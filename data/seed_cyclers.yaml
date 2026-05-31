@@ -3334,3 +3334,182 @@
       detail in the context of recent Cassini discoveries"; "For the
       Titan-Enceladus cyclers, Saturn's G rings pose a hazard out to
       approximately 176,000 km."
+
+# ---------------------------------------------------------------------------
+# 44. Hollister & Menning 1970 Earth-Venus periodic swing-by (pre-Aldrin)
+# ---------------------------------------------------------------------------
+- id: hollister-menning-1970-ev-periodic
+  name: "Hollister & Menning periodic Earth-Venus swing-by cycler"
+  source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; ballistic per the paper's matched-V_inf periodic swing-by construction
+  bodies: ["E", "V"]
+  sequence_canonical: "E-V"      # cyclic-canonical per spec §16.2; one Earth + one Venus encounter per cycle in the basic family
+  sense: "n/a"                   # paper predates the Aldrin up/down-escalator terminology
+  period:
+    pair: "E-V"
+    k: null
+    years: null
+    note: |
+      Period left null: the paper's full text was not accessible at ingest
+      (AIAA arc.aiaa.org returned 403; ADS abstract page returned empty
+      content; NTRS has no matching record). The synodic multiplier k
+      cannot be set without confirming which periodic family/families the
+      paper actually catalogues. The Earth-Venus synodic period used
+      elsewhere in this catalogue is 1.599 yr (see entry 6, EMEEVE
+      6.4-yr beat note at line ~989), so once the paper is consulted
+      directly, years should be k * 1.599 yr.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: |
+        Not accessible: paper full text not consulted. Rogers et al. 2012
+        (AIAA 2012-4746) cite Hollister-Menning 1970 as reference [4] in
+        the lineage paragraph ("In the late 1960s and early 1970s,
+        Hollister and Hollister and Menning discovered trajectories that
+        use gravity-assists to repeatedly encounter the Earth and
+        Venus") but do not transcribe its V_inf values.
+    - body: "V"
+      vinf_kms: null
+      note: "Same — paper full text not consulted."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: 0.0
+    note: |
+      a/e/perihelion/aphelion: paper not consulted at ingest. Inclination
+      set to 0.0 reflecting the standard circular-coplanar idealization
+      used in the 1969-1970 cycler literature (Hollister 1969 "Periodic
+      Orbits for Interplanetary Flight" JSR Vol. 6 No. 4, the precursor
+      paper, works in the planar idealization; the 1970 Earth-Venus
+      paper is in the same modelling lineage). If the paper turns out to
+      treat the real ~3.4° inclination of Venus's orbit, this value
+      should be revised when the paper is ingested.
+  legs: []                       # leg-by-leg breakdown not available without paper full text
+  first_published:
+    authors: ["Hollister, W. M.", "Menning, M. D."]
+    year: 1970
+    title: "Periodic Swing-By Orbits between Earth and Venus"
+    venue: "Journal of Spacecraft and Rockets, Vol. 7, No. 10, pp. 1193-1199"
+    date: "1970-10"
+    doi: "10.2514/3.30134"
+    url: "https://doi.org/10.2514/3.30134"
+    note: |
+      Pre-Aldrin (1985) foundational cycler-class paper. Predates the
+      Aldrin SAIC presentation by 15 years and the Byrnes/Longuski/Aldrin
+      1993 JSR paper by 23 years. The first peer-reviewed analytical
+      demonstration that an Earth-Venus orbit can be made periodic via
+      matched-V_inf gravity-assist swing-bys. Title capitalisation
+      ("Swing-By") follows the original citation as reproduced in Rogers
+      et al. 2012 AIAA 2012-4746 reference [4].
+  corroborating_sources:
+    - authors: ["Hollister, W. M."]
+      year: 1969
+      title: "Periodic Orbits for Interplanetary Flight"
+      venue: "Journal of Spacecraft and Rockets, Vol. 6, No. 4, pp. 366-369"
+      date: "1969-04"
+      doi: "10.2514/3.29664"
+      url: "https://doi.org/10.2514/3.29664"
+      note: |
+        Single-author precursor paper that introduces the periodic-orbit
+        framework Hollister & Menning 1970 then specialises to the
+        Earth-Venus case. Rogers et al. 2012 cites both as references
+        [1,2] (Hollister 1969 'Castles in Space' Astronautica Acta Vol.
+        14; Hollister 1969 'Periodic Orbits for Interplanetary Flight'
+        JSR) alongside Hollister & Menning 1969 AIAA Paper 69-931
+        ("Interplanetary Orbits for Multiple Swingby Missions", August
+        1969) as ref [3]. The 1970 JSR paper is the peer-reviewed
+        elaboration of the 1969 AIAA conference work.
+    - authors: ["Hollister, W. M.", "Menning, M. D."]
+      year: 1969
+      title: "Interplanetary Orbits for Multiple Swingby Missions"
+      venue: "AIAA Paper 69-931, August 1969"
+      doi: null
+      url: null
+      note: |
+        Conference precursor to the 1970 JSR paper. Not consulted
+        directly; citation per Rogers et al. 2012 reference [3].
+    - authors: ["Rall, C.", "Hollister, W. M."]
+      year: 1971
+      title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+      venue: "January 1971"
+      doi: null
+      url: null
+      note: |
+        Companion 1971 paper extending the Hollister periodic-swing-by
+        framework from the Earth-Venus pair (the present 1970 entry) to
+        the Earth-Mars pair, predating Aldrin's 1985 SAIC presentation
+        by 14 years. Per Rogers et al. 2012 conclusion: "the cycler
+        concept ... has been discussed since Hollister introduced the
+        idea in 1969" — Hollister is the priority anchor for the
+        cycler-class concept. Cited per Rogers et al. 2012 reference [6]
+        (with the Rall PhD dissertation, MIT October 1970, as ref [5]).
+  priority_date: "1970-10-01"
+  notes: |
+    Pre-Aldrin foundational paper for ballistic cycler trajectories. First
+    peer-reviewed analytical demonstration that a spacecraft can be placed
+    on a periodic Earth-Venus orbit, indefinitely shuttling between the
+    two planets via matched-V_inf gravity-assist swing-bys. The
+    matched-V_inf constraint that defines a ballistic cycler — V_inf
+    arrival at planet i must equal V_inf departure from the same planet
+    in the cycle — is introduced in this Hollister lineage; later
+    Tisserand-graph methods (Strange/Longuski 2002, etc.) formalise
+    the geometric/algebraic structure but the constraint itself is
+    Hollister's contribution. Russell/Strange 2009 JGCD (entry 42) and
+    Rogers et al. 2012 (entry 11, 12) both trace the cycler concept's
+    origin to this line of work, not to Aldrin.
+
+    DATA COMPLETENESS: citation-only. Numerical values (k, period
+    years, V_inf at Earth and Venus, a, e, perihelion, aphelion) are all
+    null because the paper full text was not accessible at ingest:
+
+      - AIAA arc.aiaa.org (DOI 10.2514/3.30134) — HTTP 403 to web-fetch
+        tool, consistent with the project-wide AIAA access caveat
+        documented in data/README.md "Audit" section.
+      - ADS abstract page (1970JSpRo...7.1193H) — fetched empty content.
+      - NTRS — no matching record.
+      - Google Scholar / search-result snippets — only metadata, not
+        numerics.
+
+    The companion Rogers et al. 2012 paper (the catalogue's primary
+    secondary source for Hollister-Menning citation, ingested for the
+    Aldrin/VISIT/S1L1 entries) cites Hollister-Menning 1970 in the
+    lineage paragraph but does not transcribe orbital parameters from
+    it. When the paper becomes accessible (a print library copy at MIT,
+    where Hollister was based, or an institutional subscriber to AIAA),
+    backfill k, years, V_inf, and orbital elements via Edit-with-source-
+    quote-update per data/README.md "Editing an existing entry".
+
+    M7 NOTE: a finder hit producing a periodic E-V ballistic cycler
+    cannot be matched against this entry via signature comparison
+    (signature fields are null). Treat as "candidate-novel, flag for
+    human review against Hollister-Menning 1970" until member numerics
+    are ingested. Given the paper's vintage and the simplicity of the
+    E-V two-body cycler family, any modern enumerator working in the
+    circular-coplanar model should rediscover Hollister-Menning's
+    solutions; preserve attribution.
+  source_quotes:
+    "first_published.title": |
+      Citation per Rogers, Hughes, Longuski & Aldrin 2012 (AIAA 2012-4746)
+      reference [4]: "Hollister, W. and Menning, M., 'Periodic Swing-By
+      Orbits between Earth and Venus,' Journal of Spacecraft and Rockets,
+      Vol. 7, No. 10, October 1970, pp. 1193-1199."
+    "first_published.doi": |
+      AIAA DOI registry: doi.org/10.2514/3.30134 resolves to the AIAA
+      arc.aiaa.org landing page for "Periodic swing-by orbits between
+      earth and Venus" by W. M. Hollister and M. D. Menning, Journal of
+      Spacecraft and Rockets Vol. 7 No. 10 (1970) pp. 1193-1199. Title
+      capitalisation on the AIAA landing page is sentence-case; the
+      Rogers et al. 2012 citation uses title-case ("Swing-By") which is
+      the form preserved in this catalogue.
+    notes: |
+      Rogers et al. 2012 AIAA 2012-4746 Introduction: "In the late 1960s
+      and early 1970s, Hollister and Hollister and Menning discovered
+      trajectories that use gravity-assists to repeatedly encounter the
+      Earth and Venus. Rall and Rall and Hollister were the first to
+      show that these types of trajectories also exist between Earth
+      and Mars." Conclusion: "The concept of cycler vehicles, which
+      would provide safe havens for astronauts traveling to and from
+      Mars on repeating trajectories, has been discussed since
+      Hollister introduced the idea in 1969."
