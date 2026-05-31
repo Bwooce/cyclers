@@ -8,9 +8,25 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 
 ## Status
 
-**M0 scaffold.** The package installs, lints, type-checks, and runs a smoke test
-over the physical constants. No domain logic yet — `ephemeris`, `lambert`,
-`kepler`, flyby and cycler construction land in M1–M3.
+| Milestone | Status |
+|---|---|
+| M0 — scaffold (uv + pyproject + ruff + mypy --strict + pytest + CI) | ✓ done |
+| M1 — core mechanics (ephemeris circular, lambert universal-variable, kepler) | ✓ done |
+| M2 — flyby + Tisserand + resonance | ✓ done |
+| M3 — Cycler/Leg/Encounter model + rotating frame + construct; reproduces Aldrin | ✓ done |
+| M4 — cell enumeration + Tisserand pruning + scoring + ranking | ✓ done |
+| M5 — optimisation (scipy DE + SLSQP with hard constraints) | in progress |
+| M6 (slice) — astropy Ephemeris backend + phase_match.find_real_windows | ✓ done |
+| M6a/M6b — multi-lap propagation, ephemeris-mode TCM minimisation | planned |
+| M7 — catalogue loader, signature matching, novelty | planned |
+| M8 — VEM campaign + CLI + viz | planned |
+
+**Companion catalogue** at [`data/seed_cyclers.yaml`](data/seed_cyclers.yaml) carries the
+published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+broad classes, Niehoff VISIT, Jones VEM family, Hollister–Menning, plus lunar and Jovian
+family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
+conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
+auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 
 ## Read first
 

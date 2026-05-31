@@ -85,14 +85,15 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M2** | Flyby + maps: flyby, tisserand, resonance | completed | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
 | **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | completed | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
 | **M4** | Enumeration + scoring | completed | [phases/m4-enumeration-scoring/plan.md](phases/m4-enumeration-scoring/plan.md) |
-| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | planned | — |
-| **M6a** | Idealized closure verification | future slice | — |
-| **M6b** | Phase-match + ephemeris-mode TCM over 3–5 laps | future slice | — |
-| **M7** | Catalogue, signatures, novelty | future slice | — |
-| **M8** | VEM campaign + CLI + viz | future slice | — |
-| Stretch | GMAT bridge | future slice | — |
-| Stretch | Low-thrust | future slice | — |
-| Stretch | `cyclers.space` public site | future slice | — |
+| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **plan written; implementation in flight 2026-06-01** | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
+| **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates) | **completed** (commit `9b2611d`) | _slice; no full phase doc_ |
+| **M6a** | Idealized closure verification (multi-lap propagation, bounded closure-drift check) | planned | — |
+| **M6b** | Ephemeris-mode TCM minimisation over 3–5 lap horizon | planned | — |
+| **M7** | Catalogue loader, canonical signature matching, novelty scoring | planned | — |
+| **M8** | VEM campaign + CLI + viz | planned | — |
+| Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
+| Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
+| Stretch | Low-thrust v2 scope expansion | refs queued (Yam 2010, Pascarella 2024) | — |
 
 Per the agreed first slice, **only M0's plan is written now**. M1–M3 plans are written as each previous phase completes, so each plan can incorporate what was actually learned from the predecessor (file boundaries that emerged, types that turned out wrong, etc.). Writing all four up-front risks four plans built on assumptions that get invalidated by M0.
 
