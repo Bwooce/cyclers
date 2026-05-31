@@ -7,6 +7,8 @@ requires-python = ">=3.11,<3.12"
 dependencies = [
     "numpy>=2.0",
     "scipy>=1.13",
+    "astropy>=7.0",
+    "jplephem>=2.22",
 ]
 
 [project.optional-dependencies]
@@ -46,6 +48,13 @@ strict = true
 warn_unused_ignores = true
 disallow_any_unimported = true
 plugins = []
+
+# astropy ships partial type stubs; treat its sub-modules as Any rather than
+# fail strict mode on third-party untyped surfaces. This is a pragmatic choice;
+# revisit if astropy's stub coverage improves materially.
+[[tool.mypy.overrides]]
+module = ["astropy.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

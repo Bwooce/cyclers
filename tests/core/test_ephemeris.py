@@ -59,11 +59,15 @@ def test_planar() -> None:
             assert v[2] == 0.0
 
 
-def test_astropy_not_implemented() -> None:
-    """The astropy backend explicitly defers to M6 in its error message."""
-    with pytest.raises(NotImplementedError) as info:
-        Ephemeris(model="astropy")
-    assert "M6" in str(info.value)
+def test_astropy_backend_constructs() -> None:
+    """The astropy backend was implemented in the 2026-06-01 launch-windows slice.
+
+    Was previously expected to raise NotImplementedError (M6 deferral); the
+    backend now instantiates cleanly. Detailed behaviour tests live in
+    ``tests/core/test_ephemeris_astropy.py``.
+    """
+    ephem = Ephemeris(model="astropy")
+    assert ephem.model == "astropy"
 
 
 def test_unknown_body() -> None:
