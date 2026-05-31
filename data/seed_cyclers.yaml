@@ -117,6 +117,15 @@
     set that matches the construction the code actually produces from the
     M1 circular-coplanar ephemeris (which uses sma_E=1.00000261, sma_M=1.52371034).
     See docs/known-cyclers.md "Outstanding questions" §A.
+
+    Russell 2004 Table 3.4 classifies this cycler under the wider
+    ARMIN=0.9 / TRMIN=0.85 "ballistic" net rather than the strict
+    AR>=1.0 AND TR>=1.0 criterion. Strictly, this cycler is near-ballistic:
+    AR=1.47, TR=0.86; the gravity-assist deflection at Mars is short
+    of fully ballistic and requires a small powered nudge. The
+    `trajectory_regime: ballistic` field is retained because Russell and
+    the cycler literature group it with the ballistic family; consumers
+    doing powered-flyby DV accounting should still compute the residual.
   source_quotes:
     a_au: |
       Rogers et al. 2012, Table 1 'Orbital elements and number of vehicles for selected
@@ -407,6 +416,16 @@
     McConaghy/Longuski 2002. Rogers et al. 2012 also calls it "Case 2" and
     reports it as having the lowest V_inf_launch (2.522 km/s) and a 171-day
     Earth-Mars flight time in the analytic ephemeris (Table 4).
+
+    Russell 2004 Table 3.4 classifies this cycler under the wider
+    ARMIN=0.9 / TRMIN=0.85 "ballistic" net rather than the strict
+    AR>=1.0 AND TR>=1.0 criterion. Strictly, this cycler is near-ballistic:
+    AR=0.95, TR=1.11; the gravity-assist deflection at Mars is short
+    of fully ballistic (aphelion just under Mars's circular-orbit
+    radius) and requires a small powered nudge. The
+    `trajectory_regime: ballistic` field is retained because Russell and
+    the cycler literature group it with the ballistic family; consumers
+    doing powered-flyby DV accounting should still compute the residual.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4, row 2.1.1.+2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4, row 2.1.1.+2."
@@ -457,6 +476,16 @@
   notes: |
     "Case 3" in the Byrnes/McConaghy/Longuski 2002 enumeration. Russell 2004
     Table 3.4 footnote 'e' attributes this entry.
+
+    Russell 2004 Table 3.4 classifies this cycler under the wider
+    ARMIN=0.9 / TRMIN=0.85 "ballistic" net rather than the strict
+    AR>=1.0 AND TR>=1.0 criterion. Strictly, this cycler is near-ballistic:
+    AR=1.08, TR=0.92; the gravity-assist deflection at Earth or Mars
+    (turn ratio just under 1) is short of fully ballistic and requires
+    a small powered nudge. The `trajectory_regime: ballistic` field is
+    retained because Russell and the cycler literature group it with
+    the ballistic family; consumers doing powered-flyby DV accounting
+    should still compute the residual.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4, row 2.3.1.+1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4, row 2.3.1.+1."
@@ -508,7 +537,7 @@
       year: 2004
       title: "A Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
       venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
-      doi: "10.2514/1.5878"
+      doi: "10.2514/1.1011"
       url: null
       note: "Citation per Wikipedia Mars Cycler article [8]. Russell's dissertation expands the catalogue."
     - authors: ["Russell, R. P."]
@@ -531,6 +560,16 @@
     This is one of the lowest-V_inf E-M cyclers known, distinct from the
     other Russell-Ocampo entries above and worth keeping in the seed
     catalogue as a counter-example to "low-V_inf cyclers require Venus".
+
+    Russell 2004 Table 3.4 classifies this cycler under the wider
+    ARMIN=0.9 / TRMIN=0.85 "ballistic" net rather than the strict
+    AR>=1.0 AND TR>=1.0 criterion. Strictly, this cycler is near-ballistic:
+    AR=0.99, TR=1.55; the gravity-assist deflection at Mars (aphelion
+    just under Mars's circular-orbit radius) is short of fully ballistic
+    and requires a small powered nudge. The `trajectory_regime: ballistic`
+    field is retained because Russell and the cycler literature group it
+    with the ballistic family; consumers doing powered-flyby DV
+    accounting should still compute the residual.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": |
       Russell 2004 dissertation §3.8: "At Earth, the cycler has a v_inf of
