@@ -408,6 +408,21 @@ One record type flows through everything — finder output, the search ledger, t
     "vinf_multiset_kms": [["E",5.65],["E",5.65],["M",3.05],["M",3.05]], // sorted, binned
     "leg_elements_AU": [{"a":1.66,"e":0.41}]            // sorted multiset, binned
   },
+
+  // 2026-06-01 schema v2: six additive optional field categories.
+  // All optional; see data/README.md "Schema v2" for full defaults +
+  // backfill rules. Consumers that omit any new field treat the entry
+  // as if model_assumption="circular-coplanar" and every other v2 field
+  // is null. None of these participate in §16.2 canonical signatures.
+  "model_assumption": "circular-coplanar",  // circular-coplanar | analytic-ephemeris | cr3bp; default circular-coplanar
+  "delta_v_kms": 0.0,                       // per-cycle maintenance ΔV; 0 for strict ballistic; null for near-ballistic / undetermined
+  "v_infinity_leveraging_dv_kms": null,     // establishment ΔV (Rogers 2012 4:3, 3:2 variants); null when not applicable
+  "fleet_size": null,                       // integer vehicle count required for the cadence; null where not stated
+  "flyby_mechanics": [                      // per-encounter geometry, parallel to vinf_kms_at_encounters; null/missing when not extracted
+    {"body":"E","turning_angle_deg":60,"min_altitude_km":200,"rp_km":6578},
+    {"body":"M","turning_angle_deg":24,"min_altitude_km":200,"rp_km":3596}
+  ],
+
   "trajectory": {
     "model": "ephemeris",                // circular | ephemeris
     "encounters": [{"body":"E","t_rel_days":0,"vinf_in":null,"vinf_out":[…],
@@ -415,6 +430,21 @@ One record type flows through everything — finder output, the search ledger, t
     "legs": [{"from":"E","to":"M","tof_days":146,"n_revs":0,"branch":"low",
               "a_AU":1.66,"e":0.41}, …],
     "radial_span_AU": [0.97, 2.34]
+  },
+
+  // orbit_elements gains six v2 children (all optional, default null).
+  // The *_km pair is parallel to perihelion_au / aphelion_au for use
+  // with non-Sun primaries (Earth-Moon, Jovian, Saturnian). The
+  // orientation fields enable full 3D state for M6+ ephemeris-mode work.
+  "orbit_elements": {
+    // (existing) "perihelion_au", "aphelion_au", "a_au", "e",
+    //            "inclination_deg" ...
+    "periapse_km": null,         // parallel to perihelion_au for non-heliocentric entries
+    "apoapse_km": null,          // parallel to aphelion_au for non-heliocentric entries
+    "raan_deg": null,            // Right Ascension of Ascending Node, Ω
+    "arg_periapsis_deg": null,   // Argument of Periapsis, ω
+    "true_anomaly_deg": null,    // True anomaly at epoch, ν
+    "epoch_iso8601": null        // ISO-8601 epoch for the anomaly; null = generic / circular-coplanar baseline
   },
   "metrics": {
     "maintenance_dv_mps_idealized": 0,
@@ -453,6 +483,8 @@ A cycler's physical identity is invariant to absolute epoch/phase, to where on t
 - **Leg geometry** → sorted multiset of `(a, e)`, binned to 0.01 AU / 0.01.
 
 `signature = sha1(canonical_json(signature_fields))`. The binning absorbs numerical noise; the canonicalisation absorbs the loop's rotational/reflective symmetry. Two records with the same hash are the same cycler.
+
+The six v2 fields added 2026-06-01 (`model_assumption`, `delta_v_kms`, `v_infinity_leveraging_dv_kms`, `fleet_size`, `flyby_mechanics`, and the orbit_elements 3D-orientation extensions) do **not** participate in the canonical signature. They are descriptive metadata, not identity carriers — including them would silently invalidate matches against pre-v2 records and against literature entries that omit them. M7 *may* additionally pre-filter the matcher pool by `model_assumption` (so a `cr3bp` finder hit doesn't match circular-coplanar literature), but this is a *pool filter*, not a signature input.
 
 ### 16.3 Matching: collapsing accidental re-derivations
 

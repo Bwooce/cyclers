@@ -107,6 +107,163 @@ When mixed-regime cataloguing begins (v2), use this field plus the
 (e.g. only match `ballistic` finder hits against `ballistic` catalogue
 entries; signatures across regimes are incommensurable).
 
+Schema v2 (2026-06-01) — six additive optional field categories
+---------------------------------------------------------------
+
+The 2026-06-01 schema rev adds six additive optional field categories
+to every catalogue entry. All are **additive optional**: pre-v2
+consumers that omit any of these fields treat the entry as if
+`model_assumption = "circular-coplanar"` and every other v2 field is
+`null`. None of the new fields participate in the §16.2 canonical
+signature (so adding them does not invalidate existing matches against
+literature). They are descriptive metadata for the M7 matcher's *pool
+filter* stage (e.g. only match `cr3bp` hits against `cr3bp` literature)
+and for downstream consumers (mission planners, public site
+visualisations).
+
+The convention `null` means **"not in source / not yet derived"**, NOT
+"doesn't apply". When a field genuinely doesn't apply (e.g. CR3BP
+entries have no Keplerian RAAN/ω/ν), the YAML field is still `null`
+and the per-entry `notes:` block carries the model-mismatch flag —
+matching the catalogue's existing convention from Arenstorf and
+related entries.
+
+### `model_assumption:` (top-level, string)
+
+The model under which the entry's numeric values (V_inf, ToF, a, e,
+peri, apo) were computed. Allowed values:
+
+- `circular-coplanar` — default. The catalogue's main convention:
+  Earth on a 1.000-AU circle, Mars on a 1.524-AU circle, both in the
+  ecliptic plane, both unperturbed. Russell 2004 Tables 3.4/3.9-3.11,
+  McConaghy 2002/2006 abstracts, S1L1 CPOM, Jones 2017 VEM-triple
+  family seed, the entire 5-/6-synodic Russell catalogue. Every
+  cycler whose published values are explicitly a "simplified model"
+  reference.
+- `analytic-ephemeris` — values come from STOUR or equivalent analytic
+  ephemeris solver, not the circular-coplanar baseline. The two
+  Rogers/Hughes/Longuski/Aldrin 2012 establishment variants (Aldrin
+  4:3(2)- and 3:2(1)-) are explicitly tagged this way; their V_inf
+  and ToF reflect a real-ephemeris reference epoch rather than the
+  abstract repeating model.
+- `cr3bp` — values come from a Circular Restricted Three-Body Problem
+  formulation. Arenstorf periodic orbits, Genova/Aldrin 2015 lunar
+  cycler, Wittal 2022 Earth-Moon family, Russell/Strange 2009
+  Saturnian-multi-moon family. These entries' numeric V_inf and
+  Keplerian orbital-element fields are mostly `null` because patched-
+  conic abstractions don't apply; the entry exists as a citation +
+  model-mismatch flag.
+
+**Why this matters.** M7 should only match finder candidates against
+literature with the *same* `model_assumption` — comparing a CR3BP
+periodic orbit against a patched-conic cycler's signature is
+meaningless, and would create false novelty claims. Use this field as
+the matcher's pool prefilter (before the per-signature distance
+calculation).
+
+**Default when absent:** `circular-coplanar`. Pre-v2 entries that
+predate this field (none currently — backfilled on all 219) should be
+read as circular-coplanar.
+
+**Backfill stats (initial v2 rev, 2026-06-01):**
+
+| value                | count | source of classification                                |
+| -------------------- | ----: | ------------------------------------------------------- |
+| `circular-coplanar`  |   213 | default (Russell 2004 Tables, McConaghy, S1L1, Niehoff…)|
+| `analytic-ephemeris` |     2 | Rogers 2012 Aldrin 4:3(2)- and 3:2(1)- establishment    |
+| `cr3bp`              |     4 | Arenstorf 1963 + Genova/Aldrin 2015 + Wittal 2022 + Russell/Strange 2009 Saturnian |
+
+### `delta_v_kms:` (top-level, float or null)
+
+Per-cycle maintenance ΔV (km/s) required to close the cycle in the
+entry's reference model. `0.0` for strict-ballistic cyclers (per
+Russell's footnotes a + b: Aphelion Ratio ≥ 1.0 AND Turn Ratio ≥ 1.0;
+also for entries the literature flags as "requires no propulsive
+maneuvers", e.g. the McConaghy 2006 S1L1 abstract). `null` for
+near-ballistic entries (Russell's wider net, ARMIN ≥ 0.9 / TRMIN ≥
+0.85) — actual values require row-by-row Russell ΔV extraction which
+is deferred. `null` also for entries where this number isn't
+extractable from the source.
+
+**Default when absent:** `null` (i.e. "we don't know"). Do not assume
+`0.0` for entries that omit the field.
+
+**Backfill stats (initial v2 rev, 2026-06-01):** 117 entries `0.0`
+(strict ballistic), 102 `null` (near-ballistic or undetermined).
+
+### `v_infinity_leveraging_dv_kms:` (top-level, float or null)
+
+Establishment-only ΔV (km/s) for the V-infinity leveraging manoeuvre
+that gets the spacecraft *onto* the steady-state cycler. Specific to
+Rogers 2012's Aldrin 4:3(2)- and 3:2(1)- variants and the broader
+SnLm establishment context. `null` on all current entries pending
+extraction of Rogers 2012 Tables 3/4 numbers.
+
+**Default when absent:** `null`.
+
+### `fleet_size:` (top-level, integer or null)
+
+The minimum number of spacecraft required on the cycle to maintain the
+specified cadence (typically: for a 2-synodic-period cycler one
+vehicle gives a 4.27-yr cadence, but a 4-vehicle fleet gives a
+~1-yr cadence). `null` on every current entry — the catalogue's
+existing sources don't tabulate this systematically; it's typically
+derivable from the period but not stated in the published numbers.
+
+**Default when absent:** `null`.
+
+### `flyby_mechanics:` (top-level, list of dicts or null)
+
+Per-encounter geometry parallel to the existing
+`vinf_kms_at_encounters:` list. Each element:
+
+```yaml
+- body: "E"
+  turning_angle_deg: 60     # gravity-assist bend angle delta
+  min_altitude_km: 200      # closest-approach altitude above body surface (convention: 200 km per Russell 2004 / Aldrin)
+  rp_km: 6578               # closest-approach radius from body center (= body radius + min altitude)
+```
+
+`null` (or omitted) on all current 219 entries: while some Russell
+entries cite turning-angle multisets like `[93, 93]` deg in their
+notes, deriving per-encounter `turning_angle_deg` + `min_altitude_km`
+mechanically requires the bend formula `sin(δ/2) = 1 / (1 + r_p ·
+V_inf² / μ_planet)` and an `r_p` convention. Manual entry per
+encounter is preferred over a derivation that may misalign with
+Russell's own tabulated values. Backfill is **deferred**.
+
+**Default when absent:** `null`.
+
+### `orbit_elements.{periapse_km, apoapse_km}` (nested, float or null)
+
+Parallel to the existing `orbit_elements.perihelion_au` /
+`.aphelion_au`, but expressed in km from the gravitational primary.
+Useful for non-heliocentric entries (Earth-Moon, Jovian, Saturnian)
+whose natural unit is km, not AU. `null` for heliocentric entries
+that already populate the `_au` fields; `null` for current
+non-heliocentric entries because none of the catalogue's existing
+sources tabulate them (Arenstorf, Genova, Wittal, Russell/Strange
+Jovian/Saturnian all carry `null` orbit_elements per the
+model-mismatch flag).
+
+**Default when absent:** `null`.
+
+### `orbit_elements.{raan_deg, arg_periapsis_deg, true_anomaly_deg, epoch_iso8601}` (nested, float / ISO-string or null)
+
+The remaining 3D orbital orientation: Right Ascension of Ascending
+Node (Ω), Argument of Periapsis (ω), True Anomaly at epoch (ν), and
+the ISO-8601 epoch the anomaly is referenced to. Together with the
+existing `a_au`, `e`, `inclination_deg` these complete the six-element
+state plus epoch needed for ephemeris-mode propagation.
+
+`null` on every current entry: none of the catalogue's literature
+sources publish these (the circular-coplanar model has no need for
+Ω/ω, and the published values are phase-independent). M6+ ephemeris-
+mode optimisation will populate them naturally for entries that get
+re-derived against the real ephemeris.
+
+**Default when absent:** `null`.
+
 Out-of-paradigm work
 --------------------
 
