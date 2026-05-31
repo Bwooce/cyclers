@@ -2618,3 +2618,637 @@
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Earth->Mars (or aphelion) Time (days) = 66."
     aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Aphelion Ratio = 1.49 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.49 x 1.52 AU = 2.265 AU."
     "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# ===========================================================================
+# NON-HELIOCENTRIC ENTRIES (added 2026-05-31)
+# Schema extension: each entry below carries an explicit `primary:` field.
+# Existing heliocentric entries 1-37 above omit `primary:` and consumers
+# must default it to "Sun" per data/README.md "Schema (extended)".
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# 38. Arenstorf 1963 — Earth-Moon periodic free-return ("figure-8" /
+#     Apollo precursor). CR3BP periodic orbit, NOT patched-conic.
+# ---------------------------------------------------------------------------
+- id: arenstorf-em-figure8-1963
+  name: "Arenstorf periodic Earth-Moon free-return orbit (CR3BP)"
+  source: literature
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      Arenstorf's 1963 paper proves existence of one-parameter analytic
+      families of "synodically closed" periodic solutions of the planar
+      restricted three-body problem with small mass ratio (Earth-Moon
+      mu ≈ 0.012). The closing period for the most-cited member used as
+      the Apollo free-return analogue is on the order of one Earth-Moon
+      synodic period (~14 d in the spacecraft's frame, or ~6 d in the
+      Earth-centered patched-conic projection); the original paper does
+      not tabulate a single period because it presents a family. Left
+      `years: null` because the catalogue's period convention is
+      heliocentric-synodic-multiple and does not naturally express the
+      sidereal-lunar / synodic-lunar ambiguity in this CR3BP setting.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: |
+        The Arenstorf orbit lives in the CR3BP, where the conserved
+        quantity is the Jacobi constant, not patched-conic V_infinity.
+        Quoting a V_inf at Earth would be model-mismatched. Left null
+        with a model-mismatch flag per spec §16.1 honesty rules.
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same as above — Jacobi-constant model, not patched-conic."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Heliocentric Keplerian orbit elements are inapplicable: the
+      Arenstorf orbit is a periodic solution in the rotating Earth-Moon
+      synodic frame, not a Kepler ellipse around the Sun. Left null
+      throughout per honesty rule.
+  legs: []
+  first_published:
+    authors: ["Arenstorf, R. F."]
+    year: 1963
+    title: "Periodic Solutions of the Restricted Three Body Problem Representing Analytic Continuations of Keplerian Elliptic Motions"
+    venue: "American Journal of Mathematics, Vol. 85, No. 1, pp. 27-35"
+    date: "1963-01"
+    doi: "10.2307/2373181"
+    url: "https://www.jstor.org/stable/2373181"
+    note: |
+      Also issued as NASA Technical Note NASA-TN-D-1859 (May 1963),
+      NTRS accession 19630005545, URL
+      https://ntrs.nasa.gov/citations/19630005545 . Arenstorf was at
+      NASA Marshall Space Flight Center at the time. The Apollo
+      programme later adopted free-return trajectories of this family;
+      Arenstorf is credited with the rescue trajectory used by Apollo
+      13 (secondary attribution).
+  corroborating_sources:
+    - authors: ["Cook, J. D."]
+      year: 2020
+      title: "Arenstorf orbit"
+      venue: "John D. Cook blog (johndcook.com), 2020-02-08"
+      doi: null
+      url: "https://www.johndcook.com/blog/2020/02/08/arenstorf-orbit/"
+      note: "Modern explainer; useful for the standard mu = 0.012277471 Earth-Moon mass ratio commonly used in numerical CR3BP demos of the Arenstorf orbit."
+  priority_date: "1963-01-01"
+  notes: |
+    MODEL MISMATCH FLAG: this is a CR3BP (circular restricted three-body
+    problem) periodic orbit, not a patched-conic + gravity-assist
+    cycler. The V_infinity + bend-angle abstraction the rest of this
+    catalogue uses does not apply to it. The entry exists for two
+    reasons:
+
+      1. Historical / pedagogical priority: Arenstorf 1963 is the
+         foundational lunar free-return analytic family; the Apollo
+         missions used trajectories of this kind.
+      2. Future scope flag: if cyclerfinder ever extends to CR3BP /
+         invariant-manifold modelling (see spec §2 stretch goals and
+         docs/known-cyclers.md §H), this entry is the first known-prior
+         art the matcher would need to handle.
+
+    Until such an extension exists, M7 novelty matching MUST treat any
+    finder hit purely on `primary == "Earth"` + bodies ["E", "Moon"] as
+    a candidate for human review against this entry rather than an
+    automatic prior-art match; the numerical signature comparison the
+    rest of the catalogue performs is not meaningful here.
+  source_quotes:
+    "first_published.title": |
+      NASA NTRS metadata for accession 19630005545: "PERIODIC SOLUTIONS
+      OF THE RESTRICTED THREE BODY PROBLEM REPRESENTING ANALYTIC
+      CONTINUATIONS OF KEPLERIAN ELLIPTIC MOTIONS" — Arenstorf, R. F.,
+      NASA-TN-D-1859, May 1963.
+    "first_published.venue": |
+      Standard library citation: American Journal of Mathematics, Vol.
+      85, No. 1 (Jan., 1963), pp. 27-35; JSTOR stable URL
+      https://www.jstor.org/stable/2373181 .
+    notes: |
+      Cook 2020 blog explainer: "Richard Arenstorf discovered a stable
+      periodic orbit between the Earth and the Moon which was used as
+      the basis for the Apollo missions." Multiple secondary sources
+      independently corroborate the Apollo provenance.
+
+# ---------------------------------------------------------------------------
+# 39. Genova/Aldrin AAS 2015 — 3-petal Earth-Moon cycler ("free-return
+#     interplanetary cruise ship") with solar-gravity phasing.
+# ---------------------------------------------------------------------------
+- id: genova-aldrin-2015-em-3petal-cycler
+  name: "Genova/Aldrin free-return Earth-Moon cycler (interplanetary cruise ship, 3:1 lunar resonant)"
+  source: literature
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: null
+    years: null
+    note: |
+      The paper describes a circumlunar periodic orbit with Earth
+      encounters every 7 or 10 days and lunar encounters every 26 days.
+      The 26-day Moon-encounter cadence corresponds to one lunar
+      sidereal period (27.3 d) modulo phasing; the cycler is qualitatively
+      a 3-petal (3:1) lunar resonant trajectory in the Earth-Moon
+      rotating frame. The single "period" of the cycler as a whole is
+      not isolated in the accessible abstract — left null with the
+      cadence captured below as legs/encounters.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: |
+        Not tabulated in accessible material (NTRS abstract +
+        Semantic Scholar landing page; full PDF inaccessible to this
+        ingest). Per spec §16.1 honesty rule, left null with the gap
+        noted rather than guessed.
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — not in the accessible abstract."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Geocentric (not heliocentric) orbital elements would apply here.
+      Not tabulated in the accessible abstract.
+  legs:
+    - from: "E"
+      to: "E"
+      tof_days: 7
+      n_revs: null
+      note: |
+        Earth-to-Earth encounter cadence: "close-Earth encounters every
+        7 or 10 days" per the NTRS abstract. The 7 / 10 d alternation
+        is a feature of the 3-petal geometry with solar-gravity phasing.
+    - from: "E"
+      to: "Moon"
+      tof_days: 26
+      n_revs: null
+      note: |
+        Earth-Moon encounter cadence: "Lunar encounters occur every 26
+        days" per the NTRS abstract.
+  first_published:
+    authors: ["Genova, A. L.", "Aldrin, B."]
+    year: 2015
+    title: "A Free-Return Earth-Moon Cycler Orbit for an Interplanetary Cruise Ship"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, Vail CO, August 9-13, 2015"
+    date: "2015-08"
+    doi: null
+    url: "https://ntrs.nasa.gov/citations/20150018049"
+    note: |
+      NASA report number ARC-E-DAA-TN22765 per the NTRS metadata. The
+      specific AAS paper number (e.g. AAS 15-XXX) is not exposed in the
+      NTRS record; the citation here uses the conference venue only.
+      AIAA-hosted PDFs returned HTTP 403 to ingest, so the abstract
+      content cited below comes from the NTRS landing page.
+  corroborating_sources:
+    - authors: ["Genova, A. L."]
+      year: 2016
+      title: "Circumlunar Free-Return Cycler Orbits for a Manned Earth-Moon Space Station"
+      venue: "NTRS 20160004674"
+      doi: null
+      url: "https://ntrs.nasa.gov/citations/20160004674"
+      note: "Companion / follow-up report from the same author covering the same orbit family."
+  priority_date: "2015-08-09"
+  notes: |
+    Buzz Aldrin's lunar-cycler extension of his Earth-Mars cycler
+    concept. Co-authored with NASA Ames trajectory analyst Anthony L.
+    Genova. The orbit is "free-return" in the sense that any spacecraft
+    flying on it will naturally return to Earth without propulsion;
+    "modest phasing maneuvers" (average 39 m/s per month per the
+    abstract) compensate for solar-gravity perturbations and keep the
+    geometry repeating.
+
+    Useful as a destination for crew transfer: per the abstract, lunar
+    encounters "offer the chance for a smaller craft to depart the
+    cycler and enter lunar orbit, or head for a Lagrange point (e.g.,
+    EM-L2 halo orbit), distant retrograde orbit (DRO), or interplanetary
+    destination such as a near-Earth object (NEO) or Mars."
+
+    MODEL NOTE: like the Arenstorf entry, this is best modelled in the
+    Earth-Moon CR3BP with solar-perturbation third-body, not in
+    patched-conic + V_infinity. The numerical signature fields are
+    largely null and should not be used for M7 novelty matching against
+    heliocentric finder hits.
+  source_quotes:
+    "first_published.title": |
+      NTRS 20150018049 title: "A Free-Return Earth-Moon Cycler Orbit
+      for an Interplanetary Cruise Ship" — Genova, Aldrin.
+    "legs[0].tof_days": |
+      NTRS abstract: "introducing solar gravity and modest phasing
+      maneuvers (average of 39 m/s per month) which yields close-Earth
+      encounters every 7 or 10 days."
+    "legs[1].tof_days": |
+      NTRS abstract: "Lunar encounters occur every 26 days and offer
+      the chance for a smaller craft to depart the cycler and enter
+      lunar orbit..."
+    notes: |
+      NTRS abstract: "introducing solar gravity and modest phasing
+      maneuvers (average of 39 m/s per month)" (delta-V budget cited
+      in notes).
+
+# ---------------------------------------------------------------------------
+# 40. Wittal/Miaule/Asher IAF 2022 — Earth-Moon cycler families for
+#     lunar logistics (Gateway / South Pole resupply). Family seed.
+# ---------------------------------------------------------------------------
+- id: wittal-2022-em-cycler-family
+  name: "Wittal/Miaule/Asher Earth-Moon cycler family for lunar logistics (family seed)"
+  source: literature
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: null
+    years: null
+    note: |
+      The paper studies multiple cycler families parameterised by
+      inclination relative to the lunar orbit plane (notably families
+      near 90 degree inclination). No single period characterises the
+      family. The full IAC PDF was not accessible to this ingest; only
+      the NTRS landing-page abstract is cited.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "Family seed — individual member V_inf not in the accessible abstract."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — family seed."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Inclination is a primary distinguishing parameter for the families
+      studied (~90 deg relative to the Moon) but no single (a, e, peri,
+      apo) characterises the set.
+  legs: []
+  first_published:
+    authors: ["Wittal, M. M.", "Miaule, S.", "Asher, B. W."]
+    year: 2022
+    title: "Earth-Moon Cycler Mission Design for Lunar Logistics"
+    venue: "73rd International Astronautical Congress (IAC), Paris, France, September 18-22, 2022, paper IAC-22-C1.6.6"
+    date: "2022-09"
+    doi: null
+    url: "https://ntrs.nasa.gov/citations/20220013595"
+    note: |
+      NTRS document ID 20220013595, paper IAC-22-C1.6.6. Authors are at
+      Kennedy Space Center (Wittal), Deep Space Logistics (Miaule), and
+      Aegis Aerospace (Asher).
+  corroborating_sources:
+    - authors: ["Wittal, M. M.", "Miaule, S.", "Asher, B. W."]
+      year: 2022
+      title: "BuzzCraft: Evolution of A Sturdy Cislunar Cycler Architecture for Permanent Lunar Settlement Logistics"
+      venue: "AIAA ASCEND 2022, AIAA 2022-4345"
+      doi: "10.2514/6.2022-4345"
+      url: "https://arc.aiaa.org/doi/10.2514/6.2022-4345"
+      note: "Sibling AIAA ASCEND paper from the same author group expanding on the cislunar cycler architecture."
+  priority_date: "2022-09-18"
+  notes: |
+    Family-seed entry. The paper applies cycler mechanics to lunar
+    logistics — particularly cargo/crew resupply between Earth, the
+    Gateway, and the lunar South Pole — by removing the need for large
+    rockets in favour of "more frequent but smaller missions". Cycler
+    families near 90 degree inclination relative to the lunar orbit
+    plane are studied so the cycler reaches high-latitude (South Pole)
+    sites.
+
+    Like other Earth-Moon cycler papers in the post-2015 wave (Genova
+    2015, the 2010 Russell/Strange Earth-Moon work), this is naturally
+    modelled in the Earth-Moon CR3BP rather than patched-conic, so
+    numerical signature fields are null and not suitable for M7
+    matching against patched-conic finder hits.
+
+    As individual cycler members from the paper become available
+    (full IAC PDF, follow-up journal versions), they should be split
+    out into per-member entries with full (period, V_inf multiset,
+    leg elements). Until then, this family seed records the citation.
+  source_quotes:
+    "first_published.title": |
+      NTRS 20220013595 title: "Earth-Moon Cycler Mission Design for
+      Lunar Logistics" — Wittal, Miaule, Asher.
+    "first_published.venue": |
+      NTRS metadata: "International Astronautical Congress, Paris,
+      France, September 18-22, 2022, paper IAC-22-C1.6.6".
+    notes: |
+      NTRS abstract: explores how "an Earth-Moon cycler may provide to
+      lunar logistics by removing the necessity for large and often
+      expensive rockets in lieu of more frequent but smaller missions";
+      examines cycler families with inclinations near 90 degrees
+      relative to the Moon.
+
+# ---------------------------------------------------------------------------
+# 41. Hernandez/Jones/Jesick 2017 — Io-Europa-Ganymede triple cyclers
+#     in the Jovian system. Family seed (Jovian sibling of the VEM
+#     17-577 paper already catalogued).
+# ---------------------------------------------------------------------------
+- id: hernandez-2017-jovian-ieg-triple-family
+  name: "Hernandez/Jones/Jesick Io-Europa-Ganymede triple cyclers (Jovian family seed)"
+  source: literature
+  primary: "Jupiter"
+  bodies: ["Io", "Europa", "Ganymede"]
+  sequence_canonical: "Io-Europa-Ganymede"
+  sense: "n/a"
+  period:
+    pair: "Io-Europa"
+    k: null
+    years: null
+    note: |
+      The cyclers leverage the 1:2:4 Laplace resonance among Io,
+      Europa, and Ganymede. Io's orbital period is 1.769 d, Europa's
+      is 3.551 d, Ganymede's is 7.155 d; the Laplace resonance
+      cadence sets the natural cycler period to a small integer
+      multiple of Io's period (~1.77 d). The paper's abstract does
+      not commit to a single period for the class; individual members
+      are tabulated in the full AAS proceedings PDF which was not
+      accessible to this ingest (AAS Astrodynamics Specialist
+      Conference proceedings are paywalled / library-only).
+  vinf_kms_at_encounters:
+    - body: "Io"
+      vinf_kms: null
+      note: |
+        Individual member V_inf values are in the full Hernandez 2017
+        paper which was not accessible to this ingest. Family-seed
+        entry.
+    - body: "Europa"
+      vinf_kms: null
+      note: "Same — family seed."
+    - body: "Ganymede"
+      vinf_kms: null
+      note: "Same — family seed."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Jovicentric (not heliocentric) orbital elements would apply.
+      Triple cyclers traverse a wide region of the Tisserand graph in
+      the Jovian system and are not characterised by a single (a, e).
+  legs: []
+  first_published:
+    authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
+    year: 2017
+    title: "One Class of Io-Europa-Ganymede Triple Cyclers"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA (Columbia River Gorge), August 20-24, 2017; published in Advances in the Astronautical Sciences Vol. 162, Univelt Inc., pp. 973-984"
+    date: "2017-08-20"
+    doi: null
+    url: "https://www.semanticscholar.org/paper/ONE-CLASS-OF-IO-EUROPA-GANYMEDE-TRIPLE-CYCLERS-Hernandez-Jones/7e1de63096852b5422107ffc23a9312ea3de54f3"
+    note: |
+      Author ordering per Semantic Scholar and citation in the SciOpen
+      review "Review of Trajectory Design and Optimization for Jovian
+      System Exploration" (Hernandez first author, then Jones, then
+      Jesick). NB this is DIFFERENT from the Jones/Hernandez/Jesick
+      ordering used for their heliocentric VEM-triple-cycler sibling
+      paper (AAS 17-577, already catalogued as
+      `jones-2017-vem-triple-family`). The AAS paper number for this
+      Jovian paper could not be confirmed in accessible material; one
+      candidate is AAS 17-608 (per the task brief's prior research) but
+      this was not verifiable in the conference programme PDFs that
+      were accessible at ingest time. Cite by conference and year until
+      paper number can be confirmed.
+  corroborating_sources:
+    - authors: ["Yang, H.", "et al."]
+      year: 2024
+      title: "Callisto-Ganymede-Europa Triple Cyclers"
+      venue: "Journal of Guidance, Control, and Dynamics"
+      doi: "10.2514/1.G008387"
+      url: "https://arc.aiaa.org/doi/10.2514/1.G008387"
+      note: "Follow-up work in the same Jovian-triple-cycler space; uses Callisto-Ganymede-Europa instead of Io-Europa-Ganymede. Reports double-cycler periods of ~50 d and a triple-cycler period of ~100 d for the Callisto class. Cited as corroboration that the Jovian-triple-cycler research line is active."
+    - authors: ["Russell, R. P.", "Strange, N. J."]
+      year: 2009
+      title: "Cycler Trajectories in Planetary Moon Systems"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+      doi: "10.2514/1.36610"
+      url: "https://arc.aiaa.org/doi/abs/10.2514/1.36610"
+      note: "Earlier ballistic-cycler enumeration in the Jovian system; double cyclers (Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede) but not the IEG triple. Provides the methodological precursor."
+  priority_date: "2017-08-20"
+  notes: |
+    Jovian sibling of the heliocentric Jones/Hernandez/Jesick 2017
+    VEM-triple paper already in this catalogue. Both papers come from
+    the same JPL team using the same patched-conic + Lambert
+    methodology. The Jovian version exploits the near-perfect Laplace
+    1:2:4 resonance among Io/Europa/Ganymede, which makes the cycler
+    geometry particularly exact in the simplified model.
+
+    Per the abstract (search.semanticscholar.org via web search):
+    "Ballistic cycler trajectories that repeatedly encounter the
+    Jovian moons Ganymede, Europa, and Io are investigated, with the
+    1:2:4 orbital resonance among these moons allowing for trajectories
+    that periodically fly by the three bodies and repeat indefinitely.
+    ... These cyclers are particularly exact due to the near perfect
+    resonance of the moons."
+
+    Family-seed entry per the same convention as the VEM-triple
+    sibling. Individual members must be split out as per-entry records
+    once the full paper text is accessible.
+  source_quotes:
+    "first_published.title": |
+      Semantic Scholar metadata for paper
+      7e1de63096852b5422107ffc23a9312ea3de54f3: "ONE CLASS OF
+      IO-EUROPA-GANYMEDE TRIPLE CYCLERS" by Hernandez, Jones, Jesick.
+    "first_published.venue": |
+      Astrodynamics 2017 proceedings (Stanford SearchWorks record
+      12735401) describes the conference as "AAS/AIAA Astrodynamics
+      Specialist Conference held August 20-24, 2017, Columbia River
+      Gorge, Stevenson, Washington, U.S.A." The Univelt
+      "Advances in the Astronautical Sciences" Vol. 162 page range
+      "pp. 973-984" is per the SciOpen review citation table.
+    notes: |
+      Abstract (via web search of Semantic Scholar landing page):
+      "the 1:2:4 orbital resonance among these moons allowing for
+      trajectories that periodically fly by the three bodies and
+      repeat indefinitely ... These cyclers are particularly exact
+      due to the near perfect resonance of the moons."
+
+# ---------------------------------------------------------------------------
+# 42. Russell/Strange 2009 — Jovian moon cyclers family seed
+# ---------------------------------------------------------------------------
+- id: russell-strange-2009-jovian-multimoon-family
+  name: "Russell/Strange Jovian moon cycler family (family seed)"
+  source: literature
+  primary: "Jupiter"
+  bodies: ["Io", "Europa", "Ganymede", "Callisto"]
+  sequence_canonical: "Galilean-multi"
+  sense: "n/a"
+  period:
+    pair: null
+    k: null
+    years: null
+    note: |
+      Family seed entry: Russell/Strange document hundreds of ballistic
+      cycler geometries shuttling between pairs of Galilean moons
+      (Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, Europa-Ganymede,
+      etc.) plus some multi-moon variants. No single period
+      characterises the family; per-member periods are in the paper's
+      tables which were not accessible at ingest (AIAA JGCD paywalled).
+  vinf_kms_at_encounters:
+    - body: "Io"
+      vinf_kms: null
+      note: "Family seed — individual V_inf in the JGCD paper not accessible at ingest."
+    - body: "Europa"
+      vinf_kms: null
+      note: "Same."
+    - body: "Ganymede"
+      vinf_kms: null
+      note: "Same."
+    - body: "Callisto"
+      vinf_kms: null
+      note: "Same."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+  legs: []
+  first_published:
+    authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    date: "2009-01"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.36610"
+    note: |
+      Authors at UT Austin (Russell) and JPL (Strange). Peer-reviewed
+      version of the conference precursor cited below.
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Strange, N. J."]
+      year: 2007
+      title: "Planetary Moon Cycler Trajectories"
+      venue: "AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, January 29 - February 1, 2007"
+      doi: null
+      url: "https://trs.jpl.nasa.gov/handle/2014/40318"
+      note: |
+        JPL Open Repository handle 2014/40318. Conference precursor
+        establishing priority; the 2009 JGCD paper is the archival
+        peer-reviewed venue.
+  priority_date: "2007-01-29"
+  notes: |
+    Family seed entry covering the Jovian / Galilean half of
+    Russell/Strange's catalogue. The paper "generalized previously
+    applied enumerative cycler search and optimization techniques
+    specifically for the Jovian and Saturnian moon systems ... overall,
+    hundreds of ideal model ballistic cycler geometries were found"
+    (per search snippets of the JGCD abstract / ResearchGate landing
+    page). For the Jovian system, double cyclers are documented for the
+    Ganymede-Io, Ganymede-Europa, Ganymede-Callisto, and Europa-Ganymede
+    pairings; multi-moon cyclers are also discussed.
+
+    Family seed for the same reason as the heliocentric VEM-triple seed:
+    full per-member ingestion requires the JGCD paper which was not
+    accessible at ingest. As individual cyclers are tabulated, split
+    them out as per-entry records keyed to this paper.
+
+    M7 NOTE: Jovian-system finder hits cannot be auto-matched against
+    this family seed; treat as "candidate-novel, flag for human review
+    against Russell/Strange 2009" until member-level data is ingested.
+    The Saturnian half of the same paper is captured as a sibling seed
+    `russell-strange-2009-saturnian-multimoon-family` below.
+  source_quotes:
+    "first_published.title": |
+      AIAA JGCD landing-page metadata (arc.aiaa.org/doi/abs/10.2514/1.36610):
+      "Cycler Trajectories in Planetary Moon Systems" — Russell, R. P.;
+      Strange, N. J.; JGCD Vol. 32 No. 1 (2009) pp. 143-157.
+    notes: |
+      JGCD abstract (via Russell-Strange search-result snippet):
+      "generalized previously applied enumerative cycler search and
+      optimization techniques specifically for the Jovian and Saturnian
+      moon systems ... overall, hundreds of ideal model ballistic
+      cycler geometries were found".
+
+# ---------------------------------------------------------------------------
+# 43. Russell/Strange 2009 — Saturnian moon cyclers family seed
+# ---------------------------------------------------------------------------
+- id: russell-strange-2009-saturnian-multimoon-family
+  name: "Russell/Strange Saturnian moon cycler family (family seed, Titan-Enceladus focus)"
+  source: literature
+  primary: "Saturn"
+  bodies: ["Mimas", "Enceladus", "Tethys", "Dione", "Rhea", "Titan"]
+  sequence_canonical: "Saturnian-multi"
+  sense: "n/a"
+  period:
+    pair: null
+    k: null
+    years: null
+    note: |
+      Family seed: same paper as the Jovian family entry above
+      (Russell/Strange 2009 JGCD). The Saturnian half of the paper
+      gives most detail to Titan-Enceladus cyclers, several of which
+      "found immediate application as Cassini extended missions options
+      that provide frequent low altitude Enceladus flybys" (per search
+      snippets of the abstract). No single period characterises the
+      family.
+  vinf_kms_at_encounters:
+    - body: "Titan"
+      vinf_kms: null
+      note: "Family seed — JGCD paper not accessible at ingest."
+    - body: "Enceladus"
+      vinf_kms: null
+      note: "Same."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+  legs: []
+  first_published:
+    authors: ["Russell, R. P.", "Strange, N. J."]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    date: "2009-01"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.36610"
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Strange, N. J."]
+      year: 2007
+      title: "Planetary Moon Cycler Trajectories"
+      venue: "AAS/AIAA Space Flight Mechanics Meeting, Sedona AZ, January 29 - February 1, 2007"
+      doi: null
+      url: "https://trs.jpl.nasa.gov/handle/2014/40318"
+      note: "Conference precursor."
+  priority_date: "2007-01-29"
+  notes: |
+    SCHEMA-MISMATCH FLAG: Saturnian cyclers may overlap with CR3BP
+    territory depending on which moon pair is considered (Titan, much
+    more massive than the Saturnian midsize moons, can be patched-conic
+    modelled; Enceladus / Mimas / Tethys cyclers tend toward
+    low-energy / manifold regimes that are CR3BP-natural). Treat as
+    "candidates for future ingest" pending model decision; for now
+    record the citation only.
+
+    Per search-snippet abstract: "the Saturn-Titan-Enceladus system was
+    investigated in the most detail in the context of recent Cassini
+    discoveries"; "For the Titan-Enceladus cyclers, Saturn's G rings
+    pose a hazard out to approximately 176,000 km"; "several of the
+    high energy Titan-Enceladus cyclers found immediate application as
+    Cassini extended missions options that provide frequent low
+    altitude Enceladus flybys."
+
+    Sibling of the Jovian-family entry above. As individual cyclers
+    are split out, they may need new body codes for Saturnian moons
+    (already reserved in data/README.md schema-extended section).
+  source_quotes:
+    notes: |
+      Russell/Strange 2009 JGCD abstract (via web search snippets):
+      "the Saturn-Titan-Enceladus system was investigated in the most
+      detail in the context of recent Cassini discoveries"; "For the
+      Titan-Enceladus cyclers, Saturn's G rings pose a hazard out to
+      approximately 176,000 km."

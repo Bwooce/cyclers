@@ -683,6 +683,57 @@ future milestone needs the full Aldrin cycle geometry, look in the
 Byrnes/Longuski/Aldrin 1993 paper or in McConaghy/Longuski/Byrnes 2002
 for a full per-leg breakdown.
 
+### H. Out-of-paradigm work flagged 2026-05-31 (NOT in the catalogue)
+
+When the catalogue was extended on 2026-05-31 to carry non-heliocentric
+(lunar + Jovian + family-seed Saturnian) cyclers, two further bodies of
+work were identified as **adjacent but out of the current cyclerfinder
+paradigm**. They are recorded here as awareness for the user / future
+implementers, but they are **deliberately NOT added to
+`data/seed_cyclers.yaml`** because:
+
+1. cyclerfinder v1 models cyclers as patched-conic gravity-assist
+   sequences with a V∞ + bend-angle abstraction at each flyby.
+2. The two papers below use fundamentally different mathematical
+   paradigms (CR3BP invariant manifolds; low-thrust / solar sail) for
+   which the V∞ + bend-angle signature is undefined.
+3. Including them as YAML entries would make M7 novelty matching
+   meaningless against them: any heliocentric or planet-centric finder
+   hit would either falsely match them (signature comparison undefined)
+   or never match them (`null` signatures everywhere). Better to flag
+   them here and re-evaluate when / if the project adopts those
+   modelling paradigms (cf. spec §2 stretch goals).
+
+#### H.1 Fantino, Alessi, Peláez Álvarez 2019 — Saturnian CR3BP manifold connections
+
+| Field | Value |
+|---|---|
+| Title | "Connecting low-energy orbits in the Saturn system" |
+| Authors | Elena Fantino, Elisa Maria Alessi, Jesús Peláez Álvarez |
+| Venue | 18th Australian International Aerospace Congress (ISSFD-AIAC18), Melbourne, Australia, 24-26 February 2019, paper AIAC18 |
+| URL (open) | <https://issfd.org/ISSFD_2019/ISSFD_2019_AIAC18_Fantino-Elena.pdf> |
+| Mirror | <https://oa.upm.es/56463/> (Universidad Politécnica de Madrid open repository) |
+| Methodology | CR3BP planar Lyapunov orbits + hyperbolic invariant manifolds + low-thrust patches; demonstrates a Tethys→Dione connection of 50 d using 9 kg propellant at 25 mN continuous thrust |
+| Why excluded | The patched-conic + V∞ abstraction does not apply to manifold-based low-energy trajectories; the conserved quantity is the Jacobi constant, not V∞ |
+| Re-evaluate when | The project adopts CR3BP modelling (would be the natural entry point for CR3BP catalogue ingestion) |
+
+#### H.2 Vergaaij & Heiligers 2018 — TU Delft solar-sail Earth-Mars cycler
+
+| Field | Value |
+|---|---|
+| Title | "Time-optimal solar sail heteroclinic-like connections for an Earth-Mars cycler" |
+| Authors | Merel Vergaaij, Jeannette Heiligers |
+| Venue | *Acta Astronautica*, 2018, DOI <https://doi.org/10.1016/j.actaastro.2018.06.011> (ScienceDirect S0094576518303734) |
+| URL | <https://research.tudelft.nl/en/publications/time-optimal-solar-sail-heteroclinic-like-connections-for-an-eart/> |
+| Methodology | Direct pseudospectral optimisation + dynamical-systems heteroclinic connections between Earth-Moon L2 and Sun-Mars L1 libration-point orbits; requires a solar sail to close the connection (no ballistic solution exists). Time-optimal cyclers span ~3 synodic Earth-Mars periods. |
+| Why excluded | Low-thrust / solar-sail propulsion is a spec §2 stretch goal, out of v1 scope. The trajectories are not ballistic and have no patched-conic V∞ signature. |
+| Re-evaluate when | The project adopts low-thrust modelling. NB the task brief referred to an "Earth-asteroid" version of this paper; the closest TU Delft paper actually found is this Earth-Mars version. If a distinct Earth-asteroid TU Delft paper exists, it would have the same out-of-paradigm classification. |
+
+These two flags are deliberately separate from the existing outstanding
+questions A-G because those are within-paradigm gaps (missing numerics,
+inconsistent secondary sources, attribution corrections) while H.1 and
+H.2 are paradigm mismatches.
+
 ---
 
 ## 9. Provenance of this document
