@@ -368,10 +368,7 @@ def _multi_start_grid(
         # with 4 unique starts out of 5. j-dependence is retained so
         # multi-interior cells get genuine per-axis variation.
         deltas = [
-            frac
-            * target_period_sec
-            * (1.0 if (j + k) % 2 == 0 else -1.0)
-            / (1.0 + 0.5 * j)
+            frac * target_period_sec * (1.0 if (j + k) % 2 == 0 else -1.0) / (1.0 + 0.5 * j)
             for j in range(n_interior)
         ]
         perturbed = tuple(
