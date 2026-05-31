@@ -179,17 +179,24 @@ Per-cycle maintenance ΔV (km/s) required to close the cycle in the
 entry's reference model. `0.0` for strict-ballistic cyclers (per
 Russell's footnotes a + b: Aphelion Ratio ≥ 1.0 AND Turn Ratio ≥ 1.0;
 also for entries the literature flags as "requires no propulsive
-maneuvers", e.g. the McConaghy 2006 S1L1 abstract). `null` for
+maneuvers", e.g. the McConaghy 2006 S1L1 abstract). Positive value for
 near-ballistic entries (Russell's wider net, ARMIN ≥ 0.9 / TRMIN ≥
-0.85) — actual values require row-by-row Russell ΔV extraction which
-is deferred. `null` also for entries where this number isn't
-extractable from the source.
+0.85) — derived per row from Russell's tabulated AR and TR via the M2
+powered-flyby surrogate (`src/cyclerfinder/core/flyby.py`):
+ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025
+(AR-correction only when AR < 1). `null` for entries where this number
+isn't extractable from the source.
 
 **Default when absent:** `null` (i.e. "we don't know"). Do not assume
 `0.0` for entries that omit the field.
 
-**Backfill stats (initial v2 rev, 2026-06-01):** 117 entries `0.0`
-(strict ballistic), 102 `null` (near-ballistic or undetermined).
+**Backfill stats (post-2026-06-01 Russell ΔV extraction):**
+
+| value          | count | breakdown                                                                                        |
+| -------------- | ----: | ------------------------------------------------------------------------------------------------ |
+| `0.0`          |   132 | strict ballistic (Russell Tables 3.9–3.11 + 4.9–4.12 strict rows, McConaghy S1L1, Niehoff, …)    |
+| positive       |    67 | Russell near-ballistic (Tables 4.x with AR ≥ 0.9 / TR ≥ 0.85); min 0.001, median 0.716, max 3.015 km/s |
+| `null`         |    20 | 17 non-Russell entries (Aldrin, McConaghy, Jones, Hollister, CR3BP, etc.) + 3 Russell broad-class seeds |
 
 ### `v_infinity_leveraging_dv_kms:` (top-level, float or null)
 
