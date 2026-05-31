@@ -46,6 +46,11 @@ Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 _NEWTON_TOL_REL: float = 1.0e-12
 _NEWTON_TOL_DZ: float = 1.0e-12
 _NEWTON_MAX_ITER: int = 60
+_BRACKET_MAX_WIDEN_ITERS: int = 100
+"""Bound on the bracket-finder widen loop. Well-posed geometries find the
+z_lo bracket in < 10 widen iterations; this cap exists to fail fast on
+pathological multi-start grid perturbations rather than loop forever (the
+optimiser's exception handler drops the start on LambertConvergenceError)."""
 
 
 class LambertError(Exception):
@@ -290,18 +295,32 @@ def lambert(
 
     z_lo = -50.0  # well into hyperbolic territory
     # Step z_lo down further if t(z_lo) is still > tof (extremely short ToF).
-    while True:
+    # Bounded loop: pre-fix this was while True with no guard, and ValueError
+    # on _f_of_z walked z_lo toward 0 via halving (z_lo *= 0.5 on a negative
+    # z_lo is less-negative, not more-negative) without bound, hanging Aldrin
+    # rediscovery tests at the 600s pytest timeout. See module-level
+    # _BRACKET_MAX_WIDEN_ITERS for the cap rationale.
+    bracket_found = False
+    for _widen_iter in range(_BRACKET_MAX_WIDEN_ITERS):
         try:
             f_lo = _f_of_z(z_lo)
         except ValueError:
             z_lo *= 0.5
             continue
         if f_lo < 0.0:
+            bracket_found = True
             break
         z_lo *= 2.0
         if z_lo < -1.0e6:
             # Pathological geometry / tof; let Newton raise below.
+            bracket_found = True
             break
+    if not bracket_found:
+        # All _MAX_WIDEN_ITERS spent without bracketing. Either the problem
+        # is ill-posed for single-rev transfer at this tof, or the geometry
+        # / V_inf combination is outside the universal-variable form's
+        # valid domain. Raise so the optimiser drops the start cleanly.
+        raise LambertConvergenceError(z_lo, float("nan"))
 
     # Approach z_high from below; t -> +inf as z -> z_high_single_rev.
     eps_high = 1.0e-6
