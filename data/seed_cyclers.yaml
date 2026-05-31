@@ -450,7 +450,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -519,6 +519,7 @@
     the cycler literature group it with the ballistic family; consumers
     doing powered-flyby DV accounting should still compute the residual.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.4, row 2.1.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4, row 2.1.1.+2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4, row 2.1.1.+2."
     "legs[0].tof_days": "Russell 2004 Table 3.4, row 2.1.1.+2: Earth->Mars 207 days."
@@ -531,7 +532,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.856   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -590,6 +591,7 @@
     the ballistic family; consumers doing powered-flyby DV accounting
     should still compute the residual.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.4, row 2.3.1.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4, row 2.3.1.+1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4, row 2.3.1.+1."
     "legs[0].tof_days": "Russell 2004 Table 3.4, row 2.3.1.+1: 143 d."
@@ -600,7 +602,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.001   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -685,6 +687,7 @@
     with the ballistic family; consumers doing powered-flyby DV
     accounting should still compute the residual.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.4, row 4.3.1.-5."
     "vinf_kms_at_encounters[0].vinf_kms": |
       Russell 2004 dissertation §3.8: "At Earth, the cycler has a v_inf of
       3.10 km/s compared to the Hohman value of 2.84 km/s". Table 3.4 rounds
@@ -702,7 +705,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -754,6 +757,7 @@
     V_inf at both bodies — close to the VEM beat period but using only E-M
     flybys.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.4, row 3.1.2.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 3.1.2.+1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 3.1.2.+1."
     "legs[0].tof_days": "Russell 2004 Table 3.4 row 3.1.2.+1."
@@ -764,7 +768,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -814,6 +818,7 @@
     short-transit cycler. The full Russell 2004 Table 3.4 (44 cyclers, 24
     ballistic) is summarised in docs/known-cyclers.md §3.4.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.4, row 2.5.1.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 2.5.1.+0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 2.5.1.+0."
     "legs[0].tof_days": "Russell 2004 §3.8: '94-day trip'."
@@ -4573,7 +4578,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.279   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -4642,6 +4647,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.1.1.-7."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.1.1.-7: Earth v_inf (km/s) = 5.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.1.1.-7: Mars v_inf (km/s) = 4.3."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.1.1.-7: Earth->Mars (or aphelion) Time (days) = 229."
@@ -4733,7 +4739,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -4802,6 +4808,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.1.5.-1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.1.5.-1: Earth v_inf (km/s) = 5.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.1.5.-1: Mars v_inf (km/s) = 9.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.1.5.-1: Earth->Mars (or aphelion) Time (days) = 133."
@@ -4813,7 +4820,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.014   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -4882,6 +4889,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.2.1.+7."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth v_inf (km/s) = 4.5."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Mars v_inf (km/s) = 1.3."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth->Mars (or aphelion) Time (days) = 182."
@@ -4893,7 +4901,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.738   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -4962,6 +4970,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.2.2.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.2.+2: Earth v_inf (km/s) = 5.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.2.+2: Mars v_inf (km/s) = 7.1."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.2.2.+2: Earth->Mars (or aphelion) Time (days) = 128."
@@ -4973,7 +4982,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.305   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5042,6 +5051,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.2.5.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.5.+0: Earth v_inf (km/s) = 5.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.5.+0: Mars v_inf (km/s) = 9.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.2.5.+0: Earth->Mars (or aphelion) Time (days) = 118."
@@ -5053,7 +5063,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5122,6 +5132,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.3.1.-7."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.3.1.-7: Earth v_inf (km/s) = 3.8."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.3.1.-7: Mars v_inf (km/s) = 1.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.3.1.-7: Earth->Mars (or aphelion) Time (days) = 270."
@@ -5133,7 +5144,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.12   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5202,6 +5213,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.3.1.-6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.3.1.-6: Earth v_inf (km/s) = 5.5."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.3.1.-6: Mars v_inf (km/s) = 5.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.3.1.-6: Earth->Mars (or aphelion) Time (days) = 205."
@@ -5293,7 +5305,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5362,6 +5374,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.4.1.+6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.4.1.+6: Earth v_inf (km/s) = 4.9."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.4.1.+6: Mars v_inf (km/s) = 1.9."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.4.1.+6: Earth->Mars (or aphelion) Time (days) = 189."
@@ -5533,7 +5546,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5602,6 +5615,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.5.1.-6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.5.1.-6: Earth v_inf (km/s) = 4.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.5.1.-6: Mars v_inf (km/s) = 2.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.5.1.-6: Earth->Mars (or aphelion) Time (days) = 279."
@@ -5773,7 +5787,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -5842,6 +5856,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.5.2.-3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.5.2.-3: Earth v_inf (km/s) = 3.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.5.2.-3: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.5.2.-3: Earth->Mars (or aphelion) Time (days) = 262."
@@ -6013,7 +6028,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.004   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6082,6 +6097,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+5) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.6.1.+5."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.1.+5: Earth v_inf (km/s) = 5.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.1.+5: Mars v_inf (km/s) = 2.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.6.1.+5: Earth->Mars (or aphelion) Time (days) = 198."
@@ -6173,7 +6189,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6242,6 +6258,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.6.1.+3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.1.+3: Earth v_inf (km/s) = 9.8."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.1.+3: Mars v_inf (km/s) = 11.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.6.1.+3: Earth->Mars (or aphelion) Time (days) = 82."
@@ -6253,7 +6270,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6322,6 +6339,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.6.2.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.2.+2: Earth v_inf (km/s) = 3.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.2.+2: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.6.2.+2: Earth->Mars (or aphelion) Time (days) = 219."
@@ -6333,7 +6351,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.067   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6402,6 +6420,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.6.2.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.2.+1: Earth v_inf (km/s) = 6.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.6.2.+1: Mars v_inf (km/s) = 9.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.6.2.+1: Earth->Mars (or aphelion) Time (days) = 104."
@@ -6653,7 +6672,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6722,6 +6741,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.7.1.-3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.7.1.-3: Earth v_inf (km/s) = 9.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.7.1.-3: Mars v_inf (km/s) = 11.9."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.7.1.-3: Earth->Mars (or aphelion) Time (days) = 142."
@@ -6893,7 +6913,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.888   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -6962,6 +6982,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.8.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.8.1.+2: Earth v_inf (km/s) = 11.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.8.1.+2: Mars v_inf (km/s) = 12.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.8.1.+2: Earth->Mars (or aphelion) Time (days) = 73."
@@ -7133,7 +7154,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.701   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -7202,6 +7223,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.9.1.-2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.1.-2: Earth v_inf (km/s) = 10.5."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.1.-2: Mars v_inf (km/s) = 13.8."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.9.1.-2: Earth->Mars (or aphelion) Time (days) = 130."
@@ -7293,7 +7315,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -7362,6 +7384,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.9.2.-1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth v_inf (km/s) = 7.9."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Mars v_inf (km/s) = 12.9."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth->Mars (or aphelion) Time (days) = 117."
@@ -7693,7 +7716,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.808   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -7762,6 +7785,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.10.2.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.10.2.+0: Earth v_inf (km/s) = 8.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.10.2.+0: Mars v_inf (km/s) = 13.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.10.2.+0: Earth->Mars (or aphelion) Time (days) = 81."
@@ -8253,7 +8277,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -8322,6 +8346,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.13.1.-3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.13.1.-3: Earth v_inf (km/s) = 4.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.13.1.-3: Mars v_inf (km/s) = 2.3."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.13.1.-3: Earth->Mars (or aphelion) Time (days) = 280."
@@ -8493,7 +8518,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -8562,6 +8587,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.14.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.14.1.+2: Earth v_inf (km/s) = 5.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.14.1.+2: Mars v_inf (km/s) = 2.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.14.1.+2: Earth->Mars (or aphelion) Time (days) = 196."
@@ -8813,7 +8839,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.708   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -8882,6 +8908,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.15.1.-1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.15.1.-1: Earth v_inf (km/s) = 10.5."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.15.1.-1: Mars v_inf (km/s) = 13.9."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.15.1.-1: Earth->Mars (or aphelion) Time (days) = 130."
@@ -8973,7 +9000,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.448   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9042,6 +9069,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.16.1.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.16.1.+0: Earth v_inf (km/s) = 12.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.16.1.+0: Mars v_inf (km/s) = 14.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.16.1.+0: Earth->Mars (or aphelion) Time (days) = 64."
@@ -9213,7 +9241,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9282,6 +9310,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+9) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.0.1.+9 (\"Cycler 6S9\")."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.0.1.+9a: Earth v_inf (km/s) = 3.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.0.1.+9a: Mars v_inf (km/s) = 1.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.0.1.+9a: Earth->Mars (or aphelion) Time (days) = 213."
@@ -9453,7 +9482,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.029   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9522,6 +9551,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.0.1.+6 (\"Cycler 6S6\")."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.0.1.+6d: Earth v_inf (km/s) = 6.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.0.1.+6d: Mars v_inf (km/s) = 8.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.0.1.+6d: Earth->Mars (or aphelion) Time (days) = 111."
@@ -9533,7 +9563,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.927   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9602,6 +9632,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.1.2.-4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.2.-4: Earth v_inf (km/s) = 4.9."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.2.-4: Mars v_inf (km/s) = 5.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.1.2.-4: Earth->Mars (or aphelion) Time (days) = 203."
@@ -9613,7 +9644,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9682,6 +9713,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.1.3.-3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.3.-3: Earth v_inf (km/s) = 3.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.3.-3: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.1.3.-3: Earth->Mars (or aphelion) Time (days) = 264."
@@ -9773,7 +9805,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9842,6 +9874,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.1.6.-1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.6.-1: Earth v_inf (km/s) = 5.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.1.6.-1: Mars v_inf (km/s) = 9.3."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.1.6.-1: Earth->Mars (or aphelion) Time (days) = 135."
@@ -9853,7 +9886,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -9922,6 +9955,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+8) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.1.+8."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.1.+8: Earth v_inf (km/s) = 3.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.1.+8: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.1.+8: Earth->Mars (or aphelion) Time (days) = 220."
@@ -10013,7 +10047,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.17   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10082,6 +10116,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.1.+6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.1.+6: Earth v_inf (km/s) = 5.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.1.+6: Mars v_inf (km/s) = 7.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.1.+6: Earth->Mars (or aphelion) Time (days) = 123."
@@ -10173,7 +10208,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.606   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10242,6 +10277,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.2.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.2.+2: Earth v_inf (km/s) = 5.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.2.+2: Mars v_inf (km/s) = 9.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.2.+2: Earth->Mars (or aphelion) Time (days) = 115."
@@ -10253,7 +10289,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10322,6 +10358,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.3.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.3.+2: Earth v_inf (km/s) = 2.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.3.+2: Mars v_inf (km/s) = 1.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.3.+2: Earth->Mars (or aphelion) Time (days) = 235."
@@ -10333,7 +10370,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10402,6 +10439,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.3.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.3.+1: Earth v_inf (km/s) = 5.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.3.+1: Mars v_inf (km/s) = 9.2."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.3.+1: Earth->Mars (or aphelion) Time (days) = 119."
@@ -10493,7 +10531,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.994   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10562,6 +10600,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.2.6.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.6.+0: Earth v_inf (km/s) = 5.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.2.6.+0: Mars v_inf (km/s) = 9.1."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.2.6.+0: Earth->Mars (or aphelion) Time (days) = 123."
@@ -10573,7 +10612,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.84   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10642,6 +10681,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-9) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.3.1.-9."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.3.1.-9: Earth v_inf (km/s) = 5.7."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.3.1.-9: Mars v_inf (km/s) = 1.8."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.3.1.-9: Earth->Mars (or aphelion) Time (days) = 279."
@@ -10733,7 +10773,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.003   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -10802,6 +10842,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.4.1.+7."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.4.1.+7: Earth v_inf (km/s) = 3.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.4.1.+7: Mars v_inf (km/s) = 2.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.4.1.+7: Earth->Mars (or aphelion) Time (days) = 227."
@@ -10973,7 +11014,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.232   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -11042,6 +11083,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.4.1.+4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.4.1.+4: Earth v_inf (km/s) = 7.0."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.4.1.+4: Mars v_inf (km/s) = 10.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.4.1.+4: Earth->Mars (or aphelion) Time (days) = 96."
@@ -11053,7 +11095,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -11122,6 +11164,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-8) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.5.1.-8."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.5.1.-8: Earth v_inf (km/s) = 6.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.5.1.-8: Mars v_inf (km/s) = 2.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.5.1.-8: Earth->Mars (or aphelion) Time (days) = 283."
@@ -11213,7 +11256,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.424   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -11282,6 +11325,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.5.1.-6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.5.1.-6: Earth v_inf (km/s) = 10.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.5.1.-6: Mars v_inf (km/s) = 9.8."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.5.1.-6: Earth->Mars (or aphelion) Time (days) = 180."
@@ -11613,7 +11657,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.194   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -11682,6 +11726,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.6.1.+3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.+3: Earth v_inf (km/s) = 7.7."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.+3: Mars v_inf (km/s) = 11.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.6.1.+3: Earth->Mars (or aphelion) Time (days) = 89."
@@ -11773,7 +11818,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.716   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -11842,6 +11887,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.6.2.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.2.+1: Earth v_inf (km/s) = 6.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.2.+1: Mars v_inf (km/s) = 11.3."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.6.2.+1: Earth->Mars (or aphelion) Time (days) = 99."
@@ -11933,7 +11979,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -12002,6 +12048,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.7.1.-7."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.1.-7: Earth v_inf (km/s) = 6.7."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.1.-7: Mars v_inf (km/s) = 3.1."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.7.1.-7: Earth->Mars (or aphelion) Time (days) = 289."
@@ -12093,7 +12140,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.147   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -12162,6 +12209,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.7.2.+3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.2.+3: Earth v_inf (km/s) = 5.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.2.+3: Mars v_inf (km/s) = 1.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.7.2.+3: Earth->Mars (or aphelion) Time (days) = 176."
@@ -12253,7 +12301,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.155   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -12322,6 +12370,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.7.5.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.5.+0: Earth v_inf (km/s) = 6.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.7.5.+0: Mars v_inf (km/s) = 9.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.7.5.+0: Earth->Mars (or aphelion) Time (days) = 107."
@@ -12333,7 +12382,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.009   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -12402,6 +12451,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.8.1.+6."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.8.1.+6: Earth v_inf (km/s) = 2.9."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.8.1.+6: Mars v_inf (km/s) = 1.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.8.1.+6: Earth->Mars (or aphelion) Time (days) = 211."
@@ -12653,7 +12703,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -12722,6 +12772,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.8.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.8.1.+2: Earth v_inf (km/s) = 8.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.8.1.+2: Mars v_inf (km/s) = 13.1."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.8.1.+2: Earth->Mars (or aphelion) Time (days) = 81."
@@ -12973,7 +13024,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.496   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -13042,6 +13093,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.9.1.-4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.1.-4: Earth v_inf (km/s) = 12.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.1.-4: Mars v_inf (km/s) = 12.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.9.1.-4: Earth->Mars (or aphelion) Time (days) = 161."
@@ -13053,7 +13105,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -13122,6 +13174,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-3) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.9.2.-3."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.2.-3: Earth v_inf (km/s) = 3.8."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.2.-3: Mars v_inf (km/s) = 2.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.9.2.-3: Earth->Mars (or aphelion) Time (days) = 274."
@@ -13133,7 +13186,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.032   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -13202,6 +13255,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.10, row 6.9.2.-2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.2.-2: Earth v_inf (km/s) = 7.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.9.2.-2: Mars v_inf (km/s) = 10.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.9.2.-2: Earth->Mars (or aphelion) Time (days) = 150."
@@ -13293,7 +13347,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -13362,6 +13416,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+5) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.10.1.+5."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.10.1.+5: Earth v_inf (km/s) = 3.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.10.1.+5: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.10.1.+5: Earth->Mars (or aphelion) Time (days) = 219."
@@ -13613,7 +13668,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -13682,6 +13737,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.10.2.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.10.2.+2: Earth v_inf (km/s) = 2.7."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.10.2.+2: Mars v_inf (km/s) = 1.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.10.2.+2: Earth->Mars (or aphelion) Time (days) = 231."
@@ -14013,7 +14069,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -14082,6 +14138,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.11.2.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.11.2.+2: Earth v_inf (km/s) = 6.1."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.11.2.+2: Mars v_inf (km/s) = 2.9."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.11.2.+2: Earth->Mars (or aphelion) Time (days) = 191."
@@ -14333,7 +14390,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.584   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -14402,6 +14459,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+5) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.13.1.+5."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.13.1.+5: Earth v_inf (km/s) = 16.7."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.13.1.+5: Mars v_inf (km/s) = 9.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.13.1.+5: Earth->Mars (or aphelion) Time (days) = 79."
@@ -14413,7 +14471,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.017   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -14482,6 +14540,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-5) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.13.1.-5."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.13.1.-5: Earth v_inf (km/s) = 5.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.13.1.-5: Mars v_inf (km/s) = 1.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.13.1.-5: Earth->Mars (or aphelion) Time (days) = 276."
@@ -14973,7 +15032,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -15042,6 +15101,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.14.1.+1."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.14.1.+1: Earth v_inf (km/s) = 8.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.14.1.+1: Mars v_inf (km/s) = 13.1."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.14.1.+1: Earth->Mars (or aphelion) Time (days) = 81."
@@ -15133,7 +15193,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 3.015   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -15202,6 +15262,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.14.2.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.14.2.+0: Earth v_inf (km/s) = 7.4."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.14.2.+0: Mars v_inf (km/s) = 12.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.14.2.+0: Earth->Mars (or aphelion) Time (days) = 91."
@@ -15293,7 +15354,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 2.76   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -15362,6 +15423,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.15.1.+4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.+4: Earth v_inf (km/s) = 17.2."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.+4: Mars v_inf (km/s) = 10.4."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.15.1.+4: Earth->Mars (or aphelion) Time (days) = 74."
@@ -15373,7 +15435,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -15442,6 +15504,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.15.1.-4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.-4: Earth v_inf (km/s) = 6.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.-4: Mars v_inf (km/s) = 2.6."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.15.1.-4: Earth->Mars (or aphelion) Time (days) = 285."
@@ -15533,7 +15596,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.746   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -15602,6 +15665,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.15.1.-2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.-2: Earth v_inf (km/s) = 14.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.15.1.-2: Mars v_inf (km/s) = 14.8."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.15.1.-2: Earth->Mars (or aphelion) Time (days) = 147."
@@ -16173,7 +16237,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -16242,6 +16306,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.18.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.18.1.+2: Earth v_inf (km/s) = 3.3."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.18.1.+2: Mars v_inf (km/s) = 1.7."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.18.1.+2: Earth->Mars (or aphelion) Time (days) = 219."
@@ -16413,7 +16478,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.939   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -16482,6 +16547,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+2) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.19.1.+2."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.19.1.+2: Earth v_inf (km/s) = 18.8."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.19.1.+2: Mars v_inf (km/s) = 12.5."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.19.1.+2: Earth->Mars (or aphelion) Time (days) = 64."
@@ -16653,7 +16719,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.031   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -16722,6 +16788,7 @@
 
     Note Russell's nomenclature: the trailing signed index (-4) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.20.1.-4."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.20.1.-4: Earth v_inf (km/s) = 12.8."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.20.1.-4: Mars v_inf (km/s) = 5.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.20.1.-4: Earth->Mars (or aphelion) Time (days) = 183."
@@ -16813,7 +16880,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 1.296   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -16882,6 +16949,7 @@
 
     Note Russell's nomenclature: the trailing signed index (+0) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.11, row 6.20.1.+0."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.20.1.+0: Earth v_inf (km/s) = 8.6."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.11 row 6.20.1.+0: Mars v_inf (km/s) = 13.0."
     "legs[0].tof_days": "Russell 2004 dissertation Table 3.11 row 6.20.1.+0: Earth->Mars (or aphelion) Time (days) = 81."
@@ -17159,7 +17227,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17265,6 +17333,7 @@
     simple-model values — they characterise the ephemeris-optimal
     trajectory, not the simple-model parent.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.9 row 1 (4.991gG2): aphel=1.64 AU, TR=2.65, v∞E=4.99, v∞M=5.10."
     "vinf_kms_at_encounters[0].vinf_kms": |
       Russell 2004 dissertation Table 4.9 (page 127), row 1: column
       "v_inf E (km/s)" = 4.99. Confirmed by parent-cycler code
@@ -17295,7 +17364,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17373,6 +17442,7 @@
     (so not fully ballistic in realistic ephemeris, but the simple-model
     parent is ballistic).
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.9 row 2 (8.049gGf2): aphel=2.19 AU, TR=1.45, v∞E=8.05, v∞M=10.02."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.9 row 2: v_inf E = 8.05."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.9 row 2: v_inf M = 10.02."
     "legs[0].tof_days": "Russell 2004 Table 4.9 row 2: t_out = 93."
@@ -17388,7 +17458,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17460,6 +17530,7 @@
     only barely within ballistic limits — the cycler is sensitive to
     real-world ephemeris deviations.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.9 row 3 (8.165Gfh-f2): aphel=2.20 AU, TR=1.08, v∞E=8.16, v∞M=10.06."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.9 row 3: v_inf E = 8.16."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.9 row 3: v_inf M = 10.06."
     "legs[0].tof_days": "Russell 2004 Table 4.9 row 3: t_out = 92."
@@ -17471,7 +17542,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17541,6 +17612,7 @@
     crewed-mission contexts where launch C3 is not the binding
     constraint.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.9 row 4 (9.353Gg2): aphel=2.21 AU, TR=1.70, v∞E=9.35, v∞M=10.52."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.9 row 4: v_inf E = 9.35."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.9 row 4: v_inf M = 10.52."
     "legs[0].tof_days": "Russell 2004 Table 4.9 row 4: t_out = 85."
@@ -17560,7 +17632,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17629,6 +17701,7 @@
     Leg descriptor: g(2.4845,894.42,Ll) G(2.9217,691.79,U)
     f(1:1,82.995,-180.000) — extracted from Table 4.10 line 5321.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.10 (low-energy bold cluster row 3.64): aphel=1.62 AU, TR=1.62, v∞E=3.64, v∞M=4.59."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.10 row 'low-energy bold cluster': v_inf E = 3.64."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.10: v_inf M = 4.59."
     "legs[0].tof_days": "Russell 2004 Table 4.10: t_out = 175."
@@ -17644,7 +17717,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17707,6 +17780,7 @@
     The 3.5-period half-rev return demonstrates the breadth of
     Russell's nomenclature.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.10 (low-energy bold cluster row 3.77 Gh): aphel=1.62 AU, TR=1.76, v∞E=3.77, v∞M=4.63."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.10 row 5323: v_inf E = 3.77."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.10: v_inf M = 4.63."
     "legs[0].tof_days": "Russell 2004 Table 4.10: t_out = 171."
@@ -17720,7 +17794,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17783,6 +17857,7 @@
     than half-rev. Leg descriptor G(2.9043,685.56,U) g(3.5018,1260.65,L)
     — two generic-return arcs.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.10 (low-energy bold cluster row 3.78 Gg): aphel=1.62 AU, TR=1.81, v∞E=3.78, v∞M=4.63."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.10 row 5352: v_inf E = 3.78."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.10: v_inf M = 4.63."
     "legs[0].tof_days": "Russell 2004 Table 4.10: t_out = 171."
@@ -17793,7 +17868,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17856,6 +17931,7 @@
     f(3:2,82.487,118.851). The f(3:2,...) is a 3:2 resonant
     full-rev return (spacecraft 3 revs vs Earth 2 revs).
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.11 (5.30gGf row, first variant): aphel=2.17 AU, TR=1.27, v∞E=5.30, v∞M=9.17."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.11 row 5376: v_inf E = 5.30."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.11: v_inf M = 9.17."
     "legs[0].tof_days": "Russell 2004 Table 4.11: t_out = 118."
@@ -17866,7 +17942,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -17940,6 +18016,7 @@
     "subtle differences" at line 5494). Cataloguing one canonical
     member captures the family signature.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.11 (5.66Gfh row, first variant): aphel=2.17 AU, TR=1.26, v∞E=5.66, v∞M=9.26."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.11 row 5392+: v_inf E = 5.66."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.11: v_inf M = 9.26."
     "legs[0].tof_days": "Russell 2004 Table 4.11: t_out = 113."
@@ -17950,7 +18027,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -18017,6 +18094,7 @@
     Leg descriptor: G(1.7025,252.9,U) g(4.7037,2053.31,Ls) — two
     generic returns.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.11 (last row 9.94 Gg): aphel=2.22 AU, TR=1.10, v∞E=9.94, v∞M=10.76."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.11 row 5442: v_inf E = 9.94."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.11: v_inf M = 10.76."
     "legs[0].tof_days": "Russell 2004 Table 4.11: t_out = 82."
@@ -18036,7 +18114,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -18103,6 +18181,7 @@
     Leg descriptor: g(2.4062,866.21,Ls) f(1:1,82.955,87.388)
     F(3:2,87.27,0.000) — third leg is a 3:2 full-rev resonant orbit.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.12 (full-rev) row 3.66 gfF: aphel=1.63 AU, TR=1.19, v∞E=3.66, v∞M=4.66."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.12 row 5541: v_inf E = 3.66."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.12: v_inf M = 4.66."
     "legs[0].tof_days": "Russell 2004 Table 4.12: t_out = 173 (out variant)."
@@ -18114,7 +18193,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -18178,6 +18257,7 @@
     variant prefers the inbound Mars->Earth leg (143-day transit
     used as the "fast" leg).
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.12 (full-rev) row 5.33 ggF: aphel=1.66 AU, TR=1.00, v∞E=5.33, v∞M=5.45."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.12 row 5546: v_inf E = 5.30."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.12: v_inf M = 5.44."
     "legs[0].tof_days": "Russell 2004 Table 4.12: t_out = 143 (in variant)."
@@ -18189,7 +18269,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -18251,6 +18331,7 @@
     Leg descriptor: g(1.8987,323.54,U) g(2.5074,902.67,L)
     F(2:1,85.196,0.000) — third leg is a 2:1 full-rev.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.12 (full-rev) row 5.75 ggF: aphel=2.19 AU, TR=1.34, v∞E=5.75, v∞M=9.36."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.12 row 5559: v_inf E = 5.75."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.12: v_inf M = 9.36."
     "legs[0].tof_days": "Russell 2004 Table 4.12: t_out = 111."
@@ -18268,7 +18349,7 @@
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  delta_v_kms: 0.509   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -18347,6 +18428,7 @@
     accordingly it is described in the surrounding text rather than
     in the table itself.
   source_quotes:
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 4.13 row 6.44 Gg: aphel=1.54 AU, TR=0.95, v∞E=6.44, v∞M=3.74."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 4.13 row 5655: v_inf E = 6.44."
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 4.13: v_inf M = 3.74."
     "legs[0].tof_days": "Russell 2004 Table 4.13: t_out = 262."
