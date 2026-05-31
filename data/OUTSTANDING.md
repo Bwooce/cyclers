@@ -45,7 +45,47 @@ both refer to different "Aldrin cyclers".
 
 ---
 
-## B. McConaghy 2006 orbital elements (medium priority)
+## ◐ Partly resolved (2026-06-01) — B. McConaghy 2006 orbital elements (medium priority)
+
+**Partial resolution:** SnLm broad-class family ingest landed on
+2026-06-01 (commit pending) as catalogue entries 45-47:
+
+- entry 45 `mcconaghy-2005-em-case1` — S2L1 family member Case 1, with
+  a=1.22, e=0.238, peri=0.93, apo=1.51 from Rogers 2012 Table 1.
+- entry 46 `mcconaghy-2005-em-u0l1` — U0L1 high-energy zero-loop
+  one-synodic cycler, with a=2.05, e=0.563, peri=0.90, apo=3.20.
+- entry 47 `mcconaghy-2005-em-snlm-broadclass-family` — citation-only
+  family-seed for the McConaghy 2005 Purdue PhD dissertation
+  (AAI3166673) capturing the SnLm taxonomy as the comprehensive
+  open-access source.
+
+**Still open:** the McConaghy 2006 'Notable' cycler's specific
+orbital elements (a, e, peri, apo) are STILL null on entry 2
+`mcconaghy-2006-em-k2`. The McConaghy 2005 dissertation full text
+was not directly accessible at the 2026-06-01 ingest (Purdue
+docs.lib.purdue.edu blocked to WebFetch; ProQuest dissertation full
+text behind subscription; AIAA arc.aiaa.org 403 across all relevant
+DOIs). The dissertation is expected to contain the per-cycler
+orbital elements but those values were not transcribable from any
+accessible secondary source.
+
+The SnLm family-seed entry 47 documents which McConaghy SnLm class
+the 'Notable' cycler belongs to (it is one of the S2L1 family
+alongside Cases 1, 2, 3 with V_inf 4.7/5.0 km/s as a distinguishing
+fingerprint), so M7 matching is now improved: a finder hit matching
+the entry 2 V_inf multiset can be cross-referenced against the four
+catalogued S2L1 members (entries 2, 4, 5, 45) by orbital-element
+proximity, even though entry 2's own (a, e, peri, apo) remain null.
+
+**Recommendation (still open):** acquire the McConaghy 2005 dissertation
+full text (Purdue library print copy; ProQuest institutional
+subscription; or direct request to the Purdue Advanced Astrodynamics
+Concepts lab where the dissertation originated) and backfill entry 2's
+orbital elements. Same source would unlock per-member numerics for
+the S3L1 ballistic and S1L2 cycler families (currently not catalogued
+as per-member entries; family seed entry 47 carries the citation).
+
+**Original question (preserved as audit trail):**
 
 The McConaghy 2006 abstract gives V∞ at Earth (4.7 km/s), V∞ at Mars
 (5.0 km/s), and Earth–Mars ToF (153 d), but no orbital elements (a, e,
