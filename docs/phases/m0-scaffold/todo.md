@@ -4,7 +4,7 @@ Working checklist for the M0 milestone. Detailed rationale in [plan.md](plan.md)
 
 ## Repo init
 
-- [x] `git init` in `/home/bruce/dev/cyclers` (if not already a repo).
+- [x] `git init` in the repo root (if not already a repo).
 - [x] Add `nohup.out` to `.gitignore` early so it doesn't get committed.
 - [x] Initial commit: `docs: project spec + overview + M0 plan` (just the `docs/` tree). _Realised as `docs: project spec, overview, and phase plans for M0-M3` once the M1/M2/M3 plans were also written in this slice — single planning-baseline commit rather than docs-then-plans._
 
