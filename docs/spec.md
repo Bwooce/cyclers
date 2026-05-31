@@ -38,7 +38,7 @@ The tool must do what blind optimisation cannot: use **structured, Tisserand-gui
 ## 3. Background the implementer needs (concise)
 
 - **Synodic period**: time between successive same-geometry alignments of two planets. Earth–Mars ≈ 2.135 yr; Earth–Venus ≈ 1.599 yr.
-- **Cycler period** is an integer multiple *k* of a synodic period. A VEM cycler must satisfy multiple synodic commensurabilities; the natural beat is **≈ 6.4 yr (3× E–M ≈ 4× E–V)**.
+- **Cycler period** is an integer multiple *k* of a synodic period. A VEM cycler must satisfy multiple synodic commensurabilities; the natural lowest beat is **≈ 6.4 yr (3× E–M ≈ 4× E–V)**, but longer commensurabilities (e.g. 12.8 yr, 32 yr) also support closure — Jones, Hernandez, Jesick (2017) report VEM triple cyclers at the 6.4-yr and 12.8-yr periods (see §9.1).
 - **V∞** (hyperbolic excess speed) at a flyby = |spacecraft heliocentric velocity − planet velocity|. A ballistic flyby preserves |V∞| and rotates its direction by up to a max bend δ_max, where `sin(δ_max/2) = 1 / (1 + r_p·V∞²/μ_planet)` (r_p = min safe flyby radius, μ_planet = planet GM).
 - **Closure**: a cycler repeats in the synodic rotating frame. After total period T, the spacecraft's outgoing state must match its initial state rotated by the frame's advance (Earth's mean motion × T). Residual = the maintenance ΔV.
 - **Key physical fact**: Earth and Venus are strong steerers (~60° bend at 7 km/s); **Mars is weak (~24°)** — so Venus assists must do the heavy shaping in VEM cyclers.
@@ -158,10 +158,36 @@ def find_cyclers(bodies, k_synodic, vinf_cap, n_keep=20, ephem="circular") -> li
 
 - Lambert vs lamberthub (izzo, gooding): max Δ|v| < 1e-3 m/s.
 - Earth–Mars synodic 2.135 yr; Earth–Venus 1.599 yr; VEM beat 3×E–M ≈ 4×E–V ≈ 6.40 yr.
-- Aldrin cycler: a ≈ 1.659 AU, e ≈ 0.41, perihelion ≈ 0.98 AU, aphelion ≈ 2.34 AU, E→M leg ≈ 146 d.
-- Gravity-assist max bend at V∞ = 7 km/s: Earth/Venus ≈ 60–63°, Mars ≈ 24°.
+- Aldrin cycler (Byrnes/Longuski/Aldrin 1993, as tabulated in Rogers et al. 2012): a ≈ 1.60 AU, e ≈ 0.393, perihelion ≈ 0.97 AU, aphelion ≈ 2.23 AU, E→M leg ≈ 146 d. (Earlier spec drafts cited a=1.659 / e=0.41 — see §9.1 for the reconciliation.)
+- Gravity-assist max bend at V∞ = 7 km/s, computed with `r_p = R_eq + 300 km` per `constants.PLANETS[code].safe_alt_km`: Mars ≈ 22.1°, Earth ≈ 66.6°, Venus ≈ 61.4°. (Earlier spec drafts gave Earth/Venus ≈ 60–63° and Mars ≈ 24°; these used inconsistent per-body altitudes — see §9.1.)
 - Published 2-synodic E–M cycler encounter speeds ≈ 5.65 km/s (Earth), 3.05 km/s (Mars) — the optimiser should be able to reach this class, not a high-V∞ degenerate one.
 - Degenerate-solution guard: reject/penalise solutions whose "ballistic" closure relies on V∞ > ~11 km/s (the known cheat mode).
+
+### 9.1 Numerical reconciliation
+
+The original §9 anchor numbers (Aldrin elements and bend angles) were
+revisited during M2/M3 implementation. Three discrepancies surfaced:
+
+1. **Aldrin a/e.** The original a=1.659, e=0.41 is a resonance-construction
+   choice (forcing P_cycler = T_syn yields a=1.6582 AU). It is internally
+   inconsistent with the also-quoted 146-day E→M leg, which corresponds to
+   a different ellipse. The literature consensus (Rogers 2012 Table 1,
+   citing Byrnes/Longuski/Aldrin 1993): a=1.60 AU, e=0.393, perihelion
+   ≈ 0.97 AU, aphelion ≈ 2.23 AU, E→M ≈ 146 d. M3's patched-conic
+   constructor reproduces these to ±0.002 on every element.
+
+2. **Bend anchors.** The original (Mars ≈ 24°, Earth/Venus ≈ 60–63° at
+   V∞=7) cannot be satisfied by any single r_p_min choice: Mars 24°
+   implies altitude −60 km (subsurface); Earth 60–63° implies 1056–1757 km.
+   Russell 2004 used 200 km Earth altitude (computed 67.1°). The
+   project adopts an unambiguous `R_eq + 300 km` per
+   `constants.PLANETS[code].safe_alt_km`, yielding Mars 22.1°,
+   Earth 66.6°, Venus 61.4°. Tests in M2 assert these values.
+
+3. **Attribution.** The VEM triple-cycler paper cited in §16.4 is
+   AAS 17-577 by Jones, Hernandez, Jesick (JPL), not Longuski et al.
+
+Full investigation: `docs/errata-investigation.md`.
 
 ---
 
@@ -452,4 +478,4 @@ The catalogue is seeded with, and continuously ingests, **published** cyclers �
 - **Retroactive correction (the "we missed it" case):** if a finder result was tagged `candidate-novel` and a later-ingested literature entry matches its signature, the pipeline **auto-downgrades** it to `known-reproduction`, attaches the citation, and re-tags the public entry to `published-elsewhere`. Symmetrically, if *we* verify-novel (V5) and publish, our entry becomes the `first_published` source for it.
 - **Hard rule for any novelty claim:** publish as `verified-novel` only if **V5** *and* no exact match *and* no unresolved probable-match *and* a documented literature review returned nothing — all four.
 
-**Seed catalogue (with citations):** Aldrin / Byrnes–Longuski–Aldrin (1993); Russell & Ocampo's 24 ballistic cyclers + nomenclature (2004–05); McConaghy et al. *Notable Two-Synodic-Period Earth–Mars Cycler* (2006); Niehoff VISIT cyclers; Longuski et al. *Low Excess Speed Triple Cyclers of Venus, Earth, and Mars* (2017). These anchor the matcher so the very first runs correctly tag known families (e.g. our re-derived 2-synodic Earth–Mars cycler resolves to the McConaghy entry, credited accordingly).
+**Seed catalogue (with citations):** Aldrin / Byrnes–Longuski–Aldrin (1993); Russell & Ocampo's 24 ballistic cyclers + nomenclature (2004–05); McConaghy et al. *Notable Two-Synodic-Period Earth–Mars Cycler* (2006); Niehoff VISIT cyclers; Jones, Hernandez, Jesick *Low Excess Speed Triple Cyclers of Venus, Earth, and Mars* (AAS 17-577, 2017). These anchor the matcher so the very first runs correctly tag known families (e.g. our re-derived 2-synodic Earth–Mars cycler resolves to the McConaghy entry, credited accordingly).
