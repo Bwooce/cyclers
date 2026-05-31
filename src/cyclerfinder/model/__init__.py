@@ -1,12 +1,13 @@
 """Cycler model layer — frozen dataclasses representing a result trajectory.
 
-Re-exports the three structures M3 defines so callers write
-``from cyclerfinder.model import Cycler, Leg, Encounter`` rather than
-reaching into the implementation module.
+Re-exports the M3 structures (``Cycler``, ``Leg``, ``Encounter``) and the
+M4 :class:`Score` so callers write ``from cyclerfinder.model import
+Cycler, Score`` rather than reaching into the implementation modules.
 """
 
 from __future__ import annotations
 
 from cyclerfinder.model.cycler import Cycler, Encounter, Leg
+from cyclerfinder.model.score import Score
 
-__all__ = ["Cycler", "Encounter", "Leg"]
+__all__ = ["Cycler", "Encounter", "Leg", "Score"]
