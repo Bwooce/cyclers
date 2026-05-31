@@ -85,11 +85,11 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M2** | Flyby + maps: flyby, tisserand, resonance | completed | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
 | **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | completed | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
 | **M4** | Enumeration + scoring | completed | [phases/m4-enumeration-scoring/plan.md](phases/m4-enumeration-scoring/plan.md) |
-| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail under investigation | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
-| **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates) | **completed** (commit `9b2611d`) | _slice; no full phase doc_ |
-| **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **plan written** (commit `8da0211`) | [phases/m6a-idealized-closure-verification/plan.md](phases/m6a-idealized-closure-verification/plan.md) |
-| **M6b** | Ephemeris-mode TCM minimisation over 3–5 lap horizon; populates `/launch-windows/` cost columns | planned (see [docs/v2-future-references.md](v2-future-references.md) — Pascarella 2024 is the architectural template) | — |
-| **M7** | Catalogue loader, canonical signature matching, novelty scoring | planned | — |
+| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail diagnosed as load-bearing collision (task #53); binding gate `test_2syn_em_rediscovers_5_65_kms_earth` is a pre-existing slow-marked regression (task #54) | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
+| **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates); ICRS→ecliptic rotation fix `4fe901d` (2026-06-01) | **completed** (commits `9b2611d`, `4fe901d`) | _slice; no full phase doc_ |
+| **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **completed** (commits `ba01f37` + `1852750`, 2026-06-01); 7/7 binding gates pass, dynamic-frame round-trip 1e-10 rel, circular-Aldrin drift ~3e-7 km | [phases/m6a-idealized-closure-verification/plan.md](phases/m6a-idealized-closure-verification/plan.md) |
+| **M6b** | Real-ephemeris closure verification; populates `/launch-windows/` cost columns; Pascarella 2024 patched-conic→medium-fidelity pipeline | **planning in flight** (see [docs/v2-future-references.md](v2-future-references.md) — Pascarella 2024 is the architectural template) | _plan being written_ |
+| **M7** | Catalogue loader, canonical signature matching, novelty scoring (scope reconciliation in flight per spec §14 V1) | **planning in flight** | _plan being written_ |
 | **M8** | VEM campaign + CLI + viz | planned | — |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
 | Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
