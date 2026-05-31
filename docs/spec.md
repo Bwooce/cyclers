@@ -261,6 +261,35 @@ def to_ephemeris_seed(cycler, epoch) -> dict          # initial guess for epheme
 
 **Milestone impact:** split **M6** into *M6a — idealized closure verification* and *M6b — phase-match + ephemeris-mode TCM minimisation over 3–5 laps*, with a gate that the reported flight candidate's horizon TCM is bounded and its frame-drift stays within tolerance.
 
+### 12.2 Representation framework — why we don't standardize on one model
+
+Cyclers are *concepts* (cyclic re-encounter patterns), not *orbits*. A single cycler has multiple legitimate representations, and the catalogue carries each as a distinct artifact rather than picking one canonical form.
+
+**The three representations:**
+
+| Representation | Where it lives | What it captures |
+|---|---|---|
+| **Idealized form** | `data/seed_cyclers.yaml` `orbit_elements` (circular-coplanar; `model_assumption: circular-coplanar`) | The cycler's *signature shape* — `(a, e, perihelion, aphelion)` from the simplified model literature publishes in. This is the cycler's *identity*. |
+| **Real-ephemeris instances** | `cyclers.space/src/data/windows.json` (regenerated weekly by `phase_match.find_real_windows` against JPL DE440) | Per launch window: actual departure date + real V∞ at injection. Many instances per idealized form. |
+| **Mission-context analytic** | A handful of catalogue entries with `model_assumption: analytic-ephemeris` (e.g. Rogers 2012 establishment variants — Aldrin 4:3(2), 3:2(1)) | Mid-fidelity — eccentricity effects retained, not full N-body. Used when the source paper itself worked at this fidelity. |
+
+A fourth representation — `model_assumption: cr3bp` — covers entries whose source uses Circular Restricted 3-Body dynamics (Arenstorf, future Saturnian manifolds). CR3BP entries have an incommensurable signature (Jacobi constant, not V∞) and M7 matching must not cross-compare with patched-conic entries.
+
+**Why no standardization:**
+
+- **Convert all to circular-coplanar** loses analytic-ephemeris eccentricity info and can't express CR3BP at all.
+- **Convert all to real-ephemeris** requires per-entry M6b optimisation × multiple launch epochs; the result isn't an "orbit" but a *family of orbits*, one per real launch window. The idealized form remains useful precisely because it's *epoch-agnostic*.
+- **Each representation answers a different question.** "What cycler is this?" → idealized. "When can I fly it?" → real-ephemeris instance. "What does Rogers 2012 say about its establishment cost?" → analytic-ephemeris row.
+
+**The `model_assumption` field (§16.1 schema v2, 2026-06-01) is the structural fix.** It tells consumers which model each entry came from. Consumers:
+
+- **M7 matching** (signature collision detection): partition by `model_assumption`; only cross-compare within partition.
+- **M5 optimisation** (rediscovery from cell): consumes `circular-coplanar` only.
+- **M6b real-ephemeris optimisation** (TCM budget per window): consumes `circular-coplanar` as the *seed* and produces a `real-ephemeris-instance` view stored separately.
+- **Site / public catalogue** (cyclers.space): renders idealized fields from `orbit_elements` and links to the real-ephemeris launch-window table.
+
+**Derived views, not conversion.** When a downstream consumer needs all entries in one representation (e.g. "every entry needs a 2027 launch date"), the answer is to generate a *derived view* from the catalogue, not rewrite the catalogue. `windows.json` is the prototype derived view. Future derived views (TCM budgets, c₃ tables, validation-level rankings) follow the same pattern.
+
 ---
 
 ## 13. Search-space decomposition, coverage & resumability
