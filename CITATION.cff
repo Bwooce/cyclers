@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: cyclerfinder
+abstract: >
+  Systematically finds, ranks, and verifies planetary cycler trajectories —
+  heliocentric and planet-centric orbits that repeatedly re-encounter two or
+  more bodies on a fixed schedule, maintained by gravity assists. Primary
+  targets are Earth–Mars and Venus–Earth–Mars cyclers; the architecture
+  generalises to lunar, Jovian (Galilean), and Saturnian moon systems via the
+  catalogue schema's `primary:` field.
+type: software
+authors:
+  - family-names: Fitzsimons
+    given-names: Bruce
+    email: bruce@fitzsimons.org
+repository-code: "https://github.com/Bwooce/cyclers"
+url: "https://cyclers.space"
+license: MIT  # placeholder — update when LICENSE file is added
+keywords:
+  - astrodynamics
+  - cycler trajectories
+  - gravity assist
+  - Aldrin cycler
+  - VEM triple cycler
+  - Tisserand graph
+  - patched-conic
+  - lambert solver
+message: >
+  If you cite this software or the catalogue it produces, please use the
+  metadata in this file. For citing an individual discovered cycler whose
+  `first_published.authors` field is set, cite that publication directly
+  (the catalogue entry's authorship). For citing the tool itself or the
+  seed catalogue's curation, cite this file.

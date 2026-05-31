@@ -481,3 +481,65 @@ The catalogue is seeded with, and continuously ingests, **published** cyclers �
 - **Hard rule for any novelty claim:** publish as `verified-novel` only if **V5** *and* no exact match *and* no unresolved probable-match *and* a documented literature review returned nothing — all four.
 
 **Seed catalogue (with citations):** Aldrin / Byrnes–Longuski–Aldrin (1993); Russell & Ocampo's 24 ballistic cyclers + nomenclature (2004–05); McConaghy et al. *Notable Two-Synodic-Period Earth–Mars Cycler* (2006); Niehoff VISIT cyclers; Jones, Hernandez, Jesick *Low Excess Speed Triple Cyclers of Venus, Earth, and Mars* (AAS 17-577, 2017). These anchor the matcher so the very first runs correctly tag known families (e.g. our re-derived 2-synodic Earth–Mars cycler resolves to the McConaghy entry, credited accordingly).
+
+### 16.5 Discovery workflow — `source: this-project` entries
+
+The §16.4 ingest path covers cyclers we *find in the literature*. The
+mirror path is cyclers *we discover with the finder*. Both produce
+records in the same catalogue with the same schema; the difference is
+the `source:` field plus a `discovery_run:` block describing how the
+finder found it.
+
+**Lifecycle of a finder-discovered cycler:**
+
+1. **Search emits a candidate.** The deepening loop (§13.8) finds a
+   closing trajectory in some cell. The auto-validation gauntlet (§14)
+   runs V0 (internal consistency) → V1 (lamberthub + Kepler cross-check)
+   → V2 (multi-lap bounded drift) → V3 (ephemeris-mode TCM under
+   horizon ΔV budget).
+2. **Entry is written** to `data/seed_cyclers.yaml` with:
+   - `source: "this-project"`
+   - `our_status: "candidate-novel"`
+   - `validation.level: "V3"` and the per-gate results
+   - `discovery_run: {finder_version, run_id, cell_id, discovery_date}`
+   - `first_published: null` (not yet published)
+   - `priority_date: <discovery_date>` (revised to publication date if/when published)
+   - Catalogue matcher run; exact match downgrades to
+     `known-reproduction` and inherits attribution from §16.4 — entry
+     never gets the `candidate-novel` tag in that case.
+3. **V4 high-fidelity check** (independent codebase + ephemeris;
+   GMAT / Tudat / pykep N-body) batched manually for promising
+   candidates. On pass: `validation.level: "V4"`.
+4. **V5 expert review** (human astrodynamicist; documented literature
+   search returning nothing; ideally independent reproduction by a
+   separate group). On pass: `our_status: "verified-novel"`.
+5. **Publication.** When the cycler is published in a peer-reviewed
+   venue with the project listed as the source:
+   - `first_published: {authors: [...], year, title, doi, venue}`
+   - `priority_date: <publication date>` (locks in priority date for
+     the matcher; subsequent literature finds bow to this date)
+   - Our entry becomes the literature-citable `first_published` record
+     for any future re-derivations of the same cycler.
+
+**Authorship of project discoveries.** Per the project's commit and
+attribution rules (no AI authorship), `first_published.authors` for
+discovered cyclers lists the **human contributors** who made
+substantive engineering or scientific input — typically the project
+owner plus any collaborators who designed the search, reviewed V5
+output, or contributed to the discovering algorithm. AI-assisted prose
+drafting or boilerplate code generation does not confer authorship.
+The project's own self-citation lives in `CITATION.cff` at the repo
+root.
+
+**Why split `discovery_run:` from `reproducibility:`.** The
+§16.1 `reproducibility:` block carries the finder configuration needed
+to *re-run* the search and reproduce the bit-identical record. The
+new `discovery_run:` block carries the *provenance* of the original
+discovery — the run that first emitted this candidate, distinct from
+the canonical-current `reproducibility:` block which a later, cleaner
+re-run may overwrite. Without this split, re-running the finder would
+silently overwrite the discovery's provenance.
+
+**Workflow worked example:** see [`data/README.md`](../data/README.md)
+"Recording a discovery" subsection for a step-by-step walkthrough
+including an example entry.

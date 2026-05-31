@@ -145,6 +145,78 @@ Editing an existing entry
 
 Edit the value in `seed_cyclers.yaml` AND its parallel entry in `source_quotes:`. Edits without a source-quote update should be rejected by review.
 
+Recording a discovery
+---------------------
+
+When the finder produces a closing trajectory that survives the V0-V3
+auto-gauntlet (per spec §14), it writes a new entry with
+`source: this-project`. Full lifecycle is in spec.md §16.5. The
+practical shape of a project-discovered entry:
+
+```yaml
+- id: cyc-vem-novel-0001              # auto-assigned; "cyc-" prefix marks project-discovered
+  name: "VEM triple cycler — cyclerfinder discovery"
+  source: this-project                # vs "literature" (seed entries) or "both" (re-derived literature)
+  primary: "Sun"
+  trajectory_regime: ballistic
+  bodies: ["V", "E", "M"]
+  sequence_canonical: "E-V-M-E-M"
+  sense: "outbound"
+  period: {pair: "VEM-beat", k: 1, years: 6.41}
+  vinf_kms_at_encounters: [...]
+  orbit_elements: {a_au: ..., e: ..., ...}
+  legs: [...]
+  source_quotes: {...}                # cite the discovery_run, not external literature
+
+  # Attribution lifecycle
+  first_published: null               # populated when published
+  priority_date: "2026-06-15"         # discovery date; revised on publication
+  our_status: candidate-novel         # candidate-novel → verified-novel (V5) → published
+
+  # Auto-validation results
+  validation:
+    level: V3
+    gates: {V0: {pass: true}, V1: {max_diff_mps: 0.0}, V2: {max_drift_km: 1.2e4}, V3: {horizon_tcm_mps: 120}}
+
+  # Discovery provenance (separate from reproducibility — see spec §16.5)
+  discovery_run:
+    finder_version: "0.4.2"
+    config_hash: "sha256:..."
+    seed: 42
+    run_id: "cyc-runs-2026-06-15-1430"
+    cell_id: "VEM|E-V-M-E-M|k1|r00000|blllll"
+    launch_epoch: "2032-11-02"
+    discovery_date: "2026-06-15T14:32:18Z"
+
+  # How to re-derive (may be overwritten by cleaner re-runs)
+  reproducibility:
+    finder_version: "0.4.2"
+    config_hash: "sha256:..."
+    seed: 42
+    run_id: "cyc-runs-2026-06-15-1430"
+    cell_id: "VEM|E-V-M-E-M|k1|r00000|blllll"
+```
+
+Transitions:
+
+- `candidate-novel` → `verified-novel` requires V5 (human expert review;
+  documented literature search returns nothing). V4 is high-fidelity
+  external (GMAT / Tudat / pykep) and is a prerequisite for V5.
+- `candidate-novel` → `known-reproduction` happens automatically if a
+  later-ingested literature entry matches the canonical signature
+  (per spec §16.3 matcher); the literature citation is attached and
+  the entry is retagged.
+- On publication: populate `first_published` with the human authors and
+  publication metadata; revise `priority_date` to the publication date.
+  This locks in priority — subsequent literature finds of the same
+  cycler bow to our publication.
+
+**Authorship rule (per project commit policy):** `first_published.authors`
+on project-discovered entries lists **human contributors** with
+substantive engineering / scientific input. No AI co-authorship.
+Project self-citation (for people citing cyclerfinder as a tool) lives
+in `CITATION.cff` at the repo root.
+
 Audit
 -----
 
