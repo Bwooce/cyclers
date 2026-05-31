@@ -85,10 +85,10 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M2** | Flyby + maps: flyby, tisserand, resonance | completed | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
 | **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | completed | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
 | **M4** | Enumeration + scoring | completed | [phases/m4-enumeration-scoring/plan.md](phases/m4-enumeration-scoring/plan.md) |
-| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **plan written; implementation in flight 2026-06-01** | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
+| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail under investigation | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
 | **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates) | **completed** (commit `9b2611d`) | _slice; no full phase doc_ |
-| **M6a** | Idealized closure verification (multi-lap propagation, bounded closure-drift check) | planned | — |
-| **M6b** | Ephemeris-mode TCM minimisation over 3–5 lap horizon | planned | — |
+| **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **plan written** (commit `8da0211`) | [phases/m6a-idealized-closure-verification/plan.md](phases/m6a-idealized-closure-verification/plan.md) |
+| **M6b** | Ephemeris-mode TCM minimisation over 3–5 lap horizon; populates `/launch-windows/` cost columns | planned (see [docs/v2-future-references.md](v2-future-references.md) — Pascarella 2024 is the architectural template) | — |
 | **M7** | Catalogue loader, canonical signature matching, novelty scoring | planned | — |
 | **M8** | VEM campaign + CLI + viz | planned | — |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
@@ -96,6 +96,14 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | Stretch | Low-thrust v2 scope expansion | refs queued (Yam 2010, Pascarella 2024) | — |
 
 Per the agreed first slice, **only M0's plan is written now**. M1–M3 plans are written as each previous phase completes, so each plan can incorporate what was actually learned from the predecessor (file boundaries that emerged, types that turned out wrong, etc.). Writing all four up-front risks four plans built on assumptions that get invalidated by M0.
+
+### 4.1 Schema-v2 + representation framework (2026-06-01)
+
+A major catalogue / spec rev shipped 2026-06-01 (commits `debd285` schema v2 + `5145bb1` spec §12.2):
+
+- **Catalogue schema v2** (`data/seed_cyclers.yaml`): six additive optional field categories — `model_assumption`, `flyby_mechanics[]`, `delta_v_kms` + `v_infinity_leveraging_dv_kms`, `periapse_km`/`apoapse_km`, RAAN/ω/ν/epoch, `fleet_size`. All 219 entries mechanically backfilled where derivable; remaining nulls are honest gaps. See `data/README.md` "Schema v2" for full convention. spec.md §16.1 carries the JSON schema; §16.2 explicitly carves the new fields OUT of the canonical signature so existing matches stay valid.
+- **Representation framework** (spec §12.2): explicit architectural rule that the catalogue carries multiple legitimate representations per cycler (idealised circular-coplanar, real-ephemeris instances on the site, analytic-ephemeris from Rogers 2012, CR3BP from Arenstorf/Saturnian). Downstream consumers pick the right model via the `model_assumption` field; we deliberately do NOT standardise on one form. "Derived views, not conversion."
+- **Future scope references** (`docs/v2-future-references.md`): bibliography for the v2 low-thrust scope expansion (Yam 2010 Sims-Flanagan, Pascarella 2024 medium-fidelity pipeline, Izzo 2015 GTOC methods, Burhani 2023 inclined low-thrust, Hollister–Menning 1969-71 foundational lineage).
 
 ---
 
