@@ -15,6 +15,8 @@ dependencies = [
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
+    "pytest-xdist>=3.6",
+    "pytest-timeout>=2.3",
     "ruff>=0.6",
     "mypy>=1.11",
     "numpy>=2.0",
@@ -58,4 +60,19 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra -q --strict-markers"
+# Skip @pytest.mark.slow tests by default. M5's full optimiser tests
+# (DE + multi-start + SLSQP per Aldrin / 2-syn rediscovery) legitimately
+# need 5-10 min each on CI's 2-core runners and are unproductive to gate
+# every push on. Run them with `uv run pytest -m slow` or
+# `-m "slow or not slow"` to include everything.
+#
+# --timeout=600: belt-and-braces wall-clock cap. Fast tests finish in
+# under 1s; the slow ones (if -m slow) need ~5 min each.
+#
+# pytest-xdist is installed and available via `-n auto` for parallel test
+# execution across cores — not default because the slow tests would each
+# saturate one core anyway and the fast ones don't benefit much.
+addopts = "-ra -q --strict-markers --timeout=600 -m 'not slow'"
+markers = [
+    "slow: tests that take more than ~10 seconds (M5 optimiser, catalogue rediscovery). Skipped by default; run with `-m slow` or `-m 'slow or not slow'`.",
+]

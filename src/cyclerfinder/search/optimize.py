@@ -69,6 +69,7 @@ from cyclerfinder.core.constants import (
 )
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.flyby import flyby_dv_for
+from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryError
 from cyclerfinder.model import Cycler, Score
 from cyclerfinder.model.score import composite_score, score
 from cyclerfinder.search.construct import construct_cycler
@@ -437,7 +438,12 @@ def _build_cycler_from_x(
             max_revs_per_leg=list(cell.per_leg_revs),
             branch_per_leg=list(cell.per_leg_branch),
         )
-    except ValueError:
+    except (ValueError, LambertConvergenceError, LambertGeometryError):
+        # Lambert Newton can fail to converge in degenerate geometries the
+        # optimiser may probe (very long ToF, near-180° transfer, large
+        # multi-rev z values). Treat as a pathological point; the caller
+        # converts ``None`` into ``_PATHOLOGICAL_OBJECTIVE_KMS`` so DE/SLSQP
+        # see a finite penalty rather than an exception.
         return None
 
 
@@ -834,6 +840,10 @@ def _de_pass(
             maxiter=_DE_MAXITER,
             popsize=_DE_POPSIZE,
             tol=_DE_TOL,
+            # Serial DE: workers=-1 was tested but the args_tuple (Cell,
+            # Ephemeris) pickling overhead per evaluation dominated the
+            # parallel speedup. The right parallelism point is the outer
+            # 5x multi-start grid, not inside DE — future enhancement.
         )
     except (ValueError, RuntimeError):
         return None
