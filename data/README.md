@@ -75,6 +75,38 @@ than per-member records. These are flagged in `notes:` with phrasing
 such as "family seed entry" and have `null` numeric fields with the
 attribution citation preserved.
 
+### `trajectory_regime:` field — 2026-06-01
+
+A second optional top-level field, `trajectory_regime:`, was added on
+2026-06-01 to make the *trajectory class* explicit:
+
+- `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
+  required to close the cycle. All current 43 entries are ballistic.
+- `low-thrust` — requires continuous propulsion (Solar Electric, ion,
+  nuclear electric, solar sail, etc.) over the transit legs to close.
+  Mathematically: Lambert's problem no longer applies; the trajectory
+  is solved with optimal control (Sims-Flanagan transcription, etc.).
+  Not in catalogue today; reserved for v2 ingest.
+- `manifold` — CR3BP invariant-manifold connections (Lyapunov / halo
+  manifold hopping). The conserved quantity is the Jacobi constant,
+  not V∞. Not in catalogue today; reserved for v2 ingest.
+
+Consumers MUST treat a missing `trajectory_regime:` field as
+`ballistic` (the v1-era default). Backfilled on all 43 existing
+entries on 2026-06-01 so the field is now mandatory by convention even
+though the default makes it formally optional.
+
+The field is **trajectory geometry**, not propulsion hardware. A
+`low-thrust` regime trajectory can be realised by ion / SEP / NEP /
+solar-sail propulsion; the choice of propulsion is implementation, not
+classification. (See OUTSTANDING.md §H for the rejected
+`propulsion:` field discussion.)
+
+When mixed-regime cataloguing begins (v2), use this field plus the
+`primary:` field to filter searches and constrain matcher behaviour
+(e.g. only match `ballistic` finder hits against `ballistic` catalogue
+entries; signatures across regimes are incommensurable).
+
 Out-of-paradigm work
 --------------------
 

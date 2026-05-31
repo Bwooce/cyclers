@@ -69,12 +69,13 @@ def _period_str(entry: dict[str, Any]) -> str:
 
 def render_md(entries: list[dict[str, Any]]) -> str:
     rows = [
-        "| # | id | primary | bodies | period | max V∞ (km/s) | data | citation |",
-        "|---|----|---------|--------|--------|---------------|------|----------|",
+        "| # | id | primary | regime | bodies | period | max V∞ (km/s) | data | citation |",
+        "|---|----|---------|--------|--------|--------|---------------|------|----------|",
     ]
     for i, e in enumerate(entries, 1):
         rows.append(
             f"| {i} | `{e['id']}` | {e.get('primary', 'Sun')} | "
+            f"{e.get('trajectory_regime', 'ballistic')} | "
             f"{','.join(e.get('bodies') or [])} | {_period_str(e)} | "
             f"{_max_vinf(e)} | {_data_completeness(e)} | {_primary_citation(e)} |"
         )
@@ -88,6 +89,7 @@ def render_csv(entries: list[dict[str, Any]]) -> str:
         [
             "id",
             "primary",
+            "trajectory_regime",
             "bodies",
             "period_years",
             "period_k",
@@ -102,6 +104,7 @@ def render_csv(entries: list[dict[str, Any]]) -> str:
             [
                 e["id"],
                 e.get("primary", "Sun"),
+                e.get("trajectory_regime", "ballistic"),
                 ",".join(e.get("bodies") or []),
                 period.get("years"),
                 period.get("k"),

@@ -23,6 +23,7 @@
 - id: aldrin-classic-em-k1-outbound
   name: "Aldrin classic Earth-Mars cycler (outbound / up-escalator, 1 synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-M"   # cyclic-canonical per spec §16.2; one Earth + one Mars encounter per synodic
   sense: "outbound"            # "up escalator": short Earth->Mars leg, long Mars->Earth return
@@ -160,6 +161,7 @@
 - id: mcconaghy-2006-em-k2
   name: "McConaghy/Landau/Yam/Longuski two-synodic-period Earth-Mars cycler"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"   # 2 Earth encounters + 2 Mars encounters per cycle (one Earth = intermediate)
   sense: "outbound"
@@ -250,6 +252,7 @@
 - id: s1l1-2syn-em-cpom
   name: "S1L1 ballistic two-synodic-period Earth-Mars cycler"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"   # 2 Earth + 2 Mars encounters per cycle; one is intermediate Earth
   sense: "outbound"
@@ -355,6 +358,7 @@
 - id: russell-ocampo-2.1.1+2-case2
   name: "Russell-Ocampo cycler 2.1.1.+2 ('Case 2' of Byrnes/McConaghy/Longuski 2002)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"     # 2-synodic, sequence per Russell Table 3.4
   sense: "outbound"
@@ -414,6 +418,7 @@
 - id: russell-ocampo-2.3.1+1-case3
   name: "Russell-Ocampo cycler 2.3.1.+1 ('Case 3' of Byrnes/McConaghy/Longuski 2002)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -461,6 +466,7 @@
 - id: russell-ocampo-4.3.1-5
   name: "Russell-Ocampo cycler 4.3.1.-5 (low-energy 4-synodic, near-Hohmann)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"  # representative; full sequence in Russell 2004 Table 3.7
   sense: "outbound"
@@ -541,6 +547,7 @@
 - id: russell-ocampo-3.1.2+1
   name: "Russell-Ocampo cycler 3.1.2.+1 (3-synodic, low terminal speeds)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -591,6 +598,7 @@
 - id: russell-ocampo-2.5.1+0
   name: "Russell-Ocampo cycler 2.5.1.+0 (short-transit 2-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -642,6 +650,7 @@
 - id: niehoff-visit1
   name: "Niehoff VISIT-1 Earth-Mars cycler"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-M"   # repeats at the cycler's natural period, not synodic-locked
   sense: "n/a"                 # VISIT cyclers are inertially-fixed resonant orbits, no escalator branch
@@ -746,6 +755,7 @@
 - id: niehoff-visit2
   name: "Niehoff VISIT-2 Earth-Mars cycler"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-M"
   sense: "n/a"
@@ -825,6 +835,7 @@
 - id: jones-2017-vem-triple-family
   name: "Jones/Hernandez/Jesick VEM triple cyclers (family seed entry)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["V", "E", "M"]
   sequence_canonical: "V-E-M"   # canonical placeholder; actual sequences vary across the family
   sense: "n/a"
@@ -926,6 +937,7 @@
 - id: vem-emeeve-3syn
   name: "EMEEVE VEM Triple Cycler (3-synodic beat archetype)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M", "E", "E", "V", "E"]
   sequence_canonical: "E-M-E-E-V-E"
   sense: "outbound"
@@ -979,6 +991,7 @@
 - id: aldrin-classic-em-k1-inbound
   name: "Aldrin classic Earth-Mars cycler (inbound / down-escalator, 1 synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["M", "E"]
   sequence_canonical: "M-E"
   sense: "inbound"            # "down escalator": short Mars->Earth leg, long Earth->Mars return
@@ -1042,6 +1055,7 @@
 - id: aldrin-4-3-2-establishment
   name: "Aldrin 4:3(2)- Variant (Analytic Ephemeris Establishment)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-M"
   sense: "outbound"
@@ -1094,6 +1108,7 @@
 - id: aldrin-3-2-1-establishment
   name: "Aldrin 3:2(1)- Variant (Analytic Ephemeris Establishment)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-M"
   sense: "outbound"
@@ -1155,6 +1170,7 @@
 - id: russell-ocampo-3.1.1+3
   name: "Russell-Ocampo cycler 3.1.1.+3 (low-V_inf 3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1222,6 +1238,7 @@
 - id: russell-ocampo-3.3.1+2
   name: "Russell-Ocampo cycler 3.3.1.+2 (3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1287,6 +1304,7 @@
 - id: russell-ocampo-3.5.1+1
   name: "Russell-Ocampo cycler 3.5.1.+1 (high-V_inf, short-transit, 3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1352,6 +1370,7 @@
 - id: russell-ocampo-3.5.2+0
   name: "Russell-Ocampo cycler 3.5.2.+0 (high-V_inf, short-transit, 3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1417,6 +1436,7 @@
 - id: russell-ocampo-3.7.1+1
   name: "Russell-Ocampo cycler 3.7.1.+1 (low-V_inf 3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1484,6 +1504,7 @@
 - id: russell-ocampo-3.9.1+0
   name: "Russell-Ocampo cycler 3.9.1.+0 (high-V_inf, short-transit, 3-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1549,6 +1570,7 @@
 - id: russell-ocampo-4.0.3+1
   name: "Russell-Ocampo cycler 4.0.3.+1 (good terminal speeds, generic returns only)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1616,6 +1638,7 @@
 - id: russell-ocampo-4.1.1-5
   name: "Russell-Ocampo cycler 4.1.1.-5 (4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1683,6 +1706,7 @@
 - id: russell-ocampo-4.3.1-4
   name: "Russell-Ocampo cycler 4.3.1.-4 (4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1750,6 +1774,7 @@
 - id: russell-ocampo-4.5.1-4
   name: "Russell-Ocampo cycler 4.5.1.-4 (promising energy)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1819,6 +1844,7 @@
 - id: russell-ocampo-4.5.1-3
   name: "Russell-Ocampo cycler 4.5.1.-3 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1886,6 +1912,7 @@
 - id: russell-ocampo-4.5.2-2
   name: "Russell-Ocampo cycler 4.5.2.-2 (promising energy)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -1955,6 +1982,7 @@
 - id: russell-ocampo-4.5.3-1
   name: "Russell-Ocampo cycler 4.5.3.-1 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2022,6 +2050,7 @@
 - id: russell-ocampo-4.7.1-3
   name: "Russell-Ocampo cycler 4.7.1.-3 (4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2089,6 +2118,7 @@
 - id: russell-ocampo-4.9.1-2
   name: "Russell-Ocampo cycler 4.9.1.-2 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2156,6 +2186,7 @@
 - id: russell-ocampo-4.9.2-1
   name: "Russell-Ocampo cycler 4.9.2.-1 (turn-angle showcase)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2225,6 +2256,7 @@
 - id: russell-ocampo-4.10.1+2
   name: "Russell-Ocampo cycler 4.10.1.+2 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2290,6 +2322,7 @@
 - id: russell-ocampo-4.11.1-2
   name: "Russell-Ocampo cycler 4.11.1.-2 (promising energy)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2359,6 +2392,7 @@
 - id: russell-ocampo-4.12.1+1
   name: "Russell-Ocampo cycler 4.12.1.+1 (high-V_inf, short-transit, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2424,6 +2458,7 @@
 - id: russell-ocampo-4.13.1-1
   name: "Russell-Ocampo cycler 4.13.1.-1 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2491,6 +2526,7 @@
 - id: russell-ocampo-4.14.1-1
   name: "Russell-Ocampo cycler 4.14.1.-1 (high-V_inf, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2558,6 +2594,7 @@
 - id: russell-ocampo-4.14.1+0
   name: "Russell-Ocampo cycler 4.14.1.+0 (high-V_inf, short-transit, 4-synodic)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"
   sense: "outbound"
@@ -2633,6 +2670,7 @@
 - id: arenstorf-em-figure8-1963
   name: "Arenstorf periodic Earth-Moon free-return orbit (CR3BP)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Earth"
   bodies: ["E", "Moon"]
   sequence_canonical: "E-Moon"
@@ -2744,6 +2782,7 @@
 - id: genova-aldrin-2015-em-3petal-cycler
   name: "Genova/Aldrin free-return Earth-Moon cycler (interplanetary cruise ship, 3:1 lunar resonant)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Earth"
   bodies: ["E", "Moon"]
   sequence_canonical: "E-Moon"
@@ -2864,6 +2903,7 @@
 - id: wittal-2022-em-cycler-family
   name: "Wittal/Miaule/Asher Earth-Moon cycler family for lunar logistics (family seed)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Earth"
   bodies: ["E", "Moon"]
   sequence_canonical: "E-Moon"
@@ -2958,6 +2998,7 @@
 - id: hernandez-2017-jovian-ieg-triple-family
   name: "Hernandez/Jones/Jesick Io-Europa-Ganymede triple cyclers (Jovian family seed)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Jupiter"
   bodies: ["Io", "Europa", "Ganymede"]
   sequence_canonical: "Io-Europa-Ganymede"
@@ -3081,6 +3122,7 @@
 - id: russell-strange-2009-jovian-multimoon-family
   name: "Russell/Strange Jovian moon cycler family (family seed)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Jupiter"
   bodies: ["Io", "Europa", "Ganymede", "Callisto"]
   sequence_canonical: "Galilean-multi"
@@ -3178,6 +3220,7 @@
 - id: russell-strange-2009-saturnian-multimoon-family
   name: "Russell/Strange Saturnian moon cycler family (family seed, Titan-Enceladus focus)"
   source: literature
+  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   primary: "Saturn"
   bodies: ["Mimas", "Enceladus", "Tethys", "Dione", "Rhea", "Titan"]
   sequence_canonical: "Saturnian-multi"
