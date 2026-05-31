@@ -80,10 +80,10 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 
 | ID | Title | Status | Plan doc |
 |----|-------|--------|----------|
-| **M0** | Scaffold | planned | [phases/m0-scaffold/plan.md](phases/m0-scaffold/plan.md) |
-| **M1** | Core mechanics: ephemeris, lambert, kepler | not yet planned | _written when M0 completes_ |
-| **M2** | Flyby + maps: flyby, tisserand, resonance | not yet planned | _written when M1 completes_ |
-| **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | not yet planned | _written when M2 completes_ |
+| **M0** | Scaffold | completed | [phases/m0-scaffold/plan.md](phases/m0-scaffold/plan.md) |
+| **M1** | Core mechanics: ephemeris, lambert, kepler | planned | [phases/m1-core-mechanics/plan.md](phases/m1-core-mechanics/plan.md) |
+| **M2** | Flyby + maps: flyby, tisserand, resonance | planned | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
+| **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | planned | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
 | **M4** | Enumeration + scoring | future slice | — |
 | **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | future slice | — |
 | **M6a** | Idealized closure verification | future slice | — |
