@@ -1,7 +1,7 @@
 # Known cyclers — seed catalogue reference
 
 **Purpose.** This document is the human-readable companion to
-`src/cyclerfinder/data/seed_cyclers.yaml`. Both files exist to give
+`data/seed_cyclers.yaml`. Both files exist to give
 cyclerfinder a starting catalogue of *published* cycler trajectories with
 full source attribution, so that:
 
@@ -553,7 +553,7 @@ separate entries once the full PDF is obtained.
 | `niehoff-visit2` | E-M | ≈14.95 yr (k=7) | n/k | Niehoff 1985 (presentation, not online) | entry 10 |
 | `jones-2017-vem-triple-family` | V-E-M | 4.27 yr (k=2 E-M) | <5 km/s (avg) | Jones/Hernandez/Jesick 2017, AAS 17-577 | entry 11 |
 
-**Machine data file:** `src/cyclerfinder/data/seed_cyclers.yaml`
+**Machine data file:** `data/seed_cyclers.yaml`
 
 ---
 
