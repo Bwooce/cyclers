@@ -530,16 +530,6 @@ def test_multi_start_grid_first_is_free_return() -> None:
     assert starts[0] == fr[1:-1]
 
 
-@pytest.mark.xfail(
-    reason=(
-        "M5 _multi_start_grid for the 2-syn E-M-E cell (N-2=1 interior dim) "
-        "produces 4 unique starts out of 5 — observed values "
-        "67385835.12, 74124418.63, 87601585.65, 94340169.16 sec (one collision). "
-        "Almost certainly the seed-perturbation step collapsing two equispaced "
-        "values onto the same float. Under investigation. Plan §7 step 3."
-    ),
-    strict=False,
-)
 def test_multi_start_grid_distinct() -> None:
     """Plan §7 step 3: ``n_starts=5`` produces 5 distinct start vectors."""
     from cyclerfinder.search.optimize import _multi_start_grid, _target_period_sec

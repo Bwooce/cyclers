@@ -357,10 +357,20 @@ def _multi_start_grid(
         # Modulate per interior epoch so multi-interior cells get a
         # genuinely varied vector (not the same scalar shift on all
         # axes).
+        # Sign source is the start index `k` (NOT chosen_idx) so sequential
+        # starts always alternate signs regardless of which table entry the
+        # permutation picks. Before this fix: for n_interior=1 the table's
+        # alternating ± fractions cancelled against (j + chosen_idx) % 2,
+        # collapsing 10 table entries to 5 unique deltas and causing
+        # _multi_start_grid to emit n_starts-1 unique vectors instead of
+        # n_starts for low-dimensional cells (e.g. 2-syn E-M-E). The
+        # collision manifested as test_multi_start_grid_distinct failing
+        # with 4 unique starts out of 5. j-dependence is retained so
+        # multi-interior cells get genuine per-axis variation.
         deltas = [
             frac
             * target_period_sec
-            * (1.0 if (j + chosen_idx) % 2 == 0 else -1.0)
+            * (1.0 if (j + k) % 2 == 0 else -1.0)
             / (1.0 + 0.5 * j)
             for j in range(n_interior)
         ]
