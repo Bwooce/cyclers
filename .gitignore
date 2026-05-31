@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+
+# Build artifacts
+build/
+dist/
+wheels/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Project outputs (per spec.md §7 — runs land here)
+out/
+
+# Editor / OS detritus
+.idea/
+.vscode/
+.DS_Store
+
+# Pre-existing stray file in the repo root; do not commit.
+nohup.out
