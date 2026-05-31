@@ -85,6 +85,25 @@ orbital elements. Same source would unlock per-member numerics for
 the S3L1 ballistic and S1L2 cycler families (currently not catalogued
 as per-member entries; family seed entry 47 carries the citation).
 
+**MAPPING DISCOVERED 2026-06-01:** the McConaghy 2006 "Notable" S1L1
+cycler is **identical** to Russell 2004's cycler `4.991gG2` (Russell's
+entry #83). Russell's dissertation cross-references this explicitly:
+
+> "cycler 4.991gG2 (#83) as seen in Figure 5.5a. Also known as the
+> 'S1L1' cycler" — Russell 2004 (line 7416 of pdftotext extraction;
+> corresponds to ~page 110 of the UT Austin handle).
+
+This means **the McConaghy 2005 dissertation is not actually required** —
+the orbital elements live in Russell Table 4.9 (2-synodic ballistic
+cyclers) under Russell's own `p.h.s.i_gG_n` notation. The pending
+ingest of Russell Tables 4.9-4.13 (task #44) will populate entry 2's
+null fields directly, plus the entire SnLm broad-class space (S2L1,
+S3L1, S1L2) under Russell's nomenclature. Russell also references the
+`8.049gGf2` cycler in the same passage as a sibling design.
+
+Action: task #44 (Russell Tables 4.9-4.13 ingest) becomes the gating
+work to close this question, **not** the Purdue dissertation acquisition.
+
 **Original question (preserved as audit trail):**
 
 The McConaghy 2006 abstract gives V∞ at Earth (4.7 km/s), V∞ at Mars

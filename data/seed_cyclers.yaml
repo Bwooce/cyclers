@@ -192,7 +192,20 @@
     perihelion_au: null
     aphelion_au: null
     inclination_deg: 0.0
-    note: "Specific (a, e, peri, apo) for the published cycler are in the body of the McConaghy 2006 paper (DOI 10.2514/1.15215), which is paywalled (AIAA 403). The abstract gives V_inf and ToF but not orbital elements. TBD: obtain elements from full paper or from McConaghy's preceding AIAA 2003-509 / AAS 03-509 paper."
+    note: |
+      Specific (a, e, peri, apo) for the published cycler are in the body of
+      the McConaghy 2006 paper (DOI 10.2514/1.15215), which is paywalled
+      (AIAA 403). The abstract gives V_inf and ToF but not orbital elements.
+
+      2026-06-01 mapping: this cycler is **identical** to Russell 2004's
+      cycler `4.991gG2` (Russell's entry #83), per Russell's dissertation
+      explicitly: "cycler 4.991gG2 (#83) ... Also known as the 'S1L1' cycler"
+      (page ~110 of the UT Austin handle, near Figure 5.5a; verbatim grep
+      from /tmp/russell-2004.txt line 7416). Russell's notation uses
+      uppercase G/g for generic vs full-rev transit legs. The orbital
+      elements should be available in Russell Table 4.9 (2-synodic ballistic
+      cyclers) under this code; queued for ingest as part of task #44
+      (Russell Tables 4.9-4.13).
   legs:
     - from: "E"
       to: "M"
