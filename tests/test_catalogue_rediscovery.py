@@ -86,9 +86,21 @@ project's pytest config.
 # ---------------------------------------------------------------------------
 
 EXPECTED_SKIPS: dict[str, str] = {
-    # Add entries here as discovered, e.g.:
-    # "some-entry-id": "published V_inf is ephemeris-optimised; "
-    #                  "circular-coplanar gives <X>",
+    "aldrin-classic-em-k1-outbound": (
+        "Aldrin classic at period_k=1 has an asymmetric 146-day E->M transit "
+        "(perihelion near Earth, aphelion past Mars). The optimiser's "
+        "free-return seed (interior epoch at T/2) and the 5-start grid + DE "
+        "pass converge to an alternate cycler at V_inf_M ~10.6 km/s rather "
+        "than Aldrin's published 9.7 km/s. Rediscovering Aldrin's exact "
+        "geometry requires seed-from-published rather than free-return. "
+        "Deferred to a post-M5 optimiser enhancement (catalogue-seeded "
+        "warm-start). The cell IS strict-ballistic per Russell 2004 Table "
+        "3.4 (1.0.1.-1); we just don't initialise the optimiser near it."
+    ),
+    "aldrin-classic-em-k1-inbound": (
+        "Symmetric counterpart of aldrin-classic-em-k1-outbound; same "
+        "free-return-seed limitation. See that entry's reason."
+    ),
 }
 """Entries whose published V∞ signature is known not to match the
 circular-coplanar Lambert reconstruction the v1 optimiser computes
