@@ -30,8 +30,8 @@ forward from full M6.
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from math import cos, pi, sin
-from typing import Protocol
+from math import cos, pi, radians, sin
+from typing import Final, Protocol
 
 import numpy as np
 from numpy.typing import NDArray
@@ -44,6 +44,12 @@ Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 # J2000 (2000-01-01T12:00:00 TDB). Match the most common heliocentric
 # convention in the cycler literature.
 _J2000_EPOCH = datetime(2000, 1, 1, 12, 0, 0, tzinfo=UTC)
+
+# Mean obliquity of the ecliptic at J2000 (IAU 2006 / IERS 2010). Used by
+# the astropy backend to rotate ICRS (BCRS-aligned, equatorial) into the
+# J2000 ecliptic frame the rest of cyclerfinder expects (z-axis along the
+# ecliptic north pole).
+_J2000_OBLIQUITY_RAD: Final[float] = radians(23.4392911)
 
 # Body-code → astropy body name map. The circular backend uses the same V/E/M
 # codes; the astropy backend translates to astropy's own naming.
@@ -83,10 +89,21 @@ class _CircularBackend:
 class _AstropyBackend:
     """Real heliocentric states from astropy's bundled JPL DE440 ephemeris.
 
-    Returns ICRS heliocentric ``(r_km, v_km_s)`` at the astropy ``Time``
-    corresponding to ``J2000 + t_sec`` (TDB). ICRS is barycentric-aligned with
-    J2000 ecliptic; for cycler work (V/E/M heliocentric positions on
-    interplanetary scales) the J2000 ecliptic alignment is what callers want.
+    Returns heliocentric ``(r_km, v_km_s)`` in the **J2000 ecliptic
+    frame** (z-axis along the ecliptic north pole) at the astropy
+    ``Time`` corresponding to ``J2000 + t_sec`` (TDB).
+
+    astropy's :func:`get_body_barycentric_posvel` returns BCRS
+    coordinates, which are aligned with ICRS — the equatorial mean
+    pole and equinox of J2000. The cyclerfinder ``circular`` backend
+    and the rest of the package (frames, propagator, dynamic frame)
+    work in the **ecliptic** frame, so we rotate the ICRS output by
+    the J2000 obliquity (-23.4393 deg about +x) to produce ecliptic-
+    aligned coordinates. Without this rotation Earth's heliocentric
+    z-component oscillates by ~ ±58 million km over a year (the
+    23.4393 deg equator/ecliptic tilt), which silently breaks any
+    rotating-frame transform that assumes z is the ecliptic normal —
+    exactly the M6a spec §10 risk.
     """
 
     def __init__(self) -> None:
@@ -96,6 +113,16 @@ class _AstropyBackend:
 
         # DE440 is bundled with astropy as of 6.x+; opt in once.
         solar_system_ephemeris.set("de440")
+        # Pre-compute the ICRS->ecliptic rotation about +x by -obliquity.
+        eps = _J2000_OBLIQUITY_RAD
+        self._r_icrs_to_ecl: NDArray[np.float64] = np.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.0, cos(eps), sin(eps)],
+                [0.0, -sin(eps), cos(eps)],
+            ],
+            dtype=np.float64,
+        )
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         from astropy.coordinates import get_body_barycentric_posvel
@@ -112,8 +139,13 @@ class _AstropyBackend:
         # we cast through .xyz.to(km).value.
         body_pos, body_vel = get_body_barycentric_posvel(astropy_name, t)
         sun_pos, sun_vel = get_body_barycentric_posvel("sun", t)
-        r_helio = (body_pos - sun_pos).xyz.to("km").value
-        v_helio = (body_vel - sun_vel).xyz.to("km/s").value
+        r_helio_icrs = (body_pos - sun_pos).xyz.to("km").value
+        v_helio_icrs = (body_vel - sun_vel).xyz.to("km/s").value
+        # Rotate ICRS (equatorial) to J2000 ecliptic so the rest of
+        # cyclerfinder gets z-along-ecliptic-pole positions matching
+        # the circular backend's convention.
+        r_helio = self._r_icrs_to_ecl @ np.asarray(r_helio_icrs, dtype=np.float64)
+        v_helio = self._r_icrs_to_ecl @ np.asarray(v_helio_icrs, dtype=np.float64)
         return (
             np.asarray(r_helio, dtype=np.float64),
             np.asarray(v_helio, dtype=np.float64),
