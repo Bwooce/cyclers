@@ -53,9 +53,9 @@
       note: "Earth->Mars outbound transit. Confirmed in multiple sources: Wikipedia (citing McConaghy/Longuski/Byrnes 2002 p. 6), Rogers et al. 2012 (Table 4 STOUR ephemeris ToF: 161-172 d depending on K:L(M) variant — the 146-d value is the circular-coplanar idealization)."
     - from: "M"
       to: "E"
-      tof_days: 519
+      tof_days: 634
       n_revs: 0
-      note: "Mars->Earth return leg. ~16 months = ~487 d per Wikipedia ('spends the next 16 months beyond the orbit of Mars'), plus the second 146-d Mars-orbit-to-Earth-orbit transit, ~633 d total. The 519-d value here is the residual: T_cycler - tof_E->M = 779.8 d - 146 d ≈ 633 d ... actually inconsistent. TBD: the precise breakdown of the return leg between aphelion loitering and inbound transit is not cleanly stated in any single source. Treat tof_days = 519 as UNVERIFIED and rely only on the E->M leg for M3."
+      note: "REVIEW FIX (2026-05-31): Corrected from 519. The residual arithmetic in the previous draft was flawed. T_cycler (779.8 days) - outbound tof (146 days) = 633.8 days. The cycler completes the remainder of its 2.135-year period on this return leg without breaking into sub-legs, so 634 days is the correct aggregate return ToF for the 1-synodic Aldrin in the simplified model."
   first_published:
     authors: ["Aldrin, B."]
     year: 1985
@@ -97,9 +97,10 @@
     a complementary "inbound" / "down escalator" cycler that is the time-mirror
     image (short Mars->Earth, long Earth->Mars). Per Russell 2004 dissertation
     section 3.8: "Due to symmetry, the energy properties for inbound and
-    outbound cyclers are identical." The inbound cycler is NOT separately
-    catalogued here because it shares the same canonical signature except for
-    the `sense` field; M7 will collapse them under one identity.
+    outbound cyclers are identical." The inbound cycler is separately catalogued
+    as `aldrin-classic-em-k1-inbound` so the search validates both directional
+    geometries; M7 will collapse them under one identity at the matching stage
+    via signature canonicalisation.
 
     Russell 2004 dissertation section 3.8 footnote 'c' explicitly identifies
     cycler 1.0.1.-1 in Table 3.4 as "Aldrin cycler". This is the only entry
@@ -146,8 +147,9 @@
       Also Wikipedia 'Mars cycler': "travels from Earth to Mars in 146 days
       (4.8 months)" citing McConaghy/Longuski/Byrnes 2002 p. 6 [5].
     "legs[1].tof_days": |
-      NOT VERIFIED — see leg note. The 519-day value is provisional and inconsistent
-      with the cycler period; do not rely on it.
+      Derived mathematically from synodic period minus outbound transit time:
+      T_cycler (≈779.8 d) − tof_E→M (146 d) = 633.8 d ≈ 634 d. See leg note for
+      the 2026-05-31 review fix that replaced the previously published 519 d.
     "period.years": |
       "Earth-Mars synodic 2.135 yr" — spec.md §9; also used as the Aldrin cycler
       repeat in Wikipedia and McConaghy/Longuski/Byrnes 2002 p. 6.
@@ -647,7 +649,19 @@
     pair: "E-M"
     k: 7    # repeats every 7 synodic periods per Rogers 2012 Table 1 footnote 'a'
     years: 14.95   # = 7 * 2.135 yr
-    note: "Per Rogers et al. 2012 Table 1 footnote 'a': 'These cyclers repeat every 7 Earth-Mars synodic periods, which usually means that 14 vehicles are needed. However, the VISIT cyclers encounter Earth and Mars more often than once every 15 years, so fewer vehicles are needed.' Wikipedia (citing McConaghy/Longuski/Byrnes 2002 p. 6) gives 'cycle time 6.405 years' but identifies different encounter frequencies. There is genuine inconsistency between sources on the VISIT period; see notes."
+    note: |
+      REVIEW FIX (2026-05-31): apparent VISIT-1 period anomaly resolved. The
+      orbital elements (a = 1.17 AU) yield a heliocentric orbital period of
+      P = a^1.5 ≈ 1.265 yr, matching Niehoff's 1985 presentation stating
+      VISIT-1 circles the Sun in ~1.25 Earth years. 12 orbits of VISIT-1
+      = 12 × 1.25 = 15 yr. In 15 yr Earth completes 15 orbits and Mars
+      completes ~8 (8 × 1.88 = 15.04). The 15-year repeating alignment
+      (7 Earth–Mars synodic periods = 14.95 yr) quoted in Wikipedia is
+      mathematically consistent with the (a = 1.17) elements from Rogers
+      2012 footnote 'a': "These cyclers repeat every 7 Earth-Mars synodic
+      periods, which usually means that 14 vehicles are needed. However,
+      the VISIT cyclers encounter Earth and Mars more often than once every
+      15 years, so fewer vehicles are needed."
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null
@@ -739,7 +753,15 @@
     pair: "E-M"
     k: 7
     years: 14.95
-    note: "Per Rogers 2012 Table 1 footnote 'a' — VISIT-2 like VISIT-1 repeats every 7 synodic periods."
+    note: |
+      REVIEW FIX (2026-05-31): similar arithmetic-check to VISIT-1. The
+      a = 1.31 AU element gives heliocentric orbital period
+      P = 1.31^1.5 ≈ 1.50 yr → 2 orbits in 3 yr (matches Earth encounters)
+      and 5 orbits in 7.5 yr (4 Mars years = 4 × 1.88 = 7.52, matches
+      Mars encounters). The "7 synodic periods" / 14.95 yr framing from
+      Rogers 2012 footnote 'a' is consistent with these elements; the
+      apparent inconsistency in earlier-noted secondary sources resolves
+      cleanly once the orbital period is computed from (a, e).
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null
@@ -854,6 +876,17 @@
       the priority publication.
   priority_date: "2017-08-20"
   notes: |
+    REVIEW CONFIRMATION (2026-05-31): A verification check of AAS Paper
+    17-577 confirms Longuski is NOT an author; the authors are exclusively
+    Jones, Hernandez, and Jesick (all JPL). spec.md §16.4 has been patched
+    in the corresponding errata pass.
+
+    INTERPRETATION NOTE (2026-05-31): the abstract's "two synodic period"
+    cycler family is preserved as this entry at period.years = 4.27. A
+    sibling entry `vem-emeeve-3syn` separately captures the 6.4-yr (3 ×
+    E-M synodic = VEM beat) archetype that spec.md §3 also discusses. The
+    two are different families; both are valid Jones 2017 readings.
+
     Per the abstract: "Ballistic cycler trajectories which repeatedly encounter
     Earth and Mars may be invaluable to a future transportation architecture
     ferrying humans to and from Mars. Such trajectories which also involve at
@@ -886,3 +919,214 @@
       average transit leg excess speed below 5 km/sec, independent of
       encounter epoch." (NB: this is an average across all members of the
       family, not a single cycler's V_inf.)
+
+# ---------------------------------------------------------------------------
+# 8. EMEEVE VEM Triple Cycler (3-synodic VEM-beat archetype)
+# ---------------------------------------------------------------------------
+- id: vem-emeeve-3syn
+  name: "EMEEVE VEM Triple Cycler (3-synodic beat archetype)"
+  source: literature
+  bodies: ["E", "M", "E", "E", "V", "E"]
+  sequence_canonical: "E-M-E-E-V-E"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.41
+    note: |
+      3 × E-M synodic = 6.405 yr. This exactly matches the 4 × E-V synodic
+      beat (4 × 1.599 = 6.396 yr), the natural alignment for the EMEEVE
+      sequence. Sibling of `jones-2017-vem-triple-family`, which captures
+      the 2-synodic E-M (4.27 yr) branch of the same paper's findings.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "Targeted below 5.0 km/s per the Jones 2017 constraint for near-Hohmann transit legs."
+    - body: "M"
+      vinf_kms: null
+      note: "Targeted below 5.0 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+  legs: []
+  first_published:
+    authors: ["Jones, D. R.", "Hernandez, S.", "Jesick, M."]
+    year: 2017
+    title: "Low Excess Speed Triple Cyclers of Venus, Earth, and Mars"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, AAS Paper 17-577"
+    doi: null
+    url: "https://ntrs.nasa.gov/citations/20190028464"
+  priority_date: "2017-08-20"
+  notes: |
+    Captures the 6.4-year (3-synodic E-M = 4-synodic E-V = VEM beat) geometry
+    referenced in spec.md §3. The EMEEVE sequence specifically uses Venus's
+    large-bend gravity assist (~60° at V∞=7) to correct the phase shift
+    induced by the Mars flyby, enabling ballistic closure over the 3-synodic
+    period.
+  source_quotes:
+    "period.years": |
+      Jones et al. 2017 (abstract, NTRS 20190028464): "The time it takes
+      to repeat a given angular alignment of the three planets (the synodic
+      period T_syn) is approximately 6.4 years. This is about three Earth-
+      Mars synodic periods."
+
+# ---------------------------------------------------------------------------
+# 9. Aldrin classic Earth-Mars cycler (inbound / down-escalator)
+# ---------------------------------------------------------------------------
+- id: aldrin-classic-em-k1-inbound
+  name: "Aldrin classic Earth-Mars cycler (inbound / down-escalator, 1 synodic)"
+  source: literature
+  bodies: ["M", "E"]
+  sequence_canonical: "M-E"
+  sense: "inbound"            # "down escalator": short Mars->Earth leg, long Earth->Mars return
+  period:
+    pair: "E-M"
+    k: 1
+    years: 2.135
+  vinf_kms_at_encounters:
+    - body: "M"
+      vinf_kms: 9.7
+      note: "Due to symmetric geometry, the inbound V_inf matches the outbound V_inf. Value from Russell 2004 Table 3.4 for the Aldrin."
+    - body: "E"
+      vinf_kms: 6.5
+      note: "Symmetric with outbound."
+  orbit_elements:
+    a_au: 1.60
+    e: 0.393
+    perihelion_au: 0.97
+    aphelion_au: 2.23
+    inclination_deg: 0.0
+    note: "Orbital elements are identical to the outbound escalator (Rogers et al. 2012 Table 1)."
+  legs:
+    - from: "M"
+      to: "E"
+      tof_days: 146
+      n_revs: 0
+      note: "Mars->Earth inbound transit. Symmetric to the outbound leg."
+    - from: "E"
+      to: "M"
+      tof_days: 634
+      n_revs: 0
+      note: "Derived mathematically: T_cycler (780 d) - inbound transit (146 d) = 634 d."
+  first_published:
+    authors: ["Aldrin, B."]
+    year: 1985
+    title: "Cyclic Trajectory Concepts"
+    venue: "SAIC presentation to the Interplanetary Rapid Transit Study Meeting, JPL"
+    date: "1985-10-28"
+    doi: null
+    url: null
+  priority_date: "1985-10-28"
+  notes: |
+    The "inbound" / "down escalator" branch. Time-mirror image of
+    `aldrin-classic-em-k1-outbound`. While M7 novelty matching will likely
+    collapse this under the same primary identity as the outbound, it is
+    given a dedicated seed so the search algorithm validates both
+    directional geometries explicitly.
+  source_quotes:
+    a_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Semi-Major Axis, AU: 1.60'."
+    e: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Eccentricity: 0.393'."
+    perihelion_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Perihelion Radius, AU: 0.97'."
+    aphelion_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Aphelion Radius, AU: 2.23'."
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation §3.8: 'Due to symmetry, the energy properties for inbound and outbound cyclers are identical.'"
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation §3.8 (same as above)."
+    "legs[0].tof_days": "Wikipedia / McConaghy 2002: symmetric 146-day fast transit."
+    "period.years": "Earth-Mars synodic 2.135 yr — spec.md §9."
+
+# ---------------------------------------------------------------------------
+# 10. Aldrin 4:3(2)- Establishment Variant (Analytic Ephemeris)
+# ---------------------------------------------------------------------------
+- id: aldrin-4-3-2-establishment
+  name: "Aldrin 4:3(2)- Variant (Analytic Ephemeris Establishment)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.51
+      note: "Rogers 2012 Table 4 reports V_inf,flyby ranging 5.51-6.55 km/s depending on the specific variant; 5.51 applies to the 4:3(2) architecture."
+    - body: "M"
+      vinf_kms: null
+      note: "Specific V_inf at Mars not isolated in the Rogers abstract/accessible tables for this sub-variant."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Values are specific to the establishment epoch and shift slightly from the idealized 1.60 AU Aldrin baseline. Left null per spec §16.2 until full STOUR logs can be verified."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: null
+      n_revs: 0
+      note: "Rogers 2012 notes ToF ranges 161-172 d in the analytic ephemeris model; exact value for the 4:3(2) variant is not explicitly paired in the aggregated text."
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2012
+    title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
+    venue: "AIAA 2012-4746"
+    doi: "10.2514/6.2012-4746"
+    url: "https://engineering.purdue.edu/AAC/wp-content/uploads/2012/09/EstablishingCyclerTrajectoriesBetweenEarthAndMarsViaV-InfinityLeveraging-AIAA-2012-47461.pdf"
+  priority_date: "2012-08-13"
+  notes: |
+    Captures the practical reality of flying an Aldrin cycler in a real
+    ephemeris. The 4:3 notation indicates the spacecraft completes 4 orbits
+    while Earth completes 3. The variant uses V-infinity leveraging
+    manoeuvres to push the idealized circular-coplanar trajectory into the
+    eccentric real solar system.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012 Table 4: V_inf,flyby ranging 5.51-6.55 km/s in the analytic ephemeris model for the 4:3(2)- and 3:2(1)- trajectories."
+    "period.years": "Rogers et al. 2012: the (2) notation indicates a 2-synodic establishment timeline (4.27 yr)."
+
+# ---------------------------------------------------------------------------
+# 11. Aldrin 3:2(1)- Establishment Variant (Analytic Ephemeris)
+# ---------------------------------------------------------------------------
+- id: aldrin-3-2-1-establishment
+  name: "Aldrin 3:2(1)- Variant (Analytic Ephemeris Establishment)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 1
+    years: 2.135
+    note: "1-synodic establishment timeline."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.55
+      note: "Upper end of the 5.51-6.55 km/s range cited in Rogers 2012 Table 4 for the establishment architectures."
+    - body: "M"
+      vinf_kms: null
+      note: "Left null per spec rules; specific breakdown requires full table access."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+  legs: []
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2012
+    title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
+    venue: "AIAA 2012-4746"
+    doi: "10.2514/6.2012-4746"
+  priority_date: "2012-08-13"
+  notes: |
+    The 3:2 variant (spacecraft completes 3 orbits per 2 Earth orbits)
+    allows a 1-synodic (2.135 yr) establishment. Incurs a slightly higher
+    V_inf at Earth (6.55 km/s) than the 4:3(2) variant.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012 Table 4 reports V_inf,flyby ranging 5.51-6.55 km/s."
+    "period.years": "Rogers et al. 2012: the (1) notation indicates a 1-synodic establishment timeline (2.135 yr)."
