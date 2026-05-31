@@ -392,6 +392,8 @@ The payoff: the finder, the validation gauntlet, and the public library become a
 
 One record type flows through everything — finder output, the search ledger, the validation gauntlet, and the public site are all the *same object*. Below: the schema, the canonical signature that gives a cycler a stable identity, the matching that collapses accidental re-derivations, and the attribution model that keeps credit correct.
 
+**File locations.** The canonical catalogue is at [`data/seed_cyclers.yaml`](../data/seed_cyclers.yaml) — sole source of truth. See [`data/README.md`](../data/README.md) for conventions, attribution rules, the `primary:` schema extension for non-heliocentric entries, and the regenerable cross-reference table command (`scripts/render-catalogue.py`). See [`data/OUTSTANDING.md`](../data/OUTSTANDING.md) for the long-form research-questions / open-source-access log.
+
 ### 16.1 Shared catalogue record
 
 ```jsonc
