@@ -45,64 +45,75 @@ both refer to different "Aldrin cyclers".
 
 ---
 
-## ◐ Partly resolved (2026-06-01) — B. McConaghy 2006 orbital elements (medium priority)
+## ✓ Resolved (2026-06-01) — B. McConaghy 2006 orbital elements (medium priority)
 
-**Partial resolution:** SnLm broad-class family ingest landed on
-2026-06-01 (commit pending) as catalogue entries 45-47:
+**Fully resolved by Russell 2004 Chapter 4 tables ingest** (commit
+pending, 2026-06-01). Russell 2004 dissertation Table 4.9 (page 127)
+row 1 carries the orbital data for the McConaghy 2006 "Notable" (S1L1)
+cycler under Russell's own nomenclature `4.991gG2`:
 
-- entry 45 `mcconaghy-2005-em-case1` — S2L1 family member Case 1, with
-  a=1.22, e=0.238, peri=0.93, apo=1.51 from Rogers 2012 Table 1.
-- entry 46 `mcconaghy-2005-em-u0l1` — U0L1 high-energy zero-loop
-  one-synodic cycler, with a=2.05, e=0.563, peri=0.90, apo=3.20.
-- entry 47 `mcconaghy-2005-em-snlm-broadclass-family` — citation-only
-  family-seed for the McConaghy 2005 Purdue PhD dissertation
-  (AAI3166673) capturing the SnLm taxonomy as the comprehensive
-  open-access source.
+- aphelion = 1.64 AU (row 1 of Table 4.9)
+- V_inf at Earth = 4.99 km/s (Russell), vs McConaghy 2006 abstract = 4.7 km/s
+- V_inf at Mars = 5.10 km/s (Russell), vs McConaghy 2006 abstract = 5.0 km/s
+- E-M ToF = 150 days (Russell), vs McConaghy 2006 abstract = 153 days
 
-**Still open:** the McConaghy 2006 'Notable' cycler's specific
-orbital elements (a, e, peri, apo) are STILL null on entry 2
-`mcconaghy-2006-em-k2`. The McConaghy 2005 dissertation full text
-was not directly accessible at the 2026-06-01 ingest (Purdue
-docs.lib.purdue.edu blocked to WebFetch; ProQuest dissertation full
-text behind subscription; AIAA arc.aiaa.org 403 across all relevant
-DOIs). The dissertation is expected to contain the per-cycler
-orbital elements but those values were not transcribable from any
-accessible secondary source.
+Russell explicitly cross-references the two: dissertation line 7416
+states "cycler 4.991gG2(#83) ... Also known as the 'S1L1' cycler",
+line 5476 says "notable 'S1L1' cycler ... discovered first by
+McConaghy et al. in Ref. 15", and line 8008 lists "the S1L1 cycler
+(4.991Gg2), 8.049gGf2, and the Aldrin cycler" as the three most
+promising designs.
 
-The SnLm family-seed entry 47 documents which McConaghy SnLm class
-the 'Notable' cycler belongs to (it is one of the S2L1 family
-alongside Cases 1, 2, 3 with V_inf 4.7/5.0 km/s as a distinguishing
-fingerprint), so M7 matching is now improved: a finder hit matching
-the entry 2 V_inf multiset can be cross-referenced against the four
-catalogued S2L1 members (entries 2, 4, 5, 45) by orbital-element
-proximity, even though entry 2's own (a, e, peri, apo) remain null.
+**Entry 2 (`mcconaghy-2006-em-k2`) updated:**
 
-**Recommendation (still open):** acquire the McConaghy 2005 dissertation
-full text (Purdue library print copy; ProQuest institutional
-subscription; or direct request to the Purdue Advanced Astrodynamics
-Concepts lab where the dissertation originated) and backfill entry 2's
-orbital elements. Same source would unlock per-member numerics for
-the S3L1 ballistic and S1L2 cycler families (currently not catalogued
-as per-member entries; family seed entry 47 carries the citation).
+- `orbit_elements.aphelion_au` backfilled with 1.64 AU.
+- `orbit_elements.note` updated to cite Russell Table 4.9 row 1 as
+  the source.
+- `orbit_elements.a_au`, `e`, `perihelion_au` retain `null` because
+  the cycler is a piecewise sequence of two generic-return arcs
+  (g(1.4612,526.02,Ll) + G(2.8096,651.46,U)), not a single Keplerian
+  ellipse. Each leg has its own (a, e), so the whole-cycler (a, e)
+  are not well-defined; only the maximum aphelion is.
+- `source_quotes.orbit_elements.aphelion_au` added with Russell Table
+  4.9 citation.
+- `notes:` block updated with the V_inf discrepancy analysis
+  (McConaghy 4.7/5.0 vs Russell 4.99/5.10) and points to the
+  new sibling entry `russell-ch4-4.991gG2` carrying Russell's
+  circular-coplanar reference values.
 
-**MAPPING DISCOVERED 2026-06-01:** the McConaghy 2006 "Notable" S1L1
-cycler is **identical** to Russell 2004's cycler `4.991gG2` (Russell's
-entry #83). Russell's dissertation cross-references this explicitly:
+The new entry `russell-ch4-4.991gG2` catalogues the same cycler
+under Russell's framing — both entries are preserved per the
+intended M7 collapse-via-canonical-signature semantics.
 
-> "cycler 4.991gG2 (#83) as seen in Figure 5.5a. Also known as the
-> 'S1L1' cycler" — Russell 2004 (line 7416 of pdftotext extraction;
-> corresponds to ~page 110 of the UT Austin handle).
+**Discrepancy noted, NOT silently resolved:** the 0.29 km/s V_inf E
+difference and 3-day ToF difference between McConaghy 2006 and
+Russell 2004 are larger than rounding alone could explain. The most
+plausible reading per Russell's own text (line 7418 "essentially
+ballistic for all launch dates ... consistent with the findings in
+Ref. 15") is that McConaghy reports ephemeris-optimised values for
+a realistic launch while Russell reports circular-coplanar simple-
+model reference values. Both characterise the same trajectory.
+Captured verbatim in both entries' `notes:` blocks for audit.
 
-This means **the McConaghy 2005 dissertation is not actually required** —
-the orbital elements live in Russell Table 4.9 (2-synodic ballistic
-cyclers) under Russell's own `p.h.s.i_gG_n` notation. The pending
-ingest of Russell Tables 4.9-4.13 (task #44) will populate entry 2's
-null fields directly, plus the entire SnLm broad-class space (S2L1,
-S3L1, S1L2) under Russell's nomenclature. Russell also references the
-`8.049gGf2` cycler in the same passage as a sibling design.
+**Decision: Purdue dissertation acquisition is no longer required.**
+Russell Table 4.9 provides the McConaghy 2006 orbital data with
+acceptable precision for M7 matching.
 
-Action: task #44 (Russell Tables 4.9-4.13 ingest) becomes the gating
-work to close this question, **not** the Purdue dissertation acquisition.
+**Audit trail (preserved):**
+
+- 2026-06-01 morning: McConaghy 2005 SnLm broad-class family ingest
+  landed (entries 45-47 = `mcconaghy-2005-em-case1`,
+  `mcconaghy-2005-em-u0l1`, `mcconaghy-2005-em-snlm-broadclass-family`).
+  Partial closure: documented SnLm class membership but did not
+  backfill entry 2's null orbital elements (Purdue dissertation
+  full text not accessible).
+- 2026-06-01 evening: Russell 2004 Chapter 4 tables ingest landed
+  (this work). Closed the gap by transcribing aphelion = 1.64 AU
+  from Russell Table 4.9 row 1 and adding the cross-reference
+  `russell-ch4-4.991gG2` entry. The Purdue dissertation acquisition
+  is no longer the gating work; if acquired later it would only
+  refine the aphelion value to higher precision and potentially
+  add a true (a, e) per-leg breakdown.
 
 **Original question (preserved as audit trail):**
 
@@ -113,11 +124,12 @@ paper, we cannot fully specify the canonical signature for M7
 matching** — finders that hit this cycler will get `null` matches on
 the leg_elements field.
 
-**Recommendation:** the McConaghy 2005 Purdue PhD dissertation
+**Recommendation (historical):** the McConaghy 2005 Purdue PhD dissertation
 (e-Pubs AAI3166673) is the open-access alternative containing the
 broader SnLm taxonomy — queued for future ingest (task #34). When
 ingested, the McConaghy 2006 "Notable" cycler should be cross-derived
-from its dissertation analog (SnLm sibling family).
+from its dissertation analog (SnLm sibling family). _Now superseded by
+the Russell Table 4.9 ingest._
 
 ---
 
