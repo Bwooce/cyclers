@@ -82,7 +82,7 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 |----|-------|--------|----------|
 | **M0** | Scaffold | completed | [phases/m0-scaffold/plan.md](phases/m0-scaffold/plan.md) |
 | **M1** | Core mechanics: ephemeris, lambert, kepler | completed | [phases/m1-core-mechanics/plan.md](phases/m1-core-mechanics/plan.md) |
-| **M2** | Flyby + maps: flyby, tisserand, resonance | planned | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
+| **M2** | Flyby + maps: flyby, tisserand, resonance | completed | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
 | **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | planned | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
 | **M4** | Enumeration + scoring | future slice | — |
 | **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | future slice | — |
