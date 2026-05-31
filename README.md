@@ -33,4 +33,8 @@ uv run ruff format --check .
 uv run mypy src tests
 ```
 
+`--all-extras` includes the optional `viz` group (matplotlib), which enables
+the Tisserand contour plotting helper in `search/tisserand.py`. The core
+code does not require it; the plotting function imports matplotlib lazily.
+
 CI runs the same four checks on every push (see `.github/workflows/ci.yml`).
