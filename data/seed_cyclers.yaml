@@ -1130,3 +1130,1491 @@
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012 Table 4 reports V_inf,flyby ranging 5.51-6.55 km/s."
     "period.years": "Rogers et al. 2012: the (1) notation indicates a 1-synodic establishment timeline (2.135 yr)."
+
+# ---------------------------------------------------------------------------
+# 12-33. Russell-Ocampo remaining ballistic cyclers (Russell 2004 Table 3.4)
+# ---------------------------------------------------------------------------
+# Russell 2004 Table 3.4 lists 44 cyclers; 24 are strictly ballistic
+# (AR >= 1.0 AND TR >= 1.0 — Russell's two footnotes a/b: 'Cycler reaches Mars
+# if Aphelion Ratio >= 1' and 'All flybys have minimum altitudes above 200 km
+# if Turn Ratio >= 1'). Of those 24 strictly-ballistic cyclers, two
+# (2.5.1.+0 and 3.1.2.+1) are already seeded above as §4 representatives;
+# the remaining 22 are added here so the catalogue covers the full strictly-
+# ballistic set Russell catalogued. Source: Russell 2004 dissertation Table 3.4,
+# extracted from the UT Austin handle 2152/1253 PDF.
+#
+# NOTE: four of the catalogue's earlier-numbered Russell-Ocampo entries
+# (1.0.1.-1 = Aldrin, 2.1.1.+2 = Byrnes 'Case 2', 2.3.1.+1 = Byrnes 'Case 3',
+# 4.3.1.-5 = near-Hohmann) appear in Russell Table 3.4 but do NOT satisfy the
+# strict AR>=1 AND TR>=1 ballistic criterion. They are retained in the
+# catalogue for historical/notable reasons (Aldrin's namesake; Byrnes-attributed
+# 'Case' labels; Russell's §3.8 'remarkably low energy' highlight). Russell
+# includes them in the table under the wider ARMIN=0.9, TRMIN=0.85 limits.
+
+# 12. Russell-Ocampo cycler 3.1.1.+3
+- id: russell-ocampo-3.1.1+3
+  name: "Russell-Ocampo cycler 3.1.1.+3 (low-V_inf 3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.1.1.+3; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.6
+      note: "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Earth v_inf = 3.6 km/s."
+    - body: "M"
+      vinf_kms: 4.6
+      note: "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Mars v_inf = 4.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 174
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Earth->Mars (or aphelion) time = 174 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.1.1.+3: AR=1.07, TR=1.19, E->M days=174, V_inf,E=3.6, V_inf,M=4.6, 2 flyby turning angles [93, 93] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 3.1.1.+3, Cycler 3.1.2.+1, and Cycler 3.7.1.+1 have low terminal speeds and require two, three, and four flybys respectively.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.19 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 2 required Earth flybys (turning angles [93, 93] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Earth v_inf (km/s) = 3.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Mars v_inf (km/s) = 4.6."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Earth->Mars (or aphelion) Time (days) = 174."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.1.1.+3: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 13. Russell-Ocampo cycler 3.3.1.+2
+- id: russell-ocampo-3.3.1+2
+  name: "Russell-Ocampo cycler 3.3.1.+2 (3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.3.1.+2; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.3
+      note: "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Earth v_inf = 4.3 km/s."
+    - body: "M"
+      vinf_kms: 6.8
+      note: "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Mars v_inf = 6.8 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.809
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.19 x 1.52 AU (his §3.3 Mars reference radius) = 1.809 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 141
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Earth->Mars (or aphelion) time = 141 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.3.1.+2: AR=1.19, TR=1.06, E->M days=141, V_inf,E=4.3, V_inf,M=6.8, 2 flyby turning angles [94, 94] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.19 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.06 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 2 required Earth flybys (turning angles [94, 94] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Earth v_inf (km/s) = 4.3."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Mars v_inf (km/s) = 6.8."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Earth->Mars (or aphelion) Time (days) = 141."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.3.1.+2: Aphelion Ratio = 1.19 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.19 x 1.52 AU = 1.809 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 14. Russell-Ocampo cycler 3.5.1.+1
+- id: russell-ocampo-3.5.1+1
+  name: "Russell-Ocampo cycler 3.5.1.+1 (high-V_inf, short-transit, 3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.5.1.+1; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.4
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Earth v_inf = 5.4 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (his §3.3 Mars reference radius) = 2.174 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 115
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Earth->Mars (or aphelion) time = 115 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.5.1.+1: AR=1.43, TR=1.15, E->M days=115, V_inf,E=5.4, V_inf,M=9.2, 4 flyby turning angles [73, 73, 73, 73] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.43 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.15 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 4 required Earth flybys (turning angles [73, 73, 73, 73] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Earth v_inf (km/s) = 5.4."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Earth->Mars (or aphelion) Time (days) = 115."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.5.1.+1: Aphelion Ratio = 1.43 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.43 x 1.52 AU = 2.174 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 15. Russell-Ocampo cycler 3.5.2.+0
+- id: russell-ocampo-3.5.2+0
+  name: "Russell-Ocampo cycler 3.5.2.+0 (high-V_inf, short-transit, 3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.5.2.+0; n_flybys = 5."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.2
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Earth v_inf = 5.2 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (his §3.3 Mars reference radius) = 2.174 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 121
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Earth->Mars (or aphelion) time = 121 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.5.2.+0: AR=1.43, TR=1.06, E->M days=121, V_inf,E=5.2, V_inf,M=9.2, 5 flyby turning angles [83, 83, 83, 83, 24] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.43 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.06 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 5 required Earth flybys (turning angles [83, 83, 83, 83, 24] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Earth v_inf (km/s) = 5.2."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Earth->Mars (or aphelion) Time (days) = 121."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.5.2.+0: Aphelion Ratio = 1.43 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.43 x 1.52 AU = 2.174 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 16. Russell-Ocampo cycler 3.7.1.+1
+- id: russell-ocampo-3.7.1+1
+  name: "Russell-Ocampo cycler 3.7.1.+1 (low-V_inf 3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.7.1.+1; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.6
+      note: "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Earth v_inf = 3.6 km/s."
+    - body: "M"
+      vinf_kms: 4.6
+      note: "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Mars v_inf = 4.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 175
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Earth->Mars (or aphelion) time = 175 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.7.1.+1: AR=1.07, TR=1.56, E->M days=175, V_inf,E=3.6, V_inf,M=4.6, 4 flyby turning angles [71, 71, 71, 71] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 3.1.1.+3, Cycler 3.1.2.+1, and Cycler 3.7.1.+1 have low terminal speeds and require two, three, and four flybys respectively.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.56 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 4 required Earth flybys (turning angles [71, 71, 71, 71] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Earth v_inf (km/s) = 3.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Mars v_inf (km/s) = 4.6."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Earth->Mars (or aphelion) Time (days) = 175."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.7.1.+1: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 17. Russell-Ocampo cycler 3.9.1.+0
+- id: russell-ocampo-3.9.1+0
+  name: "Russell-Ocampo cycler 3.9.1.+0 (high-V_inf, short-transit, 3-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 3.9.1.+0; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.4
+      note: "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Earth v_inf = 5.4 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (his §3.3 Mars reference radius) = 2.174 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 116
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Earth->Mars (or aphelion) time = 116 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.9.1.+0: AR=1.43, TR=1.17, E->M days=116, V_inf,E=5.4, V_inf,M=9.2, 6 flyby turning angles [72, 45, 45, 45, 45, 72] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.43 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.17 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 3-synodic period. 6 required Earth flybys (turning angles [72, 45, 45, 45, 45, 72] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Earth v_inf (km/s) = 5.4."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Earth->Mars (or aphelion) Time (days) = 116."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 3.9.1.+0: Aphelion Ratio = 1.43 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.43 x 1.52 AU = 2.174 AU."
+    "period.years": "3 x Earth-Mars synodic 2.135 yr = 6.405 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 18. Russell-Ocampo cycler 4.0.3.+1
+- id: russell-ocampo-4.0.3+1
+  name: "Russell-Ocampo cycler 4.0.3.+1 (good terminal speeds, generic returns only)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.0.3.+1; n_flybys = 3."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.3
+      note: "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Earth v_inf = 4.3 km/s."
+    - body: "M"
+      vinf_kms: 4.9
+      note: "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Mars v_inf = 4.9 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 160
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Earth->Mars (or aphelion) time = 160 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.0.3.+1: AR=1.07, TR=1.18, E->M days=160, V_inf,E=4.3, V_inf,M=4.9, 3 flyby turning angles [85, 85, 85] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 4.0.3.+1 has a transit time of 160 days and relatively good terminal speeds using generic returns only.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.18 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 3 required Earth flybys (turning angles [85, 85, 85] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Earth v_inf (km/s) = 4.3."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Mars v_inf (km/s) = 4.9."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Earth->Mars (or aphelion) Time (days) = 160."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.0.3.+1: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 19. Russell-Ocampo cycler 4.1.1.-5
+- id: russell-ocampo-4.1.1-5
+  name: "Russell-Ocampo cycler 4.1.1.-5 (4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.1.1.-5; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.1
+      note: "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Earth v_inf = 4.1 km/s."
+    - body: "M"
+      vinf_kms: 6.1
+      note: "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Mars v_inf = 6.1 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.748
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.15 x 1.52 AU (his §3.3 Mars reference radius) = 1.748 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 173
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Earth->Mars (or aphelion) time = 173 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.1.-5: AR=1.15, TR=1.11, E->M days=173, V_inf,E=4.1, V_inf,M=6.1, 2 flyby turning angles [94, 94] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.15 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.11 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 2 required Earth flybys (turning angles [94, 94] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-5) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Earth v_inf (km/s) = 4.1."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Mars v_inf (km/s) = 6.1."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Earth->Mars (or aphelion) Time (days) = 173."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.1.1.-5: Aphelion Ratio = 1.15 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.15 x 1.52 AU = 1.748 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 20. Russell-Ocampo cycler 4.3.1.-4
+- id: russell-ocampo-4.3.1-4
+  name: "Russell-Ocampo cycler 4.3.1.-4 (4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.3.1.-4; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.7
+      note: "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Earth v_inf = 4.7 km/s."
+    - body: "M"
+      vinf_kms: 7.6
+      note: "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Mars v_inf = 7.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.915
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.26 x 1.52 AU (his §3.3 Mars reference radius) = 1.915 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 154
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Earth->Mars (or aphelion) time = 154 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.3.1.-4: AR=1.26, TR=1.01, E->M days=154, V_inf,E=4.7, V_inf,M=7.6, 2 flyby turning angles [94, 94] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.26 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.01 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 2 required Earth flybys (turning angles [94, 94] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-4) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Earth v_inf (km/s) = 4.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Mars v_inf (km/s) = 7.6."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Earth->Mars (or aphelion) Time (days) = 154."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.3.1.-4: Aphelion Ratio = 1.26 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.26 x 1.52 AU = 1.915 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 21. Russell-Ocampo cycler 4.5.1.-4
+- id: russell-ocampo-4.5.1-4
+  name: "Russell-Ocampo cycler 4.5.1.-4 (promising energy)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.5.1.-4; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.6
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Earth v_inf = 3.6 km/s."
+    - body: "M"
+      vinf_kms: 4.7
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Mars v_inf = 4.7 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 196
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Earth->Mars (or aphelion) time = 196 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.5.1.-4: AR=1.07, TR=1.55, E->M days=196, V_inf,E=3.6, V_inf,M=4.7, 4 flyby turning angles [71, 71, 71, 71] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 4.5.1.-4, Cycler 4.5.2.-2, and Cycler 4.11.1.-2 also have promising energy characteristics.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.55 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 4 required Earth flybys (turning angles [71, 71, 71, 71] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-4) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Earth v_inf (km/s) = 3.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Mars v_inf (km/s) = 4.7."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Earth->Mars (or aphelion) Time (days) = 196."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.5.1.-4: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 22. Russell-Ocampo cycler 4.5.1.-3
+- id: russell-ocampo-4.5.1-3
+  name: "Russell-Ocampo cycler 4.5.1.-3 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.5.1.-3; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.5
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Earth v_inf = 5.5 km/s."
+    - body: "M"
+      vinf_kms: 9.3
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Mars v_inf = 9.3 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.189
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.44 x 1.52 AU (his §3.3 Mars reference radius) = 2.189 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 137
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Earth->Mars (or aphelion) time = 137 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.5.1.-3: AR=1.44, TR=1.15, E->M days=137, V_inf,E=5.5, V_inf,M=9.3, 4 flyby turning angles [73, 73, 73, 73] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.44 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.15 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 4 required Earth flybys (turning angles [73, 73, 73, 73] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-3) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Earth v_inf (km/s) = 5.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Mars v_inf (km/s) = 9.3."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Earth->Mars (or aphelion) Time (days) = 137."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.5.1.-3: Aphelion Ratio = 1.44 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.44 x 1.52 AU = 2.189 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 23. Russell-Ocampo cycler 4.5.2.-2
+- id: russell-ocampo-4.5.2-2
+  name: "Russell-Ocampo cycler 4.5.2.-2 (promising energy)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.5.2.-2; n_flybys = 5."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.4
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Earth v_inf = 3.4 km/s."
+    - body: "M"
+      vinf_kms: 4.6
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Mars v_inf = 4.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 191
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Earth->Mars (or aphelion) time = 191 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.5.2.-2: AR=1.07, TR=1.4, E->M days=191, V_inf,E=3.4, V_inf,M=4.6, 5 flyby turning angles [81, 81, 81, 81, 24] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 4.5.1.-4, Cycler 4.5.2.-2, and Cycler 4.11.1.-2 also have promising energy characteristics.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.4 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 5 required Earth flybys (turning angles [81, 81, 81, 81, 24] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-2) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Earth v_inf (km/s) = 3.4."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Mars v_inf (km/s) = 4.6."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Earth->Mars (or aphelion) Time (days) = 191."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.5.2.-2: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 24. Russell-Ocampo cycler 4.5.3.-1
+- id: russell-ocampo-4.5.3-1
+  name: "Russell-Ocampo cycler 4.5.3.-1 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.5.3.-1; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.1
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Earth v_inf = 5.1 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (his §3.3 Mars reference radius) = 2.174 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 130
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Earth->Mars (or aphelion) time = 130 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.5.3.-1: AR=1.43, TR=1.02, E->M days=130, V_inf,E=5.1, V_inf,M=9.2, 6 flyby turning angles [87, 87, 87, 87, 16, 16] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.43 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.02 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 6 required Earth flybys (turning angles [87, 87, 87, 87, 16, 16] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-1) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Earth v_inf (km/s) = 5.1."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Earth->Mars (or aphelion) Time (days) = 130."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.5.3.-1: Aphelion Ratio = 1.43 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.43 x 1.52 AU = 2.174 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 25. Russell-Ocampo cycler 4.7.1.-3
+- id: russell-ocampo-4.7.1-3
+  name: "Russell-Ocampo cycler 4.7.1.-3 (4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.7.1.-3; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.3
+      note: "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Earth v_inf = 4.3 km/s."
+    - body: "M"
+      vinf_kms: 6.8
+      note: "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Mars v_inf = 6.8 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.824
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.2 x 1.52 AU (his §3.3 Mars reference radius) = 1.824 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 163
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Earth->Mars (or aphelion) time = 163 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.7.1.-3: AR=1.2, TR=1.38, E->M days=163, V_inf,E=4.3, V_inf,M=6.8, 4 flyby turning angles [72, 72, 72, 72] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.2 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.38 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 4 required Earth flybys (turning angles [72, 72, 72, 72] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-3) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Earth v_inf (km/s) = 4.3."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Mars v_inf (km/s) = 6.8."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Earth->Mars (or aphelion) Time (days) = 163."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.7.1.-3: Aphelion Ratio = 1.2 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.2 x 1.52 AU = 1.824 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 26. Russell-Ocampo cycler 4.9.1.-2
+- id: russell-ocampo-4.9.1-2
+  name: "Russell-Ocampo cycler 4.9.1.-2 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.9.1.-2; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.5
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Earth v_inf = 5.5 km/s."
+    - body: "M"
+      vinf_kms: 9.3
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Mars v_inf = 9.3 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.189
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.44 x 1.52 AU (his §3.3 Mars reference radius) = 2.189 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 137
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Earth->Mars (or aphelion) time = 137 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.9.1.-2: AR=1.44, TR=1.16, E->M days=137, V_inf,E=5.5, V_inf,M=9.3, 6 flyby turning angles [72, 45, 45, 45, 45, 72] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.44 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.16 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 6 required Earth flybys (turning angles [72, 45, 45, 45, 45, 72] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-2) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Earth v_inf (km/s) = 5.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Mars v_inf (km/s) = 9.3."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Earth->Mars (or aphelion) Time (days) = 137."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.9.1.-2: Aphelion Ratio = 1.44 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.44 x 1.52 AU = 2.189 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 27. Russell-Ocampo cycler 4.9.2.-1
+- id: russell-ocampo-4.9.2-1
+  name: "Russell-Ocampo cycler 4.9.2.-1 (turn-angle showcase)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.9.2.-1; n_flybys = 7."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.2
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Earth v_inf = 5.2 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.189
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.44 x 1.52 AU (his §3.3 Mars reference radius) = 2.189 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 132
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Earth->Mars (or aphelion) time = 132 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.9.2.-1: AR=1.44, TR=1.05, E->M days=132, V_inf,E=5.2, V_inf,M=9.2, 7 flyby turning angles [83, 45, 45, 45, 45, 83, 24] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8 discusses turn-angle optimization on this cycler: 'the two generic returns for Cycler 4.9.2.-1 have corresponding h_j's of nine and zero respectively. The first generic return is re-initiated using all of the available half-years because the second can be re-initiated using no intermediate returns with only a 24° turn angle.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.44 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.05 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 7 required Earth flybys (turning angles [83, 45, 45, 45, 45, 83, 24] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-1) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Earth v_inf (km/s) = 5.2."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Earth->Mars (or aphelion) Time (days) = 132."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.9.2.-1: Aphelion Ratio = 1.44 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.44 x 1.52 AU = 2.189 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 28. Russell-Ocampo cycler 4.10.1.+2
+- id: russell-ocampo-4.10.1+2
+  name: "Russell-Ocampo cycler 4.10.1.+2 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.10.1.+2; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 8.9
+      note: "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Earth v_inf = 8.9 km/s."
+    - body: "M"
+      vinf_kms: 5.0
+      note: "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Mars v_inf = 5.0 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.566
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.03 x 1.52 AU (his §3.3 Mars reference radius) = 1.566 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 131
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Earth->Mars (or aphelion) time = 131 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.10.1.+2: AR=1.03, TR=1.65, E->M days=131, V_inf,E=8.9, V_inf,M=5.0, 6 flyby turning angles [31, 31, 31, 31, 31, 31] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.03 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.65 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 6 required Earth flybys (turning angles [31, 31, 31, 31, 31, 31] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Earth v_inf (km/s) = 8.9."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Mars v_inf (km/s) = 5.0."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Earth->Mars (or aphelion) Time (days) = 131."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.10.1.+2: Aphelion Ratio = 1.03 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.03 x 1.52 AU = 1.566 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 29. Russell-Ocampo cycler 4.11.1.-2
+- id: russell-ocampo-4.11.1-2
+  name: "Russell-Ocampo cycler 4.11.1.-2 (promising energy)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.11.1.-2; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.6
+      note: "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Earth v_inf = 3.6 km/s."
+    - body: "M"
+      vinf_kms: 4.7
+      note: "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Mars v_inf = 4.7 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.626
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.07 x 1.52 AU (his §3.3 Mars reference radius) = 1.626 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 195
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Earth->Mars (or aphelion) time = 195 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.11.1.-2: AR=1.07, TR=1.58, E->M days=195, V_inf,E=3.6, V_inf,M=4.7, 6 flyby turning angles [70, 45, 45, 45, 45, 70] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Russell §3.8: 'Cycler 4.5.1.-4, Cycler 4.5.2.-2, and Cycler 4.11.1.-2 also have promising energy characteristics.'
+    
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.07 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.58 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 6 required Earth flybys (turning angles [70, 45, 45, 45, 45, 70] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-2) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Earth v_inf (km/s) = 3.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Mars v_inf (km/s) = 4.7."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Earth->Mars (or aphelion) Time (days) = 195."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.11.1.-2: Aphelion Ratio = 1.07 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.07 x 1.52 AU = 1.626 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 30. Russell-Ocampo cycler 4.12.1.+1
+- id: russell-ocampo-4.12.1+1
+  name: "Russell-Ocampo cycler 4.12.1.+1 (high-V_inf, short-transit, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.12.1.+1; n_flybys = 7."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 10.8
+      note: "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Earth v_inf = 10.8 km/s."
+    - body: "M"
+      vinf_kms: 8.2
+      note: "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Mars v_inf = 8.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.763
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.16 x 1.52 AU (his §3.3 Mars reference radius) = 1.763 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 93
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Earth->Mars (or aphelion) time = 93 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.12.1.+1: AR=1.16, TR=1.48, E->M days=93, V_inf,E=10.8, V_inf,M=8.2, 7 flyby turning angles [27, 27, 27, 27, 27, 27, 27] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.16 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.48 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 7 required Earth flybys (turning angles [27, 27, 27, 27, 27, 27, 27] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Earth v_inf (km/s) = 10.8."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Mars v_inf (km/s) = 8.2."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Earth->Mars (or aphelion) Time (days) = 93."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.12.1.+1: Aphelion Ratio = 1.16 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.16 x 1.52 AU = 1.763 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 31. Russell-Ocampo cycler 4.13.1.-1
+- id: russell-ocampo-4.13.1-1
+  name: "Russell-Ocampo cycler 4.13.1.-1 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.13.1.-1; n_flybys = 8."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.5
+      note: "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Earth v_inf = 5.5 km/s."
+    - body: "M"
+      vinf_kms: 9.3
+      note: "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Mars v_inf = 9.3 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.189
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.44 x 1.52 AU (his §3.3 Mars reference radius) = 2.189 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 137
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Earth->Mars (or aphelion) time = 137 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.13.1.-1: AR=1.44, TR=1.16, E->M days=137, V_inf,E=5.5, V_inf,M=9.3, 8 flyby turning angles [72, 30, 30, 30, 30, 30, 30, 72] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.44 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.16 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 8 required Earth flybys (turning angles [72, 30, 30, 30, 30, 30, 30, 72] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-1) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Earth v_inf (km/s) = 5.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Mars v_inf (km/s) = 9.3."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Earth->Mars (or aphelion) Time (days) = 137."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.13.1.-1: Aphelion Ratio = 1.44 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.44 x 1.52 AU = 2.189 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 32. Russell-Ocampo cycler 4.14.1.-1
+- id: russell-ocampo-4.14.1-1
+  name: "Russell-Ocampo cycler 4.14.1.-1 (high-V_inf, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.14.1.-1; n_flybys = 8."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 14.7
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Earth v_inf = 14.7 km/s."
+    - body: "M"
+      vinf_kms: 9.4
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Mars v_inf = 9.4 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.702
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.12 x 1.52 AU (his §3.3 Mars reference radius) = 1.702 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 199
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Earth->Mars (or aphelion) time = 199 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.14.1.-1: AR=1.12, TR=1.13, E->M days=199, V_inf,E=14.7, V_inf,M=9.4, 8 flyby turning angles [22, 22, 22, 22, 22, 22, 22, 22] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.12 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.13 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 8 required Earth flybys (turning angles [22, 22, 22, 22, 22, 22, 22, 22] deg per Russell Table 3.4 last column).
+    
+    Note Russell's nomenclature: the trailing negative index (-1) denotes the lower-energy Lambert branch of the generic-return solution.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Earth v_inf (km/s) = 14.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Mars v_inf (km/s) = 9.4."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Earth->Mars (or aphelion) Time (days) = 199."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.14.1.-1: Aphelion Ratio = 1.12 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.12 x 1.52 AU = 1.702 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
+
+# 33. Russell-Ocampo cycler 4.14.1.+0
+- id: russell-ocampo-4.14.1+0
+  name: "Russell-Ocampo cycler 4.14.1.+0 (high-V_inf, short-transit, 4-synodic)"
+  source: literature
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation §3.8 row 4.14.1.+0; n_flybys = 8."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 14.1
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Earth v_inf = 14.1 km/s."
+    - body: "M"
+      vinf_kms: 12.7
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Mars v_inf = 12.7 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.265
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.49 x 1.52 AU (his §3.3 Mars reference radius) = 2.265 AU. Other elements (a, e, perihelion) not directly tabulated in Table 3.4."
+  legs:
+    - from: "E"
+      to: "M"
+      tof_days: 66
+      n_revs: 0
+      note: "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Earth->Mars (or aphelion) time = 66 days."
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the 24-ballistic cycler catalogue (geometric analysis branch). The conference precursor (Russell/Ocampo AAS 03-145, Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P.", "Ocampo, C. A."]
+      year: 2004
+      title: "Systematic Method for Constructing Earth-Mars Cyclers Using Free-Return Trajectories"
+      venue: "Journal of Guidance, Control, and Dynamics, Vol. 27, No. 3, pp. 321-335"
+      doi: "10.2514/1.1011"
+      url: null
+      note: "The companion JGCD paper that introduced the free-return construction method."
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.14.1.+0: AR=1.49, TR=1.09, E->M days=66, V_inf,E=14.1, V_inf,M=12.7, 8 flyby turning angles [25, 25, 25, 25, 25, 25, 25, 25] deg. Strictly ballistic by Russell footnotes a/b (AR>=1 AND TR>=1)."
+  priority_date: "2003-02-09"
+  notes: |
+    Strictly ballistic per Russell's Table 3.4 footnotes a and b: AR=1.49 >= 1 means the cycler reaches Mars without a powered maneuver; TR=1.09 >= 1 means all required Earth flybys are physically attainable above the 200 km minimum altitude. 4-synodic period. 8 required Earth flybys (turning angles [25, 25, 25, 25, 25, 25, 25, 25] deg per Russell Table 3.4 last column).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Earth v_inf (km/s) = 14.1."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Mars v_inf (km/s) = 12.7."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Earth->Mars (or aphelion) Time (days) = 66."
+    aphelion_au: "Russell 2004 dissertation Table 3.4 row 4.14.1.+0: Aphelion Ratio = 1.49 (Russell's §3.3 ratio to 1.52 AU = Mars sma); aphelion = 1.49 x 1.52 AU = 2.265 AU."
+    "period.years": "4 x Earth-Mars synodic 2.135 yr = 8.54 yr; Russell 2004 §3.3 fixes synodic geometry on 1.875-yr Mars period (=15-yr alignment); 2.135 yr matches spec.md §9."
