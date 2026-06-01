@@ -144,7 +144,7 @@ def find_cyclers(bodies, k_synodic, vinf_cap, n_keep=20, ephem="circular") -> li
 - **M0 — scaffold:** repo, packaging, CI, pytest harness, constants.
 - **M1 — core mechanics:** `ephemeris` (circular), `lambert` (single-rev) + `kepler`. *Gate: Lambert matches lamberthub izzo & gooding < 1e-3 m/s on 3 test legs.*
 - **M2 — flyby + maps:** `flyby`, `tisserand`, `resonance`. *Gate: synodic E–M = 2.135 yr, E–V = 1.599 yr; VEM beat ≈ 6.406 yr; Mars max bend ≈ 24° at 7 km/s.*
-- **M3 — model + construction:** `cycler`, `frames`, `construct`; reproduce the **Aldrin cycler** (a ≈ 1.66 AU, e ≈ 0.41, P = 1 synodic) and a **2-synodic E–M cycler**. *Gate: closure residual computed correctly; Aldrin elements reproduced.*
+- **M3 — model + construction:** `cycler`, `frames`, `construct`; reproduce the **Aldrin cycler** (a ≈ 1.60 AU, e ≈ 0.393, P = 1 synodic — reconciled literature anchor; see §9 / §9.1) and a **2-synodic E–M cycler**. *Gate: closure residual computed correctly; Aldrin elements reproduced.*
 - **M4 — enumeration + scoring:** `sequence`, `score`; Tisserand-filtered sequence lists. *Gate: enumerator rejects energetically infeasible sequences.*
 - **M5 — optimisation:** `optimize`; rediscover a published **2-synodic E–M ballistic cycler from scratch**. *Gate: matches published low-V∞ values (~5.65 km/s Earth, ~3.05 km/s Mars) within tolerance.*
 - **M6 — ephemeris + verify:** astropy backend, multi-lap `propagate`, `crosscheck`. *Gate: best E–M cycler verified periodic over ≥3 laps.*

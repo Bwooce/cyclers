@@ -15,10 +15,11 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | M2 — flyby + Tisserand + resonance | ✓ done |
 | M3 — Cycler/Leg/Encounter model + rotating frame + construct; reproduces Aldrin | ✓ done |
 | M4 — cell enumeration + Tisserand pruning + scoring + ranking | ✓ done |
-| M5 — optimisation (scipy DE + SLSQP with hard constraints) | in progress |
+| M5 — optimisation (scipy DE + SLSQP with hard constraints) | ✓ done |
 | M6 (slice) — astropy Ephemeris backend + phase_match.find_real_windows | ✓ done |
-| M6a/M6b — multi-lap propagation, ephemeris-mode TCM minimisation | planned |
-| M7 — catalogue loader, signature matching, novelty | planned |
+| M6a — idealized closure verification (multi-lap rotating-frame drift check) | ✓ done |
+| M6b — real-ephemeris closure; powered Aldrin solver landed; drift closure proven physically unreachable for k=1 (retargeted each synodic period w/ maintenance ΔV) | scaffolding shipped |
+| M7 — catalogue loader, signature matching, novelty (crosscheck + writeback + discover landed) | partial |
 | M8 — VEM campaign + CLI + viz | planned |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
@@ -33,8 +34,8 @@ auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 - [docs/spec.md](docs/spec.md) — the canonical project specification.
 - [docs/overview.md](docs/overview.md) — decisions made during planning and the
   milestone roadmap.
-- [docs/phases/m0-scaffold/plan.md](docs/phases/m0-scaffold/plan.md) — what M0
-  delivers and how.
+- [docs/phases/](docs/phases/) — per-phase plan/todo docs for the active phases
+  (m6b, m7); completed-phase docs are retired into the roadmap + spec.
 
 ## Local setup
 

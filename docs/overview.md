@@ -5,7 +5,7 @@ This is the navigation document for the cyclerfinder project. The canonical spec
 If you are picking up the project cold, read in this order:
 1. **spec.md** — what we're building and why.
 2. **This overview** — sequencing, decisions, document layout.
-3. **phases/m0-scaffold/plan.md** (or whichever phase is current) — the immediate work.
+3. **phases/m6b-real-ephemeris-closure/plan.md** / **phases/m7-catalogue-novelty-matching/plan.md** (the active phases) — the immediate work.
 
 ---
 
@@ -80,22 +80,22 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 
 | ID | Title | Status | Plan doc |
 |----|-------|--------|----------|
-| **M0** | Scaffold | completed | [phases/m0-scaffold/plan.md](phases/m0-scaffold/plan.md) |
-| **M1** | Core mechanics: ephemeris, lambert, kepler | completed | [phases/m1-core-mechanics/plan.md](phases/m1-core-mechanics/plan.md) |
-| **M2** | Flyby + maps: flyby, tisserand, resonance | completed | [phases/m2-flyby-maps/plan.md](phases/m2-flyby-maps/plan.md) |
-| **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | completed | [phases/m3-model-construct/plan.md](phases/m3-model-construct/plan.md) |
-| **M4** | Enumeration + scoring | completed | [phases/m4-enumeration-scoring/plan.md](phases/m4-enumeration-scoring/plan.md) |
-| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail diagnosed as load-bearing collision (task #53); binding gate `test_2syn_em_rediscovers_5_65_kms_earth` is a pre-existing slow-marked regression (task #54) | [phases/m5-optimisation/plan.md](phases/m5-optimisation/plan.md) |
-| **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates); ICRS→ecliptic rotation fix `4fe901d` (2026-06-01) | **completed** (commits `9b2611d`, `4fe901d`) | _slice; no full phase doc_ |
-| **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **completed** (commits `ba01f37` + `1852750`, 2026-06-01); 7/7 binding gates pass, dynamic-frame round-trip 1e-10 rel, circular-Aldrin drift ~3e-7 km | [phases/m6a-idealized-closure-verification/plan.md](phases/m6a-idealized-closure-verification/plan.md) |
-| **M6b** | Real-ephemeris closure verification; Lambert-chain across DE440 with `REAL_DRIFT_TOLERANCE_KM = 200_000` over 2 cycles; Pascarella 2024 template | **plan written** (commit `14a143a`); blocked on multi-rev Lambert (S1L1) — Aldrin classic k=1 is the achievable binding gate | [phases/m6b-real-ephemeris-closure/plan.md](phases/m6b-real-ephemeris-closure/plan.md) |
+| **M0** | Scaffold | completed | — |
+| **M1** | Core mechanics: ephemeris, lambert, kepler | completed | — |
+| **M2** | Flyby + maps: flyby, tisserand, resonance | completed | — |
+| **M3** | Model + construction: cycler, frames, construct; reproduce Aldrin | completed | — |
+| **M4** | Enumeration + scoring | completed | — |
+| **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail diagnosed as load-bearing collision (task #53); binding gate `test_2syn_em_rediscovers_5_65_kms_earth` is a pre-existing slow-marked regression (task #54) | — |
+| **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates); ICRS→ecliptic rotation fix `4fe901d` (2026-06-01) | **completed** (commits `9b2611d`, `4fe901d`) | — |
+| **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **completed** (commits `ba01f37` + `1852750`, 2026-06-01); 7/7 binding gates pass, dynamic-frame round-trip 1e-10 rel, circular-Aldrin drift ~3e-7 km | — |
+| **M6b** | Real-ephemeris closure verification; Lambert-chain across DE440 with `REAL_DRIFT_TOLERANCE_KM = 200_000` over 2 cycles; Pascarella 2024 template | **scaffolding shipped**; powered-cycler solver landed (`solve_powered_periodic_cycler`, commit `83f6272`). **Proven:** rotating-frame drift closure is physically unreachable for k=1 Aldrin on DE440 (Mars heliocentric radius breathes ≈0.117 AU/cycle; measured drift ≈7.24e7 km ≈ 362× tol) — this is *why* the real Aldrin cycler is retargeted each synodic period with maintenance ΔV; literature never claims zero-maintenance periodicity. Binding gate re-scoped to Phase-C sourced anchors + sourced Earth turn deficit. Multi-rev Lambert (S1L1) remains stretch. | [phases/m6b-real-ephemeris-closure/plan.md](phases/m6b-real-ephemeris-closure/plan.md) |
 | **M7** | Catalogue loader, canonical signature matching, novelty scoring (spec §8 + §14 V1); also absorbs M6a-deferred `verify/crosscheck.py` + the spec §13.6/§13.8 JSONL ledger | **plan written** (commits `14a143a` + `774d38c`) | [phases/m7-catalogue-novelty-matching/plan.md](phases/m7-catalogue-novelty-matching/plan.md) |
 | **M8** | VEM campaign + CLI + viz | planned | — |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
 | Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
 | Stretch | Low-thrust v2 scope expansion | refs queued (Yam 2010, Pascarella 2024) | — |
 
-Per the agreed first slice, **only M0's plan is written now**. M1–M3 plans are written as each previous phase completes, so each plan can incorporate what was actually learned from the predecessor (file boundaries that emerged, types that turned out wrong, etc.). Writing all four up-front risks four plans built on assumptions that get invalidated by M0.
+Completed-phase plan/todo working docs (M0–M6a) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Active phases (M6b, M7) retain their plan docs.
 
 ### 4.1 Schema-v2 + representation framework (2026-06-01)
 
@@ -119,12 +119,14 @@ These are the hard numbers any implementation must hit. Authoritative list in sp
 | VEM beat (3× E–M ≈ 4× E–V) | ≈ 6.40 yr | M2 gate |
 | Mars max bend at V∞ = 7 km/s | ≈ 24° | M2 gate |
 | Earth/Venus max bend at V∞ = 7 km/s | ≈ 60–63° | M2 sanity |
-| Aldrin cycler semi-major axis | a ≈ 1.659 AU | M3 gate |
-| Aldrin cycler eccentricity | e ≈ 0.41 | M3 gate |
-| Aldrin perihelion / aphelion | ≈ 0.98 / 2.34 AU | M3 gate |
+| Aldrin cycler semi-major axis | a ≈ 1.60 AU | M3 gate |
+| Aldrin cycler eccentricity | e ≈ 0.393 | M3 gate |
+| Aldrin perihelion / aphelion | ≈ 0.97 / 2.23 AU | M3 gate |
 | Aldrin E→M leg time-of-flight | ≈ 146 d | M3 gate |
 | Published 2-synodic E–M V∞ | ≈ 5.65 km/s (E), 3.05 km/s (M) | M5 gate |
 | Degenerate-solution guard | reject "ballistic" closure if V∞ > ~11 km/s | M5 constraint |
+
+> **Aldrin anchor reconciliation:** the values above (a ≈ 1.60 AU, e ≈ 0.393, perihelion/aphelion ≈ 0.97/2.23 AU) are the literature anchors from Byrnes/Longuski/Aldrin 1993 as tabulated in Rogers et al. 2012, and are what the M3 gate tests assert. Earlier drafts cited a ≈ 1.659 / e ≈ 0.41 — a resonance-construction artifact; see spec.md §9.1 for the full reconciliation.
 
 ---
 
@@ -134,8 +136,9 @@ These are the hard numbers any implementation must hit. Authoritative list in sp
 docs/
 ├── spec.md                      # Authoritative project spec (owner-authored, verbatim)
 ├── overview.md                  # This file: navigation + decisions + roadmap status
+├── errata-investigation.md      # Full record of the Aldrin anchor reconciliation (spec §9.1 defers here)
 └── phases/
-    └── m0-scaffold/
+    └── <id>-<short-name>/        # Per-phase working docs for ACTIVE phases only (currently m6b, m7)
         ├── plan.md              # Detailed implementation plan for the milestone
         └── todo.md              # Actionable checklist derived from plan.md
 ```
@@ -144,7 +147,7 @@ Each milestone that gets started gets a `phases/<id>-<short-name>/` directory co
 - `plan.md` — module-level design decisions for that milestone, file structure, tests, gates, risks.
 - `todo.md` — concrete actionable items, checked off as work progresses.
 
-Closed milestones keep their docs in place as a record. The plan documents are append-only after the milestone completes (notes added if subsequent work reveals issues, but the original plan stands as it was).
+Once a milestone is complete, its plan/todo working docs are retired — the durable outcomes live in the milestone table above, spec.md, and the code. Only active phases keep their phase docs.
 
 ---
 
