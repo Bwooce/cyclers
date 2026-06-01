@@ -194,6 +194,42 @@ class CatalogueEntry:
     """The full YAML row dict, retained so :func:`serialise_entry_yaml`
     can round-trip writeback updates without losing schema-v2 fields
     not modelled explicitly on the dataclass."""
+    family: dict[str, Any] | None = None
+    """Schema-v3 ``family{}`` linkage (spec §16.6.3); ``None`` =
+    ungrouped. Not a signature input."""
+    data_gaps: tuple[dict[str, Any], ...] = ()
+    """Schema-v3 ``data_gaps[]`` known-unknown register (spec §16.6.4).
+    Each dict carries ``path`` / ``kind`` / ``note`` / ``source_hint`` /
+    ``todo_ref``. Enumerated by :func:`find_data_gaps`."""
+
+    @property
+    def fully_defined(self) -> bool:
+        """Derived progress flag: the orbit is completely specified.
+
+        ``True`` iff the entry has its core physically-defining fields
+        populated **and** carries no acknowledged known-unknown
+        (:attr:`data_gaps`). This is a deliberately *physical*
+        completeness notion, independent of the schema-format migration
+        that :func:`find_data_gaps` tracks separately — an entry can be
+        ``fully_defined`` whether it stores legs as the legacy ``legs[]``
+        or the v3 ``trajectory.segments``. The criteria:
+
+        * no ``data_gaps[]`` entry (no tracked "we don't know it yet");
+        * ``orbit_elements.a_au`` and ``e`` both present;
+        * a V∞ value at every encounter (no ``None``);
+        * at least one leg, every leg's ``tof_days`` present.
+        """
+        if self.data_gaps:
+            return False
+        if self.orbit_elements_a_au is None or self.orbit_elements_e is None:
+            return False
+        if not self.vinf_kms_at_encounters or any(
+            v is None for _, v in self.vinf_kms_at_encounters
+        ):
+            return False
+        if not self.legs_tof_days or any(t is None for t in self.legs_tof_days):
+            return False
+        return True
 
 
 @dataclass(frozen=True)
@@ -436,6 +472,21 @@ def _signature_from_yaml_fields(
 # ---------------------------------------------------------------------------
 
 
+def _segments_as_legs(row: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the leg-like list for signature / ToF / rev extraction.
+
+    Schema v3 (spec §16.6.2) moves the per-leg conic arcs into
+    ``trajectory.segments`` (OCM ``TRAJ``). When present that is the
+    authoritative leg source; otherwise the legacy top-level ``legs[]``
+    is used. Segments reuse the ``tof_days`` / ``n_revs`` keys, so the
+    downstream loops are agnostic to which form supplied the list.
+    """
+    segments = (row.get("trajectory") or {}).get("segments")
+    if segments:
+        return list(segments)
+    return list(row.get("legs") or [])
+
+
 def _extract_signature_inputs(
     entry_dict: dict[str, Any],
 ) -> tuple[list[tuple[str, float]], list[tuple[float, float]]] | None:
@@ -467,7 +518,7 @@ def _extract_signature_inputs(
     orbit = entry_dict.get("orbit_elements") or {}
     a_au = orbit.get("a_au")
     e = orbit.get("e")
-    legs_raw = entry_dict.get("legs") or []
+    legs_raw = _segments_as_legs(entry_dict)
     if a_au is None or e is None or not legs_raw:
         # Signature is still computable from V∞ + sequence + (period_k,
         # bodies, sense). Leave the leg-elements multiset empty.
@@ -516,7 +567,7 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
             (str(body) if body is not None else "?", float(v) if v is not None else None)
         )
 
-    legs_raw = row.get("legs") or []
+    legs_raw = _segments_as_legs(row)
     leg_tofs: list[float | None] = []
     leg_revs: list[int] = []
     for leg in legs_raw:
@@ -581,6 +632,8 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
         discovery=dict(row.get("discovery") or {}),
         discovery_run=row.get("discovery_run"),
         raw=row,
+        family=row.get("family"),
+        data_gaps=tuple(row.get("data_gaps") or ()),
     )
 
 
@@ -678,6 +731,43 @@ def load_catalog(path: Path | str = CATALOGUE_PATH) -> Catalog:
         by_id=by_id,
         by_hash=by_hash,
     )
+
+
+def find_data_gaps(catalog: Catalog) -> list[dict[str, Any]]:
+    """Enumerate every known-unknown across the catalogue (spec §16.6.4).
+
+    Surfaces two gap kinds, each returned as a dict carrying the gap
+    fields plus an ``entry_id`` key:
+
+    - **Explicit** ``data_gaps[]`` entries declared on a row (with
+      ``path`` / ``kind`` / ``note`` / ``source_hint`` / ``todo_ref``) —
+      the machine-readable known-unknowns the lazy backfill consumes.
+    - **Structural** migration gaps: an entry still carrying a legacy
+      top-level ``legs[]`` rather than ``trajectory.segments`` (spec
+      §16.6.5). An un-migrated entry is itself a tracked gap.
+
+    The result is a query over the catalogue, replacing any manual
+    gap audit — this is the sweep behind "identify gaps and lazy-fill".
+    """
+    gaps: list[dict[str, Any]] = []
+    for entry in catalog.entries:
+        for gap in entry.data_gaps:
+            rec = dict(gap)
+            rec["entry_id"] = entry.id
+            gaps.append(rec)
+        has_segments = bool((entry.raw.get("trajectory") or {}).get("segments"))
+        if entry.raw.get("legs") and not has_segments:
+            gaps.append(
+                {
+                    "entry_id": entry.id,
+                    "path": "trajectory.segments",
+                    "kind": "derive",
+                    "note": "entry still on legacy legs[]; not migrated to trajectory{}",
+                    "source_hint": None,
+                    "todo_ref": "#65-backfill",
+                }
+            )
+    return gaps
 
 
 # ---------------------------------------------------------------------------
@@ -818,7 +908,32 @@ __all__ = [
     "CatalogueEntry",
     "MatchResult",
     "canonical_signature",
+    "find_data_gaps",
     "load_catalog",
     "match",
     "signature_distance",
 ]
+
+
+def _main(argv: list[str] | None = None) -> int:
+    """Minimal CLI: sweep the catalogue for known-unknowns (spec §16.6.4).
+
+    ``python -m cyclerfinder.data.catalog gaps [--catalog PATH]`` prints
+    the :func:`find_data_gaps` result as a JSON array.
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(prog="cyclerfinder.data.catalog")
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    gaps = sub.add_parser("gaps", help="enumerate data_gaps[] + migration gaps")
+    gaps.add_argument("--catalog", default=str(CATALOGUE_PATH))
+    args = parser.parse_args(argv)
+
+    if args.cmd == "gaps":
+        catalog = load_catalog(args.catalog)
+        print(json.dumps(find_data_gaps(catalog), indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(_main())

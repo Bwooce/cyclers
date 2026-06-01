@@ -271,6 +271,134 @@ re-derived against the real ephemeris.
 
 **Default when absent:** `null`.
 
+Schema v3 (2026-06-01) — `trajectory{}` (OCM-aligned), `family{}`, `data_gaps[]`
+--------------------------------------------------------------------------------
+
+The 2026-06-01 v3 rev adds three additive optional top-level fields. The
+full rationale — including the comparison to CCSDS OCM/OEM, TLE/OMM, JPL
+SBDB/Horizons, MPC, the JPL CR3BP periodic-orbit catalog, and AstDyS
+proper elements, and the decision to borrow OCM's trajectory model rather
+than migrate to OCM — is in **spec.md §16.6**. This section is the
+field-level reference.
+
+As with v2, all three fields are **additive optional** and **none
+participate in the §16.2 canonical signature** (`segments` contributes
+only the per-leg `(a, e)` multiset that the legacy `legs[]` already
+contributed, deduped to the same value; `family{}`, `maneuvers[]`, and
+`data_gaps[]` are pure metadata). Existing matches against literature are
+unaffected.
+
+### `trajectory:` (top-level, dict) — OCM-aligned, supersedes flat `legs[]`
+
+Reshapes the flat top-level `legs[]` into a self-describing trajectory
+block mirroring CCSDS OCM's `TRAJ` (segments) + `MAN` (maneuvers)
+decomposition, with an OCM-style metadata header:
+
+```yaml
+trajectory:
+  center: "Sun"             # OCM CENTER_NAME — gravitational primary (mirrors top-level primary:)
+  ref_frame: "ECLIPJ2000"   # OCM REF_FRAME
+  time_system: "TDB"        # OCM TIME_SYSTEM; null for idealized circular-coplanar
+  epoch_tzero: null         # OCM EPOCH_TZERO; null = epoch-free family (the common case here)
+  segments:                 # === OCM TRAJ === ordered conic arcs, one per leg
+    - id: "out-em"
+      from: "E"
+      to: "M"
+      traj_type: "keplerian-arc"   # keplerian-arc | cartesian-state
+      tof_days: 154
+      n_revs: 0
+      branch: "single"             # single | low | high  (multi-rev branch selector)
+      a_au: 1.30                   # optional per-segment osculating arc elements
+      e: 0.257
+  maneuvers:                # === OCM MAN === per-encounter flyby / ΔV mechanics
+    - at_segment_boundary: ["out-em", "ret-me"]   # flyby between these two segments
+      body: "M"
+      type: "flyby-ballistic"      # flyby-ballistic | flyby-powered | launch | arrival
+      dv_kms: 0.0
+      turning_angle_deg: null      # absorbs the v2 flyby_mechanics fields
+      periapsis_alt_km: null
+```
+
+- **Migration is lazy** (see "Backfill" below): the loader reads
+  `trajectory.segments` when present and falls back to the legacy top-level
+  `legs[]` otherwise, producing an identical signature either way. An
+  entry on either form is valid on disk during the transition.
+- `maneuvers[]` absorbs the v2 `flyby_mechanics:` and top-level
+  `delta_v_kms:` placeholders for migrated entries (the v2 fields remain
+  valid for un-migrated entries).
+- **OCM export.** Entries with `model_assumption: analytic-ephemeris`
+  (epoch-anchored) can be projected to canonical CCSDS OCM (KVN/XML) by a
+  future exporter; idealized circular-coplanar families cannot emit a
+  meaningful OCM and are not export targets.
+
+**Default when absent:** consumers fall back to the legacy `legs[]`.
+
+### `family:` (top-level, dict or null) — CR3BP-catalog-style grouping
+
+First-class family linkage, replacing prose-only `notes:` cross-references
+(e.g. between the McConaghy "notable" variant and the S1L1 cycler):
+
+```yaml
+family:
+  id: "s1l1-em"                  # stable family slug
+  name: "S1L1 Earth-Mars 2-synodic"
+  nomenclature: "Russell-McConaghy SnLm"
+  continuation_param: {name: "k_synodic", value: 2}   # along-family parameter (cf. Jacobi constant)
+```
+
+Not a signature input (members are told apart by their own signatures); a
+grouping/navigation aid for the matcher's human-review stage and the
+public site. Missing `family{}` = "ungrouped."
+
+**Default when absent:** `null` (ungrouped).
+
+### `data_gaps:` (top-level, list of dicts) — "we don't know it yet" register
+
+The explicit, machine-readable, **sweepable** register of *known-unknowns*
+— fields whose value is expected to exist but has not been filled. This is
+the **significant distinction** from a bare `null`: a `null` may be either
+"not applicable" or "not yet derived" (the legacy convention above, lines
+124-129), whereas a `data_gaps[]` entry asserts specifically "a value
+exists; we owe it; here is where to find it."
+
+```yaml
+data_gaps:
+  - path: "trajectory.segments[ret-me].tof_days"   # dotted/keyed path into this entry
+    kind: "unknown"            # unknown | uncertain | derive
+    note: "return M->E leg ToF not tabulated in the abstract"
+    source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420, Table 2"
+    todo_ref: "#54-backfill"
+```
+
+- `kind`: `unknown` (no value on hand), `uncertain` (provisional /
+  single-source value present), `derive` (computable once a dependency
+  lands — e.g. a leg `(a,e)` once the multi-rev solver closes the arc).
+- **This does NOT reinterpret existing nulls.** A bare `null` with no
+  `data_gaps[]` entry keeps its legacy meaning; genuinely not-applicable
+  cases are still flagged in `notes:` (the CR3BP/coplanar pattern).
+  `data_gaps[]` is an explicit register layered on top — promoting a vague
+  null to a tracked, actionable known-unknown.
+- **Sweep:** `cyclerfinder.data.catalog.find_data_gaps(catalog)` and its
+  CLI enumerate every gap across the catalogue, so the gap inventory is a
+  query, not a manual audit.
+- **Lazy fill:** when a value arrives, populate the field, update its
+  `source_quotes:` per the provenance rule (rule 3 above), and remove the
+  matching `data_gaps[]` entry. The no-fabrication rule (rule 2) is
+  unchanged.
+
+**Default when absent:** `[]` (no tracked known-unknowns).
+
+### Backfill (`legs[]` → `trajectory{}`)
+
+Lazy and sweep-driven, **not** a big-bang rewrite (most entries have only
+partial leg data; a bulk rewrite would write mostly `null`s and obscure
+which nulls are genuine gaps). Plan in spec.md §16.6.5. In short: (1)
+loader supports both forms; (2) migrate `s1l1-2syn-em-cpom` first as the
+worked exemplar (known E→M segment populated, unknown return + Earth-loop
+segments marked in `data_gaps[]`); (3) sweep to inventory remaining
+`legs[]`-only entries; (4) migrate the rest opportunistically, source-
+gated; (5) "done" when no entry retains top-level `legs[]`.
+
 Out-of-paradigm work
 --------------------
 

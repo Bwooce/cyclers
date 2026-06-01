@@ -364,12 +364,78 @@
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
-  legs:
-    - from: "E"
-      to: "M"
-      tof_days: 154
-      n_revs: 0
-      note: "Per Mistree/Kornfeld 2019 (cited via search) and Spreen et al. 2020 'Design Considerations for an Earth-Mars Cycler Spacecraft Using the S1L1 Cycler': 'a nominal 154-day trajectory'. NB Russell 2004 Table 4.9 has the McConaghy 2006 'notable' variant at t_out=150 d; the 154-d figure is for the S1L1 specifically."
+  # Schema v3 (2026-06-01): migrated from flat legs[] to OCM-aligned trajectory{}.
+  # This is the worked exemplar for the §16.6.5 backfill. Only the 154-d E->M
+  # leg is source-attested; the return leg, the intermediate Earth-Earth loop,
+  # and the full segment topology are known-unknowns tracked in data_gaps[].
+  trajectory:
+    center: "Sun"             # OCM CENTER_NAME (== top-level primary)
+    ref_frame: "ECLIPJ2000"   # OCM REF_FRAME
+    time_system: null         # idealized circular-coplanar — epoch-free family
+    epoch_tzero: null         # OCM EPOCH_TZERO; null = epoch-free
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 154
+        n_revs: 0
+        branch: "single"
+        a_au: 1.30
+        e: 0.257
+        note: "Per Mistree/Kornfeld 2019 (cited via search) and Spreen et al. 2020 'Design Considerations for an Earth-Mars Cycler Spacecraft Using the S1L1 Cycler': 'a nominal 154-day trajectory'. NB Russell 2004 Table 4.9 has the McConaghy 2006 'notable' variant at t_out=150 d; the 154-d figure is for the S1L1 specifically."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # known-unknown — see data_gaps[]
+        n_revs: null
+        branch: null
+        note: "Return Mars->Earth leg of the S1L1 cycle. ToF / rev count / branch not extracted from the AIAA 2002-4420 broad-class tables; tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # the 'L1' intermediate Earth-Earth multi-rev loop
+        n_revs: null
+        branch: null
+        note: "The single intermediate Earth-Earth loop that gives S1L1 its 'L1'; fills the remainder of the ~1559.86-d (2-synodic) period. Multi-rev arc — n_revs/branch to be set by the multi-rev Lambert solver (task #54)."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Ballistic Mars flyby; V-infinity continuity (3.05 km/s in == out) is the cycle-closure constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Intermediate Earth flyby (the 'L1' loop entry); ballistic, V-infinity 5.65 km/s."
+  family:
+    id: "s1l1-em"
+    name: "S1L1 Earth-Mars 2-synodic"
+    nomenclature: "Russell-McConaghy SnLm"
+    continuation_param: {name: "k_synodic", value: 2}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated in the AIAA 2002-4420 abstract; needs extraction from the full paper / broad-class tables."
+      source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420, Table 2"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop tof_days / n_revs / branch are computable once the in-house multi-rev Lambert solver closes the arc to the published 5.65/3.05 km/s V-infinity; not yet derived."
+      source_hint: "task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology is provisional. sequence_canonical 'E-E-M-M' implies a 4-encounter (2 Earth + 2 Mars) cycle, but only the 3-segment E->M / M->E / E-loop skeleton is represented here. The exact leg decomposition over the full 2-synodic period must be verified against AIAA 2002-4420; probe work showed the naive 3-leg fixed-154-d structure does not close ballistically."
+      source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420"
+      todo_ref: "#54"
   first_published:
     authors: ["McConaghy, T. T.", "Longuski, J. M.", "Byrnes, D. V."]
     year: 2002

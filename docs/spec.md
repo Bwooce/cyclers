@@ -604,3 +604,208 @@ silently overwrite the discovery's provenance.
 **Workflow worked example:** see [`data/README.md`](../data/README.md)
 "Recording a discovery" subsection for a step-by-step walkthrough
 including an example entry.
+
+### 16.6 Storage format — rationale & comparison to standard orbit catalogues
+
+This section records *why* the catalogue is shaped the way it is, how it
+relates to the established orbit-storage standards, and the three schema
+elements added 2026-06-01 to close the gaps those standards exposed: the
+OCM-aligned `trajectory{}` block, the `family{}` linkage, and the
+`data_gaps[]` known-unknown marker.
+
+#### 16.6.1 What the established standards store
+
+| System | Representation | Epoch | Multi-segment + maneuvers | Fit for us |
+|---|---|---|---|---|
+| **CCSDS OCM** (Orbit Comprehensive Message, 504.0-B) | State *or* elements; logical blocks `TRAJ` (trajectory segments), `MAN` (maneuvers), `PHYS`, `COV`, `USER`; explicit `CENTER_NAME` / `REF_FRAME` / `TIME_SYSTEM` | **Required** (`EPOCH_TZERO`) | **Yes** — this is its core strength | Trajectory sub-tree: excellent. Whole record: poor (no attribution/novelty/signature; would dump 80% into `USER`). |
+| **CCSDS OEM** (Ephemeris Message) | Sampled state vectors + interpolation metadata | Required | Segments yes, maneuvers no | Over-specified; we don't sample states. |
+| **NORAD TLE / CCSDS OMM** | Mean elements bound to the SGP4 theory | Required | No | Theory-bound; meaningless without its propagator. |
+| **JPL SBDB / Horizons** | Osculating Keplerian + covariance; SPK Chebyshev kernels | Required | No | Single-body, epoch-anchored. |
+| **MPC** | Osculating elements (a,e,i,Ω,ω,M,H) at epoch | Required | No | Single-body, epoch-anchored. |
+| **JPL CR3BP periodic-orbit catalog** | Dimensionless rotating-frame state; **indexed by Jacobi constant; organized into families** | **None** (epoch-free) | Family continuation, no maneuvers | **Closest analog** — validates epoch-free, invariant-indexed, family-organized storage. |
+| **AstDyS proper elements** (Milani–Knežević) | Time-averaged quasi-invariant (a, e, sin i) | Suppressed (averaged out) | No | Precedent for deliberately epoch-free storage. |
+
+Two observations drive the design:
+
+1. **Every *operational* standard requires an epoch.** OCM, TLE/OMM,
+   SBDB, MPC all answer "where is this real object." Our circular-coplanar
+   cycler *families* have no epoch — they are geometric/dynamical
+   solutions, not tracked objects — so they legitimately fit none of
+   these as a top-level container.
+2. **The *scientific* catalogues that store epoch-free family solutions
+   validate our approach.** The CR3BP periodic-orbit catalog indexes by a
+   conserved invariant (Jacobi constant) and organizes by family; we
+   index by the §16.2 canonical signature (V∞ multiset + ToF + period_k)
+   and — as of 2026-06-01 — organize by an explicit `family{}` field.
+   For the patched-conic / V∞ regime specifically there is *no*
+   established standardized schema (the literature stores these as paper
+   tables — Russell's, McConaghy's taxonomy), so this catalogue fills a
+   real gap rather than reinventing one.
+
+#### 16.6.2 Decision: borrow OCM's trajectory model, not its envelope
+
+We **do not** migrate the catalogue to OCM. We **do** reshape the
+trajectory sub-tree to mirror OCM's `TRAJ` + `MAN` decomposition, kept
+inside our own YAML envelope, and treat **canonical OCM (KVN/XML) as an
+*export target* for the epoch-anchored subset** (`model_assumption:
+analytic-ephemeris` entries), where real interoperability lives. There is
+no standardized YAML serialization of OCM (CCSDS defines KVN and XML; JSON
+is an in-progress Nav-WG effort), so a YAML projection is *our* mapping —
+it buys structural discipline and readability, not free interoperability.
+Idealized circular-coplanar families cannot emit a meaningful OCM, so the
+exporter applies only to the concrete subset.
+
+The §16.1 record sketch already gestured at a `trajectory{}` block; the
+2026-06-01 revision formalizes it and reconciles it with the on-disk
+`data/seed_cyclers.yaml` projection:
+
+```jsonc
+"trajectory": {
+  // OCM metadata header
+  "center": "Sun",            // OCM CENTER_NAME — the gravitational primary (== top-level primary)
+  "ref_frame": "ECLIPJ2000",  // OCM REF_FRAME
+  "time_system": "TDB",       // OCM TIME_SYSTEM; null for idealized circular-coplanar
+  "epoch_tzero": null,        // OCM EPOCH_TZERO; null = epoch-free family (see 16.6.1)
+
+  // === OCM TRAJ === ordered conic arcs, leg-by-leg
+  "segments": [
+    {"id":"out-em","from":"E","to":"M","traj_type":"keplerian-arc",
+     "tof_days":154,"n_revs":0,"branch":"single","a_au":1.30,"e":0.257},
+    {"id":"ret-me","from":"M","to":"E","traj_type":"keplerian-arc",
+     "tof_days":null,"n_revs":null,"branch":null},   // known-unknown — see data_gaps
+    {"id":"loop-ee","from":"E","to":"E","traj_type":"keplerian-arc",
+     "tof_days":null,"n_revs":null,"branch":null}    // the "L1" intermediate Earth loop
+  ],
+
+  // === OCM MAN === per-encounter flyby / ΔV mechanics
+  // (absorbs the v2 top-level delta_v_kms + flyby_mechanics placeholders)
+  "maneuvers": [
+    {"at_segment_boundary":["out-em","ret-me"],"body":"M","type":"flyby-ballistic",
+     "dv_kms":0.0,"turning_angle_deg":null,"periapsis_alt_km":null}
+  ]
+}
+```
+
+- `traj_type` mirrors OCM's `TRAJ_TYPE`: `keplerian-arc` (conic, the
+  ballistic default) or `cartesian-state` (boundary states, for
+  ephemeris-mode entries).
+- `branch` ∈ `single | low | high` selects the multi-revolution Lambert
+  branch (`n_revs > 0` arcs have two time-of-flight branches). This is the
+  field the multi-rev solver work (task #54) populates for the S1L1
+  Earth-loop segment.
+- `maneuvers[].type` ∈ `flyby-ballistic | flyby-powered | launch |
+  arrival`. Ballistic flybys carry `dv_kms: 0.0`; the V∞-continuity
+  condition at each flyby is the cycle-closure constraint.
+- **Signature integrity:** `segments` does **not** participate in the
+  §16.2 hash beyond what `legs[]` already contributed (the per-leg `(a,e)`
+  multiset, deduped). `vinf_kms_at_encounters[]`, `period{}`, and
+  `orbit_elements{}` remain the signature carriers and are untouched.
+  `maneuvers[]` is pure descriptive metadata (per §16.2's v2 rule).
+
+#### 16.6.3 `family{}` — explicit family linkage (CR3BP-catalog pattern)
+
+The CR3BP catalog's one clear advantage over our prior schema is
+first-class **family** organization. Previously the relationship between,
+e.g., the McConaghy "notable" 2-synodic variant and the S1L1 cycler lived
+in prose `notes:`. The additive optional `family{}` field makes it
+queryable:
+
+```jsonc
+"family": {
+  "id": "s1l1-em",                 // stable family slug
+  "name": "S1L1 Earth-Mars 2-synodic",
+  "nomenclature": "Russell-McConaghy SnLm",
+  "continuation_param": {"name":"k_synodic","value":2}  // along-family parameter (cf. Jacobi constant)
+}
+```
+
+`family{}` is **not** a signature input (members are distinguished by
+their own signatures); it is a grouping/navigation aid for the matcher's
+human-review stage and the public site. A missing `family{}` is treated
+as "ungrouped."
+
+#### 16.6.4 `data_gaps[]` — "we don't know it yet" ≠ "not applicable"
+
+A bare `null` is overloaded: it conflates **structurally not applicable**
+(e.g. `inclination_deg` for a coplanar model — there is no value to know)
+with **known-unknown** (e.g. the S1L1 return-leg ToF — a value exists in
+the literature, we simply have not extracted it). These are
+*semantically different* and must be distinguishable for honest
+provenance and for sweep-driven lazy backfill.
+
+`data_gaps[]` resolves this **without** reinterpreting the ~220 existing
+nulls. It does not flip the meaning of a bare `null`; it adds an explicit
+register on top of it. Rule:
+
+- **A `data_gaps[]` entry = known-unknown (tracked).** A value is
+  expected to exist; we have not filled it yet. This is the explicit,
+  machine-readable, sweepable marker the backfill uses, and it carries
+  the TODO context (`note`, `source_hint`, `todo_ref`).
+- **A bare `null` with no `data_gaps[]` entry keeps its legacy meaning**
+  (`data/README.md`: "not in source / not yet derived"), with genuinely
+  not-applicable cases additionally flagged in the entry's `notes:` (the
+  existing CR3BP / coplanar pattern — e.g. CR3BP entries have no
+  Keplerian RAAN/ω/ν). Promoting such a null to an explicit `data_gaps[]`
+  entry is precisely how a vague "missing" becomes a precise, actionable
+  known-unknown.
+
+```jsonc
+"data_gaps": [
+  {
+    "path": "trajectory.segments[ret-me].tof_days",  // dotted/keyed path into this record
+    "kind": "unknown",                               // unknown | uncertain | derive
+    "note": "return M->E leg ToF not tabulated in the abstract",
+    "source_hint": "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420, Table 2",
+    "todo_ref": "#54-backfill"                        // task / issue reference
+  }
+]
+```
+
+- `kind`: `unknown` (no value on hand), `uncertain` (have a value but it
+  is provisional / single-source), or `derive` (computable from other
+  fields once a dependency lands — e.g. a leg `(a,e)` derivable once the
+  multi-rev solver closes the arc).
+- **Sweepable.** `data_gaps[]` is the single machine-readable source of
+  known-unknowns. `cyclerfinder.data.catalog.find_data_gaps(catalog)`
+  (and its CLI) enumerate every gap across the catalogue, so the gap
+  inventory is a query, not a manual audit. This is the mechanism behind
+  "do sweeps to identify gaps and lazy-fill."
+- **Lazy fill.** When a value arrives: populate the field, update its
+  `source_quotes:` per the §16.4 / README provenance rule, and remove the
+  matching `data_gaps[]` entry. The no-fabrication rule (README rule 2)
+  is unchanged — a known-unknown stays `null` + `data_gaps` until a real
+  source backs the value.
+- This does **not** weaken rule 2: previously a gap and a not-applicable
+  null were indistinguishable, which understated how much is genuinely
+  *missing*. `data_gaps[]` surfaces that debt explicitly.
+
+#### 16.6.5 Backfill plan (legs[] → trajectory{})
+
+The ~220 existing entries carry the flat top-level `legs[]` (and the v2
+`flyby_mechanics` / `delta_v_kms` placeholders). Migration to
+`trajectory{}` is **lazy and sweep-driven**, not a big-bang rewrite
+(most entries have only partial leg data; a bulk rewrite would write
+mostly `null`s and obscure which nulls are real gaps):
+
+1. **Loader compatibility (task #64).** `catalog.py` reads
+   `trajectory.segments` when present and falls back to the legacy
+   `legs[]` otherwise, producing an identical canonical signature either
+   way. Both forms are valid on disk during the transition.
+2. **Exemplar first (task #65).** Migrate `s1l1-2syn-em-cpom` fully:
+   populate the known 154-d E→M segment, add the return + Earth-loop
+   segments with `data_gaps[]` markers for their unknown
+   `tof_days`/`n_revs`/`branch`. This is the worked example for the rest.
+3. **Sweep to inventory.** `find_data_gaps` + a per-entry "has the entry
+   been migrated to `trajectory{}`?" check produce the backfill worklist.
+   An entry still on `legs[]` is itself a (structural) migration gap.
+4. **Lazy fill, source-gated.** Migrate remaining entries opportunistically
+   — when an entry is touched for any other reason, or when a source is
+   read that supplies the missing legs. Each migration: move `legs[]` →
+   `trajectory.segments`, add `maneuvers[]` from `flyby_mechanics`, mark
+   genuine unknowns in `data_gaps[]`, update provenance.
+5. **Completion check.** The migration is "done" when no entry retains a
+   top-level `legs[]` and the only `data_gaps[]` remaining are true
+   known-unknowns awaiting source access (tracked, not blocking).
+
+Backfill execution is deferred work tracked under task #65; only the S1L1
+exemplar is populated immediately.
