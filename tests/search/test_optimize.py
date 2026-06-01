@@ -35,7 +35,9 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.model.score import composite_score
 from cyclerfinder.search.optimize import (
     OptimisationResult,
+    _target_period_sec,
     find_cyclers,
+    interior_epochs_from_leg_tofs,
     optimise_cell_ephemeris,
     optimise_cell_idealized,
 )
@@ -189,6 +191,95 @@ def test_optimisation_result_reproducible_with_seed() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Catalogue-seeded warm-start (#52)
+# ---------------------------------------------------------------------------
+
+
+def test_interior_epochs_from_leg_tofs_aldrin() -> None:
+    """Aldrin legs ``[146, 634]`` → a single interior epoch at 146 days.
+
+    Absolute-cumulative mapping: the final leg is dropped (last encounter
+    pinned at ``T``), so only the 146-day cumulative point survives. The
+    Aldrin k=1 period (~780 d) keeps it well inside the clip bounds, so
+    the value is unclipped.
+    """
+    t = _target_period_sec(_CELL_ALDRIN_EME)
+    epochs = interior_epochs_from_leg_tofs((146.0, 634.0), t)
+    assert len(epochs) == 1
+    assert epochs[0] == pytest.approx(146.0 * SECONDS_PER_DAY)
+    assert 0.0 < epochs[0] < t
+
+
+def test_interior_epochs_from_leg_tofs_clips_and_sorts() -> None:
+    """Out-of-range cumulative epochs clip into the strict interior, and
+    the returned vector is sorted."""
+    t = _target_period_sec(_CELL_2SYN_EM_EME)
+    # Three legs ⇒ two interior epochs; the second cumulative point
+    # (huge) must clip below T, and order must be ascending.
+    epochs = interior_epochs_from_leg_tofs((10.0, 1.0e9, 5.0), t)
+    assert len(epochs) == 2
+    assert list(epochs) == sorted(epochs)
+    assert all(0.0 < e < t for e in epochs)
+
+
+def test_warm_starts_add_history_records() -> None:
+    """Each warm start contributes one polished record, tagged with a
+    negative ``start_index`` (the grid uses ``0..n-1``)."""
+    eph = Ephemeris(model="circular")
+    t = _target_period_sec(_CELL_ALDRIN_EME)
+    warm = interior_epochs_from_leg_tofs((146.0, 634.0), t)
+    result = optimise_cell_idealized(
+        _CELL_ALDRIN_EME,
+        eph,
+        vinf_cap=ALDRIN_VINF_CAP_KMS,
+        n_starts=3,
+        seed=0,
+        use_de=False,
+        warm_starts=[warm, warm],
+    )
+    # 2 warm starts + 3 grid starts, no DE ⇒ 5 records.
+    assert len(result.optimiser_history) == 5
+    negative = [r for r in result.optimiser_history if r.start_index < 0]
+    assert len(negative) == 2
+
+
+def test_warm_starts_none_is_inert() -> None:
+    """``warm_starts=None`` leaves the result bitwise-identical to omitting
+    it — the opt-in path must not perturb existing behaviour."""
+    eph = Ephemeris(model="circular")
+    base = optimise_cell_idealized(
+        _CELL_ALDRIN_EME, eph, vinf_cap=ALDRIN_VINF_CAP_KMS, n_starts=3, seed=7, use_de=False
+    )
+    explicit_none = optimise_cell_idealized(
+        _CELL_ALDRIN_EME,
+        eph,
+        vinf_cap=ALDRIN_VINF_CAP_KMS,
+        n_starts=3,
+        seed=7,
+        use_de=False,
+        warm_starts=None,
+    )
+    assert base.best_score.max_vinf_kms == explicit_none.best_score.max_vinf_kms
+    assert base.closure_residual_kms == explicit_none.closure_residual_kms
+    assert len(base.optimiser_history) == len(explicit_none.optimiser_history)
+
+
+def test_warm_start_wrong_length_raises() -> None:
+    """A warm start whose length != ``N - 2`` is a caller bug → ``ValueError``."""
+    eph = Ephemeris(model="circular")
+    with pytest.raises(ValueError, match="interior epochs"):
+        optimise_cell_idealized(
+            _CELL_ALDRIN_EME,  # N=3 ⇒ expects 1 interior epoch
+            eph,
+            vinf_cap=ALDRIN_VINF_CAP_KMS,
+            n_starts=2,
+            seed=0,
+            use_de=False,
+            warm_starts=[(1.0, 2.0)],  # 2 epochs — wrong
+        )
+
+
+# ---------------------------------------------------------------------------
 # M5 gate: 2-synodic E-M rediscovery (plan §4.1)
 # ---------------------------------------------------------------------------
 
@@ -201,15 +292,17 @@ def test_optimisation_result_reproducible_with_seed() -> None:
         "closure on the 2-syn E-M-E cell at vinf_cap=7.0; it lands in a "
         "degenerate non-closing basin (max_vinf=38 km/s, residual=inf, "
         "constraints_satisfied=False). Two compounding reasons, neither fixed "
-        "at v1: (1) optimiser seeding/convergence — the same free-return seed "
-        "also fails on the genuinely-3-encounter Aldrin k=1 cell (lands ~43 "
-        "km/s), so this is a search-machinery limitation, deferred to the "
-        "catalogue-seeded warm-start enhancement (#52); (2) the published "
-        "5.65/3.05 cycler is the S1L1 4-encounter E-E-M-M topology (one "
-        "intermediate Earth loop), which a 3-encounter E-M-E cell cannot "
+        "at v1: (1) the circular-coplanar MODEL cannot host the family — the "
+        "catalogue-seeded warm-start (#52, now implemented) was expected to "
+        "rescue the analogous 3-encounter Aldrin k=1 cell but a 1-D sweep "
+        "proved no feasible closing basin exists at any seed in this model "
+        "(best 6.09 km/s max-V_inf, never closes); the real geometry needs "
+        "Mars's eccentricity, i.e. the M6b real-ephemeris optimiser; (2) the "
+        "published 5.65/3.05 cycler is the S1L1 4-encounter E-E-M-M topology "
+        "(one intermediate Earth loop), which a 3-encounter E-M-E cell cannot "
         "represent regardless of convergence — tracked as a data_gap on entry "
         "s1l1-2syn-em-cpom, requires AIAA 2002-4420 full text. Anchors + "
-        "assertions are kept intact so a future 4-encounter / warm-started "
+        "assertions are kept intact so a future 4-encounter / ephemeris-mode "
         "optimiser trips strict and signals the signature is reachable."
     ),
     strict=False,
@@ -341,15 +434,18 @@ def test_over_vinf_cell_rejected() -> None:
 
 @pytest.mark.xfail(
     reason=(
-        "RE-SCOPED 2026-06-01 (task #54). v1-optimiser convergence limitation, "
-        "not a pending fix. The Aldrin k=1 E-M-E cell is a genuine 3-encounter "
-        "cycler, yet from the free-return seed the v1 optimiser fails to reach "
-        "Aldrin's 9.74 km/s family at vinf_cap=12.0 — it lands in a degenerate "
-        "basin (max_vinf~43 km/s, composite=inf, constraints_satisfied=False). "
-        "This isolates the failure to optimiser seeding/convergence (no "
-        "4-encounter topology is involved here), deferred to the "
-        "catalogue-seeded warm-start enhancement (#52). Anchors kept intact so "
-        "a warm-started optimiser trips strict once it can rediscover Aldrin."
+        "RE-DIAGNOSED 2026-06-01 (#52). MODEL limitation, not seeding — the "
+        "#54 hypothesis that a catalogue-seeded warm-start would rescue this "
+        "is empirically FALSIFIED. Aldrin's 146-day E->M transit is only cheap "
+        "with Mars's real eccentricity; in the circular-coplanar model that "
+        "leg is near-hyperbolic. Building the cycler at the published interior "
+        "epoch (Mars at t=146 d) gives V_inf~21.5 km/s, and a 1-D sweep over "
+        "the whole interior-epoch range never closes sub-cap (best is 6.09 "
+        "km/s max-V_inf at T/2 with residual 21.8). So warm-starting (#52, now "
+        "implemented + unit-tested) cannot land the Aldrin 9.74 km/s family: "
+        "no feasible basin exists in this model. Rediscovery needs the "
+        "real-ephemeris (M6b) optimiser. Anchors kept intact so the "
+        "ephemeris-mode optimiser trips strict once it can rediscover Aldrin."
     ),
     strict=False,
 )

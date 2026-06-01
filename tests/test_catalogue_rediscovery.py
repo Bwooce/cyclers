@@ -42,7 +42,12 @@ import numpy as np
 import pytest
 
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.search.optimize import OptimisationResult, optimise_cell_idealized
+from cyclerfinder.search.optimize import (
+    OptimisationResult,
+    _target_period_sec,
+    interior_epochs_from_leg_tofs,
+    optimise_cell_idealized,
+)
 from cyclerfinder.search.sequence import Cell
 from tests._catalogue_loader import CatalogueEntry, load_constructible_entries
 
@@ -87,19 +92,25 @@ project's pytest config.
 
 EXPECTED_SKIPS: dict[str, str] = {
     "aldrin-classic-em-k1-outbound": (
-        "Aldrin classic at period_k=1 has an asymmetric 146-day E->M transit "
-        "(perihelion near Earth, aphelion past Mars). The optimiser's "
-        "free-return seed (interior epoch at T/2) and the 5-start grid + DE "
-        "pass converge to an alternate cycler at V_inf_M ~10.6 km/s rather "
-        "than Aldrin's published 9.7 km/s. Rediscovering Aldrin's exact "
-        "geometry requires seed-from-published rather than free-return. "
-        "Deferred to a post-M5 optimiser enhancement (catalogue-seeded "
-        "warm-start). The cell IS strict-ballistic per Russell 2004 Table "
-        "3.4 (1.0.1.-1); we just don't initialise the optimiser near it."
+        "MODEL LIMITATION, not a seeding fix (re-diagnosed 2026-06-01, #52). "
+        "Aldrin's 146-day E->M transit is only cheap with Mars's real "
+        "eccentricity; in the circular-coplanar idealisation a 146-day leg "
+        "is near-hyperbolic. Verified empirically: building the cycler at the "
+        "published interior epoch (Mars at t=146 d) gives V_inf~21.5 km/s, and "
+        "a 1-D sweep over the entire interior-epoch range (0.02T..0.98T) never "
+        "produces a closing sub-cap solution — the lowest max-V_inf is 6.09 "
+        "km/s at the T/2 midpoint with closure residual 21.8 km/s. So the "
+        "catalogue-seeded warm-start (#52, now implemented and unit-tested) "
+        "cannot close this gate: there is no feasible Aldrin basin in the "
+        "circular-coplanar model regardless of seed. Rediscovering Aldrin's "
+        "9.74 km/s signature requires the real-ephemeris (M6b) optimiser. The "
+        "cell IS strict-ballistic per Russell 2004 Table 3.4 (1.0.1.-1); the "
+        "v1 idealised model just cannot host its asymmetric real-ephemeris "
+        "geometry."
     ),
     "aldrin-classic-em-k1-inbound": (
         "Symmetric counterpart of aldrin-classic-em-k1-outbound; same "
-        "free-return-seed limitation. See that entry's reason."
+        "circular-coplanar model limitation. See that entry's reason."
     ),
 }
 """Entries whose published V∞ signature is known not to match the
@@ -137,6 +148,28 @@ def _build_cell_from_entry(entry: CatalogueEntry) -> Cell:
         per_leg_revs=(0, 0),
         per_leg_branch=("single", "single"),
     )
+
+
+def _warm_starts_for_entry(entry: CatalogueEntry, cell: Cell) -> list[tuple[float, ...]] | None:
+    """Build a catalogue-seeded warm start from the entry's leg ToFs (#52).
+
+    Returns ``None`` unless the entry **fully tabulates** its legs — i.e.
+    it carries exactly ``len(cell.sequence) - 1`` leg ToFs, one per
+    transfer. Most seed-catalogue entries are *under-tabulated* (only the
+    forward transit is recorded, not the return loop the closed sequence
+    implies); for those the cumulative mapping cannot produce a
+    correctly-sized interior-epoch vector, so we fall back to the
+    grid + DE search rather than feed the optimiser a malformed seed.
+
+    The warm start is opportunistic: it only ever *adds* a polished
+    candidate to the optimiser's ranking, never removes the grid/DE
+    coverage, so it cannot regress an entry that already rediscovers.
+    """
+    n_legs = len(cell.sequence) - 1
+    if len(entry.leg_tofs_days) != n_legs:
+        return None
+    warm = interior_epochs_from_leg_tofs(entry.leg_tofs_days, _target_period_sec(cell))
+    return [warm]
 
 
 def _vinf_magnitudes_by_body(result: OptimisationResult) -> dict[str, float]:
@@ -246,6 +279,8 @@ def test_catalogue_entry_rediscovers(entry: CatalogueEntry) -> None:
     target_by_body = _entry_target_by_body(entry)
     vinf_cap = max(target_by_body.values()) + VINF_CAP_HEADROOM_KMS
 
+    warm_starts = _warm_starts_for_entry(entry, cell)
+
     eph = Ephemeris(model="circular")
     result = optimise_cell_idealized(
         cell,
@@ -254,6 +289,7 @@ def test_catalogue_entry_rediscovers(entry: CatalogueEntry) -> None:
         n_starts=_OPTIMISER_N_STARTS,
         seed=_OPTIMISER_SEED,
         use_de=_OPTIMISER_USE_DE,
+        warm_starts=warm_starts,
     )
 
     assert result.constraints_satisfied, (

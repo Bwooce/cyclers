@@ -54,7 +54,7 @@ Plan: ``docs/phases/m5-optimisation/plan.md``.
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any, cast
 
@@ -140,8 +140,8 @@ class _StartRecord:
     ----------
     start_index:
         Position in the multi-start grid (0-based). ``-1`` flags the DE
-        wrapper's polished result so it can be distinguished from the
-        grid starts.
+        wrapper's polished result; ``-2, -3, …`` flag caller-supplied
+        warm starts (#52) — all distinguishable from the grid starts.
     x0:
         Initial parameter vector (the interior encounter times in
         seconds, length ``N - 2`` for an N-encounter cell).
@@ -399,6 +399,36 @@ def _clip_interior(t: float, target_period_sec: float) -> float:
     lo = _BOUNDS_INSET_FRAC * target_period_sec
     hi = (1.0 - _BOUNDS_INSET_FRAC) * target_period_sec
     return max(lo, min(hi, t))
+
+
+def interior_epochs_from_leg_tofs(
+    leg_tofs_days: Sequence[float],
+    target_period_sec: float,
+) -> tuple[float, ...]:
+    """Map per-leg times-of-flight to clipped interior encounter epochs (seconds).
+
+    Absolute-cumulative mapping (#52): encounter ``j`` sits at the
+    cumulative sum of the first ``j`` leg ToFs. Encounter 0 is pinned at
+    ``t = 0`` and the final encounter at ``t = T``, so only the interior
+    cumulative sums are returned — ``cumsum(leg_tofs_days[:-1])`` — giving
+    a vector of length ``len(leg_tofs_days) - 1`` (i.e. ``N - 2`` interior
+    epochs for an ``N``-encounter cycle). Each epoch is clipped to the
+    optimiser's strict interior via :func:`_clip_interior` and the result
+    is sorted, so it satisfies the monotonic-epoch precondition that
+    :func:`construct_cycler` enforces.
+
+    This is the warm-start shape :func:`optimise_cell_idealized` expects:
+    pass the result as one element of its ``warm_starts`` list. For the
+    Aldrin classic cell (``legs = [146, 634]`` days) this yields a single
+    interior epoch at ~146 days — the asymmetric Earth→Mars transit the
+    equispaced free-return seed (``T/2``) misses.
+    """
+    cum = 0.0
+    interior: list[float] = []
+    for tof_days in leg_tofs_days[:-1]:  # drop final leg: last encounter pinned at T
+        cum += float(tof_days) * SECONDS_PER_DAY
+        interior.append(_clip_interior(cum, target_period_sec))
+    return tuple(sorted(interior))
 
 
 def _full_times_from_x(
@@ -937,6 +967,7 @@ def optimise_cell_idealized(
     use_de: bool = True,
     rp_factors: dict[str, float] | None = None,
     target_period_sec: float | None = None,
+    warm_starts: Sequence[Sequence[float]] | None = None,
 ) -> OptimisationResult:
     """Optimise encounter timings within ``cell`` (spec §12(a) idealized).
 
@@ -979,6 +1010,18 @@ def optimise_cell_idealized(
     target_period_sec:
         Total cycler period, seconds. ``None`` (default) ⇒ derived from
         ``cell`` via :func:`_target_period_sec`.
+    warm_starts:
+        Optional caller-supplied interior-epoch seeds (#52). Each entry
+        is a vector of ``N - 2`` interior encounter epochs in seconds —
+        the same shape :func:`_multi_start_grid` produces and
+        :func:`interior_epochs_from_leg_tofs` returns. Warm starts are
+        polished through the same SLSQP path as the grid, *before* it,
+        and ranked into the same candidate set; they let a caller seed
+        the search from a known geometry (e.g. a catalogue entry's leg
+        ToFs) whose interior timing the equispaced free-return seed
+        misses. Each is defensively clipped to the strict interior and
+        sorted. A warm start of the wrong length raises ``ValueError``.
+        ``None`` (default) leaves the start set bitwise-unchanged.
 
     Returns
     -------
@@ -1003,6 +1046,31 @@ def optimise_cell_idealized(
 
     starts = _multi_start_grid(cell, target_period_sec, n_starts, seed)
     records: list[_StartRecord] = []
+
+    # Caller-supplied warm starts (#52) are polished first. They share
+    # the SLSQP path and candidate ranking with the grid; their negative
+    # idx (DE uses -1) marks them in the diagnostic history.
+    n_interior = len(cell.sequence) - 2
+    for i, ws in enumerate(warm_starts or ()):
+        if len(ws) != n_interior:
+            raise ValueError(
+                f"warm start {i} has {len(ws)} interior epochs; "
+                f"cell {cell.id!r} expects {n_interior}",
+            )
+        x0_warm = tuple(float(_clip_interior(t, target_period_sec)) for t in sorted(ws))
+        records.append(
+            _polish(
+                x0_warm,
+                -(2 + i),
+                cell,
+                ephem,
+                target_period_sec,
+                omega_rad_per_s,
+                vinf_cap,
+                rp_factors,
+            ),
+        )
+
     for idx, x0 in enumerate(starts):
         record = _polish(
             x0,
@@ -1234,6 +1302,7 @@ def find_cyclers(
 __all__ = [
     "OptimisationResult",
     "find_cyclers",
+    "interior_epochs_from_leg_tofs",
     "optimise_cell_ephemeris",
     "optimise_cell_idealized",
 ]
