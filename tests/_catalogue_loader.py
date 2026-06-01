@@ -32,12 +32,63 @@ out by the non-null checks above.
 from __future__ import annotations
 
 import dataclasses
+import enum
 from pathlib import Path
+from typing import Any
 
 import yaml  # type: ignore[import-untyped]
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
+
+
+class ExclusionReason(enum.Enum):
+    """Why a catalogue row is (or is not) admitted to the v1 rediscovery gauntlet.
+
+    Exactly one reason applies to every catalogue row. ``CONSTRUCTIBLE``
+    rows go into ``test_catalogue_entry_rediscovers``; every other reason
+    documents a *categorised* exclusion so no entry vanishes silently as
+    the catalogue grows (the coverage-audit invariant, task #55).
+
+    The order of the non-constructible members mirrors the order of the
+    filter checks in :func:`classify_row` — the *first* failing check
+    assigns the reason.
+    """
+
+    CONSTRUCTIBLE = "constructible"
+    """Passes every v1 filter: a heliocentric, ballistic/powered, 2-body
+    alternation with non-null period, V∞, and at least one leg ToF. Eligible
+    for V0→V1 promotion (the rediscovery test will run it, or skip it via
+    a documented ``EXPECTED_SKIPS`` entry)."""
+
+    NON_BALLISTIC = "non_ballistic_regime"
+    """``trajectory_regime`` is neither ``ballistic`` nor ``powered`` (e.g.
+    low-thrust Sims-Flanagan rows): not a Lambert cell the v1 optimiser builds."""
+
+    NON_HELIOCENTRIC = "non_heliocentric"
+    """``primary != "Sun"`` (lunar / Jovian moon tours). The v1 optimiser is
+    heliocentric; these await planet-centric support (task #76)."""
+
+    NOT_TWO_BODY = "not_two_body"
+    """``len(bodies) != 2``: VEM triples and other multi-body itineraries need
+    M4 structural enumeration over >1 synodic pair, outside the v1 contract."""
+
+    MULTI_ENCOUNTER_SEQUENCE = "multi_encounter_sequence"
+    """Two bodies, but ``sequence_canonical`` has more than two encounters
+    (e.g. ``E-E-M-M`` for 2-synodic rows). Constructible *in principle* but
+    needs multi-rev Lambert + structural inference the v1 loader does not do."""
+
+    MISSING_PERIOD = "missing_period"
+    """``period.k`` or ``period.years`` is null — typically a family-seed or
+    citation-only row carrying no closed-orbit data."""
+
+    MISSING_VINF = "missing_vinf"
+    """``vinf_kms_at_encounters`` is absent, mis-sized, or has a null
+    ``vinf_kms`` — no published target to rediscover against."""
+
+    MISSING_LEG_TOFS = "missing_leg_tofs"
+    """No leg carries a non-null ``tof_days`` (neither ``trajectory.segments``
+    nor legacy ``legs[]``) — nothing to seed or compare leg geometry against."""
 
 
 @dataclasses.dataclass(frozen=True)
@@ -101,6 +152,75 @@ def _is_two_body_alternation(
     return set(parts) == set(bodies)
 
 
+def classify_row(row: dict[str, Any]) -> tuple[ExclusionReason, CatalogueEntry | None]:
+    """Classify one catalogue row for the v1 rediscovery gauntlet.
+
+    Single source of truth for both :func:`load_constructible_entries`
+    (which keeps the ``CONSTRUCTIBLE`` rows) and the coverage-audit census
+    (which tallies every reason). Returns the assigned
+    :class:`ExclusionReason` and, when ``CONSTRUCTIBLE``, the parsed
+    :class:`CatalogueEntry`; otherwise ``None``.
+
+    The checks run in a fixed order and the *first* failure wins, so the
+    reason is stable and the categories are mutually exclusive.
+    """
+    # Regime describes the ΔV character (ballistic vs gravity-assist-
+    # maintained powered), NOT constructibility: both are buildable as a
+    # Lambert cell here. Mirrors the m6b loader, which also admits both.
+    if row.get("trajectory_regime", "ballistic") not in ("ballistic", "powered"):
+        return ExclusionReason.NON_BALLISTIC, None
+    if row.get("primary", "Sun") != "Sun":
+        return ExclusionReason.NON_HELIOCENTRIC, None
+    bodies = row.get("bodies") or []
+    if len(bodies) != 2:
+        return ExclusionReason.NOT_TWO_BODY, None
+    sequence_canonical = row.get("sequence_canonical") or ""
+    if not _is_two_body_alternation(sequence_canonical, tuple(bodies)):
+        return ExclusionReason.MULTI_ENCOUNTER_SEQUENCE, None
+    period = row.get("period") or {}
+    if period.get("k") is None or period.get("years") is None:
+        return ExclusionReason.MISSING_PERIOD, None
+    vinfs_raw = row.get("vinf_kms_at_encounters") or []
+    if len(vinfs_raw) != len(bodies):
+        return ExclusionReason.MISSING_VINF, None
+    vinfs = [v.get("vinf_kms") for v in vinfs_raw]
+    if any(v is None for v in vinfs):
+        return ExclusionReason.MISSING_VINF, None
+    # Schema v3 (spec §16.6.2): per-leg arcs may live under
+    # trajectory.segments (OCM TRAJ) once an entry is migrated off the
+    # legacy flat legs[]. Mirror the package loader's _segments_as_legs
+    # fallback so the harness reads both on-disk forms during the lazy
+    # backfill (e.g. the migrated Aldrin classic out/in entries).
+    legs_raw = (row.get("trajectory") or {}).get("segments") or row.get("legs") or []
+    leg_tofs = [leg.get("tof_days") for leg in legs_raw if leg.get("tof_days") is not None]
+    if not leg_tofs:
+        return ExclusionReason.MISSING_LEG_TOFS, None
+
+    entry = CatalogueEntry(
+        id=row["id"],
+        name=row.get("name", row["id"]),
+        bodies=tuple(bodies),
+        sequence_canonical=sequence_canonical,
+        period_k=int(period["k"]),
+        period_years=float(period["years"]),
+        vinf_targets_kms=tuple(float(v) for v in vinfs),
+        leg_tofs_days=tuple(float(t) for t in leg_tofs),
+    )
+    return ExclusionReason.CONSTRUCTIBLE, entry
+
+
+def classify_catalogue() -> list[tuple[str, ExclusionReason]]:
+    """Classify *every* catalogue row, returning ``(id, reason)`` sorted by id.
+
+    Coverage-audit primitive (task #55): no row is dropped silently, so the
+    census test can assert the union of all reasons covers the full catalogue.
+    """
+    raw = yaml.safe_load(CATALOGUE_PATH.read_text())
+    out = [(row["id"], classify_row(row)[0]) for row in raw]
+    out.sort(key=lambda pair: pair[0])
+    return out
+
+
 def load_constructible_entries() -> list[CatalogueEntry]:
     """Return the filtered, sortable list of catalogue entries the v1
     optimiser can construct.
@@ -111,49 +231,8 @@ def load_constructible_entries() -> list[CatalogueEntry]:
     raw = yaml.safe_load(CATALOGUE_PATH.read_text())
     entries: list[CatalogueEntry] = []
     for row in raw:
-        # Regime describes the ΔV character (ballistic vs gravity-assist-
-        # maintained powered), NOT constructibility: both are buildable as a
-        # Lambert cell here. Mirrors the m6b loader, which also admits both.
-        if row.get("trajectory_regime", "ballistic") not in ("ballistic", "powered"):
-            continue
-        if row.get("primary", "Sun") != "Sun":
-            continue
-        bodies = row.get("bodies") or []
-        if len(bodies) != 2:
-            continue
-        sequence_canonical = row.get("sequence_canonical") or ""
-        if not _is_two_body_alternation(sequence_canonical, tuple(bodies)):
-            continue
-        period = row.get("period") or {}
-        if period.get("k") is None or period.get("years") is None:
-            continue
-        vinfs_raw = row.get("vinf_kms_at_encounters") or []
-        if len(vinfs_raw) != len(bodies):
-            continue
-        vinfs = [v.get("vinf_kms") for v in vinfs_raw]
-        if any(v is None for v in vinfs):
-            continue
-        # Schema v3 (spec §16.6.2): per-leg arcs may live under
-        # trajectory.segments (OCM TRAJ) once an entry is migrated off the
-        # legacy flat legs[]. Mirror the package loader's _segments_as_legs
-        # fallback so the harness reads both on-disk forms during the lazy
-        # backfill (e.g. the migrated Aldrin classic out/in entries).
-        legs_raw = (row.get("trajectory") or {}).get("segments") or row.get("legs") or []
-        leg_tofs = [leg.get("tof_days") for leg in legs_raw if leg.get("tof_days") is not None]
-        if not leg_tofs:
-            continue
-
-        entries.append(
-            CatalogueEntry(
-                id=row["id"],
-                name=row.get("name", row["id"]),
-                bodies=tuple(bodies),
-                sequence_canonical=sequence_canonical,
-                period_k=int(period["k"]),
-                period_years=float(period["years"]),
-                vinf_targets_kms=tuple(float(v) for v in vinfs),
-                leg_tofs_days=tuple(float(t) for t in leg_tofs),
-            )
-        )
+        reason, entry = classify_row(row)
+        if reason is ExclusionReason.CONSTRUCTIBLE and entry is not None:
+            entries.append(entry)
     entries.sort(key=lambda e: e.id)
     return entries

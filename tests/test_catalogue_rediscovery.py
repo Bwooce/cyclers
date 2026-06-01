@@ -49,7 +49,12 @@ from cyclerfinder.search.optimize import (
     optimise_cell_idealized,
 )
 from cyclerfinder.search.sequence import Cell
-from tests._catalogue_loader import CatalogueEntry, load_constructible_entries
+from tests._catalogue_loader import (
+    CatalogueEntry,
+    ExclusionReason,
+    classify_catalogue,
+    load_constructible_entries,
+)
 
 # ---------------------------------------------------------------------------
 # Tolerances and harness constants
@@ -245,6 +250,117 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
     non_helio_ids = {row["id"] for row in raw if row.get("primary") not in (None, "Sun")}
     leaked = {e.id for e in entries} & non_helio_ids
     assert not leaked, f"non-heliocentric entries leaked: {leaked}"
+
+
+# ---------------------------------------------------------------------------
+# Coverage audit — the V0→V1 promotion gauntlet census (task #55)
+#
+# The gauntlet rediscovers only ``CONSTRUCTIBLE`` entries. The vast
+# majority of the catalogue is *not* constructible by the v1 optimiser,
+# and that is fine — but it must never be excluded *silently*. These
+# tests assert that every catalogue row is classified into exactly one
+# documented :class:`ExclusionReason`, and freeze the distribution as a
+# ratchet so any change to the catalogue's testability profile surfaces
+# as a reviewed diff rather than a quiet drop in coverage.
+# ---------------------------------------------------------------------------
+
+EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 202,
+    ExclusionReason.NON_HELIOCENTRIC: 6,
+    ExclusionReason.MISSING_VINF: 5,
+    ExclusionReason.CONSTRUCTIBLE: 2,
+    ExclusionReason.NOT_TWO_BODY: 2,
+    ExclusionReason.MISSING_PERIOD: 2,
+}
+"""Frozen census of how the 219-row catalogue distributes across
+exclusion reasons (as of 2026-06-02). This is a *ratchet*: when the
+catalogue changes, this dict must be updated in the same commit, which
+forces a conscious review of whether the change moved entries into or
+out of the v1 gauntlet's reach.
+
+Reasons absent from this dict are expected to have a count of zero (e.g.
+``NON_BALLISTIC`` and ``MISSING_LEG_TOFS`` — no such rows today).
+"""
+
+
+def _census_counts() -> dict[ExclusionReason, int]:
+    counts: dict[ExclusionReason, int] = {}
+    for _id, reason in classify_catalogue():
+        counts[reason] = counts.get(reason, 0) + 1
+    return counts
+
+
+def test_census_classifies_every_entry_exactly_once() -> None:
+    """No catalogue row may be dropped silently: the census must cover the
+    full catalogue, with one reason per id and no duplicate ids."""
+    import yaml
+
+    from tests._catalogue_loader import CATALOGUE_PATH
+
+    raw = yaml.safe_load(CATALOGUE_PATH.read_text())
+    all_ids = [row["id"] for row in raw]
+
+    census = classify_catalogue()
+    census_ids = [cid for cid, _ in census]
+
+    assert len(census_ids) == len(all_ids), (
+        f"census size {len(census_ids)} != catalogue size {len(all_ids)}"
+    )
+    assert len(set(census_ids)) == len(census_ids), "duplicate ids in census"
+    assert set(census_ids) == set(all_ids), (
+        f"census/catalogue id mismatch: "
+        f"missing={set(all_ids) - set(census_ids)}, "
+        f"extra={set(census_ids) - set(all_ids)}"
+    )
+
+
+def test_census_constructible_set_agrees_with_loader() -> None:
+    """The census and the gauntlet's own loader must name the *same*
+    constructible entries — one classifier, no divergence."""
+    census_constructible = {
+        cid for cid, reason in classify_catalogue() if reason is ExclusionReason.CONSTRUCTIBLE
+    }
+    loader_constructible = {e.id for e in load_constructible_entries()}
+    assert census_constructible == loader_constructible, (
+        f"census vs loader disagree on constructible set: "
+        f"census_only={census_constructible - loader_constructible}, "
+        f"loader_only={loader_constructible - census_constructible}"
+    )
+
+
+def test_census_breakdown_matches_frozen_ratchet() -> None:
+    """The exclusion-reason distribution must match ``EXPECTED_COVERAGE``.
+
+    A mismatch means the catalogue changed in a way that altered which
+    entries the v1 gauntlet can reach. Update ``EXPECTED_COVERAGE`` in the
+    same commit, having confirmed the shift is intended.
+    """
+    counts = _census_counts()
+    # Normalise: reasons absent from EXPECTED_COVERAGE are expected to be 0.
+    expected = {reason: EXPECTED_COVERAGE.get(reason, 0) for reason in ExclusionReason}
+    actual = {reason: counts.get(reason, 0) for reason in ExclusionReason}
+    assert actual == expected, (
+        "catalogue testability profile changed.\n"
+        f"  expected: { {r.value: n for r, n in expected.items() if n} }\n"
+        f"  actual:   { {r.value: n for r, n in actual.items() if n} }\n"
+        "If intended, update EXPECTED_COVERAGE in this commit."
+    )
+
+
+def test_expected_skips_are_constructible() -> None:
+    """Every ``EXPECTED_SKIPS`` key must still be a CONSTRUCTIBLE entry.
+
+    A skip documented for an entry that is no longer constructible (renamed,
+    re-classified, or removed) is dead weight that hides a coverage gap —
+    fail loudly so it is cleaned up or re-justified.
+    """
+    constructible = {
+        cid for cid, reason in classify_catalogue() if reason is ExclusionReason.CONSTRUCTIBLE
+    }
+    stale = set(EXPECTED_SKIPS) - constructible
+    assert not stale, (
+        f"EXPECTED_SKIPS names entries that are not constructible (stale skips): {stale}"
+    )
 
 
 # ---------------------------------------------------------------------------
