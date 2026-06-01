@@ -195,14 +195,22 @@ def test_optimisation_result_reproducible_with_seed() -> None:
 
 @pytest.mark.xfail(
     reason=(
-        "Pre-existing M5 binding-gate regression — task #54. The optimiser "
-        "returns 0 results (max_vinf=38 km/s, residual=inf, "
-        "constraints_satisfied=False) on the 2-syn E-M cell at vinf_cap=7.0. "
-        "Bisected verified the failure pre-dates today's Lambert + multi-start "
-        "work (commit a656a7e reverted; failure persists). Was hidden by "
-        "@pytest.mark.slow; @slow dropped 2026-06-01 (test runs in 4.2s; "
-        "@slow was hiding the failure, not legitimately slow). Flip strict=True "
-        "once #54 fix lands."
+        "RE-SCOPED 2026-06-01 (task #54). Not a pending bug fix — a documented "
+        "v1-scope boundary. From the free-return seed + 5-start grid + DE pass, "
+        "the v1 idealized optimiser does not converge to a feasible sub-cap "
+        "closure on the 2-syn E-M-E cell at vinf_cap=7.0; it lands in a "
+        "degenerate non-closing basin (max_vinf=38 km/s, residual=inf, "
+        "constraints_satisfied=False). Two compounding reasons, neither fixed "
+        "at v1: (1) optimiser seeding/convergence — the same free-return seed "
+        "also fails on the genuinely-3-encounter Aldrin k=1 cell (lands ~43 "
+        "km/s), so this is a search-machinery limitation, deferred to the "
+        "catalogue-seeded warm-start enhancement (#52); (2) the published "
+        "5.65/3.05 cycler is the S1L1 4-encounter E-E-M-M topology (one "
+        "intermediate Earth loop), which a 3-encounter E-M-E cell cannot "
+        "represent regardless of convergence — tracked as a data_gap on entry "
+        "s1l1-2syn-em-cpom, requires AIAA 2002-4420 full text. Anchors + "
+        "assertions are kept intact so a future 4-encounter / warm-started "
+        "optimiser trips strict and signals the signature is reachable."
     ),
     strict=False,
 )
@@ -333,10 +341,15 @@ def test_over_vinf_cell_rejected() -> None:
 
 @pytest.mark.xfail(
     reason=(
-        "Pre-existing M5 regression — task #54. Same root cause as "
-        "test_2syn_em_rediscovers_5_65_kms_earth: optimiser returns 0 results. "
-        "@slow dropped 2026-06-01 (test runs in 5.6s, well under the ~10s "
-        "@slow threshold). Flip strict=True once #54 fix lands."
+        "RE-SCOPED 2026-06-01 (task #54). v1-optimiser convergence limitation, "
+        "not a pending fix. The Aldrin k=1 E-M-E cell is a genuine 3-encounter "
+        "cycler, yet from the free-return seed the v1 optimiser fails to reach "
+        "Aldrin's 9.74 km/s family at vinf_cap=12.0 — it lands in a degenerate "
+        "basin (max_vinf~43 km/s, composite=inf, constraints_satisfied=False). "
+        "This isolates the failure to optimiser seeding/convergence (no "
+        "4-encounter topology is involved here), deferred to the "
+        "catalogue-seeded warm-start enhancement (#52). Anchors kept intact so "
+        "a warm-started optimiser trips strict once it can rediscover Aldrin."
     ),
     strict=False,
 )
@@ -412,10 +425,15 @@ def test_ephemeris_mode_stubbed_until_m6() -> None:
 @pytest.mark.slow
 @pytest.mark.xfail(
     reason=(
-        "Pre-existing M5 regression — task #54. Top-level find_cyclers "
-        "returns []. Same root cause as the other two M5-gate failures. "
-        "@slow retained — this one IS genuinely slow (~32s). Flip "
-        "strict=True once #54 fix lands."
+        "RE-SCOPED 2026-06-01 (task #54). Top-level find_cyclers((E,M), "
+        "k_synodic=2, vinf_cap=7.0) returns [] — the end-to-end surface of the "
+        "same v1-scope boundary documented on "
+        "test_2syn_em_rediscovers_5_65_kms_earth: no feasible sub-cap closure "
+        "from the free-return seed, and the published signature is the S1L1 "
+        "4-encounter topology a 3-encounter cell cannot represent. Not a "
+        "pending fix; deferred to warm-start (#52) + 4-encounter support. "
+        "@slow retained — genuinely ~32s. Anchors kept intact to trip strict "
+        "when a future optimiser can rediscover the signature."
     ),
     strict=False,
 )
