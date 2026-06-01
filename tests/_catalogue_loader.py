@@ -111,7 +111,10 @@ def load_constructible_entries() -> list[CatalogueEntry]:
     raw = yaml.safe_load(CATALOGUE_PATH.read_text())
     entries: list[CatalogueEntry] = []
     for row in raw:
-        if row.get("trajectory_regime", "ballistic") != "ballistic":
+        # Regime describes the ΔV character (ballistic vs gravity-assist-
+        # maintained powered), NOT constructibility: both are buildable as a
+        # Lambert cell here. Mirrors the m6b loader, which also admits both.
+        if row.get("trajectory_regime", "ballistic") not in ("ballistic", "powered"):
             continue
         if row.get("primary", "Sun") != "Sun":
             continue

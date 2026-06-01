@@ -19,6 +19,7 @@ from numpy.typing import NDArray
 from cyclerfinder.core.constants import PLANETS, SAFE_PERIHELION_KM
 from cyclerfinder.core.flyby import (
     bend_angle,
+    dv_from_turn_deficit,
     flyby_dv,
     flyby_dv_for,
     is_ballistic_feasible,
@@ -204,6 +205,53 @@ def test_flyby_dv_for_unknown_body_raises() -> None:
     vout = np.array([6.0, 0.0, 0.0])
     with pytest.raises(KeyError):
         flyby_dv_for("X", vin, vout)
+
+
+def test_dv_from_turn_deficit_zero_within_cone() -> None:
+    """No deficit (delta_required <= delta_max) -> exactly 0.0."""
+    assert dv_from_turn_deficit(9.0, np.radians(50.0), np.radians(72.0)) == 0.0
+    assert dv_from_turn_deficit(9.0, np.radians(72.0), np.radians(72.0)) == 0.0
+
+
+def test_dv_from_turn_deficit_matches_closed_form() -> None:
+    """Above the cone, returns ``2 * vinf * sin(0.5 * excess)``."""
+    vinf = 9.75
+    req, dmax = np.radians(84.0), np.radians(72.0)
+    expected = 2.0 * vinf * np.sin(0.5 * (req - dmax))
+    assert dv_from_turn_deficit(vinf, req, dmax) == pytest.approx(expected, rel=1e-12)
+
+
+def test_dv_from_turn_deficit_is_flyby_dv_bend_term() -> None:
+    """For an equal-magnitude over-bent pair the magnitude cost is zero, so
+    ``flyby_dv`` reduces exactly to :func:`dv_from_turn_deficit` evaluated at
+    the shared speed -- confirming the helper is the single source of the
+    bend cost used inside :func:`flyby_dv`."""
+    vinf = 7.0
+    delta_max = max_bend(MU_MARS, RP_MARS_SAFE, vinf)
+    bend = min(1.5 * delta_max, np.pi - 1.0e-9)
+    vin = np.array([vinf, 0.0, 0.0])
+    vout = _rotate_in_xy(vin, bend)
+    expected = dv_from_turn_deficit(vinf, bend_angle(vin, vout), delta_max)
+    assert flyby_dv(vin, vout, MU_MARS, RP_MARS_SAFE) == pytest.approx(expected, rel=1e-12)
+
+
+def test_dv_from_turn_deficit_rejects_negative_vinf() -> None:
+    with pytest.raises(ValueError):
+        dv_from_turn_deficit(-1.0, np.radians(84.0), np.radians(72.0))
+
+
+def test_dv_from_turn_deficit_aldrin_magnitude_order() -> None:
+    """Aldrin 1L1 illustrative input: 84 deg required vs 72 deg achievable at
+    V_inf ~= 9.75 km/s gives a single-impulse surrogate of ~2 km/s/synodic.
+
+    NOTE: this asserts the *formula is wired correctly*, not Aldrin's true
+    Delta V. The asserted value is OUR computation (Strange-Longuski single-
+    impulse surrogate, which over-estimates the optimum); no published Aldrin
+    Delta V exists. This is deliberately NOT a golden test -- see
+    feedback-golden-tests-sourced-only.
+    """
+    dv = dv_from_turn_deficit(9.75, np.radians(84.0), np.radians(72.0))
+    assert 1.5 < dv < 2.5
 
 
 def test_is_ballistic_feasible_consistency() -> None:

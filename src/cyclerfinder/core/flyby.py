@@ -70,6 +70,50 @@ def max_bend(mu_planet: float, rp_min: float, vinf: float) -> float:
     return 2.0 * asin(min(1.0, max(0.0, arg)))
 
 
+def dv_from_turn_deficit(vinf: float, delta_required: float, delta_max: float) -> float:
+    """``Delta V`` (km/s) to make up a turn-angle deficit at a flyby.
+
+    When the geometry demands more bending than the planet can ballistically
+    provide (``delta_required > delta_max``), the shortfall is paid as a
+    single periapsis impulse rotating the :math:`V_\\infty` asymptote
+    (Strange & Longuski, JSR 2002, eq. 9):
+
+    .. math::
+
+        \\Delta V = 2 V_\\infty \\sin\\!\\left(\\tfrac{1}{2}
+                    \\max(0,\\, \\delta_\\text{req} - \\delta_{\\max})\\right)
+
+    Returns ``0.0`` when the required turn is within the achievable cone.
+    This is the magnitude reported as *interesting output* for powered
+    cyclers such as the classic Aldrin (1L1): McConaghy 2002 Table 4 gives the
+    **Earth** (geocentric) ``delta_required = 84 deg`` against ``delta_max =
+    72 deg`` (a 200 km Earth flyby), a 12 deg deficit. NOTE: this is a
+    single-impulse surrogate that *over*-estimates
+    the optimal maintenance cost; it is our computed value, not a
+    source-attested ``Delta V`` (no published Aldrin ``Delta V`` exists —
+    McConaghy defers it, p.8). Never use it as a golden-test target.
+
+    Parameters
+    ----------
+    vinf:
+        Hyperbolic excess speed at the flyby, km/s. Non-negative.
+    delta_required:
+        Turn angle the trajectory geometry demands, rad.
+    delta_max:
+        Maximum ballistically achievable turn angle, rad (see
+        :func:`max_bend`).
+
+    Returns
+    -------
+    float
+        ``Delta V`` in km/s. Non-negative; ``0.0`` when within the cone.
+    """
+    if vinf < 0.0:
+        raise ValueError(f"vinf must be non-negative, got {vinf}")
+    excess = max(0.0, delta_required - delta_max)
+    return 2.0 * vinf * sin(0.5 * excess)
+
+
 def bend_angle(vin_vec: Vec3, vout_vec: Vec3) -> float:
     """Angle (rad) between two :math:`V_\\infty` vectors.
 
@@ -182,8 +226,7 @@ def flyby_dv(
     mag_cost = abs(vout_norm - vin_norm)
     delta = bend_angle(vin_vec, vout_vec)
     delta_achievable = max_bend(mu_planet, rp_min, v_mean)
-    excess = max(0.0, delta - delta_achievable)
-    bend_cost = 2.0 * v_mean * sin(0.5 * excess)
+    bend_cost = dv_from_turn_deficit(v_mean, delta, delta_achievable)
 
     return mag_cost + bend_cost
 

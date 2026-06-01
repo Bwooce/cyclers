@@ -23,9 +23,10 @@
 - id: aldrin-classic-em-k1-outbound
   name: "Aldrin classic Earth-Mars cycler (outbound / up-escalator, 1 synodic)"
   source: literature
-  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
+  trajectory_regime: powered   # reclassified 2026-06-01 (task #70): powered in the idealized model - McConaghy 2002 Table 4 / dissertation shows the 1L1 EARTH (geocentric) flyby cannot supply the required ~84 deg turn (max ~72 deg at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (the literature-attested property); NOT derived from our computed DV. See notes + maintenance_dv_kms_per_synodic + flyby_mechanics.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -98,11 +99,18 @@
         note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.7 km/s) is the cycle constraint at Mars. dv_kms null mirrors the v2 delta_v_kms (Russell classes this under the wider near-ballistic net, AR=1.47/TR=0.86)."
       - at_segment_boundary: ["ret-me", "out-em"]
         body: "E"
-        type: "flyby-ballistic"
+        type: "flyby-powered"
         dv_kms: null
-        turning_angle_deg: null
-        periapsis_alt_km: null
-        note: "Earth flyby closing the 1-synodic cycle; V-infinity 6.5 km/s."
+        turning_angle_deg: 84.7   # SOURCED geometry: geocentric turn REQUIRED to close the 1-synodic cycle, computed from the sourced a=1.60/e=0.393 (McConaghy 2002 Table 4 / dissertation report ~84 deg). This is the binding powered flyby (not Mars).
+        max_turning_angle_deg: 71.4   # COMPUTED achievable turn at periapsis_alt_km below; McConaghy bases the ~72 deg max on a 200 km Earth flyby (TRMIN=0.85 = 72/84.7 chosen to include Aldrin). required > max => powered.
+        periapsis_alt_km: 200   # SOURCED: McConaghy dissertation bases the max allowable geocentric turn on a "200 km altitude Earth flyby". Configurable per orbit/body; 300 km is the generic safe default elsewhere.
+        note: "Earth flyby closing the 1-synodic cycle; V-infinity 6.5 km/s. The required geocentric turn (~84.7 deg) exceeds the max ballistic turn (~71.4 deg at 200 km), so the cycle cannot close ballistically: this is why Aldrin is powered. dv_kms is unpublished (see data_gaps); the computed surrogate is surfaced in maintenance_dv_kms_per_synodic."
+  data_gaps:
+    - path: "trajectory.maneuvers[E].dv_kms"
+      kind: "unknown"
+      note: "The classic Aldrin (1L1) maintenance-DV magnitude is NOT published in the primary literature. McConaghy/Longuski/Byrnes 2002 (AIAA 2002-4420, Table 4, row '1L1') characterises the Aldrin cycler by a turn-angle test - required geocentric (EARTH) turn ~84 deg vs max achievable ~72 deg at a 200 km Earth flyby - and explicitly defers DV estimation to future work (p.8: 'An estimate of the total DV required by powered cyclers would also be useful for identifying nearly-ballistic cyclers'). No m/s figure exists in McConaghy 2002, Byrnes 1993, Rogers 2012, or Russell 2004. Our M6b/M7 ephemeris optimiser computes a maintenance-DV value; that value is OUR computation, not source-attested - flagged as such in maintenance_dv_kms_per_synodic."
+      source_hint: "McConaghy/Longuski/Byrnes 2002 AIAA 2002-4420 Table 4 + dissertation (geocentric turn 84/72 deg, 200 km Earth flyby, TRMIN=0.85); DV magnitude deferred p.8"
+      todo_ref: "#70"
   first_published:
     authors: ["Aldrin, B."]
     year: 1985
@@ -166,12 +174,19 @@
 
     Russell 2004 Table 3.4 classifies this cycler under the wider
     ARMIN=0.9 / TRMIN=0.85 "ballistic" net rather than the strict
-    AR>=1.0 AND TR>=1.0 criterion. Strictly, this cycler is near-ballistic:
-    AR=1.47, TR=0.86; the gravity-assist deflection at Mars is short
-    of fully ballistic and requires a small powered nudge. The
-    `trajectory_regime: ballistic` field is retained because Russell and
-    the cycler literature group it with the ballistic family; consumers
-    doing powered-flyby DV accounting should still compute the residual.
+    AR>=1.0 AND TR>=1.0 criterion (AR=1.47, TR=0.86). That is Russell's
+    *family-grouping* net, not a claim of true ballistic closure. The
+    decisive test is McConaghy 2002 Table 4 / the dissertation: the 1L1
+    EARTH (geocentric) flyby requires a ~84 deg turn against a ~72 deg
+    maximum (at a 200 km Earth flyby; TRMIN=0.85 = 72/84.7 is chosen to
+    include Aldrin), so the cycler cannot close ballistically even in the
+    idealized circular-coplanar model. We
+    therefore set `trajectory_regime: powered` (reclassified 2026-06-01,
+    task #70). The regime is the *idealized-model* property attested by
+    the literature; it is NOT set from any DV we compute. The magnitude of
+    the maintenance burn is unpublished (see data_gaps) and is surfaced
+    separately as the COMPUTED, non-source-attested
+    `maintenance_dv_kms_per_synodic`.
   source_quotes:
     a_au: |
       Rogers et al. 2012, Table 1 'Orbital elements and number of vehicles for selected
@@ -1384,9 +1399,10 @@
 - id: aldrin-classic-em-k1-inbound
   name: "Aldrin classic Earth-Mars cycler (inbound / down-escalator, 1 synodic)"
   source: literature
-  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
+  trajectory_regime: powered   # reclassified 2026-06-01 (task #70): time-mirror of outbound; powered in the idealized model per McConaghy 2002 Table 4 / dissertation (1L1 EARTH geocentric turn ~84 deg > ~72 deg max at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (literature-attested); NOT derived from our computed DV. See aldrin-classic-em-k1-outbound notes.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -1450,11 +1466,12 @@
     maneuvers:                # === OCM MAN ===
       - at_segment_boundary: ["in-me", "ret-em"]
         body: "E"
-        type: "flyby-ballistic"
+        type: "flyby-powered"
         dv_kms: null
-        turning_angle_deg: null
-        periapsis_alt_km: null
-        note: "Earth flyby closing the inbound->return transition; V-infinity 6.5 km/s (symmetric with outbound)."
+        turning_angle_deg: 84.7   # SOURCED geometry (geocentric turn required), from a=1.60/e=0.393; the binding powered flyby (time-mirror of outbound).
+        max_turning_angle_deg: 71.4   # COMPUTED achievable turn at the 200 km Earth flyby below (McConaghy ~72 deg, TRMIN=0.85). required > max => powered.
+        periapsis_alt_km: 200   # SOURCED: McConaghy dissertation 200 km Earth flyby. Configurable per orbit/body.
+        note: "Earth flyby closing the inbound->return transition; V-infinity 6.5 km/s (symmetric with outbound). Required geocentric turn ~84.7 deg > ~71.4 deg achievable => powered. dv_kms unpublished (data_gaps); computed surrogate in maintenance_dv_kms_per_synodic."
       - at_segment_boundary: ["ret-em", "in-me"]
         body: "M"
         type: "flyby-ballistic"
@@ -1462,6 +1479,12 @@
         turning_angle_deg: null
         periapsis_alt_km: null
         note: "Mars flyby closing the 1-synodic cycle; V-infinity 9.7 km/s (symmetric with outbound)."
+  data_gaps:
+    - path: "trajectory.maneuvers[E].dv_kms"
+      kind: "unknown"
+      note: "Same as aldrin-classic-em-k1-outbound: the classic Aldrin (1L1) maintenance-DV magnitude is NOT published. McConaghy 2002 (AIAA 2002-4420, Table 4 row '1L1') gives a turn-angle test (required ~84 deg > max ~72 deg at the EARTH geocentric flyby, 200 km altitude) and defers DV estimation to future work (p.8). Inbound is the time-mirror of outbound and shares the same gap."
+      source_hint: "McConaghy/Longuski/Byrnes 2002 AIAA 2002-4420 Table 4 + dissertation (geocentric 84/72 deg, 200 km Earth flyby); DV magnitude deferred p.8"
+      todo_ref: "#70"
   first_published:
     authors: ["Aldrin, B."]
     year: 1985

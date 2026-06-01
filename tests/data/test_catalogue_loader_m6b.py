@@ -1,8 +1,9 @@
 """Tests for the M6b catalogue loader (test infrastructure).
 
-Per plan §4.5: the loader must filter to circular-coplanar, ballistic,
-Sun-primary entries; reject cr3bp and analytic-ephemeris entries; and
-contain every id in :data:`M6B_REGRESSION_IDS`.
+Per plan §4.5: the loader must filter to circular-coplanar, impulsive
+(ballistic or powered), Sun-primary entries; reject cr3bp and
+analytic-ephemeris entries; and contain every id in
+:data:`M6B_REGRESSION_IDS`.
 """
 
 from __future__ import annotations
@@ -21,7 +22,7 @@ def test_loader_filters_v1_pass_circular_coplanar_ballistic_sun_only() -> None:
     assert 100 <= len(entries) <= 250, f"unexpected M6b-scope entry count: {len(entries)}"
     for entry in entries:
         assert entry.get("model_assumption") in (None, "circular-coplanar")
-        assert entry.get("trajectory_regime") in (None, "ballistic")
+        assert entry.get("trajectory_regime") in (None, "ballistic", "powered")
         assert entry.get("primary") in (None, "Sun")
 
 
@@ -58,4 +59,6 @@ def test_loader_returns_aldrin_outbound() -> None:
     assert aldrin is not None
     assert aldrin["bodies"] == ["E", "M"]
     assert aldrin["model_assumption"] == "circular-coplanar"
-    assert aldrin["trajectory_regime"] == "ballistic"
+    # Powered (reclassified 2026-06-01, task #70): the 1L1 Mars flyby cannot
+    # supply the required 84 deg turn (max 72 deg) even in the idealized model.
+    assert aldrin["trajectory_regime"] == "powered"

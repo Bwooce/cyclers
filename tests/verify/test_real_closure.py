@@ -9,7 +9,10 @@ Spec / plan references
 Test layout (plan §4.1):
 
 * Gate 1 — :func:`test_aldrin_cycler_periodic_over_2_cycles_astropy`
-  (**M6b binding gate**, spec §8 M6 real-ephemeris half).
+  (**aspirational / still-open** DE440 Lambert-chain closure; xfail —
+  the binding Aldrin criterion moved to Gate 1b per task #72).
+* Gate 1b — :func:`test_aldrin_powered_turn_deficit_gate` (**binding
+  Aldrin gate**: sourced anchors + sourced 84°/72° turn deficit).
 * Gate 2 — :func:`test_2syn_em_cpom_periodic_over_2_cycles_astropy`
   (**xfail** under the multi-rev Lambert blocker).
 * Gate 3 — :func:`test_real_drift_rejects_open_trajectory`.
@@ -35,6 +38,7 @@ import pytest
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.model.cycler import Cycler, Encounter
+from cyclerfinder.search.maintain import optimise_aldrin_maintenance_dv
 from cyclerfinder.search.phase_match import (
     PhaseSignature,
     phase_signature_from_catalogue_entry,
@@ -79,7 +83,12 @@ def astropy_ephem() -> Ephemeris:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "M6b binding gate fails by ~1450x: Lambert-chain construction "
+        "ASPIRATIONAL / still-open goal, NOT the binding gate (task #72 "
+        "moved the binding criterion to "
+        "test_aldrin_powered_turn_deficit_gate). True DE440 closure needs "
+        "the flyby-constrained periodic BVP solver, which is not yet "
+        "built; we do NOT fabricate a pass. "
+        "M6b Lambert-chain closure fails by ~1450x: Lambert-chain construction "
         "of the Aldrin classic E-M k=1 cycler (plan §3.1.1) produces "
         "max_drift_km ~ 2.9e8 km on real ephemeris (1986-02-27 launch "
         "epoch, 2 cycles ~ 4.3 yr horizon), vs the 200,000 km "
@@ -116,14 +125,15 @@ def test_aldrin_cycler_periodic_over_2_cycles_astropy(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
 ) -> None:
-    """M6b BINDING GATE — spec §8, real-ephemeris half (plan §4.1 gate 1).
+    """ASPIRATIONAL DE440 Lambert-chain closure — spec §8, real-ephemeris
+    half (plan §4.1 gate 1). NOT the binding gate: task #72 moved the binding
+    Aldrin criterion to :func:`test_aldrin_powered_turn_deficit_gate`.
 
     Asserts the Aldrin classic E-M k=1 outbound cycler closes over 2
     real-ephemeris cycles within :data:`REAL_DRIFT_TOLERANCE_KM` on
-    DE440. **xfail at M6b authorship time** per the architectural
-    finding in the xfail reason and todo.md's M7 hand-off; the test
-    will flip to passing once M7 supplies an orbital-elements-based
-    constructor for the Aldrin family.
+    DE440. **xfail** per the architectural finding in the xfail reason and
+    todo.md's M7 hand-off; the test will flip to passing once the flyby-
+    constrained periodic BVP solver lands. We do not fabricate a pass.
     """
     result = verify_real_closure(
         aldrin_entry,
@@ -146,6 +156,80 @@ def test_aldrin_cycler_periodic_over_2_cycles_astropy(
     )
     assert result.max_drift_km < REAL_DRIFT_TOLERANCE_KM
     assert result.v3_status == "v3-real-closure-pass"
+
+
+# ---------------------------------------------------------------------------
+# Gate 1b — BINDING Aldrin reproduction gate (task #72, Phase C)
+#
+# Re-specs the milestone's binding Aldrin criterion away from Lambert-chain
+# DE440 drift-closure (architecturally unreachable without the flyby-
+# constrained BVP solver — see the xfail above, which stays an open goal,
+# not a fabricated pass) and onto what the powered cycler CAN faithfully
+# reproduce: the SOURCED orbital anchors and the SOURCED per-orbit turn
+# deficit (McConaghy 84 deg required vs 72 deg achievable at a 200 km Earth
+# flyby). The ΔV magnitude is unpublished, so it is sanity-bounded only —
+# never matched against a sourced number. The gate has teeth: the honest
+# bands (±2 deg on the turns, ~1-2 % on a/e) would fail if the optimiser
+# slid off the Aldrin family onto a neighbouring ballistic cycler.
+# ---------------------------------------------------------------------------
+
+# Published, source-attested anchors (the only legitimate golden targets).
+_ALDRIN_PUB_A_AU = 1.60
+_ALDRIN_PUB_E = 0.393
+_ALDRIN_PUB_VINF_E = 6.5
+_ALDRIN_PUB_VINF_M = 9.7
+_ALDRIN_PUB_EM_TOF_DAYS = 146.0
+_ALDRIN_PUB_TURN_REQ_DEG = 84.0  # McConaghy 2002 Table 4 / dissertation, 1L1
+_ALDRIN_PUB_TURN_MAX_DEG = 72.0  # achievable at a 200 km Earth flyby
+
+
+def test_aldrin_powered_turn_deficit_gate(aldrin_entry: dict[str, object]) -> None:
+    """BINDING Aldrin gate (task #72): sourced anchors + sourced turn deficit.
+
+    Runs the periodic maintenance optimiser on the fast circular backend and
+    asserts the recovered orbit reproduces the published Aldrin anchors AND the
+    published Earth (geocentric) turn deficit (≈84° required vs ≈72° achievable
+    → powered). The computed maintenance ΔV is sanity-bounded only. Also checks
+    catalogue↔code consistency for the Aldrin outbound entry so the recorded
+    regime / turn / altitude metadata cannot silently diverge from the model.
+    """
+    result = optimise_aldrin_maintenance_dv(Ephemeris("circular"), n_starts=5, seed=0)
+    assert result.converged is True
+
+    # --- Sourced orbital anchors (golden).
+    assert result.a_au == pytest.approx(_ALDRIN_PUB_A_AU, abs=0.05)
+    assert result.e == pytest.approx(_ALDRIN_PUB_E, abs=0.03)
+    assert result.leg_tofs_days[0] == pytest.approx(_ALDRIN_PUB_EM_TOF_DAYS, abs=15.0)
+    vinf = dict(result.vinf_kms_at_encounters)
+    assert vinf["E"] == pytest.approx(_ALDRIN_PUB_VINF_E, abs=0.4)
+    assert vinf["M"] == pytest.approx(_ALDRIN_PUB_VINF_M, abs=0.5)
+
+    # --- Sourced per-orbit turn deficit (golden): the powered evidence.
+    td = result.turn_deficit
+    assert td is not None
+    assert td.body == "E"
+    assert td.turn_required_deg == pytest.approx(_ALDRIN_PUB_TURN_REQ_DEG, abs=2.0)
+    assert td.turn_max_deg == pytest.approx(_ALDRIN_PUB_TURN_MAX_DEG, abs=2.0)
+    assert td.deficit_deg > 0.0
+    assert td.ballistically_feasible is False
+
+    # --- Computed maintenance ΔV: positive (powered) and sanity-bounded only.
+    assert result.maintenance_dv_kms > 0.0
+    assert result.maintenance_dv_kms < 3.0
+
+    # --- Catalogue ↔ code consistency (teeth on the recorded metadata).
+    assert aldrin_entry["trajectory_regime"] == "powered"
+    trajectory = aldrin_entry["trajectory"]
+    assert isinstance(trajectory, dict)
+    earth_man = next(m for m in trajectory["maneuvers"] if m["body"] == "E")
+    assert earth_man["type"] == "flyby-powered"
+    assert earth_man["periapsis_alt_km"] == 200
+    assert earth_man["turning_angle_deg"] == pytest.approx(_ALDRIN_PUB_TURN_REQ_DEG, abs=2.0)
+    assert earth_man["max_turning_angle_deg"] == pytest.approx(_ALDRIN_PUB_TURN_MAX_DEG, abs=2.0)
+    # Recorded ΔV is COMPUTED (never golden): only require it present + sane.
+    recorded_dv = aldrin_entry["maintenance_dv_kms_per_synodic"]
+    assert isinstance(recorded_dv, (int, float))
+    assert 0.0 < recorded_dv < 3.0
 
 
 # ---------------------------------------------------------------------------

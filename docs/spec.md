@@ -695,7 +695,23 @@ The §16.1 record sketch already gestured at a `trajectory{}` block; the
   Earth-loop segment.
 - `maneuvers[].type` ∈ `flyby-ballistic | flyby-powered | launch |
   arrival`. Ballistic flybys carry `dv_kms: 0.0`; the V∞-continuity
-  condition at each flyby is the cycle-closure constraint.
+  condition at each flyby is the cycle-closure constraint. A
+  `flyby-powered` maneuver is one whose geometrically *required* turn
+  (`turning_angle_deg`) exceeds the *achievable* turn
+  (`max_turning_angle_deg`) at its `periapsis_alt_km`; the shortfall is
+  paid as a periapsis ΔV. The classic Aldrin (1L1) is powered at the
+  **Earth (geocentric)** flyby: ~84° required vs ~72° achievable at a
+  200 km Earth flyby (McConaghy 2002 Table 4 / dissertation).
+- `maneuvers[].turning_angle_deg` is the *required* geocentric/planetocentric
+  turn (sourced from the orbit geometry); `maneuvers[].max_turning_angle_deg`
+  (additive, schema v3) is the *achievable* ballistic turn at the flyby.
+- `maneuvers[].periapsis_alt_km` is the flyby periapsis altitude above the
+  body's equatorial radius and is **configurable per orbit and per body**.
+  Where a source specifies it (e.g. Aldrin's 200 km Earth flyby), record the
+  sourced value; otherwise the mechanics code falls back to the conservative
+  per-body default `constants.PLANETS[code].safe_alt_km` (300 km). Smaller
+  altitude → tighter flyby → larger achievable turn, so this value directly
+  sets `max_turning_angle_deg` and thus the powered/ballistic classification.
 - **Signature integrity:** `segments` does **not** participate in the
   §16.2 hash beyond what `legs[]` already contributed (the per-leg `(a,e)`
   multiset, deduped). `vinf_kms_at_encounters[]`, `period{}`, and

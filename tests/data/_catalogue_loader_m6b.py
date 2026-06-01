@@ -58,8 +58,12 @@ def _entry_in_scope(entry: dict[str, Any]) -> bool:
       entries that omit the field per schema-v2 defaults and explicit
       circular-coplanar entries; rejects ``cr3bp`` and
       ``analytic-ephemeris``.
-    * ``trajectory_regime in (None, "ballistic")`` — rejects future
-      low-thrust entries.
+    * ``trajectory_regime in (None, "ballistic", "powered")`` — accepts
+      impulsive ballistic and impulsive powered cyclers (the classic
+      Aldrin 1L1 is powered: it cannot close ballistically even in the
+      idealized model, McConaghy 2002 Table 4). Rejects only future
+      low-thrust / continuous-propulsion regimes, for which the real-
+      ephemeris Lambert closure path is not applicable.
     * ``primary in (None, "Sun")`` — heliocentric only; rejects
       Earth-primary lunar / Jovian / Saturnian entries since
       :func:`cyclerfinder.search.phase_match.find_real_windows` only
@@ -69,7 +73,7 @@ def _entry_in_scope(entry: dict[str, Any]) -> bool:
     if model_assumption not in (None, "circular-coplanar"):
         return False
     trajectory_regime = entry.get("trajectory_regime")
-    if trajectory_regime not in (None, "ballistic"):
+    if trajectory_regime not in (None, "ballistic", "powered"):
         return False
     primary = entry.get("primary")
     return primary in (None, "Sun")
