@@ -67,12 +67,17 @@ testpaths = ["tests"]
 # `-m "slow or not slow"` to include everything.
 #
 # --timeout=600: belt-and-braces wall-clock cap. Fast tests finish in
-# under 1s; the slow ones (if -m slow) need ~5 min each.
+# under 1s; the slow ones (if -m slow) need ~5 min each. pytest-timeout
+# is xdist-aware — the cap is enforced per worker.
 #
-# pytest-xdist is installed and available via `-n auto` for parallel test
-# execution across cores — not default because the slow tests would each
-# saturate one core anyway and the fast ones don't benefit much.
-addopts = "-ra -q --strict-markers --timeout=600 -m 'not slow'"
+# -n auto: parallel execution across all logical cores via pytest-xdist.
+# The default run now carries the surfaced M5/M6b xfail tests (each a real
+# ~4-5s optimiser pass), so the suite is CPU-bound and fans out cleanly;
+# the slow suite (`-m slow`, 200+ parametrised optimiser runs) is where the
+# speedup is largest. All on-disk-mutating tests write to tmp_path, so
+# worker isolation is safe. Override with `-n0` to force serial (e.g. when
+# debugging with --pdb, which xdist does not support).
+addopts = "-ra -q --strict-markers --timeout=600 -n auto -m 'not slow'"
 markers = [
     "slow: tests that take more than ~10 seconds (M5 optimiser, catalogue rediscovery). Skipped by default; run with `-m slow` or `-m 'slow or not slow'`.",
 ]

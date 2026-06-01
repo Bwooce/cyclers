@@ -37,3 +37,6 @@ out/
 
 # Pre-existing stray file in the repo root; do not commit.
 nohup.out
+
+# Local Claude Code config / scheduler state
+.claude/
