@@ -200,19 +200,21 @@ def from_rotating(
     return r_inertial, v_inertial
 
 
-def synodic_omega(body: str) -> float:
-    """Angular rate (rad/s) of the synodic rotating frame for an Earth-``body`` pair.
+def synodic_omega(anchor_body: str) -> float:
+    """Angular rate (rad/s) of the synodic rotating frame anchored on ``anchor_body``.
 
-    For Earth-Mars cyclers (the M3 case) this is **Earth's** mean motion: the
-    spacecraft's repeating geometry is naturally described in the frame that
-    follows Earth's longitude. For Earth-Venus or VEM cyclers the caller chooses
-    which body anchors the frame (typically the slowest member of the pair set);
-    M3 only needs the E-M case.
+    The synodic frame follows the longitude of a chosen *anchor* body, so its
+    angular rate is that body's mean motion. For an Earth-Mars cycler the
+    natural anchor is **Earth** (``synodic_omega("E")``): the spacecraft's
+    geometry repeats in the frame that co-rotates with Earth's longitude. For
+    Earth-Venus or VEM cyclers the caller passes whichever body anchors the
+    frame (commonly the cycler's home/first-encounter body).
 
     Parameters
     ----------
-    body:
-        One-letter planet code (``"E"``, ``"M"``, or ``"V"``).
+    anchor_body:
+        One-letter planet code in :data:`PLANETS` (e.g. ``"E"``, ``"M"``,
+        ``"V"``). The frame rate is this body's mean motion.
 
     Returns
     -------
@@ -221,25 +223,10 @@ def synodic_omega(body: str) -> float:
 
     Raises
     ------
-    NotImplementedError
-        For ``"V"``: Venus-anchored frames are part of the VEM campaign (M8),
-        and the M3 single-frame primitive should not pretend to support them
-        silently.
     KeyError
         For body codes not in :data:`PLANETS`.
     """
-    if body == "V":
-        raise NotImplementedError(
-            "Venus-anchored synodic frame is part of the M8 VEM campaign; "
-            "M3 only supports Earth-anchored frames for E-M cyclers."
-        )
-    if body not in ("E", "M"):
-        # Forward to PLANETS lookup so unknown codes surface as KeyError.
-        _ = PLANETS[body]
-    # Earth's mean motion (deg/day) -> rad/s. Both "E" and "M" use Earth's
-    # mean motion because the spacecraft repeats its geometry in Earth's
-    # rotating frame for an E-M cycler.
-    n_deg_day = PLANETS["E"].mean_motion_deg_day
+    n_deg_day = PLANETS[anchor_body].mean_motion_deg_day
     return n_deg_day * (pi / 180.0) / SECONDS_PER_DAY
 
 

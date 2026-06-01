@@ -51,12 +51,14 @@ _J2000_EPOCH = datetime(2000, 1, 1, 12, 0, 0, tzinfo=UTC)
 # ecliptic north pole).
 _J2000_OBLIQUITY_RAD: Final[float] = radians(23.4392911)
 
-# Body-code → astropy body name map. The circular backend uses the same V/E/M
-# codes; the astropy backend translates to astropy's own naming.
+# Body-code → astropy body name map. Derived from the central PLANETS registry
+# so any (sourced) body added there is automatically resolvable here: astropy's
+# solar-system body names are the lowercased planet names (``"venus"``,
+# ``"earth"``, ``"mars"``, ``"jupiter"`` …). Bodies whose astropy slug differs
+# from ``name.lower()`` (e.g. a barycenter or a moon) get an explicit override.
+_ASTROPY_NAME_OVERRIDES: Final[dict[str, str]] = {}
 _ASTROPY_BODY_NAMES: dict[str, str] = {
-    "V": "venus",
-    "E": "earth",
-    "M": "mars",
+    code: _ASTROPY_NAME_OVERRIDES.get(code, data.name.lower()) for code, data in PLANETS.items()
 }
 
 
@@ -129,7 +131,9 @@ class _AstropyBackend:
         from astropy.time import Time
 
         if body not in _ASTROPY_BODY_NAMES:
-            raise KeyError(f"unknown body code {body!r}; astropy backend handles V/E/M")
+            raise KeyError(
+                f"unknown body code {body!r}; astropy backend handles {tuple(_ASTROPY_BODY_NAMES)}"
+            )
         astropy_name = _ASTROPY_BODY_NAMES[body]
         # Time arithmetic via timedelta keeps timezone-aware datetimes consistent.
         epoch = _J2000_EPOCH.timestamp() + t_sec

@@ -172,3 +172,12 @@ SAFE_PERIHELION_KM: Final[dict[str, float]] = {
 Lives here (rather than in the future ``flyby.py``) so the constants module
 remains the single source of truth for physical numbers.
 """
+
+SUPPORTED_BODIES: Final[tuple[str, ...]] = tuple(PLANETS.keys())
+"""Body codes the compute machinery supports, derived from :data:`PLANETS`.
+
+The single source of truth for "which bodies exist": adding a (sourced)
+:class:`PlanetData` entry to ``PLANETS`` is all that is needed to make a new
+body resolvable everywhere — ephemeris, frames, flyby, and maintenance all key
+off this table rather than hardcoding their own V/E/M sets.
+"""

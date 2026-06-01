@@ -49,6 +49,7 @@ impedance mismatch for ``Cell``; the ephemeris-mode ``Cell`` stub stays locked).
 
 from __future__ import annotations
 
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from math import acos, degrees, sqrt
 from typing import Any, cast
@@ -299,21 +300,27 @@ def idealized_flyby_turn_deficit(
 # ---------------------------------------------------------------------------
 
 
-def _build_eme(x: NDArray[np.float64], ephem: Ephemeris) -> Cycler | None:
-    """Build the ``["E", "M", "E"]`` cycler from ``x = [t0, tof1_d, tof2_d]``.
+def _build_chain(
+    x: NDArray[np.float64], sequence: Sequence[str], ephem: Ephemeris
+) -> Cycler | None:
+    """Build the ``sequence`` cycler from ``x = [t0, tof_1, …, tof_{n-1}]``.
 
-    Returns ``None`` on any Lambert / construction pathology so the objective
-    can convert it into a finite penalty rather than propagating into scipy.
+    ``x[0]`` is the departure epoch (seconds since J2000); the remaining
+    ``len(sequence) - 1`` elements are per-leg times-of-flight (days). Encounter
+    epochs are the running cumulative sum. Returns ``None`` on any Lambert /
+    construction pathology so the objective can convert it into a finite penalty
+    rather than propagating ``inf`` / ``nan`` into scipy.
     """
     t0 = float(x[0])
-    tof1_sec = float(x[1]) * SECONDS_PER_DAY
-    tof2_sec = float(x[2]) * SECONDS_PER_DAY
-    if tof1_sec <= 0.0 or tof2_sec <= 0.0:
+    tofs_sec = [float(v) * SECONDS_PER_DAY for v in x[1:]]
+    if any(tof <= 0.0 for tof in tofs_sec):
         return None
-    times = [t0, t0 + tof1_sec, t0 + tof1_sec + tof2_sec]
+    times = [t0]
+    for tof in tofs_sec:
+        times.append(times[-1] + tof)
     try:
         return construct_cycler(
-            sequence=["E", "M", "E"],
+            sequence=list(sequence),
             encounter_times_sec=times,
             ephem=ephem,
         )
@@ -321,29 +328,45 @@ def _build_eme(x: NDArray[np.float64], ephem: Ephemeris) -> Cycler | None:
         return None
 
 
-def _maintenance_dv(cycler: Cycler) -> tuple[float, float, float]:
-    """Return ``(total, dv_mars, dv_earth)`` per-synodic maintenance ΔV, km/s.
+def _maintenance_dv_chain(cycler: Cycler) -> float:
+    """Per-synodic maintenance ΔV (km/s) for an arbitrary closed cycler.
 
-    ``dv_mars`` bends the Mars in-V∞ into the Mars out-V∞; ``dv_earth`` closes
-    the loop by bending the final-Earth arrival V∞ into the first-Earth
-    departure V∞ (periodicity).
+    Sums the turn-deficit ΔV at each *intermediate* encounter (bending its
+    in-V∞ onto its out-V∞) plus the closure term that bends the final arrival
+    V∞ onto the first departure V∞ (periodicity). For the Aldrin ``E-M-E``
+    sequence this is exactly ``dv_mars + dv_earth``: the single intermediate
+    Mars flyby plus the Earth loop-closure.
     """
-    mars = cycler.encounters[1]
-    dv_mars = flyby_dv_for("M", mars.vinf_in, mars.vinf_out)
-    arrival = cycler.encounters[-1].vinf_in
-    next_departure = cycler.encounters[0].vinf_out
-    dv_earth = flyby_dv_for("E", arrival, next_departure)
-    return dv_mars + dv_earth, dv_mars, dv_earth
+    total = 0.0
+    for enc in cycler.encounters[1:-1]:
+        total += flyby_dv_for(enc.body, enc.vinf_in, enc.vinf_out)
+    first = cycler.encounters[0]
+    last = cycler.encounters[-1]
+    total += flyby_dv_for(first.body, last.vinf_in, first.vinf_out)
+    return total
 
 
-def _objective(x: NDArray[np.float64], ephem: Ephemeris) -> float:
+def _objective(x: NDArray[np.float64], sequence: Sequence[str], ephem: Ephemeris) -> float:
     """Per-synodic maintenance ΔV (km/s); finite penalty on construction
     failure."""
-    cycler = _build_eme(x, ephem)
+    cycler = _build_chain(x, sequence, ephem)
     if cycler is None:
         return _PATHOLOGICAL_OBJECTIVE_KMS
-    total, _dv_mars, _dv_earth = _maintenance_dv(cycler)
-    return total
+    return _maintenance_dv_chain(cycler)
+
+
+def _first_distinct_pair(sequence: Sequence[str]) -> tuple[str, str]:
+    """First ``(body_a, body_b)`` pair of distinct bodies in ``sequence``.
+
+    Used to size the ``t0`` search window by their synodic period when the
+    caller does not name an explicit ``synodic_pair``. For ``E-M-E`` this is
+    ``("E", "M")``.
+    """
+    first = sequence[0]
+    for body in sequence[1:]:
+        if body != first:
+            return (first, body)
+    raise ValueError(f"sequence {list(sequence)!r} has no two distinct bodies")
 
 
 # ---------------------------------------------------------------------------
@@ -363,6 +386,225 @@ def _default_t0_guess(em_tof_days: float) -> float:
     return float(seed.encounters[0].t)
 
 
+def optimise_maintenance_dv(
+    sequence: Sequence[str],
+    ephem: Ephemeris,
+    *,
+    t0_guess_sec: float,
+    tof_days_guesses: Sequence[float],
+    tof_bounds_days: Sequence[tuple[float, float]],
+    synodic_pair: tuple[str, str] | None = None,
+    closure_body: str | None = None,
+    closure_flyby_alt_km: float | None = None,
+    t0_window_synodic_frac: float = _T0_WINDOW_SYNODIC_FRAC,
+    tof_jitter_half_days: Sequence[float] | None = None,
+    n_starts: int = 5,
+    seed: int = 0,
+    seed_cycler_factory: Callable[[], Cycler] | None = None,
+) -> MaintenanceOptimResult:
+    """Find the minimum-ΔV periodic cycler for an arbitrary closed ``sequence``.
+
+    Body-agnostic generalisation of :func:`optimise_aldrin_maintenance_dv`. The
+    free variables are ``x = [t0, tof_1, …, tof_{n-1}]`` (departure epoch in
+    seconds plus ``len(sequence) - 1`` leg times-of-flight in days). A global
+    ``differential_evolution`` pass over a narrow ``t0`` window (sized by the
+    ``synodic_pair`` synodic period) followed by SLSQP polishes from the seed
+    and jittered restarts; near-ties in the flat ΔV plateau break toward
+    ``t0_guess_sec``.
+
+    Parameters
+    ----------
+    sequence:
+        Body-code encounter sequence; first and last codes must match (closed
+        cycler), e.g. ``["E", "M", "E"]``.
+    ephem:
+        Planet-state provider (``"circular"`` for the test surface, ``"astropy"``
+        for real DE440 states).
+    t0_guess_sec:
+        Departure-epoch guess (seconds since J2000) — selects the launch phase.
+    tof_days_guesses:
+        ``len(sequence) - 1`` initial leg ToFs (days).
+    tof_bounds_days:
+        ``len(sequence) - 1`` ``(lo, hi)`` per-leg ToF bounds (days).
+    synodic_pair:
+        Body pair whose synodic period sizes the ``t0`` window. ``None`` derives
+        the first distinct pair from ``sequence``.
+    closure_body:
+        Body whose idealised turn-deficit ΔV is reported as the maintenance
+        cost (the source-traceable "powered" evidence). ``None`` reports the
+        Lambert closure ΔV from :func:`_maintenance_dv_chain` instead.
+    closure_flyby_alt_km:
+        Flyby periapsis altitude (km) for the turn-deficit computation. ``None``
+        uses the per-body conservative default.
+    t0_window_synodic_frac:
+        Half-width of the ``t0`` search window in synodic periods.
+    tof_jitter_half_days:
+        ``len(sequence) - 1`` per-leg jitter half-widths (days) for the
+        multi-start restarts. ``None`` defaults to zero jitter on every leg.
+    n_starts:
+        Number of SLSQP polish starts (seed plus ``n_starts - 1`` jittered),
+        in addition to the global DE pass.
+    seed:
+        RNG seed for ``differential_evolution`` and the multi-start jitter.
+    seed_cycler_factory:
+        Builds a fallback cycler if every trial is pathological even at the
+        seed. ``None`` raises ``RuntimeError`` in that case.
+
+    Returns
+    -------
+    MaintenanceOptimResult
+        With the optimised cycler, computed anchors, and the (computed,
+        not source-attested) maintenance ΔV.
+    """
+    n_legs = len(sequence) - 1
+    if len(tof_days_guesses) != n_legs:
+        raise ValueError(f"tof_days_guesses needs {n_legs} entries, got {len(tof_days_guesses)}")
+    if len(tof_bounds_days) != n_legs:
+        raise ValueError(f"tof_bounds_days needs {n_legs} entries, got {len(tof_bounds_days)}")
+    if tof_jitter_half_days is None:
+        tof_jitter_half_days = tuple(0.0 for _ in range(n_legs))
+    elif len(tof_jitter_half_days) != n_legs:
+        raise ValueError(
+            f"tof_jitter_half_days needs {n_legs} entries, got {len(tof_jitter_half_days)}"
+        )
+    if synodic_pair is None:
+        synodic_pair = _first_distinct_pair(sequence)
+
+    syn_sec = synodic_period_days(*synodic_pair) * SECONDS_PER_DAY
+    t0_lo = t0_guess_sec - t0_window_synodic_frac * syn_sec
+    t0_hi = t0_guess_sec + t0_window_synodic_frac * syn_sec
+    bounds: list[tuple[float, float]] = [(t0_lo, t0_hi)]
+    bounds.extend((float(lo), float(hi)) for lo, hi in tof_bounds_days)
+
+    # --- Global pass: differential_evolution (mirrors optimise_cell_idealized).
+    de_any = cast(Any, differential_evolution)
+    candidate_starts: list[NDArray[np.float64]] = []
+    try:
+        de_result: Any = de_any(
+            _objective,
+            bounds,
+            args=(sequence, ephem),
+            seed=seed,
+            polish=False,
+            maxiter=_DE_MAXITER,
+            popsize=_DE_POPSIZE,
+            tol=_DE_TOL,
+        )
+        candidate_starts.append(np.asarray(de_result.x, dtype=np.float64))
+    except (ValueError, RuntimeError):
+        pass
+
+    # --- Multi-start seeds: the phase-inverted guess plus jittered variants.
+    seed_x = np.array([t0_guess_sec, *tof_days_guesses], dtype=np.float64)
+    candidate_starts.append(seed_x)
+    rng = np.random.default_rng(seed)
+    for _ in range(max(0, n_starts - 1)):
+        # Draw order is load-bearing for bit-reproducibility: t0 jitter first,
+        # then each leg jitter in sequence order.
+        jitter_values = [rng.uniform(-0.25 * syn_sec, 0.25 * syn_sec)]
+        for half in tof_jitter_half_days:
+            jitter_values.append(rng.uniform(-half, half))
+        candidate_starts.append(seed_x + np.array(jitter_values, dtype=np.float64))
+
+    # --- SLSQP polish from every start; keep the best feasible optimum,
+    # breaking near-ties in the (flat, ≈0) ΔV plateau by proximity to the
+    # launch phase ``t0_guess`` so the result is deterministic and does not
+    # drift along the plateau onto a neighbouring cycler family.
+    best_x: NDArray[np.float64] | None = None
+    best_f = np.inf
+    lower = np.array([b[0] for b in bounds], dtype=np.float64)
+    upper = np.array([b[1] for b in bounds], dtype=np.float64)
+    for start in candidate_starts:
+        x0 = np.clip(start, lower, upper)
+        try:
+            res: Any = minimize(
+                _objective,
+                x0,
+                args=(sequence, ephem),
+                method="SLSQP",
+                bounds=bounds,
+                options={"maxiter": _SLSQP_MAXITER, "ftol": _SLSQP_FTOL},
+            )
+        except (ValueError, RuntimeError):
+            continue
+        x_final = np.asarray(res.x, dtype=np.float64)
+        f_final = _objective(x_final, sequence, ephem)
+        if best_x is None:
+            best_f, best_x = f_final, x_final
+            continue
+        improves = f_final < best_f - _T0_TIE_BREAK_KMS
+        ties = abs(f_final - best_f) <= _T0_TIE_BREAK_KMS
+        closer = abs(x_final[0] - t0_guess_sec) < abs(best_x[0] - t0_guess_sec)
+        if improves or (ties and closer):
+            best_f, best_x = f_final, x_final
+
+    # Fallback to the raw seed if every polish failed to build a cycler.
+    if best_x is None or best_f >= _PATHOLOGICAL_OBJECTIVE_KMS:
+        best_x = np.clip(seed_x, lower, upper)
+        best_f = _objective(best_x, sequence, ephem)
+
+    cycler = _build_chain(best_x, sequence, ephem)
+    converged = cycler is not None and best_f < _CONVERGENCE_OBJECTIVE_KMS
+    leg_tofs_days = tuple(float(v) for v in best_x[1:])
+    if cycler is None:
+        # Pathological even at the seed — surface the failure honestly.
+        if seed_cycler_factory is None:
+            raise RuntimeError(
+                f"sequence {list(sequence)!r} is pathological at the seed and no "
+                "seed_cycler_factory was provided to build a fallback cycler"
+            )
+        cycler = seed_cycler_factory()
+        return MaintenanceOptimResult(
+            cycler=cycler,
+            t0_sec=float(best_x[0]),
+            leg_tofs_days=leg_tofs_days,
+            maintenance_dv_kms=float(best_f),
+            per_encounter_dv_kms=(),
+            converged=False,
+            a_au=float("nan"),
+            e=float("nan"),
+            vinf_kms_at_encounters=(),
+            turn_deficit=None,
+        )
+
+    a_au, e = orbit_elements_au(cycler.encounters[0].r, cycler.legs[0].v_depart, MU_SUN_KM3_S2)
+    vinf_per_enc = tuple(
+        (enc.body, float(np.linalg.norm(enc.vinf_in))) for enc in cycler.encounters
+    )
+
+    # The faithful maintenance ΔV is the turn deficit the *closure* flyby
+    # (Earth for Aldrin) must make up to keep the recovered orbit repeating — a
+    # geometric property of the sourced (a, e). The free-ToF Lambert closure
+    # term (``_maintenance_dv_chain``) instead slides onto a cheaper neighbouring
+    # ballistic geometry (a ~32° Earth turn, ΔV≈0) and is therefore NOT used as
+    # the reported cost; it survives only as the optimiser objective that pins
+    # the orbit anchors.
+    turn_deficit: FlybyTurnDeficit | None = None
+    if closure_body is not None:
+        turn_deficit = idealized_flyby_turn_deficit(
+            float(a_au), float(e), closure_body, flyby_alt_km=closure_flyby_alt_km
+        )
+    if turn_deficit is not None:
+        maintenance_dv = turn_deficit.dv_kms
+        per_enc_dv: tuple[tuple[str, float], ...] = ((turn_deficit.body, turn_deficit.dv_kms),)
+    else:
+        maintenance_dv = _maintenance_dv_chain(cycler)
+        per_enc_dv = ()
+
+    return MaintenanceOptimResult(
+        cycler=cycler,
+        t0_sec=float(best_x[0]),
+        leg_tofs_days=leg_tofs_days,
+        maintenance_dv_kms=float(maintenance_dv),
+        per_encounter_dv_kms=per_enc_dv,
+        converged=converged,
+        a_au=float(a_au),
+        e=float(e),
+        vinf_kms_at_encounters=vinf_per_enc,
+        turn_deficit=turn_deficit,
+    )
+
+
 def optimise_aldrin_maintenance_dv(
     ephem: Ephemeris,
     *,
@@ -373,6 +615,12 @@ def optimise_aldrin_maintenance_dv(
     seed: int = 0,
 ) -> MaintenanceOptimResult:
     """Find the minimum-ΔV periodic Aldrin E→M→E cycler over ``ephem``.
+
+    Thin Aldrin-specific wrapper over :func:`optimise_maintenance_dv`: pins the
+    ``E-M-E`` sequence, the ``("E", "M")`` synodic window, the Earth closure
+    flyby at the sourced 200 km altitude, and the ``(20, 60)`` day leg jitters.
+    The parameterisation and default guesses are unchanged from the original
+    Aldrin-only optimiser, so results are bit-for-bit identical.
 
     Parameters
     ----------
@@ -400,137 +648,19 @@ def optimise_aldrin_maintenance_dv(
     if t0_guess_sec is None:
         t0_guess_sec = _default_t0_guess(em_tof_days_guess)
 
-    syn_sec = synodic_period_days("E", "M") * SECONDS_PER_DAY
-    t0_lo = t0_guess_sec - _T0_WINDOW_SYNODIC_FRAC * syn_sec
-    t0_hi = t0_guess_sec + _T0_WINDOW_SYNODIC_FRAC * syn_sec
-    bounds = [
-        (t0_lo, t0_hi),
-        _TOF1_BOUNDS_DAYS,
-        _TOF2_BOUNDS_DAYS,
-    ]
-
-    # --- Global pass: differential_evolution (mirrors optimise_cell_idealized).
-    de_any = cast(Any, differential_evolution)
-    candidate_starts: list[NDArray[np.float64]] = []
-    try:
-        de_result: Any = de_any(
-            _objective,
-            bounds,
-            args=(ephem,),
-            seed=seed,
-            polish=False,
-            maxiter=_DE_MAXITER,
-            popsize=_DE_POPSIZE,
-            tol=_DE_TOL,
-        )
-        candidate_starts.append(np.asarray(de_result.x, dtype=np.float64))
-    except (ValueError, RuntimeError):
-        pass
-
-    # --- Multi-start seeds: the phase-inverted guess plus jittered variants.
-    seed_x = np.array([t0_guess_sec, em_tof_days_guess, me_tof_days_guess], dtype=np.float64)
-    candidate_starts.append(seed_x)
-    rng = np.random.default_rng(seed)
-    for _ in range(max(0, n_starts - 1)):
-        jitter = np.array(
-            [
-                rng.uniform(-0.25 * syn_sec, 0.25 * syn_sec),
-                rng.uniform(-20.0, 20.0),
-                rng.uniform(-60.0, 60.0),
-            ],
-            dtype=np.float64,
-        )
-        candidate_starts.append(seed_x + jitter)
-
-    # --- SLSQP polish from every start; keep the best feasible optimum,
-    # breaking near-ties in the (flat, ≈0) ΔV plateau by proximity to the
-    # Aldrin launch phase ``t0_guess`` so the result is deterministic and
-    # does not drift along the plateau onto a neighbouring cycler family.
-    best_x: NDArray[np.float64] | None = None
-    best_f = np.inf
-    lower = np.array([b[0] for b in bounds], dtype=np.float64)
-    upper = np.array([b[1] for b in bounds], dtype=np.float64)
-    for start in candidate_starts:
-        x0 = np.clip(start, lower, upper)
-        try:
-            res: Any = minimize(
-                _objective,
-                x0,
-                args=(ephem,),
-                method="SLSQP",
-                bounds=bounds,
-                options={"maxiter": _SLSQP_MAXITER, "ftol": _SLSQP_FTOL},
-            )
-        except (ValueError, RuntimeError):
-            continue
-        x_final = np.asarray(res.x, dtype=np.float64)
-        f_final = _objective(x_final, ephem)
-        if best_x is None:
-            best_f, best_x = f_final, x_final
-            continue
-        improves = f_final < best_f - _T0_TIE_BREAK_KMS
-        ties = abs(f_final - best_f) <= _T0_TIE_BREAK_KMS
-        closer = abs(x_final[0] - t0_guess_sec) < abs(best_x[0] - t0_guess_sec)
-        if improves or (ties and closer):
-            best_f, best_x = f_final, x_final
-
-    # Fallback to the raw seed if every polish failed to build a cycler.
-    if best_x is None or best_f >= _PATHOLOGICAL_OBJECTIVE_KMS:
-        best_x = np.clip(seed_x, lower, upper)
-        best_f = _objective(best_x, ephem)
-
-    cycler = _build_eme(best_x, ephem)
-    converged = cycler is not None and best_f < _CONVERGENCE_OBJECTIVE_KMS
-    if cycler is None:
-        # Pathological even at the seed — surface the failure honestly.
-        cycler = build_aldrin_seed(Ephemeris("circular"))
-        return MaintenanceOptimResult(
-            cycler=cycler,
-            t0_sec=float(best_x[0]),
-            leg_tofs_days=(float(best_x[1]), float(best_x[2])),
-            maintenance_dv_kms=float(best_f),
-            per_encounter_dv_kms=(),
-            converged=False,
-            a_au=float("nan"),
-            e=float("nan"),
-            vinf_kms_at_encounters=(),
-            turn_deficit=None,
-        )
-
-    a_au, e = orbit_elements_au(cycler.encounters[0].r, cycler.legs[0].v_depart, MU_SUN_KM3_S2)
-    vinf_per_enc = tuple(
-        (enc.body, float(np.linalg.norm(enc.vinf_in))) for enc in cycler.encounters
-    )
-
-    # The faithful maintenance ΔV is the turn deficit the *return* flyby (Earth
-    # for Aldrin) must make up to keep the recovered orbit repeating — a
-    # geometric property of the sourced (a, e). The free-ToF Lambert closure
-    # term (``_maintenance_dv``) instead slides onto a cheaper neighbouring
-    # ballistic geometry (a ~32° Earth turn, ΔV≈0) and is therefore NOT used as
-    # the reported cost; it survives only as the optimiser objective that pins
-    # the orbit anchors.
-    turn_deficit = idealized_flyby_turn_deficit(
-        float(a_au), float(e), "E", flyby_alt_km=_ALDRIN_EARTH_FLYBY_ALT_KM
-    )
-    if turn_deficit is not None:
-        maintenance_dv = turn_deficit.dv_kms
-        per_enc_dv: tuple[tuple[str, float], ...] = (("E", turn_deficit.dv_kms),)
-    else:
-        total, _dv_mars, _dv_earth = _maintenance_dv(cycler)
-        maintenance_dv = total
-        per_enc_dv = ()
-
-    return MaintenanceOptimResult(
-        cycler=cycler,
-        t0_sec=float(best_x[0]),
-        leg_tofs_days=(float(best_x[1]), float(best_x[2])),
-        maintenance_dv_kms=float(maintenance_dv),
-        per_encounter_dv_kms=per_enc_dv,
-        converged=converged,
-        a_au=float(a_au),
-        e=float(e),
-        vinf_kms_at_encounters=vinf_per_enc,
-        turn_deficit=turn_deficit,
+    return optimise_maintenance_dv(
+        ["E", "M", "E"],
+        ephem,
+        t0_guess_sec=t0_guess_sec,
+        tof_days_guesses=(em_tof_days_guess, me_tof_days_guess),
+        tof_bounds_days=(_TOF1_BOUNDS_DAYS, _TOF2_BOUNDS_DAYS),
+        synodic_pair=("E", "M"),
+        closure_body="E",
+        closure_flyby_alt_km=_ALDRIN_EARTH_FLYBY_ALT_KM,
+        tof_jitter_half_days=(20.0, 60.0),
+        n_starts=n_starts,
+        seed=seed,
+        seed_cycler_factory=lambda: build_aldrin_seed(Ephemeris("circular")),
     )
 
 
@@ -539,4 +669,5 @@ __all__ = [
     "MaintenanceOptimResult",
     "idealized_flyby_turn_deficit",
     "optimise_aldrin_maintenance_dv",
+    "optimise_maintenance_dv",
 ]

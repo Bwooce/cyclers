@@ -142,12 +142,17 @@ def test_synodic_omega_earth_matches_constants() -> None:
     assert abs(got - expected) / expected < TOL_OMEGA_REL
 
 
-def test_synodic_omega_mars_matches_earth() -> None:
-    """``synodic_omega('M')`` returns Earth's mean motion (E-M cyclers share the frame)."""
-    assert synodic_omega("M") == synodic_omega("E")
+def test_synodic_omega_anchors_on_named_body() -> None:
+    """``synodic_omega(body)`` returns that body's own mean motion (the frame
+    anchor), not Earth's — Mars and Venus differ from Earth."""
+    for code in ("M", "V"):
+        expected = PLANETS[code].mean_motion_deg_day * (pi / 180.0) / SECONDS_PER_DAY
+        assert abs(synodic_omega(code) - expected) / expected < TOL_OMEGA_REL
+    assert synodic_omega("M") != synodic_omega("E")
+    assert synodic_omega("V") != synodic_omega("E")
 
 
-def test_synodic_omega_venus_raises() -> None:
-    """Venus-anchored frame is M8 work; raises NotImplementedError in M3."""
-    with pytest.raises(NotImplementedError):
-        synodic_omega("V")
+def test_synodic_omega_unknown_body_raises_keyerror() -> None:
+    """A body code not in :data:`PLANETS` surfaces as ``KeyError``."""
+    with pytest.raises(KeyError):
+        synodic_omega("X")

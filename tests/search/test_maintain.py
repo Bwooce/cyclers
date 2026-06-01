@@ -28,12 +28,16 @@ from __future__ import annotations
 
 import pytest
 
+from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.maintain import (
     MaintenanceOptimResult,
+    _build_chain,
     _default_t0_guess,
+    _maintenance_dv_chain,
     idealized_flyby_turn_deficit,
     optimise_aldrin_maintenance_dv,
+    optimise_maintenance_dv,
 )
 
 # Published, source-attested anchors — the ONLY legitimate assertion targets.
@@ -225,3 +229,103 @@ def test_detuned_tof_guess_converges_back_to_anchors() -> None:
     assert detuned.a_au == pytest.approx(_PUB_A_AU, abs=_TOL_A)
     assert _vinf(detuned, "E") == pytest.approx(_PUB_VINF_E_KMS, abs=_TOL_VINF_E)
     assert _vinf(detuned, "M") == pytest.approx(_PUB_VINF_M_KMS, abs=_TOL_VINF_M)
+
+
+# ---------------------------------------------------------------------------
+# Structural generality (#75): the optimiser is body-/length-agnostic. These
+# tests assert NO sourced number — only that the Aldrin wrapper is a faithful
+# pass-through of the generalised core, and that the machinery accepts a
+# sequence longer than the hardcoded E-M-E (forward map + objective handle an
+# arbitrary closed chain). The Aldrin physics is validated by the tests above.
+# ---------------------------------------------------------------------------
+
+
+def test_aldrin_wrapper_matches_generalized_core() -> None:
+    """``optimise_aldrin_maintenance_dv`` is a bit-for-bit pass-through of
+    ``optimise_maintenance_dv`` with the Aldrin parameters pinned."""
+    t0 = _default_t0_guess(_PUB_EM_TOF_DAYS)
+    wrapped = optimise_aldrin_maintenance_dv(
+        Ephemeris("circular"), t0_guess_sec=t0, n_starts=5, seed=0
+    )
+    from cyclerfinder.search.construct import build_aldrin_seed
+    from cyclerfinder.search.maintain import (
+        _ALDRIN_EARTH_FLYBY_ALT_KM,
+        _TOF1_BOUNDS_DAYS,
+        _TOF2_BOUNDS_DAYS,
+    )
+
+    generalized = optimise_maintenance_dv(
+        ["E", "M", "E"],
+        Ephemeris("circular"),
+        t0_guess_sec=t0,
+        tof_days_guesses=(146.0, 634.0),
+        tof_bounds_days=(_TOF1_BOUNDS_DAYS, _TOF2_BOUNDS_DAYS),
+        synodic_pair=("E", "M"),
+        closure_body="E",
+        closure_flyby_alt_km=_ALDRIN_EARTH_FLYBY_ALT_KM,
+        tof_jitter_half_days=(20.0, 60.0),
+        n_starts=5,
+        seed=0,
+        seed_cycler_factory=lambda: build_aldrin_seed(Ephemeris("circular")),
+    )
+    assert generalized.t0_sec == wrapped.t0_sec
+    assert generalized.leg_tofs_days == wrapped.leg_tofs_days
+    assert generalized.a_au == wrapped.a_au
+    assert generalized.e == wrapped.e
+    assert generalized.maintenance_dv_kms == wrapped.maintenance_dv_kms
+    assert generalized.converged == wrapped.converged
+
+
+def test_chain_forward_map_handles_four_encounters() -> None:
+    """The forward map / ΔV accounting accept a sequence longer than E-M-E.
+
+    Single-rev Lambert builds each leg, so a closed four-encounter chain
+    constructs and yields a finite, non-negative maintenance ΔV. No sourced
+    quantity is asserted — this only proves the machinery is length-agnostic.
+    """
+    import numpy as np
+
+    sequence = ["E", "M", "V", "E"]
+    # t0 = 0, three positive leg ToFs (days); arbitrary but non-degenerate.
+    x = np.array([0.0, 200.0, 300.0, 250.0], dtype=np.float64)
+    cycler = _build_chain(x, sequence, Ephemeris("circular"))
+    assert cycler is not None, "single-rev Lambert should build a 4-encounter chain"
+    assert [enc.body for enc in cycler.encounters] == sequence
+    assert len(cycler.legs) == 3
+    # Encounter epochs are the running cumulative sum of the leg ToFs.
+    assert cycler.encounters[1].t == pytest.approx(200.0 * SECONDS_PER_DAY)
+    assert cycler.encounters[2].t == pytest.approx(500.0 * SECONDS_PER_DAY)
+    dv = _maintenance_dv_chain(cycler)
+    import math
+
+    assert math.isfinite(dv) and dv >= 0.0
+
+
+def test_generalized_optimiser_runs_on_four_encounter_sequence() -> None:
+    """End-to-end: the optimiser drives an arbitrary closed four-encounter
+    sequence and returns a well-shaped, finite result (length-agnostic)."""
+    import math
+
+    import numpy as np
+
+    sequence = ["E", "M", "V", "E"]
+    seed = _build_chain(
+        np.array([0.0, 200.0, 300.0, 250.0], dtype=np.float64),
+        sequence,
+        Ephemeris("circular"),
+    )
+    assert seed is not None
+    result = optimise_maintenance_dv(
+        sequence,
+        Ephemeris("circular"),
+        t0_guess_sec=0.0,
+        tof_days_guesses=(200.0, 300.0, 250.0),
+        tof_bounds_days=((120.0, 300.0), (180.0, 420.0), (150.0, 360.0)),
+        n_starts=2,
+        seed=0,
+        seed_cycler_factory=lambda: seed,
+    )
+    assert len(result.leg_tofs_days) == 3
+    assert math.isfinite(result.maintenance_dv_kms)
+    assert result.maintenance_dv_kms >= 0.0
+    assert [b for b, _ in result.vinf_kms_at_encounters] == sequence

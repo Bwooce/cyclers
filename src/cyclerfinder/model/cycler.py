@@ -219,11 +219,10 @@ class Cycler:
         ----------
         omega_rad_per_s:
             Frame angular rate (rad/s). Defaults to
-            :func:`~cyclerfinder.core.frames.synodic_omega` of ``"E"`` —
-            Earth's mean motion — which is the natural frame for E-M
-            cyclers. Callers analysing a Venus-anchored or VEM cycler must
-            pass ``omega`` explicitly (the default is appropriate for the
-            M3 Earth-Mars case only).
+            :func:`~cyclerfinder.core.frames.synodic_omega` anchored on the
+            cycler's home (first-encounter) body — Earth for an E-M cycler,
+            which is the natural frame there. Callers wanting a different
+            anchor pass ``omega`` explicitly.
 
         Returns
         -------
@@ -234,7 +233,7 @@ class Cycler:
             circular-coplanar regime.
         """
         if omega_rad_per_s is None:
-            omega_rad_per_s = synodic_omega("E")
+            omega_rad_per_s = synodic_omega(self.encounters[0].body)
         first_enc = self.encounters[0]
         last_enc = self.encounters[-1]
         first_leg = self.legs[0]

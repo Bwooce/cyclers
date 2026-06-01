@@ -122,14 +122,14 @@ class Score:
 # ---------------------------------------------------------------------------
 
 
-def taxi_cost_kms(cycler: Cycler) -> float:
+def taxi_cost_kms(cycler: Cycler, taxi_body: str = _TAXI_BODY) -> float:
     """Surrogate hyperbolic-rendezvous cost for a taxi mission.
 
     Definition (M4):
 
         ``taxi_cost = max(||enc.vinf_in||)`` over encounters whose body
-        is ``"E"`` (Earth). Returns ``0.0`` when the cycler has no Earth
-        encounter.
+        is ``taxi_body`` (Earth by default). Returns ``0.0`` when the
+        cycler has no encounter at ``taxi_body``.
 
     Rationale: a taxi launched from Earth pays roughly the hyperbolic
     excess speed of the cycler at the Earth encounter as the propulsive
@@ -154,7 +154,7 @@ def taxi_cost_kms(cycler: Cycler) -> float:
     average — the bottleneck dominates.
     """
     vinfs = [
-        float(np.linalg.norm(enc.vinf_in)) for enc in cycler.encounters if enc.body == _TAXI_BODY
+        float(np.linalg.norm(enc.vinf_in)) for enc in cycler.encounters if enc.body == taxi_body
     ]
     if not vinfs:
         return 0.0
