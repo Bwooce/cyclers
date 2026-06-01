@@ -76,7 +76,6 @@ def astropy_ephem() -> Ephemeris:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.slow
 @pytest.mark.xfail(
     strict=False,
     reason=(
@@ -141,7 +140,6 @@ def test_aldrin_cycler_periodic_over_2_cycles_astropy(
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.slow
 @pytest.mark.xfail(
     strict=False,
     reason=(
@@ -173,7 +171,6 @@ def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.slow
 def test_real_drift_rejects_open_trajectory(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
@@ -236,7 +233,6 @@ _M6B_LAMBERT_CHAIN_XFAILS: frozenset[str] = frozenset(
 )
 
 
-@pytest.mark.slow
 @pytest.mark.parametrize("entry_id", M6B_REGRESSION_IDS)
 def test_real_closure_regression_set(
     entry_id: str,
@@ -370,7 +366,6 @@ def test_real_closure_uses_m6a_machinery(astropy_ephem: Ephemeris) -> None:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.slow
 def test_construct_real_ephemeris_cycler_aldrin(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
@@ -407,7 +402,6 @@ def test_construct_raises_on_multi_rev_leg(astropy_ephem: Ephemeris) -> None:
     assert excinfo.value.leg_index == 0
 
 
-@pytest.mark.slow
 def test_resolve_real_t_start_prefers_priority_window(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
@@ -422,7 +416,6 @@ def test_resolve_real_t_start_prefers_priority_window(
     assert abs(t_start - priority_sec) <= delta_sec, t_start
 
 
-@pytest.mark.slow
 def test_resolve_real_t_start_returns_none_when_no_window(
     astropy_ephem: Ephemeris,
 ) -> None:
