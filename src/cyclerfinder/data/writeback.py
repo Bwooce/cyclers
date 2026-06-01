@@ -16,7 +16,7 @@ Spec / plan references
 
 CI safety
 ---------
-None of these helpers touch ``data/seed_cyclers.yaml``. They operate on
+None of these helpers touch ``data/catalogue.yaml``. They operate on
 in-memory :class:`CatalogueEntry` instances; on-disk writeback is an
 operator-driven step (plan §5 risk #6).
 """

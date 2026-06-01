@@ -269,7 +269,7 @@ Cyclers are *concepts* (cyclic re-encounter patterns), not *orbits*. A single cy
 
 | Representation | Where it lives | What it captures |
 |---|---|---|
-| **Idealized form** | `data/seed_cyclers.yaml` `orbit_elements` (circular-coplanar; `model_assumption: circular-coplanar`) | The cycler's *signature shape* — `(a, e, perihelion, aphelion)` from the simplified model literature publishes in. This is the cycler's *identity*. |
+| **Idealized form** | `data/catalogue.yaml` `orbit_elements` (circular-coplanar; `model_assumption: circular-coplanar`) | The cycler's *signature shape* — `(a, e, perihelion, aphelion)` from the simplified model literature publishes in. This is the cycler's *identity*. |
 | **Real-ephemeris instances** | `cyclers.space/src/data/windows.json` (regenerated weekly by `phase_match.find_real_windows` against JPL DE440) | Per launch window: actual departure date + real V∞ at injection. Many instances per idealized form. |
 | **Mission-context analytic** | A handful of catalogue entries with `model_assumption: analytic-ephemeris` (e.g. Rogers 2012 establishment variants — Aldrin 4:3(2), 3:2(1)) | Mid-fidelity — eccentricity effects retained, not full N-body. Used when the source paper itself worked at this fidelity. |
 
@@ -421,7 +421,7 @@ The payoff: the finder, the validation gauntlet, and the public library become a
 
 One record type flows through everything — finder output, the search ledger, the validation gauntlet, and the public site are all the *same object*. Below: the schema, the canonical signature that gives a cycler a stable identity, the matching that collapses accidental re-derivations, and the attribution model that keeps credit correct.
 
-**File locations.** The canonical catalogue is at [`data/seed_cyclers.yaml`](../data/seed_cyclers.yaml) — sole source of truth. See [`data/README.md`](../data/README.md) for conventions, attribution rules, the `primary:` schema extension for non-heliocentric entries, and the regenerable cross-reference table command (`scripts/render-catalogue.py`). See [`data/OUTSTANDING.md`](../data/OUTSTANDING.md) for the long-form research-questions / open-source-access log.
+**File locations.** The canonical catalogue is at [`data/catalogue.yaml`](../data/catalogue.yaml) — sole source of truth. See [`data/README.md`](../data/README.md) for conventions, attribution rules, the `primary:` schema extension for non-heliocentric entries, and the regenerable cross-reference table command (`scripts/render-catalogue.py`). See [`data/OUTSTANDING.md`](../data/OUTSTANDING.md) for the long-form research-questions / open-source-access log.
 
 ### 16.1 Shared catalogue record
 
@@ -558,7 +558,7 @@ finder found it.
    runs V0 (internal consistency) → V1 (lamberthub + Kepler cross-check)
    → V2 (multi-lap bounded drift) → V3 (ephemeris-mode TCM under
    horizon ΔV budget).
-2. **Entry is written** to `data/seed_cyclers.yaml` with:
+2. **Entry is written** to `data/catalogue.yaml` with:
    - `source: "this-project"`
    - `our_status: "candidate-novel"`
    - `validation.level: "V3"` and the per-gate results
@@ -657,7 +657,7 @@ exporter applies only to the concrete subset.
 
 The §16.1 record sketch already gestured at a `trajectory{}` block; the
 2026-06-01 revision formalizes it and reconciles it with the on-disk
-`data/seed_cyclers.yaml` projection:
+`data/catalogue.yaml` projection:
 
 ```jsonc
 "trajectory": {

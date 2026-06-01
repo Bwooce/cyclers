@@ -24,14 +24,14 @@ The order mirrors plan.md §7: predecessor recap → catalogue loader + tests �
 - [ ] Sanity-check: `Ephemeris("astropy").state("E", 0.0)` returns a real heliocentric position (≈ 1.496e8 km).
 - [ ] Confirm M5 binding gate brokenness (task #54) — `find_cyclers(("E","M"), k_synodic=2, vinf_cap=7.0, seed=0)` returns either an empty list or a non-closing cycler. M6b's construction path is **Lambert-chain from catalogue**, NOT via `find_cyclers`. Documented in plan §3.1.
 - [ ] Confirm multi-rev Lambert blocker — `core/lambert.py::lambert(r1, r2, tof, max_revs=1)` raises `LambertGeometryError` for non-zero `max_revs` (per the M1 stub). M6b documents this as the binding limitation; `EXPECTED_SKIPS` carries the affected entries.
-- [ ] Confirm parallel Schema-v2 backfill / other agents are NOT touching: `verify/propagate.py`, `core/frames.py`, `core/ephemeris.py`, `search/phase_match.py`, `data/seed_cyclers.yaml` (mid-write reads should fail gracefully; sequential coordination is the parent agent's job).
+- [ ] Confirm parallel Schema-v2 backfill / other agents are NOT touching: `verify/propagate.py`, `core/frames.py`, `core/ephemeris.py`, `search/phase_match.py`, `data/catalogue.yaml` (mid-write reads should fail gracefully; sequential coordination is the parent agent's job).
 
 ## Catalogue loader (test infrastructure)
 
 - [ ] Create `tests/data/__init__.py` (empty).
 - [ ] Create `tests/data/_catalogue_loader_m6b.py` with module docstring noting: "test infrastructure; M7's full catalogue loader (`data/catalog.py`) supersedes this."
 - [ ] Implement `load_m6b_entries() -> list[dict]`:
-  - [ ] Read `data/seed_cyclers.yaml` via `pyyaml`.
+  - [ ] Read `data/catalogue.yaml` via `pyyaml`.
   - [ ] Filter to `model_assumption in (None, "circular-coplanar")`.
   - [ ] Filter to `trajectory_regime in (None, "ballistic")`.
   - [ ] Filter to `primary in (None, "Sun")`.
@@ -227,6 +227,15 @@ This mismatch propagates: lap-1 starts from `|V∞_E| ≈ 6.27 km/s` (M→E arri
 2. Use the orbital-elements path for entries whose `orbit_elements.a_au` and `e` are non-null (Aldrin, the Aldrin inbound, the analytic-ephemeris establishment variants, etc.).
 3. Use the Lambert-chain path only for entries with multiple distinct heliocentric arcs per cycle (the 2-syn S1L1 family, once multi-rev Lambert lands).
 4. Dispatch at the `verify_real_closure` boundary based on which fields the catalogue entry carries.
+
+**FALSIFIED 2026-06-01 — the orbital-elements / single-ellipse fix does NOT close.** Empirically tested the proposed fix as a zero-TCM resonant-epoch search: define the heliocentric arc from the a=1.60 AU / e=0.393 geometry (via leg-0 Lambert E→M, then Kepler-propagate the *same* orbit forward to the Earth return) and scan the launch epoch for a date where the ballistic Earth-return miss vanishes. Two findings:
+
+- **At a free period the optimiser cheats to 2.000 yr** (Earth-resonant): single-cycle return miss → ~1,200 km, BUT the 2-cycle gate fails at `max_drift_km ≈ 4.1e8` km because Mars (period 1.881 yr) is nowhere near its encounter point on cycle 2. A 2.0-yr orbit closes on Earth only.
+- **Constrained to the true synodic repeat period (779.94 d ≈ 2.135 yr)** so both planets realign, the best 2-cycle drift floors at `max_drift_km ≈ 2.94e7` km (tof0≈222 d, t0≈1986-10-29) — still ~150× over tolerance. A single ballistic ellipse cannot represent the family.
+
+**Corrected root cause.** A free ballistic ellipse with a=1.60 AU has period 2.024 yr; the synodic repeat period is 2.135 yr. They do not match, so a single ellipse can encounter Mars *once* but never realigns with both planets for a second cycle. The real Aldrin cycler is kept periodic by the Earth/Mars **gravity assists**: a ballistic flyby preserves |V∞| and *rotates* its direction, bending the post-flyby trajectory onto a **different** heliocentric ellipse. So the M→E arc is neither "the same ellipse as E→M" (the original hand-off claim, also wrong) nor an independent Lambert chord — it is the post-flyby continuation under a |V∞|-preserving turn.
+
+**Corrected M7 fix — flyby-constrained periodic boundary-value solve.** `optimise_cell_ephemeris` (currently a stub) must solve for a zero-TCM trajectory enforcing, simultaneously: (1) |V∞_in| = |V∞_out| at each encounter (valid ballistic flyby, magnitude preserved, direction free); (2) both planets at their encounter points at the synodic repeat period (real-ephemeris phasing); (3) the per-arc Kepler/Lambert geometry. This is a multi-point BVP / NLP, not a single-ellipse instantiation and not a 1-D epoch sweep. The earlier "orbital-elements construction" and "resonant-epoch sweep" strawmen are both retired — do not re-attempt them.
 
 **Tolerance is correct.** Plan §4.3's 200,000 km derivation is independent of construction algorithm — it assumes the construction produces a ballistic Aldrin and absorbs real-eccentricity breathing only. The tolerance need NOT be widened; the construction path needs to be fixed. Per the parent instruction, the tolerance was not widened unilaterally.
 

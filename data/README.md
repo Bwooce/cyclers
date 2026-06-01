@@ -1,14 +1,14 @@
 # data/
 
 Top-level project data files. Consumed by:
-- M3 golden tests (when those land) — reads `seed_cyclers.yaml`.
-- The `cyclers.space` static site repo — pulls `seed_cyclers.yaml` directly.
-- M7's catalogue loader (`src/cyclerfinder/data/catalog.py`, future) — reads `seed_cyclers.yaml`.
+- M3 golden tests (when those land) — reads `catalogue.yaml`.
+- The `cyclers.space` static site repo — pulls `catalogue.yaml` directly.
+- M7's catalogue loader (`src/cyclerfinder/data/catalog.py`, future) — reads `catalogue.yaml`.
 
 Files
 -----
 
-- `seed_cyclers.yaml` — published-cycler seed catalogue with full attribution per spec.md §16. **Sole source of truth.** Edits go through the same process as code: change values, change source quotes, commit.
+- `catalogue.yaml` — published-cycler seed catalogue with full attribution per spec.md §16. **Sole source of truth.** Edits go through the same process as code: change values, change source quotes, commit.
 - `OUTSTANDING.md` — long-form research questions / source-access gaps / paradigm-mismatch flags log. The YAML's per-entry `notes:` field handles short-form caveats; OUTSTANDING handles the discussion threads.
 
 Conventions
@@ -16,7 +16,7 @@ Conventions
 
 Three rules — non-negotiable:
 
-1. **Single source of truth.** The YAML at `seed_cyclers.yaml` is the canonical data record. There is no parallel markdown copy of the parameters. The cross-reference table that humans skim is *generated on demand* from the YAML (see "Cross-reference" below). If you want to compare a number against its source, the `source_quotes:` field on each YAML entry has the verbatim citation.
+1. **Single source of truth.** The YAML at `catalogue.yaml` is the canonical data record. There is no parallel markdown copy of the parameters. The cross-reference table that humans skim is *generated on demand* from the YAML (see "Cross-reference" below). If you want to compare a number against its source, the `source_quotes:` field on each YAML entry has the verbatim citation.
 
 2. **No fabrication.** Every numerical value in the YAML is either backed by a `source_quotes:` entry citing a paper / table / page, OR is `null` with the gap explained in the entry's `notes:` field. If a paper was not accessible, the entry carries the citation but `null` numerics rather than secondary-source-derived guesses.
 
@@ -421,21 +421,21 @@ uv run --with pyyaml python scripts/render-catalogue.py        # markdown
 uv run --with pyyaml python scripts/render-catalogue.py --csv  # spreadsheet ingest
 ```
 
-The script reads `seed_cyclers.yaml` directly; there is no committed
+The script reads `catalogue.yaml` directly; there is no committed
 cross-reference file (it would only drift).
 
 Adding a new published cycler
 -----------------------------
 
 1. Read the source paper. Capture verbatim quotes for every numerical value.
-2. Add an entry to `seed_cyclers.yaml` following the existing schema (spec.md §16.1 `signature_fields` shape, plus the `primary:` extension above if non-heliocentric).
+2. Add an entry to `catalogue.yaml` following the existing schema (spec.md §16.1 `signature_fields` shape, plus the `primary:` extension above if non-heliocentric).
 3. If the entry surfaces a contradiction with an existing entry, or has gaps requiring future work, add a section to `OUTSTANDING.md`.
 4. Commit as `data: add <cycler name> (<citation>)`.
 
 Editing an existing entry
 -------------------------
 
-Edit the value in `seed_cyclers.yaml` AND its parallel entry in `source_quotes:`. Edits without a source-quote update should be rejected by review.
+Edit the value in `catalogue.yaml` AND its parallel entry in `source_quotes:`. Edits without a source-quote update should be rejected by review.
 
 Recording a discovery
 ---------------------

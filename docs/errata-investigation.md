@@ -187,7 +187,7 @@ Justification: these are the values that (a) are explicitly attributed to
 the Aldrin cycler in two independent peer-reviewed sources (Rogers 2012,
 Wikipedia citing Byrnes 1993); (b) are *consistent* with the cited 146-day
 E→M leg under the circular-coplanar Lambert construction the M1 code
-produces; (c) match the values already in `seed_cyclers.yaml` for the
+produces; (c) match the values already in `catalogue.yaml` for the
 `aldrin-classic-em-k1-outbound` entry. The M3 gate tolerances are wider
 than the catalogue's current `TOL_A_AU = 0.01` to absorb minor differences
 between the publishing paper's rounding (0.393 vs 0.39) and JPL DE405

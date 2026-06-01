@@ -13,7 +13,7 @@ from pathlib import Path
 
 import yaml
 
-CATALOGUE = Path(__file__).resolve().parent.parent / "data" / "seed_cyclers.yaml"
+CATALOGUE = Path(__file__).resolve().parent.parent / "data" / "catalogue.yaml"
 
 
 def classify(row: dict) -> dict:

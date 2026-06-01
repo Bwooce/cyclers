@@ -32,7 +32,7 @@ conic schema. Its two worked examples are one-way **rendezvous** transfers
 to Jupiter (the arrival velocity is *constrained to zero relative to the
 planet* — "we are considering a rendezvous problem"), not repeating
 cyclers, and both require continuous nuclear-electric thrust to close. No
-`seed_cyclers.yaml` change is warranted.
+`catalogue.yaml` change is warranted.
 
 **Why it matters.** The Sims-Flanagan transcription is the standard way to
 turn a continuous low-thrust trajectory optimisation problem into a finite

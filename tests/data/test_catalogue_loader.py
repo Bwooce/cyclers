@@ -1,6 +1,6 @@
 """Catalogue loader sanity + signature-index coverage (M7).
 
-* Loader returns every row in ``data/seed_cyclers.yaml`` (currently
+* Loader returns every row in ``data/catalogue.yaml`` (currently
   ~219; the assertion is "at least 200" to allow non-disruptive
   catalogue growth without test churn — exact count is asserted by
   the row-count-anchored test below).

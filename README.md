@@ -21,7 +21,7 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | M7 — catalogue loader, signature matching, novelty | planned |
 | M8 — VEM campaign + CLI + viz | planned |
 
-**Companion catalogue** at [`data/seed_cyclers.yaml`](data/seed_cyclers.yaml) carries the
+**Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
 published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
 broad classes, Niehoff VISIT, Jones VEM family, Hollister–Menning, plus lunar and Jovian
 family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)

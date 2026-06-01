@@ -2,7 +2,7 @@
 
 Long-form log of research questions, source-access gaps, parameter
 contradictions, and out-of-paradigm flags encountered while compiling
-`seed_cyclers.yaml`. The YAML's per-entry `notes:` field carries
+`catalogue.yaml`. The YAML's per-entry `notes:` field carries
 short-form caveats; this file carries the discussion threads that
 don't fit there.
 
@@ -250,7 +250,7 @@ When the catalogue was extended on 2026-05-31 to carry non-heliocentric
 work were identified as **adjacent but out of the current cyclerfinder
 paradigm**. They are recorded here as awareness for the user / future
 implementers, but they are **deliberately NOT added to
-`seed_cyclers.yaml`** because:
+`catalogue.yaml`** because:
 
 1. cyclerfinder v1 models cyclers as patched-conic gravity-assist
    sequences with a V∞ + bend-angle abstraction at each flyby.

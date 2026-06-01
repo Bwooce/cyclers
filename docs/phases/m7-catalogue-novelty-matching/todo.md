@@ -15,7 +15,7 @@ The order mirrors plan.md §7: predecessor recap → `data/` subpackage scaffold
 - [ ] Re-read M5's `## Hand-off to M6a` in `phases/m5-optimisation/todo.md`: confirm `OptimisationResult` shape (`cell`, `best_cycler`, `best_score`, `closure_residual_kms`, `optimiser_history`, `converged`, `constraints_satisfied`) and the reproduced V∞ values.
 - [ ] Re-read `tests/_catalogue_loader.py` — M5-era test infrastructure; M7 reuses it without modification.
 - [ ] Re-read `tests/test_catalogue_rediscovery.py` — M5-era parametrised rediscovery test; M7's tagging test runs alongside it.
-- [ ] Confirm `data/seed_cyclers.yaml` row count (currently 219) — M7 binding test asserts the loader reads all rows.
+- [ ] Confirm `data/catalogue.yaml` row count (currently 219) — M7 binding test asserts the loader reads all rows.
 - [ ] Confirm `src/cyclerfinder/search/optimize.py::optimise_cell_ephemeris` still raises `NotImplementedError("requires M6 ephemeris backend")` — M7's `discover` runner leaves `enable_v3=False` until M6b lands.
 - [ ] Confirm `model/cycler.py::orbit_elements_au` exists — used by `canonical_signature` to compute `(a, e)` per leg.
 - [ ] Confirm parallel M6b plan-writing agent is NOT touching `src/cyclerfinder/verify/`, `src/cyclerfinder/data/`, `tests/data/`, `tests/verify/test_crosscheck.py`, or any M7 workspace file.
@@ -32,7 +32,7 @@ The order mirrors plan.md §7: predecessor recap → `data/` subpackage scaffold
 ### Skeleton + module docstring
 
 - [ ] Create `src/cyclerfinder/data/catalog.py` with module docstring referencing spec §16.1, §16.2, §16.3, §12.2.
-- [ ] Add `CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent.parent / "data" / "seed_cyclers.yaml"` resolution (matches `tests/_catalogue_loader.py` pattern).
+- [ ] Add `CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent.parent / "data" / "catalogue.yaml"` resolution (matches `tests/_catalogue_loader.py` pattern).
 - [ ] Stub `CanonicalSignature` frozen dataclass with all fields per plan §3.1.3.
 - [ ] Stub `canonical_signature`, `signature_distance` with full docstrings + `NotImplementedError` bodies.
 - [ ] `uv run mypy src/cyclerfinder/data/catalog.py` clean on the skeleton.
@@ -205,7 +205,7 @@ The order mirrors plan.md §7: predecessor recap → `data/` subpackage scaffold
 ### Module-level checks
 
 - [ ] Confirm `uv run pytest tests/data/test_writeback.py` green.
-- [ ] Confirm `data/seed_cyclers.yaml` is NOT modified by any test (use `tmp_path` only).
+- [ ] Confirm `data/catalogue.yaml` is NOT modified by any test (use `tmp_path` only).
 - [ ] Confirm `uv run mypy src/cyclerfinder/data/writeback.py` clean.
 
 ## `data/discover.py`
@@ -279,7 +279,7 @@ The order mirrors plan.md §7: predecessor recap → `data/` subpackage scaffold
 - [ ] Update `docs/overview.md` §2 deferred-decisions table:
   - Remove "Ledger backend — SQLite vs JSONL (decided in M4/M7 when ledger is built)" from deferred.
   - Add to kept-decisions: "Ledger backend — JSONL (M7). SQLite reserved for a future scaling pass per plan §5 risk #11."
-- [ ] (Optional) Update `data/README.md` to add a "Writeback" section describing the `apply_v2_to_entry` / `record_rediscovery` / `register_discovery` paths and the explicit rule that CI tests never modify `data/seed_cyclers.yaml`.
+- [ ] (Optional) Update `data/README.md` to add a "Writeback" section describing the `apply_v2_to_entry` / `record_rediscovery` / `register_discovery` paths and the explicit rule that CI tests never modify `data/catalogue.yaml`.
 - [ ] Append a `## Hand-off to M8` section to this `todo.md` (below).
 
 ## Hand-off to M8
@@ -297,7 +297,7 @@ The order mirrors plan.md §7: predecessor recap → `data/` subpackage scaffold
 - **V3 status:** disabled (`enable_v3=False`) until M6b's `optimise_cell_ephemeris` body lands. M6b's plan needs to flip the flag once its gate passes.
 - **Ledger size at end of `discover` run for `(("E","M"), k_synodic=2, vinf_cap=7.0, L_max=4)`:** `<TBD>` entries. Informs M8 parallel-runner sizing — typical cell-throughput per worker = ledger-entries-per-second from this measurement.
 - **JSONL atomic-claim race:** `<TBD: fired in CI? | no>`. If it fired, M8 may swap to a SQLite backend per plan §6 deferred-decision.
-- **Confirmation `data/seed_cyclers.yaml` was NOT modified by any M7 test:** `<TBD: confirmed | violation found>`.
+- **Confirmation `data/catalogue.yaml` was NOT modified by any M7 test:** `<TBD: confirmed | violation found>`.
 - **Locked `CanonicalSignature` shape** (M8 reporter inherits):
   - `bodies: tuple[str, ...]`
   - `sequence_canonical: str`

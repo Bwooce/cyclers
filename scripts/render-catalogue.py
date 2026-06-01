@@ -4,7 +4,7 @@ Usage:
     uv run --with pyyaml python scripts/render-catalogue.py        # markdown
     uv run --with pyyaml python scripts/render-catalogue.py --csv  # spreadsheet ingest
 
-Reads ``data/seed_cyclers.yaml`` at the repo root and emits a
+Reads ``data/catalogue.yaml`` at the repo root and emits a
 cross-reference of all entries to stdout. The committed catalogue is
 YAML; this script is the on-demand renderer so no derivative markdown
 table needs to be kept in sync.
@@ -156,7 +156,7 @@ def main() -> None:
     parser.add_argument("--csv", action="store_true", help="emit CSV instead of markdown")
     args = parser.parse_args()
     repo_root = Path(__file__).resolve().parent.parent
-    catalogue_path = repo_root / "data" / "seed_cyclers.yaml"
+    catalogue_path = repo_root / "data" / "catalogue.yaml"
     with catalogue_path.open() as f:
         entries = yaml.safe_load(f)
     if not isinstance(entries, list):

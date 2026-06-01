@@ -1,6 +1,6 @@
 """M6b catalogue loader (test infrastructure).
 
-Reads ``data/seed_cyclers.yaml`` and filters to entries in scope for the
+Reads ``data/catalogue.yaml`` and filters to entries in scope for the
 M6b real-ephemeris closure verification gate (spec §14 V2-real). Entries
 that fall outside M6b's scope (cr3bp, analytic-ephemeris, non-Sun
 primary, non-ballistic) are excluded at load time so callers do not
@@ -30,7 +30,7 @@ from typing import Any, Final
 import yaml  # type: ignore[import-untyped]
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-_CATALOGUE_PATH = _REPO_ROOT / "data" / "seed_cyclers.yaml"
+_CATALOGUE_PATH = _REPO_ROOT / "data" / "catalogue.yaml"
 
 
 M6B_REGRESSION_IDS: Final[tuple[str, ...]] = (
@@ -101,7 +101,7 @@ def _passes_v1_filter(entry: dict[str, Any]) -> bool:
 def load_m6b_entries(catalogue_path: Path | None = None) -> list[dict[str, Any]]:
     """Load and filter the M6b regression-candidate catalogue entries.
 
-    Reads ``data/seed_cyclers.yaml`` (or the override path), applies the
+    Reads ``data/catalogue.yaml`` (or the override path), applies the
     plan §3.2 scope filter, and returns the raw entry dicts. Callers
     turn each entry into a :class:`~cyclerfinder.model.cycler.Cycler`
     via
@@ -111,7 +111,7 @@ def load_m6b_entries(catalogue_path: Path | None = None) -> list[dict[str, Any]]
     ----------
     catalogue_path:
         Override path to the catalogue YAML. ``None`` (default) reads
-        the repository's ``data/seed_cyclers.yaml``.
+        the repository's ``data/catalogue.yaml``.
 
     Returns
     -------

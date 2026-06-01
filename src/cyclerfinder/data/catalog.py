@@ -54,9 +54,9 @@ from cyclerfinder.model.cycler import Cycler, SenseT, orbit_elements_au
 # ---------------------------------------------------------------------------
 
 CATALOGUE_PATH: Final[Path] = (
-    Path(__file__).resolve().parent.parent.parent.parent / "data" / "seed_cyclers.yaml"
+    Path(__file__).resolve().parent.parent.parent.parent / "data" / "catalogue.yaml"
 )
-"""Resolved path to ``data/seed_cyclers.yaml``.
+"""Resolved path to ``data/catalogue.yaml``.
 
 Matches ``tests/_catalogue_loader.py``'s pattern so the loader and the
 M5 rediscovery test see the same on-disk file."""
@@ -154,7 +154,7 @@ class CanonicalSignature:
 
 @dataclass(frozen=True)
 class CatalogueEntry:
-    """In-memory projection of one ``data/seed_cyclers.yaml`` row.
+    """In-memory projection of one ``data/catalogue.yaml`` row.
 
     Carries every field the M7 matcher / writer / discovery workflow
     needs. Family-seed and citation-only entries set the optional
@@ -315,6 +315,64 @@ def _signature_hash(input_dict: dict[str, Any]) -> str:
     return "sha1:" + hashlib.sha1(blob).hexdigest()
 
 
+def _assemble_signature(
+    *,
+    raw_bodies: tuple[str, ...] | list[str],
+    raw_sequence: str,
+    sense: SenseT,
+    period_k: int,
+    period_years: float,
+    vinf_multiset_raw: list[tuple[str, float]],
+    leg_elements_raw: list[tuple[float, float]],
+    model_assumption: str,
+) -> CanonicalSignature:
+    """Single canonicalisation core for spec §16.2 signatures.
+
+    THE one and only place that bins, sorts, assembles the hash-input
+    dict, and computes the digest. Both signature entry points —
+    :func:`canonical_signature` (recomputed from a model
+    :class:`Cycler`) and :func:`_signature_from_yaml_fields` (published
+    catalogue values) — extract their raw ``(bodies, sequence, V∞
+    multiset, (a, e) multiset)`` from their respective sources and then
+    delegate here, so a single identity can never hash two ways.
+
+    All inputs are **raw** (un-binned): this function applies
+    :func:`_dedupe_closing_body`, :func:`_lex_min_rotation`, and the
+    ``_bin_*`` quantisers. ``period_years`` and ``model_assumption`` are
+    carried on the returned :class:`CanonicalSignature` but, per the
+    user-resolved decision #2 and plan §5 risk #15, are NOT in the hash.
+    """
+    deduped = _dedupe_closing_body(raw_bodies)
+    bodies_sorted = tuple(sorted(set(deduped)))
+    sequence_min = _lex_min_rotation(raw_sequence)
+    vinf_binned = sorted((body, _bin_vinf(float(v))) for body, v in vinf_multiset_raw)
+    # Dedupe per the per-cycler-signature convention: cyclers whose
+    # multiple "legs" trace arcs of the *same* heliocentric ellipse
+    # (e.g. the Aldrin family) must land on the same multiset as a
+    # catalogue row that broadcasts one orbit_elements block over
+    # several legs. A sorted set collapses both representations.
+    leg_binned = sorted({(_bin_a_au(float(a)), _bin_e(float(e))) for a, e in leg_elements_raw})
+    hash_input: dict[str, Any] = {
+        "bodies": list(bodies_sorted),
+        "sequence_canonical": sequence_min,
+        "sense": sense,
+        "period_k": int(period_k),
+        "vinf_multiset_binned": [list(t) for t in vinf_binned],
+        "leg_elements_multiset_binned": [list(t) for t in leg_binned],
+    }
+    return CanonicalSignature(
+        bodies=bodies_sorted,
+        sequence_canonical=sequence_min,
+        sense=sense,
+        period_k=int(period_k),
+        period_years=float(period_years),
+        vinf_multiset_binned=tuple(vinf_binned),
+        leg_elements_multiset_binned=tuple(leg_binned),
+        model_assumption=model_assumption,
+        hash=_signature_hash(hash_input),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Public signature computation
 # ---------------------------------------------------------------------------
@@ -354,66 +412,34 @@ def canonical_signature(
         Frozen, with bitwise-stable :attr:`CanonicalSignature.hash`.
     """
     deduped = _dedupe_closing_body(cycler.bodies)
-    bodies_sorted = tuple(sorted(set(deduped)))
-    sequence_canonical = _lex_min_rotation("-".join(deduped))
 
-    vinf_multiset: list[tuple[str, float]] = []
-    for enc in cycler.encounters:
-        # Open-sequence boundary encounters set vinf_in == vinf_out by
-        # construction (M3 convention); use vinf_in uniformly so the
-        # sum is rotation-stable.
-        vmag = float(np.linalg.norm(enc.vinf_in))
-        vinf_multiset.append((enc.body, _bin_vinf(vmag)))
+    # Raw (un-binned) V∞ multiset, one entry per encounter. Open-sequence
+    # boundary encounters set vinf_in == vinf_out by construction (M3
+    # convention); use vinf_in uniformly so the sum is rotation-stable.
     # On open sequences (e.g. ("E", "M", "E")) the closing body's
-    # encounter duplicates the opening body — its |V∞| is the same as
-    # the first encounter's by construction, so the multiset includes
-    # one entry per encounter (NOT per unique body). Spec §16.2's
-    # "multiset" terminology is per-encounter.
-    vinf_multiset.sort()
+    # encounter duplicates the opening body's |V∞| — spec §16.2's
+    # "multiset" is per-encounter, NOT per unique body.
+    vinf_multiset_raw: list[tuple[str, float]] = [
+        (enc.body, float(np.linalg.norm(enc.vinf_in))) for enc in cycler.encounters
+    ]
+    # Raw per-leg heliocentric (a, e), recomputed from model state. The
+    # core dedupes/bins so the Aldrin family (multiple arcs of one
+    # ellipse) lands on the same multiset as the catalogue's single
+    # orbit_elements block (see _assemble_signature).
+    leg_elements_raw: list[tuple[float, float]] = [
+        tuple(orbit_elements_au(enc.r, leg.v_depart, MU_SUN_KM3_S2))  # type: ignore[misc]
+        for leg, enc in zip(cycler.legs, cycler.encounters[:-1], strict=True)
+    ]
 
-    # Per spec §16.2, the leg-elements multiset is over per-leg
-    # heliocentric (a, e). For canonical-identity purposes we
-    # de-duplicate: cyclers whose multiple "legs" trace arcs of the
-    # *same* heliocentric ellipse (e.g. the Aldrin family — both legs
-    # are arcs of one a=1.60 AU / e=0.393 orbit) should match a
-    # catalogue entry whose orbit_elements block records the single
-    # ellipse. M3's idealised Aldrin slice has 1 leg; the catalogue
-    # YAML row has 2 legs broadcast from the same orbit_elements.
-    # Deduplication via a sorted set lands both representations on the
-    # same multiset.
-    leg_elements_set: set[tuple[float, float]] = set()
-    for leg, enc in zip(cycler.legs, cycler.encounters[:-1], strict=True):
-        a_au, e = orbit_elements_au(enc.r, leg.v_depart, MU_SUN_KM3_S2)
-        leg_elements_set.add((_bin_a_au(float(a_au)), _bin_e(float(e))))
-    leg_elements = sorted(leg_elements_set)
-
-    if period_k is None:
-        period_k = 1
-    if period_years is None:
-        period_years = 0.0
-
-    # The in-hash dict — period_years is intentionally excluded per
-    # the user-resolved decision #2 (out of hash) and plan §5 risk #15.
-    hash_input: dict[str, Any] = {
-        "bodies": list(bodies_sorted),
-        "sequence_canonical": sequence_canonical,
-        "sense": cycler.sense,
-        "period_k": int(period_k),
-        "vinf_multiset_binned": [list(t) for t in vinf_multiset],
-        "leg_elements_multiset_binned": [list(t) for t in leg_elements],
-    }
-    sig_hash = _signature_hash(hash_input)
-
-    return CanonicalSignature(
-        bodies=bodies_sorted,
-        sequence_canonical=sequence_canonical,
+    return _assemble_signature(
+        raw_bodies=cycler.bodies,
+        raw_sequence="-".join(deduped),
         sense=cycler.sense,
-        period_k=int(period_k),
-        period_years=float(period_years),
-        vinf_multiset_binned=tuple(vinf_multiset),
-        leg_elements_multiset_binned=tuple(leg_elements),
+        period_k=1 if period_k is None else period_k,
+        period_years=0.0 if period_years is None else period_years,
+        vinf_multiset_raw=vinf_multiset_raw,
+        leg_elements_raw=leg_elements_raw,
         model_assumption=model_assumption,
-        hash=sig_hash,
     )
 
 
@@ -430,38 +456,21 @@ def _signature_from_yaml_fields(
     """Compute a :class:`CanonicalSignature` directly from catalogue YAML fields.
 
     Catalogue entries store their published ``a, e, V∞`` values
-    directly; we apply the same binning + sorting + sha1 path used by
-    :func:`canonical_signature` for idealised cyclers, so the two
-    paths land on the same hash for the same identity.
+    directly; this is the **source-data** entry point. It extracts the
+    raw published multisets and delegates to :func:`_assemble_signature`
+    — the single canonicalisation core shared with
+    :func:`canonical_signature` — so the published-value path and the
+    model-recomputed path can never hash the same identity two ways.
     """
-    deduped = _dedupe_closing_body(bodies)
-    bodies_sorted = tuple(sorted(set(deduped)))
-    sequence_min = _lex_min_rotation(sequence_canonical)
-    vinf_binned = sorted((body, _bin_vinf(float(v))) for body, v in vinf_multiset_raw)
-    # Dedupe per the per-cycler-signature convention (see
-    # canonical_signature) — catalogue entries broadcast the single
-    # orbit_elements block over multiple legs; the M3 idealised
-    # constructor produces one leg per ellipse. Both must produce the
-    # same multiset of unique (a, e) bins.
-    leg_binned = sorted({(_bin_a_au(float(a)), _bin_e(float(e))) for a, e in leg_elements_raw})
-    hash_input: dict[str, Any] = {
-        "bodies": list(bodies_sorted),
-        "sequence_canonical": sequence_min,
-        "sense": sense,
-        "period_k": int(period_k),
-        "vinf_multiset_binned": [list(t) for t in vinf_binned],
-        "leg_elements_multiset_binned": [list(t) for t in leg_binned],
-    }
-    return CanonicalSignature(
-        bodies=bodies_sorted,
-        sequence_canonical=sequence_min,
+    return _assemble_signature(
+        raw_bodies=bodies,
+        raw_sequence=sequence_canonical,
         sense=sense,
-        period_k=int(period_k),
-        period_years=float(period_years),
-        vinf_multiset_binned=tuple(vinf_binned),
-        leg_elements_multiset_binned=tuple(leg_binned),
+        period_k=period_k,
+        period_years=period_years,
+        vinf_multiset_raw=vinf_multiset_raw,
+        leg_elements_raw=leg_elements_raw,
         model_assumption=model_assumption,
-        hash=_signature_hash(hash_input),
     )
 
 
@@ -637,7 +646,7 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
 
 @dataclass(frozen=True)
 class Catalog:
-    """Loaded, indexed projection of ``data/seed_cyclers.yaml`` (spec §16.3 pool).
+    """Loaded, indexed projection of ``data/catalogue.yaml`` (spec §16.3 pool).
 
     Attributes
     ----------
@@ -684,7 +693,7 @@ class Catalog:
 
 
 def load_catalog(path: Path | str = CATALOGUE_PATH) -> Catalog:
-    """Read ``data/seed_cyclers.yaml`` and build a :class:`Catalog`.
+    """Read ``data/catalogue.yaml`` and build a :class:`Catalog`.
 
     Computes the canonical signature for every entry whose YAML row
     carries the required structural fields. Family-seed and

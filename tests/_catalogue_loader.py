@@ -37,7 +37,7 @@ from pathlib import Path
 import yaml  # type: ignore[import-untyped]
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CATALOGUE_PATH = REPO_ROOT / "data" / "seed_cyclers.yaml"
+CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 
 
 @dataclasses.dataclass(frozen=True)
