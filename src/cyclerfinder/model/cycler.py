@@ -47,6 +47,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import sqrt
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -55,6 +56,16 @@ from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2
 from cyclerfinder.core.frames import synodic_omega, to_rotating
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
+
+# Spec §16.2 sense field — direction of the cycler's heliocentric arc:
+# "outbound" (short A→B leg, long B→A return) vs "inbound" (the time-mirror).
+# "n/a" for cyclers where the distinction is undefined (e.g. M5 idealised
+# results that have not been tagged by a catalogue lookup or by an explicit
+# constructor). Russell 2004 and McConaghy 2006 catalogue outbound/inbound
+# as separate entries; M7's canonical signature treats them as distinct so
+# the Aldrin classic outbound (``aldrin-classic-em-k1-outbound``) and inbound
+# (``aldrin-classic-em-k1-inbound``) catalogue rows remain distinguishable.
+SenseT = Literal["outbound", "inbound", "n/a"]
 
 
 @dataclass(frozen=True)
@@ -159,6 +170,18 @@ class Cycler:
     period: float
     encounters: list[Encounter]
     legs: list[Leg]
+    sense: SenseT = "n/a"
+    """Spec §16.2 direction tag — ``"outbound"`` / ``"inbound"`` / ``"n/a"``.
+
+    Default ``"n/a"`` because the M3-M5 idealised constructors do not have
+    catalogue context to pick a side; M7's catalogue ingest writer (and
+    real-ephemeris constructors that consume a catalogue ``sense``) set
+    this explicitly. Folded into the M7 canonical signature so outbound /
+    inbound variants remain distinguishable. Russell 2004 §3.8 footnote
+    notes that the energy properties of inbound and outbound are
+    identical; they remain catalogued separately because their
+    *geometric* signatures differ in temporal asymmetry (short A→B then
+    long B→A vs the time-mirror)."""
 
     # ------------------------------------------------------------------
     # Metric methods
@@ -333,7 +356,7 @@ def orbit_elements_au(r: Vec3, v: Vec3, mu: float = MU_SUN_KM3_S2) -> tuple[floa
     return a_km / AU_KM, e
 
 
-__all__ = ["Cycler", "Encounter", "Leg", "orbit_elements_au"]
+__all__ = ["Cycler", "Encounter", "Leg", "SenseT", "orbit_elements_au"]
 
 
 # Defensive: import-time sanity that helper math is well-defined for a
