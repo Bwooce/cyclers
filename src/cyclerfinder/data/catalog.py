@@ -227,9 +227,7 @@ class CatalogueEntry:
             v is None for _, v in self.vinf_kms_at_encounters
         ):
             return False
-        if not self.legs_tof_days or any(t is None for t in self.legs_tof_days):
-            return False
-        return True
+        return bool(self.legs_tof_days) and all(t is not None for t in self.legs_tof_days)
 
 
 @dataclass(frozen=True)

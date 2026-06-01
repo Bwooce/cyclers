@@ -49,9 +49,7 @@ def _fully_defined(entry: dict[str, Any]) -> bool:
     if not vinfs or any(v.get("vinf_kms") is None for v in vinfs):
         return False
     legs = _legs_of(entry)
-    if not legs or any(leg.get("tof_days") is None for leg in legs):
-        return False
-    return True
+    return bool(legs) and all(leg.get("tof_days") is not None for leg in legs)
 
 
 def _data_completeness(entry: dict[str, Any]) -> str:
@@ -101,8 +99,10 @@ def _period_str(entry: dict[str, Any]) -> str:
 
 def render_md(entries: list[dict[str, Any]]) -> str:
     rows = [
-        "| # | id | primary | regime | bodies | period | max V∞ (km/s) | data | defined | citation |",
-        "|---|----|---------|--------|--------|--------|---------------|------|---------|----------|",
+        "| # | id | primary | regime | bodies | period "
+        "| max V∞ (km/s) | data | defined | citation |",
+        "|---|----|---------|--------|--------|--------"
+        "|---------------|------|---------|----------|",
     ]
     for i, e in enumerate(entries, 1):
         rows.append(
