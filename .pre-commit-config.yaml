@@ -1,0 +1,10 @@
+# Local presubmit: mirrors the CI lint job (.github/workflows/ci.yml).
+# Activate once per clone with: uv run pre-commit install
+# Run manually across the tree with: uv run pre-commit run --all-files
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.15  # keep in sync with the ruff dev-dependency in pyproject.toml
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
