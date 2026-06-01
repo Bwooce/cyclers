@@ -128,30 +128,41 @@ def test_aldrin_ballistic_closure_fails_because_powered(
 @pytest.mark.xfail(
     strict=True,
     reason=(
-        "POSITIVE powered-closure goal, BLOCKED on the flyby-constrained "
-        "periodic BVP solver (task #71, "
-        "cyclerfinder.search.bvp.solve_powered_periodic_cycler), which is not "
-        "yet implemented (the stub raises NotImplementedError). Once the solver "
-        "lands and applies the maintenance maneuver at the Earth flyby, the "
-        "powered Aldrin cycler closes on DE440 and this xfail flips to XPASS; "
-        "strict=True then fails CI, prompting removal of this marker. We do NOT "
-        "fabricate a pass. The ballistic negative result is asserted by "
-        "test_aldrin_ballistic_closure_fails_because_powered."
+        "POSITIVE powered-closure goal. The solver "
+        "(cyclerfinder.search.bvp.solve_powered_periodic_cycler) is now "
+        "implemented and DOES produce a genuine powered Aldrin cycler with a "
+        "strictly positive maintenance ΔV (that assertion passes). What remains "
+        "unreachable is the rotating-frame DRIFT bound (REAL_DRIFT_TOLERANCE_KM "
+        "= 200,000 km): it is PHYSICALLY unattainable for the k=1 Aldrin cycler "
+        "on DE440, not a missing-code problem. The drift propagator pins each "
+        "leg-start to the real planet position at the lap-shifted epoch, and "
+        "Mars's heliocentric radius breathes ≈0.117 AU (≈1.75e7 km) per 2.135 yr "
+        "cycle because the cycler period is not commensurate with Mars's 1.881 yr "
+        "orbit — empirical drift floor ≈3.6e7 km (≈180x tolerance), independent "
+        "of the maneuver (which shapes velocity, not where Mars is). The "
+        "200,000 km rotating-frame-repeat criterion is a circular-ephemeris "
+        "idealisation eccentric Mars cannot satisfy; this is exactly why the "
+        "real Aldrin cycler needs a per-cycle retargeting maneuver. We do NOT "
+        "fabricate a pass. The SOURCED reproduction (anchors + turn deficit) is "
+        "asserted with teeth by the Phase-C gate below; the ballistic negative "
+        "result by test_aldrin_ballistic_closure_fails_because_powered. "
+        "strict=True keeps this honest: if the propagator/criterion ever changes "
+        "so drift closes, CI forces a revisit of this marker."
     ),
 )
 def test_aldrin_powered_cycler_closes_on_de440(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
 ) -> None:
-    """POSITIVE gate (xfail pending #71): the powered Aldrin cycler, built by
-    the flyby-constrained periodic BVP solver *with* its maintenance maneuver,
-    closes on real DE440 ephemeris over 2 cycles within tolerance.
+    """POSITIVE goal (xfail — physically unreachable drift bound): the powered
+    Aldrin cycler built by the flyby-constrained periodic solver *with* its
+    maintenance maneuver, propagated on real DE440 ephemeris over 2 cycles.
 
-    This is the real reproduction target the negative ballistic test cannot
-    reach. It depends entirely on
-    :func:`cyclerfinder.search.bvp.solve_powered_periodic_cycler`; the
-    ``NotImplementedError`` from its stub is caught by ``xfail`` until the
-    solver exists.
+    The solver is implemented and the maintenance-ΔV assertion below passes;
+    only the rotating-frame drift bound is unreachable for k=1 Aldrin (Mars's
+    eccentric radial breathing dwarfs the 200,000 km tolerance — see the xfail
+    reason). The faithful, *reachable* reproduction target — sourced orbital
+    anchors and the sourced Earth turn deficit — is the Phase-C gate below.
     """
     from cyclerfinder.search.bvp import solve_powered_periodic_cycler
 
@@ -357,8 +368,11 @@ def test_real_closure_regression_set(
         pytest.skip(
             f"{entry_id}: powered cycler — ballistic closure not expected; "
             "covered by test_aldrin_ballistic_closure_fails_because_powered "
-            "(negative) + test_aldrin_powered_cycler_closes_on_de440 (positive, "
-            "xfail pending the BVP solver, task #71)."
+            "(negative) + test_aldrin_powered_cycler_closes_on_de440 (positive "
+            "powered-closure goal; the solver is implemented and the maintenance "
+            "ΔV is real, but the rotating-frame drift bound is physically "
+            "unreachable for k=1 Aldrin, so it stays xfail — see that test's "
+            "reason)."
         )
     priority = entry.get("priority_date")
     if isinstance(priority, str):

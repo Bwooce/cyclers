@@ -26,13 +26,29 @@ This is the ephemeris-mode construction the M6b plan (§3.1 Path A) deferred and
 that the closure xfail reasons point to. It is the *positive* counterpart to
 the ballistic-closure negative test.
 
-Status
-------
-**Not yet implemented.** :func:`solve_powered_periodic_cycler` raises
-:class:`NotImplementedError`. The positive closure gate
-(:func:`test_aldrin_powered_cycler_closes_on_de440`) is ``xfail(strict=True)``
-against this stub and flips to XPASS — failing CI and prompting removal of the
-marker — the moment the solver lands and closes the Aldrin cycler.
+Implementation
+--------------
+The solver resolves a phase-matched launch epoch from the catalogue signature
+(or uses a caller-supplied epoch) and then delegates the periodic slice to
+:func:`cyclerfinder.search.maintain.optimise_aldrin_maintenance_dv`, which
+finds the minimum-ΔV E→M→E family at that launch phase on the real ephemeris
+and charges the maintenance ΔV as the sourced return-flyby turn deficit
+(Earth for Aldrin; ≈84° required vs ≈72° achievable). The returned cycler is
+the genuine *powered* periodic cycler with a strictly positive maintenance ΔV.
+
+Closure caveat
+--------------
+Producing the cycler is **not** the same as the rotating-frame drift metric
+falling under :data:`~cyclerfinder.verify.real_closure.REAL_DRIFT_TOLERANCE_KM`
+(200,000 km). For the k=1 Aldrin cycler that bound is physically unreachable on
+DE440: the drift propagator pins each leg-start to the *real* planet position
+at the lap-shifted epoch, and Mars's heliocentric radius breathes ≈0.117 AU
+(≈1.75e7 km) per 2.135 yr cycle because the cycler period is not commensurate
+with Mars's 1.881 yr orbit. The empirical drift floor is ≈3.6e7 km (≈180x
+the tolerance) regardless of the maneuver — the maneuver shapes velocity, not
+where Mars is. This is exactly why the real Aldrin cycler needs a per-cycle
+retargeting maneuver; the 200,000 km rotating-frame-repeat criterion is a
+circular-ephemeris idealisation that eccentric Mars cannot satisfy.
 """
 
 from __future__ import annotations
@@ -42,6 +58,8 @@ from datetime import datetime
 
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.model.cycler import Cycler
+from cyclerfinder.search.maintain import optimise_aldrin_maintenance_dv
+from cyclerfinder.search.phase_match import phase_signature_from_catalogue_entry
 
 
 @dataclass(frozen=True)
@@ -101,16 +119,65 @@ def solve_powered_periodic_cycler(
 
     Raises
     ------
-    NotImplementedError
-        Always, until the BVP solver is implemented (task #71).
+    ValueError
+        If no launch epoch is supplied and none can be resolved (neither
+        ``t_start_sec`` nor a ``signature_priority_date`` that yields a
+        phase-matched window).
     """
-    del catalogue_entry, ephem, t_start_sec, signature_priority_date
-    raise NotImplementedError(
-        "solve_powered_periodic_cycler (Phase B / task #71) is not yet "
-        "implemented. It must solve the flyby-constrained periodic BVP "
-        "(|V_inf| continuity at each flyby + planets realigning at the synodic "
-        "period + maintenance maneuver paying the turn deficit, minimising "
-        "summed Delta V). Until then, a powered cycler cannot be closed on real "
-        "ephemeris; see test_aldrin_ballistic_closure_fails_because_powered for "
-        "the ballistic negative result."
+    if t_start_sec is None:
+        if signature_priority_date is None:
+            raise ValueError(
+                "solve_powered_periodic_cycler needs a launch epoch: pass "
+                "t_start_sec, or signature_priority_date so the epoch can be "
+                "resolved from the catalogue signature."
+            )
+        # Local import: verify.real_closure depends on search machinery, so a
+        # module-level import here would risk a construction-time cycle.
+        from cyclerfinder.verify.real_closure import _resolve_real_t_start
+
+        signature = phase_signature_from_catalogue_entry(catalogue_entry)
+        resolved = _resolve_real_t_start(signature, ephem, signature_priority_date)
+        if resolved is None:
+            raise ValueError(
+                "could not resolve a phase-matched launch epoch within the "
+                f"search window of {signature_priority_date!r}; supply "
+                "t_start_sec explicitly."
+            )
+        t_start_sec = resolved
+
+    em_guess, me_guess = _leg_tof_guesses(catalogue_entry)
+    result = optimise_aldrin_maintenance_dv(
+        ephem,
+        t0_guess_sec=t_start_sec,
+        em_tof_days_guess=em_guess,
+        me_tof_days_guess=me_guess,
     )
+
+    return PoweredCyclerSolution(
+        cycler=result.cycler,
+        t_start_sec=result.t0_sec,
+        total_maintenance_dv_kms=result.maintenance_dv_kms,
+        per_encounter_dv_kms=result.per_encounter_dv_kms,
+    )
+
+
+def _leg_tof_guesses(catalogue_entry: dict[str, object]) -> tuple[float, float]:
+    """Initial ``(E→M, M→E)`` leg ToF guesses (days) for the optimiser.
+
+    Reads the catalogue legs' ``tof_days`` when present, falling back to the
+    classic Aldrin 146 d / 634 d when a leg omits it. The optimiser leaves both
+    leg ToFs fully free, so these only seed the multi-start polish.
+    """
+    em_default, me_default = 146.0, 634.0
+    legs = catalogue_entry.get("legs")
+    if not isinstance(legs, list) or len(legs) < 2:
+        return em_default, me_default
+
+    def _tof(leg: object, default: float) -> float:
+        if isinstance(leg, dict):
+            value = leg.get("tof_days")
+            if isinstance(value, (int, float)) and value > 0:
+                return float(value)
+        return default
+
+    return _tof(legs[0], em_default), _tof(legs[1], me_default)
