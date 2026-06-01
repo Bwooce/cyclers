@@ -8,3 +8,16 @@ repos:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
+  - repo: local
+    hooks:
+      # Mirrors the CI Mypy stage. Runs in the uv-managed venv so it sees
+      # the same stubs/extras CI does (run `uv sync --all-extras` once).
+      # Checks the whole tree, not just staged files, since mypy is
+      # project-global; pass_filenames: false keeps pre-commit from
+      # appending paths to the command.
+      - id: mypy
+        name: mypy
+        entry: uv run mypy src tests
+        language: system
+        types: [python]
+        pass_filenames: false
