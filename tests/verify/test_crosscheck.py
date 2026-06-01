@@ -6,8 +6,8 @@ Covers :mod:`cyclerfinder.verify.crosscheck`:
   every single-rev leg of a real-ephemeris Aldrin cycler agrees with
   both lamberthub solvers to < :data:`V1_TOLERANCE_MPS`.
 * Helper-level tests for :func:`crosscheck_leg` /
-  :func:`crosscheck_cycler` behaviour (multi-rev routing, endpoint
-  extraction, aggregation).
+  :func:`crosscheck_cycler` behaviour (single- and multi-rev legs,
+  endpoint extraction, aggregation).
 """
 
 from __future__ import annotations
@@ -58,6 +58,22 @@ def aldrin_cycler(
     return construct_real_ephemeris_cycler(aldrin_entry, astropy_ephem, t_start)
 
 
+@pytest.fixture(scope="module")
+def multirev_cycler(astropy_ephem: Ephemeris) -> Cycler:
+    """Real-ephemeris single-leg E->M cycler whose leg is a feasible n=1 transfer.
+
+    A 780 d Earth->Mars leg exceeds t_min(1) (~630 d), so revolution 1 is
+    feasible; the catalogue omits ``branch`` so it defaults to ``low``.
+    """
+    entry = {
+        "id": "synthetic-multirev-crosscheck",
+        "bodies": ["E", "M"],
+        "legs": [{"from": "E", "to": "M", "tof_days": 780.0, "n_revs": 1}],
+        "period": {"years": 2.135},
+    }
+    return construct_real_ephemeris_cycler(entry, astropy_ephem, 0.0)
+
+
 # ---------------------------------------------------------------------------
 # M7 BINDING GATE — V1 lamberthub agreement on a real Aldrin cycler
 # ---------------------------------------------------------------------------
@@ -105,24 +121,16 @@ def test_crosscheck_leg_indexes_and_passes(
     assert any(abs(c) > 0.0 for c in result.mine_v1_kms)
 
 
-def test_crosscheck_leg_multirev_raises(
-    aldrin_cycler: Cycler,
+def test_crosscheck_leg_multirev_passes(
+    multirev_cycler: Cycler,
     astropy_ephem: Ephemeris,
 ) -> None:
-    """A multi-rev leg routes to ``NotImplementedError`` (single-rev only)."""
-    base = aldrin_cycler.legs[0]
-    multirev = Leg(
-        from_body=base.from_body,
-        to_body=base.to_body,
-        t_depart=base.t_depart,
-        t_arrive=base.t_arrive,
-        v_depart=base.v_depart,
-        v_arrive=base.v_arrive,
-        n_revs=1,
-        branch=base.branch,
-    )
-    with pytest.raises(NotImplementedError):
-        crosscheck_leg(multirev, aldrin_cycler, astropy_ephem, leg_index=0)
+    """A multi-rev leg crosschecks against lamberthub with matching M/low_path."""
+    leg = multirev_cycler.legs[0]
+    assert leg.n_revs == 1
+    result = crosscheck_leg(leg, multirev_cycler, astropy_ephem, leg_index=0)
+    assert result.passed, result.max_diff_mps
+    assert result.max_diff_mps < V1_TOLERANCE_MPS
 
 
 def test_crosscheck_leg_missing_endpoint_raises(
@@ -150,57 +158,21 @@ def test_crosscheck_leg_missing_endpoint_raises(
 # ---------------------------------------------------------------------------
 
 
-def test_crosscheck_cycler_skips_multirev_legs(
+def test_crosscheck_cycler_represents_single_rev_legs(
     aldrin_cycler: Cycler,
     astropy_ephem: Ephemeris,
 ) -> None:
-    """Multi-rev legs are skipped; only single-rev legs are represented."""
-    legs = list(aldrin_cycler.legs)
-    multirev = Leg(
-        from_body=legs[0].from_body,
-        to_body=legs[0].to_body,
-        t_depart=legs[0].t_depart,
-        t_arrive=legs[0].t_arrive,
-        v_depart=legs[0].v_depart,
-        v_arrive=legs[0].v_arrive,
-        n_revs=2,
-        branch=legs[0].branch,
-    )
-    mixed = Cycler(
-        bodies=aldrin_cycler.bodies,
-        period=aldrin_cycler.period,
-        encounters=aldrin_cycler.encounters,
-        legs=[*legs, multirev],
-        sense=aldrin_cycler.sense,
-    )
-    results = crosscheck_cycler(mixed, astropy_ephem)
-    assert len(results) == sum(1 for leg in mixed.legs if leg.n_revs == 0)
+    """Every single-rev leg of a real cycler is crosschecked and passes."""
+    results = crosscheck_cycler(aldrin_cycler, astropy_ephem)
+    assert len(results) == sum(1 for leg in aldrin_cycler.legs if leg.n_revs == 0)
     assert all(r.passed for r in results)
 
 
-def test_crosscheck_cycler_all_multirev_returns_empty(
-    aldrin_cycler: Cycler,
+def test_crosscheck_cycler_includes_multirev_legs(
+    multirev_cycler: Cycler,
     astropy_ephem: Ephemeris,
 ) -> None:
-    """A cycler of only multi-rev legs yields an empty tuple ("N/A")."""
-    legs = tuple(
-        Leg(
-            from_body=leg.from_body,
-            to_body=leg.to_body,
-            t_depart=leg.t_depart,
-            t_arrive=leg.t_arrive,
-            v_depart=leg.v_depart,
-            v_arrive=leg.v_arrive,
-            n_revs=1,
-            branch=leg.branch,
-        )
-        for leg in aldrin_cycler.legs
-    )
-    all_multirev = Cycler(
-        bodies=aldrin_cycler.bodies,
-        period=aldrin_cycler.period,
-        encounters=aldrin_cycler.encounters,
-        legs=list(legs),
-        sense=aldrin_cycler.sense,
-    )
-    assert crosscheck_cycler(all_multirev, astropy_ephem) == ()
+    """Multi-rev legs are now crosschecked too, not skipped."""
+    results = crosscheck_cycler(multirev_cycler, astropy_ephem)
+    assert len(results) == len(multirev_cycler.legs)
+    assert all(r.passed for r in results)

@@ -130,3 +130,13 @@ def test_multirev_crosscheck_against_lamberthub(
         float(np.linalg.norm(mine.v2 - v2_g)),
     )
     assert worst_mps < 1.0e-3, (branch, worst_mps)
+
+
+def test_lambert_crosscheck_multirev(leg_multirev: Leg) -> None:
+    """lambert_crosscheck(..., n_revs=1, branch='low') agrees < 1e-3 m/s."""
+    from cyclerfinder.core.lambert import lambert_crosscheck
+
+    res = lambert_crosscheck(
+        leg_multirev.r1, leg_multirev.r2, leg_multirev.tof, n_revs=1, branch="low"
+    )
+    assert res["max_diff_mps"] < 1.0e-3, res["max_diff_mps"]

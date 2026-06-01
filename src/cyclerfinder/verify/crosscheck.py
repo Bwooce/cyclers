@@ -118,27 +118,28 @@ def crosscheck_leg(
     cycler's encounter records, which already carry the real planet
     positions); it is currently unused.
 
-    Single-rev only: the in-house solver is single-rev (M1), so this
-    cross-check is meaningful for ``leg.n_revs == 0`` legs. Multi-rev
-    legs raise :class:`NotImplementedError` so callers route them to
-    the multi-rev blocker rather than silently comparing against a
-    single-rev in-house result.
+    Single- and multi-rev: the in-house solver matches ``leg.n_revs`` and
+    ``leg.branch`` ("low" maps to ``lamberthub``'s ``low_path=True``,
+    "high" to ``low_path=False``); the reference solvers are called with
+    ``M=leg.n_revs`` and the corresponding ``low_path`` so the comparison
+    is on the same branch.
     """
     del ephem  # endpoints come from the cycler; kept for interface symmetry
-    if leg.n_revs > 0:
-        raise NotImplementedError(
-            f"crosscheck_leg is single-rev only; leg {leg_index} has "
-            f"n_revs={leg.n_revs}. Multi-rev Lambert is out of M1/M7 scope."
-        )
 
     from lamberthub import gooding1990, izzo2015  # type: ignore[import-untyped]
 
     r1, r2 = _leg_endpoints(leg, cycler)
     tof_sec = leg.t_arrive - leg.t_depart
 
-    mine = lambert(r1, r2, tof_sec, mu=mu, prograde=True)[0]
-    v1_izzo, _v2_izzo = izzo2015(mu, r1, r2, tof_sec, M=0, prograde=True)
-    v1_gooding, _v2_gooding = gooding1990(mu, r1, r2, tof_sec, M=0, prograde=True)
+    sols = lambert(r1, r2, tof_sec, mu=mu, prograde=True, max_revs=leg.n_revs)
+    mine = next(s for s in sols if s.n_revs == leg.n_revs and s.branch == leg.branch)
+    low_path = leg.branch != "high"
+    v1_izzo, _v2_izzo = izzo2015(
+        mu, r1, r2, tof_sec, M=leg.n_revs, prograde=True, low_path=low_path
+    )
+    v1_gooding, _v2_gooding = gooding1990(
+        mu, r1, r2, tof_sec, M=leg.n_revs, prograde=True, low_path=low_path
+    )
 
     mine_v1 = np.asarray(mine.v1, dtype=np.float64)
     izzo_v1 = np.asarray(v1_izzo, dtype=np.float64)
@@ -168,19 +169,14 @@ def crosscheck_cycler(
     *,
     mu: float = MU_SUN_KM3_S2,
 ) -> tuple[LambertCrosscheckResult, ...]:
-    """Run :func:`crosscheck_leg` across every single-rev leg of ``cycler``.
+    """Run :func:`crosscheck_leg` across every leg of ``cycler``.
 
-    Multi-rev legs are skipped (no in-house single-rev result to
-    compare against). The aggregated V1 pass is
-    ``all(r.passed for r in result)`` AND every single-rev leg is
-    represented; a cycler with only multi-rev legs returns an empty
-    tuple, which the caller must treat as "V1 not applicable" rather
-    than "V1 passed".
+    Single- and multi-rev legs are both crosschecked (each on its own
+    ``n_revs``/``branch``). The aggregated V1 pass is
+    ``all(r.passed for r in result)`` with every leg represented.
     """
     results: list[LambertCrosscheckResult] = []
     for j, leg in enumerate(cycler.legs):
-        if leg.n_revs > 0:
-            continue
         results.append(crosscheck_leg(leg, cycler, ephem, leg_index=j, mu=mu))
     return tuple(results)
 

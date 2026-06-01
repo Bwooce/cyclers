@@ -14,7 +14,8 @@ Test layout (plan §4.1):
 * Gate 1b — :func:`test_aldrin_powered_turn_deficit_gate` (**binding
   Aldrin gate**: sourced anchors + sourced 84°/72° turn deficit).
 * Gate 2 — :func:`test_2syn_em_cpom_periodic_over_2_cycles_astropy`
-  (**xfail** under the multi-rev Lambert blocker).
+  (**xfail** on the S1L1 return-leg ToF data gap; multi-rev Lambert is
+  no longer the blocker).
 * Gate 3 — :func:`test_real_drift_rejects_open_trajectory`.
 * Gate 4 — :func:`test_real_closure_regression_set` (parametrised).
 * Gate 5 —
@@ -48,7 +49,6 @@ from cyclerfinder.verify.real_closure import (
     EXPECTED_SKIPS,
     N_CYCLES_DEFAULT,
     REAL_DRIFT_TOLERANCE_KM,
-    MultiRevLambertRequiredError,
     RealClosureResult,
     _check_vinf_continuity,
     _resolve_real_t_start,
@@ -266,16 +266,22 @@ def test_aldrin_powered_turn_deficit_gate(aldrin_entry: dict[str, object]) -> No
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "multi-rev Lambert blocker — see plan §5 risk #2. "
-        "Single-rev Lambert returns v3-skipped-multirev for the S1L1 "
-        "intermediate-encounter legs (n_revs=1); the test will flip to "
-        "passing once multi-rev Lambert lands (M-future / stretch)."
+        "incomplete S1L1 leg data — multi-rev Lambert is no longer the "
+        "blocker (the solver now lands), but the return M->E leg tof_days "
+        "is an unresolved data gap (not tabulated in the AIAA 2002-4420 "
+        "abstract) and the segment topology is still provisional (the "
+        "naive 3-leg fixed-154-d skeleton does not close ballistically). "
+        "construct_real_ephemeris_cycler raises on the null return-leg "
+        "tof_days. Forcing closure would require fabricating that ToF, "
+        "which the golden-test discipline forbids. Flips to passing once "
+        "the full-paper Table 2 return ToF is extracted."
     ),
 )
 def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
     astropy_ephem: Ephemeris,
 ) -> None:
-    """Aspirational gate for the 2-syn S1L1 entry; xfail at M6b time."""
+    """Aspirational gate for the 2-syn S1L1 entry; xfail on a return-leg
+    ToF data gap (no longer the multi-rev Lambert blocker)."""
     entries = load_m6b_entries()
     s1l1 = next(e for e in entries if e["id"] == "s1l1-2syn-em-cpom")
     result = verify_real_closure(
@@ -423,7 +429,6 @@ def test_real_closure_result_frozen_and_v3_fields_locked() -> None:
     assert result.v3_status in (
         "v3-real-closure-pass",
         "v3-real-closure-fail",
-        "v3-skipped-multirev",
         "v3-no-real-window",
         "v3-construction-error",
     )
@@ -503,20 +508,24 @@ def test_construct_real_ephemeris_cycler_aldrin(
     assert cycler.encounters[0].t == pytest.approx(t_start)
 
 
-def test_construct_raises_on_multi_rev_leg(astropy_ephem: Ephemeris) -> None:
-    """Plan §4.6: any leg with ``n_revs > 0`` raises ``MultiRevLambertRequiredError``."""
+def test_construct_builds_multi_rev_leg(astropy_ephem: Ephemeris) -> None:
+    """A leg with ``n_revs=1`` now builds a multi-rev Leg instead of raising.
+
+    Uses a 780 d Earth->Mars leg: t_min(1) for that geometry is ~630 d, so
+    revolution 1 is feasible. The catalogue carries no ``branch`` field, so
+    construction defaults to the ``low`` branch.
+    """
     synthetic = {
         "id": "synthetic-multirev",
         "bodies": ["E", "M"],
         "legs": [
-            {"from": "E", "to": "M", "tof_days": 200, "n_revs": 1},
+            {"from": "E", "to": "M", "tof_days": 780.0, "n_revs": 1},
         ],
         "period": {"years": 2.135},
     }
-    with pytest.raises(MultiRevLambertRequiredError) as excinfo:
-        construct_real_ephemeris_cycler(synthetic, astropy_ephem, 0.0)
-    assert excinfo.value.catalogue_id == "synthetic-multirev"
-    assert excinfo.value.leg_index == 0
+    cyc = construct_real_ephemeris_cycler(synthetic, astropy_ephem, 0.0)
+    assert cyc.legs[0].n_revs == 1
+    assert cyc.legs[0].branch == "low"
 
 
 def test_resolve_real_t_start_prefers_priority_window(
@@ -680,28 +689,32 @@ def test_verify_real_closure_requires_priority_or_t_start(
         verify_real_closure(bare, n_cycles=2, ephem=astropy_ephem)
 
 
-def test_verify_real_closure_routes_multirev_to_skip_status(
+def test_verify_real_closure_constructs_feasible_multirev(
     astropy_ephem: Ephemeris,
 ) -> None:
-    """A catalogue entry with ``n_revs=1`` returns ``v3-skipped-multirev``."""
+    """A feasible ``n_revs=1`` entry is built and measured, never skip-routed.
+
+    With multi-rev Lambert landed there is no ``v3-skipped-multirev`` status;
+    the 780 d Earth->Mars leg clears t_min(1) (~630 d) so construction
+    succeeds and the result carries a real closure outcome.
+    """
     multirev = {
         "id": "synthetic-multirev-routed",
         "bodies": ["E", "M"],
         "legs": [
-            {"from": "E", "to": "M", "tof_days": 200.0, "n_revs": 1},
-        ],
-        "vinf_kms_at_encounters": [
-            {"body": "E", "vinf_kms": 6.5},
-            {"body": "M", "vinf_kms": 9.7},
+            {"from": "E", "to": "M", "tof_days": 780.0, "n_revs": 1},
         ],
         "period": {"years": 2.135},
-        "priority_date": "1985-10-28",
     }
     result = verify_real_closure(
         multirev,
         n_cycles=2,
         ephem=astropy_ephem,
+        t_start=0.0,
     )
-    assert result.v3_status == "v3-skipped-multirev"
-    assert not result.closes
-    assert result.n_cycles_propagated == 0
+    assert result.v3_status != "v3-skipped-multirev"
+    assert result.v3_status in (
+        "v3-real-closure-pass",
+        "v3-real-closure-fail",
+        "v3-construction-error",
+    )

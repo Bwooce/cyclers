@@ -40,10 +40,9 @@ duplicating it:
   ``test_real_closure_uses_m6a_machinery``.
 * :func:`find_real_windows` (M6 slice) — picks the real launch epoch
   that matches the catalogue's signature.
-* :func:`lambert` (M1, single-rev) — solves each leg's velocity
-  vectors over real planet positions. Multi-rev legs surface
-  :class:`MultiRevLambertRequiredError` because M1's Lambert solver
-  is single-rev only.
+* :func:`lambert` — solves each leg's velocity vectors over real
+  planet positions, single- or multi-rev per the leg's ``n_revs`` and
+  ``branch``.
 
 Plan: ``docs/phases/m6b-real-ephemeris-closure/plan.md``.
 """
@@ -115,25 +114,6 @@ _YEAR_S = DAYS_PER_JULIAN_YEAR * SECONDS_PER_DAY
 # ---------------------------------------------------------------------------
 
 
-class MultiRevLambertRequiredError(Exception):
-    """Raised when a catalogue leg's ``n_revs > 0`` and M1's Lambert is single-rev.
-
-    The leg index lets callers populate diagnostic state and the
-    catalogue id lets them route the entry into
-    :data:`EXPECTED_SKIPS`.
-    """
-
-    def __init__(self, catalogue_id: str | None, leg_index: int) -> None:
-        self.catalogue_id = catalogue_id
-        self.leg_index = leg_index
-        super().__init__(
-            f"catalogue entry {catalogue_id!r} leg {leg_index} requires "
-            f"multi-rev Lambert (n_revs > 0); M1 Lambert solver is "
-            f"single-rev only. Move to EXPECTED_SKIPS or wait for "
-            f"multi-rev Lambert (M-future / M7 prerequisite)."
-        )
-
-
 class RealClosureConstructionError(Exception):
     """Raised when single-rev Lambert fails on a real-ephemeris leg.
 
@@ -194,16 +174,16 @@ class RealClosureResult:
         At each interior encounter, ``||V_inf_in| - |V_inf_out||`` in
         km/s — diagnostic measure of how far the real-ephemeris
         construction departs from the published ballistic ideal.
-        Empty tuple if construction skipped (multi-rev case) or the
-        cycler has no interior encounter (e.g. Aldrin).
+        Empty tuple if construction failed or the cycler has no
+        interior encounter (e.g. Aldrin).
     closes:
         ``max_drift_km < REAL_DRIFT_TOLERANCE_KM``. The headline
         boolean for spec §14 V2-real (the M6b binding gate).
     v3_status:
         One of ``"v3-real-closure-pass"``, ``"v3-real-closure-fail"``,
-        ``"v3-skipped-multirev"``, ``"v3-no-real-window"``,
-        ``"v3-construction-error"``. M7's catalogue writer records
-        this in ``validation.gates.V2.status``.
+        ``"v3-no-real-window"``, ``"v3-construction-error"``. M7's
+        catalogue writer records this in
+        ``validation.gates.V2.status``.
     horizon_tcm_mps:
         **M6b: 0.0**. M7 populates with the summed TCM ΔV over the
         horizon (m/s). Locked here so M7 does not reshape the
@@ -240,9 +220,14 @@ class RealClosureResult:
 
 EXPECTED_SKIPS: Final[dict[str, str]] = {
     "s1l1-2syn-em-cpom": (
-        "multi-rev Lambert blocker: published S1L1 cycler has n_revs=1 "
-        "on intermediate E-E and M-M legs; M1 Lambert solver supports "
-        "single-rev only. M-future / stretch."
+        "incomplete leg data: the multi-rev Lambert solver now lands (so "
+        "the intermediate E-E loop is solvable), but the return M->E leg "
+        "tof_days is an unresolved data gap — not tabulated in the AIAA "
+        "2002-4420 abstract (needs the full-paper Table 2) — and the "
+        "segment topology is still provisional (the naive 3-leg fixed-154-d "
+        "skeleton does not close ballistically). Closing it would require "
+        "fabricating the missing return ToF, which the golden-test "
+        "discipline forbids. See the entry's data_gaps."
     ),
     "mcconaghy-2006-em-k2": (
         "incomplete leg data: catalogue entry has only 2 legs (E-M, M-E) "
@@ -272,8 +257,8 @@ EXPECTED_SKIPS: Final[dict[str, str]] = {
 Why this exists: M6b's regression set runs over a hand-picked subset
 of literature-anchored cyclers. The Aldrin outbound/inbound entries
 carry complete 2-leg cycle data and are the binding gate. The other
-regression candidates either need multi-rev Lambert (S1L1 CPOM) or
-have only the outbound leg published — full-cycle reconstruction is
+regression candidates have only the outbound leg published, or (S1L1
+CPOM) have an unextracted return-leg ToF — full-cycle reconstruction is
 catalogue-completion work that belongs to M7 alongside the catalogue
 writer. The non-Sun primary cases are filtered at load time by
 :func:`tests.data._catalogue_loader_m6b.load_m6b_entries`; the VEM
@@ -472,16 +457,17 @@ def construct_real_ephemeris_cycler(
         Frozen cycler whose ``period`` is set from
         ``catalogue_entry["period"]["years"] * year_seconds``,
         whose ``encounters`` are placed at the real planet states at
-        each cumulative-ToF epoch, and whose ``legs`` are single-rev
-        Lambert solutions over those real positions.
+        each cumulative-ToF epoch, and whose ``legs`` are Lambert
+        solutions over those real positions. A leg's ``n_revs`` selects
+        the revolution count; its optional ``branch`` ("low"/"high")
+        picks the multi-rev branch, defaulting to "low" when omitted.
 
     Raises
     ------
-    MultiRevLambertRequiredError
-        If any leg's ``n_revs > 0``.
     RealClosureConstructionError
-        If single-rev Lambert fails on any leg (geometry singular
-        or Newton non-convergent).
+        If Lambert fails on any leg (geometry singular, non-convergent,
+        or the requested ``n_revs``/``branch`` solution does not exist --
+        e.g. a multi-rev leg whose time of flight is below ``t_min(n)``).
     ValueError
         If the entry's legs are missing or inconsistent.
     """
@@ -513,37 +499,43 @@ def construct_real_ephemeris_cycler(
             )
         )
 
-    # Per-leg Lambert solutions.
-    leg_vels: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
+    # Per-leg Lambert solutions. Each leg carries its revolution count
+    # (``n_revs``) and an optional ``branch`` ("low"/"high"); the catalogue
+    # omits ``branch``, so multi-rev legs default to "low".
+    leg_vels: list[tuple[NDArray[np.float64], NDArray[np.float64], int, str]] = []
     for j, leg in enumerate(legs_meta):
         n_revs = int(leg.get("n_revs", 0) or 0)
-        if n_revs > 0:
-            raise MultiRevLambertRequiredError(
-                catalogue_id=cat_id if cat_id is None else str(cat_id),
-                leg_index=j,
-            )
+        requested_branch = leg.get("branch") or ("single" if n_revs == 0 else "low")
         r1, _v1_planet = planet_states[j]
         r2, _v2_planet = planet_states[j + 1]
         tof = encounter_times[j + 1] - encounter_times[j]
         try:
-            sols = lambert(r1, r2, tof, mu=MU_SUN_KM3_S2, max_revs=0)
+            sols = lambert(r1, r2, tof, mu=MU_SUN_KM3_S2, max_revs=n_revs)
         except (LambertConvergenceError, LambertGeometryError) as exc:
             raise RealClosureConstructionError(
                 catalogue_id=cat_id if cat_id is None else str(cat_id),
                 leg_index=j,
                 cause=exc,
             ) from exc
-        if not sols:
+        chosen = next(
+            (s for s in sols if s.n_revs == n_revs and s.branch == requested_branch),
+            None,
+        )
+        if chosen is None:
             raise RealClosureConstructionError(
                 catalogue_id=cat_id if cat_id is None else str(cat_id),
                 leg_index=j,
-                cause=ValueError("Lambert returned no solutions"),
+                cause=ValueError(
+                    f"no Lambert solution n_revs={n_revs} branch={requested_branch!r}; "
+                    f"available={[(s.n_revs, s.branch) for s in sols]}"
+                ),
             )
-        sol = sols[0]
         leg_vels.append(
             (
-                np.asarray(sol.v1, dtype=np.float64),
-                np.asarray(sol.v2, dtype=np.float64),
+                np.asarray(chosen.v1, dtype=np.float64),
+                np.asarray(chosen.v2, dtype=np.float64),
+                chosen.n_revs,
+                chosen.branch,
             )
         )
 
@@ -579,7 +571,7 @@ def construct_real_ephemeris_cycler(
     # Build Legs.
     legs: list[Leg] = []
     for j, _leg in enumerate(legs_meta):
-        v_dep, v_arr = leg_vels[j]
+        v_dep, v_arr, leg_n_revs, leg_branch = leg_vels[j]
         legs.append(
             Leg(
                 from_body=chain[j],
@@ -588,8 +580,8 @@ def construct_real_ephemeris_cycler(
                 t_arrive=encounter_times[j + 1],
                 v_depart=v_dep,
                 v_arrive=v_arr,
-                n_revs=0,
-                branch="single",
+                n_revs=leg_n_revs,
+                branch=leg_branch,
             )
         )
 
@@ -656,9 +648,7 @@ def verify_real_closure(
     1. Resolve ``t_start`` if ``None`` via :func:`_resolve_real_t_start`.
     2. If ``cycler`` is a dict (catalogue entry), build a real-ephemeris
        :class:`Cycler` via :func:`construct_real_ephemeris_cycler`;
-       catch :class:`MultiRevLambertRequiredError` →
-       ``v3-skipped-multirev``; catch
-       :class:`RealClosureConstructionError` →
+       catch :class:`RealClosureConstructionError` →
        ``v3-construction-error``.
     3. Delegate propagation + drift measurement to
        :func:`verify_long_term_stability` (M6a).
@@ -743,13 +733,6 @@ def verify_real_closure(
     if isinstance(cycler, dict):
         try:
             constructed = construct_real_ephemeris_cycler(cycler, ephem, resolved_t_start)
-        except MultiRevLambertRequiredError:
-            return _empty_result(
-                cycler_id=cycler_id,
-                n_cycles=n_cycles,
-                v3_status="v3-skipped-multirev",
-                t_start_sec=resolved_t_start,
-            )
         except RealClosureConstructionError:
             return _empty_result(
                 cycler_id=cycler_id,
@@ -821,7 +804,6 @@ __all__ = [
     "EXPECTED_SKIPS",
     "N_CYCLES_DEFAULT",
     "REAL_DRIFT_TOLERANCE_KM",
-    "MultiRevLambertRequiredError",
     "RealClosureConstructionError",
     "RealClosureResult",
     "construct_real_ephemeris_cycler",

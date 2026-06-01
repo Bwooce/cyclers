@@ -133,6 +133,101 @@ def _t_of_z(z: float, a_coef: float, r1_n: float, r2_n: float, mu: float) -> tup
     return t, y
 
 
+def _y_of_z(z: float, a_coef: float, r1_n: float, r2_n: float) -> float:
+    """Vallado's ``y(z)``. Standalone so the Newton safeguard can reject a
+    step that would drive ``y`` negative without raising."""
+    c = stumpff_c(z)
+    s = stumpff_s(z)
+    return r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
+
+
+def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
+    """Analytic derivative dt/dz used for single-rev Newton steps.
+
+    Vallado eq. (7-15) form, valid away from ``z = 0``. Near ``z = 0`` we
+    fall back to a Maclaurin truncation to avoid the ``1/z`` divergence. This
+    derivative is only valid on the single-revolution ``z`` branch; the
+    multi-rev branches use the derivative-free :func:`_solve_uv_branch`.
+    """
+    c = stumpff_c(z)
+    s = stumpff_s(z)
+    if abs(z) > 1.0e-5:
+        # Standard form.
+        sqrt_y_over_c = sqrt(y / c)
+        y_over_c_15 = float((y / c) ** 1.5)
+        term1 = (
+            y_over_c_15 * ((1.0 / (2.0 * z)) * (c - 1.5 * s / c) + 0.75 * (s * s) / c) / sqrt(mu)
+        )
+        term2 = (a_coef / 8.0) * (3.0 * s * sqrt_y_over_c / c + a_coef * sqrt(c / y)) / sqrt(mu)
+        return term1 + term2
+    # Near z=0 fallback (Vallado): expansion about z=0.
+    y_15 = float(y**1.5)
+    return (
+        (sqrt(2.0) / 40.0) * y_15 + (a_coef / 8.0) * (sqrt(y) + a_coef * sqrt(1.0 / (2.0 * y)))
+    ) / sqrt(mu)
+
+
+def _solve_single_rev_newton(
+    z_seed: float,
+    z_lo: float,
+    z_hi: float,
+    a_coef: float,
+    r1_n: float,
+    r2_n: float,
+    tof: float,
+    mu: float,
+) -> float:
+    """Safeguarded Newton root of ``f(z)=t(z)-tof`` on the single-rev branch.
+
+    Reproduces Vallado's standard universal-variable iteration: a Newton step
+    using the analytic :func:`_dt_dz`, with bracket tightening on the residual
+    sign and a bisection fallback whenever a step would leave the bracket or
+    drive ``y`` negative. The analytic derivative is valid throughout the
+    single-rev ``z`` domain, so Newton converges quadratically here; the
+    multi-rev branches use the derivative-free :func:`_solve_uv_branch`
+    instead.
+
+    Raises :class:`LambertConvergenceError` if the iteration does not converge
+    within :data:`_ROOT_MAX_ITER` steps.
+    """
+    z = z_seed
+    if _y_of_z(z, a_coef, r1_n, r2_n) < 0.0 or not (z_lo <= z <= z_hi):
+        z = 0.5 * (z_lo + z_hi)
+
+    residual: float = 0.0
+    for _it in range(_ROOT_MAX_ITER):
+        try:
+            t_z, y = _t_of_z(z, a_coef, r1_n, r2_n, mu)
+        except ValueError:
+            # y(z) negative or sqrt(C(z)) issue: bisect into bracket.
+            z = 0.5 * (z_lo + z_hi)
+            continue
+
+        residual = t_z - tof
+        if abs(residual) / tof < _ROOT_TOL_REL:
+            return z
+
+        # Tighten bracket using sign of residual (monotone t(z)).
+        if residual < 0.0:
+            z_lo = z
+        else:
+            z_hi = z
+
+        dt = _dt_dz(z, y, a_coef, mu)
+        z_next = z - residual / dt if dt != 0.0 else z
+
+        # Reject the Newton step if it leaves the bracket or pushes y < 0;
+        # fall back to bisection in that case (Vallado's standard safeguard).
+        if not (z_lo < z_next < z_hi) or _y_of_z(z_next, a_coef, r1_n, r2_n) < 0.0:
+            z_next = 0.5 * (z_lo + z_hi)
+
+        if abs(z_next - z) < _ROOT_TOL_DZ:
+            return z_next
+        z = z_next
+
+    raise LambertConvergenceError(z, residual)
+
+
 def _min_time_of_revolution(
     n: int, a_coef: float, r1_n: float, r2_n: float, mu: float
 ) -> tuple[float, float]:
@@ -442,8 +537,10 @@ def lambert(
     eps_high = 1.0e-6
     z_hi = z_high_single_rev - eps_high
 
-    # Single-rev branch: safeguarded Newton inside the established bracket.
-    z = _solve_uv_branch(z_lo, z_hi, a_coef, r1_n, r2_n, tof, mu)
+    # Single-rev branch: safeguarded Newton inside the established bracket. The
+    # analytic dt/dz is valid here, so Newton converges quadratically; only the
+    # multi-rev branches below need the derivative-free Illinois solver.
+    z = _solve_single_rev_newton(z, z_lo, z_hi, a_coef, r1_n, r2_n, tof, mu)
     v1, v2 = _velocities_from_z(z, a_coef, r1_arr, r2_arr, r1_n, r2_n, mu)
     solutions = [LambertSolution(n_revs=0, branch="single", v1=v1, v2=v2)]
 
@@ -484,10 +581,16 @@ def lambert_crosscheck(
     *,
     mu: float = MU_SUN_KM3_S2,
     prograde: bool = True,
+    n_revs: int = 0,
+    branch: str = "single",
 ) -> dict[str, Any]:
     """Compare the in-house Lambert with ``lamberthub.izzo2015`` and ``gooding1990``.
 
-    Used by the M1 gate test and (later) by M3's V0/V1 closure verification.
+    Used by the M1 gate test and by M3's V0/V1 closure verification. With the
+    default ``n_revs=0`` this crosschecks the single-revolution transfer; pass
+    ``n_revs>=1`` with ``branch in {"low", "high"}`` to crosscheck a
+    multi-revolution branch (``low`` maps to ``lamberthub``'s
+    ``low_path=True``, ``high`` to ``low_path=False``).
     ``lamberthub`` is a development dependency; importing it inside this
     function keeps it off the production import path.
 
@@ -503,13 +606,19 @@ def lambert_crosscheck(
     # Local import: lamberthub is a dev dependency.
     from lamberthub import gooding1990, izzo2015  # type: ignore[import-untyped]
 
-    mine = lambert(r1, r2, tof, mu=mu, prograde=prograde)[0]
+    sols = lambert(r1, r2, tof, mu=mu, prograde=prograde, max_revs=n_revs)
+    mine = next(s for s in sols if s.n_revs == n_revs and s.branch == branch)
 
     r1_arr = np.asarray(r1, dtype=np.float64)
     r2_arr = np.asarray(r2, dtype=np.float64)
 
-    v1_izzo, v2_izzo = izzo2015(mu, r1_arr, r2_arr, tof, M=0, prograde=prograde)
-    v1_g, v2_g = gooding1990(mu, r1_arr, r2_arr, tof, M=0, prograde=prograde)
+    low_path = branch != "high"
+    v1_izzo, v2_izzo = izzo2015(
+        mu, r1_arr, r2_arr, tof, M=n_revs, prograde=prograde, low_path=low_path
+    )
+    v1_g, v2_g = gooding1990(
+        mu, r1_arr, r2_arr, tof, M=n_revs, prograde=prograde, low_path=low_path
+    )
 
     diffs_km_s = [
         float(np.linalg.norm(mine.v1 - v1_izzo)),
