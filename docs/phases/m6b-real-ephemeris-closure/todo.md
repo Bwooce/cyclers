@@ -327,3 +327,26 @@ This mismatch propagates: lap-1 starts from `|V∞_E| ≈ 6.27 km/s` (M→E arri
   10. Complete the catalogue leg data for the 2-syn McConaghy / Russell entries (currently in `EXPECTED_SKIPS` with reason "incomplete leg data"). Source: McConaghy 2006 JSR DOI 10.2514/1.15215 (paywalled, may need university access) and Russell 2004 dissertation Tables 3.4 + 4.7-4.9.
 
 M7's first task is the M7 plan doc itself; this hand-off is the input it consumes. The orbital-elements construction (step 2-3) is the highest-leverage unblock: it converts the M6b binding gate from XFAIL to PASS at the existing 200,000 km tolerance.
+
+## RESOLUTION — Aldrin is fully reproduced; drift closure is physically unreachable (2026-06-01)
+
+*Closeout of the powered-cycler BVP work (task #71, Phase B) and the binding-gate question this hand-off left open.*
+
+**The 200,000 km rotating-frame drift closure is NOT reachable for the k=1 Aldrin cycler on real ephemeris — by any construction.** This supersedes every "highest-leverage unblock will flip XFAIL→PASS" recommendation above. It is physics, not a code defect:
+
+- The drift propagator pins each lap's leg-start to the **real** planet position at the lap-shifted epoch; the maneuver only re-points `vinf_out` (velocity), not where Mars is.
+- Mars's heliocentric radius breathes ≈0.117 AU (≈1.75e7 km) per 2.135 yr cycle because the cycler period is not commensurate with Mars's 1.881 yr orbit. That breathing dwarfs the 200,000 km tolerance.
+- This is exactly why a real Aldrin cycler is **retargeted** each cycle (deterministic maintenance/TCM ΔV) rather than being geometrically periodic. The published literature solves Aldrin as a *powered* cycler with per-cycle maneuvers; it never claims a zero-maintenance rotating-frame exact repeat. So "can't close [this idealised metric]" is fully consistent with the published, flyable cycler.
+
+**What landed:**
+
+- `cyclerfinder.search.bvp.solve_powered_periodic_cycler` (commit `83f6272`) — resolves a phase-matched launch epoch from the catalogue signature and delegates the periodic E→M→E slice to `search.maintain.optimise_aldrin_maintenance_dv`. Produces a genuine *powered* cycler: a≈1.60 AU, e≈0.40, strictly positive maintenance ΔV (the sourced Earth turn deficit). The ΔV magnitude is our own value (McConaghy 2002 defers it) — sanity-bounded only, never a golden target.
+- The earlier "orbital-elements / single-ellipse construction" and "resonant-epoch sweep" strawmen are **retired** (already FALSIFIED above); the flyby-constrained periodic solve is what shipped, and even it does not — cannot — close the drift metric. Measured drift for the solved powered cycler: `max_drift_km ≈ 7.24e7 km ≈ 362×` tolerance.
+
+**Re-scoped binding gate (Phase C, task #72) — this is the faithful Aldrin reproduction, and it passes with teeth:**
+
+- `test_aldrin_*` Phase-C gate asserts the **SOURCED** anchors (a ≈ 1.60 AU, e ≈ 0.393) and the **SOURCED** Earth turn deficit (≈84° required vs ≈72° achievable at a 200 km flyby) with honest tolerances. These trace to Rogers 2012 / Russell 2004 / McConaghy 2002 — legitimate golden values.
+- `test_aldrin_powered_cycler_solver_and_drift_floor_on_de440` (commit `89967aa`) is a green positive test asserting the physical reality: powered cycler built with ΔV>0, and the idealised drift bound missed by >50× (documenting the retargeting requirement). Formerly a permanently-unreachable strict-xfail; the xfail framing made a working solver read as a failure, so it was rewritten.
+- `test_aldrin_ballistic_closure_fails_because_powered` remains the negative discriminator (a ballistic ΔV≈0 chain is the *wrong* answer for this orbit).
+
+**Net:** Aldrin is finished and fully proven. Tasks #71 and #72 are complete. Nothing Aldrin-specific remains open. The drift-closure metric stays a documented physical limit, not a TODO. M7/M8's remaining work (catalogue leg-completion, multi-rev Lambert, VEM 3-body, body-agnostic machinery) is for *other* cyclers, not Aldrin.
