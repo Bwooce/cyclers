@@ -1,23 +1,64 @@
-"""Verification subpackage (M6a+).
+"""Verification subpackage (M6a + M6b).
 
 Hosts the spec §14 V0-V5 validation gauntlet:
 
 * :mod:`cyclerfinder.verify.propagate` (M6a) — spec §14 V2 multi-lap
-  periodicity gate. Provides :func:`~cyclerfinder.verify.propagate.\
-verify_long_term_stability`, the spec §12 entry point that converts
-  an idealized cycler into a checkable bounded-drift statement on a
-  real ephemeris over ``n_laps`` laps.
+  periodicity gate. Provides
+  :func:`~cyclerfinder.verify.propagate.verify_long_term_stability`,
+  the spec §12 entry point that converts an idealized cycler into a
+  checkable bounded-drift statement on a real ephemeris over
+  ``n_laps`` laps.
+* :mod:`cyclerfinder.verify.real_closure` (M6b) — spec §14 V2-real
+  multi-cycle real-ephemeris closure gate. Provides
+  :func:`~cyclerfinder.verify.real_closure.verify_real_closure`, the
+  M6b entry point that promotes a catalogue entry from V1 idealised
+  reproduction to V2-real ephemeris instance.
 
-Future M6b/M7 occupants (per the M6a plan §1.5 non-goals):
+Future occupants (per the M6a/M6b plans' non-goals):
 
 * ``crosscheck.py`` (V1 Lambert cross-check, M7 stretch).
 * ``gmat_bridge.py`` (V4 GMAT bridge, stretch per spec §7).
 
 Importing this subpackage is cheap — no astropy import is triggered;
 callers pass an :class:`~cyclerfinder.core.ephemeris.Ephemeris`
-instance into :func:`~cyclerfinder.verify.propagate.\
-verify_long_term_stability` so the astropy backend is constructed at
+instance into the verifier so the astropy backend is constructed at
 the caller's discretion.
 """
 
 from __future__ import annotations
+
+from cyclerfinder.verify.propagate import (
+    DRIFT_TOLERANCE_KM,
+    StabilityReport,
+    lap_to_lap_drift,
+    multi_lap_propagation,
+    propagate_lap,
+    verify_long_term_stability,
+)
+from cyclerfinder.verify.real_closure import (
+    EXPECTED_SKIPS,
+    N_CYCLES_DEFAULT,
+    REAL_DRIFT_TOLERANCE_KM,
+    MultiRevLambertRequiredError,
+    RealClosureConstructionError,
+    RealClosureResult,
+    construct_real_ephemeris_cycler,
+    verify_real_closure,
+)
+
+__all__ = [
+    "DRIFT_TOLERANCE_KM",
+    "EXPECTED_SKIPS",
+    "N_CYCLES_DEFAULT",
+    "REAL_DRIFT_TOLERANCE_KM",
+    "MultiRevLambertRequiredError",
+    "RealClosureConstructionError",
+    "RealClosureResult",
+    "StabilityReport",
+    "construct_real_ephemeris_cycler",
+    "lap_to_lap_drift",
+    "multi_lap_propagation",
+    "propagate_lap",
+    "verify_long_term_stability",
+    "verify_real_closure",
+]

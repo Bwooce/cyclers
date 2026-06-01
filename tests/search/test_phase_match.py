@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -118,3 +118,43 @@ def test_find_real_windows_rejects_non_heliocentric_primary() -> None:
         find_real_windows(
             sig, ephem, (datetime(2026, 1, 1, tzinfo=UTC), datetime(2026, 2, 1, tzinfo=UTC))
         )
+
+
+def test_find_real_windows_for_aldrin_signature_within_priority_window() -> None:
+    """M6b plumbing test (plan §4.7): the Aldrin signature finds a window
+    within ±5 yr of its 1985-10-28 priority date on real ephemeris.
+
+    This is the binding precondition for the M6b real-closure gate: if
+    :func:`find_real_windows` returns nothing for a literature-anchored
+    cycler, M6b's construction path has no real launch epoch to feed
+    Lambert.
+    """
+    sig = phase_signature_from_catalogue_entry(
+        {
+            "id": "aldrin-classic-em-k1-outbound",
+            "bodies": ["E", "M"],
+            "vinf_kms_at_encounters": [
+                {"body": "E", "vinf_kms": 6.5},
+                {"body": "M", "vinf_kms": 9.7},
+            ],
+            "legs": [{"from": "E", "to": "M", "tof_days": 146}],
+        }
+    )
+    ephem = Ephemeris(model="astropy")
+    priority = datetime(1985, 10, 28, tzinfo=UTC)
+    windows = find_real_windows(
+        sig,
+        ephem,
+        (datetime(1980, 1, 1, tzinfo=UTC), datetime(1995, 1, 1, tzinfo=UTC)),
+        n=3,
+        step_days=10.0,
+        mismatch_cap_kms=10.0,
+    )
+    assert windows, "expected ≥1 Aldrin window in 1980-1995 (mismatch cap 10 km/s)"
+    # At least one window within ±5 yr of the priority date.
+    delta = timedelta(days=5 * 365.25)
+    near = [w for w in windows if abs(w.departure_date - priority) <= delta]
+    assert near, (
+        "expected at least one Aldrin window within ±5 yr of "
+        f"{priority.date()}; got {[w.departure_date.date() for w in windows]}"
+    )

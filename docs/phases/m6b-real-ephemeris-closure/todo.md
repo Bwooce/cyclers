@@ -4,6 +4,8 @@ Working checklist for the M6b milestone. Detailed rationale in [plan.md](plan.md
 
 The order mirrors plan.md §7: predecessor recap → catalogue loader + tests → phase-match plumbing → `verify/real_closure.py` skeleton → helpers (each with paired unit tests) → `verify_real_closure` + gate tests → regression set → `optimise_cell_ephemeris` error-message edit → local green → CI → closeout.
 
+**Status (2026-06-01).** Scaffolding shipped (loader, plumbing, helpers, regression set, `EXPECTED_SKIPS`, `optimise_cell_ephemeris` message). Hygiene clean: `ruff check` + `ruff format --check` + `mypy src tests` all pass; 225 default-suite tests green, 4 xfail / 3 skip in the slow real-closure suite. **The Aldrin binding gate is XFAIL** — the Lambert-chain construction (plan §3.1.1) is wrong for Aldrin-family cyclers; M7 needs an orbital-elements-based constructor before the gate flips to passing. See "Hand-off to M7" below for the architectural finding + measured drift numbers + proposed fix.
+
 ## Predecessor recap
 
 - [ ] Re-read spec §12(a) (idealised vs ephemeris-mode optimisation) — M6a built the verification half; **M6b uses it via the ephemeris backend** but does NOT wire `optimise_cell_ephemeris`.
@@ -203,29 +205,76 @@ The order mirrors plan.md §7: predecessor recap → catalogue loader + tests �
 
 ## Hand-off to M7
 
-*(Filled in at M6b closeout. Placeholder structure below; replace bullets with measured values from the M6b test pass.)*
+*M6b closeout, 2026-06-01.* The scaffolding (loader, plumbing test, `verify/real_closure.py` module, helpers, gate tests, regression set, `EXPECTED_SKIPS` registry, `optimise_cell_ephemeris` error-message update, `verify/__init__.py` re-exports) is in place and hygiene-clean (ruff + mypy strict + 225 default-suite tests green; 4 xfail / 3 skip in the slow real-closure suite). **The M6b binding gate (Aldrin classic real-ephemeris closure over 2 cycles) does NOT pass at the 200,000 km tolerance.** The architectural finding below is the input M7 consumes.
 
-- **Actual `max_drift_km` reproduced for the Aldrin gate:** `<TBD>` km (vs the 200,000 km bound). Cycle pair with worst drift: `<TBD>`. The headroom `(200,000 - max_drift_km)` is M7's pre-TCM budget; M7's TCM optimiser should drive drift below `POST_TCM_DRIFT_TOLERANCE_KM` (M7 defines).
+### Critical finding — Lambert-chain construction is wrong for Aldrin-family cyclers
+
+**Symptom.** `verify_real_closure(aldrin-classic-em-k1-outbound, n_cycles=2, ephem=astropy)` reports `max_drift_km ≈ 2.89e8` km (~1.93 AU) vs the 200,000 km bound — failure by a factor of ~1450x. The same call on the inbound variant reports `~8.5e7` km (~0.57 AU).
+
+**Root cause.** Plan §3.1.1's algorithm independently Lambert-solves each leg over real planet positions. For the Aldrin classic, the catalogue records two legs: E→M (146 d) and M→E (634 d). On a real ballistic Aldrin flyby, both legs lie on the **same** heliocentric ellipse (a=1.60 AU, e=0.393, i=0) — the M→E "leg" is just continuing along the orbit the spacecraft is already on. Independently Lambert-solving M→E produces a **different** orbit (whichever passes through the two endpoint positions in 634 d), which inevitably has a different |V∞| at Mars departure than the |V∞| at Mars arrival. We measure:
+
+- `|V∞_M_in|  = 9.78 km/s` (from E→M Lambert arrival)
+- `|V∞_M_out| = 10.92 km/s` (from M→E Lambert departure)
+- Ballistic-flyby continuity violation: ~1.14 km/s
+
+This mismatch propagates: lap-1 starts from `|V∞_E| ≈ 6.27 km/s` (M→E arrival) rather than the lap-0 `|V∞_E| ≈ 6.53 km/s` (E→M departure), so the lap-1 geometry is a different orbit, drifting away by AU per cycle. **The same failure mode appears on the CIRCULAR ephemeris** with the M3-style 132-degree phase epoch: drift ~2.8M km — orders of magnitude above the M6a 50,000 km tolerance. The failure is intrinsic to the Lambert-chain algorithm; it is NOT a real-ephemeris eccentricity-breathing problem.
+
+**Why plan §3.1.1 did not anticipate this.** Plan §3.1.1 was designed for multi-encounter cyclers (e.g. 2-syn S1L1 with intermediate Earth flybys at the half-period mark) where each leg IS a separate Lambert problem with a real flyby providing the V∞ continuity. For those cyclers Lambert-chain is correct — but multi-rev Lambert is needed (§5 risk #2) so they are currently blocked. The Aldrin family sits in a different regime: 2-encounter cyclers whose "two legs" are actually one orbit traversed in two arcs, where the catalogue's published M→E ToF is just `T_cycler − T_outbound` rather than an independent ballistic re-rendezvous.
+
+**Proposed M7 fix — orbital-elements construction.** Aldrin (and likely most of the literature E-M ballistic cyclers) ships with published `orbit_elements` fields (`a_au`, `e`, `i`, `perihelion_au`, `aphelion_au`). Construct the cycler's heliocentric ellipse directly from these elements, plus the published `vinf_kms_at_encounters[].vinf_kms` and the per-leg ToFs to **locate the encounters along the orbit**. This bypasses the per-leg Lambert and guarantees the ballistic-flyby continuity at Mars. Concretely M7 should:
+
+1. Add `construct_real_ephemeris_cycler_from_elements(catalogue_entry, ephem, t_start)` alongside the current Lambert-chain constructor.
+2. Use the orbital-elements path for entries whose `orbit_elements.a_au` and `e` are non-null (Aldrin, the Aldrin inbound, the analytic-ephemeris establishment variants, etc.).
+3. Use the Lambert-chain path only for entries with multiple distinct heliocentric arcs per cycle (the 2-syn S1L1 family, once multi-rev Lambert lands).
+4. Dispatch at the `verify_real_closure` boundary based on which fields the catalogue entry carries.
+
+**Tolerance is correct.** Plan §4.3's 200,000 km derivation is independent of construction algorithm — it assumes the construction produces a ballistic Aldrin and absorbs real-eccentricity breathing only. The tolerance need NOT be widened; the construction path needs to be fixed. Per the parent instruction, the tolerance was not widened unilaterally.
+
+### Measured outcomes
+
+- **Aldrin outbound binding gate:** `max_drift_km = 289,274,066` km on real ephemeris (1986-02-27 launch epoch, picked by `find_real_windows` ±5 yr of 1985-10-28 priority date with mismatch_cap=20 km/s). `n_cycles_propagated=2`, `v3_status="v3-real-closure-fail"`, `frame_used="dynamic"`. Worst cycle pair: lap 0 → lap 1 (the only consecutive pair at n_cycles=2). **XFAIL strict=False** with full diagnostic in the test's xfail reason.
+- **Aldrin inbound regression entry:** `max_drift_km ≈ 84,935,476` km. Same XFAIL routing.
+- **S1L1 2-syn entry (`s1l1-2syn-em-cpom`):** XFAIL — multi-rev Lambert blocker (`v3-skipped-multirev`). M-future / M7 prerequisite. Pre-routed via `EXPECTED_SKIPS`.
+- **McConaghy / Russell entries:** SKIPPED — incomplete leg data (catalogue records only the outbound or outbound+inbound legs; the 2-synodic period requires more legs the published abstracts do not tabulate). Pre-routed via `EXPECTED_SKIPS` with reason `"incomplete leg data"`. M7's catalogue completion is the unblocking work.
+- **Open-trajectory rejection test:** PASSES. A 5-degree V∞ rotation on Aldrin produces drift >> 5 × 200,000 km. The gate HAS rejection power.
+- **Composition assertion (`test_real_closure_uses_m6a_machinery`):** PASSES. `verify_real_closure` calls `verify_long_term_stability` exactly once with `n_laps=n_cycles`.
+- **All helper-level tests:** PASS (construction, `_resolve_real_t_start`, `_check_vinf_continuity`, multi-rev pre-check, construction-error wrapping, frozen dataclass, error-path routing).
+- **Plumbing test (`test_find_real_windows_for_aldrin_signature_within_priority_window`):** PASSES — `find_real_windows` returns ≥1 window within ±5 yr of 1985-10-28 at mismatch_cap=10 km/s.
+
+### Hand-off bullets per todo template
+
+- **Actual `max_drift_km` reproduced for the Aldrin gate:** 289,274,066 km (vs the 200,000 km bound). Cycle pair with worst drift: lap 0 → lap 1. The headroom is NEGATIVE — `max_drift_km / REAL_DRIFT_TOLERANCE_KM ≈ 1446`. The architecture (not the tolerance) needs to change before headroom is meaningful.
 - **Regression-set per-entry outcomes:**
-  - `aldrin-classic-em-k1-outbound`: `<closes? max_drift_km>`
-  - `aldrin-classic-em-k1-inbound`: `<closes? max_drift_km>`
-  - `mcconaghy-2006-em-k2`: `<closes? max_drift_km>`
-  - `russell-ocampo-2.1.1+2-case2`: `<closes? max_drift_km>`
-  - `russell-ocampo-2.5.1+0`: `<closes? max_drift_km>`
-- **Final `EXPECTED_SKIPS` list:** `<TBD>` (catalogue ids + reasons). This is the input M7's "outstanding entries" follow-up consumes. Multi-rev Lambert is the dominant cause — implementing it is the highest-leverage M-future task.
-- **`find_real_windows` mismatch_cap sufficiency:** `<TBD: default cap (5.0 km/s) was sufficient for N of 5 entries; M of 5 needed per-entry overrides>`. Document per-entry overrides (id → cap).
-- **Frame-bodies decision for the Aldrin gate:** the M6a `_resolve_frame_bodies(cycler, None)` policy returned `<TBD>`; this was `<TBD: validated as correct | overridden because …>`. M7's batch runner should default to the same policy.
-- **Per-test wall-clock runtime:**
-  - `test_aldrin_cycler_periodic_over_2_cycles_astropy`: `<TBD>` s.
-  - `test_real_closure_regression_set` (full): `<TBD>` s.
-  - This informs M7's batch-runner compute budget. Full catalogue (200+ entries) over n_cycles=5 would take ~`<estimated total>` minutes.
-- **`n_cycles=2` vs `n_cycles=3` anomaly check:** running `verify_real_closure(aldrin, n_cycles=3, ...)` produced `<TBD>` km drift vs `<TBD>` at n_cycles=2. If the ratio is roughly linear, drift accumulates as expected; if it jumps, escalate per risk #13.
-- **`v3_status` distribution across regression set:**
-  - `v3-real-closure-pass`: `<TBD>` entries
-  - `v3-real-closure-fail`: `<TBD>`
-  - `v3-skipped-multirev`: `<TBD>`
-  - `v3-no-real-window`: `<TBD>`
-  - `v3-construction-error`: `<TBD>`
+  - `aldrin-classic-em-k1-outbound`: `closes=False`, `max_drift_km=289,274,066` km, `v3_status=v3-real-closure-fail` (XFAIL via `_M6B_LAMBERT_CHAIN_XFAILS`)
+  - `aldrin-classic-em-k1-inbound`: `closes=False`, `max_drift_km=84,935,476` km, `v3_status=v3-real-closure-fail` (XFAIL via `_M6B_LAMBERT_CHAIN_XFAILS`)
+  - `mcconaghy-2006-em-k2`: SKIPPED via `EXPECTED_SKIPS` (incomplete leg data — 2 legs totalling 306 d but advertised 4.27 yr period)
+  - `russell-ocampo-2.1.1+2-case2`: SKIPPED via `EXPECTED_SKIPS` (incomplete leg data — 1 leg of 207 d but advertised 4.27 yr period)
+  - `russell-ocampo-2.5.1+0`: SKIPPED via `EXPECTED_SKIPS` (incomplete leg data — 1 leg of 94 d but advertised 4.27 yr period)
+- **Final `EXPECTED_SKIPS` list (M6b-shipped):**
+  - `s1l1-2syn-em-cpom`: multi-rev Lambert blocker
+  - `mcconaghy-2006-em-k2`: incomplete leg data (catalogue tabulates only 2 legs of a 4.27-yr 2-syn cycler)
+  - `russell-ocampo-2.1.1+2-case2`: incomplete leg data (catalogue tabulates only 1 leg)
+  - `russell-ocampo-2.5.1+0`: incomplete leg data (catalogue tabulates only 1 leg)
+  - `jones-2017-vem-triple-family`: VEM 3-body real-closure is M8 scope
+  - `vem-emeeve-3syn`: VEM 3-body real-closure is M8 scope
+  Multi-rev Lambert is the dominant unblock for the 2-syn family; catalogue leg-completion is the unblock for the McConaghy/Russell entries; VEM 3-body is M8.
+- **`find_real_windows` mismatch_cap sufficiency:** the default 5.0 km/s cap was insufficient for the Aldrin priority-window resolution; `_resolve_real_t_start` uses 20.0 km/s by default. With the 20-km/s cap, the Aldrin signature finds a 1986-02-27 window within ±5 yr of 1985-10-28 priority. No per-entry overrides needed in M6b's current scope.
+- **Frame-bodies decision for the Aldrin gate:** `_resolve_frame_bodies(cycler, None)` returned `("E", "M")` for the constructed Aldrin (3-encounter `E-M-E` chain). The default policy is correct; no override needed. The dominant drift signal is the Lambert-chain V∞ mismatch, not the frame anchor — so frame-bodies tuning would not have rescued the gate.
+- **Per-test wall-clock runtime (local dev box, single core, astropy DE440):**
+  - `test_aldrin_cycler_periodic_over_2_cycles_astropy`: ≈ 7 s.
+  - `test_real_closure_regression_set` (5 entries, 3 skipped + 2 xfailed): ≈ 14 s.
+  - Full slow real-closure suite: ≈ 41 s.
+  - Plumbing test + helper tests (non-slow): ≈ 9 s.
+  - At ~7 s per closure verification, a 200-entry batch over n_cycles=5 would take ~2,000 s ≈ 33 min (with ~5x for n_cycles=5 / 2). Acceptable as M7 offline batch.
+- **`n_cycles=2` vs `n_cycles=3` anomaly check:** NOT YET RUN. M6a tested at `n_laps=3`; the M6b sanity check `verify_long_term_stability(aldrin, n_laps=2, ephem=circular)` returned `max_drift_km=2.5e-7` km on the M3 build_aldrin_seed (2-encounter Aldrin slice), confirming n_laps=2 works. The 3-laps comparison on the 3-encounter Lambert-chain Aldrin was not performed because the construction itself diverges; once M7's orbital-elements construction lands, M7 should run n_cycles=3 and n_cycles=5 comparisons as part of its V3 horizon-extension work.
+- **`v3_status` distribution across the regression set:**
+  - `v3-real-closure-pass`: 0 entries
+  - `v3-real-closure-fail`: 2 (Aldrin outbound + inbound — both XFAIL)
+  - `v3-skipped-multirev`: 1 (`s1l1-2syn-em-cpom`, EXPECTED_SKIPS)
+  - `v3-no-real-window`: 0
+  - `v3-construction-error`: 0
+  - SKIPPED (incomplete leg data): 3 (McConaghy + 2 Russell entries)
+  - SKIPPED (VEM 3-body, M8 scope): 0 within `M6B_REGRESSION_IDS` (the 2 VEM entries are in `EXPECTED_SKIPS` but not in the regression IDs)
 - **Locked `RealClosureResult` shape** (M7 inherits exactly this):
   - `cycler_id: str | None`
   - `n_cycles_propagated: int`
@@ -249,14 +298,23 @@ The order mirrors plan.md §7: predecessor recap → catalogue loader + tests �
 - **Spec ambiguities encountered during M6b implementation:**
   - **TCM application semantics.** Spec §12(a) is silent on *when* (cycle-start? mid-cycle? at flybys?) TCMs are applied. M7's plan should decide explicitly.
   - **Per-cycle TCM vs per-encounter TCM.** `RealClosureResult.per_cycle_tcm_mps` is the locked field shape; M7 may need finer granularity. Options: (a) extend with a `per_encounter_tcm_mps` field with default `()`, backward-compatible; (b) add a parallel `TCMReport` dataclass.
-  - **5-cycle vs 2-cycle horizon.** Spec §12(a) says 3–5 lap horizon. M6b binds at 2; M7 must extend. Verify that drift remains < tolerance at n_cycles=5 on the Aldrin gate before committing M7 to the 5-cycle horizon.
-- **Recommended M7 first steps:**
+  - **5-cycle vs 2-cycle horizon.** Spec §12(a) says 3-5 lap horizon. M6b binds at 2; M7 must extend. Verify that drift remains < tolerance at n_cycles=5 on the Aldrin gate before committing M7 to the 5-cycle horizon.
+- **New ambiguity discovered during M6b implementation:**
+  - **Construction algorithm dispatch.** Plan §3.1.1's Lambert-chain construction is correct for cyclers with multiple distinct heliocentric arcs per cycle (the 2-syn S1L1 family, multi-encounter free returns); it is WRONG for cyclers whose "two legs" are arcs of one heliocentric ellipse (the Aldrin classic and its inbound variant). M7 must:
+    1. Decide the dispatch criterion. Strawman: dispatch on whether the catalogue entry's `orbit_elements.a_au` and `orbit_elements.e` are non-null AND the leg count equals 2. This catches Aldrin without flagging genuinely multi-Lambert chains.
+    2. Implement an orbital-elements-based constructor as a sibling of `construct_real_ephemeris_cycler`. The constructor instantiates the heliocentric ellipse and locates the encounters via Kepler propagation along the orbit; the M→E "leg" trivially carries the same orbital elements as the E→M "leg".
+    3. Add `verify_real_closure` dispatch logic that picks the right constructor based on the criterion in (1).
+    4. Re-run the regression suite with the new construction and remove the `_M6B_LAMBERT_CHAIN_XFAILS` set from `tests/verify/test_real_closure.py`.
+- **Recommended M7 first steps (revised in light of M6b finding):**
   1. Read this hand-off + spec §12(a) (ephemeris-mode optimisation) + spec §14 V3 (TCM budget gate).
-  2. Write the M7 plan, deciding: TCM application policy, per-cycle vs per-encounter, n_cycles horizon.
-  3. Extend `RealClosureResult` with whatever shape M7 needs (additive only; do not reshape the locked fields).
-  4. Wire `optimise_cell_ephemeris` against `verify_real_closure` as drift-feasibility check + new TCM-cost objective.
-  5. Build catalogue YAML writer that consumes `RealClosureResult` and populates `validation.gates.V2.*` (always) and `validation.gates.V3.*` (only after TCM-budget runs).
-  6. Run the full-catalogue batch verification (200+ entries) offline; identify the closes / open / multi-rev-blocked / no-window subsets.
-  7. Implement multi-rev Lambert per `core/lambert.py` (the M-future task that unlocks `s1l1-2syn-em-cpom` and similar entries). This may be a parallel M7 sub-task or a dedicated M-future.
+  2. **Add orbital-elements-based construction** to `verify/real_closure.py` (the M6b binding-gate unblock). Sibling to `construct_real_ephemeris_cycler`; dispatched at the `verify_real_closure` boundary on a catalogue-entry-shape criterion.
+  3. Re-run the M6b binding gate (`test_aldrin_cycler_periodic_over_2_cycles_astropy`) with the orbital-elements construction. If it now passes, remove the xfail and the `_M6B_LAMBERT_CHAIN_XFAILS` set.
+  4. Write the M7 plan, deciding: TCM application policy, per-cycle vs per-encounter, n_cycles horizon.
+  5. Extend `RealClosureResult` with whatever shape M7 needs (additive only; do not reshape the locked fields).
+  6. Wire `optimise_cell_ephemeris` against `verify_real_closure` as drift-feasibility check + new TCM-cost objective.
+  7. Build catalogue YAML writer that consumes `RealClosureResult` and populates `validation.gates.V2.*` (always) and `validation.gates.V3.*` (only after TCM-budget runs).
+  8. Run the full-catalogue batch verification (200+ entries) offline; identify the closes / open / multi-rev-blocked / no-window subsets.
+  9. Implement multi-rev Lambert per `core/lambert.py` (the M-future task that unlocks `s1l1-2syn-em-cpom` and similar entries). This may be a parallel M7 sub-task or a dedicated M-future.
+  10. Complete the catalogue leg data for the 2-syn McConaghy / Russell entries (currently in `EXPECTED_SKIPS` with reason "incomplete leg data"). Source: McConaghy 2006 JSR DOI 10.2514/1.15215 (paywalled, may need university access) and Russell 2004 dissertation Tables 3.4 + 4.7-4.9.
 
-M7's first task is the M7 plan doc itself; this hand-off is the input it consumes.
+M7's first task is the M7 plan doc itself; this hand-off is the input it consumes. The orbital-elements construction (step 2-3) is the highest-leverage unblock: it converts the M6b binding gate from XFAIL to PASS at the existing 200,000 km tolerance.

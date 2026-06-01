@@ -1102,9 +1102,11 @@ def optimise_cell_ephemeris(
     """
     del cell, ephem, vinf_cap, n_laps, n_starts, seed, rp_factors
     raise NotImplementedError(
-        "optimise_cell_ephemeris requires M6 ephemeris backend "
-        "(multi-lap propagator + TCM budget). Stub locked in M5; "
-        "body lands in M6b.",
+        "optimise_cell_ephemeris requires M6 ephemeris closure "
+        "(shipped at M6b as verify.real_closure.verify_real_closure) "
+        "AND M7 TCM budget machinery (not yet shipped). "
+        "M6b's verify_real_closure is the right drift-feasibility check; "
+        "full wiring lands in M7.",
     )
 
 
