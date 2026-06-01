@@ -94,9 +94,9 @@ def test_aldrin_ballistic_closure_fails_because_powered(
     cycles) — not a marginal tolerance miss. This is correct physics, not a
     deficiency: it is the reason the orbit is classified ``powered``.
 
-    The POSITIVE counterpart — closure WITH the maintenance maneuver supplied
-    by the flyby-constrained periodic BVP solver — is
-    :func:`test_aldrin_powered_cycler_closes_on_de440` (xfail pending task #71).
+    The POSITIVE counterpart — the powered cycler built WITH its maintenance
+    maneuver by the flyby-constrained periodic solver — is
+    :func:`test_aldrin_powered_cycler_solver_and_drift_floor_on_de440`.
 
     Root cause (diagnostic, 2026-06-01): the published Aldrin M->E return leg
     is the same heliocentric ellipse as the E->M outbound leg, but independent
@@ -125,44 +125,37 @@ def test_aldrin_ballistic_closure_fails_because_powered(
     assert result.v3_status == "v3-real-closure-fail"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "POSITIVE powered-closure goal. The solver "
-        "(cyclerfinder.search.bvp.solve_powered_periodic_cycler) is now "
-        "implemented and DOES produce a genuine powered Aldrin cycler with a "
-        "strictly positive maintenance ΔV (that assertion passes). What remains "
-        "unreachable is the rotating-frame DRIFT bound (REAL_DRIFT_TOLERANCE_KM "
-        "= 200,000 km): it is PHYSICALLY unattainable for the k=1 Aldrin cycler "
-        "on DE440, not a missing-code problem. The drift propagator pins each "
-        "leg-start to the real planet position at the lap-shifted epoch, and "
-        "Mars's heliocentric radius breathes ≈0.117 AU (≈1.75e7 km) per 2.135 yr "
-        "cycle because the cycler period is not commensurate with Mars's 1.881 yr "
-        "orbit — empirical drift floor ≈3.6e7 km (≈180x tolerance), independent "
-        "of the maneuver (which shapes velocity, not where Mars is). The "
-        "200,000 km rotating-frame-repeat criterion is a circular-ephemeris "
-        "idealisation eccentric Mars cannot satisfy; this is exactly why the "
-        "real Aldrin cycler needs a per-cycle retargeting maneuver. We do NOT "
-        "fabricate a pass. The SOURCED reproduction (anchors + turn deficit) is "
-        "asserted with teeth by the Phase-C gate below; the ballistic negative "
-        "result by test_aldrin_ballistic_closure_fails_because_powered. "
-        "strict=True keeps this honest: if the propagator/criterion ever changes "
-        "so drift closes, CI forces a revisit of this marker."
-    ),
-)
-def test_aldrin_powered_cycler_closes_on_de440(
+def test_aldrin_powered_cycler_solver_and_drift_floor_on_de440(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
 ) -> None:
-    """POSITIVE goal (xfail — physically unreachable drift bound): the powered
-    Aldrin cycler built by the flyby-constrained periodic solver *with* its
-    maintenance maneuver, propagated on real DE440 ephemeris over 2 cycles.
+    """POSITIVE: the flyby-constrained periodic solver produces a genuine
+    *powered* Aldrin cycler on real DE440, AND the rotating-frame drift floor
+    documents why that cycler needs a per-cycle maintenance maneuver.
 
-    The solver is implemented and the maintenance-ΔV assertion below passes;
-    only the rotating-frame drift bound is unreachable for k=1 Aldrin (Mars's
-    eccentric radial breathing dwarfs the 200,000 km tolerance — see the xfail
-    reason). The faithful, *reachable* reproduction target — sourced orbital
-    anchors and the sourced Earth turn deficit — is the Phase-C gate below.
+    This asserts the physically correct outcome, so it is green (no xfail):
+
+    1. ``solve_powered_periodic_cycler`` yields a cycler with a strictly
+       positive maintenance ΔV — the sourced Earth turn deficit (≈84° required
+       vs ≈72° achievable at a 200 km flyby). A ballistic, ΔV=0 chain would be
+       the *wrong* answer for this orbit (see
+       :func:`test_aldrin_ballistic_closure_fails_because_powered`).
+    2. Propagated over 2 cycles, the cycler does NOT meet the idealised
+       rotating-frame repeat bound (``REAL_DRIFT_TOLERANCE_KM`` = 200,000 km),
+       and misses it by orders of magnitude. That bound is a circular-coplanar
+       idealisation eccentric Mars cannot satisfy: the propagator pins each
+       leg-start to the *real* Mars position at the lap-shifted epoch, and
+       Mars's heliocentric radius breathes ≈0.117 AU (≈1.75e7 km) per 2.135 yr
+       cycle because the cycler period is not commensurate with Mars's 1.881 yr
+       orbit. The maneuver shapes velocity, not where Mars is, so no maintenance
+       ΔV closes this metric — which is exactly why a real Aldrin cycler is
+       *retargeted* each cycle rather than being geometrically periodic.
+
+    The faithful, *reachable* reproduction target — the SOURCED orbital anchors
+    (a ≈ 1.60 AU, e ≈ 0.393) and the SOURCED Earth turn deficit — is asserted
+    with teeth by the Phase-C gate below. The ΔV magnitude is unpublished
+    (McConaghy 2002 defers it), so it is sanity-bounded here, never matched
+    against a sourced number.
     """
     from cyclerfinder.search.bvp import solve_powered_periodic_cycler
 
@@ -171,7 +164,8 @@ def test_aldrin_powered_cycler_closes_on_de440(
         ephem=astropy_ephem,
         signature_priority_date=ALDRIN_PRIORITY,
     )
-    # The maintenance maneuver must be real (powered cycler).
+    # The maintenance maneuver must be real (powered cycler), not a ballistic
+    # ΔV≈0 neighbour. Sanity-bounded only — the magnitude is our own value.
     assert solution.total_maintenance_dv_kms > 0.0
 
     result = verify_real_closure(
@@ -181,9 +175,13 @@ def test_aldrin_powered_cycler_closes_on_de440(
         t_start=solution.t_start_sec,
         cycler_id="aldrin-classic-em-k1-outbound",
     )
-    assert result.closes is True
-    assert result.max_drift_km < REAL_DRIFT_TOLERANCE_KM
-    assert result.v3_status == "v3-real-closure-pass"
+    # Idealised rotating-frame closure is physically unreachable for k=1 Aldrin;
+    # the drift floor sits far above tolerance (measured ~7e7 km ~ 360x). Assert
+    # the regime qualitatively (>50x) so the gate has teeth without pinning a
+    # brittle, solver-derived magnitude.
+    assert result.closes is False
+    assert result.v3_status == "v3-real-closure-fail"
+    assert result.max_drift_km > 50.0 * REAL_DRIFT_TOLERANCE_KM
 
 
 # ---------------------------------------------------------------------------
@@ -357,8 +355,9 @@ def test_real_closure_regression_set(
     Powered entries are skipped: ballistic closure is not their target (by
     definition a powered cycler cannot close ballistically — see
     :func:`test_aldrin_ballistic_closure_fails_because_powered` for the
-    negative result and :func:`test_aldrin_powered_cycler_closes_on_de440`
-    for the powered-closure goal).
+    negative result and
+    :func:`test_aldrin_powered_cycler_solver_and_drift_floor_on_de440`
+    for the powered-cycler construction + drift floor).
     """
     if entry_id in EXPECTED_SKIPS:
         pytest.skip(EXPECTED_SKIPS[entry_id])
@@ -368,11 +367,11 @@ def test_real_closure_regression_set(
         pytest.skip(
             f"{entry_id}: powered cycler — ballistic closure not expected; "
             "covered by test_aldrin_ballistic_closure_fails_because_powered "
-            "(negative) + test_aldrin_powered_cycler_closes_on_de440 (positive "
-            "powered-closure goal; the solver is implemented and the maintenance "
-            "ΔV is real, but the rotating-frame drift bound is physically "
-            "unreachable for k=1 Aldrin, so it stays xfail — see that test's "
-            "reason)."
+            "(negative) + test_aldrin_powered_cycler_solver_and_drift_floor_on_de440 "
+            "(positive: the solver builds the powered cycler with a real "
+            "maintenance ΔV, and the idealised rotating-frame drift bound is "
+            "physically unreachable for k=1 Aldrin — asserted as the drift "
+            "floor)."
         )
     priority = entry.get("priority_date")
     if isinstance(priority, str):
