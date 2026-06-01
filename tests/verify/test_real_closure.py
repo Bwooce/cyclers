@@ -80,61 +80,34 @@ def astropy_ephem() -> Ephemeris:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    strict=False,
-    reason=(
-        "ASPIRATIONAL / still-open goal, NOT the binding gate (task #72 "
-        "moved the binding criterion to "
-        "test_aldrin_powered_turn_deficit_gate). True DE440 closure needs "
-        "the flyby-constrained periodic BVP solver, which is not yet "
-        "built; we do NOT fabricate a pass. "
-        "M6b Lambert-chain closure fails by ~1450x: Lambert-chain construction "
-        "of the Aldrin classic E-M k=1 cycler (plan §3.1.1) produces "
-        "max_drift_km ~ 2.9e8 km on real ephemeris (1986-02-27 launch "
-        "epoch, 2 cycles ~ 4.3 yr horizon), vs the 200,000 km "
-        "REAL_DRIFT_TOLERANCE_KM bound. The same construction yields "
-        "~2.8e6 km drift on the circular ephemeris with the M3-style "
-        "132-degree phase epoch, so the failure is NOT real-ephemeris "
-        "eccentricity breathing — it is intrinsic to the Lambert-chain "
-        "algorithm for the Aldrin geometry. The published Aldrin "
-        "cycler's M->E return leg is the same heliocentric ellipse as "
-        "the E->M outbound leg (one orbit, not two independent "
-        "Lambert chords); independently Lambert-solving the M->E leg "
-        "produces |V_inf_M_in|=9.78 vs |V_inf_M_out|=10.92 (~1.1 km/s "
-        "ballistic-flyby mismatch) and the cycler does not close. "
-        "FALSIFIED 2026-06-01: the proposed single-ellipse / orbital-"
-        "elements fix (a=1.60 AU, e=0.393, i=0) does NOT close either. "
-        "A zero-TCM resonant-epoch search over launch date, constrained "
-        "to the true Earth-Mars synodic repeat period (779.94 d) so "
-        "both planets realign, floors at max_drift_km~2.9e7 on cycle 2 "
-        "(an apparent 1.2e3 km closure exists only at a 2.000-yr "
-        "Earth-resonant period, which fails Mars realignment at 4.1e8 "
-        "km). Root cause: a free ballistic ellipse (P=2.024 yr) cannot "
-        "stay in synodic resonance (2.135 yr) — the real Aldrin cycler "
-        "is held periodic by the Mars/Earth gravity assists, which "
-        "preserve |V_inf| and ROTATE it, bending the post-flyby orbit "
-        "onto a different ellipse. Correct construction is a flyby-"
-        "constrained periodic boundary-value solve (|V_inf| continuity "
-        "at each encounter + both planets realigning at synodic period), "
-        "i.e. a real-ephemeris optimise_cell_ephemeris — NOT a single "
-        "ellipse and NOT independent per-leg Lambert. See todo.md "
-        "'Hand-off to M7' for the full diagnostic."
-    ),
-)
-def test_aldrin_cycler_periodic_over_2_cycles_astropy(
+def test_aldrin_ballistic_closure_fails_because_powered(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
 ) -> None:
-    """ASPIRATIONAL DE440 Lambert-chain closure — spec §8, real-ephemeris
-    half (plan §4.1 gate 1). NOT the binding gate: task #72 moved the binding
-    Aldrin criterion to :func:`test_aldrin_powered_turn_deficit_gate`.
+    """NEGATIVE gate: a POWERED cycler must NOT close ballistically.
 
-    Asserts the Aldrin classic E-M k=1 outbound cycler closes over 2
-    real-ephemeris cycles within :data:`REAL_DRIFT_TOLERANCE_KM` on
-    DE440. **xfail** per the architectural finding in the xfail reason and
-    todo.md's M7 hand-off; the test will flip to passing once the flyby-
-    constrained periodic BVP solver lands. We do not fabricate a pass.
+    The Aldrin Earth flyby needs an ~84° turn but can ballistically deliver
+    only ~72° (the deficit asserted in
+    :func:`test_aldrin_powered_turn_deficit_gate`). A purely ballistic
+    Lambert-chain construction therefore cannot maintain the cycler, and on
+    real DE440 ephemeris it drifts by orders of magnitude (~10^8 km over two
+    cycles) — not a marginal tolerance miss. This is correct physics, not a
+    deficiency: it is the reason the orbit is classified ``powered``.
+
+    The POSITIVE counterpart — closure WITH the maintenance maneuver supplied
+    by the flyby-constrained periodic BVP solver — is
+    :func:`test_aldrin_powered_cycler_closes_on_de440` (xfail pending task #71).
+
+    Root cause (diagnostic, 2026-06-01): the published Aldrin M->E return leg
+    is the same heliocentric ellipse as the E->M outbound leg, but independent
+    per-leg Lambert solves give |V_inf_M_in|=9.78 vs |V_inf_M_out|=10.92 km/s,
+    and a free ballistic ellipse (P=2.024 yr) cannot stay in the 2.135 yr
+    synodic resonance. Only the gravity assists (preserving |V_inf|, rotating
+    it) plus the maintenance maneuver keep it periodic.
     """
+    # Premise: this entry IS powered (84° required > 72° achievable at Earth).
+    assert aldrin_entry["trajectory_regime"] == "powered"
+
     result = verify_real_closure(
         aldrin_entry,
         n_cycles=2,
@@ -142,18 +115,62 @@ def test_aldrin_cycler_periodic_over_2_cycles_astropy(
         signature_priority_date=ALDRIN_PRIORITY,
         cycler_id="aldrin-classic-em-k1-outbound",
     )
-    assert result.cycler_id == "aldrin-classic-em-k1-outbound"
-    assert result.n_cycles_propagated == 2
-    assert result.frame_used == "dynamic"
-    assert result.horizon_tcm_mps == 0.0
-    assert result.per_cycle_tcm_mps == (0.0, 0.0)
-    # M6b's binding tolerance — see plan §4.3.
-    assert result.closes, (
-        f"Aldrin failed to close on real ephemeris: max_drift_km="
-        f"{result.max_drift_km}, per_cycle_drift_km="
-        f"{result.per_cycle_drift_km}, v3_status={result.v3_status}, "
-        f"t_start_sec={result.t_start_sec}. See plan §5 risk #1."
+    # Consequence: the ballistic construction does NOT close, and misses by
+    # orders of magnitude (> 5x tolerance) — not a near-pass.
+    assert result.closes is False
+    assert result.max_drift_km > 5 * REAL_DRIFT_TOLERANCE_KM, (
+        f"expected gross ballistic non-closure for the powered Aldrin cycler, "
+        f"got max_drift_km={result.max_drift_km}"
     )
+    assert result.v3_status == "v3-real-closure-fail"
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason=(
+        "POSITIVE powered-closure goal, BLOCKED on the flyby-constrained "
+        "periodic BVP solver (task #71, "
+        "cyclerfinder.search.bvp.solve_powered_periodic_cycler), which is not "
+        "yet implemented (the stub raises NotImplementedError). Once the solver "
+        "lands and applies the maintenance maneuver at the Earth flyby, the "
+        "powered Aldrin cycler closes on DE440 and this xfail flips to XPASS; "
+        "strict=True then fails CI, prompting removal of this marker. We do NOT "
+        "fabricate a pass. The ballistic negative result is asserted by "
+        "test_aldrin_ballistic_closure_fails_because_powered."
+    ),
+)
+def test_aldrin_powered_cycler_closes_on_de440(
+    aldrin_entry: dict[str, object],
+    astropy_ephem: Ephemeris,
+) -> None:
+    """POSITIVE gate (xfail pending #71): the powered Aldrin cycler, built by
+    the flyby-constrained periodic BVP solver *with* its maintenance maneuver,
+    closes on real DE440 ephemeris over 2 cycles within tolerance.
+
+    This is the real reproduction target the negative ballistic test cannot
+    reach. It depends entirely on
+    :func:`cyclerfinder.search.bvp.solve_powered_periodic_cycler`; the
+    ``NotImplementedError`` from its stub is caught by ``xfail`` until the
+    solver exists.
+    """
+    from cyclerfinder.search.bvp import solve_powered_periodic_cycler
+
+    solution = solve_powered_periodic_cycler(
+        aldrin_entry,
+        ephem=astropy_ephem,
+        signature_priority_date=ALDRIN_PRIORITY,
+    )
+    # The maintenance maneuver must be real (powered cycler).
+    assert solution.total_maintenance_dv_kms > 0.0
+
+    result = verify_real_closure(
+        solution.cycler,
+        n_cycles=2,
+        ephem=astropy_ephem,
+        t_start=solution.t_start_sec,
+        cycler_id="aldrin-classic-em-k1-outbound",
+    )
+    assert result.closes is True
     assert result.max_drift_km < REAL_DRIFT_TOLERANCE_KM
     assert result.v3_status == "v3-real-closure-pass"
 
@@ -318,41 +335,31 @@ def test_real_drift_rejects_open_trajectory(
 # Gate 4 — Regression set across M6B_REGRESSION_IDS
 # ---------------------------------------------------------------------------
 
-# Regression entries currently failing the M6b binding tolerance due to the
-# Lambert-chain construction limitation documented on the Aldrin binding-gate
-# xfail. Tracked in todo.md "Hand-off to M7" for orbital-elements-based
-# construction.
-_M6B_LAMBERT_CHAIN_XFAILS: frozenset[str] = frozenset(
-    {
-        "aldrin-classic-em-k1-outbound",
-        "aldrin-classic-em-k1-inbound",
-    },
-)
-
 
 @pytest.mark.parametrize("entry_id", M6B_REGRESSION_IDS)
 def test_real_closure_regression_set(
     entry_id: str,
     astropy_ephem: Ephemeris,
-    request: pytest.FixtureRequest,
 ) -> None:
-    """Plan §4.2: every regression entry not in EXPECTED_SKIPS closes."""
+    """Plan §4.2: every BALLISTIC regression entry not in EXPECTED_SKIPS closes.
+
+    Powered entries are skipped: ballistic closure is not their target (by
+    definition a powered cycler cannot close ballistically — see
+    :func:`test_aldrin_ballistic_closure_fails_because_powered` for the
+    negative result and :func:`test_aldrin_powered_cycler_closes_on_de440`
+    for the powered-closure goal).
+    """
     if entry_id in EXPECTED_SKIPS:
         pytest.skip(EXPECTED_SKIPS[entry_id])
-    if entry_id in _M6B_LAMBERT_CHAIN_XFAILS:
-        request.applymarker(
-            pytest.mark.xfail(
-                strict=False,
-                reason=(
-                    f"{entry_id}: Lambert-chain construction (plan §3.1.1) "
-                    "yields ~10^8 km drift on real ephemeris; see the "
-                    "test_aldrin_cycler_periodic_over_2_cycles_astropy "
-                    "xfail reason and todo.md's M7 hand-off."
-                ),
-            )
-        )
     entries = load_m6b_entries()
     entry = next(e for e in entries if e["id"] == entry_id)
+    if entry.get("trajectory_regime") == "powered":
+        pytest.skip(
+            f"{entry_id}: powered cycler — ballistic closure not expected; "
+            "covered by test_aldrin_ballistic_closure_fails_because_powered "
+            "(negative) + test_aldrin_powered_cycler_closes_on_de440 (positive, "
+            "xfail pending the BVP solver, task #71)."
+        )
     priority = entry.get("priority_date")
     if isinstance(priority, str):
         priority_dt = datetime.fromisoformat(priority).replace(tzinfo=UTC)
