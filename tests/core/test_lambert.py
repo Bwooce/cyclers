@@ -42,8 +42,12 @@ def test_lambert_returns_list_singleton(leg_aldrin: Leg) -> None:
     assert sol.v2.dtype == np.float64
 
 
-def test_lambert_max_revs_stub(leg_aldrin: Leg) -> None:
-    """``max_revs >= 1`` is a documented M4 stub: still returns just the single-rev."""
+def test_lambert_max_revs_too_short_returns_single_rev(leg_aldrin: Leg) -> None:
+    """A 146 d Earth->Mars arc is below t_min(1), so no full revolution fits.
+
+    ``max_revs=2`` is honoured but every revolution n>=1 is infeasible at this
+    short tof, so only the single-revolution solution is returned.
+    """
     sols = lambert(leg_aldrin.r1, leg_aldrin.r2, leg_aldrin.tof, max_revs=2)
     assert len(sols) == 1
     assert sols[0].n_revs == 0

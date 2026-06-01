@@ -43,9 +43,9 @@ from cyclerfinder.core.constants import MU_SUN_KM3_S2
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 
-_NEWTON_TOL_REL: float = 1.0e-12
-_NEWTON_TOL_DZ: float = 1.0e-12
-_NEWTON_MAX_ITER: int = 60
+_ROOT_TOL_REL: float = 1.0e-12
+_ROOT_TOL_DZ: float = 1.0e-12
+_ROOT_MAX_ITER: int = 60
 _BRACKET_MAX_WIDEN_ITERS: int = 100
 """Bound on the bracket-finder widen loop. Well-posed geometries find the
 z_lo bracket in < 10 widen iterations; this cap exists to fail fast on
@@ -133,29 +133,144 @@ def _t_of_z(z: float, a_coef: float, r1_n: float, r2_n: float, mu: float) -> tup
     return t, y
 
 
-def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
-    """Analytic derivative dt/dz used for Newton steps.
+def _min_time_of_revolution(
+    n: int, a_coef: float, r1_n: float, r2_n: float, mu: float
+) -> tuple[float, float]:
+    """Return ``(z_min, t_min)`` for revolution ``n >= 1``.
 
-    Vallado eq. (7-15) form, valid away from ``z = 0``. Near ``z = 0`` we
-    fall back to a Maclaurin truncation to avoid the ``1/z`` divergence.
+    On the open interval ``z in ((2*pi*n)**2, (2*pi*(n+1))**2)`` the
+    universal-variable time-of-flight ``t(z)`` is convex with a single
+    interior minimum. We locate it with a bounded golden-section search
+    (numpy-only; no SciPy on the production path). ``t_min`` is the shortest
+    time of flight achievable with exactly ``n`` full revolutions; a
+    requested ``tof <= t_min`` means revolution ``n`` is infeasible.
     """
+    lo = (2.0 * np.pi * n) ** 2
+    hi = (2.0 * np.pi * (n + 1)) ** 2
+    # Stay strictly inside the open interval: t -> +inf at both endpoints.
+    span = hi - lo
+    a = lo + 1.0e-6 * span
+    b = hi - 1.0e-6 * span
+
+    def _t(z_in: float) -> float:
+        t_z, _ = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
+        return t_z
+
+    inv_phi = (sqrt(5.0) - 1.0) / 2.0  # 1/golden ratio
+    c = b - inv_phi * (b - a)
+    d = a + inv_phi * (b - a)
+    fc = _t(c)
+    fd = _t(d)
+    for _ in range(200):
+        if abs(b - a) < 1.0e-9 * (abs(a) + abs(b)):
+            break
+        if fc < fd:
+            b, d, fd = d, c, fc
+            c = b - inv_phi * (b - a)
+            fc = _t(c)
+        else:
+            a, c, fc = c, d, fd
+            d = a + inv_phi * (b - a)
+            fd = _t(d)
+    z_min = 0.5 * (a + b)
+    t_min, _ = _t_of_z(z_min, a_coef, r1_n, r2_n, mu)
+    return z_min, t_min
+
+
+def _solve_uv_branch(
+    z_lo: float,
+    z_hi: float,
+    a_coef: float,
+    r1_n: float,
+    r2_n: float,
+    tof: float,
+    mu: float,
+) -> float:
+    """Derivative-free root of ``f(z)=t(z)-tof`` on a sign-changing bracket.
+
+    Uses the Illinois method (false-position with the anti-stall
+    modification): guaranteed to converge on any bracket where ``f(z_lo)``
+    and ``f(z_hi)`` have opposite signs, with no dependence on the analytic
+    ``dt/dz``. This matters because the closed-form derivative is only valid
+    in the single-rev ``z`` domain; on the multi-rev branches (either side of
+    a revolution's time minimum) it has the wrong magnitude and sign, so a
+    Newton iteration crawls or diverges there. The bracket is sign-monotone
+    on each branch (the whole single-rev range, and each side of the
+    multi-rev minimum), so Illinois is both robust and fast here.
+
+    Raises :class:`LambertConvergenceError` if the supplied endpoints do not
+    bracket a root or the iteration fails to converge.
+    """
+
+    def _f(z_in: float) -> float:
+        t_z, _y = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
+        return t_z - tof
+
+    a, b = z_lo, z_hi
+    try:
+        fa = _f(a)
+        fb = _f(b)
+    except ValueError as exc:
+        raise LambertConvergenceError(0.5 * (a + b), float("nan")) from exc
+
+    if fa == 0.0:
+        return a
+    if fb == 0.0:
+        return b
+    if (fa > 0.0) == (fb > 0.0):
+        # Endpoints share a sign: no guaranteed root in this bracket.
+        raise LambertConvergenceError(0.5 * (a + b), min(abs(fa), abs(fb)))
+
+    c = 0.5 * (a + b)
+    for _it in range(_ROOT_MAX_ITER):
+        # False-position estimate; fall back to bisection if degenerate or
+        # out of the current bracket.
+        if fb != fa:
+            c = b - fb * (b - a) / (fb - fa)
+        lo, hi = (a, b) if a < b else (b, a)
+        if not (lo < c < hi):
+            c = 0.5 * (a + b)
+        try:
+            fc = _f(c)
+        except ValueError:
+            c = 0.5 * (a + b)
+            fc = _f(c)
+
+        if abs(fc) / tof < _ROOT_TOL_REL or abs(b - a) < _ROOT_TOL_DZ:
+            return c
+
+        if (fc > 0.0) == (fb > 0.0):
+            # Root lies between a and c: discard b, but down-weight the now
+            # stale endpoint a (the Illinois modification) to avoid stalling.
+            b, fb = c, fc
+            fa *= 0.5
+        else:
+            # Root lies between c and b: a <- b, b <- c.
+            a, fa = b, fb
+            b, fb = c, fc
+
+    raise LambertConvergenceError(c, fc)
+
+
+def _velocities_from_z(
+    z: float,
+    a_coef: float,
+    r1_arr: Vec3,
+    r2_arr: Vec3,
+    r1_n: float,
+    r2_n: float,
+    mu: float,
+) -> tuple[Vec3, Vec3]:
+    """Lagrange-coefficient velocities at the converged universal variable z."""
     c = stumpff_c(z)
     s = stumpff_s(z)
-    if abs(z) > 1.0e-5:
-        # Standard form.
-        sqrt_y_over_c = sqrt(y / c)
-        y_over_c_15 = float((y / c) ** 1.5)
-        term1 = (
-            y_over_c_15 * ((1.0 / (2.0 * z)) * (c - 1.5 * s / c) + 0.75 * (s * s) / c) / sqrt(mu)
-        )
-        term2 = (a_coef / 8.0) * (3.0 * s * sqrt_y_over_c / c + a_coef * sqrt(c / y)) / sqrt(mu)
-        return term1 + term2
-    # Near z=0 fallback (Vallado): expansion about z=0.
-    # dt/dz ≈ (sqrt(2)/40) y0^1.5 + (A/8) * (sqrt(y0) + A * sqrt(1/(2*y0)))  / sqrt(mu)
-    y_15 = float(y**1.5)
-    return (
-        (sqrt(2.0) / 40.0) * y_15 + (a_coef / 8.0) * (sqrt(y) + a_coef * sqrt(1.0 / (2.0 * y)))
-    ) / sqrt(mu)
+    y = r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
+    f = 1.0 - y / r1_n
+    g = a_coef * sqrt(y / mu)
+    g_dot = 1.0 - y / r2_n
+    v1 = (r2_arr - f * r1_arr) / g
+    v2 = (g_dot * r2_arr - r1_arr) / g
+    return v1.astype(np.float64, copy=False), v2.astype(np.float64, copy=False)
 
 
 # ---------------------------------------------------------------------------
@@ -191,17 +306,20 @@ def lambert(
         measured counter-clockwise about ``+z``); ``False`` selects the
         retrograde transfer.
     max_revs:
-        Maximum number of full revolutions to consider. **M1 returns at most
-        one solution (``n_revs == 0``); multi-revolution branches land in
-        M4.** The parameter is accepted now so the interface is stable
-        through M4.
+        Maximum number of full revolutions to consider. ``0`` returns only
+        the single-revolution (direct) transfer. For each ``n`` in
+        ``[1, max_revs]`` two further solutions may be appended -- the ``low``
+        and ``high`` branches -- when the time of flight admits revolution
+        ``n``; infeasible revolutions are skipped silently.
 
     Returns
     -------
     list[LambertSolution]
-        In M1, a length-1 list ``[LambertSolution(n_revs=0, branch="single",
-        v1=..., v2=...)]``. The empty list is never returned in M1 success
-        paths; errors raise instead.
+        Always begins with the single-revolution solution
+        ``LambertSolution(n_revs=0, branch="single", ...)``, followed by any
+        feasible multi-revolution branches in ascending ``n``, ``low`` before
+        ``high``. The empty list is never returned on success paths; errors
+        raise instead.
 
     Raises
     ------
@@ -210,12 +328,10 @@ def lambert(
     LambertGeometryError
         On 0-degree or 180-degree transfer geometry.
     LambertConvergenceError
-        If Newton iteration fails within :data:`_NEWTON_MAX_ITER` steps.
+        If the root solver fails to converge within :data:`_ROOT_MAX_ITER` steps.
     """
     if tof <= 0.0:
         raise ValueError(f"tof must be positive, got {tof}")
-    # max_revs is reserved for M4; it must be a non-negative int but is
-    # otherwise ignored in M1 (documented above). Validate the sign only.
     if max_revs < 0:
         raise ValueError(f"max_revs must be non-negative, got {max_revs}")
 
@@ -326,68 +442,39 @@ def lambert(
     eps_high = 1.0e-6
     z_hi = z_high_single_rev - eps_high
 
-    # Initial Newton seed: midpoint of bracket if available, else current z.
-    if _y_only(z) < 0.0 or not (z_lo <= z <= z_hi):
-        z = 0.5 * (z_lo + z_hi)
+    # Single-rev branch: safeguarded Newton inside the established bracket.
+    z = _solve_uv_branch(z_lo, z_hi, a_coef, r1_n, r2_n, tof, mu)
+    v1, v2 = _velocities_from_z(z, a_coef, r1_arr, r2_arr, r1_n, r2_n, mu)
+    solutions = [LambertSolution(n_revs=0, branch="single", v1=v1, v2=v2)]
 
-    residual: float = 0.0
-    converged = False
-    for _it in range(_NEWTON_MAX_ITER):
-        try:
-            t_z, y = _t_of_z(z, a_coef, r1_n, r2_n, mu)
-        except ValueError:
-            # y(z) negative or sqrt(C(z)) issue: bisect into bracket.
-            z = 0.5 * (z_lo + z_hi)
+    # Multi-rev branches. For each n in [1, max_revs] the time curve t(z) on
+    # z in ((2*pi*n)^2, (2*pi*(n+1))^2) is convex with a single minimum
+    # t_min(n); when tof > t_min(n) two solutions exist (one on each side of
+    # the minimum -> low/high branches). tof <= t_min(n) means revolution n is
+    # infeasible and contributes nothing (skipped silently, never an error).
+    eps = 1.0e-6
+    for n in range(1, max_revs + 1):
+        z_min, t_min = _min_time_of_revolution(n, a_coef, r1_n, r2_n, mu)
+        if tof <= t_min:
             continue
+        lo_endpoint = (2.0 * np.pi * n) ** 2
+        hi_endpoint = (2.0 * np.pi * (n + 1)) ** 2
+        rev_span = hi_endpoint - lo_endpoint
+        # "low" branch: z in (lo_endpoint, z_min); "high": z in (z_min, hi_endpoint).
+        # The empirical low/high <-> lamberthub low_path mapping is asserted in
+        # the multi-rev crosscheck test; if inverted, swap these two labels.
+        for branch_label, z_a, z_b in (
+            ("low", lo_endpoint + eps * rev_span, z_min),
+            ("high", z_min, hi_endpoint - eps * rev_span),
+        ):
+            try:
+                z_sol = _solve_uv_branch(z_a, z_b, a_coef, r1_n, r2_n, tof, mu)
+            except LambertConvergenceError:
+                continue
+            vb1, vb2 = _velocities_from_z(z_sol, a_coef, r1_arr, r2_arr, r1_n, r2_n, mu)
+            solutions.append(LambertSolution(n_revs=n, branch=branch_label, v1=vb1, v2=vb2))
 
-        residual = t_z - tof
-        if abs(residual) / tof < _NEWTON_TOL_REL:
-            converged = True
-            break
-
-        # Tighten bracket using sign of residual (monotone t(z)).
-        if residual < 0.0:
-            z_lo = z
-        else:
-            z_hi = z
-
-        dt = _dt_dz(z, y, a_coef, mu)
-        z_next = z - residual / dt if dt != 0.0 else z
-
-        # Reject the Newton step if it leaves the bracket or pushes y < 0;
-        # fall back to bisection in that case. This is Vallado's standard
-        # safeguard for the universal-variable Lambert iteration.
-        if not (z_lo < z_next < z_hi) or _y_only(z_next) < 0.0:
-            z_next = 0.5 * (z_lo + z_hi)
-
-        if abs(z_next - z) < _NEWTON_TOL_DZ:
-            z = z_next
-            converged = True
-            break
-        z = z_next
-
-    if not converged:
-        raise LambertConvergenceError(z, residual)
-
-    # Final Lagrange coefficients.
-    c = stumpff_c(z)
-    s = stumpff_s(z)
-    y = r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
-    f = 1.0 - y / r1_n
-    g = a_coef * sqrt(y / mu)
-    g_dot = 1.0 - y / r2_n
-
-    v1 = (r2_arr - f * r1_arr) / g
-    v2 = (g_dot * r2_arr - r1_arr) / g
-
-    return [
-        LambertSolution(
-            n_revs=0,
-            branch="single",
-            v1=v1.astype(np.float64, copy=False),
-            v2=v2.astype(np.float64, copy=False),
-        )
-    ]
+    return solutions
 
 
 def lambert_crosscheck(
