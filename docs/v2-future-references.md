@@ -23,15 +23,72 @@ and whether a PDF is cached locally.
 | Authors | Chit Hong Yam, Dario Di Lorenzo, Dario Izzo |
 | Venue | *IEEE Congress on Evolutionary Computation*, 2010, pp. 1–7 |
 | DOI | [10.1109/cec.2010.5586019](https://doi.org/10.1109/cec.2010.5586019) |
-| Cached PDF | not yet downloaded |
+| Cached PDF | `/tmp/act-yam-2010-cec.pdf` (508 KB, 6 pp.) — downloaded 2026-06-01 from the ESA/ACT open-access copy `https://www.esa.int/gsp/ACT/doc/MAD/pub/ACT-RPR-MAD-2010-(CEC)ConstrainedGO.pdf` |
+
+**v1 catalogue eligibility: OUT OF SCOPE (low-thrust methods paper).** Read
+in full 2026-06-01. The paper contains no ballistic cycler trajectory and
+no concrete published numbers that fit the v1 circular-coplanar patched-
+conic schema. Its two worked examples are one-way **rendezvous** transfers
+to Jupiter (the arrival velocity is *constrained to zero relative to the
+planet* — "we are considering a rendezvous problem"), not repeating
+cyclers, and both require continuous nuclear-electric thrust to close. No
+`seed_cyclers.yaml` change is warranted.
 
 **Why it matters.** The Sims-Flanagan transcription is the standard way to
 turn a continuous low-thrust trajectory optimisation problem into a finite
-nonlinear program (NLP) the optimiser can solve. Each interplanetary leg
-is sliced into N segments; the low-thrust history is treated as a sequence
-of impulsive ΔV at segment boundaries, connected by Keplerian conic arcs.
-This is the architectural pattern cyclerfinder would adopt to handle
-low-thrust cyclers.
+nonlinear program (NLP) the optimiser can solve. The paper's own framing:
+"Trajectory is divided into legs which begin and end with a planet.
+Low-thrust arcs on each leg are modeled as sequences of impulsive maneuvers
+∆V, connected by conic arcs." Each leg is propagated forward and backward
+to a *matchpoint* (usually halfway), and the position/velocity mismatch
+`Smf − Smb` must fall below tolerance to be feasible. This is the
+architectural pattern cyclerfinder would adopt to handle low-thrust
+cyclers.
+
+**Concrete specifics from the paper text (2026-06-01 read):**
+
+- **Problem class = LT-MGA** (Low-Thrust Multiple Gravity Assist), framed as
+  a constrained NLP. The paper's contribution over box-constrained MGA /
+  MGA-DSM is handling the "high number of nonlinear constraints" via
+  hybridising the global search with a *local* solver, rather than via an
+  objective-function penalty term with an unknown weighting factor.
+- **NLP dimension** = `(8 + 3N)M` for `M` legs, `N` segments/leg, with
+  ~`neq·M` nonlinear constraints (`neq = 7` for a 3-D + mass problem). The
+  ∆V-per-segment bound is `∆Vmax = (Tmax/m)(tf − t0)/N` (Eq. 1); the flyby
+  turn-angle constraint uses `sin(δ/2) = 1/(1 + rp·V∞²/µ)` (Eq. 3) — the
+  same bend formula already noted for the v2 `flyby_mechanics` field in
+  `data/README.md`.
+- **Two-phase solve.** Phase 1 minimises total ∆V at *constant mass*
+  (`min ΣΣ∆Vi`, Eq. 4); Phase 2 re-optimises locally to *maximise final
+  mass* `mf` (Eq. 6) propagating mass via the rocket equation
+  `mi+1 = mi·exp(−∆Vi/g0·Isp)` (Eq. 5). The local solver is **SNOPT** (SQP).
+- **Three global optimisers compared**: Multistart (MS, baseline), Monotonic
+  Basin Hopping (BH, a.k.a. Iterated Local Search; MNI=500, perturbation
+  r=0.05, time-shift probability p=0.1 by a *synodic period*), and Simulated
+  Annealing with Adaptive Neighborhood (SA). **Basin Hopping wins** on both
+  test cases (statistically significant by unpaired t-test, both quality and
+  number of feasible solutions).
+- **Test cases — NOT GTOC problems**, but a NEP mission inspired by the
+  cancelled NASA **Jupiter Icy Moons Orbiter** (Table I: initial mass
+  20,000 kg, Tmax 2.26 N, Isp 6,000 s, launch window Jan 2020–Jan 2030,
+  launch V∞ ≤ 2.0 km/s, min flyby radius 7,000 km; max ToF 10 yr for E-E-J,
+  15 yr for E-E-E-J). GTOC/GTOP are only cited as motivating context.
+  - **E-E-J** (one Earth flyby): NLP dim 75, 35 nonlinear constraints.
+    Phase-1 best total ∆V ≈ 9.558 km/s (BH); Phase-2 best final mass
+    ≈ 17,004 kg (BH). Best trajectory: launch 2022-10-15 at V∞ 2 km/s, a
+    ~1.5-yr 3:2 resonance loop (2 revs), Earth flyby at 2.9 yr boosting V∞
+    to 9.0 km/s, Jupiter rendezvous ~Sept 2029.
+  - **E-E-E-J** (two Earth flybys): NLP dim 112, 56 nonlinear constraints.
+    Phase-1 best total ∆V ≈ 7.524 km/s (BH); Phase-2 best final mass
+    ≈ 17,601 kg (BH). Best trajectory: 1:1 resonance (495 d, V∞ 2.0→5.3
+    km/s), then 2:1 resonance (772 d, V∞ →9.0 km/s), total flight ~8.0 yr;
+    the extra flyby buys ~600 kg final mass at the cost of ~1 yr ToF.
+- **Why none of this is a catalogue entry**: the resonance loops are
+  one-shot capture-to-Jupiter sequences, not steady-state repeating cyclers;
+  and (per the paper) "unlike the case in the ballistic transfer, in the
+  low-thrust transfer case the Earth-Earth flight time does not exactly
+  equal some integer multiple of Earth's orbital period" — i.e. these are
+  expressly NOT the ballistic resonant geometry the v1 schema encodes.
 
 **Architectural impact on cyclerfinder if adopted:**
 
@@ -57,24 +114,83 @@ low-thrust cyclers.
 | Authors | Andrea Pascarella, Robyn Woollands, Etienne Pellegrini, Marc Sanchez-Net, Joel Van Hook |
 | Venue | *Advances in the Astronautical Sciences*, 2024, pp. 45-61 |
 | DOI | [10.1007/978-3-031-51928-4_4](https://doi.org/10.1007/978-3-031-51928-4_4) |
-| Cached PDF | not yet downloaded |
+| Cached PDF | `docs/refs/AAS-22-015-pascarella-pony-express.pdf` (2.5 MB) — downloaded 2026-06-01 from `ai.jpl.nasa.gov/public/documents/papers/AAS-22-015-Paper.pdf` |
 
-**Why it matters.** Pascarella et al. outline the **patched-conic → medium-fidelity
-impulsive → high-fidelity N-body** pipeline for transitioning a candidate
-low-thrust cycler trajectory from a circular-coplanar idealisation to a
-real-ephemeris flight design. The paper documents the ΔV penalty incurred
-by feeding patched-conic outputs *directly* into a high-fidelity optimiser
-(spoiler: massive, due to solar gravity perturbations during flybys) and
-shows an intermediate medium-fidelity impulsive stage that absorbs most of
-the divergence.
+> **Source-version note.** The 2024 *Advances in the Astronautical Sciences*
+> book chapter (DOI `10.1007/978-3-031-51928-4_4`) sits behind Springer's
+> paywall (`idp.springer.com` auth redirect — not accessible to the web-fetch
+> tool). The cached PDF is the open-access **AAS 22-015** conference paper
+> (same title, same five authors — note the PDF byline spells the last author
+> "Joshua Vander Hook" vs our citation's "Joel Van Hook"; same JPL group
+> supervisor). AAS conference proceedings are what get published as *Advances
+> in the Astronautical Sciences*, so the chapter is the proceedings version of
+> this paper. All quotes below are verbatim from the AAS 22-015 PDF; treat
+> numerics as high-confidence pending verification against the paginated
+> chapter.
+
+**Why it matters.** Pascarella et al. design **Earth-Mars cycler orbits for
+the SSPE** (Solar System Pony Express) — a JPL NIAC concept (grant
+80NM0018D0004) for interplanetary **data mules**: 500 kg ESPA-class smallsats
+with optical-laser comms and a NEXT ion engine (Isp 4155 s, thrust 0.235 N),
+launched as rideshare with a Mars-bound mission, that fly Earth-Mars cyclers,
+retrieve "1-3 petabits of data per flyby" at Mars and downlink at Earth
+(>8000 Tbits over 8 flybys in their example). It is the canonical reference
+for the **patched-conic → ephemeris transition** — but the actual pipeline is
+**five sequential sub-problems**, not three, and the optimiser is **indirect
+optimal control** (Pontryagin / primer-vector, MEE state, bang-bang + tanh
+continuation, RK 9(8) + Matlab `fsolve` multiple-shooting), **not**
+Sims-Flanagan (contrast Paper 1). Verbatim: "the trajectory design is divided
+in five sub-problems that are solved sequentially":
+
+1. **Patched-conic** — JPL's STAR software generates "thousands of Earth-Mars
+   cycler trajectories with a patched conic model"; filtered on ΔV +
+   flyby-altitude requirements.
+2. **Two-body impulsive** — a TPBVP in two-body dynamics builds planetocentric
+   flyby trajectories matching STAR's in/out velocity vectors "with negligible
+   difference."
+3. **Medium-fidelity impulsive** — adds solar-system gravity perturbations.
+   The documented penalty lives here (verbatim): *"the Sun's gravity
+   significantly perturbs the trajectory of the spacecraft during the planetary
+   flybys and thus the incoming and outgoing vectors computed by STAR result in
+   very large ∆v's for the flyby targeting problem."* Fix: propagate
+   backward/forward from each flyby and minimise position/velocity mismatch at a
+   heliocentric "breakpoint" midway between flybys.
+4. **High-fidelity low-thrust** — step-3 impulsive solutions seed the indirect
+   low-thrust TPBVP; impulsive ΔV replaced by optimal thrust/coast arcs. "the
+   high-fidelity impulsive solutions are a very good initial guess ... however
+   the run-time is significantly longer." They could **not** converge the whole
+   STAR set in the ephemeris model — 278 reached step 3, only "several" through
+   step 5.
+5. **Polynomial thrust-arc fitting** — post-process for precise thruster on/off
+   times for ops; negligible fuel difference vs step 4.
+
+**Documented ΔV / propellant numbers (verbatim).** Headline result: a "500 kg
+courier spacecraft ... inserted into an Earth-Mars cycler orbit using only
+36 kg of propellant, and a further 2 kg of propellant is required to target
+eight subsequent flybys over a period of six years." Cost is dominated by
+**cycler-orbit injection (COI)**, not maintenance: "most of the propellant
+budget is required for COI, and once the spacecraft is on the cycler orbit a
+minimal amount of fuel (< 5 kg) is needed to maintain the orbit and target
+flybys." Russell-Ocampo 2006 (their ref [13]) is cited for the claim that
+"directly obtaining cycler orbits in an ephemeris model is often impractical
+if not impossible" — the explicit justification for the graduated
+multi-fidelity ladder. Flyby altitude band ≤ 25,000 km, lower bounds 300 km
+(Mars) / 1000 km (Earth); engine off during flybys for comms attitude; flyby
+target set at 3× Mars SOI so the flyby stays ballistic.
 
 **Architectural impact on cyclerfinder if adopted:**
 
 - This is the **canonical reference for M6b's ephemeris-mode
   optimisation pipeline**. The current M6 slice (`9b2611d`) implemented
   geometric phase-matching only; M6b's full implementation should follow
-  the Pascarella three-stage pipeline rather than going directly from
-  idealised seed → high-fidelity N-body.
+  the Pascarella graduated multi-fidelity ladder (five steps: patched-conic →
+  two-body impulsive → medium-fidelity impulsive → high-fidelity low-thrust →
+  polynomial fit) rather than going directly from idealised seed →
+  high-fidelity N-body. M6b's v1-scope ballistic mandate maps onto steps 1-3
+  (the impulsive ladder); steps 4-5 (low-thrust) are explicitly out of v1
+  scope. Note the paper's optimiser is *indirect* optimal control, whereas
+  the M6b plan §3.1 chooses a Lambert-chain construction — the alignment
+  Pascarella validates is the *fidelity ladder*, not the solver.
 - `verify/propagate.py` (M6a, planned) becomes the medium-fidelity
   impulsive stage. `verify_long_term_stability` produces the per-lap TCM
   ΔV that quantifies the patched-conic → medium-fidelity penalty.
