@@ -69,6 +69,7 @@ from cyclerfinder.core.lambert import (
     LambertGeometryError,
     lambert,
 )
+from cyclerfinder.data.catalog import _segments_as_legs
 from cyclerfinder.model.cycler import Cycler, Encounter, Leg
 from cyclerfinder.search.phase_match import (
     LaunchWindow,
@@ -394,7 +395,7 @@ def _full_body_chain(catalogue_entry: dict[str, Any]) -> tuple[str, ...]:
     (e.g. ``["E", "M"]`` for Aldrin's 2-leg ``E→M→E`` chain), so it
     cannot be indexed directly by leg.
     """
-    legs = catalogue_entry.get("legs") or []
+    legs = _segments_as_legs(catalogue_entry)
     if not legs:
         raise ValueError(
             f"catalogue entry {catalogue_entry.get('id')!r} has no legs; cannot derive body chain."
@@ -486,7 +487,7 @@ def construct_real_ephemeris_cycler(
     """
     cat_id = catalogue_entry.get("id")
     chain = _full_body_chain(catalogue_entry)
-    legs_meta = catalogue_entry.get("legs") or []
+    legs_meta = _segments_as_legs(catalogue_entry)
 
     if isinstance(launch_window, LaunchWindow):
         t_start_sec = _dt_to_t_sec(launch_window.departure_date)

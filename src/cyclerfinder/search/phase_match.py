@@ -51,6 +51,7 @@ from numpy.typing import NDArray
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryError, lambert
+from cyclerfinder.data.catalog import _segments_as_legs
 
 # Reference epoch for converting between datetime and seconds-since-J2000.
 _J2000_EPOCH = datetime(2000, 1, 1, 12, 0, 0, tzinfo=UTC)
@@ -142,7 +143,9 @@ def phase_signature_from_catalogue_entry(entry: dict[str, Any]) -> PhaseSignatur
         raise ValueError(f"entry {entry.get('id')!r} has empty bodies")
     bodies = tuple(bodies_raw)
 
-    legs_raw = entry.get("legs") or []
+    # Schema v3 (spec §16.6.2): read trajectory.segments when migrated,
+    # else the legacy flat legs[]. Segments reuse the from/to/tof_days keys.
+    legs_raw = _segments_as_legs(entry)
     if len(legs_raw) < len(bodies) - 1:
         raise ValueError(
             f"entry {entry.get('id')!r} has {len(legs_raw)} legs; need {len(bodies) - 1}"

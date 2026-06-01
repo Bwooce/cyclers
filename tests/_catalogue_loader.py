@@ -22,7 +22,8 @@ Filter rules — an entry is *constructible by the v1 optimiser* iff:
 * All entries in ``vinf_kms_at_encounters`` have non-null ``vinf_kms``,
   and ``len(vinf_kms_at_encounters) == len(bodies)``.
 * ``period.k`` and ``period.years`` are non-null.
-* At least one leg with non-null ``tof_days``.
+* At least one leg with non-null ``tof_days`` (read from
+  ``trajectory.segments`` when migrated, else the legacy ``legs[]``).
 
 Family-seed and citation-only entries (most fields ``null``) are filtered
 out by the non-null checks above.
@@ -129,7 +130,12 @@ def load_constructible_entries() -> list[CatalogueEntry]:
         vinfs = [v.get("vinf_kms") for v in vinfs_raw]
         if any(v is None for v in vinfs):
             continue
-        legs_raw = row.get("legs") or []
+        # Schema v3 (spec §16.6.2): per-leg arcs may live under
+        # trajectory.segments (OCM TRAJ) once an entry is migrated off the
+        # legacy flat legs[]. Mirror the package loader's _segments_as_legs
+        # fallback so the harness reads both on-disk forms during the lazy
+        # backfill (e.g. the migrated Aldrin classic out/in entries).
+        legs_raw = (row.get("trajectory") or {}).get("segments") or row.get("legs") or []
         leg_tofs = [leg.get("tof_days") for leg in legs_raw if leg.get("tof_days") is not None]
         if not leg_tofs:
             continue

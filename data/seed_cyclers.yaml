@@ -57,17 +57,52 @@
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
-  legs:
-    - from: "E"
-      to: "M"
-      tof_days: 146
-      n_revs: 0
-      note: "Earth->Mars outbound transit. Confirmed in multiple sources: Wikipedia (citing McConaghy/Longuski/Byrnes 2002 p. 6), Rogers et al. 2012 (Table 4 STOUR ephemeris ToF: 161-172 d depending on K:L(M) variant — the 146-d value is the circular-coplanar idealization)."
-    - from: "M"
-      to: "E"
-      tof_days: 634
-      n_revs: 0
-      note: "REVIEW FIX (2026-05-31): Corrected from 519. The residual arithmetic in the previous draft was flawed. T_cycler (779.8 days) - outbound tof (146 days) = 633.8 days. The cycler completes the remainder of its 2.135-year period on this return leg without breaking into sub-legs, so 634 days is the correct aggregate return ToF for the 1-synodic Aldrin in the simplified model."
+  # Schema v3 (2026-06-01): migrated from flat legs[] to OCM-aligned trajectory{}
+  # per the §16.6.5 backfill (task #66). This entry migrates losslessly: the
+  # 1-synodic E-M cycle has exactly 2 encounters (1 Earth + 1 Mars), both legs
+  # are source-attested with tof_days, and the single Aldrin ellipse (a=1.60,
+  # e=0.393) applies to both arcs — so no data_gaps[] are needed.
+  trajectory:
+    center: "Sun"             # OCM CENTER_NAME (== top-level primary)
+    ref_frame: "ECLIPJ2000"   # OCM REF_FRAME
+    time_system: null         # idealized circular-coplanar — epoch-free family
+    epoch_tzero: null         # OCM EPOCH_TZERO; null = epoch-free
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 146
+        n_revs: 0
+        branch: "single"
+        a_au: 1.60
+        e: 0.393
+        note: "Earth->Mars outbound transit. Confirmed in multiple sources: Wikipedia (citing McConaghy/Longuski/Byrnes 2002 p. 6), Rogers et al. 2012 (Table 4 STOUR ephemeris ToF: 161-172 d depending on K:L(M) variant — the 146-d value is the circular-coplanar idealization). a/e are the single Aldrin heliocentric ellipse shared by both legs."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 634
+        n_revs: 0
+        branch: "single"
+        a_au: 1.60
+        e: 0.393
+        note: "REVIEW FIX (2026-05-31): Corrected from 519. The residual arithmetic in the previous draft was flawed. T_cycler (779.8 days) - outbound tof (146 days) = 633.8 days. The cycler completes the remainder of its 2.135-year period on this return leg without breaking into sub-legs, so 634 days is the correct aggregate return ToF for the 1-synodic Aldrin in the simplified model. Both legs trace arcs of the same a=1.60/e=0.393 ellipse."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.7 km/s) is the cycle constraint at Mars. dv_kms null mirrors the v2 delta_v_kms (Russell classes this under the wider near-ballistic net, AR=1.47/TR=0.86)."
+      - at_segment_boundary: ["ret-me", "out-em"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Earth flyby closing the 1-synodic cycle; V-infinity 6.5 km/s."
   first_published:
     authors: ["Aldrin, B."]
     year: 1985
@@ -1314,17 +1349,51 @@
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
-  legs:
-    - from: "M"
-      to: "E"
-      tof_days: 146
-      n_revs: 0
-      note: "Mars->Earth inbound transit. Symmetric to the outbound leg."
-    - from: "E"
-      to: "M"
-      tof_days: 634
-      n_revs: 0
-      note: "Derived mathematically: T_cycler (780 d) - inbound transit (146 d) = 634 d."
+  # Schema v3 (2026-06-01): migrated from flat legs[] to OCM-aligned trajectory{}
+  # per the §16.6.5 backfill (task #66). Time-mirror of the outbound escalator;
+  # migrates losslessly for the same reasons (2 encounters == 2 attested legs,
+  # single Aldrin ellipse a=1.60/e=0.393). No data_gaps[] needed.
+  trajectory:
+    center: "Sun"             # OCM CENTER_NAME (== top-level primary)
+    ref_frame: "ECLIPJ2000"   # OCM REF_FRAME
+    time_system: null         # idealized circular-coplanar — epoch-free family
+    epoch_tzero: null         # OCM EPOCH_TZERO; null = epoch-free
+    segments:                 # === OCM TRAJ ===
+      - id: "in-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 146
+        n_revs: 0
+        branch: "single"
+        a_au: 1.60
+        e: 0.393
+        note: "Mars->Earth inbound transit. Symmetric to the outbound leg. a/e are the single Aldrin heliocentric ellipse shared by both legs."
+      - id: "ret-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 634
+        n_revs: 0
+        branch: "single"
+        a_au: 1.60
+        e: 0.393
+        note: "Derived mathematically: T_cycler (780 d) - inbound transit (146 d) = 634 d. Both legs trace arcs of the same a=1.60/e=0.393 ellipse."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["in-me", "ret-em"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Earth flyby closing the inbound->return transition; V-infinity 6.5 km/s (symmetric with outbound)."
+      - at_segment_boundary: ["ret-em", "in-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "Mars flyby closing the 1-synodic cycle; V-infinity 9.7 km/s (symmetric with outbound)."
   first_published:
     authors: ["Aldrin, B."]
     year: 1985
