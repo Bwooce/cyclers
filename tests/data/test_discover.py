@@ -22,6 +22,7 @@ import cyclerfinder.data.discover as discover_mod
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.discover import discover
 from cyclerfinder.data.ledger import Ledger, LedgerLoader
+from cyclerfinder.search.optimize import optimise_cell_idealized
 from cyclerfinder.search.sequence import feasible_cells
 
 _VALID_TERMINAL = {"solved", "pruned", "failed", "searched"}
@@ -69,7 +70,7 @@ def test_discover_resumes_from_existing_ledger(
     assert n_after_first > 0
 
     calls: list[int] = []
-    real = discover_mod.optimise_cell_idealized
+    real = optimise_cell_idealized
 
     def spy(*args: object, **kwargs: object) -> object:
         calls.append(1)

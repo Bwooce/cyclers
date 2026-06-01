@@ -12,7 +12,7 @@ Covers :mod:`cyclerfinder.data.writeback`:
 
 from __future__ import annotations
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.catalog import CatalogueEntry, _entry_from_yaml, load_catalog
 from cyclerfinder.data.writeback import (

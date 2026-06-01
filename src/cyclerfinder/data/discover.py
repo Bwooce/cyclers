@@ -56,6 +56,7 @@ def _auto_validate(
     catalog: Catalog,
     ephem: Ephemeris,
     *,
+    vinf_cap: float,
     enable_v3: bool = False,
 ) -> str:
     """Run the cheapest-first V0→V2(/V3) gauntlet; return the highest level passed.
@@ -96,7 +97,7 @@ def _auto_validate(
         # by default; M6b flips the flag once it lands.
         from cyclerfinder.search.optimize import optimise_cell_ephemeris
 
-        optimise_cell_ephemeris(cycler, ephem)  # raises until M6b lands
+        optimise_cell_ephemeris(result.cell, ephem, vinf_cap=vinf_cap)  # raises until M6b lands
         level = "V3"
 
     return level
@@ -172,7 +173,7 @@ def discover(
 
         signature = canonical_signature(result.best_cycler, model_assumption="circular-coplanar")
         match_result = match(signature, catalog)
-        level = _auto_validate(result, catalog, ephem, enable_v3=enable_v3)
+        level = _auto_validate(result, catalog, ephem, vinf_cap=vinf_cap, enable_v3=enable_v3)
         _record(
             ledger,
             LedgerEntry(

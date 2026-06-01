@@ -25,7 +25,7 @@ from __future__ import annotations
 
 from typing import Any
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.catalog import CatalogueEntry, _replace_entry
 from cyclerfinder.verify.crosscheck import LambertCrosscheckResult
@@ -220,12 +220,13 @@ def serialise_entry_yaml(entry: CatalogueEntry) -> str:
     unmodified entry reproduces it field-for-field (modulo comments,
     which PyYAML does not preserve).
     """
-    return yaml.safe_dump(
+    dumped: str = yaml.safe_dump(
         entry.raw,
         sort_keys=False,
         allow_unicode=True,
         default_flow_style=False,
     )
+    return dumped
 
 
 __all__ = [

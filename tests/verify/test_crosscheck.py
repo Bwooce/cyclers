@@ -170,7 +170,7 @@ def test_crosscheck_cycler_skips_multirev_legs(
         bodies=aldrin_cycler.bodies,
         period=aldrin_cycler.period,
         encounters=aldrin_cycler.encounters,
-        legs=(*legs, multirev),
+        legs=[*legs, multirev],
         sense=aldrin_cycler.sense,
     )
     results = crosscheck_cycler(mixed, astropy_ephem)
@@ -200,7 +200,7 @@ def test_crosscheck_cycler_all_multirev_returns_empty(
         bodies=aldrin_cycler.bodies,
         period=aldrin_cycler.period,
         encounters=aldrin_cycler.encounters,
-        legs=legs,
+        legs=list(legs),
         sense=aldrin_cycler.sense,
     )
     assert crosscheck_cycler(all_multirev, astropy_ephem) == ()
