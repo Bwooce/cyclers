@@ -40,6 +40,7 @@ plan.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from math import inf
@@ -358,3 +359,188 @@ def find_real_windows(
 
     local_mins.sort(key=lambda w: w.mismatch_kms)
     return local_mins[:n]
+
+
+def leg_duration_seeds(
+    bodies: tuple[str, ...],
+    primary_leg_durations_s: tuple[float, ...],
+    vinf_target_kms: tuple[float, ...],
+    period_s: float,
+    *,
+    perturb_fracs: Sequence[float] = (0.0, 0.10, -0.10, 0.20, -0.20),
+    min_leg_days: float = 30.0,
+    max_leg_days_frac: float = 0.95,
+) -> list[PhaseSignature]:
+    """Generate asymmetric leg-duration perturbation seeds for window search.
+
+    Given a primary leg-duration vector, produce one
+    :class:`PhaseSignature` per entry in ``perturb_fracs`` by rescaling the
+    first leg by ``(1 + f)`` and redistributing the change across the
+    remaining legs so the total period is conserved (see below). This lets
+    the robust epoch resolver fan a single literature signature out into a
+    family of asymmetric basins rather than betting everything on the
+    equispaced (symmetric) seed.
+
+    Period conservation
+    -------------------
+    For a 2-leg family ``[d1, d2]`` and fraction ``f`` the new legs are
+    ``[d1*(1+f), d2 - d1*f]`` — exact conservation of ``d1 + d2``. For an
+    N-leg family the perturbation ``f*d0`` applied to leg 0 is spread as
+    ``-f*d0/(N-1)`` across each of the remaining legs. Conservation holds
+    exactly unless a clip triggers (see below).
+
+    Clipping
+    --------
+    Each resulting leg is clipped to
+    ``[min_leg_days * SECONDS_PER_DAY, max_leg_days_frac * period_s]`` to
+    avoid Lambert-degenerate durations. Clipping a leg breaks exact period
+    conservation for that seed; this is intentional and documented (the
+    downstream window search tolerates a slightly off-period seed because it
+    only uses the seed's per-leg ToFs to *probe* the ephemeris, not to assert
+    closure).
+
+    Parameters
+    ----------
+    bodies:
+        Ordered body codes; passed straight through to each signature.
+    primary_leg_durations_s:
+        The literature/primary per-leg ToFs in seconds. ``len() ==
+        len(bodies) - 1``.
+    vinf_target_kms:
+        Per-encounter |V∞| targets; passed straight through. ``len() ==
+        len(bodies)``.
+    period_s:
+        Total period in seconds used as the conservation target and the
+        ``max_leg_days_frac`` reference. Typically
+        ``sum(primary_leg_durations_s)``.
+    perturb_fracs:
+        Fractional perturbations applied to leg 0. ``0.0`` reproduces the
+        primary seed. Default ``(0.0, ±0.10, ±0.20)``.
+    min_leg_days, max_leg_days_frac:
+        Clip bounds (lower in days, upper as a fraction of ``period_s``).
+
+    Returns
+    -------
+    A de-duplicated list of :class:`PhaseSignature` (duplicate leg vectors,
+    e.g. produced when clipping collapses two fractions to the same bound,
+    are dropped). Always contains at least the primary (``f=0``) seed.
+    """
+    n_legs = len(primary_leg_durations_s)
+    if n_legs < 1:
+        raise ValueError("primary_leg_durations_s must have >= 1 entry")
+    min_leg_s = min_leg_days * SECONDS_PER_DAY
+    max_leg_s = max_leg_days_frac * period_s
+    d0 = primary_leg_durations_s[0]
+
+    seen: set[tuple[int, ...]] = set()
+    seeds: list[PhaseSignature] = []
+    for f in perturb_fracs:
+        legs = list(primary_leg_durations_s)
+        delta = f * d0
+        legs[0] = d0 + delta
+        if n_legs > 1:
+            share = delta / (n_legs - 1)
+            for j in range(1, n_legs):
+                legs[j] = primary_leg_durations_s[j] - share
+        # Clip each leg to the Lambert-safe band.
+        legs = [min(max(leg, min_leg_s), max_leg_s) for leg in legs]
+        # De-duplicate on a coarse second-resolution key so float jitter and
+        # clip collapses don't yield identical signatures twice.
+        key = tuple(round(leg) for leg in legs)
+        if key in seen:
+            continue
+        seen.add(key)
+        seeds.append(
+            PhaseSignature(
+                bodies=bodies,
+                leg_durations_s=tuple(legs),
+                vinf_target_kms=vinf_target_kms,
+            )
+        )
+    return seeds
+
+
+def find_candidate_windows(
+    signatures: Sequence[PhaseSignature],
+    ephem: Ephemeris,
+    date_range: tuple[datetime, datetime],
+    n: int = 10,
+    step_days: float = 5.0,
+    mismatch_cap_kms: float = 20.0,
+    dedup_window_days: float = 30.0,
+) -> list[LaunchWindow]:
+    """Fan multiple signatures through :func:`find_real_windows`, merge, rank.
+
+    Each signature in ``signatures`` is scanned independently over
+    ``date_range`` via :func:`find_real_windows`; the resulting windows are
+    pooled, de-duplicated (windows whose departure dates are within
+    ``dedup_window_days`` of each other collapse to the lower-mismatch one),
+    sorted by ascending ``mismatch_kms``, and capped at ``n`` total.
+
+    This is the multi-seed, ranked-by-mismatch replacement for the single
+    signature / calendar-proximity selection that the old
+    ``_resolve_real_t_start`` performed. The candidate pool is ranked
+    purely by V∞ mismatch; calendar proximity is left to the caller (which
+    uses ``date_range`` only to centre/bound the search).
+
+    Parameters
+    ----------
+    signatures:
+        Seeds to fan out (e.g. the output of :func:`leg_duration_seeds`).
+    ephem:
+        Ephemeris backend. Use ``Ephemeris("astropy")`` for real dates.
+    date_range:
+        ``(start, end)`` UTC-aware datetimes bounding every seed's scan.
+    n:
+        Maximum windows to return after merging.
+    step_days:
+        Grid resolution passed to each :func:`find_real_windows` scan.
+    mismatch_cap_kms:
+        Reject windows above this mismatch (km/s). Default 20.0 — looser than
+        :func:`find_real_windows`'s own default so asymmetric seeds can land
+        their basin; the downstream optimiser re-filters on the V∞ cap.
+    dedup_window_days:
+        Two windows within this many days are duplicates (lower mismatch
+        kept).
+
+    Returns
+    -------
+    Up to ``n`` :class:`LaunchWindow` sorted by ascending ``mismatch_kms``.
+    """
+    pool: list[LaunchWindow] = []
+    for sig in signatures:
+        pool.extend(
+            find_real_windows(
+                sig,
+                ephem,
+                date_range,
+                n=n,
+                step_days=step_days,
+                mismatch_cap_kms=mismatch_cap_kms,
+            )
+        )
+
+    # Sort by mismatch first so the O(N^2) dedup sweep always retains the
+    # lowest-mismatch representative of each calendar cluster.
+    pool.sort(key=lambda w: w.mismatch_kms)
+    kept: list[LaunchWindow] = []
+    for w in pool:
+        is_dup = any(
+            abs((w.departure_date - k.departure_date).total_seconds())
+            < dedup_window_days * SECONDS_PER_DAY
+            for k in kept
+        )
+        if not is_dup:
+            kept.append(w)
+
+    return kept[:n]
+
+
+__all__ = [
+    "LaunchWindow",
+    "PhaseSignature",
+    "find_candidate_windows",
+    "find_real_windows",
+    "leg_duration_seeds",
+    "phase_signature_from_catalogue_entry",
+]
