@@ -1451,7 +1451,7 @@
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
-  fleet_size: null   # schema v2; integer count; null where not stated by source
+  fleet_size: 14   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'VISIT-1' (Number of Vehicles: 14a)
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
   sequence_canonical: "E-M"   # repeats at the cycler's natural period, not synodic-locked
@@ -1567,7 +1567,7 @@
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
-  fleet_size: null   # schema v2; integer count; null where not stated by source
+  fleet_size: 14   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'VISIT-2' (Number of Vehicles: 14a)
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
   sequence_canonical: "E-M"
@@ -6868,7 +6868,7 @@ days\" per the NTRS abstract.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
-  fleet_size: null   # schema v2; integer count; null where not stated by source
+  fleet_size: 4   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'Case 1' (Number of Vehicles: 4)
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
   sequence_canonical: "E-E-M-M"   # 2-synodic with intermediate Earth encounter; SnLm = S2L1
@@ -7060,7 +7060,7 @@ days\" per the NTRS abstract.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
-  fleet_size: null   # schema v2; integer count; null where not stated by source
+  fleet_size: 4   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'U0L1' (Number of Vehicles: 4)
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
   bodies: ["E", "M"]
   sequence_canonical: "E-M"   # one synodic, zero intermediate Earth loops (L=0 in SnLm)
