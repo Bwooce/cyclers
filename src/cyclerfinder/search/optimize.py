@@ -64,6 +64,8 @@ from numpy.typing import NDArray
 from scipy.optimize import NonlinearConstraint, differential_evolution, minimize
 
 from cyclerfinder.core.constants import (
+    AU_KM,
+    MU_SUN_KM3_S2,
     PLANETS,
     SAFE_PERIHELION_KM,
     SECONDS_PER_DAY,
@@ -1142,6 +1144,34 @@ def optimise_cell_idealized(
     )
 
 
+def _multirev_min_tof_days(body_a: str, body_b: str, n_revs: int) -> float:
+    """Conservative lower-bound ToF (days) for an ``n_revs``-revolution leg
+    between ``body_a`` and ``body_b``.
+
+    A multi-revolution Lambert leg is infeasible below its physical minimum
+    time-of-flight. Rather than solving for the exact minimum-energy
+    ``t_min(n_revs)`` (which depends on the actual departure / arrival
+    positions and is unavailable at the seed-construction stage), this uses the
+    Hohmann transfer between the two bodies' circular orbits as a conservative
+    proxy: the minimum-energy semi-major axis is the mean of the two orbital
+    radii, so a single direct half-revolution takes ``pi * sqrt(a^3 / mu)`` and
+    ``n`` full revolutions add ``2*pi*n`` more of the transfer period. The
+    ``n_revs`` leg must therefore last at least one such transfer-period span:
+
+        t_min(n) ~= (2*n + 1) * pi * sqrt(a_h^3 / mu_sun)
+
+    where ``a_h = (r_a + r_b) / 2``. ``n_revs == 0`` returns ``0.0`` (no floor;
+    direct legs keep the historic ``0.1 * share`` lower bound).
+    """
+    if n_revs <= 0:
+        return 0.0
+    r_a = PLANETS[body_a].sma_au * AU_KM
+    r_b = PLANETS[body_b].sma_au * AU_KM
+    a_h = 0.5 * (r_a + r_b)
+    t_half = math.pi * math.sqrt(a_h**3 / MU_SUN_KM3_S2)
+    return (2 * n_revs + 1) * t_half / SECONDS_PER_DAY
+
+
 def _ephemeris_tof_seed_and_bounds(
     cell: Cell, target_period_sec: float
 ) -> tuple[list[float], list[tuple[float, float]]]:
@@ -1154,16 +1184,31 @@ def _ephemeris_tof_seed_and_bounds(
     so the optimiser can redistribute time between legs while keeping
     every ToF strictly positive (landmine #2: ``construct_cycler``
     requires strictly increasing epochs).
+
+    Multi-revolution legs (``cell.per_leg_revs[j] >= 1``) raise their lower
+    bound to a Hohmann-proxy minimum ToF floor (see
+    :func:`_multirev_min_tof_days`) so the optimiser is not seeded below the
+    leg's physical ``t_min`` — a seed there would trip ``LambertConvergenceError``
+    inside the objective on every trial. The seed itself is lifted onto the
+    floor when the equispaced share falls below it.
     """
     n_legs = len(cell.sequence) - 1
     if n_legs < 1:
         raise ValueError(f"cell.sequence must have >= 2 entries; got {cell.sequence!r}")
     period_days = target_period_sec / SECONDS_PER_DAY
     share = period_days / n_legs
-    seed = [share] * n_legs
-    lo = 0.1 * share
     hi = 0.9 * period_days  # a single leg may absorb most of the period
-    bounds = [(lo, hi)] * n_legs
+    base_lo = 0.1 * share
+    seed: list[float] = []
+    bounds: list[tuple[float, float]] = []
+    for j in range(n_legs):
+        revs = cell.per_leg_revs[j] if j < len(cell.per_leg_revs) else 0
+        floor = _multirev_min_tof_days(cell.sequence[j], cell.sequence[j + 1], revs)
+        lo = max(base_lo, floor)
+        # Keep the lower bound below the upper one even for aggressive floors.
+        lo = min(lo, 0.95 * hi)
+        seed.append(max(share, lo))
+        bounds.append((lo, hi))
     return seed, bounds
 
 
@@ -1410,13 +1455,18 @@ def optimise_cell_ephemeris(
             constraints_satisfied=False,
         )
 
-    # --- General real-ephemeris maintenance solve.
+    # --- General real-ephemeris maintenance solve. Thread the cell's per-leg
+    # revolution / branch metadata so multi-rev legs (e.g. an Earth-to-Earth
+    # resonant interval) are Lambert-solved with the right topology rather than
+    # silently flattened to direct legs.
     maint = optimise_maintenance_dv(
         list(cell.sequence),
         ephem,
         t0_guess_sec=t0_sec,
         tof_days_guesses=seed_days,
         tof_bounds_days=bounds,
+        per_leg_revs=cell.per_leg_revs,
+        per_leg_branch=cell.per_leg_branch,
         synodic_pair=(cell.bodies[0], cell.bodies[1]),
         closure_body=cell.sequence[0],
         n_starts=n_starts,

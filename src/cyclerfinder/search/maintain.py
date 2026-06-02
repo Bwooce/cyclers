@@ -301,7 +301,12 @@ def idealized_flyby_turn_deficit(
 
 
 def _build_chain(
-    x: NDArray[np.float64], sequence: Sequence[str], ephem: Ephemeris
+    x: NDArray[np.float64],
+    sequence: Sequence[str],
+    ephem: Ephemeris,
+    *,
+    per_leg_revs: Sequence[int] | None = None,
+    per_leg_branch: Sequence[str] | None = None,
 ) -> Cycler | None:
     """Build the ``sequence`` cycler from ``x = [t0, tof_1, …, tof_{n-1}]``.
 
@@ -310,6 +315,17 @@ def _build_chain(
     epochs are the running cumulative sum. Returns ``None`` on any Lambert /
     construction pathology so the objective can convert it into a finite penalty
     rather than propagating ``inf`` / ``nan`` into scipy.
+
+    Parameters
+    ----------
+    per_leg_revs:
+        Per-leg heliocentric revolution count (``len(sequence) - 1`` entries).
+        ``None`` defaults to all-direct (``0``-rev) legs, leaving the
+        :func:`construct_cycler` call byte-identical to the historic single-rev
+        path (the Aldrin bit-reproducibility guard depends on this).
+    per_leg_branch:
+        Per-leg Lambert branch in ``{"single", "low", "high"}``. ``None``
+        defaults to ``"single"`` on every leg.
     """
     t0 = float(x[0])
     tofs_sec = [float(v) * SECONDS_PER_DAY for v in x[1:]]
@@ -318,11 +334,17 @@ def _build_chain(
     times = [t0]
     for tof in tofs_sec:
         times.append(times[-1] + tof)
+    # None defaults keep the construct_cycler call identical to the historic
+    # single-rev path (construct_cycler itself defaults None -> all-direct).
+    max_revs_per_leg = None if per_leg_revs is None else list(per_leg_revs)
+    branch_per_leg = None if per_leg_branch is None else list(per_leg_branch)
     try:
         return construct_cycler(
             sequence=list(sequence),
             encounter_times_sec=times,
             ephem=ephem,
+            max_revs_per_leg=max_revs_per_leg,
+            branch_per_leg=branch_per_leg,
         )
     except (ValueError, LambertConvergenceError, LambertGeometryError):
         return None
@@ -346,10 +368,24 @@ def _maintenance_dv_chain(cycler: Cycler) -> float:
     return total
 
 
-def _objective(x: NDArray[np.float64], sequence: Sequence[str], ephem: Ephemeris) -> float:
+def _objective(
+    x: NDArray[np.float64],
+    sequence: Sequence[str],
+    ephem: Ephemeris,
+    per_leg_revs: Sequence[int] | None,
+    per_leg_branch: Sequence[str] | None,
+) -> float:
     """Per-synodic maintenance ΔV (km/s); finite penalty on construction
-    failure."""
-    cycler = _build_chain(x, sequence, ephem)
+    failure.
+
+    ``per_leg_revs`` / ``per_leg_branch`` are passed positionally via scipy's
+    ``args=`` tuple; every ``differential_evolution`` / ``minimize`` call site
+    in :func:`optimise_maintenance_dv` MUST pass them in lockstep so the revs /
+    branch the optimiser actually evaluates match the requested topology.
+    """
+    cycler = _build_chain(
+        x, sequence, ephem, per_leg_revs=per_leg_revs, per_leg_branch=per_leg_branch
+    )
     if cycler is None:
         return _PATHOLOGICAL_OBJECTIVE_KMS
     return _maintenance_dv_chain(cycler)
@@ -393,6 +429,8 @@ def optimise_maintenance_dv(
     t0_guess_sec: float,
     tof_days_guesses: Sequence[float],
     tof_bounds_days: Sequence[tuple[float, float]],
+    per_leg_revs: Sequence[int] | None = None,
+    per_leg_branch: Sequence[str] | None = None,
     synodic_pair: tuple[str, str] | None = None,
     closure_body: str | None = None,
     closure_flyby_alt_km: float | None = None,
@@ -426,6 +464,13 @@ def optimise_maintenance_dv(
         ``len(sequence) - 1`` initial leg ToFs (days).
     tof_bounds_days:
         ``len(sequence) - 1`` ``(lo, hi)`` per-leg ToF bounds (days).
+    per_leg_revs:
+        Per-leg heliocentric revolution count (``len(sequence) - 1`` entries),
+        threaded through every Lambert solve. ``None`` defaults to all-direct
+        (``0``-rev) legs, leaving the Aldrin path bit-identical.
+    per_leg_branch:
+        Per-leg Lambert branch in ``{"single", "low", "high"}``. ``None``
+        defaults to ``"single"`` on every leg.
     synodic_pair:
         Body pair whose synodic period sizes the ``t0`` window. ``None`` derives
         the first distinct pair from ``sequence``.
@@ -467,8 +512,17 @@ def optimise_maintenance_dv(
         raise ValueError(
             f"tof_jitter_half_days needs {n_legs} entries, got {len(tof_jitter_half_days)}"
         )
+    if per_leg_revs is not None and len(per_leg_revs) != n_legs:
+        raise ValueError(f"per_leg_revs needs {n_legs} entries, got {len(per_leg_revs)}")
+    if per_leg_branch is not None and len(per_leg_branch) != n_legs:
+        raise ValueError(f"per_leg_branch needs {n_legs} entries, got {len(per_leg_branch)}")
     if synodic_pair is None:
         synodic_pair = _first_distinct_pair(sequence)
+
+    # Frozen positional args tuple for every scipy objective call site. Adding a
+    # site that omits per_leg_revs / per_leg_branch silently evaluates the wrong
+    # topology, so all DE / SLSQP calls share this exact tuple.
+    obj_args = (sequence, ephem, per_leg_revs, per_leg_branch)
 
     syn_sec = synodic_period_days(*synodic_pair) * SECONDS_PER_DAY
     t0_lo = t0_guess_sec - t0_window_synodic_frac * syn_sec
@@ -483,7 +537,7 @@ def optimise_maintenance_dv(
         de_result: Any = de_any(
             _objective,
             bounds,
-            args=(sequence, ephem),
+            args=obj_args,
             seed=seed,
             polish=False,
             maxiter=_DE_MAXITER,
@@ -520,7 +574,7 @@ def optimise_maintenance_dv(
             res: Any = minimize(
                 _objective,
                 x0,
-                args=(sequence, ephem),
+                args=obj_args,
                 method="SLSQP",
                 bounds=bounds,
                 options={"maxiter": _SLSQP_MAXITER, "ftol": _SLSQP_FTOL},
@@ -528,7 +582,7 @@ def optimise_maintenance_dv(
         except (ValueError, RuntimeError):
             continue
         x_final = np.asarray(res.x, dtype=np.float64)
-        f_final = _objective(x_final, sequence, ephem)
+        f_final = _objective(x_final, sequence, ephem, per_leg_revs, per_leg_branch)
         if best_x is None:
             best_f, best_x = f_final, x_final
             continue
@@ -541,9 +595,11 @@ def optimise_maintenance_dv(
     # Fallback to the raw seed if every polish failed to build a cycler.
     if best_x is None or best_f >= _PATHOLOGICAL_OBJECTIVE_KMS:
         best_x = np.clip(seed_x, lower, upper)
-        best_f = _objective(best_x, sequence, ephem)
+        best_f = _objective(best_x, sequence, ephem, per_leg_revs, per_leg_branch)
 
-    cycler = _build_chain(best_x, sequence, ephem)
+    cycler = _build_chain(
+        best_x, sequence, ephem, per_leg_revs=per_leg_revs, per_leg_branch=per_leg_branch
+    )
     converged = cycler is not None and best_f < _CONVERGENCE_OBJECTIVE_KMS
     leg_tofs_days = tuple(float(v) for v in best_x[1:])
     if cycler is None:

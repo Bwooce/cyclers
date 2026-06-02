@@ -207,3 +207,83 @@ def test_optimise_cell_ephemeris_aldrin_parity_elements() -> None:
     a_au, e = orbit_elements_au(cyc.encounters[0].r, cyc.legs[0].v_depart, MU_SUN_KM3_S2)
     assert a_au == pytest.approx(_ALDRIN_PUB_A_AU, abs=0.15)
     assert e == pytest.approx(_ALDRIN_PUB_E, abs=0.08)
+
+
+# ---------------------------------------------------------------------------
+# STAGE 1 — multi-rev ToF floor + revs/branch threading
+# ---------------------------------------------------------------------------
+
+
+def test_ephemeris_seed_bounds_multirev_floor() -> None:
+    """STAGE 1: a 1-rev leg gets a wider lower-ToF floor than a direct leg.
+
+    A 1-rev Lambert leg is infeasible below its physical minimum ToF
+    (``~pi * sqrt(a^3 / mu)`` for the minimum-energy orbit). The seed/bounds
+    helper must lift leg 1's lower bound above the direct leg-0 floor so the
+    optimiser is not seeded into the LambertConvergenceError regime.
+
+    Provenance: ``# COMPUTED`` — asserts the bound ordering contract, not a
+    sourced magnitude.
+    """
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E"),
+        period_k=2,
+        per_leg_revs=(0, 1),
+        per_leg_branch=("single", "low"),
+    )
+    target_period_sec = 2 * 779.9 * 86400.0
+    _seed, bounds = _ephemeris_tof_seed_and_bounds(cell, target_period_sec)
+    # The 1-rev leg's lower floor exceeds the direct leg's 0.1*share floor.
+    assert bounds[1][0] > bounds[0][0]
+    # And every bound is still a valid strictly-positive (lo, hi).
+    for lo, hi in bounds:
+        assert 0.0 < lo < hi
+
+
+def test_optimise_cell_ephemeris_threads_revs_to_build_chain(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """STAGE 1: ``optimise_cell_ephemeris`` extracts ``cell.per_leg_revs`` /
+    ``cell.per_leg_branch`` and threads them into the maintenance solve, so the
+    recovered cycler's legs carry the requested revolution counts and a spied
+    ``optimise_maintenance_dv`` receives the exact per-leg metadata.
+
+    Provenance: ``# COMPUTED`` — circular ephemeris; asserts the plumbing
+    contract (revs forwarded, leg n_revs honoured), no sourced V_inf.
+    """
+    import cyclerfinder.search.maintain as maintain_mod
+
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E"),
+        period_k=1,
+        per_leg_revs=(0, 0),
+        per_leg_branch=("single", "single"),
+    )
+
+    captured: dict[str, object] = {}
+    real_optimise = maintain_mod.optimise_maintenance_dv
+
+    def _spy(sequence, ephem, **kwargs):  # type: ignore[no-untyped-def]
+        captured["per_leg_revs"] = kwargs.get("per_leg_revs")
+        captured["per_leg_branch"] = kwargs.get("per_leg_branch")
+        return real_optimise(sequence, ephem, **kwargs)
+
+    # optimise_cell_ephemeris imports the symbol locally, so patch the source.
+    monkeypatch.setattr(maintain_mod, "optimise_maintenance_dv", _spy)
+
+    result = optimise_cell_ephemeris(
+        cell,
+        Ephemeris("circular"),
+        vinf_cap=12.0,
+        priority_date_iso="1985-01-01",
+        vinf_targets_kms={"E": 6.5, "M": 9.7},
+        n_starts=2,
+        seed=0,
+    )
+    assert isinstance(result, OptimisationResult)
+    assert captured["per_leg_revs"] == (0, 0)
+    assert captured["per_leg_branch"] == ("single", "single")
+    # The default-direct cell still yields a 0-rev first leg.
+    assert result.best_cycler.legs[0].n_revs == 0

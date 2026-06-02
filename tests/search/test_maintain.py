@@ -329,3 +329,101 @@ def test_generalized_optimiser_runs_on_four_encounter_sequence() -> None:
     assert math.isfinite(result.maintenance_dv_kms)
     assert result.maintenance_dv_kms >= 0.0
     assert [b for b, _ in result.vinf_kms_at_encounters] == sequence
+
+
+# ---------------------------------------------------------------------------
+# STAGE 1 — multi-rev / multi-encounter parameter plumbing
+# ---------------------------------------------------------------------------
+
+
+def test_build_chain_passes_revs_and_branch() -> None:
+    """STAGE 1: ``_build_chain`` accepts explicit per-leg revs / branch and
+    still returns a built ``Cycler`` without raising.
+
+    Provenance: ``# COMPUTED`` — circular ephemeris; no velocity / V_inf golden
+    is asserted, only that the multi-rev plumbing constructs a chain.
+    """
+    import numpy as np
+
+    sequence = ["E", "M", "E"]
+    # Direct outbound, then a long return leg with room for a 1-rev solution.
+    x = np.array([0.0, 200.0, 900.0], dtype=np.float64)
+    cycler = _build_chain(
+        x,
+        sequence,
+        Ephemeris("circular"),
+        per_leg_revs=(0, 1),
+        per_leg_branch=("single", "low"),
+    )
+    assert cycler is not None
+    assert [enc.body for enc in cycler.encounters] == sequence
+    assert len(cycler.legs) == 2
+    # The requested return-leg revolution count is honoured by construct_cycler.
+    assert cycler.legs[1].n_revs == 1
+
+
+def test_build_chain_none_defaults_match_single_rev() -> None:
+    """STAGE 1: omitting per_leg_revs/per_leg_branch is byte-identical to the
+    previous all-single-rev behaviour (Aldrin bit-reproducibility guard).
+
+    Provenance: ``# COMPUTED`` — equality between two computed cyclers.
+    """
+    import numpy as np
+
+    sequence = ["E", "M", "E"]
+    x = np.array([0.0, 146.0, 634.0], dtype=np.float64)
+    default = _build_chain(x, sequence, Ephemeris("circular"))
+    explicit = _build_chain(
+        x,
+        sequence,
+        Ephemeris("circular"),
+        per_leg_revs=None,
+        per_leg_branch=None,
+    )
+    assert default is not None and explicit is not None
+    for ld, le in zip(default.legs, explicit.legs, strict=True):
+        assert np.array_equal(ld.v_depart, le.v_depart)
+        assert np.array_equal(ld.v_arrive, le.v_arrive)
+        assert ld.n_revs == le.n_revs
+
+
+def test_optimise_maintenance_dv_multirev_param_threaded() -> None:
+    """STAGE 1: ``optimise_maintenance_dv`` threads explicit per-leg revs /
+    branch through the whole solve and converges to a finite maintenance ΔV.
+
+    Provenance: ``# COMPUTED`` — circular ephemeris; never asserts a sourced
+    V_inf target, only convergence and finiteness of the computed cost.
+    """
+    import math
+
+    import numpy as np
+
+    sequence = ["E", "M", "E", "E"]
+    # The middle E->E leg carries the 1-rev branch; a 1-rev Lambert leg needs a
+    # ToF above its physical minimum (~700 d on the circular E-orbit), so seed
+    # it there rather than below the floor.
+    seed = _build_chain(
+        np.array([0.0, 200.0, 760.0, 800.0], dtype=np.float64),
+        sequence,
+        Ephemeris("circular"),
+        per_leg_revs=(0, 1, 0),
+        per_leg_branch=("single", "low", "single"),
+    )
+    assert seed is not None
+    result = optimise_maintenance_dv(
+        sequence,
+        Ephemeris("circular"),
+        t0_guess_sec=0.0,
+        tof_days_guesses=(200.0, 760.0, 800.0),
+        tof_bounds_days=((150.0, 300.0), (700.0, 1100.0), (600.0, 1000.0)),
+        per_leg_revs=(0, 1, 0),
+        per_leg_branch=("single", "low", "single"),
+        n_starts=2,
+        seed=0,
+        seed_cycler_factory=lambda: seed,
+    )
+    assert result.converged is True
+    assert math.isfinite(result.maintenance_dv_kms)
+    assert result.maintenance_dv_kms >= 0.0
+    # The 1-rev return leg survives the solve.
+    assert result.cycler.legs[1].n_revs == 1

@@ -28,19 +28,20 @@ def _vinf_by_body(result: object) -> dict[str, float]:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "TOPOLOGY CONFIRMED (STAGE 3, 2026-06-03): the robust multi-seed epoch "
-        "resolver (leg_duration_seeds + find_candidate_windows, ranked by V_inf "
-        "mismatch rather than calendar proximity) now fans the family into its "
-        "own asymmetric basins automatically — seeding is no longer the blocker. "
-        "It still finds no E-M-E launch window matching the 3.05 km/s Mars "
-        "anchor, confirming the diagnosis that S1L1 is NOT a 3-encounter E-M-E "
-        "cycler with a direct Mars->Earth return leg: the S/L labels are "
-        "Earth-to-Earth resonant intervals (see [[s1l1-nomenclature]]), and a "
-        "direct return leg cannot host 3.05 km/s at Mars at any epoch or ToF. "
-        "This is a cell-topology mismatch the resolver cannot fix. Flips to "
-        "passing once the entry is re-modelled as outbound E->M plus the S1/L1 "
-        "Earth-to-Earth resonant intervals and optimised with that cell "
-        "(STAGE 1 multi-rev plumbing provides the machinery)."
+        "TOPOLOGY MISMATCH resolved by STAGE 1 multi-rev plumbing; flip to pass "
+        "once the topology is confirmed (2026-06-03). STAGE 1 threads "
+        "per_leg_revs / per_leg_branch end-to-end (optimise_cell_ephemeris -> "
+        "optimise_maintenance_dv -> _build_chain) and adds a multi-rev ToF floor, "
+        "so a 4-encounter E-M-E-E cell with a multi-rev Earth-to-Earth resonant "
+        "interval is now reachable. This test still uses the 3-encounter E-M-E "
+        "cell with a direct Mars->Earth return leg, which the multi-seed resolver "
+        "confirms cannot host 3.05 km/s at Mars at any epoch/ToF: the S/L labels "
+        "are Earth-to-Earth resonant intervals (see [[s1l1-nomenclature]]), not "
+        "an E-M-E return leg. Re-modelling as outbound E->M plus the S1/L1 "
+        "resonant intervals and pinning the winning per_leg_revs (see "
+        "test_s1l1_idealised_multirev.py and scripts/characterise_s1l1.py) flips "
+        "this gate. The SOURCED 5.65/3.05 anchors remain the only assertion "
+        "targets."
     ),
 )
 def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
