@@ -16,8 +16,10 @@ The M5 gate tests are spelled out in plan.md §4:
   interface composes M4 enumerate + M5 optimise + M4 rank end-to-end.
 * ``test_optimisation_result_frozen_and_seeded`` — frozen dataclass
   + bitwise-reproducible across runs with the same seed.
-* ``test_ephemeris_mode_stubbed_until_m6`` — ``optimise_cell_ephemeris``
-  raises the documented ``NotImplementedError``.
+* ``test_ephemeris_mode_requires_real_window`` — ``optimise_cell_ephemeris``
+  is now implemented (over the general maintenance engine); without a
+  resolvable launch epoch it returns an honest non-converged result rather
+  than raising.
 
 Plan: ``docs/phases/m5-optimisation/plan.md`` §4.
 """
@@ -498,19 +500,21 @@ def test_aldrin_regression_anchor() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_ephemeris_mode_stubbed_until_m6() -> None:
-    """Plan §4.6: ``optimise_cell_ephemeris`` raises NotImplementedError
-    with ``"M6 ephemeris"`` in the message.
-
-    The signature is locked in M5; the body lands in M6b.
+def test_ephemeris_mode_requires_real_window() -> None:
+    """``optimise_cell_ephemeris`` is implemented over the general maintenance
+    engine. Without ``priority_date_iso`` / ``vinf_targets_kms`` no real launch
+    epoch can be phase-matched, so it returns an honest non-converged
+    ``OptimisationResult`` (landmine #3) rather than raising.
     """
     eph = Ephemeris(model="circular")
-    with pytest.raises(NotImplementedError, match="M6 ephemeris"):
-        optimise_cell_ephemeris(
-            _CELL_2SYN_EM_EME,
-            eph,
-            vinf_cap=7.0,
-        )
+    result = optimise_cell_ephemeris(
+        _CELL_2SYN_EM_EME,
+        eph,
+        vinf_cap=7.0,
+    )
+    assert result.converged is False
+    assert result.constraints_satisfied is False
+    assert result.best_cycler is not None
 
 
 # ---------------------------------------------------------------------------
