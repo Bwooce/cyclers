@@ -28,14 +28,17 @@ def _vinf_by_body(result: object) -> dict[str, float]:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "aspirational: real-ephemeris S1L1 closure is the open goal this plan "
-        "targets; flips to passing once the optimiser reaches the 5.65/3.05 "
-        "basin. Currently the equispaced cold-start seed resolves a launch "
-        "epoch from a symmetric leg signature, which lands in a degenerate "
-        "high-V_inf basin (achieved V_inf_E~21.7, V_inf_M~16.8 km/s vs the "
-        "sourced 5.65/3.05 anchors) rather than the S1L1 family; reaching the "
-        "basin needs a family-appropriate (asymmetric) ToF seed for the "
-        "phase-match epoch resolution (see plan 'Open risk', line 287)."
+        "aspirational: real-ephemeris S1L1 closure is the open goal. UPDATE "
+        "2026-06-02: an asymmetric family-appropriate ToF seed (tof_seed_days "
+        "= [154 d outbound, ~1406 d return]) was tried and does NOT close it "
+        "either — the phase-match resolves no launch window (sentinel path), "
+        "because a direct ~1406 d Mars->Earth leg cannot match the 3.05 km/s "
+        "Mars anchor at any epoch. Root cause is therefore TOPOLOGY, not "
+        "seeding: S1L1 is not a 3-encounter E-M-E cycler with a direct return "
+        "leg; the S/L labels are Earth-to-Earth resonant intervals (see "
+        "[[s1l1-nomenclature]]). Flips to passing once the entry is re-modelled "
+        "as outbound E->M plus the S1/L1 Earth-to-Earth resonant intervals and "
+        "optimised with that cell."
     ),
 )
 def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
@@ -47,6 +50,11 @@ def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
         per_leg_branch=("single", "single"),
     )
     eph = Ephemeris(model="astropy")
+    # Asymmetric family-appropriate seed: the sourced ~154 d E->M outbound +
+    # the remainder of the 2-synodic period, so the phase-match resolves the
+    # S1L1 launch epoch instead of a symmetric degenerate basin.
+    t_syn_em_days = 779.9
+    period_days = 2 * t_syn_em_days
     result = optimise_cell_ephemeris(
         cell,
         eph,
@@ -55,6 +63,7 @@ def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
         vinf_targets_kms={"E": VINF_E, "M": VINF_M},
         n_starts=5,
         seed=0,
+        tof_seed_days=[154.0, period_days - 154.0],
     )
     assert result.constraints_satisfied
     v = _vinf_by_body(result)

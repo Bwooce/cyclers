@@ -1177,6 +1177,7 @@ def optimise_cell_ephemeris(
     n_starts: int = 5,
     seed: int = 0,
     rp_factors: dict[str, float] | None = None,
+    tof_seed_days: Sequence[float] | None = None,
 ) -> OptimisationResult:
     """Spec §12(a) ephemeris-mode optimisation over the general engine.
 
@@ -1224,6 +1225,14 @@ def optimise_cell_ephemeris(
     rp_factors:
         Per-body ``SAFE_PERIHELION_KM`` multipliers, threaded into the
         final :func:`~cyclerfinder.model.score.score` call.
+    tof_seed_days:
+        Optional per-leg time-of-flight seed (days), length
+        ``len(cell.sequence) - 1``. Overrides the default equispaced seed
+        for both the epoch-resolution leg signature and the maintenance
+        guesses, so a strongly asymmetric family (e.g. S1L1's ~154 d
+        outbound + long return) phase-matches to its own launch epoch
+        rather than a symmetric degenerate basin. Bounds widen to
+        ``[0.05, 0.95] * period`` per leg when supplied.
 
     Returns
     -------
@@ -1259,6 +1268,25 @@ def optimise_cell_ephemeris(
 
     target_period_sec = _target_period_sec(cell)
     seed_days, bounds = _ephemeris_tof_seed_and_bounds(cell, target_period_sec)
+
+    # A caller-supplied asymmetric ToF seed overrides the equispaced one for
+    # BOTH the phase-match leg signature (epoch resolution) and the maintenance
+    # guesses. This matters for families whose legs are strongly asymmetric
+    # (e.g. S1L1's ~154 d outbound + long return): the equispaced seed phase-
+    # matches a symmetric leg signature and resolves a launch epoch in a
+    # degenerate high-V_inf basin, never reaching the target family.
+    if tof_seed_days is not None:
+        n_legs = len(cell.sequence) - 1
+        if len(tof_seed_days) != n_legs:
+            raise ValueError(
+                f"tof_seed_days has {len(tof_seed_days)} entries; "
+                f"cell.sequence implies {n_legs} legs.",
+            )
+        seed_days = [float(t) for t in tof_seed_days]
+        period_days = target_period_sec / 86400.0
+        # Widen bounds to bracket any reasonable asymmetric seed while keeping
+        # every leg strictly positive and shorter than the full period.
+        bounds = [(0.05 * period_days, 0.95 * period_days)] * n_legs
 
     # --- Resolve a real launch epoch by phase-matching against the sourced
     # V∞ anchors. Both the priority date and the V∞ targets are required;
