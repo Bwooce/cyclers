@@ -39,7 +39,11 @@ from cyclerfinder.data.catalog import (
     match,
 )
 from cyclerfinder.data.ledger import Ledger, LedgerEntry, LedgerError
-from cyclerfinder.search.optimize import OptimisationResult, optimise_cell_idealized
+from cyclerfinder.search.optimize import (
+    OptimisationResult,
+    optimise_cell_ephemeris,
+    optimise_cell_idealized,
+)
 from cyclerfinder.search.sequence import Cell, feasible_cells
 from cyclerfinder.verify.crosscheck import crosscheck_cycler
 from cyclerfinder.verify.propagate import verify_long_term_stability
@@ -119,6 +123,9 @@ def discover(
     seed: int = 0,
     use_de: bool = True,
     rp_factors: dict[str, float] | None = None,
+    optimiser: str = "idealized",
+    priority_date_iso: str | None = None,
+    vinf_targets_kms: dict[str, float] | None = None,
     host: str | None = None,
     enable_v3: bool = False,
     finder_version: str = "0.7.0",
@@ -136,6 +143,15 @@ def discover(
     bounds the feasible-cell stream so a sweep can be capped for cost. The
     defaults (``n_max=0``, ``branch_set=("single",)``, ``max_cells=None``)
     keep the single-rev behaviour byte-identical for existing callers.
+
+    ``optimiser`` selects the per-cell solver: ``"idealized"`` (default,
+    circular-coplanar :func:`optimise_cell_idealized`) or ``"ephemeris"``
+    (real-DE440 :func:`optimise_cell_ephemeris`). Ephemeris mode phase-
+    matches a launch epoch from ``priority_date_iso`` + ``vinf_targets_kms``
+    (both required to resolve a real window — without them every cell
+    returns a non-converged result and is recorded but not yielded), and
+    signs results into the ``"analytic-ephemeris"`` signature pool rather
+    than ``"circular-coplanar"``.
     """
     del finder_version  # provenance is the operator-driven writeback's concern
     ephem = ephem or Ephemeris(model="circular")
@@ -160,15 +176,31 @@ def discover(
             continue
 
         try:
-            result = optimise_cell_idealized(
-                cell,
-                ephem,
-                vinf_cap=vinf_cap,
-                n_starts=n_starts,
-                seed=seed,
-                use_de=use_de,
-                rp_factors=rp_factors,
-            )
+            if optimiser == "ephemeris":
+                # Real-ephemeris (DE440) mode: phase-matches a launch epoch from
+                # the supplied priority date + V-infinity targets, then minimises
+                # maintenance dV. Without targets it returns a non-converged
+                # result (recorded as "searched"), so a blind sweep is a no-op.
+                result = optimise_cell_ephemeris(
+                    cell,
+                    ephem,
+                    vinf_cap=vinf_cap,
+                    priority_date_iso=priority_date_iso,
+                    vinf_targets_kms=vinf_targets_kms,
+                    n_starts=n_starts,
+                    seed=seed,
+                    rp_factors=rp_factors,
+                )
+            else:
+                result = optimise_cell_idealized(
+                    cell,
+                    ephem,
+                    vinf_cap=vinf_cap,
+                    n_starts=n_starts,
+                    seed=seed,
+                    use_de=use_de,
+                    rp_factors=rp_factors,
+                )
         except (ValueError, RuntimeError):
             _record(
                 ledger,
@@ -183,7 +215,8 @@ def discover(
             )
             continue
 
-        signature = canonical_signature(result.best_cycler, model_assumption="circular-coplanar")
+        model_assumption = "analytic-ephemeris" if optimiser == "ephemeris" else "circular-coplanar"
+        signature = canonical_signature(result.best_cycler, model_assumption=model_assumption)
         match_result = match(signature, catalog)
         level = _auto_validate(result, catalog, ephem, vinf_cap=vinf_cap, enable_v3=enable_v3)
         _record(

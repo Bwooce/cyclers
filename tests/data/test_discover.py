@@ -174,18 +174,56 @@ def test_discover_accepts_multirev_params(tmp_path: Path) -> None:
     )
 
 
+def test_discover_accepts_ephemeris_optimiser(tmp_path: Path) -> None:
+    """Part 2 plumbing: ``discover(optimiser='ephemeris')`` routes cells to the
+    real-ephemeris ``optimise_cell_ephemeris`` without raising. Without
+    V-infinity targets no launch epoch resolves, so every cell is recorded
+    ("searched") but none is yielded — the wiring contract, not a closure claim.
+    """
+    ledger = tmp_path / "ledger.jsonl"
+    out = list(
+        discover(
+            bodies=("E", "M"),
+            k_synodic=1,
+            vinf_cap=8.0,
+            ledger_path=str(ledger),
+            ephem=Ephemeris(model="circular"),
+            l_max=2,
+            n_max=0,
+            optimiser="ephemeris",
+            n_starts=1,
+            seed=0,
+        )
+    )
+    assert out == [], "ephemeris mode without V-inf targets resolves no epoch -> nothing solved"
+    cells = list(
+        feasible_cells(
+            ("E", "M"), l_max=2, k_max=1, n_max=0, vinf_cap=8.0, ephem=Ephemeris(model="circular")
+        )
+    )
+    assert cells
+    recorded = Ledger(str(ledger))
+    for c in cells:
+        assert recorded.has(c.id), f"cell {c.id} not recorded in ephemeris mode"
+
+
 @pytest.mark.slow
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "Circular-coplanar model limitation (Phase 1 Task 1 finding): the "
-        "S1L1 / SnLm family is not hostable in the circular-coplanar model "
-        "(same as Aldrin). The full 56-cell E-M k=2 multi-rev sweep "
-        "produces zero constraint-satisfying cyclers, so none can match "
-        "the sourced 5.65 km/s Earth anchor. Same root cause as the M5 "
-        "optimiser regression (task #54). The 0.3 km/s tolerance is the "
-        "sourced-anchor bound and is NOT loosened; this gate flips to a "
-        "pass once a 3D V-E-M ephemeris model lands. Flip strict=True then."
+        "Circular-coplanar model limitation, confirmed exhaustively: the "
+        "S1L1 / SnLm family is not hostable in the idealised model (same as "
+        "Aldrin). Both the bare multi-rev sweep AND the correct E-M-E-E "
+        "topology with the sourced [154, 379, 1030] d S1/L1 seed land at "
+        "V_inf_E ~25-39 km/s (see scripts/characterise_s1l1_emee.py) — the "
+        "154-d E->M leg is near-hyperbolic in circular-coplanar, so the "
+        "blocker is the MODEL, not the topology. discover() now also offers "
+        "optimiser='ephemeris' (real-DE440), but closing S1L1/SnLm there "
+        "additionally needs multi-rev support in the maintenance engine "
+        "behind optimise_cell_ephemeris (currently single-rev only). The "
+        "0.3 km/s tolerance is the sourced-anchor bound and is NOT loosened. "
+        "Flips to a pass once the real-eph optimiser handles the L1 multi-rev "
+        "leg; flip strict=True then."
     ),
 )
 def test_snlm_sweep_rediscovers_a_sourced_anchor(tmp_path: Path) -> None:
