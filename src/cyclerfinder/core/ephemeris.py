@@ -36,7 +36,7 @@ from typing import Final, Protocol
 import numpy as np
 from numpy.typing import NDArray
 
-from cyclerfinder.core.constants import AU_KM, PLANETS, SECONDS_PER_DAY
+from cyclerfinder.core.constants import AU_KM, PLANETS, SECONDS_PER_DAY, PlanetData
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 
@@ -69,23 +69,104 @@ class _Backend(Protocol):
         ...
 
 
+def _circular_inplane_state(planet: PlanetData, t_sec: float) -> tuple[Vec3, Vec3]:
+    """In-plane circular state in the orbital plane (z == 0, prograde).
+
+    The shared kernel for both the flat and inclined backends. The returned
+    state lives in the orbital plane with the reference direction (where the
+    body sits at ``t_sec == 0``, i.e. the ascending-node direction for an
+    inclined orbit) along ``+x``.
+    """
+    a_km = planet.sma_au * AU_KM
+    # Convert tabulated mean motion (deg/day) to rad/s.
+    n_rad_s = planet.mean_motion_deg_day * (pi / 180.0) / SECONDS_PER_DAY
+    theta = n_rad_s * t_sec
+    cos_t = cos(theta)
+    sin_t = sin(theta)
+    # Circular orbital speed = a * n.
+    speed = a_km * n_rad_s
+    r = np.array([a_km * cos_t, a_km * sin_t, 0.0], dtype=np.float64)
+    v = np.array([-speed * sin_t, speed * cos_t, 0.0], dtype=np.float64)
+    return r, v
+
+
 class _CircularBackend:
-    """Circular, coplanar, prograde planet motion in the J2000 ecliptic plane."""
+    """Circular, prograde planet motion in the J2000 ecliptic frame.
+
+    Coplanar (z == 0) by default. For a planet whose ``inc_deg != 0.0`` this
+    delegates to :class:`_InclinedCircularBackend`, which rotates the in-plane
+    circular state into a tilted orbital plane. The ``inc_deg == 0.0`` test is
+    an EXACT float comparison so the coplanar path stays byte-identical for any
+    body that has not been given a (sourced) non-zero inclination.
+    """
+
+    def __init__(self) -> None:
+        self._inclined = _InclinedCircularBackend()
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         # KeyError is the right error if the caller passes an unknown body.
         planet = PLANETS[body]
-        a_km = planet.sma_au * AU_KM
-        # Convert tabulated mean motion (deg/day) to rad/s.
-        n_rad_s = planet.mean_motion_deg_day * (pi / 180.0) / SECONDS_PER_DAY
-        theta = n_rad_s * t_sec
-        cos_t = cos(theta)
-        sin_t = sin(theta)
-        # Circular orbital speed = a * n.
-        speed = a_km * n_rad_s
-        r = np.array([a_km * cos_t, a_km * sin_t, 0.0], dtype=np.float64)
-        v = np.array([-speed * sin_t, speed * cos_t, 0.0], dtype=np.float64)
-        return r, v
+        if planet.inc_deg != 0.0:
+            return self._inclined.state(body, t_sec)
+        return _circular_inplane_state(planet, t_sec)
+
+
+class _InclinedCircularBackend:
+    """Circular planet motion in an orbital plane inclined to the ecliptic.
+
+    The in-plane circular state (z == 0, body along ``+x`` at ``t_sec == 0``)
+    is rotated into the J2000 ecliptic frame by ``R_z(-lan) @ R_x(-inc)``:
+    first tilt the plane about the node line (the ``+x`` reference direction)
+    by the inclination, then rotate about the ecliptic ``+z`` by the longitude
+    of the ascending node. With this convention the body sits on the ascending
+    node at ``t_sec == 0`` (z == 0 there), and the orbit normal points along
+    ``n_hat = (-sin(lan) sin(inc), cos(lan) sin(inc), cos(inc))``.
+
+    For ``inc_deg == 0.0`` the rotation is the identity, so the result is
+    numerically identical to the flat in-plane state.
+    """
+
+    def __init__(self, planets: dict[str, PlanetData] | None = None) -> None:
+        self._planets: dict[str, PlanetData] = PLANETS if planets is None else planets
+
+    def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
+        planet = self._planets[body]
+        r_plane, v_plane = _circular_inplane_state(planet, t_sec)
+        rot = self._rotation(planet)
+        r = rot @ r_plane
+        v = rot @ v_plane
+        return (
+            np.asarray(r, dtype=np.float64),
+            np.asarray(v, dtype=np.float64),
+        )
+
+    @staticmethod
+    def _rotation(planet: PlanetData) -> NDArray[np.float64]:
+        """Orbital-plane -> ecliptic rotation ``R_z(-lan) @ R_x(-inc)``."""
+        inc = radians(planet.inc_deg)
+        lan = radians(planet.lan_deg)
+        ci, si = cos(inc), sin(inc)
+        cl, sl = cos(lan), sin(lan)
+        # R_x(-inc): tilt the orbital plane about the node line (+x) so the
+        # orbit normal acquires a +y, +z component before the node rotation.
+        rx = np.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.0, ci, si],
+                [0.0, -si, ci],
+            ],
+            dtype=np.float64,
+        )
+        # R_z(+lan): rotate the node line to its ecliptic longitude.
+        rz = np.array(
+            [
+                [cl, -sl, 0.0],
+                [sl, cl, 0.0],
+                [0.0, 0.0, 1.0],
+            ],
+            dtype=np.float64,
+        )
+        return rz @ rx
 
 
 class _AstropyBackend:
