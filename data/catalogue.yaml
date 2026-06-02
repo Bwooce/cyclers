@@ -6661,17 +6661,21 @@ days\" per the NTRS abstract.
   sense: "n/a"                   # paper predates the Aldrin up/down-escalator terminology
   period:
     pair: "E-V"
-    k: null
-    years: null
+    k: 2
+    years: 3.2
     note: |
-      Period left null: the paper's full text was not accessible at ingest
-      (AIAA arc.aiaa.org returned 403; ADS abstract page returned empty
-      content; NTRS has no matching record). The synodic multiplier k
-      cannot be set without confirming which periodic family/families the
-      paper actually catalogues. The Earth-Venus synodic period used
-      elsewhere in this catalogue is 1.599 yr (see entry 6, EMEEVE
-      6.4-yr beat note at line ~989), so once the paper is consulted
-      directly, years should be k * 1.599 yr.
+      Duration 3.2 yr sourced from a secondary IAF-preprint excerpt
+      quoting Hollister 1970 directly: "Hollister has discovered three
+      periodic orbits that connect Earth and Venus ... The duration of
+      each orbit is 3.2 yr; they differ in the type of direct return
+      orbits occurring at Earth and Venus." The primary AIAA paper
+      (DOI 10.2514/3.30134) was still not consulted directly (arc.aiaa.org
+      403 at ingest), so this is a secondary attribution.
+      k = 2 is DERIVED, not separately stated: 3.2 yr / 1.599 yr (the
+      Earth-Venus synodic period used elsewhere in this catalogue) = 2.00,
+      consistent with the source's framing of the period as two Venus
+      synodic periods (~1.6 yr each). Promote to a primary-sourced value
+      if the AIAA paper is obtained.
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null

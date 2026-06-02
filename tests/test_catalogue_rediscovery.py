@@ -267,10 +267,10 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 202,
     ExclusionReason.NON_HELIOCENTRIC: 6,
-    ExclusionReason.MISSING_VINF: 5,
+    ExclusionReason.MISSING_VINF: 6,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.NOT_TWO_BODY: 2,
-    ExclusionReason.MISSING_PERIOD: 2,
+    ExclusionReason.MISSING_PERIOD: 1,
 }
 """Frozen census of how the 219-row catalogue distributes across
 exclusion reasons (as of 2026-06-02). This is a *ratchet*: when the
