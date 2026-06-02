@@ -6661,34 +6661,45 @@ days\" per the NTRS abstract.
   sense: "n/a"                   # paper predates the Aldrin up/down-escalator terminology
   period:
     pair: "E-V"
-    k: 2
-    years: 3.2
+    k: 10
+    years: 16.0
     note: |
-      Duration 3.2 yr sourced from a secondary IAF-preprint excerpt
-      quoting Hollister 1970 directly: "Hollister has discovered three
-      periodic orbits that connect Earth and Venus ... The duration of
-      each orbit is 3.2 yr; they differ in the type of direct return
-      orbits occurring at Earth and Venus." The primary AIAA paper
-      (DOI 10.2514/3.30134) was still not consulted directly (arc.aiaa.org
-      403 at ingest), so this is a secondary attribution.
-      k = 2 is DERIVED, not separately stated: 3.2 yr / 1.599 yr (the
-      Earth-Venus synodic period used elsewhere in this catalogue) = 2.00,
-      consistent with the source's framing of the period as two Venus
-      synodic periods (~1.6 yr each). Promote to a primary-sourced value
-      if the AIAA paper is obtained.
+      PRIMARY-SOURCED from the Hollister & Menning 1970 paper itself
+      (J. Spacecraft Vol. 7 No. 10, pp. 1193-1199; scanned copy at
+      docs/refs/hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf,
+      read directly). The 15 periodic orbits "require 16 yr to complete
+      each cycle" (p.1198); Table 2 is annotated "Repeating after 16
+      years" and Table 3's footnote reads "dates repeat after 16 yr (add
+      5844 days)" (5844 d = 16.00 yr). Earth and Venus repeat absolute
+      orientation every 8 yr, so the periodic cycle is 2x that = 16 yr.
+      k = 10 is DERIVED: 16.0 yr / 1.599 yr (E-V synodic) = 10.01.
+      CORRECTION: an earlier secondary excerpt gave "3.2 yr"; that is the
+      duration of Hollister's *coplanar building-block* orbits used as
+      initial approximations (p.1195: "duration of each orbit is 3.2 yr"),
+      NOT the 16-yr periodic cycle this paper computes. Five 3.2-yr
+      coplanar sub-orbits make up one 16-yr periodic orbit.
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null
       note: |
-        Not accessible: paper full text not consulted. Rogers et al. 2012
-        (AIAA 2012-4746) cite Hollister-Menning 1970 as reference [4] in
-        the lineage paragraph ("In the late 1960s and early 1970s,
-        Hollister and Hollister and Menning discovered trajectories that
-        use gravity-assists to repeatedly encounter the Earth and
-        Venus") but do not transcribe its V_inf values.
+        Primary paper now in hand (docs/refs/hollister-menning-1970-
+        periodic-swingby-earth-venus-JSR-7-10.pdf). Table 3 tabulates a
+        per-encounter relative velocity Vr in EMOS (Earth Mean Orbital
+        Speed = 29.785 km/s) for ALL 15 periodic orbits, not a single
+        value: across the family the Earth-encounter Vr spans ~0.121-0.225
+        EMOS = ~3.6-6.7 km/s. Left null because this row is one generic
+        representative of a 15-orbit family; a single V_inf cannot stand
+        for the family. RESOLUTION OPTIONS (pending decision): (a) pick a
+        representative orbit (e.g. Orbit 1: Vr_E=0.155 EMOS=4.62 km/s) and
+        cite it, or (b) split into a 15-member family like the Russell
+        tables, one row per orbit with its own Table-3 V_inf.
     - body: "V"
       vinf_kms: null
-      note: "Same — paper full text not consulted."
+      note: |
+        Same source (Table 3). Venus-encounter Vr spans ~0.134-0.302 EMOS
+        = ~4.0-9.0 km/s across the 15 orbits (Orbit 1: Vr_V=0.179 EMOS=
+        5.33 km/s). Left null pending the family-vs-representative decision
+        noted on the Earth encounter above.
   orbit_elements:
     a_au: null
     e: null
