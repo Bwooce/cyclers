@@ -73,7 +73,8 @@ from cyclerfinder.model.cycler import Cycler, Encounter, Leg
 from cyclerfinder.search.phase_match import (
     LaunchWindow,
     PhaseSignature,
-    find_real_windows,
+    find_candidate_windows,
+    leg_duration_seeds,
     phase_signature_from_catalogue_entry,
 )
 from cyclerfinder.verify.propagate import (
@@ -358,20 +359,30 @@ def _resolve_real_t_start(
     delta = timedelta(days=window_years * DAYS_PER_JULIAN_YEAR)
     start = priority_date - delta
     end = priority_date + delta
-    windows = find_real_windows(
-        signature,
+
+    # STAGE 3: fan the literature signature into a family of asymmetric
+    # leg-duration seeds, then rank the merged candidate pool by V_inf
+    # mismatch rather than calendar proximity. The old proximity tie-break
+    # biased the resolver toward a near-date window even when a far-date
+    # window matched the signature far better — the degenerate-basin bug.
+    period_s = sum(signature.leg_durations_s)
+    seeds = leg_duration_seeds(
+        bodies=signature.bodies,
+        primary_leg_durations_s=signature.leg_durations_s,
+        vinf_target_kms=signature.vinf_target_kms,
+        period_s=period_s,
+    )
+    windows = find_candidate_windows(
+        seeds,
         ephem,
         (start, end),
-        n=n_candidates,
+        n=n_candidates * len(seeds),
         mismatch_cap_kms=mismatch_cap_kms,
     )
     if not windows:
         return None
-    # Pick the window closest to the priority date among the top candidates;
-    # this lets the gate test assert "within ±5 yr of priority" rather than
-    # "lowest mismatch anywhere in ±10 yr".
-    best = min(windows, key=lambda w: abs(w.departure_date - priority_date))
-    return _dt_to_t_sec(best.departure_date)
+    # Lowest mismatch wins; find_candidate_windows already sorts ascending.
+    return _dt_to_t_sec(windows[0].departure_date)
 
 
 def _full_body_chain(catalogue_entry: dict[str, Any]) -> tuple[str, ...]:

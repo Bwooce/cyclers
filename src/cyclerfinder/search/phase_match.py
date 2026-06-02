@@ -429,7 +429,11 @@ def leg_duration_seeds(
     if n_legs < 1:
         raise ValueError("primary_leg_durations_s must have >= 1 entry")
     min_leg_s = min_leg_days * SECONDS_PER_DAY
-    max_leg_s = max_leg_days_frac * period_s
+    # Upper clip protects against a leg consuming nearly the whole multi-leg
+    # period. For a single-leg (open-chain) signature the leg *is* the period,
+    # so floor the cap at the longest primary leg — otherwise the primary
+    # (f=0) seed would itself be clipped below its literature value.
+    max_leg_s = max(max_leg_days_frac * period_s, max(primary_leg_durations_s))
     d0 = primary_leg_durations_s[0]
 
     seen: set[tuple[int, ...]] = set()

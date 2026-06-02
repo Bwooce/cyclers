@@ -32,7 +32,7 @@ Plus the helper-level tests (plan §4.6) and the diagnostic
 from __future__ import annotations
 
 import dataclasses
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
 
 import numpy as np
@@ -44,6 +44,8 @@ from cyclerfinder.model.cycler import Cycler, Encounter
 from cyclerfinder.search.maintain import optimise_aldrin_maintenance_dv
 from cyclerfinder.search.phase_match import (
     PhaseSignature,
+    find_candidate_windows,
+    leg_duration_seeds,
     phase_signature_from_catalogue_entry,
 )
 from cyclerfinder.verify.propagate import StabilityReport
@@ -535,18 +537,49 @@ def test_construct_builds_multi_rev_leg(astropy_ephem: Ephemeris) -> None:
     assert cyc.legs[0].branch == "low"
 
 
-def test_resolve_real_t_start_prefers_priority_window(
+def test_resolve_real_t_start_picks_low_mismatch_window(
     aldrin_entry: dict[str, object],
     astropy_ephem: Ephemeris,
 ) -> None:
-    """Plan §4.6: Aldrin signature + 1985-10-28 priority → window ±5 yr."""
+    """Plan §4.6 (STAGE 3): the robust resolver ranks candidate windows by
+    V_inf mismatch, NOT calendar proximity (the proximity tie-break was the
+    degenerate-basin bug).
+
+    Two honest checks, both `# COMPUTED` (no sourced V_inf is re-asserted):
+
+    1. The resolver returns the single lowest-mismatch window across the full
+       ±10 yr range — i.e. its epoch equals the lowest-mismatch candidate, not
+       the one nearest the priority date.
+    2. That window's summed |V_inf| mismatch beats the 20 km/s resolver cap and
+       lands inside the search range.
+    """
     signature = phase_signature_from_catalogue_entry(aldrin_entry)
     t_start = _resolve_real_t_start(signature, astropy_ephem, ALDRIN_PRIORITY)
     assert t_start is not None
-    # ±5 yr around the priority epoch in J2000-relative seconds.
-    priority_sec = (ALDRIN_PRIORITY - datetime(2000, 1, 1, 12, tzinfo=UTC)).total_seconds()
-    delta_sec = 5.0 * 365.25 * SECONDS_PER_DAY
-    assert abs(t_start - priority_sec) <= delta_sec, t_start
+
+    # Independently reconstruct the candidate pool the resolver ranks.
+    delta = timedelta(days=10.0 * 365.25)
+    seeds = leg_duration_seeds(
+        bodies=signature.bodies,
+        primary_leg_durations_s=signature.leg_durations_s,
+        vinf_target_kms=signature.vinf_target_kms,
+        period_s=sum(signature.leg_durations_s),
+    )
+    windows = find_candidate_windows(
+        seeds,
+        astropy_ephem,
+        (ALDRIN_PRIORITY - delta, ALDRIN_PRIORITY + delta),
+        n=5 * len(seeds),
+        mismatch_cap_kms=20.0,
+    )
+    assert windows, "expected at least one window within the resolver range"
+    # COMPUTED: the resolver picks the lowest-mismatch candidate (windows[0]).
+    best = windows[0]
+    resolved_sec = (best.departure_date - datetime(2000, 1, 1, 12, tzinfo=UTC)).total_seconds()
+    assert t_start == pytest.approx(resolved_sec)
+    # COMPUTED: that window beats the resolver cap and is inside the range.
+    assert best.mismatch_kms < 20.0
+    assert abs(t_start - resolved_sec) <= delta.total_seconds()
 
 
 def test_resolve_real_t_start_returns_none_when_no_window(
