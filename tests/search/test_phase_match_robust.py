@@ -17,6 +17,7 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.phase_match import (
     LaunchWindow,
     PhaseSignature,
+    _mismatch_at_date,
     find_candidate_windows,
     leg_duration_seeds,
 )
@@ -183,3 +184,78 @@ def test_find_candidate_windows_aldrin_merges_seeds() -> None:
     assert len(windows) >= 3, f"expected >= 3 merged windows, got {len(windows)}"
     mismatches = [w.mismatch_kms for w in windows]
     assert mismatches == sorted(mismatches)
+
+
+# ---------------------------------------------------------------------------
+# Per-leg multi-rev / branch threading (the S1L1 epoch-resolver fix)
+# ---------------------------------------------------------------------------
+
+
+def test_default_signature_is_single_rev_byte_identical() -> None:
+    """An empty leg_revs / leg_branches signature scores every leg single-rev —
+    the pre-fix behaviour. `# COMPUTED` (contract: defaults select n_revs=0,
+    branch="single")."""
+    # A ~2-sidereal-year Earth->Earth resonant interval. The default
+    # (single-rev) path must produce a finite V_inf and must equal an
+    # explicit leg_revs=(0,), leg_branches=("single",) signature exactly.
+    tof_s = 728.5 * SPD
+    depart = datetime(2003, 1, 1, tzinfo=UTC)
+    ephem = Ephemeris(model="astropy")
+
+    sig_default = PhaseSignature(("E", "E"), (tof_s,), (0.0, 0.0))
+    sig_explicit_single = PhaseSignature(
+        ("E", "E"), (tof_s,), (0.0, 0.0), leg_revs=(0,), leg_branches=("single",)
+    )
+
+    res_default = _mismatch_at_date(sig_default, ephem, depart)
+    res_explicit = _mismatch_at_date(sig_explicit_single, ephem, depart)
+    assert res_default is not None
+    assert res_explicit is not None
+    # Byte-identical: empty defaults == explicit 0-rev/single.
+    assert res_default[0] == res_explicit[0]
+    assert res_default[1] == res_explicit[1]
+
+
+def test_multirev_branch_threads_and_changes_scoring() -> None:
+    """A same-body Earth->Earth resonant interval (~2 sidereal years) is best
+    matched by the 1-rev high branch (the Earth-following orbit, V_inf ~ 0),
+    which the single-rev default cannot find. Proves per-leg n_revs/branch is
+    threaded into the phase-match Lambert. `# COMPUTED` (geometry: a 2-yr
+    Earth->Earth loop's resonant solution is Earth's own orbit)."""
+    tof_s = 728.5 * SPD
+    depart = datetime(2003, 1, 1, tzinfo=UTC)
+    ephem = Ephemeris(model="astropy")
+
+    sig_single = PhaseSignature(("E", "E"), (tof_s,), (0.0, 0.0))
+    sig_multirev = PhaseSignature(
+        ("E", "E"), (tof_s,), (0.0, 0.0), leg_revs=(1,), leg_branches=("high",)
+    )
+
+    res_single = _mismatch_at_date(sig_single, ephem, depart)
+    res_multirev = _mismatch_at_date(sig_multirev, ephem, depart)
+    assert res_single is not None
+    assert res_multirev is not None
+
+    vinf_single_depart = res_single[1][0]
+    vinf_multirev_depart = res_multirev[1][0]
+
+    # COMPUTED: the multi-rev high branch recovers the resonant (Earth-like)
+    # orbit, so its V_inf is near zero, whereas single-rev is several km/s.
+    assert vinf_multirev_depart < 0.5
+    assert vinf_single_depart > 3.0
+    # Threading actually changed the scoring (not silently ignored).
+    assert abs(vinf_single_depart - vinf_multirev_depart) > 2.0
+
+
+def test_signature_rejects_mismatched_leg_revs_length() -> None:
+    """Non-empty leg_revs must match len(bodies) - 1. `# COMPUTED` (validation
+    contract)."""
+    with pytest.raises(ValueError, match="leg_revs length"):
+        PhaseSignature(("E", "M", "E"), (146.0 * SPD, 634.0 * SPD), (6.5, 9.7, 6.5), leg_revs=(0,))
+    with pytest.raises(ValueError, match="leg_branches length"):
+        PhaseSignature(
+            ("E", "M", "E"),
+            (146.0 * SPD, 634.0 * SPD),
+            (6.5, 9.7, 6.5),
+            leg_branches=("single",),
+        )

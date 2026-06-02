@@ -67,14 +67,28 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-# FINDING (2026-06-03):
-#   All E-M-E-E configs return the "no real window" SENTINEL (converged=False,
-#   resid=inf, equispaced tofs [520,520,520], V_inf ~17). i.e. the Stage-3
-#   multi-seed epoch resolver returns t0=None for the 4-encounter E-M-E-E cell
-#   -> optimise_cell_ephemeris never even runs the maintenance solve.
-#   ROOT CAUSE: epoch resolution (find_candidate_windows / phase_match) Lambert-
-#   solves each leg SINGLE-REV and cannot phase-match S1L1's L1 multi-rev,
-#   same-body Earth->Earth leg. The optimiser core (multi-rev/multi-encounter)
-#   is fine; the remaining fix is upstream: teach find_candidate_windows the
-#   per-leg n_revs/branch + same-body handling so it can resolve a window for
-#   multi-rev multi-encounter cells. (Aldrin's 2 direct legs resolve fine.)
+# FINDING (2026-06-03, original):
+#   All E-M-E-E configs returned the "no real window" SENTINEL (converged=False,
+#   resid=inf, equispaced tofs [520,520,520], V_inf ~17). The Stage-3 multi-seed
+#   epoch resolver returned t0=None for the 4-encounter E-M-E-E cell because
+#   epoch resolution (find_candidate_windows / phase_match) Lambert-solved every
+#   leg SINGLE-REV and could not phase-match S1L1's L1 multi-rev same-body
+#   Earth->Earth leg.
+#
+# UPDATE (2026-06-03, after per-leg n_revs/branch threading):
+#   PhaseSignature now carries optional leg_revs/leg_branches and the phase-match
+#   Lambert (_vinf_at_lambert / _mismatch_at_date) selects the matching
+#   (n_revs, branch) solution; optimise_cell_ephemeris threads cell.per_leg_revs
+#   / per_leg_branch into it. The epoch resolver no longer ALWAYS returns the
+#   inf sentinel: the r001/high config now RESOLVES an epoch (converged=True,
+#   finite resid, non-equispaced tofs ~[118,849,1213], V_E~26.5 / V_M~23.6).
+#   The (1,low) / (2,*) configs still return the sentinel, but NOT because of
+#   the single-rev bug: at the seed ToF (~1027 d) the (1,"high") branch is the
+#   only feasible multi-rev branch, and even when a branch resolves the V_inf
+#   mismatch is dominated by the still-mis-phased SINGLE-rev E->M (154 d,
+#   V_inf~17) and M->E (379 d, V_inf~10) FRONT legs -- i.e. the E-M-E-E leg
+#   ToF / encounter geometry, not the L1 multi-rev plumbing. The maintenance
+#   solve lands off-family, so the published 5.65/3.05 anchors are NOT yet
+#   reproduced and the S1L1 rediscovery gate stays xfail. Remaining work is the
+#   E-M-E-E leg-ToF / encounter phasing, separate from the multi-rev epoch
+#   resolver fixed here. (Aldrin's 2 direct legs resolve unchanged.)

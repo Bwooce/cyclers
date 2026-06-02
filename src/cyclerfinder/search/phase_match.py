@@ -90,12 +90,28 @@ class PhaseSignature:
         Gravitational primary; defaults to ``"Sun"``. Future Earth-Moon /
         Jovian launch-window work will read this; the current
         :func:`find_real_windows` only handles heliocentric (``"Sun"``).
+    leg_revs:
+        Optional per-leg revolution counts. Empty (the default) means treat
+        every leg as 0-rev (single-revolution Lambert) — byte-identical to the
+        pre-multi-rev behaviour. When non-empty, ``len() == len(bodies) - 1``
+        and entry ``j`` is the ``max_revs`` for leg ``j``. Required for
+        same-body resonant legs (e.g. S1L1's Earth→Earth L1 loop) whose
+        ToF spans multiple heliocentric revolutions and cannot be
+        phase-matched single-rev.
+    leg_branches:
+        Optional per-leg branch labels in ``{"single", "low", "high"}``. Empty
+        (the default) means ``"single"`` for every leg. When non-empty,
+        ``len() == len(bodies) - 1`` and entry ``j`` selects which multi-rev
+        branch to score for leg ``j`` (mirrors
+        :func:`~cyclerfinder.search.construct.construct_cycler`).
     """
 
     bodies: tuple[str, ...]
     leg_durations_s: tuple[float, ...]
     vinf_target_kms: tuple[float, ...]
     primary: str = "Sun"
+    leg_revs: tuple[int, ...] = ()
+    leg_branches: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if len(self.leg_durations_s) != len(self.bodies) - 1:
@@ -108,6 +124,24 @@ class PhaseSignature:
                 f"vinf_target_kms length {len(self.vinf_target_kms)} must equal "
                 f"len(bodies) = {len(self.bodies)}"
             )
+        if self.leg_revs and len(self.leg_revs) != len(self.bodies) - 1:
+            raise ValueError(
+                f"leg_revs length {len(self.leg_revs)} must equal "
+                f"len(bodies) - 1 = {len(self.bodies) - 1}"
+            )
+        if self.leg_branches and len(self.leg_branches) != len(self.bodies) - 1:
+            raise ValueError(
+                f"leg_branches length {len(self.leg_branches)} must equal "
+                f"len(bodies) - 1 = {len(self.bodies) - 1}"
+            )
+
+    def _leg_revs_for(self, leg_idx: int) -> int:
+        """Revolution count for leg ``leg_idx`` (0 when ``leg_revs`` empty)."""
+        return self.leg_revs[leg_idx] if self.leg_revs else 0
+
+    def _leg_branch_for(self, leg_idx: int) -> str:
+        """Branch label for leg ``leg_idx`` (``"single"`` when empty)."""
+        return self.leg_branches[leg_idx] if self.leg_branches else "single"
 
 
 @dataclass(frozen=True)
@@ -170,11 +204,24 @@ def phase_signature_from_catalogue_entry(entry: dict[str, Any]) -> PhaseSignatur
             raise ValueError(f"entry {entry.get('id')!r} V∞ entry {v!r} has null vinf_kms")
         vinf_target_kms.append(float(val))
 
+    # Per-leg revs/branch from the segments, when the entry carries them. Stay
+    # empty (the byte-identical single-rev default) unless any leg is multi-rev
+    # — so existing single-rev entries produce an identical signature.
+    leg_revs: list[int] = [int(leg.get("n_revs") or 0) for leg in legs_raw[: len(bodies) - 1]]
+    leg_branches: list[str] = [
+        str(leg.get("branch") or "single") for leg in legs_raw[: len(bodies) - 1]
+    ]
+    if all(r == 0 for r in leg_revs):
+        leg_revs = []
+        leg_branches = []
+
     return PhaseSignature(
         bodies=bodies,
         leg_durations_s=tuple(leg_durations_s),
         vinf_target_kms=tuple(vinf_target_kms),
         primary=entry.get("primary", "Sun"),
+        leg_revs=tuple(leg_revs),
+        leg_branches=tuple(leg_branches),
     )
 
 
@@ -184,22 +231,40 @@ def _vinf_at_lambert(
     r2: NDArray[np.float64],
     v2_planet: NDArray[np.float64],
     tof_s: float,
+    max_revs: int = 0,
+    branch: str = "single",
 ) -> tuple[float, float] | None:
-    """Single-rev Lambert from r1→r2 in tof_s; return (|v∞_depart|, |v∞_arrive|) or None.
+    """Lambert from r1→r2 in tof_s; return (|v∞_depart|, |v∞_arrive|) or None.
+
+    With the defaults (``max_revs=0``, ``branch="single"``) this is the
+    single-revolution transfer — byte-identical to the original behaviour.
+    Pass ``max_revs >= 1`` and ``branch in {"low", "high"}`` to score a
+    multi-revolution leg (e.g. a same-body resonant Earth→Earth loop); the
+    solution whose ``(n_revs, branch)`` matches ``(max_revs, branch)`` is
+    selected, mirroring
+    :func:`~cyclerfinder.search.construct.construct_cycler`.
 
     Returns None if the Lambert solver fails for any reason (no solution,
-    Newton non-convergence, near-singular geometry). The grid-scan caller
-    treats None as "skip this date" rather than propagating the exception —
-    real-ephemeris geometries occasionally produce Lambert problems where
-    Newton stalls; one bad date shouldn't kill the whole window search.
+    Newton non-convergence, near-singular geometry) or if the requested
+    multi-rev branch is not feasible at this ToF. The grid-scan caller treats
+    None as "skip this date" rather than propagating the exception — real
+    geometries occasionally produce Lambert problems where Newton stalls; one
+    bad date shouldn't kill the whole window search.
     """
     try:
-        solutions = lambert(r1, r2, tof_s, mu=MU_SUN_KM3_S2, max_revs=0)
+        solutions = lambert(r1, r2, tof_s, mu=MU_SUN_KM3_S2, max_revs=max_revs)
     except (LambertConvergenceError, LambertGeometryError):
         return None
     if not solutions:
         return None
-    sol = solutions[0]  # single-rev only
+    sol = None
+    for candidate in solutions:
+        if candidate.n_revs == max_revs and candidate.branch == branch:
+            sol = candidate
+            break
+    if sol is None:
+        # Requested multi-rev branch infeasible at this ToF / date.
+        return None
     vinf_depart = float(np.linalg.norm(sol.v1 - v1_planet))
     vinf_arrive = float(np.linalg.norm(sol.v2 - v2_planet))
     return vinf_depart, vinf_arrive
@@ -231,21 +296,35 @@ def _mismatch_at_date(
     mismatch = 0.0
     for i in range(len(signature.bodies)):
         if i == 0:
-            # Outbound only from encounter 0
+            # Outbound only from encounter 0 (leg 0)
             r1, v1_planet = encounter_states[0]
             r2, v2_planet = encounter_states[1]
-            result = _vinf_at_lambert(r1, v1_planet, r2, v2_planet, signature.leg_durations_s[0])
+            result = _vinf_at_lambert(
+                r1,
+                v1_planet,
+                r2,
+                v2_planet,
+                signature.leg_durations_s[0],
+                max_revs=signature._leg_revs_for(0),
+                branch=signature._leg_branch_for(0),
+            )
             if result is None:
                 return None
             vinf_d, _ = result
             vinf_actual_components.append(vinf_d)
             mismatch += abs(vinf_d - signature.vinf_target_kms[0])
         elif i == len(signature.bodies) - 1:
-            # Inbound only at terminal encounter
+            # Inbound only at terminal encounter (leg i-1)
             r1, v1_planet = encounter_states[i - 1]
             r2, v2_planet = encounter_states[i]
             result = _vinf_at_lambert(
-                r1, v1_planet, r2, v2_planet, signature.leg_durations_s[i - 1]
+                r1,
+                v1_planet,
+                r2,
+                v2_planet,
+                signature.leg_durations_s[i - 1],
+                max_revs=signature._leg_revs_for(i - 1),
+                branch=signature._leg_branch_for(i - 1),
             )
             if result is None:
                 return None
@@ -258,10 +337,22 @@ def _mismatch_at_date(
             r_here, v_here_p = encounter_states[i]
             r_next, v_next_p = encounter_states[i + 1]
             res_in = _vinf_at_lambert(
-                r_prev, v_prev_p, r_here, v_here_p, signature.leg_durations_s[i - 1]
+                r_prev,
+                v_prev_p,
+                r_here,
+                v_here_p,
+                signature.leg_durations_s[i - 1],
+                max_revs=signature._leg_revs_for(i - 1),
+                branch=signature._leg_branch_for(i - 1),
             )
             res_out = _vinf_at_lambert(
-                r_here, v_here_p, r_next, v_next_p, signature.leg_durations_s[i]
+                r_here,
+                v_here_p,
+                r_next,
+                v_next_p,
+                signature.leg_durations_s[i],
+                max_revs=signature._leg_revs_for(i),
+                branch=signature._leg_branch_for(i),
             )
             if res_in is None or res_out is None:
                 return None
@@ -370,6 +461,8 @@ def leg_duration_seeds(
     perturb_fracs: Sequence[float] = (0.0, 0.10, -0.10, 0.20, -0.20),
     min_leg_days: float = 30.0,
     max_leg_days_frac: float = 0.95,
+    leg_revs: tuple[int, ...] = (),
+    leg_branches: tuple[str, ...] = (),
 ) -> list[PhaseSignature]:
     """Generate asymmetric leg-duration perturbation seeds for window search.
 
@@ -418,6 +511,11 @@ def leg_duration_seeds(
         primary seed. Default ``(0.0, ±0.10, ±0.20)``.
     min_leg_days, max_leg_days_frac:
         Clip bounds (lower in days, upper as a fraction of ``period_s``).
+    leg_revs, leg_branches:
+        Optional per-leg revolution counts / branch labels, propagated
+        verbatim into every generated :class:`PhaseSignature`. Empty (the
+        default) leaves all seeds 0-rev/single — byte-identical to the
+        pre-multi-rev behaviour.
 
     Returns
     -------
@@ -459,6 +557,8 @@ def leg_duration_seeds(
                 bodies=bodies,
                 leg_durations_s=tuple(legs),
                 vinf_target_kms=vinf_target_kms,
+                leg_revs=leg_revs,
+                leg_branches=leg_branches,
             )
         )
     return seeds

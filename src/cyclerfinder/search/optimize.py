@@ -1270,16 +1270,32 @@ def _resolve_t0_multi_seed(
             f"cell.sequence {cell.sequence!r}",
         ) from exc
 
+    # Thread the cell's per-leg revs/branch into the phase-match Lambert so
+    # same-body multi-rev legs (e.g. S1L1's Earth->Earth L1 loop) are scored on
+    # the correct revolution/branch rather than mis-scored single-rev. Stay
+    # empty (single-rev default) when every leg is 0-rev — byte-identical to the
+    # pre-multi-rev epoch resolver for Aldrin and other direct-leg cells.
+    n_legs = len(cell.sequence) - 1
+    cell_leg_revs = tuple(cell.per_leg_revs[:n_legs])
+    cell_leg_branches = tuple(cell.per_leg_branch[:n_legs])
+    if all(r == 0 for r in cell_leg_revs):
+        cell_leg_revs = ()
+        cell_leg_branches = ()
+
     primary = PhaseSignature(
         bodies=tuple(cell.sequence),
         leg_durations_s=tuple(s * SECONDS_PER_DAY for s in seed_days),
         vinf_target_kms=vinf_target_per_enc,
+        leg_revs=cell_leg_revs,
+        leg_branches=cell_leg_branches,
     )
     seeds = leg_duration_seeds(
         bodies=primary.bodies,
         primary_leg_durations_s=primary.leg_durations_s,
         vinf_target_kms=primary.vinf_target_kms,
         period_s=target_period_sec,
+        leg_revs=cell_leg_revs,
+        leg_branches=cell_leg_branches,
     )
 
     delta = timedelta(days=10.0 * DAYS_PER_JULIAN_YEAR)
