@@ -13,6 +13,157 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
+# Project state at a glance (updated 2026-06-02)
+
+This top section is the orientation map for a contributor returning to
+the project: what's done, what's in progress (with plan-file pointers),
+what's blocked and why, and the prioritised human-actionable items. The
+lettered Q&A log (A–H) below it is the per-entry catalogue-sourcing
+audit trail and is unchanged in spirit.
+
+## Done
+
+- **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
+  patched-conic constructor reproduces the literature ellipse to ±0.002
+  (see Q&A item A, commit `ba12554`).
+- **Canonical 2-synodic Earth–Mars anchor replicated idealised**
+  (circular-coplanar model).
+- **Multi-revolution Lambert solver landed** — universal-variable
+  multi-rev solver with sourced cross-check, single-rev Newton restored,
+  multi-rev threaded through `verify` (commits `7d620e8`, `9f618f3`).
+- **S1L1 topology corrected** — the catalogue no longer carries a
+  spurious direct Mars→Earth "return leg" (commit `f4074d0`). See
+  Key findings below and the S1L1-nomenclature memory note.
+- **S1L1 not hostable in the idealised model — characterised and
+  documented** — Phase 1 Task 1 of the SnLm rediscovery plan was
+  executed; `scripts/characterise_s1l1.py` (see its `FINDING` header)
+  shows no circular-coplanar topology reproduces the published
+  5.65 / 3.05 km/s V∞ anchors within ±0.3 km/s. This is a model
+  limitation, exactly like the Aldrin cycler, not a solver bug.
+- **Catalogue census frozen as a ratchet** — `tests/test_catalogue_rediscovery.py`
+  (`EXPECTED_COVERAGE`) pins the 219-entry distribution; any catalogue
+  change must update it in the same commit.
+
+## In progress (with plan references)
+
+- **SnLm multi-rev rediscovery** —
+  `docs/superpowers/plans/2026-06-02-snlm-multirev-rediscovery.md`.
+  Phase 1 Task 1 EXECUTED (S1L1 characterisation above). Phase 2 —
+  plumbing multi-rev enumeration through `data/discover.py` and the
+  sweep gate so the 202-entry `MULTI_ENCOUNTER_SEQUENCE` bucket becomes
+  reachable by `discover` — IN PROGRESS.
+- **Real-ephemeris cell optimiser** —
+  `docs/superpowers/plans/2026-06-02-real-ephemeris-cell-optimiser.md`.
+  Generalise the Aldrin-specific maintenance/BVP solver into the
+  currently stubbed `optimise_cell_ephemeris`
+  (`src/cyclerfinder/search/optimize.py:1144`, raises
+  `NotImplementedError`). IN PROGRESS. This is the path to actually
+  close S1L1/Aldrin-like cyclers on the real ephemeris (DE440).
+- **Catalogue data-gap sourcing workflow** — a workflow is extracting
+  Russell 2004 + Rogers 2012 tables and filling sourced catalogue gaps
+  (goal: more usable golden orbits). Tracked in `data/MISSING_DATA.md`.
+
+Two further plan files exist alongside the above and feed the same
+effort: `2026-06-02-ml-multirev-lambert.md` and
+`2026-06-02-multirev-3d-vem-ephemeris-roadmap.md`.
+
+## Deferred (by explicit user decision — not being implemented now)
+
+- **M8-Core (VEM 3-body)** — `docs/phases/m8-multibody-vem/plan.md`.
+  Plan is written and revised (`period_basis` on `Cell`, same-body
+  Tisserand bypass, N-agnostic loader, M8-Core / M8-UX split) but is
+  DEFERRED. The Jones 2017 VEM member-list sourcing gap (Q&A item D)
+  remains the data blocker for this phase.
+
+## Blocked — needs HUMAN institutional / paywalled access (prioritised)
+
+These are the highest-value human-actionable items: each unblocks
+catalogue gaps that no amount of computation or open-web fetching can
+fill. Listed in rough priority order.
+
+1. **Russell 2004 dissertation tables (dominant gap source).** The PDF
+   itself is open-access (`docs/refs/russell-2004-dissertation.pdf`;
+   UT Austin `http://hdl.handle.net/2152/1253`) but binary-compressed —
+   the in-progress extraction workflow is handling it. 772 of 790 gaps
+   trace here. NOT human-blocked, but flagged as the single
+   highest-leverage target; see `data/MISSING_DATA.md` §3.1.
+2. **Friedlander/Niehoff/Byrnes/Longuski 1986, AIAA 86-2009-CP** —
+   VISIT-1 / VISIT-2 V∞ at Earth and Mars. Paywalled
+   (DOI `10.2514/6.1986-2009`). 4 "unknown" V∞ gaps; never digitised
+   online (Q&A item C still partly open).
+3. **McConaghy 2005 Purdue dissertation (AAI3166673)** — U0L1 return
+   ToF and steady-state V∞. Paywalled. Note: the McConaghy 2006 S1L1
+   orbital-element gap this would have closed is now resolved via
+   Russell Table 4.9 (Q&A item B), so this is needed only for the
+   remaining U0L1 / SnLm steady-state V∞ gaps.
+4. **Hollister & Menning 1970, JSR 7(10) (DOI `10.2514/3.30134`)** —
+   Earth–Venus periodic `period.k` / years and elements. Paywalled.
+   2 "missing_period" gaps.
+5. **Jones / Hernandez / Jesick 2017 (AAS 17-577)** — VEM triple-cycler
+   member list (Q&A item D). Needed to lift M8 out of placeholder
+   territory; lower priority while M8 is deferred.
+
+## Catalogue census (frozen ratchet — 219 entries)
+
+Source of truth: `tests/test_catalogue_rediscovery.py` `EXPECTED_COVERAGE`.
+
+| Exclusion reason | Count |
+|---|---|
+| `multi_encounter_sequence` | 202 |
+| `non_heliocentric` | 6 |
+| `missing_vinf` | 5 |
+| `constructible` | 2 |
+| `not_two_body` | 2 |
+| `missing_period` | 2 |
+| **Total** | **219** |
+
+Through the idealised rediscovery gauntlet ~0/219 currently pass green:
+the 2 `constructible` (Aldrin) entries are model-limited skips
+(`EXPECTED_SKIPS`). Aldrin IS replicated on the real ephemeris (M6b)
+and the canonical 2-synodic E–M anchor is replicated idealised. The
+dominant blocker is the 202-entry (92%) `multi_encounter_sequence` /
+SnLm multi-rev modelling bucket — exactly what the two in-progress
+plans target.
+
+## Data-gap accounting (see `data/MISSING_DATA.md`)
+
+790 data gaps across 207 entries:
+
+- **405 "unknown"** — need sourcing (397 from Russell 2004, the rest
+  from Rogers 2012 / McConaghy 2005 / VISIT).
+- **201 "derive"** — COMPUTABLE by our Lambert solver, no sourcing
+  needed.
+- **184 "uncertain"** — topology-provisional; resolve as a by-product
+  of extracting Russell per-leg elements.
+
+772 of 790 trace to the Russell 2004 dissertation. Source PDFs live in
+`docs/refs/`: `russell-2004-dissertation.pdf`,
+`rogers-2012-vinf-leveraging-cyclers-AIAA-2012-4746.pdf`,
+`genova-aldrin-2015-earth-moon-cycler-AAS-15.pdf`,
+`AAS-22-015-pascarella-pony-express.pdf`.
+
+## Key findings
+
+- **S1L1 nomenclature.** In McConaghy / Longuski / Byrnes, `S` and `L`
+  denote consecutive Earth-to-Earth RESONANT INTERVALS, not Earth↔Mars
+  legs. S1L1 therefore has NO direct Mars→Earth return leg — each
+  vehicle is one-way; the crewed return needs a mirrored conjugate
+  L1S1 cycler. The catalogue's old direct M→E "return leg" was a
+  mismodelling, corrected in commit `f4074d0`.
+- **Idealised-model limitations are real, not bugs.** Both the Aldrin
+  cycler and S1L1 have published anchors that the circular-coplanar
+  idealised model cannot host. These are documented xfails / skips,
+  and the real-ephemeris cell optimiser (in progress) is the intended
+  way to close them.
+
+## Infra note
+
+Background subagents in this environment appear to lack the `Bash` tool
+(under test). Implementation and verification (pytest, git) are run in
+the foreground by the orchestrator, not by dispatched subagents.
+
+---
+
 ## ✓ Resolved (2026-05-31) — A. Aldrin orbital-element discrepancy
 
 **Resolution:** commit `32c5eab` (errata: reconcile spec §3/§9/§9.1/§16.4)

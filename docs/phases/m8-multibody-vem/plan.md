@@ -876,18 +876,38 @@ Edit `tests/_catalogue_loader.py`. Add the enum member after `CONSTRUCTIBLE`:
     gauntlet (no sourced V_inf to rediscover). See M8-Core plan §5."""
 ```
 
-In `classify_row`, replace the unconditional `NOT_TWO_BODY` branch
+First, **carry the anchor pair on the loader's `CatalogueEntry`** so a
+downstream consumer that only receives the dataclass (e.g. the M-ED structural
+inference engine) can set `Cell.period_basis` without re-reading the YAML. The
+Task 4.1 VEM gate sidesteps this by reading the row directly, but production
+consumers get only the `CatalogueEntry`; without the pair they cannot populate
+`period_basis`. Add the field to the `CatalogueEntry` dataclass in
+`tests/_catalogue_loader.py`:
+
+```python
+    period_basis: tuple[str, str] | None = None
+    """Catalogue anchor pair from ``period.pair`` (e.g. ``("E","M")``) for
+    >=3-body rows, so a downstream builder can set ``Cell.period_basis``
+    without re-reading the YAML. ``None`` for 2-body rows (the 2-body
+    ``_target_period_sec`` path needs no explicit basis). See M8-Core plan §2."""
+```
+
+Then in `classify_row`, replace the unconditional `NOT_TWO_BODY` branch
 (`:174-176`) with an **N-agnostic** sub-classification — do **not** hardcode a
 VEM bodyset. Any `len(bodies) >= 3` row with a valid period block (both
 `years` and `k` present) is admitted; everything else stays `NOT_TWO_BODY`.
 Keep the order: heliocentric and ballistic checks first (so a non-Sun or
-low-thrust ≥3-body row would still fall out earlier):
+low-thrust ≥3-body row would still fall out earlier). Parse `period.pair`
+defensively (a malformed non-`A-B` pair maps to `None` rather than crashing):
 
 ```python
     bodies = row.get("bodies") or []
     if len(bodies) != 2:
         period = row.get("period") or {}
         if len(bodies) >= 3 and period.get("years") is not None and period.get("k") is not None:
+            # Safely extract and parse the anchor pair if it exists.
+            pair_str = period.get("pair")
+            basis = tuple(pair_str.split("-")) if pair_str and "-" in pair_str else None
             entry = CatalogueEntry(
                 id=row["id"],
                 name=row.get("name", row["id"]),
@@ -895,12 +915,19 @@ low-thrust ≥3-body row would still fall out earlier):
                 sequence_canonical=row.get("sequence_canonical") or "",
                 period_k=int(period["k"]),
                 period_years=float(period["years"]),
+                period_basis=basis,  # carries period.pair downstream -> Cell.period_basis
                 vinf_targets_kms=(),
                 leg_tofs_days=(),
             )
             return ExclusionReason.CONSTRUCTIBLE_MULTIBODY, entry
         return ExclusionReason.NOT_TWO_BODY, None
 ```
+
+> **Note:** `basis` is left as a plain `tuple[str, ...]` from `split("-")`; a
+> well-formed `"E-M"` yields `("E","M")`. A malformed 3-token pair (e.g.
+> `"E-M-V"`) would surface later as a `ValueError` at `a, b = cell.period_basis`
+> in `_target_period_sec` (Task 2.2) — a desirable implicit runtime guard, not a
+> silent miscompute.
 
 > **Note on traceable period (plan §2 design decision):** the
 > `CatalogueEntry.period_k` stored here is the *catalogue's sourced k* (3 for
