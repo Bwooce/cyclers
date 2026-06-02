@@ -172,3 +172,48 @@ def test_discover_accepts_multirev_params(tmp_path: Path) -> None:
     assert any("r1" in c.id or "bl" in c.id for c in cells), (
         "expected a multi-rev cell in the bounded sweep"
     )
+
+
+@pytest.mark.slow
+@pytest.mark.xfail(
+    strict=False,
+    reason=(
+        "Circular-coplanar model limitation (Phase 1 Task 1 finding): the "
+        "S1L1 / SnLm family is not hostable in the circular-coplanar model "
+        "(same as Aldrin). The full 56-cell E-M k=2 multi-rev sweep "
+        "produces zero constraint-satisfying cyclers, so none can match "
+        "the sourced 5.65 km/s Earth anchor. Same root cause as the M5 "
+        "optimiser regression (task #54). The 0.3 km/s tolerance is the "
+        "sourced-anchor bound and is NOT loosened; this gate flips to a "
+        "pass once a 3D V-E-M ephemeris model lands. Flip strict=True then."
+    ),
+)
+def test_snlm_sweep_rediscovers_a_sourced_anchor(tmp_path: Path) -> None:
+    """A bounded 2-synodic E-M multi-rev sweep must surface at least one
+    closed, constraint-satisfying cycler whose Earth V-infinity matches a
+    sourced SnLm anchor (5.65 km/s) within the gauntlet tolerance."""
+    import numpy as np
+
+    ledger = tmp_path / "ledger.jsonl"
+    matched = False
+    for opt_result, _match, _level in discover(
+        bodies=("E", "M"),
+        k_synodic=2,
+        vinf_cap=8.0,
+        ledger_path=str(ledger),
+        l_max=4,
+        n_max=1,
+        branch_set=("single", "low"),
+        max_cells=24,
+    ):
+        if not opt_result.constraints_satisfied:
+            continue
+        for enc in opt_result.best_cycler.encounters:
+            if enc.body == "E":
+                v = max(
+                    float(np.linalg.norm(enc.vinf_in)),
+                    float(np.linalg.norm(enc.vinf_out)),
+                )
+                if abs(v - 5.65) < 0.3:
+                    matched = True
+    assert matched, "no swept multi-rev cell matched the 5.65 km/s SnLm Earth anchor"
