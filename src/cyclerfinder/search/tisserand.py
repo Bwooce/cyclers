@@ -17,13 +17,17 @@ directly related to the hyperbolic excess speed at ``p``:
 so a constant-:math:`V_\\infty` flyby at ``p`` lives on a constant-:math:`T_p`
 curve in ``(a, e)`` space.
 
-**M2 implements the coplanar case only**, fixing ``i = 0`` so ``cos(i) = 1``.
-The 3-D Tisserand (with non-zero inclination as a third DOF) is M6+ work,
-deferred per spec §12 — inclination is absorbed into the b-plane during
-phase matching, not into the cell-enumeration graph. This restriction is
-re-stated in every public function docstring; do not silently extend to
-3-D, do not feed inclined real-ephemeris orbits to this module and expect
-sensible answers.
+**The original M2 predicate** :func:`linkable` **implements the coplanar
+case only**, fixing ``i = 0`` so ``cos(i) = 1``; it stays coplanar by
+contract — do not feed inclined real-ephemeris orbits to it and expect
+sensible answers. The 3-D extension is provided by the explicit, opt-in
+:func:`linkable_3d` (STAGE 4): at a fixed :math:`V_\\infty` each body's
+Tisserand equation fixes ``cos(i_sc)`` at every ``(a, e)``, and a 2-D grid
+scan tests whether the two bodies agree on a single reachable spacecraft
+inclination. ``linkable_3d`` is the sanctioned 3-D predicate; it
+conservatively extends :func:`linkable` (a coplanar ``True`` implies a 3-D
+``True``). The coplanar :func:`linkable` is left untouched so existing
+callers and goldens stay byte-identical.
 
 The :func:`linkable` predicate is the linchpin of the M4 Tisserand-pruning
 gate (spec §13.3): if two bodies' constant-:math:`V_\\infty` contours fail
@@ -51,7 +55,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.optimize import brentq
+from scipy.optimize import brentq, minimize
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 
@@ -438,6 +442,242 @@ def _refine_intersection_e(
         return a_a - a_b
 
     return float(brentq(difference, e_lo, e_hi, xtol=1.0e-6))
+
+
+# ---------------------------------------------------------------------------
+# linkable_3d — the sanctioned 3-D extension of the linkability predicate
+# ---------------------------------------------------------------------------
+
+
+def _cos_i_sc(a_au: float, e: float, a_p_au: float, t_p: float) -> float | None:
+    """Spacecraft ``cos(i_sc)`` implied by body ``p``'s Tisserand equation.
+
+    From :math:`T_p = a_p/a + 2\\cos(i)\\sqrt{(a/a_p)(1-e^2)}`,
+
+    .. math::
+
+        \\cos(i_{sc}) = \\frac{T_p - a_p/a}{2\\sqrt{(a/a_p)(1-e^2)}}.
+
+    Returns ``None`` when the denominator is non-positive (degenerate
+    ``e \\to 1`` or ``a \\to 0``) — such points carry no usable inclination
+    constraint.
+    """
+    denom = 2.0 * sqrt((a_au / a_p_au) * max(0.0, 1.0 - e * e))
+    if denom <= 0.0:
+        return None
+    return (t_p - a_p_au / a_au) / denom
+
+
+def linkable_3d(
+    body_a: str,
+    body_b: str,
+    vinf_kms: float,
+    *,
+    i_sc_max_deg: float = 30.0,
+    tol_cos_i: float = 1.0e-3,
+    a_range_au: tuple[float, float] = (0.3, 5.0),
+    n_points: int = 80,
+    n_a_points: int = 80,
+) -> bool:
+    """3-D (inclined) extension of :func:`linkable`.
+
+    At a fixed :math:`V_\\infty`, each body's Tisserand equation analytically
+    fixes the spacecraft inclination ``cos(i_sc)`` at any ``(a, e)`` point.
+    A 2-D grid scan over ``(a, e)`` asks whether the two bodies' implied
+    ``cos(i_sc)`` agree within ``tol_cos_i`` at a point where the spacecraft
+    orbit physically crosses both planets' orbits (perihelion ≤ ``a_p`` ≤
+    aphelion — a frame-independent scalar inequality) and the implied
+    inclination is reachable (``i_sc ≤ i_sc_max_deg``, i.e. ``cos(i_sc) ≥
+    cos(i_sc_max)``). This reduces the 3-D surface-intersection problem to a
+    2-D scan with O(1) work per point.
+
+    The coplanar case is recovered exactly: for ``i_sc_max_deg → 0`` only
+    points whose two implied ``cos(i_sc)`` are both ≈ 1 survive, which is
+    where the two constant-:math:`V_\\infty` contours of :func:`linkable`
+    intersect. A coplanar ``True`` therefore implies a 3-D ``True``
+    (inclination opens options, never closes them).
+
+    Formula (sourced — Strange & Longuski 2002 JSR 39(1):9-16):
+    ``T_p = a_p/a + 2 cos(i) sqrt((a/a_p)(1-e^2))``,
+    ``V_inf^2 = (mu_sun/a_p)(3 - T_p)``.
+
+    Parameters
+    ----------
+    body_a, body_b:
+        One-letter planet codes.
+    vinf_kms:
+        Common hyperbolic excess speed, km/s. Must be non-negative.
+    i_sc_max_deg:
+        Maximum spacecraft inclination (deg) considered reachable. The
+        default 30° bounds the search to physically sensible cycler orbits.
+    tol_cos_i:
+        Agreement tolerance on the two bodies' implied ``cos(i_sc)``.
+        Default ``1e-3`` is conservative; it is calibrated against the
+        coplanar consistency gate (``test_linkable_3d_coplanar_agrees_with_2d``)
+        — the physical scale derives from the 0.01 AU tolerance in
+        :func:`linkable` propagated through the Tisserand formula
+        (``d(cos_i)/da ≈ 0.5 / AU`` near ``a = a_p``, so ``≈ 0.005``).
+    a_range_au:
+        ``(a_min, a_max)`` AU filter on the spacecraft semi-major axis.
+    n_points:
+        Eccentricity grid density in ``[0, 1 - 1e-4)``.
+    n_a_points:
+        Semi-major-axis grid density across ``a_range_au``.
+
+    Returns
+    -------
+    bool
+        ``True`` iff a feasible inclined intersection exists. **Never
+        raises** — degenerate inputs return ``False``, mirroring the
+        :func:`linkable` contract.
+    """
+    try:
+        if vinf_kms < 0.0:
+            return False
+        if n_points < 2 or n_a_points < 2:
+            return False
+
+        a_min_au, a_max_au = a_range_au
+        if not (a_min_au > 0.0 and a_max_au > a_min_au):
+            return False
+
+        # Coplanar component (exact). A coplanar-linkable pair is a special
+        # case of the 3-D predicate at ``i_sc = 0`` (``cos i = 1``), so it is
+        # always 3-D-linkable. Delegating to :func:`linkable` here makes the
+        # ``i_sc_max → 0`` limit reproduce :func:`linkable` bit-for-bit (the
+        # critical regression gate) and supplies the monotonicity guarantee
+        # (coplanar ``True`` ⇒ 3-D ``True``). The inclined scan below only
+        # *adds* genuinely-inclined intersections (``cos i < 1``) that the
+        # coplanar predicate misses.
+        if linkable(
+            body_a,
+            body_b,
+            vinf_kms,
+            a_range_au=a_range_au,
+            n_points=max(n_points, 2),
+        ):
+            return True
+
+        a_pa_au = _a_p_km(body_a) / AU_KM
+        a_pb_au = _a_p_km(body_b) / AU_KM
+        t_pa = vinf_to_tisserand(body_a, vinf_kms)
+        t_pb = vinf_to_tisserand(body_b, vinf_kms)
+
+        cos_i_min = float(np.cos(np.radians(i_sc_max_deg)))
+
+        a_samples = np.linspace(a_min_au, a_max_au, n_a_points)
+
+        def _reachable(cos_i: float) -> bool:
+            # The implied spacecraft inclination must be physically reachable:
+            # cos(i) in [cos(i_max), 1] (i_sc in [0, i_sc_max]). The +tol on
+            # the upper bound absorbs the tiny cos(i) > 1 overshoot from the
+            # finite agreement tolerance at the exact coplanar (i=0) contact.
+            return cos_i_min - tol_cos_i <= cos_i <= 1.0 + tol_cos_i
+
+        def _g(a_au: float, e: float) -> float:
+            # Signed disagreement of the two bodies' implied cos(i_sc).
+            ca = _cos_i_sc(a_au, e, a_pa_au, t_pa)
+            cb = _cos_i_sc(a_au, e, a_pb_au, t_pb)
+            if ca is None or cb is None:
+                return float("nan")
+            return ca - cb
+
+        # The intersection of the two bodies' implied ``cos(i_sc)`` surfaces
+        # is a 1-D locus. Sweeping the semi-major axis ``a`` reduces the
+        # search to a 1-D root-find in ``e`` per ``a`` — exact rather than
+        # grid-limited, which is what makes the coplanar (i_sc → 0) limit
+        # reproduce :func:`linkable` faithfully.
+        #
+        # For a fixed ``a`` both orbits cross both planets iff
+        # ``e >= e_min = max_p |1 - a_p/a|`` (and ``e < 1``); on that
+        # interval ``g(e) = cos_ia(a,e) - cos_ib(a,e)`` is continuous. A sign
+        # change brackets an exact agreement (refined with ``brentq``); a
+        # tangential touch is caught by sampling ``|g|`` and accepting when
+        # it falls within ``tol_cos_i``. Each candidate is gated on
+        # reachability (at the coplanar limit this demands the shared
+        # ``cos(i_sc) ≈ 1`` at the crossing).
+        def _accept(a_au: float, e: float) -> bool:
+            # |g| already known small; gate the shared inclination on
+            # reachability.
+            cos_shared = _cos_i_sc(a_au, e, a_pa_au, t_pa)
+            return cos_shared is not None and _reachable(cos_shared)
+
+        e_sub = np.linspace(0.0, _E_MAX, n_points)
+        # Global grid minimum of |g|, used to seed a final 2-D refinement for
+        # tangential touches whose minimum lies between coarse grid nodes.
+        best_abs_g = float("inf")
+        best_a = a_pa_au
+        best_e = 0.0
+        for a_val in a_samples:
+            a_au = float(a_val)
+            e_min = max(abs(1.0 - a_pa_au / a_au), abs(1.0 - a_pb_au / a_au))
+            if e_min >= _E_MAX:
+                continue
+            e_grid = e_min + (e_sub / _E_MAX) * (_E_MAX - e_min)
+
+            # Transversal crossing: a sign change of g(e) brackets an exact
+            # agreement root (refined with brentq).
+            g_prev: float | None = None
+            e_prev = e_min
+            for e_val in e_grid:
+                e = float(e_val)
+                g = _g(a_au, e)
+                if np.isnan(g):
+                    g_prev = None
+                    continue
+                if abs(g) < best_abs_g:
+                    best_abs_g, best_a, best_e = abs(g), a_au, e
+                if abs(g) <= tol_cos_i and _accept(a_au, e):
+                    return True
+                if g_prev is not None and g_prev * g < 0.0:
+                    try:
+                        e_star = float(
+                            brentq(
+                                lambda ee, _a=a_au: _g(_a, ee),
+                                e_prev,
+                                e,
+                                xtol=1.0e-10,
+                            )
+                        )
+                    except (ValueError, RuntimeError):
+                        e_star = 0.5 * (e_prev + e)
+                    if _accept(a_au, e_star):
+                        return True
+                g_prev, e_prev = g, e
+
+        # Tangential touch: the agreement locus may graze between coarse grid
+        # nodes (no sign change). Refine |g| in 2-D around the grid minimum
+        # and accept if the refined minimum is within tolerance and reachable.
+        if best_abs_g <= tol_cos_i and _accept(best_a, best_e):
+            return True
+
+        def _abs_g_vec(x: NDArray[np.float64]) -> float:
+            a_au = float(x[0])
+            e = float(x[1])
+            val = _g(a_au, e)
+            return 1.0 if np.isnan(val) else abs(val)
+
+        da = (a_max_au - a_min_au) / max(1, n_a_points - 1)
+        de = _E_MAX / max(1, n_points - 1)
+        bounds = [
+            (max(a_min_au, best_a - 2.0 * da), min(a_max_au, best_a + 2.0 * da)),
+            (max(0.0, best_e - 2.0 * de), min(_E_MAX, best_e + 2.0 * de)),
+        ]
+        try:
+            res = minimize(
+                _abs_g_vec,
+                x0=np.array([best_a, best_e], dtype=np.float64),
+                bounds=bounds,
+                method="L-BFGS-B",
+            )
+            a_ref, e_ref = float(res.x[0]), float(res.x[1])
+            if abs(_g(a_ref, e_ref)) <= tol_cos_i and _accept(a_ref, e_ref):
+                return True
+        except (ValueError, RuntimeError):
+            pass
+        return False
+    except Exception:
+        return False
 
 
 def linkable_region(

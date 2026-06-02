@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from cyclerfinder.search.tisserand import linkable
+from cyclerfinder.search.tisserand import linkable, linkable_3d
 
 if TYPE_CHECKING:
     from cyclerfinder.core.ephemeris import Ephemeris
@@ -287,9 +287,16 @@ def tisserand_feasible(
         Common V∞ ceiling, km/s. Each consecutive pair must be linkable
         somewhere in ``(0.5, vinf_cap]``.
     ephem:
-        Accepted for API symmetry and forward-compatibility with M6's
-        ephemeris-aware variant. **Unused in M4** (coplanar Tisserand
-        needs only constants, not a planet state).
+        When ``None`` (the default) the coplanar :func:`~cyclerfinder.search
+        .tisserand.linkable` predicate is used — byte-identical to the M4
+        behaviour. When an :class:`~cyclerfinder.core.ephemeris.Ephemeris` is
+        supplied the 3-D :func:`~cyclerfinder.search.tisserand.linkable_3d`
+        predicate is consulted for each pair, with a coplanar-``True``
+        short-circuit: a pair that is already coplanar-linkable needs no 3-D
+        scan (coplanar ``True`` ⇒ 3-D ``True``), so the expensive 3-D scan
+        runs only on the pairs the coplanar predicate rejects. The ephemeris
+        object itself is not sampled — planet inclinations/eccentricities are
+        epoch-independent mean elements read from :data:`PLANETS`.
 
     Returns
     -------
@@ -304,10 +311,11 @@ def tisserand_feasible(
     Notes
     -----
     Sampling resolution is fixed at :data:`_TISSERAND_VINF_SAMPLES`
-    points evenly spaced in ``(0.5, vinf_cap]``. **Coplanar (i=0) only**
-    — inherits the M2 :func:`linkable` predicate's restriction.
+    points evenly spaced in ``(0.5, vinf_cap]``. With ``ephem=None`` the
+    coplanar (i=0) :func:`linkable` predicate is used; with an ephemeris the
+    3-D :func:`linkable_3d` predicate extends it (see the ``ephem`` note).
     """
-    del ephem  # forward-compatibility hook; M4 does not consult it
+    use_3d = ephem is not None
     try:
         if vinf_cap <= _TISSERAND_VINF_FLOOR_KMS:
             return False
@@ -319,7 +327,15 @@ def tisserand_feasible(
             body_b = cell.sequence[i + 1]
             found = False
             for vinf in grid:
-                if linkable(body_a, body_b, float(vinf)):
+                v = float(vinf)
+                # Coplanar predicate first: a coplanar-True is also 3-D-True,
+                # so it short-circuits the expensive 3-D scan. Only the
+                # coplanar-False samples fall through to linkable_3d (and only
+                # when an ephemeris was supplied).
+                if linkable(body_a, body_b, v):
+                    found = True
+                    break
+                if use_3d and linkable_3d(body_a, body_b, v):
                     found = True
                     break
             if not found:

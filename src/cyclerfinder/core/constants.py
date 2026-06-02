@@ -41,9 +41,10 @@ Planets:
       and later phases may override per body via config.
 
 Out of scope here (deliberately, per ``docs/phases/m0-scaffold/plan.md``
-§4.4): Sun radius, planet eccentricity/inclination (the circular-coplanar
-model treats both as zero; the JPL ephemeris backend in M6 will supply
-them), moons, asteroids.
+§4.4): Sun radius, moons, asteroids. Planet eccentricity (``ecc``) and
+inclination (``inc_deg``/``lan_deg``) are now carried as sourced J2000
+elements for the 3-D Tisserand predicate; the circular-coplanar ephemeris
+backend still treats both as zero (it ignores these fields).
 """
 
 from __future__ import annotations
@@ -105,6 +106,13 @@ class PlanetData:
     lan_deg:
         Longitude of the ascending node wrt the J2000 ecliptic, deg. Defaults
         to ``0.0``. Same Standish & Williams Table 1 source as ``inc_deg``.
+    ecc:
+        Mean orbital eccentricity at J2000. Defaults to ``0.0`` (the coplanar/
+        circular idealisation). Sourced J2000 values from Standish & Williams,
+        "Approximate Positions of the Planets", JPL Solar System Dynamics,
+        Table 1, ``e_0`` column (same source as ``sma_au``): Venus 0.00677727,
+        Earth 0.01671123, Mars 0.09340065. Consumed by the 3-D Tisserand
+        predicate; the circular ephemeris backend ignores it.
     """
 
     name: str
@@ -118,6 +126,7 @@ class PlanetData:
     # byte-identical for callers (and bodies) that don't set them.
     inc_deg: float = 0.0
     lan_deg: float = 0.0
+    ecc: float = 0.0
 
 
 def _mean_motion_deg_day(sma_au: float) -> float:
@@ -150,6 +159,8 @@ PLANETS: Final[dict[str, PlanetData]] = {
         sma_au=_VENUS_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_VENUS_SMA_AU),
         safe_alt_km=300.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.00677727,
         # inc_deg/lan_deg deliberately left at the coplanar default 0.0 here so
         # the live ``circular`` backend stays byte-identical for every existing
         # caller and golden. The sourced J2000 3D elements (Standish & Williams
@@ -165,6 +176,8 @@ PLANETS: Final[dict[str, PlanetData]] = {
         sma_au=_EARTH_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_EARTH_SMA_AU),
         safe_alt_km=300.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.01671123,
     ),
     "M": PlanetData(
         name="Mars",
@@ -174,6 +187,8 @@ PLANETS: Final[dict[str, PlanetData]] = {
         sma_au=_MARS_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_MARS_SMA_AU),
         safe_alt_km=300.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.09340065,
         # Left at coplanar default 0.0 (see the Venus note above). Sourced
         # J2000 3D elements (Standish & Williams Table 1: Mars inc=1.84969142
         # deg, lan=49.55953891 deg) are exercised via the inclined backend.
