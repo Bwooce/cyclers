@@ -1141,11 +1141,38 @@ def optimise_cell_idealized(
     )
 
 
+def _ephemeris_tof_seed_and_bounds(
+    cell: Cell, target_period_sec: float
+) -> tuple[list[float], list[tuple[float, float]]]:
+    """Equispaced per-leg ToF seed (days) and per-leg bounds for the
+    real-ephemeris optimiser, derived from the cell's period.
+
+    Mirrors the interior-epoch bounds logic of the idealised optimiser
+    (:func:`_free_return_seed` / :func:`_multi_start_grid`): each leg
+    starts at ``T/(N-1)`` and may range over ``[0.1 * share, 0.9 * T]``
+    so the optimiser can redistribute time between legs while keeping
+    every ToF strictly positive (landmine #2: ``construct_cycler``
+    requires strictly increasing epochs).
+    """
+    n_legs = len(cell.sequence) - 1
+    if n_legs < 1:
+        raise ValueError(f"cell.sequence must have >= 2 entries; got {cell.sequence!r}")
+    period_days = target_period_sec / SECONDS_PER_DAY
+    share = period_days / n_legs
+    seed = [share] * n_legs
+    lo = 0.1 * share
+    hi = 0.9 * period_days  # a single leg may absorb most of the period
+    bounds = [(lo, hi)] * n_legs
+    return seed, bounds
+
+
 def optimise_cell_ephemeris(
     cell: Cell,
     ephem: Ephemeris,
     *,
     vinf_cap: float,
+    priority_date_iso: str | None = None,
+    vinf_targets_kms: dict[str, float] | None = None,
     n_laps: int = 5,
     n_starts: int = 5,
     seed: int = 0,
