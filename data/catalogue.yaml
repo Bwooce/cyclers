@@ -512,7 +512,7 @@
         tof_days: null          # known-unknown — see data_gaps[]
         n_revs: null
         branch: null
-        note: "Return Mars->Earth leg of the S1L1 cycle. ToF / rev count / branch not extracted from the AIAA 2002-4420 broad-class tables; tracked in data_gaps."
+        note: "PROVISIONAL / likely mismodelled: there is no defined direct Mars->Earth leg in the S1L1 architecture. In the McConaghy/Longuski/Byrnes nomenclature S and L denote consecutive Earth-to-Earth resonant intervals, not Earth<->Mars transits; Mars is a flyby target of opportunity on the outbound arc. A single S1L1 vehicle gives one-way fast transit only — the crewed return uses a mirrored companion cycler (conjugate L1S1). This segment should be replaced by the S1/L1 Earth-to-Earth resonant intervals; see data_gaps."
       - id: "loop-ee"
         from: "E"
         to: "E"
@@ -544,10 +544,10 @@
     nomenclature: "Russell-McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
-    - path: "trajectory.segments[ret-me].tof_days"
-      kind: "unknown"
-      note: "Return M->E leg time-of-flight not tabulated in the AIAA 2002-4420 abstract; needs extraction from the full paper / broad-class tables."
-      source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420, Table 2"
+    - path: "trajectory.segments[ret-me]"
+      kind: "uncertain"
+      note: "No direct Mars->Earth leg ToF exists to extract: it is undefined by construction. The S/L labels denote Earth-to-Earth resonant intervals (S1 short, L1 long), not Earth<->Mars transits; Mars is a flyby target of opportunity on the outbound arc, and the crewed return uses a mirrored conjugate L1S1 cycler. The fix is to re-model the post-Mars arc as the S1/L1 Earth-to-Earth resonant intervals, not to back-fill a return ToF. NB the day-count breakdown of S1 vs L1 is not reconciled against a single citation and must not be invented."
+      source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420; nomenclature: McConaghy/Russell/Longuski 2005"
       todo_ref: "#54-backfill"
     - path: "trajectory.segments[loop-ee]"
       kind: "derive"
@@ -556,7 +556,7 @@
       todo_ref: "#54"
     - path: "trajectory.segments"
       kind: "uncertain"
-      note: "Segment topology is provisional. sequence_canonical 'E-E-M-M' implies a 4-encounter (2 Earth + 2 Mars) cycle, but only the 3-segment E->M / M->E / E-loop skeleton is represented here. The exact leg decomposition over the full 2-synodic period must be verified against AIAA 2002-4420; probe work showed the naive 3-leg fixed-154-d structure does not close ballistically."
+      note: "Segment topology is provisional AND the current 3-segment E->M / M->E / E-loop skeleton is structurally wrong: it posits a direct Mars->Earth leg that the S1L1 nomenclature does not define. Correct model: outbound E->M (~154 d) with a ballistic Mars flyby, then the S1 (short) and L1 (long) Earth-to-Earth resonant intervals carry the vehicle back to its next Earth flyby to repeat. Re-derive the S1/L1 interval ToF / n_revs / branch from the in-house multi-rev Lambert solver constrained to the published 5.65/3.05 km/s V-infinity; do not invent interval day-counts. probe work showed the naive 3-leg fixed-154-d structure does not close ballistically, consistent with the mismodelled return leg."
       source_hint: "McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420"
       todo_ref: "#54"
   first_published:

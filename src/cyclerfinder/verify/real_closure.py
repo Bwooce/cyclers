@@ -220,14 +220,18 @@ class RealClosureResult:
 
 EXPECTED_SKIPS: Final[dict[str, str]] = {
     "s1l1-2syn-em-cpom": (
-        "incomplete leg data: the multi-rev Lambert solver now lands (so "
-        "the intermediate E-E loop is solvable), but the return M->E leg "
-        "tof_days is an unresolved data gap — not tabulated in the AIAA "
-        "2002-4420 abstract (needs the full-paper Table 2) — and the "
-        "segment topology is still provisional (the naive 3-leg fixed-154-d "
-        "skeleton does not close ballistically). Closing it would require "
-        "fabricating the missing return ToF, which the golden-test "
-        "discipline forbids. See the entry's data_gaps."
+        "wrong topology, not missing data: the M->E direct return leg is "
+        "undefined by construction. In the McConaghy/Longuski/Byrnes "
+        "nomenclature the S and L labels denote consecutive Earth-to-Earth "
+        "resonant intervals (S1 short, L1 long), not Earth<->Mars transits; "
+        "Mars is a flyby target of opportunity on the outbound (~154-d) arc. "
+        "A single S1L1 vehicle provides only one-way fast transit, so there "
+        "is no tabulated direct Mars->Earth crewed return ToF to source — the "
+        "return requires a mirrored companion cycler (the conjugate L1S1). "
+        "Closing s1l1 as an E->M->E round trip therefore models a leg that "
+        "does not exist; reframing the trajectory as outbound E->M plus the "
+        "S1/L1 Earth-to-Earth resonant intervals is the correct fix and is "
+        "tracked in the entry's data_gaps. See the catalogue entry."
     ),
     "mcconaghy-2006-em-k2": (
         "incomplete leg data: catalogue entry has only 2 legs (E-M, M-E) "
@@ -258,9 +262,11 @@ Why this exists: M6b's regression set runs over a hand-picked subset
 of literature-anchored cyclers. The Aldrin outbound/inbound entries
 carry complete 2-leg cycle data and are the binding gate. The other
 regression candidates have only the outbound leg published, or (S1L1
-CPOM) have an unextracted return-leg ToF — full-cycle reconstruction is
-catalogue-completion work that belongs to M7 alongside the catalogue
-writer. The non-Sun primary cases are filtered at load time by
+CPOM) have no direct M->E return leg to verify at all — the S/L labels
+denote Earth-to-Earth resonant intervals, not Earth<->Mars transits, so
+the round-trip topology must be re-modelled rather than back-filled.
+Full-cycle reconstruction is catalogue-completion work that belongs to
+M7 alongside the catalogue writer. The non-Sun primary cases are filtered at load time by
 :func:`tests.data._catalogue_loader_m6b.load_m6b_entries`; the VEM
 entries here document the 3-body deferral. Every contributor reading
 this list knows what is outstanding."""

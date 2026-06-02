@@ -14,8 +14,10 @@ Test layout (plan §4.1):
 * Gate 1b — :func:`test_aldrin_powered_turn_deficit_gate` (**binding
   Aldrin gate**: sourced anchors + sourced 84°/72° turn deficit).
 * Gate 2 — :func:`test_2syn_em_cpom_periodic_over_2_cycles_astropy`
-  (**xfail** on the S1L1 return-leg ToF data gap; multi-rev Lambert is
-  no longer the blocker).
+  (**xfail** because the S1L1 entry's direct M->E return leg is undefined
+  by construction — S/L are Earth-to-Earth resonant intervals, not
+  Earth<->Mars transits; the topology must be re-modelled, not back-filled.
+  Multi-rev Lambert is not the blocker).
 * Gate 3 — :func:`test_real_drift_rejects_open_trajectory`.
 * Gate 4 — :func:`test_real_closure_regression_set` (parametrised).
 * Gate 5 —
@@ -266,22 +268,27 @@ def test_aldrin_powered_turn_deficit_gate(aldrin_entry: dict[str, object]) -> No
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "incomplete S1L1 leg data — multi-rev Lambert is no longer the "
-        "blocker (the solver now lands), but the return M->E leg tof_days "
-        "is an unresolved data gap (not tabulated in the AIAA 2002-4420 "
-        "abstract) and the segment topology is still provisional (the "
-        "naive 3-leg fixed-154-d skeleton does not close ballistically). "
-        "construct_real_ephemeris_cycler raises on the null return-leg "
-        "tof_days. Forcing closure would require fabricating that ToF, "
-        "which the golden-test discipline forbids. Flips to passing once "
-        "the full-paper Table 2 return ToF is extracted."
+        "wrong S1L1 topology, not missing data — multi-rev Lambert is not "
+        "the blocker (the solver lands). The catalogue entry posits a direct "
+        "Mars->Earth return leg, but no such leg is defined by construction: "
+        "in the McConaghy/Longuski/Byrnes nomenclature S and L denote "
+        "consecutive Earth-to-Earth resonant intervals, not Earth<->Mars "
+        "transits, and Mars is a flyby target of opportunity on the outbound "
+        "arc. A single S1L1 vehicle gives one-way fast transit; the crewed "
+        "return uses a mirrored conjugate L1S1 cycler. construct_real_"
+        "ephemeris_cycler raises on the null return-leg tof_days. Forcing "
+        "closure would require fabricating a ToF for a non-existent leg, "
+        "which the golden-test discipline forbids. Flips to passing once the "
+        "entry is re-modelled as outbound E->M plus the S1/L1 Earth-to-Earth "
+        "resonant intervals."
     ),
 )
 def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
     astropy_ephem: Ephemeris,
 ) -> None:
-    """Aspirational gate for the 2-syn S1L1 entry; xfail on a return-leg
-    ToF data gap (no longer the multi-rev Lambert blocker)."""
+    """Aspirational gate for the 2-syn S1L1 entry; xfail because the entry's
+    direct M->E return leg is undefined by construction (S/L are Earth-to-
+    Earth resonant intervals), not because of a missing ToF extraction."""
     entries = load_m6b_entries()
     s1l1 = next(e for e in entries if e["id"] == "s1l1-2syn-em-cpom")
     result = verify_real_closure(
