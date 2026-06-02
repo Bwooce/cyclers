@@ -1178,30 +1178,173 @@ def optimise_cell_ephemeris(
     seed: int = 0,
     rp_factors: dict[str, float] | None = None,
 ) -> OptimisationResult:
-    """Spec §12(a) ephemeris-mode optimisation — **stub until M6**.
+    """Spec §12(a) ephemeris-mode optimisation over the general engine.
 
-    Minimises summed TCM ΔV over a finite ``n_laps``-lap horizon on a
-    real ephemeris (typically ``Ephemeris("astropy")``). Closure is
-    *not* exactly required; bounded lap-to-lap drift in the spec §12(c)
-    dynamic rotating frame is.
+    Optimises a :class:`Cell` to a closed periodic cycler on the *real*
+    ephemeris (typically ``Ephemeris("astropy")``) by deriving the
+    inputs of the body-agnostic
+    :func:`~cyclerfinder.search.maintain.optimise_maintenance_dv` from
+    the cell plus a resolved launch epoch, then mapping its
+    :class:`~cyclerfinder.search.maintain.MaintenanceOptimResult` back
+    onto the same :class:`OptimisationResult` shape that
+    :func:`optimise_cell_idealized` produces.
 
-    The signature is locked here in M5 so that M6 fills only the body,
-    not the public API. The body itself requires M6's multi-lap
-    propagator (``verify/propagate.py``) which is not in M5's scope.
+    Closure in the rotating frame is physically unreachable on a real
+    ephemeris (documented ``bvp.py:39-51``); the optimisation *objective*
+    is the summed flyby turn-deficit maintenance ΔV (carried in
+    ``best_score.total_maintenance_dv_kms``), and ``closure_residual_kms``
+    carries the same maintenance-ΔV magnitude as a feasibility proxy
+    rather than an exact rotating-frame residual.
+
+    Parameters
+    ----------
+    cell:
+        The discrete cell to optimise. Its first and last
+        ``sequence`` entries must match (closed loop); open-sequence
+        ephemeris cyclers are out of scope (landmine #1).
+    ephem:
+        Planet-state provider — use ``Ephemeris("astropy")`` for real
+        DE440 states.
+    vinf_cap:
+        Hard ceiling on V∞ at every encounter, km/s (spec §12(d)).
+    priority_date_iso:
+        ISO-8601 ``"YYYY-MM-DD"`` literature/priority epoch centring the
+        real launch-window search. ``None`` ⇒ no epoch can be resolved
+        and a non-converged "no real window" result is returned.
+    vinf_targets_kms:
+        Per-body V∞ targets (km/s) used to phase-match a real launch
+        window. Required for epoch resolution (blind discovery without
+        targets is out of scope); ``None`` ⇒ non-converged result.
+    n_laps:
+        Reserved for an optional multi-lap drift diagnostic; not consumed
+        by the maintenance-ΔV objective. Kept for API compatibility.
+    n_starts, seed:
+        Multi-start count and RNG seed threaded into
+        :func:`~cyclerfinder.search.maintain.optimise_maintenance_dv`.
+    rp_factors:
+        Per-body ``SAFE_PERIHELION_KM`` multipliers, threaded into the
+        final :func:`~cyclerfinder.model.score.score` call.
+
+    Returns
+    -------
+    OptimisationResult
+        Same shape as :func:`optimise_cell_idealized`. ``converged`` and
+        ``constraints_satisfied`` follow the maintenance solve and the
+        V∞-cap check; an unresolved real launch window yields a
+        non-converged, non-feasible result (not an exception).
 
     Raises
     ------
-    NotImplementedError
-        Always. With message containing ``"M6 ephemeris"`` so callers
-        can match against it.
+    ValueError
+        If ``cell.sequence`` is not a closed loop.
     """
-    del cell, ephem, vinf_cap, n_laps, n_starts, seed, rp_factors
-    raise NotImplementedError(
-        "optimise_cell_ephemeris requires M6 ephemeris closure "
-        "(shipped at M6b as verify.real_closure.verify_real_closure) "
-        "AND M7 TCM budget machinery (not yet shipped). "
-        "M6b's verify_real_closure is the right drift-feasibility check; "
-        "full wiring lands in M7.",
+    from cyclerfinder.search.maintain import optimise_maintenance_dv
+    from cyclerfinder.search.phase_match import PhaseSignature
+    from cyclerfinder.verify.real_closure import (
+        _parse_priority_date,
+        _resolve_real_t_start,
+    )
+
+    del n_laps  # reserved for a future multi-lap drift diagnostic
+    if rp_factors is None:
+        rp_factors = {}
+
+    # Landmine #1: the maintenance chain assumes a closed loop.
+    if cell.sequence[0] != cell.sequence[-1]:
+        raise ValueError(
+            f"optimise_cell_ephemeris requires a closed sequence "
+            f"(sequence[0] == sequence[-1]); got {cell.sequence!r}. "
+            f"Open-sequence ephemeris cyclers are out of scope.",
+        )
+
+    target_period_sec = _target_period_sec(cell)
+    seed_days, bounds = _ephemeris_tof_seed_and_bounds(cell, target_period_sec)
+
+    # --- Resolve a real launch epoch by phase-matching against the sourced
+    # V∞ anchors. Both the priority date and the V∞ targets are required;
+    # without them the cell is unanchored on the real ephemeris.
+    priority = _parse_priority_date(priority_date_iso)
+    t0_sec: float | None = None
+    if priority is not None and vinf_targets_kms is not None:
+        try:
+            vinf_target_per_enc = tuple(float(vinf_targets_kms[body]) for body in cell.sequence)
+        except KeyError as exc:
+            raise ValueError(
+                f"vinf_targets_kms is missing body {exc.args[0]!r} required by "
+                f"cell.sequence {cell.sequence!r}",
+            ) from exc
+        signature = PhaseSignature(
+            bodies=tuple(cell.sequence),
+            leg_durations_s=tuple(s * SECONDS_PER_DAY for s in seed_days),
+            vinf_target_kms=vinf_target_per_enc,
+        )
+        t0_sec = _resolve_real_t_start(signature, ephem, priority)
+
+    if t0_sec is None:
+        # Honest "no real window" outcome (landmine #3): surface, don't crash.
+        sentinel = _sentinel_cycler(cell, ephem, target_period_sec)
+        sentinel_score = score(
+            sentinel,
+            ephem,
+            vinf_cap=vinf_cap,
+            target_period_sec=target_period_sec,
+            rp_factors=rp_factors,
+        )
+        return OptimisationResult(
+            cell=cell,
+            best_cycler=sentinel,
+            best_score=sentinel_score,
+            closure_residual_kms=float("inf"),
+            optimiser_history=(),
+            converged=False,
+            constraints_satisfied=False,
+        )
+
+    # --- General real-ephemeris maintenance solve.
+    maint = optimise_maintenance_dv(
+        list(cell.sequence),
+        ephem,
+        t0_guess_sec=t0_sec,
+        tof_days_guesses=seed_days,
+        tof_bounds_days=bounds,
+        synodic_pair=(cell.bodies[0], cell.bodies[1]),
+        closure_body=cell.sequence[0],
+        n_starts=n_starts,
+        seed=seed,
+    )
+
+    best_cycler = maint.cycler
+    best_score = score(
+        best_cycler,
+        ephem,
+        vinf_cap=vinf_cap,
+        target_period_sec=target_period_sec,
+        rp_factors=rp_factors,
+    )
+
+    # V∞ cap is the spec §12(d) hard inequality; check every encounter.
+    vinf_ok = all(
+        max(
+            float(np.linalg.norm(enc.vinf_in)),
+            float(np.linalg.norm(enc.vinf_out)),
+        )
+        <= vinf_cap
+        for enc in best_cycler.encounters
+    )
+    constraints_satisfied = bool(maint.converged and vinf_ok)
+
+    # Closure is unreachable on a real ephemeris; carry the maintenance-ΔV
+    # magnitude as the feasibility proxy in lieu of an exact residual.
+    closure_residual_kms = float(maint.maintenance_dv_kms)
+
+    return OptimisationResult(
+        cell=cell,
+        best_cycler=best_cycler,
+        best_score=best_score,
+        closure_residual_kms=closure_residual_kms,
+        optimiser_history=(),
+        converged=bool(maint.converged),
+        constraints_satisfied=constraints_satisfied,
     )
 
 
