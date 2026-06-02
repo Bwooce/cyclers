@@ -126,3 +126,49 @@ def test_discover_em_k2_yields_known_for_2syn(tmp_path: Path) -> None:
     assert match_result.outcome == "known"
     assert match_result.entry is not None
     assert match_result.entry.id == "s1l1-2syn-em-cpom"
+
+
+def test_discover_accepts_multirev_params(tmp_path: Path) -> None:
+    """The plumbing contract: ``discover`` accepts the multi-rev sweep
+    params (``n_max`` / ``branch_set`` / ``max_cells``), runs without
+    raising, and bounds the feasible-cell stream by ``max_cells``.
+
+    This asserts only the plumbing — *not* that a cell solves. Whether
+    any E-M k=2 cell yields a constraint-satisfying cycler is the M5
+    optimiser regression's concern (task #54), exercised separately by
+    :func:`test_snlm_sweep_rediscovers_a_sourced_anchor` (xfail).
+    """
+    ledger = tmp_path / "ledger.jsonl"
+    # Must not raise; with the bounded sweep only solved cells are yielded
+    # (may be empty under the M5 regression), but every *enumerated* cell
+    # within the bound is recorded to the ledger.
+    list(
+        discover(
+            bodies=("E", "M"),
+            k_synodic=2,
+            vinf_cap=8.0,
+            ledger_path=str(ledger),
+            l_max=4,
+            n_max=1,
+            branch_set=("single", "low"),
+            max_cells=3,
+        )
+    )
+    recorded = Ledger(str(ledger))
+    assert len(recorded) == 3, "max_cells must bound the swept (recorded) cell stream"
+    # At least one recorded cell must be multi-rev (n_revs >= 1), proving
+    # branch_set/n_max actually widened the enumeration.
+    cells = list(
+        feasible_cells(
+            ("E", "M"),
+            l_max=4,
+            k_max=2,
+            n_max=1,
+            vinf_cap=8.0,
+            ephem=Ephemeris(model="circular"),
+            branch_set=("single", "low"),
+        )
+    )[:3]
+    assert any("r1" in c.id or "bl" in c.id for c in cells), (
+        "expected a multi-rev cell in the bounded sweep"
+    )

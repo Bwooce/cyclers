@@ -25,6 +25,7 @@ swallows (first-writer-wins) and skips the cell.
 from __future__ import annotations
 
 import contextlib
+import itertools
 import socket
 from collections.abc import Iterator
 from datetime import UTC, datetime
@@ -39,7 +40,7 @@ from cyclerfinder.data.catalog import (
 )
 from cyclerfinder.data.ledger import Ledger, LedgerEntry, LedgerError
 from cyclerfinder.search.optimize import OptimisationResult, optimise_cell_idealized
-from cyclerfinder.search.sequence import feasible_cells
+from cyclerfinder.search.sequence import Cell, feasible_cells
 from cyclerfinder.verify.crosscheck import crosscheck_cycler
 from cyclerfinder.verify.propagate import verify_long_term_stability
 
@@ -113,6 +114,7 @@ def discover(
     l_max: int = 4,
     n_max: int = 0,
     branch_set: tuple[str, ...] = ("single",),
+    max_cells: int | None = None,
     n_starts: int = 5,
     seed: int = 0,
     use_de: bool = True,
@@ -128,6 +130,12 @@ def discover(
     Non-solved cells (``searched`` / ``failed``) are recorded in the
     ledger but not yielded. Cells already present in the ledger are
     skipped, so an interrupted run resumes without repeating work.
+
+    ``n_max`` / ``branch_set`` widen the enumeration to multi-revolution
+    legs (threaded straight into :func:`feasible_cells`); ``max_cells``
+    bounds the feasible-cell stream so a sweep can be capped for cost. The
+    defaults (``n_max=0``, ``branch_set=("single",)``, ``max_cells=None``)
+    keep the single-rev behaviour byte-identical for existing callers.
     """
     del finder_version  # provenance is the operator-driven writeback's concern
     ephem = ephem or Ephemeris(model="circular")
@@ -135,7 +143,7 @@ def discover(
     catalog = load_catalog()
     host = host or socket.gethostname()
 
-    for cell in feasible_cells(
+    cell_stream: Iterator[Cell] = feasible_cells(
         bodies,
         l_max=l_max,
         k_max=k_synodic,
@@ -143,7 +151,11 @@ def discover(
         vinf_cap=vinf_cap,
         ephem=ephem,
         branch_set=branch_set,
-    ):
+    )
+    if max_cells is not None:
+        cell_stream = itertools.islice(cell_stream, max_cells)
+
+    for cell in cell_stream:
         if ledger.has(cell.id):
             continue
 
