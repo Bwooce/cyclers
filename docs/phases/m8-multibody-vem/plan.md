@@ -1,12 +1,14 @@
-# M8 — Multi-body (3-body) VEM cyclers: beat-period dispatch, N≥3 enumeration, rediscovery gate
+# M8-Core — Multi-body (N≥3) VEM cyclers: beat-period dispatch, N≥3 enumeration, rediscovery gate (search-core only)
 
 > Written with the `superpowers:writing-plans` conventions. This is a
 > **task-level TDD plan** (write failing test → run red → minimal impl → run
-> green → commit). It is the detailed expansion of the **M-N** milestone in
+> green → commit). It is the **M8-Core** (search-core) detailed expansion of
+> the **M-N** milestone in
 > `docs/superpowers/plans/2026-06-02-multirev-3d-vem-ephemeris-roadmap.md`
 > (which calls it "N-encounter + VEM enumeration & rediscovery, deps: M-L").
-> Read that roadmap's "Verified current state" section first — it is the
-> authoritative survey of what is already built.
+> The user-facing CLI/viz/docs are carved into a separate **M8-UX** milestone
+> (see §6). Read that roadmap's "Verified current state" section first — it is
+> the authoritative survey of what is already built.
 
 ---
 
@@ -66,10 +68,12 @@ fixes exactly those, in dependency order:
 2. **Feasibility.** `tisserand_feasible` (`sequence.py:265`) is honest but
    **coplanar (i=0) only** — it inherits `tisserand.linkable`'s restriction
    (`sequence.py:308-309`). It already iterates over *every* consecutive
-   sequence pair, so it works structurally for VEM sequences today; M8 only
-   adds tests pinning that behaviour and documents the coplanar caveat at the
-   VEM-cell boundary. **No lift of the coplanar assumption here** — that is
-   M-3D, deliberately out of M8 scope (see §6).
+   sequence pair, so it works structurally for VEM sequences today; M8 adds a
+   same-body-pair bypass (so the EMEEVE E-E loop leg is not falsely
+   evaluated by the meaningless `linkable(X,X,..)` predicate), plus tests
+   pinning that behaviour and documenting the coplanar caveat at the VEM-cell
+   boundary. **No lift of the coplanar assumption here** — that is M-3D,
+   deliberately out of M8 scope (see §6).
 3. **Loader admission.** `tests/_catalogue_loader.py` classifies
    `len(bodies) != 2` as `NOT_TWO_BODY` (`_catalogue_loader.py:174-176`) and
    `_is_two_body_alternation` (`:134-152`) rejects N-encounter sequences. M8
@@ -116,7 +120,8 @@ rediscovery suite is `slow`.
 - §5 step 1 (line 87) — resonance sets the candidate total periods T.
 - §8 (line 152) — **M8 milestone definition:** "VEM campaign + UX: run the
   enumerator on `[Venus, Earth, Mars]` at the 6.4-yr beat; `cli`, `viz`,
-  reporting, docs." (CLI/viz are a *separate* M8 sub-stream; see §6 scope note.)
+  reporting, docs." This plan delivers the **M8-Core** search half; `cli`/`viz`/
+  reporting/docs are the separate **M8-UX** milestone (see §6 scope note).
 - §9 (line 160) — gate anchor: "VEM beat 3×E–M ≈ 4×E–V ≈ 6.40 yr." This is the
   only sourced VEM number this plan asserts against.
 - §11.3 / §17 (line 199) — "frame M8 as 'search + report best candidates,' not
@@ -131,24 +136,30 @@ rediscovery suite is `slow`.
 
 ## 1. What this milestone delivers
 
-M8 is **additive** to one source file and one test-support file, plus new
-tests:
+M8-Core is **additive** to three source files and one test-support file, plus
+new tests:
 
+- `src/cyclerfinder/search/sequence.py` — `Cell` gains an optional
+  `period_basis` field + `id` token (§2 Task 2.0), and `tisserand_feasible`
+  gains a same-body-pair bypass (§3 Task 3.2). Existing 2-body cell ids and
+  distinct-pair feasibility behaviour are unchanged.
 - `src/cyclerfinder/search/optimize.py` — `_target_period_sec` gains a
-  multi-body dispatch branch (§2). No signature change; the 2-body path is
-  byte-for-byte preserved.
-- `tests/_catalogue_loader.py` — gains a VEM-aware classification path and a
-  new `ExclusionReason.CONSTRUCTIBLE_MULTIBODY` (§5).
-- New tests: `tests/search/test_optimize_multibody.py` (§2, §4),
+  `period_basis`/multi-body dispatch (§2). No signature change; the 2-body
+  basis-None path is byte-for-byte preserved.
+- `tests/_catalogue_loader.py` — gains an N-agnostic multibody classification
+  path and a new `ExclusionReason.CONSTRUCTIBLE_MULTIBODY` (§5).
+- New tests: `tests/search/test_sequence_cell_basis.py` (§2 Task 2.0),
+  `tests/search/test_optimize_multibody.py` (§2, §4),
   `tests/search/test_sequence_multibody.py` (§3),
   `tests/test_vem_rediscovery.py` (§4 gate, §5).
 - `tests/test_catalogue_rediscovery.py::EXPECTED_COVERAGE` — census ratchet
   update (§5).
 
-No new production module. No edits to `resonance.py`, `construct.py`,
-`sequence.py` production bodies in the M-L-free portion (the Tisserand work in
-§3 is **tests only** — it pins existing behaviour and documents the coplanar
-caveat; it does not change `tisserand_feasible`).
+No new production module. No edits to `resonance.py` or `construct.py`. The
+`sequence.py` change in the M-L-free portion is limited to the small
+same-body-pair bypass in `tisserand_feasible` (§3 Task 3.2) plus the
+`Cell.period_basis` field (§2 Task 2.0); the rest of §3 pins existing
+behaviour and documents the coplanar caveat.
 
 ---
 
@@ -168,42 +179,164 @@ def _target_period_sec(cell: Cell) -> float:
 
 For VEM `cell.bodies == ("V","E","M")`, `cell.period_k == 3`, this returns
 `3 * T_syn(V,E)` ≈ `3 * 0.799 yr` ≈ 2.4 yr — **wrong**; the EMEEVE archetype's
-sourced period is 6.41 yr (`catalogue.yaml:1782`), the 3×E-M = 4×E-V beat.
+sourced period is 6.41 yr (`catalogue.yaml:1782`), the 3×E-M = 4×E-V beat. The
+fix carries the catalogue's anchor pair on the Cell (`period_basis`, see the
+design decision below) so the resolver can reconstruct `3 * T_syn(E,M) ≈
+6.41 yr` without rewriting `period_k`.
 
-### Design decision (settle before coding)
+### Design decision — traceable period resolution (settled)
 
-For `len(bodies) >= 3`, the *total cycler period* is `period_k` multiples of
-the **beat period** of the body set, where the beat is the smallest tuple from
-`multi_body_beat_days(bodies, k_max=...)` fed to `beat_period_days`. But note
-the catalogue's `period.k` for VEM is anchored on a **pair** (`period.pair:
-"E-M"`, `period.k: 3`, `years: 6.41` — `catalogue.yaml:1780-1782`), not on a
-beat tuple. Two consistent readings exist:
+**Do not silently mutate `period.k`.** The earlier draft proposed having the
+loader convert the catalogue's anchor-pair `period.k=3` into a beat-multiple
+`Cell.period_k=1`. That is an anti-pattern: a silent semantic shift across the
+loader boundary destroys traceability. If the catalogue defines `k=3` relative
+to E-M and the Cell drops it to `k=1`, a Cell printed from `vem-emeeve-3syn`
+showing `period_k=1` looks like a bug versus the YAML — the Cell no longer
+represents what the catalogue/user requested.
 
-- **Reading A (beat-multiple):** `T = period_k_beat * beat_period_days(bodies, top_tuple)`
-  with `period_k_beat = 1` for the natural beat. This is the resonance-pure
-  interpretation matching `resonance.py`'s own docstring (line 7).
-- **Reading B (anchor-pair-multiple):** `T = cell.period_k * T_syn(period_pair)`
-  where `period_pair` is the catalogue's anchor pair `(E,M)`. For the EMEEVE
-  row `3 * T_syn(E,M) = 3 * 2.135 = 6.405 yr` — the same number, because the
-  beat *is defined* as the commensurability where `3*T_syn(E,M) ≈ 4*T_syn(E,V)`.
+**Decision: carry the basis on the Cell instead.** Add an optional
+`period_basis: tuple[str, str] | None` field to the frozen `Cell` dataclass.
+The Cell then represents *exactly* what the catalogue/user requested: the
+anchor pair plus the (unmodified) `period_k`.
 
-These agree numerically at the natural beat (that is the whole point of a
-beat). **Choose Reading A** for `_target_period_sec` (a `Cell` carries no
-"anchor pair" field — only `bodies` and `period_k`), and interpret
-`cell.period_k` as the *beat multiple*. The catalogue loader (§5) is
-responsible for translating a catalogue row's anchor-pair `period.k=3` into the
-`Cell.period_k=1` beat-multiple it builds — this keeps `_target_period_sec`
-dependent only on `Cell` fields and keeps the catalogue's published
-anchor-pair convention intact at the loader boundary. Document this mapping in
-both places.
+- The loader (§5) maps the catalogue row's `period.pair` (e.g. `"E-M"`) into
+  `Cell.period_basis = ("E", "M")` and keeps `period_k` as the sourced value
+  (3 for EMEEVE).
+- `_target_period_sec` computes the total period by dispatch:
+  - **`period_basis` set:** `synodic_period_days(*cell.period_basis) *
+    cell.period_k * SECONDS_PER_DAY`. For EMEEVE this is `T_syn(E,M) * 3 ≈
+    2.135 * 3 = 6.405 yr` — the anchor-pair reading, with `period_k`
+    untouched and fully traceable to the YAML.
+  - **`period_basis is None and len(bodies) >= 3`:** fall back to the natural
+    beat via `multi_body_beat_days(bodies)[0]` fed to `beat_period_days`
+    (the resonance-pure default for cells with no declared basis).
+  - **`period_basis is None and len(bodies) == 2`:** the existing 2-body path
+    (`synodic_period_days(bodies[0], bodies[1]) * period_k`) — byte-identical
+    to pre-M8.
 
-> **Open question for the human (do not guess):** confirm Reading A and the
-> "loader converts anchor-pair-k to beat-multiple-k" split before coding. The
-> alternative (add a `period_pair`/`period_basis` field to `Cell`) is a wider
-> change touching M4's frozen dataclass and the `Cell.id` format
-> (`sequence.py:105`); flag for review rather than do it unilaterally.
+Both the anchor-pair path and the beat-fallback agree numerically at the
+natural beat (`3*T_syn(E,M) ≈ 4*T_syn(E,V) ≈ 6.40 yr`); that is the whole
+point of a beat. The difference is *traceability*: with `period_basis` the Cell
+faithfully echoes the catalogue, and `_target_period_sec` derives the right
+number without anyone rewriting `period_k`.
 
-### Task 2.1 — failing test: VEM 3-body period resolves to the 6.41-yr beat
+**`Cell` hashability / id stability.** `Cell` is frozen and hashable and its
+`id` (`sequence.py:105`) is used widely (cell ledgers, dedupe, logs). Update
+`Cell.id` to incorporate `period_basis` *only when set* — e.g. append a
+`|p<AB>` token (`|pEM` for `("E","M")`). When `period_basis is None` the id is
+unchanged, so every existing 2-body cell id stays stable (no ledger churn,
+no dedupe breakage). Task 2.0 below adds the dataclass field + id change and a
+dedicated test; Task 2.2 adds the `_target_period_sec` dispatch.
+
+### Task 2.0 — `Cell.period_basis` field + id token (M-L-free, do first)
+
+The dataclass change underpins the rest of §2. `Cell` is frozen
+(`sequence.py:57`) with fields `bodies, sequence, period_k, per_leg_revs,
+per_leg_branch` (`sequence.py:99-103`) and an `id` property
+(`sequence.py:105-125`).
+
+#### Failing test — `tests/search/test_sequence_cell_basis.py`
+
+```python
+"""M8: Cell.period_basis carries the catalogue's anchor pair without
+mutating period_k (plan §2 design decision)."""
+from __future__ import annotations
+
+from cyclerfinder.search.sequence import Cell
+
+
+def _emeeve_basis_cell() -> Cell:
+    seq = ("E", "M", "E", "E", "V", "E")
+    n_legs = len(seq) - 1
+    return Cell(
+        bodies=("V", "E", "M"),
+        sequence=seq,
+        period_k=3,                  # sourced anchor-pair k, NOT rewritten
+        per_leg_revs=(0,) * n_legs,
+        per_leg_branch=("single",) * n_legs,
+        period_basis=("E", "M"),
+    )
+
+
+def test_period_basis_defaults_to_none() -> None:
+    """A 2-body cell built the old way has period_basis is None."""
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E"),
+        period_k=2,
+        per_leg_revs=(0, 0),
+        per_leg_branch=("single", "single"),
+    )
+    assert cell.period_basis is None
+
+
+def test_period_basis_preserved_and_period_k_untouched() -> None:
+    cell = _emeeve_basis_cell()
+    assert cell.period_basis == ("E", "M")
+    assert cell.period_k == 3  # traceable to catalogue.yaml:1782
+
+
+def test_id_unchanged_when_basis_none() -> None:
+    """Existing 2-body cell ids stay byte-identical (no ledger churn)."""
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E"),
+        period_k=2,
+        per_leg_revs=(0, 0),
+        per_leg_branch=("single", "single"),
+    )
+    assert cell.id == "EM|E-M-E|k2|r00|bss"
+
+
+def test_id_appends_basis_token_when_set() -> None:
+    """When period_basis is set, the id gains a |p<AB> token so a basis-bearing
+    cell is distinguishable (and the YAML-traceable k3 stays visible)."""
+    cell = _emeeve_basis_cell()
+    assert cell.id == "VEM|E-M-E-E-V-E|k3|r00000|bsssss|pEM"
+```
+
+Run: `uv run pytest tests/search/test_sequence_cell_basis.py -q` → **red**
+(`Cell` has no `period_basis`).
+
+#### Minimal impl — `sequence.py`
+
+Add the field (keyword-only-by-default-value so all existing positional
+construction sites keep working unchanged):
+
+```python
+    bodies: tuple[str, ...]
+    sequence: tuple[str, ...]
+    period_k: int
+    per_leg_revs: tuple[int, ...]
+    per_leg_branch: tuple[str, ...]
+    period_basis: tuple[str, str] | None = None
+```
+
+Append the token to `id` only when set:
+
+```python
+        base = f"{bodyset}|{sequence}|k{self.period_k}|r{revs}|b{branches}"
+        if self.period_basis is not None:
+            base += f"|p{''.join(self.period_basis)}"
+        return base
+```
+
+Run: `uv run pytest tests/search/test_sequence_cell_basis.py -q` → **green**,
+then the full sequence suite to confirm no id regressions:
+`uv run pytest tests/search/test_sequence.py -q`, then lint/type.
+
+Commit:
+
+```
+search/sequence: add Cell.period_basis (anchor pair) without mutating period_k
+
+Frozen Cell gains an optional period_basis tuple so a catalogue-derived cell
+echoes its anchor pair and sourced period_k verbatim (traceability). Cell.id
+appends a |p<AB> token only when set; ids for existing basis-None cells are
+byte-identical. Underpins the _target_period_sec dispatch (plan §2).
+```
+
+### Task 2.1 — failing test: VEM 3-body period resolves via anchor-pair basis
 
 Write `tests/search/test_optimize_multibody.py`:
 
@@ -225,9 +358,12 @@ from cyclerfinder.search.optimize import _target_period_sec
 from cyclerfinder.search.sequence import Cell
 
 
-def _vem_cell(period_k: int = 1) -> Cell:
-    # Beat-multiple convention (Reading A): period_k counts beat periods.
-    seq = ("E", "V", "M", "E", "M", "E")  # spec §13.8 worked VEM sequence
+def _vem_cell(period_k: int = 3, basis: tuple[str, str] | None = ("E", "M")) -> Cell:
+    # Anchor-pair convention (plan §2): the catalogue's sourced EMEEVE sequence
+    # E-M-E-E-V-E (catalogue.yaml:1777) with its sourced anchor pair (E,M) and
+    # sourced k=3. period_k is NOT rewritten — the basis tells the resolver how
+    # to interpret it. The spec §13.8 E-V-M-E-M-E string is illustrative only.
+    seq = ("E", "M", "E", "E", "V", "E")
     n_legs = len(seq) - 1
     return Cell(
         bodies=("V", "E", "M"),
@@ -235,27 +371,38 @@ def _vem_cell(period_k: int = 1) -> Cell:
         period_k=period_k,
         per_leg_revs=(0,) * n_legs,
         per_leg_branch=("single",) * n_legs,
+        period_basis=basis,
     )
 
 
-def test_vem_target_period_is_natural_beat_6_406yr() -> None:
-    """3-body VEM cell at period_k=1 resolves to the 6.40-yr beat (spec §9)."""
-    t_sec = _target_period_sec(_vem_cell(period_k=1))
+def test_vem_anchor_pair_period_is_6_41yr() -> None:
+    """EMEEVE cell with basis (E,M) and k=3 resolves to 3*T_syn(E,M) ~ 6.41 yr,
+    the sourced beat (spec §9, catalogue.yaml:1782)."""
+    t_sec = _target_period_sec(_vem_cell(period_k=3, basis=("E", "M")))
+    t_yr = t_sec / SECONDS_PER_DAY / DAYS_PER_JULIAN_YEAR
+    assert t_yr == pytest.approx(6.41, abs=0.02), f"got {t_yr:.4f} yr"
+
+
+def test_vem_no_basis_falls_back_to_natural_beat() -> None:
+    """With period_basis=None and >=3 bodies, the resolver falls back to the
+    natural beat multi_body_beat_days(...)[0] ~ 6.406 yr (spec §9)."""
+    t_sec = _target_period_sec(_vem_cell(period_k=1, basis=None))
     t_yr = t_sec / SECONDS_PER_DAY / DAYS_PER_JULIAN_YEAR
     assert t_yr == pytest.approx(6.406, abs=0.01), f"got {t_yr:.4f} yr"
 
 
-def test_vem_target_period_scales_with_period_k() -> None:
-    """period_k=2 doubles the beat (the 12.8-yr branch, spec §3 line 41)."""
-    t1 = _target_period_sec(_vem_cell(period_k=1))
-    t2 = _target_period_sec(_vem_cell(period_k=2))
+def test_vem_anchor_period_scales_with_period_k() -> None:
+    """period_k scales the anchor-pair period linearly (the higher branches,
+    spec §3 line 41); doubling k doubles T."""
+    t1 = _target_period_sec(_vem_cell(period_k=3, basis=("E", "M")))
+    t2 = _target_period_sec(_vem_cell(period_k=6, basis=("E", "M")))
     assert t2 == pytest.approx(2.0 * t1, rel=1e-12)
 ```
 
 Run: `uv run pytest tests/search/test_optimize_multibody.py -q` → **red**
-(`_target_period_sec` returns ~2.4 yr from the V-E pair).
+(`_target_period_sec` returns ~2.4 yr from the V-E pair / ignores the basis).
 
-### Task 2.2 — minimal impl: dispatch on body count
+### Task 2.2 — minimal impl: dispatch on period_basis, then body count
 
 Edit `optimize.py`. Add the import at the top of the resonance import block
 (currently `from cyclerfinder.search.resonance import synodic_period_days`):
@@ -274,18 +421,25 @@ Replace the body of `_target_period_sec`:
 def _target_period_sec(cell: Cell) -> float:
     """Resolve the target heliocentric period for ``cell``, seconds.
 
-    For a 2-body cell, ``period_k * T_syn(bodies[0], bodies[1])`` (the M5
-    native case, preserved byte-for-byte). For ``len(bodies) >= 3`` (M8's
-    VEM territory) the single-pair formula is wrong — the period is
-    ``period_k`` multiples of the body set's *beat period*
-    (``3*T_syn(E,M) ~ 4*T_syn(E,V) ~ 6.40 yr`` for ``["V","E","M"]``).
-    Dispatch to :func:`~cyclerfinder.search.resonance.multi_body_beat_days`
-    and :func:`~cyclerfinder.search.resonance.beat_period_days`.
+    Dispatch (M8 plan §2):
 
-    ``period_k`` here is the *beat multiple* (Reading A, M8 plan §2): the
-    catalogue loader converts an anchor-pair ``period.k`` into a
-    beat-multiple before building the cell.
+    * ``cell.period_basis`` set — use the catalogue's *anchor pair*:
+      ``T_syn(*period_basis) * period_k``. ``period_k`` is the sourced
+      catalogue value, never rewritten, so a Cell stays traceable to its
+      YAML row (EMEEVE: ``T_syn(E,M) * 3 ~ 6.41 yr``).
+    * ``period_basis is None`` and ``len(bodies) >= 3`` — fall back to the
+      body set's *natural beat* via
+      :func:`~cyclerfinder.search.resonance.multi_body_beat_days` /
+      :func:`~cyclerfinder.search.resonance.beat_period_days`
+      (``3*T_syn(E,M) ~ 4*T_syn(E,V) ~ 6.40 yr`` for ``["V","E","M"]``).
+    * ``period_basis is None`` and ``len(bodies) == 2`` — the M5 native
+      single-pair formula, preserved byte-for-byte.
     """
+    if cell.period_basis is not None:
+        a, b = cell.period_basis
+        t_syn_days = synodic_period_days(a, b)
+        return t_syn_days * cell.period_k * SECONDS_PER_DAY
+
     n = len(cell.bodies)
     if n < 2:
         raise ValueError(
@@ -334,16 +488,18 @@ Run the **whole existing optimise suite** to confirm no regression:
 ### Task 2.4 — commit
 
 ```
-search/optimize: multi-body beat-period dispatch in _target_period_sec
+search/optimize: period_basis + beat dispatch in _target_period_sec
 
-len(bodies)>=3 now resolves the total period from resonance.beat_period_days
-(VEM 3xE-M~4xE-V~6.40yr) instead of the wrong single-pair formula. 2-body
-path preserved byte-for-byte. Closes the optimize.py:229 M8 extension point.
+period_basis-bearing cells resolve via the catalogue anchor pair
+(T_syn(*basis)*period_k, EMEEVE 3xE-M~6.41yr) with period_k untouched.
+Basis-None >=3-body cells fall back to resonance.beat_period_days; the
+2-body path is preserved byte-for-byte. Closes the optimize.py:229 M8
+extension point without mutating period_k.
 ```
 
 ---
 
-## 3. Tisserand feasibility for 3-body sequences (M-L-free; tests + doc only)
+## 3. Tisserand feasibility for 3-body sequences (M-L-free; same-body bypass + tests)
 
 `tisserand_feasible` (`sequence.py:265`) already loops over **every**
 consecutive sequence pair (`sequence.py:317` `for i in range(len(cell.sequence) - 1)`)
@@ -361,6 +517,12 @@ are ignored. M8 does **not** fix that (it is M-3D). M8 only:
    candidate surviving the coplanar Tisserand gate is *necessary but not
    sufficient* for real-ephemeris closure (the M-ED filter is the sufficiency
    test).
+3. Adds a **same-body-pair bypass** to `tisserand_feasible` (Task 3.2). A
+   same-body "leg" (e.g. `E->E` in the EMEEVE loop) is a multi-rev
+   phasing/resonant loop, *not* a transfer, so the coplanar `linkable()`
+   predicate cannot meaningfully evaluate it. This is a small, justified
+   production change (a `continue` skip), not the blind-pinning the earlier
+   draft proposed.
 
 ### Task 3.1 — failing test: VEM consecutive pairs are coplanar-linkable
 
@@ -381,10 +543,10 @@ from cyclerfinder.search.sequence import Cell, tisserand_feasible
 
 def _emeeve_cell() -> Cell:
     seq = ("E", "M", "E", "E", "V", "E")  # vem-emeeve-3syn sequence_canonical
-    # NOTE: adjacency E-E at index 2 is the same-body loop leg; enumerate_cells
+    # NOTE: adjacency E-E at index 3 is the same-body loop leg; enumerate_cells
     # forbids it but a catalogue-derived cell can carry it. tisserand_feasible
-    # must handle a same-body pair gracefully (linkable returns False / a body
-    # is trivially "linkable to itself" depends on the predicate — see Task 3.2).
+    # bypasses same-body pairs (Task 3.2) because linkable(X,X,..) is trivially
+    # and meaninglessly True; loop legs are validated by M-L/M-ED, not Tisserand.
     n_legs = len(seq) - 1
     return Cell(
         bodies=("V", "E", "M"),
@@ -420,48 +582,95 @@ proceeding (it would indicate `linkable` cannot bracket a V-M or M-E pair, a
 real finding to surface). Either way, **record the observed result in the
 test as the pinned baseline.**
 
-### Task 3.2 — same-body-pair behaviour at the EMEEVE loop leg
+### Task 3.2 — bypass same-body pairs in `tisserand_feasible`
 
 The EMEEVE catalogue sequence contains an `E-E` adjacency (`catalogue.yaml:1777`),
 which `enumerate_cells` forbids (`sequence.py:226`) but a catalogue-derived
-cell carries. Add a test that documents how `tisserand_feasible` treats it:
+cell carries. The earlier draft proposed merely *pinning* whatever
+`linkable(E,E,..)` returns. That is wrong — a same-body "leg" is a multi-rev
+phasing/resonant loop, not a transfer, and a blind-pinned coplanar result is
+either a meaningless False (which would falsely reject the whole EMEEVE cell)
+or a meaningless trivial True. We resolve this by *skipping* same-body pairs.
+
+#### Step 1 — mathematically verify how `linkable` handles identical bodies (finding)
+
+Read `linkable` (`tisserand.py:302-440`). For `body_a == body_b`:
+
+- `vinf_to_tisserand(body_a, vinf) == vinf_to_tisserand(body_b, vinf)`, so
+  `t_pa == t_pb` and `_a_branches_at_e(...)` produces **identical** branch
+  lists: `branches_a[i] == branches_b[i]` at every `e` sample
+  (`tisserand.py:359-364`).
+- The first inner-loop check (`tisserand.py:372-375`) computes
+  `g_lo = a_branch_lo - b_branch_lo`. For the *same* branch value at the same
+  sample this is exactly `0.0`, so `abs(g_lo) <= tol_au` is **True** and
+  `linkable` returns **True immediately** at `i = 0`.
+
+**Finding:** `linkable(X, X, vinf)` is *trivially* True (a contour is identical
+to itself) for any vinf above the floor — there is no divide-by-zero (the
+`brentq` refinement is never reached), but the answer is **physically
+meaningless**: it asserts "X is reachable from X at fixed (a,e)", which says
+nothing about a phasing loop. So pinning it would bake a meaningless True into
+the baseline. Document this finding in the test docstring.
+
+#### Step 2 — production change: skip same-body pairs
+
+Edit `tisserand_feasible` (`sequence.py:317-326`). Inside the
+`for i in range(len(cell.sequence) - 1)` loop, before computing `body_a`/
+`body_b`'s linkability:
 
 ```python
-def test_emeeve_same_body_loop_leg_behaviour() -> None:
-    """Pin how tisserand_feasible treats the E-E loop-leg adjacency.
-
-    A same-body 'leg' is a multi-rev phasing loop, not a transfer; the
-    coplanar Tisserand predicate is not meaningful for it. This test PINS
-    the current behaviour (whatever it is) so M-N's structural-inference
-    step (which builds the EMEEVE cell with the loop leg as n_revs>=1) knows
-    whether it must special-case same-body legs before calling the gate.
-    """
-    cell = _emeeve_cell()
-    result = tisserand_feasible(cell, vinf_cap=7.0)
-    # Record the observed baseline. If False because linkable(E,E,..) cannot
-    # bracket (E to itself has no synodic contour intersection band), the
-    # structural-inference step in a later M-N/M-ED task must skip same-body
-    # pairs in the feasibility check. Document the chosen value here:
-    assert result in (True, False)  # replace with the observed constant + a comment
+        for i in range(len(cell.sequence) - 1):
+            body_a = cell.sequence[i]
+            body_b = cell.sequence[i + 1]
+            if body_a == body_b:
+                # Same-body adjacency (e.g. the EMEEVE E-E loop leg) is a
+                # multi-rev phasing/resonant loop, not a transfer. The coplanar
+                # linkable() predicate is meaningless here (it returns a trivial
+                # True for X-to-X). Skip it; loop legs are validated by the
+                # multi-rev Lambert/closure path (M-L/M-ED), not by Tisserand.
+                continue
+            found = False
+            ...
 ```
 
-> **Action when writing:** replace the `in (True, False)` placeholder with the
-> *actual observed* boolean and a one-line comment explaining it. Do **not**
-> leave a tautological assert in the committed test — that is a no-op gate.
-> This is a characterisation finding, not a placeholder step.
+The distinct-pair behaviour is unchanged byte-for-byte.
 
-Run, observe, pin, then:
+#### Step 3 — test
+
+```python
+def test_emeeve_loop_leg_bypass_returns_true() -> None:
+    """An EMEEVE-style cell with an E-E loop leg returns True under the
+    same-body bypass — the loop leg does NOT falsely trigger rejection.
+
+    Finding (plan §3 Task 3.2 step 1): linkable(E, E, vinf) is trivially True
+    (a contour equals itself) and physically meaningless, so we skip same-body
+    pairs rather than consult linkable. Every distinct pair (E-M, M-E, E-V,
+    V-E) is coplanar-linkable in (0.5, 7.0], so the cell is feasible.
+    """
+    assert tisserand_feasible(_emeeve_cell(), vinf_cap=7.0) is True
+
+
+def test_distinct_pair_feasibility_unchanged() -> None:
+    """The bypass does not alter distinct-pair behaviour: a plain E-V-M-E cell
+    still passes exactly as before."""
+    assert tisserand_feasible(_vem_simple_cell(), vinf_cap=7.0) is True
+```
+
+Run: `uv run pytest tests/search/test_sequence_multibody.py -q` → green, then
+the full sequence/enumeration suite to confirm distinct-pair regressions are
+clean: `uv run pytest tests/search/test_sequence.py -q`, then
 `uv run ruff check . && uv run ruff format --check . && uv run mypy src tests`.
 
 ### Task 3.3 — commit
 
 ```
-search/sequence: pin coplanar Tisserand baseline for VEM 3-body sequences
+search/sequence: bypass same-body pairs in tisserand_feasible
 
-Characterisation tests for tisserand_feasible on E-V-M-E and the EMEEVE
-loop-leg sequence. No production change: the gate is already N-agnostic and
-honestly coplanar-only (sequence.py:308). Baselines the i=0 behaviour so the
-M-3D inclination lift surfaces as a reviewed diff.
+Same-body adjacencies (the EMEEVE E-E loop leg) are multi-rev phasing loops,
+not transfers; linkable(X,X,..) is trivially and meaninglessly True, so the
+gate now skips them (loop legs are validated by M-L/M-ED). Distinct-pair
+behaviour is byte-identical. Tests pin the EMEEVE bypass and the coplanar
+E-V-M-E baseline so the M-3D inclination lift surfaces as a reviewed diff.
 ```
 
 ---
@@ -493,7 +702,7 @@ GOLDEN DISCIPLINE: both VEM catalogue rows have null V_inf and null
 orbit_elements (catalogue.yaml:1677-1703, 1788-1806). The ONLY sourced
 anchors are period.years and sequence_canonical. This gate asserts those and
 NOTHING our own optimiser computes. The converged-geometry case is xfail
-pending M-ED (real-ephemeris discovery) — see plan §4.3.
+pending M-ED (real-ephemeris discovery) — see plan §4 Task 4.2.
 """
 from __future__ import annotations
 
@@ -514,9 +723,9 @@ def _row(entry_id: str) -> dict:
     raise AssertionError(f"catalogue row {entry_id!r} not found")
 
 
-def test_emeeve_sourced_period_matches_beat_resolver() -> None:
+def test_emeeve_sourced_period_matches_anchor_resolver() -> None:
     """The EMEEVE row's SOURCED period (6.41 yr, catalogue.yaml:1782) matches
-    what _target_period_sec resolves for its VEM body set at the natural beat.
+    what _target_period_sec resolves from the row's anchor pair + sourced k.
 
     EXPECTED side = the catalogue's published period.years (sourced from
     Jones 2017 via the row). The resolver output is the side under test.
@@ -525,22 +734,24 @@ def test_emeeve_sourced_period_matches_beat_resolver() -> None:
     sourced_years = float(row["period"]["years"])  # 6.41, Jones 2017
     assert sourced_years == pytest.approx(6.41, abs=0.005)  # fixture sanity
 
-    # Build the beat-multiple cell (period_k=1 = the natural beat; the row's
-    # anchor-pair k=3 maps to beat-multiple 1 per plan §2 / §5).
+    # Build the cell exactly as the loader (§5) would: anchor pair from
+    # period.pair, sourced period_k UNCHANGED (no silent k rewrite, plan §2).
     seq = tuple(row["sequence_canonical"].split("-"))  # E,M,E,E,V,E
+    basis = tuple(row["period"]["pair"].split("-"))    # ("E","M")
     n_legs = len(seq) - 1
     cell = Cell(
         bodies=("V", "E", "M"),
         sequence=seq,
-        period_k=1,
+        period_k=int(row["period"]["k"]),  # 3, traceable to the YAML
         per_leg_revs=(0,) * n_legs,
         per_leg_branch=("single",) * n_legs,
+        period_basis=basis,
     )
     resolved_years = (
         _target_period_sec(cell) / SECONDS_PER_DAY / DAYS_PER_JULIAN_YEAR
     )
-    # Sourced 6.41 yr vs the 3xE-M=4xE-V beat 6.406 yr: agree within the
-    # inter-source rounding (Jones rounds to 6.4; our constants give 6.406).
+    # Sourced 6.41 yr vs 3*T_syn(E,M) ~ 6.405 yr: agree within inter-source
+    # rounding (Jones rounds to 6.4; our constants give 6.405).
     assert resolved_years == pytest.approx(sourced_years, abs=0.02)
 ```
 
@@ -572,14 +783,16 @@ def test_emeeve_idealized_optimiser_converges_feasible() -> None:
 
     # EMEEVE with loop leg requires multi-rev (M-L). Until M-L lands this also
     # cannot construct; the xfail covers both the M-L and the convergence gaps.
+    # Built as the loader would: anchor pair (E,M), sourced k=3, no k rewrite.
     seq = ("E", "M", "E", "E", "V", "E")
     n_legs = len(seq) - 1
     cell = Cell(
         bodies=("V", "E", "M"),
         sequence=seq,
-        period_k=1,
+        period_k=3,
         per_leg_revs=(0, 0, 1, 0, 0),  # the E-E loop leg is multi-rev
         per_leg_branch=("single", "single", "low", "single", "single"),
+        period_basis=("E", "M"),
     )
     result = optimise_cell_idealized(
         cell, Ephemeris(model="circular"), vinf_cap=7.0, seed=0,
@@ -597,15 +810,16 @@ break CI but is visible in the report.
 ```
 test: VEM rediscovery gate against sourced period anchor + M-ED xfail
 
-Asserts the EMEEVE row's sourced 6.41-yr period round-trips through the new
-beat resolver. The full ballistic-convergence case is an xfail handed to
-M-ED — no computed V_inf is ever asserted as golden (both VEM rows have null
-V_inf; only period/sequence are sourced).
+Asserts the EMEEVE row's sourced 6.41-yr period round-trips through the
+anchor-pair resolver (period_basis=(E,M), sourced k=3, no k rewrite). The
+full ballistic-convergence case is an xfail handed to M-ED — no computed
+V_inf is ever asserted as golden (both VEM rows have null V_inf; only
+period/sequence are sourced).
 ```
 
 ---
 
-## 5. Loader admission: VEM rows from `NOT_TWO_BODY` to a categorised multibody class
+## 5. Loader admission: ≥3-body rows from `NOT_TWO_BODY` to a categorised multibody class
 
 Today both VEM rows are `ExclusionReason.NOT_TWO_BODY` (`_catalogue_loader.py:174-176`)
 and the census ratchet freezes that at `2`
@@ -618,8 +832,17 @@ have no sourced V∞ to rediscover, and `jones-2017-vem-triple-family`'s
 sequence is an explicit placeholder (`catalogue.yaml:1664`). Admitting them as
 `CONSTRUCTIBLE` would feed the V∞-asserting rediscovery suite
 (`test_catalogue_rediscovery.py`) garbage targets. Instead add a distinct
-reason `CONSTRUCTIBLE_MULTIBODY` that means "3-body, period+sequence sourced,
+reason `CONSTRUCTIBLE_MULTIBODY` that means "≥3-body, period+sequence sourced,
 admitted to the *VEM* gate (§4) but not to the 2-body V∞ rediscovery gate."
+
+**N-agnostic.** The classification does **not** hardcode a `{"V","E","M"}`
+bodyset — it admits any `len(bodies) >= 3` row with a valid period block. The
+two current VEM rows are the only ≥3-body rows in the catalogue today, but a
+future Jovian or Saturnian ≥3-body row would be admitted to the same
+categorised class without a loader edit (keeping `linkable`/Tisserand
+heliocentric assumptions aside — those remain a separate gate). This avoids a
+VEM-specific special case that would have to be revisited for every new body
+set.
 
 ### Task 5.1 — failing test: census expects the new multibody class
 
@@ -641,34 +864,30 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
 Run: `uv run pytest tests/test_catalogue_rediscovery.py -k census -q` → **red**
 (`AttributeError: CONSTRUCTIBLE_MULTIBODY` / count mismatch).
 
-### Task 5.2 — minimal impl: new reason + VEM classification path
+### Task 5.2 — minimal impl: new reason + N-agnostic multibody classification
 
 Edit `tests/_catalogue_loader.py`. Add the enum member after `CONSTRUCTIBLE`:
 
 ```python
     CONSTRUCTIBLE_MULTIBODY = "constructible_multibody"
-    """3-body (VEM) row with sourced period + sequence but null V_inf /
+    """>=3-body row with sourced period + sequence but null V_inf /
     orbit_elements. Admitted to the M8 VEM gate (tests/test_vem_rediscovery.py),
     which asserts only period/sequence — NOT to the 2-body V_inf rediscovery
-    gauntlet (no sourced V_inf to rediscover). See M8 plan §5."""
+    gauntlet (no sourced V_inf to rediscover). See M8-Core plan §5."""
 ```
 
 In `classify_row`, replace the unconditional `NOT_TWO_BODY` branch
-(`:174-176`) with a 3-body VEM sub-classification. Keep the order: heliocentric
-and ballistic checks first (so a non-Sun or low-thrust VEM row would still fall
-out earlier):
+(`:174-176`) with an **N-agnostic** sub-classification — do **not** hardcode a
+VEM bodyset. Any `len(bodies) >= 3` row with a valid period block (both
+`years` and `k` present) is admitted; everything else stays `NOT_TWO_BODY`.
+Keep the order: heliocentric and ballistic checks first (so a non-Sun or
+low-thrust ≥3-body row would still fall out earlier):
 
 ```python
     bodies = row.get("bodies") or []
     if len(bodies) != 2:
-        # 3-body VEM rows with a sourced period are admitted to the M8 VEM
-        # gate as a categorised (non-silent) class; everything else stays
-        # NOT_TWO_BODY. Period must be present (otherwise MISSING_PERIOD-like
-        # rows would masquerade as constructible-multibody).
         period = row.get("period") or {}
-        bodyset = set(bodies)
-        is_vem = len(bodies) >= 3 and bodyset <= {"V", "E", "M"}
-        if is_vem and period.get("years") is not None and period.get("k") is not None:
+        if len(bodies) >= 3 and period.get("years") is not None and period.get("k") is not None:
             entry = CatalogueEntry(
                 id=row["id"],
                 name=row.get("name", row["id"]),
@@ -676,19 +895,21 @@ out earlier):
                 sequence_canonical=row.get("sequence_canonical") or "",
                 period_k=int(period["k"]),
                 period_years=float(period["years"]),
-                vinf_targets_kms=(),   # sourced: none — VEM rows have null V_inf
-                leg_tofs_days=(),      # sourced: none — VEM rows have legs: []
+                vinf_targets_kms=(),
+                leg_tofs_days=(),
             )
             return ExclusionReason.CONSTRUCTIBLE_MULTIBODY, entry
         return ExclusionReason.NOT_TWO_BODY, None
 ```
 
-> **Note on the anchor-pair→beat-multiple mapping (plan §2 design decision):**
-> the `CatalogueEntry.period_k` stored here is the *catalogue's anchor-pair k*
-> (3 for EMEEVE), NOT the beat-multiple. The VEM gate (§4) and any future VEM
-> cell builder must convert: anchor-pair `k=3` on `(E,M)` ⇒ beat-multiple `1`
-> (because the natural beat *is* 3×E-M). Document this at both call sites. Do
-> not silently reinterpret `period_k`.
+> **Note on traceable period (plan §2 design decision):** the
+> `CatalogueEntry.period_k` stored here is the *catalogue's sourced k* (3 for
+> EMEEVE) on the row's anchor pair (`period.pair`), and is **never rewritten**.
+> The VEM gate (§4) and any future VEM cell builder construct the `Cell` with
+> `period_basis = period.pair` and `period_k` verbatim, and `_target_period_sec`
+> derives `T_syn(*period_basis) * period_k` from those. There is no
+> "beat-multiple" reinterpretation of `period_k` anywhere — that was rejected
+> (plan §2) precisely because it destroyed traceability.
 
 Run: `uv run pytest tests/test_catalogue_rediscovery.py -k census -q` → **green**.
 
@@ -747,18 +968,42 @@ with where it actually lands. Do not stub them here.
 | **Multi-rev Lambert solver** (the `lambert(max_revs=N)` math) | **M-L** (roadmap, "ready for task-level planning: YES"). | Foundational and independent. VEM *closure-sequence* convergence needs it (the EMEEVE loop leg), which is why this plan keeps that case as `xfail`. The period/feasibility/loader work here is M-L-free. |
 | **Full-3D inclination** (Venus 3.4°, Mars 1.85°) | **M-3D** (roadmap, "needs design first"). | The coplanar Tisserand limitation (§3) is honestly documented, not fixed. Real VEM closure almost certainly needs 3D (Venus's plane change is where the cheap steering comes from, spec §12.1 step 3). |
 | **Real-ephemeris VEM discovery / convergence** (`optimise_cell_ephemeris`, TCM budget, phase-match) | **M-ED** (roadmap, "needs design first"). | This is where a VEM candidate is actually found and reported. The §4.2 `xfail` is its handoff target. |
-| **CLI `--bodies V,E,M --period beat` + viz + reporting** (spec §8 line 152, §6 line 207) | **M8-UX sub-stream** (this plan is the M8 *search-core* sub-stream). | The spec bundles "VEM campaign + UX" under one milestone label, but the UX (cli/viz/docs) is a distinct deliverable with its own gate and is best planned separately once the search core lands. Flagged so the human can decide whether to split the milestone label. |
+| **CLI `--bodies V,E,M --period beat` + viz + reporting + docs** (spec §8 line 152, §6 line 207) | **M8-UX** (a separate milestone; see the subsection below). | Decided: split out. The spec bundles "VEM campaign + UX" under one M8 label, but the UX is a distinct deliverable with its own gate. |
 | **Structural inference** (catalogue `E-M-E-E-V-E @ k` → `Cell` with correct per-leg `n_revs`/`branch`) | **M-N/M-ED** (roadmap line 94). | Needs M-L to construct the loop leg. This plan hand-builds the cell in tests; the automated inference belongs after M-L. |
+
+### Out of scope → M8-UX (separate milestone)
+
+This plan is **M8-Core** (search-core only): the routing, the Tisserand
+feasibility gate, the VEM rediscovery gate, and the loader admission. The
+user-facing surface is carved into a separate **M8-UX** milestone:
+
+- **CLI** — `--bodies V,E,M --period beat` (and anchor-pair flags) wiring the
+  enumerator/optimiser to a command-line entry point.
+- **Visualisation** — porkchop / trajectory / beat-diagram plots for VEM cells.
+- **Reporting + docs** — the campaign report format and user documentation for
+  running a VEM search.
+
+**Rationale.** Tying UI to the search core blocks merging functional code: the
+search-core changes (`period_basis`, the beat/anchor resolver, the same-body
+bypass, the loader class) are reviewable and shippable on their own and gated
+by golden/feasibility tests. The CLI/viz/docs have a different gate (end-to-end
+behaviour, rendering) and a different review surface. Coupling them would hold
+correct, tested search-core code hostage to UX iteration. M8-UX depends on
+M8-Core landing first.
 
 ---
 
 ## 7. Definition of done
 
-1. `tests/search/test_optimize_multibody.py` — VEM period resolves to the
-   6.406-yr beat; scales with `period_k`; 2-body path byte-identical. **Green.**
-2. `tests/search/test_sequence_multibody.py` — VEM coplanar Tisserand baseline
-   pinned (with the observed same-body-pair constant documented, not a
-   tautology). **Green.**
+0. `tests/search/test_sequence_cell_basis.py` — `Cell.period_basis` carries the
+   anchor pair without mutating `period_k`; `id` token appended only when set;
+   existing 2-body ids byte-identical. **Green.**
+1. `tests/search/test_optimize_multibody.py` — EMEEVE anchor-pair period
+   resolves to 6.41 yr; basis-None ≥3-body falls back to the 6.406-yr natural
+   beat; scales with `period_k`; 2-body basis-None path byte-identical. **Green.**
+2. `tests/search/test_sequence_multibody.py` — the EMEEVE E-E loop leg is
+   bypassed (returns True, not falsely rejected); distinct-pair coplanar
+   Tisserand baseline unchanged. **Green.**
 3. `tests/test_vem_rediscovery.py` — sourced EMEEVE period round-trips the
    resolver (green); full ballistic convergence registers `xfail` (handed to
    M-ED).
@@ -775,30 +1020,42 @@ with where it actually lands. Do not stub them here.
 
 ---
 
-## 8. Open design questions for the human (resolve before execution)
+## 8. Resolved design decisions
 
-1. **Period convention (§2 Reading A vs B).** Confirm `_target_period_sec`
-   interprets `Cell.period_k` as a *beat multiple* and the loader converts the
-   catalogue's anchor-pair `period.k` (3 for EMEEVE) into beat-multiple 1.
-   Alternative: add a `period_basis`/`period_pair` field to the frozen `Cell`
-   dataclass + `Cell.id` format — a wider M4 change flagged but not taken
-   unilaterally.
-2. **`CONSTRUCTIBLE_MULTIBODY` vs a wider loader refactor.** Is a new
-   `ExclusionReason` the right shape, or should the loader grow a separate
-   `load_multibody_entries()` surface? The plan takes the minimal-diff path
-   (new reason, V∞ gauntlet untouched); confirm that is preferred over a
-   loader API change.
-3. **Milestone label split.** Spec §8 bundles "VEM campaign + UX" as one M8.
-   This plan delivers only the *search core*. Confirm whether CLI/viz/docs
-   should be a separate phase (M8-UX) or folded back in here.
-4. **EMEEVE vs the §13.8 worked sequence.** The catalogue's sourced EMEEVE
-   sequence is `E-M-E-E-V-E` (`catalogue.yaml:1777`); the spec §13.8 worked
-   cell-id example is `E-V-M-E-M-E`. They are different itineraries. Confirm
-   the gate should anchor on the *catalogue's sourced* sequence (it must, for
-   golden discipline) and the §13.8 string is illustrative only.
-5. **Beat-tuple selection robustness.** `_target_period_sec` takes
-   `multi_body_beat_days(bodies)[0]` (the lowest-mismatch tuple). For VEM at
-   the default `k_max=6`/`tol_frac=0.02` this is unambiguously `(4,3)`
-   (resonance gate `test_resonance.py:54`). Confirm we do not need to thread a
-   non-default `k_max`/`tol_frac` for higher-period VEM branches (12.8 yr / 32
-   yr, spec §3 line 41) in this milestone — the plan defers those to M-ED.
+These were the open questions in the original draft. Each is now **decided**;
+the plan above implements the decision. Recorded here so reviewers see the
+rationale without re-litigating.
+
+1. **Period convention — REJECT silent Reading A.** Do **not** reinterpret
+   `Cell.period_k` as a "beat multiple" and do **not** have the loader rewrite
+   the catalogue's anchor-pair `period.k`. That destroys traceability (a Cell
+   from `vem-emeeve-3syn` showing `period_k=1` looks like a bug vs the YAML's
+   `k=3`). **Decision:** add the optional `period_basis: tuple[str, str] | None`
+   field to the frozen `Cell` (§2 Task 2.0). The Cell echoes the anchor pair and
+   the sourced `period_k` verbatim; `_target_period_sec` dispatches on
+   `period_basis` (anchor-pair `T_syn(*basis)*k`), falling back to the natural
+   beat only when `period_basis is None and len(bodies) >= 3`, and preserving
+   the 2-body path byte-for-byte. `Cell.id` gains a `|p<AB>` token only when
+   `period_basis` is set, so existing 2-body ids are stable.
+2. **Loader shape — KEEP the new `CONSTRUCTIBLE_MULTIBODY` exclusion reason.**
+   Minimal-diff: it satisfies the census ratchet and keeps the ≥3-body rows out
+   of the 2-body V∞ rediscovery gauntlet (Task 5.3 guard) without a wider
+   loader-API change. The classification is N-agnostic (`len(bodies) >= 3` +
+   valid period block), not a hardcoded VEM bodyset (§5 Task 5.2).
+3. **Milestone split — SPLIT into M8-Core and M8-UX.** This plan is **M8-Core**
+   (search-core: routing, Tisserand, VEM rediscovery gate, loader admission).
+   CLI, visualisation, reporting, and docs are carved into a separate **M8-UX**
+   milestone (§6 "Out of scope → M8-UX"). Tying UI to the search core would
+   block merging correct, tested functional code.
+4. **EMEEVE sequence — anchor on the catalogue string `E-M-E-E-V-E`.** The gate
+   anchors on the catalogue's sourced `sequence_canonical = "E-M-E-E-V-E"`
+   (`catalogue.yaml:1777`) for golden discipline. The spec §13.8 worked cell-id
+   `E-V-M-E-M-E` is **illustrative only** and is not used as a test anchor.
+5. **Beat-tuple robustness — accept `multi_body_beat_days(...)[0]` for
+   M8-Core.** For the basis-None fallback the lowest-mismatch tuple is
+   unambiguously `(4,3)` ⇒ ~6.406 yr at the default `k_max=6`/`tol_frac=0.02`
+   (resonance gate `test_resonance.py:54`), reliable for the natural ~6.4-yr
+   beat. Threading non-default `k_max`/`tol_frac` for higher-period VEM branches
+   (12.8 yr / 32 yr, spec §3 line 41) is **deferred to M-ED**. Note: the primary
+   EMEEVE gate uses the anchor-pair path (decision 1), so the beat fallback is
+   only exercised for cells with no declared basis.
