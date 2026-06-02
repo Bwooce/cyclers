@@ -1,0 +1,463 @@
+# Hollister & Menning 1970, Table 3 "Solutions for orbits 1-15".
+# Source: W. M. Hollister & M. D. Menning, "Periodic Swing-By Orbits
+#   between Earth and Venus", J. Spacecraft and Rockets 7(10), Oct 1970,
+#   pp. 1193-1199; Table 3 spans pp. 1196-1198.
+# Local scan: docs/refs/hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf
+# Transcribed VISUALLY from the scanned image (no text layer). Only digits
+#   printed in the scan are recorded; no value here was computed by us.
+# EMOS (Earth Mean Orbital Speed) = 29.785 km/s; V_inf[km/s] = vr_emos * 29.785.
+# Per-orbit checksum_days = (last Earth-row date) - (first Earth-row date);
+#   Table 3 footnote: "dates repeat after 16 yr (add 5844 days)", so the
+#   nominal checksum is 5844. Orbits 1-14 verify at 5844; orbit 15 prints
+#   448 .. 6291 = 5843 (both dates re-read at 450 dpi; 1-day source rounding).
+# Columns: planet (E/V), date_j2440000 (Julian - 2440000), vr_emos (V_r in
+#   EMOS), theta_deg (turn angle), rmin_radii (min distance, planet radii).
+orbits:
+  - orbit: 1
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 441, vr_emos: 0.155, theta_deg: 81.1, rmin_radii: 1.59}
+      - {planet: E, date_j2440000: 806, vr_emos: 0.155, theta_deg: 81.1, rmin_radii: 1.59}
+      - {planet: V, date_j2440000: 971, vr_emos: 0.179, theta_deg: 61.3, rmin_radii: 1.77}
+      - {planet: V, date_j2440000: 1196, vr_emos: 0.179, theta_deg: 61.3, rmin_radii: 1.77}
+      - {planet: V, date_j2440000: 1421, vr_emos: 0.179, theta_deg: 61.3, rmin_radii: 1.77}
+      - {planet: E, date_j2440000: 1591, vr_emos: 0.154, theta_deg: 81.7, rmin_radii: 1.37}
+      - {planet: E, date_j2440000: 1957, vr_emos: 0.154, theta_deg: 81.7, rmin_radii: 1.37}
+      - {planet: V, date_j2440000: 2125, vr_emos: 0.206, theta_deg: 34.6, rmin_radii: 3.3}
+      - {planet: V, date_j2440000: 2350, vr_emos: 0.206, theta_deg: 34.6, rmin_radii: 3.3}
+      - {planet: V, date_j2440000: 2575, vr_emos: 0.206, theta_deg: 34.6, rmin_radii: 3.3}
+      - {planet: E, date_j2440000: 2798, vr_emos: 0.193, theta_deg: 42.5, rmin_radii: 3.36}
+      - {planet: V, date_j2440000: 3163, vr_emos: 0.193, theta_deg: 42.5, rmin_radii: 3.36}
+      - {planet: V, date_j2440000: 3316, vr_emos: 0.196, theta_deg: 60.2, rmin_radii: 1.53}
+      - {planet: V, date_j2440000: 3541, vr_emos: 0.196, theta_deg: 60.2, rmin_radii: 1.53}
+      - {planet: V, date_j2440000: 3766, vr_emos: 0.196, theta_deg: 60.2, rmin_radii: 1.53}
+      - {planet: E, date_j2440000: 3935, vr_emos: 0.158, theta_deg: 84.1, rmin_radii: 1.4}
+      - {planet: E, date_j2440000: 4300, vr_emos: 0.158, theta_deg: 84.1, rmin_radii: 1.4}
+      - {planet: V, date_j2440000: 4471, vr_emos: 0.194, theta_deg: 59.2, rmin_radii: 1.61}
+      - {planet: V, date_j2440000: 4696, vr_emos: 0.194, theta_deg: 59.2, rmin_radii: 1.61}
+      - {planet: V, date_j2440000: 4921, vr_emos: 0.194, theta_deg: 59.2, rmin_radii: 1.61}
+      - {planet: E, date_j2440000: 5076, vr_emos: 0.175, theta_deg: 45.4, rmin_radii: 3.66}
+      - {planet: E, date_j2440000: 5442, vr_emos: 0.175, theta_deg: 45.4, rmin_radii: 3.66}
+      - {planet: V, date_j2440000: 5664, vr_emos: 0.225, theta_deg: 32.0, rmin_radii: 3.06}
+      - {planet: V, date_j2440000: 5889, vr_emos: 0.225, theta_deg: 32.0, rmin_radii: 3.06}
+      - {planet: V, date_j2440000: 6114, vr_emos: 0.225, theta_deg: 32.0, rmin_radii: 3.06}
+      - {planet: E, date_j2440000: 6285, vr_emos: 0.155, theta_deg: 81.1, rmin_radii: 1.59}
+  - orbit: 2
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 415, vr_emos: 0.137, theta_deg: 69.3, rmin_radii: 2.87}
+      - {planet: E, date_j2440000: 780, vr_emos: 0.137, theta_deg: 69.3, rmin_radii: 2.87}
+      - {planet: V, date_j2440000: 914, vr_emos: 0.231, theta_deg: 20.9, rmin_radii: 4.99}
+      - {planet: V, date_j2440000: 1139, vr_emos: 0.231, theta_deg: 18.4, rmin_radii: 5.83}
+      - {planet: V, date_j2440000: 1470, vr_emos: 0.23, theta_deg: 30.9, rmin_radii: 3.06}
+      - {planet: E, date_j2440000: 1614, vr_emos: 0.145, theta_deg: 77.4, rmin_radii: 2.02}
+      - {planet: E, date_j2440000: 1979, vr_emos: 0.145, theta_deg: 77.4, rmin_radii: 2.02}
+      - {planet: V, date_j2440000: 2086, vr_emos: 0.257, theta_deg: 14.3, rmin_radii: 6.26}
+      - {planet: V, date_j2440000: 2311, vr_emos: 0.257, theta_deg: 14.3, rmin_radii: 6.26}
+      - {planet: V, date_j2440000: 2643, vr_emos: 0.258, theta_deg: 6.9, rmin_radii: 13.92}
+      - {planet: E, date_j2440000: 2762, vr_emos: 0.161, theta_deg: 67.5, rmin_radii: 2.18}
+      - {planet: E, date_j2440000: 3127, vr_emos: 0.161, theta_deg: 67.5, rmin_radii: 2.18}
+      - {planet: V, date_j2440000: 3252, vr_emos: 0.246, theta_deg: 16.4, rmin_radii: 5.85}
+      - {planet: V, date_j2440000: 3477, vr_emos: 0.246, theta_deg: 8.7, rmin_radii: 11.8}
+      - {planet: V, date_j2440000: 3809, vr_emos: 0.246, theta_deg: 23.4, rmin_radii: 3.85}
+      - {planet: E, date_j2440000: 3927, vr_emos: 0.146, theta_deg: 85.6, rmin_radii: 1.57}
+      - {planet: E, date_j2440000: 4293, vr_emos: 0.146, theta_deg: 85.6, rmin_radii: 1.57}
+      - {planet: V, date_j2440000: 4426, vr_emos: 0.245, theta_deg: 20.9, rmin_radii: 4.44}
+      - {planet: V, date_j2440000: 4651, vr_emos: 0.245, theta_deg: 20.9, rmin_radii: 4.44}
+      - {planet: V, date_j2440000: 4983, vr_emos: 0.245, theta_deg: 12.6, rmin_radii: 8.0}
+      - {planet: E, date_j2440000: 5108, vr_emos: 0.143, theta_deg: 66.9, rmin_radii: 2.81}
+      - {planet: E, date_j2440000: 5473, vr_emos: 0.143, theta_deg: 66.9, rmin_radii: 2.81}
+      - {planet: V, date_j2440000: 5590, vr_emos: 0.257, theta_deg: 16.3, rmin_radii: 5.42}
+      - {planet: V, date_j2440000: 5715, vr_emos: 0.257, theta_deg: 10.5, rmin_radii: 8.87}
+      - {planet: V, date_j2440000: 6147, vr_emos: 0.256, theta_deg: 13.0, rmin_radii: 7.06}
+      - {planet: E, date_j2440000: 6259, vr_emos: 0.137, theta_deg: 69.3, rmin_radii: 2.87}
+  - orbit: 3
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 382, vr_emos: 0.162, theta_deg: 58.8, rmin_radii: 2.78}
+      - {planet: E, date_j2440000: 877, vr_emos: 0.162, theta_deg: 34.5, rmin_radii: 6.42}
+      - {planet: V, date_j2440000: 1012, vr_emos: 0.248, theta_deg: 20.7, rmin_radii: 4.38}
+      - {planet: V, date_j2440000: 1237, vr_emos: 0.248, theta_deg: 19.7, rmin_radii: 4.66}
+      - {planet: V, date_j2440000: 1462, vr_emos: 0.248, theta_deg: 19.7, rmin_radii: 4.66}
+      - {planet: E, date_j2440000: 1540, vr_emos: 0.165, theta_deg: 28.7, rmin_radii: 7.92}
+      - {planet: E, date_j2440000: 2034, vr_emos: 0.164, theta_deg: 18.4, rmin_radii: 13.74}
+      - {planet: V, date_j2440000: 2149, vr_emos: 0.136, theta_deg: 30.1, rmin_radii: 4.36}
+      - {planet: V, date_j2440000: 2374, vr_emos: 0.136, theta_deg: 30.1, rmin_radii: 4.36}
+      - {planet: V, date_j2440000: 2599, vr_emos: 0.136, theta_deg: 34.3, rmin_radii: 3.81}
+      - {planet: E, date_j2440000: 2697, vr_emos: 0.176, theta_deg: 11.2, rmin_radii: 21.04}
+      - {planet: E, date_j2440000: 3190, vr_emos: 0.176, theta_deg: 43.6, rmin_radii: 3.86}
+      - {planet: V, date_j2440000: 3308, vr_emos: 0.204, theta_deg: 62.7, rmin_radii: 1.31}
+      - {planet: V, date_j2440000: 3533, vr_emos: 0.204, theta_deg: 62.7, rmin_radii: 1.31}
+      - {planet: V, date_j2440000: 3758, vr_emos: 0.204, theta_deg: 62.7, rmin_radii: 1.31}
+      - {planet: E, date_j2440000: 3885, vr_emos: 0.215, theta_deg: 67.1, rmin_radii: 1.23}
+      - {planet: E, date_j2440000: 4374, vr_emos: 0.216, theta_deg: 26.7, rmin_radii: 5.06}
+      - {planet: V, date_j2440000: 4485, vr_emos: 0.158, theta_deg: 37.2, rmin_radii: 2.57}
+      - {planet: V, date_j2440000: 4710, vr_emos: 0.158, theta_deg: 37.2, rmin_radii: 2.57}
+      - {planet: V, date_j2440000: 4935, vr_emos: 0.158, theta_deg: 37.2, rmin_radii: 2.57}
+      - {planet: E, date_j2440000: 5039, vr_emos: 0.165, theta_deg: 27.3, rmin_radii: 8.4}
+      - {planet: E, date_j2440000: 5533, vr_emos: 0.165, theta_deg: 10.7, rmin_radii: 25.12}
+      - {planet: V, date_j2440000: 5641, vr_emos: 0.144, theta_deg: 67.9, rmin_radii: 2.26}
+      - {planet: V, date_j2440000: 5866, vr_emos: 0.144, theta_deg: 67.9, rmin_radii: 2.26}
+      - {planet: V, date_j2440000: 6091, vr_emos: 0.144, theta_deg: 67.9, rmin_radii: 2.26}
+      - {planet: E, date_j2440000: 6226, vr_emos: 0.162, theta_deg: 58.8, rmin_radii: 2.78}
+  - orbit: 4
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 432, vr_emos: 0.133, theta_deg: 76.8, rmin_radii: 2.45}
+      - {planet: E, date_j2440000: 798, vr_emos: 0.133, theta_deg: 76.8, rmin_radii: 2.45}
+      - {planet: V, date_j2440000: 989, vr_emos: 0.18, theta_deg: 43.4, rmin_radii: 4.11}
+      - {planet: V, date_j2440000: 1214, vr_emos: 0.18, theta_deg: 43.4, rmin_radii: 4.11}
+      - {planet: V, date_j2440000: 1439, vr_emos: 0.18, theta_deg: 43.4, rmin_radii: 4.11}
+      - {planet: E, date_j2440000: 1614, vr_emos: 0.188, theta_deg: 78.6, rmin_radii: 1.16}
+      - {planet: E, date_j2440000: 1980, vr_emos: 0.188, theta_deg: 78.6, rmin_radii: 1.16}
+      - {planet: V, date_j2440000: 2133, vr_emos: 0.282, theta_deg: 18.9, rmin_radii: 3.79}
+      - {planet: V, date_j2440000: 2358, vr_emos: 0.282, theta_deg: 13.5, rmin_radii: 5.41}
+      - {planet: V, date_j2440000: 2573, vr_emos: 0.282, theta_deg: 19.9, rmin_radii: 3.58}
+      - {planet: E, date_j2440000: 2710, vr_emos: 0.203, theta_deg: 57.4, rmin_radii: 1.86}
+      - {planet: E, date_j2440000: 3201, vr_emos: 0.202, theta_deg: 35.5, rmin_radii: 3.94}
+      - {planet: V, date_j2440000: 3313, vr_emos: 0.208, theta_deg: 30.9, rmin_radii: 3.77}
+      - {planet: V, date_j2440000: 3538, vr_emos: 0.208, theta_deg: 26.5, rmin_radii: 4.59}
+      - {planet: V, date_j2440000: 3763, vr_emos: 0.208, theta_deg: 26.5, rmin_radii: 4.59}
+      - {planet: E, date_j2440000: 3929, vr_emos: 0.159, theta_deg: 86.5, rmin_radii: 1.28}
+      - {planet: E, date_j2440000: 4294, vr_emos: 0.159, theta_deg: 86.5, rmin_radii: 1.28}
+      - {planet: V, date_j2440000: 4468, vr_emos: 0.185, theta_deg: 57.4, rmin_radii: 1.86}
+      - {planet: V, date_j2440000: 4693, vr_emos: 0.185, theta_deg: 57.4, rmin_radii: 1.86}
+      - {planet: V, date_j2440000: 4918, vr_emos: 0.185, theta_deg: 57.4, rmin_radii: 1.86}
+      - {planet: E, date_j2440000: 5074, vr_emos: 0.163, theta_deg: 46.9, rmin_radii: 4.03}
+      - {planet: E, date_j2440000: 5439, vr_emos: 0.163, theta_deg: 46.9, rmin_radii: 4.03}
+      - {planet: V, date_j2440000: 5659, vr_emos: 0.204, theta_deg: 34.1, rmin_radii: 3.41}
+      - {planet: V, date_j2440000: 5884, vr_emos: 0.204, theta_deg: 34.1, rmin_radii: 3.41}
+      - {planet: V, date_j2440000: 6109, vr_emos: 0.204, theta_deg: 34.1, rmin_radii: 3.41}
+      - {planet: E, date_j2440000: 6276, vr_emos: 0.133, theta_deg: 76.8, rmin_radii: 2.45}
+  - orbit: 5
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 442, vr_emos: 0.133, theta_deg: 80.3, rmin_radii: 2.21}
+      - {planet: E, date_j2440000: 808, vr_emos: 0.133, theta_deg: 80.3, rmin_radii: 2.21}
+      - {planet: V, date_j2440000: 977, vr_emos: 0.165, theta_deg: 34.0, rmin_radii: 5.25}
+      - {planet: V, date_j2440000: 1242, vr_emos: 0.165, theta_deg: 34.0, rmin_radii: 5.25}
+      - {planet: V, date_j2440000: 1467, vr_emos: 0.165, theta_deg: 38.7, rmin_radii: 3.37}
+      - {planet: E, date_j2440000: 1542, vr_emos: 0.173, theta_deg: 43.9, rmin_radii: 3.96}
+      - {planet: E, date_j2440000: 2036, vr_emos: 0.173, theta_deg: 15.3, rmin_radii: 15.16}
+      - {planet: V, date_j2440000: 2147, vr_emos: 0.136, theta_deg: 52.0, rmin_radii: 4.06}
+      - {planet: V, date_j2440000: 2372, vr_emos: 0.136, theta_deg: 52.0, rmin_radii: 4.06}
+      - {planet: V, date_j2440000: 2597, vr_emos: 0.136, theta_deg: 52.9, rmin_radii: 3.95}
+      - {planet: E, date_j2440000: 2698, vr_emos: 0.171, theta_deg: 13.2, rmin_radii: 18.71}
+      - {planet: E, date_j2440000: 3192, vr_emos: 0.171, theta_deg: 37.7, rmin_radii: 5.03}
+      - {planet: V, date_j2440000: 3307, vr_emos: 0.186, theta_deg: 32.9, rmin_radii: 4.3}
+      - {planet: V, date_j2440000: 3532, vr_emos: 0.186, theta_deg: 26.0, rmin_radii: 5.86}
+      - {planet: V, date_j2440000: 3757, vr_emos: 0.186, theta_deg: 29.4, rmin_radii: 4.0}
+      - {planet: E, date_j2440000: 3922, vr_emos: 0.135, theta_deg: 80.0, rmin_radii: 2.16}
+      - {planet: E, date_j2440000: 4287, vr_emos: 0.135, theta_deg: 80.0, rmin_radii: 2.16}
+      - {planet: V, date_j2440000: 4474, vr_emos: 0.148, theta_deg: 64.4, rmin_radii: 2.37}
+      - {planet: V, date_j2440000: 4699, vr_emos: 0.148, theta_deg: 64.4, rmin_radii: 2.37}
+      - {planet: V, date_j2440000: 4924, vr_emos: 0.148, theta_deg: 64.4, rmin_radii: 2.37}
+      - {planet: E, date_j2440000: 5088, vr_emos: 0.143, theta_deg: 52.3, rmin_radii: 4.37}
+      - {planet: E, date_j2440000: 5453, vr_emos: 0.143, theta_deg: 52.3, rmin_radii: 4.37}
+      - {planet: V, date_j2440000: 5662, vr_emos: 0.188, theta_deg: 35.6, rmin_radii: 3.78}
+      - {planet: V, date_j2440000: 5877, vr_emos: 0.188, theta_deg: 35.6, rmin_radii: 3.78}
+      - {planet: V, date_j2440000: 6102, vr_emos: 0.188, theta_deg: 35.6, rmin_radii: 3.78}
+      - {planet: E, date_j2440000: 6286, vr_emos: 0.133, theta_deg: 80.3, rmin_radii: 2.21}
+  - orbit: 6
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 444, vr_emos: 0.125, theta_deg: 85.0, rmin_radii: 2.18}
+      - {planet: E, date_j2440000: 809, vr_emos: 0.125, theta_deg: 85.0, rmin_radii: 2.18}
+      - {planet: V, date_j2440000: 993, vr_emos: 0.187, theta_deg: 41.7, rmin_radii: 3.06}
+      - {planet: V, date_j2440000: 1220, vr_emos: 0.187, theta_deg: 41.7, rmin_radii: 3.06}
+      - {planet: V, date_j2440000: 1445, vr_emos: 0.187, theta_deg: 41.7, rmin_radii: 3.06}
+      - {planet: E, date_j2440000: 1620, vr_emos: 0.2, theta_deg: 75.7, rmin_radii: 1.12}
+      - {planet: E, date_j2440000: 1986, vr_emos: 0.2, theta_deg: 75.7, rmin_radii: 1.12}
+      - {planet: V, date_j2440000: 2135, vr_emos: 0.302, theta_deg: 17.5, rmin_radii: 3.6}
+      - {planet: V, date_j2440000: 2585, vr_emos: 0.302, theta_deg: 11.4, rmin_radii: 5.85}
+      - {planet: V, date_j2440000: 2810, vr_emos: 0.302, theta_deg: 18.0, rmin_radii: 3.48}
+      - {planet: E, date_j2440000: 2716, vr_emos: 0.209, theta_deg: 64.1, rmin_radii: 1.43}
+      - {planet: E, date_j2440000: 3206, vr_emos: 0.209, theta_deg: 11.4, rmin_radii: 14.62}
+      - {planet: V, date_j2440000: 3299, vr_emos: 0.15, theta_deg: 62.8, rmin_radii: 2.43}
+      - {planet: V, date_j2440000: 3524, vr_emos: 0.15, theta_deg: 62.8, rmin_radii: 2.43}
+      - {planet: V, date_j2440000: 3749, vr_emos: 0.15, theta_deg: 62.8, rmin_radii: 2.43}
+      - {planet: E, date_j2440000: 3870, vr_emos: 0.186, theta_deg: 48.0, rmin_radii: 2.98}
+      - {planet: E, date_j2440000: 4363, vr_emos: 0.186, theta_deg: 32.3, rmin_radii: 5.18}
+      - {planet: V, date_j2440000: 4474, vr_emos: 0.134, theta_deg: 54.9, rmin_radii: 3.87}
+      - {planet: V, date_j2440000: 4699, vr_emos: 0.134, theta_deg: 45.4, rmin_radii: 5.26}
+      - {planet: V, date_j2440000: 4924, vr_emos: 0.134, theta_deg: 45.4, rmin_radii: 5.26}
+      - {planet: E, date_j2440000: 5093, vr_emos: 0.133, theta_deg: 56.6, rmin_radii: 4.41}
+      - {planet: E, date_j2440000: 5458, vr_emos: 0.133, theta_deg: 56.6, rmin_radii: 4.41}
+      - {planet: V, date_j2440000: 5660, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 4.02}
+      - {planet: V, date_j2440000: 5885, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 4.02}
+      - {planet: V, date_j2440000: 6110, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 4.02}
+      - {planet: E, date_j2440000: 6288, vr_emos: 0.125, theta_deg: 85.0, rmin_radii: 2.18}
+  - orbit: 7
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 452, vr_emos: 0.135, theta_deg: 79.2, rmin_radii: 2.21}
+      - {planet: E, date_j2440000: 817, vr_emos: 0.135, theta_deg: 79.2, rmin_radii: 2.21}
+      - {planet: V, date_j2440000: 1009, vr_emos: 0.224, theta_deg: 21.2, rmin_radii: 5.24}
+      - {planet: V, date_j2440000: 1234, vr_emos: 0.224, theta_deg: 1.3, rmin_radii: 99.11}
+      - {planet: V, date_j2440000: 1459, vr_emos: 0.224, theta_deg: 23.6, rmin_radii: 4.59}
+      - {planet: E, date_j2440000: 1539, vr_emos: 0.164, theta_deg: 26.5, rmin_radii: 8.9}
+      - {planet: E, date_j2440000: 2034, vr_emos: 0.163, theta_deg: 18.6, rmin_radii: 13.82}
+      - {planet: V, date_j2440000: 2148, vr_emos: 0.134, theta_deg: 51.1, rmin_radii: 4.36}
+      - {planet: V, date_j2440000: 2373, vr_emos: 0.134, theta_deg: 51.1, rmin_radii: 4.36}
+      - {planet: V, date_j2440000: 2598, vr_emos: 0.134, theta_deg: 52.4, rmin_radii: 4.18}
+      - {planet: E, date_j2440000: 2700, vr_emos: 0.164, theta_deg: 14.3, rmin_radii: 18.53}
+      - {planet: E, date_j2440000: 3195, vr_emos: 0.164, theta_deg: 22.2, rmin_radii: 11.05}
+      - {planet: V, date_j2440000: 3299, vr_emos: 0.148, theta_deg: 38.4, rmin_radii: 2.84}
+      - {planet: V, date_j2440000: 3524, vr_emos: 0.148, theta_deg: 38.4, rmin_radii: 2.84}
+      - {planet: V, date_j2440000: 3749, vr_emos: 0.148, theta_deg: 38.4, rmin_radii: 2.84}
+      - {planet: E, date_j2440000: 3870, vr_emos: 0.185, theta_deg: 47.2, rmin_radii: 3.09}
+      - {planet: E, date_j2440000: 4362, vr_emos: 0.185, theta_deg: 31.8, rmin_radii: 5.15}
+      - {planet: V, date_j2440000: 4473, vr_emos: 0.131, theta_deg: 56.3, rmin_radii: 3.83}
+      - {planet: V, date_j2440000: 4698, vr_emos: 0.131, theta_deg: 51.4, rmin_radii: 4.47}
+      - {planet: V, date_j2440000: 4923, vr_emos: 0.131, theta_deg: 51.4, rmin_radii: 4.47}
+      - {planet: E, date_j2440000: 5100, vr_emos: 0.128, theta_deg: 60.2, rmin_radii: 4.27}
+      - {planet: E, date_j2440000: 5465, vr_emos: 0.128, theta_deg: 60.2, rmin_radii: 4.27}
+      - {planet: V, date_j2440000: 5664, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 3.95}
+      - {planet: V, date_j2440000: 5889, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 3.95}
+      - {planet: V, date_j2440000: 6114, vr_emos: 0.173, theta_deg: 38.3, rmin_radii: 3.95}
+      - {planet: E, date_j2440000: 6296, vr_emos: 0.135, theta_deg: 79.2, rmin_radii: 2.21}
+  - orbit: 8
+    checksum_days: 5844
+    notes: |
+      Row 'V 4870' is printed as-is in the scan; it is out of monotonic date
+      order (between 5645 and 6095) and is almost certainly a source typo
+      for 5870 (cf. sibling orbits). Transcribed as printed; not an Earth
+      row, so does not affect the checksum.
+    encounters:
+      - {planet: E, date_j2440000: 454, vr_emos: 0.129, theta_deg: 81.1, rmin_radii: 2.3}
+      - {planet: E, date_j2440000: 819, vr_emos: 0.129, theta_deg: 81.1, rmin_radii: 2.3}
+      - {planet: V, date_j2440000: 1008, vr_emos: 0.218, theta_deg: 21.8, rmin_radii: 5.31}
+      - {planet: V, date_j2440000: 1233, vr_emos: 0.218, theta_deg: 2.0, rmin_radii: 71.47}
+      - {planet: V, date_j2440000: 1458, vr_emos: 0.218, theta_deg: 24.6, rmin_radii: 4.6}
+      - {planet: E, date_j2440000: 1539, vr_emos: 0.163, theta_deg: 26.1, rmin_radii: 9.16}
+      - {planet: E, date_j2440000: 2034, vr_emos: 0.163, theta_deg: 18.9, rmin_radii: 13.62}
+      - {planet: V, date_j2440000: 2149, vr_emos: 0.136, theta_deg: 49.8, rmin_radii: 4.42}
+      - {planet: V, date_j2440000: 2374, vr_emos: 0.136, theta_deg: 49.8, rmin_radii: 4.42}
+      - {planet: V, date_j2440000: 2599, vr_emos: 0.136, theta_deg: 54.4, rmin_radii: 3.81}
+      - {planet: E, date_j2440000: 2697, vr_emos: 0.176, theta_deg: 11.4, rmin_radii: 20.71}
+      - {planet: E, date_j2440000: 3190, vr_emos: 0.176, theta_deg: 43.6, rmin_radii: 3.86}
+      - {planet: V, date_j2440000: 3308, vr_emos: 0.205, theta_deg: 62.6, rmin_radii: 1.3}
+      - {planet: V, date_j2440000: 3533, vr_emos: 0.205, theta_deg: 62.6, rmin_radii: 1.3}
+      - {planet: V, date_j2440000: 3758, vr_emos: 0.205, theta_deg: 62.6, rmin_radii: 1.3}
+      - {planet: E, date_j2440000: 3889, vr_emos: 0.216, theta_deg: 67.3, rmin_radii: 1.22}
+      - {planet: E, date_j2440000: 4374, vr_emos: 0.216, theta_deg: 26.4, rmin_radii: 5.11}
+      - {planet: V, date_j2440000: 4485, vr_emos: 0.158, theta_deg: 56.9, rmin_radii: 2.48}
+      - {planet: V, date_j2440000: 4710, vr_emos: 0.158, theta_deg: 56.9, rmin_radii: 2.48}
+      - {planet: V, date_j2440000: 4935, vr_emos: 0.158, theta_deg: 56.9, rmin_radii: 2.48}
+      - {planet: E, date_j2440000: 5039, vr_emos: 0.164, theta_deg: 27.9, rmin_radii: 8.3}
+      - {planet: E, date_j2440000: 5534, vr_emos: 0.164, theta_deg: 13.3, rmin_radii: 20.16}
+      - {planet: V, date_j2440000: 5645, vr_emos: 0.158, theta_deg: 46.3, rmin_radii: 3.66}
+      - {planet: V, date_j2440000: 4870, vr_emos: 0.158, theta_deg: 46.3, rmin_radii: 3.66}
+      - {planet: V, date_j2440000: 6095, vr_emos: 0.158, theta_deg: 46.3, rmin_radii: 3.66}
+      - {planet: E, date_j2440000: 6298, vr_emos: 0.129, theta_deg: 81.1, rmin_radii: 2.3}
+  - orbit: 9
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 430, vr_emos: 0.133, theta_deg: 61.2, rmin_radii: 3.86}
+      - {planet: E, date_j2440000: 795, vr_emos: 0.133, theta_deg: 61.2, rmin_radii: 3.86}
+      - {planet: V, date_j2440000: 973, vr_emos: 0.148, theta_deg: 60.6, rmin_radii: 2.65}
+      - {planet: V, date_j2440000: 1198, vr_emos: 0.148, theta_deg: 60.6, rmin_radii: 2.65}
+      - {planet: V, date_j2440000: 1423, vr_emos: 0.148, theta_deg: 60.6, rmin_radii: 2.65}
+      - {planet: E, date_j2440000: 1602, vr_emos: 0.142, theta_deg: 62.5, rmin_radii: 3.27}
+      - {planet: E, date_j2440000: 1967, vr_emos: 0.142, theta_deg: 62.5, rmin_radii: 3.27}
+      - {planet: V, date_j2440000: 2165, vr_emos: 0.194, theta_deg: 30.4, rmin_radii: 4.43}
+      - {planet: V, date_j2440000: 2390, vr_emos: 0.194, theta_deg: 30.4, rmin_radii: 4.43}
+      - {planet: V, date_j2440000: 2615, vr_emos: 0.194, theta_deg: 30.4, rmin_radii: 4.43}
+      - {planet: E, date_j2440000: 2785, vr_emos: 0.146, theta_deg: 85.9, rmin_radii: 1.55}
+      - {planet: E, date_j2440000: 3150, vr_emos: 0.146, theta_deg: 85.9, rmin_radii: 1.55}
+      - {planet: V, date_j2440000: 3254, vr_emos: 0.277, theta_deg: 11.7, rmin_radii: 6.8}
+      - {planet: V, date_j2440000: 3479, vr_emos: 0.277, theta_deg: 10.9, rmin_radii: 7.31}
+      - {planet: V, date_j2440000: 3812, vr_emos: 0.278, theta_deg: 16.3, rmin_radii: 4.62}
+      - {planet: E, date_j2440000: 3918, vr_emos: 0.148, theta_deg: 62.5, rmin_radii: 2.99}
+      - {planet: E, date_j2440000: 4283, vr_emos: 0.148, theta_deg: 62.5, rmin_radii: 2.99}
+      - {planet: V, date_j2440000: 4467, vr_emos: 0.153, theta_deg: 37.1, rmin_radii: 2.75}
+      - {planet: V, date_j2440000: 4692, vr_emos: 0.153, theta_deg: 57.1, rmin_radii: 2.75}
+      - {planet: V, date_j2440000: 4917, vr_emos: 0.153, theta_deg: 57.1, rmin_radii: 2.75}
+      - {planet: E, date_j2440000: 5082, vr_emos: 0.135, theta_deg: 76.8, rmin_radii: 2.38}
+      - {planet: E, date_j2440000: 5447, vr_emos: 0.135, theta_deg: 76.8, rmin_radii: 2.38}
+      - {planet: V, date_j2440000: 5622, vr_emos: 0.194, theta_deg: 33.2, rmin_radii: 3.92}
+      - {planet: V, date_j2440000: 5847, vr_emos: 0.194, theta_deg: 33.2, rmin_radii: 3.92}
+      - {planet: V, date_j2440000: 6072, vr_emos: 0.194, theta_deg: 33.2, rmin_radii: 3.92}
+      - {planet: E, date_j2440000: 6274, vr_emos: 0.133, theta_deg: 61.2, rmin_radii: 3.86}
+  - orbit: 10
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 430, vr_emos: 0.129, theta_deg: 61.2, rmin_radii: 4.11}
+      - {planet: E, date_j2440000: 795, vr_emos: 0.129, theta_deg: 61.2, rmin_radii: 4.11}
+      - {planet: V, date_j2440000: 973, vr_emos: 0.148, theta_deg: 60.4, rmin_radii: 2.66}
+      - {planet: V, date_j2440000: 1198, vr_emos: 0.148, theta_deg: 60.4, rmin_radii: 2.66}
+      - {planet: V, date_j2440000: 1423, vr_emos: 0.148, theta_deg: 60.4, rmin_radii: 2.66}
+      - {planet: E, date_j2440000: 1602, vr_emos: 0.142, theta_deg: 62.7, rmin_radii: 3.23}
+      - {planet: E, date_j2440000: 1967, vr_emos: 0.142, theta_deg: 62.7, rmin_radii: 3.23}
+      - {planet: V, date_j2440000: 2164, vr_emos: 0.192, theta_deg: 30.5, rmin_radii: 4.48}
+      - {planet: V, date_j2440000: 2389, vr_emos: 0.192, theta_deg: 30.5, rmin_radii: 4.48}
+      - {planet: V, date_j2440000: 2614, vr_emos: 0.192, theta_deg: 30.5, rmin_radii: 4.48}
+      - {planet: E, date_j2440000: 2784, vr_emos: 0.144, theta_deg: 85.6, rmin_radii: 1.62}
+      - {planet: E, date_j2440000: 3149, vr_emos: 0.144, theta_deg: 85.6, rmin_radii: 1.62}
+      - {planet: V, date_j2440000: 3255, vr_emos: 0.27, theta_deg: 12.5, rmin_radii: 6.67}
+      - {planet: V, date_j2440000: 3480, vr_emos: 0.27, theta_deg: 11.5, rmin_radii: 7.3}
+      - {planet: V, date_j2440000: 3812, vr_emos: 0.27, theta_deg: 18.5, rmin_radii: 4.24}
+      - {planet: E, date_j2440000: 3926, vr_emos: 0.151, theta_deg: 54.8, rmin_radii: 1.49}
+      - {planet: E, date_j2440000: 4291, vr_emos: 0.151, theta_deg: 54.8, rmin_radii: 1.49}
+      - {planet: V, date_j2440000: 4422, vr_emos: 0.259, theta_deg: 18.5, rmin_radii: 4.6}
+      - {planet: V, date_j2440000: 4647, vr_emos: 0.259, theta_deg: 18.5, rmin_radii: 4.6}
+      - {planet: V, date_j2440000: 4980, vr_emos: 0.259, theta_deg: 13.6, rmin_radii: 6.55}
+      - {planet: E, date_j2440000: 5086, vr_emos: 0.127, theta_deg: 83.2, rmin_radii: 2.21}
+      - {planet: E, date_j2440000: 5451, vr_emos: 0.127, theta_deg: 83.2, rmin_radii: 2.21}
+      - {planet: V, date_j2440000: 5624, vr_emos: 0.188, theta_deg: 34.0, rmin_radii: 4.05}
+      - {planet: V, date_j2440000: 5849, vr_emos: 0.188, theta_deg: 34.0, rmin_radii: 4.05}
+      - {planet: V, date_j2440000: 6074, vr_emos: 0.188, theta_deg: 34.0, rmin_radii: 4.05}
+      - {planet: E, date_j2440000: 6274, vr_emos: 0.129, theta_deg: 61.2, rmin_radii: 4.11}
+  - orbit: 11
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 430, vr_emos: 0.127, theta_deg: 80.9, rmin_radii: 2.36}
+      - {planet: E, date_j2440000: 795, vr_emos: 0.127, theta_deg: 80.9, rmin_radii: 2.36}
+      - {planet: V, date_j2440000: 915, vr_emos: 0.248, theta_deg: 17.6, rmin_radii: 5.31}
+      - {planet: V, date_j2440000: 1140, vr_emos: 0.248, theta_deg: 17.6, rmin_radii: 5.31}
+      - {planet: V, date_j2440000: 1471, vr_emos: 0.247, theta_deg: 23.1, rmin_radii: 3.85}
+      - {planet: E, date_j2440000: 1603, vr_emos: 0.14, theta_deg: 86.0, rmin_radii: 1.69}
+      - {planet: E, date_j2440000: 1968, vr_emos: 0.14, theta_deg: 86.0, rmin_radii: 1.69}
+      - {planet: V, date_j2440000: 2165, vr_emos: 0.191, theta_deg: 30.6, rmin_radii: 4.5}
+      - {planet: V, date_j2440000: 2390, vr_emos: 0.191, theta_deg: 30.6, rmin_radii: 4.5}
+      - {planet: V, date_j2440000: 2615, vr_emos: 0.191, theta_deg: 30.6, rmin_radii: 4.5}
+      - {planet: E, date_j2440000: 2784, vr_emos: 0.144, theta_deg: 85.8, rmin_radii: 1.61}
+      - {planet: E, date_j2440000: 3149, vr_emos: 0.144, theta_deg: 85.8, rmin_radii: 1.61}
+      - {planet: V, date_j2440000: 3255, vr_emos: 0.27, theta_deg: 12.4, rmin_radii: 6.68}
+      - {planet: V, date_j2440000: 3480, vr_emos: 0.27, theta_deg: 11.6, rmin_radii: 7.18}
+      - {planet: V, date_j2440000: 3813, vr_emos: 0.27, theta_deg: 18.3, rmin_radii: 4.3}
+      - {planet: E, date_j2440000: 3925, vr_emos: 0.151, theta_deg: 84.8, rmin_radii: 1.49}
+      - {planet: E, date_j2440000: 4291, vr_emos: 0.151, theta_deg: 84.8, rmin_radii: 1.49}
+      - {planet: V, date_j2440000: 4422, vr_emos: 0.259, theta_deg: 18.6, rmin_radii: 4.55}
+      - {planet: V, date_j2440000: 4647, vr_emos: 0.259, theta_deg: 18.6, rmin_radii: 4.55}
+      - {planet: V, date_j2440000: 4979, vr_emos: 0.258, theta_deg: 13.6, rmin_radii: 6.55}
+      - {planet: E, date_j2440000: 5086, vr_emos: 0.127, theta_deg: 83.3, rmin_radii: 2.21}
+      - {planet: E, date_j2440000: 5451, vr_emos: 0.127, theta_deg: 83.3, rmin_radii: 2.21}
+      - {planet: V, date_j2440000: 5624, vr_emos: 0.188, theta_deg: 34.3, rmin_radii: 4.01}
+      - {planet: V, date_j2440000: 5849, vr_emos: 0.188, theta_deg: 34.3, rmin_radii: 4.01}
+      - {planet: V, date_j2440000: 6074, vr_emos: 0.188, theta_deg: 34.3, rmin_radii: 4.01}
+      - {planet: E, date_j2440000: 6274, vr_emos: 0.127, theta_deg: 80.9, rmin_radii: 2.36}
+  - orbit: 12
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 417, vr_emos: 0.138, theta_deg: 69.5, rmin_radii: 2.81}
+      - {planet: E, date_j2440000: 782, vr_emos: 0.138, theta_deg: 69.5, rmin_radii: 2.81}
+      - {planet: V, date_j2440000: 914, vr_emos: 0.237, theta_deg: 17.6, rmin_radii: 5.03}
+      - {planet: V, date_j2440000: 1139, vr_emos: 0.237, theta_deg: 17.6, rmin_radii: 5.82}
+      - {planet: V, date_j2440000: 1469, vr_emos: 0.237, theta_deg: 27.2, rmin_radii: 3.41}
+      - {planet: E, date_j2440000: 1605, vr_emos: 0.138, theta_deg: 85.0, rmin_radii: 1.79}
+      - {planet: E, date_j2440000: 1970, vr_emos: 0.138, theta_deg: 85.0, rmin_radii: 1.79}
+      - {planet: V, date_j2440000: 2165, vr_emos: 0.188, theta_deg: 31.1, rmin_radii: 4.56}
+      - {planet: V, date_j2440000: 2389, vr_emos: 0.188, theta_deg: 31.1, rmin_radii: 4.56}
+      - {planet: V, date_j2440000: 2614, vr_emos: 0.188, theta_deg: 31.1, rmin_radii: 4.56}
+      - {planet: E, date_j2440000: 2785, vr_emos: 0.143, theta_deg: 86.6, rmin_radii: 1.58}
+      - {planet: E, date_j2440000: 3150, vr_emos: 0.143, theta_deg: 86.6, rmin_radii: 1.58}
+      - {planet: V, date_j2440000: 3255, vr_emos: 0.273, theta_deg: 12.0, rmin_radii: 6.74}
+      - {planet: V, date_j2440000: 3480, vr_emos: 0.273, theta_deg: 12.0, rmin_radii: 6.8}
+      - {planet: V, date_j2440000: 3813, vr_emos: 0.272, theta_deg: 17.1, rmin_radii: 4.56}
+      - {planet: E, date_j2440000: 3923, vr_emos: 0.151, theta_deg: 86.0, rmin_radii: 1.45}
+      - {planet: E, date_j2440000: 4289, vr_emos: 0.151, theta_deg: 86.0, rmin_radii: 1.45}
+      - {planet: V, date_j2440000: 4426, vr_emos: 0.244, theta_deg: 22.1, rmin_radii: 4.18}
+      - {planet: V, date_j2440000: 4651, vr_emos: 0.244, theta_deg: 22.1, rmin_radii: 4.18}
+      - {planet: V, date_j2440000: 4982, vr_emos: 0.244, theta_deg: 12.5, rmin_radii: 8.1}
+      - {planet: E, date_j2440000: 5108, vr_emos: 0.143, theta_deg: 66.8, rmin_radii: 2.82}
+      - {planet: E, date_j2440000: 5473, vr_emos: 0.143, theta_deg: 66.8, rmin_radii: 2.82}
+      - {planet: V, date_j2440000: 5591, vr_emos: 0.255, theta_deg: 16.5, rmin_radii: 5.42}
+      - {planet: V, date_j2440000: 5816, vr_emos: 0.255, theta_deg: 10.4, rmin_radii: 9.05}
+      - {planet: V, date_j2440000: 6147, vr_emos: 0.255, theta_deg: 13.8, rmin_radii: 6.64}
+      - {planet: E, date_j2440000: 6261, vr_emos: 0.138, theta_deg: 69.5, rmin_radii: 2.81}
+  - orbit: 13
+    checksum_days: 5844
+    notes: |
+      First E row vr_emos=0.129 but the repeat (last E row) prints 0.124;
+      both verified at 450 dpi. Source's repeat is not exact in V_r here.
+    encounters:
+      - {planet: E, date_j2440000: 437, vr_emos: 0.129, theta_deg: 74.6, rmin_radii: 2.99}
+      - {planet: E, date_j2440000: 802, vr_emos: 0.124, theta_deg: 74.6, rmin_radii: 2.99}
+      - {planet: V, date_j2440000: 916, vr_emos: 0.25, theta_deg: 17.0, rmin_radii: 5.47}
+      - {planet: V, date_j2440000: 1141, vr_emos: 0.25, theta_deg: 17.0, rmin_radii: 5.47}
+      - {planet: V, date_j2440000: 1473, vr_emos: 0.25, theta_deg: 22.9, rmin_radii: 3.8}
+      - {planet: E, date_j2440000: 1607, vr_emos: 0.146, theta_deg: 59.4, rmin_radii: 3.4}
+      - {planet: E, date_j2440000: 1972, vr_emos: 0.146, theta_deg: 59.4, rmin_radii: 3.4}
+      - {planet: V, date_j2440000: 2132, vr_emos: 0.217, theta_deg: 25.1, rmin_radii: 4.54}
+      - {planet: V, date_j2440000: 2357, vr_emos: 0.217, theta_deg: 22.5, rmin_radii: 5.19}
+      - {planet: V, date_j2440000: 2582, vr_emos: 0.217, theta_deg: 27.3, rmin_radii: 4.07}
+      - {planet: E, date_j2440000: 2701, vr_emos: 0.18, theta_deg: 40.1, rmin_radii: 4.19}
+      - {planet: E, date_j2440000: 3194, vr_emos: 0.178, theta_deg: 36.4, rmin_radii: 4.89}
+      - {planet: V, date_j2440000: 3309, vr_emos: 0.19, theta_deg: 32.7, rmin_radii: 4.16}
+      - {planet: V, date_j2440000: 3534, vr_emos: 0.19, theta_deg: 26.6, rmin_radii: 5.44}
+      - {planet: V, date_j2440000: 3759, vr_emos: 0.19, theta_deg: 28.7, rmin_radii: 4.94}
+      - {planet: E, date_j2440000: 3924, vr_emos: 0.14, theta_deg: 82.2, rmin_radii: 1.87}
+      - {planet: E, date_j2440000: 4289, vr_emos: 0.14, theta_deg: 82.2, rmin_radii: 1.87}
+      - {planet: V, date_j2440000: 4471, vr_emos: 0.155, theta_deg: 61.0, rmin_radii: 2.4}
+      - {planet: V, date_j2440000: 4696, vr_emos: 0.155, theta_deg: 61.0, rmin_radii: 2.4}
+      - {planet: V, date_j2440000: 4921, vr_emos: 0.155, theta_deg: 61.0, rmin_radii: 2.4}
+      - {planet: E, date_j2440000: 5084, vr_emos: 0.144, theta_deg: 52.1, rmin_radii: 4.39}
+      - {planet: E, date_j2440000: 5449, vr_emos: 0.144, theta_deg: 52.1, rmin_radii: 4.39}
+      - {planet: V, date_j2440000: 5659, vr_emos: 0.184, theta_deg: 36.6, rmin_radii: 3.82}
+      - {planet: V, date_j2440000: 5884, vr_emos: 0.184, theta_deg: 36.6, rmin_radii: 3.82}
+      - {planet: V, date_j2440000: 6109, vr_emos: 0.184, theta_deg: 36.6, rmin_radii: 3.82}
+      - {planet: E, date_j2440000: 6281, vr_emos: 0.124, theta_deg: 74.6, rmin_radii: 2.99}
+  - orbit: 14
+    checksum_days: 5844
+    encounters:
+      - {planet: E, date_j2440000: 443, vr_emos: 0.122, theta_deg: 78.5, rmin_radii: 2.76}
+      - {planet: E, date_j2440000: 808, vr_emos: 0.122, theta_deg: 78.5, rmin_radii: 2.76}
+      - {planet: V, date_j2440000: 916, vr_emos: 0.255, theta_deg: 16.2, rmin_radii: 5.53}
+      - {planet: V, date_j2440000: 1141, vr_emos: 0.255, theta_deg: 16.2, rmin_radii: 5.53}
+      - {planet: V, date_j2440000: 1473, vr_emos: 0.255, theta_deg: 21.3, rmin_radii: 4.01}
+      - {planet: E, date_j2440000: 1605, vr_emos: 0.146, theta_deg: 60.8, rmin_radii: 4.25}
+      - {planet: E, date_j2440000: 1970, vr_emos: 0.146, theta_deg: 60.8, rmin_radii: 4.25}
+      - {planet: V, date_j2440000: 2130, vr_emos: 0.213, theta_deg: 25.6, rmin_radii: 4.56}
+      - {planet: V, date_j2440000: 2355, vr_emos: 0.213, theta_deg: 24.2, rmin_radii: 4.89}
+      - {planet: V, date_j2440000: 2580, vr_emos: 0.213, theta_deg: 28.6, rmin_radii: 3.96}
+      - {planet: E, date_j2440000: 2699, vr_emos: 0.183, theta_deg: 36.7, rmin_radii: 4.39}
+      - {planet: E, date_j2440000: 3192, vr_emos: 0.183, theta_deg: 44.0, rmin_radii: 3.53}
+      - {planet: V, date_j2440000: 3310, vr_emos: 0.212, theta_deg: 28.3, rmin_radii: 4.07}
+      - {planet: V, date_j2440000: 3535, vr_emos: 0.212, theta_deg: 21.5, rmin_radii: 5.73}
+      - {planet: V, date_j2440000: 3760, vr_emos: 0.212, theta_deg: 25.3, rmin_radii: 4.66}
+      - {planet: E, date_j2440000: 3921, vr_emos: 0.154, theta_deg: 51.8, rmin_radii: 3.86}
+      - {planet: E, date_j2440000: 4287, vr_emos: 0.154, theta_deg: 51.8, rmin_radii: 3.86}
+      - {planet: V, date_j2440000: 4423, vr_emos: 0.253, theta_deg: 20.3, rmin_radii: 4.32}
+      - {planet: V, date_j2440000: 4648, vr_emos: 0.253, theta_deg: 20.3, rmin_radii: 4.32}
+      - {planet: V, date_j2440000: 4980, vr_emos: 0.252, theta_deg: 13.9, rmin_radii: 4.74}
+      - {planet: E, date_j2440000: 5092, vr_emos: 0.13, theta_deg: 74.6, rmin_radii: 2.72}
+      - {planet: E, date_j2440000: 5457, vr_emos: 0.13, theta_deg: 74.6, rmin_radii: 2.72}
+      - {planet: V, date_j2440000: 5659, vr_emos: 0.171, theta_deg: 38.9, rmin_radii: 4.05}
+      - {planet: V, date_j2440000: 5884, vr_emos: 0.171, theta_deg: 38.9, rmin_radii: 4.05}
+      - {planet: V, date_j2440000: 6109, vr_emos: 0.171, theta_deg: 38.9, rmin_radii: 4.05}
+      - {planet: E, date_j2440000: 6287, vr_emos: 0.122, theta_deg: 78.5, rmin_radii: 2.76}
+  - orbit: 15
+    checksum_days: 5843
+    notes: |
+      checksum_days = 5843 (one short of the nominal 5844). First E date 448
+      and last E date 6291 were both re-read at 450 dpi and are unambiguous;
+      the 1-day shortfall is in the printed source, not the transcription.
+      The first and last rows otherwise match (0.121 / 86.5 / 2.23).
+    encounters:
+      - {planet: E, date_j2440000: 448, vr_emos: 0.121, theta_deg: 86.5, rmin_radii: 2.23}
+      - {planet: E, date_j2440000: 813, vr_emos: 0.121, theta_deg: 86.5, rmin_radii: 2.23}
+      - {planet: V, date_j2440000: 917, vr_emos: 0.261, theta_deg: 15.4, rmin_radii: 5.62}
+      - {planet: V, date_j2440000: 1142, vr_emos: 0.261, theta_deg: 15.4, rmin_radii: 5.62}
+      - {planet: V, date_j2440000: 1474, vr_emos: 0.261, theta_deg: 20.2, rmin_radii: 5.07}
+      - {planet: E, date_j2440000: 1603, vr_emos: 0.146, theta_deg: 62.9, rmin_radii: 3.12}
+      - {planet: E, date_j2440000: 1968, vr_emos: 0.146, theta_deg: 62.0, rmin_radii: 3.12}
+      - {planet: V, date_j2440000: 2130, vr_emos: 0.211, theta_deg: 26.0, rmin_radii: 4.57}
+      - {planet: V, date_j2440000: 2355, vr_emos: 0.211, theta_deg: 26.0, rmin_radii: 4.57}
+      - {planet: V, date_j2440000: 2580, vr_emos: 0.211, theta_deg: 29.5, rmin_radii: 3.87}
+      - {planet: E, date_j2440000: 2696, vr_emos: 0.189, theta_deg: 33.6, rmin_radii: 4.88}
+      - {planet: E, date_j2440000: 3188, vr_emos: 0.189, theta_deg: 30.7, rmin_radii: 2.65}
+      - {planet: V, date_j2440000: 3310, vr_emos: 0.233, theta_deg: 24.9, rmin_radii: 3.96}
+      - {planet: V, date_j2440000: 3535, vr_emos: 0.233, theta_deg: 17.7, rmin_radii: 5.97}
+      - {planet: V, date_j2440000: 3760, vr_emos: 0.233, theta_deg: 23.0, rmin_radii: 4.35}
+      - {planet: E, date_j2440000: 3918, vr_emos: 0.167, theta_deg: 53.4, rmin_radii: 3.1}
+      - {planet: E, date_j2440000: 4284, vr_emos: 0.167, theta_deg: 53.4, rmin_radii: 3.1}
+      - {planet: V, date_j2440000: 4417, vr_emos: 0.281, theta_deg: 16.2, rmin_radii: 4.58}
+      - {planet: V, date_j2440000: 4642, vr_emos: 0.281, theta_deg: 16.2, rmin_radii: 4.58}
+      - {planet: V, date_j2440000: 4975, vr_emos: 0.281, theta_deg: 17.0, rmin_radii: 4.21}
+      - {planet: E, date_j2440000: 5042, vr_emos: 0.173, theta_deg: 28.0, rmin_radii: 7.39}
+      - {planet: E, date_j2440000: 5535, vr_emos: 0.173, theta_deg: 9.5, rmin_radii: 26.13}
+      - {planet: V, date_j2440000: 5644, vr_emos: 0.154, theta_deg: 48.7, rmin_radii: 3.53}
+      - {planet: V, date_j2440000: 5869, vr_emos: 0.154, theta_deg: 48.7, rmin_radii: 3.53}
+      - {planet: V, date_j2440000: 6094, vr_emos: 0.154, theta_deg: 48.7, rmin_radii: 3.53}
+      - {planet: E, date_j2440000: 6291, vr_emos: 0.121, theta_deg: 86.5, rmin_radii: 2.23}

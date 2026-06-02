@@ -266,20 +266,29 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 202,
+    ExclusionReason.MISSING_LEG_TOFS: 15,
     ExclusionReason.NON_HELIOCENTRIC: 6,
-    ExclusionReason.MISSING_VINF: 6,
+    ExclusionReason.MISSING_VINF: 5,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.NOT_TWO_BODY: 2,
     ExclusionReason.MISSING_PERIOD: 1,
 }
-"""Frozen census of how the 219-row catalogue distributes across
+"""Frozen census of how the 233-row catalogue distributes across
 exclusion reasons (as of 2026-06-02). This is a *ratchet*: when the
 catalogue changes, this dict must be updated in the same commit, which
 forces a conscious review of whether the change moved entries into or
 out of the v1 gauntlet's reach.
 
+The MISSING_LEG_TOFS bucket holds the 15 Hollister & Menning 1970
+Earth-Venus periodic-swing-by family members (orbits 1-15): each has
+matched-V_inf at Earth and Venus but no per-leg ToFs encoded in
+``legs`` (the per-encounter Table-3 dates live in
+data/sources/hollister-menning-1970-table3.yaml). Replacing the old
+single placeholder (which counted as MISSING_VINF) with these 15
+moved one row out of MISSING_VINF (6 -> 5) and added 15 here.
+
 Reasons absent from this dict are expected to have a count of zero (e.g.
-``NON_BALLISTIC`` and ``MISSING_LEG_TOFS`` — no such rows today).
+``NON_BALLISTIC`` — no such rows today).
 """
 
 
