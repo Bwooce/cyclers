@@ -21,6 +21,7 @@ from cyclerfinder.model.cycler import orbit_elements_au
 from cyclerfinder.search.optimize import (
     OptimisationResult,
     _ephemeris_tof_seed_and_bounds,
+    _resolve_t0_multi_seed,
     optimise_cell_ephemeris,
 )
 from cyclerfinder.search.sequence import Cell
@@ -45,6 +46,39 @@ def test_ephemeris_tof_seed_and_bounds_equispaced() -> None:
     # bounds bracket the seed and are strictly positive
     for (lo, hi), s in zip(bounds, seed_days, strict=True):
         assert 0 < lo < s < hi
+
+
+@pytest.mark.slow
+def test_resolve_t0_multi_seed_returns_low_mismatch_epoch() -> None:
+    """STAGE 3: the multi-seed t0 resolver fans the cell's seed ToFs into
+    asymmetric perturbations and returns the lowest-mismatch launch epoch on
+    the real ephemeris for an Aldrin-band E-M-E cell.
+
+    Provenance: 6.5/9.7 km/s are sourced Aldrin V_inf inputs; the returned
+    epoch is COMPUTED and only checked for type/finiteness (no golden epoch).
+    """
+    from datetime import UTC, datetime
+
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E"),
+        period_k=1,
+        per_leg_revs=(0, 0),
+        per_leg_branch=("single", "single"),
+    )
+    eph = Ephemeris(model="astropy")
+    priority = datetime(1985, 10, 28, tzinfo=UTC)
+    t0 = _resolve_t0_multi_seed(
+        cell,
+        seed_days=[146.0, 634.0],
+        priority_date=priority,
+        ephem=eph,
+        vinf_targets_kms={"E": 6.5, "M": 9.7},
+        target_period_sec=780.0 * 86400.0,
+    )
+    # COMPUTED: a real window exists for the Aldrin band → finite epoch.
+    assert t0 is not None
+    assert math.isfinite(t0)
 
 
 @pytest.mark.slow
@@ -133,24 +167,21 @@ def test_general_engine_recovers_aldrin_family_from_family_seed() -> None:
 
 
 @pytest.mark.slow
-@pytest.mark.xfail(
-    strict=False,
-    reason=(
-        "the cold-start equispaced cell seed resolves the launch epoch from a "
-        "symmetric leg signature, which lands in a degenerate short-period "
-        "basin (a~1 AU) instead of the asymmetric Aldrin family. The engine "
-        "itself reaches Aldrin given the family seed (see "
-        "test_general_engine_recovers_aldrin_family_from_family_seed); closing "
-        "this gap needs a family-appropriate ToF seed for the phase-match "
-        "epoch resolution (plan 'Open risk', line 287)."
-    ),
-)
 def test_optimise_cell_ephemeris_aldrin_parity_elements() -> None:
     """Parity goal: the general ``optimise_cell_ephemeris`` on the Aldrin E-M-E
     cell recovers a/e consistent with the Aldrin-specific solver from a cold
-    cell start. Currently xfail — the equispaced seed misses the basin.
+    cell start.
 
-    Anchors are the published Aldrin elements (sourced); the epoch and leg
+    STAGE 3 (2026-06-03) closed this gate. Previously xfail: the cold-start
+    equispaced cell seed resolved the launch epoch from a symmetric leg
+    signature and landed in a degenerate short-period basin (a~1 AU) instead
+    of the asymmetric Aldrin family. The robust multi-seed resolver
+    (``_resolve_t0_multi_seed`` → ``leg_duration_seeds`` +
+    ``find_candidate_windows``, ranked by V_inf mismatch) now fans the cold
+    equispaced seed into asymmetric perturbations and selects the Aldrin-band
+    launch epoch, so the engine reaches the published family from a cold cell.
+
+    Anchors are the published Aldrin elements (SOURCED); the epoch and leg
     ToFs are computed and not asserted as golden.
     """
     cell = Cell(

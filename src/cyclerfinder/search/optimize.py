@@ -56,6 +56,7 @@ from __future__ import annotations
 import math
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, cast
 
 import numpy as np
@@ -1166,6 +1167,92 @@ def _ephemeris_tof_seed_and_bounds(
     return seed, bounds
 
 
+def _resolve_t0_multi_seed(
+    cell: Cell,
+    seed_days: list[float],
+    priority_date: datetime,
+    ephem: Ephemeris,
+    vinf_targets_kms: dict[str, float],
+    target_period_sec: float,
+    n_candidates: int = 5,
+) -> float | None:
+    """Resolve a real launch epoch via the STAGE 3 multi-seed pool.
+
+    Builds the primary :class:`PhaseSignature` from ``seed_days``, fans it into
+    asymmetric leg-duration perturbation seeds (so a strongly asymmetric family
+    phase-matches its own basin rather than a symmetric degenerate one), and
+    returns the lowest-V_inf-mismatch window's J2000-relative seconds, or
+    ``None`` if no window beats the cap.
+
+    Provenance: the epoch is COMPUTED; ``vinf_targets_kms`` carries the sourced
+    V_inf anchors used only as match targets.
+
+    Parameters
+    ----------
+    cell:
+        The cell being optimised; its ``sequence`` defines the body chain and
+        per-encounter V_inf target lookup.
+    seed_days:
+        Primary per-leg ToF seed in days (length ``len(cell.sequence) - 1``).
+    priority_date:
+        Centre of the ±10 yr launch-window search.
+    ephem:
+        Ephemeris backend (``"astropy"`` for real dates).
+    vinf_targets_kms:
+        Per-body V_inf targets (km/s); must cover every body in
+        ``cell.sequence``.
+    target_period_sec:
+        The cell's period in seconds; the conservation reference for the
+        leg-duration perturbations.
+    n_candidates:
+        Per-seed window count requested before merging/ranking.
+    """
+    from datetime import UTC, timedelta
+
+    from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
+    from cyclerfinder.search.phase_match import (
+        PhaseSignature,
+        _dt_to_t_sec,
+        find_candidate_windows,
+        leg_duration_seeds,
+    )
+
+    try:
+        vinf_target_per_enc = tuple(float(vinf_targets_kms[body]) for body in cell.sequence)
+    except KeyError as exc:
+        raise ValueError(
+            f"vinf_targets_kms is missing body {exc.args[0]!r} required by "
+            f"cell.sequence {cell.sequence!r}",
+        ) from exc
+
+    primary = PhaseSignature(
+        bodies=tuple(cell.sequence),
+        leg_durations_s=tuple(s * SECONDS_PER_DAY for s in seed_days),
+        vinf_target_kms=vinf_target_per_enc,
+    )
+    seeds = leg_duration_seeds(
+        bodies=primary.bodies,
+        primary_leg_durations_s=primary.leg_durations_s,
+        vinf_target_kms=primary.vinf_target_kms,
+        period_s=target_period_sec,
+    )
+
+    delta = timedelta(days=10.0 * DAYS_PER_JULIAN_YEAR)
+    # Ensure tz-aware bounds for the J2000-relative conversion downstream.
+    if priority_date.tzinfo is None:
+        priority_date = priority_date.replace(tzinfo=UTC)
+    windows = find_candidate_windows(
+        seeds,
+        ephem,
+        (priority_date - delta, priority_date + delta),
+        n=n_candidates * len(seeds),
+        mismatch_cap_kms=20.0,
+    )
+    if not windows:
+        return None
+    return _dt_to_t_sec(windows[0].departure_date)
+
+
 def optimise_cell_ephemeris(
     cell: Cell,
     ephem: Ephemeris,
@@ -1248,11 +1335,7 @@ def optimise_cell_ephemeris(
         If ``cell.sequence`` is not a closed loop.
     """
     from cyclerfinder.search.maintain import optimise_maintenance_dv
-    from cyclerfinder.search.phase_match import PhaseSignature
-    from cyclerfinder.verify.real_closure import (
-        _parse_priority_date,
-        _resolve_real_t_start,
-    )
+    from cyclerfinder.verify.real_closure import _parse_priority_date
 
     del n_laps  # reserved for a future multi-lap drift diagnostic
     if rp_factors is None:
@@ -1290,23 +1373,22 @@ def optimise_cell_ephemeris(
 
     # --- Resolve a real launch epoch by phase-matching against the sourced
     # V∞ anchors. Both the priority date and the V∞ targets are required;
-    # without them the cell is unanchored on the real ephemeris.
+    # without them the cell is unanchored on the real ephemeris. STAGE 3: the
+    # multi-seed resolver fans the (possibly asymmetric) seed ToFs into a
+    # perturbation grid and ranks candidate windows by V∞ mismatch, so an
+    # asymmetric family lands its own basin instead of a symmetric degenerate.
     priority = _parse_priority_date(priority_date_iso)
     t0_sec: float | None = None
     if priority is not None and vinf_targets_kms is not None:
-        try:
-            vinf_target_per_enc = tuple(float(vinf_targets_kms[body]) for body in cell.sequence)
-        except KeyError as exc:
-            raise ValueError(
-                f"vinf_targets_kms is missing body {exc.args[0]!r} required by "
-                f"cell.sequence {cell.sequence!r}",
-            ) from exc
-        signature = PhaseSignature(
-            bodies=tuple(cell.sequence),
-            leg_durations_s=tuple(s * SECONDS_PER_DAY for s in seed_days),
-            vinf_target_kms=vinf_target_per_enc,
+        t0_sec = _resolve_t0_multi_seed(
+            cell,
+            seed_days,
+            priority,
+            ephem,
+            vinf_targets_kms,
+            target_period_sec,
+            n_candidates=n_starts,
         )
-        t0_sec = _resolve_real_t_start(signature, ephem, priority)
 
     if t0_sec is None:
         # Honest "no real window" outcome (landmine #3): surface, don't crash.

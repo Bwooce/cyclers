@@ -28,17 +28,19 @@ def _vinf_by_body(result: object) -> dict[str, float]:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "aspirational: real-ephemeris S1L1 closure is the open goal. UPDATE "
-        "2026-06-02: an asymmetric family-appropriate ToF seed (tof_seed_days "
-        "= [154 d outbound, ~1406 d return]) was tried and does NOT close it "
-        "either — the phase-match resolves no launch window (sentinel path), "
-        "because a direct ~1406 d Mars->Earth leg cannot match the 3.05 km/s "
-        "Mars anchor at any epoch. Root cause is therefore TOPOLOGY, not "
-        "seeding: S1L1 is not a 3-encounter E-M-E cycler with a direct return "
-        "leg; the S/L labels are Earth-to-Earth resonant intervals (see "
-        "[[s1l1-nomenclature]]). Flips to passing once the entry is re-modelled "
-        "as outbound E->M plus the S1/L1 Earth-to-Earth resonant intervals and "
-        "optimised with that cell."
+        "TOPOLOGY CONFIRMED (STAGE 3, 2026-06-03): the robust multi-seed epoch "
+        "resolver (leg_duration_seeds + find_candidate_windows, ranked by V_inf "
+        "mismatch rather than calendar proximity) now fans the family into its "
+        "own asymmetric basins automatically — seeding is no longer the blocker. "
+        "It still finds no E-M-E launch window matching the 3.05 km/s Mars "
+        "anchor, confirming the diagnosis that S1L1 is NOT a 3-encounter E-M-E "
+        "cycler with a direct Mars->Earth return leg: the S/L labels are "
+        "Earth-to-Earth resonant intervals (see [[s1l1-nomenclature]]), and a "
+        "direct return leg cannot host 3.05 km/s at Mars at any epoch or ToF. "
+        "This is a cell-topology mismatch the resolver cannot fix. Flips to "
+        "passing once the entry is re-modelled as outbound E->M plus the S1/L1 "
+        "Earth-to-Earth resonant intervals and optimised with that cell "
+        "(STAGE 1 multi-rev plumbing provides the machinery)."
     ),
 )
 def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
