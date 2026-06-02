@@ -1953,7 +1953,7 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
-  v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
+  v_infinity_leveraging_dv_kms: 0.568   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "4:3(2)-": ΔV_DSM = 0.568 km/s (analytic-ephemeris establishment deep-space maneuver).
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics:   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "4:3(2)-": h_flyby = 10,483 km. NO turn-angle column in Rogers, so turning_angle_deg stays null. CAVEAT: this is the ONE-TIME V-infinity-leveraging ESTABLISHMENT-trajectory Earth-flyby altitude (the burn sequence that places the vehicle ONTO the cycler), NOT the steady-state recurring cycler flyby; legitimate only for this analytic-ephemeris establishment entry. Do NOT propagate to aldrin-classic-em-*, s1l1, or mcconaghy steady-state entries.
     - body: "E"
@@ -1969,18 +1969,18 @@
     note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
   vinf_kms_at_encounters:
     - body: "E"
-      vinf_kms: 5.51
-      note: "Rogers 2012 Table 4 reports V_inf,flyby ranging 5.51-6.55 km/s depending on the specific variant; 5.51 applies to the 4:3(2) architecture."
+      vinf_kms: 5.509
+      note: "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': V∞ flyby = 5.509 km/s (analytic-ephemeris establishment). V∞ launch for the same row = 2.608 km/s (see source_quotes)."
     - body: "M"
       vinf_kms: null
-      note: "Specific V_inf at Mars not isolated in the Rogers abstract/accessible tables for this sub-variant."
+      note: "Rogers 2012 Table 4 tabulates V∞ launch and V∞ flyby (both at the establishment Earth flyby), not a distinct V∞ at Mars for this row; left null."
   orbit_elements:
     a_au: null
     e: null
-    perihelion_au: null
-    aphelion_au: null
+    perihelion_au: 0.983
+    aphelion_au: 2.229
     inclination_deg: null
-    note: "Values are specific to the establishment epoch and shift slightly from the idealized 1.60 AU Aldrin baseline. Left null per spec §16.2 until full STOUR logs can be verified."
+    note: "perihelion_au/aphelion_au SOURCED: Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': Periapse = 0.983 AU, Apoapse = 2.229 AU (analytic-ephemeris establishment epoch). a_au/e not directly tabulated by Rogers Table 4 (not computed per golden-test discipline)."
     periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
     apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
     raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
@@ -2024,21 +2024,16 @@
       - at_segment_boundary: ["ret-me", "out-em"]
         body: "E"
         type: "flyby-powered"   # V-infinity-leveraging establishment Earth flyby (one-time, places vehicle ONTO the cycler)
-        dv_kms: null            # V-inf-leveraging establishment DV; see v_infinity_leveraging_dv_kms (null, deferred)
+        dv_kms: 0.568           # SOURCED: Rogers et al. 2012 Table 4 row Aldrin '4:3(2)-' ΔV_DSM = 0.568 km/s (carried from v_infinity_leveraging_dv_kms).
         turning_angle_deg: null # Rogers 2012 publishes no turn-angle column
-        max_turning_angle_deg: 51.9   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+10483 km, vinf=5.51 km/s)); vinf sourced from vinf_kms_at_encounters; alt=sourced periapsis_alt_km. Not source-attested.
+        max_turning_angle_deg: 51.9   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+10483 km, vinf=5.509 km/s)); vinf sourced from vinf_kms_at_encounters; alt=sourced periapsis_alt_km. Not source-attested.
         periapsis_alt_km: 10483   # SOURCED: Rogers 2012 Table 4 h_flyby for this variant (carried from flyby_mechanics[]). One-time ESTABLISHMENT flyby altitude, not the steady-state cycler flyby.
-        note: "Establishment V-infinity-leveraging Earth flyby; V-infinity 5.51 km/s. periapsis_alt_km is the sourced one-time establishment flyby altitude (Rogers 2012 Table 4 h_flyby), NOT the recurring steady-state cycler flyby."
+        note: "Establishment V-infinity-leveraging Earth flyby; V-infinity 5.509 km/s. periapsis_alt_km is the sourced one-time establishment flyby altitude (Rogers 2012 Table 4 h_flyby), NOT the recurring steady-state cycler flyby."
   data_gaps:
     - path: "trajectory.segments[ret-me].tof_days"
       kind: "unknown"
       note: "Return M->E leg ToF not isolated for this Aldrin establishment sub-variant in the accessible Rogers 2012 Table 4 rows."
       source_hint: "Rogers/Hughes/Longuski/Aldrin 2012, AIAA 2012-4746, Table 4"
-      todo_ref: "#54-backfill"
-    - path: "trajectory.maneuvers[E].dv_kms"
-      kind: "unknown"
-      note: "The V-infinity-leveraging establishment DV is not extracted (mirrors top-level v_infinity_leveraging_dv_kms = null pending Rogers 2012 Tables 3/4 extraction)."
-      source_hint: "Rogers/Hughes/Longuski/Aldrin 2012, AIAA 2012-4746, Tables 3/4"
       todo_ref: "#54-backfill"
     - path: "trajectory.segments[out-em].a_au"
       kind: "unknown"
@@ -2060,7 +2055,10 @@
     manoeuvres to push the idealized circular-coplanar trajectory into the
     eccentric real solar system.
   source_quotes:
-    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012 Table 4: V_inf,flyby ranging 5.51-6.55 km/s in the analytic ephemeris model for the 4:3(2)- and 3:2(1)- trajectories."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': V∞ flyby = 5.509 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': ΔV_DSM = 0.568 km/s."
+    "orbit_elements.perihelion_au": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': Periapse = 0.983 AU."
+    "orbit_elements.aphelion_au": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': Apoapse = 2.229 AU."
     "period.years": "Rogers et al. 2012: the (2) notation indicates a 2-synodic establishment timeline (4.27 yr)."
 
 # ---------------------------------------------------------------------------
@@ -2072,7 +2070,7 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
-  v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
+  v_infinity_leveraging_dv_kms: 0.530   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "3:2(1)-": ΔV_DSM = 0.530 km/s (analytic-ephemeris establishment deep-space maneuver).
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics:   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "3:2(1)-": h_flyby = 20,745 km. NO turn-angle column in Rogers, so turning_angle_deg stays null. CAVEAT: this is the ONE-TIME V-infinity-leveraging ESTABLISHMENT-trajectory Earth-flyby altitude (the burn sequence placing the vehicle ONTO the cycler), NOT the steady-state recurring cycler flyby; legitimate only for this analytic-ephemeris establishment entry. Do NOT propagate to aldrin-classic-em-*, s1l1, or mcconaghy steady-state entries.
     - body: "E"
@@ -2088,17 +2086,18 @@
     note: "1-synodic establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
-      vinf_kms: 6.55
-      note: "Upper end of the 5.51-6.55 km/s range cited in Rogers 2012 Table 4 for the establishment architectures."
+      vinf_kms: 6.546
+      note: "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': V∞ flyby = 6.546 km/s (analytic-ephemeris establishment). V∞ launch for the same row = 3.449 km/s (see source_quotes)."
     - body: "M"
       vinf_kms: null
-      note: "Left null per spec rules; specific breakdown requires full table access."
+      note: "Rogers 2012 Table 4 tabulates V∞ launch and V∞ flyby (both at the establishment Earth flyby), not a distinct V∞ at Mars for this row; left null."
   orbit_elements:
     a_au: null
     e: null
-    perihelion_au: null
-    aphelion_au: null
+    perihelion_au: 0.964
+    aphelion_au: 2.229
     inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': Periapse = 0.964 AU, Apoapse = 2.229 AU (analytic-ephemeris establishment epoch). a_au/e not directly tabulated by Rogers Table 4 (not computed per golden-test discipline)."
     periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
     apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
     raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
@@ -2142,21 +2141,16 @@
       - at_segment_boundary: ["ret-me", "out-em"]
         body: "E"
         type: "flyby-powered"   # V-infinity-leveraging establishment Earth flyby (one-time, places vehicle ONTO the cycler)
-        dv_kms: null            # V-inf-leveraging establishment DV; see v_infinity_leveraging_dv_kms (null, deferred)
+        dv_kms: 0.530           # SOURCED: Rogers et al. 2012 Table 4 row Aldrin '3:2(1)-' ΔV_DSM = 0.530 km/s (carried from v_infinity_leveraging_dv_kms).
         turning_angle_deg: null # Rogers 2012 publishes no turn-angle column
-        max_turning_angle_deg: 29.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+20745 km, vinf=6.55 km/s)); vinf sourced from vinf_kms_at_encounters; alt=sourced periapsis_alt_km. Not source-attested.
+        max_turning_angle_deg: 29.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+20745 km, vinf=6.546 km/s)); vinf sourced from vinf_kms_at_encounters; alt=sourced periapsis_alt_km. Not source-attested.
         periapsis_alt_km: 20745   # SOURCED: Rogers 2012 Table 4 h_flyby for this variant (carried from flyby_mechanics[]). One-time ESTABLISHMENT flyby altitude, not the steady-state cycler flyby.
-        note: "Establishment V-infinity-leveraging Earth flyby; V-infinity 6.55 km/s. periapsis_alt_km is the sourced one-time establishment flyby altitude (Rogers 2012 Table 4 h_flyby), NOT the recurring steady-state cycler flyby."
+        note: "Establishment V-infinity-leveraging Earth flyby; V-infinity 6.546 km/s. periapsis_alt_km is the sourced one-time establishment flyby altitude (Rogers 2012 Table 4 h_flyby), NOT the recurring steady-state cycler flyby."
   data_gaps:
     - path: "trajectory.segments[ret-me].tof_days"
       kind: "unknown"
       note: "Return M->E leg ToF not isolated for this Aldrin establishment sub-variant in the accessible Rogers 2012 Table 4 rows."
       source_hint: "Rogers/Hughes/Longuski/Aldrin 2012, AIAA 2012-4746, Table 4"
-      todo_ref: "#54-backfill"
-    - path: "trajectory.maneuvers[E].dv_kms"
-      kind: "unknown"
-      note: "The V-infinity-leveraging establishment DV is not extracted (mirrors top-level v_infinity_leveraging_dv_kms = null pending Rogers 2012 Tables 3/4 extraction)."
-      source_hint: "Rogers/Hughes/Longuski/Aldrin 2012, AIAA 2012-4746, Tables 3/4"
       todo_ref: "#54-backfill"
     - path: "trajectory.segments[out-em].a_au"
       kind: "unknown"
@@ -2175,7 +2169,10 @@
     allows a 1-synodic (2.135 yr) establishment. Incurs a slightly higher
     V_inf at Earth (6.55 km/s) than the 4:3(2) variant.
   source_quotes:
-    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012 Table 4 reports V_inf,flyby ranging 5.51-6.55 km/s."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': V∞ flyby = 6.546 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': ΔV_DSM = 0.530 km/s."
+    "orbit_elements.perihelion_au": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': Periapse = 0.964 AU."
+    "orbit_elements.aphelion_au": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': Apoapse = 2.229 AU."
     "period.years": "Rogers et al. 2012: the (1) notation indicates a 1-synodic establishment timeline (2.135 yr)."
 
 # ---------------------------------------------------------------------------
