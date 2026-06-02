@@ -1,18 +1,19 @@
 # Missing Data — Cycler Catalogue Sourcing Report
 
-*Generated 2026-06-02. Based on analysis of 219 catalogue entries; 790 data_gaps across 207 entries.*
+*Updated 2026-06-03. Based on analysis of 233 catalogue entries; 788 data_gaps across 207 entries.*
 
 ---
 
 ## 1. Summary
 
-The catalogue carries **790 data gaps** distributed across 207 entries. The bulk (772 of 790) originate from Russell-2004-dissertation entries whose per-leg orbital elements (`a_au`, `e`) and per-leg time-of-flight (`tof_days`) were never fully extracted from the dissertation tables. This makes the **Russell 2004 PhD dissertation** (UT Austin, open-access PDF at `http://hdl.handle.net/2152/1253`) the single highest-leverage sourcing target: a systematic extraction of Tables 3.4, 3.9–3.11, 4.9–4.13 would close roughly 98% of all gaps. The remaining gaps are:
+The catalogue carries **788 data gaps** distributed across 207 entries. The bulk originate from Russell-2004-dissertation entries whose per-leg orbital elements (`a_au`, `e`) and per-leg time-of-flight (`tof_days`) were never fully extracted from the dissertation tables. This makes the **Russell 2004 PhD dissertation** (UT Austin, open-access PDF at `http://hdl.handle.net/2152/1253`; now cached at `docs/refs/russell-2004-dissertation.pdf`) the single highest-leverage sourcing target: a systematic extraction of Tables 3.4, 3.9–3.11, 4.9–4.13 would close the bulk of all gaps. The remaining gaps are:
 
 - **201 "derive" gaps** — fully computable by the project's own multi-rev Lambert solver; no sourcing needed.
 - **184 "uncertain/topology-provisional" gaps** — resolved once per-leg elements are confirmed from Russell.
-- **7 "unknown" gaps** in the McConaghy/Rogers family: return-leg ToF for establishment variants (Rogers 2012 Table 4) and steady-state V∞ for U0L1 (McConaghy 2005 dissertation).
-- **4 "unknown" V∞ gaps** for VISIT-1 and VISIT-2 (Niehoff 1985/1986 original conference papers, never digitised online).
-- **2 "missing_period" gaps** (Hollister–Menning 1970 and McConaghy 2005 SnLm family seed): period multiplier `k` cannot be set without the primary paper.
+- **U0L1 and "Case 1" steady-state V∞** (McConaghy 2005 dissertation / AIAA 2002-4420 full text) and return-leg ToF for the establishment variants (Rogers 2012 Table 4). NB **S1L1, U0L1, and "Case 1" are three distinct orbits** (Rogers 2012 Table 1: S1L1 a=1.30/e=0.257, Case 1 a=1.22/e=0.238, U0L1 a=2.05/e=0.563).
+- **4 "unknown" V∞ gaps** for VISIT-1 and VISIT-2 (Friedlander/Niehoff 1986 AIAA 86-2009-CP; Niehoff 1985/1986 originals never digitised online).
+
+**Resolved this session:** the Hollister & Menning 1970 Earth-Venus periodic-orbit gap (period `k` / years / elements / V∞) is now closed — the single placeholder was individuated into the 15-orbit `hollister-menning-1970-ev-orbit-01..15` family from the PRIMARY paper (now in `docs/refs/`), with V∞ from Table 3 (Vr × 29.785 EMOS) and a shared period 16 yr / k=10 (corrected from a wrong secondary "3.2 yr").
 
 The Russell dissertation PDF (3.45 MB, `russellr74662.pdf`) is **freely downloadable from UT Austin repositories** but is binary-compressed and requires a PDF reader or extraction tool to read the tables — web-fetch cannot decode it. All other primary sources listed below are either paywalled (AIAA, JSR) or inaccessible conference-paper archives; the Rogers 2012 preprint on Purdue's server is the only other freely accessible key source.
 
@@ -22,7 +23,7 @@ The Russell dissertation PDF (3.45 MB, `russellr74662.pdf`) is **freely download
 
 | Category | Count | Sourcing status |
 |---|---|---|
-| **unknown** — needs sourcing | 405 | 397 from Russell 2004 dissertation tables; 7 from Rogers 2012 / McConaghy 2005; 1 VISIT V∞ |
+| **unknown** — needs sourcing | 403 | bulk from Russell 2004 dissertation tables; the rest from Rogers 2012 / McConaghy 2005; VISIT V∞ |
 | **derive** — computable by Lambert solver | 201 | No sourcing needed; internal computation |
 | **uncertain** — topology-provisional | 184 | Resolved as a by-product of extracting Russell per-leg `a_au` |
 
@@ -33,7 +34,7 @@ The Russell dissertation PDF (3.45 MB, `russellr74662.pdf`) is **freely download
 | Rogers 2012 AIAA 2012-4746 | 6 | Table 4 return-leg ToF for 4:3(2)− and 3:2(1)− variants |
 | task#54 backfill items | 3 | Rogers 2012 Tables 3/4 |
 | Niehoff 1985/1986 (VISIT V∞) | 4 | Original conference proceedings |
-| Hollister–Menning 1970 (period k) | 2 | JSR Vol. 7, No. 10, pp. 1193–1199 |
+| Hollister–Menning 1970 (period k) | 0 | RESOLVED — primary paper cached in `docs/refs/`, family individuated |
 
 | Structural gap path | Count |
 |---|---|
@@ -176,15 +177,18 @@ Access route: AIAA institutional subscription or interlibrary loan.
 
 ---
 
-### 3.5 Hollister & Menning 1970 — Earth-Venus period multiplier k (2 gaps)
+### 3.5 Hollister & Menning 1970 — Earth-Venus periodic orbits (RESOLVED 2026-06-03)
 
-**Entry `hollister-menning-1970-ev-periodic`** has `period.k = null` and `period.years = null` because the paper was not consulted at ingest.
+**RESOLVED.** The primary paper was obtained and is cached at
+`docs/refs/hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf`.
+The single placeholder entry was individuated into the 15-orbit family
+`hollister-menning-1970-ev-orbit-01..15`, with V∞ taken from the paper's
+Table 3 (Vr × 29.785 EMOS) and a shared period of **16 yr / k=10**
+(corrected from a wrong secondary "3.2 yr", which was the coplanar
+sub-orbit). New V0 data-integrity test: `tests/data/test_hollister_family.py`.
 
 > Hollister, W. M., and Menning, M. D. (1970). "Periodic Swing-By Orbits between Earth and Venus." *Journal of Spacecraft and Rockets*, Vol. 7, No. 10, pp. 1193–1199.
 > DOI: `10.2514/3.30134`
-> **Status: PAYWALLED (AIAA; returned HTTP 403). No open-access version found.**
-
-The Earth-Venus synodic period is 1.599 yr. Once the paper is consulted, `period.k` should be set to the resonance multiplier the paper uses (likely k=5 or k=8 based on the 1.599-yr synodic and the need to close the periodic orbit), and `period.years = k * 1.599 yr`.
 
 The precursor paper:
 > Hollister, W. M. (1969). "Periodic Orbits for Interplanetary Flight." *Journal of Spacecraft and Rockets*, Vol. 6, No. 4, pp. 366–369.
@@ -292,19 +296,14 @@ The following items are ordered by number of catalogue gaps they would close. It
 
 ---
 
-### Priority 5 — Hollister & Menning 1970 (Earth-Venus period k)
-**Gaps closed: 2 (hollister-menning-1970-ev-periodic period.k and period.years)**
-**Status: PAYWALLED — requires AIAA JSR backfile access**
+### Priority 5 — Hollister & Menning 1970 (Earth-Venus periodic orbits) — ✓ RESOLVED 2026-06-03
+**Gaps closed: family individuated (period k=10 / 16 yr, V∞ from Table 3, 15 orbits)**
+**Status: DONE — primary paper cached in `docs/refs/`**
 
-1. Request via institution's AIAA backfile subscription or interlibrary loan:
-   Hollister, W. M., and Menning, M. D. (1970). "Periodic Swing-By Orbits between Earth and Venus." *Journal of Spacecraft and Rockets*, Vol. 7, No. 10, pp. 1193–1199. DOI: `10.2514/3.30134`.
-2. Identify the periodic orbit family/families the paper catalogues and the resonance multiplier `k` (number of Earth-Venus synodic periods to closure).
-3. Set `period.k = k` and `period.years = k * 1.599 yr` in the entry.
-4. Extract any V∞ values at Earth and Venus encounters if tabulated.
-5. Extract orbital elements (a, e, perihelion, aphelion) for the periodic orbit(s) and backfill `orbit_elements`.
-6. Also retrieve the Hollister 1969 precursor (DOI `10.2514/3.29664`) and the Hollister-Menning 1969 AIAA-69-931 conference preprint for context, though the 1970 JSR paper is the primary sourcing target.
-
-**Note:** The companion paper by Rall and Hollister (1971) covers the Earth-Mars periodic orbit family and is cited as a corroborating source for the pre-Aldrin lineage. Same AIAA backfile access route applies.
+The Hollister & Menning 1970 JSR paper and the Hollister-Rall 1970 NASA-CR
+companion were obtained and cached (`docs/refs/`). The single placeholder was
+expanded into `hollister-menning-1970-ev-orbit-01..15` with V∞ from Table 3
+(Vr × 29.785 EMOS) and shared period 16 yr / k=10. No further sourcing needed.
 
 ---
 

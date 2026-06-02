@@ -88,20 +88,20 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M5** | Optimisation (rediscover 2-synodic E–M from scratch) | **completed** (commit `e6412c4`); `test_multi_start_grid_distinct` xfail diagnosed as load-bearing collision (task #53); binding gate `test_2syn_em_rediscovers_5_65_kms_earth` is a pre-existing slow-marked regression (task #54) | — |
 | **M6 (slice)** | astropy `Ephemeris` backend + `phase_match.find_real_windows` (geometric launch-window dates); ICRS→ecliptic rotation fix `4fe901d` (2026-06-01) | **completed** (commits `9b2611d`, `4fe901d`) | — |
 | **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **completed** (commits `ba01f37` + `1852750`, 2026-06-01); 7/7 binding gates pass, dynamic-frame round-trip 1e-10 rel, circular-Aldrin drift ~3e-7 km | — |
-| **M6b** | Real-ephemeris closure verification; Lambert-chain across DE440 with `REAL_DRIFT_TOLERANCE_KM = 200_000` over 2 cycles; Pascarella 2024 template | **scaffolding shipped**; powered-cycler solver landed (`solve_powered_periodic_cycler`, commit `83f6272`). **Proven:** rotating-frame drift closure is physically unreachable for k=1 Aldrin on DE440 (Mars heliocentric radius breathes ≈0.117 AU/cycle; measured drift ≈7.24e7 km ≈ 362× tol) — this is *why* the real Aldrin cycler is retargeted each synodic period with maintenance ΔV; literature never claims zero-maintenance periodicity. Binding gate re-scoped to Phase-C sourced anchors + sourced Earth turn deficit. Multi-rev Lambert (S1L1) remains stretch. | [phases/m6b-real-ephemeris-closure/plan.md](phases/m6b-real-ephemeris-closure/plan.md) |
-| **M7** | Catalogue loader, canonical signature matching, novelty scoring (spec §8 + §14 V1); also absorbs M6a-deferred `verify/crosscheck.py` + the spec §13.6/§13.8 JSONL ledger | **plan written** (commits `14a143a` + `774d38c`) | [phases/m7-catalogue-novelty-matching/plan.md](phases/m7-catalogue-novelty-matching/plan.md) |
-| **M8** | VEM campaign + CLI + viz | planned | — |
+| **M6b** | Real-ephemeris closure verification; Lambert-chain across DE440 with `REAL_DRIFT_TOLERANCE_KM = 200_000` over 2 cycles; Pascarella 2024 template | **done**; powered-cycler solver landed (`solve_powered_periodic_cycler`, commit `83f6272`); `optimise_cell_ephemeris` (real-DE440 cell optimiser) implemented with asymmetric `tof_seed_days` + Aldrin parity test (was a stub). **Proven:** rotating-frame drift closure is physically unreachable for k=1 Aldrin on DE440 (Mars heliocentric radius breathes ≈0.117 AU/cycle; measured drift ≈7.24e7 km ≈ 362× tol) — this is *why* the real Aldrin cycler is retargeted each synodic period with maintenance ΔV; literature never claims zero-maintenance periodicity. Multi-rev Lambert (S1L1) remains stretch. | [phases/m6b-real-ephemeris-closure/plan.md](phases/m6b-real-ephemeris-closure/plan.md) |
+| **M7** | Catalogue loader, canonical signature matching, novelty scoring (spec §8 + §14 V1); also absorbs M6a-deferred `verify/crosscheck.py` + the spec §13.6/§13.8 JSONL ledger | **done** — `data/catalog.py`, `ledger.py`, `writeback.py`, `discover.py` (with `optimiser="ephemeris"`), `verify/crosscheck.py` all shipped; 233-entry census frozen as a ratchet | [phases/m7-catalogue-novelty-matching/plan.md](phases/m7-catalogue-novelty-matching/plan.md) |
+| **M8** | VEM campaign + CLI + viz | planned (DEFERRED by user decision; plan written + revised) | [phases/m8-multibody-vem/plan.md](phases/m8-multibody-vem/plan.md) |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
 | Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
 | Stretch | Low-thrust v2 scope expansion | refs queued (Yam 2010, Pascarella 2024) | — |
 
-Completed-phase plan/todo working docs (M0–M6a) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Active phases (M6b, M7) retain their plan docs.
+Completed-phase `todo.md` working checklists (M0–M7) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Each milestone's `plan.md` is kept as history. The active phase is M8 (`phases/m8-multibody-vem/plan.md`, currently deferred).
 
 ### 4.1 Schema-v2 + representation framework (2026-06-01)
 
 A major catalogue / spec rev shipped 2026-06-01 (commits `debd285` schema v2 + `5145bb1` spec §12.2):
 
-- **Catalogue schema v2** (`data/catalogue.yaml`): six additive optional field categories — `model_assumption`, `flyby_mechanics[]`, `delta_v_kms` + `v_infinity_leveraging_dv_kms`, `periapse_km`/`apoapse_km`, RAAN/ω/ν/epoch, `fleet_size`. All 219 entries mechanically backfilled where derivable; remaining nulls are honest gaps. See `data/README.md` "Schema v2" for full convention. spec.md §16.1 carries the JSON schema; §16.2 explicitly carves the new fields OUT of the canonical signature so existing matches stay valid.
+- **Catalogue schema v2** (`data/catalogue.yaml`): six additive optional field categories — `model_assumption`, `flyby_mechanics[]`, `delta_v_kms` + `v_infinity_leveraging_dv_kms`, `periapse_km`/`apoapse_km`, RAAN/ω/ν/epoch, `fleet_size`. All 233 entries mechanically backfilled where derivable; remaining nulls are honest gaps. See `data/README.md` "Schema v2" for full convention. spec.md §16.1 carries the JSON schema; §16.2 explicitly carves the new fields OUT of the canonical signature so existing matches stay valid.
 - **Representation framework** (spec §12.2): explicit architectural rule that the catalogue carries multiple legitimate representations per cycler (idealised circular-coplanar, real-ephemeris instances on the site, analytic-ephemeris from Rogers 2012, CR3BP from Arenstorf/Saturnian). Downstream consumers pick the right model via the `model_assumption` field; we deliberately do NOT standardise on one form. "Derived views, not conversion."
 - **Future scope references** (`docs/v2-future-references.md`): bibliography for the v2 low-thrust scope expansion (Yam 2010 Sims-Flanagan, Pascarella 2024 medium-fidelity pipeline, Izzo 2015 GTOC methods, Burhani 2023 inclined low-thrust, Hollister–Menning 1969-71 foundational lineage).
 
@@ -137,15 +137,17 @@ docs/
 ├── spec.md                      # Authoritative project spec (owner-authored, verbatim)
 ├── overview.md                  # This file: navigation + decisions + roadmap status
 ├── errata-investigation.md      # Full record of the Aldrin anchor reconciliation (spec §9.1 defers here)
+├── v2-future-references.md      # Seed bibliography for the v2 low-thrust scope expansion
+├── refs/                        # Cached primary-source PDFs (Russell 2004, Rogers 2012, Hollister-Menning 1970, ...)
 └── phases/
-    └── <id>-<short-name>/        # Per-phase working docs for ACTIVE phases only (currently m6b, m7)
-        ├── plan.md              # Detailed implementation plan for the milestone
-        └── todo.md              # Actionable checklist derived from plan.md
+    └── <id>-<short-name>/        # Per-phase docs; active phase is m8 (m6b/m7 retain plan.md as history)
+        └── plan.md              # Detailed implementation plan for the milestone
 ```
 
-Each milestone that gets started gets a `phases/<id>-<short-name>/` directory containing:
-- `plan.md` — module-level design decisions for that milestone, file structure, tests, gates, risks.
-- `todo.md` — concrete actionable items, checked off as work progresses.
+Each milestone gets a `phases/<id>-<short-name>/` directory whose `plan.md`
+carries module-level design decisions, file structure, tests, gates, and risks.
+The per-phase `todo.md` working checklists are deleted once the milestone ships
+(their outcome lives in the roadmap table, spec.md, and the code).
 
 Once a milestone is complete, its plan/todo working docs are retired — the durable outcomes live in the milestone table above, spec.md, and the code. Only active phases keep their phase docs.
 

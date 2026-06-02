@@ -18,14 +18,14 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | M5 — optimisation (scipy DE + SLSQP with hard constraints) | ✓ done |
 | M6 (slice) — astropy Ephemeris backend + phase_match.find_real_windows | ✓ done |
 | M6a — idealized closure verification (multi-lap rotating-frame drift check) | ✓ done |
-| M6b — real-ephemeris closure; powered Aldrin solver landed; drift closure proven physically unreachable for k=1 (retargeted each synodic period w/ maintenance ΔV) | scaffolding shipped |
-| M7 — catalogue loader, signature matching, novelty (crosscheck + writeback + discover landed) | partial |
+| M6b — real-ephemeris closure; powered Aldrin solver landed; `optimise_cell_ephemeris` (real-DE440 cell optimiser) implemented with asymmetric `tof_seed_days`; drift closure proven physically unreachable for k=1 (retargeted each synodic period w/ maintenance ΔV) | done |
+| M7 — catalogue loader, signature matching, novelty (crosscheck + writeback + discover landed; `discover(optimiser="ephemeris")` wired) | done |
 | M8 — VEM campaign + CLI + viz | planned |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
-published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
-broad classes, Niehoff VISIT, Jones VEM family, Hollister–Menning, plus lunar and Jovian
-family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
+233-entry published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+broad classes, Niehoff VISIT, Jones VEM family, the 15-orbit Hollister–Menning Earth–Venus
+family, plus lunar and Jovian family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
 conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
 auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 
@@ -34,8 +34,9 @@ auto-published to <https://cyclers.space/launch-windows/> (weekly cron sync).
 - [docs/spec.md](docs/spec.md) — the canonical project specification.
 - [docs/overview.md](docs/overview.md) — decisions made during planning and the
   milestone roadmap.
-- [docs/phases/](docs/phases/) — per-phase plan/todo docs for the active phases
-  (m6b, m7); completed-phase docs are retired into the roadmap + spec.
+- [docs/phases/](docs/phases/) — per-phase plan docs; the active phase is m8
+  (`m8-multibody-vem/plan.md`). Completed-phase working docs (M0–M7) are retired
+  into the roadmap + spec; their `plan.md` files remain as milestone history.
 
 ## Local setup
 

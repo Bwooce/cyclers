@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-02)
+# Project state at a glance (updated 2026-06-03)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
@@ -35,13 +35,29 @@ audit trail and is unchanged in spirit.
   spurious direct Mars→Earth "return leg" (commit `f4074d0`). See
   Key findings below and the S1L1-nomenclature memory note.
 - **S1L1 not hostable in the idealised model — characterised and
-  documented** — Phase 1 Task 1 of the SnLm rediscovery plan was
-  executed; `scripts/characterise_s1l1.py` (see its `FINDING` header)
-  shows no circular-coplanar topology reproduces the published
-  5.65 / 3.05 km/s V∞ anchors within ±0.3 km/s. This is a model
-  limitation, exactly like the Aldrin cycler, not a solver bug.
+  documented** — `scripts/characterise_s1l1.py` shows no circular-coplanar
+  topology reproduces the published 5.65 / 3.05 km/s V∞ anchors within
+  ±0.3 km/s. The E-M-E-E topology was additionally tested
+  (`scripts/characterise_s1l1_emee.py`) and does NOT close in
+  circular-coplanar (V∞_E ≈ 25-39 km/s): the blocker is the MODEL (the
+  ~154-d outbound leg is near-hyperbolic, exactly like the Aldrin case),
+  NOT the topology. Real-ephemeris closure additionally needs multi-rev
+  support in the maintenance engine. S1L1 gates remain xfail. This is a
+  model limitation, not a solver bug.
+- **Hollister & Menning Earth-Venus family individuated** — the single
+  E-V placeholder was expanded into the 15-orbit
+  `hollister-menning-1970-ev-orbit-01..15` family from the PRIMARY
+  Hollister & Menning 1970 paper (now in `docs/refs/`), with V∞ from
+  Table 3 (Vr × 29.785 EMOS) and a shared period 16 yr / k=10 (corrected
+  from a wrong secondary "3.2 yr", which was the coplanar sub-orbit).
+  New V0 data-integrity tests: `tests/data/test_hollister_family.py`,
+  `tests/data/test_aldrin_establishment.py`.
+- **Real-ephemeris cell optimiser IMPLEMENTED** — `optimise_cell_ephemeris`
+  (was a `NotImplementedError` stub) now runs against DE440 with an
+  asymmetric `tof_seed_days` option and an Aldrin parity test; `discover()`
+  supports `optimiser="ephemeris"` (Part 2 wired).
 - **Catalogue census frozen as a ratchet** — `tests/test_catalogue_rediscovery.py`
-  (`EXPECTED_COVERAGE`) pins the 219-entry distribution; any catalogue
+  (`EXPECTED_COVERAGE`) pins the 233-entry distribution; any catalogue
   change must update it in the same commit.
 
 ## In progress (with plan references)
@@ -52,13 +68,6 @@ audit trail and is unchanged in spirit.
   plumbing multi-rev enumeration through `data/discover.py` and the
   sweep gate so the 202-entry `MULTI_ENCOUNTER_SEQUENCE` bucket becomes
   reachable by `discover` — IN PROGRESS.
-- **Real-ephemeris cell optimiser** —
-  `docs/superpowers/plans/2026-06-02-real-ephemeris-cell-optimiser.md`.
-  Generalise the Aldrin-specific maintenance/BVP solver into the
-  currently stubbed `optimise_cell_ephemeris`
-  (`src/cyclerfinder/search/optimize.py:1144`, raises
-  `NotImplementedError`). IN PROGRESS. This is the path to actually
-  close S1L1/Aldrin-like cyclers on the real ephemeris (DE440).
 - **Catalogue data-gap sourcing workflow** — a workflow is extracting
   Russell 2004 + Rogers 2012 tables and filling sourced catalogue gaps
   (goal: more usable golden orbits). Tracked in `data/MISSING_DATA.md`.
@@ -91,52 +100,60 @@ fill. Listed in rough priority order.
    VISIT-1 / VISIT-2 V∞ at Earth and Mars. Paywalled
    (DOI `10.2514/6.1986-2009`). 4 "unknown" V∞ gaps; never digitised
    online (Q&A item C still partly open).
-3. **McConaghy 2005 Purdue dissertation (AAI3166673)** — U0L1 return
-   ToF and steady-state V∞. Paywalled. Note: the McConaghy 2006 S1L1
-   orbital-element gap this would have closed is now resolved via
+3. **McConaghy 2005 Purdue dissertation (AAI3166673) / AIAA 2002-4420
+   full text** — U0L1 and Case 1 steady-state V∞ (and U0L1 return ToF).
+   Both ResearchGate / ProQuest restricted. Note: the McConaghy 2006
+   S1L1 orbital-element gap this would have closed is now resolved via
    Russell Table 4.9 (Q&A item B), so this is needed only for the
-   remaining U0L1 / SnLm steady-state V∞ gaps.
-4. **Hollister & Menning 1970, JSR 7(10) (DOI `10.2514/3.30134`)** —
-   Earth–Venus periodic `period.k` / years and elements. Paywalled.
-   2 "missing_period" gaps.
-5. **Jones / Hernandez / Jesick 2017 (AAS 17-577)** — VEM triple-cycler
+   remaining U0L1 / Case 1 / SnLm steady-state V∞ gaps. **NB S1L1,
+   U0L1, and "Case 1" are THREE DISTINCT orbits** (Rogers 2012 Table 1:
+   S1L1 a=1.30/e=0.257, Case 1 a=1.22/e=0.238, U0L1 a=2.05/e=0.563),
+   not the same trajectory.
+4. **Jones / Hernandez / Jesick 2017 (AAS 17-577)** — VEM triple-cycler
    member list (Q&A item D). Needed to lift M8 out of placeholder
    territory; lower priority while M8 is deferred.
 
-## Catalogue census (frozen ratchet — 219 entries)
+## Catalogue census (frozen ratchet — 233 entries)
 
 Source of truth: `tests/test_catalogue_rediscovery.py` `EXPECTED_COVERAGE`.
 
 | Exclusion reason | Count |
 |---|---|
 | `multi_encounter_sequence` | 202 |
+| `missing_leg_tofs` | 15 |
 | `non_heliocentric` | 6 |
 | `missing_vinf` | 5 |
 | `constructible` | 2 |
 | `not_two_body` | 2 |
-| `missing_period` | 2 |
-| **Total** | **219** |
+| `missing_period` | 1 |
+| **Total** | **233** |
 
-Through the idealised rediscovery gauntlet ~0/219 currently pass green:
+The new `missing_leg_tofs` bucket (15) holds the individuated Hollister &
+Menning E-V family (orbits 1-15): each has matched V∞ at Earth and Venus
+but no per-leg ToFs encoded in `legs`. Expanding the old single E-V
+placeholder moved one row out of `missing_vinf` (6 → 5) and one out of
+`missing_period` (2 → 1), and added the 15-row bucket.
+
+Through the idealised rediscovery gauntlet ~0/233 currently pass green:
 the 2 `constructible` (Aldrin) entries are model-limited skips
 (`EXPECTED_SKIPS`). Aldrin IS replicated on the real ephemeris (M6b)
 and the canonical 2-synodic E–M anchor is replicated idealised. The
-dominant blocker is the 202-entry (92%) `multi_encounter_sequence` /
-SnLm multi-rev modelling bucket — exactly what the two in-progress
-plans target.
+dominant blocker is the 202-entry (87%) `multi_encounter_sequence` /
+SnLm multi-rev modelling bucket — exactly what the in-progress SnLm
+multi-rev plan targets.
 
 ## Data-gap accounting (see `data/MISSING_DATA.md`)
 
-790 data gaps across 207 entries:
+788 data gaps across 207 entries:
 
-- **405 "unknown"** — need sourcing (397 from Russell 2004, the rest
-  from Rogers 2012 / McConaghy 2005 / VISIT).
+- **403 "unknown"** — need sourcing (the bulk from Russell 2004, the
+  rest from Rogers 2012 / McConaghy 2005 / VISIT).
 - **201 "derive"** — COMPUTABLE by our Lambert solver, no sourcing
   needed.
 - **184 "uncertain"** — topology-provisional; resolve as a by-product
   of extracting Russell per-leg elements.
 
-772 of 790 trace to the Russell 2004 dissertation. Source PDFs live in
+The bulk of the gaps trace to the Russell 2004 dissertation. Source PDFs live in
 `docs/refs/`: `russell-2004-dissertation.pdf`,
 `rogers-2012-vinf-leveraging-cyclers-AIAA-2012-4746.pdf`,
 `genova-aldrin-2015-earth-moon-cycler-AAS-15.pdf`,
@@ -150,11 +167,24 @@ plans target.
   vehicle is one-way; the crewed return needs a mirrored conjugate
   L1S1 cycler. The catalogue's old direct M→E "return leg" was a
   mismodelling, corrected in commit `f4074d0`.
+- **S1L1, U0L1, and "Case 1" are three distinct orbits** — per Rogers
+  2012 Table 1: S1L1 a=1.30/e=0.257, Case 1 a=1.22/e=0.238, U0L1
+  a=2.05/e=0.563. No doc or entry should treat them as the same
+  trajectory.
 - **Idealised-model limitations are real, not bugs.** Both the Aldrin
   cycler and S1L1 have published anchors that the circular-coplanar
-  idealised model cannot host. These are documented xfails / skips,
-  and the real-ephemeris cell optimiser (in progress) is the intended
-  way to close them.
+  idealised model cannot host. These are documented xfails / skips, and
+  the now-implemented real-ephemeris cell optimiser is the intended way
+  to close them.
+- **Residual true data gaps** (need human / restricted access):
+  VISIT-1/2 V∞ (Friedlander/Niehoff 1986 AIAA 86-2009-CP); U0L1 &
+  Case 1 V∞ (McConaghy 2005 dissertation / AIAA 2002-4420 full text,
+  ResearchGate/ProQuest restricted). The Aldrin establishment Mars-V∞
+  is N/A (Earth-side V∞ leveraging). The 201 catalogue `derive`-kind
+  data_gaps are computable (no sourcing). New reference PDFs added to
+  `docs/refs/` this session: russell-2004-dissertation, rogers-2012,
+  hollister-menning-1970 primary scan, hollister-rall-1970 NASA-CR,
+  landau-longuski-2006-pt1, vasile-2005, genova-2016-phobos-deimos.
 
 ## Infra note
 
