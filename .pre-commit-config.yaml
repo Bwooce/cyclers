@@ -2,6 +2,12 @@
 # Activate once per clone with: uv run pre-commit install
 # Run manually across the tree with: uv run pre-commit run --all-files
 repos:
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.29.4
+    hooks:
+      - id: check-jsonschema
+        files: ^data/catalogue\.yaml$
+        args: ["--schemafile", "data/catalogue.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.15  # keep in sync with the ruff dev-dependency in pyproject.toml
     hooks:

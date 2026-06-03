@@ -82,3 +82,9 @@ addopts = "-ra -q --strict-markers --timeout=600 -n auto -m 'not slow'"
 markers = [
     "slow: tests that take more than ~10 seconds (M5 optimiser, catalogue rediscovery). Skipped by default; run with `-m slow` or `-m 'slow or not slow'`.",
 ]
+
+[dependency-groups]
+dev = [
+    "check-jsonschema>=0.37.2",
+    "jsonschema>=4.26.0",
+]

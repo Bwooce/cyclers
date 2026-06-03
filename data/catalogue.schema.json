@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyclers.space/schemas/catalogue.schema.json",
+  "version": 4,
+  "title": "Cycler Finder Catalogue",
+  "description": "Schema v4 for data/catalogue.yaml. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["id"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable human-readable slug for this cycler entry."
+      },
+      "cycler_class": {
+        "type": "string",
+        "enum": ["single-ellipse", "multi-arc", "non-keplerian"],
+        "default": "single-ellipse",
+        "description": "Structural kind of orbit. Default single-ellipse preserves v3 behaviour."
+      },
+      "orbit_elements": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "reference_frame": {
+            "type": "string",
+            "enum": [
+              "heliocentric-inertial",
+              "planetcentric-inertial",
+              "rotating-synodic"
+            ],
+            "default": "heliocentric-inertial"
+          },
+          "center": {
+            "type": "string",
+            "default": "Sun"
+          },
+          "a_au": {
+            "description": "Semi-major axis in AU. Null for multi-arc and non-keplerian."
+          },
+          "e": {
+            "description": "Eccentricity. Null for multi-arc and non-keplerian."
+          },
+          "cr3bp": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "jacobi_constant": {},
+              "period_nd": {},
+              "stability_index": {},
+              "mass_ratio": {},
+              "libration_point": {},
+              "family": {
+                "type": "string"
+              },
+              "state_nd": {},
+              "lunit_km": {},
+              "tunit_s": {}
+            },
+            "description": "CR3BP identity tuple for non-keplerian orbits."
+          }
+        }
+      },
+      "invariants": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "aphelion_ratio": {},
+          "transit_times_days": {},
+          "turn_ratio": {}
+        },
+        "description": "Cycle-level identity descriptors for multi-arc orbits."
+      },
+      "period": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "pair": {},
+          "k": {},
+          "years": {},
+          "basis": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["pair", "k"],
+              "properties": {
+                "pair": {
+                  "type": "string"
+                },
+                "k": {
+                  "type": "integer"
+                }
+              }
+            },
+            "description": "Beat-period basis for n-body (VEM) cyclers."
+          }
+        }
+      }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "cycler_class": {
+              "enum": ["multi-arc", "non-keplerian"]
+            }
+          },
+          "required": ["cycler_class"]
+        },
+        "then": {
+          "properties": {
+            "orbit_elements": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "a_au": {
+                  "type": "null"
+                },
+                "e": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
