@@ -13,6 +13,13 @@ Rules enforced
    rotating-frame orbits are planet-centric, not heliocentric).
 3. ``period.basis`` items, when present, must each carry both ``pair``
    and ``k`` keys.
+
+Dispatch helper
+---------------
+:func:`anchors_for` returns which expected-output anchor categories apply
+to a given catalogue entry dict, dispatching by ``cycler_class`` per
+spec §16.7.5.  Callers should use this rather than hard-coding class
+checks inline.
 """
 
 from __future__ import annotations
@@ -86,4 +93,54 @@ def validate_schema_invariants(rows: list[dict[str, Any]]) -> list[str]:
     return errors
 
 
-__all__ = ["validate_schema_invariants"]
+def anchors_for(entry: dict[str, Any]) -> dict[str, bool]:
+    """Return which expected-output anchor categories apply to *entry*.
+
+    Dispatches by ``cycler_class`` per spec §16.7.5.  The returned dict
+    maps anchor-category names to ``True`` when that category applies and
+    ``False`` when it must not be applied for the given class.
+
+    Anchor categories
+    -----------------
+    ``"vinf"``
+        V∞ multiset check — applicable to all classes (where
+        ``vinf_kms_at_encounters`` is populated).
+    ``"a_e"``
+        Semi-major axis + eccentricity identity — applies only to
+        ``single-ellipse``.  Must NOT be applied to multi-arc or
+        non-keplerian entries (they have no single conic; the
+        ``construct_resonant_cycler`` constructor must not be invoked for
+        them).
+    ``"period"``
+        Period (years / k) check — applies to ``single-ellipse`` and
+        ``multi-arc``; not meaningful for ``non-keplerian`` entries whose
+        period is expressed in non-dimensional CR3BP time.
+    ``"invariants"``
+        Cycle-level identity (aphelion_ratio / turn_ratio /
+        transit_times_days) — applies only to ``multi-arc``.
+    ``"cr3bp"``
+        CR3BP identity triple (jacobi_constant / period_nd /
+        stability_index) — applies only to ``non-keplerian``.
+
+    Parameters
+    ----------
+    entry:
+        A raw YAML row dict (as loaded by ``yaml.safe_load`` on
+        ``data/catalogue.yaml``).
+
+    Returns
+    -------
+    dict[str, bool]
+        Mapping of anchor-category names to applicability flags.
+    """
+    cls = str(entry.get("cycler_class") or "single-ellipse")
+    return {
+        "vinf": True,
+        "a_e": cls == "single-ellipse",
+        "period": cls in ("single-ellipse", "multi-arc"),
+        "invariants": cls == "multi-arc",
+        "cr3bp": cls == "non-keplerian",
+    }
+
+
+__all__ = ["anchors_for", "validate_schema_invariants"]
