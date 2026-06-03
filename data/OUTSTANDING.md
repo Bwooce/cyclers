@@ -474,3 +474,15 @@ These flags are deliberately separate from the within-paradigm questions
 A–G because those are gap-filling (missing numerics, inconsistent
 secondary sources, attribution corrections) while H.1 and H.2 are
 paradigm mismatches.
+
+## Resonance-anchored construction validated (2026-06-03)
+
+The McConaghy/Russell construction method now reproduces cyclers from their
+SOURCED orbital elements with no optimisation (`search/resonant_construct.py`,
+`core/kepler.coe_to_rv`): S1L1 -> V_inf 4.90/4.98 km/s (matches Russell 2004
+coplanar 4.99/5.10) and Aldrin -> 6.58/9.75 (matches sourced 6.5/9.7). The
+spec S1L1 5.65/3.05 is a higher-fidelity figure (Mars 3.05 needs eccentric
+Mars). Catalogue-scale reproduction (`scripts/batch_resonant_reproduction.py`)
+is currently data-limited to 3 rows (only those carry both cycler-level (a,e)
+and sourced V_inf); unlocking it needs per-cycler (a,e) populated for the
+ballistic Russell rows from the Russell 2004 dissertation (in docs/refs/).

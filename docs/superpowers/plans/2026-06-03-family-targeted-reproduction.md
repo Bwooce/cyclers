@@ -105,3 +105,15 @@ def test_s1l1_vinf_from_sourced_orbit_matches_independent_anchors():
 **Provenance:** (a,e) and V∞ are independently sourced, so constructing from one and checking the other is non-circular. Derived epochs/ToFs are COMPUTED-labelled. No tolerance loosening; xfail stays honest if a gate doesn't genuinely pass.
 
 **Risk:** Task 2's cross-check could *fail* if the published a/e and V∞ come from different model fidelities (circular-coplanar vs real). That is itself a valuable finding (record, don't force). Task 3 may narrow but not close S1L1 on DE440 — the documented next lever is a Newton differential-corrector (Russell 2004 method), a follow-on milestone.
+
+---
+
+## Findings from execution (2026-06-03)
+
+**Tasks 1–2 DONE & pushed** (`coe_to_rv`, `construct_resonant_cycler`; commit `35dff13`). The resonance‑anchored construction reproduces, from each cycler's *sourced* orbit, with no optimisation:
+- **S1L1** (a=1.30, e=0.257) → V∞ 4.90 / 4.98 km/s, E→M leg 152.6 d — matches Russell 2004 coplanar (4.99/5.10) & McConaghy 2006 (4.7/5.0) and the sourced ~154 d. ✅
+- **Aldrin** (out/in) → V∞ 6.58 / 9.75 km/s — matches sourced 6.5 / 9.7. ✅
+
+**Task 3 (spec 5.65/3.05) re‑scoped:** these are a *higher‑fidelity* figure, not S1L1's coplanar signature. The Mars 3.05 specifically requires **eccentric Mars** (coplanar geometry forces ~5.0). So closing to 5.65/3.05 is a real‑ephemeris constrained search over Mars's orbital phase, seeded by the construction (which already lands E→M at ~154 d) — not a coplanar task.
+
+**Task 4 (catalogue scale) is DATA‑LIMITED:** only **3 of 233** rows carry both a cycler‑level (a,e) *and* sourced V∞ (see `scripts/batch_resonant_reproduction.py`). The ~200 SnLm/Russell rows have V∞ but no cycler‑level (a,e); the peri/apo rows (VISIT, Case 1, U0L1, Hollister) lack V∞. **Unlock:** populate per‑cycler (a,e) for the ballistic Russell rows from the Russell 2004 dissertation tables (already in `docs/refs/`), then the batch script validates them. That is the next data task before Task 4 yields at scale.
