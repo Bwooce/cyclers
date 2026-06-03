@@ -81,7 +81,7 @@ A second optional top-level field, `trajectory_regime:`, was added on
 2026-06-01 to make the *trajectory class* explicit:
 
 - `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
-  required to close the cycle. All current 43 entries are ballistic.
+  required to close the cycle. All but 2 of the current 233 entries are ballistic (the 2 powered Aldrin establishment variants excepted).
 - `low-thrust` — requires continuous propulsion (Solar Electric, ion,
   nuclear electric, solar sail, etc.) over the transit legs to close.
   Mathematically: Lambert's problem no longer applies; the trajectory
@@ -162,7 +162,7 @@ the matcher's pool prefilter (before the per-signature distance
 calculation).
 
 **Default when absent:** `circular-coplanar`. Pre-v2 entries that
-predate this field (none currently — backfilled on all 219) should be
+predate this field (none currently — backfilled on all 233) should be
 read as circular-coplanar.
 
 **Backfill stats (initial v2 rev, 2026-06-01):**
@@ -231,7 +231,7 @@ Per-encounter geometry parallel to the existing
   rp_km: 6578               # closest-approach radius from body center (= body radius + min altitude)
 ```
 
-`null` (or omitted) on all current 219 entries: while some Russell
+`null` (or omitted) on all current 233 entries: while some Russell
 entries cite turning-angle multisets like `[93, 93]` deg in their
 notes, deriving per-encounter `turning_angle_deg` + `min_altitude_km`
 mechanically requires the bend formula `sin(δ/2) = 1 / (1 + r_p ·
