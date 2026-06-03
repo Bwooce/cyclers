@@ -282,21 +282,31 @@ def _multi_start_grid(
     n_starts: int,
     seed: int,
 ) -> list[tuple[float, ...]]:
-    """Fixed reproducible perturbation grid over the interior encounter epochs.
+    """Deterministic Latin-Hypercube multi-start over the interior epochs.
 
     Spec §13.4: "cover the remaining continuous DOF with a fixed,
     reproducible multi-start grid plus local polish, so coverage within
     a cell is systematic, not stochastic."
 
-    Strategy:
+    Strategy (task #53):
 
     - Start ``0`` is exactly the free-return seed
-      (:func:`_free_return_seed`).
-    - Starts ``1 …`` perturb each interior epoch by a deterministic
-      ``± k * T / (4N)`` offset drawn from a fixed table. The ``seed``
-      argument controls the order in which the table entries are
-      assigned to starts (so two runs with the same seed produce
-      bitwise-identical start vectors); the table itself is fixed.
+      (:func:`_free_return_seed`) — the structural anchor SLSQP polishes
+      first.
+    - Starts ``1 …`` are a seeded Latin-Hypercube Sample (LHS) of the
+      interior-epoch box ``[inset·T, (1-inset)·T]^{N-2}``. Each of the
+      ``n_starts - 1`` samples sits in its own stratum along every
+      dimension (one point per row and per column of the LHS grid), so
+      coverage is stratified and the samples are mutually distinct — a
+      strict improvement over the prior fixed ``±k·T`` perturbation
+      table, which collapsed to ``≤ 4`` unique positive magnitudes for
+      ``n_interior = 1`` cells (duplicate starts, zero minimum pairwise
+      separation).
+
+    Determinism: the LHS uses ``np.random.default_rng(seed)`` for both the
+    in-stratum jitter and the per-dimension permutations, so the same
+    ``seed`` always yields bitwise-identical start vectors (the optimiser's
+    reproducibility tests rely on this).
 
     Returns
     -------
@@ -309,8 +319,10 @@ def _multi_start_grid(
     -----
     For ``N = 2`` (a degenerate 1-leg "cell") the parameter vector is
     empty and every start is the same empty tuple. For ``N = 3`` (the
-    M5 gate) there is one interior epoch and the grid perturbs it
-    around ``T/2``.
+    M5 gate) there is one interior epoch and the LHS stratifies it across
+    the interior bounds; each interior vector is sorted to keep the
+    encounter epochs monotone (an unsorted start would make
+    :func:`construct_cycler` raise immediately).
     """
     n = len(cell.sequence)
     if n < 2:
@@ -325,74 +337,29 @@ def _multi_start_grid(
     if n_starts <= 1 or n_interior == 0:
         return starts[:n_starts] if n_starts > 0 else []
 
-    # Fixed perturbation table: each entry is a fractional offset of T
-    # applied to one interior epoch. The table is intentionally larger
-    # than the typical n_starts so that small n_starts pick a varied
-    # subset under the rng-driven shuffle. Magnitudes span ~ ±0.25 T
-    # which is wider than the basin of attraction empirically observed
-    # in the M3 Aldrin closure work.
-    perturbations_fracs: tuple[float, ...] = (
-        +0.10,
-        -0.10,
-        +0.20,
-        -0.20,
-        +0.05,
-        -0.05,
-        +0.15,
-        -0.15,
-        +0.25,
-        -0.25,
-    )
+    n_samples = n_starts - 1
+    lo = _BOUNDS_INSET_FRAC * target_period_sec
+    hi = (1.0 - _BOUNDS_INSET_FRAC) * target_period_sec
+    span = hi - lo
 
     rng = np.random.default_rng(seed)
-    # Permute the table indices so two runs with the same seed produce
-    # identical start vectors. The permutation is over indices into the
-    # fixed table — not over the values themselves — keeping the table
-    # an immutable artefact of the module.
-    perm = rng.permutation(len(perturbations_fracs))
+    # Standard LHS: for each dimension, place one jittered sample in each of
+    # the n_samples equal strata, then permute the stratum->sample assignment
+    # independently per dimension so the samples are not axis-aligned.
+    # ``lhs_unit`` is (n_samples, n_interior) in the unit hypercube.
+    lhs_unit = np.empty((n_samples, n_interior), dtype=np.float64)
+    for d in range(n_interior):
+        jitter = rng.random(n_samples)
+        strata = (np.arange(n_samples) + jitter) / n_samples
+        perm = rng.permutation(n_samples)
+        lhs_unit[:, d] = strata[perm]
 
-    # Per-interior-epoch additional rotation: index `j` of the interior
-    # epoch contributes to the choice of perturbation, so adjacent
-    # interior epochs don't all move the same way.
-    for k in range(1, n_starts):
-        chosen_idx = int(perm[(k - 1) % len(perturbations_fracs)])
-        frac = perturbations_fracs[chosen_idx]
-        # Modulate per interior epoch so multi-interior cells get a
-        # genuinely varied vector (not the same scalar shift on all
-        # axes).
-        # Sign source is (j + chosen_idx) % 2. For n_interior=1 cells this
-        # cancels against the alternating ± entries in perturbations_fracs:
-        # the 10 table entries collapse to 5 unique magnitudes, all
-        # positive. That collapse is currently LOAD-BEARING — empirically
-        # the M5 binding gate test_2syn_em_rediscovers_5_65_kms_earth only
-        # converges to the Russell 4.991gG2 cycler (5.65 / 3.05 km/s) when
-        # interior-time perturbations are positive (push the Mars
-        # encounter later than the free-return midpoint T/2). An earlier
-        # attempt to enforce true distinctness by sourcing the sign from
-        # `k` instead of `chosen_idx` (proper +/- balance) made the gate
-        # find 0 results — max_vinf = 38 km/s, residual = inf. For
-        # multi-interior cells the (j + chosen_idx) % 2 does provide
-        # genuine per-axis variation. A proper redesign (richer table or
-        # LHS sampling with physical-bounds filtering, gated on the M5
-        # gate continuing to pass) is logged as the xfail reason of
-        # test_multi_start_grid_distinct and deferred to a post-M5
-        # optimiser enhancement.
-        deltas = [
-            frac
-            * target_period_sec
-            * (1.0 if (j + chosen_idx) % 2 == 0 else -1.0)
-            / (1.0 + 0.5 * j)
-            for j in range(n_interior)
-        ]
-        perturbed = tuple(
-            float(_clip_interior(anchor + delta, target_period_sec))
-            for anchor, delta in zip(interior_anchor, deltas, strict=True)
-        )
-        # Maintain monotonicity in the interior epochs by sorting (a
-        # weak constraint — SLSQP will then refine; an unsorted start
-        # would make construct_cycler raise immediately).
-        perturbed_sorted = tuple(sorted(perturbed))
-        starts.append(perturbed_sorted)
+    for s in range(n_samples):
+        sample = tuple(float(lo + span * lhs_unit[s, d]) for d in range(n_interior))
+        # Keep interior epochs monotone (weak constraint; SLSQP refines).
+        # Clip is defensive — LHS already lies inside [lo, hi].
+        sample_clipped = tuple(_clip_interior(t, target_period_sec) for t in sorted(sample))
+        starts.append(sample_clipped)
     return starts
 
 
