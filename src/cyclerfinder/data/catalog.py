@@ -201,6 +201,31 @@ class CatalogueEntry:
     """Schema-v3 ``data_gaps[]`` known-unknown register (spec §16.6.4).
     Each dict carries ``path`` / ``kind`` / ``note`` / ``source_hint`` /
     ``todo_ref``. Enumerated by :func:`find_data_gaps`."""
+    # ------------------------------------------------------------------
+    # Schema v4 (spec §16.7, 2026-06-03) — additive, all optional,
+    # all default to v3-compatible behaviour. NOT signature inputs.
+    # ------------------------------------------------------------------
+    cycler_class: str = "single-ellipse"
+    """Structural kind of orbit: ``single-ellipse`` | ``multi-arc`` |
+    ``non-keplerian``. Default ``single-ellipse`` = v3 behaviour."""
+    orbit_elements_reference_frame: str = "heliocentric-inertial"
+    """Frame tag for the orbit elements block: ``heliocentric-inertial``
+    | ``planetcentric-inertial`` | ``rotating-synodic``."""
+    orbit_elements_center: str = "Sun"
+    """Body the orbital elements are referenced to (default ``Sun``)."""
+    invariants: dict[str, Any] | None = None
+    """Cycle-level identity descriptors for ``multi-arc`` orbits (e.g.
+    ``aphelion_ratio``, ``transit_times_days``). ``None`` for all other
+    classes."""
+    cr3bp: dict[str, Any] | None = None
+    """CR3BP identity tuple (``jacobi_constant``, ``period_nd``,
+    ``stability_index``, …) for ``non-keplerian`` orbits. Read from
+    ``orbit_elements.cr3bp`` in the YAML row. ``None`` for all other
+    classes."""
+    period_basis: tuple[dict[str, Any], ...] | None = None
+    """Beat-period basis for n-body (VEM) cyclers: tuple of
+    ``{"pair": ..., "k": ...}`` dicts from ``period.basis``. ``None``
+    when not present."""
 
     @property
     def fully_defined(self) -> bool:
@@ -212,16 +237,34 @@ class CatalogueEntry:
         completeness notion, independent of the schema-format migration
         that :func:`find_data_gaps` tracks separately — an entry can be
         ``fully_defined`` whether it stores legs as the legacy ``legs[]``
-        or the v3 ``trajectory.segments``. The criteria:
+        or the v3 ``trajectory.segments``.
 
-        * no ``data_gaps[]`` entry (no tracked "we don't know it yet");
-        * ``orbit_elements.a_au`` and ``e`` both present;
-        * a V∞ value at every encounter (no ``None``);
-        * at least one leg, every leg's ``tof_days`` present.
+        Dispatches by :attr:`cycler_class` (spec §16.7.5):
+
+        * **single-ellipse**: ``orbit_elements.a_au`` + ``e`` present,
+          V∞ at every encounter, at least one leg with ``tof_days``.
+        * **multi-arc**: ``invariants`` dict present and non-empty
+          (at least one non-null value), plus V∞ + tof_days guard
+          (same leg/encounter check as single-ellipse).
+        * **non-keplerian**: ``cr3bp`` identity triple
+          (``jacobi_constant`` / ``period_nd`` / ``stability_index``)
+          all non-null.  V∞ / legs guard intentionally *not* applied —
+          Kepler elements are structurally inapplicable.
         """
         if self.data_gaps:
             return False
-        if self.orbit_elements_a_au is None or self.orbit_elements_e is None:
+        if self.cycler_class == "non-keplerian":
+            cr = self.cr3bp or {}
+            return all(
+                cr.get(k) is not None for k in ("jacobi_constant", "period_nd", "stability_index")
+            )
+        if self.cycler_class == "multi-arc":
+            core_ok = bool(self.invariants) and any(
+                v is not None for v in (self.invariants or {}).values()
+            )
+        else:  # single-ellipse (default)
+            core_ok = self.orbit_elements_a_au is not None and self.orbit_elements_e is not None
+        if not core_ok:
             return False
         if not self.vinf_kms_at_encounters or any(
             v is None for _, v in self.vinf_kms_at_encounters
@@ -582,10 +625,25 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
         leg_tofs.append(float(tof) if tof is not None else None)
         leg_revs.append(int(leg.get("n_revs") or 0))
 
-    orbit = row.get("orbit_elements") or {}
-    a_au_raw = orbit.get("a_au")
-    e_raw = orbit.get("e")
-    i_raw = orbit.get("inclination_deg")
+    oe = row.get("orbit_elements") or {}
+    a_au_raw = oe.get("a_au")
+    e_raw = oe.get("e")
+    i_raw = oe.get("inclination_deg")
+
+    # Schema v4 fields (spec §16.7, 2026-06-03)
+    cycler_class = str(row.get("cycler_class") or "single-ellipse")
+    orbit_elements_reference_frame = str(oe.get("reference_frame") or "heliocentric-inertial")
+    orbit_elements_center = str(oe.get("center") or "Sun")
+    invariants_raw = row.get("invariants")
+    invariants: dict[str, Any] | None = (
+        dict(invariants_raw) if isinstance(invariants_raw, dict) else None
+    )
+    cr3bp_raw = oe.get("cr3bp")
+    cr3bp: dict[str, Any] | None = dict(cr3bp_raw) if isinstance(cr3bp_raw, dict) else None
+    basis_raw = period.get("basis")
+    period_basis: tuple[dict[str, Any], ...] | None = (
+        tuple(dict(b) for b in basis_raw) if basis_raw else None
+    )
 
     sig: CanonicalSignature | None = None
     sig_hash: str | None = None
@@ -641,6 +699,12 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
         raw=row,
         family=row.get("family"),
         data_gaps=tuple(row.get("data_gaps") or ()),
+        cycler_class=cycler_class,
+        orbit_elements_reference_frame=orbit_elements_reference_frame,
+        orbit_elements_center=orbit_elements_center,
+        invariants=invariants,
+        cr3bp=cr3bp,
+        period_basis=period_basis,
     )
 
 
