@@ -240,6 +240,15 @@
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [153, 153]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 2.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.4612
+      raw_descriptor: "g(1.4612,526.02,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.8096
+      raw_descriptor: "G(2.8096,651.46,U)"
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36849,6 +36858,15 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [150, 150]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 2.65   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.4612
+      raw_descriptor: "g(1.4612,526.02,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.8096
+      raw_descriptor: "G(2.8096,651.46,U)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37061,6 +37079,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [93, 93]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.45   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.4951
+      raw_descriptor: "g(1.4951,538.24,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.7757
+      raw_descriptor: "G(1.7757,279.24,U)"
+    - arc_type: full-rev
+      resonance: "1:1"
+      tof_years: null
+      raw_descriptor: "f(1:1,74.468,-180.000)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37389,6 +37420,15 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [85, 85]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.70   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.7238
+      raw_descriptor: "G(1.7238,260.58,U)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.5469
+      raw_descriptor: "g(2.5469,916.9,L)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37554,6 +37594,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [175, 175]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.62   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.4845
+      raw_descriptor: "g(2.4845,894.42,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.9217
+      raw_descriptor: "G(2.9217,691.79,U)"
+    - arc_type: full-rev
+      resonance: "1:1"
+      tof_years: null
+      raw_descriptor: "f(1:1,82.995,-180.000)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37886,6 +37939,15 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [171, 171]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.81   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.9043
+      raw_descriptor: "G(2.9043,685.56,U)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 3.5018
+      raw_descriptor: "g(3.5018,1260.65,L)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -38045,6 +38107,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [118, 118]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.4646
+      raw_descriptor: "g(1.4646,527.25,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.9416
+      raw_descriptor: "G(1.9416,338.97,U)"
+    - arc_type: full-rev
+      resonance: "3:2"
+      tof_years: null
+      raw_descriptor: "f(3:2,82.487,118.851)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -38374,6 +38449,15 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [82, 82]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.10   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.7025
+      raw_descriptor: "G(1.7025,252.9,U)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 4.7037
+      raw_descriptor: "g(4.7037,2053.31,Ls)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -38546,6 +38630,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [173, 199]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.19   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.4062
+      raw_descriptor: "g(2.4062,866.21,Ls)"
+    - arc_type: full-rev
+      resonance: "1:1"
+      tof_years: null
+      raw_descriptor: "f(1:1,82.955,87.388)"
+    - arc_type: full-rev
+      resonance: "3:2"
+      tof_years: null
+      raw_descriptor: "F(3:2,87.27,0.000)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -38710,6 +38807,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [143, 207]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.27   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.4646
+      raw_descriptor: "g(1.4646,527.25,Ll)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.9416
+      raw_descriptor: "g(1.9416,338.97,U)"
+    - arc_type: full-rev
+      resonance: "3:2"
+      tof_years: null
+      raw_descriptor: "F(3:2,82.487,180.000)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -38871,6 +38981,19 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [111, 142]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 1.34   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 1.8987
+      raw_descriptor: "g(1.8987,323.54,U)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.5074
+      raw_descriptor: "g(2.5074,902.67,L)"
+    - arc_type: full-rev
+      resonance: "2:1"
+      tof_years: null
+      raw_descriptor: "F(2:1,85.196,0.000)"
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -39036,6 +39159,15 @@ days\" per the NTRS abstract.
     aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
     transit_times_days: [262, 262]   # [outbound E->M, return M->E] transit times in days; sourced from trajectory.segments
     turn_ratio: 0.95   # Russell 2004: required turn angle / max ballistic turn (TR >= 1 => strictly ballistic)
+  free_return_arcs:   # schema v4.1 (spec §16.7.7); Russell Earth-to-Earth free-return arc descriptors
+    - arc_type: generic
+      resonance: null
+      tof_years: 2.087
+      raw_descriptor: "g(2.087,1111.33,L)"
+    - arc_type: generic
+      resonance: null
+      tof_years: 4.3191
+      raw_descriptor: "G(4.3191,1194.88,L)"
   delta_v_kms: 0.509   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
