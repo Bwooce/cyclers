@@ -147,11 +147,13 @@ def test_fully_defined_non_keplerian_uses_cr3bp(make_entry):
 - [ ] **Step 4: Run → PASS** + full suite green.
 - [ ] **Step 5: Commit** — `data/catalog: dispatch fully_defined by cycler_class`
 
-### Task 1.3: Physical-invariant gate (folds in #73 loader validation)
+### Task 1.3: Semantic/cross-row validation gate (Python)
 
-**Files:** Create `src/cyclerfinder/data/validate.py` (or extend existing validation in `catalog.py`); Test `tests/data/test_schema_invariants.py`
+**Files:** Create `src/cyclerfinder/data/validate.py`; Test `tests/data/test_schema_invariants.py`
 
-- [ ] **Step 1: Failing test** — a row with `cycler_class` in {multi-arc, non-keplerian} AND non-null top-level `orbit_elements.a_au` must raise/collect a `SchemaError`; a clean catalogue passes.
+This layer covers rules JSON Schema (Task 1.4) cannot express — cross-field semantics and census ratchets.
+
+- [ ] **Step 1: Failing test** — a row with `cycler_class` in {multi-arc, non-keplerian} AND non-null top-level `orbit_elements.a_au` must collect an error; a clean catalogue passes.
 
 ```python
 def test_multi_arc_must_not_have_top_level_a():
@@ -159,16 +161,68 @@ def test_multi_arc_must_not_have_top_level_a():
     errs = validate_schema_invariants([bad])
     assert any("a_au" in m for m in errs)
 
+def test_non_keplerian_implies_non_sun_primary():
+    bad = {"id": "y", "cycler_class": "non-keplerian", "primary": "Sun"}
+    assert any("primary" in m for m in validate_schema_invariants([bad]))
+
 def test_current_catalogue_passes_invariants():
     import yaml
     rows = yaml.safe_load(open("data/catalogue.yaml"))
     assert validate_schema_invariants(rows) == []
 ```
 
-- [ ] **Step 2: Run → fail** (no validator yet). Note: this test passing on the real catalogue is a *ratchet* — Phase 2 must keep it green.
-- [ ] **Step 3: Implement** `validate_schema_invariants(rows) -> list[str]`: for each row, if `cycler_class in {"multi-arc","non-keplerian"}` and `orbit_elements.a_au`/`e` is non-null → error; if `non-keplerian` and `primary == "Sun"` → error; if `period.basis` present, each entry has `pair`+`k`. Return collected messages (don't raise — report all).
+- [ ] **Step 2: Run → fail** (no validator yet). Note: the real-catalogue test is a *ratchet* — Phase 2 must keep it green.
+- [ ] **Step 3: Implement** `validate_schema_invariants(rows) -> list[str]`: if `cycler_class in {"multi-arc","non-keplerian"}` and `orbit_elements.a_au`/`e` non-null → error; if `non-keplerian` and `primary == "Sun"` → error; if `period.basis` present, each entry has `pair`+`k`. Return all messages (don't raise).
 - [ ] **Step 4: Run → PASS** + suite green.
-- [ ] **Step 5: Commit** — `data/validate: schema-v4 physical-invariant gate (closes #73)`
+- [ ] **Step 5: Commit** — `data/validate: schema-v4 semantic validation gate`
+
+### Task 1.4: JSON Schema + `check-jsonschema` pre-commit hook (structural, versioned)
+
+**Decision (schema version):** the catalogue is a bare YAML list; wrapping it to add a top-level `schema_version` is a breaking change across loader/site/sync/tests for little gain (single-source-of-truth repo, not a multi-version interchange format). So the **authoritative version lives in the JSON Schema document** (`"version": 4`), and the contract is "data must validate against the committed schema at HEAD." No per-row version; no list-wrapping.
+
+**Files:** Create `data/catalogue.schema.json`; Modify `.pre-commit-config.yaml`; Test `tests/data/test_jsonschema.py`
+
+- [ ] **Step 1: Write `data/catalogue.schema.json`** — a JSON Schema (draft 2020-12) for a row: `"version": 4`, `type: array`, `items` with required `id`/`bodies`/`sequence_canonical`, `cycler_class` as an `enum`, `orbit_elements.reference_frame`/`center` enums, `period.basis` item shape, `invariants`/`cr3bp` object shapes, and the conditional physical-invariant gate:
+
+```jsonc
+"allOf": [{
+  "if":   { "properties": { "cycler_class": { "enum": ["multi-arc","non-keplerian"] } },
+            "required": ["cycler_class"] },
+  "then": { "properties": { "orbit_elements": {
+              "properties": { "a_au": { "type": "null" }, "e": { "type": "null" } } } } }
+}]
+```
+
+  Use `additionalProperties: true` (the schema is permissive on legacy v1–v3 fields — it gates the v4 invariants, not the whole record, so it can land before backfill).
+
+- [ ] **Step 2: Failing test** — validate the live catalogue against the schema with the `jsonschema` library; assert it passes (proves the schema is permissive enough for current data) and that a crafted bad row (multi-arc with `a_au`) fails.
+
+```python
+import json, yaml, jsonschema
+def test_catalogue_matches_jsonschema():
+    schema = json.load(open("data/catalogue.schema.json"))
+    rows = yaml.safe_load(open("data/catalogue.yaml"))
+    jsonschema.validate(rows, schema)   # raises on failure
+def test_schema_version_is_4():
+    assert json.load(open("data/catalogue.schema.json"))["version"] == 4
+```
+
+- [ ] **Step 3: Run → fail** (no schema file). Add `jsonschema` to dev deps if absent (`uv add --dev jsonschema check-jsonschema`).
+- [ ] **Step 4: Implement** the schema until both tests pass; then add the pre-commit hook:
+
+```yaml
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.29.4
+    hooks:
+      - id: check-jsonschema
+        files: ^data/catalogue\.yaml$
+        args: ["--schemafile", "data/catalogue.schema.json"]
+```
+
+- [ ] **Step 5: Run** `uv run pre-commit run check-jsonschema --all-files` → PASS; full suite + ruff + mypy green.
+- [ ] **Step 6: Commit** — `data: versioned JSON Schema + check-jsonschema hook for catalogue (closes #73)`
+
+> #73 (loader schema validation) is satisfied by 1.3 (semantic) + 1.4 (structural) together.
 
 ---
 
@@ -286,7 +340,8 @@ def test_multi_arc_invariants_match_source():
 
 ## Self-Review
 
-- **Spec coverage:** §16.7.1 (cycler_class) → P1.1/P2; §16.7.2 (frame/units) → P1.1; §16.7.3 (period.basis) → P1.1/P5; §16.7.4 (invariants/cr3bp) → P3/P4; §16.7.5 (dispatch) → P6.1; physical-invariant gate → P1.3. All covered.
+- **Spec coverage:** §16.7.1 (cycler_class) → P1.1/P2; §16.7.2 (frame/units) → P1.1; §16.7.3 (period.basis) → P1.1/P5; §16.7.4 (invariants/cr3bp) → P3/P4; §16.7.5 (dispatch) → P6.1; physical-invariant gate → P1.3 (Python semantic) + P1.4 (JSON Schema structural, versioned, pre-commit). #73 closed by P1.3+P1.4. All covered.
+- **Validation is two-layer + robust:** structural (versioned JSON Schema, enforced on every commit via check-jsonschema) and semantic (Python, cross-row + census ratchets). The schema is permissive on legacy fields so it lands before backfill; the conditional `a/e` gate is enforced both in JSON Schema (`if/then`) and Python (defence in depth).
 - **Golden-discipline:** every EXPECTED value in Phases 3–5 cites a source we hold; unresolved values become `data_gaps[]`, never invented. The prose-`note` lift is a *source* lift, not a re-derivation.
 - **Non-breaking:** all loader fields default to v3 behaviour; signature untouched (v4 fields are non-signature, same as v2); the invariant gate is a ratchet that starts green after P2 and stays green.
 - **Conservatism enforced:** multi-arc requires a documented source verdict (P2.2) — the null-`a` heuristic is explicitly rejected, so single-ellipse cyclers with unfilled `a` are not mis-tagged.
