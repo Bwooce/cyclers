@@ -25,6 +25,7 @@
   source: literature
   trajectory_regime: powered   # reclassified 2026-06-01 (task #70): powered in the idealized model - McConaghy 2002 Table 4 / dissertation shows the 1L1 EARTH (geocentric) flyby cannot supply the required ~84 deg turn (max ~72 deg at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (the literature-attested property); NOT derived from our computed DV. See notes + maintenance_dv_kms_per_synodic + flyby_mechanics.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -234,6 +235,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -454,6 +456,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -639,6 +642,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -800,6 +804,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.856   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -949,6 +954,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.001   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -1121,6 +1127,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -1274,6 +1281,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -1449,6 +1457,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: 14   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'VISIT-1' (Number of Vehicles: 14a)
@@ -1565,6 +1574,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: 14   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'VISIT-2' (Number of Vehicles: 14a)
@@ -1656,6 +1666,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -1769,6 +1780,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -1834,6 +1846,7 @@
   source: literature
   trajectory_regime: powered   # reclassified 2026-06-01 (task #70): time-mirror of outbound; powered in the idealized model per McConaghy 2002 Table 4 / dissertation (1L1 EARTH geocentric turn ~84 deg > ~72 deg max at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (literature-attested); NOT derived from our computed DV. See aldrin-classic-em-k1-outbound notes.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -1952,6 +1965,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: 0.568   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "4:3(2)-": ΔV_DSM = 0.568 km/s (analytic-ephemeris establishment deep-space maneuver).
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2069,6 +2083,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: 0.530   # SOURCED: Rogers et al. 2012 Table 4 (p.7), row Aldrin "3:2(1)-": ΔV_DSM = 0.530 km/s (analytic-ephemeris establishment deep-space maneuver).
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2201,6 +2216,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2359,6 +2375,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2515,6 +2532,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2677,6 +2695,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -2842,6 +2861,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3006,6 +3026,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3174,6 +3195,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3335,6 +3357,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3493,6 +3516,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3651,6 +3675,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3817,6 +3842,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -3981,6 +4007,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -4181,6 +4208,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -4351,6 +4379,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -4515,6 +4544,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -4685,6 +4715,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -4860,6 +4891,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5028,6 +5060,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5200,6 +5233,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5371,6 +5405,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5547,6 +5582,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5723,6 +5759,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -5907,6 +5944,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6030,6 +6068,7 @@
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6209,6 +6248,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6315,6 +6355,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6450,6 +6491,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6559,6 +6601,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -6657,6 +6700,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -6745,6 +6789,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -6833,6 +6878,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -6921,6 +6967,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7009,6 +7056,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7097,6 +7145,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7185,6 +7234,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7273,6 +7323,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7362,6 +7413,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7450,6 +7502,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7538,6 +7591,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7626,6 +7680,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7714,6 +7769,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7803,6 +7859,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -7891,6 +7948,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -8007,6 +8065,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # circular-coplanar ballistic per Rogers 2012 Table 1 column "Number of Vehicles: 4"
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: 4   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'Case 1' (Number of Vehicles: 4)
@@ -8199,6 +8258,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # ballistic per Rogers 2012 Table 1 (no asterisk indicating powered)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: 4   # Rogers et al. 2012, AIAA 2012-4746, Table 1, p.5, row 'U0L1' (Number of Vehicles: 4)
@@ -8367,6 +8427,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # broad-class enumeration is the ballistic SnLm taxonomy; powered variants are separate publications
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -8621,6 +8682,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.279   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -8781,6 +8843,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -8943,6 +9006,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9115,6 +9179,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.014   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9275,6 +9340,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.738   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9438,6 +9504,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.305   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9610,6 +9677,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9770,6 +9838,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.12   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -9930,6 +9999,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10095,6 +10165,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.01   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10258,6 +10329,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10420,6 +10492,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10588,6 +10661,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10754,6 +10828,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -10919,6 +10994,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11084,6 +11160,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.007   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11253,6 +11330,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11421,6 +11499,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11595,6 +11674,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.004   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11761,6 +11841,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -11926,6 +12007,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12092,6 +12174,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12261,6 +12344,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.067   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12430,6 +12514,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12604,6 +12689,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12769,6 +12855,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -12934,6 +13021,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13100,6 +13188,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13268,6 +13357,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13436,6 +13526,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.888   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13605,6 +13696,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13776,6 +13868,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -13947,6 +14040,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.701   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14119,6 +14213,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14293,6 +14388,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14468,6 +14564,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14645,6 +14742,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14816,6 +14914,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -14987,6 +15086,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -15164,6 +15264,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.808   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -15342,6 +15443,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -15519,6 +15621,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -15690,6 +15793,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -15861,6 +15965,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16038,6 +16143,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16212,6 +16318,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16386,6 +16493,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16564,6 +16672,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16741,6 +16850,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -16918,6 +17028,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17096,6 +17207,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17273,6 +17385,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17450,6 +17563,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17627,6 +17741,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.708   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17805,6 +17920,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -17985,6 +18101,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.448   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -18166,6 +18283,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -18349,6 +18467,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -18532,6 +18651,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -18689,6 +18809,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -18845,6 +18966,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19001,6 +19123,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.029   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19158,6 +19281,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.927   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19321,6 +19445,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19487,6 +19612,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19655,6 +19781,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.47   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19830,6 +19957,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -19990,6 +20118,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20149,6 +20278,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.17   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20309,6 +20439,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20471,6 +20602,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.606   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20634,6 +20766,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20800,6 +20933,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.152   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -20966,6 +21100,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21134,6 +21269,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.994   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21309,6 +21445,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.84   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21469,6 +21606,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21637,6 +21775,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.003   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21800,6 +21939,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -21962,6 +22102,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22124,6 +22265,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.232   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22287,6 +22429,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22453,6 +22596,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22618,6 +22762,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.424   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22784,6 +22929,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -22961,6 +23107,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23126,6 +23273,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23291,6 +23439,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23456,6 +23605,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.194   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23622,6 +23772,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23790,6 +23941,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.716   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -23959,6 +24111,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24136,6 +24289,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24302,6 +24456,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24467,6 +24622,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.147   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24636,6 +24792,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24807,6 +24964,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.155   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -24985,6 +25143,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.009   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -25154,6 +25313,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -25322,6 +25482,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -25490,6 +25651,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -25658,6 +25820,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -25827,6 +25990,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26001,6 +26165,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26172,6 +26337,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26343,6 +26509,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.496   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26515,6 +26682,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26690,6 +26858,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.032   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -26865,6 +27034,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27045,6 +27215,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27217,6 +27388,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27388,6 +27560,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27559,6 +27732,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27730,6 +27904,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.006   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -27905,6 +28080,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28079,6 +28255,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28259,6 +28436,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28430,6 +28608,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28601,6 +28780,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.005   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28779,6 +28959,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -28953,6 +29134,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -29127,6 +29309,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -29301,6 +29484,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.584   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -29479,6 +29663,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.017   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -29657,6 +29842,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -29834,6 +30020,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30011,6 +30198,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30188,6 +30376,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30371,6 +30560,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30548,6 +30738,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30725,6 +30916,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.302   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -30903,6 +31095,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31083,6 +31276,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 3.015   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31264,6 +31458,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31447,6 +31642,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 2.76   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31625,6 +31821,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.011   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31803,6 +32000,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -31980,6 +32178,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.746   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -32158,6 +32357,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -32338,6 +32538,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -32518,6 +32719,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -32698,6 +32900,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -32881,6 +33084,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33064,6 +33268,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33247,6 +33452,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33433,6 +33639,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.008   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33617,6 +33824,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33800,6 +34008,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -33986,6 +34195,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.939   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -34170,6 +34380,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -34353,6 +34564,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -34542,6 +34754,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.031   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -34729,6 +34942,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -34915,6 +35129,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 1.296   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -35102,6 +35317,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -35291,6 +35507,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -35480,6 +35697,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -35695,6 +35913,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -35902,6 +36121,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36066,6 +36286,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36220,6 +36441,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36380,6 +36602,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36545,6 +36768,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36702,6 +36926,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -36856,6 +37081,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37010,6 +37236,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37175,6 +37402,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37342,6 +37570,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37501,6 +37730,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37657,6 +37887,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.0   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37817,6 +38048,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: 0.509   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -37995,6 +38227,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
