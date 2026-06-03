@@ -228,6 +228,141 @@ def _solve_single_rev_newton(
     raise LambertConvergenceError(z, residual)
 
 
+def _find_single_rev_bracket(
+    a_coef: float,
+    r1_n: float,
+    r2_n: float,
+    tof: float,
+    mu: float,
+    z_high_single_rev: float,
+) -> tuple[float, float, int]:
+    """Establish a sign-changing bracket ``[z_lo, z_hi]`` for ``f(z)=t(z)-tof``.
+
+    ``t(z)`` is monotone-increasing across the single-revolution valid domain,
+    whose lower edge is the *floor* ``z_floor`` where ``y(z) -> 0`` (below it
+    ``y < 0`` and the conic is undefined). At the floor ``t -> 0``, so
+    ``f(z_floor) = -tof < 0`` for any positive ``tof``: the floor is always a
+    valid lower bracket endpoint. The upper endpoint is just below
+    ``z_high_single_rev`` where ``t -> +inf``.
+
+    The previous implementation fixed ``z_lo = -50`` and widened by repeated
+    doubling, halving toward ``z = 0`` whenever ``y(z_lo) < 0`` raised. For
+    geometries whose floor sits near ``z = 0`` (small radius ratio / small
+    transfer angle) that halve-toward-zero walk oscillated and exhausted
+    :data:`_BRACKET_MAX_WIDEN_ITERS`, raising on short-but-feasible transfers
+    (see ``tests/core/test_lambert.py`` task #56 cases). Anchoring ``z_lo`` at
+    the floor via bisection brackets every well-posed geometry in
+    ``O(log2(range / tol))`` steps and fails fast (clean raise) only when the
+    geometry has no valid ``z = 0`` interior at all.
+
+    Returns ``(z_lo, z_hi, widen_iters)`` where ``widen_iters`` is the number of
+    floor-search iterations consumed (for diagnostics / regression on the walk
+    cost).
+    """
+    eps_high = 1.0e-6
+    z_hi = z_high_single_rev - eps_high
+
+    # Stumpff C(z)/S(z) grow like cosh/sinh(sqrt(-z)) on the hyperbolic side and
+    # overflow float64 near z ~ -6.5e5; stay well clear so y/t stay evaluable.
+    z_floor_limit = -5.0e5
+
+    def _y_only(z_in: float) -> float:
+        c = stumpff_c(z_in)
+        s = stumpff_s(z_in)
+        return r1_n + r2_n + a_coef * (z_in * s - 1.0) / sqrt(c)
+
+    def _f_of_z(z_in: float) -> float:
+        t_z, _y_unused = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
+        return t_z - tof
+
+    # The interior anchor: z = 0 is valid (y > 0) for every well-posed single-
+    # rev geometry. If it is not, the transfer has no valid universal-variable
+    # interior here -- raise so the optimiser drops the start cleanly.
+    if _y_only(0.0) <= 0.0:
+        raise LambertConvergenceError(0.0, float("nan"))
+
+    # t(z) is monotone-increasing across the valid domain and t(0) may be above
+    # or below tof. If f(0) < 0 already, z = 0 is itself a lower bracket end.
+    if _f_of_z(0.0) < 0.0:
+        return 0.0, z_hi, 0
+
+    widen_iters = 0
+
+    # Expand a negative anchor geometrically. Stop early the moment we reach a
+    # *valid* z with f(z) < 0 (that is a usable z_lo -- no need to find the
+    # exact floor). Track the most-negative *invalid* (y < 0) point so we can
+    # bisect to the floor if the whole expansion stayed valid-but-f>=0.
+    z_anchor = -1.0
+    z_valid = 0.0  # most-negative point known valid (y > 0); z = 0 to start
+    z_invalid: float | None = None
+    while z_anchor > z_floor_limit:
+        widen_iters += 1
+        if _y_only(z_anchor) <= 0.0:
+            z_invalid = z_anchor
+            break
+        if _f_of_z(z_anchor) < 0.0:
+            return z_anchor, z_hi, widen_iters
+        z_valid = z_anchor  # valid, but f still >= 0; remember it
+        z_anchor *= 2.0
+
+    if z_invalid is None:
+        # Reached the stumpff-safe limit with y still > 0 and f >= 0 the whole
+        # way: t cannot be driven below tof in the safe domain -> infeasible.
+        raise LambertConvergenceError(z_anchor, float("nan"))
+
+    # Bisect [z_invalid (y<0), z_valid (y>0)] toward the floor, returning as soon
+    # as a valid point with f < 0 is found (the floor itself has t -> 0 < tof).
+    for _ in range(_BRACKET_MAX_WIDEN_ITERS):
+        widen_iters += 1
+        z_mid = 0.5 * (z_invalid + z_valid)
+        if z_mid in (z_valid, z_invalid):
+            break  # converged to floating-point resolution
+        if _y_only(z_mid) > 0.0:
+            z_valid = z_mid
+            if _f_of_z(z_mid) < 0.0:
+                return z_mid, z_hi, widen_iters
+        else:
+            z_invalid = z_mid
+
+    return z_valid, z_hi, widen_iters
+
+
+def _bracket_diagnostics(
+    r1: Vec3,
+    r2: Vec3,
+    tof: float,
+    *,
+    mu: float = MU_SUN_KM3_S2,
+    prograde: bool = True,
+) -> dict[str, float]:
+    """Expose the single-rev bracket-finder's internals for tests.
+
+    Returns ``{"z_lo", "z_hi", "widen_iters"}``. Not part of the public API;
+    used by ``tests/core/test_lambert.py`` to assert the widen walk stays well
+    under :data:`_BRACKET_MAX_WIDEN_ITERS` on geometries that previously
+    approached the cap.
+    """
+    r1_arr = np.asarray(r1, dtype=np.float64)
+    r2_arr = np.asarray(r2, dtype=np.float64)
+    r1_n = float(np.linalg.norm(r1_arr))
+    r2_n = float(np.linalg.norm(r2_arr))
+    cos_dnu = max(min(float(np.dot(r1_arr, r2_arr) / (r1_n * r2_n)), 1.0), -1.0)
+    dnu = acos(cos_dnu)
+    cross_z = float(r1_arr[0] * r2_arr[1] - r1_arr[1] * r2_arr[0])
+    if prograde:
+        if cross_z < 0.0:
+            dnu = 2.0 * np.pi - dnu
+    else:
+        if cross_z > 0.0:
+            dnu = 2.0 * np.pi - dnu
+    sin_dnu = float(np.sin(dnu))
+    a_coef = sin_dnu * sqrt(r1_n * r2_n / (1.0 - cos_dnu))
+    z_lo, z_hi, widen_iters = _find_single_rev_bracket(
+        a_coef, r1_n, r2_n, tof, mu, 4.0 * np.pi * np.pi
+    )
+    return {"z_lo": z_lo, "z_hi": z_hi, "widen_iters": float(widen_iters)}
+
+
 def _min_time_of_revolution(
     n: int, a_coef: float, r1_n: float, r2_n: float, mu: float
 ) -> tuple[float, float]:
@@ -498,44 +633,14 @@ def lambert(
         z = z_try
 
     # Establish a sign-changing bracket [z_lo, z_hi] for f(z) = t(z) - tof,
-    # within the single-rev valid range. t(z) is monotone-increasing inside
-    # the valid range, so a bracket exists whenever the problem is well-posed.
-    def _f_of_z(z_in: float) -> float:
-        t_z, _y_unused = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
-        return t_z - tof
-
-    z_lo = -50.0  # well into hyperbolic territory
-    # Step z_lo down further if t(z_lo) is still > tof (extremely short ToF).
-    # Bounded loop: pre-fix this was while True with no guard, and ValueError
-    # on _f_of_z walked z_lo toward 0 via halving (z_lo *= 0.5 on a negative
-    # z_lo is less-negative, not more-negative) without bound, hanging Aldrin
-    # rediscovery tests at the 600s pytest timeout. See module-level
-    # _BRACKET_MAX_WIDEN_ITERS for the cap rationale.
-    bracket_found = False
-    for _widen_iter in range(_BRACKET_MAX_WIDEN_ITERS):
-        try:
-            f_lo = _f_of_z(z_lo)
-        except ValueError:
-            z_lo *= 0.5
-            continue
-        if f_lo < 0.0:
-            bracket_found = True
-            break
-        z_lo *= 2.0
-        if z_lo < -1.0e6:
-            # Pathological geometry / tof; let Newton raise below.
-            bracket_found = True
-            break
-    if not bracket_found:
-        # All _MAX_WIDEN_ITERS spent without bracketing. Either the problem
-        # is ill-posed for single-rev transfer at this tof, or the geometry
-        # / V_inf combination is outside the universal-variable form's
-        # valid domain. Raise so the optimiser drops the start cleanly.
-        raise LambertConvergenceError(z_lo, float("nan"))
-
-    # Approach z_high from below; t -> +inf as z -> z_high_single_rev.
-    eps_high = 1.0e-6
-    z_hi = z_high_single_rev - eps_high
+    # within the single-rev valid range. t(z) is monotone-increasing inside the
+    # valid range, so a bracket exists whenever the problem is well-posed; the
+    # floor-anchored finder locates z_lo via bisection rather than a fixed-start
+    # linear widen walk (see _find_single_rev_bracket for the rationale and the
+    # task #56 regression cases).
+    z_lo, z_hi, _widen_iters = _find_single_rev_bracket(
+        a_coef, r1_n, r2_n, tof, mu, z_high_single_rev
+    )
 
     # Single-rev branch: safeguarded Newton inside the established bracket. The
     # analytic dt/dz is valid here, so Newton converges quadratically; only the

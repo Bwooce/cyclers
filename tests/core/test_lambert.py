@@ -131,3 +131,71 @@ def test_long_arc_cross_check(leg_long: Leg) -> None:
     """Earth->Mars long arc 500 d: agreement < 1e-3 m/s."""
     res = lambert_crosscheck(leg_long.r1, leg_long.r2, leg_long.tof)
     assert res["max_diff_mps"] < 1.0e-3, res["max_diff_mps"]
+
+
+# ---------------------------------------------------------------------------
+# Bracket-finder robustness (task #56)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("tof_days", [5.0, 10.0])
+def test_short_tof_high_energy_brackets_and_matches_lamberthub(tof_days: float) -> None:
+    """A very-short, high-energy hyperbolic transfer is bracketed and solved.
+
+    The valid universal-variable domain for a near-1 AU -> 1.52 AU, 0.8 rad
+    transfer has its ``y(z) >= 0`` floor close to ``z = 0``; the feasible root
+    for a 5-10 d time-of-flight sits in the narrow window between that floor and
+    ``z = 0``. The prior fixed-start (``z_lo = -50``) widen walk halved toward
+    ``z = 0`` from the invalid hyperbolic side and oscillated until the
+    ``_BRACKET_MAX_WIDEN_ITERS`` cap, raising ``LambertConvergenceError`` on a
+    transfer that physically has a solution. The floor-anchored bracket finder
+    locates that window directly.
+
+    EXPECTED values are sourced from ``lamberthub.izzo2015`` (an independent,
+    published Lambert implementation) -- golden cross-check, not self-computed.
+    """
+    from lamberthub import izzo2015
+
+    r2_n = 1.52 * AU_KM
+    dnu = 0.8
+    r1 = np.array([AU_KM, 0.0, 0.0], dtype=np.float64)
+    r2 = np.array([r2_n * np.cos(dnu), r2_n * np.sin(dnu), 0.0], dtype=np.float64)
+    tof = tof_days * SECONDS_PER_DAY
+
+    sols = lambert(r1, r2, tof)
+    assert len(sols) == 1
+    sol = sols[0]
+
+    v1_ref, v2_ref = izzo2015(MU_SUN_KM3_S2, r1, r2, tof, M=0, prograde=True)
+    diff = max(
+        float(np.linalg.norm(sol.v1 - v1_ref)),
+        float(np.linalg.norm(sol.v2 - v2_ref)),
+    )
+    assert diff * 1000.0 < 1.0e-3, diff
+
+
+def test_deep_floor_geometry_brackets_within_a_few_iters() -> None:
+    """A deep-negative-floor geometry brackets quickly via floor bisection.
+
+    For an Earth -> Jupiter-distance (1 -> 5.2 AU, ~2.5 rad) transfer the
+    ``y(z) >= 0`` floor lies near ``z = -18``; a fixed-step linear widen walk
+    from ``z_lo = -50`` would need many doublings/halvings to land inside the
+    valid window. The bracket finder is instrumented to report its widen-loop
+    iteration count via the private ``_bracket_diagnostics`` hook; assert it is
+    well under the historical cap.
+    """
+    from cyclerfinder.core.lambert import _bracket_diagnostics
+
+    r2_n = 5.2 * AU_KM
+    dnu = 2.5
+    r1 = np.array([AU_KM, 0.0, 0.0], dtype=np.float64)
+    r2 = np.array([r2_n * np.cos(dnu), r2_n * np.sin(dnu), 0.0], dtype=np.float64)
+    tof = 300.0 * SECONDS_PER_DAY
+
+    sols = lambert(r1, r2, tof)
+    assert len(sols) == 1
+
+    diag = _bracket_diagnostics(r1, r2, tof)
+    # Floor bisection converges in O(log2(range/tol)) ~ 60 steps worst case but
+    # never spins at the cap; the prior linear walk could exhaust 100 here.
+    assert diag["widen_iters"] < 80, diag
