@@ -443,7 +443,13 @@ One record type flows through everything — finder output, the search ledger, t
   // backfill rules. Consumers that omit any new field treat the entry
   // as if model_assumption="circular-coplanar" and every other v2 field
   // is null. None of these participate in §16.2 canonical signatures.
-  "model_assumption": "circular-coplanar",  // circular-coplanar | analytic-ephemeris | cr3bp; default circular-coplanar
+  "model_assumption": "circular-coplanar",  // FIDELITY of the numbers: circular-coplanar | analytic-ephemeris | cr3bp; default circular-coplanar
+  // schema v4 (2026-06-03): cycler_class is the orbit's STRUCTURAL kind — see §16.7.
+  // single-ellipse: one repeating Kepler ellipse (S1L1, Aldrin); orbit_elements (a,e) is authoritative.
+  // multi-arc: different ellipse per leg (Russell generic-return E-E-M-M); no single (a,e) — per-arc lives
+  //   in trajectory.segments[], cycle-level identity lives in invariants{}. Top-level a/e MUST be null.
+  // non-keplerian: rotating-frame/CR3BP periodic orbit (Arenstorf); Kepler elements inapplicable, left null.
+  "cycler_class": "single-ellipse",         // single-ellipse | multi-arc | non-keplerian; default single-ellipse
   "delta_v_kms": 0.0,                       // per-cycle maintenance ΔV; 0 for strict ballistic; null for near-ballistic / undetermined
   "v_infinity_leveraging_dv_kms": null,     // establishment ΔV (Rogers 2012 4:3, 3:2 variants); null when not applicable
   "fleet_size": null,                       // integer vehicle count required for the cadence; null where not stated
@@ -468,12 +474,41 @@ One record type flows through everything — finder output, the search ledger, t
   "orbit_elements": {
     // (existing) "perihelion_au", "aphelion_au", "a_au", "e",
     //            "inclination_deg" ...
-    "periapse_km": null,         // parallel to perihelion_au for non-heliocentric entries
+    // schema v4 (2026-06-03): frame/units-tagged so elements scale to non-Sun
+    // centres. reference_frame names the frame (cf. JPL SBDB's `equinox`);
+    // the *_au fields are the heliocentric-inertial default, the *_km fields
+    // the planet-centric form, selected by reference_frame. See §16.7.
+    "reference_frame": "heliocentric-inertial", // heliocentric-inertial | planetcentric-inertial | rotating-synodic; default heliocentric-inertial
+    "center": "Sun",            // body the elements are referenced to; default Sun (= primary for non-helio)
+    "periapse_km": null,         // parallel to perihelion_au for non-heliocentric (planetcentric-inertial) entries
     "apoapse_km": null,          // parallel to aphelion_au for non-heliocentric entries
     "raan_deg": null,            // Right Ascension of Ascending Node, Ω
     "arg_periapsis_deg": null,   // Argument of Periapsis, ω
     "true_anomaly_deg": null,    // True anomaly at epoch, ν
     "epoch_iso8601": null        // ISO-8601 epoch for the anomaly; null = generic / circular-coplanar baseline
+  },
+  // schema v4: present ONLY for cycler_class=multi-arc. The cycle-level
+  // identity descriptors a source actually publishes when no single (a,e)
+  // exists (Russell). First-class + testable, not buried in notes. See §16.7.
+  "invariants": {
+    "aphelion_ratio": null,      // outbound-arc aphelion / inbound-arc aphelion (Russell)
+    "transit_times_days": null,  // [outbound, inbound] Earth↔Mars transit durations
+    "turn_ratio": null           // flyby turn-angle ratio, where published
+  },
+  // schema v4: present ONLY for cycler_class=non-keplerian (CR3BP / rotating-frame
+  // periodic orbits, e.g. Arenstorf). Mirrors JPL's three-body periodic-orbit
+  // catalog: identity is (jacobi, period, stability) + a state vector in the
+  // rotating synodic frame normalised by lunit/tunit. Kepler orbit_elements stay
+  // null here (structurally inapplicable). See §16.7.
+  "cr3bp": {
+    "jacobi_constant": null,     // dimensionless conserved energy-like quantity (identity)
+    "period_nd": null,           // period in normalised time units (tunit)
+    "stability_index": null,     // ≤1 stable; >1 unstable
+    "mass_ratio": null,          // μ = m2/(m1+m2) of the primary pair
+    "libration_point": null,     // 1–5, where applicable; null for non-libration families
+    "family": null,              // halo | lyapunov | dro | figure-eight | ...
+    "state_nd": null,            // [x,y,z,vx,vy,vz] in rotating synodic frame, normalised
+    "lunit_km": null, "tunit_s": null  // normalisation constants for de-normalising
   },
   "metrics": {
     "maintenance_dv_mps_idealized": 0,
@@ -825,3 +860,114 @@ mostly `null`s and obscure which nulls are real gaps):
 
 Backfill execution is deferred work tracked under task #65; only the S1L1
 exemplar is populated immediately.
+
+### 16.7 Scaling to multi-arc, planet-centric & n-body cyclers (schema v4)
+
+Schema v1–v3 quietly assumed every cycler is **one repeating heliocentric
+Kepler ellipse**. That is true for S1L1 and Aldrin, but false for two whole
+classes the catalogue already contains as citation-only rows, and false for
+everything the multi-body (M8) and planet-centric (#76) milestones will add.
+Schema v4 makes the record *structurally honest* about what kind of orbit it
+holds, and removes the heliocentric/2-body biases that block n-body and
+moon-tour entries. **All v4 fields are additive, optional, and default to the
+v3 behaviour** — a record that omits them reads exactly as before, so the
+loader, site, and tests keep working until each entry is backfilled. None of
+the v4 fields participate in the §16.2 canonical signature (same rule as v2).
+
+#### 16.7.1 `cycler_class` — the structural kind
+
+| `cycler_class` | What it is | Where identity lives | Example |
+|---|---|---|---|
+| `single-ellipse` *(default)* | one Kepler ellipse the vehicle repeats; flybys re-match V∞ | top-level `orbit_elements{a,e}` | S1L1, Aldrin |
+| `multi-arc` | a *different* ellipse per leg (generic-return); no single `(a,e)` exists | per-arc `(a,e)` in `trajectory.segments[]` + cycle-level `invariants{}` | Russell E-E-M-M |
+| `non-keplerian` | rotating-frame / CR3BP periodic orbit; not a Kepler ellipse at all | `orbit_elements.cr3bp{}` | Arenstorf E-Moon |
+
+The class tells every consumer how to dispatch: the resonance constructor
+only applies to `single-ellipse`; the validator picks which anchors are
+checkable (§16.7.4); the site renders the right columns instead of a row of
+em-dashes.
+
+**Physical invariant (a loader/validation gate, no source needed):** a
+`multi-arc` or `non-keplerian` record MUST NOT carry a non-null top-level
+`orbit_elements.a_au`/`e`. A single semimajor axis on a multi-arc cycler is a
+data error by construction — the kind of mistake that produced the original
+"null but misleading" Russell rows.
+
+#### 16.7.2 Frame/units-tagged elements (planet-centric scaling)
+
+`orbit_elements` gains `reference_frame` + `center`, following JPL SBDB, which
+names the frame at the orbit level (its `equinox`/`epoch`) and lets each
+quantity carry its own units. Heliocentric entries keep `a_au`/`perihelion_au`
+(frame `heliocentric-inertial`, the default); planet-centric entries use the
+existing `periapse_km`/`apoapse_km` pair under frame `planetcentric-inertial`
+with `center` set to the primary (Earth, Mars, Jupiter…). This is what lets an
+Earth–Moon or Mars–Phobos–Deimos cycler store real elements instead of nulls.
+The body registry (`core/constants.py`, currently V/E/M only) is extended with
+moon `μ`/radius/ephemeris under task **#76**; the *schema* is ready now, the
+*compute* lands with that milestone.
+
+#### 16.7.3 `period.basis` — n-body beat periods
+
+`period{pair,k,years}` is a 2-body synodic relation. An n-body cycler (V-E-M
+and beyond) repeats on the **beat** of several synodic pairs, with no single
+`pair`. v4 adds an optional `period.basis`: a list of `{pair,k}` whose periods
+beat to `period.years`; the legacy `pair`/`k` remain valid as the 2-body
+special case (and as a derived convenience when `basis` has one entry). This
+aligns with the M8 `period_basis` design and makes the schema n-body-ready
+immediately.
+
+```yaml
+period:
+  years: 6.40
+  basis:                 # n-body: beat of multiple synodic pairs
+    - {pair: E-M, k: 3}
+    - {pair: V-E, k: 5}
+# 2-body entries keep the flat form: {pair: E-M, k: 2, years: 4.27}
+```
+
+#### 16.7.4 `invariants{}` and the `cr3bp{}` block — source-matched anchors
+
+The point of capturing these is **testable expected outputs that match what
+the source actually published** (the golden-discipline rule: anchors trace to
+a source, never to our own compute):
+
+- **`multi-arc` → `invariants{}`** carries the descriptors Russell tabulates
+  when no `(a,e)` exists — `aphelion_ratio`, `transit_times_days`, `turn_ratio`
+  — promoted from prose `notes` to first-class fields the validator can assert.
+- **`non-keplerian` → `orbit_elements.cr3bp{}`** mirrors the **JPL three-body
+  periodic-orbit catalog** exactly: identity is `(jacobi_constant, period_nd,
+  stability_index)` plus a `state_nd` vector in the rotating synodic frame with
+  `mass_ratio`, `libration_point`/`family`, and `lunit_km`/`tunit_s` to
+  de-normalise. This replaces the Arenstorf row's "all-null + honest note" with
+  the field's *real* published identity.
+
+#### 16.7.5 Validation dispatch by class
+
+The tiered gauntlet (data-validation-hardening plan / the Forge) dispatches on
+`cycler_class` so it never applies the wrong check:
+
+| class | reproduce via | expected-output anchors checked |
+|---|---|---|
+| `single-ellipse` | `construct_resonant_cycler` from `(a,e)` | V∞ multiset, `(a,e)`, period |
+| `multi-arc` | multi-leg solver (no single ellipse) | V∞ multiset, period, `invariants{}` |
+| `non-keplerian` | CR3BP differential corrector (M8+) | `jacobi_constant`, `period_nd`, `stability_index` |
+
+This closes the gap that let multi-arc rows be "validated" only on V∞ while
+their published invariants went unchecked, and stops the constructor from being
+mis-applied to orbits that have no single `(a,e)`.
+
+#### 16.7.6 Prior art consulted
+
+The v4 shape deliberately tracks established orbit catalogues rather than
+inventing one: **CCSDS OCM** (multi-`segment` trajectory model — already
+borrowed in §16.6.2) for the per-arc decomposition; **JPL SBDB** (frame named
+at orbit level, per-element units, per-element `sigma` uncertainty) for the
+frame/units-tagged elements; and the **JPL three-body periodic-orbit catalog**
+(`jacobi`/`period`/`stability` + synodic state vector + `lunit`/`tunit`) for
+the `cr3bp{}` block. Adopting `sigma`-style published uncertainty on golden
+anchors is a noted future extension for the provenance work, not part of v4.
+
+Backfill is lazy and source-gated (as in §16.6.5): tag existing rows with their
+`cycler_class` first (a mechanical sweep — single-ellipse is the default,
+Russell rows → multi-arc, the 6 non-heliocentric rows → non-keplerian), then
+populate `invariants{}`/`cr3bp{}` opportunistically as sources are read.
