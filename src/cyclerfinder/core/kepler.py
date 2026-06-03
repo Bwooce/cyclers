@@ -24,7 +24,7 @@ Plan: ``docs/phases/m1-core-mechanics/plan.md`` §3.3.
 
 from __future__ import annotations
 
-from math import log, sqrt
+from math import cos, log, sin, sqrt
 
 import numpy as np
 from numpy.typing import NDArray
@@ -60,6 +60,82 @@ class KeplerConvergenceError(KeplerError):
         )
         self.chi = chi
         self.residual = residual
+
+
+def coe_to_rv(
+    a_km: float,
+    e: float,
+    true_anom_rad: float,
+    mu: float = MU_SUN_KM3_S2,
+    *,
+    arg_peri_rad: float = 0.0,
+) -> tuple[Vec3, Vec3]:
+    """Planar orbital elements -> inertial heliocentric state (inclination 0).
+
+    Converts a classical-element triple ``(a, e, nu)`` into an inertial
+    position/velocity pair using the standard perifocal formulation rotated
+    by the argument of periapsis about the +z axis. The orbit is treated as
+    planar (inclination and longitude of ascending node both zero), so the
+    inertial frame coincides with the ecliptic and the state lies in the
+    ``z = 0`` plane. This is the circular-coplanar idealisation used by the
+    resonance-anchored construction.
+
+    Parameters
+    ----------
+    a_km:
+        Semi-major axis, km. Must be positive (elliptic).
+    e:
+        Eccentricity, ``0 <= e < 1``.
+    true_anom_rad:
+        True anomaly ``nu``, radians, measured from periapsis.
+    mu:
+        Central-body gravitational parameter, km^3/s^2. Defaults to the
+        heliocentric :data:`cyclerfinder.core.constants.MU_SUN_KM3_S2`.
+    arg_peri_rad:
+        Argument of periapsis ``omega``, radians; rotates the perifocal
+        frame about +z into the inertial frame. Defaults to ``0.0``.
+
+    Returns
+    -------
+    (r, v):
+        Inertial position and velocity as two ``(3,)`` float64 arrays in
+        km and km/s, lying in the ``z = 0`` plane.
+
+    Notes
+    -----
+    Perifocal frame (Vallado §2.6, eqs. 2-110/2-115; Bate-Mueller-White
+    §2.5): with semi-latus rectum ``p = a(1 - e^2)`` and radius
+    ``r = p / (1 + e cos nu)``::
+
+        r_pf = r * [cos nu, sin nu, 0]
+        v_pf = sqrt(mu / p) * [-sin nu, e + cos nu, 0]
+
+    rotated by ``omega`` about +z to obtain the inertial state.
+    """
+    p = a_km * (1.0 - e * e)
+    nu = true_anom_rad
+    cos_nu = cos(nu)
+    sin_nu = sin(nu)
+    r_mag = p / (1.0 + e * cos_nu)
+
+    r_pf = np.array([r_mag * cos_nu, r_mag * sin_nu, 0.0], dtype=np.float64)
+    sqrt_mu_p = sqrt(mu / p)
+    v_pf = np.array([-sqrt_mu_p * sin_nu, sqrt_mu_p * (e + cos_nu), 0.0], dtype=np.float64)
+
+    cos_w = cos(arg_peri_rad)
+    sin_w = sin(arg_peri_rad)
+    rot = np.array(
+        [
+            [cos_w, -sin_w, 0.0],
+            [sin_w, cos_w, 0.0],
+            [0.0, 0.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
+
+    r = rot @ r_pf
+    v = rot @ v_pf
+    return r, v
 
 
 def propagate(
