@@ -1786,6 +1786,21 @@
     advisor of multiple cited co-authors (McConaghy, Landau, Yam, Chen, ...)
     but is not a Jones 2017 author. The spec's attribution should be
     corrected in a future revision.
+  data_gaps:
+    - path: "period.basis"
+      kind: "uncertain"
+      note: |
+        This catalogue entry interprets Jones 2017's "two synodic period" as
+        k=2 E-M synodic periods (period.years = 4.27 yr). Jones 2017 defines
+        T_syn = 6.4 yr = 3 E-M synodics = ~4 E-V synodics; "two synodic period"
+        in the paper means 2 × T_syn = 12.8 yr (6 E-M = ~8 E-V). The per-pair
+        basis decomposition for this entry's interpretation (k=2 E-M, 4.27 yr)
+        is not explicitly tabulated in the Jones 2017 abstract, and the correct
+        resonance decomposition depends on which "two synodic period" reading
+        applies. Left absent per golden-discipline until the full paper text
+        is accessible and the interpretation is confirmed.
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) full paper text"
+      todo_ref: "#54-backfill"
   source_quotes:
     "period.k": |
       Jones et al. 2017 abstract: "two synodic period Earth-Mars-Venus
@@ -1816,6 +1831,13 @@
     pair: "E-M"
     k: 3
     years: 6.41
+    basis:                   # schema v4 (2026-06-03); n-body beat-period basis
+      - pair: "E-M"          # SOURCED: Jones et al. 2017 (AAS 17-577) p.3 —
+        k: 3                 # "T_syn is approximately 6.4 years. This is about
+                             # three Earth-Mars synodic periods."
+      - pair: "E-V"          # SOURCED: existing period.note (4 × 1.599 yr ≈ 6.396 yr ≈ T_syn);
+        k: 4                 # consistent with Jones 2017 statement that VEM alignment
+                             # repeats on the beat of E-M and E-V synodics.
     note: |
       3 × E-M synodic = 6.405 yr. This exactly matches the 4 × E-V synodic
       beat (4 × 1.599 = 6.396 yr), the natural alignment for the EMEEVE
