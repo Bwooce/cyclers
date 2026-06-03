@@ -53,7 +53,7 @@
               "mass_ratio": {},
               "libration_point": {},
               "family": {
-                "type": "string"
+                "type": ["string", "null"]
               },
               "state_nd": {},
               "lunit_km": {},

@@ -6109,6 +6109,37 @@
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity for non-keplerian orbit
+      family: "figure-8"     # SOURCED: Genova & Aldrin 2015 (AAS-15) p.1 — "two Earth-Moon cycler
+                              # orbits discovered by Arenstorf in 1963 ... the same 'figure-8' or
+                              # so called 'Arenstorf' orbit"
+      mass_ratio: 0.01215    # SOURCED: Genova & Aldrin 2015 (AAS-15) p.1 — "periodic orbits in
+                              # the Earth-Moon system (μ = 0.01215)". Cook 2020 (corroborating
+                              # source) cites μ = 0.012277471; 0.01215 is the rounded value used
+                              # in Genova 2015 and standard for the planar CR3BP.
+      libration_point: null  # free-return orbits are not libration-point orbits
+      jacobi_constant: null  # not published in accessible sources → data_gaps
+      period_nd: null        # not published in accessible sources → data_gaps
+      stability_index: null  # not published in accessible sources → data_gaps
+      state_nd: null         # not published in accessible sources → data_gaps
+      lunit_km: null         # not published in accessible sources → data_gaps
+      tunit_s: null          # not published in accessible sources → data_gaps
+  data_gaps:
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "unknown"
+      note: "Jacobi constant for the Arenstorf figure-8 orbit not tabulated in the 1963 paper (which proves existence analytically) nor in the accessible Genova 2015 or Cook 2020 sources. The JPL three-body periodic-orbit catalog would be the definitive source."
+      source_hint: "JPL three-body periodic-orbit catalog (https://ssd.jpl.nasa.gov/tools/periodic_orbits.html)"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "unknown"
+      note: "Non-dimensional period not tabulated in accessible sources for this specific orbit member."
+      source_hint: "JPL three-body periodic-orbit catalog"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "unknown"
+      note: "Stability index not tabulated in accessible sources."
+      source_hint: "JPL three-body periodic-orbit catalog"
+      todo_ref: "#76-cr3bp-backfill"
   legs: []
   first_published:
     authors: ["Arenstorf, R. F."]
@@ -6234,6 +6265,19 @@
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity for non-keplerian orbit
+      family: "3:1-lunar-resonance"  # SOURCED: Genova & Aldrin 2015 (AAS-15) p.2 — "The cycler is
+                              # in 3:1 resonance with the Moon, as best seen in the Earth-Moon
+                              # rotating frame (Fig. 3, left)."
+      mass_ratio: 0.01215    # SOURCED: Genova & Aldrin 2015 (AAS-15) p.1 — "periodic orbits in
+                              # the Earth-Moon system (μ = 0.01215)"
+      libration_point: null  # circumlunar orbit; not a libration-point orbit
+      jacobi_constant: null  # not tabulated in the AAS-15 paper → data_gaps
+      period_nd: null        # not tabulated in the AAS-15 paper → data_gaps
+      stability_index: null  # not tabulated in the AAS-15 paper → data_gaps
+      state_nd: null         # not tabulated in the AAS-15 paper → data_gaps
+      lunit_km: null         # not tabulated in the AAS-15 paper → data_gaps
+      tunit_s: null          # not tabulated in the AAS-15 paper → data_gaps
   trajectory:
     center: "Earth"           # OCM CENTER_NAME (== top-level primary); Earth-Moon CR3BP
     ref_frame: "ECLIPJ2000"   # OCM REF_FRAME (rotating CR3BP frame would be the natural choice; ECLIPJ2000 placeholder)
@@ -6291,6 +6335,21 @@ days\" per the NTRS abstract.
       note: "V-infinity at Earth and Moon not tabulated in the accessible NTRS abstract / Semantic Scholar landing page (full PDF inaccessible). Geocentric, not heliocentric, energy applies in this CR3BP model."
       source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
       todo_ref: "#54-backfill"
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "unknown"
+      note: "Jacobi constant for this 3-petal circumlunar cycler not tabulated in the AAS-15 paper (which uses AGI STK/Astrogator, not an analytic CR3BP classification)."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF or JPL three-body periodic-orbit catalog"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "unknown"
+      note: "Non-dimensional period not tabulated in accessible sources."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "unknown"
+      note: "Stability index not tabulated in accessible sources."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
+      todo_ref: "#76-cr3bp-backfill"
   first_published:
     authors: ["Genova, A. L.", "Aldrin, B."]
     year: 2015
@@ -6402,6 +6461,34 @@ days\" per the NTRS abstract.
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity for non-keplerian orbit
+      mass_ratio: 0.01215    # Earth-Moon standard CR3BP mass ratio (physical constant);
+                              # same value used in Genova & Aldrin 2015 (AAS-15) p.1 and
+                              # throughout the Earth-Moon CR3BP literature.
+      family: null           # family name not stated in accessible NTRS abstract → data_gaps
+      libration_point: null  # not stated in accessible abstract
+      jacobi_constant: null  # not tabulated in accessible abstract → data_gaps
+      period_nd: null        # not tabulated in accessible abstract → data_gaps
+      stability_index: null  # not tabulated in accessible abstract → data_gaps
+      state_nd: null         # not tabulated → data_gaps
+      lunit_km: null         # not tabulated → data_gaps
+      tunit_s: null          # not tabulated → data_gaps
+  data_gaps:
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "unknown"
+      note: "Jacobi constant not available from the NTRS abstract (full IAC-22-C1.6.6 PDF inaccessible at ingest)."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF (IAC-22-C1.6.6)"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "unknown"
+      note: "Non-dimensional period not available from the accessible abstract."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "unknown"
+      note: "Stability index not available from the accessible abstract."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF"
+      todo_ref: "#76-cr3bp-backfill"
   legs: []
   first_published:
     authors: ["Wittal, M. M.", "Miaule, S.", "Asher, B. W."]
@@ -6519,6 +6606,34 @@ days\" per the NTRS abstract.
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity block (all gapped —
+                              # this entry uses circular-coplanar patched-conic, not CR3BP)
+      mass_ratio: null       # Jovian multi-moon cyclers use patched-conic model; no single
+                              # Sun-moon mass ratio governs → data_gaps
+      family: null           # not a CR3BP libration-point family → data_gaps
+      libration_point: null  # not applicable for Jovian multi-moon patched-conic cycler
+      jacobi_constant: null  # not applicable (patched-conic model) → data_gaps
+      period_nd: null        # not applicable (patched-conic model) → data_gaps
+      stability_index: null  # not applicable (patched-conic model) → data_gaps
+      state_nd: null         # not applicable → data_gaps
+      lunit_km: null         # not applicable → data_gaps
+      tunit_s: null          # not applicable → data_gaps
+  data_gaps:
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "not-applicable"
+      note: "This entry uses circular-coplanar patched-conic model (model_assumption: circular-coplanar), not CR3BP. Jacobi constant is not a conserved quantity in this model. CR3BP dynamical identity for Jovian moon cyclers would require the Jupiter-moon restricted three-body problem, which uses a different mass ratio per moon pair."
+      source_hint: "Full Hernandez et al. 2017 paper (AAS proceedings)"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "not-applicable"
+      note: "Patched-conic model; non-dimensional CR3BP period not applicable."
+      source_hint: "Full Hernandez et al. 2017 paper"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "not-applicable"
+      note: "Patched-conic model; CR3BP stability index not applicable."
+      source_hint: "Full Hernandez et al. 2017 paper"
+      todo_ref: "#76-cr3bp-backfill"
   legs: []
   first_published:
     authors: ["Hernandez, S.", "Jones, D. R.", "Jesick, M."]
@@ -6648,6 +6763,33 @@ days\" per the NTRS abstract.
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity block (all gapped —
+                              # Russell/Strange 2009 uses circular-coplanar patched-conic)
+      mass_ratio: null       # multi-moon patched-conic; no single CR3BP mass ratio → data_gaps
+      family: null           # patched-conic model; not a CR3BP family → data_gaps
+      libration_point: null  # not applicable
+      jacobi_constant: null  # not applicable (patched-conic model) → data_gaps
+      period_nd: null        # not applicable (patched-conic model) → data_gaps
+      stability_index: null  # not applicable (patched-conic model) → data_gaps
+      state_nd: null         # not applicable → data_gaps
+      lunit_km: null         # not applicable → data_gaps
+      tunit_s: null          # not applicable → data_gaps
+  data_gaps:
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "not-applicable"
+      note: "Russell/Strange 2009 uses circular-coplanar patched-conic model. Jacobi constant is not conserved in this model. CR3BP identity for individual Jovian moon cyclers would use a per-pair (e.g., Jupiter-Ganymede) mass ratio, not catalogued here."
+      source_hint: "Russell & Strange 2009 JGCD full text (paywalled)"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "not-applicable"
+      note: "Patched-conic model; non-dimensional CR3BP period not applicable."
+      source_hint: "Russell & Strange 2009 JGCD full text"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "not-applicable"
+      note: "Patched-conic model; CR3BP stability index not applicable."
+      source_hint: "Russell & Strange 2009 JGCD full text"
+      todo_ref: "#76-cr3bp-backfill"
   legs: []
   first_published:
     authors: ["Russell, R. P.", "Strange, N. J."]
@@ -6753,6 +6895,33 @@ days\" per the NTRS abstract.
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
+    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity block (all gapped —
+                              # Russell/Strange 2009 uses circular-coplanar patched-conic)
+      mass_ratio: null       # Saturnian multi-moon patched-conic; no single CR3BP mass ratio
+      family: null           # patched-conic model; not a CR3BP family
+      libration_point: null  # not applicable
+      jacobi_constant: null  # not applicable (patched-conic model) → data_gaps
+      period_nd: null        # not applicable (patched-conic model) → data_gaps
+      stability_index: null  # not applicable (patched-conic model) → data_gaps
+      state_nd: null         # not applicable → data_gaps
+      lunit_km: null         # not applicable → data_gaps
+      tunit_s: null          # not applicable → data_gaps
+  data_gaps:
+    - path: "orbit_elements.cr3bp.jacobi_constant"
+      kind: "not-applicable"
+      note: "Russell/Strange 2009 uses circular-coplanar patched-conic model for the Saturnian system. Jacobi constant is not conserved. CR3BP identity would require the Saturn-moon restricted three-body problem per moon pair."
+      source_hint: "Russell & Strange 2009 JGCD full text (paywalled)"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "not-applicable"
+      note: "Patched-conic model; non-dimensional CR3BP period not applicable."
+      source_hint: "Russell & Strange 2009 JGCD full text"
+      todo_ref: "#76-cr3bp-backfill"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "not-applicable"
+      note: "Patched-conic model; CR3BP stability index not applicable."
+      source_hint: "Russell & Strange 2009 JGCD full text"
+      todo_ref: "#76-cr3bp-backfill"
   legs: []
   first_published:
     authors: ["Russell, R. P.", "Strange, N. J."]
