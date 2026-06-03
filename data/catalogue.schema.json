@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cyclers.space/schemas/catalogue.schema.json",
-  "version": 4,
+  "version": "4.1",
   "title": "Cycler Finder Catalogue",
-  "description": "Schema v4 for data/catalogue.yaml. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
+  "description": "Schema v4.1 for data/catalogue.yaml. Adds free_return_arcs[] (arc-type descriptors, spec §16.7.7) to v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
   "type": "array",
   "items": {
     "type": "object",
@@ -19,6 +19,35 @@
         "enum": ["single-ellipse", "multi-arc", "non-keplerian"],
         "default": "single-ellipse",
         "description": "Structural kind of orbit. Default single-ellipse preserves v3 behaviour."
+      },
+      "free_return_arcs": {
+        "type": ["array", "null"],
+        "description": "Schema v4.1 (spec §16.7.7): Russell's Earth-to-Earth free-return arc decomposition. Distinct from trajectory.segments (encounter legs). Each item is one Earth-Earth arc in Russell's notation. Null when no descriptor is available (data gap, not error). Only meaningful for multi-arc cyclers (no-op on single-ellipse / non-keplerian).",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["arc_type", "raw_descriptor"],
+          "properties": {
+            "arc_type": {
+              "type": "string",
+              "enum": ["generic", "half-rev", "full-rev"],
+              "description": "Russell free-return arc type. g/G=generic, h/H=half-rev, f/F=full-rev."
+            },
+            "resonance": {
+              "type": ["string", "null"],
+              "description": "Resonance ratio string (e.g. '3:2', '2:1', '1:1') for full-rev arcs. Always null for generic and half-rev.",
+              "pattern": "^\\d+:\\d+$"
+            },
+            "tof_years": {
+              "type": ["number", "null"],
+              "description": "Time of flight in years for this Earth-Earth arc. Per Russell p.127: 'the first number in the parenthesis is the time of flight in years'. Null for full-rev arcs where TOF is determined by the M:N resonance condition, not listed explicitly."
+            },
+            "raw_descriptor": {
+              "type": ["string", "null"],
+              "description": "Verbatim Russell descriptor token, e.g. 'g(1.4612,526.02,Ll)' or 'F(3:2,82.487,180.000)'. Preserved exactly so nothing is lost to interpretation. The arc_type/resonance fields are derived from this string."
+            }
+          }
+        }
       },
       "orbit_elements": {
         "type": "object",

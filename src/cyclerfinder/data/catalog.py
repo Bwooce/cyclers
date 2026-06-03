@@ -226,6 +226,26 @@ class CatalogueEntry:
     """Beat-period basis for n-body (VEM) cyclers: tuple of
     ``{"pair": ..., "k": ...}`` dicts from ``period.basis``. ``None``
     when not present."""
+    # ------------------------------------------------------------------
+    # Schema v4.1 (spec §16.7.7, 2026-06-03) — arc-type descriptors.
+    # ------------------------------------------------------------------
+    free_return_arcs: tuple[dict[str, Any], ...] | None = None
+    """Russell's Earth-to-Earth free-return arc decomposition (spec §16.7.7).
+
+    Distinct from ``trajectory.segments`` (encounter legs): Russell's arcs
+    are Earth-to-Earth free-return trajectories; catalogue segments are
+    encounter legs (E→M, M→E, E→E loop).
+
+    Each dict carries:
+    - ``arc_type``: ``"generic"`` | ``"half-rev"`` | ``"full-rev"``
+    - ``resonance``: M:N string (e.g. ``"3:2"``) for full-rev; ``None`` otherwise
+    - ``tof_years``: TOF in years (from descriptor first param for g/h); ``None``
+      for full-rev arcs where TOF is determined by the resonance condition
+    - ``raw_descriptor``: verbatim Russell token, e.g. ``"g(1.4612,526.02,Ll)"``
+
+    ``None`` when no descriptor is available for the row (data gap, not error).
+    Only meaningful for ``multi-arc`` cyclers; ``None`` on other classes.
+    """
 
     @property
     def fully_defined(self) -> bool:
@@ -644,6 +664,11 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
     period_basis: tuple[dict[str, Any], ...] | None = (
         tuple(dict(b) for b in basis_raw) if basis_raw else None
     )
+    # Schema v4.1 fields (spec §16.7.7, 2026-06-03) — arc-type descriptors
+    free_return_arcs_raw = row.get("free_return_arcs")
+    free_return_arcs: tuple[dict[str, Any], ...] | None = None
+    if isinstance(free_return_arcs_raw, list):
+        free_return_arcs = tuple(dict(a) for a in free_return_arcs_raw)
 
     sig: CanonicalSignature | None = None
     sig_hash: str | None = None
@@ -705,6 +730,7 @@ def _entry_from_yaml(row: dict[str, Any]) -> CatalogueEntry:
         invariants=invariants,
         cr3bp=cr3bp,
         period_basis=period_basis,
+        free_return_arcs=free_return_arcs,
     )
 
 

@@ -971,3 +971,52 @@ Backfill is lazy and source-gated (as in §16.6.5): tag existing rows with their
 `cycler_class` first (a mechanical sweep — single-ellipse is the default,
 Russell rows → multi-arc, the 6 non-heliocentric rows → non-keplerian), then
 populate `invariants{}`/`cr3bp{}` opportunistically as sources are read.
+
+#### 16.7.7 `free_return_arcs[]` — arc-type descriptors (schema v4.1)
+
+**Storage design: option (a) — separate `free_return_arcs[]` list.**
+
+Russell's *arc* decomposition is genuinely distinct from the catalogue's
+*encounter-segment* decomposition (§16.6.2):
+
+- **`trajectory.segments[]`** (OCM model): encounter legs — one segment per
+  planetary encounter boundary (E→M transit, M→E return, E→E intermediate loop).
+- **`free_return_arcs[]`** (Russell model): Earth-to-Earth free-return arcs —
+  each arc is a complete Earth-departure → Earth-arrival trajectory that happens
+  to pass near Mars. A single Russell arc spans what the catalogue models as two
+  or more encounter segments.
+
+These are *different decompositions of the same physical orbit* and must not
+be conflated. Design (b) — adding arc fields directly onto `trajectory.segments[]`
+— was rejected because there is no 1-to-1 correspondence between Russell arcs
+and encounter segments, and forcing one would fabricate structure not in the source.
+
+**Descriptor field meanings** (sourced from Russell 2004 dissertation p.126–127):
+
+| Field | Source quote / meaning |
+|---|---|
+| `arc_type` | "Each string type begins with a letter indicating either half-rev, full-rev, or generic return." g/G → `generic`, h/H → `half-rev`, f/F → `full-rev` |
+| `tof_years` | "In all three cases, the first number in the parenthesis is the time of flight **in years** for that Earth-Earth leg." Applies to g/h arcs only. |
+| `resonance` | "The number following the colon in the full-rev strings represent the number of revolutions by the spacecraft, thus the full-rev return is an M:N resonant orbit." (e.g. `"3:2"`, `"2:1"`, `"1:1"`). Only on f/F arcs; `null` for g/h. For full-rev arcs the TOF is determined by the M:N resonance condition, so `tof_years` is `null`. |
+| `raw_descriptor` | Verbatim Russell token, e.g. `"g(1.4612,526.02,Ll)"` or `"F(3:2,82.487,180.000)"`. Uppercase letter = designated transit leg (transit times and Mars V∞ are computed from this leg). |
+
+**Known puzzle resolved:** the second parameter in g/h descriptors (e.g. 526.02
+in `g(1.4612,526.02,Ll)`) is **ψ in degrees** (the referencing angle on the V∞
+sphere per Russell §2.7.3), NOT time of flight in days. The TOF is the *first*
+parameter in years (1.4612 yr ≈ 533 d ≠ 526.02 d).
+
+**Schema v4.1 field:**
+
+```yaml
+free_return_arcs:   # null when no descriptor is available (data gap, not error)
+  - arc_type: generic          # generic | half-rev | full-rev
+    resonance: null            # M:N string for full-rev; null for g/h
+    tof_years: 1.4612          # TOF in years for g/h arcs; null for f/F
+    raw_descriptor: "g(1.4612,526.02,Ll)"   # verbatim Russell token
+```
+
+**Backfill coverage (2026-06-03):** 12 entries with explicit descriptors from
+Russell 2004 Tables 4.9–4.13 (pp.127–134); 3 entries with incomplete
+descriptors gapped (`russell-ch4-8.165Gfh-f2`, `russell-ch4-3.77Gh3`,
+`russell-ch4-5.66Gfh3`); all `russell-ocampo-*` entries gapped (Russell Ch3
+tables carry AR/TR summary, not leg descriptors).

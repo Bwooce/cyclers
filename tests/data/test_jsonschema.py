@@ -2,7 +2,7 @@
 
 Tests that:
 - The live catalogue validates against data/catalogue.schema.json
-- The schema version is 4
+- The schema version is 4.1 (schema v4.1 adds free_return_arcs per spec §16.7.7)
 - A crafted invalid row (multi-arc with a_au) fails validation
 """
 
@@ -24,10 +24,10 @@ def _load_schema() -> dict[str, Any]:
     return json.loads(SCHEMA_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4() -> None:
-    """The schema document carries version == 4."""
+def test_schema_version_is_4_1() -> None:
+    """The schema document carries version == '4.1' (schema v4.1 adds free_return_arcs)."""
     schema = _load_schema()
-    assert schema["version"] == 4
+    assert schema["version"] == "4.1"
 
 
 def test_catalogue_matches_jsonschema() -> None:
