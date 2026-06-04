@@ -57,7 +57,7 @@ audit trail and is unchanged in spirit.
   asymmetric `tof_seed_days` option and an Aldrin parity test; `discover()`
   supports `optimiser="ephemeris"` (Part 2 wired).
 - **Catalogue census frozen as a ratchet** — `tests/test_catalogue_rediscovery.py`
-  (`EXPECTED_COVERAGE`) pins the 233-entry distribution; any catalogue
+  (`EXPECTED_COVERAGE`) pins the 235-entry distribution; any catalogue
   change must update it in the same commit.
 
 ## In progress (with plan references)
@@ -113,20 +113,20 @@ fill. Listed in rough priority order.
    member list (Q&A item D). Needed to lift M8 out of placeholder
    territory; lower priority while M8 is deferred.
 
-## Catalogue census (frozen ratchet — 233 entries)
+## Catalogue census (frozen ratchet — 235 entries)
 
 Source of truth: `tests/test_catalogue_rediscovery.py` `EXPECTED_COVERAGE`.
 
 | Exclusion reason | Count |
 |---|---|
-| `multi_encounter_sequence` | 202 |
+| `multi_encounter_sequence` | 204 |
 | `missing_leg_tofs` | 15 |
 | `non_heliocentric` | 6 |
 | `missing_vinf` | 5 |
 | `constructible` | 2 |
 | `not_two_body` | 2 |
 | `missing_period` | 1 |
-| **Total** | **233** |
+| **Total** | **235** |
 
 The new `missing_leg_tofs` bucket (15) holds the individuated Hollister &
 Menning E-V family (orbits 1-15): each has matched V∞ at Earth and Venus
@@ -134,7 +134,7 @@ but no per-leg ToFs encoded in `legs`. Expanding the old single E-V
 placeholder moved one row out of `missing_vinf` (6 → 5) and one out of
 `missing_period` (2 → 1), and added the 15-row bucket.
 
-Through the idealised rediscovery gauntlet ~0/233 currently pass green:
+Through the idealised rediscovery gauntlet ~0/235 currently pass green:
 the 2 `constructible` (Aldrin) entries are model-limited skips
 (`EXPECTED_SKIPS`). Aldrin IS replicated on the real ephemeris (M6b)
 and the canonical 2-synodic E–M anchor is replicated idealised. The
@@ -499,9 +499,9 @@ implementers, but they are **deliberately NOT added to
 | DOI | [10.2514/1.A35091](https://doi.org/10.2514/1.A35091) |
 | Full text | held offline (not stored in repo) |
 | Scope | **NEAR-BALLISTIC, IN v1 SCOPE.** ΔV ≤ 10 m/s patched-conic Earth-Mars cyclers. Covers EM and EEM families over 2030–2034 launch windows. |
-| Candidate row | "Cycler 1" (EEM topology, launch ~2032; see `docs/notes/s1l1-target-topology-mining.md` §2.9). Data gaps: no tabulated `a`/`e`/`i`, patched-conic-only, partial V∞. |
+| Status | **Both Cycler 1 (EEM, `sanchez-net-2022-eem-cycler1`) and Cycler 2 (EM, `sanchez-net-2022-em-cycler2`) are now catalogue entries** (added 2026-06-04, `model_assumption: analytic-ephemeris`, `delta_v_kms: 0.005/0.007`). Data gaps remain: no tabulated `a`/`e`/`i`, partial V∞ for intermediate legs. See `docs/notes/s1l1-target-topology-mining.md` §2.9 for the mined event tables. |
 | Note | Distinct from the low-thrust Pascarella AAS-22-015 (H.3 above). Both papers share authors and the SSPE mission context but use fundamentally different trajectory regimes. |
-| Re-evaluate | Candidate catalogue row pending per-cycler orbital elements; current data gaps flag it as partial. |
+| Re-evaluate | Per-cycler orbital elements (`a`, `e`, `i`) remain data gaps. The numbered network cyclers in Tables 3–5 (IDs 51, 84, etc.) cannot be added without the Star database output. |
 
 ### H.5 Patel 2019 — Earth-Mars cycler vehicle conceptual design (in-scope reference for `s1l1`)
 
@@ -531,3 +531,68 @@ Mars). Catalogue-scale reproduction (`scripts/batch_resonant_reproduction.py`)
 is currently data-limited to 3 rows (only those carry both cycler-level (a,e)
 and sourced V_inf); unlocking it needs per-cycler (a,e) populated for the
 ballistic Russell rows from the Russell 2004 dissertation (in docs/refs/).
+
+## S1L1 V∞ anchor flagged unverified-provenance (2026-06-04)
+
+The `s1l1-2syn-em-cpom` entry's 5.65/3.05 km/s V∞ pair has been flagged
+`unverified-provenance` in the catalogue's `data_gaps[]` block. Mining of
+Patel 2019, McConaghy 2006 (abstract + Patel secondary), and Sanchez Net 2022
+(DOI 10.2514/1.A35091) did not find this pair in any primary source:
+
+- **Patel 2019** (= McConaghy 2006 circular-coplanar) gives Earth flyby V∞
+  3.657 km/s; no Mars V∞ is tabulated.
+- **Sanchez Net 2022** near-ballistic real-date regime gives Mars V∞ 5.2–7.3
+  km/s and Earth V∞ 3.6–7.3 km/s; none match 5.65/3.05.
+- **McConaghy 2006 JSR abstract** (real-ephemeris) gives ≈4.7 km/s Earth /
+  5.0 km/s Mars.
+- **Russell 2004 coplanar** gives 4.99/5.10 km/s (separate catalogue entry
+  `russell-ch4-4.991gG2`).
+
+The 5.65/3.05 values trace only to spec.md §9; their origin is undetermined
+until the McConaghy 2006 JSR full text is accessed. They are retained in place
+(not overwritten) pending that access. See `docs/notes/s1l1-target-topology-mining.md`
+for the full sourcing analysis.
+
+## Newly mined references — Agrawal 2022, Landau-Longuski 2009, Howe 2025 (2026-06-04)
+
+Three papers mined for S1L1 real-ephemeris targets and near-ballistic EEM/EM
+catalogue candidates. Full extraction in `docs/notes/2026-06-04-agrawal-landau-howe-mining.md`.
+
+### Agrawal 2022 — not catalogue-eligible
+
+**Agrawal, R. 2022.** "Design and Analysis of an Orbital Logistics Architecture
+for Sustainable Human Exploration of Mars." PhD dissertation, Purdue University.
+Advisors: James M. Longuski, Sarag J. Saikia.
+
+Finding: logistics/Spacedock focus; cyclers mentioned only in future-work (pp. 72,
+129–130). No cycler trajectory numbers (no orbital elements, V∞, or per-arc ToFs).
+Not catalogue-eligible.
+
+### Landau & Longuski 2009 — not catalogue-eligible
+
+**Landau, D. F. and Longuski, J. M. 2009.** "Comparative Assessment of Human–Mars-Mission
+Technologies and Architectures." *Advances in the Astronautical Sciences*, Vol. 126.
+School of Aeronautics and Astronautics, Purdue University. [ScienceDirect pii
+S0094576509001118; scanned document, image-only PDF.]
+
+Finding: IMLEO architecture comparison across six mission classes (Direct, Semi-Direct,
+Stop-Over, M-E Semi-Cycler, E-M Semi-Cycler, Cycler). E-M semi-cycler ranks #1 under
+advanced propulsion scenario (Table 13). Cites McConaghy 2006 (ref [45]) as the canonical
+S1L1 source but reproduces no per-cycler V∞ values or orbital elements — results are
+IMLEO graphs only, not tabulated trajectory data. Not catalogue-eligible.
+
+NB: Authors are Landau & Longuski (not Sarunic); image-only PDF confirmed.
+
+### Howe et al. 2025 — candidate only, not added
+
+**Howe, A. S., Blincow, J., Hall, T. W., and Leonard, C. 2025.** "Tackling a Mars Cycler
+Design Head-on." ICES-2025-555, 54th International Conference on Environmental Systems,
+13–17 July 2025, Prague.
+
+Finding: habitat/structural design for an "escalator" cycler (citing Rauwolf, Friedlander,
+Nock 2002). Up-escalator E→M ToF 151 d (Day 1→151); down-escalator stated 170 d (but
+arithmetic from printed day numbers 38→229 gives 191 d — internal inconsistency in the
+paper). V∞ < 6 km/s stated as a design constraint, not a computed encounter value.
+Two escalator cyclers cited (Rauwolf 2002) lack tabulated encounter V∞ — candidate-only,
+not added to catalogue. Primary source for escalator elements is Rauwolf 2002 (not in
+scope here).

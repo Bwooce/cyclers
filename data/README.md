@@ -81,7 +81,7 @@ A second optional top-level field, `trajectory_regime:`, was added on
 2026-06-01 to make the *trajectory class* explicit:
 
 - `ballistic` — Keplerian arcs + impulsive flybys; no deep-space thrust
-  required to close the cycle. All but 2 of the current 233 entries are ballistic (the 2 powered Aldrin establishment variants excepted).
+  required to close the cycle. All but 2 of the current 235 entries are ballistic (the 2 powered Aldrin establishment variants excepted).
 - `low-thrust` — requires continuous propulsion (Solar Electric, ion,
   nuclear electric, solar sail, etc.) over the transit legs to close.
   Mathematically: Lambert's problem no longer applies; the trajectory
@@ -162,7 +162,7 @@ the matcher's pool prefilter (before the per-signature distance
 calculation).
 
 **Default when absent:** `circular-coplanar`. Pre-v2 entries that
-predate this field (none currently — backfilled on all 233) should be
+predate this field (none currently — backfilled on all 235) should be
 read as circular-coplanar.
 
 **Backfill stats (initial v2 rev, 2026-06-01):**
@@ -231,7 +231,7 @@ Per-encounter geometry parallel to the existing
   rp_km: 6578               # closest-approach radius from body center (= body radius + min altitude)
 ```
 
-`null` (or omitted) on all current 233 entries: while some Russell
+`null` (or omitted) on all current 235 entries: while some Russell
 entries cite turning-angle multisets like `[93, 93]` deg in their
 notes, deriving per-encounter `turning_angle_deg` + `min_altitude_km`
 mechanically requires the bend formula `sin(δ/2) = 1 / (1 + r_p ·
@@ -398,6 +398,70 @@ worked exemplar (known E→M segment populated, unknown return + Earth-loop
 segments marked in `data_gaps[]`); (3) sweep to inventory remaining
 `legs[]`-only entries; (4) migrate the rest opportunistically, source-
 gated; (5) "done" when no entry retains top-level `legs[]`.
+
+Schema v4 (2026-06-03) — `cycler_class`, frame-tagged elements, `invariants{}`, `cr3bp{}`, `period.basis`
+---------------------------------------------------------------------------------------------------------
+
+The v4 rev (2026-06-03) makes the record *structurally honest* about the kind
+of orbit it holds, removing the implicit assumption that every entry is a single
+repeating heliocentric Kepler ellipse. **All v4 fields are additive, optional,
+and none participate in the §16.2 canonical signature.** Full rationale and
+field-level reference in **spec.md §16.7**.
+
+- **`cycler_class`** — the structural kind of orbit:
+  `single-ellipse` (default, one repeating Kepler ellipse; e.g. S1L1, Aldrin),
+  `multi-arc` (different ellipse per leg — the bulk of the Russell catalogue),
+  `non-keplerian` (CR3BP / rotating-frame; Arenstorf, lunar/Jovian entries).
+  A `multi-arc` or `non-keplerian` entry MUST NOT carry a non-null top-level
+  `orbit_elements.a_au`/`e`.
+
+- **`orbit_elements.reference_frame` + `.center`** — frame/units-tagged elements
+  following JPL SBDB conventions. Heliocentric entries keep
+  `frame: heliocentric-inertial` (default); planet-centric entries use
+  `planetcentric-inertial` with `center` naming the primary.
+
+- **`invariants{}`** — present on `multi-arc` entries only; carries the Russell
+  cycle-level descriptors (`aphelion_ratio`, `transit_times_days`, `turn_ratio`)
+  promoted from prose `notes` to first-class fields the validator can assert.
+
+- **`orbit_elements.cr3bp{}`** — present on `non-keplerian` entries; mirrors the
+  JPL three-body periodic-orbit catalog: `(jacobi_constant, period_nd,
+  stability_index)` plus `state_nd` + `mass_ratio` + `lunit_km`/`tunit_s`.
+
+- **`period.basis`** — optional list of `{pair,k}` beat relations for n-body
+  (VEM+) cyclers whose period is the beat of several synodic pairs; the legacy
+  flat `{pair,k,years}` remains valid as the 2-body special case.
+
+Backfill is lazy and source-gated: tag `cycler_class` first (mechanical sweep),
+then populate `invariants{}`/`cr3bp{}` opportunistically as sources are read.
+2026-06-04 backfill status: `cycler_class` tagged on all 235 entries
+(single-ellipse 28, multi-arc 201, non-keplerian 6); `invariants{}`/`cr3bp{}`
+populated on entries where Russell 2004 Tables 4.9–4.13 provide the descriptors.
+
+Schema v4.1 (2026-06-03) — `free_return_arcs[]`
+------------------------------------------------
+
+The v4.1 sub-rev adds `free_return_arcs[]` to record Russell's arc-type
+decomposition separately from the OCM encounter-segment decomposition:
+
+```yaml
+free_return_arcs:   # null when no descriptor is available
+  - arc_type: generic          # generic | half-rev | full-rev
+    resonance: null            # M:N string for full-rev arcs; null for generic/half-rev
+    tof_years: 1.4612          # TOF in years for generic/half-rev; null for full-rev
+    raw_descriptor: "g(1.4612,526.02,Ll)"   # verbatim Russell token
+```
+
+These are Russell's Earth-to-Earth free-return arcs — a *different* decomposition
+of the same orbit from the encounter-leg segments. The two MUST NOT be conflated
+(no 1-to-1 correspondence). Full field semantics in **spec.md §16.7.7**. The
+`data/catalogue.schema.json` JSON Schema enforces the shape; a `check-jsonschema`
+pre-commit hook validates every YAML change against it.
+
+Backfill coverage (2026-06-03): 12 entries with explicit descriptors from Russell
+2004 Tables 4.9–4.13; 3 entries with incomplete descriptors gapped; all
+`russell-ocampo-*` entries gapped (Russell Ch3 tables carry AR/TR summary, not
+leg descriptors).
 
 Out-of-paradigm work
 --------------------
