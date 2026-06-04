@@ -1,7 +1,15 @@
 """S1L1 real-ephemeris rediscovery — the idealised model could NOT host the
 5.65/3.05 km/s anchors (see scripts/characterise_s1l1.py); this gate tests
 whether the real ephemeris (Mars eccentricity) can, like the Aldrin cycler.
-Anchors are sourced (spec §9); epoch and leg ToFs are computed."""
+Anchors are sourced (spec §9); epoch and leg ToFs are computed.
+
+PROVENANCE FLAG (2026-06-04): the 5.65/3.05 km/s anchor pair is
+unverified-provenance per catalogue data_gaps[] (s1l1-2syn-em-cpom,
+docs/notes/s1l1-target-topology-mining.md). Source-mining found:
+Patel 2019 gives Earth flyby v∞ 3.657 km/s, no Mars v∞; McConaghy 2006
+abstract gives ≈4.7/5.0 km/s; Sanchez Net 2022 near-ballistic range is
+Earth 3.6-5.7 / Mars 5.2-7.3 km/s. Assert values are kept unchanged
+pending McConaghy 2006 JSR 43(2):456-465 full-text access."""
 
 import numpy as np
 import pytest
@@ -41,7 +49,11 @@ def _vinf_by_body(result: object) -> dict[str, float]:
         "resonant intervals and pinning the winning per_leg_revs (see "
         "test_s1l1_idealised_multirev.py and scripts/characterise_s1l1.py) flips "
         "this gate. The SOURCED 5.65/3.05 anchors remain the only assertion "
-        "targets."
+        "targets. "
+        "NOTE (2026-06-04): the 5.65/3.05 anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
 )
 def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:

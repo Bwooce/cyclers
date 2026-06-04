@@ -25,7 +25,11 @@ Two important caveats about closure_residual on this construct:
    with an intermediate Earth encounter
    (McConaghy/Longuski/Byrnes 2002, AIAA 2002-4420). That sequence and
    timing search is M4/M5 work, not M3. The catalogue carries this entry
-   as ``s1l1-2syn-em-cpom``.
+   as ``s1l1-2syn-em-cpom``. NOTE (2026-06-04): the 5.65/3.05 anchor pair
+   is unverified-provenance (catalogue data_gap vinf_kms_at_encounters,
+   s1l1-2syn-em-cpom) — traces only to spec.md §9; unconfirmed in
+   Patel 2019 / McConaghy 2006 / Sanchez Net 2022. See
+   docs/notes/s1l1-target-topology-mining.md.
 
 Plan: ``docs/phases/m3-model-construct/plan.md`` §4.4.
 """

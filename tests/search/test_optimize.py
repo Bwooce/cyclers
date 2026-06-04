@@ -305,7 +305,11 @@ def test_warm_start_wrong_length_raises() -> None:
         "represent regardless of convergence — tracked as a data_gap on entry "
         "s1l1-2syn-em-cpom, requires AIAA 2002-4420 full text. Anchors + "
         "assertions are kept intact so a future 4-encounter / ephemeris-mode "
-        "optimiser trips strict and signals the signature is reachable."
+        "optimiser trips strict and signals the signature is reachable. "
+        "NOTE (2026-06-04): the 5.65/3.05 anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
     strict=False,
 )
@@ -533,7 +537,11 @@ def test_ephemeris_mode_requires_real_window() -> None:
         "4-encounter topology a 3-encounter cell cannot represent. Not a "
         "pending fix; deferred to warm-start (#52) + 4-encounter support. "
         "@slow retained — genuinely ~32s. Anchors kept intact to trip strict "
-        "when a future optimiser can rediscover the signature."
+        "when a future optimiser can rediscover the signature. "
+        "NOTE (2026-06-04): the 5.65/3.05 anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
     strict=False,
 )

@@ -484,10 +484,10 @@
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: 5.65
-      note: "Per spec.md §9 and corroborating sources, the S1L1 ballistic two-synodic-period cycler has 'low V-infinity at Earth and Mars (5.65 and 3.05 km/s, respectively)'. This is the spec-anchored M5 milestone value."
+      note: "Per spec.md §9 and corroborating sources, the S1L1 ballistic two-synodic-period cycler has 'low V-infinity at Earth and Mars (5.65 and 3.05 km/s, respectively)'. This is the spec-anchored M5 milestone value. PROVENANCE CAVEAT: this value traces only to spec.md §9; it could NOT be corroborated in Patel 2019 / McConaghy 2006 (which give Earth flyby v∞ 3.657 km/s / no Mars v∞, coplanar) nor Sanchez Net 2022 near-ballistic regime (Mars 5.2–7.3 km/s; McConaghy abstract 4.7/5.0). See data_gaps[] entry for vinf_kms_at_encounters."
     - body: "M"
       vinf_kms: 3.05
-      note: "Per spec.md §9 — the published 2-synodic E-M cycler V_inf at Mars."
+      note: "Per spec.md §9 — the published 2-synodic E-M cycler V_inf at Mars. PROVENANCE CAVEAT: this value traces only to spec.md §9 and could NOT be corroborated in any mined source; Patel 2019 gives no Mars v∞ at all, McConaghy 2006 abstract gives 5.0 km/s, Sanchez Net 2022 range is 5.2–7.3 km/s. See data_gaps[] entry for vinf_kms_at_encounters."
   orbit_elements:
     a_au: 1.30
     e: 0.257
@@ -560,6 +560,11 @@
     nomenclature: "Russell-McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
+    - path: "vinf_kms_at_encounters"
+      kind: "unverified-provenance"
+      note: "The 5.65/3.05 km/s pair traces only to spec.md §9 and could NOT be corroborated in any mined primary source. Patel 2019 (which cites McConaghy 2006 throughout) gives Earth flyby v∞ 3.657 km/s and NO Mars v∞ in the circular-coplanar model. The near-ballistic real-date regime (Sanchez Net 2022, JSR 59(3):861-870) gives Mars v∞ 5.2–7.3 km/s and Earth 3.6–5.7 km/s — none matching 5.65/3.05. McConaghy 2006 JSR 43(2):456-465 abstract gives ≈4.7 km/s Earth / 5.0 km/s Mars for the real-ephemeris case. The values are retained in place (not overwritten) pending access to the McConaghy 2006 full text."
+      source_hint: "McConaghy 2006 JSR 43(2):456-465 full text"
+      todo_ref: "#s1l1-provenance"
     - path: "trajectory.segments[ret-me]"
       kind: "uncertain"
       note: "No direct Mars->Earth leg ToF exists to extract: it is undefined by construction. The S/L labels denote Earth-to-Earth resonant intervals (S1 short, L1 long), not Earth<->Mars transits; Mars is a flyby target of opportunity on the outbound arc, and the crewed return uses a mirrored conjugate L1S1 cycler. The fix is to re-model the post-Mars arc as the S1/L1 Earth-to-Earth resonant intervals, not to back-fill a return ToF. NB the day-count breakdown of S1 vs L1 is not reconciled against a single citation and must not be invented."

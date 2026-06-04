@@ -109,7 +109,11 @@ def test_discover_skips_v3_when_disabled(tmp_path: Path) -> None:
         "optimiser returns no constraint-satisfying cycler, so discover "
         "yields no 'known' match for the 5.65 km/s Russell cycler. Same "
         "root cause as test_2syn_em_rediscovers_5_65_kms_earth. Flip "
-        "strict=True once #54 lands."
+        "strict=True once #54 lands. "
+        "NOTE (2026-06-04): the 5.65 km/s anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
 )
 def test_discover_em_k2_yields_known_for_2syn(tmp_path: Path) -> None:
@@ -223,7 +227,11 @@ def test_discover_accepts_ephemeris_optimiser(tmp_path: Path) -> None:
         "behind optimise_cell_ephemeris (currently single-rev only). The "
         "0.3 km/s tolerance is the sourced-anchor bound and is NOT loosened. "
         "Flips to a pass once the real-eph optimiser handles the L1 multi-rev "
-        "leg; flip strict=True then."
+        "leg; flip strict=True then. "
+        "NOTE (2026-06-04): the 5.65 km/s anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
 )
 def test_snlm_sweep_rediscovers_a_sourced_anchor(tmp_path: Path) -> None:

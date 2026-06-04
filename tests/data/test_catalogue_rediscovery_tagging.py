@@ -35,7 +35,11 @@ from cyclerfinder.search.optimize import find_cyclers
         "returns 0 results (optimiser does not converge to the 5.65 km/s "
         "Russell cycler), so there is no best result to signature-match. "
         "Same root cause as test_2syn_em_rediscovers_5_65_kms_earth. "
-        "Flip strict=True once #54 lands."
+        "Flip strict=True once #54 lands. "
+        "NOTE (2026-06-04): the 5.65 km/s anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
+        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
 )
 def test_rediscovered_2syn_em_tagged_known() -> None:

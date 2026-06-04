@@ -14,6 +14,14 @@ SOURCED EXPECTED anchors: V_inf_Earth = 5.65 km/s, V_inf_Mars = 3.05 km/s
 honest +/-0.4 km/s engineering band. The launch epoch, leg ToFs and revolution
 counts are COMPUTED.
 
+PROVENANCE FLAG (2026-06-04): the 5.65/3.05 anchor pair is unverified-provenance
+per catalogue data_gaps[] (see docs/notes/s1l1-target-topology-mining.md).
+Source-mining found: Patel 2019 gives Earth flyby v∞ 3.657 km/s, no Mars v∞;
+McConaghy 2006 abstract gives ≈4.7/5.0 km/s; Sanchez Net 2022 near-ballistic
+range is Earth 3.6-5.7 / Mars 5.2-7.3 km/s. The 5.65/3.05 pair traces only to
+spec.md §9 and is unconfirmed in any mined primary source. Assert values are
+kept unchanged pending McConaghy 2006 JSR 43(2):456-465 full-text access.
+
 STATUS: ``@pytest.mark.xfail(strict=False)`` — the topology characterisation
 script (``scripts/characterise_s1l1.py``) found NO circular-coplanar topology
 (neither E-M-E nor E-M-E-E, over per-leg revs in {0,1,2} and branches
@@ -56,7 +64,12 @@ def _vinf_by_body(result: object) -> dict[str, float]:
         "optimise_cell_ephemeris -> optimise_maintenance_dv -> _build_chain), but "
         "the idealised model cannot host the anchors any more than it can host "
         "Aldrin's. Flips to a strict passing assert once a winning per_leg_revs / "
-        "topology is pinned (likely on the real ephemeris)."
+        "topology is pinned (likely on the real ephemeris). "
+        "NOTE (2026-06-04): the 5.65/3.05 anchor pair is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): traces "
+        "only to spec.md §9; unconfirmed in Patel 2019 / McConaghy 2006 / "
+        "Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md. "
+        "Assert values kept unchanged pending McConaghy 2006 full-text access."
     ),
 )
 def test_s1l1_4enc_multirev_closes_to_published_vinf_anchors() -> None:

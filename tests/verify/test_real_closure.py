@@ -282,7 +282,11 @@ def test_aldrin_powered_turn_deficit_gate(aldrin_entry: dict[str, object]) -> No
         "closure would require fabricating a ToF for a non-existent leg, "
         "which the golden-test discipline forbids. Flips to passing once the "
         "entry is re-modelled as outbound E->M plus the S1/L1 Earth-to-Earth "
-        "resonant intervals."
+        "resonant intervals. "
+        "NOTE (2026-06-04): the 5.65/3.05 V∞ anchor is unverified-provenance "
+        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
+        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy 2006 "
+        "/ Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
     ),
 )
 def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
@@ -290,7 +294,10 @@ def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
 ) -> None:
     """Aspirational gate for the 2-syn S1L1 entry; xfail because the entry's
     direct M->E return leg is undefined by construction (S/L are Earth-to-
-    Earth resonant intervals), not because of a missing ToF extraction."""
+    Earth resonant intervals), not because of a missing ToF extraction.
+    Additionally: the 5.65/3.05 km/s V∞ anchor is provenance-flagged
+    (unverified-provenance data_gap) per docs/notes/s1l1-target-topology-mining.md
+    — traces only to spec.md §9, unconfirmed in mined primary sources."""
     entries = load_m6b_entries()
     s1l1 = next(e for e in entries if e["id"] == "s1l1-2syn-em-cpom")
     result = verify_real_closure(
