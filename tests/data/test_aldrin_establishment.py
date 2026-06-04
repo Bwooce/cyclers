@@ -8,8 +8,8 @@ it pins the Rogers Table-4 numbers the catalogue carries and asserts the
 Mars-side V-infinity stays null (Table 4 tabulates only Earth launch /
 flyby V-infinity for these Earth-to-Earth leveraging arcs — a distinct
 Mars V-infinity is not defined for them). If any pinned value changes,
-this test fails so the change is re-verified against the PDF in
-docs/refs/rogers-2012-vinf-leveraging-cyclers-AIAA-2012-4746.pdf.
+this test fails so the change is re-verified against the source
+(Rogers et al. 2012, AIAA 2012-4746, DOI 10.2514/6.2012-4746; full text held offline).
 """
 
 from __future__ import annotations

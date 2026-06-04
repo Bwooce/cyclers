@@ -6,7 +6,7 @@
 
 ## 1. Summary
 
-The catalogue carries **788 data gaps** distributed across 207 entries. The bulk originate from Russell-2004-dissertation entries whose per-leg orbital elements (`a_au`, `e`) and per-leg time-of-flight (`tof_days`) were never fully extracted from the dissertation tables. This makes the **Russell 2004 PhD dissertation** (UT Austin, open-access PDF at `http://hdl.handle.net/2152/1253`; now cached at `docs/refs/russell-2004-dissertation.pdf`) the single highest-leverage sourcing target: a systematic extraction of Tables 3.4, 3.9–3.11, 4.9–4.13 would close the bulk of all gaps. The remaining gaps are:
+The catalogue carries **788 data gaps** distributed across 207 entries. The bulk originate from Russell-2004-dissertation entries whose per-leg orbital elements (`a_au`, `e`) and per-leg time-of-flight (`tof_days`) were never fully extracted from the dissertation tables. This makes the **Russell 2004 PhD dissertation** (UT Austin, open-access PDF at `http://hdl.handle.net/2152/1253`; full text held offline, not stored in repo) the single highest-leverage sourcing target: a systematic extraction of Tables 3.4, 3.9–3.11, 4.9–4.13 would close the bulk of all gaps. The remaining gaps are:
 
 - **201 "derive" gaps** — fully computable by the project's own multi-rev Lambert solver; no sourcing needed.
 - **184 "uncertain/topology-provisional" gaps** — resolved once per-leg elements are confirmed from Russell.
@@ -179,8 +179,8 @@ Access route: AIAA institutional subscription or interlibrary loan.
 
 ### 3.5 Hollister & Menning 1970 — Earth-Venus periodic orbits (RESOLVED 2026-06-03)
 
-**RESOLVED.** The primary paper was obtained and is cached at
-`docs/refs/hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf`.
+**RESOLVED.** The primary paper was obtained and is held offline
+(full text not stored in repo; cite by DOI `10.2514/3.30134`).
 The single placeholder entry was individuated into the 15-orbit family
 `hollister-menning-1970-ev-orbit-01..15`, with V∞ taken from the paper's
 Table 3 (Vr × 29.785 EMOS) and a shared period of **16 yr / k=10**

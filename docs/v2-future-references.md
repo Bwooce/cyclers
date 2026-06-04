@@ -23,7 +23,7 @@ and whether a PDF is cached locally.
 | Authors | Chit Hong Yam, Dario Di Lorenzo, Dario Izzo |
 | Venue | *IEEE Congress on Evolutionary Computation*, 2010, pp. 1–7 |
 | DOI | [10.1109/cec.2010.5586019](https://doi.org/10.1109/cec.2010.5586019) |
-| Cached PDF | `/tmp/act-yam-2010-cec.pdf` (508 KB, 6 pp.) — downloaded 2026-06-01 from the ESA/ACT open-access copy `https://www.esa.int/gsp/ACT/doc/MAD/pub/ACT-RPR-MAD-2010-(CEC)ConstrainedGO.pdf` |
+| Full text | held offline (cite by DOI `10.1109/cec.2010.5586019`; not stored in repo) |
 
 **v1 catalogue eligibility: OUT OF SCOPE (low-thrust methods paper).** Read
 in full 2026-06-01. The paper contains no ballistic cycler trajectory and
@@ -106,15 +106,17 @@ cyclers.
 - `model/score.py` adds `propellant_mass_fraction` or similar so low-thrust
   candidates are comparable to ballistic ones.
 
-## 2. Pascarella, Woollands, Pellegrini, Sanchez-Net, Van Hook 2024 — Solar System Pony Express
+## 2. Pascarella, Woollands, Pellegrini, Sanchez-Net, Van Hook 2024 — Solar System Pony Express (**low-thrust**)
 
 | Field | Value |
 |---|---|
 | Title | "Low-thrust trajectory optimization for the Solar System Pony Express" |
 | Authors | Andrea Pascarella, Robyn Woollands, Etienne Pellegrini, Marc Sanchez-Net, Joel Van Hook |
-| Venue | *Advances in the Astronautical Sciences*, 2024, pp. 45-61 |
+| Venue | *Advances in the Astronautical Sciences*, 2024, pp. 45-61 (conference paper AAS 22-015) |
 | DOI | [10.1007/978-3-031-51928-4_4](https://doi.org/10.1007/978-3-031-51928-4_4) |
-| Cached PDF | `docs/refs/AAS-22-015-pascarella-pony-express.pdf` (2.5 MB) — downloaded 2026-06-01 from `ai.jpl.nasa.gov/public/documents/papers/AAS-22-015-Paper.pdf` |
+| Full text | held offline (cite by DOI `10.1007/978-3-031-51928-4_4`; AAS 22-015 open-access preprint from `ai.jpl.nasa.gov/public/documents/papers/AAS-22-015-Paper.pdf`; not stored in repo) |
+
+> **Distinct-paper note.** This is the **low-thrust** Pony Express paper (Pascarella AAS-22-015 / 2024 book chapter). It is DISTINCT from Sanchez Net, Pellegrini, Parker, Vander Hook, Woollands 2022 *Journal of Spacecraft and Rockets* 59(3):861-870 (DOI 10.2514/1.A35091), which is the **near-ballistic** (ΔV≤10 m/s) Pony Express paper and is in-scope for v1. See `data/OUTSTANDING.md` task #38 for the near-ballistic entry.
 
 > **Source-version note.** The 2024 *Advances in the Astronautical Sciences*
 > book chapter (DOI `10.1007/978-3-031-51928-4_4`) sits behind Springer's
@@ -207,7 +209,7 @@ target set at 3× Mars SOI so the flyby stays ballistic.
 | Authors | Dario Izzo, Daniel Hennes, Luís F. Simões, Marcus Märtens |
 | Venue | arXiv preprint (ESA Advanced Concepts Team) |
 | arXiv | [1511.00821](https://arxiv.org/abs/1511.00821) |
-| Cached PDF | `/tmp/arxiv-1511.00821.pdf` (1.1 MB) — downloaded 2026-06-01 |
+| Full text | held offline (cite by arXiv `1511.00821`; not stored in repo) |
 
 **Why it matters.** Izzo's group at ESA-ACT runs the Global Trajectory
 Optimization Competition (GTOC), the premier benchmark for interplanetary
@@ -239,7 +241,7 @@ trajectories, given a budget of compute?"**.
 | Authors | Burhani M. Burhani, Elena Fantino, Roberto Flores, Manuel Sanjurjo-Rivo |
 | Venue | arXiv preprint, 2023 |
 | arXiv | [2305.18368](https://arxiv.org/abs/2305.18368) |
-| Cached PDF | `/tmp/arxiv-2305.18368.pdf` (835 KB) — downloaded 2026-06-01 |
+| Full text | held offline (cite by arXiv `2305.18368`; not stored in repo) |
 
 **Why it matters.** Same Fantino (UAE University) as the Saturnian CR3BP
 work flagged in `data/OUTSTANDING.md` §H — but here from a low-thrust
@@ -259,7 +261,31 @@ Venus orbital inclinations (1.85° and 3.4°) introduce real out-of-plane
   `inclination_deg != 0` data, the matcher will need an inclination
   tolerance band — Burhani's empirical numbers help calibrate it.
 
-## 5. Hollister & Menning 1969-1971 lineage — pre-Aldrin foundational
+## 5. Ozimek, Riley, Arrieta 2019 — LInX low-thrust trajectory-optimization tool
+
+| Field | Value |
+|---|---|
+| Title | "The Low-Thrust Interplanetary eXplorer (LInX): A Medium-Fidelity Algorithm for Multi-Gravity Assist Low-Thrust Trajectory Optimization" |
+| Authors | Martin T. Ozimek, James Riley, Arturo Arrieta |
+| Venue | *Advances in the Astronautical Sciences*, AAS 19-348, 2019 (JHU APL + Nabla Zero Labs) |
+| Full text | held offline (cite by conference number AAS 19-348; not stored in repo) |
+
+**v1 catalogue eligibility: OUT OF SCOPE (low-thrust trajectory-optimization tool paper).** No ballistic
+cycler trajectory or patched-conic V∞ anchor is presented. This is a methods contribution describing
+the LInX software tool (Sims-Flanagan transcription + SPICE ephemerides + NLP solver), not a cycler
+catalogue source.
+
+**Why it matters.** LInX extends the Sims-Flanagan framework (cf. Paper 1, Yam 2010) with SPICE
+planetary data and multi-gravity-assist structure in a single medium-fidelity package. It is the
+canonical reference for the JHU APL / Nabla Zero Labs low-thrust toolchain and a peer of the JPL
+STAR software used in Pascarella (Paper 2). If the project adopts low-thrust v2 modelling and seeks
+to benchmark or replicate JHU APL results, this paper is the primary reference for LInX.
+
+**Architectural impact on cyclerfinder if adopted:** same class as Paper 1 (Yam 2010) — provides
+the NLP formulation and SPICE integration pattern for a future `search/lt_optimizer.py`
+low-thrust leg constructor. Not actionable until v2 scope is formally adopted.
+
+## 6. Hollister & Menning 1969-1971 lineage — pre-Aldrin foundational
 
 | Field | Value |
 |---|---|
@@ -289,11 +315,11 @@ discovery of additional V-E cyclers not yet in the catalogue.
 Each of these papers becomes "real catalogue work" once the project
 formally scopes:
 
-- **Sims-Flanagan / low-thrust v2** — Papers 1, 3, 4 cited; new
+- **Sims-Flanagan / low-thrust v2** — Papers 1, 3, 4, 5 cited; new
   `trajectory_regime: low-thrust` entries ingested.
 - **M6b ephemeris-mode pipeline** — Paper 2 referenced as the
   architectural template.
-- **Hollister & Menning lineage backfill** — Paper 5 numerics ingested.
+- **Hollister & Menning lineage backfill** — Paper 6 numerics ingested.
 
 Until then this document is awareness-only. Updating: when the project
 adopts v2, this doc moves to `docs/phases/v2-low-thrust/references.md` (or

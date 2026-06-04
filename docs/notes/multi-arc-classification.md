@@ -649,9 +649,10 @@ idealisation of the other.
 
 ## 11. PDF extraction notes
 
-All cited pages were successfully extracted from
-`docs/refs/russell-2004-dissertation.pdf`. No extraction failures occurred for any
-page used in this classification.
+All cited pages were successfully extracted from the Russell 2004 dissertation
+(full text held offline; cite by handle `http://hdl.handle.net/2152/1253`,
+DOI `10.2514/1.1011` for the companion JGCD paper; not stored in repo).
+No extraction failures occurred for any page used in this classification.
 
 Pages 68–80 (Chapter 3 definitions), 107–115 (Ch3 results / Ch4 intro), 116–120
 (§4.4 definition + §4.5 problem setup), and 139–155 (Ch4 results Tables 4.9–4.14)
