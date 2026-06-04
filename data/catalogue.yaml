@@ -2251,6 +2251,317 @@
     "period.years": "Rogers et al. 2012: the (1) notation indicates a 1-synodic establishment timeline (2.135 yr)."
 
 # ---------------------------------------------------------------------------
+# 12. Sanchez Net 2022 EEM near-ballistic cycler (Fig. 2a, Cycler 1)
+# ---------------------------------------------------------------------------
+- id: sanchez-net-2022-eem-cycler1
+  name: "Sanchez Net 2022 EEM near-ballistic Earth-Mars cycler (Fig. 2a Cycler 1)"
+  source: literature
+  trajectory_regime: ballistic   # near-ballistic (max unoptimised delta-v 5 m/s per flyby — Sanchez Net Fig. 2a event 4); classed ballistic per schema v1 convention
+  model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); real-date patched-conic from JPL STAR tool; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); EEM structure — no single repeating (a,e) conic; single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated — patched-conic, no single aphelion characterises the multi-arc trajectory
+    transit_times_days: [136, 255]   # DERIVED from Fig. 2a dates: first M->E leg = 136 d (events 3->4); second M->E leg = 255 d (events 6->7). These vary by cycle; first-cycle E->M = 968 d. Representative values for the recurring M->E (short-return) legs cited here.
+    turn_ratio: null   # not tabulated in Sanchez Net 2022; patched-conic near-ballistic (Δv ≤ 10 m/s per flyby), not a Russell-style turn-ratio analysis
+  delta_v_kms: 0.005   # SOURCED: Sanchez Net 2022 Fig. 2a event 4 shows 5 m/s Δv at Earth flyby (04/11/22); unoptimised patched-conic; the fully-optimised value will be lower.
+  v_infinity_leveraging_dv_kms: null   # schema v2; not an establishment variant; this is the direct injection/cycler maintenance budget
+  fleet_size: null   # schema v2; integer count; this row is one individual cycler from the network, not the fleet
+  flyby_mechanics:   # SOURCED: Sanchez Net 2022 Fig. 2a event altitudes. altitude_km sourced from figure; turning_angle_deg not tabulated in paper.
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 6200    # SOURCED: Fig. 2a event 2 (Earth flyby 11/13/2032): 6200 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 65000   # SOURCED: Fig. 2a event 3 (Mars flyby 07/09/2035): 65000 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: null    # event 4 (Earth 11/22/2035): altitude not legible — see data_gaps[]
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 14100   # SOURCED: Fig. 2a event 5 (Earth flyby 05/20/2036): 14100 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 2040    # SOURCED: Fig. 2a event 6 (Mars flyby 10/25/2041): 2040 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 6350    # SOURCED: Fig. 2a event 7 (Earth flyby 07/07/2042): 6350 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 14000   # SOURCED: Fig. 2a event 8 (Earth flyby 07/18/2044): 14000 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 14800   # SOURCED: Fig. 2a event 9 (Mars flyby 02/06/2046): 14800 km
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M"   # lex-min cyclic rotation of EEM (Earth-Earth-Mars) encounter sequence; one Mars visit per 2-synodic period cycle; see Sanchez Net 2022 p. 862 Fig. 2a caption "EEM"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.28   # SOURCED/DERIVED: events 6 (Mars 10/25/2041) to 9 (Mars 02/06/2046) = 1565 days = 4.28 yr ≈ 2 × 2.135 yr synodic; Sanchez Net Fig. 2a caption: "1 Mars visit every 2 synodic periods"
+    note: "Period is the Mars-to-Mars repeat interval in the repeating phase; first cycle (events 3->6) spans ~6.3 yr = 3 syn due to the initial launch phase. The 4.28 yr steady-state repeat (events 6->9) confirms k=2."
+  vinf_kms_at_encounters:
+    # Individual per-event V∞ values sourced from Sanchez Net 2022 Fig. 2a, p. 862.
+    # Event 1 is launch (not a flyby); C∞ = 17.6 km²/s² → v∞ = sqrt(17.6) ≈ 4.20 km/s (launch condition, not a gravity-assist flyby).
+    - body: "E"
+      vinf_kms: 4.283
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 2 (Earth flyby 11/13/2032): v∞ = 4.283 km/s."
+    - body: "M"
+      vinf_kms: 6.207
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 3 (Mars flyby 07/09/2035): v∞ = 6.207 km/s."
+    - body: "E"
+      vinf_kms: 3.605
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 4 (Earth flyby 11/22/2035): v∞ = 3.605 km/s. Δv = 5 m/s at this event (near-ballistic maneuver)."
+    - body: "E"
+      vinf_kms: 3.709
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 5 (Earth flyby 05/20/2036): v∞ = 3.709 km/s."
+    - body: "M"
+      vinf_kms: 5.210
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 6 (Mars flyby 10/25/2041): v∞ = 5.210 km/s."
+    - body: "E"
+      vinf_kms: 5.225
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 7 (Earth flyby 07/07/2042): v∞ = 5.225 km/s."
+    - body: "E"
+      vinf_kms: 5.234
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 8 (Earth flyby 07/18/2044): v∞ = 5.234 km/s."
+    - body: "M"
+      vinf_kms: 7.276
+      note: "SOURCED: Sanchez Net 2022 Fig. 2a event 9 (Mars flyby 02/06/2046): v∞ = 7.276 km/s."
+  orbit_elements:
+    a_au: null      # multi-arc: no single repeating heliocentric conic; each arc has different (a,e) — schema v4 invariant requires null
+    e: null         # multi-arc: as above
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null   # 3D real-date patched-conic; inclination not tabulated in Fig. 2a
+    note: "Multi-arc patched-conic: each arc is a separate heliocentric ellipse. No single (a,e,i) characterises the full trajectory. Launch declination Dec. = 43.7 degrees is sourced from Fig. 2a caption (launch condition, not a cycler element). No per-arc orbital elements are tabulated in the paper."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "heliocentric-inertial"   # real-date 3D patched-conic from JPL STAR; not strictly ECLIPJ2000 but heliocentric inertial
+    time_system: "UTC"                   # calendar dates in Fig. 2a are Gregorian calendar (UTC date stamps)
+    epoch_tzero: "2032-05-11"            # SOURCED: Fig. 2a event 1 (Earth launch 05/11/2032)
+    segments:
+      - id: "ee-launch-flyby"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 186   # DERIVED: event 1 (05/11/2032) to event 2 (11/13/2032) = 186 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Initial Earth-to-Earth arc (launch to first Earth flyby). ToF derived from Fig. 2a dates."
+      - id: "em-leg1"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 968   # DERIVED: event 2 (11/13/2032) to event 3 (07/09/2035) = 968 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth flyby to first Mars flyby. ToF derived from Fig. 2a dates."
+      - id: "me-leg1"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 136   # DERIVED: event 3 (07/09/2035) to event 4 (11/22/2035) = 136 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "First Mars flyby to Earth flyby. ToF derived from Fig. 2a dates. Δv = 5 m/s near-ballistic maneuver at arrival Earth flyby."
+      - id: "ee-leg1"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 180   # DERIVED: event 4 (11/22/2035) to event 5 (05/20/2036) = 180 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth-to-Earth arc between first and second Mars cycle. ToF derived from Fig. 2a dates."
+      - id: "em-leg2"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 1984   # DERIVED: event 5 (05/20/2036) to event 6 (10/25/2041) = 1984 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth flyby to second Mars flyby. ToF derived from Fig. 2a dates. This long leg (~5.4 yr) reflects the patched-conic phase of the repeating cycle."
+      - id: "me-leg2"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 255   # DERIVED: event 6 (10/25/2041) to event 7 (07/07/2042) = 255 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Second Mars flyby to Earth flyby. ToF derived from Fig. 2a dates."
+      - id: "ee-leg2"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 742   # DERIVED: event 7 (07/07/2042) to event 8 (07/18/2044) = 742 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth-to-Earth arc in the repeating cycle. ToF derived from Fig. 2a dates."
+      - id: "em-leg3"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 568   # DERIVED: event 8 (07/18/2044) to event 9 (02/06/2046) = 568 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth flyby to third Mars flyby. ToF derived from Fig. 2a dates."
+      - id: "me-leg3"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 1223   # DERIVED: event 9 (02/06/2046) to event 10 (06/13/2049) = 1223 days
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Third Mars flyby to final Earth flyby (end of 3-cycle trajectory). ToF derived from Fig. 2a dates."
+    maneuvers:
+      - at_segment_boundary: ["ee-launch-flyby", "em-leg1"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 6200   # SOURCED: Sanchez Net 2022 Fig. 2a event 2
+        note: "First Earth gravity-assist flyby (event 2, 11/13/2032). v∞ = 4.283 km/s. Altitude 6200 km sourced from Fig. 2a."
+      - at_segment_boundary: ["em-leg1", "me-leg1"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 65000   # SOURCED: Sanchez Net 2022 Fig. 2a event 3
+        note: "First Mars flyby (event 3, 07/09/2035). v∞ = 6.207 km/s. Altitude 65000 km sourced from Fig. 2a."
+      - at_segment_boundary: ["me-leg1", "ee-leg1"]
+        body: "E"
+        type: "flyby-powered"   # near-ballistic: 5 m/s Δv listed at event 4
+        dv_kms: 0.005           # SOURCED: Sanchez Net 2022 Fig. 2a event 4: Δv = 5 m/s
+        turning_angle_deg: null
+        periapsis_alt_km: null   # altitude not legible from Fig. 2a at this event — see data_gaps[]
+        note: "Near-ballistic Earth flyby (event 4, 11/22/2035). v∞ = 3.605 km/s. Δv = 5 m/s (sourced from Fig. 2a)."
+      - at_segment_boundary: ["ee-leg1", "em-leg2"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 14100   # SOURCED: Sanchez Net 2022 Fig. 2a event 5
+        note: "Earth flyby (event 5, 05/20/2036). v∞ = 3.709 km/s. Altitude 14100 km sourced from Fig. 2a."
+      - at_segment_boundary: ["em-leg2", "me-leg2"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 2040   # SOURCED: Sanchez Net 2022 Fig. 2a event 6
+        note: "Second Mars flyby (event 6, 10/25/2041). v∞ = 5.210 km/s. Altitude 2040 km sourced from Fig. 2a."
+      - at_segment_boundary: ["me-leg2", "ee-leg2"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 6350   # SOURCED: Sanchez Net 2022 Fig. 2a event 7
+        note: "Earth flyby (event 7, 07/07/2042). v∞ = 5.225 km/s. Altitude 6350 km sourced from Fig. 2a."
+      - at_segment_boundary: ["ee-leg2", "em-leg3"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 14000   # SOURCED: Sanchez Net 2022 Fig. 2a event 8
+        note: "Earth flyby (event 8, 07/18/2044). v∞ = 5.234 km/s. Altitude 14000 km sourced from Fig. 2a."
+      - at_segment_boundary: ["em-leg3", "me-leg3"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0
+        turning_angle_deg: null
+        periapsis_alt_km: 14800   # SOURCED: Sanchez Net 2022 Fig. 2a event 9
+        note: "Third Mars flyby (event 9, 02/06/2046). v∞ = 7.276 km/s. Altitude 14800 km sourced from Fig. 2a."
+  data_gaps:
+    - path: "orbit_elements"
+      kind: "unknown"
+      note: "Per-arc and aggregate (a,e,i) not published in Sanchez Net 2022. This is a patched-conic real-date trajectory from JPL STAR; orbital elements for each arc are not tabulated. Do not compute from launch conditions."
+      source_hint: "Sanchez Net et al. 2022, JSR 59(3):861-870, DOI 10.2514/1.A35091"
+      todo_ref: null
+    - path: "trajectory.segments[me-leg3].tof_days"
+      kind: "derive"
+      note: "ToF for the final Mars-to-Earth leg (event 9 to event 10) is derived from Fig. 2a dates (1223 days). Event 10 (Earth flyby 06/13/2049, v∞ 7.285 km/s) ends the 3-cycle trajectory and is not part of the repeating cycle. ToF is included for completeness but is not a steady-state cycler parameter."
+      source_hint: "Sanchez Net 2022 Fig. 2a event dates"
+      todo_ref: null
+    - path: "trajectory.segments[*].n_revs"
+      kind: "unknown"
+      note: "Revolution counts for each segment arc not tabulated; derivable from patched-conic propagation but not published."
+      source_hint: "Sanchez Net et al. 2022, JSR 59(3):861-870"
+      todo_ref: null
+    - path: "trajectory.maneuvers[me-leg1->ee-leg1].periapsis_alt_km"
+      kind: "unknown"
+      note: "Altitude at event 4 Earth flyby (11/22/2035) not legible from Fig. 2a at available resolution."
+      source_hint: "Sanchez Net 2022 Fig. 2a event 4"
+      todo_ref: null
+    - path: "trajectory.epoch_tzero"
+      kind: "unverified-provenance"
+      note: "The epoch is given as a Gregorian calendar date from Fig. 2a; exact UTC/TDB offset and MJD equivalent are not published. epoch_tzero is set to the ISO-8601 date string (2032-05-11) as a best approximation."
+      source_hint: "Sanchez Net 2022 Fig. 2a event 1"
+      todo_ref: null
+  family:
+    id: "sanchez-net-2022-eem-near-ballistic"
+    name: "Sanchez Net 2022 EEM near-ballistic Earth-Mars cycler set"
+    nomenclature: "Sanchez Net EEM patched-conic"
+    continuation_param: {name: "launch_epoch", value: "2032-05-11"}
+  first_published:
+    authors: ["Sanchez Net, M.", "Pellegrini, S.", "Parker, J.", "Vander Hook, J.", "Woollands, R."]
+    year: 2022
+    title: "Cycler Orbits and Solar System Pony Express"
+    venue: "Journal of Spacecraft and Rockets, Vol. 59, No. 3, pp. 861-870, May-June 2022"
+    doi: "10.2514/1.A35091"
+    url: null
+    note: "Fig. 2a (p. 862) provides the full event list, dates, v∞ values, altitudes, and Δv for Cycler 1 ('1 Mars visit every 2 synodic periods'). The trajectory was generated by the JPL STAR patched-conic tool with unoptimised per-flyby Δv ≤ 10 m/s."
+  priority_date: "2022-05-01"   # JSR 59(3) May-June 2022 issue
+  notes: |
+    Sanchez Net 2022 Fig. 2a Cycler 1. Near-ballistic EEM Earth-Mars cycler
+    from the JPL STAR patched-conic enumeration. Launch: 05/11/2032,
+    C∞ = 17.6 km²/s², Dec. = 43.7 degrees (sourced from Fig. 2a caption).
+    Three Mars visits over 15 years (events 3, 6, 9). Max unoptimised Δv =
+    5 m/s (event 4). The trajectory is not circular-coplanar; it uses real
+    date ephemeris (analytic-ephemeris model).
+
+    The first Mars-to-Mars interval (events 3->6) is ~6.3 yr = ~3 synodic
+    periods; the second (events 6->9) is ~4.28 yr = ~2 synodic periods. The
+    paper caption states "1 Mars visit every 2 synodic periods" referring to
+    the repeating steady-state period (k=2). The initial longer interval is
+    a phase-matching artefact of the 2032 launch epoch.
+
+    V∞ multiset (from Fig. 2a, per encounter): Earth encounters 4.283, 3.605,
+    3.709, 5.225, 5.234 km/s; Mars encounters 6.207, 5.210, 7.276 km/s.
+    Launch v∞ ≈ 4.20 km/s (C∞ = 17.6 km²/s²).
+  source_quotes:
+    "delta_v_kms": "Sanchez Net 2022 Fig. 2a event 4: '5 m/s' (near-ballistic maneuver at Earth flyby 11/22/2035)."
+    "period.years": "Sanchez Net 2022 Fig. 2a caption: '1 Mars visit every 2 synodic periods'. Events 6 (10/25/2041) to 9 (02/06/2046) = 1565 days = 4.28 yr ≈ 2 × 2.135 yr."
+    "vinf_kms_at_encounters[E/4.283]": "Sanchez Net 2022 Fig. 2a event 2 (Earth flyby 11/13/2032): v∞ = 4.283 km/s."
+    "vinf_kms_at_encounters[M/6.207]": "Sanchez Net 2022 Fig. 2a event 3 (Mars flyby 07/09/2035): v∞ = 6.207 km/s."
+    "vinf_kms_at_encounters[E/3.605]": "Sanchez Net 2022 Fig. 2a event 4 (Earth flyby 11/22/2035): v∞ = 3.605 km/s."
+    "vinf_kms_at_encounters[E/3.709]": "Sanchez Net 2022 Fig. 2a event 5 (Earth flyby 05/20/2036): v∞ = 3.709 km/s."
+    "vinf_kms_at_encounters[M/5.210]": "Sanchez Net 2022 Fig. 2a event 6 (Mars flyby 10/25/2041): v∞ = 5.210 km/s."
+    "vinf_kms_at_encounters[E/5.225]": "Sanchez Net 2022 Fig. 2a event 7 (Earth flyby 07/07/2042): v∞ = 5.225 km/s."
+    "vinf_kms_at_encounters[E/5.234]": "Sanchez Net 2022 Fig. 2a event 8 (Earth flyby 07/18/2044): v∞ = 5.234 km/s."
+    "vinf_kms_at_encounters[M/7.276]": "Sanchez Net 2022 Fig. 2a event 9 (Mars flyby 02/06/2046): v∞ = 7.276 km/s."
+
+# ---------------------------------------------------------------------------
 # 12-33. Russell-Ocampo remaining ballistic cyclers (Russell 2004 Table 3.4)
 # ---------------------------------------------------------------------------
 # Russell 2004 Table 3.4 lists 44 cyclers; 24 are strictly ballistic

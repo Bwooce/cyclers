@@ -1,9 +1,9 @@
-"""Task 2.1: Census ratchet test for cycler_class tags on all 233 catalogue rows.
+"""Task 2.1: Census ratchet test for cycler_class tags on all 234 catalogue rows.
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 199, non-keplerian: 6}.
-3. The set of ids tagged multi-arc exactly equals the 199-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 28, multi-arc: 200, non-keplerian: 6}.
+3. The set of ids tagged multi-arc exactly equals the 200-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 6 non-keplerian ids match the §3 list.
 
@@ -20,9 +20,9 @@ import yaml  # type: ignore[import-untyped]
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 # ---------------------------------------------------------------------------
-# Frozen ratchet: the 199-id MULTI_ARC_ALLOWLIST
+# Frozen ratchet: the 200-id MULTI_ARC_ALLOWLIST
 # Source: docs/notes/multi-arc-classification.md §9
-# (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2)
+# (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2 + sanchez-net-2022-eem-cycler1)
 # ---------------------------------------------------------------------------
 MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
     [
@@ -228,11 +228,13 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "russell-ch4-6.44Gg3",
         # resolved from §7 — same physical cycler as russell-ch4-4.991gG2 (Russell Table 4.9)
         "mcconaghy-2006-em-k2",
+        # Sanchez Net 2022 EEM near-ballistic real-date patched-conic cycler (Fig. 2a)
+        "sanchez-net-2022-eem-cycler1",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 199, (
-    f"Allowlist must have 199 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 200, (
+    f"Allowlist must have 200 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -270,10 +272,10 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=199, non-keplerian=6."""
+    """Exact class distribution: single-ellipse=28, multi-arc=200, non-keplerian=6."""
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 199, "non-keplerian": 6}
+    expected = {"single-ellipse": 28, "multi-arc": 200, "non-keplerian": 6}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

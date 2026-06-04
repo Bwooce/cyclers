@@ -365,8 +365,8 @@ It is therefore added to `MULTI_ARC_ALLOWLIST` (final size 199). Its top-level
 | `wittal-2022-em-cycler-family` | 1 | non-keplerian | primary=Earth |
 | `hernandez-2017-jovian-ieg-triple-family` | 1 | non-keplerian | primary=Jupiter |
 
-**Total: 233 rows classified.**
-- **multi-arc: 199** (184 ocampo + 14 ch4 + `mcconaghy-2006-em-k2`)
+**Total: 234 rows classified.**
+- **multi-arc: 200** (184 ocampo + 14 ch4 + `mcconaghy-2006-em-k2` + `sanchez-net-2022-eem-cycler1`)
 - **single-ellipse: 28**
 - **non-keplerian: 6**
 - **uncertain: 0** (the formerly-flagged row resolved to multi-arc — see §7/§12)
@@ -585,10 +585,12 @@ MULTI_ARC_ALLOWLIST = [
     "russell-ch4-6.44Gg3",
     # resolved from §7 — same physical cycler as russell-ch4-4.991gG2 (Russell Table 4.9)
     "mcconaghy-2006-em-k2",
+    # Sanchez Net 2022 EEM near-ballistic real-date patched-conic cycler (Fig. 2a)
+    "sanchez-net-2022-eem-cycler1",
 ]
 
-# Verification: this list must have exactly 199 entries.
-assert len(MULTI_ARC_ALLOWLIST) == 199
+# Verification: this list must have exactly 200 entries.
+assert len(MULTI_ARC_ALLOWLIST) == 200
 
 # E-E-M-M single-ellipse rows confirmed NOT in the allowlist:
 SINGLE_ELLIPSE_EXCEPTIONS_CHECKED = [
