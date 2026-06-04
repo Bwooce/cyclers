@@ -265,7 +265,7 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 203,
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 204,
     ExclusionReason.MISSING_LEG_TOFS: 15,
     ExclusionReason.NON_HELIOCENTRIC: 6,
     ExclusionReason.MISSING_VINF: 5,
@@ -273,7 +273,7 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.NOT_TWO_BODY: 2,
     ExclusionReason.MISSING_PERIOD: 1,
 }
-"""Frozen census of how the 234-row catalogue distributes across
+"""Frozen census of how the 235-row catalogue distributes across
 exclusion reasons (as of 2026-06-04). This is a *ratchet*: when the
 catalogue changes, this dict must be updated in the same commit, which
 forces a conscious review of whether the change moved entries into or

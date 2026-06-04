@@ -1,9 +1,9 @@
-"""Task 2.1: Census ratchet test for cycler_class tags on all 234 catalogue rows.
+"""Task 2.1: Census ratchet test for cycler_class tags on all 235 catalogue rows.
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 200, non-keplerian: 6}.
-3. The set of ids tagged multi-arc exactly equals the 200-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 28, multi-arc: 201, non-keplerian: 6}.
+3. The set of ids tagged multi-arc exactly equals the 201-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 6 non-keplerian ids match the §3 list.
 
@@ -20,9 +20,10 @@ import yaml  # type: ignore[import-untyped]
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 # ---------------------------------------------------------------------------
-# Frozen ratchet: the 200-id MULTI_ARC_ALLOWLIST
+# Frozen ratchet: the 201-id MULTI_ARC_ALLOWLIST
 # Source: docs/notes/multi-arc-classification.md §9
-# (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2 + sanchez-net-2022-eem-cycler1)
+# (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2
+#  + sanchez-net-2022-eem-cycler1 + sanchez-net-2022-em-cycler2)
 # ---------------------------------------------------------------------------
 MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
     [
@@ -230,11 +231,13 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "mcconaghy-2006-em-k2",
         # Sanchez Net 2022 EEM near-ballistic real-date patched-conic cycler (Fig. 2a)
         "sanchez-net-2022-eem-cycler1",
+        # Sanchez Net 2022 EM near-ballistic real-date patched-conic cycler (Fig. 2b)
+        "sanchez-net-2022-em-cycler2",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 200, (
-    f"Allowlist must have 200 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 201, (
+    f"Allowlist must have 201 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -275,14 +278,14 @@ def test_census_distribution() -> None:
     """Exact class distribution: single-ellipse=28, multi-arc=200, non-keplerian=6."""
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 200, "non-keplerian": 6}
+    expected = {"single-ellipse": 28, "multi-arc": 201, "non-keplerian": 6}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
 
 
 def test_multi_arc_ids_match_allowlist() -> None:
-    """The exact set of multi-arc ids matches the 199-id MULTI_ARC_ALLOWLIST ratchet."""
+    """The exact set of multi-arc ids matches the 201-id MULTI_ARC_ALLOWLIST ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "multi-arc")
     extra = actual - MULTI_ARC_ALLOWLIST
