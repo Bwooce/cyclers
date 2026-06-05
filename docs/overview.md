@@ -67,10 +67,10 @@ What's **out** of this slice (later milestones):
 - Global + local optimisation (M5).
 - Real ephemeris backend, multi-lap verification, phase-matching (M6).
 - Catalogue, signatures, novelty (M7).
-- VEM campaign, CLI, viz (M8).
-- GMAT bridge, low-thrust, public site (stretch).
+- VEM campaign UX: CLI, viz (M8-UX; the M8-Core search half landed 2026-06-05).
+- GMAT bridge, low-thrust phases 2–5, public site (stretch).
 
-The cli skeleton from spec §4 is scaffolded in M0 but stays empty until M8 — there's nothing to expose as commands until then.
+The cli skeleton from spec §4 is scaffolded in M0 but stays empty until M8-UX — there's nothing to expose as commands until then.
 
 ---
 
@@ -90,12 +90,13 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M6a** | Idealized closure verification (multi-lap propagation in dynamic rotating frame, bounded closure-drift check; `DRIFT_TOLERANCE_KM = 50_000`) | **completed** (commits `ba01f37` + `1852750`, 2026-06-01); 7/7 binding gates pass, dynamic-frame round-trip 1e-10 rel, circular-Aldrin drift ~3e-7 km | — |
 | **M6b** | Real-ephemeris closure verification; Lambert-chain across DE440 with `REAL_DRIFT_TOLERANCE_KM = 200_000` over 2 cycles; Pascarella 2024 template | **done**; powered-cycler solver landed (`solve_powered_periodic_cycler`, commit `83f6272`); `optimise_cell_ephemeris` (real-DE440 cell optimiser) implemented with asymmetric `tof_seed_days` + Aldrin parity test (was a stub). **Proven:** rotating-frame drift closure is physically unreachable for k=1 Aldrin on DE440 (Mars heliocentric radius breathes ≈0.117 AU/cycle; measured drift ≈7.24e7 km ≈ 362× tol) — this is *why* the real Aldrin cycler is retargeted each synodic period with maintenance ΔV; literature never claims zero-maintenance periodicity. Multi-rev Lambert (S1L1) remains stretch. | [phases/m6b-real-ephemeris-closure/plan.md](phases/m6b-real-ephemeris-closure/plan.md) |
 | **M7** | Catalogue loader, canonical signature matching, novelty scoring (spec §8 + §14 V1); also absorbs M6a-deferred `verify/crosscheck.py` + the spec §13.6/§13.8 JSONL ledger | **done** — `data/catalog.py`, `ledger.py`, `writeback.py`, `discover.py` (with `optimiser="ephemeris"`), `verify/crosscheck.py` all shipped; 237-entry census frozen as a ratchet | [phases/m7-catalogue-novelty-matching/plan.md](phases/m7-catalogue-novelty-matching/plan.md) |
-| **M8** | VEM campaign + CLI + viz | planned (DEFERRED by user decision; plan written + revised) | [phases/m8-multibody-vem/plan.md](phases/m8-multibody-vem/plan.md) |
+| **M8-Core** | VEM 3-body search core: `Cell.period_basis` beat dispatch, same-body Tisserand bypass, `CONSTRUCTIBLE_MULTIBODY` loader admission, VEM rediscovery gate on the sourced 12.8-yr Jones AAS 17-577 members (`NOT_TWO_BODY` → 0) | **done** 2026-06-05 (user un-deferred; executed per plan Revision R1, commits `933e75b`..`eb851a2`); ballistic convergence is a documented xfail handed to M-ED | [phases/m8-multibody-vem/plan.md](phases/m8-multibody-vem/plan.md) |
+| **M8-UX** | VEM campaign CLI + viz + reporting (the §6 carve-out from M8-Core) | planned | [phases/m8-multibody-vem/plan.md](phases/m8-multibody-vem/plan.md) §6 |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
 | Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
-| Stretch | Low-thrust v2 scope expansion | refs queued (Yam 2010, Pascarella 2024) | — |
+| Stretch | Low-thrust v2 scope expansion (#37) | **in progress** — Sims-Flanagan leg model (phase 1 of 5) landed 2026-06-05 (`core/sims_flanagan.py`, physics-invariant tests); phases 2–5 pending | [superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md](superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md) |
 
-Completed-phase `todo.md` working checklists (M0–M7) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Each milestone's `plan.md` is kept as history. The active phase is M8 (`phases/m8-multibody-vem/plan.md`, currently deferred).
+Completed-phase `todo.md` working checklists (M0–M7) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Each milestone's `plan.md` is kept as history. M8-Core executed 2026-06-05; the open fronts are M8-UX, the low-thrust v2 expansion (#37 phases 2–5), and the Forge pipeline (`superpowers/plans/2026-06-03-the-forge-pipeline.md`).
 
 ### 4.1 Schema-v2 + representation framework (2026-06-01)
 

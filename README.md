@@ -20,7 +20,9 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | M6a — idealized closure verification (multi-lap rotating-frame drift check) | ✓ done |
 | M6b — real-ephemeris closure; powered Aldrin solver landed; `optimise_cell_ephemeris` (real-DE440 cell optimiser) implemented with asymmetric `tof_seed_days`; drift closure proven physically unreachable for k=1 (retargeted each synodic period w/ maintenance ΔV) | done |
 | M7 — catalogue loader, signature matching, novelty (crosscheck + writeback + discover landed; `discover(optimiser="ephemeris")` wired) | done |
-| M8 — VEM campaign + CLI + viz | planned |
+| M8-Core — VEM 3-body search core (`period_basis` beat dispatch, same-body Tisserand bypass, `CONSTRUCTIBLE_MULTIBODY` admission, sourced 12.8-yr Jones gate) | ✓ done |
+| M8-UX — VEM campaign CLI + viz + reporting | planned |
+| Low-thrust (v2) — Sims-Flanagan leg model (phase 1 of 5) | in progress |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
 237-entry published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
