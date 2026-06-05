@@ -61,6 +61,16 @@ class ExclusionReason(enum.Enum):
     for V0→V1 promotion (the rediscovery test will run it, or skip it via
     a documented ``EXPECTED_SKIPS`` entry)."""
 
+    CONSTRUCTIBLE_MULTIBODY = "constructible_multibody"
+    """>=3-body row with a sourced period + sequence. Admitted to the M8 VEM
+    gate (``tests/test_vem_rediscovery.py``), which asserts only period and
+    sequence — NOT to the 2-body V∞ rediscovery gauntlet, because the v1
+    optimiser builds a single synodic pair (these rows need M4 structural
+    enumeration over >1 pair). Some of these rows DO carry a sourced V∞
+    multiset (the Jones AAS 17-577 member rows): those V∞ are real M-ED
+    targets, but they are still excluded from the 2-body gauntlet here.
+    See M8-Core plan §5."""
+
     NON_BALLISTIC = "non_ballistic_regime"
     """``trajectory_regime`` is neither ``ballistic`` nor ``powered`` (e.g.
     low-thrust Sims-Flanagan rows): not a Lambert cell the v1 optimiser builds."""
@@ -70,8 +80,11 @@ class ExclusionReason(enum.Enum):
     heliocentric; these await planet-centric support (task #76)."""
 
     NOT_TWO_BODY = "not_two_body"
-    """``len(bodies) != 2``: VEM triples and other multi-body itineraries need
-    M4 structural enumeration over >1 synodic pair, outside the v1 contract."""
+    """``len(bodies) != 2`` and the row lacks a valid period block. A ≥3-body
+    row WITH a sourced period is promoted to ``CONSTRUCTIBLE_MULTIBODY``
+    instead (plan §5); only ``< 2``-body or period-less multi-body rows land
+    here. Multi-body itineraries need M4 structural enumeration over >1
+    synodic pair, outside the v1 2-body contract."""
 
     MULTI_ENCOUNTER_SEQUENCE = "multi_encounter_sequence"
     """Two bodies, but ``sequence_canonical`` has more than two encounters
@@ -129,6 +142,36 @@ class CatalogueEntry:
     period_years: float
     vinf_targets_kms: tuple[float, ...]
     leg_tofs_days: tuple[float, ...]
+    period_basis: tuple[str, str] | None = None
+    """Catalogue anchor pair from ``period.pair`` (e.g. ``("E","M")``) for a
+    ≥3-body row, so a downstream builder can set ``Cell.period_basis`` without
+    re-reading the YAML. ``None`` for 2-body rows and for rows whose
+    ``period.pair`` is a *beat token* rather than a body pair (e.g.
+    ``"VEM-syn"`` — the resolver then uses the natural beat; see plan §2 / §5
+    R1 delta 3). Never split a non-body-pair token into a pair: that would
+    crash ``synodic_period_days("VEM","syn")``."""
+
+
+_BODY_CODES: frozenset[str] = frozenset({"V", "E", "M", "S", "J"})
+"""Single-letter heliocentric body codes used to tell a 2-body anchor pair
+(``"E-M"``) from a beat token (``"VEM-syn"``) in ``period.pair``."""
+
+
+def _anchor_pair_from_period_pair(pair: str | None) -> tuple[str, str] | None:
+    """Map ``period.pair`` to a Cell anchor pair, or ``None`` for a beat token.
+
+    Only an ``A-B`` token over known single-letter body codes is a real
+    anchor pair (e.g. ``"E-M"`` → ``("E","M")``). A beat token such as
+    ``"VEM-syn"`` (plan §5 R1 delta 3) maps to ``None`` so the period
+    resolver falls back to the natural beat — and so we never construct a
+    malformed pair that would crash ``synodic_period_days("VEM","syn")``.
+    """
+    if not pair:
+        return None
+    parts = pair.split("-")
+    if len(parts) == 2 and all(p in _BODY_CODES for p in parts):
+        return (parts[0], parts[1])
+    return None
 
 
 def _is_two_body_alternation(
@@ -173,6 +216,25 @@ def classify_row(row: dict[str, Any]) -> tuple[ExclusionReason, CatalogueEntry |
         return ExclusionReason.NON_HELIOCENTRIC, None
     bodies = row.get("bodies") or []
     if len(bodies) != 2:
+        period = row.get("period") or {}
+        if len(bodies) >= 3 and period.get("years") is not None and period.get("k") is not None:
+            # N-agnostic multibody admission (plan §5): any >=3-body row with
+            # a valid period block is admitted to the categorised multibody
+            # class. period.pair is parsed to an anchor pair only when it is a
+            # real 2-body code pair; a beat token (e.g. "VEM-syn") -> None so
+            # the resolver uses the natural beat (R1 delta 3).
+            entry = CatalogueEntry(
+                id=row["id"],
+                name=row.get("name", row["id"]),
+                bodies=tuple(bodies),
+                sequence_canonical=row.get("sequence_canonical") or "",
+                period_k=int(period["k"]),
+                period_years=float(period["years"]),
+                vinf_targets_kms=(),
+                leg_tofs_days=(),
+                period_basis=_anchor_pair_from_period_pair(period.get("pair")),
+            )
+            return ExclusionReason.CONSTRUCTIBLE_MULTIBODY, entry
         return ExclusionReason.NOT_TWO_BODY, None
     sequence_canonical = row.get("sequence_canonical") or ""
     if not _is_two_body_alternation(sequence_canonical, tuple(bodies)):

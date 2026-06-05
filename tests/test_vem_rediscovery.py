@@ -114,6 +114,61 @@ def test_member_row_sequence_is_sourced(entry_id: str) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Loader-driven generalisation: every CONSTRUCTIBLE_MULTIBODY row's sourced
+# period round-trips the resolver (Task 5.4)
+# ---------------------------------------------------------------------------
+
+
+def _multibody_entries() -> list[str]:
+    from tests._catalogue_loader import ExclusionReason, classify_catalogue
+
+    return [
+        cid
+        for cid, reason in classify_catalogue()
+        if reason is ExclusionReason.CONSTRUCTIBLE_MULTIBODY
+    ]
+
+
+def test_all_multibody_rows_period_round_trips_via_loader() -> None:
+    """Every CONSTRUCTIBLE_MULTIBODY row's SOURCED period round-trips through
+    the resolver, using the loader-carried ``period_basis`` (no YAML re-read of
+    the pair). This generalises the per-row anchors across all four VEM rows.
+
+    EXPECTED side = each row's catalogue ``period.years``. The basis comes from
+    the loader's ``CatalogueEntry.period_basis`` (``("E","M")`` for EMEEVE,
+    ``None`` for the beat-token member/family rows), proving the loader feeds
+    the resolver correctly.
+    """
+    from tests._catalogue_loader import classify_row
+
+    ids = _multibody_entries()
+    assert set(ids) == {
+        "jones-2017-vem-triple-family",
+        "vem-emeeve-3syn",
+        "jones-2017-vem-emevve-outbound",
+        "jones-2017-vem-meevem-inbound",
+    }
+    for entry_id in ids:
+        row = _row(entry_id)
+        _reason, entry = classify_row(row)
+        assert entry is not None
+        seq = tuple(row["sequence_canonical"].split("-"))
+        n_legs = max(len(seq) - 1, 1)
+        cell = Cell(
+            bodies=("V", "E", "M"),
+            sequence=seq if len(seq) >= 2 else ("V", "E", "M"),
+            period_k=entry.period_k,
+            per_leg_revs=(0,) * n_legs,
+            per_leg_branch=("single",) * n_legs,
+            period_basis=entry.period_basis,
+        )
+        resolved_years = _target_period_sec(cell) / SECONDS_PER_DAY / DAYS_PER_JULIAN_YEAR
+        assert resolved_years == pytest.approx(entry.period_years, abs=0.05), (
+            f"{entry_id}: resolved {resolved_years:.4f} vs sourced {entry.period_years}"
+        )
+
+
+# ---------------------------------------------------------------------------
 # Resolver-arithmetic check: the UNREALIZED EMEEVE archetype (anchor pair)
 # ---------------------------------------------------------------------------
 

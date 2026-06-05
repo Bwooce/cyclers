@@ -270,8 +270,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.NON_HELIOCENTRIC: 6,
     ExclusionReason.MISSING_VINF: 5,
     ExclusionReason.CONSTRUCTIBLE: 2,
-    ExclusionReason.NOT_TWO_BODY: 4,
+    ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
     ExclusionReason.MISSING_PERIOD: 1,
+    # NOT_TWO_BODY now 0 — all four VEM rows promoted to CONSTRUCTIBLE_MULTIBODY.
 }
 """Frozen census of how the 237-row catalogue distributes across
 exclusion reasons (as of 2026-06-05). This is a *ratchet*: when the
@@ -359,6 +360,24 @@ def test_census_breakdown_matches_frozen_ratchet() -> None:
         f"  actual:   { {r.value: n for r, n in actual.items() if n} }\n"
         "If intended, update EXPECTED_COVERAGE in this commit."
     )
+
+
+def test_vem_rows_excluded_from_vinf_gauntlet() -> None:
+    """The four VEM rows are CONSTRUCTIBLE_MULTIBODY, not CONSTRUCTIBLE: they
+    must NOT appear in the 2-body V∞ rediscovery parametrisation.
+
+    The v1 optimiser builds a single synodic pair, so these >=3-body rows are
+    outside its 2-body contract regardless of whether they carry a sourced V∞
+    (the Jones member rows do; the others do not). Guards against a future
+    loosening that would feed the gauntlet rows it cannot construct.
+    """
+    from tests._catalogue_loader import load_constructible_entries
+
+    ids = {e.id for e in load_constructible_entries()}
+    assert "vem-emeeve-3syn" not in ids
+    assert "jones-2017-vem-triple-family" not in ids
+    assert "jones-2017-vem-emevve-outbound" not in ids
+    assert "jones-2017-vem-meevem-inbound" not in ids
 
 
 def test_expected_skips_are_constructible() -> None:
