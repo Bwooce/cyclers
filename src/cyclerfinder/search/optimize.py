@@ -76,7 +76,11 @@ from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryEr
 from cyclerfinder.model import Cycler, Score
 from cyclerfinder.model.score import composite_score, score
 from cyclerfinder.search.construct import construct_cycler
-from cyclerfinder.search.resonance import synodic_period_days
+from cyclerfinder.search.resonance import (
+    beat_period_days,
+    multi_body_beat_days,
+    synodic_period_days,
+)
 from cyclerfinder.search.sequence import Cell, feasible_cells
 
 # ---------------------------------------------------------------------------
@@ -232,22 +236,43 @@ class OptimisationResult:
 def _target_period_sec(cell: Cell) -> float:
     """Resolve the target heliocentric period for ``cell``, seconds.
 
-    For a 2-body cell, ``period_k * T_syn(bodies[0], bodies[1])``. For
-    ``len(bodies) >= 3`` (M8's VEM territory) this single-pair formula
-    is no longer correct — M8 will need to dispatch to
-    :func:`cyclerfinder.search.resonance.multi_body_beat_days` /
-    :func:`~cyclerfinder.search.resonance.beat_period_days`. M5's gate
-    test exercises only the 2-body case; the M8 follow-up is documented
-    here so a future reader can find the extension point.
+    Dispatch (M8 plan §2):
+
+    * ``cell.period_basis`` set — use the catalogue's *anchor pair*:
+      ``T_syn(*period_basis) * period_k``. ``period_k`` is the sourced
+      catalogue value, never rewritten, so a Cell stays traceable to its
+      YAML row (EMEEVE: ``T_syn(E,M) * 3 ~ 6.41 yr``).
+    * ``period_basis is None`` and ``len(bodies) >= 3`` — fall back to the
+      body set's *natural beat* via
+      :func:`~cyclerfinder.search.resonance.multi_body_beat_days` /
+      :func:`~cyclerfinder.search.resonance.beat_period_days`
+      (``3*T_syn(E,M) ~ 4*T_syn(E,V) ~ 6.40 yr`` for ``["V","E","M"]``).
+    * ``period_basis is None`` and ``len(bodies) == 2`` — the M5 native
+      single-pair formula, preserved byte-for-byte.
     """
-    if len(cell.bodies) < 2:
+    if cell.period_basis is not None:
+        a, b = cell.period_basis
+        t_syn_days = synodic_period_days(a, b)
+        return t_syn_days * cell.period_k * SECONDS_PER_DAY
+
+    n = len(cell.bodies)
+    if n < 2:
         raise ValueError(
             f"cell.bodies must have at least 2 entries; got {cell.bodies!r}",
         )
-    body_a = cell.bodies[0]
-    body_b = cell.bodies[1]
-    t_syn_days = synodic_period_days(body_a, body_b)
-    return t_syn_days * cell.period_k * SECONDS_PER_DAY
+    if n == 2:
+        t_syn_days = synodic_period_days(cell.bodies[0], cell.bodies[1])
+        return t_syn_days * cell.period_k * SECONDS_PER_DAY
+    bodies = list(cell.bodies)
+    tuples = multi_body_beat_days(bodies)
+    if not tuples:
+        raise ValueError(
+            f"no integer beat commensurability found for bodies={bodies!r} "
+            f"within the resonance.multi_body_beat_days default tolerance; "
+            f"this body set has no natural cycler beat in the searched k range",
+        )
+    beat_days = beat_period_days(bodies, tuples[0])
+    return beat_days * cell.period_k * SECONDS_PER_DAY
 
 
 def _free_return_seed(cell: Cell, target_period_sec: float) -> tuple[float, ...]:
