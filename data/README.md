@@ -558,6 +558,38 @@ left absent: the tier is a *computed* classification (frozen as a census
 ratchet in `tests/data/test_validation_tier_census.py`), not stored data, to
 avoid derived-state drift. Full rationale is in **spec.md §16.7.11**.
 
+Schema v4.5 — validation_level (the §14 gauntlet level)
+-------------------------------------------------------
+
+The v4.5 sub-rev adds one additive, optional, top-level row key:
+`validation_level` (enum `V0`..`V5`), the spec §14 gauntlet level — the highest
+gate a row has **mechanically** passed (Forge phase 3 / task #104).
+
+```yaml
+- id: aldrin-classic-em-k1-outbound
+  validation_level: V1   # real-DE440 lamberthub izzo+gooding + Kepler reprop pass
+```
+
+It is back-filled by `scripts/backfill_validation_level.py` (idempotent,
+re-runnable; `--dry-run` reports without writing), which applies §14 to RECORDED
+in-repo test evidence — never aspirationally. Today exactly one row earns above
+the floor: `aldrin-classic-em-k1-outbound` is **V1** because its real-DE440
+cycler clears §14 V1 (every leg re-solved with `lamberthub` izzo2015 + gooding1990
+agrees to < `V1_TOLERANCE_MPS`, AND the Kepler forward re-propagation residual
+passes — `tests/verify/test_agreement_lamberthub.py`). The rows the gauntlet
+machinery has exercised at the internal-consistency floor are stamped **V0**; the
+Aldrin inbound twin stays V0 (no test builds/cross-checks it on real ephemeris),
+and the other regression rows are `EXPECTED_SKIPS` (incomplete leg data / wrong
+topology). Every other row is left untagged — an absent `validation_level` is the
+explicit V0 floor for downstream views.
+
+The over-claim guard lives in the Python semantic gate
+(`validate_validation_level`): a row may declare a level above `V0` only when it
+appears in the in-repo mechanical-evidence registry (`_LEVEL_EVIDENCE`). No row
+silently promotes itself off the floor without a sourced, in-repo evidence
+pointer — golden discipline: when in doubt, V0. Full rationale is in
+**spec.md §16.7.12**.
+
 Out-of-paradigm work
 --------------------
 

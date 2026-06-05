@@ -1262,3 +1262,38 @@ non-signature provenance metadata). The live distribution at this rev is
 cross-validated rows each pair two genuinely different citations at one fidelity
 (e.g. the Aldrin classic cycler: orbit from Rogers 2012 Table 1, V∞ from Russell
 2004 Table 3.4).
+
+#### 16.7.12 Schema v4.5 — validation_level (the §14 gauntlet level) (2026-06-06)
+
+Forge phase 3 / task #104 adds one additive, optional, non-signature top-level
+row key: `validation_level` (enum `V0`..`V5`), the §14 gauntlet level — the
+highest gate a row has **mechanically** passed. The level is back-filled by
+`scripts/backfill_validation_level.py` (idempotent, `--dry-run`), which applies
+§14 to RECORDED in-repo test evidence, never aspirationally.
+
+At this rev exactly one row earns above the floor: `aldrin-classic-em-k1-outbound`
+is **V1** because its real-DE440 cycler clears §14 V1 — every leg re-solved with
+`lamberthub` izzo2015 + gooding1990 agrees to < `V1_TOLERANCE_MPS`, AND the Kepler
+forward re-propagation residual passes (the "re-propagated with the Kepler
+propagator, planet positions met < tol" half of V1). This is demonstrated with
+teeth by `tests/verify/test_agreement_lamberthub.py`
+(`test_report_includes_lamberthub_path`,
+`test_real_eph_paths_a_and_c_pass_b_flags_model_mismatch`). The rows the gauntlet
+machinery has exercised at the internal-consistency floor are stamped **V0**: the
+Aldrin INBOUND twin (no test builds/cross-checks it on real ephemeris) and the
+other M6b regression rows (all `EXPECTED_SKIPS` — incomplete leg data or wrong
+topology, so they do not pass real-closure). No row reaches V2+ today: the Aldrin
+real-ephemeris drift is deliberately unbounded (powered, retargeted each cycle),
+and no row passes a recorded multi-lap / ephemeris-horizon gate. Every other row
+is left untagged — an absent `validation_level` is the explicit V0 floor.
+
+The JSON Schema constrains the value to `V0`..`V5` (hence the 4.4 → 4.5 bump); the
+Python semantic gate `validate_validation_level` adds the over-claim rule it
+cannot express — a row may declare a level above `V0` only when it appears in the
+in-repo mechanical-evidence registry (`_LEVEL_EVIDENCE` in
+`src/cyclerfinder/data/validate.py`). No row silently promotes itself off the
+floor without a sourced, in-repo evidence pointer (golden discipline — when in
+doubt, V0). The canonical signature is unchanged (the level is derived metadata).
+This level mirrors the ledger's §13.8 `validation_level` field and the §13.6
+spit-out → trust ladder: catalogue and ledger carry the same record the finder
+emits.

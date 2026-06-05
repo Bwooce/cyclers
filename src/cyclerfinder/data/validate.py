@@ -460,6 +460,68 @@ def validate_provenance_tags(rows: list[dict[str, Any]]) -> list[str]:
     return errors
 
 
+# ---------------------------------------------------------------------------
+# validation_level (schema v4.5, spec §16.7.12 / §14)
+# ---------------------------------------------------------------------------
+
+_VALIDATION_LEVELS: frozenset[str] = frozenset({"V0", "V1", "V2", "V3", "V4", "V5"})
+
+# Mechanical-evidence registry: a row may declare a level ABOVE V0 only when the
+# recorded test evidence justifies it. Each entry maps (id, level) -> the
+# verbatim mechanical evidence pointer. The over-claim guard refuses any row
+# claiming V1+ that is not in this registry — golden discipline: a level is only
+# as high as the recorded evidence mechanically supports (when in doubt, V0).
+#
+# Today exactly one row earns above V0: the Aldrin outbound real-DE440 cycler
+# clears spec §14 V1 (lamberthub izzo+gooding leg agreement < 1e-3 m/s AND the
+# Kepler forward re-propagation residual), demonstrated with teeth by the slow
+# Axis-A integration tests. Everything else (incl. the Aldrin INBOUND row, which
+# no test builds/cross-checks on real ephemeris) stays V0.
+_LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
+    ("aldrin-classic-em-k1-outbound", "V1"): (
+        "spec §14 V1: real-DE440 Aldrin cycler — lamberthub izzo2015+gooding1990 "
+        "per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation "
+        "residual pass. tests/verify/test_agreement_lamberthub.py::"
+        "test_report_includes_lamberthub_path + "
+        "test_real_eph_paths_a_and_c_pass_b_flags_model_mismatch."
+    ),
+}
+
+
+def validate_validation_level(rows: list[dict[str, Any]]) -> list[str]:
+    """Validate the v4.5 ``validation_level`` tag WHERE PRESENT (spec §16.7.12).
+
+    The level is the spec §14 gauntlet level (the highest gate a row has
+    mechanically passed). This gate enforces what JSON Schema cannot:
+
+    * the value must be one of ``V0``..``V5``;
+    * a row may declare a level *above* ``V0`` only when it appears in
+      :data:`_LEVEL_EVIDENCE` — i.e. recorded mechanical test evidence justifies
+      it. This is the over-claim guard: no row silently promotes itself off the
+      ``V0`` internal-consistency floor without a sourced, in-repo evidence
+      pointer (golden discipline — when in doubt, ``V0``).
+
+    Returns a list of violation strings (empty when clean); never raises.
+    """
+    errors: list[str] = []
+    for row in rows:
+        rid = str(row.get("id") or "<unknown>")
+        level = row.get("validation_level")
+        if level is None:
+            continue
+        level = str(level)
+        if level not in _VALIDATION_LEVELS:
+            errors.append(f"{rid}: validation_level={level!r} is not one of V0..V5")
+            continue
+        if level != "V0" and (rid, level) not in _LEVEL_EVIDENCE:
+            errors.append(
+                f"{rid}: validation_level={level!r} is above V0 but no recorded "
+                f"mechanical evidence justifies it (not in _LEVEL_EVIDENCE) — "
+                f"levels derive mechanically from recorded evidence; when in doubt, V0"
+            )
+    return errors
+
+
 def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
     """Run BOTH validation layers over *rows*, returning all violations.
 
@@ -474,6 +536,9 @@ def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
     3. :func:`validate_provenance_tags` — registry-key / fidelity-tier /
        declared-tier checks on Task-3 provenance tags where present
        (no-op until the back-fill lands).
+    4. :func:`validate_validation_level` — the v4.5 ``validation_level``
+       over-claim guard (a row may declare V1+ only with recorded mechanical
+       evidence; spec §16.7.12 / §14).
 
     The JSON-Schema *structural* layer (draft-2020 via the ``check-jsonschema``
     pre-commit hook) is the further, out-of-process layer; this function is the
@@ -486,6 +551,7 @@ def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
         validate_schema_invariants(rows)
         + validate_physical_invariants(rows)
         + validate_provenance_tags(rows)
+        + validate_validation_level(rows)
     )
 
 

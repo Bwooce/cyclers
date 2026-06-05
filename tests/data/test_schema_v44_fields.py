@@ -33,8 +33,9 @@ def _load_rows() -> list[dict[str, Any]]:
     return yaml.safe_load(CATALOGUE_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4_4() -> None:
-    assert _load_schema()["version"] == "4.4"
+def test_schema_version_is_at_least_4_4() -> None:
+    # v4.4 fields persist into later revs (v4.5 adds validation_level on top).
+    assert _load_schema()["version"] >= "4.4"
 
 
 def test_valid_tags_pass_schema() -> None:

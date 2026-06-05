@@ -26,6 +26,7 @@
   trajectory_regime: powered   # reclassified 2026-06-01 (task #70): powered in the idealized model - McConaghy 2002 Table 4 / dissertation shows the 1L1 EARTH (geocentric) flyby cannot supply the required ~84 deg turn (max ~72 deg at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (the literature-attested property); NOT derived from our computed DV. See notes + maintenance_dv_kms_per_synodic + flyby_mechanics.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
   orbit_source: rogers-2012-t1   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -241,6 +242,7 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: mcconaghy-2006
@@ -674,6 +676,7 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
   orbit_source: russell-2004-t34   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -1345,6 +1348,7 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
   orbit_source: russell-2004-t34   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -2562,6 +2566,7 @@
   trajectory_regime: powered   # reclassified 2026-06-01 (task #70): time-mirror of outbound; powered in the idealized model per McConaghy 2002 Table 4 / dissertation (1L1 EARTH geocentric turn ~84 deg > ~72 deg max at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (literature-attested); NOT derived from our computed DV. See aldrin-classic-em-k1-outbound notes.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
   orbit_source: rogers-2012-t1   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34

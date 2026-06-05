@@ -25,10 +25,10 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '4.4' (v4.4 adds the per-field provenance
-    tag set orbit_source/vinf_source/orbit_fidelity/vinf_fidelity, spec §16.7.11)."""
+    """The schema carries version == '4.5' (v4.5 adds the validation_level enum,
+    the spec §14 gauntlet level, spec §16.7.12)."""
     schema = _load_schema()
-    assert schema["version"] == "4.4"
+    assert schema["version"] == "4.5"
 
 
 def test_catalogue_matches_jsonschema() -> None:
