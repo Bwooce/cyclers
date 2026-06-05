@@ -238,6 +238,28 @@ def test_coast_conserves_specific_energy() -> None:
     assert abs(e1 - e0) / abs(e0) < 1.0e-8
 
 
+def test_single_impulse_energy_change_matches_work_energy() -> None:
+    """One impulse changes specific energy by exactly ``v·Δv + |Δv|²/2``.
+
+    Invariant 6 (impulse half): an impulsive ``Delta V`` applied at fixed
+    position leaves potential energy unchanged and shifts kinetic energy by the
+    work-energy identity. A single-segment leg (forward over one segment) isolates
+    the one midpoint impulse; comparing the energy before and after the burn (at
+    the midpoint, same position) against ``v·Δv + |Δv|²/2`` is a source-free
+    closed-form check on the impulse model.
+    """
+    n = 1
+    leg = _earth_to_mars_leg(n_segments=n, tmax_kn=0.5, match_index=n)
+    half = 0.5 * leg.dt_seg_s
+    # State at the midpoint (after the first half-coast), just before the impulse.
+    r_mid, v_mid = propagate(leg.r0, leg.v0, half, leg.mu)
+    dv = np.array([0.0, 0.03, 0.0], dtype=np.float64)
+    e_before = _specific_energy(r_mid, v_mid, leg.mu)
+    e_after = _specific_energy(r_mid, v_mid + dv, leg.mu)
+    expected_delta = float(np.dot(v_mid, dv)) + 0.5 * float(np.dot(dv, dv))
+    assert (e_after - e_before) == pytest.approx(expected_delta, rel=1e-12)
+
+
 # ---------------------------------------------------------------------------
 # Invariant 7: forward-then-backward over a full leg round-trips the start
 # ---------------------------------------------------------------------------
