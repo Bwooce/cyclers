@@ -18,6 +18,12 @@ Rules enforced
    is deliberately NOT required to contain ``tof_days``.
 5. (v4.2, spec §16.7.9) ``source_ephemeris``, when present, must be a
    non-empty string.
+6. (v4.3, spec §16.7.10) ``superseded_by`` / ``supersedes`` link targets,
+   when present, must each resolve to an existing row ``id`` and must not
+   point at the row's own ``id`` (referential integrity / no self-link).
+   This is the cross-row check JSON Schema cannot express, and is the
+   first-class consumer that justifies promoting the supersession link out
+   of prose notes.
 
 Dispatch helper
 ---------------
@@ -50,6 +56,8 @@ def validate_schema_invariants(rows: list[dict[str, Any]]) -> list[str]:
         Does NOT raise — callers decide how to handle violations.
     """
     errors: list[str] = []
+    # Build the id set once for the v4.3 cross-row supersession link check (Rule 6).
+    known_ids = {str(r.get("id")) for r in rows if r.get("id") is not None}
     for row in rows:
         rid = row.get("id") or "<unknown>"
         cls = str(row.get("cycler_class") or "single-ellipse")
@@ -147,6 +155,32 @@ def validate_schema_invariants(rows: list[dict[str, Any]]) -> list[str]:
                 errors.append(
                     f"{rid}: source_ephemeris must be a non-empty string when present (got {se!r})"
                 )
+
+        # Rule 6 (v4.3): supersession link referential integrity. Targets must
+        # resolve to an existing row id and must not be the row's own id.
+        for field in ("superseded_by", "supersedes"):
+            links = row.get(field)
+            if links is None:
+                continue
+            if not isinstance(links, list):
+                kind = type(links).__name__
+                errors.append(f"{rid}: {field} must be a list of row ids (got {kind!r})")
+                continue
+            for target in links:
+                if not isinstance(target, str) or target.strip() == "":
+                    errors.append(
+                        f"{rid}: {field} entries must be non-empty row-id strings (got {target!r})"
+                    )
+                    continue
+                if target == rid:
+                    errors.append(
+                        f"{rid}: {field} must not reference the row's own id ({target!r})"
+                    )
+                    continue
+                if target not in known_ids:
+                    errors.append(
+                        f"{rid}: {field} target {target!r} does not resolve to an existing row id"
+                    )
 
     return errors
 

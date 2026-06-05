@@ -1153,3 +1153,68 @@ each with `exclusiveMinimum: 0`, `center` is a string. The Python semantic gate
 non-empty `source_ephemeris`, and (by *omission*) the non-containment rule
 above. The permissive `additionalProperties: true` posture is preserved
 throughout. No rows are backfilled in this rev (structure + validation only).
+
+#### 16.7.10 Schema v4.3 evaluation (2026-06-05)
+
+CCSDS 502.0-B-3 mining (`docs/notes/2026-06-05-ccsds-odm-502-mining.md`)
+surfaced five v4.3 candidates. Each is gated on the YAGNI doctrine of §16.7.6 /
+§16.7.9: a field ships only with both a demonstrable in-repo consumer and
+sourced data to backfill at least one row today. Four are deferred; one is
+adopted.
+
+1. **Row supersession links — `supersedes` / `superseded_by` — ADOPT.** CCSDS
+   carries `PREVIOUS_MESSAGE_ID` / `NEXT_MESSAGE_ID` (Table 6-2/6-3) to chain
+   message revisions. The catalogue has a live need: the `vem-emeeve-3syn` row
+   was premise-invalidated on 2026-06-05 (Jones AAS 17-577 found no feasible
+   one-synodic EMEEVE cycler; the attested truth lives in the two-synodic
+   members `jones-2017-vem-emevve-outbound` and `jones-2017-vem-meevem-inbound`).
+   That supersession was expressed only in prose `notes` and `data_gaps[]`,
+   where nothing can verify the named siblings still exist. The deciding
+   consumer is **referential-integrity validation**: a first-class link lets
+   `validate_schema_invariants` check (new Rule 6) that every target resolves to
+   an existing row id and is not a self-reference — a machine-checkable guarantee
+   prose cannot give, and a capability genuinely distinct from the grouping role
+   of `family{}`. Both gates pass: the consumer is the cross-row validator built
+   in this rev, and the sourced backfill is the `vem-emeeve-3syn` row, whose
+   `superseded_by` now names its two attested replacements. Shipped as an
+   additive, optional, non-signature array pair; the JSON Schema enforces
+   array-of-non-empty-strings, the Python gate enforces resolution and
+   no-self-link.
+
+2. **`TRAJ_BASIS=SIMULATED` marker — DEFER (redundant).** CCSDS `TRAJ_BASIS`
+   distinguishes as-flown (DETERMINED/TELEMETRY) from design-study (SIMULATED)
+   trajectories. The catalogue already carries this distinction twice: every row
+   is `source: literature` (none is as-flown telemetry) and `model_assumption`
+   names the dynamical framing (`circular-coplanar` / `analytic-ephemeris`). A
+   `traj_basis` field would encode no information not already derivable from
+   those two, with no consumer asking for it. Trigger to revisit: ingestion of
+   an *as-flown* mission kernel alongside a design-study row, where the two must
+   be told apart at the field level.
+
+3. **Per-element sigma uncertainty — DEFER (no sourced data).** JPL SBDB
+   publishes per-element 1-σ; adopting σ on golden anchors was already noted as a
+   future extension (§16.7.6). The gate is sourced data, and none exists: a sweep
+   of the held mining notes finds only formula symbols (the `±` in the Endgame
+   leveraging equations) and tour-accuracy percentages (`±5%`/`±10%` Tisserand-vs-
+   CR3BP agreement), never a published 1-σ on a catalogue anchor value. No data ⇒
+   defer. Trigger: a source that tabulates an explicit uncertainty on a number we
+   store as a golden anchor.
+
+4. **`CCSDS_OCM_VERS`-style version semantics — DEFER (already satisfied).**
+   CCSDS uses a `major.minor` version string whose minor bumps for corrections
+   and major for breaking changes. `catalogue.schema.json` already carries
+   `"version": "<major>.<minor>"` as a string and the project applies exactly
+   that bump discipline (v4 → v4.1 → v4.2 → v4.3). Nothing further is needed; no
+   consumer reads structured version components.
+
+5. **OCM exporter time-system caveat in `data/README.md` — ADOPT (doc only).**
+   The message-global `TIME_SYSTEM` / `EPOCH_TZERO` constraint is recorded in
+   §16.7.8 item 2 but was absent from the `data/README.md` OCM-export paragraph.
+   Added there as a two-line caveat so the exporter contract is stated where the
+   export is described. No schema or code change.
+
+**Net for v4.3:** one schema field pair (`supersedes` / `superseded_by`) with a
+cross-row referential-integrity rule and one sourced backfill row; one doc
+caveat. Candidates 2–4 deferred with explicit trigger conditions. The schema
+version is bumped 4.2 → 4.3; the canonical signature is unchanged (the links are
+non-signature provenance metadata).

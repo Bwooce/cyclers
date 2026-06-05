@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cyclers.space/schemas/catalogue.schema.json",
-  "version": "4.2",
+  "version": "4.3",
   "title": "Cycler Finder Catalogue",
-  "description": "Schema v4.2 for data/catalogue.yaml. Adds segments[].center, segments[].tof_days_bounds, source_ephemeris (spec §16.7.9) to v4.1 (which added free_return_arcs[] arc-type descriptors, spec §16.7.7, to v4). Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
+  "description": "Schema v4.3 for data/catalogue.yaml. Adds the row-supersession link pair supersedes/superseded_by (spec §16.7.10, CCSDS PREVIOUS_MESSAGE_ID/NEXT_MESSAGE_ID analogue) to v4.2 (which added segments[].center, segments[].tof_days_bounds, source_ephemeris, spec §16.7.9), v4.1 (free_return_arcs[] arc-type descriptors, spec §16.7.7) and v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e). Referential integrity of supersedes/superseded_by (targets must resolve to existing ids, no self-reference) is enforced by the Python semantic gate.",
   "type": "array",
   "items": {
     "type": "object",
@@ -17,6 +17,22 @@
       "source_ephemeris": {
         "type": ["string", "null"],
         "description": "Schema v4.2 (spec §16.7.9): the ephemeris model the source paper states its published numbers were computed against (e.g. 'DE405', 'DE430', 'STOUR ephemeris'). Null/absent when the source does not state one. Non-empty when present (enforced by the Python semantic gate, since JSON Schema minLength cannot apply to the null branch)."
+      },
+      "superseded_by": {
+        "type": ["array", "null"],
+        "description": "Schema v4.3 (spec §16.7.10): ids of catalogue rows that supersede this one (CCSDS NEXT_MESSAGE_ID analogue). Used when a row's premise is invalidated and one or more sibling rows now carry the attested truth. Each item must resolve to an existing row id and must not equal this row's own id; referential integrity is checked by the Python semantic gate. Null/absent for the common (non-superseded) case.",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "supersedes": {
+        "type": ["array", "null"],
+        "description": "Schema v4.3 (spec §16.7.10): ids of catalogue rows that this row supersedes (CCSDS PREVIOUS_MESSAGE_ID analogue). The inverse direction of superseded_by; the pair need not be declared symmetrically, but every id listed must resolve to an existing row and must not equal this row's own id (Python semantic gate). Null/absent for the common case.",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "cycler_class": {
         "type": "string",

@@ -329,7 +329,11 @@ trajectory:
 - **OCM export.** Entries with `model_assumption: analytic-ephemeris`
   (epoch-anchored) can be projected to canonical CCSDS OCM (KVN/XML) by a
   future exporter; idealized circular-coplanar families cannot emit a
-  meaningful OCM and are not export targets.
+  meaningful OCM and are not export targets. **Export caveat:** per CCSDS
+  502.0-B-3 §6, `TIME_SYSTEM` and `EPOCH_TZERO` are message-global (one OCM
+  metadata section, "used by all OCM data blocks"), so a faithful OCM
+  projection must hold a single time system / epoch across all segments even
+  when `segments[].center` differs per block (see spec §16.7.8 item 2).
 
 **Default when absent:** consumers fall back to the legacy `legs[]`.
 
@@ -490,6 +494,29 @@ different sourced model framings of the same leg (e.g. Aldrin's circular-coplana
 semantics in **spec.md §16.7.9**. The JSON Schema enforces the shape; the
 Python semantic gate enforces `min <= max`, non-empty `source_ephemeris`, and
 the non-containment rule. No rows are backfilled in this rev (structure only).
+
+Schema v4.3 — row supersession links
+------------------------------------
+
+The v4.3 sub-rev adds one additive, optional, non-signature link pair:
+`superseded_by` and `supersedes` (top-level arrays of row ids). They are the
+CCSDS `NEXT_MESSAGE_ID` / `PREVIOUS_MESSAGE_ID` analogue, used when a row's
+premise is invalidated and one or more sibling rows now carry the attested
+truth. Backfilled on `vem-emeeve-3syn` (premise-invalidated by Jones AAS 17-577)
+which now `superseded_by` its two attested two-synodic members.
+
+```yaml
+- id: vem-emeeve-3syn
+  superseded_by:
+    - jones-2017-vem-emevve-outbound
+    - jones-2017-vem-meevem-inbound
+```
+
+The JSON Schema enforces array-of-non-empty-strings; the Python semantic gate
+adds the cross-row check it cannot express — every target must resolve to an
+existing row id and must not self-reference. Distinct from `family{}` (which
+groups members); supersession is a directed "see these instead" link. Full
+rationale and the four deferred CCSDS candidates are in **spec.md §16.7.10**.
 
 Out-of-paradigm work
 --------------------

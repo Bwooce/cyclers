@@ -1844,6 +1844,9 @@
 - id: vem-emeeve-3syn
   name: "EMEEVE VEM Triple Cycler (3-synodic beat archetype — UNREALIZED in AAS 17-577)"
   source: literature
+  superseded_by:   # schema v4.3 (spec §16.7.10): this row's premise (a realized 6.4-yr EMEEVE cycler) is INVALIDATED by AAS 17-577 (no feasible one-synodic cyclers; see data_gaps[period.feasibility] + notes). The attested two-synodic members below carry the realized truth. Machine-checkable replacement for the prose-only supersession previously recorded.
+    - jones-2017-vem-emevve-outbound   # AAS 17-577 Table 2 (outbound)
+    - jones-2017-vem-meevem-inbound    # AAS 17-577 Table 3 (inbound)
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # CORRECTED 2026-06-05 (was circular-coplanar): AAS 17-577 solves Lambert on the real planetary ephemeris (p.5). NOTE: this row's premise (a *realized* 6.4-yr EMEEVE cycler) is INVALIDATED by the paper — see data_gaps[period.feasibility]; the model_assumption is corrected for consistency with the family the row references.
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
