@@ -36,6 +36,49 @@ Provenance + fidelity tags, tiered validation gate, physical invariants, corrobo
 
 ---
 
+## Sourced algorithm candidates (added 2026-06-05, from the design-reference mining)
+
+Enhancements with published provenance, slotted by phase. None are
+prerequisites; each is a drop-in upgrade where named. Sources:
+`docs/notes/2026-06-05-endgame-tisserand-mining.md` (Campagnola & Russell,
+JGCD 33(2) 2010, DOIs `10.2514/1.44258`/`10.2514/1.44290`, read via AAS
+09-224/09-227 preprints) and the JPL STAR tool survey (spec/prior-art notes).
+
+1. **VILM ΔV-minimum quadrature** (Endgame Pt 1, Eq. 13: `ΔV_min = ∫ V∞/Γ dV∞`)
+   — closed-form *lower bound* on any V∞-leveraging tour leg. Use in Phase 4
+   as an admissible feasibility screen: prune candidate cells/sequences whose
+   bound already exceeds the ΔV budget, before any optimiser run. Cheap,
+   sourced, and conservative (never prunes a feasible candidate).
+2. **Branch & bound / DP over the leveraging graph** (Endgame Pt 1) — their
+   explicit search procedure; the DP variant enumerates the full ToF-vs-ΔV
+   Pareto front. Candidate replacement for naive enumeration in Phase 4's
+   sequence proposal once VILM nodes exist.
+3. **Tisserand–Poincaré graph** (Endgame Pt 2) — CR3BP generalisation of
+   `tisserand.py` (r_a–r_p axes; T = 3 − v∞² identity our
+   `vinf_to_tisserand` already implements; patch-point equation = multibody
+   twin of `linkable`; T > 3 unlocks ballistic intermoon transfers).
+   The on-ramp for extending Phase 4 to planet-centric scope (#76).
+4. **Dijkstra/A\* over the (body, V∞) Tisserand graph** — sequence proposal
+   (recorded in spec §16.7.8 item 4; pairs naturally with candidate 1 as the
+   heuristic).
+5. **STAR-style triplet-ID search** (JPL STAR survey) — polynomial-complexity
+   broad search via leg-triplet matching at shared bodies; candidate for
+   Phase 4 if enumeration cost becomes the bottleneck.
+
+**Candidate gate anchors for future modules** (golden-discipline compliant —
+all literature-sourced, transcribed verbatim in the mining notes; none can
+gate *current* modules):
+- VILM module: Endgame Pt 1 Tables 1–3 (~25 Jovian/Saturnian intermoon
+  transfers, ΔV_min/max + V̄∞ thresholds).
+- T-P module: Endgame Pt 2 Table 1 (Europa/Titan insertion Δv max/min;
+  two suspected source typos flagged in the note — do not anchor those cells).
+- Earth-Moon compute (#76-adjacent): Hiraiwa et al. 2026 (arXiv:2602.17444)
+  Table 3 literature values (Hohmann 3954 m/s; Sweetser min 3726 m/s,
+  traceable to Topputo 2013); L1 Lyapunov C_J = 3.16.
+- Low-thrust MGA (#37): Vasile & Campagnola JBIS Tables 3–4 — BLOCKED on
+  re-transcription from a clean copy (digits read off rasters; see
+  `docs/notes/2026-06-05-vasile-hiraiwa-scan.md`).
+
 ## Self‑Review
 - **Independence enforced at every tier** (the spec's governing principle): GOLD needs an independent *source*; SILVER explicitly lacks one and is capped pending human review.
 - **Builds on what exists** (~70%): enumeration, construction, both optimisers, 3D, lamberthub crosscheck, ledger/match. New work is mostly *gates and orchestration*, not new physics.
