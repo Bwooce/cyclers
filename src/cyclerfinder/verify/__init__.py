@@ -36,6 +36,14 @@ from cyclerfinder.verify.crosscheck import (
     crosscheck_cycler,
     crosscheck_leg,
 )
+from cyclerfinder.verify.fidelity import (
+    FidelityRungUnavailableError,
+    FidelitySolution,
+    PersistenceClass,
+    PersistenceReport,
+    fidelity_persistence,
+    solve_at_fidelity,
+)
 from cyclerfinder.verify.propagate import (
     DRIFT_TOLERANCE_KM,
     StabilityReport,
@@ -60,16 +68,22 @@ __all__ = [
     "N_CYCLES_DEFAULT",
     "REAL_DRIFT_TOLERANCE_KM",
     "V1_TOLERANCE_MPS",
+    "FidelityRungUnavailableError",
+    "FidelitySolution",
     "LambertCrosscheckResult",
+    "PersistenceClass",
+    "PersistenceReport",
     "RealClosureConstructionError",
     "RealClosureResult",
     "StabilityReport",
     "construct_real_ephemeris_cycler",
     "crosscheck_cycler",
     "crosscheck_leg",
+    "fidelity_persistence",
     "lap_to_lap_drift",
     "multi_lap_propagation",
     "propagate_lap",
+    "solve_at_fidelity",
     "verify_long_term_stability",
     "verify_real_closure",
 ]
