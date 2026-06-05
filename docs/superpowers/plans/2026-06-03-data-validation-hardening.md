@@ -95,3 +95,68 @@
 
 ## Self‑Review
 Task 2 (physical invariants) is independent of the workflow and the highest‑value quick win (source‑free error detection). Tasks 3–7 deliver the provenance/tier/fidelity machinery. Falsification (Task 6) ensures the gates have teeth. Everything is golden‑clean: physical invariants need no source; tier checks *enforce* independence; fidelity tags prevent the cross‑fidelity bug; nothing loosens tolerances.
+
+---
+
+## Execution reconciliation (2026-06-05)
+
+Audit of each plan task against the live code (schema v4–v4.3 has shipped
+since this plan was written). Verdicts:
+
+| Task | Verdict | Notes |
+|------|---------|-------|
+| **1 Source + fidelity registry** | **NOT-SHIPPED** | No `src/cyclerfinder/data/provenance.py`. Implement the registry + `Fidelity` literal + tests. (Catalogue back-fill of tags is Task 3, deferred — additive YAML, out of scope this run.) |
+| **2 Physical-consistency invariants** | **PARTIALLY-SHIPPED** | `validate_schema_invariants` (validate.py, Rules 1–6) covers cross-field *shape* invariants (multi-arc has no a/e, tof_days_bounds shape, supersession links) — but NOT the *physics* identities the plan's Task 2 lists. Implement the missing source-independent physics as a new `validate_physical_invariants` + tests. See corrections below. |
+| **3 Back-fill source/fidelity tags on YAML** | **NOT-SHIPPED** | Requires catalogue VALUE/field edits. Per the run's concurrency + scope rules, NOT done this run (additive YAML deferred; flagged). |
+| **4 Tiered validation classifier** | **NOT-SHIPPED** | `classify_validation` does not exist. The classifier (pure-function, source-independent logic) is implementable now; the *gate* over real rows depends on Task 3 tags, so the live-row census ratchet is deferred with Task 3. Implement the classifier + unit tests over synthetic inputs. |
+| **5 Multi-source corroboration scoring** | **NOT-SHIPPED** | Depends on Task 3 `corroborations:` YAML. Deferred (needs catalogue edits). |
+| **6 Falsification + independent-tool guards** | **NOT-SHIPPED** | Negative-gate + independent-code crosscheck for `construct_resonant_cycler`. Implementable now against the 7 single-ellipse `(a,e)` rows. Implement. |
+| **7 Loader schema validation wiring (#73)** | **ALREADY-SHIPPED** | Two-layer validation is live: JSON Schema 4.3 via `check-jsonschema` pre-commit + `validate_schema_invariants` (Rules 1–6). The plan's "loader schema validation" item is done (#73). New: wire `validate_physical_invariants` into the same live-catalogue ratchet so CI fails on a physics violation too. |
+| **8 Full-suite gate + OUTSTANDING refresh** | run at end | OUTSTANDING refresh deferred to avoid touching shared docs mid-concurrency unless trivially scoped. |
+
+### Corrections to the plan's Task-2 invariant text (verified against live data, 2026-06-05)
+
+The plan's pseudocode is partly mis-designed and would false-fail real rows.
+Verified corrections (these are invariant fixes, NOT tolerance loosening — each
+is the physically *correct* form):
+
+1. **`V∞ < 15 km/s` is WRONG.** Real Russell–Ocampo E–M cyclers carry V∞ up to
+   **20.3 km/s** (`russell-ocampo-6.21.1+1`); high-V∞ ballistic cyclers exist.
+   The defensible physics ceiling at the innermost body (Venus) is
+   `v_esc + v_circ ≈ 84 km/s` (retrograde) — but a unit error (m/s in a km/s
+   field) lands at ~10³. Use `0 ≤ V∞ < 50 km/s`: above all real data, far below
+   the 1000× unit-error class it must catch.
+
+2. **`period.years ≈ k × synodic(pair)` must dispatch on token + class.**
+   - *single-ellipse* + body-pair `pair` (`E-M`): strict 5% — all such rows pass.
+   - *multi-arc* + body-pair `pair`: the synodic-integer `k` is an *approximate
+     label*, not the true period. `sanchez-net-2022-em-cycler2` has a sourced
+     real period 7.87 yr that is ~8% under `4 × 2.135 = 8.54` (documented in its
+     `period.note`). SKIP the strict check for multi-arc with a recorded reason
+     (NOT a data error — flagging it would reject sourced data).
+   - *beat token* `pair` (`VEM-syn`, M8/Forge R1 delta): validate against the
+     multi-body beat over the **canonical body set** (V,E,M sorted), NOT the raw
+     `bodies` order. `multi_body_beat_days(['V','E','M'])` → 6.40 yr; `k=2` →
+     12.80 yr, matching `years=12.8` to rel=0.000 for all three VEM rows.
+     **Trap:** `multi_body_beat_days(['E','M','V'])` and `['M','E','V']` return
+     `[]` (reference-body = middle picks a non-commensurate pair) — so the raw
+     `bodies` order MUST NOT be passed; use the canonical sorted V/E/M set.
+   - null `k`/`years` (E-Moon, Io-Europa family seeds): SKIP (no period data).
+
+3. **Reach precondition: use body peri/apo, not mean sma.** The plan's
+   `apo ≥ r_outer_body` using mean sma false-fails `niehoff-visit1` (apo 1.40)
+   and `mcconaghy-2005-em-case1` (apo 1.51), both of which encounter Mars near
+   its **perihelion 1.381 AU** (Mars e≈0.093). Correct form:
+   `peri ≤ r_inner_body.aphelion` AND `apo ≥ r_outer_body.perihelion`
+   (the orbit must reach each body's *encounterable radial range*). With the
+   eccentric range both rows pass.
+
+4. **a/e identities** (`a ≈ (peri+apo)/2`, `e ≈ (apo-peri)/(apo+peri)`,
+   `0 ≤ e < 1`, `peri ≤ a ≤ apo`) hold for all 7 `(a,e)` rows within rel 1e-2 /
+   abs 4e-3 — implement as written.
+
+### Suspected catalogue data errors found by new invariants
+None. Every apparent failure traced to an invariant mis-design (corrected
+above) or a documented, sourced framing difference — not a transcription/unit
+error. (Catalogue value edits are out of scope regardless; this run flags, never
+fixes.)
