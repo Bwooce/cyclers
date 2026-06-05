@@ -26,6 +26,7 @@ classifies.
 from __future__ import annotations
 
 import enum
+from dataclasses import dataclass
 from typing import Literal
 
 # ---------------------------------------------------------------------------
@@ -209,12 +210,133 @@ def classify_validation(
     return Tier.CONSISTENCY_CHECKED
 
 
+# ---------------------------------------------------------------------------
+# Multi-source corroboration scoring (Task 5)
+# ---------------------------------------------------------------------------
+
+# Default agreement tolerance for a V∞-class quantity (km/s). Two independent
+# sources within this absolute spread are treated as corroborating; a wider
+# spread is a dispute (often a fidelity mismatch, e.g. the S1L1 5.65 coplanar
+# vs 4.99 analytic-ephemeris episode). Callers may override per quantity.
+_CORROBORATION_ABS_TOL = 0.5
+
+
+class Corroboration(enum.Enum):
+    """How well a single quantity is corroborated across sources (plan Task 5).
+
+    * :attr:`STRONGLY_SOURCED` — two or more *independent* sources (real
+      citations, not pseudo-sources) state the quantity and all agree within
+      tolerance. The strongest provenance a single number can carry.
+    * :attr:`SINGLE_SOURCED` — only one independent source states it (or all
+      values trace to the same source); not refuted, but not corroborated.
+    * :attr:`DISPUTED` — two or more independent sources state it but their
+      spread exceeds tolerance. The spread is *recorded*, not hidden — a
+      disputed quantity is frequently a fidelity mismatch and must be resolved
+      (or its fidelity flagged), never silently averaged.
+    """
+
+    STRONGLY_SOURCED = "strongly-sourced"
+    SINGLE_SOURCED = "single-sourced"
+    DISPUTED = "disputed"
+
+
+@dataclass(frozen=True)
+class SourcedValue:
+    """One source's statement of a scalar quantity, for corroboration scoring.
+
+    Parameters
+    ----------
+    value:
+        The numeric value the source states (e.g. a V∞ in km/s).
+    source:
+        Its provenance key (a :data:`SOURCE_REGISTRY` key). A pseudo-source
+        (``derived`` / ``computed``) never counts toward independent
+        corroboration.
+    fidelity:
+        The model fidelity the value is stated at, or ``None`` if unknown.
+        Recorded so a cross-fidelity dispute can be told apart from a genuine
+        disagreement at one fidelity.
+    """
+
+    value: float
+    source: str
+    fidelity: str | None = None
+
+
+@dataclass(frozen=True)
+class CorroborationScore:
+    """Result of :func:`score_corroboration`."""
+
+    classification: Corroboration
+    independent_source_count: int
+    spread: float
+    """Max minus min over the *independent* values (0.0 when fewer than two)."""
+    cross_fidelity: bool
+    """True iff the independent values span more than one stated fidelity — a
+    dispute that is (at least partly) a fidelity mismatch rather than a pure
+    numeric disagreement."""
+
+
+def score_corroboration(
+    values: list[SourcedValue],
+    *,
+    abs_tol: float = _CORROBORATION_ABS_TOL,
+) -> CorroborationScore:
+    """Score how well *values* (multiple sources for ONE quantity) corroborate.
+
+    Pure function (no catalogue read), so it is golden-clean: it classifies
+    provenance agreement, it does not assert a computed physics value.
+    Pseudo-sources (``derived`` / ``computed``) are dropped before scoring —
+    only real, independent citations can corroborate (golden discipline).
+
+    Classification:
+
+    * ``STRONGLY_SOURCED`` — ≥2 *distinct independent* sources, spread ≤
+      ``abs_tol``.
+    * ``DISPUTED`` — ≥2 *distinct independent* sources, spread > ``abs_tol``.
+    * ``SINGLE_SOURCED`` — fewer than 2 distinct independent sources.
+
+    ``spread`` and ``cross_fidelity`` are always reported so a dispute is
+    *documented* (the plan's S1L1 requirement: surface the 5.65-vs-4.99 spread,
+    never hide it).
+    """
+    independent = [v for v in values if is_independent_source(v.source)]
+    # Distinct sources only: two rows of the same source are not corroboration.
+    by_source: dict[str, SourcedValue] = {}
+    for v in independent:
+        by_source.setdefault(v.source, v)
+    distinct = list(by_source.values())
+    n = len(distinct)
+    if n < 2:
+        return CorroborationScore(
+            classification=Corroboration.SINGLE_SOURCED,
+            independent_source_count=n,
+            spread=0.0,
+            cross_fidelity=False,
+        )
+    vals = [v.value for v in distinct]
+    spread = max(vals) - min(vals)
+    fidelities = {v.fidelity for v in distinct if v.fidelity is not None}
+    cross_fidelity = len(fidelities) > 1
+    classification = Corroboration.STRONGLY_SOURCED if spread <= abs_tol else Corroboration.DISPUTED
+    return CorroborationScore(
+        classification=classification,
+        independent_source_count=n,
+        spread=spread,
+        cross_fidelity=cross_fidelity,
+    )
+
+
 __all__ = [
     "SOURCE_REGISTRY",
+    "Corroboration",
+    "CorroborationScore",
     "Fidelity",
+    "SourcedValue",
     "Tier",
     "classify_validation",
     "is_fidelity",
     "is_independent_source",
     "is_registry_key",
+    "score_corroboration",
 ]
