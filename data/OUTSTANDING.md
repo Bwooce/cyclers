@@ -78,11 +78,14 @@ effort: `2026-06-02-ml-multirev-lambert.md` and
 
 ## Deferred (by explicit user decision — not being implemented now)
 
-- **M8-Core (VEM 3-body)** — `docs/phases/m8-multibody-vem/plan.md`.
-  Plan is written and revised (`period_basis` on `Cell`, same-body
-  Tisserand bypass, N-agnostic loader, M8-Core / M8-UX split) but is
-  DEFERRED. The Jones 2017 VEM member-list sourcing gap (Q&A item D)
-  remains the data blocker for this phase.
+- ~~**M8-Core (VEM 3-body)**~~ — **EXECUTED 2026-06-05** (user un-deferred;
+  commits `933e75b`..`eb851a2`): `Cell.period_basis` + beat dispatch in
+  `_target_period_sec`, same-body Tisserand bypass, VEM rediscovery gate
+  anchored on the Jones AAS 17-577 member rows (sourced 12.8 yr), all four
+  VEM rows admitted as `CONSTRUCTIBLE_MULTIBODY` (`NOT_TWO_BODY` now 0).
+  The data blocker (Q&A item D) was resolved the same day. Remaining
+  M8-adjacent work: **M8-UX** (CLI/viz/reporting — still deferred) and the
+  ballistic-convergence xfail handed to **M-ED**.
 
 ## Blocked — needs HUMAN institutional / paywalled access (prioritised)
 
