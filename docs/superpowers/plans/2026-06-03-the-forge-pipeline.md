@@ -15,7 +15,7 @@ Provenance + fidelity tags, tiered validation gate, physical invariants, corrobo
 
 ## Phase 1 — Axis B: fidelity‑ladder gate
 **What:** a `fidelity_persistence(cell, anchors)` check that solves a candidate at coplanar → analytic‑ephemeris → real‑DE440 and asserts V∞ either persists within tolerance or shifts in the *documented* direction (e.g. Mars V∞ drops with eccentric Mars).
-**First tasks:** (1) `solve_at_fidelity(cell, fidelity)` thin wrapper over the existing optimisers/ephemerides; (2) test that S1L1 coplanar 4.9/5.0 → real‑eph shifts toward 5.65/3.05 (the documented, *predictable* fidelity shift — turning the old "bug" into an asserted gate); (3) the persistence classifier.
+**First tasks:** (1) `solve_at_fidelity(cell, fidelity)` thin wrapper over the existing optimisers/ephemerides; (2) ~~test that S1L1 coplanar 4.9/5.0 → real‑eph shifts toward 5.65/3.05~~ **R1 (2026-06-05): SUPERSEDED — 5.65/3.05 is flagged `unverified-provenance` (untraceable, 2026-06-04) and S1L1 is multi-arc; that gate would violate golden discipline.** Anchor the ladder instead on (a) the **Aldrin outbound TOF shift**: coplanar 146 d vs Rogers 2012 STOUR analytic-ephemeris range **[161, 172] d** — both sides sourced and machine-readable since v4.2 (`segments[].tof_days_bounds` on `aldrin-classic-em-k1-outbound/out-em`), the cleanest documented fidelity shift we hold; and (b) the **Jones AAS 17-577 member rows** (sourced analytic-ephemeris V∞ multisets) as analytic-tier anchors once M-ED can solve VEM cells; (3) the persistence classifier.
 **Unlocks:** systematic prevention of the cross‑fidelity confusion class.
 
 ## Phase 2 — Axis A: code‑path agreement
@@ -35,6 +35,43 @@ Provenance + fidelity tags, tiered validation gate, physical invariants, corrobo
 **First tasks:** (1) the workflow script (fan‑out + adversarial‑panel pattern); (2) the human‑review queue artifact; (3) a falsification end‑to‑end (inject a bogus candidate, assert it's REJECTED).
 
 ---
+
+## Revision R1 (2026-06-05 evening) — post-M8-Core/v4.3 refresh
+
+State changes since this plan was written (binding where they contradict the
+phase text above):
+
+1. **Phase 1 anchor replaced** (edited inline above): the S1L1 5.65/3.05
+   fidelity target is unverified-provenance; the ladder now anchors on the
+   Aldrin TOF shift (146 d coplanar vs sourced STOUR bounds [161,172]) and
+   the Jones analytic-ephemeris V∞ multisets.
+2. **Phase 4's VEM frontier is now reachable.** The original Self-Review risk
+   ("the value then shifts to VEM/3D/planet-centric scopes") has partly
+   landed: M8-Core (2026-06-05, `933e75b`..`eb851a2`) gives the optimiser
+   `Cell.period_basis` beat dispatch, the same-body Tisserand bypass, and
+   `CONSTRUCTIBLE_MULTIBODY` admission — so `discover_novel` can enumerate
+   VEM cells from day one. Sanity targets: the two Jones member rows
+   (rediscovery), and AAS 17-577 **Table 1's 10-itinerary enumeration** as
+   the VEM search-space spec (mining note 2026-06-05). The ballistic
+   convergence xfail in `tests/test_vem_rediscovery.py` is the hand-off
+   the Phase 4 loop should aim to flip.
+3. **Novelty matching must respect v4.3 supersession links** (schema 4.3,
+   2026-06-05): a candidate matching a row that carries `superseded_by`
+   (e.g. the UNREALIZED `vem-emeeve-3syn`) must surface the supersession
+   chain in the verdict, not report a clean "known" match against an
+   invalidated premise. Add this to the Phase 3/4 match semantics.
+4. **Phase 0 partial overlap — reconcile at execution.** Since the
+   data-validation-hardening plan was written, the v4–v4.3 schema work
+   shipped two-layer loader validation (its "loader schema validation" item)
+   and some of its Task-2 invariants live in `validate_schema_invariants`.
+   Re-scope Phase 0 against the live code before executing; in particular
+   its `period.years ≈ k × synodic(pair)` invariant must handle **beat
+   tokens** (`period.pair: "VEM-syn"` is not a body pair — M8 plan R1
+   delta 3) or it will false-fail all four VEM rows.
+5. **Powered screen (note only):** Sims-Flanagan machinery (#37, phases 2–5
+   in flight) will provide a thrust-bounded maintenance evaluator — a
+   candidate future gauntlet input (powered-feasibility screen), not a
+   current dependency.
 
 ## Sourced algorithm candidates (added 2026-06-05, from the design-reference mining)
 
