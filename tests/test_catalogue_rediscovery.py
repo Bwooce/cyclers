@@ -270,11 +270,11 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.NON_HELIOCENTRIC: 6,
     ExclusionReason.MISSING_VINF: 5,
     ExclusionReason.CONSTRUCTIBLE: 2,
-    ExclusionReason.NOT_TWO_BODY: 2,
+    ExclusionReason.NOT_TWO_BODY: 4,
     ExclusionReason.MISSING_PERIOD: 1,
 }
-"""Frozen census of how the 235-row catalogue distributes across
-exclusion reasons (as of 2026-06-04). This is a *ratchet*: when the
+"""Frozen census of how the 237-row catalogue distributes across
+exclusion reasons (as of 2026-06-05). This is a *ratchet*: when the
 catalogue changes, this dict must be updated in the same commit, which
 forces a conscious review of whether the change moved entries into or
 out of the v1 gauntlet's reach.
@@ -286,6 +286,11 @@ matched-V_inf at Earth and Venus but no per-leg ToFs encoded in
 data/sources/hollister-menning-1970-table3.yaml). Replacing the old
 single placeholder (which counted as MISSING_VINF) with these 15
 moved one row out of MISSING_VINF (6 -> 5) and added 15 here.
+
+The NOT_TWO_BODY bucket grew 2 -> 4 on 2026-06-05 with the two Jones 2017
+VEM triple-cycler members (`jones-2017-vem-emevve-outbound`,
+`jones-2017-vem-meevem-inbound`): each spans three bodies (E, M, V), so the
+two-body gauntlet cannot reach them. Catalogue total: 235 -> 237.
 
 Reasons absent from this dict are expected to have a count of zero (e.g.
 ``NON_BALLISTIC`` — no such rows today).

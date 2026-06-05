@@ -1703,8 +1703,8 @@
 - id: jones-2017-vem-triple-family
   name: "Jones/Hernandez/Jesick VEM triple cyclers (family seed entry)"
   source: literature
-  trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
-  model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  trajectory_regime: ballistic   # added 2026-06-01; near-ballistic per AAS 17-577 ("near-ballistic cycler solutions", p.5); v∞-matching maneuvers below 200 m/s differentially corrected to ballistic
+  model_assumption: analytic-ephemeris   # CORRECTED 2026-06-05 (was circular-coplanar): AAS 17-577 p.5 — "A zero-sphere-of-influence patched conic gravity model is used with the real planetary ephemeris, and Lambert's problem is solved". The circular-coplanar Tisserand graph (Fig.2) is only the qualitative explanatory tool; the solutions are real-ephemeris.
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -1714,16 +1714,21 @@
   sequence_canonical: "V-E-M"   # canonical placeholder; actual sequences vary across the family
   sense: "n/a"
   period:
-    pair: "E-M"          # primary anchor pair; secondary V-E synodic also relevant
-    k: 2                  # "two synodic period" per the abstract
-    years: 4.27           # 2 x E-M synodic
+    pair: "VEM-syn"       # the three-body VEM synodic T_syn, NOT the E-M synodic (see CORRECTION note)
+    k: 2                  # "two synodic period" = 2 x T_syn (T_syn = VEM synodic ≈ 6.4 yr)
+    years: 12.8           # CORRECTED 2026-06-05 (was 4.27): 2 x 6.4-yr T_syn
     note: |
-      Jones et al. 2017 reports "two synodic period Earth-Mars-Venus triple
-      cyclers" (= 2 x 2.135 yr ≈ 4.27 yr, anchored on the E-M synodic).
-      Spec.md §3 references a different VEM beat period: "the natural beat
-      is ≈ 6.4 yr (3 x E-M ≈ 4 x E-V)". The 6.4-yr beat is a NECESSARY
-      condition for closure but not the only possible period; Jones et al.
-      2017 find 2-synodic E-M solutions that incorporate Venus flybys.
+      CORRECTED 2026-06-05 per AAS 17-577 full-paper mining. Jones et al.
+      2017 p.3 defines the synodic period explicitly: "The time it takes to
+      repeat a given angular alignment of the three planets (the synodic
+      period T_syn) is approximately 6.4 years. This is about three Earth-
+      Mars synodic periods." Therefore "two synodic period" in this paper
+      means 2 x T_syn = 12.8 yr, NOT 2 x the 2.135-yr E-M synodic (= 4.27 yr).
+      Confirmed on p.9: "Recall that the repeat period T is 12.8 years."
+      The earlier 4.27-yr value was the alternate (E-M synodic) reading
+      flagged in data_gaps[period.basis]; the source now resolves it toward
+      12.8 yr. The separate 2.13-yr number is the E-M *opportunity* spacing
+      (p.3: "The opportunities open every 2.13 years"), not the repeat period.
   vinf_kms_at_encounters:
     - body: "V"
       vinf_kms: null
@@ -1772,11 +1777,17 @@
     Jones, Hernandez, and Jesick (all JPL). spec.md §16.4 has been patched
     in the corresponding errata pass.
 
-    INTERPRETATION NOTE (2026-05-31): the abstract's "two synodic period"
-    cycler family is preserved as this entry at period.years = 4.27. A
-    sibling entry `vem-emeeve-3syn` separately captures the 6.4-yr (3 ×
-    E-M synodic = VEM beat) archetype that spec.md §3 also discusses. The
-    two are different families; both are valid Jones 2017 readings.
+    INTERPRETATION NOTE (2026-05-31, CORRECTED 2026-06-05): this entry's
+    "two synodic period" interpretation was originally recorded as
+    period.years = 4.27 (2 x E-M synodic). The AAS 17-577 full-paper mining
+    (docs/notes/2026-06-05-jones-aas17-577-vem-mining.md) shows this was
+    INCORRECT: the paper's T_syn is the 6.4-yr VEM synodic, so "two synodic
+    period" = 12.8 yr (p.9: "the repeat period T is 12.8 years"). period.years
+    is corrected to 12.8. Two fully-tabulated members of this family are now
+    ingested as separate rows: `jones-2017-vem-emevve-outbound` (Table 2) and
+    `jones-2017-vem-meevem-inbound` (Table 3). The sibling `vem-emeeve-3syn`
+    captured a 6.4-yr (1-synodic) reading which the paper found to be EMPTY
+    (no feasible solutions — p.8); see that row's data_gaps.
 
     Per the abstract: "Ballistic cycler trajectories which repeatedly encounter
     Earth and Mars may be invaluable to a future transportation architecture
@@ -1803,18 +1814,19 @@
     corrected in a future revision.
   data_gaps:
     - path: "period.basis"
-      kind: "uncertain"
+      kind: "resolved"
       note: |
-        This catalogue entry interprets Jones 2017's "two synodic period" as
-        k=2 E-M synodic periods (period.years = 4.27 yr). Jones 2017 defines
-        T_syn = 6.4 yr = 3 E-M synodics = ~4 E-V synodics; "two synodic period"
-        in the paper means 2 × T_syn = 12.8 yr (6 E-M = ~8 E-V). The per-pair
-        basis decomposition for this entry's interpretation (k=2 E-M, 4.27 yr)
-        is not explicitly tabulated in the Jones 2017 abstract, and the correct
-        resonance decomposition depends on which "two synodic period" reading
-        applies. Left absent per golden-discipline until the full paper text
-        is accessible and the interpretation is confirmed.
-      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) full paper text"
+        RESOLVED 2026-06-05 against the AAS 17-577 full paper (NTRS
+        20190028464). The earlier ambiguity — whether "two synodic period"
+        meant 2 x the 2.135-yr E-M synodic (4.27 yr) or 2 x the 6.4-yr VEM
+        T_syn (12.8 yr) — is settled by p.3: "the synodic period T_syn ... is
+        approximately 6.4 years. This is about three Earth-Mars synodic
+        periods" and p.9: "Recall that the repeat period T is 12.8 years."
+        The repeat period is therefore 12.8 yr (period.years corrected from
+        4.27 to 12.8). A per-pair (pair,k) basis decomposition is still not
+        tabulated as integer resonances in the paper (T_syn ≈ 3 E-M ≈ 4 E-V is
+        approximate, p.3), so period.basis is left absent per golden-discipline.
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) p.3, p.9"
       todo_ref: "#54-backfill"
   source_quotes:
     "period.k": |
@@ -1830,10 +1842,10 @@
 # 8. EMEEVE VEM Triple Cycler (3-synodic VEM-beat archetype)
 # ---------------------------------------------------------------------------
 - id: vem-emeeve-3syn
-  name: "EMEEVE VEM Triple Cycler (3-synodic beat archetype)"
+  name: "EMEEVE VEM Triple Cycler (3-synodic beat archetype — UNREALIZED in AAS 17-577)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
-  model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  model_assumption: analytic-ephemeris   # CORRECTED 2026-06-05 (was circular-coplanar): AAS 17-577 solves Lambert on the real planetary ephemeris (p.5). NOTE: this row's premise (a *realized* 6.4-yr EMEEVE cycler) is INVALIDATED by the paper — see data_gaps[period.feasibility]; the model_assumption is corrected for consistency with the family the row references.
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -1855,9 +1867,17 @@
                              # repeats on the beat of E-M and E-V synodics.
     note: |
       3 × E-M synodic = 6.405 yr. This exactly matches the 4 × E-V synodic
-      beat (4 × 1.599 = 6.396 yr), the natural alignment for the EMEEVE
-      sequence. Sibling of `jones-2017-vem-triple-family`, which captures
-      the 2-synodic E-M (4.27 yr) branch of the same paper's findings.
+      beat (4 × 1.599 = 6.396 yr) and equals the VEM T_syn (≈ 6.4 yr) that
+      AAS 17-577 p.3 defines. CONFLICT (recorded 2026-06-05): as a *repeat
+      period* this 6.4-yr (one-synodic) family produced NO feasible cyclers in
+      Jones et al. 2017 (p.8: "No feasible solutions were found (of any family)
+      with a repeat period of one synodic period (6.4 years)."). The 6.4-yr
+      value is a real beat period (T_syn) but is NOT a realized repeat period
+      in this source. Any *realized* EMEEVE cycler in the paper repeats at
+      12.8 yr (two T_syn), not 6.4 yr. EMEEVE itself IS a listed outbound
+      itinerary family (Table 1, p.3). Sibling of
+      `jones-2017-vem-triple-family` (the 12.8-yr branch). See
+      data_gaps[period.feasibility].
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null
@@ -1890,14 +1910,607 @@
     Captures the 6.4-year (3-synodic E-M = 4-synodic E-V = VEM beat) geometry
     referenced in spec.md §3. The EMEEVE sequence specifically uses Venus's
     large-bend gravity assist (~60° at V∞=7) to correct the phase shift
-    induced by the Mars flyby, enabling ballistic closure over the 3-synodic
-    period.
+    induced by the Mars flyby.
+
+    PREMISE-INVALIDATION NOTICE (2026-06-05): This row was created to capture
+    a *realized 6.4-yr (one-synodic) EMEEVE cycler*. The AAS 17-577 full-paper
+    mining (docs/notes/2026-06-05-jones-aas17-577-vem-mining.md) shows the
+    paper found NO feasible one-synodic (6.4-yr) cyclers of any family. Verbatim
+    (p.8): "No feasible solutions were found (of any family) with a repeat
+    period of one synodic period (6.4 years). ... In contrast, thousands of
+    feasible two-synodic period cyclers were obtained." So the 6.4-yr EMEEVE
+    cycler this row describes is UNREALIZED in this source. The row is retained
+    (not deleted) to honestly record the conflict: EMEEVE IS a valid outbound
+    itinerary family (Table 1, p.3), and the 6.4-yr T_syn beat is real, but a
+    *closed cycler at that repeat period* was not discovered. Realized EMEEVE
+    cyclers in this paper repeat at 12.8 yr. M7 novelty matching against this
+    row should treat it as an unrealized-archetype placeholder, not an
+    attested cycler. The two attested members are `jones-2017-vem-emevve-outbound`
+    (Table 2) and `jones-2017-vem-meevem-inbound` (Table 3).
+  data_gaps:
+    - path: "period.feasibility"
+      kind: "conflict"
+      note: |
+        CONFLICT (2026-06-05): this row's premise — a realized one-synodic
+        (6.4-yr) EMEEVE cycler — is contradicted by the primary source.
+        Jones et al. 2017 (AAS 17-577, NTRS 20190028464) p.8: "No feasible
+        solutions were found (of any family) with a repeat period of one
+        synodic period (6.4 years). ... In contrast, thousands of feasible
+        two-synodic period cyclers were obtained." The 6.4-yr value is the
+        VEM synodic T_syn (a real beat period) but is NOT a realized repeat
+        period in this paper. period.years = 6.41 is therefore kept as the
+        beat-period archetype value, NOT as an attested cycler repeat period.
+        Resolution would require either (a) a different source that exhibits a
+        closed 6.4-yr EMEEVE cycler, or (b) demoting this row to a pure
+        beat-period reference. Recorded honestly rather than deleting the row.
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) p.8 Broad Search Results"
+      todo_ref: null
   source_quotes:
     "period.years": |
-      Jones et al. 2017 (abstract, NTRS 20190028464): "The time it takes
+      Jones et al. 2017 (NTRS 20190028464) p.3: "The time it takes
       to repeat a given angular alignment of the three planets (the synodic
       period T_syn) is approximately 6.4 years. This is about three Earth-
-      Mars synodic periods."
+      Mars synodic periods." (NB: 6.4 yr is the T_syn beat, NOT a realized
+      one-synodic repeat period — see data_gaps[period.feasibility].)
+    "period.feasibility": |
+      Jones et al. 2017 (AAS 17-577) p.8: "No feasible solutions were found
+      (of any family) with a repeat period of one synodic period (6.4 years).
+      ... In contrast, thousands of feasible two-synodic period cyclers were
+      obtained."
+
+# ---------------------------------------------------------------------------
+# 8b. Jones 2017 VEM triple cycler — EMEVVE outbound member (AAS 17-577 Table 2)
+# ---------------------------------------------------------------------------
+# Fully-tabulated member of the jones-2017-vem-triple-family. All numbers
+# below are transcribed verbatim from AAS 17-577 Table 2 (p.10) and the p.9
+# transit-leg text; no value is computed/derived by this codebase. Encounter
+# dates and v∞/altitude columns are from the table; transit-leg ToFs (E→M 309,
+# M→E 259) are stated in the p.9 prose. Orbital elements are NOT published in
+# this paper (note §8); orbit_elements stays null with a data_gap.
+- id: jones-2017-vem-emevve-outbound
+  name: "Jones 2017 EMEVVE VEM triple cycler (outbound, AAS 17-577 Table 2)"
+  source: literature
+  trajectory_regime: ballistic   # AAS 17-577 p.5: "near-ballistic cycler solutions"; v∞-matching maneuvers <200 m/s are differentially corrected to ballistic; the optimized cases are ballistic in full n-body dynamics
+  model_assumption: analytic-ephemeris   # AAS 17-577 p.5: "A zero-sphere-of-influence patched conic gravity model is used with the real planetary ephemeris, and Lambert's problem is solved". NOT circular-coplanar (the Fig.2 Tisserand graph is only the qualitative tool).
+  cycler_class: multi-arc   # 6 flybys per cycle (EMEVVE), multiple distinct gravity-assist arcs; no single repeating (a,e) conic; see docs/notes/multi-arc-classification.md
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated — patched-conic, no single aphelion characterises the multi-arc trajectory
+    transit_times_days: [309, 259]   # SOURCED: AAS 17-577 p.9 — outbound example transit legs are "309 and 259 days" (E→M 309, M→E 259); matches Table 2 rows (12-Jun-2023 309, 05-Feb-2036 259).
+    turn_ratio: null   # not tabulated; per-flyby turning angles δ are defined (Eq.1) but no δ values listed for this cycler (note §8)
+  delta_v_kms: null   # NOT published per-row for the Table 2 broad-search cycler; Δv numbers appear only for the Table 4 optimized architecture (different trajectories). See data_gaps.
+  v_infinity_leveraging_dv_kms: null   # not an establishment variant
+  fleet_size: null   # this row is a single cycler, not the architecture fleet
+  flyby_mechanics:   # SOURCED: AAS 17-577 Table 2 periapsis-altitude column (km). turning_angle_deg not tabulated (note §8).
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 100     # SOURCED: Table 2 row 1 (Earth 07-Aug-2022): 100 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 4164    # SOURCED: Table 2 row 2 (Mars 12-Jun-2023): 4,164 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 3814    # SOURCED: Table 2 row 3 (Earth 01-Oct-2025): 3,814 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 684     # SOURCED: Table 2 row 4 (Venus 26-Apr-2030): 684 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 1985    # SOURCED: Table 2 row 5 (Venus 08-Feb-2034): 1,985 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 1998    # SOURCED: Table 2 row 6 (Earth 22-May-2035): 1,998 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 1754    # SOURCED: Table 2 row 7 (Mars 05-Feb-2036): 1,754 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 3213    # SOURCED: Table 2 row 8 (Earth 15-Aug-2038): 3,213 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 3319    # SOURCED: Table 2 row 9 (Venus 26-Dec-2039): 3,319 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 836     # SOURCED: Table 2 row 10 (Venus 17-Apr-2045): 836 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 100     # SOURCED: Table 2 row 11 (Earth 05-Mar-2048): 100 km
+  bodies: ["E", "M", "V"]
+  sequence_canonical: "E-M-E-V-V-E"   # EMEVVE outbound itinerary (AAS 17-577 Table 1 row 3, Table 2 caption "EMEVVE family cycler"); one cycle = E-M-E-V-V-E
+  sense: "outbound"   # AAS 17-577 Table 1: EMEVVE is an Outbound itinerary (begins with near-Hohmann E→M arc)
+  period:
+    pair: "VEM-syn"
+    k: 2                  # two VEM synodic periods (T_syn ≈ 6.4 yr)
+    years: 12.8           # SOURCED: AAS 17-577 p.9 "Recall that the repeat period T is 12.8 years."
+    note: |
+      Repeat period T = 12.8 yr = 2 × T_syn (the 6.4-yr VEM synodic, p.3).
+      SOURCED: AAS 17-577 p.9: "Recall that the repeat period T is 12.8 years."
+      Table 2 lists two repeat periods (11 encounters spanning Aug-2022 to
+      Mar-2048 ≈ 25.6 yr = 2 × 12.8 yr).
+  vinf_kms_at_encounters:
+    # SOURCED: AAS 17-577 Table 2 "Excess speed, km/sec" column, p.10, in encounter order.
+    - body: "E"
+      vinf_kms: 4.72
+      note: "SOURCED: Table 2 row 1 (Earth 07-Aug-2022): 4.72 km/s. Near-Hohmann transit-leg v∞ (< 5 km/s)."
+    - body: "M"
+      vinf_kms: 2.50
+      note: "SOURCED: Table 2 row 2 (Mars 12-Jun-2023): 2.50 km/s. E→M transit leg (309 d)."
+    - body: "E"
+      vinf_kms: 5.81
+      note: "SOURCED: Table 2 row 3 (Earth 01-Oct-2025): 5.81 km/s. Venus-adjacent gravity-assist leg (> 5 km/s)."
+    - body: "V"
+      vinf_kms: 7.00
+      note: "SOURCED: Table 2 row 4 (Venus 26-Apr-2030): 7.00 km/s."
+    - body: "V"
+      vinf_kms: 7.00
+      note: "SOURCED: Table 2 row 5 (Venus 08-Feb-2034): 7.00 km/s."
+    - body: "E"
+      vinf_kms: 4.21
+      note: "SOURCED: Table 2 row 6 (Earth 22-May-2035): 4.21 km/s. Near-Hohmann transit-leg v∞."
+    - body: "M"
+      vinf_kms: 2.79
+      note: "SOURCED: Table 2 row 7 (Mars 05-Feb-2036): 2.79 km/s. M→E transit leg (259 d)."
+    - body: "E"
+      vinf_kms: 5.04
+      note: "SOURCED: Table 2 row 8 (Earth 15-Aug-2038): 5.04 km/s. Venus-adjacent gravity-assist leg."
+    - body: "V"
+      vinf_kms: 4.49
+      note: "SOURCED: Table 2 row 9 (Venus 26-Dec-2039): 4.49 km/s."
+    - body: "V"
+      vinf_kms: 4.49
+      note: "SOURCED: Table 2 row 10 (Venus 17-Apr-2045): 4.49 km/s."
+    - body: "E"
+      vinf_kms: 5.67
+      note: "SOURCED: Table 2 row 11 (Earth 05-Mar-2048): 5.67 km/s."
+  orbit_elements:
+    a_au: null      # multi-arc: no single repeating heliocentric conic; AAS 17-577 publishes NO orbital elements (note §8)
+    e: null         # as above
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Multi-arc patched-conic on real ephemeris. AAS 17-577 tabulates only encounter dates, v∞, periapsis altitudes, and transit ToF (note §8 of the mining note); NO orbital elements (a,e,peri,apo,i) are published anywhere in the paper. Do NOT derive — that would require re-running Lambert (circular, violates golden-discipline)."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "heliocentric-inertial"   # real-date patched conic on real planetary ephemeris (AAS 17-577 p.5)
+    time_system: "UTC"                   # Table 2 dates are Gregorian calendar
+    epoch_tzero: "2022-08-07"            # SOURCED: Table 2 row 1 (Earth 07-Aug-2022)
+    segments:
+      # ToFs below are the AAS 17-577 Table 2 "Flight Time, days" column,
+      # which is days since the previous encounter (sourced verbatim).
+      - id: "em-leg1"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 309   # SOURCED: Table 2 row 2 Flight Time = 309 d (07-Aug-2022 → 12-Jun-2023); = p.9 outbound E→M transit leg
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to first Mars flyby. Near-Hohmann E→M transit leg; ToF 309 d (Table 2 + p.9)."
+      - id: "me-arc1"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 842   # SOURCED: Table 2 row 3 Flight Time = 842 d (12-Jun-2023 → 01-Oct-2025)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Mars flyby to Earth flyby (gravity-assist arc). ToF 842 d (Table 2)."
+      - id: "ev-arc1"
+        from: "E"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 1668   # SOURCED: Table 2 row 4 Flight Time = 1668 d (01-Oct-2025 → 26-Apr-2030)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to first Venus flyby. ToF 1668 d (Table 2)."
+      - id: "vv-arc1"
+        from: "V"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 1384   # SOURCED: Table 2 row 5 Flight Time = 1384 d (26-Apr-2030 → 08-Feb-2034)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to Venus arc. ToF 1384 d (Table 2)."
+      - id: "ve-arc1"
+        from: "V"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 468   # SOURCED: Table 2 row 6 Flight Time = 468 d (08-Feb-2034 → 22-May-2035)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to Earth flyby. ToF 468 d (Table 2)."
+      - id: "em-leg2"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 259   # SOURCED: Table 2 row 7 Flight Time = 259 d (22-May-2035 → 05-Feb-2036); = p.9 outbound M→E transit leg value (259)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Mars flyby. ToF 259 d (Table 2); the p.9 transit-leg pair for this outbound example is '309 and 259 days'."
+      - id: "me-arc2"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 922   # SOURCED: Table 2 row 8 Flight Time = 922 d (05-Feb-2036 → 15-Aug-2038)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Mars flyby to Earth flyby. ToF 922 d (Table 2)."
+      - id: "ev-arc2"
+        from: "E"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 498   # SOURCED: Table 2 row 9 Flight Time = 498 d (15-Aug-2038 → 26-Dec-2039)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Venus flyby. ToF 498 d (Table 2)."
+      - id: "vv-arc2"
+        from: "V"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 1939   # SOURCED: Table 2 row 10 Flight Time = 1939 d (26-Dec-2039 → 17-Apr-2045)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to Venus arc. ToF 1939 d (Table 2)."
+      - id: "ve-arc2"
+        from: "V"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 1053   # SOURCED: Table 2 row 11 Flight Time = 1053 d (17-Apr-2045 → 05-Mar-2048)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to final Earth flyby (end of two repeat periods). ToF 1053 d (Table 2)."
+  data_gaps:
+    - path: "orbit_elements"
+      kind: "unknown"
+      note: "AAS 17-577 publishes NO orbital elements (a,e,peri,apo,i) for any cycler (mining note §8). Solutions are given as encounter dates + v∞ + periapsis altitudes + transit ToF only. Cannot be source-derived without re-running Lambert (circular)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 2 + note §8"
+      todo_ref: null
+    - path: "delta_v_kms"
+      kind: "unknown"
+      note: "Per-row Δv is not given for the Table 2 broad-search cycler. The paper's Δv numbers (taxi/launch/capture) appear only for the Table 4 optimized architecture, which is a different set of trajectories (mining note §8)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 2 vs Table 4"
+      todo_ref: null
+    - path: "flyby_mechanics[*].turning_angle_deg"
+      kind: "unknown"
+      note: "Per-flyby turning angles δ (Eq.1) and B-plane angles θ_B (Eq.5) are not tabulated for this cycler (mining note §8). Only periapsis altitudes are listed (captured in min_altitude_km)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 2"
+      todo_ref: null
+  family:
+    id: "jones-2017-vem-triple-family"
+    name: "Jones/Hernandez/Jesick VEM triple cyclers"
+    nomenclature: "EMEVVE outbound itinerary (AAS 17-577 Table 1)"
+    continuation_param: {name: "start_epoch", value: "2022-08-07"}
+  first_published:
+    authors: ["Jones, D. R.", "Hernandez, S.", "Jesick, M."]
+    year: 2017
+    title: "Low Excess Speed Triple Cyclers of Venus, Earth, and Mars"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS Paper 17-577"
+    date: "2017-08-20"
+    doi: null   # AAS conference paper — no DOI; NTRS 20190028464
+    url: "https://ntrs.nasa.gov/citations/20190028464"
+    note: "AAS 17-577 Table 2 (p.10): 'Flyby summary for EMEVVE family cycler over two repeat periods'. NTRS accession 20190028464. No DOI (AAS conference paper)."
+  priority_date: "2017-08-20"
+  notes: |
+    Fully-tabulated EMEVVE outbound member of the jones-2017-vem-triple-family,
+    transcribed verbatim from AAS 17-577 Table 2 (p.10) over two repeat periods
+    (11 encounters, body sequence E-M-E-V-V-E-M-E-V-V-E = two overlapping EMEVVE
+    cycles). Repeat period T = 12.8 yr (p.9). Transit legs E→M 309 d, M→E 259 d
+    (p.9). EMEVVE and EMEEVE "seemed to exhibit the best overall characteristics"
+    (p.8). Per-encounter v∞ (km/s): E 4.72 / M 2.50 / E 5.81 / V 7.00 / V 7.00 /
+    E 4.21 / M 2.79 / E 5.04 / V 4.49 / V 4.49 / E 5.67. Periapsis altitudes (km):
+    100 / 4,164 / 3,814 / 684 / 1,985 / 1,998 / 1,754 / 3,213 / 3,319 / 836 / 100.
+    No orbital elements or per-row Δv are published in the paper (note §8).
+  source_quotes:
+    "period.years": |
+      AAS 17-577 p.9: "Recall that the repeat period T is 12.8 years."
+    "invariants.transit_times_days": |
+      AAS 17-577 p.9 (outbound example): transit legs are "309 and 259 days"
+      (E→M 309, M→E 259). Matches Table 2 Flight-Time rows 12-Jun-2023 (309)
+      and 05-Feb-2036 (259).
+    "vinf_kms_at_encounters": |
+      AAS 17-577 Table 2 (p.10), "Excess speed, km/sec" column, in encounter
+      order: 4.72, 2.50, 5.81, 7.00, 7.00, 4.21, 2.79, 5.04, 4.49, 4.49, 5.67.
+    "flyby_mechanics": |
+      AAS 17-577 Table 2 (p.10), "Periapsis altitude, km" column: 100; 4,164;
+      3,814; 684; 1,985; 1,998; 1,754; 3,213; 3,319; 836; 100.
+
+# ---------------------------------------------------------------------------
+# 8c. Jones 2017 VEM triple cycler — MEEVEM inbound member (AAS 17-577 Table 3)
+# ---------------------------------------------------------------------------
+# Fully-tabulated member of the jones-2017-vem-triple-family. All numbers
+# below are transcribed verbatim from AAS 17-577 Table 3 (p.10) and the p.9
+# transit-leg text (M→E 268, E→M 223). Orbital elements are NOT published
+# (note §8); orbit_elements stays null with a data_gap.
+- id: jones-2017-vem-meevem-inbound
+  name: "Jones 2017 MEEVEM VEM triple cycler (inbound, AAS 17-577 Table 3)"
+  source: literature
+  trajectory_regime: ballistic   # AAS 17-577 p.5: "near-ballistic cycler solutions"; v∞-matching maneuvers <200 m/s differentially corrected to ballistic
+  model_assumption: analytic-ephemeris   # AAS 17-577 p.5: real-ephemeris zero-SOI patched conic + Lambert. NOT circular-coplanar.
+  cycler_class: multi-arc   # 6 flybys per cycle (MEEVEM), multiple distinct gravity-assist arcs; no single repeating (a,e) conic; see docs/notes/multi-arc-classification.md
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated — patched-conic, no single aphelion
+    transit_times_days: [268, 223]   # SOURCED: AAS 17-577 p.9 — inbound example transit legs are "268 and 223 days" (M→E 268, E→M 223); matches Table 3 rows (19-Mar-2023 268, 17-Nov-2035 223).
+    turn_ratio: null   # not tabulated (note §8)
+  delta_v_kms: null   # not published per-row for the Table 3 broad-search cycler (Δv only for Table 4 optimized architecture). See data_gaps.
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: AAS 17-577 Table 3 periapsis-altitude column (km). turning_angle_deg not tabulated (note §8).
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 100     # SOURCED: Table 3 row 1 (Mars 24-Jun-2022): 100 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 7831    # SOURCED: Table 3 row 2 (Earth 19-Mar-2023): 7,831 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 967     # SOURCED: Table 3 row 3 (Earth 28-Aug-2024): 967 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 29777   # SOURCED: Table 3 row 4 (Venus 13-Mar-2028): 29,777 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 2545    # SOURCED: Table 3 row 5 (Earth 02-Oct-2032): 2,545 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 249     # SOURCED: Table 3 row 6 (Mars 08-Apr-2035): 249 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 3719    # SOURCED: Table 3 row 7 (Earth 17-Nov-2035): 3,719 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 2224    # SOURCED: Table 3 row 8 (Earth 23-Apr-2039): 2,224 km
+    - body: "V"
+      turning_angle_deg: null
+      min_altitude_km: 12349   # SOURCED: Table 3 row 9 (Venus 23-Oct-2039): 12,349 km
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 7484    # SOURCED: Table 3 row 10 (Earth 11-Aug-2045): 7,484 km
+    - body: "M"
+      turning_angle_deg: null
+      min_altitude_km: 100     # SOURCED: Table 3 row 11 (Mars 21-Jan-2048): 100 km
+  bodies: ["M", "E", "V"]
+  sequence_canonical: "M-E-E-V-E-M"   # MEEVEM inbound itinerary (AAS 17-577 Table 1 row 2 inbound, Table 3 caption "MEEVEM family cycler"); one cycle = M-E-E-V-E-M
+  sense: "inbound"   # AAS 17-577 Table 1: MEEVEM is an Inbound itinerary (begins with near-Hohmann M→E arc)
+  period:
+    pair: "VEM-syn"
+    k: 2                  # two VEM synodic periods (T_syn ≈ 6.4 yr)
+    years: 12.8           # SOURCED: AAS 17-577 p.9 "the repeat period T is 12.8 years."
+    note: |
+      Repeat period T = 12.8 yr = 2 × T_syn (6.4-yr VEM synodic, p.3).
+      SOURCED: AAS 17-577 p.9: "Recall that the repeat period T is 12.8 years."
+      Table 3 lists two repeat periods (11 encounters Jun-2022 to Jan-2048).
+  vinf_kms_at_encounters:
+    # SOURCED: AAS 17-577 Table 3 "Excess speed, km/sec" column, p.10, in encounter order.
+    - body: "M"
+      vinf_kms: 3.85
+      note: "SOURCED: Table 3 row 1 (Mars 24-Jun-2022): 3.85 km/s. Near-Hohmann inbound start (M→E)."
+    - body: "E"
+      vinf_kms: 3.48
+      note: "SOURCED: Table 3 row 2 (Earth 19-Mar-2023): 3.48 km/s. M→E transit leg (268 d)."
+    - body: "E"
+      vinf_kms: 3.42
+      note: "SOURCED: Table 3 row 3 (Earth 28-Aug-2024): 3.42 km/s."
+    - body: "V"
+      vinf_kms: 5.16
+      note: "SOURCED: Table 3 row 4 (Venus 13-Mar-2028): 5.16 km/s."
+    - body: "E"
+      vinf_kms: 3.84
+      note: "SOURCED: Table 3 row 5 (Earth 02-Oct-2032): 3.84 km/s."
+    - body: "M"
+      vinf_kms: 3.12
+      note: "SOURCED: Table 3 row 6 (Mars 08-Apr-2035): 3.12 km/s."
+    - body: "E"
+      vinf_kms: 2.98
+      note: "SOURCED: Table 3 row 7 (Earth 17-Nov-2035): 2.98 km/s. E→M transit leg (223 d)."
+    - body: "E"
+      vinf_kms: 2.92
+      note: "SOURCED: Table 3 row 8 (Earth 23-Apr-2039): 2.92 km/s."
+    - body: "V"
+      vinf_kms: 4.31
+      note: "SOURCED: Table 3 row 9 (Venus 23-Oct-2039): 4.31 km/s."
+    - body: "E"
+      vinf_kms: 4.97
+      note: "SOURCED: Table 3 row 10 (Earth 11-Aug-2045): 4.97 km/s."
+    - body: "M"
+      vinf_kms: 2.42
+      note: "SOURCED: Table 3 row 11 (Mars 21-Jan-2048): 2.42 km/s."
+  orbit_elements:
+    a_au: null      # multi-arc; AAS 17-577 publishes NO orbital elements (note §8)
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Multi-arc patched-conic on real ephemeris. AAS 17-577 tabulates only encounter dates, v∞, periapsis altitudes, and transit ToF; NO orbital elements are published (mining note §8). Do NOT derive (circular)."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "heliocentric-inertial"
+    time_system: "UTC"
+    epoch_tzero: "2022-06-24"            # SOURCED: Table 3 row 1 (Mars 24-Jun-2022)
+    segments:
+      # ToFs are the AAS 17-577 Table 3 "Flight Time, days" column
+      # (days since the previous encounter; sourced verbatim).
+      - id: "me-leg1"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 268   # SOURCED: Table 3 row 2 Flight Time = 268 d (24-Jun-2022 → 19-Mar-2023); = p.9 inbound M→E transit leg
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Mars to first Earth flyby. Near-Hohmann M→E transit leg; ToF 268 d (Table 3 + p.9)."
+      - id: "ee-arc1"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 528   # SOURCED: Table 3 row 3 Flight Time = 528 d (19-Mar-2023 → 28-Aug-2024)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Earth arc. ToF 528 d (Table 3)."
+      - id: "ev-arc1"
+        from: "E"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 1293   # SOURCED: Table 3 row 4 Flight Time = 1293 d (28-Aug-2024 → 13-Mar-2028)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Venus flyby. ToF 1293 d (Table 3)."
+      - id: "ve-arc1"
+        from: "V"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 1664   # SOURCED: Table 3 row 5 Flight Time = 1664 d (13-Mar-2028 → 02-Oct-2032)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to Earth flyby. ToF 1664 d (Table 3)."
+      - id: "em-arc1"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 918   # SOURCED: Table 3 row 6 Flight Time = 918 d (02-Oct-2032 → 08-Apr-2035)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Mars flyby. ToF 918 d (Table 3)."
+      - id: "me-leg2"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 223   # SOURCED: Table 3 row 7 Flight Time = 223 d (08-Apr-2035 → 17-Nov-2035); = p.9 inbound E→M transit leg value (223)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Mars to Earth flyby. ToF 223 d (Table 3); the p.9 transit-leg pair for this inbound example is '268 and 223 days'."
+      - id: "ee-arc2"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 1253   # SOURCED: Table 3 row 8 Flight Time = 1253 d (17-Nov-2035 → 23-Apr-2039)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Earth arc. ToF 1253 d (Table 3)."
+      - id: "ev-arc2"
+        from: "E"
+        to: "V"
+        traj_type: "keplerian-arc"
+        tof_days: 183   # SOURCED: Table 3 row 9 Flight Time = 183 d (23-Apr-2039 → 23-Oct-2039)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to Venus flyby. ToF 183 d (Table 3)."
+      - id: "ve-arc2"
+        from: "V"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 2119   # SOURCED: Table 3 row 10 Flight Time = 2119 d (23-Oct-2039 → 11-Aug-2045)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Venus to Earth flyby. ToF 2119 d (Table 3)."
+      - id: "em-arc2"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 893   # SOURCED: Table 3 row 11 Flight Time = 893 d (11-Aug-2045 → 21-Jan-2048)
+        n_revs: null
+        branch: null
+        a_au: null
+        e: null
+        note: "Earth to final Mars flyby (end of two repeat periods). ToF 893 d (Table 3)."
+  data_gaps:
+    - path: "orbit_elements"
+      kind: "unknown"
+      note: "AAS 17-577 publishes NO orbital elements for any cycler (mining note §8). Solutions are encounter dates + v∞ + periapsis altitudes + transit ToF only. Cannot be source-derived without re-running Lambert (circular)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 3 + note §8"
+      todo_ref: null
+    - path: "delta_v_kms"
+      kind: "unknown"
+      note: "Per-row Δv not given for the Table 3 broad-search cycler. The paper's Δv numbers appear only for the Table 4 optimized architecture, a different set of trajectories (mining note §8)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 3 vs Table 4"
+      todo_ref: null
+    - path: "flyby_mechanics[*].turning_angle_deg"
+      kind: "unknown"
+      note: "Per-flyby turning angles δ and B-plane angles θ_B not tabulated for this cycler (mining note §8). Only periapsis altitudes are listed (captured in min_altitude_km)."
+      source_hint: "Jones, Hernandez, Jesick 2017 (AAS 17-577) Table 3"
+      todo_ref: null
+  family:
+    id: "jones-2017-vem-triple-family"
+    name: "Jones/Hernandez/Jesick VEM triple cyclers"
+    nomenclature: "MEEVEM inbound itinerary (AAS 17-577 Table 1)"
+    continuation_param: {name: "start_epoch", value: "2022-06-24"}
+  first_published:
+    authors: ["Jones, D. R.", "Hernandez, S.", "Jesick, M."]
+    year: 2017
+    title: "Low Excess Speed Triple Cyclers of Venus, Earth, and Mars"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS Paper 17-577"
+    date: "2017-08-20"
+    doi: null   # AAS conference paper — no DOI; NTRS 20190028464
+    url: "https://ntrs.nasa.gov/citations/20190028464"
+    note: "AAS 17-577 Table 3 (p.10): 'Flyby summary for MEEVEM family cycler over two repeat periods'. NTRS accession 20190028464. No DOI (AAS conference paper)."
+  priority_date: "2017-08-20"
+  notes: |
+    Fully-tabulated MEEVEM inbound member of the jones-2017-vem-triple-family,
+    transcribed verbatim from AAS 17-577 Table 3 (p.10) over two repeat periods
+    (11 encounters, body sequence M-E-E-V-E-M-E-E-V-E-M = two MEEVEM cycles).
+    Repeat period T = 12.8 yr (p.9). Transit legs M→E 268 d, E→M 223 d (p.9).
+    Per-encounter v∞ (km/s): M 3.85 / E 3.48 / E 3.42 / V 5.16 / E 3.84 / M 3.12 /
+    E 2.98 / E 2.92 / V 4.31 / E 4.97 / M 2.42. Periapsis altitudes (km):
+    100 / 7,831 / 967 / 29,777 / 2,545 / 249 / 3,719 / 2,224 / 12,349 / 7,484 /
+    100. No orbital elements or per-row Δv are published in the paper (note §8).
+  source_quotes:
+    "period.years": |
+      AAS 17-577 p.9: "Recall that the repeat period T is 12.8 years."
+    "invariants.transit_times_days": |
+      AAS 17-577 p.9 (inbound example): transit legs are "268 and 223 days"
+      (M→E 268, E→M 223). Matches Table 3 Flight-Time rows 19-Mar-2023 (268)
+      and 17-Nov-2035 (223).
+    "vinf_kms_at_encounters": |
+      AAS 17-577 Table 3 (p.10), "Excess speed, km/sec" column, in encounter
+      order: 3.85, 3.48, 3.42, 5.16, 3.84, 3.12, 2.98, 2.92, 4.31, 4.97, 2.42.
+    "flyby_mechanics": |
+      AAS 17-577 Table 3 (p.10), "Periapsis altitude, km" column: 100; 7,831;
+      967; 29,777; 2,545; 249; 3,719; 2,224; 12,349; 7,484; 100.
 
 # ---------------------------------------------------------------------------
 # 9. Aldrin classic Earth-Mars cycler (inbound / down-escalator)

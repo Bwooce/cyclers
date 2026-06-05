@@ -57,7 +57,7 @@ audit trail and is unchanged in spirit.
   asymmetric `tof_seed_days` option and an Aldrin parity test; `discover()`
   supports `optimiser="ephemeris"` (Part 2 wired).
 - **Catalogue census frozen as a ratchet** — `tests/test_catalogue_rediscovery.py`
-  (`EXPECTED_COVERAGE`) pins the 235-entry distribution; any catalogue
+  (`EXPECTED_COVERAGE`) pins the 237-entry distribution; any catalogue
   change must update it in the same commit.
 
 ## In progress (with plan references)
@@ -146,7 +146,7 @@ fill. Listed in rough priority order.
      literature-sourced Earth-Moon ΔV goldens (Hohmann 3954 m/s, Sweetser
      min 3726 m/s, traceable to Topputo 2013).
 
-## Catalogue census (frozen ratchet — 235 entries)
+## Catalogue census (frozen ratchet — 237 entries)
 
 Source of truth: `tests/test_catalogue_rediscovery.py` `EXPECTED_COVERAGE`.
 
@@ -156,10 +156,14 @@ Source of truth: `tests/test_catalogue_rediscovery.py` `EXPECTED_COVERAGE`.
 | `missing_leg_tofs` | 15 |
 | `non_heliocentric` | 6 |
 | `missing_vinf` | 5 |
+| `not_two_body` | 4 |
 | `constructible` | 2 |
-| `not_two_body` | 2 |
 | `missing_period` | 1 |
-| **Total** | **235** |
+| **Total** | **237** |
+
+(2026-06-05: `not_two_body` 2 → 4 with the two Jones 2017 VEM triple-cycler
+members — each spans three bodies E/M/V. cycler_class census separately:
+multi-arc 201 → 203, total 235 → 237.)
 
 The new `missing_leg_tofs` bucket (15) holds the individuated Hollister &
 Menning E-V family (orbits 1-15): each has matched V∞ at Earth and Venus
@@ -167,7 +171,7 @@ but no per-leg ToFs encoded in `legs`. Expanding the old single E-V
 placeholder moved one row out of `missing_vinf` (6 → 5) and one out of
 `missing_period` (2 → 1), and added the 15-row bucket.
 
-Through the idealised rediscovery gauntlet ~0/235 currently pass green:
+Through the idealised rediscovery gauntlet ~0/237 currently pass green:
 the 2 `constructible` (Aldrin) entries are model-limited skips
 (`EXPECTED_SKIPS`). Aldrin IS replicated on the real ephemeris (M6b)
 and the canonical 2-synodic E–M anchor is replicated idealised. The
@@ -377,25 +381,39 @@ Niehoff documents (none online), this cannot be resolved.
 
 ---
 
-## D. Jones 2017 VEM triple cyclers — full member list (high priority for M8)
+## ✓ Resolved (2026-06-05) — D. Jones 2017 VEM triple cyclers — full member list
 
-The Jones/Hernandez/Jesick 2017 paper reports "thousands" of VEM triple
-cyclers but the abstract gives only a family-level summary (average
-transit V∞ < 5 km/s). The NTRS record's "downloads" section returned
-HTTP 404. The ResearchGate PDF returned HTTP 403. **The catalogue
-currently has only a family-seed entry; M7 matching will tag any VEM
-finder hit as "probable-novel, flag for human review against Jones
-2017" until member-level data can be ingested.**
+The full AAS 17-577 paper was obtained and mined verbatim
+(docs/notes/2026-06-05-jones-aas17-577-vem-mining.md). Findings:
 
-The 2026-05-31 lunar+Jovian expansion added the EMEEVE 3-synodic
-archetype as a sibling entry capturing the 6.4-yr branch geometry; the
-2-synodic family-seed entry remains as-is. Both seeds are
-deliberate-placeholders.
+- **Member list (family level):** Table 1 (p.3) enumerates all 10
+  permitted itinerary families (5 outbound + 5 inbound):
+  EMEVE/MEVEM, EMEEVE/MEEVEM, EMEVVE/MEVVEM, EMEVEE/MEVEEM, EMMEVE/MEVEMM.
+  This IS the "member list" at the family level.
+- **Two fully-specified members ingested** as separate multi-arc rows:
+  `jones-2017-vem-emevve-outbound` (Table 2, p.10 — EMEVVE outbound,
+  11 encounters over two repeat periods, transit legs 309/259 d) and
+  `jones-2017-vem-meevem-inbound` (Table 3, p.10 — MEEVEM inbound,
+  transit legs 268/223 d). Both carry full per-encounter V∞ + periapsis
+  altitudes from the tables. No orbital elements are published anywhere
+  in the paper, so orbit_elements stays null with a data_gap (the single
+  biggest gap; do NOT derive — would be circular).
+- **6.4-yr (1-synodic) family is EMPTY:** p.8 "No feasible solutions were
+  found (of any family) with a repeat period of one synodic period (6.4
+  years). ... In contrast, thousands of feasible two-synodic period
+  cyclers were obtained." The placeholder `vem-emeeve-3syn` is retained
+  but flagged with a `period.feasibility` conflict data_gap recording its
+  premise is unrealized in this source.
+- **12.8-yr repeat-period correction applied:** p.9 "Recall that the
+  repeat period T is 12.8 years." T_syn = 6.4-yr VEM synodic (p.3), so
+  "two synodic period" = 12.8 yr, NOT 4.27 yr (2 × E-M synodic). The
+  family-seed `jones-2017-vem-triple-family` period was corrected from
+  4.27 → 12.8 yr and its `period.basis` data_gap marked resolved.
+- **Table 4** (architecture pair) is family-mixed (p.7 "permits the mixing
+  of cycler families") and is NOT ingested as a single-cycler row.
 
-**Recommendation:** Obtain the Jones 2017 paper via NASA STI, JPL Open
-Repository (handle hdl:2014/46418), or AIAA institutional access. Once
-the member list is available, add each member as its own YAML entry
-with full (sequence, period, V∞ multiset, leg elements).
+See docs/notes/2026-06-05-jones-aas17-577-vem-mining.md for all verbatim
+quotes and the honest "not extracted" list (§8).
 
 ---
 

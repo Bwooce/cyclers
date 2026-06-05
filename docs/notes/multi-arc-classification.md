@@ -358,18 +358,27 @@ It is therefore added to `MULTI_ARC_ALLOWLIST` (final size 199). Its top-level
 | `niehoff-visit1` | 1 | single-ellipse | Rogers 2012 |
 | `niehoff-visit2` | 1 | single-ellipse | Rogers 2012 |
 | `s1l1-2syn-em-cpom` | 1 | single-ellipse | Rogers 2012 Table 1 |
-| `jones-2017-vem-triple-family` | 1 | single-ellipse (conservative) | Jones 2017 |
-| `vem-emeeve-3syn` | 1 | single-ellipse (conservative) | — |
+| `jones-2017-vem-triple-family` | 1 | single-ellipse (conservative family seed) | Jones 2017 |
+| `vem-emeeve-3syn` | 1 | single-ellipse (conservative; premise unrealized — Jones 2017 p.8) | — |
+| `jones-2017-vem-emevve-outbound` | 1 | **multi-arc** | Jones 2017 (AAS 17-577) Table 2 |
+| `jones-2017-vem-meevem-inbound` | 1 | **multi-arc** | Jones 2017 (AAS 17-577) Table 3 |
 | `arenstorf-em-figure8-1963` | 1 | non-keplerian | primary=Earth |
 | `genova-aldrin-2015-em-3petal-cycler` | 1 | non-keplerian | primary=Earth |
 | `wittal-2022-em-cycler-family` | 1 | non-keplerian | primary=Earth |
 | `hernandez-2017-jovian-ieg-triple-family` | 1 | non-keplerian | primary=Jupiter |
 
-**Total: 235 rows classified.**
-- **multi-arc: 201** (184 ocampo + 14 ch4 + `mcconaghy-2006-em-k2` + `sanchez-net-2022-eem-cycler1` + `sanchez-net-2022-em-cycler2`)
+**Total: 237 rows classified.**
+- **multi-arc: 203** (184 ocampo + 14 ch4 + `mcconaghy-2006-em-k2` + `sanchez-net-2022-eem-cycler1` + `sanchez-net-2022-em-cycler2` + `jones-2017-vem-emevve-outbound` + `jones-2017-vem-meevem-inbound`)
 - **single-ellipse: 28**
 - **non-keplerian: 6**
 - **uncertain: 0** (the formerly-flagged row resolved to multi-arc — see §7/§12)
+
+Jones 2017 verdict (added 2026-06-05): `jones-2017-vem-emevve-outbound`
+(AAS 17-577 Table 2) and `jones-2017-vem-meevem-inbound` (AAS 17-577 Table 3)
+are **multi-arc** — each is a real-ephemeris patched-conic VEM triple cycler
+with six gravity-assist flybys per 12.8-yr cycle and no single repeating (a,e)
+conic (the paper publishes no orbital elements; Jones, Hernandez & Jesick 2017,
+NTRS 20190028464, §method p.5 and Tables 2-3 p.10).
 
 ---
 
@@ -589,10 +598,14 @@ MULTI_ARC_ALLOWLIST = [
     "sanchez-net-2022-eem-cycler1",
     # Sanchez Net 2022 EM near-ballistic real-date patched-conic cycler (Fig. 2b)
     "sanchez-net-2022-em-cycler2",
+    # Jones 2017 VEM triple cyclers (AAS 17-577 Tables 2 & 3); real-ephemeris
+    # patched-conic, 6 flybys/cycle, no single repeating (a,e) conic.
+    "jones-2017-vem-emevve-outbound",
+    "jones-2017-vem-meevem-inbound",
 ]
 
-# Verification: this list must have exactly 201 entries.
-assert len(MULTI_ARC_ALLOWLIST) == 201
+# Verification: this list must have exactly 203 entries.
+assert len(MULTI_ARC_ALLOWLIST) == 203
 
 # E-E-M-M single-ellipse rows confirmed NOT in the allowlist:
 SINGLE_ELLIPSE_EXCEPTIONS_CHECKED = [
