@@ -13,6 +13,11 @@ Rules enforced
    rotating-frame orbits are planet-centric, not heliocentric).
 3. ``period.basis`` items, when present, must each carry both ``pair``
    and ``k`` keys.
+4. (v4.2, spec §16.7.9) ``trajectory.segments[].tof_days_bounds``, when
+   present, must be exactly two positive numbers with ``min <= max``.  It
+   is deliberately NOT required to contain ``tof_days``.
+5. (v4.2, spec §16.7.9) ``source_ephemeris``, when present, must be a
+   non-empty string.
 
 Dispatch helper
 ---------------
@@ -89,6 +94,59 @@ def validate_schema_invariants(rows: list[dict[str, Any]]) -> list[str]:
                     errors.append(f"{rid}: period.basis[{i}] is missing required key 'pair'")
                 if "k" not in item:
                     errors.append(f"{rid}: period.basis[{i}] is missing required key 'k'")
+
+        # Rule 4 (v4.2): trajectory.segments[].tof_days_bounds shape/order.
+        # Note: tof_days (when present) is deliberately NOT required to lie
+        # inside the bounds — e.g. the Aldrin outbound segment carries
+        # tof_days=146 (circular-coplanar idealization) while Rogers et al.
+        # 2012 Table 4 publishes a STOUR range of 161-172 d; both are sourced
+        # framings of the same leg, so forcing containment would reject valid data.
+        trajectory = row.get("trajectory") or {}
+        segments = trajectory.get("segments")
+        if segments is not None:
+            for i, seg in enumerate(segments):
+                if not isinstance(seg, dict):
+                    continue
+                bounds = seg.get("tof_days_bounds")
+                if bounds is None:
+                    continue
+                seg_id = seg.get("id", i)
+                if not isinstance(bounds, (list, tuple)) or len(bounds) != 2:
+                    errors.append(
+                        f"{rid}: trajectory.segments[{seg_id}].tof_days_bounds must be "
+                        f"exactly 2 numbers [min, max] (got {bounds!r})"
+                    )
+                    continue
+                lo, hi = bounds
+                if (
+                    not isinstance(lo, (int, float))
+                    or not isinstance(hi, (int, float))
+                    or isinstance(lo, bool)
+                    or isinstance(hi, bool)
+                ):
+                    errors.append(
+                        f"{rid}: trajectory.segments[{seg_id}].tof_days_bounds items must "
+                        f"both be numbers (got {bounds!r})"
+                    )
+                    continue
+                if lo <= 0 or hi <= 0:
+                    errors.append(
+                        f"{rid}: trajectory.segments[{seg_id}].tof_days_bounds values must "
+                        f"both be > 0 (got {bounds!r})"
+                    )
+                if lo > hi:
+                    errors.append(
+                        f"{rid}: trajectory.segments[{seg_id}].tof_days_bounds must have "
+                        f"min <= max (got min={lo!r}, max={hi!r})"
+                    )
+
+        # Rule 5 (v4.2): source_ephemeris, when present, must be a non-empty string.
+        if "source_ephemeris" in row:
+            se = row.get("source_ephemeris")
+            if se is not None and (not isinstance(se, str) or se.strip() == ""):
+                errors.append(
+                    f"{rid}: source_ephemeris must be a non-empty string when present (got {se!r})"
+                )
 
     return errors
 

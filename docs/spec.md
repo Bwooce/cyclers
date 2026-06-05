@@ -1043,7 +1043,9 @@ decisions below were each made earlier in the project (§16.6, §16.7.6,
    on demand against any ephemeris. Storing SPK-style sampled states would
    freeze each row to one ephemeris realisation and balloon the repo.
    SPK-kernel *references* (for cross-checking against published mission
-   kernels) remain a v4.2 candidate, not a v4 feature.
+   kernels) were a v4.2 candidate; their sourced essence — the ephemeris
+   model the source's numbers were computed against — is now built as the
+   `source_ephemeris` field (see §16.7.9).
 
 2. **OCM over OEM** — CCSDS Orbit Data Messages (CCSDS 502.0-B-3, Blue
    Book) defines OPM (single state), OMM (theory-bound mean elements), and
@@ -1079,3 +1081,62 @@ decisions below were each made earlier in the project (§16.6, §16.7.6,
    running shortest-path search (Dijkstra/A*) over that graph to *propose*
    candidate sequences is a recorded Forge-pipeline enhancement candidate,
    not yet built.
+
+#### 16.7.9 Schema v4.2 — segment center, TOF bounds, source ephemeris
+
+The v4.2 sub-rev adds three **additive, optional, non-signature** fields. None
+is a signature field, none changes the canonical signature, and no existing row
+is required to carry any of them. Backfill is lazy and source-gated (as in
+§16.7.6): the structure ships now; values are populated only as sources are read
+and a published number is in hand.
+
+1. **`trajectory.segments[].center`** (optional string) — the body the
+   segment's conic/arc is centred on. Absent ⇒ `"Sun"` (heliocentric, the
+   status quo). It is a free string, consistent with the top-level
+   `orbit_elements.center` (which is likewise a free string defaulting to
+   `"Sun"`); deliberately **no enum**, so planet-centric (moon-tour) cycler
+   segments can name their primary. This is schema-readiness for tracked
+   issue #76 (planet-centric / moon-tour segments).
+
+2. **`trajectory.segments[].tof_days_bounds`** (optional `[min, max]`, days) —
+   a *published* time-of-flight range, for sources that state a range rather
+   than a point value. Exactly two numbers, both `> 0`, with `min <= max`.
+
+   **Non-containment decision.** `tof_days_bounds` is deliberately **not**
+   required to contain the segment's `tof_days` (when both are present). The
+   motivating example: the Aldrin outbound segment carries `tof_days = 146`
+   (the circular-coplanar idealization) while Rogers et al. 2012 Table 4
+   publishes a STOUR real-ephemeris range of **161–172 d** for the same leg.
+   These are different *model framings* of one physical leg, and both are
+   sourced. Forcing the point value to lie inside the published range would
+   reject valid, sourced data, so the validator checks shape and ordering only.
+
+3. **`source_ephemeris`** (top-level, optional string) — the ephemeris model
+   the source paper states its published numbers were computed against (e.g.
+   `"DE405"`, `"DE430"`, `"STOUR ephemeris"`). When present it must be a
+   non-empty string. This is the reduced, sourced essence of the earlier
+   "SPK-kernel references" v4.2 candidate (§16.7.8 item 1): rather than store
+   sampled kernels, we record *which* ephemeris a row's anchor numbers trace
+   to, which is what cross-checking actually needs.
+
+**Schema v4.2 fields:**
+
+```yaml
+source_ephemeris: "DE430"     # ephemeris the source's numbers were computed against
+trajectory:
+  segments:
+    - id: out
+      from: E
+      to: M
+      tof_days: 146           # circular-coplanar idealization (point value)
+      tof_days_bounds: [161, 172]   # Rogers et al. 2012 STOUR range; NOT required to contain tof_days
+      center: Sun             # absent => Sun; name the primary for planet-centric segments
+```
+
+**Validation split.** The JSON Schema (`data/catalogue.schema.json`) enforces
+the structural shape it can express — `tof_days_bounds` is exactly two numbers
+each with `exclusiveMinimum: 0`, `center` is a string. The Python semantic gate
+(`validate_schema_invariants`) enforces what JSON Schema cannot: `min <= max`,
+non-empty `source_ephemeris`, and (by *omission*) the non-containment rule
+above. The permissive `additionalProperties: true` posture is preserved
+throughout. No rows are backfilled in this rev (structure + validation only).

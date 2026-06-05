@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cyclers.space/schemas/catalogue.schema.json",
-  "version": "4.1",
+  "version": "4.2",
   "title": "Cycler Finder Catalogue",
-  "description": "Schema v4.1 for data/catalogue.yaml. Adds free_return_arcs[] (arc-type descriptors, spec §16.7.7) to v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
+  "description": "Schema v4.2 for data/catalogue.yaml. Adds segments[].center, segments[].tof_days_bounds, source_ephemeris (spec §16.7.9) to v4.1 (which added free_return_arcs[] arc-type descriptors, spec §16.7.7, to v4). Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e).",
   "type": "array",
   "items": {
     "type": "object",
@@ -13,6 +13,10 @@
       "id": {
         "type": "string",
         "description": "Stable human-readable slug for this cycler entry."
+      },
+      "source_ephemeris": {
+        "type": ["string", "null"],
+        "description": "Schema v4.2 (spec §16.7.9): the ephemeris model the source paper states its published numbers were computed against (e.g. 'DE405', 'DE430', 'STOUR ephemeris'). Null/absent when the source does not state one. Non-empty when present (enforced by the Python semantic gate, since JSON Schema minLength cannot apply to the null branch)."
       },
       "cycler_class": {
         "type": "string",
@@ -125,6 +129,36 @@
               }
             },
             "description": "Beat-period basis for n-body (VEM) cyclers."
+          }
+        }
+      },
+      "trajectory": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "segments": {
+            "type": "array",
+            "description": "OCM TRAJ-model encounter legs. Permissive (additionalProperties: true) on legacy keys; v4.2 only constrains the two additive optional keys center and tof_days_bounds.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "center": {
+                  "type": "string",
+                  "description": "Schema v4.2 (spec §16.7.9): body the segment's conic/arc is centred on. Absent => 'Sun' (heliocentric, the status quo). Free string (consistent with orbit_elements.center); no enum, to allow planet-centric (moon-tour) cycler segments (issue #76)."
+                },
+                "tof_days_bounds": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "description": "Schema v4.2 (spec §16.7.9): published time-of-flight range [min, max] in days, for sources stating a range rather than a point. Both > 0 and min <= max (order enforced by the Python semantic gate). NOT required to contain tof_days when present — different model framings of the same leg may both be sourced (e.g. Aldrin outbound tof_days=146 circular-coplanar vs Rogers et al. 2012 STOUR range 161-172 d)."
+                }
+              }
+            }
           }
         }
       }

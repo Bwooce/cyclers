@@ -24,10 +24,10 @@ def _load_schema() -> dict[str, Any]:
     return json.loads(SCHEMA_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4_1() -> None:
-    """The schema document carries version == '4.1' (schema v4.1 adds free_return_arcs)."""
+def test_schema_version_is_4_2() -> None:
+    """The schema carries version == '4.2' (v4.2 adds center, tof_days_bounds, source_ephemeris)."""
     schema = _load_schema()
-    assert schema["version"] == "4.1"
+    assert schema["version"] == "4.2"
 
 
 def test_catalogue_matches_jsonschema() -> None:

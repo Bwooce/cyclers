@@ -463,6 +463,33 @@ Backfill coverage (2026-06-03): 12 entries with explicit descriptors from Russel
 `russell-ocampo-*` entries gapped (Russell Ch3 tables carry AR/TR summary, not
 leg descriptors).
 
+Schema v4.2 — segment center, TOF bounds, source ephemeris
+----------------------------------------------------------
+
+The v4.2 sub-rev adds three additive, optional, non-signature fields:
+`trajectory.segments[].center` (free string, absent ⇒ `Sun`, for planet-centric
+moon-tour segments — issue #76), `trajectory.segments[].tof_days_bounds`
+(a published `[min, max]` day range for sources that state a range), and
+top-level `source_ephemeris` (the ephemeris model — `DE405`, `DE430`, `STOUR
+ephemeris` — the source's numbers were computed against).
+
+```yaml
+source_ephemeris: "DE430"
+trajectory:
+  segments:
+    - id: out
+      tof_days: 146           # point idealization
+      tof_days_bounds: [161, 172]   # published range; NOT required to contain tof_days
+      center: Sun
+```
+
+`tof_days_bounds` is deliberately **not** required to contain `tof_days`:
+different sourced model framings of the same leg (e.g. Aldrin's circular-coplanar
+146 d vs Rogers et al. 2012 STOUR 161–172 d) are both valid. Full field
+semantics in **spec.md §16.7.9**. The JSON Schema enforces the shape; the
+Python semantic gate enforces `min <= max`, non-empty `source_ephemeris`, and
+the non-containment rule. No rows are backfilled in this rev (structure only).
+
 Out-of-paradigm work
 --------------------
 
