@@ -41,6 +41,62 @@ computes can never be the EXPECTED side of a golden test (project memory:
 case is wired as a documented `xfail` to be flipped by **M-ED**
 (real-ephemeris discovery), exactly as the roadmap's M-N test-gate row states.
 
+> **R1 partial supersession:** the "period and sequence only" clause above
+> described the catalogue before the Jones AAS 17-577 ingest. The two member
+> rows added 2026-06-05 carry **full sourced V∞ multisets** (11 encounters
+> each) — see Revision R1 below. The circular-coplanar gate still does not
+> assert them (the model cannot reproduce analytic-ephemeris values); they
+> become **M-ED targets**.
+
+---
+
+## Revision R1 (2026-06-05) — Jones AAS 17-577 ingested; plan deltas
+
+The plan below was written against two placeholder VEM rows. Commit
+`113817e` ingested the actual paper (Jones, Hernandez & Jesick, AAS 17-577;
+mining note `docs/notes/2026-06-05-jones-aas17-577-vem-mining.md`). Current
+four-row state (verified against the YAML, 2026-06-05):
+
+| row | period | pair / k | class | sequence | sourced V∞ |
+|---|---|---|---|---|---|
+| `jones-2017-vem-emevve-outbound` | **12.8 yr** | `VEM-syn` / 2 | multi-arc | E-M-E-V-V-E (11 enc.) | **yes — full multiset** |
+| `jones-2017-vem-meevem-inbound` | **12.8 yr** | `VEM-syn` / 2 | multi-arc | M-E-E-V-E-M (11 enc.) | **yes — full multiset** |
+| `jones-2017-vem-triple-family` | 12.8 yr (was 4.27 — corrected) | `VEM-syn` / 2 | single-ellipse (family seed) | placeholder | no |
+| `vem-emeeve-3syn` | 6.41 yr — **UNREALIZED** | `E-M` / 3 | single-ellipse | E-M-E-E-V-E | no |
+
+Plan deltas (binding on execution; the original text below is kept for
+audit, per the repo resolution policy):
+
+1. **Nomenclature trap.** Jones's "synodic period" is the **VEM beat
+   T_syn ≈ 6.4 yr** (≈ 3 × T_syn(E,M) ≈ 4 × T_syn(E,V)), and "two synodic
+   periods" = **12.8 yr** — NOT the E-M synodic (2.135 yr) reading the
+   placeholders originally used. p.8: no feasible 1-synodic (6.4-yr)
+   solutions of any family exist; realized cyclers repeat at 12.8 yr.
+2. **§4 gate re-anchoring.** The primary period round-trip gate (Task 4.1)
+   must anchor on the two **member rows** (sourced 12.8 yr), not on
+   `vem-emeeve-3syn` (premise-invalidated; its 6.41-yr value survives only
+   as the beat archetype — usable as a *resolver arithmetic* check with its
+   UNREALIZED status quoted in the docstring). Sequence anchors: the member
+   rows' sequences are sourced (the family row's remains a placeholder).
+3. **§5 pair-parse fix.** `period.pair: "VEM-syn"` is a beat token, not a
+   body pair: the loader must map non-2-body-pair tokens to
+   `period_basis=None` (the §2 natural-beat fallback then resolves
+   `beat 6.406 yr × k=2 = 12.81 yr` — agreeing with the sourced 12.8 within
+   rounding, which the gate asserts). Naively splitting `"VEM-syn"` would
+   crash `synodic_period_days("VEM", "syn")`. Only a token matching
+   `^[A-Z]-[A-Z]$` over known body letters maps to an anchor-pair basis.
+4. **§5 census numbers are stale.** `NOT_TWO_BODY` is now **4** (not 2) and
+   the catalogue is 237 rows; the promotion moves all four VEM rows to
+   `CONSTRUCTIBLE_MULTIBODY`, whose docstring must drop "null V∞" (member
+   rows carry sourced V∞ — excluded from the 2-body gauntlet all the same;
+   the Task 5.3 guard now covers four ids). Re-derive `EXPECTED_COVERAGE`
+   from the live loader at execution time; do not copy the §5.1 block below.
+5. **M-ED gets real targets.** The §4.2 xfail's eventual EXPECTED side now
+   exists: the member rows' V∞ multisets and per-leg ToFs (analytic
+   ephemeris) are legitimate sourced targets for real-ephemeris
+   rediscovery. Table 1 of the paper (10-itinerary enumeration, in the
+   mining note) is the M8 search-space spec for the novelty loop.
+
 ---
 
 ## Architecture
@@ -677,6 +733,10 @@ E-V-M-E baseline so the M-3D inclination lift surfaces as a reviewed diff.
 
 ## 4. VEM rediscovery gate validated against sourced anchors only
 
+> **R1 (2026-06-05):** the table below predates the Jones ingest — see
+> Revision R1 deltas 2 and 5. Anchor the primary gate on the two member rows
+> (sourced 12.8 yr + sourced sequences); `vem-emeeve-3syn` is UNREALIZED.
+
 This is the milestone's binding gate. **What is sourced for the two VEM rows**
 (verified against `data/catalogue.yaml`):
 
@@ -820,6 +880,11 @@ period/sequence are sourced).
 ---
 
 ## 5. Loader admission: ≥3-body rows from `NOT_TWO_BODY` to a categorised multibody class
+
+> **R1 (2026-06-05):** `NOT_TWO_BODY` is now **4** (two member rows added);
+> the `period.pair` parse must treat `"VEM-syn"` as a beat token →
+> `period_basis=None` (Revision R1 deltas 3–4). Do not copy the census block
+> below verbatim — re-derive from the live loader.
 
 Today both VEM rows are `ExclusionReason.NOT_TWO_BODY` (`_catalogue_loader.py:174-176`)
 and the census ratchet freezes that at `2`
