@@ -395,6 +395,100 @@ def validate_physical_invariants(rows: list[dict[str, Any]]) -> list[str]:
     return errors
 
 
+def validate_provenance_tags(rows: list[dict[str, Any]]) -> list[str]:
+    """Validate Task-3 provenance tags WHERE PRESENT (forward-compatible).
+
+    The per-field provenance back-fill (plan Task 3) attaches optional
+    ``orbit_source`` / ``vinf_source`` / ``orbit_fidelity`` / ``vinf_fidelity``
+    and an optional declared ``validation_tier`` to derivation-relevant rows.
+    Those tags do not exist on the catalogue yet, so on the current data this
+    function is a no-op — but it is the gate that makes them *machine-checked*
+    the moment they land, so Task 3 cannot introduce a typo'd source key or a
+    row that over-claims its tier.
+
+    Checks (each only when the tag is present):
+
+    * ``orbit_source`` / ``vinf_source`` must be :data:`SOURCE_REGISTRY` keys.
+    * ``orbit_fidelity`` / ``vinf_fidelity`` must be valid :data:`Fidelity`
+      tiers.
+    * ``validation_tier``, when declared, must equal the tier
+      :func:`classify_validation` actually computes from the row's sources +
+      fidelities — a row cannot claim ``cross_validated`` while sharing a
+      source or comparing across fidelities.
+    """
+    from cyclerfinder.data.provenance import (
+        Tier,
+        classify_validation,
+        is_fidelity,
+        is_registry_key,
+    )
+
+    errors: list[str] = []
+    for row in rows:
+        rid = row.get("id") or "<unknown>"
+        orbit_source = row.get("orbit_source")
+        vinf_source = row.get("vinf_source")
+        orbit_fid = row.get("orbit_fidelity")
+        vinf_fid = row.get("vinf_fidelity")
+        declared = row.get("validation_tier")
+
+        for field, val in (("orbit_source", orbit_source), ("vinf_source", vinf_source)):
+            if val is not None and not is_registry_key(str(val)):
+                errors.append(f"{rid}: {field}={val!r} is not a known provenance registry key")
+        for field, val in (("orbit_fidelity", orbit_fid), ("vinf_fidelity", vinf_fid)):
+            if val is not None and not is_fidelity(str(val)):
+                errors.append(f"{rid}: {field}={val!r} is not a valid fidelity tier")
+
+        if declared is not None:
+            try:
+                want = Tier(str(declared))
+            except ValueError:
+                errors.append(f"{rid}: validation_tier={declared!r} is not a recognised Tier value")
+                continue
+            same_fid = orbit_fid is not None and vinf_fid is not None and orbit_fid == vinf_fid
+            got = classify_validation(
+                str(orbit_source) if orbit_source is not None else None,
+                str(vinf_source) if vinf_source is not None else None,
+                same_fidelity=same_fid,
+            )
+            if got is not want:
+                errors.append(
+                    f"{rid}: declares validation_tier={want.value!r} but its sources/"
+                    f"fidelities only support {got.value!r}"
+                )
+
+    return errors
+
+
+def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
+    """Run BOTH validation layers over *rows*, returning all violations.
+
+    Single combined CI entry point (plan Task 7, closing pending #73's
+    in-repo semantic half). Layers, in order:
+
+    1. :func:`validate_schema_invariants` — cross-field *shape* / referential
+       invariants JSON Schema cannot express (Rules 1-6).
+    2. :func:`validate_physical_invariants` — source-independent *physics*
+       identities (orbit a/e geometry, V∞ sanity, period commensurability,
+       encounter reach).
+    3. :func:`validate_provenance_tags` — registry-key / fidelity-tier /
+       declared-tier checks on Task-3 provenance tags where present
+       (no-op until the back-fill lands).
+
+    The JSON-Schema *structural* layer (draft-2020 via the ``check-jsonschema``
+    pre-commit hook) is the further, out-of-process layer; this function is the
+    in-Python gate the test suite ratchets against.
+
+    Returns the concatenation of all layers' messages (empty when clean).
+    Never raises — callers decide how to surface violations.
+    """
+    return (
+        validate_schema_invariants(rows)
+        + validate_physical_invariants(rows)
+        + validate_provenance_tags(rows)
+    )
+
+
 def anchors_for(entry: dict[str, Any]) -> dict[str, bool]:
     """Return which expected-output anchor categories apply to *entry*.
 
@@ -445,4 +539,10 @@ def anchors_for(entry: dict[str, Any]) -> dict[str, bool]:
     }
 
 
-__all__ = ["anchors_for", "validate_physical_invariants", "validate_schema_invariants"]
+__all__ = [
+    "anchors_for",
+    "validate_catalogue",
+    "validate_physical_invariants",
+    "validate_provenance_tags",
+    "validate_schema_invariants",
+]
