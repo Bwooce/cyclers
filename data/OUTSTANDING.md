@@ -59,6 +59,23 @@ audit trail and is unchanged in spirit.
 - **Catalogue census frozen as a ratchet** — `tests/test_catalogue_rediscovery.py`
   (`EXPECTED_COVERAGE`) pins the 237-entry distribution; any catalogue
   change must update it in the same commit.
+- **Data-validation hardening (Forge phase 0) — COMPLETE** —
+  `docs/superpowers/plans/2026-06-03-data-validation-hardening.md` is now
+  fully shipped. The 2026-06-05 reconciliation deferred three items (Tasks 3,
+  5, and Task 4's live-row census ratchet); all three landed this run.
+  Task 3: per-field provenance tags (`orbit_source` / `vinf_source` /
+  `orbit_fidelity` / `vinf_fidelity`) back-filled mechanically onto 224 of 237
+  rows by `scripts/backfill_provenance_tags.py` (the 13 untagged rows name no
+  `SOURCE_REGISTRY` paper — explicit "unknown" marker, never a guessed key);
+  the forward-compatible `validate_provenance_tags` gate now validates real
+  data. Task 4 remainder: `tests/data/test_validation_tier_census.py` freezes
+  the live tier distribution `{cross_validated: 5, consistency_checked: 218,
+  unvalidated: 14}` as a monotone ratchet. Task 5: `score_corroboration`
+  (`tests/data/test_corroboration.py`) classifies a quantity strongly-sourced /
+  single-sourced / disputed and surfaces the spread (the S1L1 5.65-vs-4.99
+  Earth-V∞ dispute is the documented disputed case). Schema bumped 4.3 → 4.4
+  (the four tag fields as enums; spec §16.7.11). The `cycler_class` and
+  `EXPECTED_COVERAGE` census ratchets are unaffected (additive metadata).
 
 ## In progress (with plan references)
 
