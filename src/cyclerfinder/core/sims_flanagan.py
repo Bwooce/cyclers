@@ -43,6 +43,7 @@ Plan: ``docs/superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md`` (Phase 1)
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from math import exp
 
@@ -50,6 +51,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, STANDARD_GRAVITY_KM_S2
+from cyclerfinder.core.flyby import bend_angle, max_bend
 from cyclerfinder.core.kepler import propagate
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64 — matches kepler.py/flyby.py
@@ -369,3 +371,242 @@ def match_point_defect(leg: SimsFlanaganLeg, dvs: VecN3, mf_kg: float) -> NDArra
     defect[3:6] = fwd.v - bwd.v
     defect[6] = fwd.mass_kg - bwd.mass_kg
     return defect
+
+
+# ===========================================================================
+# Phase 2 — feasibility / defect constraints
+#
+# Turns the raw per-leg defect 7-vector into the constraint surface an
+# optimiser consumes: a scalar leg feasibility predicate, a chain-level defect
+# assembler over several legs, the flyby turn-angle inequality (reusing the
+# bend machinery in :mod:`cyclerfinder.core.flyby`, matching Yam Eq. 3), and
+# the NLP-dimension bookkeeping recorded from Yam §1 (``(8 + 3N)·M`` variables,
+# ``neq·M`` constraints with ``neq = 7``).
+# ===========================================================================
+
+
+def leg_feasible(
+    leg: SimsFlanaganLeg,
+    dvs: VecN3,
+    *,
+    mf_kg: float | None = None,
+    pos_tol_km: float = 1.0e-2,
+    vel_tol_kms: float = 1.0e-6,
+    mass_tol_kg: float = 1.0e-3,
+) -> bool:
+    r"""Whether the leg's match-point defect falls below tolerance.
+
+    A leg is *feasible* when the forward and backward propagations meet at the
+    match point: each block of the defect 7-vector (position, velocity, mass) is
+    within its own physically-scaled tolerance. Splitting the tolerance by block
+    rather than collapsing to a single norm keeps the km / km·s⁻¹ / kg scales
+    from swamping one another (a 1 km position miss and a 1 kg mass miss are not
+    comparable magnitudes).
+
+    Parameters
+    ----------
+    leg:
+        Leg configuration.
+    dvs:
+        Per-segment ``Delta V`` schedule, ``(N, 3)`` km/s.
+    mf_kg:
+        Spacecraft mass at the leg end, kg. ``None`` (default) uses the
+        self-consistent :func:`final_mass` for the supplied schedule, so the
+        mass block is zero by construction and the predicate tests only the
+        dynamical (position/velocity) closure. Pass an explicit value to test
+        mass closure against an externally-fixed end mass.
+    pos_tol_km:
+        Position-defect tolerance, km. Default ``1e-2`` matches the Lambert
+        residual scale used in the Phase 1 invariant tests.
+    vel_tol_kms:
+        Velocity-defect tolerance, km/s. Default ``1e-6`` matches the Lambert
+        residual scale from M1 / :func:`cyclerfinder.core.flyby`.
+    mass_tol_kg:
+        Mass-defect tolerance, kg.
+
+    Returns
+    -------
+    bool
+        ``True`` iff every defect block is within tolerance.
+    """
+    end_mass = final_mass(leg, dvs) if mf_kg is None else mf_kg
+    defect = match_point_defect(leg, dvs, end_mass)
+    pos_ok = float(np.linalg.norm(defect[0:3])) <= pos_tol_km
+    vel_ok = float(np.linalg.norm(defect[3:6])) <= vel_tol_kms
+    mass_ok = abs(float(defect[6])) <= mass_tol_kg
+    return pos_ok and vel_ok and mass_ok
+
+
+def chain_defect(
+    legs: Sequence[SimsFlanaganLeg],
+    schedules: Sequence[VecN3],
+    mf_kgs: Sequence[float] | None = None,
+) -> NDArray[np.float64]:
+    r"""Stacked match-point defect over a chain of ``M`` legs.
+
+    Returns the length-``7M`` concatenation of each leg's
+    :func:`match_point_defect` 7-vector — the equality-constraint vector the
+    Phase 3 optimiser drives to zero. Leg ``j``'s block occupies indices
+    ``[7j, 7j + 7)``.
+
+    The legs are treated independently here (each carries its own boundary
+    states); the *coupling* between consecutive legs at a shared flyby boundary
+    is the turn-angle inequality assembled separately by
+    :func:`flyby_bend_slacks`. Keeping the two constraint families separate
+    mirrors Yam's NLP, where the match-point equalities and the flyby
+    inequalities are distinct constraint sets.
+
+    Parameters
+    ----------
+    legs:
+        The ``M`` leg configurations.
+    schedules:
+        ``M`` per-segment ``Delta V`` schedules, ``schedules[j]`` of shape
+        ``(legs[j].n_segments, 3)``.
+    mf_kgs:
+        Optional ``M`` end masses (one per leg). ``None`` (default) uses each
+        leg's self-consistent :func:`final_mass`, zeroing every mass block.
+
+    Returns
+    -------
+    NDArray[np.float64]
+        Length-``7M`` stacked defect vector.
+    """
+    if len(schedules) != len(legs):
+        raise SimsFlanaganError(
+            f"need one schedule per leg: got {len(legs)} legs, {len(schedules)} schedules"
+        )
+    if mf_kgs is not None and len(mf_kgs) != len(legs):
+        raise SimsFlanaganError(
+            f"need one mf_kg per leg: got {len(legs)} legs, {len(mf_kgs)} masses"
+        )
+    out = np.empty(7 * len(legs), dtype=np.float64)
+    for j, (leg, dvs) in enumerate(zip(legs, schedules, strict=True)):
+        end_mass = final_mass(leg, dvs) if mf_kgs is None else mf_kgs[j]
+        out[7 * j : 7 * j + 7] = match_point_defect(leg, dvs, end_mass)
+    return out
+
+
+@dataclass(frozen=True)
+class FlybyBoundary:
+    r"""A flyby joining two legs: the in/out ``V_inf`` and the planet geometry.
+
+    The turn-angle constraint at a flyby is Yam Eq. 3 (as recorded), the same
+    bend formula already in :mod:`cyclerfinder.core.flyby`:
+    ``sin(delta_max / 2) = 1 / (1 + rp * V_inf^2 / mu)``. A boundary is
+    ballistically feasible when the angle between ``vinf_in`` and ``vinf_out``
+    does not exceed ``max_bend`` at the (mean) excess speed; otherwise a
+    powered manoeuvre would be required.
+
+    Attributes
+    ----------
+    body:
+        One-letter planet code (diagnostic / bookkeeping only).
+    vinf_in, vinf_out:
+        Heliocentric hyperbolic-excess velocity vectors entering and leaving
+        the flyby, ``(3,)`` km/s.
+    mu_planet:
+        Planet gravitational parameter, km^3/s^2.
+    rp_min:
+        Minimum safe flyby periapsis radius, km.
+    """
+
+    body: str
+    vinf_in: Vec3
+    vinf_out: Vec3
+    mu_planet: float
+    rp_min: float
+
+
+def flyby_bend_slacks(boundaries: Sequence[FlybyBoundary]) -> NDArray[np.float64]:
+    r"""Turn-angle inequality slacks for a chain of flyby boundaries.
+
+    Returns the length-``len(boundaries)`` array of ``delta_max - delta``
+    (radians) per boundary, where ``delta`` is the angle between ``vinf_in`` and
+    ``vinf_out`` and ``delta_max`` is the ballistic bend capability at the mean
+    excess speed (:func:`cyclerfinder.core.flyby.max_bend`). Non-negative slack
+    ⇒ the bend is ballistically achievable (the SLSQP ``fun(x) >= 0``
+    convention used throughout :mod:`cyclerfinder.search`); negative slack ⇒ a
+    powered turn would be needed.
+
+    The sign of each slack agrees with
+    :func:`cyclerfinder.core.flyby.is_ballistic_feasible` for equal-speed
+    boundaries: this reuses the exact bend machinery rather than re-deriving it.
+
+    Parameters
+    ----------
+    boundaries:
+        The flyby boundaries to evaluate.
+
+    Returns
+    -------
+    NDArray[np.float64]
+        Per-boundary bend slack ``delta_max - delta`` in radians.
+    """
+    slacks = np.empty(len(boundaries), dtype=np.float64)
+    for i, b in enumerate(boundaries):
+        vin_norm = float(np.linalg.norm(b.vinf_in))
+        vout_norm = float(np.linalg.norm(b.vinf_out))
+        if vin_norm == 0.0 or vout_norm == 0.0:
+            raise SimsFlanaganError(f"flyby boundary {i} ({b.body!r}) has a zero V_inf vector")
+        delta = bend_angle(b.vinf_in, b.vinf_out)
+        v_mean = 0.5 * (vin_norm + vout_norm)
+        delta_max = max_bend(b.mu_planet, b.rp_min, v_mean)
+        slacks[i] = delta_max - delta
+    return slacks
+
+
+@dataclass(frozen=True)
+class NlpDimensions:
+    r"""Structural dimensions of the assembled Sims-Flanagan NLP (Yam §1).
+
+    Attributes
+    ----------
+    n_variables:
+        Number of decision variables, ``(8 + 3N)·M`` for ``M`` legs of ``N``
+        segments each. The ``8`` per leg are the boundary degrees of freedom
+        (epoch / time-of-flight and the boundary ``V_inf``); the ``3N`` are the
+        per-segment ``Delta V`` components. Recorded from Yam §1.
+    n_constraints:
+        Number of nonlinear (match-point) equality constraints, ``neq·M``.
+    neq:
+        Per-leg match-point constraint count, ``7`` (3-D position + velocity +
+        mass), recorded from Yam §1.
+    """
+
+    n_variables: int
+    n_constraints: int
+    neq: int
+
+
+def nlp_dimensions(*, n_segments: int, n_legs: int) -> NlpDimensions:
+    r"""NLP dimension bookkeeping for an ``n_legs``-leg, ``n_segments``-segment
+    Sims-Flanagan problem.
+
+    Reproduces Yam §1's recorded sizing: ``(8 + 3N)·M`` variables and ``neq·M``
+    nonlinear constraints with ``neq = 7``. This lets an assembled problem be
+    validated structurally against the paper's dimensions (e.g. the recorded
+    E-E-J case: ``N = 20``, ``M = 1`` ⇒ 68 + ... ). It is bookkeeping only — it
+    builds no arrays.
+
+    Parameters
+    ----------
+    n_segments:
+        Segments per leg ``N``. Must be positive.
+    n_legs:
+        Number of legs ``M``. Must be positive.
+
+    Returns
+    -------
+    NlpDimensions
+    """
+    if n_segments <= 0:
+        raise SimsFlanaganError(f"n_segments must be positive, got {n_segments}")
+    if n_legs <= 0:
+        raise SimsFlanaganError(f"n_legs must be positive, got {n_legs}")
+    neq = 7
+    return NlpDimensions(
+        n_variables=(8 + 3 * n_segments) * n_legs,
+        n_constraints=neq * n_legs,
+        neq=neq,
+    )
