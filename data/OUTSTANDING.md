@@ -119,10 +119,16 @@ fill. Listed in rough priority order.
      (`https://public.ccsds.org/Pubs/502x0b3e1.pdf` works in a browser).
    - Acton 1996, "Ancillary data services of NASA's NAIF," *Planet. Space
      Sci.* 44(1):65–70, DOI `10.1016/0032-0633(95)00107-7` — paywalled.
-   - Campagnola & Russell 2010, Endgame Problem Parts 1+2, *JGCD* 33(2) —
-     paywalled (author copies exist but are bot-blocked).
-   - Campagnola, Skelton & Lantoine 2014, "Global Search for Gravity-Assist
-     Trajectories" — full citation (venue/DOI) still being sought.
+   - Campagnola & Russell 2010, Endgame Problem Parts 1+2, *JGCD* 33(2),
+     DOI `10.2514/1.44258` (Pt 1) / `10.2514/1.44290` (Pt 2) — paywalled
+     (author copies exist but are bot-blocked).
+   - ~~Campagnola, Skelton & Lantoine 2014, "Global Search for
+     Gravity-Assist Trajectories"~~ — **resolved 2026-06-05: no such paper
+     exists** (verified against AIAA ARC / NTRS / IEEE Xplore). Likely a
+     mix-up of Anderson, Campagnola & Lantoine 2015, *Cel. Mech. Dyn.
+     Astron.* 124(2):177–199, DOI `10.1007/s10569-015-9659-7`. Dropped as
+     a design reference (spec §16.7.8 item 3 now rests on Russell 2004
+     alone, which is held and verified).
 
 ## Catalogue census (frozen ratchet — 235 entries)
 

@@ -1056,20 +1056,26 @@ decisions below were each made earlier in the project (§16.6, §16.7.6,
    §16.6. A projection from a fully-populated row to canonical OCM KVN/XML
    remains possible by construction (see `data/README.md`).
 
-3. **Descriptor as genome** — the compact-string-encoding lineage (Russell
-   2004 §2.7/Ch.4 descriptor strings; Campagnola, Skelton & Lantoine 2014,
-   "Global Search for Gravity-Assist Trajectories" — full citation being
-   sought). Encoding a trajectory's *structure* as a short string over a
-   small alphabet makes families enumerable and searchable independent of
-   any numeric realisation. `free_return_arcs[].raw_descriptor` (§16.7.7)
+3. **Descriptor as genome** — Russell 2004 §2.7/Ch.4 descriptor strings.
+   Encoding a trajectory's *structure* as a short string over a small
+   alphabet makes families enumerable and searchable independent of any
+   numeric realisation. `free_return_arcs[].raw_descriptor` (§16.7.7)
    adopts this directly: the verbatim Russell token is first-class data,
    with `arc_type`/`resonance`/`tof_years` as its parsed projection.
+   *(A secondary reference originally cited here as "Campagnola, Skelton &
+   Lantoine 2014, Global Search for Gravity-Assist Trajectories" could not
+   be verified in any database — no such paper exists; likely a mix-up of
+   Anderson, Campagnola & Lantoine 2015, "Broad search for unstable
+   resonant orbits in the planar circular restricted three-body problem,"
+   Cel. Mech. Dyn. Astron. 124(2):177–199, DOI `10.1007/s10569-015-9659-7`.
+   Dropped; Russell 2004 — held and verified — carries this concept alone.)*
 
 4. **Tisserand graph** — Campagnola, S. & Russell, R.P., "The Endgame
-   Problem Part 1: V∞-Leveraging Technique and the Leveraging Graph" and
-   "Part 2: Multibody Technique and the Tisserand–Poincaré Graph," *Journal
-   of Guidance, Control, and Dynamics* 33(2), 2010. Representing flyby
-   reachability as a graph over (body, V∞) nodes is what the Tisserand
-   module implements; running shortest-path search (Dijkstra/A*) over that
-   graph to *propose* candidate sequences is a recorded Forge-pipeline
-   enhancement candidate, not yet built.
+   Problem Part 1: V∞-Leveraging Technique and the Leveraging Graph" (DOI
+   `10.2514/1.44258`) and "Part 2: Multibody Technique and the
+   Tisserand–Poincaré Graph" (DOI `10.2514/1.44290`), *Journal of Guidance,
+   Control, and Dynamics* 33(2), 2010. Representing flyby reachability as
+   a graph over (body, V∞) nodes is what the Tisserand module implements;
+   running shortest-path search (Dijkstra/A*) over that graph to *propose*
+   candidate sequences is a recorded Forge-pipeline enhancement candidate,
+   not yet built.
