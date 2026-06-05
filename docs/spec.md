@@ -652,7 +652,7 @@ OCM-aligned `trajectory{}` block, the `family{}` linkage, and the
 
 | System | Representation | Epoch | Multi-segment + maneuvers | Fit for us |
 |---|---|---|---|---|
-| **CCSDS OCM** (Orbit Comprehensive Message, 504.0-B) | State *or* elements; logical blocks `TRAJ` (trajectory segments), `MAN` (maneuvers), `PHYS`, `COV`, `USER`; explicit `CENTER_NAME` / `REF_FRAME` / `TIME_SYSTEM` | **Required** (`EPOCH_TZERO`) | **Yes** — this is its core strength | Trajectory sub-tree: excellent. Whole record: poor (no attribution/novelty/signature; would dump 80% into `USER`). |
+| **CCSDS OCM** (Orbit Comprehensive Message, CCSDS 502.0-B-3 §6) | State *or* elements; logical blocks `TRAJ` → `PHYS` → `COV` → `MAN` → `PERT` → `OD` → `USER` (Table 6-1 order); `CENTER_NAME` / `TRAJ_REF_FRAME` are per-TRAJ-block, `TIME_SYSTEM` / `EPOCH_TZERO` are message-global | **Required** (`EPOCH_TZERO`) | **Yes** — this is its core strength | Trajectory sub-tree: excellent. Whole record: poor (no attribution/novelty/signature; would dump 80% into `USER`). |
 | **CCSDS OEM** (Ephemeris Message) | Sampled state vectors + interpolation metadata | Required | Segments yes, maneuvers no | Over-specified; we don't sample states. |
 | **NORAD TLE / CCSDS OMM** | Mean elements bound to the SGP4 theory | Required | No | Theory-bound; meaningless without its propagator. |
 | **JPL SBDB / Horizons** | Osculating Keplerian + covariance; SPK Chebyshev kernels | Required | No | Single-body, epoch-anchored. |
@@ -1027,10 +1027,13 @@ Four bodies of prior art shaped the catalogue's data architecture. The
 decisions below were each made earlier in the project (§16.6, §16.7.6,
 §16.7.7); this subsection records them against their sources in one place.
 
-> **Provenance note:** these four are cited from their bibliographic records,
-> published abstracts, and standard summaries — the full texts have not yet
-> been digested (all four are fetch-blocked; see `data/OUTSTANDING.md`). No
-> golden-anchor numbers derive from them; they inform *structure* only.
+> **Provenance note (updated 2026-06-05):** CCSDS 502.0-B-3 and the
+> Campagnola–Russell Endgame pair (AAS 09-224/09-227 preprints of the JGCD
+> papers) have now been read in full — see
+> `docs/notes/2026-06-05-ccsds-odm-502-mining.md` and
+> `docs/notes/2026-06-05-endgame-tisserand-mining.md`. Acton 1996 remains
+> cited from its bibliographic record only (paywalled). No golden-anchor
+> numbers derive from these sources; they inform *structure* only.
 
 1. **Seeds, not tracks** — *contra* SPICE SPK/DAF (Acton, C.H., "Ancillary
    data services of NASA's Navigation and Ancillary Information Facility,"
@@ -1048,15 +1051,25 @@ decisions below were each made earlier in the project (§16.6, §16.7.6,
    `source_ephemeris` field (see §16.7.9).
 
 2. **OCM over OEM** — CCSDS Orbit Data Messages (CCSDS 502.0-B-3, Blue
-   Book) defines OPM (single state), OMM (theory-bound mean elements), and
-   OEM (sampled state vectors + interpolation metadata); the newer OCM
-   (CCSDS 504.0-B) adds multi-segment trajectories with maneuver blocks.
+   Book, April 2023) defines four message types: OPM (single state), OMM
+   (theory-bound mean elements), OEM (sampled state vectors + HERMITE /
+   LINEAR / LAGRANGE interpolation metadata), and — new in issue 3 — the
+   OCM (§6 of the same standard; an earlier draft of this subsection
+   mis-cited it as "CCSDS 504.0-B", which is actually the Attitude Data
+   Messages standard) with multi-segment trajectories and maneuver blocks.
    OEM was considered and rejected for the same reason as SPK: it is a
    *track* format (sampled states + interpolation), and we don't sample
    states. OCM's `TRAJ`/`MAN` logical-block decomposition is the model the
    `trajectory{}` block borrows (§16.6.2); the full comparison table is in
    §16.6. A projection from a fully-populated row to canonical OCM KVN/XML
-   remains possible by construction (see `data/README.md`).
+   remains possible by construction (see `data/README.md`). Reading the
+   standard itself (2026-06-05) validated two v4.2 choices: OCM §6.2.5.4(d)
+   explicitly allows `CENTER_NAME` to change per TRAJ block (our
+   `segments[].center`), and OCM metadata records `CELESTIAL_SOURCE` (e.g.
+   `JPL_DE_FILES`) — the standard's twin of our `source_ephemeris`. One
+   export caveat: `TIME_SYSTEM`/`EPOCH_TZERO` are message-global, so an OCM
+   projection must hold one time system across segments even when centers
+   differ.
 
 3. **Descriptor as genome** — Russell 2004 §2.7/Ch.4 descriptor strings.
    Encoding a trajectory's *structure* as a short string over a small

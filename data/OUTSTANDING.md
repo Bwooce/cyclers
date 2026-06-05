@@ -112,16 +112,24 @@ fill. Listed in rough priority order.
 4. **Jones / Hernandez / Jesick 2017 (AAS 17-577)** — VEM triple-cycler
    member list (Q&A item D). Needed to lift M8 out of placeholder
    territory; lower priority while M8 is deferred.
-5. **Data-architecture design references (spec §16.7.8) — full texts
-   fetch-blocked, lower priority (structure-only, no golden anchors):**
-   - CCSDS 502.0-B-3 *Orbit Data Messages* — freely redistributable but
-     the CCSDS site rate-limits automated downloads
-     (`https://public.ccsds.org/Pubs/502x0b3e1.pdf` works in a browser).
+5. **Data-architecture design references (spec §16.7.8) — mostly resolved
+   2026-06-05 (structure-only, no golden anchors):**
+   - ~~CCSDS 502.0-B-3 *Orbit Data Messages*~~ — **obtained and mined
+     2026-06-05** (`docs/notes/2026-06-05-ccsds-odm-502-mining.md`).
+     Yield: OCM lives in 502.0-B-3 §6 (spec's "504.0-B" citation was wrong
+     and is fixed); per-TRAJ-block CENTER_NAME validates v4.2
+     `segments[].center`; `CELESTIAL_SOURCE` validates `source_ephemeris`.
    - Acton 1996, "Ancillary data services of NASA's NAIF," *Planet. Space
-     Sci.* 44(1):65–70, DOI `10.1016/0032-0633(95)00107-7` — paywalled.
-   - Campagnola & Russell 2010, Endgame Problem Parts 1+2, *JGCD* 33(2),
-     DOI `10.2514/1.44258` (Pt 1) / `10.2514/1.44290` (Pt 2) — paywalled
-     (author copies exist but are bot-blocked).
+     Sci.* 44(1):65–70, DOI `10.1016/0032-0633(95)00107-7` — **still
+     paywalled**; cited from bibliographic record only.
+   - ~~Campagnola & Russell 2010, Endgame Problem Parts 1+2, *JGCD* 33(2),
+     DOI `10.2514/1.44258` / `10.2514/1.44290`~~ — **obtained (AAS
+     09-224/09-227 preprints) and mined 2026-06-05**
+     (`docs/notes/2026-06-05-endgame-tisserand-mining.md`). Yield: VILM
+     ΔV-min quadrature (Forge admissible heuristic), branch & bound over
+     the leveraging graph, T-P graph as CR3BP twin of our Tisserand module,
+     candidate VILM golden anchors (Tables 1–3 Pt 1, Table 1 Pt 2) for a
+     future VILM module.
    - ~~Campagnola, Skelton & Lantoine 2014, "Global Search for
      Gravity-Assist Trajectories"~~ — **resolved 2026-06-05: no such paper
      exists** (verified against AIAA ARC / NTRS / IEEE Xplore). Likely a
@@ -129,6 +137,14 @@ fill. Listed in rough priority order.
      Astron.* 124(2):177–199, DOI `10.1007/s10569-015-9659-7`. Dropped as
      a design reference (spec §16.7.8 item 3 now rests on Russell 2004
      alone, which is held and verified).
+   - Also scanned 2026-06-05 (`docs/notes/2026-06-05-vasile-hiraiwa-scan.md`):
+     Vasile & Campagnola 2009 (JBIS, arXiv:1105.1823) — low-thrust MGA to
+     Europa, NOT a cycler; #76-relevant synchronous moon tours + #37
+     candidate anchors (Tables 3–4, need re-transcription from a clean
+     copy: broken fonts). Hiraiwa et al. 2026 (arXiv:2602.17444) — cislunar
+     lobe-dynamics transfers, NOT a cycler; Table 3 carries
+     literature-sourced Earth-Moon ΔV goldens (Hohmann 3954 m/s, Sweetser
+     min 3726 m/s, traceable to Topputo 2013).
 
 ## Catalogue census (frozen ratchet — 235 entries)
 
