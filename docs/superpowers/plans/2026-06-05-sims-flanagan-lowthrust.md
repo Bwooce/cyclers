@@ -194,6 +194,28 @@ fabricated numbers.
 
 ---
 
+## Execution deviation (Phase 4, task #37, 2026-06-05)
+
+Phase 4 as written implies catalogue rows (`trajectory_regime: powered`) and
+schema edits (spec §16.7 powered / `maneuvers[].type = flyby-powered` fields).
+**This was deliberately scoped down to machinery-only.** No published source
+supplies a powered low-thrust cycler row we hold with extractable numbers, so
+fabricating a catalogue row is forbidden by the project's golden-test discipline
+(and by the task brief's binding disciplines). Likewise `data/catalogue.yaml`,
+`data/catalogue.schema.json`, `src/cyclerfinder/data/validate.py`, and
+`docs/spec.md` were left untouched.
+
+What landed instead: a powered-maintenance **evaluator**
+(`search/lowthrust_maintenance.py`) that models a cycler's per-synodic
+maintenance manoeuvre as a thrust-bounded low-thrust arc (reusing the Phase 1–3
+Sims-Flanagan substrate) and reports a `propellant_mass_fraction`, so future
+*sourced* powered rows (or the Forge) can consume it. It is demonstrated in
+tests on the existing ballistic rows' geometry (the Aldrin E-M maintenance ΔV
+recomputed under a thrust-bounded model and compared to the impulsive
+`optimise_maintenance_dv` result as an internal-consistency check — **not** a
+golden). A schema hook for `propellant_mass_fraction` / powered fields is a
+follow-up for whenever a sourced powered row is obtained.
+
 ## Sequencing rule
 
 Each phase ends green (full fast suite + ruff + mypy), commits locally per task,
