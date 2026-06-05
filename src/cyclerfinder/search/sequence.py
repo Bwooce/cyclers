@@ -336,6 +336,13 @@ def tisserand_feasible(
         for i in range(len(cell.sequence) - 1):
             body_a = cell.sequence[i]
             body_b = cell.sequence[i + 1]
+            if body_a == body_b:
+                # Same-body adjacency (e.g. the EMEEVE E-E loop leg) is a
+                # multi-rev phasing/resonant loop, not a transfer. The coplanar
+                # linkable() predicate is meaningless here (it returns a trivial
+                # True for X-to-X). Skip it; loop legs are validated by the
+                # multi-rev Lambert/closure path (M-L/M-ED), not by Tisserand.
+                continue
             found = False
             for vinf in grid:
                 v = float(vinf)
