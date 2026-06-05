@@ -12,6 +12,7 @@ Mars-perihelion reach) do NOT false-fail.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any, cast
 
 import yaml  # type: ignore[import-untyped]
 
@@ -20,8 +21,8 @@ from cyclerfinder.data.validate import validate_physical_invariants
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 
-def _live_rows() -> list[dict]:
-    return yaml.safe_load(CATALOGUE_PATH.read_text())
+def _live_rows() -> list[dict[str, Any]]:
+    return cast("list[dict[str, Any]]", yaml.safe_load(CATALOGUE_PATH.read_text()))
 
 
 # ---------------------------------------------------------------------------
