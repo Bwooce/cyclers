@@ -3,6 +3,15 @@
 Date: 2026-06-05. Scan-depth only (not deep mining). Per-paper verdicts below.
 Citations by author/title/arXiv ID only; PDF paths deliberately omitted (private mirror).
 
+> **SUPERSEDED FOR TABLE DIGITS (2026-06-05, task #96):** this scan's
+> 150-DPI readings of the Vasile tables contained errors — see
+> `2026-06-05-vasile-tables-retranscription.md` for the verified 300-DPI
+> cell-by-cell transcription. Known errors here: the tables are captioned
+> **Table 7 and Table 8** in the PDF (not 3/4); Ganymede4 TOF is **21.5**
+> (not 21.3); and several per-flyby figures quoted in prose below were
+> column-misaligned (bend angle B = 61.66/6.14, not 36.89/20.08; arrival
+> rel-V = 6.71, not 0.71). Do not source any digit from THIS note.
+
 ---
 
 ## Paper 1 — Vasile & Campagnola, "Design of Low-Thrust Multi-Gravity Assist Trajectories to Europa" (JBIS; arXiv:1105.1823)
