@@ -112,6 +112,17 @@ fill. Listed in rough priority order.
 4. **Jones / Hernandez / Jesick 2017 (AAS 17-577)** — VEM triple-cycler
    member list (Q&A item D). Needed to lift M8 out of placeholder
    territory; lower priority while M8 is deferred.
+5. **Data-architecture design references (spec §16.7.8) — full texts
+   fetch-blocked, lower priority (structure-only, no golden anchors):**
+   - CCSDS 502.0-B-3 *Orbit Data Messages* — freely redistributable but
+     the CCSDS site rate-limits automated downloads
+     (`https://public.ccsds.org/Pubs/502x0b3e1.pdf` works in a browser).
+   - Acton 1996, "Ancillary data services of NASA's NAIF," *Planet. Space
+     Sci.* 44(1):65–70, DOI `10.1016/0032-0633(95)00107-7` — paywalled.
+   - Campagnola & Russell 2010, Endgame Problem Parts 1+2, *JGCD* 33(2) —
+     paywalled (author copies exist but are bot-blocked).
+   - Campagnola, Skelton & Lantoine 2014, "Global Search for Gravity-Assist
+     Trajectories" — full citation (venue/DOI) still being sought.
 
 ## Catalogue census (frozen ratchet — 235 entries)
 

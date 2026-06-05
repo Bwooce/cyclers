@@ -1020,3 +1020,56 @@ Russell 2004 Tables 4.9–4.13 (pp.127–134); 3 entries with incomplete
 descriptors gapped (`russell-ch4-8.165Gfh-f2`, `russell-ch4-3.77Gh3`,
 `russell-ch4-5.66Gfh3`); all `russell-ocampo-*` entries gapped (Russell Ch3
 tables carry AR/TR summary, not leg descriptors).
+
+#### 16.7.8 Data-architecture design rationale (prior art, decisions recorded)
+
+Four bodies of prior art shaped the catalogue's data architecture. The
+decisions below were each made earlier in the project (§16.6, §16.7.6,
+§16.7.7); this subsection records them against their sources in one place.
+
+> **Provenance note:** these four are cited from their bibliographic records,
+> published abstracts, and standard summaries — the full texts have not yet
+> been digested (all four are fetch-blocked; see `data/OUTSTANDING.md`). No
+> golden-anchor numbers derive from them; they inform *structure* only.
+
+1. **Seeds, not tracks** — *contra* SPICE SPK/DAF (Acton, C.H., "Ancillary
+   data services of NASA's Navigation and Ancillary Information Facility,"
+   *Planetary and Space Science* 44(1):65–70, 1996, DOI
+   `10.1016/0032-0633(95)00107-7`). SPICE stores *sampled trajectories*
+   (Chebyshev-fitted state histories in DAF segments) because its job is
+   replaying a specific mission's as-flown path. Our job is the opposite:
+   the catalogue stores the *generative seed* (elements, invariants, arc
+   descriptors, encounter sequence) and the code regenerates the trajectory
+   on demand against any ephemeris. Storing SPK-style sampled states would
+   freeze each row to one ephemeris realisation and balloon the repo.
+   SPK-kernel *references* (for cross-checking against published mission
+   kernels) remain a v4.2 candidate, not a v4 feature.
+
+2. **OCM over OEM** — CCSDS Orbit Data Messages (CCSDS 502.0-B-3, Blue
+   Book) defines OPM (single state), OMM (theory-bound mean elements), and
+   OEM (sampled state vectors + interpolation metadata); the newer OCM
+   (CCSDS 504.0-B) adds multi-segment trajectories with maneuver blocks.
+   OEM was considered and rejected for the same reason as SPK: it is a
+   *track* format (sampled states + interpolation), and we don't sample
+   states. OCM's `TRAJ`/`MAN` logical-block decomposition is the model the
+   `trajectory{}` block borrows (§16.6.2); the full comparison table is in
+   §16.6. A projection from a fully-populated row to canonical OCM KVN/XML
+   remains possible by construction (see `data/README.md`).
+
+3. **Descriptor as genome** — the compact-string-encoding lineage (Russell
+   2004 §2.7/Ch.4 descriptor strings; Campagnola, Skelton & Lantoine 2014,
+   "Global Search for Gravity-Assist Trajectories" — full citation being
+   sought). Encoding a trajectory's *structure* as a short string over a
+   small alphabet makes families enumerable and searchable independent of
+   any numeric realisation. `free_return_arcs[].raw_descriptor` (§16.7.7)
+   adopts this directly: the verbatim Russell token is first-class data,
+   with `arc_type`/`resonance`/`tof_years` as its parsed projection.
+
+4. **Tisserand graph** — Campagnola, S. & Russell, R.P., "The Endgame
+   Problem Part 1: V∞-Leveraging Technique and the Leveraging Graph" and
+   "Part 2: Multibody Technique and the Tisserand–Poincaré Graph," *Journal
+   of Guidance, Control, and Dynamics* 33(2), 2010. Representing flyby
+   reachability as a graph over (body, V∞) nodes is what the Tisserand
+   module implements; running shortest-path search (Dijkstra/A*) over that
+   graph to *propose* candidate sequences is a recorded Forge-pipeline
+   enhancement candidate, not yet built.
