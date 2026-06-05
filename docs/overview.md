@@ -94,7 +94,7 @@ Authoritative milestone definitions and gates: **spec.md §8**. Planning status 
 | **M8-UX** | VEM campaign CLI + viz + reporting (the §6 carve-out from M8-Core) | planned | [phases/m8-multibody-vem/plan.md](phases/m8-multibody-vem/plan.md) §6 |
 | Live | `cyclers.space` public site — catalogue browser + planet filter + real-ephemeris launch windows | **shipped** ([cyclers.space](https://cyclers.space)) | — |
 | Stretch | GMAT bridge (V4 of validation gauntlet) | planned | — |
-| Stretch | Low-thrust v2 scope expansion (#37) | **in progress** — Sims-Flanagan leg model (phase 1 of 5) landed 2026-06-05 (`core/sims_flanagan.py`, physics-invariant tests); phases 2–5 pending | [superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md](superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md) |
+| Stretch | Low-thrust v2 scope expansion (#37) | **done** 2026-06-05 (all 5 phases): `core/sims_flanagan.py` + `search/lowthrust.py` (two-phase DE+SLSQP) + `search/lowthrust_maintenance.py` — machinery only, physics-invariant gated; powered catalogue rows await a sourced publication | [superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md](superpowers/plans/2026-06-05-sims-flanagan-lowthrust.md) |
 
 Completed-phase `todo.md` working checklists (M0–M7) have been retired; their durable outcomes live in this table, spec.md, and the code itself. Each milestone's `plan.md` is kept as history. M8-Core executed 2026-06-05; the open fronts are M8-UX, the low-thrust v2 expansion (#37 phases 2–5), and the Forge pipeline (`superpowers/plans/2026-06-03-the-forge-pipeline.md`).
 

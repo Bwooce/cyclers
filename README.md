@@ -22,7 +22,7 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | M7 — catalogue loader, signature matching, novelty (crosscheck + writeback + discover landed; `discover(optimiser="ephemeris")` wired) | done |
 | M8-Core — VEM 3-body search core (`period_basis` beat dispatch, same-body Tisserand bypass, `CONSTRUCTIBLE_MULTIBODY` admission, sourced 12.8-yr Jones gate) | ✓ done |
 | M8-UX — VEM campaign CLI + viz + reporting | planned |
-| Low-thrust (v2) — Sims-Flanagan leg model (phase 1 of 5) | in progress |
+| Low-thrust (v2) — Sims-Flanagan model: leg model, feasibility/NLP constraints, two-phase DE+SLSQP solve, powered-maintenance evaluator (machinery only — no sourced powered rows exist) | ✓ done |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
 237-entry published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
