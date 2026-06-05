@@ -75,6 +75,7 @@
         to: "M"
         traj_type: "keplerian-arc"
         tof_days: 146
+        tof_days_bounds: [161, 172]   # schema v4.2 (2026-06-05): SOURCED Rogers et al. 2012 Table 4 STOUR-ephemeris range across K:L(M) variants. tof_days=146 (circular-coplanar idealization) sits OUTSIDE the bounds by design — different model framings; containment deliberately not enforced (spec §16.7.9).
         n_revs: 0
         branch: "single"
         a_au: 1.60
@@ -2022,6 +2023,7 @@
 # ---------------------------------------------------------------------------
 - id: aldrin-4-3-2-establishment
   name: "Aldrin 4:3(2)- Variant (Analytic Ephemeris Establishment)"
+  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers et al. 2012 Table 4 values (V_inf, h_flyby, dV_DSM, TOF) are STOUR analytic-ephemeris establishment numbers.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
@@ -2140,6 +2142,7 @@
 # ---------------------------------------------------------------------------
 - id: aldrin-3-2-1-establishment
   name: "Aldrin 3:2(1)- Variant (Analytic Ephemeris Establishment)"
+  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers et al. 2012 Table 4 values (V_inf, h_flyby, dV_DSM, TOF) are STOUR analytic-ephemeris establishment numbers.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
