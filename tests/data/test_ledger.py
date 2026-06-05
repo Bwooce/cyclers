@@ -160,3 +160,45 @@ def test_ledger_loader_parses_existing(tmp_path: Path) -> None:
     loader = LedgerLoader(ledger_path)
     cells = {entry.cell_id for entry in loader}
     assert cells == {"c1", "c2"}
+
+
+# ---------------------------------------------------------------------------
+# Verdict tier + audit trail (Forge phase 3 — additive ledger fields)
+# ---------------------------------------------------------------------------
+
+
+def test_ledger_carries_verdict_and_audit(tmp_path: Path) -> None:
+    """A solved entry may carry a gauntlet verdict tier + audit trail, and they
+    round-trip through the JSONL serialisation unchanged."""
+    ledger_path = tmp_path / "ledger.jsonl"
+    ledger = Ledger(ledger_path)
+    audit = {
+        "A": {"available": True, "agreed": True, "n_paths_available": 2},
+        "C": {"has_independent_source": True},
+    }
+    prov: dict[str, object] = {"candidate_id": "c1", "known_id": None, "superseded_by": []}
+    entry = dataclasses.replace(
+        _make_entry("c1"),
+        verdict_tier="gold",
+        verdict_audit={"axis_results": audit, "provenance": prov},
+    )
+    ledger.record(entry)
+    re_read = Ledger(ledger_path).get("c1")
+    assert re_read.verdict_tier == "gold"
+    assert re_read.verdict_audit == {"axis_results": audit, "provenance": prov}
+    assert re_read == entry
+
+
+def test_ledger_verdict_fields_default_none_and_legacy_lines_parse(tmp_path: Path) -> None:
+    """Existing (legacy) ledger lines without verdict fields still parse, with
+    the new fields defaulting to ``None`` — the extension is additive."""
+    ledger_path = tmp_path / "ledger.jsonl"
+    # Write a legacy line WITHOUT verdict_tier / verdict_audit keys.
+    ledger_path.write_text(
+        '{"cell_id": "legacy", "status": "solved", "n_solutions": 1, '
+        '"best_dv_kms": 0.01, "signature_hashes": [], "validation_level": "V1", '
+        '"t_done": "2026-06-01T00:00:00+00:00", "host": "old"}\n'
+    )
+    entry = LedgerLoader(ledger_path).__iter__().__next__()
+    assert entry.verdict_tier is None
+    assert entry.verdict_audit is None

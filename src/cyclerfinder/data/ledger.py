@@ -99,6 +99,17 @@ class LedgerEntry:
     host:
         Worker hostname (or arbitrary string identifier). Helps
         triage failures on multi-host parallel runs.
+    verdict_tier:
+        Forge phase-3 gauntlet tier (``"gold"`` / ``"silver"`` /
+        ``"bronze"`` / ``"rejected"``) from
+        :class:`cyclerfinder.verify.gauntlet.VerdictTier`, or ``None`` for
+        entries written before the gauntlet ran. **Additive** — legacy
+        lines without the field parse with ``None``.
+    verdict_audit:
+        Forge phase-3 audit trail — the verdict's ``axis_results`` and
+        ``provenance`` (the supersession chain included), serialised as a
+        JSON object so the verdict is fully reconstructible/auditable from
+        the ledger line. ``None`` when no verdict was recorded. **Additive.**
     """
 
     cell_id: str
@@ -109,6 +120,8 @@ class LedgerEntry:
     validation_level: str | None
     t_done: str
     host: str
+    verdict_tier: str | None = None
+    verdict_audit: dict[str, object] | None = None
 
 
 def _now_iso() -> str:
@@ -153,6 +166,13 @@ def _entry_to_jsonl(entry: LedgerEntry) -> str:
         "t_done": entry.t_done,
         "host": entry.host,
     }
+    # Additive verdict fields — only emitted when present so legacy lines stay
+    # byte-identical and the per-line atomic-append budget is unaffected for
+    # non-verdict records.
+    if entry.verdict_tier is not None:
+        payload["verdict_tier"] = entry.verdict_tier
+    if entry.verdict_audit is not None:
+        payload["verdict_audit"] = entry.verdict_audit
     return json.dumps(payload, ensure_ascii=True)
 
 
@@ -180,6 +200,8 @@ def _entry_from_jsonl(line: str) -> LedgerEntry:
             validation_level=payload.get("validation_level"),
             t_done=str(payload["t_done"]),
             host=str(payload["host"]),
+            verdict_tier=payload.get("verdict_tier"),
+            verdict_audit=payload.get("verdict_audit"),
         )
     except KeyError as exc:
         raise LedgerError(f"missing required field: {exc}") from exc
