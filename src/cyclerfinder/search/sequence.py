@@ -85,6 +85,13 @@ class Cell:
         ``len(sequence) - 1``. The enumerator enforces the
         ``revs == 0 -> branch == "single"`` and
         ``revs >= 1 -> branch in {"low","high"}`` invariant.
+    period_basis:
+        Optional catalogue anchor pair (e.g. ``("E","M")``) for a
+        ≥3-body cell, so the cell echoes its YAML row verbatim while
+        ``period_k`` stays the sourced value (no silent rewrite, plan
+        §2). ``None`` for 2-body cells — the native single-pair period
+        path needs no explicit basis. When set, ``Cell.id`` gains a
+        ``|p<AB>`` token.
 
     Notes
     -----
@@ -101,6 +108,7 @@ class Cell:
     period_k: int
     per_leg_revs: tuple[int, ...]
     per_leg_branch: tuple[str, ...]
+    period_basis: tuple[str, str] | None = None
 
     @property
     def id(self) -> str:
@@ -122,7 +130,10 @@ class Cell:
         sequence = "-".join(self.sequence)
         revs = "".join(str(r) for r in self.per_leg_revs)
         branches = "".join(_BRANCH_LETTER[b] for b in self.per_leg_branch)
-        return f"{bodyset}|{sequence}|k{self.period_k}|r{revs}|b{branches}"
+        base = f"{bodyset}|{sequence}|k{self.period_k}|r{revs}|b{branches}"
+        if self.period_basis is not None:
+            base += f"|p{''.join(self.period_basis)}"
+        return base
 
 
 # ---------------------------------------------------------------------------
