@@ -518,6 +518,46 @@ existing row id and must not self-reference. Distinct from `family{}` (which
 groups members); supersession is a directed "see these instead" link. Full
 rationale and the four deferred CCSDS candidates are in **spec.md §16.7.10**.
 
+Schema v4.4 — per-field provenance tags
+---------------------------------------
+
+The v4.4 sub-rev adds the additive, optional provenance tag set
+`orbit_source` / `vinf_source` / `orbit_fidelity` / `vinf_fidelity`, plus an
+optional declared `validation_tier`, all top-level row keys (Forge phase 0
+task 3). They turn the free-text provenance previously carried only in
+`note:` / `source_quotes:` prose into a small machine-checkable vocabulary so a
+*test* — not just a human reader — can tell a real cross-source check from a
+circular same-source one, and can refuse the S1L1-class cross-fidelity
+mismatch.
+
+```yaml
+- id: aldrin-classic-em-k1-outbound
+  orbit_source: rogers-2012-t1       # Rogers 2012 Table 1
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34      # Russell 2004 Table 3.4 — a DIFFERENT source
+  vinf_fidelity: circular-coplanar   # ... at the SAME fidelity => CROSS_VALIDATED
+```
+
+These were back-filled MECHANICALLY from each row's existing source metadata by
+`scripts/backfill_provenance_tags.py` (idempotent, re-runnable; its docstring
+documents the exact derivation rules: `model_assumption` → fidelity; explicit
+Russell table reference → source key, with author-token and
+`first_published.doi` fallbacks). NO external source was consulted and NO new
+physics value was introduced — this is provenance metadata only. A row whose
+metadata cannot name a `SOURCE_REGISTRY` paper (Jones 2017, Sanchez Net 2022,
+Arenstorf, Genova, Wittal, Hernandez, Russell-Strange, and two broad-class
+family stubs — 13 rows) is left **untagged**; an absent tag is the explicit
+"unknown" marker, and such a row classifies as `UNVALIDATED`.
+
+`source` keys are constrained to the `SOURCE_REGISTRY` enum and fidelity tiers
+to the `Fidelity` enum by the JSON Schema; the Python semantic gate
+(`validate_provenance_tags`) adds the rule it cannot express — a declared
+`validation_tier`, when present, must equal the tier `classify_validation`
+computes from the row's sources + fidelities. `validation_tier` is normally
+left absent: the tier is a *computed* classification (frozen as a census
+ratchet in `tests/data/test_validation_tier_census.py`), not stored data, to
+avoid derived-state drift. Full rationale is in **spec.md §16.7.11**.
+
 Out-of-paradigm work
 --------------------
 

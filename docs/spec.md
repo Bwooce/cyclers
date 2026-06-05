@@ -1218,3 +1218,47 @@ cross-row referential-integrity rule and one sourced backfill row; one doc
 caveat. Candidates 2–4 deferred with explicit trigger conditions. The schema
 version is bumped 4.2 → 4.3; the canonical signature is unchanged (the links are
 non-signature provenance metadata).
+
+#### 16.7.11 Schema v4.4 — per-field provenance tags (2026-06-05)
+
+Forge phase 0 task 3 back-fills the per-field provenance vocabulary defined by
+`src/cyclerfinder/data/provenance.py` (the `SOURCE_REGISTRY` source keys and the
+`Fidelity` tiers) onto the catalogue. Four additive, optional, non-signature
+top-level row keys are added — `orbit_source`, `vinf_source`, `orbit_fidelity`,
+`vinf_fidelity` — plus an optional declared `validation_tier`.
+
+The deciding consumer (the YAGNI gate of §16.7.6/§16.7.9) is the already-shipped
+forward-compatible `validate_provenance_tags`: until this rev the function was a
+no-op because no row carried tags. The tags make the cross-source vs same-source
+distinction, and the cross-fidelity refusal (the S1L1 5.65-vs-4.99 bug class),
+machine-checkable rather than prose-only. Both gates pass: the consumer is live,
+and the sourced backfill is mechanical (every tag is derived from metadata
+already on the row — `model_assumption` → fidelity; an explicit Russell table
+reference in the field's own `note:`/`source_quotes:` text → source key, with
+author-token and `first_published.doi` fallbacks — by
+`scripts/backfill_provenance_tags.py`, whose docstring records the rules). No
+external source is consulted and no new physics value is introduced; this is
+provenance metadata only.
+
+Coverage: 224 of 237 rows are tagged; the 13 rows whose own citations name no
+`SOURCE_REGISTRY` paper (Jones 2017, Sanchez Net 2022, Arenstorf, Genova,
+Wittal, Hernandez, the two Russell-Strange moon-tour families, and two
+broad-class family stubs) are left **untagged** — an absent tag is the explicit
+"unknown" marker, and such a row classifies `UNVALIDATED` rather than carrying an
+invented source key.
+
+The JSON Schema constrains `*_source` to the `SOURCE_REGISTRY` enum and
+`*_fidelity` to the `Fidelity` enum (enforced structure, hence the 4.3 → 4.4
+bump); the Python semantic gate adds the rule it cannot express — a declared
+`validation_tier`, when present, must equal the tier `classify_validation`
+computes from the row's sources + fidelities, so a row cannot over-claim
+`cross_validated`. `validation_tier` is normally left absent: the tier is a
+*computed* classification, frozen as a monotone census ratchet in
+`tests/data/test_validation_tier_census.py` (the validation-strength sibling of
+the `cycler_class` census), not stored data — storing it would duplicate derived
+state and risk drift. The canonical signature is unchanged (the tags are
+non-signature provenance metadata). The live distribution at this rev is
+`{cross_validated: 5, consistency_checked: 218, unvalidated: 14}`; the five
+cross-validated rows each pair two genuinely different citations at one fidelity
+(e.g. the Aldrin classic cycler: orbit from Rogers 2012 Table 1, V∞ from Russell
+2004 Table 3.4).

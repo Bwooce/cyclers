@@ -24,10 +24,11 @@ def _load_schema() -> dict[str, Any]:
     return json.loads(SCHEMA_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4_3() -> None:
-    """The schema carries version == '4.3' (v4.3 adds supersedes/superseded_by, spec §16.7.10)."""
+def test_schema_version_is_current() -> None:
+    """The schema carries version == '4.4' (v4.4 adds the per-field provenance
+    tag set orbit_source/vinf_source/orbit_fidelity/vinf_fidelity, spec §16.7.11)."""
     schema = _load_schema()
-    assert schema["version"] == "4.3"
+    assert schema["version"] == "4.4"
 
 
 def test_catalogue_matches_jsonschema() -> None:

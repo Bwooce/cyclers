@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cyclers.space/schemas/catalogue.schema.json",
-  "version": "4.3",
+  "version": "4.4",
   "title": "Cycler Finder Catalogue",
-  "description": "Schema v4.3 for data/catalogue.yaml. Adds the row-supersession link pair supersedes/superseded_by (spec §16.7.10, CCSDS PREVIOUS_MESSAGE_ID/NEXT_MESSAGE_ID analogue) to v4.2 (which added segments[].center, segments[].tof_days_bounds, source_ephemeris, spec §16.7.9), v4.1 (free_return_arcs[] arc-type descriptors, spec §16.7.7) and v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e). Referential integrity of supersedes/superseded_by (targets must resolve to existing ids, no self-reference) is enforced by the Python semantic gate.",
+  "description": "Schema v4.4 for data/catalogue.yaml. Adds the per-field provenance tag set orbit_source/vinf_source/orbit_fidelity/vinf_fidelity and the optional declared validation_tier (spec §16.7.11, Forge phase 0 task 3), back-filled mechanically from each row's existing source metadata. source keys are constrained to the SOURCE_REGISTRY enum and fidelity tiers to the Fidelity enum; the declared-tier-must-match-classify_validation rule is enforced by the Python semantic gate. Builds on v4.3 (supersedes/superseded_by, spec §16.7.10), v4.2 (segments[].center, segments[].tof_days_bounds, source_ephemeris, spec §16.7.9), v4.1 (free_return_arcs[] arc-type descriptors, spec §16.7.7) and v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e). Referential integrity of supersedes/superseded_by (targets must resolve to existing ids, no self-reference) is enforced by the Python semantic gate.",
   "type": "array",
   "items": {
     "type": "object",
@@ -17,6 +17,57 @@
       "source_ephemeris": {
         "type": ["string", "null"],
         "description": "Schema v4.2 (spec §16.7.9): the ephemeris model the source paper states its published numbers were computed against (e.g. 'DE405', 'DE430', 'STOUR ephemeris'). Null/absent when the source does not state one. Non-empty when present (enforced by the Python semantic gate, since JSON Schema minLength cannot apply to the null branch)."
+      },
+      "orbit_source": {
+        "type": ["string", "null"],
+        "enum": [
+          "rogers-2012-t1",
+          "russell-2004-t34",
+          "russell-2004-t39_311",
+          "russell-2004-t49_413",
+          "mcconaghy-2002",
+          "mcconaghy-2006",
+          "spec-9",
+          "hollister-1970-t3",
+          "friedlander-1986",
+          "derived",
+          "computed",
+          null
+        ],
+        "description": "Schema v4.4 (spec §16.7.11): provenance key (SOURCE_REGISTRY) for the row's orbit-element block (a/e/perihelion/aphelion). Back-filled mechanically from the row's existing source metadata. Absent/null = unknown provenance (untagged); a row left untagged classifies as UNVALIDATED."
+      },
+      "vinf_source": {
+        "type": ["string", "null"],
+        "enum": [
+          "rogers-2012-t1",
+          "russell-2004-t34",
+          "russell-2004-t39_311",
+          "russell-2004-t49_413",
+          "mcconaghy-2002",
+          "mcconaghy-2006",
+          "spec-9",
+          "hollister-1970-t3",
+          "friedlander-1986",
+          "derived",
+          "computed",
+          null
+        ],
+        "description": "Schema v4.4 (spec §16.7.11): provenance key (SOURCE_REGISTRY) for the row's vinf_kms_at_encounters multiset. When orbit_source and vinf_source are two DIFFERENT independent citations at the same fidelity, the row is CROSS_VALIDATED. Absent/null = unknown provenance (untagged)."
+      },
+      "orbit_fidelity": {
+        "type": ["string", "null"],
+        "enum": ["circular-coplanar", "analytic-ephemeris", "real-de440", null],
+        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the orbit-element block is stated at. Derived from model_assumption. A value at one tier must never be cross-validated against a value at another (the S1L1 cross-fidelity bug class)."
+      },
+      "vinf_fidelity": {
+        "type": ["string", "null"],
+        "enum": ["circular-coplanar", "analytic-ephemeris", "real-de440", null],
+        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the vinf multiset is stated at. Derived from model_assumption."
+      },
+      "validation_tier": {
+        "type": ["string", "null"],
+        "enum": ["cross_validated", "consistency_checked", "unvalidated", null],
+        "description": "Schema v4.4 (spec §16.7.11): OPTIONAL declared validation tier. When present, the Python semantic gate (validate_provenance_tags) requires it to equal the tier classify_validation computes from the row's sources/fidelities — a row cannot over-claim cross_validated. Normally left absent: the tier is a computed classification (Task 4 ratchet), not stored data."
       },
       "superseded_by": {
         "type": ["array", "null"],

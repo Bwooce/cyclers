@@ -48,12 +48,15 @@ def _two_rows(
 
 
 # ---------------------------------------------------------------------------
-# schema version is bumped to 4.3
+# schema version (the supersession links this file covers landed in v4.3 and
+# persist; the live version has since advanced to 4.4 — per-field provenance
+# tags, covered by test_schema_v44_fields.py)
 # ---------------------------------------------------------------------------
 
 
-def test_schema_version_is_4_3() -> None:
-    assert _load_schema()["version"] == "4.3"
+def test_schema_version_at_least_4_3() -> None:
+    major, minor = (int(p) for p in _load_schema()["version"].split("."))
+    assert (major, minor) >= (4, 3)
 
 
 # ---------------------------------------------------------------------------
