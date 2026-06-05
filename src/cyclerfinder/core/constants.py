@@ -69,6 +69,23 @@ SECONDS_PER_DAY: Final[float] = 86400.0
 DAYS_PER_JULIAN_YEAR: Final[float] = 365.25
 """Days in a Julian year (exact convention, matches ``astropy.units.yr``)."""
 
+STANDARD_GRAVITY_M_S2: Final[float] = 9.80665
+"""Standard gravitational acceleration ``g0``, m/s^2 (CGPM 1901, exact).
+
+The conventional reference acceleration in the rocket equation
+``m_{i+1} = m_i * exp(-dv / (g0 * Isp))`` (Yam, Di Lorenzo & Izzo 2010, Eq. 5;
+see ``docs/v2-future-references.md`` §1). Used by the Sims-Flanagan low-thrust
+leg model. Note: this is the propulsion ``g0`` convention, not a local
+gravitational field strength. Value fixed by the 3rd CGPM (1901).
+"""
+
+STANDARD_GRAVITY_KM_S2: Final[float] = STANDARD_GRAVITY_M_S2 / 1000.0
+"""Standard gravitational acceleration ``g0`` in km/s^2 (derived).
+
+Convenience form for the rocket equation when speeds are in km/s and ``Isp`` is
+in seconds, so ``g0 * Isp`` carries units of km/s like the per-segment ``dv``.
+"""
+
 
 # ---------------------------------------------------------------------------
 # Planet record
