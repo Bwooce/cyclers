@@ -11,8 +11,8 @@ Two pieces:
 
 * :data:`SOURCE_REGISTRY` — short stable keys → full citations, plus the
   two pseudo-sources ``derived`` and ``computed``.
-* :data:`Fidelity` — the three model-fidelity tiers a quantity can be
-  stated at, ordered coplanar → analytic-ephemeris → real-DE440.
+* :data:`Fidelity` — the model-fidelity tiers a quantity can be stated at,
+  ordered coplanar → circular-inclined → analytic-ephemeris → real-DE440.
 * :func:`classify_validation` — pure function mapping
   ``(orbit_source, vinf_source, same_fidelity)`` to a :class:`Tier`. It is
   source-independent logic (no catalogue read), so it is golden-clean and
@@ -92,12 +92,17 @@ a value produced by this repo's own code. Neither may stand in for an
 independent source when classifying a cross-validated quantity (golden
 discipline)."""
 
-Fidelity = Literal["circular-coplanar", "analytic-ephemeris", "real-de440"]
+Fidelity = Literal["circular-coplanar", "circular-inclined", "analytic-ephemeris", "real-de440"]
 """Model-fidelity tier a quantity is stated at, ascending in realism.
 
 * ``circular-coplanar`` — planets on circular, coplanar orbits at mean sma
   (the :func:`~cyclerfinder.search.resonant_construct.construct_resonant_cycler`
   model).
+* ``circular-inclined`` — planets on circular orbits at mean sma but in their
+  real J2000 inclined planes (real i/Ω, eccentricity ignored; the M-3D
+  :meth:`~cyclerfinder.core.ephemeris.Ephemeris.inclined_circular` backend). A
+  pre-filter/diagnostic rung between the flat circular model and a true
+  mean-element analytic ephemeris.
 * ``analytic-ephemeris`` — analytic/mean-element ephemeris (eccentric,
   inclined orbits; e.g. the Jones AAS 17-577 multisets).
 * ``real-de440`` — full numerical ephemeris (JPL DE440) closure.
@@ -106,7 +111,9 @@ Cross-fidelity comparison is the S1L1 5.65-vs-4.99 bug class: a value at one
 tier must never be compared against, or corroborated by, a value at another
 tier without an explicit fidelity flag."""
 
-_FIDELITIES: frozenset[str] = frozenset({"circular-coplanar", "analytic-ephemeris", "real-de440"})
+_FIDELITIES: frozenset[str] = frozenset(
+    {"circular-coplanar", "circular-inclined", "analytic-ephemeris", "real-de440"}
+)
 """Runtime set of the :data:`Fidelity` literal values (``Literal`` is not
 introspectable at runtime, so the membership set is kept explicitly)."""
 
@@ -115,7 +122,7 @@ _PSEUDO_SOURCES: frozenset[str] = frozenset({"derived", "computed"})
 
 
 def is_fidelity(value: str) -> bool:
-    """Return True iff *value* is one of the three :data:`Fidelity` tiers."""
+    """Return True iff *value* is one of the :data:`Fidelity` tiers."""
     return value in _FIDELITIES
 
 
