@@ -90,9 +90,12 @@ def test_solve_mode_ballistic_is_attempted_on_closed_cell() -> None:
 
 
 @pytest.mark.skip(
-    reason="M-ED-BLOCKED: ballistic corrector convergence + final "
-    "optimise_cell_ephemeris ballistic signature land in M-ED Phases 3-5; "
-    "see 2026-06-05-m-ed-ballistic-corrector.md"
+    reason="OPEN RESEARCH (was M-ED-BLOCKED): the ballistic mode landed "
+    "(kwargs verified against cli.py 2026-06-06) but VEM convergence to the "
+    "sourced Jones multisets does not occur — dense 16-core scan (task #110) "
+    "floors at ~17.9-18.5 km/s vs sourced 2.4-7.0, zero bend-feasible. "
+    "Un-skip when a corrector variant reaches the family (#120 inclined-rung "
+    "hunt first); see data/OUTSTANDING.md M-ED open-research entry."
 )
 @pytest.mark.slow
 def test_solve_vem_ballistic_converges() -> None:  # pragma: no cover - skipped

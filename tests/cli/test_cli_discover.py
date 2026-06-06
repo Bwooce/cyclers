@@ -72,8 +72,13 @@ def test_discover_enable_v3_flag_accepted(tmp_path: Path) -> None:
 
 
 @pytest.mark.skip(
-    reason="M-ED-BLOCKED: V3 ballistic closure gate requires the M-ED corrector "
-    "to converge; see 2026-06-05-m-ed-ballistic-corrector.md Phase 5"
+    reason="OPEN RESEARCH (was M-ED-BLOCKED): M-ED landed but VEM ballistic "
+    "closure to the sourced Jones multisets does NOT converge — the 2026-06-06 "
+    "dense 16-core scan (2816 points/row, task #110) floors at max-V_inf "
+    "~17.9-18.5 km/s vs sourced 2.4-7.0, zero bend-feasible. V3 promotion for "
+    "VEM therefore cannot occur yet. Un-skip when a corrector variant (3D "
+    "inclination #120, eccentric intermediate flybys, or multi-arc-per-leg) "
+    "reaches the family; see data/OUTSTANDING.md M-ED open-research entry."
 )
 @pytest.mark.slow
 def test_discover_vem_reaches_v3(tmp_path: Path) -> None:  # pragma: no cover - skipped
