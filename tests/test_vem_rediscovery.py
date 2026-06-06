@@ -365,13 +365,26 @@ def test_fixed_gate_comparison_passes_on_synthetic_perfect_result(entry_id: str)
     "inclined-circular backend (sourced J2000 Venus 3.39deg / Mars 1.85deg) "
     "moved the floor only EMEVVE 17.86->17.49 and MEEVEM 18.49->18.39 km/s "
     "(still ZERO bend-feasible), and a DE440 control (full 3D+eccentric) floors "
-    "at 18.16 -- inclination/eccentricity do not reach the family. The front "
-    "hypothesis is now multi-arc-per-leg seeding / eccentric intermediate "
-    "flybys, NOT more scan density and NOT 3D-inclination-only. Per-cycle "
-    "corrector yields 6 encounter V_inf; the "
-    "sourced multiset is the 11-encounter two-cycle Table 2/3 span, so the "
-    "strict-multiset compare also surfaces a length gap. Flip ONLY when a member "
-    "row genuinely converges within VEM_VINF_TOL_KMS; see plan Phase 5 Task 5.1.",
+    "at 18.16 -- inclination/eccentricity do not reach the family. The "
+    "vector-residual (Jones-method) hypothesis was TESTED and REFUTED (task "
+    "#122, 2026-06-06): the same #110 grid re-run with the full v_inf-VECTOR "
+    "residual (bend-feasibility hinge INSIDE least_squares, "
+    "scripts/hunt_vem_ballistic.py 256 astropy vector) collapses the powered "
+    "magnitude basin to ~0 closures -- EMEVVE outbound 0 closed/2816, MEEVEM "
+    "inbound 2 closed/2816 with ONE bend-feasible family at BEST max-V_inf "
+    "20.78 (per-encounter [15.2,17.45,17.45,19.82,19.83,20.78]) -- but NO "
+    "bend-feasible family below 10 km/s appears. Phase 2 (per-flyby B-plane "
+    "angle theta_B free vars) is STOP/report, not attempted: in this "
+    "Lambert-chain corrector v_inf-in/out are both pinned by leg geometry, the "
+    "gap is a |v_inf|-MAGNITUDE gap (15-21 vs 2.4-7.0 km/s), and theta_B "
+    "re-aims the bend at CONSTANT |v_inf| -- it cannot lower a leg's magnitude. "
+    "A true theta_B DOF needs a flyby-PROPAGATION shooter (deferred Phase 3, "
+    "out of v1). The front hypothesis is multi-arc-per-leg seeding / Phase-3 "
+    "n-body shooting, NOT more scan density, NOT 3D-inclination-only, NOT the "
+    "vector residual on a Lambert chain. Per-cycle corrector yields 6 encounter "
+    "V_inf; the sourced multiset is the 11-encounter two-cycle Table 2/3 span, "
+    "so the strict-multiset compare also surfaces a length gap. Flip ONLY when "
+    "a member row genuinely converges within VEM_VINF_TOL_KMS.",
     strict=False,
 )
 @pytest.mark.slow

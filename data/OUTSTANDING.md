@@ -146,6 +146,44 @@ audit trail and is unchanged in spirit.
     `project_s1l1_realeph_closure_blocker`). The headline gate
     (`test_jones_vem_ballistic_rediscovers_sourced_multiset`) therefore stays
     **xfail** — tolerance NOT loosened, xfail NOT flipped.
+  - **Vector-residual (Jones-method) hypothesis REFUTED for this family (task
+    #122, 2026-06-06).** The design `docs/superpowers/specs/2026-06-06-jones-
+    family-corrector-variant-design.md` argued the #110/#120 floor is a *residual*
+    defect: magnitude-only continuity selects a powered, over-bent basin, and a
+    full v∞-VECTOR residual (bend-feasibility hinge INSIDE the least-squares)
+    should steer toward the bend-feasible Jones family. **Phase 1 — the cheap
+    falsifier — implemented and run** (`search/correct.py` `residual_mode=
+    "vector"`, threaded through `search/scan.py`; same #110 grid, 256 epochs ×
+    11 topos = 2816 points/row, astropy DE440, 16-core, via
+    `scripts/hunt_vem_ballistic.py 256 astropy vector`):
+    - **EMEVVE outbound**: **0 closed / 2816**, 0 distinct families.
+    - **MEEVEM inbound**: **2 closed / 2816**, 1 distinct bend-feasible family at
+      BEST max-V∞ **20.78 km/s** (per-encounter [15.2, 17.45, 17.45, 19.82,
+      19.83, 20.78]). Sourced 2.42–5.16.
+
+    The in-residual hinge *confirms the design's mechanism* — the #110 magnitude
+    basin (831/1239 closed at 17.86/18.49) WAS the powered/over-bent basin: it
+    collapses to ~0 closures once feasibility is in the residual. But **no
+    bend-feasible family appears below 10 km/s** (the Phase-1 gate). The one that
+    closes sits at ~21 km/s, ~4× the sourced floor.
+  - **Phase 2 (per-flyby B-plane angle θ_B free vars) — STOP/report, NOT
+    attempted as a code change.** Decisive physics: in this Lambert-chain
+    corrector each flyby's v∞-in AND v∞-out are *both* pinned by the heliocentric
+    Lambert geometry between fixed bodies/epochs; a B-plane angle is an *output*,
+    not a free input. The gap to the sourced multiset is a **|v∞|-MAGNITUDE gap**
+    (closed legs 15–21 km/s vs sourced 2.4–7.0), and θ_B re-aims the bend at
+    *constant* |v∞| — it cannot lower a leg's magnitude. A *true* θ_B DOF would
+    require replacing the Lambert-both-sides chain with a flyby-PROPAGATION
+    shooter (choose the bend at sourced r_p, propagate v∞-out forward) — that is
+    the deferred Phase-3 (n-body shooting) architecture, out of v1 scope. The
+    sourced periapsis altitudes exist (`flyby_mechanics[].min_altitude_km`,
+    Jones Tables 2/3: E 100/Mars 4164/E 3814/V 684/… km) and would seed r_p, but
+    seeding r_p constrains bend *magnitude*, not leg |v∞|. **Conclusion: the
+    vector residual + B-plane targeting (design direction (c)) is REFUTED as a
+    patched-conic Lambert-chain corrector lever for the Jones VEM family** — the
+    |v∞|-magnitude family selection is a leg-topology problem, exactly the
+    multi-arc-per-leg / Phase-3 shooting front-runner. The headline gate stays
+    **xfail** — tolerance NOT loosened, xfail NOT flipped.
 - **SnLm multi-rev rediscovery** —
   `docs/superpowers/plans/2026-06-02-snlm-multirev-rediscovery.md`.
   Phase 1 Task 1 EXECUTED (S1L1 characterisation above). Phase 2 —
