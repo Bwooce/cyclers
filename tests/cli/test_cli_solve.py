@@ -1,7 +1,20 @@
 """M8-UX Phase 2: `cyclerfinder solve` wires optimise_cell_*.
 
 Idealized E-M smoke is fast and deterministic. VEM ballistic convergence is
-M-ED-blocked (Task 2.4) — exposed but skipped until M-ED Phases 3-5 land."""
+M-ED-blocked (Task 2.4) — exposed but skipped until M-ED Phases 3-5 land.
+
+Flake note (task #119, 2026-06-06): this module was reported failing once under
+xdist parallelism during the M-3D run. Investigation found NO isolation hazard
+here — every test uses capsys for stdout and the handlers under test write only
+to tmp_path; cli.main() rebuilds its parser per call and holds no module-level
+mutable state. The one-off failure was reproduced and traced to a pytest-xdist
+*collection mismatch* ("Different tests were collected between gw3 and gwN"),
+not to this file: a concurrently-edited untracked test module under tests/data/
+(Forge WIP) was written mid-collection, so workers disagreed on the test set and
+xdist aborted the entire run (exit 1), surfacing against whichever test the
+reporter named. Resolution is to let in-flight WIP test files settle before a
+parallel run; nothing to fix in tests/cli. Do not re-investigate this as a CLI
+isolation bug."""
 
 from __future__ import annotations
 
