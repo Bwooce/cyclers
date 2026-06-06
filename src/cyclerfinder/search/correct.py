@@ -2,9 +2,17 @@
 
 Generalises scripts/correct_s1l1_twoarc.py: free vars x = [t0, leg ToFs] with
 one leg pinned by the sourced period; residuals = flyby V_inf-magnitude
-continuity + periodicity closure, driven to zero with least_squares; bend
-feasibility checked post-hoc, never in the residual. Pure: depends only on
-core/lambert, core/ephemeris, core/constants.
+continuity + periodicity closure, driven to zero with least_squares. Two
+residual modes (task #122):
+
+* ``residual_mode="magnitude"`` (DEFAULT, unchanged) -- magnitude continuity
+  only; bend feasibility checked post-hoc, never in the residual.
+* ``residual_mode="vector"`` -- the Jones-method full v-inf vector residual:
+  magnitude continuity PLUS a per-flyby bend-feasibility hinge INSIDE the
+  residual, so the solve is steered toward bend-feasible (ballistic) families
+  instead of the magnitude-continuous-but-powered basin.
+
+Pure: depends only on core/lambert, core/ephemeris, core/constants.
 """
 
 from __future__ import annotations
@@ -128,19 +136,68 @@ def _residual_vector(
     nodes: dict[str, np.ndarray] | dict[str, tuple[float, float, float]],
     *,
     n_encounters: int,
+    mode: str = "magnitude",
+    sequence: tuple[str, ...] | None = None,
+    rp_factors: dict[str, float] | None = None,
 ) -> list[float]:
     """Ballistic-closure residuals (spec §2.1, ``correct_s1l1_twoarc.py:96-106``).
 
-    For each intermediate encounter ``Bi`` (``1 <= i <= n-2``) a flyby conserves
-    V_inf magnitude: ``|V_inf_in(Bi)| - |V_inf_out(Bi)|``. Plus the periodicity
-    closure term ``|V_inf_in(Bn-1)| - |V_inf_out(B0)|``.
+    ``mode="magnitude"`` (DEFAULT, unchanged): for each intermediate encounter
+    ``Bi`` (``1 <= i <= n-2``) a flyby conserves V_inf magnitude:
+    ``|V_inf_in(Bi)| - |V_inf_out(Bi)|``. Plus the periodicity closure term
+    ``|V_inf_in(Bn-1)| - |V_inf_out(B0)|``. This is necessary for ballistic
+    closure but blind to whether the required in->out rotation is achievable.
+
+    ``mode="vector"`` (Jones-method, task #122 Phase 1): bend feasibility is
+    moved INSIDE the residual. Each intermediate flyby contributes TWO terms:
+      1. the magnitude-continuity term (as above), and
+      2. a feasibility hinge ``max(0, required_bend - max_bend)`` in degrees,
+         scaled to km/s-comparable units -- the part of the required rotation
+         that exceeds the body's V_inf-limited single-flyby turn. A
+         magnitude-continuous-but-over-bent chain (the #110/#120 powered basin)
+         now carries a non-zero residual, steering least_squares toward the
+         bend-feasible (Jones) family. The closure term is magnitude-only (the
+         wrap encounter is the home body, not an intermediate flyby).
+
+    ``mode="vector"`` requires ``sequence`` (to look up each body's max bend).
     """
     norm = np.linalg.norm
-    res: list[float] = []
-    for i in range(1, n_encounters - 1):
+    if mode == "magnitude":
+        res: list[float] = []
+        for i in range(1, n_encounters - 1):
+            res.append(
+                float(norm(np.asarray(nodes[f"b{i}_in"])))
+                - float(norm(np.asarray(nodes[f"b{i}_out"])))
+            )
+        last = n_encounters - 1
         res.append(
-            float(norm(np.asarray(nodes[f"b{i}_in"]))) - float(norm(np.asarray(nodes[f"b{i}_out"])))
+            float(norm(np.asarray(nodes[f"b{last}_in"]))) - float(norm(np.asarray(nodes["b0_out"])))
         )
+        return res
+
+    if mode != "vector":
+        raise ValueError(f"unknown residual mode {mode!r}")
+    if sequence is None:
+        raise ValueError("vector residual mode requires the encounter sequence")
+
+    # km/s per degree of infeasible bend: the feasibility hinge is in degrees;
+    # express it on the same scale as the magnitude (km/s) terms so least_squares
+    # weighs them comparably. A scale of |V_inf|/deg-of-max-bend would be exact;
+    # the V_inf magnitude itself is a stable, well-conditioned proxy (a fully
+    # infeasible 180-deg turn at |V_inf| then costs ~|V_inf| km/s of residual,
+    # the same order as a total magnitude loss).
+    res = []
+    for i in range(1, n_encounters - 1):
+        v_in = np.asarray(nodes[f"b{i}_in"])
+        v_out = np.asarray(nodes[f"b{i}_out"])
+        mag_in = float(norm(v_in))
+        mag_out = float(norm(v_out))
+        res.append(mag_in - mag_out)
+        required = _bend_deg(v_in, v_out)
+        max_turn = _max_bend_deg(mag_in, sequence[i], rp_factors)
+        excess_deg = max(0.0, required - max_turn)
+        # Hinge -> km/s: fraction of a half-turn (180 deg) scaled by |V_inf|.
+        res.append(mag_in * excess_deg / 180.0)
     last = n_encounters - 1
     res.append(
         float(norm(np.asarray(nodes[f"b{last}_in"]))) - float(norm(np.asarray(nodes["b0_out"])))
@@ -157,12 +214,19 @@ def _residuals(
     slack_leg: int,
     period_days: float,
     ephem: Ephemeris,
+    residual_mode: str = "magnitude",
+    rp_factors: dict[str, float] | None = None,
 ) -> list[float]:
     """least_squares residual callable: V_inf-continuity + closure, with Lambert
     pathologies mapped to a large finite penalty (``correct_s1l1_twoarc.py:100``).
+
+    ``residual_mode`` selects the magnitude-only (default) or the full v-inf
+    vector (bend-feasibility-aware) residual (task #122 Phase 1). In vector mode
+    each intermediate flyby contributes two residual terms, so the penalty
+    length on a Lambert pathology grows accordingly.
     """
     n_encounters = len(sequence)
-    n_res = n_encounters - 1
+    n_res = 2 * (n_encounters - 2) + 1 if residual_mode == "vector" else n_encounters - 1
     try:
         nodes = _vinf_nodes(
             sequence=sequence,
@@ -176,7 +240,13 @@ def _residuals(
         )
     except (LambertConvergenceError, LambertGeometryError, ValueError):
         return [1e3] * n_res
-    return _residual_vector(nodes, n_encounters=n_encounters)
+    return _residual_vector(
+        nodes,
+        n_encounters=n_encounters,
+        mode=residual_mode,
+        sequence=sequence,
+        rp_factors=rp_factors,
+    )
 
 
 def _max_bend_deg(vinf_kms: float, body: str, rp_factors: dict[str, float] | None = None) -> float:
@@ -242,6 +312,7 @@ def ballistic_correct(
     rp_factors: dict[str, float] | None = None,
     slack_leg: int | None = None,
     tol_kms: float = 0.1,
+    residual_mode: str = "magnitude",
 ) -> BallisticClosureResult:
     """N-arc ballistic differential corrector (spec §2.1; generalises
     ``correct_s1l1_twoarc.py:_solve``).
@@ -268,6 +339,8 @@ def ballistic_correct(
             slack_leg=slack_leg,
             period_days=period_days,
             ephem=ephem,
+            residual_mode=residual_mode,
+            rp_factors=rp_factors,
         )
 
     x0 = np.array([t0_seed_sec, *tof_seed_days], dtype=np.float64)
