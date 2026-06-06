@@ -485,6 +485,17 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_report_includes_lamberthub_path + "
         "test_real_eph_paths_a_and_c_pass_b_flags_model_mismatch."
     ),
+    ("aldrin-classic-em-k1-inbound", "V1"): (
+        "spec §14 V1 (#125 Part 1): real-DE440 Aldrin INBOUND cycler — built "
+        "like-for-like with the outbound twin (same loader, phase-signature "
+        "resolution, and constructor), lamberthub izzo2015+gooding1990 per-leg "
+        "agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual "
+        "pass (both §14 V1 halves). Path (b) is unavailable here (single-ellipse "
+        "crossing undefined for the short M->E first leg), so the agreed verdict "
+        "rests on the two passing independent paths. tests/verify/"
+        "test_agreement_lamberthub.py::"
+        "test_inbound_real_eph_lamberthub_and_kepler_paths_pass."
+    ),
 }
 
 

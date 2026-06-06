@@ -57,7 +57,7 @@ CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 # rows the gauntlet machinery has exercised at the internal-consistency floor.
 _LEVEL_BY_ID: dict[str, str] = {
     "aldrin-classic-em-k1-outbound": "V1",
-    "aldrin-classic-em-k1-inbound": "V0",
+    "aldrin-classic-em-k1-inbound": "V1",  # #125 Part 1: real-DE440 inbound clears §14 V1
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

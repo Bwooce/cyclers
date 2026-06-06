@@ -73,14 +73,25 @@ def test_semantic_gate_accepts_known_justified_row() -> None:
     assert validate_validation_level(rows) == []
 
 
-def test_live_aldrin_outbound_is_v1_everything_else_v0() -> None:
-    """Mechanical §14 application: exactly one row (Aldrin outbound) is V1;
-    every other tagged row is V0; no row claims V2+."""
+def test_semantic_gate_accepts_known_justified_inbound_row() -> None:
+    """The Aldrin inbound row's V1 (#125 Part 1) is in the evidence registry."""
+    rows = [{"id": "aldrin-classic-em-k1-inbound", "validation_level": "V1"}]
+    assert validate_validation_level(rows) == []
+
+
+def test_live_aldrin_pair_is_v1_everything_else_v0() -> None:
+    """Mechanical §14 application: the Aldrin outbound AND inbound rows are V1
+    (the inbound promoted by #125 Part 1's real-DE440 lamberthub + Kepler
+    re-propagation evidence); every other tagged row is V0; no row claims V2+."""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V1"
+    assert byid.get("aldrin-classic-em-k1-inbound") == "V1"
     above_v0 = {rid: lvl for rid, lvl in byid.items() if lvl not in (None, "V0")}
-    assert above_v0 == {"aldrin-classic-em-k1-outbound": "V1"}, above_v0
+    assert above_v0 == {
+        "aldrin-classic-em-k1-outbound": "V1",
+        "aldrin-classic-em-k1-inbound": "V1",
+    }, above_v0
     # No row may carry V2 or higher (no mechanical evidence exists today).
     assert not any(lvl in ("V2", "V3", "V4", "V5") for lvl in byid.values())
 

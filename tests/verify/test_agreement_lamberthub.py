@@ -43,6 +43,22 @@ def aldrin_real_cycler(astropy_ephem: Ephemeris) -> Cycler:
     return construct_real_ephemeris_cycler(entry, astropy_ephem, t_start)
 
 
+@pytest.fixture(scope="module")
+def aldrin_inbound_real_cycler(astropy_ephem: Ephemeris) -> Cycler:
+    """Real-ephemeris Aldrin INBOUND cycler (single-rev M->E->M Lambert chain).
+
+    Built like-for-like with the outbound fixture above: same loader, same
+    phase-signature resolution, same constructor — only the catalogue row
+    differs (the inbound / down-escalator twin). This is the row Part 1 of
+    the validation campaign (#125) promotes to spec §14 V1.
+    """
+    entry = next(e for e in load_m6b_entries() if e["id"] == "aldrin-classic-em-k1-inbound")
+    signature = phase_signature_from_catalogue_entry(entry)
+    t_start = _resolve_real_t_start(signature, astropy_ephem, ALDRIN_PRIORITY)
+    assert t_start is not None
+    return construct_real_ephemeris_cycler(entry, astropy_ephem, t_start)
+
+
 @pytest.mark.slow
 def test_report_includes_lamberthub_path(
     aldrin_real_cycler: Cycler,
@@ -98,3 +114,47 @@ def test_real_eph_paths_a_and_c_pass_b_flags_model_mismatch(
     assert report.n_paths_passed == 2
     # A failing available path vetoes the overall verdict.
     assert report.agreed is False
+
+
+@pytest.mark.slow
+def test_inbound_real_eph_lamberthub_and_kepler_paths_pass(
+    aldrin_inbound_real_cycler: Cycler,
+    astropy_ephem: Ephemeris,
+) -> None:
+    """Part 1 (#125): the real-DE440 Aldrin INBOUND cycler clears spec §14 V1.
+
+    Same evidence the outbound row earns its V1 from — the two §14 V1 halves:
+    every leg re-solved with ``lamberthub`` izzo2015 + gooding1990 agrees to
+    < :data:`V1_TOLERANCE_MPS` (path a), AND the Kepler forward
+    re-propagation residual passes (path c). Both paths are available and
+    pass at the same bars as outbound, so the overall verdict ``agreed`` is
+    True.
+
+    The honest difference from the outbound twin: the circular-coplanar
+    resonance construction (path b) is *unavailable* here, not
+    available-but-failing. The inbound chain starts on the short ~146 d
+    Mars->Earth arc, whose real-ephemeris Lambert solution yields a
+    heliocentric ``(a, e)`` that does not map onto the analytic single-
+    ellipse crossing construction, so :func:`_resonant_vinf_for_cycler`
+    returns ``None`` (recorded as unavailable, not a failure). The V1
+    verdict is unaffected: §14 V1 is defined by the lamberthub-agreement
+    and Kepler-re-propagation halves, both of which pass.
+    """
+    report = crosscheck_code_paths(aldrin_inbound_real_cycler, astropy_ephem)
+    # Path (a): lamberthub leg agreement < V1_TOLERANCE_MPS.
+    assert report.lamberthub.available is True
+    assert report.lamberthub.per_leg, "no legs cross-checked"
+    assert report.lamberthub.passed is True, (
+        f"lamberthub disagreement {report.lamberthub.max_diff_mps} m/s >= {V1_TOLERANCE_MPS} m/s"
+    )
+    assert report.lamberthub.max_diff_mps < V1_TOLERANCE_MPS
+    # Path (c): Kepler forward re-propagation residual passes.
+    assert report.kepler_reprop.available is True
+    assert report.kepler_reprop.passed is True
+    # Path (b) is unavailable (single-ellipse crossing undefined for the
+    # short M->E first leg) — recorded as unavailable, not failing.
+    assert report.construction_optimiser.available is False
+    # Two independent paths available, both pass -> agreed verdict.
+    assert report.n_paths_available == 2
+    assert report.n_paths_passed == 2
+    assert report.agreed is True
