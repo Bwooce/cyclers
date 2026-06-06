@@ -108,13 +108,20 @@ is fed the axes its data supports:
 - **Axis C (provenance)** — `classify_validation(orbit_source, vinf_source,
   same_fidelity)` + `Corroboration` from the row's tags (every row has these).
 - **Axis A (agreement)** — supplied ONLY for the two rows with recorded
-  real-closure agreement evidence (the Aldrin pair, `agreed == True` from Parts 1
-  and the existing outbound test). All other rows: Axis A unavailable.
+  real-closure agreement evidence (the Aldrin pair). Their agreement verdicts
+  are ASYMMETRIC: inbound `agreed == True` (2 paths available, both pass);
+  outbound `agreed == False` (3 available, 2 pass — path b, the coplanar-vs-real
+  resonance construction, is available-but-FAILING and vetoes). All other rows:
+  Axis A unavailable.
 - **Axis B / D** — not run / not falsified for any row (no adversarial pass).
 
 Decision consequence (gauntlet rules, `verify/gauntlet.py`): GOLD/SILVER require
-machine-confirmation (Axis A available + agreed). Only the Aldrin pair has that;
-both are cross_validated (Axis C) -> **GOLD**. Every other row has Axis A
+machine-confirmation (Axis A available + agreed). Only Aldrin INBOUND has that;
+it is cross_validated (Axis C) -> **GOLD**. Aldrin OUTBOUND has Axis A
+available-but-failing (the path-b veto) -> **REJECTED** — the honest multi-axis
+verdict, stricter than the single-axis §14 V1 gate the outbound still legitimately
+holds (Part 1 is unchanged: V1 is the lamberthub + Kepler halves; the gauntlet
+additionally folds in the path-b agreement veto). Every other row has Axis A
 unavailable and no failing axis -> **BRONZE**.
 
 Verdicts are written to `data/gauntlet_ledger.jsonl` (one `LedgerEntry` per row,
@@ -125,7 +132,7 @@ verdicts live in the ledger; `validation_level` changes only via Parts 1-2.
 
 ### Verdict census (live, 237 rows)
 
-- **gold: 2** (aldrin outbound + inbound)
+- **gold: 1** (aldrin-classic-em-k1-inbound)
 - **silver: 0**
 - **bronze: 235**
-- **rejected: 0**
+- **rejected: 1** (aldrin-classic-em-k1-outbound — path-b agreement veto)
