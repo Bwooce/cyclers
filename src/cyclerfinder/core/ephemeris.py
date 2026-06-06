@@ -29,6 +29,7 @@ forward from full M6.
 
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import UTC, datetime
 from math import cos, pi, radians, sin
 from typing import Final, Protocol
@@ -60,6 +61,42 @@ _ASTROPY_NAME_OVERRIDES: Final[dict[str, str]] = {}
 _ASTROPY_BODY_NAMES: dict[str, str] = {
     code: _ASTROPY_NAME_OVERRIDES.get(code, data.name.lower()) for code, data in PLANETS.items()
 }
+
+
+# Sourced J2000 inclination / longitude-of-ascending-node, Standish & Williams,
+# "Approximate Positions of the Planets", JPL Solar System Dynamics, Table 1
+# (valid 1800-2050 AD) — the same source quoted in the PLANETS comments
+# (constants.py). Earth defines the ecliptic, so its inc/lan stay 0.0. These
+# live here (not in PLANETS) so the live coplanar table is never mutated.
+_INCLINED_ELEMENTS_J2000: Final[dict[str, tuple[float, float]]] = {
+    "V": (3.39467605, 76.67984255),
+    "M": (1.84969142, 49.55953891),
+}
+
+
+def inclined_planets() -> dict[str, PlanetData]:
+    """Return a NEW planet table with the sourced J2000 inc/Ω filled in.
+
+    A copy of :data:`~cyclerfinder.core.constants.PLANETS` where each body's
+    ``inc_deg``/``lan_deg`` are replaced with the Standish & Williams Table 1
+    values (Venus i=3.39467605°, Ω=76.67984255°; Mars i=1.84969142°,
+    Ω=49.55953891°). Bodies without a tabulated entry (Earth, the
+    ecliptic-defining body) keep their live ``0.0`` defaults.
+
+    The live ``PLANETS`` dict is **never mutated** — this returns a fresh dict of
+    fresh :class:`PlanetData` records (via :func:`dataclasses.replace`), so the
+    coplanar default stays byte-identical for every existing caller. Intended to
+    be injected into :class:`_InclinedCircularBackend` (see
+    :meth:`Ephemeris.inclined_circular`).
+    """
+    out: dict[str, PlanetData] = {}
+    for code, data in PLANETS.items():
+        if code in _INCLINED_ELEMENTS_J2000:
+            inc_deg, lan_deg = _INCLINED_ELEMENTS_J2000[code]
+            out[code] = replace(data, inc_deg=inc_deg, lan_deg=lan_deg)
+        else:
+            out[code] = replace(data)
+    return out
 
 
 class _Backend(Protocol):
