@@ -16,6 +16,12 @@ Two pieces, mirroring the spec §16.7 Axis-B sketch:
     :func:`~cyclerfinder.search.resonant_construct.construct_resonant_cycler`
     from the cell's *sourced* ``(a, e)`` (the resonance-anchored coplanar
     construction);
+  - ``"circular-inclined"`` → the same resonance construction (the inc-only
+    lift is a *frame* geometry change, not a scalar ToF/V∞ change) plus the
+    opt-in inclined ephemeris for downstream inclined-geometry diagnostics. A
+    closed-form pre-filter/diagnostic rung (real i/Ω, mean sma, **e ignored**),
+    **not** a closure engine — inclined idealized closure is M-ED's (Approval
+    Q4).
   - ``"real-de440"`` →
     :func:`~cyclerfinder.search.optimize.optimise_cell_ephemeris` on a DE440
     astropy ephemeris.
@@ -164,6 +170,8 @@ def solve_at_fidelity(
 
     if fidelity == "circular-coplanar":
         return _solve_coplanar(cell, a_au=a_au, e=e)
+    if fidelity == "circular-inclined":
+        return _solve_inclined(cell, a_au=a_au, e=e)
     if fidelity == "analytic-ephemeris":
         raise FidelityRungUnavailableError(
             "no in-house analytic-ephemeris backend: the middle ladder rung is "
@@ -204,6 +212,39 @@ def _solve_coplanar(cell: Cell, *, a_au: float | None, e: float | None) -> Fidel
         cell_id=cell.id,
         outbound_tof_days=outbound_tof_days,
         vinf_kms=dict(rc.vinf_kms),
+        converged=True,
+    )
+
+
+def _solve_inclined(cell: Cell, *, a_au: float | None, e: float | None) -> FidelitySolution:
+    """Circular-inclined rung — closed-form inclined-circular screen (M-3D).
+
+    ``circular-inclined`` = real i/Ω, mean sma, **e ignored** (still circular).
+    It is a pre-filter / diagnostic rung, **not** a closure engine (inclined
+    idealized closure is M-ED's, Approval Q4). The inc-only lift is a *frame*
+    geometry change (the orbital planes tilt to their real J2000 inclination); it
+    does not change the scalar resonance ``(a, e)`` construction's time-of-flight
+    or per-body V∞. So this rung reuses the **same** resonance construction as
+    :func:`_solve_coplanar` for the tracked scalar quantities, and simply builds
+    the inclined ephemeris so downstream diagnostics (e.g. the vector-ω⃗ closure
+    frame, ``synodic_omega_vec``) can run in the inclined geometry. ``converged``
+    is ``True`` (closed-form).
+    """
+    if a_au is None or e is None:
+        raise ValueError(
+            "circular-inclined rung requires sourced (a_au, e) — they are the "
+            "resonance construction's inputs (inc-only lift is frame geometry, "
+            "it does not change the scalar (a, e) construction)",
+        )
+    # Build the opt-in inclined ephemeris so it is available for downstream
+    # inclined-geometry diagnostics; the live coplanar PLANETS are untouched.
+    _ = Ephemeris.inclined_circular()
+    base = _solve_coplanar(cell, a_au=a_au, e=e)
+    return FidelitySolution(
+        fidelity="circular-inclined",
+        cell_id=base.cell_id,
+        outbound_tof_days=base.outbound_tof_days,
+        vinf_kms=dict(base.vinf_kms),
         converged=True,
     )
 
