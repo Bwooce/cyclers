@@ -13,6 +13,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 import numpy as np
+from scipy.optimize import least_squares
 
 from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
@@ -148,7 +149,7 @@ def _residual_vector(
 
 
 def _residuals(
-    x: Sequence[float],
+    x: Sequence[float] | np.ndarray,
     *,
     sequence: tuple[str, ...],
     per_leg_revs: tuple[int, ...],
@@ -197,3 +198,107 @@ def _bend_deg(v_in: Sequence[float] | np.ndarray, v_out: Sequence[float] | np.nd
     a, b = np.asarray(v_in), np.asarray(v_out)
     c = float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
     return float(np.degrees(np.arccos(max(-1.0, min(1.0, c)))))
+
+
+def _per_encounter_vinf(nodes: dict[str, np.ndarray], n_encounters: int) -> tuple[float, ...]:
+    """Per-encounter V_inf magnitude (mean of the in/out legs available at each
+    encounter; ends carry only one leg). ``correct_s1l1_twoarc.py:139-140``."""
+    norm = np.linalg.norm
+    out: list[float] = []
+    for i in range(n_encounters):
+        mags = [float(norm(nodes[key])) for key in (f"b{i}_in", f"b{i}_out") if key in nodes]
+        out.append(float(np.mean(mags)) if mags else 0.0)
+    return tuple(out)
+
+
+def _bend_feasible(
+    nodes: dict[str, np.ndarray],
+    sequence: tuple[str, ...],
+    rp_factors: dict[str, float] | None,
+) -> bool:
+    """Every intermediate flyby's required turn must fit within its V_inf-limited
+    maximum (``correct_s1l1_twoarc.py:141,151``)."""
+    norm = np.linalg.norm
+    for i in range(1, len(sequence) - 1):
+        v_in = nodes[f"b{i}_in"]
+        v_out = nodes[f"b{i}_out"]
+        required = _bend_deg(v_in, v_out)
+        max_turn = _max_bend_deg(float(norm(v_in)), sequence[i], rp_factors)
+        if required > max_turn:
+            return False
+    return True
+
+
+def ballistic_correct(
+    sequence: tuple[str, ...],
+    per_leg_revs: tuple[int, ...],
+    per_leg_branch: tuple[str, ...],
+    t0_seed_sec: float,
+    tof_seed_days: Sequence[float],
+    period_sec: float,
+    ephem: Ephemeris,
+    *,
+    vinf_cap: float,
+    rp_factors: dict[str, float] | None = None,
+    slack_leg: int | None = None,
+    tol_kms: float = 0.1,
+) -> BallisticClosureResult:
+    """N-arc ballistic differential corrector (spec §2.1; generalises
+    ``correct_s1l1_twoarc.py:_solve``).
+
+    Free vars ``x = [t0_sec, *tof_seed_days]`` (the slack leg is eliminated and
+    reconstructed as ``period - sum(free legs)``). Drives the V_inf-continuity +
+    closure residuals to zero with ``least_squares(method="lm")``; converged iff
+    the max residual is below ``tol_kms`` (default 0.1, the prototype threshold
+    ``correct_s1l1_twoarc.py:169``). Bend feasibility and the V_inf cap are
+    evaluated post-hoc.
+    """
+    period_days = period_sec / DAY_S
+    n_encounters = len(sequence)
+    if slack_leg is None:
+        # Default: pin the longest seed leg (most slack to absorb the period).
+        slack_leg = int(np.argmax(tof_seed_days)) if len(tof_seed_days) else 0
+
+    def _res(x: np.ndarray) -> list[float]:
+        return _residuals(
+            x,
+            sequence=sequence,
+            per_leg_revs=per_leg_revs,
+            per_leg_branch=per_leg_branch,
+            slack_leg=slack_leg,
+            period_days=period_days,
+            ephem=ephem,
+        )
+
+    x0 = np.array([t0_seed_sec, *tof_seed_days], dtype=np.float64)
+    sol = least_squares(_res, x0, method="lm", max_nfev=80, xtol=1e-9, ftol=1e-9)
+    x = sol.x
+    res = _res(x)
+    max_res = max(abs(r) for r in res)
+
+    nodes = _vinf_nodes(
+        sequence=sequence,
+        per_leg_revs=per_leg_revs,
+        per_leg_branch=per_leg_branch,
+        t0_sec=float(x[0]),
+        free_tof_days=tuple(float(v) for v in x[1:]),
+        slack_leg=slack_leg,
+        period_days=period_days,
+        ephem=ephem,
+    )
+    vinf_per_encounter = _per_encounter_vinf(nodes, n_encounters)
+    full_tofs = _reconstruct_tofs(tuple(float(v) for v in x[1:]), slack_leg, period_days)
+
+    converged = max_res < tol_kms
+    bend_feasible = _bend_feasible(nodes, sequence, rp_factors)
+    vinf_cap_ok = max(vinf_per_encounter) <= vinf_cap
+
+    return BallisticClosureResult(
+        t0_sec=float(x[0]),
+        tof_days=tuple(full_tofs),
+        max_residual_kms=float(max_res),
+        vinf_per_encounter_kms=vinf_per_encounter,
+        converged=converged,
+        bend_feasible=bend_feasible,
+        vinf_cap_ok=vinf_cap_ok,
+    )
