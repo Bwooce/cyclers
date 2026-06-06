@@ -14,6 +14,8 @@ Field semantics (Russell 2004 pp.126-127, spec §16.7.7):
 
 from __future__ import annotations
 
+from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
+
 
 def arc_to_leg_topology(arc_type: str, *, resonance: str | None) -> tuple[int, str]:
     """Per-leg ``(n_revs, branch)`` for a single Earth-Earth return arc.
@@ -29,4 +31,26 @@ def arc_to_leg_topology(arc_type: str, *, resonance: str | None) -> tuple[int, s
             raise ValueError("full-rev arc requires an M:N resonance")
         m_revs = int(resonance.split(":")[0])
         return (m_revs, "low")
+    raise ValueError(f"unknown arc_type {arc_type!r}")
+
+
+def arc_tof_seed_days(arc_type: str, *, tof_years: float | None, resonance: str | None) -> float:
+    """ToF seed (days) for a single Earth-Earth return arc.
+
+    For g/h arcs the seed is the sourced ``tof_years * DAYS_PER_JULIAN_YEAR``
+    (spec §16.7.7). For f/F arcs ``tof_years`` is null; the seed is derived from
+    the ``M:N`` resonance: ``M`` spacecraft revs over ``N`` Earth years means the
+    Earth-Earth resonant interval is approximately ``N`` Earth years
+    (``N * DAYS_PER_JULIAN_YEAR``). This is a *seed only*, refined by the
+    corrector.
+    """
+    if arc_type in ("generic", "half-rev"):
+        if tof_years is None:
+            raise ValueError(f"{arc_type} arc requires tof_years")
+        return tof_years * DAYS_PER_JULIAN_YEAR
+    if arc_type == "full-rev":
+        if resonance is None:
+            raise ValueError("full-rev arc requires an M:N resonance")
+        n_years = int(resonance.split(":")[1])
+        return n_years * DAYS_PER_JULIAN_YEAR
     raise ValueError(f"unknown arc_type {arc_type!r}")
