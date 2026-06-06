@@ -14,6 +14,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.lambert import (
     LambertConvergenceError,
@@ -175,3 +176,24 @@ def _residuals(
     except (LambertConvergenceError, LambertGeometryError, ValueError):
         return [1e3] * n_res
     return _residual_vector(nodes, n_encounters=n_encounters)
+
+
+def _max_bend_deg(vinf_kms: float, body: str, rp_factors: dict[str, float] | None = None) -> float:
+    """Maximum single-flyby turn angle (deg) for ``vinf_kms`` at ``body``
+    (``correct_s1l1_twoarc.py:109-114``). ``rp_factors`` optionally scales the
+    body's ``safe_alt_km`` (spec §2.1 ``r_p_safe``)."""
+    pl = PLANETS[body]
+    mu = pl.mu_km3_s2
+    safe_alt = pl.safe_alt_km
+    if rp_factors is not None and body in rp_factors:
+        safe_alt *= rp_factors[body]
+    r_p = pl.radius_eq_km + safe_alt
+    e = 1.0 + r_p * vinf_kms * vinf_kms / mu
+    return float(np.degrees(2.0 * np.arcsin(1.0 / e)))
+
+
+def _bend_deg(v_in: Sequence[float] | np.ndarray, v_out: Sequence[float] | np.ndarray) -> float:
+    """Angle (deg) between the in/out V_inf vectors (``correct_s1l1_twoarc.py:117-120``)."""
+    a, b = np.asarray(v_in), np.asarray(v_out)
+    c = float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+    return float(np.degrees(np.arccos(max(-1.0, min(1.0, c)))))
