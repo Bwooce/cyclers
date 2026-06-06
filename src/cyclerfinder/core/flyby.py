@@ -141,6 +141,77 @@ def bend_angle(vin_vec: Vec3, vout_vec: Vec3) -> float:
     return float(np.arccos(np.clip(cos_arg, -1.0, 1.0)))
 
 
+def bend_decompose(
+    vin_vec: Vec3,
+    vout_vec: Vec3,
+    orbit_normal: Vec3,
+) -> tuple[float, float]:
+    """Attribute a flyby :math:`V_\\infty` bend to in/out-of-plane components.
+
+    **Diagnostic only** (M-3D Phase 3, Approval Q4): this splits the
+    :math:`V_\\infty`-in → :math:`V_\\infty`-out rotation into the part *in* the
+    orbit plane (which changes :math:`a, e`) and the part *out of* the orbit
+    plane (which changes :math:`i` and the node), so a reviewer can see how much
+    plane-change work a gravity assist is doing. No optimiser degree of freedom
+    is introduced; the cost model (:func:`flyby_dv`) is unchanged.
+
+    The in-plane component is the unsigned angle between the projections of the
+    two vectors onto the plane orthogonal to ``orbit_normal``. The out-of-plane
+    component is the change in elevation above that plane: the difference of each
+    vector's signed ``arcsin(v . n_hat / |v|)``.
+
+    Parameters
+    ----------
+    vin_vec, vout_vec:
+        Length-3 heliocentric :math:`V_\\infty` vectors, km/s. Non-zero.
+    orbit_normal:
+        Length-3 normal of the reference orbit plane (need not be unit; it is
+        normalised internally). The ecliptic normal ``(0, 0, 1)`` recovers the
+        in/out-of-ecliptic split.
+
+    Returns
+    -------
+    (delta_inplane_rad, delta_outofplane_rad):
+        In-plane bend (unsigned, ``[0, pi]``) and out-of-plane bend (signed).
+
+    Raises
+    ------
+    ValueError
+        If either :math:`V_\\infty` vector or ``orbit_normal`` is zero-length.
+    """
+    vin_norm = float(np.linalg.norm(vin_vec))
+    vout_norm = float(np.linalg.norm(vout_vec))
+    n_norm = float(np.linalg.norm(orbit_normal))
+    if vin_norm == 0.0 or vout_norm == 0.0:
+        raise ValueError("bend_decompose requires non-zero V_inf vectors")
+    if n_norm == 0.0:
+        raise ValueError("bend_decompose requires a non-zero orbit_normal")
+
+    n_hat = np.asarray(orbit_normal, dtype=np.float64) / n_norm
+
+    # Out-of-plane: signed elevation of each vector above the plane.
+    sin_in = float(np.dot(vin_vec, n_hat)) / vin_norm
+    sin_out = float(np.dot(vout_vec, n_hat)) / vout_norm
+    elev_in = float(asin(min(1.0, max(-1.0, sin_in))))
+    elev_out = float(asin(min(1.0, max(-1.0, sin_out))))
+    delta_outofplane = elev_out - elev_in
+
+    # In-plane: angle between the projections onto the plane orthogonal to n_hat.
+    proj_in = np.asarray(vin_vec, dtype=np.float64) - float(np.dot(vin_vec, n_hat)) * n_hat
+    proj_out = np.asarray(vout_vec, dtype=np.float64) - float(np.dot(vout_vec, n_hat)) * n_hat
+    proj_in_norm = float(np.linalg.norm(proj_in))
+    proj_out_norm = float(np.linalg.norm(proj_out))
+    if proj_in_norm == 0.0 or proj_out_norm == 0.0:
+        # A vector lying along the normal has no in-plane direction; the bend is
+        # purely out-of-plane.
+        delta_inplane = 0.0
+    else:
+        cos_arg = float(np.dot(proj_in, proj_out)) / (proj_in_norm * proj_out_norm)
+        delta_inplane = float(np.arccos(np.clip(cos_arg, -1.0, 1.0)))
+
+    return delta_inplane, delta_outofplane
+
+
 def is_ballistic_feasible(
     vin_vec: Vec3,
     vout_vec: Vec3,
