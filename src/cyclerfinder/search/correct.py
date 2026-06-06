@@ -276,18 +276,35 @@ def ballistic_correct(
     res = _res(x)
     max_res = max(abs(r) for r in res)
 
-    nodes = _vinf_nodes(
-        sequence=sequence,
-        per_leg_revs=per_leg_revs,
-        per_leg_branch=per_leg_branch,
-        t0_sec=float(x[0]),
-        free_tof_days=tuple(float(v) for v in x[1:]),
-        slack_leg=slack_leg,
-        period_days=period_days,
-        ephem=ephem,
-    )
-    vinf_per_encounter = _per_encounter_vinf(nodes, n_encounters)
     full_tofs = _reconstruct_tofs(tuple(float(v) for v in x[1:]), slack_leg, period_days)
+
+    # Post-solve node extraction is NOT inside the residual guard, so a converged
+    # x that still lands a Lambert pathology (e.g. a multi-rev VEM leg the solver
+    # walked into) would raise here. Treat that as a non-converged outcome —
+    # surface honestly rather than crash the caller (the headline-gate finding
+    # depends on a result object, not an exception).
+    try:
+        nodes = _vinf_nodes(
+            sequence=sequence,
+            per_leg_revs=per_leg_revs,
+            per_leg_branch=per_leg_branch,
+            t0_sec=float(x[0]),
+            free_tof_days=tuple(float(v) for v in x[1:]),
+            slack_leg=slack_leg,
+            period_days=period_days,
+            ephem=ephem,
+        )
+    except (LambertConvergenceError, LambertGeometryError, ValueError):
+        return BallisticClosureResult(
+            t0_sec=float(x[0]),
+            tof_days=tuple(full_tofs),
+            max_residual_kms=float("inf"),
+            vinf_per_encounter_kms=(),
+            converged=False,
+            bend_feasible=False,
+            vinf_cap_ok=False,
+        )
+    vinf_per_encounter = _per_encounter_vinf(nodes, n_encounters)
 
     converged = max_res < tol_kms
     bend_feasible = _bend_feasible(nodes, sequence, rp_factors)
