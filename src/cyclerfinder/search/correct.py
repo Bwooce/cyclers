@@ -15,7 +15,12 @@ from dataclasses import dataclass
 import numpy as np
 
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.lambert import LambertSolution, lambert
+from cyclerfinder.core.lambert import (
+    LambertConvergenceError,
+    LambertGeometryError,
+    LambertSolution,
+    lambert,
+)
 
 DAY_S = 86400.0
 
@@ -115,3 +120,58 @@ def _vinf_nodes(
         if key in nodes:
             nodes[alias] = nodes[key]
     return nodes
+
+
+def _residual_vector(
+    nodes: dict[str, np.ndarray] | dict[str, tuple[float, float, float]],
+    *,
+    n_encounters: int,
+) -> list[float]:
+    """Ballistic-closure residuals (spec §2.1, ``correct_s1l1_twoarc.py:96-106``).
+
+    For each intermediate encounter ``Bi`` (``1 <= i <= n-2``) a flyby conserves
+    V_inf magnitude: ``|V_inf_in(Bi)| - |V_inf_out(Bi)|``. Plus the periodicity
+    closure term ``|V_inf_in(Bn-1)| - |V_inf_out(B0)|``.
+    """
+    norm = np.linalg.norm
+    res: list[float] = []
+    for i in range(1, n_encounters - 1):
+        res.append(
+            float(norm(np.asarray(nodes[f"b{i}_in"]))) - float(norm(np.asarray(nodes[f"b{i}_out"])))
+        )
+    last = n_encounters - 1
+    res.append(
+        float(norm(np.asarray(nodes[f"b{last}_in"]))) - float(norm(np.asarray(nodes["b0_out"])))
+    )
+    return res
+
+
+def _residuals(
+    x: Sequence[float],
+    *,
+    sequence: tuple[str, ...],
+    per_leg_revs: tuple[int, ...],
+    per_leg_branch: tuple[str, ...],
+    slack_leg: int,
+    period_days: float,
+    ephem: Ephemeris,
+) -> list[float]:
+    """least_squares residual callable: V_inf-continuity + closure, with Lambert
+    pathologies mapped to a large finite penalty (``correct_s1l1_twoarc.py:100``).
+    """
+    n_encounters = len(sequence)
+    n_res = n_encounters - 1
+    try:
+        nodes = _vinf_nodes(
+            sequence=sequence,
+            per_leg_revs=per_leg_revs,
+            per_leg_branch=per_leg_branch,
+            t0_sec=float(x[0]),
+            free_tof_days=tuple(float(v) for v in x[1:]),
+            slack_leg=slack_leg,
+            period_days=period_days,
+            ephem=ephem,
+        )
+    except (LambertConvergenceError, LambertGeometryError, ValueError):
+        return [1e3] * n_res
+    return _residual_vector(nodes, n_encounters=n_encounters)
