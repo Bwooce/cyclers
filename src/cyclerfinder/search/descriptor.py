@@ -14,6 +14,9 @@ Field semantics (Russell 2004 pp.126-127, spec §16.7.7):
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
+from typing import Any
+
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 
 
@@ -54,3 +57,29 @@ def arc_tof_seed_days(arc_type: str, *, tof_years: float | None, resonance: str 
         n_years = int(resonance.split(":")[1])
         return n_years * DAYS_PER_JULIAN_YEAR
     raise ValueError(f"unknown arc_type {arc_type!r}")
+
+
+def parse_free_return_arcs(
+    arcs: Sequence[Mapping[str, Any]],
+) -> tuple[tuple[int, ...], tuple[str, ...], tuple[float, ...]]:
+    """Map a catalogue ``free_return_arcs[]`` list (one arc per Earth-Earth leg)
+    onto the three per-leg tuples ``(per_leg_revs, per_leg_branch, tof_seed_days)``
+    that the corrector consumes.
+
+    The S1L1 descriptor ``g(1.4612,...) G(2.8096,...)`` yields two generic arcs:
+    revs ``(0, 0)``, branches ``("single", "single")``, seeds
+    ``[1.4612 yr, 2.8096 yr]`` in days (matching the prototype's pinned arcs,
+    ``correct_s1l1_twoarc.py:40``).
+    """
+    revs: list[int] = []
+    branches: list[str] = []
+    seeds: list[float] = []
+    for arc in arcs:
+        arc_type = arc["arc_type"]
+        resonance = arc.get("resonance")
+        n_revs, branch = arc_to_leg_topology(arc_type, resonance=resonance)
+        seed = arc_tof_seed_days(arc_type, tof_years=arc.get("tof_years"), resonance=resonance)
+        revs.append(n_revs)
+        branches.append(branch)
+        seeds.append(seed)
+    return tuple(revs), tuple(branches), tuple(seeds)
