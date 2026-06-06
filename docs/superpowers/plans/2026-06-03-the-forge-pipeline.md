@@ -116,6 +116,53 @@ gate *current* modules):
   re-transcription from a clean copy (digits read off rasters; see
   `docs/notes/2026-06-05-vasile-hiraiwa-scan.md`).
 
+## Completion notes — Phases 4 + 5 (2026-06-06)
+
+**Phases 4 and 5 are SHIPPED.** Modules:
+`src/cyclerfinder/data/discover_novel.py` (the construction-first novelty loop +
+the `BallisticClosureResult -> Cycler` bridge + supersession-aware verdict
+routing), `src/cyclerfinder/verify/adversarial.py` (the N-verifier adversarial
+panel: falsification probe, independent re-closure, perturbed-seed robustness;
+majority-refute kills), `src/cyclerfinder/data/review_queue.py` (the NON-catalogue
+human-review queue, `data/review_queue.jsonl`), and the orchestrator
+`scripts/forge_novelty_run.py` (fan-out + per-finding panel + human gate).
+
+**Workflow-tool choice:** no `.claude/workflows/` convention exists in this repo,
+so the Python orchestrator alternative the plan sanctions was written
+(`scripts/forge_novelty_run.py`), documented in its module docstring.
+
+**Sanity-e2e (Phase 4 task 2):** the demonstrated DE440 E-M-E-E Sanchez-regime
+closure flows end-to-end (bridge -> signature -> Axis-A agreement -> gauntlet)
+and routes to SILVER (machine-confirmed, unsourced) — green
+(`tests/data/test_discover_novel.py::test_sanchez_regime_closure_routes_to_silver_e2e`).
+
+**First real run (Phase 4 task 3, 16-core, tight 2030 Sanchez window, 16 epochs x
+4 E-M-E-E topologies):** 12 distinct closed families. **10 REJECTED**
+(bend-infeasible — physically inadmissible, auto-falsified at the verdict).
+**2 SILVER** (bend-feasible, panel-survived, queued): peak V_inf ~13.0 and ~12.1
+km/s, both with `match=novel`. **The prototype's closed family does NOT match any
+catalogue row** — its V_inf regime (~9.75/13.0 km/s) sits far above the sourced
+Sanchez/S1L1 anchors (~3-6 km/s), the documented "S1L1 Mars-V_inf ~6.4 floor
+generalised". These are the project's first machine-confirmed novelty
+candidates, held at SILVER pending human review (never auto-promoted).
+
+**VEM frontier (recorded reason, not scanned):** the #110 dense VEM scan produced
+ZERO bend-feasible closures (floors 17.9/18.5 km/s); VEM single-ellipse-per-leg
+novelty is empirically nil. `discover_novel` defaults to the E-M multi-arc space
+where the corrector demonstrably closes bend-feasible chains; it does NOT burn
+budget on VEM.
+
+**Falsification e2e (Phase 5 task 3):** a fabricated candidate (perturbed V_inf,
+impossible bend, non-converged) is majority-refuted by the panel AND
+auto-REJECTED at the verdict — proven in
+`tests/verify/test_adversarial.py::test_panel_refutes_fabricated_impossible_bend`
+and `tests/data/test_discover_novel.py::test_bend_infeasible_closure_is_rejected_not_silver`.
+
+**Censuses (Phase 5 task 4):** UNCHANGED — by design. Novelty findings never
+create catalogue rows (golden discipline), so the catalogue
+`EXPECTED_COVERAGE` / validation-tier / cycler_class ratchets are unaffected.
+SILVER candidates live only in the non-catalogue review queue.
+
 ## Self‑Review
 - **Independence enforced at every tier** (the spec's governing principle): GOLD needs an independent *source*; SILVER explicitly lacks one and is capped pending human review.
 - **Builds on what exists** (~70%): enumeration, construction, both optimisers, 3D, lamberthub crosscheck, ledger/match. New work is mostly *gates and orchestration*, not new physics.

@@ -734,3 +734,79 @@ paper). V∞ < 6 km/s stated as a design constraint, not a computed encounter va
 Two escalator cyclers cited (Rauwolf 2002) lack tabulated encounter V∞ — candidate-only,
 not added to catalogue. Primary source for escalator elements is Rauwolf 2002 (not in
 scope here).
+
+---
+
+# Forge Phases 4 + 5 shipped — first novelty candidates queued (2026-06-06)
+
+> New section, appended; does not modify any entry above. Plan completion notes:
+> `docs/superpowers/plans/2026-06-03-the-forge-pipeline.md` (Completion notes —
+> Phases 4 + 5). Modules: `src/cyclerfinder/data/discover_novel.py`,
+> `src/cyclerfinder/verify/adversarial.py`, `src/cyclerfinder/data/review_queue.py`,
+> `scripts/forge_novelty_run.py`.
+
+## What shipped
+
+- **`discover_novel`** — construction-first novelty loop over the **E-M
+  multi-arc space** (E-M-E-E topologies x parallel epoch scan grid,
+  `scan_parallel`, 16-core). Each closed chain is bridged to a full `Cycler`
+  (`cycler_from_closure`, via `construct_cycler` at the converged epochs),
+  signed (`canonical_signature`), matched against the catalogue
+  (supersession-aware, R1 delta 3), code-path cross-checked (Axis A,
+  `crosscheck_code_paths`), and routed through `run_gauntlet`.
+- **Adversarial panel** (`adversarial_panel`) — N independent verifiers per
+  candidate: a falsification probe (claimed self-consistency must hold), an
+  independent re-closure from the reported seed, and perturbed-seed robustness
+  re-solves. Majority-refute kills. Proven teeth: a fabricated impossible-bend
+  candidate is majority-refuted AND auto-REJECTED at the verdict.
+- **Human-review queue** (`data/review_queue.jsonl`) — SILVER candidates with
+  full audit trail (verdict axes + panel result). Explicitly NON-catalogue
+  (`is_catalogue_source() is False`); the validator refuses to queue a
+  non-SILVER/GOLD or panel-refuted entry. **No catalogue row is ever created
+  by the loop** (golden discipline) — the census ratchets are unaffected.
+
+## First real run result (the science)
+
+16-core, tight 2030 Sanchez launch window, 16 epochs x 4 E-M-E-E topologies =>
+**12 distinct closed families**:
+
+- **10 REJECTED** — bend-infeasible (the required flyby turn exceeds the
+  V_inf-limited maximum). A bend-infeasible closure is physically inadmissible
+  and is auto-falsified at the verdict (never SILVER).
+- **2 SILVER** — bend-feasible, machine-confirmed (Axis A: in-house Lambert vs
+  lamberthub + forward-Kepler re-prop agree; the single-ellipse resonance
+  construction path is correctly demoted to *unavailable* for a real-DE440
+  multi-arc chain, since comparing it would be the cross-fidelity confusion the
+  Forge refuses), panel-survived, queued. Peak V_inf ~13.0 and ~12.1 km/s; both
+  `match=novel`.
+
+**The prototype's closed family does NOT match any catalogue row.** Its V_inf
+regime (~9.75 Earth / 13.0 Mars km/s) sits far above the sourced Sanchez/S1L1
+anchors (~3-6 km/s) — the documented "S1L1 Mars-V_inf ~6.4 floor generalised"
+(project memory `project_s1l1_realeph_closure_blocker`). So this is **not a
+rediscovery**: these are the project's first machine-confirmed novelty
+candidates, held at SILVER pending human review. Most likely human resolution:
+they are a *different / higher-energy* (possibly powered) family than the sourced
+near-ballistic Sanchez cyclers — which is exactly why SILVER caps them pending a
+human, rather than asserting a novel discovery.
+
+## Why VEM was not scanned (recorded reason)
+
+The #110 dense VEM scan (2816 points/row, 16-core) produced ZERO bend-feasible
+closures (floors 17.9/18.5 km/s vs sourced Jones 2.42-7.0). VEM
+single-ellipse-per-leg ballistic novelty is empirically nil; `discover_novel`
+defaults to the demonstrably-bend-feasible E-M multi-arc space and does not burn
+the loop's budget on VEM. Reaching the Jones VEM family needs 3D inclination,
+real-eccentricity intermediate flybys, or multi-arc-per-leg seeding (M-3D /
+future), not more scan density.
+
+## Open follow-ups (not blockers)
+
+- The 2 SILVER candidates await **human review** in the queue. A human decides:
+  promote to a sourced catalogue row (requires an independent source — none
+  exists yet, so promotion to GOLD is not currently possible), retain as a
+  documented novel-machine-confirmed family, or reject as a powered/off-family
+  artifact. The loop will not act without that decision.
+- The unbounded loop-until-dry deepening (broader epoch spans, more topologies,
+  E-E-M and longer multi-arc classes) is a future scaling pass; this run is the
+  bounded first sweep the plan specified.
