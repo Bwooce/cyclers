@@ -37,3 +37,32 @@ def test_vector_omega_z_only_matches_scalar_bit_for_bit() -> None:
                 r_x, v_x = to_rotating_omega_vec(r, v, t_sec, np.array([0.0, 0.0, omega_val]))
                 assert np.array_equal(r_s, r_x)
                 assert np.array_equal(v_s, v_x)
+
+
+def test_vector_omega_roundtrip_identity_general_axis() -> None:
+    """from(to(x)) == x for a TILTED omega vector (general 3-D frame)."""
+    from cyclerfinder.core.frames import from_rotating_omega_vec
+
+    omega_vec = np.array([0.02, -0.015, 0.11]) * synodic_omega("E")
+    for r, v in zip(_RS, _VS, strict=True):
+        for t_sec in (0.0, 5.0e5, -2.0e6):
+            r_rot, v_rot = to_rotating_omega_vec(r, v, t_sec, omega_vec)
+            r_back, v_back = from_rotating_omega_vec(r_rot, v_rot, t_sec, omega_vec)
+            r_mag = float(np.linalg.norm(r))
+            v_mag = float(np.linalg.norm(v))
+            omega_mag = float(np.linalg.norm(omega_vec))
+            assert float(np.linalg.norm(r_back - r)) / r_mag < 1e-10
+            # Velocity reconstruction picks up an omega*|r| cross-term error.
+            v_scale = max(v_mag, omega_mag * r_mag)
+            assert float(np.linalg.norm(v_back - v)) / v_scale < 1e-10
+
+
+def test_vector_omega_z_only_inverse_matches_scalar_bit_for_bit() -> None:
+    from cyclerfinder.core.frames import from_rotating, from_rotating_omega_vec
+
+    omega = synodic_omega("E")
+    for r, v in zip(_RS, _VS, strict=True):
+        r_s, v_s = from_rotating(r, v, 1.0e6, omega)
+        r_x, v_x = from_rotating_omega_vec(r, v, 1.0e6, np.array([0.0, 0.0, omega]))
+        assert np.array_equal(r_s, r_x)
+        assert np.array_equal(v_s, v_x)

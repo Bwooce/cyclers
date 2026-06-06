@@ -284,6 +284,60 @@ def to_rotating_omega_vec(
     return r_rot, v_rot
 
 
+def from_rotating_omega_vec(
+    r_rot: Vec3,
+    v_rot: Vec3,
+    t: float,
+    omega_vec: Vec3,
+) -> tuple[Vec3, Vec3]:
+    """Inverse of :func:`to_rotating_omega_vec`.
+
+    Rotate the position by ``+|omega_vec| t`` about ``omega_hat`` to recover the
+    inertial position, rotate the velocity likewise to recover the
+    ``v - omega_vec x r`` quantity, then add back ``omega_vec x r_inertial``.
+
+    Coplanar-limit gate: when ``omega_vec = (0, 0, omega)`` this delegates to the
+    scalar :func:`from_rotating`, so it is ``numpy.array_equal`` to it bit-for-bit.
+
+    Parameters
+    ----------
+    r_rot, v_rot:
+        Rotating-frame state, km and km/s. Length-3 float64.
+    t:
+        Time since the frame epoch (s).
+    omega_vec:
+        Angular-velocity vector used in the forward transform (rad/s), length-3.
+
+    Returns
+    -------
+    (r_inertial, v_inertial):
+        Reconstructed inertial state. ``from_rotating_omega_vec(
+        *to_rotating_omega_vec(...))`` is the identity to ~1e-10 relative.
+    """
+    wx, wy, wz = float(omega_vec[0]), float(omega_vec[1]), float(omega_vec[2])
+    if wx == 0.0 and wy == 0.0:
+        return from_rotating(r_rot, v_rot, t, wz)
+
+    omega_mag = (wx * wx + wy * wy + wz * wz) ** 0.5
+    omega_hat = np.array([wx / omega_mag, wy / omega_mag, wz / omega_mag], dtype=np.float64)
+    theta = omega_mag * t
+
+    # Rotate position and corrected velocity back by +theta about omega_hat.
+    r_inertial = _rodrigues_rotate(np.asarray(r_rot, dtype=np.float64), omega_hat, theta)
+    v_corr_i = _rodrigues_rotate(np.asarray(v_rot, dtype=np.float64), omega_hat, theta)
+
+    # Add back omega_vec x r_inertial.
+    rx, ry, rz = float(r_inertial[0]), float(r_inertial[1]), float(r_inertial[2])
+    wxr_x = wy * rz - wz * ry
+    wxr_y = wz * rx - wx * rz
+    wxr_z = wx * ry - wy * rx
+    v_inertial = np.array(
+        [float(v_corr_i[0]) + wxr_x, float(v_corr_i[1]) + wxr_y, float(v_corr_i[2]) + wxr_z],
+        dtype=np.float64,
+    )
+    return r_inertial, v_inertial
+
+
 def synodic_omega(anchor_body: str) -> float:
     """Angular rate (rad/s) of the synodic rotating frame anchored on ``anchor_body``.
 
