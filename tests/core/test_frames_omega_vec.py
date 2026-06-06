@@ -79,15 +79,12 @@ def test_synodic_omega_vec_is_z_only_for_coplanar_circular() -> None:
     assert w[2] == __import__("pytest").approx(synodic_omega("E"), rel=1e-9)
 
 
-@pytest.mark.skip(reason="needs Phase 2 inclined_circular accessor")
 def test_synodic_omega_vec_tilts_for_inclined_backend() -> None:
     """Inclined Venus -> non-zero in-plane omega components (orbit normal tilt)."""
-    import pytest
-
     from cyclerfinder.core.ephemeris import Ephemeris
     from cyclerfinder.core.frames import synodic_omega_vec
 
-    ephem = Ephemeris.inclined_circular()  # type: ignore[attr-defined]  # Phase 2 accessor
+    ephem = Ephemeris.inclined_circular()  # Phase 2 accessor
     w = synodic_omega_vec("V", 0.0, ephem)
     # Venus i=3.39 deg -> the orbit-normal tilt off ecliptic z is ~3.39 deg.
     tilt = float(np.degrees(np.arccos(abs(w[2]) / np.linalg.norm(w))))
