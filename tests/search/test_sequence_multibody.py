@@ -65,3 +65,32 @@ def test_distinct_pair_feasibility_unchanged() -> None:
     """The bypass does not alter distinct-pair behaviour: a plain E-V-M-E cell
     still passes exactly as before."""
     assert tisserand_feasible(_vem_simple_cell(), vinf_cap=7.0) is True
+
+
+# ---------------------------------------------------------------------------
+# M-3D reviewed coplanar -> 3D diff (plan §5, Task 5.0)
+# ---------------------------------------------------------------------------
+
+_SAMPLE_CELLS = (_vem_simple_cell(), _emeeve_cell())
+
+
+def test_tisserand_3d_is_superset_of_coplanar() -> None:
+    """ephem-supplied tisserand_feasible never rejects a coplanar-feasible cell
+    (monotonicity, tisserand.py:548-566) — a reviewed 3-D diff, not a silent
+    change. Physics invariant, not a sourced anchor.
+
+    Observed (2026-06-06) on these pinned cells: every pair is already
+    coplanar-linkable in (0.5, 9.0], so the coplanar-True short-circuit
+    (sequence.py) fires and the 3-D verdict matches coplanar exactly — no flip
+    to document. The monotone-superset contract (coplanar-True => 3-D-True) is
+    the assertion; any future cell whose 3-D verdict differs from coplanar would
+    surface here with its physical reason.
+    """
+    from cyclerfinder.core.ephemeris import Ephemeris
+
+    ephem = Ephemeris.inclined_circular()
+    for cell in _SAMPLE_CELLS:
+        coplanar = tisserand_feasible(cell, vinf_cap=9.0)
+        threed = tisserand_feasible(cell, vinf_cap=9.0, ephem=ephem)
+        if coplanar:
+            assert threed  # coplanar-True => 3-D-True (monotone superset)
