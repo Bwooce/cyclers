@@ -56,13 +56,13 @@
       },
       "orbit_fidelity": {
         "type": ["string", "null"],
-        "enum": ["circular-coplanar", "analytic-ephemeris", "real-de440", null],
-        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the orbit-element block is stated at. Derived from model_assumption. A value at one tier must never be cross-validated against a value at another (the S1L1 cross-fidelity bug class)."
+        "enum": ["circular-coplanar", "circular-inclined", "analytic-ephemeris", "real-de440", null],
+        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the orbit-element block is stated at. Derived from model_assumption. A value at one tier must never be cross-validated against a value at another (the S1L1 cross-fidelity bug class). M-3D additively widened the enum with circular-inclined (real i/Ω, mean sma, eccentricity ignored) between circular-coplanar and analytic-ephemeris."
       },
       "vinf_fidelity": {
         "type": ["string", "null"],
-        "enum": ["circular-coplanar", "analytic-ephemeris", "real-de440", null],
-        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the vinf multiset is stated at. Derived from model_assumption."
+        "enum": ["circular-coplanar", "circular-inclined", "analytic-ephemeris", "real-de440", null],
+        "description": "Schema v4.4 (spec §16.7.11): model-fidelity tier (Fidelity) the vinf multiset is stated at. Derived from model_assumption. M-3D additively widened the enum with circular-inclined (real i/Ω, mean sma, eccentricity ignored) between circular-coplanar and analytic-ephemeris."
       },
       "validation_tier": {
         "type": ["string", "null"],
