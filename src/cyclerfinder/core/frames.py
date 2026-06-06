@@ -200,6 +200,90 @@ def from_rotating(
     return r_inertial, v_inertial
 
 
+def _rodrigues_rotate(vec: Vec3, axis_hat: Vec3, angle: float) -> Vec3:
+    """Rotate ``vec`` about the unit ``axis_hat`` by ``angle`` (rad), Rodrigues.
+
+    Right-handed rotation: ``v cos a + (k x v) sin a + k (k . v)(1 - cos a)``
+    for unit axis ``k``. Module-internal helper for the vector-omega frame.
+    """
+    c, s = cos(angle), sin(angle)
+    kx, ky, kz = float(axis_hat[0]), float(axis_hat[1]), float(axis_hat[2])
+    vx, vy, vz = float(vec[0]), float(vec[1]), float(vec[2])
+    # k x v
+    cross_x = ky * vz - kz * vy
+    cross_y = kz * vx - kx * vz
+    cross_z = kx * vy - ky * vx
+    # k . v
+    dot = kx * vx + ky * vy + kz * vz
+    return np.array(
+        [
+            vx * c + cross_x * s + kx * dot * (1.0 - c),
+            vy * c + cross_y * s + ky * dot * (1.0 - c),
+            vz * c + cross_z * s + kz * dot * (1.0 - c),
+        ],
+        dtype=np.float64,
+    )
+
+
+def to_rotating_omega_vec(
+    r_inertial: Vec3,
+    v_inertial: Vec3,
+    t: float,
+    omega_vec: Vec3,
+) -> tuple[Vec3, Vec3]:
+    """Inertial heliocentric -> uniform rotating frame at vector rate ``omega_vec``.
+
+    A strict superset of :func:`to_rotating`: the scalar form's ``omega * z_hat``
+    is replaced by an explicit angular-velocity vector ``omega_vec`` so the frame
+    spins about the unit axis ``omega_hat`` at rate ``|omega_vec|`` and the
+    Coriolis correction ``v - omega_vec x r`` is a full 3-D cross product.
+
+    Coplanar-limit gate (binding, plan §1): when
+    ``omega_vec = (0, 0, omega)`` this returns arrays that are
+    ``numpy.array_equal`` to ``to_rotating(r, v, t, omega)`` bit-for-bit. That
+    is guaranteed by delegating the pure-z case directly to the scalar
+    :func:`to_rotating`; only a genuinely tilted ``omega_vec`` takes the general
+    Rodrigues path.
+
+    Parameters
+    ----------
+    r_inertial, v_inertial:
+        Inertial heliocentric state, km and km/s. Length-3 float64.
+    t:
+        Time since the rotating frame's reference epoch (s).
+    omega_vec:
+        Angular-velocity vector of the frame (rad/s), length-3. The frame
+        rotates about ``omega_vec / |omega_vec|`` at rate ``|omega_vec|``.
+
+    Returns
+    -------
+    (r_rot, v_rot):
+        Two length-3 float64 arrays (no in-place mutation of the inputs).
+    """
+    wx, wy, wz = float(omega_vec[0]), float(omega_vec[1]), float(omega_vec[2])
+    # Pure-z omega: delegate to the scalar form so the coplanar-limit gate is
+    # bit-for-bit (numpy.array_equal), not merely close.
+    if wx == 0.0 and wy == 0.0:
+        return to_rotating(r_inertial, v_inertial, t, wz)
+
+    omega_mag = (wx * wx + wy * wy + wz * wz) ** 0.5
+    omega_hat = np.array([wx / omega_mag, wy / omega_mag, wz / omega_mag], dtype=np.float64)
+    theta = omega_mag * t
+
+    # Coriolis correction: v - omega_vec x r.
+    rx, ry, rz = float(r_inertial[0]), float(r_inertial[1]), float(r_inertial[2])
+    vx, vy, vz = float(v_inertial[0]), float(v_inertial[1]), float(v_inertial[2])
+    wxr_x = wy * rz - wz * ry
+    wxr_y = wz * rx - wx * rz
+    wxr_z = wx * ry - wy * rx
+    v_corr = np.array([vx - wxr_x, vy - wxr_y, vz - wxr_z], dtype=np.float64)
+
+    # Passive rotation by -theta about omega_hat.
+    r_rot = _rodrigues_rotate(np.asarray(r_inertial, dtype=np.float64), omega_hat, -theta)
+    v_rot = _rodrigues_rotate(v_corr, omega_hat, -theta)
+    return r_rot, v_rot
+
+
 def synodic_omega(anchor_body: str) -> float:
     """Angular rate (rad/s) of the synodic rotating frame anchored on ``anchor_body``.
 
