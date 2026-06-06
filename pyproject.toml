@@ -27,6 +27,15 @@ dev = [
 viz = [
     "matplotlib>=3.9",
 ]
+# Independent-toolchain validation of the ephemeris layer. Never a hard
+# dependency: the SPICE cross-check (tests/verify/test_ephemeris_crosscheck.py)
+# reads the SAME DE440 kernel astropy already cached, via spiceypy, to catch a
+# frame/time-scale/jplephem-reader bug that would otherwise shift every internal
+# cross-check consistently. Tests skip cleanly with a reason when spiceypy is
+# absent.
+validation = [
+    "spiceypy>=6.0",
+]
 
 [project.scripts]
 cyclerfinder = "cyclerfinder.cli:main"
