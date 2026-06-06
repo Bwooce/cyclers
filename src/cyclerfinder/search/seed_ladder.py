@@ -99,8 +99,11 @@ def resolve_seed(
     targets (``anchor_vinf``) -> the asymmetric seed; topology from the cell.
     Rung 3 (coplanar): a coplanar warm start (explicit ``coplanar_tofs`` or, when
     an ``ephem`` is supplied, the idealized optimiser's converged leg ToFs).
-    Rung 4 (scan, last resort): an equispaced seed; family selection across epochs
-    is the corrector's ±10 yr scan window (spec §3.4).
+    Rung 4 (scan, last resort): an equispaced seed; family selection across
+    epochs is driven by the parallel epoch grid in
+    :func:`cyclerfinder.search.optimize._ballistic_scan_rung`
+    (``optimise_cell_ephemeris(mode="ballistic", scan_epochs=N)``), the task #110
+    density lever over :mod:`cyclerfinder.search.scan` (spec §3.4).
     """
     revs = tuple(cell.per_leg_revs)
     branches = tuple(cell.per_leg_branch)

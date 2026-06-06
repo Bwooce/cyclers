@@ -252,12 +252,25 @@ def _sourced_cycle_tofs(entry_id: str) -> list[float]:
 
 @pytest.mark.xfail(
     reason="M-ED HEADLINE GATE: ballistic VEM rediscovery to the sourced Jones "
-    "multiset within 0.5 km/s. Open until the corrector converges (spec §7 risk: "
-    "S1L1 family floors Mars V_inf ~6.4 vs Jones 2.4-3.9). Per-cycle corrector "
-    "yields 6 encounter V_inf; the sourced multiset is the 11-encounter two-cycle "
-    "Table 2/3 span, so the strict-multiset compare also surfaces a length gap. "
-    "Flip when at least one member row converges; see plan Phase 5 Task 5.1 flip "
-    "criteria + STOP/report branch (Task 5.4).",
+    "multiset within 0.5 km/s. STOP/report outcome (plan Task 5.4): a DENSE "
+    "parallel epoch x branch scan (task #110) STILL FAILS, so the xfail is NOT "
+    "flipped and the tolerance is NOT loosened. Hunt 2026-06-06 "
+    "(scripts/hunt_vem_ballistic.py, 256 epochs over the full 12.8-yr repeat "
+    "period x 11 rev/branch topologies = 2816 points/row, parallel 16-core): "
+    "EMEVVE outbound = 831 closed / 474 distinct families, BEST max-V_inf 17.86 "
+    "(per-encounter [13.88,13.91,15.39,15.39,17.43,17.86]); MEEVEM inbound = "
+    "1239 closed / 570 distinct families, BEST max-V_inf 18.49 (per-encounter "
+    "[11.40,16.34,16.34,17.83,18.47,18.49]). ZERO bend-feasible solutions in "
+    "either survey. The closed families floor ~11-18 km/s, far above the sourced "
+    "Jones 2.42-7.0 km/s -- the S1L1 Mars-V_inf ~6.4 floor generalised: the "
+    "single-ellipse-per-leg corrector closes a DIFFERENT, higher-V_inf, powered "
+    "family than the Jones members. The sharpened hypothesis: the Jones VEM "
+    "family needs 3D inclination (M-3D), real-eccentricity intermediate "
+    "flybys, or a different (e.g. multi-arc per leg) topology seeding -- not "
+    "more scan density. Per-cycle corrector yields 6 encounter V_inf; the "
+    "sourced multiset is the 11-encounter two-cycle Table 2/3 span, so the "
+    "strict-multiset compare also surfaces a length gap. Flip ONLY when a member "
+    "row genuinely converges within VEM_VINF_TOL_KMS; see plan Phase 5 Task 5.1.",
     strict=False,
 )
 @pytest.mark.slow
@@ -299,6 +312,10 @@ def test_jones_vem_ballistic_rediscovers_sourced_multiset(entry_id: str) -> None
     assert seed_plan.source == "anchor"
 
     # Priority epoch = the row's sourced t-zero (Table 2/3 first encounter date).
+    # Drive the scan rung (task #110): a parallel epoch grid across one full
+    # 12.8-yr repeat period is the density lever family selection needs (spec
+    # 3.4; the prototype's main() scan). The single start lands the degenerate
+    # high-V_inf basin; the dense scan samples the whole period for a member.
     priority = row["trajectory"]["epoch_tzero"]
     result = optimise_cell_ephemeris(
         cell,
@@ -308,6 +325,7 @@ def test_jones_vem_ballistic_rediscovers_sourced_multiset(entry_id: str) -> None
         vinf_targets_kms=vinf_targets,
         tof_seed_days=list(seed_plan.tof_seed_days),
         mode="ballistic",
+        scan_epochs=64,
     )
     assert result.converged and result.constraints_satisfied
 
