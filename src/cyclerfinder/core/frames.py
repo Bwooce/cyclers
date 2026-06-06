@@ -368,6 +368,61 @@ def synodic_omega(anchor_body: str) -> float:
     return n_deg_day * (pi / 180.0) / SECONDS_PER_DAY
 
 
+def synodic_omega_vec(
+    anchor_body: str,
+    t_sec: float,
+    ephem: Ephemeris,
+) -> Vec3:
+    """Anchor body's instantaneous orbit-normal angular-velocity vector (rad/s).
+
+    Returns the full vector :math:`\\boldsymbol{\\omega} = (r \\times v)/|r|^2`
+    on ``anchor_body``'s heliocentric :math:`(r, v)` at ``t_sec`` — the
+    angular-velocity vector along the body's instantaneous orbit normal. Its
+    z-component is exactly :func:`synodic_omega_dynamic`'s scalar result.
+
+    For the **coplanar circular** backend the orbit lies in the ecliptic, so the
+    result is ``(0, 0, synodic_omega(anchor_body))`` to float precision. For the
+    **inclined** backend it tilts to the body's orbit normal (the in-plane
+    components become non-zero, mirroring the body's inclination).
+
+    Parameters
+    ----------
+    anchor_body:
+        One-letter planet code; the frame is anchored on this body's orbit.
+    t_sec:
+        Seconds since the ephemeris reference epoch.
+    ephem:
+        Heliocentric state provider.
+
+    Returns
+    -------
+    Vec3
+        Angular-velocity vector (rad/s), length-3 float64.
+
+    Raises
+    ------
+    ValueError
+        If ``anchor_body``'s heliocentric radius vanishes at ``t_sec``.
+    """
+    r, v = ephem.state(anchor_body, t_sec)
+    # omega = (r x v) / |r|^2 — the full vector, prograde-positive in z.
+    rxv = np.array(
+        [
+            float(r[1] * v[2] - r[2] * v[1]),
+            float(r[2] * v[0] - r[0] * v[2]),
+            float(r[0] * v[1] - r[1] * v[0]),
+        ],
+        dtype=np.float64,
+    )
+    r_sq = float(r[0] * r[0] + r[1] * r[1] + r[2] * r[2])
+    if r_sq == 0.0:
+        raise ValueError(
+            f"synodic_omega_vec: anchor_body={anchor_body!r} has zero "
+            f"heliocentric radius at t_sec={t_sec}",
+        )
+    return rxv / r_sq
+
+
 # ---------------------------------------------------------------------------
 # Dynamic frame (M6a, spec §12(c))
 # ---------------------------------------------------------------------------
