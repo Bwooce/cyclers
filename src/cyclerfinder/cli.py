@@ -17,8 +17,12 @@ missing-viz-extra · 4 not-implemented (interim) · 5 no-candidates / empty-ledg
 from __future__ import annotations
 
 import argparse
+import csv
+import io
+import json
 import sys
 from collections.abc import Callable, Sequence
+from typing import Any
 
 from cyclerfinder import __version__
 
@@ -150,6 +154,113 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 # ---------------------------------------------------------------------------
+# Shared parsing / emit helpers
+# ---------------------------------------------------------------------------
+
+
+def _parse_bodies(spec: str, parser: argparse.ArgumentParser) -> tuple[str, ...]:
+    """Parse a comma-separated body-code list, validating against constants.
+
+    Unknown codes call ``parser.error`` (argparse exits 2).
+    """
+    from cyclerfinder.core.constants import SUPPORTED_BODIES
+
+    bodies = tuple(b.strip() for b in spec.split(",") if b.strip())
+    if not bodies:
+        parser.error("--bodies must list at least one body code")
+    unknown = [b for b in bodies if b not in SUPPORTED_BODIES]
+    if unknown:
+        parser.error(
+            f"unknown body code(s) {','.join(unknown)}; supported: {','.join(SUPPORTED_BODIES)}"
+        )
+    return bodies
+
+
+def _parse_period_basis(
+    spec: str | None, parser: argparse.ArgumentParser
+) -> tuple[str, str] | None:
+    """Resolve --period / --period-basis: ``'beat'``/None → None; ``'A-B'`` → pair."""
+    if spec is None or spec == "beat":
+        return None
+    from cyclerfinder.core.constants import SUPPORTED_BODIES
+
+    parts = spec.split("-")
+    if len(parts) != 2 or any(p not in SUPPORTED_BODIES for p in parts):
+        parser.error(f"--period anchor must be 'A-B' of supported bodies; got {spec!r}")
+    return (parts[0], parts[1])
+
+
+def _emit(rows: list[dict[str, Any]], fmt: str, columns: Sequence[str]) -> None:
+    """Print ``rows`` in the requested format to stdout."""
+    if fmt == "json":
+        print(json.dumps(rows, indent=2, sort_keys=True))
+        return
+    if fmt == "csv":
+        buf = io.StringIO()
+        writer = csv.DictWriter(buf, fieldnames=list(columns), extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
+        print(buf.getvalue(), end="")
+        return
+    # table — aligned columns
+    if not rows:
+        print("(no rows)")
+        return
+    widths = {c: len(c) for c in columns}
+    for row in rows:
+        for c in columns:
+            widths[c] = max(widths[c], len(str(row.get(c, ""))))
+    header = "  ".join(c.ljust(widths[c]) for c in columns)
+    print(header)
+    print("  ".join("-" * widths[c] for c in columns))
+    for row in rows:
+        print("  ".join(str(row.get(c, "")).ljust(widths[c]) for c in columns))
+
+
+# ---------------------------------------------------------------------------
+# enumerate handler
+# ---------------------------------------------------------------------------
+
+
+def _handle_enumerate(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
+    from cyclerfinder.search.sequence import Cell, enumerate_cells, tisserand_feasible
+
+    bodies = _parse_bodies(args.bodies, parser)
+    basis = _parse_period_basis(args.period, parser)
+    branch_set = tuple(b.strip() for b in args.branch.split(",") if b.strip())
+
+    rows: list[dict[str, Any]] = []
+    for cell in enumerate_cells(bodies, args.l_max, args.k_max, args.n_max, branch_set):
+        if basis is not None:
+            cell = Cell(
+                bodies=cell.bodies,
+                sequence=cell.sequence,
+                period_k=cell.period_k,
+                per_leg_revs=cell.per_leg_revs,
+                per_leg_branch=cell.per_leg_branch,
+                period_basis=basis,
+            )
+        feasible = tisserand_feasible(cell, vinf_cap=args.vinf_cap)
+        if args.feasible_only and not feasible:
+            continue
+        rows.append(
+            {
+                "cell_id": cell.id,
+                "bodies": "".join(cell.bodies),
+                "sequence": "-".join(cell.sequence),
+                "period_k": cell.period_k,
+                "feasible": feasible,
+            }
+        )
+        if args.limit is not None and len(rows) >= args.limit:
+            break
+
+    _emit(rows, args.format, ("cell_id", "bodies", "sequence", "period_k", "feasible"))
+    return EXIT_OK
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -164,7 +275,7 @@ def _stub_handler(name: str) -> Callable[[argparse.Namespace, argparse.ArgumentP
 
 
 _HANDLERS: dict[str, Callable[[argparse.Namespace, argparse.ArgumentParser], int]] = {
-    "enumerate": _stub_handler("enumerate"),
+    "enumerate": _handle_enumerate,
     "solve": _stub_handler("solve"),
     "discover": _stub_handler("discover"),
     "report": _stub_handler("report"),
