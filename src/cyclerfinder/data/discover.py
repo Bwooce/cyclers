@@ -63,6 +63,8 @@ def _auto_validate(
     *,
     vinf_cap: float,
     enable_v3: bool = False,
+    priority_date_iso: str | None = None,
+    vinf_targets_kms: dict[str, float] | None = None,
 ) -> str:
     """Run the cheapest-first V0→V2(/V3) gauntlet; return the highest level passed.
 
@@ -97,13 +99,28 @@ def _auto_validate(
     level = "V2"
 
     if enable_v3:
-        # V3 (ephemeris-mode TCM) needs M6b's optimise_cell_ephemeris,
-        # which is an M5 stub raising NotImplementedError. Guarded off
-        # by default; M6b flips the flag once it lands.
+        # V3 is the M-ED ballistic-closure gate (spec §0 finding 3, task #109):
+        # run optimise_cell_ephemeris in ballistic mode and promote to V3 only
+        # when the N-arc V_inf-continuity closure is genuinely satisfied
+        # (constraints_satisfied = converged AND bend-feasible AND V_inf-cap),
+        # NOT on an exception (the prior branch assumed the M5 stub still raised
+        # NotImplementedError; it no longer does). A solver error degrades the
+        # level rather than aborting the run, consistent with V1/V2.
         from cyclerfinder.search.optimize import optimise_cell_ephemeris
 
-        optimise_cell_ephemeris(result.cell, ephem, vinf_cap=vinf_cap)  # raises until M6b lands
-        level = "V3"
+        try:
+            v3_result = optimise_cell_ephemeris(
+                result.cell,
+                ephem,
+                vinf_cap=vinf_cap,
+                mode="ballistic",
+                priority_date_iso=priority_date_iso,
+                vinf_targets_kms=vinf_targets_kms,
+            )
+        except Exception:
+            return level
+        if v3_result.constraints_satisfied:
+            level = "V3"
 
     return level
 
@@ -218,7 +235,15 @@ def discover(
         model_assumption = "analytic-ephemeris" if optimiser == "ephemeris" else "circular-coplanar"
         signature = canonical_signature(result.best_cycler, model_assumption=model_assumption)
         match_result = match(signature, catalog)
-        level = _auto_validate(result, catalog, ephem, vinf_cap=vinf_cap, enable_v3=enable_v3)
+        level = _auto_validate(
+            result,
+            catalog,
+            ephem,
+            vinf_cap=vinf_cap,
+            enable_v3=enable_v3,
+            priority_date_iso=priority_date_iso,
+            vinf_targets_kms=vinf_targets_kms,
+        )
         _record(
             ledger,
             LedgerEntry(
