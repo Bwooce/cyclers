@@ -119,6 +119,33 @@ audit trail and is unchanged in spirit.
     multi-arc finding in project memory `project_s1l1_realeph_closure_blocker`.)
     The future McConaghy 4.7/5.0 anchor remains the cross-check target for the
     S1L1 floor.
+  - **3D-inclination hypothesis REFUTED for this family (task #120,
+    2026-06-06).** The first sharpened hypothesis above was tested directly:
+    the identical grid (256 epochs × 11 rev/branch topologies = 2816 points/row,
+    both Jones rows, 16-core) re-run on the M-3D inclined-circular backend
+    (`Ephemeris(model="inclined-circular")` — sourced J2000 Venus i=3.39°/Mars
+    i=1.85°, via `scripts/hunt_vem_ballistic.py 256 inclined-circular`). The
+    floors did **NOT** drop materially toward the sourced 2.4–7.0:
+    - **EMEVVE outbound**: 1496 closed / 597 distinct families; BEST max-V∞
+      **17.49 km/s** (per-encounter [12.49, 13.18, 13.18, 16.31, 16.31, 17.49]);
+      **0 bend-feasible**. (Coplanar #110 was 17.86.) Sourced 2.5–7.0.
+    - **MEEVEM inbound**: 1257 closed / 415 distinct families; BEST max-V∞
+      **18.39 km/s** (per-encounter [11.30, 15.62, 15.62, 18.38, 18.39, 18.39]);
+      **0 bend-feasible**. (Coplanar #110 was 18.49.) Sourced 2.42–5.16.
+
+    Inclination moved the EMEVVE floor by **−0.37 km/s** and MEEVEM by
+    **−0.10 km/s** — noise against the ~11–14 km/s gap to the sourced multiset,
+    and STILL zero bend-feasible. A small **DE440 control** (full 3D + eccentric;
+    64 epochs × 11 topologies on EMEVVE) bounds this: BEST max-V∞ **18.16 km/s**,
+    0 bend-feasible — i.e. even real eccentricity+inclination together do not
+    reach the family with this corrector. **Conclusion: 3D-inclination-only is
+    REFUTED as the direction for the Jones VEM family.** The blocker is the
+    single-ellipse-per-leg topology itself (it closes a different, higher-V∞,
+    powered family); the front-runner moves to **multi-arc-per-leg seeding /
+    eccentric intermediate flybys** (cf. the S1L1 multi-arc finding,
+    `project_s1l1_realeph_closure_blocker`). The headline gate
+    (`test_jones_vem_ballistic_rediscovers_sourced_multiset`) therefore stays
+    **xfail** — tolerance NOT loosened, xfail NOT flipped.
 - **SnLm multi-rev rediscovery** —
   `docs/superpowers/plans/2026-06-02-snlm-multirev-rediscovery.md`.
   Phase 1 Task 1 EXECUTED (S1L1 characterisation above). Phase 2 —

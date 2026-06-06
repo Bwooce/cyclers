@@ -93,9 +93,12 @@ def test_solve_mode_ballistic_is_attempted_on_closed_cell() -> None:
     reason="OPEN RESEARCH (was M-ED-BLOCKED): the ballistic mode landed "
     "(kwargs verified against cli.py 2026-06-06) but VEM convergence to the "
     "sourced Jones multisets does not occur — dense 16-core scan (task #110) "
-    "floors at ~17.9-18.5 km/s vs sourced 2.4-7.0, zero bend-feasible. "
-    "Un-skip when a corrector variant reaches the family (#120 inclined-rung "
-    "hunt first); see data/OUTSTANDING.md M-ED open-research entry."
+    "floors at ~17.9-18.5 km/s vs sourced 2.4-7.0, zero bend-feasible. The "
+    "#120 inclined-rung hunt ran and REFUTED 3D-inclination-only: the same grid "
+    "on the inclined-circular backend moved the floor only ~0.1-0.4 km/s (still "
+    "zero bend-feasible), DE440 control floors at ~18.2. Un-skip when a corrector "
+    "variant reaches the family (multi-arc-per-leg / eccentric flybys, NOT "
+    "3D-inclination-only); see data/OUTSTANDING.md M-ED open-research entry."
 )
 @pytest.mark.slow
 def test_solve_vem_ballistic_converges() -> None:  # pragma: no cover - skipped
