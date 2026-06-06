@@ -1095,6 +1095,24 @@ decisions below were each made earlier in the project (§16.6, §16.7.6,
    candidate sequences is a recorded Forge-pipeline enhancement candidate,
    not yet built.
 
+> **SPICE-as-validation-instrument (added 2026-06-06):** rejecting SPICE *as
+> storage* (point 1 above) does **not** reject SPICE *as an independent
+> measuring instrument*. The catalogue still stores seeds, not tracks — that is
+> intact. Separately, `tests/verify/test_ephemeris_crosscheck.py` (optional
+> `validation` extra; skips cleanly without spiceypy) points NAIF's CSPICE
+> reader (spiceypy) at the *same* DE440 kernel astropy already caches and
+> compares `Ephemeris("astropy").state(body, t)` against `spkgeo` over a
+> 2025–2045 grid for all eight planets. The risk it closes is the
+> single-point-of-failure where every internal cross-check (Axis A's
+> lamberthub/Kepler paths, the corrector, the gauntlet) consumes the *same*
+> astropy states — a frame-convention, time-scale (TDB/UTC/TT), or
+> jplephem-reader bug would shift them all consistently and pass every existing
+> gate. An independent reader over identical data catches exactly that class.
+> Confirmed agreement is sub-km / sub-mm/s (same data, different reader =
+> numerical precision); a larger systematic would be the bug, reported, not
+> tolerance-widened. This is consistency validation of the *generator's
+> ephemeris layer*, not stored trajectory data — seeds-not-tracks is untouched.
+
 #### 16.7.9 Schema v4.2 — segment center, TOF bounds, source ephemeris
 
 The v4.2 sub-rev adds three **additive, optional, non-signature** fields. None
