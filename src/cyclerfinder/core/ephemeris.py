@@ -293,11 +293,31 @@ class Ephemeris:
     def __init__(self, model: str = "circular") -> None:
         if model == "circular":
             self._backend: _Backend = _CircularBackend()
+        elif model == "inclined-circular":
+            # Opt-in inclined-circular backend: real J2000 inc/Ω (Standish &
+            # Williams), mean sma, circular (eccentricity ignored — separable
+            # follow-on). Built from a COPY of PLANETS so the live coplanar
+            # table is never mutated.
+            self._backend = _InclinedCircularBackend(inclined_planets())
         elif model == "astropy":
             self._backend = _AstropyBackend()
         else:
-            raise ValueError(f"unknown ephemeris model {model!r}; expected 'circular' or 'astropy'")
+            raise ValueError(
+                f"unknown ephemeris model {model!r}; expected 'circular', "
+                "'inclined-circular', or 'astropy'",
+            )
         self._model: str = model
+
+    @classmethod
+    def inclined_circular(cls) -> Ephemeris:
+        """Construct an :class:`Ephemeris` on the opt-in inclined-circular backend.
+
+        Convenience for ``Ephemeris(model="inclined-circular")``: planets ride
+        their mean-motion circles in orbital planes tilted by the sourced J2000
+        inclination/node (:func:`inclined_planets`). The default
+        ``Ephemeris(model="circular")`` path is unaffected and byte-identical.
+        """
+        return cls(model="inclined-circular")
 
     @property
     def model(self) -> str:
