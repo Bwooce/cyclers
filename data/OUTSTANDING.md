@@ -79,6 +79,31 @@ audit trail and is unchanged in spirit.
 
 ## In progress (with plan references)
 
+- **M-ED real-ephemeris ballistic corrector** —
+  `docs/superpowers/plans/2026-06-05-m-ed-ballistic-corrector.md`. **Phases 1-5
+  shipped.** The N-arc ballistic differential corrector (`search/correct.py`,
+  `ballistic_correct`), the Russell descriptor parser (`search/descriptor.py`),
+  the default-inert `mode="ballistic"` on `optimise_cell_ephemeris` (real
+  V∞-continuity closure residual, maintenance mode byte-identical), the seeding
+  ladder (`search/seed_ladder.py`, descriptor → anchor → coplanar → scan), and a
+  real ballistic-closure V3 gate in `data/discover.py` (replacing the stale
+  `# raises until M6b lands` stub branch) are all landed and gated. The corrector
+  closes the S1L1 two-arc chain and a Sanchez-regime near-ballistic chain on
+  DE440.
+  - **OPEN RESEARCH — Jones VEM headline gate does NOT converge.** The headline
+    rediscovery gate (`tests/test_vem_rediscovery.py::test_jones_vem_ballistic_
+    rediscovers_sourced_multiset`) stays **xfail** (STOP/report branch, plan Task
+    5.4 — tolerance NOT loosened, xfail NOT flipped). Single-start `ballistic_
+    correct` lands the degenerate high-V∞ basin, far from the sourced Jones
+    2.4-7.0 km/s: EMEVVE outbound does not close (residual=inf, per-encounter V∞
+    22-48 km/s); MEEVEM inbound closes off-target (residual 0.76 km/s, V∞
+    14-20 km/s). This is the documented S1L1 Mars-V∞ ~6.4 floor generalised: the
+    corrector closes a *different* (higher-V∞) family than the Jones members.
+    Reaching the Jones family needs the multi-start epoch×branch scan rung wired
+    into the ballistic mode (the prototype's `main()` scan; the seeding ladder's
+    scan rung exists but is not yet driven by the headline gate) — open item.
+    The future McConaghy 4.7/5.0 anchor remains the cross-check target for the
+    S1L1 floor.
 - **SnLm multi-rev rediscovery** —
   `docs/superpowers/plans/2026-06-02-snlm-multirev-rediscovery.md`.
   Phase 1 Task 1 EXECUTED (S1L1 characterisation above). Phase 2 —
