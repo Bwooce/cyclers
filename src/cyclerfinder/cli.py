@@ -261,6 +261,170 @@ def _handle_enumerate(args: argparse.Namespace, parser: argparse.ArgumentParser)
 
 
 # ---------------------------------------------------------------------------
+# solve helpers + handler
+# ---------------------------------------------------------------------------
+
+_LETTER_BRANCH: dict[str, str] = {"s": "single", "l": "low", "h": "high"}
+
+
+def _parse_cell_id(cell_id: str, parser: argparse.ArgumentParser) -> Any:
+    """Parse a ``Cell.id`` string back into a :class:`Cell` (the inverse of ``Cell.id``).
+
+    Validated by a round-trip assertion against ``Cell.id`` (``sequence.py``).
+    """
+    from cyclerfinder.search.sequence import Cell
+
+    parts = cell_id.split("|")
+    if len(parts) not in (5, 6):
+        parser.error(f"malformed --cell-id {cell_id!r}")
+    bodyset, sequence_tok, k_tok, revs_tok, branch_tok = parts[:5]
+    basis: tuple[str, str] | None = None
+    if len(parts) == 6:
+        basis_tok = parts[5]
+        if not basis_tok.startswith("p") or len(basis_tok) != 3:
+            parser.error(f"malformed period-basis token in --cell-id {cell_id!r}")
+        basis = (basis_tok[1], basis_tok[2])
+    if not k_tok.startswith("k") or not revs_tok.startswith("r") or not branch_tok.startswith("b"):
+        parser.error(f"malformed --cell-id {cell_id!r}")
+    try:
+        bodies = tuple(bodyset)
+        sequence = tuple(sequence_tok.split("-"))
+        period_k = int(k_tok[1:])
+        per_leg_revs = tuple(int(c) for c in revs_tok[1:])
+        per_leg_branch = tuple(_LETTER_BRANCH[c] for c in branch_tok[1:])
+    except (ValueError, KeyError):
+        parser.error(f"malformed --cell-id {cell_id!r}")
+    cell = Cell(
+        bodies=bodies,
+        sequence=sequence,
+        period_k=period_k,
+        per_leg_revs=per_leg_revs,
+        per_leg_branch=per_leg_branch,
+        period_basis=basis,
+    )
+    if cell.id != cell_id:
+        parser.error(f"--cell-id {cell_id!r} did not round-trip (got {cell.id!r})")
+    return cell
+
+
+def _parse_vinf_targets(
+    spec: str | None, parser: argparse.ArgumentParser
+) -> dict[str, float] | None:
+    """Parse ``E=5.65,M=3.05`` into a ``{body: kms}`` mapping."""
+    if spec is None:
+        return None
+    out: dict[str, float] = {}
+    for token in spec.split(","):
+        token = token.strip()
+        if not token:
+            continue
+        if "=" not in token:
+            parser.error(f"--vinf-targets entry must be BODY=KMS; got {token!r}")
+        body, _, value = token.partition("=")
+        try:
+            out[body.strip()] = float(value)
+        except ValueError:
+            parser.error(f"--vinf-targets value not a float in {token!r}")
+    return out
+
+
+def _cell_from_args(args: argparse.Namespace, parser: argparse.ArgumentParser) -> Any:
+    """Build a :class:`Cell` from explicit flags, or parse it from ``--cell-id``.
+
+    Explicit flags take precedence when both are supplied.
+    """
+    from cyclerfinder.search.sequence import Cell
+
+    has_flags = args.bodies is not None and args.sequence is not None and args.k is not None
+    if has_flags:
+        bodies = _parse_bodies(args.bodies, parser)
+        sequence = tuple(args.sequence.split("-"))
+        revs_spec = args.revs if args.revs is not None else ",".join(["0"] * (len(sequence) - 1))
+        per_leg_revs = tuple(int(r) for r in revs_spec.split(",") if r != "")
+        branch_spec = (
+            args.branch if args.branch is not None else ",".join(["single"] * (len(sequence) - 1))
+        )
+        per_leg_branch = tuple(b for b in branch_spec.split(",") if b != "")
+        basis = _parse_period_basis(args.period_basis, parser)
+        return Cell(
+            bodies=bodies,
+            sequence=sequence,
+            period_k=args.k,
+            per_leg_revs=per_leg_revs,
+            per_leg_branch=per_leg_branch,
+            period_basis=basis,
+        )
+    if args.cell_id is not None:
+        return _parse_cell_id(args.cell_id, parser)
+    parser.error("solve needs --cell-id OR --bodies/--sequence/--k")
+
+
+def _result_to_dict(result: Any) -> dict[str, Any]:
+    """Serialise an OptimisationResult, segregating optimiser outputs under `computed`.
+
+    Golden discipline: every value here is computed by our optimiser, never a
+    sourced anchor, so it all lives under the ``computed`` key.
+    """
+    score = result.best_score
+    return {
+        "cell_id": result.cell.id,
+        "converged": bool(result.converged),
+        "constraints_satisfied": bool(result.constraints_satisfied),
+        "computed": {
+            "closure_residual_kms": float(result.closure_residual_kms),
+            "max_vinf_kms": float(score.max_vinf_kms),
+            "total_maintenance_dv_kms": float(score.total_maintenance_dv_kms),
+            "taxi_cost_kms": float(score.taxi_cost_kms),
+            "period_error_yr": float(score.period_error_yr),
+            "hard_constraints_pass": bool(score.hard_constraints_pass),
+        },
+    }
+
+
+def _handle_solve(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.search.optimize import (
+        optimise_cell_ephemeris,
+        optimise_cell_idealized,
+    )
+
+    cell = _cell_from_args(args, parser)
+
+    if args.fidelity == "idealized":
+        result = optimise_cell_idealized(
+            cell,
+            Ephemeris(model="circular"),
+            vinf_cap=args.vinf_cap,
+            n_starts=args.n_starts,
+            seed=args.seed,
+            use_de=not args.no_de,
+        )
+    else:
+        vinf_targets = _parse_vinf_targets(args.vinf_targets, parser)
+        result = optimise_cell_ephemeris(
+            cell,
+            Ephemeris(model="astropy"),
+            vinf_cap=args.vinf_cap,
+            priority_date_iso=args.priority_date,
+            vinf_targets_kms=vinf_targets,
+            n_starts=args.n_starts,
+            seed=args.seed,
+            mode=args.mode,
+        )
+
+    payload = _result_to_dict(result)
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        flat = {"cell_id": payload["cell_id"], **payload["computed"]}
+        _emit([flat], "table", list(flat.keys()))
+    # `solve` produced a result: success. Convergence (constraints_satisfied) is
+    # carried in the payload, never conflated with the run's exit code — non-
+    # convergence is honest data, not a CLI failure (spec §11.3 honesty).
+    return EXIT_OK
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -276,7 +440,7 @@ def _stub_handler(name: str) -> Callable[[argparse.Namespace, argparse.ArgumentP
 
 _HANDLERS: dict[str, Callable[[argparse.Namespace, argparse.ArgumentParser], int]] = {
     "enumerate": _handle_enumerate,
-    "solve": _stub_handler("solve"),
+    "solve": _handle_solve,
     "discover": _stub_handler("discover"),
     "report": _stub_handler("report"),
     "viz": _stub_handler("viz"),
