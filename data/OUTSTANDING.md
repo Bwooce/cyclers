@@ -90,18 +90,33 @@ audit trail and is unchanged in spirit.
   `# raises until M6b lands` stub branch) are all landed and gated. The corrector
   closes the S1L1 two-arc chain and a Sanchez-regime near-ballistic chain on
   DE440.
-  - **OPEN RESEARCH — Jones VEM headline gate does NOT converge.** The headline
-    rediscovery gate (`tests/test_vem_rediscovery.py::test_jones_vem_ballistic_
-    rediscovers_sourced_multiset`) stays **xfail** (STOP/report branch, plan Task
-    5.4 — tolerance NOT loosened, xfail NOT flipped). Single-start `ballistic_
-    correct` lands the degenerate high-V∞ basin, far from the sourced Jones
-    2.4-7.0 km/s: EMEVVE outbound does not close (residual=inf, per-encounter V∞
-    22-48 km/s); MEEVEM inbound closes off-target (residual 0.76 km/s, V∞
-    14-20 km/s). This is the documented S1L1 Mars-V∞ ~6.4 floor generalised: the
-    corrector closes a *different* (higher-V∞) family than the Jones members.
-    Reaching the Jones family needs the multi-start epoch×branch scan rung wired
-    into the ballistic mode (the prototype's `main()` scan; the seeding ladder's
-    scan rung exists but is not yet driven by the headline gate) — open item.
+  - **OPEN RESEARCH — Jones VEM headline gate does NOT converge, even with a
+    dense parallel scan (task #110, 2026-06-06).** The headline rediscovery gate
+    (`tests/test_vem_rediscovery.py::test_jones_vem_ballistic_rediscovers_
+    sourced_multiset`) stays **xfail** (STOP/report branch, plan Task 5.4 —
+    tolerance NOT loosened, xfail NOT flipped). The parallel epoch×branch scan
+    engine now exists (`search/scan.py`, `scan_parallel` over a `ProcessPool`;
+    measured 3.98× speedup on a 32-point DE440 grid, 8 workers) and drives the
+    ballistic mode via `optimise_cell_ephemeris(mode="ballistic", scan_epochs=N)`
+    (`_ballistic_scan_rung`). A DENSE hunt (`scripts/hunt_vem_ballistic.py`:
+    256 epochs over the full 12.8-yr repeat period × 11 rev/branch topologies =
+    **2816 points/row**, 16-core) STILL FAILS:
+    - **EMEVVE outbound** (E-M-E-V-V-E): 831 closed / 474 distinct families;
+      BEST max-V∞ **17.86 km/s** (per-encounter [13.88, 13.91, 15.39, 15.39,
+      17.43, 17.86]); **0 bend-feasible**. Sourced 2.5–7.0.
+    - **MEEVEM inbound** (M-E-E-V-E-M): 1239 closed / 570 distinct families;
+      BEST max-V∞ **18.49 km/s** (per-encounter [11.40, 16.34, 16.34, 17.83,
+      18.47, 18.49]); **0 bend-feasible**. Sourced 2.42–5.16.
+
+    No bend-feasible closed family below 10 km/s exists in either survey. The
+    closed families floor ~11–18 km/s, far above the sourced Jones 2.42–7.0 —
+    the documented S1L1 Mars-V∞ ~6.4 floor generalised: the single-ellipse-per-
+    leg corrector closes a *different, higher-V∞, powered* family than the Jones
+    members. **A denser-scan-still-fails result is real science: it sharpens the
+    hypothesis** — reaching the Jones VEM family is NOT a scan-density problem;
+    it needs 3D inclination (M-3D), real-eccentricity intermediate flybys, or a
+    different (e.g. multi-arc-per-leg) topology seeding. (Compare the S1L1
+    multi-arc finding in project memory `project_s1l1_realeph_closure_blocker`.)
     The future McConaghy 4.7/5.0 anchor remains the cross-check target for the
     S1L1 floor.
 - **SnLm multi-rev rediscovery** —
