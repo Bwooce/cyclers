@@ -53,9 +53,18 @@ was added:
 
 Body codes are scoped to the primary:
 
-- Heliocentric (`primary: "Sun"` or absent): `"V"`, `"E"`, `"M"` for
-  Venus, Earth, Mars (as in the existing 15+ entries). Mercury would be
-  `"Me"` if ever added.
+- Heliocentric (`primary: "Sun"` or absent): single-letter codes for the
+  major planets, keyed in `PLANETS`
+  (`src/cyclerfinder/core/constants.py`):
+  `"V"` Venus, `"E"` Earth, `"M"` Mars (the inner-planet set used by the
+  existing 15+ entries), plus `"J"` Jupiter, `"S"` Saturn, `"U"` Uranus,
+  `"N"` Neptune. **Mercury uses the two-letter code `"Me"`** — `"M"` is
+  already Mars, and Mercury is the one major planet whose natural
+  single-letter initial collides, so it takes the minimal unambiguous
+  two-letter form. (`"Me"` cannot collide with the full-name moon codes
+  below, which are all ≥3 letters.) No heliocentric entries use `J`/`S`/`U`/
+  `N`/`Me` in the catalogue yet; the codes are registered so the body-agnostic
+  machinery (enumeration, Tisserand, ephemeris) accepts them.
 - Earth-Moon (`primary: "Earth"`): `"E"` is the primary anchor / Earth;
   `"Moon"` is the orbiting natural satellite. Most lunar cyclers in the
   literature are CR3BP periodic orbits; the patched-conic + V_inf
