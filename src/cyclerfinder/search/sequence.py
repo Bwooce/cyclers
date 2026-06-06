@@ -325,6 +325,19 @@ def tisserand_feasible(
     points evenly spaced in ``(0.5, vinf_cap]``. With ``ephem=None`` the
     coplanar (i=0) :func:`linkable` predicate is used; with an ephemeris the
     3-D :func:`linkable_3d` predicate extends it (see the ``ephem`` note).
+
+    Honest limit (M-3D, design §5)
+    ------------------------------
+    :func:`~cyclerfinder.search.tisserand.linkable_3d` tests **energetic**
+    linkability with an inclination budget (``i_sc_max_deg=30°`` default,
+    ``tisserand.py:476`` — a *modelling choice*, not a sourced constant), **not
+    node compatibility**. Two bodies can share a reachable spacecraft
+    inclination *magnitude* while their lines of nodes make the transfer
+    phasing-infeasible. The 3-D predicate is therefore a *necessary, not
+    sufficient* screen — exactly the same character as the coplanar
+    :func:`linkable` it extends. A ``True`` here means the pair is energetically
+    linkable under the inclination budget; it does not guarantee a node-and-phase
+    compatible transfer exists.
     """
     use_3d = ephem is not None
     try:
