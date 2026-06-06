@@ -25,6 +25,7 @@ from __future__ import annotations
 
 from typing import Any, cast
 
+import numpy as np
 import pytest
 import yaml  # type: ignore[import-untyped]
 
@@ -217,41 +218,103 @@ def test_vem_syn_beat_token_never_parsed_as_body_pair() -> None:
 # ---------------------------------------------------------------------------
 
 
+# M-ED HEADLINE GATE: Jones VEM ballistic rediscovery (plan Phase 5 Task 5.1).
+#
+# GOLDEN DISCIPLINE: EXPECTED = the catalogue's SOURCED vinf_kms_at_encounters
+# (AAS 17-577 Tables 2/3). The corrector output is the side under test. No
+# self-computed value is ever the EXPECTED side.
+#
+# RISK (spec §7): the S1L1 corrector family floors Mars V_inf ~6.4 km/s; the Jones
+# Mars targets are 2.50/2.79 (EMEVVE) and ~2.42-3.85 (MEEVEM). Convergence is NOT
+# assumed. Until it converges within VEM_VINF_TOL_KMS this stays xfail with the
+# finding recorded; the STOP/report branch (Task 5.4) governs that outcome.
+
+VEM_VINF_TOL_KMS = 0.5  # tied to sourced Jones rounding + model difference (spec §5)
+
+
+def _sourced_vinf_multiset(entry_id: str) -> list[float]:
+    return sorted(float(e["vinf_kms"]) for e in _row(entry_id)["vinf_kms_at_encounters"])
+
+
+def _sourced_cycle_tofs(entry_id: str) -> list[float]:
+    """First-cycle per-leg ToFs (days) from the SOURCED trajectory segments.
+
+    One cycle has ``len(sequence_canonical) - 1`` legs; the row's segments list
+    two cycles (the 11-encounter Table 2/3 span), so the first ``n_legs`` segment
+    ToFs are the single-cycle seed. These are SOURCED (Table 2/3 Flight Time
+    column), used only as the anchor-rung *seed* — never an EXPECTED.
+    """
+    row = _row(entry_id)
+    n_legs = len(row["sequence_canonical"].split("-")) - 1
+    segs = row["trajectory"]["segments"]
+    return [float(segs[i]["tof_days"]) for i in range(n_legs)]
+
+
 @pytest.mark.xfail(
-    reason="VEM strict ballistic closure is open research (spec §17 line 199); "
-    "no sourced V_inf anchor exists to assert against and the circular-coplanar "
-    "optimiser is not expected to converge a ballistic VEM cycler. Flipped by "
-    "M-ED (real-ephemeris discovery). See roadmap M-N test-gate row.",
+    reason="M-ED HEADLINE GATE: ballistic VEM rediscovery to the sourced Jones "
+    "multiset within 0.5 km/s. Open until the corrector converges (spec §7 risk: "
+    "S1L1 family floors Mars V_inf ~6.4 vs Jones 2.4-3.9). Per-cycle corrector "
+    "yields 6 encounter V_inf; the sourced multiset is the 11-encounter two-cycle "
+    "Table 2/3 span, so the strict-multiset compare also surfaces a length gap. "
+    "Flip when at least one member row converges; see plan Phase 5 Task 5.1 flip "
+    "criteria + STOP/report branch (Task 5.4).",
     strict=False,
 )
 @pytest.mark.slow
-def test_emeeve_idealized_optimiser_converges_feasible() -> None:
-    """ASPIRATIONAL: the idealized optimiser finds a feasible (constraints-
-    satisfied) interior solution for the EMEEVE VEM cell. Expected to xfail in
-    the circular-coplanar model; documents the M-ED handoff target.
+@pytest.mark.parametrize("entry_id", _MEMBER_ROW_IDS)
+def test_jones_vem_ballistic_rediscovers_sourced_multiset(entry_id: str) -> None:
+    """HEADLINE GATE: the M-ED ballistic corrector, seeded via the sourced-anchor
+    rung (the row's sourced transit/segment ToFs + per-encounter V_inf targets),
+    converges to a closed ballistic chain whose per-encounter V_inf magnitudes
+    match the row's SOURCED multiset within VEM_VINF_TOL_KMS.
 
-    This asserts ONLY result.constraints_satisfied (a feasibility predicate,
-    not a sourced number) — it never asserts a computed V_inf as golden.
+    EXPECTED side = the published Jones multiset only (golden discipline).
     """
     from cyclerfinder.core.ephemeris import Ephemeris
-    from cyclerfinder.search.optimize import optimise_cell_idealized
+    from cyclerfinder.search.optimize import optimise_cell_ephemeris
+    from cyclerfinder.search.seed_ladder import resolve_seed
 
-    # EMEEVE with loop leg requires multi-rev (M-L). Until M-L lands this also
-    # cannot construct; the xfail covers both the M-L and the convergence gaps.
-    # Built as the loader would: anchor pair (E,M), sourced k=3, no k rewrite.
-    seq = ("E", "M", "E", "E", "V", "E")
+    row = _row(entry_id)
+    seq = tuple(row["sequence_canonical"].split("-"))
+    n_legs = len(seq) - 1
     cell = Cell(
         bodies=("V", "E", "M"),
         sequence=seq,
-        period_k=3,
-        per_leg_revs=(0, 0, 1, 0, 0),  # the E-E loop leg is multi-rev
-        per_leg_branch=("single", "single", "low", "single", "single"),
-        period_basis=("E", "M"),
+        period_k=int(row["period"]["k"]),
+        per_leg_revs=(0,) * n_legs,
+        per_leg_branch=("single",) * n_legs,
+        period_basis=_basis_from_pair(row["period"]["pair"]),  # "VEM-syn" -> None
     )
-    result = optimise_cell_idealized(
+
+    # Sourced anchor: per-body V_inf targets (first occurrence of each body in
+    # encounter order) + the first-cycle sourced segment ToFs.
+    vinf_targets: dict[str, float] = {}
+    for enc in row["vinf_kms_at_encounters"]:
+        vinf_targets.setdefault(enc["body"], float(enc["vinf_kms"]))
+    seed_plan = resolve_seed(
         cell,
-        Ephemeris(model="circular"),
-        vinf_cap=7.0,
-        seed=0,
+        anchor_tofs=_sourced_cycle_tofs(entry_id),
+        anchor_vinf=vinf_targets,
     )
-    assert result.constraints_satisfied
+    assert seed_plan.source == "anchor"
+
+    # Priority epoch = the row's sourced t-zero (Table 2/3 first encounter date).
+    priority = row["trajectory"]["epoch_tzero"]
+    result = optimise_cell_ephemeris(
+        cell,
+        Ephemeris("astropy"),
+        vinf_cap=8.0,
+        priority_date_iso=priority,
+        vinf_targets_kms=vinf_targets,
+        tof_seed_days=list(seed_plan.tof_seed_days),
+        mode="ballistic",
+    )
+    assert result.converged and result.constraints_satisfied
+
+    expected = _sourced_vinf_multiset(entry_id)
+    got = sorted(
+        max(float(np.linalg.norm(e.vinf_in)), float(np.linalg.norm(e.vinf_out)))
+        for e in result.best_cycler.encounters
+    )
+    for g, x in zip(got, expected, strict=True):
+        assert g == pytest.approx(x, abs=VEM_VINF_TOL_KMS)
