@@ -2015,6 +2015,8 @@
 - id: jones-2017-vem-emevve-outbound
   name: "Jones 2017 EMEVVE VEM triple cycler (outbound, AAS 17-577 Table 2)"
   source: literature
+  supersedes:   # schema v4.3 back-link (2026-06-06, task #112): this attested member supersedes the UNREALIZED 6.4-yr archetype row (which carries the matching superseded_by). See vem-emeeve-3syn data_gaps[period.feasibility].
+    - vem-emeeve-3syn
   trajectory_regime: ballistic   # AAS 17-577 p.5: "near-ballistic cycler solutions"; v∞-matching maneuvers <200 m/s are differentially corrected to ballistic; the optimized cases are ballistic in full n-body dynamics
   model_assumption: analytic-ephemeris   # AAS 17-577 p.5: "A zero-sphere-of-influence patched conic gravity model is used with the real planetary ephemeris, and Lambert's problem is solved". NOT circular-coplanar (the Fig.2 Tisserand graph is only the qualitative tool).
   cycler_class: multi-arc   # 6 flybys per cycle (EMEVVE), multiple distinct gravity-assist arcs; no single repeating (a,e) conic; see docs/notes/multi-arc-classification.md
@@ -2292,6 +2294,8 @@
 - id: jones-2017-vem-meevem-inbound
   name: "Jones 2017 MEEVEM VEM triple cycler (inbound, AAS 17-577 Table 3)"
   source: literature
+  supersedes:   # schema v4.3 back-link (2026-06-06, task #112): this attested member supersedes the UNREALIZED 6.4-yr archetype row (which carries the matching superseded_by). See vem-emeeve-3syn data_gaps[period.feasibility].
+    - vem-emeeve-3syn
   trajectory_regime: ballistic   # AAS 17-577 p.5: "near-ballistic cycler solutions"; v∞-matching maneuvers <200 m/s differentially corrected to ballistic
   model_assumption: analytic-ephemeris   # AAS 17-577 p.5: real-ephemeris zero-SOI patched conic + Lambert. NOT circular-coplanar.
   cycler_class: multi-arc   # 6 flybys per cycle (MEEVEM), multiple distinct gravity-assist arcs; no single repeating (a,e) conic; see docs/notes/multi-arc-classification.md
