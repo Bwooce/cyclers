@@ -33,9 +33,27 @@ Lambert branch chosen to bracket the arc ToF); a full-rev ``M:N`` arc is an
 M-rev resonant E->E loop. The longest E->E loop is eliminated as the period
 slack leg (spec §2.1(a)), exactly as ``test_correct_s1l1.py`` pins it.
 
+Like-for-like variant (#135)
+-----------------------------
+The #125 Part-2 run drove the corrector on ``Ephemeris('astropy')`` (real
+DE440) and compared closures to the rows' CIRCULAR-COPLANAR sourced anchors —
+cross-fidelity confounded the basin question with the model mismatch. Pass
+``--model circular`` to re-run the SAME genome derivation, tolerances and
+anchors on ``Ephemeris('circular')``: now coplanar-vs-coplanar, against rows
+that are by-construction solutions OF the circular-coplanar model.
+
+The ``--probe-at-truth`` flag adds the decisive diagnostic: per row, seed the
+corrector EXACTLY at the row's own sourced ToF geometry (transit ToFs from the
+segments, E-E loop ToFs from the descriptor arcs) at the best-phase epoch
+(t0 chosen as the phase minimising the residual evaluated AT the sourced
+geometry), then check whether the corrector STAYS at truth (residual->0,
+ToFs unchanged) or WALKS AWAY to the degenerate basin. Staying => seeding is
+the whole story; walking => the residual/solver itself is implicated.
+
 Usage::
 
-    uv run python scripts/campaign_russell12.py [--epochs N] [--workers W]
+    uv run python scripts/campaign_russell12.py [--epochs N] [--workers W] \\
+        [--model circular|astropy] [--probe-at-truth] [--out FILE]
 """
 
 from __future__ import annotations
@@ -52,7 +70,7 @@ import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.search.correct import ballistic_correct
+from cyclerfinder.search.correct import _residuals, ballistic_correct
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
@@ -165,8 +183,8 @@ def build_genome(row: dict[str, Any]) -> dict[str, Any]:
 
 def _run_one_epoch(args: tuple) -> dict[str, Any]:
     """Worker: run the corrector at one epoch in one residual mode."""
-    (genome, t0_sec, residual_mode) = args
-    ephem = Ephemeris("astropy")
+    (genome, t0_sec, residual_mode, model) = args
+    ephem = Ephemeris(model)
     try:
         r = ballistic_correct(
             sequence=genome["sequence"],
@@ -277,7 +295,115 @@ def _classify(row: dict[str, Any], genome: dict[str, Any], best: dict[str, Any] 
     }
 
 
-def run_row(row: dict[str, Any], *, epochs: int, workers: int) -> dict:
+def _truth_seed(genome: dict[str, Any]) -> list[float]:
+    """The row's OWN sourced ToF geometry as a free-leg seed (slack eliminated).
+
+    ``all_seeds`` are [E->M, M->E, *E-E loops] taken verbatim from the row's
+    segments + descriptor arcs — the by-construction circular-coplanar geometry.
+    Drop the slack leg (reconstructed by the corrector as period - sum(free))."""
+    all_seeds = genome["all_seeds"]
+    slack = genome["slack_leg"]
+    return [all_seeds[i] for i in range(len(all_seeds)) if i != slack]
+
+
+def _residual_at(
+    genome: dict[str, Any], t0_sec: float, free_tof: list[float], model: str, residual_mode: str
+) -> float:
+    """Max residual evaluated AT a fixed genome (no solve)."""
+    ephem = Ephemeris(model)
+    x = np.array([t0_sec, *free_tof], dtype=np.float64)
+    res = _residuals(
+        x,
+        sequence=genome["sequence"],
+        per_leg_revs=genome["per_leg_revs"],
+        per_leg_branch=genome["per_leg_branch"],
+        slack_leg=genome["slack_leg"],
+        period_days=genome["period_sec"] / DAY_S,
+        ephem=ephem,
+        residual_mode=residual_mode,
+    )
+    return max(abs(r) for r in res)
+
+
+def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dict:
+    """Seed-at-truth probe: does the corrector STAY at the sourced geometry?
+
+    1. Fix the free-leg ToFs at the row's OWN sourced values (``_truth_seed``).
+    2. Scan t0 over one target period; pick the phase minimising the residual
+       evaluated AT that truth geometry (magnitude mode — the continuity floor).
+    3. Run the full corrector seeded EXACTLY there (truth ToFs, best-phase t0).
+    4. Report whether it stayed (residual->0, ToFs ~ truth) or walked away.
+    """
+    genome = build_genome(row)
+    truth_free = _truth_seed(genome)
+    period_sec = genome["period_sec"]
+    priority = row.get("priority_date")
+    if priority:
+        t0_center = _t_sec(datetime.fromisoformat(str(priority)).replace(tzinfo=UTC))
+    else:
+        t0_center = _t_sec(datetime(2030, 1, 1, tzinfo=UTC))
+
+    # Phase scan of t0 with ToFs PINNED at truth -> the residual-at-truth landscape.
+    offsets = np.linspace(0.0, period_sec, phase_epochs, endpoint=False)
+    best_t0 = t0_center
+    best_truth_res = float("inf")
+    for off in offsets:
+        t0 = t0_center + float(off)
+        try:
+            r = _residual_at(genome, t0, truth_free, model, "magnitude")
+        except Exception:
+            continue
+        if r < best_truth_res:
+            best_truth_res = r
+            best_t0 = t0
+
+    # Seed the corrector EXACTLY at (best-phase t0, truth ToFs) and let it run.
+    ephem = Ephemeris(model)
+    solved = ballistic_correct(
+        sequence=genome["sequence"],
+        per_leg_revs=genome["per_leg_revs"],
+        per_leg_branch=genome["per_leg_branch"],
+        t0_seed_sec=best_t0,
+        tof_seed_days=truth_free,
+        period_sec=period_sec,
+        ephem=ephem,
+        vinf_cap=VINF_CAP_KMS,
+        slack_leg=genome["slack_leg"],
+        tol_kms=CORRECTOR_TOL_KMS,
+        residual_mode="magnitude",
+    )
+
+    # Did it stay? Compare solved free-leg ToFs to the truth seed (the slack leg
+    # is reconstructed, so compare the FREE legs the solver actually moves).
+    solved_full = list(solved.tof_days)
+    slack = genome["slack_leg"]
+    solved_free = [solved_full[i] for i in range(len(solved_full)) if i != slack]
+    tof_drift_days = max(
+        (abs(a - b) for a, b in zip(solved_free, truth_free, strict=False)), default=0.0
+    )
+    t0_drift_days = abs(solved.t0_sec - best_t0) / DAY_S
+    stayed = (
+        solved.converged
+        and tof_drift_days <= TOL_TRANSIT_DAYS
+        and best_truth_res <= CORRECTOR_TOL_KMS
+    )
+    return {
+        "id": row["id"],
+        "model": model,
+        "best_phase_truth_residual_kms": round(best_truth_res, 4),
+        "truth_residual_below_floor": bool(best_truth_res <= CORRECTOR_TOL_KMS),
+        "solved_converged": bool(solved.converged),
+        "solved_max_residual_kms": round(float(solved.max_residual_kms), 4),
+        "tof_drift_days": round(tof_drift_days, 2),
+        "t0_drift_days": round(t0_drift_days, 2),
+        "truth_free_tof_days": [round(v, 1) for v in truth_free],
+        "solved_free_tof_days": [round(v, 1) for v in solved_free],
+        "solved_vinf_per_encounter_kms": [round(v, 3) for v in solved.vinf_per_encounter_kms],
+        "verdict": "STAYED-AT-TRUTH" if stayed else "WALKED-AWAY",
+    }
+
+
+def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> dict:
     genome = build_genome(row)
     priority = row.get("priority_date")
     if priority:
@@ -291,7 +417,7 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int) -> dict:
     tasks: list[tuple] = []
     for off in offsets:
         for mode in ("magnitude", "vector"):
-            tasks.append((genome, t0_center + float(off), mode))
+            tasks.append((genome, t0_center + float(off), mode, model))
 
     results: list[dict[str, Any]] = []
     with ProcessPoolExecutor(max_workers=workers) as ex:
@@ -309,6 +435,7 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int) -> dict:
     n_closed_vec = sum(1 for r in closed if r["mode"] == "vector")
 
     verdict = _classify(row, genome, best)
+    verdict["model"] = model
     verdict["n_closed_magnitude"] = n_closed_mag
     verdict["n_closed_vector"] = n_closed_vec
     verdict["genome"] = {
@@ -325,16 +452,36 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--epochs", type=int, default=32)
     ap.add_argument("--workers", type=int, default=16)
+    ap.add_argument(
+        "--model", type=str, default="astropy", choices=("astropy", "circular", "inclined-circular")
+    )
+    ap.add_argument(
+        "--probe-at-truth",
+        action="store_true",
+        help="run the seed-at-truth diagnostic probe per row",
+    )
+    ap.add_argument(
+        "--phase-epochs",
+        type=int,
+        default=256,
+        help="t0 phase-scan points for the seed-at-truth probe",
+    )
     ap.add_argument("--out", type=str, default=None)
     args = ap.parse_args()
 
     rows = yaml.safe_load(CATALOGUE_PATH.read_text())
     byid = {r["id"]: r for r in rows}
 
+    print(
+        f"model={args.model} epochs={args.epochs} workers={args.workers} "
+        f"probe_at_truth={args.probe_at_truth}",
+        flush=True,
+    )
+
     verdicts: list[dict] = []
     for rid in RUSSELL12_IDS:
         print(f"=== {rid} ===", flush=True)
-        v = run_row(byid[rid], epochs=args.epochs, workers=args.workers)
+        v = run_row(byid[rid], epochs=args.epochs, workers=args.workers, model=args.model)
         verdicts.append(v)
         print(
             f"  {v['outcome']}  closed(mag/vec)={v['n_closed_magnitude']}/{v['n_closed_vector']}",
@@ -343,6 +490,20 @@ def main() -> None:
         for c in v.get("checks", []):
             print(f"    {c}", flush=True)
 
+    probes: list[dict] = []
+    if args.probe_at_truth:
+        print("\n=== SEED-AT-TRUTH PROBE ===", flush=True)
+        for rid in RUSSELL12_IDS:
+            p = probe_at_truth(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
+            probes.append(p)
+            print(
+                f"{rid:24s} {p['verdict']:16s} "
+                f"truth_res={p['best_phase_truth_residual_kms']:.3f} "
+                f"solved_res={p['solved_max_residual_kms']:.3f} "
+                f"tof_drift={p['tof_drift_days']}d",
+                flush=True,
+            )
+
     # Summary table.
     print("\n=== SUMMARY ===")
     counts: dict[str, int] = {}
@@ -350,9 +511,16 @@ def main() -> None:
         counts[v["outcome"]] = counts.get(v["outcome"], 0) + 1
         print(f"{v['id']:30s} {v['outcome']}")
     print("\ncounts:", counts)
+    if probes:
+        pcounts: dict[str, int] = {}
+        for p in probes:
+            pcounts[p["verdict"]] = pcounts.get(p["verdict"], 0) + 1
+        print("probe counts:", pcounts)
 
     if args.out:
-        Path(args.out).write_text(json.dumps(verdicts, indent=2))
+        Path(args.out).write_text(
+            json.dumps({"model": args.model, "verdicts": verdicts, "probes": probes}, indent=2)
+        )
         print(f"wrote {args.out}")
 
 
