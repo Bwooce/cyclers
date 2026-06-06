@@ -71,6 +71,11 @@ import yaml  # type: ignore[import-untyped]
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.correct import _residuals, ballistic_correct
+from cyclerfinder.search.free_return import _residuals as _fr_residuals
+from cyclerfinder.search.free_return import (
+    free_return_correct,
+    free_return_geometry,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
@@ -448,6 +453,145 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> di
     return verdict
 
 
+# ---------------------------------------------------------------------------
+# #137 free-return (radial-crossing) genome path.
+#
+# The seed (a, e) is derived from TWO SOURCED anchors -- the aphelion (Russell
+# Table 4.9-4.13) and the outbound transit ToF (segments) -- so aphelion and
+# transit are CONSTRAINTS (imposed), not evidence. The per-body V_inf EMERGES
+# from the converged ellipse and is the EVIDENCE compared (non-circularly)
+# against the independently sourced V_inf anchors. See the constraint-vs-evidence
+# table in docs/notes/2026-06-06-russell12-likeforlike.md (#137 section).
+# ---------------------------------------------------------------------------
+
+
+def _seed_ae_from_aphelion_transit(aphelion_au: float, transit_days: float) -> tuple[float, float]:
+    """Derive the free-return seed ``(a, e)`` from the SOURCED aphelion and the
+    SOURCED outbound transit ToF.
+
+    aphelion ``= a (1 + e)`` pins one DOF; the radial-crossing E->M ToF pins the
+    other. Solve for ``e`` such that the geometry's ``tof_em_days`` equals the
+    sourced transit (bisection on ``e`` in ``[0.05, 0.7]``; fall back to the
+    closest grid point if no sign change). Both inputs are SOURCED -> the seed is
+    a constraint, V_inf is derived."""
+
+    def f(e: float) -> float:
+        a = aphelion_au / (1.0 + e)
+        try:
+            g = free_return_geometry(a, e)
+        except ValueError:
+            return 1e3
+        return g.tof_em_days - transit_days
+
+    lo, hi = 0.05, 0.7
+    flo, fhi = f(lo), f(hi)
+    if flo * fhi > 0:
+        grid = np.linspace(lo, hi, 60)
+        e = float(grid[int(np.argmin([abs(f(g)) for g in grid]))])
+    else:
+        from scipy.optimize import brentq
+
+        e = float(brentq(f, lo, hi))
+    return aphelion_au / (1.0 + e), e
+
+
+def run_row_free_return(row: dict[str, Any], *, phase_epochs: int, model: str) -> dict:
+    """Free-return genome closure for one row (#137).
+
+    Derives the constrained seed ``(a, e)`` from sourced aphelion + transit,
+    scans t0 for the best phase, runs :func:`free_return_correct`, then compares
+    the EMERGED V_inf to the sourced anchor (the only evidence). Symmetric single
+    ellipse only -- the asymmetric (different-per-leg transit) rows are flagged.
+    """
+    rid = row["id"]
+    aphelion = row["orbit_elements"].get("aphelion_au")
+    transit = (row.get("invariants") or {}).get("transit_times_days")
+    sourced_vinf = {e["body"]: e["vinf_kms"] for e in (row.get("vinf_kms_at_encounters") or [])}
+    period_sec = float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * DAY_S
+
+    if aphelion is None or not transit:
+        return {"id": rid, "outcome": "NO-SEED", "detail": "missing sourced aphelion or transit"}
+
+    asymmetric = len(transit) >= 2 and abs(float(transit[0]) - float(transit[1])) > 1.0
+    a_seed, e_seed = _seed_ae_from_aphelion_transit(float(aphelion), float(transit[0]))
+
+    ephem = Ephemeris(model)
+    best_t0, best_res = 0.0, float("inf")
+    for frac in np.linspace(0.0, 1.0, phase_epochs, endpoint=False):
+        t0 = float(frac) * period_sec
+        try:
+            res = _fr_residuals(
+                np.array([a_seed, e_seed, t0]),
+                period_days=period_sec / DAY_S,
+                ephem=ephem,
+                bodies=("E", "M"),
+                mu=132712440018.0,
+            )
+        except Exception:
+            continue
+        m = max(abs(r) for r in res)
+        if m < best_res:
+            best_res, best_t0 = m, t0
+
+    r = free_return_correct(
+        t0_seed_sec=best_t0,
+        a_seed_au=a_seed,
+        e_seed=e_seed,
+        period_sec=period_sec,
+        ephem=ephem,
+        tol_kms=CORRECTOR_TOL_KMS,
+    )
+
+    # EVIDENCE: emerged V_inf vs sourced anchor (V_inf was never imposed).
+    checks: list[str] = []
+    vinf_match = True
+    for body, src in sourced_vinf.items():
+        ach = r.vinf_kms.get(body)
+        if ach is None:
+            vinf_match = False
+            checks.append(f"vinf[{body}]: no achieved value")
+            continue
+        ok = abs(ach - src) <= TOL_VINF_KMS
+        vinf_match = vinf_match and ok
+        checks.append(
+            f"vinf[{body}]: src={src:.2f} ach={ach:.2f} d={abs(ach - src):.2f} "
+            f"{'OK' if ok else 'X'}"
+        )
+
+    if not r.converged:
+        outcome = "NO-CLOSE"
+    elif asymmetric:
+        # A symmetric single ellipse cannot represent a different-per-leg transit;
+        # report honestly rather than over-claim.
+        outcome = "CLOSE-MATCH-SYMMETRIC-ONLY" if vinf_match else "CLOSE-OFF-ANCHOR"
+    else:
+        outcome = "CLOSE-AND-MATCH" if vinf_match else "CLOSE-OFF-ANCHOR"
+
+    return {
+        "id": rid,
+        "outcome": outcome,
+        "model": model,
+        "genome": "free-return",
+        "converged": bool(r.converged),
+        "max_residual_kms": round(float(r.max_residual_kms), 4),
+        "constrained": {  # imposed inputs (NOT evidence)
+            "aphelion_au": float(aphelion),
+            "transit_days": float(transit[0]),
+            "asymmetric_transit": bool(asymmetric),
+        },
+        "derived": {  # emerged (evidence / comparable)
+            "a_au": round(r.a_au, 4),
+            "e": round(r.e, 4),
+            "vinf_kms": {k: round(v, 3) for k, v in r.vinf_kms.items()},
+            "transfer_tof_days": round(r.transfer_tof_days, 1),
+            "ee_interval_days": round(r.ee_interval_days, 1),
+        },
+        "sourced_vinf": sourced_vinf,
+        "best_phase_residual_kms": round(best_res, 4),
+        "checks": checks,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--epochs", type=int, default=32)
@@ -466,6 +610,15 @@ def main() -> None:
         default=256,
         help="t0 phase-scan points for the seed-at-truth probe",
     )
+    ap.add_argument(
+        "--genome",
+        type=str,
+        default="lambert",
+        choices=("lambert", "free-return"),
+        help="lambert = #125/#135 free-Lambert genome (default, byte-unchanged); "
+        "free-return = #137 radial-crossing genome (seed (a,e) from sourced "
+        "aphelion+transit, V_inf emerges as evidence)",
+    )
     ap.add_argument("--out", type=str, default=None)
     args = ap.parse_args()
 
@@ -473,14 +626,24 @@ def main() -> None:
     byid = {r["id"]: r for r in rows}
 
     print(
-        f"model={args.model} epochs={args.epochs} workers={args.workers} "
-        f"probe_at_truth={args.probe_at_truth}",
+        f"genome={args.genome} model={args.model} epochs={args.epochs} "
+        f"workers={args.workers} probe_at_truth={args.probe_at_truth}",
         flush=True,
     )
 
     verdicts: list[dict] = []
     for rid in RUSSELL12_IDS:
         print(f"=== {rid} ===", flush=True)
+        if args.genome == "free-return":
+            v = run_row_free_return(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
+            verdicts.append(v)
+            print(
+                f"  {v['outcome']}  res={v.get('max_residual_kms')}",
+                flush=True,
+            )
+            for c in v.get("checks", []):
+                print(f"    {c}", flush=True)
+            continue
         v = run_row(byid[rid], epochs=args.epochs, workers=args.workers, model=args.model)
         verdicts.append(v)
         print(
