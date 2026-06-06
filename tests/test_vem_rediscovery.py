@@ -34,9 +34,10 @@ from cyclerfinder.search.optimize import _target_period_sec
 from cyclerfinder.search.sequence import Cell
 from tests._catalogue_loader import CATALOGUE_PATH
 
-# Single-letter body codes used to decide whether a period.pair token is a
-# 2-body anchor pair (e.g. "E-M") or a beat token (e.g. "VEM-syn").
-_BODY_CODES = frozenset({"V", "E", "M", "S", "J"})
+# Heliocentric body codes used to decide whether a period.pair token is a
+# 2-body anchor pair (e.g. "E-M") or a beat token (e.g. "VEM-syn"). Mercury is
+# the two-letter "Me" (data/README.md) to avoid colliding with "M"=Mars.
+_BODY_CODES = frozenset({"V", "E", "M", "S", "J", "Me", "U", "N"})
 
 
 def _row(entry_id: str) -> dict[str, Any]:

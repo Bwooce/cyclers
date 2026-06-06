@@ -152,9 +152,11 @@ class CatalogueEntry:
     crash ``synodic_period_days("VEM","syn")``."""
 
 
-_BODY_CODES: frozenset[str] = frozenset({"V", "E", "M", "S", "J"})
-"""Single-letter heliocentric body codes used to tell a 2-body anchor pair
-(``"E-M"``) from a beat token (``"VEM-syn"``) in ``period.pair``."""
+_BODY_CODES: frozenset[str] = frozenset({"V", "E", "M", "S", "J", "Me", "U", "N"})
+"""Heliocentric body codes used to tell a 2-body anchor pair (``"E-M"``) from a
+beat token (``"VEM-syn"``) in ``period.pair``. Mercury uses the two-letter code
+``"Me"`` (data/README.md body-code table) to avoid colliding with ``"M"``=Mars;
+the others are single letters. Additive: V/E/M parsing is unchanged."""
 
 
 def _anchor_pair_from_period_pair(pair: str | None) -> tuple[str, str] | None:
