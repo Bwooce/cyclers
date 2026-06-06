@@ -30,9 +30,7 @@ def test_report_writes_both_files(tmp_path: Path, capsys: pytest.CaptureFixture[
     ledger = tmp_path / "c.jsonl"
     _seed(ledger)
     stem = tmp_path / "r"
-    code = main(
-        ["report", "--ledger", str(ledger), "--out", str(stem), "--format", "both"]
-    )
+    code = main(["report", "--ledger", str(ledger), "--out", str(stem), "--format", "both"])
     assert code == 0
     assert stem.with_suffix(".md").exists()
     assert stem.with_suffix(".json").exists()

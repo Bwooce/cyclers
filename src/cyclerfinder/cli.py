@@ -520,6 +520,69 @@ def _handle_report(args: argparse.Namespace, parser: argparse.ArgumentParser) ->
 
 
 # ---------------------------------------------------------------------------
+# viz handler
+# ---------------------------------------------------------------------------
+
+
+def _handle_viz(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
+    if args.viz_kind is None:
+        parser.error("viz needs a kind: porkchop | trajectory | beat")
+
+    # Import viz INSIDE the handler so the base CLI runs without matplotlib.
+    try:
+        from cyclerfinder.viz import MissingVizExtra, plots
+    except ImportError:
+        print(
+            "viz requires the [viz] extra: uv sync --extra viz",
+            file=sys.stderr,
+        )
+        return EXIT_MISSING_VIZ
+
+    try:
+        if args.viz_kind == "beat":
+            bodies = list(_parse_bodies(args.bodies, parser))
+            plots.beat_diagram(bodies, args.out)
+        elif args.viz_kind == "porkchop":
+            bodies = list(_parse_bodies(args.bodies, parser))
+            if len(bodies) != 2:
+                parser.error("viz porkchop needs exactly two bodies, e.g. --bodies E,M")
+            t0, _, t1 = args.epoch_range.partition(":")
+            if not t1:
+                parser.error("--epoch-range must be START:END (ISO dates)")
+            from cyclerfinder.core.ephemeris import Ephemeris
+
+            ephem = Ephemeris(model="astropy" if args.fidelity == "ephemeris" else "circular")
+            plots.porkchop(
+                bodies[0],
+                bodies[1],
+                epoch_range=(t0, t1),
+                tof_range=(args.tof_min, args.tof_max),
+                out_path=args.out,
+                ephem=ephem,
+            )
+        else:  # trajectory
+            from cyclerfinder.core.ephemeris import Ephemeris
+            from cyclerfinder.search.optimize import optimise_cell_idealized
+
+            cell = _cell_from_args(args, parser)
+            result = optimise_cell_idealized(
+                cell,
+                Ephemeris(model="circular"),
+                vinf_cap=args.vinf_cap,
+                n_starts=args.n_starts,
+                seed=args.seed,
+                use_de=not args.no_de,
+            )
+            plots.trajectory(result, args.out)
+    except MissingVizExtra as exc:
+        print(str(exc), file=sys.stderr)
+        return EXIT_MISSING_VIZ
+
+    print(f"wrote {args.out}")
+    return EXIT_OK
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -538,7 +601,7 @@ _HANDLERS: dict[str, Callable[[argparse.Namespace, argparse.ArgumentParser], int
     "solve": _handle_solve,
     "discover": _handle_discover,
     "report": _handle_report,
-    "viz": _stub_handler("viz"),
+    "viz": _handle_viz,
 }
 
 
