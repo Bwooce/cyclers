@@ -9,7 +9,15 @@ core/lambert, core/ephemeris, core/constants.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
+
+import numpy as np
+
+from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.lambert import LambertSolution, lambert
+
+DAY_S = 86400.0
 
 
 @dataclass(frozen=True)
@@ -25,3 +33,85 @@ class BallisticClosureResult:
     @property
     def constraints_satisfied(self) -> bool:
         return self.converged and self.bend_feasible and self.vinf_cap_ok
+
+
+# S1L1-prototype aliases for the first two-arc chain (E-M-E-E). The generic
+# ``b{i}_in/b{i}_out`` keys are authoritative; these convenience aliases keep the
+# prototype's residual/test vocabulary working unchanged.
+_S1L1_ALIASES: dict[str, str] = {
+    "e0": "b0_out",
+    "m_in": "b1_in",
+    "m_out": "b1_out",
+    "e1_in": "b2_in",
+    "e1_out": "b2_out",
+    "e2_in": "b3_in",
+}
+
+
+def _pick(sols: list[LambertSolution], n_revs: int, branch: str) -> LambertSolution:
+    """Select the requested (n_revs, branch) Lambert solution; fall back to the
+    first (single-rev) solution if the exact branch is absent (prototype
+    ``correct_s1l1_twoarc.py:48-52``)."""
+    for s in sols:
+        if s.n_revs == n_revs and s.branch == branch:
+            return s
+    return sols[0]
+
+
+def _reconstruct_tofs(
+    free_tof_days: Sequence[float], slack_leg: int, period_days: float
+) -> list[float]:
+    """Re-insert the eliminated slack leg ToF (``period - sum(free legs)``)."""
+    slack_tof = period_days - float(sum(free_tof_days))
+    tofs = list(free_tof_days)
+    tofs.insert(slack_leg, slack_tof)
+    return tofs
+
+
+def _vinf_nodes(
+    *,
+    sequence: tuple[str, ...],
+    per_leg_revs: tuple[int, ...],
+    per_leg_branch: tuple[str, ...],
+    t0_sec: float,
+    free_tof_days: Sequence[float],
+    slack_leg: int,
+    period_days: float,
+    ephem: Ephemeris,
+) -> dict[str, np.ndarray]:
+    """Per-encounter V_inf vectors for a closed N-arc chain (spec §2.1).
+
+    Generalises ``_legs`` / ``_state_vinf`` (``correct_s1l1_twoarc.py:55-93``):
+    reconstruct the slack leg ToF, walk cumulative encounter epochs, solve each
+    leg's Lambert with its ``(n_revs, branch)``, and return ``V_inf =
+    v_sc - v_planet`` for the outbound leg of every encounter (``b{i}_out``) and
+    the inbound leg of every encounter (``b{i}_in``). End nodes ``b0`` and
+    ``bn`` carry only the closure pair (``b0_out`` / ``bn_in``).
+    """
+    tofs = _reconstruct_tofs(free_tof_days, slack_leg, period_days)
+    n_legs = len(sequence) - 1
+    if len(tofs) != n_legs:
+        raise ValueError(f"expected {n_legs} leg ToFs, got {len(tofs)}")
+
+    # Cumulative epoch (seconds) at each encounter.
+    epochs = [t0_sec]
+    for tof in tofs:
+        epochs.append(epochs[-1] + tof * DAY_S)
+
+    # Heliocentric body states at each encounter.
+    states = [ephem.state(body, t) for body, t in zip(sequence, epochs, strict=True)]
+
+    nodes: dict[str, np.ndarray] = {}
+    for i in range(n_legs):
+        r1, v1_pl = states[i]
+        r2, v2_pl = states[i + 1]
+        sols = lambert(r1, r2, tofs[i] * DAY_S, max_revs=per_leg_revs[i])
+        sol = _pick(sols, per_leg_revs[i], per_leg_branch[i])
+        # V_inf leaving encounter i and arriving at encounter i+1.
+        nodes[f"b{i}_out"] = np.asarray(sol.v1) - np.asarray(v1_pl)
+        nodes[f"b{i + 1}_in"] = np.asarray(sol.v2) - np.asarray(v2_pl)
+
+    for alias, key in _S1L1_ALIASES.items():
+        if key in nodes:
+            nodes[alias] = nodes[key]
+    return nodes
