@@ -425,6 +425,70 @@ def _handle_solve(args: argparse.Namespace, parser: argparse.ArgumentParser) -> 
 
 
 # ---------------------------------------------------------------------------
+# discover handler
+# ---------------------------------------------------------------------------
+
+
+def _handle_discover(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.data.discover import discover
+
+    bodies = _parse_bodies(args.bodies, parser)
+    branch_set = tuple(b.strip() for b in args.branch.split(",") if b.strip())
+    vinf_targets = _parse_vinf_targets(args.vinf_targets, parser)
+    model = "astropy" if args.fidelity == "ephemeris" else "circular"
+
+    solved: list[dict[str, Any]] = []
+    level_counts: dict[str, int] = {}
+    cells_searched = 0
+
+    for result, match_result, level in discover(
+        bodies,
+        k_synodic=args.k,
+        vinf_cap=args.vinf_cap,
+        ledger_path=args.ledger,
+        ephem=Ephemeris(model=model),
+        l_max=args.l_max,
+        n_max=args.n_max,
+        branch_set=branch_set,
+        max_cells=args.max_cells,
+        n_starts=args.n_starts,
+        seed=args.seed,
+        use_de=not args.no_de,
+        optimiser=args.fidelity,
+        priority_date_iso=args.priority_date,
+        vinf_targets_kms=vinf_targets,
+        enable_v3=args.enable_v3,
+    ):
+        cells_searched += 1
+        level_counts[level] = level_counts.get(level, 0) + 1
+        solved.append(
+            {
+                "cell_id": result.cell.id,
+                "level": level,
+                "match_outcome": match_result.outcome,
+            }
+        )
+
+    summary = {
+        "ledger": str(args.ledger),
+        "cells_searched": cells_searched,
+        "cells_solved": len(solved),
+        "level_counts": level_counts,
+        "solved": solved,
+    }
+    if args.format == "json":
+        print(json.dumps(summary, indent=2, sort_keys=True))
+    else:
+        print(f"ledger: {summary['ledger']}")
+        print(f"cells solved: {summary['cells_solved']}")
+        for lvl, count in sorted(level_counts.items()):
+            print(f"  {lvl}: {count}")
+        _emit(solved, "table", ("cell_id", "level", "match_outcome"))
+    return EXIT_OK if solved else EXIT_NO_CANDIDATES
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -441,7 +505,7 @@ def _stub_handler(name: str) -> Callable[[argparse.Namespace, argparse.ArgumentP
 _HANDLERS: dict[str, Callable[[argparse.Namespace, argparse.ArgumentParser], int]] = {
     "enumerate": _handle_enumerate,
     "solve": _handle_solve,
-    "discover": _stub_handler("discover"),
+    "discover": _handle_discover,
     "report": _stub_handler("report"),
     "viz": _stub_handler("viz"),
 }
