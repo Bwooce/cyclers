@@ -22,6 +22,7 @@ import io
 import json
 import sys
 from collections.abc import Callable, Sequence
+from pathlib import Path
 from typing import Any
 
 from cyclerfinder import __version__
@@ -489,6 +490,36 @@ def _handle_discover(args: argparse.Namespace, parser: argparse.ArgumentParser) 
 
 
 # ---------------------------------------------------------------------------
+# report handler
+# ---------------------------------------------------------------------------
+
+
+def _handle_report(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
+    del parser
+    from cyclerfinder.report import (
+        attach_verdicts,
+        build_campaign_report,
+        render_json,
+        render_markdown,
+    )
+
+    report = build_campaign_report(args.ledger)
+    if not report["candidates"]:
+        print(f"empty ledger: {args.ledger}", file=sys.stderr)
+        return EXIT_NO_CANDIDATES
+    if args.with_verdicts:
+        report = attach_verdicts(report)
+
+    out = Path(args.out)
+    if args.format in ("md", "both"):
+        out.with_suffix(".md").write_text(render_markdown(report), encoding="utf-8")
+    if args.format in ("json", "both"):
+        out.with_suffix(".json").write_text(render_json(report), encoding="utf-8")
+    print(f"wrote report to {out}.* (format={args.format})")
+    return EXIT_OK
+
+
+# ---------------------------------------------------------------------------
 # Dispatch
 # ---------------------------------------------------------------------------
 
@@ -506,7 +537,7 @@ _HANDLERS: dict[str, Callable[[argparse.Namespace, argparse.ArgumentParser], int
     "enumerate": _handle_enumerate,
     "solve": _handle_solve,
     "discover": _handle_discover,
-    "report": _stub_handler("report"),
+    "report": _handle_report,
     "viz": _stub_handler("viz"),
 }
 
