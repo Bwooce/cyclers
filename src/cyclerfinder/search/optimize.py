@@ -1319,6 +1319,9 @@ def optimise_cell_ephemeris(
     rp_factors: dict[str, float] | None = None,
     tof_seed_days: Sequence[float] | None = None,
     mode: str = "maintenance",
+    scan_epochs: int = 1,
+    scan_window_years: float | None = None,
+    scan_max_workers: int | None = None,
 ) -> OptimisationResult:
     """Spec §12(a) ephemeris-mode optimisation over the general engine.
 
@@ -1383,6 +1386,21 @@ def optimise_cell_ephemeris(
         — V∞-magnitude continuity at every node driven to zero — and
         reports a **real** closure residual (spec §2.2). Any other value
         raises ``ValueError``.
+    scan_epochs:
+        Ballistic mode only. ``1`` (default) runs a single start from the
+        resolved/priority epoch (byte-identical to pre-scan behaviour).
+        ``> 1`` drives the **scan rung** (task #110): an epoch grid of
+        ``scan_epochs`` launch seeds across ``scan_window_years`` is run in
+        parallel via :mod:`cyclerfinder.search.scan`, and the best closed
+        solution (lowest residual, then lowest max-V∞) is returned. This is
+        the density lever that family selection across epochs needs (spec §3.4;
+        the prototype's ``main()`` scan loop).
+    scan_window_years:
+        Width of the epoch-scan window (years), centred on the resolved epoch.
+        ``None`` ⇒ one full target period (the sourced repeat period). Ignored
+        unless ``scan_epochs > 1``.
+    scan_max_workers:
+        Worker process count for the scan rung. ``None`` ⇒ ``os.cpu_count()``.
 
     Returns
     -------
@@ -1427,6 +1445,9 @@ def optimise_cell_ephemeris(
             n_starts=n_starts,
             rp_factors=rp_factors,
             tof_seed_days=tof_seed_days,
+            scan_epochs=scan_epochs,
+            scan_window_years=scan_window_years,
+            scan_max_workers=scan_max_workers,
         )
 
     target_period_sec = _target_period_sec(cell)
@@ -1553,6 +1574,9 @@ def _optimise_cell_ephemeris_ballistic(
     n_starts: int,
     rp_factors: dict[str, float],
     tof_seed_days: Sequence[float] | None,
+    scan_epochs: int = 1,
+    scan_window_years: float | None = None,
+    scan_max_workers: int | None = None,
 ) -> OptimisationResult:
     """M-ED ballistic mode (spec §2.2): run the N-arc ballistic differential
     corrector and report a real V∞-continuity closure residual.
@@ -1632,18 +1656,36 @@ def _optimise_cell_ephemeris_ballistic(
     slack_leg = int(np.argmax(seed_days)) if seed_days else 0
     free_tof = [t for i, t in enumerate(seed_days) if i != slack_leg]
 
-    corr = ballistic_correct(
-        sequence=tuple(cell.sequence),
-        per_leg_revs=tuple(cell.per_leg_revs),
-        per_leg_branch=tuple(cell.per_leg_branch),
-        t0_seed_sec=float(t0_sec),
-        tof_seed_days=free_tof,
-        period_sec=target_period_sec,
-        ephem=ephem,
-        vinf_cap=vinf_cap,
-        rp_factors=rp_factors or None,
-        slack_leg=slack_leg,
-    )
+    if scan_epochs > 1:
+        # --- Scan rung (task #110, spec §3.4): a parallel epoch grid across one
+        # period (or scan_window_years) from the resolved epoch. Family selection
+        # across launch epochs is the density lever the single start lacks.
+        corr = _ballistic_scan_rung(
+            cell,
+            ephem,
+            t0_sec=float(t0_sec),
+            free_tof=free_tof,
+            target_period_sec=target_period_sec,
+            slack_leg=slack_leg,
+            vinf_cap=vinf_cap,
+            rp_factors=rp_factors,
+            scan_epochs=scan_epochs,
+            scan_window_years=scan_window_years,
+            scan_max_workers=scan_max_workers,
+        )
+    else:
+        corr = ballistic_correct(
+            sequence=tuple(cell.sequence),
+            per_leg_revs=tuple(cell.per_leg_revs),
+            per_leg_branch=tuple(cell.per_leg_branch),
+            t0_seed_sec=float(t0_sec),
+            tof_seed_days=free_tof,
+            period_sec=target_period_sec,
+            ephem=ephem,
+            vinf_cap=vinf_cap,
+            rp_factors=rp_factors or None,
+            slack_leg=slack_leg,
+        )
 
     # Rebuild the closed cycler at the corrected geometry so consumers read
     # genuine per-encounter V∞ from the same construct path as every other mode.
@@ -1675,6 +1717,86 @@ def _optimise_cell_ephemeris_ballistic(
         converged=bool(corr.converged),
         constraints_satisfied=bool(corr.constraints_satisfied),
     )
+
+
+def _ballistic_scan_rung(
+    cell: Cell,
+    ephem: Ephemeris,
+    *,
+    t0_sec: float,
+    free_tof: Sequence[float],
+    target_period_sec: float,
+    slack_leg: int,
+    vinf_cap: float,
+    rp_factors: dict[str, float],
+    scan_epochs: int,
+    scan_window_years: float | None,
+    scan_max_workers: int | None,
+) -> Any:
+    """Scan rung (task #110): parallel epoch grid -> best closed corrector result.
+
+    Builds ``scan_epochs`` launch-epoch seeds across one period (or
+    ``scan_window_years``) centred on ``t0_sec``, runs the corrector at each in
+    parallel via :func:`cyclerfinder.search.scan.scan_parallel`, and returns the
+    best result: lowest residual among closed solutions, ties broken by lowest
+    max-V∞; if none close, the lowest-residual result overall. The cell's own
+    topology is used for every grid point (epoch is the swept axis here; the
+    descriptor/topology axis is the caller's via separate cells).
+    """
+    from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR, SECONDS_PER_DAY
+    from cyclerfinder.search.scan import build_epoch_branch_grid, scan_parallel
+
+    window_days = (
+        scan_window_years * DAYS_PER_JULIAN_YEAR
+        if scan_window_years is not None
+        else target_period_sec / SECONDS_PER_DAY
+    )
+    half = 0.5 * window_days * SECONDS_PER_DAY
+    if scan_epochs == 1:
+        t0_seeds = [t0_sec]
+    else:
+        step = (2.0 * half) / (scan_epochs - 1)
+        t0_seeds = [t0_sec - half + i * step for i in range(scan_epochs)]
+
+    grid = build_epoch_branch_grid(
+        sequence=tuple(cell.sequence),
+        period_sec=target_period_sec,
+        vinf_cap=vinf_cap,
+        t0_seeds_sec=t0_seeds,
+        branch_topologies=[(tuple(cell.per_leg_revs), tuple(cell.per_leg_branch))],
+        tof_seed_days=free_tof,
+        slack_leg=slack_leg,
+        rp_factors=rp_factors or None,
+    )
+    results = scan_parallel(grid, ephem_model=ephem.model, max_workers=scan_max_workers)
+    if not results:
+        # No grid -> fall back to a single direct start.
+        from cyclerfinder.search.correct import ballistic_correct
+
+        return ballistic_correct(
+            sequence=tuple(cell.sequence),
+            per_leg_revs=tuple(cell.per_leg_revs),
+            per_leg_branch=tuple(cell.per_leg_branch),
+            t0_seed_sec=t0_sec,
+            tof_seed_days=free_tof,
+            period_sec=target_period_sec,
+            ephem=ephem,
+            vinf_cap=vinf_cap,
+            rp_factors=rp_factors or None,
+            slack_leg=slack_leg,
+        )
+    closed = [r for r in results if r.closed]
+    pool = closed if closed else results
+    best = min(
+        pool,
+        key=lambda r: (
+            r.max_residual_kms,
+            max(r.result.vinf_per_encounter_kms)
+            if r.result.vinf_per_encounter_kms
+            else float("inf"),
+        ),
+    )
+    return best.result
 
 
 # ---------------------------------------------------------------------------

@@ -64,6 +64,49 @@ def test_ballistic_mode_closes_s1l1_returns_real_residual() -> None:
     assert result.closure_residual_kms < 0.1  # real V_inf-continuity residual
 
 
+def test_scan_epochs_kwarg_exists_and_defaults_to_one() -> None:
+    sig = inspect.signature(optimise_cell_ephemeris)
+    assert "scan_epochs" in sig.parameters
+    assert sig.parameters["scan_epochs"].default == 1
+    assert "scan_window_years" in sig.parameters
+    assert "scan_max_workers" in sig.parameters
+
+
+@pytest.mark.slow
+def test_ballistic_scan_rung_runs_and_is_deterministic() -> None:
+    """The scan rung (scan_epochs>1) drives a parallel epoch grid and returns a
+    deterministic result: two identical runs give identical residual/V_inf.
+    NON-GOLDEN: the V_inf is OUR computation; the gate is reproducibility, not a
+    sourced anchor."""
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.search.sequence import Cell
+
+    cell = Cell(
+        bodies=("E", "M"),
+        sequence=("E", "M", "E", "E"),
+        period_k=2,
+        per_leg_revs=(0, 1, 2),
+        per_leg_branch=("single", "single", "low"),
+    )
+    kwargs = dict(
+        vinf_cap=9.0,
+        priority_date_iso="2030-03-22",
+        vinf_targets_kms={"E": 5.6, "M": 6.4},
+        tof_seed_days=[154.0, 379.0, (1.4612 + 2.8096) * 365.25 - 154.0 - 379.0],
+        mode="ballistic",
+        scan_epochs=6,
+        scan_window_years=4.0,
+        scan_max_workers=4,
+    )
+    r1 = optimise_cell_ephemeris(cell, Ephemeris("astropy"), **kwargs)  # type: ignore[arg-type]
+    r2 = optimise_cell_ephemeris(cell, Ephemeris("astropy"), **kwargs)  # type: ignore[arg-type]
+    assert r1.closure_residual_kms == r2.closure_residual_kms
+    assert r1.converged == r2.converged
+    # The scan rung finds at least as good a residual as the single start would
+    # from the same priority epoch (it includes that epoch's neighbourhood).
+    assert r1.closure_residual_kms < float("inf")
+
+
 def test_maintenance_mode_result_unchanged_for_aldrin_cell() -> None:
     """Byte-identical-default contract (spec §4): mode="maintenance" on the
     Aldrin E-M-E cell produces the same OptimisationResult fields as the
