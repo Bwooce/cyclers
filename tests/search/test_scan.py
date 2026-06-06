@@ -84,6 +84,37 @@ def test_closed_only_filters_output() -> None:
     assert closed == [r for r in full if r.closed]
 
 
+def test_inclined_circular_token_routes_and_is_deterministic() -> None:
+    """The scan engine routes the ``inclined-circular`` ephemeris token (M-3D)
+    through every worker, and a parallel run is bit-identical to the serial run
+    of the same grid (task #120 — the 3D-hypothesis scan rung).
+
+    Token ROUTING is proven by comparing the inclined run against the coplanar
+    ``circular`` run on the same grid: the inclined Mars plane (sourced J2000
+    i=1.85 deg) changes the closure residual, so at least one grid point must
+    differ from the flat backend (otherwise the token silently fell back to
+    coplanar). DETERMINISM is proven by serial == parallel.
+    """
+    grid = _s1l1_grid_circular(n_epochs=4)
+
+    serial = scan_serial(grid, ephem_model="inclined-circular")
+    parallel = scan_parallel(grid, ephem_model="inclined-circular", max_workers=2)
+    assert len(parallel) == len(serial) == len(grid)
+    for s, p in zip(serial, parallel, strict=True):
+        assert p.point == s.point
+        assert p.result.t0_sec == s.result.t0_sec
+        assert p.result.tof_days == s.result.tof_days
+        assert p.result.max_residual_kms == s.result.max_residual_kms
+        assert p.result.converged == s.result.converged
+        assert p.result.vinf_per_encounter_kms == s.result.vinf_per_encounter_kms
+
+    # Routing: the inclined backend must NOT silently reduce to the coplanar one.
+    flat = scan_serial(grid, ephem_model="circular")
+    flat_res = [r.max_residual_kms for r in flat]
+    incl_res = [r.max_residual_kms for r in serial]
+    assert flat_res != incl_res
+
+
 @pytest.mark.slow
 def test_parallel_speedup_on_real_grid() -> None:
     """DE440 grid: measure serial vs parallel wall time and assert the parallel
