@@ -25,10 +25,22 @@ Planets:
           for the Earth+Moon vs Earth-only choice. We use the Earth-only μ
           (no Moon) since the patched-conic flyby treats only the central
           body. Source: JPL DE440 table 5.
+        - Mercury: JPL DE440 (Park et al., AJ 2021); Mercury has no
+          satellites so its GM is unambiguously planet-only.
+        - Jupiter, Saturn, Uranus, Neptune: JPL DE440 *system* GM (planet +
+          satellites; Park et al., AJ 2021). Unlike Earth (where the Moon's
+          mass is ~1.2% of Earth's and is deliberately excluded), each giant
+          planet's satellites contribute <2e-4 of the system GM and orbit far
+          above any physical flyby periapsis, so the system value is the
+          correct central-body μ a patched-conic flyby senses at closest
+          approach. JPL DE440 publishes only the system GM for these bodies.
     * ``radius_eq_km`` — mean equatorial radius.
         - Venus, Mars: IAU 2015 Working Group on Cartographic Coordinates
           and Rotational Elements (Archinal et al., CMDA 2018).
         - Earth: WGS84 semi-major axis, 6378.137 km exactly.
+        - Mercury, Jupiter, Saturn, Uranus, Neptune: IAU 2015 WGCCRE
+          (Archinal et al., CMDA 2018, 130:22) — same source as Venus/Mars.
+          Giant-planet radii are the 1-bar equatorial level.
     * ``sma_au`` — heliocentric semi-major axis at J2000, from Standish &
       Williams, "Approximate Positions of the Planets" (JPL Solar System
       Dynamics, 1992/2006 update), table 1, ``a_0`` column.
@@ -37,8 +49,21 @@ Planets:
       to six decimals. (Recomputed at import time so the table is internally
       consistent rather than copy-pasted.)
     * ``safe_alt_km`` — conservative minimum flyby altitude (atmosphere top
-      plus margin). 300 km for all three; Aldrin's original work used 200 km
-      and later phases may override per body via config.
+      plus margin). 300 km for all three of V/E/M; Aldrin's original work used
+      200 km and later phases may override per body via config. These are
+      ENGINEERING DEFAULTS (an operational convention, not sourced physics).
+      The outer-body defaults are scaled for their distinct hazards and are
+      likewise convention, not measured constants:
+        - Mercury (1000 km): no atmosphere, but extreme solar thermal flux and
+          a sparse-tracking nav environment motivate a larger standoff than the
+          inner-planet 300 km.
+        - Jupiter (5000 km): the intense radiation belts above the cloud tops
+          dominate; a high standoff keeps periapsis well clear of the worst
+          dose region (engineering convention, not a belt-model output).
+        - Saturn (5000 km): keeps periapsis well above the main ring system and
+          upper atmosphere (a flyby must not graze the rings); convention.
+        - Uranus, Neptune (1000 km): conservative atmosphere-plus-margin
+          defaults pending mission-specific analysis; convention.
 
 Out of scope here (deliberately, per ``docs/phases/m0-scaffold/plan.md``
 §4.4): Sun radius, moons, asteroids. Planet eccentricity (``ecc``) and
@@ -128,8 +153,10 @@ class PlanetData:
         circular idealisation). Sourced J2000 values from Standish & Williams,
         "Approximate Positions of the Planets", JPL Solar System Dynamics,
         Table 1, ``e_0`` column (same source as ``sma_au``): Venus 0.00677727,
-        Earth 0.01671123, Mars 0.09340065. Consumed by the 3-D Tisserand
-        predicate; the circular ephemeris backend ignores it.
+        Earth 0.01671123, Mars 0.09340065, Mercury 0.20563593,
+        Jupiter 0.04838624, Saturn 0.05386179, Uranus 0.04725744,
+        Neptune 0.00859048. Consumed by the 3-D Tisserand predicate; the
+        circular ephemeris backend ignores it.
     """
 
     name: str
@@ -160,12 +187,19 @@ def _mean_motion_deg_day(sma_au: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Planet table — Venus, Earth, Mars (others added as later phases need them)
+# Planet table — heliocentric bodies (all eight major planets).
+# sma_au values: Standish & Williams, "Approximate Positions of the Planets",
+# JPL Solar System Dynamics, Table 1, a_0 column (1800-2050 AD).
 # ---------------------------------------------------------------------------
 
 _VENUS_SMA_AU: Final[float] = 0.72333566
 _EARTH_SMA_AU: Final[float] = 1.00000261
 _MARS_SMA_AU: Final[float] = 1.52371034
+_MERCURY_SMA_AU: Final[float] = 0.38709927
+_JUPITER_SMA_AU: Final[float] = 5.20288700
+_SATURN_SMA_AU: Final[float] = 9.53667594
+_URANUS_SMA_AU: Final[float] = 19.18916464
+_NEPTUNE_SMA_AU: Final[float] = 30.06992276
 
 PLANETS: Final[dict[str, PlanetData]] = {
     "V": PlanetData(
@@ -209,6 +243,98 @@ PLANETS: Final[dict[str, PlanetData]] = {
         # Left at coplanar default 0.0 (see the Venus note above). Sourced
         # J2000 3D elements (Standish & Williams Table 1: Mars inc=1.84969142
         # deg, lan=49.55953891 deg) are exercised via the inclined backend.
+    ),
+    "Me": PlanetData(
+        name="Mercury",
+        code="Me",
+        # JPL DE440 (Park et al., AJ 2021); planet-only (Mercury has no moons).
+        mu_km3_s2=2.2031868551e4,
+        # IAU 2015 WGCCRE (Archinal et al., CMDA 2018, 130:22), mean eq. radius.
+        radius_eq_km=2440.53,
+        sma_au=_MERCURY_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_MERCURY_SMA_AU),
+        # Engineering default (convention, not sourced physics): no atmosphere,
+        # but solar-thermal + sparse-tracking nav margins → larger standoff.
+        safe_alt_km=1000.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.20563593,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced J2000 3D elements (Standish & Williams Table 1: Mercury
+        # inc=7.00497902 deg, lan=48.33076593 deg) live in the inclined backend.
+    ),
+    "J": PlanetData(
+        name="Jupiter",
+        code="J",
+        # JPL DE440 system GM (Park et al., AJ 2021); satellites contribute
+        # <2e-4 and orbit far above any flyby periapsis, so the system value is
+        # the central-body mu sensed at closest approach (see module docstring).
+        mu_km3_s2=1.267127641e8,
+        # IAU 2015 WGCCRE (Archinal et al., CMDA 2018, 130:22), 1-bar eq. radius.
+        radius_eq_km=71492.0,
+        sma_au=_JUPITER_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_JUPITER_SMA_AU),
+        # Engineering default (convention, not sourced physics): radiation belts
+        # above the cloud tops dominate → high standoff keeps periapsis clear.
+        safe_alt_km=5000.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.04838624,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced J2000 3D elements (Standish & Williams Table 1: Jupiter
+        # inc=1.30439695 deg, lan=100.47390909 deg) live in the inclined backend.
+    ),
+    "S": PlanetData(
+        name="Saturn",
+        code="S",
+        # JPL DE440 system GM (Park et al., AJ 2021); see Jupiter note.
+        mu_km3_s2=3.79405848418e7,
+        # IAU 2015 WGCCRE (Archinal et al., CMDA 2018, 130:22), 1-bar eq. radius.
+        radius_eq_km=60268.0,
+        sma_au=_SATURN_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_SATURN_SMA_AU),
+        # Engineering default (convention, not sourced physics): keeps periapsis
+        # well above the main ring system + upper atmosphere (must not graze).
+        safe_alt_km=5000.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.05386179,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced J2000 3D elements (Standish & Williams Table 1: Saturn
+        # inc=2.48599187 deg, lan=113.66242448 deg) live in the inclined backend.
+    ),
+    "U": PlanetData(
+        name="Uranus",
+        code="U",
+        # JPL DE440 system GM (Park et al., AJ 2021); see Jupiter note.
+        mu_km3_s2=5.7945564e6,
+        # IAU 2015 WGCCRE (Archinal et al., CMDA 2018, 130:22), 1-bar eq. radius.
+        radius_eq_km=25559.0,
+        sma_au=_URANUS_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_URANUS_SMA_AU),
+        # Engineering default (convention, not sourced physics): conservative
+        # atmosphere-plus-margin standoff pending mission-specific analysis.
+        safe_alt_km=1000.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.04725744,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced J2000 3D elements (Standish & Williams Table 1: Uranus
+        # inc=0.77263783 deg, lan=74.01692503 deg) live in the inclined backend.
+    ),
+    "N": PlanetData(
+        name="Neptune",
+        code="N",
+        # JPL DE440 system GM (Park et al., AJ 2021); see Jupiter note.
+        mu_km3_s2=6.83652710058e6,
+        # IAU 2015 WGCCRE (Archinal et al., CMDA 2018, 130:22), 1-bar eq. radius.
+        radius_eq_km=24764.0,
+        sma_au=_NEPTUNE_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_NEPTUNE_SMA_AU),
+        # Engineering default (convention, not sourced physics): conservative
+        # atmosphere-plus-margin standoff pending mission-specific analysis.
+        safe_alt_km=1000.0,
+        # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
+        ecc=0.00859048,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced J2000 3D elements (Standish & Williams Table 1: Neptune
+        # inc=1.77004347 deg, lan=131.78422574 deg) live in the inclined backend.
     ),
 }
 
