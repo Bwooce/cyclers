@@ -1318,6 +1318,7 @@ def optimise_cell_ephemeris(
     seed: int = 0,
     rp_factors: dict[str, float] | None = None,
     tof_seed_days: Sequence[float] | None = None,
+    mode: str = "maintenance",
 ) -> OptimisationResult:
     """Spec §12(a) ephemeris-mode optimisation over the general engine.
 
@@ -1373,6 +1374,15 @@ def optimise_cell_ephemeris(
         outbound + long return) phase-matches to its own launch epoch
         rather than a symmetric degenerate basin. Bounds widen to
         ``[0.05, 0.95] * period`` per leg when supplied.
+    mode:
+        ``"maintenance"`` (default, byte-identical to pre-M-ED): the
+        summed flyby turn-deficit maintenance-ΔV objective, answering the
+        M7 TCM question; ``closure_residual_kms`` carries the ΔV proxy.
+        ``"ballistic"`` (M-ED): runs the N-arc ballistic differential
+        corrector (:func:`~cyclerfinder.search.correct.ballistic_correct`)
+        — V∞-magnitude continuity at every node driven to zero — and
+        reports a **real** closure residual (spec §2.2). Any other value
+        raises ``ValueError``.
 
     Returns
     -------
@@ -1394,12 +1404,29 @@ def optimise_cell_ephemeris(
     if rp_factors is None:
         rp_factors = {}
 
+    if mode not in {"maintenance", "ballistic"}:
+        raise ValueError(
+            f"optimise_cell_ephemeris mode must be 'maintenance' or 'ballistic'; got {mode!r}."
+        )
+
     # Landmine #1: the maintenance chain assumes a closed loop.
     if cell.sequence[0] != cell.sequence[-1]:
         raise ValueError(
             f"optimise_cell_ephemeris requires a closed sequence "
             f"(sequence[0] == sequence[-1]); got {cell.sequence!r}. "
             f"Open-sequence ephemeris cyclers are out of scope.",
+        )
+
+    if mode == "ballistic":
+        return _optimise_cell_ephemeris_ballistic(
+            cell,
+            ephem,
+            vinf_cap=vinf_cap,
+            priority_date_iso=priority_date_iso,
+            vinf_targets_kms=vinf_targets_kms,
+            n_starts=n_starts,
+            rp_factors=rp_factors,
+            tof_seed_days=tof_seed_days,
         )
 
     target_period_sec = _target_period_sec(cell)
@@ -1513,6 +1540,140 @@ def optimise_cell_ephemeris(
         optimiser_history=(),
         converged=bool(maint.converged),
         constraints_satisfied=constraints_satisfied,
+    )
+
+
+def _optimise_cell_ephemeris_ballistic(
+    cell: Cell,
+    ephem: Ephemeris,
+    *,
+    vinf_cap: float,
+    priority_date_iso: str | None,
+    vinf_targets_kms: dict[str, float] | None,
+    n_starts: int,
+    rp_factors: dict[str, float],
+    tof_seed_days: Sequence[float] | None,
+) -> OptimisationResult:
+    """M-ED ballistic mode (spec §2.2): run the N-arc ballistic differential
+    corrector and report a real V∞-continuity closure residual.
+
+    Reuses the maintenance path's epoch resolution
+    (:func:`_resolve_t0_multi_seed`) and seed/bounds helpers verbatim, then
+    calls :func:`~cyclerfinder.search.correct.ballistic_correct` instead of the
+    maintenance-ΔV solver. The corrected ``[t0, *tofs]`` is rebuilt into a
+    :class:`Cycler` so downstream consumers read genuine per-encounter V∞,
+    and ``closure_residual_kms`` carries the real residual (not the ΔV proxy).
+    """
+    from cyclerfinder.search.correct import ballistic_correct
+    from cyclerfinder.search.maintain import _build_chain
+    from cyclerfinder.verify.real_closure import _parse_priority_date
+
+    target_period_sec = _target_period_sec(cell)
+    seed_days, _bounds = _ephemeris_tof_seed_and_bounds(cell, target_period_sec)
+    n_legs = len(cell.sequence) - 1
+    if tof_seed_days is not None:
+        if len(tof_seed_days) != n_legs:
+            raise ValueError(
+                f"tof_seed_days has {len(tof_seed_days)} entries; "
+                f"cell.sequence implies {n_legs} legs.",
+            )
+        seed_days = [float(t) for t in tof_seed_days]
+
+    priority = _parse_priority_date(priority_date_iso)
+    t0_sec: float | None = None
+    if priority is not None and vinf_targets_kms is not None:
+        t0_sec = _resolve_t0_multi_seed(
+            cell,
+            seed_days,
+            priority,
+            ephem,
+            vinf_targets_kms,
+            target_period_sec,
+            n_candidates=n_starts,
+        )
+    if t0_sec is None and priority is not None:
+        # The V∞ phase-match resolver cannot seat multi-rev / strongly
+        # asymmetric topologies (e.g. S1L1's E-M-E-E with a multi-rev E-E
+        # loop) — find_candidate_windows returns no window. The corrector,
+        # unlike the maintenance solver, drives a root-find from a *direct*
+        # epoch seed (prototype scripts/correct_s1l1_twoarc.py seeds t0 from a
+        # fixed date, never the phase-match resolver). Fall back to the
+        # priority date as the direct t0 seed so the corrector still runs;
+        # family selection across epochs is the seeding ladder's job (spec §3).
+        from datetime import UTC
+
+        from cyclerfinder.search.phase_match import _dt_to_t_sec
+
+        if priority.tzinfo is None:
+            priority = priority.replace(tzinfo=UTC)
+        t0_sec = _dt_to_t_sec(priority)
+
+    if t0_sec is None:
+        # Honest "no real window" outcome — surface, don't crash.
+        sentinel = _sentinel_cycler(cell, ephem, target_period_sec)
+        sentinel_score = score(
+            sentinel,
+            ephem,
+            vinf_cap=vinf_cap,
+            target_period_sec=target_period_sec,
+            rp_factors=rp_factors,
+        )
+        return OptimisationResult(
+            cell=cell,
+            best_cycler=sentinel,
+            best_score=sentinel_score,
+            closure_residual_kms=float("inf"),
+            optimiser_history=(),
+            converged=False,
+            constraints_satisfied=False,
+        )
+
+    # Eliminate the longest seed leg as the period slack leg (spec §2.1(a)).
+    slack_leg = int(np.argmax(seed_days)) if seed_days else 0
+    free_tof = [t for i, t in enumerate(seed_days) if i != slack_leg]
+
+    corr = ballistic_correct(
+        sequence=tuple(cell.sequence),
+        per_leg_revs=tuple(cell.per_leg_revs),
+        per_leg_branch=tuple(cell.per_leg_branch),
+        t0_seed_sec=float(t0_sec),
+        tof_seed_days=free_tof,
+        period_sec=target_period_sec,
+        ephem=ephem,
+        vinf_cap=vinf_cap,
+        rp_factors=rp_factors or None,
+        slack_leg=slack_leg,
+    )
+
+    # Rebuild the closed cycler at the corrected geometry so consumers read
+    # genuine per-encounter V∞ from the same construct path as every other mode.
+    x = np.array([corr.t0_sec, *corr.tof_days], dtype=np.float64)
+    best_cycler = _build_chain(
+        x,
+        cell.sequence,
+        ephem,
+        per_leg_revs=cell.per_leg_revs,
+        per_leg_branch=cell.per_leg_branch,
+    )
+    if best_cycler is None:
+        best_cycler = _sentinel_cycler(cell, ephem, target_period_sec)
+
+    best_score = score(
+        best_cycler,
+        ephem,
+        vinf_cap=vinf_cap,
+        target_period_sec=target_period_sec,
+        rp_factors=rp_factors,
+    )
+
+    return OptimisationResult(
+        cell=cell,
+        best_cycler=best_cycler,
+        best_score=best_score,
+        closure_residual_kms=float(corr.max_residual_kms),
+        optimiser_history=(),
+        converged=bool(corr.converged),
+        constraints_satisfied=bool(corr.constraints_satisfied),
     )
 
 
