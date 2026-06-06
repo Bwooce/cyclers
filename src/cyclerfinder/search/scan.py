@@ -51,6 +51,7 @@ class ScanPoint:
     slack_leg: int | None = None
     rp_factors: tuple[tuple[str, float], ...] | None = None
     tol_kms: float = 0.1
+    residual_mode: str = "magnitude"
 
 
 @dataclass(frozen=True)
@@ -95,6 +96,7 @@ def _evaluate_point(point: ScanPoint) -> ScanResult:
         rp_factors=rp_factors,
         slack_leg=point.slack_leg,
         tol_kms=point.tol_kms,
+        residual_mode=point.residual_mode,
     )
     return ScanResult(point=point, result=result)
 
@@ -203,6 +205,7 @@ def build_epoch_branch_grid(
     slack_leg: int | None = None,
     rp_factors: dict[str, float] | None = None,
     tol_kms: float = 0.1,
+    residual_mode: str = "magnitude",
 ) -> list[ScanPoint]:
     """Materialise the epoch x branch multi-start grid as a list of ScanPoints.
 
@@ -230,6 +233,7 @@ def build_epoch_branch_grid(
                     slack_leg=slack_leg,
                     rp_factors=rp_tuple,
                     tol_kms=float(tol_kms),
+                    residual_mode=residual_mode,
                 )
             )
     return grid

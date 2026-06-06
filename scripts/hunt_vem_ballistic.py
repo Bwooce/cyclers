@@ -9,12 +9,16 @@ loop used to reach the ~6.4 Mars S1L1 family, generalised to the VEM cells.
 NON-GOLDEN: every V_inf printed is OUR computation. The sourced Jones multiset
 is read only for the near-anchor proximity tag (a CROSS-CHECK, not fitted).
 
-Run: uv run python -W ignore scripts/hunt_vem_ballistic.py [n_epochs] [ephem_model]
+Run: uv run python -W ignore scripts/hunt_vem_ballistic.py [n_epochs] [ephem_model] [residual_mode]
 
 ``ephem_model`` (default ``astropy``) is passed straight through to
 ``scan_parallel`` / ``Ephemeris(model=...)``; the corrector and scan engine are
 ephemeris-agnostic, so ``inclined-circular`` (M-3D, sourced J2000 inc/Ω) re-runs
 the identical grid on the inclined backend (task #120, the 3D-hypothesis test).
+
+``residual_mode`` (default ``magnitude``) selects the corrector residual:
+``magnitude`` is the #110/#120 baseline; ``vector`` is the Jones-method
+bend-feasibility-aware residual (task #122 Phase 1, the falsifier run).
 """
 
 from __future__ import annotations
@@ -65,7 +69,12 @@ def _topologies(n_legs: int) -> list[tuple[tuple[int, ...], tuple[str, ...]]]:
     return topos
 
 
-def hunt(entry_id: str, n_epochs: int, ephem_model: str = "astropy") -> list[ScanResult]:
+def hunt(
+    entry_id: str,
+    n_epochs: int,
+    ephem_model: str = "astropy",
+    residual_mode: str = "magnitude",
+) -> list[ScanResult]:
     row = _row(entry_id)
     seq = tuple(row["sequence_canonical"].split("-"))
     n_legs = len(seq) - 1
@@ -95,11 +104,13 @@ def hunt(entry_id: str, n_epochs: int, ephem_model: str = "astropy") -> list[Sca
         branch_topologies=_topologies(n_legs),
         tof_seed_days=free_seed,
         slack_leg=slack_leg,
+        residual_mode=residual_mode,
     )
     print(
         f"\n== {entry_id}  seq={'-'.join(seq)}  legs={n_legs}  "
         f"period={period_years} yr  grid={len(grid)} points "
-        f"({len(_topologies(n_legs))} topos x {n_epochs} epochs)  ephem={ephem_model}"
+        f"({len(_topologies(n_legs))} topos x {n_epochs} epochs)  "
+        f"ephem={ephem_model}  residual={residual_mode}"
     )
     t0 = time.perf_counter()
     results = scan_parallel(grid, ephem_model=ephem_model, max_workers=16)
@@ -142,8 +153,9 @@ def hunt(entry_id: str, n_epochs: int, ephem_model: str = "astropy") -> list[Sca
 def main() -> None:
     n_epochs = int(sys.argv[1]) if len(sys.argv) > 1 else 256
     ephem_model = sys.argv[2] if len(sys.argv) > 2 else "astropy"
+    residual_mode = sys.argv[3] if len(sys.argv) > 3 else "magnitude"
     for entry_id in MEMBERS:
-        hunt(entry_id, n_epochs, ephem_model)
+        hunt(entry_id, n_epochs, ephem_model, residual_mode)
 
 
 if __name__ == "__main__":
