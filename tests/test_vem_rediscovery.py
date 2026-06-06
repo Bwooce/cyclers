@@ -237,6 +237,44 @@ def _sourced_vinf_multiset(entry_id: str) -> list[float]:
     return sorted(float(e["vinf_kms"]) for e in _row(entry_id)["vinf_kms_at_encounters"])
 
 
+def _sourced_vinf_multiset_one_period(entry_id: str) -> list[float]:
+    """Fold the sourced V_inf multiset from TWO repeat periods to ONE (Phase 0,
+    task #122; design §0.2 / §7 Q1).
+
+    THE FOLD RULE. The Jones AAS 17-577 Tables 2/3 list V_inf "over two repeat
+    periods" (mining note §1.2): an ``E-M-E-V-V-E`` cycle (6 encounters,
+    ``len(sequence_canonical)``) is traced twice, giving 11 encounters, NOT 12,
+    because the two periods share their boundary Earth -- the last encounter of
+    period 1 *is* the first encounter of period 2 (one physical flyby counted
+    once). So the 11 sourced rows are ``6 + 5``: the full first period
+    (encounters 0..5) followed by period 2's five *interior + closing*
+    encounters (6..10).
+
+    The corrector solves exactly ONE repeat period and emits
+    ``len(sequence_canonical)`` per-encounter V_inf (its ``b0`` home and ``bN``
+    wrap-home are the two ends of that single period -- two distinct flybys of
+    the home body, one period apart, the same boundary identity the Jones table
+    encodes between its two periods). The matching fold is therefore the FIRST
+    ``len(sequence_canonical)`` sourced encounters (period 1, indices 0..5),
+    whose bodies are asserted to equal ``sequence_canonical`` exactly. This does
+    NOT double-count the wrap Earth: index 5 (period-1 close) is kept; index 10
+    (period-2 close) is dropped because it belongs to the second period the
+    corrector does not solve.
+    """
+    row = _row(entry_id)
+    seq = tuple(row["sequence_canonical"].split("-"))
+    n = len(seq)
+    encs = row["vinf_kms_at_encounters"]
+    period1 = encs[:n]
+    # Guard the fold against silent catalogue drift: the folded encounters must
+    # be body-aligned to the cycle the corrector solves.
+    assert tuple(e["body"] for e in period1) == seq, (
+        f"{entry_id}: first {n} sourced encounter bodies "
+        f"{tuple(e['body'] for e in period1)} != sequence_canonical {seq}"
+    )
+    return sorted(float(e["vinf_kms"]) for e in period1)
+
+
 def _sourced_cycle_tofs(entry_id: str) -> list[float]:
     """First-cycle per-leg ToFs (days) from the SOURCED trajectory segments.
 
@@ -249,6 +287,63 @@ def _sourced_cycle_tofs(entry_id: str) -> list[float]:
     n_legs = len(row["sequence_canonical"].split("-")) - 1
     segs = row["trajectory"]["segments"]
     return [float(segs[i]["tof_days"]) for i in range(n_legs)]
+
+
+# ---------------------------------------------------------------------------
+# Phase 0 (task #122): the FIXED gate-comparison contract is provably passable.
+#
+# The headline gate (below) stays xfail until a real corrector lands in the
+# Jones family. But the *comparison layer* fixed in Phase 0 must be able to PASS
+# when fed a perfect result -- otherwise the xfail would mask a permanently
+# unpassable assertion (the original zip(6, 11, strict=True) ValueError). These
+# two tests exercise the fold + comparison on SYNTHETIC perfect input and assert
+# it passes, with no xfail.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("entry_id", _MEMBER_ROW_IDS)
+def test_one_period_fold_is_body_aligned_and_length_matches_cycle(entry_id: str) -> None:
+    """The Phase-0 fold yields exactly len(sequence_canonical) sourced values,
+    body-aligned to the cycle the corrector solves (the fold-rule contract)."""
+    row = _row(entry_id)
+    seq = tuple(row["sequence_canonical"].split("-"))
+    folded = _sourced_vinf_multiset_one_period(entry_id)
+    assert len(folded) == len(seq)  # one repeat period, not two
+    # The fold is a strict subset of the full two-period multiset.
+    full = _sourced_vinf_multiset(entry_id)
+    assert len(full) == 11  # sourced fixture sanity: two periods, shared boundary
+    assert len(folded) < len(full)
+
+
+@pytest.mark.parametrize("entry_id", _MEMBER_ROW_IDS)
+def test_fixed_gate_comparison_passes_on_synthetic_perfect_result(entry_id: str) -> None:
+    """A PERFECT corrector -- per-encounter V_inf exactly equal to the folded
+    sourced one-period multiset -- PASSES the fixed gate comparison.
+
+    This proves Phase 0 removed the false ValueError: the comparison is now
+    length-consistent (folded sourced == corrector encounter count) and the
+    zip(strict=True) + approx assertion succeed on perfect input. EXPECTED side
+    is still the sourced Jones values (golden discipline); the synthetic 'got'
+    stands in for a corrector that genuinely reached the family.
+    """
+    expected = _sourced_vinf_multiset_one_period(entry_id)
+
+    # Synthetic perfect result: an encounter list whose per-encounter
+    # max(|vinf_in|, |vinf_out|) reproduces the folded sourced multiset exactly.
+    class _FakeEnc:
+        def __init__(self, mag: float) -> None:
+            self.vinf_in = np.array([mag, 0.0, 0.0])
+            self.vinf_out = np.array([mag, 0.0, 0.0])
+
+    got = sorted(
+        max(float(np.linalg.norm(e.vinf_in)), float(np.linalg.norm(e.vinf_out)))
+        for e in [_FakeEnc(v) for v in expected]
+    )
+
+    # The exact comparison the fixed headline gate runs.
+    assert len(got) == len(expected)
+    for g, x in zip(got, expected, strict=True):
+        assert g == pytest.approx(x, abs=VEM_VINF_TOL_KMS)
 
 
 @pytest.mark.xfail(
@@ -335,10 +430,21 @@ def test_jones_vem_ballistic_rediscovers_sourced_multiset(entry_id: str) -> None
     )
     assert result.converged and result.constraints_satisfied
 
-    expected = _sourced_vinf_multiset(entry_id)
+    # Phase 0 (task #122): compare per-repeat-period multisets. The corrector
+    # solves ONE 12.8-yr period -> len(sequence_canonical) per-encounter V_inf;
+    # the sourced Tables span TWO periods (11 encounters). Fold the sourced data
+    # to one period (see _sourced_vinf_multiset_one_period for the fold rule)
+    # so the two sides are length-consistent. zip(strict=True) then guards the
+    # fixed contract: a genuine length mismatch must still raise, not silently
+    # truncate.
+    expected = _sourced_vinf_multiset_one_period(entry_id)
     got = sorted(
         max(float(np.linalg.norm(e.vinf_in)), float(np.linalg.norm(e.vinf_out)))
         for e in result.best_cycler.encounters
+    )
+    assert len(got) == len(expected), (
+        f"{entry_id}: corrector emitted {len(got)} per-encounter V_inf, folded "
+        f"sourced period has {len(expected)} -- fold/sequence contract broken"
     )
     for g, x in zip(got, expected, strict=True):
         assert g == pytest.approx(x, abs=VEM_VINF_TOL_KMS)
