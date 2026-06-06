@@ -51,6 +51,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from math import acos, degrees, sqrt
 from typing import Any, cast
 
@@ -132,6 +133,21 @@ sourced altitude rather than the conservative 300 km default so the recovered
 turn deficit reproduces the literature geometry. The value is also recorded
 per-body in the catalogue entry's ``flyby_mechanics`` so it is configurable per
 orbit."""
+
+_ALDRIN_PRIORITY_DATE: datetime = datetime(1985, 10, 28, tzinfo=UTC)
+"""Aldrin E-M cycler literature/priority epoch (matches the catalogue
+``aldrin-classic-em-k1-outbound`` ``priority_date`` and the M6b real-closure
+gate). Centre of the real-ephemeris launch-window search when the optimiser is
+asked to seed itself from real DE440 geometry (see
+:func:`optimise_aldrin_maintenance_dv`'s ``real_window_priority_date``)."""
+
+# Sourced Aldrin anchors used to build the real-ephemeris launch-window
+# signature (Rogers et al. 2012 Table 1; Russell 2004 Table 3.4;
+# McConaghy/Longuski/Byrnes 2002 Table 4 "1L1"). These mirror the published
+# values the module docstring records and the test surface pins; they are NOT
+# fitted by our code.
+_ALDRIN_VINF_E_KMS: float = 6.5
+_ALDRIN_VINF_M_KMS: float = 9.7
 
 
 # ---------------------------------------------------------------------------
@@ -422,6 +438,43 @@ def _default_t0_guess(em_tof_days: float) -> float:
     return float(seed.encounters[0].t)
 
 
+def _resolve_aldrin_real_t0_guess(
+    ephem: Ephemeris,
+    em_tof_days: float,
+    me_tof_days: float,
+    priority_date: datetime,
+) -> float | None:
+    """Real-ephemeris Earth-departure epoch (s) for the Aldrin launch phase.
+
+    The circular phase-inversion seed (:func:`_default_t0_guess`) selects the
+    Aldrin launch *phase* on the idealised circular ephemeris, but the real
+    planets are not at the circular phase angles at that epoch, so seeding the
+    DE440 solve there lets the global ``differential_evolution`` pass slide onto
+    a high-energy degenerate basin (a ≈ 0.95 AU, e ≈ 0.99, V∞ ≈ 38 km/s, ΔV
+    ≈ 55 km/s — finding #114). This resolver instead scans real DE440 geometry
+    for the launch window whose Lambert V∞ best matches the *sourced* Aldrin
+    anchors (V∞_E = 6.5, V∞_M = 9.7 km/s; 146 d outbound), reusing the same
+    V∞-mismatch window resolver the M6b real-closure / BVP path uses. Seeding the
+    DE440 solve there lands it in-family (a ≈ 1.59 AU, e ≈ 0.39, V∞ ≈ 6.4 / 9.5).
+
+    Returns ``None`` when no window beats the resolver's mismatch cap, so the
+    caller can fall back to the circular phase seed and surface a non-converged /
+    off-family result honestly rather than silently substituting a worse epoch.
+    """
+    # Local imports: the phase-match resolver lives in verify.real_closure,
+    # which depends on search machinery, so a module-level import here would
+    # risk a construction-time cycle (mirrors search.bvp's local import).
+    from cyclerfinder.search.phase_match import PhaseSignature
+    from cyclerfinder.verify.real_closure import _resolve_real_t_start
+
+    signature = PhaseSignature(
+        bodies=("E", "M"),
+        leg_durations_s=(em_tof_days * SECONDS_PER_DAY,),
+        vinf_target_kms=(_ALDRIN_VINF_E_KMS, _ALDRIN_VINF_M_KMS),
+    )
+    return _resolve_real_t_start(signature, ephem, priority_date)
+
+
 def optimise_maintenance_dv(
     sequence: Sequence[str],
     ephem: Ephemeris,
@@ -669,6 +722,7 @@ def optimise_aldrin_maintenance_dv(
     me_tof_days_guess: float = 634.0,
     n_starts: int = 5,
     seed: int = 0,
+    real_window_priority_date: datetime | None = None,
 ) -> MaintenanceOptimResult:
     """Find the minimum-ΔV periodic Aldrin E→M→E cycler over ``ephem``.
 
@@ -685,7 +739,8 @@ def optimise_aldrin_maintenance_dv(
         the test surface; ``Ephemeris("astropy")`` gives real DE440 states.
     t0_guess_sec:
         Earth-departure epoch guess (s). ``None`` derives it from the Aldrin
-        seed phase (see :func:`_default_t0_guess`).
+        seed phase (see :func:`_default_t0_guess`), unless
+        ``real_window_priority_date`` is given.
     em_tof_days_guess, me_tof_days_guess:
         Initial leg ToFs (days) for the Earth→Mars and Mars→Earth legs.
     n_starts:
@@ -694,6 +749,18 @@ def optimise_aldrin_maintenance_dv(
     seed:
         RNG seed for ``differential_evolution`` and the multi-start jitter, so
         results are reproducible.
+    real_window_priority_date:
+        When set (and ``t0_guess_sec`` is ``None``), seed ``t0`` from the real
+        DE440 launch window whose Lambert V∞ best matches the sourced Aldrin
+        anchors near this date, instead of the circular phase-inversion seed.
+        Required for the real (``"astropy"``) ephemeris: the circular phase seed
+        is mis-phased on DE440 and lets the global search slide off-family
+        (finding #114). Pass :data:`_ALDRIN_PRIORITY_DATE` for the classic
+        Aldrin cycler. Ignored on the circular backend (the phase seed is
+        already correct there). If no real window beats the resolver cap the
+        circular phase seed is used as a documented fallback. ``None`` keeps the
+        historic behaviour, so circular-backend calls stay bit-for-bit
+        identical.
 
     Returns
     -------
@@ -701,6 +768,13 @@ def optimise_aldrin_maintenance_dv(
         With the optimised cycler, computed anchors, and the (computed,
         not source-attested) maintenance ΔV.
     """
+    if t0_guess_sec is None and real_window_priority_date is not None:
+        t0_guess_sec = _resolve_aldrin_real_t0_guess(
+            ephem,
+            em_tof_days_guess,
+            me_tof_days_guess,
+            real_window_priority_date,
+        )
     if t0_guess_sec is None:
         t0_guess_sec = _default_t0_guess(em_tof_days_guess)
 

@@ -427,3 +427,58 @@ def test_optimise_maintenance_dv_multirev_param_threaded() -> None:
     assert result.maintenance_dv_kms >= 0.0
     # The 1-rev return leg survives the solve.
     assert result.cycler.legs[1].n_revs == 1
+
+
+# ---------------------------------------------------------------------------
+# SLOW DE440 gate (finding #114): the real-ephemeris Aldrin solve must land
+# IN-FAMILY when seeded from the sourced-anchor real launch window, not on the
+# off-family degenerate basin (a ≈ 0.95 AU, e ≈ 0.99, V∞ ≈ 38 km/s, ΔV ≈ 55
+# km/s) that the bare circular phase seed slides onto on real DE440.
+#
+# The seed is the V∞-anchor real launch-window resolver (the same one M6b's
+# real-closure / BVP path uses), passed via ``real_window_priority_date``. This
+# is the value that goes public on cyclers.space, so it is gated with teeth:
+# a/e/V∞ near the SOURCED anchors AND the plausibility bar (ΔV < 3.0). The ΔV
+# magnitude itself is OUR computation (unpublished) so it is bounded, not
+# matched. Cross-checked: the independent ``solve_powered_periodic_cycler`` BVP
+# path returns the same ΔV (2.9138 km/s) on this window.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.slow
+def test_aldrin_de440_seeded_solve_is_in_family() -> None:
+    from datetime import UTC, datetime
+
+    result = optimise_aldrin_maintenance_dv(
+        Ephemeris("astropy"),
+        n_starts=5,
+        seed=0,
+        real_window_priority_date=datetime(1985, 10, 28, tzinfo=UTC),
+    )
+
+    assert result.converged is True, "DE440 seeded solve did not converge"
+
+    # In-family on the SOURCED orbital anchors (same honest bands as the
+    # circular surface above).
+    assert result.a_au == pytest.approx(_PUB_A_AU, abs=_TOL_A), (
+        f"DE440 a={result.a_au:.4f} AU off-family vs published {_PUB_A_AU} AU"
+    )
+    assert result.e == pytest.approx(_PUB_E, abs=_TOL_E), (
+        f"DE440 e={result.e:.4f} off-family vs published {_PUB_E}"
+    )
+    vinf_e = _vinf(result, "E")
+    vinf_m = _vinf(result, "M")
+    assert vinf_e == pytest.approx(_PUB_VINF_E_KMS, abs=_TOL_VINF_E), (
+        f"DE440 V∞_Earth={vinf_e:.3f} km/s off-family vs published {_PUB_VINF_E_KMS} km/s"
+    )
+    assert vinf_m == pytest.approx(_PUB_VINF_M_KMS, abs=_TOL_VINF_M), (
+        f"DE440 V∞_Mars={vinf_m:.3f} km/s off-family vs published {_PUB_VINF_M_KMS} km/s"
+    )
+
+    # Plausibility bar (finding #114): the off-family basin reported ΔV ≈ 55
+    # km/s. The in-family value must be strictly positive (Aldrin is powered)
+    # and below the Hohmann-like sanity ceiling. NOT a match against a published
+    # number — the ΔV magnitude is unpublished.
+    dv = result.maintenance_dv_kms
+    assert dv > 0.0, f"in-family Aldrin must have positive maintenance ΔV, got {dv}"
+    assert dv < 3.0, f"DE440 maintenance ΔV implausibly large (off-family?): {dv} km/s"
