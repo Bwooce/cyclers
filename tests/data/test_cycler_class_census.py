@@ -1,13 +1,17 @@
-"""Task 2.1: Census ratchet test for cycler_class tags on all 237 catalogue rows.
+"""Task 2.1: Census ratchet test for cycler_class tags on all 252 catalogue rows.
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 203, non-keplerian: 6}.
-3. The set of ids tagged multi-arc exactly equals the 203-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 28, multi-arc: 218, non-keplerian: 6}.
+3. The set of ids tagged multi-arc exactly equals the 218-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 6 non-keplerian ids match the §3 list.
 
 Source of truth: docs/notes/multi-arc-classification.md §3 and §9.
+
+2026-06-07 (#142 catalogue ingest, batch 1): +15 Rall 1970 (MIT TE-34) free-fall
+periodic Earth-Mars orbits (rall-1970-*), all multi-arc. multi-arc 203->218,
+total 237->252. See docs/notes/2026-06-07-catalogue-ingest-rall-russell.md.
 """
 
 from __future__ import annotations
@@ -24,7 +28,8 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # Source: docs/notes/multi-arc-classification.md §9
 # (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2
 #  + sanchez-net-2022-eem-cycler1 + sanchez-net-2022-em-cycler2
-#  + jones-2017-vem-emevve-outbound + jones-2017-vem-meevem-inbound)
+#  + jones-2017-vem-emevve-outbound + jones-2017-vem-meevem-inbound
+#  + 15 rall-1970-* free-fall periodic orbits, #142 batch 1 = 218)
 # ---------------------------------------------------------------------------
 MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
     [
@@ -238,11 +243,30 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # patched-conic, 6 flybys per cycle, no single repeating (a,e) conic.
         "jones-2017-vem-emevve-outbound",
         "jones-2017-vem-meevem-inbound",
+        # Rall 1970 (MIT TE-34) free-fall periodic Earth-Mars orbits (15 rows),
+        # #142 catalogue ingest batch 1. App E circular-coplanar (M4-1, M6-1..3)
+        # + App F eccentric-inclined (M4-1a, M5-1a..e, M5-2a..e). Multi-arc:
+        # each is multiple E-M-E round trips + Earth direct returns (note §6).
+        "rall-1970-m4-1",
+        "rall-1970-m4-1a",
+        "rall-1970-m5-1a",
+        "rall-1970-m5-1b",
+        "rall-1970-m5-1c",
+        "rall-1970-m5-1d",
+        "rall-1970-m5-1e",
+        "rall-1970-m5-2a",
+        "rall-1970-m5-2b",
+        "rall-1970-m5-2c",
+        "rall-1970-m5-2d",
+        "rall-1970-m5-2e",
+        "rall-1970-m6-1",
+        "rall-1970-m6-2",
+        "rall-1970-m6-3",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 203, (
-    f"Allowlist must have 203 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 218, (
+    f"Allowlist must have 218 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -280,17 +304,17 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=203, non-keplerian=6."""
+    """Exact class distribution: single-ellipse=28, multi-arc=218, non-keplerian=6."""
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 203, "non-keplerian": 6}
+    expected = {"single-ellipse": 28, "multi-arc": 218, "non-keplerian": 6}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
 
 
 def test_multi_arc_ids_match_allowlist() -> None:
-    """The exact set of multi-arc ids matches the 203-id MULTI_ARC_ALLOWLIST ratchet."""
+    """The exact set of multi-arc ids matches the 218-id MULTI_ARC_ALLOWLIST ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "multi-arc")
     extra = actual - MULTI_ARC_ALLOWLIST

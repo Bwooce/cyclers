@@ -32,10 +32,15 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # ---------------------------------------------------------------------------
 # Frozen ratchet: the live validation-tier distribution (2026-06-05, v4.4).
 # Update in the same commit as any provenance-tag change.
+#
+# 2026-06-07 (#142 catalogue ingest, batch 1): +15 Rall 1970 (rall-1970-*)
+# multi-arc rows, each tagged orbit_source == vinf_source == rall-1970-te34 at
+# one fidelity (App E circular-coplanar / App F analytic-ephemeris) =>
+# CONSISTENCY_CHECKED. consistency_checked 218 -> 233.
 # ---------------------------------------------------------------------------
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 218,
+    "consistency_checked": 233,
     "unvalidated": 14,
 }
 

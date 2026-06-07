@@ -68,6 +68,13 @@ SOURCE_REGISTRY: dict[str, str] = {
         "Hollister, W.M. (1970). 'Castles in space.' Astronautica Acta — "
         "Table 3 (Earth-Venus / Earth-Mars cycler families)."
     ),
+    "rall-1970-te34": (
+        "Rall, C.S. (1970). 'Free-Fall Periodic Orbits Connecting Earth and "
+        "Mars.' Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report "
+        "TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct "
+        "1969 (pub. 1970) — Appendices E (circular-coplanar Model I.B) and F "
+        "(eccentric-inclined Model III.B) periodic-orbit member data."
+    ),
     "friedlander-1986": (
         "Friedlander, A.L., et al. (1986). Circulating (cycler) transportation "
         "systems for Mars (orbital elements and V_inf)."

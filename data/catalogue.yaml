@@ -41580,3 +41580,1914 @@ days\" per the NTRS abstract.
       solved. There are thirty-three previously documented and 170
       previously undocumented promising cyclers found".
 
+
+# ---------------------------------------------------------------------------
+# Rall (Hollister adv.) 1970 (MIT TE-34) free-fall periodic Earth-Mars orbits.
+# Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-rall-1970-appendices-transcription.md
+# ELIGIBLE per note §6: App E circular-coplanar (M4-1, M6-1, M6-2, M6-3) +
+# App F eccentric-inclined (M4-1a, M5-1a..e, M5-2a..e). Provenance: rall-1970-te34;
+# source_ephemeris = patched-conic mean-element (Rall TE-34, 1969), NEVER a DE kernel.
+# All validation_level V0. See ingest note 2026-06-07-catalogue-ingest-rall-russell.md.
+# ---------------------------------------------------------------------------
+
+- id: rall-1970-m4-1
+  name: "Rall 1970 periodic orbit M4-1 (circular-coplanar, App E)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: circular-coplanar   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: rall-1970-te34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App E tabulates encounter speeds/dates, not an aphelion ratio
+    transit_times_days: [164]   # E->M leg, App-E date difference 1194-1030 (JD-2440000, clean) = 164 d
+    turn_ratio: null   # not tabulated by Rall App E
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction); Rall connects E and M by gravity alone
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App E (p.182): planetary passing distances in units of the radius of the planet encountered. Earth & Mars encounters. min_altitude_km left null (passing distances are in planet radii, not km; conversion is a derived value).
+    - body: "M"
+      turning_angle_deg: null   # Rall App E does not tabulate turn angle (App F does, in degrees)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App E collapsed 7-encounter listing (note §3)
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "Rall App E M4-1 spans encounters JD-2440000 546..3666 (~8.54 yr); labelled 4-synodic-class (M4 family). k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.65
+      note: "Rall App E M4-1 (p.182): first Earth hyperbolic-excess speed 0.257 EMOS x 29.77 km/s/EMOS = 7.65 km/s (EMOS = Earth Mean Orbital Speed per Rall; mining-note Table 3-1). Original units (EMOS) preserved here."
+    - body: "M"
+      vinf_kms: 9.35
+      note: "Rall App E M4-1: Mars hyperbolic-excess speed 0.314 EMOS x 29.77 = 9.35 km/s (speeds at both Mars encounters equal by symmetry, Rall legend)."
+    - body: "E"
+      vinf_kms: 5.39
+      note: "Rall App E M4-1: second Earth hyperbolic-excess speed 0.181 EMOS x 29.77 = 5.39 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App E circular-coplanar; aphelion not tabulated (encounter speeds/dates only)
+    inclination_deg: 0.0   # circular COPLANAR model (Model I.B): i = 0
+    note: "Rall App E is the circular-coplanar Model I.B (e=i=0 for the planets). Per-orbit (a,e) of the spacecraft arcs are not tabulated; only encounter dates, speeds, and passing distances."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric interplanetary arcs
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated by Rall (note §1) — left null
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2 (spec §16.7.9): Rall patched-conic on the circular-coplanar Model I.B planetary model. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 164
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M4-1: Earth->Mars leg = App-E date difference 1194-1030 = 164 d (JD-2440000, the CLEAN encoding; note §1)."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 606
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M4-1: Mars->Earth leg = App-E date difference 1800-1194 = 606 d (JD-2440000)."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # Rall App E does not tabulate turn angle
+        max_turning_angle_deg: 13.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.35 km/s)); vinf from vinf_kms_at_encounters. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; V-infinity 9.35 km/s (0.314 EMOS). Passing distances tabulated in Mars radii (App E)."
+  family:
+    id: "rall-1970-m4-periodic"
+    name: "Rall 1970 M4 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Rall App E gives a COLLAPSED 7-encounter listing for M4-1 (only Earth encounters adjacent to Mars). The full multi-arc decomposition (direct-return loops between Mars encounters, scheme symbols e.g. 3FR/S1SR per App D) is present in the source but not materialised as segments here; out-em/ret-me are the load-bearing E-M-E round-trip legs."
+      source_hint: "Rall 1970 TE-34 App E p.182; App D direct-return combinations"
+      todo_ref: "#142-rall"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-arc (a,e) not tabulated by Rall App E (circular-coplanar Model I.B lists encounter dates/speeds/passing-distances only)."
+      source_hint: "Rall 1970 TE-34 App E"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix E (Circular Coplanar Earth-Mars Periodic Orbits, p.182), orbit M4-1. The 'a' version exists for the best approximations used."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M4-1, Appendix E circular-coplanar Model I.B. headline 4-synodic family member; exists in BOTH circular-coplanar (App E) and eccentric-inclined (App F, M4-1a).
+
+    Existence (Rall verbatim): "The 'a' version exists for the best approximations used."
+
+    Units: V_inf in EMOS (Earth Mean Orbital Speed = 29.77 km/s per Rall; mining-note Table 3-1) — converted to km/s in vinf_kms_at_encounters with the EMOS values preserved in each note. Passing distances are in local planetary radii (Earth radii at E, Mars radii at M). Dates are Julian Date minus 2440000 (App E clean encoding; note §1); per-leg ToFs are date differences.
+
+    1969-era patched-conic mean-element dynamics; modern Byrnes/Russell/Casalino free-return families supersede the dynamics, but Rall's dates/identifiers remain the primary-source member record. ET-vs-UT for the 1969 JD usage is unstated by Rall (conversion caveat). Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-rall-1970-appendices-transcription.md.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App E M4-1 (p.182): Earth V_inf 0.257 EMOS; x 29.77 km/s/EMOS = 7.65 km/s."
+    "vinf_kms_at_encounters[1].vinf_kms": "Rall 1970 TE-34 App E M4-1: Mars V_inf 0.314 EMOS; x 29.77 = 9.35 km/s."
+    "legs[0].tof_days": "Rall 1970 TE-34 App E M4-1: E->M = JD-2440000 dates 1194-1030 = 164 d."
+
+- id: rall-1970-m6-1
+  name: "Rall 1970 periodic orbit M6-1 (circular-coplanar, App E)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: circular-coplanar   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: rall-1970-te34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App E tabulates encounter speeds/dates, not an aphelion ratio
+    transit_times_days: [118]   # E->M leg, App-E date difference 2782-2664 (JD-2440000, clean) = 118 d
+    turn_ratio: null   # not tabulated by Rall App E
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction); Rall connects E and M by gravity alone
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App E (p.184): planetary passing distances in units of the radius of the planet encountered. Earth & Mars encounters. min_altitude_km left null (passing distances are in planet radii, not km; conversion is a derived value).
+    - body: "M"
+      turning_angle_deg: null   # Rall App E does not tabulate turn angle (App F does, in degrees)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App E collapsed 7-encounter listing (note §3)
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 6
+    years: 12.81
+    note: "Rall App E M6-1 spans encounters JD-2440000 473..5152 (~12.81 yr); labelled 6-synodic-class (M6 family). k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.36
+      note: "Rall App E M6-1 (p.184): first Earth hyperbolic-excess speed 0.18 EMOS x 29.77 km/s/EMOS = 5.36 km/s (EMOS = Earth Mean Orbital Speed per Rall; mining-note Table 3-1). Original units (EMOS) preserved here."
+    - body: "M"
+      vinf_kms: 9.38
+      note: "Rall App E M6-1: Mars hyperbolic-excess speed 0.315 EMOS x 29.77 = 9.38 km/s (speeds at both Mars encounters equal by symmetry, Rall legend)."
+    - body: "E"
+      vinf_kms: 6.07
+      note: "Rall App E M6-1: second Earth hyperbolic-excess speed 0.204 EMOS x 29.77 = 6.07 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App E circular-coplanar; aphelion not tabulated (encounter speeds/dates only)
+    inclination_deg: 0.0   # circular COPLANAR model (Model I.B): i = 0
+    note: "Rall App E is the circular-coplanar Model I.B (e=i=0 for the planets). Per-orbit (a,e) of the spacecraft arcs are not tabulated; only encounter dates, speeds, and passing distances."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric interplanetary arcs
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated by Rall (note §1) — left null
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2 (spec §16.7.9): Rall patched-conic on the circular-coplanar Model I.B planetary model. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 118
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-1: Earth->Mars leg = App-E date difference 2782-2664 = 118 d (JD-2440000, the CLEAN encoding; note §1)."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 578
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-1: Mars->Earth leg = App-E date difference 3360-2782 = 578 d (JD-2440000)."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # Rall App E does not tabulate turn angle
+        max_turning_angle_deg: 13.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.38 km/s)); vinf from vinf_kms_at_encounters. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; V-infinity 9.38 km/s (0.315 EMOS). Passing distances tabulated in Mars radii (App E)."
+  family:
+    id: "rall-1970-m6-periodic"
+    name: "Rall 1970 M6 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 6}
+  data_gaps:
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Rall App E gives a COLLAPSED 7-encounter listing for M6-1 (only Earth encounters adjacent to Mars). The full multi-arc decomposition (direct-return loops between Mars encounters, scheme symbols e.g. 3FR/S1SR per App D) is present in the source but not materialised as segments here; out-em/ret-me are the load-bearing E-M-E round-trip legs."
+      source_hint: "Rall 1970 TE-34 App E p.184; App D direct-return combinations"
+      todo_ref: "#142-rall"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-arc (a,e) not tabulated by Rall App E (circular-coplanar Model I.B lists encounter dates/speeds/passing-distances only)."
+      source_hint: "Rall 1970 TE-34 App E"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix E (Circular Coplanar Earth-Mars Periodic Orbits, p.184), orbit M6-1. All versions exist for the best approximations used."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M6-1, Appendix E circular-coplanar Model I.B. 6-synodic period; circular-coplanar exists (App E). No App-F eccentric per-encounter member data (not listed).
+
+    Existence (Rall verbatim): "All versions exist for the best approximations used."
+
+    Units: V_inf in EMOS (Earth Mean Orbital Speed = 29.77 km/s per Rall; mining-note Table 3-1) — converted to km/s in vinf_kms_at_encounters with the EMOS values preserved in each note. Passing distances are in local planetary radii (Earth radii at E, Mars radii at M). Dates are Julian Date minus 2440000 (App E clean encoding; note §1); per-leg ToFs are date differences.
+
+    1969-era patched-conic mean-element dynamics; modern Byrnes/Russell/Casalino free-return families supersede the dynamics, but Rall's dates/identifiers remain the primary-source member record. ET-vs-UT for the 1969 JD usage is unstated by Rall (conversion caveat). Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-rall-1970-appendices-transcription.md.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App E M6-1 (p.184): Earth V_inf 0.18 EMOS; x 29.77 km/s/EMOS = 5.36 km/s."
+    "vinf_kms_at_encounters[1].vinf_kms": "Rall 1970 TE-34 App E M6-1: Mars V_inf 0.315 EMOS; x 29.77 = 9.38 km/s."
+    "legs[0].tof_days": "Rall 1970 TE-34 App E M6-1: E->M = JD-2440000 dates 2782-2664 = 118 d."
+
+- id: rall-1970-m6-2
+  name: "Rall 1970 periodic orbit M6-2 (circular-coplanar, App E)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: circular-coplanar   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: rall-1970-te34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App E tabulates encounter speeds/dates, not an aphelion ratio
+    transit_times_days: [157]   # E->M leg, App-E date difference 2760-2603 (JD-2440000, clean) = 157 d
+    turn_ratio: null   # not tabulated by Rall App E
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction); Rall connects E and M by gravity alone
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App E (p.185): planetary passing distances in units of the radius of the planet encountered. Earth & Mars encounters. min_altitude_km left null (passing distances are in planet radii, not km; conversion is a derived value).
+    - body: "M"
+      turning_angle_deg: null   # Rall App E does not tabulate turn angle (App F does, in degrees)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App E collapsed 7-encounter listing (note §3)
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 6
+    years: 12.81
+    note: "Rall App E M6-2 spans encounters JD-2440000 534..5214 (~12.81 yr); labelled 6-synodic-class (M6 family). k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.06
+      note: "Rall App E M6-2 (p.185): first Earth hyperbolic-excess speed 0.237 EMOS x 29.77 km/s/EMOS = 7.06 km/s (EMOS = Earth Mean Orbital Speed per Rall; mining-note Table 3-1). Original units (EMOS) preserved here."
+    - body: "M"
+      vinf_kms: 9.35
+      note: "Rall App E M6-2: Mars hyperbolic-excess speed 0.314 EMOS x 29.77 = 9.35 km/s (speeds at both Mars encounters equal by symmetry, Rall legend)."
+    - body: "E"
+      vinf_kms: 5.51
+      note: "Rall App E M6-2: second Earth hyperbolic-excess speed 0.185 EMOS x 29.77 = 5.51 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App E circular-coplanar; aphelion not tabulated (encounter speeds/dates only)
+    inclination_deg: 0.0   # circular COPLANAR model (Model I.B): i = 0
+    note: "Rall App E is the circular-coplanar Model I.B (e=i=0 for the planets). Per-orbit (a,e) of the spacecraft arcs are not tabulated; only encounter dates, speeds, and passing distances."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric interplanetary arcs
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated by Rall (note §1) — left null
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2 (spec §16.7.9): Rall patched-conic on the circular-coplanar Model I.B planetary model. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 157
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-2: Earth->Mars leg = App-E date difference 2760-2603 = 157 d (JD-2440000, the CLEAN encoding; note §1)."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 600
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-2: Mars->Earth leg = App-E date difference 3360-2760 = 600 d (JD-2440000)."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # Rall App E does not tabulate turn angle
+        max_turning_angle_deg: 13.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.35 km/s)); vinf from vinf_kms_at_encounters. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; V-infinity 9.35 km/s (0.314 EMOS). Passing distances tabulated in Mars radii (App E)."
+  family:
+    id: "rall-1970-m6-periodic"
+    name: "Rall 1970 M6 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 6}
+  data_gaps:
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Rall App E gives a COLLAPSED 7-encounter listing for M6-2 (only Earth encounters adjacent to Mars). The full multi-arc decomposition (direct-return loops between Mars encounters, scheme symbols e.g. 3FR/S1SR per App D) is present in the source but not materialised as segments here; out-em/ret-me are the load-bearing E-M-E round-trip legs."
+      source_hint: "Rall 1970 TE-34 App E p.185; App D direct-return combinations"
+      todo_ref: "#142-rall"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-arc (a,e) not tabulated by Rall App E (circular-coplanar Model I.B lists encounter dates/speeds/passing-distances only)."
+      source_hint: "Rall 1970 TE-34 App E"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix E (Circular Coplanar Earth-Mars Periodic Orbits, p.185), orbit M6-2. The 'a' version exists for the best approximations used."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M6-2, Appendix E circular-coplanar Model I.B. 6-synodic period; circular-coplanar exists (App E). No App-F eccentric per-encounter member data (not listed).
+
+    Existence (Rall verbatim): "The 'a' version exists for the best approximations used."
+
+    Units: V_inf in EMOS (Earth Mean Orbital Speed = 29.77 km/s per Rall; mining-note Table 3-1) — converted to km/s in vinf_kms_at_encounters with the EMOS values preserved in each note. Passing distances are in local planetary radii (Earth radii at E, Mars radii at M). Dates are Julian Date minus 2440000 (App E clean encoding; note §1); per-leg ToFs are date differences.
+
+    1969-era patched-conic mean-element dynamics; modern Byrnes/Russell/Casalino free-return families supersede the dynamics, but Rall's dates/identifiers remain the primary-source member record. ET-vs-UT for the 1969 JD usage is unstated by Rall (conversion caveat). Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-rall-1970-appendices-transcription.md.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App E M6-2 (p.185): Earth V_inf 0.237 EMOS; x 29.77 km/s/EMOS = 7.06 km/s."
+    "vinf_kms_at_encounters[1].vinf_kms": "Rall 1970 TE-34 App E M6-2: Mars V_inf 0.314 EMOS; x 29.77 = 9.35 km/s."
+    "legs[0].tof_days": "Rall 1970 TE-34 App E M6-2: E->M = JD-2440000 dates 2760-2603 = 157 d."
+
+- id: rall-1970-m6-3
+  name: "Rall 1970 periodic orbit M6-3 (circular-coplanar, App E)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: circular-coplanar   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: rall-1970-te34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App E tabulates encounter speeds/dates, not an aphelion ratio
+    transit_times_days: [123]   # E->M leg, App-E date difference 2780-2657 (JD-2440000, clean) = 123 d
+    turn_ratio: null   # not tabulated by Rall App E
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction); Rall connects E and M by gravity alone
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App E (p.185): planetary passing distances in units of the radius of the planet encountered. Earth & Mars encounters. min_altitude_km left null (passing distances are in planet radii, not km; conversion is a derived value).
+    - body: "M"
+      turning_angle_deg: null   # Rall App E does not tabulate turn angle (App F does, in degrees)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App E collapsed 7-encounter listing (note §3)
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 6
+    years: 12.81
+    note: "Rall App E M6-3 spans encounters JD-2440000 479..5158 (~12.81 yr); labelled 6-synodic-class (M6 family). k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.21
+      note: "Rall App E M6-3 (p.185): first Earth hyperbolic-excess speed 0.175 EMOS x 29.77 km/s/EMOS = 5.21 km/s (EMOS = Earth Mean Orbital Speed per Rall; mining-note Table 3-1). Original units (EMOS) preserved here."
+    - body: "M"
+      vinf_kms: 9.38
+      note: "Rall App E M6-3: Mars hyperbolic-excess speed 0.315 EMOS x 29.77 = 9.38 km/s (speeds at both Mars encounters equal by symmetry, Rall legend)."
+    - body: "E"
+      vinf_kms: 6.01
+      note: "Rall App E M6-3: second Earth hyperbolic-excess speed 0.202 EMOS x 29.77 = 6.01 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App E circular-coplanar; aphelion not tabulated (encounter speeds/dates only)
+    inclination_deg: 0.0   # circular COPLANAR model (Model I.B): i = 0
+    note: "Rall App E is the circular-coplanar Model I.B (e=i=0 for the planets). Per-orbit (a,e) of the spacecraft arcs are not tabulated; only encounter dates, speeds, and passing distances."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric interplanetary arcs
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated by Rall (note §1) — left null
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2 (spec §16.7.9): Rall patched-conic on the circular-coplanar Model I.B planetary model. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 123
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-3: Earth->Mars leg = App-E date difference 2780-2657 = 123 d (JD-2440000, the CLEAN encoding; note §1)."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: 580
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App E M6-3: Mars->Earth leg = App-E date difference 3360-2780 = 580 d (JD-2440000)."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # Rall App E does not tabulate turn angle
+        max_turning_angle_deg: 13.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.38 km/s)); vinf from vinf_kms_at_encounters. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; V-infinity 9.38 km/s (0.315 EMOS). Passing distances tabulated in Mars radii (App E)."
+  family:
+    id: "rall-1970-m6-periodic"
+    name: "Rall 1970 M6 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 6}
+  data_gaps:
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Rall App E gives a COLLAPSED 7-encounter listing for M6-3 (only Earth encounters adjacent to Mars). The full multi-arc decomposition (direct-return loops between Mars encounters, scheme symbols e.g. 3FR/S1SR per App D) is present in the source but not materialised as segments here; out-em/ret-me are the load-bearing E-M-E round-trip legs."
+      source_hint: "Rall 1970 TE-34 App E p.185; App D direct-return combinations"
+      todo_ref: "#142-rall"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-arc (a,e) not tabulated by Rall App E (circular-coplanar Model I.B lists encounter dates/speeds/passing-distances only)."
+      source_hint: "Rall 1970 TE-34 App E"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix E (Circular Coplanar Earth-Mars Periodic Orbits, p.185), orbit M6-3. The 'a' version exists for the best approximations used, although rearrangement of the direct returns next to the short transfer to Mars is occasionally necessary."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M6-3, Appendix E circular-coplanar Model I.B. 6-synodic period; circular-coplanar exists (App E). No App-F eccentric per-encounter member data (not listed).
+
+    Existence (Rall verbatim): "The 'a' version exists for the best approximations used, although rearrangement of the direct returns next to the short transfer to Mars is occasionally necessary."
+
+    Units: V_inf in EMOS (Earth Mean Orbital Speed = 29.77 km/s per Rall; mining-note Table 3-1) — converted to km/s in vinf_kms_at_encounters with the EMOS values preserved in each note. Passing distances are in local planetary radii (Earth radii at E, Mars radii at M). Dates are Julian Date minus 2440000 (App E clean encoding; note §1); per-leg ToFs are date differences.
+
+    1969-era patched-conic mean-element dynamics; modern Byrnes/Russell/Casalino free-return families supersede the dynamics, but Rall's dates/identifiers remain the primary-source member record. ET-vs-UT for the 1969 JD usage is unstated by Rall (conversion caveat). Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-rall-1970-appendices-transcription.md.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App E M6-3 (p.185): Earth V_inf 0.175 EMOS; x 29.77 km/s/EMOS = 5.21 km/s."
+    "vinf_kms_at_encounters[1].vinf_kms": "Rall 1970 TE-34 App E M6-3: Mars V_inf 0.315 EMOS; x 29.77 = 9.38 km/s."
+    "legs[0].tof_days": "Rall 1970 TE-34 App E M6-3: E->M = JD-2440000 dates 2780-2657 = 123 d."
+
+- id: rall-1970-m4-1a
+  name: "Rall 1970 periodic orbit M4-1A (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [164]   # App-E family anchor: M4-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.191-193): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 48.8 deg, passing distance 1.63 Earth radii, type S1SR.
+    - body: "E"
+      turning_angle_deg: 48.8   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "Rall App F M4-1A is the eccentric-inclined (Model III.B) version of the M4 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.41
+      note: "Rall App F M4-1A (p.191-193): first Earth hyperbolic-excess speed 0.249 EMOS x 29.77 km/s/EMOS = 7.41 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.68
+      note: "Rall App F M4-1A: Mars hyperbolic-excess speed varies per encounter over 0.245..0.405 EMOS (7.29..12.06 km/s) across 16 Mars encounters (note §4). Stored value is the range MIDPOINT 9.68 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M4-1A Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M4-1A Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 12.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.68 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.68 km/s (per-encounter range 7.29..12.06 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m4-periodic"
+    name: "Rall 1970 M4 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.191-193; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.245..0.405 EMOS over 16 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.191-193 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.191-193), orbit M4-1A — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M4-1A, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M4-1A (p.191-193): first Earth V_inf 0.249 EMOS; x 29.77 = 7.41 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M4-1A: first Earth encounter turn angle 48.8 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-1a
+  name: "Rall 1970 periodic orbit M5-1A (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [107]   # App-E family anchor: M5-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.194): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 79.2 deg, passing distance 1.14 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 79.2   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-1A is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.6
+      note: "Rall App F M5-1A (p.194): first Earth hyperbolic-excess speed 0.188 EMOS x 29.77 km/s/EMOS = 5.6 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.51
+      note: "Rall App F M5-1A: Mars hyperbolic-excess speed varies per encounter over 0.249..0.39 EMOS (7.41..11.61 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.51 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1A Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1A Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.51 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.51 km/s (per-encounter range 7.41..11.61 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.194; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.249..0.39 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.194 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.194), orbit M5-1A — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-1A, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-1A (p.194): first Earth V_inf 0.188 EMOS; x 29.77 = 5.6 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-1A: first Earth encounter turn angle 79.2 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-1b
+  name: "Rall 1970 periodic orbit M5-1B (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [107]   # App-E family anchor: M5-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.195): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 55.2 deg, passing distance 1.9 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 55.2   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-1B is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.19
+      note: "Rall App F M5-1B (p.195): first Earth hyperbolic-excess speed 0.208 EMOS x 29.77 km/s/EMOS = 6.19 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.5
+      note: "Rall App F M5-1B: Mars hyperbolic-excess speed varies per encounter over 0.261..0.377 EMOS (7.77..11.22 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.5 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1B Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1B Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.5 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.5 km/s (per-encounter range 7.77..11.22 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.195; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.261..0.377 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.195 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.195), orbit M5-1B — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-1B, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-1B (p.195): first Earth V_inf 0.208 EMOS; x 29.77 = 6.19 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-1B: first Earth encounter turn angle 55.2 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-1c
+  name: "Rall 1970 periodic orbit M5-1C (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [107]   # App-E family anchor: M5-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.196): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 75.8 deg, passing distance 1.46 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 75.8   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-1C is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.18
+      note: "Rall App F M5-1C (p.196): first Earth hyperbolic-excess speed 0.174 EMOS x 29.77 km/s/EMOS = 5.18 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.54
+      note: "Rall App F M5-1C: Mars hyperbolic-excess speed varies per encounter over 0.252..0.389 EMOS (7.5..11.58 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.54 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1C Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1C Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.54 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.54 km/s (per-encounter range 7.5..11.58 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.196; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.252..0.389 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.196 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.196), orbit M5-1C — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-1C, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-1C (p.196): first Earth V_inf 0.174 EMOS; x 29.77 = 5.18 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-1C: first Earth encounter turn angle 75.8 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-1d
+  name: "Rall 1970 periodic orbit M5-1D (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [107]   # App-E family anchor: M5-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.197): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 76.9 deg, passing distance 1.39 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 76.9   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-1D is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.24
+      note: "Rall App F M5-1D (p.197): first Earth hyperbolic-excess speed 0.176 EMOS x 29.77 km/s/EMOS = 5.24 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.55
+      note: "Rall App F M5-1D: Mars hyperbolic-excess speed varies per encounter over 0.252..0.39 EMOS (7.5..11.61 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.55 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1D Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1D Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 12.9   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.55 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.55 km/s (per-encounter range 7.5..11.61 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.197; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.252..0.39 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.197 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.197), orbit M5-1D — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-1D, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-1D (p.197): first Earth V_inf 0.176 EMOS; x 29.77 = 5.24 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-1D: first Earth encounter turn angle 76.9 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-1e
+  name: "Rall 1970 periodic orbit M5-1E (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [107]   # App-E family anchor: M5-1 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.198): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 59.9 deg, passing distance 1.55 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 59.9   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-1E is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.37
+      note: "Rall App F M5-1E (p.198): first Earth hyperbolic-excess speed 0.214 EMOS x 29.77 km/s/EMOS = 6.37 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.5
+      note: "Rall App F M5-1E: Mars hyperbolic-excess speed varies per encounter over 0.264..0.374 EMOS (7.86..11.13 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.5 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1E Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-1E Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.5 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.5 km/s (per-encounter range 7.86..11.13 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.198; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.264..0.374 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.198 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.198), orbit M5-1E — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-1E, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-1E (p.198): first Earth V_inf 0.214 EMOS; x 29.77 = 6.37 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-1E: first Earth encounter turn angle 59.9 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-2a
+  name: "Rall 1970 periodic orbit M5-2A (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [160]   # App-E family anchor: M5-2 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.199): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 45.7 deg, passing distance 1.42 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 45.7   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-2A is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 8.37
+      note: "Rall App F M5-2A (p.199): first Earth hyperbolic-excess speed 0.281 EMOS x 29.77 km/s/EMOS = 8.37 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.78
+      note: "Rall App F M5-2A: Mars hyperbolic-excess speed varies per encounter over 0.258..0.399 EMOS (7.68..11.88 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.78 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2A Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2A Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 12.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.78 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.78 km/s (per-encounter range 7.68..11.88 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.199; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.258..0.399 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.199 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.199), orbit M5-2A — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-2A, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2A (p.199): first Earth V_inf 0.281 EMOS; x 29.77 = 8.37 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2A: first Earth encounter turn angle 45.7 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-2b
+  name: "Rall 1970 periodic orbit M5-2B (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [160]   # App-E family anchor: M5-2 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.200): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 43.8 deg, passing distance 1.73 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 43.8   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-2B is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.8
+      note: "Rall App F M5-2B (p.200): first Earth hyperbolic-excess speed 0.262 EMOS x 29.77 km/s/EMOS = 7.8 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.38
+      note: "Rall App F M5-2B: Mars hyperbolic-excess speed varies per encounter over 0.25..0.38 EMOS (7.44..11.31 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.38 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2B Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2B Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.38 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.38 km/s (per-encounter range 7.44..11.31 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.200; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.25..0.38 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.200 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.200), orbit M5-2B — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-2B, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2B (p.200): first Earth V_inf 0.262 EMOS; x 29.77 = 7.8 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2B: first Earth encounter turn angle 43.8 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-2c
+  name: "Rall 1970 periodic orbit M5-2C (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [160]   # App-E family anchor: M5-2 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.201): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 78.8 deg, passing distance 1.31 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 78.8   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-2C is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.24
+      note: "Rall App F M5-2C (p.201): first Earth hyperbolic-excess speed 0.176 EMOS x 29.77 km/s/EMOS = 5.24 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.5
+      note: "Rall App F M5-2C: Mars hyperbolic-excess speed varies per encounter over 0.246..0.392 EMOS (7.32..11.67 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.5 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2C Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2C Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.5 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.5 km/s (per-encounter range 7.32..11.67 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.201; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.246..0.392 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.201 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.201), orbit M5-2C — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-2C, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2C (p.201): first Earth V_inf 0.176 EMOS; x 29.77 = 5.24 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2C: first Earth encounter turn angle 78.8 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-2d
+  name: "Rall 1970 periodic orbit M5-2D (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [160]   # App-E family anchor: M5-2 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.202): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 78.1 deg, passing distance 1.29 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 78.1   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-2D is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.33
+      note: "Rall App F M5-2D (p.202): first Earth hyperbolic-excess speed 0.179 EMOS x 29.77 km/s/EMOS = 5.33 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.55
+      note: "Rall App F M5-2D: Mars hyperbolic-excess speed varies per encounter over 0.246..0.396 EMOS (7.32..11.79 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.55 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2D Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2D Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 12.9   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.55 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.55 km/s (per-encounter range 7.32..11.79 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.202; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.246..0.396 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.202 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.202), orbit M5-2D — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-2D, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2D (p.202): first Earth V_inf 0.179 EMOS; x 29.77 = 5.33 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2D: first Earth encounter turn angle 78.1 deg (App F column 4, degrees)."
+
+- id: rall-1970-m5-2e
+  name: "Rall 1970 periodic orbit M5-2E (eccentric-inclined, App F)"
+  source: literature
+  trajectory_regime: ballistic   # free-fall (ballistic) periodic orbit; Rall 1970 connects E and M by gravity alone
+  model_assumption: analytic-ephemeris   # schema v2; circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  cycler_class: multi-arc   # schema v4; Rall periodic orbit = multiple E-M-E round trips + Earth direct returns (note §6)
+  validation_level: V0   # schema v4.5 (spec §16.7.12 / §14); no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: rall-1970-te34   # schema v4.4; provenance key (SOURCE_REGISTRY)
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rall-1970-te34
+  vinf_fidelity: analytic-ephemeris
+  invariants:   # schema v4; cycle-level identity for multi-arc periodic orbit
+    aphelion_ratio: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not an aphelion ratio
+    transit_times_days: [160]   # App-E family anchor: M5-2 clean JD-2440000 E->M leg (note §3); per-version App-F absolute dates remain ambiguous (note §1) so segment tof_days stay null — see data_gaps
+    turn_ratio: null
+  delta_v_kms: 0.0   # free-fall periodic orbit (ballistic by construction)
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # Rall App F (p.203): turn angle in DEGREES, passing distance in local planetary radii. First Earth encounter turn = 57.8 deg, passing distance 1.11 Earth radii, type FR.
+    - body: "E"
+      turning_angle_deg: 57.8   # Rall App F first Earth encounter (degrees) — SOURCED
+      min_altitude_km: null   # passing distance is in Earth radii, not km; conversion is derived
+    - body: "M"
+      turning_angle_deg: null   # App F lists per-Mars-encounter turn angles (3-14 deg); see notes (multiple encounters)
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-E-E-M-E"   # Rall App F full per-encounter listing collapses to the same E-M-E periodic structure
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 5
+    years: 10.675
+    note: "Rall App F M5-2E is the eccentric-inclined (Model III.B) version of the M5 family; k x 2.135 yr is an approximate synodic label for a multi-arc periodic orbit. Absolute span not stated here (App-F date encoding unresolved, note §1)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.77
+      note: "Rall App F M5-2E (p.203): first Earth hyperbolic-excess speed 0.261 EMOS x 29.77 km/s/EMOS = 7.77 km/s (EMOS = 29.77 km/s per Rall; mining-note Table 3-1). Original EMOS preserved."
+    - body: "M"
+      vinf_kms: 9.32
+      note: "Rall App F M5-2E: Mars hyperbolic-excess speed varies per encounter over 0.252..0.374 EMOS (7.5..11.13 km/s) across 6 Mars encounters (note §4). Stored value is the range MIDPOINT 9.32 km/s as a representative; full per-encounter list is in the transcription note. NOT a single sourced point — see data_gaps."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null   # Rall App F tabulates per-encounter speeds/turn/passing-distance, not orbital elements
+    inclination_deg: null   # eccentric-INCLINED Model III.B (i != 0), but per-orbit inclination not tabulated
+    note: "Rall App F is the eccentric-inclined Model III.B (constant mean elements from a published series). Per-arc (a,e,i) of the spacecraft not tabulated; only per-encounter date/speed/turn/passing-distance/type."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # 1969-era JD; ET-vs-UT unstated (note §1)
+    epoch_tzero: null
+    source_ephemeris: "patched-conic mean-element (Rall TE-34, 1969)"   # schema v4.2: Rall patched-conic on eccentric-inclined Model III.B mean-element series. NEVER a DE kernel (note §5).
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: null          # App-F per-leg ToF needs the unresolved App-F date encoding — see data_gaps
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2E Earth->Mars leg. ToF null: depends on the App-F last-5-digits-with-hyphen JD reconstruction whose rule carries a documented ambiguity (note §1); not converted here."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # see data_gaps (App-F date encoding)
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Rall App F M5-2E Mars->Earth leg. ToF null for the same App-F date-encoding reason."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: 0.0   # free-fall periodic orbit
+        turning_angle_deg: null   # App F lists multiple per-Mars-encounter turn angles (see notes), not a single value
+        max_turning_angle_deg: 13.5   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.32 km/s)); vinf = representative Mars V_inf midpoint. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars encounter; representative V-infinity 9.32 km/s (per-encounter range 7.5..11.13 km/s). Passing distances tabulated in Mars radii (App F)."
+  family:
+    id: "rall-1970-m5-periodic"
+    name: "Rall 1970 M5 free-fall periodic Earth-Mars orbit"
+    nomenclature: "Rall (Hollister adv.) 1970 TE-34 periodic-orbit code"
+    continuation_param: {name: "k_synodic", value: 5}
+  data_gaps:
+    - path: "trajectory.segments[out-em].tof_days"
+      kind: "unknown"
+      note: "App-F per-leg ToFs require resolving the App-F date encoding (last 5 JD digits with a hyphen; reconstruction rule carries a documented ambiguity, note §1). Resolution path: anchor App-F tokens to the App-E clean JD-2440000 integers for the same orbit family, then take consecutive-encounter date differences."
+      source_hint: "Rall 1970 TE-34 App F p.203; App E JD-2440000 anchors (note §1, §7)"
+      todo_ref: "#142-rall-fdate"
+    - path: "vinf_kms_at_encounters[1].vinf_kms"
+      kind: "uncertain"
+      note: "Mars V_inf stored as the midpoint of the per-encounter range 0.252..0.374 EMOS over 6 encounters; the full per-encounter list is in the transcription note §4. A future pass may materialise per-encounter Mars rows."
+      source_hint: "Rall 1970 TE-34 App F p.203 (per-encounter Mars rows, note §4)"
+      todo_ref: "#142-rall"
+  first_published:
+    authors: ["Rall, C. S."]
+    year: 1970
+    title: "Free-Fall Periodic Orbits Connecting Earth and Mars"
+    venue: "Sc.D. thesis, MIT Dept. of Aeronautics and Astronautics, report TE-34 (NASA Grant NGR 22-009-010, Measurement Systems Laboratory), Oct 1969 (pub. 1970)"
+    doi: null
+    url: null
+    note: "Appendix F (Eccentric Inclined Earth-Mars Periodic Orbits, p.203), orbit M5-2E — a converged eccentric-inclined Model III.B version."
+  priority_date: "1970-01-01"
+  notes: |
+    Rall 1970 (MIT TE-34, Hollister adv.) free-fall periodic orbit M5-2E, Appendix F eccentric-inclined Model III.B (one of the 11 orbits that converged in the eccentric-inclined model: M4-1a, M5-1a..e, M5-2a..e). These versions a..e are re-phasings (different oppositions) of the same family, not different families (note §6).
+
+    Units: V_inf in EMOS (= 29.77 km/s per Rall) converted to km/s with EMOS preserved in notes; turn angles in degrees (SOURCED for the first Earth encounter); passing distances in local planetary radii. Mars V_inf varies per encounter; the stored value is the per-encounter range midpoint (full list in the transcription note §4).
+
+    DATE HAZARD: App-F dates use the last-5-digits-of-JD hyphen encoding whose reconstruction rule carries a documented ambiguity (note §1). Absolute App-F dates and the per-leg ToFs that depend on them are NOT ingested (data_gap); the safe per-encounter V_inf/turn/passing-distance (EMOS/deg/radii) ARE. 1969-era patched-conic mean-element dynamics; modern free-return families supersede the dynamics. Ingested 2026-06-07 (#142).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2E (p.203): first Earth V_inf 0.261 EMOS; x 29.77 = 7.77 km/s."
+    "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2E: first Earth encounter turn angle 57.8 deg (App F column 4, degrees)."
