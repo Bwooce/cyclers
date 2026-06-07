@@ -448,11 +448,78 @@ def _moves_toward_band(low_value: float, high_value: float, band: tuple[float, f
     return d_high < dist_to_band(low_value)
 
 
+# ---------------------------------------------------------------------------
+# Planet-centric (moon-tour Tier-1) Axis-B persistence about a primary
+# ---------------------------------------------------------------------------
+
+
+def persistence_for_primary(
+    *,
+    sequence: tuple[str, ...],
+    primary: str,
+    tof_seed_days: tuple[float, ...],
+    period_sec: float,
+    t0_seed_sec: float = 0.0,
+    slack_leg: int | None = None,
+    vinf_cap: float = 20.0,
+    abs_tol: float = 0.05,
+    documented_band: tuple[float, float] | None = None,
+) -> PersistenceReport:
+    """Axis-B fidelity persistence of the **primary-relative** V_inf (Tier-1).
+
+    Runs the same ``fidelity_persistence`` classifier on a Jovicentric/Saturnian
+    V_inf instead of a heliocentric one. The tracked scalar is the max
+    per-encounter V_inf ABOUT THE PRIMARY, computed at the ``circular-coplanar``
+    rung by the centre-agnostic corrector (Phase 3) on the centred moon ephemeris
+    (Phase 2; ``Ephemeris(model="circular", center=primary)``,
+    ``mu_central=PRIMARIES[primary]``).
+
+    SCOPE (moon-tour Tier-1, honest boundary): only the ``circular-coplanar`` rung
+    has an in-house planet-centric backend. ``analytic-ephemeris`` is the
+    documented extension point (no in-house backend, as for the heliocentric
+    ladder) and ``real-de440`` moon states (astropy resolves the Galilean moons)
+    are the next milestone. With one computable rung the low/high rung values are
+    the same circular V_inf, so the quantity PERSISTS by construction unless a
+    sourced ``documented_band`` is supplied; the value is reported honestly as the
+    tracked ``vinf_primary`` scalar. This is the primary-parametrised CALL into
+    the existing ladder, not a new combiner.
+    """
+    from cyclerfinder.core.satellites import PRIMARIES
+    from cyclerfinder.search.correct import ballistic_correct
+
+    ephem = Ephemeris(model="circular", center=primary)
+    result = ballistic_correct(
+        sequence=sequence,
+        per_leg_revs=tuple(0 for _ in range(len(sequence) - 1)),
+        per_leg_branch=tuple("single" for _ in range(len(sequence) - 1)),
+        t0_seed_sec=t0_seed_sec,
+        tof_seed_days=tof_seed_days,
+        period_sec=period_sec,
+        ephem=ephem,
+        vinf_cap=vinf_cap,
+        mu_central=PRIMARIES[primary],
+        slack_leg=slack_leg,
+    )
+    vinf_primary = max(result.vinf_per_encounter_kms) if result.vinf_per_encounter_kms else 0.0
+    # One computable rung in Tier-1: the circular-coplanar Jovicentric V_inf is
+    # both the low and the high rung (real-de440 moon states are the documented
+    # next-milestone rung). Persistence then turns purely on the documented band,
+    # if any — the conservative default with no band is PERSISTS.
+    return fidelity_persistence(
+        "vinf_primary",
+        vinf_primary,
+        vinf_primary,
+        abs_tol=abs_tol,
+        documented_band=documented_band,
+    )
+
+
 __all__ = [
     "FidelityRungUnavailableError",
     "FidelitySolution",
     "PersistenceClass",
     "PersistenceReport",
     "fidelity_persistence",
+    "persistence_for_primary",
     "solve_at_fidelity",
 ]
