@@ -35,6 +35,11 @@ viz = [
 # absent.
 validation = [
     "spiceypy>=6.0",
+    # REBOUND/IAS15 — an independent integrator run over the SAME DE440 BSP
+    # astropy caches (design Q2: the shared-DE440 cross-check class, exactly like
+    # spiceypy above). The n-body harness (src/cyclerfinder/nbody) is validation
+    # infrastructure; tests skip cleanly when rebound is absent.
+    "rebound>=4.0",
 ]
 
 [project.scripts]
