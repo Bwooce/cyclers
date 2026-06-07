@@ -17,7 +17,9 @@ sourced value (golden discipline).
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
@@ -30,6 +32,11 @@ from cyclerfinder.nbody.propagator import RestrictedNBody
 from cyclerfinder.verify.gauntlet import VerdictTier
 
 Vec3 = NDArray[np.float64]
+
+# Human-declared rung verdict thresholds (plan Phase B, the Jones <200 m/s
+# analogue). RECORDED, not gating: the rung writes the tier; the human decides.
+_ROBUST_MAX_KMS = 0.200  # < 200 m/s total correction ΔV
+_MARGINAL_MAX_KMS = 1.000  # 200-1000 m/s
 
 
 def load_silver_candidates(path: Path | str) -> list[ReviewQueueEntry]:
@@ -139,4 +146,82 @@ def propagate_one_period(
     )
 
 
-__all__ = ["RungArc", "load_silver_candidates", "propagate_one_period"]
+@dataclass(frozen=True)
+class RungVerdict:
+    """Frozen rung verdict (the recorded tier + the numbers behind it)."""
+
+    tier: str  # "ROBUST" | "MARGINAL" | "ARTIFACT"
+    correction_dv_kms: float
+    terminal_closure_km: float
+    converged: bool
+
+
+def rung_verdict(
+    correction_dv_kms: float,
+    *,
+    terminal_closure_km: float,
+    converged: bool,
+) -> RungVerdict:
+    """Apply the human-declared thresholds (plan Phase B).
+
+    ROBUST < 200 m/s; MARGINAL 200-1000 m/s; ARTIFACT >= 1000 m/s OR diverged.
+    These are RECORDED, not gating — the human makes the promotion call.
+    """
+    if not converged or correction_dv_kms >= _MARGINAL_MAX_KMS:
+        tier = "ARTIFACT"
+    elif correction_dv_kms < _ROBUST_MAX_KMS:
+        tier = "ROBUST"
+    else:
+        tier = "MARGINAL"
+    return RungVerdict(
+        tier=tier,
+        correction_dv_kms=float(correction_dv_kms),
+        terminal_closure_km=float(terminal_closure_km),
+        converged=bool(converged),
+    )
+
+
+def record_rung_result(
+    entry: ReviewQueueEntry,
+    verdict: RungVerdict,
+    path: Path | str,
+    *,
+    bodies: tuple[str, ...] = ("E", "M", "J"),
+) -> dict[str, object]:
+    """Append a NON-PROMOTING rung-audit record to the audit trail (design §4, Q6).
+
+    Writes one JSON line capturing the rung verdict + numbers for the candidate.
+    It MUST NOT change ``verdict_tier``, MUST NOT promote, and MUST NOT write a
+    catalogue row (``review_queue.is_catalogue_source()`` is ``False``). The
+    record carries ``promoted=False`` explicitly; the human decides. Returns the
+    record dict that was written.
+    """
+    record: dict[str, object] = {
+        "candidate_id": entry.candidate_id,
+        "signature_hash": entry.signature_hash,
+        "queue_tier": entry.verdict_tier,  # unchanged; recorded for traceability
+        "rung_verdict": verdict.tier,
+        "correction_dv_kms": verdict.correction_dv_kms,
+        "terminal_closure_km": verdict.terminal_closure_km,
+        "converged": verdict.converged,
+        "bodies": list(bodies),
+        "promoted": False,  # golden discipline: the rung never promotes
+        "rung_kind": "nbody-silver-rung",
+        "independence": "shared-DE440 cross-check (NOT a V4 stamp; design Q6)",
+        "t_recorded": datetime.now(UTC).isoformat(),
+    }
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(record, ensure_ascii=True) + "\n")
+    return record
+
+
+__all__ = [
+    "RungArc",
+    "RungVerdict",
+    "load_silver_candidates",
+    "propagate_one_period",
+    "record_rung_result",
+    "rung_verdict",
+]
