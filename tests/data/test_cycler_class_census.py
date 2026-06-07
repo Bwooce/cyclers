@@ -1,9 +1,9 @@
-"""Task 2.1: Census ratchet test for cycler_class tags on all 252 catalogue rows.
+"""Task 2.1: Census ratchet test for cycler_class tags on all 268 catalogue rows.
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 218, non-keplerian: 6}.
-3. The set of ids tagged multi-arc exactly equals the 218-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 28, multi-arc: 234, non-keplerian: 6}.
+3. The set of ids tagged multi-arc exactly equals the 234-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 6 non-keplerian ids match the §3 list.
 
@@ -12,6 +12,10 @@ Source of truth: docs/notes/multi-arc-classification.md §3 and §9.
 2026-06-07 (#142 catalogue ingest, batch 1): +15 Rall 1970 (MIT TE-34) free-fall
 periodic Earth-Mars orbits (rall-1970-*), all multi-arc. multi-arc 203->218,
 total 237->252. See docs/notes/2026-06-07-catalogue-ingest-rall-russell.md.
+
+2026-06-07 (#142 catalogue ingest, batch 2): +16 Russell 2004 Table 3.4
+circular-coplanar cyclers (russell-ocampo-* not previously catalogued), all
+multi-arc. multi-arc 218->234, total 252->268.
 """
 
 from __future__ import annotations
@@ -24,12 +28,13 @@ import yaml  # type: ignore[import-untyped]
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 # ---------------------------------------------------------------------------
-# Frozen ratchet: the 203-id MULTI_ARC_ALLOWLIST
+# Frozen ratchet: the 234-id MULTI_ARC_ALLOWLIST
 # Source: docs/notes/multi-arc-classification.md §9
 # (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2
 #  + sanchez-net-2022-eem-cycler1 + sanchez-net-2022-em-cycler2
 #  + jones-2017-vem-emevve-outbound + jones-2017-vem-meevem-inbound
-#  + 15 rall-1970-* free-fall periodic orbits, #142 batch 1 = 218)
+#  + 15 rall-1970-* free-fall periodic orbits, #142 batch 1 = 218
+#  + 16 russell-ocampo-* Table 3.4 circular-coplanar cyclers, #142 batch 2 = 234)
 # ---------------------------------------------------------------------------
 MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
     [
@@ -262,11 +267,32 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "rall-1970-m6-1",
         "rall-1970-m6-2",
         "rall-1970-m6-3",
+        # Russell 2004 Table 3.4 circular-coplanar cyclers (16 rows), #142 batch
+        # 2. Eligible-but-absent rows from Table 3.4 (p.83) not previously
+        # catalogued (the 27 already present + Aldrin 1.0.1.-1 are excluded by
+        # descriptor). Multi-arc: free-return E-M cyclers with intermediate
+        # Earth flybys (n_flybys-1 loops per cycle).
+        "russell-ocampo-3.1.1+2",
+        "russell-ocampo-3.1.3+0",
+        "russell-ocampo-3.5.1+2",
+        "russell-ocampo-4.1.1-6",
+        "russell-ocampo-4.1.1-4",
+        "russell-ocampo-4.1.2-3",
+        "russell-ocampo-4.1.2-2",
+        "russell-ocampo-4.1.4-1",
+        "russell-ocampo-4.6.1-4",
+        "russell-ocampo-4.6.3+0",
+        "russell-ocampo-4.7.1-2",
+        "russell-ocampo-4.8.1+3",
+        "russell-ocampo-4.8.1+2",
+        "russell-ocampo-4.9.1-3",
+        "russell-ocampo-4.10.1-3",
+        "russell-ocampo-4.12.1-2",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 218, (
-    f"Allowlist must have 218 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 234, (
+    f"Allowlist must have 234 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -304,17 +330,17 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=218, non-keplerian=6."""
+    """Exact class distribution: single-ellipse=28, multi-arc=234, non-keplerian=6."""
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 218, "non-keplerian": 6}
+    expected = {"single-ellipse": 28, "multi-arc": 234, "non-keplerian": 6}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
 
 
 def test_multi_arc_ids_match_allowlist() -> None:
-    """The exact set of multi-arc ids matches the 218-id MULTI_ARC_ALLOWLIST ratchet."""
+    """The exact set of multi-arc ids matches the 234-id MULTI_ARC_ALLOWLIST ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "multi-arc")
     extra = actual - MULTI_ARC_ALLOWLIST

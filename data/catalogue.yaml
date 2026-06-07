@@ -41590,6 +41590,2707 @@ days\" per the NTRS abstract.
 # All validation_level V0. See ingest note 2026-06-07-catalogue-ingest-rall-russell.md.
 # ---------------------------------------------------------------------------
 
+- id: russell-ocampo-3.1.1+2
+  name: "Russell-Ocampo cycler 3.1.1.+2 (3-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [115]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.89   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "3.1.1.+2", "Required Geocentric Turning Angle at each Flyby (deg)" = [95, 95]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.89) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 3.1.1.+2; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.4
+      note: "Russell 2004 Table 3.4 row 3.1.1.+2: Earth v_inf = 5.4 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 Table 3.4 row 3.1.1.+2: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (Mars sma) = 2.174 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 115
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 3.1.1.+2: Earth->Mars (or aphelion) time = 115 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 2 Earth flyby(s) for this row, implying 1 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 13.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.2 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.2 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 95   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 84.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=5.4 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 5.4 km/s. Geocentric turning angle is the sourced Russell value; 2 Earth flyby(s) total for this row."
+  family:
+    id: "russell-3syn-em"
+    name: "Russell 3-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 3}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 5.4/9.2 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 2 Earth flyby(s) (Russell required-geocentric-turn column) implying 1 intermediate Earth-Earth loop(s) over the 6.405-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.1.1.+2: AR=1.43, TR=0.89, E->M days=115, V_inf,E=5.4, V_inf,M=9.2, 2 flyby turning angles [95, 95] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.43, TR=0.89). 3-synodic period. 2 required Earth flybys (turning angles [95, 95] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+2) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 3.1.1.+2: Earth v_inf (km/s) = 5.4."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 3.1.1.+2: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 3.1.1.+2: Earth->Mars (or aphelion) Time (days) = 115."
+    aphelion_au: "Russell 2004 Table 3.4 row 3.1.1.+2: Aphelion Ratio = 1.43; aphelion = 1.43 x 1.52 AU = 2.174 AU."
+- id: russell-ocampo-3.1.3+0
+  name: "Russell-Ocampo cycler 3.1.3.+0 (3-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [123]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "3.1.3.+0", "Required Geocentric Turning Angle at each Flyby (deg)" = [95, 95, 16, 16]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.93) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 16
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 16
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 3.1.3.+0; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.1
+      note: "Russell 2004 Table 3.4 row 3.1.3.+0: Earth v_inf = 5.1 km/s."
+    - body: "M"
+      vinf_kms: 9.1
+      note: "Russell 2004 Table 3.4 row 3.1.3.+0: Mars v_inf = 9.1 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (Mars sma) = 2.174 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 123
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 3.1.3.+0: Earth->Mars (or aphelion) time = 123 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 4 Earth flyby(s) for this row, implying 3 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 14.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.1 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.1 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 95   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 88.3   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=5.1 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 5.1 km/s. Geocentric turning angle is the sourced Russell value; 4 Earth flyby(s) total for this row."
+  family:
+    id: "russell-3syn-em"
+    name: "Russell 3-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 3}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 5.1/9.1 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 4 Earth flyby(s) (Russell required-geocentric-turn column) implying 3 intermediate Earth-Earth loop(s) over the 6.405-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.1.3.+0: AR=1.43, TR=0.93, E->M days=123, V_inf,E=5.1, V_inf,M=9.1, 4 flyby turning angles [95, 95, 16, 16] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.43, TR=0.93). 3-synodic period. 4 required Earth flybys (turning angles [95, 95, 16, 16] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+0) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 3.1.3.+0: Earth v_inf (km/s) = 5.1."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 3.1.3.+0: Mars v_inf (km/s) = 9.1."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 3.1.3.+0: Earth->Mars (or aphelion) Time (days) = 123."
+    aphelion_au: "Russell 2004 Table 3.4 row 3.1.3.+0: Aphelion Ratio = 1.43; aphelion = 1.43 x 1.52 AU = 2.174 AU."
+- id: russell-ocampo-3.5.1+2
+  name: "Russell-Ocampo cycler 3.5.1.+2 (3-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [231]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.8   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "3.5.1.+2", "Required Geocentric Turning Angle at each Flyby (deg)" = [70, 70, 70, 70]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.8) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 70
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 70
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 70
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 70
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 3
+    years: 6.405
+    note: "3 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 3.5.1.+2; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.7
+      note: "Russell 2004 Table 3.4 row 3.5.1.+2: Earth v_inf = 2.7 km/s."
+    - body: "M"
+      vinf_kms: 1.5
+      note: "Russell 2004 Table 3.4 row 3.5.1.+2: Mars v_inf = 1.5 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.429
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.94 x 1.52 AU (Mars sma) = 1.429 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 231
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 3.5.1.+2: Earth->Mars (or aphelion) time = 231 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 4 Earth flyby(s) for this row, implying 3 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 113.7   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=1.5 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (1.5 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 70   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 126.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=2.7 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 2.7 km/s. Geocentric turning angle is the sourced Russell value; 4 Earth flyby(s) total for this row."
+  family:
+    id: "russell-3syn-em"
+    name: "Russell 3-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 3}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 2.7/1.5 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 4 Earth flyby(s) (Russell required-geocentric-turn column) implying 3 intermediate Earth-Earth loop(s) over the 6.405-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 3.5.1.+2: AR=0.94, TR=1.8, E->M days=231, V_inf,E=2.7, V_inf,M=1.5, 4 flyby turning angles [70, 70, 70, 70] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.94, TR=1.8). 3-synodic period. 4 required Earth flybys (turning angles [70, 70, 70, 70] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+2) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 3.5.1.+2: Earth v_inf (km/s) = 2.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 3.5.1.+2: Mars v_inf (km/s) = 1.5."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 3.5.1.+2: Earth->Mars (or aphelion) Time (days) = 231."
+    aphelion_au: "Russell 2004 Table 3.4 row 3.5.1.+2: Aphelion Ratio = 0.94; aphelion = 0.94 x 1.52 AU = 1.429 AU."
+- id: russell-ocampo-4.1.1-6
+  name: "Russell-Ocampo cycler 4.1.1.-6 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [256]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.37   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.1.1.-6", "Required Geocentric Turning Angle at each Flyby (deg)" = [92, 92]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.37) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 92
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 92
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.1.1.-6; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.7
+      note: "Russell 2004 Table 3.4 row 4.1.1.-6: Earth v_inf = 2.7 km/s."
+    - body: "M"
+      vinf_kms: 1.6
+      note: "Russell 2004 Table 3.4 row 4.1.1.-6: Mars v_inf = 1.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.429
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.94 x 1.52 AU (Mars sma) = 1.429 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 256
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.1.1.-6: Earth->Mars (or aphelion) time = 256 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 2 Earth flyby(s) for this row, implying 1 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 110.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=1.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (1.6 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 92   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 126.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=2.7 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 2.7 km/s. Geocentric turning angle is the sourced Russell value; 2 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 2.7/1.6 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 2 Earth flyby(s) (Russell required-geocentric-turn column) implying 1 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.1.-6: AR=0.94, TR=1.37, E->M days=256, V_inf,E=2.7, V_inf,M=1.6, 2 flyby turning angles [92, 92] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.94, TR=1.37). 4-synodic period. 2 required Earth flybys (turning angles [92, 92] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-6) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.1.1.-6: Earth v_inf (km/s) = 2.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.1.1.-6: Mars v_inf (km/s) = 1.6."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.1.1.-6: Earth->Mars (or aphelion) Time (days) = 256."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.1.1.-6: Aphelion Ratio = 0.94; aphelion = 0.94 x 1.52 AU = 1.429 AU."
+- id: russell-ocampo-4.1.1-4
+  name: "Russell-Ocampo cycler 4.1.1.-4 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.44   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [137]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.89   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.1.1.-4", "Required Geocentric Turning Angle at each Flyby (deg)" = [95, 95]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.89) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.1.1.-4; n_flybys = 2."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.5
+      note: "Russell 2004 Table 3.4 row 4.1.1.-4: Earth v_inf = 5.5 km/s."
+    - body: "M"
+      vinf_kms: 9.3
+      note: "Russell 2004 Table 3.4 row 4.1.1.-4: Mars v_inf = 9.3 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.189
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.44 x 1.52 AU (Mars sma) = 2.189 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 137
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.1.1.-4: Earth->Mars (or aphelion) time = 137 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 2 Earth flyby(s) for this row, implying 1 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 13.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.3 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.3 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 95   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 83.2   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=5.5 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 5.5 km/s. Geocentric turning angle is the sourced Russell value; 2 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 5.5/9.3 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 2 Earth flyby(s) (Russell required-geocentric-turn column) implying 1 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.1.-4: AR=1.44, TR=0.89, E->M days=137, V_inf,E=5.5, V_inf,M=9.3, 2 flyby turning angles [95, 95] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.44, TR=0.89). 4-synodic period. 2 required Earth flybys (turning angles [95, 95] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-4) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.1.1.-4: Earth v_inf (km/s) = 5.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.1.1.-4: Mars v_inf (km/s) = 9.3."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.1.1.-4: Earth->Mars (or aphelion) Time (days) = 137."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.1.1.-4: Aphelion Ratio = 1.44; aphelion = 1.44 x 1.52 AU = 2.189 AU."
+- id: russell-ocampo-4.1.2-3
+  name: "Russell-Ocampo cycler 4.1.2.-3 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [250]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.4   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.1.2.-3", "Required Geocentric Turning Angle at each Flyby (deg)" = [92, 92, 24]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.4) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 92
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 92
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 24
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.1.2.-3; n_flybys = 3."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.6
+      note: "Russell 2004 Table 3.4 row 4.1.2.-3: Earth v_inf = 2.6 km/s."
+    - body: "M"
+      vinf_kms: 1.5
+      note: "Russell 2004 Table 3.4 row 4.1.2.-3: Mars v_inf = 1.5 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.429
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.94 x 1.52 AU (Mars sma) = 1.429 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 250
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.1.2.-3: Earth->Mars (or aphelion) time = 250 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 3 Earth flyby(s) for this row, implying 2 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 113.7   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=1.5 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (1.5 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 92   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 127.9   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=2.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 2.6 km/s. Geocentric turning angle is the sourced Russell value; 3 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 2.6/1.5 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 3 Earth flyby(s) (Russell required-geocentric-turn column) implying 2 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.2.-3: AR=0.94, TR=1.4, E->M days=250, V_inf,E=2.6, V_inf,M=1.5, 3 flyby turning angles [92, 92, 24] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.94, TR=1.4). 4-synodic period. 3 required Earth flybys (turning angles [92, 92, 24] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-3) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.1.2.-3: Earth v_inf (km/s) = 2.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.1.2.-3: Mars v_inf (km/s) = 1.5."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.1.2.-3: Earth->Mars (or aphelion) Time (days) = 250."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.1.2.-3: Aphelion Ratio = 0.94; aphelion = 0.94 x 1.52 AU = 1.429 AU."
+- id: russell-ocampo-4.1.2-2
+  name: "Russell-Ocampo cycler 4.1.2.-2 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [132]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.1.2.-2", "Required Geocentric Turning Angle at each Flyby (deg)" = [95, 95, 24]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.93) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 24
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.1.2.-2; n_flybys = 3."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.2
+      note: "Russell 2004 Table 3.4 row 4.1.2.-2: Earth v_inf = 5.2 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 Table 3.4 row 4.1.2.-2: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (Mars sma) = 2.174 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 132
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.1.2.-2: Earth->Mars (or aphelion) time = 132 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 3 Earth flyby(s) for this row, implying 2 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 13.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.2 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.2 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 95   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 87.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=5.2 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 5.2 km/s. Geocentric turning angle is the sourced Russell value; 3 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 5.2/9.2 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 3 Earth flyby(s) (Russell required-geocentric-turn column) implying 2 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.2.-2: AR=1.43, TR=0.93, E->M days=132, V_inf,E=5.2, V_inf,M=9.2, 3 flyby turning angles [95, 95, 24] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.43, TR=0.93). 4-synodic period. 3 required Earth flybys (turning angles [95, 95, 24] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-2) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.1.2.-2: Earth v_inf (km/s) = 5.2."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.1.2.-2: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.1.2.-2: Earth->Mars (or aphelion) Time (days) = 132."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.1.2.-2: Aphelion Ratio = 1.43; aphelion = 1.43 x 1.52 AU = 2.174 AU."
+- id: russell-ocampo-4.1.4-1
+  name: "Russell-Ocampo cycler 4.1.4.-1 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [129]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.93   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.1.4.-1", "Required Geocentric Turning Angle at each Flyby (deg)" = [95, 95, 24, 12, 12, 12]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.93) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 95
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 24
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 12
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 12
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 12
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.1.4.-1; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 5.1
+      note: "Russell 2004 Table 3.4 row 4.1.4.-1: Earth v_inf = 5.1 km/s."
+    - body: "M"
+      vinf_kms: 9.2
+      note: "Russell 2004 Table 3.4 row 4.1.4.-1: Mars v_inf = 9.2 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (Mars sma) = 2.174 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 129
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.1.4.-1: Earth->Mars (or aphelion) time = 129 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 6 Earth flyby(s) for this row, implying 5 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 13.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.2 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.2 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 95   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 88.3   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=5.1 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 5.1 km/s. Geocentric turning angle is the sourced Russell value; 6 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 5.1/9.2 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 6 Earth flyby(s) (Russell required-geocentric-turn column) implying 5 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.1.4.-1: AR=1.43, TR=0.93, E->M days=129, V_inf,E=5.1, V_inf,M=9.2, 6 flyby turning angles [95, 95, 24, 12, 12, 12] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.43, TR=0.93). 4-synodic period. 6 required Earth flybys (turning angles [95, 95, 24, 12, 12, 12] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-1) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.1.4.-1: Earth v_inf (km/s) = 5.1."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.1.4.-1: Mars v_inf (km/s) = 9.2."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.1.4.-1: Earth->Mars (or aphelion) Time (days) = 129."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.1.4.-1: Aphelion Ratio = 1.43; aphelion = 1.43 x 1.52 AU = 2.174 AU."
+- id: russell-ocampo-4.6.1-4
+  name: "Russell-Ocampo cycler 4.6.1.-4 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.91   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [154]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.5   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.6.1.-4", "Required Geocentric Turning Angle at each Flyby (deg)" = [46, 46, 46, 46]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.5) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 46
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 46
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 46
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 46
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.6.1.-4; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.8
+      note: "Russell 2004 Table 3.4 row 4.6.1.-4: Earth v_inf = 6.8 km/s."
+    - body: "M"
+      vinf_kms: 2.1
+      note: "Russell 2004 Table 3.4 row 4.6.1.-4: Mars v_inf = 2.1 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.383
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.91 x 1.52 AU (Mars sma) = 1.383 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 154
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.6.1.-4: Earth->Mars (or aphelion) time = 154 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 4 Earth flyby(s) for this row, implying 3 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 92.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=2.1 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (2.1 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 46   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 68.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=6.8 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 6.8 km/s. Geocentric turning angle is the sourced Russell value; 4 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 6.8/2.1 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 4 Earth flyby(s) (Russell required-geocentric-turn column) implying 3 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.6.1.-4: AR=0.91, TR=1.5, E->M days=154, V_inf,E=6.8, V_inf,M=2.1, 4 flyby turning angles [46, 46, 46, 46] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.91, TR=1.5). 4-synodic period. 4 required Earth flybys (turning angles [46, 46, 46, 46] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-4) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.6.1.-4: Earth v_inf (km/s) = 6.8."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.6.1.-4: Mars v_inf (km/s) = 2.1."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.6.1.-4: Earth->Mars (or aphelion) Time (days) = 154."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.6.1.-4: Aphelion Ratio = 0.91; aphelion = 0.91 x 1.52 AU = 1.383 AU."
+- id: russell-ocampo-4.6.3+0
+  name: "Russell-Ocampo cycler 4.6.3.+0 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.43   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [105]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.88   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.6.3.+0", "Required Geocentric Turning Angle at each Flyby (deg)" = [60, 60, 60, 60, 84, 84]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.88) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 60
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 60
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 60
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 60
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 84
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 84
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.6.3.+0; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.4
+      note: "Russell 2004 Table 3.4 row 4.6.3.+0: Earth v_inf = 6.4 km/s."
+    - body: "M"
+      vinf_kms: 9.5
+      note: "Russell 2004 Table 3.4 row 4.6.3.+0: Mars v_inf = 9.5 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.174
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.43 x 1.52 AU (Mars sma) = 2.174 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 105
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.6.3.+0: Earth->Mars (or aphelion) time = 105 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 6 Earth flyby(s) for this row, implying 5 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 13.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=9.5 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (9.5 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 60   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 72.7   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=6.4 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 6.4 km/s. Geocentric turning angle is the sourced Russell value; 6 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 6.4/9.5 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 6 Earth flyby(s) (Russell required-geocentric-turn column) implying 5 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.6.3.+0: AR=1.43, TR=0.88, E->M days=105, V_inf,E=6.4, V_inf,M=9.5, 6 flyby turning angles [60, 60, 60, 60, 84, 84] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.43, TR=0.88). 4-synodic period. 6 required Earth flybys (turning angles [60, 60, 60, 60, 84, 84] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+0) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.6.3.+0: Earth v_inf (km/s) = 6.4."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.6.3.+0: Mars v_inf (km/s) = 9.5."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.6.3.+0: Earth->Mars (or aphelion) Time (days) = 105."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.6.3.+0: Aphelion Ratio = 1.43; aphelion = 1.43 x 1.52 AU = 2.174 AU."
+- id: russell-ocampo-4.7.1-2
+  name: "Russell-Ocampo cycler 4.7.1.-2 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.77   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [120]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.96   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.7.1.-2", "Required Geocentric Turning Angle at each Flyby (deg)" = [74, 74, 74, 74]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.96) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 74
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 74
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 74
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 74
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.7.1.-2; n_flybys = 4."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.6
+      note: "Russell 2004 Table 3.4 row 4.7.1.-2: Earth v_inf = 6.6 km/s."
+    - body: "M"
+      vinf_kms: 11.4
+      note: "Russell 2004 Table 3.4 row 4.7.1.-2: Mars v_inf = 11.4 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 2.69
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.77 x 1.52 AU (Mars sma) = 2.69 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 120
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.7.1.-2: Earth->Mars (or aphelion) time = 120 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 4 Earth flyby(s) for this row, implying 3 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 9.4   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=11.4 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (11.4 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 74   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 70.6   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=6.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 6.6 km/s. Geocentric turning angle is the sourced Russell value; 4 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 6.6/11.4 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 4 Earth flyby(s) (Russell required-geocentric-turn column) implying 3 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.7.1.-2: AR=1.77, TR=0.96, E->M days=120, V_inf,E=6.6, V_inf,M=11.4, 4 flyby turning angles [74, 74, 74, 74] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.77, TR=0.96). 4-synodic period. 4 required Earth flybys (turning angles [74, 74, 74, 74] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-2) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.7.1.-2: Earth v_inf (km/s) = 6.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.7.1.-2: Mars v_inf (km/s) = 11.4."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.7.1.-2: Earth->Mars (or aphelion) Time (days) = 120."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.7.1.-2: Aphelion Ratio = 1.77; aphelion = 1.77 x 1.52 AU = 2.69 AU."
+- id: russell-ocampo-4.8.1+3
+  name: "Russell-Ocampo cycler 4.8.1.+3 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.96   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [164]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.64   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.8.1.+3", "Required Geocentric Turning Angle at each Flyby (deg)" = [37, 37, 37, 37, 37]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.64) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.8.1.+3; n_flybys = 5."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 7.7
+      note: "Russell 2004 Table 3.4 row 4.8.1.+3: Earth v_inf = 7.7 km/s."
+    - body: "M"
+      vinf_kms: 3.1
+      note: "Russell 2004 Table 3.4 row 4.8.1.+3: Mars v_inf = 3.1 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.459
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.96 x 1.52 AU (Mars sma) = 1.459 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 164
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.8.1.+3: Earth->Mars (or aphelion) time = 164 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 5 Earth flyby(s) for this row, implying 4 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 66.3   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=3.1 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (3.1 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 37   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 60.2   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=7.7 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 7.7 km/s. Geocentric turning angle is the sourced Russell value; 5 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 7.7/3.1 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 5 Earth flyby(s) (Russell required-geocentric-turn column) implying 4 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.8.1.+3: AR=0.96, TR=1.64, E->M days=164, V_inf,E=7.7, V_inf,M=3.1, 5 flyby turning angles [37, 37, 37, 37, 37] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.96, TR=1.64). 4-synodic period. 5 required Earth flybys (turning angles [37, 37, 37, 37, 37] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+3) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.8.1.+3: Earth v_inf (km/s) = 7.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.8.1.+3: Mars v_inf (km/s) = 3.1."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.8.1.+3: Earth->Mars (or aphelion) Time (days) = 164."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.8.1.+3: Aphelion Ratio = 0.96; aphelion = 0.96 x 1.52 AU = 1.459 AU."
+- id: russell-ocampo-4.8.1+2
+  name: "Russell-Ocampo cycler 4.8.1.+2 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 1.31   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [76]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 0.86   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.8.1.+2", "Required Geocentric Turning Angle at each Flyby (deg)" = [37, 37, 37, 37, 37]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=0.86) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 37
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.8.1.+2; n_flybys = 5."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 12.5
+      note: "Russell 2004 Table 3.4 row 4.8.1.+2: Earth v_inf = 12.5 km/s."
+    - body: "M"
+      vinf_kms: 10.7
+      note: "Russell 2004 Table 3.4 row 4.8.1.+2: Mars v_inf = 10.7 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.991
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 1.31 x 1.52 AU (Mars sma) = 1.991 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 76
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.8.1.+2: Earth->Mars (or aphelion) time = 76 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 5 Earth flyby(s) for this row, implying 4 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 10.5   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=10.7 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (10.7 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 37   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 32.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=12.5 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 12.5 km/s. Geocentric turning angle is the sourced Russell value; 5 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 12.5/10.7 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 5 Earth flyby(s) (Russell required-geocentric-turn column) implying 4 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.8.1.+2: AR=1.31, TR=0.86, E->M days=76, V_inf,E=12.5, V_inf,M=10.7, 5 flyby turning angles [37, 37, 37, 37, 37] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=1.31, TR=0.86). 4-synodic period. 5 required Earth flybys (turning angles [37, 37, 37, 37, 37] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (+2) is the higher-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.8.1.+2: Earth v_inf (km/s) = 12.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.8.1.+2: Mars v_inf (km/s) = 10.7."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.8.1.+2: Earth->Mars (or aphelion) Time (days) = 76."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.8.1.+2: Aphelion Ratio = 1.31; aphelion = 1.31 x 1.52 AU = 1.991 AU."
+- id: russell-ocampo-4.9.1-3
+  name: "Russell-Ocampo cycler 4.9.1.-3 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.94   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [256]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.83   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.9.1.-3", "Required Geocentric Turning Angle at each Flyby (deg)" = [69, 45, 45, 45, 45, 69]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.83) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 69
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 45
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 45
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 45
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 45
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 69
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.9.1.-3; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.7
+      note: "Russell 2004 Table 3.4 row 4.9.1.-3: Earth v_inf = 2.7 km/s."
+    - body: "M"
+      vinf_kms: 1.6
+      note: "Russell 2004 Table 3.4 row 4.9.1.-3: Mars v_inf = 1.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.429
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.94 x 1.52 AU (Mars sma) = 1.429 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 256
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.9.1.-3: Earth->Mars (or aphelion) time = 256 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 6 Earth flyby(s) for this row, implying 5 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 110.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=1.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (1.6 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 69   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 126.0   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=2.7 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 2.7 km/s. Geocentric turning angle is the sourced Russell value; 6 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 2.7/1.6 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 6 Earth flyby(s) (Russell required-geocentric-turn column) implying 5 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.9.1.-3: AR=0.94, TR=1.83, E->M days=256, V_inf,E=2.7, V_inf,M=1.6, 6 flyby turning angles [69, 45, 45, 45, 45, 69] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.94, TR=1.83). 4-synodic period. 6 required Earth flybys (turning angles [69, 45, 45, 45, 45, 69] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-3) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.9.1.-3: Earth v_inf (km/s) = 2.7."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.9.1.-3: Mars v_inf (km/s) = 1.6."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.9.1.-3: Earth->Mars (or aphelion) Time (days) = 256."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.9.1.-3: Aphelion Ratio = 0.94; aphelion = 0.94 x 1.52 AU = 1.429 AU."
+- id: russell-ocampo-4.10.1-3
+  name: "Russell-Ocampo cycler 4.10.1.-3 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.92   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [263]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.46   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.10.1.-3", "Required Geocentric Turning Angle at each Flyby (deg)" = [30, 30, 30, 30, 30, 30]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.46) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 30
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.10.1.-3; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 10.2
+      note: "Russell 2004 Table 3.4 row 4.10.1.-3: Earth v_inf = 10.2 km/s."
+    - body: "M"
+      vinf_kms: 3.6
+      note: "Russell 2004 Table 3.4 row 4.10.1.-3: Mars v_inf = 3.6 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.398
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.92 x 1.52 AU (Mars sma) = 1.398 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 263
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.10.1.-3: Earth->Mars (or aphelion) time = 263 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 6 Earth flyby(s) for this row, implying 5 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 56.3   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=3.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (3.6 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 30   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 42.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=10.2 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 10.2 km/s. Geocentric turning angle is the sourced Russell value; 6 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 10.2/3.6 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 6 Earth flyby(s) (Russell required-geocentric-turn column) implying 5 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.10.1.-3: AR=0.92, TR=1.46, E->M days=263, V_inf,E=10.2, V_inf,M=3.6, 6 flyby turning angles [30, 30, 30, 30, 30, 30] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.92, TR=1.46). 4-synodic period. 6 required Earth flybys (turning angles [30, 30, 30, 30, 30, 30] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-3) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.10.1.-3: Earth v_inf (km/s) = 10.2."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.10.1.-3: Mars v_inf (km/s) = 3.6."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.10.1.-3: Earth->Mars (or aphelion) Time (days) = 263."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.10.1.-3: Aphelion Ratio = 0.92; aphelion = 0.92 x 1.52 AU = 1.398 AU."
+- id: russell-ocampo-4.12.1-2
+  name: "Russell-Ocampo cycler 4.12.1.-2 (4-synodic)"
+  source: literature
+  trajectory_regime: ballistic   # v1 catalogue is ballistic-only
+  model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
+  cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
+  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
+  orbit_fidelity: circular-coplanar
+  vinf_source: russell-2004-t34
+  vinf_fidelity: circular-coplanar
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: 0.97   # Russell 2004 Table 3.4: cycler aphelion / Mars sma (1.52 AU)
+    transit_times_days: [268]   # [outbound E->M] transit time in days; sourced from Table 3.4
+    turn_ratio: 1.43   # Russell 2004 Table 3.4: required turn / max ballistic turn (TR >= 1 => strictly ballistic)
+  delta_v_kms: null   # near-ballistic (AR<1 or TR<1); per-cycle DV not tabulated by Russell -- left null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics:   # SOURCED: Russell 2004 Table 3.4 row "4.12.1.-2", "Required Geocentric Turning Angle at each Flyby (deg)" = [25, 25, 25, 25, 25, 25]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8). min_altitude_km null: Russell publishes no per-flyby altitude, only the >200 km conditional footnote (TR=1.43) -- a bound, not a value.
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+    - body: "E"
+      turning_angle_deg: 25
+      min_altitude_km: null
+  bodies: ["E", "M"]
+  sequence_canonical: "E-E-M-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 4
+    years: 8.54
+    note: "4 x Earth-Mars synodic period (2.135 yr) per Russell 2004 §3.8 row 4.12.1.-2; n_flybys = 6."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 11.6
+      note: "Russell 2004 Table 3.4 row 4.12.1.-2: Earth v_inf = 11.6 km/s."
+    - body: "M"
+      vinf_kms: 4.8
+      note: "Russell 2004 Table 3.4 row 4.12.1.-2: Mars v_inf = 4.8 km/s."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: 1.474
+    inclination_deg: 0.0
+    note: "Aphelion derived from Russell 2004 Table 3.4 Aphelion Ratio AR = 0.97 x 1.52 AU (Mars sma) = 1.474 AU. Other elements (a, e, perihelion) not tabulated in Table 3.4."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  trajectory:
+    center: "Sun"             # heliocentric (Russell Ch.3 ecliptic x-y plane)
+    ref_frame: "ECLIPJ2000"
+    time_system: null         # idealized circular-coplanar model -- epoch-free family
+    epoch_tzero: null
+    source_ephemeris: "circular-coplanar simple model (Russell 2004 Ch.3)"   # schema v4.2; circular coplanar idealization, NOT a DE kernel (note: App.C is the DE405 model, not Ch.3)
+    segments:                 # === OCM TRAJ ===
+      - id: "out-em"
+        from: "E"
+        to: "M"
+        traj_type: "keplerian-arc"
+        tof_days: 268
+        n_revs: 0
+        branch: "single"
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Russell 2004 Table 3.4 row 4.12.1.-2: Earth->Mars (or aphelion) time = 268 days."
+      - id: "ret-me"
+        from: "M"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # return M->E leg ToF not tabulated by Russell -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Return Mars->Earth leg. Russell 2004 Table 3.4 tabulates only the E->M transit time for this row, not the return arc ToF / rev count / (a,e); tracked in data_gaps."
+      - id: "loop-ee"
+        from: "E"
+        to: "E"
+        traj_type: "keplerian-arc"
+        tof_days: null          # intermediate Earth-Earth multi-rev loop(s) -- see data_gaps[]
+        n_revs: null
+        branch: null
+        center: "Sun"
+        a_au: null
+        e: null
+        note: "Intermediate Earth-Earth loop arc(s) filling the cycler period between Mars encounters (sequence E-E-M-M). Russell tabulates 6 Earth flyby(s) for this row, implying 5 intermediate Earth-Earth loop(s). Multi-rev arc(s) to be set by the multi-rev Lambert solver (task #54); a single structural slot here, topology tracked as uncertain in data_gaps[]."
+    maneuvers:                # === OCM MAN ===
+      - at_segment_boundary: ["out-em", "ret-me"]
+        body: "M"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: null   # Russell tabulates only GEOCENTRIC (Earth) turn angles; no Mars turn published
+        max_turning_angle_deg: 39.1   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_M, R_M+300 km, vinf=4.8 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null
+        note: "Mars flyby closing the outbound->return transition; V-infinity continuity (4.8 km/s) is the cycle constraint at Mars."
+      - at_segment_boundary: ["ret-me", "loop-ee"]
+        body: "E"
+        type: "flyby-ballistic"
+        dv_kms: null
+        turning_angle_deg: 25   # SOURCED: Russell 2004 Required Geocentric Turning Angle column for this row (carried from flyby_mechanics[]). All flybys are EARTH (geocentric).
+        max_turning_angle_deg: 35.8   # COMPUTED achievable ballistic turn = degrees(max_bend(mu_E, R_E+300 km, vinf=11.6 km/s)); vinf sourced. Not source-attested.
+        periapsis_alt_km: null   # Russell publishes no per-flyby altitude (only the >200 km conditional footnote)
+        note: "Intermediate Earth flyby (loop entry); V-infinity 11.6 km/s. Geocentric turning angle is the sourced Russell value; 6 Earth flyby(s) total for this row."
+  family:
+    id: "russell-4syn-em"
+    name: "Russell 4-synodic Earth-Mars ballistic"
+    nomenclature: "Russell-Ocampo cycler code"
+    continuation_param: {name: "k_synodic", value: 4}
+  data_gaps:
+    - path: "trajectory.segments[ret-me].tof_days"
+      kind: "unknown"
+      note: "Return M->E leg time-of-flight not tabulated by Russell 2004 (Table 3.4 gives only the E->M transit time for this row)."
+      source_hint: "Russell 2004 dissertation Table 3.4"
+      todo_ref: "#54-backfill"
+    - path: "trajectory.segments[loop-ee]"
+      kind: "derive"
+      note: "Intermediate Earth-Earth loop arc(s) tof_days / n_revs / branch / (a,e) computable once the multi-rev Lambert solver closes the arc(s) to the published 11.6/4.8 km/s V-infinity; not yet derived. Russell tabulates only the transit time + aggregate aphelion."
+      source_hint: "task #54 multi-rev Lambert solver; Russell 2004 Table 3.4 leg descriptors"
+      todo_ref: "#54"
+    - path: "trajectory.segments"
+      kind: "uncertain"
+      note: "Segment topology provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 6 Earth flyby(s) (Russell required-geocentric-turn column) implying 5 intermediate Earth-Earth loop(s) over the 8.54-yr period. Only one representative loop-ee slot materialised; full decomposition to be closed by the task #54 solver."
+      source_hint: "Russell 2004 dissertation Table 3.4; task #54 multi-rev Lambert solver"
+      todo_ref: "#54"
+    - path: "orbit_elements.a_au"
+      kind: "unknown"
+      note: "Per-segment / per-orbit (a,e) not tabulated by Russell 2004 Table 3.4 (only the aggregate aphelion ratio is published)."
+      source_hint: "Russell 2004 dissertation Table 3.4 leg descriptors"
+      todo_ref: "#54-backfill"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2005
+    title: "Geometric Analysis of Free-Return Trajectories Following a Gravity-Assisted Flyby"
+    venue: "Journal of Spacecraft and Rockets, Vol. 42, No. 1, pp. 138-152"
+    doi: "10.2514/1.5571"
+    url: "https://arc.aiaa.org/doi/abs/10.2514/1.5571"
+    note: "Peer-reviewed venue for the ballistic cycler catalogue (geometric analysis branch). Conference precursor Russell/Ocampo AAS 03-145 (Feb 2003) establishes priority."
+  corroborating_sources:
+    - authors: ["Russell, R. P."]
+      year: 2004
+      title: "Global Search and Optimization for Free-Return Earth-Mars Cyclers"
+      venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
+      doi: null
+      url: "http://hdl.handle.net/2152/1253"
+      note: "Table 3.4 row 4.12.1.-2: AR=0.97, TR=1.43, E->M days=268, V_inf,E=11.6, V_inf,M=4.8, 6 flyby turning angles [25, 25, 25, 25, 25, 25] deg."
+  priority_date: "2003-02-09"
+  notes: |
+    Near-ballistic per Russell's Table 3.4 (passes the AR_MIN=0.9 / TR_MIN=0.85 documentation gate but not strictly ballistic: AR=0.97, TR=1.43). 4-synodic period. 6 required Earth flybys (turning angles [25, 25, 25, 25, 25, 25] deg per Table 3.4 last column). Where AR<1 the cycler does not quite reach Mars / where TR<1 a small powered turn is required; Russell does not tabulate the per-cycle DV (left null).
+
+    Russell nomenclature p.h.s.i: the trailing index (-2) is the lower-energy multiple-revolution Lambert branch of the generic-return solution (sign: + fast, - slow). Circular-coplanar simple-model values (Russell 2004 Ch.3); modern ephemeris families (App.C / DE405) refine the dynamics. Ingested 2026-06-07 (#142) from docs/notes/2026-06-07-russell-2004-member-tables-transcription.md (Table 3.4, p.83).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 Table 3.4 row 4.12.1.-2: Earth v_inf (km/s) = 11.6."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 Table 3.4 row 4.12.1.-2: Mars v_inf (km/s) = 4.8."
+    "legs[0].tof_days": "Russell 2004 Table 3.4 row 4.12.1.-2: Earth->Mars (or aphelion) Time (days) = 268."
+    aphelion_au: "Russell 2004 Table 3.4 row 4.12.1.-2: Aphelion Ratio = 0.97; aphelion = 0.97 x 1.52 AU = 1.474 AU."
+
 - id: rall-1970-m4-1
   name: "Rall 1970 periodic orbit M4-1 (circular-coplanar, App E)"
   source: literature

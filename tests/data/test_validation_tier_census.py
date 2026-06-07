@@ -37,10 +37,15 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # multi-arc rows, each tagged orbit_source == vinf_source == rall-1970-te34 at
 # one fidelity (App E circular-coplanar / App F analytic-ephemeris) =>
 # CONSISTENCY_CHECKED. consistency_checked 218 -> 233.
+#
+# 2026-06-07 (#142 catalogue ingest, batch 2): +16 Russell 2004 Table 3.4
+# circular-coplanar cyclers (russell-ocampo-* not previously catalogued), each
+# tagged orbit_source == vinf_source == russell-2004-t34 at one fidelity
+# (circular-coplanar) => CONSISTENCY_CHECKED. consistency_checked 233 -> 249.
 # ---------------------------------------------------------------------------
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 233,
+    "consistency_checked": 249,
     "unvalidated": 14,
 }
 
