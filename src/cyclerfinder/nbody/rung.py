@@ -43,12 +43,19 @@ _MARGINAL_MAX_KMS = 1.000  # 200-1000 m/s
 def load_silver_candidates(path: Path | str) -> list[ReviewQueueEntry]:
     """Return the SILVER-tier entries from a review-queue file (read-only).
 
-    Filters :func:`load_review_queue` to ``verdict_tier == VerdictTier.SILVER``.
-    These are the held candidates the rung propagates; nothing here mutates the
-    queue or promotes anything.
+    Filters :func:`load_review_queue` to ``VerdictTier.SILVER`` via the
+    enum-round-trip form ``VerdictTier(entry.verdict_tier) is VerdictTier.SILVER``
+    rather than a raw string compare against ``.value``: this makes the comparison
+    enum-typed (a renamed/aliased value tracks the enum, not a stale literal) and a
+    **malformed** ``verdict_tier`` raises ``ValueError`` from the enum constructor
+    rather than being silently dropped as "not SILVER". These are the held
+    candidates the rung propagates; nothing here mutates the queue or promotes
+    anything.
     """
     return [
-        entry for entry in load_review_queue(path) if entry.verdict_tier == VerdictTier.SILVER.value
+        entry
+        for entry in load_review_queue(path)
+        if VerdictTier(entry.verdict_tier) is VerdictTier.SILVER
     ]
 
 
