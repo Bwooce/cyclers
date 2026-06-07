@@ -25,7 +25,10 @@ from cyclerfinder.verify.gauntlet import VerdictTier
 # Tiers that may legitimately sit in the human-review queue. SILVER is the novel
 # holding tier; GOLD is admissible only for a sourced rediscovery (the loop never
 # fabricates a source, so GOLD here would come from a caller-supplied match).
-_QUEUEABLE_TIERS = frozenset({VerdictTier.SILVER.value, VerdictTier.GOLD.value})
+# Compared via the enum (round-trip ``VerdictTier(value) in _QUEUEABLE_TIERS``)
+# rather than raw strings, so a malformed tier string raises ValueError on
+# coercion instead of silently failing an ``in`` test against bare strings.
+_QUEUEABLE_TIERS: frozenset[VerdictTier] = frozenset({VerdictTier.SILVER, VerdictTier.GOLD})
 
 DEFAULT_REVIEW_QUEUE_PATH: Path = (
     Path(__file__).resolve().parent.parent.parent.parent / "data" / "review_queue.jsonl"
@@ -79,10 +82,18 @@ def validate_review_entry(entry: ReviewQueueEntry) -> None:
     * the adversarial panel majority-refuted the candidate (the falsification
       gate has teeth: a refuted candidate must not be queued).
     """
-    if entry.verdict_tier not in _QUEUEABLE_TIERS:
+    try:
+        tier = VerdictTier(entry.verdict_tier)
+    except ValueError as exc:
+        raise ValueError(
+            f"review-queue entry {entry.candidate_id!r} has unknown verdict tier "
+            f"{entry.verdict_tier!r}: not a {VerdictTier.__name__} value."
+        ) from exc
+    if tier not in _QUEUEABLE_TIERS:
+        queueable = sorted(t.value for t in _QUEUEABLE_TIERS)
         raise ValueError(
             f"review-queue entry {entry.candidate_id!r} has tier "
-            f"{entry.verdict_tier!r}; only {sorted(_QUEUEABLE_TIERS)} may be queued "
+            f"{entry.verdict_tier!r}; only {queueable} may be queued "
             f"for human review (golden discipline: no auto-promotion)."
         )
     panel = entry.panel or {}

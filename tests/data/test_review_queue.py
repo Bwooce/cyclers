@@ -95,3 +95,35 @@ def test_jsonl_is_one_object_per_line(tmp_path: Path) -> None:
 def test_silver_tier_enum_value_matches() -> None:
     """Guard against tier-string drift between the queue and the gauntlet enum."""
     assert _entry().verdict_tier == VerdictTier.SILVER.value
+
+
+def test_silver_round_trips_tier_intact_and_stays_non_catalogue(tmp_path: Path) -> None:
+    """#140 review: a SILVER entry round-trips through the queue with its tier
+    intact, the queue self-reports as NON-catalogue, and the catalogue loader
+    (which reads only the YAML catalogue, never the JSONL queue) does not surface
+    the queued candidate. Pins the golden-discipline isolation boundary."""
+    from cyclerfinder.data.catalog import load_catalog
+
+    path = tmp_path / "review_queue.jsonl"
+    e = _entry(tier="silver")
+    append_review_entry(path, e)
+
+    # Round-trip: the tier survives serialise/deserialise via the enum round-trip
+    # form (``VerdictTier(value)``) used by the validator.
+    [loaded] = list(load_review_queue(path))
+    assert loaded.verdict_tier == VerdictTier.SILVER.value
+    assert VerdictTier(loaded.verdict_tier) is VerdictTier.SILVER
+
+    # Isolation: the queue is non-catalogue and the catalogue loader (default
+    # YAML source) never enumerates the queued candidate id.
+    assert is_catalogue_source() is False
+    catalog = load_catalog()
+    assert all(e.candidate_id != known.id for known in catalog.entries)
+
+
+def test_validate_rejects_unknown_tier_string() -> None:
+    """#140 review I3: a tier string that is not a VerdictTier value is rejected on
+    enum coercion (``VerdictTier(value)`` raises), not silently passed through an
+    ``in`` test against bare strings."""
+    with pytest.raises(ValueError, match="unknown verdict tier"):
+        validate_review_entry(_entry(tier="platinum"))

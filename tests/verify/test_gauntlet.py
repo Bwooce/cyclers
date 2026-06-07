@@ -132,6 +132,42 @@ def test_bronze_when_no_axes_run() -> None:
     assert verdict.tier is VerdictTier.BRONZE
 
 
+def test_all_axes_unavailable_yields_bronze() -> None:
+    """#140 review (named property): when EVERY axis is unavailable — no
+    agreement, no persistence, no provenance, no corroboration, not falsified —
+    the verdict is BRONZE (partial, non-refuted evidence), never REJECTED. This
+    is the explicit all-axes-unavailable property the review asked to pin against
+    the actual run_gauntlet API. The agreement report is present but reports zero
+    available paths (the strongest unavailable form)."""
+    verdict = run_gauntlet(
+        "cand-all-unavailable",
+        agreement=_agreement(agreed=False, n_available=0, n_passed=0),
+        persistence_reports=(),
+        provenance_tier=None,
+        corroboration=None,
+        falsified=False,
+    )
+    assert verdict.tier is VerdictTier.BRONZE
+    assert verdict.confidence == "low"
+
+
+def test_falsified_overrides_agreed_yields_rejected() -> None:
+    """#140 review (named property): falsification DOMINATES an otherwise-agreed
+    Axis A. Even with two available, agreed paths (machine-confirmed) and a clean
+    source, ``falsified=True`` forces REJECTED. Pins the dominance ordering
+    against the actual run_gauntlet API."""
+    verdict = run_gauntlet(
+        "cand-agreed-but-falsified",
+        agreement=_agreement(agreed=True, n_available=2),
+        persistence_reports=(_persistence(PersistenceClass.PERSISTS),),
+        provenance_tier=Tier.CROSS_VALIDATED,
+        corroboration=Corroboration.STRONGLY_SOURCED,
+        falsified=True,
+    )
+    assert verdict.tier is VerdictTier.REJECTED
+    assert verdict.confidence == "none"
+
+
 def test_rejected_on_falsification() -> None:
     """Falsification dominates: REJECTED even with everything else clean."""
     verdict = run_gauntlet(
