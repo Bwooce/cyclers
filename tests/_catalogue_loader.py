@@ -86,10 +86,28 @@ class ExclusionReason(enum.Enum):
     here. Multi-body itineraries need M4 structural enumeration over >1
     synodic pair, outside the v1 2-body contract."""
 
+    DESCRIPTOR_CLOSABLE = "descriptor_closable"
+    """A MULTI_ENCOUNTER_SEQUENCE row that carries a ``free_return_arcs[]``
+    descriptor (the Russell/McConaghy SnLm multi-arc E-M-E(-E...) chains). The
+    descriptor maps onto the #137 free-return (radial-crossing) genome
+    (``cyclerfinder.search.free_return``), making the SOURCED geometry
+    representable and the per-body V∞ EMERGE for non-circular comparison to the
+    sourced anchor. These rows are *discover-reachable* through the free-return
+    descriptor path (``cyclerfinder.data.discover.discover_free_return``), NOT the
+    2-encounter Lambert gauntlet. This is the honest sub-classification of the
+    free-return-eligible subset of the multi-encounter bucket (task #106); it is
+    driven by the *presence* of ``free_return_arcs[]`` (N-agnostic), not a
+    hard-coded count. Closure is circular-coplanar like-for-like (reproducing a
+    circular-coplanar source), NOT a real-ephemeris V3 result — see
+    ``docs/notes/2026-06-07-russell12-freereturn-results.md``."""
+
     MULTI_ENCOUNTER_SEQUENCE = "multi_encounter_sequence"
     """Two bodies, but ``sequence_canonical`` has more than two encounters
-    (e.g. ``E-E-M-M`` for 2-synodic rows). Constructible *in principle* but
-    needs multi-rev Lambert + structural inference the v1 loader does not do."""
+    (e.g. ``E-E-M-M`` for 2-synodic rows) AND no ``free_return_arcs[]``
+    descriptor. Constructible *in principle* but data-gapped for the free-return
+    path: it needs multi-rev Lambert + structural inference (a published descriptor
+    or a derived topology) the loader does not synthesise. The descriptor-bearing
+    subset is split out as :attr:`DESCRIPTOR_CLOSABLE` (task #106)."""
 
     MISSING_PERIOD = "missing_period"
     """``period.k`` or ``period.years`` is null — typically a family-seed or
@@ -240,6 +258,14 @@ def classify_row(row: dict[str, Any]) -> tuple[ExclusionReason, CatalogueEntry |
         return ExclusionReason.NOT_TWO_BODY, None
     sequence_canonical = row.get("sequence_canonical") or ""
     if not _is_two_body_alternation(sequence_canonical, tuple(bodies)):
+        # A multi-encounter row that carries a free_return_arcs[] descriptor is
+        # discover-reachable through the #137 free-return genome (task #106): the
+        # descriptor maps onto the radial-crossing corrector, making the sourced
+        # geometry representable. Split it out as DESCRIPTOR_CLOSABLE; everything
+        # else in the multi-encounter bucket is data-gapped for that path. The
+        # split is driven by descriptor presence (N-agnostic), not a count.
+        if row.get("free_return_arcs"):
+            return ExclusionReason.DESCRIPTOR_CLOSABLE, None
         return ExclusionReason.MULTI_ENCOUNTER_SEQUENCE, None
     period = row.get("period") or {}
     if period.get("k") is None or period.get("years") is None:

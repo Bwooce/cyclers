@@ -265,7 +265,8 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 204,
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 192,
+    ExclusionReason.DESCRIPTOR_CLOSABLE: 12,  # #106: free_return_arcs[]-bearing SnLm rows
     ExclusionReason.MISSING_LEG_TOFS: 15,
     ExclusionReason.NON_HELIOCENTRIC: 6,
     ExclusionReason.MISSING_VINF: 5,
@@ -292,6 +293,13 @@ The NOT_TWO_BODY bucket grew 2 -> 4 on 2026-06-05 with the two Jones 2017
 VEM triple-cycler members (`jones-2017-vem-emevve-outbound`,
 `jones-2017-vem-meevem-inbound`): each spans three bodies (E, M, V), so the
 two-body gauntlet cannot reach them. Catalogue total: 235 -> 237.
+
+On 2026-06-07 (#106) the MULTI_ENCOUNTER_SEQUENCE bucket was split 204 -> 192 +
+12: the 12 `free_return_arcs[]`-bearing SnLm rows (the McConaghy/Russell-12 set)
+became DESCRIPTOR_CLOSABLE — discover-reachable through the #137 free-return
+descriptor path (`cyclerfinder.data.discover.discover_free_return`). The split is
+driven by descriptor presence (N-agnostic), no row vanished, and the catalogue
+total is unchanged at 237.
 
 Reasons absent from this dict are expected to have a count of zero (e.g.
 ``NON_BALLISTIC`` — no such rows today).
