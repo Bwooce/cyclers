@@ -59,9 +59,19 @@ DE440 propagation, minutes per case). They assert the finding QUALITATIVELY with
 teeth (drift far above tolerance; horizon TCM far above the example budget and
 strictly positive in-family per cycle) without pinning brittle solver-derived
 magnitudes as golden targets — the magnitudes are OUR computation, never source-
-attested. The catalogue rows stay V1; the v4.5 ratchet
+attested.
+
+SUPERSEDED FOR V2 (2026-06-07, the §14 V2 class-split amendment). The
+no-promotion verdict below is the outcome under the *original single* V2 gate
+(cross-cycle rotating-frame-repeat drift), and its numbers stand verbatim
+(~4.14e8 km / 3 laps). That gate was the wrong instrument for a
+per-cycle-retargeted powered cycler; the amendment splits V2 into V2-ballistic
+and V2-powered, and under the amended **V2-powered** gate the Aldrin OUTBOUND
+now PASSES and is promoted to V2 — see ``tests/verify/test_aldrin_v2_powered.py``
+and spec §14 / §16.7.12. The V3 finding (no sourced ΔV budget for Aldrin) is
+unchanged. The v4.5 census ratchet
 (``tests/data/test_schema_v45_fields.py::test_live_v1_census_matches_recorded_evidence``)
-continues to assert no row carries V2+.
+now asserts exactly one V2 (the outbound) and no V3+.
 """
 
 from __future__ import annotations
