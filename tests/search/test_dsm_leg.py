@@ -220,10 +220,13 @@ def test_dsm_644gg3_probe() -> None:
     sequence = ("E", "M", "E")
     n_legs = 2
     t0_seed = 0.0
+    # alpha0 ~ +pi/2: Earth at t=0 (circular backend) sits on +x moving +y, so a
+    # tangential prograde departure points the V_inf along +y (azimuth ~ pi/2). The
+    # corrector + MBH refine it; this only puts the seed in the right half-plane.
     x0 = dsm_chain_decision_vector(
         t0_sec=t0_seed,
         vinf_out0_kms=6.44,
-        alpha0=0.0,
+        alpha0=0.5 * np.pi,
         beta0=0.0,
         tof_days_per_leg=(262.0, 262.0),
         eta_per_leg=(0.5, 0.5),
@@ -235,10 +238,13 @@ def test_dsm_644gg3_probe() -> None:
     )
     step = make_dsm_chain_step(sequence=sequence, ephem=ephem, bounds=bounds, tol_kms=0.1)
 
-    # Absolute t0 step ~ a few days; eta steps ~0.1; ToF steps ~10 days. t0 is the
-    # first gene; vinf/alpha/beta frozen (not in the dV objective); tof + eta hop.
+    # Hop every gene that enters the dV objective: t0 (~few days), the departure
+    # V_inf magnitude/azimuth/elevation, per-leg ToF (~10 d), per-leg eta (~0.1).
     abs_scale = np.full(x0.shape, np.nan)
     abs_scale[0] = 5.0 * 86400.0  # t0: a few days
+    abs_scale[1] = 0.5  # vinf_out0 km/s
+    abs_scale[2] = 0.2  # alpha0 rad
+    abs_scale[3] = 0.1  # beta0 rad
     abs_scale[4 : 4 + n_legs] = 10.0  # tof days
     abs_scale[4 + n_legs : 4 + 2 * n_legs] = 0.1  # eta
 
@@ -246,12 +252,12 @@ def test_dsm_644gg3_probe() -> None:
     result = mbh(
         step,
         x0,
-        n_hops=40,
+        n_hops=120,
         perturbation="cauchy",
         perturbation_scale=0.0,  # use absolute scales only (frozen relative)
         perturbation_absolute_scale=[float(s) for s in abs_scale],
         rng_seed=6,
-        stop_after_stall=25,
+        stop_after_stall=60,
     )
     elapsed = time.monotonic() - t_start
     assert elapsed < 600.0, f"probe exceeded 10 min wall cap: {elapsed:.1f}s"

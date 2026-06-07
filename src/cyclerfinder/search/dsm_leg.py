@@ -52,7 +52,7 @@ Pure: depends only on core/constants, core/kepler (propagate), core/lambert.
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 import numpy as np
@@ -61,7 +61,7 @@ from scipy.optimize import least_squares
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.kepler import propagate
+from cyclerfinder.core.kepler import KeplerError, propagate
 from cyclerfinder.core.lambert import LambertError, lambert
 from cyclerfinder.search.mbh import MBHStep
 
@@ -236,6 +236,11 @@ class DsmChainResult:
         The converged per-leg ToFs (days).
     t0_sec:
         Converged departure epoch (seconds).
+    vinf_out0_kms, alpha0, beta0:
+        The converged departure-V_inf genome (magnitude + azimuth + elevation,
+        Takao Eq.5). These ENTER the dV objective through the departure state
+        ``v_planet,0 + V_inf_out0`` and are moved by the corrector; the adapter
+        echoes them so the landed decision vector is in the seed's coordinates.
     dsm_states:
         Per-leg ``(r_dsm_km, t_dsm_sec)`` for the audit trail / viz.
     converged:
@@ -254,6 +259,9 @@ class DsmChainResult:
     eta_per_leg: tuple[float, ...]
     tof_days_per_leg: tuple[float, ...]
     t0_sec: float
+    vinf_out0_kms: float = 0.0
+    alpha0: float = 0.0
+    beta0: float = 0.0
     dsm_states: tuple[tuple[Vec3, float], ...] = field(default_factory=tuple)
     converged: bool = False
     solver_success: bool = True
@@ -335,7 +343,11 @@ def evaluate_dsm_chain(
         r_target, v_planet_target = ephem.state(target_body, t_arrive)
         try:
             leg = dsm_leg(r_curr, v_depart, tof_s, eta_per_leg[i], np.asarray(r_target), mu=mu)
-        except (LambertError, ValueError):
+        except (LambertError, KeplerError, ValueError):
+            # A hop into a too-energetic departure can drive the ballistic
+            # propagation hyperbolic past Newton convergence, or the back-arc
+            # Lambert degenerate; report the chain INFEASIBLE rather than crashing
+            # the whole MBH search (the optimiser simply rejects this hop).
             feasible = False
             break
         dv_dsm.append(leg.dv_dsm_kms)
@@ -362,6 +374,9 @@ def evaluate_dsm_chain(
             eta_per_leg=tuple(eta_per_leg),
             tof_days_per_leg=tuple(tof_days_per_leg),
             t0_sec=float(t0_sec),
+            vinf_out0_kms=float(vinf_out0_kms),
+            alpha0=float(alpha0),
+            beta0=float(beta0),
             dsm_states=tuple(dsm_states),
             converged=False,
         )
@@ -378,6 +393,9 @@ def evaluate_dsm_chain(
         eta_per_leg=tuple(eta_per_leg),
         tof_days_per_leg=tuple(tof_days_per_leg),
         t0_sec=float(t0_sec),
+        vinf_out0_kms=float(vinf_out0_kms),
+        alpha0=float(alpha0),
+        beta0=float(beta0),
         dsm_states=tuple(dsm_states),
         converged=total_dv < tol_kms,
     )
@@ -540,6 +558,13 @@ def dsm_chain_correct(
 
     x0_arr = np.asarray(x0, dtype=np.float64)
     if bounds is not None:
+        # An MBH hop can perturb the seed just outside the box; ``trf`` rejects an
+        # out-of-bounds x0 outright. Clip into the box (strictly interior, to avoid
+        # the ``lb >= ub`` / on-edge degeneracies trf also rejects) so the hop's
+        # intent is preserved rather than crashing the whole search.
+        span = bounds.upper - bounds.lower
+        eps = np.where(span > 0.0, 1.0e-9 * span, 0.0)
+        x0_arr = np.clip(x0_arr, bounds.lower + eps, bounds.upper - eps)
         sol = least_squares(
             _res,
             x0_arr,
@@ -556,23 +581,10 @@ def dsm_chain_correct(
     result = evaluate_dsm_chain(
         sequence=sequence, ephem=ephem, mu=mu, rendezvous=rendezvous, tol_kms=tol_kms, **params
     )
-    # Re-stamp the solver diagnostics + residual-only acceptance (the evaluator
-    # already set ``converged`` from total_dv < tol_kms; carry the solver flags).
-    return DsmChainResult(
-        total_dv_kms=result.total_dv_kms,
-        max_residual_kms=result.max_residual_kms,
-        dv_dsm_per_leg_kms=result.dv_dsm_per_leg_kms,
-        dv_arrive_kms=result.dv_arrive_kms,
-        vinf_in_kms=result.vinf_in_kms,
-        vinf_out_kms=result.vinf_out_kms,
-        eta_per_leg=result.eta_per_leg,
-        tof_days_per_leg=result.tof_days_per_leg,
-        t0_sec=result.t0_sec,
-        dsm_states=result.dsm_states,
-        converged=result.converged,
-        solver_success=bool(sol.success),
-        solver_nfev=int(sol.nfev),
-    )
+    # The evaluator already set ``converged`` from total_dv < tol_kms; carry the
+    # solver diagnostics onto the otherwise-complete result (replace keeps every
+    # field, including the converged departure-V_inf genome, in sync).
+    return replace(result, solver_success=bool(sol.success), solver_nfev=int(sol.nfev))
 
 
 # ---------------------------------------------------------------------------
@@ -614,18 +626,19 @@ def make_dsm_chain_step(
             tol_kms=tol_kms,
             max_nfev=max_nfev,
         )
+        # The corrector moves the WHOLE genome -- including the departure V_inf
+        # (vinf_out0/alpha0/beta0), which enters the dV objective through the
+        # departure state -- so the landed vector takes the corrector's converged
+        # values, not the seed's. This is what lets MBH hop in the departure-energy
+        # direction too (the 6.44Gg3 probe needs that lever).
         landed_x = dsm_chain_decision_vector(
             t0_sec=r.t0_sec,
-            vinf_out0_kms=float(x[1]),
-            alpha0=float(x[2]),
-            beta0=float(x[3]),
+            vinf_out0_kms=r.vinf_out0_kms,
+            alpha0=r.alpha0,
+            beta0=r.beta0,
             tof_days_per_leg=r.tof_days_per_leg,
             eta_per_leg=r.eta_per_leg,
         )
-        # vinf_out0/alpha0/beta0 are not moved by the residual-only corrector here
-        # (only t0/tof/eta enter the dV objective directly through the chain), so
-        # echo them from the seed to keep landed_x in the seed's coordinates.
-        landed_x[1:4] = np.asarray(x[1:4], dtype=np.float64)
         return MBHStep(
             x=landed_x,
             objective=float(r.total_dv_kms),
