@@ -539,6 +539,25 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_free_return_v1_mechanics.py::"
         "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.353Gg2]."
     ),
+    # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
+    # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
+    # achieving its encounters with the per-cycle maintenance applied AND bounded
+    # intra-cycle drift vs the planned trajectory) — the gate the original single
+    # V2 metric could not express for a per-cycle-retargeted cycler (it drifted
+    # ~4.14e8 km / 3 laps under the cross-cycle rotating-frame-repeat metric, #134).
+    ("aldrin-classic-em-k1-outbound", "V2"): (
+        "spec §14 V2-powered (2026-06-07 class-split amendment): the powered "
+        "Aldrin outbound cycler clears >=3 consecutive in-family cycles where "
+        "(a) every planned encounter is achieved with the per-cycle maintenance "
+        "applied (Mars-flyby V_inf continuity <= ENCOUNTER_VINF_TOL_KMS, "
+        "strictly-positive in-family maintenance dV ~2.76-2.91 km/s/cycle) AND "
+        "(b) intra-cycle drift vs the planned trajectory is bounded (per-leg "
+        "Kepler forward-reprop residual <= INTRA_CYCLE_DRIFT_TOL_KM). The inbound "
+        "twin stays V1 (its real-window solve lands on a ballistic dV~0 "
+        "off-family neighbour, so 'maintenance applied' is not demonstrated). "
+        "tests/verify/test_aldrin_v2_powered.py::"
+        "test_aldrin_outbound_passes_v2_powered."
+    ),
 }
 
 

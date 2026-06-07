@@ -79,28 +79,41 @@ def test_semantic_gate_accepts_known_justified_inbound_row() -> None:
     assert validate_validation_level(rows) == []
 
 
+def test_semantic_gate_accepts_outbound_v2_powered() -> None:
+    """The Aldrin outbound row's V2 (the 2026-06-07 §14 V2-powered class-split
+    amendment) is in the evidence registry."""
+    rows = [{"id": "aldrin-classic-em-k1-outbound", "validation_level": "V2"}]
+    assert validate_validation_level(rows) == []
+
+
 def test_live_v1_census_matches_recorded_evidence() -> None:
-    """Mechanical §14 application: the Aldrin outbound + inbound rows are V1
-    (#125 Part 1's real-DE440 lamberthub + Kepler re-propagation evidence) and four
-    Russell free-return rows whose single ellipse forms a closed, V_inf-continuous
-    E->M->E cycler are V1 (#137 Part 1 + Part 3, circular like-for-like — the fourth,
-    9.353Gg2, promoted by the dense phase scan); every other tagged row is V0; no
-    row claims V2+."""
+    """Mechanical §14 application. The powered Aldrin OUTBOUND is V2 (2026-06-07
+    the §14 V2 class-split amendment: it clears the amended V2-powered gate — >=3
+    consecutive in-family cycles each achieving their encounters with maintenance
+    applied AND bounded intra-cycle drift). The Aldrin INBOUND is V1 (#125 Part 1's
+    real-DE440 lamberthub + Kepler re-propagation evidence; it lands off-family at
+    dV~0 so it is NOT V2-powered). Four Russell free-return rows whose single
+    ellipse forms a closed, V_inf-continuous E->M->E cycler are V1 (#137 Part 1 +
+    Part 3, circular like-for-like — the fourth, 9.353Gg2, promoted by the dense
+    phase scan; they are NOT V2-ballistic — they are multi-arc single-ellipse
+    slices, so no continuous >=3-lap trajectory exists). Every other tagged row is
+    V0; the only V2 is the Aldrin outbound."""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
-    assert byid.get("aldrin-classic-em-k1-outbound") == "V1"
+    assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
     assert byid.get("aldrin-classic-em-k1-inbound") == "V1"
     above_v0 = {rid: lvl for rid, lvl in byid.items() if lvl not in (None, "V0")}
     assert above_v0 == {
-        "aldrin-classic-em-k1-outbound": "V1",
+        "aldrin-classic-em-k1-outbound": "V2",
         "aldrin-classic-em-k1-inbound": "V1",
         "russell-ch4-5.30gGf3": "V1",
         "russell-ch4-9.94Gg3": "V1",
         "russell-ch4-5.75ggF3": "V1",
         "russell-ch4-9.353Gg2": "V1",
     }, above_v0
-    # No row may carry V2 or higher (no mechanical evidence exists today).
-    assert not any(lvl in ("V2", "V3", "V4", "V5") for lvl in byid.values())
+    # Exactly one row carries V2 today (the powered Aldrin outbound); no row V3+.
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 1
+    assert not any(lvl in ("V3", "V4", "V5") for lvl in byid.values())
 
 
 def test_live_catalogue_validation_level_semantic_clean() -> None:

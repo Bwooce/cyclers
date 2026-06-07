@@ -11,11 +11,23 @@ evidence registry below.
 
 Evidence applied (verified green against the live suite, 2026-06-06)
 -------------------------------------------------------------------
-* **V1** — ``aldrin-classic-em-k1-outbound``: the real-DE440 Aldrin cycler clears
-  spec §14 V1 — every leg re-solved with ``lamberthub`` izzo2015 + gooding1990
-  agrees to < ``V1_TOLERANCE_MPS``, AND the Kepler forward re-propagation residual
-  passes (the §14 "re-propagated with the Kepler propagator, planet positions met
-  < tol" half). Demonstrated with teeth by
+* **V2** — ``aldrin-classic-em-k1-outbound`` (2026-06-07, the §14 V2 class-split
+  amendment): the powered Aldrin outbound clears the amended **V2-powered** gate —
+  >=3 consecutive in-family cycles, each achieving its encounters with the
+  per-cycle maintenance applied (Mars-flyby V_inf continuity bounded;
+  strictly-positive in-family maintenance dV) AND bounded intra-cycle drift vs the
+  planned trajectory (per-leg Kepler forward-reprop residual). The original single
+  V2 gate (cross-cycle rotating-frame-repeat drift) is structurally unsatisfiable
+  for a per-cycle-retargeted cycler (~4.14e8 km / 3 laps, #134). Demonstrated with
+  teeth by ``tests/verify/test_aldrin_v2_powered.py::
+  test_aldrin_outbound_passes_v2_powered``.
+
+* **V1** — the real-DE440 Aldrin INBOUND twin clears spec §14 V1 — every leg
+  re-solved with ``lamberthub`` izzo2015 + gooding1990 agrees to <
+  ``V1_TOLERANCE_MPS``, AND the Kepler forward re-propagation residual passes (the
+  §14 "re-propagated with the Kepler propagator, planet positions met < tol"
+  half). The outbound twin's V1 is subsumed by its V2-powered promotion above.
+  Demonstrated with teeth by
   ``tests/verify/test_agreement_lamberthub.py::test_report_includes_lamberthub_path``
   and ``...::test_real_eph_paths_a_and_c_pass_b_flags_model_mismatch``.
 
@@ -56,7 +68,12 @@ CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 # V1 for the Aldrin outbound (real-DE440 lamberthub + Kepler reprop); V0 for the
 # rows the gauntlet machinery has exercised at the internal-consistency floor.
 _LEVEL_BY_ID: dict[str, str] = {
-    "aldrin-classic-em-k1-outbound": "V1",
+    # 2026-06-07: the §14 V2 class-split amendment promotes the powered Aldrin
+    # outbound to V2-powered (>=3 consecutive in-family cycles, each achieving its
+    # encounters with the per-cycle maintenance applied AND bounded intra-cycle
+    # drift vs the planned trajectory). The inbound stays V1 (its real-window solve
+    # lands on a ballistic dV~0 off-family neighbour; maintenance not demonstrated).
+    "aldrin-classic-em-k1-outbound": "V2",
     "aldrin-classic-em-k1-inbound": "V1",  # #125 Part 1: real-DE440 inbound clears §14 V1
     # #137 Part 1: three Russell free-return rows whose single heliocentric ellipse
     # forms a CLOSED, V_inf-continuous E->M->E cycler clear §14 V1 mechanics
