@@ -184,6 +184,46 @@ audit trail and is unchanged in spirit.
     |v∞|-magnitude family selection is a leg-topology problem, exactly the
     multi-arc-per-leg / Phase-3 shooting front-runner. The headline gate stays
     **xfail** — tolerance NOT loosened, xfail NOT flipped.
+  - **Free-return (radial-crossing) genome — Russell-12 BREAKTHROUGH (#137,
+    2026-06-07).** A new single-ellipse free-return genome
+    (`search/free_return.py`: per-body V_inf EMERGES from the ellipse shape
+    `(a, e)` riding the Mars-V_inf ridge; sourced geometry is now a residual-zero
+    point) closes **8 of the Russell-12 rows CLOSE-AND-MATCH** + 3 SYMMETRIC-ONLY +
+    1 OFF-ANCHOR (was 0 on the old Lambert genome). See
+    `docs/notes/2026-06-07-russell12-freereturn-results.md`.
+    - **Part 1 — §14 V1 writeback (DONE).** The literal §14 V1 mechanics
+      (lamberthub izzo+gooding leg agreement < V1_TOLERANCE_MPS AND Kepler forward
+      re-propagation < KEPLER_REPROP_TOL_KM; reused verbatim from
+      `verify.agreement` paths a+c) applied LIKE-FOR-LIKE on the circular ephemeris
+      to each closure (`search/free_return_v1.py`,
+      `tests/search/test_free_return_v1_mechanics.py`). A V_inf-continuity honesty
+      gate splits the rows: **four** whose single ellipse forms a genuinely closed,
+      V_inf-continuous E->M->E cycler (`russell-ch4-5.30gGf3`, `-9.94Gg3`,
+      `-5.75ggF3`, `-9.353Gg2`) pass → promoted V0→V1; the six genuinely multi-arc
+      rows (forced return breaks Mars V_inf continuity by ~24 km/s) and the
+      Lambert-singular `8.049gGf2` are refused. **Validation census: 6 rows V1**
+      (Aldrin pair + these four). Scope: circular-coplanar reproduction of a
+      circular-coplanar source (like-for-like), NOT real-ephemeris (V3).
+    - **Part 2 — Jones VEM extension assessment (STOP/report).** The free-return
+      primitive (one ellipse crossing TWO body radii) does NOT modestly extend to
+      the Jones EMEVVE/MEEVEM topologies: they have multiple distinct transfer
+      ellipses coupled through a bend-feasible Venus flyby, plus same-body resonant
+      legs (V->V, E->E) the radial-crossing primitive cannot represent. A control
+      probe confirms the E-M sub-arc reaches the Jones Mars-V_inf (~2.81 floor), so
+      the blocker is purely the multi-ellipse-through-Venus-flyby structure — i.e.
+      the existing multi-arc-per-leg / flyby-shooter front-runner, NOT a modest
+      `free_return.py` addition. No Jones hunt run on a half-genome; the headline
+      Jones xfail stays xfail. Design questions recorded in the results note Part 2.
+    - **Part 3 — stragglers + probe fix (DONE).** `--probe-at-truth` now honours
+      `--genome` (`probe_at_truth_free_return`). `9.353Gg2` was OFF-ANCHOR purely
+      from a coarse 256-point phase grid (narrow high-e t0 basin) → fixed by a dense
+      phase floor (`FR_PHASE_EPOCHS_FLOOR=4096`, cheap Lambert-free scan) → now
+      CLOSE-AND-MATCH and §14-V1. `6.44Gg3` closes at 4096 but OFF-ANCHOR: its
+      sourced aphelion+transit (a=1.27, 226-262 d) and sourced V_inf (needs
+      a=1.225, 166 d) describe DIFFERENT free-return ellipses — a genuinely
+      different family / descriptor-interpretation mismatch, not a phase deficiency;
+      no promotion. Candidate follow-up: seed `6.44Gg3` from its V_inf rather than
+      aphelion+transit.
 - **SnLm multi-rev rediscovery** —
   `docs/superpowers/plans/2026-06-02-snlm-multirev-rediscovery.md`.
   Phase 1 Task 1 EXECUTED (S1L1 characterisation above). Phase 2 —

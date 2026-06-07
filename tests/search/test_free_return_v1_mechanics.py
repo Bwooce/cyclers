@@ -47,12 +47,15 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CAMPAIGN = REPO_ROOT / "scripts" / "campaign_russell12.py"
 DAY_S = 86400.0
 
-# The three rows whose single free-return ellipse forms a genuinely closed,
-# V_inf-continuous E->M->E cycler (the f/F full-Mars-radius free returns).
+# The rows whose single free-return ellipse forms a genuinely closed,
+# V_inf-continuous E->M->E cycler. The f/F full-Mars-radius free returns plus the
+# deep-aphelion 9.353Gg2 (promoted CLOSE-AND-MATCH by #137 Part 3's dense phase
+# scan, then found to clear the V_inf-continuity gate too).
 V1_ROWS = (
     "russell-ch4-5.30gGf3",
     "russell-ch4-9.94Gg3",
     "russell-ch4-5.75ggF3",
+    "russell-ch4-9.353Gg2",
 )
 # Matched rows whose single free-return ellipse does NOT close to Earth (multi-arc;
 # return needs phasing loops) — refused V1 on the V_inf-continuity gate — plus the
@@ -91,7 +94,9 @@ def _close(rid: str) -> tuple[Ephemeris, float, Any]:
     a_seed, e_seed = camp._seed_ae_from_aphelion_transit(float(aphelion), float(transit[0]))
     ephem = Ephemeris("circular")
     best_t0, best_res = 0.0, float("inf")
-    for frac in np.linspace(0.0, 1.0, 256, endpoint=False):
+    # Dense phase floor (campaign FR_PHASE_EPOCHS_FLOOR): the deep-aphelion high-e
+    # rows have a narrow t0 residual basin a coarse grid steps over (#137 Part 3).
+    for frac in np.linspace(0.0, 1.0, camp.FR_PHASE_EPOCHS_FLOOR, endpoint=False):
         t0 = float(frac) * period_sec
         res = camp._fr_residuals(
             np.array([a_seed, e_seed, t0]),

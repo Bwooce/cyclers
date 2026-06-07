@@ -89,6 +89,9 @@ TOL_TRANSIT_DAYS = 5.0
 TOL_PERIOD_YEARS = 0.05
 CORRECTOR_TOL_KMS = 0.1  # convergence floor (prototype threshold)
 VINF_CAP_KMS = 12.0  # generous; these rows run 4.6-10.8 km/s at Mars
+# Dense phase-scan floor for the (cheap, Lambert-free) free-return t0 search.
+# 256 misses the narrow basin of deep-aphelion high-e rows (#137 Part 3).
+FR_PHASE_EPOCHS_FLOOR = 4096
 
 RUSSELL12_IDS = (
     "mcconaghy-2006-em-k2",
@@ -408,6 +411,81 @@ def probe_at_truth(row: dict[str, Any], *, phase_epochs: int, model: str) -> dic
     }
 
 
+def probe_at_truth_free_return(row: dict[str, Any], *, phase_epochs: int, model: str) -> dict:
+    """Seed-at-truth probe for the #137 free-return genome.
+
+    The free-return genome's "truth" seed is the SOURCED ellipse ``(a, e)`` derived
+    from the sourced aphelion + outbound transit (:func:`_seed_ae_from_aphelion_transit`).
+    This probe: (1) fixes ``(a, e)`` at that sourced seed, (2) scans t0 over one
+    period for the phase minimising the free-return residual AT that geometry,
+    (3) runs :func:`free_return_correct` seeded EXACTLY there, and (4) reports
+    whether it STAYED (residual->0, ``(a, e)`` unmoved) — the end-to-end visible
+    truth-residual≈0 the acceptance test pins. Honours ``--genome free-return``.
+    """
+    rid = row["id"]
+    aphelion = row["orbit_elements"].get("aphelion_au")
+    transit = (row.get("invariants") or {}).get("transit_times_days")
+    if aphelion is None or not transit:
+        return {"id": rid, "verdict": "NO-SEED", "detail": "missing sourced aphelion or transit"}
+
+    period_sec = float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * DAY_S
+    a_seed, e_seed = _seed_ae_from_aphelion_transit(float(aphelion), float(transit[0]))
+    ephem = Ephemeris(model)
+
+    # Match run_row_free_return's dense phase floor (#137 Part 3): the truth-residual
+    # landscape of deep-aphelion high-e rows is narrow in t0.
+    n_phase = max(phase_epochs, FR_PHASE_EPOCHS_FLOOR)
+    best_t0, best_truth_res = 0.0, float("inf")
+    for frac in np.linspace(0.0, 1.0, n_phase, endpoint=False):
+        t0 = float(frac) * period_sec
+        try:
+            res = _fr_residuals(
+                np.array([a_seed, e_seed, t0]),
+                period_days=period_sec / DAY_S,
+                ephem=ephem,
+                bodies=("E", "M"),
+                mu=132712440018.0,
+            )
+        except Exception:
+            continue
+        m = max(abs(r) for r in res)
+        if m < best_truth_res:
+            best_truth_res, best_t0 = m, t0
+
+    solved = free_return_correct(
+        t0_seed_sec=best_t0,
+        a_seed_au=a_seed,
+        e_seed=e_seed,
+        period_sec=period_sec,
+        ephem=ephem,
+        tol_kms=CORRECTOR_TOL_KMS,
+    )
+    # (a, e) drift relative to the sourced seed (the free variables the solver moves).
+    ae_drift = max(abs(solved.a_au - a_seed), abs(solved.e - e_seed))
+    stayed = (
+        solved.converged
+        and best_truth_res <= CORRECTOR_TOL_KMS
+        and ae_drift <= 0.05  # AU / dimensionless: the seed stays on its ridge
+    )
+    return {
+        "id": rid,
+        "model": model,
+        "genome": "free-return",
+        "best_phase_truth_residual_kms": round(best_truth_res, 4),
+        "truth_residual_below_floor": bool(best_truth_res <= CORRECTOR_TOL_KMS),
+        "solved_converged": bool(solved.converged),
+        "solved_max_residual_kms": round(float(solved.max_residual_kms), 4),
+        "tof_drift_days": round(abs(solved.transfer_tof_days - float(transit[0])), 2),
+        "ae_drift": round(ae_drift, 4),
+        "seed_a_au": round(a_seed, 4),
+        "seed_e": round(e_seed, 4),
+        "solved_a_au": round(solved.a_au, 4),
+        "solved_e": round(solved.e, 4),
+        "solved_vinf_kms": {k: round(v, 3) for k, v in solved.vinf_kms.items()},
+        "verdict": "STAYED-AT-TRUTH" if stayed else "WALKED-AWAY",
+    }
+
+
 def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> dict:
     genome = build_genome(row)
     priority = row.get("priority_date")
@@ -516,8 +594,14 @@ def run_row_free_return(row: dict[str, Any], *, phase_epochs: int, model: str) -
     a_seed, e_seed = _seed_ae_from_aphelion_transit(float(aphelion), float(transit[0]))
 
     ephem = Ephemeris(model)
+    # Deep-aphelion / high-e rows (e.g. russell-ch4-9.353Gg2, e~0.43) have a narrow
+    # t0 residual basin that a coarse 256-point grid steps over, leaving the
+    # corrector to drift ~0.6 km/s off-anchor (#137 Part 3 straggler diagnosis).
+    # The free-return phase scan is pure residual evals (no Lambert), so a dense
+    # floor is cheap and makes the best phase robust across all rows.
+    n_phase = max(phase_epochs, FR_PHASE_EPOCHS_FLOOR)
     best_t0, best_res = 0.0, float("inf")
-    for frac in np.linspace(0.0, 1.0, phase_epochs, endpoint=False):
+    for frac in np.linspace(0.0, 1.0, n_phase, endpoint=False):
         t0 = float(frac) * period_sec
         try:
             res = _fr_residuals(
@@ -655,15 +739,24 @@ def main() -> None:
 
     probes: list[dict] = []
     if args.probe_at_truth:
-        print("\n=== SEED-AT-TRUTH PROBE ===", flush=True)
+        print(f"\n=== SEED-AT-TRUTH PROBE (genome={args.genome}) ===", flush=True)
         for rid in RUSSELL12_IDS:
-            p = probe_at_truth(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
+            # Honour --genome: the free-return probe seeds the SOURCED ellipse (a, e)
+            # and shows the truth-residual≈0 end-to-end; the lambert probe seeds the
+            # sourced ToF geometry (the #135 diagnostic). Previously the probe always
+            # ran the lambert genome regardless of --genome (the results-note caveat).
+            if args.genome == "free-return":
+                p = probe_at_truth_free_return(
+                    byid[rid], phase_epochs=args.phase_epochs, model=args.model
+                )
+            else:
+                p = probe_at_truth(byid[rid], phase_epochs=args.phase_epochs, model=args.model)
             probes.append(p)
             print(
                 f"{rid:24s} {p['verdict']:16s} "
-                f"truth_res={p['best_phase_truth_residual_kms']:.3f} "
-                f"solved_res={p['solved_max_residual_kms']:.3f} "
-                f"tof_drift={p['tof_drift_days']}d",
+                f"truth_res={p.get('best_phase_truth_residual_kms', float('nan')):.3f} "
+                f"solved_res={p.get('solved_max_residual_kms', float('nan')):.3f} "
+                f"tof_drift={p.get('tof_drift_days')}d",
                 flush=True,
             )
 

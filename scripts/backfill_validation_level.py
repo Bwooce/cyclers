@@ -66,6 +66,9 @@ _LEVEL_BY_ID: dict[str, str] = {
     "russell-ch4-5.30gGf3": "V1",
     "russell-ch4-9.94Gg3": "V1",
     "russell-ch4-5.75ggF3": "V1",
+    # #137 Part 3: dense-phase-scan promotes the deep-aphelion 9.353Gg2 to a closed,
+    # V_inf-continuous free-return arc that clears §14 V1 mechanics.
+    "russell-ch4-9.353Gg2": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

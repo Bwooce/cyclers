@@ -581,23 +581,24 @@ gate a row has **mechanically** passed (Forge phase 3 / task #104).
 
 It is back-filled by `scripts/backfill_validation_level.py` (idempotent,
 re-runnable; `--dry-run` reports without writing), which applies §14 to RECORDED
-in-repo test evidence — never aspirationally. Five rows earn above the floor:
+in-repo test evidence — never aspirationally. Six rows earn above the floor:
 
 - the **Aldrin pair** (`aldrin-classic-em-k1-outbound`, `-inbound`) is **V1** —
   the real-DE440 cyclers clear §14 V1 (every leg re-solved with `lamberthub`
   izzo2015 + gooding1990 agrees to < `V1_TOLERANCE_MPS`, AND the Kepler forward
   re-propagation residual passes — `tests/verify/test_agreement_lamberthub.py`;
   the inbound twin promoted by #125 Part 1);
-- three **Russell free-return rows** (`russell-ch4-5.30gGf3`, `russell-ch4-9.94Gg3`,
-  `russell-ch4-5.75ggF3`) are **V1** — their single heliocentric ellipse forms a
-  genuinely CLOSED, V_inf-continuous E->M->E cycler that clears §14 V1 mechanics
-  LIKE-FOR-LIKE on the circular ephemeris (a circular-coplanar reproduction of a
-  circular-coplanar source): lamberthub agreement < `V1_TOLERANCE_MPS` AND Kepler
-  forward re-propagation < `KEPLER_REPROP_TOL_KM`, with Mars-flyby V_inf continuity
-  intact — `tests/search/test_free_return_v1_mechanics.py` (#137 Part 1). The
-  other matched free-return rows are genuinely multi-arc (their single ellipse does
-  not close to Earth — the forced return leg breaks V_inf continuity by ~24 km/s)
-  and stay V0.
+- four **Russell free-return rows** (`russell-ch4-5.30gGf3`, `russell-ch4-9.94Gg3`,
+  `russell-ch4-5.75ggF3`, `russell-ch4-9.353Gg2`) are **V1** — their single
+  heliocentric ellipse forms a genuinely CLOSED, V_inf-continuous E->M->E cycler
+  that clears §14 V1 mechanics LIKE-FOR-LIKE on the circular ephemeris (a
+  circular-coplanar reproduction of a circular-coplanar source): lamberthub
+  agreement < `V1_TOLERANCE_MPS` AND Kepler forward re-propagation <
+  `KEPLER_REPROP_TOL_KM`, with Mars-flyby V_inf continuity intact —
+  `tests/search/test_free_return_v1_mechanics.py` (#137 Part 1; the fourth,
+  9.353Gg2, promoted by Part 3's dense phase scan). The other matched free-return
+  rows are genuinely multi-arc (their single ellipse does not close to Earth — the
+  forced return leg breaks V_inf continuity by ~24 km/s) and stay V0.
 
 The rows the gauntlet machinery has exercised at the internal-consistency floor
 are stamped **V0** (the regression rows are `EXPECTED_SKIPS` — incomplete leg data

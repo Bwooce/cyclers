@@ -81,10 +81,11 @@ def test_semantic_gate_accepts_known_justified_inbound_row() -> None:
 
 def test_live_v1_census_matches_recorded_evidence() -> None:
     """Mechanical §14 application: the Aldrin outbound + inbound rows are V1
-    (#125 Part 1's real-DE440 lamberthub + Kepler re-propagation evidence) and the
-    three Russell free-return rows whose single ellipse forms a closed,
-    V_inf-continuous E->M->E cycler are V1 (#137 Part 1, circular like-for-like);
-    every other tagged row is V0; no row claims V2+."""
+    (#125 Part 1's real-DE440 lamberthub + Kepler re-propagation evidence) and four
+    Russell free-return rows whose single ellipse forms a closed, V_inf-continuous
+    E->M->E cycler are V1 (#137 Part 1 + Part 3, circular like-for-like — the fourth,
+    9.353Gg2, promoted by the dense phase scan); every other tagged row is V0; no
+    row claims V2+."""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V1"
@@ -96,6 +97,7 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "russell-ch4-5.30gGf3": "V1",
         "russell-ch4-9.94Gg3": "V1",
         "russell-ch4-5.75ggF3": "V1",
+        "russell-ch4-9.353Gg2": "V1",
     }, above_v0
     # No row may carry V2 or higher (no mechanical evidence exists today).
     assert not any(lvl in ("V2", "V3", "V4", "V5") for lvl in byid.values())

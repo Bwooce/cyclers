@@ -529,6 +529,16 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_free_return_v1_mechanics.py::"
         "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-5.75ggF3]."
     ),
+    ("russell-ch4-9.353Gg2", "V1"): (
+        "spec §14 V1 (#137 Part 3): deep-aphelion free-return row promoted to "
+        "CLOSE-AND-MATCH by the dense phase scan (its narrow high-e t0 basin missed by "
+        "the 256-point grid), then clearing §14 V1 mechanics like-for-like on the "
+        "circular ephemeris — closed single-ellipse E->M->E arc, lamberthub "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass, Mars-flyby V_inf continuous. tests/search/"
+        "test_free_return_v1_mechanics.py::"
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.353Gg2]."
+    ),
 }
 
 
