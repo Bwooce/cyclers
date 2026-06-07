@@ -63,6 +63,35 @@ def test_parallel_matches_serial_determinism_gate() -> None:
         assert p.result.vinf_per_encounter_kms == s.result.vinf_per_encounter_kms
 
 
+@pytest.mark.parametrize("max_workers", [1, 2, 4])
+def test_parallel_full_structural_equality_vs_serial(max_workers: int) -> None:
+    """Determinism (#140 review C4): for max_workers in {1, 2, 4} the parallel
+    scan is FULLY structurally equal to the serial reference -- every field of
+    every ScanResult, not just residual/converged. Pins that the C4 refactor
+    (serial path no longer mutates the module-global ``_EPHEM_MODEL``) keeps the
+    serial oracle and the parallel path bit-identical, including the max_workers=1
+    fast path which now delegates to ``scan_serial``."""
+    grid = _s1l1_grid_circular(n_epochs=6)
+    serial = scan_serial(grid, ephem_model="circular")
+    parallel = scan_parallel(grid, ephem_model="circular", max_workers=max_workers)
+
+    assert len(parallel) == len(serial) == len(grid)
+    # Frozen dataclasses compare structurally; this asserts EVERY field of point
+    # and result (sequence, branch, t0, tofs, residual, vinf tuple, converged...).
+    assert parallel == serial
+
+
+def test_serial_does_not_mutate_module_global() -> None:
+    """C4 regression: ``scan_serial`` must leave the module-global ``_EPHEM_MODEL``
+    untouched (the refactor passes the model explicitly to ``_evaluate_point``)."""
+    from cyclerfinder.search import scan as scan_mod
+
+    before = scan_mod._EPHEM_MODEL
+    grid = _s1l1_grid_circular(n_epochs=2)
+    scan_serial(grid, ephem_model="circular")
+    assert before == scan_mod._EPHEM_MODEL
+
+
 def test_results_sorted_by_residual_then_epoch() -> None:
     """Deterministic ordering: ascending residual, then ascending t0 seed."""
     grid = _s1l1_grid_circular(n_epochs=4)

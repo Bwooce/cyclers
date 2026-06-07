@@ -74,15 +74,23 @@ class ScanResult:
         return self.point.t0_seed_sec
 
 
-def _evaluate_point(point: ScanPoint) -> ScanResult:
+def _evaluate_point(point: ScanPoint, model: str | None = None) -> ScanResult:
     """Worker entry point: build a fresh Ephemeris and run the corrector.
 
     Runs in a worker process. Only primitives crossed the boundary; the
     ``Ephemeris`` is constructed here, never pickled. The corrector already maps
     Lambert pathologies to a non-converged result, so this returns a result for
     every point rather than raising.
+
+    ``model`` selects the ephemeris model. When ``None`` (the parallel path:
+    :meth:`ProcessPoolExecutor.map` can pass only the point), it falls back to the
+    process-global ``_EPHEM_MODEL`` pinned by :func:`_init_worker` in each worker
+    process. The serial path passes ``model`` explicitly so it never touches the
+    module-global. ``_EPHEM_MODEL`` is process-safe (one binding per worker
+    process), NOT thread-safe; do not call this concurrently within one process
+    relying on the global.
     """
-    ephem = Ephemeris(model=_EPHEM_MODEL)
+    ephem = Ephemeris(model=model if model is not None else _EPHEM_MODEL)
     rp_factors = dict(point.rp_factors) if point.rp_factors is not None else None
     result = ballistic_correct(
         sequence=point.sequence,
@@ -101,10 +109,13 @@ def _evaluate_point(point: ScanPoint) -> ScanResult:
     return ScanResult(point=point, result=result)
 
 
-# The ephemeris model is process-global in each worker so it is initialised once
+# The ephemeris model is process-global in each WORKER so it is initialised once
 # per worker (via the pool initialiser) rather than pickled per point. The parent
-# sets it through the initialiser argument; a module default keeps direct
-# (serial) calls to ``_evaluate_point`` working in tests.
+# sets it through the initialiser argument. This global is the parallel path's
+# mechanism only -- it is process-safe (one binding per worker process) but NOT
+# thread-safe. The serial path (:func:`scan_serial`) passes the model explicitly
+# to :func:`_evaluate_point` and never mutates this global. A module default keeps
+# any direct call to ``_evaluate_point`` working out of the box.
 _EPHEM_MODEL: str = "astropy"
 
 
@@ -126,16 +137,12 @@ def scan_serial(
 ) -> list[ScanResult]:
     """Serial reference scan -- the determinism oracle for :func:`scan_parallel`.
 
-    Evaluates every grid point in this process with one shared ``Ephemeris``.
-    Returns results in the same deterministic order as the parallel path.
+    Evaluates every grid point in this process, passing ``ephem_model`` directly
+    to :func:`_evaluate_point` (no module-global mutation, so it is safe to call
+    from any context). Returns results in the same deterministic order as the
+    parallel path.
     """
-    global _EPHEM_MODEL
-    saved = _EPHEM_MODEL
-    _EPHEM_MODEL = ephem_model
-    try:
-        results = [_evaluate_point(p) for p in points]
-    finally:
-        _EPHEM_MODEL = saved
+    results = [_evaluate_point(p, ephem_model) for p in points]
     return _sorted(results)
 
 
