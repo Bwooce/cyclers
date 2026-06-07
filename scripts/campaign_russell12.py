@@ -60,6 +60,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from concurrent.futures import ProcessPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
@@ -70,6 +71,7 @@ import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.data.runlog import RunLog, RunRecord, default_runlog_path
 from cyclerfinder.search.correct import _residuals, ballistic_correct
 from cyclerfinder.search.free_return import _residuals as _fr_residuals
 from cyclerfinder.search.free_return import (
@@ -79,6 +81,7 @@ from cyclerfinder.search.free_return import (
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
+DEFAULT_RUNLOG_DIR = REPO_ROOT / "data" / "runs"
 DAY_S = 86400.0
 J2000 = datetime(2000, 1, 1, 12, 0, 0, tzinfo=UTC)
 
@@ -656,6 +659,72 @@ def run_row_free_return(row: dict[str, Any], *, phase_epochs: int, model: str) -
     }
 
 
+def _git_short_head() -> str:
+    """``git rev-parse --short HEAD`` captured BY THE CALLER (runlog stays pure).
+
+    Returns the empty string outside a git checkout / on any git error so the
+    campaign never crashes on the persistence side-effect.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+    return out.stdout.strip()
+
+
+def _verdict_to_record(v: dict[str, Any], genome: str, code_version: str) -> RunRecord:
+    """Map one campaign verdict dict -> a :class:`RunRecord` (no info dropped).
+
+    Works for BOTH genome paths: the lambert verdict (``run_row`` -> ``_classify``)
+    and the free-return verdict (``run_row_free_return``). The fields each path
+    happens to carry land in the matching optional slots; absent ones stay empty.
+    """
+    achieved = dict(v.get("achieved_vinf") or {})
+    if not achieved:
+        # Free-return path nests the emerged V∞ under ``derived``.
+        achieved = dict((v.get("derived") or {}).get("vinf_kms") or {})
+
+    sourced_anchors: dict[str, Any] = {}
+    for key in ("sourced_turn_ratio", "sourced_aphelion_ratio"):
+        if v.get(key) is not None:
+            sourced_anchors[key] = v[key]
+    if v.get("constrained") is not None:
+        sourced_anchors["constrained"] = v["constrained"]
+
+    seed: dict[str, Any] = {}
+    if v.get("genome") and isinstance(v["genome"], dict):
+        seed = dict(v["genome"])  # lambert genome descriptor (sequence/revs/seeds)
+    if v.get("derived") is not None:
+        seed["derived"] = v["derived"]  # free-return emerged (a, e), tof
+
+    solver_audit: dict[str, Any] = {"checks": v.get("checks", [])}
+    for key in ("n_closed_magnitude", "n_closed_vector", "mode", "bend_feasible", "vinf_cap_ok"):
+        if key in v:
+            solver_audit[key] = v[key]
+    if "best_phase_residual_kms" in v:
+        solver_audit["best_phase_residual_kms"] = v["best_phase_residual_kms"]
+
+    return RunRecord(
+        row_id=str(v.get("id")),
+        genome=genome,
+        outcome=str(v.get("outcome")),
+        model=str(v.get("model")),
+        code_version=code_version,
+        achieved_vinf_kms=achieved,
+        sourced_vinf_kms=dict(v.get("sourced_vinf") or {}),
+        sourced_anchors=sourced_anchors,
+        seed=seed,
+        residual_kms=v.get("max_residual_kms"),
+        solver_audit=solver_audit,
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--epochs", type=int, default=32)
@@ -684,6 +753,19 @@ def main() -> None:
         "aphelion+transit, V_inf emerges as evidence)",
     )
     ap.add_argument("--out", type=str, default=None)
+    ap.add_argument(
+        "--runlog-dir",
+        type=str,
+        default=str(DEFAULT_RUNLOG_DIR),
+        help="directory for the per-invocation JSON-lines runlog (default ON, "
+        "writes data/runs/russell12-<timestamp>.jsonl); pass empty to disable",
+    )
+    ap.add_argument(
+        "--runlog-timestamp",
+        type=str,
+        default=None,
+        help="filename timestamp tag for the runlog (default: UTC now)",
+    )
     args = ap.parse_args()
 
     rows = yaml.safe_load(CATALOGUE_PATH.read_text())
@@ -758,6 +840,17 @@ def main() -> None:
             json.dumps({"model": args.model, "verdicts": verdicts, "probes": probes}, indent=2)
         )
         print(f"wrote {args.out}")
+
+    # Persist the per-row (seed -> basin) labels the campaign just computed
+    # (additive side-effect; does not change the scientific run or stdout above).
+    if args.runlog_dir:
+        code_version = _git_short_head()
+        runlog_path = default_runlog_path(
+            args.runlog_dir, f"russell12-{args.model}", timestamp=args.runlog_timestamp
+        )
+        runlog = RunLog(runlog_path)
+        runlog.extend([_verdict_to_record(v, args.genome, code_version) for v in verdicts])
+        print(f"wrote runlog {runlog_path} ({len(verdicts)} records)")
 
 
 if __name__ == "__main__":
