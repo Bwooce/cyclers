@@ -26,7 +26,7 @@
   trajectory_regime: powered   # reclassified 2026-06-01 (task #70): powered in the idealized model - McConaghy 2002 Table 4 / dissertation shows the 1L1 EARTH (geocentric) flyby cannot supply the required ~84 deg turn (max ~72 deg at a 200 km Earth flyby). regime = ballistic/powered in the idealized model (the literature-attested property); NOT derived from our computed DV. See notes + maintenance_dv_kms_per_synodic + flyby_mechanics.
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
-  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
+  validation_level: V2   # schema v4.5 (2026-06-07, spec §16.7.12 / §14 V2 class-split); V2-powered: >=3 consecutive in-family cycles each achieving encounters with per-cycle maintenance applied AND bounded intra-cycle drift (tests/verify/test_aldrin_v2_powered.py); see data/README.md
   orbit_source: rogers-2012-t1   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
