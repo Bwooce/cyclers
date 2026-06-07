@@ -33,3 +33,18 @@ def mean_motion_deg_day_about(sma_km: float, *, mu_primary: float) -> float:
     """Mean motion (deg/day) about a primary, Kepler III (cf. constants.py:149-159)."""
     period_s = 2.0 * math.pi * math.sqrt(sma_km**3 / mu_primary)
     return 360.0 / (period_s / 86400.0)
+
+
+# Primary (central-body) gravitational parameters GM [km^3/s^2].
+#
+# SOURCING (golden discipline): these are the JPL Solar System Dynamics planetary
+# *system* GM values (http://ssd.jpl.nasa.gov/, gm_de440 planetary constants),
+# the SAME upstream the Endgame Part-1 Table 3 footnote cites. They are sourced
+# INDEPENDENTLY of the paper's transcribed V_M anchors so the Task-1.3 golden
+# (registry vs published Table 3) stays non-circular. Accessed 2026-06-07.
+PRIMARIES: dict[str, float] = {
+    # Jupiter system GM (JPL SSD gm_de440 planetary constants): 1.26686534e8.
+    "Jupiter": 1.26686534e8,
+    # Saturn system GM (JPL SSD gm_de440 planetary constants): 3.7931207e7.
+    "Saturn": 3.7931207e7,
+}
