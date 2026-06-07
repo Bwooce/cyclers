@@ -163,8 +163,6 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], ephem: Ephemeris
     read that is the harness's cost (design Risk 3). Sun-frame indirect term
     included so the heliocentric (non-inertial) frame is consistent.
     """
-    import rebound
-
     from cyclerfinder.core.constants import PLANETS
 
     assert ephem is not None
@@ -189,11 +187,11 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], ephem: Ephemeris
         sc.ay += ay
         sc.az += az
 
+    # The setter wraps `func` in a CFUNCTYPE and stores it in the simulation's
+    # own `_afp` slot, so the callback is kept alive for us (REBOUND 5.0); we do
+    # NOT attach our own attribute — Simulation.__setattr__ rejects unknown names.
     sim.additional_forces = additional_forces  # type: ignore[attr-defined]
     sim.force_is_velocity_dependent = 0  # type: ignore[attr-defined]
-    # Keep a reference so the ctypes callback is not garbage-collected.
-    sim._cyclerfinder_rails_cb = additional_forces  # type: ignore[attr-defined]
-    _ = rebound  # imported for side-effect / API availability
 
 
 __all__ = ["NBodyArc", "Propagator", "RestrictedNBody"]
