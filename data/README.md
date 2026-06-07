@@ -581,16 +581,28 @@ gate a row has **mechanically** passed (Forge phase 3 / task #104).
 
 It is back-filled by `scripts/backfill_validation_level.py` (idempotent,
 re-runnable; `--dry-run` reports without writing), which applies §14 to RECORDED
-in-repo test evidence — never aspirationally. Today exactly one row earns above
-the floor: `aldrin-classic-em-k1-outbound` is **V1** because its real-DE440
-cycler clears §14 V1 (every leg re-solved with `lamberthub` izzo2015 + gooding1990
-agrees to < `V1_TOLERANCE_MPS`, AND the Kepler forward re-propagation residual
-passes — `tests/verify/test_agreement_lamberthub.py`). The rows the gauntlet
-machinery has exercised at the internal-consistency floor are stamped **V0**; the
-Aldrin inbound twin stays V0 (no test builds/cross-checks it on real ephemeris),
-and the other regression rows are `EXPECTED_SKIPS` (incomplete leg data / wrong
-topology). Every other row is left untagged — an absent `validation_level` is the
-explicit V0 floor for downstream views.
+in-repo test evidence — never aspirationally. Five rows earn above the floor:
+
+- the **Aldrin pair** (`aldrin-classic-em-k1-outbound`, `-inbound`) is **V1** —
+  the real-DE440 cyclers clear §14 V1 (every leg re-solved with `lamberthub`
+  izzo2015 + gooding1990 agrees to < `V1_TOLERANCE_MPS`, AND the Kepler forward
+  re-propagation residual passes — `tests/verify/test_agreement_lamberthub.py`;
+  the inbound twin promoted by #125 Part 1);
+- three **Russell free-return rows** (`russell-ch4-5.30gGf3`, `russell-ch4-9.94Gg3`,
+  `russell-ch4-5.75ggF3`) are **V1** — their single heliocentric ellipse forms a
+  genuinely CLOSED, V_inf-continuous E->M->E cycler that clears §14 V1 mechanics
+  LIKE-FOR-LIKE on the circular ephemeris (a circular-coplanar reproduction of a
+  circular-coplanar source): lamberthub agreement < `V1_TOLERANCE_MPS` AND Kepler
+  forward re-propagation < `KEPLER_REPROP_TOL_KM`, with Mars-flyby V_inf continuity
+  intact — `tests/search/test_free_return_v1_mechanics.py` (#137 Part 1). The
+  other matched free-return rows are genuinely multi-arc (their single ellipse does
+  not close to Earth — the forced return leg breaks V_inf continuity by ~24 km/s)
+  and stay V0.
+
+The rows the gauntlet machinery has exercised at the internal-consistency floor
+are stamped **V0** (the regression rows are `EXPECTED_SKIPS` — incomplete leg data
+/ wrong topology). Every other row is left untagged — an absent `validation_level`
+is the explicit V0 floor for downstream views.
 
 The over-claim guard lives in the Python semantic gate
 (`validate_validation_level`): a row may declare a level above `V0` only when it

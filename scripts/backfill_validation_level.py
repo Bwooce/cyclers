@@ -58,6 +58,14 @@ CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 _LEVEL_BY_ID: dict[str, str] = {
     "aldrin-classic-em-k1-outbound": "V1",
     "aldrin-classic-em-k1-inbound": "V1",  # #125 Part 1: real-DE440 inbound clears §14 V1
+    # #137 Part 1: three Russell free-return rows whose single heliocentric ellipse
+    # forms a CLOSED, V_inf-continuous E->M->E cycler clear §14 V1 mechanics
+    # like-for-like on the circular ephemeris (lamberthub + Kepler reprop, Mars
+    # V_inf continuity intact). The other matched rows are genuinely multi-arc
+    # (forced return breaks continuity) and stay V0.
+    "russell-ch4-5.30gGf3": "V1",
+    "russell-ch4-9.94Gg3": "V1",
+    "russell-ch4-5.75ggF3": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

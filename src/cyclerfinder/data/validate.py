@@ -496,6 +496,39 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_agreement_lamberthub.py::"
         "test_inbound_real_eph_lamberthub_and_kepler_paths_pass."
     ),
+    # #137 Part 1: three Russell free-return rows whose single heliocentric
+    # ellipse forms a genuinely CLOSED, V_inf-continuous E->M->E cycler clear
+    # spec §14 V1 mechanics LIKE-FOR-LIKE on the circular ephemeris (a
+    # circular-coplanar reproduction of a circular-coplanar source): lamberthub
+    # izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward
+    # re-propagation residual < KEPLER_REPROP_TOL_KM, with Mars-flyby V_inf
+    # continuity intact (the genome honesty gate that refuses the six multi-arc
+    # rows whose forced return breaks continuity by ~24 km/s). See
+    # docs/notes/2026-06-07-russell12-freereturn-results.md.
+    ("russell-ch4-5.30gGf3", "V1"): (
+        "spec §14 V1 (#137 Part 1): circular like-for-like free-return reproduction "
+        "— closed single-ellipse E->M->E arc, lamberthub izzo2015+gooding1990 per-leg "
+        "agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual pass, "
+        "Mars-flyby V_inf continuity 0.01 km/s. tests/search/"
+        "test_free_return_v1_mechanics.py::"
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-5.30gGf3]."
+    ),
+    ("russell-ch4-9.94Gg3", "V1"): (
+        "spec §14 V1 (#137 Part 1): circular like-for-like free-return reproduction "
+        "— closed single-ellipse E->M->E arc, lamberthub izzo2015+gooding1990 per-leg "
+        "agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual pass, "
+        "Mars-flyby V_inf continuity 0.04 km/s. tests/search/"
+        "test_free_return_v1_mechanics.py::"
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.94Gg3]."
+    ),
+    ("russell-ch4-5.75ggF3", "V1"): (
+        "spec §14 V1 (#137 Part 1): circular like-for-like free-return reproduction "
+        "— closed single-ellipse E->M->E arc, lamberthub izzo2015+gooding1990 per-leg "
+        "agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual pass, "
+        "Mars-flyby V_inf continuity 0.18 km/s. tests/search/"
+        "test_free_return_v1_mechanics.py::"
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-5.75ggF3]."
+    ),
 }
 
 
