@@ -25,13 +25,13 @@ from scipy.optimize import least_squares
 
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS, VINF_CEILING_KMS
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.core.lambert import (
     LambertConvergenceError,
     LambertGeometryError,
     LambertSolution,
     lambert,
 )
+from cyclerfinder.core.satellites import SATELLITES
 
 DAY_S = 86400.0
 
