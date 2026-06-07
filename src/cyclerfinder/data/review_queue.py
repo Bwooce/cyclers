@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Any
 
 from cyclerfinder.verify.gauntlet import VerdictTier
+from cyclerfinder.verify.plausibility import QuantityKind, check_publishable
 
 # Tiers that may legitimately sit in the human-review queue. SILVER is the novel
 # holding tier; GOLD is admissible only for a sourced rediscovery (the loop never
@@ -80,7 +81,11 @@ def validate_review_entry(entry: ReviewQueueEntry) -> None:
     * the tier is not queueable (only SILVER / GOLD may await human review — a
       REJECTED or BRONZE candidate is never promoted), or
     * the adversarial panel majority-refuted the candidate (the falsification
-      gate has teeth: a refuted candidate must not be queued).
+      gate has teeth: a refuted candidate must not be queued), or
+    * any recorded per-encounter V_inf breaks the elliptic-periodicity physics
+      ceiling (task #127): a periodic heliocentric cycler physically cannot have
+      V_inf above ``v_esc_sun(r_B) + v_B`` at a body, so such an entry is a
+      degenerate / off-family artifact and must not even reach the human queue.
     """
     try:
         tier = VerdictTier(entry.verdict_tier)
@@ -103,6 +108,15 @@ def validate_review_entry(entry: ReviewQueueEntry) -> None:
             f"adversarial panel ({panel.get('n_refuted')}/{panel.get('n_verifiers')}); "
             f"refusing to queue a refuted candidate."
         )
+    # Physics-ceiling guard (task #127): each recorded encounter V_inf must be
+    # publishable against its body's elliptic-periodicity ceiling.
+    for body, vinf in zip(entry.sequence, entry.vinf_per_encounter_kms, strict=False):
+        verdict = check_publishable(QuantityKind.VINF_KMS, vinf, {"body": body})
+        if not verdict.ok:
+            raise ValueError(
+                f"review-queue entry {entry.candidate_id!r} records an implausible "
+                f"V_inf at {body}: {verdict.reason}"
+            )
 
 
 def _normalise(payload: dict[str, Any]) -> dict[str, Any]:

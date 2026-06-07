@@ -127,3 +127,32 @@ def test_validate_rejects_unknown_tier_string() -> None:
     ``in`` test against bare strings."""
     with pytest.raises(ValueError, match="unknown verdict tier"):
         validate_review_entry(_entry(tier="platinum"))
+
+
+def test_validate_rejects_over_ceiling_vinf() -> None:
+    """#127: an entry recording a physically-impossible V_inf (above the body's
+    elliptic-periodicity ceiling) is refused -- never reaches the human queue."""
+    e = _entry()
+    # 80 km/s at Earth breaches the 71.9 km/s elliptic-periodicity ceiling.
+    bad = ReviewQueueEntry(
+        **{
+            **e.__dict__,
+            "vinf_per_encounter_kms": (80.0, 13.01, 9.76, 9.75),
+            "max_vinf_kms": 80.0,
+        }
+    )
+    with pytest.raises(ValueError, match="implausible"):
+        validate_review_entry(bad)
+
+
+def test_validate_accepts_high_energy_but_sub_ceiling_vinf() -> None:
+    """A legitimate high-energy entry (Russell-class, sub-ceiling) is accepted."""
+    e = _entry()
+    ok = ReviewQueueEntry(
+        **{
+            **e.__dict__,
+            "vinf_per_encounter_kms": (20.3, 14.4, 19.0, 18.0),
+            "max_vinf_kms": 20.3,
+        }
+    )
+    validate_review_entry(ok)  # no raise
