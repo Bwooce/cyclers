@@ -23,8 +23,9 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.optimize import least_squares
 
-from cyclerfinder.core.constants import PLANETS, VINF_CEILING_KMS
+from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS, VINF_CEILING_KMS
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.core.lambert import (
     LambertConvergenceError,
     LambertGeometryError,
@@ -118,6 +119,7 @@ def _vinf_nodes(
     slack_leg: int,
     period_days: float,
     ephem: Ephemeris,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> dict[str, np.ndarray]:
     """Per-encounter V_inf vectors for a closed N-arc chain (spec §2.1).
 
@@ -145,7 +147,7 @@ def _vinf_nodes(
     for i in range(n_legs):
         r1, v1_pl = states[i]
         r2, v2_pl = states[i + 1]
-        sols = lambert(r1, r2, tofs[i] * DAY_S, max_revs=per_leg_revs[i])
+        sols = lambert(r1, r2, tofs[i] * DAY_S, mu=mu_central, max_revs=per_leg_revs[i])
         sol = _pick(sols, per_leg_revs[i], per_leg_branch[i])
         # V_inf leaving encounter i and arriving at encounter i+1.
         nodes[f"b{i}_out"] = np.asarray(sol.v1) - np.asarray(v1_pl)
@@ -241,6 +243,7 @@ def _residuals(
     ephem: Ephemeris,
     residual_mode: str = "magnitude",
     rp_factors: dict[str, float] | None = None,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> list[float]:
     """least_squares residual callable: V_inf-continuity + closure, with Lambert
     pathologies mapped to a large finite penalty (``correct_s1l1_twoarc.py:100``).
@@ -287,8 +290,13 @@ def _residuals(
 def _max_bend_deg(vinf_kms: float, body: str, rp_factors: dict[str, float] | None = None) -> float:
     """Maximum single-flyby turn angle (deg) for ``vinf_kms`` at ``body``
     (``correct_s1l1_twoarc.py:109-114``). ``rp_factors`` optionally scales the
-    body's ``safe_alt_km`` (spec §2.1 ``r_p_safe``)."""
-    pl = PLANETS[body]
+    body's ``safe_alt_km`` (spec §2.1 ``r_p_safe``).
+
+    Resolves a heliocentric planet code via ``PLANETS`` and, failing that, a
+    moon code via ``SATELLITES`` (moon-tour Tier-1): both expose
+    ``mu_km3_s2``/``radius_eq_km``/``safe_alt_km``, so the V_inf-limited turn
+    formula is centre-blind once the right body record is found."""
+    pl = PLANETS.get(body) or SATELLITES[body]
     mu = pl.mu_km3_s2
     safe_alt = pl.safe_alt_km
     if rp_factors is not None and body in rp_factors:
@@ -348,6 +356,7 @@ def ballistic_correct(
     slack_leg: int | None = None,
     tol_kms: float = 0.1,
     residual_mode: str = "magnitude",
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> BallisticClosureResult:
     """N-arc ballistic differential corrector (spec §2.1; generalises
     ``correct_s1l1_twoarc.py:_solve``).
@@ -376,6 +385,7 @@ def ballistic_correct(
             ephem=ephem,
             residual_mode=residual_mode,
             rp_factors=rp_factors,
+            mu_central=mu_central,
         )
 
     x0 = np.array([t0_seed_sec, *tof_seed_days], dtype=np.float64)
@@ -401,6 +411,7 @@ def ballistic_correct(
             slack_leg=slack_leg,
             period_days=period_days,
             ephem=ephem,
+            mu_central=mu_central,
         )
     except (LambertConvergenceError, LambertGeometryError, ValueError):
         return BallisticClosureResult(
