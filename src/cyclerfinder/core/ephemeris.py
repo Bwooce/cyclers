@@ -440,6 +440,11 @@ class Ephemeris:
         """Name of the backend in use."""
         return self._model
 
+    @property
+    def cache_enabled(self) -> bool:
+        """Whether per-instance ``state()`` memoisation is active."""
+        return self._cache_enabled
+
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         """Return ``(r_km, v_km_s)`` heliocentric inertial state for ``body``.
 

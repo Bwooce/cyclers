@@ -424,6 +424,30 @@ def find_real_windows(
     total_days = (end - start).total_seconds() / SECONDS_PER_DAY
     n_steps = max(2, int(total_days / step_days) + 1)
 
+    # Batch the entire grid's (body, epoch) requests through the vectorised
+    # Ephemeris.states() API up front (Task #128-S2 lever 2). This collapses the
+    # astropy backend's per-call Time/posvel framework overhead into a handful of
+    # array-Time calls and warms the per-instance state() cache, so the
+    # _mismatch_at_date scan below hits the cache instead of recomputing each
+    # encounter state. The epoch arithmetic here MUST match _mismatch_at_date's
+    # exactly (same t_running accumulation) so the cache keys line up; the scan's
+    # results are byte-identical whether or not this prewarm ran.
+    if ephem.cache_enabled:
+        batch_dts = [start + timedelta(days=i * step_days) for i in range(n_steps)]
+        batch_dts = [dt for dt in batch_dts if dt <= end]
+        batch_bodies: list[str] = []
+        batch_epochs: list[float] = []
+        for dt in batch_dts:
+            t_running = _dt_to_t_sec(dt)
+            batch_bodies.append(signature.bodies[0])
+            batch_epochs.append(t_running)
+            for j, leg_tof in enumerate(signature.leg_durations_s):
+                t_running += leg_tof
+                batch_bodies.append(signature.bodies[j + 1])
+                batch_epochs.append(t_running)
+        if batch_bodies:
+            ephem.states(batch_bodies, batch_epochs)
+
     # Grid scan: compute mismatch at each step. Store (mismatch, dt, actual_vinf).
     samples: list[tuple[float, datetime, tuple[float, ...]]] = []
     for i in range(n_steps):
