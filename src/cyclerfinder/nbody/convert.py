@@ -53,16 +53,23 @@ def t_sec_to_et(t_sec: float) -> float:
 
     Requires ``spiceypy`` (the ``validation`` extra). Imports it lazily so the
     fast suite need not have it installed.
+
+    Kernel isolation: we ``furnsh`` only the LSK and ``unload`` exactly that file
+    in the finally block. The earlier ``kclear()`` was a session hazard — it
+    unloads ALL furnished kernels, so any caller that had its own BSP (or other
+    kernel) loaded would have it silently dropped by a single time conversion.
+    Targeted ``unload`` leaves the rest of the SPICE pool untouched.
     """
     import spiceypy
 
     from cyclerfinder.verify.spice_kernels import ensure_leapseconds_kernel
 
-    spiceypy.furnsh(ensure_leapseconds_kernel())
+    lsk_path = str(ensure_leapseconds_kernel())
+    spiceypy.furnsh(lsk_path)
     try:
         et_j2000 = float(spiceypy.str2et(_J2000_TDB_STR))
     finally:
-        spiceypy.kclear()
+        spiceypy.unload(lsk_path)
     return et_j2000 + float(t_sec)
 
 

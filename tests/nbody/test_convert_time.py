@@ -57,3 +57,43 @@ def test_tagless_iso_epoch_is_the_utc_trap() -> None:
         assert abs(t_sec_to_et(0.0) - utc_trap_et) == pytest.approx(64.184, abs=1e-2)
     finally:
         spiceypy.kclear()
+
+
+@pytest.mark.slow
+def test_t_sec_to_et_round_trip_is_linear() -> None:
+    """t_sec_to_et(t) - t_sec_to_et(0) == t for non-round t (leap-second guard).
+
+    SPICE ET is itself TDB-seconds-past-J2000, so the mapping must be the exact
+    identity offset: the difference of two conversions reproduces the raw t_sec to
+    relative precision. Any leap-second / TDB↔UTC contamination would break this
+    linearity (the difference would pick up a non-constant jump).
+    """
+    base = t_sec_to_et(0.0)
+    for t_sec in (1.0, 123.456, 86_400.0 + 0.5, 3.156e7 + 17.0, -5_000_000.25):
+        assert t_sec_to_et(t_sec) - base == pytest.approx(t_sec, rel=1e-9)
+
+
+@pytest.mark.slow
+def test_t_sec_to_et_does_not_unload_other_kernels() -> None:
+    """t_sec_to_et must NOT contaminate a caller's SPICE pool (kernel isolation).
+
+    The earlier implementation called ``kclear()`` in its finally block, which
+    unloads ALL furnished kernels — silently dropping any BSP a caller had loaded.
+    Furnish an unrelated kernel (the DE440 BSP astropy already caches), call
+    t_sec_to_et, and assert the other kernel survives via ``ktotal``.
+    """
+    from cyclerfinder.verify.spice_kernels import astropy_de440_bsp_path
+
+    other_kernel = astropy_de440_bsp_path()
+    spiceypy.furnsh(other_kernel)
+    try:
+        before = spiceypy.ktotal("ALL")
+        _ = t_sec_to_et(123.0)
+        after = spiceypy.ktotal("ALL")
+        # The LSK furnished+unloaded inside the call nets to zero change; the
+        # caller's BSP is still loaded (the old kclear() would have dropped it).
+        assert after == before
+        loaded = {spiceypy.kdata(i, "ALL")[0] for i in range(after)}
+        assert other_kernel in loaded
+    finally:
+        spiceypy.kclear()
