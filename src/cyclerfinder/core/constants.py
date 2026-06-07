@@ -69,7 +69,11 @@ Out of scope here (deliberately, per ``docs/phases/m0-scaffold/plan.md``
 §4.4): Sun radius, moons, asteroids. Planet eccentricity (``ecc``) and
 inclination (``inc_deg``/``lan_deg``) are now carried as sourced J2000
 elements for the 3-D Tisserand predicate; the circular-coplanar ephemeris
-backend still treats both as zero (it ignores these fields).
+backend still treats both as zero (it ignores these fields). The
+time-phasing angles ``varpi_deg`` (longitude of perihelion ϖ) and ``L0_deg``
+(mean longitude at J2000) are likewise sourced from Standish & Williams
+Table 1 for the time-true visualization (planet-elements.json emitter); no
+ephemeris backend reads them either.
 """
 
 from __future__ import annotations
@@ -157,6 +161,21 @@ class PlanetData:
         Jupiter 0.04838624, Saturn 0.05386179, Uranus 0.04725744,
         Neptune 0.00859048. Consumed by the 3-D Tisserand predicate; the
         circular ephemeris backend ignores it.
+    varpi_deg:
+        Longitude of perihelion ``ϖ = Ω + ω`` wrt the J2000 ecliptic, deg.
+        Defaults to ``0.0``. Sourced J2000 values from Standish & Williams,
+        "Approximate Positions of the Planets", JPL Solar System Dynamics,
+        Table 1, ``varpi_0`` (longitude of perihelion) column — the SAME table
+        as ``sma_au``/``ecc``/``inc_deg``. Needed to place a planet at a real
+        date (``ω = ϖ - Ω``). The circular/inclined ephemeris backends ignore
+        it; it is consumed by the time-true viz (planet-elements.json emitter).
+    L0_deg:
+        Mean longitude at J2000 ``L0 = ϖ + M0`` wrt the J2000 ecliptic, deg.
+        Defaults to ``0.0``. Sourced J2000 values from Standish & Williams,
+        Table 1, ``L_0`` (mean longitude) column. Needed to place a planet on
+        its ellipse at a given date (``M0 = L0 - ϖ``). Same provenance and same
+        consumer (time-true viz) as ``varpi_deg``; the ephemeris backends
+        ignore it.
     """
 
     name: str
@@ -171,6 +190,10 @@ class PlanetData:
     inc_deg: float = 0.0
     lan_deg: float = 0.0
     ecc: float = 0.0
+    # Time-phasing angles (Standish & Williams Table 1 varpi_0 / L_0 columns).
+    # No ephemeris backend reads these; they feed the time-true viz emitter.
+    varpi_deg: float = 0.0
+    L0_deg: float = 0.0
 
 
 def _mean_motion_deg_day(sma_au: float) -> float:
@@ -212,6 +235,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=300.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.00677727,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=131.60246718,
+        L0_deg=181.97909950,
         # inc_deg/lan_deg deliberately left at the coplanar default 0.0 here so
         # the live ``circular`` backend stays byte-identical for every existing
         # caller and golden. The sourced J2000 3D elements (Standish & Williams
@@ -229,6 +256,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=300.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.01671123,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (Earth-Moon barycentre row).
+        varpi_deg=102.93768193,
+        L0_deg=100.46457166,
     ),
     "M": PlanetData(
         name="Mars",
@@ -240,6 +271,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=300.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.09340065,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=-23.94362959,
+        L0_deg=-4.55343205,
         # Left at coplanar default 0.0 (see the Venus note above). Sourced
         # J2000 3D elements (Standish & Williams Table 1: Mars inc=1.84969142
         # deg, lan=49.55953891 deg) are exercised via the inclined backend.
@@ -258,6 +293,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=1000.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.20563593,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=77.45779628,
+        L0_deg=252.25032350,
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Mercury
         # inc=7.00497902 deg, lan=48.33076593 deg) live in the inclined backend.
@@ -278,6 +317,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=5000.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.04838624,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=14.72847983,
+        L0_deg=34.39644051,
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Jupiter
         # inc=1.30439695 deg, lan=100.47390909 deg) live in the inclined backend.
@@ -296,6 +339,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=5000.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.05386179,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=92.59887831,
+        L0_deg=49.95424423,
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Saturn
         # inc=2.48599187 deg, lan=113.66242448 deg) live in the inclined backend.
@@ -314,6 +361,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=1000.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.04725744,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=170.95427630,
+        L0_deg=313.23810451,
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Uranus
         # inc=0.77263783 deg, lan=74.01692503 deg) live in the inclined backend.
@@ -332,6 +383,10 @@ PLANETS: Final[dict[str, PlanetData]] = {
         safe_alt_km=1000.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.00859048,
+        # J2000 longitude of perihelion / mean longitude, Standish & Williams
+        # Table 1, varpi_0 / L_0 columns (time-true viz phasing angles).
+        varpi_deg=44.96476227,
+        L0_deg=-55.12002969,
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Neptune
         # inc=1.77004347 deg, lan=131.78422574 deg) live in the inclined backend.
