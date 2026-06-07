@@ -53,7 +53,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from math import acos, degrees, sqrt
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 import numpy as np
 from numpy.typing import NDArray
@@ -67,7 +67,12 @@ from cyclerfinder.core.constants import (
     SECONDS_PER_DAY,
 )
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.flyby import dv_from_turn_deficit, flyby_dv_for, max_bend
+from cyclerfinder.core.flyby import (
+    dv_from_turn_deficit,
+    dv_powered_flyby_periapsis,
+    flyby_dv_for,
+    max_bend,
+)
 from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryError
 from cyclerfinder.model import Cycler
 from cyclerfinder.model.cycler import orbit_elements_au
@@ -148,6 +153,20 @@ asked to seed itself from real DE440 geometry (see
 # fitted by our code.
 _ALDRIN_VINF_E_KMS: float = 6.5
 _ALDRIN_VINF_M_KMS: float = 9.7
+
+FlybyCostModel = Literal["asymptote", "oberth_periapsis"]
+"""Powered-flyby cost model selector for the turn-deficit ΔV.
+
+``"asymptote"`` (default) charges the deficit as an asymptote rotation at
+infinity (:func:`cyclerfinder.core.flyby.dv_from_turn_deficit`) — the
+published-comparison baseline and the established regression anchor (the Aldrin
+≈2.9138 km/s value that cross-checks the BVP path). ``"oberth_periapsis"`` is the
+opt-in Oberth-credited periapsis maneuver
+(:func:`cyclerfinder.core.flyby.dv_powered_flyby_periapsis`); it is OUR
+computation and DIAGNOSTIC/PROVISIONAL — never silently substituted for the
+published baseline."""
+
+_DEFAULT_FLYBY_COST_MODEL: FlybyCostModel = "asymptote"
 
 
 # ---------------------------------------------------------------------------
@@ -250,6 +269,7 @@ def idealized_flyby_turn_deficit(
     *,
     mu_sun: float = MU_SUN_KM3_S2,
     flyby_alt_km: float | None = None,
+    flyby_cost_model: FlybyCostModel = _DEFAULT_FLYBY_COST_MODEL,
 ) -> FlybyTurnDeficit | None:
     """Turn deficit at ``body`` for a coplanar cycler orbit ``(a_au, e)``.
 
@@ -272,6 +292,13 @@ def idealized_flyby_turn_deficit(
         cycler uses a 200 km Earth flyby per McConaghy's dissertation). ``None``
         falls back to the conservative per-body default
         (:attr:`~cyclerfinder.core.constants.PlanetData.safe_alt_km`, 300 km).
+    flyby_cost_model:
+        Which powered-flyby cost charges the turn deficit. ``"asymptote"``
+        (default) keeps the published-comparison asymptote-rotation ΔV
+        unchanged; ``"oberth_periapsis"`` charges the Oberth-credited periapsis
+        maneuver instead (DIAGNOSTIC/PROVISIONAL — see :data:`FlybyCostModel`).
+        Only the reported :attr:`FlybyTurnDeficit.dv_kms` changes; the turn
+        angles are unaffected.
     """
     r_body = PLANETS[body].sma_au * AU_KM
     a_km = a_au * AU_KM
@@ -297,8 +324,12 @@ def idealized_flyby_turn_deficit(
         r_peri_flyby = SAFE_PERIHELION_KM[body]
     else:
         r_peri_flyby = PLANETS[body].radius_eq_km + flyby_alt_km
-    turn_max = max_bend(PLANETS[body].mu_km3_s2, r_peri_flyby, vinf)
-    dv = dv_from_turn_deficit(vinf, turn_req, turn_max)
+    mu_planet = PLANETS[body].mu_km3_s2
+    turn_max = max_bend(mu_planet, r_peri_flyby, vinf)
+    if flyby_cost_model == "oberth_periapsis":
+        dv = dv_powered_flyby_periapsis(vinf, turn_req, turn_max, mu_planet, r_peri_flyby)
+    else:
+        dv = dv_from_turn_deficit(vinf, turn_req, turn_max)
 
     return FlybyTurnDeficit(
         body=body,
@@ -487,6 +518,7 @@ def optimise_maintenance_dv(
     synodic_pair: tuple[str, str] | None = None,
     closure_body: str | None = None,
     closure_flyby_alt_km: float | None = None,
+    flyby_cost_model: FlybyCostModel = _DEFAULT_FLYBY_COST_MODEL,
     t0_window_synodic_frac: float = _T0_WINDOW_SYNODIC_FRAC,
     tof_jitter_half_days: Sequence[float] | None = None,
     n_starts: int = 5,
@@ -534,6 +566,13 @@ def optimise_maintenance_dv(
     closure_flyby_alt_km:
         Flyby periapsis altitude (km) for the turn-deficit computation. ``None``
         uses the per-body conservative default.
+    flyby_cost_model:
+        Powered-flyby cost model for the reported turn-deficit ΔV. Default
+        ``"asymptote"`` leaves the published baseline unchanged; the optimiser
+        objective (which pins the orbital anchors) always uses the asymptote
+        surrogate, so the recovered cycler is bit-identical across models — only
+        the reported :attr:`MaintenanceOptimResult.maintenance_dv_kms` changes.
+        See :data:`FlybyCostModel`.
     t0_window_synodic_frac:
         Half-width of the ``t0`` search window in synodic periods.
     tof_jitter_half_days:
@@ -691,7 +730,11 @@ def optimise_maintenance_dv(
     turn_deficit: FlybyTurnDeficit | None = None
     if closure_body is not None:
         turn_deficit = idealized_flyby_turn_deficit(
-            float(a_au), float(e), closure_body, flyby_alt_km=closure_flyby_alt_km
+            float(a_au),
+            float(e),
+            closure_body,
+            flyby_alt_km=closure_flyby_alt_km,
+            flyby_cost_model=flyby_cost_model,
         )
     if turn_deficit is not None:
         maintenance_dv = turn_deficit.dv_kms
@@ -723,6 +766,7 @@ def optimise_aldrin_maintenance_dv(
     n_starts: int = 5,
     seed: int = 0,
     real_window_priority_date: datetime | None = None,
+    flyby_cost_model: FlybyCostModel = _DEFAULT_FLYBY_COST_MODEL,
 ) -> MaintenanceOptimResult:
     """Find the minimum-ΔV periodic Aldrin E→M→E cycler over ``ephem``.
 
@@ -761,6 +805,11 @@ def optimise_aldrin_maintenance_dv(
         circular phase seed is used as a documented fallback. ``None`` keeps the
         historic behaviour, so circular-backend calls stay bit-for-bit
         identical.
+    flyby_cost_model:
+        Powered-flyby cost model for the reported maintenance ΔV. Default
+        ``"asymptote"`` reproduces the published ≈2.9138 km/s baseline;
+        ``"oberth_periapsis"`` re-costs it with the Oberth credit
+        (DIAGNOSTIC/PROVISIONAL). The optimiser anchors are unchanged either way.
 
     Returns
     -------
@@ -787,6 +836,7 @@ def optimise_aldrin_maintenance_dv(
         synodic_pair=("E", "M"),
         closure_body="E",
         closure_flyby_alt_km=_ALDRIN_EARTH_FLYBY_ALT_KM,
+        flyby_cost_model=flyby_cost_model,
         tof_jitter_half_days=(20.0, 60.0),
         n_starts=n_starts,
         seed=seed,
@@ -795,6 +845,7 @@ def optimise_aldrin_maintenance_dv(
 
 
 __all__ = [
+    "FlybyCostModel",
     "FlybyTurnDeficit",
     "MaintenanceOptimResult",
     "idealized_flyby_turn_deficit",

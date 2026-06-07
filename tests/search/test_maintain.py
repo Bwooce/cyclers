@@ -482,3 +482,88 @@ def test_aldrin_de440_seeded_solve_is_in_family() -> None:
     dv = result.maintenance_dv_kms
     assert dv > 0.0, f"in-family Aldrin must have positive maintenance ΔV, got {dv}"
     assert dv < 3.0, f"DE440 maintenance ΔV implausibly large (off-family?): {dv} km/s"
+
+
+# ---------------------------------------------------------------------------
+# Oberth periapsis cost model (task #151) — opt-in, default unchanged.
+#
+# The default model ("asymptote") MUST leave the reported ΔV bit-identical;
+# "oberth_periapsis" re-costs the SAME recovered cycler (anchors unchanged) with
+# the Oberth credit. The ΔV magnitudes are OUR computation (DIAGNOSTIC), so the
+# circular tests assert ORDERING / IDENTITY, not a sourced target.
+# ---------------------------------------------------------------------------
+
+
+def test_turn_deficit_default_model_is_asymptote() -> None:
+    # Default flyby_cost_model reproduces the asymptote-rotation ΔV exactly.
+    default = idealized_flyby_turn_deficit(_PUB_A_AU, _PUB_E, "E", flyby_alt_km=200.0)
+    asym = idealized_flyby_turn_deficit(
+        _PUB_A_AU, _PUB_E, "E", flyby_alt_km=200.0, flyby_cost_model="asymptote"
+    )
+    assert default is not None and asym is not None
+    assert default.dv_kms == asym.dv_kms
+
+
+def test_turn_deficit_oberth_cheaper_than_asymptote() -> None:
+    asym = idealized_flyby_turn_deficit(
+        _PUB_A_AU, _PUB_E, "E", flyby_alt_km=200.0, flyby_cost_model="asymptote"
+    )
+    oberth = idealized_flyby_turn_deficit(
+        _PUB_A_AU, _PUB_E, "E", flyby_alt_km=200.0, flyby_cost_model="oberth_periapsis"
+    )
+    assert asym is not None and oberth is not None
+    # Same geometry -> identical turn angles; only the charged ΔV differs.
+    assert oberth.turn_required_deg == asym.turn_required_deg
+    assert oberth.turn_max_deg == asym.turn_max_deg
+    # Aldrin sits in the deep-well regime: Oberth credit is real.
+    assert 0.0 < oberth.dv_kms < asym.dv_kms
+
+
+def test_aldrin_wrapper_default_unchanged_oberth_cheaper() -> None:
+    # The wrapper's default must reproduce the historic result; the opt-in model
+    # only changes the reported ΔV, never the recovered anchors.
+    base = optimise_aldrin_maintenance_dv(Ephemeris("circular"), n_starts=5, seed=0)
+    oberth = optimise_aldrin_maintenance_dv(
+        Ephemeris("circular"), n_starts=5, seed=0, flyby_cost_model="oberth_periapsis"
+    )
+    assert oberth.a_au == base.a_au
+    assert oberth.e == base.e
+    assert oberth.t0_sec == base.t0_sec
+    assert oberth.leg_tofs_days == base.leg_tofs_days
+    assert 0.0 < oberth.maintenance_dv_kms < base.maintenance_dv_kms
+
+
+@pytest.mark.slow
+def test_aldrin_de440_recost_under_both_models() -> None:
+    """Re-cost the in-family DE440 Aldrin schedule under both models.
+
+    Regression anchor: the asymptote model reproduces ≈2.9138 km/s (the value
+    that cross-checks the BVP path). The Oberth value is OUR computation
+    (DIAGNOSTIC/PROVISIONAL) — bounded and ordered, not matched.
+    """
+    from datetime import UTC, datetime
+
+    d = datetime(1985, 10, 28, tzinfo=UTC)
+    old = optimise_aldrin_maintenance_dv(
+        Ephemeris("astropy"), n_starts=5, seed=0, real_window_priority_date=d
+    )
+    new = optimise_aldrin_maintenance_dv(
+        Ephemeris("astropy"),
+        n_starts=5,
+        seed=0,
+        real_window_priority_date=d,
+        flyby_cost_model="oberth_periapsis",
+    )
+    # Anchors identical across models (objective unchanged).
+    assert new.a_au == old.a_au
+    assert new.e == old.e
+    assert new.t0_sec == old.t0_sec
+    # Asymptote regression anchor.
+    assert old.maintenance_dv_kms == pytest.approx(2.9138, abs=1e-3)
+    # Oberth re-cost: strictly cheaper, still strictly positive (powered cycler).
+    assert 0.0 < new.maintenance_dv_kms < old.maintenance_dv_kms
+    assert new.maintenance_dv_kms == pytest.approx(1.9336, abs=1e-3)
+    # Both pass the publication plausibility bar.
+    from cyclerfinder.verify.plausibility import QuantityKind, check_publishable
+
+    assert check_publishable(QuantityKind.MAINTENANCE_DV_KMS, new.maintenance_dv_kms).ok
