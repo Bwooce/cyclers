@@ -202,6 +202,7 @@ def defect_residual(
     ephem: Ephemeris,
     bodies: Sequence[str],
     accuracy: float = 1e-10,
+    max_wall_sec: float = 90.0,
 ) -> NDArray[np.float64]:
     """Full-state multiple-shooting residual in restricted n-body (design §3).
 
@@ -220,6 +221,13 @@ def defect_residual(
     Divergence is a first-class outcome: a leg whose propagation does not converge
     contributes a large finite sentinel defect (never a NaN/raise), so
     ``least_squares`` sees it as a bad region, not a crash (mirror ``correct.py``).
+
+    ``max_wall_sec`` is the per-leg propagation wall budget (the propagator's own
+    divergence budget). The default (90 s) matches the propagator; a multiple-
+    shooting solve that re-propagates many legs over a high-V∞ / step-collapsing
+    seed (the #135 high-V∞ basin) needs a tighter budget to stay bounded — every
+    leg that blows the budget returns the divergence sentinel instead of grinding
+    on. Pass a small value (e.g. 8 s) for a wall-capped bounded solve.
     """
     from cyclerfinder.nbody.forces import RailsEphemerisCache
     from cyclerfinder.nbody.propagator import RestrictedNBody
@@ -253,6 +261,7 @@ def defect_residual(
             accuracy=accuracy,
             ephem=ephem,
             cache=cache,
+            max_wall_sec=max_wall_sec,
         )
         s_next = seed.node_states[i + 1]
         if arc.converged and np.all(np.isfinite(arc.r_km)) and np.all(np.isfinite(arc.v_km_s)):
@@ -481,6 +490,7 @@ def shoot(
     bodies: Sequence[str],
     accuracy: float = 1e-10,
     max_nfev: int = 200,
+    max_wall_sec: float = 90.0,
 ) -> ShootResult:
     """Multiple-shooting differential correction (the SNOPT analogue, design §3).
 
@@ -495,6 +505,12 @@ def shoot(
     A solve is ``converged`` when ``least_squares`` reports success AND the
     corrected full-state defect norm clears the published SNOPT continuity floor
     (§2.5: 1e-3 km / 1e-6 km/s). Divergence is recorded honestly, not raised.
+
+    ``max_wall_sec`` is the per-leg propagation wall budget, forwarded to
+    :func:`defect_residual`. A bounded (tractable-gate) solve combines a small
+    ``max_nfev`` with a small ``max_wall_sec`` so the worst case is
+    ``O(max_nfev * (n-1) * max_wall_sec)`` wall — divergent legs short-circuit on
+    the budget instead of collapsing IAS15 steps for the full 90 s default.
     """
     from scipy.optimize import least_squares
 
@@ -503,7 +519,9 @@ def shoot(
     def residual_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
         states = _x_to_states(x, n)
         trial = _seed_with_states(seed, states)
-        return defect_residual(trial, ephem=ephem, bodies=bodies, accuracy=accuracy)
+        return defect_residual(
+            trial, ephem=ephem, bodies=bodies, accuracy=accuracy, max_wall_sec=max_wall_sec
+        )
 
     x0 = _states_to_x(seed.node_states)
     seed_res = residual_of_x(x0)
