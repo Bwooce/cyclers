@@ -209,7 +209,7 @@ uses `MU_SUN`, `constants.py:149-159`). New sibling type in a **new module**
 `core/satellites.py` (avoids a write-collision with concurrent `constants.py`
 edits).
 
-### Task 1.0 — `SatelliteData` dataclass + Kepler-III mean-motion derive
+### Task 1.0 — `SatelliteData` dataclass + Kepler-III mean-motion derive ✅ DONE (a4effd3)
 
 **Files:** create `src/cyclerfinder/core/satellites.py`; test
 `tests/core/test_satellites_type.py`.
@@ -301,7 +301,7 @@ Run → **green**. Lint/type. Commit:
 core/satellites: SatelliteData type + Kepler-III mean-motion helper (moon-tour Tier-1 Phase 1)
 ```
 
-### Task 1.1 — `PRIMARIES` table (Jupiter, Saturn) — sourced
+### Task 1.1 — `PRIMARIES` table (Jupiter, Saturn) — sourced ✅ DONE (c34f53c)
 
 **Files:** `core/satellites.py`; test `tests/core/test_primaries.py`.
 
@@ -348,7 +348,7 @@ Commit:
 core/satellites: PRIMARIES mu table (JPL SSD GM), sourced (moon-tour Tier-1 Phase 1)
 ```
 
-### Task 1.2 — `SATELLITES` table (Galilean four + Titan + Saturnian midsize) — sourced
+### Task 1.2 — `SATELLITES` table (Galilean four + Titan + Saturnian midsize) — sourced ✅ DONE (3479dbb)
 
 **Files:** `core/satellites.py`; test `tests/core/test_satellites_registry.py`.
 
@@ -402,7 +402,7 @@ Run → **red** → impl `SATELLITES` with sourced comments → **green**. Commi
 core/satellites: SATELLITES table (Galilean + Saturnian), JPL-sourced (moon-tour Tier-1 Phase 1)
 ```
 
-### Task 1.3 — registry-construction golden vs Endgame Part-1 Table 3 (independent anchor)
+### Task 1.3 — registry-construction golden vs Endgame Part-1 Table 3 (independent anchor) ✅ DONE (9b2485f)
 
 **Files:** test `tests/core/test_satellites_golden.py`.
 
@@ -471,7 +471,7 @@ test: registry-construction golden vs published Endgame Part-1 Table 3 (moon-tou
 
 ## Phase 2 — Centred ephemeris + catalogue re-tag + admit rows; census ratchet
 
-### Task 2.0 — `_CentredCircularBackend` (moon about its primary, km-scaled)
+### Task 2.0 — `_CentredCircularBackend` (moon about its primary, km-scaled) ✅ DONE (309d85f)
 
 **Files:** `src/cyclerfinder/core/ephemeris.py`; test
 `tests/core/test_ephemeris_centred.py`.
@@ -523,7 +523,7 @@ Commit:
 core/ephemeris: planet-centred circular moon backend (center=) (moon-tour Tier-1 Phase 2)
 ```
 
-### Task 2.1 — re-tag the two Jovian rows: `non-keplerian` → `multi-arc`
+### Task 2.1 — re-tag the two Jovian rows: `non-keplerian` → `multi-arc` ✅ DONE (d44f035)
 
 **Files:** `data/catalogue.yaml`; test `tests/data/test_moontour_retag.py`.
 
@@ -590,7 +590,7 @@ demand the cr3bp identity triple and forbid the multi-arc invariants, misrouting
 the gauntlet dispatch (design §7, Approval Q3).
 ```
 
-### Task 2.2 — Saturnian mixed row: supersession-style honesty for the Titan sub-family
+### Task 2.2 — Saturnian mixed row: supersession-style honesty for the Titan sub-family ✅ DONE (d44f035)
 
 **Files:** `data/catalogue.yaml`; test `tests/data/test_moontour_retag.py`
 (extend).
@@ -638,7 +638,7 @@ Commit:
 data/catalogue: Saturnian row — Titan Tier-1/midsize Tier-2 split note (moon-tour Tier-1 Phase 2)
 ```
 
-### Task 2.3 — census ratchet: re-derive coverage same-commit; no entry vanishes
+### Task 2.3 — census ratchet: re-derive coverage same-commit; no entry vanishes ✅ DONE (d44f035)
 
 **Files:** test `tests/data/test_validation_dispatch.py` (the existing
 CONSTRUCTIBLE invariant); whichever census test holds `EXPECTED_COVERAGE`.
