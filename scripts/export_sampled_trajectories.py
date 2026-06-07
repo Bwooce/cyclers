@@ -408,6 +408,26 @@ def _serialize(payload: dict[str, Any]) -> str:
     return json.dumps(payload, indent=2) + "\n"
 
 
+def _geometry_view(payload: dict[str, Any]) -> dict[str, Any]:
+    """A copy of ``payload`` with the volatile commit-SHA provenance normalised,
+    for a deterministic ``--check`` that verifies the GEOMETRY is reproducible (not
+    the moving HEAD the file was last emitted at). The commit field legitimately
+    tracks when the data was produced, so it must not gate reproducibility —
+    re-running on a later commit produces identical geometry with a different SHA,
+    which is not "stale" in any meaningful sense (and would otherwise force the
+    slow DE440 solve on every check).
+    """
+    import copy
+    import re
+
+    view = copy.deepcopy(payload)
+    # Provenance carries "; commit <sha>;" — replace whatever SHA is present.
+    view["provenance"] = re.sub(r"commit [0-9a-f]+", "commit <commit>", view["provenance"])
+    if "_meta" in view:
+        view["_meta"]["commit"] = "<commit>"
+    return view
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0] if __doc__ else "")
     parser.add_argument(
@@ -432,10 +452,13 @@ def main() -> None:
             sys.stderr.write(f"export-sampled: {out_path} missing — run without --check.\n")
             raise SystemExit(1)
         payload = build_payload(entry_id=args.id, n_laps=args.n_laps, max_points=args.max_points)
-        if out_path.read_text() != _serialize(payload):
+        on_disk = json.loads(out_path.read_text())
+        # Compare GEOMETRY (commit SHA normalised): the data is reproducible iff the
+        # samples match, independent of which HEAD it was last emitted at.
+        if _geometry_view(on_disk) != _geometry_view(payload):
             sys.stderr.write(f"export-sampled: {out_path} is stale — re-run to regenerate.\n")
             raise SystemExit(1)
-        sys.stderr.write(f"export-sampled: {out_path} up to date.\n")
+        sys.stderr.write(f"export-sampled: {out_path} up to date (geometry matches).\n")
         return
 
     payload = build_payload(entry_id=args.id, n_laps=args.n_laps, max_points=args.max_points)
