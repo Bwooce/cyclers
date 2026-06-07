@@ -29,6 +29,8 @@ forward from full M6.
 
 from __future__ import annotations
 
+from collections import OrderedDict
+from collections.abc import Sequence
 from dataclasses import replace
 from datetime import UTC, datetime
 from math import cos, pi, radians, sin
@@ -278,6 +280,78 @@ class _AstropyBackend:
             np.asarray(v_helio, dtype=np.float64),
         )
 
+    def states(self, bodies: Sequence[str], epochs: Sequence[float]) -> list[tuple[Vec3, Vec3]]:
+        """Vectorised batch of :meth:`state` over parallel ``(body, epoch)`` lists.
+
+        Collapses the per-call ``Time`` construction and units/posvel framework
+        overhead into array-``Time`` calls: one ``Time`` over all DISTINCT
+        epochs, the Sun posvel computed once per distinct epoch (shared across
+        every body at that epoch), and each body's posvel grouped so astropy's
+        Chebyshev evaluator runs once per (body, epoch-array). Per-element output
+        is byte-identical to looping :meth:`state` — same DE440 states, same
+        ICRS→ecliptic rotation, same subtraction order.
+        """
+        from astropy.coordinates import get_body_barycentric_posvel
+        from astropy.time import Time
+
+        unknown = [b for b in bodies if b not in _ASTROPY_BODY_NAMES]
+        if unknown:
+            raise KeyError(
+                f"unknown body code(s) {tuple(unknown)!r}; astropy backend handles "
+                f"{tuple(_ASTROPY_BODY_NAMES)}"
+            )
+        n = len(bodies)
+        # Distinct epochs (preserve first-seen order) → one array Time + one Sun
+        # posvel per distinct epoch. Match the scalar path's epoch arithmetic.
+        epoch_index: dict[float, int] = {}
+        unix_epochs: list[float] = []
+        for t_sec in epochs:
+            if t_sec not in epoch_index:
+                epoch_index[t_sec] = len(unix_epochs)
+                unix_epochs.append(_J2000_EPOCH.timestamp() + t_sec)
+        t_arr = Time(np.asarray(unix_epochs, dtype=np.float64), format="unix", scale="tdb")
+        sun_pos, sun_vel = get_body_barycentric_posvel("sun", t_arr)
+
+        # Group element indices by astropy body so each body's Chebyshev eval is
+        # a single array call over its (distinct) epochs.
+        by_body: dict[str, list[int]] = {}
+        for i, b in enumerate(bodies):
+            by_body.setdefault(b, []).append(i)
+
+        results: list[tuple[Vec3, Vec3] | None] = [None] * n
+        rot = self._r_icrs_to_ecl
+        for body, idxs in by_body.items():
+            astropy_name = _ASTROPY_BODY_NAMES[body]
+            uniq = list(dict.fromkeys(epochs[i] for i in idxs))
+            cols = [epoch_index[t] for t in uniq]
+            sub_t = t_arr[cols]
+            body_pos, body_vel = get_body_barycentric_posvel(astropy_name, sub_t)
+            sun_pos_sub = sun_pos[cols]
+            sun_vel_sub = sun_vel[cols]
+            r_icrs = (body_pos - sun_pos_sub).xyz.to("km").value
+            v_icrs = (body_vel - sun_vel_sub).xyz.to("km/s").value
+            # xyz is shape (3, k); rotate all columns at once.
+            r_ecl = rot @ np.asarray(r_icrs, dtype=np.float64)
+            v_ecl = rot @ np.asarray(v_icrs, dtype=np.float64)
+            col_for_epoch = {t: c for c, t in enumerate(uniq)}
+            for i in idxs:
+                c = col_for_epoch[epochs[i]]
+                results[i] = (
+                    np.array(r_ecl[:, c], dtype=np.float64),
+                    np.array(v_ecl[:, c], dtype=np.float64),
+                )
+        return [r for r in results if r is not None]
+
+
+# Default per-instance state() cache capacity. Profile-informed: one S1L1
+# astropy solve touches ~70-80 distinct (body,epoch) pairs (Target 2 in
+# docs/notes/2026-06-06-performance-profile.md), and the maintenance window
+# scan + DE pass revisit overlapping launch epochs across generations. 4096
+# entries comfortably covers a whole solve / window scan while bounding memory:
+# each entry is a (str, float) key plus two float64 (3,) arrays ≈ 200 bytes, so
+# the full cache is well under ~1 MB per Ephemeris instance.
+_DEFAULT_STATE_CACHE_SIZE: Final[int] = 4096
+
 
 class Ephemeris:
     """Planet-state provider; selects the backend at construction time.
@@ -293,25 +367,62 @@ class Ephemeris:
         - ``"astropy"`` — real heliocentric states from astropy's bundled
           JPL DE440 ephemeris. ``t_sec = 0`` corresponds to the J2000 epoch
           (2000-01-01T12:00:00 TDB).
+    cache:
+        Memoise exact ``(body, t_sec)`` results in a per-instance bounded LRU
+        (default ``True``). The astropy backend does no caching of its own and
+        ~36-42% of the ``state()`` calls in a single solve are exact duplicates
+        (the finite-difference jacobian holds ``t0`` fixed; the maintenance scan
+        revisits launch epochs across DE generations). The cache returns FRESH
+        copies on every access, so behaviour is byte-identical to the uncached
+        path (proven by the replay fixture in ``tests/core``). The cache is
+        per-instance, so a ramped backend (``continuation.ramped_ephemeris``),
+        the circular backend, and a DE440 instance never share entries.
+    cache_size:
+        Max number of distinct ``(body, t_sec)`` entries retained (LRU
+        eviction). Defaults to :data:`_DEFAULT_STATE_CACHE_SIZE`.
     """
 
-    def __init__(self, model: str = "circular") -> None:
+    def __init__(
+        self,
+        model: str = "circular",
+        *,
+        cache: bool = True,
+        cache_size: int = _DEFAULT_STATE_CACHE_SIZE,
+    ) -> None:
+        self._cache_enabled: bool = cache
+        self._cache_size: int = cache_size
+        # Keyed on (body, t_sec); values are (r, v) float64 (3,) tuples kept
+        # read-only internally and copied out on every access.
+        self._state_cache: OrderedDict[tuple[str, float], tuple[Vec3, Vec3]] = OrderedDict()
         if model == "circular":
-            self._backend: _Backend = _CircularBackend()
+            self._backend_impl: _Backend = _CircularBackend()
         elif model == "inclined-circular":
             # Opt-in inclined-circular backend: real J2000 inc/Ω (Standish &
             # Williams), mean sma, circular (eccentricity ignored — separable
             # follow-on). Built from a COPY of PLANETS so the live coplanar
             # table is never mutated.
-            self._backend = _InclinedCircularBackend(inclined_planets())
+            self._backend_impl = _InclinedCircularBackend(inclined_planets())
         elif model == "astropy":
-            self._backend = _AstropyBackend()
+            self._backend_impl = _AstropyBackend()
         else:
             raise ValueError(
                 f"unknown ephemeris model {model!r}; expected 'circular', "
                 "'inclined-circular', or 'astropy'",
             )
         self._model: str = model
+
+    @property
+    def _backend(self) -> _Backend:
+        return self._backend_impl
+
+    @_backend.setter
+    def _backend(self, backend: _Backend) -> None:
+        # Reassigning the backend (e.g. continuation.ramped_ephemeris injects a
+        # _RampedElementsBackend post-construction) invalidates any cached
+        # states computed by the previous backend, preventing cross-model
+        # contamination on the SAME instance.
+        self._backend_impl = backend
+        self._state_cache.clear()
 
     @classmethod
     def inclined_circular(cls) -> Ephemeris:
@@ -348,4 +459,82 @@ class Ephemeris:
             the heliocentric ecliptic J2000 frame described in the module
             docstring.
         """
-        return self._backend.state(body, t_sec)
+        if not self._cache_enabled:
+            return self._backend_impl.state(body, t_sec)
+        key = (body, t_sec)
+        cache = self._state_cache
+        hit = cache.get(key)
+        if hit is None:
+            r, v = self._backend_impl.state(body, t_sec)
+            # Store a read-only canonical copy; never the array we hand out.
+            r_store = np.array(r, dtype=np.float64)
+            v_store = np.array(v, dtype=np.float64)
+            r_store.flags.writeable = False
+            v_store.flags.writeable = False
+            cache[key] = (r_store, v_store)
+            if len(cache) > self._cache_size:
+                cache.popitem(last=False)  # LRU evict oldest
+            return r_store.copy(), v_store.copy()
+        cache.move_to_end(key)  # LRU: mark most-recently-used
+        r_store, v_store = hit
+        # Fresh writeable copies every access => byte-identical to uncached path.
+        return r_store.copy(), v_store.copy()
+
+    def states(self, bodies: Sequence[str], epochs: Sequence[float]) -> list[tuple[Vec3, Vec3]]:
+        """Vectorised batch of :meth:`state` over parallel ``(body, epoch)`` lists.
+
+        ``bodies[i]`` is evaluated at ``epochs[i]``; the two sequences must be
+        the same length. Returns a list of ``(r_km, v_km_s)`` tuples in the same
+        order, each element identical to ``state(bodies[i], epochs[i])``.
+
+        For the astropy backend this collapses the per-call ``Time`` construction
+        and ``get_body_barycentric_posvel`` framework overhead (~2x the actual
+        Chebyshev math, per the profile note) into a handful of array-``Time``
+        calls. Cached ``(body, epoch)`` pairs are served from the per-instance
+        LRU and only the misses are batched. For the analytic backends it is a
+        thin loop over :meth:`state` (no vectorisation benefit, same results).
+
+        Callers can adopt this where they already have the full epoch grid up
+        front (e.g. a phase-match window scan). Per-element behaviour is
+        byte-identical to repeated :meth:`state` calls.
+        """
+        if len(bodies) != len(epochs):
+            raise ValueError(f"bodies/epochs length mismatch: {len(bodies)} != {len(epochs)}")
+        results: list[tuple[Vec3, Vec3] | None] = [None] * len(bodies)
+        misses: list[int] = []
+        for i, (body, t_sec) in enumerate(zip(bodies, epochs, strict=True)):
+            if self._cache_enabled:
+                hit = self._state_cache.get((body, t_sec))
+                if hit is not None:
+                    self._state_cache.move_to_end((body, t_sec))
+                    r_store, v_store = hit
+                    results[i] = (r_store.copy(), v_store.copy())
+                    continue
+            misses.append(i)
+
+        if misses:
+            batch_states = getattr(self._backend_impl, "states", None)
+            if batch_states is not None:
+                computed = batch_states([bodies[i] for i in misses], [epochs[i] for i in misses])
+            else:
+                computed = [self._backend_impl.state(bodies[i], epochs[i]) for i in misses]
+            for i, (r, v) in zip(misses, computed, strict=True):
+                if self._cache_enabled:
+                    r_store = np.array(r, dtype=np.float64)
+                    v_store = np.array(v, dtype=np.float64)
+                    r_store.flags.writeable = False
+                    v_store.flags.writeable = False
+                    self._state_cache[(bodies[i], epochs[i])] = (r_store, v_store)
+                    if len(self._state_cache) > self._cache_size:
+                        self._state_cache.popitem(last=False)
+                    results[i] = (r_store.copy(), v_store.copy())
+                else:
+                    results[i] = (
+                        np.array(r, dtype=np.float64),
+                        np.array(v, dtype=np.float64),
+                    )
+        return [r for r in results if r is not None]
+
+    def clear_cache(self) -> None:
+        """Drop all memoised ``state()`` results for this instance."""
+        self._state_cache.clear()
