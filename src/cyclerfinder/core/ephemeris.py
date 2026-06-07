@@ -155,6 +155,45 @@ class _CircularBackend:
         return _circular_inplane_state(planet, t_sec)
 
 
+class _CentredCircularBackend:
+    """Circular moon motion about a *primary* (planet), km-scaled.
+
+    The planet-centric Tier-1 analogue of :class:`_CircularBackend`: a moon rides
+    its mean-motion circle ABOUT THE PRIMARY (Jupiter/Saturn/…), returning
+    planet-centred inertial ``(r, v)`` in km / km·s⁻¹. It reads
+    :data:`cyclerfinder.core.satellites.SATELLITES` (not ``PLANETS``), uses
+    ``sma_km`` directly (NO ``* AU_KM``) and the about-primary
+    ``mean_motion_deg_day`` (Kepler III with the primary's GM). Coplanar (z == 0),
+    every moon at ``theta == 0`` at ``t_sec == 0`` — the same convention as the
+    heliocentric circular backend, one centre down.
+
+    Only moons whose ``primary`` matches the backend's ``center`` are resolvable;
+    any other code raises ``KeyError``.
+    """
+
+    def __init__(self, center: str) -> None:
+        # Lazy import keeps core.ephemeris -> core.satellites edge one-directional
+        # and avoids a cycle if satellites ever needs ephemeris helpers.
+        from cyclerfinder.core.satellites import SATELLITES
+
+        self._center = center
+        self._moons = {code: sat for code, sat in SATELLITES.items() if sat.primary == center}
+
+    def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
+        # KeyError is the right error if the caller passes an unknown moon (or a
+        # moon of a different primary than this backend's centre).
+        moon = self._moons[body]
+        a_km = moon.sma_km
+        n_rad_s = moon.mean_motion_deg_day * (pi / 180.0) / SECONDS_PER_DAY
+        theta = n_rad_s * t_sec
+        cos_t = cos(theta)
+        sin_t = sin(theta)
+        speed = a_km * n_rad_s
+        r = np.array([a_km * cos_t, a_km * sin_t, 0.0], dtype=np.float64)
+        v = np.array([-speed * sin_t, speed * cos_t, 0.0], dtype=np.float64)
+        return r, v
+
+
 class _InclinedCircularBackend:
     """Circular planet motion in an orbital plane inclined to the ecliptic.
 
@@ -386,6 +425,7 @@ class Ephemeris:
         self,
         model: str = "circular",
         *,
+        center: str | None = None,
         cache: bool = True,
         cache_size: int = _DEFAULT_STATE_CACHE_SIZE,
     ) -> None:
@@ -394,8 +434,24 @@ class Ephemeris:
         # Keyed on (body, t_sec); values are (r, v) float64 (3,) tuples kept
         # read-only internally and copied out on every access.
         self._state_cache: OrderedDict[tuple[str, float], tuple[Vec3, Vec3]] = OrderedDict()
+        if center is not None:
+            # Planet-centric Tier-1 moon ephemeris: a moon on its mean-motion
+            # circle about ``center`` (a primary). Only the circular model is
+            # supported for centred moon states in Tier-1; the heliocentric
+            # backends below are entered only when ``center is None``, so they
+            # stay byte-identical.
+            if model != "circular":
+                raise ValueError(
+                    f"center={center!r} requires model='circular' "
+                    f"(Tier-1 centred moon ephemeris); got model={model!r}",
+                )
+            self._backend_impl: _Backend = _CentredCircularBackend(center)
+            self._center: str | None = center
+            self._model: str = model
+            return
+        self._center = None
         if model == "circular":
-            self._backend_impl: _Backend = _CircularBackend()
+            self._backend_impl = _CircularBackend()
         elif model == "inclined-circular":
             # Opt-in inclined-circular backend: real J2000 inc/Ω (Standish &
             # Williams), mean sma, circular (eccentricity ignored — separable
@@ -409,7 +465,7 @@ class Ephemeris:
                 f"unknown ephemeris model {model!r}; expected 'circular', "
                 "'inclined-circular', or 'astropy'",
             )
-        self._model: str = model
+        self._model = model
 
     @property
     def _backend(self) -> _Backend:
