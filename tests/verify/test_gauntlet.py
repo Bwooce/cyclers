@@ -292,7 +292,7 @@ def test_validate_rejects_gold_without_independent_source() -> None:
         tier=VerdictTier.GOLD,
         confidence="high",
         axis_results={
-            "A": {"available": True, "agreed": True},
+            "A": {"available": True, "agreed": True, "n_paths_available": 2, "n_paths_passed": 2},
             "B": {"ran": False, "undocumented_shift": False},
             "C": {"has_independent_source": False, "disputed_cross_fidelity": False},
             "D": {"falsified": False},
@@ -325,7 +325,7 @@ def test_validate_rejects_rejected_tier_with_clean_axes() -> None:
         tier=VerdictTier.REJECTED,
         confidence="none",
         axis_results={
-            "A": {"available": True, "agreed": True},
+            "A": {"available": True, "agreed": True, "n_paths_available": 2, "n_paths_passed": 2},
             "B": {"ran": True, "undocumented_shift": False},
             "C": {"has_independent_source": True, "disputed_cross_fidelity": False},
             "D": {"falsified": False},
@@ -333,4 +333,24 @@ def test_validate_rejects_rejected_tier_with_clean_axes() -> None:
         provenance={"candidate_id": "x", "superseded_by": []},
     )
     with pytest.raises(ValueError, match="REJECTED requires"):
+        validate_verdict(fake)
+
+
+def test_validate_refuses_available_axis_a_without_explicit_counts() -> None:
+    """Review I6 (2026-06-07): an AVAILABLE Axis A without explicit path
+    counts must be refused, not guessed — the old `2 if available` default
+    could make the validator disagree with the combiner's own verdict for
+    hand-built dicts. Strict-on-ambiguity is the fabrication guard's job."""
+    fake = ValidationVerdict(
+        tier=VerdictTier.SILVER,
+        confidence="medium",
+        axis_results={
+            "A": {"available": True, "agreed": True},  # counts deliberately absent
+            "B": {"ran": False, "undocumented_shift": False},
+            "C": {"has_independent_source": False, "disputed_cross_fidelity": False},
+            "D": {"falsified": False},
+        },
+        provenance={"candidate_id": "x", "superseded_by": []},
+    )
+    with pytest.raises(ValueError, match="missing explicit n_paths"):
         validate_verdict(fake)

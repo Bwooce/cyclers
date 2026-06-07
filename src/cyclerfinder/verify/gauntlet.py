@@ -340,8 +340,19 @@ def validate_verdict(verdict: ValidationVerdict) -> None:
     a_agreed = a.get("agreed")
     # available-but-failing: a path ran but did NOT pass its tolerance (a
     # contradicting witness). Mirrors _axis_a_summary's `failing` rule.
-    n_paths_available = int(a.get("n_paths_available", 2 if a_available else 0))
-    n_paths_passed = int(a.get("n_paths_passed", n_paths_available if a_agreed else 0))
+    # Review finding I6 (2026-06-07): guessing missing path counts (the old
+    # `2 if a_available else 0` default) could make this validator disagree
+    # with the combiner's own verdict for hand-built axis dicts. A validator
+    # whose purpose is catching fabricated verdicts must be strict on
+    # ambiguity: an AVAILABLE Axis A must carry explicit counts.
+    if a_available and ("n_paths_available" not in a or "n_paths_passed" not in a):
+        raise ValueError(
+            "invalid verdict: axis_results['A'] is available but missing "
+            "explicit n_paths_available/n_paths_passed (refusing to guess; "
+            "see _axis_a_summary for the producing contract)"
+        )
+    n_paths_available = int(a.get("n_paths_available", 0))
+    n_paths_passed = int(a.get("n_paths_passed", 0))
     a_failing = n_paths_passed < n_paths_available
     b_undocumented = bool(b.get("undocumented_shift"))
     c_has_source = bool(c.get("has_independent_source"))
