@@ -28,8 +28,19 @@ import contextlib
 import itertools
 import socket
 from collections.abc import Iterator
+from dataclasses import dataclass
 from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
+import numpy as np
+import yaml  # type: ignore[import-untyped]
+
+from cyclerfinder.core.constants import (
+    DAYS_PER_JULIAN_YEAR,
+    MU_SUN_KM3_S2,
+    SECONDS_PER_DAY,
+)
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.catalog import (
     Catalog,
@@ -50,6 +61,10 @@ from cyclerfinder.verify.propagate import verify_long_term_stability
 
 _V2_N_LAPS: int = 3
 """Laps propagated by the V2 auto-gate (matches the M6a 3-lap gate)."""
+
+_DEFAULT_CATALOGUE_PATH: Path = Path(__file__).resolve().parents[3] / "data" / "catalogue.yaml"
+"""Repo-root ``data/catalogue.yaml`` — the default source for the free-return
+descriptor discover path (task #106)."""
 
 
 def _now() -> str:
@@ -266,4 +281,216 @@ def _record(ledger: Ledger, entry: LedgerEntry) -> None:
         ledger.record(entry)
 
 
-__all__ = ["discover"]
+# ---------------------------------------------------------------------------
+# Free-return descriptor discover path (task #106, the SnLm re-scope).
+#
+# The MULTI_ENCOUNTER_SEQUENCE catalogue rows that carry a ``free_return_arcs[]``
+# descriptor (the McConaghy/Russell-12 SnLm chains) are NOT reachable through the
+# 2-encounter idealised-optimiser sweep above. They ARE reachable through the
+# #137 free-return (radial-crossing) genome: seed (a, e) from the SOURCED aphelion
+# + transit, close the single ellipse, and the per-body V_inf EMERGES for
+# non-circular comparison against the sourced anchor.
+#
+# This is a real path that REUSES the existing physics
+# (cyclerfinder.search.free_return + .free_return_v1) — it does NOT reimplement
+# the corrector. It is a sibling of discover(): same role (walk catalogue-eligible
+# structures, attempt closure, classify), different genome. Like-for-like circular
+# closure of a circular-coplanar source — NOT a real-ephemeris V3 result.
+# ---------------------------------------------------------------------------
+
+_DAY_S = SECONDS_PER_DAY
+
+# Free-return match tolerance vs the row's SOURCED V_inf anchor (km/s). Mirrors
+# the campaign default (scripts/campaign_russell12.py:TOL_VINF_KMS) and the §14
+# V_inf-continuity ceiling — NOT loosened per row (golden discipline).
+_FR_VINF_TOL_KMS = 0.5
+_FR_TOL_KMS = 0.1  # corrector residual closure floor
+# Dense t0 phase floor: deep-aphelion high-e rows have a narrow residual basin a
+# coarse grid steps over (#137 Part 3). Pure residual evals (no Lambert), cheap.
+_FR_PHASE_EPOCHS = 4096
+
+
+@dataclass(frozen=True)
+class FreeReturnDiscovery:
+    """One descriptor row's free-return discover outcome (task #106).
+
+    Attributes
+    ----------
+    row_id:
+        Catalogue id of the descriptor-bearing SnLm row.
+    outcome:
+        ``"CLOSE-AND-MATCH"`` (closed AND emerged V_inf within tolerance of the
+        sourced anchor, symmetric single-ellipse row),
+        ``"CLOSE-MATCH-SYMMETRIC-ONLY"`` (V_inf matches but the row's transit legs
+        are asymmetric, so a single symmetric ellipse only reproduces it
+        partially — reported honestly, not over-claimed),
+        ``"CLOSE-OFF-ANCHOR"`` (closed but off the sourced anchor), ``"NO-CLOSE"``
+        (corrector did not reach the residual floor), or ``"NO-SEED"`` (missing
+        sourced aphelion/transit to seed from).
+    closed:
+        The corrector reached the residual floor.
+    vinf_match:
+        Every sourced per-body V_inf matched the emerged V_inf within tolerance.
+    v1_passed:
+        §14 V1 mechanics (paths a+c) + V_inf-continuity passed on the closed,
+        reconstructed E->M->E arc (``None`` when not run / not closed).
+    max_residual_kms:
+        Corrector closure residual (km/s).
+    derived_vinf_kms:
+        Per-body EMERGED V_inf (evidence; never imposed).
+    sourced_vinf_kms:
+        Per-body SOURCED V_inf anchor (the EXPECTED side — golden).
+    """
+
+    row_id: str
+    outcome: str
+    closed: bool
+    vinf_match: bool
+    v1_passed: bool | None
+    max_residual_kms: float
+    derived_vinf_kms: dict[str, float]
+    sourced_vinf_kms: dict[str, float]
+
+
+def _descriptor_rows(catalogue_path: Path) -> list[dict[str, Any]]:
+    """Catalogue rows carrying a ``free_return_arcs[]`` descriptor (sorted by id).
+
+    N-agnostic: driven by descriptor presence, not a hard-coded id list — exactly
+    the DESCRIPTOR_CLOSABLE sub-classification (tests/_catalogue_loader.py).
+    """
+    rows = yaml.safe_load(catalogue_path.read_text())
+    out = [r for r in rows if r.get("free_return_arcs")]
+    out.sort(key=lambda r: r["id"])
+    return out
+
+
+def _best_phase_t0(
+    a_seed: float, e_seed: float, period_sec: float, ephem: Ephemeris, mu: float
+) -> tuple[float, float]:
+    """Scan t0 over one period; return ``(best_t0_sec, best_residual_kms)`` at the
+    SOURCED ``(a, e)``. Mirrors the campaign/probe best-phase selection."""
+    from cyclerfinder.search.free_return import _residuals as _fr_residuals
+
+    best_t0, best_res = 0.0, float("inf")
+    for frac in np.linspace(0.0, 1.0, _FR_PHASE_EPOCHS, endpoint=False):
+        t0 = float(frac) * period_sec
+        try:
+            res = _fr_residuals(
+                np.array([a_seed, e_seed, t0]),
+                period_days=period_sec / _DAY_S,
+                ephem=ephem,
+                bodies=("E", "M"),
+                mu=mu,
+            )
+        except Exception:
+            continue
+        m = max(abs(r) for r in res)
+        if m < best_res:
+            best_res, best_t0 = m, t0
+    return best_t0, best_res
+
+
+def discover_free_return(
+    *,
+    ephem: Ephemeris | None = None,
+    catalogue_path: str | Path | None = None,
+    run_v1: bool = True,
+    mu: float = MU_SUN_KM3_S2,
+) -> Iterator[FreeReturnDiscovery]:
+    """Attempt free-return closure for every descriptor-bearing SnLm row.
+
+    The sibling discover path for the DESCRIPTOR_CLOSABLE bucket (task #106): for
+    each catalogue row carrying a ``free_return_arcs[]`` descriptor it derives the
+    seed ``(a, e)`` from the SOURCED aphelion + transit
+    (:func:`~cyclerfinder.search.free_return.seed_ae_from_aphelion_transit`), scans
+    t0 for the best phase, closes the single radial-crossing ellipse
+    (:func:`~cyclerfinder.search.free_return.free_return_correct`), and compares the
+    EMERGED per-body V_inf against the row's SOURCED anchor — yielding the row OUT
+    of the "unreachable" bucket with an honest outcome.
+
+    Reuses the #137 physics verbatim (the corrector + the §14 V1 mechanics); it
+    does NOT reimplement closure. Closure is circular-coplanar like-for-like
+    (reproducing a circular-coplanar source), NOT a real-ephemeris V3 result.
+
+    GOLDEN DISCIPLINE: the EXPECTED side of every match is the row's SOURCED V_inf
+    anchor; the emerged V_inf (evidence) is never imposed.
+    """
+    from cyclerfinder.search.free_return import (
+        free_return_correct,
+        seed_ae_from_aphelion_transit,
+    )
+
+    ephem = ephem or Ephemeris(model="circular")
+    cat_path = Path(catalogue_path) if catalogue_path else _DEFAULT_CATALOGUE_PATH
+
+    for row in _descriptor_rows(cat_path):
+        rid = row["id"]
+        aphelion = (row.get("orbit_elements") or {}).get("aphelion_au")
+        transit = (row.get("invariants") or {}).get("transit_times_days")
+        sourced_vinf = {
+            e["body"]: float(e["vinf_kms"]) for e in (row.get("vinf_kms_at_encounters") or [])
+        }
+        if aphelion is None or not transit:
+            yield FreeReturnDiscovery(
+                row_id=rid,
+                outcome="NO-SEED",
+                closed=False,
+                vinf_match=False,
+                v1_passed=None,
+                max_residual_kms=float("inf"),
+                derived_vinf_kms={},
+                sourced_vinf_kms=sourced_vinf,
+            )
+            continue
+
+        period_sec = float(row["period"]["years"]) * DAYS_PER_JULIAN_YEAR * _DAY_S
+        # A single symmetric ellipse cannot represent a different-per-leg transit;
+        # the campaign flags these CLOSE-MATCH-SYMMETRIC-ONLY (honest, not
+        # over-claimed) even when the emerged V_inf matches.
+        asymmetric = len(transit) >= 2 and abs(float(transit[0]) - float(transit[1])) > 1.0
+        a_seed, e_seed = seed_ae_from_aphelion_transit(float(aphelion), float(transit[0]), mu=mu)
+        best_t0, _ = _best_phase_t0(a_seed, e_seed, period_sec, ephem, mu)
+        sol = free_return_correct(
+            t0_seed_sec=best_t0,
+            a_seed_au=a_seed,
+            e_seed=e_seed,
+            period_sec=period_sec,
+            ephem=ephem,
+            mu=mu,
+            tol_kms=_FR_TOL_KMS,
+        )
+
+        derived = {k: float(v) for k, v in sol.vinf_kms.items()}
+        vinf_match = bool(sourced_vinf) and all(
+            (body in derived) and abs(derived[body] - src) <= _FR_VINF_TOL_KMS
+            for body, src in sourced_vinf.items()
+        )
+
+        v1_passed: bool | None = None
+        if run_v1 and sol.converged:
+            from cyclerfinder.search.free_return_v1 import free_return_v1_mechanics
+
+            v1_passed = free_return_v1_mechanics(sol, ephem, period_sec, mu=mu).v1_passed
+
+        if not sol.converged:
+            outcome = "NO-CLOSE"
+        elif vinf_match and asymmetric:
+            outcome = "CLOSE-MATCH-SYMMETRIC-ONLY"
+        elif vinf_match:
+            outcome = "CLOSE-AND-MATCH"
+        else:
+            outcome = "CLOSE-OFF-ANCHOR"
+
+        yield FreeReturnDiscovery(
+            row_id=rid,
+            outcome=outcome,
+            closed=bool(sol.converged),
+            vinf_match=vinf_match,
+            v1_passed=v1_passed,
+            max_residual_kms=float(sol.max_residual_kms),
+            derived_vinf_kms=derived,
+            sourced_vinf_kms=sourced_vinf,
+        )
+
+
+__all__ = ["FreeReturnDiscovery", "discover", "discover_free_return"]

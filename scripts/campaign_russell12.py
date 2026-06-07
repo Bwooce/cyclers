@@ -74,7 +74,7 @@ from cyclerfinder.search.correct import _residuals, ballistic_correct
 from cyclerfinder.search.free_return import _residuals as _fr_residuals
 from cyclerfinder.search.free_return import (
     free_return_correct,
-    free_return_geometry,
+    seed_ae_from_aphelion_transit,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -544,33 +544,13 @@ def run_row(row: dict[str, Any], *, epochs: int, workers: int, model: str) -> di
 
 
 def _seed_ae_from_aphelion_transit(aphelion_au: float, transit_days: float) -> tuple[float, float]:
-    """Derive the free-return seed ``(a, e)`` from the SOURCED aphelion and the
-    SOURCED outbound transit ToF.
+    """Thin wrapper kept for the campaign's existing call sites.
 
-    aphelion ``= a (1 + e)`` pins one DOF; the radial-crossing E->M ToF pins the
-    other. Solve for ``e`` such that the geometry's ``tof_em_days`` equals the
-    sourced transit (bisection on ``e`` in ``[0.05, 0.7]``; fall back to the
-    closest grid point if no sign change). Both inputs are SOURCED -> the seed is
-    a constraint, V_inf is derived."""
-
-    def f(e: float) -> float:
-        a = aphelion_au / (1.0 + e)
-        try:
-            g = free_return_geometry(a, e)
-        except ValueError:
-            return 1e3
-        return g.tof_em_days - transit_days
-
-    lo, hi = 0.05, 0.7
-    flo, fhi = f(lo), f(hi)
-    if flo * fhi > 0:
-        grid = np.linspace(lo, hi, 60)
-        e = float(grid[int(np.argmin([abs(f(g)) for g in grid]))])
-    else:
-        from scipy.optimize import brentq
-
-        e = float(brentq(f, lo, hi))
-    return aphelion_au / (1.0 + e), e
+    The derivation now lives in :func:`cyclerfinder.search.free_return
+    .seed_ae_from_aphelion_transit` (promoted in task #106 so the discover path and
+    this campaign share one implementation — the physics is not duplicated).
+    """
+    return seed_ae_from_aphelion_transit(aphelion_au, transit_days)
 
 
 def run_row_free_return(row: dict[str, Any], *, phase_epochs: int, model: str) -> dict:

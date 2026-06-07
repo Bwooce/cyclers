@@ -244,6 +244,45 @@ def _residuals(
     return [res_span, res_reach]
 
 
+def seed_ae_from_aphelion_transit(
+    aphelion_au: float,
+    transit_days: float,
+    *,
+    bodies: tuple[str, str] = ("E", "M"),
+    mu: float = MU_SUN_KM3_S2,
+) -> tuple[float, float]:
+    """Derive the free-return seed ``(a, e)`` from a SOURCED aphelion + transit ToF.
+
+    ``aphelion = a (1 + e)`` pins one DOF; the radial-crossing inner->outer ToF
+    pins the other. Solves for ``e`` such that :func:`free_return_geometry`'s
+    ``tof_em_days`` equals the sourced transit (bisection on ``e`` in
+    ``[0.05, 0.7]``; falls back to the closest grid point if no sign change).
+
+    Both inputs are SOURCED, so the resulting seed is a CONSTRAINT (imposed); the
+    per-body V_inf that later EMERGES from the converged ellipse is the evidence.
+    Promoted from ``scripts/campaign_russell12.py`` so the discover path and the
+    campaign share one derivation (task #106) — the physics is not duplicated.
+    """
+    from scipy.optimize import brentq
+
+    def f(e: float) -> float:
+        a = aphelion_au / (1.0 + e)
+        try:
+            g = free_return_geometry(a, e, bodies=bodies, mu=mu)
+        except ValueError:
+            return 1e3
+        return g.tof_em_days - transit_days
+
+    lo, hi = 0.05, 0.7
+    flo, fhi = f(lo), f(hi)
+    if flo * fhi > 0:
+        grid = np.linspace(lo, hi, 60)
+        e = float(grid[int(np.argmin([abs(f(g)) for g in grid]))])
+    else:
+        e = float(brentq(f, lo, hi))
+    return aphelion_au / (1.0 + e), e
+
+
 def free_return_correct(
     t0_seed_sec: float,
     a_seed_au: float,
