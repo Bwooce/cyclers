@@ -79,7 +79,17 @@ class FreeReturnClosureResult:
         that the (eliminated) intermediate loop must fill. Reported, not
         constrained, for the symmetric gate.
     converged:
-        ``max_residual_kms < tol_kms``.
+        ``max_residual_kms < tol_kms`` -- the AUTHORITATIVE acceptance criterion,
+        residual-magnitude only, BY DESIGN (the residual is the physics; the
+        least_squares internal stopping is secondary). See the note in
+        :func:`free_return_correct`.
+    solver_success:
+        DIAGNOSTIC: the underlying ``least_squares`` ``sol.success`` flag, kept
+        for the audit trail only. It does NOT decide ``converged`` -- a
+        max_nfev-exhausted run (``solver_success is False``) that still landed a
+        residual-good point is a legitimately closed cycler.
+    solver_nfev:
+        DIAGNOSTIC: ``least_squares`` function-evaluation count (audit trail).
     """
 
     a_au: float
@@ -91,6 +101,8 @@ class FreeReturnClosureResult:
     crossing_true_anom_deg: dict[str, float]
     ee_interval_days: float
     converged: bool
+    solver_success: bool = True
+    solver_nfev: int = 0
 
 
 def _true_to_mean(nu: float, e: float) -> float:
@@ -123,6 +135,12 @@ def free_return_geometry(
     V_inf with the planet on its circular coplanar orbit).
     """
     inner, outer = bodies
+    if not PLANETS[inner].sma_au < PLANETS[outer].sma_au:
+        raise ValueError(
+            f"bodies must be ordered (inner, outer) by semi-major axis: "
+            f"{inner!r} (sma={PLANETS[inner].sma_au} AU) is not inside "
+            f"{outer!r} (sma={PLANETS[outer].sma_au} AU)."
+        )
     a_km = a_au * AU_KM
     nu = {b: _crossing(a_km, e, PLANETS[b].sma_au * AU_KM) for b in bodies}
     vinf: dict[str, float] = {}
@@ -249,6 +267,13 @@ def free_return_correct(
     row's sourced ellipse and best phase yields residual ~ 0 (the acceptance gate
     in ``tests/search/test_russell12_likeforlike_probe.py``).
     """
+    inner, outer = bodies
+    if not PLANETS[inner].sma_au < PLANETS[outer].sma_au:
+        raise ValueError(
+            f"bodies must be ordered (inner, outer) by semi-major axis: "
+            f"{inner!r} (sma={PLANETS[inner].sma_au} AU) is not inside "
+            f"{outer!r} (sma={PLANETS[outer].sma_au} AU)."
+        )
     period_days = period_sec / DAY_S
 
     def _res(x: np.ndarray) -> list[float]:
@@ -263,6 +288,16 @@ def free_return_correct(
     x = sol.x
     res = _res(x)
     max_res = max(abs(r) for r in res)
+    # Convergence is decided by the residual MAGNITUDE alone, BY DESIGN -- the
+    # residual IS the physics (V_inf-continuity + phase closure, in km/s), so a
+    # solution whose worst residual is below ``tol_kms`` is a closed cycler
+    # regardless of how ``trf`` itself terminated. We deliberately do NOT gate on
+    # ``sol.success``: trf's internal stopping criteria (xtol/ftol/max_nfev) are
+    # secondary, and ``success is False`` on a max_nfev-exhausted run that still
+    # landed a residual-good point would wrongly reject a physically closed arc.
+    # The acceptance gates (tests/search/test_russell12_likeforlike_probe.py,
+    # test_free_return_v1_mechanics.py) rely on this residual-only meaning. The
+    # solver's own outcome is preserved below for the audit trail, not the gate.
 
     a_au, e, t0 = float(x[0]), float(x[1]), float(x[2])
     try:
@@ -281,6 +316,8 @@ def free_return_correct(
             crossing_true_anom_deg={},
             ee_interval_days=0.0,
             converged=False,
+            solver_success=bool(sol.success),
+            solver_nfev=int(sol.nfev),
         )
 
     return FreeReturnClosureResult(
@@ -293,4 +330,6 @@ def free_return_correct(
         crossing_true_anom_deg=nu_deg,
         ee_interval_days=period_days - 2.0 * tof_em,
         converged=max_res < tol_kms,
+        solver_success=bool(sol.success),
+        solver_nfev=int(sol.nfev),
     )
