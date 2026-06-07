@@ -46,6 +46,16 @@ class NBodyArc:
     t1_sec: float
     energy_rel_drift: float
     anchor_err_km: float
+    """Reserved closure-error slot — ALWAYS 0.0 from :class:`RestrictedNBody`.
+
+    The propagator seeds the spacecraft at the *exact* ``(r0, v0)`` it is handed
+    and performs no ephemeris-anchoring step, so it has no anchor/closure error of
+    its own to report; this field is reserved for a future backend that does anchor
+    against an ephemeris. **Callers that need a closure error must compute it
+    themselves** from the returned terminal state — :mod:`cyclerfinder.nbody.rung`
+    does exactly this (``terminal_closure_km`` = ``|r_wrap - r_seed|``). Do NOT
+    read this field as a meaningful closure metric for the REBOUND backend.
+    """
     integrator_accuracy: float
     bodies: tuple[str, ...]
     converged: bool
@@ -185,6 +195,10 @@ class RestrictedNBody:
             v_km_s=v_km_s,
             t1_sec=float(sim.t),
             energy_rel_drift=float(energy_rel_drift),
+            # Reserved: RestrictedNBody seeds at the exact (r0, v0) and never
+            # anchors against an ephemeris, so it has no anchor error of its own.
+            # Callers compute closure themselves (see NBodyArc.anchor_err_km doc;
+            # rung.py derives terminal_closure_km from the returned state).
             anchor_err_km=0.0,
             integrator_accuracy=float(accuracy),
             bodies=bodies,
