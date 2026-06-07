@@ -761,12 +761,15 @@ class Catalog:
         bodies: tuple[str, ...] | None = None,
         k: int | None = None,
         model_assumption: str | None = None,
+        primary: str | None = None,
     ) -> tuple[CatalogueEntry, ...]:
         """Spec §16.3 matcher pool pre-filter.
 
         Returns the entries that share the supplied ``bodies`` (set
-        equality after dedup), ``k``, and ``model_assumption``.
-        ``None`` arguments skip the corresponding constraint.
+        equality after dedup), ``k``, ``model_assumption``, and ``primary``
+        (the central body — moon-tour Tier-1; a missing ``primary`` is the
+        heliocentric ``"Sun"`` bucket). ``None`` arguments skip the
+        corresponding constraint.
         """
         out: list[CatalogueEntry] = []
         wanted_bodies = set(_dedupe_closing_body(bodies)) if bodies is not None else None
@@ -778,8 +781,25 @@ class Catalog:
                 continue
             if model_assumption is not None and entry.model_assumption != model_assumption:
                 continue
+            if primary is not None and (entry.primary or "Sun") != primary:
+                continue
             out.append(entry)
         return tuple(out)
+
+
+def signature_bucket_key(row: dict[str, Any]) -> tuple[str, str]:
+    """The ``(model_assumption, primary)`` matcher-pool bucket key for a row.
+
+    A finder hit is matched only within its bucket (spec §16.2): a Jovicentric
+    V_inf (``primary: Jupiter``) never compares to a heliocentric V_inf. The
+    V_inf comparator is unchanged; only the partition key gains ``primary``
+    (moon-tour Tier-1). A missing ``primary`` is the heliocentric ``"Sun"``
+    bucket (data/README.md). Accepts a raw YAML row dict or a
+    :class:`CatalogueEntry`-like mapping.
+    """
+    model_assumption = str(row.get("model_assumption") or "circular-coplanar")
+    primary = str(row.get("primary") or "Sun")
+    return (model_assumption, primary)
 
 
 def load_catalog(path: Path | str = CATALOGUE_PATH) -> Catalog:
