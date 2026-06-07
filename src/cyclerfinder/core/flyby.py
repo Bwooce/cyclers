@@ -27,7 +27,7 @@ Plan: ``docs/phases/m2-flyby-maps/plan.md`` §3.1.
 
 from __future__ import annotations
 
-from math import asin, sin
+from math import asin, sin, sqrt
 
 import numpy as np
 from numpy.typing import NDArray
@@ -112,6 +112,109 @@ def dv_from_turn_deficit(vinf: float, delta_required: float, delta_max: float) -
         raise ValueError(f"vinf must be non-negative, got {vinf}")
     excess = max(0.0, delta_required - delta_max)
     return 2.0 * vinf * sin(0.5 * excess)
+
+
+def dv_powered_flyby_periapsis(
+    vinf: float,
+    delta_required: float,
+    delta_max: float,
+    mu_planet: float,
+    rp_min: float,
+) -> float:
+    """Oberth-credited periapsis powered-flyby ``Delta V`` (km/s) for a turn deficit.
+
+    An **alternative** to :func:`dv_from_turn_deficit` for the equal-:math:`|V_\\infty|`
+    turn-closure case (the actuator the Aldrin maintenance schedule needs). Where
+    :func:`dv_from_turn_deficit` rotates the :math:`V_\\infty` asymptote *at
+    infinity* (speed :math:`V_\\infty`, no Oberth credit), this model supplies the
+    residual turn by a **tangential impulse at periapsis**, deep in the planet's
+    well, where the spacecraft moves at
+    :math:`v_p = \\sqrt{V_\\infty^2 + 2\\mu/r_p}`.
+
+    Mechanism (Takao 2025 Eq. 11 / Russell 2004 Eq. 5.5 family). The achievable
+    ballistic bend cone at ``rp_min`` is ``delta_max`` for the incoming
+    :math:`V_\\infty`. To deliver the *full* ``delta_required`` ballistically the
+    flyby must run at a **lower** excess speed ``vinf_target`` for which the cone
+    just opens to ``delta_required``:
+
+    .. math::
+
+        \\sin\\!\\left(\\tfrac{1}{2}\\delta_\\text{req}\\right)
+        = \\frac{1}{1 + r_p\\, V_{\\infty,\\text{target}}^2 / \\mu}
+        \\;\\Rightarrow\\;
+        V_{\\infty,\\text{target}}
+        = \\sqrt{\\frac{\\mu}{r_p}\\!\\left(\\frac{1}{\\sin(\\delta_\\text{req}/2)} - 1\\right)}.
+
+    The maneuver is two tangential periapsis impulses charged by the Oberth speed
+    difference (Takao Eq. 11): slow from the incoming periapsis speed
+    :math:`v_p(V_\\infty)` to :math:`v_p(V_{\\infty,\\text{target}})` so the
+    widened cone delivers the whole turn, then restore the original
+    :math:`|V_\\infty|` on the way out so the closure magnitude is preserved:
+
+    .. math::
+
+        \\Delta V_\\text{Oberth}
+        = 2\\,\\bigl|\\,\\sqrt{V_\\infty^2 + 2\\mu/r_p}
+                       - \\sqrt{V_{\\infty,\\text{target}}^2 + 2\\mu/r_p}\\,\\bigr|.
+
+    Properties (asserted in :mod:`tests.core.test_flyby_oberth`): zero deficit ->
+    exactly ``0.0``; monotone non-decreasing in ``delta_required``; and, **in the
+    deep-well regime** (``2 mu / rp`` dominant — equivalently ``vinf`` below a
+    body-specific threshold, which covers the entire physically-relevant deficit
+    range for an Earth flyby up to ``vinf ~ 6.9 km/s``), strictly below
+    :func:`dv_from_turn_deficit` for the same deficit (the Oberth credit). The
+    guarantee is **not** universal: at high ``vinf`` the ballistic cone is already
+    so narrow that opening it to ``delta_required`` demands a large magnitude
+    excursion and the periapsis maneuver can exceed the asymptote rotation. See
+    the module-level note ``docs/notes/2026-06-07-oberth-flyby-recost.md``.
+
+    Units/frames match the rest of the module: ``vinf`` and the result in km/s,
+    ``mu_planet`` in km**3/s**2, ``rp_min`` in km, angles in radians.
+
+    Parameters
+    ----------
+    vinf:
+        Hyperbolic excess speed at the flyby (shared in/out magnitude), km/s.
+        Non-negative.
+    delta_required:
+        Turn angle the geometry demands, rad.
+    delta_max:
+        Maximum ballistically achievable turn at ``rp_min`` for ``vinf`` (rad);
+        see :func:`max_bend`. Passed in so the caller controls the cone
+        convention (the same value fed to :func:`dv_from_turn_deficit`).
+    mu_planet:
+        Planet gravitational parameter ``GM``, km**3/s**2.
+    rp_min:
+        Periapsis radius at which the maneuver is performed (the tightest safe
+        flyby), km.
+
+    Returns
+    -------
+    float
+        ``Delta V`` in km/s. Non-negative; exactly ``0.0`` within the cone.
+    """
+    if vinf < 0.0:
+        raise ValueError(f"vinf must be non-negative, got {vinf}")
+    if mu_planet <= 0.0:
+        raise ValueError(f"mu_planet must be positive, got {mu_planet}")
+    if rp_min <= 0.0:
+        raise ValueError(f"rp_min must be positive, got {rp_min}")
+    if delta_required <= delta_max:
+        return 0.0
+    # vinf_target whose ballistic cone equals the required turn. delta_required
+    # is in (delta_max, pi) here, so sin(delta_required / 2) in (0, 1] and the
+    # bracket is non-negative.
+    s = sin(0.5 * delta_required)
+    inner = (1.0 / s) - 1.0
+    if inner <= 0.0:
+        # delta_required >= pi: the cone can never open this far; no finite
+        # periapsis target exists. Fall back to the asymptote-rotation cost so
+        # the model never returns a spuriously small number.
+        return dv_from_turn_deficit(vinf, delta_required, delta_max)
+    vinf_target = sqrt(mu_planet / rp_min * inner)
+    vp_in = sqrt(vinf * vinf + 2.0 * mu_planet / rp_min)
+    vp_target = sqrt(vinf_target * vinf_target + 2.0 * mu_planet / rp_min)
+    return 2.0 * abs(vp_in - vp_target)
 
 
 def bend_angle(vin_vec: Vec3, vout_vec: Vec3) -> float:
