@@ -176,7 +176,11 @@ class RestrictedNBody:
                 if not (np.isfinite(sc_p.x) and np.isfinite(sc_p.y) and np.isfinite(sc_p.z)):
                     converged = False
                     break
-                if sim.steps > max_steps or (time.monotonic() - wall_start) > max_wall_sec:
+                # REBOUND 5.0: the cumulative integration-step count is the
+                # `steps_done` attribute; `steps` is a (callable) method, so
+                # comparing it to an int raises and would be silently swallowed by
+                # the divergence handler — always flagging converged=False.
+                if sim.steps_done > max_steps or (time.monotonic() - wall_start) > max_wall_sec:
                     converged = False
                     break
         except Exception:
