@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
+from scipy.interpolate import CubicSpline
 
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS
 
@@ -35,6 +36,52 @@ if TYPE_CHECKING:
     from cyclerfinder.core.ephemeris import Ephemeris
 
 Vec3 = NDArray[np.float64]
+
+
+class RailsEphemerisCache:
+    """Spline-interpolated planets-on-rails ephemeris (perf, design §2 / Risk 3).
+
+    The rails force callback is evaluated at every IAS15 sub-step; a raw astropy
+    ``state()`` is ~2.7 ms/call (``docs/notes/2026-06-06-performance-profile.md``),
+    which makes a multi-year propagation impractical. This cache pre-samples each
+    perturber's heliocentric position from the SAME DE440 reader
+    (:func:`ingest_planet_state`) on a fine uniform grid and serves per-sub-step
+    queries by cubic-spline interpolation (~µs/call). The DE440 reader remains the
+    source of truth — GOLDEN GATE 3 anchors it — so this is a *speed* optimisation
+    over the shared kernel, not a different ephemeris (design §4 shared-DE440).
+
+    Grid step defaults to 1 day; planetary heliocentric motion is smooth at that
+    scale, so the spline error is far below the rung's km/s-level tolerance (the
+    §5.3 sensitivity test is the standing check).
+    """
+
+    def __init__(
+        self,
+        bodies: Sequence[str],
+        ephem: Ephemeris,
+        t0_sec: float,
+        t1_sec: float,
+        *,
+        step_days: float = 1.0,
+        pad_days: float = 5.0,
+    ) -> None:
+        from cyclerfinder.core.constants import SECONDS_PER_DAY
+
+        lo = min(t0_sec, t1_sec) - pad_days * SECONDS_PER_DAY
+        hi = max(t0_sec, t1_sec) + pad_days * SECONDS_PER_DAY
+        n = max(4, int((hi - lo) / (step_days * SECONDS_PER_DAY)) + 1)
+        grid = np.linspace(lo, hi, n)
+        self._splines: dict[str, CubicSpline] = {}
+        for body in bodies:
+            samples = np.array(
+                [ingest_planet_state(body, float(t), ephem)[0] for t in grid],
+                dtype=np.float64,
+            )
+            self._splines[body] = CubicSpline(grid, samples, axis=0)
+
+    def position(self, body: str, t_sec: float) -> Vec3:
+        """Interpolated heliocentric position of ``body`` at ``t_sec`` (km)."""
+        return np.asarray(self._splines[body](t_sec), dtype=np.float64)
 
 
 def ingest_planet_state(body: str, t_sec: float, ephem: Ephemeris) -> tuple[Vec3, Vec3]:

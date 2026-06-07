@@ -25,7 +25,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core.constants import MU_SUN_KM3_S2
-from cyclerfinder.nbody.forces import ingest_planet_state
+from cyclerfinder.nbody.forces import RailsEphemerisCache
 
 if TYPE_CHECKING:
     from cyclerfinder.core.ephemeris import Ephemeris
@@ -90,6 +90,8 @@ class RestrictedNBody:
         bodies: Sequence[str] = (),
         accuracy: float = 1e-10,
         ephem: Ephemeris | None = None,
+        max_steps: int = 2_000_000,
+        max_wall_sec: float = 90.0,
     ) -> NBodyArc:
         """Propagate ``(r0, v0)`` from ``t0_sec`` to ``t1_sec`` in restricted n-body.
 
@@ -97,7 +99,16 @@ class RestrictedNBody:
         means Sun-only two-body (GOLDEN GATE 1). ``accuracy`` is the IAS15
         ``epsilon`` tolerance. Returns a frozen :class:`NBodyArc` with the final
         state and the relative-energy-drift diagnostic.
+
+        Divergence is a first-class outcome (design §3, mirror ``correct.py``):
+        a pathological seed (e.g. one that grazes a perturber's softened core)
+        forces IAS15 into ever-smaller steps. Rather than spin forever, the
+        integration is budgeted by ``max_steps`` and ``max_wall_sec``; hitting
+        either returns ``converged=False`` with the last finite state — the honest
+        DIVERGENT signal the SILVER rung grades as an ARTIFACT.
         """
+        import time
+
         import rebound
 
         bodies = tuple(bodies)
@@ -132,12 +143,38 @@ class RestrictedNBody:
         # force. The Sun central term is handled by REBOUND's own gravity; this
         # callback adds only the planet perturbations (direct + indirect).
         if bodies:
-            _install_rails_forces(sim, bodies, ephem)
+            assert ephem is not None
+            cache = RailsEphemerisCache(bodies, ephem, t0_sec, t1_sec)
+            _install_rails_forces(sim, bodies, cache)
 
         e0 = float(sim.energy())
-        sim.integrate(float(t1_sec))
+        t_target = float(t1_sec)
+        # Walk toward the target in coarse time chunks so the step / wall budgets
+        # can be checked between chunks (REBOUND has no native step cap). With no
+        # perturbers (two-body) this completes in one chunk — the golden gates are
+        # unaffected.
+        n_chunks = 1 if not bodies else 200
+        chunk = (t_target - float(sim.t)) / n_chunks if n_chunks else 0.0
+        wall_start = time.monotonic()
+        converged = True
+        target = float(sim.t)
+        try:
+            for _ in range(n_chunks):
+                target = t_target if _ == n_chunks - 1 else float(sim.t) + chunk
+                sim.integrate(target)
+                sc_p = sim.particles[1]
+                if not (np.isfinite(sc_p.x) and np.isfinite(sc_p.y) and np.isfinite(sc_p.z)):
+                    converged = False
+                    break
+                if sim.steps > max_steps or (time.monotonic() - wall_start) > max_wall_sec:
+                    converged = False
+                    break
+        except Exception:
+            # REBOUND raises on a genuine integration breakdown; treat as divergent.
+            converged = False
+
         e1 = float(sim.energy())
-        energy_rel_drift = (e1 - e0) / abs(e0) if e0 != 0.0 else 0.0
+        energy_rel_drift = (e1 - e0) / abs(e0) if e0 != 0.0 and np.isfinite(e1) else 0.0
 
         sc = sim.particles[1]
         r_km = np.array([sc.x, sc.y, sc.z], dtype=np.float64)
@@ -146,26 +183,25 @@ class RestrictedNBody:
         return NBodyArc(
             r_km=r_km,
             v_km_s=v_km_s,
-            t1_sec=float(t1_sec),
+            t1_sec=float(sim.t),
             energy_rel_drift=float(energy_rel_drift),
             anchor_err_km=0.0,
             integrator_accuracy=float(accuracy),
             bodies=bodies,
-            converged=True,
+            converged=converged,
         )
 
 
-def _install_rails_forces(sim: object, bodies: tuple[str, ...], ephem: Ephemeris | None) -> None:
+def _install_rails_forces(sim: object, bodies: tuple[str, ...], cache: RailsEphemerisCache) -> None:
     """Attach the rails third-body perturbation to a REBOUND simulation.
 
-    The callback reads each perturber's heliocentric state at the integrator's
-    *current* sub-step time (``sim.t``) — this is the per-force-eval ephemeris
-    read that is the harness's cost (design Risk 3). Sun-frame indirect term
+    The callback reads each perturber's heliocentric position at the integrator's
+    *current* sub-step time (``sim.t``) from the spline rails cache (built once
+    from the shared DE440 reader) — the per-force-eval read that is the harness's
+    cost (design Risk 3), made tractable by interpolation. Sun-frame indirect term
     included so the heliocentric (non-inertial) frame is consistent.
     """
     from cyclerfinder.core.constants import PLANETS
-
-    assert ephem is not None
 
     def additional_forces(reb_sim_pointer: object) -> None:
         reb_sim = reb_sim_pointer.contents  # type: ignore[attr-defined]
@@ -174,10 +210,20 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], ephem: Ephemeris
         r = np.array([sc.x, sc.y, sc.z], dtype=np.float64)
         ax = ay = az = 0.0
         for body in bodies:
-            mu_p = PLANETS[body].mu_km3_s2
-            r_p, _ = ingest_planet_state(body, t_sec, ephem)
+            pdata = PLANETS[body]
+            mu_p = pdata.mu_km3_s2
+            r_p = cache.position(body, t_sec)
             d = r_p - r
-            d3 = float(np.linalg.norm(d)) ** 3
+            d_norm = float(np.linalg.norm(d))
+            # Soften the point-mass singularity at the safe-flyby periapsis: inside
+            # the SOI a real flyby is a B-plane-targeted patched-conic turn, NOT a
+            # heliocentric point-mass integration (design §2: flyby bending lives
+            # at the patch points). Clamping |d| to the safe periapsis keeps the
+            # heliocentric arc finite; a trajectory that would dive inside it is a
+            # divergent-seed signal the rung surfaces, not a NaN crash.
+            d_safe = pdata.radius_eq_km + pdata.safe_alt_km
+            d_eff = max(d_norm, d_safe)
+            d3 = d_eff**3
             rp3 = float(np.linalg.norm(r_p)) ** 3
             acc = mu_p * (d / d3 - r_p / rp3)
             ax += float(acc[0])
