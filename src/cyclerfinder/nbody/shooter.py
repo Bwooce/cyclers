@@ -30,7 +30,7 @@ non-converged result), never an exception.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -483,6 +483,163 @@ def _node_vinf(state: Vec3, body: str, epoch: float, ephem: Ephemeris) -> Vec3:
     return np.asarray(state[3:], dtype=np.float64) - np.asarray(v_pl, dtype=np.float64)
 
 
+# --- Parallel finite-difference Jacobian (perf lever 1, #159) ------------------
+#
+# A multiple-shooting Jacobian is (3*n_nodes+1) residual evaluations, each of
+# which re-propagates the full multi-segment trajectory; serially this dominates
+# the LM solve cost (~0.5-5 CPU-h/member, the #159 cost model). The columns are
+# independent, so they parallelise across a process pool. We use the SAME
+# primitives-only worker pattern the scan rung established
+# (``search/scan.py``): only the small ``ShootingSeed`` (numpy arrays + floats,
+# fully picklable) and the perturbed free-vector cross the process boundary; each
+# worker constructs its own ``Ephemeris(model=...)`` once via the pool
+# initialiser, never pickling a live ``Ephemeris``. Threads are NOT used: the
+# rails additional-force callback is a Python CFUNCTYPE invoked on every IAS15
+# force evaluation, so REBOUND re-acquires the GIL inside the inner loop and
+# threads would serialise there (measured; see the perf note).
+
+# Per-worker pinned context (one binding per worker process — process-safe, NOT
+# thread-safe), set by :func:`_shoot_init_worker`. The parent passes the seed and
+# the ephemeris MODEL STRING (never a live Ephemeris) through the initialiser.
+_WORKER_SEED: ShootingSeed | None = None
+_WORKER_EPHEM: Ephemeris | None = None
+_WORKER_BODIES: tuple[str, ...] = ()
+_WORKER_ACCURACY: float = 1e-10
+_WORKER_MAX_WALL_SEC: float = 90.0
+
+
+def _shoot_init_worker(
+    seed: ShootingSeed,
+    ephem_model: str,
+    bodies: tuple[str, ...],
+    accuracy: float,
+    max_wall_sec: float,
+) -> None:
+    """Pool initialiser: pin the seed + a fresh per-process Ephemeris."""
+    global _WORKER_SEED, _WORKER_EPHEM, _WORKER_BODIES, _WORKER_ACCURACY, _WORKER_MAX_WALL_SEC
+    from cyclerfinder.core.ephemeris import Ephemeris
+
+    _WORKER_SEED = seed
+    _WORKER_EPHEM = Ephemeris(model=ephem_model)
+    _WORKER_BODIES = tuple(bodies)
+    _WORKER_ACCURACY = float(accuracy)
+    _WORKER_MAX_WALL_SEC = float(max_wall_sec)
+
+
+def _residual_worker(x: NDArray[np.float64]) -> NDArray[np.float64]:
+    """Worker entry point: evaluate the full-state residual at free-vector ``x``.
+
+    Runs in a worker process against the pinned seed/ephemeris. Only the
+    perturbed free-vector ``x`` crossed the boundary; the result is the small
+    residual vector. Mirrors :func:`_evaluate_point` in ``search/scan.py``.
+    """
+    assert _WORKER_SEED is not None and _WORKER_EPHEM is not None
+    n = len(_WORKER_SEED.sequence)
+    states = _x_to_states(x, n)
+    trial = _seed_with_states(_WORKER_SEED, states)
+    return defect_residual(
+        trial,
+        ephem=_WORKER_EPHEM,
+        bodies=_WORKER_BODIES,
+        accuracy=_WORKER_ACCURACY,
+        max_wall_sec=_WORKER_MAX_WALL_SEC,
+    )
+
+
+def _fd_step(x: NDArray[np.float64]) -> NDArray[np.float64]:
+    """Forward-difference step per element (MINPACK ``lmdif`` convention).
+
+    ``h_j = sqrt(eps) * |x_j|``, with ``sqrt(eps)`` substituted when ``x_j`` is
+    zero — the same relative step ``scipy``'s ``method="lm"`` uses internally, so
+    the parallel Jacobian matches the serial reference to working precision.
+    """
+    rel = float(np.sqrt(np.finfo(np.float64).eps))
+    h = rel * np.abs(x)
+    h[h == 0.0] = rel
+    return h
+
+
+def _fd_jacobian(
+    residual_of_x: Callable[[NDArray[np.float64]], NDArray[np.float64]],
+    x: NDArray[np.float64],
+    f0: NDArray[np.float64],
+    *,
+    column_eval: Callable[
+        [Callable[[NDArray[np.float64]], NDArray[np.float64]], list[NDArray[np.float64]]],
+        list[NDArray[np.float64]],
+    ],
+) -> NDArray[np.float64]:
+    """Forward-difference Jacobian ``df/dx`` (columns optionally parallelised).
+
+    ``column_eval`` maps the residual over the per-column perturbed vectors;
+    passing a serial map or a pool map selects the execution mode. The arithmetic
+    (step size, forward difference) is identical either way, so the serial and
+    parallel Jacobians agree to working precision — asserted in the tests.
+    """
+    h = _fd_step(x)
+    perturbed = []
+    for j in range(x.size):
+        xj = x.copy()
+        xj[j] += h[j]
+        perturbed.append(xj)
+    fcols = column_eval(residual_of_x, perturbed)
+    jac = np.empty((f0.size, x.size), dtype=np.float64)
+    for j in range(x.size):
+        jac[:, j] = (fcols[j] - f0) / h[j]
+    return jac
+
+
+def _serial_columns(
+    residual_of_x: Callable[[NDArray[np.float64]], NDArray[np.float64]],
+    perturbed: list[NDArray[np.float64]],
+) -> list[NDArray[np.float64]]:
+    """Serial column evaluator — the determinism oracle for the parallel path."""
+    return [residual_of_x(xj) for xj in perturbed]
+
+
+def _parallel_columns_for_test(
+    seed: ShootingSeed,
+    ephem: Ephemeris,
+    x: NDArray[np.float64],
+    f0: NDArray[np.float64],
+    *,
+    n_jobs: int,
+    bodies: Sequence[str] = (),
+    accuracy: float = 1e-11,
+    max_wall_sec: float = 90.0,
+) -> NDArray[np.float64]:
+    """Build the FD Jacobian via the process pool (correctness-test entry point).
+
+    Exercises the exact pool path :func:`shoot` uses for ``n_jobs > 1`` in
+    isolation (one Jacobian build, no LM loop), so the parallel-vs-serial
+    equality gate runs in milliseconds. Not part of the solve API.
+    """
+    from concurrent.futures import ProcessPoolExecutor
+
+    n = len(seed.sequence)
+
+    def residual_of_x(xv: NDArray[np.float64]) -> NDArray[np.float64]:
+        trial = _seed_with_states(seed, _x_to_states(xv, n))
+        return defect_residual(
+            trial, ephem=ephem, bodies=bodies, accuracy=accuracy, max_wall_sec=max_wall_sec
+        )
+
+    workers = max(1, min(int(n_jobs), x.size))
+    with ProcessPoolExecutor(
+        max_workers=workers,
+        initializer=_shoot_init_worker,
+        initargs=(seed, ephem.model, tuple(bodies), accuracy, max_wall_sec),
+    ) as pool:
+
+        def _cols(
+            _res: Callable[[NDArray[np.float64]], NDArray[np.float64]],
+            perturbed: list[NDArray[np.float64]],
+        ) -> list[NDArray[np.float64]]:
+            return list(pool.map(_residual_worker, perturbed))
+
+        return _fd_jacobian(residual_of_x, x, f0, column_eval=_cols)
+
+
 def shoot(
     seed: ShootingSeed,
     *,
@@ -491,6 +648,7 @@ def shoot(
     accuracy: float = 1e-10,
     max_nfev: int = 200,
     max_wall_sec: float = 90.0,
+    n_jobs: int = 1,
 ) -> ShootResult:
     """Multiple-shooting differential correction (the SNOPT analogue, design §3).
 
@@ -511,6 +669,17 @@ def shoot(
     ``max_nfev`` with a small ``max_wall_sec`` so the worst case is
     ``O(max_nfev * (n-1) * max_wall_sec)`` wall — divergent legs short-circuit on
     the budget instead of collapsing IAS15 steps for the full 90 s default.
+
+    ``n_jobs`` (perf lever 1, #159): worker-process count for the
+    finite-difference Jacobian columns. ``n_jobs == 1`` (the default) is today's
+    serial path EXACTLY — ``least_squares`` builds its own internal FD Jacobian,
+    byte-identical to the pre-#159 behaviour. ``n_jobs > 1`` supplies an explicit
+    forward-difference Jacobian whose (3*n_nodes+1) independent columns are
+    evaluated across a :class:`~concurrent.futures.ProcessPoolExecutor` (same
+    primitives-only worker contract as ``search/scan.py``); the FD arithmetic
+    matches ``scipy``'s ``lm`` step to working precision. The serial and parallel
+    Jacobians agree on a fixture to ~1e-9 relative (asserted in the tests). The
+    speedup is bounded by ``min(n_jobs, 3*n_nodes+1)``.
     """
     from scipy.optimize import least_squares
 
@@ -527,7 +696,32 @@ def shoot(
     seed_res = residual_of_x(x0)
     seed_defect_norm = float(np.linalg.norm(seed_res))
 
-    sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
+    if n_jobs <= 1:
+        sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
+    else:
+        from concurrent.futures import ProcessPoolExecutor
+
+        n_cols = x0.size
+        workers = max(1, min(int(n_jobs), n_cols))
+        with ProcessPoolExecutor(
+            max_workers=workers,
+            initializer=_shoot_init_worker,
+            initargs=(seed, ephem.model, tuple(bodies), accuracy, max_wall_sec),
+        ) as pool:
+
+            def _parallel_columns(
+                _res: Callable[[NDArray[np.float64]], NDArray[np.float64]],
+                perturbed: list[NDArray[np.float64]],
+            ) -> list[NDArray[np.float64]]:
+                # The residual is evaluated in the workers against the pinned seed;
+                # only the perturbed free-vectors cross the boundary.
+                return list(pool.map(_residual_worker, perturbed))
+
+            def jac_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+                f0 = residual_of_x(x)
+                return _fd_jacobian(residual_of_x, x, f0, column_eval=_parallel_columns)
+
+            sol = least_squares(residual_of_x, x0, jac=jac_of_x, method="lm", max_nfev=max_nfev)
     corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
     final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
     defect_norm = float(np.linalg.norm(final_res))
