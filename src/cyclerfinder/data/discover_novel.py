@@ -53,7 +53,7 @@ from typing import Any, Literal
 
 import numpy as np
 
-from cyclerfinder.core.constants import MU_SUN_KM3_S2
+from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR, MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.catalog import (
     CanonicalSignature,
@@ -472,7 +472,7 @@ class TopologySpec:
 # which the #110 dense scan proved is ballistically nil). Period and seed trace
 # to the sourced Russell 4.991gG arcs (1.4612 + 2.8096 yr); the corrector's V_inf
 # output is OUR computation (never a golden).
-_S1L1_PERIOD_SEC = (1.4612 + 2.8096) * 365.25 * DAY_S
+_S1L1_PERIOD_SEC = (1.4612 + 2.8096) * DAYS_PER_JULIAN_YEAR * DAY_S
 
 
 def em_multiarc_topologies() -> tuple[TopologySpec, ...]:
