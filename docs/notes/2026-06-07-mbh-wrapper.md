@@ -130,3 +130,124 @@ as a passing test (it is a known multi-arc row); recorded here as diligence.
   selector (e.g. an anchor-aware secondary objective, or the pseudo-arclength
   continuation of Thread 2) would remove the seed-sensitivity that Gate 2's
   caveat records.
+
+---
+
+## ADDENDUM 2026-06-07 — perturbation spec is now SOURCED (task #156)
+
+**Status flip: UNSOURCED → SOURCED.** The Englander 2014 paper has been acquired,
+read in full, and mined (`docs/notes/2026-06-07-englander-2014-mbh-tuning-mining.md`).
+The "SPEC CAVEAT (not sourced)" section above is superseded by this addendum and
+by the SOURCED docstring in `src/cyclerfinder/search/mbh.py`.
+
+**Source (cite exactly):** Englander, J. A. and Englander, A. C., "Tuning
+Monotonic Basin Hopping: Improving the Efficiency of Stochastic Search as Applied
+to Low-Thrust Trajectory Optimization," 24th International Symposium on Space
+Flight Dynamics (ISSFD24), 2014, paper S7-3.
+
+**What the paper prescribes:** a long-tailed, bi-directional, zero-centred
+per-step perturbation; ordering **bi-polar Pareto ≥ Cauchy ≫ Gaussian ≈ Uniform**;
+the authors RECOMMEND bi-polar Pareto as the single best default because it is the
+most robust to its excursion parameter (p.31).
+
+**HONEST CAVEAT (the magnitudes are not portable).** Their numbers are from a
+SINGLE 503-variable low-thrust EESU benchmark whose decision variables are
+bound-NORMALISED (EMTG Table 1); the authors themselves flag the tunings may be
+problem-dependent (p.29). Our cycler-corrector genes are NOT range-normalised
+(hence this module's per-gene relative/absolute scale split), so we import only
+the QUALITATIVE prescription and validate the scale + distribution choice LOCALLY
+by sweep on our own Gate-2 free-return recovery.
+
+**Source-fidelity note on the Pareto generator.** Table 4 transcribes the
+generator as `(s/ε)·(ε/(ε+r))^(−α) = (s/ε)·((ε+r)/ε)^α`, which is BOUNDED for
+`r ∈ [0,1]` and therefore does NOT actually produce a long tail (its undocumented
+`ε` sets a scale, not a tail). Read literally that contradicts the paper's stated
+"very long tails" property (p.7) — the whole thesis. We therefore implement the
+canonical long-tailed bi-polar Pareto the thesis unambiguously calls for:
+magnitude `u**(−1/α)` (unit floor, genuine heavy tail as `u→0`; SMALLER α ⇒
+heavier tail) times a fair ±1 sign coin, parameterised by the same exponent α.
+Default `DEFAULT_PARETO_ALPHA = 1.08` (paper's mid-range MSD value, p.21). This
+discrepancy and our choice are recorded in the kernel body and here.
+
+### What was built
+
+1. `PERTURBATIONS = ("pareto", "cauchy", "gaussian", "uniform")` — `"pareto"`
+   (bi-polar Pareto) added; `"cauchy"` KEPT as the code default.
+2. `perturbation_alpha` parameter (Pareto exponent; ignored by other dists).
+3. `MBHResult` now records `perturbation` (name) + `perturbation_param` (the
+   excursion parameter: α for Pareto, else the scalar relative scale, `nan` for a
+   per-gene vector / `None`) — the audit gap the paper's result demands.
+4. Restart-on-stall (Englander Algorithm 1 global reset, p.9) added behind a
+   default-OFF `restart_bounds=(lower, upper)` flag: when set AND
+   `stop_after_stall` is set, a stall RE-SEEDS the next hop from a fresh uniform
+   point in bounds (keeping best-so-far) instead of stopping. `None` (default)
+   preserves the original stop-on-stall behaviour exactly. The free-return adapter
+   is the bounded case this fits; the ballistic genome is not bounded here.
+5. Docstring SPEC-CAVEAT block flipped to SOURCED.
+
+All additive: no public-signature breaks, no default-path behaviour change. The
+9 original tests stay green; 8 new tests cover Pareto escape, Pareto bi-polarity /
+α-sensitivity, the two new audit fields (incl. default-path = cauchy/0.05), the
+documented α, and restart-on-stall + its shape validation. **17 passed.**
+
+### Local sweep — distribution × scale on OUR Gate-2 problem
+
+Re-ran the Gate-2 free-return recovery (`mcconaghy-2006-em-k2`, circular model,
+40-day off-phase mis-seed, `rng_seed=6`, a/e frozen, t0 perturbed absolutely,
+60 hops) across {uniform, cauchy, pareto} × a t0-step grid spanning the Gate-2
+default (8 d) ÷10 .. default. Script: `scripts/mbh_pareto_sweep.py` (one-off,
+deterministic, re-runnable). "ANCHOR" = converged AND in the SOURCED ellipse
+(a=1.30, e=0.257 within 0.03) AND emerged V∞ at the SOURCED anchor (M 5.0 ±0.5,
+E 4.7 ±1.0) — the Gate-2 pass criterion. "conv" = converged but off-anchor (wrong
+sub-basin on the underdetermined Mars-V∞ ridge). "hops2conv" = first hop reaching
+a converged residual.
+
+```
+    dist  t0_step_d  recovered hops2conv    obj_kms   a_rec   e_rec  vinfE  vinfM  acc/att
+------------------------------------------------------------------------------------------
+ uniform        0.8         no         -     2.1637   1.310   0.237   3.35   4.53 0/ 61
+ uniform        2.5         no         -     2.1637   1.310   0.237   3.35   4.53 0/ 61
+ uniform        8.0     ANCHOR        18     0.0001   1.301   0.254   4.70   4.91 9/ 61
+  cauchy        0.8     ANCHOR         9     0.0000   1.307   0.243   3.86   4.65 7/ 61
+  cauchy        2.5     ANCHOR         5     0.0001   1.296   0.257   5.00   4.93 6/ 61
+  cauchy        8.0       conv         5     0.0000   1.074   0.797  26.94  18.18 7/ 61
+  pareto        0.8         no         -     2.1637   1.310   0.237   3.35   4.53 0/ 61
+  pareto        2.5     ANCHOR        24     0.0000   1.303   0.249   4.34   4.78 5/ 61
+  pareto        8.0     ANCHOR         2     0.0001   1.305   0.245   4.05   4.69 4/ 61
+```
+
+**Reading.**
+- **uniform** recovers the anchor in only 1/3 cells (largest step). Fragile to the
+  scale — exactly Englander's "uniform is the worst, and scale-fragile" finding.
+- **cauchy** recovers the anchor in 2/3 cells (the two SMALL-scale cells, the
+  regime the long-tail/small-scale coupling favours) and is the FASTEST (5-9 hops).
+  At the largest scale it overshoots into the degenerate powered sub-basin
+  (a=1.07, V∞ 27) — confirming the "use a smaller typical scale with a long tail"
+  lesson.
+- **pareto** also recovers the anchor in 2/3 cells but FAILS at the smallest scale
+  (no accepts) and is slower / more variable where it does (24 hops at 2.5 d).
+
+### Default-distribution recommendation + DECISION
+
+**Recommendation (per the paper):** bi-polar Pareto is the paper's recommended
+default. **Decision (per our local sweep): KEEP `"cauchy"` as the code default.**
+Pareto does NOT *clearly dominate* on our problem — on the Gate-2 anchor-recovery
+criterion the two tie on anchor-cell count (2/3 each), but cauchy is faster (5-9
+vs 2-24 hops) and, crucially, succeeds at the SMALL scales the long-tail theory
+predicts should be best, whereas pareto fails the smallest-scale cell entirely.
+Per the task rule ("change the default only if Pareto dominates clearly"), the
+evidence does not meet that bar. `"pareto"` is shipped, documented as the paper's
+recommendation, and a one-line flip away — to be reconsidered if a broader sweep
+(more rows, alpha sweep, non-frozen a/e) shows it dominating here. The paper's
+single bound-normalised low-thrust benchmark is not our cycler corrector, so the
+local evidence governs the default; the paper governs the available menu.
+
+### Restart-on-stall assessment (Algorithm 1 global reset)
+
+Assessed and IMPLEMENTED as a clean additive default-off flag (`restart_bounds`),
+since the free-return adapter genome (`a_au`, `e`, `t0`) has natural bounds. When
+off (default, and what every existing caller and all gates use) behaviour is the
+original stop-on-stall — the defensible simplification for our bounded-by-
+construction seeds. The faithful reset is now available for callers that supply
+bounds; it was not wired into the Gate-2 test because that test deliberately pins
+the stop-on-stall path. Not forced anywhere.

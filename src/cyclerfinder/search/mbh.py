@@ -16,22 +16,37 @@ survey.md``): MBH cures selection *within a fixed transcription*. If a target
 basin does not exist for the single-ellipse topology, MBH confirms that faster
 than a denser grid -- itself a positive (negative-science) result.
 
-Perturbation distribution -- SPEC CAVEAT
-----------------------------------------
-The canonical perturbation-distribution paper (Englander & Englander 2014,
-"Tuning Monotonic Basin Hopping", ISSFD24 S7-3) prescribes long-tailed
-(Cauchy / Pareto) per-gene perturbations -- the long tail is what lets the hop
-jump *between* basins rather than only jittering within one. That paper is NOT
-yet acquired (it is on the #116 acquisition list). Until it is, this module
-implements a *documented, sensible default*: per-gene relative perturbation drawn
-from a configurable distribution (``"gaussian"``, ``"uniform"``, or ``"cauchy"``)
-with a configurable scale. ``"cauchy"`` is provided as the long-tailed option and
-is the closest available stand-in for the Englander spec, but its TUNING (scale
-schedule, per-gene scaling) is NOT sourced and must not be claimed as such. The
-default is ``"cauchy"`` because the long tail is the property that makes MBH hop;
-the Gaussian/uniform options are offered for the mechanics gate and for
-ablation. Refinement to the exact Englander 2014 tuning is a follow-up once the
-paper is in hand.
+Perturbation distribution -- SOURCED (Englander & Englander 2014)
+-----------------------------------------------------------------
+The canonical perturbation-distribution paper (Englander, J. A. and Englander,
+A. C., "Tuning Monotonic Basin Hopping: Improving the Efficiency of Stochastic
+Search as Applied to Low-Thrust Trajectory Optimization," 24th International
+Symposium on Space Flight Dynamics (ISSFD24), 2014, paper S7-3) prescribes
+long-tailed, bi-directional, zero-centred per-gene perturbations -- the long tail
+is what lets a hop jump *between* basins rather than only jittering within one.
+Its headline ordering is **bi-polar Pareto >= Cauchy >> Gaussian ~ Uniform**, and
+of the two long-tailed options it RECOMMENDS bi-polar Pareto as the single best
+default because it is the most robust to its excursion parameter (p.31).
+
+This module implements all four: ``"pareto"`` (bi-polar Pareto, parameterised by
+the Power-Law exponent ``perturbation_alpha`` per Table 4's RV generator),
+``"cauchy"`` (the long-tailed scale-parameterised option), and ``"gaussian"`` /
+``"uniform"`` (the inferior baselines, retained for the mechanics gate and for
+ablation -- NOT recommended for production hops).
+
+HONEST CAVEAT on the magnitudes. The paper's numbers (Table 3 winning scale /
+alpha) are from a SINGLE 503-variable low-thrust EESU benchmark whose variables
+are bound-NORMALISED (EMTG Table 1); the authors themselves flag the tunings may
+be problem-dependent (p.29). Our cycler-corrector genes are NOT range-normalised
+(hence this module's per-gene relative/absolute scale split), so the Table-3
+magnitudes are NOT directly portable. We import only the QUALITATIVE prescription
+(long-tailed, bi-directional, zero-centred, small typical scale) and validate the
+scale / distribution choice LOCALLY by sweep on our own free-return recovery gate
+(see ``docs/notes/2026-06-07-mbh-wrapper.md`` addendum). The code default is kept
+at ``"cauchy"`` because that is what our Gate-2 free-return recovery and the
+mechanics gate were validated on; ``"pareto"`` is offered and documented as the
+paper's recommendation, to be flipped to default only when a local sweep shows it
+dominates here (it did not, clearly -- see the note).
 
 Design
 ------
@@ -77,10 +92,22 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.correct import ballistic_correct
 from cyclerfinder.search.free_return import free_return_correct
 
-# Distributions the perturbation kernel understands. "cauchy" is the long-tailed
-# default (closest available stand-in for the Englander 2014 Cauchy/Pareto spec,
-# which is NOT yet acquired -- see module docstring).
-PERTURBATIONS = ("cauchy", "gaussian", "uniform")
+# Distributions the perturbation kernel understands (Englander & Englander 2014,
+# ISSFD24 S7-3). Ordering by the paper's recommendation: "pareto" (bi-polar
+# Pareto) is the paper's single recommended default; "cauchy" is the other
+# long-tailed option (and remains THIS module's code default -- see docstring);
+# "gaussian"/"uniform" are the inferior baselines kept for the mechanics gate and
+# ablation. See module docstring for the SOURCED spec and the local-sweep caveat.
+PERTURBATIONS = ("pareto", "cauchy", "gaussian", "uniform")
+
+# Bi-polar Pareto default exponent (Power-Law alpha). The paper parameterises
+# Pareto by alpha (NOT a step-size; Table 3/4, p.13-14); 1.08 is the mid-range
+# value used in the paper's MSD demo (p.21). The magnitude is NOT a portable
+# production tuning (single bound-normalised low-thrust benchmark, p.29) -- it is
+# a documented starting point validated locally by sweep (see the wrapper note).
+# Smaller alpha => heavier tail / larger excursions; alpha in ~[1.0, 1.12] is the
+# paper's useful range (Table 3).
+DEFAULT_PARETO_ALPHA = 1.08
 
 
 @dataclass(frozen=True)
@@ -143,6 +170,17 @@ class MBHResult:
     rng_seed:
         The seed used -- echoed for reproducibility (the run is a pure function
         of (objective_and_solve, x0, params, rng_seed)).
+    perturbation:
+        The perturbation distribution name used for the run (one of
+        :data:`PERTURBATIONS`). Recorded so a run is reconstructable from the
+        result alone -- the distribution choice is the SOURCED variable that
+        Englander & Englander 2014 show governs MBH performance.
+    perturbation_param:
+        The distribution's EXCURSION PARAMETER for the run: the Power-Law exponent
+        ``alpha`` for ``"pareto"``, else the relative ``perturbation_scale`` (the
+        scalar value when scalar, else ``nan`` when a per-gene array was supplied --
+        the full per-gene vectors are the caller's to record). Paired with
+        ``perturbation`` this is the audit trail Englander's result demands.
     """
 
     best_x: np.ndarray
@@ -157,6 +195,8 @@ class MBHResult:
     final_stall: int
     stopped_on_stall: bool
     rng_seed: int
+    perturbation: str = "cauchy"
+    perturbation_param: float = float("nan")
 
 
 def _perturb(
@@ -166,6 +206,7 @@ def _perturb(
     distribution: str,
     scale: float | Sequence[float] | np.ndarray | None,
     absolute_scale: np.ndarray | None = None,
+    alpha: float = DEFAULT_PARETO_ALPHA,
 ) -> np.ndarray:
     """Perturb ``x`` componentwise.
 
@@ -183,6 +224,12 @@ def _perturb(
 
     ``scale`` / ``absolute_scale`` may be scalar or per-gene. Use ``0`` (relative)
     or ``NaN``/``0`` (absolute) on a gene to FREEZE it (no perturbation).
+
+    For ``distribution="pareto"`` the per-gene unit draw is a bi-polar Pareto /
+    Power-Law RV (Englander & Englander 2014): magnitude ``u**(-1/alpha)`` (unit
+    floor, long tail; smaller ``alpha`` => heavier tail) times a fair +-1 sign
+    coin. The ``scale``/``absolute_scale`` per-gene multiplier still applies on
+    top. See the kernel body for the source-fidelity note on Table 4.
     """
     if scale is None:
         scale_arr = np.zeros(x.shape, dtype=np.float64)
@@ -215,6 +262,26 @@ def _perturb(
         # lets a hop escape the current basin). NOT the sourced Englander 2014
         # tuning; see the module docstring spec caveat.
         r = rng.standard_cauchy(x.shape)
+    elif distribution == "pareto":
+        # Bi-polar Pareto / Power-Law RV (Englander & Englander 2014). The paper's
+        # whole thesis is a LONG-TAILED Power-Law step parameterised by the
+        # exponent ``alpha`` (Table 3/4, p.13-14). We implement the standard
+        # bi-polar Pareto via inverse-CDF: magnitude ``u**(-1/alpha)`` (unit floor
+        # at u=1, genuine heavy tail as u->0; smaller alpha => heavier tail) with
+        # ``s`` a fair +-1 coin (the "bi-polar" sign flip that makes the one-sided
+        # Pareto symmetric about zero), then scaled per-gene like the others.
+        #
+        # SOURCE-FIDELITY NOTE: Table 4 transcribes the generator as
+        #   (s/eps) * (eps/(eps+r))**(-alpha) == (s/eps) * ((eps+r)/eps)**alpha,
+        # which is BOUNDED in r in [0,1] and so does NOT actually produce a long
+        # tail (and its undocumented ``eps`` controls the scale, not the tail).
+        # Read literally it contradicts the paper's stated "very long tails"
+        # property (p.7). We therefore implement the canonical long-tailed Pareto
+        # the thesis unambiguously calls for, parameterised by the same alpha. The
+        # discrepancy + this choice are recorded in the wrapper note's addendum.
+        u = rng.uniform(np.finfo(np.float64).tiny, 1.0, size=x.shape)
+        s = rng.choice(np.array([-1.0, 1.0]), size=x.shape)
+        r = s * np.power(u, -1.0 / alpha)
     else:
         raise ValueError(
             f"unknown perturbation distribution {distribution!r}; expected one of {PERTURBATIONS}"
@@ -230,9 +297,11 @@ def mbh(
     perturbation: str = "cauchy",
     perturbation_scale: float | Sequence[float] | None = 0.05,
     perturbation_absolute_scale: Sequence[float] | None = None,
+    perturbation_alpha: float = DEFAULT_PARETO_ALPHA,
     rng_seed: int,
     accept_tol: float = 1e-9,
     stop_after_stall: int | None = None,
+    restart_bounds: tuple[Sequence[float], Sequence[float]] | None = None,
 ) -> MBHResult:
     """Generic Monotonic Basin Hopping over an arbitrary local-solve closure.
 
@@ -251,15 +320,25 @@ def mbh(
         runs at most ``n_hops + 1`` times).
     perturbation:
         Perturbation distribution -- one of :data:`PERTURBATIONS`. Default
-        ``"cauchy"`` (long-tailed; see the module docstring spec caveat).
+        ``"cauchy"`` (long-tailed). ``"pareto"`` is the SOURCED paper's
+        recommendation (Englander & Englander 2014); ``"gaussian"``/``"uniform"``
+        are the inferior baselines. See the module docstring for the spec and the
+        local-sweep caveat on why ``"cauchy"`` remains the code default.
     perturbation_scale:
         Relative per-gene step fraction (scalar or per-gene). Default 0.05 (5%).
         ``None`` (or ``0`` on a gene) freezes the relative step for that gene.
+        For ``"pareto"`` this is the per-gene multiplier on the unit-floor Pareto
+        draw (the excursion is governed by ``perturbation_alpha``, not this).
     perturbation_absolute_scale:
         Optional per-gene ABSOLUTE step size, in each gene's own units. A finite
         positive entry OVERRIDES the relative step for that gene -- needed when a
         gene's magnitude is huge (e.g. ``t0`` in seconds) so that a few-day basin
         is reachable. ``None`` (default) uses the relative step everywhere.
+    perturbation_alpha:
+        Bi-polar Pareto Power-Law exponent (used only when
+        ``perturbation="pareto"``). Default :data:`DEFAULT_PARETO_ALPHA` (1.08).
+        Larger ``alpha`` => heavier tail / larger excursions. Ignored by the other
+        distributions.
     rng_seed:
         REQUIRED. Seeds a local ``numpy.random.Generator``; no global RNG state
         is used, so the run is fully reproducible.
@@ -268,8 +347,23 @@ def mbh(
         objective by strictly more than this (guards against floating-noise
         churn). Default 1e-9.
     stop_after_stall:
-        If set, stop early once this many consecutive PERTURBED hops fail to
-        improve the incumbent. ``None`` (default) runs the full ``n_hops``.
+        If set, controls the STALL response (this many consecutive PERTURBED hops
+        failing to improve the incumbent). ``None`` (default) never reacts to a
+        stall and runs the full ``n_hops``. Combined with ``restart_bounds`` it
+        becomes the ``Max_not_improve`` reset trigger (see ``restart_bounds``);
+        otherwise it stops the run early on stall (the original behaviour).
+    restart_bounds:
+        Default-OFF Englander Algorithm-1 GLOBAL RESET (p.9). When ``None``
+        (default) the run STOPS on a stall (the simplification documented in
+        ``docs/notes/2026-06-07-mbh-wrapper.md``: our seeds are bounded by
+        construction). When supplied as ``(lower, upper)`` per-gene bounds AND
+        ``stop_after_stall`` is set, a stall instead RE-SEEDS the next hop from a
+        fresh uniform-random point in ``[lower, upper]`` (keeping the best-so-far
+        incumbent) and continues -- the faithful MBH explore/exploit reset. The
+        run then stops only when ``n_hops`` is exhausted. The free-return adapter
+        is the bounded case this fits (``a_au``/``e``/``t0`` all have natural
+        ranges); the ballistic genome is not bounded here. Off by default so no
+        existing caller's behaviour changes.
 
     Returns
     -------
@@ -290,6 +384,17 @@ def mbh(
         if perturbation_absolute_scale is not None
         else None
     )
+    lower_b: np.ndarray | None = None
+    upper_b: np.ndarray | None = None
+    if restart_bounds is not None:
+        lower_b = np.asarray(restart_bounds[0], dtype=np.float64)
+        upper_b = np.asarray(restart_bounds[1], dtype=np.float64)
+        if lower_b.shape != x0_arr.shape or upper_b.shape != x0_arr.shape:
+            raise ValueError(
+                f"restart_bounds shapes {lower_b.shape}/{upper_b.shape} != x0 shape {x0_arr.shape}"
+            )
+        if np.any(upper_b < lower_b):
+            raise ValueError("restart_bounds upper must be >= lower elementwise")
 
     objective_history: list[float] = []
     accept_history: list[bool] = []
@@ -307,18 +412,27 @@ def mbh(
     accept_history.append(best_feasible)
     best_history.append(best_obj if best_feasible else float("inf"))
 
+    do_restart = restart_bounds is not None and stop_after_stall is not None
     stall = 0
     stopped_on_stall = False
+    pending_reset = False
     for _ in range(n_hops):
-        # Perturb the BEST incumbent's location (the classic MBH "hop from the
-        # incumbent" -- the perturbation, not an uphill accept, is the escape).
-        x_seed = _perturb(
-            best_x,
-            rng,
-            distribution=perturbation,
-            scale=perturbation_scale,
-            absolute_scale=abs_scale,
-        )
+        if pending_reset and lower_b is not None and upper_b is not None:
+            # Englander Algorithm-1 GLOBAL RESET: explore from a fresh uniform
+            # random point in bounds (the best-so-far incumbent is retained).
+            x_seed = lower_b + rng.uniform(0.0, 1.0, size=x0_arr.shape) * (upper_b - lower_b)
+            pending_reset = False
+        else:
+            # Perturb the BEST incumbent's location (the classic MBH "hop from the
+            # incumbent" -- the perturbation, not an uphill accept, is the escape).
+            x_seed = _perturb(
+                best_x,
+                rng,
+                distribution=perturbation,
+                scale=perturbation_scale,
+                absolute_scale=abs_scale,
+                alpha=perturbation_alpha,
+            )
         step = objective_and_solve(x_seed, rng)
         cand_obj = float(step.objective)
         objective_history.append(cand_obj)
@@ -341,11 +455,26 @@ def mbh(
         best_history.append(best_obj if best_feasible else float("inf"))
 
         if stop_after_stall is not None and stall >= stop_after_stall:
-            stopped_on_stall = True
-            break
+            if do_restart:
+                # Reset the impatience counter and explore from a fresh random
+                # point on the next hop (do NOT terminate the run).
+                stall = 0
+                pending_reset = True
+            else:
+                stopped_on_stall = True
+                break
 
     hops_attempted = len(objective_history)
     hops_accepted = sum(accept_history)
+    # Record the distribution's excursion parameter (the SOURCED audit field):
+    # alpha for Pareto, else the scalar relative scale (nan if a per-gene vector
+    # was supplied -- those are the caller's to record alongside the result).
+    if perturbation == "pareto":
+        perturbation_param = float(perturbation_alpha)
+    elif np.isscalar(perturbation_scale):
+        perturbation_param = float(perturbation_scale)  # type: ignore[arg-type]
+    else:
+        perturbation_param = float("nan")
     return MBHResult(
         best_x=best_x,
         best_objective=best_obj,
@@ -359,6 +488,8 @@ def mbh(
         final_stall=stall,
         stopped_on_stall=stopped_on_stall,
         rng_seed=int(rng_seed),
+        perturbation=perturbation,
+        perturbation_param=perturbation_param,
     )
 
 

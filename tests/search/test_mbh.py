@@ -41,6 +41,8 @@ import pytest
 import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.search.mbh import (
+    DEFAULT_PARETO_ALPHA,
+    PERTURBATIONS,
     MBHStep,
     make_free_return_step,
     mbh,
@@ -205,6 +207,167 @@ def test_mbh_stall_stop() -> None:
 def test_mbh_requires_known_distribution() -> None:
     with pytest.raises(ValueError, match="unknown perturbation"):
         mbh(_double_well_step, x0=[0.0], n_hops=1, perturbation="laplace", rng_seed=0)
+
+
+# ---------------------------------------------------------------------------
+# Englander 2014 upgrade (task #156): bi-polar Pareto + audit fields + restart.
+# ---------------------------------------------------------------------------
+
+
+def test_pareto_is_a_registered_long_tailed_distribution() -> None:
+    """``"pareto"`` (bi-polar Pareto) is the SOURCED paper's recommendation and is
+    registered; ``"cauchy"`` remains the CODE default (Englander & Englander 2014;
+    local-sweep caveat in the wrapper note)."""
+    assert "pareto" in PERTURBATIONS
+    assert PERTURBATIONS == ("pareto", "cauchy", "gaussian", "uniform")
+
+
+def test_mbh_pareto_escapes_to_global_basin() -> None:
+    """MBH driven by the bi-polar Pareto perturbation escapes the wrong basin
+    (the long tail jumps the inter-well barrier), mirroring the cauchy gate."""
+    result = mbh(
+        _double_well_step,
+        x0=[_SHALLOW_X],
+        n_hops=200,
+        perturbation="pareto",
+        perturbation_absolute_scale=[3.0],
+        rng_seed=12345,
+    )
+    assert result.best_feasible
+    assert abs(result.best_x[0] - _DEEP_X) < 0.2
+    assert result.best_objective == pytest.approx(_DEEP_DEPTH, abs=1e-3)
+    hist = [h for h in result.best_history if math.isfinite(h)]
+    assert all(b <= a + 1e-12 for a, b in pairwise(hist))
+
+
+def test_mbh_pareto_is_bipolar_and_alpha_sensitive() -> None:
+    """The bi-polar Pareto draw is symmetric about zero (both signs occur), is
+    long-tailed (unit floor with a heavy tail), and SMALLER ``alpha`` => heavier
+    tail (the Power-Law exponent; inverse-CDF Pareto)."""
+    from cyclerfinder.search.mbh import _perturb
+
+    def pareto_sample(alpha: float) -> np.ndarray:
+        return np.array(
+            [
+                _perturb(
+                    np.array([0.0]),
+                    np.random.default_rng(s),
+                    distribution="pareto",
+                    scale=None,
+                    absolute_scale=np.array([1.0]),
+                    alpha=alpha,
+                )[0]
+                for s in range(2000)
+            ]
+        )
+
+    sample_heavy = pareto_sample(1.05)  # heavier tail (smaller exponent)
+    sample_light = pareto_sample(3.00)  # lighter tail (larger exponent)
+    # Bi-polar: both signs present.
+    assert np.any(sample_heavy > 0) and np.any(sample_heavy < 0)
+    # Unit floor: every magnitude is >= 1 (before the per-gene scale of 1.0).
+    assert np.min(np.abs(sample_heavy)) >= 1.0 - 1e-9
+    # Heavier tail at SMALLER alpha -> larger extreme magnitude.
+    assert np.max(np.abs(sample_heavy)) > np.max(np.abs(sample_light))
+
+
+def test_mbh_result_records_distribution_and_excursion_param() -> None:
+    """MBHResult records the distribution name + its excursion parameter -- the
+    audit gap the Englander upgrade closes (the distribution choice is the SOURCED
+    performance driver)."""
+    # Pareto: excursion parameter is alpha.
+    r_pareto = mbh(
+        _double_well_step,
+        x0=[_SHALLOW_X],
+        n_hops=10,
+        perturbation="pareto",
+        perturbation_absolute_scale=[1.0],
+        perturbation_alpha=1.11,
+        rng_seed=1,
+    )
+    assert r_pareto.perturbation == "pareto"
+    assert r_pareto.perturbation_param == pytest.approx(1.11)
+
+    # Scalar relative scale: excursion parameter is that scale.
+    r_scale = mbh(
+        _double_well_step,
+        x0=[_SHALLOW_X],
+        n_hops=10,
+        perturbation="cauchy",
+        perturbation_scale=0.07,
+        rng_seed=1,
+    )
+    assert r_scale.perturbation == "cauchy"
+    assert r_scale.perturbation_param == pytest.approx(0.07)
+
+    # Per-gene / None scale: excursion parameter is nan (caller records vectors).
+    r_vec = mbh(
+        _double_well_step,
+        x0=[_SHALLOW_X],
+        n_hops=10,
+        perturbation="gaussian",
+        perturbation_scale=None,
+        perturbation_absolute_scale=[3.0],
+        rng_seed=1,
+    )
+    assert r_vec.perturbation == "gaussian"
+    assert math.isnan(r_vec.perturbation_param)
+
+
+def test_mbh_default_records_cauchy_and_default_scale() -> None:
+    """The default path records ``cauchy`` with the default 0.05 scale (the code
+    default is unchanged by the Englander upgrade)."""
+    r = mbh(_double_well_step, x0=[_SHALLOW_X], n_hops=5, rng_seed=0)
+    assert r.perturbation == "cauchy"
+    assert r.perturbation_param == pytest.approx(0.05)
+
+
+def test_default_pareto_alpha_is_the_documented_value() -> None:
+    assert pytest.approx(1.08) == DEFAULT_PARETO_ALPHA
+
+
+def test_mbh_restart_on_stall_continues_instead_of_stopping() -> None:
+    """With ``restart_bounds`` set, a stall RE-SEEDS from a fresh random point in
+    bounds (Englander Algorithm 1 global reset) and continues, rather than
+    stopping the run. The default (no bounds) still stops -- proven by the
+    existing ``test_mbh_stall_stop``."""
+
+    seen_seeds: list[float] = []
+
+    def trap_step(x_seed: np.ndarray, _rng: np.random.Generator) -> MBHStep:
+        # A flat objective: no perturbed hop ever improves, so stalls keep firing.
+        seen_seeds.append(float(x_seed[0]))
+        return MBHStep(x=np.array([0.0]), objective=0.0, feasible=True, info={})
+
+    result = mbh(
+        trap_step,
+        x0=[5.0],
+        n_hops=30,
+        perturbation="gaussian",
+        perturbation_absolute_scale=[1.0],
+        rng_seed=0,
+        stop_after_stall=3,
+        restart_bounds=([-100.0], [100.0]),
+    )
+    # Did NOT stop early: ran all 30 hops + seed solve.
+    assert not result.stopped_on_stall
+    assert result.hops_attempted == 31
+    # A reset draws within [-100, 100]; the post-reset seeds are wide spread (not
+    # the tiny gaussian jitter around the frozen incumbent at 0).
+    assert max(abs(s) for s in seen_seeds) > 10.0
+
+
+def test_mbh_restart_bounds_validates_shapes() -> None:
+    with pytest.raises(ValueError, match="restart_bounds shapes"):
+        mbh(
+            _double_well_step,
+            x0=[0.0, 1.0],
+            n_hops=1,
+            perturbation="gaussian",
+            rng_seed=0,
+            stop_after_stall=1,
+            restart_bounds=([0.0], [1.0]),
+        )
 
 
 # ---------------------------------------------------------------------------
