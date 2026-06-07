@@ -888,3 +888,206 @@ future), not more scan density.
 - The unbounded loop-until-dry deepening (broader epoch spans, more topologies,
   E-E-M and longer multi-arc classes) is a future scaling pass; this run is the
   bounded first sweep the plan specified.
+
+---
+
+# Landed 2026-06-07 — V2 promotion, MBH, primer, Hughes cross-check, method-mining
+
+> New section, appended; does not modify any entry above. Records the day's
+> landed results against the cited commits / notes. Running work is marked
+> in-flight (no outcomes claimed).
+
+## §14 V2 class-split — first V2 catalogue row
+
+The single §14 V2 multi-lap-periodicity gate was split into **V2-ballistic**
+(the existing rotating-frame-repeat drift over ≥3 laps, in the row's defining
+model) and **V2-powered** (≥3 consecutive cycles, every encounter achieved
+with the per-cycle maintenance applied AND bounded intra-cycle drift vs the
+planned trajectory, reset at each maneuver) — commit `ee9f854` (spec §14 +
+§16.7.12). Rationale (task #134): the powered Aldrin cycler is retargeted
+every cycle by design, so the cross-cycle rotating-frame-repeat metric is
+structurally unsatisfiable for it (~4.14e8 km / 3 laps, ~2072× tol) — the gate
+measured the wrong thing.
+
+- **Aldrin OUTBOUND clears V2-powered** (`verify/v2_powered.py`,
+  `tests/verify/test_aldrin_v2_powered.py`, slow; commit `69f2593`): 3
+  consecutive in-family cycles, Mars-flyby V∞ continuity ≤1e-6 km/s,
+  intra-cycle Kepler forward-reprop ≤0.002 km, in-family maintenance ΔV
+  2.76–2.91 km/s/cycle. Row `aldrin-classic-em-k1-outbound` promoted **V1→V2**
+  (commit `6263548`).
+- **Aldrin INBOUND stays V1** — its real-window solve lands on a ballistic
+  ΔV≈0 off-family neighbour, so "maintenance applied" is not demonstrated (the
+  recorded #134 off-family resolver issue).
+- **The four #137 free-return rows honestly do NOT pass V2-ballistic** (commit
+  `78bc7f0`, `tests/search/test_free_return_v2_ballistic.py`). They are
+  `cycler_class: multi-arc`: the #137 V1 evidence closes a single E→M→E
+  free-return ellipse SLICE (~620–708 d, only ~0.3–0.4 of the catalogue
+  4.27/6.41 yr period); no continuous ≥3-lap trajectory exists to propagate
+  (measured 3-lap drift ~9.4e7–1.2e8 km, >10× the M6a 50,000 km tol). The four
+  rows stay V1 — a structural finding, not a near-miss.
+
+**Validation census (verified `tests/data/test_schema_v45_fields.py::
+test_live_v1_census_matches_recorded_evidence`):** exactly one V2 (the Aldrin
+outbound) and five V1 (Aldrin inbound + `russell-ch4-5.30gGf3`, `-9.94Gg3`,
+`-5.75ggF3`, `-9.353Gg2`); no V3+. Schema bumped to v4.5.
+
+## #106 SnLm Phase 2 re-scoped complete — DESCRIPTOR_CLOSABLE bucket
+
+The `multi_encounter_sequence` exclusion bucket was split **204 → 12
+DESCRIPTOR_CLOSABLE + 192 MULTI_ENCOUNTER_SEQUENCE** (commit `9fe26e3`,
+`tests/test_catalogue_rediscovery.py` / `tests/_catalogue_loader.py`). The 12
+`free_return_arcs[]`-bearing SnLm rows (the McConaghy/Russell-12 set) became
+discover-reachable through the #137 free-return descriptor path: `discover.py`
+gained `discover_free_return()` and the descriptor-closable code path (commit
+`cc65c39`, `tests/data/test_discover_free_return.py`), making the Russell-12
+set discover-reachable rather than blanket-excluded. Plan re-scope recorded in
+commit `d60886d`. NB this is a `tests/test_catalogue_rediscovery.py` bucket
+re-partition (additive split of the same 237 rows), not a census change.
+
+## #142 method-mining of six held PDFs (commit `fee7c7b`)
+
+Six method-mining notes dated 2026-06-07 (cite by author/title/venue only).
+Headline corroborations:
+
+- **B-plane targeting + powered-flyby kernel** is the implementable Phase C
+  shooter blueprint: Jones / Hernandez / Jesick (AAS 17-577, 2017) Eqs. 1–5
+  (transfer/turn angle, iterative periapsis radius, periapsis speeds, B-plane
+  frame Ŝ/T̂/R̂, B-plane angle θ_B) — **independently corroborated** by Russell
+  2004 dissertation Eq. 5.5 (powered-SOI ΔV).
+- **S1L1 multi-arc blocker independently confirmed** by Hollister & Rall 1970
+  (NASA CR periodic-orbits study): a periodic E–M orbit is intrinsically
+  multi-arc (reciprocal E–M–E round trips stitched by Earth-side returns;
+  single Mars-return arcs are infeasible — the trajectory intersects Mars).
+  1969-vintage corroboration that S1L1 never closing as a single ellipse is a
+  modelling-truth, not an infra bug.
+- **#137 genome pivot validated** by Russell 2004 §5.4.2: rejecting
+  integer-structured analytic transfers in favour of a shape that can morph
+  under a gradient optimiser is the canonical written justification for the
+  radial-crossing `(a,e)` free-return genome; our genome is the symmetric
+  special case of his ψ generic-return.
+- **Bend formula corroborated across four papers** — `core/flyby.max_bend`
+  equals Russell Eq. 5.4, Jones Eq. 2, Ozimek (AAS 19-348) Eq. 17, and the
+  Vasile & Campagnola DFET formula.
+
+## #143 external novel-algorithms survey (commit `e1885dd`)
+
+Note `docs/notes/2026-06-07-external-algorithms-survey.md` — a ranked roadmap
+across four external algorithm families: primer-vector diagnostic (cheapest,
+read-only) → Monotonic Basin Hopping (basin-selection) → STOUR cross-check →
+family continuation.
+
+- **Russell & Ocampo (2006), "Optimization of a Broad Class of Ephemeris Model
+  Earth–Mars Cyclers," JGCD 29(2):354–367** flagged as the **near-exact
+  frontier match** (circular-coplanar→ephemeris continuation; the V1→V3 bridge
+  for the Russell rows) — **top of the acquisition list**.
+- **EMTG** (NASA Goddard) is blocked on the commercial SNOPT dependency;
+  **pykep / `pygmo.mbh`** (ESA, MPL-2.0, no SNOPT) is the open adoption path
+  for wrapping our existing `ballistic_correct`.
+- Caveat recorded in the note: four primary PDFs returned binary/encoded
+  content on automated fetch, so their internal numeric tables were NOT read —
+  citations are confirmed via metadata, but any number must be verified on
+  acquisition before being quoted as sourced.
+
+## #147 Hughes-Edelman-Longuski (AIAA 2014-4109) mined (commit `65aecee`)
+
+Note `docs/notes/2026-06-07-hughes-2014-fast-mars-free-returns-mining.md` —
+the STOUR cross-check for the Jones VEM frontier. Headline: **pure-ballistic
+E-V-M free returns exist only at node-crossing phasings, in the 5–7 km/s
+Mars-side V∞ class**; reaching *lower* V∞ is explicitly gated behind a
+broken-plane (DSM) maneuver — i.e. a multi-arc / powered topology, NOT
+single-ellipse ballistic. This **independently corroborates** the #110 /
+M-ED single-ellipse blocker and the S1L1 multi-arc finding: our #110 floors
+(17.9 / 18.5 km/s) were wrong-basin artifacts, and the Jones ~3 km/s class is
+not reachable as a pure free return here.
+
+- Six golden-eligible cross-check tables (Tables 1–6, verbatim with page
+  numbers); Table 4 is a sourced STOUR-vs-STK-Astrogator high-fidelity
+  agreement (~0.06 km/s V∞, ~1 d, ~20 km altitude) — a validation anchor for
+  the patched-conic→n-body verify chain.
+- **v4.2 backfill / catalogue-eligibility (confirmed NO):** these are one-shot
+  human-flyby free returns, NOT cyclers → **NOT catalogue rows**. They ARE
+  valid as cross-check / golden-test anchors for a patched-conic E-V-M
+  *pipeline*, not as catalogue goldens.
+- Upstream acquisitions flagged: Okutsu & Longuski 2002 ("Mars Free Returns
+  via Gravity Assist…", ref 11) and Patel, Longuski & Sims 2002 ("Mars Free
+  Return…", ref 10) — the acquisition-worthy STOUR free-return sources.
+
+## #145 MBH wrapper landed (commit `54d5075`)
+
+Transcription-agnostic Monotonic Basin Hopping loop (`search/mbh.py`;
+deterministic audit trail, rng_seed required) with adapters wrapping the
+existing `ballistic_correct` and the #137 `free_return_correct` correctors
+without editing them. Note `docs/notes/2026-06-07-mbh-wrapper.md`.
+
+- **Basin selection is curable:** on `mcconaghy-2006-em-k2`, from a 40-day
+  off-phase mis-seed, the plain solve fails (lands at 2.16 km/s) but MBH
+  recovers the sourced-anchor (Rogers ellipse) basin — emerged V∞ M=4.69 /
+  E=4.05 vs sourced 5.0 / 4.7.
+- **Honest negative:** the `russell-ch4-6.44Gg3` probe (catalogued multi-arc;
+  sourced V∞ E=6.44 / M=3.74) does NOT recover — MBH confirms the multi-arc
+  topology blocker internally rather than hopping into a non-existent
+  single-ellipse basin.
+- The perturbation distribution default is documented, NOT sourced — awaits
+  Englander & Englander 2014.
+
+## #144 primer-vector diagnostic landed (commit `b0dfe7d`)
+
+Read-only Lawden / Lion & Handelsman 1968 first-order optimality check
+(`verify/primer.py`; p̈ = G(r)p, propagated via the 6×6 STM along the Kepler
+coast; per-coast max|p| → OPTIMAL / IMPROVABLE). Note
+`docs/notes/2026-06-07-primer-vector-diagnostic.md`.
+
+- **Aldrin maintenance schedule verdict: IMPROVABLE_ADD_IMPULSE.** Coast 0
+  (E→M, 131.9 d) grid-converged max|p| = 1.1223 at t/T ≈ 0.355 (≈47 d) — a
+  genuine interior bulge; coast 1 (M→E) marginal at max|p| = 1.00008 (noise
+  floor). **PROVISIONAL pending Guzman et al. 2002** (where the linearised
+  theory fails on long multi-rev arcs).
+- **Methods correction recorded:** the brief's Hohmann-ratio-20 interior-bulge
+  gate was physically incorrect — the ~11.94 threshold is Lawden's
+  endpoint coast-extension (bi-elliptic) condition, not an interior |p|>1 on
+  the two-impulse arc. The golden gate was corrected to a long-way
+  (>180°) Lambert transfer → IMPROVABLE; symmetric Hohmann transfers (ratios
+  2, 11.94, 20, 50) touch unity only at the endpoints → OPTIMAL.
+
+## Acquisitions ledger (2026-06-07)
+
+**New holdings (held offline; cite by author/title/venue — never a repo
+path):**
+
+- **Hughes, Edelman & Longuski, "Fast Mars Free-Returns via Venus Gravity
+  Assist," AIAA 2014-4109** — **mined** this run (see #147 above).
+- **Zhang 2026** — neural-network porkchop for low-thrust asteroid transfers.
+  Held, **unmined**; likely out of scope (low-thrust). Scope decision pending
+  user.
+- **Zhang 2024** — neural angle-only orbit determination at Earth–Moon
+  libration points. Held, **unmined**; likely out of scope (OD, not cycler
+  trajectory design). Scope decision pending user.
+
+**New wants (from #143 / #147; prioritised):**
+
+1. **Russell, R. P. & Ocampo, C. A. (2006), "Optimization of a Broad Class of
+   Ephemeris Model Earth–Mars Cyclers," JGCD 29(2):354–367** — top of the
+   list; the circular-coplanar→ephemeris continuation V1→V3 bridge.
+2. **Englander, J. A. & Englander, A. C. (2014), "Tuning Monotonic Basin
+   Hopping…," 24th ISSFD, paper S7-3** — the Cauchy/Pareto perturbation-spec
+   reference before implementing MBH (open PDF located).
+3. **Guzman, Mailhe, Schiff, Hughes & Folta (2002), "Primer Vector
+   Optimization: Survey of Theory, New Analysis and Applications,"
+   IAC-02-A.6.09 (53rd IAC, Houston; NTRS 20030032208)** — needed to lift the
+   #144 primer diagnostic from PROVISIONAL.
+4. **Lion, P. M. & Handelsman, M. (1968), "Primer Vector on Fixed-Time
+   Impulsive Trajectories," AIAA Journal 6(1):127–132, DOI 10.2514/3.4452** —
+   the add-an-impulse diagnostic the maintenance work would implement.
+5. **Okutsu & Longuski (2002), "Mars Free Returns via Gravity Assist from
+   Venus"** — STOUR free-return upstream (Hughes ref 11).
+6. **Patel, Longuski & Sims (2002), "Mars Free Return…"** — STOUR free-return
+   upstream (Hughes ref 10).
+
+## Open / running (in-flight — no outcomes claimed)
+
+- **#133 Phase C n-body shooter** — running concurrently; B-plane targeting
+  kernel mandate (Jones Eqs. 4–5, the #142 finding).
+- **#148 add-an-impulse recoverable-ΔV** — running concurrently.
+- **#146 viz 2c sampled-trajectory variant** — queued.
+- **#76 moon-tour** — queued behind Phase C.
+- **#128-S2** — queued.
