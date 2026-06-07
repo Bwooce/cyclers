@@ -2,10 +2,10 @@
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 234, non-keplerian: 6}.
-3. The set of ids tagged multi-arc exactly equals the 234-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 28, multi-arc: 236, non-keplerian: 4}.
+3. The set of ids tagged multi-arc exactly equals the 236-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
-4. The 6 non-keplerian ids match the §3 list.
+4. The 4 non-keplerian ids match the §3 list.
 
 Source of truth: docs/notes/multi-arc-classification.md §3 and §9.
 
@@ -16,6 +16,11 @@ total 237->252. See docs/notes/2026-06-07-catalogue-ingest-rall-russell.md.
 2026-06-07 (#142 catalogue ingest, batch 2): +16 Russell 2004 Table 3.4
 circular-coplanar cyclers (russell-ocampo-* not previously catalogued), all
 multi-arc. multi-arc 218->234, total 252->268.
+
+2026-06-07 (moon-tour Tier-1, task #76): the two Jovian patched-conic
+family-seed rows re-tagged non-keplerian -> multi-arc (they are circular-coplanar
+patched-conic moon tours about Jupiter, not CR3BP). multi-arc 234->236,
+non-keplerian 6->4; total unchanged at 268.
 """
 
 from __future__ import annotations
@@ -28,13 +33,14 @@ import yaml  # type: ignore[import-untyped]
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 # ---------------------------------------------------------------------------
-# Frozen ratchet: the 234-id MULTI_ARC_ALLOWLIST
+# Frozen ratchet: the 236-id MULTI_ARC_ALLOWLIST
 # Source: docs/notes/multi-arc-classification.md §9
 # (184 russell-ocampo-* + 14 russell-ch4-* + mcconaghy-2006-em-k2
 #  + sanchez-net-2022-eem-cycler1 + sanchez-net-2022-em-cycler2
 #  + jones-2017-vem-emevve-outbound + jones-2017-vem-meevem-inbound
 #  + 15 rall-1970-* free-fall periodic orbits, #142 batch 1 = 218
-#  + 16 russell-ocampo-* Table 3.4 circular-coplanar cyclers, #142 batch 2 = 234)
+#  + 16 russell-ocampo-* Table 3.4 circular-coplanar cyclers, #142 batch 2 = 234
+#  + 2 Jovian patched-conic family-seed rows, moon-tour Tier-1 #76 = 236)
 # ---------------------------------------------------------------------------
 MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
     [
@@ -288,15 +294,21 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "russell-ocampo-4.9.1-3",
         "russell-ocampo-4.10.1-3",
         "russell-ocampo-4.12.1-2",
+        # Re-tagged non-keplerian -> multi-arc by moon-tour Tier-1 (task #76):
+        # circular-coplanar patched-conic multi-arc moon tours about Jupiter.
+        # Family-seed null-numeric rows (exempt from the multi-arc completeness
+        # invariants — see tests/data/test_multi_arc_invariants.py).
+        "hernandez-2017-jovian-ieg-triple-family",
+        "russell-strange-2009-jovian-multimoon-family",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 234, (
-    f"Allowlist must have 234 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 236, (
+    f"Allowlist must have 236 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
-# Frozen ratchet: the 6 non-keplerian ids
+# Frozen ratchet: the 4 non-keplerian ids
 # Source: docs/notes/multi-arc-classification.md §3
 # ---------------------------------------------------------------------------
 NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
@@ -304,13 +316,16 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "arenstorf-em-figure8-1963",
         "genova-aldrin-2015-em-3petal-cycler",
         "wittal-2022-em-cycler-family",
-        "hernandez-2017-jovian-ieg-triple-family",
-        "russell-strange-2009-jovian-multimoon-family",
+        # The two Jovian patched-conic family-seed rows were re-tagged
+        # non-keplerian -> multi-arc by moon-tour Tier-1 (task #76): they are
+        # circular-coplanar patched-conic multi-arc moon tours, not CR3BP. See
+        # MULTI_ARC_ALLOWLIST below. The Saturnian seed stays non-keplerian (its
+        # midsize members are genuinely CR3BP — Tier-2; Titan split deferred).
         "russell-strange-2009-saturnian-multimoon-family",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 6
+assert len(NON_KEPLERIAN_IDS) == 4
 
 
 # ---------------------------------------------------------------------------
@@ -330,17 +345,21 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=234, non-keplerian=6."""
+    """Exact class distribution: single-ellipse=28, multi-arc=236, non-keplerian=4.
+
+    (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
+    rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4.)
+    """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 234, "non-keplerian": 6}
+    expected = {"single-ellipse": 28, "multi-arc": 236, "non-keplerian": 4}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
 
 
 def test_multi_arc_ids_match_allowlist() -> None:
-    """The exact set of multi-arc ids matches the 234-id MULTI_ARC_ALLOWLIST ratchet."""
+    """The exact set of multi-arc ids matches the 236-id MULTI_ARC_ALLOWLIST ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "multi-arc")
     extra = actual - MULTI_ARC_ALLOWLIST
@@ -354,7 +373,7 @@ def test_multi_arc_ids_match_allowlist() -> None:
 
 
 def test_non_keplerian_ids_match_ratchet() -> None:
-    """The exact set of non-keplerian ids matches the 6-id NON_KEPLERIAN_IDS ratchet."""
+    """The exact set of non-keplerian ids matches the 4-id NON_KEPLERIAN_IDS ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "non-keplerian")
     extra = actual - NON_KEPLERIAN_IDS

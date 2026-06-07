@@ -7936,7 +7936,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -8100,7 +8100,7 @@ days\" per the NTRS abstract.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
-  cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
@@ -8342,6 +8342,17 @@ days\" per the NTRS abstract.
     Sibling of the Jovian-family entry above. As individual cyclers
     are split out, they may need new body codes for Saturnian moons
     (already reserved in data/README.md schema-extended section).
+
+    TIER-1/TIER-2 SPLIT (moon-tour Tier-1, task #76): Titan members are
+    Tier-1 patched-conic-modellable (primary: Saturn, circular-coplanar
+    V_inf about Saturn); midsize-moon members (Mimas/Enceladus/Tethys)
+    defer to the CR3BP Tier-2 milestone. As individual Titan cyclers are
+    split out they take cycler_class: multi-arc / model_assumption:
+    circular-coplanar. This family-seed row stays cycler_class:
+    non-keplerian because its midsize members are genuinely CR3BP — no
+    silent whole-row re-tag (that would falsely claim the
+    Enceladus/Mimas members are patched-conic). An individual Titan-only
+    row is created only when a sourced member is ingested.
   source_quotes:
     notes: |
       Russell/Strange 2009 JGCD abstract (via web search snippets):

@@ -86,9 +86,31 @@ def _notes_tr(row: dict[str, Any]) -> float | None:
 # ---------------------------------------------------------------------------
 
 
+# Planet-centric (moon-tour Tier-1, task #76) family-seed rows that are
+# multi-arc patched-conic moon tours but carry NULL numerics: they record the
+# citation + qualitative geometry only (data/README.md "family-seed null-numeric
+# records"; Russell-Strange / Hernandez Jovian seeds). They have no sourced
+# trajectory.segments and therefore no transit_times / AR / TR to populate —
+# fabricating any would violate the golden discipline. They are exempt from the
+# completeness invariants below (which assume the full-numeric heliocentric
+# Russell Earth-Mars rows). The note-consistency sweeps still apply to them: if
+# such a row ever DID state an AR/TR in its notes, the typed-field check fires.
+_FAMILY_SEED_NULL_NUMERIC_MULTI_ARC: frozenset[str] = frozenset(
+    {
+        "hernandez-2017-jovian-ieg-triple-family",
+        "russell-strange-2009-jovian-multimoon-family",
+    }
+)
+
+
 def _load_multi_arc_rows() -> list[dict[str, Any]]:
     rows = yaml.safe_load(CATALOGUE_PATH.read_text())
     return [r for r in rows if r.get("cycler_class") == "multi-arc"]
+
+
+def _load_full_numeric_multi_arc_rows() -> list[dict[str, Any]]:
+    """Multi-arc rows that carry full numerics (excludes family-seed null rows)."""
+    return [r for r in _load_multi_arc_rows() if r["id"] not in _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC]
 
 
 def test_note_ar_matches_invariants_field() -> None:
@@ -145,8 +167,13 @@ def test_note_tr_matches_invariants_field() -> None:
 
 
 def test_all_multi_arc_rows_have_invariants_block() -> None:
-    """Every multi-arc row must carry an invariants{} block (may have null fields)."""
-    rows = _load_multi_arc_rows()
+    """Every full-numeric multi-arc row must carry an invariants{} block.
+
+    Planet-centric family-seed null-numeric rows (moon-tour Tier-1) are exempt —
+    they record citation + qualitative geometry only (see
+    _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC).
+    """
+    rows = _load_full_numeric_multi_arc_rows()
     missing = [r["id"] for r in rows if "invariants" not in r]
     assert missing == [], (
         f"Multi-arc rows missing invariants{{}} block ({len(missing)}):\n" + "\n".join(missing[:20])
@@ -157,9 +184,12 @@ def test_transit_times_present_for_all_multi_arc_rows() -> None:
     """Every multi-arc row must have invariants.transit_times_days populated.
 
     Transit times (E→M outbound, M→E inbound) are always available from the
-    trajectory.segments for every multi-arc row in the catalogue.
+    trajectory.segments for every full-numeric multi-arc row in the catalogue.
+    Planet-centric family-seed null-numeric rows (moon-tour Tier-1) are exempt —
+    they have no sourced trajectory.segments (see
+    _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC).
     """
-    rows = _load_multi_arc_rows()
+    rows = _load_full_numeric_multi_arc_rows()
     failures: list[str] = []
     for row in rows:
         rid = row["id"]
