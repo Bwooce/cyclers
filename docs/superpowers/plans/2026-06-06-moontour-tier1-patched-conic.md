@@ -945,7 +945,7 @@ test: linkable prunes a Jovicentric moon pair (centre-blind feasibility) (moon-t
 > formula *shape* and the `T = 3 − v∞²` identity (those are validated by
 > round-trip/algebraic identity in Phase 4, not by a paper cell).
 
-### Task 5.0 — `vilm.py` skeleton + n:m_K± resonance taxonomy
+### Task 5.0 — `vilm.py` skeleton + n:m_K± resonance taxonomy ✅ DONE (325dc2f)
 
 **Files:** create `src/cyclerfinder/search/vilm.py`; test
 `tests/search/test_vilm_taxonomy.py`.
@@ -978,7 +978,7 @@ Commit:
 search/vilm: VILM module skeleton + n:m_K± leg taxonomy (moon-tour Tier-1 Phase 5)
 ```
 
-### Task 5.1 — Eq.(9) V̄∞-efficiency root, gated on Table 3 V̄∞ E/I
+### Task 5.1 — Eq.(9) V̄∞-efficiency root, gated on Table 3 V̄∞ E/I ✅ DONE (8c03be0) — E AND I columns reproduced to <0.5 m/s
 
 **Files:** `search/vilm.py`; test `tests/search/test_vilm_efficiency.py`.
 
@@ -1024,7 +1024,7 @@ Commit:
 search/vilm: Eq.(9) V_inf-efficiency root vs Part-1 Table 3 V_inf_bar golden (moon-tour Tier-1 Phase 5)
 ```
 
-### Task 5.2 — Eq.(13) ΔV-min quadrature (no-GA), gated on Table 1
+### Task 5.2 — Eq.(13) ΔV-min quadrature (no-GA), gated on Table 1 ✅ DONE (a30d7bf) — all Table 1 to <0.5%
 
 **Files:** `search/vilm.py`; test `tests/search/test_vilm_quadrature.py`.
 
@@ -1068,7 +1068,7 @@ Run → **red** → impl the Eq.(13) quadrature → **green**. Commit:
 search/vilm: Eq.(13) ΔV-min quadrature vs Part-1 Table 1 (no-GA) golden (moon-tour Tier-1 Phase 5)
 ```
 
-### Task 5.3 — GA-routed ΔV-min (Table 2) + end-to-end Europa scalar (A6)
+### Task 5.3 — GA-routed ΔV-min (Table 2) + end-to-end Europa scalar (A6) ✅ DONE (a30d7bf) — Table 2 to 0.2%; A6 floor 128 m/s = valid LB on discrete 154
 
 **Files:** `search/vilm.py`; test `tests/search/test_vilm_quadrature.py`
 (extend).
@@ -1101,7 +1101,7 @@ Run → **red** → impl GA routing + the worked-scalar driver → **green**. Co
 search/vilm: GA-routed ΔV (Table 2) + Europa 3-VILM endgame scalar (A6) golden (moon-tour Tier-1 Phase 5)
 ```
 
-### Task 5.4 — VILM as admissible ΔV-floor for search pruning + Phase-5 gate
+### Task 5.4 — VILM as admissible ΔV-floor for search pruning + Phase-5 gate ✅ DONE (a30d7bf) — DEVIATION: floor=escape+capture (plan's no-GA-as-floor is backwards; GA reduces ΔV)
 
 **Files:** `search/vilm.py`; test `tests/search/test_vilm_quadrature.py`
 (extend); lint/type gate.
