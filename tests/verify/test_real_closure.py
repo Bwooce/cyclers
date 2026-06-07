@@ -180,9 +180,9 @@ def test_aldrin_powered_cycler_solver_and_drift_floor_on_de440(
         cycler_id="aldrin-classic-em-k1-outbound",
     )
     # Idealised rotating-frame closure is physically unreachable for k=1 Aldrin;
-    # the drift floor sits far above tolerance (measured ~7e7 km ~ 360x). Assert
-    # the regime qualitatively (>50x) so the gate has teeth without pinning a
-    # brittle, solver-derived magnitude.
+    # the drift floor sits far above tolerance (measured ~4.14e8 km ~ 2072x at
+    # n=2/n=3 — #134). Assert the regime qualitatively (>50x) so the gate has
+    # teeth without pinning a brittle, solver-derived magnitude.
     assert result.closes is False
     assert result.v3_status == "v3-real-closure-fail"
     assert result.max_drift_km > 50.0 * REAL_DRIFT_TOLERANCE_KM

@@ -44,8 +44,8 @@ falling under :data:`~cyclerfinder.verify.real_closure.REAL_DRIFT_TOLERANCE_KM`
 DE440: the drift propagator pins each leg-start to the *real* planet position
 at the lap-shifted epoch, and Mars's heliocentric radius breathes ≈0.117 AU
 (≈1.75e7 km) per 2.135 yr cycle because the cycler period is not commensurate
-with Mars's 1.881 yr orbit. The empirical drift floor is ≈3.6e7 km (≈180x
-the tolerance) regardless of the maneuver — the maneuver shapes velocity, not
+with Mars's 1.881 yr orbit. The empirical drift floor is ≈4.14e8 km (≈2072x
+the tolerance, #134) regardless of the maneuver — the maneuver shapes velocity, not
 where Mars is. This is exactly why the real Aldrin cycler needs a per-cycle
 retargeting maneuver; the 200,000 km rotating-frame-repeat criterion is a
 circular-ephemeris idealisation that eccentric Mars cannot satisfy.
