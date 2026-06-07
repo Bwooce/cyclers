@@ -221,11 +221,21 @@ def defect_residual(
     contributes a large finite sentinel defect (never a NaN/raise), so
     ``least_squares`` sees it as a bad region, not a crash (mirror ``correct.py``).
     """
+    from cyclerfinder.nbody.forces import RailsEphemerisCache
     from cyclerfinder.nbody.propagator import RestrictedNBody
 
     prop = RestrictedNBody("rebound")
     n = len(seed.sequence)
     res: list[float] = []
+
+    # Build ONE rails cache spanning the whole itinerary and reuse it across every
+    # leg propagation — the spline build (~0.5 s/call) is the dominant per-call
+    # cost, and a multiple-shooting Jacobian re-propagates the same window many
+    # times. Without reuse a single 3-node shoot does not finish in 8 min.
+    bodies = tuple(bodies)
+    cache = (
+        RailsEphemerisCache(bodies, ephem, min(seed.epochs), max(seed.epochs)) if bodies else None
+    )
 
     # 1. Leg continuity defects.
     for i in range(n - 1):
@@ -235,7 +245,14 @@ def defect_residual(
         t0 = seed.epochs[i]
         t1 = seed.epochs[i + 1]
         arc = prop.propagate(
-            r0, v0, t0_sec=t0, t1_sec=t1, bodies=bodies, accuracy=accuracy, ephem=ephem
+            r0,
+            v0,
+            t0_sec=t0,
+            t1_sec=t1,
+            bodies=bodies,
+            accuracy=accuracy,
+            ephem=ephem,
+            cache=cache,
         )
         s_next = seed.node_states[i + 1]
         if arc.converged and np.all(np.isfinite(arc.r_km)) and np.all(np.isfinite(arc.v_km_s)):
@@ -268,10 +285,294 @@ def defect_residual(
     return np.asarray(res, dtype=np.float64)
 
 
+@dataclass(frozen=True)
+class NearMissSeed:
+    """A low-V∞ near-miss conic chain — a shooting seed (Phase 3a, #133).
+
+    The #135 verdict mandates the shooter be seeded from the near-miss survey, NOT
+    a blind scan: the lowest-V∞ conic chains found near the Jones anchors, even
+    when they carry a small V∞-continuity mismatch (Jones's own stage 1 accepted
+    <= 200 m/s conic mismatches, then SNOPT-corrected to ballistic — the deepdive
+    note §2.2). ``max_residual_kms`` is the conic-continuity residual; the seed is
+    retained even when it exceeds the strict 0.1 km/s closure floor (down to a
+    relaxed near-miss tolerance), because the shooter's job is to absorb that
+    residual into n-body-ballistic continuity.
+    """
+
+    t0_sec: float
+    tof_days: tuple[float, ...]
+    per_leg_revs: tuple[int, ...]
+    per_leg_branch: tuple[str, ...]
+    slack_leg: int
+    max_residual_kms: float
+    vinf_per_encounter_kms: tuple[float, ...]
+    max_vinf_kms: float
+    bend_feasible: bool
+
+
+def near_miss_survey(
+    *,
+    sequence: tuple[str, ...],
+    period_sec: float,
+    t0_base_sec: float,
+    tof_seed_days: Sequence[float],
+    ephem: Ephemeris,
+    n_epochs: int = 64,
+    vinf_cap: float = 8.0,
+    near_miss_tol_kms: float = 0.5,
+    branch_topologies: Sequence[tuple[tuple[int, ...], tuple[str, ...]]] | None = None,
+) -> list[NearMissSeed]:
+    """Phase 3a near-miss survey: lowest-V∞ conic chains near the Jones anchors.
+
+    Scans an epoch grid over one repeat period (centred on ``t0_base_sec``) x the
+    given rev/branch topologies, running the conic ``ballistic_correct`` at each
+    point, and collects every chain whose continuity residual is within
+    ``near_miss_tol_kms`` (the relaxed near-miss tolerance — Jones's <=200 m/s
+    stage-1 analogue, here 0.5 km/s), ranked by max per-encounter V∞ (lowest first
+    = closest to the Jones 2.5-3.9 basin). These are the shooter seeds (#135
+    verdict: near-miss seeding, never a blind scan).
+    """
+    from cyclerfinder.core.constants import SECONDS_PER_DAY as _SPD
+    from cyclerfinder.search.correct import ballistic_correct
+
+    n_legs = len(sequence) - 1
+    slack_leg = int(np.argmax(tof_seed_days)) if len(tof_seed_days) else 0
+    free_seed = [t for i, t in enumerate(tof_seed_days) if i != slack_leg]
+    if branch_topologies is None:
+        branch_topologies = [((0,) * n_legs, ("single",) * n_legs)]
+
+    period_days = period_sec / _SPD
+    step = period_days / max(1, n_epochs)
+    t0_seeds = [t0_base_sec + i * step * _SPD for i in range(n_epochs)]
+
+    seeds: list[NearMissSeed] = []
+    for revs, branch in branch_topologies:
+        for t0 in t0_seeds:
+            result = ballistic_correct(
+                sequence,
+                revs,
+                branch,
+                t0,
+                free_seed,
+                period_sec,
+                ephem,
+                vinf_cap=vinf_cap,
+                slack_leg=slack_leg,
+                tol_kms=near_miss_tol_kms,
+            )
+            if not result.vinf_per_encounter_kms:
+                continue
+            if result.max_residual_kms > near_miss_tol_kms:
+                continue
+            seeds.append(
+                NearMissSeed(
+                    t0_sec=result.t0_sec,
+                    tof_days=result.tof_days,
+                    per_leg_revs=revs,
+                    per_leg_branch=branch,
+                    slack_leg=slack_leg,
+                    max_residual_kms=result.max_residual_kms,
+                    vinf_per_encounter_kms=result.vinf_per_encounter_kms,
+                    max_vinf_kms=max(result.vinf_per_encounter_kms),
+                    bend_feasible=result.bend_feasible,
+                )
+            )
+    seeds.sort(key=lambda s: s.max_vinf_kms)
+    return seeds
+
+
+def shooting_seed_from_near_miss(
+    near_miss: NearMissSeed,
+    sequence: tuple[str, ...],
+    period_sec: float,
+    ephem: Ephemeris,
+) -> ShootingSeed:
+    """Build the multiple-shooting seed for a near-miss chain (reuses _vinf_nodes)."""
+    from cyclerfinder.core.constants import SECONDS_PER_DAY as _SPD
+    from cyclerfinder.search.correct import _vinf_nodes
+
+    period_days = period_sec / _SPD
+    free_tofs = [t for i, t in enumerate(near_miss.tof_days) if i != near_miss.slack_leg]
+    nodes = _vinf_nodes(
+        sequence=sequence,
+        per_leg_revs=near_miss.per_leg_revs,
+        per_leg_branch=near_miss.per_leg_branch,
+        t0_sec=near_miss.t0_sec,
+        free_tof_days=free_tofs,
+        slack_leg=near_miss.slack_leg,
+        period_days=period_days,
+        ephem=ephem,
+    )
+    return seed_from_conic(
+        sequence=sequence,
+        vinf_nodes=nodes,
+        t0_sec=near_miss.t0_sec,
+        tofs_days=near_miss.tof_days,
+        slack_leg=near_miss.slack_leg,
+        period_days=period_days,
+        ephem=ephem,
+    )
+
+
+@dataclass(frozen=True)
+class ShootResult:
+    """Frozen multiple-shooting result (design §3 / §5 honest-record discipline).
+
+    ``converged`` follows ``scipy``'s success flag AND a defect-norm acceptance
+    floor; a non-converged solve is recorded honestly (mirror ``correct.py``), not
+    raised. ``vinf_per_encounter_kms`` is the per-node V∞ magnitude of the
+    *corrected* solution (the side the Jones gate compares to the SOURCED multiset).
+    ``correction_dv`` is the node-impulse ΔV from seed to corrected (Task B.2).
+    """
+
+    converged: bool
+    defect_norm: float
+    seed_defect_norm: float
+    corrected_states: list[Vec3]
+    vinf_per_encounter_kms: list[float]
+    correction_dv_kms: float
+    bend_feasible: bool
+    sequence: tuple[str, ...]
+    integrator_accuracy: float
+    n_iterations: int
+
+
+# SNOPT-analogue continuity acceptance (Jones AAS 17-577 method deep-dive §2.5:
+# "continuity to 1.0E-3 km position and 1.0E-6 km/s velocity"). We accept a solve
+# as ballistic-converged when its full-state defect L2 norm falls below a scaled
+# multiple of these published per-component tolerances. Documented provenance.
+_POS_CONTINUITY_KM = 1.0e-3
+_VEL_CONTINUITY_KMS = 1.0e-6
+
+
+def _states_to_x(states: Sequence[Vec3]) -> NDArray[np.float64]:
+    return np.concatenate([np.asarray(s, dtype=np.float64).ravel() for s in states])
+
+
+def _x_to_states(x: NDArray[np.float64], n: int) -> list[Vec3]:
+    return [
+        np.asarray(x[i * _STATE_DIM : (i + 1) * _STATE_DIM], dtype=np.float64) for i in range(n)
+    ]
+
+
+def _seed_with_states(seed: ShootingSeed, states: Sequence[Vec3]) -> ShootingSeed:
+    """Clone ``seed`` with new node states (epochs/ToFs/V∞ vectors carried)."""
+    return ShootingSeed(
+        node_states=[np.asarray(s, dtype=np.float64) for s in states],
+        epochs=list(seed.epochs),
+        tofs=list(seed.tofs),
+        sequence=seed.sequence,
+        slack_leg=seed.slack_leg,
+        period_days=seed.period_days,
+        vinf_in=list(seed.vinf_in),
+        vinf_out=list(seed.vinf_out),
+    )
+
+
+def _node_vinf(state: Vec3, body: str, epoch: float, ephem: Ephemeris) -> Vec3:
+    _, v_pl = ephem.state(body, epoch)
+    return np.asarray(state[3:], dtype=np.float64) - np.asarray(v_pl, dtype=np.float64)
+
+
+def shoot(
+    seed: ShootingSeed,
+    *,
+    ephem: Ephemeris,
+    bodies: Sequence[str],
+    accuracy: float = 1e-10,
+    max_nfev: int = 200,
+) -> ShootResult:
+    """Multiple-shooting differential correction (the SNOPT analogue, design §3).
+
+    Free variables: the per-node full Cartesian states (6 each). Node epochs are
+    held at the (near-miss-seeded) seed epochs — a documented choice: the conic
+    seed already fixes good encounter dates near the Jones anchors, and freeing
+    epochs multiplies the finite-difference Jacobian cost without changing the
+    family selection the #135 verdict identified as the real lever (seeding, not
+    DOF count). Solver: ``scipy.optimize.least_squares(method="lm")`` (mirror
+    ``correct.py``), Jacobian by finite difference over REBOUND (Q1 baseline).
+
+    A solve is ``converged`` when ``least_squares`` reports success AND the
+    corrected full-state defect norm clears the published SNOPT continuity floor
+    (§2.5: 1e-3 km / 1e-6 km/s). Divergence is recorded honestly, not raised.
+    """
+    from scipy.optimize import least_squares
+
+    n = len(seed.sequence)
+
+    def residual_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        states = _x_to_states(x, n)
+        trial = _seed_with_states(seed, states)
+        return defect_residual(trial, ephem=ephem, bodies=bodies, accuracy=accuracy)
+
+    x0 = _states_to_x(seed.node_states)
+    seed_res = residual_of_x(x0)
+    seed_defect_norm = float(np.linalg.norm(seed_res))
+
+    sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
+    corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
+    final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
+    defect_norm = float(np.linalg.norm(final_res))
+
+    # Only the leg-continuity block governs the ballistic-continuity acceptance
+    # (the trailing hinge + wrap terms are constraints, not continuity defects).
+    n_leg_defects = (n - 1) * _STATE_DIM
+    leg_block = final_res[:n_leg_defects]
+    continuity_floor = float(
+        np.linalg.norm([_POS_CONTINUITY_KM] * 3 + [_VEL_CONTINUITY_KMS] * 3) * np.sqrt(n - 1)
+    )
+    converged = bool(sol.success) and float(np.linalg.norm(leg_block)) < continuity_floor
+
+    corrected_vinf = [
+        _node_vinf(s, body, ep, ephem)
+        for s, body, ep in zip(corrected_states, seed.sequence, seed.epochs, strict=True)
+    ]
+    vinf_mag = [float(np.linalg.norm(v)) for v in corrected_vinf]
+
+    # Correction ΔV: per-node velocity change seed -> corrected (Task B.2).
+    seed_nodes = {f"b{i}": np.asarray(seed.node_states[i][3:]) for i in range(n)}
+    corr_nodes = {f"b{i}": np.asarray(corrected_states[i][3:]) for i in range(n)}
+    from cyclerfinder.nbody.correction_dv import node_impulse_correction_dv
+
+    cdv = node_impulse_correction_dv(seed_nodes, corr_nodes)
+
+    # Bend feasibility of the interior flybys, evaluated with the Jones B-plane
+    # kernel (AAS 17-577 Eq. 7, #142): the targeted flyby turns the SEED incoming
+    # asymptote (vinf_in, end of the prior conic leg) into the SEED outgoing
+    # asymptote (vinf_out, start of the next), and that powered flyby must clear
+    # the published v∞-mismatch tolerance + 100 km-100,000 km altitude window.
+    # (The corrected n-body node carries a single v∞; the conic seed's distinct
+    # in/out asymptotes are the physically meaningful bend the flyby must deliver.)
+    from cyclerfinder.nbody.bplane import interior_flyby_feasible
+
+    bend_feasible = all(
+        interior_flyby_feasible(seed.vinf_in[i], seed.vinf_out[i], seed.sequence[i])
+        for i in range(1, n - 1)
+    )
+
+    return ShootResult(
+        converged=converged,
+        defect_norm=defect_norm,
+        seed_defect_norm=seed_defect_norm,
+        corrected_states=corrected_states,
+        vinf_per_encounter_kms=vinf_mag,
+        correction_dv_kms=cdv.total_kms,
+        bend_feasible=bend_feasible,
+        sequence=seed.sequence,
+        integrator_accuracy=accuracy,
+        n_iterations=int(sol.nfev),
+    )
+
+
 __all__ = [
+    "NearMissSeed",
+    "ShootResult",
     "ShootingSeed",
     "build_shooting_vector",
     "defect_count",
     "defect_residual",
+    "near_miss_survey",
     "seed_from_conic",
+    "shoot",
+    "shooting_seed_from_near_miss",
 ]

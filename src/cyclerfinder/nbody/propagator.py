@@ -100,6 +100,7 @@ class RestrictedNBody:
         bodies: Sequence[str] = (),
         accuracy: float = 1e-10,
         ephem: Ephemeris | None = None,
+        cache: RailsEphemerisCache | None = None,
         max_steps: int = 2_000_000,
         max_wall_sec: float = 90.0,
     ) -> NBodyArc:
@@ -109,6 +110,15 @@ class RestrictedNBody:
         means Sun-only two-body (GOLDEN GATE 1). ``accuracy`` is the IAS15
         ``epsilon`` tolerance. Returns a frozen :class:`NBodyArc` with the final
         state and the relative-energy-drift diagnostic.
+
+        ``cache`` is an optional pre-built :class:`RailsEphemerisCache` spanning
+        ``[t0, t1]`` (or wider). Building the spline cache is the dominant per-call
+        cost (~0.5 s for a multi-month arc — the planet-state sampling); a
+        multiple-shooting solve evaluates many leg propagations over the SAME
+        itinerary window, so the shooter builds ONE cache spanning the whole
+        itinerary and passes it to every leg, turning the per-leg cost into the
+        bare integration. When ``cache is None`` a per-call cache is built (the
+        rung / golden-gate path, where each call is independent).
 
         Divergence is a first-class outcome (design §3, mirror ``correct.py``):
         a pathological seed (e.g. one that grazes a perturber's softened core)
@@ -154,7 +164,8 @@ class RestrictedNBody:
         # callback adds only the planet perturbations (direct + indirect).
         if bodies:
             assert ephem is not None
-            cache = RailsEphemerisCache(bodies, ephem, t0_sec, t1_sec)
+            if cache is None:
+                cache = RailsEphemerisCache(bodies, ephem, t0_sec, t1_sec)
             _install_rails_forces(sim, bodies, cache)
 
         e0 = float(sim.energy())
@@ -162,8 +173,19 @@ class RestrictedNBody:
         # Walk toward the target in coarse time chunks so the step / wall budgets
         # can be checked between chunks (REBOUND has no native step cap). With no
         # perturbers (two-body) this completes in one chunk — the golden gates are
-        # unaffected.
-        n_chunks = 1 if not bodies else 200
+        # unaffected. With perturbers the chunk count scales with the arc length
+        # (~1 chunk per 30 days, clamped to [4, 200]): a fixed 200-chunk cadence
+        # adds ~10x Python-call overhead on short multi-month legs for an identical
+        # result (the chunking is only a budget-check cadence — IAS15 adapts its own
+        # internal substeps), which is the difference between a tractable and an
+        # 8-min-timeout multiple-shooting Jacobian.
+        if not bodies:
+            n_chunks = 1
+        else:
+            from cyclerfinder.core.constants import SECONDS_PER_DAY as _SPD
+
+            arc_days = abs(t_target - float(sim.t)) / _SPD
+            n_chunks = int(min(200, max(4, arc_days / 30.0)))
         chunk = (t_target - float(sim.t)) / n_chunks if n_chunks else 0.0
         wall_start = time.monotonic()
         converged = True
