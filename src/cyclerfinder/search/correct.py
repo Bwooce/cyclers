@@ -226,6 +226,16 @@ def _residuals(
     length on a Lambert pathology grows accordingly.
     """
     n_encounters = len(sequence)
+    # FRAGILITY (task #122/#137 review I2): ``n_res`` is the penalty-path residual
+    # length returned on a Lambert pathology (the ``[1e3] * n_res`` branch below).
+    # It MUST stay byte-for-byte equal to ``len(_residual_vector(..., mode=...))``
+    # for the SAME mode, or least_squares sees a ragged residual vector (the
+    # pathology evaluations and the successful ones disagree on length, which
+    # corrupts the Jacobian / raises). The two formulas below mirror
+    # ``_residual_vector`` exactly: magnitude -> ``(n-2)`` intermediate continuity
+    # terms + 1 closure = ``n-1``; vector -> each of the ``(n-2)`` intermediate
+    # flybys emits TWO terms (continuity + bend hinge) + 1 closure = ``2*(n-2)+1``.
+    # Any change to the residual layout in either mode MUST be made in BOTH places.
     n_res = 2 * (n_encounters - 2) + 1 if residual_mode == "vector" else n_encounters - 1
     try:
         nodes = _vinf_nodes(
