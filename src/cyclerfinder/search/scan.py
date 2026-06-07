@@ -152,6 +152,7 @@ def scan_parallel(
     ephem_model: str = "astropy",
     max_workers: int | None = None,
     closed_only: bool = False,
+    prune_above_cap: bool = False,
 ) -> list[ScanResult]:
     """Run the epoch x branch multi-start grid over a process pool.
 
@@ -173,12 +174,20 @@ def scan_parallel(
     closed_only:
         When ``True``, drop non-converged points from the returned list (the
         full grid is still evaluated; this only filters the output).
+    prune_above_cap:
+        COMPUTE-EFFICIENCY ONLY, OFF by default. When ``True``, drop results
+        whose V_inf exceeds the per-point ``vinf_cap`` (``vinf_cap_ok`` False)
+        from the returned list — a convenience to shrink a large grid's output,
+        NOT a physics gate. The full grid is still evaluated. This is distinct
+        from the elliptic-periodicity ceiling: a pruned point is merely
+        over-cap, while ``result.hyperbolic_impossible`` flags a physically
+        impossible (degenerate/bug) solve and is always preserved, never pruned.
 
     Returns
     -------
     list[ScanResult]
-        Every grid point's outcome (or only the closed ones when
-        ``closed_only``), deterministically ordered.
+        Every grid point's outcome (or only the closed / under-cap ones when
+        the corresponding flag is set), deterministically ordered.
     """
     if not points:
         return []
@@ -198,6 +207,8 @@ def scan_parallel(
 
     if closed_only:
         results = [r for r in results if r.closed]
+    if prune_above_cap:
+        results = [r for r in results if r.result.vinf_cap_ok]
     return results
 
 

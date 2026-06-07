@@ -415,3 +415,45 @@ The single source of truth for "which bodies exist": adding a (sourced)
 body resolvable everywhere — ephemeris, frames, flyby, and maintenance all key
 off this table rather than hardcoding their own V/E/M sets.
 """
+
+
+def vinf_ceiling_kms(body: str) -> float:
+    """Elliptic-periodicity hyperbolic-excess ceiling at ``body`` (km/s).
+
+    PHYSICS, not a convention. A heliocentric cycler orbit must be *bound*
+    (closed/periodic), i.e. the spacecraft's heliocentric speed at the
+    encounter radius ``r_B`` cannot exceed the local solar-escape speed
+    ``v_esc_sun(r_B) = sqrt(2 * mu_Sun / r_B)`` — a faster vehicle is on a
+    hyperbolic heliocentric trajectory and never returns, so it cannot be a
+    periodic cycler. The hyperbolic excess at the body is the vector difference
+    ``V_inf = v_sc - v_body``; its magnitude is maximised (worst case) when the
+    spacecraft moves *anti-parallel* to the body, giving the bound
+
+        |V_inf| <= v_esc_sun(r_B) + |v_body|
+
+    where ``|v_body| = sqrt(mu_Sun / r_B)`` is the body's circular orbital
+    speed (the planets are very nearly circular). This is a hard upper limit
+    for ANY periodic heliocentric orbit at that body — exceeding it means the
+    encounter cannot belong to a closed cycler. At Earth it evaluates to
+    ``42.122 + 29.785 = 71.91 km/s``.
+
+    Use as a BUG ceiling, never a family filter: legitimate high-energy
+    catalogue rows (Russell-Ocampo reaches 20.3 km/s at Earth) sit far below
+    it. A value above the ceiling signals a degenerate / unit-error / off-family
+    solve, not a high-energy cycler.
+    """
+    p = PLANETS[body]
+    r_b_km = p.sma_au * AU_KM
+    v_body = sqrt(MU_SUN_KM3_S2 / r_b_km)
+    v_esc_sun = sqrt(2.0 * MU_SUN_KM3_S2 / r_b_km)
+    return v_esc_sun + v_body
+
+
+VINF_CEILING_KMS: Final[dict[str, float]] = {code: vinf_ceiling_kms(code) for code in PLANETS}
+"""Per-body elliptic-periodicity V_inf ceiling (km/s); see :func:`vinf_ceiling_kms`.
+
+Precomputed for every supported body. Values (km/s): Venus 84.55, Earth 71.91,
+Mars 58.25, Mercury 115.57, Jupiter 31.52, Saturn 23.29, Uranus 16.42,
+Neptune 13.11. A periodic heliocentric encounter V_inf above the body's entry
+here is physically impossible and marks a BUG, not a high-energy solution.
+"""

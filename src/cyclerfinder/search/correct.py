@@ -23,7 +23,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.optimize import least_squares
 
-from cyclerfinder.core.constants import PLANETS
+from cyclerfinder.core.constants import PLANETS, VINF_CEILING_KMS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.lambert import (
     LambertConvergenceError,
@@ -44,10 +44,35 @@ class BallisticClosureResult:
     converged: bool
     bend_feasible: bool
     vinf_cap_ok: bool = True
+    # LOUD physics flag (never a filter): any encounter V_inf exceeds the
+    # elliptic-periodicity ceiling v_esc_sun(r_B) + v_B (~71.9 km/s at Earth).
+    # A True here marks a degenerate / unit-error / off-family solve — a
+    # periodic heliocentric cycler is physically incapable of it. Legitimate
+    # high-energy rows (Russell 20.3 km/s) leave this False; it is surfaced, not
+    # acted on, so a caller decides how to handle it (the publication layer
+    # refuses; the search loop merely records it).
+    hyperbolic_impossible: bool = False
 
     @property
     def constraints_satisfied(self) -> bool:
         return self.converged and self.bend_feasible and self.vinf_cap_ok
+
+
+def _hyperbolic_impossible(
+    sequence: tuple[str, ...], vinf_per_encounter_kms: tuple[float, ...]
+) -> bool:
+    """True if ANY encounter V_inf breaches its body's elliptic-periodicity
+    ceiling (:data:`~cyclerfinder.core.constants.VINF_CEILING_KMS`).
+
+    The per-encounter magnitudes align positionally with ``sequence``. A body
+    absent from the ceiling table is skipped (cannot be assessed), never treated
+    as a breach.
+    """
+    for body, vinf in zip(sequence, vinf_per_encounter_kms, strict=False):
+        ceiling = VINF_CEILING_KMS.get(body)
+        if ceiling is not None and vinf > ceiling:
+            return True
+    return False
 
 
 # S1L1-prototype aliases for the first two-arc chain (E-M-E-E). The generic
@@ -401,4 +426,5 @@ def ballistic_correct(
         converged=converged,
         bend_feasible=bend_feasible,
         vinf_cap_ok=vinf_cap_ok,
+        hyperbolic_impossible=_hyperbolic_impossible(sequence, vinf_per_encounter),
     )
