@@ -28,6 +28,7 @@ from numpy.typing import NDArray
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.review_queue import ReviewQueueEntry, load_review_queue
+from cyclerfinder.nbody.correction_dv import CorrectionDV, node_impulse_correction_dv
 from cyclerfinder.nbody.propagator import RestrictedNBody
 from cyclerfinder.verify.gauntlet import VerdictTier
 
@@ -146,6 +147,22 @@ def propagate_one_period(
     )
 
 
+def _closure_correction_dv(arc: RungArc) -> CorrectionDV:
+    """Node-impulse correction ΔV implied by the terminal closure (Phase B).
+
+    Phase B runs a single forward propagation, not the full multiple-shooter
+    (that is Phase C). The minimal node-impulse to restore periodicity from this
+    seed is the velocity discontinuity at the wrap node — the burn that maps the
+    propagated wrap velocity back onto the seeded start velocity. Expressed
+    through :func:`node_impulse_correction_dv` so the convention (design §3, Q3) is
+    identical to the shooter's. A divergent arc carries a finite (sentinel) gap
+    here; the verdict path grades not-converged as ARTIFACT regardless.
+    """
+    seed = {"wrap": np.asarray(arc.wrap_node["v_km_s"], dtype=np.float64)}
+    corr = {"wrap": np.asarray(arc.seed_node["v_km_s"], dtype=np.float64)}
+    return node_impulse_correction_dv(seed, corr)
+
+
 @dataclass(frozen=True)
 class RungVerdict:
     """Frozen rung verdict (the recorded tier + the numbers behind it)."""
@@ -217,11 +234,70 @@ def record_rung_result(
     return record
 
 
+def run_rung(
+    entry: ReviewQueueEntry,
+    ephem: Ephemeris,
+    *,
+    audit_path: Path | str,
+    bodies: tuple[str, ...] = ("E", "M", "J"),
+    accuracy: float = 1e-9,
+) -> dict[str, object]:
+    """Run the full SILVER rung end-to-end and RECORD it (never promote).
+
+    Propagate one period (design §2 Sun+E+M+J), compute the node-impulse
+    correction ΔV from the terminal closure, grade the verdict, and append a
+    non-promoting audit record. Returns the record dict.
+    """
+    arc = propagate_one_period(entry, ephem, bodies=bodies, accuracy=accuracy)
+    dv = _closure_correction_dv(arc)
+    verdict = rung_verdict(
+        dv.total_kms,
+        terminal_closure_km=arc.terminal_closure_km,
+        converged=arc.converged,
+    )
+    return record_rung_result(entry, verdict, audit_path, bodies=bodies)
+
+
+def jupiter_sensitivity(
+    entry: ReviewQueueEntry,
+    ephem: Ephemeris,
+    *,
+    accuracy: float = 1e-9,
+) -> dict[str, object]:
+    """Gate-4 body-inclusion arm: rerun with/without Jupiter (design §2, §5.3).
+
+    Records the correction ΔV with the full Sun+E+M+J set and with Sun+E+M only,
+    and their difference, so Jupiter's contribution at this candidate's baseline
+    is *evidence*, not assertion (the standing §2 rule). Returns both verdicts +
+    the delta; the verdict tier is unchanged (recorded, not gating).
+    """
+    arc_with = propagate_one_period(entry, ephem, bodies=("E", "M", "J"), accuracy=accuracy)
+    arc_without = propagate_one_period(entry, ephem, bodies=("E", "M"), accuracy=accuracy)
+    dv_with = _closure_correction_dv(arc_with).total_kms
+    dv_without = _closure_correction_dv(arc_without).total_kms
+    return {
+        "with_jupiter": {
+            "correction_dv_kms": dv_with,
+            "terminal_closure_km": arc_with.terminal_closure_km,
+            "converged": arc_with.converged,
+        },
+        "without_jupiter": {
+            "correction_dv_kms": dv_without,
+            "terminal_closure_km": arc_without.terminal_closure_km,
+            "converged": arc_without.converged,
+        },
+        "delta_correction_dv_kms": dv_with - dv_without,
+    }
+
+
 __all__ = [
+    "CorrectionDV",
     "RungArc",
     "RungVerdict",
+    "jupiter_sensitivity",
     "load_silver_candidates",
     "propagate_one_period",
     "record_rung_result",
+    "run_rung",
     "rung_verdict",
 ]
