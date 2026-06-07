@@ -76,6 +76,14 @@ plugins = []
 module = ["astropy.*"]
 ignore_missing_imports = true
 
+# spiceypy (validation extra) and rebound (n-body harness, validation extra) ship
+# no type stubs / py.typed marker. Treat them as Any rather than fail strict mode
+# on these optional validation-only third-party surfaces — same pragmatic choice
+# as astropy above.
+[[tool.mypy.overrides]]
+module = ["spiceypy.*", "rebound.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Skip @pytest.mark.slow tests by default. M5's full optimiser tests
