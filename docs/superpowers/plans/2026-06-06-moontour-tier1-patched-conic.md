@@ -671,7 +671,7 @@ test: census ratchet after moon-tour re-tags (re-derived from live loader) (moon
 > `PLANETS`-only bend lookup) plus accepting a centred ephemeris. Do **not**
 > refactor the #110 N-arc solver structure.
 
-### Task 3.0 — VERIFY-FIRST snapshot of the live corrector
+### Task 3.0 — VERIFY-FIRST snapshot of the live corrector ✅ DONE (read-only; signatures drifted from plan lines: ballistic_correct@340, _vinf_nodes@111, _max_bend_deg@287, no mu/primary param)
 
 **Files:** none (read-only); record findings in the task log.
 
@@ -686,7 +686,7 @@ test: census ratchet after moon-tour re-tags (re-derived from live loader) (moon
 
 (No commit — this is the safety read mandated by the concurrency rule.)
 
-### Task 3.1 — plumb `mu=μ_central` into the Lambert call (coupling #1)
+### Task 3.1 — plumb `mu=μ_central` into the Lambert call (coupling #1) ✅ DONE (4724354)
 
 **Files:** `search/correct.py`; test `tests/search/test_correct_centred.py`.
 
@@ -729,7 +729,7 @@ S1L1) to confirm the heliocentric solver is byte-identical. Commit:
 search/correct: plumb mu_central into Lambert (centre-agnostic, Sun-default) (moon-tour Tier-1 Phase 3)
 ```
 
-### Task 3.2 — `_max_bend_deg` resolves a moon's μ/radius (coupling #2)
+### Task 3.2 — `_max_bend_deg` resolves a moon's μ/radius (coupling #2) ✅ DONE (4724354)
 
 **Files:** `search/correct.py`; test `tests/search/test_correct_centred.py`
 (extend).
@@ -757,7 +757,7 @@ Run → **red** → add the `SATELLITES` fallback → **green**. Commit:
 search/correct: _max_bend_deg resolves moon codes via SATELLITES (moon-tour Tier-1 Phase 3)
 ```
 
-### Task 3.3 — end-to-end: close the Hernandez Io-Europa-Ganymede chain (slow)
+### Task 3.3 — end-to-end: close the Hernandez Io-Europa-Ganymede chain (slow) ✅ DONE (a8ac2e9) — closure PASSES; bend-feasibility strict-xfail (honest-risk: no-leverage model lands ~10km/s vinf, 100-150deg turns vs 2-5deg max-bend)
 
 **Files:** test `tests/search/test_correct_jovian.py` (slow).
 
@@ -822,7 +822,7 @@ test: corrector closes Jovian I-E-G chain about Jupiter (non-golden, slow) (moon
 > Path correction: the live module is **`search/tisserand.py`** (design said
 > `core/`). Line numbers match.
 
-### Task 4.0 — `_a_p_km` resolves a moon's about-primary SMA
+### Task 4.0 — `_a_p_km` resolves a moon's about-primary SMA ✅ DONE (b56546e)
 
 **Files:** `src/cyclerfinder/search/tisserand.py`; test
 `tests/search/test_tisserand_moon.py`.
@@ -858,7 +858,7 @@ Run → **red** → add the fallback → **green**. Commit:
 search/tisserand: _a_p_km resolves moon about-primary SMA via SATELLITES (moon-tour Tier-1 Phase 4)
 ```
 
-### Task 4.1 — μ_primary into `vinf_to_tisserand` / `tisserand_to_vinf`
+### Task 4.1 — μ_primary into `vinf_to_tisserand` / `tisserand_to_vinf` ✅ DONE (b56546e)
 
 **Files:** `search/tisserand.py`; test `tests/search/test_tisserand_moon.py`
 (extend).
@@ -896,7 +896,7 @@ Commit:
 search/tisserand: mu= on vinf<->tisserand (centre-aware T=3-vinf^2), Sun-default (moon-tour Tier-1 Phase 4)
 ```
 
-### Task 4.2 — `linkable` prunes a Jovicentric moon pair (centre-blind once a_p/μ right)
+### Task 4.2 — `linkable` prunes a Jovicentric moon pair (centre-blind once a_p/μ right) ✅ DONE (b56546e)
 
 **Files:** test `tests/search/test_tisserand_moon.py` (extend). `linkable`'s
 contour-intersection logic (`tisserand.py:306`) is centre-blind once `_a_p_km`
