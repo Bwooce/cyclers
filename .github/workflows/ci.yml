@@ -25,5 +25,26 @@ jobs:
       - name: Mypy
         run: uv run mypy src tests
 
+      # DE440 comes from JPL via astropy's download cache. Without a CI
+      # cache every run depends on JPL availability at run time — one
+      # throttled window fails ~20 ephemeris-backed tests with URLError
+      # timeouts (run 27083228805 and both its reruns). Cache the kernel
+      # and warm it with retries so pytest never downloads it.
+      - name: Cache astropy ephemeris kernel
+        uses: actions/cache@v4
+        with:
+          path: ~/.astropy/cache
+          key: astropy-de440-v1
+
+      - name: Warm DE440 kernel (retries)
+        run: |
+          for i in 1 2 3; do
+            if uv run python -c "from astropy.coordinates import solar_system_ephemeris; solar_system_ephemeris.set('de440'); print('de440 kernel ready')"; then
+              break
+            fi
+            echo "kernel warm-up attempt $i failed; retrying in 30s"
+            sleep 30
+          done
+
       - name: Pytest
         run: uv run pytest
