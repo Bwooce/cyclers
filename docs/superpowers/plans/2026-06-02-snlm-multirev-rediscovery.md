@@ -473,3 +473,75 @@ git add -A && git commit -m "snlm: full-suite regression green after multi-rev r
 **Type consistency:** `Cell(bodies, sequence, period_k, per_leg_revs, per_leg_branch)`, `optimise_cell_idealized(..., vinf_cap=, n_starts=, seed=, use_de=)`, `OptimisationResult.best_cycler/.constraints_satisfied/.closure_residual_kms`, and `Score.max_vinf_kms` match the source signatures read at plan time.
 
 **Risk:** Task 1 may yield zero hits (S1L1 not hostable in circular-coplanar, as with Aldrin). That branch is handled explicitly in Task 1 Step 2 and Task 4 Step 1 — the work degrades to an honest model-limitation xfail rather than a forced/fabricated pass.
+
+---
+
+## PHASE 2 RE-SCOPE (2026-06-07, task #106)
+
+> Appended before executing Phase 2. The landscape changed substantially since the
+> 2026-06-02 plan was written; this section records what Phase 2 still means, what
+> intervening work subsumed, and the remaining deliverable.
+
+### What changed since the plan was written
+
+1. **The plumbing (Task 6) already shipped.** `discover()` in
+   `src/cyclerfinder/data/discover.py` *already* accepts `l_max`, `n_max`,
+   `branch_set`, `max_cells`, `optimiser`, and `enable_v3`, threaded straight into
+   `feasible_cells(...)`. Task 6 is **done** — nothing to add.
+
+2. **M-ED landed a REAL ballistic corrector + a V3 closure gate.** `discover()`'s
+   `_auto_validate` now runs a V0→V3 gauntlet; V3 is the N-arc V∞-continuity
+   ballistic closure (`optimise_cell_ephemeris(mode="ballistic")`). The old Phase-2
+   premise — "the bucket becomes reachable by running the *idealised* multi-rev
+   optimiser over enumerated cells" — is no longer the live closure path.
+
+3. **#137 made the Russell/SnLm geometry representable via the free-return genome.**
+   `search/free_return.py` (`free_return_correct`) + `search/free_return_v1.py`
+   (`free_return_v1_mechanics`) close a single radial-crossing ellipse `(a,e)` whose
+   per-body V∞ EMERGES and is compared non-circularly to the sourced anchor. The
+   `scripts/campaign_russell12.py` campaign over the **12** `free_return_arcs[]`
+   rows (recorded in `docs/notes/2026-06-07-russell12-freereturn-results.md`) gives:
+   **8 CLOSE-AND-MATCH, 3 CLOSE-MATCH-SYMMETRIC-ONLY, 1 CLOSE-OFF-ANCHOR, 0 NO-CLOSE**;
+   4 of those promoted to V1 via `free_return_v1.py`. These 12 rows are **exactly**
+   the subset of the MULTI_ENCOUNTER_SEQUENCE bucket that carries the descriptor.
+
+### Verdict: subsumed vs. remaining deliverable
+
+- **Subsumed by Task 6 (already done):** multi-rev enumeration plumbing through
+  `discover()` and the sweep gate. No work.
+- **Subsumed by M-ED / #137:** the *physics* of reaching the SnLm family. The
+  idealised-optimiser framing ("multi-rev enumeration through the idealised
+  optimiser") is **superseded** by the free-return/corrector path. Do NOT
+  duplicate that physics.
+- **Remaining deliverable (this task):** make the closable subset **honestly
+  classified and discover-reachable** through the real path:
+  1. **Loader/classification.** Give the ~204 MULTI_ENCOUNTER_SEQUENCE rows an
+     honest sub-classification: `DESCRIPTOR_CLOSABLE` for the free-return-eligible
+     subset (the 12 `free_return_arcs[]` rows — the descriptor-bearing, campaign-
+     proven set) vs. the residual data-gapped MULTI_ENCOUNTER_SEQUENCE rows. The
+     split is N-agnostic (driven by `free_return_arcs[]` presence, not a hard-coded
+     count). Census ratchet (`EXPECTED_COVERAGE`) updated same-commit; the
+     coverage-audit invariant (no row vanishes silently) held.
+  2. **discover() integration.** A real discover path that attempts free-return
+     descriptor closure for the DESCRIPTOR_CLOSABLE rows, reusing
+     `parse_free_return_arcs` + `free_return_correct` + `free_return_v1_mechanics`
+     (NOT reimplementing physics). Rediscovery cases parameterised over the closable
+     rows; the #137 campaign outcomes are the expectation (matches for the
+     known-good rows). Golden discipline absolute: the EXPECTED side is the row's
+     SOURCED anchor, never a value our code computed.
+
+- **Stays out (explicitly):** data-gapped MULTI_ENCOUNTER_SEQUENCE rows whose gaps
+  prevent closure (recorded, not forced); VEM (Jones shooter owns that — #137 Part 2
+  established the free-return primitive does not carry over); anything needing the
+  n-body harness. The Russell-12 closure is a **circular-coplanar reproduction of a
+  circular-coplanar source** (like-for-like) — NOT a real-ephemeris V3 result.
+
+### Why classify rather than fold into the V0→V1 gauntlet
+
+The parametrised `test_catalogue_entry_rediscovers` gauntlet builds a *direct
+2-encounter Lambert cell* (`_build_cell_from_entry`). The closable rows are
+multi-arc E-M-E(-E...) free-return chains — a *different builder* (the free-return
+genome). They get a dedicated discover-reachability test, and the bucket's honest
+sub-classification, rather than being forced through a 2-encounter builder that
+cannot represent them. Tasks 1–5 (the S1L1 single-row re-model) are left as the
+2026-06-02 plan describes; this re-scope addresses Phase 2 only.
