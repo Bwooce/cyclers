@@ -549,3 +549,225 @@ def test_dsm_leg_rev_branch_explicit_selection() -> None:
 
     with pytest.raises(LambertError):
         dsm_leg(r_mars, v0, t_back, 0.01, np.asarray(r_earth), mu=MU, rev_branch=(99, "low"))
+
+
+# ---------------------------------------------------------------------------
+# THE MULTI-REV RE-PROBES (#157, slow, wall-capped) -- the #153 probes re-run
+# with the back-arc multi-rev branch now wired in (max_revs sized to the arc
+# periods). EXPECTED = each row's OWN sourced anchors; emerged V_inf is EVIDENCE.
+# Either outcome is reportable; NO catalogue writeback. Verdicts recorded in
+# docs/notes/2026-06-07-dsm-multirev-probe.md.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.slow
+def test_dsm_644gg3_full_sequence_multirev_reprobe() -> None:
+    """6.44Gg3 full E-M-E-M-E sequence re-run with back-arc multi-rev (#157).
+
+    Identical seeding to ``test_dsm_644gg3_full_sequence_probe`` (the #153
+    single-rev baseline that floored at ~30 km/s) but with ``max_revs=3`` so the
+    long loop-arc legs (g 2.087 yr ~1.5 rev, G 4.319 yr ~2-3 rev) may take a
+    multi-revolution branch -- the first configuration in which the multi-arc
+    topology is representable. EXPECTED = the sourced anchors (E=6.44 / M=3.74);
+    the emerged V_inf is EVIDENCE. Asserts only a finite, audited result; the
+    verdict is in the note.
+    """
+    import time
+
+    from cyclerfinder.search.dsm_leg import DsmBounds, make_dsm_chain_step
+    from cyclerfinder.search.mbh import mbh
+
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E", "M", "E")
+    n_legs = 4
+
+    g_arc_days = _G_ARC_YEARS * _YEAR_DAYS
+    big_g_arc_days = _BIG_G_ARC_YEARS * _YEAR_DAYS
+    tof_seed = (
+        _TRANSIT_OUT_DAYS,
+        g_arc_days - _TRANSIT_OUT_DAYS,
+        _TRANSIT_OUT_DAYS,
+        big_g_arc_days - _TRANSIT_OUT_DAYS,
+    )
+
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=_VINF_E_SOURCED,
+        alpha0=0.5 * np.pi,
+        beta0=0.0,
+        tof_days_per_leg=tof_seed,
+        eta_per_leg=(0.5,) * n_legs,
+    )
+    lower = np.array(
+        [-2.0e7, 1.0, -np.pi, -0.5 * np.pi, *[0.7 * t for t in tof_seed], *([0.0] * n_legs)],
+        dtype=np.float64,
+    )
+    upper = np.array(
+        [2.0e7, 9.0, np.pi, 0.5 * np.pi, *[1.3 * t for t in tof_seed], *([1.0] * n_legs)],
+        dtype=np.float64,
+    )
+    bounds = DsmBounds(lower=lower, upper=upper)
+    # max_revs=3: g arc ~1.5 rev, G arc ~2-3 rev (#153 diagnosis).
+    step = make_dsm_chain_step(
+        sequence=sequence, ephem=ephem, bounds=bounds, tol_kms=0.1, max_revs=3
+    )
+
+    abs_scale = np.full(x0.shape, np.nan)
+    abs_scale[0] = 5.0 * 86400.0
+    abs_scale[1] = 0.5
+    abs_scale[2] = 0.2
+    abs_scale[3] = 0.1
+    abs_scale[4 : 4 + n_legs] = 20.0
+    abs_scale[4 + n_legs : 4 + 2 * n_legs] = 0.1
+
+    t_start = time.monotonic()
+    result = mbh(
+        step,
+        x0,
+        n_hops=120,
+        perturbation="cauchy",
+        perturbation_scale=0.0,
+        perturbation_absolute_scale=[float(s) for s in abs_scale],
+        rng_seed=6,
+        stop_after_stall=60,
+    )
+    elapsed = time.monotonic() - t_start
+    assert elapsed < 600.0, f"probe exceeded 10 min wall cap: {elapsed:.1f}s"
+
+    assert np.isfinite(result.best_objective)
+    assert result.rng_seed == 6
+    assert len(result.objective_history) == result.hops_attempted
+    info = result.best_info
+    assert len(info["dv_dsm_per_leg_kms"]) == n_legs
+    assert set(info["vinf_in_kms"]) == {1, 2, 3, 4}
+
+    print("\n=== 6.44Gg3 FULL-sequence MULTI-REV re-probe (max_revs=3) ===")
+    print(f"feasible={result.best_feasible}  total_dV={result.best_objective:.4f} km/s")
+    print(f"hops attempted/accepted = {result.hops_attempted}/{result.hops_accepted}")
+    print(
+        f"emerged V_inf_in  (sourced E={_VINF_E_SOURCED}, M={_VINF_M_SOURCED}): "
+        f"{info['vinf_in_kms']}"
+    )
+    print(f"per-leg dV_DSM km/s: {info['dv_dsm_per_leg_kms']}")
+    print(f"n_revs per leg: {info.get('n_revs_per_leg')}")
+    print(f"branch per leg: {info.get('branch_per_leg')}")
+    print(f"eta per leg: {info['eta_per_leg']}")
+    print(f"tof days per leg: {info['tof_days_per_leg']}")
+    print(f"wall: {elapsed:.1f}s")
+
+
+# Sourced descriptor constants for russell-ch4-4.991gG2 (the S1L1 Russell
+# free-return framing). data/catalogue.yaml russell-ch4-4.991gG2:
+#   free_return_arcs: g(1.4612,...) + G(2.8096,...) ; transit out/in = 150/150 d;
+#   vinf_kms_at_encounters: E=4.99, M=5.10 ; aphelion 1.64 AU ; period 4.27 yr.
+# These are this ROW's OWN anchors -- NOT the s1l1-2syn-em-cpom 5.65/3.05 framing
+# (a different idealisation of the same physical cycler; multi-arc-classification
+# §7/§12). Do not mix framings.
+_S1L1_G_ARC_YEARS = 1.4612  # russell-ch4-4.991gG2 free_return_arcs[0].tof_years
+_S1L1_BIG_G_ARC_YEARS = 2.8096  # free_return_arcs[1].tof_years
+_S1L1_TRANSIT_DAYS = 150.0  # trajectory.segments[out-em].tof_days
+_S1L1_VINF_E_SOURCED = 4.99  # vinf_kms_at_encounters[0].vinf_kms
+_S1L1_VINF_M_SOURCED = 5.10  # vinf_kms_at_encounters[1].vinf_kms
+
+
+@pytest.mark.slow
+def test_dsm_s1l1_4991gg2_two_arc_multirev_reprobe() -> None:
+    """S1L1 (russell-ch4-4.991gG2) two-arc geometry, back-arc multi-rev (#157).
+
+    The 4.991gG2 row is the Russell free-return framing of the S1L1 / "Notable"
+    2-synodic Earth-Mars cycler: two generic arcs g(1.4612 yr) + G(2.8096 yr)
+    bracketing the 150-day E->M outbound transit (this row's OWN sourced anchors:
+    V_inf E=4.99, M=5.10 km/s, aphelion 1.64 AU -- NOT the s1l1-2syn-em-cpom
+    5.65/3.05 framing; multi-arc-classification §7/§12). The arcs sum to the row's
+    4.27-yr period.
+
+    Sequence ``E-M-E-M-E`` (4 legs), the two arcs unrolled into their
+    Mars-bracketing pieces, with ``max_revs=3`` so the loop arcs may take a
+    multi-revolution branch. EXPECTED = the row's sourced anchors (4.99 / 5.10);
+    emerged V_inf is EVIDENCE. Asserts only a finite, audited result; the verdict
+    (a close-and-match would be the first multi-arc closure) is in the note. No
+    catalogue writeback.
+    """
+    import time
+
+    from cyclerfinder.search.dsm_leg import DsmBounds, make_dsm_chain_step
+    from cyclerfinder.search.mbh import mbh
+
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E", "M", "E")
+    n_legs = 4
+
+    g_arc_days = _S1L1_G_ARC_YEARS * _YEAR_DAYS
+    big_g_arc_days = _S1L1_BIG_G_ARC_YEARS * _YEAR_DAYS
+    tof_seed = (
+        _S1L1_TRANSIT_DAYS,
+        g_arc_days - _S1L1_TRANSIT_DAYS,
+        _S1L1_TRANSIT_DAYS,
+        big_g_arc_days - _S1L1_TRANSIT_DAYS,
+    )
+    # The two arc ToFs sum to the sourced 4.27-yr period (sanity, not a gate).
+    assert abs((g_arc_days + big_g_arc_days) / _YEAR_DAYS - 4.2708) < 0.01
+
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=_S1L1_VINF_E_SOURCED,
+        alpha0=0.5 * np.pi,
+        beta0=0.0,
+        tof_days_per_leg=tof_seed,
+        eta_per_leg=(0.5,) * n_legs,
+    )
+    lower = np.array(
+        [-2.0e7, 1.0, -np.pi, -0.5 * np.pi, *[0.7 * t for t in tof_seed], *([0.0] * n_legs)],
+        dtype=np.float64,
+    )
+    upper = np.array(
+        [2.0e7, 9.0, np.pi, 0.5 * np.pi, *[1.3 * t for t in tof_seed], *([1.0] * n_legs)],
+        dtype=np.float64,
+    )
+    bounds = DsmBounds(lower=lower, upper=upper)
+    step = make_dsm_chain_step(
+        sequence=sequence, ephem=ephem, bounds=bounds, tol_kms=0.1, max_revs=3
+    )
+
+    abs_scale = np.full(x0.shape, np.nan)
+    abs_scale[0] = 5.0 * 86400.0
+    abs_scale[1] = 0.5
+    abs_scale[2] = 0.2
+    abs_scale[3] = 0.1
+    abs_scale[4 : 4 + n_legs] = 20.0
+    abs_scale[4 + n_legs : 4 + 2 * n_legs] = 0.1
+
+    t_start = time.monotonic()
+    result = mbh(
+        step,
+        x0,
+        n_hops=120,
+        perturbation="cauchy",
+        perturbation_scale=0.0,
+        perturbation_absolute_scale=[float(s) for s in abs_scale],
+        rng_seed=6,
+        stop_after_stall=60,
+    )
+    elapsed = time.monotonic() - t_start
+    assert elapsed < 600.0, f"probe exceeded 10 min wall cap: {elapsed:.1f}s"
+
+    assert np.isfinite(result.best_objective)
+    assert result.rng_seed == 6
+    assert len(result.objective_history) == result.hops_attempted
+    info = result.best_info
+    assert len(info["dv_dsm_per_leg_kms"]) == n_legs
+    assert set(info["vinf_in_kms"]) == {1, 2, 3, 4}
+
+    print("\n=== S1L1 4.991gG2 two-arc MULTI-REV re-probe (max_revs=3) ===")
+    print(f"feasible={result.best_feasible}  total_dV={result.best_objective:.4f} km/s")
+    print(f"hops attempted/accepted = {result.hops_attempted}/{result.hops_accepted}")
+    print(
+        f"emerged V_inf_in  (sourced E={_S1L1_VINF_E_SOURCED}, M={_S1L1_VINF_M_SOURCED}): "
+        f"{info['vinf_in_kms']}"
+    )
+    print(f"per-leg dV_DSM km/s: {info['dv_dsm_per_leg_kms']}")
+    print(f"n_revs per leg: {info.get('n_revs_per_leg')}")
+    print(f"branch per leg: {info.get('branch_per_leg')}")
+    print(f"eta per leg: {info['eta_per_leg']}")
+    print(f"tof days per leg: {info['tof_days_per_leg']}")
+    print(f"wall: {elapsed:.1f}s")
