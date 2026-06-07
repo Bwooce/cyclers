@@ -58,6 +58,7 @@ from numpy.typing import NDArray
 from scipy.optimize import brentq, minimize
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
+from cyclerfinder.core.satellites import SATELLITES
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
@@ -76,8 +77,18 @@ _U_MIN_NUM: float = 1.0e-6
 
 
 def _a_p_km(body: str) -> float:
-    """Semi-major axis of ``body`` in km, from :data:`PLANETS`."""
-    return PLANETS[body].sma_au * AU_KM
+    """Semi-major axis of ``body`` in km.
+
+    Resolves a heliocentric planet code via :data:`PLANETS` (``sma_au * AU_KM``)
+    and, failing that, a moon code via
+    :data:`cyclerfinder.core.satellites.SATELLITES` (``sma_km`` — already km,
+    already about the primary). The Tisserand identity is centre-blind once
+    ``a_p`` (and ``mu``) name the right centre (moon-tour Tier-1).
+    """
+    pl = PLANETS.get(body)
+    if pl is not None:
+        return pl.sma_au * AU_KM
+    return SATELLITES[body].sma_km
 
 
 # ---------------------------------------------------------------------------
@@ -85,21 +96,28 @@ def _a_p_km(body: str) -> float:
 # ---------------------------------------------------------------------------
 
 
-def vinf_to_tisserand(body: str, vinf_kms: float) -> float:
+def vinf_to_tisserand(body: str, vinf_kms: float, *, mu: float = MU_SUN_KM3_S2) -> float:
     """Tisserand parameter ``T_p`` at ``body`` for hyperbolic excess ``vinf_kms`` (km/s).
 
-    Coplanar (``i = 0``) only. ``T_p = 3 - V_inf^2 * a_p / mu_sun``.
+    Coplanar (``i = 0``) only. ``T_p = 3 - V_inf^2 * a_p / mu``. ``mu`` defaults
+    to the Sun (heliocentric, byte-identical); pass a primary's GM
+    (``PRIMARIES["Jupiter"]``) for a Jovicentric/Saturnian V_inf about that
+    primary (moon-tour Tier-1) — the canonical identity ``T = 3 - v_inf^2`` is
+    centre-aware via ``mu`` + ``a_p``.
     """
     a_p = _a_p_km(body)
-    return 3.0 - (vinf_kms * vinf_kms) * a_p / MU_SUN_KM3_S2
+    return 3.0 - (vinf_kms * vinf_kms) * a_p / mu
 
 
-def tisserand_to_vinf(body: str, t_p: float) -> float:
+def tisserand_to_vinf(body: str, t_p: float, *, mu: float = MU_SUN_KM3_S2) -> float:
     """Inverse of :func:`vinf_to_tisserand`. Returns 0.0 when ``t_p >= 3``.
 
     ``t_p >= 3`` corresponds to spacecraft orbits that cannot encounter the
     body at any positive ``V_inf`` (the body is unreachable from the
     spacecraft's (a, e) regime); the conventional inverse returns 0.
+
+    ``mu`` defaults to the Sun (heliocentric, byte-identical); pass a primary's
+    GM for a centre-aware inverse (moon-tour Tier-1).
 
     Parameter spelled ``t_p`` (lower-case) per PEP 8 / ruff N803; the
     literature symbol is ``T_p`` (capital T, subscript p for "planet").
@@ -107,7 +125,7 @@ def tisserand_to_vinf(body: str, t_p: float) -> float:
     if t_p >= 3.0:
         return 0.0
     a_p = _a_p_km(body)
-    return float(sqrt(MU_SUN_KM3_S2 * (3.0 - t_p) / a_p))
+    return float(sqrt(mu * (3.0 - t_p) / a_p))
 
 
 # ---------------------------------------------------------------------------
@@ -306,11 +324,13 @@ def _a_branches_at_e(
 def linkable(
     body_a: str,
     body_b: str,
-    vinf_kms: float,
+    vinf_kms: float = 0.0,
     tol_au: float = 0.01,
     tol_e: float = 0.01,
     a_range_au: tuple[float, float] = (0.3, 5.0),
     n_points: int = 200,
+    *,
+    mu: float = MU_SUN_KM3_S2,
 ) -> bool:
     """Do the constant-:math:`V_\\infty` contours of ``body_a`` and ``body_b`` intersect?
 
@@ -344,6 +364,12 @@ def linkable(
         ``(a_min, a_max)`` AU filter on the contours.
     n_points:
         Eccentricity grid density.
+    mu:
+        Central GM for the Tisserand identity. Defaults to the Sun
+        (heliocentric, byte-identical). Pass a primary's GM
+        (``PRIMARIES["Jupiter"]``) for a Jovicentric/Saturnian moon pair —
+        ``a_range_au`` must then be moon-scale (about-primary SMA in AU)
+        (moon-tour Tier-1).
 
     Returns
     -------
@@ -354,8 +380,8 @@ def linkable(
     if n_points < 2:
         return False
 
-    t_pa = vinf_to_tisserand(body_a, vinf_kms)
-    t_pb = vinf_to_tisserand(body_b, vinf_kms)
+    t_pa = vinf_to_tisserand(body_a, vinf_kms, mu=mu)
+    t_pb = vinf_to_tisserand(body_b, vinf_kms, mu=mu)
 
     e_samples = np.linspace(0.0, _E_MAX, n_points)
 
