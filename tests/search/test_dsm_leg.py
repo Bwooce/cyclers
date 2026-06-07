@@ -278,3 +278,174 @@ def test_dsm_644gg3_probe() -> None:
     print(f"eta per leg: {info.get('eta_per_leg')}")
     print(f"tof days per leg: {info.get('tof_days_per_leg')}")
     print(f"wall: {elapsed:.1f}s")
+
+
+# ---------------------------------------------------------------------------
+# THE FULL-SEQUENCE PROBE (slow, wall-capped) -- task #153 follow-up to #150.
+#
+# #150's probe used the MINIMAL E->M->E chain (the control) and recorded a clean
+# negative, with the follow-up: drive the FULL multi-arc topology -- the two
+# generic Earth-Earth free-return arcs the row's descriptor encodes -- as their
+# own legs. This is that probe. Every seeded quantity traces to the row's
+# descriptor (``data/catalogue.yaml`` ``russell-ch4-6.44Gg3``):
+#
+#   * the two generic-arc ToFs from ``free_return_arcs[]`` (first descriptor
+#     number = TOF in YEARS, per ``docs/notes/multi-arc-classification.md``):
+#     g(2.087 yr) and G(4.3191 yr) -- summing to the 6.41-yr ``period.years``;
+#   * the 262-day E->M outbound transit from ``invariants.transit_times_days[0]``
+#     (and ``trajectory.segments[out-em]``);
+#   * the departure V_inf seeded at the sourced Earth anchor 6.44 km/s
+#     (``vinf_kms_at_encounters[0]``), direction-free magnitude.
+#
+# SOURCED anchors (EXPECTED side): V_inf E=6.44, M=3.74 km/s. The emerged V_inf
+# is EVIDENCE -- never imposed (constraint-vs-evidence separation). EITHER
+# outcome is a legitimate frontier result; the verdict is reported in
+# ``docs/notes/2026-06-07-dsm-full-sequence-probe.md``.
+# ---------------------------------------------------------------------------
+
+# Sourced descriptor constants (data/catalogue.yaml russell-ch4-6.44Gg3).
+_YEAR_DAYS = 365.25
+_G_ARC_YEARS = 2.087  # free_return_arcs[0].tof_years  g(2.087,1111.33,L)
+_BIG_G_ARC_YEARS = 4.3191  # free_return_arcs[1].tof_years  G(4.3191,1194.88,L)
+_TRANSIT_OUT_DAYS = 262.0  # invariants.transit_times_days[0]; segments[out-em].tof_days
+_VINF_E_SOURCED = 6.44  # vinf_kms_at_encounters[0].vinf_kms
+_VINF_M_SOURCED = 3.74  # vinf_kms_at_encounters[1].vinf_kms
+
+
+@pytest.mark.slow
+def test_dsm_644gg3_full_sequence_probe() -> None:
+    """Full multi-arc sequence for 6.44Gg3: two generic E-E free-return arcs.
+
+    The #150 minimal E->M->E chain floored at 9.4 km/s and predicted the missing
+    piece was the FULL multi-leg topology -- the two generic Earth-Earth arcs
+    (g 2.087 yr + G 4.3191 yr) the descriptor encodes, each unrolled into its
+    Mars-bracketing pieces (E->M outbound + M->E return) so the period sums to the
+    sourced 6.41 yr. Sequence ``E-M-E-M-E`` (4 legs):
+
+      leg 1: E->M  262 d (sourced outbound transit)
+      leg 2: M->E  (g_arc - 262 d) -- remainder of the 2.087-yr g arc
+      leg 3: E->M  262 d (sourced outbound transit)
+      leg 4: M->E  (G_arc - 262 d) -- remainder of the 4.3191-yr G arc
+
+    Driven by the MBH wrapper (cauchy, seed 6, <=120 hops, stall 60). EXPECTED =
+    the sourced anchors (6.44 / 3.74); the emerged V_inf is EVIDENCE. The probe
+    asserts only that the search RUNS and produces a finite, audited result; the
+    scientific verdict (basin reached or not) is in the note. No catalogue
+    writeback.
+    """
+    import time
+
+    from cyclerfinder.search.dsm_leg import DsmBounds, make_dsm_chain_step
+    from cyclerfinder.search.mbh import mbh
+
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E", "M", "E")
+    n_legs = 4
+
+    g_arc_days = _G_ARC_YEARS * _YEAR_DAYS
+    big_g_arc_days = _BIG_G_ARC_YEARS * _YEAR_DAYS
+    tof_seed = (
+        _TRANSIT_OUT_DAYS,
+        g_arc_days - _TRANSIT_OUT_DAYS,
+        _TRANSIT_OUT_DAYS,
+        big_g_arc_days - _TRANSIT_OUT_DAYS,
+    )
+    # The two arc ToFs sum to the sourced 6.41-yr period (sanity, not a gate).
+    assert abs((g_arc_days + big_g_arc_days) / _YEAR_DAYS - 6.406) < 0.01
+
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=_VINF_E_SOURCED,
+        alpha0=0.5 * np.pi,  # tangential prograde departure (circular backend, t=0)
+        beta0=0.0,
+        tof_days_per_leg=tof_seed,
+        eta_per_leg=(0.5,) * n_legs,
+    )
+    # Custom bounds: ToFs +-30% around the sourced descriptor breakdown (the long
+    # loop-arc legs do not fit sequence_keyed_bounds' E<->M inner-pair window, and
+    # an E->E synodic period is singular -- so the bounds are stated explicitly
+    # from the descriptor here).
+    lower = np.array(
+        [-2.0e7, 1.0, -np.pi, -0.5 * np.pi, *[0.7 * t for t in tof_seed], *([0.0] * n_legs)],
+        dtype=np.float64,
+    )
+    upper = np.array(
+        [2.0e7, 9.0, np.pi, 0.5 * np.pi, *[1.3 * t for t in tof_seed], *([1.0] * n_legs)],
+        dtype=np.float64,
+    )
+    bounds = DsmBounds(lower=lower, upper=upper)
+    step = make_dsm_chain_step(sequence=sequence, ephem=ephem, bounds=bounds, tol_kms=0.1)
+
+    abs_scale = np.full(x0.shape, np.nan)
+    abs_scale[0] = 5.0 * 86400.0  # t0 a few days
+    abs_scale[1] = 0.5  # vinf_out0 km/s
+    abs_scale[2] = 0.2  # alpha0 rad
+    abs_scale[3] = 0.1  # beta0 rad
+    abs_scale[4 : 4 + n_legs] = 20.0  # tof days
+    abs_scale[4 + n_legs : 4 + 2 * n_legs] = 0.1  # eta
+
+    t_start = time.monotonic()
+    result = mbh(
+        step,
+        x0,
+        n_hops=120,
+        perturbation="cauchy",
+        perturbation_scale=0.0,
+        perturbation_absolute_scale=[float(s) for s in abs_scale],
+        rng_seed=6,
+        stop_after_stall=60,
+    )
+    elapsed = time.monotonic() - t_start
+    assert elapsed < 600.0, f"probe exceeded 10 min wall cap: {elapsed:.1f}s"
+
+    # Finite, fully-audited result regardless of basin (the only gated claim).
+    assert np.isfinite(result.best_objective)
+    assert result.rng_seed == 6
+    assert len(result.objective_history) == result.hops_attempted
+    info = result.best_info
+    assert len(info["dv_dsm_per_leg_kms"]) == n_legs
+    assert set(info["vinf_in_kms"]) == {1, 2, 3, 4}
+
+    print("\n=== 6.44Gg3 FULL-sequence (E-M-E-M-E, two generic arcs) probe ===")
+    print(f"feasible={result.best_feasible}  total_dV={result.best_objective:.4f} km/s")
+    print(f"hops attempted/accepted = {result.hops_attempted}/{result.hops_accepted}")
+    print(
+        f"emerged V_inf_in  (sourced E={_VINF_E_SOURCED}, M={_VINF_M_SOURCED}): "
+        f"{info['vinf_in_kms']}"
+    )
+    print(f"per-leg dV_DSM km/s: {info['dv_dsm_per_leg_kms']}")
+    print(f"eta per leg: {info['eta_per_leg']}")
+    print(f"tof days per leg: {info['tof_days_per_leg']}")
+    print(f"wall: {elapsed:.1f}s")
+
+
+@pytest.mark.slow
+def test_dsm_leg_single_rev_floors_on_multirev_loop_arc() -> None:
+    """The structural reason the full-sequence probe cannot close: single-rev only.
+
+    The two generic Earth-Earth arcs are MULTI-revolution (a 2.087-yr / 4.319-yr
+    flight at a ~1.27-1.54 AU heliocentric ellipse, period ~1.4-1.9 yr, makes 1.5-3
+    revolutions). :func:`dsm_leg`'s back-arc Lambert is SINGLE-rev (``max_revs=0``),
+    so on a >1-period leg it is forced onto the degenerate near-radial high-energy
+    branch. This test demonstrates that the single-rev branch on the G-arc M->E
+    return is strictly worse (higher departure speed) than the multi-rev branches
+    -- the precise mechanism behind the negative. CONSTRUCTED comparison: the
+    reference is the multi-rev Lambert family, not a DSM-evaluator output.
+    """
+    ephem = Ephemeris(model="circular")
+    big_g_arc_days = _BIG_G_ARC_YEARS * _YEAR_DAYS
+    t_back = (big_g_arc_days - _TRANSIT_OUT_DAYS) * 86400.0  # G-arc M->E return ToF
+    r_mars, _ = ephem.state("M", _TRANSIT_OUT_DAYS * 86400.0)
+    r_earth, _ = ephem.state("E", _TRANSIT_OUT_DAYS * 86400.0 + t_back)
+
+    single = lambert(r_mars, r_earth, t_back, mu=MU, prograde=True, max_revs=0)
+    multi = lambert(r_mars, r_earth, t_back, mu=MU, prograde=True, max_revs=3)
+
+    v1_single = min(float(np.linalg.norm(s.v1)) for s in single)
+    v1_multi = min(float(np.linalg.norm(s.v1)) for s in multi)
+    # The leg is genuinely multi-rev: more solution branches exist beyond single-rev.
+    assert len(multi) > len(single)
+    # The single-rev branch dsm_leg is locked to is strictly worse (higher |v1|)
+    # than the best multi-rev branch -- the loop arc cannot be represented well by
+    # the single-rev primitive.
+    assert v1_multi < v1_single - 1.0
