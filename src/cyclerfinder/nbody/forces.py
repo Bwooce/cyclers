@@ -113,6 +113,20 @@ def rails_acceleration(
     each body in ``bodies`` (read on rails via :func:`ingest_planet_state`). With
     no perturbers (``bodies=()``) this reduces to the pure two-body central force —
     the basis of GOLDEN GATE 1 (Sun-only ≡ ``core/kepler.propagate``).
+
+    **FAR-FIELD ONLY — unsoftened.** This is the exact point-mass model: the
+    perturber term diverges as ``1/|d|^2`` as the spacecraft approaches a body.
+    The integrator's own callback (``propagator._install_rails_forces``)
+    deliberately **softens** that term by clamping ``|d|`` to the safe-flyby
+    periapsis ``radius_eq_km + safe_alt_km`` — inside the SOI a real flyby is a
+    B-plane-targeted patched-conic turn, not a heliocentric point-mass dive
+    (design §2). The two formulas are therefore **identical in the far field**
+    (where ``|d| >= d_safe`` so the clamp never engages — the cruise regime the
+    rung integrates) and **diverge only inside the safe periapsis**. Use this
+    public function as the unsoftened far-field reference; do NOT use it to model
+    the near-flyby regime — that is the callback's clamped path by design. The
+    far-field agreement of the two is pinned by
+    ``tests/nbody/test_propagator_api.py``.
     """
     r = np.asarray(r_km, dtype=np.float64)
     r_norm = float(np.linalg.norm(r))
