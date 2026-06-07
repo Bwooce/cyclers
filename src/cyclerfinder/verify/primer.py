@@ -43,6 +43,16 @@ have a two-point BVP: ``p`` is pinned (as a 3-vector) at both ends, and the
 unknown ``ṗ(t0)`` is recovered from the STM by inverting the upper-right
 3x3 block ``Φ_rv``.
 
+Caveat — degenerate (zero-magnitude) bounding impulse: the BC
+``p(t_i) = Δv_i / |Δv_i|`` (Guzman 2002, Eq. 33) is **ill-posed as
+``|Δv_i| → 0``** — the direction is undefined in the limit. Our Aldrin coast-0
+Earth departure is *exactly* this degenerate case (``|Δv_0| = 0`` by
+construction), so the endpoint primer direction supplied there is a fallback
+unit vector, not a physical ``Δv/|Δv|``. The resulting ``|p|`` bulge on such a
+coast is partly an artifact of the imposed (non-physical) endpoint direction
+and should be read with that in mind; the survey assumes non-degenerate
+impulses and does not cover this boundary condition.
+
 Diagnostic verdict
 ------------------
 Necessary (NOT sufficient) conditions for an optimal impulse schedule:

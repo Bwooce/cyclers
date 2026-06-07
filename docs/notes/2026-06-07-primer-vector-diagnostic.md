@@ -91,7 +91,11 @@ overall: IMPROVABLE_ADD_IMPULSE
 
 **Interpretation (DIAGNOSTIC, PROVISIONAL):**
 
-- **Coast 0 (Earth→Mars) carries a genuine interior bulge**, `max|p| ≈ 1.122`
+- **Coast 0 (Earth→Mars) carries a genuine interior bulge**
+  [**CONFIRMED-with-scope per Guzman 2002 pp.7-8**: coast 0 is a sub-one-rev
+  (Δν < 180°) singularity-free arc, the `|p|=1.122` necessary-condition flag is
+  valid and the Φ_rv inversion is well-posed; **remains necessary-not-sufficient
+  (Guzman p.3)**], `max|p| ≈ 1.122`
   peaked ~35% along the 132-day arc and stable under grid refinement
   (300 → 4000 samples, identical to 5 sig figs). By the Lion & Handelsman
   diagnostic this is first-order evidence that a midcourse impulse near
@@ -100,7 +104,11 @@ overall: IMPROVABLE_ADD_IMPULSE
   quantified here (that needs the add-impulse predictor / corrector, which is
   out of scope), so the implication is qualitative only: a fraction of the
   2.9138 km/s is plausibly recoverable, magnitude TBD.
-- **Coast 1 (Mars→Earth) is at the noise floor**, `max|p| = 1.00008` with the
+- **Coast 1 (Mars→Earth) is at the noise floor**
+  [**CONFIRMED-with-scope per Guzman 2002 pp.7-8**: 598.7 d is sub-one-rev
+  (~0.87 of Mars's ~687-d period), no Φ_rv singularity; the earlier
+  "multi-revolution-scale" framing was an overstatement the survey dissolves],
+  `max|p| = 1.00008` with the
   peak at the endpoint (t ≈ 2 d into a 599-day arc). This is a *marginal* touch
   of unity, not a real interior violation; treat coast 1 as effectively
   satisfying the necessary conditions. It tips the overall verdict to
@@ -108,14 +116,20 @@ overall: IMPROVABLE_ADD_IMPULSE
   signal is entirely coast 0.
 
 **Caveat (binding).** The maintenance ΔV (2.9138 km/s) is our own computed
-number, not a sourced value — McConaghy 2002 defers it. The long M→E leg
-(599 days, multi-revolution-scale) is exactly the regime where the Guzman et
-al. 2002 primer survey (IAC-02-A.6.09 / NTRS 20030032208, **not yet
-acquired**) flags linearised primer theory as fragile (singularities along
-arcs). Until that survey is in hand and the STM propagation is validated
-against its cases, **all Aldrin primer results are provisional** and must not
-be cited as an optimality claim. The Hohmann and long-way goldens (short,
+number, not a sourced value — McConaghy 2002 defers it. The M→E leg
+(598.7 days) is sub-one-rev (~0.87 of Mars's ~687-day period, Δν < 360° as a
+single transfer arc), so it does **not** trigger the Guzman et al. 2002 primer
+survey's singularity family (Δt = n·period; Δν = kπ; min-ToF), per Guzman
+§"Isolated Singularities" (p.7-8). The Hohmann and long-way goldens (short,
 single-rev, analytic) are the trustworthy validation of the machinery itself.
+
+> **Addendum (2026-06-07, per Guzman 2002 mining):** the "all Aldrin primer
+> results are provisional pending Guzman (multi-rev)" hedge above is **lifted**.
+> The Guzman survey (now acquired) places both Aldrin legs in the singularity-
+> free sub-one-rev regime (Δν < 180° geometry, no Φ_rv singularity conditions
+> met), so the *machinery* is validated for these arcs; the coast-0 verdict
+> below is upgraded to CONFIRMED-with-scope. See
+> `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`.
 
 ## What is NOT done (deliberate scope limits)
 

@@ -7,6 +7,15 @@ via the Lion & Handelsman (1968) add-an-impulse step. Implemented in
 `tests/verify/test_primer_refine.py`. Reads on from the #144 diagnostic note
 `docs/notes/2026-06-07-primer-vector-diagnostic.md`.
 
+> **Addendum (2026-06-07, per Guzman 2002 mining):** the "DIAGNOSTIC /
+> PROVISIONAL, multi-rev caveats apply" hedge is **upgraded to CONFIRMED per
+> Guzman 2002 pp.5-6**. The now-acquired survey corroborates the zero-recovery
+> result from its own equations (Eq. 43 δJ ∝ `|Δv₀| = 0`, and the Eq. 40/41
+> first-order-gradient-vs-realised-magnitude separation), and the multi-rev
+> caveat does not bind (sub-one-rev arc). See
+> `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`. The
+> "NOT for the site/catalogue" honesty framing is unchanged.
+
 ## What it computes
 
 A single coast is a two-impulse, fixed-endpoint transfer from boundary state A
@@ -114,8 +123,14 @@ itself is correct and has teeth; it is simply the wrong lever for this schedule.
   from our optimiser, **not primer-predicted**. First-order primer theory only
   asserts that an improvement *exists* on a coast with `|p| > 1`; the magnitude
   comes from the optimiser.
-- **DIAGNOSTIC / PROVISIONAL.** The Guzman 2002 multi-rev caveats
-  (IAC-02-A.6.09 / NTRS 20030032208, not yet acquired) of #144 apply unchanged.
+- **CONFIRMED per Guzman 2002 pp.5-6.** The zero-recovery finding is the
+  *expected* outcome of a degenerate-endpoint (`|Δv₀| = 0`) coast: the survey
+  separates the Eq. 40/41 first-order gradient (improvable) from the realised
+  impulse magnitude (which "might not produce an optimal trajectory in the sense
+  of Lawden"), and its endpoint-time formula Eq. 43 (δJ ∝ `|Δv₀|`) gives zero
+  recoverable when `|Δv₀| = 0` exactly — both predict #148's ~0. The multi-rev
+  caveat does **not** bind (sub-one-rev arc). See
+  `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`.
 - These numbers must **NOT** be published to the site or written to the
   catalogue. They live in this note only.
 
