@@ -110,7 +110,10 @@ class RestrictedNBody:
         sim = rebound.Simulation()
         sim.G = _G_KM3_KG_S2
         sim.integrator = "ias15"
-        sim.ri_ias15.epsilon = accuracy
+        # REBOUND 5.0: the IAS15 accuracy parameter lives on the integrator
+        # configuration object (sim.integrator.epsilon), not the removed
+        # sim.ri_ias15.epsilon accessor of the 3.x/4.x line.
+        sim.integrator.epsilon = accuracy
         # Central Sun (mass 1.0 => G*M = mu_sun) at the heliocentric origin.
         sim.add(m=1.0, x=0.0, y=0.0, z=0.0, vx=0.0, vy=0.0, vz=0.0)
         # Massless spacecraft test particle.
