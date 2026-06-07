@@ -97,6 +97,15 @@ class DsmLegResult:
     t_dsm_sec:
         Time of the DSM along the leg, ``eta * tof`` seconds (relative to leg
         start). Audit/viz.
+    n_revs_chosen:
+        The revolution count of the back-arc Lambert branch actually selected,
+        ``0`` for the single-revolution (direct) branch. When ``max_revs == 0``
+        this is always ``0`` (the legacy single-rev path); when ``max_revs > 0``
+        it records which multi-rev branch minimised :attr:`dv_dsm_kms`. Audit.
+    branch_chosen:
+        The branch label of the selected back-arc Lambert solution
+        (``"single"`` / ``"low"`` / ``"high"``). Audit; pairs with
+        :attr:`n_revs_chosen`.
     """
 
     v_arrive: Vec3
@@ -105,6 +114,8 @@ class DsmLegResult:
     dv_dsm_kms: float
     r_dsm: Vec3
     t_dsm_sec: float
+    n_revs_chosen: int = 0
+    branch_chosen: str = "single"
 
 
 # eta is clamped this far from the singular endpoints {0, 1}: at exactly eta=0 the
@@ -124,6 +135,8 @@ def dsm_leg(
     *,
     mu: float = MU_SUN_KM3_S2,
     prograde: bool = True,
+    max_revs: int = 0,
+    rev_branch: tuple[int, str] | None = None,
 ) -> DsmLegResult:
     """One interior-impulse (DSM) leg: propagate ``eta*tof`` then Lambert the rest.
 
@@ -150,19 +163,39 @@ def dsm_leg(
         Central-body gravitational parameter, km^3/s^2 (heliocentric default).
     prograde:
         Lambert transfer sense for the back arc (default prograde / short-way).
+    max_revs:
+        Maximum number of full revolutions to consider for the back-arc Lambert
+        (passed straight through to :func:`cyclerfinder.core.lambert.lambert`).
+        The default ``0`` keeps the historical single-revolution-only behaviour
+        (bit-identical results). When ``max_revs > 0`` the solver enumerates the
+        single-rev branch plus every feasible multi-rev ``low``/``high`` branch
+        up to ``max_revs`` and selects the one that MINIMISES the DSM impulse
+        ``dV_DSM`` (the leg objective). The resonant loop arcs of a multi-arc
+        cycler are >1-period transfers, for which the single-rev branch is forced
+        onto a degenerate near-radial high-energy solution; allowing multi-rev
+        branches is what makes those arcs representable (the #153 diagnosis).
+    rev_branch:
+        Optional ``(n_revs, branch)`` selector. When given, the back arc uses
+        exactly that branch (e.g. ``(2, "low")``) instead of minimising over the
+        enumerated set; ``max_revs`` is widened to ``n_revs`` if needed so the
+        requested branch is produced. A :class:`LambertError` is raised if the
+        requested branch is infeasible for this geometry/ToF. ``None`` (default)
+        selects the dV-minimising branch as described above.
 
     Returns
     -------
     DsmLegResult
-        Arrival velocity, post/pre-DSM velocities, the DSM impulse magnitude, and
-        the DSM state for the audit trail.
+        Arrival velocity, post/pre-DSM velocities, the DSM impulse magnitude, the
+        DSM state, and the chosen back-arc revolution/branch for the audit trail.
 
     Raises
     ------
     ValueError
-        On non-positive ``tof`` or ``eta`` at/outside the singular endpoints.
+        On non-positive ``tof`` or ``eta`` at/outside the singular endpoints, or a
+        negative ``max_revs``.
     LambertError
-        If the back-arc Lambert solve fails (degenerate geometry / no convergence).
+        If the back-arc Lambert solve fails (degenerate geometry / no
+        convergence), or the explicitly requested ``rev_branch`` is infeasible.
     """
     if tof <= 0.0:
         raise ValueError(f"tof must be positive, got {tof}")
@@ -171,6 +204,8 @@ def dsm_leg(
             f"eta must lie in [{_ETA_EPS}, {1.0 - _ETA_EPS}] (the exact endpoints "
             f"0/1 are singular ballistic/Lambert degeneracies), got {eta}"
         )
+    if max_revs < 0:
+        raise ValueError(f"max_revs must be non-negative, got {max_revs}")
 
     r0_arr = np.asarray(r0, dtype=np.float64)
     v0_arr = np.asarray(v0, dtype=np.float64)
@@ -183,10 +218,38 @@ def dsm_leg(
     r_dsm, v12 = propagate(r0_arr, v0_arr, t_front, mu)
 
     # Back arc: Lambert from the DSM position to the target over (1-eta)*tof.
-    # The single-rev (direct) branch is the DSM leg's transfer (max_revs=0).
-    sols = lambert(r_dsm, target_arr, t_back, mu=mu, prograde=prograde, max_revs=0)
-    v21 = sols[0].v1  # post-impulse departure from the DSM (Eq.6, v_21)
-    v22 = sols[0].v2  # arrival at the target (Eq.6, v_22)
+    # max_revs=0 returns ONLY the single-rev (direct) branch -> the historical
+    # path is bit-identical (sols[0] is the single-rev solution). max_revs>0 also
+    # returns the feasible multi-rev low/high branches, among which the chosen
+    # branch is the one minimising the DSM impulse (the resonant loop arcs need
+    # this; the single-rev branch on a >1-period leg is degenerate -- #153).
+    enumerate_revs = max_revs
+    if rev_branch is not None:
+        # Widen the enumeration so the explicitly requested branch is produced.
+        enumerate_revs = max(max_revs, int(rev_branch[0]))
+    sols = lambert(r_dsm, target_arr, t_back, mu=mu, prograde=prograde, max_revs=enumerate_revs)
+
+    if rev_branch is not None:
+        want_n, want_b = int(rev_branch[0]), str(rev_branch[1])
+        chosen = next(
+            (s for s in sols if s.n_revs == want_n and s.branch == want_b),
+            None,
+        )
+        if chosen is None:
+            raise LambertError(
+                f"requested rev_branch ({want_n}, {want_b!r}) is infeasible for this "
+                f"geometry/ToF (available: "
+                f"{[(s.n_revs, s.branch) for s in sols]})"
+            )
+    elif max_revs == 0:
+        # Legacy path: the single-rev (direct) branch, identical to before.
+        chosen = sols[0]
+    else:
+        # Pick the branch minimising the DSM impulse ||v21 - v12||.
+        chosen = min(sols, key=lambda s: float(np.linalg.norm(s.v1 - v12)))
+
+    v21 = chosen.v1  # post-impulse departure from the DSM (Eq.6, v_21)
+    v22 = chosen.v2  # arrival at the target (Eq.6, v_22)
 
     dv_dsm = float(np.linalg.norm(v21 - v12))
 
@@ -197,6 +260,8 @@ def dsm_leg(
         dv_dsm_kms=dv_dsm,
         r_dsm=np.asarray(r_dsm, dtype=np.float64),
         t_dsm_sec=float(t_front),
+        n_revs_chosen=int(chosen.n_revs),
+        branch_chosen=str(chosen.branch),
     )
 
 
@@ -234,6 +299,13 @@ class DsmChainResult:
         The converged DSM fractions (the new genome coordinate), per leg.
     tof_days_per_leg:
         The converged per-leg ToFs (days).
+    n_revs_per_leg:
+        EMERGED back-arc revolution count selected on each leg (audit). All zeros
+        when the chain was evaluated single-rev (``max_revs == 0``); otherwise the
+        per-leg multi-rev branch the dV-minimising selection landed on.
+    branch_per_leg:
+        EMERGED back-arc Lambert branch label per leg (audit), pairs with
+        :attr:`n_revs_per_leg`.
     t0_sec:
         Converged departure epoch (seconds).
     vinf_out0_kms, alpha0, beta0:
@@ -262,6 +334,8 @@ class DsmChainResult:
     vinf_out0_kms: float = 0.0
     alpha0: float = 0.0
     beta0: float = 0.0
+    n_revs_per_leg: tuple[int, ...] = field(default_factory=tuple)
+    branch_per_leg: tuple[str, ...] = field(default_factory=tuple)
     dsm_states: tuple[tuple[Vec3, float], ...] = field(default_factory=tuple)
     converged: bool = False
     solver_success: bool = True
@@ -293,6 +367,7 @@ def evaluate_dsm_chain(
     mu: float = MU_SUN_KM3_S2,
     rendezvous: bool = False,
     tol_kms: float = 0.1,
+    max_revs: int = 0,
 ) -> DsmChainResult:
     """Evaluate a chained one-DSM-per-leg trajectory (Takao Eqs.3-7, 14-15).
 
@@ -330,6 +405,8 @@ def evaluate_dsm_chain(
 
     dv_dsm: list[float] = []
     dsm_states: list[tuple[Vec3, float]] = []
+    n_revs_legs: list[int] = []
+    branch_legs: list[str] = []
     vinf_in: dict[int, float] = {}
     vinf_out: dict[int, float] = {0: float(vinf_out0_kms)}
 
@@ -342,7 +419,15 @@ def evaluate_dsm_chain(
         target_body = sequence[i + 1]
         r_target, v_planet_target = ephem.state(target_body, t_arrive)
         try:
-            leg = dsm_leg(r_curr, v_depart, tof_s, eta_per_leg[i], np.asarray(r_target), mu=mu)
+            leg = dsm_leg(
+                r_curr,
+                v_depart,
+                tof_s,
+                eta_per_leg[i],
+                np.asarray(r_target),
+                mu=mu,
+                max_revs=max_revs,
+            )
         except (LambertError, KeplerError, ValueError):
             # A hop into a too-energetic departure can drive the ballistic
             # propagation hyperbolic past Newton convergence, or the back-arc
@@ -352,6 +437,8 @@ def evaluate_dsm_chain(
             break
         dv_dsm.append(leg.dv_dsm_kms)
         dsm_states.append((leg.r_dsm, leg.t_dsm_sec))
+        n_revs_legs.append(leg.n_revs_chosen)
+        branch_legs.append(leg.branch_chosen)
         v_inf_in_vec = leg.v_arrive - np.asarray(v_planet_target, dtype=np.float64)
         vinf_in[i + 1] = float(np.linalg.norm(v_inf_in_vec))
 
@@ -377,6 +464,8 @@ def evaluate_dsm_chain(
             vinf_out0_kms=float(vinf_out0_kms),
             alpha0=float(alpha0),
             beta0=float(beta0),
+            n_revs_per_leg=tuple(n_revs_legs),
+            branch_per_leg=tuple(branch_legs),
             dsm_states=tuple(dsm_states),
             converged=False,
         )
@@ -396,6 +485,8 @@ def evaluate_dsm_chain(
         vinf_out0_kms=float(vinf_out0_kms),
         alpha0=float(alpha0),
         beta0=float(beta0),
+        n_revs_per_leg=tuple(n_revs_legs),
+        branch_per_leg=tuple(branch_legs),
         dsm_states=tuple(dsm_states),
         converged=total_dv < tol_kms,
     )
@@ -530,6 +621,7 @@ def dsm_chain_correct(
     rendezvous: bool = False,
     tol_kms: float = 0.1,
     max_nfev: int = 200,
+    max_revs: int = 0,
 ) -> DsmChainResult:
     """Drive the chained-DSM total-dV to a minimum with bounded least-squares.
 
@@ -549,7 +641,13 @@ def dsm_chain_correct(
     def _res(x: NDArray[np.float64]) -> NDArray[np.float64]:
         params = _unpack(np.asarray(x, dtype=np.float64), n_legs)
         r = evaluate_dsm_chain(
-            sequence=sequence, ephem=ephem, mu=mu, rendezvous=rendezvous, tol_kms=tol_kms, **params
+            sequence=sequence,
+            ephem=ephem,
+            mu=mu,
+            rendezvous=rendezvous,
+            tol_kms=tol_kms,
+            max_revs=max_revs,
+            **params,
         )
         val = r.total_dv_kms
         if not np.isfinite(val):
@@ -579,7 +677,13 @@ def dsm_chain_correct(
 
     params = _unpack(np.asarray(sol.x, dtype=np.float64), n_legs)
     result = evaluate_dsm_chain(
-        sequence=sequence, ephem=ephem, mu=mu, rendezvous=rendezvous, tol_kms=tol_kms, **params
+        sequence=sequence,
+        ephem=ephem,
+        mu=mu,
+        rendezvous=rendezvous,
+        tol_kms=tol_kms,
+        max_revs=max_revs,
+        **params,
     )
     # The evaluator already set ``converged`` from total_dv < tol_kms; carry the
     # solver diagnostics onto the otherwise-complete result (replace keeps every
@@ -603,6 +707,7 @@ def make_dsm_chain_step(
     rendezvous: bool = False,
     tol_kms: float = 0.1,
     max_nfev: int = 200,
+    max_revs: int = 0,
 ) -> Callable[[np.ndarray, np.random.Generator], MBHStep]:
     """Adapter: :func:`dsm_chain_correct` as an MBH local-solve closure.
 
@@ -625,6 +730,7 @@ def make_dsm_chain_step(
             rendezvous=rendezvous,
             tol_kms=tol_kms,
             max_nfev=max_nfev,
+            max_revs=max_revs,
         )
         # The corrector moves the WHOLE genome -- including the departure V_inf
         # (vinf_out0/alpha0/beta0), which enters the dV objective through the
@@ -651,6 +757,8 @@ def make_dsm_chain_step(
                 "vinf_out_kms": dict(r.vinf_out_kms),
                 "eta_per_leg": tuple(r.eta_per_leg),
                 "tof_days_per_leg": tuple(r.tof_days_per_leg),
+                "n_revs_per_leg": tuple(r.n_revs_per_leg),
+                "branch_per_leg": tuple(r.branch_per_leg),
                 "solver_nfev": int(r.solver_nfev),
             },
         )

@@ -449,3 +449,103 @@ def test_dsm_leg_single_rev_floors_on_multirev_loop_arc() -> None:
     # than the best multi-rev branch -- the loop arc cannot be represented well by
     # the single-rev primitive.
     assert v1_multi < v1_single - 1.0
+
+
+# ---------------------------------------------------------------------------
+# Multi-rev mechanics gate (#157, CONSTRUCTED) -- the back-arc multi-rev fix.
+#
+# #153 proved the LAMBERT FAMILY (lambert(..., max_revs=3)) has a ~15.5 km/s
+# best-|v1| branch vs the ~28.2 km/s single-rev branch on the 1315.5-d G-arc
+# M->E return. This gate proves the same improvement is now wired into the
+# dsm_leg PRIMITIVE: dsm_leg(..., max_revs=3) selects the multi-rev branch and
+# its DSM impulse / departure speed drop substantially below the single-rev
+# (max_revs=0) result on the very same arc. CONSTRUCTED comparison: the
+# reference is the leg's own single-rev result and the multi-rev Lambert family,
+# not any DSM-evaluator/optimiser output (golden-rule mechanics, not a golden
+# test). Mechanics label.
+# ---------------------------------------------------------------------------
+
+
+def test_dsm_leg_max_revs_recovers_multirev_improvement_on_g_arc() -> None:
+    """dsm_leg(max_revs=3) reproduces the #153 multi-rev |v1| improvement.
+
+    On the 1315.5-d G-arc M->E return (the loop arc that floors the single-rev
+    full sequence), a near-pure-Lambert leg (eta -> small, so the DSM sits at the
+    leg start and the back arc is essentially the whole M->E transfer):
+
+      * single-rev (max_revs=0) is forced onto the degenerate near-radial branch
+        -- departure speed |v1| ~ 28 km/s (cf. #153's measured 28.18 km/s);
+      * multi-rev (max_revs=3) selects a multi-revolution branch with |v1| ~ 15
+        km/s (cf. #153's measured 15.51 km/s),
+
+    and the selected DSM impulse drops strictly and substantially. This is the
+    mechanism the full-sequence re-probe needs; the assertion thresholds are loose
+    floors around the #153-cited numbers, not exact golden values.
+    """
+    ephem = Ephemeris(model="circular")
+    t_back = (_BIG_G_ARC_YEARS * _YEAR_DAYS - _TRANSIT_OUT_DAYS) * 86400.0
+    r_mars, v_mars = ephem.state("M", _TRANSIT_OUT_DAYS * 86400.0)
+    r_earth, _ = ephem.state("E", _TRANSIT_OUT_DAYS * 86400.0 + t_back)
+
+    # eta -> small: the front (ballistic) arc is negligible, so the back-arc
+    # Lambert spans (almost) the whole G-arc M->E return -- the multi-rev regime.
+    eta = 0.01
+    v0 = np.asarray(v_mars) + np.array([0.0, 3.0, 0.0])  # a modest departure V_inf
+
+    leg_single = dsm_leg(r_mars, v0, t_back, eta, np.asarray(r_earth), mu=MU, max_revs=0)
+    leg_multi = dsm_leg(r_mars, v0, t_back, eta, np.asarray(r_earth), mu=MU, max_revs=3)
+
+    v1_single = float(np.linalg.norm(leg_single.v_depart_post_dsm))
+    v1_multi = float(np.linalg.norm(leg_multi.v_depart_post_dsm))
+
+    # The single-rev path is the legacy degenerate branch (#153: ~28.2 km/s).
+    assert leg_single.n_revs_chosen == 0
+    assert leg_single.branch_chosen == "single"
+    assert v1_single > 25.0  # near the #153-cited 28.18 km/s
+    # The multi-rev path selects a genuine multi-revolution branch (#153: ~15.5).
+    assert leg_multi.n_revs_chosen >= 1
+    assert v1_multi < 18.0  # near the #153-cited 15.51 km/s
+    # The improvement is strict and substantial (>5 km/s on |v1|, and the DSM
+    # impulse itself drops well below the single-rev value).
+    assert v1_multi < v1_single - 5.0
+    assert leg_multi.dv_dsm_kms < leg_single.dv_dsm_kms - 3.0
+
+
+def test_dsm_leg_max_revs_zero_is_bit_identical_to_default() -> None:
+    """max_revs=0 (the default) is byte-identical to the historical single-rev path.
+
+    Regression guard for the additive multi-rev change: passing max_revs=0
+    explicitly, omitting it, and the converged single-rev branch must all produce
+    the SAME DSM impulse, arrival velocity, and audit (n_revs=0, branch="single").
+    """
+    r0 = np.array([1.0 * AU_KM, 0.0, 0.0])
+    target = np.array([0.0, 1.52 * AU_KM, 0.0])
+    tof = 200.0 * 86400.0
+    v0 = lambert(r0, target, tof, mu=MU)[0].v1 + np.array([0.4, -0.2, 0.1])
+
+    default = dsm_leg(r0, v0, tof, 0.5, target, mu=MU)
+    explicit_zero = dsm_leg(r0, v0, tof, 0.5, target, mu=MU, max_revs=0)
+
+    assert default.dv_dsm_kms == explicit_zero.dv_dsm_kms
+    assert np.array_equal(default.v_arrive, explicit_zero.v_arrive)
+    assert default.n_revs_chosen == 0
+    assert default.branch_chosen == "single"
+
+
+def test_dsm_leg_rev_branch_explicit_selection() -> None:
+    """An explicit rev_branch selector picks exactly that branch (or raises)."""
+    ephem = Ephemeris(model="circular")
+    t_back = (_BIG_G_ARC_YEARS * _YEAR_DAYS - _TRANSIT_OUT_DAYS) * 86400.0
+    r_mars, v_mars = ephem.state("M", _TRANSIT_OUT_DAYS * 86400.0)
+    r_earth, _ = ephem.state("E", _TRANSIT_OUT_DAYS * 86400.0 + t_back)
+    v0 = np.asarray(v_mars) + np.array([0.0, 3.0, 0.0])
+
+    leg = dsm_leg(r_mars, v0, t_back, 0.01, np.asarray(r_earth), mu=MU, rev_branch=(1, "low"))
+    assert leg.n_revs_chosen == 1
+    assert leg.branch_chosen == "low"
+
+    # An impossible revolution count for this ToF raises LambertError.
+    from cyclerfinder.core.lambert import LambertError
+
+    with pytest.raises(LambertError):
+        dsm_leg(r_mars, v0, t_back, 0.01, np.asarray(r_earth), mu=MU, rev_branch=(99, "low"))
