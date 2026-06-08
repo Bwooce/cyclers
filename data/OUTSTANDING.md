@@ -21,6 +21,31 @@ what's blocked and why, and the prioritised human-actionable items. The
 lettered Q&A log (A–H) below it is the per-entry catalogue-sourcing
 audit trail and is unchanged in spirit.
 
+## Validation campaign — 2026-06-08 (V0-lift, three-track)
+
+Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 total).
+
+- **+6 V1 (closer sweep, #(3)):** ran the #137 circular-coplanar free-return
+  closer over the newly-ingested rows; `russell-ocampo-3.1.1+2 / -3.1.3+0 /
+  -4.1.1-4 / -4.1.2-2 / -4.1.4-1 / -4.6.3+0` CLOSE-AND-MATCH + §14 V1 mechanics →
+  promoted V0→V1 (commit `12a0e9e`; gate `tests/search/test_closer_sweep_v1.py`;
+  runlog `data/runs/closer-sweep-2026-06-08.jsonl`). 2 CLOSE-but-multi-arc + 8
+  NO-CLOSE correctly refused. See `docs/notes/2026-06-08-closer-sweep-v1-candidates.md`.
+- **Continuation V1→V3 batch (#(1)): 0 clean V3.** Built
+  `search/continuation_batch.py` + per-row V3 gate. The best candidate
+  (`russell-ch4-5.75ggF3`) passes the 3.0 km/s plausibility bar but FAILS spec
+  §14's actual V3 budget (`horizon_tcm_mps` = 120 m/s; its 3-lap TCM = 1210 m/s)
+  and the 4–5 lap horizon. Held — no V3 written. Aldrin remains the only family
+  ballistic across the full 20–30 yr horizon. See
+  `docs/notes/2026-06-08-continuation-batch-results.md`.
+- **Appendix C (#(2)) confirmed the only path for the 15 Rall rows** — not
+  closer-reachable, not continuation-seedable (no per-arc aphelion to seed). Held
+  pending the transcription slog.
+- **Finding:** the V3 frontier is gated by *physics* (cycler geometry breaks the
+  ΔV budget over decades), not tooling. Cheap V0→V1 wins are now spent; the
+  remaining frontier is the multi-arc genome (#94 / ~10 Russell multi-arc rows)
+  and the human-gated acquisitions (#116).
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
