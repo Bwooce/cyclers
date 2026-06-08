@@ -67,6 +67,18 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   circular-coplanar close would also hand the continuation driver (#158) the seed
   S1L1/#94 has lacked → the path to V3. RUNNING; verdict →
   `docs/notes/2026-06-08-free-return-chain-results.md`.
+- **#163 LANDED — reverses the empty-set lean.** The two-arc chain REACHED the
+  V∞ anchors where every prior approach floored off-anchor: 6.44Gg3 emerged
+  6.48/3.70 + 6.36/3.82 vs sourced 6.44/3.74 (vinf_res **0.081 km/s**),
+  bend-feasible. The obstruction MOVED to a quantified **descriptor-ToF gap**
+  (V∞-pinned ellipse period × integer revs leaves the ToF in a gap; 6.44Gg3
+  0.50 yr). **S1L1 `russell-ch4-4.991gG2` is CLOSE-LEANING** (own anchors
+  4.99/5.10): V∞ <0.1, G-arc ToF near-exact (2.810 vs 2.8096), g-arc 0.14 yr
+  off — the strongest circular-coplanar continuation seed yet. Frontier is NOT
+  empty-set; it is V∞-reachable / ToF-quantised. **Next:** continue the S1L1
+  two-arc seed to the real ephemeris (real eccentricity breaks the circular
+  integer-rev quantization → may close the ToF gap → #94, seedable for the first
+  time). Commits `f87a6be`/`234caf1`.
 
 ## Done
 
