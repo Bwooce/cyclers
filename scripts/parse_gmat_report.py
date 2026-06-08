@@ -42,11 +42,14 @@ _NOT_CONVERGED_RE = re.compile(
     r"did not converge|failed to converge|not converged|no convergence|exceeded.*max.*iter",
     re.IGNORECASE,
 )
-# A per-flyby TCM magnitude. GMAT ReportFile columns / Maneuver summaries print
-# either "<name>.Magnitude = <val>" or "<name>.TotalDV = <val>" (km/s).
+# A per-flyby TCM magnitude in the solver-log / inline form
+# "<name>.Magnitude = <val>" or "<name>.TotalDV = <val>" or "dv_<name> = <val>" (km/s).
 _TCM_RE = re.compile(
-    r"(?:TCM_\w+\.(?:Magnitude|TotalDV)|Maneuver\.TotalDV)\s*=\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)"
+    r"(?:TCM_\w+\.(?:Magnitude|TotalDV)|Maneuver\.TotalDV|\bdv_\w+)\s*=\s*"
+    r"([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)"
 )
+# A floating-point token (for columnar ReportFile parsing).
+_FLOAT_RE = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
 
 DEFAULT_TOL_FRAC: float = 0.05  # the self-declared ±5% band (design §4)
 
@@ -73,8 +76,49 @@ def parse_convergence(report_text: str) -> bool:
     return bool(_CONVERGED_RE.search(report_text))
 
 
+def _columnar_dv(report_text: str) -> list[float]:
+    """Extract dv values from a GMAT ReportFile's columnar form.
+
+    A ReportFile writes a header line of column names then data rows. The TCM/dv
+    columns are those named ``dv_*`` or ``*.Magnitude``/``*.TotalDV``. Returns the
+    last data row's values for those columns (the converged figures). Empty if the
+    text is not in columnar form.
+    """
+    lines = [ln for ln in report_text.splitlines() if ln.strip()]
+    # Find EVERY ReportFile header (column names containing dv_ / .Magnitude /
+    # .TotalDV). A header need not be the first line — a combined solver+report log,
+    # or several per-flyby reports concatenated, buries multiple headers. A header
+    # has a non-numeric first token and >= 1 dv-named column; we take the FIRST data
+    # row after each header and accumulate all its dv columns.
+    out: list[float] = []
+    for h_idx, line in enumerate(lines):
+        names = line.split()
+        if not names or _FLOAT_RE.fullmatch(names[0]):
+            continue  # empty or a data row, not a header
+        dv_cols = [
+            i
+            for i, name in enumerate(names)
+            if name.startswith("dv_") or name.endswith((".Magnitude", ".TotalDV"))
+        ]
+        if not dv_cols:
+            continue
+        for data in lines[h_idx + 1 :]:
+            row_toks = data.split()
+            if all(_FLOAT_RE.fullmatch(t) for t in row_toks) and len(row_toks) >= len(names):
+                out.extend(abs(float(row_toks[i])) for i in dv_cols)
+                break
+    return out
+
+
 def parse_maintenance_dv(report_text: str) -> float:
-    """Sum the per-flyby converged TCM magnitudes (km/s) over one cycle/synodic period."""
+    """Sum the per-flyby converged TCM magnitudes (km/s) over one cycle/synodic period.
+
+    Handles both the columnar GMAT ReportFile form (header + data rows with ``dv_*``
+    columns) and the inline solver-log form (``<name>.Magnitude = <val>``).
+    """
+    cols = _columnar_dv(report_text)
+    if cols:
+        return float(sum(cols))
     return float(sum(float(m) for m in _TCM_RE.findall(report_text)))
 
 
@@ -82,7 +126,8 @@ def parse_report(report_text: str) -> ParsedReport:
     """Extract convergence + per-flyby TCM magnitudes + their sum."""
     n_ok = len(_CONVERGED_RE.findall(report_text))
     n_fail = len(_NOT_CONVERGED_RE.findall(report_text))
-    tcms = tuple(float(m) for m in _TCM_RE.findall(report_text))
+    cols = _columnar_dv(report_text)
+    tcms = tuple(cols) if cols else tuple(float(m) for m in _TCM_RE.findall(report_text))
     return ParsedReport(
         converged=parse_convergence(report_text),
         n_converged_blocks=n_ok,

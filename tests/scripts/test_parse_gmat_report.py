@@ -108,6 +108,36 @@ def test_v4_pass_convergence_only_when_no_reference() -> None:
     assert v4_pass(0.137, ref_dv=None, converged=False) is False
 
 
+_REPORT_COLUMNAR = """\
+Sat.A1ModJulian           dv_Mars3
+31393.638                 0.3340549804286069
+"""
+
+_REPORT_COLUMNAR_MULTI = """\
+*** GMAT Mission Run
+*** The Targeter converged!
+Sat.A1ModJulian           dv_Mars3
+31393.638                 0.3340549804286069
+*** The Targeter converged!
+Sat.A1ModJulian           dv_Mars6
+31393.648                 1.273223947801619
+"""
+
+
+def test_parse_columnar_reportfile() -> None:
+    """The real GMAT ReportFile form (header + numeric data row)."""
+    parsed = parse_report(_REPORT_COLUMNAR)
+    assert parsed.tcm_magnitudes_kms == (0.3340549804286069,)
+    assert parsed.maintenance_dv_kms == 0.3340549804286069
+
+
+def test_parse_columnar_multiblock_sums_all() -> None:
+    """Concatenated per-flyby reports (the combined-log case): sum all dv columns."""
+    parsed = parse_report(_REPORT_COLUMNAR_MULTI)
+    assert parsed.maintenance_dv_kms == 0.3340549804286069 + 1.273223947801619
+    assert parsed.converged is True
+
+
 def test_aldrin_report_end_to_end() -> None:
     parsed = parse_report(_REPORT_ALDRIN_OK)
     assert parsed.converged is True
