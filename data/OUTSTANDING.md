@@ -46,6 +46,28 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   remaining frontier is the multi-arc genome (#94 / ~10 Russell multi-arc rows)
   and the human-gated acquisitions (#116).
 
+### Multi-arc frontier — primitive-mismatch finding (2026-06-08, #162→#163)
+
+- **#162 multi-arc basin experiment (AMBIGUOUS, floor-drop):** the dsm_leg
+  residual had no bend-feasibility term; adding one (default-off
+  `charge_flyby_continuity`) dropped the 6.44Gg3 floor to ~9 km/s (lowest to
+  date: 9.40→29.9→26.9→~9) but proved bend was never the wall — freeing the
+  intermediate departure-V∞ direction makes every flyby trivially bend-feasible
+  (flyby_dv→0); the irreducible term is the **ΔV_DSM budget** (~7.4–9.7 km/s
+  across a 9-pt seed sweep, 0/61 MBH hops). See
+  `docs/notes/2026-06-08-multiarc-basin-selection-results.md`.
+- **The reframe (#163):** dsm_leg is the WRONG primitive — its ΔV_DSM-min
+  objective does not pin V∞ to the anchor, so it floors off-anchor regardless of
+  freedom. Russell's construction is the **generic-return arc** (the g/G
+  descriptor) = #137's `free_return` primitive, which pins V∞ to the anchor and
+  closed 8 symmetric rows + the 6 promoted today. 6.44Gg3 / S1L1 are the TWO-arc
+  cases a single ellipse can't represent. We were re-deriving a *published*
+  result (Russell's 0.509 km/s cycler) with the wrong building block. #163 chains
+  TWO `free_return` arcs (anchor-respecting residual, NOT ΔV-min); a
+  circular-coplanar close would also hand the continuation driver (#158) the seed
+  S1L1/#94 has lacked → the path to V3. RUNNING; verdict →
+  `docs/notes/2026-06-08-free-return-chain-results.md`.
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
