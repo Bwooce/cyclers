@@ -623,7 +623,12 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "v∞ is epoch-dependent (breathes 3.198-8.046, avg 5.47) — cite the App-C "
         "per-leg values, NOT the coplanar 5.10/5.10 or spec 5.65/3.05 idealisations; "
         "the multi-cycle run re-anchors v∞ per App-C node (Russell's per-leg "
-        "reproduction recipe), continuous-from-one-seed measurement pending (#169)."
+        "reproduction recipe). #169 measured the continuous-from-one-seed horizon "
+        "TCM = 62 m/s over 7 cycles (8.8 m/s/cycle, 52% of the 120 m/s V3 budget) "
+        "in the patched-conic (astropy/V3-tier) model — STRENGTHENS this V3. The "
+        "higher-fidelity Mars-perturbed continuous run needs B-plane flyby "
+        "targeting (naive patched-conic->continuous handoff diverges, an artifact "
+        "not a fuel cost); canonical V4 (GMAT) remains OPEN."
     ),
 }
 
