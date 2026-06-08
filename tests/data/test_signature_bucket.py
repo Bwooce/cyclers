@@ -4,7 +4,7 @@ absent->Sun) never share a bucket with Jovicentric rows."""
 
 from __future__ import annotations
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.catalog import signature_bucket_key
 from tests._catalogue_loader import CATALOGUE_PATH

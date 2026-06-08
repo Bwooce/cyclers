@@ -265,7 +265,7 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 192,
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 223,
     ExclusionReason.DESCRIPTOR_CLOSABLE: 12,  # #106: free_return_arcs[]-bearing SnLm rows
     ExclusionReason.MISSING_LEG_TOFS: 15,
     ExclusionReason.NON_HELIOCENTRIC: 6,
@@ -275,8 +275,8 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.MISSING_PERIOD: 1,
     # NOT_TWO_BODY now 0 — all four VEM rows promoted to CONSTRUCTIBLE_MULTIBODY.
 }
-"""Frozen census of how the 237-row catalogue distributes across
-exclusion reasons (as of 2026-06-05). This is a *ratchet*: when the
+"""Frozen census of how the 268-row catalogue distributes across
+exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the
 catalogue changes, this dict must be updated in the same commit, which
 forces a conscious review of whether the change moved entries into or
 out of the v1 gauntlet's reach.
@@ -300,6 +300,13 @@ became DESCRIPTOR_CLOSABLE — discover-reachable through the #137 free-return
 descriptor path (`cyclerfinder.data.discover.discover_free_return`). The split is
 driven by descriptor presence (N-agnostic), no row vanished, and the catalogue
 total is unchanged at 237.
+
+On 2026-06-08 the MULTI_ENCOUNTER_SEQUENCE bucket grew 192 -> 223 (+31): the
+Russell 2004 Table 3.4 circular-coplanar ingest added 16 rows and the Rall 1970
+(MIT TE-34) free-fall periodic Earth-Mars ingest added 15 — all multi-encounter
+sequences out of the two-body gauntlet's reach. No row vanished; catalogue total
+237 -> 268. (The moon-tour Tier-1 re-tag re-classed three existing rows within
+their buckets and added no new rows, so it did not move this census.)
 
 Reasons absent from this dict are expected to have a count of zero (e.g.
 ``NON_BALLISTIC`` — no such rows today).

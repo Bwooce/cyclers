@@ -6,7 +6,7 @@ from a patched-conic row, which is the misroute the design (§7) flags."""
 from __future__ import annotations
 
 import pytest
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.validate import anchors_for
 from tests._catalogue_loader import CATALOGUE_PATH
@@ -17,8 +17,9 @@ _JOVIAN = (
 )
 
 
-def _row(entry_id: str) -> dict:
-    for row in yaml.safe_load(CATALOGUE_PATH.read_text()):
+def _row(entry_id: str) -> dict[str, object]:
+    rows: list[dict[str, object]] = yaml.safe_load(CATALOGUE_PATH.read_text())
+    for row in rows:
         if row["id"] == entry_id:
             return row
     raise AssertionError(f"catalogue row {entry_id!r} not found")
@@ -40,7 +41,7 @@ def test_saturnian_row_stays_non_keplerian_with_titan_split_note() -> None:
     row = _row("russell-strange-2009-saturnian-multimoon-family")
     # NOT silently re-tagged: midsize members are genuinely CR3BP (Tier 2).
     assert row["cycler_class"] == "non-keplerian"
-    notes = row.get("notes") or ""
+    notes = str(row.get("notes") or "")
     assert "Titan" in notes
     # The honest split must name the Tier-1/Tier-2 boundary.
     assert "Tier-1" in notes or "patched-conic" in notes

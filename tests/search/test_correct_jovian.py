@@ -28,28 +28,33 @@ import pytest
 
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.satellites import PRIMARIES
-from cyclerfinder.search.correct import ballistic_correct
+from cyclerfinder.search.correct import BallisticClosureResult, ballistic_correct
+
 
 # A seed that converges (residual ~1e-13) about Jupiter — found by the seed sweep
 # documented in the module docstring (t0=0.6 d, free ToFs (4.0, 3.4) d, slack
 # leg = the Ganymede->Io leg, period = sum of the three moon periods).
-_SEED = dict(
-    sequence=("Io", "Europa", "Ganymede", "Io"),
-    per_leg_revs=(0, 0, 0),
-    per_leg_branch=("single", "single", "single"),
-    t0_seed_sec=0.6 * 86400.0,
-    tof_seed_days=(4.0, 3.4),
-    period_sec=(1.769 + 3.551 + 7.155) * 86400.0,
-    vinf_cap=20.0,
-    slack_leg=2,
-)
+def _solve_seed() -> BallisticClosureResult:
+    """Run the converging Jovicentric I-E-G seed (shared by both slow tests)."""
+    ephem = Ephemeris(model="circular", center="Jupiter")
+    return ballistic_correct(
+        sequence=("Io", "Europa", "Ganymede", "Io"),
+        per_leg_revs=(0, 0, 0),
+        per_leg_branch=("single", "single", "single"),
+        t0_seed_sec=0.6 * 86400.0,
+        tof_seed_days=(4.0, 3.4),
+        period_sec=(1.769 + 3.551 + 7.155) * 86400.0,
+        vinf_cap=20.0,
+        slack_leg=2,
+        ephem=ephem,
+        mu_central=PRIMARIES["Jupiter"],
+    )
 
 
 @pytest.mark.slow
 def test_jovian_ieg_chain_closes_about_jupiter() -> None:
     """The corrector CLOSES the chain about Jupiter — the centre-agnostic gate."""
-    ephem = Ephemeris(model="circular", center="Jupiter")
-    r = ballistic_correct(ephem=ephem, mu_central=PRIMARIES["Jupiter"], **_SEED)
+    r = _solve_seed()
     # Closure (magnitude continuity + periodicity) is the centre-agnostic gate:
     # it proves mu_central + the centred ephemeris produce a self-consistent
     # Jovicentric chain.
@@ -73,7 +78,6 @@ def test_jovian_ieg_chain_closes_about_jupiter() -> None:
     ),
 )
 def test_jovian_ieg_chain_is_bend_feasible() -> None:
-    ephem = Ephemeris(model="circular", center="Jupiter")
-    r = ballistic_correct(ephem=ephem, mu_central=PRIMARIES["Jupiter"], **_SEED)
+    r = _solve_seed()
     assert r.converged
     assert r.bend_feasible
