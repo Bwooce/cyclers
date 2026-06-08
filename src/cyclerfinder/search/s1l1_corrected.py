@@ -54,7 +54,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from cyclerfinder.core.constants import AU_KM, SECONDS_PER_DAY
+from cyclerfinder.core.constants import AU_KM, PLANETS, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.kepler import propagate as kepler_propagate
 
@@ -161,6 +161,142 @@ class GArcClearance:
     closest_mars_au: float
     aphelion_au: float
     earth_return_miss_au: float
+
+
+@dataclass(frozen=True)
+class ContinuousNode:
+    """One encounter of the CONTINUOUS-from-one-seed chain (#169, the V4 measure).
+
+    Unlike :class:`MarsEncounter` / :func:`reconstruct_mars_encounters` — which
+    reconstruct each leg INDEPENDENTLY from its own App-C v_inf node (Russell's
+    per-leg reproduction recipe, i.e. it RE-ANCHORS v_inf at every node) — this
+    records one node of a SINGLE continuous trajectory propagated forward from the
+    first Earth departure with NO v_inf re-anchoring between legs. At each node the
+    spacecraft arrives ballistically with ``vinf_in_kms``; a real flyby rotates
+    that v_inf freely toward the next leg's App-C direction (sourced) and the
+    MAINTENANCE dv is the part a ballistic flyby cannot supply: the |v_inf|
+    magnitude change ``dv_mag_kms`` plus, if the required bend exceeds the
+    safe-periapsis maximum, the un-bent shortfall ``dv_bend_kms``.
+    """
+
+    arrival_leg_no: int
+    body: str
+    is_mars: bool
+    miss_km: float
+    vinf_in_kms: float
+    vinf_appc_kms: float
+    bend_deg: float
+    max_bend_deg: float
+    dv_mag_kms: float
+    dv_bend_kms: float
+
+    @property
+    def dv_total_kms(self) -> float:
+        """Maintenance dv at this node (magnitude change + un-bendable shortfall)."""
+        return self.dv_mag_kms + self.dv_bend_kms
+
+
+def continuous_chain(
+    ephem: Ephemeris,
+    *,
+    perturbers: tuple[str, ...] = (),
+    propagate: object | None = None,
+    start_leg_no: int = 2,
+) -> list[ContinuousNode]:
+    """Propagate ONE continuous trajectory through the App-C nodes (#169 V4).
+
+    Starts from the first Earth-departure App-C state (``start_leg_no``, default
+    leg 2 — the 2026-12-15 Mars-transit departure used in the #167 results note)
+    and walks forward node-to-node WITHOUT re-anchoring v_inf. Between nodes the
+    state is propagated either by two-body-Sun Kepler (``propagate is None``) or by
+    a supplied n-body propagator (a ``RestrictedNBody`` whose ``.propagate`` is
+    called; ``perturbers`` then names the rails perturber bodies) — the test wires
+    REBOUND/IAS15. At each node the FLYBY PATCH convention is applied: the position
+    is snapped to the real DE440 planet (the few-thousand-km ballistic miss is
+    ``<< SOI`` — the standard patched-conic boundary, recorded as evidence) and the
+    velocity is rotated to the next leg's App-C v_inf direction (the free flyby
+    turn). The maintenance dv (magnitude change + any un-bendable shortfall) is the
+    measured horizon-TCM budget that the per-leg re-anchoring hides.
+
+    EXPECTED = the App-C per-leg v_inf (sourced); ``miss_km`` / ``vinf_in_kms`` /
+    the dv are EVIDENCE measured by the integrator, never imposed.
+    """
+    from cyclerfinder.core.flyby import max_bend
+
+    nodes = [((APPC_EPOCH_DAYS + ts) * DAY_S, body, vinf) for (_no, body, ts, vinf) in APPC_LEGS]
+    start_idx = next(i for i, leg in enumerate(APPC_LEGS) if leg[0] == start_leg_no)
+
+    t0, body0, vinf0 = nodes[start_idx]
+    r_p, v_p = ephem.state(body0, t0)
+    r = np.asarray(r_p, dtype=np.float64)
+    v = np.asarray(v_p, dtype=np.float64) + _vinf_vec(vinf0)
+
+    out: list[ContinuousNode] = []
+    for i in range(start_idx + 1, len(nodes)):
+        t1, body_i, vinf_out = nodes[i]
+        if propagate is None:
+            rk, vk = kepler_propagate(r, v, t1 - t0)
+        else:
+            arc = propagate.propagate(  # type: ignore[attr-defined]
+                r,
+                v,
+                t0,
+                t1,
+                bodies=perturbers,
+                ephem=ephem if perturbers else None,
+                accuracy=1e-11 if not perturbers else 1e-10,
+            )
+            rk = np.asarray(arc.r_km, dtype=np.float64)
+            vk = np.asarray(arc.v_km_s, dtype=np.float64)
+
+        r_pl_t, v_pl_t = ephem.state(body_i, t1)
+        r_pl = np.asarray(r_pl_t, dtype=np.float64)
+        v_pl = np.asarray(v_pl_t, dtype=np.float64)
+        miss_km = float(np.linalg.norm(rk - r_pl))
+        vinf_in = vk - v_pl
+        vinf_in_mag = float(np.linalg.norm(vinf_in))
+
+        dv_mag = 0.0
+        dv_bend = 0.0
+        bend_deg = 0.0
+        max_bend_deg = 0.0
+        vinf_appc_mag = vinf_in_mag
+        if vinf_out is not None:
+            vinf_out_vec = _vinf_vec(vinf_out)
+            vinf_appc_mag = float(np.linalg.norm(vinf_out_vec))
+            dv_mag = abs(vinf_appc_mag - vinf_in_mag)
+            cos_b = float(np.dot(vinf_in, vinf_out_vec) / (vinf_in_mag * vinf_appc_mag))
+            bend = float(np.arccos(max(min(cos_b, 1.0), -1.0)))
+            bend_deg = float(np.degrees(bend))
+            pdata = PLANETS[body_i]
+            v_for_bend = min(vinf_in_mag, vinf_appc_mag)
+            mb = max_bend(pdata.mu_km3_s2, pdata.radius_eq_km + pdata.safe_alt_km, v_for_bend)
+            max_bend_deg = float(np.degrees(mb))
+            if bend > mb:
+                dv_bend = float(2.0 * v_for_bend * np.sin((bend - mb) / 2.0))
+            # Maintained departure: flyby patch (snap to planet) + App-C v_inf turn.
+            r = r_pl.copy()
+            v = v_pl + vinf_out_vec
+        else:
+            r = rk
+            v = vk
+
+        out.append(
+            ContinuousNode(
+                arrival_leg_no=APPC_LEGS[i][0],
+                body=body_i,
+                is_mars=body_i == "M",
+                miss_km=miss_km,
+                vinf_in_kms=vinf_in_mag,
+                vinf_appc_kms=vinf_appc_mag,
+                bend_deg=bend_deg,
+                max_bend_deg=max_bend_deg,
+                dv_mag_kms=dv_mag,
+                dv_bend_kms=dv_bend,
+            )
+        )
+        t0 = t1
+    return out
 
 
 def _vinf_vec(vinf: tuple[float, float, float] | None) -> Vec3:
@@ -303,10 +439,12 @@ __all__ = [
     "APPC_VINF_M_AVG",
     "COPLANAR_VINF_M",
     "ROGERS_CPOM_VINF_M",
+    "ContinuousNode",
     "GArcClearance",
     "LegArc",
     "MarsEncounter",
     "build_seeded_arcs",
+    "continuous_chain",
     "g_arc_clearances",
     "reconstruct_mars_encounters",
 ]
