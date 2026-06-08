@@ -609,6 +609,22 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "tests/verify/test_aldrin_v2_powered.py::"
         "test_aldrin_outbound_passes_v2_powered."
     ),
+    # #167/#94: S1L1's FIRST V3 — the corrected-topology closure CONFIRMED on the
+    # real DE440 ephemeris by an independent REBOUND/IAS15 integrator. See
+    # docs/notes/2026-06-08-s1l1-corrected-closure-results.md.
+    ("russell-ch4-4.991gG2", "V3"): (
+        "spec §14 V3 (#167/#94): S1L1 closes on the real DE440 ephemeris. Sourced "
+        "Russell 2004 App-C #83 real-eph per-leg seed → corrected "
+        "E-g(E-E,sub-Mars)-E-G(E-M-E,longitude-rendezvous)-E topology → INDEPENDENT "
+        "REBOUND/IAS15 DE440 confirmation: all 7 Mars encounters within 3×Mars-SOI "  # noqa: RUF001
+        "(≈0.0116 AU) at the published per-leg v∞ to 4 dp, holding under "
+        "Mars-perturbed continuous gravity; g-arcs verified sub-Mars (0.67-1.05 AU). "
+        "Gated by tests/nbody/test_s1l1_corrected_nbody.py. CAVEAT: real-eph Mars "
+        "v∞ is epoch-dependent (breathes 3.198-8.046, avg 5.47) — cite the App-C "
+        "per-leg values, NOT the coplanar 5.10/5.10 or spec 5.65/3.05 idealisations; "
+        "the multi-cycle run re-anchors v∞ per App-C node (Russell's per-leg "
+        "reproduction recipe), continuous-from-one-seed measurement pending (#169)."
+    ),
 }
 
 

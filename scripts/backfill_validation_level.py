@@ -97,6 +97,10 @@ _LEVEL_BY_ID: dict[str, str] = {
     "russell-ocampo-4.1.2-2": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
     "russell-ocampo-4.1.4-1": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
     "russell-ocampo-4.6.3+0": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    # #167/#94: S1L1's FIRST V3 — corrected-topology closure CONFIRMED on the real
+    # DE440 ephemeris (independent REBOUND/IAS15, all 7 Mars encounters in 3x Mars-SOI
+    # at the published per-leg v∞). docs/notes/2026-06-08-s1l1-corrected-closure-results.md.
+    "russell-ch4-4.991gG2": "V3",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",
