@@ -630,6 +630,31 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "targeting (naive patched-conic->continuous handoff diverges, an artifact "
         "not a fuel cost); canonical V4 (GMAT) remains OPEN."
     ),
+    # #175: the §14 V3 class-split (V3-ballistic / V3-powered). russell-ch4-8.049gGf2
+    # (App-C #188) earns V3-POWERED — held to its OWN documented operational ΔV, not
+    # the 120 m/s ballistic bar, because it is powered by design. Encodes as the V3
+    # enum value with a powered-class tag in the evidence text, exactly as
+    # aldrin-classic-em-k1-outbound encodes V2-powered under the V2 enum. See
+    # docs/notes/2026-06-08-v3-powered-classsplit.md.
+    ("russell-ch4-8.049gGf2", "V3"): (
+        "spec §14 V3-POWERED (#175 class-split, #170 App-C batch): powered App-C "
+        "parent #188 confirmed on the real DE440 ephemeris by an INDEPENDENT "
+        "REBOUND/IAS15 integrator — all 7 Mars encounters in-band (miss 3.2e-6 … "
+        "1.1e-5 AU, ≤1,691 km ≪ 1 Mars-SOI) at the published per-leg v∞ to ≤1e-3 "
+        "km/s with true-longitude rendezvous (Δlon < 0.001°). Cite the App-C "
+        "real-eph BREATHING v∞ (8.42, 8.52, 10.07, 10.77, 11.24, 11.61, 11.71), "
+        "NOT the coplanar 8.05/10.02 idealisation. The continuous-from-one-seed "
+        "horizon TCM (#169 method, executing the documented nominal maneuvers) = "
+        "163.6 m/s over 7 cycles — ≤ the documented App-C total ΔV of 420 m/s "
+        "(Russell 2004 Table 5.5), i.e. 0.39x the documented budget (criterion: "
+        "continuous TCM ≤ documented ΔV x 1.10). NOTE this is OVER the 120 m/s "
+        "ballistic budget, so it is V3-POWERED, not V3-ballistic — exactly the "
+        "case the class-split exists for. The sibling #192 (russell-ch4-8.165Gfh-f2) "
+        "is NOT promoted: its continuous TCM 2040.6 m/s EXCEEDS its own documented "
+        "1678 m/s budget (1.22x) — the honest V3-powered failure. #170 evidence: "
+        "tests/nbody/test_appc_batch_nbody.py; "
+        "docs/notes/2026-06-08-appc-v3-batch-results.md."
+    ),
 }
 
 

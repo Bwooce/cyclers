@@ -100,8 +100,10 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     Table 3.4 free-return rows are V1 (closer sweep 2026-06-08, #142 continuation —
     closed circular like-for-like single-ellipse arcs clearing §14 V1 mechanics;
     docs/notes/2026-06-08-closer-sweep-v1-candidates.md). Every other tagged row is
-    V0; the only V2 is the Aldrin outbound and the only V3 is S1L1, the catalogue's
-    first DE440-confirmed cycler (#167/#94 — V1=11, V2=1, V3=1)."""
+    V0; the only V2 is the Aldrin outbound. Two rows are V3: S1L1 (#167/#94 — the
+    V3-ballistic type specimen) and russell-ch4-8.049gGf2 (#175/#170 — the first
+    V3-powered, App-C #188 under its documented 420 m/s budget). (V1=11, V2=1,
+    V3=2.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -129,14 +131,26 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # #167/#94: S1L1's FIRST V3 — corrected-topology closure CONFIRMED on the
         # real DE440 ephemeris (independent REBOUND/IAS15, all 7 Mars encounters in
         # 3x Mars-SOI at the published per-leg v∞, holding under Mars-perturbed
-        # gravity; g-arcs sub-Mars). tests/nbody/test_s1l1_corrected_nbody.py;
+        # gravity; g-arcs sub-Mars). It is the V3-BALLISTIC type specimen (62 m/s
+        # continuous TCM, 52% of the 120 m/s ballistic budget).
+        # tests/nbody/test_s1l1_corrected_nbody.py;
         # docs/notes/2026-06-08-s1l1-corrected-closure-results.md.
         "russell-ch4-4.991gG2": "V3",
+        # #175: the §14 V3 class-split. russell-ch4-8.049gGf2 (App-C #188) is the
+        # first V3-POWERED — encounters confirmed on real DE440 by an independent
+        # REBOUND/IAS15 integrator (#170), continuous TCM 163.6 m/s under its OWN
+        # documented App-C ΔV (420 m/s; 0.39x budget), not the 120 m/s ballistic
+        # bar. Encoded as the V3 enum value (powered class in _LEVEL_EVIDENCE text,
+        # as V2-powered is under V2). The sibling #192 (russell-ch4-8.165Gfh-f2) is
+        # NOT promoted (TCM 2040.6 m/s EXCEEDS its 1678 m/s budget, 1.22x).
+        # docs/notes/2026-06-08-v3-powered-classsplit.md.
+        "russell-ch4-8.049gGf2": "V3",
     }, above_v0
-    # Exactly one row carries V2 today (the powered Aldrin outbound) and exactly one
-    # carries V3 (S1L1, #167/#94 — the catalogue's first DE440-confirmed cycler).
+    # Exactly one row carries V2 today (the powered Aldrin outbound). Two rows carry
+    # V3: S1L1 (#167/#94 — V3-ballistic) and russell-ch4-8.049gGf2 (#175/#170 — the
+    # first V3-powered, App-C #188 under its documented 420 m/s budget).
     assert sum(1 for lvl in byid.values() if lvl == "V2") == 1
-    assert sum(1 for lvl in byid.values() if lvl == "V3") == 1
+    assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     assert not any(lvl in ("V4", "V5") for lvl in byid.values())
 
 

@@ -101,6 +101,15 @@ _LEVEL_BY_ID: dict[str, str] = {
     # DE440 ephemeris (independent REBOUND/IAS15, all 7 Mars encounters in 3x Mars-SOI
     # at the published per-leg v∞). docs/notes/2026-06-08-s1l1-corrected-closure-results.md.
     "russell-ch4-4.991gG2": "V3",
+    # #175: the §14 V3 class-split. russell-ch4-8.049gGf2 (App-C #188) is V3-POWERED
+    # — encounters confirmed on real DE440 by an independent REBOUND/IAS15 integrator
+    # (#170), and its continuous-from-one-seed TCM (163.6 m/s) is under its OWN
+    # documented App-C ΔV (420 m/s, Russell 2004 Table 5.5; 0.39x budget), not the
+    # 120 m/s ballistic bar. Encodes as the V3 enum value (the powered class lives in
+    # the _LEVEL_EVIDENCE text, as V2-powered does under V2). The sibling #192
+    # (russell-ch4-8.165Gfh-f2) is NOT promoted: its TCM 2040.6 m/s EXCEEDS its own
+    # 1678 m/s budget (1.22x). See docs/notes/2026-06-08-v3-powered-classsplit.md.
+    "russell-ch4-8.049gGf2": "V3",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",
