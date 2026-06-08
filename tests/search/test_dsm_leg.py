@@ -24,6 +24,7 @@ from cyclerfinder.core.kepler import propagate
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.search.dsm_leg import (
     _flyby_continuity_residual,
+    _unpack,
     dsm_chain_correct,
     dsm_chain_decision_vector,
     dsm_leg,
@@ -892,3 +893,303 @@ def test_charge_flyby_continuity_default_off_is_bit_identical() -> None:
     assert c_flag.total_dv_kms == c_base.total_dv_kms
     assert c_flag.tof_days_per_leg == c_base.tof_days_per_leg
     assert c_flag.eta_per_leg == c_base.eta_per_leg
+
+
+# ---------------------------------------------------------------------------
+# Phase 3 (#162) -- symmetric descriptor seed for the 6.44Gg3 flyby-continuity
+# probe. Probe-side helper (NOT new src surface): maps the row's free_return_arcs
+# descriptor to the E-M-E-M-E genome and initialises the intermediate-flyby
+# direction coords to CONTINUE the arrival direction, so the seed reproduces the
+# old forced-continuity chain at t=0 (flyby_dv terms start at their ballistic
+# baseline, the corrector then frees them).
+# ---------------------------------------------------------------------------
+
+
+def _continue_direction_seed(
+    *,
+    sequence: tuple[str, ...],
+    t0_sec: float,
+    vinf_out0_kms: float,
+    alpha0: float,
+    beta0: float,
+    tof_days_per_leg: tuple[float, ...],
+    eta_per_leg: tuple[float, ...],
+    ephem: Ephemeris,
+    max_revs: int,
+) -> tuple[tuple[float, ...], tuple[float, ...]]:
+    """Intermediate-flyby (alpha_int, beta_int) that CONTINUE the arrival direction.
+
+    Run the default (forced-continuity) chain once; at each intermediate flyby the
+    next leg's departure V_inf equals the arrival V_inf vector. Invert
+    ``_vinf_out_dir`` (alpha = atan2(vy, vx), beta = asin(vz / |v|)) on that arrival
+    V_inf to get the seed direction coords -- so the charged-path seed reproduces the
+    forced-continuity chain exactly at t=0 (every seed flyby_dv == 0 by construction,
+    since v_inf_out == v_inf_in there).
+    """
+    n_legs = len(sequence) - 1
+    # Reproduce the per-leg state chain (default continuity) to read each
+    # intermediate body's arrival V_inf vector direction.
+    alpha_int: list[float] = []
+    beta_int: list[float] = []
+    t_cursor = t0_sec
+    r_curr, v_planet0 = ephem.state(sequence[0], t0_sec)
+    v_out0 = np.array(
+        [
+            vinf_out0_kms * np.cos(alpha0) * np.cos(beta0),
+            vinf_out0_kms * np.sin(alpha0) * np.cos(beta0),
+            vinf_out0_kms * np.sin(beta0),
+        ]
+    )
+    v_depart = np.asarray(v_planet0) + v_out0
+    r_curr = np.asarray(r_curr)
+    for i in range(n_legs):
+        tof_s = tof_days_per_leg[i] * 86400.0
+        t_arrive = t_cursor + tof_s
+        r_target, v_planet_target = ephem.state(sequence[i + 1], t_arrive)
+        leg = dsm_leg(
+            r_curr, v_depart, tof_s, eta_per_leg[i], np.asarray(r_target), mu=MU, max_revs=max_revs
+        )
+        v_inf_in_vec = leg.v_arrive - np.asarray(v_planet_target)
+        if i < n_legs - 1:
+            mag = float(np.linalg.norm(v_inf_in_vec))
+            alpha_int.append(float(np.arctan2(v_inf_in_vec[1], v_inf_in_vec[0])))
+            beta_int.append(float(np.arcsin(np.clip(v_inf_in_vec[2] / mag, -1.0, 1.0))))
+        v_depart = np.asarray(leg.v_arrive)
+        r_curr = np.asarray(r_target)
+        t_cursor = t_arrive
+    return tuple(alpha_int), tuple(beta_int)
+
+
+def symmetric_arc_seed_644gg3(
+    ephem: Ephemeris,
+    max_revs: int,
+) -> tuple[np.ndarray, tuple[float, ...]]:
+    """Symmetric descriptor seed for 6.44Gg3 (E-M-E-M-E) -- design #2 thin slice.
+
+    Maps ``russell-ch4-6.44Gg3`` ``free_return_arcs[]`` (g 2.087 yr / G 4.3191 yr)
+    to the #153 sourced ToF decomposition (262, g-262, 262, G-262) d, eta=0.5 per
+    leg, departure V_inf = 6.44 km/s tangential prograde (alpha=pi/2 on the circular
+    backend at t=0), with the intermediate-flyby direction coords initialised to
+    CONTINUE the arrival direction (so the charged seed == the forced-continuity
+    chain at t=0). The long loop legs take their dV-min back-arc branch under
+    ``max_revs`` (the #157 mechanism -- it lands the long G-arc leg on (1, low); the
+    shorter g-arc remainder admits no multi-rev branch at this ToF, so it stays
+    single-rev. Forcing (1, low) on BOTH long legs is infeasible by construction --
+    the live-code override of the plan's "force (1, low)" wording). Returns the full
+    charged decision vector and the ToF seed (for the bounds).
+    """
+    g_arc_days = _G_ARC_YEARS * _YEAR_DAYS
+    big_g_arc_days = _BIG_G_ARC_YEARS * _YEAR_DAYS
+    tof_seed = (
+        _TRANSIT_OUT_DAYS,
+        g_arc_days - _TRANSIT_OUT_DAYS,
+        _TRANSIT_OUT_DAYS,
+        big_g_arc_days - _TRANSIT_OUT_DAYS,
+    )
+    sequence = ("E", "M", "E", "M", "E")
+    alpha_int, beta_int = _continue_direction_seed(
+        sequence=sequence,
+        t0_sec=0.0,
+        vinf_out0_kms=_VINF_E_SOURCED,
+        alpha0=0.5 * np.pi,
+        beta0=0.0,
+        tof_days_per_leg=tof_seed,
+        eta_per_leg=(0.5,) * 4,
+        ephem=ephem,
+        max_revs=max_revs,
+    )
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=_VINF_E_SOURCED,
+        alpha0=0.5 * np.pi,
+        beta0=0.0,
+        tof_days_per_leg=tof_seed,
+        eta_per_leg=(0.5,) * 4,
+        alpha_int_per_leg=alpha_int,
+        beta_int_per_leg=beta_int,
+    )
+    return x0, tof_seed
+
+
+def test_symmetric_arc_seed_644gg3_continues_forced_continuity() -> None:
+    """The symmetric seed reproduces the forced-continuity chain at t=0 (flyby_dv~0).
+
+    The intermediate direction coords are initialised to continue the arrival
+    direction, so evaluating the charged chain at the seed must yield per-flyby
+    flyby_dv terms ~0 (the seed sits on the ballistic-feasible continuity surface).
+    This is the Phase-3 sanity that the seed enters the charged objective at the same
+    geometry the default path lands -- the corrector then frees the directions.
+    """
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E", "M", "E")
+    x0, _tof = symmetric_arc_seed_644gg3(ephem, max_revs=3)
+    params = _unpack(x0, n_legs=4, charge_flyby_continuity=True)
+    r = evaluate_dsm_chain(
+        sequence=sequence,
+        ephem=ephem,
+        max_revs=3,
+        charge_flyby_continuity=True,
+        **params,
+    )
+    # The seed continues the arrival direction -> every intermediate flyby is
+    # ballistic-feasible at t=0, so flyby_dv ~ 0 there (CONSTRUCTED continuity).
+    assert len(r.flyby_dv_per_flyby_kms) == 3
+    for k, fdv in enumerate(r.flyby_dv_per_flyby_kms):
+        assert fdv < 1.0e-6, f"seed flyby {k} not continuous: flyby_dv={fdv}"
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 (#162) -- THE DECISIVE PROBE. Charge the explicit per-flyby
+# flyby_dv residual on 6.44Gg3 from the symmetric descriptor seed and ask the
+# three-way gate (design §3): CLOSE (first multi-arc closure) / EMPTY-SET
+# (quantified irreducible flyby_dv floor -> publishable negative) / AMBIGUOUS
+# (basin moves -> assemble hybrid). EXPECTED = the SOURCED anchors E 6.44 /
+# M 3.74; emerged V_inf is EVIDENCE, never imposed. The verdict is REPORTED to
+# docs/notes/2026-06-08-multiarc-basin-selection-results.md, not gated. NO
+# catalogue writeback. Asserts only a finite, fully-audited result.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.slow
+def test_dsm_644gg3_flyby_continuity_probe() -> None:
+    """6.44Gg3 charged-residual probe: single corrector run, then MBH (#162).
+
+    Run ``dsm_chain_correct(..., charge_flyby_continuity=True, max_revs=3)`` from the
+    symmetric descriptor seed on the circular backend (the cheapest decisive run).
+    If the single run shows movement toward the anchors, wrap in MBH (cauchy,
+    rng_seed=6, <=120 hops, stall 60) and re-probe. PRINT the verbatim block the
+    note consumes: total dV, per-flyby flyby_dv, per-leg dV_DSM, emerged V_inf in/out
+    vs sourced 6.44/3.74, branches, eta, ToF, max(residual_vector). The scientific
+    verdict is reported, not asserted.
+    """
+    import time
+
+    from cyclerfinder.search.dsm_leg import DsmBounds, make_dsm_chain_step
+    from cyclerfinder.search.mbh import mbh
+
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E", "M", "E")
+    n_legs = 4
+    max_revs = 3
+
+    x0, tof_seed = symmetric_arc_seed_644gg3(ephem, max_revs=max_revs)
+
+    # Charged-path bounds: ToFs +-30% around the sourced descriptor breakdown, the
+    # departure box, AND the 2*(n_legs-1)=6 intermediate-flyby direction coords
+    # (alpha_int in [-pi,pi], beta_int in [-pi/2,pi/2]).
+    n_flybys = n_legs - 1
+    lower = np.array(
+        [
+            -2.0e7,
+            1.0,
+            -np.pi,
+            -0.5 * np.pi,
+            *[0.7 * t for t in tof_seed],
+            *([0.0] * n_legs),
+            *([-np.pi] * n_flybys),
+            *([-0.5 * np.pi] * n_flybys),
+        ],
+        dtype=np.float64,
+    )
+    upper = np.array(
+        [
+            2.0e7,
+            9.0,
+            np.pi,
+            0.5 * np.pi,
+            *[1.3 * t for t in tof_seed],
+            *([1.0] * n_legs),
+            *([np.pi] * n_flybys),
+            *([0.5 * np.pi] * n_flybys),
+        ],
+        dtype=np.float64,
+    )
+    bounds = DsmBounds(lower=lower, upper=upper)
+
+    t_start = time.monotonic()
+    single = dsm_chain_correct(
+        x0,
+        sequence=sequence,
+        ephem=ephem,
+        bounds=bounds,
+        tol_kms=0.1,
+        max_nfev=400,
+        max_revs=max_revs,
+        charge_flyby_continuity=True,
+    )
+    single_elapsed = time.monotonic() - t_start
+
+    max_resid_single = float(np.max(np.abs(single.residual_vector)))
+    print("\n=== 6.44Gg3 flyby-continuity probe -- SINGLE corrector run (#162) ===")
+    print(f"converged={single.converged}  max(residual_vector)={max_resid_single:.4f} km/s")
+    print(f"total_dV (audit sum)={single.total_dv_kms:.4f} km/s")
+    print(f"per-leg dV_DSM km/s: {single.dv_dsm_per_leg_kms}")
+    print(f"per-flyby flyby_dv km/s: {single.flyby_dv_per_flyby_kms}")
+    print(
+        f"emerged V_inf_in  (sourced E={_VINF_E_SOURCED}, M={_VINF_M_SOURCED}): "
+        f"{single.vinf_in_kms}"
+    )
+    print(f"emerged V_inf_out: {single.vinf_out_kms}")
+    print(f"n_revs per leg: {single.n_revs_per_leg}   branch per leg: {single.branch_per_leg}")
+    print(f"eta per leg: {single.eta_per_leg}")
+    print(f"tof days per leg: {single.tof_days_per_leg}")
+    print(f"wall: {single_elapsed:.1f}s")
+
+    # MBH follow-up (deterministic; seed echoed) -- the basin-hopping refinement.
+    step = make_dsm_chain_step(
+        sequence=sequence,
+        ephem=ephem,
+        bounds=bounds,
+        tol_kms=0.1,
+        max_nfev=400,
+        max_revs=max_revs,
+        charge_flyby_continuity=True,
+    )
+    abs_scale = np.full(x0.shape, np.nan)
+    abs_scale[0] = 5.0 * 86400.0  # t0 days
+    abs_scale[1] = 0.5  # vinf_out0 km/s
+    abs_scale[2] = 0.2  # alpha0 rad
+    abs_scale[3] = 0.1  # beta0 rad
+    abs_scale[4 : 4 + n_legs] = 20.0  # tof days
+    abs_scale[4 + n_legs : 4 + 2 * n_legs] = 0.1  # eta
+    abs_scale[4 + 2 * n_legs :] = 0.2  # intermediate-flyby direction coords (rad)
+
+    t_start = time.monotonic()
+    result = mbh(
+        step,
+        x0,
+        n_hops=120,
+        perturbation="cauchy",
+        perturbation_scale=0.0,
+        perturbation_absolute_scale=[float(s) for s in abs_scale],
+        rng_seed=6,
+        stop_after_stall=60,
+    )
+    mbh_elapsed = time.monotonic() - t_start
+    assert single_elapsed + mbh_elapsed < 900.0, (
+        f"probe exceeded wall cap: {single_elapsed + mbh_elapsed:.1f}s"
+    )
+
+    assert np.isfinite(result.best_objective)
+    assert result.rng_seed == 6
+    assert len(result.objective_history) == result.hops_attempted
+    info = result.best_info
+    assert len(info["dv_dsm_per_leg_kms"]) == n_legs
+    assert set(info["vinf_in_kms"]) == {1, 2, 3, 4}
+
+    print("\n=== 6.44Gg3 flyby-continuity probe -- MBH (max_revs=3, charged) ===")
+    print(f"feasible={result.best_feasible}  total_dV (audit)={result.best_objective:.4f} km/s")
+    print(f"max(residual_vector)={info.get('max_residual_kms'):.4f} km/s")
+    print(f"hops attempted/accepted = {result.hops_attempted}/{result.hops_accepted}")
+    print(
+        f"emerged V_inf_in  (sourced E={_VINF_E_SOURCED}, M={_VINF_M_SOURCED}): "
+        f"{info['vinf_in_kms']}"
+    )
+    print(f"emerged V_inf_out: {info.get('vinf_out_kms')}")
+    print(f"per-leg dV_DSM km/s: {info['dv_dsm_per_leg_kms']}")
+    print(f"per-flyby flyby_dv km/s: {info.get('flyby_dv_per_flyby_kms')}")
+    print(f"n_revs per leg: {info.get('n_revs_per_leg')}   branch: {info.get('branch_per_leg')}")
+    print(f"eta per leg: {info['eta_per_leg']}")
+    print(f"tof days per leg: {info['tof_days_per_leg']}")
+    print(f"alpha_int: {info.get('alpha_int_per_leg')}   beta_int: {info.get('beta_int_per_leg')}")
+    print(f"wall: single={single_elapsed:.1f}s  mbh={mbh_elapsed:.1f}s")
