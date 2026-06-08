@@ -104,6 +104,20 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   topology, seed G from App-C, n-body-validate; golden target = App-C real-eph
   v∞ (breathes 3.2–8.0, avg 5.48), NOT coplanar 5.10/3.05. Commit `8f24e1d`;
   note `docs/notes/2026-06-08-s1l1-source-dig.md`. → #167 builds it.
+- **#167 — S1L1 CONFIRMED on DE440 (corrected topology), scoped.** The corrected
+  E→g(E-E,sub-Mars)→E→G(E-M-E,longitude rendezvous)→E build, seeded from Russell
+  App-C #83, lands ALL 7 Mars encounters in the 3-SOI band (same band #165 used,
+  not loosened) at the published per-leg v∞ to 4 dp (breathing 3.2–8.0, avg 5.47,
+  NOT coplanar 5.10/3.05); g-arcs sub-Mars (0.67–1.05 AU); holds under
+  Mars-perturbed gravity. **#94's scientific question answered YES** — S1L1 IS a
+  real ballistic E-M cycler; Russell's states reproduce on an independent
+  integrator+ephemeris (DE405→DE440) with the right topology. SCOPE (no overclaim,
+  cf. #164 retraction): the run RE-ANCHORS v∞ at each App-C node (Russell's per-leg
+  recipe) — VERIFIES his published cycler independently, NOT yet a single
+  continuous-from-one-seed multi-cycle closure. LEVEL: solid V3 leaning V4; clean
+  V3/V4 upgrade = one continuous propagation measuring the re-anchor Δv as the
+  maintenance budget. **V3 writeback recommended, HELD to user decision.** Commits
+  `cec1353`/`3ae4715`; note `docs/notes/2026-06-08-s1l1-corrected-closure-results.md`.
 - **[SUPERSEDED] #164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
   two-arc seed circular→real eccentric/inclined model
   (`search/continuation_chain.py`) closes `russell-ch4-4.991gG2` (the S1L1
