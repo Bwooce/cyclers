@@ -67,10 +67,51 @@ behaviour and continuous TCM honestly rather than pre-judging.
 
 ## STEP 2+ — per-row results
 
-(filled in below as each reachable row is processed)
+### Reachable rows (2) — INDEPENDENT n-body cross-check + continuous TCM
+
+Both reconstruct cleanly: all 7 Mars encounters per row intercept the TRUE DE440 Mars
+at the published per-leg v∞ (true-longitude rendezvous Δlon < 0.001°), measured on an
+INDEPENDENT REBOUND/IAS15 Sun-only integrator (Russell's patched-conic cruise model;
+the 3-Mars-SOI band ≈0.0116 AU, the SAME band #165/#167 used, NOT loosened). The
+mid-leg App-C Δv is applied (these parents are POWERED, not ballistic). The
+continuous-from-one-seed horizon TCM (#169 method, Sun-only patched-conic V3 tier)
+is the V3 budget figure.
+
+**`russell-ch4-8.049gGf2` (App-C #188) — VERDICT: PARTIAL**
+- 7 Mars encounters in-band: miss 3.2e-6 … 1.1e-5 AU (≤ 1,691 km, ≪ 1 SOI); v∞
+  matched to ≤ 1e-3 km/s vs published (8.42, 8.52, 10.07, 10.77, 11.24, 11.61,
+  11.71 — breathes, real-eph).
+- Continuous-from-one-seed TCM = **163.6 m/s** over 7 cycles (23.4 m/s/cycle).
+  Published App-C total Δv = 420 m/s (Table 5.5).
+- **TCM 163.6 m/s > 120 m/s V3 budget → NOT V3.** Encounter geometry is real; the
+  fuel cost is not V3-grade. NO writeback.
+
+**`russell-ch4-8.165Gfh-f2` (App-C #192) — VERDICT: PARTIAL (DRIFT-leaning)**
+- 7 Mars encounters in-band: miss 3.2e-6 … 1.9e-5 AU (≤ 2,906 km); v∞ matched to
+  ≤ 1e-3 km/s vs published (6.79, 8.36, 9.56, 10.61, 10.87, 11.67, 11.86).
+- Continuous-from-one-seed TCM = **2040.6 m/s** over 7 cycles (291.5 m/s/cycle).
+  Published App-C total Δv = 1678 m/s (Table 5.5) — one of the worst-performing
+  real-eph cyclers in the catalogue (per the catalogue note).
+- **TCM 2041 m/s ≫ 120 m/s V3 budget → NOT V3.** Heavily powered. NO writeback.
 
 | id | verdict | measured v∞ vs App-C | continuous TCM | commit |
 |---|---|---|---|---|
+| `russell-ch4-8.049gGf2`   | PARTIAL | matches (4 dp), breathes 8.4–11.7 | 163.6 m/s (>120 budget) | (this commit) |
+| `russell-ch4-8.165Gfh-f2` | PARTIAL | matches (4 dp), breathes 6.8–11.9 | 2040.6 m/s (≫120 budget) | (this commit) |
+
+Gate: `tests/nbody/test_appc_batch_nbody.py` (2 @slow, parametrized — encounters
+in-band + TCM-over-budget pinned), `tests/search/test_appc_corrected.py` (7 fast —
+construction mechanics). Both green. NO catalogue writeback for either — the
+encounters are real, the maintenance is not V3-grade. A clean, honest negative.
+
+### Why PARTIAL is the right call (discipline check)
+The danger signal "it closed!" does NOT apply here — the encounter half closed, but
+the OMITTED binding constraint is the maintenance budget, which both rows fail on
+their OWN published App-C Δv. S1L1 was a 0.000000-km/s ballistic parent (62 m/s
+continuous TCM); these two are 420 / 1678 m/s powered parents. The S1L1 pipeline
+scales mechanically (same reconstruction recipe, same independent gate, same band),
+but the V3 *verdict* is parent-specific: only a near-ballistic App-C parent clears
+the 120 m/s budget. No tolerance was tuned; the band and budget are identical to S1L1.
 
 ### NOT-REACHABLE (7, no sourced App-C reproduction block) — recorded, skipped
 - `russell-ch4-3.64gGg3`  (Table 4.10 coplanar; no sourced App-C parent #)
@@ -86,4 +127,22 @@ behaviour and continuous TCM honestly rather than pre-judging.
 ## Rows done / rows remaining
 
 - Triage complete: 9/9 classified (7 NOT-REACHABLE, 2 reachable).
-- Reachable rows to process: `8.049gGf2` (#188), `8.165Gfh-f2` (#192).
+- Reachable rows processed: `8.049gGf2` (#188) PARTIAL, `8.165Gfh-f2` (#192) PARTIAL.
+- **Promoted to V3: 0 of 9.** The 2 reachable rows are powered cyclers whose
+  maintenance exceeds the V3 budget; the 7 others have no sourced App-C block.
+- V3 census unchanged at **1** (S1L1 `russell-ch4-4.991gG2` remains the only V3).
+- Rows remaining: none. Batch complete.
+
+## Summary
+
+| outcome | count | rows |
+|---|---|---|
+| CONFIRMED → V3 | 0 | — |
+| PARTIAL (in-band, TCM over budget) | 2 | `8.049gGf2`, `8.165Gfh-f2` |
+| NOT-REACHABLE (no sourced App-C block) | 7 | `3.64gGg3`, `3.66gfF3`, `3.77Gh3`, `3.78Gg3`, `5.30ggF3`, `5.66Gfh3`, `6.44Gg3` |
+
+The S1L1 pipeline scaled mechanically (generic `appc_corrected.py` reconstructs any
+App-C block including powered ones), but no V3 promotions resulted: the only two
+reachable parents are powered (420 / 1678 m/s), and the rest lack a sourced
+reproduction block. Promoting any would have required either loosening the budget or
+asserting an unsourced coplanar→App-C parent mapping — both forbidden.
