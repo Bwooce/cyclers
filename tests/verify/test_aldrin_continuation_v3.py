@@ -68,8 +68,8 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
+import cyclerfinder.search.continuation as cont
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.search import continuation as cont
 from cyclerfinder.search.maintain import optimise_aldrin_maintenance_dv
 from cyclerfinder.verify.plausibility import MAINTENANCE_DV_CONVENTION_KMS
 

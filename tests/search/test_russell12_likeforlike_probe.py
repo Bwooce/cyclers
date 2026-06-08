@@ -131,8 +131,8 @@ def test_free_return_genome_makes_truth_a_closure_point(
     """#137 acceptance gate: the free-return genome reaches residual ~ 0 at the
     SOURCED geometry on the symmetric k=2 rows, and the EMERGED V_inf matches the
     INDEPENDENTLY sourced anchor (within the 0.5 km/s campaign tolerance)."""
+    import cyclerfinder.search.free_return as fr
     from cyclerfinder.core.ephemeris import Ephemeris
-    from cyclerfinder.search import free_return as fr
 
     row = _row(rid)
     period_sec = float(row["period"]["years"]) * 365.25 * 86400.0
