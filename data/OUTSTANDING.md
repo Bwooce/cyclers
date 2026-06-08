@@ -93,6 +93,17 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   DRIFT. Commits `3a371be`/`18961b5`; note
   `docs/notes/2026-06-08-s1l1-nbody-crossval-results.md`. [The #164 entry below is
   SUPERSEDED by this retraction.]
+- **#166 SOURCE DIG — DRIFT cause found, exact fix seedable, NO acquisition.**
+  (1) Topology was wrong: in `g(1.4612)+G(2.8096)` only the UPPERCASE G is the
+  Mars-transit leg (Russell §4.8); lowercase g is a pure Earth-to-Earth free
+  return that never reaches Mars (DE440-verified, closest 1.05 AU). #164/#165
+  modeled both arcs as Mars-crossing → the 2.6 AU drift. Correct sequence:
+  E → g(E-E) → E → G(E-M-E, longitude rendezvous) → E. (2) Russell App-C gives
+  the exact real-eph state; it reconstructs on DE440 to **1.7 km** (Mars flyby
+  2027-06-13, v∞ 5.248 = published, Mars lon 201.0°). PATH: build corrected
+  topology, seed G from App-C, n-body-validate; golden target = App-C real-eph
+  v∞ (breathes 3.2–8.0, avg 5.48), NOT coplanar 5.10/3.05. Commit `8f24e1d`;
+  note `docs/notes/2026-06-08-s1l1-source-dig.md`. → #167 builds it.
 - **[SUPERSEDED] #164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
   two-arc seed circular→real eccentric/inclined model
   (`search/continuation_chain.py`) closes `russell-ch4-4.991gG2` (the S1L1
