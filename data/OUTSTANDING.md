@@ -134,6 +134,30 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   Commits `561f440`/`2e7ac69`. 6.44Gg3 stays a quantified partial (g-arc target
   below the n_rev=1 floor — structurally deeper).
 
+## App-C V3 batch result — 0/9 (#170): S1L1 was singular, not a batch (2026-06-08)
+
+The 9-parent App-C→V3 batch promoted **0 new V3 rows**; S1L1
+(`russell-ch4-4.991gG2`) remains the only V3. NOT a pipeline failure — a clean,
+honest negative that corrects the earlier "V3 1→~10" optimism:
+- **7/9 NOT-REACHABLE** — coplanar Table-4.10-4.13 members with no sourced App-C
+  reproduction block and no 1:1 coplanar→App-C bridge; forcing one would be
+  unsourced inference (discipline forbids). Skipped.
+- **2/9 reachable but PARTIAL** (`8.049gGf2` #188, `8.165Gfh-f2` #192): the
+  CLOSURE half passes — all 7 Mars encounters per row reconstruct in-band on an
+  independent REBOUND/IAS15 DE440 integrator at the published per-leg v∞ (4 dp),
+  with true-longitude rendezvous — but they are **POWERED** cyclers (published
+  App-C Δv 420 / 1678 m/s; continuous TCM 164 / 2041 m/s, both > the 120 m/s V3
+  budget). They fail V3-ballistic on budget, not on geometry.
+- **S1L1 is special**: it is the one parent that is BOTH reachable AND genuinely
+  near-ballistic (62 m/s continuous TCM). The others are powered or unsourced.
+- **Implications:** (a) the App-C V3 path is now exhausted — more V3s need the
+  **self-seeding longitude-rendezvous construction** (reaches the 7 + the 194
+  members, removes the App-C-block dependency); (b) the powered reachable parents
+  raise a **V3-powered class-split** question (parallel to the §14 V2 split) — they
+  have real, independently-confirmed encounter geometry but exceed the
+  ballistic budget. Modules `search/appc_corrected.py`; commits `359b248`/`bf8d2a8`;
+  note `docs/notes/2026-06-08-appc-v3-batch-results.md`.
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
