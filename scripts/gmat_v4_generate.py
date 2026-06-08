@@ -95,7 +95,7 @@ class CyclerRow:
 # --------------------------------------------------------------------------- #
 
 
-def aldrin_row(epoch_iso: str = "2003-07-11T00:00:00.000") -> CyclerRow:
+def aldrin_row(epoch_iso: str = "11 Jul 2003 00:00:00.000") -> CyclerRow:
     """The Aldrin (#134) single-powered-Mars-flyby descriptor.
 
     The Mars return-flyby geometry is the documented lap-0 powered member
@@ -130,7 +130,7 @@ def aldrin_row(epoch_iso: str = "2003-07-11T00:00:00.000") -> CyclerRow:
     )
 
 
-def s1l1_row(epoch_iso: str = "2026-12-15T00:00:00.000") -> CyclerRow:
+def s1l1_row(epoch_iso: str = "15 Dec 2026 00:00:00.000") -> CyclerRow:
     """The S1L1 (``russell-ch4-4.991gG2``) per-Mars-flyby station-keep descriptor.
 
     Reads the App-C nodes from :data:`APPC_LEGS` (the sourced Russell 2004 Appendix-C
@@ -180,94 +180,128 @@ def s1l1_row(epoch_iso: str = "2026-12-15T00:00:00.000") -> CyclerRow:
 # --------------------------------------------------------------------------- #
 
 
+_MARS_SOI_KM: float = 577_204.0  # Mars sphere-of-influence (GMAT Ex_MarsBPlane value)
+
+
 def _vec_str(v: Vec3) -> str:
     return f"[ {v[0]:.9g} {v[1]:.9g} {v[2]:.9g} ]"
 
 
-def _force_model_block(extra_bodies: tuple[str, ...]) -> str:
-    """Initialisation: Spacecraft, ForceModel (Sun + planets), Propagator, B-plane CS."""
-    point_masses = ["Sun", "Earth", "Luna", "Mars", "Jupiter", *extra_bodies]
-    # de-dup while preserving order
-    pm = list(dict.fromkeys(point_masses))
-    pm_line = ", ".join(pm)
+def _seed_state_marsrel(node: MarsFlybyNode) -> tuple[Vec3, Vec3]:
+    r"""Mars-relative Cartesian seed at the SOI on the incoming asymptote.
+
+    Beeson: the boundary condition is the flyby periapse with the body's gravity in
+    the EOM. We seed the spacecraft on the **incoming asymptote** at the Mars SOI:
+    position ``r0 = -S_hat * R_SOI`` (R_SOI up-stream along the incoming direction,
+    offset by the impact parameter so the natural hyperbola has the targeted B), and
+    velocity ``v0 = v_inf^- + (hyperbolic radial term)``. At SOI distance the excess
+    dominates, so ``v0 ~= v_inf^-`` is an excellent initial guess; the DC's TCM then
+    drives the B-plane to the v_inf^+ goal. This makes the script RUNNABLE (a real
+    Mars-relative hyperbola), the maintenance ΔV being the converged |TCM|.
+    """
+    tgt = node.target()
+    s_hat = tgt.s_hat  # incoming asymptote direction = v_inf^-_hat
+    # Offset the start point off-axis by the targeted B along B_hat so the
+    # uncorrected hyperbola already lands near the B-plane goal (good DC seed).
+    b_hat = (tgt.bdot_t_km * tgt.t_hat + tgt.bdot_r_km * tgt.r_hat) / max(tgt.b_mag_km, 1e-30)
+    r0 = -s_hat * _MARS_SOI_KM + b_hat * tgt.b_mag_km
+    v0 = np.asarray(node.vinf_minus, dtype=np.float64)
+    return r0, v0
+
+
+def _init_block(row: CyclerRow, node: MarsFlybyNode) -> str:
+    """Initialisation: Spacecraft (Mars-relative seed), ForceModel, Propagator, CS, DC."""
+    r0, v0 = _seed_state_marsrel(node)
     return f"""\
-%% ---- Section 1: initialisation (Beeson Algorithm-1) ----
+%----- Section 1: initialisation (Beeson Algorithm-1; BC at Mars flyby periapse)
 Create Spacecraft Sat;
 GMAT Sat.DateFormat = UTCGregorian;
-GMAT Sat.CoordinateSystem = EarthMJ2000Eq;
-
-Create ForceModel FM;
-GMAT FM.CentralBody = Sun;
-GMAT FM.PointMasses = {{{pm_line}}};
-GMAT FM.Drag = None;
-GMAT FM.SRP = Off;
-
-Create Propagator Prop;
-GMAT Prop.FM = FM;
-GMAT Prop.Type = RungeKutta89;
-GMAT Prop.InitialStepSize = 60;
-GMAT Prop.Accuracy = 1e-12;
-
-Create CoordinateSystem MarsBPlane;
-GMAT MarsBPlane.Origin = Mars;
-GMAT MarsBPlane.Axes = BodyInertial;
-"""
-
-
-def _initial_guess_block(row: CyclerRow) -> str:
-    """The 'Provide an Initial Guess' slot — seed departure state + epoch (Beeson)."""
-    return f"""\
-
-%% ---- Provide an Initial Guess (the medium-fidelity seed) ----
-%% Row: {row.row_id}  sequence: {row.sequence}  mode: {row.mode}
 GMAT Sat.Epoch = '{row.epoch_iso}';
-%% Seed Earth-departure hyperbolic-excess (km/s), body-centered:
-GMAT Sat.SeedVinf = {_vec_str(row.seed_vinf_kms)};
+GMAT Sat.CoordinateSystem = MarsInertial;
+GMAT Sat.DisplayStateType = Cartesian;
+GMAT Sat.X = {r0[0]:.9g};
+GMAT Sat.Y = {r0[1]:.9g};
+GMAT Sat.Z = {r0[2]:.9g};
+GMAT Sat.VX = {v0[0]:.9g};
+GMAT Sat.VY = {v0[1]:.9g};
+GMAT Sat.VZ = {v0[2]:.9g};
+GMAT Sat.DryMass = 1000;
+
+Create ForceModel NearMars_FM;
+GMAT NearMars_FM.CentralBody = Mars;
+GMAT NearMars_FM.PointMasses = {{Mars, Sun}};
+GMAT NearMars_FM.Drag = None;
+GMAT NearMars_FM.SRP = Off;
+
+Create Propagator NearMars;
+GMAT NearMars.FM = NearMars_FM;
+GMAT NearMars.Type = PrinceDormand78;
+GMAT NearMars.InitialStepSize = 60;
+GMAT NearMars.Accuracy = 1e-12;
+GMAT NearMars.MaxStep = 86400;
+
+Create CoordinateSystem MarsInertial;
+GMAT MarsInertial.Origin = Mars;
+GMAT MarsInertial.Axes = BodyInertial;
+
+Create ImpulsiveBurn TCM_{node.label};
+GMAT TCM_{node.label}.CoordinateSystem = MarsInertial;
+
+Create DifferentialCorrector DC;
+GMAT DC.ShowProgress = true;
+GMAT DC.MaximumIterations = 100;
+GMAT DC.DerivativeMethod = ForwardDifference;
+GMAT DC.Algorithm = NewtonRaphson;
+
+Create Variable dv_{node.label};
+
+Create ReportFile Rpt;
+GMAT Rpt.Filename = 'gmat_v4_{row.row_id}_{node.label}.report';
+GMAT Rpt.WriteHeaders = true;
 """
 
 
-def _tcm_and_target_block(idx: int, node: MarsFlybyNode) -> str:
-    """One Mars-flyby Target/Vary/Achieve block (Jones B-plane goal at periapse)."""
+def _target_block(idx: int, node: MarsFlybyNode) -> str:
+    r"""One Mars-flyby Target/Vary/Achieve block (Beeson BC at periapse).
+
+    The Jones B-plane goal (in the comment) is the **approach geometry**; the
+    achieved goal is the **outgoing v_inf^+ velocity** at the outbound SOI. That is
+    the maintenance the flyby must deliver: a periapsis TCM (Oberth-credited) drives
+    the outgoing asymptote to the next leg's sourced v_inf^+. The converged |TCM| is
+    the high-fidelity maintenance ΔV — the figure the patched-conic models only
+    bound. The TCM is applied AT periapsis (deepest Oberth credit), then propagated
+    out three days to read the asymptotic outgoing velocity.
+    """
     tgt = node.target()
     name = node.label
     feasible = "feasible (ballistic cone)" if tgt.feasible else "INFEASIBLE -> powered TCM"
+    vp = np.asarray(node.vinf_plus, dtype=np.float64)
     return f"""\
 
-%% ---- Mars flyby {idx}: {name}  ({feasible}) ----
-%% Jones B-plane goal from sourced (v_inf^-, v_inf^+):
-%%   turn = {np.degrees(tgt.turn_rad):.4f} deg, rp = {tgt.rp_km:.3f} km,
-%%   theta_B = {np.degrees(tgt.theta_b_rad):.4f} deg, |B| = {tgt.b_mag_km:.3f} km
-Create ImpulsiveBurn TCM_{name};
-GMAT TCM_{name}.CoordinateSystem = Local;
-GMAT TCM_{name}.Origin = Sun;
-GMAT TCM_{name}.Axes = VNB;
-
-Target FlybyTCM_{name} {{SolveMode = Solve, ExitMode = SaveAndContinue}};
-   Vary    TCM_{name}.Element1 = 0.0;
-   Vary    TCM_{name}.Element2 = 0.0;
-   Vary    TCM_{name}.Element3 = 0.0;
+%----- Mars flyby {idx}: {name}  ({feasible})
+%  Jones B-plane approach geometry from sourced (v_inf^-, v_inf^+):
+%    turn = {np.degrees(tgt.turn_rad):.4f} deg, rp = {tgt.rp_km:.3f} km,
+%    theta_B = {np.degrees(tgt.theta_b_rad):.4f} deg,
+%    B.R = {tgt.bdot_r_km:.4f} km, B.T = {tgt.bdot_t_km:.4f} km
+%  Achieved goal: outgoing v_inf^+ (km/s, MarsInertial) = {_vec_str(vp)}
+Target DC {{SolveMode = Solve, ExitMode = SaveAndContinue}};
+   Vary DC(TCM_{name}.Element1 = 0.01, {{Perturbation = 1e-4, MaxStep = 1.0}});
+   Vary DC(TCM_{name}.Element2 = 0.01, {{Perturbation = 1e-4, MaxStep = 1.0}});
+   Vary DC(TCM_{name}.Element3 = 0.01, {{Perturbation = 1e-4, MaxStep = 1.0}});
+   Propagate NearMars(Sat) {{Sat.Mars.Periapsis}};
    Maneuver TCM_{name}(Sat);
-   Propagate Prop(Sat) {{Sat.Mars.Periapsis}};
-   Achieve  Sat.MarsBPlane.BdotR = {tgt.bdot_r_km:.9g} {{Tolerance = {JONES_POS_TOL_KM:g}}};
-   Achieve  Sat.MarsBPlane.BdotT = {tgt.bdot_t_km:.9g} {{Tolerance = {JONES_POS_TOL_KM:g}}};
+   Propagate NearMars(Sat) {{Sat.ElapsedDays = 3}};
+   Achieve DC(Sat.VX = {vp[0]:.9g}, {{Tolerance = {JONES_VEL_TOL_KMS:g}}});
+   Achieve DC(Sat.VY = {vp[1]:.9g}, {{Tolerance = {JONES_VEL_TOL_KMS:g}}});
+   Achieve DC(Sat.VZ = {vp[2]:.9g}, {{Tolerance = {JONES_VEL_TOL_KMS:g}}});
 EndTarget;
+GMAT dv_{name} = sqrt(TCM_{name}.Element1^2 + TCM_{name}.Element2^2 + TCM_{name}.Element3^2);
+Report Rpt Sat.A1ModJulian dv_{name};
 """
 
 
-def _report_block(row: CyclerRow) -> str:
-    tcm_cols = " ".join(f"TCM_{n.label}.Magnitude" for n in row.mars_flybys)
-    return f"""\
-
-%% ---- Report (the parser reads Maneuver magnitudes + convergence) ----
-Create ReportFile Rpt;
-GMAT Rpt.Filename = 'gmat_v4_{row.row_id}.report';
-GMAT Rpt.WriteHeaders = true;
-Report Rpt Sat.A1ModJulian {tcm_cols};
-"""
-
-
-def generate_script(row: CyclerRow) -> str:
-    """Render the full GMAT V4 ``.script`` text for ``row``."""
+def generate_script(row: CyclerRow, *, node_index: int = 0) -> str:
+    """Render the runnable GMAT V4 ``.script`` for ``row``'s Mars flyby ``node_index``."""
     parts: list[str] = []
     ref_str = (
         f"{row.reference_dv_kms:.4f} km/s"
@@ -282,19 +316,31 @@ def generate_script(row: CyclerRow) -> str:
         f"{JONES_POS_TOL_KM:g} km / {JONES_VEL_TOL_KMS:g} km/s\n"
         f"%% {row.notes}\n"
     )
-    parts.append(_force_model_block(row.extra_bodies))
-    parts.append(_initial_guess_block(row))
-    parts.append("\n%% ---- Section 2: mission sequence ----\nBeginMissionSequence;\n")
-    for i, node in enumerate(row.mars_flybys, start=1):
-        parts.append(_tcm_and_target_block(i, node))
-    parts.append(_report_block(row))
+    # One runnable GMAT script per Mars flyby (each flyby is an independent
+    # Mars-SOI B-plane targeting; the maintenance ΔV sums across them). A single
+    # GMAT spacecraft cannot be re-seeded mid-mission, so the multi-flyby chain is
+    # emitted as one script per node and the parser sums the converged TCMs.
+    node = row.mars_flybys[node_index]
+    parts.append(_init_block(row, node))
+    parts.append("\n%----- Section 2: mission sequence\nBeginMissionSequence;\n")
+    parts.append(_target_block(node_index + 1, node))
     return "".join(parts)
 
 
-def write_script(row: CyclerRow, out_path: Path) -> Path:
-    """Render and write the script for ``row`` to ``out_path``."""
-    out_path.write_text(generate_script(row), encoding="utf-8")
+def write_script(row: CyclerRow, out_path: Path, *, node_index: int = 0) -> Path:
+    """Render and write the per-flyby script for ``row``'s ``node_index`` to ``out_path``."""
+    out_path.write_text(generate_script(row, node_index=node_index), encoding="utf-8")
     return out_path
+
+
+def write_all_scripts(row: CyclerRow, out_dir: Path) -> list[Path]:
+    """Write one runnable script per Mars flyby; returns the paths in node order."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    paths: list[Path] = []
+    for i, node in enumerate(row.mars_flybys):
+        p = out_dir / f"{row.row_id}_{node.label}.script"
+        paths.append(write_script(row, p, node_index=i))
+    return paths
 
 
 # Convenience entry points (Aldrin first, then S1L1) -------------------------- #
@@ -302,12 +348,12 @@ def write_script(row: CyclerRow, out_path: Path) -> Path:
 
 def generate_aldrin_script(out_path: Path, *, epoch_iso: str | None = None) -> Path:
     row = aldrin_row(epoch_iso) if epoch_iso else aldrin_row()
-    return write_script(row, out_path)
+    return write_script(row, out_path)  # single flyby -> complete script
 
 
-def generate_s1l1_script(out_path: Path, *, epoch_iso: str | None = None) -> Path:
+def generate_s1l1_scripts(out_dir: Path, *, epoch_iso: str | None = None) -> list[Path]:
     row = s1l1_row(epoch_iso) if epoch_iso else s1l1_row()
-    return write_script(row, out_path)
+    return write_all_scripts(row, out_dir)
 
 
 def main() -> None:
@@ -315,25 +361,25 @@ def main() -> None:
         description="Generate a GMAT V4 script from a confirmed cycler."
     )
     parser.add_argument("row", choices=["aldrin", "s1l1"], help="which confirmed row")
-    parser.add_argument("--out", type=Path, required=True, help="output .script path")
     parser.add_argument(
-        "--epoch", type=str, default=None, help="override seed epoch (UTCGregorian ISO)"
+        "--out", type=Path, required=True, help="output .script (aldrin) or directory (s1l1)"
+    )
+    parser.add_argument(
+        "--epoch",
+        type=str,
+        default=None,
+        help="override seed epoch (UTCGregorian, e.g. '06 Aug 2003 00:00:00')",
     )
     args = parser.parse_args()
 
     if args.row == "aldrin":
         path = generate_aldrin_script(args.out, epoch_iso=args.epoch)
+        print(f"wrote {path} (1 Mars-flyby B-plane Target block)")
     else:
-        path = generate_s1l1_script(args.out, epoch_iso=args.epoch)
-    n_flybys = (
-        len(
-            generate_script(aldrin_row() if args.row == "aldrin" else s1l1_row()).split(
-                "Target FlybyTCM_"
-            )
-        )
-        - 1
-    )
-    print(f"wrote {path} ({n_flybys} Mars-flyby B-plane Target block(s))")
+        paths = generate_s1l1_scripts(args.out, epoch_iso=args.epoch)
+        print(f"wrote {len(paths)} per-Mars-flyby scripts to {args.out}:")
+        for p in paths:
+            print(f"  {p}")
 
 
 if __name__ == "__main__":
@@ -347,8 +393,9 @@ __all__ = [
     "MarsFlybyNode",
     "aldrin_row",
     "generate_aldrin_script",
-    "generate_s1l1_script",
+    "generate_s1l1_scripts",
     "generate_script",
     "s1l1_row",
+    "write_all_scripts",
     "write_script",
 ]
