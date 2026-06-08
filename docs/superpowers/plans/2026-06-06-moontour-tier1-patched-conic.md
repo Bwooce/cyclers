@@ -651,9 +651,12 @@ be in CONSTRUCTIBLE — verify the loader still excludes them). Re-derive any
 `EXPECTED_COVERAGE`/census numbers from the **live loader** (do not copy stale
 counts — the M-ED plan's ratchet rule). Run the full dispatch + coverage suite.
 
-- [ ] `uv run pytest tests/data/test_validation_dispatch.py -q` green.
-- [ ] Coverage/census invariant holds; no entry silently dropped.
-- [ ] `uv run ruff check . && uv run ruff format --check . && uv run mypy src tests`.
+- [x] `uv run pytest tests/data/test_validation_dispatch.py -q` green (2026-06-08).
+- [x] Coverage/census invariant holds; no entry silently dropped. Ratchet
+  re-derived 192 -> 223 (Russell 2004 +16, Rall 1970 +15 ingests; moon-tour
+  added 0 rows). Fixed in 8218a56.
+- [x] `ruff check` + `ruff format --check` clean on moon-tour files; `mypy src
+  tests` clean except a concurrent-agent free_return WIP file (out of lane).
 
 Commit (only if census numbers move):
 
@@ -1120,8 +1123,8 @@ def test_dv_floor_is_admissible_lower_bound() -> None:
     assert floor <= vilm_dv_min("Callisto", "Europa", via=("Ganymede",))  # <= with-GA
 ```
 
-- [ ] `uv run pytest tests/search/test_vilm_*.py -q` green.
-- [ ] `uv run ruff check . && uv run ruff format --check . && uv run mypy src tests`.
+- [x] `uv run pytest tests/search/test_vilm_*.py -q` green (2026-06-08).
+- [x] `ruff check` + `ruff format --check` + `mypy` clean on VILM source/tests.
 
 Commit:
 
@@ -1201,7 +1204,7 @@ def test_all_heliocentric_rows_bucket_as_sun() -> None:
             assert signature_bucket_key(row)[1] == "Sun"
 ```
 
-- [ ] Existing matcher/signature/golden suite green (no heliocentric move).
+- [x] Existing matcher/signature/golden suite green (no heliocentric move) (2026-06-08).
 
 Commit (only if a guard test is added):
 
@@ -1211,8 +1214,9 @@ test: heliocentric signature byte-identical under primary bucket key (moon-tour 
 
 ### Task 6.2 — Phase-6 lint/type gate
 
-- [ ] `uv run pytest tests/data/test_signature_bucket.py -q` + the live matcher
-  suite green; ruff + ruff format + mypy clean. Commit if cleanup needed.
+- [x] `uv run pytest tests/data/test_signature_bucket.py -q` + the live matcher
+  suite green; ruff + ruff format + mypy clean (2026-06-08; mypy yaml ignore
+  added in 8218a56).
 
 ---
 
@@ -1365,13 +1369,16 @@ test: Axis-D wrong-central-mu falsification guard for moon chains (moon-tour Tie
 
 ### Task 7.3 — full-suite + lint/type gate; OUTSTANDING note
 
-- [ ] `uv run pytest -m "not slow"` green; `uv run pytest -m slow` evaluated.
-- [ ] `uv run ruff check . && uv run ruff format --check . && uv run mypy src tests` clean.
-- [ ] Update `data/OUTSTANDING.md`: Tier-1 shipped (registry + centred ephemeris +
+- [x] `uv run pytest -m "not slow"` green (exit 0, 2026-06-08); `uv run pytest
+  -m slow` for moon-tour evaluated: I-E-G closure PASS, Axis-A agreement PASS,
+  Axis-D falsification PASS, bend-feasibility strict-xfail (honest-risk).
+- [x] `ruff check` + `ruff format --check` clean; `mypy src tests` clean on all
+  moon-tour files (one remaining tree error is a concurrent free_return WIP file,
+  out of lane).
+- [x] Update `data/OUTSTANDING.md`: Tier-1 shipped (registry + centred ephemeris +
   centre-agnostic corrector + Tisserand μ + VILM); the Jovian rows now
   patched-conic-computable; the Saturnian Titan/midsize split; **Tier-2 (CR3BP)
-  remains open** for Arenstorf/Genova/Wittal + Saturnian midsize. *(Defer this
-  edit if shared-doc concurrency forbids it at run time; flag in the report.)*
+  remains open** for Arenstorf/Genova/Wittal + Saturnian midsize.
 
 Commit:
 

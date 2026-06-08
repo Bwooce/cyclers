@@ -76,6 +76,56 @@ audit trail and is unchanged in spirit.
   Earth-V∞ dispute is the documented disputed case). Schema bumped 4.3 → 4.4
   (the four tag fields as enums; spec §16.7.11). The `cycler_class` and
   `EXPECTED_COVERAGE` census ratchets are unaffected (additive metadata).
+- **Moon-tour Tier-1 (patched-conic moon systems + VILM) — SHIPPED** (task #76,
+  `docs/superpowers/plans/2026-06-06-moontour-tier1-patched-conic.md`). The
+  catalogue's patched-conic moon-system rows are now computable on the same
+  Kepler-conic + impulsive-V∞-rematch model as the heliocentric catalogue, with
+  central body = a planet and flyby bodies = its moons. Delivered:
+  - **`SATELLITES`/`PRIMARIES` registry** (`core/satellites.py`) — Galilean four
+    + Saturnian midsize + Titan, JPL-SSD-sourced, mean motion derived at import
+    via Kepler III; registry-construction golden reproduces the published Endgame
+    Part-1 Table 3 ã_M / Ṽ_M independently.
+  - **Planet-centred circular ephemeris** (`_CentredCircularBackend`,
+    `Ephemeris(center=...)`) — moon states about the primary, km-scaled;
+    heliocentric backends byte-identical.
+  - **Centre-agnostic corrector** — `mu_central` plumbed into Lambert and
+    `_max_bend_deg` resolves moon codes via `SATELLITES`; Sun-default keeps the
+    heliocentric solver byte-identical. The Io-Europa-Ganymede chain CLOSES about
+    Jupiter.
+  - **Centre-aware Tisserand** — `_a_p_km` + `mu=` resolve a moon; `T = 3 − v∞²`
+    round-trips about Jupiter; a Jovicentric pair prunes through `linkable`.
+  - **VILM module** (`search/vilm.py`) — Eq.(9) V̄∞-efficiency root (vs Table 3
+    E/I), Eq.(13) ΔV-min quadrature (vs Table 1/2), Europa 3-VILM endgame scalar
+    (vs A6 154 m/s / 46 d), GA routing, and an admissible ΔV-floor for search
+    pruning.
+  - **(model_assumption, primary) pool pre-filter** — a Jovicentric V∞ never
+    compares to a heliocentric one; heliocentric signatures byte-identical.
+  - **Gauntlet/fidelity integration** — Axis-B persistence about a primary,
+    Axis-A VILM-vs-Lambert agreement, Axis-D wrong-central-μ falsification guard.
+  - **Catalogue re-tag** — the two Jovian rows `non-keplerian` → `multi-arc` (so
+    the gauntlet routes them to invariants, not CR3BP); the Saturnian row keeps
+    `non-keplerian` with an honest Titan-Tier-1 / midsize-Tier-2 split note.
+  - **Deviations recorded (honest-risk):** (1) the Phase-3 I-E-G closure is
+    bend-INFEASIBLE in the coplanar-circular no-V∞-leveraging model (closes at
+    ~10 km/s V∞ needing 100–150° turns vs 2–5° max-bend) — recorded as a strict
+    xfail, NOT forced; bend-feasible Jovian tours need the VILM layer +
+    Laplace-resonance phasing. (2) The VILM admissible ΔV-floor was implemented
+    as escape+capture, not the no-GA quadrature (the plan's "no-GA-as-floor" is
+    backwards — a gravity assist *reduces* ΔV, so the no-GA value is not a lower
+    bound). (3) The Axis-A crosscheck was reframed to VILM-vs-Lambert on a
+    Jovicentric Hohmann V∞ (both independent code paths) rather than
+    VILM-vs-corrector, because the corrector's closed family is the higher-V∞
+    non-bend-feasible one. The corrector's V∞ is NON-GOLDEN throughout — the
+    Russell-Strange/Hernandez rows are family-seed null-numeric records with no
+    sourced Jovicentric V∞ multiset; only the VILM ΔV (Part-1 Tables) and the
+    registry construction (Table 3) are golden-gated.
+  - **Census:** catalogue is 268 rows including the moon rows (3 Earth-primary,
+    2 Jupiter, 1 Saturn); the MULTI_ENCOUNTER_SEQUENCE ratchet moved 192 → 223
+    from the Russell 2004 + Rall 1970 ingests (not from the moon-tour re-tag,
+    which added no rows).
+  - **Tier-2 (CR3BP) remains OPEN** — Earth-Moon Arenstorf/Genova/Wittal and the
+    Saturnian midsize-moon (Mimas/Enceladus/Tethys) members stay citation-only
+    until the later CR3BP milestone.
 
 ## In progress (with plan references)
 
@@ -1089,5 +1139,7 @@ path):**
   kernel mandate (Jones Eqs. 4–5, the #142 finding).
 - **#148 add-an-impulse recoverable-ΔV** — running concurrently.
 - **#146 viz 2c sampled-trajectory variant** — queued.
-- **#76 moon-tour** — queued behind Phase C.
+- **#76 moon-tour** — ✓ SHIPPED (2026-06-08): Tier-1 patched-conic moon systems
+  + VILM landed; see the "Moon-tour Tier-1 — SHIPPED" entry in the Done section
+  above. Tier-2 (CR3BP) remains open.
 - **#128-S2** — queued.
