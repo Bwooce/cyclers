@@ -38,6 +38,16 @@ away in longitude from where DE440 Mars actually is; the achieved Mars miss is
 propagation of the same absolute state (so it is structural, not an integrator
 artifact). NO catalogue writeback; S1L1 promotion is the main session's call.
 
+SUPERSEDED-BY note (#167): the DRIFT pinned here is real and STILL VALID — it is the
+DRIFT of the WRONG-TOPOLOGY #164 construction (both descriptor arcs forced to cross
+Mars; no longitude target). #166 found the topology error and the exact App-C real-eph
+seed; #167 built the CORRECTED sequence (E -> g[E-E, no Mars] -> E -> G[E-M-E transit,
+true longitude rendezvous] -> E) and INDEPENDENTLY CONFIRMED it on DE440 in
+``tests/nbody/test_s1l1_corrected_nbody.py`` (all 7 Mars encounters in-band at the
+published per-leg v_inf). This test is NOT inverted — the old geometry genuinely
+drifts; the corrected geometry is confirmed in that sibling test. S1L1 / #94 is now
+n-body-confirmed via the corrected build, not via this construction.
+
 Wall budget: the @slow encounter test is bounded well under the 25 min cap (the
 n-body legs are sub-second once the spacecraft starts outside Earth's SOI; the
 dominant cost is the one-off continuation re-solve, ~2 s).
