@@ -90,11 +90,13 @@ Verified 2026-06-08 against the live tree:
 | **1** | Incremental VILM/Tisserand prune gate for moon-pair legs | 1.0–1.2 (3) | #76 vilm/tisserand |
 | **2** | Moon-system topology set + centred-scan wiring into the novelty loop | 2.0–2.2 (3) | Phase 1 |
 | **3** | Literature-check field on the review queue + promotion guard | 3.0–3.1 (2) | review_queue |
-| **4** | Empty-region report artefact (the first-class negative) | 4.0–4.2 (3) | Phase 2 |
+| **4** | Empty-region report + method-capability re-sweep gate | 4.0a–4.2 (5) | Phase 2 |
 | **5** | Run the first sweep + honest report | 5.0–5.2 (3) | Phases 1–4 |
 
-Phase 1 (prune) and Phase 3 (queue field) are pure and shippable alone. Phase 5
-is the campaign run. **Total: 14 tasks across 5 phases.**
+Phase 1 (prune) and Phase 3 (queue field) are pure and shippable alone. Phase 4
+carries both the empty-region artefact and the method-capability re-sweep gate
+(4.0a/4.0b are pure and shippable alone). Phase 5 is the campaign run.
+**Total: 16 tasks across 5 phases.**
 
 ---
 
@@ -403,13 +405,149 @@ data/review_queue: is_promotion_eligible gate (no promotion without literature c
 
 ## Phase 4 — Empty-region report artefact
 
+> Phase 4 carries SIX tasks: the empty-region artefact (4.0/4.1/4.2) AND the
+> method-capability re-sweep gate (4.0a the partial-order registry; 4.0b the
+> `should_sweep` gate), per design note §6a/§6b. The gate is what makes
+> `empty_regions.jsonl` a *re-sweepable* record rather than a permanent foreclosure
+> — without it, a recorded "empty" silently locks out every future, more-capable
+> method (the #163-reopens-#137 lesson). **Total tasks now: 16 across 5 phases.**
+
+### Task 4.0a — method-capability partial order (`MethodCapability` + `subsumes`)
+
+**Files:** create `src/cyclerfinder/data/method_capability.py`; test
+`tests/data/test_method_capability.py`.
+
+The capability registry (design note §6a). A small enum/registry of capability
+tags and a `subsumes(a, b) -> bool` partial-order predicate. `MethodCapability` is
+a frozen dataclass: `genome: str`, `corrector: str`, `capability_tags:
+frozenset[str]`, `git_sha: str`. The partial order is defined over the tags by an
+explicit edge set (the §6b ordering), e.g.:
+
+- `multi-arc` ⊐ `single-arc`,
+- `n-body` ⊐ `patched-conic`,
+- `powered`/`low-thrust` ⊐ `ballistic`,
+- `one-dsm-per-leg` ⊐ `single-arc`,
+- `broken-plane` ⊐ `coplanar`.
+
+`subsumes(a, b)` is True iff every tag of `b` is reached by `a` under the partial
+order (`b`'s envelope ⊆ `a`'s). It MUST be reflexive (`subsumes(a, a) is True`)
+and MUST return `False` for incomparable methods (neither contains the other).
+
+> **NON-GOLDEN / sourced-discipline:** the edge set is a *design decision*
+> transcribed from §6b, not a computed value. Keep the edges in one named
+> constant (`_CAPABILITY_EDGES`) so the partial order is auditable in one place.
+
+#### Failing test
+```python
+"""Phase 6 Phase 4: method-capability partial order (plan Task 4.0a)."""
+from __future__ import annotations
+
+from cyclerfinder.data.method_capability import MethodCapability, subsumes
+
+SINGLE = MethodCapability(
+    genome="single-ellipse free-return", corrector="ballistic_correct",
+    capability_tags=frozenset({"ballistic", "patched-conic", "single-arc",
+                               "coplanar"}), git_sha="aaa")
+MULTI = MethodCapability(
+    genome="two-arc free-return chain", corrector="ballistic_correct",
+    capability_tags=frozenset({"ballistic", "patched-conic", "multi-arc",
+                               "coplanar"}), git_sha="bbb")
+BROKEN = MethodCapability(
+    genome="single-ellipse free-return", corrector="ballistic_correct",
+    capability_tags=frozenset({"ballistic", "patched-conic", "single-arc",
+                               "broken-plane"}), git_sha="ccc")
+
+
+def test_subsumes_is_reflexive() -> None:
+    assert subsumes(SINGLE, SINGLE) is True
+
+
+def test_multi_arc_subsumes_single_ellipse() -> None:
+    assert subsumes(MULTI, SINGLE) is True       # #163 ⊐ #137
+    assert subsumes(SINGLE, MULTI) is False       # weaker does not subsume
+
+
+def test_incomparable_methods_do_not_subsume() -> None:
+    # coplanar-multi-arc vs broken-plane-single-arc: neither envelope ⊆ the other
+    assert subsumes(MULTI, BROKEN) is False
+    assert subsumes(BROKEN, MULTI) is False
+```
+
+Run → **red** → impl the partial order (one named edge constant) → **green**.
+Commit:
+```
+data/method_capability: capability partial order + subsumes predicate (Forge Phase 6)
+```
+
+### Task 4.0b — the re-sweep gate `should_sweep(region, method, registry) -> bool`
+
+**Files:** `src/cyclerfinder/data/method_capability.py` (or
+`src/cyclerfinder/data/empty_regions.py` once 4.0 lands — keep it next to the
+`load_empty_regions` reader); test `tests/data/test_method_capability.py`
+(extend, or `tests/data/test_empty_regions.py`).
+
+The core gate (design note §6b). Given the proposed `region` (its
+region_id / box), the proposed `method: MethodCapability`, and the loaded
+`empty_regions.jsonl` registry, decide whether to sweep:
+
+```text
+should_sweep(region, method, registry):
+    priors = [r for r in registry if r covers the same region/box]
+    if any(subsumes(prior.method_capability, method) for prior in priors):
+        return False        # a prior, ≥-capable method already emptied it → SKIP
+    return True             # no prior subsumes the proposed method → RE-SWEEP
+                            # (new/more-capable OR incomparable both re-sweep)
+```
+
+The skip criterion is capability-subsumption, NOT region-match alone: a prior
+empty over the same box only skips if its method **subsumes** the proposed one.
+
+#### Failing test
+```python
+def test_weaker_method_skips_region_a_stronger_method_emptied() -> None:
+    # Prior: a STRONGER (multi-arc) sweep emptied region R.
+    # Proposed: a WEAKER (single-ellipse) method → nothing new to learn → SKIP.
+    from cyclerfinder.data.method_capability import should_sweep
+    registry = [_empty_record(region_id="R", method=MULTI)]
+    assert should_sweep(region_id="R", method=SINGLE, registry=registry) is False
+
+
+def test_stronger_method_re_sweeps_region_a_weaker_method_emptied() -> None:
+    # Prior: a WEAKER (single-ellipse) sweep emptied R; #163-reopens-#137.
+    # Proposed: a STRONGER (multi-arc) method → re-sweep the reopened ground.
+    from cyclerfinder.data.method_capability import should_sweep
+    registry = [_empty_record(region_id="R", method=SINGLE)]
+    assert should_sweep(region_id="R", method=MULTI, registry=registry) is True
+
+
+def test_incomparable_method_re_sweeps() -> None:
+    # Prior emptied R with coplanar-multi-arc; proposed is broken-plane (incomparable).
+    from cyclerfinder.data.method_capability import should_sweep
+    registry = [_empty_record(region_id="R", method=MULTI)]
+    assert should_sweep(region_id="R", method=BROKEN, registry=registry) is True
+
+
+def test_no_prior_for_region_re_sweeps() -> None:
+    from cyclerfinder.data.method_capability import should_sweep
+    assert should_sweep(region_id="UNSWEPT", method=SINGLE, registry=[]) is True
+```
+
+(`_empty_record` is a small test helper building an `EmptyRegionReport`-shaped
+object carrying `region_id` + `method_capability`.)
+
+Run → **red** → impl → **green**. Commit:
+```
+data/method_capability: should_sweep capability-subsumption re-sweep gate (Forge Phase 6)
+```
+
 ### Task 4.0 — `EmptyRegionReport` dataclass + serialiser
 
 **Files:** create `src/cyclerfinder/data/empty_regions.py`; test
 `tests/data/test_empty_regions.py`.
 
 The first-class negative (design note §6). A frozen dataclass with the required
-fields: `region_id`, `family`, `centre`, `topologies`, `search_extent`
+fields: `region_id`, `family`, `centre`, `topologies`, `method_capability`
+(the §6a descriptor — see Task 4.0a), `search_extent`
 (n_epochs / span_days / n_topologies / points_total / ephem_model / center),
 `prune_gates`, `result` (closed / distinct_families / bend_feasible /
 best_max_vinf_kms / vinf_floor_target_kms / gap_kms), `verdict`,
@@ -419,8 +557,10 @@ wall_s). Plus `append_empty_region(report, path)` → `data/empty_regions.jsonl`
 
 > **The bar for a negative to count (test it):** a report is INVALID if
 > `search_extent.points_total` is absent/zero (an unbounded negative is a
-> silently-dropped negative) or `prune_gates` is empty (can't tell if the empty
-> set is an over-pruning artefact). `validate_empty_region` enforces both.
+> silently-dropped negative), `prune_gates` is empty (can't tell if the empty
+> set is an over-pruning artefact), or `method_capability` is absent/empty (an
+> *unconditional* "empty" claim — "empty" is never unconditional, design note
+> §6a). `validate_empty_region` enforces all three.
 
 #### Failing test
 ```python
@@ -477,15 +617,21 @@ data/empty_regions: JSONL append + load round-trip (Forge Phase 6)
 > queue pattern; reuse it, do not reinvent. Swap the topology set for
 > `jovian_galilean_topologies` + `discover_novel_moon`.
 
-The orchestrator: run `discover_novel_moon`, fan SILVER survivors through the
+The orchestrator: BEFORE sweeping, call `should_sweep(region, method, registry)`
+(Task 4.0b) against the loaded `empty_regions.jsonl` — skip the region iff a prior
+≥-capable method already emptied it (the proposed method here is the
+single-ellipse no-leveraging `MethodCapability`; record the skip reason if
+skipped). If swept: run `discover_novel_moon`, fan SILVER survivors through the
 adversarial panel (`verify/adversarial.py`) + queue them (with
 `literature_check=None`), and — if the sweep yields zero promotable candidates —
-emit an `EmptyRegionReport` with the actual search extent + best-achieved V∞ +
-gap. Assert (stubbed) that a barren sweep writes a valid empty-region report.
+emit an `EmptyRegionReport` carrying the `method_capability` descriptor + the
+actual search extent + best-achieved V∞ + gap. Assert (stubbed) that (a) a barren
+sweep writes a valid method-versioned empty-region report, and (b) re-running with
+the *same* method against that record skips (should_sweep → False).
 
 Run → **red**/**green** → Commit:
 ```
-scripts/forge_phase6_moon_run: Jovian VILM sweep orchestrator + empty-region emit (Forge Phase 6)
+scripts/forge_phase6_moon_run: Jovian VILM sweep orchestrator + re-sweep gate + empty-region emit (Forge Phase 6)
 ```
 
 ---
@@ -506,9 +652,11 @@ count, best max-V∞, the V∞ floor gap, and every SILVER survivor's panel verd
 
 > **HONEST-RISK (binding):** if nothing closes bend-feasible (the expected
 > outcome per design note §5), that is a SUCCESS — emit the empty-region report
-> and STOP; do NOT loosen `tol_kms`, the budget, or the bend cap to manufacture a
-> survivor. If a SILVER survives, run the n-body ARTIFACT rung (Task 5.1) before
-> any human-facing claim.
+> (carrying the single-ellipse no-leveraging `method_capability` descriptor, so a
+> later multi-arc/n-body/low-thrust method re-sweeps per §6b) and STOP; do NOT
+> loosen `tol_kms`, the budget, or the bend cap to manufacture a survivor. If a
+> SILVER survives, run the n-body ARTIFACT rung (Task 5.1) before any human-facing
+> claim.
 
 ### Task 5.1 — independent n-body cross-check of any SILVER survivor (slow)
 
@@ -544,8 +692,14 @@ docs: Forge Phase 6 first campaign — Jovian VILM sweep results (task #172)
 ## Self-review
 
 - **Reuses Phases 0–5.** No new finding loop, panel, queue, dedup, or n-body rung
-  — Phase 6 is a topology set + a VILM prune + a literature-check field + an
-  empty-region artefact + one run.
+  — Phase 6 is a topology set + a VILM prune + a literature-check field + a
+  method-versioned empty-region artefact (with a capability-subsumption re-sweep
+  gate) + one run.
+- **"Empty" is never unconditional.** Every empty-region record carries a
+  method-capability descriptor; the `should_sweep` gate skips ONLY when a prior
+  ≥-capable method emptied the region, and re-sweeps for any more-capable OR
+  incomparable method — the #163-reopens-#137 lesson encoded as a gate, so a
+  recorded negative never permanently forecloses a future capability.
 - **Golden-clean.** The prune gates are sourced (VILM Endgame Tables); no computed
   V∞ is a golden EXPECTED; novelty caps at SILVER; the empty-set guard forbids
   unbounded negatives; the literature gate forbids promotion without a documented

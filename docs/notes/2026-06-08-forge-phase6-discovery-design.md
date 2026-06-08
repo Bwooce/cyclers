@@ -344,6 +344,11 @@ bounded*:
   "centre": "Jupiter",
   "topologies": [{"sequence": ["Io","Europa","Ganymede","Io"],
                   "per_leg_revs": [0,0,0], "period_k": 1}],
+  "method_capability": {"genome": "single-ellipse free-return",
+                        "corrector": "ballistic_correct (no-leveraging)",
+                        "capability_tags": ["ballistic", "patched-conic",
+                                            "single-arc", "coplanar"],
+                        "git_sha": "..."},
   "search_extent": {"n_epochs": 256, "span_days": 64.0,
                     "n_topologies": 11, "points_total": 2816,
                     "ephem_model": "circular", "center": "Jupiter"},
@@ -368,15 +373,83 @@ The required fields (the bar for a negative to count): **search extent**
 (how much space was actually covered — epochs × topologies × points), **prune
 gates** (what was pruned and why, so the negative is not an artefact of
 over-pruning), **best achieved vs target** (the V∞ floor gap — the quantified
-near-miss), and **interpretation** (the sharpened hypothesis, the #110-style "a
-denser-scan-still-fails result is real science"). A negative is only first-class
-if it is *bounded* (states what was NOT covered) and *reproducible* (carries the
-grid + git SHA). An empty region with no search-extent record is a silently-dropped
-negative — exactly what this format forbids.
+near-miss), **interpretation** (the sharpened hypothesis, the #110-style "a
+denser-scan-still-fails result is real science"), and — load-bearing for the
+re-sweep gate (§6a/§6b) — the **method-capability descriptor** (what the method
+could *reach*, not just which SHA produced it). A negative is only first-class
+if it is *bounded* (states what was NOT covered), *reproducible* (carries the
+grid + git SHA), and *method-versioned* (carries the capability envelope). An
+empty region with no search-extent record is a silently-dropped negative; an
+empty region with no method-capability descriptor is an *unconditional* "empty"
+claim — and "empty" is never unconditional (§6a). Both are exactly what this
+format forbids.
 
 The mirror of the human-review queue: SILVER survivors go to
 `data/review_queue.jsonl`; empty regions go to `data/empty_regions.jsonl`. Both
 are non-catalogue artefacts; neither auto-promotes anything.
+
+### 6a. Method-capability versioning — "empty" is conditional on the method
+
+A bare git SHA does NOT express what a method can *reach*: two SHAs of the
+single-ellipse genome are equivalent in capability, while the multi-arc genome at
+*any* SHA reaches strictly more of the trajectory space. So every
+`empty_regions.jsonl` record carries an explicit **method-capability descriptor**
+alongside the run/SHA fields — the genome/corrector plus an ordered (partially-
+ordered) **capability tag set** describing the envelope it can represent:
+
+- `single-ellipse free-return` — one ballistic arc, no DSM, patched-conic.
+- `one-DSM-per-leg` — adds one deep-space manoeuvre DOF per leg.
+- `two-arc free-return chain` (multi-arc, #163) — two generic-return arcs;
+  reaches geometries a single ellipse cannot represent.
+- `n-body shooter` — full-force integrated, supersedes patched-conic seeds.
+- `low-thrust` — continuous control, supersedes ballistic/impulsive.
+
+The descriptor is the load-bearing field: it is what lets a *later* campaign
+decide whether a recorded "empty" still binds. The crux, restated as the binding
+invariant: **"region X is empty" always means "empty as far as method M could
+reach"** — never an absolute claim (the same sourced-floor discipline: the floor
+is OUR computation, recorded as method-conditional evidence, never an absolute).
+
+### 6b. The re-sweep gate — capability-subsumption, not region-match
+
+Before a campaign sweeps a region it queries `empty_regions.jsonl` and applies the
+re-sweep gate: **SKIP the region ONLY IF a prior sweep's method-capability
+SUBSUMES the proposed method's.** Region-match alone is NOT the skip criterion — a
+prior empty result over the identical box does *not* license a skip if the new
+method can reach ground the old one could not.
+
+**The subsumption partial order (`⊐` = "strictly more capable than").** Methods
+form a *partial* order — not a total one — over capability:
+
+- multi-arc `⊐` single-ellipse (more arcs reach more geometry; #163 ⊐ #137),
+- n-body `⊐` patched-conic (full force supersedes the conic seed),
+- powered (DSM / low-thrust) `⊐` ballistic (added control DOF),
+- one-DSM-per-leg `⊐` single-ellipse free-return (added per-leg DOF).
+
+`A` **subsumes** `B` operationally iff every capability tag of `B` is reached by
+`A` — i.e. `B`'s envelope is contained in `A`'s under the partial order. Then:
+
+- **Proposed method ⊑ prior method (prior subsumes proposed): SKIP.** A weaker or
+  equal method re-running a region a stronger method already emptied learns
+  nothing new — that is the compute-saving half of the gate.
+- **Proposed method ⊐ prior method (strictly more capable): RE-SWEEP.** A new
+  genome, an added DOF, higher fidelity, or a different regime JUSTIFIES
+  re-sweeping *exactly* the regions the old method could not represent — that is
+  the option-preserving half.
+- **Incomparable methods (neither subsumes the other): RE-SWEEP.** E.g. a
+  broken-plane method vs a coplanar multi-arc reach *different* ground; neither
+  envelope contains the other, so the old "empty" does not bind the new method.
+  Incomparable never skips.
+
+**Rationale (why both halves matter).** "Empty" is always conditional on the
+method: the multi-arc genome (#163) reopened 6.44Gg3/S1L1 ground the single-
+ellipse genome (#137) had closed as "empty". A SHA-only or region-match-only gate
+would have *permanently* foreclosed that re-discovery. The capability-subsumption
+gate is precisely what prevents BOTH re-burning compute on proven-empty regions
+(weaker/equal method ⇒ skip) AND losing the option to revisit when a new
+capability arrives (more-capable/incomparable method ⇒ re-sweep). It is the
+direct analogue, on the negative-result side, of the catalogue's
+supersession-aware match (§3b) on the positive side.
 
 ---
 
@@ -385,7 +458,8 @@ are non-catalogue artefacts; neither auto-promotes anything.
 - **Builds on Phases 0–5, not new infra.** The finding loop, adversarial panel,
   human queue, dedup, and n-body rung are all shipped; Phase 6 is a family choice
   + two wiring additions (incremental VILM prune; literature-check field) + one
-  new artefact (empty-region report).
+  new artefact (the empty-region report, method-versioned with a
+  capability-subsumption re-sweep gate, §6a/§6b).
 - **Golden-clean.** No computed value is asserted as a golden EXPECTED. The dedup
   is a classification; the VILM gates are sourced (Endgame Part-1 Tables); a novel
   candidate caps at SILVER by construction; GOLD is structurally unreachable by
