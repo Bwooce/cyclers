@@ -23,6 +23,8 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.kepler import propagate
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.search.dsm_leg import (
+    _flyby_continuity_residual,
+    dsm_chain_correct,
     dsm_chain_decision_vector,
     dsm_leg,
     evaluate_dsm_chain,
@@ -771,3 +773,122 @@ def test_dsm_s1l1_4991gg2_two_arc_multirev_reprobe() -> None:
     print(f"eta per leg: {info['eta_per_leg']}")
     print(f"tof days per leg: {info['tof_days_per_leg']}")
     print(f"wall: {elapsed:.1f}s")
+
+
+# ---------------------------------------------------------------------------
+# Phase 1 (#162) -- mechanics gates for the explicit flyby V_inf-continuity +
+# bend-feasibility residual. CONSTRUCTED: every "expected" value is a hand-built
+# feasible / infeasible flyby geometry (or a hand-computed flyby_dv), never a
+# DSM-evaluator output. These prove the new per-flyby residual term is correct
+# BEFORE the decisive 6.44Gg3 probe consumes it.
+# ---------------------------------------------------------------------------
+
+# Mars flyby constants (cyclerfinder.core.constants PLANETS["M"]).
+_MU_MARS = 4.282837521e4  # km^3/s^2
+_RP_MIN_MARS = 3396.19 + 300.0  # radius_eq_km + safe_alt_km, km
+
+
+def _rotate_in_plane(vec: np.ndarray, angle_rad: float) -> np.ndarray:
+    """Rotate a 3-vector by ``angle_rad`` about the z axis (in the xy plane)."""
+    c, s = np.cos(angle_rad), np.sin(angle_rad)
+    return np.array(
+        [c * vec[0] - s * vec[1], s * vec[0] + c * vec[1], vec[2]],
+        dtype=np.float64,
+    )
+
+
+def test_flyby_continuity_residual_zero_on_feasible_flyby() -> None:
+    """The per-flyby residual term is ~0 on a CONSTRUCTED bend-feasible flyby.
+
+    Build a v_inf^- / v_inf^+ pair with EQUAL magnitude and a turn angle strictly
+    inside ``max_bend(mu_M, rp_min, |v_inf|)``. A ballistic Mars flyby can realise
+    this exactly, so ``flyby_dv == 0`` and the continuity residual term must vanish.
+    Reference = the known feasible geometry (the bend cone), NOT the evaluator.
+    Label: mechanics.
+    """
+    from cyclerfinder.core.flyby import max_bend
+
+    vinf = 3.74  # the sourced Mars anchor magnitude (a physically relevant speed)
+    vin = np.array([vinf, 0.0, 0.0])
+    delta_max = max_bend(_MU_MARS, _RP_MIN_MARS, vinf)
+    # A turn strictly inside the cone (half of the achievable maximum).
+    vout = _rotate_in_plane(vin, 0.5 * delta_max)
+    assert abs(np.linalg.norm(vout) - vinf) < 1.0e-12  # equal magnitude by construction
+
+    r = _flyby_continuity_residual(vin, vout, "M")
+    assert r < 1.0e-9, f"feasible flyby must charge ~0, got {r}"
+
+
+def test_flyby_continuity_residual_charges_infeasible_turn() -> None:
+    """The per-flyby residual equals the hand-computed flyby_dv on an infeasible turn.
+
+    Build an equal-magnitude pair whose turn angle is BEYOND ``max_bend`` (a
+    near-reversal at high V_inf, where the bend cone is narrow). The residual must
+    equal the independently hand-computed ``flyby_dv`` (> 0). This is precisely the
+    bend-feasibility term the old scalar objective could not see. Label: mechanics.
+    """
+    from cyclerfinder.core.flyby import flyby_dv, max_bend
+
+    vinf = 8.0  # high V_inf -> narrow cone
+    vin = np.array([vinf, 0.0, 0.0])
+    delta_max = max_bend(_MU_MARS, _RP_MIN_MARS, vinf)
+    # A turn well beyond the cone (160 deg, far past delta_max which is small here).
+    turn = np.radians(160.0)
+    assert turn > delta_max  # infeasible by construction
+    vout = _rotate_in_plane(vin, turn)
+    assert abs(np.linalg.norm(vout) - vinf) < 1.0e-12
+
+    expected = flyby_dv(vin, vout, _MU_MARS, _RP_MIN_MARS)
+    assert expected > 0.0  # constructed-infeasible -> strictly positive
+    r = _flyby_continuity_residual(vin, vout, "M")
+    assert abs(r - expected) < 1.0e-6, f"residual {r} != hand-computed flyby_dv {expected}"
+
+
+def test_charge_flyby_continuity_default_off_is_bit_identical() -> None:
+    """charge_flyby_continuity=False (default) is bit-identical to current code.
+
+    The regression that guarantees no existing caller/test changes: with the flag
+    off, ``evaluate_dsm_chain`` and ``dsm_chain_correct`` return exactly the current
+    scalar-objective results on the E-M-E mechanics fixture, and the residual is
+    still the length-1 scalar. Label: regression.
+    """
+    ephem = Ephemeris(model="circular")
+    sequence = ("E", "M", "E")
+    kwargs = dict(
+        sequence=sequence,
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 200.0),
+        eta_per_leg=(0.5, 0.5),
+        ephem=ephem,
+    )
+    base = evaluate_dsm_chain(**kwargs)  # type: ignore[arg-type]
+    flagged = evaluate_dsm_chain(charge_flyby_continuity=False, **kwargs)  # type: ignore[arg-type]
+
+    # Bit-identical scalar objective and per-leg breakdown.
+    assert flagged.total_dv_kms == base.total_dv_kms
+    assert flagged.dv_dsm_per_leg_kms == base.dv_dsm_per_leg_kms
+    assert flagged.vinf_in_kms == base.vinf_in_kms
+    assert flagged.vinf_out_kms == base.vinf_out_kms
+    # The default residual_vector is the length-1 scalar [total_dv].
+    assert flagged.residual_vector.shape == (1,)
+    assert flagged.residual_vector[0] == base.total_dv_kms
+
+    # dsm_chain_correct default path is unchanged too (same converged decision).
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 200.0),
+        eta_per_leg=(0.5, 0.5),
+    )
+    c_base = dsm_chain_correct(x0, sequence=sequence, ephem=ephem, max_nfev=20)
+    c_flag = dsm_chain_correct(
+        x0, sequence=sequence, ephem=ephem, max_nfev=20, charge_flyby_continuity=False
+    )
+    assert c_flag.total_dv_kms == c_base.total_dv_kms
+    assert c_flag.tof_days_per_leg == c_base.tof_days_per_leg
+    assert c_flag.eta_per_leg == c_base.eta_per_leg

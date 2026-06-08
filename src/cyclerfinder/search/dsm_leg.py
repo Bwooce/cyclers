@@ -59,8 +59,15 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.optimize import least_squares
 
-from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS, SECONDS_PER_DAY
+from cyclerfinder.core.constants import (
+    AU_KM,
+    MU_SUN_KM3_S2,
+    PLANETS,
+    SAFE_PERIHELION_KM,
+    SECONDS_PER_DAY,
+)
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.flyby import flyby_dv
 from cyclerfinder.core.kepler import KeplerError, propagate
 from cyclerfinder.core.lambert import LambertError, lambert
 from cyclerfinder.search.mbh import MBHStep
@@ -320,6 +327,16 @@ class DsmChainResult:
         (mirrors ``free_return_correct``; the solver flag is secondary).
     solver_success, solver_nfev:
         DIAGNOSTIC ``least_squares`` outcome (audit trail only, never gates).
+    residual_vector:
+        The vector residual the corrector drives (#162). In the default
+        (``charge_flyby_continuity=False``) path this is the length-1 scalar
+        ``[total_dv_kms]`` -- bit-identical to the historical single-scalar
+        objective. In the ``charge_flyby_continuity=True`` path it is the multi-term
+        root-find vector ``[*dV_DSM_per_leg, *flyby_dv_per_intermediate_flyby,
+        arrival]`` (design §3): every DSM impulse, every intermediate-flyby bend
+        cost (:func:`_flyby_continuity_residual`), and the terminal arrival V_inf.
+        ``converged`` in that mode is ``max(|residual_vector|) < tol_kms`` (every
+        DSM AND every flyby_dv below tol), still residual-magnitude only.
     """
 
     total_dv_kms: float
@@ -340,6 +357,12 @@ class DsmChainResult:
     converged: bool = False
     solver_success: bool = True
     solver_nfev: int = 0
+    residual_vector: NDArray[np.float64] = field(
+        default_factory=lambda: np.zeros(1, dtype=np.float64)
+    )
+    alpha_int_per_leg: tuple[float, ...] = field(default_factory=tuple)
+    beta_int_per_leg: tuple[float, ...] = field(default_factory=tuple)
+    flyby_dv_per_flyby_kms: tuple[float, ...] = field(default_factory=tuple)
 
 
 def _vinf_out_dir(v_inf: float, alpha: float, beta: float) -> Vec3:
@@ -352,6 +375,29 @@ def _vinf_out_dir(v_inf: float, alpha: float, beta: float) -> Vec3:
         ],
         dtype=np.float64,
     )
+
+
+def _flyby_continuity_residual(
+    vinf_in_vec: Vec3,
+    vinf_out_vec: Vec3,
+    target_code: str,
+) -> float:
+    """Per-flyby V_inf-continuity + bend-feasibility residual (#162, design §3).
+
+    Returns the powered-flyby surrogate Delta V (:func:`core.flyby.flyby_dv`,
+    Russell Eq.5.5) needed to convert the incoming hyperbolic excess ``vinf_in_vec``
+    into the outgoing ``vinf_out_vec`` at the body ``target_code`` -- exactly ``0.0``
+    when the pair is ballistic-feasible (equal magnitude AND turn within the bend
+    cone), strictly positive otherwise. The planet ``(mu, rp_min)`` are resolved from
+    the constants registry the same way :func:`core.flyby.flyby_dv_for` does (no
+    hardcoded planet numbers). This is the bend-feasibility term the default scalar
+    objective omits; in the ``charge_flyby_continuity`` path the chain genome frees
+    the departure-V_inf DIRECTION so the magnitude is inherited by construction and
+    the only flyby residual is this bend cost.
+    """
+    mu_planet = PLANETS[target_code].mu_km3_s2
+    rp_min = SAFE_PERIHELION_KM[target_code]
+    return flyby_dv(vinf_in_vec, vinf_out_vec, mu_planet, rp_min)
 
 
 def evaluate_dsm_chain(
@@ -368,18 +414,41 @@ def evaluate_dsm_chain(
     rendezvous: bool = False,
     tol_kms: float = 0.1,
     max_revs: int = 0,
+    rev_branch_per_leg: tuple[tuple[int, str] | None, ...] | None = None,
+    charge_flyby_continuity: bool = False,
+    alpha_int_per_leg: tuple[float, ...] = (),
+    beta_int_per_leg: tuple[float, ...] = (),
 ) -> DsmChainResult:
     """Evaluate a chained one-DSM-per-leg trajectory (Takao Eqs.3-7, 14-15).
 
     The genome strings ``len(sequence) - 1`` legs. The departure state at body 0 is
     ``v_planet,0 + V_inf_out0`` with ``V_inf_out0`` from (``vinf_out0_kms``,
     ``alpha0``, ``beta0``) (Eq.4-5). Each leg runs :func:`dsm_leg`; the heliocentric
-    arrival velocity is the spacecraft's incoming velocity at the next body. The
-    departing velocity for the NEXT leg is that same incoming heliocentric velocity
-    (a ballistic flyby preserves heliocentric speed continuity; the powered-flyby
-    surrogate, owned by ``core/flyby.py``, is applied separately at scoring time and
-    is NOT charged here -- this evaluator's objective is the sum of DSM impulses
-    plus the terminal arrival, Eq.15 without the P-FB term).
+    arrival velocity is the spacecraft's incoming velocity at the next body.
+
+    Default path (``charge_flyby_continuity=False``)
+    ------------------------------------------------
+    The departing velocity for the NEXT leg is that same incoming heliocentric
+    velocity (a ballistic flyby preserves heliocentric speed continuity; the
+    powered-flyby surrogate, owned by ``core/flyby.py``, is applied separately at
+    scoring time and is NOT charged here -- this evaluator's objective is the sum of
+    DSM impulses plus the terminal arrival, Eq.15 without the P-FB term). The
+    ``residual_vector`` is the length-1 scalar ``[total_dv_kms]``, BIT-IDENTICAL to
+    the historical behaviour.
+
+    Charged path (``charge_flyby_continuity=True``, #162 / design §3)
+    ----------------------------------------------------------------
+    The next leg's departure V_inf DIRECTION at each intermediate flyby is a free
+    genome coordinate (``alpha_int_per_leg[k]`` / ``beta_int_per_leg[k]`` for the
+    ``k``-th intermediate body, ``k = 0 .. n_legs-2``); its MAGNITUDE is inherited
+    from the arrival V_inf (so V_inf magnitude continuity holds by construction).
+    Per intermediate flyby the bend-feasibility cost
+    :func:`_flyby_continuity_residual` (``flyby_dv``, 0 when ballistic-feasible) is
+    charged, and the result's ``residual_vector`` becomes the multi-term root-find
+    vector ``[*dV_DSM_per_leg, *flyby_dv_per_flyby, arrival]``. ``converged`` is then
+    ``max(|residual_vector|) < tol_kms`` (every DSM AND every flyby_dv below tol).
+    This is the only path that rewards the sourced bend-feasible low-V_inf basin; it
+    is default-off and adds zero cost to every existing caller.
 
     Body epochs chain as ``t_j = t0 + sum(tau_i)`` (Eq.3); body states pulled from
     ``ephem`` at those epochs.
@@ -387,8 +456,9 @@ def evaluate_dsm_chain(
     Returns
     -------
     DsmChainResult
-        ``total_dv_kms`` is the objective; the per-leg DSM impulses, emerged V_inf,
-        and DSM states are the evidence/audit trail.
+        ``total_dv_kms`` is the scalar objective (back-compat / audit);
+        ``residual_vector`` is what the corrector drives. The per-leg DSM impulses,
+        emerged V_inf, and DSM states are the evidence/audit trail.
     """
     n_legs = len(sequence) - 1
     if n_legs < 1:
@@ -397,6 +467,15 @@ def evaluate_dsm_chain(
         raise ValueError(
             f"tof_days_per_leg and eta_per_leg must each have {n_legs} entries "
             f"(one per leg), got {len(tof_days_per_leg)} / {len(eta_per_leg)}"
+        )
+    n_flybys = n_legs - 1  # intermediate flybys (bodies 1 .. n_legs-1)
+    if charge_flyby_continuity and (
+        len(alpha_int_per_leg) != n_flybys or len(beta_int_per_leg) != n_flybys
+    ):
+        raise ValueError(
+            f"charge_flyby_continuity requires alpha_int_per_leg / beta_int_per_leg "
+            f"of length {n_flybys} (one per intermediate flyby), got "
+            f"{len(alpha_int_per_leg)} / {len(beta_int_per_leg)}"
         )
 
     r0, v_planet0 = ephem.state(sequence[0], t0_sec)
@@ -407,6 +486,7 @@ def evaluate_dsm_chain(
     dsm_states: list[tuple[Vec3, float]] = []
     n_revs_legs: list[int] = []
     branch_legs: list[str] = []
+    flyby_dv_per_flyby: list[float] = []
     vinf_in: dict[int, float] = {}
     vinf_out: dict[int, float] = {0: float(vinf_out0_kms)}
 
@@ -418,6 +498,7 @@ def evaluate_dsm_chain(
         t_arrive = t_cursor + tof_s
         target_body = sequence[i + 1]
         r_target, v_planet_target = ephem.state(target_body, t_arrive)
+        rb = rev_branch_per_leg[i] if rev_branch_per_leg is not None else None
         try:
             leg = dsm_leg(
                 r_curr,
@@ -427,6 +508,7 @@ def evaluate_dsm_chain(
                 np.asarray(r_target),
                 mu=mu,
                 max_revs=max_revs,
+                rev_branch=rb,
             )
         except (LambertError, KeplerError, ValueError):
             # A hop into a too-energetic departure can drive the ballistic
@@ -439,14 +521,29 @@ def evaluate_dsm_chain(
         dsm_states.append((leg.r_dsm, leg.t_dsm_sec))
         n_revs_legs.append(leg.n_revs_chosen)
         branch_legs.append(leg.branch_chosen)
-        v_inf_in_vec = leg.v_arrive - np.asarray(v_planet_target, dtype=np.float64)
-        vinf_in[i + 1] = float(np.linalg.norm(v_inf_in_vec))
+        v_planet_target_arr = np.asarray(v_planet_target, dtype=np.float64)
+        v_inf_in_vec = leg.v_arrive - v_planet_target_arr
+        vinf_in_mag = float(np.linalg.norm(v_inf_in_vec))
+        vinf_in[i + 1] = vinf_in_mag
 
-        # Ballistic-flyby heliocentric continuity for the next leg's departure.
-        # (The powered-flyby bend cost is the catalogue scorer's job, not this
-        # evaluator's; here the next leg simply departs on the arrival velocity.)
-        v_depart = np.asarray(leg.v_arrive, dtype=np.float64)
-        vinf_out[i + 1] = float(np.linalg.norm(v_inf_in_vec))
+        is_intermediate = i < n_legs - 1
+        if charge_flyby_continuity and is_intermediate:
+            # The next leg departs on a FREE-direction V_inf at the inherited
+            # magnitude (V_inf-magnitude continuity holds by construction); the bend
+            # cost of turning v_inf_in -> v_inf_out at this body is the per-flyby
+            # residual term (0 iff ballistic-feasible).
+            v_inf_out_vec = _vinf_out_dir(vinf_in_mag, alpha_int_per_leg[i], beta_int_per_leg[i])
+            flyby_dv_per_flyby.append(
+                _flyby_continuity_residual(v_inf_in_vec, v_inf_out_vec, target_body)
+            )
+            v_depart = v_planet_target_arr + v_inf_out_vec
+            vinf_out[i + 1] = float(np.linalg.norm(v_inf_out_vec))
+        else:
+            # Ballistic-flyby heliocentric continuity for the next leg's departure.
+            # (The powered-flyby bend cost is the catalogue scorer's job in this
+            # default path; here the next leg simply departs on the arrival velocity.)
+            v_depart = np.asarray(leg.v_arrive, dtype=np.float64)
+            vinf_out[i + 1] = vinf_in_mag
         r_curr = np.asarray(r_target, dtype=np.float64)
         t_cursor = t_arrive
 
@@ -468,10 +565,20 @@ def evaluate_dsm_chain(
             branch_per_leg=tuple(branch_legs),
             dsm_states=tuple(dsm_states),
             converged=False,
+            residual_vector=np.array([float("inf")], dtype=np.float64),
+            alpha_int_per_leg=tuple(alpha_int_per_leg),
+            beta_int_per_leg=tuple(beta_int_per_leg),
+            flyby_dv_per_flyby_kms=tuple(flyby_dv_per_flyby),
         )
 
     dv_arrive = vinf_in[n_legs] if rendezvous else 0.0
     total_dv = float(sum(dv_dsm) + dv_arrive)
+    if charge_flyby_continuity:
+        residual_vector = np.array([*dv_dsm, *flyby_dv_per_flyby, dv_arrive], dtype=np.float64)
+        converged = bool(np.max(np.abs(residual_vector)) < tol_kms)
+    else:
+        residual_vector = np.array([total_dv], dtype=np.float64)
+        converged = total_dv < tol_kms
     return DsmChainResult(
         total_dv_kms=total_dv,
         max_residual_kms=total_dv,
@@ -488,7 +595,11 @@ def evaluate_dsm_chain(
         n_revs_per_leg=tuple(n_revs_legs),
         branch_per_leg=tuple(branch_legs),
         dsm_states=tuple(dsm_states),
-        converged=total_dv < tol_kms,
+        converged=converged,
+        residual_vector=residual_vector,
+        alpha_int_per_leg=tuple(alpha_int_per_leg),
+        beta_int_per_leg=tuple(beta_int_per_leg),
+        flyby_dv_per_flyby_kms=tuple(flyby_dv_per_flyby),
     )
 
 
@@ -502,7 +613,10 @@ class DsmBounds:
     """Box bounds for the DSM-chain decision vector (Takao Appendix A.1-A.3).
 
     Layout matches :func:`dsm_chain_decision_vector`:
-    ``[t0_sec, vinf_out0, alpha0, beta0, *tof_days_per_leg, *eta_per_leg]``.
+    ``[t0_sec, vinf_out0, alpha0, beta0, *tof_days_per_leg, *eta_per_leg]`` in the
+    default path, with ``2*(n_legs-1)`` intermediate-flyby direction coords
+    ``[*alpha_int, *beta_int]`` appended when ``charge_flyby_continuity`` is on
+    (#162).
     """
 
     lower: NDArray[np.float64]
@@ -527,6 +641,7 @@ def sequence_keyed_bounds(
     sequence: tuple[str, ...],
     t0_window_sec: tuple[float, float],
     vinf_out0_bounds_kms: tuple[float, float] = (1.0, 5.1),
+    charge_flyby_continuity: bool = False,
 ) -> DsmBounds:
     """Automatic box bounds from the body sequence (Takao Appendix A.1-A.3).
 
@@ -542,6 +657,10 @@ def sequence_keyed_bounds(
 
     The departure V_inf default ``[1, 5.1]`` km/s is Takao's Earth-departure window
     (5.1 km/s = the 1:2 Earth-resonant cap; 1 km/s prevents low-velocity flybys).
+
+    When ``charge_flyby_continuity`` is on (#162) the box is extended by the
+    ``2*(n_legs-1)`` intermediate-flyby departure-direction coords, each boxed like
+    the leg-0 direction (``alpha_int in [-pi, pi]``, ``beta_int in [-pi/2, pi/2]``).
     """
     n_legs = len(sequence) - 1
     if n_legs < 1:
@@ -568,12 +687,16 @@ def sequence_keyed_bounds(
             tof_lo.append(0.3 * p_h)
             tof_hi.append(1.3 * p_h)
 
+    n_flybys = n_legs - 1 if charge_flyby_continuity else 0
+    dir_lo = [-np.pi] * n_flybys + [-0.5 * np.pi] * n_flybys
+    dir_hi = [np.pi] * n_flybys + [0.5 * np.pi] * n_flybys
+
     lower = np.array(
-        [t0_lo, vinf_lo, -np.pi, -0.5 * np.pi, *tof_lo, *([0.0] * n_legs)],
+        [t0_lo, vinf_lo, -np.pi, -0.5 * np.pi, *tof_lo, *([0.0] * n_legs), *dir_lo],
         dtype=np.float64,
     )
     upper = np.array(
-        [t0_hi, vinf_hi, np.pi, 0.5 * np.pi, *tof_hi, *([1.0] * n_legs)],
+        [t0_hi, vinf_hi, np.pi, 0.5 * np.pi, *tof_hi, *([1.0] * n_legs), *dir_hi],
         dtype=np.float64,
     )
     return DsmBounds(lower=lower, upper=upper)
@@ -587,21 +710,42 @@ def dsm_chain_decision_vector(
     beta0: float,
     tof_days_per_leg: tuple[float, ...],
     eta_per_leg: tuple[float, ...],
+    alpha_int_per_leg: tuple[float, ...] = (),
+    beta_int_per_leg: tuple[float, ...] = (),
 ) -> NDArray[np.float64]:
     """Pack the chain genome into the flat decision vector the corrector consumes.
 
     Layout ``[t0_sec, vinf_out0, alpha0, beta0, *tof_days_per_leg, *eta_per_leg]``
-    (matches :class:`DsmBounds`).
+    (matches :class:`DsmBounds`), with ``[*alpha_int_per_leg, *beta_int_per_leg]``
+    appended when the intermediate-flyby direction coords are supplied (#162; the
+    ``charge_flyby_continuity`` path). When both are empty the vector is
+    bit-identical to the historical layout.
     """
     return np.array(
-        [t0_sec, vinf_out0_kms, alpha0, beta0, *tof_days_per_leg, *eta_per_leg],
+        [
+            t0_sec,
+            vinf_out0_kms,
+            alpha0,
+            beta0,
+            *tof_days_per_leg,
+            *eta_per_leg,
+            *alpha_int_per_leg,
+            *beta_int_per_leg,
+        ],
         dtype=np.float64,
     )
 
 
-def _unpack(x: NDArray[np.float64], n_legs: int) -> dict[str, Any]:
-    """Inverse of :func:`dsm_chain_decision_vector`."""
-    return {
+def _unpack(
+    x: NDArray[np.float64], n_legs: int, *, charge_flyby_continuity: bool = False
+) -> dict[str, Any]:
+    """Inverse of :func:`dsm_chain_decision_vector`.
+
+    With ``charge_flyby_continuity`` the trailing ``2*(n_legs-1)`` coords are read
+    back as the intermediate-flyby departure-direction genome
+    (``alpha_int_per_leg`` / ``beta_int_per_leg``).
+    """
+    base: dict[str, Any] = {
         "t0_sec": float(x[0]),
         "vinf_out0_kms": float(x[1]),
         "alpha0": float(x[2]),
@@ -609,6 +753,12 @@ def _unpack(x: NDArray[np.float64], n_legs: int) -> dict[str, Any]:
         "tof_days_per_leg": tuple(float(v) for v in x[4 : 4 + n_legs]),
         "eta_per_leg": tuple(float(v) for v in x[4 + n_legs : 4 + 2 * n_legs]),
     }
+    if charge_flyby_continuity:
+        n_flybys = n_legs - 1
+        off = 4 + 2 * n_legs
+        base["alpha_int_per_leg"] = tuple(float(v) for v in x[off : off + n_flybys])
+        base["beta_int_per_leg"] = tuple(float(v) for v in x[off + n_flybys : off + 2 * n_flybys])
+    return base
 
 
 def dsm_chain_correct(
@@ -622,15 +772,27 @@ def dsm_chain_correct(
     tol_kms: float = 0.1,
     max_nfev: int = 200,
     max_revs: int = 0,
+    rev_branch_per_leg: tuple[tuple[int, str] | None, ...] | None = None,
+    charge_flyby_continuity: bool = False,
 ) -> DsmChainResult:
-    """Drive the chained-DSM total-dV to a minimum with bounded least-squares.
+    """Drive the chained-DSM residual to a minimum with bounded least-squares.
 
     Free variables = the full decision vector
     ``[t0_sec, vinf_out0, alpha0, beta0, *tof, *eta]`` (see
-    :func:`dsm_chain_decision_vector`). The single scalar residual is the chain's
-    ``total_dv_kms`` (Takao Eq.15 minus the P-FB term); ``least_squares`` minimises
-    it inside ``bounds`` (Takao's box). Converged iff ``total_dv_kms < tol_kms``
-    (residual-magnitude only, BY DESIGN -- mirrors ``free_return_correct``).
+    :func:`dsm_chain_decision_vector`), with the ``2*(n_legs-1)``
+    intermediate-flyby direction coords appended when ``charge_flyby_continuity``.
+
+    Default path (``charge_flyby_continuity=False``): the residual is the length-1
+    scalar ``total_dv_kms`` (Takao Eq.15 minus the P-FB term) -- bit-identical to
+    the historical corrector. ``least_squares`` minimises it inside ``bounds``;
+    converged iff ``total_dv_kms < tol_kms``.
+
+    Charged path (``charge_flyby_continuity=True``, #162): the residual is the
+    VECTOR ``result.residual_vector`` = ``[*dV_DSM, *flyby_dv_per_flyby, arrival]``,
+    a true multi-term root-find (``least_squares`` natively handles vector
+    residuals). Converged iff ``max(|residual_vector|) < tol_kms`` -- every DSM AND
+    every flyby bend cost below tol. This is the only mode that rewards the sourced
+    bend-feasible low-V_inf basin.
 
     This is the local-solve primitive the MBH wrapper drives via
     :func:`make_dsm_chain_step`; MBH supplies the basin hops, this supplies the
@@ -638,21 +800,36 @@ def dsm_chain_correct(
     """
     n_legs = len(sequence) - 1
 
-    def _res(x: NDArray[np.float64]) -> NDArray[np.float64]:
-        params = _unpack(np.asarray(x, dtype=np.float64), n_legs)
-        r = evaluate_dsm_chain(
+    def _eval(x: NDArray[np.float64]) -> DsmChainResult:
+        params = _unpack(
+            np.asarray(x, dtype=np.float64),
+            n_legs,
+            charge_flyby_continuity=charge_flyby_continuity,
+        )
+        return evaluate_dsm_chain(
             sequence=sequence,
             ephem=ephem,
             mu=mu,
             rendezvous=rendezvous,
             tol_kms=tol_kms,
             max_revs=max_revs,
+            rev_branch_per_leg=rev_branch_per_leg,
+            charge_flyby_continuity=charge_flyby_continuity,
             **params,
         )
-        val = r.total_dv_kms
-        if not np.isfinite(val):
-            val = 1.0e3
-        return np.array([val], dtype=np.float64)
+
+    # Residual length the optimiser expects (so an INFEASIBLE hop returns a finite
+    # penalty vector of the right shape rather than crashing least_squares).
+    res_len = (n_legs + (n_legs - 1) + 1) if charge_flyby_continuity else 1
+
+    def _res(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        r = _eval(x)
+        vec = np.asarray(r.residual_vector, dtype=np.float64)
+        if vec.shape != (res_len,) or not np.all(np.isfinite(vec)):
+            # Infeasible chain (broke early) -> uniform large penalty of the
+            # expected length; the optimiser rejects this direction.
+            return np.full(res_len, 1.0e3, dtype=np.float64)
+        return vec
 
     x0_arr = np.asarray(x0, dtype=np.float64)
     if bounds is not None:
@@ -675,19 +852,10 @@ def dsm_chain_correct(
     else:
         sol = least_squares(_res, x0_arr, method="trf", max_nfev=max_nfev, xtol=1e-12, ftol=1e-12)
 
-    params = _unpack(np.asarray(sol.x, dtype=np.float64), n_legs)
-    result = evaluate_dsm_chain(
-        sequence=sequence,
-        ephem=ephem,
-        mu=mu,
-        rendezvous=rendezvous,
-        tol_kms=tol_kms,
-        max_revs=max_revs,
-        **params,
-    )
-    # The evaluator already set ``converged`` from total_dv < tol_kms; carry the
-    # solver diagnostics onto the otherwise-complete result (replace keeps every
-    # field, including the converged departure-V_inf genome, in sync).
+    result = _eval(np.asarray(sol.x, dtype=np.float64))
+    # The evaluator already set ``converged`` from the residual; carry the solver
+    # diagnostics onto the otherwise-complete result (replace keeps every field,
+    # including the converged departure-V_inf genome, in sync).
     return replace(result, solver_success=bool(sol.success), solver_nfev=int(sol.nfev))
 
 
@@ -708,15 +876,19 @@ def make_dsm_chain_step(
     tol_kms: float = 0.1,
     max_nfev: int = 200,
     max_revs: int = 0,
+    rev_branch_per_leg: tuple[tuple[int, str] | None, ...] | None = None,
+    charge_flyby_continuity: bool = False,
 ) -> Callable[[np.ndarray, np.random.Generator], MBHStep]:
     """Adapter: :func:`dsm_chain_correct` as an MBH local-solve closure.
 
     Genome ``x = [t0_sec, vinf_out0, alpha0, beta0, *tof_days, *eta]`` (see
-    :func:`dsm_chain_decision_vector`). Objective = ``total_dv_kms`` (Takao Eq.15
-    minus the P-FB term); feasible = ``converged``. The emerged per-body V_inf is
-    carried in ``info`` as the EVIDENCE the sourced-anchor gate compares against
-    (it is never the objective, which would impose it). Deterministic: ``rng``
-    accepted for the generic signature and ignored.
+    :func:`dsm_chain_decision_vector`), with the ``2*(n_legs-1)`` intermediate-flyby
+    direction coords appended when ``charge_flyby_continuity``. Objective =
+    ``total_dv_kms`` (the scalar audit sum); feasible = ``converged`` (which is
+    ``max(|residual_vector|) < tol_kms`` in the charged path). The emerged per-body
+    V_inf is carried in ``info`` as the EVIDENCE the sourced-anchor gate compares
+    against (it is never the objective, which would impose it). Deterministic:
+    ``rng`` accepted for the generic signature and ignored.
     """
     n_legs = len(sequence) - 1
 
@@ -731,12 +903,14 @@ def make_dsm_chain_step(
             tol_kms=tol_kms,
             max_nfev=max_nfev,
             max_revs=max_revs,
+            rev_branch_per_leg=rev_branch_per_leg,
+            charge_flyby_continuity=charge_flyby_continuity,
         )
         # The corrector moves the WHOLE genome -- including the departure V_inf
-        # (vinf_out0/alpha0/beta0), which enters the dV objective through the
-        # departure state -- so the landed vector takes the corrector's converged
-        # values, not the seed's. This is what lets MBH hop in the departure-energy
-        # direction too (the 6.44Gg3 probe needs that lever).
+        # (vinf_out0/alpha0/beta0) and (charged path) the intermediate-flyby
+        # departure directions -- so the landed vector takes the corrector's
+        # converged values, not the seed's. This is what lets MBH hop in the
+        # departure-energy direction too (the 6.44Gg3 probe needs that lever).
         landed_x = dsm_chain_decision_vector(
             t0_sec=r.t0_sec,
             vinf_out0_kms=r.vinf_out0_kms,
@@ -744,6 +918,8 @@ def make_dsm_chain_step(
             beta0=r.beta0,
             tof_days_per_leg=r.tof_days_per_leg,
             eta_per_leg=r.eta_per_leg,
+            alpha_int_per_leg=r.alpha_int_per_leg,
+            beta_int_per_leg=r.beta_int_per_leg,
         )
         return MBHStep(
             x=landed_x,
@@ -751,7 +927,9 @@ def make_dsm_chain_step(
             feasible=bool(r.converged),
             info={
                 "total_dv_kms": float(r.total_dv_kms),
+                "max_residual_kms": float(np.max(np.abs(r.residual_vector))),
                 "dv_dsm_per_leg_kms": tuple(r.dv_dsm_per_leg_kms),
+                "flyby_dv_per_flyby_kms": tuple(r.flyby_dv_per_flyby_kms),
                 "dv_arrive_kms": float(r.dv_arrive_kms),
                 "vinf_in_kms": dict(r.vinf_in_kms),
                 "vinf_out_kms": dict(r.vinf_out_kms),
@@ -759,6 +937,8 @@ def make_dsm_chain_step(
                 "tof_days_per_leg": tuple(r.tof_days_per_leg),
                 "n_revs_per_leg": tuple(r.n_revs_per_leg),
                 "branch_per_leg": tuple(r.branch_per_leg),
+                "alpha_int_per_leg": tuple(r.alpha_int_per_leg),
+                "beta_int_per_leg": tuple(r.beta_int_per_leg),
                 "solver_nfev": int(r.solver_nfev),
             },
         )
