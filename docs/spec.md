@@ -395,7 +395,8 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 | **V1** | Solver cross-check | every leg re-solved with **lamberthub izzo + gooding**, agreement < 1e-3 m/s; full trajectory re-propagated with the **Kepler** propagator (not the Lambert that built it), planet positions met < tol | lamberthub, kepler.py |
 | **V2-ballistic** | Multi-lap periodicity (ballistic) | ≥3 continuous laps; **bounded** drift in the dynamic rotating frame (tolerant of geometric breathing), evaluated **in the row's defining model** (for a circular-coplanar row that is the idealized propagation; the like-for-like model scope is recorded in the evidence, same convention as the V1 scoping) | propagate.py |
 | **V2-powered** | Multi-cycle maintenance periodicity (powered) | ≥3 consecutive cycles where **(a)** every planned encounter is achieved within the documented encounter tolerance **with the documented per-cycle maintenance applied**, AND **(b)** intra-cycle drift versus the cycle's planned trajectory stays **bounded** (reset at each maneuver) | maintain.py + propagate.py |
-| **V3** | Ephemeris realisation | phase-matched to a real launch window; ephemeris-mode horizon TCM over 3–5 laps (~20–30 yr) bounded and within ΔV budget | astropy backend |
+| **V3-ballistic** | Ephemeris realisation (ballistic budget) | phase-matched to a real launch window; ephemeris-mode horizon TCM over 3–5 laps (~20–30 yr) bounded and within the **~120 m/s ballistic-maintenance budget** | astropy backend |
+| **V3-powered** | Ephemeris realisation (documented budget) | the cycler's encounters are **independently confirmed on the real ephemeris** (in-band miss + true-longitude rendezvous + per-leg v∞ match, on an integrator independent of the finding solver) AND the continuous-from-one-seed horizon TCM — which includes executing the cycler's documented nominal maneuvers — is **≤ the cycler's documented operational ΔV** (the published per-cycle/total maintenance budget), within a stated tolerance | astropy backend + independent n-body |
 | **V4** | High-fidelity external | **independent codebase + ephemeris** (NASA GMAT, or Tudat/pykep n-body) reproduces trajectory and maintenance ΔV within tol | GMAT bridge |
 | **V5** | Novelty + expert review | canonical signature misses catalogue **and** literature; human expert review; ideally independent reproduction by a separate group | catalog.py + human |
 
@@ -435,6 +436,61 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 > gate the same physics **passes** (per-cycle encounter V∞-continuity ≤1e-6 km/s,
 > intra-cycle Kepler-reprop residual ≤0.002 km, in-family maintenance ΔV
 > 2.76–2.91 km/s/cycle over 3 consecutive cycles).
+
+> **Note — the V3 class-split (V3-ballistic / V3-powered), 2026-06-08.** V3 is
+> split for the same reason V2 is: a single ΔV bar cannot judge a ballistic and a
+> powered cycler honestly. The two tiers differ **only in the budget reference**,
+> not in the closure evidence required.
+>
+> - **V3-ballistic** (the original V3) holds a cycler that is *meant to be
+>   near-ballistic* to the **~120 m/s ballistic-maintenance budget**: phase-matched
+>   to a real window, with the ephemeris-mode horizon TCM bounded under that bar.
+>   S1L1 (`russell-ch4-4.991gG2`) is the type specimen — a 0.000000-km/s App-C
+>   parent whose continuous-from-one-seed TCM is 62 m/s over 7 cycles (52% of the
+>   budget).
+> - **V3-powered** holds a cycler that is *powered by design* (a documented,
+>   non-zero operational ΔV in its source) to **its own documented budget**. It is
+>   the V3 analogue of V2-powered's "every encounter met under documented
+>   maintenance": the encounters must be **independently confirmed on the real
+>   ephemeris** — every planned encounter reconstructs in-band (miss ≪ one SOI),
+>   at the published per-leg v∞ (the App-C real-eph *breathing* values, NOT the
+>   coplanar idealisations), with true-longitude rendezvous, **on an integrator
+>   independent of the finding solver** (REBOUND/IAS15 DE440) — AND the
+>   maintenance ΔV is within the cycler's documented budget.
+>
+> **The budget criterion, stated explicitly.** A row earns V3-powered iff its
+> measured **continuous-from-one-seed horizon TCM** (the #169 method — a single
+> seed integrated through the whole multi-cycle horizon, *executing the documented
+> nominal maneuvers as part of the run*, so the figure is the true cost of flying
+> the published trajectory, not a per-encounter re-anchor) is **≤ the documented
+> operational ΔV × (1 + τ)**, with tolerance **τ = 0.10** (10%). The 10% slack
+> absorbs the patched-conic-vs-source modelling gap and the choice of horizon
+> length; it is *not* tuned per row. The comparison is deliberately
+> like-for-like: continuous TCM is the realistic finite-horizon maintenance cost
+> (spec §12a), and the documented ΔV is the source's own stated budget for the
+> same cycler, so "TCM ≤ documented" asks the honest question *does flying it cost
+> no more than its authors said it would?* A row whose continuous TCM **exceeds**
+> its own documented budget fails V3-powered — it costs more to maintain than the
+> source claims, so it is not a faithful realisation of the documented cycler, and
+> promoting it would be over-claiming. The distinction from V3-ballistic is the
+> budget reference *only*: documented operational ΔV, not the 120 m/s ballistic
+> TCM bar. (Note: clearing V3-powered is *not* a stronger claim than
+> V3-ballistic — a powered cycler is simply held to the right bar for its class;
+> "credible (V3+)" gating in §14 applies to both.)
+>
+> **Application (2026-06-08, the #170 App-C V3 batch).** Two powered App-C parents
+> had their Mars encounters independently reconstructed in-band on REBOUND/IAS15
+> DE440 at the published per-leg v∞ with true-longitude rendezvous (#170,
+> `docs/notes/2026-06-08-appc-v3-batch-results.md`):
+> - `russell-ch4-8.049gGf2` (App-C #188): continuous TCM **163.6 m/s** vs
+>   documented App-C total ΔV **420 m/s** (Table 5.5) → 0.39× budget, well under
+>   the 1.10× bar → **V3-powered PASS**. (Over the 120 m/s ballistic budget, so
+>   *not* V3-ballistic — exactly the case the class-split exists for.)
+> - `russell-ch4-8.165Gfh-f2` (App-C #192): continuous TCM **2040.6 m/s** vs
+>   documented App-C total ΔV **1678 m/s** → 1.22× budget, over the 1.10× bar →
+>   **FAIL** (over its own documented budget; not promoted). This is the correct
+>   honest negative: #192 is one of the worst-performing real-eph cyclers in the
+>   catalogue, and tuning τ to admit it would defeat the criterion.
 
 ---
 
@@ -1361,6 +1417,27 @@ multi-arc` — the V1 evidence closes a single E→M→E free-return *ellipse sl
 includes Earth-to-Earth resonant phasing intervals (e.g. the 3:2 full-rev
 return) the single ellipse does not represent, so no continuous ≥3-lap trajectory
 exists to propagate. They stay V1.
+
+**V3 (2026-06-08, the §14 V3 class-split + the #170 App-C batch).** S1L1
+(`russell-ch4-4.991gG2`) is the catalogue's **V3-ballistic** type specimen
+(#167/#94 — DE440-confirmed, 62 m/s continuous TCM over 7 cycles, 52% of the
+~120 m/s ballistic budget). The §14 V3 class-split (V3-ballistic / V3-powered)
+adds a second V3 tier held to the cycler's *own documented* operational ΔV
+instead of the 120 m/s ballistic bar, for cyclers that are powered by design. The
+#170 App-C batch promoted one row to **V3-powered**:
+`russell-ch4-8.049gGf2` (App-C #188) — its 7 Mars encounters reconstruct in-band
+on an independent REBOUND/IAS15 DE440 integrator at the published per-leg v∞ (the
+App-C real-eph *breathing* values 8.42–11.71, NOT the coplanar 8.05/10.02
+idealisation) with true-longitude rendezvous, and its continuous-from-one-seed
+horizon TCM is **163.6 m/s** — under the documented App-C total ΔV of **420 m/s**
+(Russell 2004 Table 5.5), i.e. 0.39× the documented budget (the V3-powered
+criterion is continuous TCM ≤ documented ΔV × 1.10). The catalogue carries the
+enum value `V3` (the powered class is recorded in the `_LEVEL_EVIDENCE` evidence
+text, exactly as V2-powered records its class under the `V2` enum value). The
+sibling row `russell-ch4-8.165Gfh-f2` (App-C #192) is **NOT promoted**: its
+encounters reconstruct in-band identically, but its continuous TCM of **2040.6
+m/s exceeds** its own documented App-C ΔV of 1678 m/s (1.22× the budget, over the
+1.10× bar) — the honest V3-powered failure, kept at the V0 floor.
 
 The JSON Schema constrains the value to `V0`..`V5` (hence the 4.4 → 4.5 bump); the
 Python semantic gate `validate_validation_level` adds the over-claim rule it
