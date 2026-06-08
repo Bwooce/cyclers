@@ -79,7 +79,21 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   two-arc seed to the real ephemeris (real eccentricity breaks the circular
   integer-rev quantization → may close the ToF gap → #94, seedable for the first
   time). Commits `f87a6be`/`234caf1`.
-- **#164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
+- **⚠️ #165 RETRACTS the #164 "closes" claim — S1L1 is two-body-closeable,
+  n-body-UNCONFIRMED; #94 REMAINS OPEN.** The independent REBOUND/IAS15 cross-check
+  over REAL DE440 planets got **DRIFT**: the #164 geometry crosses Mars's radius
+  at the right time/speed but ~110° from real Mars → **2.6 AU miss** (band ≈
+  0.0116 AU), V∞ 38.8 not 5.10. Cause: #164 closed V∞+ToF+radius in a model with
+  real Mars *eccentricity* but idealised *longitude*; longitude rendezvous against
+  true DE440 Mars was never enforced. A best-phase epoch scan still misses by
+  0.234 AU → the single-ellipse-per-arc geometry + real-Mars rendezvous look
+  jointly unsatisfiable in this construction. The continuation closed the
+  ToF-quantization axis (real progress); the **phasing/longitude axis is the
+  remaining wall**. No V3. Gate `tests/nbody/test_s1l1_nbody_closure.py` pins the
+  DRIFT. Commits `3a371be`/`18961b5`; note
+  `docs/notes/2026-06-08-s1l1-nbody-crossval-results.md`. [The #164 entry below is
+  SUPERSEDED by this retraction.]
+- **[SUPERSEDED] #164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
   two-arc seed circular→real eccentric/inclined model
   (`search/continuation_chain.py`) closes `russell-ch4-4.991gG2` (the S1L1
   physical cycler, Russell-coplanar framing) on BOTH halves: vinf_res **0.006
