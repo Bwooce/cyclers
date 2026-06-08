@@ -79,6 +79,21 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   two-arc seed to the real ephemeris (real eccentricity breaks the circular
   integer-rev quantization → may close the ToF gap → #94, seedable for the first
   time). Commits `f87a6be`/`234caf1`.
+- **#164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
+  two-arc seed circular→real eccentric/inclined model
+  (`search/continuation_chain.py`) closes `russell-ch4-4.991gG2` (the S1L1
+  physical cycler, Russell-coplanar framing) on BOTH halves: vinf_res **0.006
+  km/s** (4.99/5.10 own anchors) AND both descriptor ToFs inside the 0.1-yr band
+  (g-arc gap 0.14→0.032, G-arc 0.053), bend-feasible. Real Mars eccentricity
+  breaks the circular ToF quantization exactly as predicted (e-ramp monotone,
+  epoch slides to J2000+239 d). Closed V3-seed elements recorded. **THREE
+  caveats before V3 writeback (held to main session):** (1) closes at the row's
+  OWN 4.99/5.10, NOT spec §9 5.65/3.05 (target was always framing-ambiguous);
+  (2) ToF close-within-band, not exact (~12–19 d); (3) V3-class two-body model,
+  single-solver, no independent cross-check yet. **Decisive confirmation =
+  full N-encounter DE440 propagation of the closed geometry at J2000+239 d.**
+  Commits `561f440`/`2e7ac69`. 6.44Gg3 stays a quantified partial (g-arc target
+  below the n_rev=1 floor — structurally deeper).
 
 ## Done
 
