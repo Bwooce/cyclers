@@ -86,6 +86,17 @@ _LEVEL_BY_ID: dict[str, str] = {
     # #137 Part 3: dense-phase-scan promotes the deep-aphelion 9.353Gg2 to a closed,
     # V_inf-continuous free-return arc that clears §14 V1 mechanics.
     "russell-ch4-9.353Gg2": "V1",
+    # closer sweep 2026-06-08 (#142 continuation): six Russell 2004 Table 3.4 rows
+    # whose single circular-coplanar ellipse closes to a V_inf-continuous E->M->E
+    # cycler and clears §14 V1 mechanics like-for-like (emerged V_inf within
+    # 0.5 km/s of the sourced anchor, lamberthub + Kepler reprop, Mars V_inf
+    # continuity intact). See docs/notes/2026-06-08-closer-sweep-v1-candidates.md.
+    "russell-ocampo-3.1.1+2": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    "russell-ocampo-3.1.3+0": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    "russell-ocampo-4.1.1-4": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    "russell-ocampo-4.1.2-2": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    "russell-ocampo-4.1.4-1": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    "russell-ocampo-4.6.3+0": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

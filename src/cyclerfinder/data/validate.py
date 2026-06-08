@@ -539,6 +539,57 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_free_return_v1_mechanics.py::"
         "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.353Gg2]."
     ),
+    # closer sweep 2026-06-08 (#142 continuation): six Russell 2004 Table 3.4
+    # free-return rows whose single circular-coplanar ellipse closes to a
+    # V_inf-continuous E->M->E cycler clear spec §14 V1 mechanics like-for-like
+    # (a circular-coplanar reproduction of a circular-coplanar source). Emerged
+    # V_inf within 0.5 km/s of the sourced anchor, izzo2015+gooding1990 per-leg
+    # agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual pass
+    # (both §14 V1 halves), Mars-flyby V_inf continuity intact (the honesty gate
+    # that withholds the two CLOSE-MATCH-NO-V1 rows and the eight NO-CLOSE rows).
+    # See docs/notes/2026-06-08-closer-sweep-v1-candidates.md.
+    ("russell-ocampo-3.1.1+2", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
+    ("russell-ocampo-3.1.3+0", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
+    ("russell-ocampo-4.1.1-4", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
+    ("russell-ocampo-4.1.2-2", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
+    ("russell-ocampo-4.1.4-1", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
+    ("russell-ocampo-4.6.3+0", "V1"): (
+        "closer sweep 2026-06-08: circular like-for-like free-return reproduction of "
+        "the Russell 2004 Table 3.4 sourced V∞ anchor — emerged V∞ within 0.5 km/s, "
+        "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
+        "re-propagation residual pass (both §14 V1 halves), gated by "
+        "tests/search/test_closer_sweep_v1.py."
+    ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
     # achieving its encounters with the per-cycle maintenance applied AND bounded

@@ -41607,7 +41607,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -41769,7 +41769,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -42267,7 +42267,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -42594,7 +42594,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -42759,7 +42759,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34
@@ -43101,7 +43101,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # v1 catalogue is ballistic-only
   model_assumption: circular-coplanar   # schema v2; Russell 2004 Ch.3 simple solar system (circular coplanar)
   cycler_class: multi-arc   # schema v4; free-return E-M cycler with intermediate Earth flybys; see docs/notes/multi-arc-classification.md
-  validation_level: V0   # schema v4.5; no validation performed on this ingest (#142); V0 internal-consistency floor
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); closer sweep 2026-06-08: closed circular like-for-like free-return arc clears §14 V1 (emerged V∞ within 0.5 km/s of Russell T3.4 anchor, lamberthub + Kepler reprop; tests/search/test_closer_sweep_v1.py); see docs/notes/2026-06-08-closer-sweep-v1-candidates.md
   orbit_source: russell-2004-t34   # schema v4.4; provenance tag (SOURCE_REGISTRY)
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34

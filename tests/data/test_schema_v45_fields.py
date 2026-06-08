@@ -96,8 +96,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     ellipse forms a closed, V_inf-continuous E->M->E cycler are V1 (#137 Part 1 +
     Part 3, circular like-for-like — the fourth, 9.353Gg2, promoted by the dense
     phase scan; they are NOT V2-ballistic — they are multi-arc single-ellipse
-    slices, so no continuous >=3-lap trajectory exists). Every other tagged row is
-    V0; the only V2 is the Aldrin outbound."""
+    slices, so no continuous >=3-lap trajectory exists). Six further Russell 2004
+    Table 3.4 free-return rows are V1 (closer sweep 2026-06-08, #142 continuation —
+    closed circular like-for-like single-ellipse arcs clearing §14 V1 mechanics;
+    docs/notes/2026-06-08-closer-sweep-v1-candidates.md). Every other tagged row is
+    V0; the only V2 is the Aldrin outbound (V1=11, V2=1)."""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -110,6 +113,18 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "russell-ch4-9.94Gg3": "V1",
         "russell-ch4-5.75ggF3": "V1",
         "russell-ch4-9.353Gg2": "V1",
+        # closer sweep 2026-06-08 (#142 continuation): six Russell 2004 Table 3.4
+        # rows whose single circular-coplanar ellipse closes to a V_inf-continuous
+        # E->M->E cycler and clears §14 V1 mechanics like-for-like (emerged V∞
+        # within 0.5 km/s of the sourced anchor, lamberthub + Kepler reprop, Mars
+        # V_inf continuity intact). tests/search/test_closer_sweep_v1.py;
+        # docs/notes/2026-06-08-closer-sweep-v1-candidates.md.
+        "russell-ocampo-3.1.1+2": "V1",
+        "russell-ocampo-3.1.3+0": "V1",
+        "russell-ocampo-4.1.1-4": "V1",
+        "russell-ocampo-4.1.2-2": "V1",
+        "russell-ocampo-4.1.4-1": "V1",
+        "russell-ocampo-4.6.3+0": "V1",
     }, above_v0
     # Exactly one row carries V2 today (the powered Aldrin outbound); no row V3+.
     assert sum(1 for lvl in byid.values() if lvl == "V2") == 1
