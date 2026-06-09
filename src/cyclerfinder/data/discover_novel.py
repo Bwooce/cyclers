@@ -66,6 +66,7 @@ from cyclerfinder.data.catalog import (
 from cyclerfinder.model.cycler import Cycler
 from cyclerfinder.search.construct import construct_cycler
 from cyclerfinder.search.correct import BallisticClosureResult
+from cyclerfinder.search.moon_prune import prune_topology_legs
 from cyclerfinder.search.scan import (
     ScanResult,
     build_epoch_branch_grid,
@@ -498,6 +499,138 @@ def em_multiarc_topologies() -> tuple[TopologySpec, ...]:
     return tuple(specs)
 
 
+# ---------------------------------------------------------------------------
+# Moon-system (Jovian) topology set + centred sweep (Forge Phase 6)
+# ---------------------------------------------------------------------------
+
+# Galilean synodic ToF seeds (days) — the Laplace-resonance spacings the moon
+# orbital periods set: Io 1.769 d, Europa 3.551 d, Ganymede 7.155 d. These are
+# SEEDS ONLY (NON-GOLDEN); the corrector refines them. period_sec seeds from the
+# resonance multiple (the sum of the three moon periods).
+_GALILEAN_PERIODS_DAYS: dict[str, float] = {
+    "Io": 1.769,
+    "Europa": 3.551,
+    "Ganymede": 7.155,
+    "Callisto": 16.689,
+}
+
+
+def jovian_galilean_topologies() -> tuple[TopologySpec, ...]:
+    """The Galilean Jovian topology set the first campaign sweeps (plan Task 2.0).
+
+    The empirically-closing Io-Europa-Ganymede(-Io) chain (#76 Phase 3 closes it;
+    the open question is bend feasibility under VILM gating), swept over the
+    converging Lambert branches (low/high x n_revs in {0, 1}). The slack
+    (period-absorbing) leg is the Ganymede->Io return leg (index 2). ``period_sec``
+    seeds from the Laplace-resonance multiple (the sum of the three moon periods).
+    """
+    seq = ("Io", "Europa", "Ganymede", "Io")
+    period_days = (
+        _GALILEAN_PERIODS_DAYS["Io"]
+        + _GALILEAN_PERIODS_DAYS["Europa"]
+        + _GALILEAN_PERIODS_DAYS["Ganymede"]
+    )
+    # Free (slack-eliminated) ToF seeds: the Io->Europa and Europa->Ganymede legs;
+    # the Ganymede->Io leg is slack (period-absorbing).
+    tof_seed_days = (
+        _GALILEAN_PERIODS_DAYS["Europa"],
+        _GALILEAN_PERIODS_DAYS["Ganymede"],
+    )
+    specs: list[TopologySpec] = []
+    for last_revs, last_branch in ((0, "low"), (1, "low"), (0, "high"), (1, "high")):
+        specs.append(
+            TopologySpec(
+                sequence=seq,
+                per_leg_revs=(0, 0, last_revs),
+                per_leg_branch=("single", "single", last_branch),
+                period_k=1,
+                period_sec=period_days * DAY_S,
+                tof_seed_days=tof_seed_days,
+                slack_leg=2,
+            )
+        )
+    return tuple(specs)
+
+
+def discover_novel_moon(
+    *,
+    base_t0_sec: float,
+    topologies: Sequence[TopologySpec] | None = None,
+    center: str = "Jupiter",
+    budget_kms: float = 50.0,
+    n_epochs: int = 16,
+    span_days: float = 8.0,
+    vinf_cap: float = 14.0,
+    vinf_seed_kms: float = 4.0,
+    max_workers: int | None = None,
+    catalog: Catalog | None = None,
+    distinct_only: bool = True,
+) -> Iterator[NoveltyFinding]:
+    """The VILM-pruned centred Jovian novelty sweep (plan Task 2.1).
+
+    A sibling of :func:`discover_novel` for the moon space. For each topology it
+    applies the Phase-1 incremental prune (:func:`prune_topology_legs`) BEFORE
+    building its scan grid — pruned topologies are SKIPPED (their per-leg reasons
+    are available to the caller via :func:`prune_topology_legs`, which the
+    orchestrator records for the empty-region report). Survivors run the centred
+    scan (``Ephemeris(model="circular", center=center)``,
+    ``mu_central=PRIMARIES[center]``, threaded via the ``center`` ScanPoint field)
+    and each closure flows through :func:`evaluate_closure` verbatim — the bridge
+    -> signature -> match -> agreement -> gauntlet pipeline is centre-agnostic.
+
+    The closures read ``novel`` against the null-numeric Jovian catalogue bucket
+    (design §3a); a bend-INFEASIBLE closure is auto-falsified to REJECTED inside
+    :func:`evaluate_closure` (never SILVER).
+    """
+    ephem = Ephemeris(model="circular", center=center)
+    catalog = catalog if catalog is not None else load_catalog()
+    topologies = tuple(topologies) if topologies is not None else jovian_galilean_topologies()
+
+    seen_hashes: set[str] = set()
+    for spec in topologies:
+        survives, _reasons = prune_topology_legs(
+            spec,
+            vinf_seed_kms=vinf_seed_kms,
+            budget_kms=budget_kms,
+            primary=center,
+        )
+        if not survives:
+            continue
+        t0_seeds = _epoch_seeds_sec(base_t0_sec=base_t0_sec, n_epochs=n_epochs, span_days=span_days)
+        grid = build_epoch_branch_grid(
+            sequence=spec.sequence,
+            period_sec=spec.period_sec,
+            vinf_cap=vinf_cap,
+            t0_seeds_sec=t0_seeds,
+            branch_topologies=[(spec.per_leg_revs, spec.per_leg_branch)],
+            tof_seed_days=spec.tof_seed_days,
+            slack_leg=spec.slack_leg,
+            center=center,
+        )
+        results: list[ScanResult] = scan_parallel(
+            grid,
+            max_workers=max_workers,
+            closed_only=True,
+        )
+        for sr in results:
+            finding = evaluate_closure(
+                sr.result,
+                sequence=spec.sequence,
+                per_leg_revs=spec.per_leg_revs,
+                per_leg_branch=spec.per_leg_branch,
+                period_k=spec.period_k,
+                ephem=ephem,
+                catalog=catalog,
+                model_assumption="circular-coplanar",
+                slack_leg=spec.slack_leg,
+            )
+            if distinct_only and finding.signature is not None:
+                if finding.signature.hash in seen_hashes:
+                    continue
+                seen_hashes.add(finding.signature.hash)
+            yield finding
+
+
 def _epoch_seeds_sec(
     *,
     base_t0_sec: float,
@@ -612,6 +745,8 @@ __all__ = [
     "classify_candidate_verdict",
     "cycler_from_closure",
     "discover_novel",
+    "discover_novel_moon",
     "em_multiarc_topologies",
     "evaluate_closure",
+    "jovian_galilean_topologies",
 ]

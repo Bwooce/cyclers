@@ -29,7 +29,9 @@ from collections.abc import Iterable, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 
+from cyclerfinder.core.constants import MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.search.correct import BallisticClosureResult, ballistic_correct
 
 
@@ -52,6 +54,11 @@ class ScanPoint:
     rp_factors: tuple[tuple[str, float], ...] | None = None
     tol_kms: float = 0.1
     residual_mode: str = "magnitude"
+    # Moon-tour Tier-1 (Forge Phase 6): a planet-centred scan. ``center=None``
+    # (the default) is the heliocentric DE440 path, byte-identical to pre-change.
+    # ``center="Jupiter"`` selects ``Ephemeris(model="circular", center=...)`` and
+    # passes ``mu_central=PRIMARIES[center]`` to the corrector.
+    center: str | None = None
 
 
 @dataclass(frozen=True)
@@ -90,7 +97,16 @@ def _evaluate_point(point: ScanPoint, model: str | None = None) -> ScanResult:
     process), NOT thread-safe; do not call this concurrently within one process
     relying on the global.
     """
-    ephem = Ephemeris(model=model if model is not None else _EPHEM_MODEL)
+    # Moon-tour Tier-1: a centred point pins its own ``Ephemeris(model="circular",
+    # center=...)`` + ``mu_central=PRIMARIES[center]`` regardless of the worker's
+    # heliocentric model global. The heliocentric path (``center is None``) is
+    # unchanged: it uses the worker model and the Sun's GM (the corrector default).
+    if point.center is not None:
+        ephem = Ephemeris(model="circular", center=point.center)
+        mu_central = PRIMARIES[point.center]
+    else:
+        ephem = Ephemeris(model=model if model is not None else _EPHEM_MODEL)
+        mu_central = MU_SUN_KM3_S2
     rp_factors = dict(point.rp_factors) if point.rp_factors is not None else None
     result = ballistic_correct(
         sequence=point.sequence,
@@ -105,6 +121,7 @@ def _evaluate_point(point: ScanPoint, model: str | None = None) -> ScanResult:
         slack_leg=point.slack_leg,
         tol_kms=point.tol_kms,
         residual_mode=point.residual_mode,
+        mu_central=mu_central,
     )
     return ScanResult(point=point, result=result)
 
@@ -224,6 +241,7 @@ def build_epoch_branch_grid(
     rp_factors: dict[str, float] | None = None,
     tol_kms: float = 0.1,
     residual_mode: str = "magnitude",
+    center: str | None = None,
 ) -> list[ScanPoint]:
     """Materialise the epoch x branch multi-start grid as a list of ScanPoints.
 
@@ -252,6 +270,7 @@ def build_epoch_branch_grid(
                     rp_factors=rp_tuple,
                     tol_kms=float(tol_kms),
                     residual_mode=residual_mode,
+                    center=center,
                 )
             )
     return grid
