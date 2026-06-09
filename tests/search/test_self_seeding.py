@@ -317,3 +317,67 @@ def test_s1l1_self_seed_drives_independent_nbody_in_band() -> None:
         f"{band_au:.4f} AU 3-SOI band — found seed NOT confirmed"
     )
     assert 3.0 < vinf_m < 8.2, f"FAIL: n-body Mars v_inf {vinf_m:.3f} outside real-eph band"
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 — Prove-on-ONE unsourced member (gated on the Phase 3 PASS).
+# ---------------------------------------------------------------------------
+
+# russell-ch4-6.44Gg3 — an UNSOURCED row (NO Russell App-C block; descriptor only),
+# the plan's recommended near-ballistic pick (TR=0.95, the continuation companion
+# with free_return_arcs[]). Russell 2004 Table 4.13: aphel 1.54, g(2.087) +
+# G(4.3191), v_inf E 6.44 / M 3.74, long 262-d transit (the low-v_inf-at-Mars row).
+_644_APHELION = 1.54
+_644_G_TOF = 2.087
+_644_BIGG_TOF = 4.3191
+_644_VINF_E = 6.44
+_644_VINF_M = 3.74
+
+
+@pytest.mark.slow
+def test_self_seed_one_unsourced_member_6_44gg3() -> None:
+    """Prove-on-ONE: full self-seed of the UNSOURCED row 6.44Gg3 (design §6).
+
+    Runs the full search + on-family gate + independent Sun-only n-body confirm on a
+    row with NO published real-eph seed. Asserts only that the search RUNS and returns
+    a FINITE, fully-audited result — the scientific three-way verdict (CONFIRMED /
+    PARTIAL / OFF-FAMILY-EMPTY-SET) is REPORTED in the results note, NOT gated. NO
+    catalogue writeback. This is one member, never a batch."""
+    rebound = pytest.importorskip("rebound")
+    assert rebound is not None
+    from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
+    from cyclerfinder.nbody.propagator import RestrictedNBody
+
+    mars_soi_au = PLANETS["M"].sma_au * (PLANETS["M"].mu_km3_s2 / MU_SUN_KM3_S2) ** 0.4
+    band_au = 3.0 * mars_soi_au
+
+    ephem = Ephemeris("astropy")
+    shape = g_arc_shape(_644_APHELION, _644_G_TOF, _644_BIGG_TOF, _644_VINF_E, _644_VINF_M)
+    # Generic 2027 launch window (no published seed centres it — any synodic window
+    # surfaces the same phase candidates).
+    t_center = (datetime(2027, 1, 1, tzinfo=UTC) - _J2000).total_seconds()
+    results = self_seed_g_leg(shape, ephem, t_center, refine=True)
+    assert results, "self-seed surfaced no candidate for 6.44Gg3"
+
+    anchors = FamilyAnchors(vinf_e=_644_VINF_E, vinf_m=_644_VINF_M, vinf_band_kms=1.5)
+    prop = RestrictedNBody("rebound")
+    for r in results:
+        # The result must be finite and fully audited (the contract of the search).
+        assert np.isfinite(r.t_depart_sec)
+        assert np.isfinite(r.residual_lon_deg)
+        assert np.isfinite(r.vinf_e_kms) and np.isfinite(r.vinf_m_kms)
+        assert np.all(np.isfinite(r.vinf_vec))
+        verdict = on_family(r, anchors)  # structured verdict (reported, not gated)
+        assert isinstance(verdict.on_family, bool)
+
+        # Independent integrator confirms the geometric arrival (the arbiter).
+        r_e, v_e = ephem.state("E", r.t_depart_sec)
+        r0 = np.asarray(r_e, dtype=np.float64)
+        v0 = np.asarray(v_e, dtype=np.float64) + r.vinf_vec
+        out = prop.propagate(r0, v0, r.t_depart_sec, r.t_arrive_sec, accuracy=1e-11)
+        assert out.converged
+        r_m, _v_m = ephem.state("M", r.t_arrive_sec)
+        miss_au = float(np.linalg.norm(out.r_km - np.asarray(r_m)) / AU_KM)
+        # The Lambert-refined seed arrives at Mars geometrically (miss in-band); the
+        # SCIENTIFIC verdict turns on the v_inf-vs-anchor term, reported in the note.
+        assert miss_au < band_au or not verdict.miss_ok
