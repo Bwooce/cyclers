@@ -19,8 +19,12 @@ from cyclerfinder.search.s1l1_corrected import APPC_LEGS
 from scripts.gmat_v4_generate import (
     JONES_VEL_TOL_KMS,
     CyclerRow,
+    aldrin_earth_row,
     aldrin_row,
+    generate_aldrin_earth_oberth_opt_script,
+    generate_aldrin_earth_oberth_script,
     generate_aldrin_script,
+    generate_s1l1_operational_scripts,
     generate_s1l1_scripts,
     generate_script,
     s1l1_row,
@@ -141,3 +145,75 @@ def test_write_scripts_to_disk(tmp_path) -> None:  # type: ignore[no-untyped-def
     assert len(s_paths) == 7  # one runnable script per Mars flyby
     for p in s_paths:
         assert p.read_text().count("Target DC") == 1
+
+
+# --- #176 reconciliation: Aldrin EARTH leg (the right maintenance leg) --------
+
+
+def test_aldrin_earth_row_targets_earth_not_mars() -> None:
+    """The #176 corrected Aldrin maintenance leg is the EARTH return flyby."""
+    row = aldrin_earth_row()
+    assert row.flyby_body == "E"
+    text = generate_script(row)
+    assert "Create CoordinateSystem EarthInertial" in text
+    assert "CentralBody = Earth" in text
+    assert "{Sat.Earth.Periapsis}" in text
+    # The Mars (wrong) leg must NOT be the targeted body here.
+    assert "CentralBody = Mars" not in text
+
+
+def test_aldrin_earth_clamps_subsurface_seed_to_safe_periapsis() -> None:
+    """The 93 deg turn's Jones root is subsurface; the seed must clamp to safe rp.
+
+    Without clamping, the seed hyperbola passes through the Earth (rp ~3207 km) and
+    the DC recovers a spuriously cheap TCM. The clamp seeds at the safe-periapsis
+    impact parameter (B ~12559 km) so the DC pays the honest powered turn.
+    """
+    row = aldrin_earth_row()
+    assert row.clamp_safe_rp is True
+    text = generate_script(row)
+    # The off-axis seed offset (Sat.Y) must be the safe-rp impact parameter, not the
+    # subsurface Jones-root B (8038 km). Safe-rp B for vinf 6.86 km/s ~= 12559 km.
+    y_line = next(ln for ln in text.splitlines() if ln.startswith("GMAT Sat.Y ="))
+    y_val = abs(float(y_line.split("=")[1].strip().rstrip(";")))
+    assert 12000.0 < y_val < 13000.0
+
+
+def test_aldrin_earth_reference_is_oberth() -> None:
+    text = generate_script(aldrin_earth_row())
+    assert "1.9336" in text  # Oberth-periapsis reference (#151/#154)
+    assert "OUR value" in text
+
+
+def test_aldrin_earth_oberth_modes_emit_two_burns(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """The Oberth widen-restore modes declare and sum two periapsis burns."""
+    p = generate_aldrin_earth_oberth_script(tmp_path / "ob.script")
+    text = p.read_text()
+    assert "Create ImpulsiveBurn TCM_EarthReturn" in text
+    assert "Create ImpulsiveBurn TCM2_EarthReturn" in text
+    assert "TCM2_EarthReturn" in text  # second burn varied + summed
+    assert text.count("Maneuver ") == 2
+
+
+def test_aldrin_earth_oberth_opt_uses_yukon_minimize(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """The optimize mode minimizes total ΔV with the Yukon NLP optimizer."""
+    p = generate_aldrin_earth_oberth_opt_script(tmp_path / "obopt.script")
+    text = p.read_text()
+    assert "Create Yukon NLP" in text
+    assert "Optimize NLP" in text
+    assert "Minimize NLP(dv_EarthReturn)" in text
+    assert text.count("NonlinearConstraint NLP") == 3  # VX/VY/VZ equality
+
+
+# --- #176 reconciliation: S1L1 OPERATIONAL B-plane-position targeting ----------
+
+
+def test_s1l1_operational_targets_bplane_position(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Operational maintenance aims at the B-plane POSITION; |v_inf| rides free."""
+    paths = generate_s1l1_operational_scripts(tmp_path / "oper")
+    assert len(paths) == 7
+    text = paths[0].read_text()
+    # Achieve the B-plane aim point, NOT the outgoing v_inf vector.
+    assert "BdotR" in text and "BdotT" in text
+    assert "Achieve DC(Sat.VX" not in text
+    assert "B-plane-POSITION" in text
