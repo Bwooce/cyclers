@@ -13,13 +13,42 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-03)
+# Project state at a glance (updated 2026-06-09)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
 what's blocked and why, and the prioritised human-actionable items. The
 lettered Q&A log (A–H) below it is the per-entry catalogue-sourcing
 audit trail and is unchanged in spirit.
+
+## VALIDATION CEILING REACHED (2026-06-09) — read this first
+
+The catalogue (268 rows) is at its **data-limited validation ceiling** via
+current methods + held papers: **V3:2** (S1L1 `russell-ch4-4.991gG2` ballistic +
+`russell-ch4-8.049gGf2` #188 powered), **V2:1** (Aldrin outbound), **V1:11**,
+rest V0. This is the honest boundary, established by exhaustive triage (#170
+App-C batch, #177 self-seeding over all 212 unsourced rows, #172 Phase 6 novelty
+sweep) — NOT a backlog to grind.
+
+- **The ~200 V0 ocampo rows are V0 by a PUBLICATION gap, not laziness.** They use
+  Russell's `n.m.k±j` SUMMARY-table format (descriptor + summary V∞ + period) —
+  enough to CATALOGUE (V0=sourced), but the per-arc / per-leg reproducible state
+  needed for V1+ was published only for ~9 PARENTS (Appendix C), never
+  per-member. "Insufficient data but backed by full papers" is exactly true and
+  not a contradiction. **V0 IS the deliverable for the bulk** — a faithful
+  sourced census of the literature; V1+ is the smaller set WE independently
+  reproduced.
+- **S1L1 is SINGULAR** — the one row where coplanar descriptor + real-eph family
+  + sourced anchors align. #177 confirmed the others close geometrically but miss
+  their v∞ anchors (off-family) or lack the descriptor (sub-Mars / summary-only).
+- **Past the ceiling is NEW-INPUT-gated** (not more iteration): (1) acquisitions
+  (#116 — Russell&Ocampo 2006 / McConaghy 2006 full text; human-access,
+  uncertain payoff), or (2) a more-capable genome (multi-arc / low-thrust /
+  broken-plane — would reopen off-family rows AND the Jovian empty region; the
+  Phase 6 §6b capability-subsumption gate auto-re-sweeps when one ships).
+- **Machinery is complete**: corrector + MBH + continuation + free-return-chain +
+  self-seeding + n-body harness + GMAT V4 lane (live, headless) + Phase 6
+  discovery pipeline with the method-versioned empty-region registry.
 
 ## Validation campaign — 2026-06-08 (V0-lift, three-track)
 
