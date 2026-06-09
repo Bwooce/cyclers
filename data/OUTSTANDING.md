@@ -1315,3 +1315,13 @@ path):**
   + VILM landed; see the "Moon-tour Tier-1 — SHIPPED" entry in the Done section
   above. Tier-2 (CR3BP) remains open.
 - **#128-S2** — queued.
+- **#172 Forge Phase 6 — first novelty campaign** — ✓ RAN (2026-06-09):
+  Jovian Galilean I-E-G VILM sweep, 64 epochs × 2 topologies (128 pts). Verdict
+  **EMPTY** (the expected base rate): 12 closed, all `novel`, 0 bend-feasible
+  (V∞ 8.3–26.8 km/s vs ~6 km/s floor; gap 20.8 km/s), 0 SILVER. The #76
+  honest-risk generalises — a rigorous bounded method-versioned negative recorded
+  in `data/empty_regions.jsonl` (region `jovian-IEG-vilm-2026-06-09`). Dedup
+  firewall + capability-subsumption re-sweep gate both verified live. Pipeline
+  (VILM prune + empty-region registry + literature-check field + re-sweep gate)
+  SHIPPED. See `docs/notes/2026-06-08-forge-phase6-jovian-sweep-results.md`. A
+  multi-arc / n-body / low-thrust method will auto-re-sweep this region per §6b.
