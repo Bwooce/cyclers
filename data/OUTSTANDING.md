@@ -193,6 +193,27 @@ triage the 7+194 (OFF-FAMILY → negative-results registry); multi-rev G-arc Sta
 extension for long-transit rows; REACHABLE → full pipeline → V3 candidates.
 Module `search/self_seeding.py`; notes `docs/notes/2026-06-08-self-seeding-results.md`.
 
+## Self-seeding triage RESULT (#177) + Forge Phase 6 first sweep (#172) — both EMPTY-ish, 2026-06-09
+
+- **#177 triage of all 212 unsourced rows: 6 REACHABLE, 206 OFF-FAMILY, 0 V3-candidates.**
+  Built the multi-rev G-arc Stage-A extension (short/long/k-rev branches). 204 rows
+  OFF-FAMILY-NO-DESCRIPTOR (all ~194 ocampo have no g/G arc ToFs / are sub-Mars);
+  the 6 reachable ch4 rows achieve longitude rendezvous (n-body miss at machine
+  precision) but MISS their sourced v∞ anchors (OFF-FAMILY-AT-ANCHOR-VINF). The
+  multi-rev extension pulled 6.44Gg3 v∞_M 10.9→7.83 (right direction) but not to the
+  3.74 anchor. **S1L1 is SINGULAR** — the realistic V3 ceiling via current
+  methods+sourced data is V3:2 (S1L1 ballistic + #188 powered); more V3s need new
+  sourced real-eph data (#116), not more method. Runlogs (method-versioned) →
+  #172 registry. Note `docs/notes/2026-06-08-self-seeding-triage-results.md`.
+- **#172 Forge Phase 6 first novelty sweep (Jovian I-E-G): EMPTY** — the expected
+  base rate, a complete valid result. 128 points, 12 closed + all `novel` (sparse
+  bucket) but **0 bend-feasible** (V∞ 8.3–26.8 vs ~6 floor, gap 20.8 km/s) → 0
+  SILVER, 12 REJECTED. 1 method-versioned empty region recorded
+  (`data/empty_regions.jsonl`); re-sweep gate + dedup firewall verified LIVE; no
+  writeback, no tolerance loosening. A bend-feasible Jovian cycler needs a
+  strictly-more-capable genome (the §6b gate auto-re-sweeps when one ships). Built
+  the full Phase 6 pipeline + capability-subsumption registry (16/16 plan tasks).
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
