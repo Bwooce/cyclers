@@ -21,6 +21,7 @@
 - **Explicit pathspecs in `git add`**; run `git status --short` before each commit and confirm only your files are staged.
 - **No tolerance/budget/cap loosening to manufacture a survivor.** A clean negative is a success.
 - **Golden tests:** the EXPECTED side must trace to a published source (the mining note), never to a value our own code computed.
+- **Repo mypy is strict (also on tests).** Two recurring gotchas the code blocks below may not show: (1) every test function needs an explicit `-> None` return annotation; (2) wrap any `**`/`np.*` expression returned from a `-> float` function in `float(...)` to avoid `no-any-return`. Apply both as you transcribe — don't wait for the pre-commit hook to reject the commit.
 
 ### Golden-mapping (precise; refines the spec wording)
 
