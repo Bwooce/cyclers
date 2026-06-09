@@ -55,7 +55,7 @@ import numpy as np
 
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR, MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.satellites import PRIMARIES
+from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.data.catalog import (
     CanonicalSignature,
     Catalog,
@@ -564,6 +564,109 @@ def jovian_galilean_topologies() -> tuple[TopologySpec, ...]:
     return tuple(specs)
 
 
+def _moon_period_days(moon: str) -> float:
+    """Orbital period (days) of a moon about its primary, Kepler III.
+
+    DERIVED at call time from ``SATELLITES[moon].sma_km`` + the primary's mu
+    (``PRIMARIES``), never a hand-copied magic number — same Kepler-III mechanism
+    :func:`cyclerfinder.core.satellites.mean_motion_deg_day_about` uses. This is
+    the sourced sibling of the literal ``_GALILEAN_PERIODS_DAYS`` table (the latter
+    pre-dates the registry and is retained only for the original Galilean campaign).
+    NON-GOLDEN here: a ToF/period *seed* the corrector refines, not a published anchor.
+    """
+    sat = SATELLITES[moon]
+    period_s = 2.0 * np.pi * np.sqrt(sat.sma_km**3 / PRIMARIES[sat.primary])
+    return float(period_s / DAY_S)
+
+
+def _tour_topologies(
+    seq: tuple[str, ...],
+    *,
+    period_ks: tuple[int, ...],
+) -> tuple[TopologySpec, ...]:
+    """Build period-multiple-swept VILM topologies for a closed moon tour.
+
+    Shared construction discipline (mirrors :func:`jovian_galilean_topologies`):
+    short resonant moon legs admit only the direct 0-rev ``"single"`` Lambert
+    branch (a fictitious multi-rev/low-high branch is rejected at reconstruction),
+    so enrichment is over the *period multiple* (``period_k``) and the launch-epoch
+    grid, NOT branches the geometry cannot support. The return leg (last index) is
+    the slack (period-absorbing) leg. ``period_sec`` seeds from the sum-of-periods
+    synodic multiple. The free (slack-eliminated) ToF seeds are each intermediate
+    leg's destination-moon period. NON-GOLDEN: the corrector refines all seeds.
+    """
+    if len(seq) < 3 or seq[0] != seq[-1]:
+        raise ValueError(f"tour sequence must be a closed chain of >=3 bodies: {seq!r}")
+    n_legs = len(seq) - 1
+    one_synodic_days = sum(_moon_period_days(m) for m in seq[:-1])
+    # Free ToF seeds: every leg except the slack (return) leg, seeded by the
+    # destination moon's period.
+    tof_seed_days = tuple(_moon_period_days(seq[i + 1]) for i in range(n_legs - 1))
+    specs: list[TopologySpec] = []
+    for period_k in period_ks:
+        specs.append(
+            TopologySpec(
+                sequence=seq,
+                per_leg_revs=tuple(0 for _ in range(n_legs)),
+                per_leg_branch=tuple("single" for _ in range(n_legs)),
+                period_k=period_k,
+                period_sec=period_k * one_synodic_days * DAY_S,
+                tof_seed_days=tof_seed_days,
+                slack_leg=n_legs - 1,
+            )
+        )
+    return tuple(specs)
+
+
+def saturnian_titan_tour_topologies() -> tuple[TopologySpec, ...]:
+    """Saturnian midsize+Titan resonant moon-tour topology set (Forge Phase 6 #178).
+
+    Closed resonant sub-chains over the Saturnian midsize moons + Titan. Periods
+    are DERIVED from :data:`cyclerfinder.core.satellites.SATELLITES` (sma + Saturn
+    mu, Kepler III) via :func:`_moon_period_days` — no hardcoded magic numbers. The
+    construction discipline matches :func:`jovian_galilean_topologies`: 0-rev
+    ``"single"`` branches only, return leg = slack, ``period_k`` in (1, 2). Tours:
+
+    * Dione-Rhea-Titan-Dione: the outer resonant chain anchored on Titan.
+    * Enceladus-Dione-Rhea-Enceladus: an inner midsize resonant chain.
+    * Enceladus-Tethys-Dione-Rhea-Titan style is too long/non-resonant for the
+      no-leveraging genome, so the swept set is the two 3-leg sub-chains.
+
+    NON-GOLDEN: the corrector refines the period/ToF seeds.
+    """
+    tours = (
+        ("Dione", "Rhea", "Titan", "Dione"),
+        ("Enceladus", "Dione", "Rhea", "Enceladus"),
+    )
+    specs: list[TopologySpec] = []
+    for seq in tours:
+        specs.extend(_tour_topologies(seq, period_ks=(1, 2)))
+    return tuple(specs)
+
+
+def jovian_galilean_permutation_topologies() -> tuple[TopologySpec, ...]:
+    """Galilean orderings beyond the swept I-E-G-I chain (Forge Phase 6 #178).
+
+    Alternate Galilean orderings (including Callisto) the first campaign did NOT
+    sweep: Io-Ganymede-Europa-Io, Europa-Ganymede-Callisto-Europa, and
+    Io-Europa-Callisto-Io. Periods are DERIVED from :data:`SATELLITES` (sma +
+    Jupiter mu, Kepler III) via :func:`_moon_period_days`. Same discipline as
+    :func:`jovian_galilean_topologies` (0-rev ``"single"`` branches only, return
+    leg = slack), swept over ``period_k`` in (1, 2, 3).
+
+    NON-GOLDEN: the corrector refines the period/ToF seeds.
+    """
+    tours = (
+        ("Io", "Ganymede", "Europa", "Io"),
+        ("Europa", "Ganymede", "Callisto", "Europa"),
+        ("Io", "Europa", "Callisto", "Io"),
+    )
+    specs: list[TopologySpec] = []
+    for seq in tours:
+        specs.extend(_tour_topologies(seq, period_ks=(1, 2, 3)))
+    return tuple(specs)
+
+
 def discover_novel_moon(
     *,
     base_t0_sec: float,
@@ -761,5 +864,7 @@ __all__ = [
     "discover_novel_moon",
     "em_multiarc_topologies",
     "evaluate_closure",
+    "jovian_galilean_permutation_topologies",
     "jovian_galilean_topologies",
+    "saturnian_titan_tour_topologies",
 ]
