@@ -158,6 +158,25 @@ honest negative that corrects the earlier "V3 1→~10" optimism:
   ballistic budget. Modules `search/appc_corrected.py`; commits `359b248`/`bf8d2a8`;
   note `docs/notes/2026-06-08-appc-v3-batch-results.md`.
 
+## GMAT V4 + maintenance-ΔV reconciliation (#174/#176, 2026-06-08)
+
+GMAT R2022a installed + headless-verified; it CONVERGED both Aldrin and S1L1
+(geometry externally validated). The two maintenance-ΔV mismatches it flagged
+were both ARTIFACTS, resolved without changing our claims:
+- **Aldrin:** #174's GMAT 0.175 km/s was the WRONG FLYBY (Mars, not the Earth
+  return-flyby turn deficit). Corrected GMAT Earth-leg = 3.287 km/s impulsive
+  (confirms the asymptote class ~2.9–3.3). GMAT impulsive does NOT reach our
+  1.9336 Oberth figure — the Oberth credit needs a CONTINUOUS widen-cone-restore
+  strategy. Defensible: bound pair **2.9138 (conservative) / 1.9336 (Oberth
+  lower bound, continuous-strategy)**; 0.175 retired. Site keeps 2.914 (correct).
+- **S1L1:** #174's 7.29 km/s was the forced-v∞-vector artifact (manufactured
+  Mars turns exceeding the cone; absent in continuous flight). **62 m/s (#169)
+  STANDS; S1L1 V3-ballistic needs NO qualification.**
+- **V4 held for both** (Aldrin ~13% over the ±5% band; S1L1 needs an
+  operational-targeting GMAT setup). No writeback. Notes
+  `docs/notes/2026-06-08-gmat-v4-execution-results.md` +
+  `2026-06-08-maintenance-dv-reconciliation.md`.
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
