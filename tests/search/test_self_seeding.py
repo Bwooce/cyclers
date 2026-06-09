@@ -439,3 +439,45 @@ def test_self_seed_one_unsourced_member_6_44gg3() -> None:
         # The Lambert-refined seed arrives at Mars geometrically (miss in-band); the
         # SCIENTIFIC verdict turns on the v_inf-vs-anchor term, reported in the note.
         assert miss_au < band_au or not verdict.miss_ok
+
+
+@pytest.mark.slow
+def test_multirev_long_branch_improves_6_44gg3_mars_vinf() -> None:
+    """The multi-rev LONG branch lowers 6.44Gg3 Mars v_inf vs the #173 short branch (#177).
+
+    #173 declared 6.44Gg3 OFF-FAMILY: its single short-way branch (131-d transit) put
+    the longitude rendezvous at v_inf_M ~10.9 km/s, far above the row's 3.74 anchor and
+    the real-eph breathing ceiling (~8). The multi-rev extension's long branch (~292 d,
+    matching the row's 262-d signature) must drive a LOWER Mars v_inf — the rescue the
+    one-member note flagged. EXPECTED side = the 3.74 sourced anchor + the ~8 km/s
+    real-eph ceiling; the emerged v_inf is EVIDENCE. This records the rescue's effect;
+    a full V3-CANDIDATE still requires the v_inf to reach the anchor (it does NOT — the
+    honest residual is reported, NOT loosened). Label: slow (astropy + REBOUND)."""
+    rebound = pytest.importorskip("rebound")
+    assert rebound is not None
+    ephem = Ephemeris("astropy")
+    branches = g_arc_branches(
+        _644_APHELION, _644_G_TOF, _644_BIGG_TOF, _644_VINF_E, _644_VINF_M, max_g_revs=2
+    )
+    triage = triage_transit_match(branches, real_eph_transit_days=262.0, tol_days=30.0)
+    long_branch = next(b for b in branches if b.branch == triage.best_branch)
+    short_branch = next(b for b in branches if b.branch == "short")
+    assert long_branch.branch != "short", "the rescue branch must be non-short"
+
+    t_center = (datetime(2027, 1, 1, tzinfo=UTC) - _J2000).total_seconds()
+    long_res = self_seed_g_leg(long_branch, ephem, t_center, refine=True)
+    short_res = self_seed_g_leg(short_branch, ephem, t_center, refine=True)
+    assert long_res and short_res
+
+    long_vinf_m = min(r.vinf_m_kms for r in long_res)
+    short_vinf_m = min(r.vinf_m_kms for r in short_res)
+    # The long branch's Mars v_inf is materially lower (the rescue mechanism).
+    assert long_vinf_m < short_vinf_m, (
+        f"long-branch v_inf_M {long_vinf_m:.2f} should be below short {short_vinf_m:.2f}"
+    )
+    # ...but it still does NOT reach the 3.74 anchor (honest OFF-FAMILY-AT-ANCHOR-VINF):
+    # the rescue improves the family fit without closing it. Reported, NOT loosened.
+    assert long_vinf_m > _644_VINF_M + 1.5, (
+        f"long-branch v_inf_M {long_vinf_m:.2f} unexpectedly within the 3.74 anchor band "
+        f"— if this fires, 6.44Gg3 became a V3 candidate (update the results note)"
+    )
