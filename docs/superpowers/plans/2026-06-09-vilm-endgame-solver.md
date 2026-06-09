@@ -180,6 +180,20 @@ git commit -m "search/leveraging_leg: canonical Tisserand helpers for VILM legs"
 
 ---
 
+> **EXECUTION FINDING (2026-06-09) — Task 2 needs a design rework before implementing.**
+> A first implementation of the apse-DSM leg below revealed the model does NOT
+> realize VILM leverage: one leg lowering V∞ by 0.3 km/s cost 4–10 km/s (an
+> un-leveraged impulsive orbit change; real VILMs cost ~0.1 km/s because the
+> gravity assist does the work and the apse burn is small). It also mixes
+> exterior-resonance orbits (a>1) with interior (periapsis) burns, and the
+> bracket finder latches the `1e3` nan-sentinel → spurious "converged" results
+> with `vinf_out≈0` instead of the target. Before re-implementing Task 2: rework
+> the leg physics so (a) the resonance/apse/leverage-direction are consistent,
+> (b) per-leg ΔV is on the order of the Γ-quadrature increment (the leverage is
+> realized, not bypassed), (c) the root-find brackets only over the feasible
+> (real-V∞) interval so no sentinel roots appear. The crossing constraint in
+> `eccentricity_from_vinf` (periapsis ≤ 1 ≤ apoapsis) is CORRECT and must stay.
+
 ## Task 2: The phase-full leg solve (`evaluate_leveraging_leg`)
 
 **Files:**
