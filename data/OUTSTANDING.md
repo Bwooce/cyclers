@@ -177,6 +177,22 @@ were both ARTIFACTS, resolved without changing our claims:
   `docs/notes/2026-06-08-gmat-v4-execution-results.md` +
   `2026-06-08-maintenance-dv-reconciliation.md`.
 
+## Self-seeding construction VALIDATED (#173, 2026-06-08)
+
+The App-C-blind self-seeding longitude-rendezvous construction PASSED its S1L1
+ground-truth gate: given only the descriptor (never reading App-C), it recovered
+S1L1's App-C basin as a SINGLE candidate (Mars lon 199.5° vs key 201.0°; n-body
+arrival 1.7e-12 AU at v∞ 5.42) — beating the 2026-06-04 off-family failure via
+corrected topology + explicit longitude target + enumerate-don't-optimise.
+QUALIFIED: ~11-day epoch offset (family-correct WINDOW, not flight-grade).
+Prove-on-one (6.44Gg3): clean OFF-FAMILY (coplanar 131-d transit ≠ 262-d real-eph
+family; emerged v∞_M 10.9 vs 3.74). **The method is a TRIAGE + family-seed tool,
+not a one-shot V3 machine** — works when coplanar transit ≈ real-eph transit.
+Path to volume EXISTS but is a minority-yield triage, not "194→V3". Next (#177):
+triage the 7+194 (OFF-FAMILY → negative-results registry); multi-rev G-arc Stage-A
+extension for long-transit rows; REACHABLE → full pipeline → V3 candidates.
+Module `search/self_seeding.py`; notes `docs/notes/2026-06-08-self-seeding-results.md`.
+
 ## Done
 
 - **Aldrin cycler replicated on the real ephemeris** — M6b binding gate;
