@@ -33,6 +33,7 @@ from typing import Any
 
 import numpy as np
 
+from cyclerfinder.core.constants import MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.correct import BallisticClosureResult, ballistic_correct
 
@@ -104,6 +105,7 @@ def _reclose_probe(
     slack_leg: int,
     vinf_cap: float,
     ephem: Ephemeris,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> bool:
     """Probe 3: a fresh corrector run from the reported seed must re-close
     feasibly. Independent of whatever produced ``closure``."""
@@ -118,6 +120,7 @@ def _reclose_probe(
         ephem=ephem,
         vinf_cap=vinf_cap,
         slack_leg=slack_leg,
+        mu_central=mu_central,
     )
     return redo.converged and redo.bend_feasible and redo.vinf_cap_ok
 
@@ -136,6 +139,7 @@ def _perturbed_seed_probe(
     epoch_jitter_days: float = 25.0,
     tof_jitter_days: float = 8.0,
     vinf_tol_kms: float = 1.5,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> bool:
     """Probe 1: a perturbed-seed re-solve must re-find the family.
 
@@ -162,6 +166,7 @@ def _perturbed_seed_probe(
         ephem=ephem,
         vinf_cap=vinf_cap,
         slack_leg=slack_leg,
+        mu_central=mu_central,
     )
     if not (redo.converged and redo.bend_feasible):
         return False
@@ -181,6 +186,7 @@ def adversarial_panel(
     ephem: Ephemeris,
     n_verifiers: int = 3,
     seed: int = 0,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> PanelResult:
     """Run an N-verifier adversarial panel over one candidate closure.
 
@@ -222,6 +228,7 @@ def adversarial_panel(
                     slack_leg=slack_leg,
                     vinf_cap=vinf_cap,
                     ephem=ephem,
+                    mu_central=mu_central,
                 )
             )
         else:
@@ -241,6 +248,7 @@ def adversarial_panel(
                     vinf_cap=vinf_cap,
                     ephem=ephem,
                     rng=rng,
+                    mu_central=mu_central,
                 )
             )
         else:
