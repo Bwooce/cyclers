@@ -61,6 +61,11 @@ class ReviewQueueEntry:
     verdict_audit: dict[str, Any]
     panel: dict[str, Any]
     t_added: str
+    # Phase 6 (design §3c): the recorded literature-review block. ``None`` is the
+    # machine-written default ("not yet checked"); a human fills it. Shape:
+    # ``{checked: bool, reviewer: str|None, date: str|None,
+    #    sources_searched: list[str], result: str|None}``. Additive, non-catalogue.
+    literature_check: dict[str, Any] | None = None
 
 
 def is_catalogue_source() -> bool:
@@ -119,6 +124,22 @@ def validate_review_entry(entry: ReviewQueueEntry) -> None:
             )
 
 
+def is_promotion_eligible(entry: ReviewQueueEntry) -> bool:
+    """Is a SILVER-novel entry eligible for human promotion (design §3c)?
+
+    NOT an auto-promoter — :func:`is_catalogue_source` stays ``False``; this is a
+    pure recorded gate encoding spec §613's fourth V5 condition ("a documented
+    literature review returned nothing"). Eligible iff the literature block is
+    present, ``checked is True``, and ``result == "no-match"``. A literature
+    *hit* makes it ineligible-as-novel (the human downgrades it to
+    ``known-reproduction`` per spec §612).
+    """
+    lit = entry.literature_check
+    if lit is None:
+        return False
+    return bool(lit.get("checked")) and lit.get("result") == "no-match"
+
+
 def _normalise(payload: dict[str, Any]) -> dict[str, Any]:
     """Coerce JSON lists back into the tuple-typed fields for round-trip equality."""
     for key in ("superseded_by", "vinf_per_encounter_kms", "tof_days", "sequence"):
@@ -165,6 +186,7 @@ __all__ = [
     "ReviewQueueEntry",
     "append_review_entry",
     "is_catalogue_source",
+    "is_promotion_eligible",
     "load_review_queue",
     "validate_review_entry",
 ]

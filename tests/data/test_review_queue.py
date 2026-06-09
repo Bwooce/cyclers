@@ -156,3 +156,70 @@ def test_validate_accepts_high_energy_but_sub_ceiling_vinf() -> None:
         }
     )
     validate_review_entry(ok)  # no raise
+
+
+# --- Phase 6: literature_check field + promotion gate (plan Tasks 3.0/3.1) ---
+
+
+def test_review_entry_carries_literature_check_default_none() -> None:
+    e = _entry()
+    assert e.literature_check is None
+    validate_review_entry(e)  # None must validate (machine-written default)
+
+
+def test_literature_check_round_trips(tmp_path: Path) -> None:
+    path = tmp_path / "review_queue.jsonl"
+    lit = {
+        "checked": True,
+        "reviewer": "human",
+        "date": "2026-06-08",
+        "sources_searched": ["ADS", "Jones AAS 17-577"],
+        "result": "no-match",
+    }
+    e = ReviewQueueEntry(**{**_entry().__dict__, "literature_check": lit})
+    append_review_entry(path, e)
+    loaded = list(load_review_queue(path))
+    assert loaded[0].literature_check == lit
+
+
+def test_unchecked_silver_is_not_promotion_eligible() -> None:
+    from cyclerfinder.data.review_queue import is_promotion_eligible
+
+    e = _entry()  # literature_check=None
+    assert is_promotion_eligible(e) is False
+
+
+def test_clean_literature_check_makes_eligible() -> None:
+    from cyclerfinder.data.review_queue import is_promotion_eligible
+
+    e = ReviewQueueEntry(
+        **{
+            **_entry().__dict__,
+            "literature_check": {
+                "checked": True,
+                "reviewer": "human",
+                "date": "2026-06-08",
+                "sources_searched": ["ADS", "Jones AAS 17-577"],
+                "result": "no-match",
+            },
+        }
+    )
+    assert is_promotion_eligible(e) is True
+
+
+def test_literature_hit_makes_ineligible() -> None:
+    from cyclerfinder.data.review_queue import is_promotion_eligible
+
+    e = ReviewQueueEntry(
+        **{
+            **_entry().__dict__,
+            "literature_check": {
+                "checked": True,
+                "reviewer": "human",
+                "date": "2026-06-08",
+                "sources_searched": ["ADS"],
+                "result": "matches Russell&Ocampo 1988",
+            },
+        }
+    )
+    assert is_promotion_eligible(e) is False
