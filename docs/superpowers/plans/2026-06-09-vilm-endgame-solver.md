@@ -83,7 +83,8 @@ def test_resonant_sma_canonical():
 
 def test_tisserand_vinf_roundtrip():
     assert ll.tisserand_vinf(a=1.0, e=0.0) == pytest.approx(0.0, abs=1e-12)
-    a, e = 1.6, 0.25
+    # a=1.6, e=0.4: periapsis 0.96 <= 1 <= apoapsis 2.24, so it crosses the moon.
+    a, e = 1.6, 0.4
     v = ll.tisserand_vinf(a=a, e=e)
     assert ll.eccentricity_from_vinf(a=a, vinf=v) == pytest.approx(e, abs=1e-9)
 
