@@ -46,6 +46,7 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.kepler import propagate as kepler_propagate
 from cyclerfinder.core.lambert import LambertError, lambert
 from cyclerfinder.search.continuation_chain import continuation_chain_correct
+from cyclerfinder.search.free_return import _crossing, _true_to_mean
 from cyclerfinder.search.free_return_chain import (
     _earth_vinf_vector,
     free_return_chain_correct,
@@ -109,6 +110,8 @@ class GArcShape:
     vinf_e_vec_ref: Vec3  # departure v_inf in Earth-orbit (r_hat, t_hat) frame
     vinf_e_anchor: float
     vinf_m_anchor: float
+    branch: str = "short"  # G-arc Mars-crossing branch: short | long | shortN | longN
+    g_revs: int = 0  # full G-arc revolutions added before the Mars crossing
 
 
 def g_arc_shape(
@@ -192,6 +195,103 @@ def g_arc_shape(
         vinf_e_anchor=float(vinf_e_anchor),
         vinf_m_anchor=float(vinf_m_anchor),
     )
+
+
+# ---------------------------------------------------------------------------
+# Stage A multi-rev extension (#177) — enumerate the G-arc Mars-crossing branches.
+#
+# #173's single-branch Stage A took only the SHORT-way (inbound) Mars radial
+# crossing of the converged G arc, giving one transit ToF. A long-transit row (e.g.
+# 6.44Gg3: real-eph 262 d vs the coplanar short-way 131 d) is OFF-FAMILY against that
+# one branch but its real-eph transit signature is reproduced by a DIFFERENT branch
+# of the SAME (a, e) shape: the LONG-way crossing (after aphelion, ~292 d) and/or a
+# multi-rev branch (k full G-arc revolutions added before the crossing). This
+# extension enumerates all those branch ToFs from the converged shape so a row is
+# matched against ALL its branch transits before being declared OFF-FAMILY (#177
+# build 1). The branch ToFs feed the Stage-B Lambert refinement (which already
+# accepts ``max_revs`` from :mod:`core.lambert`, the M-L milestone multi-rev solver).
+# ---------------------------------------------------------------------------
+
+
+def _g_arc_branch_transits(
+    a_au: float, e: float, *, max_g_revs: int = 1, mu: float = MU_SUN_KM3_S2
+) -> list[tuple[str, int, float]]:
+    """Enumerate the E->M transit ToFs of every Mars-crossing branch of ``(a, e)``.
+
+    A transfer ellipse that reaches Mars crosses Mars's radius at TWO true
+    anomalies: the inbound (``+nu_M``, the SHORT way, before aphelion) and the
+    outbound (``2*pi - nu_M``, the LONG way, after aphelion). Each branch can also
+    be reached after ``k`` full revolutions (``k`` in ``[0, max_g_revs]``). Returns
+    ``(branch_label, k, tof_days)`` for every feasible branch, sorted by ToF — the
+    candidate transit shapes Stage A offers the longitude search. Raises nothing:
+    an ``(a, e)`` that does not reach Mars yields an empty list (a clean negative).
+    """
+    a_km = a_au * AU_KM
+    try:
+        nu_e = _crossing(a_km, e, PLANETS["E"].sma_au * AU_KM)
+        nu_m = _crossing(a_km, e, PLANETS["M"].sma_au * AU_KM)
+    except ValueError:
+        return []
+    n = np.sqrt(mu / a_km**3)  # mean motion, rad/s
+    period_days = (2.0 * np.pi / n) / SECONDS_PER_DAY
+    m_e = _true_to_mean(nu_e, e)
+    out: list[tuple[str, int, float]] = []
+    for label, nu_cross in (("short", nu_m), ("long", 2.0 * np.pi - nu_m)):
+        dm = (_true_to_mean(nu_cross, e) - m_e) % (2.0 * np.pi)
+        base_tof = (dm / n) / SECONDS_PER_DAY
+        for k in range(max_g_revs + 1):
+            out.append((label, k, base_tof + k * period_days))
+    out.sort(key=lambda t: t[2])
+    return out
+
+
+def g_arc_branches(
+    aphelion_au: float,
+    g_tof_years: float,
+    big_g_tof_years: float,
+    vinf_e_anchor: float,
+    vinf_m_anchor: float,
+    *,
+    max_g_revs: int = 1,
+    mu: float = MU_SUN_KM3_S2,
+) -> list[GArcShape]:
+    """Stage A (multi-rev #177): a row descriptor -> ALL its G-arc branch SHAPES.
+
+    Runs the #173 :func:`g_arc_shape` once to get the converged ``(a, e, n_rev)`` and
+    the departure v_inf vector, then enumerates every Mars-crossing branch
+    (:func:`_g_arc_branch_transits`) as a separate :class:`GArcShape` differing only
+    in ``tof_g_days`` / ``branch`` / ``g_revs``. The branch ``n_rev`` carries the
+    Stage-B Lambert ``max_revs`` (base n_rev + the branch's added G revolutions). The
+    first element is always the #173 base short-way shape (byte-compatible default),
+    so a caller that wants only the historical single branch can take ``[0]``.
+
+    EXPECTED = the SOURCED anchors; every branch's emerged transit is EVIDENCE. The
+    branch whose ToF matches the row's real-eph transit signature is the gate (#177).
+    """
+    base = g_arc_shape(
+        aphelion_au, g_tof_years, big_g_tof_years, vinf_e_anchor, vinf_m_anchor, mu=mu
+    )
+    branches = _g_arc_branch_transits(base.a_au, base.e, max_g_revs=max_g_revs, mu=mu)
+    if not branches:
+        return [base]
+    out: list[GArcShape] = []
+    for label, k, tof_days in branches:
+        out.append(
+            GArcShape(
+                a_au=base.a_au,
+                e=base.e,
+                n_rev=base.n_rev + k,
+                tof_g_days=tof_days,
+                vinf_e_mag=base.vinf_e_mag,
+                vinf_m_mag=base.vinf_m_mag,
+                vinf_e_vec_ref=base.vinf_e_vec_ref,
+                vinf_e_anchor=base.vinf_e_anchor,
+                vinf_m_anchor=base.vinf_m_anchor,
+                branch=(f"{label}{k}" if k else label),
+                g_revs=k,
+            )
+        )
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -499,15 +599,65 @@ def on_family(
     )
 
 
+@dataclass(frozen=True)
+class TransitTriage:
+    """Cheap REACHABLE-vs-OFF-FAMILY triage of a row by branch-transit match (#177).
+
+    The #173 gating condition: a row is REACHABLE only if SOME coplanar G-arc branch
+    transit lands within ``tol_days`` of the row's real-eph transit signature. This is
+    the cheap per-row test (no n-body) the bulk triage runs. ``best_branch`` /
+    ``best_tof_days`` / ``delta_days`` record the closest branch as evidence.
+    """
+
+    reachable: bool
+    real_eph_transit_days: float
+    best_branch: str
+    best_g_revs: int
+    best_tof_days: float
+    delta_days: float
+    branch_tofs: dict[str, float]
+
+
+def triage_transit_match(
+    branches: list[GArcShape],
+    real_eph_transit_days: float,
+    *,
+    tol_days: float = 30.0,
+) -> TransitTriage:
+    """Classify a row REACHABLE / OFF-FAMILY by the #173 branch-transit gate (#177).
+
+    REACHABLE iff the closest enumerated G-arc branch transit (:func:`g_arc_branches`)
+    is within ``tol_days`` of the row's real-eph transit signature. The tolerance is
+    the coplanar->real-eph transit gap admitted (S1L1: coplanar 188 vs real-eph 180,
+    ~8 d; the long-transit families breathe more) — it is the GATE, NOT loosened to
+    inflate REACHABLE (brief honesty rule). Pure: no ephemeris, no n-body.
+    """
+    branch_tofs = {b.branch: b.tof_g_days for b in branches}
+    best = min(branches, key=lambda b: abs(b.tof_g_days - real_eph_transit_days))
+    delta = best.tof_g_days - real_eph_transit_days
+    return TransitTriage(
+        reachable=abs(delta) <= tol_days,
+        real_eph_transit_days=float(real_eph_transit_days),
+        best_branch=best.branch,
+        best_g_revs=best.g_revs,
+        best_tof_days=float(best.tof_g_days),
+        delta_days=float(delta),
+        branch_tofs={k: float(v) for k, v in branch_tofs.items()},
+    )
+
+
 __all__ = [
     "SYNODIC_PERIOD_DAYS",
     "FamilyAnchors",
     "GArcShape",
     "OnFamilyVerdict",
     "SelfSeedResult",
+    "TransitTriage",
+    "g_arc_branches",
     "g_arc_shape",
     "on_family",
     "residual_lon",
     "self_seed_g_leg",
     "synodic_longitude_scan",
+    "triage_transit_match",
 ]

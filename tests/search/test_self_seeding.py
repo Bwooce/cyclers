@@ -36,11 +36,13 @@ from cyclerfinder.search.self_seeding import (
     FamilyAnchors,
     GArcShape,
     SelfSeedResult,
+    g_arc_branches,
     g_arc_shape,
     on_family,
     residual_lon,
     self_seed_g_leg,
     synodic_longitude_scan,
+    triage_transit_match,
 )
 
 # --- S1L1 / 4.991gG2 SOURCED descriptor (Russell 2004 Table 4.9, the row's OWN
@@ -105,6 +107,62 @@ def _appc_leg2_shape(ephem: Ephemeris) -> GArcShape:
         vinf_e_anchor=_4991_VINF_E,
         vinf_m_anchor=_4991_VINF_M,
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 0 mechanics (#177) — the multi-rev G-arc Stage-A branch enumeration.
+# ---------------------------------------------------------------------------
+
+
+def test_g_arc_branches_include_base_short_first() -> None:
+    """g_arc_branches[0] reproduces the #173 single-branch g_arc_shape (compat).
+
+    The base short-way branch must stay first (a caller wanting the historical
+    single branch takes [0]) and carry the same converged (a, e). Label: mechanics."""
+    base = g_arc_shape(_4991_APHELION, _4991_G_TOF, _4991_BIGG_TOF, _4991_VINF_E, _4991_VINF_M)
+    branches = g_arc_branches(
+        _4991_APHELION, _4991_G_TOF, _4991_BIGG_TOF, _4991_VINF_E, _4991_VINF_M
+    )
+    assert len(branches) >= 2  # at least short + long
+    assert branches[0].a_au == pytest.approx(base.a_au)
+    assert branches[0].e == pytest.approx(base.e)
+    labels = {b.branch for b in branches}
+    assert "short" in labels and "long" in labels
+
+
+def test_multirev_branch_rescues_long_transit_6_44gg3() -> None:
+    """The 6.44Gg3 long-transit branch matches its real-eph 262-d signature (#177 gate).
+
+    #173 declared 6.44Gg3 OFF-FAMILY because its single SHORT-way coplanar branch
+    transits ~131 d vs the row's real-eph 262 d. The multi-rev extension must surface
+    a branch whose transit lands near 262 d — the rescue the one-member note flagged.
+    EXPECTED = the row's real-eph 262-d transit (Russell Table 4.13, sourced). Label:
+    mechanics."""
+    # 6.44Gg3 descriptor (Russell 2004 Table 4.13): aphel 1.54, g 2.087 / G 4.3191,
+    # v_inf E 6.44 / M 3.74; real-eph E->M transit 262 d (the low-Mars-v_inf row).
+    branches = g_arc_branches(1.54, 2.087, 4.3191, 6.44, 3.74, max_g_revs=2)
+    short = next(b for b in branches if b.branch == "short")
+    assert short.tof_g_days < 160.0, "short-way branch is the #173 ~131-d transit"
+    # The multi-rev extension surfaces a branch within 30 d of the real-eph 262 d.
+    triage = triage_transit_match(branches, real_eph_transit_days=262.0, tol_days=30.0)
+    assert triage.reachable, (
+        f"no branch matched real-eph 262 d; branches={triage.branch_tofs}, "
+        f"closest {triage.best_branch} at {triage.best_tof_days:.1f} d"
+    )
+    assert triage.best_branch != "short", "the rescue must be a non-short branch"
+
+
+def test_triage_off_family_when_no_branch_matches() -> None:
+    """triage is OFF-FAMILY (not reachable) when no branch transit matches (#177).
+
+    A real-eph transit far from every enumerated branch is a clean OFF-FAMILY
+    negative — the tolerance is NOT loosened to manufacture REACHABLE. Label:
+    mechanics."""
+    branches = g_arc_branches(1.54, 2.087, 4.3191, 6.44, 3.74, max_g_revs=2)
+    # An absurd transit signature no branch can host.
+    triage = triage_transit_match(branches, real_eph_transit_days=2000.0, tol_days=30.0)
+    assert not triage.reachable
+    assert triage.delta_days != 0.0
 
 
 # ---------------------------------------------------------------------------
