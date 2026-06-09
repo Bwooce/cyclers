@@ -31,3 +31,49 @@ def test_discover_novel_moon_prunes_then_scans(monkeypatch: pytest.MonkeyPatch) 
     list(dn.discover_novel_moon(base_t0_sec=0.0, n_epochs=2, budget_kms=50.0))
     # At least the known-closing I-E-G family survived the prune and was scanned.
     assert any(set(s) <= {"Io", "Europa", "Ganymede", "Callisto"} for s in seen_topos)
+
+
+@pytest.mark.slow
+def test_jovian_closure_routes_through_full_pipeline() -> None:
+    """A closed Jovian I-E-G chain flows bridge->signature->match->gauntlet (slow).
+
+    NON-GOLDEN for the V_inf value (our computation). Per design note §5 the #76
+    I-E-G closure is bend-INFEASIBLE in the no-leveraging model, so the realistic
+    assertion is: it closes, reads ``novel`` against the null-numeric Jovian
+    bucket, and routes to REJECTED (not SILVER) because it is bend-infeasible —
+    proving the firewall holds on a non-heliocentric centre. We do NOT loosen tol
+    to manufacture a SILVER.
+    """
+    from cyclerfinder.data.discover_novel import discover_novel_moon
+    from cyclerfinder.verify.gauntlet import VerdictTier
+
+    findings = list(
+        discover_novel_moon(
+            base_t0_sec=0.6 * 86400.0,
+            n_epochs=4,
+            span_days=2.0,
+            budget_kms=50.0,
+            max_workers=1,
+        )
+    )
+    if not findings:
+        pytest.xfail("no Jovian closure surfaced in this small grid (empty-set outcome)")
+
+    # At least one finding flowed the full pipeline: it has a signature, a match
+    # outcome, and a tiered verdict.
+    f = findings[0]
+    assert f.signature is not None
+    assert f.match_outcome in ("novel", "probable-match-NEEDS-HUMAN", "known")
+    assert f.verdict.tier in {
+        VerdictTier.REJECTED,
+        VerdictTier.BRONZE,
+        VerdictTier.SILVER,
+        VerdictTier.GOLD,
+    }
+    # The #76 honest-risk: a bend-INFEASIBLE closure must route REJECTED, never
+    # SILVER (the firewall on a non-heliocentric centre).
+    for finding in findings:
+        if not finding.bend_feasible:
+            assert finding.verdict.tier == VerdictTier.REJECTED
+    # The Jovian bucket is null-numeric -> closures read novel.
+    assert any(f.match_outcome == "novel" for f in findings)

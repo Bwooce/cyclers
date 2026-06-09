@@ -65,7 +65,7 @@ from typing import Final
 
 import numpy as np
 
-from cyclerfinder.core.constants import MU_SUN_KM3_S2
+from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.kepler import KeplerConvergenceError, propagate
 from cyclerfinder.model.cycler import Cycler, orbit_elements_au
@@ -307,6 +307,15 @@ def _resonant_vinf_for_cycler(
     for enc in cycler.encounters:
         if enc.body not in bodies:
             bodies.append(enc.body)
+    # The closed-form resonance crossing is a HELIOCENTRIC single-ellipse model
+    # (``construct_resonant_cycler`` resolves body radii via ``PLANETS``). It does
+    # not apply to a planet-centred moon tour (moon codes live in ``SATELLITES``),
+    # so the path is recorded UNAVAILABLE for such a candidate rather than
+    # crashing — exactly the design-note §2 "resonance path dropped" rule, here
+    # for a non-heliocentric centre. lamberthub + Kepler-reprop remain the two
+    # independent Axis-A witnesses.
+    if any(b not in PLANETS for b in bodies):
+        return None
     try:
         rc = construct_resonant_cycler(a_au, e, bodies=tuple(bodies), mu=mu)
     except ValueError:

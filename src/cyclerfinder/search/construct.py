@@ -34,6 +34,7 @@ import numpy as np
 from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.lambert import lambert
+from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.model import Cycler, Encounter, Leg
 
 
@@ -101,12 +102,16 @@ def construct_cycler(
                 f"violation at index {i}: "
                 f"{encounter_times_sec[i]} -> {encounter_times_sec[i + 1]}"
             )
-    # Body codes.
+    # Body codes. Heliocentric planet codes live in PLANETS; planet-centred moon
+    # codes (moon-tour Tier-1, Forge Phase 6) live in SATELLITES. Either is valid
+    # — the ephemeris resolves the state and ``mu_sun`` carries the right central
+    # GM (the Sun's, or a primary's for a centred moon tour).
     for i, body in enumerate(sequence):
-        if body not in PLANETS:
+        if body not in PLANETS and body not in SATELLITES:
             raise ValueError(
                 f"unknown body code {body!r} at sequence index {i}; "
-                f"valid codes: {sorted(PLANETS.keys())}"
+                f"valid codes: {sorted(PLANETS.keys())} (heliocentric) "
+                f"or {sorted(SATELLITES.keys())} (planet-centred moons)"
             )
 
     n_legs = n - 1

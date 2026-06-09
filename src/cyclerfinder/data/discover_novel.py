@@ -55,6 +55,7 @@ import numpy as np
 
 from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR, MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.data.catalog import (
     CanonicalSignature,
     Catalog,
@@ -360,6 +361,7 @@ def evaluate_closure(
     model_assumption: str = "analytic-ephemeris",
     falsified: bool = False,
     slack_leg: int = 0,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> NoveltyFinding:
     """Bridge a closed chain to a Cycler, sign it, match it, gauntlet it.
 
@@ -382,8 +384,12 @@ def evaluate_closure(
     the human queue).
     """
     catalog = catalog if catalog is not None else load_catalog()
-    cycler = cycler_from_closure(closure, sequence, per_leg_revs, per_leg_branch, ephem)
-    signature = canonical_signature(cycler, model_assumption=model_assumption, period_k=period_k)
+    cycler = cycler_from_closure(
+        closure, sequence, per_leg_revs, per_leg_branch, ephem, mu_sun=mu_central
+    )
+    signature = canonical_signature(
+        cycler, model_assumption=model_assumption, period_k=period_k, mu_central=mu_central
+    )
     match_result: MatchResult = match(signature, catalog)
     known_id = match_result.entry.id if match_result.entry is not None else None
     superseded_by = (
@@ -397,7 +403,7 @@ def evaluate_closure(
     )
     falsified = falsified or physically_inadmissible
 
-    agreement = crosscheck_code_paths(cycler, ephem)
+    agreement = crosscheck_code_paths(cycler, ephem, mu=mu_central)
     multi_arc = _is_multi_arc(cycler)
     agreed, n_available, n_passed = _agreement_predicate(agreement, multi_arc=multi_arc)
     cid = _candidate_id(sequence, per_leg_revs, per_leg_branch, period_k, closure.t0_sec)
@@ -519,13 +525,19 @@ def jovian_galilean_topologies() -> tuple[TopologySpec, ...]:
     """The Galilean Jovian topology set the first campaign sweeps (plan Task 2.0).
 
     The empirically-closing Io-Europa-Ganymede(-Io) chain (#76 Phase 3 closes it;
-    the open question is bend feasibility under VILM gating), swept over the
-    converging Lambert branches (low/high x n_revs in {0, 1}). The slack
-    (period-absorbing) leg is the Ganymede->Io return leg (index 2). ``period_sec``
-    seeds from the Laplace-resonance multiple (the sum of the three moon periods).
+    the open question is bend feasibility under VILM gating). At the Laplace-
+    resonance ToF seeds these short Galilean legs admit only the direct (0-rev,
+    ``"single"``) Lambert branch — a fictitious multi-rev/low-high branch would be
+    rejected at reconstruction (``construct_cycler`` raises on a missing branch),
+    so the physically-honest enrichment is over the *period multiple* (``period_k``
+    -> the resonance-multiple period seed) and the launch-epoch grid (the
+    ``n_epochs`` sweep in :func:`discover_novel_moon`), NOT over branches the
+    geometry does not support. The slack (period-absorbing) leg is the Ganymede->Io
+    return leg (index 2). ``period_sec`` seeds from the Laplace-resonance multiple.
+    NON-GOLDEN: the corrector refines the period/ToF seeds.
     """
     seq = ("Io", "Europa", "Ganymede", "Io")
-    period_days = (
+    one_synodic_days = (
         _GALILEAN_PERIODS_DAYS["Io"]
         + _GALILEAN_PERIODS_DAYS["Europa"]
         + _GALILEAN_PERIODS_DAYS["Ganymede"]
@@ -537,14 +549,14 @@ def jovian_galilean_topologies() -> tuple[TopologySpec, ...]:
         _GALILEAN_PERIODS_DAYS["Ganymede"],
     )
     specs: list[TopologySpec] = []
-    for last_revs, last_branch in ((0, "low"), (1, "low"), (0, "high"), (1, "high")):
+    for period_k in (1, 2):
         specs.append(
             TopologySpec(
                 sequence=seq,
-                per_leg_revs=(0, 0, last_revs),
-                per_leg_branch=("single", "single", last_branch),
-                period_k=1,
-                period_sec=period_days * DAY_S,
+                per_leg_revs=(0, 0, 0),
+                per_leg_branch=("single", "single", "single"),
+                period_k=period_k,
+                period_sec=period_k * one_synodic_days * DAY_S,
                 tof_seed_days=tof_seed_days,
                 slack_leg=2,
             )
@@ -623,6 +635,7 @@ def discover_novel_moon(
                 catalog=catalog,
                 model_assumption="circular-coplanar",
                 slack_leg=spec.slack_leg,
+                mu_central=PRIMARIES[center],
             )
             if distinct_only and finding.signature is not None:
                 if finding.signature.hash in seen_hashes:

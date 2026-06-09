@@ -447,6 +447,7 @@ def canonical_signature(
     model_assumption: str = "circular-coplanar",
     period_k: int | None = None,
     period_years: float | None = None,
+    mu_central: float = MU_SUN_KM3_S2,
 ) -> CanonicalSignature:
     """Compute the spec §16.2 canonical signature of an idealised cycler.
 
@@ -490,7 +491,7 @@ def canonical_signature(
     # ellipse) lands on the same multiset as the catalogue's single
     # orbit_elements block (see _assemble_signature).
     leg_elements_raw: list[tuple[float, float]] = [
-        tuple(orbit_elements_au(enc.r, leg.v_depart, MU_SUN_KM3_S2))  # type: ignore[misc]
+        tuple(orbit_elements_au(enc.r, leg.v_depart, mu_central))  # type: ignore[misc]
         for leg, enc in zip(cycler.legs, cycler.encounters[:-1], strict=True)
     ]
 
