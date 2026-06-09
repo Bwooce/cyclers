@@ -44,7 +44,9 @@ from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.data.discover_novel import (
     NoveltyFinding,
     discover_novel_moon,
+    jovian_galilean_permutation_topologies,
     jovian_galilean_topologies,
+    saturnian_titan_tour_topologies,
 )
 from cyclerfinder.data.empty_regions import (
     EmptyRegionReport,
@@ -67,6 +69,15 @@ from cyclerfinder.verify.gauntlet import VerdictTier
 # this and re-sweep per the §6b gate.
 _CAMPAIGN_TAGS = frozenset({"ballistic", "patched-conic", "single-arc", "coplanar"})
 
+# Topology-set registry (Forge Phase 6 #178). Each entry maps a --topology-set
+# choice to (enumerator, region-id prefix). The dated region id is built per-run.
+# The default keeps the original first-campaign Jovian-Galilean behaviour identical.
+_TOPOLOGY_SETS: dict[str, tuple[object, str]] = {
+    "jovian-galilean": (jovian_galilean_topologies, "jovian-IEG-vilm"),
+    "jovian-permutations": (jovian_galilean_permutation_topologies, "jovian-perm-vilm"),
+    "saturnian-titan": (saturnian_titan_tour_topologies, "saturnian-titan-vilm"),
+}
+
 
 def _git_sha() -> str:
     try:
@@ -75,10 +86,10 @@ def _git_sha() -> str:
         return "unknown"
 
 
-def _campaign_method() -> MethodCapability:
+def _campaign_method(center: str) -> MethodCapability:
     return MethodCapability(
-        genome="single-ellipse free-return (Jovicentric, no-leveraging)",
-        corrector="ballistic_correct (mu_central=PRIMARIES[Jupiter])",
+        genome=f"single-ellipse free-return ({center}-centric, no-leveraging)",
+        corrector=f"ballistic_correct (mu_central=PRIMARIES[{center}])",
         capability_tags=_CAMPAIGN_TAGS,
         git_sha=_git_sha(),
     )
@@ -147,7 +158,13 @@ def _finding_to_queue_entry(finding: NoveltyFinding, panel: PanelResult) -> Revi
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Forge Phase 6 Jovian VILM moon-system sweep")
+    p = argparse.ArgumentParser(description="Forge Phase 6 VILM moon-system sweep")
+    p.add_argument(
+        "--topology-set",
+        default="jovian-galilean",
+        choices=sorted(_TOPOLOGY_SETS),
+        help="which Phase 6 topology set to sweep (default: jovian-galilean, first campaign)",
+    )
     p.add_argument("--center", default="Jupiter")
     p.add_argument("--region-id", default=None, help="empty-region id (defaults to dated)")
     p.add_argument("--epochs", type=int, default=64, help="epoch grid points per topology")
@@ -169,8 +186,9 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
     center = args.center
-    region_id = args.region_id or f"jovian-IEG-vilm-{datetime.now(UTC).date().isoformat()}"
-    method = _campaign_method()
+    enumerator, region_prefix = _TOPOLOGY_SETS[args.topology_set]
+    region_id = args.region_id or f"{region_prefix}-{datetime.now(UTC).date().isoformat()}"
+    method = _campaign_method(center)
     mu_central = PRIMARIES[center]
 
     lines: list[str] = []
@@ -179,8 +197,9 @@ def main(argv: list[str] | None = None) -> int:
         print(s, flush=True)
         lines.append(s)
 
-    emit("=== Forge Phase 6 — Jovian VILM moon-system novelty sweep ===")
-    emit(f"center={center} region_id={region_id} epochs={args.epochs} budget_kms={args.budget_kms}")
+    emit("=== Forge Phase 6 — VILM moon-system novelty sweep ===")
+    emit(f"topology_set={args.topology_set} center={center} region_id={region_id}")
+    emit(f"epochs={args.epochs} budget_kms={args.budget_kms}")
     emit(f"method={method.genome} tags={sorted(method.capability_tags)} git_sha={method.git_sha}")
 
     # --- The re-sweep gate (design §6b) -----------------------------------
@@ -193,7 +212,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     ephem = Ephemeris(model="circular", center=center)
-    topologies = jovian_galilean_topologies()
+    topologies = enumerator()  # type: ignore[operator]
     base_t0 = 0.6 * 86400.0  # the #76 converging seed window (NON-GOLDEN)
     t_start = time.monotonic()
 
