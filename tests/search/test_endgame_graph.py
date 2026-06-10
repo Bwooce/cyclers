@@ -5,9 +5,9 @@ from __future__ import annotations
 
 import pytest
 
-from cyclerfinder.search import endgame_graph as eg
-from cyclerfinder.search import leveraging_leg as ll  # noqa: F401 (used in Task 5+)
-from cyclerfinder.search import vilm
+import cyclerfinder.search.endgame_graph as eg
+import cyclerfinder.search.leveraging_leg as ll  # noqa: F401 (used in Task 5+)
+import cyclerfinder.search.vilm as vilm
 
 
 def test_lower_bound_is_admissible_vs_vilm() -> None:
@@ -101,3 +101,39 @@ def test_dijkstra_matches_brute_force_on_two_moon_grid() -> None:
     )
     assert bb is not None and brute is not None
     assert bb.total_dv_kms == pytest.approx(brute, abs=1e-6)
+
+
+def test_a2_ganymede_europa_min_dv_golden() -> None:
+    # A2 (Part-1 Table 1, no-GA): Ganymede->Europa ΔV_min = 1.71 km/s.
+    assert vilm.vilm_dv_min("Ganymede", "Europa") == pytest.approx(1.71, abs=0.17)
+
+
+def test_a6_europa_endgame_scalar_golden() -> None:
+    # A6: Europa endgame continuous floor + 46-day phasing scalar.
+    dv_ms, days = vilm.europa_endgame_dv()
+    assert days == pytest.approx(46.0)
+    assert dv_ms < 154.0  # continuous floor < published discrete 3-VILM design
+
+
+def test_phasefull_route_realises_leverage_above_continuous_floor() -> None:
+    # The endgame route is V∞-SHAPING ONLY (a cycler does not capture into a
+    # parking orbit), so the right published lower bound is the *leverage* portion
+    # of A2 = full ΔV_min MINUS the escape+capture insertion floor. A finite-leg
+    # route cannot beat that continuous leverage minimum, and (leverage realised)
+    # it stays within a small multiple of it — NOT the un-leveraged impulsive cost.
+    route = eg.solve_endgame(
+        moon_system="Jupiter",
+        entry_moon="Ganymede",
+        target_moon="Europa",
+        vinf_entry_kms=3.0,
+        target_vinf_floor_kms=0.8,
+        dv_budget_kms=4.0,
+        system_moons=("Ganymede", "Europa"),
+    )
+    assert route is not None
+    leverage_floor = vilm.vilm_dv_min("Ganymede", "Europa") - vilm.vilm_dv_floor(
+        "Ganymede", "Europa"
+    )
+    assert route.total_dv_kms >= leverage_floor - 1e-9
+    assert route.total_dv_kms < 5.0 * leverage_floor
+    assert all(leg.gamma_floor_ok for leg in route.leveraging_legs)
