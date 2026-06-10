@@ -180,19 +180,20 @@ git commit -m "search/leveraging_leg: canonical Tisserand helpers for VILM legs"
 
 ---
 
-> **EXECUTION FINDING (2026-06-09) — Task 2 needs a design rework before implementing.**
-> A first implementation of the apse-DSM leg below revealed the model does NOT
-> realize VILM leverage: one leg lowering V∞ by 0.3 km/s cost 4–10 km/s (an
-> un-leveraged impulsive orbit change; real VILMs cost ~0.1 km/s because the
-> gravity assist does the work and the apse burn is small). It also mixes
-> exterior-resonance orbits (a>1) with interior (periapsis) burns, and the
-> bracket finder latches the `1e3` nan-sentinel → spurious "converged" results
-> with `vinf_out≈0` instead of the target. Before re-implementing Task 2: rework
-> the leg physics so (a) the resonance/apse/leverage-direction are consistent,
-> (b) per-leg ΔV is on the order of the Γ-quadrature increment (the leverage is
-> realized, not bypassed), (c) the root-find brackets only over the feasible
-> (real-V∞) interval so no sentinel roots appear. The crossing constraint in
-> `eccentricity_from_vinf` (periapsis ≤ 1 ≤ apoapsis) is CORRECT and must stay.
+> **EXECUTION FINDING — RESOLVED (2026-06-10, commit 21ed9ff).** The first
+> brentq-bracket draft of the apse-DSM leg latched the *far* root / the nan
+> sentinel, giving un-leveraged 4–10 km/s legs and spurious `vinf_out≈0`. FIX: a
+> fixed-apse tangential burn collapses Tisserand to a quadratic in the apse speed
+> `V∞² = v² − 2R·v + (3 − 2/R)`; solve analytically and take the **near root**
+> (continuous from the pre-burn `v`) — the small, leveraged burn. No brentq, no
+> sentinel. Europa 2:1 endgame 2.5→2.2 km/s now costs 0.30 km/s (≥ the Γ floor).
+> Tasks 2 AND 3 (the leg solve + the `gamma_floor_ok` cross-check) are
+> IMPLEMENTED together in `leveraging_leg.py` and committed; the brentq code in
+> the Task 2 block below is SUPERSEDED — skip it. The crossing constraint in
+> `eccentricity_from_vinf` (periapsis ≤ 1 ≤ apoapsis) is CORRECT and stays.
+> Resume execution at **Task 4** (the leg interface — `evaluate_leveraging_leg`
+> + `LeveragingLegResult` + `gamma_floor_kms` — is unchanged, so Tasks 4–12 apply
+> as written).
 
 ## Task 2: The phase-full leg solve (`evaluate_leveraging_leg`)
 
