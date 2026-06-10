@@ -923,6 +923,60 @@ def discover_endgame_moon(
             )
 
 
+def endgame_route_to_nbody_request(
+    route: EndgameRoute,
+    *,
+    center: str,
+    moon: str,
+) -> dict[str, object]:
+    """Serialise an endgame route to a REBOUND moon-system harness request dict.
+
+    The existing REBOUND harness (:mod:`cyclerfinder.nbody.rung`) consumes
+    heliocentric SILVER candidates; a dedicated moon-system endgame propagator is
+    not yet implemented.  This function returns the minimal dict that such a
+    harness would need to reproduce the endgame manoeuvre sequence:
+
+    * ``center`` / ``moon``: primary body and target moon (strings).
+    * ``n_maneuvers``: number of leveraging-leg burns.
+    * ``maneuvers``: per-leg list of ``{dv_dsm_kms, apse_radius_km, vinf_in_kms,
+      vinf_out_kms, resonance}`` — the burn parameters the propagator needs to
+      place the DSM at the correct apse.
+    * ``vinf_entry_kms`` / ``vinf_final_kms``: end-to-end V∞ bounds.
+
+    NOTE: The REBOUND moon-system harness call site was not found in this
+    repository at implementation time (2026-06-10).  The dict schema above is
+    designed to be self-describing and forward-compatible; adapt the keys to
+    match the harness when it is built.
+
+    Do NOT run propagation here.
+    """
+    from cyclerfinder.search.leveraging_leg import LeveragingLegResult
+
+    legs = route.leveraging_legs
+    maneuvers = [
+        {
+            "dv_dsm_kms": leg.dv_dsm_kms,
+            "apse_radius_km": leg.apse_radius_km,
+            "vinf_in_kms": leg.vinf_in_kms,
+            "vinf_out_kms": leg.vinf_out_kms,
+            "resonance": list(leg.resonance),
+            "exterior": leg.exterior,
+            "moon": leg.moon,
+        }
+        for leg in legs
+        if isinstance(leg, LeveragingLegResult)
+    ]
+    return {
+        "center": center,
+        "moon": moon,
+        "n_maneuvers": len(legs),
+        "maneuvers": maneuvers,
+        "vinf_entry_kms": route.vinf_entry_kms,
+        "vinf_final_kms": route.vinf_final_kms,
+        "total_dv_kms": route.total_dv_kms,
+    }
+
+
 def _epoch_seeds_sec(
     *,
     base_t0_sec: float,
@@ -1040,6 +1094,7 @@ __all__ = [
     "discover_novel",
     "discover_novel_moon",
     "em_multiarc_topologies",
+    "endgame_route_to_nbody_request",
     "evaluate_closure",
     "jovian_galilean_permutation_topologies",
     "jovian_galilean_topologies",
