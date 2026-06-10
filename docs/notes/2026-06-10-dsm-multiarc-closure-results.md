@@ -1,5 +1,16 @@
 # DSM multi-arc closure lane — RESULTS (task #180, Spec 2)
 
+> **SUPERSEDED (2026-06-10, same day).** The "0 rows, triple-confirmed
+> off-family" conclusion below is an ARTIFACT and is WITHDRAWN. A follow-up
+> descriptor re-dig found all three methods (self-seeding, DSM, MBH) inherited one
+> upstream bug — the Stage-B closer used the *coplanar branch ToF* instead of the
+> row's *tabulated signature transit* for the real-eph Lambert, inflating the
+> emerged Mars V∞ ~1.6–2.1×. `g_arc_shape` in fact reproduces BOTH sourced anchors,
+> and a free (epoch, ToF) Lambert at the signature ToF closes both anchors to
+> 0.1–0.3 km/s on ~6 rows. These rows ARE reachable; the empty-region claim is
+> withdrawn (not ingested). See the "Correction" section appended at the end and
+> `docs/notes/2026-06-10-dsm-tof-artifact-correction.md` (the follow-up).
+
 **Date:** 2026-06-10
 **Code:** `src/cyclerfinder/search/dsm_descriptor_seed.py` (seed adapter +
 `close_row_dsm`), `tests/search/test_dsm_descriptor_seed.py`. Commits
