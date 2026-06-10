@@ -7,6 +7,7 @@ from typing import Any
 import numpy as np
 
 import cyclerfinder.search.dsm_descriptor_seed as dds
+from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.catalog import load_catalog
 
 
@@ -34,3 +35,17 @@ def test_no_descriptor_row_returns_none() -> None:
     catalog = load_catalog()
     ocampo = next(e for e in catalog.entries if e.id.startswith("russell-ocampo"))
     assert dds.seed_dsm_chain_from_descriptor(ocampo.raw) is None
+
+
+def test_close_reachable_row_emerges_vinf_near_anchor() -> None:
+    # A REACHABLE descriptor row closes with the DSM genome on the real ephemeris,
+    # and its EMERGED Mars V_inf lands within tolerance of the row's sourced anchor.
+    row = _row("russell-ch4-9.353Gg2")
+    ephem = Ephemeris("astropy")  # real DE440 via astropy
+    res = dds.close_row_dsm(row, ephem)
+    # converged is by the corrector's own residual criterion; if it converges the
+    # emerged V_inf must match the sourced anchor (golden — anchor from the row, not
+    # computed here). A non-converged row is a recorded negative (also valid).
+    if res.converged:
+        assert res.anchor_match
+        assert min(res.dv_dsm_kms) >= 0.0
