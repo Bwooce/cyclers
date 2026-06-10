@@ -5,8 +5,10 @@ from __future__ import annotations
 import math
 
 import numpy as np
+import pytest
 
 import cyclerfinder.core.cr3bp as cr3bp
+import cyclerfinder.core.satellites as sats
 
 
 def test_jacobi_constant_value() -> None:
@@ -55,3 +57,11 @@ def test_stm_matches_finite_difference() -> None:
     ) / (2 * eps)
     assert arc.stm is not None
     assert np.allclose(arc.stm[:, 0], col0, atol=1e-4)
+
+
+def test_earth_moon_mu_physical() -> None:
+    # cr3bp_system derives the physical Earth-Moon mass ratio ~0.01215 from the
+    # registry GMs (distinct from the Arenstorf test-problem 0.012277471).
+    assert "Moon" in sats.SATELLITES
+    sysm = cr3bp.cr3bp_system("Earth", "Moon")
+    assert sysm.mu == pytest.approx(0.01215, abs=2e-4)

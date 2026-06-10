@@ -43,6 +43,9 @@ def mean_motion_deg_day_about(sma_km: float, *, mu_primary: float) -> float:
 # INDEPENDENTLY of the paper's transcribed V_M anchors so the Task-1.3 golden
 # (registry vs published Table 3) stays non-circular. Accessed 2026-06-07.
 PRIMARIES: dict[str, float] = {
+    # Earth system GM (JPL SSD gm_de440 planetary constants): 4.0350323562548019e5 km^3/s^2.
+    # Used for the Earth-Moon CR3BP (Task 4, 2026-06-10).
+    "Earth": 4.0350323562548019e5,
     # Jupiter system GM (JPL SSD gm_de440 planetary constants): 1.26686534e8.
     "Jupiter": 1.26686534e8,
     # Saturn system GM (JPL SSD gm_de440 planetary constants): 3.7931207e7.
@@ -85,6 +88,12 @@ def _sat(
 # anchors are comparable: 100 km for all moons except Titan at 1500 km (mining
 # note line 352).
 SATELLITES: dict[str, SatelliteData] = {
+    # --- Earth-Moon system ---
+    # Moon: GM 4902.800118 km^3/s^2 (JPL SSD satellite GM table, gm_de440);
+    #       mean radius 1737.4 km; SMA 384400 km (JPL SSD satellite physical/orbital
+    #       tables); safe_alt 100 km (standard low lunar orbit altitude).
+    #       Sources accessed 2026-06-10. Added for Earth-Moon CR3BP mu (Task 4).
+    "Moon": _sat("Moon", "Earth", 4902.800118, 1737.4, 384400.0, 100.0),
     # --- Galilean (Jupiter) ---
     # Io: GM 5959.916, mean R 1821.49 km, a 421800 km (JPL SSD).
     "Io": _sat("Io", "Jupiter", 5959.916, 1821.49, 421800.0, 100.0),
