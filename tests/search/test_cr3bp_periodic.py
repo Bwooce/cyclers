@@ -30,3 +30,14 @@ def test_non_periodic_guess_does_not_converge() -> None:
     s0 = np.array([0.7, 0.0, 0.0, 0.0, -0.2, 0.0])
     res = cp.correct_periodic(sysm, s0, 3.0, max_iter=8)
     assert not res.converged
+
+
+def test_periodic_orbit_crosscheck_independent_integrator() -> None:
+    # A corrected Arenstorf orbit re-propagated with a DIFFERENT integrator ("Radau")
+    # stays closed and conserves Jacobi -- an independent confirmation.
+    # Sourced golden: Arenstorf 1963 / Hairer et al. (same as above).
+    sysm = cr3bp.CR3BPSystem(mu=MU, primary="t", secondary="t", l_km=1.0, t_s=1.0)
+    res = cp.correct_periodic(sysm, np.array([X0, 0.0, 0.0, 0.0, VY0, 0.0]), PERIOD)
+    ok, dc = cp.crosscheck_periodic(sysm, res)
+    assert ok
+    assert dc < 1e-8
