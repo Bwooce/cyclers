@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-09)
+# Project state at a glance (updated 2026-06-10)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
@@ -49,6 +49,107 @@ sweep) — NOT a backlog to grind.
 - **Machinery is complete**: corrector + MBH + continuation + free-return-chain +
   self-seeding + n-body harness + GMAT V4 lane (live, headless) + Phase 6
   discovery pipeline with the method-versioned empty-region registry.
+  (2026-06-10: + the CR3BP Tier-2 propagator/corrector — `core/cr3bp.py` /
+  `search/cr3bp_periodic.py` — and the VILM-leveraging endgame solver.)
+
+**CORRECTION (2026-06-10) — the ceiling was WRONG for the descriptor-bearing
+rows.** A Stage-B closer bug (the real-eph Lambert used the coplanar G-arc
+*branch* ToF instead of the row's tabulated *signature transit*) inflated the
+emerged Mars V∞ ~1.6–2.1×, producing a false "triple-confirmed off-family"
+consensus — self-seeding (#177), the DSM corrector, and MBH all inherited the
+SAME upstream bug, so their agreement was never independent evidence. With the
+fix (signature-transit ToF + a joint (epoch, ToF) closer), ALL 6
+descriptor-bearing `russell-ch4` rows close on real DE440 to both sourced
+anchors (≤0.08 km/s; 6.44Gg3 to 0.00 km/s) and pass §14 V1 mechanics; the
+proposed promotions (4 V0→V1 + 2 real-eph re-confirmations of existing circular
+V1 rows; all 6 V3-CANDIDATES) are HELD for review — no writeback yet. See
+`docs/notes/2026-06-10-dsm-tof-artifact-correction.md` and
+`docs/notes/2026-06-10-tof-fix-closure-results.md`. SEPARATELY, the McConaghy
+2004 dissertation mining CONFIRMED the ceiling for everything else: per-member
+reproducible data (date + V∞ + closest-approach + leg ToF, DE405) exists ONLY
+for S1L1 (see the 2026-06-10 section below); the ~200 ocampo rows stay V0 —
+no per-member data was ever published.
+
+## 2026-06-10 — genome-capability day: VILM endgame, ToF-artifact correction, CR3BP Tier-2, two acquisitions mined
+
+- **#179 — VILM-leveraging endgame solver BUILT + VALIDATED.**
+  `src/cyclerfinder/search/leveraging_leg.py` (analytic near-root
+  apse-quadratic leveraging legs + Γ-floor cross-check) and
+  `src/cyclerfinder/search/endgame_graph.py` (multi-moon Dijkstra over the
+  leveraging graph, soundness verified against brute force). The Saturnian
+  leveraging novelty sweep came back **EMPTY** (best max-V∞ 12.775 km/s vs the
+  6.0 km/s floor) — an honest method-versioned negative
+  (`saturnian-titan-endgame-vilm-2026-06-10` in `data/empty_regions.jsonl`).
+  The capability edge ("leveraging" ⊐ "single-arc") is registered for the
+  Phase-6 §6b re-sweep gate.
+- **#180→#181 — DSM multi-arc lane built; its negative RETRACTED same day;
+  ToF fix closes all 6 descriptor rows.** The DSM multi-arc closure lane
+  (`search/dsm_descriptor_seed.py`) was built and produced a "0 promotions,
+  triple-confirmed off-family" negative — RETRACTED the same day as a
+  shared-upstream-bug artifact (the ceiling CORRECTION above). The fix
+  (signature-transit ToF + the joint (epoch, ToF) closer in
+  `search/self_seeding.py`) closes all 6 descriptor-bearing rows V1-PASS on
+  real DE440 (every emerged anchor ≤0.08 km/s of sourced; best is 6.44Gg3 —
+  the row that triggered the investigation — at 0.00 km/s on both anchors).
+  All 6 are **V3-CANDIDATES** (single-leg independent REBOUND/IAS15 confirm
+  in-band; the multi-lap horizon-TCM is the named follow-up); promotions
+  pending review. Notes: `2026-06-10-dsm-multiarc-closure-results.md`
+  (carries the SUPERSEDED banner), `2026-06-10-dsm-tof-artifact-correction.md`,
+  `2026-06-10-tof-fix-closure-results.md`.
+- **#182 — CR3BP Tier-2 SHIPPED** (8-task plan; Task 8 regression in flight at
+  writing). `core/cr3bp.py` (rotating-frame EOM, Jacobi constant, 42-state STM
+  propagation, DOP853 at 1e-12) + `search/cr3bp_periodic.py`
+  (`correct_periodic` Newton single-shooting + `crosscheck_periodic`
+  independent Radau re-propagation). Arenstorf sourced golden: the corrector
+  converges to the published IC (closure 4.16e-9 in the gate; 7.7e-11 in the
+  backfill run), Jacobi conserved ≤3.4e-12. The Moon was added to the
+  `core/satellites.py` registry. **Earth-Moon backfill:** the Arenstorf row's
+  CR3BP block is populated (proposed, review-gated); `genova-aldrin` + `wittal`
+  came back NO_SOURCED_IC — and the Genova mining below makes the genova
+  blocker PERMANENT for the CR3BP lane (not an acquisition gap). **Saturnian
+  midsize-moon discovery:** the first run produced 11 contaminated
+  "convergences" (8 were libration-point equilibria / a period-collapse — a
+  fixed point trivially "closes" for any period); deleted and regenerated
+  under a v2 degeneracy gate (equilibrium rejection / period floor / dedup /
+  independent Radau crosscheck) → **14 genuine tiny-amplitude (km-scale)
+  L1/L2 Lyapunov members** across Mimas/Enceladus/Tethys, SILVER
+  (`data/cr3bp_silver.jsonl`, method `cr3bp-lyapunov-corrector-v2`), honestly
+  flagged pipeline-validation-not-novel (Lyapunov-centre families). Amplitude
+  growth needs half-period symmetry / multiple shooting — recorded as a
+  method-capability gap. Notes: `2026-06-10-cr3bp-backfill-results.md`,
+  `2026-06-10-cr3bp-moontour-results.md`.
+- **Acquisitions MINED** (held reference papers, cited by publication only —
+  the offline reference store is private and is never linked from this repo):
+  - **McConaghy 2004 Purdue PhD** (*Design and Optimization of Interplanetary
+    Spacecraft Trajectories*, UMI/ProQuest 3166673) — Ch. 7 Tables 7.1–7.5
+    give four full per-encounter DE405 S1L1 itineraries (calendar date, V∞,
+    closest-approach distance, leg ToF; 24–27 encounters over 33 yr) = exactly
+    the per-member state the V0 rows lack, **for S1L1 ONLY**. Table 6.2 pins
+    S1L1 = `2g(2.8277, 657.97°, U)…g(1.4508, 522.29°, L)` (multi-arc, two
+    generic E-E legs). Table 5.8 gives U0L1(2.7540) ballistic (ΔV=0.00) with
+    its V∞ pairs (Earth 11.3/11.3, Mars 14.0/5.4 km/s); Table 5.4 gives
+    2L3 = Byrnes Case 1 (V∞E 5.65 / V∞M 3.05, simple model). Every other
+    family is summary-exemplar-only → **ceiling CONFIRMED except S1L1**.
+    **#94 UNBLOCKED** on the source axis (follow-on: reproduce Table 7.1 on
+    REBOUND/IAS15 for V1+). Note:
+    `docs/notes/2026-06-10-mcconaghy-2004-dissertation-mining.md`.
+  - **Genova & Aldrin 2015** (NTRS 20150018049) — the 3-petal EM cycler does
+    NOT exist in the pure CR3BP (it requires solar gravity, i.e. a
+    bicircular-or-better model; stated explicitly on p.3); no Jacobi constant,
+    rotating-frame IC, or nondimensional period is published → the row's
+    CR3BP-backfill blocker is **PERMANENT-for-CR3BP**, not an acquisition gap.
+    Sourced values extracted and held for review (553-d apsidal super-period,
+    ~24° inclination, 20–62 m/s/cycle station-keeping, 39 m/s/month abstract
+    average); flags a `model_assumption: cr3bp` → bicircular reclassification
+    question. Note: `docs/notes/2026-06-10-genova-aldrin-2015-mining.md`.
+  - **Also newly held:** Vallado 1991 USAFA-TR-91-6 (sourced algorithm test
+    cases); Ellison et al. 2018 JGCD (analytic MGALT/MGAnDSM gradients);
+    Cuevas del Valle 2026 EuroGNC (CR3BP rendezvous); Iorfida 2016; Shakouri
+    2019. Vallado *Fundamentals of Astrodynamics* 4th ed full text is
+    consultable online (archive.org djvu text — OCR caveat: equations/tables
+    unreliable, independent check required before any golden use). Szebehely
+    *Theory of Orbits* held, mining pending (#185 — CR3BP periodic-orbit
+    goldens).
 
 ## Validation campaign — 2026-06-08 (V0-lift, three-track)
 
@@ -536,8 +637,19 @@ fill. Listed in rough priority order.
 2. **Friedlander/Niehoff/Byrnes/Longuski 1986, AIAA 86-2009-CP** —
    VISIT-1 / VISIT-2 V∞ at Earth and Mars. Paywalled
    (DOI `10.2514/6.1986-2009`). 4 "unknown" V∞ gaps; never digitised
-   online (Q&A item C still partly open).
-3. **McConaghy 2005 Purdue dissertation (AAI3166673) / AIAA 2002-4420
+   online (Q&A item C still partly open). Partial mitigation 2026-06-10:
+   McConaghy 2004 Table 5.5 identifies VISIT 2 = r=10 / VISIT 1 = r=12
+   with PARAMETRIC aphelion/period ranges (perihelion free), not exact
+   V∞ — so the paywalled paper is still wanted for the exact values.
+3. **✓ Resolved (2026-06-10)** — the McConaghy Purdue dissertation (2004,
+   UMI 3166673) is acquired and mined
+   (`docs/notes/2026-06-10-mcconaghy-2004-dissertation-mining.md`): U0L1
+   steady-state V∞ resolved from Table 5.8 (U0L1(2.7540) is ballistic,
+   ΔV 0.00, with per-leg Earth V∞ 11.3/11.3 and Mars V∞ 14.0/5.4 km/s;
+   aphelion 3.20/1.54 AU, period 2.93/1.18 yr), and "Case 1" resolved
+   from Table 5.4 (2L3 = Byrnes Case 1: V∞E 5.65, V∞M 3.05, simple
+   model). Original text:
+   **McConaghy 2005 Purdue dissertation (AAI3166673) / AIAA 2002-4420
    full text** — U0L1 and Case 1 steady-state V∞ (and U0L1 return ToF).
    Both ResearchGate / ProQuest restricted. Note: the McConaghy 2006
    S1L1 orbital-element gap this would have closed is now resolved via

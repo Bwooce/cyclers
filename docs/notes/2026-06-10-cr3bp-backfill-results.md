@@ -57,6 +57,19 @@ _Proposed level: **V1** (computed from sourced IC; pending independent Jacobi cr
 
 No CR3BP fields can be proposed for this row.
 
+**Addendum (2026-06-10, post-mining):** the full Genova & Aldrin 2015 PDF has
+since been acquired and mined
+(`docs/notes/2026-06-10-genova-aldrin-2015-mining.md`). It proves the 3-petal
+cycler does **not exist in the pure CR3BP** — solar gravity is required (a
+bicircular-or-better model; stated explicitly on p.3) — and it publishes no
+Jacobi constant, rotating-frame state vector, or non-dimensional period. The
+CR3BP backfill for this row is therefore **PERMANENTLY out of model**, not
+pending acquisition: the "requires the full … paper PDF" framing above is
+superseded — the PDF is in hand and cannot supply a CR3BP IC. The catalogue-gap
+implication changes the same way: this is no longer an acquisition gap but a
+model-mismatch question (`model_assumption: cr3bp` → bicircular
+reclassification, see the mining note §9).
+
 ---
 
 ## Row: `wittal-2022-em-cycler-family`
@@ -74,7 +87,8 @@ No CR3BP fields can be proposed for this row.
 - **Converged (sourced IC + periodic orbit found):** 1
   - `arenstorf-em-figure8-1963`
 - **No sourced IC (skipped, not fabricated):** 2
-  - `genova-aldrin-2015-em-3petal-cycler`
+  - `genova-aldrin-2015-em-3petal-cycler` — (2026-06-10 addendum above:
+    PERMANENT for the CR3BP lane; the orbit does not exist in the pure CR3BP)
   - `wittal-2022-em-cycler-family`
 
 **NO writeback to `data/catalogue.yaml` or `validate.py`.**  Promotion is review-gated (separate step).
