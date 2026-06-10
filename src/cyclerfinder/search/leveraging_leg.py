@@ -60,7 +60,18 @@ def eccentricity_from_vinf(*, a: float, vinf: float) -> float:
 
 @dataclass(frozen=True)
 class LeveragingLegResult:
-    """One phase-full VILM leg. CONSTRAINED vs EMERGED separated (golden rule)."""
+    """One phase-full VILM leg. CONSTRAINED vs EMERGED separated (golden rule).
+
+    FIDELITY CAVEAT (this rung): ``converged=True`` asserts only that the leg is a
+    geometrically valid V∞-SHAPING burn (real near-root, bound post-burn orbit,
+    both orbits cross the moon) and that ΔV ≥ the Γ floor. It does NOT assert
+    phasing closure — ``resonance_residual`` is REPORTED as a diagnostic but is
+    deliberately not enforced here (the post-burn orbit need not land on an
+    integer resonance). True return-to-moon phasing is confirmed downstream by the
+    n-body step (:func:`cyclerfinder.data.discover_novel.endgame_route_to_nbody_request`).
+    So a converged leg / route is a conservative V∞-lowering lower bound, not yet a
+    phasing-closed endgame design.
+    """
 
     dv_dsm_kms: float  # CONSTRAINED — the apse leveraging burn
     vinf_out_kms: float  # EMERGED — achieved excess speed at return
@@ -69,7 +80,7 @@ class LeveragingLegResult:
     apse_radius_km: float  # EMERGED — burn-point radius about the primary
     exterior: bool  # apoapsis (True) vs periapsis (False) burn
     moon: str
-    resonance_residual: float  # phasing diagnostic (rad); 0 == ideal
+    resonance_residual: float  # phasing DIAGNOSTIC (rad), NOT enforced — see caveat
     converged: bool
     gamma_floor_ok: bool = False
 
@@ -86,6 +97,7 @@ def _nan_leg(moon: str, n: int, m: int, vinf_in: float, exterior: bool) -> Lever
         moon=moon,
         resonance_residual=float("nan"),
         converged=False,
+        gamma_floor_ok=False,
     )
 
 

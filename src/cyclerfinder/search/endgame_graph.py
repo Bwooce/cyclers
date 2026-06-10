@@ -4,8 +4,12 @@
 Chains phase-full VILM legs (:mod:`cyclerfinder.search.leveraging_leg`) and
 ballistic intermoon transfers to walk a moon-tour cycler's encounter V∞ from a
 high entry down to a bend-feasible target floor. Dijkstra over (moon, V∞) states
-(non-negative edge costs -> optimal); the phase-free Γ-quadrature
-(:mod:`cyclerfinder.search.vilm`) supplies the admissible lower bound. Pure.
+(non-negative edge costs -> optimal **over the discretised graph**: states are
+bucketed at ``_VINF_BUCKET_KMS`` and the candidate V∞ targets are a finite set, so
+this is the optimum of the bucketed graph, not the continuous problem). The
+phase-free Γ-quadrature (:mod:`cyclerfinder.search.vilm`) supplies the admissible
+lower bound. The route is a conservative V∞-shaping lower bound — phasing closure
+is confirmed downstream by the n-body step, not asserted here. Pure.
 """
 
 from __future__ import annotations
