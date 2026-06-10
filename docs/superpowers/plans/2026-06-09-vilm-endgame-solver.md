@@ -961,16 +961,25 @@ def test_a6_europa_endgame_scalar_golden():
     assert dv_ms < 154.0  # continuous floor < published discrete 3-VILM design
 
 
-def test_phasefull_route_bounded_below_by_continuous_floor():
-    # The phase-full two-moon route ΔV >= the continuous Γ floor for the same
-    # transfer (a finite-leg route cannot beat the analytic minimum).
+def test_phasefull_route_realises_leverage_above_continuous_floor():
+    # The endgame route is V∞-SHAPING ONLY (a cycler does not capture into a
+    # parking orbit), so the right published lower bound is the *leverage* portion
+    # of A2 = full ΔV_min MINUS the escape+capture insertion floor. A finite-leg
+    # route cannot beat that continuous leverage minimum, and (leverage realised)
+    # it stays within a small multiple of it — NOT the un-leveraged impulsive cost.
     route = eg.solve_endgame(
         moon_system="Jupiter", entry_moon="Ganymede", target_moon="Europa",
         vinf_entry_kms=3.0, target_vinf_floor_kms=0.8, dv_budget_kms=4.0,
         system_moons=("Ganymede", "Europa"),
     )
     assert route is not None
-    assert route.total_dv_kms >= vilm.vilm_dv_floor("Ganymede", "Europa") - 1e-9
+    leverage_floor = vilm.vilm_dv_min("Ganymede", "Europa") - vilm.vilm_dv_floor(
+        "Ganymede", "Europa"
+    )
+    assert route.total_dv_kms >= leverage_floor - 1e-9
+    assert route.total_dv_kms < 5.0 * leverage_floor
+    # Every VILM leg independently respects its Γ-quadrature floor.
+    assert all(leg.gamma_floor_ok for leg in route.leveraging_legs)
 ```
 
 - [ ] **Step 2: Run the tests**
