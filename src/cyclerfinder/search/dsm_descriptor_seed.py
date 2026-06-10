@@ -112,8 +112,12 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
             float(big_g_tof_days) * DAY_S,
         ),
         vinf_out0_bounds_kms=(max(0.5, vinf_e - 2.0), vinf_e + 2.0),
-        charge_flyby_continuity=False,
+        charge_flyby_continuity=True,
     )
+    # Charged (#162 vector-residual) layout: the corrector runs with
+    # charge_flyby_continuity=True (the only mode that rewards the bend-feasible
+    # low-V_inf basin), so the seed carries the 2*(n_legs-1) intermediate-flyby
+    # direction coords (seeded 0). The closer (Task 2) runs the same charged mode.
     x0 = dsm_leg.dsm_chain_decision_vector(
         t0_sec=t0_seed_sec,
         vinf_out0_kms=vinf_e,
@@ -121,6 +125,8 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
         beta0=0.0,
         tof_days_per_leg=tuple(tof_seed_days),
         eta_per_leg=eta_seed,
+        alpha_int_per_leg=tuple(0.0 for _ in range(n_legs - 1)),
+        beta_int_per_leg=tuple(0.0 for _ in range(n_legs - 1)),
     )
     return DsmChainSeed(
         sequence=sequence,
