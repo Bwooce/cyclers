@@ -1,7 +1,13 @@
 # CR3BP Tier-2 — Design Spec
 
 **Date:** 2026-06-10
-**Status:** Design approved (brainstorming), pending implementation plan.
+**Status:** COMPLETE (2026-06-10, task #182). All 8 plan tasks executed: core +
+corrector validated on the Arenstorf golden, independent Radau cross-check added,
+Earth-Moon backfill (Arenstorf yes; Genova-Aldrin permanently out-of-model — needs
+solar gravity/bicircular; Wittal no sourced IC), Saturnian discovery 14 SILVER
+Lyapunov members (pipeline-validation, review-gated), full regression green.
+Results: `docs/notes/2026-06-10-cr3bp-backfill-results.md`,
+`docs/notes/2026-06-10-cr3bp-moontour-results.md`.
 **Track:** Genome-capability extension #2 (the new dynamical model). Follows
 Spec 1 (#179 VILM endgame) and the corrected Spec 2 (#181 ToF-fix catalogue lift).
 
