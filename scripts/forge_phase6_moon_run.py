@@ -43,6 +43,7 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.satellites import PRIMARIES
 from cyclerfinder.data.discover_novel import (
     NoveltyFinding,
+    discover_endgame_moon,
     discover_novel_moon,
     jovian_galilean_permutation_topologies,
     jovian_galilean_topologies,
@@ -177,6 +178,13 @@ def main(argv: list[str] | None = None) -> int:
         default=6.0,
         help="target V_inf floor (the bend-feasible band; for the gap report)",
     )
+    p.add_argument(
+        "--genome",
+        choices=("ballistic", "leveraging"),
+        default="ballistic",
+        help="ballistic (no-leveraging, default) or leveraging (phase-full endgame)",
+    )
+    p.add_argument("--dv-budget-endgame-kms", type=float, default=4.0)
     p.add_argument("--workers", type=int, default=16)
     p.add_argument("--n-verifiers", type=int, default=3)
     p.add_argument("--empty-regions", default="data/empty_regions.jsonl")
@@ -187,8 +195,18 @@ def main(argv: list[str] | None = None) -> int:
 
     center = args.center
     enumerator, region_prefix = _TOPOLOGY_SETS[args.topology_set]
-    region_id = args.region_id or f"{region_prefix}-{datetime.now(UTC).date().isoformat()}"
-    method = _campaign_method(center)
+    if args.genome == "leveraging":
+        endgame_prefix = f"{args.topology_set}-endgame-vilm"
+        region_id = args.region_id or f"{endgame_prefix}-{datetime.now(UTC).date().isoformat()}"
+        method = MethodCapability(
+            genome=f"phase-full VILM endgame ({center}-centric, leveraging)",
+            corrector=f"solve_endgame (mu_central=PRIMARIES[{center}])",
+            capability_tags=frozenset({"powered", "coplanar", "patched-conic", "leveraging"}),
+            git_sha=_git_sha(),
+        )
+    else:
+        region_id = args.region_id or f"{region_prefix}-{datetime.now(UTC).date().isoformat()}"
+        method = _campaign_method(center)
     mu_central = PRIMARIES[center]
 
     lines: list[str] = []
@@ -220,17 +238,31 @@ def main(argv: list[str] | None = None) -> int:
     n_queued = n_panel_killed = 0
     best_max_vinf = 0.0
 
-    for finding in discover_novel_moon(
-        base_t0_sec=base_t0,
-        topologies=topologies,
-        center=center,
-        budget_kms=args.budget_kms,
-        n_epochs=args.epochs,
-        span_days=args.span_days,
-        vinf_cap=args.vinf_cap,
-        max_workers=args.workers,
-        distinct_only=True,
-    ):
+    if args.genome == "leveraging":
+        finding_iter = discover_endgame_moon(
+            topologies=topologies,
+            center=center,
+            target_vinf_floor_kms=args.vinf_floor_kms,
+            dv_budget_kms=args.dv_budget_endgame_kms,
+            n_epochs=args.epochs,
+            span_days=args.span_days,
+            vinf_cap=args.vinf_cap,
+            max_workers=args.workers,
+        )
+    else:
+        finding_iter = discover_novel_moon(
+            base_t0_sec=base_t0,
+            topologies=topologies,
+            center=center,
+            budget_kms=args.budget_kms,
+            n_epochs=args.epochs,
+            span_days=args.span_days,
+            vinf_cap=args.vinf_cap,
+            max_workers=args.workers,
+            distinct_only=True,
+        )
+
+    for finding in finding_iter:
         n_closed += 1
         tier = finding.verdict.tier
         if tier is VerdictTier.SILVER:
