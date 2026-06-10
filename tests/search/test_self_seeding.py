@@ -481,3 +481,84 @@ def test_multirev_long_branch_improves_6_44gg3_mars_vinf() -> None:
         f"long-branch v_inf_M {long_vinf_m:.2f} unexpectedly within the 3.74 anchor band "
         f"— if this fires, 6.44Gg3 became a V3 candidate (update the results note)"
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 5 — the 2026-06-10 ToF-artifact fix: joint (epoch, ToF) closer.
+#
+# The coplanar-branch-ToF path (`self_seed_g_leg` with no override) inflated the
+# emerged Mars v_inf ~1.6-2.1x (note 2026-06-10-dsm-tof-artifact-correction): forcing
+# the idealized circular-crossing transit onto a longitude-rendezvous epoch is the
+# wrong flight time for the real DE440 intercept. `joint_epoch_tof_close` opens BOTH
+# the departure epoch and the ToF as free variables, bracketed near the row's
+# tabulated signature transit, and selects the solution whose departure AND arrival
+# v_inf both match the row's anchor band. EXPECTED = the row's SOURCED E/M v_inf
+# anchors (Russell 2004 Table 4.x); the emerged v_inf is EVIDENCE, compared (never
+# imposed) and NOT loosened.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.slow
+def test_joint_closer_reproduces_both_anchors_9_353gg2() -> None:
+    """Joint (epoch, ToF) closer reproduces BOTH sourced anchors for 9.353Gg2 (fix gate).
+
+    russell-ch4-9.353Gg2 (Russell 2004 Table 4.x): sourced Earth v_inf 9.35, Mars v_inf
+    10.52, tabulated signature transit 85 d. Under the buggy coplanar-ToF path the
+    emerged Mars v_inf inflated to ~18.8 (artifact). The fix must emerge BOTH anchors to
+    within ~0.5 km/s. GOLDEN = the row's SOURCED 9.35 / 10.52 (NOT a computed value);
+    the emerged v_inf is EVIDENCE. Label: slow (astropy DE440 + Lambert grid)."""
+    import cyclerfinder.core.ephemeris as ephemeris
+    import cyclerfinder.search.self_seeding as ss
+
+    ephem = ephemeris.Ephemeris("astropy")
+    # SOURCED anchors (the golden) — fed only to SELECT among physical Lambert solutions.
+    sourced_vinf_e = 9.35
+    sourced_vinf_m = 10.52
+    signature_transit_days = 85.0
+    anchors = ss.FamilyAnchors(vinf_e=sourced_vinf_e, vinf_m=sourced_vinf_m, vinf_band_kms=1.5)
+    t_center = (datetime(2027, 1, 1, tzinfo=UTC) - _J2000).total_seconds()
+
+    result = ss.joint_epoch_tof_close(ephem, anchors, t_center, signature_transit_days, max_revs=2)
+    assert result is not None, "joint closer found no Lambert solution in the bracket"
+
+    # BOTH anchors reproduced to within ~0.5 km/s (the fix gate).
+    assert abs(result.vinf_e_kms - sourced_vinf_e) < 0.5, (
+        f"emerged Earth v_inf {result.vinf_e_kms:.3f} off sourced {sourced_vinf_e} "
+        f"by {result.vinf_e_kms - sourced_vinf_e:+.3f} km/s"
+    )
+    assert abs(result.vinf_m_kms - sourced_vinf_m) < 0.5, (
+        f"emerged Mars v_inf {result.vinf_m_kms:.3f} off sourced {sourced_vinf_m} "
+        f"by {result.vinf_m_kms - sourced_vinf_m:+.3f} km/s (artifact would be ~18.8)"
+    )
+    # Arrival = true Mars position by construction: longitude rendezvous + miss exact.
+    verdict = ss.on_family(result, anchors)
+    assert verdict.on_family, f"verdict {verdict}"
+    # The found ToF sits near (not at) the signature transit — the real-intercept ToF.
+    assert abs(result.tof_g_days - signature_transit_days) <= 45.0
+
+
+@pytest.mark.slow
+def test_joint_closer_returns_none_when_no_solution() -> None:
+    """Joint closer returns None (clean negative) for an unreachable ToF bracket.
+
+    A tiny ToF bracket far from any Earth->Mars transfer geometry yields no Lambert
+    solution; the closer reports None rather than fabricating a result. Label: slow."""
+    import cyclerfinder.core.ephemeris as ephemeris
+    import cyclerfinder.search.self_seeding as ss
+
+    ephem = ephemeris.Ephemeris("astropy")
+    anchors = ss.FamilyAnchors(vinf_e=9.35, vinf_m=10.52, vinf_band_kms=1.5)
+    t_center = (datetime(2027, 1, 1, tzinfo=UTC) - _J2000).total_seconds()
+    # A 0.5-day ToF cannot reach Mars: no Lambert solution anywhere in the bracket.
+    result = ss.joint_epoch_tof_close(
+        ephem,
+        anchors,
+        t_center,
+        0.5,
+        epoch_halfwidth_days=20.0,
+        epoch_step_days=10.0,
+        tof_halfwidth_days=0.2,
+        tof_step_days=0.1,
+        refine_iters=0,
+    )
+    assert result is None

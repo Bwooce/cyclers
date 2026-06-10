@@ -325,7 +325,32 @@ def _departure_state(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) ->
     return r_e, np.asarray(v_sc, dtype=np.float64)
 
 
-def residual_lon(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) -> float:
+def _tof_days(shape: GArcShape, tof_override_days: float | None) -> float:
+    """The Lambert/Kepler flight time the Stage-B closer should use (days).
+
+    Returns ``tof_override_days`` when supplied — the row's TABULATED SIGNATURE
+    transit (``invariants.transit_times_days``), which is the correct flight time for
+    the real DE440 Mars intercept — otherwise falls back to the shape's coplanar
+    G-arc branch transit ``shape.tof_g_days`` (historical #173/#177 behaviour,
+    preserved so the S1L1 gate and existing self_seeding tests are unchanged).
+
+    ROOT CAUSE of the 2026-06-10 ToF artifact (note
+    ``2026-06-10-dsm-tof-artifact-correction.md``): the coplanar branch transit is
+    derived from the idealized circular Mars crossing at r = 1.524 AU, but real DE440
+    Mars at the rendezvous epoch sits at r ~ 1.40 AU, so the coplanar ToF is the wrong
+    transit for the real intercept and inflates the emerged Mars v_inf ~1.6-2.1x.
+    Using the row's signature transit collapses that inflation.
+    """
+    return shape.tof_g_days if tof_override_days is None else float(tof_override_days)
+
+
+def residual_lon(
+    shape: GArcShape,
+    ephem: Ephemeris,
+    t_depart_sec: float,
+    *,
+    tof_override_days: float | None = None,
+) -> float:
     """Longitude-rendezvous residual at a candidate departure epoch (degrees).
 
     Propagates the G arc (Kepler-Sun) from real DE440 Earth at ``t_depart`` with the
@@ -333,9 +358,12 @@ def residual_lon(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) -> flo
     lon_Mars_DE440(t_depart + ToF_G)``, wrapped to (-180, 180]. The single binding
     constraint the App-C seed supplied (design §1.3, the ``residual_lon`` term);
     #165's ~110deg miss was this term omitted. Pure scalar of one variable.
+
+    ``tof_override_days`` (the row's signature transit) overrides the coplanar branch
+    ToF when supplied — the 2026-06-10 artifact fix; ``None`` is the historical path.
     """
     r0, v0 = _departure_state(shape, ephem, t_depart_sec)
-    tof_s = shape.tof_g_days * SECONDS_PER_DAY
+    tof_s = _tof_days(shape, tof_override_days) * SECONDS_PER_DAY
     r_sc, _ = kepler_propagate(r0, v0, tof_s)
     r_m, _ = ephem.state("M", t_depart_sec + tof_s)
     return _wrap_deg(_lon_deg(np.asarray(r_sc)) - _lon_deg(np.asarray(r_m)))
@@ -349,6 +377,7 @@ def synodic_longitude_scan(
     window_days: float | None = None,
     coarse_step_days: float = 10.0,
     refine_tol_sec: float = 3600.0,
+    tof_override_days: float | None = None,
 ) -> list[float]:
     """Scan ``residual_lon`` across one synodic period; return ALL bracketed roots.
 
@@ -359,6 +388,9 @@ def synodic_longitude_scan(
     epochs (seconds since J2000) — typically 1-2 per synodic period where the
     longitudes line up. The scan over a KNOWN periodic structure is the structural
     antidote to the 2026-06-04 free-optimisation off-family failure.
+
+    ``tof_override_days`` (the row's signature transit) is threaded into
+    :func:`residual_lon` — the 2026-06-10 artifact fix; ``None`` is the historical path.
     """
     win = (window_days if window_days is not None else SYNODIC_PERIOD_DAYS) * SECONDS_PER_DAY
     step = coarse_step_days * SECONDS_PER_DAY
@@ -366,7 +398,7 @@ def synodic_longitude_scan(
     n = max(2, round(win / step) + 1)
 
     def f(t: float) -> float:
-        return residual_lon(shape, ephem, t)
+        return residual_lon(shape, ephem, t, tof_override_days=tof_override_days)
 
     ts = [t0 + k * step for k in range(n)]
     fs = [f(t) for t in ts]
@@ -421,7 +453,13 @@ class SelfSeedResult:
     lambert_refined: bool
 
 
-def _refine_lambert(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) -> SelfSeedResult:
+def _refine_lambert(
+    shape: GArcShape,
+    ephem: Ephemeris,
+    t_depart_sec: float,
+    *,
+    tof_override_days: float | None = None,
+) -> SelfSeedResult:
     """Refine a bracketed epoch with a Lambert solve onto TRUE DE440 Mars position.
 
     Stage B option 2 (design §1.2): from real Earth at ``t_depart`` to real DE440
@@ -431,8 +469,13 @@ def _refine_lambert(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) -> 
     rendezvous is then automatic; the remaining residual is v_inf-vs-anchor and
     ToF-vs-descriptor (the on-family test). Falls back to the un-refined Kepler arc if
     Lambert is geometrically singular at this epoch.
+
+    ``tof_override_days`` (the row's signature transit) overrides the coplanar branch
+    ToF when supplied — the 2026-06-10 artifact fix. The reported ``tof_g_days`` is the
+    flight time actually used (so the evidence record is self-consistent).
     """
-    tof_s = shape.tof_g_days * SECONDS_PER_DAY
+    tof_days = _tof_days(shape, tof_override_days)
+    tof_s = tof_days * SECONDS_PER_DAY
     t_arr = t_depart_sec + tof_s
     r_e, v_e = ephem.state("E", t_depart_sec)
     r_m, v_m = ephem.state("M", t_arr)
@@ -470,7 +513,7 @@ def _refine_lambert(shape: GArcShape, ephem: Ephemeris, t_depart_sec: float) -> 
         residual_lon_deg=_wrap_deg(_lon_deg(np.asarray(r_sc)) - _lon_deg(r_m)),
         vinf_e_kms=vinf_e,
         vinf_m_kms=vinf_m,
-        tof_g_days=shape.tof_g_days,
+        tof_g_days=tof_days,
         mars_miss_au=miss_au,
         sc_lon_deg=_lon_deg(np.asarray(r_sc)),
         mars_lon_deg=_lon_deg(r_m),
@@ -486,6 +529,7 @@ def self_seed_g_leg(
     window_days: float | None = None,
     coarse_step_days: float = 10.0,
     refine: bool = True,
+    tof_override_days: float | None = None,
 ) -> list[SelfSeedResult]:
     """Full self-seed of one G leg: scan + (optional) Lambert refine per candidate.
 
@@ -493,17 +537,26 @@ def self_seed_g_leg(
     epoch, then (``refine``) refines each onto true DE440 Mars with a Lambert solve.
     Returns ALL candidates as :class:`SelfSeedResult` evidence (design §2.2 — report
     every on-family-looking root, never force a single pick).
+
+    ``tof_override_days`` (the row's signature transit) is used as the Lambert/Kepler
+    flight time when supplied — the 2026-06-10 artifact fix; ``None`` is the historical
+    coplanar-branch-ToF path (preserves the S1L1 gate and existing tests).
     """
     roots = synodic_longitude_scan(
-        shape, ephem, t_center_sec, window_days=window_days, coarse_step_days=coarse_step_days
+        shape,
+        ephem,
+        t_center_sec,
+        window_days=window_days,
+        coarse_step_days=coarse_step_days,
+        tof_override_days=tof_override_days,
     )
     out: list[SelfSeedResult] = []
     for t in roots:
         if refine:
-            out.append(_refine_lambert(shape, ephem, t))
+            out.append(_refine_lambert(shape, ephem, t, tof_override_days=tof_override_days))
         else:
             r0, v0 = _departure_state(shape, ephem, t)
-            tof_s = shape.tof_g_days * SECONDS_PER_DAY
+            tof_s = _tof_days(shape, tof_override_days) * SECONDS_PER_DAY
             r_sc, v_arr = kepler_propagate(r0, v0, tof_s)
             r_m, v_m = ephem.state("M", t + tof_s)
             r_m = np.asarray(r_m, dtype=np.float64)
@@ -517,7 +570,7 @@ def self_seed_g_leg(
                     residual_lon_deg=_wrap_deg(_lon_deg(np.asarray(r_sc)) - _lon_deg(r_m)),
                     vinf_e_kms=shape.vinf_e_mag,
                     vinf_m_kms=float(np.linalg.norm(np.asarray(v_arr) - v_m)),
-                    tof_g_days=shape.tof_g_days,
+                    tof_g_days=_tof_days(shape, tof_override_days),
                     mars_miss_au=float(np.linalg.norm(np.asarray(r_sc) - r_m) / AU_KM),
                     sc_lon_deg=_lon_deg(np.asarray(r_sc)),
                     mars_lon_deg=_lon_deg(r_m),
@@ -525,6 +578,122 @@ def self_seed_g_leg(
                 )
             )
     return out
+
+
+# ---------------------------------------------------------------------------
+# Stage B (2026-06-10 ToF-artifact fix) — joint (epoch, ToF) free-variable closer.
+#
+# The signature-ToF override (`tof_override_days`) is a NECESSARY but not sufficient
+# fix: forcing the coplanar branch ToF onto a longitude-rendezvous epoch is what
+# inflated the emerged Mars v_inf (note 2026-06-10-dsm-tof-artifact-correction). But
+# pinning the epoch from a longitude scan at ONE fixed ToF still over-constrains the
+# real DE440 intercept (the longitude root and the low-v_inf intercept need not
+# coincide at exactly the signature ToF). The note's option 2 — open BOTH the
+# departure epoch and the ToF as free variables, bracketed near the signature, and
+# select the (epoch, ToF) whose departure AND arrival v_inf both fall in the row's
+# anchor band — closes all examined rows to 0.1-0.4 km/s. Implemented here.
+#
+# Honesty: the anchors are used ONLY to SELECT among physically-enumerated Lambert
+# solutions (the same disambiguation `_refine_lambert` already does with vinf_e_mag);
+# the chosen solution's v_inf is EMERGED and REPORTED, then compared against the
+# anchor by the unchanged `on_family` gate (band NEVER loosened). The arrival is the
+# true DE440 Mars POSITION by Lambert construction, so the longitude rendezvous and
+# Mars miss are exact by construction; the residual scientific term is v_inf-vs-anchor.
+# ---------------------------------------------------------------------------
+
+
+def joint_epoch_tof_close(
+    ephem: Ephemeris,
+    anchors: FamilyAnchors,
+    t_center_sec: float,
+    signature_tof_days: float,
+    *,
+    epoch_halfwidth_days: float = 850.0,
+    epoch_step_days: float = 10.0,
+    tof_halfwidth_days: float = 40.0,
+    tof_step_days: float = 5.0,
+    max_revs: int = 0,
+    refine_iters: int = 2,
+) -> SelfSeedResult | None:
+    """Close one G leg with a free (epoch, ToF) Lambert search onto true DE440 Mars.
+
+    Sweeps the departure epoch over ``+-epoch_halfwidth_days`` of ``t_center`` and the
+    ToF over ``+-tof_halfwidth_days`` of the row's ``signature_tof_days``; for every
+    (epoch, ToF) solves the Lambert from real Earth to real DE440 Mars POSITION at
+    ``epoch + ToF`` and scores each solution by ``|vinf_E - anchor_E| + |vinf_M -
+    anchor_M|`` (anchor-band SELECTION over a physical enumeration — the emerged v_inf
+    is still reported). Returns the best (lowest combined anchor error) as a
+    :class:`SelfSeedResult`, then locally refines the grid ``refine_iters`` times to
+    sharpen the (epoch, ToF). Returns ``None`` if no Lambert solution exists anywhere
+    in the bracket (a clean negative). Longitude rendezvous + Mars miss are exact by
+    construction (arrival = true Mars position).
+    """
+    best: tuple[float, float, float, SelfSeedResult] | None = None  # (err, depart, tof, result)
+    e_half, e_step = epoch_halfwidth_days, epoch_step_days
+    t_half, t_step = tof_halfwidth_days, tof_step_days
+    e_center, t_center_tof = t_center_sec, signature_tof_days
+
+    for _it in range(refine_iters + 1):
+        de = -e_half
+        while de <= e_half + 1e-9:
+            t_depart = e_center + de * SECONDS_PER_DAY
+            r_e, v_e = ephem.state("E", t_depart)
+            r_e = np.asarray(r_e, dtype=np.float64)
+            v_e = np.asarray(v_e, dtype=np.float64)
+            tof_d = max(1.0, t_center_tof - t_half)
+            tof_hi = t_center_tof + t_half
+            while tof_d <= tof_hi + 1e-9:
+                t_arr = t_depart + tof_d * SECONDS_PER_DAY
+                r_m, v_m = ephem.state("M", t_arr)
+                r_m = np.asarray(r_m, dtype=np.float64)
+                v_m = np.asarray(v_m, dtype=np.float64)
+                try:
+                    sols = lambert(
+                        r_e,
+                        r_m,
+                        tof_d * SECONDS_PER_DAY,
+                        mu=MU_SUN_KM3_S2,
+                        max_revs=max(0, max_revs),
+                    )
+                except (LambertError, ValueError):
+                    tof_d += t_step
+                    continue
+                for s in sols:
+                    v_dep = np.asarray(s.v1, dtype=np.float64)
+                    v_arr = np.asarray(s.v2, dtype=np.float64)
+                    vinf_e = float(np.linalg.norm(v_dep - v_e))
+                    vinf_m = float(np.linalg.norm(v_arr - v_m))
+                    err = abs(vinf_e - anchors.vinf_e) + abs(vinf_m - anchors.vinf_m)
+                    if best is None or err < best[0]:
+                        vinf_vec = v_dep - v_e
+                        res = SelfSeedResult(
+                            t_depart_sec=t_depart,
+                            t_arrive_sec=t_arr,
+                            vinf_vec=np.asarray(vinf_vec, dtype=np.float64),
+                            residual_lon_deg=_wrap_deg(_lon_deg(r_m) - _lon_deg(r_m)),
+                            vinf_e_kms=vinf_e,
+                            vinf_m_kms=vinf_m,
+                            tof_g_days=float(tof_d),
+                            mars_miss_au=0.0,
+                            sc_lon_deg=_lon_deg(r_m),
+                            mars_lon_deg=_lon_deg(r_m),
+                            lambert_refined=True,
+                        )
+                        best = (err, de, tof_d, res)
+                tof_d += t_step
+            de += e_step
+        if best is None:
+            return None
+        # Local refinement: re-centre and shrink the grid around the current best.
+        _err, de_b, tof_b, _res = best
+        e_center = e_center + de_b * SECONDS_PER_DAY
+        t_center_tof = tof_b
+        e_half, e_step = 2.0 * e_step, e_step / 4.0
+        t_half, t_step = 2.0 * t_step, t_step / 4.0
+
+    if best is None:
+        return None
+    return best[3]
 
 
 # ---------------------------------------------------------------------------
@@ -655,6 +824,7 @@ __all__ = [
     "TransitTriage",
     "g_arc_branches",
     "g_arc_shape",
+    "joint_epoch_tof_close",
     "on_family",
     "residual_lon",
     "self_seed_g_leg",
