@@ -49,7 +49,10 @@ from __future__ import annotations
 
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
+
+if TYPE_CHECKING:
+    from cyclerfinder.search.endgame_graph import EndgameRoute
 
 import numpy as np
 
@@ -285,6 +288,9 @@ class NoveltyFinding:
     period_k: int = 0
     t0_sec: float = 0.0
     slack_leg: int = 0
+    # Endgame-genome fields (Task 9): present only for leveraging-genome findings.
+    powered: bool = False
+    endgame_route: EndgameRoute | None = None
 
 
 def _is_multi_arc(cycler: Cycler, *, a_bin_au: float = 0.01, e_bin: float = 0.01) -> bool:
@@ -747,6 +753,176 @@ def discover_novel_moon(
             yield finding
 
 
+def discover_endgame_moon(
+    *,
+    topologies: Sequence[TopologySpec] | None = None,
+    center: str = "Saturn",
+    target_vinf_floor_kms: float = 6.0,
+    dv_budget_kms: float = 4.0,
+    base_t0_sec: float = 0.0,
+    n_epochs: int = 4,
+    span_days: float = 8.0,
+    vinf_cap: float = 14.0,
+    vinf_seed_kms: float = 4.0,
+    max_workers: int | None = None,
+) -> Iterator[NoveltyFinding]:
+    """Endgame-genome discovery path: VILM V∞-lowering sweep (plan 2026-06-09, Task 9).
+
+    For each topology, runs the ballistic circular-ephemeris closure scan
+    (:func:`scan_parallel`) to determine per-encounter V∞ values. For each
+    encounter above ``target_vinf_floor_kms`` it calls
+    :func:`cyclerfinder.search.endgame_graph.solve_endgame` to find a
+    phase-full VILM leg chain that walks V∞ down to the floor. A topology
+    whose EVERY above-floor encounter yields a route is a ``powered=True``
+    finding (a VILM-powered moon-tour candidate); topologies with any
+    above-floor encounter for which no route fits ``dv_budget_kms`` are
+    silently skipped (they contribute to the method-versioned EMPTY outcome).
+
+    Leaves :func:`discover_novel_moon` UNCHANGED — this is an additive path.
+    """
+    from cyclerfinder.search import endgame_graph
+
+    if topologies is not None:
+        topologies_seq = tuple(topologies)
+    else:
+        topologies_seq = saturnian_titan_tour_topologies()
+
+    for spec in topologies_seq:
+        survives, _reasons = prune_topology_legs(
+            spec,
+            vinf_seed_kms=vinf_seed_kms,
+            budget_kms=dv_budget_kms * 10.0,  # loose prune; endgame adds ΔV
+            primary=center,
+        )
+        if not survives:
+            continue
+
+        t0_seeds = _epoch_seeds_sec(base_t0_sec=base_t0_sec, n_epochs=n_epochs, span_days=span_days)
+        grid = build_epoch_branch_grid(
+            sequence=spec.sequence,
+            period_sec=spec.period_sec,
+            vinf_cap=vinf_cap,
+            t0_seeds_sec=t0_seeds,
+            branch_topologies=[(spec.per_leg_revs, spec.per_leg_branch)],
+            tof_seed_days=spec.tof_seed_days,
+            slack_leg=spec.slack_leg,
+            center=center,
+        )
+        results: list[ScanResult] = scan_parallel(
+            grid,
+            max_workers=max_workers,
+            closed_only=True,
+        )
+        for sr in results:
+            closure = sr.result
+            if not (closure.converged and closure.vinf_per_encounter_kms):
+                continue
+
+            # For each encounter body, pair it with its ballistic V∞.
+            # sequence has len n; vinf_per_encounter_kms has len n (one per body).
+            enc_vinfs = list(zip(spec.sequence, closure.vinf_per_encounter_kms, strict=False))
+
+            # Check every above-floor encounter can be endgamed within budget.
+            all_routed = True
+            last_route = None
+            for moon, vinf_kms in enc_vinfs:
+                if vinf_kms <= target_vinf_floor_kms:
+                    continue  # already at or below floor — no endgame needed
+                route = endgame_graph.solve_endgame(
+                    moon_system=center,
+                    entry_moon=moon,
+                    target_moon=moon,
+                    vinf_entry_kms=vinf_kms,
+                    target_vinf_floor_kms=target_vinf_floor_kms,
+                    dv_budget_kms=dv_budget_kms,
+                    system_moons=(moon,),
+                )
+                if route is None:
+                    all_routed = False
+                    break
+                last_route = route
+
+            if not all_routed or last_route is None:
+                continue
+
+            # Build a minimal NoveltyFinding for the endgame candidate.
+            # No gauntlet/signature — those require a heliocentric Cycler. This
+            # finding carries the endgame route and is SILVER-equivalent pending
+            # human review; powered=True marks it as an endgame-genome candidate.
+            cid = _candidate_id(
+                spec.sequence,
+                spec.per_leg_revs,
+                spec.per_leg_branch,
+                spec.period_k,
+                closure.t0_sec,
+            )
+            verdict = classify_candidate_verdict(
+                candidate_id=cid,
+                agreed=False,
+                n_paths_available=0,
+                n_paths_passed=0,
+                match_outcome="novel",
+                known_id=None,
+                superseded_by=(),
+                falsified=False,
+                notes="discover_endgame_moon/powered-vilm",
+            )
+            from cyclerfinder.verify.agreement import (
+                AgreementReport,
+                ConstructionOptimiserPathResult,
+                KeplerRepropPathResult,
+                LamberthubPathResult,
+            )
+
+            agreement = AgreementReport(
+                lamberthub=LamberthubPathResult(
+                    available=False, per_leg=(), max_diff_mps=0.0, passed=False
+                ),
+                construction_optimiser=ConstructionOptimiserPathResult(
+                    available=False,
+                    resonant_vinf_kms={},
+                    cycler_vinf_kms={},
+                    construction_max_diff_kms=float("inf"),
+                    optimiser_available=False,
+                    optimiser_vinf_kms={},
+                    optimiser_max_diff_kms=None,
+                    max_diff_kms=float("inf"),
+                    passed=False,
+                ),
+                kepler_reprop=KeplerRepropPathResult(
+                    available=False,
+                    per_leg_residual_km=(),
+                    max_residual_km=float("inf"),
+                    passed=False,
+                ),
+                n_paths_available=0,
+                n_paths_passed=0,
+                agreed=False,
+            )
+            vinf = closure.vinf_per_encounter_kms
+            yield NoveltyFinding(
+                candidate_id=cid,
+                signature=None,
+                match_outcome="novel",
+                known_id=None,
+                superseded_by=(),
+                verdict=verdict,
+                agreement=agreement,
+                vinf_per_encounter_kms=vinf,
+                tof_days=closure.tof_days,
+                bend_feasible=closure.bend_feasible,
+                max_vinf_kms=float(max(vinf)) if vinf else float("inf"),
+                sequence=spec.sequence,
+                per_leg_revs=spec.per_leg_revs,
+                per_leg_branch=spec.per_leg_branch,
+                period_k=spec.period_k,
+                t0_sec=closure.t0_sec,
+                slack_leg=spec.slack_leg,
+                powered=True,
+                endgame_route=last_route,
+            )
+
+
 def _epoch_seeds_sec(
     *,
     base_t0_sec: float,
@@ -860,6 +1036,7 @@ __all__ = [
     "TopologySpec",
     "classify_candidate_verdict",
     "cycler_from_closure",
+    "discover_endgame_moon",
     "discover_novel",
     "discover_novel_moon",
     "em_multiarc_topologies",
