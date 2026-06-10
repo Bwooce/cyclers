@@ -17,7 +17,8 @@ The partial order (design §6b, ``_CAPABILITY_EDGES``): ``stronger ⊐ weaker``:
 * ``n-body`` ⊐ ``patched-conic`` (full force supersedes the conic seed),
 * ``powered`` / ``low-thrust`` ⊐ ``ballistic`` (added control DOF),
 * ``one-dsm-per-leg`` ⊐ ``single-arc`` (added per-leg DOF),
-* ``broken-plane`` ⊐ ``coplanar`` (out-of-plane DOF).
+* ``broken-plane`` ⊐ ``coplanar`` (out-of-plane DOF),
+* ``leveraging`` ⊐ ``single-arc`` (VILM resonant-leg DOF ⊐ no-leveraging).
 
 NON-GOLDEN / sourced-discipline: the edge set is a *design decision* transcribed
 from §6b, not a computed value. It lives in one named constant so the partial
@@ -69,6 +70,7 @@ _CAPABILITY_EDGES: frozenset[tuple[str, str]] = frozenset(
         ("low-thrust", "ballistic"),
         ("one-dsm-per-leg", "single-arc"),
         ("broken-plane", "coplanar"),
+        ("leveraging", "single-arc"),  # VILM resonant-leg DOF ⊐ no-leveraging
     }
 )
 
