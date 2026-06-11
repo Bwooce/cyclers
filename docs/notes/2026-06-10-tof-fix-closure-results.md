@@ -203,3 +203,71 @@ Follows the #137 / closer-sweep (12a0e9e) writeback precedent. One commit
 **NOT done (scope honesty):** no V3 promotion (multi-lap horizon-TCM still the
 named follow-up); no other rows touched; the 14 CR3BP SILVER candidates
 untouched (inertial cross-check still running).
+
+## Adjudication after the #195 `joint_epoch_tof_close` bookkeeping fixes (2026-06-11)
+
+Two confirmed review findings against the closer that produced the table above were
+fixed (task #195) and the 6-row closure was RE-RUN with the corrected code to
+adjudicate whether the recorded values (and hence the approved writeback) stand:
+
+* **(a) epoch double-shift** — the refinement loop stored the best epoch as a
+  day-offset RELATIVE to each iteration's grid centre and re-applied it after every
+  iteration without reset; when a refinement iteration failed to beat the incumbent,
+  the stale offset was applied AGAIN, re-centring the next (shrunken) grid up to
+  2x the offset away from the best evaluated point. Fixed by absolute-epoch
+  bookkeeping in the best tuple. Pinned by
+  `tests/search/test_self_seeding.py::test_joint_closer_no_epoch_double_shift`
+  (deterministic stub; the pre-fix code reproducibly drifts onto a +60 d decoy
+  minimum the correct grids never visit — verified by running the pin scenario
+  against the pre-fix module).
+  Scope note (verified against the pre-fix code): the RETURNED result always carried
+  the absolute epoch of the best EVALUATED point, so the bug corrupted *which points
+  the refinement evaluated* (off-basin grids), not the internal consistency of the
+  returned (epoch, v∞, ToF) tuple — which is why the V1 / n-body gates, which re-use
+  the returned epochs, passed self-consistently above.
+* **(b) vacuous lon diagnostics** — `residual_lon_deg` was computed as
+  `lon(Mars) - lon(Mars) ≡ 0` and `sc_lon_deg` duplicated `mars_lon_deg`, dressing
+  `on_family.lon_ok` up as an independent gate on this path. Fixed: `sc_lon_deg` is
+  now the DEPARTURE Earth longitude; `residual_lon_deg`/`mars_miss_au` are recorded
+  as explicit by-construction zeros (documented in the docstring as NOT independent
+  gates here — the binding terms for this path are the two v∞ bands, as the
+  "Honesty" section above already stated). Pinned by
+  `::test_joint_closer_sc_lon_is_departure_longitude`.
+
+### Re-run vs the recorded table (old = the 2026-06-10 table above; new = fixed code)
+
+Same script (`scripts/scratch_tof_fix_validate.py`, now also printing the departure
+epoch), same DE440 ephemeris, same anchors and bands.
+
+| row | old E/M (km/s) | new E/M | old ToF (d) | new ToF | depart (new; not previously recorded) | verdict |
+|---|---|---|---|---|---|---|
+| russell-ch4-9.353Gg2 | 9.31 / 10.50 | 9.31 / 10.50 | 105.0 | 105.0 | 2029-02-11 | UNCHANGED |
+| russell-ch4-9.94Gg3  | 9.99 / 10.77 | 9.99 / 10.77 | 100.4 | 100.4 | 2024-12-01 | UNCHANGED |
+| russell-ch4-3.78Gg3  | 3.77 / 4.63  | 3.77 / 4.63  | 205.4 | 205.4 | 2029-01-01 | UNCHANGED |
+| russell-ch4-6.44Gg3  | 6.44 / 3.74  | 6.44 / 3.74  | 292.3 | 292.3 | 2026-08-25 | UNCHANGED |
+| russell-ch4-3.64gGg3 | 3.62 / 4.59  | 3.62 / 4.59  | 208.8 | 208.8 | 2028-12-29 | UNCHANGED |
+| russell-ch4-5.30ggF3 | 5.31 / 5.43  | 5.31 / 5.43  | 173.9 | 173.9 | 2029-01-19 | UNCHANGED |
+
+5.30ggF3: both signature branches again collapse to the same closing arc
+(143 d sig → ToF 173.6, E/M 5.31/5.45; 207 d sig → ToF 173.9, E/M 5.31/5.43 — the
+cited branch), departing the same epoch. All 6 rows: `on_family=True`, V1 PASS
+(izzo/gooding ≤ 1.8e-8 m/s, Kepler reprop ≤ 1.9e-12 AU), single-leg REBOUND/IAS15
+in-band (miss ≤ 1.9e-12 AU) at the anchor v∞. The 2026-06-10 table did not record
+departure epochs, so the epoch column is newly recorded evidence, not a comparison;
+the (v∞, ToF) pairs — which uniquely identify the closing arc at this precision —
+are identical to every recorded digit. The per-run V1 agreement scalars differ in
+their (irrelevant) trailing digits from the prose above, as expected from the
+sharper, correctly-centred refinement; all remain orders of magnitude inside the
+gates.
+
+### Verdict
+
+**6 / 6 UNCHANGED — the #181 closure results were NOT affected by the double-shift
+or the lon-diagnostics defects, and the approved V1 writeback STANDS.** The
+double-shift could only have mattered if a no-improvement refinement iteration had
+drifted a later grid onto a different, lower-error solution (the pinned decoy
+scenario); the re-run shows the real rows' refinements stayed in-basin. The lon
+finding was a diagnostics-honesty defect, not a results defect: `on_family` for this
+path was, and remains, binding only through the two v∞ bands, which all 6 rows pass
+on their own merits. (Confirm/retract authority on the writeback rests with the
+controller; this note records the evidence: nothing to retract.)
