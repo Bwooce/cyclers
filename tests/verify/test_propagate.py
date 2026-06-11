@@ -145,10 +145,19 @@ def test_2syn_em_cycler_periodic_over_3_laps(aldrin_cycler: Any) -> None:
 
 @pytest.mark.xfail(
     reason=(
-        "M5 optimiser broken (task #54) prevents constructing the "
-        "closed S1L1 cycler on astropy; Lambert multi-rev (out of M1 "
-        "scope) prevents an alternative analytical construction. "
-        "M6b's optimise_cell_ephemeris will fill this in."
+        "Wrong-topology/wrong-anchor target, NOT missing machinery (reason "
+        "refreshed 2026-06-12). The two milestones the old reason waited on are "
+        "both done — Lambert multi-rev (M-L) and the real-eph optimiser "
+        "(optimise_cell_ephemeris, M6b) ship — yet this still xfails because the "
+        "test hand-builds a 2-encounter direct E-M cycler and targets the "
+        "coplanar 5.65/3.05 km/s pair. S1L1 is now CLOSED-CONFIRMED, but against "
+        "a DIFFERENT topology (E->g(E-E)->E->G(E-M-E longitude-rendezvous)->E) "
+        "and the App-C real-eph per-leg v_inf (breathing 3.2-8.0), in the passing "
+        "tests/search/test_s1l1_corrected*.py. The 5.65/3.05 pair is unverified-"
+        "provenance (spec.md §9 only). Re-anchoring this test to the App-C values + "
+        "corrected topology is a data/spec decision (see "
+        "docs/notes/2026-06-08-s1l1-corrected-closure-results.md); do NOT let it "
+        "flip against the old anchors."
     ),
     strict=False,
 )
