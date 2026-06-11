@@ -221,7 +221,10 @@ class _RampedElementsBackend:
         """
         ci, si = cos(i_rad), sin(i_rad)
         cl, sl = cos(lan_rad), sin(lan_rad)
-        rx = np.array([[1.0, 0.0, 0.0], [0.0, ci, si], [0.0, -si, ci]], dtype=np.float64)
+        # R_x(+i) (Standish ascending-node convention, same fix as the inclined
+        # circular backend): the previous R_x(-i) mirrored the plane about the
+        # ecliptic, leaving the final mean-elements -> DE440 step 2i off.
+        rx = np.array([[1.0, 0.0, 0.0], [0.0, ci, -si], [0.0, si, ci]], dtype=np.float64)
         rz = np.array([[cl, -sl, 0.0], [sl, cl, 0.0], [0.0, 0.0, 1.0]], dtype=np.float64)
         rz_neg = np.array([[cl, sl, 0.0], [-sl, cl, 0.0], [0.0, 0.0, 1.0]], dtype=np.float64)
         return rz @ rx @ rz_neg
