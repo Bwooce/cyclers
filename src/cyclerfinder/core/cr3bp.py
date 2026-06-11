@@ -96,7 +96,16 @@ def propagate(
     rtol: float = 1e-12,
     atol: float = 1e-12,
 ) -> CR3BPArc:
-    """Propagate a state (and optionally the STM) for nondimensional time ``t``."""
+    """Propagate a state (and optionally the STM) for nondimensional time ``t``.
+
+    Raises
+    ------
+    RuntimeError
+        If the integrator fails (``sol.success`` is False) — e.g. a collision
+        trajectory driving the step size below floating-point resolution near a
+        primary. Returning ``sol.y[:, -1]`` in that case would silently hand back
+        the state where the integrator gave up, not the state at time ``t``.
+    """
     if with_stm:
         y0 = np.concatenate([np.asarray(state6, float), np.eye(6).reshape(36)])
         sol = solve_ivp(
@@ -109,6 +118,8 @@ def propagate(
             method="DOP853",
             dense_output=False,
         )
+        if not sol.success:
+            raise RuntimeError(f"CR3BP STM propagation failed at t={sol.t[-1]}: {sol.message}")
         yf = sol.y[:, -1]
         return CR3BPArc(state_f=yf[:6], stm=yf[6:].reshape(6, 6), t=t)
     sol = solve_ivp(
@@ -120,14 +131,28 @@ def propagate(
         atol=atol,
         method="DOP853",
     )
+    if not sol.success:
+        raise RuntimeError(f"CR3BP propagation failed at t={sol.t[-1]}: {sol.message}")
     return CR3BPArc(state_f=sol.y[:, -1], stm=None, t=t)
 
 
 def cr3bp_system(primary: str, secondary: str) -> CR3BPSystem:
-    """Build a CR3BPSystem from the registry: mu = GM2/(GM1+GM2), scales from SMA."""
-    gm1 = PRIMARIES[primary]
+    """Build a CR3BPSystem from the registry: mu = GM2/G(m1+m2), scales from SMA.
+
+    ``PRIMARIES[primary]`` is the JPL *system* GM (gm_de440 planetary constants;
+    see ``core/satellites.py``) — it ALREADY includes the satellites' GM. The
+    pair total ``G(m1+m2)`` is therefore the system GM itself; the historical
+    ``PRIMARIES[primary] + gm2`` double-counted the secondary (#212 Part A:
+    Earth-Moon mu came out 0.0120047, -1.2% vs the canonical 0.0121505843,
+    and t_s was -0.6%). For Earth-Moon the system GM is exactly G(Earth+Moon);
+    for the Jupiter/Saturn pairs the OTHER moons' mass stays folded into the
+    primary term (<= 2.4e-4 of the system GM, dominated by Titan/the Galileans)
+    — the best decomposition available from system GMs, and far below the
+    SILVER members' reported precision (quantified in tests/core/test_cr3bp.py).
+    """
     gm2 = SATELLITES[secondary].mu_km3_s2
-    mu = gm2 / (gm1 + gm2)
+    gm_pair = PRIMARIES[primary]  # system GM == G(m1 + m2 [+ other moons])
+    mu = gm2 / gm_pair
     l_km = SATELLITES[secondary].sma_km
-    t_s = float(math.sqrt(l_km**3 / (gm1 + gm2)))
+    t_s = float(math.sqrt(l_km**3 / gm_pair))
     return CR3BPSystem(mu=mu, primary=primary, secondary=secondary, l_km=l_km, t_s=t_s)
