@@ -32,7 +32,6 @@ from __future__ import annotations
 from collections import OrderedDict
 from collections.abc import Sequence
 from dataclasses import replace
-from datetime import UTC, datetime
 from math import cos, pi, radians, sin
 from typing import Final, Protocol
 
@@ -43,10 +42,15 @@ from cyclerfinder.core.constants import AU_KM, PLANETS, SECONDS_PER_DAY, PlanetD
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
 
-# astropy epoch convention for the astropy backend: t_sec is seconds since
-# J2000 (2000-01-01T12:00:00 TDB). Match the most common heliocentric
-# convention in the cycler literature.
-_J2000_EPOCH = datetime(2000, 1, 1, 12, 0, 0, tzinfo=UTC)
+# Epoch convention for the astropy backend: t_sec is TDB seconds since J2000
+# (2000-01-01T12:00:00 TDB, JD 2451545.0 TDB) — identical to SPICE ET and to
+# nbody/convert.py's harness axis. The backend builds Time("J2000",
+# scale="tdb") + TimeDelta(t_sec) directly in the TDB scale; the J2000 instant
+# is spelled as the JD constant below. (The pre-2026-06-11 code built the
+# epoch from a UTC datetime's POSIX timestamp relabeled scale="tdb" — the
+# design §0 "~64.184 s TDB↔TT/UTC trap" nbody/convert.py warns about — which
+# put t_sec=0 at J2000 TDB + 64.184 s, ~1944 km of Earth along-track motion.)
+_J2000_TDB_JD: Final[float] = 2451545.0
 
 # Mean obliquity of the ecliptic at J2000 (IAU 2006 / IERS 2010). Used by
 # the astropy backend to rotate ICRS (BCRS-aligned, equatorial) into the
@@ -280,9 +284,15 @@ class _AstropyBackend:
         # Import lazily so packages that omit the runtime dep can still import
         # this module's circular path.
         from astropy.coordinates import solar_system_ephemeris
+        from astropy.time import Time
 
         # DE440 is bundled with astropy as of 6.x+; opt in once.
         solar_system_ephemeris.set("de440")
+        # t_sec=0 reference: exactly J2000 TDB (JD 2451545.0 in the TDB scale).
+        # Built ONCE as a jd-format TDB Time so the t_sec offset is pure TDB
+        # second arithmetic — never a POSIX/unix timestamp relabeled "tdb"
+        # (that relabeling is the ~64.184 s trap; see module-level comment).
+        self._j2000_tdb = Time(_J2000_TDB_JD, format="jd", scale="tdb")
         # Pre-compute the ICRS->ecliptic rotation about +x by -obliquity.
         eps = _J2000_OBLIQUITY_RAD
         self._r_icrs_to_ecl: NDArray[np.float64] = np.array(
@@ -296,16 +306,17 @@ class _AstropyBackend:
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         from astropy.coordinates import get_body_barycentric_posvel
-        from astropy.time import Time
+        from astropy.time import TimeDelta
 
         if body not in _ASTROPY_BODY_NAMES:
             raise KeyError(
                 f"unknown body code {body!r}; astropy backend handles {tuple(_ASTROPY_BODY_NAMES)}"
             )
         astropy_name = _ASTROPY_BODY_NAMES[body]
-        # Time arithmetic via timedelta keeps timezone-aware datetimes consistent.
-        epoch = _J2000_EPOCH.timestamp() + t_sec
-        t = Time(epoch, format="unix", scale="tdb")
+        # J2000(TDB) + t_sec, entirely in the TDB scale: a scale-less
+        # TimeDelta added to a TDB Time is applied as TDB seconds (uniform,
+        # no leap-second steps), so t_sec=0 lands EXACTLY on JD 2451545.0 TDB.
+        t = self._j2000_tdb + TimeDelta(t_sec, format="sec")
         # Heliocentric posvel: subtract Sun's barycentric posvel from the
         # body's. astropy returns CartesianRepresentation in km and km/s when
         # we cast through .xyz.to(km).value.
@@ -335,7 +346,7 @@ class _AstropyBackend:
         ICRS→ecliptic rotation, same subtraction order.
         """
         from astropy.coordinates import get_body_barycentric_posvel
-        from astropy.time import Time
+        from astropy.time import TimeDelta
 
         unknown = [b for b in bodies if b not in _ASTROPY_BODY_NAMES]
         if unknown:
@@ -345,14 +356,17 @@ class _AstropyBackend:
             )
         n = len(bodies)
         # Distinct epochs (preserve first-seen order) → one array Time + one Sun
-        # posvel per distinct epoch. Match the scalar path's epoch arithmetic.
+        # posvel per distinct epoch. Match the scalar path's epoch arithmetic:
+        # J2000(TDB) + t_sec as a TDB-scale TimeDelta (see state()).
         epoch_index: dict[float, int] = {}
-        unix_epochs: list[float] = []
+        tdb_offsets_sec: list[float] = []
         for t_sec in epochs:
             if t_sec not in epoch_index:
-                epoch_index[t_sec] = len(unix_epochs)
-                unix_epochs.append(_J2000_EPOCH.timestamp() + t_sec)
-        t_arr = Time(np.asarray(unix_epochs, dtype=np.float64), format="unix", scale="tdb")
+                epoch_index[t_sec] = len(tdb_offsets_sec)
+                tdb_offsets_sec.append(t_sec)
+        t_arr = self._j2000_tdb + TimeDelta(
+            np.asarray(tdb_offsets_sec, dtype=np.float64), format="sec"
+        )
         sun_pos, sun_vel = get_body_barycentric_posvel("sun", t_arr)
 
         # Group element indices by astropy body so each body's Chebyshev eval is

@@ -29,16 +29,15 @@ Conventions confirmed from ``src/cyclerfinder/core/ephemeris.py`` (read
   SPICE center 10 (Sun).
 - **Frame**: J2000 **ecliptic** (ICRS/equatorial rotated by ``-obliquity``
   23.4392911 deg about +x) ⇒ SPICE ``ECLIPJ2000``.
-- **Time**: ``t_sec`` is seconds added to a unix timestamp that is then
-  *relabeled* ``scale="tdb"``. The reference ``_J2000_EPOCH`` is
-  ``2000-01-01T12:00:00`` built as a **UTC** datetime; feeding its POSIX
-  timestamp to ``Time(..., format="unix", scale="tdb")`` lands ``t_sec=0`` at
-  **2000-01-01T12:01:04.184 TDB** — i.e. 64.184 s after textbook J2000(TDB)
-  (32 leap seconds + 32.184 s TAI->TT). This offset is the project's *de facto*
-  epoch convention; it is pinned by :func:`test_j2000_epoch_offset_is_pinned`
-  below. The SPICE/Horizons comparisons replicate astropy's exact internal
-  ``Time`` (so they validate the *reader*, not the epoch label) — see
-  :func:`_backend_tdb_jd` / :func:`_t_sec_for_tdb_jd`.
+- **Time**: ``t_sec`` is **TDB seconds since J2000(TDB)** (JD 2451545.0 TDB),
+  a uniform axis with no leap-second steps — identical to SPICE ET and to
+  ``nbody/convert.py``. Pinned by :func:`test_j2000_epoch_offset_is_pinned`.
+  (Until 2026-06-11/#198 the backend relabeled a UTC POSIX timestamp
+  ``scale="tdb"``, landing ``t_sec=0`` at J2000(TDB)+64.184 s; this module's
+  SPICE/Horizons comparisons replicated that internal ``Time`` via
+  ``_backend_tdb_jd``, so they validated the kernel *reader* while sharing the
+  epoch convention — the shift was invisible here. The epoch itself is now
+  anchored externally by ``tests/verify/test_epoch_anchor.py``.)
 
 The astropy-name -> NAIF-id map was confirmed empirically (min-residual over the
 grid): astropy ``get_body_barycentric_posvel`` returns the *planet center* for
@@ -59,8 +58,8 @@ import pytest
 from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import (
     _ASTROPY_BODY_NAMES,
-    _J2000_EPOCH,
     _J2000_OBLIQUITY_RAD,
+    _J2000_TDB_JD,
     Ephemeris,
 )
 
@@ -105,21 +104,23 @@ def test_obliquity_constant_is_j2000_mean() -> None:
 
 
 def test_j2000_epoch_offset_is_pinned() -> None:
-    """Pin the project's *de facto* epoch: t_sec=0 is 64.184 s after J2000(TDB).
+    """Pin the epoch: t_sec=0 is EXACTLY J2000(TDB), JD 2451545.0 TDB.
 
-    ``_J2000_EPOCH`` is a UTC datetime whose POSIX timestamp is relabeled
-    ``scale="tdb"`` by the astropy backend. That relabeling lands t_sec=0 at
-    2000-01-01T12:01:04.184 TDB = 64.184 s after textbook J2000(TDB)
-    (32 leap seconds at 2000 + 32.184 s TAI->TT). This is the convention every
-    astropy-backed caller inherits; pin it so a silent change (e.g. switching
-    ``_J2000_EPOCH`` to a TDB/TT datetime) is caught.
+    Fixed in #198 (2026-06-11): the backend previously relabeled a UTC POSIX
+    timestamp ``scale="tdb"``, landing t_sec=0 at J2000(TDB)+64.184 s
+    (32 leap seconds at 2000 + 32.184 s TAI->TT — the design §0 trap
+    ``nbody/convert.py`` warns about). The backend now constructs
+    ``Time(2451545.0, format="jd", scale="tdb") + TimeDelta(t_sec)``; pin
+    both the exported JD constant and the constructed instant so any silent
+    reintroduction of a relabeled epoch is caught.
     """
     pytest.importorskip("astropy")
-    from astropy.time import Time
+    from astropy.time import Time, TimeDelta
 
-    t0 = Time(_J2000_EPOCH.timestamp(), format="unix", scale="tdb")
+    assert _J2000_TDB_JD == 2451545.0
+    t0 = Time(_J2000_TDB_JD, format="jd", scale="tdb") + TimeDelta(0.0, format="sec")
     offset_s = (t0.tdb.jd - 2451545.0) * 86400.0
-    assert offset_s == pytest.approx(64.184, abs=1e-3)
+    assert offset_s == pytest.approx(0.0, abs=1e-6)
 
 
 def test_earth_z_small_confirms_ecliptic_frame() -> None:
@@ -154,19 +155,17 @@ def test_all_eight_planets_registered_and_named() -> None:
 def _backend_tdb_jd(t_sec: float) -> float:
     """The exact TDB Julian date the astropy backend evaluates ``t_sec`` at.
 
-    The backend builds ``Time(_J2000_EPOCH.timestamp() + t_sec, format="unix",
-    scale="tdb")`` and reads the body at that ``Time``. astropy's ``unix``
-    format counts UTC SI seconds, so this map is **not** uniform: even labeled
-    ``scale="tdb"`` it carries the leap-second steps, and the offset from
-    textbook J2000(TDB) drifts from 64.184 s (2000) to ~69 s (2030). We compute
-    the backend's actual TDB instant rather than assume linearity, so the SPICE
-    ET and Horizons comparison hit the SAME instant the backend reads — i.e. we
-    validate the kernel *reader*, not the epoch label (the label offset is
-    pinned separately by :func:`test_j2000_epoch_offset_is_pinned`).
+    Since #198 the backend builds ``Time(_J2000_TDB_JD, format="jd",
+    scale="tdb") + TimeDelta(t_sec, format="sec")`` — a uniform TDB axis, so
+    this map is exactly linear: ``JD = 2451545.0 + t_sec / 86400``. We still
+    replicate it through astropy's own ``Time`` arithmetic (not the formula)
+    so the SPICE ET and Horizons comparisons hit the SAME instant the backend
+    reads, whatever the backend's construction is.
     """
-    from astropy.time import Time
+    from astropy.time import Time, TimeDelta
 
-    return float(Time(_J2000_EPOCH.timestamp() + t_sec, format="unix", scale="tdb").tdb.jd)
+    t = Time(_J2000_TDB_JD, format="jd", scale="tdb") + TimeDelta(t_sec, format="sec")
+    return float(t.tdb.jd)
 
 
 def _et_for_t_sec(t_sec: float) -> float:
@@ -174,6 +173,7 @@ def _et_for_t_sec(t_sec: float) -> float:
 
     Exact by construction: ET is derived from the backend's own TDB instant
     (:func:`_backend_tdb_jd`), so SPICE reads the SAME epoch astropy reads.
+    Since #198 this is simply ``t_sec`` itself (ET == TDB seconds past J2000).
     """
     return (_backend_tdb_jd(t_sec) - 2451545.0) * 86400.0
 
@@ -181,25 +181,11 @@ def _et_for_t_sec(t_sec: float) -> float:
 def _t_sec_for_tdb_jd(tdb_jd: float) -> float:
     """Invert :func:`_backend_tdb_jd`: t_sec landing the backend on ``tdb_jd``.
 
-    The map is monotonic but non-uniform (leap-second steps), so we bisect to
-    machine precision rather than assume a linear slope. Used to anchor against
-    Horizons vectors stated at a fixed TDB calendar instant.
+    Since #198 the t_sec axis is uniform TDB seconds since J2000(TDB), so the
+    inverse is the exact linear map (no leap-second steps to bisect across).
+    Used to anchor against Horizons vectors stated at a fixed TDB instant.
     """
-    # 1 day ~ 86400 s; bracket generously around a linear first guess.
-    guess = (tdb_jd - 2451545.0) * 86400.0
-    lo, hi = guess - 200.0, guess + 200.0
-    # Ensure the bracket contains the root (expand if a leap edge sits nearby).
-    while _backend_tdb_jd(lo) > tdb_jd:
-        lo -= 200.0
-    while _backend_tdb_jd(hi) < tdb_jd:
-        hi += 200.0
-    for _ in range(80):  # 400 s / 2^80 -> far below float resolution
-        mid = 0.5 * (lo + hi)
-        if _backend_tdb_jd(mid) < tdb_jd:
-            lo = mid
-        else:
-            hi = mid
-    return 0.5 * (lo + hi)
+    return (tdb_jd - 2451545.0) * 86400.0
 
 
 # --------------------------------------------------------------------------- #
@@ -301,10 +287,11 @@ def test_spice_same_kernel_crosscheck_all_planets(spice_kernels: Any) -> None:
 #   REF_PLANE='ECLIPTIC', REF_SYSTEM='J2000', OUT_UNITS='KM-S',
 #   VEC_TABLE='2' (position + velocity), GEOMETRIC states (no light-time/aberr).
 # Horizons reported {source: DE441} for both target and Sun center; OUR backend
-# reads DE440. The DE440-vs-DE441 difference (plus our backend's epoch handling)
-# is why the anchor tolerance is looser than the SPICE same-kernel gate.
-# Epochs are stated by Horizons in TDB; we compare at the same TDB instant via
-# _t_sec_for_tdb_jd (so the comparison tests the reader, not the epoch label).
+# reads DE440. The DE440-vs-DE441 difference is why the anchor tolerance is
+# looser than the SPICE same-kernel gate. Epochs are stated by Horizons in TDB;
+# we compare at the same TDB instant via _t_sec_for_tdb_jd (since #198 the exact
+# linear map, so these anchors now pin the epoch convention too — see also the
+# dedicated keystone anchors in test_epoch_anchor.py).
 # Each entry: (body_code, "YYYY-MM-DD TDB", r_km(3), v_km_s(3)).
 _HORIZONS_ANCHORS: list[tuple[str, str, tuple[float, float, float], tuple[float, float, float]]] = [
     # Earth (target 399, Sun center 10), DE441, retrieved 2026-06-06.
