@@ -10,6 +10,10 @@ PDF itself was NOT available to this task). Tool:
 `scripts/reproduce_mcconaghy_table71.py`.
 
 **Headline verdict: PARTIAL-CONFIRMED, with the discrepant tail ADJUDICATED.**
+*(UPDATE 2026-06-11 — §9: PDF re-verification REFUTES transcription drift; the
+printed Table 7.1 tail itself is defective, and the emerged tail matches Table
+7.5's printed values on the same dates. Verdict upgrades to CONFIRMED with a
+source-defect note.)*
 
 - **Encounters 1–19 (2005-08-13 → 2031-03-12, six full E→M→E→E cycles) REPRODUCE**
   on DE440: |V∞| residual ≤ 0.195 km/s (mean 0.047 over 36 leg-endpoints), ballistic
@@ -185,8 +189,10 @@ rows (rendered-PDF table reading; possibly bleed from the adjacent Table 7.5 —
 boxed Mars maximum 7.70 km/s at Mars-20 matches our emerged 7.693–7.705 exactly), or
 less likely a misprint in the dissertation itself. **Unresolvable from the mining
 note alone — the PDF is not available to this task.** Follow-up: re-verify Table 7.1
-rows 20–24 (V∞ and closest-approach columns) against the PDF
-(`cyclers_pdf` private repo) in a task with source access.
+rows 20–24 (V∞ and closest-approach columns) against the dissertation in a task with
+source access. *[RESOLVED 2026-06-11 — §9: re-verification REFUTES transcription
+drift (the mining note matches the print cell-for-cell); the "less likely" branch is
+the true one — the defect is in the dissertation's printed Table 7.1 itself.]*
 
 ## 5. Independent n-body (REBOUND/IAS15 over DE440)
 
@@ -254,3 +260,57 @@ Mars-perturbed run (6,600–40,900 km). The band was NOT loosened.
 uv run python scripts/reproduce_mcconaghy_table71.py            # full (needs rebound)
 uv run python scripts/reproduce_mcconaghy_table71.py --no-nbody # Lambert stage only
 ```
+
+---
+
+## 9. ADJUDICATION ADDENDUM (2026-06-11, #193) — tail re-verified against the dissertation
+
+The §4 follow-up was performed with source access: McConaghy 2004 Table 7.1 (p.149)
+rows 18–24 re-transcribed character-by-character (rendered page image and the
+file's embedded OCR text layer, which agree), and Table 7.5 (p.159) read in full.
+Nothing computed/emerged in §§1–8 was changed.
+
+**Finding 1 — the mining note's transcription is CORRECT.** All cells of rows
+18–24 match the print (18–19 were the overlap controls, also matching). The
+transcription-drift / Table-7.5-bleed hypothesis is REFUTED.
+
+**Finding 2 — the defect is in the SOURCE.** Table 7.1's printed dates are
+identical, to the printed day, to Table 7.5's from Earth-3 through Earth-22
+(Mars-23/Earth-24 differ by +1/+2 d), yet from Mars-20 on the two tables print
+incompatible V∞/CA. Identical encounter dates force the same Lambert conics (the
+discrete alternatives are 6.7–16.3 km/s apart, §4), so both printed tails cannot
+describe these dates: Table 7.1 rows 20–24 are internally inconsistent AS PRINTED —
+a production defect in the dissertation (same genus as the Vallado TR-91-6
+Mars-row transposition). Whether the error sits in Table 7.1's date column or its
+V∞/CA columns is unresolvable from the print alone.
+
+**Finding 3 — the emerged tail IS Table 7.5's printed tail.** Per-cell, on the
+dates our Lambert chain used (= Table 7.1's printed dates; Δd = Table 7.5 date −
+Table 7.1 date):
+
+| enc | body | Δd | 7.1 V∞ | 7.5 V∞ | emerged V∞ | 7.1 CA | 7.5 CA | implied CA |
+|---|---|---|---|---|---|---|---|---|
+| 20 | M | 0 d | 7.85 | **7.70** (boxed) | 7.693–7.705 | 8,802 | 10,573 | 10,469 |
+| 21 | E | 0 d | 4.21 | 3.78 | 3.771–3.824 | 24,870 | 22,970 | 22,459 |
+| 22 | E | 0 d | 4.20 | 3.76 | 3.784–3.805 | 2,756 | 9,633 | 9,442 |
+| 23 | M | +1 d | 5.87 | 4.68 | 4.746–4.749 | 1,770 | 15,695 | 13,782 |
+| 24 | E | +2 d | 7.23 | 5.54 | 5.670 | — | 27,049 | (terminal) |
+
+On the exactly-shared dates (20–22) the emerged V∞ matches Table 7.5 to ≤ 0.05 km/s
+and the implied CA to 104–511 km — head-region reconstruction noise; at 23–24 the
+residuals (0.07 / 0.13 km/s) are the size of the 1–2-day date offset times the
+measured sensitivity (§4). Russell App-C #83's node dates equal TABLE 7.5's
+(11/13/2035, 05/08/2038), i.e. Russell's block and Table 7.5 print the same member —
+the §4 overlap was Russell-vs-7.5 agreement all along, and our date-anchored chain
+lands on that member because the printed Table 7.1 carries its dates from Earth-3
+onward.
+
+**Verdict upgrade: PARTIAL-CONFIRMED → CONFIRMED (with a source-defect note).**
+Every leg of the 33-year date-anchored chain now reproduces a PRINTED golden:
+encounters 1–19 against Table 7.1, encounters 20–24 against Table 7.5. The §2 clean
+negative stands exactly as stated — the printed Table 7.1 tail values match no
+conic through the printed dates — but it is now adjudicated as the dissertation's
+print defect, not an open question about our transcription or reconstruction. For
+any future golden use: Table 7.1 rows 20–24 V∞/CA are DEFECTIVE; Table 7.5 is the
+sourced golden for that segment (verbatim rows now in the mining note §2.2). The §6
+proposed writeback should cite this addendum and carry the source-defect flag.

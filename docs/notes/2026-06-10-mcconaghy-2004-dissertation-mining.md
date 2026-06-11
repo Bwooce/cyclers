@@ -4,8 +4,6 @@
 **Source:** Thomas Troy McConaghy, *Design and Optimization of Interplanetary
 Spacecraft Trajectories*, PhD thesis, Purdue University, December 2004 (advisor
 J. Longuski). UMI/ProQuest no. 3166673.
-File: `/home/bruce/dev/cyclers_pdf/papers/mcconaghy-2004-design-optimization-interplanetary-spacecraft-trajectories-purdue-phd.pdf`
-(PRIVATE repo — never linked from the public tree; see memory `cyclers_pdf private repo`).
 Read with the Read tool (rendered pages). **PDF-page↔printed-page offset is +18 for
 Chapters 5–7** (PDF p.147 = printed p.129); cited values below use the **printed page**
 shown in the page header.
@@ -129,6 +127,28 @@ encounter label (Earth-k / Mars-k), **calendar date (mm/dd/yyyy)**, **V∞ (km/s
 - Mars-23  11/12/2035 | 5.87 | 1,770 | 137
 - Earth-24 05/06/2038 | 7.23 | — | 906
 
+> **VERIFICATION (2026-06-11, #193):** rows 18–24 above were re-transcribed
+> character-by-character against the printed page (rendered page image AND the
+> file's embedded OCR text layer, which agree) after the DE440 reproduction
+> (`2026-06-10-mcconaghy-table71-reproduction.md`) found rows 20–24 irreproducible
+> from their own printed dates. **The transcription is CORRECT — every cell matches
+> the print.** The "transcription drift / Table 7.5 bleed" hypothesis is REFUTED;
+> the inconsistency is in the SOURCE. Specifically: Table 7.1's printed dates are
+> identical, to the printed day, to Table 7.5's (p.159) from Earth-3 through
+> Earth-22 (Mars-23/Earth-24 then differ by 1/2 d), yet from Mars-20 the two tables
+> print incompatible V∞ (7.85 vs 7.70, 4.21 vs 3.78, 4.20 vs 3.76, 5.87 vs 4.68,
+> 7.23 vs 5.54 km/s) and closest approaches (8,802 vs 10,573; 24,870 vs 22,970;
+> 2,756 vs 9,633; 1,770 vs 15,695 km). Identical encounter dates force the same
+> Lambert conics (the discrete alternatives are 6.7–16.3 km/s apart), so both tails
+> cannot be right for these dates; the DE440 reproduction and Russell App-C #83
+> both side with Table 7.5's values (reproduction note §9). **For golden use:
+> Table 7.1 rows 1–19 stand; rows 20–24 V∞/CA are DEFECTIVE AS PRINTED (internally
+> inconsistent with the table's own dates+TOF — a source defect of the
+> Vallado-TR-91-6-Mars-row kind); the sourced golden for the 2031–2038 tail of
+> these dates is Table 7.5 (verbatim rows below).** Whether the production error in
+> Table 7.1 sits in its date column or its V∞/CA columns is unresolvable from the
+> print alone.
+
 **Table 7.2 — Outbound Cycler Vehicle 2 (p.150):** 24 encounters, launch Earth-1
 09/30/2007 (V∞ 4.52) … Earth-24 05/11/2040 (V∞ 11.05). Mars-2 V∞ 3.00, CA 6,601, TOF
 231 d. (Full table available in source; first/last rows quoted to characterise.)
@@ -148,6 +168,16 @@ p.159).** This is the "best balanced" example (boxed maxima: 7.09 km/s at Earth
 Mars-2 03/03/2006 V∞ 3.00 CA 9,961 TOF 175; Mars-14 05/01/2023 V∞ 2.77 CA 7,593 TOF
 223 (boxed). Average over the itinerary (text p.154): taxi-Earth V∞ 5.50, Mars V∞ 5.06,
 Earth-Mars TOF 162 d.
+
+> **ADDITION (2026-06-11, #193) — verbatim Table 7.5 rows 17–24 (p.159), now
+> adjudication-relevant per the VERIFICATION note in §2.2** (date | V∞ km/s | CA km
+> | leg TOF d; Table 7.5 prints CA without thousands separators):
+> Mars-17 06/14/2027 | 5.26 | 13751 | 170; Earth-18 09/21/2029 | 5.78 | 26818 |
+> 830; Earth-19 03/12/2031 | 5.78 | 39051 | 537; Mars-20 07/15/2031 | **7.70**
+> (boxed) | 10573 | 125; Earth-21 01/15/2034 | 3.78 | 22970 | 915; Earth-22
+> 06/28/2035 | 3.76 | 9633 | 529; Mars-23 11/13/2035 | 4.68 | 15695 | 138;
+> Earth-24 05/08/2038 | 5.54 | 27049 | 907. These dates coincide with Table 7.1's
+> printed dates exactly at encounters 17–22 and differ by +1/+2 d at 23/24.
 
 ### 2.3 The feasibility envelope (Figs 7.2–7.5, text p.153–154)
 
