@@ -21,6 +21,7 @@ import pytest
 import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.validate import validate_validation_level
+from scripts.backfill_validation_level import _LEVEL_BY_ID, preflight_registry_drift
 
 CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 SCHEMA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.schema.json"
@@ -59,6 +60,32 @@ def test_semantic_gate_rejects_unjustified_level_above_v0() -> None:
     errors = validate_validation_level(rows)
     assert errors, "expected an over-claim violation"
     assert any("validation_level" in e for e in errors)
+
+
+def test_semantic_gate_rejects_unjustified_nested_validation_level() -> None:
+    """C1 pin (#196): the NESTED ``validation.level`` field (the spelling the
+    M7 writeback helpers maintain) is held to the same over-claim guard as the
+    top-level ``validation_level`` tag — the historical bypass route."""
+    rows = [{"id": "some-random-row", "validation": {"level": "V3"}}]
+    errors = validate_validation_level(rows)
+    assert errors, "expected an over-claim violation on nested validation.level"
+    assert any("validation.level" in e for e in errors)
+
+
+def test_semantic_gate_accepts_nested_v0_and_registered_nested_level() -> None:
+    """Nested V0 needs no evidence; a registered nested (id, level) passes."""
+    rows = [
+        {"id": "anything", "validation": {"level": "V0"}},
+        {"id": "aldrin-classic-em-k1-outbound", "validation": {"level": "V2"}},
+    ]
+    assert validate_validation_level(rows) == []
+
+
+def test_semantic_gate_rejects_unknown_nested_level_enum() -> None:
+    """A nested level outside V0..V5 is refused (enum check, nested spelling)."""
+    rows = [{"id": "bad", "validation": {"level": "V9"}}]
+    errors = validate_validation_level(rows)
+    assert any("not one of V0..V5" in e for e in errors)
 
 
 def test_semantic_gate_accepts_v0_anywhere() -> None:
@@ -171,3 +198,30 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
 def test_live_catalogue_validation_level_semantic_clean() -> None:
     """The whole live catalogue passes the validation_level semantic gate."""
     assert validate_validation_level(_load_rows()) == []
+
+
+# ---------------------------------------------------------------------------
+# M1 preflight (#196) — backfill registry must agree with _LEVEL_EVIDENCE
+# ---------------------------------------------------------------------------
+
+
+def test_backfill_preflight_rejects_fabricated_drift_entry() -> None:
+    """M1 pin (#196): an (id, level>V0) present in the script's _LEVEL_BY_ID but
+    absent from the validator's _LEVEL_EVIDENCE is drift — the preflight must
+    name it so the script refuses to write."""
+    drifted = {**_LEVEL_BY_ID, "fabricated-drift-row": "V2"}
+    errors = preflight_registry_drift(drifted)
+    assert errors, "expected the fabricated drift entry to be rejected"
+    assert any("fabricated-drift-row" in e for e in errors)
+    assert any("_LEVEL_EVIDENCE" in e for e in errors)
+
+
+def test_backfill_preflight_allows_v0_floor_entries() -> None:
+    """V0 (the internal-consistency floor) never needs an evidence pointer."""
+    assert preflight_registry_drift({"any-row-at-the-floor": "V0"}) == []
+
+
+def test_backfill_preflight_live_registries_agree() -> None:
+    """The script's live _LEVEL_BY_ID and the validator's _LEVEL_EVIDENCE have
+    NOT drifted — every level above V0 is evidence-backed."""
+    assert preflight_registry_drift(_LEVEL_BY_ID) == []

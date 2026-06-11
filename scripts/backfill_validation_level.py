@@ -61,6 +61,9 @@ from pathlib import Path
 
 import yaml  # type: ignore[import-untyped]
 
+from cyclerfinder.data.catalog import atomic_write_text
+from cyclerfinder.data.validate import has_level_evidence
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 
@@ -130,6 +133,28 @@ _LEVEL_BY_ID: dict[str, str] = {
 }
 
 
+def preflight_registry_drift(level_by_id: dict[str, str]) -> list[str]:
+    """M1 guard (#196): refuse any (id, level>V0) absent from ``_LEVEL_EVIDENCE``.
+
+    ``_LEVEL_BY_ID`` (this script) and ``_LEVEL_EVIDENCE``
+    (``cyclerfinder.data.validate``) are maintained by hand in two files; if
+    they drift, this script could stamp a level the over-claim guard would
+    then reject — or worse, a level nothing ever checks. Every entry above
+    the V0 floor must be backed by the SAME registry the validator reads
+    (via :func:`has_level_evidence`). Returns a list of drift descriptions
+    (empty when clean).
+    """
+    errors: list[str] = []
+    for rid, lvl in sorted(level_by_id.items()):
+        if not has_level_evidence(rid, lvl):
+            errors.append(
+                f"{rid}: level {lvl!r} is in _LEVEL_BY_ID but ({rid!r}, {lvl!r}) "
+                f"has no entry in cyclerfinder.data.validate._LEVEL_EVIDENCE — "
+                f"register the evidence pointer there first (registries drifted)"
+            )
+    return errors
+
+
 def _render_line(level: str) -> str:
     return (
         f"  validation_level: {level}"
@@ -141,6 +166,17 @@ def _render_line(level: str) -> str:
 
 def main() -> None:
     dry_run = "--dry-run" in sys.argv
+
+    # M1 preflight (#196): _LEVEL_BY_ID must agree with the validator's
+    # evidence registry BEFORE any write — otherwise this script could stamp
+    # an over-claim the suite would only catch after the file changed.
+    drift = preflight_registry_drift(_LEVEL_BY_ID)
+    if drift:
+        print("ERROR: evidence-registry drift; refusing to write:", file=sys.stderr)
+        for line in drift:
+            print(f"  {line}", file=sys.stderr)
+        sys.exit(1)
+
     raw_text = CATALOGUE_PATH.read_text(encoding="utf-8")
     rows = yaml.safe_load(raw_text)
 
@@ -194,7 +230,9 @@ def main() -> None:
         )
         sys.exit(1)
 
-    CATALOGUE_PATH.write_text("".join(out), encoding="utf-8")
+    # N1 (#196): atomic replace — a writer dying mid-write must not truncate
+    # the catalogue.
+    atomic_write_text(CATALOGUE_PATH, "".join(out))
     print(f"\nInserted validation_level into {inserted} rows -> {CATALOGUE_PATH}")
 
 

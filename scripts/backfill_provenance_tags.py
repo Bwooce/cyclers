@@ -83,6 +83,8 @@ from pathlib import Path
 
 import yaml  # type: ignore[import-untyped]
 
+from cyclerfinder.data.catalog import atomic_write_text
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOGUE_PATH = REPO_ROOT / "data" / "catalogue.yaml"
 
@@ -323,7 +325,9 @@ def main() -> None:
         )
         sys.exit(1)
 
-    CATALOGUE_PATH.write_text("".join(out), encoding="utf-8")
+    # N1 (#196): atomic replace — a writer dying mid-write must not truncate
+    # the catalogue.
+    atomic_write_text(CATALOGUE_PATH, "".join(out))
     print(f"\nInserted provenance tags into {inserted} rows -> {CATALOGUE_PATH}")
 
 

@@ -28,11 +28,32 @@ from typing import Any
 import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.catalog import CatalogueEntry, _replace_entry
+from cyclerfinder.data.validate import has_level_evidence
 from cyclerfinder.verify.crosscheck import LambertCrosscheckResult
 from cyclerfinder.verify.propagate import StabilityReport
 from cyclerfinder.verify.real_closure import RealClosureResult
 
 _LEVELS: tuple[str, ...] = ("V0", "V1", "V2", "V3", "V4", "V5")
+
+
+def _assert_level_evidence(cycler_id: str, level: str) -> None:
+    """Refuse to persist a level above V0 without registered evidence.
+
+    The C1 guard (task #196): the apply_* helpers write the NESTED
+    ``validation.level`` field, which historically routed around the
+    over-claim guard (``validate_validation_level`` read only the
+    top-level ``validation_level`` tag). Both ends are now closed — the
+    validator also reads the nested field, and this assertion stops an
+    unregistered promotion at the writeback source. ``V0`` (the
+    internal-consistency floor) never needs evidence.
+    """
+    if not has_level_evidence(cycler_id, level):
+        raise ValueError(
+            f"{cycler_id}: refusing to write validation level {level!r} above V0 — "
+            f"({cycler_id!r}, {level!r}) has no recorded mechanical evidence in "
+            f"_LEVEL_EVIDENCE (cyclerfinder.data.validate). Register the evidence "
+            f"pointer first; when in doubt, V0."
+        )
 
 
 def _gate_passed(name: str, gate: object) -> bool:
@@ -98,7 +119,9 @@ def apply_v0_v1_to_entry(
         v1_pass = False
     gates["V1"] = {"pass": v1_pass, "max_diff_mps": max_diff_mps}
     new_validation["gates"] = gates
-    new_validation["level"] = _highest_passing_level(gates)
+    level = _highest_passing_level(gates)
+    _assert_level_evidence(entry.id, level)
+    new_validation["level"] = level
     return _with_validation(entry, new_validation)
 
 
@@ -120,7 +143,9 @@ def apply_v2_to_entry(entry: CatalogueEntry, report: StabilityReport) -> Catalog
         "frame_used": report.frame_used,
     }
     new_validation["gates"] = gates
-    new_validation["level"] = _highest_passing_level(gates)
+    level = _highest_passing_level(gates)
+    _assert_level_evidence(entry.id, level)
+    new_validation["level"] = level
     return _with_validation(entry, new_validation)
 
 
@@ -143,7 +168,9 @@ def apply_v3_to_entry(entry: CatalogueEntry, report: RealClosureResult) -> Catal
         "frame_used": report.frame_used,
     }
     new_validation["gates"] = gates
-    new_validation["level"] = _highest_passing_level(gates)
+    level = _highest_passing_level(gates)
+    _assert_level_evidence(entry.id, level)
+    new_validation["level"] = level
     metrics = dict(new_validation.get("metrics", {}))
     metrics["horizon_tcm_dv_mps"] = report.horizon_tcm_mps
     metrics["horizon_laps"] = report.n_cycles_propagated

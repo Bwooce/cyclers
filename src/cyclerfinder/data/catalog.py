@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Final, Literal
@@ -60,6 +61,25 @@ CATALOGUE_PATH: Final[Path] = (
 
 Matches ``tests/_catalogue_loader.py``'s pattern so the loader and the
 M5 rediscovery test see the same on-disk file."""
+
+
+def atomic_write_text(path: Path, text: str, *, encoding: str = "utf-8") -> None:
+    """Write *text* to *path* atomically (sibling tmp file + ``os.replace``).
+
+    The N1 guard (task #196): the backfill scripts used to write
+    ``data/catalogue.yaml`` in place, so a writer dying mid-write could
+    truncate the catalogue. ``os.replace`` is atomic on POSIX when source
+    and destination share a filesystem — hence the SIBLING tmp file, not a
+    system tmp dir. On any failure the tmp file is removed and the original
+    is left intact.
+    """
+    tmp = path.with_name(path.name + ".tmp")
+    try:
+        tmp.write_text(text, encoding=encoding)
+        os.replace(tmp, path)
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 VINF_BIN_KMS: Final[float] = 0.05
@@ -822,6 +842,13 @@ def load_catalog(path: Path | str = CATALOGUE_PATH) -> Catalog:
     -------
     Catalog
         Frozen, indexed.
+
+    Raises
+    ------
+    ValueError
+        If two rows share the same ``id``. ``by_id`` is the writeback /
+        evidence-registry key, so a silent last-write-wins here would let
+        one row shadow another (the M2 guard, task #196).
     """
     raw = yaml.safe_load(Path(path).read_text())
     entries: list[CatalogueEntry] = []
@@ -831,6 +858,12 @@ def load_catalog(path: Path | str = CATALOGUE_PATH) -> Catalog:
         entry = _entry_from_yaml(row)
         entries.append(entry)
         if entry.id:
+            if entry.id in by_id:
+                raise ValueError(
+                    f"{path}: duplicate catalogue id {entry.id!r} — ids must be "
+                    f"unique (by_id is the writeback/evidence-registry key; a "
+                    f"silent last-write-wins would shadow the earlier row)"
+                )
             by_id[entry.id] = entry
         if entry.signature_hash is not None and entry.signature_hash not in by_hash:
             # First-wins on hash collisions: Russell-table rows whose
@@ -1025,6 +1058,7 @@ __all__ = [
     "Catalog",
     "CatalogueEntry",
     "MatchResult",
+    "atomic_write_text",
     "canonical_signature",
     "find_data_gaps",
     "load_catalog",

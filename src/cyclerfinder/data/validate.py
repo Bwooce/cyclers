@@ -717,6 +717,19 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
 }
 
 
+def has_level_evidence(cycler_id: str, level: str) -> bool:
+    """Whether recorded mechanical evidence backs ``(cycler_id, level)``.
+
+    Membership accessor for :data:`_LEVEL_EVIDENCE` so writers (e.g. the
+    writeback helpers and the back-fill script's preflight) share the SAME
+    registry the over-claim guard reads, without reaching into the private
+    dict. ``V0`` is the internal-consistency floor and never needs evidence.
+    """
+    if level == "V0":
+        return True
+    return (cycler_id, level) in _LEVEL_EVIDENCE
+
+
 def validate_validation_level(rows: list[dict[str, Any]]) -> list[str]:
     """Validate the v4.5 ``validation_level`` tag WHERE PRESENT (spec §16.7.12).
 
@@ -730,24 +743,33 @@ def validate_validation_level(rows: list[dict[str, Any]]) -> list[str]:
       ``V0`` internal-consistency floor without a sourced, in-repo evidence
       pointer (golden discipline — when in doubt, ``V0``).
 
+    BOTH level spellings are guarded: the top-level ``validation_level`` tag
+    AND the nested ``validation.level`` field the M7 writeback helpers
+    maintain — otherwise a writeback-produced row would route around the
+    over-claim guard entirely (the C1 bypass, task #196).
+
     Returns a list of violation strings (empty when clean); never raises.
     """
     errors: list[str] = []
     for row in rows:
         rid = str(row.get("id") or "<unknown>")
-        level = row.get("validation_level")
-        if level is None:
-            continue
-        level = str(level)
-        if level not in _VALIDATION_LEVELS:
-            errors.append(f"{rid}: validation_level={level!r} is not one of V0..V5")
-            continue
-        if level != "V0" and (rid, level) not in _LEVEL_EVIDENCE:
-            errors.append(
-                f"{rid}: validation_level={level!r} is above V0 but no recorded "
-                f"mechanical evidence justifies it (not in _LEVEL_EVIDENCE) — "
-                f"levels derive mechanically from recorded evidence; when in doubt, V0"
-            )
+        declared: list[tuple[str, Any]] = []
+        if row.get("validation_level") is not None:
+            declared.append(("validation_level", row["validation_level"]))
+        nested = row.get("validation")
+        if isinstance(nested, dict) and nested.get("level") is not None:
+            declared.append(("validation.level", nested["level"]))
+        for field_name, raw_level in declared:
+            level = str(raw_level)
+            if level not in _VALIDATION_LEVELS:
+                errors.append(f"{rid}: {field_name}={level!r} is not one of V0..V5")
+                continue
+            if level != "V0" and (rid, level) not in _LEVEL_EVIDENCE:
+                errors.append(
+                    f"{rid}: {field_name}={level!r} is above V0 but no recorded "
+                    f"mechanical evidence justifies it (not in _LEVEL_EVIDENCE) — "
+                    f"levels derive mechanically from recorded evidence; when in doubt, V0"
+                )
     return errors
 
 
@@ -836,8 +858,10 @@ def anchors_for(entry: dict[str, Any]) -> dict[str, bool]:
 
 __all__ = [
     "anchors_for",
+    "has_level_evidence",
     "validate_catalogue",
     "validate_physical_invariants",
     "validate_provenance_tags",
     "validate_schema_invariants",
+    "validate_validation_level",
 ]
