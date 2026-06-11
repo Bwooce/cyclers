@@ -201,6 +201,25 @@ def test_deep_floor_geometry_brackets_within_a_few_iters() -> None:
     assert diag["widen_iters"] < 80, diag
 
 
+def test_bracket_diagnostics_degenerate_geometry_raises() -> None:
+    """``_bracket_diagnostics`` guards singular geometry like ``lambert()`` does.
+
+    At ``cos_dnu = 1`` (collinear, same direction) the ``a_coef`` expression
+    divides by ``(1 - cos_dnu) = 0``; before the #200 fix the helper produced a
+    NaN ``a_coef`` instead of raising :class:`LambertGeometryError`.
+    """
+    from cyclerfinder.core.lambert import _bracket_diagnostics
+
+    r1 = np.array([AU_KM, 0.0, 0.0], dtype=np.float64)
+    tof = 200.0 * SECONDS_PER_DAY
+    # dnu = 0 (r2 parallel to r1, cos_dnu = 1).
+    with pytest.raises(LambertGeometryError):
+        _bracket_diagnostics(r1, 2.0 * r1, tof)
+    # dnu = pi (anti-parallel) is singular too, same as lambert().
+    with pytest.raises(LambertGeometryError):
+        _bracket_diagnostics(r1, -1.5 * r1, tof)
+
+
 # ---------------------------------------------------------------------------
 # _dt_dz algebra fix (task #205 defect A)
 # ---------------------------------------------------------------------------

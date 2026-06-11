@@ -362,6 +362,13 @@ def _bracket_diagnostics(
     else:
         if cross_z > 0.0:
             dnu = 2.0 * np.pi - dnu
+    # Same singular-geometry guard as lambert(): at dnu -> 0 the a_coef
+    # expression divides by (1 - cos_dnu) = 0 and would NaN.
+    if abs(dnu) < 1.0e-12 or abs(dnu - np.pi) < 1.0e-9 or abs(dnu - 2.0 * np.pi) < 1.0e-12:
+        raise LambertGeometryError(
+            "Lambert single-rev universal-variable form is singular for 0- or "
+            "180-degree transfer angles; bracket diagnostics undefined."
+        )
     sin_dnu = float(np.sin(dnu))
     a_coef = sin_dnu * sqrt(r1_n * r2_n / (1.0 - cos_dnu))
     z_lo, z_hi, widen_iters = _find_single_rev_bracket(

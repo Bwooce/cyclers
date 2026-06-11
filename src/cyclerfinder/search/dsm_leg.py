@@ -291,10 +291,12 @@ class DsmChainResult:
         the powered-flyby term, which the catalogue's flyby surrogate owns), km/s.
         This is the residual the corrector / MBH drives.
     max_residual_kms:
-        Alias of ``total_dv_kms`` exposed under the name the MBH adapters expect
-        (``free_return`` / ``ballistic`` correctors both report ``max_residual_kms``
-        as the objective). Keeps :func:`make_dsm_chain_step` uniform with the
-        existing adapters.
+        ``max(|residual_vector|)`` — the SAME quantity the ``converged`` decision
+        is made on (the name the ``free_return`` / ``ballistic`` correctors use
+        for their residual). In the default path ``residual_vector`` is the
+        length-1 ``[total_dv_kms]`` so this still equals ``total_dv_kms``; in the
+        charged path it is the worst per-component residual, NOT the sum
+        (which is ``total_dv_kms``).
     dv_dsm_per_leg_kms:
         EMERGED per-leg DSM impulse magnitudes (the audit breakdown), km/s.
     dv_arrive_kms:
@@ -581,7 +583,9 @@ def evaluate_dsm_chain(
         converged = total_dv < tol_kms
     return DsmChainResult(
         total_dv_kms=total_dv,
-        max_residual_kms=total_dv,
+        # The quantity `converged` was decided on (NOT the total_dv sum; in the
+        # charged path those differ and callers were getting the wrong one).
+        max_residual_kms=float(np.max(np.abs(residual_vector))),
         dv_dsm_per_leg_kms=tuple(dv_dsm),
         dv_arrive_kms=float(dv_arrive),
         vinf_in_kms=vinf_in,

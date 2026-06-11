@@ -895,6 +895,48 @@ def test_charge_flyby_continuity_default_off_is_bit_identical() -> None:
     assert c_flag.eta_per_leg == c_base.eta_per_leg
 
 
+def test_max_residual_kms_is_the_convergence_criterion_quantity() -> None:
+    """``max_residual_kms`` reports ``max(|residual_vector|)`` — the quantity
+    ``converged`` is decided on — NOT the ``total_dv_kms`` sum.
+
+    Pre-fix (#200 review), the field aliased ``total_dv_kms`` in BOTH paths, so
+    charged-path callers (``dsm_descriptor_seed.close_row_dsm``) got a SUM under a
+    field documented as the worst per-component residual. In the default path the
+    residual vector is the length-1 ``[total_dv]`` so the alias was accidentally
+    correct there (pinned by ``test_chain_is_deterministic_...`` line ~168).
+    Label: regression.
+    """
+    ephem = Ephemeris(model="circular")
+    kwargs = dict(
+        sequence=("E", "M", "E"),
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 200.0),
+        eta_per_leg=(0.5, 0.5),
+        ephem=ephem,
+    )
+    r = evaluate_dsm_chain(
+        charge_flyby_continuity=True,
+        alpha_int_per_leg=(0.5,),
+        beta_int_per_leg=(0.0,),
+        **kwargs,  # type: ignore[arg-type]
+    )
+    # Multi-component residual vector: [dv_dsm_leg0, dv_dsm_leg1, flyby_dv, arrival].
+    assert r.residual_vector.shape == (4,)
+    worst = float(np.max(np.abs(r.residual_vector)))
+    assert r.max_residual_kms == worst
+    # converged is decided on exactly this quantity (tol_kms default 0.1).
+    assert r.converged == (worst < 0.1)
+    # The bug is observable on this fixture: the sum strictly exceeds the max
+    # (>= 2 strictly positive components), so the old alias was the WRONG number.
+    positive = [float(c) for c in r.residual_vector if c > 1.0e-6]
+    assert len(positive) >= 2, r.residual_vector
+    assert r.max_residual_kms < r.total_dv_kms + sum(r.flyby_dv_per_flyby_kms)
+    assert r.max_residual_kms != r.total_dv_kms
+
+
 # ---------------------------------------------------------------------------
 # Phase 3 (#162) -- symmetric descriptor seed for the 6.44Gg3 flyby-continuity
 # probe. Probe-side helper (NOT new src surface): maps the row's free_return_arcs
