@@ -198,12 +198,13 @@ class _InclinedCircularBackend:
     """Circular planet motion in an orbital plane inclined to the ecliptic.
 
     The in-plane circular state (z == 0, body along ``+x`` at ``t_sec == 0``)
-    is rotated into the J2000 ecliptic frame by ``R_z(-lan) @ R_x(-inc)``:
-    first tilt the plane about the node line (the ``+x`` reference direction)
-    by the inclination, then rotate about the ecliptic ``+z`` by the longitude
-    of the ascending node. With this convention the body sits on the ascending
-    node at ``t_sec == 0`` (z == 0 there), and the orbit normal points along
-    ``n_hat = (-sin(lan) sin(inc), cos(lan) sin(inc), cos(inc))``.
+    is rotated into the J2000 ecliptic frame by ``R_z(+lan) @ R_x(+inc)``
+    (the Standish ascending-node convention): first tilt the plane about the
+    node line (the ``+x`` reference direction) by the inclination, then rotate
+    about the ecliptic ``+z`` by the longitude of the ascending node. With this
+    convention the body sits on the ASCENDING node at ``t_sec == 0`` (z == 0
+    there, crossing the ecliptic going north), and the orbit normal points
+    along ``n_hat = (sin(lan) sin(inc), -cos(lan) sin(inc), cos(inc))``.
 
     For ``inc_deg == 0.0`` the rotation is the identity, so the result is
     numerically identical to the flat in-plane state.
@@ -225,18 +226,21 @@ class _InclinedCircularBackend:
 
     @staticmethod
     def _rotation(planet: PlanetData) -> NDArray[np.float64]:
-        """Orbital-plane -> ecliptic rotation ``R_z(-lan) @ R_x(-inc)``."""
+        """Orbital-plane -> ecliptic rotation ``R_z(+lan) @ R_x(+inc)``."""
         inc = radians(planet.inc_deg)
         lan = radians(planet.lan_deg)
         ci, si = cos(inc), sin(inc)
         cl, sl = cos(lan), sin(lan)
-        # R_x(-inc): tilt the orbital plane about the node line (+x) so the
-        # orbit normal acquires a +y, +z component before the node rotation.
+        # R_x(+inc): tilt the orbital plane about the node line (+x) so the
+        # orbit normal acquires a -y, +z component before the node rotation
+        # (Standish ascending-node convention: the body crosses the ecliptic
+        # going NORTH at the node). The previous R_x(-inc) form mirrored every
+        # orbital plane about the ecliptic (normals 2*inc away from DE440).
         rx = np.array(
             [
                 [1.0, 0.0, 0.0],
-                [0.0, ci, si],
-                [0.0, -si, ci],
+                [0.0, ci, -si],
+                [0.0, si, ci],
             ],
             dtype=np.float64,
         )

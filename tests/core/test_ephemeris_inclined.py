@@ -17,6 +17,7 @@ from math import cos, pi, radians, sin, sqrt
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 
 from cyclerfinder.core.constants import (
     AU_KM,
@@ -111,14 +112,19 @@ def test_inclined_circular_speed_preserved() -> None:
 def test_inclined_circular_angular_momentum_direction() -> None:
     """h = r x v parallel to orbit normal n_hat within 1e-12 rel. # INVARIANT.
 
-    n_hat = (-sin(lan)*sin(inc), cos(lan)*sin(inc), cos(inc)). Catches a wrong
-    rotation order/sign (which would flip h).
+    INDEPENDENTLY-DERIVED expected (Standish ascending-node convention):
+    n_hat = (sin(lan)*sin(inc), -cos(lan)*sin(inc), cos(inc)).
+    Physical check: polar orbit i=90 deg, lan=0 -> n_hat = (0, -1, 0), so at the
+    node (r along +x) v = n_hat x r_hat = +z: the body crosses the ecliptic
+    going NORTH — the definition of the ASCENDING node. The previous expected
+    value here was derived with the SAME mirrored R_x(-inc) the backend used
+    (a circular test), which hid a plane-mirror bug (normals 2*inc from DE440).
     """
     venus = _inclined_planet("V", _VENUS_INC_DEG, _VENUS_LAN_DEG)
     backend = _InclinedCircularBackend(planets={"V": venus})
     inc = radians(_VENUS_INC_DEG)
     lan = radians(_VENUS_LAN_DEG)
-    n_hat = np.array([-sin(lan) * sin(inc), cos(lan) * sin(inc), cos(inc)], dtype=np.float64)
+    n_hat = np.array([sin(lan) * sin(inc), -cos(lan) * sin(inc), cos(inc)], dtype=np.float64)
     period = _period_s(venus)
     for frac in (0.1, 0.35, 0.6, 0.9):
         r, v = backend.state("V", frac * period)
@@ -164,3 +170,60 @@ def test_astropy_backend_unaffected() -> None:
     assert v.shape == (3,)
     # Earth ~ 1 AU from the Sun.
     assert float(np.linalg.norm(r)) == pytest.approx(AU_KM, rel=0.05)
+
+
+def _de440_orbit_normal(body: str, t_sec: float) -> NDArray[np.float64]:
+    """Unit orbit normal h_hat = (r x v)/|r x v| from the DE440 backend."""
+    r, v = Ephemeris(model="astropy").state(body, t_sec)
+    h = np.cross(r, v)
+    return np.asarray(h / np.linalg.norm(h), dtype=np.float64)
+
+
+def _angle_deg(a: NDArray[np.float64], b: NDArray[np.float64]) -> float:
+    return float(np.degrees(np.arccos(np.clip(float(np.dot(a, b)), -1.0, 1.0))))
+
+
+@pytest.mark.parametrize(
+    ("body", "inc_deg", "lan_deg"),
+    [("V", _VENUS_INC_DEG, _VENUS_LAN_DEG), ("M", _MARS_INC_DEG, _MARS_LAN_DEG)],
+)
+def test_inclined_orbit_normal_anchored_to_de440(body: str, inc_deg: float, lan_deg: float) -> None:
+    """ANCHOR: inclined-backend orbit normal matches DE440's to <= 0.01 deg.
+
+    The DE440 normal is computed INDEPENDENTLY (h = r x v from the astropy
+    backend) — no shared rotation code. Under the pre-fix mirrored R_x(-inc)
+    the disagreement was ~2*inc (Venus 6.7893 deg, Mars 3.6995 deg), so this
+    anchor pins the ascending/descending-node sign unambiguously.
+    """
+    planet = _inclined_planet(body, inc_deg, lan_deg)
+    backend = _InclinedCircularBackend(planets={body: planet})
+    period = _period_s(planet)
+    r0, v0 = backend.state(body, 0.13 * period)
+    h = np.cross(r0, v0)
+    n_model = h / np.linalg.norm(h)
+    # The DE440 normal direction is (very nearly) constant; one epoch suffices.
+    n_de440 = _de440_orbit_normal(body, 100.0 * SECONDS_PER_DAY)
+    assert _angle_deg(np.asarray(n_model, dtype=np.float64), n_de440) < 0.01
+
+
+def test_continuation_ramp_lambda1_plane_matches_de440() -> None:
+    """REGRESSION (2i tilt defect): ramped backend at lam=1 matches DE440's plane.
+
+    At lam_i=1 the continuation's _RampedElementsBackend tilts Mars by its J2000
+    mean inclination about its mean node, so its orbit normal must agree with
+    DE440's to a small fraction of inc (1.8497 deg). Under the pre-fix mirrored
+    R_x(-i) in _tilt the angle was 2i = 3.6995 deg — defeating the homotopy ramp
+    (the "small" final mean-elements -> DE440 step was the full plane flip).
+    Threshold 0.05 deg ~ inc/37: fails loudly at 2i, passes the fixed geometry.
+    """
+    from cyclerfinder.search.continuation import ramped_ephemeris
+
+    ramp = ramped_ephemeris(1.0, 1.0, 1.0)
+    r, v = ramp.state("M", 123.0 * SECONDS_PER_DAY)
+    h = np.cross(r, v)
+    n_ramp = h / np.linalg.norm(h)
+    n_de440 = _de440_orbit_normal("M", 123.0 * SECONDS_PER_DAY)
+    angle = _angle_deg(np.asarray(n_ramp, dtype=np.float64), n_de440)
+    inc_deg = 1.84972647778  # Russell Table 5.4 J2000 mean inclination (lam=1 target)
+    assert angle < 0.05
+    assert angle < inc_deg / 30.0  # "much less than inc": the 2i mirror is 75x over
