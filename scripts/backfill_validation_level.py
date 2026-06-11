@@ -97,6 +97,20 @@ _LEVEL_BY_ID: dict[str, str] = {
     "russell-ocampo-4.1.2-2": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
     "russell-ocampo-4.1.4-1": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
     "russell-ocampo-4.6.3+0": "V1",  # closer sweep 2026-06-08: closed free-return, §14 V1 pass
+    # #181 ToF-fix (2026-06-10): four descriptor-bearing Russell Ch.4 rows close on
+    # the real DE440 ephemeris via the joint (epoch, ToF) self-seed closer (the
+    # Stage-B coplanar-branch-ToF artifact corrected) — emerged E/M v∞ within
+    # 0.08 km/s of the sourced Russell 2004 Table 4.x anchor, lamberthub
+    # izzo2015+gooding1990 + Kepler reprop pass (both §14 V1 halves). All four are
+    # V3-CANDIDATES (single-leg REBOUND/IAS15 confirm in-band; the multi-lap
+    # horizon-TCM is the named follow-up). The siblings 9.353Gg2 / 9.94Gg3 were
+    # already V1 (circular like-for-like); the real-eph closure is ADDED EVIDENCE
+    # for them, not a level change. See
+    # docs/notes/2026-06-10-tof-fix-closure-results.md.
+    "russell-ch4-3.78Gg3": "V1",
+    "russell-ch4-6.44Gg3": "V1",
+    "russell-ch4-3.64gGg3": "V1",
+    "russell-ch4-5.30ggF3": "V1",
     # #167/#94: S1L1's FIRST V3 — corrected-topology closure CONFIRMED on the real
     # DE440 ephemeris (independent REBOUND/IAS15, all 7 Mars encounters in 3x Mars-SOI
     # at the published per-leg v∞). docs/notes/2026-06-08-s1l1-corrected-closure-results.md.

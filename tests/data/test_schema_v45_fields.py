@@ -102,8 +102,12 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     docs/notes/2026-06-08-closer-sweep-v1-candidates.md). Every other tagged row is
     V0; the only V2 is the Aldrin outbound. Two rows are V3: S1L1 (#167/#94 — the
     V3-ballistic type specimen) and russell-ch4-8.049gGf2 (#175/#170 — the first
-    V3-powered, App-C #188 under its documented 420 m/s budget). (V1=11, V2=1,
-    V3=2.)"""
+    V3-powered, App-C #188 under its documented 420 m/s budget). Four further
+    descriptor-bearing Russell Ch.4 rows are V1 (#181 ToF-fix 2026-06-10 — real-DE440
+    closure via the joint (epoch, ToF) closer, emerged v∞ within 0.08 km/s of the
+    sourced anchor, lamberthub + Kepler reprop; the 9.353Gg2/9.94Gg3 siblings were
+    already V1 and carry the closure as added evidence;
+    docs/notes/2026-06-10-tof-fix-closure-results.md). (V1=15, V2=1, V3=2.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -128,6 +132,16 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "russell-ocampo-4.1.2-2": "V1",
         "russell-ocampo-4.1.4-1": "V1",
         "russell-ocampo-4.6.3+0": "V1",
+        # #181 ToF-fix (2026-06-10): four descriptor-bearing Russell Ch.4 rows
+        # close on the real DE440 ephemeris via the joint (epoch, ToF) self-seed
+        # closer (Stage-B coplanar-branch-ToF artifact corrected) and clear §14 V1
+        # (emerged E/M v∞ within 0.08 km/s of the sourced anchor, lamberthub +
+        # Kepler reprop). V3-CANDIDATES pending the multi-lap horizon-TCM.
+        # docs/notes/2026-06-10-tof-fix-closure-results.md.
+        "russell-ch4-3.78Gg3": "V1",
+        "russell-ch4-6.44Gg3": "V1",
+        "russell-ch4-3.64gGg3": "V1",
+        "russell-ch4-5.30ggF3": "V1",
         # #167/#94: S1L1's FIRST V3 — corrected-topology closure CONFIRMED on the
         # real DE440 ephemeris (independent REBOUND/IAS15, all 7 Mars encounters in
         # 3x Mars-SOI at the published per-leg v∞, holding under Mars-perturbed

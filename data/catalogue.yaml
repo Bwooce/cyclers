@@ -39492,7 +39492,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
-  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
+  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md. ADDED EVIDENCE (#181 ToF-fix 2026-06-10, no level change): real-DE440 closure via the joint (epoch, ToF) closer re-confirms — emerged E/M v∞ 9.31/10.50 within 0.05 km/s of the sourced 9.35/10.52 anchor; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413
@@ -39671,6 +39671,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); #181 ToF-fix 2026-06-10: real-DE440 closure of the descriptor G leg via the joint (epoch, ToF) closer clears §14 V1 (emerged E/M v∞ 3.62/4.59 within 0.02 km/s of the sourced 3.64/4.59 anchor; lamberthub izzo+gooding + Kepler reprop); V3-CANDIDATE pending the multi-lap horizon-TCM; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413
@@ -40024,6 +40025,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); #181 ToF-fix 2026-06-10: real-DE440 closure of the descriptor G leg via the joint (epoch, ToF) closer clears §14 V1 (emerged E/M v∞ 3.77/4.63 within 0.01 km/s of the sourced 3.78/4.63 anchor; lamberthub izzo+gooding + Kepler reprop); V3-CANDIDATE pending the multi-lap horizon-TCM; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413
@@ -40547,7 +40549,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
-  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
+  validation_level: V1   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md. ADDED EVIDENCE (#181 ToF-fix 2026-06-10, no level change): real-DE440 closure via the joint (epoch, ToF) closer re-confirms — emerged E/M v∞ 9.99/10.77 within 0.05 km/s of the sourced 9.94/10.76 anchor; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413
@@ -40914,6 +40916,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); #181 ToF-fix 2026-06-10: real-DE440 closure of the descriptor G leg via the joint (epoch, ToF) closer clears §14 V1 (dual-transit row, 207-d signature branch, ToF ~174 d; emerged E/M v∞ 5.31/5.43 within 0.01 km/s of the sourced 5.30/5.44 anchor; lamberthub izzo+gooding + Kepler reprop); V3-CANDIDATE pending the multi-lap horizon-TCM; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413
@@ -41275,6 +41278,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  validation_level: V1   # schema v4.5 (spec §16.7.12 / §14); #181 ToF-fix 2026-06-10: real-DE440 closure of the long-transit (~292 d) branch clears §14 V1 (emerged E/M v∞ 6.44/3.74 to 0.00 km/s of the sourced anchor; lamberthub izzo+gooding + Kepler reprop) — RETRACTS the #173/#177/#180 OFF-FAMILY verdict (shared ToF artifact); V3-CANDIDATE pending the multi-lap horizon-TCM; see docs/notes/2026-06-10-tof-fix-closure-results.md
   orbit_source: russell-2004-t49_413   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t49_413

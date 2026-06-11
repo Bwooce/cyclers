@@ -7,6 +7,8 @@ and the single-leg independent REBOUND/IAS15 confirm. They are recorded as
 **V3-CANDIDATES** (the full multi-lap horizon-TCM is the named follow-up). **NO
 catalogue writeback performed; no `validation_level` edits; no `_LEVEL_EVIDENCE`
 edits.** The proposed entries below are held for human review.
+**(UPDATE 2026-06-10: the writeback was USER-APPROVED and applied — see the
+Writeback record section at the end of this note.)**
 
 ## The fix
 
@@ -157,4 +159,47 @@ withheld pending the multi-lap horizon-TCM follow-up.
   anchor; full multi-lap horizon-TCM is the follow-up).
 * **0 honest negatives** — the original #180 "triple-confirmed off-family" was the shared
   ToF artifact, now retracted by the corrected closer.
-* **NO catalogue / `validate.py` writeback performed.**
+* **NO catalogue / `validate.py` writeback performed.** (Superseded same day by the
+  approved writeback below.)
+
+## Writeback record (2026-06-10, USER-APPROVED — #181 V1 promotions applied)
+
+Follows the #137 / closer-sweep (12a0e9e) writeback precedent. One commit
+(`data: ...`), gated by the jsonschema pre-commit hook + the full
+`tests/data/` suite + the v4.5 census ratchet.
+
+**Applied:**
+
+* `data/catalogue.yaml` — `validation_level: V1` added on the four previously
+  untagged rows `russell-ch4-3.78Gg3`, `russell-ch4-6.44Gg3`,
+  `russell-ch4-3.64gGg3`, `russell-ch4-5.30ggF3` (V0-floor → V1); the two
+  already-V1 rows `russell-ch4-9.353Gg2` / `russell-ch4-9.94Gg3` keep V1 and
+  their comment records the real-DE440 closure as ADDED EVIDENCE
+  (re-confirmation, NOT a level change — the precision point from review).
+* `src/cyclerfinder/data/validate.py` `_LEVEL_EVIDENCE` — 4 new `(id, V1)`
+  entries (the proposed texts above) + the #181 re-confirmation appended to the
+  existing 9.353Gg2 / 9.94Gg3 entries.
+* `scripts/backfill_validation_level.py` `_LEVEL_BY_ID` — the 4 rows added
+  (registry kept consistent; script idempotent, rows already tagged by this
+  commit).
+* `tests/data/test_schema_v45_fields.py` census ratchet — the 4 rows added to
+  the expected above-V0 dict; docstring counts updated (the legitimate,
+  intended ratchet update; gate logic untouched).
+
+**Validation census: V1 11 → 15** (V2: 1, V3: 2 unchanged; no V4/V5).
+
+**v4.2 backfill checklist** (binding per-writeback check, all 6 touched rows):
+
+* `trajectory.center` — present and correct (`"Sun"`) on all 6 rows.
+* `tof_days_bounds` — left absent: no SOURCED published ToF range exists for
+  these rows (Russell tabulates point transits; the #181 closure ToFs are our
+  own computed real-eph values at a different fidelity — recording them as
+  bounds would violate the sourced-only rule).
+* `source_ephemeris` — left absent per the explicit 2026-06-05 v4.2 sweep
+  negative ("All ~201 idealized Russell rows: circular-coplanar → no
+  source_ephemeris"); the rows' tabulated values remain Russell 2004 Ch.4
+  circular-coplanar.
+
+**NOT done (scope honesty):** no V3 promotion (multi-lap horizon-TCM still the
+named follow-up); no other rows touched; the 14 CR3BP SILVER candidates
+untouched (inertial cross-check still running).

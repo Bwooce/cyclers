@@ -519,7 +519,14 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "agreement < V1_TOLERANCE_MPS AND Kepler forward re-propagation residual pass, "
         "Mars-flyby V_inf continuity 0.04 km/s. tests/search/"
         "test_free_return_v1_mechanics.py::"
-        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.94Gg3]."
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.94Gg3]. "
+        "ADDED EVIDENCE (#181 ToF-fix, 2026-06-10 — re-confirmation, no level "
+        "change): real DE440 closure of the descriptor G leg via the joint "
+        "(epoch, ToF) free-variable self-seed closer — emerged E/M v∞ 9.99/10.77 "
+        "within 0.05 km/s of the sourced 9.94/10.76 anchor, izzo2015+gooding1990 "
+        "agreement 7.7e-9 m/s AND Kepler reprop residual 3.7e-13 AU. Single-leg "
+        "REBOUND/IAS15 confirm in-band; V3-CANDIDATE pending the multi-lap "
+        "horizon-TCM. docs/notes/2026-06-10-tof-fix-closure-results.md."
     ),
     ("russell-ch4-5.75ggF3", "V1"): (
         "spec §14 V1 (#137 Part 1): circular like-for-like free-return reproduction "
@@ -537,7 +544,16 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
         "re-propagation residual pass, Mars-flyby V_inf continuous. tests/search/"
         "test_free_return_v1_mechanics.py::"
-        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.353Gg2]."
+        "test_free_return_rows_pass_section14_v1_mechanics[russell-ch4-9.353Gg2]. "
+        "ADDED EVIDENCE (#181 ToF-fix, 2026-06-10 — re-confirmation, no level "
+        "change): real DE440 closure of the descriptor G leg via the joint "
+        "(epoch, ToF) free-variable self-seed closer — emerged E/M v∞ 9.31/10.50 "
+        "within 0.05 km/s of the sourced 9.35/10.52 anchor (Russell 2004 Table "
+        "4.9), izzo2015+gooding1990 agreement 5.2e-9 m/s AND Kepler reprop "
+        "residual 2.5e-13 AU. Single-leg REBOUND/IAS15 confirm in-band; "
+        "V3-CANDIDATE pending the multi-lap horizon-TCM. tests/search/"
+        "test_self_seeding.py::test_joint_closer_reproduces_both_anchors_9_353gg2; "
+        "docs/notes/2026-06-10-tof-fix-closure-results.md."
     ),
     # closer sweep 2026-06-08 (#142 continuation): six Russell 2004 Table 3.4
     # free-return rows whose single circular-coplanar ellipse closes to a
@@ -589,6 +605,49 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "izzo2015+gooding1990 per-leg agreement < V1_TOLERANCE_MPS AND Kepler forward "
         "re-propagation residual pass (both §14 V1 halves), gated by "
         "tests/search/test_closer_sweep_v1.py."
+    ),
+    # #181 ToF-fix (2026-06-10, USER-approved writeback): four descriptor-bearing
+    # Russell Ch.4 rows close on the real DE440 ephemeris via the joint (epoch, ToF)
+    # free-variable self-seed closer (the Stage-B coplanar-branch-ToF artifact
+    # corrected — see docs/notes/2026-06-10-dsm-tof-artifact-correction.md). Each
+    # clears spec §14 V1: lamberthub izzo2015+gooding1990 per-leg agreement
+    # < V1_TOLERANCE_MPS AND Kepler forward reprop residual pass, with the emerged
+    # E/M v∞ within 0.08 km/s of the sourced Russell 2004 Table 4.x anchor. All
+    # four are V3-CANDIDATES (single-leg REBOUND/IAS15 confirm in-band; the
+    # multi-lap horizon-TCM is the named follow-up). The two already-V1 siblings
+    # (9.353Gg2, 9.94Gg3) carry the same closure as ADDED EVIDENCE above.
+    # See docs/notes/2026-06-10-tof-fix-closure-results.md.
+    ("russell-ch4-3.78Gg3", "V1"): (
+        "spec §14 V1 (#181 ToF-fix): real DE440 closure of the descriptor G leg "
+        "via the joint (epoch, ToF) free-variable self-seed closer — emerged E/M "
+        "v∞ 3.77/4.63 within 0.01 km/s of the sourced 3.78/4.63 anchor (Russell "
+        "2004 Table 4.10), izzo2015+gooding1990 agreement 1.1e-8 m/s AND Kepler "
+        "reprop residual 1.1e-12 AU. Single-leg REBOUND confirm in-band; "
+        "V3-CANDIDATE. docs/notes/2026-06-10-tof-fix-closure-results.md."
+    ),
+    ("russell-ch4-6.44Gg3", "V1"): (
+        "spec §14 V1 (#181 ToF-fix): real DE440 closure of the long-transit "
+        "(~292 d) branch — emerged E/M v∞ 6.44/3.74 to 0.00 km/s of the sourced "
+        "anchor (Russell 2004 Table 4.13), izzo2015+gooding1990 agreement "
+        "1.3e-8 m/s AND Kepler reprop residual 2.4e-12 AU. RETRACTS the "
+        "#173/#177/#180 OFF-FAMILY verdict (a shared ToF-artifact, not a real "
+        "negative). Single-leg REBOUND confirm in-band; V3-CANDIDATE. "
+        "docs/notes/2026-06-10-tof-fix-closure-results.md."
+    ),
+    ("russell-ch4-3.64gGg3", "V1"): (
+        "spec §14 V1 (#181 ToF-fix): real DE440 closure — emerged E/M v∞ "
+        "3.62/4.59 within 0.02 km/s of the sourced 3.64/4.59 anchor (Russell "
+        "2004 Table 4.10), izzo2015+gooding1990 agreement 6.5e-9 m/s AND Kepler "
+        "reprop residual 7.0e-13 AU. Single-leg REBOUND confirm in-band; "
+        "V3-CANDIDATE. docs/notes/2026-06-10-tof-fix-closure-results.md."
+    ),
+    ("russell-ch4-5.30ggF3", "V1"): (
+        "spec §14 V1 (#181 ToF-fix): real DE440 closure (dual-transit row; the "
+        "207-d signature branch, ToF ~174 d) — emerged E/M v∞ 5.31/5.43 within "
+        "0.01 km/s of the sourced 5.30/5.44 anchor (Russell 2004 Table 4.12), "
+        "izzo2015+gooding1990 agreement 8.8e-9 m/s AND Kepler reprop residual "
+        "7.3e-13 AU. Single-leg REBOUND confirm in-band; V3-CANDIDATE. "
+        "docs/notes/2026-06-10-tof-fix-closure-results.md."
     ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each

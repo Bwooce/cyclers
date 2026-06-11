@@ -92,10 +92,14 @@ no per-member data was ever published.
   real DE440 (every emerged anchor ≤0.08 km/s of sourced; best is 6.44Gg3 —
   the row that triggered the investigation — at 0.00 km/s on both anchors).
   All 6 are **V3-CANDIDATES** (single-leg independent REBOUND/IAS15 confirm
-  in-band; the multi-lap horizon-TCM is the named follow-up); promotions
-  pending review. Notes: `2026-06-10-dsm-multiarc-closure-results.md`
+  in-band; the multi-lap horizon-TCM is the named follow-up). **Writeback
+  APPROVED + APPLIED 2026-06-10:** the 4 previously-untagged rows promoted
+  V0→V1 (`3.78Gg3`, `6.44Gg3`, `3.64gGg3`, `5.30ggF3` — census V1: 11 → 15);
+  the 2 already-V1 rows (`9.353Gg2`, `9.94Gg3`) carry the real-eph closure as
+  ADDED EVIDENCE (no level change). V3 promotion still pending the multi-lap
+  horizon-TCM. Notes: `2026-06-10-dsm-multiarc-closure-results.md`
   (carries the SUPERSEDED banner), `2026-06-10-dsm-tof-artifact-correction.md`,
-  `2026-06-10-tof-fix-closure-results.md`.
+  `2026-06-10-tof-fix-closure-results.md` (writeback record appended).
 - **#182 — CR3BP Tier-2 SHIPPED** (8-task plan; Task 8 regression in flight at
   writing). `core/cr3bp.py` (rotating-frame EOM, Jacobi constant, 42-state STM
   propagation, DOP853 at 1e-12) + `search/cr3bp_periodic.py`
