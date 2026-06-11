@@ -20,6 +20,7 @@ The S1L1 answer key (Russell App-C #83 / #166 / #167):
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import cast
 
 import numpy as np
 import pytest
@@ -562,3 +563,146 @@ def test_joint_closer_returns_none_when_no_solution() -> None:
         refine_iters=0,
     )
     assert result is None
+
+
+# ---------------------------------------------------------------------------
+# Task #195 pinning tests — `joint_epoch_tof_close` bookkeeping regressions.
+#
+# Both run on a STUB ephemeris + a STUBBED Lambert solver (fast, no DE440): the
+# stub Earth state encodes the query epoch into r_e[0] so the stubbed Lambert can
+# score every evaluated grid point by departure epoch, fully deterministically.
+# ---------------------------------------------------------------------------
+
+_PIN_T0_SEC = 1000.0 * SECONDS_PER_DAY  # arbitrary positive centre epoch
+_PIN_BEST_OFF_D = 30.0  # the iteration-0 grid point holding the true minimum
+_PIN_DECOY_OFF_D = 60.0  # OUTSIDE the iteration-0 bracket; reachable ONLY by drift
+_PIN_ANCHOR_KMS = 5.0
+_PIN_BEST_ERR_KMS = 0.1
+
+
+class _PinStubEphem:
+    """Minimal Ephemeris stand-in (`state()` only) for the bookkeeping pins."""
+
+    def state(self, body: str, t_sec: float) -> tuple[np.ndarray, np.ndarray]:
+        if body == "E":
+            # r_e[0] == r_e[1] == t_sec: encodes the epoch (read by the Lambert
+            # stub) and fixes the departure longitude at 45 deg (the lon pin).
+            return np.array([t_sec, t_sec, 0.0]), np.zeros(3)
+        return np.array([0.0, 1.0e8, 0.0]), np.zeros(3)  # Mars longitude 90 deg
+
+
+def _pin_err_kms(offset_days: float) -> float:
+    """Anchor error of the stubbed Lambert as a function of the departure offset."""
+    if abs(offset_days - _PIN_BEST_OFF_D) < 1e-6:
+        return _PIN_BEST_ERR_KMS
+    if abs(offset_days - _PIN_DECOY_OFF_D) < 1e-6:
+        return 0.0  # DEEPER than the true best — the grid-drift detector
+    return 1.0 + abs(offset_days) * 1e-3  # strictly worse everywhere else
+
+
+def _pin_install_stub_lambert(monkeypatch: pytest.MonkeyPatch, evaluated: list[float]) -> None:
+    """Patch self_seeding.lambert with the deterministic epoch-scored stub."""
+    import cyclerfinder.core.lambert as lambert_mod
+    import cyclerfinder.search.self_seeding as ss
+
+    def fake_lambert(
+        r1: np.ndarray,
+        r2: np.ndarray,
+        tof: float,
+        *,
+        mu: float = 0.0,
+        prograde: bool = True,
+        max_revs: int = 0,
+    ) -> list[lambert_mod.LambertSolution]:
+        t_depart = float(r1[0])
+        evaluated.append(t_depart)
+        e = _pin_err_kms((t_depart - _PIN_T0_SEC) / SECONDS_PER_DAY)
+        # v_e is the zero vector, so vinf_e == |v1| == anchor + err; vinf_m == anchor.
+        return [
+            lambert_mod.LambertSolution(
+                n_revs=0,
+                branch="single",
+                v1=np.array([_PIN_ANCHOR_KMS + e, 0.0, 0.0]),
+                v2=np.array([_PIN_ANCHOR_KMS, 0.0, 0.0]),
+            )
+        ]
+
+    monkeypatch.setattr(ss, "lambert", fake_lambert)
+
+
+def test_joint_closer_no_epoch_double_shift(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Regression (#195a): refinement re-centres on the best EVALUATED epoch; no drift.
+
+    Schedule: iteration 0 (+-30 d, 10 d step) finds its minimum at +30 d; the later
+    refinement iterations CANNOT beat it (every other point is strictly worse). Under
+    the pre-fix relative-offset bookkeeping the stale +30 d offset was RE-applied after
+    the no-improvement iteration, drifting the final grid to +60 d — where this stub
+    plants a DEEPER decoy minimum. Correct absolute bookkeeping never evaluates the
+    decoy and returns the epoch of the best evaluated point (+30 d)."""
+    import cyclerfinder.search.self_seeding as ss
+
+    evaluated: list[float] = []
+    _pin_install_stub_lambert(monkeypatch, evaluated)
+    anchors = ss.FamilyAnchors(vinf_e=_PIN_ANCHOR_KMS, vinf_m=_PIN_ANCHOR_KMS, vinf_band_kms=1.5)
+
+    result = ss.joint_epoch_tof_close(
+        cast(Ephemeris, _PinStubEphem()),
+        anchors,
+        _PIN_T0_SEC,
+        200.0,
+        epoch_halfwidth_days=30.0,
+        epoch_step_days=10.0,
+        tof_halfwidth_days=0.0,
+        tof_step_days=1.0,
+        max_revs=0,
+        refine_iters=2,
+    )
+    assert result is not None
+
+    # The returned epoch IS the epoch of the best EVALUATED point...
+    best_eval = min(evaluated, key=lambda t: _pin_err_kms((t - _PIN_T0_SEC) / SECONDS_PER_DAY))
+    assert result.t_depart_sec == pytest.approx(best_eval)
+    assert result.t_depart_sec == pytest.approx(_PIN_T0_SEC + _PIN_BEST_OFF_D * SECONDS_PER_DAY)
+    assert result.vinf_e_kms == pytest.approx(_PIN_ANCHOR_KMS + _PIN_BEST_ERR_KMS)
+    # ...and no refinement grid ever drifted onto the decoy (the double-shift footprint).
+    decoy_t = _PIN_T0_SEC + _PIN_DECOY_OFF_D * SECONDS_PER_DAY
+    assert all(abs(t - decoy_t) > 0.5 * SECONDS_PER_DAY for t in evaluated), (
+        "refinement grid drifted to the +60 d decoy — the pre-fix double-shift "
+        "re-applied a stale relative offset after a no-improvement iteration"
+    )
+
+
+def test_joint_closer_sc_lon_is_departure_longitude(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Regression (#195b): sc_lon_deg = DEPARTURE Earth longitude, not a Mars-lon copy.
+
+    Pre-fix, sc_lon_deg and mars_lon_deg were BOTH the arrival Mars longitude and
+    residual_lon_deg was lon(Mars) - lon(Mars) == 0 — vacuous diagnostics that dressed
+    `on_family.lon_ok` up as an independent gate. The stub puts the departure Earth at
+    45 deg and Mars at 90 deg: sc_lon must be the departure longitude (45), distinct
+    from mars_lon (90) in general; residual_lon / mars_miss stay 0.0 — BY CONSTRUCTION
+    (documented, not an independent gate), since the arc terminates at true Mars."""
+    import cyclerfinder.search.self_seeding as ss
+
+    evaluated: list[float] = []
+    _pin_install_stub_lambert(monkeypatch, evaluated)
+    anchors = ss.FamilyAnchors(vinf_e=_PIN_ANCHOR_KMS, vinf_m=_PIN_ANCHOR_KMS, vinf_band_kms=1.5)
+
+    result = ss.joint_epoch_tof_close(
+        cast(Ephemeris, _PinStubEphem()),
+        anchors,
+        _PIN_T0_SEC,
+        200.0,
+        epoch_halfwidth_days=30.0,
+        epoch_step_days=10.0,
+        tof_halfwidth_days=0.0,
+        tof_step_days=1.0,
+        max_revs=0,
+        refine_iters=0,
+    )
+    assert result is not None
+    assert result.sc_lon_deg == pytest.approx(45.0)
+    assert result.mars_lon_deg == pytest.approx(90.0)
+    assert result.sc_lon_deg != result.mars_lon_deg
+    # By-construction zeros (documented as NOT independent gates on this path).
+    assert result.residual_lon_deg == 0.0
+    assert result.mars_miss_au == 0.0

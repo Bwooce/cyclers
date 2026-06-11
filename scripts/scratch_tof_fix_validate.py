@@ -17,7 +17,7 @@ writeback. Prints a per-row table consumed by the results note.
 from __future__ import annotations
 
 import warnings
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -110,7 +110,7 @@ def main() -> None:
         row = rows[rid]
         vinf = {e["body"]: float(e["vinf_kms"]) for e in (row.get("vinf_kms_at_encounters") or [])}
         transit = (row.get("invariants") or {}).get("transit_times_days")
-        sigs = sorted({float(t) for t in transit})
+        sigs = sorted({float(t) for t in (transit or [])})
         anchors = FamilyAnchors(vinf_e=vinf["E"], vinf_m=vinf["M"], vinf_band_kms=1.5)
         print(f"\n=== {rid}  sourced E={vinf['E']} M={vinf['M']}  sig={transit} ===")
         for sig in sigs:
@@ -121,8 +121,10 @@ def main() -> None:
             v = on_family(r, anchors)
             v1 = v1_crosscheck(ephem, r.t_depart_sec, r.t_arrive_sec)
             nb = nbody_confirm(ephem, prop, r.t_depart_sec, r.t_arrive_sec, r.vinf_vec)
+            depart = (J2000 + timedelta(seconds=r.t_depart_sec)).date().isoformat()
             print(
-                f"  sig={sig:.0f}d tof={r.tof_g_days:.1f}d  "
+                f"  sig={sig:.0f}d tof={r.tof_g_days:.1f}d depart={depart} "
+                f"(t={r.t_depart_sec:.0f}s)  "
                 f"E={r.vinf_e_kms:6.2f}(d{r.vinf_e_kms - vinf['E']:+.2f}) "
                 f"M={r.vinf_m_kms:6.2f}(d{r.vinf_m_kms - vinf['M']:+.2f})  "
                 f"on_family={v.on_family}\n"

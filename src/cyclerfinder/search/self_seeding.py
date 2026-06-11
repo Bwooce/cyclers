@@ -626,9 +626,15 @@ def joint_epoch_tof_close(
     :class:`SelfSeedResult`, then locally refines the grid ``refine_iters`` times to
     sharpen the (epoch, ToF). Returns ``None`` if no Lambert solution exists anywhere
     in the bracket (a clean negative). Longitude rendezvous + Mars miss are exact by
-    construction (arrival = true Mars position).
+    construction (arrival = true Mars position) — so ``on_family``'s ``lon_ok`` and
+    ``miss_ok`` terms pass trivially for any result of THIS path and are NOT
+    independent gates here; the binding terms are the two v_inf bands.
     """
-    best: tuple[float, float, float, SelfSeedResult] | None = None  # (err, depart, tof, result)
+    # (err, t_depart_sec ABSOLUTE, tof_days, result). The depart entry MUST be absolute:
+    # an offset relative to a per-iteration e_center goes stale when a later refinement
+    # iteration fails to beat the incumbent, and re-applying it re-shifts the next grid
+    # centre off the best point (the 2026-06-11 double-shift fix, task #195).
+    best: tuple[float, float, float, SelfSeedResult] | None = None
     e_half, e_step = epoch_halfwidth_days, epoch_step_days
     t_half, t_step = tof_halfwidth_days, tof_step_days
     e_center, t_center_tof = t_center_sec, signature_tof_days
@@ -666,27 +672,39 @@ def joint_epoch_tof_close(
                     err = abs(vinf_e - anchors.vinf_e) + abs(vinf_m - anchors.vinf_m)
                     if best is None or err < best[0]:
                         vinf_vec = v_dep - v_e
+                        # residual_lon_deg / mars_miss_au are ZERO BY CONSTRUCTION on
+                        # this path (the Lambert arc TERMINATES at the true DE440 Mars
+                        # position, so arrival longitude == Mars longitude exactly).
+                        # They are NOT independent evidence here: `on_family.lon_ok` /
+                        # `miss_ok` pass trivially for any Lambert solution, and the
+                        # binding scientific terms are vinf_e_ok / vinf_m_ok (task #195
+                        # finding b — recorded honestly, not as a measured residual).
+                        # sc_lon_deg is the DEPARTURE Earth longitude (a real
+                        # diagnostic), not a copy of the Mars arrival longitude.
                         res = SelfSeedResult(
                             t_depart_sec=t_depart,
                             t_arrive_sec=t_arr,
                             vinf_vec=np.asarray(vinf_vec, dtype=np.float64),
-                            residual_lon_deg=_wrap_deg(_lon_deg(r_m) - _lon_deg(r_m)),
+                            residual_lon_deg=0.0,  # by construction, see above
                             vinf_e_kms=vinf_e,
                             vinf_m_kms=vinf_m,
                             tof_g_days=float(tof_d),
-                            mars_miss_au=0.0,
-                            sc_lon_deg=_lon_deg(r_m),
+                            mars_miss_au=0.0,  # by construction, see above
+                            sc_lon_deg=_lon_deg(r_e),
                             mars_lon_deg=_lon_deg(r_m),
                             lambert_refined=True,
                         )
-                        best = (err, de, tof_d, res)
+                        best = (err, t_depart, tof_d, res)
                 tof_d += t_step
             de += e_step
         if best is None:
             return None
         # Local refinement: re-centre and shrink the grid around the current best.
-        _err, de_b, tof_b, _res = best
-        e_center = e_center + de_b * SECONDS_PER_DAY
+        # Both centres are taken ABSOLUTELY from the best tuple, so an iteration that
+        # fails to improve the incumbent leaves the centres exactly on the best point
+        # (no stale-offset re-application / double-shift).
+        _err, t_depart_b, tof_b, _res = best
+        e_center = t_depart_b
         t_center_tof = tof_b
         e_half, e_step = 2.0 * e_step, e_step / 4.0
         t_half, t_step = 2.0 * t_step, t_step / 4.0
