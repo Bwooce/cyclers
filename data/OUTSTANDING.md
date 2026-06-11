@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-10)
+# Project state at a glance (updated 2026-06-11)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
@@ -25,8 +25,8 @@ audit trail and is unchanged in spirit.
 
 The catalogue (268 rows) is at its **data-limited validation ceiling** via
 current methods + held papers: **V3:2** (S1L1 `russell-ch4-4.991gG2` ballistic +
-`russell-ch4-8.049gGf2` #188 powered), **V2:1** (Aldrin outbound), **V1:11**,
-rest V0. This is the honest boundary, established by exhaustive triage (#170
+`russell-ch4-8.049gGf2` #188 powered), **V2:1** (Aldrin outbound), **V1:15**
+(was 11; the 2026-06-10 #181 writeback, applied + pushed), rest V0. This is the honest boundary, established by exhaustive triage (#170
 App-C batch, #177 self-seeding over all 212 unsourced rows, #172 Phase 6 novelty
 sweep) — NOT a backlog to grind.
 
@@ -62,13 +62,110 @@ fix (signature-transit ToF + a joint (epoch, ToF) closer), ALL 6
 descriptor-bearing `russell-ch4` rows close on real DE440 to both sourced
 anchors (≤0.08 km/s; 6.44Gg3 to 0.00 km/s) and pass §14 V1 mechanics; the
 proposed promotions (4 V0→V1 + 2 real-eph re-confirmations of existing circular
-V1 rows; all 6 V3-CANDIDATES) are HELD for review — no writeback yet. See
+V1 rows; all 6 V3-CANDIDATES) were APPROVED + APPLIED 2026-06-10 (commit
+`cec9b90`, census V1 11→15, pushed) and re-adjudicated **6/6 UNCHANGED** after
+the #195 closer fixes (2026-06-11, `58674f6`/`d7f0c87`) — the writeback STANDS. See
 `docs/notes/2026-06-10-dsm-tof-artifact-correction.md` and
 `docs/notes/2026-06-10-tof-fix-closure-results.md`. SEPARATELY, the McConaghy
 2004 dissertation mining CONFIRMED the ceiling for everything else: per-member
 reproducible data (date + V∞ + closest-approach + leg ToF, DE405) exists ONLY
 for S1L1 (see the 2026-06-10 section below); the ~200 ocampo rows stay V0 —
 no per-member data was ever published.
+
+## 2026-06-11 — review-and-harden + acquisitions wave 2
+
+- **FULL-PROJECT REVIEW — verdict: "the equations are right."** 4 scoped
+  reviewers (core math / search correctors / data+verify / performance) + a
+  numerical math-verification agent (8 independent probe suites: FD-vs-STM,
+  ∇C·f=0, Lambert-vs-independent-Kepler, flyby identities, Tisserand, frame
+  conventions, rotating↔inertial round-trips). Every independently-derived
+  formula agrees with the implementation at/near machine precision; ALL
+  confirmed defects live in solver plumbing / conventions — every one in a
+  stratum no published golden exercised. Consolidated record (findings table
+  with dispositions, the doctrine, open items):
+  `docs/notes/2026-06-11-project-review-results.md`.
+- **Findings FIXED + adjudicated (commits):**
+  - `joint_epoch_tof_close` epoch double-shift + vacuous lon diagnostics →
+    `58674f6`; #195 adjudication `d7f0c87`: the #181 6-row closure re-run is
+    **6/6 UNCHANGED to every recorded digit** — the V1 writeback STANDS.
+  - Data-layer guards (#196) — the validation-level over-claim bypass closed
+    at BOTH ends (nested `validation.level` validated + `apply_*` refuse
+    unregistered promotions), registry-drift preflight, duplicate-id
+    rejection, atomic catalogue writes → `091783a`; 448 data tests green.
+  - R_x(−i) node-convention MIRROR in the inclined-circular backend + the
+    ramped-elements `_tilt` (orbit normals sat 2×inc off DE440) →
+    `278ff1a`/`1d6ad1b`. Blast radius adjudicated: the #120 3D-inclination
+    negative STANDS (its decisive DE440 control was mirror-free), Tisserand
+    is mirror-invariant, continuation results valid.
+  - Lambert dT/dz spurious √C + log-compressed Illinois residual (rescues
+    the dropped multi-rev high branches) → `f6a0460`; full suite green.
+  - `crosscheck_leg` endpoint independence default-ON + poisoned-input fault
+    test + the gate-classification convention (#197) → `ba55b2e`.
+- **ZERO RETRACTIONS.** Every adjudication (joint-closer re-run, mirror
+  blast radius, McConaghy tail) CONFIRMED the existing results. The
+  McConaghy Table 7.1 rows-18–24 tail is a **SOURCE print defect** (Table
+  7.1 prints Table 7.5's dates with an orphaned V∞/CA tail); our
+  transcription is character-exact, and the DE440-emerged tail matches
+  Table 7.5's printed values → reproduction upgraded PARTIAL-CONFIRMED →
+  **CONFIRMED** (all 23 legs vs printed goldens; `53c0a92`/`a8c0928`).
+  **#94 CLOSED.**
+- **FALSE-CONSENSUS DOCTRINE (3rd incident: the 63 s shared epoch
+  conversion).** After #180 (shared-ToF) and #197 (shared crosscheck
+  endpoints), the review's probes confirmed a 63 s UTC/TDB conversion offset
+  shared between the primary path and its "independent" cross-check.
+  Doctrine now operational: consistency-vs-independence gate TIERS + a
+  "shared with primary path:" declaration per cited gate (recorded in
+  `src/cyclerfinder/data/validate.py`'s docstring), fault injection,
+  positive controls, per-interface external anchors.
+- **OPEN (in flight / queued):** #198 the 63 s UTC/TDB epoch offset
+  (probe-confirmed; fix in flight); #212 Earth-Moon μ double-count in
+  `cr3bp_system()` (−1.2%, found by the Ross mine §7; fix in flight; the
+  2026-06-10 EM backfill needs a post-fix re-run; Saturnian/Jovian pairs
+  expected unaffected at ≤~2e-4 — pending quantification); #206 Lambert
+  blast-radius re-run; #201 perf batch; #202 fault-injection harness.
+- **ACQUISITIONS WAVE 2** — forward-citation sweep of the load-bearing
+  holdings (`d3dc4fd`, 13 HITs across 6 seeds) → user fetched 7 PDFs (filed
+  in the private papers store; cite by publication only, never by
+  path/repo) → 4 mining passes, notes all committed 2026-06-11:
+  - **Ross & Roberts-Tsoukkas, AAS 25-621** (stable low-energy prograde
+    Earth-Moon cyclers) — first publication of **5 STABLE fully-ballistic
+    EM cycler families** (15–16-digit Jacobi C + period per stable
+    representative, μ printed; no full IC printed, but every member is
+    recoverable from (μ, C, T) via a 1-D symmetric-orbit solve) + 6
+    critical-tangency manifold-tube goldens + the complete construction
+    method. The mine FOUND the #212 μ bug. **5 proposed rows, review-gated.**
+    Note: `2026-06-11-ross-roberts-tsoukkas-2025-mining.md`.
+  - **Liang et al. 2024 JGCD** (Callisto-Ganymede-Europa triple cyclers) —
+    **4 concrete ballistic CGE members** (3 idealized + 1 SPICE-ephemeris,
+    per-flyby V∞/ToF/phases tabulated, ≥10 cycles). The Jovian empty-region
+    bucket is **REOPENED via the §6b new-sourced-data arm, CONDITIONAL on a
+    multi-rev + repeated-moon genome** (the members live in a topology class
+    our swept genome does not cover, so the zero-rev EMPTY verdicts stay
+    valid as conditioned). 3 paper errata recorded. **4 proposed rows,
+    review-gated.** Note: `2026-06-11-liang-2024-cge-triple-cyclers-mining.md`.
+  - **Wittal, Miaule & Asher IAC-22-C1.6.6** (full text) — **zero ICs of any
+    kind**: the `wittal` NO_SOURCED_IC blocker is **SOURCE-PERMANENT** (a
+    publication gap, not an access gap); the row's `model_assumption: cr3bp`
+    is unsupported by the source (model never stated) → revisit #211.
+    Catalogue enrichment only. Note: `2026-06-11-wittal-2022-iac-mining.md`.
+  - **Cuevas del Valle et al. 2023** (*Aerospace*, Floquet station-keeping) —
+    **first sourced CR3BP maintenance-cost anchor** (Table 1: 18.5–22.7 m/s
+    per ~330 km insertion error, EM L2 halo, one period) + the
+    Jacobi-error-state formulation confirming the #190 energy coordinate;
+    cross-paper finding: the 2026 MPC paper's "L2 southern halo" IC is
+    almost certainly an **L1** halo (relabeled). Note:
+    `2026-06-11-cuevas-del-valle-2023-floquet-mining.md`.
+  - **ML-surrogate trio (Ozaki 2022 / Leifsson 2022 / Wu 2024)** — Ozaki's
+    DNN flyby-cycler blueprint is the direct template for a future
+    combinatorial free-return-chain lane but **DEFERRED** (≈7e6-sample
+    training floor, below breakeven at our scale; costless surrogate-prep
+    items → #210); Leifsson/Wu background-only. Note:
+    `2026-06-11-ml-surrogate-trio-triage.md`.
+- **Catalogue state:** census **V1:15** live + pushed (the #181 writeback
+  applied 2026-06-10, re-adjudicated UNCHANGED today); the 14 CR3BP SILVER
+  Lyapunov members are all-gates-green (incl. the `f69d2b3` inertial
+  REBOUND/IAS15 cross-check) and **await user disposition**; proposed-row
+  queues review-gated: Ross 5 (stable EM), Liang 4 (Jovian CGE).
 
 ## 2026-06-10 — genome-capability day: VILM endgame, ToF-artifact correction, CR3BP Tier-2, two acquisitions mined
 
@@ -110,7 +207,11 @@ no per-member data was ever published.
   `core/satellites.py` registry. **Earth-Moon backfill:** the Arenstorf row's
   CR3BP block is populated (proposed, review-gated); `genova-aldrin` + `wittal`
   came back NO_SOURCED_IC — and the Genova mining below makes the genova
-  blocker PERMANENT for the CR3BP lane (not an acquisition gap). **Saturnian
+  blocker PERMANENT for the CR3BP lane (not an acquisition gap). (2026-06-11:
+  the Wittal full-text mining confirmed the `wittal` blocker is
+  **SOURCE-PERMANENT** too — zero ICs of any kind in the paper, and the row's
+  `model_assumption: cr3bp` is unsupported by the source; see the 2026-06-11
+  section.) **Saturnian
   midsize-moon discovery:** the first run produced 11 contaminated
   "convergences" (8 were libration-point equilibria / a period-collapse — a
   fixed point trivially "closes" for any period); deleted and regenerated
@@ -134,9 +235,13 @@ no per-member data was ever published.
     its V∞ pairs (Earth 11.3/11.3, Mars 14.0/5.4 km/s); Table 5.4 gives
     2L3 = Byrnes Case 1 (V∞E 5.65 / V∞M 3.05, simple model). Every other
     family is summary-exemplar-only → **ceiling CONFIRMED except S1L1**.
-    **#94 UNBLOCKED** on the source axis (follow-on: reproduce Table 7.1 on
-    REBOUND/IAS15 for V1+). Note:
-    `docs/notes/2026-06-10-mcconaghy-2004-dissertation-mining.md`.
+    **#94 UNBLOCKED** on the source axis — and **CLOSED (2026-06-11)**:
+    Table 7.1 reproduced per-leg on DE440 (`53c0a92`); the rows-18–24 tail
+    adjudicated a SOURCE print defect (Table 7.1 prints Table 7.5's dates
+    with an orphaned V∞/CA tail; our transcription character-exact);
+    reproduction CONFIRMED across all 23 legs (`a8c0928`). Notes:
+    `docs/notes/2026-06-10-mcconaghy-2004-dissertation-mining.md`,
+    `docs/notes/2026-06-10-mcconaghy-table71-reproduction.md`.
   - **Genova & Aldrin 2015** (NTRS 20150018049) — the 3-petal EM cycler does
     NOT exist in the pure CR3BP (it requires solar gravity, i.e. a
     bicircular-or-better model; stated explicitly on p.3); no Jacobi constant,
