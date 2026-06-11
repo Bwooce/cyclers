@@ -133,6 +133,87 @@ def test_crosscheck_leg_multirev_passes(
     assert result.max_diff_mps < V1_TOLERANCE_MPS
 
 
+# ---------------------------------------------------------------------------
+# Endpoint independence (task #197 — the #180/63-s false-consensus class)
+# ---------------------------------------------------------------------------
+
+
+def _poison_first_encounter(cycler: Cycler, offset_km: float) -> Cycler:
+    """Return a copy of ``cycler`` with encounter 0 displaced by ``offset_km``.
+
+    Fault-injection helper: simulates an upstream encounter-position bug
+    (wrong epoch / wrong frame / corrupted record) that every solver sharing
+    the embedded endpoints would silently agree on.
+    """
+    import dataclasses
+
+    import numpy as np
+
+    enc0 = cycler.encounters[0]
+    poisoned_r = np.asarray(enc0.r, dtype=np.float64) + np.array(
+        [offset_km, 0.0, 0.0], dtype=np.float64
+    )
+    poisoned_enc = dataclasses.replace(enc0, r=poisoned_r)
+    return dataclasses.replace(cycler, encounters=[poisoned_enc, *cycler.encounters[1:]])
+
+
+def test_crosscheck_catches_poisoned_endpoint(
+    multirev_cycler: Cycler,
+    astropy_ephem: Ephemeris,
+) -> None:
+    """A poisoned embedded encounter position FAILS the independent crosscheck.
+
+    Pre-#197, ``crosscheck_leg`` read its Lambert endpoints from the cycler's
+    own encounter records (``del ephem``) — so a wrong upstream position fed
+    the SAME wrong ``(r1, r2)`` to the in-house solver and both lamberthub
+    solvers, and all three happily agreed (false consensus; the #180 ToF-bug
+    and 63-s epoch-bug class). With independent endpoints (default ON) the
+    1000 km poison must be detected and fail the leg regardless of solver
+    agreement.
+    """
+    from cyclerfinder.verify.crosscheck import POSITION_CONSISTENCY_TOL_KM
+
+    poisoned = _poison_first_encounter(multirev_cycler, offset_km=1000.0)
+    leg = poisoned.legs[0]
+
+    result = crosscheck_leg(leg, poisoned, astropy_ephem, leg_index=0)
+    assert result.endpoint_mismatch_km is not None
+    assert result.endpoint_mismatch_km > POSITION_CONSISTENCY_TOL_KM
+    assert result.endpoint_mismatch_km == pytest.approx(1000.0, rel=1e-6)
+    assert result.passed is False  # poisoned input caught, NOT a false consensus
+
+
+def test_crosscheck_escape_hatch_reproduces_shared_endpoint_blindness(
+    multirev_cycler: Cycler,
+    astropy_ephem: Ephemeris,
+) -> None:
+    """``independent_endpoints=False`` documents the pre-#197 blindness.
+
+    The escape hatch restores endpoints-from-artifact behaviour: the same
+    1000 km poison sails through with solver agreement intact — which is
+    exactly why the independent mode is the default and validation paths
+    must never turn it off.
+    """
+    poisoned = _poison_first_encounter(multirev_cycler, offset_km=1000.0)
+    leg = poisoned.legs[0]
+
+    result = crosscheck_leg(leg, poisoned, astropy_ephem, leg_index=0, independent_endpoints=False)
+    assert result.endpoint_mismatch_km is None  # check skipped
+    assert result.passed is True  # the false consensus the default mode prevents
+
+
+def test_crosscheck_clean_cycler_endpoint_mismatch_is_roundoff(
+    multirev_cycler: Cycler,
+    astropy_ephem: Ephemeris,
+) -> None:
+    """A clean cycler's embedded endpoints match the re-query to round-off."""
+    leg = multirev_cycler.legs[0]
+    result = crosscheck_leg(leg, multirev_cycler, astropy_ephem, leg_index=0)
+    assert result.endpoint_mismatch_km is not None
+    assert result.endpoint_mismatch_km < 1.0e-6  # km; float round-off, not 1 km
+    assert result.passed is True
+
+
 def test_crosscheck_leg_missing_endpoint_raises(
     aldrin_cycler: Cycler,
     astropy_ephem: Ephemeris,

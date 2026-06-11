@@ -22,6 +22,20 @@ the in-house solver did not converge to a subtly wrong velocity. The
 M1 gate already validates this on synthetic legs; M7 wires it to the
 catalogue's real cycler legs.
 
+Endpoint independence (task #197, the #180/63-s false-consensus class)
+----------------------------------------------------------------------
+The velocity-side independence above is real, but the Lambert endpoints
+themselves must NOT be trusted from the artifact under test: a cycler
+whose embedded encounter position/epoch is wrong upstream would be
+re-solved on the same wrong ``(r1, r2)`` by every solver, and all three
+would happily agree (false consensus). So by default
+:func:`crosscheck_leg` re-derives ``r1``/``r2`` independently from the
+passed ephemeris at the leg's own epochs, checks them against the
+encounter-embedded positions to within
+:data:`POSITION_CONSISTENCY_TOL_KM`, and runs the Lambert re-solve on
+the *re-queried* endpoints. A mismatch fails the leg
+(``passed = False``) regardless of solver agreement.
+
 Plan: ``docs/phases/m7-catalogue-novelty-matching/plan.md`` §3.4.
 """
 
@@ -43,6 +57,15 @@ V1_TOLERANCE_MPS: Final[float] = 1.0e-3
 between the in-house Lambert and either lamberthub solver, in metres
 per second. Spec-fixed; NOT test-tunable."""
 
+POSITION_CONSISTENCY_TOL_KM: Final[float] = 1.0
+"""Endpoint-consistency bound (km) between a cycler's encounter-embedded
+planet position and the independent ephemeris re-query at the same
+epoch. Every in-tree constructor reads ``Encounter.r`` straight from
+``ephem.state(body, t)``, so a clean cycler checked against the same
+ephemeris matches to float round-off; 1 km corresponds to ~0.03 s of
+planetary motion — far above round-off, far below any real
+encounter-position or epoch bug. Module constant; NOT test-tunable."""
+
 
 @dataclass(frozen=True)
 class LambertCrosscheckResult:
@@ -61,9 +84,16 @@ class LambertCrosscheckResult:
     max_diff_mps:
         Worst of ``||mine - izzo||`` / ``||mine - gooding||`` over the
         departure velocity, in metres per second.
+    endpoint_mismatch_km:
+        Worst position difference (km) between the encounter-embedded
+        endpoints and the independent ephemeris re-query at the leg's
+        epochs. ``None`` when the check was skipped
+        (``independent_endpoints=False``).
     passed:
-        ``max_diff_mps < V1_TOLERANCE_MPS``. Named ``passed`` rather
-        than ``pass`` because ``pass`` is a Python keyword.
+        ``max_diff_mps < V1_TOLERANCE_MPS`` AND, when the endpoint
+        check ran, ``endpoint_mismatch_km <=
+        POSITION_CONSISTENCY_TOL_KM``. Named ``passed`` rather than
+        ``pass`` because ``pass`` is a Python keyword.
     """
 
     leg_index: int
@@ -72,6 +102,7 @@ class LambertCrosscheckResult:
     lamberthub_gooding_v1_kms: tuple[float, float, float]
     max_diff_mps: float
     passed: bool
+    endpoint_mismatch_km: float | None = None
 
 
 def _leg_endpoints(
@@ -108,15 +139,29 @@ def crosscheck_leg(
     *,
     leg_index: int = 0,
     mu: float = MU_SUN_KM3_S2,
+    independent_endpoints: bool = True,
 ) -> LambertCrosscheckResult:
     """Re-solve ``leg`` with the in-house and lamberthub Lambert solvers.
 
     Compares the in-house :func:`lambert` departure velocity against
     ``lamberthub.izzo2015`` and ``lamberthub.gooding1990`` on the same
-    ``(r1, r2, tof)`` endpoints. The ``ephem`` argument is accepted for
-    interface symmetry with the V2 path (the endpoints come from the
-    cycler's encounter records, which already carry the real planet
-    positions); it is currently unused.
+    ``(r1, r2, tof)`` endpoints.
+
+    Endpoint independence (default ON): with
+    ``independent_endpoints=True`` the endpoints are re-derived from
+    ``ephem.state(body, t)`` at the leg's own epochs, checked against
+    the cycler's encounter-embedded positions to within
+    :data:`POSITION_CONSISTENCY_TOL_KM` (recorded as
+    ``endpoint_mismatch_km``), and the re-solve runs on the
+    *re-queried* endpoints — so a poisoned upstream encounter position
+    fails the leg instead of feeding the same wrong ``(r1, r2)`` to
+    every solver (false consensus, the #180/63-s bug class). All
+    validation paths must keep this ON. ``independent_endpoints=False``
+    is the documented escape hatch for the one legitimate exception — a
+    caller whose cycler epochs are not on the passed ephemeris's time
+    base (no such caller exists in-tree); it restores the
+    endpoints-from-artifact behaviour and leaves
+    ``endpoint_mismatch_km`` as ``None``.
 
     Single- and multi-rev: the in-house solver matches ``leg.n_revs`` and
     ``leg.branch`` ("low" maps to ``lamberthub``'s ``low_path=True``,
@@ -124,11 +169,21 @@ def crosscheck_leg(
     ``M=leg.n_revs`` and the corresponding ``low_path`` so the comparison
     is on the same branch.
     """
-    del ephem  # endpoints come from the cycler; kept for interface symmetry
-
     from lamberthub import gooding1990, izzo2015  # type: ignore[import-untyped]
 
-    r1, r2 = _leg_endpoints(leg, cycler)
+    r1_enc, r2_enc = _leg_endpoints(leg, cycler)
+    endpoint_mismatch_km: float | None = None
+    endpoints_consistent = True
+    if independent_endpoints:
+        r1 = np.asarray(ephem.state(leg.from_body, leg.t_depart)[0], dtype=np.float64)
+        r2 = np.asarray(ephem.state(leg.to_body, leg.t_arrive)[0], dtype=np.float64)
+        endpoint_mismatch_km = max(
+            float(np.linalg.norm(r1 - r1_enc)),
+            float(np.linalg.norm(r2 - r2_enc)),
+        )
+        endpoints_consistent = endpoint_mismatch_km <= POSITION_CONSISTENCY_TOL_KM
+    else:
+        r1, r2 = r1_enc, r2_enc
     tof_sec = leg.t_arrive - leg.t_depart
 
     sols = lambert(r1, r2, tof_sec, mu=mu, prograde=True, max_revs=leg.n_revs)
@@ -159,7 +214,8 @@ def crosscheck_leg(
             float(gooding_v1[2]),
         ),
         max_diff_mps=max_diff_mps,
-        passed=max_diff_mps < V1_TOLERANCE_MPS,
+        passed=(max_diff_mps < V1_TOLERANCE_MPS) and endpoints_consistent,
+        endpoint_mismatch_km=endpoint_mismatch_km,
     )
 
 

@@ -31,6 +31,28 @@ Dispatch helper
 to a given catalogue entry dict, dispatching by ``cycler_class`` per
 spec §16.7.5.  Callers should use this rather than hard-coding class
 checks inline.
+
+Gate classification (task #197 convention, 2026-06-11)
+------------------------------------------------------
+Every validation gate cited in a ``_LEVEL_EVIDENCE`` entry is one of two
+kinds, and agreement between gates is only worth what they do NOT share:
+
+* CONSISTENCY gate — same inputs, different algorithm (e.g. the in-house
+  Lambert vs lamberthub izzo2015/gooding1990 on the same ``(r1, r2, dt)``).
+  Catches algorithm bugs; blind to input/upstream bugs.
+* INDEPENDENCE gate — independently re-derived inputs (e.g. endpoints
+  re-queried from the ephemeris; a different time-scale conversion; a
+  published value transcribed from the source). Catches upstream bugs.
+
+Every promotion requires at least one TRUE independence gate. New
+``_LEVEL_EVIDENCE`` entries should carry a one-line
+``shared with primary path:`` declaration naming what the cited gate has
+in common with the construction under test — if that line cannot be
+written, the gate's independence is unknown, which means it is not
+independent. (Three false-consensus incidents motivated this: the #180
+shared-ToF bug, the crosscheck endpoint sharing fixed in #197, and the
+63 s shared epoch-conversion offset. See the orbit-closure-discipline
+notes and ``docs/notes/2026-06-11-project-review-results.md``.)
 """
 
 from __future__ import annotations
