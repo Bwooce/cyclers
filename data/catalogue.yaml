@@ -7592,7 +7592,7 @@
   name: "Genova/Aldrin free-return Earth-Moon cycler (interplanetary cruise ship, 3:1 lunar resonant)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
-  model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  model_assumption: bicircular   # RECLASSIFIED 2026-06-10 (#184, USER-approved) from cr3bp: Genova & Aldrin 2015 (AAS-15) p.3 state the 3-petal cycler does NOT exist in the pure restricted three-body problem — it appears only when SOLAR gravity is added (Earth-Moon-Sun bicircular model) plus modest station-keeping ΔV. The prior cr3bp label was a known mismatch flagged in data_gaps. schema v2 enum widened additively: circular-coplanar | circular-inclined | analytic-ephemeris | cr3bp | bicircular; see data/README.md + docs/notes/2026-06-10-genova-aldrin-2015-mining.md.
   cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -7612,6 +7612,7 @@
     pair: "E-Moon"
     k: null
     years: null
+    apsidal_rotation_days: 553   # SOURCED 2026-06-10 (#184): Genova & Aldrin 2015 Fig. 5 caption p.5 — 553 d for one full apsidal revolution; 21 complete cycles (22 lunar flybys) from TLI 2019-07-12 to final perigee 2021-01-15. Natural solar-perturbed super-period of the 3-petal orbit.
     note: |
       The paper describes a circumlunar periodic orbit with Earth
       encounters every 7 or 10 days and lunar encounters every 26 days.
@@ -7637,10 +7638,12 @@
     e: null
     perihelion_au: null
     aphelion_au: null
-    inclination_deg: null
+    inclination_deg: 24   # SOURCED 2026-06-10 (#184): Genova & Aldrin 2015 p.8 — "the 24 degrees contained in the cycler" (geocentric frame).
+    inclination_moon_tod_deg: 174   # SOURCED 2026-06-10 (#184): Genova & Aldrin 2015 p.8 — inclination ~174° in the Moon true-of-date (TOD) frame.
     note: |
-      Geocentric (not heliocentric) orbital elements would apply here.
-      Not tabulated in the accessible abstract.
+      Geocentric inclination 24° (p.8); Moon-TOD-frame inclination ~174° (p.8),
+      both backfilled 2026-06-10 from the full PDF (#184). Other geocentric
+      elements (a, e) are not tabulated in the paper.
     periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
     apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
     raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
@@ -7706,6 +7709,31 @@ days\" per the NTRS abstract.
         turning_angle_deg: null # CR3BP model — patched-conic turn angle not defined
         periapsis_alt_km: 3000   # SOURCED: Genova & Aldrin 2015 p.3 (3,000 km perigee per Earth encounter). Carried from flyby_mechanics[].
         note: "Earth encounter (~7/10-day cadence). periapsis_alt_km is the sourced perigee altitude; CR3BP turn angle undefined."
+      # --- Per-cycle station-keeping maneuvers (SOURCED 2026-06-10, #184; Genova & Aldrin 2015 p.3). ---
+      # These are the bicircular-model maintenance burns that keep the 3-petal cycler; nominal total
+      # ~35 m/s/cycle (13+14+8), varying 20-62 m/s/cycle under solar perturbation (p.4), avg 39 m/s/month
+      # (abstract p.1). Reference run: TLI 2019-07-12, first lunar flyby 2019-07-15 (Figs. 4-5).
+      - at_segment_boundary: null
+        body: "E"
+        type: "station-keeping"
+        dv_kms: 0.013            # SOURCED p.3: 13 m/s at perigee (Fig. 3 point C) — enables Moon phasing; yields ~9.5-d Earth holding orbits.
+        turning_angle_deg: null
+        periapsis_alt_km: 3000
+        note: "MAN-C: Moon-phasing burn at perigee (Genova & Aldrin 2015 p.3, Fig. 3 C)."
+      - at_segment_boundary: null
+        body: "E"
+        type: "station-keeping"
+        dv_kms: 0.014            # SOURCED p.3: 14 m/s at perigee (Fig. 3 point E) — increases apogee back to true lunar distance.
+        turning_angle_deg: null
+        periapsis_alt_km: 3000
+        note: "MAN-E: apogee-restore burn at perigee (Genova & Aldrin 2015 p.3, Fig. 3 E)."
+      - at_segment_boundary: null
+        body: "E"
+        type: "station-keeping"
+        dv_kms: 0.008            # SOURCED p.3: 8 m/s, 0.5 d after MAN-E — corrects out-of-plane drift from solar perturbation.
+        turning_angle_deg: null
+        periapsis_alt_km: null
+        note: "MAN-OOP: out-of-plane correction 0.5 d after MAN-E (Genova & Aldrin 2015 p.3)."
   data_gaps:
     - path: "trajectory.segments"
       kind: "uncertain"
@@ -7718,20 +7746,20 @@ days\" per the NTRS abstract.
       source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
       todo_ref: "#54-backfill"
     - path: "orbit_elements.cr3bp.jacobi_constant"
-      kind: "unknown"
-      note: "Jacobi constant for this 3-petal circumlunar cycler not tabulated in the AAS-15 paper (which uses AGI STK/Astrogator, not an analytic CR3BP classification)."
-      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF or JPL three-body periodic-orbit catalog"
-      todo_ref: "#76-cr3bp-backfill"
+      kind: "not-applicable"
+      note: "RESOLVED 2026-06-10 (#184, full PDF read): no Jacobi constant exists for this orbit because it is NOT a pure CR3BP periodic orbit — Genova & Aldrin 2015 p.3 state the 3-petal cycler exists only when solar gravity is added (bicircular Earth-Moon-Sun model) plus station-keeping. model_assumption reclassified cr3bp -> bicircular. The cr3bp.* block is retained as null for schema shape but is structurally inapplicable; a bicircular periodic-orbit IC would require a separate numerical search or a future paper publishing rotating-frame states."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) p.3 — orbit does not exist in pure CR3BP; bicircular model required"
+      todo_ref: "#184"
     - path: "orbit_elements.cr3bp.period_nd"
-      kind: "unknown"
-      note: "Non-dimensional period not tabulated in accessible sources."
-      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
-      todo_ref: "#76-cr3bp-backfill"
+      kind: "not-applicable"
+      note: "RESOLVED 2026-06-10 (#184): inapplicable — not a pure CR3BP orbit (bicircular, solar-perturbed). The physical super-period is the 553-d apsidal rotation (period.apsidal_rotation_days), not a CR3BP non-dimensional period."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) p.3/p.5"
+      todo_ref: "#184"
     - path: "orbit_elements.cr3bp.stability_index"
-      kind: "unknown"
-      note: "Stability index not tabulated in accessible sources."
-      source_hint: "Genova & Aldrin 2015 (AAS-15) full PDF"
-      todo_ref: "#76-cr3bp-backfill"
+      kind: "not-applicable"
+      note: "RESOLVED 2026-06-10 (#184): inapplicable — not a pure CR3BP orbit. The orbit is maneuver-maintained (20-62 m/s/cycle station-keeping), i.e. not naturally stable; a CR3BP monodromy stability index does not characterize it."
+      source_hint: "Genova & Aldrin 2015 (AAS-15) p.3/p.4"
+      todo_ref: "#184"
   first_published:
     authors: ["Genova, A. L.", "Aldrin, B."]
     year: 2015
