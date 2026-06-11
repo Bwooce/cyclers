@@ -199,3 +199,90 @@ def test_deep_floor_geometry_brackets_within_a_few_iters() -> None:
     # Floor bisection converges in O(log2(range/tol)) ~ 60 steps worst case but
     # never spins at the cap; the prior linear walk could exhaust 100 here.
     assert diag["widen_iters"] < 80, diag
+
+
+# ---------------------------------------------------------------------------
+# _dt_dz algebra fix (task #205 defect A)
+# ---------------------------------------------------------------------------
+
+
+def test_long_way_newton_converges_and_bvp_validates() -> None:
+    """Pinning case for the ``_dt_dz`` term2 algebra error (task #205 defect A).
+
+    Boundary states are built closed-form (independent of the Lambert solver)
+    on a heliocentric ellipse at ``nu1`` and ``nu1 + dnu`` with ``dnu > pi``
+    (long-way). The pre-fix ``_dt_dz`` carried a spurious ``sqrt(C)`` in
+    term2 (``3*S*sqrt(y)/C^1.5`` instead of ``3*S*sqrt(y)/C``), making Newton
+    oscillate at a contraction ratio ~0.873/step until the 60-iteration cap:
+    this exact case raised :class:`LambertConvergenceError` (true root
+    ``z ~ 10.349184``) even though the transfer is feasible. Post-fix it must
+    converge and satisfy the boundary-value problem: propagating ``(r1, v1)``
+    by ``tof`` with the in-house Kepler propagator reproduces ``r2`` to
+    ``<= 1e-9`` relative.
+    """
+    from cyclerfinder.core.kepler import propagate
+
+    from .conftest import coe3d_to_rv
+
+    a_km = 1.991442e8
+    e = 0.210298
+    raan = 2.072523
+    inc = 0.085380
+    argp = 2.874090
+    nu1 = 4.729555
+    dnu = 3.624510  # > pi: long-way transfer
+    tof = 2.1689e7  # s
+
+    r1, _v1_gen = coe3d_to_rv(a_km, e, raan, inc, argp, nu1)
+    r2, _v2_gen = coe3d_to_rv(a_km, e, raan, inc, argp, nu1 + dnu)
+
+    # Pre-fix: raises LambertConvergenceError. Post-fix: converges.
+    sols = lambert(r1, r2, tof)
+    assert len(sols) == 1
+    sol = sols[0]
+
+    r2_prop, _v2_prop = propagate(r1, sol.v1, tof)
+    rel = float(np.linalg.norm(r2_prop - r2) / np.linalg.norm(r2))
+    assert rel <= 1.0e-9, rel
+
+
+def test_dt_dz_matches_finite_difference() -> None:
+    """Property test: analytic ``_dt_dz`` agrees with a central difference.
+
+    Seeded random sweep over ``(z, A)`` (both ``A`` signs, elliptic and
+    hyperbolic ``z``); the analytic derivative must match the central FD of
+    ``_t_of_z`` to high relative accuracy everywhere ``y(z) > 0``. The pre-fix
+    term2 algebra error produced FD ratios anywhere in ``-6.2 .. +4.7`` over
+    this domain; the corrected form sits at FD truncation level (~1e-7).
+    """
+    from cyclerfinder.core.lambert import _dt_dz, _t_of_z
+
+    rng = np.random.default_rng(20260611)
+    n_checked = 0
+    for _trial in range(400):
+        r1_n = float(rng.uniform(0.5, 4.0)) * 1.5e8
+        r2_n = float(rng.uniform(0.5, 4.0)) * 1.5e8
+        dnu = float(rng.uniform(0.1, 2.0 * np.pi - 0.1))
+        if abs(dnu - np.pi) < 0.05:
+            continue
+        cos_dnu = float(np.cos(dnu))
+        a_coef = float(np.sin(dnu)) * float(np.sqrt(r1_n * r2_n / (1.0 - cos_dnu)))
+        z = float(rng.uniform(-20.0, 35.0))
+        if abs(z) < 1.0e-3:
+            continue  # the near-zero Maclaurin window is exercised separately
+        h = max(1.0e-7 * abs(z), 1.0e-8)
+        try:
+            _t, y = _t_of_z(z, a_coef, r1_n, r2_n, MU_SUN_KM3_S2)
+            t_plus, y_plus = _t_of_z(z + h, a_coef, r1_n, r2_n, MU_SUN_KM3_S2)
+            t_minus, y_minus = _t_of_z(z - h, a_coef, r1_n, r2_n, MU_SUN_KM3_S2)
+        except ValueError:
+            continue  # y < 0 somewhere in the stencil: outside the valid domain
+        if y <= 0.0 or y_plus <= 0.0 or y_minus <= 0.0:
+            continue
+        fd = (t_plus - t_minus) / (2.0 * h)
+        if fd == 0.0:
+            continue
+        analytic = _dt_dz(z, y, a_coef, MU_SUN_KM3_S2)
+        assert abs(analytic / fd - 1.0) < 1.0e-4, (z, a_coef, analytic, fd)
+        n_checked += 1
+    assert n_checked > 100  # the sweep must actually exercise the domain

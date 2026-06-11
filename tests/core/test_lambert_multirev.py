@@ -140,3 +140,73 @@ def test_lambert_crosscheck_multirev(leg_multirev: Leg) -> None:
         leg_multirev.r1, leg_multirev.r2, leg_multirev.tof, n_revs=1, branch="low"
     )
     assert res["max_diff_mps"] < 1.0e-3, res["max_diff_mps"]
+
+
+# ---------------------------------------------------------------------------
+# Illinois stall against the rev-boundary singularity (task #205 defect B)
+# ---------------------------------------------------------------------------
+
+
+def test_high_branch_near_rev_boundary_is_returned() -> None:
+    """Pinning case for the silently-dropped n=1 high branch (task #205 B).
+
+    Boundary states and the time of flight are built closed-form on a
+    generating ellipse: ``r1, r2`` at ``nu1`` and ``nu1 + dnu``, ``tof`` the
+    Kepler sweep time from ``nu1`` to ``nu1 + dnu`` plus one full period
+    (~7.5 yr) — so the generating orbit itself *is* an exact ``n=1`` solution,
+    with universal variable ``z ~ 138.7573``, close to the ``z = (4*pi)^2``
+    revolution boundary where ``t(z)`` blows up (~1e29 s at the bracket
+    endpoint). Pre-fix, Illinois iterated the raw residual ``t - tof``: false
+    position against the ~1e29 s endpoint stalls (the Illinois halving needs
+    ~70 iterations to deflate it, past the 60-iteration cap), the iterate sat
+    AT the root with a 3.66e-4 s residual (1.5e-12 relative) but missed the
+    1e-12 threshold, and ``lambert()`` caught the raise and silently omitted
+    the feasible branch. Post-fix (log-compressed residual) the high branch
+    must be returned, BVP-validate to ``<= 1e-9`` relative, and match the
+    generating orbit's velocity (the closed-form expected value, independent
+    of the Lambert solver).
+    """
+    from math import atan2, cos, pi, sin, sqrt
+
+    from cyclerfinder.core.kepler import propagate
+    from cyclerfinder.core.lambert import lambert
+
+    from .conftest import coe3d_to_rv
+
+    a_km = 373755302.85
+    e = 0.279159
+    raan = 2.810967
+    inc = 0.405913
+    argp = 2.335005
+    nu1 = 5.955822
+    dnu = 5.314586  # > pi: long-way transfer
+    nrevs = 1
+
+    def _time_since_periapsis(nu: float, ecc: float, n_mean: float) -> float:
+        ecc_anom = 2.0 * atan2(sqrt(1.0 - ecc) * sin(nu / 2.0), sqrt(1.0 + ecc) * cos(nu / 2.0))
+        mean_anom = ecc_anom - ecc * sin(ecc_anom)
+        return mean_anom / n_mean
+
+    n_mean = sqrt(MU_SUN_KM3_S2 / a_km**3)
+    period = 2.0 * pi / n_mean
+    nu2 = (nu1 + dnu) % (2.0 * pi)
+    sweep = _time_since_periapsis(nu2, e, n_mean) - _time_since_periapsis(nu1, e, n_mean)
+    if sweep < 0.0:
+        sweep += period
+    tof = sweep + nrevs * period  # ~7.5 yr
+
+    r1, v1_gen = coe3d_to_rv(a_km, e, raan, inc, argp, nu1)
+    r2, _v2_gen = coe3d_to_rv(a_km, e, raan, inc, argp, nu1 + dnu)
+
+    sols = lambert(r1, r2, tof, max_revs=nrevs)
+    high = [s for s in sols if s.n_revs == 1 and s.branch == "high"]
+    assert high, [(s.n_revs, s.branch) for s in sols]  # pre-fix: branch silently dropped
+    sol = high[0]
+
+    # BVP validity against the in-house propagator.
+    r2_prop, _v2_prop = propagate(r1, sol.v1, tof)
+    rel = float(np.linalg.norm(r2_prop - r2) / np.linalg.norm(r2))
+    assert rel <= 1.0e-9, rel
+
+    # The generating orbit is the expected solution (closed-form source).
+    assert 1000.0 * float(np.linalg.norm(sol.v1 - v1_gen)) < 1.0e-3

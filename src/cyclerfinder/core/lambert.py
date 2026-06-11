@@ -32,7 +32,7 @@ Plan: ``docs/phases/m1-core-mechanics/plan.md`` §3.2.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import acos, sqrt
+from math import acos, copysign, expm1, log1p, sqrt
 from typing import Any
 
 import numpy as np
@@ -152,13 +152,20 @@ def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
     c = stumpff_c(z)
     s = stumpff_s(z)
     if abs(z) > 1.0e-5:
-        # Standard form.
-        sqrt_y_over_c = sqrt(y / c)
+        # Standard form. Differentiating sqrt(mu)*t = (y/C)^1.5 * S + A*sqrt(y)
+        # with the Stumpff identities dC/dz = (1 - z*S - 2*C)/(2z) and
+        # dS/dz = (C - 3*S)/(2z) gives
+        #   sqrt(mu) dt/dz = (y/C)^1.5 [ (1/(2z))(C - 3S/(2C)) + (3/4) S^2/C ]
+        #                  + (A/8) [ 3 S sqrt(y) / C + A sqrt(C/y) ].
+        # (A historical defect computed the first piece of term2 as
+        # 3*S*sqrt(y)/C^1.5 — one spurious sqrt(C) — which was inconsistent
+        # with the z->0 Maclaurin limit below and made Newton oscillate on
+        # long-way transfers; see task #205.)
         y_over_c_15 = float((y / c) ** 1.5)
         term1 = (
             y_over_c_15 * ((1.0 / (2.0 * z)) * (c - 1.5 * s / c) + 0.75 * (s * s) / c) / sqrt(mu)
         )
-        term2 = (a_coef / 8.0) * (3.0 * s * sqrt_y_over_c / c + a_coef * sqrt(c / y)) / sqrt(mu)
+        term2 = (a_coef / 8.0) * (3.0 * s * sqrt(y) / c + a_coef * sqrt(c / y)) / sqrt(mu)
         return term1 + term2
     # Near z=0 fallback (Vallado): expansion about z=0.
     y_15 = float(y**1.5)
@@ -428,18 +435,35 @@ def _solve_uv_branch(
     on each branch (the whole single-rev range, and each side of the
     multi-rev minimum), so Illinois is both robust and fast here.
 
+    The residual is iterated in log-compressed form,
+    ``g = sign(t - tof) * log1p(|t - tof| / tof)``, which has exactly the same
+    root and sign as the raw residual but compresses the huge values near the
+    revolution-boundary time singularities (``t(z) ~ 1e29 s`` at a bracket
+    endpoint maps to ``g ~ 48``). With the raw residual, false position against
+    such an endpoint takes steps scaled by ``~tof / 1e29`` and the Illinois
+    halving needs ``log2(1e29 / tof) ~ 70`` iterations just to deflate the
+    stale endpoint — past :data:`_ROOT_MAX_ITER`, silently dropping a feasible
+    high branch (task #205 defect B). Near the root ``g ~ (t - tof)/tof``, so
+    the convergence test ``|g| < _ROOT_TOL_REL`` is the same relative-residual
+    criterion as before: precision is unchanged, only the stall is removed.
+
     Raises :class:`LambertConvergenceError` if the supplied endpoints do not
     bracket a root or the iteration fails to converge.
     """
 
-    def _f(z_in: float) -> float:
+    def _g(z_in: float) -> float:
         t_z, _y = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
-        return t_z - tof
+        resid = t_z - tof
+        return copysign(log1p(abs(resid) / tof), resid)
+
+    def _residual_seconds(g_val: float) -> float:
+        """Invert the log compression for error reporting (seconds)."""
+        return copysign(expm1(abs(g_val)) * tof, g_val)
 
     a, b = z_lo, z_hi
     try:
-        fa = _f(a)
-        fb = _f(b)
+        fa = _g(a)
+        fb = _g(b)
     except ValueError as exc:
         raise LambertConvergenceError(0.5 * (a + b), float("nan")) from exc
 
@@ -449,7 +473,9 @@ def _solve_uv_branch(
         return b
     if (fa > 0.0) == (fb > 0.0):
         # Endpoints share a sign: no guaranteed root in this bracket.
-        raise LambertConvergenceError(0.5 * (a + b), min(abs(fa), abs(fb)))
+        raise LambertConvergenceError(
+            0.5 * (a + b), min(abs(_residual_seconds(fa)), abs(_residual_seconds(fb)))
+        )
 
     c = 0.5 * (a + b)
     for _it in range(_ROOT_MAX_ITER):
@@ -461,12 +487,14 @@ def _solve_uv_branch(
         if not (lo < c < hi):
             c = 0.5 * (a + b)
         try:
-            fc = _f(c)
+            fc = _g(c)
         except ValueError:
             c = 0.5 * (a + b)
-            fc = _f(c)
+            fc = _g(c)
 
-        if abs(fc) / tof < _ROOT_TOL_REL or abs(b - a) < _ROOT_TOL_DZ:
+        # |g| ~ |t - tof| / tof near the root: same relative criterion as the
+        # raw-residual form.
+        if abs(fc) < _ROOT_TOL_REL or abs(b - a) < _ROOT_TOL_DZ:
             return c
 
         if (fc > 0.0) == (fb > 0.0):
@@ -479,7 +507,7 @@ def _solve_uv_branch(
             a, fa = b, fb
             b, fb = c, fc
 
-    raise LambertConvergenceError(c, fc)
+    raise LambertConvergenceError(c, _residual_seconds(fc))
 
 
 def _velocities_from_z(

@@ -16,10 +16,50 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from cyclerfinder.core.constants import SECONDS_PER_DAY
+from cyclerfinder.core.constants import MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.ephemeris import Ephemeris
 
 Vec3 = NDArray[np.float64]
+
+
+def coe3d_to_rv(
+    a_km: float,
+    e: float,
+    raan_rad: float,
+    inc_rad: float,
+    argp_rad: float,
+    nu_rad: float,
+    mu: float = MU_SUN_KM3_S2,
+) -> tuple[Vec3, Vec3]:
+    """Full classical elements -> inertial state (perifocal + 3-1-3 rotation).
+
+    Test-side helper (closed-form, independent of the Lambert solver) used by
+    the task #205 pinning tests in ``test_lambert.py`` /
+    ``test_lambert_multirev.py`` to construct exact boundary states on an
+    inclined generating orbit. The production :func:`coe_to_rv` is planar-only.
+    """
+    from math import cos, sin, sqrt
+
+    p = a_km * (1.0 - e * e)
+    r_mag = p / (1.0 + e * cos(nu_rad))
+    r_pf = np.array([r_mag * cos(nu_rad), r_mag * sin(nu_rad), 0.0], dtype=np.float64)
+    sqrt_mu_p = sqrt(mu / p)
+    v_pf = np.array(
+        [-sqrt_mu_p * sin(nu_rad), sqrt_mu_p * (e + cos(nu_rad)), 0.0], dtype=np.float64
+    )
+
+    def _rz(t: float) -> NDArray[np.float64]:
+        return np.array(
+            [[cos(t), -sin(t), 0.0], [sin(t), cos(t), 0.0], [0.0, 0.0, 1.0]], dtype=np.float64
+        )
+
+    def _rx(t: float) -> NDArray[np.float64]:
+        return np.array(
+            [[1.0, 0.0, 0.0], [0.0, cos(t), -sin(t)], [0.0, sin(t), cos(t)]], dtype=np.float64
+        )
+
+    rot = _rz(raan_rad) @ _rx(inc_rad) @ _rz(argp_rad)
+    return rot @ r_pf, rot @ v_pf
 
 
 @dataclass(frozen=True)
