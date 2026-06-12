@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cyclers.space/schemas/catalogue.schema.json",
-  "version": "4.5",
+  "version": "4.6",
   "title": "Cycler Finder Catalogue",
-  "description": "Schema v4.5 for data/catalogue.yaml. Adds the additive optional top-level validation_level enum (V0-V5, the spec §14 gauntlet level; spec §16.7.12), back-filled mechanically by scripts/backfill_validation_level.py from recorded test evidence and guarded against over-claim by validate_validation_level. Builds on v4.4: the per-field provenance tag set orbit_source/vinf_source/orbit_fidelity/vinf_fidelity and the optional declared validation_tier (spec §16.7.11, Forge phase 0 task 3), back-filled mechanically from each row's existing source metadata. source keys are constrained to the SOURCE_REGISTRY enum and fidelity tiers to the Fidelity enum; the declared-tier-must-match-classify_validation rule is enforced by the Python semantic gate. Builds on v4.3 (supersedes/superseded_by, spec §16.7.10), v4.2 (segments[].center, segments[].tof_days_bounds, source_ephemeris, spec §16.7.9), v4.1 (free_return_arcs[] arc-type descriptors, spec §16.7.7) and v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e). Referential integrity of supersedes/superseded_by (targets must resolve to existing ids, no self-reference) is enforced by the Python semantic gate.",
+  "description": "Schema v4.6 for data/catalogue.yaml. Task #194: hardens the previously-freeform discriminator string fields with controlled-vocabulary enums — model_assumption, trajectory_regime, sense, and data_gaps[].kind — each enum being the exact superset of live values plus obviously-intended members. Discovered during #184: model_assumption='bicircular' and data_gaps[].kind='not-applicable' were accepted with zero validation, so a typo (cr3pb, unkown) would pass silently and corrupt the catalogue. Builds on v4.5, which adds the additive optional top-level validation_level enum (V0-V5, the spec §14 gauntlet level; spec §16.7.12), back-filled mechanically by scripts/backfill_validation_level.py from recorded test evidence and guarded against over-claim by validate_validation_level. Builds on v4.4: the per-field provenance tag set orbit_source/vinf_source/orbit_fidelity/vinf_fidelity and the optional declared validation_tier (spec §16.7.11, Forge phase 0 task 3), back-filled mechanically from each row's existing source metadata. source keys are constrained to the SOURCE_REGISTRY enum and fidelity tiers to the Fidelity enum; the declared-tier-must-match-classify_validation rule is enforced by the Python semantic gate. Builds on v4.3 (supersedes/superseded_by, spec §16.7.10), v4.2 (segments[].center, segments[].tof_days_bounds, source_ephemeris, spec §16.7.9), v4.1 (free_return_arcs[] arc-type descriptors, spec §16.7.7) and v4. Permissive on legacy v1-v3 fields (additionalProperties: true throughout); enforces the v4 structural invariants: cycler_class enum, orbit_elements frame/center enums, period.basis item shape, and the conditional physical-invariant gate (multi-arc/non-keplerian must not have top-level a/e). Referential integrity of supersedes/superseded_by (targets must resolve to existing ids, no self-reference) is enforced by the Python semantic gate.",
   "type": "array",
   "items": {
     "type": "object",
@@ -13,6 +13,46 @@
       "id": {
         "type": "string",
         "description": "Stable human-readable slug for this cycler entry."
+      },
+      "model_assumption": {
+        "type": ["string", "null"],
+        "enum": ["circular-coplanar", "circular-inclined", "analytic-ephemeris", "cr3bp", "bicircular", null],
+        "description": "Schema v4.6 (task #194): controlled vocabulary for the dynamical model the row's published numbers were stated under. Enum is the exact superset of live values (circular-coplanar, analytic-ephemeris, cr3bp, bicircular) plus circular-inclined (the M-3D fidelity tier, present in the orbit_fidelity/vinf_fidelity enums) for forward consistency. Constrained because a typo (e.g. 'cr3pb', 'bicirular') would silently corrupt the fidelity derivation."
+      },
+      "trajectory_regime": {
+        "type": ["string", "null"],
+        "enum": ["ballistic", "powered", "low-thrust", null],
+        "description": "Schema v4.6 (task #194): controlled vocabulary for the propulsion regime of the trajectory. Enum is the live superset (ballistic, powered) plus low-thrust, the obviously-intended third member of the standard regime trichotomy. Constrained because a typo would pass silently."
+      },
+      "sense": {
+        "type": ["string", "null"],
+        "enum": ["outbound", "inbound", "n/a", null],
+        "description": "Schema v4.6 (task #194): controlled vocabulary for the direction sense of the leg. Enum is the exact live superset (outbound, inbound, n/a). Constrained because a typo would pass silently."
+      },
+      "data_gaps": {
+        "type": ["array", "null"],
+        "description": "Schema v4.6 (task #194): the kind discriminator is now a controlled vocabulary. Permissive (additionalProperties: true) on all other gap fields; only kind is constrained.",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kind": {
+              "type": ["string", "null"],
+              "enum": [
+                "unknown",
+                "derive",
+                "uncertain",
+                "not-applicable",
+                "unverified-provenance",
+                "resolved",
+                "conflict",
+                "anomaly",
+                null
+              ],
+              "description": "Schema v4.6 (task #194): controlled vocabulary for the gap discriminator. Enum is the exact live superset (unknown, derive, uncertain, not-applicable, unverified-provenance, resolved, conflict, anomaly). Constrained because a typo (e.g. 'unkown', 'not-aplicable') would pass silently and corrupt the review queue, the original #184 failure mode."
+            }
+          }
+        }
       },
       "source_ephemeris": {
         "type": ["string", "null"],

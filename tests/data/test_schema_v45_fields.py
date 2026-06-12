@@ -35,8 +35,9 @@ def _load_rows() -> list[dict[str, Any]]:
     return yaml.safe_load(CATALOGUE_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4_5() -> None:
-    assert _load_schema()["version"] == "4.5"
+def test_schema_version_is_at_least_4_5() -> None:
+    # v4.5 fields remain present; the schema version has since advanced (>= 4.5).
+    assert float(_load_schema()["version"]) >= 4.5
 
 
 def test_valid_level_passes_schema() -> None:
