@@ -105,6 +105,19 @@ class PrimerVerdict(enum.Enum):
     published interpretation is that an added / relocated impulse near the
     peak reduces total ΔV."""
 
+    INDETERMINATE_ILL_CONDITIONED = "indeterminate_ill_conditioned"
+    """The two-point primer BVP is singular / ill-conditioned on this coast —
+    the regime of a near-integer-revolution ("phasing-orbit") coast, where the
+    coast STM tends to the identity and its position-velocity block ``Φ_rv``
+    becomes rank-deficient (Şaloğlu, Taheri & Landau 2023, Sec. III.F; Glandorf
+    1969). The endpoint primer directions cannot be independently enforced on
+    such an arc, so the two-point inversion (Eq. 28) returns garbage. We instead
+    propagate the primer by continuity (truncated-SVD minimum-norm ``ṗ(0)``,
+    dropping the unobservable null direction of ``Φ_rv``), which keeps ``|p(t)|``
+    finite, and report the coast as INDETERMINATE rather than emitting a
+    spurious IMPROVABLE verdict. See ``primer_on_coast`` for the citation and
+    :data:`_ILL_CONDITIONED_CAVEAT`."""
+
 
 _NECESSARY_CONDITIONS_CAVEAT: str = (
     "NECESSARY-conditions check only (Lawden / Lion & Handelsman 1968): "
@@ -112,6 +125,39 @@ _NECESSARY_CONDITIONS_CAVEAT: str = (
     "checked). Linearised primer theory degrades on long multi-rev arcs "
     "(Guzman 2002, not yet acquired) -- treat long-arc results as provisional."
 )
+
+_ILL_CONDITIONED_CAVEAT: str = (
+    "At least one coast is a near-integer-revolution (phasing-orbit) arc whose "
+    "two-point primer BVP is singular (Phi_rv rank-deficient; Saloglu, Taheri & "
+    "Landau 2023 Sec. III.F, Glandorf 1969). The endpoint primer directions "
+    "cannot be enforced there; the primer was propagated by continuity "
+    "(truncated-SVD minimum-norm pdot0) and the coast verdict is INDETERMINATE, "
+    "NOT a true IMPROVABLE/OPTIMAL result. On such multi-rev coasts an interior "
+    "|p|->1 touch with pdot~0 is an iso-DeltaV impulse degeneracy consistent "
+    "with optimality, not an add-an-impulse signal."
+)
+
+# Reciprocal-condition-number floor below which Phi_rv is treated as singular, so
+# the continuity (truncated-SVD) primer-rate solve is used instead of a direct
+# inversion. Picked well above float64 round-off (~1e-16) yet far below the
+# conditioning of any well-separated Kepler coast (rcond ~ 1e-2 in the empirical
+# sweep). NOTE: Phi_rv is singular at EVERY half-integer revolution (transfer
+# angle = k*180 deg), which includes the legitimate 180-deg Hohmann transfer --
+# so a singular Phi_rv alone is NOT a defect signal. The defect (the false
+# IMPROVABLE the direct inversion produces on multi-rev coasts) is detected by
+# the BVP RESIDUAL below: a singular arc is only INDETERMINATE when the endpoint
+# primer direction also lies OUTSIDE the range of Phi_rv (so the two-point BC is
+# genuinely unenforceable). Hohmann's BC happens to lie in-range -> residual ~0
+# -> trustworthy; an integer-rev phasing coast with mismatched directions has a
+# residual ~O(1) -> INDETERMINATE.
+_PHI_RV_RCOND_FLOOR: float = 1.0e-8
+
+# Tolerance on the two-point BVP residual ||Phi_rr p0 + Phi_rv pdot0 - p1|| used,
+# ONLY on a rank-deficient (singular) Phi_rv, to decide whether the prescribed
+# endpoint primer direction is actually reachable. Well above the ~1e-14 residual
+# of an in-range (e.g. Hohmann) BC and far below the ~1e-1..1e0 residual of a
+# genuinely unenforceable integer-rev BC.
+_PRIMER_BVP_RESIDUAL_TOL: float = 1.0e-6
 
 
 def gravity_gradient(r: Vec3, mu: float = MU_SUN_KM3_S2) -> NDArray[np.float64]:
@@ -205,6 +251,74 @@ def _coast_stm(
     return sol.t.copy(), ref_states, stms
 
 
+def _solve_primer_rate(
+    phi_rr: NDArray[np.float64],
+    phi_rv: NDArray[np.float64],
+    p0: Vec3,
+    p1: Vec3,
+) -> tuple[NDArray[np.float64], bool, float]:
+    """Recover ``ṗ(0)`` from the coast STM, robust to near-integer-rev coasts.
+
+    The primer two-point BVP on a coast bounded by two impulses fixes ``p(0)``
+    and ``p(T)`` (the unit ΔV directions); the unknown initial rate is recovered
+    from the STM end-block decomposition ``p(T) = Φ_rr p(0) + Φ_rv ṗ(0)``, i.e.
+    ``ṗ(0) = Φ_rv⁻¹ (p(T) - Φ_rr p(0))`` (Glandorf 1969, Eq. 28 of Şaloğlu,
+    Taheri & Landau 2023).
+
+    Over a (near-)integer-revolution **phasing orbit** the coast STM tends to
+    the identity and ``Φ_rv`` becomes rank-deficient (Saloglu 2023 Sec. III.F):
+    a direct inversion then amplifies round-off by ``~1/sigma_min ≈ 10¹¹`` and the
+    diagnostic silently returns a primer of magnitude ``~10⁹`` — a false
+    IMPROVABLE on exactly the multi-rev cycler-leg regime we care about. The
+    *continuity* fix the paper prescribes is to propagate the primer through the
+    phasing orbit rather than re-solve the singular two-point problem; at the
+    single-coast level that is the **truncated-SVD minimum-norm** solution,
+    which discards the unobservable null direction of ``Φ_rv`` (along which the
+    endpoint BC carries no information) and so keeps ``ṗ(0)`` — and hence
+    ``|p(t)|`` — finite and continuous. On a full-rank coast the truncation
+    drops nothing and the result is bit-for-bit the direct solve.
+
+    ``Φ_rv`` is singular at *every* half-integer revolution (transfer angle a
+    multiple of 180°), which includes the legitimate 180° Hohmann transfer — so
+    a singular ``Φ_rv`` alone is not a defect. The coast is reported
+    ``ill_conditioned`` (⇒ INDETERMINATE) only when ``Φ_rv`` is rank-deficient
+    **and** the prescribed endpoint direction lies outside its range, i.e. the
+    two-point BC is genuinely unenforceable, measured by the BVP residual
+    ``‖Φ_rr p0 + Φ_rv ṗ0 - p1‖`` exceeding :data:`_PRIMER_BVP_RESIDUAL_TOL`.
+    Hohmann's BC is in-range (residual ~1e-15) ⇒ trustworthy; an integer-rev
+    phasing coast with mismatched impulse directions has a residual ~O(1) ⇒
+    INDETERMINATE.
+
+    Returns
+    -------
+    (pdot0, ill_conditioned, rcond):
+        the recovered initial primer rate; a flag that ``Φ_rv`` was singular
+        *and* the endpoint BC unenforceable (so the verdict must be reported
+        INDETERMINATE); and the reciprocal condition number ``sigma_min/sigma_max``
+        of ``Φ_rv``.
+    """
+    rhs = p1 - phi_rr @ p0
+    u, s, vt = np.linalg.svd(phi_rv)
+    smax = float(s[0])
+    smin = float(s[-1])
+    rcond = smin / smax if smax > 0.0 else 0.0
+    singular = rcond < _PHI_RV_RCOND_FLOOR
+    # Truncated-SVD (minimum-norm) pseudo-inverse: invert only the singular
+    # values above the floor; this is the continuity-propagation primer on the
+    # singular arc and is identical to the direct solve when full rank.
+    s_inv = np.array(
+        [1.0 / sv if sv > _PHI_RV_RCOND_FLOOR * smax else 0.0 for sv in s],
+        dtype=np.float64,
+    )
+    pdot0 = (vt.T * s_inv) @ (u.T @ rhs)
+    # On a singular Φ_rv the truncated solve cannot represent any BC component in
+    # the null direction; a large residual there means the endpoint primer
+    # direction is genuinely unreachable and the verdict must be INDETERMINATE.
+    bvp_residual = float(np.linalg.norm(phi_rv @ pdot0 - rhs))
+    ill_conditioned = singular and bvp_residual > _PRIMER_BVP_RESIDUAL_TOL
+    return pdot0, ill_conditioned, rcond
+
+
 @dataclass(frozen=True)
 class CoastPrimerResult:
     """Primer-vector profile and verdict for a single coast arc.
@@ -222,8 +336,20 @@ class CoastPrimerResult:
     verdict:
         :class:`PrimerVerdict` for this coast.
     endpoint_magnitudes:
-        ``(|p(t0)|, |p(t1)|)`` — both ≈ 1 by construction; reported so a
-        caller can confirm the BCs were honoured.
+        ``(|p(t0)|, |p(t1)|)`` — both ≈ 1 by construction on a well-posed
+        coast; reported so a caller can confirm the BCs were honoured. On an
+        ``INDETERMINATE_ILL_CONDITIONED`` (near-integer-rev) coast the second
+        entry may differ from 1: the endpoint BC is unenforceable there and the
+        primer was propagated by continuity (see ``phi_rv_rcond``).
+    phi_rv_rcond:
+        Reciprocal condition number ``sigma_min/sigma_max`` of the coast STM
+        block ``Φ_rv``. A value at/near ``0`` flags a near-integer-revolution
+        (phasing-orbit) coast where the two-point primer inversion is singular
+        (Saloglu, Taheri & Landau 2023 Sec. III.F).
+    ill_conditioned:
+        ``True`` when ``phi_rv_rcond`` fell below :data:`_PHI_RV_RCOND_FLOOR`
+        and the continuity (truncated-SVD) primer-rate fallback was used; the
+        verdict is then ``INDETERMINATE_ILL_CONDITIONED``.
     """
 
     coast_index: int
@@ -232,6 +358,8 @@ class CoastPrimerResult:
     duration_s: float
     verdict: PrimerVerdict
     endpoint_magnitudes: tuple[float, float]
+    phi_rv_rcond: float = 1.0
+    ill_conditioned: bool = False
 
 
 @dataclass(frozen=True)
@@ -243,18 +371,28 @@ class PrimerDiagnostic:
     coasts:
         Per-coast results in schedule order.
     overall_verdict:
-        ``IMPROVABLE_ADD_IMPULSE`` if any coast is improvable, else
-        ``OPTIMAL_NECESSARY_CONDITIONS_MET``.
+        Aggregated verdict. ``INDETERMINATE_ILL_CONDITIONED`` if any coast is
+        ill-conditioned (a near-integer-rev coast whose verdict cannot be
+        trusted dominates the schedule); else ``IMPROVABLE_ADD_IMPULSE`` if any
+        coast is improvable; else ``OPTIMAL_NECESSARY_CONDITIONS_MET``.
     max_primer_magnitude:
-        The largest per-coast ``max|p|`` across the whole schedule.
+        The largest per-coast ``max|p|`` across the whole schedule. NB: an
+        ill-conditioned coast's ``max|p|`` is a continuity-fallback value, not a
+        trustworthy optimality magnitude — read it together with
+        ``any_ill_conditioned``.
     caveat:
-        Standard necessary-conditions / multi-rev caveat string.
+        Standard necessary-conditions / multi-rev caveat string; the
+        ill-conditioned (phasing-orbit) caveat is appended when any coast tripped
+        the continuity fallback.
+    any_ill_conditioned:
+        ``True`` when at least one coast was a near-integer-rev singular arc.
     """
 
     coasts: tuple[CoastPrimerResult, ...]
     overall_verdict: PrimerVerdict
     max_primer_magnitude: float
     caveat: str
+    any_ill_conditioned: bool = False
 
 
 def primer_on_coast(
@@ -300,6 +438,16 @@ def primer_on_coast(
     Returns
     -------
     CoastPrimerResult
+
+    Notes
+    -----
+    On a near-integer-revolution (phasing-orbit) coast the position-velocity
+    STM block ``Φ_rv`` is rank-deficient and the two-point inversion (Eq. 28 of
+    Şaloğlu, Taheri & Landau 2023) is singular; ``ṗ(0)`` is then recovered by
+    continuity (truncated-SVD minimum-norm; see :func:`_solve_primer_rate`) and
+    the verdict is reported as ``INDETERMINATE_ILL_CONDITIONED`` — never a
+    spurious IMPROVABLE — with the coast's ``Φ_rv`` reciprocal condition number
+    on the result.
     """
     if duration_s <= 0.0:
         raise ValueError(f"coast duration must be positive, got {duration_s}")
@@ -312,10 +460,11 @@ def primer_on_coast(
 
     # End-state STM maps [p(0); ṗ(0)] -> [p(T); ṗ(T)].
     # p(T) = Φ_rr p(0) + Φ_rv ṗ(0)  =>  ṗ(0) = Φ_rv⁻¹ (p1 - Φ_rr p0).
+    # Robust to near-integer-rev singularity of Φ_rv (continuity fallback).
     phi_end = stms[-1]
     phi_rr = phi_end[:3, :3]
     phi_rv = phi_end[:3, 3:]
-    pdot0 = np.linalg.solve(phi_rv, p1 - phi_rr @ p0)
+    pdot0, ill_conditioned, rcond = _solve_primer_rate(phi_rr, phi_rv, p0, p1)
 
     state0 = np.concatenate([p0, pdot0])
     mags = np.empty(times.shape[0], dtype=np.float64)
@@ -325,11 +474,16 @@ def primer_on_coast(
 
     k_max = int(np.argmax(mags))
     max_mag = float(mags[k_max])
-    verdict = (
-        PrimerVerdict.IMPROVABLE_ADD_IMPULSE
-        if max_mag > 1.0 + tol
-        else PrimerVerdict.OPTIMAL_NECESSARY_CONDITIONS_MET
-    )
+    if ill_conditioned:
+        # Near-integer-rev coast: the endpoint BC is unenforceable, so a |p| > 1
+        # excursion here is NOT a valid add-an-impulse signal (it may be the
+        # iso-ΔV phasing-orbit degeneracy of Saloglu 2023 Sec. III.F). Report
+        # INDETERMINATE rather than a false OPTIMAL/IMPROVABLE verdict.
+        verdict = PrimerVerdict.INDETERMINATE_ILL_CONDITIONED
+    elif max_mag > 1.0 + tol:
+        verdict = PrimerVerdict.IMPROVABLE_ADD_IMPULSE
+    else:
+        verdict = PrimerVerdict.OPTIMAL_NECESSARY_CONDITIONS_MET
     return CoastPrimerResult(
         coast_index=coast_index,
         max_primer_magnitude=max_mag,
@@ -337,6 +491,8 @@ def primer_on_coast(
         duration_s=float(duration_s),
         verdict=verdict,
         endpoint_magnitudes=(float(mags[0]), float(mags[-1])),
+        phi_rv_rcond=float(rcond),
+        ill_conditioned=bool(ill_conditioned),
     )
 
 
@@ -387,16 +543,24 @@ def diagnose_impulse_schedule(
             )
         )
     max_mag = max(c.max_primer_magnitude for c in coasts)
-    overall = (
-        PrimerVerdict.IMPROVABLE_ADD_IMPULSE
-        if any(c.verdict is PrimerVerdict.IMPROVABLE_ADD_IMPULSE for c in coasts)
-        else PrimerVerdict.OPTIMAL_NECESSARY_CONDITIONS_MET
-    )
+    any_ill = any(c.ill_conditioned for c in coasts)
+    if any_ill:
+        # A near-integer-rev coast whose BVP is singular cannot be ruled
+        # OPTIMAL or IMPROVABLE; its uncertainty dominates the schedule verdict.
+        overall = PrimerVerdict.INDETERMINATE_ILL_CONDITIONED
+    elif any(c.verdict is PrimerVerdict.IMPROVABLE_ADD_IMPULSE for c in coasts):
+        overall = PrimerVerdict.IMPROVABLE_ADD_IMPULSE
+    else:
+        overall = PrimerVerdict.OPTIMAL_NECESSARY_CONDITIONS_MET
+    caveat = _NECESSARY_CONDITIONS_CAVEAT
+    if any_ill:
+        caveat = f"{caveat} {_ILL_CONDITIONED_CAVEAT}"
     return PrimerDiagnostic(
         coasts=tuple(coasts),
         overall_verdict=overall,
         max_primer_magnitude=max_mag,
-        caveat=_NECESSARY_CONDITIONS_CAVEAT,
+        caveat=caveat,
+        any_ill_conditioned=any_ill,
     )
 
 

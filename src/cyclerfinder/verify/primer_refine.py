@@ -71,7 +71,7 @@ from cyclerfinder.core.lambert import (
     LambertGeometryError,
     lambert,
 )
-from cyclerfinder.verify.primer import _coast_stm
+from cyclerfinder.verify.primer import _coast_stm, _solve_primer_rate
 
 Vec3 = NDArray[np.float64]
 
@@ -157,7 +157,9 @@ def _primer_peak(
     phi_end = stms[-1]
     phi_rr = phi_end[:3, :3]
     phi_rv = phi_end[:3, 3:]
-    pdot0 = np.linalg.solve(phi_rv, p1 - phi_rr @ p0)
+    # Robust to near-integer-rev singularity of Φ_rv (Saloglu 2023 Sec. III.F):
+    # continuity (truncated-SVD min-norm) primer rate instead of a direct solve.
+    pdot0, _ill, _rcond = _solve_primer_rate(phi_rr, phi_rv, p0, p1)
     state0 = np.concatenate([p0, pdot0])
 
     p_vectors = np.empty((times.shape[0], 3), dtype=np.float64)

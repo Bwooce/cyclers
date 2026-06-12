@@ -37,9 +37,12 @@ import pytest
 from cyclerfinder.core.kepler import propagate
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.verify.primer import (
+    _PHI_RV_RCOND_FLOOR,
     CoastPrimerResult,
     PrimerDiagnostic,
     PrimerVerdict,
+    _coast_stm,
+    _solve_primer_rate,
     diagnose_impulse_schedule,
     gravity_gradient,
     hohmann_primer_diagnostic,
@@ -287,6 +290,150 @@ def test_coast_stm_matches_kepler_reference() -> None:
     r_end_kepler, v_end_kepler = propagate(r0, v0, tof, MU_CANONICAL)
     assert np.allclose(ref[-1, :3], r_end_kepler, rtol=1e-7, atol=1e-7)
     assert np.allclose(ref[-1, 3:], v_end_kepler, rtol=1e-7, atol=1e-7)
+
+
+# ---------------------------------------------------------------------------
+# Integer-revolution (phasing-orbit) singularity — the LIVE DEFECT fix
+# ---------------------------------------------------------------------------
+#
+# Sourced fact (Şaloğlu, Taheri & Landau 2023, "Existence of Infinitely Many
+# Optimal Iso-Impulse Trajectories in Two-Body Dynamics," JGCD 46(10); Sec.
+# III.F, AAS 23-307 p. 32): over one full revolution of a phasing orbit the
+# coast STM is the identity, so its position-velocity block Φ_rv is singular and
+# the Glandorf (1969) two-point primer-rate inversion (their Eq. 28) has no
+# solution. The fix is to propagate the primer by CONTINUITY across the
+# integer-rev coast instead of inverting the singular Φ_rv. The reinterpretation
+# (same section): an interior ‖p‖→1 touch with ṗ≈0 on a multi-rev coast is an
+# iso-ΔV impulse degeneracy CONSISTENT with optimality, not an add-impulse
+# signal. These tests pin (a) that the singularity is real, (b) that our
+# diagnostic no longer blows up / no longer emits a spurious IMPROVABLE there,
+# and (c) that well-posed sub-revolution coasts are byte-unaffected by the fix.
+
+
+def _circular_orbit_state(mu: float = MU_CANONICAL) -> tuple[np.ndarray, np.ndarray, float]:
+    """Unit circular orbit and its exact period (an exact-integer-rev phaser)."""
+    r0 = np.array([1.0, 0.0, 0.0])
+    v0 = np.array([0.0, float(np.sqrt(mu)), 0.0])
+    period = 2.0 * np.pi * float(np.sqrt(1.0 / mu))
+    return r0, v0, period
+
+
+def test_phi_rv_is_singular_at_integer_revolution() -> None:
+    """SOURCED: Φ_rv is rank-deficient over a full revolution (Saloglu 2023 §III.F).
+
+    Reproduces the documented singularity directly on the STM: at exactly one
+    revolution the reciprocal condition number of Φ_rv collapses below the
+    continuity-fallback floor (here to ~1e-11), confirming the two-point primer
+    inversion is ill-posed in the multi-rev cycler-leg regime.
+    """
+    r0, v0, period = _circular_orbit_state()
+    _times, _ref, stms = _coast_stm(r0, v0, period, MU_CANONICAL, n_samples=50)
+    phi_rv = stms[-1][:3, 3:]
+    rcond = np.linalg.cond(phi_rv) ** -1
+    assert rcond < _PHI_RV_RCOND_FLOOR, f"expected singular Φ_rv, got rcond={rcond:.2e}"
+    # And a well-conditioned quarter-rev coast is NOT singular (control).
+    _t2, _r2, stms2 = _coast_stm(r0, v0, 0.25 * period, MU_CANONICAL, n_samples=50)
+    rcond_quarter = np.linalg.cond(stms2[-1][:3, 3:]) ** -1
+    assert rcond_quarter > _PHI_RV_RCOND_FLOOR
+
+
+def test_integer_rev_solver_finite_unlike_direct_inversion() -> None:
+    """The continuity fallback keeps ṗ(0) finite where the direct solve explodes.
+
+    Pinning test for the defect: a *direct* ``np.linalg.solve(Φ_rv, ·)`` on the
+    singular full-rev coast amplifies round-off to ``‖ṗ0‖ ~ 1e9`` (garbage); the
+    truncated-SVD continuity solver returns an O(1) rate. Both are checked on the
+    SAME singular system so the contrast is unambiguous.
+    """
+    r0, v0, period = _circular_orbit_state()
+    _times, _ref, stms = _coast_stm(r0, v0, period, MU_CANONICAL, n_samples=200)
+    phi = stms[-1]
+    phi_rr, phi_rv = phi[:3, :3], phi[:3, 3:]
+    p0 = np.array([0.3, 0.95, 0.0])
+    p0 = p0 / np.linalg.norm(p0)
+    p1 = np.array([-0.6, 0.8, 0.0])
+    p1 = p1 / np.linalg.norm(p1)
+
+    # The OLD code path: a direct inversion of the singular block blows up.
+    pdot_direct = np.linalg.solve(phi_rv, p1 - phi_rr @ p0)
+    assert np.linalg.norm(pdot_direct) > 1.0e6, "expected the direct solve to be garbage"
+
+    # The fix: finite, O(1) primer rate, flagged ill-conditioned.
+    pdot_fix, ill, rcond = _solve_primer_rate(phi_rr, phi_rv, p0, p1)
+    assert ill is True
+    assert rcond < _PHI_RV_RCOND_FLOOR
+    assert np.linalg.norm(pdot_fix) < 10.0
+
+
+def test_primer_on_coast_integer_rev_no_blowup_and_indeterminate() -> None:
+    """primer_on_coast on a full-rev coast returns a finite |p| and INDETERMINATE.
+
+    Pre-fix, the singular inversion drove ``max|p| ~ 5e9`` and a spurious
+    IMPROVABLE verdict on exactly the multi-rev coasts cyclers live on. Post-fix
+    the primer stays O(1) and the verdict is the honest
+    ``INDETERMINATE_ILL_CONDITIONED`` (the endpoint BC is unenforceable on a
+    phasing-orbit coast — Saloglu 2023 §III.F).
+    """
+    r0, v0, period = _circular_orbit_state()
+    p0 = np.array([0.3, 0.95, 0.0])
+    p1 = np.array([-0.6, 0.8, 0.0])
+    for n_rev in (1, 2, 3):
+        res = primer_on_coast(r0, v0, p0, p1, n_rev * period, mu=MU_CANONICAL, n_samples=200)
+        assert res.ill_conditioned is True
+        assert res.verdict is PrimerVerdict.INDETERMINATE_ILL_CONDITIONED
+        assert res.max_primer_magnitude < 1.0e3, (
+            f"primer blew up at {n_rev} rev: max|p|={res.max_primer_magnitude:.3e}"
+        )
+        assert res.phi_rv_rcond < _PHI_RV_RCOND_FLOOR
+        # |p(0)| is still pinned to unity (the start BC is always enforceable).
+        assert res.endpoint_magnitudes[0] == pytest.approx(1.0, abs=1e-9)
+
+
+def test_well_conditioned_coast_unaffected_by_fix() -> None:
+    """REGRESSION: the continuity fallback is a no-op on a well-posed coast.
+
+    On a sub-revolution coast Φ_rv is full rank, so the truncated-SVD solver
+    must return bit-for-bit what the old direct ``np.linalg.solve`` returned —
+    guaranteeing no existing primer golden moves.
+    """
+    r0, v0, period = _circular_orbit_state()
+    for frac in (0.2, 0.4, 0.6, 0.8):
+        _t, _r, stms = _coast_stm(r0, v0, frac * period, MU_CANONICAL, n_samples=200)
+        phi = stms[-1]
+        phi_rr, phi_rv = phi[:3, :3], phi[:3, 3:]
+        p0 = np.array([0.3, 0.95, 0.0])
+        p0 = p0 / np.linalg.norm(p0)
+        p1 = np.array([-0.6, 0.8, 0.0])
+        p1 = p1 / np.linalg.norm(p1)
+        pdot_direct = np.linalg.solve(phi_rv, p1 - phi_rr @ p0)
+        pdot_fix, ill, _rcond = _solve_primer_rate(phi_rr, phi_rv, p0, p1)
+        assert ill is False
+        assert np.allclose(pdot_fix, pdot_direct, rtol=0, atol=1e-12)
+
+
+def test_schedule_indeterminate_dominates_and_caveat_appended() -> None:
+    """A schedule with one ill-conditioned coast reports INDETERMINATE overall.
+
+    The near-integer-rev coast's verdict cannot be trusted, so it dominates the
+    aggregate verdict (it must NOT be silently absorbed into an OPTIMAL or
+    IMPROVABLE schedule), and the phasing-orbit caveat is appended.
+    """
+    r0, v0, period = _circular_orbit_state()
+    # Coast A: well-posed quarter-rev arc. Coast B: singular full-rev arc.
+    p_a0 = np.array([0.0, 1.0, 0.0])
+    p_a1 = np.array([0.2, 0.97, 0.0])
+    p_b1 = np.array([-0.6, 0.8, 0.0])
+    diag = diagnose_impulse_schedule(
+        [(r0, v0, 0.25 * period), (r0, v0, period)],
+        [p_a0, p_a1, p_b1],
+        mu=MU_CANONICAL,
+        n_samples=200,
+    )
+    assert diag.any_ill_conditioned is True
+    assert diag.overall_verdict is PrimerVerdict.INDETERMINATE_ILL_CONDITIONED
+    assert "phasing-orbit" in diag.caveat or "Saloglu" in diag.caveat
+    assert diag.coasts[0].ill_conditioned is False
+    assert diag.coasts[1].ill_conditioned is True
 
 
 # ---------------------------------------------------------------------------
