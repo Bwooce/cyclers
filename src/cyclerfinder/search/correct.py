@@ -391,7 +391,11 @@ def ballistic_correct(
     x0 = np.array([t0_seed_sec, *tof_seed_days], dtype=np.float64)
     sol = least_squares(_res, x0, method="lm", max_nfev=80, xtol=1e-9, ftol=1e-9)
     x = sol.x
-    res = _res(x)
+    # least_squares stores the residual vector evaluated at the returned x in
+    # sol.fun (LM's final fvec); reuse it instead of a redundant full re-eval of
+    # the residual (each call solves every leg's Lambert). Byte-identical to
+    # _res(sol.x): same deterministic residual at the same point.
+    res = [float(r) for r in sol.fun]
     max_res = max(abs(r) for r in res)
 
     full_tofs = _reconstruct_tofs(tuple(float(v) for v in x[1:]), slack_leg, period_days)

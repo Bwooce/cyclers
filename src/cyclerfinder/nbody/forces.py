@@ -71,12 +71,16 @@ class RailsEphemerisCache:
         hi = max(t0_sec, t1_sec) + pad_days * SECONDS_PER_DAY
         n = max(4, int((hi - lo) / (step_days * SECONDS_PER_DAY)) + 1)
         grid = np.linspace(lo, hi, n)
+        grid_list = [float(t) for t in grid]
         self._splines: dict[str, CubicSpline] = {}
         for body in bodies:
-            samples = np.array(
-                [ingest_planet_state(body, float(t), ephem)[0] for t in grid],
-                dtype=np.float64,
-            )
+            # Batch the per-body grid through the vectorised states() path (one
+            # array-Time / Chebyshev eval instead of ~n serial state() calls).
+            # ingest_planet_state is the identity over ephem.state for the
+            # shared-DE440 path, so stacking states()[i][0] reproduces the old
+            # per-point [ingest_planet_state(...)[0]] samples bit-for-bit.
+            batch = ephem.states([body] * len(grid_list), grid_list)
+            samples = np.array([rv[0] for rv in batch], dtype=np.float64)
             self._splines[body] = CubicSpline(grid, samples, axis=0)
 
     def position(self, body: str, t_sec: float) -> Vec3:

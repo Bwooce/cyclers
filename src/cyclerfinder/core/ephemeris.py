@@ -216,11 +216,18 @@ class _InclinedCircularBackend:
 
     def __init__(self, planets: dict[str, PlanetData] | None = None) -> None:
         self._planets: dict[str, PlanetData] = PLANETS if planets is None else planets
+        # Per-body orbital-plane -> ecliptic rotation is constant in t_sec (it
+        # depends only on inc/Ω), so build it ONCE at construction instead of
+        # rebuilding 5 trig + 2 matmuls on every state() call. Matrices are the
+        # CORRECT R_z(+lan) @ R_x(+inc) (post #199 sign fix) — cached verbatim.
+        self._rotations: dict[str, NDArray[np.float64]] = {
+            code: self._rotation(data) for code, data in self._planets.items()
+        }
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         planet = self._planets[body]
         r_plane, v_plane = _circular_inplane_state(planet, t_sec)
-        rot = self._rotation(planet)
+        rot = self._rotations[body]
         r = rot @ r_plane
         v = rot @ v_plane
         return (

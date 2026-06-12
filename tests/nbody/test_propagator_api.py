@@ -85,6 +85,35 @@ def test_rails_acceleration_matches_integrator_in_far_field() -> None:
     assert np.linalg.norm(a_fd - a_ref) / np.linalg.norm(a_ref) < 1e-4
 
 
+def test_rails_cache_batch_samples_match_per_point() -> None:
+    """The rails spline is built from the vectorised ephem.states() batch; at every
+    grid knot the resulting CubicSpline must reproduce the per-point
+    ingest_planet_state() sample it replaced (≤1e-9 km). This pins the I5 batching
+    optimisation to byte-for-byte parity with the old serial-loop construction.
+    """
+    pytest.importorskip("astropy")
+    from cyclerfinder.core.constants import SECONDS_PER_DAY
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.nbody.forces import RailsEphemerisCache, ingest_planet_state
+
+    ephem = Ephemeris("astropy")
+    bodies = ("V", "E", "M")
+    t0, t1 = 0.0, 60.0 * SECONDS_PER_DAY
+    cache = RailsEphemerisCache(bodies, ephem, t0, t1)
+
+    # Reconstruct the exact grid the cache builds (defaults: step 1 d, pad 5 d).
+    pad, step = 5.0 * SECONDS_PER_DAY, 1.0 * SECONDS_PER_DAY
+    lo, hi = min(t0, t1) - pad, max(t0, t1) + pad
+    n = max(4, int((hi - lo) / step) + 1)
+    grid = np.linspace(lo, hi, n)
+
+    for body in bodies:
+        for t in grid:
+            ref = ingest_planet_state(body, float(t), ephem)[0]
+            got = cache.position(body, float(t))
+            assert np.max(np.abs(got - ref)) <= 1e-9
+
+
 @pytest.mark.slow
 def test_anchor_err_km_is_reserved_zero_contract() -> None:
     """RestrictedNBody seeds at the exact (r0, v0) and never anchors against an

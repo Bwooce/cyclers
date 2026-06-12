@@ -20,11 +20,9 @@ from typing import Any
 
 import jsonschema  # type: ignore[import-untyped]
 import pytest
-import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.validate import validate_schema_invariants
 
-CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 SCHEMA_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.schema.json"
 
 
@@ -143,16 +141,16 @@ def test_absent_links_are_clean() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_live_catalogue_passes_v43_invariants() -> None:
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+def test_live_catalogue_passes_v43_invariants(catalogue_rows: list[dict[str, Any]]) -> None:
+    rows = catalogue_rows
     jsonschema.validate(rows, _load_schema())
     assert validate_schema_invariants(rows) == []
 
 
-def test_vem_emeeve_3syn_supersession_backfill() -> None:
+def test_vem_emeeve_3syn_supersession_backfill(catalogue_rows: list[dict[str, Any]]) -> None:
     """The premise-invalidated row points at its two attested Jones 2017 members,
     and both targets exist in the live catalogue (referential integrity holds)."""
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     by_id = {r["id"]: r for r in rows}
     row = by_id["vem-emeeve-3syn"]
     links = row.get("superseded_by")

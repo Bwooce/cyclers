@@ -20,13 +20,9 @@ Source: Russell 2004 PhD dissertation (UT Austin, hdl.handle.net/2152/1253)
 from __future__ import annotations
 
 import re
-from pathlib import Path
 from typing import Any
 
 import pytest
-import yaml  # type: ignore[import-untyped]
-
-CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
 
 # ---------------------------------------------------------------------------
 # Helpers to extract what the notes say about AR/TR
@@ -103,23 +99,24 @@ _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC: frozenset[str] = frozenset(
 )
 
 
-def _load_multi_arc_rows() -> list[dict[str, Any]]:
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+def _load_multi_arc_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [r for r in rows if r.get("cycler_class") == "multi-arc"]
 
 
-def _load_full_numeric_multi_arc_rows() -> list[dict[str, Any]]:
+def _load_full_numeric_multi_arc_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Multi-arc rows that carry full numerics (excludes family-seed null rows)."""
-    return [r for r in _load_multi_arc_rows() if r["id"] not in _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC]
+    return [
+        r for r in _load_multi_arc_rows(rows) if r["id"] not in _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC
+    ]
 
 
-def test_note_ar_matches_invariants_field() -> None:
+def test_note_ar_matches_invariants_field(catalogue_rows: list[dict[str, Any]]) -> None:
     """For every multi-arc row that states an AR in its notes, invariants.aphelion_ratio
     must be present and equal to the note-stated value (±0.005).
 
     This is the complete ratchet: no row's typed field may drift from its prose source.
     """
-    rows = _load_multi_arc_rows()
+    rows = _load_multi_arc_rows(catalogue_rows)
     failures: list[str] = []
     for row in rows:
         rid = row["id"]
@@ -139,14 +136,14 @@ def test_note_ar_matches_invariants_field() -> None:
     )
 
 
-def test_note_tr_matches_invariants_field() -> None:
+def test_note_tr_matches_invariants_field(catalogue_rows: list[dict[str, Any]]) -> None:
     """For every multi-arc row that states a TR in its notes, invariants.turn_ratio
     must be present and equal to the note-stated value (±0.005).
 
     Rows where multiple distinct TR values appear in the notes (ambiguous) are skipped;
     those are handled in test_ambiguous_tr_rows_are_gapped.
     """
-    rows = _load_multi_arc_rows()
+    rows = _load_multi_arc_rows(catalogue_rows)
     failures: list[str] = []
     for row in rows:
         rid = row["id"]
@@ -166,21 +163,23 @@ def test_note_tr_matches_invariants_field() -> None:
     )
 
 
-def test_all_multi_arc_rows_have_invariants_block() -> None:
+def test_all_multi_arc_rows_have_invariants_block(catalogue_rows: list[dict[str, Any]]) -> None:
     """Every full-numeric multi-arc row must carry an invariants{} block.
 
     Planet-centric family-seed null-numeric rows (moon-tour Tier-1) are exempt —
     they record citation + qualitative geometry only (see
     _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC).
     """
-    rows = _load_full_numeric_multi_arc_rows()
+    rows = _load_full_numeric_multi_arc_rows(catalogue_rows)
     missing = [r["id"] for r in rows if "invariants" not in r]
     assert missing == [], (
         f"Multi-arc rows missing invariants{{}} block ({len(missing)}):\n" + "\n".join(missing[:20])
     )
 
 
-def test_transit_times_present_for_all_multi_arc_rows() -> None:
+def test_transit_times_present_for_all_multi_arc_rows(
+    catalogue_rows: list[dict[str, Any]],
+) -> None:
     """Every multi-arc row must have invariants.transit_times_days populated.
 
     Transit times (E→M outbound, M→E inbound) are always available from the
@@ -189,7 +188,7 @@ def test_transit_times_present_for_all_multi_arc_rows() -> None:
     they have no sourced trajectory.segments (see
     _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC).
     """
-    rows = _load_full_numeric_multi_arc_rows()
+    rows = _load_full_numeric_multi_arc_rows(catalogue_rows)
     failures: list[str] = []
     for row in rows:
         rid = row["id"]
@@ -233,14 +232,17 @@ GOLDEN_CHECKS: list[tuple[str, float | None, float | None]] = [
 
 @pytest.mark.parametrize("row_id,expected_ar,expected_tr", GOLDEN_CHECKS)
 def test_golden_invariants(
-    row_id: str, expected_ar: float | None, expected_tr: float | None
+    row_id: str,
+    expected_ar: float | None,
+    expected_tr: float | None,
+    catalogue_rows: list[dict[str, Any]],
 ) -> None:
     """Spot-check: invariants{} fields match values read directly from the Russell tables.
 
     ``None`` means the value is not tabulated in that Russell table; the typed field
     must be null (or absent → treated as null).
     """
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row = next((r for r in rows if r["id"] == row_id), None)
     assert row is not None, f"Row {row_id!r} not found in catalogue"
     inv = row.get("invariants") or {}
@@ -274,13 +276,13 @@ def test_golden_invariants(
         )
 
 
-def test_golden_transit_times() -> None:
+def test_golden_transit_times(catalogue_rows: list[dict[str, Any]]) -> None:
     """Spot-check transit times for key rows against Russell table values.
 
     Table 4.9 row 1: t_out=150, t_in=150 (symmetric).
     McConaghy 2006 abstract: "153-day transfer times between Earth and Mars" (both dirs).
     """
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row_map = {r["id"]: r for r in rows}
 
     # russell-ch4-4.991gG2: t_out=150, t_in=150 per Russell 2004 Table 4.9 row 1

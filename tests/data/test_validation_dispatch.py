@@ -17,16 +17,10 @@ Asserts that:
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
-
-import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.data.validate import anchors_for
 from tests._catalogue_loader import ExclusionReason, classify_catalogue, classify_row
-
-CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catalogue.yaml"
-
 
 # ---------------------------------------------------------------------------
 # Unit tests for anchors_for() with synthetic rows
@@ -160,9 +154,9 @@ def _row_by_id(rows: list[dict[str, Any]], rid: str) -> dict[str, Any]:
     raise KeyError(f"Row {rid!r} not found in catalogue")
 
 
-def test_mcconaghy_2006_multi_arc_dispatch() -> None:
+def test_mcconaghy_2006_multi_arc_dispatch(catalogue_rows: list[dict[str, Any]]) -> None:
     """mcconaghy-2006-em-k2 is multi-arc → invariants True, a_e False."""
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row = _row_by_id(rows, "mcconaghy-2006-em-k2")
     a = anchors_for(row)
     assert a["invariants"] is True
@@ -170,9 +164,9 @@ def test_mcconaghy_2006_multi_arc_dispatch() -> None:
     assert a["cr3bp"] is False
 
 
-def test_aldrin_single_ellipse_dispatch() -> None:
+def test_aldrin_single_ellipse_dispatch(catalogue_rows: list[dict[str, Any]]) -> None:
     """aldrin-classic-em-k1-outbound is single-ellipse → a_e True, invariants False."""
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row = _row_by_id(rows, "aldrin-classic-em-k1-outbound")
     a = anchors_for(row)
     assert a["a_e"] is True
@@ -180,9 +174,9 @@ def test_aldrin_single_ellipse_dispatch() -> None:
     assert a["cr3bp"] is False
 
 
-def test_arenstorf_non_keplerian_dispatch() -> None:
+def test_arenstorf_non_keplerian_dispatch(catalogue_rows: list[dict[str, Any]]) -> None:
     """arenstorf-em-figure8-1963 is non-keplerian → cr3bp True, a_e False, period False."""
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row = _row_by_id(rows, "arenstorf-em-figure8-1963")
     a = anchors_for(row)
     assert a["cr3bp"] is True
@@ -203,7 +197,9 @@ def test_arenstorf_non_keplerian_dispatch() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_all_constructible_entries_are_single_ellipse() -> None:
+def test_all_constructible_entries_are_single_ellipse(
+    catalogue_rows: list[dict[str, Any]],
+) -> None:
     """Every CONSTRUCTIBLE entry must have cycler_class == single-ellipse
     (anchors_for a_e == True) — the v1 single-ellipse constructor must
     only be called for single-ellipse entries.
@@ -212,7 +208,7 @@ def test_all_constructible_entries_are_single_ellipse() -> None:
     would be fed to the wrong constructor.  Fix the loader's guard, not
     this test.
     """
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     row_by_id = {r["id"]: r for r in rows}
     violations: list[str] = []
     for cid, reason in classify_catalogue():
@@ -228,7 +224,9 @@ def test_all_constructible_entries_are_single_ellipse() -> None:
     )
 
 
-def test_classify_row_excludes_multi_arc_by_sequence() -> None:
+def test_classify_row_excludes_multi_arc_by_sequence(
+    catalogue_rows: list[dict[str, Any]],
+) -> None:
     """classify_row excludes multi-arc entries via MULTI_ENCOUNTER_SEQUENCE
     (they always have >2-encounter sequences), never via cycler_class directly.
 
@@ -236,7 +234,7 @@ def test_classify_row_excludes_multi_arc_by_sequence() -> None:
     cycler_class check, no multi-arc row can slip into CONSTRUCTIBLE because
     its sequence is always a multi-encounter (e.g. E-E-M-M) form.
     """
-    rows = yaml.safe_load(CATALOGUE_PATH.read_text())
+    rows = catalogue_rows
     multi_arc_constructible: list[str] = []
     for row in rows:
         if row.get("cycler_class") != "multi-arc":

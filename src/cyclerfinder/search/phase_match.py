@@ -288,6 +288,31 @@ def _mismatch_at_date(
         t_running += leg_tof
         encounter_states.append(ephem.state(signature.bodies[i + 1], t_running))
 
+    # Each interior leg is viewed twice — as the outbound leg of its start
+    # encounter and the inbound leg of its end encounter — but it is the SAME
+    # Lambert problem both times. Solve each leg index at most once and memoise
+    # the (vinf_depart, vinf_arrive) result (or None on Lambert failure). The
+    # per-leg result is deterministic, so lookups are byte-identical to the prior
+    # double-solve, and the first None still triggers the same early return.
+    leg_cache: dict[int, tuple[float, float] | None] = {}
+
+    def _leg(j: int) -> tuple[float, float] | None:
+        if j in leg_cache:  # None is a valid (Lambert-failed) cached value
+            return leg_cache[j]
+        r1, v1_planet = encounter_states[j]
+        r2, v2_planet = encounter_states[j + 1]
+        result = _vinf_at_lambert(
+            r1,
+            v1_planet,
+            r2,
+            v2_planet,
+            signature.leg_durations_s[j],
+            max_revs=signature._leg_revs_for(j),
+            branch=signature._leg_branch_for(j),
+        )
+        leg_cache[j] = result
+        return result
+
     # Per-encounter actual V∞: for encounter i (1..N-1) we have both an inbound
     # (arrival from leg i-1) and outbound (departure on leg i if exists); we
     # compare each to the target. For boundaries (encounter 0, encounter N-1)
@@ -297,17 +322,7 @@ def _mismatch_at_date(
     for i in range(len(signature.bodies)):
         if i == 0:
             # Outbound only from encounter 0 (leg 0)
-            r1, v1_planet = encounter_states[0]
-            r2, v2_planet = encounter_states[1]
-            result = _vinf_at_lambert(
-                r1,
-                v1_planet,
-                r2,
-                v2_planet,
-                signature.leg_durations_s[0],
-                max_revs=signature._leg_revs_for(0),
-                branch=signature._leg_branch_for(0),
-            )
+            result = _leg(0)
             if result is None:
                 return None
             vinf_d, _ = result
@@ -315,17 +330,7 @@ def _mismatch_at_date(
             mismatch += abs(vinf_d - signature.vinf_target_kms[0])
         elif i == len(signature.bodies) - 1:
             # Inbound only at terminal encounter (leg i-1)
-            r1, v1_planet = encounter_states[i - 1]
-            r2, v2_planet = encounter_states[i]
-            result = _vinf_at_lambert(
-                r1,
-                v1_planet,
-                r2,
-                v2_planet,
-                signature.leg_durations_s[i - 1],
-                max_revs=signature._leg_revs_for(i - 1),
-                branch=signature._leg_branch_for(i - 1),
-            )
+            result = _leg(i - 1)
             if result is None:
                 return None
             _, vinf_a = result
@@ -333,27 +338,8 @@ def _mismatch_at_date(
             mismatch += abs(vinf_a - signature.vinf_target_kms[i])
         else:
             # Both inbound (leg i-1) and outbound (leg i); report average mismatch
-            r_prev, v_prev_p = encounter_states[i - 1]
-            r_here, v_here_p = encounter_states[i]
-            r_next, v_next_p = encounter_states[i + 1]
-            res_in = _vinf_at_lambert(
-                r_prev,
-                v_prev_p,
-                r_here,
-                v_here_p,
-                signature.leg_durations_s[i - 1],
-                max_revs=signature._leg_revs_for(i - 1),
-                branch=signature._leg_branch_for(i - 1),
-            )
-            res_out = _vinf_at_lambert(
-                r_here,
-                v_here_p,
-                r_next,
-                v_next_p,
-                signature.leg_durations_s[i],
-                max_revs=signature._leg_revs_for(i),
-                branch=signature._leg_branch_for(i),
-            )
+            res_in = _leg(i - 1)
+            res_out = _leg(i)
             if res_in is None or res_out is None:
                 return None
             vinf_in = res_in[1]
