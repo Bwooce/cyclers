@@ -32,6 +32,44 @@ def jacobi_constant(state6: NDArray[np.float64], mu: float) -> float:
     )
 
 
+def jacobi_gap_dv_min(speed: float, delta_c: float) -> float:
+    """Minimum single-impulse |dv| to change the Jacobi constant by ``delta_c``.
+
+    An impulse at fixed position changes C only through the ``-v^2`` term, so
+    ``delta_c = v0^2 - vf^2`` where ``vf`` is the post-impulse speed. Any
+    impulse achieving the gap satisfies ``|dv| >= |vf - v0|`` (triangle
+    inequality), with equality for a tangential burn — hence
+
+        dv_min = |sqrt(speed^2 - delta_c) - speed|.
+
+    This is the Jacobi-gap minimum-DV technique of Cuevas del Valle, Urrutxua &
+    Solano-Lopez 2026 ("Fuel-optimal Rendezvous in the CR3BP via MPC and
+    Proximal Operators", CEAS EuroGNC 2026, paper CEAS-GNC-2026-012, Sec. 7.2):
+    the Jacobi energy integral floors the l2 DV-requirement to bridge the
+    energy gap between two CR3BP states. The bound is exact (tight) for a
+    single impulse applied at speed ``speed``; it is a rigorous lower bound for
+    any single-impulse transfer-cost estimate at that state. Units: any
+    consistent set — ``delta_c`` carries speed^2 units; nondimensional in our
+    usage (multiply by ``l_km / t_s`` to dimensionalise the result).
+
+    Raises
+    ------
+    ValueError
+        If ``speed`` is negative, or ``delta_c > speed**2`` (the required
+        post-impulse speed squared would be negative: no single impulse at this
+        state can raise C past the v = 0 ceiling).
+    """
+    if speed < 0.0:
+        raise ValueError(f"jacobi_gap_dv_min: negative speed {speed}")
+    vf_sq = speed * speed - delta_c
+    if vf_sq < 0.0:
+        raise ValueError(
+            f"jacobi_gap_dv_min: delta_c={delta_c} exceeds speed^2={speed * speed}; "
+            "C cannot be raised past the zero-velocity ceiling by one impulse"
+        )
+    return abs(math.sqrt(vf_sq) - speed)
+
+
 def cr3bp_eom(t: float, state6: NDArray[np.float64], mu: float) -> NDArray[np.float64]:
     """Rotating-frame equations of motion (state [x,y,z,vx,vy,vz])."""
     x, y, z, vx, vy, vz = (float(v) for v in state6)

@@ -23,6 +23,71 @@ def test_jacobi_constant_value() -> None:
     assert np.isclose(cr3bp.jacobi_constant(s, mu), expect)
 
 
+def test_jacobi_gap_dv_min_exact_algebra() -> None:
+    # Hand derivation (Cuevas del Valle et al. 2026, CEAS-GNC-2026-012, Sec. 7.2
+    # technique): an impulse at fixed position changes C only via the -v^2
+    # term, so delta_c = v0^2 - vf^2 with vf the post-impulse speed; the
+    # cheapest impulse is tangential with |dv| = |vf - v0|.
+    #   v0 = 3, delta_c = +5 (raise C / shed energy): vf = sqrt(9-5) = 2 -> dv = 1
+    #   v0 = 3, delta_c = -7 (lower C / add energy):  vf = sqrt(9+7) = 4 -> dv = 1
+    #   delta_c = 0: no burn needed.
+    assert cr3bp.jacobi_gap_dv_min(3.0, 5.0) == pytest.approx(1.0, rel=1e-14)
+    assert cr3bp.jacobi_gap_dv_min(3.0, -7.0) == pytest.approx(1.0, rel=1e-14)
+    assert cr3bp.jacobi_gap_dv_min(3.0, 0.0) == 0.0
+    # v0 = 0 (zero-velocity surface): dv = sqrt(-delta_c); C can only decrease.
+    assert cr3bp.jacobi_gap_dv_min(0.0, -4.0) == pytest.approx(2.0, rel=1e-14)
+
+
+def test_jacobi_gap_dv_min_consistent_with_jacobi_constant() -> None:
+    # The tangential burn of exactly the bound's magnitude realises delta_c
+    # exactly, per our own jacobi_constant convention (position unchanged, so
+    # the potential terms cancel and only -v^2 moves).
+    mu = 0.012277471
+    s = np.array([0.5, 0.1, 0.0, 0.05, 0.3, -0.02])
+    v0 = float(np.linalg.norm(s[3:6]))
+    for delta_c in (0.04, -0.07):
+        dv = cr3bp.jacobi_gap_dv_min(v0, delta_c)
+        vf = math.sqrt(v0 * v0 - delta_c)
+        s_burn = s.copy()
+        s_burn[3:6] = s[3:6] * (vf / v0)  # tangential: scale speed v0 -> vf
+        assert np.linalg.norm(s_burn[3:6] - s[3:6]) == pytest.approx(dv, rel=1e-12)
+        achieved = cr3bp.jacobi_constant(s_burn, mu) - cr3bp.jacobi_constant(s, mu)
+        assert achieved == pytest.approx(delta_c, abs=1e-12)
+
+
+def test_jacobi_gap_dv_min_is_a_lower_bound() -> None:
+    # No impulse of magnitude 0.99 * bound, in ANY direction, can bridge the
+    # gap: for delta_c > 0 the achieved gap v0^2 - |v + dv|^2 is maximised by
+    # the anti-tangential dv and still falls short; symmetrically for
+    # delta_c < 0. Sampled over a deterministic direction grid.
+    mu = 0.012277471
+    s = np.array([0.5, 0.1, 0.0, 0.05, 0.3, -0.02])
+    v0 = float(np.linalg.norm(s[3:6]))
+    c0 = cr3bp.jacobi_constant(s, mu)
+    rng = np.random.default_rng(20260612)
+    dirs = rng.normal(size=(64, 3))
+    dirs /= np.linalg.norm(dirs, axis=1, keepdims=True)
+    for delta_c in (0.04, -0.07):
+        w = 0.99 * cr3bp.jacobi_gap_dv_min(v0, delta_c)
+        for u in dirs:
+            s_burn = s.copy()
+            s_burn[3:6] = s[3:6] + w * u
+            achieved = cr3bp.jacobi_constant(s_burn, mu) - c0
+            if delta_c > 0:
+                assert achieved < delta_c
+            else:
+                assert achieved > delta_c
+
+
+def test_jacobi_gap_dv_min_raises_on_unreachable_gap() -> None:
+    # delta_c > v0^2 needs vf^2 < 0: even killing all velocity (dv = v0) only
+    # raises C by v0^2 — the zero-velocity ceiling for one impulse.
+    with pytest.raises(ValueError, match="zero-velocity ceiling"):
+        cr3bp.jacobi_gap_dv_min(3.0, 9.0 + 1e-9)
+    with pytest.raises(ValueError, match="negative speed"):
+        cr3bp.jacobi_gap_dv_min(-1.0, 0.0)
+
+
 def test_eom_shape_and_coriolis_sign() -> None:
     mu = 0.012277471
     s = np.array([0.5, 0.1, 0.0, 0.0, 0.3, 0.0])
