@@ -15,6 +15,8 @@ emerged values are evidence. Either outcome is reportable.
 
 from __future__ import annotations
 
+import warnings
+
 import numpy as np
 import pytest
 
@@ -186,6 +188,30 @@ def test_sequence_keyed_bounds_layout_and_eta_box() -> None:
     assert list(b.upper[6:8]) == [1.0, 1.0]
     # ToF lower for an inner E<->M leg is the 30-day A.2 floor.
     assert b.lower[4] == pytest.approx(30.0)
+
+
+def test_sequence_keyed_bounds_same_body_leg_inf_tof_no_warning() -> None:
+    """#217 regression: a same-body (E-E resonant-return) leg must not trip a
+    divide-by-zero RuntimeWarning in the synodic-period helper.
+
+    The synodic period of an equal-period pair is genuinely infinite (the pair
+    never laps), so the A.2 upper ToF bound for that leg is the correct limit
+    ``+inf`` — pinned here, since the descriptor-seed lane relies on detecting
+    and capping exactly that inf. Everything else in the box stays finite.
+    """
+    sequence = ("E", "E", "M")  # leg 0 is the same-body resonant-return leg
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", RuntimeWarning)
+        b = sequence_keyed_bounds(sequence=sequence, t0_window_sec=(0.0, 1.0e8))
+    # Layout: [t0, vinf0, alpha0, beta0, *tof(2), *eta(2)] -> length 8.
+    assert b.lower.shape == (8,)
+    # Same-body leg: A.2 floor below, mathematically-correct +inf limit above.
+    assert b.lower[4] == pytest.approx(30.0)
+    assert np.isposinf(b.upper[4])
+    # The E-M leg and every other coordinate remain finite.
+    assert np.isfinite(b.upper[5])
+    assert np.all(np.isfinite(np.delete(b.upper, 4)))
+    assert np.all(np.isfinite(b.lower))
 
 
 # ---------------------------------------------------------------------------

@@ -628,9 +628,20 @@ class DsmBounds:
 
 
 def _synodic_period_days(inner: str, outer: str) -> float:
-    """Synodic period of two bodies (days), from their sidereal periods."""
+    """Synodic period of two bodies (days), from their sidereal periods.
+
+    A same-body pair (e.g. the E-E leg of a resonant return, as produced by the
+    descriptor-seed lane) has equal periods: the pair never laps, and the synodic
+    period's mathematically-correct limit is +inf. Return that limit explicitly
+    rather than evaluating ``1/0`` (which yields the same +inf but trips numpy's
+    divide-by-zero RuntimeWarning — #217). Callers that need finite box bounds
+    must cap the resulting infinite A.2 ToF upper bound themselves (the
+    descriptor-seed lane already does).
+    """
     p_in = 2.0 * np.pi * np.sqrt((PLANETS[inner].sma_au * AU_KM) ** 3 / MU_SUN_KM3_S2) / DAY_S
     p_out = 2.0 * np.pi * np.sqrt((PLANETS[outer].sma_au * AU_KM) ** 3 / MU_SUN_KM3_S2) / DAY_S
+    if p_in == p_out:
+        return float("inf")
     return float(abs(1.0 / (1.0 / p_in - 1.0 / p_out)))
 
 
@@ -657,7 +668,9 @@ def sequence_keyed_bounds(
     * Per-leg ToF: an inner pair (both bodies inner planets, here the E<->M class)
       gets ``[30 d, P_s + P_H]`` (A.2); any leg touching an outer body gets
       ``[0.3 P_H, 1.3 P_H]`` (A.3). ``P_s`` synodic, ``P_H`` Hohmann for that leg's
-      pair.
+      pair. A same-body inner leg (e.g. an E-E resonant return) has ``P_s = +inf``
+      — the A.2 upper bound is then ``+inf`` and callers needing a finite box must
+      cap it (#217; the descriptor-seed lane does).
 
     The departure V_inf default ``[1, 5.1]`` km/s is Takao's Earth-departure window
     (5.1 km/s = the 1:2 Earth-resonant cap; 1 km/s prevents low-velocity flybys).
