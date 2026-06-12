@@ -53,11 +53,21 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # rows (arenstorf, wittal, genova-aldrin) do. Their gauntlet strength lives in
 # the orthogonal validation_level axis (V1, _LEVEL_EVIDENCE), NOT this
 # orbit/vinf provenance-tag census. unvalidated 14 -> 19.
+#
+# 2026-06-12 (#216, USER-approved writeback): +4 Liang et al. 2024 (JGCD doi
+# 10.2514/1.G008387) Callisto-Ganymede-Europa triple-cycler members
+# (liang-2024-cgcec-*). These are Jovian moon-tour multi-arc rows whose identity
+# is a per-flyby ToF/V_inf table, not the heliocentric orbit/vinf-multiset pair
+# the SOURCE_REGISTRY tier classifier reads (the Liang source is not a registry
+# key), so they classify UNVALIDATED by the provenance-tag tier system — exactly
+# as the existing Jovian seeds (hernandez, russell-strange) do. Members A-C are
+# idealized-model V0; member D is ephemeris figures-only V0 (validation_level
+# axis). unvalidated 19 -> 23.
 # ---------------------------------------------------------------------------
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
     "consistency_checked": 249,
-    "unvalidated": 19,
+    "unvalidated": 23,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

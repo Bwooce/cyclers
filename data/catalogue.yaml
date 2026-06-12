@@ -46754,3 +46754,461 @@ days\" per the NTRS abstract.
     "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) C^stable = 3.177224018696528."
     "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) T^stable = 18.14546057589189 TU."
     "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
+
+# ---------------------------------------------------------------------------
+# Liang, Yang, Li, Bai & Qin 2024 — Callisto-Ganymede-Europa (CGE) triple
+# cyclers (Jovian moon system). JGCD Engineering Note, doi 10.2514/1.G008387.
+# Four ballistic CGCEC members (sequence Callisto->Ganymede->Callisto->Europa->
+# Callisto per ~100 d cycle, propagated 10 cycles / ~1000 d). USER-approved
+# writeback #216. Mining note: docs/notes/2026-06-11-liang-2024-cge-triple-cyclers-mining.md.
+#
+# MODELS: members A-C are an IDEALIZED circular-coplanar two-body (Jupiter)
+# patched-conic model (golden-grade reproducible up to the unprinted mu_Jupiter
+# -> a tolerance caveat); member D is a SPICE-ephemeris (JUP365.bsp) patched-conic
+# model with per-flyby data published as figures only (V0). The paper's "Flyby
+# Altitude" columns (Tables 3/5/7) are Delta-v-equivalent FICTIONS (paper's own
+# caveat, p. 16) — NEVER ingested as physical altitudes. Satellites registry
+# (src/cyclerfinder/core/satellites.py) already carries Callisto/Ganymede/Europa
+# about Jupiter with sourced JPL SSD GM/SMA (moon-tour #76/#117).
+# ---------------------------------------------------------------------------
+- id: liang-2024-cgcec-111-highperijove
+  name: "Liang et al. CGE triple cycler — Member A (1-1-1, high perijove, idealized)"
+  source: literature
+  trajectory_regime: ballistic   # residual flyby-defect Delta-v < 1e-8 m/s threshold (paper p. 13)
+  model_assumption: circular-coplanar   # idealized circular, planar moon orbits, two-body about Jupiter (Sec. II.B)
+  cycler_class: multi-arc   # patched-conic multi-rev Lambert legs, repeated-moon CGCEC sequence
+  validation_level: V0   # idealized-model member; reproducible up to the unprinted mu_Jupiter, but not yet reproduced in-repo
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Jupiter"
+  bodies: ["Callisto", "Ganymede", "Europa"]
+  sequence_canonical: "Callisto-Ganymede-Callisto-Europa-Callisto"
+  sense: "n/a"
+  period:
+    pair: "Callisto-Europa"
+    k: null
+    years: null
+    note: |
+      Triple-cycler repeat period ~100 d (two ~50 d double-cycler cycle periods;
+      switched-double-cycler construction, Sec. III.B). NOT indefinite: the paper
+      demonstrates >= 1000 d / 10 cycles (near-resonance + chained local
+      optimization; paper's own caveat, Conclusion pp. 19-20). Per-cycle ToF over
+      10 cycles 99.86-100.14 d (Fig. 5d). The heliocentric-synodic `years`
+      convention does not apply to a Jovian moon-tour cycler -> null.
+  vinf_kms_at_encounters:
+    - body: "Callisto"
+      vinf_kms: 5.6730
+      note: "Liang et al. 2024 Table 3 (p. 15), first-cycle flyby #0 (initial conic-guess Callisto encounter). The 5 per-cycle V_inf are in invariants.transit_times_days companion + source_quotes."
+    - body: "Ganymede"
+      vinf_kms: 6.9919
+      note: "Liang et al. 2024 Table 3 (p. 15), flyby #1."
+    - body: "Europa"
+      vinf_kms: 4.6685
+      note: "Liang et al. 2024 Table 3 (p. 15), flyby #3."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Jovicentric (not heliocentric) patched-conic multi-rev arcs; no single
+      (a, e) characterises the CGCEC cycle. Spacecraft period = Callisto's period
+      (T_C ~ 16.69 d; 3T_C ~ T_S ~ 50 d, Sec. III.A); perijove r_p = r_Europa -
+      10000 km ~ 660,988 km (p. 14). Initial moon phases (Table 2, p. 14):
+      Europa 0.063748 rad, Ganymede 0.70579 rad, Callisto 1.3550 rad.
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      mass_ratio: null   # patched-conic two-body model, not CR3BP -> data_gaps
+      family: null
+      libration_point: null
+      jacobi_constant: null
+      period_nd: null
+      stability_index: null
+      state_nd: null
+      lunit_km: null
+      tunit_s: null
+  invariants:   # schema v4; cycle-level identity for multi-arc cyclers
+    aphelion_ratio: null   # Earth-Mars free-return concept; inapplicable to a Jovian moon-tour multi-arc cycler -> null
+    turn_ratio: null       # Earth-Mars free-return concept; inapplicable here -> null
+    transit_times_days: [31.8973, 18.1697, 29.9343, 19.9747]   # SOURCED: Liang et al. 2024 Table 3 (p. 15) per-leg ToF for the 4 transfer legs of the first cycle (C->G, G->C, C->E, E->C); flyby #0 is the t=0 initial conic guess (ToF 0).
+  source_ephemeris: null   # v4.2 backfill: idealized circular-coplanar model, no ephemeris
+  data_gaps:
+    - path: "orbit_elements.cr3bp.mass_ratio"
+      kind: "not-applicable"
+      note: "Idealized circular-coplanar patched-conic two-body model about Jupiter, not CR3BP; no single mass ratio governs. (Separately, mu_Jupiter itself is never printed in the paper — see the tolerance caveat in notes.)"
+      source_hint: "Liang et al. 2024 JGCD doi 10.2514/1.G008387"
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Liang, G.", "Yang, H.", "Li, S.", "Bai, X.", "Qin, L."]
+    year: 2024
+    title: "Callisto-Ganymede-Europa Triple Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics (Engineering Note)"
+    date: "2024"
+    doi: "10.2514/1.G008387"
+    url: "https://arc.aiaa.org/doi/10.2514/1.G008387"
+    note: |
+      Authors at NUAA (Liang, Yang, Li, Qin) and Rutgers (Bai). A portion was
+      presented as paper IAC-23,C1,9,9,x76777 at the 74th IAC, Baku, 2-6 October
+      2023. Page numbers cited from the 22-page author draft.
+  corroborating_sources: []
+  priority_date: "2024-01-01"
+  notes: |
+    Member A: idealized circular-coplanar CGCEC triple cycler, 1-1-1 flyby
+    structure (Fig. 2, p. 8), high perijove (the low-energy family). Ballistic
+    (residual Delta-v below the 1e-8 m/s threshold, p. 13). First publication of
+    Callisto-bearing triple cyclers: Callisto is NOT in the 1:2:4 Laplace
+    resonance, so the Laplace-resonant machinery (Lynam/Longuski, Hernandez) is
+    unavailable; Liang et al. instead exploit a 7:4 NEAR-resonance of the
+    (C-G, G-E) synodic periods (~50 d quasi-repeat) absorbed by a
+    switched-double-cycler + multi-rev legs (Sec. II.A, III.B).
+
+    TOLERANCE CAVEAT: mu_Jupiter is never printed; idealized-model reproductions
+    should treat trailing digits as constant-dependent (validate ToF at ~0.01 d,
+    V_inf at ~1e-3 km/s; mining note §5).
+
+    FLYBY-ALTITUDE FICTION: the paper's Table 3 "Flyby Altitude" column
+    (1,900,851 / 978,172 / 33,839 / 6,241 / 19,765 km) is computed from the
+    required defect Delta-v on the moon-centered hyperbola ignoring Jupiter's
+    gravity — a reflection of how little turning is needed, NOT physical periapses
+    (1.9e6 km vastly exceeds Callisto's SOI). NOT ingested as altitudes (paper's
+    own caveat, p. 16; mining note §9).
+
+    Capability: this member's topology (repeated-moon CGCEC, Callisto 3x per
+    cycle) and leg class (multi-rev Lambert legs used as phase-reshaping
+    reservoirs) lie OUTSIDE our Phase-6 swept genome (single-ellipse zero-rev
+    free-return loops); it does not contradict the Jovian EMPTY-region registry
+    verdicts, which remain valid as conditioned (mining note §6).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 3 (p. 15): first-cycle flyby V_inf — Callisto 5.6730, Ganymede 6.9919, Callisto 5.6698, Europa 4.6685, Callisto 5.8721 km/s."
+    "invariants.transit_times_days": "Liang et al. 2024 Table 3 (p. 15): first-cycle per-leg ToF (days) — C->G 31.8973, G->C 18.1697, C->E 29.9343, E->C 19.9747 (flyby #0 at t=0)."
+    notes: |
+      Liang et al. 2024 p. 16 caveat: the Table 3/5/7 "Flyby Altitude" values are
+      computed from the required defect Delta-v ignoring Jupiter's gravity and are
+      not physical periapses. Per-cycle repeat ~100 d; demonstrated 10 cycles /
+      ~1000 d, not indefinite (Conclusion pp. 19-20).
+
+- id: liang-2024-cgcec-110-highperijove
+  name: "Liang et al. CGE triple cycler — Member B (1-1-0, high perijove, idealized)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  validation_level: V0
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Jupiter"
+  bodies: ["Callisto", "Ganymede", "Europa"]
+  sequence_canonical: "Callisto-Ganymede-Callisto-Europa-Callisto"
+  sense: "n/a"
+  period:
+    pair: "Callisto-Europa"
+    k: null
+    years: null
+    note: |
+      Triple-cycler repeat ~100 d (switched-double-cycler). >= 1000 d / 10 cycles
+      demonstrated, not indefinite (paper caveat). Same perijove as Member A;
+      diverges from A at the Europa branch (1-1-0 structure, only Europa's
+      flag/phase differs). years: null (Jovian moon tour).
+  vinf_kms_at_encounters:
+    - body: "Callisto"
+      vinf_kms: 5.6730
+      note: "Liang et al. 2024 Table 5 (p. 17), flyby #0. First two flybys (Callisto, Ganymede) identical to Member A — trajectories diverge at the Europa branch."
+    - body: "Ganymede"
+      vinf_kms: 6.9919
+      note: "Liang et al. 2024 Table 5 (p. 17), flyby #1."
+    - body: "Europa"
+      vinf_kms: 4.4853
+      note: "Liang et al. 2024 Table 5 (p. 17), flyby #3."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Same perijove as Member A (r_Europa - 10000 km ~ 660,988 km). Initial moon
+      phases (Table 4, p. 15): Europa -0.48843 rad, Ganymede 0.70579 rad, Callisto
+      1.3550 rad (only Europa's flag/phase differs from A). Over 10 cycles perijove
+      drops, eccentricity grows, apse line rotates clockwise (eases the Europa
+      encounter, p. 17).
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      mass_ratio: null
+      family: null
+      libration_point: null
+      jacobi_constant: null
+      period_nd: null
+      stability_index: null
+      state_nd: null
+      lunit_km: null
+      tunit_s: null
+  invariants:
+    aphelion_ratio: null
+    turn_ratio: null
+    transit_times_days: [31.8973, 18.1697, 30.2850, 19.6834]   # SOURCED: Liang et al. 2024 Table 5 (p. 17) per-leg ToF (C->G, G->C, C->E, E->C); flyby #0 at t=0.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.mass_ratio"
+      kind: "not-applicable"
+      note: "Idealized circular-coplanar patched-conic two-body model, not CR3BP. (mu_Jupiter also unprinted — tolerance caveat in notes.)"
+      source_hint: "Liang et al. 2024 JGCD doi 10.2514/1.G008387"
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Liang, G.", "Yang, H.", "Li, S.", "Bai, X.", "Qin, L."]
+    year: 2024
+    title: "Callisto-Ganymede-Europa Triple Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics (Engineering Note)"
+    date: "2024"
+    doi: "10.2514/1.G008387"
+    url: "https://arc.aiaa.org/doi/10.2514/1.G008387"
+    note: "See Member A row for IAC-23 presentation provenance + page-draft note."
+  corroborating_sources: []
+  priority_date: "2024-01-01"
+  notes: |
+    Member B: idealized circular-coplanar CGCEC triple cycler, 1-1-0 flyby
+    structure (Fig. 6), high perijove. Same first two flybys as Member A; the
+    trajectories diverge at the Europa branch (only Europa's 0/1 flag and phase
+    differ). Ballistic (residual < 1e-8 m/s).
+
+    TOLERANCE CAVEAT: mu_Jupiter unprinted; validate ToF ~0.01 d, V_inf ~1e-3
+    km/s. FLYBY-ALTITUDE FICTION: Table 5 "Altitude" column NOT ingested as
+    physical periapses (paper p. 16). Topology/leg class outside our swept genome
+    (mining note §6).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 5 (p. 17): first-cycle flyby V_inf — Callisto 5.6730, Ganymede 6.9919, Callisto 5.6698, Europa 4.4853, Callisto 5.7914 km/s."
+    "invariants.transit_times_days": "Liang et al. 2024 Table 5 (p. 17): first-cycle per-leg ToF (days) — C->G 31.8973, G->C 18.1697, C->E 30.2850, E->C 19.6834 (flyby #0 at t=0)."
+    notes: |
+      Liang et al. 2024 p. 16 "Flyby Altitude" Delta-v-fiction caveat; p. 17
+      apse-line rotation observation; ~100 d repeat, 10-cycle/~1000 d
+      demonstrated (not indefinite).
+
+- id: liang-2024-cgcec-111-lowperijove
+  name: "Liang et al. CGE triple cycler — Member C (1-1-1, low perijove, idealized)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  validation_level: V0
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Jupiter"
+  bodies: ["Callisto", "Ganymede", "Europa"]
+  sequence_canonical: "Callisto-Ganymede-Callisto-Europa-Callisto"
+  sense: "n/a"
+  period:
+    pair: "Callisto-Europa"
+    k: null
+    years: null
+    note: |
+      Triple-cycler repeat ~100 d; 10-cycle/~1000 d demonstrated, not indefinite.
+      Low-perijove (high-energy) contrast member: r_p = (r_Europa - 10000 km)/2
+      ~ 330,494 km, roughly doubling the V_inf vs the high-perijove A/B family.
+      years: null (Jovian moon tour).
+  vinf_kms_at_encounters:
+    - body: "Callisto"
+      vinf_kms: 7.6433
+      note: "Liang et al. 2024 Table 7 (p. 18), flyby #0. Lower perijove ~ doubled V_inf vs Members A/B — confirms high-perijove is the low-energy family."
+    - body: "Ganymede"
+      vinf_kms: 10.4922
+      note: "Liang et al. 2024 Table 7 (p. 18), flyby #1."
+    - body: "Europa"
+      vinf_kms: 12.0213
+      note: "Liang et al. 2024 Table 7 (p. 18), flyby #3."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      Low perijove r_p = (r_Europa - 10000 km)/2 ~ 330,494 km. Initial moon phases
+      (Table 6, p. 18): Europa 0.94281 rad, Ganymede 1.3883 rad, Callisto 1.7936
+      rad. Across all three idealized members ToF(G->C)+ToF(C->G) ~ 50 d and
+      likewise for the C/E pair; cycle-ToF spread <= 0.35 d; all cycle ToFs ~100 d
+      (p. 18).
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      mass_ratio: null
+      family: null
+      libration_point: null
+      jacobi_constant: null
+      period_nd: null
+      stability_index: null
+      state_nd: null
+      lunit_km: null
+      tunit_s: null
+  invariants:
+    aphelion_ratio: null
+    turn_ratio: null
+    transit_times_days: [32.2542, 17.8127, 31.1267, 18.9362]   # SOURCED: Liang et al. 2024 Table 7 (p. 18) per-leg ToF (C->G, G->C, C->E, E->C); flyby #0 at t=0.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.mass_ratio"
+      kind: "not-applicable"
+      note: "Idealized circular-coplanar patched-conic two-body model, not CR3BP. (mu_Jupiter also unprinted — tolerance caveat in notes.)"
+      source_hint: "Liang et al. 2024 JGCD doi 10.2514/1.G008387"
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Liang, G.", "Yang, H.", "Li, S.", "Bai, X.", "Qin, L."]
+    year: 2024
+    title: "Callisto-Ganymede-Europa Triple Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics (Engineering Note)"
+    date: "2024"
+    doi: "10.2514/1.G008387"
+    url: "https://arc.aiaa.org/doi/10.2514/1.G008387"
+    note: "See Member A row for IAC-23 presentation provenance + page-draft note."
+  corroborating_sources: []
+  priority_date: "2024-01-01"
+  notes: |
+    Member C: idealized circular-coplanar CGCEC triple cycler, 1-1-1 flyby
+    structure (Fig. 7), LOW perijove — the high-V_inf contrast member (lower
+    perijove ~ doubled V_inf, confirming the high-perijove A/B family is the
+    low-energy one). Ballistic (residual < 1e-8 m/s).
+
+    TOLERANCE CAVEAT: mu_Jupiter unprinted; validate ToF ~0.01 d, V_inf ~1e-3
+    km/s. FLYBY-ALTITUDE FICTION: Table 7 "Altitude" column NOT ingested as
+    physical periapses (paper p. 16). Topology/leg class outside our swept genome
+    (mining note §6).
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 7 (p. 18): first-cycle flyby V_inf — Callisto 7.6433, Ganymede 10.4922, Callisto 7.6409, Europa 12.0213, Callisto 7.7838 km/s."
+    "invariants.transit_times_days": "Liang et al. 2024 Table 7 (p. 18): first-cycle per-leg ToF (days) — C->G 32.2542, G->C 17.8127, C->E 31.1267, E->C 18.9362 (flyby #0 at t=0)."
+    notes: |
+      Liang et al. 2024 p. 16 "Flyby Altitude" Delta-v-fiction caveat; p. 18
+      across-member ToF regularities; ~100 d repeat, 10-cycle/~1000 d
+      demonstrated (not indefinite).
+
+- id: liang-2024-cgcec-ephemeris-2033
+  name: "Liang et al. CGE triple cycler — Member D (SPICE-ephemeris, JUP365.bsp)"
+  source: literature
+  trajectory_regime: ballistic   # max required Delta-v per cycle 1.0383e-7 m/s (negligible -> ballistic), p. 18
+  model_assumption: analytic-ephemeris   # SPICE JUP365.bsp moon states (ecliptic J2000 Jupiter-centered); spacecraft legs Keplerian about Jupiter with impulsive flybys ("patched-conic ephemeris model")
+  cycler_class: multi-arc
+  validation_level: V0   # per-flyby data published as FIGURES ONLY (no numeric per-flyby table); V0/V1 ceiling until authors' data obtained
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Jupiter"
+  bodies: ["Callisto", "Ganymede", "Europa"]
+  sequence_canonical: "Callisto-Ganymede-Callisto-Europa-Callisto"
+  sense: "n/a"
+  period:
+    pair: "Callisto-Europa"
+    k: null
+    years: null
+    note: |
+      Triple-cycler repeat ~100 d (cycle ToF 99.4-100.5 d, Figs. 8d-e). Departs
+      Callisto 2033-09-25 18:04:43, returns to Callisto 2036-06-22 01:44:39
+      (~1000 d / 10 cycles). Per-pair ToF behaviour matches the idealized model
+      (C-G less variable than C-E). years: null (Jovian moon tour).
+  vinf_kms_at_encounters:
+    - body: "Callisto"
+      vinf_kms: null
+      note: "Member D per-flyby V_inf published as figure traces only (no numeric per-flyby table, p. 19-20) -> data_gaps. All flybys above 100 km real altitude (p. 18)."
+    - body: "Ganymede"
+      vinf_kms: null
+      note: "Same — figures-only data completeness (epoch + sequence + kernel)."
+    - body: "Europa"
+      vinf_kms: null
+      note: "Same — figures-only."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: |
+      SPICE JUP365.bsp moon states (non-circular, non-coplanar; ecliptic J2000
+      Jupiter-centered inertial); spacecraft legs Keplerian about Jupiter with
+      impulsive flybys. No (a, e) characterises the cycle. The start epoch was
+      found by a traversal search matching the idealized member's relative phase
+      structure (Eq. 19, p. 12).
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: "2033-09-25T18:04:43"
+    cr3bp:
+      mass_ratio: null
+      family: null
+      libration_point: null
+      jacobi_constant: null
+      period_nd: null
+      stability_index: null
+      state_nd: null
+      lunit_km: null
+      tunit_s: null
+  invariants:
+    aphelion_ratio: null
+    turn_ratio: null
+    transit_times_days: null   # per-flyby ToF for Member D published as figure traces only (no numeric table) -> data_gaps
+  source_ephemeris: "JUP365.bsp"   # v4.2 backfill: SPICE kernel (Sec. II.C, p. 4)
+  data_gaps:
+    - path: "vinf_kms_at_encounters"
+      kind: "unknown"
+      note: "Member D (ephemeris model) publishes per-flyby V_inf, epochs, and altitudes as FIGURE TRACES only (Figs. 8d-e, pp. 19-20) — no numeric per-flyby table. Data completeness is departure/arrival epoch + sequence + kernel only. V0/V1 ceiling until the authors' data is obtained."
+      source_hint: "Liang et al. 2024 JGCD doi 10.2514/1.G008387 (authors' data); mining note §4.4."
+      todo_ref: "#216"
+    - path: "invariants.transit_times_days"
+      kind: "unknown"
+      note: "Per-flyby/per-leg ToF for Member D are figure traces only; cycle ToF range 99.4-100.5 d is the only published numeric bound."
+      source_hint: "Liang et al. 2024 Figs. 8d-e (pp. 19-20)."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Liang, G.", "Yang, H.", "Li, S.", "Bai, X.", "Qin, L."]
+    year: 2024
+    title: "Callisto-Ganymede-Europa Triple Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics (Engineering Note)"
+    date: "2024"
+    doi: "10.2514/1.G008387"
+    url: "https://arc.aiaa.org/doi/10.2514/1.G008387"
+    note: "See Member A row for IAC-23 presentation provenance + page-draft note."
+  corroborating_sources: []
+  priority_date: "2024-01-01"
+  notes: |
+    Member D: ballistic CGCEC triple cycler in the SPICE-ephemeris (JUP365.bsp)
+    patched-conic model — the headline qualitative result that the near-resonance
+    construction survives a real ephemeris (the gravity assist adjusts semi-major
+    axis, not argument-of-periapsis precession, so it tolerates the ephemeris
+    model's irregular precession, unlike the Laplace-resonant designs; Sec. III.4,
+    pp. 18-19). Max required Delta-v for one cycle 1.0383e-7 m/s (negligible ->
+    ballistic); all flybys above 100 km real altitude (p. 18).
+
+    NOT golden-grade: per-flyby V_inf / epochs / altitudes are figure traces only
+    (no numeric per-flyby table). Data completeness is departure/arrival epoch +
+    sequence + kernel — V0/V1 ceiling until the authors' data is obtained (mining
+    note §4.4). Topology/leg class outside our swept genome (mining note §6).
+  source_quotes:
+    "period.note": "Liang et al. 2024 (pp. 19-20): departs Callisto 25 September 2033 18:04:43, returns to Callisto 22 June 2036 01:44:39 (~1000 d); cycle ToF 99.4-100.5 d; max required Delta-v per cycle 1.0383e-7 m/s (negligible)."
+    "source_ephemeris": "Liang et al. 2024 Sec. II.C (p. 4): moon states from SPICE kernel JUP365.bsp, ecliptic J2000.0 Jupiter-centered inertial."
+    notes: |
+      Liang et al. 2024 pp. 18-20: the ephemeris-model member demonstrates the
+      near-resonance construction survives a real ephemeris; per-flyby data exists
+      only as figure traces; all flybys above 100 km real altitude.

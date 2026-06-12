@@ -95,6 +95,16 @@ _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC: frozenset[str] = frozenset(
     {
         "hernandez-2017-jovian-ieg-triple-family",
         "russell-strange-2009-jovian-multimoon-family",
+        # #216 (2026-06-12): Liang et al. 2024 CGE triple-cycler Member D, the
+        # SPICE-ephemeris (JUP365.bsp) member — its per-flyby/per-leg ToF are
+        # published as figure traces only (no numeric table; mining note §4.4), so
+        # transit_times_days is a genuine data_gap (null). Exempt from the
+        # transit-times completeness invariant. (Members A-C DO carry sourced
+        # per-leg ToF from Tables 3/5/7 and are NOT exempt.) AR/TR are Earth-Mars
+        # free-return concepts inapplicable to a Jovian moon tour -> null for all
+        # four Liang members; they state no AR/TR in their notes, so the
+        # note-consistency sweeps do not fire.
+        "liang-2024-cgcec-ephemeris-2033",
     }
 )
 
