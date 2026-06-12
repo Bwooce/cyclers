@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyclers.space/schemas/errata.schema.json",
+  "version": "1.0",
+  "title": "Cycler Finder Assumed-Errata Ledger",
+  "description": "Schema v1.0 for data/errata.yaml (task #228): the project's source-defect ledger as a first-class, publishable artifact. Each entry records a printed value in a published source that our reproduction or an internal-consistency argument indicates is defective, together with the full falsifiable reasoning and the in-repo evidence trail (mining note, pinning test, adjudication commit). These are ASSUMED errata: the ledger exists so authors can verify or refute each item, and every entry starts status: open. Tone rule: reasoning must be evidence-first and falsifiable ('the printed value appears inconsistent with X; we derive Y by Z'), never an accusation; unresolved entries are explicitly questions for the authors. Citation rule: doi_or_url is publication-level only (DOI / arXiv / publisher or author page) — never a local file path or private repository.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "paper",
+      "doi_or_url",
+      "location",
+      "printed_value",
+      "derived_value",
+      "reasoning",
+      "evidence_refs",
+      "confidence",
+      "affected_catalogue_rows",
+      "vor_status",
+      "status"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "description": "Stable kebab-case slug for this erratum (unique across the ledger; uniqueness enforced by tests/data/test_errata.py)."
+      },
+      "paper": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Full citation of the published source (authors, title, venue, year)."
+      },
+      "doi_or_url": {
+        "type": "string",
+        "pattern": "^https://",
+        "description": "Publication-level link only: DOI resolver, arXiv abstract, or publisher/author page. Never a local file path or a private repository."
+      },
+      "location": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Where in the source the printed value sits: table / equation / page (use the pagination the entry's citation declares, e.g. arXiv vs VoR)."
+      },
+      "printed_value": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The value exactly as printed in the source."
+      },
+      "derived_value": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The value we derive (with one-line method), or the question we cannot resolve for unresolved-discrepancy entries."
+      },
+      "reasoning": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The full falsifiable argument: reproduction method and/or internal-consistency proof. Evidence-first phrasing; framed so the authors can check (and refute) it."
+      },
+      "evidence_refs": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "type": "string", "minLength": 1 },
+        "description": "In-repo evidence trail: mining-note path + section, pinning-test node id, and/or commit SHA where the defect was adjudicated. Paths must live in the public repo (docs/notes/, tests/, src/)."
+      },
+      "confidence": {
+        "type": "string",
+        "enum": [
+          "confirmed-in-print",
+          "provable-internal-inconsistency",
+          "unresolved-discrepancy"
+        ],
+        "description": "confirmed-in-print = the page was re-read twice AND an independent reproduction disagrees with the printed value. provable-internal-inconsistency = the source is mathematically impossible or self-contradictory as printed (e.g. a max exceeding a sum, two printed statements of the same quantity that disagree). unresolved-discrepancy = our reproduction disagrees but we hold no independent proof — phrased as a question for the authors."
+      },
+      "affected_catalogue_rows": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1 },
+        "description": "Ids of data/catalogue.yaml rows that inherited or annotate this printed value (may be empty). Referential integrity enforced by tests/data/test_errata.py."
+      },
+      "vor_status": {
+        "type": "string",
+        "enum": ["final-form", "preprint-may-be-fixed-in-vor"],
+        "description": "final-form = the cited document is the version of record (dissertation, technical report, published journal article). preprint-may-be-fixed-in-vor = we read a preprint/author draft; the defect may already be fixed in the (unchecked) version of record."
+      },
+      "vor_note": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Optional note on the version-of-record situation, e.g. 'JGCD VoR DOI 10.2514/1.G008387 unchecked (paywalled)'."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["open", "author-confirmed", "author-refuted", "fixed-in-vor"],
+        "description": "Lifecycle of the assumed erratum. All entries start open; author contact or a VoR check moves them."
+      },
+      "minor": {
+        "type": "boolean",
+        "description": "Optional flag: true for minor/typographical items (e.g. misspelled author names) that carry no numerical consequence."
+      }
+    }
+  }
+}
