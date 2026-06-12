@@ -684,11 +684,12 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
     # 16-digit C), AND (b) an INDEPENDENT Radau integrator closes the full period
     # conserving the Jacobi constant (dJ < 1e-12). The published |nu|<1 STABLE
     # verdict is reproduced (Barden half-period monodromy). state_nd is DERIVED,
-    # not a golden (recorded with provenance). NOT promoted above V1: no
-    # higher-fidelity (bicircular/ephemeris) confirmation exists — that is the
-    # paper's stated future work. Adopted #212b (commit 4be2375). See
-    # docs/notes/2026-06-12-ross-adoption-results.md.
-    ("ross-rt-em-cycler-11-2025", "V1"): (
+    # not a golden (recorded with provenance). Promoted V1->V2-ballistic #229
+    # (long-span discriminating run; see each entry's V2 suffix). NOT promoted
+    # above V2: no higher-fidelity (bicircular/ephemeris) confirmation exists —
+    # that is the paper's stated future work. Adopted #212b (commit 4be2375).
+    # See docs/notes/2026-06-12-ross-adoption-results.md.
+    ("ross-rt-em-cycler-11-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 (AAS 25-621) Table 3 (1,1) stable cycler — "
         "fixed-Jacobi corrector closes on (C^stable=3.151175879508174, "
@@ -698,8 +699,19 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "state_nd DERIVED (not a golden). tests/search/test_cr3bp_ross_families.py::"
         "test_ross_family_reproduced[(1,1)] + "
         "test_ross_family_independent_crosscheck[(1,1)]."
+        " V2-BALLISTIC UPGRADE (#229, 2026-06-13): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (>=3x the measured-delta1 discrimination "
+        "threshold N_req~30-33) stays in a bounded oscillation band (max per-period "
+        "recurrence drift 5-7 orders inside the 3A departure band; Jacobi drift "
+        "<=2.7e-10 over the span; half-ratio <=2.35 vs ~1e15 for a hypothetical "
+        "|lambda|=2 — exponential growth excluded), evaluated in the row's DEFINING "
+        "MODEL (CR3BP, like-for-like scope per the V1 convention). STABLE verdict "
+        "derives from Barden nu + the long-span run, never the 5-period gate. No "
+        "real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
+        "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
     ),
-    ("ross-rt-em-cycler-21-2025", "V1"): (
+    ("ross-rt-em-cycler-21-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 Table 3 (2,1) stable cycler — fixed-Jacobi "
         "corrector closes on (C^stable=3.129389531088256, T^stable="
@@ -711,8 +723,19 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "tests/search/test_cr3bp_ross_families.py::"
         "test_ross_family_reproduced[(2,1)] + "
         "test_ross_family_independent_crosscheck[(2,1)]."
+        " V2-BALLISTIC UPGRADE (#229, 2026-06-13): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (>=3x the measured-delta1 discrimination "
+        "threshold N_req~30-33) stays in a bounded oscillation band (max per-period "
+        "recurrence drift 5-7 orders inside the 3A departure band; Jacobi drift "
+        "<=2.7e-10 over the span; half-ratio <=2.35 vs ~1e15 for a hypothetical "
+        "|lambda|=2 — exponential growth excluded), evaluated in the row's DEFINING "
+        "MODEL (CR3BP, like-for-like scope per the V1 convention). STABLE verdict "
+        "derives from Barden nu + the long-span run, never the 5-period gate. No "
+        "real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
+        "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
     ),
-    ("ross-rt-em-cycler-31-2025", "V1"): (
+    ("ross-rt-em-cycler-31-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 Table 3 (3,1) stable cycler — fixed-Jacobi "
         "corrector closes on (C^stable=3.161784147013429, T^stable="
@@ -723,8 +746,19 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "tests/search/test_cr3bp_ross_families.py::"
         "test_ross_family_reproduced[(3,1)] + "
         "test_ross_family_independent_crosscheck[(3,1)]."
+        " V2-BALLISTIC UPGRADE (#229, 2026-06-13): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (>=3x the measured-delta1 discrimination "
+        "threshold N_req~30-33) stays in a bounded oscillation band (max per-period "
+        "recurrence drift 5-7 orders inside the 3A departure band; Jacobi drift "
+        "<=2.7e-10 over the span; half-ratio <=2.35 vs ~1e15 for a hypothetical "
+        "|lambda|=2 — exponential growth excluded), evaluated in the row's DEFINING "
+        "MODEL (CR3BP, like-for-like scope per the V1 convention). STABLE verdict "
+        "derives from Barden nu + the long-span run, never the 5-period gate. No "
+        "real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
+        "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
     ),
-    ("ross-rt-em-cycler-32-2025", "V1"): (
+    ("ross-rt-em-cycler-32-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 Table 3 (3,2) stable cycler — fixed-Jacobi "
         "corrector closes on (C^stable=3.182762663084288, T^stable="
@@ -736,8 +770,19 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "state_nd DERIVED (not a golden). tests/search/test_cr3bp_ross_families.py::"
         "test_ross_family_reproduced[(3,2)] + "
         "test_ross_family_independent_crosscheck[(3,2)]."
+        " V2-BALLISTIC UPGRADE (#229, 2026-06-13): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (>=3x the measured-delta1 discrimination "
+        "threshold N_req~30-33) stays in a bounded oscillation band (max per-period "
+        "recurrence drift 5-7 orders inside the 3A departure band; Jacobi drift "
+        "<=2.7e-10 over the span; half-ratio <=2.35 vs ~1e15 for a hypothetical "
+        "|lambda|=2 — exponential growth excluded), evaluated in the row's DEFINING "
+        "MODEL (CR3BP, like-for-like scope per the V1 convention). STABLE verdict "
+        "derives from Barden nu + the long-span run, never the 5-period gate. No "
+        "real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
+        "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
     ),
-    ("ross-rt-em-cycler-33-2025", "V1"): (
+    ("ross-rt-em-cycler-33-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 Table 3 (3,3) stable cycler — fixed-Jacobi "
         "corrector closes on (C^stable=3.177224018696528, T^stable="
@@ -748,6 +793,53 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "tests/search/test_cr3bp_ross_families.py::"
         "test_ross_family_reproduced[(3,3)] + "
         "test_ross_family_independent_crosscheck[(3,3)]."
+        " V2-BALLISTIC UPGRADE (#229, 2026-06-13): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (>=3x the measured-delta1 discrimination "
+        "threshold N_req~30-33) stays in a bounded oscillation band (max per-period "
+        "recurrence drift 5-7 orders inside the 3A departure band; Jacobi drift "
+        "<=2.7e-10 over the span; half-ratio <=2.35 vs ~1e15 for a hypothetical "
+        "|lambda|=2 — exponential growth excluded), evaluated in the row's DEFINING "
+        "MODEL (CR3BP, like-for-like scope per the V1 convention). STABLE verdict "
+        "derives from Barden nu + the long-span run, never the 5-period gate. No "
+        "real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
+        "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
+    ),
+    # #222 (2026-06-13, USER-approved): Liang et al. 2024 (JGCD, DOI
+    # 10.2514/1.G008387) idealized CGE triple-cycler Members A/B/C — same-model
+    # reproduction in the paper's own circular-coplanar two-body-about-Jupiter
+    # model (search/cge_scaffold.py): moon positions from Table 1 mean motions +
+    # Table 2/4/6 phases at the cumulative printed times, fixed-time multi-rev
+    # Lambert legs at the printed ToFs, V_inf-magnitude continuity checked at
+    # every flyby. Tolerance is the Table 1 4-dp print-quantization propagation
+    # (0.017-0.14 km/s per flyby; sensitivity-scan backed), never widened.
+    # Member D (ephemeris-2033) stays V0 (figures-only per-flyby data).
+    # docs/notes/2026-06-13-liang-abc-reproduction.md (commit 70a1cc5).
+    ("liang-2024-cgcec-111-highperijove", "V1"): (
+        "spec §14 V1 (#222): same-model reproduction of Liang 2024 Member A "
+        "(1-1-1 high-perijove) — Table 3 per-flyby V_inf matched on both flyby "
+        "sides to worst 1.52e-2 km/s, V_inf continuity 8.1e-3 km/s, inside the "
+        "Table 1 print-quantization tolerance; all 4 legs 1-rev multi-rev "
+        "Lambert as published; conic flyby-0 anchor residual 1.6e-5 km/s; "
+        "phase check 6.5e-6 rad. "
+        "tests/search/test_liang_cge_reproduction.py (member A cases)."
+    ),
+    ("liang-2024-cgcec-110-highperijove", "V1"): (
+        "spec §14 V1 (#222): same-model reproduction of Liang 2024 Member B "
+        "(1-1-0) — Table 5 per-flyby V_inf matched on both flyby sides to "
+        "worst 1.38e-2 km/s, V_inf continuity 7.8e-3 km/s, inside the Table 1 "
+        "print-quantization tolerance; first two flybys bit-identical to "
+        "Member A as the paper states; all 4 legs 1-rev multi-rev Lambert as "
+        "published. tests/search/test_liang_cge_reproduction.py (member B cases)."
+    ),
+    ("liang-2024-cgcec-111-lowperijove", "V1"): (
+        "spec §14 V1 (#222): same-model reproduction of Liang 2024 Member C "
+        "(1-1-1 low-perijove) — Table 7 per-flyby V_inf matched on both flyby "
+        "sides to worst 4.82e-2 km/s, V_inf continuity 9.0e-3 km/s, inside the "
+        "Table 1 print-quantization tolerance (sensitivity scan brackets the "
+        "observed worst); all 4 legs 1-rev multi-rev Lambert as published; "
+        "conic anchor residual 4.1e-4 km/s. "
+        "tests/search/test_liang_cge_reproduction.py (member C cases)."
     ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each

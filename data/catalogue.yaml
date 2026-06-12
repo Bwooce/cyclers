@@ -46313,7 +46313,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # fully ballistic prograde cycler (paper title); no maintenance dV
   model_assumption: cr3bp   # planar CR3BP (PCR3BP), paper Sec. 1 / p. 3; schema v2 enum
   cycler_class: non-keplerian   # rotating-frame periodic orbit, not a Kepler ellipse
-  validation_level: V1   # schema v4.5; same-model CR3BP reproduction of a sourced same-model orbit (corrector closure + T^stable match + independent Radau closure + published |nu|<1 verdict). Evidence in scripts/backfill_validation_level.py _LEVEL_BY_ID + cyclerfinder.data.validate._LEVEL_EVIDENCE.
+  validation_level: V2   # schema v4.5; V2-ballistic (spec §14): >=3 continuous laps with bounded rotating-frame drift, evaluated in the row's DEFINING MODEL (CR3BP — like-for-like scope, same convention as the V1 scoping). Evidence: same-model corrector reproduction (V1 base) + 100-period inertial REBOUND/IAS15 bounded-band run (3x the measured-delta1 discrimination threshold; docs/notes/2026-06-13-ross-v2-longspan-evidence.md; tests/search/test_cr3bp_v2_longspan.py) + Barden |nu|<1 in the published stable window. STABLE verdict from nu + the long-span run, never the 5-period gate. No real-ephemeris claim; V2-ballistic is this lane's ceiling. Details in scripts/backfill_validation_level.py _LEVEL_BY_ID + cyclerfinder.data.validate._LEVEL_EVIDENCE.
   delta_v_kms: null   # ballistic
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46414,7 +46414,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  validation_level: V1
+  validation_level: V2   # schema v4.5; V2-ballistic (spec §14, CR3BP defining model, like-for-like): V1 same-model reproduction + 100-period inertial IAS15 bounded-band run (docs/notes/2026-06-13-ross-v2-longspan-evidence.md; tests/search/test_cr3bp_v2_longspan.py) + Barden |nu|<1 in the published stable window. No real-ephemeris claim.
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46508,7 +46508,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  validation_level: V1
+  validation_level: V2   # schema v4.5; V2-ballistic (spec §14, CR3BP defining model, like-for-like): V1 same-model reproduction + 100-period inertial IAS15 bounded-band run (docs/notes/2026-06-13-ross-v2-longspan-evidence.md; tests/search/test_cr3bp_v2_longspan.py) + Barden |nu|<1 in the published stable window. No real-ephemeris claim.
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46608,7 +46608,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  validation_level: V1
+  validation_level: V2   # schema v4.5; V2-ballistic (spec §14, CR3BP defining model, like-for-like): V1 same-model reproduction + 100-period inertial IAS15 bounded-band run (docs/notes/2026-06-13-ross-v2-longspan-evidence.md; tests/search/test_cr3bp_v2_longspan.py) + Barden |nu|<1 in the published stable window. No real-ephemeris claim.
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46714,7 +46714,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  validation_level: V1
+  validation_level: V2   # schema v4.5; V2-ballistic (spec §14, CR3BP defining model, like-for-like): V1 same-model reproduction + 100-period inertial IAS15 bounded-band run (docs/notes/2026-06-13-ross-v2-longspan-evidence.md; tests/search/test_cr3bp_v2_longspan.py) + Barden |nu|<1 in the published stable window. No real-ephemeris claim.
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46829,7 +46829,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic   # residual flyby-defect Delta-v < 1e-8 m/s threshold (paper p. 13)
   model_assumption: circular-coplanar   # idealized circular, planar moon orbits, two-body about Jupiter (Sec. II.B)
   cycler_class: multi-arc   # patched-conic multi-rev Lambert legs, repeated-moon CGCEC sequence
-  validation_level: V0   # idealized-model member; reproducible up to the unprinted mu_Jupiter, but not yet reproduced in-repo
+  validation_level: V1   # V1: reproduced in-repo in the source's own idealized model (#222, commit 70a1cc5); see docs/notes/2026-06-13-liang-abc-reproduction.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -46939,6 +46939,11 @@ days\" per the NTRS abstract.
     reservoirs) lie OUTSIDE our Phase-6 swept genome (single-ellipse zero-rev
     free-return loops); it does not contradict the Jovian EMPTY-region registry
     verdicts, which remain valid as conditioned (mining note §6).
+    REPRODUCED 2026-06-13 (#222): same-model reconstruction (cge_scaffold.py)
+    matches Table 3 per-flyby V_inf on both flyby sides to worst 1.52e-2 km/s
+    and V_inf continuity to 8.1e-3 km/s, inside the Table 1 print-quantization
+    tolerance (0.017-0.14 km/s per flyby); all 4 legs 1-rev multi-rev Lambert
+    as published; golden tests tests/search/test_liang_cge_reproduction.py.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 3 (p. 15): first-cycle flyby V_inf — Callisto 5.6730, Ganymede 6.9919, Callisto 5.6698, Europa 4.6685, Callisto 5.8721 km/s."
     "invariants.transit_times_days": "Liang et al. 2024 Table 3 (p. 15): first-cycle per-leg ToF (days) — C->G 31.8973, G->C 18.1697, C->E 29.9343, E->C 19.9747 (flyby #0 at t=0)."
@@ -46954,7 +46959,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
-  validation_level: V0
+  validation_level: V1   # V1: reproduced in-repo in the source's own idealized model (#222, commit 70a1cc5); see docs/notes/2026-06-13-liang-abc-reproduction.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -47043,6 +47048,11 @@ days\" per the NTRS abstract.
     km/s. FLYBY-ALTITUDE FICTION: Table 5 "Altitude" column NOT ingested as
     physical periapses (paper p. 16). Topology/leg class outside our swept genome
     (mining note §6).
+    REPRODUCED 2026-06-13 (#222): same-model reconstruction (cge_scaffold.py)
+    matches Table 5 per-flyby V_inf on both flyby sides to worst 1.38e-2 km/s
+    and V_inf continuity to 7.8e-3 km/s, inside the Table 1 print-quantization
+    tolerance (0.017-0.14 km/s per flyby); all 4 legs 1-rev multi-rev Lambert
+    as published; golden tests tests/search/test_liang_cge_reproduction.py.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 5 (p. 17): first-cycle flyby V_inf — Callisto 5.6730, Ganymede 6.9919, Callisto 5.6698, Europa 4.4853, Callisto 5.7914 km/s."
     "invariants.transit_times_days": "Liang et al. 2024 Table 5 (p. 17): first-cycle per-leg ToF (days) — C->G 31.8973, G->C 18.1697, C->E 30.2850, E->C 19.6834 (flyby #0 at t=0)."
@@ -47057,7 +47067,7 @@ days\" per the NTRS abstract.
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
-  validation_level: V0
+  validation_level: V1   # V1: reproduced in-repo in the source's own idealized model (#222, commit 70a1cc5); see docs/notes/2026-06-13-liang-abc-reproduction.md
   delta_v_kms: null
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
@@ -47146,6 +47156,11 @@ days\" per the NTRS abstract.
     km/s. FLYBY-ALTITUDE FICTION: Table 7 "Altitude" column NOT ingested as
     physical periapses (paper p. 16). Topology/leg class outside our swept genome
     (mining note §6).
+    REPRODUCED 2026-06-13 (#222): same-model reconstruction (cge_scaffold.py)
+    matches Table 7 per-flyby V_inf on both flyby sides to worst 4.82e-2 km/s
+    and V_inf continuity to 9.0e-3 km/s, inside the Table 1 print-quantization
+    tolerance (0.017-0.14 km/s per flyby); all 4 legs 1-rev multi-rev Lambert
+    as published; golden tests tests/search/test_liang_cge_reproduction.py.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Liang et al. 2024 Table 7 (p. 18): first-cycle flyby V_inf — Callisto 7.6433, Ganymede 10.4922, Callisto 7.6409, Europa 12.0213, Callisto 7.7838 km/s."
     "invariants.transit_times_days": "Liang et al. 2024 Table 7 (p. 18): first-cycle per-leg ToF (days) — C->G 32.2542, G->C 17.8127, C->E 31.1267, E->C 18.9362 (flyby #0 at t=0)."

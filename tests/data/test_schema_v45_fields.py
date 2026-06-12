@@ -136,10 +136,15 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     sourced anchor, lamberthub + Kepler reprop; the 9.353Gg2/9.94Gg3 siblings were
     already V1 and carry the closure as added evidence;
     docs/notes/2026-06-10-tof-fix-closure-results.md). Five Ross & Roberts-Tsoukkas
-    2025 stable Earth-Moon CR3BP cyclers are V1 (#216 — same-model CR3BP
-    reproduction of the sourced C^stable/T^stable/stability tuple, corrector +
-    independent Radau closure; docs/notes/2026-06-12-ross-adoption-results.md).
-    (V1=20, V2=1, V3=2.)"""
+    2025 stable Earth-Moon CR3BP cyclers are V2 (#216 V1 same-model CR3BP
+    reproduction, then #229 2026-06-13 USER-approved V2-ballistic: 100-period
+    inertial IAS15 bounded-band run at 3x the discrimination threshold, CR3BP
+    defining-model scope; docs/notes/2026-06-13-ross-v2-longspan-evidence.md).
+    Three Liang 2024 idealized CGE triple-cycler members are V1 (#222 2026-06-13
+    USER-approved — same-model reconstruction matches Tables 3/5/7 per-flyby
+    V_inf inside the print-quantization tolerance;
+    docs/notes/2026-06-13-liang-abc-reproduction.md; Member D stays V0).
+    (V1=18, V2=6, V3=2.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -199,16 +204,21 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # integrator closes the full period dJ<1e-12). state_nd DERIVED (not a
         # golden). tests/search/test_cr3bp_ross_families.py;
         # docs/notes/2026-06-12-ross-adoption-results.md.
-        "ross-rt-em-cycler-11-2025": "V1",
-        "ross-rt-em-cycler-21-2025": "V1",
-        "ross-rt-em-cycler-31-2025": "V1",
-        "ross-rt-em-cycler-32-2025": "V1",
-        "ross-rt-em-cycler-33-2025": "V1",
+        "ross-rt-em-cycler-11-2025": "V2",
+        "ross-rt-em-cycler-21-2025": "V2",
+        "ross-rt-em-cycler-31-2025": "V2",
+        "ross-rt-em-cycler-32-2025": "V2",
+        "ross-rt-em-cycler-33-2025": "V2",
+        # #222 (2026-06-13, USER-approved): Liang A/B/C same-model reproduction.
+        "liang-2024-cgcec-111-highperijove": "V1",
+        "liang-2024-cgcec-110-highperijove": "V1",
+        "liang-2024-cgcec-111-lowperijove": "V1",
     }, above_v0
-    # Exactly one row carries V2 today (the powered Aldrin outbound). Two rows carry
-    # V3: S1L1 (#167/#94 — V3-ballistic) and russell-ch4-8.049gGf2 (#175/#170 — the
-    # first V3-powered, App-C #188 under its documented 420 m/s budget).
-    assert sum(1 for lvl in byid.values() if lvl == "V2") == 1
+    # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
+    # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
+    # carry V3: S1L1 (#167/#94 — V3-ballistic) and russell-ch4-8.049gGf2
+    # (#175/#170 — the first V3-powered, App-C #188 under its documented budget).
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 6
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     assert not any(lvl in ("V4", "V5") for lvl in byid.values())
 

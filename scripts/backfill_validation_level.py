@@ -134,11 +134,27 @@ _LEVEL_BY_ID: dict[str, str] = {
     # verdict reproduced, AND an independent Radau integrator closes the full period
     # dJ<1e-12). state_nd DERIVED (not a golden). Adopted #212b (commit 4be2375).
     # See docs/notes/2026-06-12-ross-adoption-results.md.
-    "ross-rt-em-cycler-11-2025": "V1",
-    "ross-rt-em-cycler-21-2025": "V1",
-    "ross-rt-em-cycler-31-2025": "V1",
-    "ross-rt-em-cycler-32-2025": "V1",
-    "ross-rt-em-cycler-33-2025": "V1",
+    # #229 (2026-06-13, USER-approved): promoted V1 -> V2 (V2-ballistic, spec §14):
+    # 100-period inertial REBOUND/IAS15 bounded-band run (3x the measured-delta1
+    # discrimination threshold) in the rows' DEFINING MODEL (CR3BP, like-for-like).
+    # STABLE verdict from Barden nu + the long-span run, never the 5-period gate.
+    # No real-ephemeris claim; V2-ballistic is this lane's ceiling.
+    # docs/notes/2026-06-13-ross-v2-longspan-evidence.md.
+    "ross-rt-em-cycler-11-2025": "V2",
+    "ross-rt-em-cycler-21-2025": "V2",
+    "ross-rt-em-cycler-31-2025": "V2",
+    "ross-rt-em-cycler-32-2025": "V2",
+    "ross-rt-em-cycler-33-2025": "V2",
+    # #222 (2026-06-13, USER-approved): Liang et al. 2024 (JGCD, DOI
+    # 10.2514/1.G008387) idealized CGE triple-cycler Members A/B/C clear §14 V1
+    # like-for-like — same-model reconstruction (search/cge_scaffold.py) matches
+    # the printed per-flyby V_inf (Tables 3/5/7) inside the Table 1
+    # print-quantization tolerance; all legs 1-rev multi-rev Lambert as published.
+    # Member D (ephemeris-2033) stays V0: no numeric per-flyby anchors published.
+    # docs/notes/2026-06-13-liang-abc-reproduction.md.
+    "liang-2024-cgcec-111-highperijove": "V1",
+    "liang-2024-cgcec-110-highperijove": "V1",
+    "liang-2024-cgcec-111-lowperijove": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",
