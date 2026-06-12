@@ -671,6 +671,84 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "7.3e-13 AU. Single-leg REBOUND confirm in-band; V3-CANDIDATE. "
         "docs/notes/2026-06-10-tof-fix-closure-results.md."
     ),
+    # #216 (2026-06-12, USER-approved writeback): five STABLE prograde Earth-Moon
+    # (k1,k2)-cycler families from Ross & Roberts-Tsoukkas 2025 (AAS 25-621) clear
+    # spec §14 V1 mechanics LIKE-FOR-LIKE in the planar CR3BP (a same-model CR3BP
+    # reproduction of a sourced same-model CR3BP orbit — the Russell circular-row
+    # precedent, transposed to the Jacobi-constant model). EXPECTED side sourced:
+    # mu (p. 3), C^stable + T^stable + stability verdict (Table 3, p. 11). The V1
+    # halves: (a) the fixed-Jacobi symmetric corrector closes on a perpendicular
+    # x-axis crossing with C enforced to machine eps and period matching the
+    # published T^stable (to <1e-7 TU for the wide windows, ~2-3e-4 TU for the two
+    # razor-thin windows where the exact nu=0 x0 sits a hair off the printed
+    # 16-digit C), AND (b) an INDEPENDENT Radau integrator closes the full period
+    # conserving the Jacobi constant (dJ < 1e-12). The published |nu|<1 STABLE
+    # verdict is reproduced (Barden half-period monodromy). state_nd is DERIVED,
+    # not a golden (recorded with provenance). NOT promoted above V1: no
+    # higher-fidelity (bicircular/ephemeris) confirmation exists — that is the
+    # paper's stated future work. Adopted #212b (commit 4be2375). See
+    # docs/notes/2026-06-12-ross-adoption-results.md.
+    ("ross-rt-em-cycler-11-2025", "V1"): (
+        "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
+        "Roberts-Tsoukkas 2025 (AAS 25-621) Table 3 (1,1) stable cycler — "
+        "fixed-Jacobi corrector closes on (C^stable=3.151175879508174, "
+        "T^stable=10.29206921007976 TU) with C enforced to machine eps and T to "
+        "<1e-7 TU, Barden stability nu=-0.00334 (|nu|<1, published STABLE), AND "
+        "an independent Radau integrator closes the full period dJ<1e-12. "
+        "state_nd DERIVED (not a golden). tests/search/test_cr3bp_ross_families.py::"
+        "test_ross_family_reproduced[(1,1)] + "
+        "test_ross_family_independent_crosscheck[(1,1)]."
+    ),
+    ("ross-rt-em-cycler-21-2025", "V1"): (
+        "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
+        "Roberts-Tsoukkas 2025 Table 3 (2,1) stable cycler — fixed-Jacobi "
+        "corrector closes on (C^stable=3.129389531088256, T^stable="
+        "19.44043166795154 TU) with C enforced to machine eps (T ~2.7e-4 TU off "
+        "T^stable: razor-thin Delta_p_m=4.23 km window displaces the exact nu=0 "
+        "x0 a hair along the family), Barden nu=0.05007 (|nu|<1, published "
+        "STABLE), AND an independent Radau integrator closes the full period "
+        "dJ<1e-12. state_nd DERIVED (not a golden). "
+        "tests/search/test_cr3bp_ross_families.py::"
+        "test_ross_family_reproduced[(2,1)] + "
+        "test_ross_family_independent_crosscheck[(2,1)]."
+    ),
+    ("ross-rt-em-cycler-31-2025", "V1"): (
+        "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
+        "Roberts-Tsoukkas 2025 Table 3 (3,1) stable cycler — fixed-Jacobi "
+        "corrector closes on (C^stable=3.161784147013429, T^stable="
+        "14.78849241668140 TU) with C enforced to machine eps (T ~2.2e-4 TU off "
+        "T^stable: narrow inner band), Barden nu=0.01545 (|nu|<1, published "
+        "STABLE), AND an independent Radau integrator closes the full period "
+        "dJ<1e-12. state_nd DERIVED (not a golden). "
+        "tests/search/test_cr3bp_ross_families.py::"
+        "test_ross_family_reproduced[(3,1)] + "
+        "test_ross_family_independent_crosscheck[(3,1)]."
+    ),
+    ("ross-rt-em-cycler-32-2025", "V1"): (
+        "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
+        "Roberts-Tsoukkas 2025 Table 3 (3,2) stable cycler — fixed-Jacobi "
+        "corrector closes on (C^stable=3.182762663084288, T^stable="
+        "17.90058010350006 TU) with C enforced to machine eps and T to +1.2e-8 "
+        "TU once the half-period crossing index is fixed to the 6th x-axis "
+        "crossing (results note §2; the deferral as integrator-cost-prohibitive "
+        "is retracted), Barden nu=-0.01175 (|nu|<1, published STABLE), AND an "
+        "independent Radau integrator closes the full period dJ=5.3e-13. "
+        "state_nd DERIVED (not a golden). tests/search/test_cr3bp_ross_families.py::"
+        "test_ross_family_reproduced[(3,2)] + "
+        "test_ross_family_independent_crosscheck[(3,2)]."
+    ),
+    ("ross-rt-em-cycler-33-2025", "V1"): (
+        "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
+        "Roberts-Tsoukkas 2025 Table 3 (3,3) stable cycler — fixed-Jacobi "
+        "corrector closes on (C^stable=3.177224018696528, T^stable="
+        "18.14546057589189 TU) with C enforced to machine eps and T to <2e-9 TU "
+        "(wide window), Barden nu=0.06001 (|nu|<1, published STABLE), AND an "
+        "independent Radau integrator closes the full period dJ<1e-12. state_nd "
+        "DERIVED (not a golden; x0 in the Fig. 10b family-curve bracket). "
+        "tests/search/test_cr3bp_ross_families.py::"
+        "test_ross_family_reproduced[(3,3)] + "
+        "test_ross_family_independent_crosscheck[(3,3)]."
+    ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
     # achieving its encounters with the per-cycle maintenance applied AND bounded

@@ -46237,3 +46237,520 @@ days\" per the NTRS abstract.
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Rall 1970 TE-34 App F M5-2E (p.203): first Earth V_inf 0.261 EMOS; x 29.77 = 7.77 km/s."
     "flyby_mechanics[0].turning_angle_deg": "Rall 1970 TE-34 App F M5-2E: first Earth encounter turn angle 57.8 deg (App F column 4, degrees)."
+
+# ---------------------------------------------------------------------------
+# Ross & Roberts-Tsoukkas 2025 (AAS 25-621) — five STABLE prograde Earth-Moon
+# (k1,k2)-cycler families (planar CR3BP). Adopted into the CR3BP lane #212b
+# (commit 4be2375); USER-approved catalogue writeback #216.
+#
+# SOURCED (V0-grade) EXPECTED side per row: mass_ratio mu (p. 3), and the
+# C^stable / T^stable / stability-verdict columns of Table 3 (p. 11) — 15-16
+# digit values. DERIVED (self-consistency-checked, NOT goldens): the symmetric
+# perpendicular-crossing state0 = (x0, 0, 0, 0, ydot0, 0) recovered by our
+# fixed-Jacobi 1-D corrector (the §5 solve); the stability parameter nu is our
+# Barden half-period-monodromy result. validation_level V1: same-model CR3BP
+# reproduction of a sourced same-model CR3BP orbit (corrector closure + period
+# match to T^stable + independent Radau closure + published |nu|<1 verdict) —
+# the Russell circular-row precedent. See
+# docs/notes/2026-06-12-ross-adoption-results.md and
+# docs/notes/2026-06-11-ross-roberts-tsoukkas-2025-mining.md.
+# ---------------------------------------------------------------------------
+- id: ross-rt-em-cycler-11-2025
+  name: "Ross/Roberts-Tsoukkas stable Earth-Moon (1,1) prograde cycler (CR3BP)"
+  source: literature
+  trajectory_regime: ballistic   # fully ballistic prograde cycler (paper title); no maintenance dV
+  model_assumption: cr3bp   # planar CR3BP (PCR3BP), paper Sec. 1 / p. 3; schema v2 enum
+  cycler_class: non-keplerian   # rotating-frame periodic orbit, not a Kepler ellipse
+  validation_level: V1   # schema v4.5; same-model CR3BP reproduction of a sourced same-model orbit (corrector closure + T^stable match + independent Radau closure + published |nu|<1 verdict). Evidence in scripts/backfill_validation_level.py _LEVEL_BY_ID + cyclerfinder.data.validate._LEVEL_EVIDENCE.
+  delta_v_kms: null   # ballistic
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      Rotating-frame period T^stable = 10.29206921007976 TU (Ross Table 3,
+      p. 11), where 1 TU = sidereal month / 2pi = 27.321661 d / 2pi =
+      4.348377401631 d (p. 3) -> 44.753800 d (Table 4 day column, p. 13).
+      Encounter cadence: 1 perigee + 1 perilune pass per period; T^stable is
+      within ~1% of the 2:3 resonance with the synodic month (p. 11). The
+      catalogue's heliocentric-synodic-multiple `years` convention does not
+      apply to an Earth-Moon CR3BP periodic orbit -> null.
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: the conserved quantity is the Jacobi constant (C^stable), not patched-conic V_inf. Quoting V_inf would be model-mismatched (per arenstorf-em-figure8-1963 convention)."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model, not patched-conic."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Heliocentric Keplerian elements inapplicable: periodic solution in the rotating Earth-Moon barycentric frame, planar (PCR3BP). The CR3BP identity tuple below carries the orbit's identity."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(1,1) prograde Earth-Moon cycler"   # SOURCED: Ross & Roberts-Tsoukkas 2025 Def. 1 (p. 5), Table 3 (p. 11): k1=1 U1- crossings, k2=1 U2+ crossings per cycle.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Ross & Roberts-Tsoukkas 2025 p. 3 (Earth-system GM ratio, DE440).
+      libration_point: null   # not a libration-point orbit; built from L1 Lyapunov manifold-tube seeding but is itself a (k1,k2)-cycler.
+      jacobi_constant: 3.151175879508174   # SOURCED: Ross Table 3 (p. 11) C^stable_(1,1) (nu=0 midpoint of the stable subfamily). Convention C = (x^2+y^2)+2(1-mu)/r1+2mu/r2 - v^2 (Eq. 3, p. 3), matches our jacobi_constant convention.
+      period_nd: 10.29206921007976   # SOURCED: Ross Table 3 (p. 11) T^stable_(1,1) in TU.
+      stability_index: -0.00334   # DERIVED (our Barden half-period-monodromy nu, Eqs. 13-15): linearly STABLE (|nu|<1), nu~0 midpoint. NOT a golden; published verdict is "stable", value is our reproduction.
+      state_nd: [-0.7682140805, 0.0, 0.0, 0.0, -0.2568154857, 0.0]   # DERIVED (NOT a golden): symmetric perpendicular x-axis-crossing IC (x0,0,0,0,ydot0,0) recovered by our fixed-Jacobi 1-D corrector at C^stable; self-consistency-checked (orbit closes perpendicularly, Jacobi enforced, independent Radau closure). state0 is not printed in the source.
+      lunit_km: 384400.0   # SOURCED: Ross p. 3 (a_m, Earth-Moon distance = 1).
+      tunit_s: 375699.8   # SOURCED: Ross p. 3 (1 TU = 27.321661 d / 2pi).
+      jacobi_max: 3.151175879916394   # SOURCED: Ross Table 3 (p. 11) C^max_(1,1), the Jacobi at which the family first emerges (C^max < C_(k1,k2) < C1).
+      energy_regime: "Case 3"   # SOURCED (p. 13 text): C^stable < C2 = 3.172160450399808 -> L2 neck open (exterior escape energetically open).
+      tof_days_bounds: [44.753800, 44.753800]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days (Ross Table 4 day column, p. 13).
+  source_ephemeris: null   # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "Ross & Roberts-Tsoukkas 2025 prints no initial-state vector for any member (publication gap, mining note §5). state_nd is DERIVED in-repo by the fixed-Jacobi symmetric 1-D corrector from the sourced (mu, C^stable) and self-consistency-checked against the sourced T^stable + an independent Radau closure; it is recorded with provenance, never as a golden."
+      source_hint: "scripts/cr3bp_ross_reproduce.py; tests/search/test_cr3bp_ross_families.py; 2026 journal version (Roberts-Tsoukkas & Ross) may print ICs."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+    date: "2025-08"
+    doi: null
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: |
+      LaTeX preprint dated 2025-07-17. A 2026 journal version exists
+      ("Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body
+      Dynamics," Roberts-Tsoukkas & Ross); re-verify table/page numbering
+      against it before embedding citations in code comments.
+  corroborating_sources: []
+  priority_date: "2025-08-01"
+  notes: |
+    First publication of STABLE, fully ballistic, prograde Earth-Moon cyclers
+    (the class our CR3BP lane previously lacked — all prior lane discoveries
+    were unstable Lyapunovs). The (1,1) family's stable subfamily is extremely
+    narrow (perilune-distance width Delta_p_m = 0.13 km, Table 3); this row is
+    its nu=0 midpoint. Reproduced in-repo (#212b, commit 4be2375): corrector
+    closes on (C^stable, T^stable), Barden stability nu=-0.00334 (|nu|<1), and
+    an independent Radau integration closes the full period with dJ < 1e-12.
+
+    MODEL: pure planar CR3BP (PCR3BP). No bicircular / solar-gravity /
+    lunar-eccentricity / ephemeris refinement (the paper's stated future work);
+    any cross-fidelity persistence claim must wait for the 2026 journal. Every
+    number here is PCR3BP-only.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (1,1) C^stable = 3.151175879508174."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (1,1) T^stable = 10.29206921007976 TU; Table 4 (p. 13) day column 44.753800 d."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
+
+- id: ross-rt-em-cycler-21-2025
+  name: "Ross/Roberts-Tsoukkas stable Earth-Moon (2,1) prograde cycler (CR3BP)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      T^stable = 19.44043166795154 TU (Ross Table 3, p. 11) -> 84.534335 d
+      (Table 4, p. 13). Encounter cadence: 2 perigee + 1 perilune pass per
+      period (k1=2, k2=1). T^stable ~ 3.09 sidereal months — not an integer
+      multiple, so the orbit does not close in the Earth-centered inertial
+      frame (p. 11, Fig. 7b). years: null (CR3BP, see (1,1) row).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(2,1) prograde Earth-Moon cycler"   # SOURCED: Ross Def. 1 (p. 5), Table 3 (p. 11): k1=2, k2=1.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Ross p. 3.
+      libration_point: null
+      jacobi_constant: 3.129389531088256   # SOURCED: Ross Table 3 (p. 11) C^stable_(2,1).
+      period_nd: 19.44043166795154   # SOURCED: Ross Table 3 (p. 11) T^stable_(2,1) in TU.
+      stability_index: 0.05007   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
+      state_nd: [0.7237335857, 0.0, 0.0, 0.0, 0.4137707374, 0.0]   # DERIVED (NOT a golden): x0 > 0 (U1+-side perpendicular crossing); recovered by our corrector, self-consistency-checked. Razor-thin stable window (Delta_p_m 4.23 km), so T lands ~2.7e-4 TU off the printed T^stable (results note §1) — the verdict and enforced C are exact.
+      lunit_km: 384400.0   # SOURCED: Ross p. 3.
+      tunit_s: 375699.8   # SOURCED: Ross p. 3.
+      jacobi_max: 3.129389531092325   # SOURCED: Ross Table 3 (p. 11) C^max_(2,1).
+      energy_regime: "Case 3"   # SOURCED (p. 13): C^stable < C2 -> exterior escape open.
+      tof_days_bounds: [84.534335, 84.534335]   # v4.2 backfill: [period, period] (Ross Table 4, p. 13).
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in the source (mining note §5). state_nd DERIVED by the fixed-Jacobi corrector from sourced (mu, C^stable), self-consistency-checked; never a golden. (2,1) is a razor-thin stable window (Delta_p_m 4.23 km): the exact nu=0 x0 sits a hair off the published 16-digit C, so the reproduced T lands ~2.7e-4 TU from T^stable (results note §1)."
+      source_hint: "scripts/cr3bp_ross_reproduce.py; tests/search/test_cr3bp_ross_families.py; 2026 journal version."
+      todo_ref: "#216"
+    - path: "orbit_elements.cr3bp.jacobi_max"
+      kind: "conflict"
+      note: "Ross Table 3 C_(2,1) BOUND column = 3.1297495000000 disagrees with Eq. 8 + Table 1 min{3.129751730201047, 3.1833333078762} = 3.129751730201047 (Delta 2.24e-6; mining note §4). The C^stable/C^max/T^stable columns used here are internally consistent and catalogue-grade; only the C_(k1,k2) bound column is inconsistent. Pinned by tests/search/test_cr3bp_ross_families.py::test_data_gap_c21_bound_inconsistency. Re-verify against the 2026 journal."
+      source_hint: "Ross & Roberts-Tsoukkas 2026 journal version (Roberts-Tsoukkas & Ross)."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+    date: "2025-08"
+    doi: null
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: "LaTeX preprint 2025-07-17; 2026 journal version exists (re-verify numbering)."
+  corroborating_sources: []
+  priority_date: "2025-08-01"
+  notes: |
+    (2,1) stable prograde Earth-Moon cycler, nu=0 midpoint of a narrow stable
+    subfamily (Delta_p_m 4.23 km, Table 3). Reproduced in-repo (#212b): the
+    enforced C is exact, the corrected member lands ~2.7e-4 TU off the printed
+    T^stable (the razor-thin window displaces the exact-midpoint x0 a hair along
+    the family), verdict STABLE (nu=0.05007, |nu|<1), independent Radau closure
+    dJ < 1e-12. PCR3BP-only; see (1,1) row model note.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (2,1) C^stable = 3.129389531088256."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (2,1) T^stable = 19.44043166795154 TU; Table 4 (p. 13) 84.534335 d."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
+
+- id: ross-rt-em-cycler-31-2025
+  name: "Ross/Roberts-Tsoukkas stable Earth-Moon (3,1) prograde cycler (CR3BP)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      T^stable = 14.78849241668140 TU (Ross Table 3, p. 11) -> 64.305944 d
+      (Table 4, p. 13). Encounter cadence: 3 perigee + 1 perilune pass per
+      period (k1=3, k2=1). Stable window ~750-1,000 km perilune altitude
+      (Delta_p_m 253.70 km; nd perilune radius ~0.00648-0.00713, Fig. 8).
+      years: null (CR3BP, see (1,1) row).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(3,1) prograde Earth-Moon cycler"   # SOURCED: Ross Def. 1 (p. 5), Table 3 (p. 11): k1=3, k2=1.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Ross p. 3.
+      libration_point: null
+      jacobi_constant: 3.161784147013429   # SOURCED: Ross Table 3 (p. 11) C^stable_(3,1).
+      period_nd: 14.78849241668140   # SOURCED: Ross Table 3 (p. 11) T^stable_(3,1) in TU.
+      stability_index: 0.01545   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
+      state_nd: [-0.3209891696, 0.0, 0.0, 0.0, -1.8322134075, 0.0]   # DERIVED (NOT a golden): high-velocity Earth-side perpendicular crossing; recovered by our corrector, self-consistency-checked. Narrow inner band, so T lands ~2.2e-4 TU off T^stable (results note §1); enforced C exact.
+      lunit_km: 384400.0   # SOURCED: Ross p. 3.
+      tunit_s: 375699.8   # SOURCED: Ross p. 3.
+      jacobi_max: 3.161796247265416   # SOURCED: Ross Table 3 (p. 11) C^max_(3,1).
+      energy_regime: "Case 3"   # SOURCED (p. 13): C^stable < C2 -> exterior escape open.
+      tof_days_bounds: [64.305944, 64.305944]   # v4.2 backfill: [period, period] (Ross Table 4, p. 13).
+      basin_widths_km: [23, 195, 155, 146, 92, 227]   # SOURCED: Ross Fig. 8(b) U2 Poincare-inset basin-of-stability widths (largest surrounding resonant torus, km) along the family; 23 and 195 within the stable window. Reported only for the (3,1) family (p. 11).
+      window_bifurcations: "period-doubling (nu=-1 side) / tangent (nu=+1 side)"   # SOURCED: Ross Fig. 8 — entry/exit of the stable window.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in the source (mining note §5). state_nd DERIVED by the fixed-Jacobi corrector, self-consistency-checked; never a golden. (3,1) narrow inner band: reproduced T lands ~2.2e-4 TU from T^stable (results note §1); enforced C and STABLE verdict exact."
+      source_hint: "scripts/cr3bp_ross_reproduce.py; tests/search/test_cr3bp_ross_families.py; 2026 journal version."
+      todo_ref: "#216"
+    - path: "orbit_elements.cr3bp.jacobi_max"
+      kind: "conflict"
+      note: "Ross Table 3 C_(3,1) BOUND column = 3.1833333078762 (= C^{u2}_1, the Eq. 8 min) is inconsistent with Table 4: C1 - DeltaC_(3,1) implies C_(3,1) = 3.1756140 (Delta 7.7e-3; mining note §4). The C^stable/C^max/T^stable columns used here are internally consistent and catalogue-grade; only the C_(k1,k2) bound column is inconsistent. Pinned by tests/search/test_cr3bp_ross_families.py::test_data_gap_c31_bound_inconsistency. Re-verify against the 2026 journal."
+      source_hint: "Ross & Roberts-Tsoukkas 2026 journal version."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+    date: "2025-08"
+    doi: null
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: "LaTeX preprint 2025-07-17; 2026 journal version exists (re-verify numbering)."
+  corroborating_sources: []
+  priority_date: "2025-08-01"
+  notes: |
+    (3,1) stable prograde Earth-Moon cycler, nu=0 midpoint (Delta_p_m 253.70 km,
+    Table 3). Its rotating-frame geometry (3 Earth-realm petals + lunar loop)
+    superficially resembles the Genova/Aldrin 3-petal cycler
+    (genova-aldrin-2015-em-3petal-cycler) but is NOT the same orbit: the
+    Genova/Aldrin 3-petal cycler does not exist in the pure CR3BP (needs solar
+    gravity + station-keeping; reclassified bicircular), whereas (3,1) is a
+    genuine ballistic PCR3BP periodic orbit with a stable window — the first
+    pure-CR3BP 3-petal-geometry catalogue entry. Keep both rows, cross-reference,
+    do not merge (mining note §6). Reproduced in-repo (#212b): STABLE
+    (nu=0.01545), independent Radau closure dJ < 1e-12. PCR3BP-only.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,1) C^stable = 3.161784147013429."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,1) T^stable = 14.78849241668140 TU; Table 4 (p. 13) 64.305944 d."
+    "orbit_elements.cr3bp.basin_widths_km": "Ross & Roberts-Tsoukkas 2025 Fig. 8(b) (p. 11): U2 Poincare-inset basin-of-stability widths 23, 195, 155, 146, 92, 227 km along the (3,1) family."
+
+- id: ross-rt-em-cycler-32-2025
+  name: "Ross/Roberts-Tsoukkas stable Earth-Moon (3,2) prograde cycler (CR3BP)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      T^stable = 17.90058010350006 TU (Ross Table 3, p. 11) -> 77.838478 d
+      (our conversion via the printed TU; Table 4 prints days only for the
+      (k1,1) rows, so this day figure is DERIVED, mining note §8). Encounter
+      cadence: 3 perigee + 2 perilune pass per period (k1=3, k2=2). Two stable
+      windows, the larger ~40 km wide (Delta_p_m 42.08 km); the near-2:5
+      synodic-resonance member (Fig. 9b, ~74 d) is a DIFFERENT, unstable member
+      of this family, NOT this nu=0 Table-3 member (p. 13). years: null (CR3BP).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(3,2) prograde Earth-Moon cycler"   # SOURCED: Ross Def. 1 (p. 5), Table 3 (p. 11): k1=3, k2=2.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Ross p. 3.
+      libration_point: null
+      jacobi_constant: 3.182762663084288   # SOURCED: Ross Table 3 (p. 11) C^stable_(3,2).
+      period_nd: 17.90058010350006   # SOURCED: Ross Table 3 (p. 11) T^stable_(3,2) in TU.
+      stability_index: -0.01175   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
+      state_nd: [-0.3214486013, 0.0, 0.0, 0.0, -1.8239555099, 0.0]   # DERIVED (NOT a golden): recovered by our corrector. Binding subtlety: the half-period perpendicular crossing is the 6TH x-axis crossing (half_crossings=6, results note §2), not a naive nearest-T/2 pick; with the correct index T lands +1.2e-8 TU of T^stable.
+      lunit_km: 384400.0   # SOURCED: Ross p. 3.
+      tunit_s: 375699.8   # SOURCED: Ross p. 3.
+      jacobi_max: 3.182762785398336   # SOURCED: Ross Table 3 (p. 11) C^max_(3,2).
+      energy_regime: "Case 2"   # DERIVED observation (results note / mining §4): C^stable = 3.18276 > C2 = 3.172160450399808 -> L2 neck closed (exterior escape energetically closed). NOT stated in the paper.
+      tof_days_bounds: [77.838478, 77.838478]   # v4.2 backfill: [period, period]; DERIVED day conversion (Table 4 prints days only for (k1,1)).
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in the source (mining note §5). state_nd DERIVED by the fixed-Jacobi corrector, self-consistency-checked; never a golden. (3,2) requires crossing-index selection at the 6th x-axis crossing (results note §2)."
+      source_hint: "scripts/cr3bp_ross_reproduce.py; tests/search/test_cr3bp_ross_families.py; 2026 journal version."
+      todo_ref: "#216"
+    - path: "orbit_elements.cr3bp.tof_days_bounds"
+      kind: "derive"
+      note: "Table 4 (p. 13) prints the day-converted period only for the (k1,1) rows; the (3,2) day figure 77.838478 d is our conversion of the printed T^stable via the printed TU (1 TU = 4.348377401631 d). The TU period_nd is the sourced quantity."
+      source_hint: "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11) T^stable in TU + p. 3 TU definition."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+    date: "2025-08"
+    doi: null
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: "LaTeX preprint 2025-07-17; 2026 journal version exists (re-verify numbering)."
+  corroborating_sources:
+    - authors: ["Leiva, A. M.", "Briozzo, C. B."]
+      year: 2008
+      title: "Extension of fast periodic transfer orbits in the Sun-perturbed Earth-Moon system (quasi-bicircular persistence of a (3,2)-class member)"
+      venue: "Celestial Mechanics and Dynamical Astronomy 101, pp. 225-245"
+      doi: null
+      url: null
+      note: "Ross p. 13 (spelled 'Leiva and Brizzolara') notes a member of the (3,2) family was previously identified by Leiva & Briozzo and shown to persist under solar perturbation (Sun-Earth-Moon quasi-bicircular model) — the only prior sighting, as a single unstable orbit. If ever ingested, parent it to this (3,2) family (mining note §6)."
+  priority_date: "2025-08-01"
+  notes: |
+    (3,2) stable prograde Earth-Moon cycler, nu=0 midpoint of the larger of two
+    stable windows (Delta_p_m 42.08 km, Table 3). An earlier pass deferred this
+    family as integrator-cost-prohibitive; the deferral is RETRACTED — fixing the
+    half-period crossing index (the 6th x-axis crossing) resolves it (results
+    note §2): reproduced T = 17.9005801151 (+1.2e-8 TU), nu=-0.01175 (STABLE),
+    independent Radau closure dJ = 5.3e-13. The near-2:5-synodic member (Fig. 9b)
+    is a different, unstable member — do not conflate. Case 2 energy regime
+    (C^stable > C2) is our derived observation, not stated by the paper.
+    PCR3BP-only.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,2) C^stable = 3.182762663084288."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,2) T^stable = 17.90058010350006 TU."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
+
+- id: ross-rt-em-cycler-33-2025
+  name: "Ross/Roberts-Tsoukkas stable Earth-Moon (3,3) prograde cycler (CR3BP)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      T^stable = 18.14546057589189 TU (Ross Table 3, p. 11) -> 78.903311 d
+      (our conversion; DERIVED, Table 4 prints days only for (k1,1) rows).
+      Encounter cadence: 3 perigee + 3 perilune pass per period (k1=3, k2=3).
+      Largest of FIVE stable windows spans perilune altitudes ~4,200-6,200 km
+      (Delta_p_m 2041.34 km), perigee altitudes ~112,400-113,500 km (~3x GEO);
+      family terminates both ends in lunar-surface collision (p. 14). years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(3,3) prograde Earth-Moon cycler"   # SOURCED: Ross Def. 1 (p. 5), Table 3 (p. 11): k1=3, k2=3.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Ross p. 3.
+      libration_point: null
+      jacobi_constant: 3.177224018696528   # SOURCED: Ross Table 3 (p. 11) C^stable_(3,3).
+      period_nd: 18.14546057589189   # SOURCED: Ross Table 3 (p. 11) T^stable_(3,3) in TU.
+      stability_index: 0.06001   # DERIVED (Barden nu): linearly STABLE (|nu|<1). NOT a golden.
+      state_nd: [-0.3217380626, 0.0, 0.0, 0.0, -1.8238865086, 0.0]   # DERIVED (NOT a golden): recovered by our corrector; x0 in the Fig. 10b family-curve bracket [-0.330, -0.315]. Wide stable window -> T lands within ~1.6e-9 TU of T^stable.
+      lunit_km: 384400.0   # SOURCED: Ross p. 3.
+      tunit_s: 375699.8   # SOURCED: Ross p. 3.
+      jacobi_max: 3.183379082936385   # SOURCED: Ross Table 3 (p. 11) C^max_(3,3); Fig. 10 axis label 3.183379083.
+      energy_regime: "Case 2"   # DERIVED observation (results note / mining §4): C^stable = 3.17722 > C2 = 3.172160450399808 -> L2 neck closed. NOT stated in the paper.
+      tof_days_bounds: [78.903311, 78.903311]   # v4.2 backfill: [period, period]; DERIVED day conversion.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in the source (mining note §5). state_nd DERIVED by the fixed-Jacobi corrector, self-consistency-checked against the sourced T^stable + independent Radau closure; never a golden. x0 lies in the Fig. 10b family-curve bracket [-0.330, -0.315] nd."
+      source_hint: "scripts/cr3bp_ross_reproduce.py; tests/search/test_cr3bp_ross_families.py; 2026 journal version."
+      todo_ref: "#216"
+    - path: "orbit_elements.cr3bp.tof_days_bounds"
+      kind: "derive"
+      note: "Table 4 (p. 13) prints the day-converted period only for the (k1,1) rows; the (3,3) day figure 78.903311 d is our conversion of the printed T^stable via the printed TU. The TU period_nd is the sourced quantity."
+      source_hint: "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11) T^stable in TU + p. 3 TU definition."
+      todo_ref: "#216"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+    date: "2025-08"
+    doi: null
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: "LaTeX preprint 2025-07-17; 2026 journal version exists (re-verify numbering)."
+  corroborating_sources: []
+  priority_date: "2025-08-01"
+  notes: |
+    (3,3) stable prograde Earth-Moon cycler, nu=0 midpoint of the largest of
+    FIVE stable windows (Delta_p_m 2041.34 km — the widest of the five families,
+    Table 3). The window's perigee altitudes (~112,400-113,500 km, ~3x GEO) make
+    it the most accessible. Family terminates both ends in lunar-surface
+    collision (p. 14). Generic observation (p. 14): every (k1,k2) family examined
+    has a stable region near C^max. Reproduced in-repo (#212b): wide window ->
+    T within ~1.6e-9 TU of T^stable, nu=0.06001 (STABLE), independent Radau
+    closure dJ < 1e-12. Case 2 energy regime is our derived observation.
+    PCR3BP-only.
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) C^stable = 3.177224018696528."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) T^stable = 18.14546057589189 TU."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."

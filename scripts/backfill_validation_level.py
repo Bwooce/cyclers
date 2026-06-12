@@ -127,6 +127,18 @@ _LEVEL_BY_ID: dict[str, str] = {
     # (russell-ch4-8.165Gfh-f2) is NOT promoted: its TCM 2040.6 m/s EXCEEDS its own
     # 1678 m/s budget (1.22x). See docs/notes/2026-06-08-v3-powered-classsplit.md.
     "russell-ch4-8.049gGf2": "V3",
+    # #216 (2026-06-12, USER-approved): five Ross & Roberts-Tsoukkas 2025 (AAS
+    # 25-621) stable prograde Earth-Moon (k1,k2)-cyclers clear §14 V1 like-for-like
+    # in the planar CR3BP — same-model reproduction of a sourced same-model orbit
+    # (corrector closes on the published C^stable/T^stable, Barden |nu|<1 STABLE
+    # verdict reproduced, AND an independent Radau integrator closes the full period
+    # dJ<1e-12). state_nd DERIVED (not a golden). Adopted #212b (commit 4be2375).
+    # See docs/notes/2026-06-12-ross-adoption-results.md.
+    "ross-rt-em-cycler-11-2025": "V1",
+    "ross-rt-em-cycler-21-2025": "V1",
+    "ross-rt-em-cycler-31-2025": "V1",
+    "ross-rt-em-cycler-32-2025": "V1",
+    "ross-rt-em-cycler-33-2025": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

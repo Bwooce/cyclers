@@ -322,10 +322,18 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # MULTI_ARC_ALLOWLIST below. The Saturnian seed stays non-keplerian (its
         # midsize members are genuinely CR3BP — Tier-2; Titan split deferred).
         "russell-strange-2009-saturnian-multimoon-family",
+        # #216 (2026-06-12): five Ross & Roberts-Tsoukkas 2025 (AAS 25-621) stable
+        # prograde Earth-Moon (k1,k2)-cyclers — genuine planar CR3BP periodic
+        # orbits (non-keplerian; rotating-frame, Jacobi-constant identity).
+        "ross-rt-em-cycler-11-2025",
+        "ross-rt-em-cycler-21-2025",
+        "ross-rt-em-cycler-31-2025",
+        "ross-rt-em-cycler-32-2025",
+        "ross-rt-em-cycler-33-2025",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 4
+assert len(NON_KEPLERIAN_IDS) == 9
 
 
 # ---------------------------------------------------------------------------
@@ -352,7 +360,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 236, "non-keplerian": 4}
+    expected = {"single-ellipse": 28, "multi-arc": 236, "non-keplerian": 9}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
@@ -373,7 +381,7 @@ def test_multi_arc_ids_match_allowlist() -> None:
 
 
 def test_non_keplerian_ids_match_ratchet() -> None:
-    """The exact set of non-keplerian ids matches the 4-id NON_KEPLERIAN_IDS ratchet."""
+    """The exact set of non-keplerian ids matches the 9-id NON_KEPLERIAN_IDS ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "non-keplerian")
     extra = actual - NON_KEPLERIAN_IDS

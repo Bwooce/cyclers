@@ -135,7 +135,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     closure via the joint (epoch, ToF) closer, emerged v∞ within 0.08 km/s of the
     sourced anchor, lamberthub + Kepler reprop; the 9.353Gg2/9.94Gg3 siblings were
     already V1 and carry the closure as added evidence;
-    docs/notes/2026-06-10-tof-fix-closure-results.md). (V1=15, V2=1, V3=2.)"""
+    docs/notes/2026-06-10-tof-fix-closure-results.md). Five Ross & Roberts-Tsoukkas
+    2025 stable Earth-Moon CR3BP cyclers are V1 (#216 — same-model CR3BP
+    reproduction of the sourced C^stable/T^stable/stability tuple, corrector +
+    independent Radau closure; docs/notes/2026-06-12-ross-adoption-results.md).
+    (V1=20, V2=1, V3=2.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -187,6 +191,19 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # NOT promoted (TCM 2040.6 m/s EXCEEDS its 1678 m/s budget, 1.22x).
         # docs/notes/2026-06-08-v3-powered-classsplit.md.
         "russell-ch4-8.049gGf2": "V3",
+        # #216 (2026-06-12, USER-approved writeback): five Ross & Roberts-Tsoukkas
+        # 2025 (AAS 25-621) stable prograde Earth-Moon (k1,k2)-cyclers clear §14 V1
+        # like-for-like in the planar CR3BP — same-model reproduction of a sourced
+        # same-model orbit (corrector closes on the published C^stable/T^stable,
+        # Barden |nu|<1 STABLE verdict reproduced, AND an independent Radau
+        # integrator closes the full period dJ<1e-12). state_nd DERIVED (not a
+        # golden). tests/search/test_cr3bp_ross_families.py;
+        # docs/notes/2026-06-12-ross-adoption-results.md.
+        "ross-rt-em-cycler-11-2025": "V1",
+        "ross-rt-em-cycler-21-2025": "V1",
+        "ross-rt-em-cycler-31-2025": "V1",
+        "ross-rt-em-cycler-32-2025": "V1",
+        "ross-rt-em-cycler-33-2025": "V1",
     }, above_v0
     # Exactly one row carries V2 today (the powered Aldrin outbound). Two rows carry
     # V3: S1L1 (#167/#94 — V3-ballistic) and russell-ch4-8.049gGf2 (#175/#170 — the

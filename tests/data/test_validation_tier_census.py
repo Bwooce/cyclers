@@ -42,11 +42,22 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # circular-coplanar cyclers (russell-ocampo-* not previously catalogued), each
 # tagged orbit_source == vinf_source == russell-2004-t34 at one fidelity
 # (circular-coplanar) => CONSISTENCY_CHECKED. consistency_checked 233 -> 249.
+#
+# 2026-06-12 (#216, USER-approved writeback): +5 Ross & Roberts-Tsoukkas 2025
+# (AAS 25-621) stable Earth-Moon CR3BP cycler rows (ross-rt-em-cycler-*). These
+# carry no orbit_source/vinf_source provenance tags (the SOURCE_REGISTRY keys
+# are heliocentric Earth-Mars / patched-conic citations; the Ross CR3BP source
+# is not a registry key, and their identity is a Jacobi/period tuple, not the
+# orbit/vinf-multiset pair the tier classifier reads), so they classify
+# UNVALIDATED by the provenance-tag tier system — exactly as the existing CR3BP
+# rows (arenstorf, wittal, genova-aldrin) do. Their gauntlet strength lives in
+# the orthogonal validation_level axis (V1, _LEVEL_EVIDENCE), NOT this
+# orbit/vinf provenance-tag census. unvalidated 14 -> 19.
 # ---------------------------------------------------------------------------
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
     "consistency_checked": 249,
-    "unvalidated": 14,
+    "unvalidated": 19,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent
