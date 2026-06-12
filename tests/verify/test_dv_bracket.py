@@ -50,9 +50,9 @@ def _bitangential_base_dv(mu: float) -> tuple[float, float, float]:
     """Bi-tangential coaxial transfer with the plane change at apogee.
 
     Departs the initial orbit at its perigee onto a transfer ellipse whose
-    apogee is the target apogee, then circularises... no - matches the target
-    orbit at its apogee with the full 48° plane change folded into the apogee
-    burn. This is the *specific construction the paper names* for the two-impulse
+    apogee is the target apogee, then matches the target orbit at its apogee with
+    the full 48 deg plane change folded into the apogee burn. This is the
+    *specific construction the paper names* for the two-impulse
     base (perigee departure / apogee arrival, plane change at the second burn);
     with FREE true anomalies the Eq.-1 optimiser can only do better, so this is a
     tight UPPER estimate of the published base value - exactly what is needed to
