@@ -46475,7 +46475,7 @@ days\" per the NTRS abstract.
       todo_ref: "#216"
     - path: "orbit_elements.cr3bp.jacobi_max"
       kind: "conflict"
-      note: "Ross Table 3 C_(2,1) BOUND column = 3.1297495000000 disagrees with Eq. 8 + Table 1 min{3.129751730201047, 3.1833333078762} = 3.129751730201047 (Delta 2.24e-6; mining note §4). The C^stable/C^max/T^stable columns used here are internally consistent and catalogue-grade; only the C_(k1,k2) bound column is inconsistent. Pinned by tests/search/test_cr3bp_ross_families.py::test_data_gap_c21_bound_inconsistency. Re-verify against the 2026 journal."
+      note: "Ross Table 3 C_(2,1) BOUND column = 3.1297495000000 disagrees with Eq. 8 + Table 1 min{3.129751730201047, 3.1833333078762} = 3.129751730201047 (Delta 2.23e-6; mining note §4). The C^stable/C^max/T^stable columns used here are internally consistent and catalogue-grade; only the C_(k1,k2) bound column is inconsistent. Pinned by tests/search/test_cr3bp_ross_families.py::test_data_gap_c21_bound_inconsistency. Re-verify against the 2026 journal."
       source_hint: "Ross & Roberts-Tsoukkas 2026 journal version (Roberts-Tsoukkas & Ross)."
       todo_ref: "#216"
   legs: []
@@ -47181,7 +47181,7 @@ days\" per the NTRS abstract.
   vinf_kms_at_encounters:
     - body: "Callisto"
       vinf_kms: null
-      note: "Member D per-flyby V_inf published as figure traces only (no numeric per-flyby table, p. 19-20) -> data_gaps. All flybys above 100 km real altitude (p. 18)."
+      note: "Member D per-flyby V_inf published as figure traces only (no numeric per-flyby table, p. 19-20) -> data_gaps. All flybys above 100 km real altitude (p. 19)."
     - body: "Ganymede"
       vinf_kms: null
       note: "Same — figures-only data completeness (epoch + sequence + kernel)."
@@ -47251,7 +47251,7 @@ days\" per the NTRS abstract.
     axis, not argument-of-periapsis precession, so it tolerates the ephemeris
     model's irregular precession, unlike the Laplace-resonant designs; Sec. III.4,
     pp. 18-19). Max required Delta-v for one cycle 1.0383e-7 m/s (negligible ->
-    ballistic); all flybys above 100 km real altitude (p. 18).
+    ballistic); all flybys above 100 km real altitude (p. 19).
 
     NOT golden-grade: per-flyby V_inf / epochs / altitudes are figure traces only
     (no numeric per-flyby table). Data completeness is departure/arrival epoch +

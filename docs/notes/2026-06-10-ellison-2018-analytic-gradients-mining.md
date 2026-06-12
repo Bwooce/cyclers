@@ -10,6 +10,18 @@ table/figure numbers are publication-stable** — cite the eq. numbers, not the 
 **Writeback: NONE.** Extraction + adoption assessment only; no code or catalogue
 edits in this pass.
 
+**TRANSCRIPTION RESCAN (2026-06-12, spot-check):** the cited headline numbers
+re-read against the PDF — **MATCH**. Table 4 (p. 41) verbatim: best mass delivered
+**2104 kg**, mean feasible solutions **55**, success rate **94%**, mean time to
+best **16.6 min**, finite-differenced column all dashes (zero feasible in 100
+runs); corroborated independently by the Sec. V prose (p. 20: "None of the runs
+using finite differencing identified any feasible solutions"; "94 identified a
+feasible solution"; "55 feasible solutions in its 2 h search"; "best solution
+after 16.6 min"; FD seeded with the analytic optimum declared infeasible and
+diverged). Fig. 8 (p. 37) read: FD/analytic ≈160 at 10 segments rising to ≈1650
+at 200 segments (AD/analytic ≈25→≈730) — the §6 figure-read caveat stands. Fig. 6
+(p. 35) event labels and Table 3 (p. 40) inputs also match §6 as transcribed.
+
 **Verdict: USEFUL.** This is the published algorithm specification for exactly the
 thing flagged as our known performance bottleneck: replacing finite-difference
 Jacobians in STM-based multiple shooting with analytic STM/MTM chain products. It

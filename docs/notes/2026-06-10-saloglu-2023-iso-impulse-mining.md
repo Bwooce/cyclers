@@ -12,6 +12,25 @@ in code comments.
 **Writeback: NONE.** Extraction + adoption assessment only; no code or catalogue
 edits in this pass.
 
+**TRANSCRIPTION RESCAN (2026-06-12):** all load-bearing values re-read against the
+PDF (two passes per load-bearing table) — **MATCH throughout**. Verified: Table 1
+p. 11 digit-for-digit (all six boundary-state components per vector incl.
+5.053×10⁻⁵; TOF 3534 d); the fundamental arc p. 12 (Δv₁ = 7.521545, Δv₂ = 2.38588,
+total **9.907425 km/s**; t_pf = 348.46 d; θ_i = 179.27°, θ_f = 149.20°; coasts
+193.24 + 348.46 + 501.81 = 1043.51 ⇒ surplus **2490.48 d**; phase-constrained
+Lambert always > 9.907425); phasing periods **830.16 d** (Fig. 6a, p. 13),
+**664.23 d** (Fig. 6b, p. 13), **443.00 d** (Fig. 6d, p. 15); T_pf = 1161.47 d
+(pp. 13, 24), T_D = 1191.88 d (p. 15), T(α=0) = 365.25 d (pp. 24, 29); family
+census 26/42/37/21/7/1 (p. 15 text); the §III.E bound verbatim on p. 29
+("365.25 < 2490.48/n_p, or n_p < 6.82 giving a maximum of 6 phasing orbits and
+8 impulses"; "1 ≤ n_p ≤ 6"); envelope corners p. 25 (1062.62 / 1161.47 / 963.77 /
+664.51 / TOF/3 = 830.16); 1840.31-d window p. 20; GTO–GEO **1.4873346 km/s** p. 20
++ Table 3 p. 21 digit-for-digit (incl. TOF 2 / 12.011 d, 1 DU = 6378 km,
+first-two-impulses ≈ 0.2 km/s, Fig. 15 ×5); LEO–GEO Table 4 p. 23 digit-for-digit
++ **4.2206849 km/s**, 0.220 d arc, 0.780 d surplus, 1.944 km/s largest impulse
+(p. 24). Everything `tests/verify/test_dv_bracket.py` (#207) wires from this paper
+(365.25 / 1161.47 / 2490.48 / 830.16 / n_p ≤ 6) is transcription-clean.
+
 **Verdict: USEFUL** on three of the five mining lenses, with one important
 negative. (1) The ΔV-allocation machinery is fully extractable and trivially
 implementable (a quadratic per phasing orbit). (2) The impulse-count bounds are

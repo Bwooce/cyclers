@@ -229,7 +229,7 @@ We verified Tables 1–4 against each other (arithmetic, 2026-06-11):
 
 1. Table 3's C_(2,1) = 3.1297495000000 (trailing zeros suspicious) disagrees
    with Eq. 8 + Table 1: min{3.129751730201047, 3.1833333078762} =
-   3.129751730201047 (Δ = 2.24e-6). Table 4's ΔC_(2,1) is consistent with the
+   3.129751730201047 (Δ = 2.23e-6). Table 4's ΔC_(2,1) is consistent with the
    *Table 3* value.
 2. Table 3's C_(3,1) = 3.1833333078762 (= C^{u2}_1, the Eq. 8 min) is
    inconsistent with Table 4: C1 − ΔC_(3,1) = 3.188341105401253 − 1.272710e-2
@@ -442,3 +442,79 @@ cross-fidelity rule: until then, every number here is **PCR3BP-only**).
 - [24] Zhong & Ross, Applied Mathematical Modelling 97 (2021) 81–95:
   differential correction + arc-length continuation how-to (implementation
   reference for the continuation step).
+
+---
+
+## TRANSCRIPTION RESCAN (2026-06-12)
+
+Character-by-character re-read of the source PDF (Ross & Roberts-Tsoukkas
+2025, AAS 25-621) against this note and every repo artifact that inherited its
+numbers (the 5 `ross-rt-em-cycler-*-2025` catalogue rows,
+`tests/search/test_cr3bp_ross_families.py`,
+`tests/core/test_cr3bp.py::test_earth_moon_mu_physical`, and the
+`_LEVEL_EVIDENCE` strings in `cyclerfinder/data/validate.py`). Each
+load-bearing table was read TWICE in independent passes; all arithmetic
+cross-checks re-run exactly (Decimal).
+
+**VERDICT: the golden set is CLEAN.** Every 15–16-digit value below is a
+three-way MATCH (PDF = note = repo):
+
+- **μ = 1.2150584270572e-2** (p. 3, read twice) — matches §1, `ROSS_MU`, all
+  five rows' `mass_ratio`, and the `test_earth_moon_mu_physical` expected.
+- **Table 3 (p. 11), C^stable and T^stable, all 5 families, all digits** —
+  match §4/§8, `_FAMILIES`, the rows' `jacobi_constant`/`period_nd`, and the
+  `_LEVEL_EVIDENCE` strings. THE critical set: no digit slips anywhere.
+- **Table 3 C^max, all 5** — match §4 and the rows' `jacobi_max`.
+- **Table 3 Δp_m** (0.13 / 4.23 / 253.70 / 42.08 / 2041.34 km) — match; the
+  (3,1) 750–1,000 km window (p. 12 + Fig. 8 caption), the (3,3)
+  4,200–6,200 km perilune / 112,400–113,500 km perigee windows (p. 14), and
+  the Fig. 8(b) basin widths 23/195/155/146/92/227 km all confirmed.
+- **Tables 1–2 (p. 8), all 6 tangency constants + x-locations** — match §4
+  and `ROSS_TABLE1_CU1`.
+- Supporting constants confirmed: C1 = 3.188341105401253 and
+  C2 = 3.172160450399808 (p. 13); R_m = 1,740 km (p. 10); ν = ½(λ+1/λ),
+  G = diag(1,−1,−1,1) (p. 10); a_m = 384,400 km, T_m = 27.321661 d (p. 3);
+  synodic 29.530588 d, 3.09×2π (p. 11); Fig. 9(a) label 3.182762785 and
+  Fig. 9(b) "74 days" (p. 13); Fig. 10 label 3.183379083 and x0 axis
+  −0.33…−0.315 (p. 14); Table 4 (p. 13) all 18 entries as transcribed in §4.
+
+**The two flagged C-bound conflicts are CONFIRMED SOURCE-INTERNAL (PDF
+genuinely self-inconsistent; not our misreading — both sides re-read twice):**
+
+1. C_(2,1): Table 3 prints 3.1297495000000; Eq. 8 + Table 1 give
+   3.129751730201047. Exact Δ = **2.2302e-6** (this note's §4 had rounded it to
+   2.24e-6; correct 3-sig-fig value is 2.23e-6 — prose-only slip, also echoed
+   in the (2,1) catalogue row's data_gap note; BOTH FIXED 2026-06-12 in the
+   rescan-cleanup pass; the pinning test's
+   2.235e-6 ± 1e-7 assertion brackets the true value and passes).
+   Table 4's ΔC_(2,1) = 5.859161e-2 sides with the Table 3 value
+   (C1 − 3.1297495 = 5.8591605e-2; C1 − eq8 = 5.858938e-2). As §4 said.
+2. C_(3,1): Table 3 prints 3.1833333078762 (= C^{u2}_1, the correct Eq. 8
+   min); Table 4's ΔC_(3,1) = 1.272710e-2 and ΔC^max_(3,1) = 1.381776e-2
+   both reconcile only with C_(3,1) = 3.175614005. Exact Δ = **7.7193e-3**
+   (§4's 7.7e-3 ✓; pinning test's 7.72e-3 ✓ exact).
+
+Both stay data_gap/`kind: conflict` for the 2026 journal; neither touches the
+C^stable/C^max/T^stable golden columns, which re-verify as internally
+consistent (all Table 4 ΔC^stable/ΔC^max/ΔC identities re-checked exactly:
+4.08220e-10, 4.069e-12, 1.2100252e-5, 5.8784844e-4, 3.5996891e-4,
+3.6577377e-2 vs the printed values — all agree to printed precision).
+
+Two new micro-findings (no action, recorded for completeness):
+
+- **Table 4 day column is the rounded-TU-column conversion**: e.g.
+  10.292069 TU × 4.348377401631 d = 44.753800 d (printed), whereas the
+  full-precision T^stable × TU = 44.753801 d; likewise 84.534335 vs
+  84.534334 and 64.305944 vs 64.305946. Last-printed-digit only. §4's "match
+  Table 4's day column exactly" holds at the 4-dp precision quoted there. The
+  (k1,1) rows' `tof_days_bounds` use Table 4's printed (sourced) values; the
+  derived (3,2)/(3,3) conversions 77.838478 / 78.903311 d re-verify exactly.
+- §4 item 3 (C_(1,1) Table 3 vs Table 1): exact Δ = 4.508e-11, at the 11th
+  *decimal place*; strictly not a rounding of the Table 1 value (which would
+  round to …315, not …3600) but benign in magnitude — characterization
+  unchanged.
+
+**Bottom line: zero NOTE-ERRORs and zero WIRING-ERRORs in any golden or
+catalogue value; the only note defect was the 2.24e-6-vs-2.23e-6 prose
+rounding above (fixed 2026-06-12). The 5 V1 rows and the golden tests stand
+as written.**

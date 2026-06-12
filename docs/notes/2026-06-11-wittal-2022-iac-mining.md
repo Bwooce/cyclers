@@ -163,3 +163,69 @@ launch to cycler rendezvous, Sec. 3, p. 3.)
    > 5 petals infeasible (both Sec. 2, p. 2); 3-petal unstable in all configurations
    tried (Sec. 5, p. 5); no epochs, no states, no Jacobi constants, no model statement
    anywhere in the paper.
+
+---
+
+## TRANSCRIPTION RESCAN (2026-06-12)
+
+Character-by-character re-read of the source PDF (IAC-22-C1.6.6, 7 pp.) against
+this note and catalogue row `wittal-2022-em-cycler-family` (#216 enrichment,
+commits be88b12 + a2f3398). Both numeric tables read twice in independent passes.
+
+### Verdicts — numeric values (all MATCH, PDF → note → row)
+
+1. **Table 1 launch masses, p. 3** (read 2x, all 27 cells): Falcon 9 RTLS
+   1925/1925/1440; Vulcan VC0 2260/2260/1695; Falcon 9 ASDS 3520/3520/2640;
+   Vulcan VC2 6160/6160/4620; Falcon Heavy (Recover) 7030/7030/N/A(5270);
+   New Glenn 7095/7095/N/A(5320); Vulcan VC4 8825/8825/6615; Vulcan VC6
+   11180/11180/8385; Falcon Heavy (Expend) 15545/15545/N/A(11655). Column heads
+   "2-petal (20,000 km) / 5-petal (low inc, 25,000 km) / 5-petal (high inc,
+   10,000 km)" and the footnote-1 VSFB no-infrastructure caveat — MATCH note §3.
+2. **Table 2 ΔV block, p. 5** (read 2x): cycler rendezvous 349.7 / 285.0 / 0;
+   LLO transfer 1,254.1 / 1,291.0 / 1,481.5; NRHO transfer 446.3 / 529.7 / 742.2
+   m/s — MATCH note §3 and the row's notes/source_quotes enrichment.
+3. **2-petal stability domain** (Sec. 5, read 2x): "greater than 7500 km and less
+   than ~15000 km in the ±ẑ direction"; 5-petal family examined 7,500–15,000 km
+   perilune (Fig. 3 caption); Conclusions repeat "lunar polar transit of
+   7500 − 15000 km" — MATCH note §2 and row notes.
+4. **Maintenance** (Sec. 5, read 2x): "lifetime delta-V is less than 50 m/s for
+   all family members, which is about half the cost of two-petal cyclers when
+   considering that each cycle of of five-petal cycler is nearly twice as long as
+   that of a two-petal" (the doubled "of of" is in print) — MATCH note §3 quote.
+5. **Period + taxonomy negatives** (read 2x): 2-petal "approximately 27 ± 3 days"
+   (Sec. 5); orbits twice per lunar sidereal period (27.3 d) (Sec. 2.1); "no
+   stable four-petal cyclers were found that could meet the period and
+   inclination requirement"; > 5 petals "considered infeasible due to the long
+   periods" (Sec. 2); 3-petal unstable, collapses to 2-petal or (less frequently)
+   5-petal, periapsis ~200,000 km, < 35° inclination (Secs. 2.2, 5); 5-petal
+   flyby every 53 d, same pole every 163 d (Sec. 2.3) — all MATCH note §2 and
+   row notes.
+6. **Supporting scalars**: 28.5° KSC / 80.5° + 600 km perigee VSFB geometries,
+   349.7 m/s + 5.5 d apogee-scenario transit, ~33% upmass advantage, 185 km park
+   orbit + 3 h limit + >60,000 km perigee-radius preclusion, perilune < 7,500 km
+   instability, 20,000 km insufficient-gravity case, Gateway 3-burn/~12 d node
+   rotation into the 9:2 NRHO, landing 100 km/90° three-burn — all MATCH.
+
+### IC re-scan (item e) — NO_SOURCED_IC re-confirmed, stays PERMANENT
+
+Full 7-page re-read specifically hunting a missed IC table: the only numeric
+tables are Table 1 (masses) and Table 2 (ΔV); everything else is text scalars
+(listed above) and Figs. 1–9 (renders + bar/line charts). **No state vector, no
+rotating-frame IC, no epoch, no Jacobi constant, no nd-period, no
+stability/monodromy data, no dynamical-model statement anywhere.** The Fig. 4
+caption's "Earth-Moon Rotating frame" / "Earth inertial frame" remain the only
+frame mentions. The PERMANENT NO_SOURCED_IC call and the
+model-unstated/ephemeris-leaning reclassification both stand unchanged.
+
+### Minor wording observation (no catalogue edit made)
+
+The row's maintenance paraphrase "about half the per-cycle cost of 2-petal, but
+each 5-petal cycle is ~2x longer" reads as two independent facts, whereas the
+paper's "about half the cost ... when considering that each cycle ... is nearly
+twice as long" makes the 2x duration the *basis* of the halving (i.e. similar
+absolute 5-cycle ΔV over twice the elapsed time). Values unaffected (< 50 m/s
+per 5 cycles is exact); candidate phrasing tighten at the next row-prose pass.
+
+**Bottom line:** zero numeric discrepancies in note or row; both tables verified
+twice; all quoted stability/period/cadence claims verbatim-correct; the
+NO_SOURCED_IC permanent verdict survives a dedicated second hunt.

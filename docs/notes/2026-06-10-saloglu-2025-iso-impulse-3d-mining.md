@@ -9,6 +9,24 @@ Sciences* (2025), DOI: 10.1007/s40295-025-00528-0; preprint arXiv:2501.01583 (3 
 No. 10 (2023) [their Ref. 52], which is mined separately; this note covers only what is
 NEW here.
 
+**TRANSCRIPTION RESCAN (2026-06-12):** all load-bearing values re-read against the
+arXiv PDF (two passes per load-bearing table) — **MATCH throughout**, and the two
+flagged source defects are confirmed in print. Verified: Table 1 p. 18 (initial
+[7000, 0.02, 60°, 0°, 0°, θ_i]; target [105000, 0.3, 12°, 0°, 0°, θ_f]); two-impulse
+base p. 18 verbatim ("Δv_total is **3.9618011** km/s with of Δv₁ = **2.8246140**
+km/s and Δv₂ = **1.1371871** km/s"); three-impulse base p. 19 (**3.8641159** =
+2.9390 + 0.6815 + 0.2436 km/s, particleswarm); coast 6.4738 d, T_f = 3.9191 d,
+0.73 ≤ Σ N_{k,1} ≤ 58.09 (p. 20). Earth–Mars Sec. VI.A: 5.5865 / 5.5873 km/s,
+313.2430 / 801.4034 d, Lambert 6.047 km/s, 793 + 686.9658 = 1479.9658 d /
+759.6963 d — all as noted. **SOURCE-DEFECT-CONFIRMED (both):** p. 30 prints
+"becomes 701.2694 days and 1405.8939 days" in prose and then
+"793 − 720.2694 = 72.7306 < T₀" in the feasibility check on the same page
+(arithmetic supports 720.2694); Δv_total printed **5.6109** km/s on p. 30 (Fig. 21c
+sentence) vs **5.6108** km/s on p. 31 — genuinely inconsistent in print, exactly as
+recorded in §7. The #207 goldens wired from this paper in
+`tests/verify/test_dv_bracket.py` (3.9618011 and its breakdown) are
+transcription-clean.
+
 **Verdict: USEFUL (secondary, two narrow takeaways).** The headline machinery — generating
 infinitely many equal-ΔV solutions by inserting phasing orbits at impulse anchor positions
 (APs) — is structurally inapplicable to our epoch-anchored, time-fixed cycler legs (their

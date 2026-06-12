@@ -9,6 +9,22 @@ Received 30 Mar 2023, published 25 Apr 2023.
 2026 MPC paper — i.e., acquisition-lead item 3 of
 `docs/notes/2026-06-10-cuevas-del-valle-2026-cr3bp-mpc-mining.md` is now **CLOSED**.
 
+**TRANSCRIPTION RESCAN (2026-06-12):** all load-bearing values re-read against the
+PDF (two passes per load-bearing page/table) — **MATCH throughout**. Verified:
+Table 1 p. 19 row-by-row (SDRE 0.3 T / 0.00025 / 0.02878 / **22.73 m/s** / 0.03 /
+0.5 / 28.93 s; LQR 0.1 T / 0.00011 / 0.01817 / **18.47 m/s** / 0.04 / 0.5 / 1.10 s;
+None T / 0.68393 / 1.02245 / 0); Monte-Carlo setup p. 19 (1000 draws, 1σ = 100 km /
+0.5 m/s) and the Fig. 8 ΔV scatter span (~0.5–6 m/s, axis to 7 — figure-read, as
+caveated); Sec. 3.1 IC p. 12 ([0.82413, 0, 0.05680, 0, 0.16725, 0] +
+[0.00058, 0, 0.1, 0, 0.01139, 0]) **with the paper's own "Earth–Moon L1 standard
+halo" label in the body text** — the Sec. 3.3 L1-relabel evidence stands as quoted;
+Sec. 3.2 IC p. 17 ([1.08238, 0, 0.06460, 0, 0.28198, 0] + the 332.55 km relative
+state, "L2 southern, A_z = 30,000 km, as given in [26]", dispersions 190 km / 4 m/s);
+3.76 nd mission duration p. 18; Q/R penalties pp. 18, 20. Richardson c₂: confirmed
+NOT printed numerically anywhere in this paper (formula only, p. 13) — the Sec. 4
+statement that the 2026 paper's value is the only printed c₂ across the pair holds.
+The pending #190 maintenance anchor (Table 1 + MC range) is transcription-clean.
+
 **Verdict: USEFUL.** Yields: (a) a complete, implementable Floquet station-keeping
 formulation whose key trick — augmenting the unstable Floquet mode with a
 **Jacobi-constant error state** — independently confirms the Jacobi constant as the

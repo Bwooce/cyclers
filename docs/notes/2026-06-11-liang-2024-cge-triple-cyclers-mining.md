@@ -162,7 +162,7 @@ theirs; the two searches are disjoint in genome space. See §6.
 
 All four members share sequence **CGCEC** per ~100 d cycle, propagated 10 cycles
 (~1000 d), ballistic (residual Δv below the 1e-8 m/s threshold; ephemeris member
-max 1.0383e-7 m/s per cycle, p. 18 — "can be neglected"). Per 10-cycle solution:
+max 1.0383e-7 m/s per cycle, p. 19 — "can be neglected"). Per 10-cycle solution:
 Europa ×10, Ganymede ×10, Callisto ×21 encounters (+1 each counting the initial conic
 guess) (p. 15).
 
@@ -171,7 +171,7 @@ Tables 3, 5, 7 are computed from the *required defect Δv* on the moon-centered
 hyperbola ignoring Jupiter's gravity — they are a reflection of how little turning is
 needed, not physical periapses (e.g. 1.9e6 km vastly exceeds Callisto's sphere of
 influence; that "flyby" needs essentially zero turn). In the ephemeris solution all
-flybys occur above 100 km real altitude (p. 18).
+flybys occur above 100 km real altitude (p. 19).
 
 ### 4.1 Member A — idealized, 1-1-1 structure, high perijove (Fig. 5, Tables 2–3, pp. 14–15)
 
@@ -237,7 +237,7 @@ pair; cycle-ToF spread ≤ 0.35 d; all cycle ToFs ≈ 100 d (p. 18).
 Ballistic CGCEC, 10 cycles, **SPICE JUP365.bsp** patched-conic. Departs Callisto
 **25 September 2033 18:04:43**, returns to Callisto **22 June 2036 01:44:39**
 (~1000 d). Max required Δv for one cycle **1.0383e-7 m/s** (negligible → ballistic);
-all flybys above **100 km** real altitude (p. 18). Cycle ToF 99.4–100.5 d; per-pair ToF
+all flybys above **100 km** real altitude (p. 19). Cycle ToF 99.4–100.5 d; per-pair ToF
 behaviour matches the idealized model (C-G less variable than C-E) (Figs. 8d–e, p. 20).
 **No per-flyby table is printed for this member** — flyby epochs/V∞ exist only as
 figure traces; data completeness is epoch+sequence+kernel only.
@@ -389,3 +389,92 @@ it defines the capability bar for the method arm.** Specifically:
 5. The cyclers are **not** guaranteed indefinite repetition (near-resonance + chained
    local optimization); the published claim is ≥ 1000 days / 10 cycles in both models
    (Conclusion, p. 19–20). Catalogue rows must carry that bound, not "infinite".
+
+---
+
+## TRANSCRIPTION RESCAN (2026-06-12)
+
+Character-by-character re-read of the source PDF against this note and the four
+catalogue rows (`liang-2024-cgcec-111-highperijove`, `-110-highperijove`,
+`-111-lowperijove`, `-ephemeris-2033`; #216, commits be88b12 + a2f3398). Every
+load-bearing table was read twice in independent passes.
+
+### Verdicts — numeric values (all MATCH, PDF → note → rows)
+
+1. **Table 1 mean motions** (read 2x): Europa 1.7693, Ganymede 0.8782, Callisto
+   0.3765 rad/day — MATCH note §2 (rows carry them via orbit_elements notes /
+   reproduction inputs only).
+2. **Table 2 phases** (2x): 0.063748 / 0.70579 / 1.3550 rad (E/G/C) — MATCH note
+   §4.1 and row A orbit_elements.note.
+3. **Table 3** (2x): (0, 5.6730, 1900851); (31.8973, 6.9919, 978172); (18.1697,
+   5.6698, 33839); (29.9343, 4.6685, 6241); (19.9747, 5.8721, 19765) — MATCH note
+   §4.1, row A invariants.transit_times_days [31.8973, 18.1697, 29.9343, 19.9747],
+   vinf 5.6730/6.9919/4.6685, and both source_quotes strings (incl. the 5.6698 and
+   5.8721 quoted-only values).
+4. **Table 4 phases** (2x): −0.48843 / 0.70579 / 1.3550 — MATCH note §4.2, row B.
+5. **Table 5** (2x): rows 1–2 identical to Table 3; (18.1697, 5.6698, 60877);
+   (30.2850, 4.4853, 10825); (19.6834, 5.7914, 36258) — MATCH note §4.2, row B
+   transit_times_days [31.8973, 18.1697, 30.2850, 19.6834], vinf 4.4853, quotes.
+6. **Table 6 phases** (2x): 0.94281 / 1.3883 / 1.7936 — MATCH note §4.3, row C.
+7. **Table 7** (2x): (0, 7.6433, 1329021); (32.2542, 10.4922, 629226); (17.8127,
+   7.6409, 27438); (31.1267, 12.0213, 3636); (18.9362, 7.7838, 12516) — MATCH note
+   §4.3, row C transit_times_days [32.2542, 17.8127, 31.1267, 18.9362], vinf
+   7.6433/10.4922/12.0213, quotes (7.6409, 7.7838 quoted-only).
+8. **Perijoves**: paper prints "r_Eu-10000, which is about 660988 km" (Member A/B)
+   and "(r_Eu-10000)/2" (Member C) — MATCH 660,988 km; the 330,494 km figure is our
+   derived half (correctly marked "~" in note and rows; the paper never prints
+   330494 itself).
+9. **Member D** (epoch sentence read 2x): departs Callisto 25 September 2033
+   18:04:43, arrives 22 June 2036 01:44:39; max required Δv for one cycle
+   1.0383e-7 m/s; all flybys above 100 km — MATCH note §4.4, row D
+   (epoch_iso8601 2033-09-25T18:04:43, period.note, source_quotes).
+   source_ephemeris JUP365.bsp confirmed (Sec. II.B.2, read 2x).
+10. **Scaffolding scalars**: S_C,G 12.5232 d, S_G,E 7.0509 d, ratio 1.7761 ≈ 7/4;
+    mismatch 50.0928 − 49.3563 = 0.7365 d; T_S/T ≈ 3/7/14; 50 km min-altitude
+    constraint; 1e-8 m/s ballistic threshold; ≤ 0.35 d cycle-ToF spread; encounter
+    counts E×10/G×10/C×21 (+1 with the initial guess) — all MATCH.
+11. Cycle-ToF ranges 99.86–100.14 d (A, Fig. 5d) and 99.4–100.5 d (D, Fig. 8e) are
+    figure-trace reads consistent with the printed axes (99.85–100.15 / 99.4–100.6);
+    correctly figure-derived, not table values.
+
+### Errata re-verification (item e) — all three genuinely in print
+
+- **Eq. 16 t_e1 = 22·n_cycle·S_G,E** confirmed in print (2x), while Fig. 4 labels
+  the same interval "11*2 S_C,E" and the p. 10 text says "4 C-G synodic periods or
+  11 C-E synodic periods" — the S_G,E→S_C,E erratum is SOURCE-DEFECT-CONFIRMED.
+- "Lynan and Longuski [9]" (Introduction), "Drew et al. [6]", "Naoya et al. [7]"
+  (Introduction), ref-list "Sttange" [8] — all confirmed in print.
+- Flyby-altitude fiction caveat confirmed verbatim: "the flyby altitudes in
+  Tables. 3, 5, and 7 are calculated with the Δv provided by the gravity-assist
+  based on the hyperbolic Jovian-moon-centered orbit, and the gravitation of
+  Jupiter is not taken into consideration."
+
+### NEW source defect found (add to §9 quote-with-care list)
+
+6. **Eq. 13 (p. 6) denominator misprint** (read 2x): printed as
+   γ = arccos[(1+ν₁)/√((1+ν₁)² + ν₂² + ν₂²)] — the last term repeats ν₂²; by the
+   Δv-projection definition (Eqs. 9–10, components ν₁, ν₂, ν₃) it should be ν₃².
+   SOURCE-DEFECT (subscript typo). No catalogue impact (no row ingests Eq. 13);
+   any reproduction script must use ν₂²+ν₃².
+
+### Note-level citation artifacts found (values unaffected; no catalogue edits)
+
+- §3.1 cites "(Fig. 2, p. 8)" for the example structures "1-1-1 or 1-1-0"; the
+  structure actually illustrated in Fig. 2 is **0-1-1** (text: "the initial conic
+  guess structure represented by 0-1-1 is shown in Fig. 2"). The 1-1-1/1-1-0
+  labels themselves are correct — they are the published members' structures
+  (Tables 2/4 contexts). NOTE-ERROR (citation only).
+- §4 preamble and §4.4 cited "p. 18" for Member D's 1.0383e-7 m/s and >100 km
+  statements; in the 22-page draft these sit on **p. 19** (p. 18 carries the
+  altitude caveat and the Sec. IV.B opening). The catalogue row
+  `liang-2024-cgcec-ephemeris-2033` inherited "(p. 18)" in trajectory_regime and
+  notes — inherited citation artifact only; all values correct. NOTE-ERROR
+  (page-cite only, propagated). FIXED 2026-06-12 in the rescan-cleanup pass
+  (note §4 ×3 + row trajectory_regime + row flyby note → p. 19).
+
+**Bottom line:** all numeric content in the four rows traces exactly to the PDF;
+zero numeric discrepancies; three claimed errata confirmed in print; one new
+in-print typo (Eq. 13) recorded; two page/figure citation imprecisions in this
+note (one inherited by row D's prose) — the p. 18→19 cites fixed 2026-06-12;
+the §3.1 Fig. 2 structure-label imprecision left as documented (annotation
+above is the correction of record).
