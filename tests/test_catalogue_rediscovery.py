@@ -268,7 +268,11 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 223,
     ExclusionReason.DESCRIPTOR_CLOSABLE: 12,  # #106: free_return_arcs[]-bearing SnLm rows
     ExclusionReason.MISSING_LEG_TOFS: 15,
-    ExclusionReason.NON_HELIOCENTRIC: 6,
+    # 6 -> 15 (2026-06-12, #216): +5 Ross-Roberts-Tsoukkas EM CR3BP cycler rows
+    # (non-keplerian, Earth primary) + 4 Liang CGE Jovian triple-cycler rows
+    # (Jupiter primary). None is v1-gauntlet-reachable (planet-centric), so the
+    # heliocentric gauntlet's reach is unchanged — a pure census shift.
+    ExclusionReason.NON_HELIOCENTRIC: 15,
     ExclusionReason.MISSING_VINF: 5,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
