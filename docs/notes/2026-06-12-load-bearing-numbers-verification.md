@@ -138,3 +138,35 @@ not McConaghy. The values themselves are confirmed; only the brief's label was o
 - Saloglu phase-free fundamental-arc t_pf/θ values (need the Eq.1/Eq.7 optimiser).
   Only the algebraic by-products (phasing period, rev-count bound, base ΔV via the
   named bi-tangential construction) were reproducible — and they all passed.
+
+---
+
+## PDF ADJUDICATION (2026-06-12) — the two flagged Vallado rows re-read from source
+
+The #203 pass above flagged two rows by *reproduction* but had only checked them
+against our mining note. Both have now been adjudicated by re-reading the actual
+report PDF (Vallado 1991, USAFA TR-91-6, Appendix E) character-by-character, twice
+independently per page, the same way the McConaghy Table 7.1 row was settled.
+
+**Headline: 0 of the 2 are our transcription errors — BOTH are genuine
+SOURCE-PRINT DEFECTS. Neither row is rescued; both stay dropped.**
+
+1. **Stumpff z = −39.47842 (p. E-12, FindCandS table) — SOURCE-DEFECT.** The PDF
+   prints exactly `−39.47842  5.83559577  0.97444596`. Our note transcribed it
+   faithfully; the z value is also printed exactly (not mis-printed). Independent
+   reproduction gives C = 6.75677528, S = 1.05406777, and no nearby z reproduces
+   both printed values. The published cell is wrong. **NOT a transcription error →
+   row NOT rescued; stays dropped** from the #187 `_stumpff` golden set. The four
+   other Stumpff rows re-read identically and remain usable.
+
+2. **Kepler D.3-3 hyperbolic R_y (p. E-14, KEPLER case 4 / BMW D.3,3) —
+   SOURCE-DEFECT.** The PDF prints the full input AND output state exactly as our
+   note records, including R_y = −0.1172043; no single digit/sign in the printed
+   R_y or any input explains the gap (inputs reproduce a, e, |R| exactly).
+   Independent `propagate` + RK4 give R_y = −0.11822049 (Δ ≈ 1.0e-3, above the
+   report's own ~1e-5 floor on this e=8 hyperbola). **NOT a transcription error →
+   row NOT rescued; stays dropped** as a tight #187 golden (coarse >2e-4 sanity
+   use only). The other Kepler cases reproduce clean.
+
+Mining note `docs/notes/2026-06-10-vallado-1991-tr916-mining.md` annotated in place
+(dated CORRECTION/ADJUDICATION blocks at §4.1 and §3 case 4).
