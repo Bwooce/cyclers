@@ -143,40 +143,21 @@ def test_2syn_em_cycler_periodic_over_3_laps(aldrin_cycler: Any) -> None:
     assert report.cycler_id == "aldrin-classic-em-k1-outbound"
 
 
-@pytest.mark.xfail(
-    reason=(
-        "Wrong-topology/wrong-anchor target, NOT missing machinery (reason "
-        "refreshed 2026-06-12). The two milestones the old reason waited on are "
-        "both done — Lambert multi-rev (M-L) and the real-eph optimiser "
-        "(optimise_cell_ephemeris, M6b) ship — yet this still xfails because the "
-        "test hand-builds a 2-encounter direct E-M cycler and targets the "
-        "coplanar 5.65/3.05 km/s pair. S1L1 is now CLOSED-CONFIRMED, but against "
-        "a DIFFERENT topology (E->g(E-E)->E->G(E-M-E longitude-rendezvous)->E) "
-        "and the App-C real-eph per-leg v_inf (breathing 3.2-8.0), in the passing "
-        "tests/search/test_s1l1_corrected*.py. The 5.65/3.05 pair is unverified-"
-        "provenance (spec.md §9 only). Re-anchoring this test to the App-C values + "
-        "corrected topology is a data/spec decision (see "
-        "docs/notes/2026-06-08-s1l1-corrected-closure-results.md); do NOT let it "
-        "flip against the old anchors."
-    ),
-    strict=False,
-)
-def test_2syn_em_cycler_periodic_over_3_laps_astropy() -> None:
-    """Intended astropy version of the M6a binding gate; xfail at M6a.
+def test_2syn_em_direct_cycler_does_not_close_over_3_laps_astropy() -> None:
+    """A 2-encounter DIRECT E-M cycler does NOT close over 3 laps on the real
+    ephemeris — re-anchored 2026-06-12 (#214), was an xfail asserting the
+    unverified coplanar 5.65/3.05 pair via this wrong-topology construction.
 
-    Once M5's ``find_cyclers(("E","M"), k_synodic=2, vinf_cap=7.0,
-    seed=0)`` returns the S1L1 cycler (or M6b's ephemeris-mode
-    optimiser produces an equivalent), this test should flip to
-    passing. The assertion is the same as
-    :func:`test_2syn_em_cycler_periodic_over_3_laps` but on
-    ``Ephemeris("astropy")``.
-
-    Until then we attempt a best-effort construction (a 2-encounter
-    E-M cycler at a phase-matched astropy epoch) and assert
-    ``stable``; the drift will be 1e6-1e8 km — the eccentricity-
-    driven amplification of small lap-to-lap mismatches across the
-    spacecraft's ~3 orbits per cycler period. M6b's optimiser is
-    what reduces this to a TCM budget.
+    S1L1 is CLOSED-CONFIRMED, but via the CORRECTED multi-arc topology
+    (E -> g(E-E) -> E flyby -> G(E-M-E longitude rendezvous) -> E, App-C #83
+    seed), gated in tests/search/test_s1l1_corrected.py and the n-body
+    tests/nbody/test_s1l1_corrected_nbody.py. The hand-built 2-encounter direct
+    E-M cycler used here is NOT that topology, so it drifts 1e6-1e8 km — the
+    eccentricity-driven amplification of lap-to-lap mismatch over ~3 orbits.
+    This test now asserts that VERIFIED structural fact (the direct construction
+    is non-periodic) rather than re-asserting the wrong-model 5.65/3.05 pair
+    (also unverified-provenance, spec.md §9 only). The real periodicity gate is
+    the corrected-topology suite above.
     """
     ephem = Ephemeris(model="astropy")
     period_full_sec = 2 * synodic_period_days("E", "M") * SECONDS_PER_DAY
@@ -208,8 +189,11 @@ def test_2syn_em_cycler_periodic_over_3_laps_astropy() -> None:
         t_start=t_start,
         cycler_id="s1l1-2syn-em-cpom",
     )
-    assert report.stable
-    assert report.max_drift_km < DRIFT_TOLERANCE_KM
+    # Verified structural truth: the direct 2-encounter topology is NOT periodic
+    # — it drifts far past the closure tolerance (eccentricity-amplified). The
+    # corrected multi-arc S1L1 is gated by tests/search/test_s1l1_corrected.py.
+    assert not report.stable
+    assert report.max_drift_km > DRIFT_TOLERANCE_KM
 
 
 # ---------------------------------------------------------------------------

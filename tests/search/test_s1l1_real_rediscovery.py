@@ -33,30 +33,21 @@ def _vinf_by_body(result: object) -> dict[str, float]:
 
 
 @pytest.mark.slow
-@pytest.mark.xfail(
-    strict=False,
-    reason=(
-        "TOPOLOGY MISMATCH resolved by STAGE 1 multi-rev plumbing; flip to pass "
-        "once the topology is confirmed (2026-06-03). STAGE 1 threads "
-        "per_leg_revs / per_leg_branch end-to-end (optimise_cell_ephemeris -> "
-        "optimise_maintenance_dv -> _build_chain) and adds a multi-rev ToF floor, "
-        "so a 4-encounter E-M-E-E cell with a multi-rev Earth-to-Earth resonant "
-        "interval is now reachable. This test still uses the 3-encounter E-M-E "
-        "cell with a direct Mars->Earth return leg, which the multi-seed resolver "
-        "confirms cannot host 3.05 km/s at Mars at any epoch/ToF: the S/L labels "
-        "are Earth-to-Earth resonant intervals (see [[s1l1-nomenclature]]), not "
-        "an E-M-E return leg. Re-modelling as outbound E->M plus the S1/L1 "
-        "resonant intervals and pinning the winning per_leg_revs (see "
-        "test_s1l1_idealised_multirev.py and scripts/characterise_s1l1.py) flips "
-        "this gate. The SOURCED 5.65/3.05 anchors remain the only assertion "
-        "targets. "
-        "NOTE (2026-06-04): the 5.65/3.05 anchor is unverified-provenance "
-        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
-        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy "
-        "2006 / Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
-    ),
-)
-def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
+def test_s1l1_direct_eme_cell_is_off_family() -> None:
+    """The 3-encounter DIRECT E-M-E cell does NOT host S1L1 — re-anchored
+    2026-06-12 (#214), was an xfail asserting the unverified coplanar 5.65/3.05
+    pair.
+
+    S1L1 is CLOSED-CONFIRMED via the CORRECTED topology (E -> g(E-E) -> E flyby
+    -> G(E-M-E transit) -> E, App-C #83 seed, per-leg Mars v_inf breathing
+    3.2-8.0 km/s), gated in tests/search/test_s1l1_corrected.py. The S/L labels
+    are Earth-to-Earth resonant intervals, not an E-M-E direct return leg
+    (see memory s1l1-nomenclature), so this construction path is structurally the
+    WRONG topology and cannot reach the family. This test now asserts that
+    VERIFIED negative — the direct cell lands off-family (constraints
+    unsatisfied, emerged v_inf far outside the App-C 3.2-8.0 band) — rather than
+    re-asserting the wrong-model 5.65/3.05 anchor (which was also
+    unverified-provenance, spec.md §9 only)."""
     cell = Cell(
         bodies=("E", "M"),
         sequence=("E", "M", "E"),
@@ -65,9 +56,6 @@ def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
         per_leg_branch=("single", "single"),
     )
     eph = Ephemeris(model="astropy")
-    # Asymmetric family-appropriate seed: the sourced ~154 d E->M outbound +
-    # the remainder of the 2-synodic period, so the phase-match resolves the
-    # S1L1 launch epoch instead of a symmetric degenerate basin.
     t_syn_em_days = 779.9
     period_days = 2 * t_syn_em_days
     result = optimise_cell_ephemeris(
@@ -80,7 +68,9 @@ def test_s1l1_real_ephemeris_rediscovers_anchors() -> None:
         seed=0,
         tof_seed_days=[154.0, period_days - 154.0],
     )
-    assert result.constraints_satisfied
+    # Verified structural truth: the direct E-M-E topology is off-family.
+    assert not result.constraints_satisfied
     v = _vinf_by_body(result)
-    assert abs(v["E"] - VINF_E) < TOL
-    assert abs(v["M"] - VINF_M) < TOL
+    # Emerged Mars v_inf is far above the corrected cycler's 3.2-8.0 band, not
+    # near the wrong-model 3.05 anchor — the direct cell is a different basin.
+    assert v["M"] > 9.0

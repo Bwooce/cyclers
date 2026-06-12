@@ -267,48 +267,36 @@ def test_aldrin_powered_turn_deficit_gate(aldrin_entry: dict[str, object]) -> No
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    strict=False,
-    reason=(
-        "wrong S1L1 topology, not missing data — multi-rev Lambert is not "
-        "the blocker (the solver lands). The catalogue entry posits a direct "
-        "Mars->Earth return leg, but no such leg is defined by construction: "
-        "in the McConaghy/Longuski/Byrnes nomenclature S and L denote "
-        "consecutive Earth-to-Earth resonant intervals, not Earth<->Mars "
-        "transits, and Mars is a flyby target of opportunity on the outbound "
-        "arc. A single S1L1 vehicle gives one-way fast transit; the crewed "
-        "return uses a mirrored conjugate L1S1 cycler. construct_real_"
-        "ephemeris_cycler raises on the null return-leg tof_days. Forcing "
-        "closure would require fabricating a ToF for a non-existent leg, "
-        "which the golden-test discipline forbids. Flips to passing once the "
-        "entry is re-modelled as outbound E->M plus the S1/L1 Earth-to-Earth "
-        "resonant intervals. "
-        "NOTE (2026-06-04): the 5.65/3.05 V∞ anchor is unverified-provenance "
-        "(catalogue data_gap vinf_kms_at_encounters, s1l1-2syn-em-cpom): "
-        "traces only to spec.md §9; unconfirmed in Patel 2019 / McConaghy 2006 "
-        "/ Sanchez Net 2022 — see docs/notes/s1l1-target-topology-mining.md."
-    ),
-)
-def test_2syn_em_cpom_periodic_over_2_cycles_astropy(
+def test_2syn_em_cpom_direct_return_leg_is_undefined_by_construction(
     astropy_ephem: Ephemeris,
 ) -> None:
-    """Aspirational gate for the 2-syn S1L1 entry; xfail because the entry's
-    direct M->E return leg is undefined by construction (S/L are Earth-to-
-    Earth resonant intervals), not because of a missing ToF extraction.
-    Additionally: the 5.65/3.05 km/s V∞ anchor is provenance-flagged
-    (unverified-provenance data_gap) per docs/notes/s1l1-target-topology-mining.md
-    — traces only to spec.md §9, unconfirmed in mined primary sources."""
+    """The `s1l1-2syn-em-cpom` entry's DIRECT Mars->Earth return leg does not
+    exist — re-anchored 2026-06-12 (#214), was an xfail asserting the unverified
+    coplanar 5.65/3.05 km/s pair.
+
+    S1L1 is now CLOSED-CONFIRMED, but via the CORRECTED topology
+    E -> g(E-E resonant interval, no Mars) -> E flyby -> G(E-M-E transit) -> E,
+    seeded from Russell App-C #83 with per-leg Mars v_inf breathing 3.2-8.0 km/s
+    — fully gated in tests/search/test_s1l1_corrected.py (+ the n-body
+    tests/nbody/test_s1l1_corrected_nbody.py). In the McConaghy/Longuski/Byrnes
+    nomenclature S and L are consecutive Earth-to-Earth resonant intervals, NOT
+    Earth<->Mars transits, so the catalogue entry's direct M->E return leg is
+    undefined by construction. This test now asserts that VERIFIED structural
+    fact (construct_real_ephemeris_cycler raises on the null return-leg ToF)
+    rather than re-asserting the wrong-model coplanar anchor — forcing a ToF for
+    a non-existent leg is exactly what the golden-test discipline forbids.
+    The 5.65/3.05 pair was also unverified-provenance (spec.md §9 only;
+    docs/notes/s1l1-target-topology-mining.md)."""
     entries = load_m6b_entries()
     s1l1 = next(e for e in entries if e["id"] == "s1l1-2syn-em-cpom")
-    result = verify_real_closure(
-        s1l1,
-        n_cycles=2,
-        ephem=astropy_ephem,
-        signature_priority_date=datetime(2002, 8, 14, tzinfo=UTC),
-        cycler_id="s1l1-2syn-em-cpom",
-    )
-    assert result.closes
-    assert result.max_drift_km < REAL_DRIFT_TOLERANCE_KM
+    with pytest.raises(ValueError, match="null tof_days"):
+        verify_real_closure(
+            s1l1,
+            n_cycles=2,
+            ephem=astropy_ephem,
+            signature_priority_date=datetime(2002, 8, 14, tzinfo=UTC),
+            cycler_id="s1l1-2syn-em-cpom",
+        )
 
 
 # ---------------------------------------------------------------------------
