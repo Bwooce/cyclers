@@ -7828,7 +7828,7 @@ days\" per the NTRS abstract.
   name: "Wittal/Miaule/Asher Earth-Moon cycler family for lunar logistics (family seed)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
-  model_assumption: cr3bp   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
+  model_assumption: analytic-ephemeris   # RECLASSIFIED 2026-06-12 (#211/#216, USER-approved) from cr3bp: the full IAC-22-C1.6.6 text NEVER states CR3BP (model unstated); internal evidence leans ephemeris-class numerical simulation — the 2-petal period is "approximately 27 +/- 3 days" (a CR3BP periodic orbit has an EXACT period), maintenance dV accumulates per-flyby across 5 cycles with discrete MCC events, and Earth-flyby inclination/periapsis vary cycle-to-cycle (mining note §1). Mirrors the Genova-Aldrin precedent (cr3bp -> bicircular, #184): keep cycler_class non-keplerian + the EM-physical-constant cr3bp identity block, retag only the dynamical model to the supported ephemeris-class enum value. schema v4.6 enum (circular-coplanar|circular-inclined|analytic-ephemeris|cr3bp|bicircular). See docs/notes/2026-06-11-wittal-2022-iac-mining.md.
   cycler_class: non-keplerian   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
@@ -7843,18 +7843,22 @@ days\" per the NTRS abstract.
     k: null
     years: null
     note: |
-      The paper studies multiple cycler families parameterised by
-      inclination relative to the lunar orbit plane (notably families
-      near 90 degree inclination). No single period characterises the
-      family. The full IAC PDF was not accessible to this ingest; only
-      the NTRS landing-page abstract is cited.
+      The paper studies a "petal" cycler family set in lunar resonance at
+      lunar-relative inclination near 90 deg, with no single period for the
+      family. Per-family cadence (full text, mining note §2): the 2-petal
+      cycler orbits twice per lunar sidereal period (27.3 d), period
+      "approximately 27 +/- 3 days" (Sec. 5, p. 4 — approximate, consistent
+      with an ephemeris-class simulation, not an exact CR3BP period); the
+      5-petal has a lunar flyby once every 53 d and same-pole access every
+      163 d (Sec. 2.3, p. 2). years: null (Earth-Moon bound orbit, not a
+      heliocentric-synodic cycler).
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: null
-      note: "Family seed — individual member V_inf not in the accessible abstract."
+      note: "V_inf is n/a: these are BOUND Earth-Moon petal cycler orbits, not hyperbolic-encounter cyclers (mining note §5). Recorded n/a rather than not-extracted."
     - body: "Moon"
       vinf_kms: null
-      note: "Same — family seed."
+      note: "Same — n/a for a bound Earth-Moon orbit."
   orbit_elements:
     a_au: null
     e: null
@@ -7862,43 +7866,55 @@ days\" per the NTRS abstract.
     aphelion_au: null
     inclination_deg: null
     note: |
-      Inclination is a primary distinguishing parameter for the families
-      studied (~90 deg relative to the Moon) but no single (a, e, peri,
-      apo) characterises the set.
+      Lunar-relative inclination near 90 deg is the family's primary
+      distinguishing parameter (abstract; Conclusions, p. 5), but no single
+      (a, e, peri, apo) characterises the set. Specific full-text geometry:
+      2-petal at 20,000 km perilune has Earth-relative inclination ~28.5 deg
+      (KSC latitude); the 5-petal high-inclination variant at 10,000 km perilune
+      reaches perigee altitudes as low as 600 km at Earth inclination 80.5 deg
+      (Sec. 3, p. 3).
     periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
     apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
     raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
     arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
     true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
     epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
-    cr3bp:                    # schema v4 (2026-06-03); CR3BP identity for non-keplerian orbit
-      mass_ratio: 0.01215    # Earth-Moon standard CR3BP mass ratio (physical constant);
+    cr3bp:                    # schema v4 (2026-06-03); orbit identity block for non-keplerian orbit
+                              # (retained as identity per the Genova-Aldrin bicircular precedent;
+                              # model RECLASSIFIED cr3bp -> analytic-ephemeris, #211/#216).
+      mass_ratio: 0.01215    # Earth-Moon standard mass ratio (physical constant);
                               # same value used in Genova & Aldrin 2015 (AAS-15) p.1 and
-                              # throughout the Earth-Moon CR3BP literature.
-      family: null           # family name not stated in accessible NTRS abstract → data_gaps
-      libration_point: null  # not stated in accessible abstract
-      jacobi_constant: null  # not tabulated in accessible abstract → data_gaps
-      period_nd: null        # not tabulated in accessible abstract → data_gaps
-      stability_index: null  # not tabulated in accessible abstract → data_gaps
-      state_nd: null         # not tabulated → data_gaps
-      lunit_km: null         # not tabulated → data_gaps
-      tunit_s: null          # not tabulated → data_gaps
+                              # throughout the Earth-Moon literature. Kept as the EM identity
+                              # constant even though the paper's model is ephemeris-class, not CR3BP.
+      family: null           # PERMANENT data gap: no IC/family identifier anywhere in the full text
+      libration_point: null  # PERMANENT data gap: full text figures-only
+      jacobi_constant: null  # PERMANENT data gap: ephemeris-class model (no Jacobi constant) + figures-only
+      period_nd: null        # PERMANENT data gap: 2-petal period quoted as "~27 +/- 3 d" (approximate, not nd-exact)
+      stability_index: null  # PERMANENT data gap: no monodromy/eigenvalue data in the full text
+      state_nd: null         # PERMANENT data gap: no state vector anywhere in the full text
+      lunit_km: null         # PERMANENT data gap: full text figures-only
+      tunit_s: null          # PERMANENT data gap: full text figures-only
   data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "unknown"
+      note: "NO_SOURCED_IC, now PERMANENT with respect to this source: mining of the FULL IAC-22-C1.6.6 PDF (mining note §1) confirms it contains ZERO initial conditions of any kind — no state vectors, no rotating-frame ICs, no Jacobi constants, no nd-periods, no stability indices/eigenvalues, no epochs; the orbits exist only as rendered figures. This is a PUBLICATION gap in the primary source, not an access gap. The reclassified analytic-ephemeris model also makes a CR3BP nd-state inapplicable. The only remaining source-axis lead is the companion paper ref [9] (Wittal/Smith/M. 2021 AAS/AIAA, robotic lunar + Gateway payload return)."
+      source_hint: "Wittal, M. M., Smith, J. D., M., C. A. 2021 (AAS/AIAA Astrodynamics Specialist Conference) — the companion paper; may state the simulation environment / orbit states."
+      todo_ref: "#211"
     - path: "orbit_elements.cr3bp.jacobi_constant"
-      kind: "unknown"
-      note: "Jacobi constant not available from the NTRS abstract (full IAC-22-C1.6.6 PDF inaccessible at ingest)."
-      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF (IAC-22-C1.6.6)"
-      todo_ref: "#76-cr3bp-backfill"
+      kind: "not-applicable"
+      note: "PERMANENT: the paper's model is ephemeris-class (reclassified analytic-ephemeris #211/#216), not CR3BP, so a Jacobi constant is not a conserved quantity here; and the full text is figures-only (no constant of any kind is published). Part of the NO_SOURCED_IC permanent gap (mining note §1)."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC-22-C1.6.6 full text (figures-only); companion ref [9]."
+      todo_ref: "#211"
     - path: "orbit_elements.cr3bp.period_nd"
-      kind: "unknown"
-      note: "Non-dimensional period not available from the accessible abstract."
-      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF"
-      todo_ref: "#76-cr3bp-backfill"
+      kind: "not-applicable"
+      note: "PERMANENT: the paper's model is ephemeris-class (reclassified analytic-ephemeris), not CR3BP, so a non-dimensional CR3BP period does not apply; the only published period is the 2-petal '~27 +/- 3 days' (approximate, dimensional, Sec. 5 p. 4)."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC-22-C1.6.6 full text (figures-only)."
+      todo_ref: "#211"
     - path: "orbit_elements.cr3bp.stability_index"
       kind: "unknown"
-      note: "Stability index not available from the accessible abstract."
-      source_hint: "Wittal, Miaule, Asher 2022 IAC paper full PDF"
-      todo_ref: "#76-cr3bp-backfill"
+      note: "PERMANENT with respect to this source: no monodromy/eigenvalue/stability-index data anywhere in the full text. Stability is described only qualitatively (the 2-petal is the most stable family; 3-petal unstable everywhere; stability domain by perilune passage 7,500-15,000 km)."
+      source_hint: "Wittal, Miaule, Asher 2022 IAC-22-C1.6.6 full text (figures-only); companion ref [9]."
+      todo_ref: "#211"
   legs: []
   first_published:
     authors: ["Wittal, M. M.", "Miaule, S.", "Asher, B. W."]
@@ -7911,7 +7927,11 @@ days\" per the NTRS abstract.
     note: |
       NTRS document ID 20220013595, paper IAC-22-C1.6.6. Authors are at
       Kennedy Space Center (Wittal), Deep Space Logistics (Miaule), and
-      Aegis Aerospace (Asher).
+      Aegis Aerospace (Asher). PROVENANCE: this row was originally ingested
+      from the NTRS landing-page ABSTRACT only; enriched 2026-06-12 (#211/#216)
+      from the FULL IAC-22-C1.6.6 PDF (mining note
+      docs/notes/2026-06-11-wittal-2022-iac-mining.md). The earlier
+      "full IAC PDF was not accessible" note is now obsolete.
   corroborating_sources:
     - authors: ["Wittal, M. M.", "Miaule, S.", "Asher, B. W."]
       year: 2022
@@ -7922,24 +7942,50 @@ days\" per the NTRS abstract.
       note: "Sibling AIAA ASCEND paper from the same author group expanding on the cislunar cycler architecture."
   priority_date: "2022-09-18"
   notes: |
-    Family-seed entry. The paper applies cycler mechanics to lunar
-    logistics — particularly cargo/crew resupply between Earth, the
-    Gateway, and the lunar South Pole — by removing the need for large
-    rockets in favour of "more frequent but smaller missions". Cycler
-    families near 90 degree inclination relative to the lunar orbit
-    plane are studied so the cycler reaches high-latitude (South Pole)
-    sites.
+    Family-seed entry, enriched from the FULL IAC-22-C1.6.6 text (#211/#216).
+    The paper applies cycler mechanics to lunar logistics (cargo/crew resupply
+    between Earth, the Gateway, and the lunar South Pole) by removing the need
+    for large rockets in favour of "more frequent but smaller missions". The
+    families are near-polar "petal" cyclers in lunar resonance, explored at
+    lunar-relative inclination near 90 deg.
 
-    Like other Earth-Moon cycler papers in the post-2015 wave (Genova
-    2015, the 2010 Russell/Strange Earth-Moon work), this is naturally
-    modelled in the Earth-Moon CR3BP rather than patched-conic, so
-    numerical signature fields are null and not suitable for M7
-    matching against patched-conic finder hits.
+    PETAL TAXONOMY (full text, mining note §2):
+      - 2-petal (Sec. 2.1): orbits twice per lunar sidereal period (27.3 d);
+        the MOST STABLE family; period "~27 +/- 3 days" (Sec. 5, p. 4).
+      - 3-petal (Sec. 2.2 / Sec. 5): good NRHO/south-pole access but UNSTABLE
+        EVERYWHERE — collapses readily into a 2-petal (or, less often, 5-petal)
+        form; periapsis ~200,000 km, inclination < 35 deg; expensive to
+        maintain in any configuration.
+      - 5-petal (Sec. 2.3): lunar flyby every 53 d, same-pole access every
+        163 d; examined over perilune 7,500-15,000 km; greatest accessibility
+        flexibility but highly variable inclination.
+      - NEGATIVES: no stable 4-petal meeting the period+inclination requirement
+        was found; > 5 petals considered infeasible (long periods). (Sec. 2.)
 
-    As individual cycler members from the paper become available
-    (full IAC PDF, follow-up journal versions), they should be split
-    out into per-member entries with full (period, V_inf multiset,
-    leg elements). Until then, this family seed records the citation.
+    2-PETAL STABILITY DOMAIN (Sec. 5): "relatively stable and periodic so long
+    as the perilune passage was greater than 7500 km and less than ~15,000 km
+    in the +/- z direction"; perilune < 7,500 km destabilises (pushed into the
+    2-petal formation or a non-resonant orbit); at 20,000 km perilune the lunar
+    gravity is insufficient to maintain high lunar inclination. Perilune passes
+    alternate N/S poles, so a given pole is reachable every other cycle (Sec. 4).
+
+    MAINTENANCE: lifetime station-keeping dV over 5 cycles is < 50 m/s for all
+    5-petal members (about half the per-cycle cost of 2-petal, but each 5-petal
+    cycle is ~2x longer; Sec. 5, Figs. 6/8); 2-petal totals on the same < 50 m/s
+    scale (Fig. 6). Course-correction burns at perilune and at perigee between
+    petals 2-3, assumed impulsive.
+
+    MODEL: the full text NEVER states a dynamical model; internal evidence
+    (approximate ~27 +/- 3 d period; per-flyby MCC accumulation; cycle-to-cycle
+    inclination/periapsis variation) leans EPHEMERIS-CLASS simulation, so the
+    row's model_assumption was reclassified cr3bp -> analytic-ephemeris
+    (#211/#216, mirroring the Genova-Aldrin cr3bp -> bicircular precedent).
+    V_inf-at-encounters is n/a (these are bound Earth-Moon orbits, not
+    hyperbolic-encounter cyclers).
+
+    NO_SOURCED_IC is now PERMANENT with respect to this source (the full text
+    is figures-only). The single remaining source-axis lead is the companion
+    paper ref [9] (Wittal/Smith/M. 2021).
   source_quotes:
     "first_published.title": |
       NTRS 20220013595 title: "Earth-Moon Cycler Mission Design for
@@ -7948,11 +7994,17 @@ days\" per the NTRS abstract.
       NTRS metadata: "International Astronautical Congress, Paris,
       France, September 18-22, 2022, paper IAC-22-C1.6.6".
     notes: |
-      NTRS abstract: explores how "an Earth-Moon cycler may provide to
-      lunar logistics by removing the necessity for large and often
-      expensive rockets in lieu of more frequent but smaller missions";
-      examines cycler families with inclinations near 90 degrees
-      relative to the Moon.
+      Full-text quotes (IAC-22-C1.6.6, mining note §2-3):
+      - 2-petal stability domain (Sec. 5): "relatively stable and periodic so
+        long as the perilune passage was greater than 7500 km and less than
+        ~15,000 km in the +/- z direction".
+      - 2-petal period (Sec. 5, p. 4): "approximately 27 +/- 3 days".
+      - 4-petal negative (Sec. 2, p. 2): "no stable four-petal cyclers were
+        found that could meet the period and inclination requirement".
+      - 5-petal cadence (Sec. 2.3, p. 2): lunar flyby once every 53 days,
+        access to the same pole once every 163 days.
+      - Maintenance (Sec. 5, p. 5): lifetime dV over 5 cycles < 50 m/s for all
+        5-petal family members.
 
 # ---------------------------------------------------------------------------
 # 41. Hernandez/Jones/Jesick 2017 — Io-Europa-Ganymede triple cyclers
