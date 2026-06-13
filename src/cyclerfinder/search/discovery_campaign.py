@@ -619,9 +619,15 @@ def _silver_entry(
     """Build the SILVER review-queue entry for a novel closed candidate.
 
     The candidate is machine-confirmed (closed below the gate) but UNSOURCED, so
-    it is SILVER and lands in the human-review queue with no panel refutation and
-    a literature_check left ``None`` (a human checks the literature before any
-    promotion). NEVER written to the catalogue.
+    it is SILVER and lands in the human-review queue with ``literature_check``
+    left ``None`` -- meaning NOT YET novelty-claimable. Per #261 the
+    literature-novelty check (``scripts/literature_check_review_queue.py`` ->
+    :func:`cyclerfinder.search.literature_check.check_literature`) must populate
+    that block before the candidate may be called novel:
+    :func:`cyclerfinder.search.literature_check.is_novelty_claimable` treats an
+    unpopulated or ``published`` block as NOT novelty-claimable, so a SILVER
+    routed here with ``literature_check=None`` is correctly non-claimable until
+    the check runs. NEVER written to the catalogue.
     """
     return ReviewQueueEntry(
         candidate_id=f"{target.target_id}-{candidate.index:08d}",
