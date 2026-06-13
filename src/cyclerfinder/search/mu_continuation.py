@@ -65,6 +65,7 @@ class MuStopReason(StrEnum):
     STEP_UNDERFLOW = "step_underflow"  # arclength step halved below floor (fold/edge)
     NO_MEMBER = "no_member"  # the symmetric IC lost its k-th crossing (topology loss)
     RADAU_REJECT = "radau_reject"  # independent cross-check failed at a kept step
+    TOPOLOGY_JUMP = "topology_jump"  # period jumped vs previous member (branch switch / fold)
 
 
 @dataclass(frozen=True)
@@ -313,6 +314,7 @@ def continue_in_mu(
     corrector_tol: float = 1e-11,
     corrector_max_iter: int = 80,
     t_hi_frac: float = 1.8,
+    period_jump_frac: float = 0.0,
     radau_closure_tol: float = 1e-3,
     radau_jacobi_tol: float = 1e-8,
     rtol: float = 1e-12,
@@ -338,6 +340,12 @@ def continue_in_mu(
     ds0, ds_max, ds_min:
         Initial / maximum / minimum arclength step (adaptive: grows on success,
         halves on corrector failure; underflow below ``ds_min`` stops the walk).
+    period_jump_frac:
+        If > 0, reject (and shrink the step on) any corrected member whose period
+        differs from the previous member by more than this fraction -- a
+        branch-switch / fold guard that keeps the same crossing-index family.
+        ``0.0`` (default) disables it (the bare arclength follows the branch
+        through folds, which can switch the crossing topology).
 
     Returns
     -------
@@ -431,13 +439,30 @@ def continue_in_mu(
                 branch.stop_reason = MuStopReason.STEP_UNDERFLOW
                 break
             continue
-        z, tan = zc, ntan
-        branch.n_steps += 1
+        # Topology / branch-switch guard: a corrected member whose period jumps
+        # vs the previous member is the corrector landing on a different
+        # crossing branch (a fold the same crossing-index cannot follow). Reject
+        # and shrink the step rather than silently switch families.
         cheap = _half_crossing(
-            z[0], z[1], z[2], ydot0_sign, half_crossings, t_hi, with_stm=False, rtol=rtol, atol=atol
+            zc[0],
+            zc[1],
+            zc[2],
+            ydot0_sign,
+            half_crossings,
+            t_hi,
+            with_stm=False,
+            rtol=rtol,
+            atol=atol,
         )
-        if cheap is not None:
-            per = 2.0 * cheap[0]
+        new_per = 2.0 * cheap[0] if cheap is not None else per
+        if period_jump_frac > 0.0 and abs(new_per - per) > period_jump_frac * per:
+            ds *= 0.5
+            if ds < ds_min:
+                branch.stop_reason = MuStopReason.TOPOLOGY_JUMP
+                break
+            continue
+        z, tan, per = zc, ntan, new_per
+        branch.n_steps += 1
         ds = min(ds * 1.3, ds_max)
         if branch.n_steps % record_every == 0:
             mem = _make_member(
