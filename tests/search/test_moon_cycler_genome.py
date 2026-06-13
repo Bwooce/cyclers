@@ -20,8 +20,13 @@ import pytest
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.search.moon_cycler_genome import (
+    CGE_SEQUENCE,
     JUPITER_MOONS,
+    EncounterGene,
+    LegGene,
+    MoonCyclerGenome,
     jupiter_system,
+    liang_member_genome,
     moon_linkable,
     moon_tisserand_to_vinf,
     moon_vinf_to_tisserand,
@@ -101,3 +106,84 @@ def test_vinf_graph_edges_symmetric_and_no_self_pairs() -> None:
     for (a, b), ok in edges.items():
         assert a != b
         assert edges[(b, a)] == ok
+
+
+# ---------------------------------------------------------------------------
+# Step 2 — genome representation + decision vector
+# ---------------------------------------------------------------------------
+
+
+def _sample_genome() -> MoonCyclerGenome:
+    sys = jupiter_system()
+    encounters = (
+        EncounterGene("Callisto", 0.10),
+        EncounterGene("Ganymede", -0.25),
+        EncounterGene("Callisto", 0.30),
+    )
+    legs = (LegGene(p=1, q=1, n_rev=1), LegGene(p=2, q=1, n_rev=0))
+    return MoonCyclerGenome(sys, encounters, legs, epoch_days=12.5, perijove_scale=0.5)
+
+
+def test_genome_requires_k_minus_one_legs() -> None:
+    """A k-encounter cycle must carry exactly k-1 legs."""
+    sys = jupiter_system()
+    with pytest.raises(ValueError, match="k-1 legs"):
+        MoonCyclerGenome(
+            sys,
+            (EncounterGene("Callisto", 0.0), EncounterGene("Ganymede", 0.0)),
+            (),  # should be 1 leg
+        )
+
+
+def test_decision_vector_round_trip() -> None:
+    """encode -> vector -> decode reproduces the genome exactly (lossless)."""
+    g = _sample_genome()
+    vec = g.to_vector()
+    back = MoonCyclerGenome.from_vector(vec, g.system, len(g.encounters))
+    assert back.sequence == g.sequence
+    assert back.legs == g.legs
+    assert back.epoch_days == g.epoch_days
+    assert back.perijove_scale == g.perijove_scale
+    for e_in, e_out in zip(g.encounters, back.encounters, strict=True):
+        assert e_out.moon == e_in.moon
+        assert e_out.b_plane_angle_rad == pytest.approx(e_in.b_plane_angle_rad, abs=1e-15)
+
+
+def test_from_vector_rejects_wrong_length() -> None:
+    g = _sample_genome()
+    vec = g.to_vector()
+    with pytest.raises(ValueError, match="vector length"):
+        MoonCyclerGenome.from_vector([*vec, 0.0], g.system, len(g.encounters))
+
+
+def test_sample_genome_is_valid() -> None:
+    assert _sample_genome().is_valid()
+
+
+def test_invalid_moon_fails_validity() -> None:
+    sys = jupiter_system()
+    g = MoonCyclerGenome(
+        sys,
+        (EncounterGene("Titan", 0.0), EncounterGene("Callisto", 0.0)),  # Titan orbits Saturn
+        (LegGene(1, 1, 1),),
+    )
+    assert not g.is_valid()
+
+
+@pytest.mark.parametrize("member", ["A", "B", "C"])
+def test_liang_members_encode_validly(member: str) -> None:
+    """The published Liang CGE members encode as valid genomes that round-trip.
+
+    Design step 2 anchor ("the Liang members encode validly"): the sourced
+    Callisto-Ganymede-Callisto-Europa-Callisto sequence (5 flybys / 4 legs),
+    all 1-rev Lambert arcs, with the member's perijove scale.
+    """
+    g = liang_member_genome(member)
+    assert g.is_valid()
+    assert g.sequence == CGE_SEQUENCE
+    assert len(g.legs) == 4
+    assert all(leg.n_rev == 1 for leg in g.legs)
+    vec = g.to_vector()
+    back = MoonCyclerGenome.from_vector(vec, g.system, len(g.encounters))
+    assert back.sequence == g.sequence
+    assert back.perijove_scale == g.perijove_scale

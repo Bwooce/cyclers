@@ -178,3 +178,199 @@ def vinf_graph_edges(
             edges[(m_i, m_j)] = ok
             edges[(m_j, m_i)] = ok
     return edges
+
+
+# ---------------------------------------------------------------------------
+# Step 2 — genome representation + decision vector
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class LegGene:
+    """One inter-encounter leg of a repeated-moon cycle.
+
+    A planet-centric resonance ``p:q`` (p spacecraft revs per q moon revs)
+    plus a multi-revolution count ``n_rev`` (the discrete Lambert revolution
+    number realising the resonant arc). For the idealized Liang CGE legs all
+    four resolve to ``n_rev = 1`` one-revolution Lambert arcs (cge_scaffold
+    geometry conventions); the resonance bookkeeping records the commensurable
+    arc class the leg implements.
+    """
+
+    p: int  # spacecraft revolutions on the arc (resonance numerator)
+    q: int  # moon revolutions over the same interval (resonance denominator)
+    n_rev: int  # Lambert multi-rev count realising the arc
+
+    def is_valid(self) -> bool:
+        return self.p >= 1 and self.q >= 1 and self.n_rev >= 0
+
+
+@dataclass(frozen=True)
+class EncounterGene:
+    """One flyby of the repeated-moon sequence.
+
+    ``moon`` is the body flown by; ``b_plane_angle_rad`` is the B-plane clock
+    angle (the continuous DOF the corrector closes — it sets the post-flyby
+    plane/direction at fixed V_inf magnitude, the ballistic flyby's only free
+    parameter in the planar idealization it is the in-plane turn sign/branch).
+    """
+
+    moon: str
+    b_plane_angle_rad: float
+
+
+@dataclass(frozen=True)
+class MoonCyclerGenome:
+    """A repeated-moon multi-revolution cycler genome (the decision object).
+
+    Structure (design "Representation"):
+
+    * ``system`` — the planet + moon registry the sequence lives in.
+    * ``encounters`` — the repeated moon sequence ``[m_1, ..., m_k]`` as flyby
+      genes (k encounters per cycle; the sequence repeats every cycle).
+    * ``legs`` — the ``k - 1`` inter-encounter legs (resonance + n_rev). (A
+      cycle's published anchor is a single cycle's k flybys / k-1 transfer
+      legs, e.g. Liang's Callisto-Ganymede-Callisto-Europa-Callisto = 5
+      flybys, 4 legs.)
+    * ``epoch_days`` — overall phasing epoch (days from the cycle anchor).
+    * ``perijove_scale`` — the family's perijove scale (Liang member A/B = 1.0,
+      member C = 0.5), part of the overall phasing/energy DOF.
+
+    The decision vector (:func:`MoonCyclerGenome.to_vector` /
+    :func:`from_vector`) flattens the continuous + discrete DOF into a single
+    1-D ``list[float]`` for the corrector / search; the moon-id and resonance
+    integers ride in the vector as exact floats (small integers are
+    representable), so the round-trip is lossless.
+    """
+
+    system: MoonSystem
+    encounters: tuple[EncounterGene, ...]
+    legs: tuple[LegGene, ...]
+    epoch_days: float = 0.0
+    perijove_scale: float = 1.0
+
+    def __post_init__(self) -> None:
+        if len(self.legs) != max(0, len(self.encounters) - 1):
+            raise ValueError(
+                f"a k-encounter cycle has k-1 legs; got {len(self.encounters)} "
+                f"encounters and {len(self.legs)} legs"
+            )
+
+    @property
+    def sequence(self) -> tuple[str, ...]:
+        """The repeated moon sequence as moon names."""
+        return tuple(e.moon for e in self.encounters)
+
+    def is_valid(self) -> bool:
+        """Structural validity: registered moons, well-formed legs, k>=2.
+
+        Does NOT assert dynamical closure (that is the corrector's residual);
+        this is the cheap up-front filter the enumerator/search uses.
+        """
+        if len(self.encounters) < 2:
+            return False
+        for e in self.encounters:
+            sat = SATELLITES.get(e.moon)
+            if sat is None or sat.primary != self.system.planet:
+                return False
+            if not math.isfinite(e.b_plane_angle_rad):
+                return False
+        return all(leg.is_valid() for leg in self.legs)
+
+    def to_vector(self) -> list[float]:
+        """Flatten to a single decision vector (the corrector/search interface).
+
+        Layout (all float64):
+        ``[epoch_days, perijove_scale,
+           moon_idx_0, b_plane_0, ..., moon_idx_{k-1}, b_plane_{k-1},
+           p_0, q_0, n_rev_0, ..., p_{k-2}, q_{k-2}, n_rev_{k-2}]``
+        where ``moon_idx`` is the index of the moon within ``system.moons``.
+        """
+        idx = {m: i for i, m in enumerate(self.system.moons)}
+        vec: list[float] = [self.epoch_days, self.perijove_scale]
+        for e in self.encounters:
+            vec.append(float(idx[e.moon]))
+            vec.append(e.b_plane_angle_rad)
+        for leg in self.legs:
+            vec.extend((float(leg.p), float(leg.q), float(leg.n_rev)))
+        return vec
+
+    @classmethod
+    def from_vector(
+        cls, vec: list[float], system: MoonSystem, n_encounters: int
+    ) -> MoonCyclerGenome:
+        """Inverse of :func:`to_vector` (the round-trip partner).
+
+        ``n_encounters`` (k) is structural metadata not carried in the vector,
+        so the search must supply it (it is fixed per enumerated sequence).
+        """
+        expected = 2 + 2 * n_encounters + 3 * (n_encounters - 1)
+        if len(vec) != expected:
+            raise ValueError(
+                f"vector length {len(vec)} != expected {expected} for k={n_encounters}"
+            )
+        epoch_days = vec[0]
+        perijove_scale = vec[1]
+        encounters: list[EncounterGene] = []
+        cursor = 2
+        for _ in range(n_encounters):
+            moon = system.moons[round(vec[cursor])]
+            encounters.append(EncounterGene(moon=moon, b_plane_angle_rad=vec[cursor + 1]))
+            cursor += 2
+        legs: list[LegGene] = []
+        for _ in range(n_encounters - 1):
+            legs.append(
+                LegGene(
+                    p=round(vec[cursor]),
+                    q=round(vec[cursor + 1]),
+                    n_rev=round(vec[cursor + 2]),
+                )
+            )
+            cursor += 3
+        return cls(
+            system=system,
+            encounters=tuple(encounters),
+            legs=tuple(legs),
+            epoch_days=epoch_days,
+            perijove_scale=perijove_scale,
+        )
+
+
+# The Liang CGE repeated-moon sequence (one published cycle), as moon names.
+# Callisto-Ganymede-Callisto-Europa-Callisto — 5 flybys / 4 transfer legs per
+# ~100 d cycle (Liang et al. 2024 Sec. III.B; see cge_scaffold.CGCEC_SEQUENCE).
+CGE_SEQUENCE: tuple[str, ...] = ("Callisto", "Ganymede", "Callisto", "Europa", "Callisto")
+
+
+def liang_member_genome(member: str) -> MoonCyclerGenome:
+    """Encode one published Liang CGE member (A/B/C) as a genome.
+
+    The discrete structure (moon sequence, per-leg ``n_rev = 1`` one-rev
+    Lambert arcs, perijove scale) is taken from the sourced
+    :mod:`cyclerfinder.search.cge_scaffold` member spec. The B-plane angles are
+    initialised to 0 (the corrector / gate resolves the flyby geometry from the
+    published V_inf + ToF); this function is the "the Liang members encode
+    validly" round-trip anchor of design step 2, NOT a dynamical solve.
+
+    Resonance bookkeeping: the spacecraft period equals Callisto's period
+    (Eq. 14), so each Callisto-anchored arc is a 1:1 Callisto resonance; the
+    Ganymede/Europa legs are the multi-rev Lambert reservoirs that reshape the
+    phase within that 1:1 Callisto frame (paper Sec. III.A). All four legs are
+    recorded as ``n_rev = 1`` (cge_scaffold golden: every leg is a 1-rev
+    Lambert solution).
+    """
+    from cyclerfinder.search.cge_scaffold import LIANG_MEMBERS
+
+    spec = LIANG_MEMBERS[member]
+    system = jupiter_system()
+    encounters = tuple(EncounterGene(moon=m, b_plane_angle_rad=0.0) for m in CGE_SEQUENCE)
+    # p:q resonance per leg — all arcs ride the 1:1 Callisto-period frame; the
+    # n_rev = 1 multi-rev Lambert count is the cge_scaffold golden.
+    legs = tuple(LegGene(p=1, q=1, n_rev=1) for _ in range(len(CGE_SEQUENCE) - 1))
+    return MoonCyclerGenome(
+        system=system,
+        encounters=encounters,
+        legs=legs,
+        epoch_days=0.0,
+        perijove_scale=spec.perijove_scale,
+    )
