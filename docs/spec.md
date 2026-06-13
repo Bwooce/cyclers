@@ -695,6 +695,16 @@ finder found it.
    - Catalogue matcher run; exact match downgrades to
      `known-reproduction` and inherits attribution from §16.4 — entry
      never gets the `candidate-novel` tag in that case.
+   - **Literature-novelty check — MANDATORY BASELINE GATE** (`search/literature_check.py`).
+     The catalogue matcher only checks OUR catalogue, a subset of the published
+     literature. Before any `candidate-novel` tag, the literature-novelty check MUST
+     run against the published record (by structural fingerprint: primary, body/moon
+     sequence, per-leg resonance + n_rev, V∞, period) and populate the
+     `literature_check` block. `is_novelty_claimable` = populated AND status ∉
+     {published, inconclusive}. A `published` hit ⇒ `known-reproduction` (cite it).
+     `not-found` is NECESSARY-NOT-SUFFICIENT — it keeps the candidate *eligible*,
+     proves nothing; V5's documented human literature search remains the final word.
+     **No candidate is `candidate-novel` until this gate is satisfied.**
 3. **V4 high-fidelity check** (independent codebase + ephemeris;
    GMAT / Tudat / pykep N-body) batched manually for promising
    candidates. On pass: `validation.level: "V4"`.
