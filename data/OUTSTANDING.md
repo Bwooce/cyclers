@@ -107,9 +107,22 @@ agree to ~1e-12; on long multi-rev arcs FBS shooting is *more* seed-sensitive
 (needs the Lambert basin as a seed). KEY REFRAME: Ellison FBS's value is **analytic
 gradients for ΔV OPTIMIZATION**, not feasibility-finding — #242 mis-scoped it as a
 Lambert replacement. Conclusion: **keep the opt-in FBS corrector as an independent
-cross-check; do NOT default it.** The fair trial (FBS gradients as an optimizer
-backbone vs Lambert+FD) is queued as #243; the default-promotion ladder #243→#246
-is re-pointed at the optimizer role. See `docs/notes/2026-06-13-fbs-hard-rows-closure-attempt.md`.
+cross-check; do NOT default it.** See `docs/notes/2026-06-13-fbs-hard-rows-closure-attempt.md`.
+
+**FBS optimizer fair trial (#243) — clean POSITIVE → ADOPT.** Tested in its actual
+role (analytic gradients as a ΔV-minimizing multi-leg optimizer backbone vs the
+same NLP solved with finite-difference gradients), FBS wins decisively across
+Aldrin / Russell / 6.44Gg3-class problems (40 cold seeds each, same-model optima,
+Jacobian cross-checked to ≤2.2e-7): **robustness 3–16× better** (Aldrin 100% vs 28%
+feasible; opt% 100 vs 2), **wall-clock up to 4.8× faster** (gap widens with NLP size
+— FD pays O(n_vars) evals/gradient), **optimum equal-or-better** (FD found a
+strictly worse optimum on Russell). Commit `51bb455`; `tests/search/test_fbs_optimize.py`
+4 passed. Verdict: **adopt FBS as the optimization engine → proceed to #244.**
+Caveats for #244: confirm on the real `dsm_chain_correct` lane (trial used scipy
+SLSQP; EMTG pairs FBS with SNOPT), and wire patched-conic flyby-continuity
+constraints into the NLP (where the analytic advantage should compound). The
+default-promotion ladder #243→#246 is re-pointed at the optimizer role. See
+`docs/notes/2026-06-13-fbs-optimizer-fair-trial.md`.
 
 **Reachable-set accessibility scorer (#236, from Braik-Ross #230) — built, GATED.**
 A reduced (x,y,θ) heading-fan forward/backward reachable-set overlap scorer +
@@ -139,7 +152,9 @@ not title-dismissed.
 - **Surrogate-corpus daemon** — 12-worker CR3BP search writing `(genome → outcome)`
   tuples to gitignored `out/outcome_log/`; healthy ~50/50 converged/failed mix
   (the training boundary the surrogate needs); runs at nice +19.
-- **#243** (FBS optimizer fair trial) — the next one-shot, launched after #236.
+- **#243** (FBS optimizer fair trial) — DONE, clean POSITIVE (adopt; see above).
+  **#244** (wire FBS gradients into the real `dsm_chain_correct` optimizer +
+  catalogue-wide parity) is the next step, HELD for user go (architectural commit).
 
 ## 2026-06-11 — review-and-harden + acquisitions wave 2
 
