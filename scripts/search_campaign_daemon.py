@@ -105,9 +105,14 @@ def _publish_pool(states: list[np.ndarray], periods: list[float]) -> None:
     usable pool within ~1 min instead of waiting for the whole sweep to finish."""
     if not states:
         return
-    tmp = _POOL_CACHE + ".tmp"
-    np.savez(tmp, states=np.array(states), periods=np.array(periods))
-    os.replace(tmp, _POOL_CACHE)
+    try:
+        # NB: np.savez appends ".npz" if the name lacks it, so the temp MUST
+        # already end in ".npz" or os.replace would chase a non-existent path.
+        tmp = _POOL_CACHE.replace(".npz", ".tmp.npz")
+        np.savez(tmp, states=np.array(states), periods=np.array(periods))
+        os.replace(tmp, _POOL_CACHE)
+    except Exception as exc:  # caching is best-effort; never abort the sweep
+        print(f"PhaseA pool-cache write failed (continuing): {exc}", flush=True)
 
 
 if WID == 0:
