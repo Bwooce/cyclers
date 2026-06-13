@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-11)
+# Project state at a glance (updated 2026-06-13)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
@@ -23,10 +23,11 @@ audit trail and is unchanged in spirit.
 
 ## VALIDATION CEILING REACHED (2026-06-09) — read this first
 
-The catalogue (268 rows) is at its **data-limited validation ceiling** via
+The catalogue (277 rows) is at its **data-limited validation ceiling** via
 current methods + held papers: **V3:2** (S1L1 `russell-ch4-4.991gG2` ballistic +
-`russell-ch4-8.049gGf2` #188 powered), **V2:1** (Aldrin outbound), **V1:15**
-(was 11; the 2026-06-10 #181 writeback, applied + pushed), rest V0. This is the honest boundary, established by exhaustive triage (#170
+`russell-ch4-8.049gGf2` #188 powered), **V2:6** (Aldrin outbound + the 5 Ross
+stable EM cyclers, #229), **V1:18** (the 2026-06-10 #181 writeback + the 3 Liang
+CGE members, #222), rest V0. This is the honest boundary, established by exhaustive triage (#170
 App-C batch, #177 self-seeding over all 212 unsourced rows, #172 Phase 6 novelty
 sweep) — NOT a backlog to grind.
 
@@ -71,6 +72,66 @@ the #195 closer fixes (2026-06-11, `58674f6`/`d7f0c87`) — the writeback STANDS
 reproducible data (date + V∞ + closest-approach + leg ToF, DE405) exists ONLY
 for S1L1 (see the 2026-06-10 section below); the ~200 ocampo rows stay V0 —
 no per-member data was ever published.
+
+## 2026-06-13 — Ellison FBS lane, errata system, JPL oracle, writebacks, reachable-set scorer, surrogate corpus
+
+**Catalogue writebacks applied since 2026-06-11** (census now V3:2 / V2:6 / V1:18,
+rest V0; 277 rows):
+- **Ross 5 stable EM cyclers → V2-ballistic** (#229): long-span discriminating
+  propagation evidence; held writeback applied.
+- **Liang A/B/C CGE triple-cyclers → V1** (#222): idealized same-model CGE
+  reproduction. Member D (#223) re-propagated n-body with the JUP365 kernel.
+
+**Tooling / verification landed:**
+- **Assumed-errata system** (#228): `data/errata.yaml` (14 entries) + a respectful,
+  evidence-first `/errata` page on cyclers.space. STANDING RULE: public defect
+  claims are benefit-of-the-doubt, falsifiable, typesetting-slips-happen framing.
+- **JPL Three-Body Periodic-Orbit oracle** (#116 capability): live API consumable
+  via `verify/jpl_periodic_orbits.py`; our CR3BP propagator reproduces JPL ICs to
+  ~2.8e-10 nd at matched μ. Resolves "JPL 3BP catalog" as a usable cross-check.
+- **Solver-outcome logger** (#210): `search/outcome_log.py` — opt-in `(genome →
+  outcome)` JSONL capture for a future ANN surrogate (Ozaki 2022); NO-OP unless
+  `CYCLERFINDER_OUTCOME_LOG` set; never read back into validation (hard boundary).
+
+**Ellison FBS Path-B lane (#226) — DONE, parity-proven.** A Lambert-free
+match-point leg corrector with analytic Jacobian (Shepperd STM): `dsm_leg_correct_fbs`
++ `core/fbs_match_point.py` (single-leg defect/Jacobian, boundary v∞/epoch columns,
+multi-arc `chain_defect_jacobian`, `flyby_coupling_block`). All gradients FD-validated
+to ~1e-9; Phase-6 closure parity vs Lambert to **6.1e-13 km/s**. Full suite
+1655 passed. **Opt-in / additive** — the Lambert lane is untouched.
+
+**FBS evaluation — what it is and isn't (#242, clean negative).** Tested whether
+FBS closes the historically un-closeable multi-arc rows (S1L1, 6.44Gg3): it does
+NOT close anything Lambert can't. Both lanes solve the identical per-leg BVP and
+agree to ~1e-12; on long multi-rev arcs FBS shooting is *more* seed-sensitive
+(needs the Lambert basin as a seed). KEY REFRAME: Ellison FBS's value is **analytic
+gradients for ΔV OPTIMIZATION**, not feasibility-finding — #242 mis-scoped it as a
+Lambert replacement. Conclusion: **keep the opt-in FBS corrector as an independent
+cross-check; do NOT default it.** The fair trial (FBS gradients as an optimizer
+backbone vs Lambert+FD) is queued as #243; the default-promotion ladder #243→#246
+is re-pointed at the optimizer role. See `docs/notes/2026-06-13-fbs-hard-rows-closure-attempt.md`.
+
+**Reachable-set accessibility scorer (#236, from Braik-Ross #230) — built, GATED.**
+A reduced (x,y,θ) heading-fan forward/backward reachable-set overlap scorer +
+proxy-ΔV graph centralities, as a continuation/family-selection prioritizer. The
+reproduce-before-trust validation gate at C_J=3.1294 was a PARTIAL pass:
+**R21-S persistent-hard-access reproduced**, but **C32-dominant was a faithful
+negative** (our reproduction did not rank C32 #1 as Braik-Ross do) → the scorer is
+**GATED** (not yet trusted to rank our families). #239 (Zhou-Armellin reachable-set)
+remains to merge. See `verify/reachable_*` + the 2026-06-13 scorer note.
+
+**Papers digested (#230–235):** Braik & Ross 2026 Orbital Networks (reachable-set
+family-accessibility — method-only, no new tuples), arXiv:2509.12671 HOTM fixed
+points (#237 negative-registry entry), Şaloğlu-Taheri JAS VoR, Shepperd 1985
+(#225 goldens), Fan 2025 (triage), Tito-MacCallum 2013 free-return reproduced as a
+cross-check (#238, withheld per cyclers-only scope). All background papers READ,
+not title-dismissed.
+
+**In flight / queued (background, this session):**
+- **Surrogate-corpus daemon** — 12-worker CR3BP search writing `(genome → outcome)`
+  tuples to gitignored `out/outcome_log/`; healthy ~50/50 converged/failed mix
+  (the training boundary the surrogate needs); runs at nice +19.
+- **#243** (FBS optimizer fair trial) — the next one-shot, launched after #236.
 
 ## 2026-06-11 — review-and-harden + acquisitions wave 2
 

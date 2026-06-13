@@ -25,7 +25,7 @@ Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth�
 | Low-thrust (v2) — Sims-Flanagan model: leg model, feasibility/NLP constraints, two-phase DE+SLSQP solve, powered-maintenance evaluator (machinery only — no sourced powered rows exist) | ✓ done |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
-237-entry published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+277-entry published-cycler seed library (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
 broad classes, Niehoff VISIT, Jones VEM family, the 15-orbit Hollister–Menning Earth–Venus
 family, plus lunar and Jovian family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
 conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
