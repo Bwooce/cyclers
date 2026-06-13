@@ -21,7 +21,7 @@ from dataclasses import dataclass
 class SatelliteData:
     name: str
     code: str  # full moon name (scheme: data/README.md:65-79)
-    primary: str  # "Jupiter" | "Saturn" | "Earth" | "Mars"
+    primary: str  # "Earth" | "Mars" | "Jupiter" | "Saturn" | "Uranus" | "Neptune" | "Pluto"
     mu_km3_s2: float  # moon GM
     radius_eq_km: float
     sma_km: float  # SMA ABOUT THE PRIMARY (km, not AU, not Sun-relative)
@@ -46,10 +46,24 @@ PRIMARIES: dict[str, float] = {
     # Earth system GM (JPL SSD gm_de440 planetary constants): 4.0350323562548019e5 km^3/s^2.
     # Used for the Earth-Moon CR3BP (Task 4, 2026-06-10).
     "Earth": 4.0350323562548019e5,
+    # Mars system GM (JPL DE440 planetary constants, ssd.jpl.nasa.gov astro_par /
+    # gm_de440.tpc): 4.282837521e4 km^3/s^2. Phobos/Deimos add <2e-8 of this, so
+    # the system value is the body GM the moon-frame Kepler sees. Accessed 2026-06-14.
+    "Mars": 4.282837521e4,
     # Jupiter system GM (JPL SSD gm_de440 planetary constants): 1.26686534e8.
     "Jupiter": 1.26686534e8,
     # Saturn system GM (JPL SSD gm_de440 planetary constants): 3.7931207e7.
     "Saturn": 3.7931207e7,
+    # Uranus system GM (JPL DE440 planetary constants, ssd.jpl.nasa.gov astro_par):
+    # 5.794556400e6 km^3/s^2. Accessed 2026-06-14.
+    "Uranus": 5.7945564e6,
+    # Neptune system GM (JPL DE440 planetary constants, ssd.jpl.nasa.gov astro_par):
+    # 6.836527100580e6 km^3/s^2. Accessed 2026-06-14.
+    "Neptune": 6.836527100580e6,
+    # Pluto system GM (JPL DE440 / gm_de440.tpc BODY9_GM, Brozovic et al. 2015):
+    # 9.755e2 km^3/s^2. The Pluto-Charon pair is a near-binary; this is the
+    # Pluto+Charon SYSTEM GM. Accessed 2026-06-14.
+    "Pluto": 9.755e2,
 }
 
 
@@ -86,7 +100,22 @@ def _sat(
 #
 # safe_alt_km = the altitude the paper used for its Delta-V tables so the Phase-5
 # anchors are comparable: 100 km for all moons except Titan at 1500 km (mining
-# note line 352).
+# note line 352). For the bodies added 2026-06-14 (Mars/Uranus/Neptune/Pluto
+# moons + Jupiter Amalthea + Saturn Iapetus/Hyperion) there is no paper-anchored
+# altitude, so safe_alt_km is an ENGINEERING DEFAULT scaled to the moon's size:
+# 10 km for the tiny irregulars (Phobos/Deimos/Amalthea/Hyperion/Nix/Hydra,
+# mean radius < ~140 km), 100 km otherwise. This is a convention, not a sourced
+# constant; the Tisserand/V_inf screen self-prunes the low-mass bodies regardless.
+#
+# CAVEAT (completeness, not advocacy): most of the 2026-06-14 additions are
+# LOW-MASS and make poor gravity-assist / cycler bodies. Phobos/Deimos and the
+# small irregulars (Amalthea, Hyperion, Nix, Hydra) have GM < 1 km^3/s^2 ->
+# negligible bending. Triton is large but RETROGRADE and inclined (a hostile
+# capture/flyby geometry). The genuinely interesting additions are the five
+# regular Uranian moons (Miranda/Ariel/Umbriel/Titania/Oberon) and the
+# Pluto-Charon pair (Charon's GM is ~11% of the system -> a real binary). They
+# are added so the screen has the full body set to prune from, not because every
+# one is a useful cycler node.
 SATELLITES: dict[str, SatelliteData] = {
     # --- Earth-Moon system ---
     # Moon: GM 4902.800118 km^3/s^2 (JPL SSD satellite GM table, gm_de440);
@@ -116,4 +145,61 @@ SATELLITES: dict[str, SatelliteData] = {
     "Rhea": _sat("Rhea", "Saturn", 153.94, 763.8, 527070.0, 100.0),
     # Titan: GM 8978.14, mean R 2574.7 km, a 1221870 km (JPL SSD); 1500 km alt.
     "Titan": _sat("Titan", "Saturn", 8978.14, 2574.7, 1221870.0, 1500.0),
+    # --- Mars system (added 2026-06-14) ---
+    # All values JPL SSD satellite physical (phys_par, ref MAR097) + mean elements
+    # (sats/elem), accessed 2026-06-14. Tiny bodies: GM ~ 7e-4 / 1e-4 -> screen
+    # self-prunes. safe_alt 10 km (irregular, mean R ~ 6-11 km).
+    # Phobos: GM 0.0007087 km^3/s^2, mean R 11.08 km, a 9375 km.
+    "Phobos": _sat("Phobos", "Mars", 0.0007087, 11.08, 9375.0, 10.0),
+    # Deimos: GM 0.0000962 km^3/s^2, mean R 6.2 km, a 23457 km.
+    "Deimos": _sat("Deimos", "Mars", 0.0000962, 6.2, 23457.0, 10.0),
+    # --- Uranus system (added 2026-06-14) ---
+    # All values JPL SSD satellite physical (phys_par, ref URA111) + mean elements
+    # (sats/elem), accessed 2026-06-14. The five classical regular moons; the most
+    # interesting outer-planet additions (moderate GM, prograde, low inclination).
+    # Miranda: GM 4.3 km^3/s^2, mean R 235.8 km, a 129846 km.
+    "Miranda": _sat("Miranda", "Uranus", 4.3, 235.8, 129846.0, 100.0),
+    # Ariel: GM 83.5 km^3/s^2, mean R 578.9 km, a 190929 km.
+    "Ariel": _sat("Ariel", "Uranus", 83.5, 578.9, 190929.0, 100.0),
+    # Umbriel: GM 85.1 km^3/s^2, mean R 584.7 km, a 265986 km.
+    "Umbriel": _sat("Umbriel", "Uranus", 85.1, 584.7, 265986.0, 100.0),
+    # Titania: GM 226.9 km^3/s^2, mean R 788.9 km, a 436298 km.
+    "Titania": _sat("Titania", "Uranus", 226.9, 788.9, 436298.0, 100.0),
+    # Oberon: GM 205.3 km^3/s^2, mean R 761.4 km, a 583511 km.
+    "Oberon": _sat("Oberon", "Uranus", 205.3, 761.4, 583511.0, 100.0),
+    # --- Neptune system (added 2026-06-14) ---
+    # JPL SSD satellite physical (phys_par, ref NEP097/NEP101) + mean elements,
+    # accessed 2026-06-14. Triton is large (GM ~ 1428) but RETROGRADE + inclined
+    # (a ~ 354800 km on a near-circular retrograde orbit) -> hostile flyby
+    # geometry; carried for completeness. Proteus added (regular, prograde).
+    # Nereid OMITTED: JPL SSD lists its GM as 0.0 (mass not determined), so per
+    # the sourcing discipline we omit it rather than guess from a size estimate.
+    # Triton: GM 1428.495 km^3/s^2, mean R 1352.6 km, a 354800 km.
+    "Triton": _sat("Triton", "Neptune", 1428.49546, 1352.6, 354800.0, 100.0),
+    # Proteus: GM 2.58342 km^3/s^2, mean R 208.0 km, a 117600 km.
+    "Proteus": _sat("Proteus", "Neptune", 2.58342, 208.0, 117600.0, 100.0),
+    # --- Pluto system (added 2026-06-14) ---
+    # JPL SSD satellite physical (phys_par, ref PLU060) + mean elements, accessed
+    # 2026-06-14. Charon's GM (106.1) is ~11% of the Pluto+Charon system GM
+    # (975.5) -> a genuine binary, the interesting addition here. Nix/Hydra are
+    # tiny (GM ~ 1.5e-3 / 2e-3); included for completeness, screen self-prunes.
+    # Charon: GM 106.1 km^3/s^2, mean R 606.0 km, a 19600 km.
+    "Charon": _sat("Charon", "Pluto", 106.1, 606.0, 19600.0, 100.0),
+    # Nix: GM 0.0015 km^3/s^2, mean R 18.0 km, a 49300 km.
+    "Nix": _sat("Nix", "Pluto", 0.0015, 18.0, 49300.0, 10.0),
+    # Hydra: GM 0.0020 km^3/s^2, mean R 18.5 km, a 65200 km.
+    "Hydra": _sat("Hydra", "Pluto", 0.0020, 18.5, 65200.0, 10.0),
+    # --- Completeness additions to existing systems (added 2026-06-14) ---
+    # Jupiter Amalthea: JPL SSD phys_par ref JUP365 + mean elements, accessed
+    # 2026-06-14. GM 0.16456 km^3/s^2, mean R 83.5 km, a 181400 km (tiny inner
+    # irregular; screen self-prunes).
+    "Amalthea": _sat("Amalthea", "Jupiter", 0.16456, 83.5, 181400.0, 10.0),
+    # Saturn Iapetus: JPL SSD phys_par ref SAT441 + mean elements, accessed
+    # 2026-06-14. GM 120.51511 km^3/s^2, mean R 734.3 km, a 3561700 km (regular
+    # outer moon, moderate GM).
+    "Iapetus": _sat("Iapetus", "Saturn", 120.51511, 734.3, 3561700.0, 100.0),
+    # Saturn Hyperion: JPL SSD phys_par ref SAT441 + mean elements, accessed
+    # 2026-06-14. GM 0.37049 km^3/s^2, mean R 135.0 km, a 1481500 km (small
+    # chaotic-rotation moon; screen self-prunes).
+    "Hyperion": _sat("Hyperion", "Saturn", 0.37049, 135.0, 1481500.0, 10.0),
 }
