@@ -19,6 +19,8 @@ from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.fbs_match_point import (
     BodyKinematics,
     FbsLeg,
+    chain_defect,
+    chain_defect_jacobian,
     match_point_defect,
     match_point_defect_epoch_column,
     match_point_defect_jacobian,
@@ -312,3 +314,114 @@ def test_epoch_column_fd_consistency_random() -> None:
         assert col_an.shape == (6,)
         err = _block_rel_err(col_an.reshape(6, 1), col_fd.reshape(6, 1))
         assert err < _FD_RTOL, (a0, af, t0, tof_s, alpha, err)
+
+
+# --- Phase 4: multi-arc chain assembler (Ellison Eqs. 31-32) -----------------
+
+
+def _build_chain_legs(
+    bodies_r: list[np.ndarray],
+    vels: list[np.ndarray],
+    tofs: list[float],
+    alphas: list[float],
+) -> tuple[FbsLeg, ...]:
+    """Assemble M legs from M+1 body positions and M+1 shared boundary velocities.
+
+    Leg ``i`` runs body ``i`` -> body ``i+1`` with ``v0 = vels[i]``,
+    ``vf = vels[i+1]`` (the shared-match-point layout the chain Jacobian uses).
+    """
+    legs = []
+    for i in range(len(tofs)):
+        legs.append(
+            FbsLeg(
+                r0=bodies_r[i],
+                v0=vels[i],
+                rf=bodies_r[i + 1],
+                vf=vels[i + 1],
+                tof_s=tofs[i],
+                alpha=alphas[i],
+            )
+        )
+    return tuple(legs)
+
+
+def test_chain_jacobian_fd_consistency_random() -> None:
+    """Analytic chain Jacobian matches central differences (consistency test).
+
+    Ellison Eqs. 31-32: the M-leg stacked defect ``[c_0;...;c_{M-1}]`` against the
+    shared decision vector ``[Δv_0..Δv_{M-1} | v_0..v_M]``. Perturbing a shared
+    interior ``v_j`` rebuilds both adjoining legs (the off-block coupling), so the
+    FD validates the full block-sparse assembly, not just the diagonal blocks.
+    """
+    rng = np.random.default_rng(20260616)
+    for m in (2, 3):
+        for _ in range(3):
+            bodies_r = []
+            vels = []
+            for _b in range(m + 1):
+                a_km = float(rng.uniform(0.7, 2.5)) * AU_KM
+                r, v = coe_to_rv(
+                    a_km,
+                    float(rng.uniform(0.0, 0.4)),
+                    float(rng.uniform(0.0, 2.0 * pi)),
+                    arg_peri_rad=float(rng.uniform(0.0, 2.0 * pi)),
+                )
+                bodies_r.append(r)
+                # Generic (not body-tied) boundary velocities -> non-zero defects.
+                vels.append(v + rng.uniform(-2.0, 2.0, size=3))
+            tofs = [float(rng.uniform(120.0, 320.0)) * SECONDS_PER_DAY for _ in range(m)]
+            alphas = [float(rng.uniform(0.3, 0.7)) for _ in range(m)]
+            dvs = tuple(rng.uniform(-0.3, 0.3, size=3) for _ in range(m))
+
+            legs = _build_chain_legs(bodies_r, vels, tofs, alphas)
+            j_an = chain_defect_jacobian(legs, dvs)
+            assert j_an.shape == (6 * m, 3 * m + 3 * (m + 1))
+
+            # FD: defect of the whole chain as a function of [Δv...; v...].
+            n_v = m + 1
+
+            def _defect_of(
+                dv_flat: np.ndarray,
+                v_flat: np.ndarray,
+                m: int = m,
+                n_v: int = n_v,
+                bodies_r: list[np.ndarray] = bodies_r,
+                tofs: list[float] = tofs,
+                alphas: list[float] = alphas,
+            ) -> np.ndarray:
+                dvs_l = tuple(dv_flat[3 * k : 3 * k + 3] for k in range(m))
+                vels_l = [v_flat[3 * k : 3 * k + 3] for k in range(n_v)]
+                legs_l = _build_chain_legs(bodies_r, vels_l, tofs, alphas)
+                return chain_defect(legs_l, dvs_l)
+
+            dv_flat0 = np.concatenate(dvs)
+            v_flat0 = np.concatenate(vels)
+            cols: list[np.ndarray] = []
+            for j in range(3 * m):
+                h = _FD_STEP * max(abs(dv_flat0[j]), 1.0)
+                ep = np.zeros(3 * m)
+                ep[j] = h
+                cols.append(
+                    (_defect_of(dv_flat0 + ep, v_flat0) - _defect_of(dv_flat0 - ep, v_flat0))
+                    / (2.0 * h)
+                )
+            for j in range(3 * n_v):
+                h = _FD_STEP * max(abs(v_flat0[j]), float(np.linalg.norm(v_flat0)))
+                ep = np.zeros(3 * n_v)
+                ep[j] = h
+                cols.append(
+                    (_defect_of(dv_flat0, v_flat0 + ep) - _defect_of(dv_flat0, v_flat0 - ep))
+                    / (2.0 * h)
+                )
+            j_fd = np.column_stack(cols)
+
+            # Block-wise rel error over the 6-row (r/v) blocks of every leg.
+            max_err = 0.0
+            for i in range(m):
+                for off in (0, 3):
+                    aa = j_an[6 * i + off : 6 * i + off + 3, :]
+                    bb = j_fd[6 * i + off : 6 * i + off + 3, :]
+                    denom = float(np.linalg.norm(bb))
+                    if denom > 0.0:
+                        max_err = max(max_err, float(np.linalg.norm(aa - bb)) / denom)
+            assert max_err < _FD_RTOL, (m, max_err)

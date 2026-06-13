@@ -293,3 +293,72 @@ def match_point_defect_epoch_column(
     df[3:6] = np.asarray(bodyf.a, dtype=np.float64)
 
     return phi_bwd @ df - phi_fwd @ d0
+
+
+# ---------------------------------------------------------------------------
+# Phase 4: multi-arc chain assembler (Ellison Eqs. 31-32)
+# ---------------------------------------------------------------------------
+
+
+def chain_defect(legs: tuple[FbsLeg, ...], dvs: tuple[Vec3, ...]) -> NDArray[np.float64]:
+    r"""Stacked match-point defect of an M-leg chain (Ellison Eqs. 31-32).
+
+    ``[c_0; c_1; ...; c_{M-1}]`` (``6*M`` rows): each leg contributes its own
+    6-vector :func:`match_point_defect`. The legs are joined at shared interior
+    bodies (leg ``i`` arrives at the same body leg ``i+1`` departs from); that
+    sharing is expressed in the column layout of :func:`chain_defect_jacobian`,
+    not here — the per-leg defect depends only on that leg's own boundary states.
+
+    Raises ``FbsMatchPointError`` on a leg/Δv count mismatch or an empty chain.
+    """
+    if len(legs) != len(dvs):
+        raise FbsMatchPointError(f"legs ({len(legs)}) and dvs ({len(dvs)}) length mismatch")
+    if not legs:
+        raise FbsMatchPointError("chain must contain at least one leg")
+    return np.concatenate([match_point_defect(leg, dv) for leg, dv in zip(legs, dvs, strict=True)])
+
+
+def chain_defect_jacobian(legs: tuple[FbsLeg, ...], dvs: tuple[Vec3, ...]) -> NDArray[np.float64]:
+    r"""Block-sparse Jacobian of the M-leg chain defect (Ellison Eqs. 31-32).
+
+    Decision vector layout ``x = [Δv_0..Δv_{M-1} (3M) | v_0..v_M (3(M+1))]`` where
+    ``v_j`` is the shared boundary velocity at body ``j``: leg ``i`` uses ``v_i`` as
+    its left-boundary velocity ``v0`` and ``v_{i+1}`` as its right-boundary
+    velocity ``vf``. The shared interior ``v_j`` (``0 < j < M``) therefore couples
+    the two legs ``j-1`` (through its ``vf`` slot) and ``j`` (through its ``v0``
+    slot) — the only off-block-diagonal coupling in the massless chain (the match
+    points are the shared variables; Eqs. 31-32).
+
+    Block entries per leg ``i`` (6 rows at ``6*i``):
+
+    * ``∂c_i/∂Δv_i = -[0; I]``        at Δv-column block ``3*i``
+    * ``∂c_i/∂v_i  = -Φ_fwd_i[:,3:6]`` at v-column block ``3M + 3*i``
+    * ``∂c_i/∂v_{i+1} = +Φ_bwd_i[:,3:6]`` at v-column block ``3M + 3*(i+1)``
+
+    The result is ``(6M) x (3M + 3(M+1))``. NOTE: ``v_j`` are stand-ins for the
+    per-body v∞ slots; with the bodies fixed this is the boundary-velocity chain
+    Jacobian (the moving-body epoch and phase-TOF columns are the per-leg
+    extensions of Phases 2-3 and are wired per-leg, not re-derived here). Validated
+    FD-vs-analytic against the whole stacked chain (consistency).
+    """
+    if len(legs) != len(dvs):
+        raise FbsMatchPointError(f"legs ({len(legs)}) and dvs ({len(dvs)}) length mismatch")
+    if not legs:
+        raise FbsMatchPointError("chain must contain at least one leg")
+
+    m = len(legs)
+    n_cols = 3 * m + 3 * (m + 1)
+    jac = np.zeros((6 * m, n_cols), dtype=np.float64)
+    v_base = 3 * m  # first column of the shared boundary-velocity block
+
+    for i, (leg, dv) in enumerate(zip(legs, dvs, strict=True)):
+        per_leg = match_point_defect_jacobian(leg, dv)  # 6x9 [Δv | v0 | vf]
+        row = 6 * i
+        # ∂c_i/∂Δv_i
+        jac[row : row + 6, 3 * i : 3 * i + 3] = per_leg[:, 0:3]
+        # ∂c_i/∂v_i (= leg's v0 columns)
+        jac[row : row + 6, v_base + 3 * i : v_base + 3 * i + 3] = per_leg[:, 3:6]
+        # ∂c_i/∂v_{i+1} (= leg's vf columns)
+        jac[row : row + 6, v_base + 3 * (i + 1) : v_base + 3 * (i + 1) + 3] = per_leg[:, 6:9]
+
+    return jac
