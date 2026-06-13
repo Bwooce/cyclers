@@ -574,6 +574,12 @@ def _flyby_continuity_residual(
 _GRADIENT_LAMBERT = "lambert"
 _GRADIENT_FBS_ANALYTIC = "fbs-analytic"
 _GRADIENT_CHOICES = (_GRADIENT_LAMBERT, _GRADIENT_FBS_ANALYTIC)
+# Corrector-level mode only (NOT a leg primitive): "auto" runs the FBS-analytic
+# corrector first and falls back to Lambert if FBS does not converge — see the
+# auto dispatch at the top of :func:`dsm_chain_correct`. Intercepted before any
+# leg evaluation, so the leg primitives only ever see a concrete choice above.
+_GRADIENT_AUTO = "auto"
+_GRADIENT_CORRECTOR_CHOICES = (*_GRADIENT_CHOICES, _GRADIENT_AUTO)
 
 
 def _eval_leg_fbs_analytic(
@@ -1090,7 +1096,51 @@ def dsm_chain_correct(
     arrival velocity Lambert produces (#226 parity), so the two backbones reach the
     same chain geometry; the opt-in only changes HOW each leg is solved. Default-off
     so every existing caller's result is unchanged.
+
+    ``"auto"`` (corrector-level only, #245): run the ``"fbs-analytic"`` corrector
+    first; if it converges, return it (FBS is faster and same-or-better optimum,
+    #243, and on the #248 multi-start seeds closes rows Lambert misses); otherwise
+    fall back to the ``"lambert"`` corrector and return it, or — if neither
+    converges — the lower-residual of the two (FBS is strictly closer on the hard
+    rows, #244). This guarantees ``"auto"`` never converges worse than Lambert, so
+    it is a safe reversible default. Not a leg primitive: the recursion always calls
+    the inner solve with a CONCRETE backbone, so leg evaluation never sees ``"auto"``.
     """
+    if gradient == _GRADIENT_AUTO:
+        fbs = dsm_chain_correct(
+            x0,
+            sequence=sequence,
+            ephem=ephem,
+            bounds=bounds,
+            mu=mu,
+            rendezvous=rendezvous,
+            tol_kms=tol_kms,
+            max_nfev=max_nfev,
+            max_revs=max_revs,
+            rev_branch_per_leg=rev_branch_per_leg,
+            charge_flyby_continuity=charge_flyby_continuity,
+            gradient=_GRADIENT_FBS_ANALYTIC,
+        )
+        if fbs.converged:
+            return fbs
+        lam = dsm_chain_correct(
+            x0,
+            sequence=sequence,
+            ephem=ephem,
+            bounds=bounds,
+            mu=mu,
+            rendezvous=rendezvous,
+            tol_kms=tol_kms,
+            max_nfev=max_nfev,
+            max_revs=max_revs,
+            rev_branch_per_leg=rev_branch_per_leg,
+            charge_flyby_continuity=charge_flyby_continuity,
+            gradient=_GRADIENT_LAMBERT,
+        )
+        if lam.converged:
+            return lam
+        return fbs if fbs.max_residual_kms <= lam.max_residual_kms else lam
+
     n_legs = len(sequence) - 1
 
     def _eval(x: NDArray[np.float64]) -> DsmChainResult:

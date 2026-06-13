@@ -321,6 +321,28 @@ def test_dsm_chain_correct_gradient_default_unchanged() -> None:
     assert r_omit.tof_days_per_leg == r_lam.tof_days_per_leg
 
 
+def test_dsm_chain_correct_auto_never_worse_than_lambert() -> None:
+    """``gradient="auto"`` (FBS-first, Lambert-fallback, #245) is accepted and never
+    converges worse than the pure-Lambert lane on the same seed: if Lambert
+    converges, auto converges too (it would fall back to Lambert), and auto's
+    residual is <= Lambert's. Default stays "lambert" (the test above)."""
+    ephem = Ephemeris(model="circular")
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 220.0),
+        eta_per_leg=(0.4, 0.6),
+    )
+    kw = dict(sequence=("E", "M", "E"), ephem=ephem, max_nfev=40)
+    r_auto = dsm_chain_correct(x0, gradient="auto", **kw)  # type: ignore[arg-type]
+    r_lam = dsm_chain_correct(x0, gradient="lambert", **kw)  # type: ignore[arg-type]
+    # auto guarantees: at least as converged, and residual no worse than Lambert.
+    assert r_auto.converged or not r_lam.converged
+    assert r_auto.max_residual_kms <= r_lam.max_residual_kms + 1e-9
+
+
 def test_sequence_keyed_bounds_layout_and_eta_box() -> None:
     """Takao A.1-A.3 bounds: correct arity, eta box [0,1], alpha/beta boxes."""
     sequence = ("E", "M", "E")
