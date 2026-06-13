@@ -115,10 +115,18 @@ is re-pointed at the optimizer role. See `docs/notes/2026-06-13-fbs-hard-rows-cl
 A reduced (x,y,θ) heading-fan forward/backward reachable-set overlap scorer +
 proxy-ΔV graph centralities, as a continuation/family-selection prioritizer. The
 reproduce-before-trust validation gate at C_J=3.1294 was a PARTIAL pass:
-**R21-S persistent-hard-access reproduced**, but **C32-dominant was a faithful
-negative** (our reproduction did not rank C32 #1 as Braik-Ross do) → the scorer is
-**GATED** (not yet trusted to rank our families). #239 (Zhou-Armellin reachable-set)
-remains to merge. See `verify/reachable_*` + the 2026-06-13 scorer note.
+**R21-S persistent-hard-access reproduced** and Table-2 periods confirmed exactly
+(LL1/LL2/DPO/R21-S/C11b to the digit, C32 to ~1.1%), but **C32-dominant was a
+faithful negative** — recorded as `xfail`, NOT forced. Root cause is a
+member-RECOVERY gap, not a method bug: only **6 of 13** representatives recover via
+the available 1-DOF perpendicular-x-crossing symmetric corrector at the off-stable
+common energy (C11a/C21/R21-U/R31 don't; JPL doesn't expose 5:2 R52), and C32's
+dominance is a full-13-node-chaotic-sea property that doesn't survive the
+truncation. Scorer is therefore **GATED** (not applied to our families). UNGATE
+PATH: a multi-segment corrector to recover C11a/C21 + R21-U/R31/R52, then re-run
+the full 13-node gate. #239 (Zhou-Armellin reachable-set) remains to merge. See
+`search/reachable_network.py` / `search/reachable_representatives.py` + the
+2026-06-13 scorer note.
 
 **Papers digested (#230–235):** Braik & Ross 2026 Orbital Networks (reachable-set
 family-accessibility — method-only, no new tuples), arXiv:2509.12671 HOTM fixed
