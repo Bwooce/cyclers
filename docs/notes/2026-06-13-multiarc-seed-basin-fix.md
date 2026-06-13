@@ -111,6 +111,18 @@ finer resonant grid) is running to settle whether it crosses 0.1. Either way the
 seed/basin lever + clean harness is the answer; #245 unblocks the moment a row
 crosses (or we accept 0.1044 ≈ gate as effective convergence and re-run the parity).
 
+### Refine result (2026-06-14): CROSSED — 0.0987 km/s, converged=True (fbs lane)
+`--gradient fbs-analytic --n-starts 40 --n-resonant 6` → best canonical
+**max_residual_kms = 0.0987, converged=True** (49 seeds, ~919 s). The first real
+multi-arc convergence by the canonical metric. **The FBS lane crossed where Lambert
+(0.1044) did not** — direct evidence FBS analytic gradients reach a basin Lambert
+misses (feeds #245). CAVEAT: it's MARGINAL (0.0013 under the 0.1 gate) — knife-edge,
+so a confirmation re-run (fbs, 60 starts, n_resonant=8) is running to verify it
+reproducibly stays under 0.1 rather than being one lucky seed. Honest framing until
+confirmed: the row sits AT the gate (~0.10 km/s), marginally on the converged side.
+If the re-run holds → #248 essentially solved for mcconaghy → run the 6 russell rows
++ re-run `fbs_optimizer_adoption_parity.py` so #245 becomes decidable.
+
 ## Discipline
 No catalogue writeback — a converged optimization is not a validated cycler (the
 V0–V5 gauntlet still governs). The incomplete production scaffold in
