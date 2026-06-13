@@ -64,8 +64,21 @@ _J2000_OBLIQUITY_RAD: Final[float] = radians(23.4392911)
 # ``"earth"``, ``"mars"``, ``"jupiter"`` …). Bodies whose astropy slug differs
 # from ``name.lower()`` (e.g. a barycenter or a moon) get an explicit override.
 _ASTROPY_NAME_OVERRIDES: Final[dict[str, str]] = {}
+# DE440 (the bundled astropy ephemeris) carries the eight major planets and the
+# Pluto barycenter, but NOT the main-belt / TNO small bodies added 2026-06-14
+# (#260): Ceres/Eris/Makemake/Haumea/Vesta/Pallas have no DE440 slot, so they
+# cannot have a real-ephemeris state and are excluded from the astropy map.
+# They remain fully usable via the circular / inclined backends (the Tisserand
+# screen uses those). Exclude by NAME so a later sourced small body is caught
+# too. ``get_body_barycentric_posvel`` would raise for these anyway; excluding
+# them here keeps the advertised astropy body set honest.
+_NO_DE440_EPHEMERIS: Final[frozenset[str]] = frozenset(
+    {"Ceres", "Eris", "Makemake", "Haumea", "Vesta", "Pallas"}
+)
 _ASTROPY_BODY_NAMES: dict[str, str] = {
-    code: _ASTROPY_NAME_OVERRIDES.get(code, data.name.lower()) for code, data in PLANETS.items()
+    code: _ASTROPY_NAME_OVERRIDES.get(code, data.name.lower())
+    for code, data in PLANETS.items()
+    if data.name not in _NO_DE440_EPHEMERIS
 }
 
 
@@ -82,6 +95,18 @@ _INCLINED_ELEMENTS_J2000: Final[dict[str, tuple[float, float]]] = {
     "S": (2.48599187, 113.66242448),
     "U": (0.77263783, 74.01692503),
     "N": (1.77004347, 131.78422574),
+    # Dwarf planets / planetoids (added 2026-06-14, #260). These bodies are
+    # significantly inclined, so the 3D Tisserand screen needs the real i/Omega.
+    # Pluto: Standish & Williams Table 2a (the only Standish table with Pluto).
+    # The rest: JPL SBDB osculating elements at epoch JD 2461200.5 (i = "in",
+    # Omega = "om"), accessed 2026-06-14 (same source as constants.py sma/ecc).
+    "Pl": (17.14104260, 110.30167986),
+    "Ce": (10.58802780183462, 80.24862682043221),
+    "Er": (43.9258279471791, 36.00477044417249),
+    "Mk": (29.02785603743067, 79.2948338209406),
+    "Ha": (28.20847393040364, 121.7860561329425),
+    "Ve": (7.143925545058711, 103.701293265032),
+    "Pa": (34.93279321851542, 172.8866193357694),
 }
 
 

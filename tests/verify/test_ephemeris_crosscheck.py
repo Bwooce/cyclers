@@ -142,11 +142,32 @@ def test_earth_z_small_confirms_ecliptic_frame() -> None:
 
 
 def test_all_eight_planets_registered_and_named() -> None:
-    """All 8 planets are in PLANETS and resolvable by the astropy backend."""
-    assert set(PLANETS) == {"Me", "V", "E", "M", "J", "S", "U", "N"}
-    for code in PLANETS:
+    """The 8 major planets are in PLANETS and resolvable by the astropy backend.
+
+    Since #260 PLANETS also carries the dwarf planets / planetoids (Pl/Ce/Er/
+    Mk/Ha/Ve/Pa), so the registry is a SUPERSET of the eight. The eight planets
+    must still all be present, astropy-resolvable, and NAIF-cross-checkable.
+    """
+    eight = {"Me", "V", "E", "M", "J", "S", "U", "N"}
+    assert eight <= set(PLANETS)
+    for code in eight:
         assert code in _ASTROPY_BODY_NAMES
         assert code in _NAIF_ID
+    # The NAIF cross-check grid stays over exactly the eight planets.
+    assert set(_NAIF_ID) == eight
+
+
+def test_planetoids_present_but_small_bodies_excluded_from_de440() -> None:
+    """The #260 planetoids are registered; the non-DE440 small bodies (no DE440
+    ephemeris slot) are excluded from the astropy backend map, while Pluto (a
+    DE440 barycenter) stays resolvable."""
+    planetoids = {"Pl", "Ce", "Er", "Mk", "Ha", "Ve", "Pa"}
+    assert planetoids <= set(PLANETS)
+    # Pluto IS in DE440 (barycenter) -> resolvable by the astropy backend.
+    assert "Pl" in _ASTROPY_BODY_NAMES
+    # Main-belt / TNO small bodies are NOT in DE440 -> excluded from astropy.
+    for code in ("Ce", "Er", "Mk", "Ha", "Ve", "Pa"):
+        assert code not in _ASTROPY_BODY_NAMES
 
 
 # --------------------------------------------------------------------------- #

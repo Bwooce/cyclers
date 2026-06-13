@@ -22,7 +22,8 @@ import pytest
 
 from cyclerfinder.core.constants import PLANETS
 
-# Standish & Williams Table 1, L_0 / varpi_0 columns (deg, J2000).
+# Standish & Williams Table 1 (1800-2050), L_0 / varpi_0 columns (deg, J2000),
+# plus Pluto from Table 2a (3000 BC-3000 AD; the only Standish table with Pluto).
 _PHASING_ANGLES: dict[str, tuple[float, float]] = {
     # code: (L0_deg, varpi_deg)
     "Me": (252.25032350, 77.45779628),
@@ -33,7 +34,13 @@ _PHASING_ANGLES: dict[str, tuple[float, float]] = {
     "S": (49.95424423, 92.59887831),
     "U": (313.23810451, 170.95427630),
     "N": (-55.12002969, 44.96476227),
+    "Pl": (238.96535011, 224.09702598),  # Standish & Williams Table 2a
 }
+
+# The #260 planetoids whose elements come from JPL SBDB osculating fits (not a
+# Standish mean-element table) deliberately leave varpi/L0 at the 0.0 default —
+# only sma/ecc/inc feed the screen, so the time-phasing angles were not sourced.
+_NO_PHASING_BY_DESIGN = ("Ce", "Er", "Mk", "Ha", "Ve", "Pa")
 
 
 @pytest.mark.parametrize(
@@ -44,16 +51,23 @@ def test_phasing_angles_match_standish_williams(code: str, l0: float, varpi: flo
     assert PLANETS[code].varpi_deg == varpi
 
 
-def test_all_eight_bodies_carry_phasing_angles() -> None:
-    """Every body in the registry has both phasing angles sourced (non-default).
+def test_standish_bodies_carry_phasing_angles() -> None:
+    """Every Standish-sourced body (8 planets + Pluto) has both phasing angles
+    sourced (non-default); the SBDB-osculating planetoids legitimately default
+    them to 0.0.
 
-    A zero would mean an un-sourced body slipped in; all eight Standish &
-    Williams rows are non-zero in both columns.
+    A zero among the Standish bodies would mean an un-sourced body slipped in;
+    all their rows are non-zero in both columns. Together the two sets partition
+    the registry, so this still pins "every body is accounted for".
     """
-    assert set(_PHASING_ANGLES) == set(PLANETS)
-    for code in PLANETS:
+    assert set(_PHASING_ANGLES) | set(_NO_PHASING_BY_DESIGN) == set(PLANETS)
+    for code in _PHASING_ANGLES:
         assert PLANETS[code].L0_deg != 0.0
         assert PLANETS[code].varpi_deg != 0.0
+    # The osculating-element planetoids carry the documented 0.0 default.
+    for code in _NO_PHASING_BY_DESIGN:
+        assert PLANETS[code].L0_deg == 0.0
+        assert PLANETS[code].varpi_deg == 0.0
 
 
 def test_argument_of_perihelion_reduction_is_finite() -> None:

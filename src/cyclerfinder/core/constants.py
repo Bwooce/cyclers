@@ -65,8 +65,53 @@ Planets:
         - Uranus, Neptune (1000 km): conservative atmosphere-plus-margin
           defaults pending mission-specific analysis; convention.
 
+Dwarf planets / planetoids (added 2026-06-14, #260):
+    The eight major planets are joined by the IAU dwarf planets Pluto, Ceres,
+    Eris, Makemake, Haumea and the two largest main-belt asteroids Vesta and
+    Pallas, so every meaningful heliocentric body is available for the
+    Tisserand/V_inf screen to prune (most are LOW-MASS -> negligible gravity
+    assist; they are added for COMPLETENESS, not because each is a useful flyby
+    body). Their sourcing:
+      * ``mu_km3_s2`` (GM) —
+          - Ceres, Pallas, Vesta, Pluto(system): JPL DE440 small-body /
+            planetary constants kernel ``gm_de440.tpc`` (Park et al., AJ 2021).
+            Ceres 62.6289, Pallas 13.6659, Vesta 17.2882, Pluto system 975.5.
+          - Eris, Makemake, Haumea: JPL/SBDB publishes no GM, only a mass from
+            satellite dynamics, so GM = G*M with G = 6.67430e-20 km^3 kg^-1 s^-2
+            (CODATA 2018). Eris M=(1.638±0.014)e22 kg (Brown & Schaller 2007,
+            Science 316:1585); Makemake M=(2.69±0.20)e21 kg (Bamberger et al.
+            2025, from moon S/2015 (136472) 1); Haumea M=(3.952±0.011)e21 kg
+            (Proudfoot et al. 2024). These are MASS-derived, hence less precise
+            than the DE440 GMs — flagged inline. Pluto here is the planet-only
+            heliocentric body (its system GM lives in satellites.PRIMARIES).
+      * ``radius_eq_km`` — mean radii: Pluto 1188.3, Ceres 469.7 (IAU 2015
+        WGCCRE / Dawn, Archinal et al. 2018), Eris 1163, Makemake 715,
+        Haumea ~780 (volume-equivalent), Vesta 262.7, Pallas 256.5 (mean radii,
+        JPL SSD / Russell et al. 2012). Used only for the flyby periapsis floor.
+      * ``sma_au`` / ``ecc`` / time-phasing angles —
+          - Pluto: Standish & Williams "Keplerian Elements for Approximate
+            Positions of the Major Planets" (JPL SSD), Table 2a (3000 BC-3000
+            AD) — the only table that retains Pluto (Table 1 dropped it post-IAU
+            2006). a0=39.48686035, e0=0.24885238, I0=17.14104260,
+            L0=238.96535011, varpi0=224.09702598, Omega0=110.30167986.
+          - Ceres/Eris/Makemake/Haumea + Vesta/Pallas: JPL Small-Body Database
+            osculating heliocentric elements (NASA/JPL SBDB ``full-prec=1``), all
+            at the common epoch JD 2461200.5 (TDB), accessed 2026-06-14. These
+            are osculating (not a mean-element table), so the time-phasing
+            varpi/L0 are left at 0.0 — only sma/ecc/inc feed the Tisserand
+            screen. Ceres a=2.76555 e=0.07969 i=10.588; Eris a=67.9339 e=0.43824
+            i=43.926; Makemake a=45.5709 e=0.15889 i=29.028; Haumea a=43.0603
+            e=0.19444 i=28.208; Vesta a=2.36137 e=0.09020 i=7.144; Pallas
+            a=2.76956 e=0.23070 i=34.933.
+      * ``safe_alt_km`` — engineering default 100 km for all (no atmosphere /
+        small body); convention, not sourced physics.
+    The non-coplanar inclinations (Pluto 17°, Eris 44°, Makemake 29°,
+    Haumea 28°) matter for the 3-D Tisserand screen but, per the existing
+    convention, ``inc_deg``/``lan_deg`` stay at the coplanar 0.0 default in
+    PLANETS and are exposed via the inclined backend's element map instead.
+
 Out of scope here (deliberately, per ``docs/phases/m0-scaffold/plan.md``
-§4.4): Sun radius, moons, asteroids. Planet eccentricity (``ecc``) and
+§4.4): Sun radius, moons, smaller asteroids. Planet eccentricity (``ecc``) and
 inclination (``inc_deg``/``lan_deg``) are now carried as sourced J2000
 elements for the 3-D Tisserand predicate; the circular-coplanar ephemeris
 backend still treats both as zero (it ignores these fields). The
@@ -223,6 +268,21 @@ _JUPITER_SMA_AU: Final[float] = 5.20288700
 _SATURN_SMA_AU: Final[float] = 9.53667594
 _URANUS_SMA_AU: Final[float] = 19.18916464
 _NEPTUNE_SMA_AU: Final[float] = 30.06992276
+
+# Dwarf planets / planetoids (added 2026-06-14, #260).
+# Pluto: Standish & Williams Table 2a a0 (the only Standish table with Pluto).
+# The rest: JPL SBDB osculating a at epoch JD 2461200.5 (see module docstring).
+_PLUTO_SMA_AU: Final[float] = 39.48686035
+_CERES_SMA_AU: Final[float] = 2.765552595034094
+_ERIS_SMA_AU: Final[float] = 67.93394687853566
+_MAKEMAKE_SMA_AU: Final[float] = 45.57093317300052
+_HAUMEA_SMA_AU: Final[float] = 43.06029023650952
+_VESTA_SMA_AU: Final[float] = 2.361365965127599
+_PALLAS_SMA_AU: Final[float] = 2.769559010737709
+
+# G (CODATA 2018), km^3 kg^-1 s^-2 — for the mass-derived GMs (Eris/Makemake/
+# Haumea), which JPL/SBDB publish only as a mass, not a GM.
+_G_KM3_KG_S2: Final[float] = 6.67430e-20
 
 PLANETS: Final[dict[str, PlanetData]] = {
     "V": PlanetData(
@@ -390,6 +450,124 @@ PLANETS: Final[dict[str, PlanetData]] = {
         # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
         # Sourced J2000 3D elements (Standish & Williams Table 1: Neptune
         # inc=1.77004347 deg, lan=131.78422574 deg) live in the inclined backend.
+    ),
+    # -----------------------------------------------------------------------
+    # Dwarf planets / planetoids (added 2026-06-14, #260). LOW-MASS bodies
+    # added for COMPLETENESS so the Tisserand/V_inf screen can self-prune;
+    # most are poor flyby/cycler nodes. Two-letter codes (single letters are
+    # taken). Full sourcing in the module docstring.
+    # -----------------------------------------------------------------------
+    "Pl": PlanetData(
+        name="Pluto",
+        code="Pl",
+        # Planet-only heliocentric body. GM = Pluto+Charon system GM minus
+        # Charon would be ideal, but DE440 publishes only the system value and
+        # Charon is ~11% of it; for the heliocentric screen the system GM is the
+        # mass that perturbs a flyby, so we use the DE440 system GM (975.5).
+        mu_km3_s2=9.755e2,
+        # Mean radius 1188.3 km (New Horizons / IAU 2015 WGCCRE, Archinal 2018).
+        radius_eq_km=1188.3,
+        sma_au=_PLUTO_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_PLUTO_SMA_AU),
+        # Engineering default (convention): no atmosphere of consequence, small
+        # body -> 100 km standoff.
+        safe_alt_km=100.0,
+        # Standish & Williams Table 2a (3000 BC-3000 AD) — the only Standish
+        # table retaining Pluto. e0/varpi0/L0 from that same row.
+        ecc=0.24885238,
+        varpi_deg=224.09702598,
+        L0_deg=238.96535011,
+        # inc_deg/lan_deg left at coplanar default 0.0 (see the Venus note).
+        # Sourced Table 2a 3D elements (inc=17.14104260 deg, lan=110.30167986
+        # deg) live in the inclined backend element map (ephemeris.py).
+    ),
+    "Ce": PlanetData(
+        name="Ceres",
+        code="Ce",
+        # JPL DE440 small-body constants (gm_de440.tpc, body 2000001): 62.6289.
+        mu_km3_s2=6.26288886444e1,
+        # Mean radius 469.7 km (Dawn / IAU 2015 WGCCRE, Archinal et al. 2018).
+        radius_eq_km=469.7,
+        sma_au=_CERES_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_CERES_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5 (see module docstring).
+        ecc=0.07969229514816586,
+        # inc=10.58802780183462 deg lives in the inclined backend element map.
+    ),
+    "Er": PlanetData(
+        name="Eris",
+        code="Er",
+        # No published GM; GM = G*M, M=(1.638e22) kg (Brown & Schaller 2007,
+        # Science 316:1585, from Dysnomia's orbit). MASS-derived (less precise).
+        mu_km3_s2=_G_KM3_KG_S2 * 1.638e22,
+        # Mean radius 1163 km (Sicardy et al. 2011 stellar occultation).
+        radius_eq_km=1163.0,
+        sma_au=_ERIS_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_ERIS_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5.
+        ecc=0.4382385347971672,
+        # inc=43.9258279471791 deg lives in the inclined backend element map.
+    ),
+    "Mk": PlanetData(
+        name="Makemake",
+        code="Mk",
+        # No published GM; GM = G*M, M=(2.69e21) kg (Bamberger et al. 2025, from
+        # the moon S/2015 (136472) 1). MASS-derived (less precise).
+        mu_km3_s2=_G_KM3_KG_S2 * 2.69e21,
+        # Mean radius 715 km (Ortiz et al. 2012 stellar occultation).
+        radius_eq_km=715.0,
+        sma_au=_MAKEMAKE_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_MAKEMAKE_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5.
+        ecc=0.1588889953992523,
+        # inc=29.02785603743067 deg lives in the inclined backend element map.
+    ),
+    "Ha": PlanetData(
+        name="Haumea",
+        code="Ha",
+        # No published GM; GM = G*M, M=(3.952e21) kg (Proudfoot et al. 2024,
+        # from the satellites Hi'iaka/Namaka). MASS-derived (less precise).
+        mu_km3_s2=_G_KM3_KG_S2 * 3.952e21,
+        # Volume-equivalent mean radius ~780 km (Ortiz et al. 2017 occultation;
+        # Haumea is markedly triaxial, so this is the equivalent-sphere radius).
+        radius_eq_km=780.0,
+        sma_au=_HAUMEA_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_HAUMEA_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5.
+        ecc=0.1944430148898797,
+        # inc=28.20847393040364 deg lives in the inclined backend element map.
+    ),
+    "Ve": PlanetData(
+        name="Vesta",
+        code="Ve",
+        # JPL DE440 small-body constants (gm_de440.tpc, body 2000004): 17.2882.
+        mu_km3_s2=1.72882328792e1,
+        # Mean radius 262.7 km (Dawn, Russell et al. 2012).
+        radius_eq_km=262.7,
+        sma_au=_VESTA_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_VESTA_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5.
+        ecc=0.09020374382834395,
+        # inc=7.143925545058711 deg lives in the inclined backend element map.
+    ),
+    "Pa": PlanetData(
+        name="Pallas",
+        code="Pa",
+        # JPL DE440 small-body constants (gm_de440.tpc, body 2000002): 13.6659.
+        mu_km3_s2=1.36658781460e1,
+        # Mean radius 256.5 km (Marsset et al. 2020 / SPHERE imaging).
+        radius_eq_km=256.5,
+        sma_au=_PALLAS_SMA_AU,
+        mean_motion_deg_day=_mean_motion_deg_day(_PALLAS_SMA_AU),
+        safe_alt_km=100.0,
+        # JPL SBDB osculating e at epoch JD 2461200.5.
+        ecc=0.2307000995648547,
+        # inc=34.93279321851542 deg lives in the inclined backend element map.
     ),
 }
 
