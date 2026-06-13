@@ -21,6 +21,7 @@ from cyclerfinder.core.fbs_match_point import (
     FbsLeg,
     chain_defect,
     chain_defect_jacobian,
+    flyby_coupling_block,
     match_point_defect,
     match_point_defect_epoch_column,
     match_point_defect_jacobian,
@@ -425,3 +426,69 @@ def test_chain_jacobian_fd_consistency_random() -> None:
                     if denom > 0.0:
                         max_err = max(max_err, float(np.linalg.norm(aa - bb)) / denom)
             assert max_err < _FD_RTOL, (m, max_err)
+
+
+# --- Phase 5: inter-leg flyby-continuity coupling (Ellison Eqs. 3-4) ----------
+
+
+def test_flyby_coupling_block_fd_consistency_random() -> None:
+    """Coupled flyby-continuity block matches central differences (consistency).
+
+    Ellison Eqs. 3-4 wired through ``flyby_coupling_block``: the two continuity
+    constraints' gradients w.r.t. the inbound/outbound leg boundary velocities
+    (``∂c/∂v_arr``, ``∂c/∂v_dep``) are checked against the FD of the constraint
+    values, with the planet velocity an additive constant. Geometries are sampled
+    so the turn is non-degenerate (altitude constraint active).
+    """
+    rng = np.random.default_rng(20260617)
+    body = "E"
+    v_planet = np.array([0.0, 29.78, 0.0])  # ~Earth heliocentric speed, km/s
+    checked = 0
+    for _ in range(20):
+        # Inbound v∞ of a few km/s, outbound a moderate rotation of it.
+        vinf_in = rng.uniform(-1.0, 1.0, size=3)
+        vinf_in = vinf_in / np.linalg.norm(vinf_in) * float(rng.uniform(3.0, 7.0))
+        axis = rng.uniform(-1.0, 1.0, size=3)
+        axis = axis / np.linalg.norm(axis)
+        ang = float(rng.uniform(0.2, 1.2))  # moderate bend -> altitude active
+        # Rodrigues rotation of vinf_in about axis by ang, with a small magnitude
+        # perturbation so c_vinf is non-zero too.
+        k = axis
+        vinf_out = (
+            vinf_in * np.cos(ang)
+            + np.cross(k, vinf_in) * np.sin(ang)
+            + k * np.dot(k, vinf_in) * (1.0 - np.cos(ang))
+        ) * float(rng.uniform(0.9, 1.1))
+
+        v_arr = v_planet + vinf_in
+        v_dep = v_planet + vinf_out
+        blk = flyby_coupling_block(v_arr, v_dep, v_planet, body)
+        if not blk.altitude_active:
+            continue
+        checked += 1
+
+        def _consts(va: np.ndarray, vd: np.ndarray) -> np.ndarray:
+            b = flyby_coupling_block(va, vd, v_planet, body)
+            return np.array([b.c_vinf_kms, b.c_altitude_km])
+
+        an_arr = np.column_stack([blk.d_cvinf_d_v_arr, blk.d_calt_d_v_arr]).T  # 2x3
+        an_dep = np.column_stack([blk.d_cvinf_d_v_dep, blk.d_calt_d_v_dep]).T  # 2x3
+
+        for vidx, an in ((0, an_arr), (1, an_dep)):
+            fd = np.zeros((2, 3))
+            for c in range(3):
+                h = _FD_STEP * 7.0  # km/s scale of v∞
+                e = np.zeros(3)
+                e[c] = h
+                if vidx == 0:
+                    cp, cm = _consts(v_arr + e, v_dep), _consts(v_arr - e, v_dep)
+                else:
+                    cp, cm = _consts(v_arr, v_dep + e), _consts(v_arr, v_dep - e)
+                fd[:, c] = (cp - cm) / (2.0 * h)
+            # Row-wise rel error (the two rows carry different units).
+            for r in range(2):
+                denom = float(np.linalg.norm(fd[r]))
+                if denom > 0.0:
+                    assert float(np.linalg.norm(an[r] - fd[r])) / denom < 1.0e-5, (vidx, r)
+
+    assert checked >= 5, f"too few active-altitude geometries sampled ({checked})"

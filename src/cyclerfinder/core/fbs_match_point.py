@@ -362,3 +362,80 @@ def chain_defect_jacobian(legs: tuple[FbsLeg, ...], dvs: tuple[Vec3, ...]) -> ND
         jac[row : row + 6, v_base + 3 * (i + 1) : v_base + 3 * (i + 1) + 3] = per_leg[:, 6:9]
 
     return jac
+
+
+# ---------------------------------------------------------------------------
+# Phase 5: inter-leg flyby-continuity coupling (Ellison Eqs. 3-4, A1-A6)
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class FlybyCouplingBlock:
+    r"""Inter-leg flyby-continuity constraints + their boundary-velocity Jacobian.
+
+    The two patched-conic continuity constraints (Ellison Eqs. 3-4) at an interior
+    body where the inbound leg arrives (heliocentric ``v_arr``) and the outbound
+    leg departs (heliocentric ``v_dep``):
+
+    * ``c_vinf``     = ``‖v∞_out‖ - ‖v∞_in‖``      (Eq. 3 magnitude continuity)
+    * ``c_altitude`` = periapsis-altitude feasibility (Eq. 4; ≥ 0 feasible)
+
+    with ``v∞_in = v_arr - v_planet`` and ``v∞_out = v_dep - v_planet``. The
+    ``d_*_d_v_arr`` / ``d_*_d_v_dep`` fields are the 3-vectors
+    ``∂c/∂v_arr`` / ``∂c/∂v_dep`` — equal to ``∂c/∂v∞_in`` / ``∂c/∂v∞_out`` from
+    :func:`cyclerfinder.nbody.flyby_gradients.flyby_continuity_gradients` because
+    the v_planet term is an additive constant (chain rule = identity).
+    """
+
+    c_vinf_kms: float
+    c_altitude_km: float
+    d_cvinf_d_v_arr: Vec3
+    d_cvinf_d_v_dep: Vec3
+    d_calt_d_v_arr: Vec3
+    d_calt_d_v_dep: Vec3
+    turn_angle_rad: float
+    altitude_active: bool
+
+
+def flyby_coupling_block(
+    v_arr: Vec3,
+    v_dep: Vec3,
+    v_planet: Vec3,
+    body: str,
+    *,
+    h_safe_km: float | None = None,
+) -> FlybyCouplingBlock:
+    r"""Couple two consecutive legs through a patched-conic flyby (Eqs. 3-4).
+
+    Forms the inbound/outbound hyperbolic excess vectors from the heliocentric
+    arrival/departure velocities (``v∞_in = v_arr - v_planet``,
+    ``v∞_out = v_dep - v_planet``) and evaluates the two flyby-continuity
+    constraints with their analytic gradients via the already-validated
+    :func:`cyclerfinder.nbody.flyby_gradients.flyby_continuity_gradients` (Ellison
+    Appendix A1-A6). Because ``v_planet`` is an additive constant the gradients
+    w.r.t. the leg boundary velocities equal the gradients w.r.t. the v∞ vectors
+    (chain rule = identity), so these slot straight into the chain Jacobian's
+    ``vf`` (inbound leg) and ``v0`` (outbound leg) columns.
+
+    Validated FD-vs-analytic on the coupled block (consistency; Ellison publishes
+    no numeric gradient).
+    """
+    from cyclerfinder.nbody.flyby_gradients import flyby_continuity_gradients
+
+    v_arr_a = np.asarray(v_arr, dtype=np.float64)
+    v_dep_a = np.asarray(v_dep, dtype=np.float64)
+    v_pl_a = np.asarray(v_planet, dtype=np.float64)
+    vinf_in = v_arr_a - v_pl_a
+    vinf_out = v_dep_a - v_pl_a
+
+    g = flyby_continuity_gradients(vinf_in, vinf_out, body, h_safe_km=h_safe_km)
+    return FlybyCouplingBlock(
+        c_vinf_kms=g.c_vinf_kms,
+        c_altitude_km=g.c_altitude_km,
+        d_cvinf_d_v_arr=g.d_cvinf_d_vinf_in,
+        d_cvinf_d_v_dep=g.d_cvinf_d_vinf_out,
+        d_calt_d_v_arr=g.d_calt_d_vinf_in,
+        d_calt_d_v_dep=g.d_calt_d_vinf_out,
+        turn_angle_rad=g.turn_angle_rad,
+        altitude_active=g.altitude_active,
+    )
