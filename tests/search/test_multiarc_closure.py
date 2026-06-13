@@ -21,10 +21,11 @@ from typing import Any
 import numpy as np
 import pytest
 
+import cyclerfinder.search.dsm_leg as dsm_leg
+import cyclerfinder.search.multiarc_closure as multiarc_closure
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.catalog import load_catalog
-from cyclerfinder.search import dsm_leg, multiarc_closure
 
 DAY_S = 86400.0
 
@@ -198,6 +199,12 @@ def test_close_multiarc_row_smoke_runs() -> None:
     eph = Ephemeris("astropy")
     row = _row("mcconaghy-2006-em-k2")
     report = multiarc_closure.close_multiarc_row(row, eph, n_starts=1, gradient="lambert")
+    print(
+        f"\n[smoke] {report.row_id} seq={'-'.join(report.sequence)} "
+        f"best_max_residual_kms={report.best_max_residual_kms:.4f} "
+        f"converged={report.converged} "
+        f"n_starts_run={report.n_starts_run} n_seeds_available={report.n_seeds_available}"
+    )
     assert report.row_id == "mcconaghy-2006-em-k2"
     assert report.n_starts_run == 1
     assert report.n_seeds_available >= 1
