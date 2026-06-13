@@ -26,7 +26,7 @@ unexplored space**, NOT by algorithm trust.
 
 ## The three discovery tracks
 
-### Track A — Richer genome (HIGHEST leverage; currently barely a task)
+### Track A — Richer genome (HIGHEST leverage; tracked as #254)
 A more capable genome opens regions the current one cannot even represent.
 **Corollary (the coupling): a novel cycler usually arrives WITH a new algorithm** —
 you find cyclers you couldn't before because you built/adopted the capability to
@@ -58,7 +58,7 @@ nothing). The reachable-set scorer is exactly this:
 Output: a ranked list of accessible, non-empty regions/families to seed — so Track C
 spends compute where cyclers plausibly are.
 
-### Track C — Discovery-campaign daemon (how to run it)
+### Track C — Discovery-campaign daemon (how to run it; tracked as #253)
 Novel-cycler search is **days of compute**, which is why one-shot agents HANG on it
 (they background-and-poll; subagents get no completion signal — see
 [[feedback_long_agents_commit_incrementally]]). Long compute belongs in a **daemon**,
@@ -82,11 +82,11 @@ The corpus daemon is the working template to generalize.
   logger needs no change, only a flyby-cycler data-gen driver). Defer until A+B exist.
 
 ## Task re-prioritization
-- **Elevate (discovery-enabling):** #248 (multi-arc convergence — can't discover what
-  you can't close), #249 + #239-merge (the prioritizer), **#250 (capability-paper
-  sweep — primary source of new genomes/methods)**, and a **NEW Track-A genome
-  effort** (repeated-moon multi-rev first).
-- **New:** a discovery-campaign daemon (Track C) generalizing the corpus daemon; the
+- **Elevate (discovery-enabling):** #248 (multi-arc convergence — SOLVED for
+  mcconaghy, 0.0987 km/s), #249 + #239-merge (the prioritizer), #250 (capability-paper
+  sweep — DONE, no new genome paper exists), and the **Track-A genome effort #254**
+  (repeated-moon multi-rev first).
+- **New:** the discovery-campaign daemon **#253** (Track C) generalizing the corpus daemon; the
   ML false-positive flagger.
 - **Downrank:** pure paper-validation/acquisition (#116) now matters only when a paper
   brings a NEW algorithm or topology, not just another anchor. The FBS-default ladder

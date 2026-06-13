@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-13)
+# Project state at a glance (updated 2026-06-14)
 
 This top section is the orientation map for a contributor returning to
 the project: what's done, what's in progress (with plan-file pointers),
@@ -72,6 +72,45 @@ the #195 closer fixes (2026-06-11, `58674f6`/`d7f0c87`) — the writeback STANDS
 reproducible data (date + V∞ + closest-approach + leg ToF, DE405) exists ONLY
 for S1L1 (see the 2026-06-10 section below); the ~200 ocampo rows stay V0 —
 no per-member data was ever published.
+
+## 2026-06-14 — discovery-program pivot + multi-arc convergence SOLVED
+
+**STRATEGIC PIVOT: novel cyclers are the deliverable; validation is the means.** The
+catalogue is at its data-limited validation ceiling and the literature is mostly
+exhausted (paper sweep #250 found no new genome). The toolkit is mature, so the
+program shifts to DISCOVERY. Spec: `docs/notes/2026-06-13-discovery-program-spec.md`.
+Three tracks: **(A) richer genome** — #254 repeated-moon multi-rev (highest-evidenced
+lever, the only genome with a PROVEN non-empty target = Liang CGE; designed
+`docs/notes/2026-06-14-repeated-moon-multirev-genome-design.md`); **(B) prioritizer** —
+#249 ungate the reachable-set scorer + #239 impulsive merge; **(C) discovery-campaign
+daemon** — #253. Regime arc: left input-bound → briefly build-bound (genome +
+prioritizer + harness) → then CPU-bound (the wanted regime: discoveries scale with
+cores×time). The agent-hang failures were long solver compute outgrowing one-shot
+agents → that compute belongs in the #253 daemon.
+
+**Multi-arc convergence SOLVED (#248).** The hard E-E-M-M closure blocker (neither lane
+converged, #244) is cracked: the clean `search/multiarc_closure.py` harness (canonical
+metric + epoch-safe eval + discrete resonant-return seeds + multi-start) converges
+`mcconaghy-2006-em-k2` at **0.0987 km/s, reproducibly** on the FBS-analytic lane —
+where Lambert (0.1044) misses. First direct evidence FBS reaches a basin Lambert
+can't → **unblocks #245**. Marginal (0.0013 under gate), mcconaghy-only so far;
+follow-through = russell rows + parity re-run (now #245). The scratch-era
+0.163/2.06/58 numbers were buggy/metric-confused — superseded. Note:
+`docs/notes/2026-06-13-multiarc-seed-basin-fix.md`.
+
+**Binary-star μ-continuation — clean NEGATIVE (#252).** Continuing the EM (1,1)/(3,1)
+families in μ does NOT reach the journal's binary-star cyclers: the cycler branches go
+linearly unstable before μ=0.5/0.3, and the stable orbit found at μ=0.5 was a
+one-primary librational orbit (the topology gate caught the false "it closed and it's
+stable"). The paper's binary-star cyclers exist but are NOT the analytic continuation
+of the EM member — they need a DIRECT fixed-μ search. Note:
+`docs/notes/2026-06-14-binary-star-mu-continuation-discovery.md`.
+
+**Infra:** WebFetch broadly enabled (blanket allow) so agents can fetch arXiv/PDFs;
+standing rule — every fetched PDF is filed + committed to the private `cyclers_pdf`
+repo (4 filed this session). Roberts-Tsoukkas journal (#251) = no numeric tables
+(figures only) → no sourced row, only a qualitative prior. Long agents now commit
+incrementally (quota walls + polling-loop hangs lose un-committed work otherwise).
 
 ## 2026-06-13 — Ellison FBS lane, errata system, JPL oracle, writebacks, reachable-set scorer, surrogate corpus
 
