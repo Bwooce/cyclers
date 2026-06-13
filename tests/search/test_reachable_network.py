@@ -280,3 +280,68 @@ def test_strength_prefers_cheaper_edges() -> None:
     # Node 1 has a 0.1 edge (1/0.1=10) + a 2.0 edge (0.5) = 10.5; node 2 has two
     # 2.0 edges = 1.0. Cheap-edge node dominates strength.
     assert c.strength[1] > c.strength[2]
+
+
+def test_vu_ms_matches_earth_moon_velocity_unit() -> None:
+    # VU = LU/TU = 384400 km / (4.34837740 d) ~ 1.0232 km/s (standard EM value).
+    assert pytest.approx(1023.16, abs=1.0) == rn.VU_MS
+
+
+def test_apply_budget_cap_drops_over_budget_edges() -> None:
+    # An edge whose m/s cost exceeds dV_cap is dropped (set to inf); a cheap edge
+    # is kept and converted to m/s.
+    inf = math.inf
+    # nondimensional: 0.01 -> ~10 m/s (kept); 1.0 -> ~1023 m/s (> 409.3, dropped).
+    w_nd = np.array(
+        [
+            [0.0, 0.01, 1.0],
+            [0.01, 0.0, inf],
+            [1.0, inf, 0.0],
+        ]
+    )
+    capped = rn.apply_budget_cap(w_nd, dv_cap_ms=409.3)
+    assert capped[0, 1] == pytest.approx(0.01 * rn.VU_MS)
+    assert math.isinf(capped[0, 2])  # over the cap -> dropped
+    assert math.isinf(capped[1, 2])  # already missing
+    assert capped[0, 0] == 0.0
+
+
+def test_budget_cap_creates_relay_betweenness() -> None:
+    # The cap can drop a direct edge and force relay routing -> nonzero betweenness
+    # for the relay node. Without the cap (complete graph) betweenness is zero.
+    # 0-1, 1-2 moderately cheap; 0-2 direct is cheaper than the 0-1-2 relay sum
+    # but still over the cap. Uncapped: direct 0-2 wins (no relay). Capped: 0-2
+    # dropped, forcing relay through 1.
+    # direct 0-2 = 0.55*VU ~ 563 m/s; relay 0-1-2 = (0.4+0.4)*VU ~ 819 m/s.
+    w_nd = np.array(
+        [
+            [0.0, 0.4, 0.55],
+            [0.4, 0.0, 0.4],
+            [0.55, 0.4, 0.0],
+        ]
+    )
+    uncapped = rn.centralities(w_nd * rn.VU_MS)
+    assert uncapped.betweenness[1] == pytest.approx(0.0)  # direct 0-2 cheaper: no relay
+    capped = rn.apply_budget_cap(w_nd, dv_cap_ms=409.3)
+    c = rn.centralities(capped)
+    assert c.betweenness[1] > 0.0  # node 1 now relays 0<->2
+
+
+def test_normalized_centralities_preserve_ranks() -> None:
+    # The Nf normalization is a per-metric constant -> ranks unchanged vs raw.
+    inf = math.inf
+    w = np.array(
+        [
+            [0.0, 0.1, 2.0, inf],
+            [0.1, 0.0, 0.5, 2.0],
+            [2.0, 0.5, 0.0, 0.5],
+            [inf, 2.0, 0.5, 0.0],
+        ]
+    )
+    raw = rn.centralities(w)
+    norm = rn.normalized_centralities(w, n_families=4)
+    assert np.argsort(-raw.strength).tolist() == np.argsort(-norm.strength).tolist()
+    assert (
+        np.argsort(-raw.harmonic_closeness).tolist()
+        == np.argsort(-norm.harmonic_closeness).tolist()
+    )

@@ -506,3 +506,61 @@ def centralities(weights: NDArray[np.float64]) -> Centralities:
                 harmonic[i] += 1.0 / dist[i, j]
     bet = _betweenness(weights)
     return Centralities(strength=strength, harmonic_closeness=harmonic, betweenness=bet)
+
+
+# ---------------------------------------------------------------------------
+# Budget-capped network (Braik-Ross Sec. 5.1, Eqs. 53-62).
+# ---------------------------------------------------------------------------
+
+#: Earth-Moon velocity unit VU = LU / TU = 384400 km / (4.34837740 d) -> m/s.
+#: Converts a nondimensional proxy turn-cost (Eq. 26) to m/s so the budget cap
+#: (Braik-Ross max-budget reference dV_cap = 409.3 m/s) can be applied.
+VU_MS = 384400.0 / (4.34837740 * 86400.0) * 1000.0
+
+#: Braik-Ross maximum-budget reference maneuver cap (Sec. 5.1): dV_cap = 409.3 m/s.
+#: At this cap the 13-node network retains 75 of 78 edges; the three dropped edges
+#: all involve the 2:1 stable resonant R21-S (the persistent hard-access family).
+DV_CAP_MS = 409.3
+
+
+def apply_budget_cap(
+    weights_nd: NDArray[np.float64],
+    *,
+    dv_cap_ms: float = DV_CAP_MS,
+) -> NDArray[np.float64]:
+    """Convert a nondimensional proxy-dV matrix to m/s and drop over-budget edges.
+
+    Braik-Ross edge-retention rule (Eq. 54): an undirected edge ``(A, B)`` is kept
+    iff its direct proxy cost ``dV_A,B <= dV_cap``. Edges above the cap (and the
+    already-missing ``inf`` edges) are set to ``inf`` (no edge). The returned
+    matrix is in m/s with a zero diagonal -- ready for :func:`centralities`.
+    """
+    mat = weights_nd * VU_MS
+    np.fill_diagonal(mat, 0.0)
+    over = mat > dv_cap_ms
+    mat[over] = math.inf
+    np.fill_diagonal(mat, 0.0)
+    return mat
+
+
+def normalized_centralities(weights_ms: NDArray[np.float64], n_families: int) -> Centralities:
+    """Braik-Ross normalized centralities (Eqs. 59-62) on a capped m/s matrix.
+
+    Applies the paper's per-metric normalizations to :func:`centralities`:
+      - strength  S(A) = (1/(Nf-1)) * sum 1/dV  (Eq. 60);
+      - harmonic  H(A) = (1/(Nf-1)) * sum 1/d   (Eq. 61);
+      - betweenness B(A) = (2/((Nf-1)(Nf-2))) * sum sigma_PQ(A)/sigma_PQ (Eq. 62).
+    ``n_families`` is ``Nf`` (the full representative-set size the paper normalizes
+    against). The normalizations are constant per metric, so node *ranks* are
+    identical to :func:`centralities`; they are applied so the reported values are
+    directly comparable to Table 4.
+    """
+    raw = centralities(weights_ms)
+    nf = float(n_families)
+    s_norm = 1.0 / (nf - 1.0)
+    b_norm = 2.0 / ((nf - 1.0) * (nf - 2.0))
+    return Centralities(
+        strength=raw.strength * s_norm,
+        harmonic_closeness=raw.harmonic_closeness * s_norm,
+        betweenness=raw.betweenness * b_norm,
+    )
