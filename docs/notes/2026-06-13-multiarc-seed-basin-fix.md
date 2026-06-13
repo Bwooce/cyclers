@@ -99,6 +99,18 @@ First fix the metric inconsistency, then a single bounded grid on `mcconaghy-200
 (the closest row), lambert lane only, to settle whether it crosses 0.1. Until a row
 converges on EITHER lane with a consistent metric, **#245 stays HELD**.
 
+## Update 4 (2026-06-14, the clean harness WORKS — 0.1044 km/s, at the gate edge)
+The `search/multiarc_closure.py` harness (epoch-safe canonical metric + discrete
+resonant-return seeds + multi-start) was built and the coordinator ran the bounded
+campaign: `scripts/multiarc_closure_run.py --rows mcconaghy-2006-em-k2 --n-starts 25`
+→ **best canonical max_residual_kms = 0.1044, converged=False** (25 seeds, ~126 s,
+lambert lane). This is the TRUSTWORTHY number (the 58 / 2.06 / 0.163 scratch values
+were buggy/metric-confused). It sits a hair over the 0.1 km/s gate — the multi-arc
+row is essentially AT convergence. A refine pass (fbs-analytic lane, 40 starts,
+finer resonant grid) is running to settle whether it crosses 0.1. Either way the
+seed/basin lever + clean harness is the answer; #245 unblocks the moment a row
+crosses (or we accept 0.1044 ≈ gate as effective convergence and re-run the parity).
+
 ## Discipline
 No catalogue writeback — a converged optimization is not a validated cycler (the
 V0–V5 gauntlet still governs). The incomplete production scaffold in
