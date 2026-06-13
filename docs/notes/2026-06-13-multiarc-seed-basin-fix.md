@@ -61,6 +61,36 @@ multi-arc rows from 40 km/s (non-converging) down to the ~1–2 km/s range — t
 seed/basin IS the lever and this is real progress — but **no row cleanly crosses the
 0.1 km/s gate**, and the one sub-gate claim was not reproducible.
 
+## Update 3 (2026-06-14, inline probe — INCONCLUSIVE, the scratch numbers are unreliable)
+Took it inline to settle the metric. The canonical gate metric is
+`dsm_chain_correct(...).max_residual_kms` with `tol_kms=0.1` (and `.converged`).
+A quick canonical probe on `mcconaghy-2006-em-k2` (lambert lane, structured seed
+with the *base* descriptor resonant ToF = 534 d) returned **58 km/s, non-converged**,
+and IDENTICAL across a ±15% resonant-ToF sweep — an identical-across-seeds result is
+a bug signature (the resonant seed wasn't affecting the outcome). This also flatly
+contradicts the run-1 note's "structured seed → 1.0 km/s," so AT LEAST ONE of those
+numbers is wrong/metric-confused. Re-testing with the coarse's actual per-leg
+resonant-return values (≈1096 d / 1718 d) **crashed** with `jplephem OutOfRangeError`
+— the larger resonant ToFs drove the corrector's epoch search outside DE440's range
+(the evaluator needs epoch-range-safe guarding).
+
+**Conclusion: sub-gate multi-arc convergence is NOT demonstrated, and quick inline
+probing is unreliable** (inconsistent metrics, an identical-result bug, an
+unguarded epoch-range crash). #245 stays HELD. This is a genuine, careful
+engineering problem — not solvable by chat-turn thrashing or one-shot agents.
+
+## What a proper #248 solve needs (the real unit of work)
+A CLEAN multi-arc closure harness (a real module + test, not scratch):
+1. ONE canonical metric throughout (`max_residual_kms` / `converged`), no ad-hoc "res".
+2. Epoch-range-SAFE evaluation (catch/penalise `OutOfRangeError` instead of crashing).
+3. Correct resonant-return ENUMERATION per leg (discrete small-N returns of the leg's
+   body, not a ±% scale of one value) for the seed.
+4. Structured-epoch transit seed (done) + MBH multi-start over the resonant-return
+   grid, driven through `dsm_chain_correct`.
+5. Verify on `mcconaghy-2006-em-k2` first (closest row), then the 6 russell rows.
+This belongs inline (deliberate) or in the Track-C discovery daemon (its natural host
+for long solver compute) — NOT a one-shot agent (3 hangs) and NOT quick probes.
+
 ## Precise next step (NOT a one-shot agent)
 #248 has now hung THREE one-shot agents — it is slow iterative solver compute that
 makes agents background-and-poll until killed. Do it **inline (main loop, bounded,
