@@ -91,6 +91,7 @@ import numpy as np
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.correct import ballistic_correct
 from cyclerfinder.search.free_return import free_return_correct
+from cyclerfinder.search.outcome_log import log_outcome
 
 # Distributions the perturbation kernel understands (Englander & Englander 2014,
 # ISSFD24 S7-3). Ordering by the paper's recommendation: "pareto" (bi-polar
@@ -404,6 +405,18 @@ def mbh(
     # incumbent (feasible or not). It counts as an attempt; it is "accepted" iff
     # it yields the first feasible incumbent.
     seed_step = objective_and_solve(x0_arr, rng)
+    # Passive training-data capture (#210): NO-OP unless CYCLERFINDER_OUTCOME_LOG
+    # is set. One record per basin-hop trial. Side effect only; never validation.
+    log_outcome(
+        solver="mbh.hop",
+        inputs={"x_seed": x0_arr, "rng_seed": int(rng_seed), "hop": 0},
+        outcome={
+            "x": seed_step.x,
+            "objective": float(seed_step.objective),
+            "feasible": bool(seed_step.feasible),
+        },
+        meta={"perturbation": perturbation},
+    )
     best_x = np.asarray(seed_step.x, dtype=np.float64)
     best_obj = float(seed_step.objective)
     best_feasible = bool(seed_step.feasible)
@@ -416,7 +429,7 @@ def mbh(
     stall = 0
     stopped_on_stall = False
     pending_reset = False
-    for _ in range(n_hops):
+    for _hop in range(1, n_hops + 1):
         if pending_reset and lower_b is not None and upper_b is not None:
             # Englander Algorithm-1 GLOBAL RESET: explore from a fresh uniform
             # random point in bounds (the best-so-far incumbent is retained).
@@ -435,6 +448,18 @@ def mbh(
             )
         step = objective_and_solve(x_seed, rng)
         cand_obj = float(step.objective)
+        # Passive training-data capture (#210): one record per perturbed hop trial.
+        # NO-OP unless CYCLERFINDER_OUTCOME_LOG is set. Side effect only.
+        log_outcome(
+            solver="mbh.hop",
+            inputs={"x_seed": x_seed, "rng_seed": int(rng_seed), "hop": int(_hop)},
+            outcome={
+                "x": step.x,
+                "objective": cand_obj,
+                "feasible": bool(step.feasible),
+            },
+            meta={"perturbation": perturbation},
+        )
         objective_history.append(cand_obj)
 
         # Monotonic acceptance: must be feasible AND strictly improve.

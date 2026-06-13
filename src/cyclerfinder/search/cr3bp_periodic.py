@@ -14,6 +14,7 @@ from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
+from cyclerfinder.search.outcome_log import log_outcome
 
 
 @dataclass(frozen=True)
@@ -86,10 +87,28 @@ def correct_periodic(
         if period <= period_lo or period >= period_hi:
             break
     converged = residual < tol and period_lo < period < period_hi
+    jacobi = cr3bp.jacobi_constant(s, system.mu)
+    # Passive training-data capture (#210): NO-OP unless CYCLERFINDER_OUTCOME_LOG
+    # is set. Side effect only — never alters the result. NEVER a validation input.
+    log_outcome(
+        solver="cr3bp.correct_periodic",
+        inputs={
+            "state0_guess": np.asarray(state0_guess, float),
+            "period_guess": float(period_guess),
+            "mu": float(system.mu),
+        },
+        outcome={
+            "converged": bool(converged),
+            "residual": float(residual),
+            "period": float(period),
+            "jacobi": float(jacobi),
+        },
+        meta={"primary": system.primary, "secondary": system.secondary},
+    )
     return PeriodicOrbit(
         state0=s,
         period=period,
-        jacobi=cr3bp.jacobi_constant(s, system.mu),
+        jacobi=jacobi,
         converged=converged,
         closure_residual=residual,
     )
@@ -273,6 +292,29 @@ def correct_symmetric_fixed_jacobi(
     ydot0_final = ydot0_from_jacobi(x0, jacobi, system.mu, sign=ydot0_sign)
     period = 2.0 * t_half
     converged = crossing_res < tol
+    # Passive training-data capture (#210): NO-OP unless CYCLERFINDER_OUTCOME_LOG
+    # is set. This also captures every per-step continuation result (the campaign
+    # calls this corrector per step). Side effect only; never a validation input.
+    log_outcome(
+        solver="cr3bp.correct_symmetric_fixed_jacobi",
+        inputs={
+            "x0_guess": float(x0_guess),
+            "jacobi": float(jacobi),
+            "period_guess": float(period_guess),
+            "ydot0_sign": float(ydot0_sign),
+            "half_crossings": half_crossings,
+            "mu": float(system.mu),
+        },
+        outcome={
+            "converged": bool(converged),
+            "crossing_residual": float(crossing_res),
+            "x0": float(x0),
+            "ydot0": float(ydot0_final),
+            "period": float(period),
+            "n_iter": int(n_iter),
+        },
+        meta={"primary": system.primary, "secondary": system.secondary},
+    )
     return SymmetricOrbit(
         x0=x0,
         ydot0=ydot0_final,

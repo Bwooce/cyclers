@@ -76,6 +76,7 @@ from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryEr
 from cyclerfinder.model import Cycler, Score
 from cyclerfinder.model.score import composite_score, score
 from cyclerfinder.search.construct import construct_cycler
+from cyclerfinder.search.outcome_log import log_outcome
 from cyclerfinder.search.resonance import (
     beat_period_days,
     multi_body_beat_days,
@@ -1123,6 +1124,29 @@ def optimise_cell_idealized(
         vinf_cap=vinf_cap,
         target_period_sec=target_period_sec,
         rp_factors=rp_factors,
+    )
+
+    # Passive training-data capture (#210): NO-OP unless CYCLERFINDER_OUTCOME_LOG
+    # is set. Side effect only — never alters the result. NEVER a validation input.
+    log_outcome(
+        solver="optimise_cell_idealized",
+        inputs={
+            "cell_id": cell.id,
+            "bodies": list(cell.bodies),
+            "sequence": list(cell.sequence),
+            "period_k": int(cell.period_k),
+            "vinf_cap": float(vinf_cap),
+            "n_starts": int(n_starts),
+            "seed": int(seed),
+            "use_de": bool(use_de),
+        },
+        outcome={
+            "converged": bool(converged),
+            "constraints_satisfied": bool(constraints_satisfied),
+            "closure_residual_kms": float(residual),
+            "max_vinf_kms": float(final_score.max_vinf_kms),
+            "taxi_cost_kms": float(final_score.taxi_cost_kms),
+        },
     )
 
     return OptimisationResult(
