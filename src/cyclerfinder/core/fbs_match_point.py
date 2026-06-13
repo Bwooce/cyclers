@@ -217,3 +217,79 @@ def match_point_defect_jacobian(
 
     _ = x_fwd  # forward match state retained for clarity / future use
     return jac
+
+
+@dataclass(frozen=True)
+class BodyKinematics:
+    """Inertial velocity + acceleration of a moving boundary body at an epoch.
+
+    Supplied by the caller (the ephemeris-aware lane) so this pure ``core/``
+    module never imports an ephemeris. ``v`` is ``dr_body/dt`` (km/s) and ``a`` is
+    ``dv_body/dt`` (km/s^2) of the body at the relevant epoch — the heliocentric
+    two-body values for a Keplerian body, or whatever the ephemeris provides.
+    """
+
+    v: Vec3
+    a: Vec3
+
+
+def match_point_defect_vinf_jacobian(leg: FbsLeg, dv: Vec3) -> NDArray[np.float64]:
+    r"""6x6 Jacobian of the defect w.r.t. the boundary v∞ vectors (Ellison Eq. 57).
+
+    Columns ``[∂c/∂v∞_out (3) | ∂c/∂v∞_in (3)]`` for a leg whose boundary
+    velocities ride v∞ slots: ``v0 = v_body0 + v∞_out`` and
+    ``vf = v_bodyf + v∞_in`` (Ellison Eq. 57 — the boundary-velocity decision is
+    the v∞ vector and the body-velocity term is an additive constant). Because the
+    v∞ → boundary-velocity map is ``+I``, ``∂c/∂v∞_out = ∂c/∂v0 = -Φ_fwd[:, 3:6]``
+    and ``∂c/∂v∞_in = ∂c/∂vf = +Φ_bwd[:, 3:6]`` — bit-identical to the ``v0`` / ``vf``
+    columns of :func:`match_point_defect_jacobian`. Provided as a named slice so
+    the chain assembler can address the v∞ columns by physical meaning.
+
+    Validated FD-vs-analytic (consistency; Ellison publishes no numeric gradient).
+    """
+    j = match_point_defect_jacobian(leg, dv)
+    return np.ascontiguousarray(j[:, 3:9])
+
+
+def match_point_defect_epoch_column(
+    leg: FbsLeg,
+    dv: Vec3,
+    *,
+    body0: BodyKinematics,
+    bodyf: BodyKinematics,
+) -> Vec6:
+    r"""6-vector ``∂c/∂t0`` for a leg on moving (ephemeris) bodies (Eqs. 59-61).
+
+    With the departure epoch ``t0`` a decision variable and the leg time of flight
+    ``tof_s`` held fixed, BOTH boundary states ride their bodies in epoch:
+
+    * forward boundary ``r0 = r_body0(t0)``, ``v0 = v_body0(t0) + v∞_out`` moves at
+      ``∂[r0; v0]/∂t0 = [v_body0; a_body0]`` (Ellison Eq. 59); the forward coast
+      interval ``t_burn = alpha*tof_s`` is epoch-independent, so
+      ``∂X^F/∂t0 = Φ_fwd · [v_body0; a_body0]`` (full STM, not just velocity cols).
+    * backward boundary at ``tf = t0 + tof_s`` (``∂tf/∂t0 = 1``) moves at
+      ``∂[rf; vf]/∂t0 = [v_bodyf; a_bodyf]`` (Eq. 60); the backward coast interval
+      ``dt_back = -(1-alpha)*tof_s`` is epoch-independent, so
+      ``∂X^B/∂t0 = Φ_bwd · [v_bodyf; a_bodyf]`` (Eq. 61).
+
+    Hence ``∂c/∂t0 = Φ_bwd·[v_bodyf; a_bodyf] - Φ_fwd·[v_body0; a_body0]``. The
+    impulse adds a constant to the forward velocity slot and drops out. The v∞
+    vectors are held fixed here (their columns come from
+    :func:`match_point_defect_vinf_jacobian`).
+
+    Validated FD-vs-analytic (consistency; Ellison publishes no numeric gradient).
+    """
+    arr = np.asarray(dv, dtype=np.float64)
+    if arr.shape != (3,):
+        raise FbsMatchPointError(f"dv must have shape (3,), got {arr.shape}")
+    _, _, _, phi_fwd = _forward_match_state(leg, arr)
+    _, phi_bwd = _backward_match_state(leg)
+
+    d0 = np.empty(6, dtype=np.float64)
+    d0[0:3] = np.asarray(body0.v, dtype=np.float64)
+    d0[3:6] = np.asarray(body0.a, dtype=np.float64)
+    df = np.empty(6, dtype=np.float64)
+    df[0:3] = np.asarray(bodyf.v, dtype=np.float64)
+    df[3:6] = np.asarray(bodyf.a, dtype=np.float64)
+
+    return phi_bwd @ df - phi_fwd @ d0

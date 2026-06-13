@@ -17,9 +17,12 @@ import numpy as np
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, SECONDS_PER_DAY
 from cyclerfinder.core.fbs_match_point import (
+    BodyKinematics,
     FbsLeg,
     match_point_defect,
+    match_point_defect_epoch_column,
     match_point_defect_jacobian,
+    match_point_defect_vinf_jacobian,
 )
 from cyclerfinder.core.kepler import coe_to_rv, propagate
 
@@ -204,3 +207,108 @@ def test_phase_jacobian_fd_consistency_random() -> None:
         np.testing.assert_array_equal(j_an[:, 0:9], match_point_defect_jacobian(leg, dv))
         j_phase_fd = _fd_phase_columns(leg, dv)
         assert _block_rel_err(j_an[:, 9:11], j_phase_fd) < _FD_RTOL, (a_km, e, alpha, tof_s)
+
+
+# --- Phase 3: boundary v-infinity + moving-endpoint epoch partials -----------
+
+
+def _accel(r: np.ndarray, mu: float = MU_SUN_KM3_S2) -> np.ndarray:
+    """Two-body acceleration ``-mu r / |r|^3`` (km/s^2)."""
+    r = np.asarray(r, dtype=np.float64)
+    rn = float(np.linalg.norm(r))
+    return -mu * r / rn**3
+
+
+def _moving_body_leg(
+    r_b0_ref: np.ndarray,
+    v_b0_ref: np.ndarray,
+    r_bf_ref: np.ndarray,
+    v_bf_ref: np.ndarray,
+    vinf_out: np.ndarray,
+    vinf_in: np.ndarray,
+    t0: float,
+    tof_s: float,
+    alpha: float,
+) -> FbsLeg:
+    """Build a leg whose endpoints ride Keplerian bodies at epoch ``t0`` / ``t0+tof``.
+
+    Body states are propagated from a reference epoch (=0) so the leg is a true
+    function of ``t0``: the FD epoch test perturbs ``t0`` and rebuilds the leg.
+    """
+    r_b0, v_b0 = propagate(r_b0_ref, v_b0_ref, t0)
+    r_bf, v_bf = propagate(r_bf_ref, v_bf_ref, t0 + tof_s)
+    r0 = r_b0
+    v0 = v_b0 + vinf_out
+    rf = r_bf
+    vf = v_bf + vinf_in
+    return FbsLeg(r0=r0, v0=v0, rf=rf, vf=vf, tof_s=tof_s, alpha=alpha)
+
+
+def test_vinf_columns_equal_boundary_velocity_columns() -> None:
+    """``∂c/∂v∞`` equals the v0/vf columns (Eq. 57: v∞ map is additive, consistency)."""
+    r0 = np.array([AU_KM, 0.0, 0.0])
+    v0 = np.array([0.0, _V_CIRC_1AU, 0.02 * _V_CIRC_1AU])
+    rf = np.array([0.1 * AU_KM, 1.4 * AU_KM, -0.05 * AU_KM])
+    vf = np.array([-0.7 * _V_CIRC_1AU, 0.3 * _V_CIRC_1AU, 0.0])
+    leg = FbsLeg(r0=r0, v0=v0, rf=rf, vf=vf, tof_s=200.0 * SECONDS_PER_DAY, alpha=0.45)
+    dv = np.array([0.1, 0.2, -0.05])
+    j_full = match_point_defect_jacobian(leg, dv)
+    j_vinf = match_point_defect_vinf_jacobian(leg, dv)
+    assert j_vinf.shape == (6, 6)
+    np.testing.assert_array_equal(j_vinf, j_full[:, 3:9])
+
+
+def test_epoch_column_fd_consistency_random() -> None:
+    """Analytic ``∂c/∂t0`` matches central differences over moving bodies (consistency).
+
+    Ellison Eqs. 59-61: with TOF fixed, both boundary bodies translate in epoch.
+    The leg endpoints are Keplerian bodies propagated from a reference epoch, so
+    perturbing ``t0`` rebuilds a genuinely epoch-dependent leg; the analytic
+    ``Φ_bwd·[v_bf;a_bf] - Φ_fwd·[v_b0;a_b0]`` is checked against the FD of the
+    defect.
+    """
+    rng = np.random.default_rng(20260615)
+    for _ in range(6):
+        a0 = float(rng.uniform(0.8, 1.2)) * AU_KM
+        r_b0_ref, v_b0_ref = coe_to_rv(
+            a0,
+            float(rng.uniform(0.0, 0.2)),
+            float(rng.uniform(0.0, 2.0 * pi)),
+            arg_peri_rad=float(rng.uniform(0.0, 2.0 * pi)),
+        )
+        af = float(rng.uniform(1.3, 1.8)) * AU_KM
+        r_bf_ref, v_bf_ref = coe_to_rv(
+            af,
+            float(rng.uniform(0.0, 0.2)),
+            float(rng.uniform(0.0, 2.0 * pi)),
+            arg_peri_rad=float(rng.uniform(0.0, 2.0 * pi)),
+        )
+        vinf_out = rng.uniform(-3.0, 3.0, size=3)
+        vinf_in = rng.uniform(-3.0, 3.0, size=3)
+        t0 = float(rng.uniform(0.0, 300.0)) * SECONDS_PER_DAY
+        tof_s = float(rng.uniform(150.0, 350.0)) * SECONDS_PER_DAY
+        alpha = float(rng.uniform(0.3, 0.7))
+        dv = rng.uniform(-0.3, 0.3, size=3)
+
+        leg = _moving_body_leg(
+            r_b0_ref, v_b0_ref, r_bf_ref, v_bf_ref, vinf_out, vinf_in, t0, tof_s, alpha
+        )
+        # Body kinematics at the two epochs (v = dr/dt, a = dv/dt of the body).
+        r_b0, v_b0 = propagate(r_b0_ref, v_b0_ref, t0)
+        r_bf, v_bf = propagate(r_bf_ref, v_bf_ref, t0 + tof_s)
+        body0 = BodyKinematics(v=v_b0, a=_accel(r_b0))
+        bodyf = BodyKinematics(v=v_bf, a=_accel(r_bf))
+        col_an = match_point_defect_epoch_column(leg, dv, body0=body0, bodyf=bodyf)
+
+        h = _FD_STEP * max(t0, tof_s)
+        lp = _moving_body_leg(
+            r_b0_ref, v_b0_ref, r_bf_ref, v_bf_ref, vinf_out, vinf_in, t0 + h, tof_s, alpha
+        )
+        lm = _moving_body_leg(
+            r_b0_ref, v_b0_ref, r_bf_ref, v_bf_ref, vinf_out, vinf_in, t0 - h, tof_s, alpha
+        )
+        col_fd = (match_point_defect(lp, dv) - match_point_defect(lm, dv)) / (2.0 * h)
+
+        assert col_an.shape == (6,)
+        err = _block_rel_err(col_an.reshape(6, 1), col_fd.reshape(6, 1))
+        assert err < _FD_RTOL, (a0, af, t0, tof_s, alpha, err)
