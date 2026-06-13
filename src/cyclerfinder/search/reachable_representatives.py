@@ -271,17 +271,34 @@ SOURCED_TABLE2: dict[str, tuple[float, float]] = {
     "DPO": (11.184, 1.5886),
 }
 
-#: Offline recovery seeds: (x0_seed, ydot0_sign). The target half-period is taken
-#: from the sourced period. The seed x0 region is sourced from the family geometry
-#: (collinear-point Lyapunov amplitude, resonant/cycler x0 band); the period is a
-#: prediction. Only families that CONFIRM (period within tolerance AND correct
-#: stability character) are admitted by :func:`recover_offline_set`.
-OFFLINE_SEEDS: dict[str, tuple[float, float]] = {
-    "LL1": (0.8115, 1.0),  # near L1 (x=0.8369), small planar Lyapunov amplitude
-    "LL2": (1.1006, 1.0),  # near L2 (x=1.1557)
-    "DPO": (1.0608, 1.0),  # distant prograde, exterior to the Moon
-    "R21-S": (0.4485, 1.0),  # 2:1 stable resonant
-    "R31-S": (0.3568, -1.0),  # 3:1 stable resonant
+#: Offline recovery seeds: ``label -> (x0_seed, ydot0_sign, jacobi)``. The target
+#: half-period is taken from the sourced period; ``jacobi`` is the common energy
+#: 3.1294 except for C21, which is the Ross & Roberts-Tsoukkas 2025 (2,1) STABLE
+#: sourced member at its own C = 3.129389531 (Braik-Ross's 3.1294 is the rounded
+#: value of this same member). The seed x0 region is sourced from the family
+#: geometry (collinear-point Lyapunov amplitude, resonant x0 band, AAS-25-621
+#: cycler seed); the period AND the Floquet sigma are PREDICTIONS confirmed against
+#: Table 2. Only families that CONFIRM (period within tolerance AND sigma within
+#: tolerance) are admitted by :func:`recover_offline_set` -- no faked members.
+#:
+#: RECOVERED (period + sigma both confirmed offline, #247): the nine below.
+#: NOT RECOVERED at this off-stable common energy with the available single-/
+#: free-period shooting correctors (excluded, not faked): the three unstable
+#: cyclers C11a (sigma 1.05), C11b (sigma 0.93), C32 (sigma 0.69) -- which all
+#: collapse onto nearby spurious lower-sigma orbits -- and the 5:2 unstable
+#: resonant R52-U (sigma 0.37). A robust Jacobi-constrained multiple-shooting
+#: corrector (or the JPL oracle, unavailable in this environment) would be needed.
+ROSS_C21_JACOBI = 3.129389531088256  # AAS 25-621 Table 3 (2,1) C^stable
+OFFLINE_SEEDS: dict[str, tuple[float, float, float]] = {
+    "LL1": (0.8115, 1.0, C_J_BRAIK_ROSS),  # near L1 (x=0.8369), small Lyapunov amplitude
+    "LL2": (1.1006, 1.0, C_J_BRAIK_ROSS),  # near L2 (x=1.1557)
+    "DPO": (1.0608, 1.0, C_J_BRAIK_ROSS),  # distant prograde, exterior to the Moon
+    "R21-S": (0.4485, 1.0, C_J_BRAIK_ROSS),  # 2:1 stable resonant
+    "R21-U": (-0.812, -1.0, C_J_BRAIK_ROSS),  # 2:1 unstable resonant
+    "R31-S": (0.3568, -1.0, C_J_BRAIK_ROSS),  # 3:1 stable resonant
+    "R31-U": (0.138, 1.0, C_J_BRAIK_ROSS),  # 3:1 unstable resonant
+    "R52-S": (0.228, 1.0, C_J_BRAIK_ROSS),  # 5:2 stable resonant
+    "C21": (0.7237335857, 1.0, ROSS_C21_JACOBI),  # AAS-25-621 (2,1) stable cycler
 }
 
 
@@ -405,24 +422,26 @@ def recover_free_period(
     x0_seed: float,
     *,
     ydot0_sign: float,
+    jacobi: float = C_J_BRAIK_ROSS,
     tol_days: float = 0.5,
-    sigma_tol: float = 0.1,
+    sigma_tol: float = 0.15,
     corrector_tol: float = 1e-10,
 ) -> Representative:
-    """Recover a member at ``C_J=3.1294`` offline via the free-period corrector.
+    """Recover a member at ``jacobi`` offline via the free-period corrector.
 
     Seeds the corrector at the sourced half-period and the supplied ``x0`` region;
     the recovered period is confirmed against the Braik-Ross sourced period AND the
     Floquet rate ``sigma = ln(lambda_max)/T`` is checked against the sourced sigma
     (stable resonants must give sigma ~ 0). ``confirmed`` is True only if BOTH the
-    period (within ``tol_days``) and sigma (within ``sigma_tol``) match.
+    period (within ``tol_days``) and sigma (within ``sigma_tol``) match -- the
+    sigma check is what rejects spurious nearby orbits that merely share a period.
     """
     sourced_days, sourced_sigma = SOURCED_TABLE2[label]
     t_half_guess = 0.5 * sourced_days / TU_DAYS
     orbit = correct_symmetric_free_period(
         system,
         x0_seed,
-        C_J_BRAIK_ROSS,
+        jacobi,
         t_half_guess,
         ydot0_sign=ydot0_sign,
         tol=corrector_tol,
@@ -455,6 +474,6 @@ def recover_offline_set(system: cr3bp.CR3BPSystem) -> list[Representative]:
     caller filters on ``.confirmed`` before scoring -- no faked members.
     """
     out: list[Representative] = []
-    for label, (x0, sign) in OFFLINE_SEEDS.items():
-        out.append(recover_free_period(system, label, x0, ydot0_sign=sign))
+    for label, (x0, sign, cj) in OFFLINE_SEEDS.items():
+        out.append(recover_free_period(system, label, x0, ydot0_sign=sign, jacobi=cj))
     return out

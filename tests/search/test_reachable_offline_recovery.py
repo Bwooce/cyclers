@@ -86,15 +86,21 @@ def test_offline_recovery_confirms_sourced_periods() -> None:
             f"confirmed={r.confirmed}"
         )
         _ = arc
-    # These five recover offline to <0.5 d of the sourced period with the right
-    # stability character (sigma): LL1, LL2, DPO, R21-S, R31-S.
-    for label in ("LL1", "LL2", "DPO", "R21-S", "R31-S"):
+    # These NINE recover offline to <0.5 d of the sourced period AND with the
+    # right Floquet sigma (the stability check rejects spurious same-period
+    # orbits): the two Lyapunov, DPO, both 2:1 + 3:1 resonant (stable + unstable),
+    # the 5:2 stable resonant, and the (2,1) cycler (at the AAS-25-621 sourced C).
+    expected = ("LL1", "LL2", "DPO", "R21-S", "R21-U", "R31-S", "R31-U", "R52-S", "C21")
+    for label in expected:
         r = by[label]
         assert r.confirmed, (
-            f"{label}: recovered {r.period_days:.3f} d vs sourced "
+            f"{label}: recovered {r.period_days:.3f} d (sigma check) vs sourced "
             f"{r.sourced_period_days} d (converged={r.converged})"
         )
-        assert r.jacobi == pytest.approx(rr.C_J_BRAIK_ROSS, abs=1e-9)
+    # C21 is recovered at the AAS-25-621 (2,1) sourced energy (Braik-Ross rounds
+    # it to 3.1294); the others sit exactly on the common manifold.
+    for label in ("LL1", "LL2", "DPO", "R21-S", "R21-U", "R31-S", "R31-U", "R52-S"):
+        assert by[label].jacobi == pytest.approx(rr.C_J_BRAIK_ROSS, abs=1e-9)
 
 
 def test_sourced_table2_matches_sourced_periods_subset() -> None:
