@@ -374,3 +374,80 @@ def liang_member_genome(member: str) -> MoonCyclerGenome:
         epoch_days=0.0,
         perijove_scale=spec.perijove_scale,
     )
+
+
+# ---------------------------------------------------------------------------
+# Step 3 — repeated-sequence periodicity corrector (one canonical residual)
+# ---------------------------------------------------------------------------
+
+# Ballistic-cycler threshold: Liang's members are published ballistic with a
+# residual flyby-defect Delta-v below 1e-8 m/s = 1e-11 km/s (paper p. 13). Our
+# same-model reconstruction is input-precision-limited, so the achievable
+# residual is the Table 1 print quantization (~1e-2 km/s), not 1e-11; the
+# corrector reports the residual in km/s and the GATE asserts against the
+# sourced print-precision tolerance (cge_scaffold.vinf_print_tolerance_kms),
+# never a hand-tuned number.
+BALLISTIC_DV_THRESHOLD_KMS: float = 1.0e-11
+
+
+@dataclass(frozen=True)
+class PeriodicityResidual:
+    """The ONE canonical residual of a repeated-moon cycle closure.
+
+    A repeated-moon cycler is periodic when, after the full k-encounter
+    sequence, the trajectory returns to the same relative geometry — for a
+    ballistic tour this is exactly V_inf-magnitude continuity at every flyby
+    (the spacecraft hyperbolic excess speed entering a moon equals the speed
+    leaving it; the flyby only turns the vector). The canonical residual is the
+    worst such continuity defect over the cycle, in km/s:
+
+    .. math::
+
+        R = \\max_i \\bigl| |V_{\\infty,i}^{\\text{in}}| -
+                            |V_{\\infty,i}^{\\text{out}}| \\bigr|.
+
+    This mirrors the #248 harness discipline: a single scalar (km/s),
+    epoch-safe (evaluated at the Eq. 16-anchored cumulative flyby epochs), no
+    ad-hoc per-leg metrics. The daemon/search closes a candidate by driving
+    this residual below the ballistic threshold; the GATE checks it against the
+    sourced print-precision tolerance for the Liang anchors.
+    """
+
+    worst_continuity_kms: float
+    per_flyby_continuity_kms: tuple[float, ...]
+    worst_vinf_vs_published_kms: float  # only meaningful for the Liang anchors
+    n_flybys: int
+
+    def closes(self, tol_kms: float) -> bool:
+        """True iff the worst continuity defect is within ``tol_kms``."""
+        return self.worst_continuity_kms <= tol_kms
+
+
+def liang_periodicity_residual(member: str) -> PeriodicityResidual:
+    """Canonical periodicity residual for a published Liang CGE member.
+
+    Routes the genome's repeated CGE sequence through the trusted same-model
+    planet-centric reconstruction (:func:`cyclerfinder.search.cge_scaffold.
+    reproduce_member`): place the moons by mean motion + the sourced Table 2/4/6
+    phases at the Eq. 16-anchored cumulative flyby epochs, solve the Jupiter-
+    frame Lambert legs at the sourced Table 3/5/7 ToFs, and read off the per-
+    flyby V_inf-magnitude continuity. The residual is the worst continuity
+    defect across the cycle — the SAME quantity the daemon would minimise for a
+    new candidate, evaluated here on the published member (the "a single known
+    leg/closure closes" test of design step 3).
+
+    DISCIPLINE: every input is sourced (Liang's printed phases/ToFs/V_inf); the
+    residual is our model's continuity, asserted by the gate against the
+    sourced print tolerance, not a value we fit.
+    """
+    from cyclerfinder.search.cge_scaffold import reproduce_member
+
+    rep = reproduce_member(member)
+    continuities = tuple(fb.continuity_kms for fb in rep.flybys if fb.continuity_kms is not None)
+    worst_continuity = max(continuities) if continuities else 0.0
+    return PeriodicityResidual(
+        worst_continuity_kms=worst_continuity,
+        per_flyby_continuity_kms=continuities,
+        worst_vinf_vs_published_kms=rep.max_vinf_residual_kms,
+        n_flybys=len(rep.flybys),
+    )

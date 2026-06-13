@@ -19,14 +19,17 @@ import math
 import pytest
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.search.cge_scaffold import reproduce_member, vinf_print_tolerance_kms
 from cyclerfinder.search.moon_cycler_genome import (
     CGE_SEQUENCE,
     JUPITER_MOONS,
     EncounterGene,
     LegGene,
     MoonCyclerGenome,
+    PeriodicityResidual,
     jupiter_system,
     liang_member_genome,
+    liang_periodicity_residual,
     moon_linkable,
     moon_tisserand_to_vinf,
     moon_vinf_to_tisserand,
@@ -187,3 +190,38 @@ def test_liang_members_encode_validly(member: str) -> None:
     back = MoonCyclerGenome.from_vector(vec, g.system, len(g.encounters))
     assert back.sequence == g.sequence
     assert back.perijove_scale == g.perijove_scale
+
+
+# ---------------------------------------------------------------------------
+# Step 3 — periodicity corrector (one canonical residual)
+# ---------------------------------------------------------------------------
+
+
+def test_periodicity_residual_shape() -> None:
+    """The canonical residual reports one worst-continuity scalar + per-flyby."""
+    res = liang_periodicity_residual("A")
+    assert isinstance(res, PeriodicityResidual)
+    assert res.n_flybys == 5
+    # 4 transfer legs => 4 flybys carry an in/out continuity (the cycle-end
+    # flyby has no outbound side in a single printed cycle).
+    assert len(res.per_flyby_continuity_kms) == 4
+    assert res.worst_continuity_kms == max(res.per_flyby_continuity_kms)
+
+
+def test_known_closure_closes_within_sourced_tolerance() -> None:
+    """A single known closure closes: Member A's periodicity residual is within
+    the SOURCED print-precision tolerance (design step 3 "a known leg closes").
+
+    The tolerance is cge_scaffold.vinf_print_tolerance_kms evaluated at the
+    worst (latest-epoch) flyby — the published-input precision floor, never a
+    hand-tuned number. The residual is V_inf continuity, the ballistic-cycler
+    periodicity condition.
+    """
+    res = liang_periodicity_residual("A")
+    rep = reproduce_member("A")
+    worst_tol = max(
+        vinf_print_tolerance_kms(fb.epoch_days, fb.moon, rep.radii_km)
+        for fb in rep.flybys
+        if fb.continuity_kms is not None
+    )
+    assert res.closes(worst_tol), f"residual {res.worst_continuity_kms:.3e} > tol {worst_tol:.3e}"
