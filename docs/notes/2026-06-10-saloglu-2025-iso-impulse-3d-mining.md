@@ -290,3 +290,54 @@ fixed encounter epochs), TOF fixed by the cycler period, phases fixed. Against t
 - Circle-to-circle Sec. VI.B numbers: not golden-grade (absolute radii unpublished).
 - Paper contains two internal numeric inconsistencies (701.2694 vs 720.2694 d, p. 30;
   5.6109 vs 5.6108 km/s, pp. 30–31) — quote with care if ever used as goldens.
+  **UPDATE 2026-06-13 (#232): both fixed in the VoR by section removal — see §8.**
+
+---
+
+## 8. Version-of-record diff (2026-06-13, #232)
+
+The open-access J. Astronaut. Sci. version of record (DOI 10.1007/s40295-025-00528-0;
+J. Astronaut. Sci. (2025) 72:54; 38 journal pages, PDF created 2025-10-17) was diffed
+against the arXiv:2501.01583 preprint these notes were mined from. The two flagged
+internal inconsistencies (errata-ledger ids `saloglu-taheri-2025-p30-total-time` and
+`saloglu-taheri-2025-dv-total-mismatch`) **do not survive — both are fixed in the VoR**,
+and the mechanism is a section revision rather than a digit correction:
+
+- **The entire arXiv Sec. VI.A Earth–Mars rendezvous worked example was removed in
+  production.** It is replaced by a new CAPSTONE-inspired **orbit-raising example**
+  (VoR §5.4 "An Orbit-Raising Example", journal pp. 29–32, Table 5 + Figs. 19–20).
+  The VoR's worked examples are now: geocentric three-impulse (§5.1), geocentric
+  two-/three-AP (§5.2), Earth–Dionysus (§5.2.1), and the orbit-raising example (§5.4).
+  The VoR Conclusion (§6) lists exactly these — no Earth–Mars example.
+- A full-text search of the VoR for every Earth–Mars number from §5.2 above
+  (5.5865, 5.5873, 313.2430, 801.4034, 6.047, 701.2694, 720.2694, 72.7306, 5.6109,
+  5.6108, 759.6963, 1479.9658, 686.9658) and for the mission time "793" returns
+  **zero hits**. Both defective cells are simply absent from the version of record.
+- This is the routine, no-fault kind of preprint→publication revision; the underlying
+  work is excellent and the defects were typesetting-class in the first place.
+
+**New numeric content in the VoR not in the preprint mining (the replacement example,
+recorded for completeness — not wired):** orbit-raising problem, Table 5 elements
+initial `[15265.9970, 0.6451, 0.7553, 0.0689, 5.5234, 0]` and target
+`[47312.5193, 0.8854, 0.8225, 0.0689, 5.5234, 0]` (a in km, angles in rad; CAPSTONE
+JPL Horizons states); Δv_total = 1.0885 km/s; Δv_max = 0.5443 km/s (Δα = 0.5); 6-day
+mission; n_p,1 = 4 phasing orbits; feasibility 15.23 < ΣN_{k,1} < 27.62; chosen
+(N_{1,1},N_{2,1},N_{3,1},N_{4,1}) = (6,4,4,3); Fig. 19a periods {0.2730, 0.3413,
+0.3822, 0.4892} d with impulses {0.2394, 0.1959, 0.0870, 0.1661, 0.3999} km/s; Fig. 19b
+periods {0.2193, 0.3, 0.3323, 0.8064} d with impulses {0.0109, 0.3157, 0.2068, 0.3077,
+0.2475} km/s. This is the same Δv-allocation machinery already assessed as
+NOT-applicable-in-leg (§3, §6.4); the CAPSTONE framing is an establishment/insertion
+apogee-raising case, exactly the one niche §3 flagged — still outside our epoch-anchored,
+phase-fixed cycler legs. No new takeaway for our lane; nothing to wire.
+
+**Page re-cite (preprint→VoR pagination) for the values these notes DO use:** the
+self-contained geocentric goldens (§5.1 here) survive verbatim in the VoR. Two-impulse
+base Δv_total = 3.9618011 km/s (Δv1 = 2.8246140, Δv2 = 1.1371871) and three-impulse
+base Δv_total = 3.8641159 km/s (Δv1 = 2.9390, Δv2 = 0.6815, Δv3 = 0.2436) are printed
+on **VoR journal p. 19** (Figs. 7–8 text), matching the arXiv p. 18–19 transcription
+exactly. The Earth–Dionysus base restated from Ref. [40] (Δv1 = 7.521545,
+Δv2 = 2.38588 km/s, t_pf = 348.46 d, θ_i = 179.27°, θ_f = 149.20°) is on **VoR p. 21**
+(§5.2.1; note the VoR cites this as Ref. [40], renumbered from the arXiv's Ref. [52]).
+The arXiv-only Earth–Mars numbers in §5.2 above have no VoR pagination because the
+example was removed. The `tests/verify/test_dv_bracket.py` goldens (3.9618011 and its
+breakdown) are therefore VoR-confirmed.
