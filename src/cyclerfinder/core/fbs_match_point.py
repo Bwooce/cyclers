@@ -97,6 +97,13 @@ class FbsLeg:
         return self.alpha * self.tof_s
 
 
+def _two_body_accel(r: Vec3, mu: float) -> Vec3:
+    """Two-body gravitational acceleration ``-mu r / |r|^3`` (km/s^2)."""
+    r_arr = np.asarray(r, dtype=np.float64)
+    r_n = float(np.linalg.norm(r_arr))
+    return -mu * r_arr / (r_n * r_n * r_n)
+
+
 def _forward_match_state(leg: FbsLeg, dv: Vec3) -> tuple[Vec6, Vec3, Vec3, Mat6]:
     """Forward state at the match point (just AFTER the impulse) + STM pieces.
 
@@ -142,13 +149,15 @@ def match_point_defect(leg: FbsLeg, dv: Vec3) -> Vec6:
     return x_bwd - x_fwd
 
 
-def match_point_defect_jacobian(leg: FbsLeg, dv: Vec3) -> NDArray[np.float64]:
-    r"""Analytic 6x9 Jacobian of the match-point defect (Ellison Eqs. 16, 31-32).
+def match_point_defect_jacobian(
+    leg: FbsLeg, dv: Vec3, *, include_phase: bool = False
+) -> NDArray[np.float64]:
+    r"""Analytic Jacobian of the match-point defect (Ellison Eqs. 16, 31-32, 43-44).
 
     Columns are ordered ``[∂c/∂Δv (3) | ∂c/∂v0 (3) | ∂c/∂vf (3)]`` for the
-    decision sub-vector ``x = [Δv; v0; vf]`` (Phase 1 holds ``r0, rf, tof_s,
-    alpha`` fixed; ``v0`` / ``vf`` are the boundary-velocity / v∞ slots — the
-    v∞ → state map is an additive constant, so ``∂c/∂v0 = ∂c/∂v∞_out`` etc.).
+    decision sub-vector ``x = [Δv; v0; vf]`` (holds ``r0, rf, tof_s, alpha``
+    fixed; ``v0`` / ``vf`` are the boundary-velocity / v∞ slots — the v∞ → state
+    map is an additive constant, so ``∂c/∂v0 = ∂c/∂v∞_out`` etc.).
 
     For the massless single-DSM leg the Eq. 31-32 chain is one STM per side and
     the maneuver connection is the Eq. 42 velocity slot ``[0; I]``:
@@ -157,19 +166,54 @@ def match_point_defect_jacobian(leg: FbsLeg, dv: Vec3) -> NDArray[np.float64]:
     * ``∂c/∂v0  = -Φ_fwd[:, 3:6]``    (only ``X^F`` sees v0, via the fwd-coast STM)
     * ``∂c/∂vf  = +Φ_bwd[:, 3:6]``    (only ``X^B`` sees vf, via the bwd-coast STM)
 
-    Validated FD-vs-analytic (consistency; Ellison publishes no numeric gradient).
+    Phase-TOF columns (``include_phase=True``; Pitkin Eqs. 43-44, Ellison Eq. 58)
+    append ``[∂c/∂tof_s (1) | ∂c/∂alpha (1)]`` giving a 6x11 Jacobian for the
+    decision vector ``x = [Δv; v0; vf; tof_s; alpha]``. The defect depends on
+    these only through the propagation intervals ``t_burn = alpha*tof_s`` (forward)
+    and ``dt_back = -(1-alpha)*tof_s`` (backward); the time-derivative of a coasted
+    state w.r.t. its own propagation interval is the state's flow
+    ``[v; a]`` with ``a = -mu r/|r|^3`` (Pitkin's Lagrange-coefficient time
+    derivatives reduce to this), so with ``∂t_burn/∂tof = alpha``,
+    ``∂dt_back/∂tof = -(1-alpha)``, ``∂t_burn/∂alpha = ∂dt_back/∂alpha = tof``:
+
+    * ``∂c/∂tof   = -(1-alpha)·[v^B; a^B] - alpha·[v^F; a^F]``
+    * ``∂c/∂alpha = tof·([v^B; a^B] - [v^F; a^F])``
+
+    (the impulse adds a constant to the forward velocity slot, so it drops out of
+    the time derivatives). Validated FD-vs-analytic (consistency; Ellison
+    publishes no numeric gradient).
     """
     arr = np.asarray(dv, dtype=np.float64)
     if arr.shape != (3,):
         raise FbsMatchPointError(f"dv must have shape (3,), got {arr.shape}")
-    _, _, _, phi_fwd = _forward_match_state(leg, arr)
-    _, phi_bwd = _backward_match_state(leg)
+    x_fwd, r_fwd, v_fwd_pre, phi_fwd = _forward_match_state(leg, arr)
+    x_bwd, phi_bwd = _backward_match_state(leg)
 
-    jac = np.zeros((6, 9), dtype=np.float64)
+    n_cols = 11 if include_phase else 9
+    jac = np.zeros((6, n_cols), dtype=np.float64)
     # ∂c/∂Δv = -[0; I]  (Eq. 42 velocity-slot connection; sign from c = X^B - X^F)
     jac[3:6, 0:3] = -np.eye(3, dtype=np.float64)
     # ∂c/∂v0 = -Φ_fwd[:, 3:6]  (forward-coast STM velocity columns)
     jac[:, 3:6] = -phi_fwd[:, 3:6]
     # ∂c/∂vf = +Φ_bwd[:, 3:6]  (backward-coast STM velocity columns)
     jac[:, 6:9] = phi_bwd[:, 3:6]
+
+    if include_phase:
+        # Flow (state time-derivative) at each match state. The forward velocity
+        # slot carries +dv, but d/dt of a constant shift is zero, so the flow uses
+        # the COAST velocity v_fwd_pre and the coast acceleration at r_fwd.
+        flow_fwd = np.empty(6, dtype=np.float64)
+        flow_fwd[0:3] = v_fwd_pre
+        flow_fwd[3:6] = _two_body_accel(r_fwd, leg.mu)
+        flow_bwd = np.empty(6, dtype=np.float64)
+        flow_bwd[0:3] = x_bwd[3:6]
+        flow_bwd[3:6] = _two_body_accel(x_bwd[0:3], leg.mu)
+
+        one_minus_a = 1.0 - leg.alpha
+        # ∂c/∂tof = ∂X^B/∂tof - ∂X^F/∂tof
+        jac[:, 9] = -one_minus_a * flow_bwd - leg.alpha * flow_fwd
+        # ∂c/∂alpha = ∂X^B/∂alpha - ∂X^F/∂alpha = tof*(flow_bwd - flow_fwd)
+        jac[:, 10] = leg.tof_s * (flow_bwd - flow_fwd)
+
+    _ = x_fwd  # forward match state retained for clarity / future use
     return jac

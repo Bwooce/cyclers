@@ -89,6 +89,34 @@ def _fd_defect_jacobian(leg: FbsLeg, dv: np.ndarray) -> np.ndarray:
     return np.column_stack(cols)
 
 
+def _fd_phase_columns(leg: FbsLeg, dv: np.ndarray) -> np.ndarray:
+    """Central-difference 6x2 phase columns of the defect w.r.t. ``[tof_s; alpha]``."""
+    base_dv = np.asarray(dv, dtype=np.float64)
+    cols: list[np.ndarray] = []
+
+    # tof_s column
+    h = _FD_STEP * leg.tof_s
+    lp = FbsLeg(
+        r0=leg.r0, v0=leg.v0, rf=leg.rf, vf=leg.vf, tof_s=leg.tof_s + h, alpha=leg.alpha, mu=leg.mu
+    )
+    lm = FbsLeg(
+        r0=leg.r0, v0=leg.v0, rf=leg.rf, vf=leg.vf, tof_s=leg.tof_s - h, alpha=leg.alpha, mu=leg.mu
+    )
+    cols.append((match_point_defect(lp, base_dv) - match_point_defect(lm, base_dv)) / (2.0 * h))
+
+    # alpha column
+    h = _FD_STEP * max(leg.alpha, 1.0 - leg.alpha)
+    lp = FbsLeg(
+        r0=leg.r0, v0=leg.v0, rf=leg.rf, vf=leg.vf, tof_s=leg.tof_s, alpha=leg.alpha + h, mu=leg.mu
+    )
+    lm = FbsLeg(
+        r0=leg.r0, v0=leg.v0, rf=leg.rf, vf=leg.vf, tof_s=leg.tof_s, alpha=leg.alpha - h, mu=leg.mu
+    )
+    cols.append((match_point_defect(lp, base_dv) - match_point_defect(lm, base_dv)) / (2.0 * h))
+
+    return np.column_stack(cols)
+
+
 def _block_rel_err(a: np.ndarray, b: np.ndarray) -> float:
     """Block-wise (r-rows / v-rows) Frobenius-relative error.
 
@@ -144,3 +172,35 @@ def test_jacobian_fd_consistency_random() -> None:
         j_fd = _fd_defect_jacobian(leg, dv)
         assert j_an.shape == (6, 9)
         assert _block_rel_err(j_an, j_fd) < _FD_RTOL, (a_km, e, nu, alpha, tof_s)
+
+
+def test_phase_jacobian_fd_consistency_random() -> None:
+    """Analytic phase-TOF columns match central differences (consistency test).
+
+    Extends the Phase 1 FD-vs-analytic discipline (Pitkin Eqs. 43-44 / Ellison
+    Eq. 58) to the ``[∂c/∂tof_s | ∂c/∂alpha]`` columns of the 6x11 Jacobian.
+    """
+    rng = np.random.default_rng(20260614)
+    for _ in range(6):
+        a_km = float(rng.uniform(0.6, 3.0)) * AU_KM
+        e = float(rng.uniform(0.0, 0.6))
+        nu = float(rng.uniform(0.0, 2.0 * pi))
+        argp = float(rng.uniform(0.0, 2.0 * pi))
+        r0, v0 = coe_to_rv(a_km, e, nu, arg_peri_rad=argp)
+        period = 2.0 * pi * sqrt(a_km**3 / MU_SUN_KM3_S2)
+        tof_s = float(rng.uniform(0.15, 0.6)) * period
+        alpha = float(rng.uniform(0.25, 0.75))
+        dv = rng.uniform(-0.3, 0.3, size=3)
+        rf, vf = coe_to_rv(
+            float(rng.uniform(0.6, 3.0)) * AU_KM,
+            float(rng.uniform(0.0, 0.6)),
+            float(rng.uniform(0.0, 2.0 * pi)),
+            arg_peri_rad=float(rng.uniform(0.0, 2.0 * pi)),
+        )
+        leg = FbsLeg(r0=r0, v0=v0, rf=rf, vf=vf, tof_s=tof_s, alpha=alpha)
+        j_an = match_point_defect_jacobian(leg, dv, include_phase=True)
+        assert j_an.shape == (6, 11)
+        # The first 9 columns must be byte-identical to the default Jacobian.
+        np.testing.assert_array_equal(j_an[:, 0:9], match_point_defect_jacobian(leg, dv))
+        j_phase_fd = _fd_phase_columns(leg, dv)
+        assert _block_rel_err(j_an[:, 9:11], j_phase_fd) < _FD_RTOL, (a_km, e, alpha, tof_s)
