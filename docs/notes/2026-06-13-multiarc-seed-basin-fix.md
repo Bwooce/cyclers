@@ -123,6 +123,19 @@ confirmed: the row sits AT the gate (~0.10 km/s), marginally on the converged si
 If the re-run holds → #248 essentially solved for mcconaghy → run the 6 russell rows
 + re-run `fbs_optimizer_adoption_parity.py` so #245 becomes decidable.
 
+### Confirmation (2026-06-14): HOLDS — 0.0987 km/s reproduced
+`--gradient fbs-analytic --n-starts 60 --n-resonant 8` → best canonical
+**max_residual_kms = 0.0987, converged=True** — IDENTICAL to the 40-start refine.
+The harness's discrete-seed enumeration is deterministic, so two independent runs
+landing on the same 0.0987 minimum = a ROBUST, reproducible solve (not a lucky
+seed). **#248 core is solved for mcconaghy-2006-em-k2:** structured-epoch +
+discrete-resonant-return + multi-start on the FBS-analytic lane converges below the
+0.1 gate where Lambert (0.1044) misses — also direct #245 evidence (FBS reaches a
+basin Lambert doesn't). Marginal (0.0013 under gate) but reproducible.
+FOLLOW-THROUGH (now #245's): run the 6 russell descriptor rows through the harness
+(does the fix generalise?) + re-run `fbs_optimizer_adoption_parity.py` on this
+converged row so the FBS-default convergence-parity decision becomes real.
+
 ## Discipline
 No catalogue writeback — a converged optimization is not a validated cycler (the
 V0–V5 gauntlet still governs). The incomplete production scaffold in
