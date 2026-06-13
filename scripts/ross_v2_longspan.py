@@ -225,4 +225,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    from cyclerfinder.search.outcome_log import enable_default_outcome_log
+
+    enable_default_outcome_log("ross_v2_longspan")
     main()

@@ -45,7 +45,13 @@ from typing import Any
 
 import numpy as np
 
-__all__ = ["ENV_VAR", "SCHEMA_VERSION", "log_outcome", "to_jsonable"]
+__all__ = [
+    "ENV_VAR",
+    "SCHEMA_VERSION",
+    "enable_default_outcome_log",
+    "log_outcome",
+    "to_jsonable",
+]
 
 # Bump when the record envelope (the keys this module stamps) changes shape.
 SCHEMA_VERSION = 1
@@ -53,7 +59,31 @@ SCHEMA_VERSION = 1
 # The single switch: set this env var to a writable path to turn capture on.
 ENV_VAR = "CYCLERFINDER_OUTCOME_LOG"
 
+# Gitignored default location used by campaign DRIVER scripts (not by tests or
+# library imports) when they opt in via enable_default_outcome_log(). ``out/`` is
+# already in .gitignore, so the accruing corpus is never committed.
+_DEFAULT_LOG_DIR = "out/outcome_log"
+
 _log = logging.getLogger(__name__)
+
+
+def enable_default_outcome_log(tag: str) -> str | None:
+    """Opt a DRIVER SCRIPT into outcome capture without anyone remembering the env var.
+
+    If ``CYCLERFINDER_OUTCOME_LOG`` is already set (CI, a manual export, a test),
+    leave it untouched and return it. Otherwise point it at the gitignored
+    ``out/outcome_log/<tag>.jsonl`` so running a real campaign accrues the corpus
+    automatically. Call this ONLY from a campaign driver's ``__main__`` — never on
+    library import (that would silently turn capture on everywhere, including tests).
+    Returns the active log path.
+    """
+    existing = os.environ.get(ENV_VAR)
+    if existing:
+        return existing
+    path = f"{_DEFAULT_LOG_DIR}/{tag}.jsonl"
+    os.environ[ENV_VAR] = path
+    return path
+
 
 # Process-local monotonic record counter (deterministic-friendly: it does not
 # depend on wall-clock and is reproducible within a single process run).
