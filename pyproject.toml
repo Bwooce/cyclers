@@ -84,6 +84,13 @@ ignore_missing_imports = true
 module = ["spiceypy.*", "rebound.*"]
 ignore_missing_imports = true
 
+# jplephem (astropy's DE440 kernel reader) ships no py.typed marker. The
+# multi-arc closure harness imports its OutOfRangeError to penalise out-of-range
+# epochs; treat the module as Any — same pragmatic choice as astropy above.
+[[tool.mypy.overrides]]
+module = ["jplephem.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Skip @pytest.mark.slow tests by default. M5's full optimiser tests
