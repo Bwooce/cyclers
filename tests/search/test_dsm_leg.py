@@ -249,6 +249,78 @@ def test_chain_is_deterministic_and_carries_full_audit_trail() -> None:
     assert r1.max_residual_kms == r1.total_dv_kms
 
 
+def test_evaluate_dsm_chain_gradient_default_is_bit_identical() -> None:
+    """The ``gradient`` opt-in is default-off: the Lambert path is byte-unchanged.
+
+    Omitting ``gradient`` and passing the explicit default ``gradient="lambert"``
+    must produce a BIT-IDENTICAL result (additive-only discipline: the production
+    Lambert+FD default must not move when the FBS opt-in exists).
+    """
+    ephem = Ephemeris(model="circular")
+    kwargs = dict(
+        sequence=("E", "M", "E"),
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 200.0),
+        eta_per_leg=(0.4, 0.6),
+        ephem=ephem,
+    )
+    r_omit = evaluate_dsm_chain(**kwargs)  # type: ignore[arg-type]
+    r_lam = evaluate_dsm_chain(gradient="lambert", **kwargs)  # type: ignore[arg-type]
+    assert r_omit.total_dv_kms == r_lam.total_dv_kms
+    assert r_omit.dv_dsm_per_leg_kms == r_lam.dv_dsm_per_leg_kms
+    assert r_omit.vinf_in_kms == r_lam.vinf_in_kms
+
+
+def test_evaluate_dsm_chain_fbs_analytic_matches_lambert() -> None:
+    """The FBS-analytic gradient lane reproduces the Lambert lane's leg geometry.
+
+    Same-model parity: at each leg's own solution the FBS match-point corrector
+    (analytic Jacobian, NO Lambert) converges to the SAME interior impulse and
+    arrival velocity as the Lambert ``dsm_leg`` (the #226 per-leg parity, lifted to
+    the whole chain). So the emerged per-body V_inf and the per-leg DSM impulses
+    must agree to solver tolerance.
+    """
+    ephem = Ephemeris(model="circular")
+    kwargs = dict(
+        sequence=("E", "M", "E"),
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 200.0),
+        eta_per_leg=(0.4, 0.6),
+        ephem=ephem,
+    )
+    r_lam = evaluate_dsm_chain(gradient="lambert", **kwargs)  # type: ignore[arg-type]
+    r_fbs = evaluate_dsm_chain(gradient="fbs-analytic", **kwargs)  # type: ignore[arg-type]
+    for a, b in zip(r_lam.dv_dsm_per_leg_kms, r_fbs.dv_dsm_per_leg_kms, strict=True):
+        assert abs(a - b) < 1e-4
+    for k in r_lam.vinf_in_kms:
+        assert abs(r_lam.vinf_in_kms[k] - r_fbs.vinf_in_kms[k]) < 1e-4
+
+
+def test_dsm_chain_correct_gradient_default_unchanged() -> None:
+    """``dsm_chain_correct`` default (no gradient kwarg) is byte-identical to lambert."""
+    ephem = Ephemeris(model="circular")
+    x0 = dsm_chain_decision_vector(
+        t0_sec=0.0,
+        vinf_out0_kms=3.0,
+        alpha0=0.5,
+        beta0=0.0,
+        tof_days_per_leg=(200.0, 220.0),
+        eta_per_leg=(0.4, 0.6),
+    )
+    r_omit = dsm_chain_correct(x0, sequence=("E", "M", "E"), ephem=ephem, max_nfev=20)
+    r_lam = dsm_chain_correct(
+        x0, sequence=("E", "M", "E"), ephem=ephem, max_nfev=20, gradient="lambert"
+    )
+    assert r_omit.total_dv_kms == r_lam.total_dv_kms
+    assert r_omit.tof_days_per_leg == r_lam.tof_days_per_leg
+
+
 def test_sequence_keyed_bounds_layout_and_eta_box() -> None:
     """Takao A.1-A.3 bounds: correct arity, eta box [0,1], alpha/beta boxes."""
     sequence = ("E", "M", "E")

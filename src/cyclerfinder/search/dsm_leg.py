@@ -570,6 +570,80 @@ def _flyby_continuity_residual(
     return flyby_dv(vinf_in_vec, vinf_out_vec, mu_planet, rp_min)
 
 
+# Allowed values of the ``gradient`` opt-in (additive — default is "lambert").
+_GRADIENT_LAMBERT = "lambert"
+_GRADIENT_FBS_ANALYTIC = "fbs-analytic"
+_GRADIENT_CHOICES = (_GRADIENT_LAMBERT, _GRADIENT_FBS_ANALYTIC)
+
+
+def _eval_leg_fbs_analytic(
+    r_curr: Vec3,
+    v_depart: Vec3,
+    tof_s: float,
+    eta: float,
+    r_target: Vec3,
+    *,
+    mu: float,
+    max_revs: int = 0,
+    rev_branch: tuple[int, str] | None = None,
+) -> DsmLegResult:
+    """Evaluate ONE leg with the FBS analytic-gradient corrector (#244 opt-in).
+
+    The opt-in backbone: the interior impulse and the arrival velocity are produced
+    by :func:`dsm_leg_correct_fbs` — the Ellison-2018 forward-backward-shooting
+    match-point corrector driven by the #226 ANALYTIC Jacobian. The match-point
+    defect is multi-rooted (the backward arc can reach the DSM via alternate
+    conics; documented in :func:`dsm_leg_correct_fbs`), so a cold seed can converge
+    to a DIFFERENT conic than the Lambert leg. To land the SAME leg the corrector
+    is seeded from the Lambert ballistic solution (exactly the #243 trial design —
+    "each problem's ballistic seed is built by Lambert; the FBS analytic gradient
+    is the refinement / optimisation engine"), then refined with the analytic
+    Jacobian. This is the honest scope of the opt-in: FBS-analytic GRADIENTS as the
+    refinement engine, not a Lambert-free single-leg root-finder (the #242 finding:
+    cold-seed FBS is no better as a feasibility solver).
+
+    Raises :class:`LambertError` (caught by the chain loop as an infeasible hop) if
+    EITHER the Lambert seed solve OR the FBS refinement fails — mirroring the
+    Lambert lane's failure handling.
+    """
+    r_curr_a = np.asarray(r_curr, dtype=np.float64)
+    v_dep_a = np.asarray(v_depart, dtype=np.float64)
+    r_tgt_a = np.asarray(r_target, dtype=np.float64)
+    # Ballistic Lambert seed for the leg's basin (the #243 trial seeding design).
+    lam = dsm_leg(
+        r_curr_a, v_dep_a, tof_s, eta, r_tgt_a, mu=mu, max_revs=max_revs, rev_branch=rev_branch
+    )
+    dv_seed = lam.v_depart_post_dsm - lam.v_arrive_pre_dsm
+    res = dsm_leg_correct_fbs(
+        r_curr_a,
+        v_dep_a,
+        r_tgt_a,
+        tof_s,
+        eta,
+        dv_seed,
+        lam.v_arrive,
+        mu=mu,
+        use_analytic_jac=True,
+        tol=1.0e-7,
+        max_nfev=200,
+    )
+    if not res.converged:
+        raise LambertError(
+            f"FBS analytic leg corrector did not converge "
+            f"(max_residual={res.max_residual:.3e}); treated as an infeasible hop"
+        )
+    return DsmLegResult(
+        v_arrive=res.v_arrive,
+        v_depart_post_dsm=res.dv_dsm,  # not used downstream; kept for shape parity
+        v_arrive_pre_dsm=np.zeros(3, dtype=np.float64),
+        dv_dsm_kms=float(np.linalg.norm(res.dv_dsm)),
+        r_dsm=res.r_dsm,
+        t_dsm_sec=float(eta * tof_s),
+        n_revs_chosen=int(lam.n_revs_chosen),
+        branch_chosen="fbs",
+    )
+
+
 def evaluate_dsm_chain(
     *,
     sequence: tuple[str, ...],
@@ -588,6 +662,7 @@ def evaluate_dsm_chain(
     charge_flyby_continuity: bool = False,
     alpha_int_per_leg: tuple[float, ...] = (),
     beta_int_per_leg: tuple[float, ...] = (),
+    gradient: str = _GRADIENT_LAMBERT,
 ) -> DsmChainResult:
     """Evaluate a chained one-DSM-per-leg trajectory (Takao Eqs.3-7, 14-15).
 
@@ -630,6 +705,8 @@ def evaluate_dsm_chain(
         ``residual_vector`` is what the corrector drives. The per-leg DSM impulses,
         emerged V_inf, and DSM states are the evidence/audit trail.
     """
+    if gradient not in _GRADIENT_CHOICES:
+        raise ValueError(f"gradient must be one of {_GRADIENT_CHOICES}, got {gradient!r}")
     n_legs = len(sequence) - 1
     if n_legs < 1:
         raise ValueError("sequence must name at least two bodies (one leg)")
@@ -670,16 +747,33 @@ def evaluate_dsm_chain(
         r_target, v_planet_target = ephem.state(target_body, t_arrive)
         rb = rev_branch_per_leg[i] if rev_branch_per_leg is not None else None
         try:
-            leg = dsm_leg(
-                r_curr,
-                v_depart,
-                tof_s,
-                eta_per_leg[i],
-                np.asarray(r_target),
-                mu=mu,
-                max_revs=max_revs,
-                rev_branch=rb,
-            )
+            if gradient == _GRADIENT_FBS_ANALYTIC:
+                # FBS match point needs alpha strictly inside (0,1); clamp the eta
+                # seed the same way the Lambert dsm_leg does (the exact endpoints are
+                # singular). The Lambert seed inside _eval_leg_fbs_analytic honours
+                # max_revs / rev_branch so the FBS refinement lands the same basin.
+                eta_clamped = min(max(eta_per_leg[i], _ETA_EPS), 1.0 - _ETA_EPS)
+                leg = _eval_leg_fbs_analytic(
+                    r_curr,
+                    v_depart,
+                    tof_s,
+                    eta_clamped,
+                    np.asarray(r_target),
+                    mu=mu,
+                    max_revs=max_revs,
+                    rev_branch=rb,
+                )
+            else:
+                leg = dsm_leg(
+                    r_curr,
+                    v_depart,
+                    tof_s,
+                    eta_per_leg[i],
+                    np.asarray(r_target),
+                    mu=mu,
+                    max_revs=max_revs,
+                    rev_branch=rb,
+                )
         except (LambertError, KeplerError, ValueError):
             # A hop into a too-energetic departure can drive the ballistic
             # propagation hyperbolic past Newton convergence, or the back-arc
@@ -959,6 +1053,7 @@ def dsm_chain_correct(
     max_revs: int = 0,
     rev_branch_per_leg: tuple[tuple[int, str] | None, ...] | None = None,
     charge_flyby_continuity: bool = False,
+    gradient: str = _GRADIENT_LAMBERT,
 ) -> DsmChainResult:
     """Drive the chained-DSM residual to a minimum with bounded least-squares.
 
@@ -982,6 +1077,19 @@ def dsm_chain_correct(
     This is the local-solve primitive the MBH wrapper drives via
     :func:`make_dsm_chain_step`; MBH supplies the basin hops, this supplies the
     refinement.
+
+    Gradient backbone (``gradient``, #244 opt-in, default ``"lambert"``)
+    -------------------------------------------------------------------
+    ``"lambert"`` (default): each leg is evaluated by the Lambert ``dsm_leg`` and
+    the outer ``least_squares`` finite-differences over the genome — BIT-IDENTICAL
+    to the historical corrector. ``"fbs-analytic"``: each leg is evaluated by the
+    Lambert-free Ellison-2018 forward-backward-shooting match-point corrector
+    (:func:`_eval_leg_fbs_analytic` → :func:`dsm_leg_correct_fbs`), whose inner
+    root-find is driven by the #226 ANALYTIC Jacobian — no Lambert anywhere on the
+    leg. At a leg's own solution the FBS defect is zero with the same impulse /
+    arrival velocity Lambert produces (#226 parity), so the two backbones reach the
+    same chain geometry; the opt-in only changes HOW each leg is solved. Default-off
+    so every existing caller's result is unchanged.
     """
     n_legs = len(sequence) - 1
 
@@ -1000,6 +1108,7 @@ def dsm_chain_correct(
             max_revs=max_revs,
             rev_branch_per_leg=rev_branch_per_leg,
             charge_flyby_continuity=charge_flyby_continuity,
+            gradient=gradient,
             **params,
         )
 
