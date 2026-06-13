@@ -202,6 +202,7 @@ def close_row_dsm(
     ephem: Ephemeris,
     *,
     tol_kms: float = 0.1,
+    gradient: str = "lambert",
 ) -> DsmClosureResult:
     """Attempt to close *row* on the real ephemeris using the Takao-DSM genome.
 
@@ -220,6 +221,11 @@ def close_row_dsm(
         Ephemeris instance (use ``Ephemeris("astropy")`` for real DE440).
     tol_kms:
         Convergence tolerance passed to the DSM corrector (km/s).
+    gradient:
+        Gradient backbone for the corrector (#244 opt-in). ``"lambert"`` (default)
+        is the historical Lambert+finite-difference lane, byte-unchanged.
+        ``"fbs-analytic"`` evaluates each leg with the Ellison-2018 FBS match-point
+        corrector driven by the analytic Jacobian (the parity-sweep lane).
 
     Returns
     -------
@@ -244,6 +250,7 @@ def close_row_dsm(
         bounds=seed.bounds,
         tol_kms=tol_kms,
         charge_flyby_continuity=True,
+        gradient=gradient,
     )
     # Extract per-encounter emerged V_inf from vinf_out_kms (departure side).
     # vinf_out_kms is dict[int, float] keyed by body index in the sequence.
