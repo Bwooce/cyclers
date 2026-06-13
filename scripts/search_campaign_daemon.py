@@ -97,6 +97,19 @@ def run_one(state0: np.ndarray, period: float) -> None:
 # caches the seed pool to disk. Workers >0 wait for that cache and load it.
 _POOL_CACHE = "out/outcome_log/jpl_seed_pool.npz"
 jpl_pool: list[tuple[np.ndarray, float]] = []
+
+
+def _publish_pool(states: list[np.ndarray], periods: list[float]) -> None:
+    """Atomically (tmp + replace) write the seed-pool cache so a reader never
+    sees a half-written npz. Called after EVERY family so workers >0 can load a
+    usable pool within ~1 min instead of waiting for the whole sweep to finish."""
+    if not states:
+        return
+    tmp = _POOL_CACHE + ".tmp"
+    np.savez(tmp, states=np.array(states), periods=np.array(periods))
+    os.replace(tmp, _POOL_CACHE)
+
+
 if WID == 0:
     states: list[np.ndarray] = []
     periods: list[float] = []
@@ -113,17 +126,17 @@ if WID == 0:
             continue
         # Subsample per family: Phase A is a fast cross-check + seed harvest, NOT
         # an exhaustive corpus (Phase B is the bulk + the diverse converged/failed
-        # boundary). Capping it lets worker 0 publish the pool in ~1 min so all
-        # workers reach Phase B quickly instead of idling behind a long sweep.
+        # boundary). Capping it keeps the sweep short; publishing the pool after
+        # each family lets all workers reach Phase B quickly instead of idling.
         for o in orbits[::25]:
             run_one(o.state0, o.period)
             s = np.asarray(o.state0, float)
             jpl_pool.append((s, float(o.period)))
             states.append(s)
             periods.append(float(o.period))
+        _publish_pool(states, periods)  # incremental: usable after family 1
         beat(f"PhaseA {fam} L{libr} {branch}: {len(orbits)} members, sampled {len(orbits[::25])}")
-    if states:
-        np.savez(_POOL_CACHE, states=np.array(states), periods=np.array(periods))
+    _publish_pool(states, periods)
     beat(f"PhaseA DONE -- pool cached ({len(jpl_pool)} members)")
 else:
     # Wait for worker 0 to publish the seed-pool cache, then load it.
