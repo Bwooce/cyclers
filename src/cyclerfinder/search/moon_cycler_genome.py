@@ -451,3 +451,90 @@ def liang_periodicity_residual(member: str) -> PeriodicityResidual:
         worst_vinf_vs_published_kms=rep.max_vinf_residual_kms,
         n_flybys=len(rep.flybys),
     )
+
+
+# ---------------------------------------------------------------------------
+# Step 4 — REPRODUCE-BEFORE-SEARCH validation gate
+# ---------------------------------------------------------------------------
+
+# Catalogue id -> Liang member letter for the V1 idealized CGE members
+# (data/catalogue.yaml). Member D (liang-2024-cgcec-ephemeris-2033) is V0: its
+# per-flyby data are published as FIGURES ONLY (no printed (V_inf, ToF) per
+# flyby), so it is structurally unreproducible from sourced numbers and is NOT
+# a gate golden — only the three numerically-printed members are.
+LIANG_V1_CATALOGUE_IDS: dict[str, str] = {
+    "liang-2024-cgcec-111-highperijove": "A",
+    "liang-2024-cgcec-110-highperijove": "B",
+    "liang-2024-cgcec-111-lowperijove": "C",
+}
+
+
+@dataclass(frozen=True)
+class GateResult:
+    """Per-member outcome of the reproduce-before-search gate.
+
+    Every EXPECTED value is Liang's PUBLISHED number (Tables 3/5/7); the ACTUAL
+    side is the genome's same-model reconstruction. The gate PASSES iff the
+    genome reproduces the published per-flyby V_inf and closes to periodicity,
+    both within the SOURCED print-precision tolerance (never a hand-tuned one).
+    """
+
+    member: str
+    catalogue_id: str
+    passed: bool
+    worst_vinf_residual_kms: float  # ACTUAL vs published V_inf, worst over flybys
+    worst_vinf_tolerance_kms: float  # SOURCED print tolerance at the worst flyby
+    worst_continuity_kms: float  # periodicity residual (V_inf continuity)
+    n_legs: int
+    n_flybys: int
+
+
+def reproduce_before_search_gate() -> dict[str, GateResult]:
+    """Run the mandatory reproduce-before-search gate over Liang's CGE members.
+
+    For each V1 catalogue member (A/B/C) the genome's same-model reconstruction
+    must (1) reproduce every published per-flyby V_inf (Tables 3/5/7) within the
+    sourced print-precision tolerance and (2) close to periodicity (V_inf
+    continuity) within that same tolerance. Returns the per-member
+    :class:`GateResult` — the caller (the gate test + the build note) reports
+    the real recovered-vs-published numbers and asserts ``passed``.
+
+    A FAILURE here is a STOP-and-report finding: the genome/corrector needs
+    fixing before any search runs (design step 4 / the task's key deliverable).
+    No catalogue writeback occurs; this only validates the genome.
+    """
+    from cyclerfinder.search.cge_scaffold import reproduce_member, vinf_print_tolerance_kms
+
+    results: dict[str, GateResult] = {}
+    for cat_id, member in LIANG_V1_CATALOGUE_IDS.items():
+        # Structural anchor: the genome must encode the member validly first.
+        genome = liang_member_genome(member)
+        if not (genome.is_valid() and genome.sequence == CGE_SEQUENCE):
+            raise RuntimeError(f"{cat_id}: genome failed to encode member {member} validly")
+
+        rep = reproduce_member(member)
+        res = liang_periodicity_residual(member)
+
+        # Worst V_inf residual vs published, and the sourced tolerance at the
+        # worst (latest-epoch) flyby — both per-flyby quantities.
+        worst_vinf_res = 0.0
+        worst_tol = 0.0
+        for fb in rep.flybys:
+            tol = vinf_print_tolerance_kms(fb.epoch_days, fb.moon, rep.radii_km)
+            worst_tol = max(worst_tol, tol)
+            worst_vinf_res = max(worst_vinf_res, fb.residual_in_kms)
+            if fb.residual_out_kms is not None:
+                worst_vinf_res = max(worst_vinf_res, fb.residual_out_kms)
+
+        passed = worst_vinf_res < worst_tol and res.closes(worst_tol)
+        results[cat_id] = GateResult(
+            member=member,
+            catalogue_id=cat_id,
+            passed=passed,
+            worst_vinf_residual_kms=worst_vinf_res,
+            worst_vinf_tolerance_kms=worst_tol,
+            worst_continuity_kms=res.worst_continuity_kms,
+            n_legs=len(genome.legs),
+            n_flybys=res.n_flybys,
+        )
+    return results

@@ -23,6 +23,7 @@ from cyclerfinder.search.cge_scaffold import reproduce_member, vinf_print_tolera
 from cyclerfinder.search.moon_cycler_genome import (
     CGE_SEQUENCE,
     JUPITER_MOONS,
+    LIANG_V1_CATALOGUE_IDS,
     EncounterGene,
     LegGene,
     MoonCyclerGenome,
@@ -33,6 +34,7 @@ from cyclerfinder.search.moon_cycler_genome import (
     moon_linkable,
     moon_tisserand_to_vinf,
     moon_vinf_to_tisserand,
+    reproduce_before_search_gate,
     vinf_graph_edges,
 )
 
@@ -225,3 +227,44 @@ def test_known_closure_closes_within_sourced_tolerance() -> None:
         if fb.continuity_kms is not None
     )
     assert res.closes(worst_tol), f"residual {res.worst_continuity_kms:.3e} > tol {worst_tol:.3e}"
+
+
+# ---------------------------------------------------------------------------
+# Step 4 — REPRODUCE-BEFORE-SEARCH validation gate
+# ---------------------------------------------------------------------------
+
+
+def test_gate_covers_the_three_v1_catalogue_members() -> None:
+    """The gate runs over exactly the three reproducible V1 liang-* rows.
+
+    Member D (liang-2024-cgcec-ephemeris-2033) is V0 — per-flyby data are
+    figures only, so it is structurally unreproducible and intentionally not a
+    gate golden.
+    """
+    results = reproduce_before_search_gate()
+    assert set(results) == set(LIANG_V1_CATALOGUE_IDS)
+    assert {r.member for r in results.values()} == {"A", "B", "C"}
+
+
+def test_reproduce_before_search_gate_passes() -> None:
+    """KEY DELIVERABLE: the genome REPRODUCES Liang's published CGE members.
+
+    For each V1 member the same-model reconstruction reproduces every published
+    per-flyby V_inf (Tables 3/5/7) and closes to periodicity, both within the
+    SOURCED print-precision tolerance (cge_scaffold.vinf_print_tolerance_kms).
+    The goldens are Liang's PUBLISHED numbers, never our own output. A failure
+    here is a STOP-and-report finding (the genome needs fixing before search).
+    """
+    results = reproduce_before_search_gate()
+    for cat_id, r in results.items():
+        assert r.worst_vinf_residual_kms < r.worst_vinf_tolerance_kms, (
+            f"{cat_id}: V_inf residual {r.worst_vinf_residual_kms:.3e} "
+            f">= tol {r.worst_vinf_tolerance_kms:.3e}"
+        )
+        assert r.worst_continuity_kms < r.worst_vinf_tolerance_kms, (
+            f"{cat_id}: continuity {r.worst_continuity_kms:.3e} "
+            f">= tol {r.worst_vinf_tolerance_kms:.3e}"
+        )
+        assert r.passed, f"{cat_id} did not pass the gate"
+        assert r.n_legs == 4
+        assert r.n_flybys == 5
