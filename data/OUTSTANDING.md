@@ -124,6 +124,19 @@ constraints into the NLP (where the analytic advantage should compound). The
 default-promotion ladder #243→#246 is re-pointed at the optimizer role. See
 `docs/notes/2026-06-13-fbs-optimizer-fair-trial.md`.
 
+**FBS optimizer adoption + parity sweep (#244) — DONE; verdict HOLD #245.** The
+opt-in FBS-analytic-gradient backbone is wired into the real `dsm_chain_correct` /
+`close_row_dsm` lane (commits `4abb1b8`/`b25f2d1`/`c2fb57a`, default `gradient=
+"lambert"` byte-unchanged) WITH patched-conic flyby-continuity constraints. The
+catalogue-wide parity sweep on the REAL corrector found: FBS is closer-to-feasible
+on every row (optimum-quality half holds directionally) but **slower, and NEITHER
+lane converges** on the multi-arc E-E-M-M / E-E-E-M-M rows. So there is no
+convergence parity to flip toward → **do NOT flip the default (#245)**; FBS stays
+the opt-in it already is. The real, decision-changing blocker is UPSTREAM of the
+gradient: **single-charged-seed basin selection** for multi-arc rows (now tracked as
+**#248**, which gates #245). Re-run `scripts/fbs_optimizer_adoption_parity.py` once a
+row converges on either lane. See `docs/notes/2026-06-13-fbs-optimizer-adoption-parity.md`.
+
 **Reachable-set accessibility scorer (#236, from Braik-Ross #230) — built, GATED.**
 A reduced (x,y,θ) heading-fan forward/backward reachable-set overlap scorer +
 proxy-ΔV graph centralities, as a continuation/family-selection prioritizer. The
@@ -135,11 +148,20 @@ member-RECOVERY gap, not a method bug: only **6 of 13** representatives recover 
 the available 1-DOF perpendicular-x-crossing symmetric corrector at the off-stable
 common energy (C11a/C21/R21-U/R31 don't; JPL doesn't expose 5:2 R52), and C32's
 dominance is a full-13-node-chaotic-sea property that doesn't survive the
-truncation. Scorer is therefore **GATED** (not applied to our families). UNGATE
-PATH: a multi-segment corrector to recover C11a/C21 + R21-U/R31/R52, then re-run
-the full 13-node gate. #239 (Zhou-Armellin reachable-set) remains to merge. See
-`search/reachable_network.py` / `search/reachable_representatives.py` + the
-2026-06-13 scorer note.
+truncation. Scorer is therefore **GATED** (not applied to our families).
+
+**Ungate attempt (#247) — 9/13 recovered, STILL GATED.** A network-independent
+free-(x0,t_half) perpendicular-crossing corrector recovered **9 of 13** members
+(up from 6), each confirmed against BOTH sourced Table-2 period AND Floquet σ (a
+stronger bar than #236's period-only): added R21-U, R31-S, R31-U, R52-S, C21.
+**Still unrecovered: C11a, C11b, C32, R52-U** — all UNSTABLE orbits that collapse
+onto spurious lower-σ members under single/free-period shooting at the off-stable
+energy. So **C32-dominance remains UNTESTABLE → scorer stays GATED** (faithful
+negative, no tuning; commits `5b48ecc`…`0ad93f7`, reachable suite 30 passed/1
+xfail). Blocker now precisely pinned to the σ/stability character of the unstable
+cyclers — a future corrector handling unstable members (not just a multi-segment
+period fix) is what remains. #239 (Zhou-Armellin reachable-set) remains to merge.
+See `docs/notes/2026-06-13-reachable-scorer-ungate.md`.
 
 **Papers digested (#230–235):** Braik & Ross 2026 Orbital Networks (reachable-set
 family-accessibility — method-only, no new tuples), arXiv:2509.12671 HOTM fixed
@@ -148,14 +170,23 @@ points (#237 negative-registry entry), Şaloğlu-Taheri JAS VoR, Shepperd 1985
 cross-check (#238, withheld per cyclers-only scope). All background papers READ,
 not title-dismissed.
 
-**In flight / queued (background, this session):**
-- **Surrogate-corpus daemon** — 12-worker CR3BP search writing `(genome → outcome)`
-  tuples to gitignored `out/outcome_log/`; healthy ~50/50 converged/failed mix
-  (the training boundary the surrogate needs); runs at nice +19.
-- **#243** (FBS optimizer fair trial) — DONE, clean POSITIVE (adopt; see above).
-  **#244** (wire FBS gradients into the real `dsm_chain_correct` optimizer as opt-in
-  + flyby-continuity constraints + catalogue-wide parity sweep) — LAUNCHED
-  (user-approved 2026-06-13); decides whether the #245 default flip is warranted.
+**Open after this session:**
+- **#248** (NEW) — multi-arc seed/basin fix so the E-E-M-M rows converge on either
+  optimizer lane; GATES the FBS default flip (#245). The decision-changing finding
+  from #244.
+- **#245/#246** — FBS optimizer default flip + documentation; HELD behind #248
+  (no convergence parity to flip toward yet).
+- **#239** — Zhou-Armellin reachable-set spike; merges into the still-gated scorer.
+- **#240** — KKT/surrogate amplifier; gated on the surrogate-target decision. Logger
+  needs NO change — it already logs the DSM-chain lane via `optimize.py`; what's
+  missing is a flyby-cycler DATA-GEN DRIVER, only if that surrogate is the target.
+- **#115/#116** — blocked (no published V∞ / human-gated acquisitions).
+- **Surrogate-corpus daemon** — still running (plain process, quota-proof); CR3BP
+  `(genome → outcome)` tuples to gitignored `out/outcome_log/`, ~50/50 mix, nice +19.
+
+**Quota note (2026-06-13):** several one-shot agents hit the session quota wall
+mid-run; agents that committed incrementally kept their work, one that batched lost
+everything — incremental commits are now the standing instruction for long agents.
 
 ## 2026-06-11 — review-and-harden + acquisitions wave 2
 
