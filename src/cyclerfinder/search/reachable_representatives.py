@@ -216,6 +216,9 @@ def recover_jpl_family(
     Pulls the member nearest the common energy from the JPL oracle, then
     re-corrects it under our mass ratio with the fixed-Jacobi symmetric corrector
     so it sits exactly on ``C_J = 3.1294``; confirms against the sourced period.
+
+    NETWORK ROUTE: requires the JPL oracle. For a network-independent recovery use
+    :func:`recover_free_period` with an offline seed from :data:`OFFLINE_SEEDS`.
     """
     seed = _jpl_seed_near_cj(family, libr=libr, branch=branch, stable=stable)
     x0_seed = float(seed[0])
@@ -229,3 +232,229 @@ def recover_jpl_family(
         half_crossings=half_crossings,
         tol_days=tol_days,
     )
+
+
+# ---------------------------------------------------------------------------
+# Network-INDEPENDENT (offline) member recovery (#247).
+#
+# The JPL oracle is the intended seed source for the Lyapunov / resonant / DPO
+# families, but it requires a live network call. The offline route below recovers
+# those members from analytic seeds (collinear-point linear Lyapunov amplitude,
+# resonant x0 region) using the free-(x0, t_half) perpendicular-crossing corrector
+# (:func:`correct_symmetric_free_period`), which -- unlike the 1-DOF fixed-crossing
+# corrector -- frees the half-period time and so recovers the member of a *target*
+# period region rather than collapsing onto the nearest fixed-crossing branch.
+#
+# SOURCED-CONFIRMATION DISCIPLINE is unchanged: the seed (x0 region + velocity
+# sign + target half-period) is the only family input; the recovered period is a
+# PREDICTION confirmed against the Braik-Ross Table-2 sourced period before the
+# member is admitted. Where a member does not confirm it is reported unconfirmed
+# and excluded rather than faked.
+# ---------------------------------------------------------------------------
+
+#: Full Braik-Ross Table 2 (arXiv:2605.31543, p. 11) sourced periods (days) AND
+#: Floquet instability rates sigma (TU^-1) at C_J = 3.1294, for ALL thirteen
+#: representatives. sigma = 0 for the stable resonants (|lambda_max| = 1).
+SOURCED_TABLE2: dict[str, tuple[float, float]] = {
+    "LL1": (12.811, 2.4884),
+    "LL2": (15.117, 1.9797),
+    "C11a": (42.140, 1.0482),
+    "C11b": (55.995, 0.9255),
+    "C21": (84.533, 0.1358),
+    "C32": (78.613, 0.6886),
+    "R21-S": (26.500, 0.0),
+    "R21-U": (31.039, 0.8397),
+    "R31-S": (27.252, 0.0),
+    "R31-U": (28.066, 0.40124),
+    "R52-S": (54.802, 0.0),
+    "R52-U": (56.436, 0.36547),
+    "DPO": (11.184, 1.5886),
+}
+
+#: Offline recovery seeds: (x0_seed, ydot0_sign). The target half-period is taken
+#: from the sourced period. The seed x0 region is sourced from the family geometry
+#: (collinear-point Lyapunov amplitude, resonant/cycler x0 band); the period is a
+#: prediction. Only families that CONFIRM (period within tolerance AND correct
+#: stability character) are admitted by :func:`recover_offline_set`.
+OFFLINE_SEEDS: dict[str, tuple[float, float]] = {
+    "LL1": (0.8115, 1.0),  # near L1 (x=0.8369), small planar Lyapunov amplitude
+    "LL2": (1.1006, 1.0),  # near L2 (x=1.1557)
+    "DPO": (1.0608, 1.0),  # distant prograde, exterior to the Moon
+    "R21-S": (0.4485, 1.0),  # 2:1 stable resonant
+    "R31-S": (0.3568, -1.0),  # 3:1 stable resonant
+}
+
+
+def lagrange_collinear_x(mu: float, point: str) -> float:
+    """x-coordinate of the collinear libration point ``point`` (``L1`` or ``L2``).
+
+    Root of ``dUbar/dx = 0`` on the x-axis. ``L1`` lies between the primaries,
+    ``L2`` beyond the secondary. Offline (no network); used to place the linear
+    Lyapunov seed.
+    """
+    from scipy.optimize import brentq
+
+    def f(x: float) -> float:
+        return cp._ubar_grad_x_at_axis(x, mu)
+
+    if point == "L1":
+        return float(brentq(f, -mu + 0.05, 1.0 - mu - 1e-3))
+    if point == "L2":
+        return float(brentq(f, 1.0 - mu + 1e-3, 1.7))
+    raise ValueError(f"point must be 'L1' or 'L2', got {point!r}")
+
+
+def correct_symmetric_free_period(
+    system: cr3bp.CR3BPSystem,
+    x0_guess: float,
+    jacobi: float,
+    t_half_guess: float,
+    *,
+    ydot0_sign: float = 1.0,
+    tol: float = 1e-10,
+    max_iter: int = 50,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+    x0_max_step: float = 0.1,
+    t_half_step_frac: float = 0.2,
+    x0_bounds: tuple[float, float] = (-2.0, 2.0),
+) -> cp.SymmetricOrbit:
+    """Free-(x0, t_half) fixed-Jacobi perpendicular-crossing corrector (#247).
+
+    A more general member-recovery corrector than
+    :func:`cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`:
+    instead of snapping to a fixed *event crossing index* (which makes the period
+    an output of whichever branch the Newton iterate slides onto), this corrector
+    treats the half-period time ``t_half`` as a *free variable* and drives the two
+    perpendicular-crossing residuals to zero simultaneously,
+
+        F1: y(t_half)    = 0,
+        F2: xdot(t_half) = 0,
+
+    with ``ydot0 = ydot0_from_jacobi(x0)`` holding the Jacobi constant fixed (Ross
+    Eq. 9). The 2x2 Newton system uses the half-period STM (columns 0 and 4, the
+    latter coupled through ``dydot0/dx0 = -(dUbar/dx)/ydot0``) and the EOM time
+    derivative at ``t_half``. Because ``t_half`` is continuous, seeding it near a
+    *target* half-period recovers the member of that period region rather than the
+    nearest fixed-index attractor -- this separates distinct same-energy members
+    (e.g. a resonant stable/unstable pair) that the 1-DOF corrector collapses.
+
+    Returns a :class:`~cyclerfinder.search.cr3bp_periodic.SymmetricOrbit` with
+    ``period = 2 * t_half``; ``converged`` iff ``sqrt(F1^2 + F2^2) < tol``.
+    """
+    mu = system.mu
+    x0 = float(x0_guess)
+    t_half = abs(float(t_half_guess))
+    lo, hi = x0_bounds
+    res = float("inf")
+    n_iter = 0
+    for n_iter in range(1, max_iter + 1):  # noqa: B007 -- returned as iteration count
+        ydot0 = cp.ydot0_from_jacobi(x0, jacobi, mu, sign=ydot0_sign)
+        state0 = np.array([x0, 0.0, 0.0, 0.0, ydot0, 0.0])
+        arc = cr3bp.propagate(system, state0, t_half, with_stm=True, rtol=rtol, atol=atol)
+        yf = arc.state_f
+        assert arc.stm is not None
+        stm = arc.stm
+        f1 = float(yf[1])  # y at t_half
+        f2 = float(yf[3])  # xdot at t_half
+        res = math.hypot(f1, f2)
+        if res < tol:
+            break
+        fdot = cr3bp.cr3bp_eom(t_half, yf, mu)
+        dydot0_dx0 = -cp._ubar_grad_x_at_axis(x0, mu) / ydot0
+        ds_dx0_y = float(stm[1, 0]) + float(stm[1, 4]) * dydot0_dx0
+        ds_dx0_xdot = float(stm[3, 0]) + float(stm[3, 4]) * dydot0_dx0
+        jac = np.array(
+            [
+                [ds_dx0_y, float(fdot[1])],  # dy/dx0,    dy/dt_half
+                [ds_dx0_xdot, float(fdot[3])],  # dxdot/dx0, dxdot/dt_half
+            ]
+        )
+        try:
+            step = np.linalg.solve(jac, np.array([-f1, -f2]))
+        except np.linalg.LinAlgError:
+            break
+        dx0 = float(step[0])
+        dth = float(step[1])
+        if abs(dx0) > x0_max_step:
+            dx0 = math.copysign(x0_max_step, dx0)
+        if abs(dth) > t_half_step_frac * t_half:
+            dth = math.copysign(t_half_step_frac * t_half, dth)
+        x0 = min(max(x0 + dx0, lo), hi)
+        t_half = t_half + dth
+        if t_half <= 0.0:
+            t_half = 0.5 * abs(float(t_half_guess))
+    ydot0_final = cp.ydot0_from_jacobi(x0, jacobi, mu, sign=ydot0_sign)
+    period = 2.0 * t_half
+    converged = res < tol
+    return cp.SymmetricOrbit(
+        x0=x0,
+        ydot0=ydot0_final,
+        jacobi=cr3bp.jacobi_constant(np.array([x0, 0.0, 0.0, 0.0, ydot0_final, 0.0]), mu),
+        t_half=t_half,
+        period=period,
+        converged=converged,
+        crossing_residual=res,
+        n_iter=n_iter,
+    )
+
+
+def recover_free_period(
+    system: cr3bp.CR3BPSystem,
+    label: str,
+    x0_seed: float,
+    *,
+    ydot0_sign: float,
+    tol_days: float = 0.5,
+    sigma_tol: float = 0.1,
+    corrector_tol: float = 1e-10,
+) -> Representative:
+    """Recover a member at ``C_J=3.1294`` offline via the free-period corrector.
+
+    Seeds the corrector at the sourced half-period and the supplied ``x0`` region;
+    the recovered period is confirmed against the Braik-Ross sourced period AND the
+    Floquet rate ``sigma = ln(lambda_max)/T`` is checked against the sourced sigma
+    (stable resonants must give sigma ~ 0). ``confirmed`` is True only if BOTH the
+    period (within ``tol_days``) and sigma (within ``sigma_tol``) match.
+    """
+    sourced_days, sourced_sigma = SOURCED_TABLE2[label]
+    t_half_guess = 0.5 * sourced_days / TU_DAYS
+    orbit = correct_symmetric_free_period(
+        system,
+        x0_seed,
+        C_J_BRAIK_ROSS,
+        t_half_guess,
+        ydot0_sign=ydot0_sign,
+        tol=corrector_tol,
+    )
+    period_days = orbit.period * TU_DAYS
+    _nu, lam = cp.barden_stability(system, orbit)
+    sigma = math.log(abs(lam)) / orbit.period if abs(lam) > 1.0 + 1e-9 else 0.0
+    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0])
+    confirmed = (
+        orbit.converged
+        and abs(period_days - sourced_days) <= tol_days
+        and abs(sigma - sourced_sigma) <= sigma_tol
+    )
+    return Representative(
+        label=label,
+        state0=state0,
+        period=orbit.period,
+        jacobi=orbit.jacobi,
+        sourced_period_days=sourced_days,
+        period_days=period_days,
+        confirmed=confirmed,
+        converged=orbit.converged,
+    )
+
+
+def recover_offline_set(system: cr3bp.CR3BPSystem) -> list[Representative]:
+    """Recover every member that has an :data:`OFFLINE_SEEDS` entry, offline.
+
+    Returns one :class:`Representative` per seeded family (confirmed or not). The
+    caller filters on ``.confirmed`` before scoring -- no faked members.
+    """
+    out: list[Representative] = []
+    for label, (x0, sign) in OFFLINE_SEEDS.items():
+        out.append(recover_free_period(system, label, x0, ydot0_sign=sign))
+    return out
