@@ -27,8 +27,13 @@ unexplored space**, NOT by algorithm trust.
 ## The three discovery tracks
 
 ### Track A — Richer genome (HIGHEST leverage; currently barely a task)
-A more capable genome opens regions the current one cannot even represent. Priorities,
-in rough order of evidenced payoff:
+A more capable genome opens regions the current one cannot even represent.
+**Corollary (the coupling): a novel cycler usually arrives WITH a new algorithm** —
+you find cyclers you couldn't before because you built/adopted the capability to
+represent and close them (Liang's CGE members ⇐ repeated-moon multi-rev genome). So
+the **capability-paper sweep (#250) is a primary discovery input, not a downranked
+validation chore**: papers bring algorithms, algorithms make new cyclers findable.
+Priorities, in rough order of evidenced payoff:
 - **Repeated-moon multi-rev topologies.** The Liang CGE class *reopened* the Jovian
   empty region precisely because it lives in a topology our swept (zero-rev,
   single-encounter) genome does not cover (the §6b new-sourced-data arm, conditional
@@ -78,7 +83,8 @@ The corpus daemon is the working template to generalize.
 
 ## Task re-prioritization
 - **Elevate (discovery-enabling):** #248 (multi-arc convergence — can't discover what
-  you can't close), #249 + #239-merge (the prioritizer), and a **NEW Track-A genome
+  you can't close), #249 + #239-merge (the prioritizer), **#250 (capability-paper
+  sweep — primary source of new genomes/methods)**, and a **NEW Track-A genome
   effort** (repeated-moon multi-rev first).
 - **New:** a discovery-campaign daemon (Track C) generalizing the corpus daemon; the
   ML false-positive flagger.
