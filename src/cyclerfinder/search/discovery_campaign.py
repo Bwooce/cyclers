@@ -219,6 +219,21 @@ def catalogue_moon_signatures(catalog: Catalog, *, primary: str) -> set[str]:
 DAY_S: float = 86400.0
 
 
+def _registry_moons_for(primary: str) -> tuple[str, ...]:
+    """Sorted moon set for ``primary`` from the satellite registry (Fix A).
+
+    The moon set MUST be derived from :data:`cyclerfinder.core.satellites.
+    SATELLITES` filtered to the moons that actually orbit ``primary`` — never a
+    hardcoded list. The original code hardcoded the Galilean moons regardless of
+    ``primary``, so a Saturn campaign enumerated JOVIAN moons (Callisto/Europa/
+    ...) with Saturn's mu, which is physically meaningless (#259 fix A). Returns
+    a deterministic (sorted) tuple so enumeration is reproducible.
+    """
+    from cyclerfinder.core.satellites import SATELLITES
+
+    return tuple(sorted(name for name, sat in SATELLITES.items() if sat.primary == primary))
+
+
 def _mean_motion_rad_day(system_mu: float, sma_km: float) -> float:
     """Mean motion (rad/day) about the primary, Kepler III (registry-derived)."""
     return math.sqrt(system_mu / sma_km**3) * DAY_S
@@ -253,12 +268,22 @@ class RepeatedMoonTarget:
     """
 
     primary: str = "Jupiter"
-    moons: tuple[str, ...] = ("Io", "Europa", "Ganymede", "Callisto")
-    seq_lengths: tuple[int, ...] = (3,)
+    moons: tuple[str, ...] = ()
+    seq_lengths: tuple[int, ...] = (4,)
     n_rev_grid: tuple[int, ...] = (0, 1, 2)
     n_phase_samples: int = 12
     tof_resonance_grid: tuple[float, ...] = (0.5, 1.0, 1.5, 2.0)
     git_sha: str = "uncommitted"
+
+    def __post_init__(self) -> None:
+        # Fix A: when the caller does not pin an explicit moon set, derive it
+        # from the registry for THIS primary (Saturn -> Saturnian moons, Jupiter
+        # -> Galilean moons), never a hardcoded Jovian default. A frozen dataclass
+        # needs object.__setattr__ to fill the resolved default.
+        if not self.moons:
+            object.__setattr__(self, "moons", _registry_moons_for(self.primary))
+        if not self.moons:
+            raise ValueError(f"no registered moons for primary {self.primary!r}")
 
     @property
     def target_id(self) -> str:
@@ -293,18 +318,33 @@ class RepeatedMoonTarget:
         return out
 
     def _sequences(self) -> list[tuple[str, ...]]:
-        """Deterministic bounded list of repeated-moon sequences.
+        """Deterministic bounded list of CLOSED repeated-moon cycle sequences.
 
-        For each requested length k, every length-k product over the SORTED moon
-        set whose consecutive bodies differ (a leg must change moons) and which
-        uses at least two distinct moons (a single-moon resonance loop is the
-        zero-rev genome's territory, not a repeated-moon tour). Deterministic
-        order: ``itertools.product`` over the sorted moons.
+        A repeated-moon cycler is a CLOSED loop: it must return to its starting
+        moon so the tour repeats every cycle (the Liang CGE reference is
+        Callisto-Ganymede-Callisto-Europa-Callisto — it starts AND ends at
+        Callisto). The prior enumeration produced OPEN paths (``[Io, Europa,
+        Ganymede]``) and called them cyclers; an open path has no anchor body to
+        re-close on and is not a periodic tour (#259 fix C, topology side).
+
+        For each requested length k (k = number of flybys per cycle, anchor body
+        counted at both ends), every length-k product over the SORTED moon set
+        such that: (a) ``seq[0] == seq[-1]`` (closed on the anchor moon);
+        (b) every leg changes moons (no consecutive-same-moon leg); (c) at least
+        two DISTINCT moons are used (a single-moon resonance loop is the zero-rev
+        genome's territory, not a repeated-moon tour). Deterministic order:
+        ``itertools.product`` over the sorted moons.
         """
         moons = tuple(sorted(self.moons))
         seqs: list[tuple[str, ...]] = []
         for k in self.seq_lengths:
+            if k < 3:
+                # k<3 cannot be a closed cycle with a distinct intermediate body
+                # (anchor, >=1 distinct body, anchor needs k>=3).
+                continue
             for combo in itertools.product(moons, repeat=k):
+                if combo[0] != combo[-1]:
+                    continue  # closed-cycle: start and end at the anchor moon
                 if any(combo[i] == combo[i + 1] for i in range(k - 1)):
                     continue
                 if len(set(combo)) < 2:
@@ -324,6 +364,16 @@ class RepeatedMoonTarget:
         for seq in self._sequences():
             n_legs = len(seq) - 1
             for nrevs in itertools.product(self.n_rev_grid, repeat=n_legs):
+                # Fix B: exclude the trivial all-zero-rev corner. A genuine
+                # repeated-moon multi-rev cycler (the Liang CGE class, >=10
+                # cycles) needs the spacecraft to do >=1 full revolution on at
+                # least one leg between encounters; an all-zero-rev candidate is
+                # the trivial direct-transfer degeneracy the prior run mistook
+                # for cyclers (all 4 purged Jovian SILVER hits were n_rev=[0,0]).
+                # Require at least one leg with n_rev >= 1 (#259 fix B). The Liang
+                # members are all 1-rev legs, so they are NOT excluded.
+                if all(nr == 0 for nr in nrevs):
+                    continue
                 struct_blob = json.dumps(
                     {"seq": list(seq), "n_rev": list(nrevs)},
                     sort_keys=True,
@@ -346,10 +396,14 @@ class RepeatedMoonTarget:
         resonance grid; for each phasing, place the circular-coplanar moons at
         the cumulative flyby epochs, solve the planet-frame multi-rev Lambert leg
         at the requested ``n_rev``, and measure the worst per-flyby V_inf-
-        magnitude continuity. Return the phasing that MINIMISES that worst defect
-        (the corrector's canonical residual). A leg with no Lambert solution at
-        the requested revolution count marks the phasing infeasible; if no
-        phasing is feasible the candidate is reported non-converged.
+        magnitude continuity INCLUDING the closed-cycle anchor wrap (#259 fix C:
+        the residual now links the cycle-start outbound and cycle-end inbound
+        V_inf at the shared anchor moon, so a sub-gate residual means the loop
+        actually closes on itself, not just that interior flybys matched). Return
+        the phasing that MINIMISES that worst defect (the corrector's canonical
+        residual). A leg with no Lambert solution at the requested revolution
+        count marks the phasing infeasible; if no phasing is feasible the
+        candidate is reported non-converged.
         """
         from cyclerfinder.core.lambert import lambert
         from cyclerfinder.core.satellites import PRIMARIES
@@ -457,6 +511,21 @@ class RepeatedMoonTarget:
             # representative per-flyby V_inf (prefer inbound, else outbound)
             rep = vi if vi is not None else vo
             per_flyby.append(rep if rep is not None else 0.0)
+
+        # Fix C (closed-cycle periodicity): the sequence STARTS and ENDS at the
+        # same anchor moon (enforced in _sequences), so the cycle-start outbound
+        # V_inf (leg 0 departure, vinf_out[0]) and the cycle-end inbound V_inf
+        # (last leg arrival, vinf_in[-1]) are the SAME anchor flyby across the
+        # cycle boundary. A real cycler must be V_inf-continuous there too; the
+        # prior residual NEVER linked these two ends, so it accepted trajectories
+        # whose closing flyby did not match the opening one (V_inf-continuity at
+        # interior flybys is necessary-not-sufficient for the tour to close on
+        # itself). Including the wrap defect makes a sub-gate residual mean the
+        # closed loop is actually continuous at every flyby including the anchor.
+        wrap_out = vinf_out[0]
+        wrap_in = vinf_in[-1]
+        if wrap_out is not None and wrap_in is not None:
+            worst = max(worst, abs(wrap_out - wrap_in))
         return (True, worst, tuple(per_flyby), tuple(tofs))
 
 

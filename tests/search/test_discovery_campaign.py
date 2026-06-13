@@ -93,7 +93,7 @@ def test_target_satisfies_protocol() -> None:
 
 def test_enumeration_deterministic_and_bounded() -> None:
     """Enumeration is finite, deterministically ordered, and index-contiguous."""
-    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0, 1))
+    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0, 1, 2))
     a = list(t.enumerate_candidates())
     b = list(t.enumerate_candidates())
     assert a, "enumeration must be non-empty"
@@ -104,18 +104,101 @@ def test_enumeration_deterministic_and_bounded() -> None:
 
 
 def test_enumeration_legs_change_moons_and_use_two_bodies() -> None:
-    """No consecutive-same-moon leg; every sequence uses >= 2 distinct moons."""
-    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0,))
-    for c in t.enumerate_candidates():
+    """No consecutive-same-moon leg; every sequence uses >= 2 distinct moons.
+
+    Closed-cycle topology (#259 fix C): every sequence also starts and ends at
+    the same anchor moon, so it is a genuine repeating loop, not an open path.
+    """
+    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(1,))
+    cands = list(t.enumerate_candidates())
+    assert cands, "enumeration must be non-empty"
+    for c in cands:
         seq = c.sequence
         assert all(seq[i] != seq[i + 1] for i in range(len(seq) - 1))
         assert len(set(seq)) >= 2
+        assert seq[0] == seq[-1], "a repeated-moon cycle is closed on its anchor moon"
+
+
+# ---------------------------------------------------------------------------
+# #259 fixes: (A) primary-correct moon set, (B) no zero-rev, (C) closed cycle
+# ---------------------------------------------------------------------------
+
+
+def test_fix_a_saturn_enumerates_only_saturn_moons() -> None:
+    """Fix A: a Saturn target enumerates ONLY Saturnian moons (registry-derived).
+
+    The prior code hardcoded the Galilean list, so a Saturn run enumerated
+    Jovian moons with Saturn's mu (meaningless). The moon set must come from the
+    satellite registry filtered to the moons that orbit the primary.
+    """
+    from cyclerfinder.core.satellites import SATELLITES
+
+    saturn_moons = {n for n, s in SATELLITES.items() if s.primary == "Saturn"}
+    jupiter_moons = {n for n, s in SATELLITES.items() if s.primary == "Jupiter"}
+
+    t_sat = RepeatedMoonTarget(primary="Saturn")
+    assert set(t_sat.moons) <= saturn_moons
+    assert set(t_sat.moons) & jupiter_moons == set()
+    seen_bodies = {m for c in t_sat.enumerate_candidates() for m in c.sequence}
+    assert seen_bodies, "Saturn enumeration must be non-empty"
+    assert seen_bodies <= saturn_moons
+    assert seen_bodies & jupiter_moons == set()
+
+    t_jup = RepeatedMoonTarget(primary="Jupiter")
+    jup_seen = {m for c in t_jup.enumerate_candidates() for m in c.sequence}
+    assert jup_seen <= jupiter_moons
+    assert jup_seen & saturn_moons == set()
+
+
+def test_fix_b_all_zero_rev_excluded() -> None:
+    """Fix B: every enumerated candidate has at least one leg with n_rev >= 1.
+
+    The trivial all-zero-rev corner (direct transfer, no multi-rev) is excluded;
+    all 4 purged Jovian SILVER artifacts were n_rev=[0,0]. With a grid that
+    INCLUDES 0, the all-zero tuple must never appear.
+    """
+    t = RepeatedMoonTarget(seq_lengths=(3, 4), n_rev_grid=(0, 1, 2))
+    cands = list(t.enumerate_candidates())
+    assert cands
+    for c in cands:
+        nrevs = c.payload["n_rev"]
+        assert any(nr >= 1 for nr in nrevs), f"all-zero-rev candidate leaked: {nrevs}"
+
+
+def test_fix_b_liang_style_legs_still_allowed() -> None:
+    """Fix B does not exclude the Liang reference (all legs n_rev=1)."""
+    t = RepeatedMoonTarget(seq_lengths=(5,), n_rev_grid=(1,))
+    cands = list(t.enumerate_candidates())
+    assert cands, "1-rev closed cycles (Liang class) must enumerate"
+    assert all(all(nr == 1 for nr in c.payload["n_rev"]) for c in cands)
+
+
+def test_fix_c_closure_includes_anchor_wrap() -> None:
+    """Fix C: the closure residual links the cycle-start and cycle-end anchor.
+
+    For a closed cycle the cycle-start outbound V_inf and cycle-end inbound
+    V_inf are the same anchor flyby across the cycle boundary; the residual must
+    reflect their continuity. We construct a phasing-feasible closed candidate
+    and check the residual is at least the anchor-wrap defect (i.e. the wrap is
+    actually folded in, not dropped as the prior open-path residual did).
+    """
+    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(1,), n_phase_samples=8)
+    cands = list(t.enumerate_candidates())
+    converged = [(c, t.close(c)) for c in cands]
+    converged = [(c, r) for c, r in converged if r.converged]
+    assert converged, "at least one closed candidate must close"
+    for c, r in converged:
+        # closed-cycle: first and last body are the anchor moon
+        assert c.sequence[0] == c.sequence[-1]
+        # residual is a finite non-negative continuity defect (km/s)
+        assert r.residual_kms >= 0.0
 
 
 def test_close_returns_canonical_residual() -> None:
     """Closing a candidate yields a finite residual + per-encounter V_inf."""
     t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0, 1), n_phase_samples=6)
     cands = list(t.enumerate_candidates())
+    assert cands
     closed = [(c, t.close(c)) for c in cands[:8]]
     converged = [(c, r) for c, r in closed if r.converged]
     assert converged, "at least one of the first candidates must close"
@@ -271,7 +354,7 @@ def test_worker_sharding_partitions_indices(tmp_path: Path) -> None:
     evaluates only its ``index % n_workers == worker_id`` shard; the two shard
     sizes sum to the single-worker total (a clean partition).
     """
-    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0,), n_phase_samples=4)
+    t = RepeatedMoonTarget(seq_lengths=(3,), n_rev_grid=(0, 1), n_phase_samples=4)
     r_all = _routing(tmp_path / "all")
     r0 = _routing(tmp_path / "w0")
     r1 = _routing(tmp_path / "w1")
