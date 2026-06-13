@@ -1,12 +1,16 @@
 """Tests for :mod:`cyclerfinder.core.kepler_stm` (analytic two-body STM).
 
 CONSISTENCY-TEST PATTERN (same discipline as ``tests/nbody`` for
-``flyby_gradients``): no printed Shepperd 1985 numeric example is in hand
-(acquisition pending, #116), so the analytic STM is validated against
-central-difference finite differences of the INDEPENDENT existing propagator
-:func:`cyclerfinder.core.kepler.propagate` across all conic regimes, plus the
-STM group properties (identity at ``dt = 0``, symplecticity, unit determinant,
-composition). These are internal-consistency checks, never sourced goldens.
+``flyby_gradients``): Shepperd 1985 was read 2026-06-13 (#233) and prints NO
+worked numeric example — it is a pure theory/algorithm paper (symbolic
+universal-variable formulation, M-matrix STM, U_n functions, and the
+continued-fraction evaluation; Appendix A is the algorithm summary, not a
+numeric case). There is therefore no wireable printed golden, so the analytic
+STM is validated against central-difference finite differences of the
+INDEPENDENT existing propagator :func:`cyclerfinder.core.kepler.propagate`
+across all conic regimes, plus the STM group properties (identity at
+``dt == 0``, symplecticity, unit determinant, composition). These are
+internal-consistency checks, never sourced goldens.
 """
 
 from __future__ import annotations

@@ -23,19 +23,26 @@ Bounded-Impulse Trajectory Models Using Two-Sided Shooting," *JGCD* 41(7),
 2018, Eq. (17) and ref [52] (mining note
 ``docs/notes/2026-06-10-ellison-2018-analytic-gradients-mining.md`` §3, §7).
 
-SOURCE HONESTY: we do not hold the Shepperd 1985 PDF (acquisition pending,
-#116), and Ellison 2018 prints only the quadrant *partition* (Eq. 17), not the
-closed forms — its appendix carries the flyby gradients (A1-A6) only. The
-quadrant expressions implemented below are therefore the standard
+SOURCE HONESTY: Ellison 2018 prints only the quadrant *partition* (Eq. 17),
+not the closed forms — its appendix carries the flyby gradients (A1-A6) only.
+The quadrant expressions implemented below are therefore the standard
 universal-variable closed form of the Keplerian STM in Battin's development
 (equivalent to Shepperd's), with the secular term
-``C = (3*U5 - chi*U4)/sqrt(mu) - dt*U2``. No printed numeric example is in
-hand, so validation is the CONSISTENCY-test pattern (exactly like
-``nbody/flyby_gradients.py``): central-difference FD agreement against the
-independent :func:`cyclerfinder.core.kepler.propagate` across all conic
-regimes, plus the STM group properties (identity at ``dt = 0``, symplecticity
-``Phi^T J Phi = J``, ``det Phi = 1``, composition). When the Shepperd 1985 PDF
-is acquired, printed-example goldens can be added; none are fabricated here.
+``C = (3*U5 - chi*U4)/sqrt(mu) - dt*U2``. Validation is the CONSISTENCY-test
+pattern (exactly like ``nbody/flyby_gradients.py``): central-difference FD
+agreement against the independent :func:`cyclerfinder.core.kepler.propagate`
+across all conic regimes, plus the STM group properties (identity at
+``dt = 0``, symplecticity ``Phi^T J Phi = J``, ``det Phi = 1``, composition).
+
+Shepperd 1985 read 2026-06-13 (#233, closes the #116 acquisition item for this
+paper): the paper is pure theory/algorithm — Sections 2-7 give the symbolic
+universal-variable formulation, the M-matrix STM (Eq. 17), the U_n functions
+(Eqs. 20-30), and the Gaussian-continued-fraction evaluation, and Appendix A
+summarises the algorithm (Eqs. A.1-A.46). It prints NO worked numeric example:
+no input state, no propagated output, no numeric STM cells, no tabulated
+U-function values anywhere in pp. 129-144. There is therefore no wireable
+printed golden; the consistency-tests above remain the validation. No goldens
+are fabricated here.
 
 Universal functions
 -------------------
