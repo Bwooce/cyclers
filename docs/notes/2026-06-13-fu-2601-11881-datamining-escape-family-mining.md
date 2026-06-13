@@ -14,6 +14,16 @@ Models"; HTML at arxiv.org/html/2601.11881).
 
 ## Verdict: BACKGROUND, prioritizer-method-adjacent (Track B) — worth a closer read if/when the discovery daemon needs a clustering layer
 
+> **CONFIRMED from full HTML 2026-06-13 (#251, WebFetch re-enabled).** Full text
+> confirms: clustering algorithm is **DBSCAN**; output is one-way *escape*
+> trajectories (criterion E>0 + monotonically increasing distance), NOT cyclers;
+> Tables 4–6 list 19/21/24 escape families by ΔV/TOF (escapes, not
+> catalogue-relevant); cross-model CR3BP→BCR4BP persistence studied (families
+> emerge/disappear under solar gravity — concrete examples: Families XX/XXI/XXII–
+> XXV emerge, XI/XVI/XVIII/XIX disappear). No cycler-discovery capability; DBSCAN
+> family-clustering + persistence is the only transferable idea. Verdict
+> unchanged: BACKGROUND (Track-B-conditional).
+
 ## What it does
 
 Systematic analysis of **escape trajectories** from a 167 km circular Earth

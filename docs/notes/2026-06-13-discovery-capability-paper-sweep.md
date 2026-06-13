@@ -87,3 +87,45 @@ novel-but-sourced catalogue row, pending the user PDF fetch.
   broken-plane / inclined / repeated-moon cycler genome 2024–2026; no new
   Earth-Mars cycler family with sourced rows; no external Liang-CGE citers
   beyond the group's own follow-on.
+
+## FULL-TEXT RE-READ (#251, WebFetch re-enabled 2026-06-13)
+
+WebFetch was blanket-allowed for #251. Confirmed working (fetched the
+Roberts-Tsoukkas journal PDF, 1.1 MB). The four candidates previously read from
+abstracts/metadata only were re-read from full text. **All four verdicts hold;
+one is materially corrected.**
+
+- **Roberts-Tsoukkas & Ross 2026 journal (HIT → CORRECTED to qualitative-only).**
+  Full text fetched (`pdftotext` + figures read directly). The paper prints
+  **NO numeric data** — no tables, C, T, σ, or ICs; binary-star families
+  (μ=0.1 (1,3) exterior, μ=0.3 (3,1), μ=0.5 (1,1) equal-mass) exist only as
+  Figure 3 plots, the (3,2) bifurcation only as Figure 4 (offset axes). The
+  "USER FETCH → transcribe → reproduce → new V1 rows" follow-on is DISCHARGED:
+  fetched, nothing to transcribe. No sourced rows proposable. Only qualitative
+  takeaways: (a) binary-star cycler families exist (never-catalogued μ regime,
+  but figure-only); (b) "stable subfamily for every (k1,k2) family near its
+  saddle-center C^max, any μ" conjecture — a prioritizer prior, no number.
+  Detail: `docs/notes/2026-06-13-roberts-tsoukkas-2026-multi-orbiter-mining.md`.
+  The single-highest-leverage framing in the Headline above is hereby
+  downgraded: it is NOT a path to a sourced row (no published tuple); it is a
+  Track-C *discovery* lead (self-find at new μ, full gauntlet) plus a Track-B
+  prior.
+- **Merrill et al. arXiv:2502.05140 — BACKGROUND, CONFIRMED (full PDF).**
+  Every periodic trajectory is a *forced periodic trajectory* (continuous
+  low-thrust, thrust ≥95% of the period; explicitly distinguished from natural
+  orbits). No ballistic cycler family, no (μ,C,T) rows. Headline result
+  unchanged: mass-optimal thrust-limited reachable set ⊇ energy-optimal
+  energy-limited reachable set. Out of catalogue scope (powered, not ballistic);
+  a low-thrust-genome reference at most.
+- **Tagliaferri et al. arXiv:2405.18916 — BACKGROUND, CONFIRMED.** Minimum-ΔV
+  *transfers* between known periodic orbits (incl. heteroclinic connections) via
+  MBH + SQP; reproduces known connections for validation. No new periodic-orbit
+  families, no discovery capability beyond our existing MBH + manifold seeding.
+- **Fu et al. arXiv:2601.11881 — BACKGROUND, CONFIRMED (full HTML).** Output is
+  one-way *escape* trajectories, not cyclers (escape criterion E>0 +
+  monotonically increasing distance). Family identification uses **DBSCAN**
+  clustering; Tables 4–6 list 19/21/24 escape families by ΔV/TOF (escapes — not
+  catalogue-relevant). Cross-model CR3BP→BCR4BP persistence studied (families
+  emerge/disappear under solar gravity). No cycler-discovery capability; the
+  DBSCAN family-clustering + cross-fidelity-persistence method is the only
+  transferable idea, conditional on a future Track-C clustering layer.

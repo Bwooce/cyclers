@@ -15,6 +15,13 @@ abstract/review, not the full derivation.
 
 ## Verdict: BACKGROUND (Track-A-adjacent, but NOT a cycler genome)
 
+> **CONFIRMED from full PDF 2026-06-13 (#251, WebFetch re-enabled).** The full
+> text confirms every periodic trajectory is a *forced periodic trajectory*
+> (continuous low-thrust, thrust ≥95% of the period; explicitly distinguished
+> from natural orbits). No ballistic cycler family and no (μ,C,T) rows. Reachable
+> -set headline (mass-optimal thrust-limited ⊇ energy-optimal energy-limited)
+> confirmed verbatim. Verdict unchanged: BACKGROUND, out of catalogue scope.
+
 This is a **forced-periodic low-thrust** paper, and the distinction is
 load-bearing for us: a "forced periodic trajectory" is one whose periodic
 structure is *maintained by continuous thrust* — it is not a ballistic

@@ -1,5 +1,16 @@
 # Roberts-Tsoukkas & Ross 2026 journal — "Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics" (discovery-capability digest)
 
+> **SUPERSEDED 2026-06-13 (#251).** This note was written under a WebFetch
+> DENIAL and ASSUMED the PDF held transcribable higher-μ (μ, C, T) tuples and
+> printed ICs. WebFetch was later re-enabled and the full PDF was fetched: it
+> contains **NO numeric data at all** (no tables, C, T, σ, or ICs) — the
+> binary-star families exist only as figures. The "USER FETCH the PDF" follow-on
+> is DISCHARGED (fetched; nothing to transcribe) and the "ADOPT gated on fetch"
+> verdict collapses to **no adoption possible from this paper** (qualitative
+> priors only). See `docs/notes/2026-06-13-roberts-tsoukkas-2026-multi-orbiter-mining.md`
+> for the full-text verdict. The HIT-by-coverage hopes below were aspirational
+> and are NOT borne out by the manuscript.
+
 **Date:** 2026-06-13
 **Task:** #250 discovery-capability sweep (head-start candidate 4).
 **Source (free):** M. Roberts-Tsoukkas & S. D. Ross, "Stable Prograde

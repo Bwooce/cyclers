@@ -13,6 +13,12 @@ denied (no table transcription).
 
 ## Verdict: BACKGROUND (capability we already have)
 
+> **CONFIRMED from full text 2026-06-13 (#251, WebFetch re-enabled).** Full text
+> confirms the output is minimum-ΔV *transfers* between known periodic orbits
+> (incl. heteroclinic connections) via MBH + SQP, reproducing known connections
+> for validation; no new periodic-orbit families, no discovery capability beyond
+> our existing MBH + manifold seeding. Verdict unchanged: BACKGROUND.
+
 The head-start brief framed this as "multiparameter continuation of transfer
 FAMILIES → family-continuation discovery method." The actual content is
 narrower than that framing:
