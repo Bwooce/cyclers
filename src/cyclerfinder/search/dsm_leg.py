@@ -67,6 +67,11 @@ from cyclerfinder.core.constants import (
     SECONDS_PER_DAY,
 )
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.core.fbs_match_point import (
+    FbsLeg,
+    match_point_defect,
+    match_point_defect_jacobian,
+)
 from cyclerfinder.core.flyby import flyby_dv
 from cyclerfinder.core.kepler import KeplerError, propagate
 from cyclerfinder.core.lambert import LambertError, lambert
@@ -269,6 +274,169 @@ def dsm_leg(
         t_dsm_sec=float(t_front),
         n_revs_chosen=int(chosen.n_revs),
         branch_chosen=str(chosen.branch),
+    )
+
+
+# ---------------------------------------------------------------------------
+# OPT-IN: Lambert-free single-leg corrector using the FBS analytic Jacobian
+# (Ellison 2018 Path-B; #226). Additive — the Lambert dsm_leg above and the
+# chain corrector below are untouched and remain the default everywhere.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class FbsLegCorrectionResult:
+    """Outcome of a Lambert-free FBS match-point single-leg correction (#226).
+
+    Attributes
+    ----------
+    dv_dsm:
+        The converged interior impulse vector ``Δv`` (km/s) at the DSM point. The
+        magnitude ``‖Δv‖`` is the same quantity the Lambert :func:`dsm_leg`
+        reports as :attr:`DsmLegResult.dv_dsm_kms`.
+    v_arrive:
+        The converged heliocentric arrival velocity ``vf`` at the target (km/s) —
+        the FBS analogue of :attr:`DsmLegResult.v_arrive` (Lambert's ``v_22``).
+    r_dsm:
+        Heliocentric position of the DSM / match point (km).
+    max_residual:
+        ``max(|match-point defect|)`` at the solution (the position rows in km,
+        velocity rows in km/s; the convergence quantity).
+    converged:
+        ``max_residual < tol`` (residual-magnitude acceptance, by design, mirroring
+        the Lambert correctors).
+    solver_success, solver_nfev, solver_njev:
+        ``least_squares`` diagnostics (audit trail only).
+    """
+
+    dv_dsm: Vec3
+    v_arrive: Vec3
+    r_dsm: Vec3
+    max_residual: float
+    converged: bool
+    solver_success: bool = True
+    solver_nfev: int = 0
+    solver_njev: int = 0
+
+
+def dsm_leg_correct_fbs(
+    r0: Vec3,
+    v0: Vec3,
+    target_r: Vec3,
+    tof: float,
+    eta: float,
+    dv0: Vec3,
+    vf0: Vec3,
+    *,
+    mu: float = MU_SUN_KM3_S2,
+    use_analytic_jac: bool = True,
+    tol: float = 1.0e-9,
+    max_nfev: int = 200,
+) -> FbsLegCorrectionResult:
+    r"""Correct a single DSM leg to match-point closure WITHOUT Lambert (#226).
+
+    The Ellison-2018 forward-backward-shooting (FBS) alternative to the Lambert
+    :func:`dsm_leg`: instead of solving a Lambert back arc, the interior impulse
+    ``Δv`` is an explicit decision variable and the leg's 6-vector match-point
+    defect (:func:`cyclerfinder.core.fbs_match_point.match_point_defect`) is driven
+    to zero. The free variables are ``x = [Δv (3); vf (3)]`` (the impulse and the
+    heliocentric arrival velocity) — 6 unknowns for the 6 defect rows — with the
+    boundary positions ``r0``/``target_r``, the departure velocity ``v0``, the ToF
+    and the burn fraction ``alpha = eta`` held fixed.
+
+    At the Lambert leg's own solution the defect is exactly zero with
+    ``Δv = v21 - v12`` and ``vf = v22``, so this corrector converges to the SAME
+    leg geometry (the parity cross-check; see the Phase 6 test) — no Lambert solve
+    anywhere on this path.
+
+    Parameters
+    ----------
+    r0, v0:
+        Heliocentric departure state, km / km/s.
+    target_r:
+        Heliocentric target position at arrival, km (the right-boundary position).
+    tof, eta:
+        Total leg ToF (s) and DSM burn fraction (``alpha``); same meaning as
+        :func:`dsm_leg`.
+    dv0, vf0:
+        Seeds for the impulse and the arrival velocity (km/s). A perturbed seed
+        still converges to the leg solution (demonstrated in the test).
+    use_analytic_jac:
+        When ``True`` (default for this opt-in entry point) the analytic FBS
+        Jacobian (:func:`...match_point_defect_jacobian`, columns ``∂c/∂Δv`` and
+        ``∂c/∂vf``) is supplied to ``least_squares`` as ``jac=``. When ``False`` the
+        solver finite-differences the residual instead (the comparison baseline);
+        both reach the same solution.
+    mu, tol, max_nfev:
+        Central body, convergence tolerance on the NON-DIMENSIONALISED
+        ``max|defect|`` (position rows scaled by AU, velocity rows by the local
+        circular speed), and solver evaluation cap.
+
+    Returns
+    -------
+    FbsLegCorrectionResult
+        The converged impulse, arrival velocity, DSM position, residual, and the
+        solver diagnostics.
+    """
+    r0_a = np.asarray(r0, dtype=np.float64)
+    v0_a = np.asarray(v0, dtype=np.float64)
+    rf_a = np.asarray(target_r, dtype=np.float64)
+
+    # Non-dimensionalise the defect so least_squares sees a well-scaled 6-vector:
+    # position rows (km, ~1e8) by AU, velocity rows (km/s) by the local circular
+    # speed. The match-point defect is multi-rooted (like Lambert — the backward
+    # arc can reach the DSM via alternate conics), so good scaling keeps the solver
+    # in the seed's basin and makes tol a meaningful convergence threshold.
+    v_scale = float(np.sqrt(mu / float(np.linalg.norm(r0_a))))
+    scale = np.array([AU_KM, AU_KM, AU_KM, v_scale, v_scale, v_scale], dtype=np.float64)
+
+    def _leg(vf: Vec3) -> FbsLeg:
+        return FbsLeg(
+            r0=r0_a,
+            v0=v0_a,
+            rf=rf_a,
+            vf=np.asarray(vf, dtype=np.float64),
+            tof_s=float(tof),
+            alpha=float(eta),
+            mu=mu,
+        )
+
+    def _res(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        dv = x[0:3]
+        vf = x[3:6]
+        return match_point_defect(_leg(vf), dv) / scale
+
+    def _jac(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        dv = x[0:3]
+        vf = x[3:6]
+        full = match_point_defect_jacobian(_leg(vf), dv)  # 6x9 [Δv | v0 | vf]
+        # Free variables are [Δv; vf] -> stack the Δv (cols 0:3) and vf (cols 6:9),
+        # row-scaled to match the non-dimensionalised residual.
+        return np.column_stack([full[:, 0:3], full[:, 6:9]]) / scale[:, None]
+
+    x0 = np.concatenate([np.asarray(dv0, dtype=np.float64), np.asarray(vf0, dtype=np.float64)])
+    jac_arg: Any = _jac if use_analytic_jac else "2-point"
+    sol = least_squares(
+        _res, x0, jac=jac_arg, method="lm", max_nfev=max_nfev, xtol=1e-14, ftol=1e-14
+    )
+
+    dv_sol = np.asarray(sol.x[0:3], dtype=np.float64)
+    vf_sol = np.asarray(sol.x[3:6], dtype=np.float64)
+    leg = _leg(vf_sol)
+    defect = match_point_defect(leg, dv_sol)
+    # Convergence on the SCALED defect (position/AU, velocity/v_circ) so the
+    # km-scale position rows do not dominate; tol is the scaled threshold.
+    max_res = float(np.max(np.abs(defect / scale)))
+    r_dsm, _ = propagate(r0_a, v0_a, float(eta) * float(tof), mu)
+    return FbsLegCorrectionResult(
+        dv_dsm=dv_sol,
+        v_arrive=vf_sol,
+        r_dsm=np.asarray(r_dsm, dtype=np.float64),
+        max_residual=max_res,
+        converged=bool(max_res < tol),
+        solver_success=bool(sol.success),
+        solver_nfev=int(sol.nfev),
+        solver_njev=int(getattr(sol, "njev", 0) or 0),
     )
 
 

@@ -30,6 +30,7 @@ from cyclerfinder.search.dsm_leg import (
     dsm_chain_correct,
     dsm_chain_decision_vector,
     dsm_leg,
+    dsm_leg_correct_fbs,
     evaluate_dsm_chain,
     sequence_keyed_bounds,
 )
@@ -127,6 +128,84 @@ def test_constructed_broken_plane_transfer_recovered() -> None:
     assert np.linalg.norm(leg.v_arrive - v22_known) < 1.0e-6
     assert leg.v_arrive_pre_dsm.shape == (3,)
     assert abs(leg.t_dsm_sec - eta * tof) < 1.0e-6
+
+
+# ---------------------------------------------------------------------------
+# Phase 6 (#226) -- Lambert-free FBS corrector parity with the Lambert path
+# ---------------------------------------------------------------------------
+
+
+def test_fbs_corrector_lambert_free_matches_lambert_solution() -> None:
+    """The FBS analytic-Jacobian corrector reaches the SAME leg as the Lambert path.
+
+    A real broken-plane DSM leg is first solved by the existing Lambert
+    :func:`dsm_leg` (the reference). The Lambert-free :func:`dsm_leg_correct_fbs`
+    (Δv an explicit variable, the 6-vector match-point defect driven to zero with
+    the Ellison-2018 analytic Jacobian, NO Lambert) is then started from a
+    PERTURBED seed and must converge to the same impulse, arrival velocity, and DSM
+    position -- the Phase 6 cross-check (#226).
+    """
+    r0 = np.array([1.0 * AU_KM, 0.0, 0.0])
+    v0 = np.array([0.0, 30.0, 1.5])  # out-of-plane -> broken plane
+    tof = 300.0 * 86400.0
+    eta = 0.4
+
+    r_dsm, v12 = propagate(r0, v0, eta * tof, MU)
+    dv_known = np.array([0.8, -0.5, 0.3])
+    v21_known = v12 + dv_known
+    r_target, v22_known = propagate(r_dsm, v21_known, (1.0 - eta) * tof, MU)
+
+    # Reference: the existing Lambert path's solution.
+    ref = dsm_leg(r0, v0, tof, eta, r_target, mu=MU)
+
+    # FBS Lambert-free correction from a PERTURBED seed (no Lambert anywhere here).
+    res = dsm_leg_correct_fbs(
+        r0,
+        v0,
+        r_target,
+        tof,
+        eta,
+        dv0=dv_known + np.array([0.3, 0.2, -0.25]),
+        vf0=v22_known + np.array([-0.4, 0.5, 0.2]),
+        mu=MU,
+        use_analytic_jac=True,
+    )
+
+    assert res.converged, res.max_residual
+    # Same leg solution as the Lambert path (and as the construction).
+    assert np.linalg.norm(res.dv_dsm - dv_known) < 1.0e-6
+    assert abs(np.linalg.norm(res.dv_dsm) - ref.dv_dsm_kms) < 1.0e-6
+    assert np.linalg.norm(res.v_arrive - ref.v_arrive) < 1.0e-6
+    assert np.linalg.norm(res.v_arrive - v22_known) < 1.0e-6
+    assert np.linalg.norm(res.r_dsm - ref.r_dsm) < 1.0e-3  # km
+
+
+def test_fbs_corrector_analytic_and_fd_jac_reach_same_solution() -> None:
+    """The analytic-jac and finite-difference-jac FBS paths land on the same leg.
+
+    Both are Lambert-free; the analytic Jacobian only changes HOW least_squares
+    steps, not WHERE it converges. Confirms the analytic ``jac=`` is wired
+    correctly (a wrong Jacobian would converge elsewhere or stall).
+    """
+    r0 = np.array([1.0 * AU_KM, 0.0, 0.0])
+    v0 = np.array([0.0, 29.0, 0.9])
+    tof = 260.0 * 86400.0
+    eta = 0.55
+
+    r_dsm, v12 = propagate(r0, v0, eta * tof, MU)
+    dv_known = np.array([-0.6, 0.4, -0.2])
+    r_target, _ = propagate(r_dsm, v12 + dv_known, (1.0 - eta) * tof, MU)
+
+    seed = dict(dv0=dv_known + 0.2, vf0=v12 + dv_known + 0.3)
+    res_an = dsm_leg_correct_fbs(r0, v0, r_target, tof, eta, mu=MU, use_analytic_jac=True, **seed)
+    res_fd = dsm_leg_correct_fbs(r0, v0, r_target, tof, eta, mu=MU, use_analytic_jac=False, **seed)
+
+    assert res_an.converged and res_fd.converged
+    assert np.linalg.norm(res_an.dv_dsm - res_fd.dv_dsm) < 1.0e-7
+    assert np.linalg.norm(res_an.v_arrive - res_fd.v_arrive) < 1.0e-7
+    # The analytic Jacobian path supplies jac= (njev > 0); the FD path does not.
+    assert res_an.solver_njev > 0
+    assert res_fd.solver_njev == 0
 
 
 # ---------------------------------------------------------------------------
