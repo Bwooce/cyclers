@@ -132,14 +132,17 @@ def _from_payload(payload: dict[str, Any]) -> EmptyRegionReport:
         region_id=payload["region_id"],
         family=payload["family"],
         centre=payload["centre"],
-        topologies=tuple(payload["topologies"]),
+        # topologies / prune_gates / source_anchors are optional metadata absent
+        # from the earliest (#219) entries; default to empty so the whole file
+        # round-trips. Pinned by test_load_real_empty_regions_file.
+        topologies=tuple(payload.get("topologies", ())),
         method_capability=method,
         search_extent=payload["search_extent"],
-        prune_gates=tuple(payload["prune_gates"]),
+        prune_gates=tuple(payload.get("prune_gates", ())),
         result=payload["result"],
         verdict=payload["verdict"],
         interpretation=payload["interpretation"],
-        source_anchors=payload["source_anchors"],
+        source_anchors=payload.get("source_anchors", ""),
         run=payload["run"],
     )
 

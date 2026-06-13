@@ -11,9 +11,12 @@ from cyclerfinder.data.empty_regions import (
     append_empty_region,
     is_catalogue_source,
     load_empty_regions,
+    load_empty_regions_list,
     validate_empty_region,
 )
 from cyclerfinder.data.method_capability import MethodCapability
+
+_REPO_REGISTRY = Path(__file__).resolve().parents[2] / "data" / "empty_regions.jsonl"
 
 _METHOD = MethodCapability(
     genome="single-ellipse free-return",
@@ -120,3 +123,17 @@ def test_append_and_load_round_trips(tmp_path: Path) -> None:
     assert got.method_capability == _METHOD
     assert got.prune_gates == report.prune_gates
     assert got.search_extent == report.search_extent
+
+
+def test_real_repo_registry_loads_whole_file() -> None:
+    """The on-disk data/empty_regions.jsonl must round-trip in full.
+
+    Regression for the #237 finding: the earliest (#219) entries omit the
+    optional topologies/prune_gates/source_anchors keys, which once raised
+    KeyError on a whole-file load. The loader now defaults them; this pins it.
+    """
+    if not _REPO_REGISTRY.exists():
+        pytest.skip("repo registry not present")
+    reports = list(load_empty_regions_list(_REPO_REGISTRY))
+    assert len(reports) >= 1
+    assert all(r.region_id for r in reports)
