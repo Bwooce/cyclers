@@ -193,3 +193,30 @@ lift the "PROVISIONAL pending Guzman 2002" caveats on the primer diagnostic
 (#144) and primer-refine (#148) lanes. Re-reading confirms that note's use is
 faithful (the failure conditions and the multi-rev singularity caveats are the
 load-bearing content). No new task.
+
+### 14. Fan, Cheng, Li, Pan, Huo & Qi (2025), "An Initial Trajectory Design for
+the Multi-Target Exploration of the Electric Sail," *Aerospace* 12:196 (#234).
+Bezier shape-based initial-trajectory design for an electric-sail (E-sail,
+infinite-Isp continuous thrust) flying planetary flybys + gravity assists and
+then escaping to the solar-system boundary. Heliocentric cylindrical coordinates
+are each fit by an 8th-order Bezier curve whose endpoint coefficients are pinned
+by boundary conditions; the free interior coefficients, flight times, GA
+pericenter altitudes and pre-flyby velocities are optimized by `fmincon`
+(interior-point) to minimize total flight time, with the E-sail thrust
+coefficient kappa, pitch-angle feasibility and a 70 km minimum GA altitude as
+constraints. Three worked cases (Mars-GA 2.62 yr; Jupiter-GA 11.15 yr;
+Mars-Jupiter-GA 5.88 yr, the multi-GA shortening flight time 47.3% vs Jupiter
+alone), each solved in <100 s. Despite the "multi-target" title, the planet
+SEQUENCE is fixed by the analyst per example — there is no combinatorial
+sequencing/ordering search (the appealing hook from the relevance lens); the
+contribution is the continuous-thrust shape-based + GA-constraint plumbing.
+**OUT-OF-SCOPE** — E-sail-specific continuous-thrust propulsion and shape-based
+(Bezier) trajectory design, neither of which transfers to our ballistic/
+impulsive heliocentric + CR3BP cyclers; and the hoped-for reusable multi-target
+sequencing method is absent (sequences are hand-chosen, not searched). The
+gravity-assist closure model (eq. 4: v-infinity matching, bend angle delta,
+pericenter-altitude floor) is textbook patched-conic, already covered by our
+flyby stack. Note the bibliography is a useful index of the shape-based +
+multi-GA low-thrust literature (Petropoulos exp-sinusoid [29]; Fan's own MCTS
+multi-GA sequencer [22]; Quarta-Mengali E-sail outer-system [10]) if that lane is
+ever revisited, but nothing here is adoptable.
