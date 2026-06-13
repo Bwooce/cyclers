@@ -111,14 +111,17 @@ if WID == 0:
         except Exception as exc:
             print(f"PhaseA {fam} L{libr} {branch}: query failed: {exc}", flush=True)
             continue
-        for o in orbits:
+        # Subsample per family: Phase A is a fast cross-check + seed harvest, NOT
+        # an exhaustive corpus (Phase B is the bulk + the diverse converged/failed
+        # boundary). Capping it lets worker 0 publish the pool in ~1 min so all
+        # workers reach Phase B quickly instead of idling behind a long sweep.
+        for o in orbits[::25]:
             run_one(o.state0, o.period)
             s = np.asarray(o.state0, float)
             jpl_pool.append((s, float(o.period)))
             states.append(s)
             periods.append(float(o.period))
-            if solves % 200 == 0:
-                beat(f"PhaseA sweeping {fam} L{libr} {branch}")
+        beat(f"PhaseA {fam} L{libr} {branch}: {len(orbits)} members, sampled {len(orbits[::25])}")
     if states:
         np.savez(_POOL_CACHE, states=np.array(states), periods=np.array(periods))
     beat(f"PhaseA DONE -- pool cached ({len(jpl_pool)} members)")
