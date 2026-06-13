@@ -93,6 +93,43 @@ The corpus daemon is the working template to generalize.
   (#245/#246) is low-stakes housekeeping (FBS is already usable opt-in).
 - **Keep deferred:** #240 (behind A+B), #115 (no published V∞).
 
+## How to scout a new cycler type (standing methodology)
+"Scout a new type" ≠ "theorize a random combination and try it." Blind trials mostly
+hit empty space (Forge Phase 6 / multi-family sweeps / #218 all ~empty; the
+negative-registry proves the space is sparse). The value is in the SCREEN that makes
+guessing cheap, not in the guess. The loop:
+
+1. **Theorize a TYPE, not a point.** A type = a topology class (which bodies, sequence,
+   resonances/n_revs, energy regime) = a *genome*, not a single trial. This is the
+   genuine creative step (a new chain, a resonance-hop sequence, an inclined
+   repeated-encounter, a new moon system).
+2. **Representable?** Can an existing genome express it? If not → it's a genome BUILD
+   (Track A), not a search. You cannot find what you cannot represent.
+3. **Plausibly non-empty? (the cheap screen — do this BEFORE any solver time)**
+   - **Tisserand / V∞ graph** — can these bodies even link at these V∞? Prunes the
+     combinatorics by orders of magnitude, ~free. (We have it, body-agnostic.)
+   - **Reachable-set scorer (#236/#249)** — is the region accessible?
+   - **A published existence prior** — strongest signal (Liang → repeated-moon;
+     Roberts-Tsoukkas → binary-star μ). Reproduce-then-extend beats blind theorizing.
+4. **Search within the type** — the #253 daemon enumerates the discrete combinatorics,
+   closes each (canonical residual), dedups vs catalogue + negative-registry, routes
+   SILVER survivors → gauntlet. Systematic enumeration, not one-off guesses.
+5. **Register the negatives** — method-versioned empty-region record, so the space is
+   never re-searched and "empty" stays conditional on the method (a stronger genome
+   later auto-reopens it via the §6b subsumption gate).
+
+**Yield rule:** highest-yield scouts have an existence prior (repeated-moon #254/#253;
+binary-star #255). Fully-novel types (no prior) become worth trying precisely once the
+Tisserand screen + daemon make each test cheap — then speculative types cost nothing to
+kill. **Adding a type = one genome build (or config) + a screen + a daemon target.**
+
+**Cheapest parallel scouts right now** (reuse the #254 genome + #253 daemon, body-
+agnostic — just change `--primary` / sequence): repeated-moon at **Saturn** (Titan/
+Enceladus/Rhea/Dione; prior: Takubo 2210.14996 tour design), and other moon systems
+(Uranus, Mars Phobos/Deimos, Pluto-Charon) — each a near-free parallel daemon run that
+the Tisserand graph self-prunes. Heliocentric **resonance-hopping** and **broken-plane**
+types need a genome build first (Track A), so they are scouts-after-build, not now.
+
 ## Success metric
 **One novel cycler found AND passed the gauntlet** — distinct from, and the point of,
 the 277-row literature census. Everything above is in service of that.
