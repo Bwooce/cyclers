@@ -153,8 +153,9 @@ not title-dismissed.
   tuples to gitignored `out/outcome_log/`; healthy ~50/50 converged/failed mix
   (the training boundary the surrogate needs); runs at nice +19.
 - **#243** (FBS optimizer fair trial) — DONE, clean POSITIVE (adopt; see above).
-  **#244** (wire FBS gradients into the real `dsm_chain_correct` optimizer +
-  catalogue-wide parity) is the next step, HELD for user go (architectural commit).
+  **#244** (wire FBS gradients into the real `dsm_chain_correct` optimizer as opt-in
+  + flyby-continuity constraints + catalogue-wide parity sweep) — LAUNCHED
+  (user-approved 2026-06-13); decides whether the #245 default flip is warranted.
 
 ## 2026-06-11 — review-and-harden + acquisitions wave 2
 
