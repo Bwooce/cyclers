@@ -50,3 +50,20 @@ prograde (3,1) cycler. The crude proxy was a false positive; the winding gate
 
 Pairs with [[feedback_orbit_closure_discipline]] and
 [[feedback_literature_novelty_check_baseline]] (no novelty claim without the gates).
+
+---
+
+## FINAL (2026-06-14): all three mu swept — triple negative
+
+Lean figure-seeded sweeps completed at all three Fig. 3 targets:
+- **mu=0.3 (3,1):** the only stable orbit found is a (1,0) RETROGRADE libration
+  (w1=-1, w2=0), NOT the depicted prograde (3,1). (Detailed above.)
+- **mu=0.5 (1,1) equal-mass:** NO stable prograde (1,1) candidate in the figure box.
+- **mu=0.1 (1,3) exterior:** NO stable prograde (1,3) candidate in the figure box.
+
+**Verdict: #255 COMPLETE — triple negative.** None of RT-Ross Fig. 3's depicted
+stable binary-star cyclers were reproduced from figure-read seeds. Root cause is
+NOT the algorithm (the corrector + winding classifier reproduce the published EM
+(3,1)/(1,1) labels exactly) but **missing published ICs**: Fig. 3 prints no
+numbers, so this is re-derivation-from-a-picture, an under-determined search, not
+reproduction. Closed as a complete, honest negative; harness + classifier kept.

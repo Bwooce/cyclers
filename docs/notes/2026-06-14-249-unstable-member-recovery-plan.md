@@ -91,3 +91,30 @@ Next session: (1) identify stable-branch seeds for (1,1) and (2,1); (2) land bot
 fold branches exactly at C=3.1294; (3) confirm C11a/C21/C32 periods vs sourced;
 (4) add resonant U-branches via JPL unstable seeds; (5) re-run the C32-dominance
 gate with the enlarged node set.
+
+---
+
+## FINAL (2026-06-14): C11a/C21 NOT recovered — blocked on unpublished ICs
+
+Ran the fold-turn extraction: continued the (1,1) seed in C past the apex
+(C in [3.119, 3.183], 99 members), then landed every branch straddling C=3.1294.
+Members recovered at the common energy:
+- T=54.802 d (nu=-1, marginal),  T=55.995 d (nu=+7.5e4, unstable; the C11b period),
+- **T=79.499 d (nu=-0.344, STABLE)** — the C32 member (matches #247's ~79.50 d),
+  now recovered as a genuine stable member.
+- **NO 42.140 d member (C11a)** and **no 84.533 d (C21)** anywhere on the
+  fold-connected branch from this seed.
+
+**Verdict:** the fold-turning engine WORKS (built, tested, proven to turn the
+saddle-center fold; commit e34edb2) and adds the stable C32 node, but **C11a and
+C21 are not reachable from the available seeds** — they live on a different
+branch/family whose seed Braik-Ross does not publish (only the period is given,
+which does not pin an orbit in a multi-branch family). This is the SAME
+missing-published-IC blocker as the RT-Ross binary-star case (#255) and the
+paywalled acquisitions (#116): re-derivation from a single period is
+under-determined. The scored network grows 6 -> 7 (adds stable C32) but C11a/C21
+remain missing, so the C32-dominance gate stays a faithful PARTIAL/negative.
+
+**Disposition:** engine deliverable DONE; full member recovery BLOCKED on
+unpublished state vectors (re-file as source-blocked, like #116). Not claimed
+recovered.
