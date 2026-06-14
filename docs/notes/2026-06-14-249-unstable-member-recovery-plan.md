@@ -60,3 +60,34 @@ itself. Highest leverage given three consecutive blind-search negatives
 focused plan (subagent-driven or a fresh session) rather than rushed — the
 foreground corrector scans are slow (~0.5 s/seed) and timed out repeatedly when
 attempted inline.
+
+---
+
+## Progress update (2026-06-14, same day)
+
+**Task 1 DONE + the fold-turn capability is PROVEN.**
+`src/cyclerfinder/search/cr3bp_jacobi_arclength.py` + tests built and committed
+(`e34edb2`); pseudo-arclength continuation in (x0, C) at fixed mu, 5 tests
+(reproduce-before-trust: self-consistency, period continuity, unit-null tangent,
+fixed-C landing).
+
+Controller-side validation against the real (1,1) saddle-center fold:
+**the continuation turns the fold** — seeded from the x0=-0.768 / C=3.1294 /
+T=55.995 d member, it walked up to the fold apex **C=3.15117** and back down to
+C=3.10060 (75 members, stop=step_underflow). `continue_family` (natural-parameter)
+could not do this; the new arclength engine does.
+
+**C11a not yet recovered — two concrete follow-ups identified:**
+1. The x0=-0.768, T=55.995 d member is **unstable (nu=+7.5e4)** — it is NOT the
+   stable C11b branch despite matching the sourced C11b period. The genuine stable
+   C11b (|nu|<1) seed must be identified first (scan x0 at C=3.1294 for the
+   |nu|<1 (1,1) member), then continued.
+2. The return branch (post-fold, C descending through 3.1294) exists but the
+   coarse member scan (tol 5e-4) did not extract its C=3.1294 member — use
+   `land_at_jacobi(c_target=3.1294)` from a return-branch member to pull the
+   candidate C11a (~42.140 d) exactly, then confirm period + Barden + Radau.
+
+Next session: (1) identify stable-branch seeds for (1,1) and (2,1); (2) land both
+fold branches exactly at C=3.1294; (3) confirm C11a/C21/C32 periods vs sourced;
+(4) add resonant U-branches via JPL unstable seeds; (5) re-run the C32-dominance
+gate with the enlarged node set.
