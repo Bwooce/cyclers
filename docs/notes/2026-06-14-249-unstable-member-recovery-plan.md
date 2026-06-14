@@ -155,3 +155,29 @@ offset vs Braik-Ross shifts C11b/C21 off 55.995/84.533 in our scales.
   topology filter into `reachable_representatives` as the member-recovery path,
   wire the confirmed C11a/C32 seeds, then re-run the C32-dominance gate with the
   enlarged node set.
+
+---
+
+## GRIND RESULT (2026-06-14): 3 of 4 reproduced (C11a, C11b, C32)
+
+Fine winding-classified all-roots grind at C=3.1294 (step 6e-4, hc 1-7,
+`scripts/grind_families.py`, members checkpointed to
+`out/outcome_log/grind_members.jsonl`). Full prograde family structure found:
+- **(1,1):** 43.11, 54.25, **55.99**, 56.52, 127.49 d  -> **C11b = 55.995 d EXACT**
+  (hc=3, x0=-0.760180), plus C11a = 42.1405 d (fine scan, hc=3, x0=-0.8116407).
+- **(3,2):** 74.39, **78.61** d  -> **C32 = 78.613 d EXACT** (hc=6, x0=-0.275211).
+- **(2,1):** **70.60 d only** -- NO 84.533 d member in hc 1-7.
+
+**Rigorously reproduced (period + (k1,k2) + prograde): C11a, C11b, C32.** The
+winding filter remains essential -- period-only matching had flagged a (1,3)@55.96
+and a (4,0)@84.43 as false C11b/C21.
+
+**C21 (2,1, 84.533 d): still open, NOT a uniform mu offset** (C11a/C11b/C32 all
+match <0.1%, so mu is right). The (2,1) family shows a 70.6 d member; C21 is most
+likely its saddle-center partner at a higher crossing-index (hc>7) -- the same
+two-member pattern as (1,1)=(C11a,C11b). Chasing it via a focused high-hc (5-12)
+(2,1) scan (`scripts/grind_c21.py`).
+
+**Bottom line:** "blocked / can't reproduce" is decisively refuted -- 3/4 members
+reproduced by re-discovering ICs from published periods (all-roots enumeration +
+winding-topology identity). C21 is one targeted high-hc scan from 4/4.
