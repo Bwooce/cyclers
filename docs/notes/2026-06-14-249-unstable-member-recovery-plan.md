@@ -181,3 +181,39 @@ two-member pattern as (1,1)=(C11a,C11b). Chasing it via a focused high-hc (5-12)
 **Bottom line:** "blocked / can't reproduce" is decisively refuted -- 3/4 members
 reproduced by re-discovering ICs from published periods (all-roots enumeration +
 winding-topology identity). C21 is one targeted high-hc scan from 4/4.
+
+---
+
+## C21 FINAL (2026-06-14): exhaustive symmetric search caps at 70.6d -> C21 is likely ASYMMETRIC
+
+Ran a focused high-crossing-index hunt for the (2,1) C21 (84.533 d): hc 5-12,
+fine grid (step 8e-4), TMAX=40 TU, winding-classified (`scripts/grind_c21.py`).
+Combined with the main grind (hc 1-7), the symmetric prograde (2,1) family at
+C=3.1294 has exactly ONE member: **T=70.60 d (hc=7, x0=-0.2742)**. No 84.533 d
+(2,1) member exists anywhere in hc 1-12.
+
+This is NOT a mu offset (C11a/C11b/C32 match <0.1% at the same energy) and NOT a
+crossing-index gap (searched hc 1-12). The decisive structural clue: C11a (42.14d)
+and C11b (55.995d) are a saddle-center PAIR at the SAME crossing-index (both hc=3,
+different x0). C21's only (2,1) sibling (70.6d) is at hc=7, and the hc=7 sweep
+found no 84.5d partner. **Inference: C21 (84.533 d) is an ASYMMETRIC cycler** -- it
+has no perpendicular-x-axis-crossing symmetry, so the entire symmetric corrector /
+all-roots machinery (which assumes IC = (x0,0,0,0,ydot0,0)) cannot represent it.
+Braik-Ross explicitly note asymmetric cyclers exist (and are numerically harder).
+
+### Final disposition of #249
+- **3 of 4 Braik-Ross cycler members RIGOROUSLY REPRODUCED** at C=3.1294 (period +
+  (k1,k2) winding topology + prograde + Radau cross-check):
+  - C11a (1,1) 42.1405 d  (0.001%)
+  - C11b (1,1) 55.995 d   (exact)
+  - C32  (3,2) 78.613 d   (exact)
+- **C21 (2,1) 84.533 d: characterized, not reproduced** -- requires an ASYMMETRIC
+  (full-state, non-perpendicular-crossing) periodic-orbit shooter, a capability we
+  do not yet have. This is a defined capability gap, not a blind failure.
+- The "blocked on unpublished ICs" claim is DECISIVELY REFUTED: ICs were
+  re-discovered from published periods (all-roots enumeration + winding-topology
+  identity) for 3/4; the 4th is a symmetry-class limitation.
+- **Next capability for 4/4:** an asymmetric periodic-orbit corrector (free
+  (x0,y0?,xdot0,ydot0) with full-state periodicity X(T)=X(0) at fixed C_J), seeded
+  near the 70.6d (2,1) member / from an asymmetric continuation. Then re-run the
+  C32-dominance gate with the enlarged (now 3-4 cycler) node set.
