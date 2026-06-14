@@ -118,3 +118,40 @@ remain missing, so the C32-dominance gate stays a faithful PARTIAL/negative.
 **Disposition:** engine deliverable DONE; full member recovery BLOCKED on
 unpublished state vectors (re-file as source-blocked, like #116). Not claimed
 recovered.
+
+---
+
+## BREAKTHROUGH (2026-06-14): IC re-discovery via all-roots + topology — 2/4 RIGOROUSLY reproduced
+
+The earlier "blocked on unpublished ICs" was WRONG. Braik-Ross prints the PERIOD
+(not the state); an **all-roots enumeration** (bracket every sign-change of the
+periodicity residual g(x0)=xdot(t_half) per crossing-index at C=3.1294, refine
+each) **re-discovers the IC**, and the published period selects among the
+enumerated members. Combined with the winding-(k1,k2) classifier (#255) to reject
+period-impostors, this RIGOROUSLY reproduces:
+
+| member | sourced | recovered | (k1,k2) | prograde | status |
+|--------|---------|-----------|---------|----------|--------|
+| **C11a** | 42.140 d | 42.1405 d (x0=-0.8116407, hc=3) | (1,1) ✓ | yes | **REPRODUCED** (0.001%) |
+| **C32**  | 78.613 d | 78.6126 d (x0=-0.2752115, hc=6) | (3,2) ✓ | yes | **REPRODUCED** (exact) |
+
+**The topology filter caught 2 false period-matches** (the discipline working):
+- a 55.959 d member is (1,3), NOT the (1,1) C11b — period-right, orbit-wrong.
+- an 84.432 d member is (4,0), NOT the (2,1) C21 — period-right, orbit-wrong.
+
+**C11b (1,1, 55.995 d) and C21 (2,1, 84.533 d): still open.** No correct-topology
+member found near those periods by (a) a fine all-roots+winding scan, nor (b)
+continuing the confirmed C11a (1,1) family in C (it climbs monotonically to 3.30
+with no fold, so C11b is not its saddle-center partner below 3.30). Two live
+hypotheses, neither a give-up: (i) the (1,1)/(2,1) partner sits past a higher-C
+fold (continue C11a to c_target>3.30 to find it), or (ii) a small model-mu period
+offset vs Braik-Ross shifts C11b/C21 off 55.995/84.533 in our scales.
+
+## Honest status of #249
+- **REFUTED** the give-up: ICs ARE re-discoverable from published periods.
+- **2 of 4 reproduced rigorously** (C11a, C32: period + topology + prograde + Radau).
+- C11b/C21 in progress (defined next steps above), NOT blocked.
+- Method to formalize next: fold (a) all-roots enumeration and (b) the winding
+  topology filter into `reachable_representatives` as the member-recovery path,
+  wire the confirmed C11a/C32 seeds, then re-run the C32-dominance gate with the
+  enlarged node set.
