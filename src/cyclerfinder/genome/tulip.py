@@ -636,6 +636,9 @@ def find_tulip_via_continuation(
     tol: float = 1e-10,
     rtol: float = 1e-12,
     atol: float = 1e-12,
+    multi_shooting: bool = False,
+    multi_shoot_segments: int | None = None,
+    seed_row: dict[str, float | int] | None = None,
 ) -> FindTulipResult:
     """End-to-end Phase 3 reproduce gate: continuation + family-switching.
 
@@ -664,6 +667,18 @@ def find_tulip_via_continuation(
         Forwarded to :func:`switch_family`.
     tol, rtol, atol :
         Forwarded to the corrector and propagators.
+    multi_shooting :
+        If True, the family-switch step uses the Phase 4 multi-shooter
+        instead of single-shooting. Default ``False`` keeps Phase 3 behaviour.
+    multi_shoot_segments :
+        Number of segments for the multi-shooter. ``None`` selects
+        ``max(np_target, 2)`` inside :func:`switch_family`.
+    seed_row :
+        Explicit seed row (``x0, z0, ydot0, tau0`` keys). When ``None`` (default)
+        the Koblick AMOSTECH Table 4 Np=1 row is used. Pass a custom seed when
+        running at a non-Earth-Moon system where the Koblick IC may not be a
+        periodic orbit -- callers obtain a system-appropriate seed via
+        :func:`find_tulip_at_system`.
 
     Returns
     -------
@@ -691,7 +706,8 @@ def find_tulip_via_continuation(
         )
     if system is None:
         system = koblick_system()
-    seed_row = KOBLICK_2023_TABLE4_PAPER[1]
+    if seed_row is None:
+        seed_row = KOBLICK_2023_TABLE4_PAPER[1]
     # tau0 is the FULL period for the NRHO family rows (verified by closure of
     # the IC at t=tau0 to machine precision; the half-period reading of the
     # Phase 2 docstring was incorrect).
@@ -781,6 +797,8 @@ def find_tulip_via_continuation(
         tol=tol,
         rtol=rtol,
         atol=atol,
+        multi_shooting=multi_shooting,
+        multi_shoot_segments=multi_shoot_segments,
     )
     return FindTulipResult(
         seed=seed,
@@ -802,3 +820,91 @@ class FindTulipResult:
     switched: SymmetricNRHO | None
     success: bool
     reason: str
+
+
+def find_tulip_at_system(
+    system: cr3bp.CR3BPSystem,
+    *,
+    np_target: int = 2,
+    multi_shooting: bool = True,
+    multi_shoot_segments: int | None = None,
+    seed_row: dict[str, float | int] | None = None,
+    d_x0: float = 5e-4,
+    n_steps_max: int = 60,
+    perilune_floor_km: float | None = None,
+    eigenvector_step: float = 1e-2,
+    tol: float = 1e-9,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> FindTulipResult | None:
+    """Cross-system tulip-orbit finder (#268 Phase 4).
+
+    Find a Np=``np_target`` tulip at an arbitrary CR3BP system via the
+    end-to-end NRHO continuation + multi-shooting family-switch pipeline.
+
+    1. Seed an L2 NRHO at the system's neighbourhood (uses the Koblick AMOSTECH
+       Table 4 Np=1 paper-row IC if no seed is given -- empirically this
+       converges at the Saturn-Titan mu via :func:`correct_symmetric_nrho`
+       per the #264 discovery probe).
+    2. Continue the family in x0 until a k=2 bifurcation is bracketed.
+    3. At the closest-to-(-1) family member, invoke
+       :func:`switch_family` with ``multi_shooting=True`` (default).
+    4. Verify the switched orbit's petal count.
+
+    Parameters
+    ----------
+    system :
+        Any CR3BP system (built via
+        :func:`cyclerfinder.core.cr3bp.cr3bp_system` or the system-specific
+        :func:`koblick_system`).
+    np_target :
+        Petal count to land on. Currently only ``np_target=2`` is supported by
+        the underlying continuation routine.
+    multi_shooting :
+        If True (default), the family-switch step uses multi-shooting --
+        recommended at non-Earth-Moon systems where single-shooting fails (see
+        the Saturn-Titan finding in #264).
+    multi_shoot_segments :
+        Number of multi-shooting segments. ``None`` picks ``max(np_target, 2)``.
+    seed_row :
+        Explicit IC seed for the NRHO -- a dict with keys ``x0, z0, ydot0,
+        tau0``. When ``None`` (default) the Koblick AMOSTECH Table 4 Np=1
+        paper-row is used; that IC is Earth-Moon by origin but empirically
+        converges at the Saturn-Titan mu (the symmetric corrector is
+        mu-tolerant when the IC happens to sit in a neighbouring family's
+        basin -- verified by the #264 probe).
+    d_x0, n_steps_max, perilune_floor_km :
+        Continuation parameters forwarded to :func:`continue_nrho_family`.
+    eigenvector_step :
+        Forwarded to :func:`switch_family`.
+    tol, rtol, atol :
+        Forwarded to the corrector and propagators.
+
+    Returns
+    -------
+    FindTulipResult | None :
+        ``None`` only when the seed orbit fails to converge at the given
+        system (the corrector cannot find ANY periodic orbit near the seed).
+        Otherwise a :class:`FindTulipResult` carrying the seed, branch,
+        bifurcation, switched member (or ``None``), and ``success`` flag.
+
+    Notes
+    -----
+    No catalogue writeback. This is a discovery / cross-system reproduction
+    routine; the caller (e.g. :mod:`scripts.tulip_discovery_probe`) decides
+    whether to log the outcome.
+    """
+    return find_tulip_via_continuation(
+        np_target=np_target,
+        system=system,
+        d_x0=d_x0,
+        n_steps_max=n_steps_max,
+        perilune_floor_km=perilune_floor_km,
+        eigenvector_step=eigenvector_step,
+        tol=tol,
+        rtol=rtol,
+        atol=atol,
+        multi_shooting=multi_shooting,
+        multi_shoot_segments=multi_shoot_segments,
+        seed_row=seed_row,
+    )

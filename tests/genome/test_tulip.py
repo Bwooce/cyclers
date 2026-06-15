@@ -310,3 +310,56 @@ def test_find_tulip_via_continuation_lands_np2() -> None:
     assert 3.00 < switched.jacobi < 3.10, (
         f"switched Jacobi {switched.jacobi:.4f} outside Koblick Np=2 band [3.00, 3.10]"
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 backward-compatibility gate: multi_shooting=True at Earth-Moon Np=2
+# matches the Phase 3 single-shooting outcome to within the corrector tol.
+# ---------------------------------------------------------------------------
+
+
+def test_find_tulip_via_continuation_with_multi_shooting_matches_single_shooting_at_np2() -> None:
+    """multi_shooting=True at the Earth-Moon k=2 bifurcation lands the same
+    Np=2 family as single-shooting (period within 1%, Jacobi within 0.01).
+
+    Phase 4's multi-shooter is an ESCALATION, not a replacement: at cases where
+    single-shooting succeeds, both paths must land on the same family member.
+    The gate is loose (1% on period, 0.01 on Jacobi) because the multi-shooter's
+    free-variable layout differs from single-shooting's, so the two correctors
+    can land on slightly different family-curve points -- but both must be in
+    the same Np=2 family.
+    """
+    from cyclerfinder.genome.tulip import find_tulip_via_continuation
+
+    # Reuse the standard Phase 3 settings to anchor the single-shooting path.
+    ss = find_tulip_via_continuation(np_target=2, d_x0=5e-4, n_steps_max=40)
+    ms = find_tulip_via_continuation(
+        np_target=2,
+        d_x0=5e-4,
+        n_steps_max=40,
+        multi_shooting=True,
+    )
+    assert ss.success, f"Phase 3 single-shooting did not succeed: {ss.reason}"
+    assert ms.success, f"Phase 4 multi-shooting did not succeed: {ms.reason}"
+    assert ss.switched is not None
+    assert ms.switched is not None
+    # Both should land in the same Np=2 family: period within 1%, Jacobi within
+    # 0.01 of each other.
+    period_diff = abs(ms.switched.T_TU - ss.switched.T_TU)
+    assert period_diff / ss.switched.T_TU < 0.01, (
+        f"multi-shooting period {ms.switched.T_TU:.4f} differs from single-shooting "
+        f"{ss.switched.T_TU:.4f} by {period_diff:.3e} (> 1%)."
+    )
+    jacobi_diff = abs(ms.switched.jacobi - ss.switched.jacobi)
+    assert jacobi_diff < 0.01, (
+        f"multi-shooting Jacobi {ms.switched.jacobi:.4f} differs from single-shooting "
+        f"{ss.switched.jacobi:.4f} by {jacobi_diff:.3e} (> 0.01)."
+    )
+    # Petal counts must both be 2.
+    s0_ss = np.array([ss.switched.x0, 0, ss.switched.z0, 0, ss.switched.ydot0, 0])
+    s0_ms = np.array([ms.switched.x0, 0, ms.switched.z0, 0, ms.switched.ydot0, 0])
+    n_ss = petal_count(s0_ss, ss.switched.T_TU, koblick_system())
+    n_ms = petal_count(s0_ms, ms.switched.T_TU, koblick_system())
+    assert n_ss == 2 and n_ms == 2, (
+        f"Phase 4 vs Phase 3 petal_count mismatch: ss={n_ss}, ms={n_ms} (both expected 2)"
+    )

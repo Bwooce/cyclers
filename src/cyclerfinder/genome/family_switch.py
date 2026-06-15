@@ -50,7 +50,7 @@ import numpy as np
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.genome.tulip as tulip
-from cyclerfinder.search.bifurcation_detector import BifurcationPoint
+from cyclerfinder.search.bifurcation_detector import BifurcationPoint, monodromy
 from cyclerfinder.search.nrho_continuation import (
     SymmetricNRHO,
     correct_symmetric_nrho,
@@ -142,6 +142,8 @@ def switch_family(
     rtol: float = 1e-12,
     atol: float = 1e-12,
     verify_petal_count: bool = True,
+    multi_shooting: bool = False,
+    multi_shoot_segments: int | None = None,
 ) -> SymmetricNRHO | None:
     """Branch off the parent family at the bifurcation, landing on a kT family.
 
@@ -187,6 +189,19 @@ def switch_family(
         converge to a *different* periodic orbit (e.g. a kT orbit on a sibling
         family) that happens to satisfy the perpendicular crossing residual.
         The petal_count classifier is the independent cross-check.
+    multi_shooting :
+        If True, use the Phase 4 multi-shooter
+        (:func:`cyclerfinder.genome.multi_shooting.multi_shoot_periodic`)
+        instead of the Phase 3 single-shooter. Multi-shooting is the textbook
+        upgrade when single-shooting fails on high-k or high-|eigenvalue|
+        bifurcations -- e.g. the Saturn-Titan k=2 bracket flagged by
+        :mod:`scripts.tulip_discovery_probe` (#264) where single-shooting
+        cannot converge through the strong period-doubling multiplier.
+        Default ``False`` for backward compatibility with Phase 3.
+    multi_shoot_segments :
+        Number of segments for the multi-shooter. ``None`` (default) chooses
+        ``max(k, 2)`` -- one segment per period-multiplying petal, with a
+        floor of 2. Ignored when ``multi_shooting=False``.
 
     Returns
     -------
@@ -195,10 +210,15 @@ def switch_family(
 
     Notes
     -----
-    Single-shooting first. Multi-shooting (one segment per petal; patch-point
-    continuity) is the textbook upgrade when single-shooting fails on high-k
-    bifurcations; this module deliberately ships only the single-shooting
-    path, with multi-shooting deferred to Phase 4 per the task spec.
+    With ``multi_shooting=False`` (default) the corrector uses single-shooting,
+    which is the simpler and faster path -- recommended for k=2 Earth-Moon
+    NRHO bifurcations where it converges reliably. With ``multi_shooting=True``
+    the corrector swaps in the Phase 4 multi-shooter from
+    :mod:`cyclerfinder.genome.multi_shooting`. The multi-shooter's free
+    variables are the segment-start states + period, NOT the (z0, ydot0, T)
+    triple of the single-shooter; the result is converted back to a
+    :class:`cyclerfinder.search.nrho_continuation.SymmetricNRHO` so callers
+    can treat both paths identically.
     """
     if k < 2:
         raise ValueError(f"switch_family: k must be >= 2, got {k}")
@@ -224,23 +244,21 @@ def switch_family(
     ydot0_new = parent.ydot0 + dydot0
     period_guess = float(k) * parent.T_TU
 
-    member = correct_symmetric_nrho(
-        system,
-        parent.x0,
-        z0_new,
-        ydot0_new,
-        period_guess,
-        tol=tol,
-        max_iter=max_iter,
-        rtol=rtol,
-        atol=atol,
-        with_monodromy=True,
-    )
-    if not member.converged:
-        # Try the opposite sign of the eigenvector (eigenvectors are sign-
-        # ambiguous; the branch may lie on the OTHER side).
-        z0_new = parent.z0 - dz0
-        ydot0_new = parent.ydot0 - dydot0
+    if multi_shooting:
+        member = _multi_shoot_switch(
+            system,
+            parent,
+            dz0,
+            dydot0,
+            period_guess,
+            k,
+            multi_shoot_segments,
+            tol=tol,
+            max_iter=max_iter,
+            rtol=rtol,
+            atol=atol,
+        )
+    else:
         member = correct_symmetric_nrho(
             system,
             parent.x0,
@@ -253,7 +271,24 @@ def switch_family(
             atol=atol,
             with_monodromy=True,
         )
-    if not member.converged:
+        if not member.converged:
+            # Try the opposite sign of the eigenvector (eigenvectors are sign-
+            # ambiguous; the branch may lie on the OTHER side).
+            z0_new = parent.z0 - dz0
+            ydot0_new = parent.ydot0 - dydot0
+            member = correct_symmetric_nrho(
+                system,
+                parent.x0,
+                z0_new,
+                ydot0_new,
+                period_guess,
+                tol=tol,
+                max_iter=max_iter,
+                rtol=rtol,
+                atol=atol,
+                with_monodromy=True,
+            )
+    if member is None or not member.converged:
         return None
 
     # Independent topological gate: the petal count must equal k. Otherwise
@@ -268,3 +303,114 @@ def switch_family(
         if n != k:
             return None
     return member
+
+
+# ---------------------------------------------------------------------------
+# Multi-shooting family-switch helper (#268 Phase 4).
+# ---------------------------------------------------------------------------
+
+
+def _multi_shoot_switch(
+    system: cr3bp.CR3BPSystem,
+    parent: SymmetricNRHO,
+    dz0: float,
+    dydot0: float,
+    period_guess: float,
+    k: int,
+    n_segments_arg: int | None,
+    *,
+    tol: float,
+    max_iter: int,
+    rtol: float,
+    atol: float,
+) -> SymmetricNRHO | None:
+    """Try a multi-shooting family-switch (both eigenvector signs).
+
+    Routes the multi-shooter from
+    :func:`cyclerfinder.genome.multi_shooting.multi_shoot_periodic` through the
+    standard family-switch protocol: perturb the parent IC along ``+v`` and
+    ``-v`` and refine each with multi-shooting. Returns the FIRST converged
+    member (or ``None`` if neither sign works). Converts the
+    :class:`MultiShootResult` back to a
+    :class:`cyclerfinder.search.nrho_continuation.SymmetricNRHO` -- including a
+    fresh full-period monodromy via the standard variational integrator -- so
+    callers see identical types from both the single-shooting and
+    multi-shooting paths.
+
+    Discipline: NO petal-count verification here -- that's the caller's job
+    via ``verify_petal_count`` in :func:`switch_family`. This helper handles
+    only the corrector convergence question.
+    """
+    # Local import: avoid module-load cycle.
+    from cyclerfinder.genome.multi_shooting import multi_shoot_periodic
+
+    n_segments = int(n_segments_arg) if n_segments_arg is not None else max(int(k), 2)
+
+    def _try(sign: float) -> SymmetricNRHO | None:
+        z0_new = parent.z0 + sign * dz0
+        ydot0_new = parent.ydot0 + sign * dydot0
+        parent_state = np.array(
+            [parent.x0, 0.0, z0_new, 0.0, ydot0_new, 0.0],
+            dtype=np.float64,
+        )
+        try:
+            ms = multi_shoot_periodic(
+                system,
+                parent_state,
+                float(period_guess),
+                n_segments=n_segments,
+                ydot0_sign=-1.0 if ydot0_new < 0 else 1.0,
+                tol=tol,
+                max_iter=max_iter,
+                rtol=rtol,
+                atol=atol,
+            )
+        except (RuntimeError, ValueError):
+            return None
+        if not ms.converged:
+            return None
+        s0 = ms.state0
+        period_final = ms.period
+        # Compute the closure residual at the half-period perpendicular crossing
+        # for parity with the single-shooter's reported metric. The pin
+        # constraints are encoded in the multi-shooter's residual; here we
+        # recompute on the converged IC for cross-check.
+        try:
+            arc_half = cr3bp.propagate(
+                system,
+                s0,
+                0.5 * period_final,
+                with_stm=False,
+                rtol=rtol,
+                atol=atol,
+            )
+        except RuntimeError:
+            return None
+        sh = arc_half.state_f
+        residual_half = float(
+            np.linalg.norm(
+                np.array([sh[1], sh[3], sh[5]], dtype=np.float64),
+            )
+        )
+        # Full-period monodromy.
+        try:
+            mono = monodromy(system, s0, period_final, rtol=rtol, atol=atol)
+        except RuntimeError:
+            mono = None
+        jacobi = cr3bp.jacobi_constant(s0, system.mu)
+        return SymmetricNRHO(
+            x0=float(s0[0]),
+            z0=float(s0[2]),
+            ydot0=float(s0[4]),
+            T_TU=float(period_final),
+            jacobi=float(jacobi),
+            converged=True,
+            closure_residual=residual_half,
+            n_iter=int(ms.n_iter),
+            monodromy=mono,
+        )
+
+    out = _try(+1.0)
+    if out is not None:
+        return out
+    return _try(-1.0)
