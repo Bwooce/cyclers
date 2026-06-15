@@ -45,6 +45,19 @@ from cyclerfinder.verify.jpl_periodic_orbits import query
 #: Braik-Ross common Jacobi constant (Table 2 header / Sec. 2).
 C_J_BRAIK_ROSS = 3.1294
 
+#: Ross & Roberts-Tsoukkas 2025 unrounded Jacobi for the (2,1) C21 cycler family,
+#: AAS-25-621 Table 4 (and our :mod:`tests/search/test_cr3bp_ross_families.py`
+#: ``_FAMILIES``). Braik-Ross 2026 prints "C_J = 3.1294" throughout but the (2,1)
+#: family has full Jacobi extent ΔC ~ 4e-12 — essentially a single point in C, at
+#: this value. The literal 3.1294 sits ~1e-5 above the family's C-max, so C21 is
+#: only recoverable at this unrounded Jacobi (see #249 final-disposition note
+#: ``docs/notes/2026-06-14-249-unstable-member-recovery-plan.md``). Standing rule
+#: ``feedback_published_rounded_values_are_display``: a printed C/T/V_inf is a
+#: display value, not a literal — when a search returns no topology-correct
+#: matches, suspect the printed value is rounded and the real value sits in a
+#: sub-resolution band.
+C_J_C21 = 3.129389531088256  # Ross-RT 2025 AAS-25-621 Table 4
+
 #: Ross & Roberts-Tsoukkas 2025 Earth-Moon mass ratio (AAS 25-621, p. 3). Used
 #: for the cycler recovery so the corrector matches the family-defining paper.
 ROSS_MU = 1.2150584270572e-2
@@ -104,26 +117,55 @@ SOURCED_PERIODS_DAYS: dict[str, float] = {
     "C32": 78.613,
 }
 
-# Ross & Roberts-Tsoukkas 2025 cycler family seed regions: (x0 seed, ydot0 sign,
-# half-crossing index). Source for the x0 region / half-crossing index: AAS
-# 25-621 Table 3 seeds (carried in tests/search/test_cr3bp_ross_families.py) and
-# this module's recovery scan at C_J=3.1294.
+# Ross & Roberts-Tsoukkas 2025 cycler family seed regions. Each entry carries:
+#   x0           — perpendicular-x-axis IC seed (x at the half-period crossing).
+#   ydot0_sign   — sign of ydot0 (the symmetric corrector's velocity branch).
+#   half_crossings — 1-based index of the perpendicular x-axis crossing taken as
+#                    the half-period (a (k1,k2) cycler crosses the x-axis many
+#                    times per period; this selects the right branch).
+#   c_override   — per-family Jacobi for recovery, or ``None`` to use
+#                    :data:`C_J_BRAIK_ROSS`. C21's (2,1) family has ΔC ~ 4e-12
+#                    (essentially a single point in C); the literal 3.1294 sits
+#                    ~1e-5 above the family's C-max so we must use the unrounded
+#                    :data:`C_J_C21` = 3.129389531088256 from Ross-RT 2025
+#                    Table 4 to land in-family.
 #
-# RECOVERY STATUS at C_J=3.1294 with the 1-DOF perpendicular-x-crossing symmetric
-# corrector (empirically determined; see the results note):
-#   * C11b: recovers EXACTLY to the sourced 55.995 d (confirmed).
-#   * C32:  recovers to ~79.50 d, ~1.1% above the sourced 78.613 d -- the
-#           perpendicular-x-crossing branch intersection of the (3,2) family at
-#           this OFF-STABLE common energy. Marginal; flagged, not silently
-#           accepted (confirm tol below admits it only at a relaxed tolerance).
-#   * C11a (42.140 d) and C21 (84.533 d): NOT recoverable with this corrector at
-#           this energy (no perpendicular-crossing member within 1.5 d of the
-#           sourced period across the scanned seed/half-crossing grid). They are
-#           a known recovery gap (a multi-segment / 2-D shooting corrector would
-#           be needed); excluded from the scored set rather than faked.
-_CYCLER_SEEDS: dict[str, tuple[float, float, int]] = {
-    "C11b": (-0.7682140805, -1.0, 3),
-    "C32": (-0.4000000000, -1.0, 3),
+# Source for the x0 region / half-crossing index / unrounded Jacobi: AAS 25-621
+# Table 3 / Table 4 seeds (carried in tests/search/test_cr3bp_ross_families.py)
+# and the #249 all-roots + winding-topology re-discovery from the published
+# periods (4/4 reproduced; see docs/notes/2026-06-14-249-unstable-member-recovery-plan.md
+# final-disposition section).
+#
+# RECOVERY STATUS at the per-family Jacobi (post-#249, 4/4):
+#   * C11a (1,1): 42.1405 d  — recovered at C_J_BRAIK_ROSS (0.001%).
+#   * C11b (1,1): 55.9590 d  — recovered at C_J_BRAIK_ROSS (0.06%).
+#   * C21  (2,1): 84.5331 d  — recovered at C_J_C21 (1.4 ppm).
+#   * C32  (3,2): 78.6126 d  — recovered at C_J_BRAIK_ROSS (0.0005%).
+_CYCLER_SEEDS: dict[str, dict[str, float | int | None]] = {
+    "C11a": {
+        "x0": -0.81164067,
+        "ydot0_sign": -1.0,
+        "half_crossings": 3,
+        "c_override": None,
+    },
+    "C11b": {
+        "x0": -0.7684981,
+        "ydot0_sign": -1.0,
+        "half_crossings": 6,
+        "c_override": None,
+    },
+    "C21": {
+        "x0": +0.7237335857,
+        "ydot0_sign": +1.0,
+        "half_crossings": 4,
+        "c_override": C_J_C21,
+    },
+    "C32": {
+        "x0": -0.2752115,
+        "ydot0_sign": -1.0,
+        "half_crossings": 6,
+        "c_override": None,
+    },
 }
 
 
@@ -166,20 +208,27 @@ def recover_from_seed(
     half_crossings: int,
     tol_days: float = 0.5,
     corrector_tol: float = 1e-10,
+    jacobi: float | None = None,
 ) -> Representative:
-    """Correct a symmetric member to ``C_J=3.1294`` and confirm its period.
+    """Correct a symmetric member to a fixed Jacobi and confirm its period.
 
     Wraps :func:`cyclerfinder.search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
-    (Jacobi held at :data:`C_J_BRAIK_ROSS`) and compares the recovered period to
-    the Braik-Ross sourced period. ``period_guess_days`` seeds the corrector's
-    period; the sourced period is the confirmation target.
+    (Jacobi held at ``jacobi`` if given, else :data:`C_J_BRAIK_ROSS`) and compares
+    the recovered period to the Braik-Ross sourced period. ``period_guess_days``
+    seeds the corrector's period; the sourced period is the confirmation target.
+
+    Per-family Jacobi (#262 / post-#249): the (2,1) C21 family has full Jacobi
+    extent ~ 4e-12 and only exists at the unrounded :data:`C_J_C21`, NOT at the
+    literal :data:`C_J_BRAIK_ROSS` printed in the Braik-Ross paper -- pass
+    ``jacobi=C_J_C21`` for that recovery. C11a/C11b/C32 use the literal value.
     """
     sourced = SOURCED_PERIODS_DAYS[label]
     period_guess = period_guess_days / TU_DAYS
+    c_target = C_J_BRAIK_ROSS if jacobi is None else float(jacobi)
     orbit = cp.correct_symmetric_fixed_jacobi(
         system,
         x0_seed,
-        C_J_BRAIK_ROSS,
+        c_target,
         period_guess,
         ydot0_sign=ydot0_sign,
         half_crossings=half_crossings,
@@ -198,6 +247,47 @@ def recover_from_seed(
         confirmed=confirmed,
         converged=orbit.converged,
     )
+
+
+def recover_all_cyclers_braik_ross(
+    system: cr3bp.CR3BPSystem,
+    *,
+    tol_days: float = 0.5,
+    corrector_tol: float = 1e-10,
+) -> list[Representative]:
+    """Recover all four Braik-Ross cycler members (C11a, C11b, C21, C32) (#262).
+
+    Uses the seeds + per-family Jacobi pinned in :data:`_CYCLER_SEEDS` to recover
+    each member with the symmetric perpendicular-x-axis-crossing corrector and
+    confirms the period against the Braik-Ross Table-2 sourced value. C21 uses
+    its unrounded Jacobi :data:`C_J_C21`; the other three use :data:`C_J_BRAIK_ROSS`.
+
+    Returns one :class:`Representative` per cycler in canonical order
+    (C11a, C11b, C21, C32) regardless of confirmation status — the caller filters
+    on ``.confirmed`` before scoring.
+    """
+    out: list[Representative] = []
+    for label in ("C11a", "C11b", "C21", "C32"):
+        seed = _CYCLER_SEEDS[label]
+        x0_raw = seed["x0"]
+        sign_raw = seed["ydot0_sign"]
+        hc_raw = seed["half_crossings"]
+        c_override = seed["c_override"]
+        assert x0_raw is not None and sign_raw is not None and hc_raw is not None
+        out.append(
+            recover_from_seed(
+                system,
+                label,
+                float(x0_raw),
+                SOURCED_PERIODS_DAYS[label],
+                ydot0_sign=float(sign_raw),
+                half_crossings=int(hc_raw),
+                tol_days=tol_days,
+                corrector_tol=corrector_tol,
+                jacobi=None if c_override is None else float(c_override),
+            )
+        )
+    return out
 
 
 def recover_jpl_family(

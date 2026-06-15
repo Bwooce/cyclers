@@ -208,8 +208,31 @@ are display, not literal — see `feedback_published_rounded_values_are_display`
 New infrastructure (all tested, reusable): fold-turning pseudo-arclength
 continuation in Jacobi (`e34edb2`), winding-(k1,k2) classifier (`93fb330`),
 asymmetric (general) periodic-orbit corrector (`23b980e`). Final 4/4 disposition
-`a19eb24`. **Next:** re-run C32-dominance gate with the enlarged node set;
-#239 (Zhou-Armellin reachable-set) remains to merge.
+`a19eb24`.
+
+**C32-dominance gate re-run (#262, 2026-06-15) — FAITHFUL NEGATIVE on the 12-node
+source-confirmable set; scorer STAYS GATED.** With all four cyclers (C11a, C11b,
+C21, C32) wired into the scorer via `recover_all_cyclers_braik_ross` (each at its
+correct per-family Jacobi — literal 3.1294 for C11a/C11b/C32, the unrounded
+3.129389531088256 for C21) plus the eight offline-confirmable nodes (LL1, LL2,
+DPO, R21-S, R21-U, R31-S, R31-U, R52-S), C32 does NOT emerge as the dominant
+family node under our scorer. Observed centrality ranking:
+  - strength argmax: **C11a** (0.00741); C32 = 0.00666 (rank 6 of 12)
+  - harmonic argmax: **C21** (0.00743); C32 = 0.00676 (rank 5 of 12)
+  - betweenness argmax: **R21-U** (0.0606); **C32 has ZERO betweenness** (no
+    relay role at all)
+The Braik-Ross Table-4 prediction (C32 rank 1 across all three metrics at
+0.2850/0.2891/0.5000) is not reproduced. Whether this reflects a real limitation
+of our heading-fan reachable-set proxy on this model (voxel-grid resolution,
+T_a horizon, n_seeds/n_fan, or the missing R52-U node) or a deeper method
+mismatch is not yet diagnosed — parameters were NOT tuned. R21-S hard-access
+half of the gate still REPRODUCES (R21-S in the bottom-3 of strength and
+harmonic closeness alongside the other stable resonants). The C32-dominance
+gate-test stays `xfail`; a companion `test_validation_gate_c32_undominant_faithful_negative`
+records the observed ranking as a passing test so the negative is captured (not
+just an xfail). The scorer is **NOT applied to rank our families**. **Next:**
+diagnose the rank disagreement (parameter sensitivity / R52-U recovery / horizon
+choice) before any unblocking; #239 (Zhou-Armellin reachable-set) still pending.
 
 **Papers digested (#230–235):** Braik & Ross 2026 Orbital Networks (reachable-set
 family-accessibility — method-only, no new tuples), arXiv:2509.12671 HOTM fixed

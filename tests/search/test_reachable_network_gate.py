@@ -9,21 +9,16 @@ their common energy C_J = 3.1294 (paper Table 4 / Fig. 10):
   * the 2:1 stable resonant R21-S is the persistent HARD-ACCESS family (last in
     strength and closeness, zero betweenness).
 
-RECOVERY GAP (honest scoping; see the results note
-``docs/notes/2026-06-13-reachable-scorer-ungate.md``): Braik-Ross publish NO state
-vectors, only periods + sigma. We recover each member at C_J=3.1294 and confirm it
-against BOTH the sourced Table-2 period AND the sourced Floquet rate sigma before
-scoring (the sigma check rejects spurious same-period orbits). With the
-network-independent free-(x0, t_half) corrector, NINE of the thirteen members
-recover and confirm offline (LL1, LL2, DPO, R21-S, R21-U, R31-S, R31-U, R52-S,
-C21). The four that do NOT recover at this off-stable common energy with the
-available single-/free-period shooting correctors are the three unstable cyclers
-(C11a sigma=1.05, C11b sigma=0.93, C32 sigma=0.69 -- each collapses onto a nearby
-spurious lower-sigma orbit) and the 5:2 unstable resonant R52-U; they are excluded
-rather than faked. The gate therefore runs on the nine source-confirmable nodes.
-Crucially C32 -- the family whose dominance is the headline claim -- is itself
-NOT faithfully recoverable here, so the C32-dominance gate cannot be tested. This
-is a faithfully-scoped reproduction, not a forced one; parameters are NOT tuned.
+RECOVERY STATUS (#262, post-#249 4/4 cycler recovery): all four Braik-Ross
+cycler members (C11a, C11b, C21, C32) are now rigorously reproduced via the
+symmetric perpendicular-x-axis-crossing corrector at the correct per-family
+Jacobi (literal :data:`C_J_BRAIK_ROSS` = 3.1294 for C11a/C11b/C32; the unrounded
+:data:`C_J_C21` = 3.129389531088256 for C21, whose (2,1) family spans ΔC ~ 4e-12
+and does not exist at the literal printed value). Combined with the eight
+network-independent offline confirmations (LL1, LL2, DPO, R21-S, R21-U, R31-S,
+R31-U, R52-S), the gate now runs on TWELVE source-confirmable nodes -- the
+full Braik-Ross representative set minus only the 5:2 unstable resonant R52-U
+(still unrecovered; excluded rather than faked).
 
 All EXPECTED values trace to a published source: sourced periods + sigma to
 Braik-Ross Table 2, and the C32-dominant / R21-S-hard-access ranking to Table 4 /
@@ -42,18 +37,54 @@ import cyclerfinder.search.reachable_representatives as rr
 
 
 def _recover_subset() -> list[rr.Representative]:
-    """Recover the network-independent source-confirmable gate subset at C_J=3.1294.
+    """Recover the source-confirmable gate set at C_J=3.1294 (#262 / post-#249).
 
-    Period AND Floquet sigma are both confirmed against Braik-Ross Table 2 (no
-    JPL network call). Returns only the members that confirm.
+    Combines the offline source-confirmable nodes (LL1, LL2, DPO, R21-S, R21-U,
+    R31-S, R31-U, R52-S) with the four Braik-Ross cyclers (C11a, C11b, C21, C32)
+    recovered via :func:`rr.recover_all_cyclers_braik_ross`. C21 is recovered at
+    its own (unrounded) Jacobi :data:`rr.C_J_C21` (where the (2,1) family
+    actually lives); the other three cyclers + the eight offline nodes are all
+    at :data:`rr.C_J_BRAIK_ROSS`. Period AND (for the offline nodes) Floquet
+    sigma are both confirmed against Braik-Ross Table 2; we dedupe by label so
+    the C21 in the offline set is replaced by the cycler-route version.
+
+    Returns only the members that confirm (no faked members enter the network).
     """
     sysm = rr.braik_ross_system()
-    return [r for r in rr.recover_offline_set(sysm) if r.confirmed]
+    by_label: dict[str, rr.Representative] = {}
+    for r in rr.recover_offline_set(sysm):
+        if r.confirmed:
+            by_label[r.label] = r
+    for r in rr.recover_all_cyclers_braik_ross(sysm):
+        if r.confirmed:
+            by_label[r.label] = r  # cycler-route C21 supersedes offline C21
+    # Canonical ordering for stable label/value reporting.
+    order = (
+        "LL1",
+        "LL2",
+        "DPO",
+        "R21-S",
+        "R21-U",
+        "R31-S",
+        "R31-U",
+        "R52-S",
+        "C11a",
+        "C11b",
+        "C21",
+        "C32",
+    )
+    return [by_label[label] for label in order if label in by_label]
 
 
 @pytest.mark.slow
 def test_recover_representatives_periods_and_sigma_confirmed() -> None:
-    """Each gate-subset member recovers to its Table-2 period AND sigma (offline)."""
+    """Each gate-subset member recovers to its Table-2 period (offline + cyclers).
+
+    Offline nodes also confirm against the sourced Floquet sigma; the four
+    cyclers are confirmed by period + (k1,k2) winding topology + prograde +
+    Radau in :mod:`tests.search.test_cr3bp_ross_families` (#249 4/4 reproduction)
+    -- here we only check the period close-to-sourced gate.
+    """
     reps = _recover_subset()
     by = {r.label: r for r in reps}
     for r in reps:
@@ -63,9 +94,22 @@ def test_recover_representatives_periods_and_sigma_confirmed() -> None:
             f"(sourced {src_d:7.3f}, sigma {src_s}) C={r.jacobi:.6f} x0={r.state0[0]:+.5f} "
             f"confirmed={r.confirmed}"
         )
-    expected = ("LL1", "LL2", "DPO", "R21-S", "R21-U", "R31-S", "R31-U", "R52-S", "C21")
+    expected = (
+        "LL1",
+        "LL2",
+        "DPO",
+        "R21-S",
+        "R21-U",
+        "R31-S",
+        "R31-U",
+        "R52-S",
+        "C11a",
+        "C11b",
+        "C21",
+        "C32",
+    )
     for label in expected:
-        assert label in by, f"{label} did not confirm (period+sigma)"
+        assert label in by, f"{label} did not confirm (period+sigma or period)"
         r = by[label]
         assert abs(r.period_days - r.sourced_period_days) < 0.5, (
             f"{label}: recovered {r.period_days:.3f} d vs sourced {r.sourced_period_days} d"
@@ -127,25 +171,29 @@ def test_stable_resonants_are_hard_access_on_subset() -> None:
 @pytest.mark.slow
 @pytest.mark.xfail(
     reason=(
-        "NOT TESTABLE on the source-confirmable subset: C32 is NOT among the nine "
-        "recoverable members. C32 (and C11a, C11b, R52-U) are unstable orbits that "
-        "collapse onto spurious lower-sigma members under the available shooting "
-        "correctors at the off-stable common energy; a robust Jacobi-constrained "
-        "multiple-shooting corrector (or the JPL oracle, unavailable here) is needed. "
-        "C32's hub/gateway/relay dominance is intrinsically a full-13-node property, "
-        "and C32 itself is not faithfully recovered -- so the headline gate cannot be "
-        "exercised. A faithful negative: the scorer stays GATED for our families. "
-        "See docs/notes/2026-06-13-reachable-scorer-ungate.md."
+        "FAITHFUL NEGATIVE on the 12-node source-confirmable set (#262, post-#249 "
+        "4/4 cycler recovery): with all four Braik-Ross cyclers (C11a, C11b, C21, "
+        "C32) and the eight offline-confirmable resonant/libration/DPO nodes in "
+        "play, C32 does NOT emerge as the dominant family node under our scorer. "
+        "Observed ranking on this run: strength argmax = C11a; harmonic-closeness "
+        "argmax = C21; betweenness argmax = R21-U; C32 has ZERO betweenness (no "
+        "relay role at all). Whether this is a real limitation of the heading-fan "
+        "reachable-set proxy on our model (e.g. a voxel-grid resolution or "
+        "horizon-T_a difference vs Braik-Ross's grid) or a missing-node effect "
+        "(R52-U is still absent) is not yet diagnosed -- the test stays xfail and "
+        "the scorer stays GATED for our families. Parameters are NOT tuned. See "
+        "docs/notes/2026-06-13-reachable-scorer-ungate.md."
     ),
-    strict=False,
+    strict=True,
 )
 def test_validation_gate_c32_dominant() -> None:
     """METHOD-VALIDATION GATE (published claim): C32 is the dominant family.
 
     Encodes the Braik-Ross Table-4 / Fig-10 claim verbatim so the negative is
-    recorded honestly rather than silently dropped. Expected to xfail: C32 is not
-    in the recoverable subset, so ``labels.index('C32')`` raises -- the gate cannot
-    even be evaluated, which IS the honest negative. Parameters are NOT tuned.
+    recorded honestly rather than silently dropped. With the 4/4 cycler set in
+    play (#262) the gate is now evaluable; expected to xfail because our scorer's
+    ranking does not promote C32 (see xfail reason above). Parameters are NOT
+    tuned.
     """
     reps = _recover_subset()
     labels, cent = _run_network(reps)
@@ -156,10 +204,38 @@ def test_validation_gate_c32_dominant() -> None:
         ("betweenness", cent.betweenness),
     ):
         print(_rank_msg(name, labels, vals))
-    i_c32 = labels.index("C32")  # raises ValueError: C32 not recovered -> xfail
+    i_c32 = labels.index("C32")
     assert int(np.argmax(cent.strength)) == i_c32
     assert int(np.argmax(cent.harmonic_closeness)) == i_c32
     assert int(np.argmax(cent.betweenness)) == i_c32
+
+
+@pytest.mark.slow
+def test_validation_gate_c32_undominant_faithful_negative() -> None:
+    """RECORD the faithful negative: C32 is NOT the dominant node on our 12-set.
+
+    Companion to ``test_validation_gate_c32_dominant`` (xfail): asserts the
+    *observed* ranking on the post-#249 4/4-cycler 12-node source-confirmable
+    set so the negative is captured as a passing test (not just an xfail), and
+    will fail-loud if the ranking ever changes (e.g. if we add R52-U later or if
+    a corrector change shifts the scoring). Parameters are NOT tuned -- this
+    test reports what the unmodified scorer produces.
+
+    Findings (commit-time): C32 is below the median in strength AND in harmonic
+    closeness, and has zero betweenness. The hub/gateway/relay node identities
+    differ from Braik-Ross Table 4 -- which means the scorer is not yet a
+    reliable family-selection prioritizer on our families.
+    """
+    reps = _recover_subset()
+    labels, cent = _run_network(reps)
+    i_c32 = labels.index("C32")
+    # C32 is NOT rank 1 in any metric on this set.
+    assert int(np.argmax(cent.strength)) != i_c32, _rank_msg("strength", labels, cent.strength)
+    assert int(np.argmax(cent.harmonic_closeness)) != i_c32, _rank_msg(
+        "harmonic_closeness", labels, cent.harmonic_closeness
+    )
+    # And C32 has no relay role (betweenness == 0).
+    assert cent.betweenness[i_c32] == 0.0, _rank_msg("betweenness", labels, cent.betweenness)
 
 
 def _rank_msg(name: str, labels: list[str], values: np.ndarray) -> str:
