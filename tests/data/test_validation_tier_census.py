@@ -63,11 +63,20 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # as the existing Jovian seeds (hernandez, russell-strange) do. Members A-C are
 # idealized-model V0; member D is ephemeris figures-only V0 (validation_level
 # axis). unvalidated 19 -> 23.
+#
+# 2026-06-15 (#249, USER-approved writeback): +3 Braik & Ross 2026 (arXiv
+# 2605.31543) common-energy Earth-Moon CR3BP cycler reproductions
+# (braik-ross-c11a/c11b/c32-cycler-2026). Like the Ross-RT 2025 rows, these
+# carry no orbit_source/vinf_source provenance tags (their identity is a
+# Jacobi/period tuple, not the orbit/vinf-multiset pair the SOURCE_REGISTRY
+# tier classifier reads), so they classify UNVALIDATED on this orthogonal
+# provenance-tag axis. Their gauntlet strength lives in the validation_level
+# axis (V1, _LEVEL_EVIDENCE). unvalidated 23 -> 26.
 # ---------------------------------------------------------------------------
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
     "consistency_checked": 249,
-    "unvalidated": 23,
+    "unvalidated": 26,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

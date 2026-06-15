@@ -144,7 +144,13 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     USER-approved — same-model reconstruction matches Tables 3/5/7 per-flyby
     V_inf inside the print-quantization tolerance;
     docs/notes/2026-06-13-liang-abc-reproduction.md; Member D stays V0).
-    (V1=18, V2=6, V3=2.)"""
+    Three Braik & Ross 2026 (arXiv 2605.31543) common-energy Earth-Moon CR3BP
+    cycler reproductions are V1 (#249 2026-06-15 USER-approved — same-model
+    fixed-Jacobi corrector closes on Braik-Ross Table-2 T_PO to 0.001%-0.06%,
+    Barden nu reproduces published Floquet UNSTABLE verdict, independent Radau
+    preserves Jacobi; NOT V2 because unstable orbits cannot satisfy the bounded-
+    drift gate; docs/notes/2026-06-14-249-unstable-member-recovery-plan.md).
+    (V1=21, V2=6, V3=2.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -213,6 +219,21 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "liang-2024-cgcec-111-highperijove": "V1",
         "liang-2024-cgcec-110-highperijove": "V1",
         "liang-2024-cgcec-111-lowperijove": "V1",
+        # #249 (2026-06-15, USER-approved writeback): three Braik & Ross 2026
+        # (arXiv 2605.31543) common-energy Earth-Moon CR3BP cycler reproductions
+        # at C_J=3.1294. Clear §14 V1 like-for-like in the planar CR3BP: same-
+        # model fixed-Jacobi corrector closes (C enforced to machine eps, T
+        # matches Braik-Ross Table-2 sourced figure to 0.001%-0.06%), Barden nu
+        # reproduces the published Floquet UNSTABLE verdict (sigma>0 in Table 2),
+        # AND an independent Radau integrator preserves Jacobi (dJ<1e-12; full-
+        # state closure is unstable-orbit-limited for C32 at ~7e-6, structurally
+        # explained by sigma*T_PO=12.45 -> |lambda|~2.5e5). NOT V2: an unstable
+        # orbit cannot satisfy V2-ballistic's bounded-drift-over->=3-laps gate.
+        # state_nd DERIVED (not a golden). docs/notes/2026-06-14-249-unstable-
+        # member-recovery-plan.md.
+        "braik-ross-c11a-cycler-2026": "V1",
+        "braik-ross-c11b-cycler-2026": "V1",
+        "braik-ross-c32-cycler-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

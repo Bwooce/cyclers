@@ -841,6 +841,78 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "conic anchor residual 4.1e-4 km/s. "
         "tests/search/test_liang_cge_reproduction.py (member C cases)."
     ),
+    # #249 (2026-06-15, USER-approved writeback): three Braik & Ross 2026 (arXiv
+    # 2605.31543) common-energy Earth-Moon (k1,k2)-cycler reproductions at the
+    # paper's common Jacobi level C_J=3.1294 (Sec. 2.4 / Table 2). Three NEW
+    # family members (C11a / C11b / C32) -- C21 is already catalogued as
+    # ross-rt-em-cycler-21-2025 (Braik-Ross 2026 added there as corroborating
+    # source). All three clear spec §14 V1 like-for-like in the planar CR3BP:
+    # same-model fixed-Jacobi symmetric corrector closes on a perpendicular
+    # x-axis crossing with C enforced to machine eps and T matching the printed
+    # Braik-Ross Table-2 sourced value to 0.001%-0.06%; Barden half-period
+    # monodromy reproduces the published Floquet UNSTABLE verdict (sigma>0 in
+    # Table 2); an INDEPENDENT Radau integrator preserves the Jacobi constant
+    # (dJ<1e-12). state_nd is DERIVED, not a golden (Braik-Ross publishes only
+    # T_PO + sigma, no IC). NOT promoted to V2: V2-ballistic requires bounded-
+    # drift over >=3 laps, which is mechanically impossible for a linearly
+    # unstable orbit -- exponential growth at rate sigma is exactly the verdict.
+    # The Ross-RT 2025 anchor rows (ross-rt-em-cycler-*) reached V2 via a
+    # 100-period bounded-band IAS15 run on STABLE members; that evidence
+    # mechanically does not apply here. Reproduction harness:
+    # src/cyclerfinder/search/reachable_representatives.py::recover_all_cyclers_braik_ross
+    # + docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (final
+    # disposition section; commits a19eb24, 4a20243, f608c6b, 325c8a2).
+    ("braik-ross-c11a-cycler-2026", "V1"): (
+        "spec §14 V1 (#249): same-model CR3BP reproduction of Braik & Ross 2026 "
+        "(arXiv 2605.31543) Table 2 (1,1)a-cycler at the common Jacobi "
+        "C_J=3.1294 — fixed-Jacobi symmetric corrector closes on a perpendicular "
+        "x-axis crossing with C enforced to machine eps and T=42.140462 d "
+        "(sourced 42.140 d, error +0.0011%), Barden half-period nu=1.29e4 "
+        "(|lambda|=2.58e4 = exp(sigma*T_PO) for the published sigma=1.0482 "
+        "TU^-1 -- the published Floquet UNSTABLE verdict is reproduced), AND an "
+        "independent Radau integrator preserves the Jacobi constant (dJ=1.9e-13) "
+        "and closes the rotating-frame state to ~2.8e-9 over one period. (1,1) "
+        "topology + prograde sense confirmed by winding-number diagnostic. "
+        "state_nd DERIVED (not a golden). "
+        "src/cyclerfinder/search/reachable_representatives.py + "
+        "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (commits "
+        "a19eb24, 4a20243, f608c6b, 325c8a2)."
+    ),
+    ("braik-ross-c11b-cycler-2026", "V1"): (
+        "spec §14 V1 (#249): same-model CR3BP reproduction of Braik & Ross 2026 "
+        "Table 2 (1,1)b-cycler at C_J=3.1294 — fixed-Jacobi corrector closes "
+        "with C enforced to machine eps and T=55.959 d (sourced 55.995 d, "
+        "error -0.064%; this is the largest period-gap of the three Braik-Ross "
+        "cyclers reproduced here, recorded as a data_gap on the row -- C11b "
+        "sits closer to the (1,1) family's saddle-center fold than C11a so the "
+        "seed bracket is tighter, mining note #249), Barden nu=3.24 (|lambda|=6.33 "
+        "half-period; the published Floquet UNSTABLE verdict sigma=0.9255 TU^-1 "
+        "is reproduced qualitatively), AND an independent Radau integrator "
+        "preserves the Jacobi constant (dJ=1.3e-12) and closes the rotating-"
+        "frame state to ~3e-11 over one period. (1,1) topology + prograde sense "
+        "confirmed. state_nd DERIVED (not a golden). "
+        "src/cyclerfinder/search/reachable_representatives.py + "
+        "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
+    ),
+    ("braik-ross-c32-cycler-2026", "V1"): (
+        "spec §14 V1 (#249): same-model CR3BP reproduction of Braik & Ross 2026 "
+        "Table 2 (3,2)-cycler at C_J=3.1294 — fixed-Jacobi corrector closes "
+        "with C enforced to machine eps and T=78.6126 d (sourced 78.613 d, "
+        "error -0.0005%) once the half-period crossing index is fixed to the "
+        "6th x-axis crossing (same lesson as the Ross-RT 2025 (3,2) anchor, "
+        "ross-rt-em-cycler-32-2025 results note §2), Barden nu=1.27e5 "
+        "(|lambda|=2.53e5 half-period; matches the published Floquet sigma=0.6886 "
+        "TU^-1 exactly via exp(sigma*T_PO)=exp(12.45)=2.5e5 -- this is among the "
+        "most-unstable cyclers in the catalogue), AND an independent Radau "
+        "integrator preserves the Jacobi constant (dJ=7.6e-13). The full-state "
+        "rotating-frame closure only reaches ~7e-6 over one period -- the "
+        "structural ceiling for an orbit with |lambda|~2.5e5 under round-off "
+        "amplification (eps*|lambda| ~ 2.5e-11 amplifying through the integrator), "
+        "NOT a defect; it is exactly what the published sigma forecasts. (3,2) "
+        "topology + prograde sense confirmed. state_nd DERIVED (not a golden). "
+        "src/cyclerfinder/search/reachable_representatives.py + "
+        "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
+    ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
     # achieving its encounters with the per-cycle maintenance applied AND bounded

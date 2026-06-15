@@ -23,11 +23,12 @@ audit trail and is unchanged in spirit.
 
 ## VALIDATION CEILING REACHED (2026-06-09) — read this first
 
-The catalogue (277 rows) is at its **data-limited validation ceiling** via
+The catalogue (280 rows) is at its **data-limited validation ceiling** via
 current methods + held papers: **V3:2** (S1L1 `russell-ch4-4.991gG2` ballistic +
 `russell-ch4-8.049gGf2` #188 powered), **V2:6** (Aldrin outbound + the 5 Ross
-stable EM cyclers, #229), **V1:18** (the 2026-06-10 #181 writeback + the 3 Liang
-CGE members, #222), rest V0. This is the honest boundary, established by exhaustive triage (#170
+stable EM cyclers, #229), **V1:21** (the 2026-06-10 #181 writeback + the 3 Liang
+CGE members, #222, + the 3 Braik-Ross 2026 common-energy CR3BP cycler
+reproductions #249), rest V0. This is the honest boundary, established by exhaustive triage (#170
 App-C batch, #177 self-seeding over all 212 unsourced rows, #172 Phase 6 novelty
 sweep) — NOT a backlog to grind.
 

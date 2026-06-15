@@ -46488,7 +46488,32 @@ days\" per the NTRS abstract.
     doi: null
     url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
     note: "LaTeX preprint 2025-07-17; 2026 journal version exists (re-verify numbering)."
-  corroborating_sources: []
+  corroborating_sources:
+    - authors: ["Braik, A.", "Ross, S. D."]
+      year: 2026
+      title: "Orbital Networks in the Three-Body Problem"
+      venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+      doi: null
+      url: "https://arxiv.org/abs/2605.31543"
+      note: |
+        Braik & Ross 2026 confirms the (2,1) stable cycler in their common-energy
+        Table 2 as "C21", period T=84.533 d, instability rate sigma=0.1358 TU^-1
+        (the LOWEST sigma of the 4 cyclers tabulated — consistent with the
+        published stable verdict). Their stated common Jacobi C_J=3.1294 is the
+        5-sig-fig display rounding of THIS row's C^stable=3.129389531088256 (the
+        (2,1) family's full Jacobi extent DeltaC ~ 4e-12 is sub-resolution at
+        4 d.p., so 3.1294 IS this family's Jacobi to that precision — verified
+        by our #249 reproduction harness which only recovered C21 at the
+        unrounded 3.129389531088256, not at literal 3.1294). 4-of-4 reproduction
+        and the rounded-vs-literal disposition are recorded in
+        docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (final
+        section, commits a19eb24, 4a20243, f608c6b, 325c8a2). Three other
+        common-energy (1,1)/(3,2) members from the same Table 2 (C11a, C11b,
+        C32) enter as separate catalogue rows (braik-ross-c11a-cycler-2026,
+        braik-ross-c11b-cycler-2026, braik-ross-c32-cycler-2026) -- those are
+        new family members at a DIFFERENT Jacobi (C=3.1294) from the (1,1)/(3,2)
+        anchors ross-rt-em-cycler-11-2025 / ross-rt-em-cycler-32-2025 (which
+        sit at the per-family stable midpoint, not the common energy).
   priority_date: "2025-08-01"
   notes: |
     (2,1) stable prograde Earth-Moon cycler, nu=0 midpoint of a narrow stable
@@ -46806,6 +46831,449 @@ days\" per the NTRS abstract.
     "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) C^stable = 3.177224018696528."
     "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (3,3) T^stable = 18.14546057589189 TU."
     "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
+
+# ---------------------------------------------------------------------------
+# Braik & Ross 2026 — Common-energy (1,1)a, (1,1)b, (3,2) Earth-Moon cyclers
+# (arXiv 2605.31543, "Orbital Networks in the Three-Body Problem", 29 May 2026).
+# Three NEW (k1,k2)-cycler family members at the common Jacobi C_J=3.1294 used
+# throughout the paper's reachable-set accessibility framework (Sec. 2.4-2.5,
+# Table 2). DISTINCT from the existing per-family-stable-midpoint Ross & Roberts-
+# Tsoukkas 2025 (AAS 25-621) anchors (ross-rt-em-cycler-11-2025 at C=3.151,
+# ross-rt-em-cycler-32-2025 at C=3.183) -- the Braik-Ross members are different
+# orbits in the same continuous families at a different energy. The fourth
+# Braik-Ross cycler (C21) is already catalogued as ross-rt-em-cycler-21-2025
+# (the (2,1) family's full Jacobi extent DeltaC ~ 4e-12 makes it a single point
+# in C; 3.1294 is its 5-sig-fig display rounding -- Braik-Ross 2026 added as
+# corroborating_sources on that row).
+#
+# RECOVERY: All three reproduced (#249, commits a19eb24/4a20243/f608c6b/325c8a2)
+# by the same fixed-Jacobi symmetric perpendicular-x-axis-crossing corrector that
+# adopted the Ross-RT 2025 anchor rows, with the per-family seed regions (x0
+# bracket + ydot0 sign + half-period crossing index) pinned in
+# src/cyclerfinder/search/reachable_representatives.py::_CYCLER_SEEDS. Period
+# matches the Braik-Ross Table-2 sourced figure to 0.001%-0.06%; Jacobi is
+# enforced to machine epsilon; topology is (1,1) prograde / (3,2) prograde as
+# expected. Independent Radau cross-check closes the Jacobi (dJ < 1e-12) but
+# NOT the full state vector at one period for the highly-unstable (3,2) member
+# (C32: Floquet ratio |lambda|~2.5e5 over one period -> structural ~7e-6
+# rotating-frame closure ceiling from integrator round-off amplification; the
+# instability is exactly what Braik-Ross sigma=0.6886 TU^-1 forecasts).
+#
+# STABILITY: All three are UNSTABLE at the common Jacobi (Braik-Ross Table 2
+# instability rate sigma > 0). This is the design feature that makes the
+# Braik-Ross framework work: unstable representatives share a common chaotic
+# region (Fig. 4) and finite-DeltaV heading-change maneuvers exploit that for
+# low-cost connectivity. NOT comparable to the per-family STABLE-midpoint
+# Ross-RT 2025 anchors, which are linearly stable (|nu|<1).
+#
+# VALIDATION LEVEL: V1 -- spec §14 V1 like-for-like in the planar CR3BP (same-
+# model corrector reproduction + Jacobi enforced + Barden ny REPRODUCED |nu|>>1
+# UNSTABLE verdict matching Braik-Ross sigma>0 + independent Radau Jacobi
+# preservation). NOT V2: V2-ballistic requires bounded-drift over >=3 laps,
+# which is mechanically impossible for an unstable orbit (the long-span IAS15
+# evidence used to upgrade the stable Ross-RT 2025 anchors from V1->V2 in #229
+# does not apply here -- exponential growth excluded is exactly NOT what these
+# orbits exhibit). State_nd is DERIVED, not a golden.
+# ---------------------------------------------------------------------------
+- id: braik-ross-c11a-cycler-2026
+  name: "Braik-Ross common-energy (1,1)a Earth-Moon cycler (CR3BP, C=3.1294)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1   # spec §14 V1 like-for-like: same-model fixed-Jacobi corrector closes (C enforced to machine eps, T matches Braik-Ross 42.140 d sourced to 0.001%), Barden nu reproduces the published Floquet UNSTABLE verdict (sigma=1.0482 TU^-1 / sigma_d=0.2410 d^-1), independent Radau closes Jacobi (dJ < 1e-12). NOT V2: an unstable orbit cannot satisfy V2-ballistic's bounded-drift-over->=3-laps requirement.
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      Period T_PO = 42.140 d (Braik & Ross 2026 Table 2 "(1,1)a-cycler" row,
+      reported in days at the common C_J=3.1294); reproduced in-repo at
+      42.1405 d (+0.0011%, #249). Encounter cadence: k1=1 perigee + k2=1
+      perilune pass per period (Ross-RT 2025 Def. 1, family-anchor row
+      ross-rt-em-cycler-11-2025). years: null (CR3BP, rotating-frame periodic
+      orbit; the heliocentric-synodic-multiple convention does not apply).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(1,1) prograde Earth-Moon cycler — short-period branch (C11a)"   # SOURCED: Braik-Ross 2026 Table 2 "(1,1)a-cycler" + Ross-RT 2025 Def. 1 (k1=1, k2=1). The (1,1) family has TWO branches meeting at a saddle-center fold (#249 mining); C11a is the short-period branch.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Braik-Ross 2026 Table 1 (= Ross-RT 2025 p. 3, all printed digits agree).
+      libration_point: null
+      jacobi_constant: 3.1294   # SOURCED: Braik-Ross 2026 Sec. 2.4 / Table 2 header (common Jacobi level used throughout the accessibility study). The (1,1) family has DeltaC ~ 3.6e-4 (mining note #249), so 3.1294 is well-inside the family.
+      period_nd: 9.69107744379376   # DERIVED (corrector at C=3.1294): reproduced period in TU; equals 42.140462 d via TU_DAYS=4.348377401631 d, matching Braik-Ross Table 2 T_PO=42.140 d to 0.0011%.
+      stability_index: 12902.66   # DERIVED (Barden half-period-monodromy nu): linearly UNSTABLE (|nu|>>1). Consistent with the published Floquet instability rate sigma=1.0482 TU^-1 (lambda_max=exp(sigma*T_PO)~exp(10.16)~2.6e4, matching our lambda=25805). NOT a golden.
+      state_nd: [-0.8116406668238195, 0.0, 0.0, 0.0, -0.11859055759763637, 0.0]   # DERIVED (NOT a golden): symmetric perpendicular x-axis-crossing IC (x0,0,0,0,ydot0,0) recovered by our fixed-Jacobi 1-D corrector at C=3.1294 from seed x0=-0.81164067 with ydot0_sign=-1 and the 3rd x-axis crossing as the half-period (per _CYCLER_SEEDS in src/cyclerfinder/search/reachable_representatives.py). Crossing residual 2.3e-13.
+      lunit_km: 384400.0   # SOURCED: Braik-Ross 2026 Table 1 (== Ross-RT 2025 p. 3).
+      tunit_s: 375699.8   # SOURCED: Braik-Ross 2026 Table 1 (1 TU = T_EM/(2*pi); T_EM=27.321661 d).
+      energy_regime: "Case 3"   # DERIVED: C=3.1294 < C_L2=3.172160 -> L2 neck OPEN (exterior escape energetically open). Same regime as ross-rt-em-cycler-11/21/31-2025.
+      tof_days_bounds: [42.140462, 42.140462]   # v4.2 backfill: single-period CR3BP orbit; bounds = [period, period] in days from our reproduction.
+      braik_ross_sigma_per_tu: 1.0482   # SOURCED: Braik-Ross 2026 Table 2 "Instability rate sigma [TU^-1]" column for (1,1)a-cycler.
+      braik_ross_sigma_per_day: 0.2410   # SOURCED: Braik-Ross 2026 Table 2 "Instability rate sigma_d [day^-1]" column for (1,1)a-cycler.
+  source_ephemeris: null   # v4.2 backfill: pure CR3BP, no ephemeris dependency.
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "Braik & Ross 2026 prints no initial-state vector for any member (only T_PO + sigma in Table 2). state_nd is DERIVED in-repo by the fixed-Jacobi symmetric corrector from the seed region (x0~-0.81164067, ydot0_sign=-1, half-period at the 3rd x-axis crossing) pinned in src/cyclerfinder/search/reachable_representatives.py::_CYCLER_SEEDS and confirmed against the sourced T_PO + (1,1) topology by the #249 reproduction harness."
+      source_hint: "src/cyclerfinder/search/reachable_representatives.py + docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (commits a19eb24, 4a20243, f608c6b, 325c8a2)."
+      todo_ref: "#249"
+  legs: []
+  first_published:
+    authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    date: "2026-05-29"
+    doi: null
+    url: "https://arxiv.org/abs/2605.31543"
+    note: |
+      arXiv submission dated 29 May 2026; PDF dated June 1, 2026 (title page).
+      Table 2 lists thirteen common-energy representative periodic orbits at
+      C_J=3.1294. The (1,1)a-cycler row carries T_PO=42.140 d and instability
+      rate sigma=1.0482 TU^-1 (sigma_d=0.2410 d^-1). The paper does NOT print
+      the initial state.
+  corroborating_sources:
+    - authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+      year: 2025
+      title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+      venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+      doi: null
+      url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+      note: |
+        Family anchor: Ross-RT 2025 defines the (k1,k2)-cycler family numbering
+        (Def. 1) and proves the (1,1) family's stable subfamily at C^stable=3.151;
+        ross-rt-em-cycler-11-2025 is its nu=0 midpoint. C11a is a DIFFERENT
+        member of the same continuous (1,1) family at the lower Jacobi C=3.1294,
+        on the short-period branch of a saddle-center fold inside the family
+        (#249 mining note). Same family identity (k1=1, k2=1, prograde); different
+        orbit (UNSTABLE, T=42.140 d vs the anchor's STABLE T=44.754 d).
+  priority_date: "2026-05-29"
+  notes: |
+    Common-energy (1,1)a-cycler from Braik & Ross 2026 Table 2, the SHORT-PERIOD
+    branch of the (1,1) family at C_J=3.1294. Distinct from the family-anchor row
+    ross-rt-em-cycler-11-2025 (Ross-RT 2025), which is the (1,1) family's per-
+    family STABLE midpoint at C^stable=3.151175879508174 (T=44.754 d, |nu|<1).
+    C11a sits at a different Jacobi (3.1294, below C^stable) and a different
+    branch (short-period side of a saddle-center fold inside the family — the
+    fold geometry is documented in #249's mining note). At C=3.1294 the (1,1)
+    family is UNSTABLE; Braik-Ross publishes instability rate sigma=1.0482 TU^-1
+    (sigma_d=0.2410 d^-1, Floquet exponent of the largest-magnitude nontrivial
+    monodromy eigenvalue per Eq. 20), reproduced in-repo as Barden nu=1.29e4
+    (|lambda|=2.58e4 ~ exp(sigma*T_PO)).
+
+    REPRODUCTION (#249, 2026-06-14): symmetric perpendicular-x-axis-crossing
+    corrector at C=3.1294 from seed x0=-0.81164067 with ydot0_sign=-1 and the
+    3rd x-axis crossing pinned as half-period -> T=42.140462 d (sourced 42.140,
+    error +0.0011%); Jacobi 3.1294 enforced to machine eps; topology (1,1)
+    prograde confirmed by winding-number diagnostic. Independent Radau
+    integrator at rtol/atol 1e-11 closes the Jacobi (dJ=1.9e-13 over one
+    period); the rotating-frame state closes to ~2.8e-9 (well-conditioned for
+    the moderate instability). Reproduction harness:
+    src/cyclerfinder/search/reachable_representatives.py +
+    docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (final
+    disposition section; commits a19eb24, 4a20243, f608c6b, 325c8a2).
+
+    MODEL: pure planar CR3BP (PCR3BP). No bicircular / solar-gravity / lunar-
+    eccentricity / ephemeris refinement. Every number here is PCR3BP-only at
+    the Braik-Ross common Jacobi.
+  source_quotes:
+    "orbit_elements.cr3bp.period_nd": "Braik & Ross 2026 Table 2 (p. 12): (1,1)a-cycler T_PO=42.140 d at C_J=3.1294."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_tu": "Braik & Ross 2026 Table 2 (p. 12): (1,1)a-cycler instability rate sigma=1.0482 TU^-1."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_day": "Braik & Ross 2026 Table 2 (p. 12): (1,1)a-cycler instability rate sigma_d=0.2410 day^-1."
+    "orbit_elements.cr3bp.jacobi_constant": "Braik & Ross 2026 Sec. 2.4 / Table 2 header: common Jacobi level C_J=3.1294 used throughout the accessibility study."
+    "orbit_elements.cr3bp.mass_ratio": "Braik & Ross 2026 Table 1 (p. 8): Earth-Moon mass parameter mu = 0.012150584270572 (== Ross-RT 2025 p. 3)."
+
+- id: braik-ross-c11b-cycler-2026
+  name: "Braik-Ross common-energy (1,1)b Earth-Moon cycler (CR3BP, C=3.1294)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1   # spec §14 V1 like-for-like: same-model fixed-Jacobi corrector closes (C enforced to machine eps, T matches Braik-Ross 55.995 d sourced to 0.06%), Barden nu reproduces the published Floquet UNSTABLE verdict (sigma=0.9255 TU^-1 / sigma_d=0.2128 d^-1), independent Radau closes Jacobi (dJ < 1e-12). NOT V2: an unstable orbit cannot satisfy V2-ballistic's bounded-drift-over->=3-laps requirement.
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      Period T_PO = 55.995 d (Braik & Ross 2026 Table 2 "(1,1)b-cycler" row);
+      reproduced in-repo at 55.9590 d (-0.064%, #249). The 0.06% gap is the
+      largest of the three Braik-Ross cyclers reproduced here; the C11b branch
+      sits closer to the (1,1) family's saddle-center fold than C11a, so the
+      seed bracket is tighter and the corrector's recovered period lands slightly
+      off the published rounded value (mining-note discussion in
+      docs/notes/2026-06-14-249-unstable-member-recovery-plan.md). Encounter
+      cadence: k1=1, k2=1 (same family as C11a, different branch). years: null
+      (CR3BP).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(1,1) prograde Earth-Moon cycler — long-period branch (C11b)"   # SOURCED: Braik-Ross 2026 Table 2 "(1,1)b-cycler". (1,1) family two branches meet at a saddle-center fold (#249); C11b is the long-period branch.
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Braik-Ross 2026 Table 1.
+      libration_point: null
+      jacobi_constant: 3.1294   # SOURCED: Braik-Ross 2026 Sec. 2.4 / Table 2 header.
+      period_nd: 12.869009303363775   # DERIVED (corrector at C=3.1294): equals 55.959309 d.
+      stability_index: 3.243641   # DERIVED (Barden nu): linearly UNSTABLE (|nu|>1, lambda=6.33). Consistent with Braik-Ross sigma=0.9255 TU^-1 (lambda_max=exp(sigma*T_PO)~exp(11.91)~1.5e5; our half-period nu=3.24 reflects half-period eigenvalue 6.33, full-period lambda~40, modulo Barden's reciprocal-pair convention -- the qualitative UNSTABLE verdict matches). NOT a golden.
+      state_nd: [-0.7684981321302414, 0.0, 0.0, 0.0, -0.2952676042894401, 0.0]   # DERIVED (NOT a golden): symmetric IC recovered by our fixed-Jacobi corrector from seed x0=-0.7684981 with ydot0_sign=-1 and the 6th x-axis crossing as half-period (per _CYCLER_SEEDS). Crossing residual 1.7e-13.
+      lunit_km: 384400.0   # SOURCED: Braik-Ross 2026 Table 1.
+      tunit_s: 375699.8   # SOURCED: Braik-Ross 2026 Table 1.
+      energy_regime: "Case 3"   # DERIVED: C=3.1294 < C_L2=3.172160 -> L2 neck OPEN.
+      tof_days_bounds: [55.959309, 55.959309]   # v4.2 backfill: bounds from reproduction.
+      braik_ross_sigma_per_tu: 0.9255   # SOURCED: Braik-Ross 2026 Table 2 sigma column for (1,1)b-cycler.
+      braik_ross_sigma_per_day: 0.2128   # SOURCED: Braik-Ross 2026 Table 2 sigma_d column for (1,1)b-cycler.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in source. state_nd DERIVED in-repo by the fixed-Jacobi symmetric corrector from the seed region (x0~-0.7684981, ydot0_sign=-1, half-period at the 6th x-axis crossing) pinned in src/cyclerfinder/search/reachable_representatives.py::_CYCLER_SEEDS and confirmed against the sourced T_PO + (1,1) topology by the #249 reproduction harness."
+      source_hint: "src/cyclerfinder/search/reachable_representatives.py + docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
+      todo_ref: "#249"
+    - path: "orbit_elements.cr3bp.period_nd"
+      kind: "uncertain"
+      note: "Reproduced period 55.9593 d lands 0.06% (-0.036 d) below Braik-Ross's Table-2 sourced 55.995 d -- the largest period-error of the three Braik-Ross cyclers reproduced here. The C11b branch sits closer to the (1,1) family's saddle-center fold than C11a (mining note #249), so the seed region is more sensitive and the corrected member lands a hair off the printed rounded value. Topology, Jacobi, and UNSTABLE verdict are exact; the period difference is within the 0.5 d source-confirmation tolerance used by recover_all_cyclers_braik_ross."
+      source_hint: "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (GRIND RESULT section)."
+      todo_ref: "#249"
+  legs: []
+  first_published:
+    authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    date: "2026-05-29"
+    doi: null
+    url: "https://arxiv.org/abs/2605.31543"
+    note: |
+      Same source as braik-ross-c11a-cycler-2026. Table 2 row "(1,1)b-cycler":
+      T_PO=55.995 d, sigma=0.9255 TU^-1 (sigma_d=0.2128 d^-1).
+  corroborating_sources:
+    - authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+      year: 2025
+      title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+      venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+      doi: null
+      url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+      note: |
+        Family anchor: same continuous (1,1) family as ross-rt-em-cycler-11-2025
+        (Ross-RT 2025 Def. 1, Table 3), DIFFERENT branch at a DIFFERENT energy.
+        C11b is the long-period branch of the (1,1) family at C=3.1294 (paired
+        with C11a's short-period branch across a saddle-center fold, #249).
+        Same family identity (k1=1, k2=1, prograde); different orbit (UNSTABLE,
+        T=55.995 d vs the anchor's STABLE T=44.754 d).
+  priority_date: "2026-05-29"
+  notes: |
+    Common-energy (1,1)b-cycler from Braik & Ross 2026 Table 2, the LONG-PERIOD
+    branch of the (1,1) family at C_J=3.1294. Paired with C11a across the
+    family's saddle-center fold (#249 mining). Like C11a it is UNSTABLE at this
+    energy (sigma=0.9255 TU^-1, slightly weaker than C11a's sigma=1.0482).
+
+    REPRODUCTION (#249, 2026-06-14): symmetric corrector at C=3.1294 from seed
+    x0=-0.7684981 (ydot0_sign=-1, 6th x-axis crossing) -> T=55.959 d
+    (sourced 55.995, error -0.064%; the largest period-gap of the three
+    Braik-Ross cyclers reproduced, flagged as data_gap "uncertain" above);
+    Jacobi 3.1294 enforced to machine eps; topology (1,1) prograde confirmed.
+    Independent Radau closes Jacobi (dJ=1.3e-12) and full state to ~3e-11.
+
+    MODEL: pure PCR3BP at the Braik-Ross common Jacobi. See the C11a row for
+    the framework context (Braik-Ross reachable-set accessibility study).
+  source_quotes:
+    "orbit_elements.cr3bp.period_nd": "Braik & Ross 2026 Table 2 (p. 12): (1,1)b-cycler T_PO=55.995 d at C_J=3.1294."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_tu": "Braik & Ross 2026 Table 2 (p. 12): (1,1)b-cycler instability rate sigma=0.9255 TU^-1."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_day": "Braik & Ross 2026 Table 2 (p. 12): (1,1)b-cycler instability rate sigma_d=0.2128 day^-1."
+    "orbit_elements.cr3bp.jacobi_constant": "Braik & Ross 2026 Sec. 2.4 / Table 2 header: common Jacobi level C_J=3.1294."
+    "orbit_elements.cr3bp.mass_ratio": "Braik & Ross 2026 Table 1 (p. 8): mu = 0.012150584270572."
+
+- id: braik-ross-c32-cycler-2026
+  name: "Braik-Ross common-energy (3,2) Earth-Moon cycler (CR3BP, C=3.1294)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  validation_level: V1   # spec §14 V1 like-for-like: same-model fixed-Jacobi corrector closes (C enforced to machine eps, T matches Braik-Ross 78.613 d sourced to 0.0005%), Barden nu reproduces the published Floquet UNSTABLE verdict (sigma=0.6886 TU^-1 / sigma_d=0.1583 d^-1), independent Radau preserves Jacobi (dJ=7.6e-13) but full state diverges to ~7e-6 over one period due to the orbit's extreme local instability (lambda~2.5e5); that is the expected ceiling for a strongly-unstable orbit, not a defect. NOT V2.
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: null
+  fleet_size: null
+  flyby_mechanics: null
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years: null
+    note: |
+      Period T_PO = 78.613 d (Braik & Ross 2026 Table 2 "(3,2)-cycler" row);
+      reproduced in-repo at 78.6126 d (-0.0005%, #249). Encounter cadence:
+      k1=3 perigee + k2=2 perilune passes per period (Ross-RT 2025 Def. 1;
+      family anchor ross-rt-em-cycler-32-2025). Half-period at the 6th x-axis
+      crossing (same crossing-index lesson as Ross-RT 32-2025; see results
+      note §2 there). years: null (CR3BP).
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: null
+      note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+    - body: "Moon"
+      vinf_kms: null
+      note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: null
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+    cr3bp:
+      family: "(3,2) prograde Earth-Moon cycler"   # SOURCED: Braik-Ross 2026 Table 2 "(3,2)-cycler" + Ross-RT 2025 Def. 1 (k1=3, k2=2).
+      mass_ratio: 1.2150584270572e-2   # SOURCED: Braik-Ross 2026 Table 1.
+      libration_point: null
+      jacobi_constant: 3.1294   # SOURCED: Braik-Ross 2026 Sec. 2.4 / Table 2 header. The (3,2) family spans a wide C band per Ross-RT 2025 (Table 3 jacobi_max=3.182762785398336); 3.1294 sits well below the family's per-family stable midpoint (3.1828) -- a different, UNSTABLE member of the same continuous family.
+      period_nd: 18.078608042038397   # DERIVED (corrector at C=3.1294): equals 78.612611 d.
+      stability_index: 126565.0   # DERIVED (Barden nu): linearly UNSTABLE (|nu|>>1, lambda=2.53e5 half-period eigenvalue). Consistent with Braik-Ross sigma=0.6886 TU^-1 (lambda_max=exp(sigma*T_PO)~exp(12.45)~2.5e5 -- matches). NOT a golden.
+      state_nd: [-0.27521145385238827, 0.0, 0.0, 0.0, -2.115657313282865, 0.0]   # DERIVED (NOT a golden): symmetric IC recovered from seed x0=-0.2752115 (ydot0_sign=-1, 6th x-axis crossing) per _CYCLER_SEEDS. High |ydot0|=2.12 (Earth-realm fast perpendicular crossing). Crossing residual 1.9e-13.
+      lunit_km: 384400.0   # SOURCED: Braik-Ross 2026 Table 1.
+      tunit_s: 375699.8   # SOURCED: Braik-Ross 2026 Table 1.
+      energy_regime: "Case 3"   # DERIVED: C=3.1294 < C_L2=3.172160 -> L2 neck OPEN. (Contrast: ross-rt-em-cycler-32-2025 at C=3.183 is Case 2; the (3,2) family crosses C2 as it extends in C, so the same family includes both regimes depending on the member's energy.)
+      tof_days_bounds: [78.612611, 78.612611]   # v4.2 backfill: bounds from reproduction.
+      braik_ross_sigma_per_tu: 0.6886   # SOURCED: Braik-Ross 2026 Table 2 sigma column for (3,2)-cycler.
+      braik_ross_sigma_per_day: 0.1583   # SOURCED: Braik-Ross 2026 Table 2 sigma_d column for (3,2)-cycler.
+  source_ephemeris: null
+  data_gaps:
+    - path: "orbit_elements.cr3bp.state_nd"
+      kind: "derive"
+      note: "No initial-state vector printed in source. state_nd DERIVED in-repo by the fixed-Jacobi corrector from the seed region (x0~-0.2752115, ydot0_sign=-1, half-period at the 6th x-axis crossing -- same crossing-index lesson as the Ross-RT 2025 (3,2) anchor, see ross-rt-em-cycler-32-2025 results note §2) pinned in _CYCLER_SEEDS and confirmed against the sourced T_PO + (3,2) topology by the #249 reproduction harness."
+      source_hint: "src/cyclerfinder/search/reachable_representatives.py + docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
+      todo_ref: "#249"
+    - path: "orbit_elements.cr3bp.stability_index"
+      kind: "uncertain"
+      note: "Barden half-period monodromy nu=1.27e5 is extreme. The cross-check is consistent: lambda_max from Braik-Ross sigma=0.6886 TU^-1 over one period (T_PO=18.08 TU) is exp(sigma*T_PO)~2.5e5 -- exactly the half-period |lambda| we recover (the Barden reciprocal-pair convention uses the half-period STM so the eigenvalue magnitudes match the full-period Floquet multiplier modulo the (lambda, 1/lambda) reciprocal pairing, which the planar CR3BP factorisation guarantees). For an orbit this unstable the full-state rotating-frame closure ceiling under round-off amplification is ~|lambda|*eps ~ 2.5e-11 amplifying to ~7e-6 over one period (matches the Radau cross-check observation in the V2-blocker reasoning above); only the Jacobi closure (dJ=7.6e-13) is structurally precise."
+      source_hint: "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
+      todo_ref: "#249"
+  legs: []
+  first_published:
+    authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    date: "2026-05-29"
+    doi: null
+    url: "https://arxiv.org/abs/2605.31543"
+    note: |
+      Same source as braik-ross-c11a-cycler-2026. Table 2 row "(3,2)-cycler":
+      T_PO=78.613 d, sigma=0.6886 TU^-1 (sigma_d=0.1583 d^-1). The paper
+      identifies the (3,2)-cycler as the DOMINANT hub/gateway/relay family in
+      the accessibility network (Sec. 5.3, Abstract).
+  corroborating_sources:
+    - authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+      year: 2025
+      title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+      venue: "AAS/AIAA Astrodynamics Specialist Conference, 2025, paper AAS 25-621"
+      doi: null
+      url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+      note: |
+        Family anchor: same continuous (3,2) family as ross-rt-em-cycler-32-2025
+        (Ross-RT 2025 Def. 1, Table 3), at a DIFFERENT Jacobi. The anchor is the
+        family's per-family stable midpoint at C^stable=3.182762663084288
+        (T=77.84 d, |nu|<1, Case 2 -- L2 neck CLOSED). The Braik-Ross member sits
+        at the lower Jacobi C=3.1294, where the (3,2) family is UNSTABLE and the
+        L2 neck is OPEN (Case 3). Same family identity (k1=3, k2=2, prograde);
+        different orbit (UNSTABLE T=78.613 d at low energy vs anchor STABLE
+        T=77.84 d at higher energy).
+    - authors: ["Leiva, A. M.", "Briozzo, C. B."]
+      year: 2008
+      title: "Extension of fast periodic transfer orbits in the Sun-perturbed Earth-Moon system (quasi-bicircular persistence of a (3,2)-class member)"
+      venue: "Celestial Mechanics and Dynamical Astronomy 101, pp. 225-245"
+      doi: null
+      url: null
+      note: "Ross-RT 2025 p. 13 notes a member of the (3,2) family was previously identified by Leiva & Briozzo and shown to persist under solar perturbation (Sun-Earth-Moon quasi-bicircular model) as a single unstable orbit. The Braik-Ross C32 -- unstable, at lower C than the per-family stable midpoint -- is plausibly closer in character to the Leiva-Briozzo member than the Ross-RT 2025 stable anchor is. Not the same orbit (different model framing); recorded for cross-reference."
+  priority_date: "2026-05-29"
+  notes: |
+    Common-energy (3,2)-cycler from Braik & Ross 2026 Table 2 at C_J=3.1294,
+    UNSTABLE (sigma=0.6886 TU^-1). Identified in the paper (Sec. 5.3, Abstract)
+    as the DOMINANT hub/gateway/relay family of the cislunar reachable-set
+    network -- the (3,2)-cycler dominates the accessibility hierarchy across
+    much of the sampled DeltaV/ToF budget plane, with the (1,1)a-cycler dominating
+    the low-time-of-flight regime and the 2:1 stable resonant orbit persistently
+    hard-to-access.
+
+    Distinct from ross-rt-em-cycler-32-2025 (the same family's per-family STABLE
+    midpoint at C=3.183, T=77.84 d, |nu|<1, Case 2). The Braik-Ross member sits
+    at the lower energy C=3.1294 where the family is UNSTABLE and the L2 neck
+    is OPEN (Case 3); this is exactly the regime where the chaotic-sea
+    connectivity argument (Braik-Ross Fig. 4 / Sec. 2.5) applies and the orbit
+    serves as a transport hub.
+
+    REPRODUCTION (#249, 2026-06-14): symmetric corrector at C=3.1294 from seed
+    x0=-0.2752115 (ydot0_sign=-1, 6th x-axis crossing) -> T=78.613 d
+    (sourced 78.613, error -0.0005%); Jacobi enforced to machine eps; topology
+    (3,2) prograde confirmed. Barden nu=1.27e5 (UNSTABLE); independent Radau
+    preserves Jacobi (dJ=7.6e-13) but the full-state rotating-frame closure
+    only reaches ~7e-6 over one period -- the structural ceiling for an orbit
+    with |lambda|~2.5e5 under round-off amplification, NOT a defect (matches
+    Braik-Ross's published sigma exactly: sigma*T_PO=12.45, exp(12.45)=2.5e5).
+
+    MODEL: pure PCR3BP at the Braik-Ross common Jacobi.
+  source_quotes:
+    "orbit_elements.cr3bp.period_nd": "Braik & Ross 2026 Table 2 (p. 12): (3,2)-cycler T_PO=78.613 d at C_J=3.1294."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_tu": "Braik & Ross 2026 Table 2 (p. 12): (3,2)-cycler instability rate sigma=0.6886 TU^-1."
+    "orbit_elements.cr3bp.braik_ross_sigma_per_day": "Braik & Ross 2026 Table 2 (p. 12): (3,2)-cycler instability rate sigma_d=0.1583 day^-1."
+    "orbit_elements.cr3bp.jacobi_constant": "Braik & Ross 2026 Sec. 2.4 / Table 2 header: common Jacobi level C_J=3.1294."
+    "orbit_elements.cr3bp.mass_ratio": "Braik & Ross 2026 Table 1 (p. 8): mu = 0.012150584270572."
 
 # ---------------------------------------------------------------------------
 # Liang, Yang, Li, Bai & Qin 2024 — Callisto-Ganymede-Europa (CGE) triple

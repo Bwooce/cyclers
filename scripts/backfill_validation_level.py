@@ -155,6 +155,19 @@ _LEVEL_BY_ID: dict[str, str] = {
     "liang-2024-cgcec-111-highperijove": "V1",
     "liang-2024-cgcec-110-highperijove": "V1",
     "liang-2024-cgcec-111-lowperijove": "V1",
+    # #249 (2026-06-15, USER-approved writeback): three Braik & Ross 2026 (arXiv
+    # 2605.31543) common-energy Earth-Moon CR3BP cycler reproductions at
+    # C_J=3.1294. Clear spec §14 V1 like-for-like in the planar CR3BP -- same-
+    # model fixed-Jacobi corrector closes (C enforced to machine eps, T matches
+    # Braik-Ross Table-2 to 0.001%-0.06%), Barden nu reproduces the published
+    # Floquet UNSTABLE verdict (sigma>0), independent Radau preserves Jacobi
+    # (dJ<1e-12). NOT V2: unstable orbits cannot satisfy V2-ballistic's
+    # bounded-drift gate. state_nd DERIVED (not a golden).
+    # docs/notes/2026-06-14-249-unstable-member-recovery-plan.md (final
+    # disposition section; commits a19eb24, 4a20243, f608c6b, 325c8a2).
+    "braik-ross-c11a-cycler-2026": "V1",
+    "braik-ross-c11b-cycler-2026": "V1",
+    "braik-ross-c32-cycler-2026": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

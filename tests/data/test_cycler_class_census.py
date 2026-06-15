@@ -26,6 +26,14 @@ non-keplerian 6->4; total unchanged at 268.
 stable Earth-Moon CR3BP cyclers (non-keplerian 4->9) and +4 Liang et al. 2024
 Callisto-Ganymede-Europa triple-cycler members (multi-arc 236->240); total
 268->277.
+
+2026-06-15 (#249, USER-approved writeback): +3 Braik & Ross 2026 common-energy
+Earth-Moon CR3BP cycler reproductions (braik-ross-c11a/c11b/c32-cycler-2026,
+non-keplerian 9->12) -- new (1,1)/(3,2) family members at the common Jacobi
+C_J=3.1294, distinct from the per-family stable midpoints already catalogued
+under ross-rt-em-cycler-*. The 4th Braik-Ross cycler (C21) already exists as
+ross-rt-em-cycler-21-2025 (added there as corroborating_sources, no new row).
+total 277->280.
 """
 
 from __future__ import annotations
@@ -346,10 +354,18 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "ross-rt-em-cycler-31-2025",
         "ross-rt-em-cycler-32-2025",
         "ross-rt-em-cycler-33-2025",
+        # #249 (2026-06-15): three Braik & Ross 2026 (arXiv 2605.31543) common-
+        # energy Earth-Moon (1,1)/(3,2) cycler reproductions at C_J=3.1294 -- new
+        # family members at a different energy from the Ross-RT 2025 anchors
+        # (rotating-frame periodic, Jacobi-constant identity). The 4th Braik-Ross
+        # cycler (C21) is already catalogued as ross-rt-em-cycler-21-2025.
+        "braik-ross-c11a-cycler-2026",
+        "braik-ross-c11b-cycler-2026",
+        "braik-ross-c32-cycler-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 9
+assert len(NON_KEPLERIAN_IDS) == 12
 
 
 # ---------------------------------------------------------------------------
@@ -369,16 +385,17 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=240, non-keplerian=9.
+    """Exact class distribution: single-ellipse=28, multi-arc=240, non-keplerian=12.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
     added 5 Ross CR3BP cyclers (non-keplerian 4->9) and 4 Liang CGE triple-cycler
-    members (multi-arc 236->240).)
+    members (multi-arc 236->240). #249 (2026-06-15) added 3 Braik-Ross 2026 CR3BP
+    cycler reproductions (non-keplerian 9->12).)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 240, "non-keplerian": 9}
+    expected = {"single-ellipse": 28, "multi-arc": 240, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
