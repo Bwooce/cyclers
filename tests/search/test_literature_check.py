@@ -252,6 +252,188 @@ def test_build_queries_moon_tour_branch() -> None:
     assert any("Callisto" in q for q in qs)
 
 
+# ---------------------------------------------------------------------------
+# #272 corpus expansion: Pluto-Charon + recent capability papers.
+#
+# Each new anchor in KNOWN_CORPUS should be findable via a synthetic search
+# result whose title/snippet carries the published authors + keywords. We
+# feed three independent signatures (one Pluto-system, one Earth-Moon cycler
+# family, one tulip-orbit) and verify check_literature flags each "published"
+# with a citation that names the right line.
+# ---------------------------------------------------------------------------
+
+
+_NEW_CORPUS_HITS: list[SearchResult] = [
+    SearchResult(
+        title="Persephone: A Pluto-system Orbiter and Kuiper Belt Explorer",
+        url="https://doi.org/10.3847/PSJ/abf837",
+        snippet="Howard, Stern et al. design Persephone, a Pluto orbiter with "
+        "Pluto-Charon CR3BP periodic orbits and Nix Hydra encounters; "
+        "binary rotating frame cycler science orbits.",
+    ),
+    SearchResult(
+        title="Stable Prograde Earth-Moon Multi-Orbiter Cyclers via Three-Body Dynamics",
+        url="https://vsgc.odu.edu/wp-content/uploads/2026/04/Roberts-Tsoukkas_Michael_Cycler-Journal-Paper.pdf",
+        snippet="Roberts-Tsoukkas and Ross present stable prograde Earth-Moon "
+        "cycler families across mass parameters including a universal stable "
+        "subfamily; multi-orbiter cycler trajectories in the three-body problem.",
+    ),
+    SearchResult(
+        title="Novel Tulip-Shaped Three-body Orbits for Cislunar SDA Missions",
+        url="https://doi.org/10.1007/s40295-025-00510-w",
+        snippet="Koblick and Kelly construct tulip-shaped three-body cycler "
+        "orbits in the Earth-Moon CR3BP for cislunar SDA missions; "
+        "petal-count periodic orbit families.",
+    ),
+]
+
+
+def _new_corpus_search(query: str) -> Sequence[SearchResult]:
+    """Deterministic ranker over the #272 expansion corpus (and the old one)."""
+    q_terms = {t for t in _tokenise(query) if len(t) > 2}
+    out: list[tuple[int, SearchResult]] = []
+    for r in (*_REAL_CORPUS, *_NEW_CORPUS_HITS):
+        text_terms = set(_tokenise(r.title + " " + r.snippet))
+        overlap = len(q_terms & text_terms)
+        if overlap >= 2:
+            out.append((overlap, r))
+    out.sort(key=lambda t: t[0], reverse=True)
+    return [r for _, r in out]
+
+
+PLUTO_PERSEPHONE_SIG = CandidateSignature(
+    primary="Pluto",
+    sequence=("Charon", "Nix", "Hydra", "Charon"),
+    period_k=2,
+    vinf_per_encounter_kms=(0.18, 0.07, 0.05),
+)
+
+ROBERTS_TSOUKKAS_SIG = CandidateSignature(
+    primary="Earth",
+    sequence=("Moon",),
+    vinf_per_encounter_kms=(0.6,),
+)
+
+KOBLICK_TULIP_SIG = CandidateSignature(
+    primary="Earth",
+    sequence=("Moon",),
+    vinf_per_encounter_kms=(0.4,),
+    resonances=("tulip",),
+)
+
+
+# Tokens that any of the #272 new anchors could legitimately surface in a
+# citation/url/doi. Per signature class, the matcher's structural overlap +
+# author/keyword override should return at least ONE of these -- proving the
+# expansion is reachable through check_literature. The matcher picks the
+# first overlap in KNOWN_CORPUS insertion order; with multiple Earth-Moon
+# anchors that all overlap a generic E-M cycler signature, ANY of them is a
+# valid "new corpus" hit -- the point is the matcher resolves to a #272 line,
+# not the pre-existing Aldrin/Russell/Liang/Strange/Jones/Hernandez entries.
+_NEW_CORPUS_TOKENS: dict[str, tuple[str, ...]] = {
+    "pluto-system": (
+        "persephone",
+        "showalter",
+        "brozovic",
+        "stern",
+        "pluto",
+        "10.3847/psj/abf837",
+        "10.1038/nature14469",
+    ),
+    # Any of the Earth-Moon CR3BP #272 anchors (Braik-Ross orbital networks;
+    # Roberts-Tsoukkas multi-orbiter; Kumar resonant transport; Koblick tulip;
+    # Zhang tulip; Hiraiwa lobe-dynamics; Chinese J. tulip; Sanaga fidelity).
+    "earth-moon-new": (
+        "roberts-tsoukkas",
+        "braik",
+        "kumar",
+        "rosengren",
+        "koblick",
+        "kelly",
+        "tulip",
+        "hiraiwa",
+        "lobe dynamics",
+        "orbital networks",
+        "multi-orbiter",
+        "cislunar resonant transport",
+        "2605.31543",
+        "2509.12675",
+        "2602.17444",
+        "10.1007/s40295-025-00510-w",
+        "10.1007/s11071-026-12465-0",
+        # Roberts-Tsoukkas journal manuscript URL host:
+        "vsgc.odu.edu",
+    ),
+}
+
+
+@pytest.mark.parametrize(
+    ("sig", "token_class"),
+    [
+        (PLUTO_PERSEPHONE_SIG, "pluto-system"),
+        (ROBERTS_TSOUKKAS_SIG, "earth-moon-new"),
+        (KOBLICK_TULIP_SIG, "earth-moon-new"),
+    ],
+)
+def test_new_corpus_entries_flagged_published(sig: CandidateSignature, token_class: str) -> None:
+    """At least 3 of the #272 additions must be findable as ``published``.
+
+    Mirrors the existing Aldrin/Russell/Liang self-validation: a synthetic
+    search result with the publication's real authors + venue must score above
+    MATCH_THRESHOLD and surface a citation/url referencing the right line.
+
+    Multiple corpus anchors structurally overlap an Earth-Moon candidate
+    (Braik-Ross, Roberts-Tsoukkas, Kumar, Koblick, Hiraiwa, ...); the matcher
+    picks the first author/keyword overlap in KNOWN_CORPUS insertion order.
+    The test passes if the verdict's citation OR matched_url surfaces ANY
+    token from the expected publication class -- the point is that the new
+    anchors are reachable through ``check_literature``, not that any one of
+    them is uniquely picked from a multi-anchor structural overlap.
+    """
+    result = check_literature(sig, search=_new_corpus_search)
+    assert result.status == "published", (
+        f"new-corpus entry {token_class!r} not flagged as published: {result}"
+    )
+    assert result.citation, "published verdict must carry a citation"
+    blob = (result.citation + " " + (result.matched_url or "") + " " + (result.doi or "")).lower()
+    expected = _NEW_CORPUS_TOKENS[token_class]
+    assert any(tok in blob for tok in expected), (
+        f"verdict does not surface any expected token from {token_class!r}: "
+        f"citation={result.citation!r} matched_url={result.matched_url!r} "
+        f"doi={result.doi!r}"
+    )
+    assert result.confidence >= 0.70
+    assert not is_novelty_claimable(result.to_review_block())
+
+
+def test_new_corpus_anchors_registered() -> None:
+    """Direct registration check for the #272 KNOWN_CORPUS additions.
+
+    Independent of the live-matcher path, the corpus expansion must register
+    the named publication anchors so downstream code (the discovery daemon's
+    candidate-anchor walker, the offline citation override) can see them. We
+    verify the canonical primaries + authors / keywords are present.
+    """
+    from cyclerfinder.search.literature_check import KNOWN_CORPUS
+
+    pluto_anchors = [a for a in KNOWN_CORPUS if a.primary == "Pluto"]
+    assert len(pluto_anchors) >= 3, (
+        f"expected >=3 Pluto-system anchors after #272 expansion; got {len(pluto_anchors)}"
+    )
+    pluto_authors = {a for anchor in pluto_anchors for a in anchor.authors}
+    assert "Howard" in pluto_authors  # Persephone
+    assert "Showalter" in pluto_authors  # Styx-Nix-Hydra resonance
+
+    earth_moon_anchors = [a for a in KNOWN_CORPUS if a.primary == "Earth" and "Moon" in a.body_set]
+    em_authors = {a for anchor in earth_moon_anchors for a in anchor.authors}
+    # Recent capability papers (Track A).
+    assert "Braik" in em_authors  # Braik-Ross orbital networks
+    assert "Roberts-Tsoukkas" in em_authors  # Roberts-Tsoukkas multi-orbiter
+    assert "Kumar" in em_authors  # Kumar-Rawat-Rosengren-Ross
+    assert "Koblick" in em_authors  # Koblick tulip
+    assert "Hiraiwa" in em_authors  # Hiraiwa lobe dynamics
+
+
 def test_review_entry_signature_roundtrip() -> None:
     from cyclerfinder.search.literature_check import signature_from_review_entry
 

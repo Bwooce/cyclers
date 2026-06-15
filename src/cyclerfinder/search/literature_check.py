@@ -266,6 +266,223 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         citation="Jones, Hernandez & Jesick, AAS 17-577 (VEM triple cyclers)",
         doi=None,
     ),
+    # -----------------------------------------------------------------------
+    # Pluto-Charon dynamical literature (#272 expansion).
+    #
+    # The 12-row Pluto SILVER pass (#269 / 2026-06-15-pluto-silver-review.md)
+    # identified three structural classes the offline corpus was missing. The
+    # entries below pre-register the published anchors so the offline matcher
+    # surfaces them deterministically without needing live web search; web
+    # search remains authoritative for novelty.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Howard et al. Persephone Pluto-system orbiter (CR3BP periodic orbits)",
+        primary="Pluto",
+        body_set=frozenset({"Charon", "Nix", "Hydra", "Styx", "Kerberos"}),
+        authors=("Howard", "Stern", "McKinnon"),
+        keywords=(
+            "Persephone Pluto orbiter",
+            "Pluto-Charon CR3BP periodic orbit",
+            "Pluto-Charon binary rotating frame orbit",
+        ),
+        citation="Howard, Stern et al., 'Persephone: A Pluto-system Orbiter "
+        "and Kuiper Belt Explorer,' Planetary Science Journal 2(2):56 (2021); "
+        "arXiv:2102.08282",
+        doi="10.3847/PSJ/abf837",
+    ),
+    CorpusAnchor(
+        name="Stern/SwRI Pluto Game-Changer (Charon gravity-assist tour)",
+        primary="Pluto",
+        body_set=frozenset({"Charon", "Nix", "Hydra", "Styx", "Kerberos"}),
+        authors=("Stern", "Tapley", "Zangari"),
+        keywords=(
+            "Charon gravity assist tour",
+            "Pluto orbiter Game-Changer",
+            "Pluto system flyby tour",
+        ),
+        citation="Stern, Tapley, Zangari et al., 'Game-Changer Pluto Orbiter' "
+        "concept, DPS 2018 (SwRI)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Showalter-Hamilton Styx-Nix-Hydra three-body resonance",
+        primary="Pluto",
+        body_set=frozenset({"Styx", "Nix", "Hydra"}),
+        authors=("Showalter", "Hamilton"),
+        keywords=(
+            "Styx Nix Hydra three-body resonance",
+            "Pluto small moons Laplace-like resonance",
+        ),
+        citation="Showalter & Hamilton, 'Resonant interactions and chaotic "
+        "rotation of Pluto's small moons,' Nature 522:45-49 (2015)",
+        doi="10.1038/nature14469",
+    ),
+    CorpusAnchor(
+        name="Brozovic et al. Pluto satellite orbit determination",
+        primary="Pluto",
+        body_set=frozenset({"Charon", "Styx", "Nix", "Kerberos", "Hydra"}),
+        authors=("Brozovic", "Showalter", "Jacobson"),
+        keywords=(
+            "Pluto small satellite orbits",
+            "Pluto satellite system orbit determination",
+        ),
+        citation="Brozovic et al., 'The orbits and masses of satellites of "
+        "Pluto,' Icarus 246:317-329 (2015); Brozovic et al., AJ 163:241 (2022)",
+        doi="10.1016/j.icarus.2014.03.015",
+    ),
+    CorpusAnchor(
+        name="Pluto-Charon CR3BP tadpole/horseshoe at L3/L4/L5 (2025)",
+        primary="Pluto",
+        body_set=frozenset({"Charon"}),
+        authors=("Pluto-Charon", "Charon"),  # arXiv preprint; authors not pinned in our notes
+        keywords=(
+            "Pluto-Charon tadpole horseshoe orbit",
+            "Pluto-Charon L4 L5 L3 periodic orbit",
+            "Pluto-Charon CR3BP coorbital",
+        ),
+        citation="'Tadpole and horseshoe orbits in the Pluto-Charon CR3BP at "
+        "L3/L4/L5,' arXiv:2510.13479 (2025)",
+        doi=None,
+    ),
+    # -----------------------------------------------------------------------
+    # Recent capability papers (Track A, surfaced by the #265 capability sweep
+    # 2026-06-13-discovery-capability-paper-sweep.md / forward-citation-sweep-2).
+    # These are anchored here so the offline corpus + structural matcher can
+    # cite the published genome / family-network / tulip / lobe-dynamics
+    # papers when a candidate's fingerprint overlaps them.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Braik-Ross orbital networks in the three-body problem (2026)",
+        primary="Earth",  # Earth-Moon CR3BP family network
+        body_set=frozenset({"Moon"}),
+        authors=("Braik", "Ross"),
+        keywords=(
+            "orbital network three-body problem",
+            "reachable-set family accessibility",
+            "Earth-Moon CR3BP family network",
+        ),
+        citation="Braik & Ross, 'Orbital Networks in the Three-Body Problem,' "
+        "arXiv:2605.31543 (2026)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Roberts-Tsoukkas & Ross stable prograde Earth-Moon multi-orbiter cyclers",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Roberts-Tsoukkas", "Ross"),
+        keywords=(
+            "stable prograde Earth-Moon cycler",
+            "multi-orbiter cycler three-body dynamics",
+            "binary-star mass parameter cycler family",
+        ),
+        citation="Roberts-Tsoukkas & Ross, 'Stable Prograde Earth-Moon "
+        "Multi-Orbiter Cyclers via Three-Body Dynamics,' journal extension of "
+        "AAS 25-621 (2026, VSGC manuscript)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Kumar", "Rawat", "Rosengren", "Ross"),
+        keywords=(
+            "cislunar resonant transport",
+            "heteroclinic pathway resonant manifold",
+            "Earth-Moon resonant family network",
+        ),
+        citation="Kumar, Rawat, Rosengren & Ross, 'Cislunar Resonant Transport "
+        "and Heteroclinic Pathways,' Advances in Space Research (2026); "
+        "arXiv:2509.12675",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Koblick novel tulip-shaped three-body orbits (cislunar SDA)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Koblick", "Kelly"),
+        keywords=(
+            "tulip-shaped three-body orbit",
+            "tulip cislunar SDA orbit",
+            "petal-count periodic orbit Earth-Moon",
+        ),
+        citation="Koblick, 'Novel Tulip-Shaped Three-body Orbits for Cislunar "
+        "SDA Missions,' AMOSTECH (2023); Koblick & Kelly, J. Astronaut. Sci. "
+        "(2025) DOI 10.1007/s40295-025-00510-w",
+        doi="10.1007/s40295-025-00510-w",
+    ),
+    CorpusAnchor(
+        name="Zhang-Jiang-Yuan tulip time-regularized bifurcation framework (2026)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Zhang", "Jiang", "Yuan"),
+        keywords=(
+            "tulip orbit time-regularized bifurcation",
+            "period-multiplying bifurcation cislunar tulip",
+        ),
+        citation="Zhang, Jiang & Yuan, 'Time-regularized bifurcation framework "
+        "for tulip-shaped orbits,' Nonlinear Dynamics (2026) DOI "
+        "10.1007/s11071-026-12465-0",
+        doi="10.1007/s11071-026-12465-0",
+    ),
+    CorpusAnchor(
+        name="Cislunar tulip robust construction (Chinese J. Aeronautics 2026)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Chinese Journal of Aeronautics",),
+        keywords=(
+            "cislunar tulip robust construction",
+            "tulip orbit cislunar mission",
+        ),
+        citation="'Robust construction of cislunar tulip-shaped orbits,' "
+        "Chinese Journal of Aeronautics (2026), Elsevier "
+        "S1000936126001755",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Hiraiwa", "Bando", "Sato", "Hokamoto"),
+        keywords=(
+            "lobe dynamics low-energy cislunar transfer",
+            "weighted directed graph lobe sequence",
+            "resonant orbit lobe-dynamics transfer",
+        ),
+        citation="Hiraiwa, Bando, Sato & Hokamoto, 'Design of low-energy "
+        "transfers in cislunar space using sequences of lobe dynamics,' "
+        "Acta Astronautica 248 (2026); arXiv:2602.17444",
+        doi=None,
+    ),
+    # -----------------------------------------------------------------------
+    # Ancillary anchors -- adjacent literature surfaced by the discovery
+    # campaign that the matcher may bump into structurally.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Davis-Phillips-McCarthy Saturn tulip-shaped orbits",
+        primary="Saturn",
+        body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione"}),
+        authors=("Davis", "Phillips", "McCarthy"),
+        keywords=(
+            "Saturn tulip-shaped orbit",
+            "Titan period-multiplying orbit",
+            "Saturnian periodic orbit Np petal",
+        ),
+        citation="Davis, Phillips & McCarthy, 'Tulip-shaped orbits in the "
+        "Saturn system,' Acta Astronautica 143:16-28 (2018)",
+        doi="10.1016/j.actaastro.2017.11.011",
+    ),
+    CorpusAnchor(
+        name="Sanaga-Park-Howell fidelity-transition framework (2026)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Sanaga", "Park", "Howell"),
+        keywords=(
+            "fidelity transition framework CR3BP ephemeris",
+            "CR3BP to high-fidelity continuation",
+        ),
+        citation="Sanaga, Park & Howell, J. Astronaut. Sci. (2026) DOI 10.1007/s40295-026-00571-5",
+        doi="10.1007/s40295-026-00571-5",
+    ),
 )
 
 
