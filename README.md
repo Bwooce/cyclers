@@ -6,6 +6,19 @@ maintained by gravity assists with little or no propellant. Primary targets are
 Earth–Mars cyclers (used as validation) and the under-explored Venus–Earth–Mars
 (VEM) family.
 
+**Catalogue scope (schema v4.7, expanded 2026-06-15):** four orbit classes,
+admitting the mission-actionable epoch-locked literature alongside strict cyclers.
+
+| Class | Period? | Epoch-locked? | Returns | Type case |
+|---|---|---|---|---|
+| `cycler` | strictly periodic | NO | ∞ | Aldrin Earth-Mars; Russell-Ocampo S1L1 |
+| `quasi_cycler` | closes-up-to-rotation | YES (10–15 yr) | 3–15 | cyclers-of-opportunity |
+| `precursor_mga` | non-repeating | YES (launch window) | 1 (insertion) | one-shot insertion into an extant cycler |
+| `mga_tour` | non-repeating | YES (launch window) | 1 (terminal) | Galileo VEEGA; Tito 2018 Mars free-return |
+
+See [`docs/notes/2026-06-16-catalogue-scope-taxonomy.md`](docs/notes/2026-06-16-catalogue-scope-taxonomy.md)
+for the full taxonomy, V0–V5 gauntlet extension, and migration record.
+
 ## Status
 
 | Milestone | Status |

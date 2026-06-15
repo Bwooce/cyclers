@@ -13,6 +13,54 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
+# Project state at a glance (updated 2026-06-15)
+
+## SCOPE EXPANSION (2026-06-15, task #294) — read this first
+
+Catalogue scope expanded from cyclers-only to a four-class taxonomy
+(`cycler` / `quasi_cycler` / `precursor_mga` / `mga_tour`), schema bumped
+v4.6 → v4.7. Driven by the #286 frontier-scoping finding that the
+literature has a mature class of epoch-locked trajectories (Galileo VEEGA,
+Cassini VVEJGA, Petropoulos pump tours, Tito 2018) the prior scope could
+not represent — and that without the precursor MGA class the catalogue
+describes cyclers no spacecraft can actually reach.
+
+**Mechanical work landed:**
+- Schema v4.7 + one-time migration script (`5665fc6`). All 280 pre-v4.7
+  rows annotated `orbit_class: cycler`, `epoch_locked: false`,
+  `n_returns: infinite` (defaults preserve v4.6 behaviour).
+- Tito 2018 admitted as `mga_tour` (`b6bcbb3`): catalogue ID
+  `tito-2018-mars-free-return`, V0 evidence is the DE440 reproduction of
+  Tito's published DE421 Tables III/IV to <1.5%.
+- `KNOWN_CORPUS` expanded with 12 MGA/tour anchors + Antoniadou-Voyatzis
+  2018 spatial-CR3BP anchor (`568d8a4`).
+- Public taxonomy doc: `docs/notes/2026-06-16-catalogue-scope-taxonomy.md`.
+- Website filter UI live on `cyclers.space` (class dropdown, window
+  filter, n_returns range, per-row class badge; commits `c2bb4ee` /
+  `c620492` on `Bwooce/cyclers.space:main`).
+
+**Queued multi-week Track-A capability builds** (per the
+`feedback_speculative_high_effort_required` rule: cost is a column, not
+a verdict — these are NOT rejected, just queued for funding):
+- **#289** quasi-cycler + precursor-MGA genome (~1200 LOC / 2–3 wk) —
+  Track A Axis 5; unblocked by this scope decision.
+- **#291** full 3D / broken-plane genome (~850 LOC) — Track A Axis 3,
+  risk dropped MED → LOW after the #287 scoping spike confirmed the
+  corrector spine is already 3D-aware (commit `9068aa0` mapped an 80-member
+  3D Braik-Ross (1,1) family at z0 ≈ -0.241 nondim).
+- **#290** quasi-periodic 2-tori (Olikara-Howell, ~1500 LOC) — Track A
+  Axis 4.
+- **#292** BCR4BP (Andreu 1998, digested 2026-06-14) — Track A Axis 2,
+  re-evaluate verdict after #287/#289.
+- **#293** ER3BP — Track A Axis 1, weakest of the 5 axes (well-documented
+  e>0 continuation refines CR3BP families without yielding species that
+  don't continue back to e→0).
+
+See `docs/notes/2026-06-16-frontier-scoping-er3bp-bcr4bp-3d-qp-epoch.md`
+for the cost / existence-prior / first-IC scoping that drove this queue.
+
+---
+
 # Project state at a glance (updated 2026-06-14)
 
 This top section is the orientation map for a contributor returning to

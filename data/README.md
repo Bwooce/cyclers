@@ -612,6 +612,47 @@ silently promotes itself off the floor without a sourced, in-repo evidence
 pointer — golden discipline: when in doubt, V0. Full rationale is in
 **spec.md §16.7.12**.
 
+Schema v4.7 — orbit_class taxonomy (catalogue scope expansion)
+--------------------------------------------------------------
+
+The v4.7 sub-rev (2026-06-15, task #294) expands the catalogue's scope from
+cyclers-only to a four-class taxonomy. Adds three additive optional row fields
+(defaults preserve v4.6 behaviour — every pre-v4.7 row reads as a strict cycler):
+
+- `orbit_class`: enum `cycler` | `quasi_cycler` | `precursor_mga` | `mga_tour` (default `cycler`)
+- `epoch_locked`: bool (default `false`)
+- `n_returns`: integer ≥ 1 or string `"infinite"` (default `"infinite"`)
+
+Plus three optional epoch-locked fields (null/absent for `cycler`):
+
+- `validity_window`: `{start, end}` ISO-8601 (UTC) — when the trajectory closes
+- `launch_epoch`: ISO-8601 (UTC) — for `mga_tour` / `precursor_mga`
+- `inserts_into`: catalogue ID — required for `precursor_mga`; must resolve to an extant `cycler`
+
+```yaml
+- id: tito-2018-mars-free-return
+  orbit_class: mga_tour
+  epoch_locked: true
+  n_returns: 1
+  validity_window:
+    start: "2018-01-05T07:00:00Z"
+    end: "2019-05-21T13:52:48Z"
+  launch_epoch: "2018-01-05T07:00:00Z"
+```
+
+Class invariants (enforced by the Python semantic gate; the JSON Schema cannot
+express cross-row referential integrity):
+
+- `cycler` ⇒ `epoch_locked=false`, `n_returns="infinite"`
+- `quasi_cycler` / `precursor_mga` / `mga_tour` ⇒ `epoch_locked=true`, `n_returns` is a finite integer ≥ 1
+- `precursor_mga` ⇒ `inserts_into` resolves to an existing `cycler` row
+
+One-time migration: `scripts/migrate_catalogue_scope_2026-06-15.py` (idempotent;
+preserves comments and formatting via ruamel.yaml). Full taxonomy + V0–V5
+gauntlet extension is documented in
+`docs/notes/2026-06-16-catalogue-scope-taxonomy.md`. Full rationale is in
+**spec.md** (scope section, scheduled update under task #294).
+
 Out-of-paradigm work
 --------------------
 
