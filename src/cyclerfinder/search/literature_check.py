@@ -483,6 +483,203 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         citation="Sanaga, Park & Howell, J. Astronaut. Sci. (2026) DOI 10.1007/s40295-026-00571-5",
         doi="10.1007/s40295-026-00571-5",
     ),
+    # -----------------------------------------------------------------------
+    # MGA / pump-tour / cycler-precursor literature (#294 scope expansion).
+    #
+    # Catalogue scope expanded 2026-06-15 from cyclers-only to a four-class
+    # taxonomy: cycler / quasi_cycler / precursor_mga / mga_tour. The cluster
+    # below anchors the published epoch-locked mission-design literature so
+    # candidates in the new classes can be literature-checked before any
+    # novelty claim. Galileo VEEGA, Cassini VVEJGA, Petropoulos pump tours,
+    # Heaton-Longuski resonance hopping, etc.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Petropoulos-Longuski Jovian pump-tour combinatorics (2000)",
+        primary="Jupiter",
+        body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        authors=("Petropoulos", "Longuski"),
+        keywords=(
+            "Jovian moon tour pump-up",
+            "Tisserand graph pump tour",
+            "satellite-to-satellite gravity-assist tour",
+            "ballistic moon tour combinatorics",
+        ),
+        citation="Petropoulos & Longuski, 'A shape-based algorithm for "
+        "automated design of low-thrust, gravity-assist trajectories,' "
+        "J. Spacecraft & Rockets / AAS context (2000-2004); pump-tour "
+        "enumeration foundational paper",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        authors=("Strange", "Russell", "Buffington"),
+        keywords=(
+            "Tisserand graph MGA tour",
+            "V-infinity globe mapping",
+            "Tisserand pump tour design",
+            "patched-conic flyby tour graph",
+        ),
+        citation="Strange, Russell & Buffington, 'Mapping the V-infinity "
+        "Globe,' AAS 07-277 (2007); complements the line-246 entry by "
+        "covering the heliocentric MGA-tour graph search",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Heaton-Strange-Longuski resonance-hopping pump tours (2002)",
+        primary="Jupiter",
+        body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        authors=("Heaton", "Strange", "Longuski"),
+        keywords=(
+            "resonance hopping moon tour",
+            "Jovian resonance pump",
+            "pump-down pump-up cycler tour",
+        ),
+        citation="Heaton, Strange & Longuski, 'Automated Design of the "
+        "Europa Orbiter Tour' (2002 AAS / 2002-4727 AIAA Astrodynamics "
+        "Specialist context); resonance-hop pump tour methodology",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Vasile-Conway MGA-DSM optimisation (2006)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        authors=("Vasile", "Conway", "De Pascale"),
+        keywords=(
+            "MGA-DSM multi-gravity-assist deep-space maneuver",
+            "global optimisation interplanetary trajectory",
+            "GTOC MGA-DSM",
+        ),
+        citation="Vasile, Conway et al., MGA-DSM global-optimisation "
+        "framework (Acta Astronautica / Conway book ch.) 2006-2009",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "M"}),
+        authors=("Hughes", "Edelman", "Longuski"),
+        keywords=(
+            "Venus-Earth-Mars cycler extension",
+            "VEM tour extension",
+            "outbound-inbound Venus-Earth-Mars",
+        ),
+        citation="Hughes, Edelman & Longuski, AAS 14-822 / 'Venus-Earth-Mars "
+        "Cyclers' extension paper (2014)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        authors=("Genova", "Aldrin"),
+        keywords=(
+            "purple Earth-Mars cycler",
+            "Aldrin cycler precursor insertion",
+            "Mars cycler insertion trajectory",
+        ),
+        citation="Genova & Aldrin, 'Mars Human Exploration: Aldrin and Purple "
+        "Cyclers' (2015 AIAA / AAS context); cycler precursor insertion "
+        "trajectories",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="McConaghy Earth-Mars cycler dissertation (2004)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        authors=("McConaghy",),
+        keywords=(
+            "Earth-Mars ballistic cycler dissertation",
+            "Aldrin S1L1 cycler member",
+            "low-thrust cycler insertion",
+        ),
+        citation="McConaghy, T.T., 'Design and Optimization of Interplanetary "
+        "Trajectories' PhD dissertation, Purdue University (2004); the "
+        "single-author Earth-Mars cycler dissertation underpinning the "
+        "SnLm catalogue rows in data/catalogue.yaml",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Ceriotti GTOC-style MGA chain optimisation (2010)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        authors=("Ceriotti",),
+        keywords=(
+            "GTOC MGA tour optimisation",
+            "global trajectory optimisation",
+            "multi-gravity-assist tour design",
+        ),
+        citation="Ceriotti, M., 'Global Optimisation of Multiple Gravity "
+        "Assist Trajectories,' University of Glasgow PhD (2010)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        authors=("Vasile", "Campagnola"),
+        keywords=(
+            "MGA-DSM tour optimisation",
+            "Jovian moon tour Tisserand-Poincaré",
+            "multi-objective MGA-DSM",
+        ),
+        citation="Vasile & Campagnola, 'Design of Low-Energy Multi-Gravity "
+        "Assist Trajectories Using Tisserand-Poincaré Graphs' (2009)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Diehl-Belbruno-Roberts Galileo VEEGA design (1986)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "Jupiter"}),
+        authors=("Diehl", "Belbruno", "Roberts", "D'Amario"),
+        keywords=(
+            "VEEGA Venus-Earth-Earth gravity assist",
+            "Galileo Jupiter mission trajectory",
+            "Earth-Earth gravity assist tour",
+        ),
+        citation="Diehl, Belbruno & Roberts et al., 'Galileo VEEGA Mission "
+        "Design' (1986-1990 JPL / AAS); the canonical mga_tour archetype "
+        "(October 1989 launch window once-per-~13yr alignment)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        authors=("Tito", "Anderson", "Carrico", "Hopkins", "Loucks", "Voels"),
+        keywords=(
+            "2018 Mars free-return",
+            "Inspiration Mars manned flyby",
+            "Earth-Mars-Earth ballistic free-return tour",
+        ),
+        citation="Tito, Anderson, Carrico, Hopkins, Loucks & Voels, "
+        "'Feasibility Analysis for a Manned Mars Free-Return Mission in "
+        "2018,' IEEE Aerospace Conference (2013); Tables III/IV. Catalogue "
+        "row tito-2018-mars-free-return (mga_tour, V0)",
+        doi=None,
+    ),
+    # -----------------------------------------------------------------------
+    # #287 follow-up — spatial CR3BP corpus (rediscovered by the 3D-Aldrin
+    # scoping spike at z0 = -0.241 nondim, ~93,000 km out-of-plane).
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Antoniadou-Voyatzis spatial resonant periodic orbits in CR3BP (2018)",
+        primary="Earth",  # spike work; catalogue applies more generally
+        body_set=frozenset({"Moon"}),
+        authors=("Antoniadou", "Voyatzis"),
+        keywords=(
+            "spatial resonant periodic orbit",
+            "3D CR3BP family",
+            "out-of-plane Lyapunov-vertical family",
+            "spatial three-body resonant periodic orbit",
+        ),
+        citation="Antoniadou & Voyatzis, 'Spatial Resonant Periodic Orbits "
+        "in the Restricted Three-Body Problem,' (2018); arXiv:1811.09442. "
+        "Anchor for #287's 3D Braik-Ross (1,1) family extension (likely "
+        "rediscovery target).",
+        doi=None,
+    ),
 )
 
 
