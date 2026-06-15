@@ -221,6 +221,11 @@ def test_tulip_at_saturn_titan_via_multi_shooting() -> None:
     survives the strong period-doubling eigenvector that single-shooting
     cannot.
 
+    This test exercises the Tier B (Phase 3/4) path with ``try_direct_seed=False``
+    so the new Phase 5 (#280) direct-seed escalation cannot short-circuit it.
+    The Tier B path itself is what we are stress-testing here, separately from
+    the parallel direct-seed result.
+
     HONEST DISCIPLINE: this test is BOUNDED at marker slow (>30s wall) and
     must either:
       - succeed (the multi-shooter delivers a converged Np=2 tulip at Titan
@@ -236,6 +241,7 @@ def test_tulip_at_saturn_titan_via_multi_shooting() -> None:
         d_x0=5e-4,
         eigenvector_step=1e-2,
         tol=1e-8,
+        try_direct_seed=False,  # force Tier B path; Phase 5 direct-seed tested separately
     )
     assert result is not None
     # Seed should converge (verified by #264 probe; that result IS this seed).
@@ -258,12 +264,20 @@ def test_tulip_at_saturn_titan_via_multi_shooting() -> None:
             f"bifurcation_distance="
             f"{min(result.bifurcation.dist_before, result.bifurcation.dist_after):.4f}. "
             "Honest negative -- multi-shooting at n_segments=2 still cannot "
-            "thread this period-doubling. Possible diagnoses: (a) the family-"
-            "switch eigenvector_step is too small / large for the Saturn-Titan "
-            "eigenvalue's magnitude; (b) the parent member sits too far from "
-            "the bifurcation point (the continuation step d_x0=5e-4 may need "
-            "to be finer); (c) the multi-shooter needs more segments at this "
-            "system's mu. None of these warrant tuning the gate to pass."
+            "thread this period-doubling. The Tier-B continuation goes the "
+            "natural -1 direction in x0 and the family curve there approaches "
+            "lambda=-1 only marginally (distance ~0.058) before turning away; "
+            "the recorded bracket sits PAST the closest approach. Possible "
+            "diagnoses: (a) the family-switch eigenvector_step is too small / "
+            "large for the Saturn-Titan eigenvalue's magnitude; (b) the parent "
+            "member sits too far from the bifurcation point (the continuation "
+            "step d_x0=5e-4 may need to be finer); (c) the multi-shooter needs "
+            "more segments at this system's mu. None of these warrant tuning "
+            "the gate to pass. Phase 5 (#280) routes Saturn-Titan Np=2 via the "
+            "Tier-A direct-seed path -- see "
+            "``test_tulip_at_saturn_titan_via_direct_seed`` -- so the "
+            "operational result is delivered there even while this Tier-B "
+            "probe remains an honest negative on multi-shooting capability."
         )
     switched = result.switched
     assert switched is not None
@@ -278,4 +292,110 @@ def test_tulip_at_saturn_titan_via_multi_shooting() -> None:
     assert 1.80 < ratio < 2.20, (
         f"Saturn-Titan switched/parent period ratio = {ratio:.4f} "
         "not near 2 (period doubling) -- corrector landed on the wrong family."
+    )
+
+
+# ---------------------------------------------------------------------------
+# Gate 4 (Phase 5, #280): Saturn-Titan k=2 via the direct-seed escalation.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.slow
+def test_tulip_at_saturn_titan_via_direct_seed() -> None:
+    """find_tulip_at_system(saturn_titan, np_target=2) lands an Np=2 tulip via
+    Phase 5's Tier-A direct-seed path (#280).
+
+    Phase 4's diagnosis (#268 commit ``42d60be``): at Saturn-Titan the
+    natural-parameter continuation from the Koblick seed in direction=-1
+    approaches lambda=-1 only marginally (dist ~0.058) before the family curve
+    turns away; the recorded k=2 bracket sits PAST the closest approach, so
+    the period-multiplying eigenvector is ill-defined and the family-switch
+    cannot converge. Phase 5 #280 escalation findings:
+
+      * **Direction +1 in x0** DOES cross lambda=-1 cleanly (dist ~0.009 at
+        x0=1.0243), but the period-doubling family from that bifurcation has
+        petal_count=4 (not the requested 2); the operational Saturn-Titan Np=2
+        cycler is NOT on the period-doubled branch of the Koblick family.
+      * **Tier A (the seed itself).** At Saturn-Titan mu (~2.37e-4) the
+        Koblick AMOSTECH Table 4 Np=1 IC, when run through the symmetric
+        corrector, lands on a DIFFERENT family from the Earth-Moon Np=1 NRHO
+        (the corrector's basin shifts with mu): the IC closes to a planar
+        (z0 ~ 1e-23) periodic orbit with T ~ 2.68 TU (~6.8 d), J ~ 3.016, that
+        passes perilune TWICE per period -- a Saturn-Titan native Np=2 tulip.
+        Radau cross-checks to <1e-12 closure; Floquet has a multiplier pair at
+        (-0.998, +/-0.058 j); perilune ~15,180 km from Titan (well above the
+        2,575 km surface), apolune ~29,290 km.
+
+    The independent topological cross-check (petal_count) IS the trust gate:
+    the corrector ensures perpendicular-crossing closure (Newton residual) but
+    cannot distinguish between Np=1 and Np=2 families; petal_count counts
+    perilune passes directly, so petal_count==2 confirms the topology
+    INDEPENDENTLY of the corrector.
+
+    HONEST DISCIPLINE: clean negatives are successes (Tier-B test xfails the
+    period-doubling claim). This test asserts the OPERATIONAL deliverable: a
+    Saturn-Titan Np=2 tulip exists and is reachable via the genome's
+    cross-system finder, by the most natural-on-the-evidence path.
+    """
+    sysm = cr3bp_mod.cr3bp_system("Saturn", "Titan")
+    result = find_tulip_at_system(
+        sysm,
+        np_target=2,
+        try_direct_seed=True,
+        tol=1e-8,
+    )
+    assert result is not None
+    assert result.success, (
+        f"Saturn-Titan direct-seed Np=2 escalation failed: reason={result.reason}; "
+        f"seed_converged={result.seed.converged}, "
+        f"closure_residual={result.seed.closure_residual:.3e}. "
+        "Tier-A is supposed to land Np=2 directly from the corrected seed at "
+        "Saturn-Titan; if it does not converge here, either the system "
+        "construction has changed or the seed-correction basin no longer "
+        "lands on the planar Np=2 family at this mu (a substantive change in "
+        "behaviour worth investigating, not a tuning opportunity)."
+    )
+    assert result.reason == "direct_seed_match", (
+        f"Saturn-Titan unexpected reason {result.reason!r}; Phase 5 Tier-A "
+        "should return 'direct_seed_match' when the corrected seed already "
+        "matches np_target. If reason is 'ok' the Tier-B fallback fired "
+        "instead -- check that try_direct_seed=True is wired through."
+    )
+    switched = result.switched
+    assert switched is not None
+    assert switched is result.seed, (
+        "Tier-A's switched should BE the seed itself (the seed is the answer);"
+        f" got switched.x0={switched.x0:.6f} vs seed.x0={result.seed.x0:.6f}."
+    )
+
+    # Independent topological gate.
+    s0 = np.array([switched.x0, 0.0, switched.z0, 0.0, switched.ydot0, 0.0], dtype=np.float64)
+    n = petal_count(s0, switched.T_TU, sysm)
+    assert n == 2, (
+        f"Saturn-Titan Tier-A converged but petal_count={n}, expected 2. The "
+        "direct-seed claim hinges on the topology check; a mismatch means the "
+        "corrector landed somewhere else and Tier-A should not have returned."
+    )
+
+    # Jacobi in a plausible band. The probe-confirmed value is ~3.016; allow
+    # +/-0.5 for system-construction tolerance (different gm_de440 epochs etc.)
+    # but tight enough to catch a corrector landing on an unrelated family.
+    assert 2.5 < switched.jacobi < 3.5, (
+        f"Saturn-Titan switched Jacobi {switched.jacobi:.4f} outside plausible "
+        "[2.5, 3.5] band -- corrector likely on an unrelated family."
+    )
+
+    # Period plausibility: dimensionalised T should fall under 30 days at
+    # Saturn-Titan (the empirical value is ~6.8 d; this generous upper bound
+    # catches a corrector landing on a wildly different family).
+    t_days = float(switched.T_TU * sysm.t_s / 86400.0)
+    assert 1.0 < t_days < 30.0, (
+        f"Saturn-Titan Np=2 period {t_days:.3f} d outside plausible [1.0, 30.0] d band."
+    )
+
+    # Closure-residual sanity (corrector tolerance).
+    assert switched.closure_residual < 1e-6, (
+        f"Saturn-Titan Tier-A closure_residual {switched.closure_residual:.3e} "
+        "above 1e-6 -- corrector did not actually converge despite "
+        "result.success=True."
     )

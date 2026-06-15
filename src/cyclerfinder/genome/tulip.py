@@ -836,20 +836,28 @@ def find_tulip_at_system(
     tol: float = 1e-9,
     rtol: float = 1e-12,
     atol: float = 1e-12,
+    try_direct_seed: bool = True,
 ) -> FindTulipResult | None:
-    """Cross-system tulip-orbit finder (#268 Phase 4).
+    """Cross-system tulip-orbit finder (#268 Phase 4 + #280 Phase 5).
 
-    Find a Np=``np_target`` tulip at an arbitrary CR3BP system via the
-    end-to-end NRHO continuation + multi-shooting family-switch pipeline.
+    Find a Np=``np_target`` tulip at an arbitrary CR3BP system. The routine
+    walks two escalation tiers in order:
 
-    1. Seed an L2 NRHO at the system's neighbourhood (uses the Koblick AMOSTECH
-       Table 4 Np=1 paper-row IC if no seed is given -- empirically this
-       converges at the Saturn-Titan mu via :func:`correct_symmetric_nrho`
-       per the #264 discovery probe).
-    2. Continue the family in x0 until a k=2 bifurcation is bracketed.
-    3. At the closest-to-(-1) family member, invoke
-       :func:`switch_family` with ``multi_shooting=True`` (default).
-    4. Verify the switched orbit's petal count.
+    **Tier A (Phase 5 #280, ``try_direct_seed=True``).**  Correct the seed at
+    the target system's mu and INDEPENDENTLY verify the topology via
+    :func:`petal_count`. The symmetric corrector's basin of attraction shifts
+    with mu, so a Koblick Earth-Moon NRHO seed CAN converge to a
+    *system-native* Np=``np_target`` orbit on a different (typically planar)
+    family at the target mu (verified empirically at Jupiter-Ganymede,
+    Saturn-Titan, and Pluto-Charon -- the Koblick Np=1 seed lands Np=2 there).
+    When the corrected seed's petal count already matches ``np_target``, return
+    it directly: it IS the answer. No continuation, no family-switching needed.
+
+    **Tier B (Phase 3/4 fallback).**  When the direct-seed petal count does NOT
+    match (the canonical Earth-Moon path: Koblick seed -> Np=1 NRHO -> continue
+    in x0 -> k=2 bifurcation -> family-switch -> Np=2), fall through to
+    :func:`find_tulip_via_continuation`. The Phase 4 multi-shooter
+    handles strong period-doublings where single-shooting fails.
 
     Parameters
     ----------
@@ -859,26 +867,29 @@ def find_tulip_at_system(
         :func:`koblick_system`).
     np_target :
         Petal count to land on. Currently only ``np_target=2`` is supported by
-        the underlying continuation routine.
+        Tier B's continuation routine; Tier A in principle accepts any
+        ``np_target`` (whatever the system-native seed-correction produces).
     multi_shooting :
-        If True (default), the family-switch step uses multi-shooting --
-        recommended at non-Earth-Moon systems where single-shooting fails (see
-        the Saturn-Titan finding in #264).
+        Tier B only. If True (default), the family-switch step uses
+        multi-shooting. Ignored in Tier A (no family-switch).
     multi_shoot_segments :
-        Number of multi-shooting segments. ``None`` picks ``max(np_target, 2)``.
+        Tier B only. Number of multi-shooting segments. ``None`` picks
+        ``max(np_target, 2)``.
     seed_row :
         Explicit IC seed for the NRHO -- a dict with keys ``x0, z0, ydot0,
         tau0``. When ``None`` (default) the Koblick AMOSTECH Table 4 Np=1
-        paper-row is used; that IC is Earth-Moon by origin but empirically
-        converges at the Saturn-Titan mu (the symmetric corrector is
-        mu-tolerant when the IC happens to sit in a neighbouring family's
-        basin -- verified by the #264 probe).
+        paper-row is used. Used by BOTH tiers.
     d_x0, n_steps_max, perilune_floor_km :
-        Continuation parameters forwarded to :func:`continue_nrho_family`.
+        Tier B continuation parameters forwarded to
+        :func:`continue_nrho_family`.
     eigenvector_step :
-        Forwarded to :func:`switch_family`.
+        Tier B family-switch parameter.
     tol, rtol, atol :
-        Forwarded to the corrector and propagators.
+        Forwarded to the corrector and propagators in both tiers.
+    try_direct_seed :
+        When True (default), Tier A runs first. Set False to force the Tier B
+        Phase 3/4 path (useful for testing the bifurcation pipeline at systems
+        where Tier A also works).
 
     Returns
     -------
@@ -887,13 +898,62 @@ def find_tulip_at_system(
         system (the corrector cannot find ANY periodic orbit near the seed).
         Otherwise a :class:`FindTulipResult` carrying the seed, branch,
         bifurcation, switched member (or ``None``), and ``success`` flag.
+        When Tier A succeeds, the seed itself IS the discovered orbit:
+        ``switched is seed``, ``branch_members=[]``, ``bifurcation=None``,
+        and ``reason="direct_seed_match"``.
 
     Notes
     -----
     No catalogue writeback. This is a discovery / cross-system reproduction
     routine; the caller (e.g. :mod:`scripts.tulip_discovery_probe`) decides
     whether to log the outcome.
+
+    Independent cross-check (orbit-closure discipline). Tier A's "the seed is
+    the answer" claim is gated on petal_count, which is INDEPENDENT of the
+    corrector's residual: the corrector only ensures perpendicular-crossing
+    closure, while petal_count is a topological classifier (counts perilune
+    passes). The two agreeing on np_target IS the cross-check; this is the
+    same petal_count gate that ``switch_family(..., verify_petal_count=True)``
+    uses in Tier B.
     """
+    if try_direct_seed:
+        from cyclerfinder.search.nrho_continuation import correct_symmetric_nrho
+
+        active_seed_row: dict[str, float | int] = (
+            seed_row if seed_row is not None else KOBLICK_2023_TABLE4_PAPER[1]
+        )
+        t_seed = float(active_seed_row["tau0"])
+        direct_seed = correct_symmetric_nrho(
+            system,
+            float(active_seed_row["x0"]),
+            float(active_seed_row["z0"]),
+            float(active_seed_row["ydot0"]),
+            t_seed,
+            tol=1e-11,
+            rtol=rtol,
+            atol=atol,
+        )
+        if direct_seed.converged:
+            state0 = np.array(
+                [direct_seed.x0, 0.0, direct_seed.z0, 0.0, direct_seed.ydot0, 0.0],
+                dtype=np.float64,
+            )
+            try:
+                n_direct = petal_count(state0, direct_seed.T_TU, system, rtol=rtol, atol=atol)
+            except RuntimeError:
+                n_direct = -1
+            if n_direct == np_target:
+                # Tier A hit: the seed IS already the target Np tulip at this mu.
+                return FindTulipResult(
+                    seed=direct_seed,
+                    branch_members=[],
+                    bifurcation=None,
+                    switched=direct_seed,
+                    success=True,
+                    reason="direct_seed_match",
+                )
+
+    # Tier B fallback: full Phase 3/4 pipeline (continuation + family-switch).
     return find_tulip_via_continuation(
         np_target=np_target,
         system=system,
