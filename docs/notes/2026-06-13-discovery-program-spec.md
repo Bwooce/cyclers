@@ -1,5 +1,30 @@
 # Discovery Program — spec (2026-06-13)
 
+> **STATUS 2026-06-15 — major build phase complete; entering discovery phase.**
+> Tracks A & B both substantially built; Track C campaign about to run.
+>
+> **Track A — Richer genome — TWO OPERATIONAL GENOMES (vs one):**
+> - #254 repeated-moon multi-rev (Liang CGE replication; Jupiter/Saturn/Uranus swept clean negatives).
+> - **#266 TULIP-ORBIT GENOME OPERATIONAL** (Phases 1-3, commits `12fd15c`/`2eb1a56`/`d8b8210`/`fc5aab5`): Sundman regularization + NRHO continuation + period-multiplying bifurcation detector + family-switching corrector. End-to-end `find_tulip_via_continuation(np_target=2)` lands a Np=2 tulip at T=2.746 TU within 0.38% of Koblick 2023 AMOSTECH Table 4 source. Petal-count is a new topological index orthogonal to (k1,k2). Phase 4 (multi-shooting for k≥3) tracked as #268.
+>
+> **Track B — Prioritizer — TWO TIERS OPERATIONAL + 3rd PENDING:**
+> - #249 RESOLVED 4/4: all Braik-Ross cycler members (C11a/C11b/C21/C32) reproduced via all-roots enumeration + winding-(k1,k2) classifier. C21 needed Ross-RT 2025 AAS-25-621 Table 4's unrounded Jacobi 3.129389531088256 (B-R's "C_J=3.1294" is 5-sig-fig display rounding — standing rule `feedback_published_rounded_values_are_display`).
+> - #263 two-tier prioritizer wired Braik-Ross heading-fan (energy-preserving, tier 1) + Zhou-Armellin impulsive (energy-changing, tier 2) into one composable scorer.
+> - #262 re-ran the C32-dominance gate with the full node set: FAITHFUL NEGATIVE (C32 ranks 5–6 of 12). Scorer stays gated as not-our-applied-prioritizer; likely a voxel-resolution issue. No tuning.
+> - **#267 Resonant-manifold heteroclinic-network scorer** (third Track-B tier, from #265 capability sweep hit #2: Kumar/Rawat/Rosengren/Ross arXiv 2509.12675) — still PENDING.
+>
+> **Discovery guard chain — fully operational:**
+> closure gate (#259) → literature-novelty (#261) → ML false-positive flagger (#256, LOO AUC 0.969 on labeled corpus) → V0-V5 gauntlet. Standing rules: never give up reproducing papers (#249 escalation); published rounded values are display, not literal; bug-fix invalidates past searches.
+>
+> **Capability-paper sweep (#265, recurring) found TWO new hits:**
+> #266 tulip (DELIVERED) and #267 resonant scorer (pending).
+>
+> **Track C — Discovery campaign:** #264 (Neptune/Pluto/Mars repeated-moon sweeps + tulip sweep at the new genome's reachable regions) is the next fire — first run with the substantially-enriched toolkit.
+>
+> Original 2026-06-13 spec below unchanged for history.
+
+
+
 **Premise (the reset):** the project's deliverable is **novel cyclers found and
 validated**, not a literature census. Paper validation was instrumental — it earned
 a **trusted, known-good toolkit**. That toolkit is now largely mature, so the

@@ -38,8 +38,10 @@ def _load_rows() -> list[dict[str, Any]]:
     return yaml.safe_load(CATALOGUE_PATH.read_text())  # type: ignore[no-any-return]
 
 
-def test_schema_version_is_4_6() -> None:
-    assert _load_schema()["version"] == "4.6"
+def test_schema_version_is_at_least_4_6() -> None:
+    # v4.6 fields/enums remain present; the schema version has since advanced
+    # (>= 4.6; v4.7 added the orbit_class taxonomy on top, task #294).
+    assert float(_load_schema()["version"]) >= 4.6
 
 
 # --- Fault injection: known-bad values must be REJECTED ---

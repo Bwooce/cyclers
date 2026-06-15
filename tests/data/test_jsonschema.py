@@ -25,10 +25,11 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '4.6' (v4.6 adds controlled-vocabulary
-    enums for model_assumption/trajectory_regime/sense/data_gaps[].kind, task #194)."""
+    """The schema carries version == '4.7' (v4.7 adds the four-class
+    orbit_class taxonomy + epoch_locked + n_returns + validity_window +
+    launch_epoch + inserts_into for the catalogue-scope expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "4.6"
+    assert schema["version"] == "4.7"
 
 
 def test_catalogue_matches_jsonschema() -> None:
