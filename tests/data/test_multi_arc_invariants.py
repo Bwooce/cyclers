@@ -114,9 +114,24 @@ def _load_multi_arc_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def _load_full_numeric_multi_arc_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Multi-arc rows that carry full numerics (excludes family-seed null rows)."""
+    """Multi-arc rows that carry full numerics (excludes family-seed null rows
+    AND non-cycler orbit_class rows per schema v4.7 / task #294).
+
+    The completeness invariants below — invariants{} present, AR/TR populated,
+    transit_times_days populated — are inherently cycler concepts (aphelion
+    ratio and turn ratio are *cycle-level* descriptors; transit times are
+    per-flyby ToFs of a *repeating* sequence). The v4.7 scope expansion admits
+    non-cycler orbit classes (quasi_cycler / precursor_mga / mga_tour) that
+    legitimately carry cycler_class=multi-arc as a *structural* tag (multiple
+    distinct heliocentric legs) without being cyclers — the cycler invariants
+    do not apply to them. Filter them out here so the test stays focused on
+    actual cyclers.
+    """
     return [
-        r for r in _load_multi_arc_rows(rows) if r["id"] not in _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC
+        r
+        for r in _load_multi_arc_rows(rows)
+        if r["id"] not in _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC
+        and r.get("orbit_class", "cycler") == "cycler"
     ]
 
 

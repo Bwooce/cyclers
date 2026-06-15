@@ -76,7 +76,13 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
     "consistency_checked": 249,
-    "unvalidated": 26,
+    # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
+    # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
+    # which classifies as 'unvalidated' under the existing provenance rules.
+    # The row's V0 evidence (the DE440 reproduction <1.5% to Tito's published
+    # DE421) lives in validation_level, not the source-pair tier — separate
+    # axis. See docs/notes/2026-06-16-catalogue-scope-taxonomy.md.
+    "unvalidated": 27,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

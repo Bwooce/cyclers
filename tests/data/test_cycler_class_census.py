@@ -324,11 +324,19 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "liang-2024-cgcec-110-highperijove",
         "liang-2024-cgcec-111-lowperijove",
         "liang-2024-cgcec-ephemeris-2033",
+        # #294 (2026-06-15): Tito 2018 Mars free-return admitted as mga_tour
+        # under the schema v4.7 scope expansion. cycler_class=multi-arc is
+        # structural (two distinct heliocentric legs E->M and M->E), not a
+        # cycler claim — see docs/notes/2026-06-16-catalogue-scope-taxonomy.md.
+        # The cycler-specific invariants tests in test_multi_arc_invariants.py
+        # filter orbit_class != cycler so this row is exempt from
+        # invariants{}/transit_times_days completeness.
+        "tito-2018-mars-free-return",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 240, (
-    f"Allowlist must have 240 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 241, (
+    f"Allowlist must have 241 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -385,17 +393,19 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=240, non-keplerian=12.
+    """Exact class distribution: single-ellipse=28, multi-arc=241, non-keplerian=12.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
     added 5 Ross CR3BP cyclers (non-keplerian 4->9) and 4 Liang CGE triple-cycler
     members (multi-arc 236->240). #249 (2026-06-15) added 3 Braik-Ross 2026 CR3BP
-    cycler reproductions (non-keplerian 9->12).)
+    cycler reproductions (non-keplerian 9->12). #294 (2026-06-15) admitted Tito
+    2018 Mars free-return as mga_tour with cycler_class=multi-arc (structural)
+    under the v4.7 scope expansion: multi-arc 240->241.)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 240, "non-keplerian": 12}
+    expected = {"single-ellipse": 28, "multi-arc": 241, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
