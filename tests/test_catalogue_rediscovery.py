@@ -272,7 +272,12 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # (non-keplerian, Earth primary) + 4 Liang CGE Jovian triple-cycler rows
     # (Jupiter primary). None is v1-gauntlet-reachable (planet-centric), so the
     # heliocentric gauntlet's reach is unchanged — a pure census shift.
-    ExclusionReason.NON_HELIOCENTRIC: 15,
+    # 15 -> 18 (2026-06-15, #249/#262): +3 Braik-Ross 2026 (1,1) and (3,2)
+    # Earth-Moon CR3BP cycler reproductions (braik-ross-c11a/c11b/c32, V1, at
+    # the common Jacobi C=3.1294 — different family members than the Ross-RT
+    # stable midpoints at C=3.151). Same Earth-primary CR3BP family-keying as
+    # the Ross-RT rows; not v1-gauntlet-reachable; pure census shift.
+    ExclusionReason.NON_HELIOCENTRIC: 18,
     ExclusionReason.MISSING_VINF: 5,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
