@@ -1,3 +1,4 @@
+> **SUPERSEDED 2026-06-15 by #249:** all 4 cycler members (C11a/C11b/C21/C32) now recovered (C21 needed the unrounded Jacobi C=3.129389531088256 — 'C_J=3.1294' was 5-sig-fig display rounding). Scorer is ungate-ready. See `docs/notes/2026-06-14-249-unstable-member-recovery-plan.md`. Original analysis below retained for history.\n
 # Braik-Ross reachable-set accessibility-network scorer — build + validation-gate results (#236)
 
 **Date:** 2026-06-13

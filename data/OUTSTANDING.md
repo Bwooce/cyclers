@@ -82,8 +82,8 @@ program shifts to DISCOVERY. Spec: `docs/notes/2026-06-13-discovery-program-spec
 Three tracks: **(A) richer genome** — #254 repeated-moon multi-rev (highest-evidenced
 lever, the only genome with a PROVEN non-empty target = Liang CGE; designed
 `docs/notes/2026-06-14-repeated-moon-multirev-genome-design.md`); **(B) prioritizer** —
-#249 ungate the reachable-set scorer + #239 impulsive merge; **(C) discovery-campaign
-daemon** — #253. Regime arc: left input-bound → briefly build-bound (genome +
+#249 RESOLVED 4/4 (all Braik-Ross cycler members C11a/C11b/C21/C32 reproduced; scorer
+ungate-ready) + #239 impulsive merge; **(C) discovery-campaign daemon** — #253. Regime arc: left input-bound → briefly build-bound (genome +
 prioritizer + harness) → then CPU-bound (the wanted regime: discoveries scale with
 cores×time). The agent-hang failures were long solver compute outgrowing one-shot
 agents → that compute belongs in the #253 daemon.
@@ -189,18 +189,27 @@ common energy (C11a/C21/R21-U/R31 don't; JPL doesn't expose 5:2 R52), and C32's
 dominance is a full-13-node-chaotic-sea property that doesn't survive the
 truncation. Scorer is therefore **GATED** (not applied to our families).
 
-**Ungate attempt (#247) — 9/13 recovered, STILL GATED.** A network-independent
-free-(x0,t_half) perpendicular-crossing corrector recovered **9 of 13** members
-(up from 6), each confirmed against BOTH sourced Table-2 period AND Floquet σ (a
-stronger bar than #236's period-only): added R21-U, R31-S, R31-U, R52-S, C21.
-**Still unrecovered: C11a, C11b, C32, R52-U** — all UNSTABLE orbits that collapse
-onto spurious lower-σ members under single/free-period shooting at the off-stable
-energy. So **C32-dominance remains UNTESTABLE → scorer stays GATED** (faithful
-negative, no tuning; commits `5b48ecc`…`0ad93f7`, reachable suite 30 passed/1
-xfail). Blocker now precisely pinned to the σ/stability character of the unstable
-cyclers — a future corrector handling unstable members (not just a multi-segment
-period fix) is what remains. #239 (Zhou-Armellin reachable-set) remains to merge.
-See `docs/notes/2026-06-13-reachable-scorer-ungate.md`.
+**Ungate attempt (#247) — 9/13 recovered.** A network-independent free-(x0,t_half)
+perpendicular-crossing corrector recovered 9 of 13 members (up from 6), each
+confirmed against BOTH sourced Table-2 period AND Floquet σ. Unrecovered (at
+that stage): C11a, C11b, C32, R52-U. Commits `5b48ecc`…`0ad93f7`. See
+`docs/notes/2026-06-13-reachable-scorer-ungate.md`.
+
+**Final ungate (#249, 2026-06-14/15) — 4/4 cycler members reproduced; scorer
+ungate-ready.** All four Braik-Ross cycler members rigorously reproduced at
+C_J=3.1294 (period + (k1,k2) winding topology + prograde + Radau cross-check):
+C11a 42.1405d (1,1), C11b 55.9590d (1,1), C32 78.6126d (3,2), C21 84.5331d (2,1)
+— see `docs/notes/2026-06-14-249-unstable-member-recovery-plan.md`. Method:
+all-roots enumeration + winding classifier (rejects period-impostors). C21
+required Ross-RT 2025 AAS 25-621 Table 4's unrounded Jacobi 3.129389531088256
+(B-R's "C_J=3.1294" is 5-sig-fig DISPLAY rounding; the (2,1) family has ΔC≈4e-12
+so literal-3.1294 sits outside it). Standing lesson: published rounded invariants
+are display, not literal — see `feedback_published_rounded_values_are_display`.
+New infrastructure (all tested, reusable): fold-turning pseudo-arclength
+continuation in Jacobi (`e34edb2`), winding-(k1,k2) classifier (`93fb330`),
+asymmetric (general) periodic-orbit corrector (`23b980e`). Final 4/4 disposition
+`a19eb24`. **Next:** re-run C32-dominance gate with the enlarged node set;
+#239 (Zhou-Armellin reachable-set) remains to merge.
 
 **Papers digested (#230–235):** Braik & Ross 2026 Orbital Networks (reachable-set
 family-accessibility — method-only, no new tuples), arXiv:2509.12671 HOTM fixed
