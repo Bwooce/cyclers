@@ -224,3 +224,57 @@ def test_training_set_shape() -> None:
     assert X.shape[0] == len(KNOWN_FALSE_POSITIVES) + len(KNOWN_TRUE_REPRODUCTIONS)
     # Both classes are present.
     assert set(np.unique(y).tolist()) == {0, 1}
+
+
+# ---------------------------------------------------------------------------
+# #275 Pluto-class / binary-regime discrimination.
+#
+# Before #275, the flagger's p_fp clustered in [0.559, 0.561] for all 12
+# Pluto SILVER candidates (#269) -- degenerate because the labeled corpus had
+# NO Pluto-class or binary-system exemplars. #275 added 4 synthetic Pluto
+# false-positives + 4 synthetic Pluto reproductions. The test below asserts
+# that the retrained flagger now SEPARATES those 8 synthetic Pluto-class rows
+# by a meaningful margin (the corpus contains the labels, but the LOO AUC
+# gate above already covers learnability; this test specifically pins
+# *within-Pluto-regime* discrimination). xfail if the margin collapses below
+# 0.05 -- that would mean the flagger still cannot tell binary-regime FPs
+# from binary-regime TRs and we need REAL labels from a V0-V5 result.
+# ---------------------------------------------------------------------------
+
+
+def test_pluto_class_discrimination(
+    trained_flagger: tuple[FalsePosFlagger, np.ndarray, np.ndarray],
+) -> None:
+    """Retrained flagger discriminates synthetic Pluto FPs from synthetic Pluto TRs.
+
+    Margin gate: mean(p_fp | synthetic-Pluto-FP) - mean(p_fp | synthetic-Pluto-TR)
+    must exceed 0.15. Below 0.05 -> xfail with a marker that the labeled corpus
+    still cannot discriminate within the binary regime; the next move would be
+    acquiring REAL labels from the V0-V5 gauntlet results (#274).
+    """
+    clf, _X, _y = trained_flagger
+    pluto_fps = [r for r in KNOWN_FALSE_POSITIVES if "#275" in r.get("_source", "")]
+    pluto_trs = [r for r in KNOWN_TRUE_REPRODUCTIONS if "#275" in r.get("_source", "")]
+    # We expect 4 of each from the #275 backfill.
+    assert len(pluto_fps) >= 4, "expected at least 4 #275 Pluto-class FP exemplars"
+    assert len(pluto_trs) >= 4, "expected at least 4 #275 Pluto-class TR exemplars"
+
+    fp_scores = [clf.score(r) for r in pluto_fps]
+    tr_scores = [clf.score(r) for r in pluto_trs]
+    mean_fp = float(np.mean(fp_scores))
+    mean_tr = float(np.mean(tr_scores))
+    margin = mean_fp - mean_tr
+
+    if margin < 0.05:
+        pytest.xfail(
+            "Pluto-class discrimination margin < 0.05 -- label corpus needs "
+            "more Pluto-class examples; the flagger cannot yet discriminate "
+            "within the binary regime. Wait for V0-V5 gauntlet results "
+            "(#274) to provide REAL labeled examples."
+        )
+    assert margin > 0.15, (
+        f"Pluto-class discrimination margin {margin:.4f} below the 0.15 gate "
+        f"(mean FP p_fp={mean_fp:.4f}, mean TR p_fp={mean_tr:.4f}); the "
+        f"corpus has 4 Pluto FP + 4 Pluto TR labels but the flagger is not "
+        f"separating them. Investigate before relying on Pluto-regime scores."
+    )

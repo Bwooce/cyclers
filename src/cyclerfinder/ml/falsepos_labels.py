@@ -268,6 +268,90 @@ KNOWN_FALSE_POSITIVES: list[dict[str, Any]] = [
         "closure_date": None,
         "model_assumption": "FBS_analytic",
     },
+    # --- #275 Pluto-class / binary-regime synthetic basin-edge pathologies ------
+    # These exemplars instantiate KNOWN failure modes a future V0-V5 gauntlet
+    # would catch on Pluto-system candidates: the discovery campaign #264
+    # surfaced 12 SILVER candidates whose flagger score clustered in
+    # [0.559, 0.561] -- degenerate because the labeled corpus carried NO
+    # Pluto-class or binary-regime exemplars. The four rows below pattern the
+    # known failure modes already in the corpus onto the Pluto-Charon regime
+    # (mu~0.1085, V_inf ~ tens to hundreds of m/s at Charon/Nix/Hydra, ToF in
+    # the 19-63 day range). They are SYNTHETIC -- ``_mocked=True`` -- and
+    # carry ``_source="synthetic basin-edge pathology, #275"`` so they can never
+    # be mistaken for recovered real-run data. They are NOT the 12 gauntlet
+    # candidates themselves (those are NEITHER confirmed FP nor TR; that is
+    # exactly what V0-V5 will adjudicate).
+    {
+        "_label": "false_positive",
+        "_source": "synthetic basin-edge pathology, #275 (ToF-artifact at Pluto-Hydra)",
+        "_mocked": True,
+        # Pluto-regime echo of #181: solver tag predates the ToF fix SHA, and the
+        # apparent V_inf inflates past the binary-regime floor by ~3x at Hydra.
+        "max_residual_kms": 0.18,  # large for the Pluto regime
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.06, 0.35, 0.05],  # Hydra V_inf inflated
+        "vinf_floors_kms": [0.03, 0.05, 0.03],
+        "encounter_periods_days": [24.85, 38.20, 24.85],  # Nix-Hydra-Nix
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "pre-3b09614",  # pre-#181 ToF fix
+        "closure_date": "2026-06-08",
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
+    {
+        "_label": "false_positive",
+        "_source": "synthetic basin-edge pathology, #275 (period-impostor at Pluto-Charon)",
+        "_mocked": True,
+        # Pluto-regime echo of #249: numerically clean closure but wrong winding
+        # around the binary -- caught by the topology classifier post-#249.
+        "max_residual_kms": 5e-7,  # numerically clean
+        "bend_feasible": True,
+        "topology_match": False,  # the signature
+        "vinf_per_encounter_kms": [0.09, 0.07],
+        "vinf_floors_kms": [0.03, 0.03],
+        "encounter_periods_days": [25.52],  # Charon-Nix-Charon resonance proxy
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "23b980e",
+        "closure_date": "2026-06-14",
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
+    {
+        "_label": "false_positive",
+        "_source": "synthetic basin-edge pathology, #275 (basin-edge sub-km/s scratch closure)",
+        "_mocked": True,
+        # Pluto-regime echo of the "0.163 km/s" MEMORY scratch case: marginal
+        # bend at the second body + scratch solver tag means the closure cannot
+        # be re-run from its inputs -- the same non-reproducibility signature.
+        "max_residual_kms": 0.08,
+        "bend_feasible": False,  # marginal at sub-km/s V_inf
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.05, 0.12, 0.04],
+        "vinf_floors_kms": [0.03, 0.05, 0.03],
+        "encounter_periods_days": [38.20, 24.85, 38.20],  # Hydra-Nix-Hydra
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "scratch",
+        "closure_date": None,
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
+    {
+        "_label": "false_positive",
+        "_source": "synthetic basin-edge pathology, #275 (pre-mu-fix CR3BP at Pluto-Charon)",
+        "_mocked": True,
+        # Pluto-regime echo of #212a: a CR3BP closure produced before the mu
+        # double-count fix; the binary mu (~0.1085) makes the proportional
+        # error larger than for Earth-Moon (~0.012), so the bug-equivalent
+        # period mismatch is louder, not quieter.
+        "max_residual_kms": 0.03,
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.08, 0.06],
+        "vinf_floors_kms": [0.03, 0.03],
+        "encounter_periods_days": [25.52, 51.04],  # mismatched 2:1 from mu bug
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "pre-3cec84c",
+        "closure_date": "2026-06-06",
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
 ]
 
 
@@ -510,6 +594,86 @@ KNOWN_TRUE_REPRODUCTIONS: list[dict[str, Any]] = [
         "closure_method_version": "cec9b90",
         "closure_date": "2026-06-12",
         "model_assumption": "real_eph_DE440",
+    },
+    # --- #275 Pluto-class / binary-regime literature-anchored reproductions ----
+    # Companion to the four Pluto-class FP rows above. These represent the
+    # Pluto/binary-regime cases the corpus claimed knowledge of via the offline
+    # KNOWN_CORPUS expansion (#272) but had no labeled examples for. They are
+    # SYNTHETIC SILVER-record-shape reconstructions of the named anchors --
+    # we are not re-running the published Persephone or Game-Changer reference
+    # trajectories here; the SHAPE (residual~0, V_inf within floor, topology
+    # match, post-fix solver tag) is the representation. Each row's ``_source``
+    # names the published anchor it is patterned on.
+    {
+        "_label": "true_reproduction",
+        "_source": "Howard et al. 2021 Persephone Pluto-Charon CR3BP periodic orbit "
+        "(arXiv:2102.08282 / Planet. Sci. J. 2(2):56), #275 synthetic SILVER shape",
+        "_mocked": True,
+        "max_residual_kms": 2e-7,  # CR3BP periodic orbit, numerically clean
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.04],  # incidental small-moon encounter
+        "vinf_floors_kms": [0.03],
+        "encounter_periods_days": [6.387, 12.774],  # Charon-period CR3BP halo, 2:1
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "4be2375",  # post-#212b fix
+        "closure_date": "2026-06-11",
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
+    {
+        "_label": "true_reproduction",
+        "_source": "Howard et al. 2021 Persephone Pluto-Charon CR3BP halo family "
+        "(arXiv:2102.08282), #275 synthetic SILVER shape (long-period branch)",
+        "_mocked": True,
+        "max_residual_kms": 5e-7,
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.05, 0.04],
+        "vinf_floors_kms": [0.03, 0.03],
+        "encounter_periods_days": [6.387, 25.548],  # 4:1 Charon synodic
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "4be2375",
+        "closure_date": "2026-06-11",
+        "model_assumption": "CR3BP_PlutoCharon",
+    },
+    {
+        "_label": "true_reproduction",
+        "_source": "Stern/SwRI 2018 Pluto Game-Changer Charon gravity-assist tour "
+        "(DPS 2018), #275 synthetic SILVER shape",
+        "_mocked": True,
+        # Patched-conic Charon gravity-assist with low-V_inf at Charon
+        # (binary-system equivalent of an Aldrin outbound cycler V_inf shape).
+        "max_residual_kms": 0.015,
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.15, 0.18],  # Charon GA tour V_inf
+        "vinf_floors_kms": [0.03, 0.03],
+        "encounter_periods_days": [6.387, 12.774],  # Charon resonance
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "cec9b90",  # post-#181 ToF fix
+        "closure_date": "2026-06-12",
+        "model_assumption": "real_eph_DE440",
+    },
+    {
+        "_label": "true_reproduction",
+        "_source": "Roberts-Tsoukkas-Ross 2025 stable cycler family at mu~0.1 "
+        "(#249 family extrapolated to Pluto-Charon binary regime), "
+        "#275 synthetic SILVER shape",
+        "_mocked": True,
+        # The binary-regime stable cycler analogue of the Ross EM family-1
+        # row above, but at mu~0.1085 (Pluto-Charon) instead of mu~0.012
+        # (Earth-Moon). Same numerical signature: residual~0, topology match,
+        # low V_inf, CR3BP model, post-#212b fix-SHA.
+        "max_residual_kms": 3e-8,
+        "bend_feasible": True,
+        "topology_match": True,
+        "vinf_per_encounter_kms": [0.07, 0.06],
+        "vinf_floors_kms": [0.03, 0.03],
+        "encounter_periods_days": [6.387, 12.774],
+        "cross_check_shared_with_primary": False,
+        "closure_method_version": "4be2375",
+        "closure_date": "2026-06-11",
+        "model_assumption": "CR3BP_PlutoCharon",
     },
 ]
 
