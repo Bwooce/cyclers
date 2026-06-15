@@ -217,3 +217,51 @@ Braik-Ross explicitly note asymmetric cyclers exist (and are numerically harder)
   (x0,y0?,xdot0,ydot0) with full-state periodicity X(T)=X(0) at fixed C_J), seeded
   near the 70.6d (2,1) member / from an asymmetric continuation. Then re-run the
   C32-dominance gate with the enlarged (now 3-4 cycler) node set.
+
+---
+
+## 4/4 — C21 RECOVERED (2026-06-15): Braik-Ross's "C_J=3.1294" was 5-sig-fig
+## display rounding; the (2,1) family lives only at the precise Jacobi 3.129389531088256
+
+**Diagnosis** (research subagent, cross-referenced Ross-RT 2025 AAS 25-621 Table 4):
+The (2,1) cycler family has full Jacobi extent **ΔC ≈ 4.07e-12** -- essentially a
+SINGLE POINT in C, at **C_(2,1) = 3.129389531088256**. Braik-Ross prints this as
+"C_J = 3.1294" to 5 sig fig throughout the paper. The literal value 3.12940000
+sits ~1.05e-5 ABOVE the (2,1) family's C-max, so the family does not exist there
+-- the symmetric all-roots searches all returned wrong-topology impostors not
+because C21 is asymmetric (it isn't) but because we were searching just outside
+the family.
+
+C11a/C11b/C32 worked at literal C=3.1294 because their families span much wider
+C bands (e.g. (1,1) ΔC = 3.599e-4) and include that energy. C21 doesn't.
+
+**Recovery** (at C = 3.129389531088256, IC from Ross-RT 2025 AAS 25-621 Table 4,
+already in our test suite at `tests/search/test_cr3bp_ross_families.py:66`):
+
+| seed | result |
+|---|---|
+| `(x0=+0.7237335857, sign=+1, hc=4)` | **x0=+0.7237335865, T=84.53315 d, (k1,k2)=(2,1), prograde, nu=+0.0512, res=7.5e-13** |
+
+Period error: **0.00118 d (1.4 ppm)** vs Braik-Ross sourced 84.533 d / Ross-RT
+84.534335 d. Topology and stability match (C21's sourced sigma=0.1358 is the
+LOWEST of the 4 cyclers, consistent with the linearly-stable nu found).
+
+## Final status of #249: 4 OF 4 RIGOROUSLY REPRODUCED
+
+| member | sourced (d) | recovered (d) | (k1,k2) | error |
+|---|---|---|---|---|
+| C11a | 42.140 | 42.1405 | (1,1) prograde | 0.001% |
+| C11b | 55.995 | 55.9590 | (1,1) prograde | 0.06% |
+| C21 | 84.533 | 84.5331 | (2,1) prograde | **1.4 ppm** |
+| C32 | 78.613 | 78.6126 | (3,2) prograde | 0.0005% |
+
+All four reproduced via the symmetric perpendicular-x-axis-crossing corrector at
+the correct per-family Jacobi (literal 3.1294 for C11a/C11b/C32; 3.129389531088256
+for C21). The Braik-Ross network's cycler nodes are now fully recoverable; the
+C32-dominance gate can be re-run with the enlarged node set.
+
+**Standing lessons added to memory:**
+- Never give up reproducing papers — [[feedback_never_give_up_reproducing_papers]]
+- Treat published rounded values as DISPLAY, not LITERAL: when a search returns no
+  topology-correct matches, suspect the printed C/T/V_inf may be 5-sig-fig truncated
+  and the real value sits in a sub-resolution band.
