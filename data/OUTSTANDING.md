@@ -79,11 +79,17 @@ no per-member data was ever published.
 catalogue is at its data-limited validation ceiling and the literature is mostly
 exhausted (paper sweep #250 found no new genome). The toolkit is mature, so the
 program shifts to DISCOVERY. Spec: `docs/notes/2026-06-13-discovery-program-spec.md`.
-Three tracks: **(A) richer genome** — #254 repeated-moon multi-rev (highest-evidenced
-lever, the only genome with a PROVEN non-empty target = Liang CGE; designed
-`docs/notes/2026-06-14-repeated-moon-multirev-genome-design.md`); **(B) prioritizer** —
-#249 RESOLVED 4/4 (all Braik-Ross cycler members C11a/C11b/C21/C32 reproduced; scorer
-ungate-ready) + #239 impulsive merge; **(C) discovery-campaign daemon** — #253. Regime arc: left input-bound → briefly build-bound (genome +
+Three tracks: **(A) richer genome** — #254 repeated-moon multi-rev (Liang CGE
+replication, Jupiter/Saturn/Uranus swept empty) + **#266 TULIP-ORBIT GENOME
+OPERATIONAL** (Phase 1-3 complete, commits `12fd15c`/`2eb1a56`/`d8b8210`: Sundman
+regularization → NRHO continuation → period-multiplying bifurcation detector →
+family-switching corrector; end-to-end `find_tulip_via_continuation(np_target=2)`
+lands a Np=2 tulip at T=2.746 TU, J=3.058, petal_count=2 — within 0.38% of
+Koblick 2023 AMOSTECH Table 4 source. Phase 4 follow-on (multi-shooting for k>=3)
+tracked separately); **(B) prioritizer** — #249 RESOLVED 4/4 (all Braik-Ross
+cycler members C11a/C11b/C21/C32 reproduced; scorer ungate-ready) + #239
+impulsive merge done in #263 two-tier prioritizer; **(C) discovery-campaign
+daemon** — #253. Regime arc: left input-bound → briefly build-bound (genome +
 prioritizer + harness) → then CPU-bound (the wanted regime: discoveries scale with
 cores×time). The agent-hang failures were long solver compute outgrowing one-shot
 agents → that compute belongs in the #253 daemon.
