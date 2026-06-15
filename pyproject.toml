@@ -59,6 +59,14 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
 
+[tool.ruff.lint.per-file-ignores]
+# Standard ML/linear-algebra convention: capital X for a feature matrix, lowercase y for
+# a label vector. The ``ml`` package (the false-positive flagger #256) is the only place
+# in the tree using matrix algebra at this depth; allow N803/N806 here so the math reads
+# the way every textbook writes it.
+"src/cyclerfinder/ml/*.py" = ["N803", "N806"]
+"tests/ml/*.py" = ["N803", "N806"]
+
 [tool.ruff.format]
 # Defaults are PEP 8 compatible; keep them.
 
