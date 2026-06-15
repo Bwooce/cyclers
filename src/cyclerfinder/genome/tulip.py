@@ -153,11 +153,184 @@ KOBLICK_2023_TABLE4: dict[int, dict[str, float | int | None]] = {
         "n_petals": 2,
         "r_min_km": None,
         "r_max_km": None,
-        # Sourced via Coorbital / pumpkyn ``getTulip.m``. The published precision
-        # is full-double (15 sig fig) but every value has solver-tolerance
-        # uncertainty around it; the reproduce gate's closure tolerance is set
-        # accordingly.
+        # Sourced via Coorbital / pumpkyn ``getTulip.m`` (full-double seed).
+        # The Koblick 2023 AMOSTECH Table 4 row at fixed x0=1.023731 is a DIFFERENT
+        # member of the same Np=2 family (Koblick z0=0.174305, ydot0=-0.082095,
+        # tau0=2.756426 -> T=5.512852, nu=1.143759, r_min=252 km). See the variant
+        # below (`KOBLICK_2023_TABLE4_PAPER`) — both are kept because they index
+        # different points on the SAME Np=2 family curve; the pumpkyn seed sits
+        # near a bifurcation (nu~1.0), the paper row at nu=1.144.
     },
+}
+
+
+# Koblick 2023 AMOSTECH Table 4 (page 6): the 15-family IC table at the FIXED
+# crossing x0 = 1.023731 (so a one-parameter family indexed by Np). All rows are
+# planar perpendicular x-z-plane crossings (y0 = xdot0 = zdot0 = 0); the
+# published columns are (x0, z0, ydot0, tau0) where tau0 is the HALF-period
+# (T_TU = 2 * tau0; see Koblick Eqn 12 Case Two).
+#
+# Source: Koblick (2023) "Novel Tulip-Shaped Three-body Orbits for Cislunar Space
+# Domain Awareness Missions", AMOSTECH 2023, Poster, Table 4 (p.6). Sourced
+# precision: 5-6 sig fig (x), 5-6 (z, ydot), 7 (tau0). The nu column (stability
+# index from Koblick Eqn 6) and r_min/r_max (km) carry over from the table.
+#
+# IMPORTANT: r_min in the paper appears to be a SIGNED quantity (radius vs Moon
+# centre, lunar radius = 1737 km), so Np>=3 with r_min < 0 km are LUNAR
+# IMPACTORS at this particular IC sample - they are valid bifurcation roots of
+# the family curve but unphysical as trajectories. The reproduce gate should not
+# call them physical orbits without continuation off the impactor branch.
+KOBLICK_2023_TABLE4_PAPER: dict[int, dict[str, float | int]] = {
+    1: dict(
+        x0=1.023731,
+        z0=0.183250,
+        ydot0=-0.106950,
+        tau0=1.533637,
+        n_petals=1,
+        nu=1.369020,
+        r_min_km=1829.78,
+        r_max_km=71031.98,
+    ),
+    2: dict(
+        x0=1.023731,
+        z0=0.174305,
+        ydot0=-0.082095,
+        tau0=2.756426,
+        n_petals=2,
+        nu=1.143759,
+        r_min_km=252.10,
+        r_max_km=67614.28,
+    ),
+    3: dict(
+        x0=1.023731,
+        z0=0.159022,
+        ydot0=-0.049901,
+        tau0=3.588824,
+        n_petals=3,
+        nu=1.000000,
+        r_min_km=-752.49,
+        r_max_km=61792.20,
+    ),
+    4: dict(
+        x0=1.023731,
+        z0=0.138427,
+        ydot0=-0.016770,
+        tau0=4.050042,
+        n_petals=4,
+        nu=1.006718,
+        r_min_km=-985.88,
+        r_max_km=53991.24,
+    ),
+    5: dict(
+        x0=1.023731,
+        z0=0.122012,
+        ydot0=+0.006413,
+        tau0=4.380388,
+        n_petals=5,
+        nu=1.000000,
+        r_min_km=-868.06,
+        r_max_km=47824.86,
+    ),
+    6: dict(
+        x0=1.023731,
+        z0=0.108984,
+        ydot0=+0.026199,
+        tau0=4.628880,
+        n_petals=6,
+        nu=1.000070,
+        r_min_km=-652.02,
+        r_max_km=42976.89,
+    ),
+    7: dict(
+        x0=1.023731,
+        z0=0.098423,
+        ydot0=+0.044549,
+        tau0=4.827278,
+        n_petals=7,
+        nu=1.000000,
+        r_min_km=-399.67,
+        r_max_km=39087.92,
+    ),
+    8: dict(
+        x0=1.023731,
+        z0=0.089585,
+        ydot0=+0.062522,
+        tau0=4.991642,
+        n_petals=8,
+        nu=1.000000,
+        r_min_km=-125.78,
+        r_max_km=35870.64,
+    ),
+    9: dict(
+        x0=1.023731,
+        z0=0.081981,
+        ydot0=+0.080721,
+        tau0=5.131974,
+        n_petals=9,
+        nu=1.000000,
+        r_min_km=167.60,
+        r_max_km=33137.37,
+    ),
+    10: dict(
+        x0=1.023731,
+        z0=0.075272,
+        ydot0=+0.099631,
+        tau0=5.254942,
+        n_petals=10,
+        nu=1.000000,
+        r_min_km=485.03,
+        r_max_km=30759.16,
+    ),
+    11: dict(
+        x0=1.023731,
+        z0=0.069206,
+        ydot0=+0.119765,
+        tau0=5.365409,
+        n_petals=11,
+        nu=1.000000,
+        r_min_km=836.20,
+        r_max_km=28641.99,
+    ),
+    12: dict(
+        x0=1.023731,
+        z0=0.063570,
+        ydot0=+0.141824,
+        tau0=5.467385,
+        n_petals=12,
+        nu=1.000000,
+        r_min_km=1238.55,
+        r_max_km=26710.27,
+    ),
+    13: dict(
+        x0=1.023731,
+        z0=0.058150,
+        ydot0=+0.167010,
+        tau0=5.564950,
+        n_petals=13,
+        nu=1.000000,
+        r_min_km=1724.83,
+        r_max_km=24891.06,
+    ),
+    14: dict(
+        x0=1.023731,
+        z0=0.052617,
+        ydot0=+0.198057,
+        tau0=5.664248,
+        n_petals=14,
+        nu=1.000000,
+        r_min_km=2376.01,
+        r_max_km=23082.05,
+    ),
+    15: dict(
+        x0=1.023731,
+        z0=0.045796,
+        ydot0=+0.247118,
+        tau0=5.787296,
+        n_petals=15,
+        nu=1.000000,
+        r_min_km=3566.42,
+        r_max_km=20935.32,
+    ),
 }
 
 
