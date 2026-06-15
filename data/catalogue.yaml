@@ -48587,3 +48587,69 @@ days\" per the NTRS abstract.
       Liang et al. 2024 pp. 18-20: the ephemeris-model member demonstrates the
       near-resonance construction survives a real ephemeris; per-flyby data exists
       only as figure traces; all flybys above 100 km real altitude.
+
+- id: tito-2018-mars-free-return
+  name: "Tito 2018 manned Mars free-return (one-window E-M-E ballistic flyby)"
+  source: literature
+  trajectory_regime: ballistic   # Tito 2013 IEEE Aero: ballistic Earth-Mars-Earth free-return; single Mars gravity assist drops perihelion toward Venus's orbit
+  model_assumption: analytic-ephemeris   # schema v2; source: DE421; reproduced on DE440
+  cycler_class: multi-arc   # schema v4; two distinct heliocentric legs E->M then M->E (NB: not a cycler; see orbit_class)
+  orbit_class: mga_tour   # schema v4.7 (2026-06-15, task #294); single-window E-M-E ballistic flyby, terminal Earth re-entry; admitted under the scope expansion (was withheld under cyclers-only scope per docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md §4)
+  epoch_locked: true   # schema v4.7 (task #294); viable only at the January 2018 launch window per Patel-Longuski "two times every 15 years" fast-opportunity geometry
+  n_returns: 1   # schema v4.7 (task #294); single Mars gravity-assist returns the spacecraft to Earth at 14.18 km/s entry speed (terminal re-entry; no next lap)
+  validity_window:   # schema v4.7 (task #294); Tables III departure -> Tables III return (UTC)
+    start: "2018-01-05T07:00:00Z"
+    end: "2019-05-21T13:52:48Z"
+  launch_epoch: "2018-01-05T07:00:00Z"   # schema v4.7 (task #294); Tables III departure UTCG
+  validation_level: V0   # schema v4.5 (2026-06-15, task #294); sourced + reproduced on real ephemeris (DE440 vs published DE421 to <1.5%); V0 is conservative pending V0-V5 gauntlet extension for epoch-locked classes (#289)
+  source_ephemeris: "DE421"   # v4.2; Tito 2013 §II: Astrogator full-force solution against JPL DE421
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: analytic-ephemeris
+  vinf_fidelity: analytic-ephemeris
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M-E"
+  sense: "n/a"   # not a cycler; sense (in/out) only applies to repeating cyclers
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 6.232
+      note: "Tito 2013 Tables IV leg-1 Earth departure V_inf; ours 6.226 km/s on DE440 (-0.09%; -0.17% on C3)."
+    - body: "M"
+      vinf_kms: 5.417
+      note: "Tito 2013 Tables IV Mars flyby (in ≈ out at 5.417 km/s); ours 5.424 km/s in / 5.413 km/s out on DE440 (+0.13% / -0.07%); ballistic continuity confirmed (required bend 33.4 deg vs cone 34.2 deg at 100 km periapsis)."
+    - body: "E"
+      vinf_kms: 8.837
+      note: "Tito 2013 Tables IV leg-2 Earth arrival V_inf; ours 8.900 km/s on DE440 (+0.71%; +1.42% on C3; the larger residual is the DE421->DE440 ephemeris difference accumulated over 274 d)."
+  legs: []
+  first_published:
+    authors: ["Tito, D. A.", "Anderson, G.", "Carrico, J. P.", "Hopkins, J. B.", "Loucks, M. E.", "Voels, S. A."]
+    year: 2013
+    title: "Feasibility Analysis for a Manned Mars Free-Return Mission in 2018"
+    venue: "IEEE Aerospace Conference, 2013"
+  corroborating_sources: []
+  priority_date: "2013-01-01"
+  notes: |
+    Single Earth-Mars-Earth ballistic free-return for the once-per-~15-yr fast
+    opportunity at the January-2018 launch window. 501.3-day total. Single Mars
+    gravity assist (~100 km periapsis altitude, ~7.27 km/s periapsis speed) drops
+    perihelion toward Venus's orbit. Terminal Earth re-entry at 14.18 km/s; no
+    next lap.
+
+    Admitted under the catalogue scope expansion (2026-06-15, task #294) as
+    orbit_class=mga_tour; was withheld under the prior cyclers-only scope per
+    project_catalogue_scope_cyclers_only memory and docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md §4.
+
+    Reproduction (DE440 vs Tito's published DE421): all four V_inf within 0.71%
+    (departure C3 within 0.17%, arrival C3 within 1.42% — the return-arc residual
+    is dominated by the DE421->DE440 ephemeris difference, not a model error);
+    Mars-flyby ballistic continuity independently confirmed (33.4 deg required
+    bend fits inside the 34.2 deg cone at the published 100 km periapsis).
+
+    Reproduction notes: docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md
+    Reproduction script: scripts/tito_free_return_repro.py
+  source_quotes:
+    "validity_window.start": "Tito 2013 Tables III: 'Depart Earth, 5 Jan 2018 07:00:00.000 UTCG'."
+    "validity_window.end": "Tito 2013 Tables III: 'Arrive Earth, 21 May 2019 13:52:48.012 UTCG'."
+    "vinf_kms_at_encounters.0.vinf_kms": "Tito 2013 Tables IV leg-1: 'Dep V-inf 6.232 km/s'."
+    "vinf_kms_at_encounters.1.vinf_kms": "Tito 2013 Tables IV leg-1 / leg-2: Mars arrival V-inf 5.417 km/s; Mars departure V-inf 5.417 km/s (ballistic free-return symmetry)."
+    "vinf_kms_at_encounters.2.vinf_kms": "Tito 2013 Tables IV leg-2: 'Arr V-inf 8.837 km/s' (the entry-speed driver for the TPS analysis)."

@@ -265,7 +265,16 @@ def test_loader_filter_excludes_non_heliocentric() -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 223,
+    # 223 -> 224 (2026-06-15, #294): +1 Tito 2018 Mars free-return (the
+    # tito-2018-mars-free-return row, admitted under the catalogue scope
+    # expansion as orbit_class=mga_tour; previously withheld under the
+    # cyclers-only scope). E-M-E sequence is structurally a multi-encounter
+    # row from the v1 gauntlet's perspective (the gauntlet does not yet
+    # have an mga_tour lane), so the classifier files it under
+    # MULTI_ENCOUNTER_SEQUENCE. Pure census shift; the row carries its own
+    # V0 sourced-and-real-eph-reproduced evidence (see the row's notes
+    # and docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md).
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 224,
     ExclusionReason.DESCRIPTOR_CLOSABLE: 12,  # #106: free_return_arcs[]-bearing SnLm rows
     ExclusionReason.MISSING_LEG_TOFS: 15,
     # 6 -> 15 (2026-06-12, #216): +5 Ross-Roberts-Tsoukkas EM CR3BP cycler rows
