@@ -70,6 +70,13 @@ import cyclerfinder.core.lambert as core_lambert
 # ---------------------------------------------------------------------------
 
 #: 16-D input vector to the NN (after self-similar normalization).
+# Vendored pretrained-weight directories (see neural_reach_models/NOTICE.md for
+# upstream attribution + MPL-2.0 license terms). Used as the default when
+# ``from_weight_dir(...)`` is called without explicit paths.
+_MODELS_DIR = Path(__file__).resolve().parent / "neural_reach_models"
+_VENDORED_DV_DIR = _MODELS_DIR / "eigen_model_large"
+_VENDORED_TMIN_DIR = _MODELS_DIR / "eigen_model_tmin_large"
+
 INPUT_DIM = 16
 #: 128 neurons per hidden layer.
 HIDDEN_DIM = 128
@@ -535,22 +542,28 @@ class NeuralReachPrefilter:
     ) -> NeuralReachPrefilter:
         """Load weights from on-disk CSV dirs and construct a prefilter.
 
-        Falls back to non-blocking mode (``weights_dv=None``) when the path
-        is ``None`` or the directory is missing. NEVER raises on path
-        problems -- the non-blocking contract is end-to-end.
+        When ``dv_model_dir`` / ``tmin_model_dir`` is ``None``, falls back to
+        the in-repo vendored weights at ``neural_reach_models/`` (MPL-2.0,
+        from zhong-zh15/neural-low-thrust-approximator; see the adjacent
+        ``NOTICE.md``). If the vendored directory is also missing (e.g. a
+        slim distribution that stripped the model files), enters non-blocking
+        fallback (``weights_dv=None``). NEVER raises on path problems -- the
+        non-blocking contract is end-to-end.
         """
+        if dv_model_dir is None:
+            dv_model_dir = _VENDORED_DV_DIR
+        if tmin_model_dir is None:
+            tmin_model_dir = _VENDORED_TMIN_DIR
         w_dv: _Weights | None = None
         w_tmin: _Weights | None = None
-        if dv_model_dir is not None:
-            try:
-                w_dv = load_weights(dv_model_dir)
-            except (FileNotFoundError, ValueError, OSError):
-                w_dv = None
-        if tmin_model_dir is not None:
-            try:
-                w_tmin = load_weights(tmin_model_dir)
-            except (FileNotFoundError, ValueError, OSError):
-                w_tmin = None
+        try:
+            w_dv = load_weights(dv_model_dir)
+        except (FileNotFoundError, ValueError, OSError):
+            w_dv = None
+        try:
+            w_tmin = load_weights(tmin_model_dir)
+        except (FileNotFoundError, ValueError, OSError):
+            w_tmin = None
         return cls(weights_dv=w_dv, weights_tmin=w_tmin, **kwargs)
 
     # ------------------------------------------------------------------
