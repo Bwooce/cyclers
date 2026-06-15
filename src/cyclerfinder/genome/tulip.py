@@ -40,9 +40,14 @@ continuation. Those land in Phase 3 (#266 follow-up).
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
+
+if TYPE_CHECKING:
+    from cyclerfinder.search.bifurcation_detector import BifurcationPoint
+    from cyclerfinder.search.nrho_continuation import SymmetricNRHO
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
@@ -167,8 +172,13 @@ KOBLICK_2023_TABLE4: dict[int, dict[str, float | int | None]] = {
 # Koblick 2023 AMOSTECH Table 4 (page 6): the 15-family IC table at the FIXED
 # crossing x0 = 1.023731 (so a one-parameter family indexed by Np). All rows are
 # planar perpendicular x-z-plane crossings (y0 = xdot0 = zdot0 = 0); the
-# published columns are (x0, z0, ydot0, tau0) where tau0 is the HALF-period
-# (T_TU = 2 * tau0; see Koblick Eqn 12 Case Two).
+# published columns are (x0, z0, ydot0, tau0). #266 Phase 3 verified that
+# ``tau0`` IS THE FULL nondim period (the IC closes to machine precision at
+# t=tau0 under DOP853 at rtol=1e-12) -- NOT the half-period as initially
+# misread. This is consistent with Koblick's Fig 6 captions, which label the
+# horizontal axis as "period (TU)" with values in the 1.5-5.8 TU range matching
+# the tau0 column directly. Each member has ONE half-period perpendicular
+# x-z-plane re-crossing at t = tau0/2 (the orbit's symmetry partner of the IC).
 #
 # Source: Koblick (2023) "Novel Tulip-Shaped Three-body Orbits for Cislunar Space
 # Domain Awareness Missions", AMOSTECH 2023, Poster, Table 4 (p.6). Sourced
@@ -608,3 +618,187 @@ def reproduce_tulip(
         n_petals_observed=int(n_petals_observed),
         monodromy_eigs=eigs_sorted,
     )
+
+
+# ---------------------------------------------------------------------------
+# End-to-end Phase 3 reproduce gate: continuation + family-switching.
+# ---------------------------------------------------------------------------
+
+
+def find_tulip_via_continuation(
+    np_target: int = 2,
+    *,
+    system: cr3bp.CR3BPSystem | None = None,
+    d_x0: float = 2e-3,
+    n_steps_max: int = 60,
+    perilune_floor_km: float | None = None,
+    eigenvector_step: float = 1e-3,
+    tol: float = 1e-10,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> FindTulipResult:
+    """End-to-end Phase 3 reproduce gate: continuation + family-switching.
+
+    1. From the Koblick 2023 AMOSTECH Table 4 Np=1 (paper-row) seed at
+       ``x0=1.023731``, correct it via the symmetric corrector.
+    2. Continue the family in ``x0`` (direction=-1: decreasing x0) until a
+       period-doubling (k=2) bifurcation bracket is found OR the perilune floor
+       (if any) is reached.
+    3. At the first k=2 bracket, call
+       :func:`cyclerfinder.genome.family_switch.switch_family` with ``k=2``.
+    4. Independently verify ``petal_count == 2`` on the switched orbit.
+
+    Parameters
+    ----------
+    np_target :
+        The petal count to land on. Currently only ``np_target=2`` is wired in.
+    system :
+        CR3BP system. Defaults to the Koblick / pumpkyn normalisation.
+    d_x0 :
+        Continuation step in x0.
+    n_steps_max :
+        Step budget for the continuation.
+    perilune_floor_km :
+        If given, stop the continuation when perilune drops below this floor.
+    eigenvector_step :
+        Forwarded to :func:`switch_family`.
+    tol, rtol, atol :
+        Forwarded to the corrector and propagators.
+
+    Returns
+    -------
+    FindTulipResult :
+        Carries the seed orbit, the continuation branch, the first matched
+        bifurcation, the switched member (or ``None``), and a high-level
+        ``success`` flag.
+
+    Notes
+    -----
+    This function does NOT modify the catalogue or write to disk. It is a
+    diagnostic / reproduce-gate routine for the genome layer.
+    """
+    # Local imports to avoid a circular dependency at module-load time
+    # (family_switch imports genome.tulip).
+    from cyclerfinder.genome.family_switch import switch_family
+    from cyclerfinder.search.nrho_continuation import (
+        continue_nrho_family,
+        correct_symmetric_nrho,
+    )
+
+    if np_target != 2:
+        raise NotImplementedError(
+            f"find_tulip_via_continuation: only np_target=2 wired in Phase 3, got {np_target}"
+        )
+    if system is None:
+        system = koblick_system()
+    seed_row = KOBLICK_2023_TABLE4_PAPER[1]
+    # tau0 is the FULL period for the NRHO family rows (verified by closure of
+    # the IC at t=tau0 to machine precision; the half-period reading of the
+    # Phase 2 docstring was incorrect).
+    t_seed = float(seed_row["tau0"])
+    seed = correct_symmetric_nrho(
+        system,
+        float(seed_row["x0"]),
+        float(seed_row["z0"]),
+        float(seed_row["ydot0"]),
+        t_seed,
+        tol=1e-11,
+        rtol=rtol,
+        atol=atol,
+    )
+    if not seed.converged:
+        return FindTulipResult(
+            seed=seed,
+            branch_members=[],
+            bifurcation=None,
+            switched=None,
+            success=False,
+            reason="seed_no_converge",
+        )
+
+    # The period-doubling bifurcation on this family is a TANGENT bifurcation:
+    # the real hyperbolic pair (-2.30, -0.43) collide AT -1 as x0 decreases,
+    # then turn into a complex pair on the unit circle. The "distance to -1"
+    # signal has a TANGENT MINIMUM at the bifurcation (rather than a crossing
+    # through zero), so a coarse tolerance like bif_tol=0.1 brackets it.
+    branch = continue_nrho_family(
+        seed,
+        system,
+        label="koblick_l2_southern_nrho",
+        direction=-1,
+        d_x0=d_x0,
+        n_steps_max=n_steps_max,
+        perilune_floor_km=perilune_floor_km,
+        tol=1e-10,
+        rtol=rtol,
+        atol=atol,
+        bif_k_max=4,
+        bif_tol=1e-1,
+        stop_on_first_bifurcation=False,
+    )
+    k2_bifs = [b for b in branch.bifurcations if b.k == 2]
+    if not k2_bifs:
+        return FindTulipResult(
+            seed=seed,
+            branch_members=list(branch.members),
+            bifurcation=None,
+            switched=None,
+            success=False,
+            reason=f"no_k2_bifurcation:{branch.stop_reason.value}:{branch.n_steps}steps",
+        )
+    # Pick the bracket whose MIDPOINT member has the smallest |lam + 1|: this is
+    # the closest-to-bifurcation member on the family, the best parent for the
+    # family-switching corrector.
+    from cyclerfinder.search.bifurcation_detector import floquet_multipliers
+
+    best_idx = -1
+    best_dist = float("inf")
+    for i, m in enumerate(branch.members):
+        if m.monodromy is None:
+            continue
+        eigs = floquet_multipliers(m.monodromy)
+        d = min(abs(complex(e) + 1.0) for e in eigs)
+        if d < best_dist:
+            best_dist = d
+            best_idx = i
+    if best_idx < 0:
+        return FindTulipResult(
+            seed=seed,
+            branch_members=list(branch.members),
+            bifurcation=k2_bifs[0],
+            switched=None,
+            success=False,
+            reason="no_monodromy_on_any_member",
+        )
+    parent = branch.members[best_idx]
+    bif = k2_bifs[0]
+    switched = switch_family(
+        parent,
+        bif,
+        system,
+        k=2,
+        eigenvector_step=eigenvector_step,
+        tol=tol,
+        rtol=rtol,
+        atol=atol,
+    )
+    return FindTulipResult(
+        seed=seed,
+        branch_members=list(branch.members),
+        bifurcation=bif,
+        switched=switched,
+        success=switched is not None,
+        reason=("ok" if switched is not None else "family_switch_no_converge"),
+    )
+
+
+@dataclass(frozen=True)
+class FindTulipResult:
+    """Outcome of :func:`find_tulip_via_continuation`."""
+
+    seed: SymmetricNRHO
+    branch_members: list[SymmetricNRHO]
+    bifurcation: BifurcationPoint | None
+    switched: SymmetricNRHO | None
+    success: bool
+    reason: str

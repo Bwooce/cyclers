@@ -257,3 +257,56 @@ def test_reproduce_tulip_floquet_structure_on_np2() -> None:
             f"Floquet multiplier modulus {m:.4f} outside [0.99, 1.01] -- "
             "Np=2 butterfly should be near-marginal, not strongly hyperbolic."
         )
+
+
+# ---------------------------------------------------------------------------
+# Phase 3 end-to-end gate: continuation + family-switching lands Np=2.
+# ---------------------------------------------------------------------------
+
+
+def test_find_tulip_via_continuation_lands_np2() -> None:
+    """End-to-end Phase 3 reproduce gate: from the Koblick Np=1 seed,
+    continuation + family-switching lands a Np=2 family member.
+
+    Discipline:
+      - The switched orbit must converge (residual below the corrector tol).
+      - The petal count must equal 2 (independent topological cross-check).
+      - The period must be within 10% of the Koblick paper Np=2 period
+        (T = tau0 = 2.756 TU). Note: our family-switching corrector lands on
+        the SAME-family Np=2 orbit but at the BIFURCATION POINT x0 (which is
+        NOT the paper's fixed x0=1.0237 -- it's whatever x0 the multiplier
+        crossed -1 at). So we compare PERIOD and JACOBI within precision,
+        NOT raw IC.
+      - The Jacobi must be in Koblick's documented Np=2 band ~3.05 +- 0.05.
+
+    On failure: file as HONEST DIAGNOSTIC via xfail; do NOT tune to pass.
+    """
+    from cyclerfinder.genome.tulip import (
+        KOBLICK_2023_TABLE4_PAPER,
+        find_tulip_via_continuation,
+    )
+
+    result = find_tulip_via_continuation(np_target=2, d_x0=5e-4, n_steps_max=40)
+    assert result.success, (
+        f"find_tulip_via_continuation failed: reason={result.reason}; "
+        f"branch_members={len(result.branch_members)}, "
+        f"bifurcation={'yes' if result.bifurcation is not None else 'no'}"
+    )
+    switched = result.switched
+    assert switched is not None
+    # Topological check.
+    s0 = np.array([switched.x0, 0, switched.z0, 0, switched.ydot0, 0])
+    n = petal_count(s0, switched.T_TU, koblick_system())
+    assert n == 2, f"switched orbit petal_count={n}, expected 2"
+    # Period within +-10% of Koblick Np=2 tau0 (the FULL period, per the
+    # Phase 3 finding that tau0 is the full period in Table 4).
+    t_target = float(KOBLICK_2023_TABLE4_PAPER[2]["tau0"])
+    period_ratio = switched.T_TU / t_target
+    assert 0.90 < period_ratio < 1.10, (
+        f"switched T={switched.T_TU:.4f} not within 10% of Koblick Np=2 "
+        f"T={t_target:.4f} (ratio={period_ratio:.4f})"
+    )
+    # Jacobi in Koblick's Np=2 band (~3.05 +- 0.05).
+    assert 3.00 < switched.jacobi < 3.10, (
+        f"switched Jacobi {switched.jacobi:.4f} outside Koblick Np=2 band [3.00, 3.10]"
+    )
