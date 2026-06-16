@@ -90,6 +90,17 @@ class CandidateSignature:
     n_rev: tuple[int, ...] = ()
     """Per-leg full-revolution counts (the multi-rev structure)."""
 
+    period_band_tu: tuple[float, float] | None = None
+    """Optional CR3BP nondim-period band (T_min, T_max) the candidate occupies.
+
+    When set AND an overlapping anchor declares its own ``period_band_tu``, the
+    candidate is treated as out-of-anchor-scope iff the two bands are disjoint.
+    ``None`` (the historical default) preserves the old behaviour: no period
+    filter, the anchor's structural-fingerprint footprint dominates. Used by
+    #301 to escape the Antoniadou-Voyatzis 2018 anchor's low-integer scope when
+    the candidate sits at a period-multiplied (k>1) sub-family.
+    """
+
     @property
     def is_moon_tour(self) -> bool:
         """A non-solar primary => a planetary-satellite (moon-tour) cycler."""
@@ -190,6 +201,16 @@ class CorpusAnchor:
     citation: str
     doi: str | None
     domains: tuple[str, ...] = ()
+    period_band_tu: tuple[float, float] | None = None
+    """Optional CR3BP nondim-period band the anchor's published scope covers.
+
+    When set, a candidate whose ``period_band_tu_min`` lies outside this band is
+    treated as out-of-scope for the anchor (the anchor is NOT used to flag it
+    a rediscovery). ``None`` (default) means the anchor has no period-scope
+    restriction. Used by #301 to filter the Antoniadou-Voyatzis 2018 anchor's
+    low-integer-resonance scope away from the period-multiplied Neimark-Sacker
+    sub-families at T_TU ~ 20-44.
+    """
 
 
 # Hand-curated from the catalogue's published rows + the task's named corpus.
@@ -679,6 +700,12 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "Anchor for #287's 3D Braik-Ross (1,1) family extension (likely "
         "rediscovery target).",
         doi=None,
+        # The paper's published catalogue covers low-integer p:q resonant
+        # orbits (typically 1:1, 2:1, 3:2) in the spatial CR3BP. Their families
+        # sit at T_TU under ~15. The #299 Neimark-Sacker sub-families at T_TU
+        # 20-44 are period-multiplied (k=3-6) derivatives that are outside the
+        # paper's scope -- treat them as not-anchored on AV-2018 alone.
+        period_band_tu=(0.0, 15.0),
     ),
 )
 
@@ -699,8 +726,18 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
         # Require the candidate's tour to be a subset-ish of the anchor's body
         # set (every encountered body is one the anchor's family visits), which
         # is the structural-fingerprint test, not a single shared body.
-        if overlap and seq_set <= anchor.body_set:
-            anchors.append(anchor)
+        if not (overlap and seq_set <= anchor.body_set):
+            continue
+        # Optional CR3BP period-band filter (#301): if BOTH sides declare a
+        # ``period_band_tu``, drop the anchor when the bands are disjoint -- a
+        # candidate at a period-multiplied sub-family is structurally out-of-
+        # scope for an anchor that catalogues only the low-integer base family.
+        if sig.period_band_tu is not None and anchor.period_band_tu is not None:
+            c_min, c_max = sig.period_band_tu
+            a_min, a_max = anchor.period_band_tu
+            if c_max < a_min or c_min > a_max:
+                continue
+        anchors.append(anchor)
     return anchors
 
 
