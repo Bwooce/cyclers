@@ -9,6 +9,12 @@ dependencies = [
     "scipy>=1.13",
     "astropy>=7.0",
     "jplephem>=2.22",
+    # Parallel-sweep substrate (#321 Phase 1). MIT-licensed, lightweight,
+    # pulls in cloudpickle + loky for safe-fork process pools. Used by
+    # ``cyclerfinder.parallel.parallel_sweep`` to fan single-cell sweep
+    # closures across cores. Phase 2 rewires specific sweep callers; until
+    # then joblib is only a substrate dependency.
+    "joblib>=1.3",
 ]
 
 [project.optional-dependencies]
@@ -97,6 +103,13 @@ ignore_missing_imports = true
 # epochs; treat the module as Any — same pragmatic choice as astropy above.
 [[tool.mypy.overrides]]
 module = ["jplephem.*"]
+ignore_missing_imports = true
+
+# joblib (parallel-sweep substrate, #321) ships no py.typed marker. The
+# wrapper imports Parallel + delayed; treat as Any — same pragmatic choice
+# as the other untyped third-party surfaces above.
+[[tool.mypy.overrides]]
+module = ["joblib.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
