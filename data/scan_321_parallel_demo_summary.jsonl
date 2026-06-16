@@ -1,0 +1,1 @@
+{"_meta": true, "task": "#321 parallel-sweep demo summary", "git_sha": "ba9d66e", "n_epochs": 100, "n_cycles_per_epoch": 3, "serial_wall_seconds": 43.62354850769043, "parallel_wall_seconds": 8.621203422546387, "speedup_ratio": 5.060030064202526, "n_workers_requested": 8, "parallel_succeeded": 100, "parallel_failed": 0, "equivalence_notes": "100/100 rows match (0 mismatches)"}
