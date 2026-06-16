@@ -26,10 +26,17 @@ multi-week Track-A builds the speculative-high-effort rule mandated:
   rediscovery against Antoniadou-Voyatzis 2018 (likely) and the broader EM CR3BP
   corpus. Highest-priority IC queued for #306 3D V0-V5 gauntlet.
 - **Axis 2 — BCR4BP** (#292/#303/#304): Andreu/Rosales-Jorba 2023 Phase 1 substrate
-  + mu_sun continuation + halo extension. **Honest structural finding**:
-  Sun-Jupiter-moon BCR4BP L1 Lyapunov family is essentially CR3BP-equivalent at
-  corrector precision (Δx0 < 1e-9 vs Sun-Earth-Moon's Δx0 ~ 1e-4). **Sun
-  perturbation does NOT transfer from EM to Jovian for L1-substitute families.**
+  + mu_sun continuation + halo extension. **Honest structural finding** (#313 /
+  #326, commit `c1896ef`): Sun-Jupiter-moon BCR4BP L1 Lyapunov family has
+  **2.7-3.0 orders of magnitude weaker** Sun-perturbation than Sun-Earth-Moon
+  (Δx0 = 1-2e-7 at SJE/SJI vs 1.055e-4 at SEM). Geometric explanation:
+  Δx0_target / Δx0_SEM ≈ (μ_sun_target/μ_sun_SEM) × (a_sun_SEM/a_sun_target)^k,
+  k ∈ [2,3]. **Sun perturbation is much weaker (but NOT identically zero) at
+  Sun-Jupiter for L1 Lyapunov** — falsifiable scope: claim is per-family, not
+  global; SEM halos actually have Δx0 ~7e-4 (LARGER than SEM L1 Lyapunov), and
+  Sun-Jupiter-moon HALO behaviour is unverified. See
+  `docs/notes/2026-06-16-sun-perturbation-doesnt-transfer-to-jovian.md` for the
+  full quantitative writeup.
 - **Axis 5 — Epoch-aware MGA** (#297/#298/#300/#302): data model + Tisserand-
   Poincaré enumerator + multi-shell BFS + per-leg TOF optimisation + DSM extension
   + Aldrin/S1L1 precursor matcher. **Galileo VEEGA structural re-find at 11.5 km/s
