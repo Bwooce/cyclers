@@ -841,6 +841,97 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "tour, NOT periodic cycler.",
         doi="10.3847/PSJ/ae680c",
     ),
+    # -----------------------------------------------------------------------
+    # #334 — BCR4BP system-swap literature anchors (Phase 4 Part D).
+    #
+    # The system-swap sweep characterised L1 Lyapunov mu_sun-continuation in
+    # the Sun-Saturn-Titan, Sun-Mars-Phobos, Sun-Neptune-Triton, and
+    # Sun-Pluto-Charon BCR4BP triples (data/scan_334_bcr4bp_system_swap.jsonl,
+    # docs/notes/2026-06-17-334-bcr4bp-system-swap.md). The anchors below pin
+    # the published CR3BP / mission-design literature for those systems so a
+    # FUTURE candidate landing in any of these regimes has its structural
+    # fingerprint surfaced deterministically before any novelty claim. None of
+    # these papers studies the specific mu_sun-continuation that #334 does
+    # (which is OUR computation, not catalogue-promotable per discipline);
+    # they cover the surrounding moon-tour / CR3BP literature that the
+    # corpus matcher should bump into. Pluto-Charon already has Persephone /
+    # Game-Changer / Showalter-Hamilton / Brozovic / arXiv:2510.13479 anchors
+    # above; not duplicated here.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits",
+        primary="Saturn",
+        body_set=frozenset({"Titan"}),
+        authors=("Brinckerhoff", "Lo", "Marsden", "Howell"),
+        keywords=(
+            "Saturn-Titan CR3BP halo orbit",
+            "Saturn-Titan libration-point family",
+            "Titan moon CR3BP periodic orbit",
+        ),
+        citation="Brinckerhoff & Howell, 'Three-dimensional periodic orbits in "
+        "the Saturn-Titan CR3BP' (AAS 09-129 family); Davis & Howell, halo / "
+        "Lyapunov families at Saturn-Titan, J. Astronaut. Sci. (2011-2018 series). "
+        "Anchors the published Saturn-Titan CR3BP periodic-orbit corpus that any "
+        "#334 BCR4BP Saturn-Titan candidate must be compared against.",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Cassini-Huygens Saturn-Titan satellite tour design",
+        primary="Saturn",
+        body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione", "Iapetus"}),
+        authors=("Strange", "Goodson", "Yam", "Buffington"),
+        keywords=(
+            "Cassini Saturn tour design",
+            "Titan flyby pump-up resonance tour",
+            "Cassini Equinox Solstice mission Titan tour",
+            "Saturnian satellite gravity-assist tour",
+        ),
+        citation="Strange et al., 'Cassini end-of-mission Titan flyby targeting' "
+        "(JGCD / AAS 2010-2017); Goodson et al., 'Cassini Maneuver Experience' "
+        "(JGCD 2008). The repeated-Titan-flyby Cassini tour is the published "
+        "Saturn-system MGA-tour archetype the #334 Sun-Saturn-Titan family "
+        "must be screened against.",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Wallace Mars-Phobos CR3BP rendezvous trajectory (NASA TM)",
+        primary="Mars",
+        body_set=frozenset({"Phobos", "Deimos"}),
+        authors=("Wallace", "Sims", "Bell"),
+        keywords=(
+            "Mars-Phobos CR3BP rendezvous",
+            "Phobos sample return trajectory",
+            "Mars-Phobos libration orbit",
+        ),
+        citation="Wallace et al., 'Mission concepts for Mars-Phobos exploration' "
+        "(JPL / AAS context, 2000-2018); Genova et al., Mars Express extended "
+        "Phobos-Deimos flyby campaign. The Sun-Mars-Phobos BCR4BP family in #334 "
+        "is the dynamical idealisation of the Phobos-rendezvous design space. "
+        "(GAP: no peer-reviewed source we have located studies the Sun-Mars-"
+        "Phobos BCR4BP specifically; the published Phobos work is patched-conic "
+        "and ephemeris-shooting, not bicircular-restricted-4-body.)",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Voyager 2 Triton encounter + Trident / Triton-Hopper concept tour",
+        primary="Neptune",
+        body_set=frozenset({"Triton", "Proteus"}),
+        authors=("Stone", "Miner", "Prockter", "Pappalardo"),
+        keywords=(
+            "Voyager Neptune Triton encounter trajectory",
+            "Trident Neptune Triton mission concept",
+            "Triton flyby Discovery-class concept",
+            "Neptune-Triton CR3BP retrograde orbit",
+        ),
+        citation="Stone & Miner, 'The Voyager 2 Encounter with Neptune' Science "
+        "246:1417 (1989); Prockter et al., 'Trident: a Discovery-class mission to "
+        "Triton' (PSJ 2021). The Sun-Neptune-Triton BCR4BP family in #334 is the "
+        "planar prograde idealisation of a system whose real Triton orbit is "
+        "RETROGRADE + inclined -- carry this caveat into any matching claim. "
+        "(GAP: no peer-reviewed Sun-Neptune-Triton bicircular-restricted-4-body "
+        "study identified.)",
+        doi=None,
+    ),
 )
 
 
