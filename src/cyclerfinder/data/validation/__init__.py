@@ -21,14 +21,28 @@ from cyclerfinder.data.validation.v2_3d import (
     V2Verdict3D,
     run_v2_3d,
 )
+from cyclerfinder.data.validation.v2_moontour import (
+    V2_MOONTOUR_CLOSURE_FLOOR_KMS,
+    V2_MOONTOUR_DRIFT_FLOOR_KMS,
+    V2_MOONTOUR_N_CYCLES_MIN,
+    MoontourCycleVerdict,
+    V2MoontourVerdict,
+    run_v2_moontour,
+)
 
 __all__ = [
     "V1_FLOOR_KMS",
     "V1_FLOOR_NONDIM_DEFAULT",
     "V2_DRIFT_FLOOR_KMS",
+    "V2_MOONTOUR_CLOSURE_FLOOR_KMS",
+    "V2_MOONTOUR_DRIFT_FLOOR_KMS",
+    "V2_MOONTOUR_N_CYCLES_MIN",
     "V2_N_CYCLES_MIN",
+    "MoontourCycleVerdict",
     "V1Verdict3D",
+    "V2MoontourVerdict",
     "V2Verdict3D",
     "run_v1_3d",
     "run_v2_3d",
+    "run_v2_moontour",
 ]
