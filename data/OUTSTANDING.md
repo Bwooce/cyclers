@@ -13,9 +13,35 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-15)
+# Project state at a glance (updated 2026-06-16)
 
-## SCOPE EXPANSION (2026-06-15, task #294) — read this first
+## FRONTIER CAPABILITY SPRINT (2026-06-15 → 06-16) — read this first
+
+A two-day sprint shipped Phase 1+ of all four #286 frontier capability axes — the
+multi-week Track-A builds the speculative-high-effort rule mandated:
+
+- **Axis 3 — 3D / broken-plane** (#291/#296/#299/#301): corrector + family tracer
+  + bifurcation track + sub-family validation. 265-member 3D Braik-Ross (1,1) family
+  mapped; 4 sub-families found at Neimark-Sacker bifurcations; all confirmed
+  rediscovery against Antoniadou-Voyatzis 2018 (likely) and the broader EM CR3BP
+  corpus. Highest-priority IC queued for #306 3D V0-V5 gauntlet.
+- **Axis 2 — BCR4BP** (#292/#303/#304): Andreu/Rosales-Jorba 2023 Phase 1 substrate
+  + mu_sun continuation + halo extension. **Honest structural finding**:
+  Sun-Jupiter-moon BCR4BP L1 Lyapunov family is essentially CR3BP-equivalent at
+  corrector precision (Δx0 < 1e-9 vs Sun-Earth-Moon's Δx0 ~ 1e-4). **Sun
+  perturbation does NOT transfer from EM to Jovian for L1-substitute families.**
+- **Axis 5 — Epoch-aware MGA** (#297/#298/#300/#302): data model + Tisserand-
+  Poincaré enumerator + multi-shell BFS + per-leg TOF optimisation + DSM extension
+  + Aldrin/S1L1 precursor matcher. **Galileo VEEGA structural re-find at 11.5 km/s
+  residual** (single-shell saturation gap; Phase 5/#307 needs eccentric-Earth
+  Tisserand + automated DSM placement). Aldrin/S1L1 precursor probe clean negative
+  (788/788 covered by Jones-Hernandez-Jesick VEM corpus).
+- **Axis 4 — QP 2-tori** (#290): Olikara-Howell GMOS substrate + Neimark-Sacker-
+  seeded smoke test. **First quasi-periodic invariant 2-torus computed by the
+  project.** CI flake noted: smoke test gate 1e-6 occasionally exceeded by ~3×
+  due to floating-point determinism on the CI runner (LOCALLY 5/5 pass).
+
+## CATALOGUE SCOPE EXPANSION (2026-06-15, task #294) — read this second
 
 Catalogue scope expanded from cyclers-only to a four-class taxonomy
 (`cycler` / `quasi_cycler` / `precursor_mga` / `mga_tour`), schema bumped
@@ -42,19 +68,63 @@ describes cyclers no spacecraft can actually reach.
 **Queued multi-week Track-A capability builds** (per the
 `feedback_speculative_high_effort_required` rule: cost is a column, not
 a verdict — these are NOT rejected, just queued for funding):
-- **#289** quasi-cycler + precursor-MGA genome (~1200 LOC / 2–3 wk) —
-  Track A Axis 5; unblocked by this scope decision.
-- **#291** full 3D / broken-plane genome (~850 LOC) — Track A Axis 3,
-  risk dropped MED → LOW after the #287 scoping spike confirmed the
-  corrector spine is already 3D-aware (commit `9068aa0` mapped an 80-member
-  3D Braik-Ross (1,1) family at z0 ≈ -0.241 nondim).
-- **#290** quasi-periodic 2-tori (Olikara-Howell, ~1500 LOC) — Track A
-  Axis 4.
-- **#292** BCR4BP (Andreu 1998, digested 2026-06-14) — Track A Axis 2,
-  re-evaluate verdict after #287/#289.
+- **#289 / #291 / #290 / #292** — ALL SHIPPED Phase 1+ during the 2026-06-15 → 06-16
+  frontier capability sprint (see top section). #289 reached Phase 4 (precursor MGA
+  matcher with multi-shell + DSM + TOF opt). #291 reached Phase 4 (3D sub-family
+  validation). #292 reached Phase 3 (BCR4BP halo + mu_sun continuation). #290
+  reached Phase 1 (first computed QP-torus from a Neimark-Sacker bracket).
 - **#293** ER3BP — Track A Axis 1, weakest of the 5 axes (well-documented
   e>0 continuation refines CR3BP families without yielding species that
-  don't continue back to e→0).
+  don't continue back to e→0). **Remains un-started.**
+
+## DISCOVERY-SIDE QUEUE (2026-06-16) — what's PENDING
+
+**Gauntlet adaptations (infra blockers for catalogue admission of Phase 1
+outputs):** #305 (BCR4BP V0-V5), #306 (3D V0-V5), #319 (QP-tori V0-V5).
+Without these, even literature-fresh candidates cannot pass V1.
+
+**Discovery probes (the strategic-answer ideas, ranked by novelty leverage):**
+- **#312** Uranus extended sweep (in flight) — 0.062 km/s near-miss is the
+  session's highest-novelty-leverage probe; 3D extension is the discovery shot
+- **#311** Saturn extended sweep (low-thrust + 3D)
+- **#308** Asteroid-leveraging cycler search (fresh ground per #302's
+  structural conclusion)
+- **#318** Multi-axis joint search (powered × multi-rev × 3D × epoch-locked) —
+  strategic-answer keystone; no single published paper has done this joint sweep
+- **#314** Heteroclinic-network mass-transport (new "closure" definition)
+- **#315** Circumbinary/binary-star μ-gap sweep
+- **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds)
+- **#320** First quasi_cycler discovery sweep (blocked by #319)
+
+**Infrastructure + polish:**
+- **#307** #289 Phase 5 (DSM + multi-rev + eccentric Tisserand) — gap from #300/#302
+- **#310** Single-orbit prioritizer adapter (#284 architectural gap)
+- **#317** PINN-based pre-filter for sweep-impossible regions
+- **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
+- **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
+
+## SESSION YIELD (HONEST RECKONING)
+
+- **0 novel cyclers** — discipline held throughout; every well-scoped search hits
+  published material. The planar-CR3BP-and-immediate-extensions envelope IS saturated.
+- **1 admitted mga_tour row** (Tito 2018 under v4.7 scope expansion)
+- **2 quantified near-misses** — Saturn Rhea-Dione 0.107 km/s (confirmed binding
+  genome ceiling); Uranus Oberon-Titania 0.062 km/s (first quantification at this
+  system; Uranus has NO published existence prior — highest novelty leverage)
+- **1 publication-equivalent structural finding** (#313): Sun-perturbation
+  effects do not transfer from Sun-Earth-Moon to Sun-Jupiter-moon for L1
+  substitute families (Δx0 < 1e-9 across full mu_sun continuation vs Δx0 ~ 1e-4
+  for the Sun-Earth-Moon case; geometric reason a_sun_LU ≈ 1160-1845 at Jupiter
+  vs 388.8 at EM makes per-particle Sun acceleration ~10× weaker)
+- **4 multi-week Track-A capabilities operational** (3D / BCR4BP / QP-tori /
+  epoch-aware MGA — all 4 of #286's 5 axes that had concrete entry points)
+- **Catalogue scope expanded** from 1 class to 4 classes (cycler / quasi_cycler
+  / precursor_mga / mga_tour) with full toolchain (schema + lit corpus +
+  website filters)
+- **KNOWN_CORPUS** gained 12 MGA/tour anchors + Antoniadou-Voyatzis 2018
+  spatial CR3BP anchor
+- **3 standing memory rules added**: scope expansion taxonomy, Andreu
+  canonical-momentum gotcha, speculative-high-effort-required
 
 See `docs/notes/2026-06-16-frontier-scoping-er3bp-bcr4bp-3d-qp-epoch.md`
 for the cost / existence-prior / first-IC scoping that drove this queue.
