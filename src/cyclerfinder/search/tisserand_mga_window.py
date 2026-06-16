@@ -93,7 +93,10 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
+import numpy as np
+from numpy.typing import NDArray
 
 from cyclerfinder.core.constants import (
     AU_KM,
@@ -883,6 +886,245 @@ def validate_chain_candidate(
     return closure
 
 
+def _epoch_locked_loss(
+    candidate: MGAChainCandidate,
+    ephemeris: Ephemeris,
+    *,
+    orbit_class: str,
+    n_returns: int,
+    inserts_into: str | None,
+    periapsis_altitudes_km: tuple[float | None, ...] | None,
+    independent_cross_check: bool,
+    independent_tol_kms: float,
+    closure_residual_weight: float,
+    flyby_continuity_weight: float,
+) -> tuple[float, EpochLockedClosure | None]:
+    """Run :func:`close_epoch_locked` on a candidate, return (loss, closure).
+
+    Loss = ``closure_residual_weight * closure_residual_kms +
+    flyby_continuity_weight * flyby_continuity_max_dv_kms``. Used by
+    :func:`optimise_chain_tofs`. On any Lambert / ephemeris error returns
+    a large penalty (1e6) and ``None``.
+    """
+    total_tof_days = sum(candidate.leg_tofs_days)
+    end_utc = _add_days_utc(candidate.launch_epoch_utc, total_tof_days)
+    try:
+        trajectory = EpochLockedTrajectory(
+            sequence=candidate.sequence,
+            leg_tofs_days=candidate.leg_tofs_days,
+            vinf_kms_at_encounters=candidate.vinf_tuple_kms,
+            launch_epoch_utc=candidate.launch_epoch_utc,
+            orbit_class=orbit_class,  # type: ignore[arg-type]
+            n_returns=n_returns,
+            validity_window_start_utc=candidate.launch_epoch_utc,
+            validity_window_end_utc=end_utc,
+            inserts_into=inserts_into,
+            periapsis_altitudes_km=periapsis_altitudes_km,
+            notes="Tisserand-Poincaré MGA TOF-opt loss eval (#300)",
+        )
+    except ValueError:
+        return 1.0e6, None
+    try:
+        closure = close_epoch_locked(
+            trajectory,
+            ephemeris,
+            # Use loose gates inside the loss so the loss surface is smooth.
+            closure_tol_kms=1.0e6,
+            flyby_continuity_tol_kms=1.0e6,
+            independent_cross_check=independent_cross_check,
+            independent_tol_kms=independent_tol_kms,
+        )
+    except Exception:
+        return 1.0e6, None
+    loss = (
+        closure_residual_weight * closure.closure_residual_kms
+        + flyby_continuity_weight * closure.flyby_continuity_max_dv_kms
+    )
+    return float(loss), closure
+
+
+def optimise_chain_tofs(
+    candidate: MGAChainCandidate,
+    ephemeris: Ephemeris,
+    *,
+    orbit_class: str = "mga_tour",
+    n_returns: int = 1,
+    inserts_into: str | None = None,
+    periapsis_altitudes_km: tuple[float | None, ...] | None = None,
+    method: str = "Nelder-Mead",
+    max_iter: int = 50,
+    epoch_search_half_width_days: float = 10.0,
+    tof_search_relative_half_width: float = 0.25,
+    alpha_flyby_continuity: float = 2.0,
+    accept_loss_kms: float | None = 1.0,
+    independent_cross_check: bool = False,
+    independent_tol_kms: float = 0.1,
+) -> tuple[MGAChainCandidate, EpochLockedClosure, float] | None:
+    """Optimise a candidate's (launch epoch, per-leg TOFs) to minimise closure loss.
+
+    The free parameters are the launch epoch offset (days from the seed)
+    and the per-leg TOFs (days). The loss function is
+
+    .. math::
+
+        L = \\text{closure_residual_kms}
+            + \\alpha_\\text{flyby}\\,\\text{flyby_continuity_max_dv_kms}
+
+    with :math:`\\alpha_\\text{flyby} = 2.0` by default (continuity is a
+    hard ballistic constraint; closure residual is a softer V_inf-match).
+
+    The search uses ``scipy.optimize.minimize`` with the method specified.
+    ``Nelder-Mead`` is the default — it handles the noisy Lambert loss
+    surface without needing gradients. The maximum iterations cap is 50 by
+    default; for 4-leg chains that's a ~250-evaluation budget.
+
+    Parameters
+    ----------
+    candidate:
+        Seed :class:`MGAChainCandidate` (from :func:`find_mga_chains`).
+    ephemeris:
+        Phase-1 body-state provider.
+    orbit_class, n_returns, inserts_into, periapsis_altitudes_km:
+        Passed through to :class:`EpochLockedTrajectory` construction at
+        each iteration.
+    method:
+        ``scipy.optimize.minimize`` method. Default ``"Nelder-Mead"``.
+    max_iter:
+        Max iterations. Default 50.
+    epoch_search_half_width_days:
+        Launch-epoch search window half-width (days). Default 10 — the
+        optimiser may slide the launch epoch by ±10 days from the seed.
+    tof_search_relative_half_width:
+        Per-leg TOF search half-width as a fraction of the seed TOF.
+        Default 0.25 (±25%). This keeps the TOFs inside a realistic
+        geometric envelope.
+    alpha_flyby_continuity:
+        Weight on the flyby-continuity term in the loss. Default 2.0
+        (per task brief).
+    accept_loss_kms:
+        Acceptance threshold on the final loss. ``None`` returns the
+        optimised candidate regardless of loss; default ``1.0`` km/s
+        returns ``None`` if the loss is above this.
+    independent_cross_check:
+        Whether to run the Kepler cross-check at each iteration. Default
+        ``False`` for speed; the FINAL closure (returned alongside the
+        optimised candidate) is re-run with the cross-check ON.
+    independent_tol_kms:
+        Cross-check tolerance (forwarded to the final closure).
+
+    Returns
+    -------
+    (optimised_candidate, optimised_closure, final_loss) | None
+        ``None`` if the optimiser fails to find a loss below
+        ``accept_loss_kms``. Otherwise the optimised candidate (with
+        updated ``launch_epoch_utc`` and ``leg_tofs_days``), the
+        :class:`EpochLockedClosure` at the optimum (re-run with the
+        cross-check on), and the final loss value.
+
+    Notes
+    -----
+    The optimiser is local — it refines a seed, it does not search the
+    global epoch / TOF space. The seed quality directly determines the
+    achievable loss. Use :func:`find_mga_chains` to enumerate seeds.
+    """
+    from scipy.optimize import minimize
+
+    n_legs = len(candidate.leg_tofs_days)
+    seed_tofs = list(candidate.leg_tofs_days)
+    seed_epoch = candidate.launch_epoch_utc
+
+    def _x_to_candidate(x: NDArray[np.float64]) -> MGAChainCandidate:
+        epoch_offset_days = float(x[0])
+        new_tofs = tuple(max(1.0, float(t)) for t in x[1 : 1 + n_legs])
+        new_epoch = _add_days_utc(seed_epoch, epoch_offset_days)
+        return MGAChainCandidate(
+            sequence=candidate.sequence,
+            vinf_tuple_kms=candidate.vinf_tuple_kms,
+            leg_tofs_days=new_tofs,
+            launch_epoch_utc=new_epoch,
+            tisserand_parameter=candidate.tisserand_parameter,
+            chain_score=candidate.chain_score,
+        )
+
+    def _objective(x: NDArray[np.float64]) -> float:
+        cand = _x_to_candidate(x)
+        loss, _ = _epoch_locked_loss(
+            cand,
+            ephemeris,
+            orbit_class=orbit_class,
+            n_returns=n_returns,
+            inserts_into=inserts_into,
+            periapsis_altitudes_km=periapsis_altitudes_km,
+            independent_cross_check=independent_cross_check,
+            independent_tol_kms=independent_tol_kms,
+            closure_residual_weight=1.0,
+            flyby_continuity_weight=alpha_flyby_continuity,
+        )
+        return loss
+
+    x0 = np.asarray([0.0, *seed_tofs], dtype=np.float64)
+    # Initial simplex: ±10% on TOFs, ±5 days on epoch offset.
+    perturbations: list[tuple[int, float]] = [(0, 5.0)]
+    for k in range(n_legs):
+        perturbations.append((1 + k, max(2.0, 0.1 * seed_tofs[k])))
+    simplex_rows: list[NDArray[np.float64]] = [x0.copy()]
+    for idx, delta in perturbations:
+        x_p = x0.copy()
+        x_p[idx] = x0[idx] + delta
+        simplex_rows.append(x_p)
+    initial_simplex = np.asarray(simplex_rows, dtype=np.float64)
+
+    options: dict[str, Any] = {
+        "maxiter": max_iter * (n_legs + 2),
+        "xatol": 1.0,  # 1 day / 1 km-s scale
+        "fatol": 0.05,  # 0.05 km/s loss tolerance
+    }
+    if method.lower() == "nelder-mead":
+        options["initial_simplex"] = initial_simplex
+
+    try:
+        result = minimize(  # type: ignore[call-overload]
+            _objective,
+            x0,
+            method=method,
+            options=options,
+        )
+    except Exception:
+        return None
+
+    # Clamp the optimiser output back inside the search box, then evaluate.
+    x_opt = np.asarray(result.x, dtype=np.float64).copy()
+    x_opt[0] = max(
+        -epoch_search_half_width_days,
+        min(epoch_search_half_width_days, x_opt[0]),
+    )
+    for k in range(n_legs):
+        seed_t = seed_tofs[k]
+        lo = seed_t * (1.0 - tof_search_relative_half_width)
+        hi = seed_t * (1.0 + tof_search_relative_half_width)
+        x_opt[1 + k] = max(lo, min(hi, x_opt[1 + k]))
+
+    opt_cand = _x_to_candidate(x_opt)
+    # Final closure with cross-check ON (regardless of inner-loop setting).
+    final_loss, final_closure = _epoch_locked_loss(
+        opt_cand,
+        ephemeris,
+        orbit_class=orbit_class,
+        n_returns=n_returns,
+        inserts_into=inserts_into,
+        periapsis_altitudes_km=periapsis_altitudes_km,
+        independent_cross_check=True,
+        independent_tol_kms=independent_tol_kms,
+        closure_residual_weight=1.0,
+        flyby_continuity_weight=alpha_flyby_continuity,
+    )
+    if final_closure is None:
+        return None
+    if accept_loss_kms is not None and final_loss > accept_loss_kms:
+        return None
+    return opt_cand, final_closure, float(final_loss)
+
+
 def scan_window_and_validate(
     launch_window: tuple[str, str],
     planet_set: tuple[str, ...],
@@ -977,6 +1219,7 @@ __all__ = [
     "MGAChainCandidate",
     "delta_vinf_max_kms",
     "find_mga_chains",
+    "optimise_chain_tofs",
     "scan_window_and_validate",
     "validate_chain_candidate",
 ]

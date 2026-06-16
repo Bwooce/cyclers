@@ -33,6 +33,7 @@ from cyclerfinder.search.tisserand_mga_window import (
     MGAChainCandidate,
     delta_vinf_max_kms,
     find_mga_chains,
+    optimise_chain_tofs,
     scan_window_and_validate,
     validate_chain_candidate,
 )
@@ -500,6 +501,99 @@ def test_multi_shell_galileo_v_inf_pattern_recoverable() -> None:
         f"closest was {closest_vinf} with first-three diff "
         f"{closest_first_three_diff:.2f}"
     )
+
+
+# --------------------------------------------------------------------------- #
+# Phase-3 Part B: per-leg TOF optimisation
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.slow
+def test_optimise_chain_tofs_reduces_loss_below_seed() -> None:
+    """Per-leg TOF optimisation strictly reduces the loss vs the seed.
+
+    Sets up an off-Tito Earth-Mars-Earth seed (Tito published TOFs are
+    227, 274 days; the seed uses 200, 250 days — both inside a ±25%
+    box). Optimising the seed with the DE440 Lambert loss should
+    recover a strictly smaller loss; if the optimiser cannot improve,
+    the local-search machinery is broken.
+    """
+    eph = Ephemeris("astropy")
+    # Tito published: 2018-01-05, TOFs (227.05, 274.23). The seed is off
+    # by ~25 days each and 4 days in epoch.
+    from cyclerfinder.search.tisserand import vinf_to_tisserand
+
+    seed = MGAChainCandidate(
+        sequence=("E", "M", "E"),
+        vinf_tuple_kms=(6.42, 5.10, 9.49),  # Tito Tables IV
+        leg_tofs_days=(200.0, 250.0),
+        launch_epoch_utc="2018-01-09T07:00:00",
+        tisserand_parameter=float(vinf_to_tisserand("E", 6.42)),
+        chain_score=2.0,
+    )
+    # Pre-loss with these off-seed values.
+    pre_closure = validate_chain_candidate(
+        seed,
+        eph,
+        periapsis_altitudes_km=(None, 100.0, None),
+        closure_tol_kms=1.0e6,
+        flyby_continuity_tol_kms=1.0e6,
+        independent_cross_check=False,
+    )
+    assert pre_closure is not None
+    pre_loss = pre_closure.closure_residual_kms + 2.0 * pre_closure.flyby_continuity_max_dv_kms
+
+    result = optimise_chain_tofs(
+        seed,
+        eph,
+        periapsis_altitudes_km=(None, 100.0, None),
+        max_iter=80,
+        epoch_search_half_width_days=15.0,
+        tof_search_relative_half_width=0.3,
+        accept_loss_kms=None,  # don't reject; we just want the comparison
+        independent_cross_check=False,
+    )
+    assert result is not None, "TOF optimiser returned None"
+    opt_cand, _opt_closure, opt_loss = result
+    assert opt_loss < pre_loss, (
+        f"TOF optimisation did not reduce loss: pre={pre_loss:.3f} km/s vs post={opt_loss:.3f} km/s"
+    )
+    # The optimised candidate's leg TOFs should sit inside the search box.
+    for k, (seed_t, opt_t) in enumerate(
+        zip(seed.leg_tofs_days, opt_cand.leg_tofs_days, strict=True)
+    ):
+        assert 0.7 * seed_t <= opt_t <= 1.3 * seed_t, (
+            f"leg {k} TOF {opt_t:.2f} outside [0.7, 1.3] * seed {seed_t:.2f}"
+        )
+
+
+def test_optimise_chain_tofs_returns_none_on_impossible_accept() -> None:
+    """If ``accept_loss_kms`` is set zero, optimise returns None (no false pass).
+
+    Fast unit test — uses the analytic circular backend. The loss surface
+    on a generic Tisserand candidate never lands at zero, so an accept
+    threshold of 1e-12 must return None.
+    """
+    cands = list(
+        find_mga_chains(
+            launch_window=("2024-01-01T00:00:00", "2024-01-15T00:00:00"),
+            planet_set=("E", "V"),
+            max_legs=2,
+            vinf_grid_kms=(4.0,),
+            tof_box_days_per_leg=(60.0, 400.0),
+            epoch_step_days=30.0,
+        )
+    )
+    assert cands
+    eph = Ephemeris("circular")
+    result = optimise_chain_tofs(
+        cands[0],
+        eph,
+        max_iter=5,
+        accept_loss_kms=1.0e-12,
+        independent_cross_check=False,
+    )
+    assert result is None
 
 
 @pytest.mark.slow
