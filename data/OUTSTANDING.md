@@ -103,14 +103,27 @@ Without these, even literature-fresh candidates cannot pass V1.
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
 - **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
 
-## SESSION YIELD (HONEST RECKONING)
+## SESSION YIELD (HONEST RECKONING — POST #322 CORRECTION)
 
 - **0 novel cyclers** — discipline held throughout; every well-scoped search hits
   published material. The planar-CR3BP-and-immediate-extensions envelope IS saturated.
 - **1 admitted mga_tour row** (Tito 2018 under v4.7 scope expansion)
-- **2 quantified near-misses** — Saturn Rhea-Dione 0.107 km/s (confirmed binding
-  genome ceiling); Uranus Oberon-Titania 0.062 km/s (first quantification at this
-  system; Uranus has NO published existence prior — highest novelty leverage)
+- **Genuine Koblick tulip-orbit characterizations: 1 system, NOT 5** — Earth-Moon
+  Np=2..6 confirmed real 3D tulips under the #322 z0-amplitude gate. The
+  #281/#283 claims of Jupiter-Ganymede / Saturn-Titan / Neptune-Triton / Pluto-Charon
+  Np=2-3 "tulip" matches were **planar Np-petal collapses misidentified as 3D
+  tulips by the pre-#322 broken petal_count gate**. Real boundary: the Koblick
+  family does NOT μ-scale cleanly to small-μ moon systems (μ ≲ 1e-4); it's
+  structurally Earth-Moon-specific.
+  **Catalogue impact: zero** — none were ever written to `catalogue.yaml`; the
+  JSONL-as-staging-not-truth discipline + hold-writeback rule protected the
+  catalogue from the bug. Per `feedback_bugfix_invalidates_past_searches`, the
+  systematic re-verification in #322 (data/tulip_topology_reverify_322.jsonl)
+  caught all 7 false positives.
+- **2 quantified near-misses** (UNAFFECTED by #322 — these are repeated-moon,
+  not tulip) — Saturn Rhea-Dione 0.107 km/s (confirmed binding genome ceiling);
+  Uranus Oberon-Titania 0.062 km/s (first quantification at this system;
+  Uranus has NO published existence prior — highest novelty leverage)
 - **1 publication-equivalent structural finding** (#313): Sun-perturbation
   effects do not transfer from Sun-Earth-Moon to Sun-Jupiter-moon for L1
   substitute families (Δx0 < 1e-9 across full mu_sun continuation vs Δx0 ~ 1e-4
