@@ -85,6 +85,60 @@ def utc_to_tsec(utc_iso: str) -> float:
     return float((t.tdb.jd - 2451545.0) * 86400.0)
 
 
+@dataclass(frozen=True)
+class DSMSpec:
+    """An optional deep-space-manoeuvre on one leg of an epoch-locked trajectory.
+
+    A DSM splits one Lambert leg at ``fraction_along_leg`` (in [0, 1]),
+    propagates the first segment ballistically up to that fraction, applies
+    an instantaneous ``delta_v_kms`` vector in the heliocentric frame, then
+    runs a fresh Lambert from the post-impulse position to the next body
+    over the remaining fraction. Closure is the V_inf match at the FAR
+    endpoint (after both Lamberts).
+
+    The DSM is a *user-supplied* placement; Phase 4 will add automated
+    placement. The data model and closure driver only know how to evaluate
+    a hand-placed DSM, not where to place it.
+
+    Class invariants enforced in :meth:`__post_init__`:
+
+    * ``leg_index`` is non-negative.
+    * ``fraction_along_leg`` is strictly inside ``(0, 1)`` (an endpoint DSM
+      is degenerate — use a different ``leg_index`` or absorb into the
+      flyby).
+    * ``delta_v_kms`` is a 3-tuple of finite floats.
+    """
+
+    leg_index: int
+    """0-based index of the leg this DSM belongs to.
+    Must satisfy ``0 <= leg_index < len(leg_tofs_days)``."""
+
+    fraction_along_leg: float
+    """Fraction of the leg's TOF at which the DSM fires. In ``(0, 1)``.
+    A value of 0.5 fires the DSM at the midpoint of the leg."""
+
+    delta_v_kms: tuple[float, float, float]
+    """Inertial heliocentric ``Delta V`` vector (km/s), applied to the
+    spacecraft at the split point. The magnitude is the DSM cost."""
+
+    def __post_init__(self) -> None:
+        if self.leg_index < 0:
+            raise ValueError(f"leg_index must be >= 0, got {self.leg_index}")
+        if not (0.0 < self.fraction_along_leg < 1.0):
+            raise ValueError(
+                f"fraction_along_leg must be in (0, 1), got {self.fraction_along_leg}",
+            )
+        if len(self.delta_v_kms) != 3:
+            raise ValueError(
+                f"delta_v_kms must be a length-3 tuple, got {self.delta_v_kms!r}",
+            )
+        for k, c in enumerate(self.delta_v_kms):
+            if not np.isfinite(c):
+                raise ValueError(
+                    f"delta_v_kms[{k}] = {c} is not finite",
+                )
+
+
 def _add_days_to_iso_utc(utc_iso: str, days: float) -> str:
     """Return an ISO-8601 UTC string offset from ``utc_iso`` by ``days``."""
     from astropy.time import Time, TimeDelta
@@ -163,6 +217,20 @@ class EpochLockedTrajectory:
     field itself is ``None`` (the default), every encounter uses the safe
     default. If supplied, length must equal ``len(sequence)``."""
 
+    dsm_specs: tuple[DSMSpec, ...] | None = None
+    """Optional per-leg deep-space-manoeuvres. ``None`` (the default) is
+    the ballistic case (Phase 1 / Tito reproduction). If supplied, every
+    entry's ``leg_index`` must satisfy ``0 <= leg_index < len(leg_tofs_days)``.
+    At most one DSM per leg is supported by the Phase-3 closure driver
+    (the Phase-4 multi-DSM-per-leg extension is deferred). DSMs are
+    *hand-placed* in Phase 3; automated placement is a Phase-4+ extension.
+
+    See :class:`DSMSpec` for the per-DSM contract. The closure driver
+    (:func:`close_epoch_locked`) reads this field; if it is non-``None``,
+    each affected leg is split at the DSM fraction, propagated ballistically
+    to the split, gets the ΔV applied, then runs a fresh Lambert from the
+    post-impulse position to the next body."""
+
     closure_residual_kms: float | None = None
     """Worst-encounter ``|V_inf|`` residual vs ``vinf_kms_at_encounters`` after
     closure. Set by :func:`close_epoch_locked`; ``None`` before closure."""
@@ -237,6 +305,26 @@ class EpochLockedTrajectory:
                 f"!= len(sequence) = {len(self.sequence)}",
             )
 
+        # 6. DSM specs validation (Phase 3 extension).
+        if self.dsm_specs is not None:
+            seen_legs: set[int] = set()
+            for k, spec in enumerate(self.dsm_specs):
+                if not isinstance(spec, DSMSpec):
+                    raise ValueError(
+                        f"dsm_specs[{k}] is not a DSMSpec instance: {spec!r}",
+                    )
+                if not (0 <= spec.leg_index < n_legs):
+                    raise ValueError(
+                        f"dsm_specs[{k}].leg_index = {spec.leg_index} is outside "
+                        f"[0, {n_legs}) (n_legs = len(sequence) - 1)",
+                    )
+                if spec.leg_index in seen_legs:
+                    raise ValueError(
+                        f"dsm_specs[{k}].leg_index = {spec.leg_index} is duplicated; "
+                        "Phase 3 supports at most one DSM per leg",
+                    )
+                seen_legs.add(spec.leg_index)
+
 
 @dataclass(frozen=True)
 class EpochLockedClosure:
@@ -268,6 +356,11 @@ class EpochLockedClosure:
     """
     independent_check_residual_kms: float | None
     converged: bool
+    dsm_delta_v_kms_per_leg: tuple[float, ...] = ()
+    """Per-DSM ``Delta V`` magnitudes (km/s), one entry per DSM in
+    ``trajectory.dsm_specs`` (empty for a ballistic closure). Ordered the
+    same as ``trajectory.dsm_specs``. Phase 3+; for Phase-1 / ballistic
+    closures this is ``()`` (empty tuple)."""
     notes: str = ""
 
 
@@ -374,15 +467,78 @@ def close_epoch_locked(
         ephemeris.state(seq[i], t_encounter_sec[i]) for i in range(len(seq))
     ]
 
-    # Per-leg single-rev prograde Lambert.
+    # Build a quick lookup for DSMs by leg index (Phase 3 DSM extension).
+    dsm_by_leg: dict[int, DSMSpec] = {}
+    if trajectory_spec.dsm_specs is not None:
+        for spec in trajectory_spec.dsm_specs:
+            dsm_by_leg[spec.leg_index] = spec
+
+    # Per-leg single-rev prograde Lambert. For a leg with a DSM, we model
+    # the leg as a TWO-arc trajectory that ACTUALLY EXECUTES the user's
+    # prescribed ΔV:
+    #
+    #   * Arc 1: depart body_k with the ballistic-Lambert v1, propagate
+    #     ballistically for ``fraction_along_leg * tof`` seconds; reach
+    #     r_dsm, v_dsm_pre.
+    #   * Apply user ΔV: v_dsm_post = v_dsm_pre + ΔV (heliocentric inertial).
+    #   * Arc 2: propagate (r_dsm, v_dsm_post) for the REMAINING TOF
+    #     forward to the leg's arrival time. The propagated arrival is r2_arc
+    #     (may differ from r2_body when ΔV is non-zero) and v2_arc.
+    #
+    # The leg's "v2" used by downstream V_inf computation is v2_arc — i.e.
+    # the velocity the spacecraft actually has when it reaches the arrival
+    # epoch. The arrival V_inf is then v2_arc - v_body_arrival; if the DSM
+    # was *targeted* (the user picked it to redirect to body_{k+1}), the
+    # closure residual will pick up the magnitude of the rendezvous miss
+    # via the V_inf-mismatch term. The DSM cost reported on the closure
+    # record is the magnitude of the user-prescribed ΔV (the "actuator
+    # cost"); the closure residual measures whether the prescribed DSM
+    # actually closes the trajectory.
     per_leg_sols: list[LambertSolution] = []
+    # DSM diagnostic data — empty when there are no DSMs (backward-compatible).
+    per_dsm_delta_v_kms: dict[int, float] = {}
     for k in range(n_legs):
         r1, _ = body_states[k]
         r2, _ = body_states[k + 1]
         tof_s = t_encounter_sec[k + 1] - t_encounter_sec[k]
-        sols = lambert(r1, r2, tof_s, prograde=True, max_revs=0)
-        # The single-rev branch is always first.
-        per_leg_sols.append(sols[0])
+        if k not in dsm_by_leg:
+            sols = lambert(r1, r2, tof_s, prograde=True, max_revs=0)
+            per_leg_sols.append(sols[0])
+            continue
+        dsm = dsm_by_leg[k]
+        t_dsm_s = tof_s * dsm.fraction_along_leg
+        # Ballistic Lambert (r1 -> r2 over tof). Used to seed the leg's v1
+        # (the spacecraft's departure velocity at body_k); the DSM perturbs
+        # the trajectory partway through.
+        sols_ref = lambert(r1, r2, tof_s, prograde=True, max_revs=0)
+        v1_ref = sols_ref[0].v1
+        # Arc 1: propagate ballistically to the DSM time.
+        r_dsm, v_dsm_pre = propagate(r1, v1_ref, t_dsm_s)
+        # Apply the user ΔV.
+        dv_vec = np.asarray(dsm.delta_v_kms, dtype=np.float64)
+        v_dsm_post = np.asarray(v_dsm_pre, dtype=np.float64) + dv_vec
+        # Arc 2: propagate the post-impulse state forward to the leg's
+        # arrival epoch. r2_arc is where the spacecraft ACTUALLY arrives; it
+        # equals r2 only when the DSM happens to be the right correction.
+        tof_remain_s = tof_s - t_dsm_s
+        _r2_arc, v2_arc = propagate(
+            np.asarray(r_dsm, dtype=np.float64),
+            v_dsm_post,
+            tof_remain_s,
+        )
+        # The leg solution reports the actual v1 / v2 the spacecraft has
+        # at the leg endpoints. v1 = v1_ref (ballistic Lambert departure
+        # from body_k); v2 = v2_arc (post-DSM forward propagation).
+        synthetic = LambertSolution(
+            n_revs=sols_ref[0].n_revs,
+            branch=sols_ref[0].branch,
+            v1=v1_ref,
+            v2=np.asarray(v2_arc, dtype=np.float64),
+        )
+        per_leg_sols.append(synthetic)
+        # DSM cost = magnitude of the prescribed ΔV (the spacecraft pays
+        # this regardless of whether the DSM is well-targeted).
+        per_dsm_delta_v_kms[k] = float(np.linalg.norm(dv_vec))
 
     # Per-encounter |V_inf|: at endpoints it's the leg V_inf; at intermediate
     # bodies it's the MEAN of inbound and outbound (the ballistic-continuity
@@ -460,7 +616,23 @@ def close_epoch_locked(
             r2_eph, _ = body_states[k + 1]
             tof_s = t_encounter_sec[k + 1] - t_encounter_sec[k]
             v1 = per_leg_sols[k].v1
-            r2_prop, _v2_prop = propagate(r1, v1, tof_s)
+            if k in dsm_by_leg:
+                # Match the closure: propagate to the DSM fraction, apply
+                # the ΔV, then propagate the remainder.
+                dsm = dsm_by_leg[k]
+                t_dsm_s = tof_s * dsm.fraction_along_leg
+                r_dsm, v_dsm_pre = propagate(r1, v1, t_dsm_s)
+                v_dsm_post = np.asarray(v_dsm_pre, dtype=np.float64) + np.asarray(
+                    dsm.delta_v_kms,
+                    dtype=np.float64,
+                )
+                r2_prop, _v2_prop = propagate(
+                    np.asarray(r_dsm, dtype=np.float64),
+                    v_dsm_post,
+                    tof_s - t_dsm_s,
+                )
+            else:
+                r2_prop, _v2_prop = propagate(r1, v1, tof_s)
             pos_err = float(np.linalg.norm(np.asarray(r2_prop) - np.asarray(r2_eph)))
             chord = float(np.linalg.norm(np.asarray(r2_eph) - np.asarray(r1)))
             if pos_err > worst_pos_km:
@@ -482,6 +654,14 @@ def close_epoch_locked(
     )
     converged = closure_gate and flyby_gate and indep_gate
 
+    # Per-DSM ΔV diagnostic, ordered to match trajectory_spec.dsm_specs
+    # (so caller can zip the two).
+    dsm_dv_tuple: tuple[float, ...] = ()
+    if trajectory_spec.dsm_specs is not None:
+        dsm_dv_tuple = tuple(
+            per_dsm_delta_v_kms.get(spec.leg_index, 0.0) for spec in trajectory_spec.dsm_specs
+        )
+
     return EpochLockedClosure(
         trajectory=trajectory_spec,
         closure_residual_kms=float(closure_residual),
@@ -492,6 +672,7 @@ def close_epoch_locked(
             None if independent_residual is None else float(independent_residual)
         ),
         converged=bool(converged),
+        dsm_delta_v_kms_per_leg=dsm_dv_tuple,
     )
 
 
@@ -572,6 +753,7 @@ def search_validity_window(
 
 
 __all__ = [
+    "DSMSpec",
     "EpochLockedClosure",
     "EpochLockedTrajectory",
     "OrbitClass",

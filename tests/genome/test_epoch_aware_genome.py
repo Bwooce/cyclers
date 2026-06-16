@@ -30,6 +30,7 @@ import yaml  # type: ignore[import-untyped]
 
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.genome.epoch_aware_genome import (
+    DSMSpec,
     EpochLockedClosure,
     EpochLockedTrajectory,
     close_epoch_locked,
@@ -407,3 +408,164 @@ def test_bogus_vinf_does_not_close(
     # The closure residual is large by construction — Tito's |V_inf| are all
     # > 5 km/s and the bogus tuple is 1.0 km/s, so the worst gap is > 4 km/s.
     assert closure.closure_residual_kms > 4.0
+
+
+# --------------------------------------------------------------------------- #
+# Test 7-9: DSM extension (Phase 3 of #289)
+# --------------------------------------------------------------------------- #
+
+
+def test_dsm_spec_invariants() -> None:
+    """DSMSpec rejects ill-formed inputs."""
+    # leg_index negative
+    with pytest.raises(ValueError, match="leg_index"):
+        DSMSpec(leg_index=-1, fraction_along_leg=0.5, delta_v_kms=(0.0, 0.0, 0.0))
+    # fraction at endpoints
+    with pytest.raises(ValueError, match="fraction_along_leg"):
+        DSMSpec(leg_index=0, fraction_along_leg=0.0, delta_v_kms=(0.0, 0.0, 0.0))
+    with pytest.raises(ValueError, match="fraction_along_leg"):
+        DSMSpec(leg_index=0, fraction_along_leg=1.0, delta_v_kms=(0.0, 0.0, 0.0))
+    # non-finite delta_v
+    with pytest.raises(ValueError, match="delta_v_kms"):
+        DSMSpec(leg_index=0, fraction_along_leg=0.5, delta_v_kms=(float("nan"), 0.0, 0.0))
+
+
+def test_trajectory_rejects_dsm_for_out_of_range_leg(
+    tito_trajectory: EpochLockedTrajectory,
+) -> None:
+    """``EpochLockedTrajectory`` rejects a DSM on a leg index past n_legs."""
+    bad_dsm = DSMSpec(leg_index=99, fraction_along_leg=0.5, delta_v_kms=(0.001, 0.0, 0.0))
+    with pytest.raises(ValueError, match="leg_index"):
+        EpochLockedTrajectory(
+            sequence=tito_trajectory.sequence,
+            leg_tofs_days=tito_trajectory.leg_tofs_days,
+            vinf_kms_at_encounters=tito_trajectory.vinf_kms_at_encounters,
+            launch_epoch_utc=tito_trajectory.launch_epoch_utc,
+            orbit_class=tito_trajectory.orbit_class,
+            n_returns=tito_trajectory.n_returns,
+            validity_window_start_utc=tito_trajectory.validity_window_start_utc,
+            validity_window_end_utc=tito_trajectory.validity_window_end_utc,
+            periapsis_altitudes_km=tito_trajectory.periapsis_altitudes_km,
+            dsm_specs=(bad_dsm,),
+        )
+
+
+def test_trajectory_rejects_duplicate_dsm_on_same_leg(
+    tito_trajectory: EpochLockedTrajectory,
+) -> None:
+    """Two DSMs on the same leg index are rejected (Phase 3 supports <=1/leg)."""
+    a = DSMSpec(leg_index=0, fraction_along_leg=0.3, delta_v_kms=(0.001, 0.0, 0.0))
+    b = DSMSpec(leg_index=0, fraction_along_leg=0.6, delta_v_kms=(0.0, 0.001, 0.0))
+    with pytest.raises(ValueError, match="duplicated"):
+        EpochLockedTrajectory(
+            sequence=tito_trajectory.sequence,
+            leg_tofs_days=tito_trajectory.leg_tofs_days,
+            vinf_kms_at_encounters=tito_trajectory.vinf_kms_at_encounters,
+            launch_epoch_utc=tito_trajectory.launch_epoch_utc,
+            orbit_class=tito_trajectory.orbit_class,
+            n_returns=tito_trajectory.n_returns,
+            validity_window_start_utc=tito_trajectory.validity_window_start_utc,
+            validity_window_end_utc=tito_trajectory.validity_window_end_utc,
+            periapsis_altitudes_km=tito_trajectory.periapsis_altitudes_km,
+            dsm_specs=(a, b),
+        )
+
+
+@pytest.fixture(scope="module")
+def tito_trajectory_with_tiny_dsm(
+    tito_trajectory: EpochLockedTrajectory,
+) -> EpochLockedTrajectory:
+    """Tito trajectory with a 10 m/s DSM at leg-0 fraction 0.5 (smoke test).
+
+    A 0.01 km/s DSM at the midpoint of the outbound leg is small enough
+    that the closure should change only slightly from the no-DSM case.
+    The test asserts the closure changes (DSM is wired correctly) but
+    stays inside a sane band (no DSM amplification).
+    """
+    tiny_dsm = DSMSpec(
+        leg_index=0,
+        fraction_along_leg=0.5,
+        delta_v_kms=(0.01, 0.0, 0.0),  # 10 m/s along heliocentric +X
+    )
+    return EpochLockedTrajectory(
+        sequence=tito_trajectory.sequence,
+        leg_tofs_days=tito_trajectory.leg_tofs_days,
+        vinf_kms_at_encounters=tito_trajectory.vinf_kms_at_encounters,
+        launch_epoch_utc=tito_trajectory.launch_epoch_utc,
+        orbit_class=tito_trajectory.orbit_class,
+        n_returns=tito_trajectory.n_returns,
+        validity_window_start_utc=tito_trajectory.validity_window_start_utc,
+        validity_window_end_utc=tito_trajectory.validity_window_end_utc,
+        periapsis_altitudes_km=tito_trajectory.periapsis_altitudes_km,
+        dsm_specs=(tiny_dsm,),
+        notes="Tito + 10 m/s DSM at leg-0 midpoint (Phase 3 wiring smoke test)",
+    )
+
+
+def test_dsm_wiring_smoke_test(
+    tito_closure: EpochLockedClosure,
+    tito_trajectory_with_tiny_dsm: EpochLockedTrajectory,
+    astropy_ephemeris: Ephemeris,
+) -> None:
+    """Tito + tiny DSM produces a CLOSE-BUT-NOT-IDENTICAL closure.
+
+    The Phase-3 DSM path: split leg 0 at fraction 0.5, propagate
+    ballistically, apply 10 m/s, re-Lambert to Mars. Compared to the
+    no-DSM Tito closure (the ``tito_closure`` fixture), the residual
+    must (a) change (the DSM path is actually wired), (b) stay inside a
+    sane band (the DSM cost reports ~0.01 km/s).
+    """
+    closure_with_dsm = close_epoch_locked(
+        tito_trajectory_with_tiny_dsm,
+        astropy_ephemeris,
+        closure_tol_kms=10.0,  # loose; we only care about diagnostics here
+        flyby_continuity_tol_kms=10.0,
+        independent_cross_check=True,
+        independent_tol_kms=10.0,
+    )
+    # The DSM cost is the magnitude of the ΔV vector — record it.
+    assert len(closure_with_dsm.dsm_delta_v_kms_per_leg) == 1
+    assert closure_with_dsm.dsm_delta_v_kms_per_leg[0] == pytest.approx(0.01, abs=1e-9)
+    # The per-encounter V_inf at the MARS flyby node must DIFFER from the
+    # ballistic Tito reproduction (the DSM is on leg 0, so it perturbs the
+    # leg-0 arrival velocity at Mars — and Mars's intermediate V_inf is the
+    # mean of inbound and outbound, so changes). Both endpoints' V_inf are
+    # unchanged because the leg-1 Lambert re-targets from the fixed Mars
+    # position to the fixed E2 position.
+    ours_mars = closure_with_dsm.per_encounter_vinf_kms[1]
+    ref_mars = tito_closure.per_encounter_vinf_kms[1]
+    delta_mars = abs(ours_mars - ref_mars)
+    assert delta_mars > 1.0e-6, (
+        "Mars V_inf bit-identical to no-DSM — the DSM path is not "
+        "actually being exercised by close_epoch_locked. "
+        f"with_dsm.per_encounter_vinf={closure_with_dsm.per_encounter_vinf_kms}, "
+        f"no_dsm.per_encounter_vinf={tito_closure.per_encounter_vinf_kms}"
+    )
+    # The independent cross-check residual ALSO changes — the Kepler
+    # re-propagation now passes through the DSM, giving a non-trivial
+    # arrival-position mismatch versus the ballistic-Lambert reference.
+    assert closure_with_dsm.independent_check_residual_kms is not None
+    assert tito_closure.independent_check_residual_kms is not None
+    assert closure_with_dsm.independent_check_residual_kms != pytest.approx(
+        tito_closure.independent_check_residual_kms, abs=1e-9
+    ), (
+        "Independent cross-check residual unchanged — DSM is not visible "
+        "to the Kepler propagator either"
+    )
+    # The DSM-vs-no-DSM Mars-V_inf shift stays inside a sane band. A 10 m/s
+    # impulse should perturb the arrival V_inf by O(10 m/s); we use a loose
+    # 1 km/s band.
+    assert delta_mars < 1.0, (
+        f"Mars V_inf shift {delta_mars:.3f} km/s exceeds 1 km/s; "
+        "a 10 m/s DSM should not amplify this much"
+    )
+
+
+def test_ballistic_closure_dsm_field_empty(tito_closure: EpochLockedClosure) -> None:
+    """Phase-1 ballistic closure has empty dsm_delta_v_kms_per_leg.
+
+    Backward-compatibility test: every Phase-1 closure consumer that ignores
+    the new field must continue to work. The empty-tuple default is the
+    contract.
+    """
+    assert tito_closure.dsm_delta_v_kms_per_leg == ()
