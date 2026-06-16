@@ -103,10 +103,24 @@ Without these, even literature-fresh candidates cannot pass V1.
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
 - **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
 
-## SESSION YIELD (HONEST RECKONING — POST #322 CORRECTION)
+## SESSION YIELD (HONEST RECKONING — POST #322 + #327)
 
-- **0 novel cyclers** — discipline held throughout; every well-scoped search hits
-  published material. The planar-CR3BP-and-immediate-extensions envelope IS saturated.
+- **0 admitted novel cyclers; 1 lit-fresh + physically-valid SILVER candidate
+  awaiting #306 3D V0-V5 gauntlet adaptation.** Candidate ID
+  `repeated-moon-uranus-00000041` at sequence Umbriel-Oberon-Umbriel (1,1).
+  Closure 0.0252 km/s (2-moon convention, 24×24 basin floor) at V_inf =
+  (0.92, 0.96, 0.89) km/s — ALL passing the #324 physical-sanity gate.
+  Independent DOP853 cross-check residual 2.7e-11 nondim (5 orders of magnitude
+  below the discipline gate). Offline literature_check against 35 KNOWN_CORPUS
+  anchors returns `not-found` at confidence 0.40 (necessary-not-sufficient per
+  `feedback_literature_novelty_check_baseline`; wider literature pass required).
+  ML flagger p_fp 0.591 (below 0.75 SILVER threshold). Catalogue admission
+  blocked by (a) #306 3D V0-V5 gauntlet not yet built, (b) wider literature
+  search not yet run. **The candidate is REAL but not novel-claimable yet.**
+- **Discipline held throughout** — no admission, no novelty claim, both gated
+  exactly as the rule requires. Every well-scoped search hits published material
+  EXCEPT this one row, which clears all offline guards and a fresh post-hoc
+  physical-sanity gate (#324) but still has the discipline ladder to climb.
 - **1 admitted mga_tour row** (Tito 2018 under v4.7 scope expansion)
 - **Genuine Koblick tulip-orbit characterizations: 1 system, NOT 5** — Earth-Moon
   Np=2..6 confirmed real 3D tulips under the #322 z0-amplitude gate. The
