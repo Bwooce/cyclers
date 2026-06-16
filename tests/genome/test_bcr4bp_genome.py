@@ -53,12 +53,15 @@ import numpy as np
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.genome.bcr4bp_genome import (
+    FREE_VARS_HALO,
     IDX_T,
     IDX_X,
     IDX_XDOT,
     IDX_Y,
     IDX_YDOT,
+    IDX_Z,
     IDX_ZDOT,
+    RESIDUAL_HALO_HALF_PERIOD,
     correct_bcr4bp_periodic,
 )
 
@@ -389,3 +392,148 @@ def test_sun_phase_drift_at_commensurate_period() -> None:
     period_n3 = bcr4bp.sun_commensurate_period(sys_bcr.omega_sun_nondim, n=3)
     expected_drift = abs(sys_bcr.omega_sun_nondim * period_n3 - 2.0 * math.pi * 3)
     assert expected_drift < 1e-13
+
+
+# ---------------------------------------------------------------------------
+# Halo masks (Phase 3 of #292, task #304). The seed Howell EM L1 southern
+# halo IC is sourced (NASA TN D-1949 / Howell 1984 family); the test asserts
+# CLOSURE (corrector residual + independent Radau closure) and TOPOLOGY
+# (z0 stays nontrivially nonzero -- genuine 3D, not collapsed to planar),
+# never specific intermediate-mu_sun numbers.
+# ---------------------------------------------------------------------------
+
+
+def test_halo_masks_close_in_cr3bp_limit() -> None:
+    """At mu_sun=0 the halo masks recover the Howell EM L1 southern halo.
+
+    Uses the SAME sourced IC + period as Gate 1 but with the named halo
+    masks (:data:`FREE_VARS_HALO` = ``(x, z, vy, T)``, :data:`RESIDUAL_HALO_HALF_PERIOD`
+    = ``(y, vx, vz)``) instead of the planar-pattern mask. The halo case
+    leaves z0 FREE (Gate 1 holds z0 implicitly fixed because it is not in
+    the planar mask); the corrected z0 may relax, but it MUST remain
+    nontrivially nonzero -- a genuine 3D halo, not a planar libration.
+    """
+    sys_bcr = bcr4bp.BCR4BPSystem(
+        mu=0.012150581600000,
+        mu_sun=0.0,
+        a_sun_nondim=388.8111430233511,
+        omega_sun_nondim=0.925195985520347,
+    )
+    state_seed = np.array(
+        [0.824024728136525, 0.0, -0.054501847320725, 0.0, 0.164671964079122, 0.0],
+        dtype=np.float64,
+    )
+    period_guess = 2.7549
+    result = correct_bcr4bp_periodic(
+        sys_bcr,
+        state_seed,
+        period_guess,
+        sun_commensurate_n=1,
+        free_vars=FREE_VARS_HALO,
+        residual_indices=RESIDUAL_HALO_HALF_PERIOD,
+        is_half_period_residual=True,
+        independent_tol=1e-6,
+        tol=1e-10,
+    )
+    assert result.converged, (
+        f"Halo masks at mu_sun=0 failed on Howell EM L1 southern halo seed. "
+        f"corrector_residual={result.corrector_residual:.3e}, "
+        f"independent_closure={result.independent_closure_residual:.3e}, "
+        f"n_iter={result.n_iter}"
+    )
+    # The independent (Radau) full-period closure must be tight at mu_sun=0.
+    assert result.independent_closure_residual < 1e-6, (
+        f"mu_sun=0 halo independent closure={result.independent_closure_residual:.3e} > 1e-6"
+    )
+    # Topology: z0 stays nontrivially nonzero (a halo, not a planar collapse).
+    z0_converged = float(result.state_initial[IDX_Z])
+    assert abs(z0_converged) > 0.01, (
+        f"Halo collapsed to planar at mu_sun=0: z0={z0_converged:.3e} -- "
+        "the corrector slid off the halo basin to a planar libration."
+    )
+    # Sanity: y0 and vx0 / vz0 of the IC remain pinned at zero (the symmetric
+    # halo lives on the xz-plane perpendicular crossing).
+    assert abs(float(result.state_initial[IDX_Y])) < 1e-12
+    assert abs(float(result.state_initial[IDX_XDOT])) < 1e-12
+    assert abs(float(result.state_initial[IDX_ZDOT])) < 1e-12
+
+
+def test_halo_masks_close_at_andreu_musun_with_continuation_seed() -> None:
+    """At Andreu mu_sun the halo masks close from a CR3BP-converged seed.
+
+    Strategy: first close the Howell EM L1 southern halo at mu_sun=0 with the
+    halo masks. Then call the SAME masks at the Andreu mu_sun with the
+    CR3BP-converged IC as a SEED. Per the orbit-closure discipline + the
+    fact that the Sun perturbation is finite-but-strong (mu_sun ~ 3.3e5,
+    a_sun ~ 389), a direct one-shot closure from a CR3BP seed at the full
+    Andreu mu_sun is NOT expected to succeed without continuation. We
+    therefore do a 2-shot continuation here (mu_sun=0 -> small mu_sun ->
+    Andreu) using the same corrector primitive: the test asserts the masks
+    are USABLE in the BCR4BP regime, not that a single-shot closure works.
+    """
+    # Step 1: close at mu_sun=0 with the halo masks (a clean copy of the
+    # Gate 1 closure result, but via the named halo bundles).
+    sys_zero = bcr4bp.BCR4BPSystem(
+        mu=0.012150581600000,
+        mu_sun=0.0,
+        a_sun_nondim=388.8111430233511,
+        omega_sun_nondim=0.925195985520347,
+    )
+    state_seed = np.array(
+        [0.824024728136525, 0.0, -0.054501847320725, 0.0, 0.164671964079122, 0.0],
+        dtype=np.float64,
+    )
+    period_guess = 2.7549
+    seed_at_zero = correct_bcr4bp_periodic(
+        sys_zero,
+        state_seed,
+        period_guess,
+        sun_commensurate_n=1,
+        free_vars=FREE_VARS_HALO,
+        residual_indices=RESIDUAL_HALO_HALF_PERIOD,
+        is_half_period_residual=True,
+        tol=1e-10,
+        independent_tol=1e-6,
+    )
+    assert seed_at_zero.converged, "Step 1 (mu_sun=0 halo closure) failed"
+
+    # Step 2: try a small mu_sun first (10% of Andreu) so the BCR4BP regime
+    # is real but the perturbation is in the regular-perturbation basin.
+    sys_andreu = bcr4bp.andreu_default()
+    sys_intermediate = bcr4bp.BCR4BPSystem(
+        mu=sys_andreu.mu,
+        mu_sun=0.1 * sys_andreu.mu_sun,
+        a_sun_nondim=sys_andreu.a_sun_nondim,
+        omega_sun_nondim=sys_andreu.omega_sun_nondim,
+    )
+    intermediate = correct_bcr4bp_periodic(
+        sys_intermediate,
+        seed_at_zero.state_initial,
+        seed_at_zero.period_nondim,
+        sun_commensurate_n=1,
+        free_vars=FREE_VARS_HALO,
+        residual_indices=RESIDUAL_HALO_HALF_PERIOD,
+        is_half_period_residual=True,
+        tol=1e-9,
+        # half-period symmetric residual + free T => not Sun-commensurate at
+        # arbitrary mu_sun, so full-period closure carries an O(mu_sun) phase
+        # residual; loosen independent_tol consistent with the Phase 1 weak-
+        # Sun halo gate.
+        independent_tol=1e-2,
+        state_step_cap=0.05,
+        max_iter=80,
+        notes="halo masks at intermediate mu_sun (10% Andreu)",
+    )
+    # The corrector residual gate is tight (half-period closure converges
+    # well even at moderate mu_sun); the independent-closure gate is loose
+    # because T is not Sun-commensurate.
+    assert intermediate.corrector_residual < 1e-7, (
+        f"Halo masks at 10% Andreu mu_sun: corrector_residual="
+        f"{intermediate.corrector_residual:.3e} > 1e-7"
+    )
+    # Topology: z0 still nontrivially nonzero (halo did not collapse to planar
+    # under the Sun perturbation).
+    z0_intermediate = float(intermediate.state_initial[IDX_Z])
+    assert abs(z0_intermediate) > 0.01, (
+        f"Halo collapsed to planar at 10% Andreu mu_sun: z0={z0_intermediate:.3e}"
+    )

@@ -67,6 +67,37 @@ IDX_YDOT = 4
 IDX_ZDOT = 5
 IDX_T = 6  # period in 7th slot when free
 
+# ---------------------------------------------------------------------------
+# Convenience free-var / residual bundles (mirror the
+# :mod:`cyclerfinder.search.cr3bp_general_periodic_3d` Phase 1 pattern).
+# The default arguments on :func:`correct_bcr4bp_periodic` keep the legacy
+# Phase 1 planar-symmetric setup; these constants are exposed as the named
+# bundles a caller can pass for the 3D halo case (Phase 3).
+# ---------------------------------------------------------------------------
+
+FREE_VARS_HALO: tuple[int, ...] = (IDX_X, IDX_Z, IDX_YDOT, IDX_T)
+"""Halo-style symmetric free vars: (x0, z0, vy0, T).
+
+Use for halo / NRHO orbits with IC ``(x0, 0, z0, 0, vy0, 0)``. The standard
+perpendicular-crossing symmetric halo mask: the spacecraft starts on the
+``xz``-plane with velocity perpendicular to it, and re-crosses the same plane
+at ``T/2``. Mirror of the 3D Phase 1 ``FREE_VARS_SYMMETRIC_TULIP`` bundle but
+with ``x0`` ALSO free (the halo basin curves substantially in both x and z
+under the Sun perturbation, so x0 cannot be held fixed the way it is for the
+tulip / NRHO continuation parameter). Pairs with
+:data:`RESIDUAL_HALO_HALF_PERIOD`.
+"""
+
+RESIDUAL_HALO_HALF_PERIOD: tuple[int, ...] = (IDX_Y, IDX_XDOT, IDX_ZDOT)
+"""Halo perpendicular-crossing residual: ``(y, vx, vz)`` at ``T/2``.
+
+Pairs with :data:`FREE_VARS_HALO`. Identical in form to the planar-symmetric
+``(y, vx, vz)`` residual at T/2 (the perpendicular-crossing condition is the
+same on the xz-plane regardless of out-of-plane content). The half-period
+symmetric closure is the standard Howell setup for halo families and reduces
+the 6D state-closure problem to a 3-residual / 4-unknown shooting problem.
+"""
+
 
 @dataclass(frozen=True)
 class BCR4BPPeriodicOrbit:

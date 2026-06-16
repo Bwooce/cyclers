@@ -27,12 +27,15 @@ from cyclerfinder.genome.bcr4bp_continuation import (
     continue_bcr4bp_family_in_musun,
 )
 from cyclerfinder.genome.bcr4bp_genome import (
+    FREE_VARS_HALO,
     IDX_T,
     IDX_X,
     IDX_XDOT,
     IDX_Y,
     IDX_YDOT,
+    IDX_Z,
     IDX_ZDOT,
+    RESIDUAL_HALO_HALF_PERIOD,
     correct_bcr4bp_periodic,
 )
 from cyclerfinder.search.reachable_representatives import (
@@ -361,3 +364,98 @@ def test_continuation_cr3bp_limit_anchor_tight() -> None:
     for m in fam.members:
         assert m.orbit.corrector_residual < 1e-9
         assert m.orbit.independent_closure_residual < 1e-6
+
+
+# ---------------------------------------------------------------------------
+# Gate 6 (Phase 3 / #304): halo-mask continuation closes in CR3BP limit.
+# ---------------------------------------------------------------------------
+
+
+def _seed_halo_at_mu_sun_zero() -> tuple[bcr4bp.BCR4BPSystem, np.ndarray, float]:
+    """Return (system, state, period) for the Howell EM L1 southern halo at mu_sun=0.
+
+    Sourced seed: Earth-Moon L1 southern halo IC (Howell 1984 / NASA TN D-1949
+    family; used as the sourced seed in
+    :func:`tests.search.test_cr3bp_periodic.test_cr3bp_periodic_halo_l1_southern`
+    and :func:`tests.genome.test_bcr4bp_genome.test_cr3bp_limit_closure_recovers_cr3bp_halo`).
+    """
+    sys_zero = bcr4bp.BCR4BPSystem(
+        mu=_MU_EM,
+        mu_sun=0.0,
+        a_sun_nondim=388.8111430233511,
+        omega_sun_nondim=0.925195985520347,
+    )
+    state_seed = np.array(
+        [0.824024728136525, 0.0, -0.054501847320725, 0.0, 0.164671964079122, 0.0],
+        dtype=np.float64,
+    )
+    period_seed = 2.7549
+    return sys_zero, state_seed, period_seed
+
+
+def test_halo_continuation_cr3bp_limit_to_small_musun_stays_3d() -> None:
+    """A 3-step halo continuation from mu_sun=0 stays 3D (z0 stays nonzero).
+
+    Asserts the halo-mask continuation driver path (free_vars=FREE_VARS_HALO,
+    residual_indices=RESIDUAL_HALO_HALF_PERIOD) works end-to-end through
+    the same continuation primitive used for the planar L1 Lyapunov in
+    #303. The CR3BP-limit-to-small-mu_sun continuation should preserve the
+    halo topology (z0 nonzero, x0 in the L1-halo basin).
+    """
+    sys_zero, state_seed, period_seed = _seed_halo_at_mu_sun_zero()
+    seed_orbit = correct_bcr4bp_periodic(
+        sys_zero,
+        state_seed,
+        period_seed,
+        sun_commensurate_n=1,
+        free_vars=FREE_VARS_HALO,
+        residual_indices=RESIDUAL_HALO_HALF_PERIOD,
+        is_half_period_residual=True,
+        # 1e-10 is the Phase 1 corrector default; the halo Jacobian conditioning
+        # is slightly worse than the planar Lyapunov case (4 unknowns / 3 residuals
+        # vs 3/3), so the Newton iteration lands a few ULP above 1e-12 on this
+        # seed. The independent (Radau) closure (gated at 1e-6) dominates the
+        # closure verdict for halo orbits.
+        tol=1e-10,
+        independent_tol=1e-6,
+    )
+    assert seed_orbit.converged, (
+        f"halo seed @mu_sun=0 failed: corr={seed_orbit.corrector_residual:.3e}, "
+        f"indep={seed_orbit.independent_closure_residual:.3e}"
+    )
+    fam = continue_bcr4bp_family_in_musun(
+        seed_orbit,
+        seed_mu_sun=0.0,
+        target_mu_sun=10.0,  # tiny relative to Andreu's 3.3e5 -- regular-perturbation regime
+        n_steps=3,
+        step_method="linear",
+        corrector_tol=1e-10,
+        closure_tol=1e-3,  # T is free => not Sun-commensurate => O(mu_sun) Sun-phase residual
+        free_vars=FREE_VARS_HALO,
+        residual_indices=RESIDUAL_HALO_HALF_PERIOD,
+        is_half_period_residual=True,
+        monodromy=False,
+        sun_commensurate_n=1,
+        state_step_cap=0.05,
+    )
+    assert len(fam.members) == 3, (
+        f"halo continuation to mu_sun=10 should yield 3 members, got "
+        f"{len(fam.members)}. walk_notes: {fam.walk_notes}"
+    )
+    # Every member must close under the corrector (mathematical zero).
+    for m in fam.members:
+        assert m.orbit.corrector_residual < 1e-9, (
+            f"halo continuation member corrector_residual={m.orbit.corrector_residual:.3e} "
+            f"> 1e-9 at mu_sun={m.mu_sun_value:.3e}"
+        )
+    # Topology: every accepted member must remain a halo (z0 nonzero) and
+    # in the L1 region (x0 near 0.82).
+    for m in fam.members:
+        z0 = float(m.orbit.state_initial[IDX_Z])
+        x0 = float(m.orbit.state_initial[IDX_X])
+        assert abs(z0) > 0.01, (
+            f"halo collapsed to planar at mu_sun={m.mu_sun_value:.3e}: z0={z0:.3e}"
+        )
+        assert 0.75 < x0 < 0.90, (
+            f"halo member at mu_sun={m.mu_sun_value:.3e} drifted outside L1 region: x0={x0:.4f}"
+        )
