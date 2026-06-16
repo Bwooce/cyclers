@@ -223,3 +223,114 @@ def test_select_period_multiplying_eigenvector_returns_none_when_far() -> None:
     mat = np.diag([2.0, 2.0, 2.0, 2.0, 2.0, 2.0])
     pick = _select_period_multiplying_eigenvector(mat, 2)
     assert pick is None
+
+
+# ---------------------------------------------------------------------------
+# Defensive: verify_three_dimensional gate (#325 sibling of #322).
+# ---------------------------------------------------------------------------
+
+
+def test_switch_family_verify_three_dimensional_admits_genuine_3d_em_nrho() -> None:
+    """The canonical Earth-Moon k=2 switch is genuinely 3D — the new
+    ``verify_three_dimensional`` flag MUST NOT reject it.
+
+    Positive case for the #325 defensive gate: turning on the 3D check at
+    Earth-Moon mu (where Tier B Np=2 is the canonical published tulip) must
+    still admit the switched orbit. This guards against the gate being
+    accidentally too strict.
+    """
+    sysm = koblick_system()
+    parent, bif = _build_parent_at_bifurcation()
+    switched = switch_family(
+        parent,
+        bif,
+        sysm,
+        k=2,
+        eigenvector_step=1e-2,
+        tol=1e-9,
+        verify_three_dimensional=True,
+    )
+    assert switched is not None, (
+        "verify_three_dimensional rejected a genuine Earth-Moon Np=2 tulip "
+        "switch — the gate is too strict for the canonical published case."
+    )
+    assert switched.converged
+    # The switched orbit's z0 must be above the Koblick-sourced floor.
+    from cyclerfinder.genome.tulip import TULIP_Z_AMPLITUDE_FLOOR_NONDIM
+
+    assert abs(switched.z0) >= TULIP_Z_AMPLITUDE_FLOOR_NONDIM, (
+        f"Earth-Moon Np=2 switched z0={switched.z0:.3e} below floor "
+        f"{TULIP_Z_AMPLITUDE_FLOOR_NONDIM:.3e} — the gate would have caught "
+        "this; the test fixture is wrong."
+    )
+
+
+def test_switch_family_verify_three_dimensional_default_off_preserves_behavior() -> None:
+    """Default ``verify_three_dimensional=False`` preserves the pre-#325
+    behavior.
+
+    Sanity check: the parameter is opt-in. With the flag at its default value
+    the canonical Earth-Moon switch returns exactly the same orbit as it did
+    before the #325 gate was added (the petal_count path is untouched).
+    """
+    sysm = koblick_system()
+    parent, bif = _build_parent_at_bifurcation()
+    # Without the new flag.
+    switched_a = switch_family(
+        parent,
+        bif,
+        sysm,
+        k=2,
+        eigenvector_step=1e-2,
+        tol=1e-9,
+    )
+    # Explicit default.
+    switched_b = switch_family(
+        parent,
+        bif,
+        sysm,
+        k=2,
+        eigenvector_step=1e-2,
+        tol=1e-9,
+        verify_three_dimensional=False,
+    )
+    assert switched_a is not None and switched_b is not None
+    # The two calls must produce identical orbits (the new flag is purely
+    # additive when False).
+    assert switched_a.x0 == switched_b.x0
+    assert switched_a.z0 == switched_b.z0
+    assert switched_a.ydot0 == switched_b.ydot0
+    assert switched_a.T_TU == switched_b.T_TU
+
+
+def test_switch_family_verify_three_dimensional_rejects_planar_collapse() -> None:
+    """Synthetic test: a switched orbit with z0 ~ 0 must be rejected when
+    ``verify_three_dimensional=True``.
+
+    Because we can't construct a real planar-collapse case at Earth-Moon mu
+    (the bifurcation_detector at Earth-Moon happily lands a genuinely-3D
+    orbit), this test exercises the underlying gate
+    :func:`cyclerfinder.genome.tulip.is_three_dimensional` directly on a
+    synthetic z0~0 IC, mirroring how ``switch_family``'s new check applies
+    it. The aim is a focused regression on the floor threshold, not an
+    end-to-end Mars-Phobos reproduction (which is covered by the existing
+    #322 tulip-side tests).
+    """
+    import cyclerfinder.core.cr3bp as cr3bp
+    from cyclerfinder.genome.tulip import (
+        TULIP_Z_AMPLITUDE_FLOOR_NONDIM,
+        is_three_dimensional,
+    )
+
+    sysm = cr3bp.cr3bp_system("Earth", "Moon")
+    # IC with z0 below the floor — the planar-collapse pattern.
+    s0 = np.array(
+        [0.836, 0.0, 0.5 * TULIP_Z_AMPLITUDE_FLOOR_NONDIM, 0.0, 0.05, 0.0],
+        dtype=np.float64,
+    )
+    is_3d, max_abs_z = is_three_dimensional(s0, 0.5, sysm)
+    assert not is_3d, (
+        f"is_three_dimensional admitted a sub-floor IC: max_abs_z={max_abs_z:.3e}, "
+        f"floor={TULIP_Z_AMPLITUDE_FLOOR_NONDIM:.3e}. The switch_family "
+        "verify_three_dimensional gate would have failed to reject this."
+    )

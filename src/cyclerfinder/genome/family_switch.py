@@ -142,6 +142,7 @@ def switch_family(
     rtol: float = 1e-12,
     atol: float = 1e-12,
     verify_petal_count: bool = True,
+    verify_three_dimensional: bool = False,
     multi_shooting: bool = False,
     multi_shoot_segments: int | None = None,
 ) -> SymmetricNRHO | None:
@@ -189,6 +190,19 @@ def switch_family(
         converge to a *different* periodic orbit (e.g. a kT orbit on a sibling
         family) that happens to satisfy the perpendicular crossing residual.
         The petal_count classifier is the independent cross-check.
+    verify_three_dimensional :
+        If True, the result is ALSO checked via
+        :func:`cyclerfinder.genome.tulip.is_three_dimensional` -- the #322 /
+        #325 complementary 3D-amplitude gate. Independent of
+        ``verify_petal_count``: ``petal_count`` counts IN-PLANE petals, so a
+        planar k-petal orbit can pass the count check while not being a 3D
+        tulip at all. The 3D-amplitude check (max|z(t)| >= Koblick-sourced
+        floor) is the orthogonal cross-check. Default ``False`` for backward
+        compatibility — the canonical Earth-Moon discovery path
+        (``find_tulip_via_continuation``) runs this gate downstream, and some
+        single-shooting NRHO callers exercise legitimate small-z0 IC seeds.
+        Turn ON in extreme-mu / multi-system callers where z0 -> 0 collapse
+        is the dominant failure mode (the #322 Mars-Phobos case).
     multi_shooting :
         If True, use the Phase 4 multi-shooter
         (:func:`cyclerfinder.genome.multi_shooting.multi_shoot_periodic`)
@@ -301,6 +315,25 @@ def switch_family(
         except RuntimeError:
             return None
         if n != k:
+            return None
+    # Complementary 3D-topology gate (#325 defensive add, sibling to #322).
+    # ``petal_count`` alone counts in-plane perilune minima; at extreme small mu
+    # (or with a poor secant-step pull) the corrector can drive z0 -> 0 and the
+    # resulting orbit is planar but still has k in-plane petals. The
+    # complementary check is :func:`cyclerfinder.genome.tulip.is_three_dimensional`,
+    # which gates on |z0| AND max|z(t)| against the sourced Koblick floor.
+    # Default OFF for backward compatibility (the canonical Earth-Moon caller
+    # ``find_tulip_via_continuation`` runs the same check downstream and the
+    # NRHO tests rely on this function NOT applying a z-floor at Earth-Moon
+    # mu where seeds may be intentionally small-z); turn ON in extreme-mu /
+    # multi-system callers.
+    if verify_three_dimensional:
+        s0 = np.array([member.x0, 0.0, member.z0, 0.0, member.ydot0, 0.0], dtype=np.float64)
+        try:
+            is_3d, _ = tulip.is_three_dimensional(s0, member.T_TU, system, rtol=rtol, atol=atol)
+        except RuntimeError:
+            return None
+        if not is_3d:
             return None
     return member
 
