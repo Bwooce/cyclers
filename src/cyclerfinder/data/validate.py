@@ -978,6 +978,68 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "tests/nbody/test_appc_batch_nbody.py; "
         "docs/notes/2026-06-08-appc-v3-batch-results.md."
     ),
+    # #340 (2026-06-17): SILVER (umbriel-oberon-1-1-uranian-quasi-cycler-2026) —
+    # the catalogue's first computed quasi_cycler row. The full 10-gate provenance
+    # was built by #306 / #330 / #331 / #332 / #335 / #338 across the 2026-06-15
+    # → 06-17 frontier-capability sprint; per-cycle, per-leg residuals are frozen
+    # in project-output JSONLs (data/silver_327_v*_verdicts.jsonl,
+    # data/silver_327_moontour_v2_verdicts.jsonl,
+    # data/silver_327_v4_strict_boundary_338.jsonl). #340 wraps each tier's JSONL
+    # verdict as a FROZEN-GATE pytest (tests/verify/test_silver_327_v*.py) and
+    # registers V1/V2/V3/V4 evidence here. The row's #339 V0 admission (commit
+    # 34566d5) is now promoted to V4. The bounded-drift signature (~86k-530k km
+    # oscillation across 10 cycles) is the v4.7 quasi_cycler structural signature
+    # — strict V2 FAILS by design (drift > 50,000 km strict-periodic floor), and
+    # the gauntlet promotion is on the structural verdicts (passes_v1, V3-vs-V2
+    # agreement, V4-strict EFFECTIVELY_CYCLIC). See
+    # docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md.
+    ("umbriel-oberon-1-1-uranian-quasi-cycler-2026", "V1"): (
+        "spec §14 V1 (#340 Part A registers #306 Phase 1 Part D evidence): the "
+        "#306 V1-aspect verdict on the SILVER (Umbriel-Oberon-Umbriel near-5:1 "
+        "synodic-resonance quasi-cycler) — independent DOP853 cross-check arrival "
+        "residual 2.30e-10 km/s well below the spec §14 V1 1 m/s floor, "
+        "passes_v1=True. The moontour's V1 is the per-leg independent "
+        "re-propagation residual (DOP853 from the Lambert-derived velocity at "
+        "the next encounter), the analogue of the periodic-orbit V1 closure. "
+        "Frozen in data/silver_327_v1_v2_verdicts.jsonl; gated by "
+        "tests/verify/test_silver_327_v1_passes.py."
+    ),
+    ("umbriel-oberon-1-1-uranian-quasi-cycler-2026", "V2"): (
+        "spec §14 V2 (#340 Part A registers #330 V2-moontour evidence): the #330 "
+        "V2-moontour gauntlet — 10/10 Lambert cycles convergent at all 10 legs "
+        "with bounded drift oscillation between ~86,000 km (cycle 5 floor) and "
+        "~530,000 km (cycle 7 peak), the v4.7 quasi_cycler structural signature "
+        "(near-5:1 Umbriel-Oberon synodic resonance, NOT a strict-periodic "
+        "cycler). Strict V2 verdict is FAIL_QUASI_BOUNDED (drift exceeds the "
+        "50,000 km strict-periodic floor by design — that floor would refuse the "
+        "quasi_cycler slot). Frozen in data/silver_327_moontour_v2_verdicts.jsonl; "
+        "gated by tests/verify/test_silver_327_v2_quasi_cycler.py."
+    ),
+    ("umbriel-oberon-1-1-uranian-quasi-cycler-2026", "V3"): (
+        "spec §14 V3 (#340 Part A registers #331 evidence): the #331 V3 REBOUND "
+        "IAS15 independent-integrator gauntlet — drift_agreement_kms < 100 km vs "
+        "the V2 driver across n_cycles in {3, 5, 10} (max |V3-V2| = 1.84e-6 km at "
+        "n_cycles=10, 8 orders below the 100 km agreement floor), passes_v3=True "
+        "at all three n_cycles. The bounded-drift signature is a REAL dynamical "
+        "property of the shared Keplerian + 5-moon CR3BP model, NOT a "
+        "Lambert/DOP853 numerical artifact. Frozen in "
+        "data/silver_327_v3_verdicts.jsonl; gated by "
+        "tests/verify/test_silver_327_v3_nbody.py."
+    ),
+    ("umbriel-oberon-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#340 Part A registers #335 + #338 evidence): the #335 "
+        "V4-strict URA111 SPICE real-ephemeris gauntlet + the #338 annual epoch "
+        "sweep boundary verdict — EFFECTIVELY_CYCLIC across 2000-2099 (94/100 "
+        "PASS) with all 6 failures clustered in the last 15 yr of URA111 kernel "
+        "coverage (kernel-edge / extrapolation artifact, not dynamical), interior "
+        "PASS rate 85/85 = 100% (n_fails_interior=0), longest PASS run 84 yr "
+        "spanning 2000-06-21 → 2083-06-21 centred on 2041 (the row's "
+        "launch_epoch). Sub-year DOY sensitivity is flagged in the row's notes "
+        "block (the validity_window assumes June 21 DOY launch; characterising "
+        "the sub-year boundary is Phase 2 follow-up). Frozen in "
+        "data/silver_327_v4_strict_boundary_338.jsonl; gated by "
+        "tests/verify/test_silver_327_v4_strict_passes.py."
+    ),
 }
 
 
