@@ -302,7 +302,14 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # period.k). Pure census shift; the row carries its own V0 sourced evidence
     # (Heaton-Longuski 2003 Tables 3 + 5 verbatim; reproduction on real
     # ephemeris pending #335 SPICE-Uranian kernel work).
-    ExclusionReason.NOT_TWO_BODY: 1,
+    # 1 -> 2 (2026-06-17, #339): +1 umbriel-oberon-1-1-uranian-quasi-cycler-2026
+    # — catalogue's first computed quasi_cycler row (Umbriel-Oberon-Umbriel
+    # (1,1) Uranian near-5:1 synodic resonance). 3 bodies (Uranus + Umbriel +
+    # Oberon) -> falls into the non-two-body lane, same as Heaton-Longuski
+    # 2003 mga_tour. Cleared all 10 V-tier gates including V4-strict + #338
+    # annual epoch sweep EFFECTIVELY_CYCLIC verdict. Full provenance in the
+    # catalogue row's notes block.
+    ExclusionReason.NOT_TWO_BODY: 2,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

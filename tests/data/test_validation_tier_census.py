@@ -88,7 +88,15 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # classifies as 'unvalidated' on the provenance-tag tier axis. Its V0
     # evidence (Tables 3 + 5 verbatim from the JSR paper, DOI 10.2514/2.3981)
     # lives in validation_level, not the source-pair tier — separate axis.
-    "unvalidated": 28,
+    # 28 -> 29 (2026-06-17, #339): umbriel-oberon-1-1-uranian-quasi-cycler-2026
+    # admitted as catalogue's first computed quasi_cycler row with
+    # orbit_source=derived / vinf_source=derived (same fidelity) — classifies
+    # as 'unvalidated' on the provenance-tag tier axis. Its evidence
+    # (validation_level=V4, gated on #335 V4-strict + #338 annual epoch
+    # sweep EFFECTIVELY_CYCLIC) lives on a SEPARATE axis from this
+    # source-pair census. The two axes are orthogonal by design (see
+    # earlier #294/#336 comments above).
+    "unvalidated": 29,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

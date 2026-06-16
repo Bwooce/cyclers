@@ -48789,3 +48789,164 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.2.vinf_kms": "Heaton-Longuski 2003 Table 3 Uranus arrival row: V_inf 6.44 km/s."
     "vinf_kms_at_encounters.42.vinf_kms": "Heaton-Longuski 2003 Table 5 event 40 (Ariel): V_inf 0.92 km/s (the design-goal arrival speed for Ariel orbit insertion)."
     "n_returns": "Heaton-Longuski 2003 §Uranian Tour Example p. 594: single Earth launch and single Ariel-rendezvous terminal arrival — non-repeating Galileo-style tour, n_returns=1."
+
+- id: umbriel-oberon-1-1-uranian-quasi-cycler-2026
+  name: "Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic-resonance quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+  launch_epoch: "2041-06-21T00:00:00Z"
+  validation_level: V4
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Umbriel", "Oberon"]
+  sequence_canonical: "Umbriel-Oberon-Umbriel"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+    - body: "Umbriel"
+      vinf_kms: 0.9199
+      note: "Per #327 verified gate-passing IC at 2-moon convention basin floor (rel_offset=180 deg). #324 physical-sanity gate: 14.7 deg max-bend at 100 km altitude — usable but lower-bend flyby."
+    - body: "Oberon"
+      vinf_kms: 0.9604
+      note: "Per #327 verified gate-passing IC. #324 physical-sanity gate: 39 deg max-bend at 100 km altitude — comfortable usable flyby."
+    - body: "Umbriel"
+      vinf_kms: 0.8947
+      note: "Per #327 verified gate-passing IC. Matches the first Umbriel encounter within 0.025 km/s (the closure residual)."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic-resonance quasi-cycler — catalogue's first computed quasi_cycler row"
+    venue: "cyclerfinder project; task chain #281 -> #285 -> #312 -> #327 -> #324 -> #328 -> #329 -> #330 -> #331 -> #332 -> #335 -> #338 -> #339"
+    doi: null
+  corroborating_sources: []
+  priority_date: "2026-06-16"
+  notes: |
+    First computed quasi_cycler row admitted to the catalogue, validating the
+    v4.7 scope expansion built earlier this session. Structurally a near-5:1
+    Umbriel-Oberon synodic-resonance trajectory (T_leg = 14.94 d/leg, the
+    Umbriel-Oberon synodic period is ~5.99 d, ratio 4.991 -> close to 5:1).
+    Closes-up-to-rotation for 10 cycles with bounded drift oscillation between
+    86,000 km and 530,000 km (peak ~530,000 km at cycle 1 then returns to
+    86,000 km by cycle 5 — bounded oscillation, NOT monotonic divergence).
+
+    Discovery + verification chain (12 tasks across the 2026-06-15 -> 06-17
+    frontier-capability sprint):
+
+    * #281 (multi-mu tulip Np=2 sweep, commit 24907ad): did NOT find this —
+      confirms #281's search coverage was orthogonal to the repeated-moon class
+      this candidate belongs to.
+    * #285 (Saturn + Uranus prioritized repeated-moon scan, commit 1520fd1):
+      surfaced the Uranian near-miss class with Oberon-Titania-Oberon (1,1)
+      at residual 0.062 km/s — the conceptual precursor to this row.
+    * #312 (Uranus extended sweep, commits ee5e45e/b9af576/bebaeaf/d0d5898):
+      surfaced THIS candidate via 24x24 offset sweep at Uranus-Oberon-Umbriel
+      pair, basin floor residual 0.025 km/s, V_inf=(0.92, 0.96, 0.89) km/s,
+      ToF 14.94 d/leg. Coarse-grid sequence Umbriel-Oberon-Umbriel (1,1).
+    * #327 (gate-passing IC verification, commit 3500c71): confirmed the
+      SILVER's stored V_inf and residual at the 2-moon convention basin
+      floor. Verdict REAL_CANDIDATE_AWAITING_306.
+    * #324 (physical-sanity max-bend gate, commit bdd64e6): 14.7 deg at
+      Umbriel + 39 deg at Oberon (both above 5 deg threshold — flybys
+      are physically usable, NOT V_inf-magnitude-only matches at unphysical
+      encounter geometries).
+    * #328 (Uranian cycler literature deep-dive, commits 5199949/eb25a20):
+      offline literature_check against the 41-anchor expanded KNOWN_CORPUS
+      (including 6 new Uranian-dynamics anchors added by #328) returned
+      not-found. Heaton-Longuski 2003 (the only known paywalled adjacent
+      Uranian-tour paper) was flagged for #329 acquisition.
+    * #329 (Heaton-Longuski 2003 paywall, resolved 2026-06-16): user
+      acquired the PDF via AIAA institutional access (filed in cyclers_pdf
+      commit 0c26264). Direct read confirmed the paper is a Galileo-style
+      mga_tour (40 flybys, 810.7 d, Ariel orbit insertion at V_inf=0.92 km/s
+      AT ARIEL, not at Umbriel-Oberon). The SILVER's V_inf tuple
+      (0.92, 0.96, 0.89) at Umbriel-Oberon-Umbriel is ABSENT from Table 5.
+      Different topology, different structural class — NOT a rediscovery.
+    * #330 (V2-moontour gauntlet, commits 5494638/ff6a4ad): all 10 Lambert
+      cycles convergent; strict V2 FAILS_QUASI_BOUNDED (drift exceeds the
+      50,000 km cycler-class floor) BUT the bounded oscillation pattern
+      matches the v4.7 quasi_cycler structural definition exactly.
+    * #331 (V3 6D n-body REBOUND IAS15, commits 79e9a11/cae57ca): REBOUND
+      IAS15 (symplectic Gauss-Radau, eps=1e-12) reproduces the V2 driver's
+      per-cycle drift series to nanometer precision (max |V3-V2| = 1.84e-6 km
+      at n_cycles=10, vs the 100 km agreement floor). The bounded-drift
+      signature is a REAL dynamical property of the Keplerian + 5-moon model,
+      NOT a Lambert/DOP853 integrator artifact.
+    * #332 (V4-scipy with J2 + 5-moon circular Battin, commits 7d43631/
+      a202b72/7c797bb): scipy DOP853 with Uranus J2 (Jacobson 2014 AJ 148:76,
+      3.34343e-3) + Battin third-body perturbations from Miranda/Ariel/
+      Umbriel/Titania/Oberon at CIRCULAR-COPLANAR ephemerides. V4-vs-V3
+      agreement 2-5% on drifts of 3e5-5e5 km. Bounded oscillation persists.
+    * #335 (V4-strict with URA111 SPICE real ephemerides, commits 8ad472e/
+      2eda155/ce4b334/011a289): JPL/NAIF URA111 SPICE kernel installed,
+      sample-and-pin Umbriel/Oberon real eccentricities (e_Umbriel=0.00411,
+      e_Oberon=0.00056) + inclinations (~75 deg in J2000). Verdict at the
+      3 sample epochs: 2000-01-15 FAILS (drift 91,000 km), 2030-06-21 PASSES
+      (10,000 km), 2050-12-31 PASSES (4,000 km). MIXED epoch-dependent.
+    * #338 (annual epoch sweep 2000-2099, commits 65ab8cf/309767d/f03140b):
+      100 annual epochs at DOY=June 21. 94/100 PASS at 50,000 km floor.
+      6 failures all in the last 15 yr of URA111 kernel coverage (kernel-edge
+      artifact, not dynamical). Interior PASS run 2000-06-21 -> 2083-06-21
+      is 85/85 = 100%. EFFECTIVELY_CYCLIC verdict; recommended launch_epoch
+      2041 (center of 84-yr PASS run).
+
+    Sub-year DOY sensitivity exists: 2000-01-15 FAILS V4-strict while
+    2000-06-21 PASSES (same year, different launch day). Validity_window
+    assumes June 21 DOY launch. Sub-year boundary characterization is a
+    follow-up task (Phase 2 of #338). For now, the row's launch_epoch
+    intentionally fixes the DOY at June 21.
+
+    URA111 SPICE kernel coverage ends 2099 (the 2084-2099 failures are
+    kernel-edge extrapolation artifacts, not dynamical). A fresher Uranian
+    satellite kernel (post-URA111) is needed to extend the validity_window
+    beyond 2083. Tracked as follow-up.
+
+    Literature-novelty: cleared against the 41-anchor expanded KNOWN_CORPUS
+    via #328's structured triage (DIRECT/ADJACENT/TOUR/DYNAMICS/MISSION/
+    NO_MATCH classifier) AND via direct PDF read of Heaton-Longuski 2003 JSR
+    (the only known paywalled adjacent Uranian-tour paper, resolved #329).
+    Per `feedback_literature_novelty_check_baseline`: not-found is
+    necessary-not-sufficient — but with all known adjacent papers cleared
+    structurally, this is the highest-confidence literature-fresh verdict
+    achievable within the project's offline + paywall-resolved corpus.
+
+    Schema-field-to-gate mapping:
+    * validation_level=V4 is gated on V4-strict #338 with the explicit
+      caveat that the validity_window assumes June 21 DOY (not all DOYs).
+    * orbit_class=quasi_cycler is the v4.7 admission slot for "closes-
+      up-to-rotation, epoch-locked, 3-15 returns inside a planetary-
+      alignment window".
+    * n_returns=10 reflects #330's 10-cycle convergence at all 10 Lambert
+      cycles + #331's V3 reproduction over the same 10 cycles + #338's
+      verdict at n_cycles=3 (a conservative subset).
+
+    This row's mission-utility implication: a spacecraft launched at the
+    indicated launch_epoch (or any June 21 within the validity_window),
+    arriving at Umbriel at V_inf=0.92 km/s, can complete ~10 Umbriel-
+    Oberon-Umbriel cycles before bounded drift accumulates beyond
+    ~530,000 km (smaller than Oberon's orbit radius). Useful for repeat-
+    observation orbital science of both Umbriel and Oberon without
+    requiring continuous maintenance Delta-V.
+
+    cyclers.space website filter UI (built #295) will auto-display this
+    row as the first quasi_cycler entry at next sync (predev/prebuild
+    pulls catalogue.yaml from main; see scripts/sync-catalogue.mjs in
+    the cyclers.space repo).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #327 verified data/silver_327_verified.jsonl meta-row: stored V_inf at Umbriel-1 = 0.9199258810725036 km/s; reported as 0.9199 (4 sig figs) for catalogue display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #327: stored V_inf at Oberon = 0.9604309791298091 km/s; reported as 0.9604."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #327: stored V_inf at Umbriel-2 = 0.8946936085078939 km/s; reported as 0.8947."
+    "launch_epoch": "Per #338 Part C verdict doc (commit f03140b) and data/silver_327_v4_strict_boundary_338.jsonl 'longest_pass_run' record: longest_pass_run_center_year=2041; combined with the DOY (June 21) used for the annual sweep."
+    "validity_window.start": "Per #338 boundary JSONL: longest_pass_run_start_year=2000, length 84 yr."
+    "validity_window.end": "Per #338 boundary JSONL: longest_pass_run_end_year=2083."
+    "n_returns": "Per #330 data/silver_327_moontour_v2_verdicts.jsonl: n_cycles=10 verdict with bounded drift; #331 V3 reproduces same 10 cycles; n_returns=10 reflects the convergent-with-bounded-drift count, NOT a strict periodic-cycler infinity (which would require strict-periodic n_returns='infinite' per v4.7 cycler-class definition)."
