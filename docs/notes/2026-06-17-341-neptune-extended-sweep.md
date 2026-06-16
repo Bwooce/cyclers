@@ -28,9 +28,25 @@ resolution; Part B is **non-executable under sourced discipline**
 Proteus's mass cannot deliver a useful flyby bend.
 
 Frame: Neptune extended sweep (#341) — 70 + 4 + 72 = 146 cells / seeds
-evaluated, best closure 0.05839 km/s, all 6 near-miss cells lit-fresh
-class (KNOWN_CORPUS anchor overlap = 0), zero SILVER, zero physical-
-gate passes.
+evaluated, best closure 0.05839 km/s, zero SILVER, zero physical-gate
+passes.
+
+**Lit-fresh status erratum:** the Part A.1 JSONL was written with
+`n_lit_corpus_anchors_overlap = 0` for all near-miss rows (the
+KNOWN_CORPUS at the time of the scan, sha ba9d66e, had zero Neptune
+anchors). Concurrent agent #334 landed commit `db54476` (Part D) which
+added the "Voyager 2 Triton encounter + Trident / Triton-Hopper concept
+tour" anchor with `primary=Neptune, body_set={Triton, Proteus}` — a
+deliberate honest-gap entry citing Stone & Miner (Science 1989) and
+Prockter et al. (PSJ 2021), with the GAP caveat that no peer-reviewed
+Sun-Neptune-Triton BCR4BP study was identified. Re-running the
+`_candidate_anchors(...)` query against this updated corpus on the
+0.0584 km/s near-miss now returns 1 anchor. **The Proteus-Triton-Proteus
+(1,1) candidate is NOT lit-fresh class as of #334's anchor update;
+it is anchored by the Voyager 2 / Trident regime entry.** This does
+NOT change the verdict (the candidate is rejected on residual and
+physical-sanity gates anyway), but the doc should reflect the
+post-#334 corpus state honestly.
 
 ## Discipline anchors
 
