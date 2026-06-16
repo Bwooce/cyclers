@@ -46,6 +46,7 @@ def ross_33_result() -> fs.SeedResult:
     return fs.run_seed(_ross_33_seed())
 
 
+@pytest.mark.slow
 def test_ross_seed_yields_members_and_runs_inertial_on_each(
     ross_33_result: fs.SeedResult,
 ) -> None:
@@ -67,6 +68,7 @@ def test_ross_seed_yields_members_and_runs_inertial_on_each(
     assert any(c == "REPRODUCTION" for c in classifications)
 
 
+@pytest.mark.slow
 def test_continuation_of_sourced_seed_is_never_novel(ross_33_result: fs.SeedResult) -> None:
     # The #219 correction: every branch here is built by continuing a *published*
     # family representative, so a non-reproduction member is the SAME family at a
@@ -83,6 +85,7 @@ def test_continuation_of_sourced_seed_is_never_novel(ross_33_result: fs.SeedResu
             assert m["family_label"] == res.label  # provenance: the sourced family
 
 
+@pytest.mark.slow
 def test_seed_member_is_reproduction_of_itself() -> None:
     # The corrected seed (the published Ross point) must classify as REPRODUCTION
     # (within dedup tol of the published member), never as a discovery.
@@ -119,6 +122,7 @@ def test_seed_member_is_reproduction_of_itself() -> None:
     assert fs._is_reproduction(member, seed)
 
 
+@pytest.mark.slow
 def test_offfamily_seed_is_abandoned_not_fabricated() -> None:
     # The Arenstorf seed uses half_crossings=1, which lands the symmetric corrector
     # on a DIFFERENT orbit (T~5 vs the figure-8's 17.06). The seed-period guard must
@@ -129,6 +133,7 @@ def test_offfamily_seed_is_abandoned_not_fabricated() -> None:
     assert "off-family" in res.error
 
 
+@pytest.mark.slow
 def test_routed_members_reach_review_queue_and_counts_agree(
     ross_33_result: fs.SeedResult, tmp_path: Path
 ) -> None:

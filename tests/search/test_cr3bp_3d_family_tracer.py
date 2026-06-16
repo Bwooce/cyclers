@@ -106,6 +106,7 @@ def _spike_seed() -> tuple[np.ndarray, float]:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_pseudo_arclength_reproduces_spike_family() -> None:
     """Pseudo-arclength from the spike's IC walks a multi-member 3D family.
 
@@ -146,6 +147,7 @@ def test_pseudo_arclength_reproduces_spike_family() -> None:
     assert n_3d >= 10, f"only {n_3d} members had |z0| > 0.05 — family collapsed to planar?"
 
 
+@pytest.mark.slow
 def test_closure_preserved_on_every_member() -> None:
     """Every accepted member must close under Radau re-propagation."""
     system = _make_system()
@@ -256,6 +258,7 @@ def test_seed_member_has_a_trivial_unit_eigenvalue() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_fold_detected_and_walk_continues_through() -> None:
     """The spike's family has a fold in (z0, x0) near x0 ~ -0.81; the
     pseudo-arclength walker detects the sign flip in the tangent and
@@ -334,6 +337,7 @@ def test_planar_seed_marks_all_members_degenerate() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_direction_symmetry() -> None:
     """Forward + backward walks cover x0 above + below the seed."""
     system = _make_system()

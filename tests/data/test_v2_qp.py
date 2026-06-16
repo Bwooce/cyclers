@@ -175,6 +175,7 @@ def test_v2_qp_floors_are_sourced_constants() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_v2_qp_sourced_smoke_torus_passes() -> None:
     """V2_qp on the #299 Neimark-Sacker-seeded torus, n_cycles=3.
 
@@ -248,6 +249,7 @@ def test_v2_qp_zero_amplitude_limit_passes() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_v2_qp_rejects_corrupted_torus() -> None:
     """Bit-flip the Fourier modes; V2_qp must catch it.
 
@@ -280,6 +282,7 @@ def test_v2_qp_rejects_corrupted_torus() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_v2_qp_cycle_count_scaling_documents_drift() -> None:
     """Document the per-cycle invariance drift as a function of cycle
     count k. Olikara 2016 §4 reports drift growing from ~1e-4 at k=1 to

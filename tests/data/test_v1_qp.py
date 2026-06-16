@@ -198,6 +198,7 @@ def test_v1_qp_floors_are_sourced_constants() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_v1_qp_sourced_smoke_torus_passes() -> None:
     """V1_qp on the #299 Neimark-Sacker-seeded torus.
 
@@ -267,6 +268,7 @@ def test_v1_qp_zero_amplitude_limit_passes() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_v1_qp_rejects_corrupted_fourier_coefficients() -> None:
     """Take a converged torus and apply a gross perturbation to its
     Fourier modes -- V1_qp must catch the corruption.
