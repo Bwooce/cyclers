@@ -40,7 +40,7 @@ continuation. Those land in Phase 3 (#266 follow-up).
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -493,6 +493,140 @@ def petal_count(
 
 
 # ---------------------------------------------------------------------------
+# 3D-topology gate (#322 bug-fix).
+# ---------------------------------------------------------------------------
+
+# Out-of-plane amplitude floor for the "genuine 3D tulip" gate.
+#
+# Bug context: ``petal_count`` counts local minima of the spacecraft-to-secondary
+# distance in 3D, but a planar Np-petal orbit (z(t) ≡ 0) still produces exactly
+# Np in-plane perilune minima — the classifier alone CANNOT distinguish a
+# planar Np-petal orbit from a genuine 3D Np-tulip. At very small mu (e.g. the
+# Mars-Phobos system, mu ~ 1.65e-8), the symmetric corrector drives the seed's
+# z0 toward zero and the orbit collapses to planar; petal_count then fires a
+# FALSE POSITIVE on the tulip topology gate. See #313 negative + #322 fix.
+#
+# Sourced threshold rationale:
+# ``KOBLICK_2023_TABLE4_PAPER`` publishes z0 values for Np=1..15 in the Koblick
+# Earth-Moon normalisation. The SMALLEST z0 in that table is the Np=15 row at
+# z0 = 0.045796 nondim; the LARGEST is the Np=1 row at z0 = 0.183250 nondim. We
+# use a conservative floor of ``5e-3`` nondim (~5% of the smallest Koblick z0
+# at Np=15, and ~3% of the canonical Np=2 z0=0.174305). This is a Phase 1
+# floor: anything below 5e-3 nondim is definitely planar-collapse rather than
+# a 3D tulip on the published family. The number is a conservative cliff
+# (sourced family minimum is 0.046 -- two decades above the floor), not a
+# precision threshold. Phase 2 (#322 follow-up) may refine this against
+# Koblick's Fig.~7 out-of-plane envelopes if/when they are digitised.
+#
+# Concretely at Earth-Moon scale, 5e-3 nondim ≈ 1.95e3 km (LU=389703 km, so
+# ~1948 km out-of-plane). At Mars-Phobos (LU = 9375 km) the same floor is
+# 46.9 km; at Pluto-Charon (LU = 19600 km) it is 98 km.
+TULIP_Z_AMPLITUDE_FLOOR_NONDIM: float = 5e-3
+
+
+def out_of_plane_amplitude(
+    state0: NDArray[np.float64],
+    period: float,
+    system: cr3bp.CR3BPSystem,
+    *,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    n_samples: int = 401,
+) -> float:
+    """Compute ``max |z(t)|`` over one period of a CR3BP orbit.
+
+    Used by :func:`is_three_dimensional` and the ``find_tulip_at_system``
+    topology gate to distinguish a genuine 3D tulip from a planar Np-petal
+    orbit that happens to share the in-plane petal count.
+
+    The integrator runs in physical time with ``DOP853`` and a dense ``t_eval``
+    grid (the cost is one cheap forward propagation per gate call). For
+    near-collision low-perilune orbits the regularised propagator might be
+    safer; in practice the Koblick / Mars-moon ICs the gate has to discriminate
+    do not hit collisions during this evaluation.
+
+    Parameters
+    ----------
+    state0, period, system :
+        IC, full nondim period, and CR3BP system the IC is referenced to.
+    rtol, atol :
+        Integrator tolerances. Loosened from the corrector's ``1e-12`` because
+        we want ``max|z|`` to a few significant figures only.
+    n_samples :
+        Number of evenly-spaced sample points on ``[0, T]``. Default 401 is
+        cheap and captures any plausible z-extremum even for the Np=15 row
+        (one out-of-plane lobe per ~6.3 TU / 15 petals ~ 0.4 TU spacing).
+
+    Returns
+    -------
+    float :
+        The maximum of ``|z(t)|`` over the dense sample grid.
+
+    Raises
+    ------
+    RuntimeError
+        If the integrator fails.
+    """
+    from scipy.integrate import solve_ivp
+
+    s0 = np.asarray(state0, dtype=np.float64)
+    t_eval = np.linspace(0.0, period, int(n_samples))
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, period),
+        s0,
+        args=(system.mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        t_eval=t_eval,
+    )
+    if not sol.success:
+        raise RuntimeError(
+            f"out_of_plane_amplitude: integrator failed at t={sol.t[-1]}: {sol.message}"
+        )
+    return float(np.max(np.abs(sol.y[2])))
+
+
+def is_three_dimensional(
+    state0: NDArray[np.float64],
+    period: float,
+    system: cr3bp.CR3BPSystem,
+    *,
+    z_floor: float = TULIP_Z_AMPLITUDE_FLOOR_NONDIM,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+) -> tuple[bool, float]:
+    """Return ``(is_3d, max_abs_z)`` for the 3D-topology gate.
+
+    An orbit qualifies as 3D iff BOTH ``|z0| >= z_floor`` AND
+    ``max|z(t)| >= z_floor``. Either-or would be insufficient: a sourced
+    Koblick IC can have z0 near zero at the perpendicular-crossing IC instant
+    while still having a non-trivial out-of-plane lobe (so we check max|z|);
+    and a degenerate IC that crosses z=0 only at sample times could pass a
+    pure max|z| check spuriously (so we also pin z0).
+
+    See :data:`TULIP_Z_AMPLITUDE_FLOOR_NONDIM` for the floor's sourced
+    justification and units.
+    """
+    z0_ok = abs(float(state0[2])) >= z_floor
+    if not z0_ok:
+        # Short-circuit: the IC itself is planar, no need to integrate.
+        return False, abs(float(state0[2]))
+    max_abs_z = out_of_plane_amplitude(state0, period, system, rtol=rtol, atol=atol)
+    return (max_abs_z >= z_floor), max_abs_z
+
+
+TopologyVerdict = Literal[
+    "3D tulip",
+    "planar Np-petal collapse",
+    "petal count mismatch",
+    "seed no converge",
+    "unknown",
+]
+
+
+# ---------------------------------------------------------------------------
 # Reproduce-before-trust gate.
 # ---------------------------------------------------------------------------
 
@@ -812,7 +946,30 @@ def find_tulip_via_continuation(
 
 @dataclass(frozen=True)
 class FindTulipResult:
-    """Outcome of :func:`find_tulip_via_continuation`."""
+    """Outcome of :func:`find_tulip_via_continuation`.
+
+    Attributes
+    ----------
+    topology_verdict :
+        3D-topology classification of the returned orbit (#322). One of:
+
+          * ``"3D tulip"`` -- genuine 3D Np-tulip (passes both petal_count and
+            out-of-plane amplitude gates).
+          * ``"planar Np-petal collapse"`` -- petal_count matches but the
+            orbit's z(t) collapsed below
+            :data:`TULIP_Z_AMPLITUDE_FLOOR_NONDIM`; NOT a real tulip.
+          * ``"petal count mismatch"`` -- corrected orbit has the wrong petal
+            count (e.g. seed at Np=1 family, target Np=2 -- the canonical
+            Tier B fallback signal).
+          * ``"seed no converge"`` -- the corrector failed before topology
+            could be classified.
+          * ``"unknown"`` -- topology not classified (default for paths that
+            pre-date the gate, kept for backward compat).
+    max_abs_z :
+        ``max |z(t)|`` over one period of the returned orbit (nondim), or
+        ``None`` if topology was not classified. Carries the 3D-topology
+        evidence alongside the verdict.
+    """
 
     seed: SymmetricNRHO
     branch_members: list[SymmetricNRHO]
@@ -820,6 +977,8 @@ class FindTulipResult:
     switched: SymmetricNRHO | None
     success: bool
     reason: str
+    topology_verdict: TopologyVerdict = "unknown"
+    max_abs_z: float | None = None
 
 
 def find_tulip_at_system(
@@ -943,28 +1102,99 @@ def find_tulip_at_system(
             except RuntimeError:
                 n_direct = -1
             if n_direct == np_target:
-                # Tier A hit: the seed IS already the target Np tulip at this mu.
-                return FindTulipResult(
+                # #322 fix: petal_count alone is NOT sufficient -- a planar
+                # Np-petal orbit (z(t) ≡ 0) shares the in-plane petal count
+                # with a genuine 3D tulip. At very small mu the symmetric
+                # corrector collapses z0 -> 0; we must independently verify
+                # 3D topology via out-of-plane amplitude.
+                try:
+                    is_3d, max_abs_z = is_three_dimensional(
+                        state0, direct_seed.T_TU, system, rtol=rtol, atol=atol
+                    )
+                except RuntimeError:
+                    is_3d, max_abs_z = False, float("nan")
+                if is_3d:
+                    # Tier A hit: the seed IS already the target Np tulip at this mu.
+                    return FindTulipResult(
+                        seed=direct_seed,
+                        branch_members=[],
+                        bifurcation=None,
+                        switched=direct_seed,
+                        success=True,
+                        reason="direct_seed_match",
+                        topology_verdict="3D tulip",
+                        max_abs_z=max_abs_z,
+                    )
+                # Petal count matched but the orbit collapsed to planar -- this
+                # is the #322 false-positive pattern. Refuse to claim success;
+                # fall through to Tier B (which uses bifurcation tracking +
+                # family-switching, immune to the z0-collapse mode).
+                # Carry the diagnostic verdict so the caller can log it.
+                tier_a_collapse_result: FindTulipResult | None = FindTulipResult(
                     seed=direct_seed,
                     branch_members=[],
                     bifurcation=None,
-                    switched=direct_seed,
-                    success=True,
-                    reason="direct_seed_match",
+                    switched=None,
+                    success=False,
+                    reason="direct_seed_planar_collapse",
+                    topology_verdict="planar Np-petal collapse",
+                    max_abs_z=max_abs_z,
                 )
+            else:
+                tier_a_collapse_result = None
+        else:
+            tier_a_collapse_result = None
+    else:
+        tier_a_collapse_result = None
 
     # Tier B fallback: full Phase 3/4 pipeline (continuation + family-switch).
-    return find_tulip_via_continuation(
-        np_target=np_target,
-        system=system,
-        d_x0=d_x0,
-        n_steps_max=n_steps_max,
-        perilune_floor_km=perilune_floor_km,
-        eigenvector_step=eigenvector_step,
-        tol=tol,
-        rtol=rtol,
-        atol=atol,
-        multi_shooting=multi_shooting,
-        multi_shoot_segments=multi_shoot_segments,
-        seed_row=seed_row,
-    )
+    try:
+        tier_b = find_tulip_via_continuation(
+            np_target=np_target,
+            system=system,
+            d_x0=d_x0,
+            n_steps_max=n_steps_max,
+            perilune_floor_km=perilune_floor_km,
+            eigenvector_step=eigenvector_step,
+            tol=tol,
+            rtol=rtol,
+            atol=atol,
+            multi_shooting=multi_shooting,
+            multi_shoot_segments=multi_shoot_segments,
+            seed_row=seed_row,
+        )
+    except NotImplementedError:
+        # Tier B currently only handles np_target=2. For higher Np targets
+        # where Tier A flagged a planar collapse, the caller still benefits
+        # from the diagnostic; surface the Tier A verdict.
+        if tier_a_collapse_result is not None:
+            return tier_a_collapse_result
+        raise
+
+    # If Tier B succeeded, classify the topology of the switched member too.
+    if tier_b.success and tier_b.switched is not None:
+        sw = tier_b.switched
+        sw_state0 = np.array([sw.x0, 0.0, sw.z0, 0.0, sw.ydot0, 0.0], dtype=np.float64)
+        try:
+            is_3d_b, max_abs_z_b = is_three_dimensional(
+                sw_state0, sw.T_TU, system, rtol=rtol, atol=atol
+            )
+        except RuntimeError:
+            is_3d_b, max_abs_z_b = False, float("nan")
+        verdict_b: TopologyVerdict = "3D tulip" if is_3d_b else "planar Np-petal collapse"
+        # Re-emit with topology fields populated.
+        return FindTulipResult(
+            seed=tier_b.seed,
+            branch_members=tier_b.branch_members,
+            bifurcation=tier_b.bifurcation,
+            switched=tier_b.switched if is_3d_b else None,
+            success=is_3d_b,
+            reason=(tier_b.reason if is_3d_b else "tier_b_planar_collapse"),
+            topology_verdict=verdict_b,
+            max_abs_z=max_abs_z_b,
+        )
+    # Tier B did not produce a switched orbit. Prefer the Tier A diagnostic
+    # if we have one (it's more specific than "no_k2_bifurcation").
+    if tier_a_collapse_result is not None:
+        return tier_a_collapse_result
+    return tier_b

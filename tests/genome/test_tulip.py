@@ -363,3 +363,143 @@ def test_find_tulip_via_continuation_with_multi_shooting_matches_single_shooting
     assert n_ss == 2 and n_ms == 2, (
         f"Phase 4 vs Phase 3 petal_count mismatch: ss={n_ss}, ms={n_ms} (both expected 2)"
     )
+
+
+# ---------------------------------------------------------------------------
+# #322 regression gates: 3D-topology gate rejects planar Np-petal collapse.
+# ---------------------------------------------------------------------------
+
+
+def test_322_marsphobos_paperseed_np4_does_not_claim_tulip() -> None:
+    """Regression for #322: at Mars-Phobos (mu ~ 1.65e-8) the Koblick Np=4
+    paper IC collapses to planar (z0 -> ~1e-14) when corrected, and
+    petal_count returns 2 -- matching ``np_target=2`` and TRIGGERING the
+    Tier A success gate UNDER THE OLD CODE (see ``data/scan_313_*.jsonl``).
+
+    Post-fix expected behavior: ``find_tulip_at_system`` MUST NOT return
+    ``success=True`` for this case. The result must carry
+    ``topology_verdict == "planar Np-petal collapse"`` AND ``success=False``,
+    since the orbit is not a genuine 3D tulip.
+    """
+    from cyclerfinder.genome.tulip import (
+        KOBLICK_2023_TABLE4_PAPER,
+        find_tulip_at_system,
+    )
+
+    system = cr3bp.cr3bp_system("Mars", "Phobos")
+    result = find_tulip_at_system(
+        system,
+        np_target=2,
+        seed_row=KOBLICK_2023_TABLE4_PAPER[4],
+        try_direct_seed=True,
+        multi_shooting=False,  # avoid the multishoot RuntimeError at very small mu
+        n_steps_max=4,  # keep Tier B fallback brief; we only care about Tier A verdict
+    )
+    assert result is not None, "result should not be None when seed corrects"
+    # The fix MUST refuse to claim success on the planar-collapse case.
+    assert not result.success, (
+        f"#322 regression: find_tulip_at_system claimed success on the "
+        f"Mars-Phobos planar-collapse case (reason={result.reason}). "
+        "The petal_count gate alone IS NOT SUFFICIENT to certify 3D tulip "
+        "topology."
+    )
+    # And it must specifically diagnose the planar collapse.
+    assert result.topology_verdict == "planar Np-petal collapse", (
+        f"#322 regression: expected topology_verdict='planar Np-petal collapse', "
+        f"got '{result.topology_verdict}' (reason={result.reason})."
+    )
+    # Sanity: max_abs_z should be small (below the threshold).
+    assert result.max_abs_z is not None
+    from cyclerfinder.genome.tulip import TULIP_Z_AMPLITUDE_FLOOR_NONDIM
+
+    assert result.max_abs_z < TULIP_Z_AMPLITUDE_FLOOR_NONDIM, (
+        f"planar-collapse case had max|z|={result.max_abs_z:.3e}, "
+        f"expected < {TULIP_Z_AMPLITUDE_FLOOR_NONDIM:.3e}."
+    )
+
+
+def test_322_earth_moon_genuine_3d_tulip_still_admitted() -> None:
+    """Regression for #322: the genuine 3D tulip at Earth-Moon (the existing
+    Tier B end-to-end gate target) MUST continue to be admitted under the
+    fixed code. Belt-and-braces: this test asserts ``success=True`` AND
+    ``topology_verdict='3D tulip'`` AND ``max_abs_z >= floor`` for the
+    Earth-Moon Np=2 case.
+    """
+    from cyclerfinder.genome.tulip import (
+        TULIP_Z_AMPLITUDE_FLOOR_NONDIM,
+        find_tulip_at_system,
+    )
+
+    system = koblick_system()
+    # Force the Tier B path -- Tier A from the Koblick Np=1 seed at
+    # Earth-Moon mu produces Np=1 (not Np=2), so the canonical EM workflow
+    # exercises the Tier B continuation + family-switch.
+    result = find_tulip_at_system(
+        system,
+        np_target=2,
+        try_direct_seed=False,
+        multi_shooting=False,
+        d_x0=5e-4,
+        n_steps_max=40,
+    )
+    assert result is not None
+    assert result.success, (
+        f"#322 regression: the canonical Earth-Moon Np=2 tulip MUST still "
+        f"be admitted. reason={result.reason}, verdict={result.topology_verdict}."
+    )
+    assert result.topology_verdict == "3D tulip", (
+        f"#322 regression: Earth-Moon Np=2 mis-classified as '{result.topology_verdict}'."
+    )
+    assert result.max_abs_z is not None
+    assert result.max_abs_z >= TULIP_Z_AMPLITUDE_FLOOR_NONDIM, (
+        f"Earth-Moon Np=2 max|z|={result.max_abs_z:.3e} below floor "
+        f"{TULIP_Z_AMPLITUDE_FLOOR_NONDIM:.3e} -- the gate would reject a "
+        "real tulip."
+    )
+
+
+def test_322_threshold_sanity_at_half_and_double() -> None:
+    """Numeric sanity check for the chosen z-amplitude floor.
+
+    Constructs a SYNTHETIC orbit that would pass the gate at z0 = 2*floor and
+    fail at z0 = 0.5*floor. We use a CR3BP propagation from a perpendicular-
+    crossing IC at chosen z0; with the symmetric corrector NOT involved (no
+    z0 collapse), the orbit's z(t) excursion is bounded by an order-of-mag
+    factor of z0 over short time scales. Both directions of the test are
+    asserted:
+
+      * z0 = 0.5 * floor -> ``is_three_dimensional`` returns False.
+      * z0 = 2.0 * floor -> ``is_three_dimensional`` returns True.
+    """
+    from cyclerfinder.genome.tulip import (
+        TULIP_Z_AMPLITUDE_FLOOR_NONDIM,
+        is_three_dimensional,
+    )
+
+    sysm = koblick_system()
+    # Use the Koblick Np=2 paper IC family at Earth-Moon, scaled in z. The IC
+    # is at the perpendicular crossing (y0 = xdot0 = zdot0 = 0); we vary z0
+    # and ydot0 stays the published value. (The orbit will NOT be closed at
+    # these adjusted z0, but we only need ``out_of_plane_amplitude`` over one
+    # period, not a closed orbit, for the gate-threshold test.)
+    period = 2.756426
+    floor = TULIP_Z_AMPLITUDE_FLOOR_NONDIM
+
+    # Below-floor case: should return is_3d=False (short-circuits on z0 check).
+    state_below = np.array([1.023731, 0.0, 0.5 * floor, 0.0, -0.082095, 0.0])
+    is_3d_below, _ = is_three_dimensional(state_below, period, sysm)
+    assert not is_3d_below, (
+        f"is_three_dimensional returned True for z0={0.5 * floor:.3e} "
+        f"(half the floor {floor:.3e}) -- threshold check broken."
+    )
+
+    # Above-floor case: must return is_3d=True. The Koblick Np=2 family has
+    # max|z| comparable to z0, so 2*floor in z0 produces max|z| comfortably
+    # above the floor.
+    state_above = np.array([1.023731, 0.0, 2.0 * floor, 0.0, -0.082095, 0.0])
+    is_3d_above, max_abs_z_above = is_three_dimensional(state_above, period, sysm)
+    assert is_3d_above, (
+        f"is_three_dimensional returned False for z0={2.0 * floor:.3e} "
+        f"(twice the floor {floor:.3e}), max|z|={max_abs_z_above:.3e} -- "
+        "threshold check overly strict."
+    )
