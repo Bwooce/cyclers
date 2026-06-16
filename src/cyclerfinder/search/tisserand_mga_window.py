@@ -95,7 +95,14 @@ from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS, SECONDS_PER_DAY
+from cyclerfinder.core.constants import (
+    AU_KM,
+    MU_SUN_KM3_S2,
+    PLANETS,
+    SAFE_PERIHELION_KM,
+    SECONDS_PER_DAY,
+)
+from cyclerfinder.core.flyby import max_bend
 from cyclerfinder.genome.epoch_aware_genome import (
     EpochLockedClosure,
     EpochLockedTrajectory,
@@ -247,6 +254,100 @@ def _resonant_tof_days_candidates(
     return out
 
 
+def delta_vinf_max_kms(
+    body: str,
+    vinf_in_kms: float,
+    *,
+    periapsis_altitude_km: float | None = None,
+) -> float:
+    """Strange-Longuski 2002 §12 gravity-assist pump envelope at body ``body``.
+
+    The maximum heliocentric ``|V_inf|`` change a single flyby at ``body``
+    can impart at the **next** body, given an incoming hyperbolic excess
+    ``vinf_in_kms``. This is the pump-tour increment (Strange-Longuski 2002
+    §12; pump-tour combinatorics in Petropoulos-Longuski 2000).
+
+    Sourced golden. For Earth at V_inf = 9 km/s the published figure (this
+    repository's KNOWN_CORPUS anchor at corpus rev ``568d8a4``,
+    Strange-Longuski 2002 §12) is ~2.7 km/s per flyby. See
+    ``docs/notes/2026-06-16-298-289-phase2-tisserand-enumerator.md`` §Phase
+    3 hand-off.
+
+    Derivation. At a flyby, the body-frame :math:`|v_\\infty|` is
+    conserved and the :math:`v_\\infty` vector rotates by at most
+    :math:`\\delta_\\text{max}` (cone half-angle at safe periapsis,
+    :func:`max_bend`). The change in heliocentric speed (scalar) that drives
+    the change in V_inf at the **next** encounter follows the
+    Strange-Longuski 2002 §12 leveraging identity:
+
+    .. math::
+
+        \\Delta V_\\infty^{\\text{next}}_\\text{max}
+        \\;\\approx\\; V_\\infty^{\\text{in}}\\;
+                       \\bigl(1 - \\cos\\delta_\\text{max}\\bigr).
+
+    This is the heliocentric speed-magnitude change picked up by the
+    spacecraft when the v_inf asymptote is rotated through the maximum cone
+    half-angle (the perpendicular-to-V_p case). For Earth at V_inf = 9 km/s
+    and safe periapsis (~300 km altitude) this evaluates to ~3.24 km/s; the
+    sourced 2.7 km/s figure is recovered with a realised-vs-geometric factor
+    of ~0.83 (the rotation usually doesn't reach the geometric maximum
+    because it must point at the next body, not just anywhere on the V_inf
+    globe). The function returns the GEOMETRIC bound; multi-shell callers
+    that want the realised-shift bound pass ``pump_envelope_factor=0.83``
+    to :func:`find_mga_chains`.
+
+    Discrepancy honesty. The textbook closed-form
+    :math:`2 V_p \\sin(\\delta/2)` (where :math:`V_p` is the body's
+    heliocentric circular speed) gives ~25 km/s for Earth at V_inf = 9 —
+    that is the maximum INSTANTANEOUS heliocentric velocity-vector change
+    at the flyby, NOT the maximum change in **V_inf at the next body**.
+    The two quantities are distinct: the instantaneous heliocentric ΔV is
+    bounded by the body's circular speed; the per-encounter V_inf change at
+    the NEXT body is bounded by the energy / Tisserand-shift envelope —
+    which is the smaller :math:`V_\\infty(1 - \\cos\\delta)` expression
+    used here. Source: Strange-Longuski 2002 §12.
+
+    Parameters
+    ----------
+    body:
+        One-letter body code from :data:`PLANETS`.
+    vinf_in_kms:
+        Incoming hyperbolic excess speed, km/s. Must be non-negative.
+    periapsis_altitude_km:
+        Optional override on the flyby altitude. ``None`` uses
+        :data:`SAFE_PERIHELION_KM` (the engineering safe periapsis radius).
+
+    Returns
+    -------
+    float
+        Maximum per-flyby V_inf change at ``body`` for an incoming
+        :math:`|v_\\infty|` = ``vinf_in_kms``, km/s. Non-negative.
+    """
+    if vinf_in_kms < 0.0:
+        raise ValueError(f"vinf_in_kms must be non-negative, got {vinf_in_kms}")
+    if body not in PLANETS:
+        raise ValueError(f"unknown body code {body!r}; valid: {tuple(PLANETS)!r}")
+    if vinf_in_kms == 0.0:
+        return 0.0
+    planet = PLANETS[body]
+    mu = planet.mu_km3_s2
+    if periapsis_altitude_km is None:
+        rp = SAFE_PERIHELION_KM[body]
+    else:
+        rp = planet.radius_eq_km + float(periapsis_altitude_km)
+    # Deflection cone half-angle at safe periapsis for this V_inf.
+    delta_max = max_bend(mu, rp, vinf_in_kms)
+    # Strange-Longuski 2002 §12 leveraging identity: per-flyby change in
+    # V_inf at the NEXT body, evaluated at the maximum-effect geometry.
+    return vinf_in_kms * (1.0 - math.cos(delta_max))
+
+
+def _snap_to_grid(v: float, grid: tuple[float, ...]) -> float:
+    """Snap a continuous V_inf value to its nearest grid point."""
+    return min(grid, key=lambda g: abs(g - v))
+
+
 def _edge_admissible(
     body_a: str,
     body_b: str,
@@ -299,6 +400,102 @@ def _adjacency(
                     successors.append((body_b, float(vinf)))
             adj[node] = successors
     return adj
+
+
+def _multi_shell_adjacency(
+    planet_set: tuple[str, ...],
+    vinf_grid_kms: tuple[float, ...],
+    *,
+    a_range_au: tuple[float, float],
+    pump_envelope_factor: float = 1.0,
+) -> dict[tuple[str, float], list[tuple[str, float]]]:
+    """Multi-shell Tisserand-Poincaré adjacency: allow V_inf shifts within the
+    Strange-Longuski 2002 §12 pump envelope at every hetero-body flyby.
+
+    Each node ``(body_a, vinf_a)`` may transition to ``(body_b, vinf_b)``
+    where ``|vinf_b - vinf_a| <= delta_vinf_max_kms(body_a, vinf_a) *
+    pump_envelope_factor``. Same-body hops stay V_inf-conservative (the
+    Tisserand identity is bit-exact at the same flyby body).
+
+    ``pump_envelope_factor`` defaults to 1.0 (the full geometric envelope);
+    pass <1.0 to be more conservative (the realised shift is usually a
+    fraction of the geometric maximum because the V_inf rotation must also
+    point at the next body, not just anywhere on the V_inf globe).
+    """
+    if pump_envelope_factor <= 0.0:
+        raise ValueError(
+            f"pump_envelope_factor must be positive, got {pump_envelope_factor}",
+        )
+    adj: dict[tuple[str, float], list[tuple[str, float]]] = {}
+    for body_a in planet_set:
+        for vinf_a in vinf_grid_kms:
+            v_a = float(vinf_a)
+            node = (body_a, v_a)
+            successors: list[tuple[str, float]] = []
+            # The pump envelope at this body and V_inf.
+            envelope_kms = delta_vinf_max_kms(body_a, v_a) * pump_envelope_factor
+            for body_b in planet_set:
+                if body_a == body_b:
+                    # Same-body resonant return: V_inf is Tisserand-conserved.
+                    if _edge_admissible(body_a, body_b, v_a, a_range_au=a_range_au):
+                        successors.append((body_b, v_a))
+                else:
+                    # Hetero body: try every neighbouring V_inf bin inside the
+                    # envelope. The next-body V_inf is constrained both by the
+                    # pump envelope (geometric reachability) AND by the 3-D
+                    # Tisserand predicate at the *new* V_inf.
+                    for vinf_b in vinf_grid_kms:
+                        v_b = float(vinf_b)
+                        if abs(v_b - v_a) > envelope_kms:
+                            continue
+                        # The Tisserand admissibility is at the *outgoing*
+                        # V_inf (the V_inf the spacecraft carries on the leg
+                        # to body_b). For a hetero hop the outgoing V_inf at
+                        # body_a equals the body_a frame's V_inf at the moment
+                        # of flyby; we use v_a (V_inf is body-frame conserved
+                        # AT the flyby), but the leg's heliocentric geometry
+                        # only matters for the predicate at v_b.
+                        if _edge_admissible(body_a, body_b, v_b, a_range_au=a_range_au):
+                            successors.append((body_b, v_b))
+            adj[node] = successors
+    return adj
+
+
+def _enumerate_multi_shell_sequences(
+    adj: dict[tuple[str, float], list[tuple[str, float]]],
+    planet_set: tuple[str, ...],
+    vinf_grid_kms: tuple[float, ...],
+    *,
+    max_legs: int,
+    start_body_filter: Iterable[str] | None = None,
+) -> Iterator[tuple[tuple[str, ...], tuple[float, ...]]]:
+    """BFS over the multi-shell adjacency; V_inf may shift across hetero flybys.
+
+    Generalises :func:`_enumerate_sequences` (single-shell) by letting V_inf
+    take per-node values rather than carrying one shell value across the
+    whole chain. The Galileo pattern (V_inf ≈ 4 → 9 → 9 → 5.6 km/s) is now
+    representable.
+    """
+    start_filter: set[str] | None = None if start_body_filter is None else set(start_body_filter)
+    for vinf in vinf_grid_kms:
+        v = float(vinf)
+        for start_body in planet_set:
+            if start_filter is not None and start_body not in start_filter:
+                continue
+            frontier: list[list[tuple[str, float]]] = [[(start_body, v)]]
+            while frontier:
+                next_frontier: list[list[tuple[str, float]]] = []
+                for path in frontier:
+                    last = path[-1]
+                    if len(path) >= 2:
+                        seq = tuple(p[0] for p in path)
+                        vinf_tuple = tuple(p[1] for p in path)
+                        yield seq, vinf_tuple
+                    if len(path) - 1 >= max_legs:
+                        continue
+                    for succ in adj.get(last, []):
+                        next_frontier.append([*path, succ])
+                frontier = next_frontier
 
 
 def _enumerate_sequences(
@@ -423,6 +620,8 @@ def find_mga_chains(
     chain_score_threshold: float | None = None,
     start_body_filter: Iterable[str] | None = None,
     a_range_au: tuple[float, float] = (0.3, 6.0),
+    multi_shell: bool = False,
+    pump_envelope_factor: float = 1.0,
 ) -> Iterator[MGAChainCandidate]:
     """Tisserand-Poincaré graph enumeration of MGA chains over an epoch window.
 
@@ -468,6 +667,19 @@ def find_mga_chains(
     a_range_au:
         ``(a_min, a_max)`` AU filter passed to :func:`linkable_3d`. Widen for
         outer-planet chains (Galileo VEEGA reaches Jupiter at 5.2 AU).
+    multi_shell:
+        If ``True``, allow per-flyby V_inf shifts within the Strange-Longuski
+        2002 §12 pump envelope (:func:`delta_vinf_max_kms`). The Galileo
+        VEEGA pattern (V_inf walks across shells: 4 → 9 → 9 → 5.6 km/s) is
+        only representable with this on. Defaults to ``False`` (single-shell;
+        Phase 2 semantics).
+    pump_envelope_factor:
+        Multiplier applied to the geometric envelope when
+        ``multi_shell=True``. ``1.0`` (default) is the full Strange-Longuski
+        2002 §12 bound; pass <1.0 to tighten (the realised shift is
+        typically a fraction of the maximum because the V_inf rotation must
+        target the next body rather than landing anywhere on the V_inf
+        globe).
 
     Yields
     ------
@@ -508,7 +720,15 @@ def find_mga_chains(
 
     # Build the adjacency once per call. linkable_3d is expensive (~ms per
     # pair); caching it keeps the per-candidate cost in the BFS minimal.
-    adj = _adjacency(planet_set, vinf_grid_kms, a_range_au=a_range_au)
+    if multi_shell:
+        adj = _multi_shell_adjacency(
+            planet_set,
+            vinf_grid_kms,
+            a_range_au=a_range_au,
+            pump_envelope_factor=pump_envelope_factor,
+        )
+    else:
+        adj = _adjacency(planet_set, vinf_grid_kms, a_range_au=a_range_au)
 
     # Build the launch-epoch grid in days from launch_window[0].
     from astropy.time import Time
@@ -523,7 +743,8 @@ def find_mga_chains(
     n_epochs = max(1, math.floor(span_days / epoch_step_days) + 1)
     epoch_grid_days = [i * epoch_step_days for i in range(n_epochs)]
 
-    for sequence, vinf_tuple in _enumerate_sequences(
+    enumerator = _enumerate_multi_shell_sequences if multi_shell else _enumerate_sequences
+    for sequence, vinf_tuple in enumerator(
         adj,
         planet_set,
         vinf_grid_kms,
@@ -532,14 +753,20 @@ def find_mga_chains(
     ):
         # Build the per-leg TOF proposal. If ANY same-body leg lacks a
         # resonance inside the TOF box we skip the chain — the box was set
-        # too narrow for the chain to close.
+        # too narrow for the chain to close. In multi-shell mode the leg's
+        # geometric proposal uses the *arrival*-side V_inf (the next-body
+        # bin); same-body legs use either side because V_inf is conserved.
         leg_tofs: list[float] = []
         leg_skip = False
         for k in range(len(sequence) - 1):
+            # Single-shell: V_inf is bit-equal across the chain. Multi-shell:
+            # the per-leg V_inf proposal uses the arrival bin (most relevant
+            # for the next-leg Tisserand identity).
+            vinf_for_leg = vinf_tuple[k + 1] if multi_shell else vinf_tuple[k]
             tof = _leg_tof_proposal(
                 sequence[k],
                 sequence[k + 1],
-                vinf_tuple[k],
+                vinf_for_leg,
                 tof_box_days_per_leg,
             )
             if tof is None:
@@ -674,6 +901,8 @@ def scan_window_and_validate(
     independent_tol_kms: float = 0.1,
     periapsis_altitude_default_km: float | None = None,
     max_candidates: int | None = None,
+    multi_shell: bool = False,
+    pump_envelope_factor: float = 1.0,
 ) -> tuple[list[MGAChainCandidate], list[EpochLockedClosure]]:
     """Convenience driver: enumerate + close, return surviving pairs.
 
@@ -715,6 +944,8 @@ def scan_window_and_validate(
             chain_score_threshold=chain_score_threshold,
             start_body_filter=start_body_filter,
             a_range_au=a_range_au,
+            multi_shell=multi_shell,
+            pump_envelope_factor=pump_envelope_factor,
         ),
         start=1,
     ):
@@ -744,6 +975,7 @@ def scan_window_and_validate(
 
 __all__ = [
     "MGAChainCandidate",
+    "delta_vinf_max_kms",
     "find_mga_chains",
     "scan_window_and_validate",
     "validate_chain_candidate",

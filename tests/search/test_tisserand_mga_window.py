@@ -31,6 +31,7 @@ from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.tisserand import vinf_to_tisserand
 from cyclerfinder.search.tisserand_mga_window import (
     MGAChainCandidate,
+    delta_vinf_max_kms,
     find_mga_chains,
     scan_window_and_validate,
     validate_chain_candidate,
@@ -324,6 +325,181 @@ def test_galileo_veega_chain_score_lower_than_random() -> None:
 # --------------------------------------------------------------------------- #
 # Slow-path smoke: enumerate + validate round-trip on DE440.
 # --------------------------------------------------------------------------- #
+
+
+# --------------------------------------------------------------------------- #
+# Phase-3 multi-shell BFS + Strange-Longuski 2002 §12 envelope tests.
+# --------------------------------------------------------------------------- #
+
+
+def test_delta_vinf_max_kms_strange_longuski_earth_anchor() -> None:
+    """The pump envelope at Earth V_inf=9 km/s matches Strange-Longuski 2002 §12.
+
+    SOURCED golden (``feedback_golden_tests_sourced_only``). The published
+    figure cited in the corpus-rev ``568d8a4`` mining note for Strange-
+    Longuski 2002 §12 and reproduced in
+    ``docs/notes/2026-06-16-298-289-phase2-tisserand-enumerator.md`` is
+    ~2.7 km/s per flyby for Earth at V_inf = 9 km/s. Our geometric formula
+    returns ~3.24 km/s (the maximum-effect bound at the safe-periapsis cone
+    half-angle), which envelops the realised 2.7 km/s by a factor of ~0.83
+    — the rotation usually cannot reach the geometric maximum because the
+    V_inf direction must also point at the next body. The geometric bound
+    is the conservative envelope; the realised factor is applied at the
+    multi-shell-BFS level via ``pump_envelope_factor``.
+
+    The TEST gate is that (a) our geometric bound is >= the sourced 2.7
+    figure (we never UNDER-bound the published number — that would be a
+    silent search miss); (b) the ratio is in the realistic range
+    [1.0, 1.5] (we don't over-bound by more than 50%).
+    """
+    geometric_bound = delta_vinf_max_kms("E", 9.0)
+    sourced = 2.7  # Strange-Longuski 2002 §12 (corpus rev 568d8a4)
+    assert geometric_bound >= sourced, (
+        f"geometric envelope {geometric_bound:.3f} km/s is BELOW the sourced "
+        f"Strange-Longuski 2002 §12 figure {sourced} km/s; "
+        "this would cause silent search misses on real pump tours"
+    )
+    assert geometric_bound <= 1.5 * sourced, (
+        f"geometric envelope {geometric_bound:.3f} km/s exceeds 1.5 x sourced "
+        f"{sourced} km/s; pump envelope is too loose"
+    )
+
+
+def test_delta_vinf_max_kms_monotone_in_body_well_depth() -> None:
+    """Pump envelope at fixed V_inf orders by body well depth (mu / R).
+
+    At a fixed incoming V_inf, the deflection cone half-angle increases
+    with mu / (rp * V_inf**2) (i.e. deeper bodies bend more). The pump
+    envelope (V_inf * (1 - cos δ)) follows the cone. We assert Jupiter
+    pumps more than Earth pumps more than Mars at the same V_inf.
+    """
+    j = delta_vinf_max_kms("J", 7.0)
+    e = delta_vinf_max_kms("E", 7.0)
+    m = delta_vinf_max_kms("M", 7.0)
+    assert j > e > m, f"envelope ordering broken: J={j:.2f}, E={e:.2f}, M={m:.2f}"
+
+
+def test_delta_vinf_max_kms_rejects_negative_vinf() -> None:
+    with pytest.raises(ValueError, match="vinf_in_kms"):
+        delta_vinf_max_kms("E", -1.0)
+
+
+def test_delta_vinf_max_kms_rejects_unknown_body() -> None:
+    with pytest.raises(ValueError, match="unknown body code"):
+        delta_vinf_max_kms("XYZ", 5.0)
+
+
+def test_delta_vinf_max_kms_zero_vinf_returns_zero() -> None:
+    """At V_inf=0 the body-frame cone is geometrically full (pi) but the
+    leveraging identity collapses (V_inf factor is zero); return 0."""
+    assert delta_vinf_max_kms("E", 0.0) == 0.0
+
+
+def test_multi_shell_admits_vinf_change_across_chain() -> None:
+    """With ``multi_shell=True`` a chain may carry different V_inf per encounter.
+
+    Single-shell mode (Phase 2) conserves V_inf bit-exactly along the
+    chain. Multi-shell mode (Phase 3) admits chains whose encounters live
+    on neighbouring V_inf bins within the Strange-Longuski 2002 §12 pump
+    envelope. The test asserts that at least one emitted chain has a
+    non-singleton V_inf set when the envelope is wide enough to span the
+    grid.
+    """
+    cands_ms = list(
+        find_mga_chains(
+            launch_window=("1989-10-01T00:00:00", "1989-11-15T00:00:00"),
+            planet_set=("V", "E", "J"),
+            max_legs=4,
+            vinf_grid_kms=(5.0, 7.0, 9.0),
+            tof_box_days_per_leg=(60.0, 1200.0),
+            epoch_step_days=30.0,
+            a_range_au=(0.3, 8.0),
+            multi_shell=True,
+            pump_envelope_factor=1.0,
+        )
+    )
+    assert cands_ms, "expected at least one multi-shell candidate"
+    has_multi = any(len(set(c.vinf_tuple_kms)) > 1 for c in cands_ms)
+    assert has_multi, (
+        "expected at least one chain with a non-singleton V_inf set in "
+        "multi-shell mode; got "
+        f"{[set(c.vinf_tuple_kms) for c in cands_ms[:5]]!r}"
+    )
+
+
+def test_multi_shell_preserves_single_shell_chains() -> None:
+    """Multi-shell mode is a SUPERSET of single-shell mode.
+
+    Every chain admissible in single-shell is also admissible in
+    multi-shell (zero V_inf shift is inside any positive envelope). The
+    test asserts the multi-shell output count is >= single-shell.
+    """
+    kwargs = dict(
+        launch_window=("1989-10-01T00:00:00", "1989-10-15T00:00:00"),
+        planet_set=("V", "E"),
+        max_legs=3,
+        vinf_grid_kms=(5.0, 7.0),
+        tof_box_days_per_leg=(60.0, 600.0),
+        epoch_step_days=30.0,
+        a_range_au=(0.3, 6.0),
+    )
+    cands_ss = list(find_mga_chains(**kwargs, multi_shell=False))  # type: ignore[arg-type]
+    cands_ms = list(find_mga_chains(**kwargs, multi_shell=True))  # type: ignore[arg-type]
+    assert len(cands_ms) >= len(cands_ss), (
+        f"multi-shell {len(cands_ms)} < single-shell {len(cands_ss)}; "
+        "multi-shell must be a superset of single-shell"
+    )
+
+
+def test_multi_shell_galileo_v_inf_pattern_recoverable() -> None:
+    """Multi-shell BFS admits a (V,E,E,J) chain whose Earth-1 and Earth-2
+    V_inf bins match Galileo's published 8.93 km/s within the pump envelope.
+
+    Sourced anchor: Diehl-Belbruno-Roberts 1986 (KNOWN_CORPUS, corpus rev
+    ``568d8a4``) records Galileo's actual flight V_inf at each encounter as
+    approximately (Venus 5.3, Earth-1 8.93, Earth-2 8.93, Jupiter 5.6)
+    km/s. The single-shell enumerator cannot represent this (it conserves
+    V_inf across the chain at ~10 km/s).
+
+    Honest scope: even with multi-shell BFS the **ballistic** E→J Tisserand
+    contours intersect only at V_inf ≥ ~11 km/s at Earth (predicate
+    ``linkable_3d`` at the inclined-Tisserand identity). Galileo's actual
+    E2 → J leg is NOT ballistic — it uses a DSM and a Hohmann-class
+    transfer. The multi-shell BFS finds a (V,E,E,J) chain whose first
+    three V_inf entries (Venus / E1 / E2) match Galileo's pattern within
+    the pump envelope; the J entry is pinned to V_inf ≥ 11 by the
+    predicate and the discrepancy is the DSM contribution. Phase 3 Part C
+    closes this with the optional DSM field on
+    :class:`EpochLockedTrajectory`.
+    """
+    closest_first_three_diff = float("inf")
+    closest_vinf: tuple[float, ...] = ()
+    target_first_three = (5.0, 9.0, 9.0)  # Galileo VEE pattern, single grid bin
+    for cand in find_mga_chains(
+        launch_window=("1989-10-01T00:00:00", "1989-11-15T00:00:00"),
+        planet_set=("V", "E", "J"),
+        max_legs=4,
+        vinf_grid_kms=(3.0, 5.0, 7.0, 9.0, 11.0),
+        tof_box_days_per_leg=(60.0, 1200.0),
+        epoch_step_days=30.0,
+        a_range_au=(0.3, 8.0),
+        multi_shell=True,
+        pump_envelope_factor=1.0,
+    ):
+        if cand.sequence != ("V", "E", "E", "J"):
+            continue
+        first_three_diff = sum(
+            abs(a - b) for a, b in zip(cand.vinf_tuple_kms[:3], target_first_three, strict=False)
+        )
+        if first_three_diff < closest_first_three_diff:
+            closest_first_three_diff = first_three_diff
+            closest_vinf = cand.vinf_tuple_kms
+    assert closest_first_three_diff <= 2.0, (
+        f"no (V,E,E,J) chain matched the Galileo V-E-E V_inf shell pattern "
+        f"within one grid bin (target first three {target_first_three}); "
+        f"closest was {closest_vinf} with first-three diff "
+        f"{closest_first_three_diff:.2f}"
+    )
 
 
 @pytest.mark.slow
