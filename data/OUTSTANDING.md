@@ -81,9 +81,10 @@ a verdict — these are NOT rejected, just queued for funding):
 
 **Gauntlet adaptations (infra blockers for catalogue admission of Phase 1
 outputs):** #305 (BCR4BP V0-V5), #306 (3D V0-V5) — **Phase 1 (V1+V2 for 3D
-periodic) and Phase 2 (V2-moontour) shipped 2026-06-16; Phase 3 V3 nbody
-(#331) and Phase 4 V4 HFEM (#332) outstanding**, #319 (QP-tori V0-V5).
-Without these, even literature-fresh candidates cannot pass V3.
+periodic), Phase 2 (V2-moontour), and Phase 3 (V3 6D n-body / REBOUND IAS15)
+shipped 2026-06-16; Phase 4 V4 HFEM Uranian-system real-eph (#332)
+outstanding**, #319 (QP-tori V0-V5). Without #332, even literature-fresh
+candidates cannot pass V4.
 
 **Discovery probes (the strategic-answer ideas, ranked by novelty leverage):**
 - **#312** Uranus extended sweep (in flight) — 0.062 km/s near-miss is the
@@ -105,7 +106,7 @@ Without these, even literature-fresh candidates cannot pass V3.
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
 - **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
 
-## SESSION YIELD (HONEST RECKONING — POST #322 + #327 + #330)
+## SESSION YIELD (HONEST RECKONING — POST #322 + #327 + #330 + #331)
 
 - **0 admitted novel cyclers; 1 lit-fresh + physically-valid SILVER candidate
   that FAILS V2-moontour (drift + closure both above strict floor) but with
@@ -125,11 +126,19 @@ Without these, even literature-fresh candidates cannot pass V3.
   synodic period); closure grows monotonically 0.025 → 0.349 km/s. Every
   Lambert leg converges in every cycle; the SILVER is geometrically valid
   but at this phasing it is a *near-resonant tour*, not a true cycler.
-  Catalogue admission blocked by (a) V3 (#331 — real-eph 6D nbody / REBOUND),
-  (b) V4 HFEM Uranus (#332 — only relevant if V3 admits), (c) wider lit
-  pass (#329). See `docs/notes/2026-06-16-330-moontour-v2-phase2.md`.
-  **The candidate is geometrically real but neither V2-clear nor
-  novel-claimable yet.**
+  **#331 (V3 6D n-body, 2026-06-16) verdict: PASS.** REBOUND IAS15
+  agrees with the V2 (DOP853+Lambert) per-cycle drift series at every
+  n_cycles in {3, 5, 10} to nanometer/micrometer precision (max |V3-V2|
+  = 1.8e-6 km at n=10, vs 100 km agreement floor). The bounded-drift
+  signature is a REAL property of the circular-coplanar Keplerian model
+  — NOT an artifact of the V2 driver's DOP853+Lambert internals. The
+  v4.7 quasi_cycler reading stands.
+  Catalogue admission still blocked by (a) V4 HFEM Uranus (#332 —
+  real-ephemeris with SPICE Uranian kernels), (b) wider lit pass (#329).
+  See `docs/notes/2026-06-16-330-moontour-v2-phase2.md` +
+  `docs/notes/2026-06-16-331-v3-nbody-phase3.md`.
+  **The candidate is geometrically real and integrator-independent but
+  not yet novel-claimable.**
 - **Discipline held throughout** — no admission, no novelty claim, both gated
   exactly as the rule requires. Every well-scoped search hits published material
   EXCEPT this one row, which clears all offline guards and a fresh post-hoc
