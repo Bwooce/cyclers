@@ -114,6 +114,22 @@ def _extract_seq_vinfs(row: dict[str, Any]) -> tuple[tuple[str, ...], tuple[floa
             vinfs = closure.get("per_encounter_vinf_kms")
             if isinstance(seq, list) and isinstance(vinfs, list) and len(seq) == len(vinfs):
                 return tuple(str(b) for b in seq), tuple(float(v) for v in vinfs)
+    # 312 offset-sweep style (vinf_in / vinf_out per encounter; the actual
+    # encounter V_inf magnitude is the larger of the two asymptote magnitudes —
+    # the asymptote that exists is the non-zero one at the first/last
+    # encounter, both at an interior encounter). Falls back to the per-leg
+    # values stored in vinf_in/vinf_out on the row.
+    if "vinf_in" in row and "vinf_out" in row:
+        vin = row["vinf_in"]
+        vout = row["vinf_out"]
+        if isinstance(vin, list) and isinstance(vout, list) and len(vin) == len(vout):
+            seq_row = row.get("sequence")
+            if not isinstance(seq_row, list) or len(seq_row) != len(vin):
+                return None
+            encounter_vinfs = tuple(
+                max(abs(float(vin[i])), abs(float(vout[i]))) for i in range(len(vin))
+            )
+            return tuple(str(b) for b in seq_row), encounter_vinfs
     return None
 
 
@@ -214,6 +230,8 @@ def main(argv: list[str] | None = None) -> int:
             file_failed = 0
             file_skipped = 0
 
+            file_default_sequence: tuple[str, ...] | None = None
+
             with path.open() as in_fh:
                 for line in in_fh:
                     line = line.strip()
@@ -228,7 +246,20 @@ def main(argv: list[str] | None = None) -> int:
 
                     if row.get("_meta"):
                         totals["rows_skipped_meta"] += 1
+                        meta_seq = row.get("sequence")
+                        if isinstance(meta_seq, list) and meta_seq:
+                            file_default_sequence = tuple(str(b) for b in meta_seq)
                         continue
+
+                    # Inject the meta-row sequence so the offset-sweep top10
+                    # rows (which carry vinf_in/vinf_out but no sequence) can
+                    # be checked against the file's documented sequence.
+                    if (
+                        "sequence" not in row
+                        and file_default_sequence is not None
+                        and ("vinf_in" in row or "vinf_out" in row)
+                    ):
+                        row = {**row, "sequence": list(file_default_sequence)}
 
                     extracted = _extract_seq_vinfs(row)
                     if extracted is None:
