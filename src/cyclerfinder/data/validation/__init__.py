@@ -15,10 +15,20 @@ from cyclerfinder.data.validation.v1_3d import (
     V1Verdict3D,
     run_v1_3d,
 )
+from cyclerfinder.data.validation.v2_3d import (
+    V2_DRIFT_FLOOR_KMS,
+    V2_N_CYCLES_MIN,
+    V2Verdict3D,
+    run_v2_3d,
+)
 
 __all__ = [
     "V1_FLOOR_KMS",
     "V1_FLOOR_NONDIM_DEFAULT",
+    "V2_DRIFT_FLOOR_KMS",
+    "V2_N_CYCLES_MIN",
     "V1Verdict3D",
+    "V2Verdict3D",
     "run_v1_3d",
+    "run_v2_3d",
 ]
