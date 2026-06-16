@@ -312,6 +312,7 @@ def find_cycler_precursors(
     max_legs: int = 4,
     intermediate_bodies: tuple[str, ...] = ("V", "E"),
     vinf_terminal_tol_kms: float = 0.5,
+    vinf_terminal_post_closure_tol_kms: float | None = None,
     vinf_grid_kms: tuple[float, ...] = (3.0, 4.0, 5.0, 6.0, 7.0, 8.0),
     tof_box_days_per_leg: tuple[float, float] = (60.0, 600.0),
     epoch_step_days: float = 30.0,
@@ -559,9 +560,20 @@ def find_cycler_precursors(
             continue
         if closure.flyby_continuity_max_dv_kms > flyby_continuity_tol_kms:
             continue
-        if vinf_match_residual_kms > vinf_terminal_tol_kms:
+        post_closure_vinf_tol = (
+            vinf_terminal_post_closure_tol_kms
+            if vinf_terminal_post_closure_tol_kms is not None
+            else vinf_terminal_tol_kms
+        )
+        if vinf_match_residual_kms > post_closure_vinf_tol:
             # Re-check post-closure (proposal bin may have shifted under
-            # TOF optimisation).
+            # TOF optimisation).  The proposal-time tolerance
+            # ``vinf_terminal_tol_kms`` filters the BFS output; the
+            # post-closure tolerance gates the survivor record.  Setting
+            # ``vinf_terminal_post_closure_tol_kms`` to a larger value
+            # admits candidates whose proposal-V_inf was in-tolerance but
+            # whose actual closure-V_inf drifted — useful for a discovery
+            # probe that wants to see the residual distribution.
             continue
         if (
             independent_cross_check
