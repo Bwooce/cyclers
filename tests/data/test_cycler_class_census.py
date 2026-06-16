@@ -34,6 +34,17 @@ C_J=3.1294, distinct from the per-family stable midpoints already catalogued
 under ross-rt-em-cycler-*. The 4th Braik-Ross cycler (C21) already exists as
 ross-rt-em-cycler-21-2025 (added there as corroborating_sources, no new row).
 total 277->280.
+
+2026-06-15 (#294, USER-approved writeback): +1 Tito 2018 Mars free-return
+admitted as mga_tour under the v4.7 catalogue-scope expansion
+(tito-2018-mars-free-return, cycler_class=multi-arc structural).
+multi-arc 240->241; total 280->281.
+
+2026-06-16 (#336): +1 Heaton-Longuski 2003 Uranian satellite tour U00-01
+admitted as mga_tour (second mga_tour row after Tito 2018) -- 40-flyby
+Galileo-style tour terminating at Ariel rendezvous V_inf=0.92 km/s
+(heaton-longuski-2003-uranian-tour-u00-01, cycler_class=multi-arc structural).
+multi-arc 241->242; total 281->282.
 """
 
 from __future__ import annotations
@@ -332,11 +343,20 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # filter orbit_class != cycler so this row is exempt from
         # invariants{}/transit_times_days completeness.
         "tito-2018-mars-free-return",
+        # #336 (2026-06-16): Heaton-Longuski 2003 Uranian satellite tour U00-01
+        # admitted as mga_tour under the schema v4.7 scope expansion (second
+        # mga_tour row). cycler_class=multi-arc is structural (one heliocentric
+        # arc E->J->U plus a 40-flyby Uranian-system tour with multiple distinct
+        # arcs between satellite encounters), not a cycler claim. As with the
+        # Tito row, the cycler-specific invariants tests filter orbit_class !=
+        # cycler so this row is exempt from invariants{}/transit_times_days
+        # completeness.
+        "heaton-longuski-2003-uranian-tour-u00-01",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 241, (
-    f"Allowlist must have 241 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 242, (
+    f"Allowlist must have 242 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -393,7 +413,7 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=241, non-keplerian=12.
+    """Exact class distribution: single-ellipse=28, multi-arc=242, non-keplerian=12.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
@@ -401,11 +421,14 @@ def test_census_distribution() -> None:
     members (multi-arc 236->240). #249 (2026-06-15) added 3 Braik-Ross 2026 CR3BP
     cycler reproductions (non-keplerian 9->12). #294 (2026-06-15) admitted Tito
     2018 Mars free-return as mga_tour with cycler_class=multi-arc (structural)
-    under the v4.7 scope expansion: multi-arc 240->241.)
+    under the v4.7 scope expansion: multi-arc 240->241. #336 (2026-06-16)
+    admitted Heaton-Longuski 2003 Uranian satellite tour U00-01 as mga_tour
+    with cycler_class=multi-arc (one heliocentric arc + 40 Uranian-system
+    flybys): multi-arc 241->242.)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 241, "non-keplerian": 12}
+    expected = {"single-ellipse": 28, "multi-arc": 242, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

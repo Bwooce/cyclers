@@ -35,7 +35,8 @@ The V0 baseline is already shipped at the corrector level: `QPTorus` carries
 ## V1_qp — same-model gauntlet (Part A)
 
 **Module**: `src/cyclerfinder/data/validation/v1_qp.py` (in commit
-`5293392` — see Reconstruction below for the agent-collision note).
+`9ce5b5d` after a sequence of concurrent-agent collisions — see
+Reconstruction below).
 
 **Verdict**: `V1VerdictQP` with frozen fields for the audit trail:
 - `invariance_residual_fourier_norm` — L2 norm of GMOS residual at the
@@ -197,22 +198,31 @@ matching Olikara 2016 §4's published scaling.
 
 ## Reconstruction note: concurrent-agent collision
 
-This Phase 1 work was committed under another agent's commit SHA
-(`5293392 data: V4-strict Uranus driver with full SPICE ephemeris
-(#335 Part B)`) due to a concurrent-agent collision: agents #311, #318,
-#323, #335 were active simultaneously and the shared git index was
-modified between this agent's `git add` and `git commit`. The
-pre-commit hook's stash-restore mechanic interacted poorly with
-out-of-band file moves (the quarantine-and-restore strategy this agent
-used to keep the mypy hook clean against other agents' untracked broken
-files).
+This Phase 1 work survived a multi-round concurrent-agent collision
+chain (agents #311, #318, #323, #325, #335 active simultaneously). The
+sequence:
 
-**Verifiable**: `git show --stat 5293392 | grep -E "v1_qp|v2_qp|test_v[12]_qp"`
-lists all 4 files at the line counts (394, 356, 368, 401) this agent
-produced.
+1. V1 + V2 files initially swept into another agent's commit `aa61655`
+   (#311), then `aa61655` was reset away by another agent.
+2. Files recovered from reflog and re-attempted; swept into `5293392`
+   (#335 Part B), then `5293392` was reset away (now exists only as
+   dangling-commit garbage).
+3. Files finally landed in `9ce5b5d` with correct attribution after
+   atomic add+commit in a single bash invocation (no shell-state
+   window for another agent's pre-commit to fire).
 
-**Cost**: attribution is wrong (the commit message says #335, not #319);
-the work is preserved permanently.
+**Cost during the chain**:
+- Several attribution swaps (#311 / #335 / #319).
+- Pre-commit hook's stash-restore mechanic interacted poorly with the
+  out-of-band quarantine-and-restore strategy this agent used to keep
+  the mypy hook clean against other agents' untracked broken files
+  (`v4_uranus_strict.py`, `test_v4_uranus_strict.py`,
+  `topology_audit.py`, etc.).
+- The doc note `ce4b334` is functionally empty (the doc text didn't
+  make it; the real doc is in `6d2ac05`).
+
+**Verifiable**: `git show --stat 9ce5b5d` lists exactly four files at
+line counts 394 + 356 + 368 + 401 = 1519 insertions.
 
 **Lesson**: when N concurrent agents are active, single-pathspec commits
 are NECESSARY but NOT SUFFICIENT. Future task descriptions should
@@ -220,7 +230,9 @@ either:
 1. Add an explicit serialization mechanism (advisory lock on
    `.git/index.lock`), OR
 2. Reduce parallelism for tasks that ship multiple files to the same
-   subdirectory.
+   subdirectory, OR
+3. Mandate atomic `git add ... && git commit ...` in a single shell
+   command (this is what finally worked here).
 
 ## Phase 2 next steps
 

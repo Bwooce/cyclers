@@ -82,7 +82,13 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # The row's V0 evidence (the DE440 reproduction <1.5% to Tito's published
     # DE421) lives in validation_level, not the source-pair tier — separate
     # axis. See docs/notes/2026-06-16-catalogue-scope-taxonomy.md.
-    "unvalidated": 27,
+    # 27 -> 28 (2026-06-16, #336): Heaton-Longuski 2003 Uranian satellite tour
+    # U00-01 admitted as mga_tour (second mga_tour row, after Tito 2018) with
+    # orbit_source=derived / vinf_source=derived (same fidelity) — also
+    # classifies as 'unvalidated' on the provenance-tag tier axis. Its V0
+    # evidence (Tables 3 + 5 verbatim from the JSR paper, DOI 10.2514/2.3981)
+    # lives in validation_level, not the source-pair tier — separate axis.
+    "unvalidated": 28,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

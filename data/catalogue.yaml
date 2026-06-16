@@ -48653,3 +48653,139 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.0.vinf_kms": "Tito 2013 Tables IV leg-1: 'Dep V-inf 6.232 km/s'."
     "vinf_kms_at_encounters.1.vinf_kms": "Tito 2013 Tables IV leg-1 / leg-2: Mars arrival V-inf 5.417 km/s; Mars departure V-inf 5.417 km/s (ballistic free-return symmetry)."
     "vinf_kms_at_encounters.2.vinf_kms": "Tito 2013 Tables IV leg-2: 'Arr V-inf 8.837 km/s' (the entry-speed driver for the TPS analysis)."
+
+- id: heaton-longuski-2003-uranian-tour-u00-01
+  name: "Heaton-Longuski 2003 Uranian satellite tour U00-01 (Galileo-style)"
+  source: literature
+  trajectory_regime: ballistic   # patched-conic with Jupiter and Uranian-satellite gravity assists; the tour itself is ballistic (insertion ΔV at Uranus arrival is outside the tour)
+  model_assumption: analytic-ephemeris   # STOUR patched-conic per Heaton-Longuski 2003 (Tisserand-graph design + STOUR ballistic-conic search)
+  cycler_class: multi-arc   # schema v4; one heliocentric arc (E -> J -> U) plus a 40-flyby Uranian-system tour with multiple distinct arcs between satellite encounters
+  orbit_class: mga_tour   # schema v4.7 (2026-06-15, task #294); Galileo-style non-repeating tour terminating at Ariel orbit insertion (Wallace/Heaton archetype)
+  epoch_locked: true   # schema v4.7 (task #294); viable only at the 2008 Jupiter-gravity-assist-to-Uranus window (paper §Initial Conditions: 'closes in 2008 ... next similar opportunity will not occur for several decades')
+  n_returns: 1   # schema v4.7 (task #294); single Earth-launch / single Ariel-arrival mission, no cycler return
+  validity_window:   # schema v4.7 (task #294); Earth launch (Table 3) -> Ariel rendezvous (Table 5 event 40 = Table 3 Titania arrival + 810.8 d)
+    start: "2008-03-19T00:00:00Z"
+    end: "2021-07-20T19:12:00Z"
+  launch_epoch: "2008-03-19T00:00:00Z"   # Heaton-Longuski 2003 Table 3 'Launch, 3/19/2008'
+  validation_level: V0   # spec §14: sourced from Tables 3 + 5; not reproduced on real ephemeris (V0 internal-consistency floor; #335 has the Uranian SPICE kernel work in flight)
+  source_ephemeris: "STOUR patched-conic (Heaton-Longuski 2003 §Methodology / §Tisserand Graph Analysis)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: analytic-ephemeris
+  vinf_fidelity: analytic-ephemeris
+  bodies: ["E", "J", "U", "Titania", "Oberon", "Ariel", "Umbriel"]
+  sequence_canonical: "E-J-U-T-T-T-T-T-T-T-T-T-O-A-A-T-U-O-A-A-A-O-A-A-A-O-U-U-O-U-T-O-T-U-U-T-T-T-T-U-U-U-A"
+  sense: "n/a"   # not a cycler; sense (in/out) only applies to repeating cyclers
+  vinf_kms_at_encounters:
+    # Heliocentric phase (Heaton-Longuski 2003 Table 3 — design reference mission):
+    - body: "E"
+      vinf_kms: 9.80
+      note: "Heaton-Longuski 2003 Table 3 launch (Earth departure V_inf, 3/19/2008)."
+    - body: "J"
+      vinf_kms: 11.11
+      note: "Heaton-Longuski 2003 Table 3 Jupiter flyby V_inf (9/13/2009)."
+    - body: "U"
+      vinf_kms: 6.44
+      note: "Heaton-Longuski 2003 Table 3 Uranus arrival V_inf (2/14/2018; arrival inclination 13.6 deg per §Uranian Tour Example p. 594)."
+    # Uranian satellite tour U00-01 (Heaton-Longuski 2003 Table 5 — verbatim, 40 events):
+    - {body: "Titania", vinf_kms: 3.27, note: "U00-01 event 1: altitude 316 km, θ=-22°, period 52.2 d, periapsis 9.1 R_U, time 0 d (= Table 3 Titania arrival 5/2/2019)."}
+    - {body: "Titania", vinf_kms: 3.27, note: "U00-01 event 2: altitude 74 km, θ=-65°, period 43.5 d, periapsis 8.6 R_U, time 52.2 d."}
+    - {body: "Titania", vinf_kms: 3.27, note: "U00-01 event 3: altitude 58 km, θ=-54°, period 34.8 d, periapsis 8.1 R_U, time 95.8 d."}
+    - {body: "Titania", vinf_kms: 3.27, note: "U00-01 event 4: altitude 54 km, θ=-23°, period 26.1 d, periapsis 7.4 R_U, time 130.6 d."}
+    - {body: "Titania", vinf_kms: 3.28, note: "U00-01 event 5: altitude 90 km, θ=-92°, period 26.1 d, periapsis 7.2 R_U, time 156.7 d."}
+    - {body: "Titania", vinf_kms: 3.28, note: "U00-01 event 6: altitude 90 km, θ=-92°, period 26.1 d, periapsis 7.0 R_U, time 182.8 d."}
+    - {body: "Titania", vinf_kms: 3.29, note: "U00-01 event 7: altitude 90 km, θ=-91°, period 26.1 d, periapsis 6.9 R_U, time 208.9 d."}
+    - {body: "Titania", vinf_kms: 3.30, note: "U00-01 event 8: altitude 90 km, θ=-91°, period 26.1 d, periapsis 6.8 R_U, time 235.1 d."}
+    - {body: "Titania", vinf_kms: 3.30, note: "U00-01 event 9: altitude 776 km, θ=-103°, period 27.0 d, periapsis 6.9 R_U, time 261.2 d (end of inclination-reduction phase)."}
+    - {body: "Oberon", vinf_kms: 2.98, note: "U00-01 event 10: altitude 414 km, θ=0°, period 23.2 d, periapsis 6.3 R_U, time 287.6 d (begin energy-reduction phase)."}
+    - {body: "Ariel", vinf_kms: 3.04, note: "U00-01 event 11: altitude 378 km, θ=0°, period 20.2 d, periapsis 6.2 R_U, time 312.2 d."}
+    - {body: "Ariel", vinf_kms: 3.04, note: "U00-01 event 12: altitude 55 km, θ=0°, period 16.7 d, periapsis 6.1 R_U, time 332.4 d."}
+    - {body: "Titania", vinf_kms: 3.18, note: "U00-01 event 13: altitude 388 km, θ=0°, period 14.5 d, periapsis 5.7 R_U, time 348.2 d."}
+    - {body: "Umbriel", vinf_kms: 3.64, note: "U00-01 event 14: altitude 54 km, θ=180°, period 13.2 d, periapsis 5.5 R_U, time 364.3 d."}
+    - {body: "Oberon", vinf_kms: 2.60, note: "U00-01 event 15: altitude 584 km, θ=0°, period 14.5 d, periapsis 6.1 R_U, time 378.7 d."}
+    - {body: "Ariel", vinf_kms: 2.99, note: "U00-01 event 16: altitude 133 km, θ=180°, period 12.6 d, periapsis 6.0 R_U, time 406.2 d."}
+    - {body: "Ariel", vinf_kms: 2.99, note: "U00-01 event 17: altitude 219 km, θ=180°, period 11.2 d, periapsis 6.0 R_U, time 418.8 d."}
+    - {body: "Ariel", vinf_kms: 2.99, note: "U00-01 event 18: altitude 119 km, θ=0°, period 9.9 d, periapsis 5.9 R_U, time 440.7 d."}
+    - {body: "Oberon", vinf_kms: 2.13, note: "U00-01 event 19: altitude 109 km, θ=180°, period 11.5 d, periapsis 7.1 R_U, time 448.9 d."}
+    - {body: "Ariel", vinf_kms: 2.00, note: "U00-01 event 20: altitude 651 km, θ=0°, period 8.8 d, periapsis 7.0 R_U, time 473.6 d."}
+    - {body: "Ariel", vinf_kms: 1.87, note: "U00-01 event 21: altitude 88 km, θ=180°, period 10.2 d, periapsis 7.1 R_U, time 491.3 d."}
+    - {body: "Ariel", vinf_kms: 1.86, note: "U00-01 event 22: altitude 251 km, θ=0°, period 11.4 d, periapsis 7.2 R_U, time 501.8 d."}
+    - {body: "Oberon", vinf_kms: 2.10, note: "U00-01 event 23: altitude 282 km, θ=-12°, period 12.5 d, periapsis 9.0 R_U, time 526.5 d."}
+    - {body: "Umbriel", vinf_kms: 1.97, note: "U00-01 event 24: altitude 432 km, θ=-101°, period 12.8 d, periapsis 9.0 R_U, time 561.6 d."}
+    - {body: "Umbriel", vinf_kms: 1.97, note: "U00-01 event 25: altitude 196 km, θ=180°, period 11.3 d, periapsis 8.9 R_U, time 575.2 d."}
+    - {body: "Oberon", vinf_kms: 1.78, note: "U00-01 event 26: altitude 404 km, θ=180°, period 13.2 d, periapsis 10.3 R_U, time 583.8 d."}
+    - {body: "Umbriel", vinf_kms: 1.20, note: "U00-01 event 27: altitude 60 km, θ=0°, period 11.8 d, periapsis 10.2 R_U, time 599.2 d."}
+    - {body: "Titania", vinf_kms: 1.93, note: "U00-01 event 28: altitude 286 km, θ=0°, period 9.7 d, periapsis 9.0 R_U, time 609.8 d."}
+    - {body: "Oberon", vinf_kms: 1.44, note: "U00-01 event 29: altitude 241 km, θ=180°, period 11.7 d, periapsis 11.2 R_U, time 637.7 d."}
+    - {body: "Titania", vinf_kms: 1.72, note: "U00-01 event 30: altitude 342 km, θ=0°, period 9.5 d, periapsis 9.9 R_U, time 662.1 d."}
+    - {body: "Umbriel", vinf_kms: 1.29, note: "U00-01 event 31: altitude 166 km, θ=180°, period 8.3 d, periapsis 9.7 R_U, time 682.8 d."}
+    - {body: "Umbriel", vinf_kms: 1.29, note: "U00-01 event 32: altitude 151 km, θ=180°, period 7.3 d, periapsis 9.5 R_U, time 691.1 d (end of energy-reduction phase)."}
+    - {body: "Titania", vinf_kms: 1.30, note: "U00-01 event 33: altitude 909 km, θ=138°, period 9.9 d, periapsis 13.3 R_U, time 696.1 d (begin Ariel-rendezvous phase)."}
+    - {body: "Titania", vinf_kms: 1.04, note: "U00-01 event 34: altitude 1293 km, θ=139°, period 8.7 d, periapsis 12.2 R_U, time 709.2 d."}
+    - {body: "Titania", vinf_kms: 1.04, note: "U00-01 event 35: altitude 95 km, θ=-180°, period 6.5 d, periapsis 9.3 R_U, time 717.9 d."}
+    - {body: "Titania", vinf_kms: 1.04, note: "U00-01 event 36: altitude 2189 km, θ=-173°, period 6.1 d, periapsis 8.4 R_U, time 744.0 d."}
+    - {body: "Umbriel", vinf_kms: 1.61, note: "U00-01 event 37: altitude 238 km, θ=-180°, period 5.5 d, periapsis 8.1 R_U, time 760.7 d."}
+    - {body: "Umbriel", vinf_kms: 1.61, note: "U00-01 event 38: altitude 77 km, θ=-180°, period 5.0 d, periapsis 7.7 R_U, time 777.2 d."}
+    - {body: "Umbriel", vinf_kms: 1.61, note: "U00-01 event 39: altitude 519 km, θ=-180°, period 4.7 d, periapsis 7.5 R_U, time 802.1 d."}
+    - {body: "Ariel", vinf_kms: 0.92, note: "U00-01 event 40: altitude 316 km, time 810.8 d — final Ariel rendezvous (sufficiently below the 1-km/s design goal to permit Ariel orbit insertion)."}
+  legs: []
+  first_published:
+    authors: ["Heaton, A. F.", "Longuski, J. M."]
+    year: 2003
+    title: "Feasibility of a Galileo-Style Tour of the Uranian Satellites"
+    venue: "Journal of Spacecraft and Rockets, Vol. 40, No. 4, pp. 591-595 (July-August 2003)"
+    doi: "10.2514/2.3981"
+  corroborating_sources: []
+  priority_date: "2003-01-01"
+  notes: |
+    Prototypical Galileo-style tour at Uranus, demonstrating for the first time
+    (paper §Conclusions, p. 595) that the Jovian-system tour strategy transfers
+    to the Uranian system because the Uranian-satellite/Uranus mass ratios
+    mirror the Jovian-satellite/Jupiter mass ratios (Tables 1+2: Titania/U mass
+    ratio 4.06e-5 vs Ganymede/J 7.80e-5 — same order of magnitude). Single
+    Earth launch with Jupiter gravity assist (closes only in 2008; next similar
+    opportunity ~2022, then several decades).
+
+    Tour structure (paper §Uranian Tour Example):
+    * Inclination-reduction phase (events 1-9, ~261 d): nine Titania flybys
+      crank the initial 13.6-deg arrival inclination down to the equatorial
+      plane (paper p. 594).
+    * Energy-reduction phase (events 11-32, ~430 d): Oberon for periapsis
+      maintenance; Titania, Umbriel and Ariel pump down period while
+      preserving periapsis > 4 R_U.
+    * Ariel-rendezvous phase (events 33-40, ~115 d): multiple Titania flybys
+      followed by Umbriel flybys with a final Umbriel -> Ariel transfer
+      arriving at V_inf = 0.92 km/s (under the 1-km/s design goal).
+    Total tour duration 810.7 d (~2.2 yr) from Titania arrival to Ariel
+    rendezvous. End-to-end mission duration ~13.3 yr (Earth launch to Ariel
+    rendezvous).
+
+    Admitted under the v4.7 catalogue-scope expansion (task #294, commit
+    5665fc6) as orbit_class=mga_tour — Galileo-style tours are the canonical
+    archetype the v4.7 taxonomy was widened to accommodate. Second mga_tour
+    row (after tito-2018-mars-free-return, commit b6bcbb3).
+
+    Resolves the #329 paywall gate (PDF acquired by the user 2026-06-16):
+    this paper is a Galileo-style satellite tour, NOT a cycler. The #327
+    SILVER candidate's V_inf tuple (0.92, 0.96, 0.89) km/s at sequence
+    Umbriel-Oberon-Umbriel (1,1) does NOT appear in Table 5 — the 0.92 km/s
+    value occurs only at the Ariel terminal rendezvous (event 40), not at
+    Umbriel. Different topology (Umbriel-Oberon-Umbriel two-body cycler vs
+    a 40-flyby one-shot Galileo-style tour), different structural class
+    (cycler vs mga_tour), different evidence ladder (V2-moontour FAIL_QUASI_BOUNDED
+    + V3 PASS for the SILVER vs Heaton-Longuski's published STOUR patched-conic).
+    So Heaton-Longuski 2003 does NOT prior-publish the #327 SILVER.
+
+    Reproduction status: V0 internal-consistency only. Not reproduced on real
+    ephemeris (the SPICE Uranian-kernel work for V4-Uranus is in flight under
+    #335). The #335 V4 strict gauntlet, when complete, will be applicable to
+    this row.
+  source_quotes:
+    "launch_epoch": "Heaton-Longuski 2003 Table 3: 'Launch, 3/19/2008, V_inf 9.80 km/s'."
+    "validity_window.start": "Heaton-Longuski 2003 Table 3 launch row: '3/19/2008'."
+    "validity_window.end": "Heaton-Longuski 2003 Table 3 'Titania arrival, 5/2/2019' + Table 5 event 40 'Time, days 810.8' = 2021-07-20T19:12:00Z (810.8 d after Tour event 1; sub-day precision derived from Table 5's stated tenth-of-a-day)."
+    "vinf_kms_at_encounters.0.vinf_kms": "Heaton-Longuski 2003 Table 3 Launch row: V_inf 9.80 km/s."
+    "vinf_kms_at_encounters.1.vinf_kms": "Heaton-Longuski 2003 Table 3 Jupiter flyby row: V_inf 11.11 km/s."
+    "vinf_kms_at_encounters.2.vinf_kms": "Heaton-Longuski 2003 Table 3 Uranus arrival row: V_inf 6.44 km/s."
+    "vinf_kms_at_encounters.42.vinf_kms": "Heaton-Longuski 2003 Table 5 event 40 (Ariel): V_inf 0.92 km/s (the design-goal arrival speed for Ariel orbit insertion)."
+    "n_returns": "Heaton-Longuski 2003 §Uranian Tour Example p. 594: single Earth launch and single Ariel-rendezvous terminal arrival — non-repeating Galileo-style tour, n_returns=1."

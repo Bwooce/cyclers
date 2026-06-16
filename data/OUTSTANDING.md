@@ -65,6 +65,11 @@ describes cyclers no spacecraft can actually reach.
 - Tito 2018 admitted as `mga_tour` (`b6bcbb3`): catalogue ID
   `tito-2018-mars-free-return`, V0 evidence is the DE440 reproduction of
   Tito's published DE421 Tables III/IV to <1.5%.
+- Heaton-Longuski 2003 Uranian Tour U00-01 admitted as `mga_tour` (#336,
+  2026-06-16): catalogue ID `heaton-longuski-2003-uranian-tour-u00-01`,
+  V0 evidence is Tables 3 + 5 verbatim from the JSR paper (DOI
+  10.2514/2.3981). 40-flyby Galileo-style tour ending at Ariel rendezvous
+  V_inf=0.92 km/s. Resolves the #329 paywall gate.
 - `KNOWN_CORPUS` expanded with 12 MGA/tour anchors + Antoniadou-Voyatzis
   2018 spatial-CR3BP anchor (`568d8a4`).
 - Public taxonomy doc: `docs/notes/2026-06-16-catalogue-scope-taxonomy.md`.
@@ -150,7 +155,16 @@ candidates cannot pass V4.
   exactly as the rule requires. Every well-scoped search hits published material
   EXCEPT this one row, which clears all offline guards and a fresh post-hoc
   physical-sanity gate (#324) but still has the discipline ladder to climb.
-- **1 admitted mga_tour row** (Tito 2018 under v4.7 scope expansion)
+- **2 admitted mga_tour rows** (Tito 2018 + Heaton-Longuski 2003 Uranian Tour
+  U00-01 under v4.7 scope expansion). #336 (2026-06-16) admitted the second:
+  catalogue ID `heaton-longuski-2003-uranian-tour-u00-01`, V0 evidence is
+  Tables 3 + 5 verbatim from the JSR paper (DOI 10.2514/2.3981). This also
+  RESOLVES the #329 paywall gate (PDF acquired by the user 2026-06-16) and
+  confirms Heaton-Longuski 2003 does NOT prior-publish the #327 SILVER —
+  the 0.92 km/s value in Table 5 is the terminal Ariel rendezvous, not an
+  Umbriel-Oberon-Umbriel cycler at (0.92, 0.96, 0.89). Frozen-census ratchet
+  bumped NOT_TWO_BODY 0 -> 1 (bodies=[E, J, U, Titania, Oberon, Ariel, Umbriel],
+  no period block — a one-shot tour). Catalogue 281 -> 282.
 - **Genuine Koblick tulip-orbit characterizations: 1 system, NOT 5** — Earth-Moon
   Np=2..6 confirmed real 3D tulips under the #322 z0-amplitude gate. The
   #281/#283 claims of Jupiter-Ganymede / Saturn-Titan / Neptune-Triton / Pluto-Charon

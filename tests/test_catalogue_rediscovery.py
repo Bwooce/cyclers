@@ -291,7 +291,18 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
     ExclusionReason.MISSING_PERIOD: 1,
-    # NOT_TWO_BODY now 0 — all four VEM rows promoted to CONSTRUCTIBLE_MULTIBODY.
+    # 0 -> 1 (2026-06-16, #336): +1 Heaton-Longuski 2003 Uranian satellite tour
+    # U00-01 (the heaton-longuski-2003-uranian-tour-u00-01 row, admitted under
+    # the v4.7 catalogue scope expansion as orbit_class=mga_tour — the second
+    # mga_tour row, after Tito 2018). bodies=[E, J, U, Titania, Oberon, Ariel,
+    # Umbriel] (7 bodies, primary defaults to Sun), and the row carries no
+    # period.years/period.k pair (none in the source — a one-shot tour, not a
+    # cycle), so the classifier files it under NOT_TWO_BODY rather than
+    # CONSTRUCTIBLE_MULTIBODY (the >=3-body lane requires period.years AND
+    # period.k). Pure census shift; the row carries its own V0 sourced evidence
+    # (Heaton-Longuski 2003 Tables 3 + 5 verbatim; reproduction on real
+    # ephemeris pending #335 SPICE-Uranian kernel work).
+    ExclusionReason.NOT_TWO_BODY: 1,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the
