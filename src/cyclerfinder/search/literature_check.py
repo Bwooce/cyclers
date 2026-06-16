@@ -707,6 +707,140 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # paper's scope -- treat them as not-anchored on AV-2018 alone.
         period_band_tu=(0.0, 15.0),
     ),
+    # -----------------------------------------------------------------------
+    # #328 — Uranian dynamics + mission-design literature.
+    #
+    # Added after the #327 verified SILVER (Umbriel-Oberon (1,1) repeated-
+    # encounter cycler at V_inf ~ 0.9 km/s) deep-dive lit pass
+    # (docs/notes/2026-06-16-328-uranian-cycler-lit-deep-dive.md).
+    #
+    # The candidate cleared as CLEAN LITERATURE-FRESH at its specific topology
+    # (no DIRECT MATCH found), but the surrounding Uranian published record
+    # is broad enough that the offline corpus needed deterministic anchors so
+    # any FUTURE Uranian candidate's structural fingerprint surfaces the
+    # appropriate paper. None of these six anchors covers the (1,1) two-moon
+    # Umbriel-Oberon cycler topology; they cover (a) one-shot satellite tours,
+    # (b) single-moon MMR resonant orbits, (c) moon-pair halo-to-halo
+    # one-shot manifold transfers, and (d) Decadal mission concepts.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Heaton-Longuski Galileo-style Uranian satellite tour (2003)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        authors=("Heaton", "Longuski"),
+        keywords=(
+            "Galileo-style Uranian satellite tour",
+            "Uranian moon gravity-assist tour",
+            "STOUR patched-conic Uranus tour",
+            "Uranus orbiter moon flyby tour",
+        ),
+        citation="Heaton & Longuski, 'The Feasibility of a Galileo-Style Tour "
+        "of the Uranian Satellites,' J. Spacecraft & Rockets 40(4):591-596 "
+        "(2003); AIAA 2001-3859 / NTRS 20020021945. Foundational one-shot "
+        "Uranus moon-tour anchor: 811-day three-phase tour with 40+ flybys "
+        "across Miranda/Ariel/Umbriel/Titania/Oberon. NOT a periodic cycler.",
+        doi="10.2514/2.3981",
+    ),
+    CorpusAnchor(
+        name="Sims et al. polar Uranus orbiter & satellite tour (2014)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        authors=("Sims", "Finlayson", "Rinderle", "Vavrina", "Kawalkowski"),
+        keywords=(
+            "polar Uranus orbiter satellite tour",
+            "conceptual mission design Uranus orbiter",
+            "two-flyby-per-moon Uranus tour",
+            "Uranus inclination reduction sequence",
+        ),
+        citation="Sims, Finlayson, Rinderle, Vavrina & Kawalkowski et al., "
+        "'Conceptual mission design of a polar Uranus orbiter and satellite "
+        "tour' (2014). Baseline 424-day, 619 m/s tour with two targeted "
+        "flybys of each major moon. One-shot insertion tour, NOT cycler.",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Kumar Uranus-Oberon PCRTBP MMR study (2025)",
+        primary="Uranus",
+        body_set=frozenset({"Oberon", "Titania"}),
+        authors=("Kumar",),
+        keywords=(
+            "Uranus-Oberon PCRTBP mean motion resonance",
+            "Uranus-Oberon unstable resonant periodic orbit",
+            "Uranus-Titania-Oberon CCR4BP secondary resonance",
+            "Uranian system heteroclinic resonance transition",
+        ),
+        citation="Kumar, 'Multi-shooting parameterization methods for "
+        "invariant manifolds and heteroclinics of 2-DOF Hamiltonian Poincare "
+        "maps, with applications to celestial resonant dynamics,' "
+        "arXiv:2509.03655 (2025). Section 6.2 studies Uranus-Oberon PCRTBP "
+        "3:4/4:5/5:6 exterior and 4:3/5:4/6:5 interior MMR unstable periodic "
+        "orbits plus heteroclinic connections; extends to Uranus-Titania-"
+        "Oberon CCR4BP secondary resonances. Single-moon MMR topology, NOT "
+        "moon-pair cycler.",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Canales-Howell-Fantino moon-to-moon analytical transfer (Titania-Oberon, 2021)",
+        primary="Uranus",
+        body_set=frozenset({"Titania", "Oberon"}),
+        authors=("Canales", "Howell", "Fantino"),
+        keywords=(
+            "Titania-Oberon halo-to-halo transfer",
+            "Uranian moon-to-moon analytical transfer MMAT",
+            "Uranus-Titania L2 to Uranus-Oberon L1 manifold transfer",
+            "2BP-CR3BP patched moon-to-moon transfer Uranus",
+        ),
+        citation="Canales, Howell & Fantino, 'Transfer design between "
+        "neighborhoods of planetary moons in the circular restricted "
+        "three-body problem: the moon-to-moon analytical transfer method,' "
+        "Celest. Mech. Dyn. Astron. 133:36 (2021); arXiv:2110.03683. "
+        "Uranian case study: L2 halo at Uranus-Titania -> L1 halo at "
+        "Uranus-Oberon via unstable/stable manifolds. One-shot transfer "
+        "between halo orbits, NOT repeated-encounter cycler. Companion "
+        "FTLE-map extensions in Canales-Howell-Fantino JGCD 2023 "
+        "(arXiv:2308.10029).",
+        doi=None,
+    ),
+    CorpusAnchor(
+        name="Jarmak QUEST Uranus orbiter New Frontiers concept (2020)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        authors=("Jarmak", "Brinckerhoff"),
+        keywords=(
+            "QUEST Uranus orbiter New Frontiers",
+            "Uranus polar orbit mission concept",
+            "Jupiter-gravity-assist Uranus orbiter",
+        ),
+        citation="Jarmak, Brinckerhoff et al., 'QUEST: A New Frontiers "
+        "Uranus orbiter mission concept study,' Acta Astronautica 170:6-26 "
+        "(2020); ADS 2020AcAau.170....6J. Polar orbiter, no satellite "
+        "tour; not cycler-relevant but anchors the New-Frontiers Uranus "
+        "mission concept literature.",
+        doi="10.1016/j.actaastro.2020.01.030",
+    ),
+    CorpusAnchor(
+        name="UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025)",
+        primary="Uranus",
+        body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        authors=("Cohen", "Simon", "Saikia", "Hofstadter"),
+        keywords=(
+            "Uranus Orbiter and Probe UOP Flagship",
+            "UOP Decadal trajectory satellite tour",
+            "Uranus aerocapture flagship mission",
+            "Uranus equatorial moon tour 4.5 year",
+        ),
+        citation="UOP Decadal Mission Concept Study (2023); Saikia et al. "
+        "'A Flagship-class Uranus Orbiter and Probe mission concept using "
+        "aerocapture,' Acta Astronautica (2022) DOI 10.1016/"
+        "j.actaastro.2022.10.026; 'Uranus Orbiter and Probe: Mission "
+        "Challenges and Concept Updates Since the OWL Decadal Survey,' "
+        "Planet. Sci. J. 6:ae680c (2025) DOI 10.3847/PSJ/ae680c; Simon et "
+        "al. Flagship Science-Driven Tour Design Community Input Poll, "
+        "arXiv:2505.05514 (2025). Repeated-Titania-flyby inclination "
+        "reduction + 4.5-year equatorial moon tour. One-shot insertion "
+        "tour, NOT periodic cycler.",
+        doi="10.3847/PSJ/ae680c",
+    ),
 )
 
 
