@@ -479,18 +479,26 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # campaign that the matcher may bump into structurally.
     # -----------------------------------------------------------------------
     CorpusAnchor(
-        name="Davis-Phillips-McCarthy Saturn tulip-shaped orbits",
+        name="Davis-Phillips-McCarthy Saturnian Ocean Worlds orbiters (2018)",
         primary="Saturn",
-        body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione"}),
+        # Body-set tightened by #346 PDF deep-read: paper's documented orbit
+        # families are Saturn-Titan TULIP orbits (Fig. 8-11, ~6:1 resonance,
+        # periapses over Titan's poles) and Saturn-Enceladus L1/L2 NRHO halos
+        # + a heteroclinic transfer Enceladus-halo -> Titan polar orbit. Rhea
+        # and Dione are NOT orbit-family targets in the paper, so a
+        # repeated-moon (k1,k2) Titan-Rhea or Titan-Dione sequence is NOT
+        # captured by this anchor and remains lit-fresh.
+        body_set=frozenset({"Titan", "Enceladus"}),
         authors=("Davis", "Phillips", "McCarthy"),
         keywords=(
-            "Saturn tulip-shaped orbit",
-            "Titan period-multiplying orbit",
-            "Saturnian periodic orbit Np petal",
+            "Saturnian Ocean Worlds Poincare map",
+            "Saturn-Titan tulip-shaped orbit polar coverage",
+            "Saturn-Enceladus NRHO halo heteroclinic",
         ),
-        citation="Davis, Phillips & McCarthy, 'Tulip-shaped orbits in the "
-        "Saturn system,' Acta Astronautica 143:16-28 (2018)",
-        doi="10.1016/j.actaastro.2017.11.011",
+        citation="Davis, Phillips & McCarthy, 'Trajectory design for "
+        "Saturnian Ocean Worlds orbiters using multidimensional Poincare "
+        "maps,' Acta Astronautica 143:16-28 (2018)",
+        doi="10.1016/j.actaastro.2017.11.004",
     ),
     CorpusAnchor(
         name="Sanaga-Park-Howell fidelity-transition framework (2026)",
