@@ -150,7 +150,13 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     Barden nu reproduces published Floquet UNSTABLE verdict, independent Radau
     preserves Jacobi; NOT V2 because unstable orbits cannot satisfy the bounded-
     drift gate; docs/notes/2026-06-14-249-unstable-member-recovery-plan.md).
-    (V1=21, V2=6, V3=2.)"""
+    The Umbriel-Oberon-Umbriel SILVER is V4 (#340 2026-06-17 — #335 V4-strict
+    URA111 SPICE real-eph + #338 annual epoch sweep EFFECTIVELY_CYCLIC; #340
+    Part A registers the V1/V2/V3/V4 chain as four frozen-gate pytests in
+    tests/verify/test_silver_327_v*.py wrapping the project-output verdict
+    JSONLs from #306/#330/#331/#335/#338;
+    docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md).
+    (V1=21, V2=6, V3=2, V4=1.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -234,14 +240,27 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "braik-ross-c11a-cycler-2026": "V1",
         "braik-ross-c11b-cycler-2026": "V1",
         "braik-ross-c32-cycler-2026": "V1",
+        # #340 (2026-06-17): SILVER (umbriel-oberon-1-1-uranian-quasi-cycler-2026)
+        # promoted V0 -> V4 — the catalogue's first computed quasi_cycler row
+        # and the first V4 anywhere. V4 is the URA111 SPICE real-eph + annual
+        # epoch sweep gauntlet (#335 + #338): EFFECTIVELY_CYCLIC verdict, interior
+        # PASS rate 85/85=100%, longest PASS run 84 yr (2000-06-21 -> 2083-06-21
+        # centred 2041). The four #340 Part A frozen-gate pytests wrap the
+        # JSONL verdict files from #306/#330/#331/#335/#338 and assert what the
+        # catalogue row claims. V5 is the GMAT independent-toolchain lane,
+        # separately-tracked. docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md.
+        "umbriel-oberon-1-1-uranian-quasi-cycler-2026": "V4",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
     # carry V3: S1L1 (#167/#94 — V3-ballistic) and russell-ch4-8.049gGf2
     # (#175/#170 — the first V3-powered, App-C #188 under its documented budget).
+    # One row carries V4: the SILVER Umbriel-Oberon-Umbriel quasi_cycler (#340,
+    # #335 V4-strict URA111 + #338 annual epoch sweep EFFECTIVELY_CYCLIC).
     assert sum(1 for lvl in byid.values() if lvl == "V2") == 6
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
-    assert not any(lvl in ("V4", "V5") for lvl in byid.values())
+    assert sum(1 for lvl in byid.values() if lvl == "V4") == 1
+    assert not any(lvl == "V5" for lvl in byid.values())
 
 
 def test_live_catalogue_validation_level_semantic_clean() -> None:

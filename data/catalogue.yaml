@@ -48803,7 +48803,7 @@ days\" per the NTRS abstract.
     start: "2000-06-21T00:00:00Z"
     end: "2083-06-21T00:00:00Z"
   launch_epoch: "2041-06-21T00:00:00Z"
-  validation_level: V0   # spec §14: V0 internal-consistency floor. The 10-gate provenance (closure 0.025 km/s / DOP853 2.7e-11 / physical 14.7°+39° / lit-fresh 41-anchor / Heaton-Longuski-2003 direct read / V1-V4-strict / #338 EFFECTIVELY_CYCLIC) lives in data/silver_327_v*_verdicts.jsonl — project-output JSONLs, NOT pytest-evidenced gates registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE. Promotion to V4 requires registering pytest evidence per spec §16.7.12; tracked as follow-up task. The row's notes block carries the full chain narrative.
+  validation_level: V4   # spec §14: V4-strict URA111 real-eph + #338 EFFECTIVELY_CYCLIC. The 10-gate provenance (closure 0.025 km/s / DOP853 2.7e-11 / physical 14.7°+39° / lit-fresh 41-anchor / Heaton-Longuski-2003 direct read / V1-V4-strict / #338 EFFECTIVELY_CYCLIC) lives in data/silver_327_v*_verdicts.jsonl AND #340 (commit pending) wraps each V-tier's JSONL verdict as a frozen-gate pytest (tests/verify/test_silver_327_v1_passes.py / test_silver_327_v2_quasi_cycler.py / test_silver_327_v3_nbody.py / test_silver_327_v4_strict_passes.py) and registers V1/V2/V3/V4 in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE per spec §16.7.12. Sub-year DOY sensitivity flagged in notes block (validity_window assumes June 21 DOY launch).
   source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
   orbit_source: derived
   vinf_source: derived
