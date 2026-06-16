@@ -80,8 +80,10 @@ a verdict — these are NOT rejected, just queued for funding):
 ## DISCOVERY-SIDE QUEUE (2026-06-16) — what's PENDING
 
 **Gauntlet adaptations (infra blockers for catalogue admission of Phase 1
-outputs):** #305 (BCR4BP V0-V5), #306 (3D V0-V5), #319 (QP-tori V0-V5).
-Without these, even literature-fresh candidates cannot pass V1.
+outputs):** #305 (BCR4BP V0-V5), #306 (3D V0-V5) — **Phase 1 (V1+V2 for 3D
+periodic) and Phase 2 (V2-moontour) shipped 2026-06-16; Phase 3 V3 nbody
+(#331) and Phase 4 V4 HFEM (#332) outstanding**, #319 (QP-tori V0-V5).
+Without these, even literature-fresh candidates cannot pass V3.
 
 **Discovery probes (the strategic-answer ideas, ranked by novelty leverage):**
 - **#312** Uranus extended sweep (in flight) — 0.062 km/s near-miss is the
@@ -103,20 +105,31 @@ Without these, even literature-fresh candidates cannot pass V1.
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
 - **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
 
-## SESSION YIELD (HONEST RECKONING — POST #322 + #327)
+## SESSION YIELD (HONEST RECKONING — POST #322 + #327 + #330)
 
 - **0 admitted novel cyclers; 1 lit-fresh + physically-valid SILVER candidate
-  awaiting #306 3D V0-V5 gauntlet adaptation.** Candidate ID
-  `repeated-moon-uranus-00000041` at sequence Umbriel-Oberon-Umbriel (1,1).
-  Closure 0.0252 km/s (2-moon convention, 24×24 basin floor) at V_inf =
+  that FAILS V2-moontour (drift + closure both above strict floor) but with
+  bounded oscillation + monotonic-but-sub-0.5-km/s closure over 10 cycles.**
+  Candidate ID `repeated-moon-uranus-00000041` at sequence Umbriel-Oberon-Umbriel
+  (1,1). Closure 0.0252 km/s (2-moon convention, 24×24 basin floor) at V_inf =
   (0.92, 0.96, 0.89) km/s — ALL passing the #324 physical-sanity gate.
   Independent DOP853 cross-check residual 2.7e-11 nondim (5 orders of magnitude
   below the discipline gate). Offline literature_check against 35 KNOWN_CORPUS
   anchors returns `not-found` at confidence 0.40 (necessary-not-sufficient per
   `feedback_literature_novelty_check_baseline`; wider literature pass required).
-  ML flagger p_fp 0.591 (below 0.75 SILVER threshold). Catalogue admission
-  blocked by (a) #306 3D V0-V5 gauntlet not yet built, (b) wider literature
-  search not yet run. **The candidate is REAL but not novel-claimable yet.**
+  ML flagger p_fp 0.591 (below 0.75 SILVER threshold).
+  **#330 (V2-moontour, 2026-06-16) verdict: FAIL_QUASI_BOUNDED.** At
+  `n_cycles=3` strict gates: drift 5.2e+05 km (gate 5e+04 km), closure
+  0.123 km/s (gate 0.05 km/s). Across 10 cycles drift OSCILLATES (cycle 5
+  returns to 8.6e+04 km — near-resonant at 4.991× the Umbriel-Oberon
+  synodic period); closure grows monotonically 0.025 → 0.349 km/s. Every
+  Lambert leg converges in every cycle; the SILVER is geometrically valid
+  but at this phasing it is a *near-resonant tour*, not a true cycler.
+  Catalogue admission blocked by (a) V3 (#331 — real-eph 6D nbody / REBOUND),
+  (b) V4 HFEM Uranus (#332 — only relevant if V3 admits), (c) wider lit
+  pass (#329). See `docs/notes/2026-06-16-330-moontour-v2-phase2.md`.
+  **The candidate is geometrically real but neither V2-clear nor
+  novel-claimable yet.**
 - **Discipline held throughout** — no admission, no novelty claim, both gated
   exactly as the rule requires. Every well-scoped search hits published material
   EXCEPT this one row, which clears all offline guards and a fresh post-hoc
