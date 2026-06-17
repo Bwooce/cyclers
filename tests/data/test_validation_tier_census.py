@@ -86,9 +86,12 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # 257 -> 259 (2026-06-17, #367 wave 2): +2 VISIT-2 Table 3 circular-
 # coplanar precursor_mga sub-variants (5:4(3)-, 3:2(2)-). Same source/
 # fidelity pair -> CONSISTENCY_CHECKED.
+# 259 -> 261 (2026-06-17, #367 wave 2): +2 Case 1 Table 3 circular-
+# coplanar precursor_mga sub-variants (5:4(3)-, 3:2(2)-). Same
+# CONSISTENCY_CHECKED classification.
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 259,
+    "consistency_checked": 261,
     # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
     # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
     # which classifies as 'unvalidated' under the existing provenance rules.
