@@ -1372,7 +1372,7 @@
   orbit_class: cycler   # schema v4.7 (2026-06-15, task #294); scope expansion default — every pre-v4.7 row is a strict cycler (scripts/migrate_catalogue_scope_2026-06-15.py); see data/README.md
   epoch_locked: false   # schema v4.7 (task #294); strict cyclers are NOT epoch-locked
   n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
-  validation_level: V0   # schema v4.5 (2026-06-06, spec §16.7.12 / §14); MECHANICAL gauntlet level from recorded test evidence (scripts/backfill_validation_level.py); see data/README.md
+  validation_level: V1   # #365 (2026-06-17): closer_sweep_v1 substrate emerged V_inf E=7.895/M=9.942 vs sourced 7.8/9.9 (|dE|=0.10, |dM|=0.04 < 0.5), single ellipse closes V_inf-continuous (multi-arc topology Earth-Earth loops folded into the Lambert-equivalent radial-crossing arc, vinf_continuity gate intact). tests/verify/test_365_russell_ocampo_v1_promotion.py + data/russell-ocampo-2.5.1+0_v1_verdict.jsonl
   orbit_source: russell-2004-t34   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: circular-coplanar
   vinf_source: russell-2004-t34

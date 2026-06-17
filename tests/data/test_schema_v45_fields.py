@@ -181,6 +181,17 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "russell-ocampo-4.1.2-2": "V1",
         "russell-ocampo-4.1.4-1": "V1",
         "russell-ocampo-4.6.3+0": "V1",
+        # #365 (2026-06-17): Russell-Ocampo 2003 Tables 5-8 V0->V1 wave. ONE
+        # candidate (2.5.1+0 = Cycler-2-5-1-3, short-transit 94-d high-V_inf
+        # 2-synodic) clears the §14 V1 like-for-like gate; the closer_sweep_v1
+        # substrate emerges V_inf E=7.895/M=9.942 vs sourced 7.8/9.9 and the
+        # single ellipse is V_inf-continuous. The other three Tables 5-8
+        # cyclers (3.1.2+1, 4.3.1-5, 4.5.2-2) stay V0 as honest negatives —
+        # multi-arc topologies that a single radial-crossing ellipse
+        # fundamentally cannot represent. tests/verify/
+        # test_365_russell_ocampo_v1_promotion.py;
+        # docs/notes/2026-06-17-digest-russell-ocampo-2003.md.
+        "russell-ocampo-2.5.1+0": "V1",
         # #181 ToF-fix (2026-06-10): four descriptor-bearing Russell Ch.4 rows
         # close on the real DE440 ephemeris via the joint (epoch, ToF) self-seed
         # closer (Stage-B coplanar-branch-ToF artifact corrected) and clear §14 V1

@@ -628,6 +628,42 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "re-propagation residual pass (both §14 V1 halves), gated by "
         "tests/search/test_closer_sweep_v1.py."
     ),
+    # #365 Phase D (2026-06-17): Russell-Ocampo 2003 Tables 5-8 V0→V1 promotion
+    # wave. Russell-Ocampo 2003 (AAS-03-145) Tables 5-8 publish per-encounter Δv
+    # vectors for FOUR cyclers (the only rows in that paper with reproducible
+    # per-encounter state in the circular-coplanar model). The §14 V1 like-for-
+    # like reproduction asks: does the closer_sweep_v1 substrate emerge per-body
+    # V_inf within 0.5 km/s of the sourced Russell 2004 Table 3.4 anchor AND
+    # clear the V1 mechanics gate?
+    #
+    # Of the 4 candidates, ONE clears: russell-ocampo-2.5.1+0 (short-transit
+    # 94-d high-V_inf 2-synodic). The other three (3.1.2+1, 4.3.1-5, 4.5.2-2)
+    # are HONEST NEGATIVES per feedback_orbit_closure_discipline — they stay V0:
+    # 3.1.2+1 V_inf matches but V_inf-continuity fails (multi-arc);
+    # 4.3.1-5 aphelion 1.505 < Mars 1.52 (Russell §3.8: "doesn't quite reach
+    # Mars in the simplified model"); 4.5.2-2 max_res 0.103 just above floor
+    # AND V_inf-continuity fails (multi-arc). See tests/verify/
+    # test_365_russell_ocampo_v1_promotion.py (covers all four — PASS gate on
+    # 2.5.1+0, honest-negative gates on the other three) +
+    # data/russell-ocampo-*_v1_verdict.jsonl (per-candidate verdict).
+    # Driver: scripts/run_365_russell_ocampo_v1.py.
+    ("russell-ocampo-2.5.1+0", "V1"): (
+        "spec §14 V1 (#365): circular like-for-like free-return reproduction of "
+        "the Russell-Ocampo 2003 Table 5 Cycler-2-5-1-3 per-encounter Δv vectors "
+        "(p.15) and the corroborating Russell 2004 Table 3.4 row 2.5.1.+0 V_inf "
+        "anchor (E=7.8, M=9.9 km/s). closer_sweep_v1 substrate seeded from the "
+        "sourced (aphelion=2.189 AU, transit_em=94 d) closes the single free-"
+        "return ellipse and emerges V_inf E=7.895, M=9.942 km/s (|ΔE|=0.10, "
+        "|ΔM|=0.04, both < 0.5 km/s V1 floor); §14 V1 mechanics gate passes "
+        "(V_inf-continuous, multi-arc Earth-Earth loops folded into the Lambert-"
+        "equivalent radial-crossing arc). tests/verify/"
+        "test_365_russell_ocampo_v1_promotion.py::"
+        "test_russell_ocampo_2_5_1_plus_0_v1_pass + "
+        "data/russell-ocampo-2.5.1+0_v1_verdict.jsonl. SIBLINGS: 3.1.2+1 / "
+        "4.3.1-5 / 4.5.2-2 stay V0 as honest negatives (multi-arc topology that "
+        "a single radial-crossing ellipse fundamentally cannot represent — same "
+        "limitation as the existing closer_sweep_v1 CLOSE-NOT-V1 set)."
+    ),
     # #181 ToF-fix (2026-06-10, USER-approved writeback): four descriptor-bearing
     # Russell Ch.4 rows close on the real DE440 ephemeris via the joint (epoch, ToF)
     # free-variable self-seed closer (the Stage-B coplanar-branch-ToF artifact
