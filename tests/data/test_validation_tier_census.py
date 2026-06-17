@@ -73,9 +73,15 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # provenance-tag axis. Their gauntlet strength lives in the validation_level
 # axis (V1, _LEVEL_EVIDENCE). unvalidated 23 -> 26.
 # ---------------------------------------------------------------------------
+# 249 -> 256 (2026-06-17, #367): seven Rogers 2015 Table 4 precursor_mga
+# rows (VISIT-1/2, Case 1/2/3, S1L1, U0L1) admitted with
+# orbit_source=vinf_source=rogers-2012-t1 at fidelity=analytic-ephemeris.
+# Single-source same-fidelity pair classifies as CONSISTENCY_CHECKED
+# under the existing tier rules (matches the Aldrin '4:3(2)-' and
+# '3:2(1)-' Rogers establishment rows already in this bucket).
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 249,
+    "consistency_checked": 256,
     # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
     # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
     # which classifies as 'unvalidated' under the existing provenance rules.

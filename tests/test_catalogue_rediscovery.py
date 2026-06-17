@@ -287,7 +287,15 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # stable midpoints at C=3.151). Same Earth-primary CR3BP family-keying as
     # the Ross-RT rows; not v1-gauntlet-reachable; pure census shift.
     ExclusionReason.NON_HELIOCENTRIC: 18,
-    ExclusionReason.MISSING_VINF: 5,
+    # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
+    # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
+    # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
+    # only V_inf-launch / V_inf-flyby, both at Earth; no distinct V_inf at Mars
+    # is tabulated for these sub-variant rows). Same family-keying as the
+    # existing Aldrin 4:3(2)- / 3:2(1)- establishment rows already in this
+    # bucket. Pure census shift; not v1-gauntlet-reachable (precursor_mga is a
+    # one-time insertion trajectory, not a cycler).
+    ExclusionReason.MISSING_VINF: 12,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
     ExclusionReason.MISSING_PERIOD: 1,

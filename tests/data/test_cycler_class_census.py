@@ -432,7 +432,7 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=244, non-keplerian=12.
+    """Exact class distribution: single-ellipse=35, multi-arc=244, non-keplerian=12.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
@@ -449,11 +449,13 @@ def test_census_distribution() -> None:
     not strict-periodic): multi-arc 242->243. #356 (2026-06-17) admitted
     Galileo VEEGA (D'Amario-Bright-Wolf 1992) as the third computed mga_tour
     row, cycler_class=multi-arc (E->V, V->E1, E1->E2, E2->J heliocentric arcs):
-    multi-arc 243->244.)
+    multi-arc 243->244. #367 (2026-06-17) admitted 7 Rogers 2015 Table 4
+    precursor_mga insertion-trajectory rows (VISIT-1/2, Case 1/2/3, S1L1, U0L1),
+    all cycler_class=single-ellipse: single-ellipse 28->35.)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 244, "non-keplerian": 12}
+    expected = {"single-ellipse": 35, "multi-arc": 244, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
