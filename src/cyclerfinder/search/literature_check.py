@@ -251,6 +251,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Aldrin Earth-Mars cycler",
         primary="Sun",
         body_set=frozenset({"E", "M"}),
+        # #350: Aldrin's canonical paradigm IS the (k1, k2) repeated-encounter
+        # cycler -- the defining instance of the class.
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Aldrin", "Byrnes", "McConaghy", "Longuski"),
         keywords=("Aldrin cycler", "Earth-Mars cycler", "cycler trajectory"),
         citation="Byrnes, McConaghy & Longuski, AIAA 2002-4420 (Aldrin cycler)",
@@ -260,6 +263,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
         primary="Sun",
         body_set=frozenset({"E", "M"}),
+        # #350: SnLm is the systematic catalogue of repeated-encounter
+        # Earth-Mars cyclers (S = synodic returns, L = sidereal returns).
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Russell", "Ocampo", "McConaghy", "Landau", "Longuski"),
         keywords=(
             "ballistic Earth-Mars cycler",
@@ -275,6 +281,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Liang et al. Callisto-Ganymede-Europa triple cyclers",
         primary="Jupiter",
         body_set=frozenset({"Callisto", "Ganymede", "Europa"}),
+        # #350: 'triple cycler' = repeated CGE encounter sequence.
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Liang", "Yang", "Bai", "Qin"),
         keywords=(
             "Callisto-Ganymede-Europa triple cycler",
@@ -289,6 +297,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Hernandez/Jones/Jesick Io-Europa-Ganymede triple cyclers",
         primary="Jupiter",
         body_set=frozenset({"Io", "Europa", "Ganymede"}),
+        # #350: 'triple cycler' = repeated IEG encounter sequence.
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Hernandez", "Jones", "Jesick"),
         keywords=("Io-Europa-Ganymede triple cycler", "Jovian triple cycler"),
         citation="Hernandez, Jones & Jesick, 'One Class of Io-Europa-Ganymede "
@@ -299,6 +309,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Strange/Campagnola/Russell moon-tour & V-infinity-leveraging",
         primary="Jupiter",
         body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        # #350: V-infinity-leveraging is the same-body Tisserand-pump
+        # methodology (AAS 07-277 abstract: 'transfers between the same
+        # gravity-assist body'). Same family as the Cassini pump-tour.
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
         authors=("Strange", "Campagnola", "Russell", "Landau"),
         keywords=(
             "V-infinity leveraging",
@@ -313,6 +327,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M"}),
+        # #350: 'VEM triple cycler' = repeated Venus-Earth-Mars encounter
+        # sequence (the Jones-Hernandez-Jesick AAS 17-577 family).
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Jones", "Hernandez", "Jesick"),
         keywords=("VEM triple cycler", "Venus-Earth-Mars cycler"),
         citation="Jones, Hernandez & Jesick, AAS 17-577 (VEM triple cyclers)",
@@ -360,6 +377,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Showalter-Hamilton Styx-Nix-Hydra three-body resonance",
         primary="Pluto",
         body_set=frozenset({"Styx", "Nix", "Hydra"}),
+        # #350: natural Laplace-like three-body resonance (Nature 2015) -- not
+        # an engineered trajectory, observational dynamics paper.
+        topology_label=frozenset({"resonant"}),
         authors=("Showalter", "Hamilton"),
         keywords=(
             "Styx Nix Hydra three-body resonance",
@@ -386,6 +406,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Pluto-Charon CR3BP tadpole/horseshoe at L3/L4/L5 (2025)",
         primary="Pluto",
         body_set=frozenset({"Charon"}),
+        # #350: Tadpole + horseshoe = coorbital binary topology (the L3/L4/L5
+        # equilateral-Lagrange family for the Pluto-Charon binary).
+        topology_label=frozenset({"binary-coorbital"}),
         authors=("Pluto-Charon", "Charon"),  # arXiv preprint; authors not pinned in our notes
         keywords=(
             "Pluto-Charon tadpole horseshoe orbit",
@@ -421,6 +444,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Roberts-Tsoukkas & Ross stable prograde Earth-Moon multi-orbiter cyclers",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #350: Earth-Moon multi-orbiter cyclers = repeated lunar-encounter
+        # family (the 5 stable EM cyclers reproduced as V1 in catalogue).
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Roberts-Tsoukkas", "Ross"),
         keywords=(
             "stable prograde Earth-Moon cycler",
@@ -451,6 +477,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Koblick novel tulip-shaped three-body orbits (cislunar SDA)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #350: tulip-shaped Np-petal three-body orbit family (the #266
+        # genome's source paper).
+        topology_label=frozenset({"tulip"}),
         authors=("Koblick", "Kelly"),
         keywords=(
             "tulip-shaped three-body orbit",
@@ -466,6 +495,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Zhang-Jiang-Yuan tulip time-regularized bifurcation framework (2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #350: tulip orbit period-multiplying bifurcation methodology.
+        topology_label=frozenset({"tulip"}),
         authors=("Zhang", "Jiang", "Yuan"),
         keywords=(
             "tulip orbit time-regularized bifurcation",
@@ -480,6 +511,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Cislunar tulip robust construction (Chinese J. Aeronautics 2026)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
+        # #350: tulip orbit family construction methodology.
+        topology_label=frozenset({"tulip"}),
         authors=("Chinese Journal of Aeronautics",),
         keywords=(
             "cislunar tulip robust construction",
@@ -562,6 +595,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Petropoulos-Longuski Jovian pump-tour combinatorics (2000)",
         primary="Jupiter",
         body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        # #350: Tisserand-graph pump-tour design (foundational paper).
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
         authors=("Petropoulos", "Longuski"),
         keywords=(
             "Jovian moon tour pump-up",
@@ -579,6 +614,11 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        # #350: Heliocentric Tisserand-graph MGA-tour graph search (same
+        # AAS-07-277 paper that grounds the Cassini-Huygens anchor's
+        # same-body-pump methodology, here applied to heliocentric pump
+        # tours).
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
         authors=("Strange", "Russell", "Buffington"),
         keywords=(
             "Tisserand graph MGA tour",
@@ -595,6 +635,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Heaton-Strange-Longuski resonance-hopping pump tours (2002)",
         primary="Jupiter",
         body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        # #350: resonance-hopping is same-body pump methodology applied to
+        # Jovian moon tour design (Galileo / JIMO context).
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
         authors=("Heaton", "Strange", "Longuski"),
         keywords=(
             "resonance hopping moon tour",
@@ -610,6 +653,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Vasile-Conway MGA-DSM optimisation (2006)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        # #350: MGA-DSM = multi-gravity-assist with deep-space maneuvers,
+        # the canonical mga_tour optimisation paradigm.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Vasile", "Conway", "De Pascale"),
         keywords=(
             "MGA-DSM multi-gravity-assist deep-space maneuver",
@@ -624,6 +670,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Hughes-Edelman-Longuski VEM cycler extensions (2014)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M"}),
+        # #350: extends Jones-Hernandez-Jesick AAS 17-577 VEM cycler family
+        # (repeated Venus-Earth-Mars encounter sequence).
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Hughes", "Edelman", "Longuski"),
         keywords=(
             "Venus-Earth-Mars cycler extension",
@@ -638,6 +687,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
         primary="Sun",
         body_set=frozenset({"E", "M"}),
+        # #350: Aldrin/purple cyclers + their precursor insertion trajectories
+        # are repeated-encounter Earth-Mars families.
+        topology_label=frozenset({"repeated-moon"}),
         authors=("Genova", "Aldrin"),
         keywords=(
             "purple Earth-Mars cycler",
@@ -653,6 +705,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="McConaghy Earth-Mars cycler dissertation (2004)",
         primary="Sun",
         body_set=frozenset({"E", "M"}),
+        # #350: McConaghy's PhD is the dissertation source for the SnLm
+        # repeated-encounter Earth-Mars cycler catalogue.
+        topology_label=frozenset({"repeated-moon"}),
         authors=("McConaghy",),
         keywords=(
             "Earth-Mars ballistic cycler dissertation",
@@ -669,6 +724,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Ceriotti GTOC-style MGA chain optimisation (2010)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        # #350: GTOC-style global optimisation of MGA chains (mga_tour class).
+        topology_label=frozenset({"mga-tour"}),
         authors=("Ceriotti",),
         keywords=(
             "GTOC MGA tour optimisation",
@@ -683,6 +740,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Vasile-Campagnola MGA-DSM tour optimisation (2009)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M", "Jupiter"}),
+        # #350: MGA-DSM tour optimisation via Tisserand-Poincare graphs.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Vasile", "Campagnola"),
         keywords=(
             "MGA-DSM tour optimisation",
@@ -697,6 +756,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Diehl-Belbruno-Roberts Galileo VEEGA design (1986)",
         primary="Sun",
         body_set=frozenset({"V", "E", "Jupiter"}),
+        # #350: Galileo VEEGA = the canonical Venus-Earth-Earth-Gravity-Assist
+        # mga_tour archetype. Single launch window, non-repeating tour.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Diehl", "Belbruno", "Roberts", "D'Amario"),
         keywords=(
             "VEEGA Venus-Earth-Earth gravity assist",
@@ -712,6 +774,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Tito-MacCallum 2018 Mars free-return mission design (2013)",
         primary="Sun",
         body_set=frozenset({"E", "M"}),
+        # #350: Single-window Earth-Mars-Earth ballistic free-return
+        # (catalogue row tito-2018-mars-free-return, mga_tour class).
+        topology_label=frozenset({"mga-tour"}),
         authors=("Tito", "Anderson", "Carrico", "Hopkins", "Loucks", "Voels"),
         keywords=(
             "2018 Mars free-return",
@@ -732,6 +797,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Antoniadou-Voyatzis spatial resonant periodic orbits in CR3BP (2018)",
         primary="Earth",  # spike work; catalogue applies more generally
         body_set=frozenset({"Moon"}),
+        # #350: 'Spatial Resonant Periodic Orbits' = resonant family.
+        topology_label=frozenset({"resonant"}),
         authors=("Antoniadou", "Voyatzis"),
         keywords=(
             "spatial resonant periodic orbit",
@@ -771,6 +838,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Heaton-Longuski Galileo-style Uranian satellite tour (2003)",
         primary="Uranus",
         body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        # #350: Catalogue row heaton-longuski-2003-uranian-tour-u00-01
+        # (mga_tour class). One-shot 40+-flyby tour, NOT periodic cycler.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Heaton", "Longuski"),
         keywords=(
             "Galileo-style Uranian satellite tour",
@@ -789,6 +859,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Sims et al. polar Uranus orbiter & satellite tour (2014)",
         primary="Uranus",
         body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        # #350: Citation explicit: 'one-shot insertion tour, NOT cycler.'
+        topology_label=frozenset({"mga-tour"}),
         authors=("Sims", "Finlayson", "Rinderle", "Vavrina", "Kawalkowski"),
         keywords=(
             "polar Uranus orbiter satellite tour",
@@ -806,6 +878,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Kumar Uranus-Oberon PCRTBP MMR study (2025)",
         primary="Uranus",
         body_set=frozenset({"Oberon", "Titania"}),
+        # #350: MMR = mean-motion resonance. Citation explicit: 'Single-moon
+        # MMR topology, NOT moon-pair cycler.'
+        topology_label=frozenset({"resonant"}),
         authors=("Kumar",),
         keywords=(
             "Uranus-Oberon PCRTBP mean motion resonance",
@@ -827,6 +902,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Canales-Howell-Fantino moon-to-moon analytical transfer (Titania-Oberon, 2021)",
         primary="Uranus",
         body_set=frozenset({"Titania", "Oberon"}),
+        # #350: Citation explicit: 'L2 halo at Uranus-Titania -> L1 halo at
+        # Uranus-Oberon... One-shot transfer between halo orbits, NOT
+        # repeated-encounter cycler.'
+        topology_label=frozenset({"halo"}),
         authors=("Canales", "Howell", "Fantino"),
         keywords=(
             "Titania-Oberon halo-to-halo transfer",
@@ -849,6 +928,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Jarmak QUEST Uranus orbiter New Frontiers concept (2020)",
         primary="Uranus",
         body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        # #350: Citation explicit: 'Polar orbiter, no satellite tour; not
+        # cycler-relevant.' Mission concept = mga-tour class even when polar
+        # orbiter has no extended satellite tour.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Jarmak", "Brinckerhoff"),
         keywords=(
             "QUEST Uranus orbiter New Frontiers",
@@ -866,6 +949,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="UOP Decadal Flagship Uranus Orbiter & Probe + Aerocapture variants (2022-2025)",
         primary="Uranus",
         body_set=frozenset({"Miranda", "Ariel", "Umbriel", "Titania", "Oberon"}),
+        # #350: Citation explicit: 'One-shot insertion tour, NOT periodic
+        # cycler.' Decadal-class mga_tour mission concept.
+        topology_label=frozenset({"mga-tour"}),
         authors=("Cohen", "Simon", "Saikia", "Hofstadter"),
         keywords=(
             "Uranus Orbiter and Probe UOP Flagship",
@@ -906,6 +992,8 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Brinckerhoff-Lo-Marsden Saturn-Titan CR3BP libration-point orbits",
         primary="Saturn",
         body_set=frozenset({"Titan"}),
+        # #350: Halo / libration-point orbit family at Saturn-Titan L1/L2/L3.
+        topology_label=frozenset({"halo"}),
         authors=("Brinckerhoff", "Lo", "Marsden", "Howell"),
         keywords=(
             "Saturn-Titan CR3BP halo orbit",
