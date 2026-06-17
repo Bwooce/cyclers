@@ -13,7 +13,111 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-16)
+# Project state at a glance (updated 2026-06-17)
+
+## DELTA SINCE 2026-06-16 — read this first
+
+The 06-15→06-17 sprint extended into a third day. The 06-16 block below
+remains the orientation map for everything PRIOR; this block carries
+only the deltas. Audit-trail discipline preserved: prior block unedited.
+
+**Catalogue admission — the first computed `quasi_cycler` row.** The #312
+Uranus Umbriel-Oberon-Umbriel (1,1) SILVER cleared the full 10-gate
+provenance ladder during a 06-16→06-17 sprint segment (#327 verification
+→ #324 physical-sanity → #328 wider lit-check → #329 paywall resolution
+→ #330 V2-moontour → #331 V3 REBOUND IAS15 → #332/#335 V4-scipy +
+V4-strict URA111 SPICE → #338 annual epoch sweep 2000-2099 →
+**#339 admission** at `umbriel-oberon-1-1-uranian-quasi-cycler-2026`
+→ **#340 V0→V4 promotion** with pytest evidence in `_LEVEL_EVIDENCE`).
+Catalogue 282 → 283 rows. v4.7 `quasi_cycler` slot now has its first
+real entry. Frozen-census ratchets bumped: NOT_TWO_BODY 1→2, multi-arc
+242→243, unvalidated 28→29 (provenance-tag axis; the row's V4 evidence
+lives on the orthogonal gauntlet axis). See
+`docs/notes/2026-06-17-339-silver-quasi-cycler-admission.md` for the
+12-task provenance chain.
+
+**Discovery probes — three clean negatives, one reactivation-eligible.**
+
+- **#341 Neptune Proteus-Triton extended sweep:** clean negative. Chased
+  the #320 Vector A 0.058 km/s near-miss; wider grid + 3D probe + other
+  Neptunian pairs all anchored or physical-sanity FAIL.
+- **#344 Saturn Titan-Rhea extended sweep:** Part A.2 deepened the #320
+  SILVER from 0.0316 → **0.0102 km/s** (basin floor at ps=96 phase
+  resolution, 3× deeper than #339's Umbriel-Oberon SILVER). Part B
+  (other Saturn pairs + 3-body) clean negative; Part C (3D existence
+  probe) 0/72 — same outcome shape as #312 Part C and #341 Part C.
+  KNOWN_CORPUS overlap pre-#346 was 2 (Davis 2018 + Cassini-Huygens
+  tour).
+- **#346 Davis-Phillips-McCarthy 2018 PDF deep-read** (commit `dabf4a6`):
+  three errata in the KNOWN_CORPUS anchor — citation title was
+  shorthand not actual, DOI had a typo digit, body_set over-wide
+  ({Titan, Enceladus, Rhea, Dione}) — the paper actually documents only
+  Saturn-Titan TULIP orbits + Saturn-Enceladus NRHO halo families.
+  body_set tightened to {Titan, Enceladus}. The Titan-Rhea-Titan (1,1)
+  candidate becomes lit-fresh under the corrected anchor.
+- **#344 Phase 2 Stage A** (commit `dbf7dc4`): IC verified to 1e-9
+  reproducibility; physical-sanity PASS (Titan 49.91°/Rhea 7.07°/Titan
+  50.27°); ML flagger PASS (p_fp=0.604 "real"); **lit-fresh FAIL** —
+  Cassini-Huygens Saturn-Titan satellite tour anchor (line 887 in
+  literature_check.py, body_set ⊇ {Titan, Rhea}) still matches.
+  HALT until #349 Cassini scope investigation resolves.
+- **#343 #284 asymmetric scan Phase 2:** clean negative on a 1,944-cell
+  re-run (12.5× speedup via #321 parallel substrate, above the 5-8×
+  target). The asymmetric corrector keeps collapsing to symmetric basins
+  regardless of seed — structural finding, not coverage gap. Phase 3
+  needs Floquet bifurcation continuation framework (now tracked as
+  #347), not more seed-grid sweeps.
+
+**Infrastructure landed since 06-16.**
+
+- **#321** joblib parallel-sweep substrate (`parallel_sweep` in
+  `src/cyclerfinder/parallel/`) — proven 5.06× on #338's 100-epoch sweep;
+  used by #343's 12.5× speedup.
+- **#324** V∞-vs-escape-velocity physical-sanity gate — required gate
+  for all SILVER candidates (#327, #341, #344 all pre-use).
+- **#332**/**#335** GMAT V4 lane with URA111/URA107 SPICE kernels for
+  real Uranian-moon ephemeris (gauntlet-completion gate for #339).
+- **#338** annual launch-epoch sweep 2000-2099 substrate — EFFECTIVELY_CYCLIC
+  boundary characterisation (Phase 2 sub-year DOY refinement deferred).
+- **#321/#322/#323/#325/#342** various sweep / topology / CI flake /
+  test-marker fixes (all background-stable, none changed catalogue).
+- **#345** classic-mission mga_tour catalogue admissions backlog opened
+  (Voyager 1+2, Galileo, Cassini, Pioneer, Mariner-10, Juno, BepiColombo
+  — pending).
+- **#310** single-orbit prioritizer adapter closing the #284
+  architectural gap (adapter seam open per #343 report).
+
+**Newly-pending items (added 2026-06-17).**
+
+- **#347** Floquet bifurcation continuation framework — addresses
+  the #343 symmetric-basin attractor wall; multi-week build.
+- **#348** OUTSTANDING.md state-sync (THIS edit).
+- **#349** Cassini-Huygens anchor scope investigation — blocks #344
+  Phase 2 Stages B-E gauntlet entry; needs Strange et al. JGCD/AAS
+  2010-2017 + Goodson et al. JGCD 2008 acquisitions then deep-read,
+  OR `topology_label` schema extension to CorpusAnchor (#350 candidate).
+- **#350** (soft) #342 Phase 2 — shrink `n_steps_max` on 3D-tracer
+  slow tests to demote some back to default.
+
+**Memory rules added since 06-16.**
+
+- `feedback_user_works_24h` — bias toward firing more substantive work.
+- `feedback_dont_attribute_changes_to_user` — system-reminder "modified
+  by user or linter" = concurrent agent / pre-commit auto-format, not
+  user editing.
+- `feedback_check_dont_guess` — when a quick command tells you the
+  state, RUN it instead of approximating.
+- `feedback_cyclers_pdf_filing_pattern` — when user uploads a PDF to
+  cyclers_pdf root, I file + rename into `papers/` per the documented
+  standard, not the user.
+- `feedback_times_in_aet` — all ETAs / status times in Australian
+  Eastern Time (UTC+10).
+
+**Validation-tier census (post-#339+#340)** — provenance axis (frozen
+ratchet in `tests/data/test_validation_tier_census.py`):
+cross_validated=5 / consistency_checked=249 / unvalidated=29 (total 283).
+**Validation-level census (gauntlet axis, post-#340 promotion):** V4=1,
+V3=2, V2=6, V1=21, V0=253.
 
 ## FRONTIER CAPABILITY SPRINT (2026-06-15 → 06-16) — read this first
 
