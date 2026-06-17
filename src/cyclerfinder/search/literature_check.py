@@ -101,6 +101,25 @@ class CandidateSignature:
     the candidate sits at a period-multiplied (k>1) sub-family.
     """
 
+    topology_label: frozenset[str] = frozenset()
+    """Optional topology classifier set (e.g. ``{"repeated-moon"}``).
+
+    When BOTH the candidate AND an overlapping anchor declare non-empty
+    ``topology_label`` sets, the matcher requires a non-empty intersection
+    -- a candidate's topology must be one the anchor's published scope
+    actually covers. Empty (the default) means "topology unrestricted":
+    preserves the historical body-set-only matching for all anchors not
+    yet annotated. Used by #349 to discriminate the Cassini-Huygens
+    Titan-pump tour from a (k1, k2) repeated-moon cycler candidate
+    despite sharing the {Titan, Rhea} body subset.
+
+    Standard labels: ``"repeated-moon"`` (Aldrin / k1,k2 repeating-encounter
+    cyclers), ``"pump-tour"`` (V-infinity-leveraging Titan-pump style),
+    ``"mga-tour"`` (non-repeating multi-flyby tours, e.g. Galileo VEEGA),
+    ``"tulip"`` (Sundman/petal Np-petal periodic orbits), ``"halo"``,
+    ``"nrho"``, ``"resonant"``, ``"binary-coorbital"``.
+    """
+
     @property
     def is_moon_tour(self) -> bool:
         """A non-solar primary => a planetary-satellite (moon-tour) cycler."""
@@ -210,6 +229,18 @@ class CorpusAnchor:
     restriction. Used by #301 to filter the Antoniadou-Voyatzis 2018 anchor's
     low-integer-resonance scope away from the period-multiplied Neimark-Sacker
     sub-families at T_TU ~ 20-44.
+    """
+
+    topology_label: frozenset[str] = frozenset()
+    """Optional topology classifier set this anchor's published scope covers.
+
+    Sibling of :attr:`CandidateSignature.topology_label`; the matcher requires
+    a non-empty intersection only when BOTH sides are non-empty. Empty (the
+    default) means the anchor doesn't restrict by topology -- body-set-only
+    matching, the historical behaviour. Added by #349 to discriminate the
+    Cassini-Huygens Titan-pump tour anchor from a candidate (k1, k2)
+    repeated-moon cycler despite shared {Titan, Rhea} body subset. See the
+    sibling field on ``CandidateSignature`` for the standard labels.
     """
 
 
@@ -489,6 +520,11 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # repeated-moon (k1,k2) Titan-Rhea or Titan-Dione sequence is NOT
         # captured by this anchor and remains lit-fresh.
         body_set=frozenset({"Titan", "Enceladus"}),
+        # #349: topology_label set per the same #346 deep-read -- the paper's
+        # actual orbit families are tulip-shaped resonant orbits at Titan and
+        # NRHO halo families at Enceladus. NOT a repeated-moon cycler, NOT a
+        # pump tour. Belt-and-suspenders alongside the tightened body_set.
+        topology_label=frozenset({"tulip", "halo", "nrho"}),
         authors=("Davis", "Phillips", "McCarthy"),
         keywords=(
             "Saturnian Ocean Worlds Poincare map",
@@ -887,19 +923,37 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         name="Cassini-Huygens Saturn-Titan satellite tour design",
         primary="Saturn",
         body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione", "Iapetus"}),
-        authors=("Strange", "Goodson", "Yam", "Buffington"),
+        # #349: topology_label is decisive per Strange-Russell-Buffington
+        # AAS-07-277 ("graphical method for the design of transfers between
+        # the same gravity-assist body... used with great success in the
+        # Cassini extended mission design") + Yam-Davis-Longuski-Howell-
+        # Buffington JSR 2009 ("successive Titan flybys... Tisserand graphs").
+        # Cassini's tour is fundamentally a SAME-BODY Titan-pump + Tisserand-
+        # graph multi-body tour, NOT a repeated-moon (k1, k2) cycler. Rhea /
+        # Dione / Enceladus / Iapetus were single-visit science targets
+        # reached during the Titan-pump phase, NOT repeating tour members
+        # in the cycler sense. A candidate signature with
+        # topology_label={"repeated-moon"} is therefore correctly EXCLUDED
+        # by this anchor (disjoint sets), unblocking #344 Phase 2 Stages
+        # B-E for the Titan-Rhea-Titan (1, 1) candidate.
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
+        authors=("Strange", "Russell", "Buffington", "Yam", "Davis", "Longuski"),
         keywords=(
             "Cassini Saturn tour design",
-            "Titan flyby pump-up resonance tour",
+            "Titan same-body V-infinity leveraging pump tour",
+            "Tisserand graph Cassini multi-body tour",
             "Cassini Equinox Solstice mission Titan tour",
-            "Saturnian satellite gravity-assist tour",
         ),
-        citation="Strange et al., 'Cassini end-of-mission Titan flyby targeting' "
-        "(JGCD / AAS 2010-2017); Goodson et al., 'Cassini Maneuver Experience' "
-        "(JGCD 2008). The repeated-Titan-flyby Cassini tour is the published "
-        "Saturn-system MGA-tour archetype the #334 Sun-Saturn-Titan family "
-        "must be screened against.",
-        doi=None,
+        citation="Strange, Russell & Buffington, 'Mapping the V-infinity "
+        "globe' (AAS 07-277, JPL/Caltech, 2007) -- same-body Titan-pump "
+        "method used in Cassini extended mission; Yam, Davis, Longuski, "
+        "Howell & Buffington, 'Saturn Impact Trajectories for Cassini "
+        "End-of-Mission,' JSR DOI 10.2514/1.38760 (2009) -- successive "
+        "Titan flybys + Tisserand graphs for Saturn impact; Valerino, "
+        "'Updating the Reference Trajectory for the Cassini Solstice "
+        "Mission,' SpaceOps 2014 DOI 10.2514/6.2014-1880 -- "
+        "trajectory-update process for the Titan-flyby tour pattern.",
+        doi="10.2514/1.38760",
     ),
     CorpusAnchor(
         name="Wallace Mars-Phobos CR3BP rendezvous trajectory (NASA TM)",
@@ -970,6 +1024,18 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
             a_min, a_max = anchor.period_band_tu
             if c_max < a_min or c_min > a_max:
                 continue
+        # Optional topology-label filter (#349): if BOTH sides declare a
+        # non-empty ``topology_label`` set, drop the anchor when the sets are
+        # disjoint -- a (k1, k2) repeated-moon candidate is not the same family
+        # as a Titan-pump tour anchor even when they share a body subset.
+        # Empty on either side falls through to the historical body-set-only
+        # match, preserving prior behaviour for un-annotated anchors.
+        if (
+            sig.topology_label
+            and anchor.topology_label
+            and not (sig.topology_label & anchor.topology_label)
+        ):
+            continue
         anchors.append(anchor)
     return anchors
 

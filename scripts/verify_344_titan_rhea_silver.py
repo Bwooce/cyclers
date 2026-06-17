@@ -332,13 +332,18 @@ def main() -> int:
     )
 
     # 2. Lit-fresh confirmation via _candidate_anchors at the post-#346 corpus.
-    print("[#344-A] (2/4) literature_check anchor count post-#346...", flush=True)
+    print("[#344-A] (2/4) literature_check anchor count post-#346/#349...", flush=True)
+    # #349: declare the candidate's structural topology so the matcher can
+    # discriminate the Cassini-Huygens Titan-pump tour anchor (topology
+    # ``pump-tour``, ``mga-tour``) from a (k1, k2) repeated-moon cycler
+    # candidate despite the shared {Titan, Rhea} body subset.
     sig = CandidateSignature(
         primary=PRIMARY,
         sequence=SEQ,
         period_k=2,
         vinf_per_encounter_kms=ic_vinf,
         n_rev=NREV,
+        topology_label=frozenset({"repeated-moon"}),
     )
     anchors = _candidate_anchors(sig)
     anchor_records: list[dict[str, Any]] = []
