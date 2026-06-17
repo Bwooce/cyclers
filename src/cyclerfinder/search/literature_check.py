@@ -1167,7 +1167,12 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     CorpusAnchor(
         name="Cassini-Huygens Saturn-Titan satellite tour design",
         primary="Saturn",
-        body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione", "Iapetus"}),
+        # #360 (2026-06-17): body_set extended to include Tethys + Mimas per
+        # Wolf-Smith 1995 Table 2 verbatim (Tethys 21 targeted; Tethys 46N/49N
+        # nontargeted; Mimas 31N nontargeted). Phoebe is NOT included: it is
+        # mentioned in §3 for a pre-SOI approach flyby but does NOT appear in
+        # the 1995 sample tour Table 2.
+        body_set=frozenset({"Titan", "Enceladus", "Rhea", "Dione", "Iapetus", "Tethys", "Mimas"}),
         # #349: topology_label is decisive per Strange-Russell-Buffington
         # AAS-07-277 ("graphical method for the design of transfers between
         # the same gravity-assist body... used with great success in the
@@ -1181,24 +1186,54 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # topology_label={"repeated-moon"} is therefore correctly EXCLUDED
         # by this anchor (disjoint sets), unblocking #344 Phase 2 Stages
         # B-E for the Titan-Rhea-Titan (1, 1) candidate.
+        # #360 (2026-06-17): topology_label retained as {pump-tour, mga-tour};
+        # Wolf-Smith 1995 confirms both (sample tour has 33 Titan pump flybys
+        # + 5 single-visit other-moon flybys, structurally a pump-tour wrapped
+        # in an mga-tour).
         topology_label=frozenset({"pump-tour", "mga-tour"}),
-        authors=("Strange", "Russell", "Buffington", "Yam", "Davis", "Longuski"),
+        # #360 (2026-06-17): authors tuple extended with Wolf + Smith (the
+        # 1995 pre-launch base-tour-design authors). Strange/Russell/Buffington/
+        # Yam/Davis/Longuski retained as post-launch refinement authors.
+        authors=(
+            "Wolf",
+            "Smith",
+            "Strange",
+            "Russell",
+            "Buffington",
+            "Yam",
+            "Davis",
+            "Longuski",
+        ),
         keywords=(
             "Cassini Saturn tour design",
             "Titan same-body V-infinity leveraging pump tour",
             "Tisserand graph Cassini multi-body tour",
             "Cassini Equinox Solstice mission Titan tour",
         ),
-        citation="Strange, Russell & Buffington, 'Mapping the V-infinity "
-        "globe' (AAS 07-277, JPL/Caltech, 2007) -- same-body Titan-pump "
-        "method used in Cassini extended mission; Yam, Davis, Longuski, "
-        "Howell & Buffington, 'Saturn Impact Trajectories for Cassini "
-        "End-of-Mission,' JSR DOI 10.2514/1.38760 (2009) -- successive "
-        "Titan flybys + Tisserand graphs for Saturn impact; Valerino, "
-        "'Updating the Reference Trajectory for the Cassini Solstice "
-        "Mission,' SpaceOps 2014 DOI 10.2514/6.2014-1880 -- "
+        # #360 (2026-06-17): Wolf-Smith 1995 is now the LEADING pre-launch
+        # citation (the canonical pre-launch base-tour reference: 63 orbits,
+        # 38 targeted flybys, 33 of Titan + 5 of (Enceladus, Tethys, Dione,
+        # Rhea, Iapetus); Wolf-Smith 1995 sample tour also includes a Mimas
+        # 31N nontargeted flyby per Table 2). Strange/Yam/Valerino retained
+        # as post-launch refinement references. See deep-read digest
+        # docs/notes/2026-06-17-digest-wolf-smith-1995-cassini.md.
+        citation="Wolf & Smith, 'Design of the Cassini Tour Trajectory in the "
+        "Saturnian System,' Control Engineering Practice 3(11):1611-1619 "
+        "(1995) DOI 10.1016/0967-0661(95)00172-7 -- pre-launch sample tour: "
+        "63 orbits, 38 targeted flybys (33 of Titan + 5 of Enceladus/Tethys/"
+        "Dione/Rhea/Iapetus); tour ID not given by paper (project-internal "
+        "designation only); Strange, Russell & Buffington, 'Mapping the "
+        "V-infinity globe' (AAS 07-277, JPL/Caltech, 2007) -- same-body "
+        "Titan-pump method used in Cassini extended mission; Yam, Davis, "
+        "Longuski, Howell & Buffington, 'Saturn Impact Trajectories for "
+        "Cassini End-of-Mission,' JSR DOI 10.2514/1.38760 (2009) -- "
+        "successive Titan flybys + Tisserand graphs for Saturn impact; "
+        "Valerino, 'Updating the Reference Trajectory for the Cassini "
+        "Solstice Mission,' SpaceOps 2014 DOI 10.2514/6.2014-1880 -- "
         "trajectory-update process for the Titan-flyby tour pattern.",
-        doi="10.2514/1.38760",
+        # #360 (2026-06-17): DOI updated to lead with Wolf-Smith 1995
+        # (the pre-launch canonical reference).
+        doi="10.1016/0967-0661(95)00172-7",
     ),
     CorpusAnchor(
         name="Wallace Mars-Phobos CR3BP rendezvous trajectory (NASA TM)",
