@@ -295,7 +295,10 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # existing Aldrin 4:3(2)- / 3:2(1)- establishment rows already in this
     # bucket. Pure census shift; not v1-gauntlet-reachable (precursor_mga is a
     # one-time insertion trajectory, not a cycler).
-    ExclusionReason.MISSING_VINF: 12,
+    # 12 -> 13 (2026-06-17, #367 wave 2): +1 Rogers 2015 Table 3 circular-
+    # coplanar precursor_mga sub-variant (VISIT-1 5:4(3)-). Same null V_inf
+    # at Mars as the Table 4 rows.
+    ExclusionReason.MISSING_VINF: 13,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
     ExclusionReason.MISSING_PERIOD: 1,

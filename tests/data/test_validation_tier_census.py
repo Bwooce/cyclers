@@ -79,9 +79,13 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # Single-source same-fidelity pair classifies as CONSISTENCY_CHECKED
 # under the existing tier rules (matches the Aldrin '4:3(2)-' and
 # '3:2(1)-' Rogers establishment rows already in this bucket).
+# 256 -> 257 (2026-06-17, #367 wave 2): one Rogers 2015 Table 3
+# circular-coplanar precursor_mga sub-variant (VISIT-1 5:4(3)-) admitted
+# with orbit_source=vinf_source=rogers-2012-t1 at fidelity=circular-
+# coplanar. Same CONSISTENCY_CHECKED classification.
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 256,
+    "consistency_checked": 257,
     # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
     # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
     # which classifies as 'unvalidated' under the existing provenance rules.
