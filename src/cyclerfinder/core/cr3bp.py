@@ -9,12 +9,20 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+
+# STM integration modes. See ``propagate(with_stm=True, stm_mode=...)`` for the
+# semantics; ``"variable"`` is the legacy variable-step variational path,
+# ``"fixed_path"`` is the Pellegrini-Russell 2016 mitigation (record the state
+# only path's accepted step grid, replay state+STM along that pre-scheduled
+# grid so the step size has no IC dependence).
+StmMode = Literal["variable", "fixed_path"]
 
 
 def _r1_r2(x: float, y: float, z: float, mu: float) -> tuple[float, float]:
@@ -98,7 +106,36 @@ class CR3BPArc:
 
 
 def cr3bp_stm_eom(t: float, y42: NDArray[np.float64], mu: float) -> NDArray[np.float64]:
-    """State (6) + flattened 6x6 STM (36) variational EOM."""
+    """State (6) + flattened 6x6 STM (36) variational EOM.
+
+    Implements the classical variational equations: Phi'(t) = A(X(t)) Phi(t)
+    where A is the Jacobian of the CR3BP RHS at the current state X(t).
+
+    Pellegrini-Russell 2016 caveat
+    ------------------------------
+    The variational equations capture the smooth-flow sensitivity but, when
+    integrated alongside the state by a *variable-step* integrator, miss a
+    per-step term
+
+        f(X_i) (partial delta_t / partial X|_X_i) Phi_i
+
+    (eq. 17, Pellegrini & Russell, JGCD 2016, DOI 10.2514/1.G001920, p. 3) --
+    the step size delta_t selected by the adaptive controller depends on the
+    initial condition through the local error estimate, and this dependence
+    contributes to the STM but is not propagated by the variational equations.
+    The bias is small (~ epsilon^(4/5) for an RKF(7)8 controller per eq. 19,
+    same page) but is most pronounced for *highly sensitive* orbits where the
+    STM has large magnitude. See :func:`propagate` for the ``stm_mode``
+    parameter that switches to a pre-scheduled fixed-path replay (Pellegrini-
+    Russell Conclusion 2, p. 14) -- it pins the step grid to the state-only
+    pass so the IC-dependence vanishes.
+
+    Reference
+    ---------
+    Pellegrini, E. & Russell, R.P. (2016), "On the Computation and Accuracy of
+    Trajectory State Transition Matrices", *Journal of Guidance, Control, and
+    Dynamics*, DOI 10.2514/1.G001920.
+    """
     s = y42[:6]
     phi = y42[6:].reshape(6, 6)
     x, y, z = float(s[0]), float(s[1]), float(s[2])
@@ -133,33 +170,79 @@ def propagate(
     with_stm: bool = False,
     rtol: float = 1e-12,
     atol: float = 1e-12,
+    stm_mode: StmMode = "variable",
 ) -> CR3BPArc:
     """Propagate a state (and optionally the STM) for nondimensional time ``t``.
+
+    Parameters
+    ----------
+    system, state6, t, with_stm, rtol, atol :
+        Standard CR3BP propagation inputs. ``rtol`` / ``atol`` are the DOP853
+        local-error tolerances (default 1e-12 / 1e-12 -- the project standard).
+    stm_mode :
+        Selects the STM-integration method when ``with_stm=True``. Ignored
+        otherwise.
+
+        * ``"variable"`` (default; backward-compatible): integrate the augmented
+          state + STM together with scipy's variable-step DOP853. This is the
+          legacy path. Subject to the Pellegrini-Russell 2016 small-bias
+          caveat: the adaptive step size delta_t depends on the IC through the
+          local error estimate, contributing a term
+
+              f(X_i) (partial delta_t / partial X|_X_i) Phi_i
+
+          (eq. 17, p. 3) that the variational equations do NOT capture. The
+          bias scales as ~ epsilon^(4/5) for an RKF(7)8 controller (eq. 19,
+          p. 3) and is most pronounced for highly sensitive orbits with large
+          ||Phi||.
+
+        * ``"fixed_path"``: implements Pellegrini-Russell's "fixed-path"
+          mitigation (§III.A.2, p. 6; Conclusion 2, p. 14). Step 1: run a
+          state-only DOP853 propagation at the same tolerances, *recording*
+          its accepted step grid ``[t_0, t_1, ..., t_N=t]``. Step 2: replay
+          the augmented state + STM along that pre-scheduled grid, taking
+          exactly one DOP853 step per sub-interval (h_i = t_{i+1} - t_i fed
+          as ``first_step=max_step=h_i``). Because the grid is fixed in
+          advance from the unperturbed trajectory, ``partial delta_t /
+          partial X = 0``, the eq. 17 contamination term vanishes, and the
+          STM is unbiased relative to the achieved state path. Cost: a
+          state-only pass plus a per-sub-interval solver call (~3x the
+          variable-step path's wall time for our typical orbits).
+
+    Returns
+    -------
+    CR3BPArc :
+        Always carries ``state_f`` at time ``t``; ``stm`` is the 6x6 monodromy
+        block when ``with_stm=True``, else ``None``.
 
     Raises
     ------
     RuntimeError
-        If the integrator fails (``sol.success`` is False) — e.g. a collision
+        If the integrator fails (``sol.success`` is False) -- e.g. a collision
         trajectory driving the step size below floating-point resolution near a
         primary. Returning ``sol.y[:, -1]`` in that case would silently hand back
         the state where the integrator gave up, not the state at time ``t``.
+    ValueError
+        If ``stm_mode`` is not one of the supported literals.
+
+    Reference
+    ---------
+    Pellegrini, E. & Russell, R.P. (2016), "On the Computation and Accuracy of
+    Trajectory State Transition Matrices", *Journal of Guidance, Control, and
+    Dynamics*, DOI 10.2514/1.G001920. The eq. 17 derivation (p. 3) plus the
+    PO2-test-case Fig. 13 (p. 13) demonstrate that variable-step variational
+    can underperform CSD by several orders of magnitude on highly sensitive
+    orbits at loose tolerance; fixed-path closes most of that gap without a
+    complex-number integrator refactor.
     """
-    if with_stm:
-        y0 = np.concatenate([np.asarray(state6, float), np.eye(6).reshape(36)])
-        sol = solve_ivp(
-            cr3bp_stm_eom,
-            (0.0, t),
-            y0,
-            args=(system.mu,),
-            rtol=rtol,
-            atol=atol,
-            method="DOP853",
-            dense_output=False,
+    if stm_mode not in ("variable", "fixed_path"):
+        raise ValueError(
+            f"propagate: stm_mode must be 'variable' or 'fixed_path', got {stm_mode!r}"
         )
-        if not sol.success:
-            raise RuntimeError(f"CR3BP STM propagation failed at t={sol.t[-1]}: {sol.message}")
-        yf = sol.y[:, -1]
-        return CR3BPArc(state_f=yf[:6], stm=yf[6:].reshape(6, 6), t=t)
+    if with_stm:
+        if stm_mode == "variable":
+            return _propagate_with_stm_variable(system, state6, t, rtol=rtol, atol=atol)
+        return _propagate_with_stm_fixed_path(system, state6, t, rtol=rtol, atol=atol)
     sol = solve_ivp(
         cr3bp_eom,
         (0.0, t),
@@ -172,6 +255,113 @@ def propagate(
     if not sol.success:
         raise RuntimeError(f"CR3BP propagation failed at t={sol.t[-1]}: {sol.message}")
     return CR3BPArc(state_f=sol.y[:, -1], stm=None, t=t)
+
+
+def _propagate_with_stm_variable(
+    system: CR3BPSystem,
+    state6: NDArray[np.float64],
+    t: float,
+    *,
+    rtol: float,
+    atol: float,
+) -> CR3BPArc:
+    """Legacy variable-step augmented (state+STM) DOP853 propagation."""
+    y0 = np.concatenate([np.asarray(state6, float), np.eye(6).reshape(36)])
+    sol = solve_ivp(
+        cr3bp_stm_eom,
+        (0.0, t),
+        y0,
+        args=(system.mu,),
+        rtol=rtol,
+        atol=atol,
+        method="DOP853",
+        dense_output=False,
+    )
+    if not sol.success:
+        raise RuntimeError(f"CR3BP STM propagation failed at t={sol.t[-1]}: {sol.message}")
+    yf = sol.y[:, -1]
+    return CR3BPArc(state_f=yf[:6], stm=yf[6:].reshape(6, 6), t=t)
+
+
+def _propagate_with_stm_fixed_path(
+    system: CR3BPSystem,
+    state6: NDArray[np.float64],
+    t: float,
+    *,
+    rtol: float,
+    atol: float,
+) -> CR3BPArc:
+    """Pellegrini-Russell fixed-path STM propagation.
+
+    Step 1: state-only DOP853 to record the accepted-step grid. Step 2: replay
+    the augmented (state, STM) system along that recorded grid, one DOP853
+    step per sub-interval, with ``first_step = max_step = h_i`` (and the
+    same ``rtol`` / ``atol`` as the state-only pass).
+
+    Pinning the step grid in advance to the unperturbed state trajectory kills
+    the ``partial delta_t / partial X`` term in eq. 17 (Pellegrini-Russell
+    2016, p. 3): the per-step size is now an INPUT, not an IC-dependent
+    output. The cost is a separate state-only pass and per-sub-interval
+    solve_ivp instantiation; the benefit is an unbiased STM aligned exactly
+    with the state path.
+
+    The single-step DOP853 (no internal subdivision) gives the most faithful
+    reading of Pellegrini-Russell §III.A.2 ("fixed-path feature"): the same
+    8th-order scheme that produced the recorded grid replays each step
+    exactly once at the same h_i, so the LOCAL truncation error per step is
+    consistent with the original state-only pass.
+    """
+    state_arr = np.asarray(state6, dtype=np.float64)
+    if state_arr.shape != (6,):
+        raise ValueError(
+            "propagate(stm_mode='fixed_path'): state6 must be a 6-vector, "
+            f"got shape {state_arr.shape}"
+        )
+    # Step 1: record state-only step grid.
+    sol_state = solve_ivp(
+        cr3bp_eom,
+        (0.0, t),
+        state_arr,
+        args=(system.mu,),
+        rtol=rtol,
+        atol=atol,
+        method="DOP853",
+    )
+    if not sol_state.success:
+        raise RuntimeError(
+            "CR3BP fixed-path state-only pre-pass failed at "
+            f"t={sol_state.t[-1]}: {sol_state.message}"
+        )
+    grid = np.asarray(sol_state.t, dtype=np.float64)
+    if grid.size < 2:
+        raise RuntimeError(
+            "CR3BP fixed-path: state-only DOP853 returned a degenerate grid "
+            f"(size {grid.size}); cannot replay STM"
+        )
+    # Step 2: replay augmented system along the recorded grid.
+    y = np.concatenate([state_arr, np.eye(6).reshape(36)])
+    for i in range(grid.size - 1):
+        h = float(grid[i + 1] - grid[i])
+        if h <= 0.0:
+            raise RuntimeError(f"CR3BP fixed-path: non-positive recorded step h={h} at index {i}")
+        sol_step = solve_ivp(
+            cr3bp_stm_eom,
+            (grid[i], grid[i + 1]),
+            y,
+            args=(system.mu,),
+            rtol=rtol,
+            atol=atol,
+            method="DOP853",
+            first_step=h,
+            max_step=h,
+        )
+        if not sol_step.success:
+            raise RuntimeError(
+                "CR3BP fixed-path STM replay failed at sub-interval "
+                f"[{grid[i]}, {grid[i + 1]}]: {sol_step.message}"
+            )
+        y = sol_step.y[:, -1]
+    return CR3BPArc(state_f=y[:6], stm=y[6:].reshape(6, 6), t=t)
 
 
 def cr3bp_system(primary: str, secondary: str) -> CR3BPSystem:
