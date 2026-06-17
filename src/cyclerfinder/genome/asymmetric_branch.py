@@ -107,6 +107,7 @@ class BranchedOrbit:
 
 def _select_saddle_center_eigenvector(
     monodromy_matrix: NDArray[np.float64],
+    parent_tangent: NDArray[np.float64] | None = None,
 ) -> tuple[NDArray[np.float64], complex] | None:
     """Pick the marginal eigenvector at a saddle-center bifurcation.
 
@@ -118,12 +119,37 @@ def _select_saddle_center_eigenvector(
     are the secondary pair, and the secondary eigenvalue closest to +1 is the
     bifurcation direction.
 
+    Parameters
+    ----------
+    monodromy_matrix :
+        6x6 monodromy from one full period of the parent orbit.
+    parent_tangent :
+        Optional 6-vector tangent to the parent's flow at the IC, i.e.
+        ``ẋ₀ = f(state0, mu)`` where ``f`` is the CR3BP EOM. When supplied,
+        the returned eigenvector is **Gram-Schmidt orthogonalised** against
+        this tangent before being unit-normalised. The tangent direction is
+        always a trivial monodromy eigenvector (time-translation symmetry,
+        ``M @ ẋ₀ = ẋ₀``); for higher-codimension or non-Earth-Moon-(3,2)
+        families the secondary-pair eigenvector returned by ``np.linalg.eig``
+        may carry a non-zero component along ``ẋ₀`` because the trivial-pair
+        eigenspace is degenerate and numerically rotated. Without
+        orthogonalisation, perturbing along the eigenvector slides the
+        corrector along the parent family rather than off it. The (3, 2)
+        Phase 1 anchor is harmless because the marginal direction is purely
+        (z, ż) while the parent's tangent is purely (ẋ, ẏ); they are
+        orthogonal by symmetry. For general Phase 2 sweep targets this
+        coincidence is not guaranteed.
+
     Returns
     -------
     (v, lam) :
-        ``v`` = unit-normalised real right-eigenvector (length 6).
+        ``v`` = unit-normalised real right-eigenvector (length 6), optionally
+        Gram-Schmidt-orthogonalised against ``parent_tangent``.
         ``lam`` = the matching eigenvalue.
-        ``None`` if no secondary eigenvalue can be cleanly identified.
+        ``None`` if no secondary eigenvalue can be cleanly identified or the
+        eigenvector collapses under Gram-Schmidt (would happen if the
+        secondary eigenvalue is actually parallel to the trivial pair — a
+        degenerate case that should fall to the next-closest secondary).
 
     Notes
     -----
@@ -166,6 +192,24 @@ def _select_saddle_center_eigenvector(
     if norm < 1e-14:
         return None
     v_real /= norm
+    # Step 3: Gram-Schmidt orthogonalisation against the parent tangent (#379).
+    # The trivial time-translation eigenvector is parallel to the EOM at the IC;
+    # perturbing along this direction slides along the parent's own orbit, not
+    # to the branched family.
+    if parent_tangent is not None:
+        t = np.asarray(parent_tangent, dtype=np.float64).reshape(-1)
+        if t.shape != (6,):
+            raise ValueError(f"parent_tangent must have shape (6,); got {t.shape}")
+        t_norm = float(np.linalg.norm(t))
+        if t_norm > 1e-14:
+            t_hat = t / t_norm
+            v_real = v_real - float(np.dot(v_real, t_hat)) * t_hat
+            norm = float(np.linalg.norm(v_real))
+            if norm < 1e-12:
+                # The candidate eigenvector was parallel to the parent tangent
+                # — a degenerate case. Caller should treat as no-pick.
+                return None
+            v_real /= norm
     return v_real, lam
 
 
@@ -263,7 +307,14 @@ def branch_at_saddle_center(
         raise ValueError(f"epsilon must be > 0 finite; got {epsilon}")
 
     mono = monodromy(system, parent_state0, parent_period, rtol=rtol, atol=atol)
-    pick = _select_saddle_center_eigenvector(mono)
+    # Compute the parent's tangent ẋ₀ = f(state0, mu) for the Gram-Schmidt
+    # orthogonalisation in _select_saddle_center_eigenvector (#379). This
+    # tangent is the time-translation symmetry direction and is always a
+    # trivial monodromy eigenvector; the secondary-pair eigenvector returned
+    # by np.linalg.eig is degenerate against it for general Phase 2 sweep
+    # targets and must be projected out before perturbing the IC.
+    parent_tangent = cr3bp.cr3bp_eom(0.0, parent_state0, system.mu)
+    pick = _select_saddle_center_eigenvector(mono, parent_tangent=parent_tangent)
     if pick is None:
         return None
     v, lam = pick
