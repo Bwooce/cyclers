@@ -298,7 +298,10 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 12 -> 13 (2026-06-17, #367 wave 2): +1 Rogers 2015 Table 3 circular-
     # coplanar precursor_mga sub-variant (VISIT-1 5:4(3)-). Same null V_inf
     # at Mars as the Table 4 rows.
-    ExclusionReason.MISSING_VINF: 13,
+    # 13 -> 15 (2026-06-17, #367 wave 2): +2 VISIT-2 Table 3 circular-
+    # coplanar precursor_mga sub-variants (5:4(3)-, 3:2(2)-). Same null
+    # V_inf at Mars.
+    ExclusionReason.MISSING_VINF: 15,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
     ExclusionReason.MISSING_PERIOD: 1,
