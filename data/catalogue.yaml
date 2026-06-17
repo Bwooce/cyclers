@@ -2734,15 +2734,20 @@
 # 10. Aldrin 4:3(2)- Establishment Variant (Analytic Ephemeris)
 # ---------------------------------------------------------------------------
 - id: aldrin-4-3-2-establishment
-  name: "Aldrin 4:3(2)- Variant (Analytic Ephemeris Establishment)"
-  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers et al. 2012 Table 4 values (V_inf, h_flyby, dV_DSM, TOF) are STOUR analytic-ephemeris establishment numbers.
+  name: "Aldrin 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers 2015 Table 4 values (V_inf, h_flyby, dV_DSM, TOF, LD) are STOUR analytic-ephemeris establishment numbers.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
-  orbit_class: cycler   # schema v4.7 (2026-06-15, task #294); scope expansion default — every pre-v4.7 row is a strict cycler (scripts/migrate_catalogue_scope_2026-06-15.py); see data/README.md
-  epoch_locked: false   # schema v4.7 (task #294); strict cyclers are NOT epoch-locked
-  n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
+  orbit_class: precursor_mga   # schema v4.7 (2026-06-17, task #367); reclassified from cycler -> precursor_mga: this is a one-time V-infinity-leveraging insertion trajectory that places a spacecraft INTO the steady-state Aldrin cycler, not a periodic cycler in its own right. Per the Rogers 2015 deep-read digest (#367) and the v4.7 catalogue-scope expansion (#294).
+  epoch_locked: true   # schema v4.7 (task #367); precursor_mga insertion trajectories exist only for a specific real-ephemeris launch window (Rogers 2015 Table 4 publishes the LD: 01/03/2023 for the 4:3(2)- variant).
+  n_returns: 1   # schema v4.7 (task #367); single Earth-launch / single insertion into the Aldrin cycler; n_returns=1 per the precursor_mga invariant.
+  inserts_into: aldrin-classic-em-k1-outbound   # schema v4.7 (task #367): cross-row pointer to the steady-state Aldrin outbound cycler this precursor establishes.
+  validity_window:   # schema v4.7 (task #367); Rogers 2015 Table 4 LD (01/03/2023) + ToF 161 d to Mars; nominal validity_window = LD +/- ~30 d phasing
+    start: "2023-01-03T00:00:00Z"
+    end: "2023-06-13T00:00:00Z"
+  launch_epoch: "2023-01-03T00:00:00Z"   # schema v4.7 (task #367); Rogers 2015 Table 4, row Aldrin '4:3(2)-': LD = 01/03/2023.
   orbit_source: rogers-2012-t1   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: analytic-ephemeris
   vinf_source: rogers-2012-t1
@@ -2837,11 +2842,18 @@
       todo_ref: "#54-backfill"
   first_published:
     authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
-    year: 2012
-    title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
-    venue: "AIAA 2012-4746"
-    doi: "10.2514/6.2012-4746"
-    url: "https://engineering.purdue.edu/AAC/wp-content/uploads/2012/09/EstablishingCyclerTrajectoriesBetweenEarthAndMarsViaV-InfinityLeveraging-AIAA-2012-47461.pdf"
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  corroborating_sources:
+    - authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+      year: 2012
+      title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
+      venue: "AIAA 2012-4746 / AAS Hilton Head 2013 (conference precursors of Rogers 2015 Acta Astro)"
+      doi: "10.2514/6.2012-4746"
+      url: "https://engineering.purdue.edu/AAC/wp-content/uploads/2012/09/EstablishingCyclerTrajectoriesBetweenEarthAndMarsViaV-InfinityLeveraging-AIAA-2012-47461.pdf"
+      note: "Conference-paper precursor of the Rogers 2015 Acta Astro archival version; same Table 4 values."
   priority_date: "2012-08-13"
   notes: |
     Captures the practical reality of flying an Aldrin cycler in a real
@@ -2849,6 +2861,14 @@
     while Earth completes 3. The variant uses V-infinity leveraging
     manoeuvres to push the idealized circular-coplanar trajectory into the
     eccentric real solar system.
+
+    Reclassified 2026-06-17 (#367) from orbit_class=cycler to
+    orbit_class=precursor_mga: this is a one-time V-infinity-leveraging
+    insertion trajectory that places a spacecraft INTO the steady-state
+    Aldrin outbound cycler, not a periodic cycler in its own right. The
+    inserts_into pointer resolves to aldrin-classic-em-k1-outbound. Source
+    elevated from Rogers 2012 (conference) to Rogers 2015 (Acta Astro
+    archival) per #367 digest (docs/notes/2026-06-17-digest-rogers-2015.md).
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': V∞ flyby = 5.509 km/s."
     "v_infinity_leveraging_dv_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '4:3(2)-': ΔV_DSM = 0.568 km/s."
@@ -2860,15 +2880,20 @@
 # 11. Aldrin 3:2(1)- Establishment Variant (Analytic Ephemeris)
 # ---------------------------------------------------------------------------
 - id: aldrin-3-2-1-establishment
-  name: "Aldrin 3:2(1)- Variant (Analytic Ephemeris Establishment)"
-  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers et al. 2012 Table 4 values (V_inf, h_flyby, dV_DSM, TOF) are STOUR analytic-ephemeris establishment numbers.
+  name: "Aldrin 3:2(1)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"   # schema v4.2 (2026-06-05): SOURCED — Rogers 2015 Table 4 values (V_inf, h_flyby, dV_DSM, TOF, LD) are STOUR analytic-ephemeris establishment numbers.
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: analytic-ephemeris   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: single-ellipse   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
-  orbit_class: cycler   # schema v4.7 (2026-06-15, task #294); scope expansion default — every pre-v4.7 row is a strict cycler (scripts/migrate_catalogue_scope_2026-06-15.py); see data/README.md
-  epoch_locked: false   # schema v4.7 (task #294); strict cyclers are NOT epoch-locked
-  n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
+  orbit_class: precursor_mga   # schema v4.7 (2026-06-17, task #367); reclassified from cycler -> precursor_mga: this is a one-time V-infinity-leveraging insertion trajectory that places a spacecraft INTO the steady-state Aldrin cycler, not a periodic cycler in its own right. Per the Rogers 2015 deep-read digest (#367).
+  epoch_locked: true   # schema v4.7 (task #367); precursor_mga insertion trajectories exist only for a specific real-ephemeris launch window (Rogers 2015 Table 4 LD: 12/09/2023 for the 3:2(1)- variant).
+  n_returns: 1   # schema v4.7 (task #367); single Earth-launch / single insertion into the Aldrin cycler; n_returns=1 per the precursor_mga invariant.
+  inserts_into: aldrin-classic-em-k1-outbound   # schema v4.7 (task #367): cross-row pointer to the steady-state Aldrin outbound cycler this precursor establishes.
+  validity_window:   # schema v4.7 (task #367); Rogers 2015 Table 4 LD (12/09/2023) + ToF 172 d to Mars; nominal validity_window = LD +/- ~30 d phasing
+    start: "2023-12-09T00:00:00Z"
+    end: "2024-05-29T00:00:00Z"
+  launch_epoch: "2023-12-09T00:00:00Z"   # schema v4.7 (task #367); Rogers 2015 Table 4, row Aldrin '3:2(1)-': LD = 12/09/2023.
   orbit_source: rogers-2012-t1   # schema v4.4 (2026-06-05); provenance tag back-filled from this row's existing source metadata (scripts/backfill_provenance_tags.py); see data/README.md
   orbit_fidelity: analytic-ephemeris
   vinf_source: rogers-2012-t1
@@ -2963,15 +2988,30 @@
       todo_ref: "#54-backfill"
   first_published:
     authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
-    year: 2012
-    title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
-    venue: "AIAA 2012-4746"
-    doi: "10.2514/6.2012-4746"
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  corroborating_sources:
+    - authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+      year: 2012
+      title: "Preliminary Analysis of Establishing Cycler Trajectories Between Earth and Mars via V-Infinity Leveraging"
+      venue: "AIAA 2012-4746 / AAS Hilton Head 2013 (conference precursors of Rogers 2015 Acta Astro)"
+      doi: "10.2514/6.2012-4746"
+      note: "Conference-paper precursor of the Rogers 2015 Acta Astro archival version; same Table 4 values."
   priority_date: "2012-08-13"
   notes: |
     The 3:2 variant (spacecraft completes 3 orbits per 2 Earth orbits)
     allows a 1-synodic (2.135 yr) establishment. Incurs a slightly higher
     V_inf at Earth (6.55 km/s) than the 4:3(2) variant.
+
+    Reclassified 2026-06-17 (#367) from orbit_class=cycler to
+    orbit_class=precursor_mga: this is a one-time V-infinity-leveraging
+    insertion trajectory that places a spacecraft INTO the steady-state
+    Aldrin outbound cycler, not a periodic cycler in its own right. The
+    inserts_into pointer resolves to aldrin-classic-em-k1-outbound. Source
+    elevated from Rogers 2012 (conference) to Rogers 2015 (Acta Astro
+    archival) per #367 digest (docs/notes/2026-06-17-digest-rogers-2015.md).
   source_quotes:
     "vinf_kms_at_encounters[0].vinf_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': V∞ flyby = 6.546 km/s."
     "v_infinity_leveraging_dv_kms": "Rogers et al. 2012, Table 4, p.7, row Aldrin '3:2(1)-': ΔV_DSM = 0.530 km/s."
