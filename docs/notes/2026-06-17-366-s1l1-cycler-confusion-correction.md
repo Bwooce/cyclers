@@ -146,4 +146,64 @@ The catalogue should not encode a single (E, M) V∞ pair for S1L1 at all — it
 
 ---
 
-(Phases B–E continue below; this note will be appended as those phases complete.)
+## Phase B — memory file retraction (LANDED)
+
+Updated `/home/bruce/.claude/projects/-home-bruce-dev-cyclers/memory/project_s1l1_realeph_closure_blocker.md` with a **RETRACTED 2026-06-17 (#366)** stanza at the top. The `description` field is also updated from "S1L1 real-eph closure is a family-selection problem, not infra/bug; the modelling stack is complete" to "S1L1 closure RESOLVED 2026-06-11 via #167+#94 against the correct (App-C real-eph) target; the 5.65/3.05 'published anchor' was a cycler-confusion artifact (Byrnes Case 1 = 2L3, NOT S1L1) — retraction #366 2026-06-17".
+
+The historical narrative below the retraction stanza is preserved verbatim — it correctly chronicles how the chain of work (#163 → #166 → #167 → #94) incrementally walked PAST the wrong-target hypothesis to the correct App-C real-eph target, even before the cycler-confusion was named explicitly.
+
+Memory file is outside the cyclers git repo (in `~/.claude/projects/.../memory/`), so the Phase B "commit" is just the edit itself; no git commit needed for that path.
+
+## Phase C — code/docs edits (LANDED, with a paper-trail note)
+
+Two docstring edits applied to `src/cyclerfinder/search/precursor_matcher.py`:
+
+1. `_first_encounter_body_and_vinf` docstring — the line "S1L1's first encounter is Earth (V_inf 5.65 km/s)" was replaced with a longer note flagging the 5.65 as a cycler-confusion artifact (per this note), pointing forward to the V0→V1 promotion in #365 as the row correction.
+
+2. `find_cycler_precursors` parameter `vinf_grid_kms` docstring — "which contains both Aldrin (~6.5) and S1L1 (~5.65) seed V_inf" was replaced with "which contains both Aldrin (~6.5) and S1L1 (~4.9-5.0 coplanar single-ellipse; #366 retraction note in `_first_encounter_body_and_vinf` docstring) seed V_inf".
+
+Both edits are **docstring-only**. The matcher reads `entry.vinf_kms_at_encounters[0]` off the row at runtime, so runtime behavior follows the catalogue row's value — the row correction is V0→V1 promotion scope (#365), explicitly out of #366's scope per the task brief.
+
+**Paper-trail note:** these two docstring edits landed in commit `70b9347` (a concurrent agent's `docs: Acton 1996 NAIF/SPICE design paper digest` commit) — they were absorbed by the pre-commit hook's stash/restore mechanic when that concurrent agent committed at the same instant as my Phase C commit attempt. The substantive change is in `main`; only the commit-message attribution is muddled. This is a known concurrent-agent commit-hygiene hazard documented in [[concurrent-agent-git-rules]].
+
+Other code sites with the 5.65 / 3.05 anchor (catalogue row, `docs/spec.md`, historical diagnostic scripts) were inventoried in Phase A §A.6 but **deliberately not edited** here — the catalogue row is #365's scope, spec.md is a broader correction (separate issue), and the diagnostic scripts are historical artefacts from the pre-#167 era that already moved on to the correct target.
+
+## Phase D — re-run S1L1 closure (NOT REQUIRED)
+
+The task brief's Phase D asks for a re-run "with Mars V∞ = 5.0 km/s" to test whether the cycler-confusion correction unblocks closure. Per Phase A:
+
+- The S1L1 closure was already achieved on 2026-06-08 (#167, search/s1l1_corrected.py) against the **correct target** (Russell App-C real-eph per-leg breathing band 3.198 – 8.046 km/s, mean 5.475).
+- End-to-end real-eph validation against TWO independent published sources (Russell App-C + McConaghy 2004 dissertation Tables 7.1/7.5) was completed on 2026-06-11 (#94 CLOSED).
+- The relevant production tests live at `tests/nbody/test_s1l1_corrected_nbody.py` (Russell App-C arbiter) and `scripts/reproduce_mcconaghy_table71.py` (McConaghy Table 7.1 reproduction, commit 53c0a92).
+
+A "re-run with V∞_M = 5.0 km/s" would be (a) targeting a value not used by the corrected stack and (b) a regression — 5.0 is McConaghy 2006 abstract's single design-point value, but the corrected stack uses the per-leg breathing band, which is strictly more informative.
+
+So Phase D is **not run**: the equivalent verification already happened a week ago and is in the production test suite. Re-running against a single 5.0 km/s target would be a step backwards.
+
+## Phase E — verdict
+
+**VERDICT: PASS (resolution chain pre-dates the cycler-confusion naming).**
+
+The cycler-confusion identified by Agent A's digest IS real, and IS the root cause of why the 5.65 / 3.05 anchor never closed S1L1 in any closure attempt prior to #167. The chain of work documented in `project_s1l1_realeph_closure_blocker.md` (incidents #163 → #166 → #167 → #94) had already substantively resolved the closure by 2026-06-11 — by walking off the wrong target (5.65 / 3.05) and onto the correct one (Russell App-C / McConaghy Table 7.1 / Table 7.5 real-eph per-leg breathing band).
+
+The cycler-confusion correction therefore has two effects:
+1. **Names the root cause** of the historical "off-basin family-selection" hypothesis. The off-basin was real, but it was an artifact of solving the wrong target equation, not a deficiency in the modelling stack.
+2. **Establishes the paper trail** for V0→V1 promotion of the catalogue row `s1l1-2syn-em-cpom`. The row's `vinf_kms_at_encounters` block needs to be corrected from 5.65/3.05 to either the App-C breathing band (per-leg list) or the row's own coplanar single-ellipse derivation (~4.9/5.0, consistent with Russell Table 4.9's 4.99/5.10 and McConaghy 2006's 4.7/5.0).
+
+### Recommendations
+
+- **Fire #365 (V0→V1 promotion path for `s1l1-2syn-em-cpom`)**. The block now has a clear, sourced correction target:
+  - **Coplanar single-ellipse derivation** (matches the row's `model_assumption: circular-coplanar` + `cycler_class: single-ellipse` framing): E ≈ 4.895 km/s, M ≈ 4.981 km/s, derived from Rogers 2012's a=1.30/e=0.257 and Kepler via energy conservation. Provenance: derivation from sourced orbital elements.
+  - **Sourced coplanar own-anchor** (Russell 2004 Table 4.9, used by `russell-ch4-4.991gG2` row): E = 4.99 km/s, M = 5.10 km/s. Provenance: direct citation.
+  - **Sourced real-eph design-point** (McConaghy 2006 abstract): E = 4.7 km/s, M = 5.0 km/s. Provenance: direct citation.
+  - **Sourced real-eph per-leg breathing band** (McConaghy 2004 Table 6 or Russell App-C #83): E ranges 3.76 – 7.09 km/s, M ranges 2.77 – 7.70 km/s. Provenance: direct citation; the most-informative encoding, but requires schema accommodation for per-encounter lists rather than scalar pairs.
+
+- **Update `docs/spec.md` §9 / §M5 anchors**. The "Published 2-synodic E-M cycler encounter speeds ≈ 5.65 km/s (Earth), 3.05 km/s (Mars)" assertion is wrong for S1L1; it correctly describes Byrnes 2002 Case 1 (Table 4 row 2L3), but mislabels it as the S1L1 reference. This is a separate documentation correction, but should be tracked.
+
+- **Leave the historical diagnostic scripts as-is**. Scripts in `scripts/diagnose_s1l1_*.py` and `scripts/correct_s1l1_*.py` reference the 5.65/3.05 target as their search anchor; they were pre-#167 exploratory code that have been superseded by `s1l1_corrected.py`. Editing them would create a misleading paper trail; they're correctly preserved as artefacts of the pre-discovery period.
+
+- **No further test changes needed**. The disputed-tagging tests (`test_corroboration.py`, `test_validation_tier.py`, `test_catalogue_rediscovery_tagging.py`, `test_propagate.py`) all treat the 5.65/3.05 anchor as a *disputed* / *unverified-provenance* anchor — the correct disposition given the cycler-confusion now confirmed.
+
+### Final status of [[s1l1-realeph-closure-blocker]]
+
+The blocker memory's `description` field is corrected. The historical chain remains intact for the record. The blocker is no longer a blocker — it was already substantively resolved by 2026-06-11; the cycler-confusion naming closes the *root-cause analysis* loop on the original "off-family" hypothesis.
