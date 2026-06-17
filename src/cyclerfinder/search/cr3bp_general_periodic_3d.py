@@ -228,7 +228,17 @@ def _propagate_with_stm(
     rtol: float,
     atol: float,
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
-    """Wrap :func:`cr3bp.propagate` for clarity; returns ``(state_f, STM)``."""
+    """Wrap :func:`cr3bp.propagate` for clarity; returns ``(state_f, STM)``.
+
+    Uses the legacy ``stm_mode='variable'`` augmented-state DOP853 path. The
+    3D corrector is dominated by single-shooting residual reduction (not
+    Floquet-clustered-eigenvalue conditioning), so the Pellegrini-Russell
+    2016 (JGCD, DOI 10.2514/1.G001920) δt/∂X bias does not change the
+    Newton-step direction at any tolerance the corrector ever lands at.
+    For saddle-center / cluster-point monodromy work, see
+    :func:`cyclerfinder.search.bifurcation_detector.monodromy` and pass
+    ``stm_mode='fixed_path'`` (PR mitigation per Conclusion 2, p. 14).
+    """
     arc = cr3bp.propagate(system, state0, t, with_stm=True, rtol=rtol, atol=atol)
     assert arc.stm is not None  # we asked for it
     return arc.state_f, arc.stm
