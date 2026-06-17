@@ -456,11 +456,12 @@ def test_census_distribution() -> None:
     precursor_mga sub-variant: single-ellipse 35->36; then VISIT-2 5:4(3)-
     and 3:2(2)- circular-coplanar precursor_mga: single-ellipse 36->38;
     then Case 1 5:4(3)- and 3:2(2)- circular-coplanar precursor_mga:
-    single-ellipse 38->40.)
+    single-ellipse 38->40; then Case 2 5:4(3)- and Case 3 3:2(2)-
+    circular-coplanar precursor_mga: single-ellipse 40->42.)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 40, "multi-arc": 244, "non-keplerian": 12}
+    expected = {"single-ellipse": 42, "multi-arc": 244, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
