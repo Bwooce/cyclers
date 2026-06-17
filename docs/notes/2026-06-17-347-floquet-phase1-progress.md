@@ -74,6 +74,30 @@ Either interpretation is consistent with the eigenvalue evidence. For P1.3-P1.4 
 
 **P1.2 gate.** PASS. Continuation runs cleanly to 250 members covering C ∈ [3.1294, 3.1544]; the saddle-center signature is clearly visible in the data. Proceed to P1.3 (saddle-center detector).
 
-**P1.2 commits:** `scripts/floquet_phase1_p1_2_walk.py` + `data/floquet_phase1_c32_family.jsonl` artifact (251 rows: 1 header + 250 members).
+**P1.2 commits:** `scripts/floquet_phase1_p1_2_walk.py` + `data/floquet_phase1_c32_family.jsonl` artifact (251 rows: 1 header + 250 members). Commit `075f21b`.
+
+---
+
+## P1.3 — Saddle-center detector for k=1
+
+**New function** in `src/cyclerfinder/search/bifurcation_detector.py`:
+
+  * `_classify_secondary_pair(eigs)`: per-member classifier. Excludes the 2 trivial eigenvalues (closest to +1 by |λ - 1|) and the 2 primary-saddle eigenvalues (largest |log|λ|| — the dominant unstable manifold direction). Classifies the remaining 2 as either `complex_unit_circle`, `real_near_one` (both real, both within 0.1 of +1), or `real_far` (both real but separated). The saddle-center transition is `complex_unit_circle → real_near_one`.
+  * `detect_saddle_center_bracket(seeds)`: family-level detector. For each adjacent pair of `FamilyMember`, runs `monodromy` + `floquet_multipliers` + `_classify_secondary_pair`; emits a `BifurcationPoint` with `k=1` for each adjacent pair where the classification transitions between `complex_unit_circle` and `real_near_one`.
+
+This is the k=1 specialisation of the pre-existing `scan_family_for_bifurcations` which excludes k=1 (the trivial-pair degeneracy swamps the period-multiplying signal). The two functions are complementary.
+
+**Tests** in `tests/search/test_floquet_saddle_center_detector.py`. 11 tests; all pass. Gates:
+
+  * Artifact contract: 1 header + 251 member rows; sourced anchor labeled `braik_ross_2026_table2_C32`.
+  * `_classify_secondary_pair` returns `complex_unit_circle` at the C32 anchor i=0 (C=3.1294) and at the pre-bifurcation i=123 (C=3.14170); `real_near_one` at the post-bifurcation i=124 (C=3.14180); `real_far` at i=150 (C=3.14440, bifurcated pair separated past the 0.1 band); `complex_unit_circle` again at i=230 (C=3.15240, the RE-COALESCED secondary pair — see Inverse Bifurcation below).
+  * `detect_saddle_center_bracket` flags the canonical k=1 bracket between (i=123, i=124) on the i=121..125 window AND across the full 5-step-subsampled 250-member walk.
+  * Re-checks the 5 existing `bifurcation_detector` tests + the P1.1 anchor tests: no regression.
+
+**Inverse-direction bifurcation observed.** Walking past i=124 the bifurcated real pair separates ((0.8778, 1.1392) at i=130, (0.7894, 1.2668) at i=150). But by i=200 (C=3.1494) the pair is (0.8013, 1.2479) — still real. By i=230 (C=3.1524) the pair has **re-coalesced as a complex conjugate pair on the unit circle** (0.9895 ± 0.1443j). This is a SECOND saddle-center bifurcation in the inverse direction (real_far → complex_unit_circle). The current detector intentionally only flags transitions involving `real_near_one` (the strict saddle-center signature near +1) and ignores this `real_far → complex_unit_circle` transition. The structural observation — that the (3,2) family has TWO saddle-centers within the walked C-range, not just one — is preserved in the progress note for Phase 2/3 design discussion.
+
+**P1.3 gate.** PASS. The detector returns exactly one canonical k=1 BifurcationPoint bracketing C ∈ (3.14170, 3.14180) — the eigenvalue evidence matches RTR2026 p.5 saddle-center theory.
+
+**P1.3 commit:** (filled at commit time)
 
 ---

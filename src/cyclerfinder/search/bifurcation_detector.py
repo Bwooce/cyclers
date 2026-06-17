@@ -1,4 +1,5 @@
-"""Period-multiplying bifurcation detector for CR3BP families (#266 Phase 2).
+"""Period-multiplying and saddle-center bifurcation detector for CR3BP families
+(#266 Phase 2, extended #347 Phase 1).
 
 When a one-parameter family of periodic orbits is continued through parameter
 space, the Floquet multipliers (eigenvalues of the monodromy matrix) sweep
@@ -11,6 +12,18 @@ The detector is the *minimum-viable* substrate for tulip-orbit family hunting
 (#266 Phase 2): given a continuation along the NRHO family it flags every
 adjacent pair where a multiplier crossed a root-of-unity, narrowing the search
 for new petal-count families to a bracket the corrector can later refine.
+
+The k=1 saddle-center case (extension #347 Phase 1, RTR2026 + Hamiltonian
+bifurcation theory) is the bifurcation at lambda=+1 with codimension 1: a
+non-trivial Floquet multiplier coalesces with the trivial pair at +1. In the
+CR3BP Hamiltonian flow this manifests as a complex-conjugate pair on the unit
+circle coalescing on the real axis at +1 and splitting into a real reciprocal
+pair (one branch slightly above +1, one below). The pre-existing
+:func:`detect_period_multiplying` excludes k=1 (the trivial-pair degeneracy
+swamps the signal); :func:`detect_saddle_center_bracket` is the k=1
+specialisation. It identifies the bracket where the two "secondary" non-
+trivial eigenvalues transition from complex-on-unit-circle (pre-bifurcation)
+to real-near-+1 (post-bifurcation).
 
 Discipline:
 
@@ -351,4 +364,185 @@ def scan_family_for_bifurcations(
                         extras={"param_before": pa, "param_after": pb},
                     )
                 )
+    return brackets
+
+
+# ---------------------------------------------------------------------------
+# Saddle-center / pitchfork (k=1) detection (#347 Phase 1).
+# ---------------------------------------------------------------------------
+
+
+def _classify_secondary_pair(eigs: NDArray[np.complex128]) -> tuple[str, complex, complex]:
+    """Classify the two "secondary" Floquet multipliers of a planar CR3BP orbit.
+
+    The CR3BP monodromy has 6 eigenvalues with reciprocal-pair structure:
+
+      * one trivial pair near (1, 1) (energy + time-translation; split only by
+        integrator round-off);
+      * one "primary" real reciprocal pair (lambda_max, 1/lambda_max) carrying
+        the orbit's dominant unstable manifold (e.g. ~ 2.5e5 / 4e-6 for the
+        (3,2) Earth-Moon C32 anchor);
+      * one "secondary" pair: either a complex conjugate pair on the unit
+        circle (pre-bifurcation) OR a real reciprocal pair near +1 (post-
+        bifurcation). This is the pair the saddle-center detector tracks.
+
+    The classification picks the secondary pair by excluding (a) the 2
+    eigenvalues closest to +1 (trivial), and (b) the eigenvalues with the
+    largest |log|lambda|| (primary saddle pair). The remaining 2 are the
+    secondary pair.
+
+    Returns
+    -------
+    (kind, lam_a, lam_b) :
+        ``kind`` is one of "complex_unit_circle", "real_near_one", or
+        "real_far". ``(lam_a, lam_b)`` are the two secondary eigenvalues; for
+        a complex pair, ``lam_a`` has the positive imaginary component.
+
+    Notes
+    -----
+    The classification is local-state-only — it makes no continuation
+    inference. The bifurcation BRACKET is produced by comparing the
+    classification across adjacent family members.
+
+    "real_near_one" means both secondary eigenvalues are real AND within 0.1
+    of +1 (the post-saddle-center signature; the bifurcated pair starts at
+    (+1, +1) and slowly separates as the family advances). "real_far" is for
+    orbits where the secondary pair is real but well separated — that can
+    happen far past the bifurcation. "complex_unit_circle" requires both
+    eigenvalues complex with non-zero imaginary and |lambda - 1| > 1e-6.
+    """
+    eigs_c = np.asarray(eigs, dtype=np.complex128)
+    if eigs_c.shape[0] < 4:
+        raise ValueError(f"_classify_secondary_pair: need >= 4 eigenvalues, got {eigs_c.shape[0]}")
+    # Step 1: exclude the 2 trivial-pair eigenvalues (closest to +1 by |lam - 1|).
+    dists_to_one = np.abs(eigs_c - 1.0)
+    triv_idx = np.argsort(dists_to_one)[:2]
+    triv_set = set(int(i) for i in triv_idx)
+    remaining = [(i, eigs_c[i]) for i in range(eigs_c.shape[0]) if i not in triv_set]
+    # Step 2: among remaining, exclude the primary saddle pair by largest |log|lambda||.
+    log_mags = [(i, abs(math.log(max(abs(e), 1e-300)))) for i, e in remaining]
+    log_mags.sort(key=lambda t: -t[1])
+    primary_indices = {log_mags[0][0], log_mags[1][0]}
+    secondary = [(i, e) for i, e in remaining if i not in primary_indices]
+    if len(secondary) != 2:
+        # Fallback: take the 2 remaining whose |lambda| is closest to 1.
+        secondary = sorted(remaining, key=lambda t: abs(abs(t[1]) - 1.0))[:2]
+    lam_a = complex(secondary[0][1])
+    lam_b = complex(secondary[1][1])
+    # Conventional ordering: positive-imag first.
+    if lam_a.imag < lam_b.imag:
+        lam_a, lam_b = lam_b, lam_a
+    # Classify.
+    imag_a = abs(lam_a.imag)
+    imag_b = abs(lam_b.imag)
+    is_complex = imag_a > 1e-6 and imag_b > 1e-6
+    if is_complex:
+        return "complex_unit_circle", lam_a, lam_b
+    near_one_a = abs(lam_a - 1.0) < 0.1
+    near_one_b = abs(lam_b - 1.0) < 0.1
+    if near_one_a and near_one_b:
+        return "real_near_one", lam_a, lam_b
+    return "real_far", lam_a, lam_b
+
+
+def detect_saddle_center_bracket(
+    seeds: Sequence[FamilyMember],
+    *,
+    primary: str = "Earth",
+    secondary: str = "Moon",
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> list[BifurcationPoint]:
+    """Scan an ordered family for the saddle-center / pitchfork (k=1) bifurcation.
+
+    For each consecutive pair ``(member_i, member_{i+1})``:
+
+      1. Compute the monodromy + Floquet multipliers at both members.
+      2. Classify the secondary eigenvalue pair (see
+         :func:`_classify_secondary_pair`).
+      3. If the classification TRANSITIONS from ``complex_unit_circle`` at
+         member_i to ``real_near_one`` at member_{i+1} (or vice versa), emit a
+         :class:`BifurcationPoint` bracket with ``k=1``.
+
+    The signal is unambiguous in eigenvalue terms: a complex conjugate pair on
+    the unit circle has coalesced on the real axis at +1 and split into a
+    real reciprocal pair. This is the saddle-center / pitchfork at lambda=+1
+    (codimension 1 Hamiltonian-with-symmetry bifurcation, RTR2026 Sec. p.5).
+
+    Parameters
+    ----------
+    seeds :
+        Ordered family members. Order matters: the bracket is between
+        adjacent members in the sequence.
+    primary, secondary :
+        CR3BPSystem labels passed through; only ``system.mu`` is read from
+        each member.
+    rtol, atol :
+        Integrator tolerances for the monodromy. Defaults match the rest of
+        the module (1e-12 / 1e-12).
+
+    Returns
+    -------
+    list of BifurcationPoint :
+        Adjacent-member brackets with ``k=1`` and
+        ``extras["classification_before"]`` / ``extras["classification_after"]``
+        carrying the secondary-pair labels at each end. May be empty.
+
+    Notes
+    -----
+    The detector is robust to the discrete signal flipping more than once: a
+    family that crosses the bifurcation, then crosses back, will emit two
+    brackets in canonical adjacency order. The caller resolves.
+    """
+    if len(seeds) < 2:
+        return []
+    per_member_kind: list[str] = []
+    per_member_eigs: list[NDArray[np.complex128]] = []
+    per_member_pair: list[tuple[complex, complex]] = []
+    for mem in seeds:
+        sysm = cr3bp.CR3BPSystem(
+            mu=mem.mu,
+            primary=primary,
+            secondary=secondary,
+            l_km=1.0,
+            t_s=1.0,
+        )
+        mat = monodromy(sysm, mem.state0, mem.period, rtol=rtol, atol=atol)
+        eigs = floquet_multipliers(mat)
+        kind, lam_a, lam_b = _classify_secondary_pair(eigs)
+        per_member_kind.append(kind)
+        per_member_eigs.append(eigs)
+        per_member_pair.append((lam_a, lam_b))
+
+    brackets: list[BifurcationPoint] = []
+    transition_kinds = {"complex_unit_circle", "real_near_one"}
+    for i in range(len(seeds) - 1):
+        k_a = per_member_kind[i]
+        k_b = per_member_kind[i + 1]
+        if k_a == k_b:
+            continue
+        if k_a not in transition_kinds or k_b not in transition_kinds:
+            continue
+        a, b = seeds[i], seeds[i + 1]
+        lam_a, _ = per_member_pair[i]
+        lam_b, _ = per_member_pair[i + 1]
+        pa = a.parameter if a.parameter is not None else float("nan")
+        pb = b.parameter if b.parameter is not None else float("nan")
+        brackets.append(
+            BifurcationPoint(
+                k=1,
+                members=(a, b),
+                eig_before=lam_a,
+                eig_after=lam_b,
+                dist_before=float(abs(lam_a - 1.0)),
+                dist_after=float(abs(lam_b - 1.0)),
+                tol=0.1,
+                extras={
+                    "param_before": pa,
+                    "param_after": pb,
+                    "classification_before": float(0.0 if k_a == "complex_unit_circle" else 1.0),
+                    "classification_after": float(0.0 if k_b == "complex_unit_circle" else 1.0),
+                },
+            )
+        )
     return brackets
