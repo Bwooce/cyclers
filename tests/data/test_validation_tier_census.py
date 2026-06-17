@@ -93,9 +93,14 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # 3:2(2)- Table 3 circular-coplanar precursor_mga sub-variants.
 # 263 -> 265 (2026-06-17, #367 wave 2): +2 S1L1 5:4(3)- and 3:2(2)-
 # Table 3 circular-coplanar precursor_mga sub-variants.
+# 265 -> 267 (2026-06-17, #367 wave 2): +2 U0L1 4:3(3)- and 2:1(1)-
+# Table 3 circular-coplanar precursor_mga sub-variants. Completes the
+# Rogers 2015 Table 3 admission wave (8 cycler families x {2,3} K:L(M)
+# variants = 20 rows, with the 9 Table-4-also-tabulated rows already
+# admitted earlier in the wave).
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 265,
+    "consistency_checked": 267,
     # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
     # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
     # which classifies as 'unvalidated' under the existing provenance rules.
