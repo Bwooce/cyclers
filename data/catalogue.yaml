@@ -3645,8 +3645,8 @@
   period:
     pair: "E-M"
     k: 2
-    years: 5.0
-    note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline (~5 Earth years; rounds to 2 Earth-Mars synodic periods for the period.k synodic-count axis)."
+    years: 4.27
+    note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline (~2 Earth-Mars synodic periods)."
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: 2.664
@@ -3727,8 +3727,8 @@
   period:
     pair: "E-M"
     k: 2
-    years: 5.0
-    note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline (~5 Earth years; rounds to 2 Earth-Mars synodic periods)."
+    years: 4.27
+    note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline (~2 Earth-Mars synodic periods)."
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: 3.754
@@ -3803,7 +3803,7 @@
   period:
     pair: "E-M"
     k: 1
-    years: 3.0
+    years: 2.135
     note: "K=3 Earth-orbit V-infinity-leveraging establishment timeline (~3 Earth years; rounds to 1 Earth-Mars synodic period)."
   vinf_kms_at_encounters:
     - body: "E"
@@ -3879,7 +3879,7 @@
   period:
     pair: "E-M"
     k: 2
-    years: 5.0
+    years: 4.27
     note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -3956,7 +3956,7 @@
   period:
     pair: "E-M"
     k: 1
-    years: 3.0
+    years: 2.135
     note: "K=3 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -4033,7 +4033,7 @@
   period:
     pair: "E-M"
     k: 2
-    years: 5.0
+    years: 4.27
     note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -4110,7 +4110,7 @@
   period:
     pair: "E-M"
     k: 1
-    years: 3.0
+    years: 2.135
     note: "K=3 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -4187,7 +4187,7 @@
   period:
     pair: "E-M"
     k: 2
-    years: 5.0
+    years: 4.27
     note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -4266,7 +4266,7 @@
   period:
     pair: "E-M"
     k: 1
-    years: 3.0
+    years: 2.135
     note: "K=3 Earth-orbit V-infinity-leveraging establishment timeline."
   vinf_kms_at_encounters:
     - body: "E"
@@ -4344,7 +4344,7 @@
     pair: "E-M"
     k: 2
     years: 4.27
-    note: "K=4 Earth-orbit V-infinity-leveraging establishment timeline (~2-synodic period); maneuver on 3rd s/c orbit (M=3, distinct from the 4:3(2)- variant — note M=L=3 places the burn on the LAST s/c orbit before encounter)."
+    note: "K=4 Earth-orbit V-infinity-leveraging establishment timeline (~2 Earth-Mars synodic periods); maneuver on 3rd s/c orbit (M=3, distinct from the 4:3(2)- variant — note M=L=3 places the burn on the LAST s/c orbit before encounter)."
   vinf_kms_at_encounters:
     - body: "E"
       vinf_kms: 9.801
@@ -4422,7 +4422,7 @@
   period:
     pair: "E-M"
     k: 1
-    years: 2.0
+    years: 2.135
     note: "K=2 Earth-orbit V-infinity-leveraging establishment timeline (~1 Earth-Mars synodic period); the shortest establishment timeline in Rogers Table 3 (highest V∞ swing)."
   vinf_kms_at_encounters:
     - body: "E"

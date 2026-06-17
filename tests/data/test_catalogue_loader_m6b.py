@@ -17,9 +17,12 @@ from tests.data._catalogue_loader_m6b import (
 def test_loader_filters_v1_pass_circular_coplanar_ballistic_sun_only() -> None:
     """Plan §4.5: returned set is bounded; every entry's fields obey the filter."""
     entries = load_m6b_entries()
-    # Bounded count: catalogue ~ 219 entries; M6b scope drops the cr3bp,
-    # analytic-ephemeris, and non-Sun rows. Plan §3.2 expects ~180-215.
-    assert 100 <= len(entries) <= 250, f"unexpected M6b-scope entry count: {len(entries)}"
+    # Bounded count: catalogue ~ 302 entries; M6b scope drops the cr3bp,
+    # analytic-ephemeris, and non-Sun rows. Plan §3.2 expects ~180-215 at
+    # original publish; ceiling raised 250->270 after #367 wave 2 admitted
+    # 11 Rogers 2015 Table 3 circular-coplanar precursor_mga rows (all
+    # M6b-scope eligible).
+    assert 100 <= len(entries) <= 270, f"unexpected M6b-scope entry count: {len(entries)}"
     for entry in entries:
         assert entry.get("model_assumption") in (None, "circular-coplanar")
         assert entry.get("trajectory_regime") in (None, "ballistic", "powered")
