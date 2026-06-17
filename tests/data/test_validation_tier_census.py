@@ -96,7 +96,13 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # sweep EFFECTIVELY_CYCLIC) lives on a SEPARATE axis from this
     # source-pair census. The two axes are orthogonal by design (see
     # earlier #294/#336 comments above).
-    "unvalidated": 29,
+    # 29 -> 30 (2026-06-17, #356): damario-1992-galileo-veega admitted as
+    # the third computed mga_tour row with orbit_source=derived /
+    # vinf_source=derived (same fidelity) — classifies as 'unvalidated'
+    # under the same orthogonal-axis convention. Its V0 evidence
+    # (D'Amario 1992 SSR 60(1-4):23-78 Table I + Figs 3/5/8 verbatim) lives
+    # in validation_level, not the source-pair tier.
+    "unvalidated": 30,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

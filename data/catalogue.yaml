@@ -48950,3 +48950,131 @@ days\" per the NTRS abstract.
     "validity_window.start": "Per #338 boundary JSONL: longest_pass_run_start_year=2000, length 84 yr."
     "validity_window.end": "Per #338 boundary JSONL: longest_pass_run_end_year=2083."
     "n_returns": "Per #330 data/silver_327_moontour_v2_verdicts.jsonl: n_cycles=10 verdict with bounded drift; #331 V3 reproduces same 10 cycles; n_returns=10 reflects the convergent-with-bounded-drift count, NOT a strict periodic-cycler infinity (which would require strict-periodic n_returns='infinite' per v4.7 cycler-class definition)."
+
+- id: damario-1992-galileo-veega
+  name: "Galileo VEEGA flown trajectory (D'Amario-Bright-Wolf 1992)"
+  source: literature
+  trajectory_regime: ballistic   # patched-conic with Venus + Earth + Earth gravity assists (+Gaspra/Ida asteroid science flybys) + JOI dV at Jupiter (outside the heliocentric tour)
+  model_assumption: analytic-ephemeris   # JPL flight design per D'Amario 1992; pre-launch DE-200 era + post-launch TCM-corrected
+  cycler_class: multi-arc   # schema v4; three distinct heliocentric arcs (E->V, V->E1, E1->E2, E2->J); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7 (task #356, 2026-06-17); canonical Venus-Earth-Earth gravity-assist mga_tour archetype; terminal target is Jupiter capture (JOI 628 m/s), not a continuing tour at Earth
+  epoch_locked: true   # 1989 VEEGA opportunity is a once-per-decade Earth-Venus phasing window; 41-day launch period per D'Amario 1992 §2.1 / §2.3.1
+  n_returns: 1   # single Earth-launch / single Jupiter-arrival; not a cycler
+  validity_window:   # Earth launch (Table I) -> JOI completion (Table I)
+    start: "1989-10-18T16:54:00Z"
+    end: "1995-12-08T01:16:00Z"
+  launch_epoch: "1989-10-18T16:54:00Z"   # D'Amario 1992 p.27: '18 October 1989 at 16:54 UTC (09:54 PST)'
+  validation_level: V0   # spec §14: sourced from D'Amario 1992 Table I + Figs 3/5/8; not independently reproduced on modern ephemeris (V0 internal-consistency floor)
+  source_ephemeris: "JPL pre-launch design ephemeris + post-launch TCM-corrected (D'Amario 1992 §2.3); approx DE-200 era"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: analytic-ephemeris
+  vinf_fidelity: analytic-ephemeris
+  bodies: ["E", "V", "E", "Gaspra", "E", "Ida", "J"]
+  sequence_canonical: "E-V-E-Gaspra-E-Ida-J"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.8
+      note: "D'Amario 1992 p.25: launch C3 in [13, 17] km^2/s^2 (IUS-limited; nominal ~14.5); sqrt(C3) -> V_inf magnitude ~3.6-4.1 km/s. Approximate (range-derived); D'Amario et al. 1989 AAS 89-431 has the actual flown C3 if a tighter value is needed."
+    - body: "V"
+      vinf_kms: 6.2
+      note: "D'Amario 1992 Fig 3 (p.28); Venus flyby 10 Feb 1990 05:59 UTC; closest-approach altitude 16,123 km; latitude -40.8 deg; V_rel = 8.2 km/s; |V_inf| = 6.2 km/s. Venus added 2.3 km/s to heliocentric V."
+    - body: "E"
+      vinf_kms: 8.9
+      note: "D'Amario 1992 Fig 5 (p.32); Earth-1 flyby 8 Dec 1990 20:35 UTC; closest-approach altitude 960 km; lat 25 deg, lon 63 W; V_rel = 13.7 km/s; |V_inf| = 8.9 km/s; V_inf rotated 48 deg; heliocentric period 1 yr -> 2 yr (k=2 E-E resonance)."
+    - body: "Gaspra"
+      vinf_kms: 8.0
+      note: "D'Amario 1992 §2.3.4 (p.32) and Table I (p.37); Gaspra (asteroid 951) flyby 29 Oct 1991; closest approach 1600 km from center; V_rel = 8.0 km/s. Gravity-assist negligible (asteroid mass too low) - science flyby only. Note Johnson-Yeates-Young 1992 (sister SSR paper) Note Added in Proof confirms 1600 km."
+    - body: "E"
+      vinf_kms: 8.9
+      note: "D'Amario 1992 Fig 8 (p.35); Earth-2 flyby 8 Dec 1992 15:35 UTC; closest-approach altitude 300 km; lat -34 deg, lon 12 W; V_rel = 14.1 km/s; |V_inf| = 8.9 km/s; V_inf rotated 51 deg; V_helio 35.3 -> 39.0 km/s; period now 5.6 yr to Jupiter."
+    - body: "Ida"
+      vinf_kms: 12.4
+      note: "D'Amario 1992 §2.3.4 (p.36) and Table I (p.37); Ida (asteroid 243) flyby 28 Aug 1993; V_rel = 12.4 km/s; closest-approach altitude TBD at writing (was flown). Gravity-assist negligible - science flyby only."
+    - body: "J"
+      vinf_kms: 5.9
+      note: "DERIVED: D'Amario 1992 §3.4 (p.45) gives Probe inertial entry speed 59.9 km/s and atmosphere-relative 47.4 km/s. V_inf_J ~ sqrt(V_entry^2 - V_circ_Jupiter^2); JOI dV = 628 m/s (Table VIII). Johnson-Yeates-Young 1992 sister paper does NOT publish Jupiter approach V_inf (verified in #358 digest), so 5.9 km/s is order-of-magnitude derivation, not directly sourced - flagged for any future V2-promotion attention."
+  legs: []
+  first_published:
+    authors: ["D'Amario, L. A.", "Bright, L. E.", "Wolf, A. A."]
+    year: 1992
+    title: "Galileo trajectory design"
+    venue: "Space Science Reviews, Vol. 60, No. 1-4, pp. 23-78 (May 1992)"
+    doi: "10.1007/bf00216849"
+  corroborating_sources:
+    - authors: ["Johnson, T. V.", "Yeates, C. M.", "Young, R."]
+      year: 1992
+      title: "Space Science Reviews Volume on Galileo Mission Overview"
+      venue: "Space Science Reviews, Vol. 60, No. 1-4, pp. 3-21 (May 1992)"
+      doi: null
+      note: "Companion (sister) paper in the same SSR vol. 60 Galileo issue. Per the #358 deep-read digest: this paper does NOT extend D'Amario's per-flyby V_inf or Jupiter approach V_inf data, but corroborates Venus flyby date (Feb 9 1990 PST = Feb 10 1990 UTC), Probe atmosphere-relative entry speed 48 km/s (vs D'Amario 47.4 km/s), Gaspra 1600 km close-approach (Note Added in Proof), and the 200-day initial orbit period."
+  priority_date: "1989-10-18"
+  notes: |
+    The canonical Galileo VEEGA mga_tour: the textbook Venus-Earth-Earth
+    Gravity-Assist mission archetype for the v4.7 catalogue scope expansion's
+    mga_tour class, joining Tito 2018 (single-flyby ballistic return) and
+    Heaton-Longuski 2003 Uranian tour (multi-arc moon-tour) as the third
+    computed mga_tour row in the catalogue's history.
+
+    Mission flown (D'Amario 1992 §2 and Table I):
+    * 18 Oct 1989 16:54 UTC: Launch from STS-34 Atlantis with IUS upper stage;
+      C3 = 13-17 km^2/s^2 (IUS-limited, post-Challenger substitution forced
+      VEEGA selection per §2.1).
+    * 10 Feb 1990 05:59 UTC: Venus flyby, alt 16,123 km, V_inf = 6.2 km/s
+      (Fig 3); heliocentric period 1 yr post-flyby.
+    * 8 Dec 1990 20:35 UTC: Earth-1 flyby, alt 960 km, V_inf = 8.9 km/s
+      (Fig 5); V_inf rotated 48 deg; heliocentric period 2 yr.
+    * 29 Oct 1991: Gaspra (asteroid 951) flyby, alt 1600 km, V_rel = 8.0 km/s
+      - science target on the 2-yr E1-E2 resonant arc.
+    * 8 Dec 1992 15:35 UTC: Earth-2 flyby, alt 300 km, V_inf = 8.9 km/s
+      (Fig 8); V_inf rotated 51 deg; period 5.6 yr to Jupiter.
+    * 28 Aug 1993: Ida (asteroid 243) flyby, V_rel = 12.4 km/s - science.
+    * 7 Dec 1995 17:46 UTC: Io flyby (alt 1000 km) immediately before JOI.
+    * 8 Dec 1995 00:27 UTC: JOI burn begins, dV = 628 m/s (retrograde),
+      perijove ~4 R_J, initial orbital period ~200 days.
+
+    Aggregate gravity-assist dV imparted by the three planetary flybys:
+    18.3 km/s (Summary p.75). Interplanetary deterministic dV: 102 m/s; JOI
+    628 m/s; PJR 370 m/s.
+
+    Admitted under the v4.7 catalogue-scope expansion (task #356, 2026-06-17)
+    as orbit_class=mga_tour; the third mga_tour row after Tito 2018 (#294)
+    and Heaton-Longuski 2003 (#336). Source: D'Amario-Bright-Wolf 1992 SSR
+    60(1-4):23-78, DOI 10.1007/bf00216849. Verdict note: #356 (this commit);
+    deep-read digest: docs/notes/2026-06-17-digest-damario-1992-galileo.md.
+    Sister-paper cross-check (Johnson-Yeates-Young 1992): #358 digest
+    docs/notes/2026-06-17-digest-johnson-yeates-young-1992.md.
+
+    Asteroid flybys (Gaspra + Ida) are included in bodies + V_inf list per
+    their published role in the actual flown trajectory; their gravity is
+    negligible (no orbit change) so they are science targets, not GA legs.
+    The Jovian satellite tour (Galileo's 10-orbit Jupiter-system tour with
+    13 satellite encounters, D'Amario Table V) is structurally a SEPARATE
+    mga_tour and out of this row's scope (the V_inf at Jupiter-system
+    satellites is not published in D'Amario 1992; Table V publishes
+    altitude + latitude only).
+
+    KNOWN_CORPUS impact (#356): adds a new D'Amario-Bright-Wolf 1992 anchor
+    in src/cyclerfinder/search/literature_check.py with the SSR DOI; the
+    pre-existing "Diehl-Belbruno-Roberts Galileo VEEGA design (1986)" anchor
+    is retained for the pre-Challenger concept-design epoch (the 1986 paper
+    is a different, distinct work) with an UNVERIFIED tag on the Belbruno
+    co-author attribution (D'Amario 1992 reference list does NOT cite
+    Belbruno; Johnson-Yeates-Young 1992 reference list also does NOT cite
+    Belbruno - per #358 digest §6). The Belbruno attribution warrants a
+    separate verification effort against the original 1986 Diehl-Roberts-
+    D'Amario citation.
+  source_quotes:
+    "launch_epoch": "D'Amario 1992 p.27: 'On October 18, 1989, at 16:54 UTC (09:54 PST), the Galileo spacecraft and IUS were successfully launched from the Kennedy Space Center.'"
+    "validity_window.start": "Same as launch_epoch (D'Amario 1992 p.27)."
+    "validity_window.end": "D'Amario 1992 Table I (p.37): 'Jupiter Orbit Insertion ... December 8, 1995 ... 00:27 UTC' (start of JOI burn); end of validity_window taken as JOI completion (start time used as conservative approximation given the burn lasted ~49 min)."
+    "vinf_kms_at_encounters.0.vinf_kms": "D'Amario 1992 p.25: 'C3 = ... 13 to 17 km^2/s^2.' sqrt(13)=3.6, sqrt(17)=4.1 -> V_inf ~3.8 km/s nominal."
+    "vinf_kms_at_encounters.1.vinf_kms": "D'Amario 1992 Fig 3 (p.28): 'Venus flyby ... |V_inf| = 6.2 km/s.'"
+    "vinf_kms_at_encounters.2.vinf_kms": "D'Amario 1992 Fig 5 (p.32): 'Earth-1 flyby ... |V_inf| = 8.9 km/s.'"
+    "vinf_kms_at_encounters.3.vinf_kms": "D'Amario 1992 §2.3.4 (p.32): 'Gaspra ... closest approach 1600 km from center ... V_rel = 8.0 km/s.'"
+    "vinf_kms_at_encounters.4.vinf_kms": "D'Amario 1992 Fig 8 (p.35): 'Earth-2 flyby ... |V_inf| = 8.9 km/s.'"
+    "vinf_kms_at_encounters.5.vinf_kms": "D'Amario 1992 §2.3.4 (p.36) and Table I (p.37, 'Asteroid 243 Ida'): V_rel = 12.4 km/s."
+    "vinf_kms_at_encounters.6.vinf_kms": "DERIVED from D'Amario 1992 §3.4 (p.45): 'Inertial entry speed is 59.9 km/s'; V_inf_J = sqrt(V_entry^2 - V_circ_Jupiter^2) gives ~5-6 km/s. NOT directly sourced; Johnson-Yeates-Young 1992 sister paper also does not publish Jupiter approach V_inf (#358 verdict)."
+    "n_returns": "D'Amario 1992 §2 confirms single Earth launch and single Jupiter capture (JOI); n_returns=1 per v4.7 mga_tour invariant."
+

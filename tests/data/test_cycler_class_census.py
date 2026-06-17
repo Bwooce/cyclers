@@ -362,11 +362,20 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # and Tito 2018 from the invariants{}/transit_times_days completeness
         # tests.
         "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
+        # #356 (2026-06-17): damario-1992-galileo-veega admitted as the third
+        # computed mga_tour row (after Tito 2018 and Heaton-Longuski 2003).
+        # Galileo VEEGA flown trajectory (D'Amario-Bright-Wolf 1992 SSR
+        # 60(1-4):23-78, DOI 10.1007/bf00216849). cycler_class=multi-arc is
+        # structural (three distinct heliocentric arcs E->V, V->E1, E1->E2,
+        # E2->J), not a cycler claim. Same exemption pattern as Tito 2018 /
+        # Heaton-Longuski 2003 from the invariants{}/transit_times_days
+        # completeness tests.
+        "damario-1992-galileo-veega",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 243, (
-    f"Allowlist must have 243 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 244, (
+    f"Allowlist must have 244 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -423,7 +432,7 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=28, multi-arc=242, non-keplerian=12.
+    """Exact class distribution: single-ellipse=28, multi-arc=244, non-keplerian=12.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
@@ -437,11 +446,14 @@ def test_census_distribution() -> None:
     flybys): multi-arc 241->242. #339 (2026-06-17) admitted Umbriel-Oberon-
     Umbriel (1,1) Uranian quasi_cycler — catalogue's first computed
     quasi_cycler row — with cycler_class=multi-arc (3 Lambert legs structural,
-    not strict-periodic): multi-arc 242->243.)
+    not strict-periodic): multi-arc 242->243. #356 (2026-06-17) admitted
+    Galileo VEEGA (D'Amario-Bright-Wolf 1992) as the third computed mga_tour
+    row, cycler_class=multi-arc (E->V, V->E1, E1->E2, E2->J heliocentric arcs):
+    multi-arc 243->244.)
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 28, "multi-arc": 243, "non-keplerian": 12}
+    expected = {"single-ellipse": 28, "multi-arc": 244, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

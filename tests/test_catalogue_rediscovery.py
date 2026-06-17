@@ -309,7 +309,15 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 2003 mga_tour. Cleared all 10 V-tier gates including V4-strict + #338
     # annual epoch sweep EFFECTIVELY_CYCLIC verdict. Full provenance in the
     # catalogue row's notes block.
-    ExclusionReason.NOT_TWO_BODY: 2,
+    # 2 -> 3 (2026-06-17, #356): +1 damario-1992-galileo-veega
+    # — third computed mga_tour row (Galileo VEEGA flown trajectory per
+    # D'Amario-Bright-Wolf 1992 SSR 60(1-4):23-78). bodies = [E, V, E, Gaspra,
+    # E, Ida, J] (7 bodies), so 4-body+ tour -> NOT_TWO_BODY (same lane as
+    # Heaton-Longuski 2003 7-body tour). The row carries no period.years/
+    # period.k pair (a one-shot mga_tour, not a cycle). Pure census shift;
+    # the row carries its own V0 sourced evidence (Table I + Figs 3/5/8
+    # verbatim).
+    ExclusionReason.NOT_TWO_BODY: 3,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

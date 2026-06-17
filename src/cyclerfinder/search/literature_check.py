@@ -881,8 +881,17 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         body_set=frozenset({"V", "E", "Jupiter"}),
         # #350: Galileo VEEGA = the canonical Venus-Earth-Earth-Gravity-Assist
         # mga_tour archetype. Single launch window, non-repeating tour.
+        # #356 (2026-06-17): the "Belbruno" co-author attribution is UNVERIFIED.
+        # D'Amario 1992 SSR (the flown-trajectory canonical reference; new
+        # anchor below) does NOT cite Belbruno in its reference list, and
+        # neither does the sister Johnson-Yeates-Young 1992 SSR paper (#358
+        # digest verified). The Belbruno name is associated with weak-stability-
+        # boundary lunar capture, not Galileo VEEGA design. The original 1986
+        # Diehl-Roberts-D'Amario citation needs a separate verification effort
+        # before this attribution is corrected; the anchor retains the existing
+        # author tuple as a placeholder pending that check.
         topology_label=frozenset({"mga-tour"}),
-        authors=("Diehl", "Belbruno", "Roberts", "D'Amario"),
+        authors=("Diehl", "Belbruno", "Roberts", "D'Amario"),  # UNVERIFIED - see #356
         keywords=(
             "VEEGA Venus-Earth-Earth gravity assist",
             "Galileo Jupiter mission trajectory",
@@ -890,8 +899,33 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         ),
         citation="Diehl, Belbruno & Roberts et al., 'Galileo VEEGA Mission "
         "Design' (1986-1990 JPL / AAS); the canonical mga_tour archetype "
-        "(October 1989 launch window once-per-~13yr alignment)",
+        "(October 1989 launch window once-per-~13yr alignment). NB: Belbruno "
+        "co-author attribution is UNVERIFIED (see #356); D'Amario 1992 SSR "
+        "(see new anchor below) supersedes for the flown trajectory.",
         doi=None,
+    ),
+    CorpusAnchor(
+        name="D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        primary="Sun",
+        body_set=frozenset({"V", "E", "Jupiter"}),
+        # #356 (2026-06-17): the post-launch / flown-trajectory canonical
+        # Galileo VEEGA reference. Distinct paper from the Diehl 1986 anchor
+        # above. Catalogue row damario-1992-galileo-veega (mga_tour, V0).
+        topology_label=frozenset({"mga-tour"}),
+        authors=("D'Amario", "Bright", "Wolf"),
+        keywords=(
+            "VEEGA Venus-Earth-Earth gravity assist",
+            "Galileo Jupiter mission flown trajectory",
+            "1989 VEEGA opportunity",
+            "Earth-Earth 2-year resonance",
+            "Gaspra Ida asteroid flyby",
+        ),
+        citation="D'Amario, Bright & Wolf, 'Galileo trajectory design,' "
+        "Space Science Reviews 60(1-4), 23-78 (May 1992); DOI 10.1007/bf00216849; "
+        "the canonical post-launch reference for the flown 1989 VEEGA "
+        "(launch 18 Oct 1989, V 10 Feb 1990, E1 8 Dec 1990, E2 8 Dec 1992, "
+        "JOI 8 Dec 1995). Catalogue row damario-1992-galileo-veega (mga_tour, V0).",
+        doi="10.1007/bf00216849",
     ),
     CorpusAnchor(
         name="Tito-MacCallum 2018 Mars free-return mission design (2013)",
