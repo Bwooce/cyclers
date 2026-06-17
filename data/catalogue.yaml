@@ -4159,6 +4159,162 @@
     "orbit_elements.a_au": "Rogers 2015 Table 3: a = 1.32 AU."
     "orbit_elements.e": "Rogers 2015 Table 3: e = 0.259."
 
+- id: s1l1-5-4-3-establishment-cc
+  name: "S1L1 5:4(3)- establishment trajectory (Rogers 2015 Table 3, circular-coplanar)"
+  source_ephemeris: "circular-coplanar idealized"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: s1l1-2syn-em-cpom
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: circular-coplanar
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: circular-coplanar
+  delta_v_kms: 3.647   # SOURCED: Rogers 2015 Table 3 row S1L1 '5:4(3)-': ΔV_total = 3.647 km/s.
+  v_infinity_leveraging_dv_kms: 0.258   # SOURCED: Rogers 2015 Table 3: ΔV_DSM = 0.258 km/s.
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 419   # SOURCED: Rogers 2015 Table 3 row S1L1 '5:4(3)-': h_flyby = 419 km.
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 5.0
+    note: "K=5 Earth-orbit V-infinity-leveraging establishment timeline."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.514
+      note: "Rogers 2015 Table 3 row S1L1 '5:4(3)-': V∞ flyby = 3.514 km/s; V∞ launch = 2.042 km/s. Note this is the establishment-context V∞, distinct from S1L1's steady-state V∞_E breathing band 3.76-7.09 km/s per McConaghy 2004 Table 6."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 3 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: 1.33   # SOURCED: Rogers 2015 Table 3 row S1L1 '5:4(3)-': a = 1.33 AU.
+    e: 0.248   # SOURCED: Rogers 2015 Table 3 row S1L1 '5:4(3)-': e = 0.248.
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: 0.0
+    note: "a/e SOURCED: Rogers 2015 Table 3 (circular-coplanar, post-leveraging). inclination=0 by model definition."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "launch_epoch"
+      kind: "not-applicable"
+      note: "Rogers 2015 Table 3 is the circular-coplanar idealized GA model (epoch-free by design)."
+      source_hint: "Rogers 2015 §3.1.2 (p.118-119) GA model description."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    S1L1 5:4(3)- circular-coplanar establishment variant. K=5 Earth-orbit
+    V-infinity-leveraging with maneuver on 3rd s/c orbit before line of
+    apsides. Per Rogers 2015 p.118: "only the characteristics of the first
+    leg are used" to establish S1L1 — so Rogers Table 3's (a, e) are the
+    LEG-1 values of the S1L1 multi-arc cycler, not the full cycler. Admitted
+    under v4.7 scope as orbit_class=precursor_mga (#367 wave 2, 2026-06-17).
+    The inserts_into pointer resolves to s1l1-2syn-em-cpom.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 3 row S1L1 '5:4(3)-': V∞ flyby = 3.514 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 3: ΔV_DSM = 0.258 km/s."
+    "delta_v_kms": "Rogers 2015 Table 3: ΔV_total = 3.647 km/s."
+    "flyby_mechanics[0].min_altitude_km": "Rogers 2015 Table 3: h_flyby = 419 km."
+    "orbit_elements.a_au": "Rogers 2015 Table 3: a = 1.33 AU."
+    "orbit_elements.e": "Rogers 2015 Table 3: e = 0.248."
+
+- id: s1l1-3-2-2-establishment-cc
+  name: "S1L1 3:2(2)- establishment trajectory (Rogers 2015 Table 3, circular-coplanar)"
+  source_ephemeris: "circular-coplanar idealized"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: s1l1-2syn-em-cpom
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: circular-coplanar
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: circular-coplanar
+  delta_v_kms: 3.859   # SOURCED: Rogers 2015 Table 3 row S1L1 '3:2(2)-': ΔV_total = 3.859 km/s.
+  v_infinity_leveraging_dv_kms: 0.160   # SOURCED: Rogers 2015 Table 3: ΔV_DSM = 0.160 km/s.
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 2212   # SOURCED: Rogers 2015 Table 3 row S1L1 '3:2(2)-': h_flyby = 2212 km.
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 1
+    years: 3.0
+    note: "K=3 Earth-orbit V-infinity-leveraging establishment timeline."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.479
+      note: "Rogers 2015 Table 3 row S1L1 '3:2(2)-': V∞ flyby = 4.479 km/s; V∞ launch = 3.340 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 3 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: 1.31   # SOURCED: Rogers 2015 Table 3 row S1L1 '3:2(2)-': a = 1.31 AU.
+    e: 0.253   # SOURCED: Rogers 2015 Table 3 row S1L1 '3:2(2)-': e = 0.253.
+    perihelion_au: null
+    aphelion_au: null
+    inclination_deg: 0.0
+    note: "a/e SOURCED: Rogers 2015 Table 3 (circular-coplanar, post-leveraging). inclination=0 by model definition."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "launch_epoch"
+      kind: "not-applicable"
+      note: "Rogers 2015 Table 3 is the circular-coplanar idealized GA model (epoch-free by design)."
+      source_hint: "Rogers 2015 §3.1.2 (p.118-119) GA model description."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    S1L1 3:2(2)- circular-coplanar establishment variant. K=3 Earth-orbit
+    V-infinity-leveraging with maneuver on 2nd s/c orbit before line of
+    apsides. Admitted under v4.7 scope as orbit_class=precursor_mga (#367
+    wave 2, 2026-06-17). The inserts_into pointer resolves to
+    s1l1-2syn-em-cpom.
+  source_quotes:
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 3 row S1L1 '3:2(2)-': V∞ flyby = 4.479 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 3: ΔV_DSM = 0.160 km/s."
+    "delta_v_kms": "Rogers 2015 Table 3: ΔV_total = 3.859 km/s."
+    "flyby_mechanics[0].min_altitude_km": "Rogers 2015 Table 3: h_flyby = 2212 km."
+    "orbit_elements.a_au": "Rogers 2015 Table 3: a = 1.31 AU."
+    "orbit_elements.e": "Rogers 2015 Table 3: e = 0.253."
+
 # ---------------------------------------------------------------------------
 # 12. Sanchez Net 2022 EEM near-ballistic cycler (Fig. 2a, Cycler 1)
 # ---------------------------------------------------------------------------
