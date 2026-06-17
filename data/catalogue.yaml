@@ -3020,6 +3020,583 @@
     "period.years": "Rogers et al. 2012: the (1) notation indicates a 1-synodic establishment timeline (2.135 yr)."
 
 # ---------------------------------------------------------------------------
+# 11b. Rogers 2015 precursor_mga establishment trajectories (#367)
+# ---------------------------------------------------------------------------
+# Seven additional precursor_mga rows admitted from Rogers 2015 Table 4 (one
+# 4:3(2)- variant per remaining cycler family: VISIT-1, VISIT-2, Case 1,
+# Case 2, Case 3, S1L1; plus one U0L1 3:2(1)- variant). Each row is an
+# epoch-locked V-infinity-leveraging insertion trajectory that establishes
+# the steady-state cycler named in inserts_into. Source: Rogers, Hughes,
+# Longuski & Aldrin, Acta Astronautica 112:114-125 (2015), DOI
+# 10.1016/j.actaastro.2015.03.002, Table 4 (STOUR analytic-ephemeris results).
+# Deep-read digest: docs/notes/2026-06-17-digest-rogers-2015.md.
+# ---------------------------------------------------------------------------
+
+- id: visit-1-4-3-2-establishment
+  name: "VISIT-1 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: niehoff-visit1
+  validity_window:
+    start: "2046-06-12T00:00:00Z"
+    end: "2046-12-30T00:00:00Z"
+  launch_epoch: "2046-06-12T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.043   # Rogers 2015 Table 4 row VISIT-1 '4:3(2)-': ΔV_DSM = 0.043 km/s.
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 120625   # Rogers 2015 Table 4 row VISIT-1 '4:3(2)-': h_flyby = 120,625 km.
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.834
+      note: "Rogers 2015 Table 4 row VISIT-1 '4:3(2)-': V∞ flyby = 2.834 km/s; V∞ launch = 2.540 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby (both at the Earth flyby), not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 1.012
+    aphelion_au: 1.470
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row VISIT-1 '4:3(2)-': Periapse = 1.012 AU, Apoapse = 1.470 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4 sub-variant rows; tracked for future #367 extraction work."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4 + Figure 2 trajectory diagrams."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    VISIT-1 (Niehoff) cycler insertion variant. The lowest leveraging dV in
+    Rogers 2015 Table 4 (0.043 km/s vs Aldrin's 0.568 km/s) - VISIT cyclers
+    have low V_inf at both Earth and Mars in the idealized model and require
+    minimal leveraging. Note the very large h_flyby (120,625 km) - the
+    leveraging is dominated by the small DSM rather than the Earth flyby
+    geometry.
+
+    Admitted under the v4.7 catalogue-scope expansion as orbit_class=
+    precursor_mga (#367, 2026-06-17). The inserts_into pointer resolves to
+    niehoff-visit1.
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row VISIT-1 '4:3(2)-': LD = 06/12/2046."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 2.834 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.043 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 1.012 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.470 AU."
+
+- id: visit-2-4-3-2-establishment
+  name: "VISIT-2 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: niehoff-visit2
+  validity_window:
+    start: "2023-12-27T00:00:00Z"
+    end: "2024-07-21T00:00:00Z"
+  launch_epoch: "2023-12-27T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.221   # Rogers 2015 Table 4 row VISIT-2 '4:3(2)-': ΔV_DSM = 0.221 km/s.
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 7696   # Rogers 2015 Table 4 row VISIT-2 '4:3(2)-': h_flyby = 7,696 km.
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.878
+      note: "Rogers 2015 Table 4 row VISIT-2 '4:3(2)-': V∞ flyby = 3.878 km/s; V∞ launch = 2.503 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.985
+    aphelion_au: 1.670
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row VISIT-2 '4:3(2)-': Periapse = 0.985 AU, Apoapse = 1.670 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    VISIT-2 (Niehoff) cycler insertion variant. Admitted under the v4.7
+    catalogue-scope expansion as orbit_class=precursor_mga (#367,
+    2026-06-17). The inserts_into pointer resolves to niehoff-visit2.
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row VISIT-2 '4:3(2)-': LD = 12/27/2023."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 3.878 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.221 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.985 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.670 AU."
+
+- id: case-1-4-3-2-establishment
+  name: "Case 1 (Byrnes 2002 / 2L3) 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: mcconaghy-2005-em-case1
+  validity_window:
+    start: "2024-12-14T00:00:00Z"
+    end: "2025-12-14T00:00:00Z"
+  launch_epoch: "2024-12-14T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.346
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 140286
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 4.526
+      note: "Rogers 2015 Table 4 row Case 1 '4:3(2)-': V∞ flyby = 4.526 km/s; V∞ launch = 2.558 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.946
+    aphelion_au: 1.503
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row Case 1 '4:3(2)-': Periapse = 0.946 AU, Apoapse = 1.503 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    Case 1 is the Byrnes 2002 (AIAA 2002-4423) 2L3 cycler in McConaghy 2004
+    nPr nomenclature. Insertion variant admitted under the v4.7 scope as
+    orbit_class=precursor_mga (#367, 2026-06-17). The inserts_into pointer
+    resolves to mcconaghy-2005-em-case1 (the steady-state cycler row).
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row Case 1 '4:3(2)-': LD = 12/14/2024."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 4.526 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.346 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.946 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.503 AU."
+
+- id: case-2-4-3-2-establishment
+  name: "Case 2 (Byrnes 2002) 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: russell-ocampo-2.1.1+2-case2
+  validity_window:
+    start: "2029-04-22T00:00:00Z"
+    end: "2029-10-10T00:00:00Z"
+  launch_epoch: "2029-04-22T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.059
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 56068
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 2.910
+      note: "Rogers 2015 Table 4 row Case 2 '4:3(2)-': V∞ flyby = 2.910 km/s; V∞ launch = 2.522 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.997
+    aphelion_au: 1.433
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row Case 2 '4:3(2)-': Periapse = 0.997 AU, Apoapse = 1.433 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    Case 2 is the Byrnes 2002 cycler catalogued as russell-ocampo-2.1.1+2-case2.
+    Insertion variant admitted as orbit_class=precursor_mga (#367,
+    2026-06-17). Note the second-lowest leveraging dV in Rogers 2015 Table 4
+    (0.059 km/s; only VISIT-1 has lower).
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row Case 2 '4:3(2)-': LD = 04/22/2029."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 2.910 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.059 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.997 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.433 AU."
+
+- id: case-3-4-3-2-establishment
+  name: "Case 3 (Byrnes 2002) 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: russell-ocampo-2.3.1+1-case3
+  validity_window:
+    start: "2022-12-20T00:00:00Z"
+    end: "2023-07-24T00:00:00Z"
+  launch_epoch: "2022-12-20T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.187
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 13291
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.688
+      note: "Rogers 2015 Table 4 row Case 3 '4:3(2)-': V∞ flyby = 3.688 km/s; V∞ launch = 2.492 km/s."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.988
+    aphelion_au: 1.651
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row Case 3 '4:3(2)-': Periapse = 0.988 AU, Apoapse = 1.651 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    Case 3 is the Byrnes 2002 cycler catalogued as russell-ocampo-2.3.1+1-case3.
+    Insertion variant admitted as orbit_class=precursor_mga (#367,
+    2026-06-17). Aphelion 1.651 AU is similar to S1L1's 1.64 AU; this Case 3
+    is structurally close to S1L1 but distinct.
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row Case 3 '4:3(2)-': LD = 12/20/2022."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 3.688 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.187 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.988 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.651 AU."
+
+- id: s1l1-4-3-2-establishment
+  name: "S1L1 4:3(2)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: s1l1-2syn-em-cpom
+  validity_window:
+    start: "2022-12-20T00:00:00Z"
+    end: "2023-07-29T00:00:00Z"
+  launch_epoch: "2022-12-20T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.182
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 12965
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 2
+    years: 4.27
+    note: "Establishment timeline over a 2-synodic period using V-infinity leveraging."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.657
+      note: "Rogers 2015 Table 4 row S1L1 '4:3(2)-': V∞ flyby = 3.657 km/s; V∞ launch = 2.492 km/s. Note this is the establishment-context V∞, distinct from S1L1's steady-state V∞_E breathing band 3.76-7.09 km/s per McConaghy 2004 Table 6."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.987
+    aphelion_au: 1.635
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row S1L1 '4:3(2)-': Periapse = 0.987 AU, Apoapse = 1.635 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    S1L1 cycler insertion variant. Same LD (12/20/2022) as the Case 3
+    establishment - reflects the similar (a, e, peri, apo) parameter space
+    of these two cyclers in Rogers Table 1. Admitted as orbit_class=
+    precursor_mga (#367, 2026-06-17). The inserts_into pointer resolves to
+    s1l1-2syn-em-cpom (which itself has open data-gap issues per #366
+    cycler-confusion correction; the steady-state V_inf targets on that row
+    are flagged as unverified-provenance until #365 promotes it).
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row S1L1 '4:3(2)-': LD = 12/20/2022."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 3.657 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.182 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.987 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 1.635 AU."
+
+- id: u0l1-3-2-1-establishment
+  name: "U0L1 3:2(1)- establishment trajectory (Rogers 2015 Table 4)"
+  source_ephemeris: "STOUR analytic ephemeris"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: single-ellipse
+  orbit_class: precursor_mga
+  epoch_locked: true
+  n_returns: 1
+  inserts_into: mcconaghy-2005-em-u0l1
+  validity_window:
+    start: "2025-11-25T00:00:00Z"
+    end: "2026-03-02T00:00:00Z"
+  launch_epoch: "2025-11-25T00:00:00Z"
+  orbit_source: rogers-2012-t1
+  orbit_fidelity: analytic-ephemeris
+  vinf_source: rogers-2012-t1
+  vinf_fidelity: analytic-ephemeris
+  delta_v_kms: null
+  v_infinity_leveraging_dv_kms: 0.794
+  fleet_size: null
+  flyby_mechanics:
+    - body: "E"
+      turning_angle_deg: null
+      min_altitude_km: 6633
+  bodies: ["E", "M"]
+  sequence_canonical: "E-M"
+  sense: "outbound"
+  period:
+    pair: "E-M"
+    k: 1
+    years: 2.135
+    note: "1-synodic establishment timeline (single-Earth-orbit phasing)."
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 8.049
+      note: "Rogers 2015 Table 4 row U0L1 '3:2(1)-': V∞ flyby = 8.049 km/s; V∞ launch = 3.702 km/s. Note the very large 4.35 km/s V_inf leveraging swing - U0L1's large aphelion (3.20 AU) requires high V_inf."
+    - body: "M"
+      vinf_kms: null
+      note: "Rogers 2015 Table 4 tabulates V∞ launch and V∞ flyby, not a distinct V∞ at Mars."
+  orbit_elements:
+    a_au: null
+    e: null
+    perihelion_au: 0.960
+    aphelion_au: 3.189
+    inclination_deg: null
+    note: "perihelion_au/aphelion_au SOURCED: Rogers 2015 Table 4 row U0L1 '3:2(1)-': Periapse = 0.960 AU, Apoapse = 3.189 AU."
+    periapse_km: null
+    apoapse_km: null
+    raan_deg: null
+    arg_periapsis_deg: null
+    true_anomaly_deg: null
+    epoch_iso8601: null
+  data_gaps:
+    - path: "trajectory"
+      kind: "unknown"
+      note: "Per-segment trajectory topology not isolated from the accessible Rogers 2015 Table 4."
+      source_hint: "Rogers/Hughes/Longuski/Aldrin 2015 Acta Astro 112:114-125, Table 4."
+      todo_ref: "#367-trajectory-extraction"
+  first_published:
+    authors: ["Rogers, B. A.", "Hughes, K. M.", "Longuski, J. M.", "Aldrin, B."]
+    year: 2015
+    title: "Establishing cycler trajectories between Earth and Mars"
+    venue: "Acta Astronautica 112:114-125 (2015)"
+    doi: "10.1016/j.actaastro.2015.03.002"
+  priority_date: "2015-03-11"
+  notes: |
+    U0L1 cycler insertion variant (1-synodic 3:2(1)- timeline). U0L1 has the
+    largest aphelion (3.20 AU, well beyond Mars) in Rogers Table 1, and
+    correspondingly the largest leveraging benefit: 49.1 mt propellant
+    savings via V-infinity leveraging (Rogers Table 9) vs the next-largest
+    (Aldrin 3:2(1)- at 24.3 mt). The 0.794 km/s DSM is the highest in
+    Rogers Table 4. Admitted as orbit_class=precursor_mga (#367,
+    2026-06-17). The inserts_into pointer resolves to mcconaghy-2005-em-u0l1.
+  source_quotes:
+    "launch_epoch": "Rogers 2015 Table 4 row U0L1 '3:2(1)-': LD = 11/25/2025."
+    "vinf_kms_at_encounters[0].vinf_kms": "Rogers 2015 Table 4: V∞ flyby = 8.049 km/s."
+    "v_infinity_leveraging_dv_kms": "Rogers 2015 Table 4: ΔV_DSM = 0.794 km/s."
+    "orbit_elements.perihelion_au": "Rogers 2015 Table 4: Periapse = 0.960 AU."
+    "orbit_elements.aphelion_au": "Rogers 2015 Table 4: Apoapse = 3.189 AU."
+
+# ---------------------------------------------------------------------------
 # 12. Sanchez Net 2022 EEM near-ballistic cycler (Fig. 2a, Cycler 1)
 # ---------------------------------------------------------------------------
 - id: sanchez-net-2022-eem-cycler1
