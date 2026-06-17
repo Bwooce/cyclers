@@ -254,10 +254,24 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # #350: Aldrin's canonical paradigm IS the (k1, k2) repeated-encounter
         # cycler -- the defining instance of the class.
         topology_label=frozenset({"repeated-moon"}),
-        authors=("Aldrin", "Byrnes", "McConaghy", "Longuski"),
+        # #364: combined 1993 JSR (Byrnes-Longuski-Aldrin) + 2002 AIAA
+        # (McConaghy-Longuski-Byrnes) author rosters.
+        authors=("Aldrin", "Byrnes", "Longuski", "McConaghy"),
         keywords=("Aldrin cycler", "Earth-Mars cycler", "cycler trajectory"),
-        citation="Byrnes, McConaghy & Longuski, AIAA 2002-4420 (Aldrin cycler)",
-        doi="10.2514/6.2002-4420",
+        # #364 errata fix: the canonical archival Aldrin cycler paper is the
+        # 1993 JSR (Byrnes-Longuski-Aldrin, DOI 10.2514/3.25519); AIAA 2002-4420
+        # is a follow-up. Per docs/notes/2026-06-17-digest-byrnes-longuski-
+        # aldrin-1993.md the JSR paper publishes the circular-coplanar (a, e)
+        # derivation and the 15-year DE405 numerical results (Tables 1-2).
+        citation=(
+            "Byrnes, D. V., Longuski, J. M. & Aldrin, B., 'Cycler Orbit Between "
+            "Earth and Mars,' J. Spacecraft & Rockets 30(3):334-336 (1993), "
+            "DOI 10.2514/3.25519 (canonical archival Aldrin cycler paper); "
+            "McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis of a "
+            "Broad Class of Earth-Mars Cycler Trajectories,' AIAA-2002-4420 "
+            "(Aldrin-class follow-up)"
+        ),
+        doi="10.2514/3.25519",
     ),
     CorpusAnchor(
         name="Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
@@ -273,9 +287,19 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "two-synodic cycler",
             "systematic cycler catalog",
         ),
-        citation="Russell & Ocampo, J. Spacecraft & Rockets 41(1) 2004; "
-        "McConaghy et al., J. Spacecraft & Rockets 43(2) 2006",
-        doi="10.2514/1.10078",
+        # #364 errata fix: Russell-Ocampo is JGCD 27(3):321-335 (2004) DOI
+        # 10.2514/1.1909, NOT JSR 41(1) DOI 10.2514/1.10078. The peer-reviewed
+        # version stamp on the AAS-03-145 preprint p.1 establishes the JGCD
+        # citation unambiguously. Per docs/notes/2026-06-17-digest-russell-
+        # ocampo-2003.md.
+        citation=(
+            "Russell, R. P. & Ocampo, C. A., 'Systematic Method for "
+            "Constructing Earth-Mars Cyclers Using Free-Return Trajectories,' "
+            "J. Guidance, Control, and Dynamics 27(3):321-335 (2004), "
+            "DOI 10.2514/1.1909 (preprint AAS-03-145); "
+            "McConaghy et al., J. Spacecraft & Rockets 43(2) 2006"
+        ),
+        doi="10.2514/1.1909",
     ),
     CorpusAnchor(
         name="Liang et al. Callisto-Ganymede-Europa triple cyclers",
@@ -719,6 +743,105 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "single-author Earth-Mars cycler dissertation underpinning the "
         "SnLm catalogue rows in data/catalogue.yaml",
         doi=None,
+    ),
+    # -----------------------------------------------------------------------
+    # #364 — McConaghy 2004 JSR + McConaghy 2005 JSR + Rogers 2015 Acta Astro
+    # added as Mars-cycler corpus anchors (errata fix wave from Agent A
+    # digest pass). The 2004 JSR introduces the nPr family-tag nomenclature
+    # and publishes the S1L1 DE405 itinerary (Table 6, V1-grade ground truth).
+    # The 2005 JSR introduces the formal per-leg g/f/h descriptor
+    # nomenclature (Table 2 Rosetta stone). The 2015 Acta Astro is the
+    # establishment-cycler / precursor_mga class anchor — Tables 1-9 give
+    # ~21 V1-grade insertion trajectories for eight cycler families.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name=("McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)"),
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #350: nPr family + S1L1 DE405 itinerary are repeated-encounter
+        # Earth-Mars cyclers.
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("McConaghy", "Longuski", "Byrnes"),
+        keywords=(
+            "nPr nomenclature Earth-Mars cycler",
+            "S1L1 ballistic cycler DE405 itinerary",
+            "Earth-Mars cycler trajectory class",
+            "n=7 ballistic cycler family",
+        ),
+        citation=(
+            "McConaghy, T. T., Longuski, J. M. & Byrnes, D. V., 'Analysis "
+            "of a Class of Earth-Mars Cycler Trajectories,' J. Spacecraft "
+            "& Rockets 41(4):622-628 (2004), DOI 10.2514/1.11939. "
+            "Introduces the nPr family-tag nomenclature (Aldrin = 1L1, "
+            "Case 1 = 2L3, VISIT 1 = 7(R_p)12, VISIT 2 = 7(R_p)10). Table 4 "
+            "lists 21 most-promising cyclers (1 <= n <= 6); Table 5 lists "
+            "14 all-ballistic n=7 cyclers; Table 6 gives the 22-encounter "
+            "outbound ballistic S1L1 cycler DE405 itinerary (launch "
+            "9 June 2008) as V1-grade ground truth"
+        ),
+        doi="10.2514/1.11939",
+    ),
+    CorpusAnchor(
+        name=("McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)"),
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #350: per-leg formal labels for repeated-encounter Earth-Mars cyclers.
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("McConaghy", "Russell", "Longuski"),
+        keywords=(
+            "standard nomenclature Earth-Mars cycler",
+            "g f h leg descriptor cycler label",
+            "Lambert solution subtype U L cycler",
+            "Ballistic S1L1 formal label",
+        ),
+        citation=(
+            "McConaghy, T. T., Russell, R. P. & Longuski, J. M., 'Toward a "
+            "Standard Nomenclature for Earth-Mars Cycler Trajectories,' "
+            "J. Spacecraft & Rockets 42(4):694-698 (2005), DOI "
+            "10.2514/1.8123. Introduces the formal per-leg [(body-seq)] n "
+            "d_1...d_K label with d in {g(t_f, theta, eps), f(M:N, phi, "
+            "lambda), h(t_f, N, eps, i')}; EBNF grammar in Table 3; Table 2 "
+            "tabulates Aldrin = 1g(2-1/7, 1-1/7 rev, L), Ballistic S1L1 = "
+            "2g(2.8277, 657.97 deg, U) g(1.4508, 522.29 deg, L) (confirms "
+            "S1L1's two-arc structure), VISIT-1/2, Byrnes' Case 3, Russell "
+            "Cycler-2.5.1.+0 and Cycler-4.3.1.-5 as Rosetta-stone formal "
+            "labels"
+        ),
+        doi="10.2514/1.8123",
+    ),
+    CorpusAnchor(
+        name=("Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)"),
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        # #364: establishment trajectories are precursor_mga (mga-tour) that
+        # insert into the repeated-encounter cycler families (repeated-moon).
+        # Both topology classes apply -- the cycler matcher should bump into
+        # this anchor for either class. Per docs/notes/2026-06-17-digest-
+        # rogers-2015.md section 4.
+        topology_label=frozenset({"mga-tour", "repeated-moon"}),
+        # Capped at 3 authors per memory rule; Aldrin (4th) named only in
+        # the citation text.
+        authors=("Rogers", "Hughes", "Longuski"),
+        keywords=(
+            "establishment cycler trajectory Earth-Mars",
+            "K:L(M) V-infinity leveraging cycler insertion",
+            "precursor cycler MGA low-thrust establishment",
+            "cycler LEO insertion Sims-Longuski leveraging",
+        ),
+        citation=(
+            "Rogers, B. A., Hughes, K. M., Longuski, J. M. & Aldrin, B., "
+            "'Establishing cycler trajectories between Earth and Mars,' "
+            "Acta Astronautica 112:114-125 (2015), DOI "
+            "10.1016/j.actaastro.2015.03.002 (conf precursors AIAA "
+            "Minneapolis 2012 + AAS Hilton Head 2013). Eight cycler families "
+            "(Aldrin, VISIT-1, VISIT-2, Case 1, Case 2, Case 3, S1L1, U0L1) "
+            "with per-cycler establishment Delta-v via Sims-Longuski K:L(M)+- "
+            "V-infinity leveraging (Tables 3-5) and JPL MALTO low-thrust "
+            "spiral (Tables 6-9); Table 1 confirms the Aldrin a=1.60 AU / "
+            "e=0.393 / aphelion=2.23 AU / perihelion=0.97 AU values; ~21 "
+            "V1-grade precursor_mga establishment trajectories"
+        ),
+        doi="10.1016/j.actaastro.2015.03.002",
     ),
     CorpusAnchor(
         name="Ceriotti GTOC-style MGA chain optimisation (2010)",
