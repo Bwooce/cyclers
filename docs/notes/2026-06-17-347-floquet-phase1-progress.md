@@ -98,6 +98,41 @@ This is the k=1 specialisation of the pre-existing `scan_family_for_bifurcations
 
 **P1.3 gate.** PASS. The detector returns exactly one canonical k=1 BifurcationPoint bracketing C ∈ (3.14170, 3.14180) — the eigenvalue evidence matches RTR2026 p.5 saddle-center theory.
 
-**P1.3 commit:** (filled at commit time)
+**P1.3 commit:** `006b062`.
+
+---
+
+## P1.4 — Asymmetric / 3D branch corrector
+
+**New module** `src/cyclerfinder/genome/asymmetric_branch.py`. Mirrors `family_switch.py` but routes through `cr3bp_general_periodic_3d.correct_general_periodic_3d` in **full-asymmetric mode**: free vars (x0, y0, z0, xdot0, ydot0, zdot0, T); residual = full 6D state closure at T. This is the corrector for the k=1 saddle-center / pitchfork bifurcation (which `family_switch.switch_family`'s symmetric corrector cannot reach because the branched family breaks the time-reversal symmetry).
+
+**API:**
+
+  * `_select_saddle_center_eigenvector(monodromy)`: mirrors `_select_period_multiplying_eigenvector` from `family_switch.py` but tuned for k=1. Excludes the 2 trivial-pair eigenvalues + the 2 primary-saddle eigenvalues; among the remaining 2 (the secondary pair), picks the one closest to +1; returns the real right-eigenvector + the eigenvalue.
+  * `branch_at_saddle_center(system, parent_state0, parent_period, epsilon, ...)`: full pipeline. (a) compute parent monodromy + select eigenvector; (b) compute parent winding topology; (c) perturb parent IC by ±eps × eigenvector; (d) hand to `correct_general_periodic_3d` in FULL_ASYMMETRIC mode at period_guess = parent_period (k=1 saddle-center preserves period); (e) compute branched topology; (f) compare to parent topology. Returns a `BranchedOrbit` or `None`.
+
+**Empirical convergence study (artifact `data/floquet_phase1_c32_family.jsonl`).**
+
+  * Parent i=123 (pre-bifurcation, C=3.14170): NO convergence at any eps ∈ {1e-4, 1e-3, 1e-2}. The eigenvector at the pre-bifurcation point still points along an UNRESOLVED unit-circle direction; perturbing along it lands the corrector in a region with no nearby periodic orbit.
+  * **Parent i=124 (POST-bifurcation, C=3.14180): converges at eps=5e-4, sign=+1.** Branched orbit: T_d=27.44 days, residual 9.4e-12 (< 1e-10), independent Radau closure 4e-12 (< 1e-6); z0=-0.66 (genuinely 3D, |z0| > 0.1); winding topology (2, 0). **Parent topology (3, 2) → branched topology (2, 0)** = topology changed.
+  * Parent i=125 at eps=1e-3 / 5e-3 converges, but to planar orbits with topologies (2,2) / (1,1) — also family-switches but stays in-plane.
+  * Parent i=130 at eps=5e-3 converges to planar (2,2) at T=70.7 d.
+  * Parent i=140: no convergence at any eps tested.
+
+The strongest result is the i=124 / eps=5e-4 case: **genuinely 3D branched orbit with z0=-0.66 and topology (2, 0)** — distinct from the parent's (3, 2), and with bulletproof residual + independent closure. This satisfies the Phase 1 exit criterion verbatim.
+
+**Eigenvector direction.** At i=124 the marginal eigenvector has dominant (z, zdot) components: (3e-10, 1e-6, -0.842, -6e-6, 2e-9, 0.539). In-plane components are < 1e-5 in magnitude (effectively zero). This is the canonical planar→3D bifurcation pattern: the (3,2) family lives at z=0 (the planar manifold is dynamically invariant), the saddle-center bifurcation BREAKS the z=0 invariance, and the new family branches out into z ≠ 0 territory.
+
+**Default `require_monotone_decrease=False`.** The strict line search rejects transient residual oscillations that the damped Newton needs to escape on the way to the quadratic basin; with monotone-decrease enforced the corrector returns None even from the i=124/eps=5e-4 seed that converges cleanly without it. The default `False` matches `correct_symmetric_nrho`'s pattern and the cr3bp_general_periodic_3d.correct_general_periodic_3d docstring's recommendation for similar cases.
+
+**Tests** in `tests/genome/test_asymmetric_branch.py`. 3 tests, all pass:
+
+  * eigenvector at i=124 is (z, zdot)-dominant (in-plane energy < 1e-6, out-of-plane > 0.99);
+  * `branch_at_saddle_center` from i=124 at eps=5e-4 produces a converged branched orbit with residual < 1e-10, independent closure < 1e-6, z0 > 0.1 (3D), and topology distinct from (3, 2);
+  * defensive contract gates (invalid inputs raise ValueError).
+
+**P1.4 gate.** PASS. Phase 1 exit criterion is met by a clean run of the corrector at the post-bifurcation parent (i=124) at eps=5e-4.
+
+**P1.4 commit:** (filled at commit time)
 
 ---
