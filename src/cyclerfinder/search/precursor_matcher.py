@@ -176,8 +176,14 @@ def _first_encounter_body_and_vinf(entry: CatalogueEntry) -> tuple[str, float]:
     ``vinf_kms_at_encounters`` ordering is canonically the body where the
     spacecraft arrives after a precursor insertion — i.e. the natural
     insertion target.  Aldrin's first encounter is Earth (V_inf 6.5 km/s);
-    S1L1's first encounter is Earth (V_inf 5.65 km/s).  Both are
-    insertion-from-Earth-launch candidates.
+    S1L1's first encounter is Earth (V_inf ~4.9-5.0 km/s in the coplanar
+    single-ellipse framing; the catalogue currently stores 5.65 km/s for
+    s1l1-2syn-em-cpom, but #366 (2026-06-17) identified this as a
+    cycler-confusion artifact — 5.65 traces to McConaghy 2004 Table 4
+    row 2L3 / Byrnes 2002 Case 1, a DIFFERENT cycler.  V0→V1 promotion
+    (#365) will correct the row; this matcher reads whatever value the
+    row carries at runtime, so the precursor target moves with the row).
+    Both are insertion-from-Earth-launch candidates.
 
     Raises
     ------
@@ -369,7 +375,9 @@ def find_cycler_precursors(
         Default 0.5 km/s.
     vinf_grid_kms:
         V_inf grid used by :func:`find_mga_chains`.  Default covers 3-8 km/s
-        which contains both Aldrin (~6.5) and S1L1 (~5.65) seed V_inf.
+        which contains both Aldrin (~6.5) and S1L1 (~4.9-5.0 coplanar
+        single-ellipse; #366 retraction note in _first_encounter_body_and_vinf
+        docstring) seed V_inf.
     tof_box_days_per_leg:
         Per-leg TOF constraint window.  Default ``(60, 600)`` covers single-
         synodic Earth-Mars Hohmanns (~258 days) and short Venus-Earth hops
