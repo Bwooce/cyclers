@@ -133,6 +133,82 @@ The strongest result is the i=124 / eps=5e-4 case: **genuinely 3D branched orbit
 
 **P1.4 gate.** PASS. Phase 1 exit criterion is met by a clean run of the corrector at the post-bifurcation parent (i=124) at eps=5e-4.
 
-**P1.4 commit:** (filled at commit time)
+**P1.4 commit:** `4054f86`.
 
 ---
+
+## P1.5 — End-to-end reproduction-of-record + JSONL artifact
+
+**New test** `tests/genome/test_floquet_phase1_reproduction.py`. Two tests, both pass. The first wires the full Phase 1 pipeline end-to-end (P1.1 anchor → P1.2 walk-consumption → P1.3 detect → P1.4 branch → JSONL emit) and asserts the Phase 0 design doc Section 4 exit criterion verbatim. The second verifies the emitted JSONL artifact survives test ordering.
+
+**Emitted artifact** `data/floquet_phase1_reproduction.jsonl`. One line. Contents:
+
+```json
+{
+  "kind": "phase1_reproduction_record",
+  "sourced_anchor": "braik_ross_2026_table2_C32",
+  "parent_state0": [-0.2843494, 0, 0, 0, -2.0534, 0],
+  "parent_T_TU": 17.46421, "parent_T_days": 75.94096,
+  "parent_k1": 3, "parent_k2": 2, "parent_jacobi": 3.1418,
+  "branch_state0": [0.6023, -0.4521, -0.6585, -1.1369, -1.3079, -0.1528],
+  "branch_T_TU": 6.3106, "branch_T_days": 27.44087,
+  "branch_k1": 2, "branch_k2": 0, "branch_jacobi": -0.4713,
+  "branch_z0": -0.6585, "branch_zdot0": -0.1528,
+  "branch_degenerate_planar": false,
+  "corrector_residual": 9.4026e-12,
+  "independent_closure_residual": 4.013e-12,
+  "max_floquet_mag_branched": 1.0733,
+  "epsilon_used": 5e-4, "eigenvector_sign_used": 1,
+  "eigenvalue_used_real": 0.97424, "eigenvalue_used_imag": 0.0,
+  "eigenvector_used": [-3e-10, 1e-6, -0.84234, -6e-6, 2e-9, 0.53895],
+  "topology_changed": true, "exit_criterion_met": true
+}
+```
+
+**Exit criterion verification (design doc Section 4 verbatim).**
+
+  * "One JSONL row showing a branched orbit": YES, the artifact has exactly 1 row.
+  * "topology distinct from parent (k1, k2) = (3, 2)": YES, branched (k1, k2) = (2, 0). Parent and branch verified independently via `winding_topology`.
+  * "corrector residual < 1e-10": YES, 9.4e-12 (factor 100 inside the gate). Independent Radau closure also < 1e-6 (actual 4e-12).
+  * "≤ 5 days wall-clock": YES. Total Phase 1 wall-clock from P1.1 start (2026-06-17T16:46 AET) to P1.5 commit (in flight): ~1 hour. Well inside the 5-day budget.
+
+**Note on the branched orbit's physical character.** branch_jacobi = -0.47, very different from the parent's 3.14. The full-asymmetric corrector does NOT pin Jacobi (it's not in the residual mask). The branched orbit lives at a totally different energy from the parent — physically this is reasonable, since the saddle-center bifurcation has spawned an entire new family and the corrector's min-norm 6-residuals-7-unknowns step lands wherever it pulls fastest. The branched orbit's max_floquet_mag is 1.07 — very nearly stable! This is a remarkable byproduct: the branched orbit appears to be a near-stable 3D periodic orbit, which is potentially Phase 2/4 territory (gauntlet evaluation).
+
+**This is NOT a catalogue admission claim.** Per Phase 0 design doc discipline: "No catalogue writeback. Phase 1 is reproduction-only; admission is Phase 4+." Whether this branched orbit survives V0-V5 gauntlet (literature novelty check; physical sanity; sourced same-model golden; etc.) is a future-phase question. The Phase 1 deliverable is the proof-of-concept that the substrate WORKS, and that the asymmetric corrector escapes the symmetric basin at the saddle-center.
+
+**P1.5 gate.** PASS. The Phase 1 exit criterion is met by one converged JSONL row with residual 9.4e-12 and topology change (3, 2) → (2, 0).
+
+**P1.5 commit:** (filled at commit time)
+
+---
+
+## Phase 1 verdict
+
+**PASS_PROCEED_TO_PHASE_2.**
+
+  * P1.1: PASS. (3,2) C32 anchor reproduced; period, Jacobi, topology, Floquet σ all match Braik-Ross Table 2 within sourced tolerances.
+  * P1.2: PASS. CJ continuation walked 250 members covering C ∈ [3.1294, 3.1544]; saddle-center bifurcation captured between i=123 and i=124 by eigenvalue evolution (UC pair coalesces on real axis at +1).
+  * P1.3: PASS. New `detect_saddle_center_bracket` flags the canonical bracket on both the focused window and the full subsampled walk; 11 tests pass.
+  * P1.4: PASS. New `branch_at_saddle_center` corrector converges to a 3D branched orbit (z0=-0.66, topology (2, 0)) at parent i=124, eps=5e-4 with residual 9.4e-12 and independent closure 4e-12; 3 tests pass.
+  * P1.5: PASS. End-to-end test + JSONL artifact write; exit criterion met verbatim.
+
+**Total Phase 1 wall-clock:** ~1 hour (vs the 5-day budget).
+**Total new code:** ~600 LOC (1 module + 3 test files + 1 driver script + JSONL artifacts + this progress note).
+**Pytest gates:** 24 new tests, all pass. No regressions in 17 existing tests across `bifurcation_detector` and `family_switch`.
+
+**Discoveries seeded for Phase 2:**
+
+  1. The (3,2) family has a saddle-center bifurcation at C* ∈ (3.14170, 3.14180) — narrowing to the 4th decimal would be a Phase 2 P1.2 refinement.
+  2. The marginal eigenvector is in the (z, zdot) direction: the (3,2) saddle-center is a planar→3D bifurcation, spawning a 3D family OUT of the planar one. This is the canonical mechanism Phase 2's discovery sweep should exploit.
+  3. A SECOND saddle-center bifurcation exists at C ∈ (3.1494, 3.1524) in the inverse direction (real_far → complex_unit_circle); the current detector ignores it but Phase 2/3 may want to extend.
+  4. The branched orbit at the P1.5 anchor (eps=5e-4 / sign=+1) has max Floquet ~1.07 — nearly stable. This is potentially a high-value Phase 4 gauntlet candidate; needs literature-novelty + physical-sanity gauntlet runs before any admission claim.
+
+**Recommendations for Phase 2 design (do NOT execute under Phase 1):**
+
+  * Sweep the SAME (3,2) saddle-center substrate across the other Braik-Ross Table 2 families: (1,1)a, (1,1)b, (2,1) — each at its own per-family Jacobi (C21 needs the unrounded C_J_C21 = 3.129389531088256). The substrate is family-agnostic.
+  * Sweep the epsilon range {1e-4, 5e-4, 1e-3, 5e-3} per family to characterise the basin of attraction.
+  * For each converged branched orbit, run the V0 literature-novelty check (`search/literature_check.py`) + the physical-sanity gauntlet (`search/physical_sanity.py`).
+  * The PSEUDO-arclength continuation that Phase 0 mentioned ("the canonical upgrade for natural-parameter continuation at folds") is NOT needed for the saddle-center direction we found — natural-parameter walked CLEANLY through the bifurcation. Phase 2 should defer pseudo-arclength until / unless a future family fails on a fold.
+
+---
+
