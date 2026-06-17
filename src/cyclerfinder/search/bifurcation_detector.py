@@ -134,6 +134,7 @@ def monodromy(
     *,
     rtol: float = 1e-12,
     atol: float = 1e-12,
+    stm_mode: cr3bp.StmMode = "variable",
 ) -> NDArray[np.float64]:
     """Return the 6x6 monodromy matrix for one full period.
 
@@ -153,6 +154,16 @@ def monodromy(
         Full nondim period.
     rtol, atol :
         Integrator tolerances. Defaults match the rest of the cr3bp module.
+    stm_mode :
+        Forwarded to :func:`cyclerfinder.core.cr3bp.propagate`. ``"variable"``
+        (default; backward-compatible) is the legacy variable-step variational
+        path. ``"fixed_path"`` is the Pellegrini-Russell 2016 mitigation
+        (Pellegrini & Russell, JGCD, DOI 10.2514/1.G001920, §III.A.2 + Conc. 2)
+        recommended for monodromy at clustered eigenvalues (saddle-center
+        cluster point, λ approaching primitive roots of unity), where the
+        eq. 17 step-size IC-dependence contaminates the multipliers under the
+        variable-step variational path. See the ``propagate`` docstring for
+        the full derivation and the cost ratio.
 
     Returns
     -------
@@ -164,12 +175,20 @@ def monodromy(
     RuntimeError
         Propagated from the integrator if it fails.
     ValueError
-        If ``state0`` is not a 6-vector.
+        If ``state0`` is not a 6-vector, or ``stm_mode`` is not supported.
+
+    Reference
+    ---------
+    Pellegrini, E. & Russell, R.P. (2016), "On the Computation and Accuracy of
+    Trajectory State Transition Matrices", *Journal of Guidance, Control, and
+    Dynamics*, DOI 10.2514/1.G001920.
     """
     s0 = np.asarray(state0, dtype=np.float64)
     if s0.shape != (6,):
         raise ValueError(f"monodromy: state0 must be a 6-vector, got shape {s0.shape}")
-    arc = cr3bp.propagate(system, s0, float(period), with_stm=True, rtol=rtol, atol=atol)
+    arc = cr3bp.propagate(
+        system, s0, float(period), with_stm=True, rtol=rtol, atol=atol, stm_mode=stm_mode
+    )
     assert arc.stm is not None
     return np.asarray(arc.stm, dtype=np.float64)
 
