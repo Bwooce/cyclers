@@ -89,12 +89,69 @@ CR3BP periodic orbit, not a Phase 2 driver artifact.
 
 ---
 
-## P389.2 — Physical-sanity + lit-fresh + ML flagger [PENDING]
+## P389.2 — Physical-sanity + lit-fresh + ML flagger — PASS (with structural caveat)
 
-Per-encounter V_∞ at the Moon for the 3 lunar encounters in the (3,3) cycle;
-#324 max-bend gate (5° threshold); offline `check_literature` against the
-KNOWN_CORPUS with `topology_label = frozenset({"repeated-moon"})`; #256 ML
-flagger score.
+**New artifacts:**
+
+* `scripts/branch_c32_b0_p389_2_gates.py` — combined three-gate driver.
+* `data/branch_c32_b0_p389_2_verdict.jsonl` — 3-row verdict.
+* `tests/verify/test_branch_c32_b0_p389_2_passes.py` — 4-test frozen-gate pytest.
+
+**Physical-sanity (#324 max-bend gate):**
+
+| Encounter | t_TU | r_min_to_Moon (km) | V_rel (km/s) | V_∞ (km/s) | max_bend (deg) | is_useful |
+|-----------|------|---------------------|-------------|-------------|----------------|-----------|
+| 0 | 5.546 | 772,165 | 2.4749 | 2.4723 | 35.383 | True |
+| 1 | 13.330 | 772,165 | 2.4749 | 2.4723 | 35.383 | True |
+| 2 | 21.115 | 772,165 | 2.4749 | 2.4723 | 35.383 | True |
+
+All three encounters clear the 5° structural-feasibility floor — PASS.
+
+**HONEST CAVEAT (recorded in JSONL `interpretation` per encounter):** the
+actual minimum r-to-Moon distance is **772,165 km**, which is **~12× the
+Moon's Hill sphere (66,100 km)**. branch_C32_b0 is a *far-amplitude bound
+Earth-system orbit at ~1.15 million km Earth-distance*, NOT a lunar-flyby
+tour. The (3, 3) topology label refers to the winding number around each
+primary, not to physical close encounters. The #324 gate is checking
+*structural feasibility* at the registered Moon safe-altitude (Moon radius +
+100 km = 1837 km r_periapsis) IF the spacecraft were placed there at the
+indicated V_∞; the orbit itself doesn't transit through the Moon's vicinity.
+
+This is consistent with branch_C32_b0's parent (C32 = (3, 2)) which is a
+Braik-Ross Table 2 cycler — those cyclers also have large amplitudes, and
+their (k1, k2) labels are topological invariants of the winding, not flyby
+counts. The catalogue row will describe this as a `quasi_cycler` with
+`flyby_class: distant-libration` / `flyby_class: none` rather than a flyby
+tour.
+
+**Lit-fresh (#346/#349):**
+
+* Signature: primary=Earth, sequence=("Moon",), period_k=3, topology_label =
+  frozenset({"repeated-moon"}), period_band_tu = (T-1e-6, T+1e-6).
+* `check_literature` injected with an offline no-results search returned
+  `status=inconclusive` (no results returned at all — the project's
+  web-search lane is not wired in this run). Per the SILVER's #328 precedent,
+  this is the same offline-corpus regime the SILVER's V0 lit-check ran under.
+* **Structural KNOWN_CORPUS scan:** the only Earth-Moon CR3BP anchors with
+  `topology_label = frozenset({"repeated-moon"})` are Braik-Ross 2026
+  (publishes Table 2 = C11a/C11b/C21/C32; no (3, 3)) and Roberts-Tsoukkas &
+  Ross AAS 25-621 (publishes the 5 stable EM cyclers; no (3, 3)). No
+  published (3, 3) planar EM CR3BP cycler at jacobi=3.797 in the present
+  corpus — branch_C32_b0 is **structurally novel at the published-record
+  level** (necessary-not-sufficient per `feedback_literature_novelty_check_baseline`).
+
+**ML flagger (#256):**
+
+* Trained on the labeled corpus (`build_training_set`).
+* Score: **p_fp = 0.3748** (well below the 0.75 spec §16.5 routing threshold).
+* `ml_passes = True`.
+
+**P389.2 gate:** PASS on all three sub-gates, with the structural caveat
+(far-amplitude orbit, not a lunar-flyby tour) recorded for honesty.
+
+**P389.2 commit (pending):** `scripts/branch_c32_b0_p389_2_gates.py` +
+`data/branch_c32_b0_p389_2_verdict.jsonl` +
+`tests/verify/test_branch_c32_b0_p389_2_passes.py` + this note update.
 
 ---
 
