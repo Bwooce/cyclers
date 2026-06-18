@@ -155,16 +155,46 @@ tour.
 
 ---
 
-## P389.3 — V2 bounded-cycle gate (CR3BP-adapted) [PENDING]
+## P389.3 — V2 bounded-cycle gate (CR3BP-adapted) — PASS (spectacular)
 
-`run_v2_3d` over n_cycles ∈ {3, 5, 10} — DOES the orbit remain bounded under
-successive DOP853 propagations WITHOUT re-correction? Spec §14 V2 floor =
-50,000 km (same-model).
+**New artifacts:**
 
-For an *essentially stable* (max Floquet ~= 1 + 6e-13) orbit the answer should
-be a clean PASS — the per-cycle drift should grow only as the cumulative round-
-off error × Floquet amplification factor, which for σ_d~6e-15/day is
-effectively zero.
+* `scripts/branch_c32_b0_v2_verify.py` — calls
+  `cyclerfinder.data.validation.v2_3d.run_v2_3d` at n_cycles ∈ {3, 5, 10}
+  with the V1-corrected state + period.
+* `data/branch_c32_b0_v2_verdict.jsonl` — 5-row verdict (header + 3 per-n_cycles
+  rows + footer).
+* `tests/verify/test_branch_c32_b0_v2_passes.py` — 4-test frozen-gate pytest.
+
+**Results:**
+
+| n_cycles | max_drift (km) | Spec §14 floor | passes_v2 |
+|----------|----------------|-----------------|-----------|
+| 3 | 2.47e-5 km (24.7 μm) | 50,000 km | True |
+| 5 | 4.35e-5 km (43.5 μm) | 50,000 km | True |
+| 10 | 5.51e-5 km (55.1 μm) | 50,000 km | True |
+
+**Margin: ~9 orders of magnitude below the spec floor.** The per-cycle drift
+is pure DOP853 round-off accumulation (rtol=atol=1e-12). The orbit is
+dynamically essentially perfectly stable, exactly as the Phase 2 Floquet
+character predicted (max_floquet_mag = 1.000000000000617, σ_d = 6.08e-15/day).
+
+**P389.3 gate:** PASS. branch_C32_b0 is a strict bounded cycler in the spec
+§14 sense at n_cycles up to 10 in the same model. (Compare to the SILVER's
+~530,000 km bounded oscillation; branch_C32_b0 is ~10 orders tighter — a
+genuinely strict-periodic CR3BP cycler, NOT a quasi_cycler in the
+bounded-oscillation sense.)
+
+**Implication for the orbit_class label.** The SILVER admission used the
+`quasi_cycler` slot because it FAILED strict V2 by exceeding the 50,000 km
+floor (in bounded oscillation). branch_C32_b0 PASSES strict V2 by 9 orders of
+magnitude, suggesting it should enter the `cycler` slot, not `quasi_cycler`.
+This will be revisited in P389.6 row composition — the orbit_class admission
+slot depends on the full V1-V5 verdict.
+
+**P389.3 commit (pending):** `scripts/branch_c32_b0_v2_verify.py` +
+`data/branch_c32_b0_v2_verdict.jsonl` +
+`tests/verify/test_branch_c32_b0_v2_passes.py` + this note update.
 
 ---
 
