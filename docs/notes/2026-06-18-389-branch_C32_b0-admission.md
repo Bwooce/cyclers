@@ -47,17 +47,45 @@
 
 ---
 
-## P389.1 — Closure + DOP853 cross-check (V1 re-confirm) [PENDING]
+## P389.1 — Closure + DOP853 cross-check (V1 re-confirm) — PASS
 
-Will recompute the Phase 2 branch corrector against the sanitized IC, run an
-independent Radau closure, and freeze the V1 gate via
-`tests/verify/test_branch_c32_b0_v1_passes.py` + a verdict JSONL
-`data/branch_c32_b0_v1_verdict.jsonl`.
+**New artifacts:**
 
-V1 floor: spec §14 corrector residual < 1e-10 AND independent closure < 1e-6
-(at the periodic-orbit specification — the moontour-flavoured 1 m/s floor in
-the #327 SILVER V1 doesn't apply here because branch_C32_b0 is a closed CR3BP
-orbit, NOT a patched-Lambert moontour).
+* `scripts/branch_c32_b0_v1_verify.py` — re-runs the Phase 2 branch corrector
+  against `data/branch_c32_b0_ic.jsonl`. Uses
+  `correct_general_periodic_3d` in full-asymmetric mode (free vars =
+  (x0, y0, z0, xdot0, ydot0, zdot0, T); residual = full 6D state closure at T)
+  with tol=1e-12, max_iter=80, rtol=atol=1e-12. The independent Radau closure
+  check is built into the `Periodic3DOrbit.converged` compound gate.
+* `data/branch_c32_b0_v1_verdict.jsonl` — 3-row verdict (header / verdict / footer).
+* `tests/verify/test_branch_c32_b0_v1_passes.py` — 3-test frozen-gate pytest.
+
+**Results (run 2026-06-18, 0.95s wall):**
+
+| Field | Value | Phase 2 reference | Margin |
+|-------|-------|-------------------|--------|
+| Corrector residual | **1.276e-13** | 4.77e-12 | ~37x tighter |
+| Independent Radau closure | **2.188e-11** | 2.59e-11 | comparable |
+| `converged` (compound gate) | True | True | — |
+| `n_iter` | 2 | — | — |
+| T_TU corrected | 23.355184434547020 | 23.355184434547017 | drift 3e-15 |
+| Jacobi corrected | 3.797487163854493 | 3.797487163854691 | drift 2e-13 |
+| `degenerate_planar` | True | True | — |
+
+**V1 floors held:**
+
+* Corrector residual 1.276e-13 < 1e-10 floor — PASS.
+* Independent Radau closure 2.188e-11 < 1e-6 floor — PASS.
+* Period preserved to 8+ decimals — PASS (Phase 2 structural identity intact).
+* Planar character preserved — PASS.
+
+**P389.1 gate:** PASS. The Phase 2 sweep IC re-closes under V1 spec with the
+same characteristic period, jacobi, and planar topology. The orbit is a real
+CR3BP periodic orbit, not a Phase 2 driver artifact.
+
+**P389.1 commit (pending):** `scripts/branch_c32_b0_v1_verify.py` +
+`data/branch_c32_b0_v1_verdict.jsonl` +
+`tests/verify/test_branch_c32_b0_v1_passes.py` + this note update.
 
 ---
 
