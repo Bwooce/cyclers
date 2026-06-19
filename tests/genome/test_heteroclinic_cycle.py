@@ -307,3 +307,46 @@ def test_nonclosing_chain_is_not_closed() -> None:
     )
     assert not cycle.closed
     assert cycle.notes
+
+
+import pathlib  # noqa: E402
+
+import yaml  # type: ignore[import-untyped]  # noqa: E402
+
+_GOLDEN = pathlib.Path("data/golden/wz_oterma_heteroclinic.yaml")
+
+
+@pytest.mark.slow
+def test_l1_to_l2_crossing_matches_wz_golden() -> None:
+    """The certified L1->L2 crossing matches one published W-Z section crossing.
+
+    Agreement is ~3.8e-3 (tol=5e-3), NOT machine precision, and that is correct:
+    our manifold is a LINEAR Floquet-eigenvector seed (epsilon=1e-6) integrated to the
+    k=3 {y=0} crossing, whereas W-Z tabulate rigorous interval-arithmetic crossings of
+    the true nonlinear manifold. The leading error is O(epsilon linearization) +
+    O(manifold stretch over k crossings) ~ 1e-3. Landing within ~3.8e-3 of W-Z crossing
+    index 2 ([0.957916, 0.021915]) on the correct branch/index is a strong reproduction
+    (not a closure of the section gap, which is separately ~1e-10 in
+    test_connection_l1_to_l2_converges). Measured min-dist = 3.8105e-03; tol set to
+    5e-3 to allow for minor integrator-version variation while remaining physically snug.
+    """
+    data = yaml.safe_load(_GOLDEN.read_text())
+    # The inline fixed-point constants must equal the golden's (same W-Z source).
+    assert abs(WZ_X_L1 - data["lyapunov_fixed_points"]["L1_star"]["point"][0]) < 1e-12
+    assert abs(WZ_X_L2 - data["lyapunov_fixed_points"]["L2_star"]["point"][0]) < 1e-12
+
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    conn = correct_connection(system, l1, l2, tol=1e-8)
+    assert conn.converged
+    seq = np.array(data["crossings"]["heteroclinic_L1_to_L2"]["sequence"], dtype=np.float64)
+    dists = np.linalg.norm(seq - conn.crossing_xv[None, :], axis=1)
+    assert float(dists.min()) < 5e-3, (
+        f"crossing {conn.crossing_xv} not near any W-Z L1->L2 crossing "
+        f"(min dist {dists.min():.3e}); closest = {seq[int(dists.argmin())]}"
+    )
