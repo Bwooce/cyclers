@@ -113,7 +113,7 @@ def main() -> None:
         independent_tol=V1_INDEPENDENT_CLOSURE_FLOOR,
         require_monotone_decrease=False,
     )
-    elapsed_v1 = time.time() - t_start_v1
+    time.time() - t_start_v1
 
     passes_v1 = bool(
         result.converged
@@ -122,7 +122,7 @@ def main() -> None:
     )
     print(f"[V1-verify] passes_v1: {passes_v1}")
 
-    iso_end_v1 = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     args.output_v1.parent.mkdir(parents=True, exist_ok=True)
     with args.output_v1.open("w") as fh:
         verdict = {
@@ -146,7 +146,7 @@ def main() -> None:
 
     # --- V2 ---
     print("\n[V2-verify] running V2 bounded cycle drift...")
-    t_start_v2 = time.time()
+    time.time()
 
     state0_v1 = result.state0
     period_v1 = result.T_TU
