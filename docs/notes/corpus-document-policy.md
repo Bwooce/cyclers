@@ -12,12 +12,24 @@ gaps so no document silently goes unprocessed again.
 A document in the private `cyclers_pdf/papers/` corpus is **"processed"**
 only when ALL THREE hold:
 
-### 1. OCR-first (text-searchable)
-On acquisition, probe for a text layer (`pdffonts <f>`, or a `pdftotext`
-probe). If image-only, it must be OCR'd — either by a digest agent reading
-page-images through the Read tool (the Szebehely method: selective, works
-on 600+ page scans) or an explicit OCR pass. Text-layer PDFs use
-`pdftotext -layout`. No document stays a black-box image.
+### 1. OCR-first (text-searchable) — use a tool, not Claude tokens
+On acquisition, probe for a text layer (`pdffonts <f>`; or a `pdftotext`
+probe returning empty = image-only).
+- **Text-layer PDFs** (most modern arXiv/journal papers): just
+  `pdftotext -layout`. No OCR needed.
+- **Image-only PDFs** (old scans — Szebehely 1967, 1970s AIAA scans):
+  run **`ocrmypdf --skip-text <in> <out>`** (Tesseract under the hood) to
+  add a text layer ONCE, then `pdftotext`. This is a cheap deterministic
+  CPU step — do NOT vision-read hundreds of page-images through the Read
+  tool (the Szebehely digest burned large token cost doing exactly that).
+- **Hybrid for precision**: Tesseract garbles math/subscripts/tables on
+  old scans. Navigate via the OCR'd text, but reserve Claude vision
+  (Read on the page image) for the 2-3 precision-critical
+  equation/table pages where exact sourced values matter. Cheap bulk +
+  accurate where it counts.
+- Tooling: `ocrmypdf` (PyPI, `uv add`) requires the `tesseract-ocr` +
+  `ghostscript` system binaries. Setup is task #400. No document stays a
+  black-box image.
 
 ### 2. Chapter/section-summary digest
 A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.
