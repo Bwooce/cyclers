@@ -391,11 +391,14 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "cassini-huygens-vvejga",
         "juno-earth-flyby-jupiter",
         "mariner-10-venus-mercury",
+        # BepiColombo (#399, 2026-06-19): 1 Earth + 2 Venus + 6 Mercury gravity
+        # assists, ESA reconstructed MPO SPK (NAIF -121); closes the #345 backlog.
+        "bepicolombo-earth-venus-mercury",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 251, (
-    f"Allowlist must have 251 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 252, (
+    f"Allowlist must have 252 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -489,7 +492,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 251, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 252, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

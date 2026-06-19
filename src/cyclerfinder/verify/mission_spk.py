@@ -63,6 +63,8 @@ NAIF_PIONEER10_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/
 NAIF_PIONEER11_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
 NAIF_JUNO_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/JUNO/kernels/spk/"
 NAIF_CASSINI_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/CASSINI/kernels/spk/"
+# BepiColombo SPKs live in the ESA SPICE Service archive, not NAIF.
+ESA_BEPICOLOMBO_SPK_BASE = "http://spiftp.esac.esa.int/data/SPICE/BEPICOLOMBO/kernels/spk/"
 
 # NAIF body IDs for the spacecraft (CSPICE built-in name->ID; given explicitly so
 # the extractor never depends on a name-resolution kernel being loaded).
@@ -73,6 +75,7 @@ PIONEER_10_NAIF_ID = -23  # confirmed from p10-a.bsp coverage (#399)
 PIONEER_11_NAIF_ID = -24  # confirmed from p11-a.bsp coverage (#399)
 JUNO_NAIF_ID = -61  # confirmed from the Juno cruise-merge SPK coverage (#399)
 CASSINI_NAIF_ID = -82  # confirmed from the Cassini reconstructed-SPK coverage (#399)
+BEPICOLOMBO_MPO_NAIF_ID = -121  # MPO; confirmed from the ESA fcp cruise-SPK coverage (#399)
 
 
 # Map flyby-body short names to (NAIF body name spiceypy understands, PLANETS key
@@ -426,7 +429,9 @@ def vinf_at_flyby(
 
 
 __all__ = [
+    "BEPICOLOMBO_MPO_NAIF_ID",
     "CASSINI_NAIF_ID",
+    "ESA_BEPICOLOMBO_SPK_BASE",
     "FLYBY_BODIES",
     "JUNO_NAIF_ID",
     "MARINER_10_NAIF_ID",

@@ -156,7 +156,12 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # blocked on kernel availability). orbit_source=derived / vinf_source=derived
     # -> 'unvalidated'; V0 evidence (Mercury-I CA 704 km vs published 704 km)
     # lives in validation_level, not the source-pair tier.
-    "unvalidated": 37,
+    # 37 -> 38 (2026-06-19, #399): bepicolombo-earth-venus-mercury admitted as the
+    # 9th SPK-derived mga_tour row (1 Earth + 2 Venus + 6 Mercury gravity assists,
+    # ESA reconstructed MPO SPK, NAIF -121; closes the #345 backlog). derived/
+    # derived -> 'unvalidated'; V0 evidence (all 9 CA altitudes vs published ESA
+    # to <=1.01%) on the validation_level axis, not the source-pair tier.
+    "unvalidated": 38,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

@@ -51185,3 +51185,108 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 10.376 km/s from NAIF SPK M10_archive_1.bsp (Mariner 10, body -76) at Mercury-I closest approach 1974-03-29T20:46 UTC; CA 1.289 R_Me / 704 km alt reproduces the published 704 km (NASA '45 Years Ago: Mariner 10 flies by Venus'; Giberson-Cunningham 1975) to <0.1%."
     "n_returns": "Single Earth launch (1973-11-03); n_returns=1. Mariner 10's repeated-Mercury encounters are a 2:1 resonance about the Sun, not Earth returns; per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
+- id: bepicolombo-earth-venus-mercury
+  name: "BepiColombo Earth-Venus-Mercury gravity-assist cruise, SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # solar-electric-propulsion + 9 gravity-assist flybys (1 Earth, 2 Venus, 6 Mercury); the gravity-assist flybys are ballistic encounters; terminal Mercury Orbit Insertion is a capture
+  model_assumption: analytic-ephemeris   # per-flyby V_inf derived from the ESA reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; nine distinct heliocentric arcs between gravity-assist flybys; structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; the most flyby-rich gravity-assist tour flown (1 Earth + 2 Venus + 6 Mercury); terminal target is Mercury capture (MOI), not a continuing tour at Earth
+  epoch_locked: true   # the flown 2018 launch / 2020-2025 flyby / 2026 MOI window
+  n_returns: 1   # single Earth launch / single Mercury arrival; not a cycler
+  validity_window:   # launch -> final pre-capture Mercury flyby (last SPK-derived encounter)
+    start: "2018-10-20T01:45:00Z"
+    end: "2025-01-08T05:59:00Z"
+  launch_epoch: "2018-10-20T01:45:00Z"   # BepiColombo launch 2018-10-20 01:45 UTC, Ariane 5 ECA (ESA)
+  validation_level: V0   # spec §14: SPK-derived per-flyby V_inf; every CA altitude reproduces the published ESA value to <=1.01%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + ESA SPICE Service reconstructed BepiColombo MPO SPK (bc_mpo_fcp_00226_20181020_20270407_v01.bsp, NAIF -121; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "E", "V", "V", "Me", "Me", "Me", "Me", "Me", "Me"]
+  sequence_canonical: "E-E-V-V-Me-Me-Me-Me-Me-Me"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 3.993
+      note: "Earth gravity-assist flyby 2020-04-10T04:25 UTC; vis-viva std 0.003 km/s; CA 12,686 km alt vs published 12,677 km (ESA) +0.07%. #399 (bc_mpo_fcp_00226, NAIF -121)."
+    - body: "V"
+      vinf_kms: 7.979
+      note: "Venus-1 flyby 2020-10-15T03:58 UTC; vis-viva std 0.007 km/s; CA 10,722 km alt vs published 10,720 km (ESA) +0.02%. #399."
+    - body: "V"
+      vinf_kms: 8.022
+      note: "Venus-2 flyby 2021-08-10T13:51 UTC; vis-viva std 0.007 km/s; CA 553 km alt vs published ~552 km (ESA) +0.10%. #399."
+    - body: "Me"
+      vinf_kms: 6.659
+      note: "Mercury-1 flyby 2021-10-01T23:35 UTC; vis-viva std 0.010 km/s; CA 199 km alt vs published 199 km (ESA) -0.10%. #399."
+    - body: "Me"
+      vinf_kms: 6.423
+      note: "Mercury-2 flyby 2022-06-23T09:44 UTC; vis-viva std 0.026 km/s; CA 198 km alt vs published 200 km (ESA) -0.97%. #399."
+    - body: "Me"
+      vinf_kms: 3.640
+      note: "Mercury-3 flyby 2023-06-19T19:34 UTC; vis-viva std 0.017 km/s; CA 235 km alt vs published 236 km (ESA) -0.51%. #399."
+    - body: "Me"
+      vinf_kms: 2.748
+      note: "Mercury-4 flyby 2024-09-04T21:48 UTC; vis-viva std 0.014 km/s; CA 163 km alt vs published 165 km (ESA) -1.01%. #399."
+    - body: "Me"
+      vinf_kms: 2.612
+      note: "Mercury-5 flyby 2024-12-01T14:23 UTC; vis-viva std 0.013 km/s; CA 37,626 km alt vs published 37,626 km (ESA) -0.00%. This is the deliberately HIGH post-anomaly flyby (Sept 2024 solar-electric-thruster power shortfall raised the targeted altitude from ~37 km to 37,626 km) -- a genuine gravity assist, not the terminal capture. #399."
+    - body: "Me"
+      vinf_kms: 1.892
+      note: "Mercury-6 flyby 2025-01-08T05:59 UTC; vis-viva std 0.010 km/s; CA 295 km alt vs published 295 km (ESA) +0.00%; the final pre-capture flyby. #399."
+  legs: []
+  first_published:
+    authors: ["ESA BepiColombo"]
+    year: 2025
+    title: "BepiColombo mission / Earth-Venus-Mercury gravity-assist flyby parameters"
+    venue: "ESA Science (cosmos.esa.int/web/bepicolombo-flyby) + ESA per-flyby press releases"
+    doi: null
+  corroborating_sources:
+    - authors: ["ESA SPICE Service"]
+      year: 2025
+      title: "BepiColombo SPICE Kernel Dataset (reconstructed MPO SPK)"
+      venue: "spiftp.esac.esa.int/data/SPICE/BEPICOLOMBO/"
+      note: "Provenance of the reconstructed BepiColombo MPO spacecraft SPK (bc_mpo_fcp_00226_20181020_20270407_v01.bsp) that #399's vinf_at_flyby() reads; the per-flyby V_inf is DERIVED from this authoritative mission kernel."
+  priority_date: "2018-10-20"
+  notes: |
+    BepiColombo's flown Earth-Venus-Mercury gravity-assist cruise to Mercury --
+    the most flyby-rich gravity-assist tour ever flown: 1 Earth + 2 Venus + 6
+    Mercury gravity assists (a solar-electric-propulsion-assisted MGA tour),
+    spiralling into Mercury capture (MOI). The per-flyby V_inf is not published
+    in clean form, so #399 DERIVES it from the ESA SPICE Service reconstructed
+    MPO spacecraft SPK at the sourced flyby epochs
+    (cyclerfinder.verify.mission_spk.vinf_at_flyby). The kernel is the ESA
+    reconstructed flight-dynamics product bc_mpo_fcp_00226 (61 MB, NAIF -121,
+    one continuous segment 2018-2027) -- the coarse bc_mmo_scp_cruise kernel
+    (7 KB) is unusable. Recon: docs/notes/2026-06-19-bepicolombo-kernel-recon.md.
+
+    All 9 gravity-assist flybys extracted cleanly (every periapsis refined, every
+    vis-viva V_inf converged to <=0.027 km/s std), with CA altitudes reproducing
+    the published ESA values to <=1.01% (Mercury-4 the max; all others <1%). V_inf
+    decreases monotonically 8.02 km/s (Venus-2) -> 1.89 km/s (Mercury-6) as the
+    spacecraft brakes into the Mercury-resonant approach. Mercury-5 is the
+    deliberately HIGH (37,626 km) post-anomaly flyby (Sept 2024 thruster power
+    shortfall) -- a real gravity assist correctly extracted, not an artefact.
+
+    Earth departure (2018-10-20) and the terminal Mercury Orbit Insertion
+    (delayed to Nov 2026 following the 2024 thruster anomaly) carry no V_inf
+    entry: the launch C3 is not assigned a fabricated departure V_inf, and MOI is
+    a capture, not a hyperbolic flyby (the symmetric vis-viva extraction does not
+    apply to a capture). Sourced-only discipline. validity_window.end is the last
+    SPK-derived gravity-assist flyby (Mercury-6, 2025-01-08).
+
+    validation_level=V0 (orbit_source = vinf_source = derived -> 'unvalidated'
+    provenance tier; V0 on validation_level), even though every CA altitude
+    reproduces the published ESA record to <=1.01%. The 9th SPK-derived mga_tour
+    row -- and the one that closes the #345 classic-mission backlog (Mariner 6/7
+    excluded as pre-gravity-assist-era direct flybys; out of scope). See
+    docs/notes/2026-06-19-bepicolombo-kernel-recon.md and
+    docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "BepiColombo launched 2018-10-20 01:45 UTC on an Ariane 5 ECA (flight VA245) from Kourou (ESA)."
+    "validity_window.end": "Mercury-6 flyby 2025-01-08T05:59 UTC, the last SPK-derived gravity-assist flyby before Mercury Orbit Insertion (MOI delayed to Nov 2026 after the 2024 thruster anomaly)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 3.993 km/s from ESA SPK bc_mpo_fcp_00226_20181020_20270407_v01.bsp (BepiColombo MPO, body -121) at the Earth gravity-assist CA 2020-04-10T04:25 UTC; CA 12,686 km alt reproduces the published 12,677 km (ESA) to +0.07%."
+    "vinf_kms_at_encounters.8.vinf_kms": "DERIVED (#399): planetocentric V_inf 1.892 km/s at the Mercury-6 CA 2025-01-08T05:59 UTC; CA 295 km alt reproduces the published 295 km (ESA) to +0.00%; the final pre-capture flyby."
+    "n_returns": "Single Earth launch (2018-10-20) and single Mercury arrival (MOI 2026); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+

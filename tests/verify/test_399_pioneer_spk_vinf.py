@@ -47,6 +47,11 @@ PUBLISHED_CASSINI_EARTH_ALT_KM = 1166.0
 PUBLISHED_JUNO_EARTH_ALT_KM = 559.0
 SPK_VINF_BAND_KMS = (5.0, 18.0)  # broad sanity band for the inner-system flybys
 
+# BepiColombo published CA altitudes (km) — ESA per-flyby press releases.
+PUBLISHED_BEPI_EARTH_ALT_KM = 12677.0
+PUBLISHED_BEPI_MERCURY6_ALT_KM = 295.0
+BEPI_VINF_BAND_KMS = (1.0, 9.0)  # V_inf decreases 8.0 -> 1.9 km/s across the tour
+
 
 @pytest.fixture(scope="module")
 def mission_spk_module() -> ModuleType:
@@ -205,3 +210,40 @@ def test_juno_earth(mission_spk_module: ModuleType) -> None:
     )
     _assert_alt(r, PUBLISHED_JUNO_EARTH_ALT_KM, tol=0.03)
     _assert_converged(r)
+
+
+_BEPI_KERNEL = "bc_mpo_fcp_00226_20181020_20270407_v01.bsp"
+
+
+@pytest.mark.slow
+def test_bepicolombo_earth(mission_spk_module: ModuleType) -> None:
+    """BepiColombo Earth GA CA altitude matches ESA (12677 km) + V∞ converges."""
+    m = mission_spk_module
+    r = _extract(
+        m,
+        m.ESA_BEPICOLOMBO_SPK_BASE,
+        _BEPI_KERNEL,
+        m.BEPICOLOMBO_MPO_NAIF_ID,
+        "Earth",
+        "2020-04-10T04:25:00",
+        window_minutes=2880.0,
+    )
+    _assert_alt(r, PUBLISHED_BEPI_EARTH_ALT_KM, tol=0.02)
+    _assert_converged(r, band=BEPI_VINF_BAND_KMS)
+
+
+@pytest.mark.slow
+def test_bepicolombo_mercury6(mission_spk_module: ModuleType) -> None:
+    """BepiColombo final Mercury flyby CA altitude matches ESA (295 km) + V∞ converges."""
+    m = mission_spk_module
+    r = _extract(
+        m,
+        m.ESA_BEPICOLOMBO_SPK_BASE,
+        _BEPI_KERNEL,
+        m.BEPICOLOMBO_MPO_NAIF_ID,
+        "Mercury",
+        "2025-01-08T05:59:00",
+        window_minutes=2880.0,
+    )
+    _assert_alt(r, PUBLISHED_BEPI_MERCURY6_ALT_KM, tol=0.03)
+    _assert_converged(r, band=BEPI_VINF_BAND_KMS)

@@ -378,7 +378,11 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # tour, no period.years/period.k). NOT_TWO_BODY, same lane as the other
     # SPK-derived mga_tour rows. Only Mercury-I has an SPK-derived V_inf (the
     # public NAIF M10 archive covers only the Mercury-I window); pure census shift.
-    ExclusionReason.NOT_TWO_BODY: 9,
+    # 9 -> 10 (2026-06-19, #399): +1 bepicolombo-earth-venus-mercury
+    # (bodies=[E,E,V,V,Me,Me,Me,Me,Me,Me], 10 bodies; 1 Earth + 2 Venus + 6
+    # Mercury gravity-assist tour, no period.years/period.k). NOT_TWO_BODY, same
+    # lane as the other SPK-derived mga_tour rows. Closes the #345 backlog.
+    ExclusionReason.NOT_TWO_BODY: 10,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the
