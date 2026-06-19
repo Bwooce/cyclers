@@ -47,6 +47,9 @@ validation = [
     # infrastructure; tests skip cleanly when rebound is absent.
     "rebound>=4.0",
 ]
+ocr = [
+    "ocrmypdf>=17.7.0",
+]
 
 [project.scripts]
 cyclerfinder = "cyclerfinder.cli:main"
