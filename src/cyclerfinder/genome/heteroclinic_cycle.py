@@ -241,6 +241,8 @@ class HeteroclinicConnection:
     tau_s: float
     k_u: int
     k_s: int
+    branch_u: int  # manifold branch used for the unstable leg (+1 or -1)
+    branch_s: int  # manifold branch used for the stable leg (+1 or -1)
     crossing_xv: NDArray[np.float64]  # (x, xdot) at the matched crossing
     residual: float
     converged: bool
@@ -436,6 +438,8 @@ def correct_connection(
                 tau_s,
                 k_u,
                 k_s,
+                branch_u,
+                branch_s,
                 np.zeros(2),
                 float("inf"),
                 False,
@@ -462,6 +466,8 @@ def correct_connection(
                 tau_s,
                 k_u,
                 k_s,
+                branch_u,
+                branch_s,
                 xv if xv is not None else np.zeros(2),
                 rn,
                 False,
@@ -495,6 +501,8 @@ def correct_connection(
         tau_s=tau_s,
         k_u=k_u,
         k_s=k_s,
+        branch_u=branch_u,
+        branch_s=branch_s,
         crossing_xv=xv if xv is not None else np.zeros(2),
         residual=final_rn,
         converged=converged,
@@ -574,4 +582,76 @@ def assemble_cycle(
         independent_residual=float("nan"),
         symbol_sequence=symbols,
         notes="" if closed else "one or more legs did not converge",
+    )
+
+
+def crosscheck_cycle(
+    system: cr3bp.CR3BPSystem,
+    nodes: list[LyapunovNode],
+    cycle: HeteroclinicCycle,
+    *,
+    method: str = "Radau",
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    max_time_factor: float = 8.0,
+) -> HeteroclinicCycle:
+    """Re-derive each converged leg's crossing with an independent integrator.
+
+    Returns a copy of ``cycle`` with ``independent_residual`` set to the maximum
+    section-point disagreement between the corrector's stored crossing (DOP853) and
+    a fresh ``method`` (default Radau) re-propagation at the SAME (tau_u, tau_s, k,
+    branch). A leg that fails to reproduce its crossing contributes ``inf`` (a real
+    failure, surfaced — never silently dropped). Mandatory before a "closed" claim
+    is trusted (orbit-closure-discipline: independent cross-check).
+    """
+    label_to_node = {nd.label: nd for nd in nodes}
+    worst = 0.0
+    for conn in cycle.connections:
+        if not conn.converged:
+            worst = float("inf")
+            continue
+        a = label_to_node[conn.orbit_from]
+        b = label_to_node[conn.orbit_to]
+        max_time = max_time_factor * max(a.period, b.period)
+        seed_u = _seed_on_manifold(
+            system, a, tau=conn.tau_u, direction="unstable", branch=conn.branch_u, epsilon=1e-6
+        )
+        seed_s = _seed_on_manifold(
+            system, b, tau=conn.tau_s, direction="stable", branch=conn.branch_s, epsilon=1e-6
+        )
+        p_u = _section_crossing(
+            system,
+            seed_u,
+            direction="unstable",
+            k=conn.k_u,
+            max_time=max_time,
+            method=method,
+            rtol=rtol,
+            atol=atol,
+        )
+        p_s = _section_crossing(
+            system,
+            seed_s,
+            direction="stable",
+            k=conn.k_s,
+            max_time=max_time,
+            method=method,
+            rtol=rtol,
+            atol=atol,
+        )
+        if p_u is None or p_s is None:
+            worst = float("inf")
+            continue
+        gap = float(np.linalg.norm(p_u - p_s))  # independent section-gap residual
+        recovered = 0.5 * (p_u + p_s)
+        worst = max(worst, float(np.linalg.norm(recovered - conn.crossing_xv)), gap)
+    return HeteroclinicCycle(
+        orbits=cycle.orbits,
+        connections=cycle.connections,
+        jacobi=cycle.jacobi,
+        closed=cycle.closed,
+        max_leg_residual=cycle.max_leg_residual,
+        independent_residual=worst,
+        symbol_sequence=cycle.symbol_sequence,
+        notes=cycle.notes,
     )

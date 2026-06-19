@@ -246,3 +246,32 @@ def test_assemble_energy_mismatch_raises() -> None:
     )
     with pytest.raises(ValueError, match=r"equal Jacobi|energy"):
         assemble_cycle(system, [l1, l2])
+
+
+from cyclerfinder.genome.heteroclinic_cycle import (  # noqa: E402
+    crosscheck_cycle,
+)
+
+
+@pytest.mark.slow
+def test_cycle_independent_crosscheck() -> None:
+    """Radau re-propagation reproduces each leg's section crossing (vs DOP853)."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    cycle = assemble_cycle(
+        system,
+        [l1, l2],
+        tol=1e-7,
+        per_leg_kwargs=[{}, {"branch_u": +1, "branch_s": +1, "k_u": 4, "k_s": 3}],
+    )
+    assert cycle.closed
+    checked = crosscheck_cycle(system, [l1, l2], cycle)
+    assert checked.independent_residual < 1e-5, (
+        f"Radau vs DOP853 disagreement {checked.independent_residual:.3e}"
+    )
+    assert not np.isnan(checked.independent_residual)
