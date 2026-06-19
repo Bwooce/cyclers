@@ -143,7 +143,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # V0 evidence (SPK-derived V_inf whose CA geometry reproduces the published
     # NASA Pioneer mission-page record to ~1%) lives in validation_level, not
     # the source-pair tier -- same orthogonal-axis convention as the Voyager rows.
-    "unvalidated": 34,
+    # 34 -> 36 (2026-06-19, #399): cassini-huygens-vvejga and
+    # juno-earth-flyby-jupiter admitted as the 6th/7th SPK-derived mga_tour rows,
+    # both orbit_source=derived / vinf_source=derived (same fidelity real-de440)
+    # -- 'unvalidated' under the existing provenance rules. V0 evidence
+    # (SPK-derived cruise/Earth-flyby V_inf whose CA geometry reproduces the
+    # published ESA/NSSDCA record to <=1%; Cassini Jupiter ~3%) lives in
+    # validation_level, not the source-pair tier.
+    "unvalidated": 36,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

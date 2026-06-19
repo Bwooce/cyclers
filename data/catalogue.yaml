@@ -50941,3 +50941,173 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.1.vinf_kms": "DERIVED (#399): planetocentric V_inf 8.359 km/s from NAIF SPK p11_sat336.bsp (Pioneer 11, body -24) at Saturn closest approach 1979-09-01T16:31 UTC (outer-window std 0.003 km/s). CA 1.344 R_S / 20,713 km alt reproduces the published 20,900 km (NASA Science Pioneer-11 mission page) to ~1%."
     "n_returns": "Single Earth launch (1973-04-06) and single Saturn arrival (1979-09-01); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
+- id: cassini-huygens-vvejga
+  name: "Cassini-Huygens VVEJGA cruise to Saturn, SPK-derived cruise V_inf"
+  source: literature
+  trajectory_regime: ballistic   # Venus-Venus-Earth-Jupiter gravity-assist cruise; heliocentric arcs ballistic (with the deep-space maneuver between the two Venus flybys); terminal Saturn capture (SOI) is a retro burn, outside the heliocentric tour
+  model_assumption: analytic-ephemeris   # cruise V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; multiple distinct heliocentric arcs (E->V, V->V, V->E, E->J, J->S); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; the canonical VVEJGA gravity-assist cruise (Venus-Venus-Earth-Jupiter); terminal target is Saturn capture (SOI), not a continuing tour at Earth
+  epoch_locked: true   # the flown 1997 launch / 1998-2000 flyby / 2004 SOI window
+  n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
+  validity_window:   # launch -> Saturn Orbit Insertion
+    start: "1997-10-15T08:43:00Z"
+    end: "2004-07-01T00:00:00Z"
+  launch_epoch: "1997-10-15T08:43:00Z"   # Cassini launch 1997-10-15 08:43 UTC (ESA/NASA Cassini-Huygens)
+  validation_level: V0   # spec §14: SPK-derived cruise V_inf; the closest-approach geometry independently reproduces the published altitudes to <=1% (Jupiter ~3%), but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Cassini spacecraft SPKs (000331R_SK_LP0_V1P32.bsp Venus-1; 000331R_SK_V1P32_V2P12.bsp Venus-2; 000331R_SK_V2P12_EP15.bsp Earth; 010420R_SCPSE_EP1_JP83.bsp Jupiter; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "V", "V", "E", "J", "S"]
+  sequence_canonical: "E-V-V-E-J-S"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "V"
+      vinf_kms: 6.008
+      note: "SPK-derived planetocentric V_inf at Venus-1 closest approach 1998-04-26 (000331R_SK_LP0_V1P32.bsp, NAIF -82); vis-viva outer-window std 0.012 km/s; CA 1.047 R_V / 284 km alt reproduces the published 284 km (ESA Cassini-Huygens) to <0.1%. #399."
+    - body: "V"
+      vinf_kms: 9.452
+      note: "SPK-derived planetocentric V_inf at Venus-2 closest approach 1999-06-24 (000331R_SK_V1P32_V2P12.bsp, NAIF -82); vis-viva std 0.016 km/s; CA 1.100 R_V / 603 km alt reproduces the published ~600 km (ESA Cassini-Huygens) to <0.5%. #399."
+    - body: "E"
+      vinf_kms: 16.048
+      note: "SPK-derived planetocentric V_inf at Earth closest approach 1999-08-18 (000331R_SK_V2P12_EP15.bsp, NAIF -82); vis-viva std 0.011 km/s; CA 1.184 R_E / 1172 km alt reproduces the published 1166 km (ESA Cassini-Huygens) to <0.5%. #399."
+    - body: "J"
+      vinf_kms: 10.427
+      note: "SPK-derived planetocentric V_inf at Jupiter closest approach 2000-12-30 (010420R_SCPSE_EP1_JP83.bsp, NAIF -82); vis-viva std 0.001 km/s; CA 137 R_J / 9.72e6 km (the deliberately DISTANT Jupiter flyby) reproduces the published ~10e6 km (ESA Cassini-Huygens) to ~3%. #399."
+  legs: []
+  first_published:
+    authors: ["ESA / NASA Cassini-Huygens"]
+    year: 2004
+    title: "Cassini-Huygens mission / Venus-Venus-Earth-Jupiter cruise flyby parameters"
+    venue: "ESA Cassini-Huygens science portal + NASA Science Cassini mission pages"
+    doi: null
+  corroborating_sources:
+    - authors: ["Wolf, A. A.", "Smith, J. C."]
+      year: 1995
+      title: "Design of the Cassini Tour Trajectory in the Saturnian System"
+      venue: "Control Engineering Practice 3(11):1611-1619"
+      doi: "10.1016/0967-0661(95)00172-7"
+      note: "Cassini mission-design reference (digested #355); covers the Saturnian satellite tour + SOI 2004-07-01, not the cruise V_inf (no per-flyby V_inf published anywhere)."
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed Cassini spacecraft SPK kernels that #399's vinf_at_flyby() reads; the cruise V_inf is DERIVED from these authoritative mission kernels."
+  priority_date: "1997-10-15"
+  notes: |
+    Cassini-Huygens' flown Venus-Venus-Earth-Jupiter-Gravity-Assist (VVEJGA)
+    cruise to Saturn -- the textbook inner-solar-system gravity-assist chain that
+    accelerated the heaviest interplanetary spacecraft of its era to Saturn. The
+    per-encounter cruise V_inf is not published in clean form (the Wolf-Smith
+    1995 design paper, #355, tabulates only the Saturnian tour geometry, no
+    cruise V_inf), so #399 DERIVES it from the mission's archived NAIF
+    reconstructed spacecraft SPKs at the sourced flyby epochs
+    (cyclerfinder.verify.mission_spk.vinf_at_flyby). Each cruise flyby uses the
+    reconstructed phase kernel that covers it (the launch-phase SK kernels for
+    Venus-1/Venus-2/Earth; the SCPSE cruise kernel for Jupiter).
+
+    Cruise gravity-assist flybys:
+    * Venus-1 1998-04-26: V_inf 6.008 km/s, CA 1.047 R_V / 284 km alt
+      (published 284 km, ESA).
+    * Venus-2 1999-06-24: V_inf 9.452 km/s, CA 1.100 R_V / 603 km alt
+      (published ~600 km, ESA).
+    * Earth 1999-08-18: V_inf 16.048 km/s, CA 1.184 R_E / 1172 km alt
+      (published 1166 km, ESA).
+    * Jupiter 2000-12-30: V_inf 10.427 km/s, CA 137 R_J / 9.72e6 km -- the
+      deliberately distant Jupiter flyby (published ~10e6 km, ESA).
+
+    Earth departure (1997-10-15) and the terminal Saturn Orbit Insertion
+    (2004-07-01) carry no V_inf entry: the launch C3 / departure V_inf is not
+    published in clean form, and SOI is a retro-capture burn, not a hyperbolic
+    flyby (the symmetric vis-viva extraction does not apply to a capture).
+    Sourced-only discipline -> both are documented (launch_epoch / validity end)
+    but not assigned a fabricated V_inf.
+
+    validation_level=V0: cruise V_inf DERIVED by our own code (orbit_source =
+    vinf_source = derived -> 'unvalidated' provenance tier; V0 on
+    validation_level), even though every CA altitude reproduces the published
+    ESA record to <=0.5% (Jupiter ~3%). The 6th SPK-derived mga_tour row. See
+    docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Cassini-Huygens launched 1997-10-15 08:43 UTC by Titan IVB-Centaur (ESA Cassini-Huygens operations page)."
+    "validity_window.end": "Saturn Orbit Insertion 2004-07-01 (Wolf-Smith 1995 §3 'The orbiter arrives at Saturn on 1 July, 2004'; ESA Cassini-Huygens)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 6.008 km/s from NAIF SPK 000331R_SK_LP0_V1P32.bsp (Cassini, body -82) at Venus-1 CA 1998-04-26; CA 284 km alt reproduces the published 284 km (ESA Cassini-Huygens 'Venus flyby successfully completed')."
+    "vinf_kms_at_encounters.1.vinf_kms": "DERIVED (#399): planetocentric V_inf 9.452 km/s from NAIF SPK 000331R_SK_V1P32_V2P12.bsp (Cassini, body -82) at Venus-2 CA 1999-06-24; CA 603 km alt reproduces the published ~600 km (ESA Cassini-Huygens)."
+    "vinf_kms_at_encounters.2.vinf_kms": "DERIVED (#399): planetocentric V_inf 16.048 km/s from NAIF SPK 000331R_SK_V2P12_EP15.bsp (Cassini, body -82) at Earth CA 1999-08-18; CA 1172 km alt reproduces the published 1166 km (ESA Cassini-Huygens)."
+    "vinf_kms_at_encounters.3.vinf_kms": "DERIVED (#399): planetocentric V_inf 10.427 km/s from NAIF SPK 010420R_SCPSE_EP1_JP83.bsp (Cassini, body -82) at Jupiter CA 2000-12-30; CA 9.72e6 km (137 R_J, the distant flyby) reproduces the published ~10e6 km (ESA Cassini-Huygens) to ~3%."
+    "n_returns": "Single Earth launch (1997-10-15) and single Saturn arrival (2004-07-01); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+
+- id: juno-earth-flyby-jupiter
+  name: "Juno Earth-gravity-assist cruise to Jupiter, SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # deep-space-maneuver + single Earth gravity assist to Jupiter; the heliocentric arcs are ballistic; terminal Jupiter capture (JOI) is a retro burn, outside the heliocentric tour
+  model_assumption: analytic-ephemeris   # Earth-flyby V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; two heliocentric arcs (E->E via the 2-yr deep-space-maneuver loop, E->J); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; single-Earth-gravity-assist cruise to Jupiter; terminal target is Jupiter capture (JOI), not a continuing tour at Earth
+  epoch_locked: true   # the flown 2011 launch / 2013 Earth flyby / 2016 JOI window
+  n_returns: 1   # single Earth launch / single Jupiter arrival; not a cycler
+  validity_window:   # launch -> Jupiter Orbit Insertion
+    start: "2011-08-05T16:25:00Z"
+    end: "2016-07-05T03:53:00Z"
+  launch_epoch: "2011-08-05T16:25:00Z"   # Juno launch 2011-08-05 16:25 UTC (NSSDCA 2011-040A)
+  validation_level: V0   # spec §14: SPK-derived Earth-flyby V_inf; the CA altitude reproduces the published value to ~1%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Juno cruise SPK (spk_merge_110805_171017_130515.bsp; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "E", "J"]
+  sequence_canonical: "E-E-J"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "E"
+      vinf_kms: 10.401
+      note: "SPK-derived planetocentric V_inf at the Earth gravity-assist flyby closest approach 2013-10-09T19:21 UTC (spk_merge_110805_171017_130515.bsp, NAIF -61); vis-viva outer-window std 0.003 km/s; CA 1.087 R_E / 552 km alt reproduces the published ~559 km (NSSDCA 2011-040A) to ~1%. #399."
+  legs: []
+  first_published:
+    authors: ["NASA NSSDCA"]
+    year: 2011
+    title: "Juno spacecraft (2011-040A) / Earth flyby parameters"
+    venue: "NASA NSSDCA master catalog + NASA Science Juno mission pages"
+    doi: null
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed Juno cruise SPK kernel that #399's vinf_at_flyby() reads; the Earth-flyby V_inf is DERIVED from this authoritative mission kernel."
+  priority_date: "2011-08-05"
+  notes: |
+    Juno's flown Earth-gravity-assist cruise to Jupiter: launched 2011-08-05 into
+    a ~2-year heliocentric loop, a deep-space maneuver at aphelion set up the
+    2013-10-09 Earth gravity assist that boosted the spacecraft onto its Jupiter
+    transfer, arriving for Jupiter Orbit Insertion 2016-07-05. The single clean
+    gravity-assist flyby (Earth 2013) is the diagnostic encounter; its V_inf is
+    not published in clean form, so #399 DERIVES it from the mission's archived
+    NAIF reconstructed cruise SPK at the sourced flyby epoch
+    (cyclerfinder.verify.mission_spk.vinf_at_flyby).
+
+    Earth gravity-assist flyby 2013-10-09T19:21 UTC: V_inf 10.401 km/s,
+    CA 1.087 R_E / 552 km alt (published ~559 km, NSSDCA).
+
+    Earth departure (2011-08-05) and the terminal Jupiter Orbit Insertion
+    (2016-07-05) carry no V_inf entry: the launch C3 is not assigned a fabricated
+    departure V_inf, and JOI is a retro-capture burn, not a hyperbolic flyby (the
+    symmetric vis-viva extraction does not apply to a capture). Sourced-only
+    discipline.
+
+    validation_level=V0: Earth-flyby V_inf DERIVED by our own code (orbit_source
+    = vinf_source = derived -> 'unvalidated' provenance tier; V0 on
+    validation_level), even though the CA altitude reproduces the published
+    NSSDCA record to ~1%. The 7th SPK-derived mga_tour row. See
+    docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Juno launched 2011-08-05 16:25 UTC from Cape Canaveral (NASA NSSDCA spacecraft 2011-040A)."
+    "validity_window.end": "Jupiter Orbit Insertion 2016-07-05 03:53 UTC (burn-completion confirmation received at Earth; NASA NSSDCA 2011-040A)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 10.401 km/s from NAIF SPK spk_merge_110805_171017_130515.bsp (Juno, body -61) at the Earth gravity-assist CA 2013-10-09T19:21 UTC; CA 552 km alt reproduces the published ~559 km (NASA NSSDCA 2011-040A) to ~1%."
+    "n_returns": "Single Earth launch (2011-08-05) and single Jupiter arrival (2016-07-05); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+

@@ -82,13 +82,13 @@ lives on the orthogonal gauntlet axis). See
 - **#321/#322/#323/#325/#342** various sweep / topology / CI flake /
   test-marker fixes (all background-stable, none changed catalogue).
 - **#345** classic-mission mga_tour catalogue admissions backlog. Admitted:
-  Galileo VEEGA (#356, published V_inf), Voyager 1+2 (#390, SPK-derived),
-  Pioneer 10 + Pioneer 11 (#399, SPK-derived via the #390 extractor — Jupiter
-  V_inf 8.516 / 8.934 km/s, Saturn 8.359 km/s, CAs reproduce the NASA
-  Pioneer-page altitudes to ~1%). Catalogue now 306 rows, 7 mga_tour.
-  Still pending: Cassini + Juno (need the cruise SPK + sourced Venus/Earth
-  interplanetary flyby epochs — the digested papers cover only the Saturn
-  tour / Jupiter science, not cruise; cf. #361), Mariner-10, BepiColombo.
+  Galileo VEEGA (#356, published V_inf); Voyager 1+2, Pioneer 10+11, Cassini,
+  Juno (all SPK-derived via the #390 extractor, #390/#399). Cassini cruise V_inf
+  (V 6.008 / V 9.452 / E 16.048 / J 10.427 km/s) and Juno Earth-flyby V_inf
+  (10.401 km/s) reproduce the published ESA/NSSDCA CA altitudes to <=1% (Cassini
+  Jupiter ~3%); terminal captures (Cassini SOI, Juno JOI) recorded without a
+  fabricated V_inf. Catalogue now 308 rows, 9 mga_tour. Still pending:
+  Mariner-10 (M10 SPK cached, body -76; Venus + Mercury x3) and BepiColombo.
 - **#310** single-orbit prioritizer adapter closing the #284
   architectural gap (adapter seam open per #343 report).
 

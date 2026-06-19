@@ -365,7 +365,15 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # as Voyager 1 E-J-S / the Heaton-Longuski 2003 / D'Amario 1992 tours). Pure
     # census shift; carries its own V0 SPK-derived evidence (Jupiter V_inf 8.934 +
     # Saturn V_inf 8.359 km/s; CAs reproduce the NASA Pioneer-11 page to ~1%).
-    ExclusionReason.NOT_TWO_BODY: 6,
+    # 6 -> 8 (2026-06-19, #399): +2 SPK-derived mga_tour rows.
+    # cassini-huygens-vvejga (bodies=[E,V,V,E,J,S], 6 bodies) and
+    # juno-earth-flyby-jupiter (bodies=[E,E,J], 3 bodies). Both lack a
+    # period.years/period.k pair (one-shot gravity-assist cruises, not cycles),
+    # so they file under NOT_TWO_BODY (same lane as Voyager/Pioneer-11 E-J-S /
+    # the Galileo / Heaton-Longuski tours). Pure census shift; each carries its
+    # own V0 SPK-derived cruise/Earth-flyby evidence (CAs reproduce the published
+    # ESA / NSSDCA record to <=1%; Cassini Jupiter ~3%).
+    ExclusionReason.NOT_TWO_BODY: 8,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

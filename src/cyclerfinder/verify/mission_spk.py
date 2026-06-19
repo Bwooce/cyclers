@@ -61,6 +61,8 @@ NAIF_VOYAGER_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/
 NAIF_M10_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/M10/kernels/spk/"
 NAIF_PIONEER10_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/"
 NAIF_PIONEER11_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
+NAIF_JUNO_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/JUNO/kernels/spk/"
+NAIF_CASSINI_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/CASSINI/kernels/spk/"
 
 # NAIF body IDs for the spacecraft (CSPICE built-in name->ID; given explicitly so
 # the extractor never depends on a name-resolution kernel being loaded).
@@ -69,6 +71,8 @@ VOYAGER_2_NAIF_ID = -32
 MARINER_10_NAIF_ID = -76
 PIONEER_10_NAIF_ID = -23  # confirmed from p10-a.bsp coverage (#399)
 PIONEER_11_NAIF_ID = -24  # confirmed from p11-a.bsp coverage (#399)
+JUNO_NAIF_ID = -61  # confirmed from the Juno cruise-merge SPK coverage (#399)
+CASSINI_NAIF_ID = -82  # confirmed from the Cassini reconstructed-SPK coverage (#399)
 
 
 # Map flyby-body short names to (NAIF body name spiceypy understands, PLANETS key
@@ -90,6 +94,10 @@ FLYBY_BODIES: dict[str, FlybyBody] = {
     "Neptune": FlybyBody(spice_center="NEPTUNE BARYCENTER", planets_key="N"),
     "Venus": FlybyBody(spice_center="VENUS BARYCENTER", planets_key="V"),
     "Mercury": FlybyBody(spice_center="MERCURY", planets_key="Me"),
+    # Earth flybys (Cassini, Juno, Galileo cruise) use the EARTH body center
+    # (399), NOT the Earth-Moon barycenter: the Moon's mass is non-negligible,
+    # and PLANETS["E"].mu is Earth's GM (398600.44), which must match the center.
+    "Earth": FlybyBody(spice_center="EARTH", planets_key="E"),
 }
 
 
@@ -418,8 +426,12 @@ def vinf_at_flyby(
 
 
 __all__ = [
+    "CASSINI_NAIF_ID",
     "FLYBY_BODIES",
+    "JUNO_NAIF_ID",
     "MARINER_10_NAIF_ID",
+    "NAIF_CASSINI_SPK_BASE",
+    "NAIF_JUNO_SPK_BASE",
     "NAIF_M10_SPK_BASE",
     "NAIF_PIONEER10_SPK_BASE",
     "NAIF_PIONEER11_SPK_BASE",

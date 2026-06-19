@@ -37,6 +37,16 @@ PUBLISHED_P11_SATURN_ALT_KM = 20_900.0
 # V∞ order-of-magnitude sanity band (km/s) — NOT a tight gate.
 PIONEER_VINF_BAND_KMS = (7.0, 10.0)
 
+# Published cruise-flyby altitudes (km) — ESA Cassini-Huygens science portal /
+# NASA Science Cassini pages (Venus-1 284, Venus-2 ~600, Earth 1166); and the
+# NASA NSSDCA Juno (2011-040A) Earth-flyby altitude (~559 km). NOT values our
+# own code computed — the non-circular EXPECTED side of each gate.
+PUBLISHED_CASSINI_VENUS1_ALT_KM = 284.0
+PUBLISHED_CASSINI_VENUS2_ALT_KM = 600.0
+PUBLISHED_CASSINI_EARTH_ALT_KM = 1166.0
+PUBLISHED_JUNO_EARTH_ALT_KM = 559.0
+SPK_VINF_BAND_KMS = (5.0, 18.0)  # broad sanity band for the inner-system flybys
+
 
 @pytest.fixture(scope="module")
 def mission_spk_module() -> ModuleType:
@@ -138,3 +148,60 @@ def test_pioneer11_saturn(mission_spk_module: ModuleType) -> None:
     )
     _assert_alt(r, PUBLISHED_P11_SATURN_ALT_KM)
     _assert_vinf(r)
+
+
+def _assert_converged(r: Any, band: tuple[float, float] = SPK_VINF_BAND_KMS) -> None:
+    frac = r.vinf_kms_visviva_window_std / r.vinf_kms_visviva_window_mean
+    assert frac < 0.01, (
+        f"V∞ not converged: std/mean = {frac:.2%} (mean {r.vinf_kms_visviva_window_mean:.4f} km/s)"
+    )
+    lo, hi = band
+    assert lo <= r.vinf_kms <= hi, f"V∞ {r.vinf_kms:.3f} km/s outside [{lo},{hi}]"
+
+
+@pytest.mark.slow
+def test_cassini_venus1(mission_spk_module: ModuleType) -> None:
+    """Cassini Venus-1 CA altitude matches ESA (284 km) + V∞ converges."""
+    m = mission_spk_module
+    r = _extract(
+        m,
+        m.NAIF_CASSINI_SPK_BASE,
+        "000331R_SK_LP0_V1P32.bsp",
+        m.CASSINI_NAIF_ID,
+        "Venus",
+        "1998-04-26T13:51:00",
+    )
+    _assert_alt(r, PUBLISHED_CASSINI_VENUS1_ALT_KM, tol=0.05)
+    _assert_converged(r)
+
+
+@pytest.mark.slow
+def test_cassini_earth(mission_spk_module: ModuleType) -> None:
+    """Cassini Earth CA altitude matches ESA (1166 km) + V∞ converges."""
+    m = mission_spk_module
+    r = _extract(
+        m,
+        m.NAIF_CASSINI_SPK_BASE,
+        "000331R_SK_V2P12_EP15.bsp",
+        m.CASSINI_NAIF_ID,
+        "Earth",
+        "1999-08-18T03:28:00",
+    )
+    _assert_alt(r, PUBLISHED_CASSINI_EARTH_ALT_KM, tol=0.02)
+    _assert_converged(r)
+
+
+@pytest.mark.slow
+def test_juno_earth(mission_spk_module: ModuleType) -> None:
+    """Juno Earth gravity-assist CA altitude matches NSSDCA (~559 km) + V∞ converges."""
+    m = mission_spk_module
+    r = _extract(
+        m,
+        m.NAIF_JUNO_SPK_BASE,
+        "spk_merge_110805_171017_130515.bsp",
+        m.JUNO_NAIF_ID,
+        "Earth",
+        "2013-10-09T19:21:00",
+    )
+    _assert_alt(r, PUBLISHED_JUNO_EARTH_ALT_KM, tol=0.03)
+    _assert_converged(r)
