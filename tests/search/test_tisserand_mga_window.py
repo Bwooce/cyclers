@@ -246,7 +246,7 @@ def test_validate_returns_none_on_extreme_tolerance() -> None:
 # --------------------------------------------------------------------------- #
 # Galileo VEEGA reproduction probe (KNOWN_CORPUS golden test).
 # --------------------------------------------------------------------------- #
-# Diehl-Belbruno-Roberts 1986 (AAS) and the public Galileo trajectory record
+# D'Amario-Bright-Wolf 1992 (flown VEEGA) and the public Galileo trajectory record
 # put the (V, E, E, J) launch on 1989-10-18T16:53:40 UTC. The Tisserand-
 # Poincaré graph at a single V_inf shell admits this sequence at V_inf
 # ~10 km/s (the lowest single-shell binding that includes E-J at the inclined
@@ -456,7 +456,7 @@ def test_multi_shell_galileo_v_inf_pattern_recoverable() -> None:
     """Multi-shell BFS admits a (V,E,E,J) chain whose Earth-1 and Earth-2
     V_inf bins match Galileo's published 8.93 km/s within the pump envelope.
 
-    Sourced anchor: Diehl-Belbruno-Roberts 1986 (KNOWN_CORPUS, corpus rev
+    Sourced anchor: D'Amario-Bright-Wolf 1992 (KNOWN_CORPUS, corpus rev
     ``568d8a4``) records Galileo's actual flight V_inf at each encounter as
     approximately (Venus 5.3, Earth-1 8.93, Earth-2 8.93, Jupiter 5.6)
     km/s. The single-shell enumerator cannot represent this (it conserves

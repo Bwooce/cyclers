@@ -55,7 +55,7 @@ catalogue.
 Galileo VEEGA integration test
 ------------------------------
 The 1989-October Galileo trajectory (V, E, E, J) is the canonical
-``mga_tour`` archetype (Diehl-Belbruno-Roberts AAS 1986;
+``mga_tour`` archetype (D'Amario-Bright-Wolf 1992 flown VEEGA;
 KNOWN_CORPUS at corpus rev ``568d8a4``). The integration test sweeps
 ``planet_set=("V","E","J")``, ``launch_window=(1989-10-01, 1989-11-15)``,
 ``max_legs=4`` and verifies that a (V, E, E, J) candidate surfaces with a

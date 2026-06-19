@@ -976,32 +976,33 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         doi=None,
     ),
     CorpusAnchor(
-        name="Diehl-Belbruno-Roberts Galileo VEEGA design (1986)",
+        name="Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
         primary="Sun",
-        body_set=frozenset({"V", "E", "Jupiter"}),
-        # #350: Galileo VEEGA = the canonical Venus-Earth-Earth-Gravity-Assist
-        # mga_tour archetype. Single launch window, non-repeating tour.
-        # #356 (2026-06-17): the "Belbruno" co-author attribution is UNVERIFIED.
-        # D'Amario 1992 SSR (the flown-trajectory canonical reference; new
-        # anchor below) does NOT cite Belbruno in its reference list, and
-        # neither does the sister Johnson-Yeates-Young 1992 SSR paper (#358
-        # digest verified). The Belbruno name is associated with weak-stability-
-        # boundary lunar capture, not Galileo VEEGA design. The original 1986
-        # Diehl-Roberts-D'Amario citation needs a separate verification effort
-        # before this attribution is corrected; the anchor retains the existing
-        # author tuple as a placeholder pending that check.
+        body_set=frozenset({"E", "Jupiter"}),
+        # #356/#384 (2026-06-19): the Belbruno misattribution is now CORRECTED.
+        # The acquired+digested 1983 design papers establish the true lineage
+        # (docs/notes/2026-06-19-digest-damario-byrnes-1983-galileo-interplanetary.md
+        # + 2026-06-17-digest-diehl-1983.md): the pre-Challenger Galileo concept
+        # was a DIRECT Earth->Jupiter trajectory (NOT VEEGA), designed in two
+        # companion AIAA-83 papers -- Diehl, Kaplan & Penzo (AIAA-83-0101,
+        # Jovian satellite tour) and D'Amario & Byrnes (AIAA-83-0099,
+        # interplanetary leg). "Belbruno" (weak-stability-boundary / Hiten lunar
+        # capture, not Galileo design) and "Roberts" were NOT authors of these
+        # papers -- both removed. The flown post-Challenger VEEGA is the separate
+        # D'Amario-Bright-Wolf 1992 anchor below (body_set {V,E,Jupiter}).
         topology_label=frozenset({"mga-tour"}),
-        authors=("Diehl", "Belbruno", "Roberts", "D'Amario"),  # UNVERIFIED - see #356
+        authors=("Diehl", "Kaplan", "Penzo", "D'Amario", "Byrnes"),
         keywords=(
-            "VEEGA Venus-Earth-Earth gravity assist",
-            "Galileo Jupiter mission trajectory",
-            "Earth-Earth gravity assist tour",
+            "Galileo direct Earth-Jupiter trajectory",
+            "Galileo satellite tour design",
+            "pre-Challenger Galileo 1986-launch concept",
         ),
-        citation="Diehl, Belbruno & Roberts et al., 'Galileo VEEGA Mission "
-        "Design' (1986-1990 JPL / AAS); the canonical mga_tour archetype "
-        "(October 1989 launch window once-per-~13yr alignment). NB: Belbruno "
-        "co-author attribution is UNVERIFIED (see #356); D'Amario 1992 SSR "
-        "(see new anchor below) supersedes for the flown trajectory.",
+        citation="Diehl, Kaplan & Penzo, 'Satellite Tour Design for the Galileo "
+        "Mission' (AIAA-83-0101) + D'Amario & Byrnes, 'Interplanetary Trajectory "
+        "Design for the Galileo Mission' (AIAA-83-0099), AIAA 21st Aerospace "
+        "Sciences Meeting, Reno, Jan 1983 -- the pre-Challenger DIRECT Earth-"
+        "Jupiter 1986-launch concept (#384). The flown VEEGA is the "
+        "D'Amario-Bright-Wolf 1992 anchor below.",
         doi=None,
     ),
     CorpusAnchor(
