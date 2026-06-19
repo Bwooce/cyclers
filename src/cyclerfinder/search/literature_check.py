@@ -280,7 +280,7 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # #350: SnLm is the systematic catalogue of repeated-encounter
         # Earth-Mars cyclers (S = synodic returns, L = sidereal returns).
         topology_label=frozenset({"repeated-moon"}),
-        authors=("Russell", "Ocampo", "McConaghy", "Landau", "Longuski"),
+        authors=("Russell", "Ocampo", "McConaghy", "Landau", "Longuski", "Byrnes"),
         keywords=(
             "ballistic Earth-Mars cycler",
             "S1L1 cycler",
@@ -297,7 +297,13 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "Constructing Earth-Mars Cyclers Using Free-Return Trajectories,' "
             "J. Guidance, Control, and Dynamics 27(3):321-335 (2004), "
             "DOI 10.2514/1.1909 (preprint AAS-03-145); "
-            "McConaghy et al., J. Spacecraft & Rockets 43(2) 2006"
+            "McConaghy et al., J. Spacecraft & Rockets 43(2) 2006; "
+            "Byrnes, D. V., McConaghy, T. T. & Longuski, J. M., 'Analysis of "
+            "Various Two Synodic Period Earth-Mars Cycler Trajectories,' "
+            "AIAA/AAS Astrodynamics Specialist Conf., Monterey CA, Aug 2002 "
+            "(#384; S1L1-B / Case-3 two-synodic precedence + real-eph V_inf "
+            "envelope E 4.15-7.44 / M 2.97-7.83 km/s that brackets the spec-9 "
+            "S1L1 anchor 5.65/3.05)"
         ),
         doi="10.2514/1.1909",
     ),
