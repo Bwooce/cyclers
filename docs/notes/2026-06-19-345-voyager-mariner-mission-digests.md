@@ -65,20 +65,53 @@ Bourke 1971 Voyager #382, Lam 2008 Juno #382, Bellerose 2018 Cassini #382).
   - Minovitch 1963 (the foundational gravity-assist analysis)
   - Sturms 1965 / 1966a / 1966b; Eckman 1969 (trajectory studies)
 
+## McKinley & Van Allen 1976 — "Mariner Jupiter/Saturn 1977 Navigation Strategy" (added 2026-06-19)
+
+* **Citation:** J. Spacecraft & Rockets 13(8):494-501 (1976), DOI
+  10.2514/3.57113. E.L. McKinley, R.E. Van Allen (JPL). Cached:
+  `cyclers_pdf` commit `aca2a36`. The DEDICATED Voyager (MJS77)
+  navigation paper — the Tier-1 V∞ source flagged in the section above.
+* **What it is:** trajectory-correction-maneuver (TCM) strategy +
+  propellant costs + delivery accuracies + planetary-quarantine analysis.
+* **Data published:** Table 1 (delivery-accuracy reqs: Jupiter 1500/600 km,
+  Saturn 4000/600 km), Table 2 (TCM execution errors), Tables 3-5 (TCM
+  ΔV: Earth-Jupiter leg 53.8 m/s, Jupiter-Saturn 39.6 m/s; 155 m/s total
+  nav allocation), Tables 6-7 (PQ contamination + Titan retarget), Fig 7
+  (mission ΔV99 vs post-Jupiter deterministic ΔV), Fig 8 (propellant vs
+  launch date). Saturn B-plane sensitivity 50,500 km/m/s.
+* **V∞: ABSENT — decisive finding.** Even the dedicated navigation-strategy
+  paper (the best-case venue for V∞) does NOT tabulate per-encounter
+  hyperbolic excess velocity. Its V∞ values live in internal JPL documents
+  it cites and we cannot obtain (Wallace 1974 EM 392-117; Curkendall 1974
+  PD618-115; Gates 1963 TR 32-504). **This confirms the Voyager V∞ is not
+  in the public literature in clean form — the SPK-direct path is the ONLY
+  reliable route.**
+* Verdict: NEGATIVE for V0 admission, but strongly motivates #390.
+
+## Rinker, Jacobson & Wood 1976 — off-scope for #345
+
+`cyclers_pdf` commit `aca2a36`. "Statistical Analysis of Trim Maneuvers in
+Low-Thrust Interplanetary Navigation," JSR (1976). Solar-electric-propulsion
+navigation trim-maneuver methodology for comet/asteroid missions. A
+low-thrust-navigation reference for #309 / #359, NOT a #345 mission-tour
+admission paper. No catalogue impact.
+
 ## Net #345 status after this digest
 
-Both Voyager and Mariner-10 join the #345 confirmed-negative set: the
-mission-overview literature is insufficient for V0 admission. The
-catalogue cannot admit Voyager or Mariner-10 mga_tour rows until either:
-1. A dedicated navigation paper with a per-encounter V∞ table is acquired
-   (McKinley-Van Allen 1976 JSR for Voyager; Bourke-Beerer 1970 for
-   Mariner-10), OR
-2. The **NAIF SPK direct-evaluation path** is built — derive V∞ at each
-   encounter from the mission's archived SPK kernels (same fallback noted
-   for Cassini #361). This is a methodology build, not an acquisition;
-   it would unblock Voyager 1/2, Mariner-10, Galileo, Cassini, Pioneer,
-   Juno all at once and is probably the highest-leverage way to clear the
-   #345 backlog wholesale.
+Voyager (×2 papers), Mariner-10 (×2 papers) all join the #345
+confirmed-negative set: NEITHER the mission-overview NOR the dedicated
+navigation literature publishes per-encounter V∞ in a V0-admissible
+tuple. The catalogue cannot admit these mga_tour rows until:
+
+**The NAIF SPK direct-evaluation path (#390) is built** — derive V∞ at
+each encounter from the mission's archived SPK kernels using the flyby
+epochs we already have. This is now the ONLY remaining route (the
+acquisition route is exhausted: even the best nav paper lacks V∞, and the
+true sources are unobtainable internal JPL docs). It is a methodology
+build, not an acquisition; it unblocks Voyager 1/2, Mariner-10, Galileo,
+Cassini, Pioneer, Juno all at once and is the highest-leverage way to
+clear the #345 backlog wholesale. The #361/#384/#387 acquisition tasks
+for V∞ are effectively SUPERSEDED by #390.
 
 The two papers ARE valuable as catalogue corroborating-source / KNOWN_CORPUS
 context for the missions; only the V0 numeric-admission bar is unmet.
