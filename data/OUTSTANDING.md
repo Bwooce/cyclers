@@ -82,13 +82,13 @@ lives on the orthogonal gauntlet axis). See
 - **#321/#322/#323/#325/#342** various sweep / topology / CI flake /
   test-marker fixes (all background-stable, none changed catalogue).
 - **#345 CLOSED** (2026-06-19) — classic-mission mga_tour catalogue admissions.
-  Admitted (10 mga_tour rows total): Galileo VEEGA (#356, published V_inf);
+  Admitted (11 mga_tour rows total): Galileo VEEGA (#356, published V_inf);
   Voyager 1+2, Pioneer 10+11, Cassini, Juno, Mariner-10, BepiColombo (all
-  SPK-derived via the #390 extractor, #390/#399). All CA altitudes reproduce the
+  SPK-derived via the #390 extractor, #390/#399), plus the Cassini Titan tour (#408). All CA altitudes reproduce the
   published mission-page values to <=1% (Cassini distant Jupiter ~3%); terminal
   captures (Cassini SOI, Juno/BepiColombo MOI) recorded without a fabricated
   V_inf. BepiColombo (1 Earth + 2 Venus + 6 Mercury) used the ESA SPICE Service
-  reconstructed MPO kernel (NAIF -121). Catalogue now 309 rows, 10 mga_tour.
+  reconstructed MPO kernel (NAIF -121). Catalogue now 310 rows, 11 mga_tour.
   EXCLUSIONS (deliberate, out of scope): Mariner-10 Venus + Mercury-II/III V_inf
   (only Mercury-I in the public NAIF M10 archive — sourced negative); Mariner 6/7
   (pre-gravity-assist-era direct Mars flybys, no assist — not mga_tour).

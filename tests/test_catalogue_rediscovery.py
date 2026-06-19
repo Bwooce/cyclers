@@ -382,7 +382,9 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # (bodies=[E,E,V,V,Me,Me,Me,Me,Me,Me], 10 bodies; 1 Earth + 2 Venus + 6
     # Mercury gravity-assist tour, no period.years/period.k). NOT_TWO_BODY, same
     # lane as the other SPK-derived mga_tour rows. Closes the #345 backlog.
-    ExclusionReason.NOT_TWO_BODY: 10,
+    # 10 -> 11 (2026-06-20, #408): +1 cassini-titan-tour
+    # (Saturn-Titan 50 flybys, no period). NOT_TWO_BODY.
+    ExclusionReason.NOT_TWO_BODY: 11,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

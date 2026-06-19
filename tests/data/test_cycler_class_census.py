@@ -394,11 +394,14 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # BepiColombo (#399, 2026-06-19): 1 Earth + 2 Venus + 6 Mercury gravity
         # assists, ESA reconstructed MPO SPK (NAIF -121); closes the #345 backlog.
         "bepicolombo-earth-venus-mercury",
+        # Cassini Titan Tour (#408, 2026-06-20): 50-flyby Saturn-Titan resonant tour
+        # derived from JPL Horizons (NAIF -82 vs 606). structural multi-arc.
+        "cassini-titan-tour",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 252, (
-    f"Allowlist must have 252 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 253, (
+    f"Allowlist must have 253 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -489,10 +492,13 @@ def test_census_distribution() -> None:
     5:4(3)- and 3:2(2)- circular-coplanar precursor_mga: single-ellipse
     42->44; then U0L1 4:3(3)- and 2:1(1)- circular-coplanar precursor_mga:
     single-ellipse 44->46.)
+
+    #408 (2026-06-20) admitted Cassini Titan tour (cassini-titan-tour) as an
+    mga_tour, cycler_class=multi-arc: multi-arc 252->253.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 252, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 253, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

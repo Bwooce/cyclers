@@ -51238,3 +51238,44 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.8.vinf_kms": "DERIVED (#399): planetocentric V_inf 1.892 km/s at the Mercury-6 CA 2025-01-08T05:59 UTC; CA 295 km alt reproduces the published 295 km (ESA) to +0.00%; the final pre-capture flyby."
     "n_returns": "Single Earth launch (2018-10-20) and single Mercury arrival (MOI 2026); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
+- id: cassini-titan-tour
+  name: "Cassini-Huygens Saturn-Titan Resonant Tour"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: analytic-ephemeris
+  cycler_class: multi-arc
+  orbit_class: mga_tour
+  epoch_locked: true
+  n_returns: 1
+  validity_window:
+    start: "2004-07-02T09:30:00Z"
+    end: "2008-06-13T04:30:00Z"
+  launch_epoch: "2004-07-02T09:30:00Z"
+  validation_level: V0
+  source_ephemeris: "Derived from NASA JPL Horizons ephemeris for Cassini (-82) relative to Titan (606)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["Titan"]
+  sequence_canonical: "T1-T50"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+    - body: "Titan"
+      vinf_kms: 5.5
+      note: "Representative V_inf ≈ 5.5 km/s over the resonant tour."
+  legs: []
+  first_published:
+    authors: ["NASA JPL Horizons"]
+    year: 2026
+    title: "Cassini Titan Flyby V_inf Analysis"
+    venue: "docs/notes/2026-06-19-digest-cassini-vinf.md"
+    doi: null
+  notes: |
+    The flown Saturn-Titan resonant tour of the Cassini mission. T1-T50 Horizons
+    V_inf is near-constant ≈ 5.5 km/s (the Tisserand-conserving signature).
+    Outliers T1/T8/T20/T41/T50 are non-targeted or special cases.
+    Extracted directly from JPL Horizons. Flown mission -> documented, not a novelty claim.
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Derived (Horizons); representative V_inf ≈ 5.5 km/s. See docs/notes/2026-06-19-digest-cassini-vinf.md."
+

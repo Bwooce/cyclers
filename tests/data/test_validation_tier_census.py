@@ -161,7 +161,9 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # ESA reconstructed MPO SPK, NAIF -121; closes the #345 backlog). derived/
     # derived -> 'unvalidated'; V0 evidence (all 9 CA altitudes vs published ESA
     # to <=1.01%) on the validation_level axis, not the source-pair tier.
-    "unvalidated": 38,
+    # 38 -> 39 (2026-06-20, #408): cassini-titan-tour admitted as the 10th
+    # SPK-derived mga_tour row. derived/derived -> 'unvalidated'.
+    "unvalidated": 39,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent
