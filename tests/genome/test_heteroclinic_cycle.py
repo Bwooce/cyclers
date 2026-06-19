@@ -153,6 +153,7 @@ def test_connection_energy_mismatch_raises() -> None:
         correct_connection(system, l1, l2)
 
 
+@pytest.mark.slow
 def test_connection_l1_to_l2_converges() -> None:
     """Wu(L1) meets Ws(L2) on {y=0}: a transversal heteroclinic connection.
 

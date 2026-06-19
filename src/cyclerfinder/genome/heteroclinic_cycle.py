@@ -301,20 +301,30 @@ def _scan_starts(
     period_s: float,
     *,
     n: int = 20,
+    fixed_u: float | None = None,
+    fixed_s: float | None = None,
 ) -> tuple[float, float]:
-    """Coarse n-by-n grid over [0, period)^2 -> ``(tau_u, tau_s)`` of least residual norm.
+    """Coarse grid over the FREE phase(s) -> ``(tau_u, tau_s)`` of least residual norm.
 
     The Newton target is codimension-1; a blind centre start may sit outside the
-    basin. This finds the cell whose section gap is smallest so Newton starts near
-    a genuine intersection. Falls back to the centre if every cell misses.
+    basin. This grids the free phase(s) and returns the cell whose section gap is
+    smallest so Newton starts near a genuine intersection. Falls back to the centre
+    (or the pinned value) if every cell misses.
+
+    If ``fixed_u``/``fixed_s`` is supplied, that phase is held fixed and only the
+    free phase is gridded -- so a caller who pins exactly one phase still gets a
+    sensible start for the other (rather than a joint scan whose pinned component is
+    then overwritten). Cost is O(n^2) residual evaluations with both phases free,
+    O(n) with one pinned; each evaluation is two manifold propagations, so raising
+    ``n`` increases cost quadratically.
     """
+    us = [float(fixed_u)] if fixed_u is not None else [period_u * (i + 0.5) / n for i in range(n)]
+    ss = [float(fixed_s)] if fixed_s is not None else [period_s * (j + 0.5) / n for j in range(n)]
     best = float("inf")
-    best_tu = 0.5 * period_u
-    best_ts = 0.5 * period_s
-    for i in range(n):
-        tu = period_u * (i + 0.5) / n
-        for j in range(n):
-            ts = period_s * (j + 0.5) / n
+    best_tu = float(fixed_u) if fixed_u is not None else 0.5 * period_u
+    best_ts = float(fixed_s) if fixed_s is not None else 0.5 * period_s
+    for tu in us:
+        for ts in ss:
             res, _ = resid(tu, ts)
             if res is None:
                 continue
@@ -371,6 +381,8 @@ def correct_connection(
     pass them explicitly to certify a specific one. The exact W-Z crossing-by-
     crossing match is Task 8.
     """
+    if max_iter < 1:
+        raise ValueError(f"max_iter must be >= 1; got {max_iter}")
     if abs(orbit_from.jacobi - orbit_to.jacobi) > jacobi_tol:
         raise ValueError(
             f"connection requires equal Jacobi (energy): "
@@ -398,15 +410,19 @@ def correct_connection(
             ydot_sign_s=ydot_sign_s,
         )
 
-    if tau_u0 is None or tau_s0 is None:
-        tau_u, tau_s = _scan_starts(_resid, orbit_from.period, orbit_to.period, n=scan_n)
-        if tau_u0 is not None:
-            tau_u = float(tau_u0)
-        if tau_s0 is not None:
-            tau_s = float(tau_s0)
-    else:
+    if tau_u0 is not None and tau_s0 is not None:
         tau_u = float(tau_u0)
         tau_s = float(tau_s0)
+    else:
+        # Grid only the free phase(s); a pinned phase is held fixed during the scan.
+        tau_u, tau_s = _scan_starts(
+            _resid,
+            orbit_from.period,
+            orbit_to.period,
+            n=scan_n,
+            fixed_u=tau_u0,
+            fixed_s=tau_s0,
+        )
 
     res, xv = _resid(tau_u, tau_s)
     n_iter = 0
