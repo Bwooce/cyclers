@@ -1,8 +1,64 @@
 entries:
-  - id: 392_floquet_low_amplitude
+  - id: branch_C32_b0
+    issue: 389
+    method: "Floquet continuation / bifurcation"
+    regime: "Earth-Moon CR3BP"
+    failed_rung: "V4"
+    physical_reason: "Far-amplitude orbit (~0.77x Earth-Sun Hill radius) is destroyed by solar tides (30% of Earth gravity) on real ephemeris."
+    resweep_condition: "None. Orbit is fundamentally destroyed by N-body forces."
+  
+  - id: branch_C32_C_3.1774
     issue: 392
     method: "Floquet continuation / bifurcation"
-    target: "Low-amplitude Floquet branches off Earth-Moon CR3BP cyclers (C32, C11a, C11b, C21)"
-    finding: "The Floquet branch families off the EM cycler nodes have no V4-survivable amplitude window."
-    details: "Even when pulling branches to low amplitudes (deep inside the Hill sphere), the mild intrinsic instability of the branches (e.g. Floquet multiplier ~37) acts as a massive gain stage. It amplifies real lunar eccentricity and small solar tides into exponential escape trajectories on real ephemeris. Structural failure is guaranteed across all launch epochs."
-    date: "2026-06-19"
+    regime: "Earth-Moon CR3BP"
+    failed_rung: "V4"
+    physical_reason: "Low-amplitude orbit still experiences mild intrinsic instability (Floquet multiplier ~37), acting as a massive gain stage that amplifies real lunar eccentricity and small solar tides into exponential escape trajectories."
+    resweep_condition: "None."
+
+  - id: branch_C11a_b0
+    issue: 393
+    method: "Floquet continuation / bifurcation"
+    regime: "Earth-Moon CR3BP"
+    failed_rung: "V4"
+    physical_reason: "Same as C32 low-amp; instability-driven perturbation amplification leads to structural failure across all epochs. EM-only control max drift is ~7e5 km while full N-body drift is ~1.4e9 km."
+    resweep_condition: "None."
+
+  - id: em_node_floquet_branches
+    issue: 392
+    method: "Floquet continuation / bifurcation"
+    regime: "Earth-Moon CR3BP"
+    failed_rung: "V4"
+    physical_reason: "The Floquet branch families off the EM cycler nodes have no V4-survivable amplitude window. At far-amplitude they die from solar tides; at low-amplitude they die from instability amplifying lunar eccentricity."
+    resweep_condition: "None."
+
+  - id: russell-ocampo-3.1.2+1
+    issue: 365
+    method: "Single-arc closer_sweep_v1"
+    regime: "Earth-Mars Ballistic"
+    failed_rung: "V1"
+    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity by tens of km/s."
+    resweep_condition: "Implement multi-arc closure infrastructure."
+
+  - id: russell-ocampo-4.3.1-5
+    issue: 365
+    method: "Single-arc closer_sweep_v1"
+    regime: "Earth-Mars Ballistic"
+    failed_rung: "V1"
+    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse (NO-CLOSE)."
+    resweep_condition: "Implement multi-arc closure infrastructure."
+
+  - id: russell-ocampo-4.5.2-2
+    issue: 365
+    method: "Single-arc closer_sweep_v1"
+    regime: "Earth-Mars Ballistic"
+    failed_rung: "V1"
+    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity."
+    resweep_condition: "Implement multi-arc closure infrastructure."
+
+  - id: mcconaghy-2006-em-k2
+    issue: 365
+    method: "Single-arc closer_sweep_v1"
+    regime: "Earth-Mars Ballistic"
+    failed_rung: "V1"
+    physical_reason: "Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby. Single ellipse representation breaks V_inf continuity."
+    resweep_condition: "Implement multi-arc closure infrastructure."
