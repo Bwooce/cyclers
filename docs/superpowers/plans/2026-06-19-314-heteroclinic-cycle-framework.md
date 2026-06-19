@@ -1072,7 +1072,27 @@ If absent: skip this task; the inline W-Z constants already provide a sourced it
 
 - [ ] **Step 2: Write the golden-backed test**
 
-Append (only if the file exists; match the actual YAML keys #403 produced — read the file first):
+The golden schema (verified — file already exists, committed in `cd659cd`):
+
+```yaml
+system: {mu: 0.0009537, C: 3.03}
+lyapunov_fixed_points:
+  L1_star: {point: [0.9208034913207400196, 0.0], eigenvector_unstable: [1.0, 2.5733011], ...}
+  L2_star: {point: [1.081929486841799903, 0.0], ...}
+crossings:
+  heteroclinic_L1_to_L2:
+    source: "Part I, Section 6.1"
+    sequence:           # the connecting orbit's successive {y=0} crossings, each [x, xdot]
+      - [0.9522928423486199945, 1.23e-05]
+      - [0.921005737890425169, 0.0005205932817646883714]
+      # ... 8 points total
+  homoclinic_L2_exterior_4_symbol: {...}
+  homoclinic_L1_interior_4_symbol: {...}
+  homoclinic_L2_2_3_resonance_6_symbol: {...}
+  homoclinic_L1_5_3_resonance_6_symbol: {...}
+```
+
+The corrector certifies ONE matched crossing per leg (`conn.crossing_xv`), which must coincide with one of the published sequence points for that connection. Append:
 
 ```python
 import pathlib  # noqa: E402
@@ -1083,7 +1103,7 @@ _GOLDEN = pathlib.Path("data/golden/wz_oterma_heteroclinic.yaml")
 
 
 def test_l1_to_l2_crossing_matches_wz_golden() -> None:
-    """The certified L1->L2 crossing (x, xdot) matches W-Z's tabulated value."""
+    """The certified L1->L2 crossing (x, xdot) matches one published W-Z crossing."""
     data = yaml.safe_load(_GOLDEN.read_text())
     system = _sun_jupiter()
     l1 = LyapunovNode.from_libration(system, x0_guess=WZ_X_L1, jacobi=WZ_C,
@@ -1092,13 +1112,15 @@ def test_l1_to_l2_crossing_matches_wz_golden() -> None:
                                      period_guess=3.0, label="L2")
     conn = correct_connection(system, l1, l2, tol=1e-8)
     assert conn.converged
-    # Read the published L1->L2 crossing from the golden (key names per #403).
-    leg = data["connections"]["L1_to_L2"]
-    expected = np.array([leg["x"], leg["xdot"]], dtype=np.float64)
-    assert np.allclose(conn.crossing_xv, expected, atol=1e-4), (
-        f"crossing {conn.crossing_xv} vs W-Z {expected}"
+    seq = np.array(data["crossings"]["heteroclinic_L1_to_L2"]["sequence"], dtype=np.float64)
+    # The corrector's matched crossing must be one of W-Z's tabulated section points.
+    dists = np.linalg.norm(seq - conn.crossing_xv[None, :], axis=1)
+    assert float(dists.min()) < 1e-4, (
+        f"crossing {conn.crossing_xv} not among W-Z sequence (min dist {dists.min():.3e})"
     )
 ```
+
+Also verify the inline fixed-point constants `WZ_X_L1`/`WZ_X_L2` equal `data["lyapunov_fixed_points"]["L1_star"]["point"][0]` / `L2_star` — they should match exactly (same source).
 
 - [ ] **Step 3: Run + commit**
 
