@@ -1638,6 +1638,14 @@
       doi: "10.2514/6.1986-2009"
       url: "https://doi.org/10.2514/6.1986-2009"
       note: "First peer-reviewed venue for VISIT cyclers (covers both VISIT-1 and VISIT-2 as 'inertially fixed' alternatives to the 'up/down escalator' Aldrin cyclers)."
+    - authors: ["Niehoff, J. C."]
+      year: 1970
+      title: "Touring the Galilean Satellites"
+      venue: "AAS/AIAA Astrodynamics Conference, Santa Barbara, Aug 19-21, 1970; AIAA Paper 70-1070"
+      doi: null
+      url: null
+      relation: methodology_predecessor
+      note: "#386 (2026-06-19): Niehoff's own foundational Galilean multi-flyby tour paper, predating the VISIT Earth-Mars cyclers by 15 yr. The resonance-lock-plus-correction paradigm (Mode 3, 14-day Jupiter orbit, 73 encounters / 170 days) is the same inertially-fixed-resonant-orbit idea transposed from Jupiter (1970) to the Sun / Earth-Mars (1985 VISIT). See docs/notes/2026-06-17-digest-niehoff-1970.md."
   priority_date: "1985-07-01"
   notes: |
     VISIT-1 (Versatile International Station for Interplanetary Transport — 1)
@@ -1748,6 +1756,14 @@
       venue: "AIAA 86-2009-CP"
       doi: "10.2514/6.1986-2009"
       url: "https://doi.org/10.2514/6.1986-2009"
+    - authors: ["Niehoff, J. C."]
+      year: 1970
+      title: "Touring the Galilean Satellites"
+      venue: "AAS/AIAA Astrodynamics Conference, Santa Barbara, Aug 19-21, 1970; AIAA Paper 70-1070"
+      doi: null
+      url: null
+      relation: methodology_predecessor
+      note: "#386 (2026-06-19): Niehoff's foundational Galilean multi-flyby tour paper (15 yr before VISIT). Same inertially-fixed-resonant-orbit paradigm transposed Jupiter (1970) -> Sun / Earth-Mars (1985 VISIT). See docs/notes/2026-06-17-digest-niehoff-1970.md."
   priority_date: "1985-07-01"
   notes: |
     Per spaceflighthistory.blogspot (summarising Niehoff 1985): "A VISIT-2
@@ -50120,7 +50136,15 @@ days\" per the NTRS abstract.
     year: 2013
     title: "Feasibility Analysis for a Manned Mars Free-Return Mission in 2018"
     venue: "IEEE Aerospace Conference, 2013"
-  corroborating_sources: []
+  corroborating_sources:
+    - authors: ["Luidens, R. W."]
+      year: 1964
+      title: "Mars Nonstop Round-Trip Trajectories"
+      venue: "AIAA Journal, Vol. 2, No. 2, pp. 368-370 (1964)"
+      doi: null
+      url: null
+      relation: methodology_predecessor
+      note: "#386 (2026-06-19): the earliest sourced Earth-Mars-Earth ballistic free-return analysis in the corpus (21 yr before the Aldrin cycler, 49 yr before Tito 2018). Luidens compares gravity-only / propulsive-gravity / aerodynamic turn classes for 1971 + 1980 launches; Tito 2018 is structurally an ephemeris-locked instance of Luidens's near-pure-gravity-turn free-return class. See docs/notes/2026-06-17-digest-luidens-1964.md."
   priority_date: "2013-01-01"
   notes: |
     Single Earth-Mars-Earth ballistic free-return for the once-per-~15-yr fast
