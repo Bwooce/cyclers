@@ -1,0 +1,8 @@
+entries:
+  - id: 392_floquet_low_amplitude
+    issue: 392
+    method: "Floquet continuation / bifurcation"
+    target: "Low-amplitude Floquet branches off Earth-Moon CR3BP cyclers (C32, C11a, C11b, C21)"
+    finding: "The Floquet branch families off the EM cycler nodes have no V4-survivable amplitude window."
+    details: "Even when pulling branches to low amplitudes (deep inside the Hill sphere), the mild intrinsic instability of the branches (e.g. Floquet multiplier ~37) acts as a massive gain stage. It amplifies real lunar eccentricity and small solar tides into exponential escape trajectories on real ephemeris. Structural failure is guaranteed across all launch epochs."
+    date: "2026-06-19"
