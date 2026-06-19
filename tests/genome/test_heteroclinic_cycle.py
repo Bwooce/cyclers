@@ -117,3 +117,65 @@ def test_section_miss_returns_none() -> None:
     # Ask for the 9999th crossing — unreachable in this horizon.
     pt = _section_crossing(system, seed, direction="unstable", k=9999, max_time=2.0 * l1.period)
     assert pt is None
+
+
+import pytest  # noqa: E402
+
+from cyclerfinder.genome.heteroclinic_cycle import (  # noqa: E402
+    HeteroclinicConnection,
+    correct_connection,
+)
+
+
+def test_connection_energy_mismatch_raises() -> None:
+    """Connections require equal Jacobi; a mismatch is a hard error.
+
+    Offset note: an L2 Lyapunov orbit only exists for C within a narrow band of
+    the libration energy (ydot0_from_jacobi's radicand goes negative above
+    ~WZ_C_OURS+0.0096 at x0=WZ_X_L2). We therefore build the mismatched node at
+    +0.005 — a genuinely different energy (3.034 vs 3.029, well above jacobi_tol=1e-6)
+    that still triggers the guard, rather than an infeasible +0.05 that fails the
+    corrector before correct_connection is even reached.
+    """
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system,
+        x0_guess=WZ_X_L2,
+        jacobi=WZ_C_OURS + 0.005,
+        period_guess=3.0,
+        label="L2",
+        ydot0_sign=-1.0,
+    )
+    with pytest.raises(ValueError, match=r"equal Jacobi|energy"):
+        correct_connection(system, l1, l2)
+
+
+def test_connection_l1_to_l2_converges() -> None:
+    """Wu(L1) meets Ws(L2) on {y=0}: a transversal heteroclinic connection.
+
+    W-Z Part I proves this connection exists; we certify the section-gap residual
+    closes and the meeting point lies in the L1-L2 neck (exact W-Z crossing match
+    is Task 8).
+
+    Working configuration: this relies on the corrector defaults
+    ``branch_u=-1, branch_s=+1, k_u=3, k_s=4`` (the neck-facing branch of each
+    manifold; see ``correct_connection`` docstring). The internal 20x20 coarse
+    scan seeds Newton near (tau_u, tau_s) ~ (0.30, 3.11); Newton then drives the
+    section gap to ~1e-10 in ~5 iterations, landing at x ~= 0.9588 in the neck
+    (near W-Z Part I crossing 0.95792). Other (k_u, k_s) on the -1/+1 branches
+    give further valid transversal connections, e.g. (4, 3) at x ~= 1.040."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    conn = correct_connection(system, l1, l2, tol=1e-7)
+    assert isinstance(conn, HeteroclinicConnection)
+    assert conn.converged, f"residual={conn.residual:.3e}, n_iter={conn.n_iter}"
+    assert conn.residual < 1e-6
+    assert WZ_X_L1 - 0.1 < conn.crossing_xv[0] < WZ_X_L2 + 0.1

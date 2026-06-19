@@ -17,6 +17,7 @@ search/resonance_network.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import numpy as np
@@ -227,3 +228,260 @@ def _section_crossing(
         if count == k:
             return np.array([float(y_ev[0]), float(y_ev[3])], dtype=np.float64)
     return None
+
+
+@dataclass(frozen=True)
+class HeteroclinicConnection:
+    """A certified (or attempted) Wu(A) -> Ws(B) connection on {y=0}."""
+
+    orbit_from: str
+    orbit_to: str
+    jacobi: float
+    tau_u: float
+    tau_s: float
+    k_u: int
+    k_s: int
+    crossing_xv: NDArray[np.float64]  # (x, xdot) at the matched crossing
+    residual: float
+    converged: bool
+    n_iter: int
+    notes: str = ""
+
+
+def _connection_residual(
+    system: cr3bp.CR3BPSystem,
+    a: LyapunovNode,
+    b: LyapunovNode,
+    *,
+    tau_u: float,
+    tau_s: float,
+    k_u: int,
+    k_s: int,
+    epsilon: float,
+    branch_u: int,
+    branch_s: int,
+    max_time: float,
+    ydot_sign_u: int | None,
+    ydot_sign_s: int | None,
+    method: str = "DOP853",
+) -> tuple[NDArray[np.float64] | None, NDArray[np.float64] | None]:
+    """Return ``(residual2, crossing_xv)`` or ``(None, None)`` if a leg misses the section."""
+    seed_u = _seed_on_manifold(
+        system, a, tau=tau_u, direction="unstable", branch=branch_u, epsilon=epsilon
+    )
+    p_u = _section_crossing(
+        system,
+        seed_u,
+        direction="unstable",
+        k=k_u,
+        max_time=max_time,
+        ydot_sign=ydot_sign_u,
+        method=method,
+    )
+    seed_s = _seed_on_manifold(
+        system, b, tau=tau_s, direction="stable", branch=branch_s, epsilon=epsilon
+    )
+    p_s = _section_crossing(
+        system,
+        seed_s,
+        direction="stable",
+        k=k_s,
+        max_time=max_time,
+        ydot_sign=ydot_sign_s,
+        method=method,
+    )
+    if p_u is None or p_s is None:
+        return None, None
+    return (p_u - p_s).astype(np.float64), p_u
+
+
+def _scan_starts(
+    resid: Callable[[float, float], tuple[NDArray[np.float64] | None, NDArray[np.float64] | None]],
+    period_u: float,
+    period_s: float,
+    *,
+    n: int = 20,
+) -> tuple[float, float]:
+    """Coarse n-by-n grid over [0, period)^2 -> ``(tau_u, tau_s)`` of least residual norm.
+
+    The Newton target is codimension-1; a blind centre start may sit outside the
+    basin. This finds the cell whose section gap is smallest so Newton starts near
+    a genuine intersection. Falls back to the centre if every cell misses.
+    """
+    best = float("inf")
+    best_tu = 0.5 * period_u
+    best_ts = 0.5 * period_s
+    for i in range(n):
+        tu = period_u * (i + 0.5) / n
+        for j in range(n):
+            ts = period_s * (j + 0.5) / n
+            res, _ = resid(tu, ts)
+            if res is None:
+                continue
+            rn = float(np.linalg.norm(res))
+            if rn < best:
+                best, best_tu, best_ts = rn, tu, ts
+    return best_tu, best_ts
+
+
+def correct_connection(
+    system: cr3bp.CR3BPSystem,
+    orbit_from: LyapunovNode,
+    orbit_to: LyapunovNode,
+    *,
+    k_u: int = 3,
+    k_s: int = 4,
+    epsilon: float = 1e-6,
+    branch_u: int = -1,
+    branch_s: int = +1,
+    tau_u0: float | None = None,
+    tau_s0: float | None = None,
+    ydot_sign_u: int | None = None,
+    ydot_sign_s: int | None = None,
+    tol: float = 1e-7,
+    max_iter: int = 40,
+    fd_step: float = 1e-6,
+    max_time_factor: float = 8.0,
+    jacobi_tol: float = 1e-6,
+    scan_n: int = 20,
+) -> HeteroclinicConnection:
+    """Certify Wu(orbit_from) ∩ Ws(orbit_to) on {y=0} by 2-D Newton on (tau_u, tau_s).
+
+    Residual = section-plane gap (Δx, Δxdot). Free vars = manifold phases.
+    Jacobian finite-differenced (2x2); Newton step damped by backtracking. Raises
+    ``ValueError`` on an energy mismatch. A leg that never reaches the section ->
+    ``converged=False`` with a diagnostic note (never a fabricated closure).
+
+    When ``tau_u0``/``tau_s0`` are not supplied, a coarse ``scan_n``-by-``scan_n`` grid
+    over the two phases seeds Newton at the cell of least section gap (the codim-1
+    intersection rarely lies at a blind centre start).
+
+    Default branch/crossing selection (W-Z Oterma L1->L2)
+    -----------------------------------------------------
+    The defaults ``branch_u=-1, branch_s=+1, k_u=3, k_s=4`` pick the *neck-facing*
+    branch of each manifold: from L1 (interior) and L2 (exterior) only those
+    branches reach the L1-L2 neck where the connection lives. With the opposite
+    (orbit-hugging) branches the first few crossings cluster on the source orbit
+    and the two section curves stay in disjoint x-ranges (no intersection). The
+    crossing indices ``(3, 4)`` are the lowest-index pair whose Wu(L1) and Ws(L2)
+    section curves cross transversally in (x, xdot); the meeting point lands at
+    x~=0.9588 in the neck (near the W-Z Part I crossing 0.95792). Other valid
+    transversal connections exist at higher (k_u, k_s) -- e.g. (4, 3) at x~=1.040,
+    (5, 4), (5, 5) -- reflecting the rich symbolic dynamics of the W-Z system;
+    pass them explicitly to certify a specific one. The exact W-Z crossing-by-
+    crossing match is Task 8.
+    """
+    if abs(orbit_from.jacobi - orbit_to.jacobi) > jacobi_tol:
+        raise ValueError(
+            f"connection requires equal Jacobi (energy): "
+            f"{orbit_from.label} C={orbit_from.jacobi:.6f} vs "
+            f"{orbit_to.label} C={orbit_to.jacobi:.6f}"
+        )
+    max_time = max_time_factor * max(orbit_from.period, orbit_to.period)
+
+    def _resid(
+        tu: float, ts: float
+    ) -> tuple[NDArray[np.float64] | None, NDArray[np.float64] | None]:
+        return _connection_residual(
+            system,
+            orbit_from,
+            orbit_to,
+            tau_u=tu,
+            tau_s=ts,
+            k_u=k_u,
+            k_s=k_s,
+            epsilon=epsilon,
+            branch_u=branch_u,
+            branch_s=branch_s,
+            max_time=max_time,
+            ydot_sign_u=ydot_sign_u,
+            ydot_sign_s=ydot_sign_s,
+        )
+
+    if tau_u0 is None or tau_s0 is None:
+        tau_u, tau_s = _scan_starts(_resid, orbit_from.period, orbit_to.period, n=scan_n)
+        if tau_u0 is not None:
+            tau_u = float(tau_u0)
+        if tau_s0 is not None:
+            tau_s = float(tau_s0)
+    else:
+        tau_u = float(tau_u0)
+        tau_s = float(tau_s0)
+
+    res, xv = _resid(tau_u, tau_s)
+    n_iter = 0
+    for n_iter in range(1, max_iter + 1):
+        if res is None:
+            return HeteroclinicConnection(
+                orbit_from.label,
+                orbit_to.label,
+                orbit_from.jacobi,
+                tau_u,
+                tau_s,
+                k_u,
+                k_s,
+                np.zeros(2),
+                float("inf"),
+                False,
+                n_iter,
+                notes="manifold leg did not reach the section",
+            )
+        rn = float(np.linalg.norm(res))
+        if rn < tol:
+            break
+        jac = np.zeros((2, 2), dtype=np.float64)
+        ok = True
+        for j, (du, ds) in enumerate([(fd_step, 0.0), (0.0, fd_step)]):
+            rp, _ = _resid(tau_u + du, tau_s + ds)
+            if rp is None:
+                ok = False
+                break
+            jac[:, j] = (rp - res) / fd_step
+        if not ok:
+            return HeteroclinicConnection(
+                orbit_from.label,
+                orbit_to.label,
+                orbit_from.jacobi,
+                tau_u,
+                tau_s,
+                k_u,
+                k_s,
+                xv if xv is not None else np.zeros(2),
+                rn,
+                False,
+                n_iter,
+                notes="FD-Jacobian probe left the manifold's section branch",
+            )
+        try:
+            step = np.linalg.solve(jac, -res)
+        except np.linalg.LinAlgError:
+            step, *_ = np.linalg.lstsq(jac, -res, rcond=None)
+        alpha = 1.0
+        improved = False
+        for _ in range(20):
+            tu_t = (tau_u + alpha * float(step[0])) % orbit_from.period
+            ts_t = (tau_s + alpha * float(step[1])) % orbit_to.period
+            res_t, xv_t = _resid(tu_t, ts_t)
+            if res_t is not None and float(np.linalg.norm(res_t)) < rn:
+                tau_u, tau_s, res, xv = tu_t, ts_t, res_t, xv_t
+                improved = True
+                break
+            alpha *= 0.5
+        if not improved:
+            break
+    final_rn = float(np.linalg.norm(res)) if res is not None else float("inf")
+    converged = res is not None and final_rn < tol
+    return HeteroclinicConnection(
+        orbit_from=orbit_from.label,
+        orbit_to=orbit_to.label,
+        jacobi=orbit_from.jacobi,
+        tau_u=tau_u,
+        tau_s=tau_s,
+        k_u=k_u,
+        k_s=k_s,
+        crossing_xv=xv if xv is not None else np.zeros(2),
+        residual=final_rn,
+        converged=converged,
+        n_iter=n_iter,
+        notes="" if converged else "did not reach tol",
+    )
