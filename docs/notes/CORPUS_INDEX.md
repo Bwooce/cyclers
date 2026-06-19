@@ -1,0 +1,277 @@
+# Corpus Master Index (CORPUS_INDEX.md)
+
+**LIVING DOCUMENT.** One row per file in the private corpus
+`cyclers_pdf/papers/`. This is the discoverability layer **and** the anti-slip
+ledger mandated by `docs/notes/corpus-document-policy.md` §3 — its absence is
+precisely what let Szebehely 1967 (the foundational CR3BP textbook the genome
+rests on) sit undigested for weeks.
+
+**Maintenance rule (policy §3):** this index is updated **in the same commit**
+as any future filing or digest. Filing a PDF is not "done" until its digest
+note (or mined-by pointer) **and** its index line both exist — *"Filed,
+digested, indexed."* Re-run the coverage sweep (task #397 method, below) after
+every large acquisition wave.
+
+**Built:** 2026-06-19 (task #397), sweeping all 130 files then in `papers/`.
+Supersedes the one-shot `2026-06-13-paper-corpus-digest-audit.md` (which
+covered ~67 files and is now a historical snapshot).
+
+## Status vocabulary
+
+Per file: a **digest/mined status** and an **OCR status**.
+
+- `digested` — has a dedicated digest note `docs/notes/*digest*.md` (or a
+  per-paper section in a multi-paper digest), full verdict + sourced citations.
+- `mined` — referenced by a `docs/notes/*mining*.md` method/data note. Its
+  tables/methods power real work even without a standalone digest note.
+- `mined-by-catalogue` — cited by a `data/catalogue.yaml` row
+  (first_published / corroborating / orbit_source, DOI- or table-traced).
+- `mined-by-KNOWN_CORPUS` — a `literature_check.py` `KNOWN_CORPUS` anchor
+  (DOI/author/citation), used for the novelty gate.
+- `triaged` — read and given an explicit in-/out-of-scope verdict in a triage
+  note (background ML/GNC/EDL sweep). A verdict counts as processed.
+- `undigested-unmined` — none of the above. The Szebehely-class gap.
+
+(A file often carries several at once; the row lists the strongest pointer
+plus any others.)
+
+OCR status (from `verify/ocr.has_text_layer`, 10.0 chars/page threshold,
+measured 2026-06-19):
+
+- `text-layer` — native/searchable text. Just `pdftotext`.
+- `image-only` — scanned page-images; needs `ocrmypdf` before any digest can
+  `pdftotext` it. Vision-read precision pages per policy §1 hybrid rule.
+- `text-layer (thin)` — passes the 10 char/page floor but carries only a
+  sparse/partial OCR layer (≈20–250 chars/page); usable for navigation, but a
+  precision read should treat it like image-only and vision-read the page.
+
+## Genuine gap list (ranked) — see §"Gaps" at the bottom
+
+Only **3 genuine `undigested-unmined` files** remain (Szebehely is now
+digested). All other prior gaps (Fan 2025, Li-Topputo 2019, Silvestrini 2022,
+Singh-Junkins 2022) were closed by the 2026-06-13 background-papers triage.
+
+---
+
+## Foundational theory / textbooks / methods (the highest-slip-risk class)
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| szebehely-1967-theory-of-orbits-restricted-problem-three-bodies-book.pdf | 2026-06-19-digest-szebehely-1967.md; -mining; -goldens | The foundational CR3BP textbook (Jacobi integral, periodic-orbit families, stability) — the genome's implicit base | digested + mined | image-only (OCR done, #400) |
+| gurfil-ed-2007-modern-astrodynamics-elsevier-astrodynamics-series-vol-1-textbook.pdf | 2026-06-19-digest-gurfil-2007-modern-astrodynamics.md | Methods reference (Elsevier Astrodynamics vol. 1); perturbation / optimization methods | digested | text-layer |
+| hintz-2023-orbital-mechanics-astrodynamics-techniques-tools-space-missions-springer-textbook.pdf | 2026-06-17-digest-hintz-2023.md | Springer astrodynamics textbook; techniques/tools reference | digested | text-layer |
+| belbruno-2004-capture-dynamics-chaotic-motions-...-low-energy-transfers-princetonUP-textbook.pdf | 2026-06-17-digest-belbruno-2004.md | Low-energy/ballistic-capture dynamics textbook (WSB transfers) | digested | text-layer |
+| parker-2007-low-energy-ballistic-lunar-transfers-phd-thesis-cu-boulder.pdf | 2026-06-17-digest-parker-2007.md | PhD thesis; low-energy ballistic lunar transfer design | digested | text-layer |
+| vallado-1991-methods-astrodynamics-computer-approach-USAFA-TR-91-6.pdf | 2026-06-10-vallado-1991-tr916-mining.md | Methods of astrodynamics, computer approach (USAFA TR) | mined | text-layer |
+| russell-2004-dissertation.pdf | 2026-06-07-russell-2004-dissertation-method-mining.md (+continuation/member-tables); catalogue orbit_source | Periodic-orbit continuation dissertation; major catalogue orbit source | mined + mined-by-catalogue | text-layer |
+| mcconaghy-2004-design-optimization-interplanetary-spacecraft-trajectories-purdue-phd.pdf | 2026-06-17-digest-mcconaghy-2004.md; 2026-06-10-mcconaghy-2004-dissertation-mining.md | Interplanetary trajectory design/optimization PhD; cycler tables | digested + mined | text-layer |
+| ceriotti-2010-global-optimisation-multiple-gravity-assist-glasgow-phd.pdf | 2026-06-07-ceriotti-2010-mga-global-opt-mining.md | Global optimisation of MGA trajectories PhD | mined | text-layer |
+| agrawal-2022-orbital-logistics-architecture-sustainable-mars-exploration-purdue-phd.pdf | 2026-06-04-agrawal-landau-howe-mining.md | Orbital logistics architecture for sustainable Mars (PhD) | mined | text-layer |
+| doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-I-...IJBC-1(3).pdf | 2026-06-17-digest-doedel-keller-kernevez-1991.md | Bifurcation numerics part I (finite dimensions) — AUTO foundations | digested | text-layer (thin) |
+| doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-II-...IJBC-1(4).pdf | 2026-06-17-digest-doedel-keller-kernevez-1991.md | Bifurcation numerics part II (infinite dimensions) | digested | text-layer (thin) |
+| doedel-paffenroth-keller-2003-computation-periodic-solutions-conservative-systems-3-body-IJBC.pdf | 2026-06-17-digest-doedel-2003.md | Periodic-solution computation in conservative 3-body systems | digested | text-layer |
+| bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-princetonUP-...textbook.pdf | — | Princeton UP astrodynamics textbook (fundamentals + perturbation methods) | **undigested-unmined** | text-layer |
+| willis-2008-book-review-modern-astrodynamics-gurfil-ed-asr-doi-10.1016-j.asr.2007.07.047.pdf | — | 2-page book review of the Gurfil-ed 2007 volume | **undigested-unmined** | text-layer |
+
+## Earth-Mars cyclers (core domain)
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| byrnes-longuski-aldrin-1993-cycler-orbit-earth-mars-jsr-doi-10.2514-3.25519.pdf | 2026-06-17-digest-byrnes-longuski-aldrin-1993.md; KNOWN_CORPUS; catalogue | The Aldrin cycler paper | digested + mined-by-catalogue + KNOWN_CORPUS | text-layer |
+| mcconaghy-longuski-byrnes-2002-analysis-broad-class-earth-mars-cycler-...AIAA-2002-4420.pdf | 2026-06-17-digest-mcconaghy-2002.md; catalogue | Broad-class E-M cycler analysis (conference) | digested + mined-by-catalogue | text-layer |
+| mcconaghy-longuski-byrnes-2004-analysis-class-earth-mars-cycler-...jsr-doi-10.2514-1.11939.pdf | 2026-06-17-digest-mcconaghy-2004.md; catalogue | Broad-class E-M cycler analysis (journal) | digested + mined-by-catalogue | text-layer |
+| mcconaghy-russell-longuski-2005-standard-nomenclature-earth-mars-cycler-...jsr-doi-10.2514-1.8123.pdf | 2026-06-17-digest-mcconaghy-2005.md; catalogue | Standard cycler nomenclature (S/L convention) | digested + mined-by-catalogue | text-layer |
+| mcconaghy-landau-yam-2006-notable-two-synodic-period-earth-mars-cycler-...jsr-doi-10.2514-1.15215.pdf | 2026-06-17-digest-mcconaghy-2006.md; catalogue | Two-synodic-period (S1L1) cycler | digested + mined-by-catalogue | text-layer |
+| rogers-2012-vinf-leveraging-cyclers-AIAA-2012-4746.pdf | catalogue orbit_source rogers-2012-t1 (source_quotes) | V∞-leveraging cyclers; major establishment-DV source | mined-by-catalogue | text-layer |
+| rogers-hughes-longuski-2015-establishing-cycler-trajectories-earth-mars-...j.actaastro.2015.03.002.pdf | 2026-06-17-digest-rogers-2015.md; catalogue | Establishing E-M cycler trajectories | digested + mined-by-catalogue | text-layer |
+| russell-ocampo-2003-systematic-method-earth-mars-cyclers-direct-return-...AAS-03-145.pdf | 2026-06-17-digest-russell-ocampo-2003.md; KNOWN_CORPUS | Systematic E-M cycler + direct-return method | digested + KNOWN_CORPUS | text-layer |
+| luidens-1964-mars-nonstop-round-trip-trajectories-AIAA-journal-2-2.pdf | 2026-06-17-digest-luidens-1964.md | Mars non-stop round-trip free-return trajectories | digested | text-layer |
+| gravier-marchal-culp-1972-optimal-trajectories-earth-mars-true-planetary-orbits-jota.pdf | 2026-06-17-digest-gravier-1972.md | Optimal E-M trajectories in true planetary orbits | digested | text-layer |
+| pontani-conway-2018-optimal-trajectories-hyperbolic-rendezvous-earth-mars-cycling-...jgcd.pdf | 2026-06-17-digest-pontani-2018.md | Hyperbolic rendezvous with cycling spacecraft | digested | text-layer |
+| jesick-2019-mars-trojan-orbits-continuous-earth-mars-communication-jas.pdf | 2026-06-17-digest-jesick-2019.md | Mars-Trojan orbits for continuous E-M comms | digested | text-layer |
+| patel-2019-earth-mars-cycler-vehicle-conceptual-design-FIT-etd.pdf | s1l1-target-topology-mining.md; 2026-06-05-v42-backfill-sweep.md §7 | E-M cycler vehicle conceptual design (thesis) | mined | text-layer |
+| adamo-2025-spanning-earth-mars-chasm-synodic-resonant-waypoints-AIAA-houston-LnL.pdf | 2026-06-17-digest-adamo-2025.md | Synodic-resonant waypoints spanning the E-M chasm | digested | text-layer |
+| howe-2025-tackling-mars-cycler-design-head-on-ICES-2025-555.pdf | 2026-06-17-digest-howe-2025.md; 2026-06-04-agrawal-landau-howe-mining.md | Tackling Mars cycler design head-on | digested + mined | text-layer |
+| howe-blincow-hall-2025-tackling-mars-cycler-design-head-on-ICES-2025-555.pdf | (duplicate of howe-2025 above, full author list) | Same paper, full-author filename | digested + mined | text-layer |
+| landau-longuski-2006-human-mars-trajectories-pt1-impulsive-JSR.pdf | 2026-06-04-agrawal-landau-howe-mining.md; catalogue | Human Mars trajectories pt1 (impulsive) | mined + mined-by-catalogue | text-layer |
+| landau-longuski-2009-comparative-assessment-human-mars-technologies-architectures.pdf | 2026-06-04-agrawal-landau-howe-mining.md | Comparative assessment of human Mars architectures | mined | text-layer |
+| nock-friedlander-1987-elements-mars-transportation-system-...0094-5765(87)90189-5.pdf | 2026-06-17-digest-nock-friedlander-1987.md | Elements of a Mars transportation system | digested | text-layer |
+| vasile-summerer-depascale-2005-earth-mars-evolutionary-branching-ActaAstro.pdf | 2026-06-05-v42-backfill-sweep.md; 2026-06-07-external-algorithms-survey.md | E-M evolutionary-branching global search | mined | text-layer |
+
+## Mars free-return / human-flyby missions
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| okutsu-longuski-2002-mars-free-returns-via-gravity-assist-venus-JSR-39-1.pdf | 2026-06-07-okutsu-tito-free-returns-mining.md | Mars free returns via Venus GA | mined | image-only |
+| hughes-edelman-longuski-2014-fast-mars-free-returns-venus-ga-AIAA-2014-4109.pdf | 2026-06-07-hughes-2014-fast-mars-free-returns-mining.md | Fast Mars free returns via Venus GA | mined | text-layer |
+| tito-maccallum-carrico-2013-feasibility-manned-mars-free-return-2018-IEEE-aerospace.pdf | 2026-06-07-okutsu-tito-free-returns-mining.md; 2026-06-13-tito-maccallum-2018-free-return-reproduction.md | Inspiration Mars 2018 manned free-return feasibility | mined | text-layer |
+| donahue-duggan-2022-boeing-mars-2033-human-flyby-IAC-22-B3-8-x70674.pdf | 2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md | Boeing Mars-2033 human flyby | mined | text-layer |
+| conte-spencer-2018-mission-analysis-earth-to-mars-phobos-dro-...j.actaastro.2018.06.049.pdf | 2026-06-17-digest-conte-spencer-2018.md | E-to-Mars/Phobos DRO mission analysis | digested | text-layer |
+| kakoi-howell-folta-2014-access-mars-from-earth-moon-libration-orbits-...j.actaastro.2014.06.010.pdf | 2026-06-17-digest-kakoi-2014.md | Accessing Mars from E-M libration orbits | digested | text-layer |
+| putnam-braun-2005-entry-system-options-human-return-moon-mars-AIAA-2005-5915.pdf | 2026-06-13-background-papers-read-triage.md #11 — OUT-OF-SCOPE (EDL) | Entry-system options for human Moon/Mars return | triaged | text-layer |
+
+## Earth-Moon / cislunar cyclers & dynamics
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| genova-aldrin-2015-earth-moon-cycler-AAS-15.pdf | 2026-06-10-genova-aldrin-2015-mining.md | E-M cycler (AAS 2015) | mined | text-layer |
+| genova-aldrin-2015-free-return-earth-moon-cycler-AAS-15.pdf | 2026-06-10-genova-aldrin-2015-mining.md (free-return arc) | Free-return E-M cycler companion | mined | text-layer |
+| ross-roberts-tsoukkas-2025-stable-ballistic-earth-moon-cyclers-AAS-25-621.pdf | 2026-06-11-ross-roberts-tsoukkas-2025-mining.md; 2026-06-12-ross-adoption-results.md; catalogue | Stable ballistic E-M cyclers (5 families) | mined + mined-by-catalogue | text-layer |
+| roberts-tsoukkas-ross-2026-stable-prograde-em-cyclers-journal.pdf | 2026-06-13-roberts-tsoukkas-2026-multi-orbiter-journal-mining.md; KNOWN_CORPUS | Stable prograde E-M cyclers (journal) | mined + KNOWN_CORPUS | text-layer |
+| roberts-tsoukkas-2026-vsgc-multiorbiter-cyclers-student-summary.pdf | 2026-06-13-roberts-tsoukkas-2026-multi-orbiter-mining.md | VSGC multi-orbiter cyclers (student summary, companion) | mined | text-layer |
+| wittal-2022-earth-moon-cycler-lunar-logistics-IAC-22-C1.6.6.pdf | 2026-06-11-wittal-2022-iac-mining.md | E-M cycler for lunar logistics | mined | text-layer |
+| wittal-smith-cassell-2021-robotic-lunar-gateway-payload-return-AAS-21-724.pdf | 2026-06-14-wittal-2021-aas-21724-digest.md | Robotic lunar Gateway payload return | digested | text-layer |
+| AAS-22-015-pascarella-pony-express.pdf | OUTSTANDING H.3 (#38); 2026-06-11-forward-citation-sweep.md | Pony Express low-thrust E-M cycler | mined-by-catalogue (Pony Express rows) | text-layer |
+| sanchez-net-2022-cycler-orbits-solar-system-pony-express-JSR.pdf | catalogue sanchez-net-2022-* rows; OUTSTANDING H.4 (#38) | Cycler orbits across solar system (Pony Express) | mined-by-catalogue | text-layer |
+| merrill-2025-low-thrust-forced-periodic-em-cr3bp-arxiv-2502.05140.pdf | 2026-06-13-merrill-2502-05140-lowthrust-forced-periodic-mining.md | Low-thrust forced periodic orbits in E-M CR3BP | mined | text-layer |
+| hiraiwa-2026-lobe-dynamics-cislunar-transfers-arxiv-2602.17444.pdf | 2026-06-07-hiraiwa-lobe-dynamics-method-mining.md; KNOWN_CORPUS | Lobe-dynamics cislunar transfers | mined + KNOWN_CORPUS | text-layer |
+| singh-anderson-taheri-2021-exploiting-manifolds-L1-halo-em-low-thrust-...j.actaastro.2021.03.017.pdf | 2026-06-17-digest-singh-2021-L1-halo.md; KNOWN_CORPUS | Exploiting L1-halo manifolds for low-thrust E-M | digested + KNOWN_CORPUS | text-layer |
+| singh-anderson-taheri-2021-low-thrust-transfers-southern-L2-NRHO-invariant-manifolds-jota.pdf | 2026-06-17-digest-singh-2021-NRHO.md; KNOWN_CORPUS | Low-thrust transfers to southern L2 NRHO | digested + KNOWN_CORPUS | text-layer |
+| cuevas-del-valle-2023-optimal-floquet-stationkeeping-relative-dynamics-three-body-aerospace.pdf | 2026-06-11-cuevas-del-valle-2023-floquet-mining.md | Optimal Floquet stationkeeping in CR3BP | mined | text-layer |
+| cuevas-del-valle-2026-fuel-optimal-rendezvous-CR3BP-MPC-proximal-EuroGNC.pdf | 2026-06-10-cuevas-del-valle-2026-cr3bp-mpc-mining.md; 2026-06-13-cuevas-2026-l1-halo-seed-run.md | Fuel-optimal CR3BP rendezvous MPC | mined | text-layer |
+
+## CR3BP / periodic-orbit families / three-body networks
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| restrepo-russell-2018-database-planar-axisymmetric-periodic-orbits-solar-system-CMDA.pdf | 2026-06-17-digest-restrepo-russell-2018.md | Database of planar axisymmetric periodic orbits | digested | text-layer |
+| russell-2012-survey-spacecraft-trajectory-design-strongly-perturbed-environments-jgcd.pdf | 2026-06-17-digest-russell-2012.md | Survey of trajectory design in strongly-perturbed regimes | digested | text-layer |
+| braik-ross-2026-orbital-networks-three-body-problem-arxiv-2605.31543.pdf | 2026-06-13-braik-ross-2026-orbital-networks-mining.md; KNOWN_CORPUS | Orbital networks in the three-body problem | mined + KNOWN_CORPUS | text-layer |
+| 2025-fixed-points-three-body-high-order-transfer-map-arxiv-2509.12671.pdf | 2026-06-13-high-order-transfer-map-2509.12671-mining.md | Fixed points in 3BP via high-order transfer map | mined | text-layer |
+| fu-2026-datamining-escape-families-arxiv-2601.11881.pdf | 2026-06-13-fu-2601-11881-datamining-escape-family-mining.md | Data-mining escape families | mined | text-layer |
+| tagliaferri-2024-mbh-manifold-transfers-arxiv-2405.18916.pdf | 2026-06-13-tagliaferri-2405-18916-global-opt-manifolds-mining.md | MBH global-opt with manifold transfers | mined | text-layer |
+| andreu-1998-quasi-bicircular-problem-phd-thesis.pdf | 2026-06-14-andreu-quasi-bicircular-digest.md | Quasi-bicircular problem PhD thesis (POL1/POL2 ICs) | digested | text-layer |
+| andreu-1998-quasi-bicircular-problem-phd-thesis.ps.gz | (PostScript source of the PDF above) | Original PS of the andreu thesis — same content | digested (via PDF) | n/a (compressed PS) |
+| de-la-fuente-marcos-2018-geometric-characterization-arjuna-orbital-domain-arxiv-1410.4104v2.pdf | 2026-06-17-digest-fuente-marcos-2018.md | Geometric characterization of the Arjuna orbital domain | digested | text-layer |
+
+## Outer-planet / moon tours & endgame (Galilean, Saturnian, Uranian)
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| niehoff-1970-touring-galilean-satellites-AIAA-paper-70-1070.pdf | 2026-06-17-digest-niehoff-1970.md; KNOWN_CORPUS | Touring the Galilean satellites | digested + KNOWN_CORPUS | text-layer |
+| campagnola-russell-2009-endgame-partA-vinf-leveraging-graph-AAS-09-224.pdf | 2026-06-05-endgame-tisserand-mining.md | Endgame Part A (V∞-leveraging graph) | mined | text-layer |
+| campagnola-russell-2009-endgame-partB-multibody-tp-graph-AAS-09-227.pdf | 2026-06-05-endgame-tisserand-mining.md | Endgame Part B (multibody Tisserand-Poincaré graph) | mined | text-layer |
+| campagnola-buffington-petropoulos-2014-jovian-tour-design-europa-orbiter-lander-...actaastro.pdf | 2026-06-17-digest-campagnola-2014.md; KNOWN_CORPUS | Jovian tour design (Europa orbiter/lander) | digested + KNOWN_CORPUS | text-layer |
+| strange-russell-buffington-2007-mapping-v-infinity-globe-AAS-07-277.pdf | KNOWN_CORPUS (Mapping the V∞ globe) | Mapping the V∞ globe (multi-body resonance hopping) | mined-by-KNOWN_CORPUS | text-layer |
+| heaton-longuski-2003-feasibility-galileo-style-tour-uranian-satellites-jsr-doi-10.2514-2.3981.pdf | catalogue Heaton-Longuski U00-01 (Table 5 transcribed); KNOWN_CORPUS | Galileo-style Uranian satellite tour feasibility | mined-by-catalogue + KNOWN_CORPUS | image-only |
+| davis-phillips-mccarthy-2018-saturnian-ocean-worlds-poincare-maps-...j.actaastro.2017.11.004.pdf | 2026-06-17-346-davis-2018-deep-read.md; KNOWN_CORPUS | Saturnian ocean-worlds tour via Poincaré maps | digested + KNOWN_CORPUS | text-layer |
+| takao-2025-mission-analysis-first-saturn-trojan-2019-uo14-arxiv-2501.06586.pdf | 2026-06-07-takao-2025-mpga-1dsm-mining.md | First Saturn-Trojan (2019 UO14) MPGA+1DSM mission | mined | text-layer |
+| liang-2024-callisto-ganymede-europa-triple-cyclers-JGCD.pdf | 2026-06-11-liang-2024-cge-triple-cyclers-mining.md; KNOWN_CORPUS; catalogue | Callisto-Ganymede-Europa triple cyclers | mined + mined-by-catalogue + KNOWN_CORPUS | text-layer |
+| jones-hernandez-jesick-2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf | 2026-06-05-jones-aas17-577-vem-mining.md; KNOWN_CORPUS; catalogue | Low-excess-speed VEM triple cyclers | mined + mined-by-catalogue + KNOWN_CORPUS | text-layer |
+| vasile-campagnola-2009-lowthrust-mga-europa-JBIS-arxiv-1105.1823.pdf | 2026-06-07-vasile-campagnola-dfet-method-mining.md; 2026-06-05-vasile-tables-retranscription.md | Low-thrust MGA to Europa (DFET) | mined | text-layer |
+| genova-2016-phobos-deimos-PADME-trajectory-AIAA-2016-5681.pdf | 2026-06-05-v42-backfill-sweep.md §7 (PADME) | Phobos/Deimos PADME trajectory | mined | text-layer |
+
+## Historic / reference flight missions (Voyager, Mariner, Galileo, Cassini, Juno)
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| bourke-friedman-penzo-1971-design-grand-tour-missions-AIAA-71-187.pdf | 2026-06-17-digest-bourke-1971.md | Design of Grand Tour missions | digested | text-layer |
+| kohlhase-penzo-1977-voyager-mission-description-space-science-reviews-21-77-101.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md; catalogue | Voyager mission description | digested + mined-by-catalogue | text-layer |
+| mckinley-vanallen-1976-mariner-jupiter-saturn-1977-navigation-strategy-jsr-...57113.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md; catalogue | Mariner Jupiter/Saturn 1977 navigation strategy | digested + mined-by-catalogue | text-layer |
+| dunne-burgess-1978-voyage-mariner-10-mission-venus-mercury-NASA-SP-424.pdf | 2026-06-17-digest-dunne-burgess-1978-mariner-10.md | Mariner 10 mission (Venus/Mercury) NASA SP-424 | digested | text-layer |
+| giberson-cunningham-1975-mariner-10-mission-venus-mercury-...0094-5765(75)90012-0.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md | Mariner 10 mission to Venus and Mercury | digested | text-layer |
+| johnson-yeates-young-1992-galileo-mission-overview-space-science-reviews-vol-60.pdf | 2026-06-17-digest-johnson-yeates-young-1992.md | Galileo mission overview | digested | text-layer |
+| damario-bright-wolf-1992-galileo-trajectory-design-space-science-reviews-...bf00216849.pdf | 2026-06-17-digest-damario-1992-galileo.md; catalogue | Galileo trajectory design (VEEGA) | digested + mined-by-catalogue | text-layer |
+| diehl-kaplan-penzo-1983-satellite-tour-design-galileo-mission-AIAA-83-0101.pdf | 2026-06-17-digest-diehl-1983.md; catalogue | Galileo satellite-tour design | digested + mined-by-catalogue | text-layer |
+| young-1998-galileo-probe-mission-jupiter-science-overview-jgr-doi-10.1029-98JE01051.pdf | 2026-06-17-digest-damario-1992-galileo.md (probe context); catalogue | Galileo probe mission science overview | digested + mined-by-catalogue | text-layer |
+| young-2000-correction-galileo-probe-mission-jupiter-science-overview-jgr-...2000JE001251.pdf | (errata to young-1998 above) | Correction to the Galileo probe overview | digested (via 1998) | text-layer |
+| wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-...0967-0661(95)00172-7.pdf | 2026-06-17-digest-wolf-smith-1995-cassini.md; catalogue | Cassini tour trajectory design | digested + mined-by-catalogue | text-layer |
+| bellerose-roth-wagner-2018-cassini-reconstructing-thirteen-years-...2018-2646.pdf | 2026-06-17-digest-bellerose-2018-cassini.md | Cassini: reconstructing 13 years of gravity assists | digested | text-layer |
+| valerino-2014-updating-reference-trajectory-cassini-solstice-mission-spaceops-...2014-1880.pdf | 2026-06-17-digest-bellerose-2018-cassini.md (Solstice context); KNOWN_CORPUS | Updating Cassini Solstice reference trajectory | digested + KNOWN_CORPUS | text-layer |
+| yam-davis-longuski-2009-saturn-impact-trajectories-cassini-end-of-mission-jsr-...38760.pdf | 2026-06-04-agrawal-landau-howe-mining.md; catalogue | Cassini end-of-mission Saturn-impact trajectories | mined + mined-by-catalogue | text-layer |
+| lam-johannesen-kowalkowski-2008-planetary-protection-trajectory-analysis-juno-...2008-7368.pdf | 2026-06-17-digest-lam-2008-juno.md | Juno planetary-protection trajectory analysis | digested | text-layer |
+| hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf | catalogue hollister-menning-1970-ev-orbit-01..15 family | Earth-Venus periodic swingby (E-V cycler family) | mined-by-catalogue | image-only |
+| hollister-rall-1970-periodic-orbits-NASA-CR.pdf | 2026-06-07-hollister-rall-1970-periodic-orbits-mining.md; -appendices-transcription | Periodic orbits NASA-CR (appendix tables transcribed) | mined | text-layer |
+
+## Methods: optimization, STM, primer-vector, low-thrust, reachable sets
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| guzman-mailhe-schiff-hughes-folta-2002-primer-vector-optimization-survey-IAC-02-A.6.09.pdf | 2026-06-07-guzman-2002-primer-survey-mining.md | Primer-vector optimization survey | mined | text-layer |
+| ellison-2018-analytic-gradient-bounded-impulse-trajectory-two-sided-shooting-JGCD.pdf | 2026-06-10-ellison-2018-analytic-gradients-mining.md | Analytic-gradient bounded-impulse two-sided shooting | mined | text-layer |
+| iorfida-2016-geometric-perpendicular-thrust-trajectory-optimization-JGCD.pdf | 2026-06-10-iorfida-2016-perpendicular-thrust-mining.md | Geometric perpendicular-thrust optimization | mined | text-layer |
+| shakouri-2019-shape-based-multiple-impulse-coplanar-maneuvers-arxiv.pdf | 2026-06-10-shakouri-2019-shape-based-mining.md | Shape-based multiple-impulse coplanar maneuvers | mined | text-layer |
+| junkins-taheri-2019-alternative-state-vector-choices-low-thrust-...jgcd-doi-10.2514-1.G003686.pdf | 2026-06-17-digest-junkins-taheri-2019.md | Alternative state-vector choices for low-thrust opt | digested | text-layer |
+| woollands-taheri-junkins-2019-efficient-computation-optimal-low-thrust-gravity-perturbed-jas.pdf | 2026-06-17-digest-woollands-2019.md | Efficient low-thrust optimal control (gravity-perturbed) | digested | text-layer |
+| pellegrini-russell-2016-computation-accuracy-trajectory-state-transition-matrices-jgcd.pdf | 2026-06-17-digest-pellegrini-russell-2016.md | Computation/accuracy of trajectory STMs | digested | text-layer |
+| saloglu-2023-infinitely-many-optimal-iso-impulse-trajectories-JGCD.pdf | 2026-06-10-saloglu-2023-iso-impulse-mining.md | Infinitely many iso-impulse trajectories | mined | text-layer |
+| saloglu-2025-iso-impulse-3d-classification-feasibility-arxiv.pdf | 2026-06-10-saloglu-2025-iso-impulse-3d-mining.md | Iso-impulse 3D classification/feasibility (preprint) | mined | text-layer |
+| saloglu-taheri-2025-iso-impulse-3d-JAS-vor-s40295-025-00528-0.pdf | 2026-06-10-saloglu-2025-iso-impulse-3d-mining.md (VoR of the preprint above) | Iso-impulse 3D (JAS version-of-record) | mined | text-layer |
+| zhou-armellin-2025-single-impulse-reachable-set-polynomials-arxiv-2502.11280.pdf | 2026-06-07-zhou-2025-da-reachable-sets-mining.md | Single-impulse reachable-set polynomials (DA) | mined | text-layer |
+| beeson-englander-hughes-2015-emtg-gmat-lowthrust-tool-chain-AAS-15-278.pdf | 2026-06-07-beeson-2015-emtg-gmat-toolchain-mining.md | EMTG/GMAT low-thrust toolchain | mined | text-layer |
+| englander-englander-2014-tuning-monotonic-basin-hopping-ISSFD24-S7-3.pdf | 2026-06-07-englander-2014-mbh-tuning-mining.md | Tuning monotonic basin hopping (MBH) | mined | text-layer |
+| ozimek-2019-linx-lowthrust-mga-trajectory-optimization-AAS-19-348.pdf | 2026-06-07-ozimek-linx-aas19-348-mining.md | LinX low-thrust MGA optimization | mined | text-layer |
+| shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf | cited in 2026-06-10-ellison mining; queued #233 (forward-citation-sweep-2), no dedicated digest | Universal Keplerian STM | **undigested-unmined** | text-layer (thin) |
+| montenbruck-markgraf-2004-gps-sensor-impact-point-prediction-sounding-rockets-jsr-...1962.pdf | 2026-06-17-digest-montenbruck-2004.md | GPS impact-point prediction for sounding rockets | digested | text-layer |
+| rinker-jacobson-wood-1976-statistical-analysis-trim-maneuvers-low-thrust-interplanetary-navigation-jsr.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md — off-scope for #345 | Statistical analysis of nav trim maneuvers | triaged | text-layer |
+
+## ML / surrogate / GNC background (triaged sweep)
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| zhang-2024-neural-angle-only-od-earth-moon-libration-remotesensing-16-03287.pdf | 2026-06-07-zhang-2024-neural-od-mining.md | Neural angle-only OD at E-M libration | mined | text-layer |
+| zhang-acciarini-2026-pretrained-approximators-lowthrust-cost-reachability-arxiv-2605.26790.pdf | 2026-06-07-ml-surrogate-investigation.md Paper 1; background-triage #8 | Pretrained approximators for low-thrust cost/reachability | mined/triaged | text-layer |
+| zhang-2026-neural-porkchop-lowthrust-asteroid-rendezvous-astronautics-01-00006.pdf | 2026-06-07-ml-surrogate-investigation.md Paper 2 | Neural porkchop low-thrust asteroid rendezvous | mined | text-layer |
+| ozaki-2022-neural-network-surrogate-global-cycler-search-arxiv-2111.11858.pdf | 2026-06-11-ml-surrogate-trio-triage.md — blueprint DEFERRED | NN surrogate for global cycler search | triaged | text-layer |
+| leifsson-2022-global-surrogate-modeling-nn-uncertainty-ICCS.pdf | 2026-06-11-ml-surrogate-trio-triage.md — background-only | Global surrogate modeling, NN uncertainty | triaged | text-layer |
+| wu-2024-physics-informed-ml-review-condition-monitoring-ESWA.pdf | 2026-06-11-ml-surrogate-trio-triage.md — background-only | Physics-informed ML review (condition-monitoring) | triaged | text-layer |
+| viavattene-ceriotti-2021-neural-multiple-nea-rendezvous-continuous-thrust-JSR.pdf | 2026-06-07-ml-surrogate-investigation.md Paper 3; background-triage #7 — OUT-OF-SCOPE | ANN multiple-NEA rendezvous (continuous thrust) | triaged | text-layer |
+| silvestrini-lavagna-2022-deep-learning-ann-spacecraft-gnc-drones-6-270.pdf | 2026-06-13-background-papers-read-triage.md #1 — OUT-OF-SCOPE | Deep-learning ANN for spacecraft GNC | triaged | text-layer |
+| li-topputo-baoyin-2019-neural-time-optimal-orbit-raising-ep-geo-arxiv-1909.08768.pdf | 2026-06-13-background-papers-read-triage.md #2 — OUT-OF-SCOPE | Neural time-optimal EP-to-GEO orbit raising | triaged | text-layer |
+| singh-junkins-2022-stochastic-learning-extremal-field-lowthrust-guidance-sci-rep.pdf | 2026-06-13-background-papers-read-triage.md #3 — OUT-OF-SCOPE | Stochastic learning of extremal field, low-thrust | triaged | text-layer |
+| hu-yang-li-2024-robust-lowthrust-gravity-assist-rl-AIAA-G009427.pdf | 2026-06-07-marginal-papers-triage.md #5 — OUT-OF-SCOPE | Robust low-thrust GA via RL | triaged | text-layer |
+| blender-singh-2025-uncertainty-aware-guidance-gbdt-continuous-thrust-AAS-25-524.pdf | 2026-06-07-marginal-papers-triage.md #6 — OUT-OF-SCOPE | Uncertainty-aware GBDT continuous-thrust guidance | triaged | text-layer |
+| sinha-beeson-2025-initial-guess-lowthrust-missed-thrust-robust-arxiv-2501.06694.pdf | 2026-06-07-marginal-papers-triage.md #2 — REFERENCE-ONLY | Initial-guess generation, robust low-thrust | triaged | text-layer |
+| venigalla-englander-scheeres-2020-lowthrust-missed-thrust-recovery-margin-AAS-20-438.pdf | 2026-06-07-marginal-papers-triage.md #1 — OUT-OF-SCOPE | Low-thrust missed-thrust recovery margin | triaged | text-layer |
+| fan-2025-electric-sail-multi-target-trajectory-design-aerospace-12-00196.pdf | 2026-06-13-background-papers-read-triage.md #14 — OUT-OF-SCOPE (E-sail) | E-sail multi-target trajectory design | triaged | text-layer |
+
+## Continuous-thrust / electric-sail / misc applied
+
+| File | Pointer | One-line summary | Status | OCR |
+|---|---|---|---|---|
+| rickman-intro-orbital-mechanics-spacecraft-attitudes-thermal-engineers-NASA-NESC-slides.pdf | 2026-06-10-rickman-nesc-slides-triage.md | Intro orbital-mechanics lecture slides (NESC) | triaged | text-layer |
+| acton-1996-ancillary-data-services-NASA-NAIF-SPICE-planet-space-sci-...95)00107-7.pdf | 2026-06-17-digest-acton-1996.md; catalogue | SPICE/NAIF ancillary data services | digested + mined-by-catalogue | text-layer |
+| ccsds-2023-orbit-data-messages-502.0-B-3-blue-book.pdf | 2026-06-05-ccsds-odm-502-mining.md | CCSDS Orbit Data Messages standard | mined | text-layer |
+
+## Gaps — `undigested-unmined` (ranked by value) + image-only OCR backlog
+
+### Genuine gaps (3)
+
+1. **shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf**
+   — *moderate value (method).* The canonical universal-variable Keplerian STM;
+   our STM/lambert/continuation code uses this family of formulation. Cited in
+   the ellison mining note and queued as #233, but never given a dedicated
+   digest. Text-layer is **thin** (~21 chars/page) — likely a sparse OCR layer;
+   a precision read of the STM equations should vision-read the page images, not
+   trust `pdftotext`. **Recommend: a focused method-digest task** (the equations
+   are load-bearing for the STM lane).
+2. **bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-...textbook.pdf**
+   — *low–moderate value (textbook).* A general astrodynamics/perturbation
+   textbook. We already have four digested method textbooks (Gurfil, Hintz,
+   Belbruno, Vallado) covering this ground. **Recommend: a light
+   chapter-summary triage** (TOC + any CR3BP/perturbation chapter) — low
+   priority; likely REFERENCE-ONLY.
+3. **willis-2008-book-review-modern-astrodynamics-gurfil-ed-...asr.2007.07.047.pdf**
+   — *negligible value.* A 2-page book review of the Gurfil 2007 volume (already
+   digested). **Recommend: one-line OUT-OF-SCOPE triage** (not a primary source);
+   no standalone digest warranted.
+
+### Image-only files needing OCR before any future digest (4)
+
+All are currently classified but would need `ocrmypdf` (via `verify/ocr.py`)
+before a `pdftotext` digest; precision values vision-read per policy §1.
+
+- **szebehely-1967-...book.pdf** — already OCR'd + digested (task #400 / #185).
+  Listed for completeness; no action.
+- **heaton-longuski-2003-...uranian-satellites-...pdf** — *mined-by-catalogue*
+  (U00-01 tour, Table 5 transcribed via vision already). OCR only needed if a
+  future re-mine wants greppable body text.
+- **okutsu-longuski-2002-mars-free-returns-via-gravity-assist-venus-...pdf** —
+  *mined* (free-returns note). OCR only needed for a future deeper re-mine.
+- **hollister-menning-1970-periodic-swingby-earth-venus-...pdf** —
+  *mined-by-catalogue* (E-V family). OCR only needed for a future re-mine.
+
+None of the image-only files is an *unprocessed* black box — each is already
+mined/digested; OCR is a convenience for any future greppable re-read, not a
+blocker. The Szebehely failure mode (image-only **and** unprocessed) does not
+recur in the current corpus.
