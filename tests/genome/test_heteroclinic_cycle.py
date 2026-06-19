@@ -199,10 +199,12 @@ def test_assemble_l1_l2_two_cycle_closes() -> None:
     own branch/crossing-index pair. The working config is
     ``branch_u=+1, branch_s=+1, k_u=4, k_s=3`` -- found by a coarse branch/k sweep
     then certified by full Newton (residual ~1.1e-9). It meets the section at
-    x~=0.95880, xdot~=-0.02562: the EXACT time-reversal mirror of the L1->L2 crossing
-    (x~=0.95880, xdot~=+0.02191 in the W-Z golden; the symmetry x->x, y->-y,
-    xdot->-xdot, ydot->ydot, t->-t flips only the sign of xdot). W-Z prove both
-    directions of the L1<->L2 cycle exist; this reproduces the return half.
+    x~=0.95880, xdot~=-0.02562: the EXACT time-reversal mirror of OUR L1->L2 crossing
+    (x~=0.95880, xdot~=+0.02562; the symmetry x->x, y->-y, xdot->-xdot, ydot->ydot,
+    t->-t flips only the sign of xdot, reproduced between our two legs to ~8 digits).
+    Both legs land near the W-Z golden crossing (x=0.957916, xdot=+-0.021915), which
+    our linear-seed manifold reproduces to ~3.8e-3 (see test_l1_to_l2_crossing_matches_
+    wz_golden). W-Z prove both directions of the L1<->L2 cycle exist; this is the return half.
     """
     system = _sun_jupiter()
     l1 = LyapunovNode.from_libration(
