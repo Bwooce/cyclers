@@ -123,7 +123,7 @@ All EXPECTED values trace to the W-Z publication, never to our own computation.
    `max_leg_residual < tol`.
 4. **Independent cross-check.** Radau-vs-DOP853 endpoint agreement `< independent_tol`.
 
-Test file: `tests/search/test_heteroclinic_cycle.py`. The golden YAML is a #403 deliverable;
+Test file: `tests/genome/test_heteroclinic_cycle.py`. The golden YAML is a #403 deliverable;
 the #314 corrector build and the #403 transcription run in parallel — the validation tests
 (items 2–4) are written against the golden but only pass once #403 lands. Item 1 needs only
 the two fixed points (already captured by the scouting pass) and can be written immediately.
