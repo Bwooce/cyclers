@@ -402,6 +402,23 @@ Every emitted candidate carries a **validation level** = the highest gate it has
 
 **Trust gating:** only **V3+** candidates are "credible"; only **V5 + catalogue/literature miss** may be called a *discovery* or submitted for publication. The auto-pipeline tags V0–V3 on every hit; V3 candidates that miss the catalogue are queued for V4 (GMAT); V4 passers go to human V5. This is the spit-out → trust ladder, and it is what protects against publishing a re-derived or numerically-faked "novel" cycler.
 
+> **Note — spectral CR3BP stability does NOT imply V4 survival; the Hill
+> pre-screen (#391).** A periodic orbit can be almost perfectly stable in the
+> **autonomous CR3BP** (max |Floquet| ≈ 1) yet escape under the **real
+> ephemeris** the moment the Sun is switched on, because the CR3BP — and V1–V3,
+> which live in or near it — ignore solar gravity entirely. The #389
+> `branch_C32_b0` candidate (a (3,3) Earth-Moon Floquet branch with max
+> |Floquet| = 1.000000000000617) cleared V1–V3 by 6–9 orders and then **failed
+> V4 by 4–5 orders into a ~10⁹ km escape, 0/100 launch epochs**, purely because
+> its amplitude reaches **0.77 of the Earth-Sun Hill radius**, where the solar
+> tide is ~30% of Earth's gravity. The cheap predictor of this V4 outcome is the
+> orbit's **amplitude as a fraction of the Earth-Sun Hill radius**
+> (`cyclerfinder.genome.hill_screen`): a one-period propagation classifies the
+> candidate `PASS` (< 0.3 R_Hill; solar tide < ~10% of Earth gravity),
+> `MARGINAL` (0.3–0.5), or `V4_DOOMED` (> 0.5). Far-amplitude / near-Hill
+> families should be tagged `cr3bp-only` up front and re-scoped to lower
+> amplitude rather than sent up a full V0–V5 gauntlet that V4 will reject.
+
 > **Note — the V2 class-split and the "≥3 laps" convention.** V2 is split into
 > **V2-ballistic** and **V2-powered** because a single drift metric cannot judge
 > both regimes honestly. A *ballistic* cycler is meant to be geometrically
