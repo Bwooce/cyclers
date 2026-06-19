@@ -113,3 +113,33 @@ def test_se_lyapunov_reproduces_canalias_c() -> None:
     )
     assert node.converged, f"SE-L1 did not converge at C={c_target}"
     assert abs(node.jacobi - c_target) < 1e-6, f"SE jacobi {node.jacobi} vs {c_target}"
+
+
+from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
+    CrossConnection,
+    correct_cross_connection,
+)
+
+
+@pytest.mark.slow
+def test_em_to_se_connection_is_low_energy() -> None:
+    """An EM-L2 unstable -> SE-L2 stable connection closes its inertial position gap
+    with a low patch ΔV (near-ballistic cross-system connection). Position match < 100 km,
+    ΔV < 1 km/s."""
+    se = se_earth_system()
+    em = em_moon_system()
+    bridge = FrameBridge(se=se, em=em)
+    # Both L2 Lyapunov orbits need ydot0_sign=-1.0: with the default +1 sign the
+    # corrector collapses onto a different (shorter-period) family member instead of
+    # the L2 orbit (EM lands at x0≈1.064 T≈2.05 rather than x0≈1.182 T≈3.42).
+    em_l2 = LyapunovNode.from_libration(
+        em, x0_guess=1.18, jacobi=3.15, period_guess=3.4, label="EM-L2", ydot0_sign=-1.0
+    )
+    se_l2 = LyapunovNode.from_libration(
+        se, x0_guess=1.009, jacobi=CANALIAS_C_SE, period_guess=3.06, label="SE-L2", ydot0_sign=-1.0
+    )
+    conn = correct_cross_connection(bridge, em_l2, se_l2, label_from="EM-L2", label_to="SE-L2")
+    assert isinstance(conn, CrossConnection)
+    assert conn.converged, f"pos residual {conn.residual:.3e} km, n_iter {conn.n_iter}"
+    assert conn.residual < 1e2
+    assert conn.patch_dv_kms < 1.0
