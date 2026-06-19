@@ -100,12 +100,10 @@ lives on the orthogonal gauntlet axis). See
 - **#347** Floquet bifurcation continuation framework — addresses
   the #343 symmetric-basin attractor wall; multi-week build.
 - **#348** OUTSTANDING.md state-sync (THIS edit).
-- **#349** Cassini-Huygens anchor scope investigation — blocks #344
-  Phase 2 Stages B-E gauntlet entry; needs Strange et al. JGCD/AAS
-  2010-2017 + Goodson et al. JGCD 2008 acquisitions then deep-read,
-  OR `topology_label` schema extension to CorpusAnchor (#350 candidate).
+- **#349 CLOSED** (2026-06-20) — Cassini-Huygens anchor scope investigation. Resolved by Task #361: we bypassed the missing papers (Strange et al, Goodson et al) and extracted the exact flown $V_\infty$ directly from JPL Horizons.
 - **#350** (soft) #342 Phase 2 — shrink `n_steps_max` on 3D-tracer
   slow tests to demote some back to default.
+- **#361 CLOSED** (2026-06-20) — Acquire Cassini per-flyby $V_\infty$ Source. We queried NASA Horizons (`get_vinf.py`) to compile the actual flown $V_\infty$ sequence (`docs/notes/2026-06-19-digest-cassini-vinf.md`). Wolf 1996 acquired but logged as HONEST NEGATIVE for $V_\infty$.
 
 **Memory rules added since 06-16.**
 

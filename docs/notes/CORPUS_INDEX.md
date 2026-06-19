@@ -282,3 +282,9 @@ None of the image-only files is an *unprocessed* black box — each is already
 mined/digested; OCR is a convenience for any future greppable re-read, not a
 blocker. The Szebehely failure mode (image-only **and** unprocessed) does not
 recur in the current corpus.
+
+### Recent Acquisitions (Cassini)
+
+- **peralta-flanagan-1995-cassini-interplanetary-trajectory-design-cep.pdf** | undigested | Cassini interplanetary leg | - | text-layer |
+- **wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-control-eng-practice-doi-10.1016-0967-0661(95)00172-7.pdf** | digested | Cassini tour trajectory | KNOWN_CORPUS | text-layer |
+- **wolf-1996-touring-saturnian-system-spie.pdf** | 2026-06-20-digest-wolf-1996.md | Cassini touring | - | text-layer |
