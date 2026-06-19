@@ -27,3 +27,29 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+      # Catalogue-ratchet gate (the 2026-06-19 #399 lesson): any
+      # data/catalogue.yaml row add/remove/edit ripples into several frozen-
+      # census ratchet tests + consumers (cycler_class / validation_tier /
+      # rediscovery census, schema, multi-arc invariants, verdict-tier). A
+      # missed ratchet turns CI red. This hook runs the census/ratchet gates on
+      # the staged catalogue so the breakage surfaces locally, before push.
+      # Fires ONLY when data/catalogue.yaml is staged (the only thing that moves
+      # these counts); the slow optimizer-rediscovery test is excluded -- only
+      # the fast census-classification assertions run (~70 s).
+      - id: catalogue-ratchets
+        name: catalogue ratchets
+        entry: >-
+          uv run pytest
+          tests/data/test_cycler_class_census.py
+          tests/data/test_validation_tier_census.py
+          tests/data/test_validate_catalogue.py
+          tests/data/test_schema_v47_orbit_class.py
+          tests/data/test_multi_arc_invariants.py
+          tests/verify/test_verdict_tier_census.py
+          tests/test_catalogue_rediscovery.py::test_census_breakdown_matches_frozen_ratchet
+          tests/test_catalogue_rediscovery.py::test_census_classifies_every_entry_exactly_once
+          tests/test_catalogue_rediscovery.py::test_census_constructible_set_agrees_with_loader
+          -q
+        language: system
+        files: ^data/catalogue\.yaml$
+        pass_filenames: false
