@@ -275,3 +275,35 @@ def test_cycle_independent_crosscheck() -> None:
         f"Radau vs DOP853 disagreement {checked.independent_residual:.3e}"
     )
     assert not np.isnan(checked.independent_residual)
+
+
+def test_no_connection_reports_clean_negative() -> None:
+    """A too-short horizon -> the legs never meet -> converged=False, no exception."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    # Starve the integration horizon so no qualifying crossing is reached.
+    conn = correct_connection(system, l1, l2, max_time_factor=0.05, max_iter=5)
+    assert not conn.converged
+    assert conn.residual == float("inf") or conn.residual > 1e-6
+    assert conn.notes  # a diagnostic is recorded
+
+
+def test_nonclosing_chain_is_not_closed() -> None:
+    """If a leg cannot close, the cycle is reported open (not silently 'closed')."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    cycle = assemble_cycle(
+        system, [l1, l2], connection_kwargs={"max_time_factor": 0.05, "max_iter": 5}
+    )
+    assert not cycle.closed
+    assert cycle.notes
