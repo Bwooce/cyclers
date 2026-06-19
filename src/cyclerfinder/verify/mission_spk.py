@@ -59,12 +59,16 @@ from cyclerfinder.verify.spice_kernels import (
 # filenames verified against the NAIF directory index on 2026-06-19.
 NAIF_VOYAGER_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/"
 NAIF_M10_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/M10/kernels/spk/"
+NAIF_PIONEER10_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER10/kernels/spk/"
+NAIF_PIONEER11_SPK_BASE = "https://naif.jpl.nasa.gov/pub/naif/PIONEER11/kernels/spk/"
 
 # NAIF body IDs for the spacecraft (CSPICE built-in name->ID; given explicitly so
 # the extractor never depends on a name-resolution kernel being loaded).
 VOYAGER_1_NAIF_ID = -31
 VOYAGER_2_NAIF_ID = -32
 MARINER_10_NAIF_ID = -76
+PIONEER_10_NAIF_ID = -23  # confirmed from p10-a.bsp coverage (#399)
+PIONEER_11_NAIF_ID = -24  # confirmed from p11-a.bsp coverage (#399)
 
 
 # Map flyby-body short names to (NAIF body name spiceypy understands, PLANETS key
@@ -417,7 +421,11 @@ __all__ = [
     "FLYBY_BODIES",
     "MARINER_10_NAIF_ID",
     "NAIF_M10_SPK_BASE",
+    "NAIF_PIONEER10_SPK_BASE",
+    "NAIF_PIONEER11_SPK_BASE",
     "NAIF_VOYAGER_SPK_BASE",
+    "PIONEER_10_NAIF_ID",
+    "PIONEER_11_NAIF_ID",
     "VOYAGER_1_NAIF_ID",
     "VOYAGER_2_NAIF_ID",
     "FlybyBody",

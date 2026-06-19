@@ -136,7 +136,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # published mission record to <1%; data/390_mission_vinf.jsonl) lives in
     # validation_level, not the source-pair tier -- the orthogonal-axis
     # convention shared with Tito 2018 / Heaton-Longuski 2003 / D'Amario 1992.
-    "unvalidated": 32,
+    # 32 -> 34 (2026-06-19, #399): pioneer-10-jupiter-flyby and
+    # pioneer-11-jupiter-saturn-flyby admitted as the 4th/5th SPK-derived
+    # mga_tour rows, both orbit_source=derived / vinf_source=derived (same
+    # fidelity real-de440) -- 'unvalidated' under the existing provenance rules.
+    # V0 evidence (SPK-derived V_inf whose CA geometry reproduces the published
+    # NASA Pioneer mission-page record to ~1%) lives in validation_level, not
+    # the source-pair tier -- same orthogonal-axis convention as the Voyager rows.
+    "unvalidated": 34,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

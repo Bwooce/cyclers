@@ -81,9 +81,14 @@ lives on the orthogonal gauntlet axis). See
   boundary characterisation (Phase 2 sub-year DOY refinement deferred).
 - **#321/#322/#323/#325/#342** various sweep / topology / CI flake /
   test-marker fixes (all background-stable, none changed catalogue).
-- **#345** classic-mission mga_tour catalogue admissions backlog opened
-  (Voyager 1+2, Galileo, Cassini, Pioneer, Mariner-10, Juno, BepiColombo
-  — pending).
+- **#345** classic-mission mga_tour catalogue admissions backlog. Admitted:
+  Galileo VEEGA (#356, published V_inf), Voyager 1+2 (#390, SPK-derived),
+  Pioneer 10 + Pioneer 11 (#399, SPK-derived via the #390 extractor — Jupiter
+  V_inf 8.516 / 8.934 km/s, Saturn 8.359 km/s, CAs reproduce the NASA
+  Pioneer-page altitudes to ~1%). Catalogue now 306 rows, 7 mga_tour.
+  Still pending: Cassini + Juno (need the cruise SPK + sourced Venus/Earth
+  interplanetary flyby epochs — the digested papers cover only the Saturn
+  tour / Jupiter science, not cruise; cf. #361), Mariner-10, BepiColombo.
 - **#310** single-orbit prioritizer adapter closing the #284
   architectural gap (adapter seam open per #343 report).
 

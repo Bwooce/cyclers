@@ -50782,3 +50782,162 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.3.vinf_kms": "DERIVED (#390 P-A): planetocentric V_inf 16.742 km/s from NAIF SPK vgr2_nep097.bsp (Voyager 2, body -32) at Neptune closest approach 1989-08-25T03:56 UTC (outer-window std 4e-4 km/s); CA 1.18 R_N / 29,271 km radius-from-center reproduces the published ~29,240 km (4,950 km above the north pole, Wikipedia 'Voyager 2') to <0.2%."
     "n_returns": "Single Earth launch (1977-08-20) and single Neptune departure (1989-08-25); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
+- id: pioneer-10-jupiter-flyby
+  name: "Pioneer 10 Jupiter flyby (first Jupiter encounter), SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # single Jupiter gravity assist onto solar-system-escape hyperbola; the E->J heliocentric arc is ballistic
+  model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; 'analytic-ephemeris' is the closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; single heliocentric arc E->J then escape; structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; classic single-gravity-assist outer-planet mission (the first Jupiter flyby); terminal state is solar-system escape, no continuing tour at Earth
+  epoch_locked: true   # the flown 1972 launch / 1973 Jupiter-encounter window
+  n_returns: 1   # single Earth launch / single Jupiter encounter; not a cycler
+  validity_window:   # launch -> Jupiter closest approach (the SPK-derived encounter)
+    start: "1972-03-03T01:49:00Z"
+    end: "1973-12-04T02:26:00Z"
+  launch_epoch: "1972-03-03T01:49:00Z"   # Pioneer 10 launch 1972-03-03 01:49 UTC (NASA Science mission page)
+  validation_level: V0   # spec §14: SPK-derived V_inf (not in the acquired literature in clean form); the closest-approach geometry independently reproduces the published value to ~1%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Pioneer 10 spacecraft SPK (p10-a.bsp; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "J"]
+  sequence_canonical: "E-J"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "J"
+      vinf_kms: 8.516
+      note: "SPK-derived planetocentric V_inf at Jupiter closest approach 1973-12-04T02:26 UTC (p10-a.bsp, NAIF -23); vis-viva outer-window std 0.0003 km/s; CA 2.841 R_J / 131,615 km alt reproduces the published 130,354 km (NASA Science Pioneer-10 page) to ~1%. #399."
+  legs: []
+  first_published:
+    authors: ["NASA Science"]
+    year: 2024
+    title: "Pioneer 10 (mission overview / encounter parameters)"
+    venue: "NASA Science mission pages (science.nasa.gov/mission/pioneer-10)"
+    doi: null
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed Pioneer 10 spacecraft SPK kernel (p10-a.bsp) from the NAIF public archive that #399's vinf_at_flyby() reads; the V_inf is DERIVED from this authoritative mission kernel."
+  priority_date: "1972-03-03"
+  notes: |
+    Pioneer 10's flown Jupiter flyby -- the first spacecraft to traverse the
+    asteroid belt and the first to encounter Jupiter (1973-12-04), departing on
+    a solar-system-escape hyperbola. The clean-hyperbolic-flyby analogue of the
+    Voyager SPK-derived rows: the per-encounter hyperbolic-excess velocity
+    (V_inf) is not in the acquired literature in clean form, so #399 DERIVES it
+    directly from the mission's archived NAIF reconstructed spacecraft SPK at the
+    sourced flyby epoch (cyclerfinder.verify.mission_spk.vinf_at_flyby): furnsh
+    DE440 + LSK + the spacecraft SPK, sample the planetocentric state over a
+    window around closest approach, and read the vis-viva hyperbolic-excess speed
+    sqrt(v_rel^2 - 2*mu/r_rel) at the outermost sample where v_rel -> V_inf.
+
+    Encounter:
+    * Jupiter 1973-12-04T02:26 UTC: V_inf 8.516 km/s, CA 2.841 R_J / 131,615 km
+      alt. CA reproduces the published 130,354 km (81,000 mi; NASA Science
+      Pioneer-10 mission page) to ~1% -- the independent, sourced cross-check
+      (the EXPECTED side of the geometry check is published, not computed by us).
+
+    Earth departure (1972-03-03) carries no V_inf entry: no launch C3 / departure
+    V_inf is published in clean form in the acquired literature, and #399's SPK
+    extractor reads the planetocentric flyby V_inf only. Sourced-only discipline
+    -> the Earth launch is documented (launch_epoch) but not assigned a
+    fabricated departure V_inf.
+
+    validation_level=V0: the V_inf is DERIVED by our own code (orbit_source =
+    vinf_source = derived), so it classifies 'unvalidated' on the orthogonal
+    provenance-tag tier axis and V0 on the validation_level axis -- the honest
+    floor for a self-derived number, even though the closest-approach geometry it
+    reproduces matches the published mission record to ~1%. The fourth SPK-derived
+    mga_tour row (after Voyager 1/2; cf. #390). See
+    docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Pioneer 10 launched 1972-03-03 01:49 UTC (March 2 local; NASA Science 'Pioneer 10' mission page)."
+    "validity_window.start": "Same as launch_epoch (Pioneer 10 launch 1972-03-03)."
+    "validity_window.end": "Jupiter closest approach 1973-12-04T02:26 UTC, the SPK-derived encounter (NASA Science Pioneer-10 page; p10-a.bsp periapsis refinement)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 8.516 km/s from NAIF SPK p10-a.bsp (Pioneer 10, body -23) at Jupiter closest approach 1973-12-04T02:26 UTC; vis-viva sqrt(v_rel^2 - 2*mu_J/r_rel) converged outside Jupiter SOI (outer-window std 0.0003 km/s). CA radius 2.841 R_J / 131,615 km alt reproduces the published 130,354 km (NASA Science Pioneer-10 mission page) to ~1%."
+    "n_returns": "Single Earth launch (1972-03-03) and single Jupiter encounter (1973-12-04); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+
+- id: pioneer-11-jupiter-saturn-flyby
+  name: "Pioneer 11 Jupiter-Saturn gravity-assist tour (first Saturn encounter), SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # Jupiter gravity assist retargets to Saturn; the heliocentric arcs E->J and J->S are ballistic
+  model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; two distinct heliocentric arcs (E->J, J->S); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; two-giant-planet gravity-assist tour (first Saturn encounter); terminal state is solar-system escape, no continuing tour at Earth
+  epoch_locked: true   # the flown 1973 launch / 1974 Jupiter / 1979 Saturn window
+  n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
+  validity_window:   # launch -> Saturn closest approach (the last SPK-derived encounter)
+    start: "1973-04-06T02:11:00Z"
+    end: "1979-09-01T16:31:00Z"
+  launch_epoch: "1973-04-06T02:11:00Z"   # Pioneer 11 launch 1973-04-06 02:11 UTC (NASA Science mission page; p11-a.bsp coverage starts 1973-04-06)
+  validation_level: V0   # spec §14: SPK-derived V_inf; the closest-approach geometry independently reproduces the published values to ~1%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Pioneer 11 spacecraft SPKs (p11-a.bsp Jupiter; p11_sat336.bsp Saturn-relative; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "J", "S"]
+  sequence_canonical: "E-J-S"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "J"
+      vinf_kms: 8.934
+      note: "SPK-derived planetocentric V_inf at Jupiter closest approach 1974-12-03T05:22 UTC (p11-a.bsp, NAIF -24); vis-viva outer-window std 0.0004 km/s; CA 1.590 R_J / 42,174 km alt reproduces the published 42,500 km (NASA Science Pioneer-11 page) to ~1%. #399."
+    - body: "S"
+      vinf_kms: 8.359
+      note: "SPK-derived planetocentric V_inf at Saturn closest approach 1979-09-01T16:31 UTC (p11_sat336.bsp, NAIF -24); vis-viva outer-window std 0.003 km/s; CA 1.344 R_S / 20,713 km alt reproduces the published 20,900 km (NASA Science Pioneer-11 page) to ~1%. #399."
+  legs: []
+  first_published:
+    authors: ["NASA Science"]
+    year: 2024
+    title: "Pioneer 11 (mission overview / encounter parameters)"
+    venue: "NASA Science mission pages (science.nasa.gov/mission/pioneer-11)"
+    doi: null
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed Pioneer 11 spacecraft SPK kernels (p11-a.bsp, p11_sat336.bsp) from the NAIF public archive that #399's vinf_at_flyby() reads; the V_inf is DERIVED from these authoritative mission kernels."
+  priority_date: "1973-04-06"
+  notes: |
+    Pioneer 11's flown Jupiter-Saturn gravity-assist tour -- the first spacecraft
+    to encounter Saturn (1979-09-01), reached via a Jupiter gravity assist
+    (1974-12-03) that cranked the trajectory up and across the solar system to
+    Saturn. Structurally the Voyager-1 archetype (E-J-S two-giant-planet tour),
+    flown two years earlier as the Saturn pathfinder. As with the Voyager rows,
+    the per-encounter V_inf is not in the acquired literature in clean form, so
+    #399 DERIVES it from the mission's archived NAIF reconstructed spacecraft SPK
+    at the sourced flyby epochs (cyclerfinder.verify.mission_spk.vinf_at_flyby).
+
+    Encounters:
+    * Jupiter 1974-12-03T05:22 UTC: V_inf 8.934 km/s, CA 1.590 R_J / 42,174 km
+      alt. Reproduces the published 42,500 km (26,400 mi from cloud tops; NASA
+      Science Pioneer-11 page) to ~1%.
+    * Saturn 1979-09-01T16:31 UTC: V_inf 8.359 km/s, CA 1.344 R_S / 20,713 km
+      alt. Reproduces the published 20,900 km (13,000 mi; NASA Science
+      Pioneer-11 page) to ~1%. Saturn-relative kernel p11_sat336.bsp covers
+      only 1979-08-20..09-04, so the extraction window is bracketed inside it.
+
+    Earth departure (1973-04-06) carries no V_inf entry (sourced-only discipline,
+    as for Pioneer 10 / the Voyager rows): the launch is documented but not
+    assigned a fabricated departure V_inf.
+
+    validation_level=V0 for the same orthogonal-axis reason as the Voyager /
+    Pioneer-10 rows (orbit_source = vinf_source = derived -> 'unvalidated' on the
+    provenance-tier axis; V0 on validation_level even though CA geometry matches
+    the published record to ~1%). The fifth SPK-derived mga_tour row. See
+    docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Pioneer 11 launched 1973-04-06 02:11 UTC (NASA Science 'Pioneer 11' mission page; consistent with p11-a.bsp SPK coverage start 1973-04-06 02:25)."
+    "validity_window.start": "Same as launch_epoch (Pioneer 11 launch 1973-04-06)."
+    "validity_window.end": "Saturn closest approach 1979-09-01T16:31 UTC, the last SPK-derived encounter (NASA Science Pioneer-11 page; p11_sat336.bsp periapsis refinement)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 8.934 km/s from NAIF SPK p11-a.bsp (Pioneer 11, body -24) at Jupiter closest approach 1974-12-03T05:22 UTC (outer-window std 0.0004 km/s). CA 1.590 R_J / 42,174 km alt reproduces the published 42,500 km (NASA Science Pioneer-11 mission page) to ~1%."
+    "vinf_kms_at_encounters.1.vinf_kms": "DERIVED (#399): planetocentric V_inf 8.359 km/s from NAIF SPK p11_sat336.bsp (Pioneer 11, body -24) at Saturn closest approach 1979-09-01T16:31 UTC (outer-window std 0.003 km/s). CA 1.344 R_S / 20,713 km alt reproduces the published 20,900 km (NASA Science Pioneer-11 mission page) to ~1%."
+    "n_returns": "Single Earth launch (1973-04-06) and single Saturn arrival (1979-09-01); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+

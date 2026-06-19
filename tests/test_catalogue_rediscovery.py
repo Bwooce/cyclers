@@ -316,7 +316,14 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     ExclusionReason.MISSING_VINF: 23,
     ExclusionReason.CONSTRUCTIBLE: 2,
     ExclusionReason.CONSTRUCTIBLE_MULTIBODY: 4,  # M8: the four VEM rows
-    ExclusionReason.MISSING_PERIOD: 1,
+    # 1 -> 2 (2026-06-19, #399): +1 pioneer-10-jupiter-flyby. bodies=[E, J] is a
+    # 2-body sequence (so it is NOT filed under NOT_TWO_BODY), but the row carries
+    # no period.years/period.k pair (a one-shot Jupiter flyby onto a
+    # solar-system-escape hyperbola, not a cycle), so the classifier cannot build
+    # a cell and files it under MISSING_PERIOD. Pure census shift; the row carries
+    # its own V0 SPK-derived evidence (Jupiter V_inf 8.516 km/s; CA 2.841 R_J
+    # reproduces the NASA Pioneer-10 page 130,354 km to ~1%).
+    ExclusionReason.MISSING_PERIOD: 2,
     # 0 -> 1 (2026-06-16, #336): +1 Heaton-Longuski 2003 Uranian satellite tour
     # U00-01 (the heaton-longuski-2003-uranian-tour-u00-01 row, admitted under
     # the v4.7 catalogue scope expansion as orbit_class=mga_tour — the second
@@ -352,7 +359,13 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # shift; each carries its own V0 SPK-derived evidence (per-encounter
     # V_inf whose closest-approach geometry reproduces the published mission
     # record to <1%; data/390_mission_vinf.jsonl).
-    ExclusionReason.NOT_TWO_BODY: 5,
+    # 5 -> 6 (2026-06-19, #399): +1 pioneer-11-jupiter-saturn-flyby
+    # (bodies=[E, J, S], 3 bodies). Lacks a period.years/period.k pair (a one-shot
+    # gravity-assist tour, not a cycle), so it files under NOT_TWO_BODY (same lane
+    # as Voyager 1 E-J-S / the Heaton-Longuski 2003 / D'Amario 1992 tours). Pure
+    # census shift; carries its own V0 SPK-derived evidence (Jupiter V_inf 8.934 +
+    # Saturn V_inf 8.359 km/s; CAs reproduce the NASA Pioneer-11 page to ~1%).
+    ExclusionReason.NOT_TWO_BODY: 6,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the
