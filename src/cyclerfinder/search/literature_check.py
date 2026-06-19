@@ -348,6 +348,55 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         doi="10.2514/1.45645",
     ),
     CorpusAnchor(
+        # #385: Campagnola-Buffington-Petropoulos 2014 EHM Europa orbiter +
+        # lander Jovian tour (Acta Astro 100:68-81). Distinct paper / DOI from
+        # the Strange/Campagnola/Russell anchor above (Campagnola & Russell
+        # JGCD 2010). Tours 11-O3 / 12-L1 / 12-L4 with full per-encounter
+        # V_inf tables (digest docs/notes/2026-06-17-digest-campagnola-2014.md).
+        # topology mapped to the standard vocabulary: Tisserand-Poincare graph
+        # design IS a pump-tour / mga-tour, not a separate topology label.
+        name="Campagnola-Buffington-Petropoulos EHM Europa orbiter+lander Jovian tour (2014)",
+        primary="Jupiter",
+        body_set=frozenset({"Europa", "Ganymede", "Callisto"}),
+        topology_label=frozenset({"pump-tour", "mga-tour"}),
+        authors=("Campagnola", "Buffington", "Petropoulos"),
+        keywords=(
+            "Europa orbiter lander Jovian tour",
+            "Tisserand-Poincare graph moon tour",
+            "EHM Europa Habitability Mission tour",
+        ),
+        citation="Campagnola, Buffington & Petropoulos, 'Jovian tour design "
+        "for orbiter and lander missions to Europa,' Acta Astronautica "
+        "100:68-81 (2014); tours 11-O3 / 12-L1 / 12-L4.",
+        doi="10.1016/j.actaastro.2014.02.005",
+    ),
+    CorpusAnchor(
+        # #385: Niehoff 1970 'Touring the Galilean Satellites' (AIAA 70-1070)
+        # -- the earliest sourced multi-flyby Galilean-moon tour paper in the
+        # corpus, predating Strange-Russell-Buffington 2007 by 37 yr and the
+        # Niehoff VISIT cyclers (already catalogued) by 15 yr. Foundational
+        # resonance-locked Jovian tour paradigm (Mode 3, 14-day orbit, 73
+        # encounters / 170 days). Digest
+        # docs/notes/2026-06-17-digest-niehoff-1970.md. The digest's free-text
+        # 'resonance-locked / laplace-syzygy' labels map to the standard
+        # 'resonant' topology vocabulary; the tour structure is pump-tour /
+        # mga-tour.
+        name="Niehoff Galilean multi-flyby tour paradigm (1970, foundational)",
+        primary="Jupiter",
+        body_set=frozenset({"Io", "Europa", "Ganymede", "Callisto"}),
+        topology_label=frozenset({"pump-tour", "mga-tour", "resonant"}),
+        authors=("Niehoff",),
+        keywords=(
+            "Galilean satellite tour",
+            "resonance-locked Jupiter orbit multi-flyby tour",
+            "syzygy phase-locked satellite encounter sequence",
+        ),
+        citation="Niehoff, 'Touring the Galilean Satellites,' AAS/AIAA "
+        "Astrodynamics Conference, Santa Barbara, Aug 19-21, 1970; AIAA "
+        "Paper 70-1070. Foundational Galilean multi-flyby tour paradigm.",
+        doi=None,
+    ),
+    CorpusAnchor(
         name="Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
         primary="Sun",
         body_set=frozenset({"V", "E", "M"}),
