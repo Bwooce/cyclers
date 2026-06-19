@@ -42,19 +42,34 @@ Seams (for the deferred wiring): `core/cr3bp.py:108-162` `cr3bp_stm_eom`;
 `_propagate_with_stm` + Newton loop `316-392`; `genome/multi_shooting.py:185-267`
 `_residual_and_jacobian`; `search/cr3bp_general_periodic_3d.py:124-168`.
 
-## DEFERRED (Steps 4-6) — gated on these open questions
-1. **#378 Phase 3.2:** does it strictly need integral rows IN the Newton system,
-   or does a post-hoc `sun_phase_drift` check on `correct_bcr4bp_periodic`
-   already suffice? (Architect: the latter may suffice — #380 then becomes a
-   forward-looking capability, not a hard gate.)
-2. **#388 SnLm multi-arc routes through the HELIOCENTRIC DSM corrector**
-   (`search/dsm_leg.dsm_chain_correct`, Lambert-based residual) — NOT the
-   rotating-frame CR3BP/BCR4BP corrector this module augments. So the
-   arc-duration-sum constraint for #388 may need a separate heliocentric variant.
-3. The pure Jacobi-drift constraint has ZERO gradient in CR3BP (conserved) -> it
-   cannot steer the corrector; the actionable constraint is the time-integral /
-   arc-duration-sum (non-trivial gradient).
-4. `IntegralConstraint.weight`: user-supplied scalar (default 1.0), applied to
-   the row before stacking, to control `lstsq` conditioning vs the point rows.
+## Steps 4-6 — RESOLVED: NOT NEEDED (2026-06-19, routing confirmed in code)
 
-Revisit Steps 4-6 once #378/#388 routing is confirmed.
+The two consumers #380 was speculatively framed to "gate" do NOT route through
+this rotating-frame integral-constraint machinery, so the wiring is unnecessary.
+#380 stands **CORE-COMPLETE** (Steps 1-3) as a forward-looking capability.
+
+1. **#378 BCR4BP Phase 3.2 — already handled, no integral rows needed.**
+   `genome/bcr4bp_genome.correct_bcr4bp_periodic` already enforces Sun-
+   commensurate periodicity by taking `sun_commensurate_n`, correcting toward
+   `sun_commensurate_period(omega_sun, n)`, and computing
+   `sun_phase_drift = |omega_sun*T - 2*pi*n|` POST-HOC at the converged period
+   (bcr4bp_genome.py:425, reported in the result :466). The architect's Risk #5
+   is confirmed: the post-hoc drift check suffices; integral rows in the Newton
+   system add nothing for Phase 3.2.
+2. **#388 SnLm multi-arc — heliocentric, different machinery.**
+   `search/dsm_leg.py` is a propagate-then-Lambert HELIOCENTRIC corrector
+   (residual = match-point defect in km/s; depends only on core/kepler +
+   core/lambert; already uses the Shepperd-STM analytic Jacobian via
+   `core/fbs_match_point.match_point_defect_jacobian`). It is NOT a rotating-
+   frame CR3BP/BCR4BP corrector, so the augmented-quadrature integral-constraint
+   module does not apply. Architect's Risk #4 confirmed.
+
+So #380 = the augmented-quadrature propagator + corrector + time-integral
+constraint (Steps 1-3, committed 0b0bdea), available for any FUTURE rotating-
+frame integral-constraint need. No wiring lands; the "forced gate" framing was
+speculative. Carried-forward design notes (if a future need arises):
+- The pure Jacobi-drift constraint has ZERO gradient in CR3BP (conserved) and is
+  numerically pathological as an augmented quadrature (removed; #380 commit) —
+  monitor Jacobi drift post-hoc, not as a constraint row.
+- `IntegralConstraint.weight`: user-supplied scalar (default 1.0) applied to the
+  row before stacking, to control `lstsq` conditioning vs the point rows.
