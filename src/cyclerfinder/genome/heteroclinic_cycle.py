@@ -76,13 +76,21 @@ class LyapunovNode:
 
 
 def _real_unit(v: NDArray[np.complex128]) -> NDArray[np.float64]:
-    """Real-cast + unit-normalise a (possibly complex) eigenvector (4-vector)."""
+    """Real-cast + unit-normalise a (possibly complex) eigenvector (4-vector).
+
+    Raises ``ValueError`` if the result is numerically zero even after the
+    real+imag fallback: that means the eigenvector has no usable real direction
+    (the orbit is not a genuine saddle), and returning a zero vector would
+    silently produce a zero manifold perturbation downstream.
+    """
     vr = np.real(v)
     n = float(np.linalg.norm(vr))
     if n < 1e-14:
         vr = np.real(v) + np.imag(v)
         n = float(np.linalg.norm(vr))
-    return (vr / n).astype(np.float64) if n > 0.0 else vr.astype(np.float64)
+    if n < 1e-14:
+        raise ValueError("eigenvector is numerically zero — orbit is not a saddle")
+    return (vr / n).astype(np.float64)
 
 
 def _planar_floquet_pair(
@@ -100,6 +108,12 @@ def _planar_floquet_pair(
     real-normalised eigenvectors (the unstable and stable Floquet directions).
     Mirrors ``search/resonance_network._planar_floquet`` but returns BOTH ends of
     the reciprocal pair (the connection needs unstable-of-A and stable-of-B).
+
+    NB: eigenvalues are returned as MAGNITUDES (sign stripped). This is correct
+    for a Lyapunov saddle (positive real reciprocal pair, the W-Z target). A
+    caller working with reflection/period-doubling orbits whose saddle eigenvalue
+    is negative real needs the signed value and should use
+    ``search/resonance_network._planar_floquet`` directly instead.
     """
     arc = cr3bp.propagate(system, state0, period, with_stm=True, rtol=rtol, atol=atol)
     assert arc.stm is not None
