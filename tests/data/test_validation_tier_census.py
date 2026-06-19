@@ -127,7 +127,16 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # under the same orthogonal-axis convention. Its V0 evidence
     # (D'Amario 1992 SSR 60(1-4):23-78 Table I + Figs 3/5/8 verbatim) lives
     # in validation_level, not the source-pair tier.
-    "unvalidated": 30,
+    # 30 -> 32 (2026-06-19, #390): voyager-1-jupiter-saturn-grand-tour and
+    # voyager-2-grand-tour admitted as the catalogue's first SPK-derived
+    # mga_tour rows, both orbit_source=derived / vinf_source=derived (same
+    # fidelity real-de440) -- classifies 'unvalidated' under the existing
+    # provenance rules ('derived' is a pseudo-source). The rows' V0 evidence
+    # (SPK-derived V_inf whose closest-approach geometry reproduces the
+    # published mission record to <1%; data/390_mission_vinf.jsonl) lives in
+    # validation_level, not the source-pair tier -- the orthogonal-axis
+    # convention shared with Tito 2018 / Heaton-Longuski 2003 / D'Amario 1992.
+    "unvalidated": 32,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

@@ -371,11 +371,22 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # Heaton-Longuski 2003 from the invariants{}/transit_times_days
         # completeness tests.
         "damario-1992-galileo-veega",
+        # #390 (2026-06-19): the catalogue's first SPK-derived mga_tour rows --
+        # Voyager 1 (E-J-S) and Voyager 2 (E-J-S-U-N, the only four-giant-planet
+        # Grand Tour). cycler_class=multi-arc is structural (two/four distinct
+        # heliocentric gravity-assist arcs), not a cycler claim. Per-encounter
+        # V_inf DERIVED from the NAIF reconstructed spacecraft SPK at the flown
+        # flyby epochs (cyclerfinder.verify.mission_spk; data/390_mission_vinf.
+        # jsonl). Same exemption pattern as Tito 2018 / Heaton-Longuski 2003 /
+        # D'Amario 1992 from the invariants{}/transit_times_days completeness
+        # tests.
+        "voyager-1-jupiter-saturn-grand-tour",
+        "voyager-2-grand-tour",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 244, (
-    f"Allowlist must have 244 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 246, (
+    f"Allowlist must have 246 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -432,7 +443,12 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=35, multi-arc=244, non-keplerian=12.
+    """Exact class distribution: single-ellipse=46, multi-arc=246, non-keplerian=12.
+
+    #390 (2026-06-19) admitted the catalogue's first two SPK-derived mga_tour
+    rows -- voyager-1-jupiter-saturn-grand-tour (E-J-S) and voyager-2-grand-tour
+    (E-J-S-U-N, the only four-giant-planet Grand Tour), both cycler_class=
+    multi-arc (structural gravity-assist arcs): multi-arc 244->246.
 
     (moon-tour Tier-1 task #76 re-tagged the two Jovian patched-conic family-seed
     rows non-keplerian -> multi-arc: multi-arc 234->236, non-keplerian 6->4. #216
@@ -464,7 +480,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 244, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 246, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

@@ -50596,3 +50596,189 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.6.vinf_kms": "DERIVED from D'Amario 1992 §3.4 (p.45): 'Inertial entry speed is 59.9 km/s'; V_inf_J = sqrt(V_entry^2 - V_circ_Jupiter^2) gives ~5-6 km/s. NOT directly sourced; Johnson-Yeates-Young 1992 sister paper also does not publish Jupiter approach V_inf (#358 verdict)."
     "n_returns": "D'Amario 1992 §2 confirms single Earth launch and single Jupiter capture (JOI); n_returns=1 per v4.7 mga_tour invariant."
 
+- id: voyager-1-jupiter-saturn-grand-tour
+  name: "Voyager 1 Jupiter-Saturn gravity-assist tour (MJS77 JST), SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # gravity-assist tour; the heliocentric arcs E->J and J->S are ballistic (TCMs are tiny corrections, McKinley-Van Allen 1976 total nav <=155 m/s)
+  model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 (a real numerical ephemeris) at the flown flyby epochs; 'analytic-ephemeris' is the closest controlled-vocabulary token (model_assumption enum has no real-ephemeris value)
+  cycler_class: multi-arc   # schema v4; two distinct heliocentric arcs (E->J, J->S); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; classic two-giant-planet gravity-assist tour terminating at Saturn (no continuing tour at Earth)
+  epoch_locked: true   # the flown 1977 MJS77 launch window; once-per-176-yr outer-planet alignment
+  n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
+  validity_window:   # launch -> Saturn closest approach (the last SPK-derived encounter)
+    start: "1977-09-05T12:56:00Z"
+    end: "1980-11-12T23:46:00Z"
+  launch_epoch: "1977-09-05T12:56:00Z"   # Voyager 1 launch 1977-09-05 (Kohlhase-Penzo 1977)
+  validation_level: V0   # spec §14: SPK-derived V_inf (not in the published literature in clean form); the closest-approach geometry independently reproduces the published value to <1%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Voyager 1 spacecraft SPK (vgr1_jup230.bsp, vgr1_sat337.bsp; #390)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "J", "S"]
+  sequence_canonical: "E-J-S"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "J"
+      vinf_kms: 10.773
+      note: "SPK-derived planetocentric V_inf at Jupiter closest approach 1979-03-05T12:05 UTC (vgr1_jup230.bsp, NAIF -31); vis-viva outer-window std 0.006 km/s; CA 4.88 R_J vs published 4.89 R_J (Kohlhase-Penzo 1977 Table IV JST). #390."
+    - body: "S"
+      vinf_kms: 15.167
+      note: "SPK-derived planetocentric V_inf at Saturn closest approach 1980-11-12T23:46 UTC (vgr1_sat337.bsp, NAIF -31); vis-viva outer-window std 0.030 km/s; CA 3.06 R_S (high-energy Titan-targeted approach). #390."
+  legs: []
+  first_published:
+    authors: ["Kohlhase, C. E.", "Penzo, P. A."]
+    year: 1977
+    title: "Voyager Mission Description"
+    venue: "Space Science Reviews 21(2):77-101"
+    doi: "10.1007/bf00200846"
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed spacecraft SPK kernels (vgr1_jup230.bsp, vgr1_sat337.bsp) from the NAIF public archive that #390's vinf_at_flyby() reads; the V_inf is DERIVED from these authoritative mission kernels."
+  priority_date: "1977-09-05"
+  notes: |
+    Voyager 1's flown Jupiter-Saturn gravity-assist tour (MJS77, the JST
+    high-energy Titan-targeted branch). The catalogue's first SPK-DERIVED
+    mga_tour row: the per-encounter hyperbolic-excess velocity (V_inf) is not
+    published in clean form in any Voyager mission-overview or dedicated-
+    navigation paper (#345 firm negative, including the best-case venue
+    McKinley-Van Allen 1976) -- the true V_inf live in unobtainable internal
+    JPL documents. #390 instead DERIVES the V_inf directly from the mission's
+    archived NAIF reconstructed spacecraft SPK at the already-sourced flyby
+    epochs (cyclerfinder.verify.mission_spk.vinf_at_flyby): furnsh DE440 + LSK
+    + the spacecraft SPK, sample the planetocentric state over a window around
+    closest approach, and read the vis-viva hyperbolic-excess speed
+    sqrt(v_rel^2 - 2*mu/r_rel) at the outermost sample where v_rel -> V_inf.
+
+    Encounters (data/390_mission_vinf.jsonl):
+    * Jupiter 1979-03-05T12:05 UTC: V_inf 10.773 km/s, CA 4.88 R_J / 277,369 km
+      alt. CA radius reproduces the published 4.89 R_J (Kohlhase-Penzo Table IV)
+      to <0.2% -- the independent, sourced cross-check (the EXPECTED side of the
+      geometry check is published, not computed by us).
+    * Saturn 1980-11-12T23:46 UTC: V_inf 15.167 km/s, CA 3.06 R_S / 123,875 km
+      alt. The Saturn V_inf is higher than Voyager 2's (10.674 km/s) because
+      Voyager 1 took the high-energy Titan-targeted approach.
+
+    Earth departure (1977-09-05) carries no V_inf entry: no launch C3 / departure
+    V_inf is published in clean form in the acquired literature, and #390's SPK
+    extractor reads the planetocentric flyby V_inf only. Sourced-only discipline
+    -> the Earth launch is documented (launch_epoch) but not assigned a
+    fabricated departure V_inf.
+
+    validation_level=V0: the V_inf is DERIVED by our own code (orbit_source =
+    vinf_source = derived), so it classifies 'unvalidated' on the orthogonal
+    provenance-tag tier axis and V0 on the validation_level axis -- the honest
+    floor for a self-derived number, even though the closest-approach geometry
+    it reproduces matches the published mission record to <1%. Admitted as the
+    payoff of #390 (parent-reviewed: V_inf validated to <1% against published
+    CA geometry, vis-viva converged). The remaining #345 missions (Galileo,
+    Cassini, Pioneer, Juno) follow the identical SPK-extraction pattern.
+    See docs/notes/2026-06-19-390-spk-vinf-extractor.md and
+    docs/notes/2026-06-19-345-voyager-mariner-mission-digests.md.
+  source_quotes:
+    "launch_epoch": "Voyager 1 launched 1977-09-05 12:56 UTC (Kohlhase-Penzo 1977 'Voyager Mission Description'; NASA Voyager fact pages)."
+    "validity_window.start": "Same as launch_epoch (Voyager 1 launch 1977-09-05)."
+    "validity_window.end": "Saturn closest approach 1980-11-12T23:46 UTC, the last SPK-derived encounter (data/390_mission_vinf.jsonl)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#390): planetocentric V_inf 10.773 km/s from NAIF SPK vgr1_jup230.bsp (Voyager 1, body -31) at Jupiter closest approach 1979-03-05T12:05 UTC; vis-viva sqrt(v_rel^2 - 2*mu_J/r_rel) converged outside Jupiter SOI (outer-window std 0.006 km/s). CA radius 4.88 R_J independently reproduces the published 4.89 R_J (Kohlhase-Penzo 1977 Table IV JST)."
+    "vinf_kms_at_encounters.1.vinf_kms": "DERIVED (#390): planetocentric V_inf 15.167 km/s from NAIF SPK vgr1_sat337.bsp (Voyager 1, body -31) at Saturn closest approach 1980-11-12T23:46 UTC (outer-window std 0.030 km/s); CA 3.06 R_S (high-energy Titan-targeted approach)."
+    "n_returns": "Single Earth launch (1977-09-05) and single Saturn arrival (1980-11-12); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+
+- id: voyager-2-grand-tour
+  name: "Voyager 2 Grand Tour E-J-S-U-N (MJS77/JSX), SPK-derived V_inf"
+  source: literature
+  trajectory_regime: ballistic   # the four giant-planet gravity-assist arcs are ballistic (TCMs are small corrections)
+  model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 (a real numerical ephemeris) at the flown flyby epochs; 'analytic-ephemeris' is the closest controlled-vocabulary token (model_assumption enum has no real-ephemeris value)
+  cycler_class: multi-arc   # schema v4; four distinct heliocentric arcs (E->J, J->S, S->U, U->N); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; the canonical outer-planet Grand Tour, terminating at Neptune (no continuing tour at Earth)
+  epoch_locked: true   # the flown 1977 MJS77 launch window; the once-per-176-yr four-giant-planet alignment that made the Grand Tour possible
+  n_returns: 1   # single Earth launch / single Neptune departure; not a cycler
+  validity_window:   # launch -> Neptune closest approach (the last SPK-derived encounter)
+    start: "1977-08-20T14:29:00Z"
+    end: "1989-08-25T03:56:00Z"
+  launch_epoch: "1977-08-20T14:29:00Z"   # Voyager 2 launch 1977-08-20 (Kohlhase-Penzo 1977)
+  validation_level: V0   # SPK-derived V_inf; closest-approach geometry reproduces published values to <0.2%, but V0 is the honest floor for a self-derived value
+  source_ephemeris: "DE440 + NAIF reconstructed Voyager 2 spacecraft SPK (vgr2_jup230.bsp, vgr2_sat337.bsp, vgr2.ura182.bsp, vgr2_nep097.bsp; #390 + #390 P-A)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "J", "S", "U", "N"]
+  sequence_canonical: "E-J-S-U-N"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "J"
+      vinf_kms: 7.639
+      note: "SPK-derived planetocentric V_inf at Jupiter closest approach 1979-07-09T22:29 UTC (vgr2_jup230.bsp, NAIF -32); vis-viva outer-window std 0.031 km/s; CA 10.09 R_J vs published 10.0 R_J (Kohlhase-Penzo 1977 Table IV JSX). #390."
+    - body: "S"
+      vinf_kms: 10.674
+      note: "SPK-derived planetocentric V_inf at Saturn closest approach 1981-08-26T03:24 UTC (vgr2_sat337.bsp, NAIF -32); vis-viva outer-window std 0.001 km/s; CA 2.68 R_S. #390."
+    - body: "U"
+      vinf_kms: 14.732
+      note: "SPK-derived planetocentric V_inf at Uranus closest approach 1986-01-24T17:58 UTC (vgr2.ura182.bsp, NAIF -32); vis-viva outer-window std 8e-6 km/s; CA 4.19 R_U / 81,573 km alt vs published 81,500 km above cloud tops (Wikipedia 'Voyager 2'; NASA '35 Years Ago: Voyager 2 Explores Uranus' 50,700 mi). #390 P-A."
+    - body: "N"
+      vinf_kms: 16.742
+      note: "SPK-derived planetocentric V_inf at Neptune closest approach 1989-08-25T03:56 UTC (vgr2_nep097.bsp, NAIF -32); vis-viva outer-window std 4e-4 km/s; CA 1.18 R_N / 29,271 km radius-from-center vs published ~29,240 km (4,950 km above the north pole, Wikipedia 'Voyager 2'). #390 P-A."
+  legs: []
+  first_published:
+    authors: ["Kohlhase, C. E.", "Penzo, P. A."]
+    year: 1977
+    title: "Voyager Mission Description"
+    venue: "Space Science Reviews 21(2):77-101"
+    doi: "10.1007/bf00200846"
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed spacecraft SPK kernels (vgr2_jup230.bsp, vgr2_sat337.bsp, vgr2.ura182.bsp, vgr2_nep097.bsp) from the NAIF public archive that #390's vinf_at_flyby() reads; the four-planet V_inf tuple is DERIVED from these authoritative mission kernels."
+  priority_date: "1977-08-20"
+  notes: |
+    Voyager 2's flown outer-planet Grand Tour: the ONLY spacecraft to visit all
+    four giant planets (Jupiter, Saturn, Uranus, Neptune), made possible by the
+    once-per-176-yr four-giant-planet alignment. The catalogue's first
+    four-giant-planet Grand Tour row, and (with voyager-1-jupiter-saturn-grand-
+    tour) one of the catalogue's first SPK-derived mga_tour rows.
+
+    As with Voyager 1, the per-encounter V_inf is not published in clean form in
+    any Voyager mission-overview or dedicated-navigation paper (#345 firm
+    negative); #390 DERIVES it directly from the mission's archived NAIF
+    reconstructed spacecraft SPK at the already-sourced flyby epochs
+    (cyclerfinder.verify.mission_spk.vinf_at_flyby). The Jupiter + Saturn
+    encounters were extracted in #390; Uranus + Neptune in the #390 admission
+    follow-on (P-A) with the same code, zero new code.
+
+    Encounters (data/390_mission_vinf.jsonl), each cross-checked against the
+    published closest-approach geometry (the sourced, independent EXPECTED side):
+    * Jupiter 1979-07-09T22:29 UTC: V_inf 7.639 km/s, CA 10.09 R_J (vs published
+      10.0 R_J, Kohlhase-Penzo Table IV JSX; <1%).
+    * Saturn  1981-08-26T03:24 UTC: V_inf 10.674 km/s, CA 2.68 R_S.
+    * Uranus  1986-01-24T17:58 UTC: V_inf 14.732 km/s, CA 4.19 R_U / 81,573 km
+      alt (vs published 81,500 km above cloud tops; <0.1%).
+    * Neptune 1989-08-25T03:56 UTC: V_inf 16.742 km/s, CA 1.18 R_N / 29,271 km
+      radius-from-center (vs published ~29,240 km / 4,950 km above the north
+      pole; <0.2%).
+
+    Earth departure (1977-08-20) carries no V_inf entry (no clean published
+    launch C3 / departure V_inf in the acquired literature; #390's extractor
+    reads the planetocentric flyby V_inf only). Sourced-only discipline.
+
+    validation_level=V0 on the same orthogonal-axis convention as Voyager 1:
+    derived/derived -> 'unvalidated' on the provenance-tag tier axis, V0 on the
+    validation_level axis, even though the closest-approach geometry reproduces
+    the published mission record to <0.2%. Admitted as the payoff of #390
+    (parent-reviewed). See docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Voyager 2 launched 1977-08-20 14:29 UTC (Kohlhase-Penzo 1977 'Voyager Mission Description'; NASA Voyager fact pages)."
+    "validity_window.start": "Same as launch_epoch (Voyager 2 launch 1977-08-20)."
+    "validity_window.end": "Neptune closest approach 1989-08-25T03:56 UTC, the last SPK-derived encounter (data/390_mission_vinf.jsonl; CA confirmed by fine periapsis scan, 29,271 km from center)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#390): planetocentric V_inf 7.639 km/s from NAIF SPK vgr2_jup230.bsp (Voyager 2, body -32) at Jupiter closest approach 1979-07-09T22:29 UTC; vis-viva converged outside Jupiter SOI (outer-window std 0.031 km/s). CA radius 10.09 R_J independently reproduces Kohlhase-Penzo 1977 Table IV (10.0 R_J)."
+    "vinf_kms_at_encounters.1.vinf_kms": "DERIVED (#390): planetocentric V_inf 10.674 km/s from NAIF SPK vgr2_sat337.bsp (Voyager 2, body -32) at Saturn closest approach 1981-08-26T03:24 UTC (outer-window std 0.001 km/s)."
+    "vinf_kms_at_encounters.2.vinf_kms": "DERIVED (#390 P-A): planetocentric V_inf 14.732 km/s from NAIF SPK vgr2.ura182.bsp (Voyager 2, body -32) at Uranus closest approach 1986-01-24T17:58 UTC (outer-window std 8e-6 km/s); CA 4.19 R_U / 81,573 km alt reproduces the published 81,500 km above cloud tops (Wikipedia 'Voyager 2'; NASA '35 Years Ago: Voyager 2 Explores Uranus', 50,700 mi) to <0.1%."
+    "vinf_kms_at_encounters.3.vinf_kms": "DERIVED (#390 P-A): planetocentric V_inf 16.742 km/s from NAIF SPK vgr2_nep097.bsp (Voyager 2, body -32) at Neptune closest approach 1989-08-25T03:56 UTC (outer-window std 4e-4 km/s); CA 1.18 R_N / 29,271 km radius-from-center reproduces the published ~29,240 km (4,950 km above the north pole, Wikipedia 'Voyager 2') to <0.2%."
+    "n_returns": "Single Earth launch (1977-08-20) and single Neptune departure (1989-08-25); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+

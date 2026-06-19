@@ -343,7 +343,16 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # period.k pair (a one-shot mga_tour, not a cycle). Pure census shift;
     # the row carries its own V0 sourced evidence (Table I + Figs 3/5/8
     # verbatim).
-    ExclusionReason.NOT_TWO_BODY: 3,
+    # 3 -> 5 (2026-06-19, #390): +2 SPK-derived mga_tour rows
+    # voyager-1-jupiter-saturn-grand-tour (bodies=[E,J,S], 3 bodies) and
+    # voyager-2-grand-tour (bodies=[E,J,S,U,N], 5 bodies). Both lack a
+    # period.years/period.k pair (a one-shot gravity-assist tour, not a
+    # cycle), so the classifier files them under NOT_TWO_BODY (same lane as
+    # the Heaton-Longuski 2003 / D'Amario 1992 multi-body tours). Pure census
+    # shift; each carries its own V0 SPK-derived evidence (per-encounter
+    # V_inf whose closest-approach geometry reproduces the published mission
+    # record to <1%; data/390_mission_vinf.jsonl).
+    ExclusionReason.NOT_TWO_BODY: 5,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the
