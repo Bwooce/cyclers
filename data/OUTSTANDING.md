@@ -218,7 +218,15 @@ candidates cannot pass V4.
   structural conclusion)
 - **#318** Multi-axis joint search (powered × multi-rev × 3D × epoch-locked) —
   strategic-answer keystone; no single published paper has done this joint sweep
-- **#314** Heteroclinic-network mass-transport (new "closure" definition)
+- **#314 ✓ DONE (2026-06-20)** Heteroclinic-network mass-transport (new
+  "periodic-up-to-rotation" closure). Delivered `genome/heteroclinic_cycle.py`
+  (planar CR3BP): Lyapunov nodes + Floquet-manifold seeding + 2-D Newton
+  connection corrector + cycle assembler + independent Radau cross-check.
+  Validated against the Wilczak-Zgliczyński Sun-Jupiter-Oterma L1↔L2 closed
+  cycle (golden `data/golden/wz_oterma_heteroclinic.yaml`, #403): section gap
+  closes to ~1e-10, crossing matches the published value to ~4e-3 (linear-seed
+  fidelity), L2→L1 return leg is the exact time-reversal mirror. Spec/plan in
+  docs/superpowers/. Unblocks #405 (cross-system novel search).
 - **#315** Circumbinary/binary-star μ-gap sweep
 - **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds)
 - **#320** First quasi_cycler discovery sweep (blocked by #319)
