@@ -54,19 +54,6 @@
     - body: "M"
       vinf_kms: 9.7
       note: "Russell 2004 dissertation Table 3.4, cycler 1.0.1.-1 (Aldrin). This is the heliocentric V_inf at Mars in the simplified circular-coplanar model; the Aldrin geometry sacrifices V_inf at Mars to keep V_inf at Earth low and the E->M transit short (146 d)."
-  orbit_elements:
-    a_au: 1.60
-    e: 0.393
-    perihelion_au: 0.97
-    aphelion_au: 2.23
-    inclination_deg: 0.0
-    note: "Values per Rogers/Hughes/Longuski/Aldrin 2012 Table 1, attributed there to the Aldrin cycler. Spec.md §9 quotes a≈1.659, e≈0.41, peri≈0.98, apo≈2.34 — those are also literature-cited but appear to come from a different rounding/source convention (possibly an early SAIC presentation or the original Aldrin 1985 talk). See docs/known-cyclers.md 'Outstanding questions' for the discrepancy. M3 test tolerances (±0.01 AU on a, ±0.02 on e) absorb both numbers."
-    periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
-    apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
-    raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
-    arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
-    true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
-    epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
   # Schema v3 (2026-06-01): migrated from flat legs[] to OCM-aligned trajectory{}
   # per the §16.6.5 backfill (task #66). This entry migrates losslessly: the
   # 1-synodic E-M cycle has exactly 2 encounters (1 Earth + 1 Mars), both legs
@@ -199,27 +186,6 @@
     separately as the COMPUTED, non-source-attested
     `maintenance_dv_kms_per_synodic`.
   source_quotes:
-    a_au: |
-      Rogers et al. 2012, Table 1 'Orbital elements and number of vehicles for selected
-      cycler trajectories': "Aldrin Cycler ... Semi-Major Axis, AU: 1.60". Same value
-      derivable from Russell 2004 Table 3.4 (Aldrin = cycler 1.0.1.-1) via Aphelion
-      Ratio 1.47 and the geometry.
-    e: |
-      Rogers et al. 2012, Table 1: "Aldrin Cycler ... Eccentricity: 0.393". Consistent
-      with Wikipedia's quotation of the same value, attributed there to
-      "Byrnes, Longuski & Aldrin 1993, pp. 334-335" [9].
-    perihelion_au: |
-      Rogers et al. 2012, Table 1: "Aldrin Cycler ... Perihelion Radius, AU: 0.97".
-    aphelion_au: |
-      Rogers et al. 2012, Table 1: "Aldrin Cycler ... Aphelion Radius, AU: 2.23".
-      Russell 2004 Table 3.4 lists Aphelion Ratio 1.47 for cycler 1.0.1.-1, giving
-      aphelion = 1.47 x 1.52 AU = 2.23 AU.
-    inclination_deg: |
-      Inclination 0 is the modelling assumption (circular-coplanar) used in the
-      original Aldrin 1985 derivation and all subsequent reproductions in §9 of
-      Russell 2004 and §III.A of Rogers 2012. Real-ephemeris versions (Rogers
-      2012 Table 4 STOUR results) inherit Mars' ~1.85° inclination; that is an
-      M6 concern, not M3.
     "vinf_kms_at_encounters[0].vinf_kms": |
       Russell 2004 Table 3.4 row for cycler 1.0.1.-1: "Earth v_inf (km/s): 6.5".
     "vinf_kms_at_encounters[1].vinf_kms": |
@@ -382,7 +348,7 @@
   family:
     id: "s2l1-em"
     name: "S2L1 Earth-Mars 2-synodic (McConaghy 'Notable')"
-    nomenclature: "Russell-McConaghy SnLm"
+    nomenclature: "McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
     - path: "trajectory.segments[loop-ee]"
@@ -581,7 +547,7 @@
   family:
     id: "s1l1-em"
     name: "S1L1 Earth-Mars 2-synodic"
-    nomenclature: "Russell-McConaghy SnLm"
+    nomenclature: "McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
     - path: "vinf_kms_at_encounters"
@@ -2655,19 +2621,6 @@
     - body: "E"
       vinf_kms: 6.5
       note: "Symmetric with outbound."
-  orbit_elements:
-    a_au: 1.60
-    e: 0.393
-    perihelion_au: 0.97
-    aphelion_au: 2.23
-    inclination_deg: 0.0
-    note: "Orbital elements are identical to the outbound escalator (Rogers et al. 2012 Table 1)."
-    periapse_km: null         # schema v2; parallel to perihelion_au for non-Sun primaries; null if not tabulated
-    apoapse_km: null          # schema v2; parallel to aphelion_au for non-Sun primaries
-    raan_deg: null            # schema v2; right ascension of ascending node (Ω); null for current entries
-    arg_periapsis_deg: null   # schema v2; argument of periapsis (ω); null for current entries
-    true_anomaly_deg: null    # schema v2; true anomaly at epoch (ν); null for current entries
-    epoch_iso8601: null       # schema v2; ISO-8601 epoch for the anomaly; null = generic
   # Schema v3 (2026-06-01): migrated from flat legs[] to OCM-aligned trajectory{}
   # per the §16.6.5 backfill (task #66). Time-mirror of the outbound escalator;
   # migrates losslessly for the same reasons (2 encounters == 2 attested legs,
@@ -2737,10 +2690,6 @@
     given a dedicated seed so the search algorithm validates both
     directional geometries explicitly.
   source_quotes:
-    a_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Semi-Major Axis, AU: 1.60'."
-    e: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Eccentricity: 0.393'."
-    perihelion_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Perihelion Radius, AU: 0.97'."
-    aphelion_au: "Rogers et al. 2012, Table 1: 'Aldrin Cycler ... Aphelion Radius, AU: 2.23'."
     "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation §3.8: 'Due to symmetry, the energy properties for inbound and outbound cyclers are identical.'"
     "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation §3.8 (same as above)."
     "legs[0].tof_days": "Wikipedia / McConaghy 2002: symmetric 146-day fast transit."
@@ -11684,7 +11633,7 @@ days\" per the NTRS abstract.
   family:
     id: "s2l1-em"
     name: "S2L1 Earth-Mars 2-synodic (McConaghy broad-class)"
-    nomenclature: "Russell-McConaghy SnLm"
+    nomenclature: "McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 2}
   data_gaps:
     - path: "trajectory.segments[ret-me].tof_days"
@@ -11871,7 +11820,7 @@ days\" per the NTRS abstract.
   family:
     id: "u0l1-em"
     name: "U0L1 Earth-Mars 1-synodic high-energy"
-    nomenclature: "Russell-McConaghy SnLm"
+    nomenclature: "McConaghy SnLm"
     continuation_param: {name: "k_synodic", value: 1}
   data_gaps:
     - path: "trajectory.segments[ret-me].tof_days"
@@ -43897,7 +43846,6 @@ days\" per the NTRS abstract.
       examined, nearly two million minimax problems are posed and
       solved. There are thirty-three previously documented and 170
       previously undocumented promising cyclers found".
-
 
 # ---------------------------------------------------------------------------
 # Rall (Hollister adv.) 1970 (MIT TE-34) free-fall periodic Earth-Mars orbits.

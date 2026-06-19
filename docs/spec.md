@@ -884,7 +884,7 @@ queryable:
 "family": {
   "id": "s1l1-em",                 // stable family slug
   "name": "S1L1 Earth-Mars 2-synodic",
-  "nomenclature": "Russell-McConaghy SnLm",
+  "nomenclature": "McConaghy SnLm",
   "continuation_param": {"name":"k_synodic","value":2}  // along-family parameter (cf. Jacobi constant)
 }
 ```
