@@ -125,7 +125,15 @@ from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
 def test_em_to_se_connection_is_low_energy() -> None:
     """An EM-L2 unstable -> SE-L2 stable connection closes its inertial position gap
     with a low patch ΔV (near-ballistic cross-system connection). Position match < 100 km,
-    ΔV < 1 km/s."""
+    ΔV < 1 km/s.
+
+    Working config (recorded): EM-L2 unstable (branch +1) meets SE-L2 stable (branch -1)
+    on the inertial patch plane {x_inertial = 1.5e6 km} (corrector defaults). At the
+    converged point (theta≈4.945 rad, tau_u≈2.079, tau_s≈2.686, 4 Newton iters) the
+    inertial position gap is ≈0.38 km and the patch ΔV is ≈0.364 km/s — a genuine
+    near-ballistic cross-system connection in the patched (CR3BP+CR3BP) model. The EM-L2
+    unstable manifold reaches ~1.77 Mkm sunward in inertial X, past the SE-L2 region at
+    ~1.6 Mkm, so both manifolds co-reach the patch plane."""
     se = se_earth_system()
     em = em_moon_system()
     bridge = FrameBridge(se=se, em=em)
