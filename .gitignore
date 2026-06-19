@@ -30,6 +30,9 @@ coverage.xml
 # Project outputs (per spec.md §7 — runs land here)
 out/
 
+# Intermediate scan progress streams; the consolidated *.jsonl is the deliverable
+*.stream.jsonl
+
 # Editor / OS detritus
 .idea/
 .vscode/
