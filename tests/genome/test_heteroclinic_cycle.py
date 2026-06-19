@@ -180,3 +180,69 @@ def test_connection_l1_to_l2_converges() -> None:
     assert conn.converged, f"residual={conn.residual:.3e}, n_iter={conn.n_iter}"
     assert conn.residual < 1e-6
     assert WZ_X_L1 - 0.1 < conn.crossing_xv[0] < WZ_X_L2 + 0.1
+
+
+from cyclerfinder.genome.heteroclinic_cycle import (  # noqa: E402
+    HeteroclinicCycle,
+    assemble_cycle,
+)
+
+
+@pytest.mark.slow
+def test_assemble_l1_l2_two_cycle_closes() -> None:
+    """The L1->L2->L1 chain forms a closed heteroclinic cycle (W-Z, both directions).
+
+    Leg 0 (L1->L2) closes on the corrector defaults (branch_u=-1, branch_s=+1,
+    k_u=3, k_s=4), landing at x~=0.9588 in the neck (see test_connection_l1_to_l2).
+
+    Leg 1 (L2->L1) is the RETURN leg; its manifold geometry differs, so it needs its
+    own branch/crossing-index pair. The working config is
+    ``branch_u=+1, branch_s=+1, k_u=4, k_s=3`` -- found by a coarse branch/k sweep
+    then certified by full Newton (residual ~1.1e-9). It meets the section at
+    x~=0.95880, xdot~=-0.02562: the EXACT time-reversal mirror of the L1->L2 crossing
+    (x~=0.95880, xdot~=+0.02191 in the W-Z golden; the symmetry x->x, y->-y,
+    xdot->-xdot, ydot->ydot, t->-t flips only the sign of xdot). W-Z prove both
+    directions of the L1<->L2 cycle exist; this reproduces the return half.
+    """
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    cycle = assemble_cycle(
+        system,
+        [l1, l2],
+        tol=1e-7,
+        # Leg 0 = L1->L2 uses corrector defaults; leg 1 = L2->L1 uses the mirror config.
+        per_leg_kwargs=[{}, {"k_u": 4, "k_s": 3, "branch_u": 1, "branch_s": 1}],
+    )
+    assert isinstance(cycle, HeteroclinicCycle)
+    assert cycle.closed, (
+        f"max_leg_residual={cycle.max_leg_residual:.3e}, symbols={cycle.symbol_sequence}"
+    )
+    assert len(cycle.connections) == 2  # L1->L2 and L2->L1
+    assert cycle.symbol_sequence == ["L1", "L2", "L1"]
+    assert abs(cycle.jacobi - WZ_C_OURS) < 1e-6
+    # Return leg meets the section in the neck (W-Z mirror crossing x~=0.9588).
+    l2_to_l1 = cycle.connections[1]
+    assert WZ_X_L1 - 0.1 < l2_to_l1.crossing_xv[0] < WZ_X_L2 + 0.1
+
+
+def test_assemble_energy_mismatch_raises() -> None:
+    """A node off the shared energy is rejected before any leg is attempted."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system,
+        x0_guess=WZ_X_L2,
+        jacobi=WZ_C_OURS + 0.005,
+        period_guess=3.0,
+        label="L2",
+        ydot0_sign=-1.0,
+    )
+    with pytest.raises(ValueError, match=r"equal Jacobi|energy"):
+        assemble_cycle(system, [l1, l2])

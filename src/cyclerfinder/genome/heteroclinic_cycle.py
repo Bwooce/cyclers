@@ -501,3 +501,77 @@ def correct_connection(
         n_iter=n_iter,
         notes="" if converged else "did not reach tol",
     )
+
+
+@dataclass(frozen=True)
+class HeteroclinicCycle:
+    """A closed chain of heteroclinic connections (periodic-up-to-rotation).
+
+    ``closed`` means the itinerary returns to the same first orbit O_1 with every
+    leg certified at the shared Jacobi -- a recurrence, NOT strict state(T)=state(0)
+    periodicity. ``symbol_sequence`` is the node-label itinerary including the
+    return to O_1 (e.g. ["L1", "L2", "L1"]).
+    """
+
+    orbits: list[str]
+    connections: list[HeteroclinicConnection]
+    jacobi: float
+    closed: bool
+    max_leg_residual: float
+    independent_residual: float
+    symbol_sequence: list[str]
+    notes: str = ""
+
+
+def assemble_cycle(
+    system: cr3bp.CR3BPSystem,
+    nodes: list[LyapunovNode],
+    *,
+    tol: float = 1e-7,
+    jacobi_tol: float = 1e-6,
+    connection_kwargs: dict[str, object] | None = None,
+    per_leg_kwargs: list[dict[str, object]] | None = None,
+) -> HeteroclinicCycle:
+    """Certify a closed heteroclinic cycle over the ordered ``nodes`` (wraps to O_1).
+
+    Requires >= 1 node (a single node is a degenerate homoclinic cycle O->O). Raises
+    ``ValueError`` if the nodes are not all at the same Jacobi. ``closed`` iff every
+    consecutive-pair connection converged. ``independent_residual`` is filled by a
+    later task (nan here = "not yet cross-checked"). ``connection_kwargs`` apply to
+    every leg; ``per_leg_kwargs[i]`` (if given) override for leg i (each leg's
+    manifold geometry can need a different branch/crossing-index pair).
+    """
+    if not nodes:
+        raise ValueError("assemble_cycle requires at least one node")
+    c0 = nodes[0].jacobi
+    for nd in nodes[1:]:
+        if abs(nd.jacobi - c0) > jacobi_tol:
+            raise ValueError(
+                f"all cycle nodes must share Jacobi (energy): {nd.label} "
+                f"C={nd.jacobi:.6f} vs {nodes[0].label} C={c0:.6f}"
+            )
+    base_kw: dict[str, object] = dict(connection_kwargs or {})
+    base_kw.setdefault("tol", tol)
+    n = len(nodes)
+    connections: list[HeteroclinicConnection] = []
+    for i in range(n):
+        a = nodes[i]
+        b = nodes[(i + 1) % n]
+        leg_kw = dict(base_kw)
+        if per_leg_kwargs is not None and i < len(per_leg_kwargs):
+            leg_kw.update(per_leg_kwargs[i])
+        conn = correct_connection(system, a, b, **leg_kw)  # type: ignore[arg-type]
+        connections.append(conn)
+    max_leg = max((c.residual for c in connections), default=float("inf"))
+    closed = all(c.converged for c in connections)
+    symbols = [nd.label for nd in nodes] + [nodes[0].label]
+    return HeteroclinicCycle(
+        orbits=[nd.label for nd in nodes],
+        connections=connections,
+        jacobi=c0,
+        closed=closed,
+        max_leg_residual=max_leg,
+        independent_residual=float("nan"),
+        symbol_sequence=symbols,
+        notes="" if closed else "one or more legs did not converge",
+    )
