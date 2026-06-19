@@ -45,11 +45,14 @@ measured 2026-06-19):
   sparse/partial OCR layer (≈20–250 chars/page); usable for navigation, but a
   precision read should treat it like image-only and vision-read the page.
 
-## Genuine gap list (ranked) — see §"Gaps" at the bottom
+## Genuine gap list — see §"Gaps" at the bottom
 
-Only **3 genuine `undigested-unmined` files** remain (Szebehely is now
-digested). All other prior gaps (Fan 2025, Li-Topputo 2019, Silvestrini 2022,
-Singh-Junkins 2022) were closed by the 2026-06-13 background-papers triage.
+**ZERO genuine `undigested-unmined` files remain** (2026-06-19). The last
+three — shepperd-1985 (#402), bond-allman-2021 (#396), willis-2008 — were
+digested 2026-06-19; Szebehely was digested earlier (#394/#400). All other
+prior gaps (Fan 2025, Li-Topputo 2019, Silvestrini 2022, Singh-Junkins 2022)
+were closed by the 2026-06-13 background-papers triage. Every `papers/` file
+is now digested, mined, or triaged.
 
 ---
 
@@ -70,8 +73,8 @@ Singh-Junkins 2022) were closed by the 2026-06-13 background-papers triage.
 | doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-I-...IJBC-1(3).pdf | 2026-06-17-digest-doedel-keller-kernevez-1991.md | Bifurcation numerics part I (finite dimensions) — AUTO foundations | digested | text-layer (thin) |
 | doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-II-...IJBC-1(4).pdf | 2026-06-17-digest-doedel-keller-kernevez-1991.md | Bifurcation numerics part II (infinite dimensions) | digested | text-layer (thin) |
 | doedel-paffenroth-keller-2003-computation-periodic-solutions-conservative-systems-3-body-IJBC.pdf | 2026-06-17-digest-doedel-2003.md | Periodic-solution computation in conservative 3-body systems | digested | text-layer |
-| bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-princetonUP-...textbook.pdf | — | Princeton UP astrodynamics textbook (fundamentals + perturbation methods) | **undigested-unmined** | text-layer |
-| willis-2008-book-review-modern-astrodynamics-gurfil-ed-asr-doi-10.1016-j.asr.2007.07.047.pdf | — | 2-page book review of the Gurfil-ed 2007 volume | **undigested-unmined** | text-layer |
+| bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-princetonUP-...textbook.pdf | 2026-06-19-digest-bond-allman-2021-modern-astrodynamics.md | Bond/Allman two-body + perturbation textbook; Sundman/Sperling-Burdet regularization (Ch 9, feeds tulip Sundman), universal-variable f/g + Lambert (Ch 5-6), VOP element rates (Ch 8), metre-level L4/L5 perturbed-two-body case (Table 9.3) usable as CR3BP golden | digested | text-layer |
+| willis-2008-book-review-modern-astrodynamics-gurfil-ed-asr-doi-10.1016-j.asr.2007.07.047.pdf | 2026-06-19-digest-willis-2008-book-review.md | 2-page book review of the Gurfil-ed 2007 volume; corroborating metadata only (defer to the #395 Gurfil digest), zero catalogue impact | digested | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
@@ -201,7 +204,7 @@ Singh-Junkins 2022) were closed by the 2026-06-13 background-papers triage.
 | beeson-englander-hughes-2015-emtg-gmat-lowthrust-tool-chain-AAS-15-278.pdf | 2026-06-07-beeson-2015-emtg-gmat-toolchain-mining.md | EMTG/GMAT low-thrust toolchain | mined | text-layer |
 | englander-englander-2014-tuning-monotonic-basin-hopping-ISSFD24-S7-3.pdf | 2026-06-07-englander-2014-mbh-tuning-mining.md | Tuning monotonic basin hopping (MBH) | mined | text-layer |
 | ozimek-2019-linx-lowthrust-mga-trajectory-optimization-AAS-19-348.pdf | 2026-06-07-ozimek-linx-aas19-348-mining.md | LinX low-thrust MGA optimization | mined | text-layer |
-| shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf | cited in 2026-06-10-ellison mining; queued #233 (forward-citation-sweep-2), no dedicated digest | Universal Keplerian STM | **undigested-unmined** | text-layer (thin) |
+| shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf | 2026-06-19-digest-shepperd-1985-universal-keplerian-stm.md | Closed-form universal-variables (Goodyear/Sundman/Stumpff) two-body STM valid for all conics; Kepler solve via one transcendental (q-variable, Newton dt/du=4(1-q)r), STM from 9 M-coefficients + W,U; canonical analytic STM for conic-leg correctors (cf. Pellegrini-Russell #372) | digested | text-layer (thin) |
 | montenbruck-markgraf-2004-gps-sensor-impact-point-prediction-sounding-rockets-jsr-...1962.pdf | 2026-06-17-digest-montenbruck-2004.md | GPS impact-point prediction for sounding rockets | digested | text-layer |
 | rinker-jacobson-wood-1976-statistical-analysis-trim-maneuvers-low-thrust-interplanetary-navigation-jsr.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md — off-scope for #345 | Statistical analysis of nav trim maneuvers | triaged | text-layer |
 
@@ -233,28 +236,27 @@ Singh-Junkins 2022) were closed by the 2026-06-13 background-papers triage.
 | acton-1996-ancillary-data-services-NASA-NAIF-SPICE-planet-space-sci-...95)00107-7.pdf | 2026-06-17-digest-acton-1996.md; catalogue | SPICE/NAIF ancillary data services | digested + mined-by-catalogue | text-layer |
 | ccsds-2023-orbit-data-messages-502.0-B-3-blue-book.pdf | 2026-06-05-ccsds-odm-502-mining.md | CCSDS Orbit Data Messages standard | mined | text-layer |
 
-## Gaps — `undigested-unmined` (ranked by value) + image-only OCR backlog
+## Gaps — `undigested-unmined` + image-only OCR backlog
 
-### Genuine gaps (3)
+### Genuine gaps: NONE remaining (all 3 closed 2026-06-19)
 
-1. **shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf**
-   — *moderate value (method).* The canonical universal-variable Keplerian STM;
-   our STM/lambert/continuation code uses this family of formulation. Cited in
-   the ellison mining note and queued as #233, but never given a dedicated
-   digest. Text-layer is **thin** (~21 chars/page) — likely a sparse OCR layer;
-   a precision read of the STM equations should vision-read the page images, not
-   trust `pdftotext`. **Recommend: a focused method-digest task** (the equations
-   are load-bearing for the STM lane).
-2. **bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-...textbook.pdf**
-   — *low–moderate value (textbook).* A general astrodynamics/perturbation
-   textbook. We already have four digested method textbooks (Gurfil, Hintz,
-   Belbruno, Vallado) covering this ground. **Recommend: a light
-   chapter-summary triage** (TOC + any CR3BP/perturbation chapter) — low
-   priority; likely REFERENCE-ONLY.
-3. **willis-2008-book-review-modern-astrodynamics-gurfil-ed-...asr.2007.07.047.pdf**
-   — *negligible value.* A 2-page book review of the Gurfil 2007 volume (already
-   digested). **Recommend: one-line OUT-OF-SCOPE triage** (not a primary source);
-   no standalone digest warranted.
+The last three `undigested-unmined` files were all digested on 2026-06-19,
+bringing the corpus to **zero genuine gaps** (every `papers/` file is now
+digested, mined, or triaged):
+
+1. **shepperd-1985-...celest-mech-35.pdf** → digested
+   `2026-06-19-digest-shepperd-1985-universal-keplerian-stm.md` (#402; full
+   16-page read; universal-variable two-body STM). The thin text-layer was
+   handled by reading the rendered page images directly.
+2. **bond-allman-2021-...textbook.pdf** → digested
+   `2026-06-19-digest-bond-allman-2021-modern-astrodynamics.md` (#396;
+   chapter-summary scope; Sundman/Sperling-Burdet regularization Ch 9 feeds
+   the tulip Sundman work, Table 9.3 metre-level L4/L5 case usable as a
+   CR3BP golden).
+3. **willis-2008-...asr.2007.07.047.pdf** → digested
+   `2026-06-19-digest-willis-2008-book-review.md` (2-page review of the Gurfil
+   2007 volume; corroborating metadata only, zero catalogue impact — defer to
+   the #395 Gurfil digest).
 
 ### Image-only files needing OCR before any future digest (4)
 
