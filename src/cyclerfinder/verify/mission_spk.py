@@ -168,13 +168,96 @@ class FlybyVinf:
     vinf_kms_visviva_window_std: float
     """Std of the same — the convergence/stability evidence (<1% target)."""
     closest_approach_radius_km: float
-    """Minimum spacecraft-to-body distance over the sampled window, km."""
+    """Minimum spacecraft-to-body distance, km. By default this is the
+    automatically-REFINED periapsis (golden-section search between the bracketing
+    coarse samples), not merely the best coarse sample — the coarse grid can miss
+    the true periapsis by hours on a fast inner flyby (the #398 Voyager-2 Neptune
+    bug, which reported 6.2 R_N for a true 1.18 R_N)."""
     closest_approach_altitude_km: float
     """closest_approach_radius_km - body_radius_km (cross-check vs published)."""
     closest_approach_radius_body_radii: float
     """closest_approach_radius_km / body_radius_km (Kohlhase-Penzo Table IV
     publishes closest approach in planet radii — direct self-consistency)."""
+    closest_approach_et_seconds: float
+    """ET (TDB seconds) of the refined periapsis."""
+    closest_approach_offset_minutes: float
+    """Refined periapsis epoch relative to the nominal ``epoch_utc``, minutes."""
+    closest_approach_refined: bool
+    """True if the periapsis was refined past the coarse grid (default path)."""
     samples: tuple[VinfSample, ...]
+
+
+def _r_rel_at(sc_naif_id: int, et: float, center: str) -> float:
+    """Spacecraft-to-center distance (km) at ET — a single ``spkezr`` position read.
+
+    Assumes the required kernels are already ``furnsh``-ed (this is only called
+    from inside :func:`vinf_at_flyby`'s furnsh/kclear scope).
+    """
+    state, _lt = spice.spkezr(str(sc_naif_id), et, "J2000", "NONE", center)
+    arr = np.asarray(state, dtype=np.float64)
+    return float(np.linalg.norm(arr[:3]))
+
+
+def _refine_periapsis(
+    sc_naif_id: int,
+    center: str,
+    et_lo: float,
+    et_hi: float,
+    *,
+    tol_seconds: float = 1.0,
+    max_iter: int = 64,
+) -> tuple[float, float]:
+    """Golden-section minimisation of |r_rel|(t) on ``[et_lo, et_hi]``.
+
+    Returns ``(et_periapsis, r_min_km)``. The interval is the bracket around the
+    coarse minimum (the min-distance sample and its two neighbours), within which
+    |r_rel|(t) is unimodal for a hyperbolic flyby, so golden-section converges
+    deterministically. Each iteration costs one ``spkezr`` position read; the
+    1-second tolerance closes in <~ log_phi(window/tol) ~ a few dozen reads.
+
+    A noisy SPK could in principle break unimodality; the caller guards the
+    result against the coarse minimum and falls back to a dense fine resample if
+    the refinement does not improve on it.
+    """
+    inv_phi = (math.sqrt(5.0) - 1.0) / 2.0  # 1/phi ~ 0.618
+    a, b = et_lo, et_hi
+    c = b - inv_phi * (b - a)
+    d = a + inv_phi * (b - a)
+    fc = _r_rel_at(sc_naif_id, c, center)
+    fd = _r_rel_at(sc_naif_id, d, center)
+    for _ in range(max_iter):
+        if (b - a) <= tol_seconds:
+            break
+        if fc < fd:
+            b, d, fd = d, c, fc
+            c = b - inv_phi * (b - a)
+            fc = _r_rel_at(sc_naif_id, c, center)
+        else:
+            a, c, fc = c, d, fd
+            d = a + inv_phi * (b - a)
+            fd = _r_rel_at(sc_naif_id, d, center)
+    et_min = c if fc < fd else d
+    return et_min, min(fc, fd)
+
+
+def _refine_periapsis_dense(
+    sc_naif_id: int,
+    center: str,
+    et_lo: float,
+    et_hi: float,
+    *,
+    n: int = 64,
+) -> tuple[float, float]:
+    """Robust fallback: dense uniform resample of |r_rel|(t) on the bracket.
+
+    Used only if golden-section fails to beat the coarse minimum (e.g. a noisy /
+    multi-modal SPK segment), so the CA is still resolved well past the coarse
+    grid. ``n`` position reads.
+    """
+    ets = np.linspace(et_lo, et_hi, n)
+    rs = np.array([_r_rel_at(sc_naif_id, float(et), center) for et in ets])
+    i = int(np.argmin(rs))
+    return float(ets[i]), float(rs[i])
 
 
 def vinf_at_flyby(
@@ -187,6 +270,7 @@ def vinf_at_flyby(
     window_minutes: float = 4320.0,
     n_samples: int = 25,
     extra_kernels: tuple[str, ...] = (),
+    refine_periapsis: bool = True,
 ) -> FlybyVinf:
     """Extract the planetocentric hyperbolic-excess velocity (V∞) at a flyby.
 
@@ -202,9 +286,18 @@ def vinf_at_flyby(
        ``sqrt(max(0, v_rel^2 - 2*mu/r_rel))``. Near periapsis this is depressed
        by the deep potential; far outside the SOI it converges to the true
        asymptotic V∞.
-    5. Report the V∞ as the outermost-epoch vis-viva value, plus the
-       outer-window mean/std as convergence evidence, and the closest-approach
-       radius (cross-check vs the published flyby geometry).
+    5. **Refine the periapsis** (default): the coarse grid (~6 h spacing on the
+       default window) can miss the true closest approach by hours — for a fast
+       flyby this hugely over-reports the CA radius (the #398 Voyager-2 Neptune
+       bug: 6.2 R_N reported for a true 1.18 R_N). After locating the coarse
+       minimum, bracket it with its two neighbouring samples and minimise
+       |r_rel|(t) by golden-section search (≈1 s tolerance, a couple of dozen
+       extra ``spkezr`` reads), with a dense-resample fallback. The reported
+       closest-approach radius/epoch are the refined values. Set
+       ``refine_periapsis=False`` to keep the legacy coarse-grid behaviour.
+    6. Report the V∞ as the outermost-epoch vis-viva value, plus the
+       outer-window mean/std as convergence evidence, and the refined
+       closest-approach radius (cross-check vs the published flyby geometry).
 
     Body GM + radius are sourced from :data:`cyclerfinder.core.constants.PLANETS`
     (never hard-coded). ``window_minutes`` defaults to 3 days each side, large
@@ -259,12 +352,33 @@ def vinf_at_flyby(
                     vinf_visviva_kms=vinf,
                 )
             )
+
+        radii = np.array([s.r_rel_km for s in samples])
+        ca_idx = int(np.argmin(radii))
+        ca_radius = float(radii[ca_idx])
+        ca_et = float(samples[ca_idx].et_seconds)
+        ca_refined = False
+
+        if refine_periapsis and n_samples >= 3:
+            # Bracket the coarse minimum with its two neighbours (clamped to the
+            # sampled window). |r_rel|(t) is unimodal across a hyperbolic flyby,
+            # so this bracket contains the true periapsis.
+            lo_idx = max(0, ca_idx - 1)
+            hi_idx = min(n_samples - 1, ca_idx + 1)
+            et_lo = float(samples[lo_idx].et_seconds)
+            et_hi = float(samples[hi_idx].et_seconds)
+            if et_hi > et_lo:
+                r_et, r_min = _refine_periapsis(sc_naif_id, body.spice_center, et_lo, et_hi)
+                if r_min > ca_radius:  # golden-section did not beat the grid
+                    r_et, r_min = _refine_periapsis_dense(
+                        sc_naif_id, body.spice_center, et_lo, et_hi
+                    )
+                if r_min < ca_radius:
+                    ca_radius = r_min
+                    ca_et = r_et
+                    ca_refined = True
     finally:
         spice.kclear()
-
-    radii = np.array([s.r_rel_km for s in samples])
-    ca_idx = int(np.argmin(radii))
-    ca_radius = float(radii[ca_idx])
 
     # Outer window = samples beyond 5x the closest-approach radius (well outside
     # the deep potential), used for the converged V∞ + stability evidence. If the
@@ -292,6 +406,9 @@ def vinf_at_flyby(
         closest_approach_radius_km=ca_radius,
         closest_approach_altitude_km=ca_radius - body_radius_km,
         closest_approach_radius_body_radii=ca_radius / body_radius_km,
+        closest_approach_et_seconds=ca_et,
+        closest_approach_offset_minutes=(ca_et - et0) / 60.0,
+        closest_approach_refined=ca_refined,
         samples=tuple(samples),
     )
 

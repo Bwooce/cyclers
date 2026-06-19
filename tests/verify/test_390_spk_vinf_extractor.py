@@ -42,6 +42,15 @@ import pytest
 PUBLISHED_V2_JUPITER_CA_RJ = 10.0
 PUBLISHED_V2_SATURN_CA_RS = 2.7
 
+# Voyager 2 Neptune: the #398 fast-inner-flyby regression case. Periapsis at
+# 1989-08-25 03:56 UTC put closest approach ~4,950 km above the north pole, i.e.
+# ~29,240 km from Neptune center (Wikipedia "Voyager 2"; cross-checked against
+# the NASA Voyager mission record), or ~1.18 Neptune radii (24,764 km eq.).
+# Before #398 the coarse ~6 h sample grid never landed near this periapsis and
+# the DEFAULT call reported a spurious 6.2 R_N; the periapsis refinement now
+# resolves it from the default call without manual re-centering.
+PUBLISHED_V2_NEPTUNE_CA_RN = 1.18
+
 # Order-of-magnitude V∞ sanity bands (km/s) — NOT tight gates.
 V2_JUPITER_VINF_BAND_KMS = (6.0, 9.0)
 V2_SATURN_VINF_BAND_KMS = (9.0, 13.0)
@@ -125,6 +134,84 @@ def test_voyager2_saturn_vinf_converges_and_sane(mission_spk_module: ModuleType)
     )
     lo, hi = V2_SATURN_VINF_BAND_KMS
     assert lo <= r.vinf_kms <= hi, f"V2 Saturn V∞ {r.vinf_kms:.3f} km/s outside [{lo},{hi}]"
+
+
+# An off-grid nominal epoch for the Neptune flyby: still within the encounter
+# day, but the true periapsis (03:56 UTC) sits between the coarse ~6 h samples
+# rather than on one. This is the exact condition that produced the original
+# #398 spurious ~6.2 R_N. (When the nominal epoch happens to align with a grid
+# sample the coarse value is accidentally right; this epoch makes the coarse
+# miss explicit, so the test really exercises the refinement.)
+V2_NEPTUNE_OFFGRID_EPOCH = "1989-08-25T00:00:00"
+
+
+@pytest.mark.slow
+def test_voyager2_neptune_periapsis_refined_from_default_call(
+    mission_spk_module: ModuleType,
+) -> None:
+    """#398 regression: the DEFAULT call resolves the fast Neptune periapsis.
+
+    Neptune is the motivating fast inner flyby. With the nominal epoch off the
+    coarse ~6 h grid the legacy default reported ~6.2 R_N for a true ~1.18 R_N;
+    with periapsis refinement on by default the closest approach must match the
+    published ~1.18 R_N to < 0.5% regardless of how the nominal epoch is centered
+    (no caller widening / re-centering).
+    """
+    r = _extract(mission_spk_module, "vgr2_nep097.bsp", "Neptune", V2_NEPTUNE_OFFGRID_EPOCH)
+    assert r.closest_approach_refined, "periapsis refinement should be the default"
+    rel = abs(r.closest_approach_radius_body_radii - PUBLISHED_V2_NEPTUNE_CA_RN)
+    rel /= PUBLISHED_V2_NEPTUNE_CA_RN
+    assert rel <= 0.005, (
+        f"V2 Neptune CA {r.closest_approach_radius_body_radii:.4f} R_N disagrees "
+        f"with published {PUBLISHED_V2_NEPTUNE_CA_RN} R_N by {rel:.2%} "
+        f"(refined periapsis offset {r.closest_approach_offset_minutes:+.2f} min)"
+    )
+
+
+@pytest.mark.slow
+def test_periapsis_refinement_improves_on_coarse_grid(
+    mission_spk_module: ModuleType,
+) -> None:
+    """The refined CA must dramatically beat the legacy coarse-grid CA.
+
+    Same SPK + off-grid epoch, refinement off vs on: the coarse grid badly
+    over-reports this fast flyby (~6 R_N) while refinement recovers the true
+    periapsis (~1.18 R_N) — refinement only ever moves toward periapsis, and
+    here cuts the reported radius by well over half. V∞ (read at the outermost
+    sample) must be untouched by refinement.
+    """
+    try:
+        spk = mission_spk_module.ensure_mission_spk(
+            "vgr2_nep097.bsp", base_url=mission_spk_module.NAIF_VOYAGER_SPK_BASE
+        )
+    except Exception as exc:  # network blocked / 404 -> skip honestly
+        pytest.skip(f"could not fetch NAIF SPK (network blocked?): {exc}")
+    try:
+        coarse = mission_spk_module.vinf_at_flyby(
+            spk,
+            mission_spk_module.VOYAGER_2_NAIF_ID,
+            "Neptune",
+            V2_NEPTUNE_OFFGRID_EPOCH,
+            refine_periapsis=False,
+        )
+        refined = mission_spk_module.vinf_at_flyby(
+            spk,
+            mission_spk_module.VOYAGER_2_NAIF_ID,
+            "Neptune",
+            V2_NEPTUNE_OFFGRID_EPOCH,
+            refine_periapsis=True,
+        )
+    except Exception as exc:  # kernel fetch failure -> skip honestly
+        pytest.skip(f"extractor failed (kernel fetch blocked?): {exc}")
+
+    assert not coarse.closest_approach_refined
+    assert refined.closest_approach_refined
+    assert refined.closest_approach_radius_km <= coarse.closest_approach_radius_km
+    # The coarse grid badly over-reports this fast flyby; refinement cuts it by
+    # well over half (coarse ~6 R_N vs refined ~1.18 R_N).
+    assert refined.closest_approach_radius_km < 0.5 * coarse.closest_approach_radius_km
+    # V∞ is read at the outermost sample and must be unaffected by refinement.
+    assert refined.vinf_kms == pytest.approx(coarse.vinf_kms, rel=1e-12)
 
 
 def test_body_gm_is_sourced_not_hardcoded(mission_spk_module: ModuleType) -> None:
