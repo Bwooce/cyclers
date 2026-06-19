@@ -1,0 +1,43 @@
+# Canalias 2007 PhD Thesis: SE-EM Manifold Connections
+# Extracted for Task #405 and validation
+
+jacobi_convention: "C = (x^2+y^2) + 2(1-mu)/r1 + 2mu/r2 - (vx^2+vy^2+vz^2)"
+conventions_match_cr3bp: true # Exactly matches cyclerfinder/core/cr3bp.py without any mu(1-mu) offset.
+
+bifurcation_jacobi_constants:
+  se_l1_to_l2_heteroclinic: 3.000863625
+  se_l1_homoclinic_ho11: 3.00088389
+
+lyapunov_families:
+  se_l1:
+    c_min: 3.0007222915
+    c_max: 3.00090098
+    ax_min_km: 1081.9
+    ax_max_km: 359019.1
+  se_l2:
+    c_min: 3.00072105
+    c_max: 3.0008969275
+    ax_min_km: 548.3
+    ax_max_km: 366122.8
+  em_l1:
+    c_min: 3.149305
+    c_max: 3.20034403
+    ax_min_km: 100.6
+    ax_max_km: 12661.6
+  em_l2:
+    c_min: 3.14445
+    c_max: 3.184163
+    ax_min_km: 50.3
+    ax_max_km: 17258.1
+
+coupling_convention:
+  description: "Earth-Moon system deployed inside Sun-Earth system."
+  beta: "Relative position angle between Sun-Earth x-axis and Earth-Moon x-axis."
+  poincare_section: "Defined by angle phi_SE = 90 deg relative to SE x-axis."
+
+cross_system_patch_coordinates:
+  note: "Exact coordinate vectors (x, y, x_dot, y_dot) are not explicitly tabulated in the thesis text. They are located in the attached database (inters.dat, sistemn.dat)."
+  table_5_2_representative:
+    description: "Sample maneuvers for phi_SE = 90 deg and various phi_EM (e.g. 60 deg). Costs range from ~4 m/s to ~96 m/s depending on phasing."
+  table_5_3_representative:
+    description: "Maneuvers intersecting unstable EM L2 (Ax=17123.2 km) and stable SE L2 (Ax=330102.8 km)."
