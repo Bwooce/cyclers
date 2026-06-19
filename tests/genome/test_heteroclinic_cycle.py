@@ -86,3 +86,34 @@ def test_lyapunov_fixed_points_match_wz() -> None:
     assert abs(l2.state0[0] - WZ_X_L2) < 1e-6, f"L2 x0={l2.state0[0]} vs {WZ_X_L2}"
     # Both nodes sit at the WZ-equivalent Oterma energy (our convention).
     assert abs(l1.jacobi - WZ_C_OURS) < 1e-6 and abs(l2.jacobi - WZ_C_OURS) < 1e-6
+
+
+from cyclerfinder.genome.heteroclinic_cycle import (  # noqa: E402  (grouped import)
+    _section_crossing,
+    _seed_on_manifold,
+)
+
+
+def test_unstable_manifold_reaches_section() -> None:
+    """The L1 unstable manifold crosses {y=0} within a bounded horizon."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    seed = _seed_on_manifold(system, l1, tau=0.0, direction="unstable", branch=+1, epsilon=1e-6)
+    assert seed.shape == (6,)
+    pt = _section_crossing(system, seed, direction="unstable", k=1, max_time=8.0 * l1.period)
+    assert pt is not None, "manifold must reach the {y=0} section"
+    assert pt.shape == (2,)  # (x, xdot)
+
+
+def test_section_miss_returns_none() -> None:
+    """A horizon too short to reach the section yields None (no hang, no fabrication)."""
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    seed = _seed_on_manifold(system, l1, tau=0.0, direction="unstable", branch=+1, epsilon=1e-6)
+    # Ask for the 9999th crossing — unreachable in this horizon.
+    pt = _section_crossing(system, seed, direction="unstable", k=9999, max_time=2.0 * l1.period)
+    assert pt is None
