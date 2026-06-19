@@ -26,6 +26,17 @@ Constraints (equality, = 0):  the stacked per-leg match-point defects ``chain_de
     with the analytic block-sparse ``chain_defect_jacobian`` (#226) supplying ∂c/∂x
     exactly.
 
+Cost-function note (#384): we use the sum-of-magnitudes Σ‖Δv_i‖, which is
+non-smooth at Δv_i = 0 (the ‖·‖ gradient kink). The canonical JPL precedent
+D'Amario, Byrnes & Stanford 1981 (MOSES, AIAA 80-1676R; digest
+docs/notes/2026-06-19-digest-damario-byrnes-stanford-1981-moses-multiconic.md)
+instead minimised a weighted SUM-OF-SQUARES of the Δv magnitudes precisely to
+eliminate that kink and admit a Newton optimiser. We keep sum-of-magnitudes (it
+is the physical total-Δv objective) and handle the kink directly via the guarded
+subgradient in ``_grad`` (g = Δv/‖Δv‖ only when ‖Δv‖ > 0, else 0) plus a
+Nelder-Mead refinement fallback — switching to MOSES SOS would change the
+converged optimum, so it is documented as precedent, not adopted.
+
 This is genuinely UNDER-determined: ``3M + 3(M+1)`` variables versus ``6M`` equality
 constraints leaves ``3M + 3`` optimisation degrees of freedom (the v∞ vectors plus the
 impulse null space), so SLSQP minimises ΔV over a real null space rather than just
