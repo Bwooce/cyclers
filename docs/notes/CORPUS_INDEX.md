@@ -147,6 +147,8 @@ is now digested, mined, or triaged.
 | andreu-1998-quasi-bicircular-problem-phd-thesis.pdf | 2026-06-14-andreu-quasi-bicircular-digest.md | Quasi-bicircular problem PhD thesis (POL1/POL2 ICs) | digested | text-layer |
 | andreu-1998-quasi-bicircular-problem-phd-thesis.ps.gz | (PostScript source of the PDF above) | Original PS of the andreu thesis — same content | digested (via PDF) | n/a (compressed PS) |
 | de-la-fuente-marcos-2018-geometric-characterization-arjuna-orbital-domain-arxiv-1410.4104v2.pdf | 2026-06-17-digest-fuente-marcos-2018.md | Geometric characterization of the Arjuna orbital domain | digested | text-layer |
+| wilczak-zgliczynski-2003-heteroclinic-connections-part-I-math-0201278.pdf | 2026-06-19-digest-wilczak-zgliczynski-oterma-heteroclinic.md; KNOWN_CORPUS | W-Z Part I: L1<->L2 heteroclinic cycle proof | digested + KNOWN_CORPUS | text-layer |
+| wilczak-zgliczynski-2006-heteroclinic-connections-part-II-math-0401146.pdf | 2026-06-19-digest-wilczak-zgliczynski-oterma-heteroclinic.md; KNOWN_CORPUS | W-Z Part II: rigorous numerics for the proof | digested + KNOWN_CORPUS | text-layer |
 
 ## Outer-planet / moon tours & endgame (Galilean, Saturnian, Uranian)
 

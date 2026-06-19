@@ -1375,6 +1375,44 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "study identified.)",
         doi=None,
     ),
+    # -----------------------------------------------------------------------
+    # #314 / #403 — Heteroclinic-cycle / Oterma literature anchors.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Koon-Lo-Marsden-Ross dynamical systems and space mission design (2000-2011)",
+        primary="Sun",
+        body_set=frozenset({"Jupiter"}),
+        authors=("Koon", "Lo", "Marsden", "Ross"),
+        keywords=(
+            "Oterma heteroclinic connection",
+            "resonance transition celestial mechanics",
+            "Sun-Jupiter-Oterma PCR3BP",
+            "dynamical systems space mission design",
+        ),
+        citation="Koon, W.S., Lo, M.W., Marsden, J.E. & Ross, S.D., 'Dynamical "
+        "Systems, the Three-Body Problem and Space Mission Design' (2006/2011); "
+        "Chaos 10(2):427-469 (2000) DOI 10.1063/1.166509. Foundational "
+        "connection-only conceptual framework for Oterma.",
+        doi="10.1063/1.166509",
+    ),
+    CorpusAnchor(
+        name="Wilczak-Zgliczyński Sun-Jupiter-Oterma heteroclinic cycle proof",
+        primary="Sun",
+        body_set=frozenset({"Jupiter"}),
+        authors=("Wilczak", "Zgliczyński", "Zgliczynski"),
+        keywords=(
+            "Oterma heteroclinic cycle",
+            "computer-assisted proof",
+            "L1 L2 Lyapunov heteroclinic",
+            "Sun-Jupiter-Oterma PCR3BP",
+        ),
+        citation="Wilczak, D. & Zgliczyński, P., 'Heteroclinic Connections "
+        "between Periodic Orbits in Planar Restricted Circular Three-Body "
+        "Problem', Comm. Math. Phys. (Part I: arXiv:math/0201278; Part II: "
+        "DOI 10.1007/s00220-005-1374-x). The sourced golden dataset for "
+        "closed L1<->L2 Lyapunov heteroclinic cycles.",
+        doi="10.1007/s00220-005-1374-x",
+    ),
 )
 
 
