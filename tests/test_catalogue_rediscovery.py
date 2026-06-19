@@ -373,7 +373,12 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # the Galileo / Heaton-Longuski tours). Pure census shift; each carries its
     # own V0 SPK-derived cruise/Earth-flyby evidence (CAs reproduce the published
     # ESA / NSSDCA record to <=1%; Cassini Jupiter ~3%).
-    ExclusionReason.NOT_TWO_BODY: 8,
+    # 8 -> 9 (2026-06-19, #399): +1 mariner-10-venus-mercury
+    # (bodies=[E,V,Me,Me,Me], 5 bodies; one-shot Venus-Mercury gravity-assist
+    # tour, no period.years/period.k). NOT_TWO_BODY, same lane as the other
+    # SPK-derived mga_tour rows. Only Mercury-I has an SPK-derived V_inf (the
+    # public NAIF M10 archive covers only the Mercury-I window); pure census shift.
+    ExclusionReason.NOT_TWO_BODY: 9,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

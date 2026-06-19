@@ -382,11 +382,20 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # tests.
         "voyager-1-jupiter-saturn-grand-tour",
         "voyager-2-grand-tour",
+        # #399 (2026-06-19): 5 more SPK-derived mga_tour rows admitted via the
+        # #390 extractor (Pioneer 10/11, Cassini, Juno, Mariner-10). Each is a
+        # one-shot gravity-assist tour -> cycler_class=multi-arc structural, same
+        # exemption pattern as the Voyager rows above.
+        "pioneer-10-jupiter-flyby",
+        "pioneer-11-jupiter-saturn-flyby",
+        "cassini-huygens-vvejga",
+        "juno-earth-flyby-jupiter",
+        "mariner-10-venus-mercury",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 246, (
-    f"Allowlist must have 246 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 251, (
+    f"Allowlist must have 251 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -480,7 +489,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 246, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 251, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

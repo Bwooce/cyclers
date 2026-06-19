@@ -150,7 +150,13 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # (SPK-derived cruise/Earth-flyby V_inf whose CA geometry reproduces the
     # published ESA/NSSDCA record to <=1%; Cassini Jupiter ~3%) lives in
     # validation_level, not the source-pair tier.
-    "unvalidated": 36,
+    # 36 -> 37 (2026-06-19, #399): mariner-10-venus-mercury admitted as the 8th
+    # SPK-derived mga_tour row (Mercury-I V_inf only; the public NAIF M10 archive
+    # covers just the Mercury-I window, so Venus + Mercury-II/III are V_inf-
+    # blocked on kernel availability). orbit_source=derived / vinf_source=derived
+    # -> 'unvalidated'; V0 evidence (Mercury-I CA 704 km vs published 704 km)
+    # lives in validation_level, not the source-pair tier.
+    "unvalidated": 37,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

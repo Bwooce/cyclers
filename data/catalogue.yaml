@@ -51111,3 +51111,77 @@ days\" per the NTRS abstract.
     "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 10.401 km/s from NAIF SPK spk_merge_110805_171017_130515.bsp (Juno, body -61) at the Earth gravity-assist CA 2013-10-09T19:21 UTC; CA 552 km alt reproduces the published ~559 km (NASA NSSDCA 2011-040A) to ~1%."
     "n_returns": "Single Earth launch (2011-08-05) and single Jupiter arrival (2016-07-05); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
+- id: mariner-10-venus-mercury
+  name: "Mariner 10 Venus-Mercury gravity-assist tour (Mercury-I SPK-derived V_inf)"
+  source: literature
+  trajectory_regime: ballistic   # Venus gravity assist to Mercury + the 2:1 resonant repeated-Mercury encounters; heliocentric arcs ballistic
+  model_assumption: analytic-ephemeris   # Mercury-I V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; closest controlled-vocabulary token (no real-ephemeris enum value)
+  cycler_class: multi-arc   # schema v4; multiple distinct heliocentric arcs (E->V, V->Me, then 2:1 Mercury-resonant returns); structural, not a cycler
+  orbit_class: mga_tour   # schema v4.7; first dual-planet gravity-assist mission (Venus->Mercury) + first repeated-Mercury (2:1 resonance) tour
+  epoch_locked: true   # the flown 1973 launch / 1974 Venus / 1974-1975 Mercury window
+  n_returns: 1   # single Earth launch; not a cycler
+  validity_window:   # launch -> Mercury-III (last encounter)
+    start: "1973-11-03T05:45:00Z"
+    end: "1975-03-16T22:39:00Z"
+  launch_epoch: "1973-11-03T05:45:00Z"   # Mariner 10 launch 1973-11-03 (NASA; Giberson-Cunningham 1975)
+  validation_level: V0   # spec §14: SPK-derived Mercury-I V_inf; CA altitude reproduces the published value to <0.1%, but V0 is the honest floor for a value our own code derived
+  source_ephemeris: "DE440 + NAIF reconstructed Mariner 10 spacecraft SPK (M10_archive_1.bsp; Mercury-I ONLY -- the public NAIF M10 archive covers only the 1974-03-21..04-04 Mercury-I window; Venus + Mercury-II/III trajectory kernels are not publicly archived in clean SPK form; #399)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: real-de440
+  vinf_fidelity: real-de440
+  bodies: ["E", "V", "Me", "Me", "Me"]
+  sequence_canonical: "E-V-Me-Me-Me"
+  sense: "n/a"   # not a cycler
+  vinf_kms_at_encounters:
+    - body: "Me"
+      vinf_kms: 10.376
+      note: "SPK-derived planetocentric V_inf at Mercury-I closest approach 1974-03-29T20:46 UTC (M10_archive_1.bsp, NAIF -76); vis-viva outer-window std 0.037 km/s; CA 1.289 R_Me / 704 km alt reproduces the published 704 km (NASA Mariner-10 mission page; Giberson-Cunningham 1975) to <0.1%. #399. Venus (1974-02-05) and Mercury-II (1974-09-21) / Mercury-III (1975-03-16) flyby V_inf are NOT extractable: the public NAIF M10 archive contains only the Mercury-I segment."
+  legs: []
+  first_published:
+    authors: ["Giberson, W. E.", "Cunningham, N. W."]
+    year: 1975
+    title: "Mariner 10 mission to Venus and Mercury"
+    venue: "Acta Astronautica 2(7-8):715-743"
+    doi: "10.1016/0094-5765(75)90012-0"
+  corroborating_sources:
+    - authors: ["Acton, C. H."]
+      year: 1996
+      title: "Ancillary data services of NASA's Navigation and Ancillary Information Facility (NAIF SPICE)"
+      venue: "Planetary and Space Science 44(1):65-70"
+      doi: "10.1016/0032-0633(95)00107-7"
+      note: "Provenance of the reconstructed Mariner 10 spacecraft SPK kernel (M10_archive_1.bsp) from the NAIF public archive that #399's vinf_at_flyby() reads; the Mercury-I V_inf is DERIVED from this authoritative mission kernel."
+  priority_date: "1973-11-03"
+  notes: |
+    Mariner 10's flown Venus-Mercury gravity-assist tour -- the FIRST dual-planet
+    gravity-assist mission (Venus flyby retargeting to Mercury) and the FIRST to
+    make repeated encounters with one planet (the 2:1 Mercury-resonant returns:
+    Mercury-I 1974-03-29, Mercury-II 1974-09-21, Mercury-III 1975-03-16). The
+    Mercury-I per-encounter V_inf is not published in clean form (Giberson-
+    Cunningham 1975, #345 digest, gives dates + flyby altitudes + TCM dV but no
+    V_inf), so #399 DERIVES it from the mission's archived NAIF reconstructed
+    spacecraft SPK at the sourced flyby epoch.
+
+    SPK-availability limitation (sourced negative, #399): the public NAIF M10
+    archive contains ONLY M10_archive_1.bsp, which covers the 1974-03-21..04-04
+    Mercury-I window. The Venus gravity assist (1974-02-05) and the Mercury-II /
+    Mercury-III re-encounters are NOT in the public NAIF archive, and the PDART
+    SPICE-reconstruction effort that re-derived Mariner-6/7 trajectories has not
+    (as of this writing) been extended to Mariner 10. So only Mercury-I yields a
+    derived V_inf; the row records the full body sequence but assigns V_inf only
+    where the SPK supports it (sourced-only discipline).
+
+    Mercury-I 1974-03-29T20:46 UTC: V_inf 10.376 km/s, CA 1.289 R_Me / 704 km alt
+    (published 704 km, NASA Mariner-10 mission page). The single SPK-derived
+    encounter; the others remain V_inf-blocked on kernel availability.
+
+    validation_level=V0 (orbit_source = vinf_source = derived -> 'unvalidated'
+    provenance tier; V0 on validation_level), even though the Mercury-I CA
+    altitude reproduces the published record to <0.1%. The 8th SPK-derived
+    mga_tour row. See docs/notes/2026-06-19-390-spk-vinf-extractor.md.
+  source_quotes:
+    "launch_epoch": "Mariner 10 launched 1973-11-03 (NASA Mariner-10 mission page; Giberson-Cunningham 1975 Acta Astronautica 2(7-8):715-743)."
+    "validity_window.end": "Mercury-III encounter 1975-03-16, the mission's last planetary encounter (NASA; Giberson-Cunningham 1975)."
+    "vinf_kms_at_encounters.0.vinf_kms": "DERIVED (#399): planetocentric V_inf 10.376 km/s from NAIF SPK M10_archive_1.bsp (Mariner 10, body -76) at Mercury-I closest approach 1974-03-29T20:46 UTC; CA 1.289 R_Me / 704 km alt reproduces the published 704 km (NASA '45 Years Ago: Mariner 10 flies by Venus'; Giberson-Cunningham 1975) to <0.1%."
+    "n_returns": "Single Earth launch (1973-11-03); n_returns=1. Mariner 10's repeated-Mercury encounters are a 2:1 resonance about the Sun, not Earth returns; per the v4.7 mga_tour invariant (no continuing tour at Earth)."
+
