@@ -103,7 +103,9 @@ def test_se_lyapunov_reproduces_canalias_c() -> None:
         import yaml  # type: ignore[import-untyped]
 
         data = yaml.safe_load(_GOLDEN.read_text())
-        c_target = float(data["se"]["lyapunov_family_C"]) - float(data["se"].get("c_offset", 0.0))
+        # #407 golden schema: conventions_match_cr3bp is true (no mu(1-mu) offset),
+        # so the SE L1->L2 heteroclinic-family bifurcation C is used directly.
+        c_target = float(data["bifurcation_jacobi_constants"]["se_l1_to_l2_heteroclinic"])
     node = LyapunovNode.from_libration(
         se,
         x0_guess=0.9893,
