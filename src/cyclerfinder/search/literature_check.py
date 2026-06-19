@@ -654,6 +654,51 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         citation="Sanaga, Park & Howell, J. Astronaut. Sci. (2026) DOI 10.1007/s40295-026-00571-5",
         doi="10.1007/s40295-026-00571-5",
     ),
+    CorpusAnchor(
+        # #357: Singh-Anderson-Taheri-Junkins 2021 (Acta Astro 183:255-272)
+        # end-to-end GTO -> lunar low-thrust via Earth-Moon L1 halo manifolds.
+        # 3 sourced 15-digit L1 halo ICs at C = 3.128 / 3.143 / 3.158 (Table 2
+        # p.257). Digest docs/notes/2026-06-17-digest-singh-2021-L1-halo.md.
+        name="Singh-Anderson-Taheri-Junkins Earth-Moon L1 halo low-thrust manifolds (2021)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        topology_label=frozenset({"halo"}),
+        authors=("Singh", "Anderson", "Taheri", "Junkins"),
+        keywords=(
+            "Earth-Moon L1 halo manifold low-thrust transfer",
+            "GTO to lunar polar orbit low-thrust",
+            "bi-circular problem halo manifold",
+        ),
+        citation="Singh, Anderson, Taheri & Junkins, 'Exploiting manifolds of "
+        "L1 halo orbits for end-to-end Earth-Moon low-thrust trajectory "
+        "design,' Acta Astronautica 183:255-272 (2021); Table 2 p.257 "
+        "(3 L1 halo ICs at C = 3.128 / 3.143 / 3.158).",
+        doi="10.1016/j.actaastro.2021.03.017",
+    ),
+    CorpusAnchor(
+        # #357: Singh-Anderson-Taheri-Junkins 2021 (JOTA 191(2-3)) low-thrust
+        # transfers to 3 Southern L2 NRHOs via invariant manifolds. 3 sourced
+        # NRHO ICs (9:2 Gateway / 24:5 / 4:1) with stability indices (Table 1
+        # p.5). Digest docs/notes/2026-06-17-digest-singh-2021-NRHO.md. The
+        # 9:2 Gateway NRHO stability indices (-1.3753 / 0.6626) are also #347
+        # Floquet-multiplier ground truth.
+        name="Singh-Anderson-Taheri-Junkins Earth-Moon Southern L2 NRHO manifolds (2021)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        topology_label=frozenset({"nrho", "halo"}),
+        authors=("Singh", "Anderson", "Taheri", "Junkins"),
+        keywords=(
+            "Southern L2 NRHO low-thrust transfer invariant manifold",
+            "9:2 Gateway NRHO",
+            "near-rectilinear halo orbit stability index",
+        ),
+        citation="Singh, Anderson, Taheri & Junkins, 'Low-Thrust Transfers to "
+        "Southern L2 Near-Rectilinear Halo Orbits Facilitated by Invariant "
+        "Manifolds,' J. Optimization Theory & Applications 191(2-3) (2021); "
+        "Table 1 p.5 (9:2 Gateway / 24:5 / 4:1 NRHO ICs + stability indices); "
+        "preliminary AAS 20-565.",
+        doi="10.1007/s10957-021-01898-9",
+    ),
     # -----------------------------------------------------------------------
     # MGA / pump-tour / cycler-precursor literature (#294 scope expansion).
     #
