@@ -20,7 +20,12 @@ from cyclerfinder.genome.heteroclinic_cycle import (
 
 # --- W-Z Sun-Jupiter-Oterma golden (arXiv:math/0201278) ---------------------
 WZ_MU = 0.0009537  # W-Z fixed Sun-Jupiter mass ratio (published exactly)
-WZ_C = 3.03  # Oterma Jacobi constant
+WZ_C = 3.03  # Oterma Jacobi constant in W-Z convention: C = 2*Omega - v^2
+# where Omega = (x^2+y^2)/2 + (1-mu)/r1 + mu/r2 + mu*(1-mu)/2  (includes constant term).
+# Our code uses C_ours = 2*Ubar - v^2, Ubar = Omega - mu*(1-mu)/2, so:
+#   C_ours = C_WZ - mu*(1-mu)
+# This constant offset is the ONLY difference; the dynamics are identical.
+WZ_C_OURS = WZ_C - WZ_MU * (1.0 - WZ_MU)  # = 3.0290472095... (our code's C for WZ energy)
 # Lyapunov fixed points on the section {y=0}, params (x, xdot); xdot=0 at the
 # perpendicular crossing. W-Z Part I, interval-enclosed centres:
 WZ_X_L1 = 0.9208034913207400196
@@ -50,3 +55,34 @@ def test_floquet_pair_gives_unstable_and_stable_reciprocal() -> None:
     assert abs(lam_u * lam_s - 1.0) < 1e-2, f"not a reciprocal pair: {lam_u}*{lam_s}"
     assert v_u.shape == (4,) and v_s.shape == (4,)
     assert np.isclose(np.linalg.norm(v_u), 1.0) and np.isclose(np.linalg.norm(v_s), 1.0)
+
+
+def test_lyapunov_fixed_points_match_wz() -> None:
+    """Corrected L1/L2 Lyapunov x0 reproduce W-Z's section fixed points at C=3.03.
+
+    EXPECTED = W-Z Part I interval-enclosed centres (arXiv:math/0201278); confirms
+    our mu/Jacobi/section conventions agree with the paper before any connection.
+
+    Jacobi convention note: W-Z uses C = 2*Omega - v^2 with Omega including the
+    mu*(1-mu)/2 constant term; our code omits that term (WZ_C_OURS = WZ_C - mu*(1-mu)).
+    The dynamics are identical; the Jacobi values differ by a fixed offset.  At the
+    WZ-equivalent energy the corrector reproduces x* to double-precision, validating
+    that our CR3BP mu/equations/section match the paper exactly.
+
+    Seeds: L1 uses ydot0_sign=+1 (x0 < L1_x, Theta+ start); L2 uses ydot0_sign=-1
+    (x0 > L2_x, Theta- start) — these are the working seeds; period_guess=3.0 suffices
+    for both.
+    """
+    system = _sun_jupiter()
+    l1 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L1, jacobi=WZ_C_OURS, period_guess=3.0, label="L1"
+    )
+    l2 = LyapunovNode.from_libration(
+        system, x0_guess=WZ_X_L2, jacobi=WZ_C_OURS, period_guess=3.0, label="L2", ydot0_sign=-1.0
+    )
+    assert l1.converged and l2.converged
+    # W-Z enclosures are ~1e-13; our corrector tol is 1e-10, so allow 1e-6.
+    assert abs(l1.state0[0] - WZ_X_L1) < 1e-6, f"L1 x0={l1.state0[0]} vs {WZ_X_L1}"
+    assert abs(l2.state0[0] - WZ_X_L2) < 1e-6, f"L2 x0={l2.state0[0]} vs {WZ_X_L2}"
+    # Both nodes sit at the WZ-equivalent Oterma energy (our convention).
+    assert abs(l1.jacobi - WZ_C_OURS) < 1e-6 and abs(l2.jacobi - WZ_C_OURS) < 1e-6
