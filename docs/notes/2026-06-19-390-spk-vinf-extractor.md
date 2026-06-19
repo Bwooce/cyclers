@@ -98,7 +98,18 @@ mission record to <1%, and the V∞ is vis-viva-stable far outside the SOI.
 | Voyager 1 | Saturn  | 1980-11-12T23:46 | 15.167 | 0.030 | 3.06 R_S | 123,875 |
 | Voyager 2 | Jupiter | 1979-07-09T22:29 | 7.639  | 0.031 | 10.09 R_J | 650,060 |
 | Voyager 2 | Saturn  | 1981-08-26T03:24 | 10.674 | 0.001 | 2.68 R_S | 101,050 |
+| Voyager 2 | Uranus  | 1986-01-24T17:58 | 14.732 | 0.00001 | 4.19 R_U | 81,573 |
+| Voyager 2 | Neptune | 1989-08-25T03:56 | 16.742 | 0.0004 | 1.18 R_N | 4,507 |
 | Mariner 10 | Mercury | 1974-03-29T20:47 | 10.376 | 0.038 | 1.29 R_Me | 713 |
+
+The Voyager 2 Uranus + Neptune rows were added in the #390 admission follow-on
+(P-A): same `vinf_at_flyby()` with zero new code, centered on the true CA epochs
+found by a fine periapsis scan. Cross-checks (both sourced): Uranus CA 4.192 R_U
+/ 81,573 km alt vs the published 81,500 km above cloud tops (Wikipedia "Voyager
+2"; NASA "35 Years Ago: Voyager 2 Explores Uranus" 50,700 mi); Neptune CA 1.182
+R_N / 29,271 km radius-from-center vs the published ~29,240 km (4,950 km above
+the north pole, Wikipedia "Voyager 2") — both agree to <0.2%. Voyager 2 is now
+the complete E-J-S-U-N Grand Tour V∞ tuple.
 
 All closest-approach radii match the published flyby geometry (V1 Jupiter 4.88 vs
 published 4.89 R_J; V1 Saturn 3.06 vs ~3.09 R_S; Mariner-10 Mercury I 713 km alt
@@ -118,9 +129,11 @@ meaningful published cross-check, and it matches.
   the only Mariner-10 datum #390 can deliver.** Venus/Mercury-II/III remain
   blocked pending a wider-coverage Mariner-10 SPK (none currently on NAIF).
 * All Voyager flybys at giant planets are fully covered.
-* Voyager 2 Uranus (1986) / Neptune (1989) SPKs exist (`vgr2.ura182.bsp`,
-  `vgr2_nep097.bsp`) and are mechanically extractable with the same code if those
-  encounters are wanted later.
+* Voyager 2 Uranus (1986) / Neptune (1989) SPKs (`vgr2.ura182.bsp`,
+  `vgr2_nep097.bsp`) were extracted in the #390 admission follow-on (P-A) with
+  the same code — see the §4 table. Coverage `vgr2_nep097.bsp` spans 1988-11-12
+  → 1989-10-01 (Neptune CA well inside); `vgr2.ura182.bsp` covers the Uranus
+  encounter. Voyager 2 is the full four-giant-planet Grand Tour.
 
 ## 6. RECOMMENDED catalogue `mga_tour` rows (NO writeback — review-gated)
 
