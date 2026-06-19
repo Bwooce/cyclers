@@ -1,12 +1,12 @@
 # #389 Phase 4 — branch_C32_b0 V0-V5 gauntlet for catalogue admission
 
-**Status:** P389.0 complete, working on `main`.
-**Date opened:** 2026-06-18 AET.
+**Status:** COMPLETE — **HALT at V4** (honest negative). NOT admitted. Catalogue unchanged at 302 rows. Working on `main`.
+**Date opened:** 2026-06-18 AET. **Closed:** 2026-06-19 AET.
 **Predecessor task:** #347 Phase 2 (`docs/notes/2026-06-17-347-floquet-phase2-progress.md`).
 **Structural template:** #339 (`docs/notes/2026-06-17-339-silver-quasi-cycler-admission.md`).
 **Candidate:** `branch-c32-b0-em-3-3-quasi-cycler-2026` — the #347 Floquet bifurcation framework's first discovered cycler-family member (planar (3, 3) Earth-Moon CR3BP at T=101.56d, J=3.797, max Floquet 1.000000000000617).
-**Catalogue target:** if all V-tiers clear → catalogue 302 → 303 rows, second computed quasi_cycler row (first from the Floquet framework).
-**Discipline:** every V-tier cleanly + atomically committed; HALT on any failure per `feedback_orbit_closure_discipline`.
+**Outcome:** cleared V1-V3 (idealized CR3BP) by 6-9 orders, but **FAILED V4** — real DE440 solar tides destabilize the far-amplitude (0.77 R_Hill) orbit into escape (~10⁹ km), uniformly across all 100 launch epochs 2000-2099.
+**Discipline:** every V-tier cleanly + atomically committed; HALT on failure per `feedback_orbit_closure_discipline` — no tuning to force a pass, no catalogue writeback.
 
 ---
 
@@ -198,24 +198,151 @@ slot depends on the full V1-V5 verdict.
 
 ---
 
-## P389.4 — V3 REBOUND IAS15 n-body [PENDING]
+## P389.4 — V3 REBOUND IAS15 n-body (same idealized 2-body) — PASS
 
-REBOUND IAS15 + Earth + Moon + Sun + Mars + Jupiter mass points (DE440-class).
-PASS = nanometer/micrometer agreement vs V2 at n=3, 5, 10 cycles.
+**New artifacts:** `scripts/branch_c32_b0_v3_verify.py` +
+`data/branch_c32_b0_v3_verdict.jsonl` + `tests/verify/test_branch_c32_b0_v3_passes.py`.
+
+V3 isolated the **integrator** (REBOUND IAS15 vs scipy DOP853), at the SAME
+idealized circular-coplanar Earth-Moon 2-body the CR3BP uses (G_total = ω²a³,
+Kepler-consistent with t_s). Per-cycle V3-vs-V2 drift agreement stayed at
+**~1.6e-5 km** (max over n=3, 5, 10) — ~6.9 orders below the 100 km spec §14 V3
+floor. The bounded-drift signature is a real dynamical property, not a DOP853
+artifact.
+
+**P389.4 gate:** PASS. Committed `ef29378`.
 
 ---
 
-## P389.5 — V4 GMAT + SPICE real-eph [PENDING]
+## P389.5 — V4 real-ephemeris (DE440) cross-check — **HALT (honest negative)**
 
-DE440 ephemeris (not URA111 as in #339), V4-scipy first then V4-strict, plus
-annual epoch sweep 2000-2099 analogous to #338.
+**New artifacts:** `scripts/branch_c32_b0_v4_verify.py` +
+`data/branch_c32_b0_v4_verdict.jsonl` +
+`tests/verify/test_branch_c32_b0_v4_passes.py`. Committed `fcdf5c5`.
+
+**Approach (REBOUND-with-DE440, option A — no GMAT needed).** A full REBOUND
+IAS15 n-body seeded from the JPL **DE440** planetary ephemeris (fetched + cached
+by astropy): Earth (399) + Moon (301) at their real DE440 inertial states with
+the JPL registry GM masses (the real eccentric/inclined lunar orbit, not the
+CR3BP circular idealization), plus **Sun (10) + Mars (4) + Jupiter (5)** as
+massive third-body perturbers, the spacecraft a massless test particle. Unlike
+V3 (which isolated the integrator at idealized physics), V4 isolates the
+**physics**: real lunar eccentricity + solar/planetary tides. Drift is measured
+in the instantaneous DE440 Earth→Moon rotating frame at each cycle boundary,
+compared against V3 with the same 50 000 km same-model floor the #335 SILVER
+V4-strict used.
+
+**Results (epoch 2000-01-15, n_cycles = 3, 5, 10):**
+
+| n_cycles | max V4 drift (km) | V4-vs-V3 agreement (km) | floor (km) | passes_v4 |
+|----------|-------------------|--------------------------|------------|-----------|
+| 3 | 9.01e8 | 9.01e8 | 50 000 | **False** |
+| 5 | 1.32e9 | 1.32e9 | 50 000 | **False** |
+| 10 | 2.71e9 | 2.71e9 | 50 000 | **False** |
+
+The spacecraft drifts ~10⁹ km — far larger than the orbit's own ~1.15M km
+amplitude. This is an **escape**, not a marginal miss. Fails V4 by ~4-5 orders.
+
+**Attribution (not a plumbing bug).** Two controls in the verdict JSONL isolate
+the cause:
+
+* **Earth+Moon-only control** (DE440 real lunar orbit, NO Sun/Mars/Jupiter):
+  max drift **2.75e5 km** over 10 cycles — bounded, no escape. (It does exceed
+  the 50k floor at cycle 2 (~2.3e5 km), driven by the real lunar
+  eccentricity + the 2.3% distance mismatch between the real 375,637 km
+  Earth-Moon distance at epoch and the CR3BP's assumed 384,400 km — a real
+  geometric effect of seeding a CR3BP orbit onto the real Moon, but BOUNDED.)
+* **Sun-only isolation** (separate run): reproduces the entire ~9e8 km drift;
+  Mars + Jupiter are negligible.
+
+So the escape is caused by the **real solar tide**, fully isolated.
+
+**Structural cause (`structural_diagnostic` record).** branch_C32_b0 is a
+far-amplitude orbit whose max Earth-distance is **1.15M km = 0.766 of the
+Earth-Sun Hill radius (1.50M km)**. At that amplitude the solar tidal
+acceleration is **30% of Earth's gravity**. The CR3BP — and V1-V3, which live in
+or near it — ignore the Sun entirely. V4 with real DE440 solar gravity is the
+first gate that sees this dominant perturbation, and the orbit cannot survive it.
+
+**P389.5 gate: HALT.** A clean structural negative at V4 per
+`feedback_orbit_closure_discipline`. NO tuning to force a pass. NO catalogue
+writeback.
 
 ---
 
-## P389.6 — Admission verdict + catalogue writeback [PENDING]
+## P389.6 — Annual epoch sweep 2000-2099 (#338 pattern) — STRUCTURAL_FAIL_ALL_EPOCHS
 
-Only on full PASS: row composition + 3 ratchet bumps + _LEVEL_EVIDENCE
-registration. Catalogue 302 → 303.
+**New artifacts:** `scripts/branch_c32_b0_v4_annual_sweep.py` +
+`data/branch_c32_b0_v4_annual_sweep_389.jsonl` +
+`tests/verify/test_branch_c32_b0_v4_annual_sweep_389.py`. Committed `27a3959`.
+
+The #338 SILVER pattern asks whether a V4 verdict is epoch-dependent (a
+launch-window artifact) or structural (true at every epoch). Where #338 found
+the SILVER's interior PASS run (EFFECTIVELY_CYCLIC), branch_C32_b0 gives the
+opposite:
+
+| Metric | Value |
+|--------|-------|
+| Epochs swept (2000-2099, DOY 06-21) | 100 |
+| PASS | **0** |
+| FAIL | **100** |
+| verdict_label | **STRUCTURAL_FAIL_ALL_EPOCHS** |
+| epoch_dependent | False |
+| drift min / median / max (km) | 8.48e8 / 9.02e8 / 9.43e8 |
+
+The drift is remarkably uniform (~9e8 km) across all 100 epochs — confirming the
+failure is geometric/amplitude-driven, NOT a launch-phase artifact. This
+upgrades the single-epoch HALT to a **complete structural negative**:
+branch_C32_b0 cannot be a real-ephemeris cycler at any 21st-century launch epoch.
+
+---
+
+## P389.7 — Catalogue writeback — **SKIPPED (HALT)**
+
+Per the HALT discipline and the "no writeback until ALL gates clear" rule, the
+V4 failure means **no catalogue admission**. The catalogue stays at **302 rows**.
+The proposed `branch-c32-b0-em-3-3-cycler-2026` row is NOT created. No census
+ratchets bumped, no `_LEVEL_EVIDENCE` registration.
+
+---
+
+## Final verdict
+
+**branch_C32_b0 HALTS at V4. NOT admitted. Catalogue unchanged at 302 rows.**
+
+| Gate | Verdict | Margin / note |
+|------|---------|---------------|
+| V1 (closure + Radau) | PASS | residual 1.3e-13, Radau 2.2e-11 |
+| P389.2 (physical / lit / ML) | PASS | 3/3 (far-amplitude, not flyby tour) |
+| V2 (bounded-cycle CR3BP) | PASS | ~9 orders below floor |
+| V3 (REBOUND IAS15, idealized 2-body) | PASS | ~6.9 orders below floor |
+| **V4 (DE440 real-eph n-body)** | **FAIL** | **solar-tide escape, ~10⁹ km** |
+| V4 annual sweep 2000-2099 | FAIL | 0/100, STRUCTURAL_FAIL_ALL_EPOCHS |
+
+**Structural cause:** the candidate is a far-amplitude (3,3) EM CR3BP orbit
+reaching 0.77 of the Earth-Sun Hill radius, where the solar tide (~30% of Earth
+gravity) — entirely absent from the CR3BP and from V1-V3 — destabilizes it into
+escape. The V1-V3 PASSES were genuine *within the idealized model*; the orbit is
+simply not a real-ephemeris cycler. This is a legitimate clean negative.
+
+**Lesson (candidate for memory).** The Floquet Phase 2 framework found a
+spectrally-stable (max |Floquet| = 1.000000000000617) CR3BP periodic orbit, but
+spectral stability in the **autonomous CR3BP** says nothing about survival under
+the **Sun's tidal perturbation** when the orbit's amplitude approaches the Earth
+Hill radius. A pre-V4 amplitude-vs-Hill screen (cheap: one `_structural_diagnostic`
+call) would flag such far-amplitude candidates as V4-doomed before spending the
+gauntlet. Recommended follow-on: add a Hill-fraction pre-screen to the Floquet
+candidate emitter so near-Hill families are tagged `cr3bp-only` up front.
+
+**Recommended follow-on tasks:**
+
+1. Add an amplitude/Hill-fraction pre-screen to the Floquet emitter (flag
+   amplitude > ~0.3 R_Hill as "solar-tide-dominated, expect V4 fail").
+2. Re-scope the Floquet sweep toward **lower-amplitude** (3,k) families well
+   inside the Earth Hill sphere, which have a chance at V4 survival.
+3. The parent C32 = (3,2) is a Braik-Ross Table 2 cycler — check whether IT (or
+   nearer-in branch members) sits at a smaller amplitude before running its
+   gauntlet.
 
 ---
 
