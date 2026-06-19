@@ -17,7 +17,11 @@ For each parent in
      :func:`cyclerfinder.genome.asymmetric_branch.branch_at_saddle_center`
      (with the Phase 2 P2.1 Gram-Schmidt fix in place) at epsilon=5e-4.
   5. Emit one JSONL row per (parent, bracket, branched orbit) tuple to
-     ``data/floquet_phase2_sweep_results.jsonl``.
+     ``data/floquet_phase2_sweep_results.jsonl``. Each emitted branch is tagged
+     with its #391 Hill-fraction pre-screen classification
+     (:mod:`cyclerfinder.genome.hill_screen`) so far-amplitude /
+     solar-tide-dominated families are pre-flagged ``V4_DOOMED`` before any
+     V0-V5 gauntlet is fired (see the #389 ``branch_C32_b0`` V4 HALT).
 
 Phase 2 is DISCOVERY only: each emitted row is a "discovery candidate", NOT a
 catalogue admission. Catalogue writeback is Phase 4+ (gauntlet) work.
@@ -54,6 +58,7 @@ from cyclerfinder.genome.floquet_phase2_parents import (
     PHASE2_SWEEP_PARENTS,
     SweepParent,
 )
+from cyclerfinder.genome.hill_screen import screen_orbit
 from cyclerfinder.search.bifurcation_detector import (
     FamilyMember,
     detect_saddle_center_bracket,
@@ -377,6 +382,23 @@ def _process_parent(
             sigma_tu = float("nan")
             sigma_d = float("nan")
 
+        # #391 Hill-fraction pre-screen: tag the branched orbit with its
+        # amplitude-vs-Earth-Sun-Hill classification so future sweeps pre-flag
+        # V4-doomed (far-amplitude, solar-tide-dominated) families BEFORE anyone
+        # fires a V0-V5 gauntlet. See cyclerfinder.genome.hill_screen +
+        # docs/notes/2026-06-18-389-branch_C32_b0-admission.md.
+        try:
+            hill = screen_orbit(system, bo.state0, bo.T_TU)
+            hill_class = hill.classification
+            hill_fraction = float(hill.hill_fraction)
+            hill_max_amp_km = float(hill.max_amplitude_km)
+            hill_tide_ratio = float(hill.solar_tide_to_earth_gravity_ratio)
+        except (RuntimeError, ValueError):
+            hill_class = "screen_failed"
+            hill_fraction = float("nan")
+            hill_max_amp_km = float("nan")
+            hill_tide_ratio = float("nan")
+
         # Cycler-candidate flag (informational; Phase 4 gauntlet decides).
         cycler_candidate = (
             result.topology_changed and bo.corrector_residual < 1e-10 and (b_k1, b_k2) != (-1, -1)
@@ -427,13 +449,18 @@ def _process_parent(
             "eigenvalue_used_imag": float(result.eigenvalue_used.imag),
             "eigenvector_used": [float(x) for x in result.eigenvector_used],
             "cycler_candidate_flag": bool(cycler_candidate),
+            "hill_classification": hill_class,
+            "hill_fraction": hill_fraction,
+            "hill_max_amplitude_km": hill_max_amp_km,
+            "hill_solar_tide_to_earth_gravity_ratio": hill_tide_ratio,
         }
         output_fh.write(json.dumps(row) + "\n")
         print(
             f"{log_prefix} parent={parent.label} bracket={b_idx}: branched orbit "
             f"converged (residual={bo.corrector_residual:.3e}, T={bo.T_TU * TU_DAYS:.2f}d, "
             f"topology=({result.branched_topology.k1}, {result.branched_topology.k2}), "
-            f"cycler_candidate={cycler_candidate})"
+            f"cycler_candidate={cycler_candidate}, "
+            f"hill={hill_class} ({hill_fraction:.3f}))"
         )
 
     return counters
