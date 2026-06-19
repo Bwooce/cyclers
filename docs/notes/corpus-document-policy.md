@@ -22,14 +22,37 @@ probe returning empty = image-only).
   add a text layer ONCE, then `pdftotext`. This is a cheap deterministic
   CPU step — do NOT vision-read hundreds of page-images through the Read
   tool (the Szebehely digest burned large token cost doing exactly that).
-- **Hybrid for precision**: Tesseract garbles math/subscripts/tables on
-  old scans. Navigate via the OCR'd text, but reserve Claude vision
-  (Read on the page image) for the 2-3 precision-critical
-  equation/table pages where exact sourced values matter. Cheap bulk +
-  accurate where it counts.
 - Tooling: `ocrmypdf` (PyPI, `uv add`) requires the `tesseract-ocr` +
-  `ghostscript` system binaries. Setup is task #400. No document stays a
-  black-box image.
+  `ghostscript` system binaries (installed; helper `verify/ocr.py`, #400).
+  No document stays a black-box image.
+
+#### Three content classes (the hybrid rule)
+OCR is bulk text only; two other content classes need Claude vision.
+Cost is bounded by using the cheap OCR text to decide *which* pages to
+vision-read — never vision-read a whole document.
+
+| Content | Tool | Note |
+|---|---|---|
+| Body text | ocrmypdf/Tesseract | cheap, deterministic, greppable |
+| Equations / tables (precise values) | Claude vision on the specific page | Tesseract garbles math, subscripts, table structure |
+| **Diagrams / figures (semantic)** | Claude vision — **caption-guided** | Tesseract extracts ~nothing from plots/graphs |
+
+- **Diagram rule:** Tesseract reads figure *captions* fine but extracts
+  nothing from the figure itself. Many findings live in the diagram —
+  Tisserand-Poincaré graphs, B-plane error ellipses, heliocentric
+  trajectory plots, family-network figures, orbit-shape plots. Workflow:
+  OCR text → read captions (cheap) → identify the load-bearing figures
+  the captions reference → Claude-vision-read ONLY those figure pages to
+  extract what the diagram shows. Bounded cost (N relevant figures, not
+  all), full diagram coverage.
+- **Fidelity guard (figure-derived ≠ sourced):** reading a *value off a
+  plot* (a curve, a contour, an error ellipse) is **digitization, not
+  OCR** — lossy. Vision tells you what a diagram *shows*; it does not
+  authoritatively *measure* it. Flag any plot-read value `figure-derived`
+  and never put it in a sourced numeric field without the explicit
+  digitize rung (cf. the published-values-are-display discipline and the
+  digitize step of the never-give-up-reproducing ladder). A published
+  table or the original always beats an eyeballed plot.
 
 ### 2. Chapter/section-summary digest
 A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.
