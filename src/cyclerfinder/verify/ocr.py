@@ -47,13 +47,25 @@ import shutil
 import subprocess
 from pathlib import Path
 
-# Probe threshold (documented constant; see policy §1). A genuine text layer
-# yields hundreds-to-thousands of characters per page; an image-only scan yields
-# ~0 (pdftotext returns only stray whitespace / form-feed bytes). One char per
-# page is a deliberately low floor: anything at or above it is treated as a
-# usable text layer, anything below as image-only needing OCR. See the
-# "Edge case" note in the task record re: thin pre-existing OCR layers.
-DEFAULT_MIN_CHARS_PER_PAGE = 1.0
+# Probe threshold (documented constant; see policy §1). At or above this many
+# pdftotext characters per page ⇒ usable text layer (no OCR); below ⇒ image-only.
+#
+# Measured on the corpus (2026-06-19): a genuine text layer yields ~3700
+# chars/page (braik-ross-2026 arXiv: 215409 chars / 58 pages); an image-only
+# scan yields EXACTLY ~1 char/page — pdftotext emits one form-feed (\f) byte per
+# page and nothing else (Szebehely 1967: 342 chars / 342 pages = 1.000). The two
+# populations are ~3 orders of magnitude apart, so the threshold sits anywhere in
+# the gap. A floor of 1.0 is WRONG: it coincides exactly with the image-only
+# value and misclassifies image-only scans as text-bearing (the bug the slow
+# OCR test caught). 10 chars/page is ~10x above the form-feed noise floor and
+# ~370x below real text — comfortably inside the gap.
+#
+# Edge case (honest): a scan carrying a *thin pre-existing* OCR layer (a few
+# words per page) could read just above this floor and wrongly skip a re-OCR.
+# That is rare; for such a document call with a higher min_chars_per_page or
+# force OCR explicitly. We do not over-engineer per-page distribution analysis
+# here — the bimodal corpus does not need it.
+DEFAULT_MIN_CHARS_PER_PAGE = 10.0
 
 # ocrmypdf flags (policy §1): --skip-text leaves any page that already has text
 # untouched (so a partly-OCR'd PDF is not double-burned) and OCRs only the
