@@ -15,6 +15,7 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
+from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search import dsm_leg, self_seeding
 
@@ -28,6 +29,16 @@ V1_TOLERANCE_KMS: float = 0.5
 DAY_S = 86400.0
 YEAR_DAYS = 365.25
 
+# Russell 2004 SS2.1: the generic-return search caps ToF at 6 body periods; this is
+# the global ceiling on how many revolutions the lane will enumerate.
+RUSSELL_GENERIC_RETURN_BODY_PERIOD_CAP = 6
+
+
+def _body_period_days(body: str) -> float:
+    """Sidereal period of a planet (days), from its semi-major axis."""
+    a_km = PLANETS[body].sma_au * AU_KM
+    return float(2.0 * np.pi * np.sqrt(a_km**3 / MU_SUN_KM3_S2) / DAY_S)
+
 
 @dataclass(frozen=True)
 class DsmChainSeed:
@@ -38,6 +49,8 @@ class DsmChainSeed:
     arc_e: float
     transit_branch: str
     vinf_anchor_kms: float  # the row's sourced Russell-table V_inf cell
+    per_leg_tof_days: tuple[float, ...] = ()  # SOURCED per-leg seed ToFs (audit)
+    max_revs: int = 0  # global Lambert rev cap (Russell-sourced; see seed builder)
 
 
 def _descriptor_params(
@@ -111,19 +124,46 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
     n_legs = len(sequence) - 1
     # Seed ToFs: use the arc branch's tof_g_days as the transit-leg seed,
     # the complementary g-arc duration (big_g - transit) for the other legs.
-    g_tof_days = float(g_tof_yr * YEAR_DAYS)
-    big_g_tof_days = float(big_g_tof_yr * YEAR_DAYS)
-    transit_days = float(arc.tof_g_days)
-    # Distribute remaining time across non-transit legs; at minimum 30 d.
-    slack_days = max(30.0, big_g_tof_days - transit_days)
-    tof_seed_days: list[float] = []
+    # SOURCED per-leg seed ToFs (spec 2026-06-20): a same-body resonant leg seeds at
+    # its PUBLISHED arc ToF (free_return_arcs tof_years x 365.25, in list order); a
+    # cross-body transit leg seeds at the row's sourced invariants.transit_times_days
+    # (in order). Falls back to the computed arc transit (arc.tof_g_days) only if the
+    # row has no transit_times_days entry left.
+    arc_tofs_days = [
+        float(a["tof_years"]) * YEAR_DAYS
+        for a in (row.get("free_return_arcs") or [])
+        if a.get("tof_years") is not None
+    ]
+    transit_days_list = [
+        float(t) for t in ((row.get("invariants") or {}).get("transit_times_days") or [])
+    ]
+    big_g_tof_days = float(big_g_tof_yr * YEAR_DAYS)  # retained for the bounds cap below
+    tof_seed_days = []
+    per_leg_rev_cap = []
+    arc_i = 0
+    transit_i = 0
     for i in range(n_legs):
         body_a, body_b = sequence[i], sequence[i + 1]
-        # Transit leg: E->M or M->E
-        if {body_a, body_b} == {"E", "M"}:
-            tof_seed_days.append(transit_days)
+        if body_a == body_b:
+            # Same-body resonant return -> the next published arc ToF.
+            if arc_i >= len(arc_tofs_days):
+                return None  # more resonant legs than descriptor arcs -> cannot seed
+            leg_tof = arc_tofs_days[arc_i]
+            arc_i += 1
+            rev_body = body_a
         else:
-            tof_seed_days.append(max(slack_days, g_tof_days))
+            # Cross-body transit -> the next sourced transit time (else computed arc).
+            if transit_i < len(transit_days_list):
+                leg_tof = transit_days_list[transit_i]
+                transit_i += 1
+            else:
+                leg_tof = float(arc.tof_g_days)
+            inner = body_a if PLANETS[body_a].sma_au <= PLANETS[body_b].sma_au else body_b
+            rev_body = inner
+        tof_seed_days.append(leg_tof)
+        period_days = _body_period_days(rev_body)
+        per_leg_rev_cap.append(int(np.floor(leg_tof / period_days)) + 1)
+    max_revs = min(max(per_leg_rev_cap), RUSSELL_GENERIC_RETURN_BODY_PERIOD_CAP)
     eta_seed = tuple(0.0 for _ in range(n_legs))
     t0_seed_sec = 0.0
     bounds_raw = dsm_leg.sequence_keyed_bounds(
@@ -168,6 +208,8 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
         arc_e=float(arc.e),
         transit_branch=str(arc.branch),
         vinf_anchor_kms=float(vinf_m),
+        per_leg_tof_days=tuple(tof_seed_days),
+        max_revs=int(max_revs),
     )
 
 
