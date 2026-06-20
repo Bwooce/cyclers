@@ -239,3 +239,29 @@ def test_crosscheck_is_recorded_or_inf() -> None:
     for cyc in results:
         checked = crosscheck_cross_cycle(bridge, cyc)
         assert not np.isnan(checked.independent_residual)
+
+
+import math  # noqa: E402
+
+from cyclerfinder.genome.cross_system_cycle import theta_commensurability  # noqa: E402
+
+
+def test_theta_commensurability_arithmetic() -> None:
+    """The Diophantine phase-closure grid finds the minimal-residual (n_em, n_se).
+
+    Pure arithmetic (no external source). Constructed case: gap=pi, dtheta_em=pi/2 ->
+    n_em=2 nulls it (pi + 2*(pi/2) = 2pi == 0 mod 2pi); dtheta_se large/irrelevant so
+    n_se=0. Plus the trivial gap=0 -> (0,0) and an infeasible case."""
+    n_em, n_se, res, feasible = theta_commensurability(
+        math.pi, math.pi / 2, 5.0, n_max=4, tol_rad=1e-6
+    )
+    assert (n_em, n_se) == (2, 0)
+    assert res < 1e-9 and feasible
+
+    # Trivial: already closed.
+    assert theta_commensurability(0.0, 1.0, 1.0, n_max=3)[2] < 1e-12
+
+    # Infeasible within range at a tight tol: gap=pi, only commensurate increments of
+    # exactly 2pi/3 — within n_max=1 the best residual cannot reach 0.
+    _, _, res2, feasible2 = theta_commensurability(math.pi, 0.1, 0.1, n_max=1, tol_rad=1e-3)
+    assert not feasible2 and res2 > 1e-3

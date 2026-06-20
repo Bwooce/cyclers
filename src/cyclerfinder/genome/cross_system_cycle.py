@@ -528,6 +528,38 @@ def _theta_gap(theta_a: float, theta_b: float) -> float:
     return float(min(d, 2.0 * math.pi - d))
 
 
+def theta_commensurability(
+    gap_rad: float,
+    dtheta_em_rad: float,
+    dtheta_se_rad: float,
+    *,
+    n_max: int = 60,
+    tol_rad: float = 5.0e-2,
+) -> tuple[int, int, float, bool]:
+    """Smallest-residual non-negative (n_em, n_se) nulling the cross-cycle phase gap.
+
+    Necessary-condition feasibility check for closing a cross-system cycle by
+    multi-revolution phasing (#411): adding ``n_em`` revolutions on the EM orbit and
+    ``n_se`` on the SE orbit advances the relative phase by ``n_em*dtheta_em +
+    n_se*dtheta_se``; closure needs ``gap + n_em*dtheta_em + n_se*dtheta_se ≡ 0
+    (mod 2π)``. Grid-searches ``0 <= n_em, n_se <= n_max`` and returns
+    ``(n_em, n_se, residual_rad, feasible)`` for the minimal mod-2π residual, with
+    ``feasible = residual < tol_rad``. This is NECESSARY-not-sufficient: the
+    multi-rev connections themselves must still re-converge (sufficiency). It asserts
+    NO orbit — only whether a commensurate phase closure exists at tractable counts.
+    """
+    two_pi = 2.0 * math.pi
+    best_n_em, best_n_se, best_res = 0, 0, float("inf")
+    for n_em in range(n_max + 1):
+        partial = gap_rad + n_em * dtheta_em_rad
+        for n_se in range(n_max + 1):
+            val = (partial + n_se * dtheta_se_rad) % two_pi
+            res = min(val, two_pi - val)
+            if res < best_res:
+                best_n_em, best_n_se, best_res = n_em, n_se, res
+    return best_n_em, best_n_se, float(best_res), bool(best_res < tol_rad)
+
+
 def _build_em_node(em: cr3bp.CR3BPSystem, label: str, c_em: float) -> LyapunovNode:
     x0, sign = _EM_SEEDS.get(label, (1.155, -1.0))
     return LyapunovNode.from_libration(

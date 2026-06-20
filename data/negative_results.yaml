@@ -92,8 +92,11 @@ entries:
     still under-resolves and reports the return non-converged; a full-scan return
     converges.)'
   resweep_condition: 'Both spatial legs exist at low dV, so the open work is PHASE
-    closure, not the connections. Productive path: a continuation that enforces
-    theta-consistency across both legs (track the converged forward+return connections
-    jointly in energy/theta toward a commensurate return) and/or a multi-revolution /
-    Metonic-commensurate formulation; or BCR4BP Phase B (coherent 4-body). NOT a finer
+    closure. FEASIBILITY CONFIRMED (2026-06-20, docs/notes/2026-06-20-411-theta-closure-feasibility.md):
+    the 2.2 rad gap IS nullable by multi-revolution phasing -- (n_em=41, n_se=19) closes
+    it to 2e-4 rad at a ~11 yr cycle (Metonic ballpark). So the productive next step is
+    the FULL multi-revolution theta-closure corrector (n-rev manifold departure + joint
+    solve of both legs + theta-consistency near (41,19), with rigorous Radau verification
+    before any closed-cycle claim); sufficiency (do the multi-rev connections re-converge?)
+    is the open question. Alternative venue: BCR4BP Phase B (#412). NOT a finer
     single-revolution grid.'
