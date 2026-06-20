@@ -183,9 +183,12 @@ def _manifold_inertial_at_section(
     """
     if side not in {"em", "se"}:
         raise ValueError(f"side must be 'em' or 'se'; got {side!r}")
-    seed = _seed_on_manifold(
-        system, node, tau=tau, direction=direction, branch=branch, epsilon=epsilon
-    )
+    try:
+        seed = _seed_on_manifold(
+            system, node, tau=tau, direction=direction, branch=branch, epsilon=epsilon
+        )
+    except (RuntimeError, ValueError):
+        return None  # orbit not valid at this energy/phase (e.g. singular STM)
     horizon = abs(float(max_time))
     t_span = (0.0, horizon) if direction == "unstable" else (0.0, -horizon)
     t_eval = np.linspace(t_span[0], t_span[1], n_samples)
@@ -527,6 +530,120 @@ def _build_se_node(se: cr3bp.CR3BPSystem, label: str, c_se: float) -> LyapunovNo
     return LyapunovNode.from_libration(
         se, x0_guess=x0, jacobi=c_se, period_guess=_SE_PERIOD_GUESS, label=label, ydot0_sign=sign
     )
+
+
+def crosscheck_cross_cycle(
+    bridge: FrameBridge,
+    cycle: CrossCycle,
+    *,
+    method: str = "Radau",
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    epsilon: float = 1e-6,
+    max_time_factor: float = 8.0,
+) -> CrossCycle:
+    """Re-derive each converged leg's patch-state with an independent integrator.
+
+    For each connection in ``cycle.connections`` that ``converged``, re-runs
+    ``_manifold_inertial_at_section`` at the stored ``(theta, tau_u, tau_s, branch)``
+    using ``method`` (default Radau; the corrector used DOP853) and compares the
+    re-derived inertial patch POSITION to the stored ``conn.patch_state_inertial[:3]``.
+    The maximum position disagreement (km) across all re-derived legs is
+    ``independent_residual``.  A leg that fails to re-derive contributes ``inf`` (a
+    real failure, surfaced — never silently dropped).  If NO leg converged (the
+    Task-4 clean-negative case) there is nothing to re-derive and the result is
+    ``inf`` (finite, non-nan — the test requires not-nan).
+
+    Returns a new ``CrossCycle`` (dataclasses.replace) with ``independent_residual``
+    filled; all other fields are unchanged.  Mirrors ``heteroclinic_cycle.crosscheck_cycle``.
+    """
+    import dataclasses
+
+    em, se = bridge.em, bridge.se
+    worst: float = 0.0
+    any_converged = False
+
+    for conn in cycle.connections:
+        if not conn.converged:
+            continue
+        any_converged = True
+        # Determine which system and direction this leg belongs to.
+        # Forward leg: label_from is an EM label (EM-L*) → unstable from EM.
+        # Return leg: label_from is a SE label (SE-L*) → unstable from SE.
+        if conn.label_from.startswith("EM"):
+            system = em
+            side = "em"
+            label = conn.label_from
+            try:
+                node = _build_em_node(em, label, conn.c_em)
+            except Exception:
+                worst = float("inf")
+                continue
+            if not node.converged:
+                worst = float("inf")
+                continue
+            max_time = max_time_factor * node.period
+            recheck = _manifold_inertial_at_section(
+                bridge,
+                system,
+                node,
+                side=side,
+                tau=conn.tau_u,
+                direction="unstable",
+                branch=+1,  # forward leg uses branch_u=+1 (corrector default)
+                theta=conn.theta,
+                x0_km=float(conn.patch_state_inertial[0])
+                if np.any(conn.patch_state_inertial[:3] != 0.0)
+                else _PATCH_X0_KM_DEFAULT,
+                epsilon=epsilon,
+                max_time=max_time,
+                method=method,
+                rtol=rtol,
+                atol=atol,
+            )
+        else:
+            # Return leg: SE unstable.
+            system = se
+            side = "se"
+            label = conn.label_from
+            try:
+                node = _build_se_node(se, label, conn.c_se)
+            except Exception:
+                worst = float("inf")
+                continue
+            if not node.converged:
+                worst = float("inf")
+                continue
+            max_time = max_time_factor * node.period
+            recheck = _manifold_inertial_at_section(
+                bridge,
+                system,
+                node,
+                side=side,
+                tau=conn.tau_u,
+                direction="unstable",
+                branch=+1,
+                theta=conn.theta,
+                x0_km=float(conn.patch_state_inertial[0])
+                if np.any(conn.patch_state_inertial[:3] != 0.0)
+                else _PATCH_X0_KM_DEFAULT,
+                epsilon=epsilon,
+                max_time=max_time,
+                method=method,
+                rtol=rtol,
+                atol=atol,
+            )
+
+        if recheck is None:
+            worst = float("inf")
+            continue
+        pos_gap = float(np.linalg.norm(recheck[:3] - conn.patch_state_inertial[:3]))
+        worst = max(worst, pos_gap)
+
+    if not any_converged:
+        worst = float("inf")
+
+    return dataclasses.replace(cycle, independent_residual=worst)
 
 
 def search_cross_cycle(

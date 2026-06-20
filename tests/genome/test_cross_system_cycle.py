@@ -183,3 +183,25 @@ def test_closure_search_returns_results_or_clean_negative() -> None:
             assert cyc.theta_closure_residual < 1e-2
         else:
             assert cyc.notes
+
+
+from cyclerfinder.genome.cross_system_cycle import crosscheck_cross_cycle  # noqa: E402
+
+
+@pytest.mark.slow
+def test_crosscheck_is_recorded_or_inf() -> None:
+    """crosscheck_cross_cycle returns a cycle whose independent_residual is set
+    (finite if every converged leg re-derives under Radau, inf if any fails)."""
+    se = se_earth_system()
+    em = em_moon_system()
+    bridge = FrameBridge(se=se, em=em)
+    results = search_cross_cycle(
+        bridge,
+        c_em_grid=(3.15,),
+        c_se_grid=(CANALIAS_C_SE,),
+        libration_pairs=(("EM-L2", "SE-L2"),),
+        max_attempts=2,
+    )
+    for cyc in results:
+        checked = crosscheck_cross_cycle(bridge, cyc)
+        assert not np.isnan(checked.independent_residual)
