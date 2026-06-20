@@ -51,11 +51,19 @@ DAY_S = 86400.0
 # V_inf-continuous E->M->E cycler. The f/F full-Mars-radius free returns plus the
 # deep-aphelion 9.353Gg2 (promoted CLOSE-AND-MATCH by #137 Part 3's dense phase
 # scan, then found to clear the V_inf-continuity gate too).
+#
+# 8.049gGf2 added here after the #200/#205 Lambert-accuracy fixes: its reconstructed
+# free-return arc now closes V_inf-continuously (continuity 103 m/s — in-family with
+# the accepted rows, which span 0.9-190.5 m/s; 5.75ggF3 is looser at 190.5), and the
+# row is independently catalogue-validated to V3. The original #137 "multi-arc,
+# refused V1" classification was superseded by the improved reconstruction; this is a
+# census re-baseline to match ground truth, not a tolerance relaxation.
 V1_ROWS = (
     "russell-ch4-5.30gGf3",
     "russell-ch4-9.94Gg3",
     "russell-ch4-5.75ggF3",
     "russell-ch4-9.353Gg2",
+    "russell-ch4-8.049gGf2",
 )
 # Matched rows whose single free-return ellipse does NOT close to Earth (multi-arc;
 # return needs phasing loops) — refused V1 on the V_inf-continuity gate — plus the
@@ -63,7 +71,6 @@ V1_ROWS = (
 NON_V1_ROWS = (
     "mcconaghy-2006-em-k2",
     "russell-ch4-4.991gG2",
-    "russell-ch4-8.049gGf2",
     "russell-ch4-3.64gGg3",
     "russell-ch4-3.78Gg3",
     "russell-ch4-3.66gfF3",

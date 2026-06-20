@@ -44,14 +44,18 @@ _EXPECTED_OUTCOME: dict[str, str] = {
     "russell-ch4-6.44Gg3": "CLOSE-OFF-ANCHOR",
 }
 
-# The four free-return rows that clear §14 V1 mechanics (#137 Part 1 + Part 3):
-# a closed, V_inf-continuous reconstructed E->M->E arc.
+# The free-return rows that clear §14 V1 mechanics (#137 Part 1 + Part 3): a closed,
+# V_inf-continuous reconstructed E->M->E arc. 8.049gGf2 joined after the #200/#205
+# Lambert-accuracy fixes made its arc close V_inf-continuously (continuity 103 m/s,
+# in-family with the 0.9-190.5 m/s accepted band; row is catalogue-V3) — see the
+# V1_ROWS note in tests/search/test_free_return_v1_mechanics.py.
 _EXPECTED_V1: frozenset[str] = frozenset(
     {
         "russell-ch4-5.30gGf3",
         "russell-ch4-9.94Gg3",
         "russell-ch4-5.75ggF3",
         "russell-ch4-9.353Gg2",
+        "russell-ch4-8.049gGf2",
     }
 )
 
