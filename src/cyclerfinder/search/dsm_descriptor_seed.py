@@ -53,7 +53,13 @@ def _descriptor_params(
     - sequence     <- row["sequence_canonical"] split on "-"
     """
     aph = (row.get("orbit_elements") or {}).get("aphelion_au")
-    vinf_list = {e["body"]: float(e["vinf_kms"]) for e in (row.get("vinf_kms_at_encounters") or [])}
+    # Skip encounters with a null V_inf (some rows publish a body with no V_inf cell);
+    # a row then missing its E/M anchor falls through to None below rather than raising.
+    vinf_list = {
+        e["body"]: float(e["vinf_kms"])
+        for e in (row.get("vinf_kms_at_encounters") or [])
+        if e.get("body") is not None and e.get("vinf_kms") is not None
+    }
     fra = row.get("free_return_arcs") or []
     g_tofs = [a.get("tof_years") for a in fra if a.get("tof_years") is not None]
     seq_str: str | None = row.get("sequence_canonical")
@@ -91,7 +97,14 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
     if params is None:
         return None
     aphelion_au, g_tof_yr, big_g_tof_yr, vinf_e, vinf_m, sequence = params
-    branches = self_seeding.g_arc_branches(aphelion_au, g_tof_yr, big_g_tof_yr, vinf_e, vinf_m)
+    # A descriptor whose arc geometry does not actually reach the body (the spec's
+    # OFF-FAMILY-NO-CLOSE case, e.g. 5.30ggF3 / 5.75ggF3) raises "orbit does not
+    # reach body" from g_arc_branches -> there is no USABLE seed, so honour the
+    # documented contract and return None rather than propagating the error.
+    try:
+        branches = self_seeding.g_arc_branches(aphelion_au, g_tof_yr, big_g_tof_yr, vinf_e, vinf_m)
+    except ValueError:
+        return None
     if not branches:
         return None
     arc = branches[0]  # base short-way shape; the gate may retry others
