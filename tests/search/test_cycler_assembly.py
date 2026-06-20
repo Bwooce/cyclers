@@ -94,3 +94,25 @@ def test_golden_cycler_4_9_2_m1_grouping() -> None:
     assert f_count(9) == 6  # six re-initiating flybys (the [83,45,45,45,45,83] list)
     assert f_count(0) == 1  # single 24-deg flyby
     assert omega_max > 0.0
+
+
+def test_descriptor_to_phsi_maps_known_row() -> None:
+    from cyclerfinder.data.catalog import load_catalog
+    from cyclerfinder.search.cycler_assembly import descriptor_to_phsi
+
+    row = load_catalog().by_id["russell-ch4-4.991gG2"].raw
+    spec = descriptor_to_phsi(row)
+    assert spec is not None
+    assert spec.s >= 1
+    assert spec.vinf_e_kms > 0.0
+    assert spec.vinf_m_kms > 0.0
+    assert spec.sequence == ("E", "E", "M", "M")
+
+
+def test_descriptor_to_phsi_none_for_ocampo() -> None:
+    from cyclerfinder.data.catalog import load_catalog
+    from cyclerfinder.search.cycler_assembly import descriptor_to_phsi
+
+    cat = load_catalog()
+    ocampo = next(e for e in cat.entries if e.id.startswith("russell-ocampo"))
+    assert descriptor_to_phsi(ocampo.raw) is None

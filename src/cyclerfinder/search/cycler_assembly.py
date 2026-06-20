@@ -18,6 +18,8 @@ All quantities are in Russell's canonical units (mu_sun = 1, AU, TU).
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 from scipy.optimize import brentq
@@ -292,3 +294,111 @@ def group_half_years(
         omega_minimax(model, body, vinf, vinf_in_vec, f_j=f_count(h_j)) for h_j in groups
     )
     return tuple(groups), omega_max
+
+
+@dataclass(frozen=True)
+class PhsiSpec:
+    """Russell's p.h.s.i cycler-structure descriptor (Phase D, #388).
+
+    Russell (2004 §3) parametrises a generic-return cycler by four integers
+    ``p.h.s.i`` plus its V_inf anchors:
+
+    - ``p`` — number of synodic periods spanned by the cycle;
+    - ``h`` — number of half-years of re-initiating return arcs;
+    - ``s`` — number of generic (g/G) free-return arcs;
+    - ``i`` — signed spacecraft revolution count of the leading generic arc
+      (sign distinguishes fast/slow direction).
+
+    plus ``vinf_e_kms`` / ``vinf_m_kms`` (the E and M flyby anchors) and the
+    canonical body ``sequence``.
+    """
+
+    p: int
+    h: int
+    s: int
+    i: int
+    vinf_e_kms: float
+    vinf_m_kms: float
+    sequence: tuple[str, ...]
+
+
+def descriptor_to_phsi(row: dict[str, Any]) -> PhsiSpec | None:
+    """Map a catalogue row's McConaghy g/G/f/h arc descriptor onto p.h.s.i.
+
+    There is NO published crosswalk between McConaghy's per-arc descriptor
+    (``free_return_arcs``) and Russell's p.h.s.i structure, so this is a
+    best-effort STRUCTURAL map: the descriptor *is* the per-arc decomposition,
+    and the four integers are read off it where they can be, approximated
+    otherwise. The approximations are flagged inline below.
+
+    Mapping
+    -------
+    - No ``free_return_arcs`` with a generic (g/G) arc → ``None`` (ocampo rows
+      carry no descriptor).
+    - ``s`` = count of generic arcs (``arc_type == "generic"`` with non-null
+      ``tof_years``); needs ``s >= 1`` else ``None``.
+    - ``h`` = count of re-initiating arcs (``arc_type in {"half-rev",
+      "full-rev"}``), default 0. **APPROXIMATION**: Russell's ``h`` is a
+      half-year count; the descriptor does not tabulate it directly, so the
+      arc count is used as a structural proxy.
+    - ``i`` = the leading generic arc's ``resonance`` rev count if present,
+      else 1, sign ``+1``. **APPROXIMATION**: the descriptor does not encode
+      fast/slow sense reliably, so the sign defaults positive and unknown
+      counts fall back to ``i = 1``.
+    - ``p`` = 2 if the row name / V_inf notes mention "two-synodic", else
+      ``max(1, s)``. **APPROXIMATION**: the synodic-period count is not in the
+      descriptor; ``s`` is a reasonable proxy.
+    - ``vinf_e_kms`` / ``vinf_m_kms`` = the E / M anchor V_inf (both required,
+      else ``None``).
+
+    Returns ``None`` when the row is not mappable (no generic arcs, or a
+    missing required E / M V_inf anchor).
+    """
+    arcs = row.get("free_return_arcs")
+    if not arcs:
+        return None
+
+    generic = [a for a in arcs if a.get("arc_type") == "generic" and a.get("tof_years") is not None]
+    s = len(generic)
+    if s < 1:
+        return None
+
+    h = sum(1 for a in arcs if a.get("arc_type") in {"half-rev", "full-rev"})
+
+    # i: leading generic arc's resonance rev count, else 1; sign defaults +1.
+    resonance = generic[0].get("resonance")
+    i = 1
+    if resonance is not None:
+        try:
+            i = int(str(resonance).split(":")[0])
+        except (ValueError, IndexError):
+            i = 1
+
+    name_blob = (str(row.get("name") or "") + str(row.get("vinf_kms_at_encounters") or "")).lower()
+    p = 2 if "two-synodic" in name_blob else max(1, s)
+
+    vinf_e_kms: float | None = None
+    vinf_m_kms: float | None = None
+    for enc in row.get("vinf_kms_at_encounters") or []:
+        body = enc.get("body")
+        v = enc.get("vinf_kms")
+        if v is None:
+            continue
+        if body == "E" and vinf_e_kms is None:
+            vinf_e_kms = float(v)
+        elif body == "M" and vinf_m_kms is None:
+            vinf_m_kms = float(v)
+    if vinf_e_kms is None or vinf_m_kms is None:
+        return None
+
+    sequence = tuple(str(row.get("sequence_canonical") or "").split("-"))
+
+    return PhsiSpec(
+        p=p,
+        h=h,
+        s=s,
+        i=i,
+        vinf_e_kms=vinf_e_kms,
+        vinf_m_kms=vinf_m_kms,
+        sequence=sequence,
+    )
