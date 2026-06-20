@@ -102,8 +102,7 @@ Russell §2.5–2.6 (full/half-rev return geometry) + §3.4–3.6 (turn-angle mi
 Appendix A.1.
 
 - `half_rev_returns` / `full_rev_returns(model, body, vinf, n_half_years)`: the analytic
-  re-initiating returns (Russell Eqs 2.13–2.25 — **bodies to be transcribed at
-  plan-time from §2.5–2.6**, flagged in Appendix A.3 as the one un-transcribed gap).
+  re-initiating returns (Russell Eqs 2.12–2.25, transcribed verbatim in Appendix A.3).
   Full-rev: re-encounter after integer years, identical velocity diagram, free
   longitude on the full-rev circle. Half-rev: after odd half-years, v_e flips → v∞ must
   be re-pointed.
@@ -200,9 +199,8 @@ Cycler (AR/TR-gated) → golden checks / held closure report.
 - 3D / out-of-plane v∞ sphere → #414.
 - Real-DE440 continuation of the assembled cyclers → existing dsm/correct lanes; a
   later rung, not this spec.
-- The bodies of Eqs 2.13–2.25 (full/half-rev geometry) are referenced but not yet
-  transcribed (Appendix A.3) — a plan-time source read of §2.5–2.6 is required before
-  Phase B implementation.
+- (Resolved 2026-06-21) The full/half-rev geometry Eqs 2.12–2.25 are now transcribed
+  verbatim in Appendix A.3 — no remaining un-sourced equations; the spec is gap-free.
 
 ## References
 - `docs/notes/2026-06-07-russell-2004-dissertation-method-mining.md`
@@ -265,10 +263,41 @@ integration to machine precision. N_MAX = largest rev count whose min ToF fits t
 6-period cap (=15 in the worked example). Tables 2.2 (N=1) and 2.3 (|v∞|=0.1838 AU/TU)
 are the goldens.
 
-### A.3 Known un-transcribed gap (plan-time source read required)
+### A.3 Full-rev / half-rev return geometry (Russell §2.7.1–2.7.2; print pp. 32–39)
 
-The bodies of **Eqs 2.13–2.25** (full-rev circle z-coordinate Eqs 2.13–2.17; half-rev
-points Eqs 2.18,2.19,2.23–2.25) govern the re-initiating-return geometry in Phase B and
-were NOT transcribed (they live in §2.3/2.5/2.6, before the read range). The
-implementation plan must read Russell §2.5–2.6 to transcribe them before Phase B. The
-turn-angle optimization (3.2–3.8) and Table 3.2 ARE fully transcribed above.
+Verbatim (transcribed 2026-06-21). **Frame:** origin at the tip of v_B, z-axis along
+v_B, y-axis opposed to the body's angular-momentum vector; the half-rev primed frame
+has x′ along r_B. Symbols: v_B = body heliocentric speed; v∞ = hyperbolic excess; v_F =
+full-rev post-flyby speed; a (a_F) = transfer semi-major axis; a_B = body semi-major
+axis; r (r₁,r₂) = body distance(s) from primary; N/M = s/c-vs-body revolution counts;
+γ = body flight-path angle; μ = gravitational parameter.
+
+**Full-rev returns:**
+- (2.12) vis-viva: `v_F = sqrt(2μ/r − μ/a_F)`.
+- (2.13) feasible post-flyby speed: `v_F = sqrt(2μ/r − μ·(N/M)^(2/3)/a_B)` (from a_F =
+  a_B·(N/M)^(2/3)). Feasible (N,M,r,μ,a_B) = those making v_F real; N = 1..N_max.
+- (2.14) intersection feasibility (logical): `|v_B − v∞| ≤ v_F ≤ v_B + v∞`.
+- (2.15) v∞ sphere: `x² + y² + z² = v∞²`.
+- (2.16) full-rev sphere: `x² + y² + (z + v_B)² = v_F²`.
+- (2.17) full-rev circle z-height: `z_F = (v_F² − v∞² − v_B²) / (2 v_B)`. The full-rev
+  circle is the slice of (2.15) at z = z_F.
+
+**Half-rev returns** (outbound terminal velocity, Battin):
+- (2.18) radial: `v_Hr² = μ·[2/(r₁+r₂) − 1/a]` (negative root = fast, positive = slow).
+- (2.19) transverse: `v_Hθ² = 2μ·r₂/(r₁² + r₁ r₂)` (independent of a / TOF).
+- (2.20) half-rev circle (primed): `(y′)² + [z′ + v_B cos γ]² = v_Hθ²`.
+- (2.21) half-rev circle plane: `x′ = v_Hr − v_B sin γ`.
+- (2.22) v∞ sphere (primed): `(x′)² + (y′)² + (z′)² = v∞²`.
+- (2.23) `x = [v_Hr − v_B sin γ] cos γ + K sin γ / (2 v_B cos γ)`
+- (2.24) `y = ± sqrt{ v∞² − [v_Hr − v_B sin γ]² − K²/(2 v_B cos γ)² }` (± = the two
+  intersection points; real-y required for existence)
+- (2.25) `z = [v_Hr − v_B sin γ] sin γ − K/(2 v_B)`
+- (unnumbered, defines K): `K = 2 v_Hr v_B sin γ + v_B²·[1 − 2 sin²γ] − v_Hθ² − v_Hr² + v∞²`
+
+**Half-rev a constraint:** `a ≥ a_min` (= (r₁+r₂)/2 in the symmetric r₁=r₂ case);
+below a_min, Eq 2.18's v_Hr goes imaginary. Half-rev returns exist only at the discrete
+a where the ToF curve meets the required ToF.
+
+(Numbering note: in the source 2.13 is the lone feasible-v_F formula, 2.14 the
+feasibility *constraint*, 2.15 the v∞ sphere — the full-rev *circle* is its z_F slice
+via 2.15+2.16+2.17. Physics matches §2.7.5's references exactly.)
