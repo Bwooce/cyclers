@@ -42,7 +42,12 @@ entries:
   physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
     represented by a single radial-crossing free-return ellipse, breaking V_inf continuity
     by tens of km/s.'
-  resweep_condition: Implement multi-arc closure infrastructure.
+  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
+    this row is multi-arc but carries NO per-arc free-return descriptor (the Russell-Ocampo
+    n.m.k summary format publishes only the cycle-level summary, never the per-arc g/G
+    geometry), so a multi-arc closer has nothing to seed. The block is a PUBLICATION gap,
+    not missing closer infrastructure. Resweep = acquire the per-arc descriptor (Russell
+    2004 detailed tables / dissertation), NOT build/run a closer.'
 - id: russell-ocampo-4.3.1-5
   issue: 365
   method: Single-arc closer_sweep_v1
@@ -50,7 +55,10 @@ entries:
   failed_rung: V1
   physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
     represented by a single radial-crossing free-return ellipse (NO-CLOSE).'
-  resweep_condition: Implement multi-arc closure infrastructure.
+  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
+    multi-arc but NO per-arc free-return descriptor (n.m.k summary format) -> a multi-arc
+    closer has nothing to seed. PUBLICATION gap, not missing infrastructure. Resweep =
+    acquire the per-arc descriptor (Russell 2004 detailed tables), NOT build/run a closer.'
 - id: russell-ocampo-4.5.2-2
   issue: 365
   method: Single-arc closer_sweep_v1
@@ -58,7 +66,10 @@ entries:
   failed_rung: V1
   physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
     represented by a single radial-crossing free-return ellipse, breaking V_inf continuity.'
-  resweep_condition: Implement multi-arc closure infrastructure.
+  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
+    multi-arc but NO per-arc free-return descriptor (n.m.k summary format) -> a multi-arc
+    closer has nothing to seed. PUBLICATION gap, not missing infrastructure. Resweep =
+    acquire the per-arc descriptor (Russell 2004 detailed tables), NOT build/run a closer.'
 - id: mcconaghy-2006-em-k2
   issue: 365
   method: Single-arc closer_sweep_v1
@@ -66,7 +77,13 @@ entries:
   failed_rung: V1
   physical_reason: 'Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby.
     Single ellipse representation breaks V_inf continuity.'
-  resweep_condition: Implement multi-arc closure infrastructure.
+  resweep_condition: 'IN SCOPE for the multi-arc closer (#404 triage 2026-06-20): unlike the
+    three russell-ocampo #365 negatives, this row IS descriptor-bearing -- it carries 2
+    generic free-return arcs (tof 1.46 + 2.81 yr), so the DSM eta-leg closure lane
+    (spec docs/superpowers/specs/2026-06-10-dsm-multiarc-closure-lane-design.md) can seed
+    it. The ONE of the four #365 negatives a closer can actually address. Resweep = run
+    that lane; per its single-arc-degenerate guard, only a genuine two-arc closure at the
+    sourced V_inf (4.7/5.0 km/s) promotes it off V0.'
 - id: cross_system_se_em_L2_patched_cr3bp
   issue: 405
   method: patched-CR3BP SE<->EM connection matcher + bounded closure search (#405
