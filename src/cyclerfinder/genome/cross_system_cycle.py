@@ -450,3 +450,234 @@ def correct_cross_connection(
         n_iter=n_iter,
         notes="" if converged else "did not reach tol_km",
     )
+
+
+# --- Task 4: bounded closure search + CrossCycle ----------------------------
+#
+# A cross-system CYCLE chains a forward EM->SE connection with a SE->EM RETURN
+# connection so the trajectory comes back to the starting EM orbit. Spatial closure
+# (both inertial position legs match) is necessary but not sufficient: the relative
+# phase ``theta`` between the SE line and the EM line must ALSO return commensurately
+# (periodic-up-to-rotation). theta_closure_residual measures the phase mismatch
+# |theta_return - theta_forward| reduced to [0, pi]; closure requires it small.
+#
+# This simultaneous spatial+phase closure is genuinely hard. The #316 survey notes
+# the natural cross-system closure is the ~19yr Metonic (235:19) commensurability, far
+# outside any single-revolution bounded grid. A non-closing grid is therefore an
+# honest CLEAN NEGATIVE (an acceptable Phase-A result), surfaced as ``closed=False``
+# with a diagnostic note — NEVER fabricated closure or loosened thresholds.
+
+# Per-libration Lyapunov seeds (x0 guess, ydot0 sign). EM/SE families need the -1
+# branch (the +1 sign collapses onto a different, shorter-period member). L2 seeds are
+# the Task-3 working values; L1 seeds are the sunward-side equivalents.
+# L2 seeds are the Task-3 verified-converging values (EM-L2 x0=1.18 -> x0_corr~1.182
+# T~3.42; SE-L2 x0=1.009 -> x0_corr~1.0108 T~3.07). The nearby x0=1.155 / 1.0101 wander
+# off the branch (Newton lands on a different-period member or fails). L1 seeds are the
+# sunward-side equivalents.
+_EM_SEEDS: dict[str, tuple[float, float]] = {
+    "EM-L1": (0.85, -1.0),
+    "EM-L2": (1.18, -1.0),
+}
+_SE_SEEDS: dict[str, tuple[float, float]] = {
+    "SE-L1": (0.9893, -1.0),
+    "SE-L2": (1.009, -1.0),
+}
+# Period guesses by family (nondim); only used as Newton seeds.
+_EM_PERIOD_GUESS = 3.4
+_SE_PERIOD_GUESS = 3.06
+
+
+@dataclass(frozen=True)
+class CrossCycle:
+    """A candidate cross-system cycle: EM->SE forward leg chained to a SE->EM return.
+
+    ``closed`` is True only when BOTH legs converged AND ``theta_closure_residual`` is
+    below the commensurability tolerance (periodic-up-to-rotation). ``max_leg_residual``
+    is the larger of the two legs' inertial position gaps (km). ``independent_residual``
+    is reserved for an independent cross-check (Task 5; nan here). When not closed,
+    ``notes`` records what was observed (which leg failed / best theta residual).
+    """
+
+    connections: list[CrossConnection]
+    c_em: float
+    c_se: float
+    libration_pair: tuple[str, str]
+    theta_closure_residual: float
+    closed: bool
+    max_leg_residual: float
+    independent_residual: float
+    notes: str = ""
+
+
+def _theta_gap(theta_a: float, theta_b: float) -> float:
+    """|theta_a - theta_b| reduced to [0, pi] (relative-phase commensurability gap)."""
+    d = (theta_a - theta_b) % (2.0 * math.pi)
+    return float(min(d, 2.0 * math.pi - d))
+
+
+def _build_em_node(em: cr3bp.CR3BPSystem, label: str, c_em: float) -> LyapunovNode:
+    x0, sign = _EM_SEEDS.get(label, (1.155, -1.0))
+    return LyapunovNode.from_libration(
+        em, x0_guess=x0, jacobi=c_em, period_guess=_EM_PERIOD_GUESS, label=label, ydot0_sign=sign
+    )
+
+
+def _build_se_node(se: cr3bp.CR3BPSystem, label: str, c_se: float) -> LyapunovNode:
+    x0, sign = _SE_SEEDS.get(label, (1.0101, -1.0))
+    return LyapunovNode.from_libration(
+        se, x0_guess=x0, jacobi=c_se, period_guess=_SE_PERIOD_GUESS, label=label, ydot0_sign=sign
+    )
+
+
+def search_cross_cycle(
+    bridge: FrameBridge,
+    *,
+    c_em_grid: tuple[float, ...],
+    c_se_grid: tuple[float, ...],
+    libration_pairs: tuple[tuple[str, str], ...],
+    max_attempts: int = 2,
+    theta_tol: float = 1e-2,
+    tol_km: float = 1e2,
+    return_scan_n: int = 4,
+    return_scan_n_tau: int = 2,
+    return_max_time_factor: float = 4.0,
+    **conn_kwargs: object,
+) -> list[CrossCycle]:
+    """Bounded energy x libration grid search for a closed cross-system cycle.
+
+    For each ``(c_em, c_se, (em_lib, se_lib))`` grid point: build the two Lyapunov
+    nodes, correct the forward EM->SE connection and the (harder) SE->EM return
+    connection, then test spatial AND phase closure. The return leg may need a
+    different stable/unstable branch than the forward leg (like #314's L2->L1 return);
+    up to ``max_attempts`` branch/k variations are tried and the best (least position
+    gap) is kept.
+
+    BOUNDED COST: the return leg (SE unstable -> EM stable) integrates an SE-system
+    manifold over many SE periods (each SE time unit ~58 days) and is ~25x costlier
+    than the forward leg, so it is run on a coarser scan and a shorter horizon
+    (``return_scan_n`` / ``return_scan_n_tau`` / ``return_max_time_factor``). This is
+    a deliberately bounded Phase-A search, not an exhaustive one: a coarser grid that
+    finds no crossing is still an honest non-closure (the manifolds genuinely never
+    co-reach the section at this horizon), not an artifact to hide.
+
+    Returns one ``CrossCycle`` per grid point. NEVER raises for non-closure — a grid
+    that does not close is an honest CLEAN NEGATIVE (closed=False with a diagnostic
+    note). Thresholds are NEVER loosened to manufacture a closed=True.
+    """
+    em, se = bridge.em, bridge.se
+    # Return-leg branch/k variations to try (forward defaults are branch_u=+1, branch_s=-1).
+    return_variants: list[dict[str, int]] = [
+        {"branch_u": +1, "branch_s": -1, "k": 1},
+        {"branch_u": -1, "branch_s": +1, "k": 1},
+        {"branch_u": +1, "branch_s": +1, "k": 1},
+        {"branch_u": -1, "branch_s": -1, "k": 1},
+    ][: max(1, int(max_attempts))]
+
+    results: list[CrossCycle] = []
+    for c_em in c_em_grid:
+        for c_se in c_se_grid:
+            for em_lib, se_lib in libration_pairs:
+                pair = (em_lib, se_lib)
+                try:
+                    em_node = _build_em_node(em, em_lib, c_em)
+                    se_node = _build_se_node(se, se_lib, c_se)
+                except Exception as exc:  # report, never abort the grid
+                    results.append(
+                        CrossCycle(
+                            connections=[],
+                            c_em=c_em,
+                            c_se=c_se,
+                            libration_pair=pair,
+                            theta_closure_residual=float("nan"),
+                            closed=False,
+                            max_leg_residual=float("inf"),
+                            independent_residual=float("nan"),
+                            notes=f"node construction failed: {exc}",
+                        )
+                    )
+                    continue
+                if not (em_node.converged and se_node.converged):
+                    results.append(
+                        CrossCycle(
+                            connections=[],
+                            c_em=c_em,
+                            c_se=c_se,
+                            libration_pair=pair,
+                            theta_closure_residual=float("nan"),
+                            closed=False,
+                            max_leg_residual=float("inf"),
+                            independent_residual=float("nan"),
+                            notes=(
+                                f"Lyapunov node did not converge "
+                                f"(EM={em_node.converged}, SE={se_node.converged})"
+                            ),
+                        )
+                    )
+                    continue
+
+                # Forward leg: EM unstable -> SE stable (Task-3 working direction).
+                fwd = correct_cross_connection(
+                    bridge,
+                    em_node,
+                    se_node,
+                    label_from=em_lib,
+                    label_to=se_lib,
+                    tol_km=tol_km,
+                    **conn_kwargs,  # type: ignore[arg-type]
+                )
+
+                # Return leg: SE unstable -> EM stable (harder). Try branch/k variants,
+                # keep the one with the smallest inertial position gap.
+                ret: CrossConnection | None = None
+                for variant in return_variants:
+                    cand = correct_cross_connection(
+                        bridge,
+                        se_node,
+                        em_node,
+                        label_from=se_lib,
+                        label_to=em_lib,
+                        tol_km=tol_km,
+                        branch_u=variant["branch_u"],
+                        branch_s=variant["branch_s"],
+                        k=variant["k"],
+                        scan_n=return_scan_n,
+                        scan_n_tau=return_scan_n_tau,
+                        max_time_factor=return_max_time_factor,
+                        **conn_kwargs,  # type: ignore[arg-type]
+                    )
+                    if ret is None or cand.residual < ret.residual:
+                        ret = cand
+                    if cand.converged:
+                        break
+                assert ret is not None  # max_attempts >= 1 guarantees one candidate
+
+                connections = [fwd, ret]
+                theta_res = _theta_gap(ret.theta, fwd.theta)
+                max_leg = max(fwd.residual, ret.residual)
+                legs_ok = fwd.converged and ret.converged
+                phase_ok = theta_res < theta_tol
+                closed = legs_ok and phase_ok
+
+                if closed:
+                    notes = ""
+                elif not fwd.converged:
+                    notes = f"forward leg did not converge: residual={fwd.residual:.3e} km"
+                elif not ret.converged:
+                    notes = f"return leg did not converge: residual={ret.residual:.3e} km"
+                else:
+                    notes = f"theta not commensurate: residual={theta_res:.3e} rad"
+
+                results.append(
+                    CrossCycle(
+                        connections=connections,
+                        c_em=c_em,
+                        c_se=c_se,
+                        libration_pair=pair,
+                        theta_closure_residual=theta_res,
+                        closed=closed,
+                        max_leg_residual=max_leg,
+                        independent_residual=float("nan"),
+                        notes=notes,
+                    )
+                )
+    return results

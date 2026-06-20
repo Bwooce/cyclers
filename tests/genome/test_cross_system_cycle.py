@@ -153,3 +153,33 @@ def test_em_to_se_connection_is_low_energy() -> None:
     assert conn.converged, f"pos residual {conn.residual:.3e} km, n_iter {conn.n_iter}"
     assert conn.residual < 1e2
     assert conn.patch_dv_kms < 1.0
+
+
+from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
+    CrossCycle,
+    search_cross_cycle,
+)
+
+
+@pytest.mark.slow
+def test_closure_search_returns_results_or_clean_negative() -> None:
+    """The bounded search returns CrossCycle results; each is closed (with bounded
+    residuals) or honestly open (closed=False, notes set). Never fabricates closure."""
+    se = se_earth_system()
+    em = em_moon_system()
+    bridge = FrameBridge(se=se, em=em)
+    results = search_cross_cycle(
+        bridge,
+        c_em_grid=(3.15,),
+        c_se_grid=(CANALIAS_C_SE,),
+        libration_pairs=(("EM-L2", "SE-L2"),),
+        max_attempts=2,
+    )
+    assert isinstance(results, list)
+    for cyc in results:
+        assert isinstance(cyc, CrossCycle)
+        if cyc.closed:
+            assert cyc.max_leg_residual < 1e2
+            assert cyc.theta_closure_residual < 1e-2
+        else:
+            assert cyc.notes
