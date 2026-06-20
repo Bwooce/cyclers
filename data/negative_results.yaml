@@ -55,10 +55,15 @@ entries:
   failed_rung: V1
   physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
     represented by a single radial-crossing free-return ellipse (NO-CLOSE).'
-  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
-    multi-arc but NO per-arc free-return descriptor (n.m.k summary format) -> a multi-arc
-    closer has nothing to seed. PUBLICATION gap, not missing infrastructure. Resweep =
-    acquire the per-arc descriptor (Russell 2004 detailed tables), NOT build/run a closer.'
+  resweep_condition: 'DESCRIPTOR AVAILABLE BUT NOT INGESTED (#404 triage + acquisition
+    research 2026-06-20, docs/notes/2026-06-20-ocampo-descriptor-acquisition-research.md):
+    UNLIKE the other two ocampo #365 negatives, this row''s per-arc g/f/h free-return
+    descriptor IS published -- McConaghy-Russell-Longuski 2005 (JSR 42(4)) Table 2 lists it
+    among the 7 named cyclers. The catalogue row currently carries free_return_arcs=[] (not
+    yet ingested). Resweep = ingest the McConaghy-2005 Table-2 descriptor into the row (then
+    it becomes seedable) and run the multi-arc DSM closure lane. A prior #365 single-arc
+    NO-CLOSE is on record, so promotion requires a genuine two-arc closure at the sourced
+    V_inf -- not automatic.'
 - id: russell-ocampo-4.5.2-2
   issue: 365
   method: Single-arc closer_sweep_v1
