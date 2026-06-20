@@ -65,10 +65,12 @@ per-leg ToFs:
   that arc: `g_tof_yr × 365.25` for the first resonant arc, `big_g_tof_yr × 365.25`
   for the second. The arc→leg assignment follows the existing g/G order in
   `free_return_arcs`.
-- A cross-body transit leg (E→M / M→E) takes the descriptor's transit ToF
-  (`arc.tof_g_days` as today) when present; otherwise the Russell tabulated transit
-  is not auto-fetched here (it lives in the row note, not a parsed field) — the
-  existing `arc.tof_g_days` is the sourced transit seed and stays.
+- A cross-body transit leg (E→M / M→E) takes the row's **sourced** transit ToF from
+  the existing structured field `invariants.transit_times_days` (required on every
+  multi-arc row; `[150, 150]` d for `russell-ch4-4.991gG2` = Russell's tabulated
+  `t_out = t_in = 150 d`), NOT the computed `arc.tof_g_days` (≈143 d). Transit legs
+  map to `transit_times_days` entries in sequence order. No schema change or backfill
+  — the field already exists; the seed simply reads it.
 
 Add an explicit `per_leg_tof_days: tuple[float, ...]` to `DsmChainSeed` carrying the
 sourced ToFs (audit/evidence), and use it to build `x0`.
