@@ -35,3 +35,39 @@ def test_half_rev_components_eq_2_18_2_19() -> None:
     expected_vht = math.sqrt(2 * m.mu_sun * aE / (aE**2 + aE * aE))
     assert abs(vht - expected_vht) < 1e-9
     assert vht > 0
+
+
+def test_f_count_table_3_2() -> None:
+    from cyclerfinder.search.cycler_assembly import f_count
+
+    assert [f_count(h) for h in range(0, 9)] == [1, 2, 2, 2, 3, 4, 4, 4, 5]
+
+
+def test_omega_minimax_branches() -> None:
+    import numpy as np
+
+    from cyclerfinder.search.cycler_assembly import omega_minimax
+    from cyclerfinder.search.generic_return import RussellModel
+
+    m = RussellModel()
+    vinf = 0.1838
+    vinf_in = np.array([vinf, 0.0, 0.0])  # incoming v∞ (canonical)
+    w1 = omega_minimax(m, "E", vinf, vinf_in, f_j=1)
+    w2 = omega_minimax(m, "E", vinf, vinf_in, f_j=2)
+    w3 = omega_minimax(m, "E", vinf, vinf_in, f_j=3)
+    for w in (w1, w2, w3):
+        assert 0.0 < w < np.pi
+
+
+def test_group_half_years_sums_to_h() -> None:
+    import numpy as np
+
+    from cyclerfinder.search.cycler_assembly import group_half_years
+    from cyclerfinder.search.generic_return import RussellModel
+
+    hs, omega_max = group_half_years(
+        RussellModel(), "E", 0.1838, np.array([0.1838, 0.0, 0.0]), h=10, s=3
+    )
+    assert sum(hs) == 10
+    assert len(hs) == 3
+    assert omega_max > 0.0
