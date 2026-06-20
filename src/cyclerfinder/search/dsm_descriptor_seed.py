@@ -122,8 +122,6 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
         return None
     arc = branches[0]  # base short-way shape; the gate may retry others
     n_legs = len(sequence) - 1
-    # Seed ToFs: use the arc branch's tof_g_days as the transit-leg seed,
-    # the complementary g-arc duration (big_g - transit) for the other legs.
     # SOURCED per-leg seed ToFs (spec 2026-06-20): a same-body resonant leg seeds at
     # its PUBLISHED arc ToF (free_return_arcs tof_years x 365.25, in list order); a
     # cross-body transit leg seeds at the row's sourced invariants.transit_times_days
@@ -181,11 +179,20 @@ def seed_dsm_chain_from_descriptor(row: dict[str, Any]) -> DsmChainSeed | None:
     # (inf - inf = nan in the eps computation breaks least_squares).
     tof_upper_cap = max(big_g_tof_days * 2.0, 2000.0)
     upper_capped = bounds_raw.upper.copy()
+    lower_capped = bounds_raw.lower.copy()
     for i in range(n_legs):
         ui = 4 + i  # tof slot i in the flat bounds vector
-        if not np.isfinite(upper_capped[ui]):
+        body_a, body_b = sequence[i], sequence[i + 1]
+        if body_a == body_b:
+            # Resonant same-body leg: bracket the PUBLISHED seed ToF (spec Change 3)
+            # so the corrector stays in the multi-rev resonant basin and cannot reach
+            # the degenerate near-zero-ToF single-rev region.
+            published = tof_seed_days[i]
+            lower_capped[ui] = 0.7 * published
+            upper_capped[ui] = 1.3 * published
+        elif not np.isfinite(upper_capped[ui]):
             upper_capped[ui] = tof_upper_cap
-    bounds = dsm_leg.DsmBounds(lower=bounds_raw.lower, upper=upper_capped)
+    bounds = dsm_leg.DsmBounds(lower=lower_capped, upper=upper_capped)
     # Charged (#162 vector-residual) layout: the corrector runs with
     # charge_flyby_continuity=True (the only mode that rewards the bend-feasible
     # low-V_inf basin), so the seed carries the 2*(n_legs-1) intermediate-flyby

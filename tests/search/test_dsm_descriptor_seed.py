@@ -52,6 +52,25 @@ def test_seed_max_revs_from_published_tof() -> None:
         assert seed.max_revs == 2, rid
 
 
+def test_resonant_leg_tof_bounds_bracket_published() -> None:
+    # A same-body resonant leg's ToF box brackets its published seed ToF (0.7x..1.3x)
+    # so the corrector cannot collapse it to the degenerate near-zero-ToF single-rev
+    # solution; the transit leg keeps the sequence-keyed bound.
+    import pytest
+
+    seed = dds.seed_dsm_chain_from_descriptor(_row("russell-ch4-4.991gG2"))
+    assert seed is not None
+    n_legs = len(seed.sequence) - 1
+    lower = seed.bounds.lower[4 : 4 + n_legs]
+    upper = seed.bounds.upper[4 : 4 + n_legs]
+    # leg 0 (E->E) is resonant: published 533.70 d -> [373.6, 693.8]
+    assert lower[0] == pytest.approx(0.7 * 533.70, abs=1.0)
+    assert upper[0] == pytest.approx(1.3 * 533.70, abs=1.0)
+    # leg 2 (M->M) resonant: published 1026.21 d
+    assert lower[2] == pytest.approx(0.7 * 1026.21, abs=1.0)
+    assert upper[2] == pytest.approx(1.3 * 1026.21, abs=1.0)
+
+
 def test_no_descriptor_row_returns_none() -> None:
     # An ocampo row has the n.m.k summary format, no per-arc g/G descriptor.
     catalog = load_catalog()
