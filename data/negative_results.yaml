@@ -80,11 +80,15 @@ entries:
     "return leg does not close / narrow-basin scale mismatch" claim was a CODE BUG, not
     physics -- correct_cross_connection hardwired from=EM/to=SE and propagated the
     return-leg SE manifold in the EM system (garbage). With each manifold propagated in
-    its own system the return converges. What remains OPEN is the closed CYCLE: the two
-    legs converge INDEPENDENTLY at incompatible relative phases (theta_fwd~4.94,
-    theta_ret~2.53; Delta theta ~2.4 rad), so simultaneous theta-commensurate closure
-    (periodic-up-to-rotation) is the unmet gate -- consistent with the ~19yr Metonic
-    (235:19) prediction (note #316). (The bounded search''s cost-tuned return config
+    its own system the return converges. What remains OPEN is the closed CYCLE: a
+    theta-TIME-CONSISTENCY analysis (2026-06-20) quantifies the gate. The forward
+    EM-L2->SE-L2 transit takes ~52 days, over which the SE-EM relative phase advances
+    ~4.88 rad (omega_rel = 2.47e-6 rad/s); the time-consistent prediction
+    theta_f + omega_rel*t_fwd does NOT match the independently-converged return-leg
+    theta_r -- a ~2.2 rad gap AT SINGLE REVOLUTION. The cycle therefore does not close
+    at one rev; that 2.2 rad must be absorbed by MULTI-REVOLUTION phasing (extra orbit
+    revs each advance theta) -- the patched-model analog of the ~19yr Metonic (235:19)
+    commensurate return (note #316). (The bounded search''s cost-tuned return config
     still under-resolves and reports the return non-converged; a full-scan return
     converges.)'
   resweep_condition: 'Both spatial legs exist at low dV, so the open work is PHASE
