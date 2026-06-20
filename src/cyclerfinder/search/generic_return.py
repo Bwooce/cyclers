@@ -10,9 +10,11 @@ only match in this exact model.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from math import sqrt
+from math import degrees, pi, sqrt
 
 import numpy as np
+
+from cyclerfinder.core.lambert import LambertError, lambert
 
 YEAR_DAYS = 365.25
 
@@ -125,3 +127,109 @@ def psi_of_vinf_vec(
     e2 = e2 / np.linalg.norm(e2)
 
     return float(np.arctan2(np.dot(vinf, e2), np.dot(vinf, e1)))
+
+
+# Provisional Lambert-branch -> Russell-branch label mapping (Russell §2.7.4).
+# Maps the multi-rev energy branch ("low"->"slow", "high"->"fast") and the
+# single-rev transfer ("single"->"slow"). This is a provisional assignment; the
+# later golden test A5 (against Russell's tables) will confirm or correct it.
+_BRANCH_MAP: dict[str, str] = {"single": "slow", "low": "slow", "high": "fast"}
+
+
+def generate_generic_returns(
+    model: RussellModel,
+    body: str,
+    *,
+    max_tof_body_periods: float = 6.0,
+    dtheta_deg: float = 0.5,
+    refine_dtheta_deg: float = 1.0 / 24.0,
+    max_revs_cap: int = 15,
+) -> list[GenericReturn]:
+    """Multi-rev Lambert grid of same-body generic returns (Russell §2.7.3-2.7.5).
+
+    A generic return is a free return to the same body: depart ``body`` at
+    in-plane angle 0 and return to the body's later position after some time of
+    flight. The grid steps the time of flight (measured in body orbital
+    periods) and, at each step, solves the multi-revolution Lambert problem
+    Sun-to-Sun between the body's departure and arrival positions, recording one
+    :class:`GenericReturn` per Lambert solution.
+
+    Parameters
+    ----------
+    model:
+        The :class:`RussellModel` providing the circular-coplanar body states
+        and canonical ``mu_sun``.
+    body:
+        Body key (e.g. ``"E"``) understood by :meth:`RussellModel.body_state`.
+    max_tof_body_periods:
+        Upper bound on time of flight, in body orbital periods.
+    dtheta_deg:
+        Grid step in body angle (degrees); the TOF step in body periods is
+        ``dtheta_deg / 360``.
+    refine_dtheta_deg:
+        Reserved for a later refinement pass; accepted but unused here.
+    max_revs_cap:
+        Maximum heliocentric revolution count passed to :func:`lambert`.
+
+    Returns
+    -------
+    list[GenericReturn]
+        One entry per Lambert solution across the grid (single-rev plus any
+        feasible multi-rev branches).
+    """
+    p_tu = 2.0 * pi * model.sma_au(body) ** 1.5
+    dtof = dtheta_deg / 360.0
+    step = dtheta_deg / 360.0
+
+    r1, v_b0 = model.body_state(body, 0.0)
+    r = float(np.linalg.norm(r1))
+
+    returns: list[GenericReturn] = []
+
+    n_steps = int((max_tof_body_periods - dtof) / step) + 1
+    for i in range(n_steps):
+        tof_bp = dtof + i * step
+        if tof_bp > max_tof_body_periods:
+            break
+
+        # Body position is periodic in its angle, so the wrapped angle is fine.
+        r2, _ = model.body_state(body, 2.0 * pi * tof_bp)
+        tof_canonical = tof_bp * p_tu
+
+        try:
+            sols = lambert(
+                r1, r2, tof_canonical, mu=model.mu_sun, prograde=True, max_revs=max_revs_cap
+            )
+        except LambertError:
+            continue
+
+        for sol in sols:
+            vinf_vec = sol.v1 - v_b0
+            vinf = float(np.linalg.norm(vinf_vec))
+            if vinf <= 0.0:
+                # Degenerate: the transfer coincides with the body's own
+                # circular orbit (zero hyperbolic excess) -- not a return.
+                continue
+            psi_deg = degrees(psi_of_vinf_vec(vinf_vec, r1, v_b0))
+
+            speed = float(np.linalg.norm(sol.v1))
+            denom = 2.0 / r - speed * speed / model.mu_sun
+            if abs(denom) < 1.0e-12:
+                # Parabolic transfer -- semi-major axis undefined; skip.
+                continue
+            a_au = 1.0 / denom
+
+            branch = _BRANCH_MAP.get(sol.branch, sol.branch)
+
+            returns.append(
+                GenericReturn(
+                    psi_deg=psi_deg,
+                    tof_body_periods=tof_bp,
+                    a_au=a_au,
+                    n_revs=int(sol.n_revs),
+                    branch=branch,
+                    vinf=vinf,
+                )
+            )
+
+    return returns

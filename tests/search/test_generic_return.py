@@ -61,3 +61,16 @@ def test_generic_return_dataclass() -> None:
     )
     assert g.branch == "slow"
     assert g.n_revs == 1
+
+
+def test_generate_returns_coarse_grid() -> None:
+    from cyclerfinder.search.generic_return import RussellModel, generate_generic_returns
+
+    m = RussellModel()
+    rs = generate_generic_returns(m, "E", max_tof_body_periods=6.0, dtheta_deg=2.0, max_revs_cap=4)
+    assert len(rs) > 50
+    assert {g.n_revs for g in rs} & {1, 2}  # multiple rev counts present
+    assert {g.branch for g in rs} <= {"fast", "slow"}  # only these labels
+    assert any(g.n_revs >= 1 for g in rs)  # multi-rev solutions found
+    assert all(g.vinf > 0 for g in rs)
+    assert all(g.a_au > 0 for g in rs)
