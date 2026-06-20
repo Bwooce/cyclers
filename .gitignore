@@ -43,3 +43,6 @@ nohup.out
 
 # Local Claude Code config / scheduler state
 .claude/
+
+# Playwright-MCP browser-automation session detritus (regenerated per run)
+.playwright-mcp/
