@@ -24,16 +24,18 @@ carries no descriptor.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import atan2, pi, tau
+from math import atan2, inf, pi, tau
 from typing import TYPE_CHECKING, Any
 
+import cyclerfinder.search.continuation as cont
+from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.search.correct import BallisticClosureResult, ballistic_correct
 from cyclerfinder.search.dsm_descriptor_seed import seed_dsm_chain_from_descriptor
 from cyclerfinder.search.generic_return import RussellModel
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Sequence
 
-    from cyclerfinder.core.ephemeris import Ephemeris
     from cyclerfinder.search.cycler_search import Cycler
 
 # Real Earth-Mars synodic-year scaling. The synodic-normalized Russell parent
@@ -233,3 +235,162 @@ def candidate_epochs(
 
     best.sort(key=lambda pe: pe[0])
     return [t for _, t in best]
+
+
+@dataclass(frozen=True)
+class NarcContinuationResult:
+    """Outcome of the Russell §5.4 homotopy-ramp N-arc continuation driver.
+
+    The headline fields are read off the best (lowest max-residual) final-rung
+    :class:`~cyclerfinder.search.correct.BallisticClosureResult` across all
+    candidate epochs. The seed period and per-leg branch/rev structure are
+    constraints (inputs); the emerged V_inf, converged ToFs and bend feasibility
+    are EVIDENCE (the golden-rule separation inherited from the inner corrector).
+
+    Attributes
+    ----------
+    converged:
+        The best final result's max residual fell below ``tol_kms``.
+    max_residual_kms:
+        Max V_inf-continuity/closure residual of the best final result (``inf``
+        if no epoch produced any result).
+    emerged_vinf_kms:
+        Per-encounter V_inf magnitudes of the best final result.
+    t0_sec:
+        Converged launch epoch (seconds) of the best final result.
+    tof_days:
+        Converged per-leg ToFs (days) of the best final result.
+    bend_feasible:
+        Whether the best final result satisfies all constraints (converged AND
+        every intermediate flyby's required turn fits the V_inf-limited maximum
+        AND the V_inf cap), i.e. ``BallisticClosureResult.constraints_satisfied``.
+    winning_epoch_sec:
+        Which candidate epoch produced the best final result.
+    """
+
+    converged: bool
+    max_residual_kms: float
+    emerged_vinf_kms: tuple[float, ...]
+    t0_sec: float
+    tof_days: tuple[float, ...]
+    bend_feasible: bool
+    winning_epoch_sec: float
+
+
+def _ramp_rung_ephemerides(nstep: int) -> list[Ephemeris]:
+    """Ordered intermediate rung ephemerides for the homotopy ramp.
+
+    Reuses :func:`cyclerfinder.search.continuation._ramp_schedule` (the verified
+    Russell §5.4 e-then-i ramp, with its leading phase ramp) and maps each
+    ``(lam_e, lam_i, lam_p)`` step to a :func:`ramped_ephemeris`. The final
+    true-ephemeris (lambda=1) target is appended by the driver, not here.
+    """
+    return [
+        cont.ramped_ephemeris(lam_e, lam_i, lam_p)
+        for _phase, lam_e, lam_i, lam_p in cont._ramp_schedule(nstep)
+    ]
+
+
+def narc_continuation_correct(
+    seed: NarcSeed,
+    *,
+    ladder: tuple[int, ...] | None = None,
+    final_ephemeris: Ephemeris | None = None,
+    epochs: Sequence[float] | None = None,
+    vinf_cap: float,
+    residual_mode: str = "vector",
+    tol_kms: float = 0.1,
+) -> NarcContinuationResult:
+    """Walk the Russell §5.4 homotopy ramp, calling the N-arc corrector per rung.
+
+    For each candidate ``t0`` in ``epochs``, walk the ordered ramp rungs (built
+    from ``_ramp_schedule(ladder[0])``), re-seeding the launch epoch and per-leg
+    ToFs from each rung's converged solution, then take one final step to
+    ``final_ephemeris`` (the lambda=1 target). The lowest max-residual final
+    result across all epochs is the headline.
+
+    The corrector's V_inf-continuity + closure residual is driven to zero with
+    :func:`~cyclerfinder.search.correct.ballistic_correct`; ``residual_mode``
+    defaults to ``"vector"`` (bend feasibility steered inside the residual). A
+    rung that raises (Lambert pathology) aborts that epoch's walk; the driver
+    never raises.
+
+    Parameters
+    ----------
+    ladder:
+        ``nstep`` rungs; only the first is used to size the ramp (default
+        :data:`cyclerfinder.search.continuation.LADDER`).
+    final_ephemeris:
+        The lambda=1 true-ephemeris target (default ``Ephemeris('astropy')``).
+    epochs:
+        Candidate launch epochs (seconds). Default ``[0.0]``.
+    vinf_cap:
+        Per-encounter V_inf ceiling forwarded to the inner corrector.
+    """
+    ladder = cont.LADDER if ladder is None else ladder
+    if final_ephemeris is None:
+        final_ephemeris = Ephemeris("astropy")
+    epochs = [0.0] if epochs is None else list(epochs)
+
+    nstep = ladder[0]
+    rung_ephems = _ramp_rung_ephemerides(nstep)
+
+    def _correct(t0: float, tofs: list[float], ephem: Ephemeris) -> BallisticClosureResult:
+        return ballistic_correct(
+            seed.sequence,
+            seed.per_leg_revs,
+            seed.per_leg_branch,
+            t0_seed_sec=t0,
+            tof_seed_days=tofs,
+            period_sec=seed.period_sec,
+            ephem=ephem,
+            vinf_cap=vinf_cap,
+            residual_mode=residual_mode,
+            tol_kms=tol_kms,
+        )
+
+    best: BallisticClosureResult | None = None
+    best_epoch = epochs[0]
+    for t0 in epochs:
+        cur_t0 = t0
+        cur_tofs = list(seed.tof_seed_days)
+        diverged = False
+        for rung_ephem in rung_ephems:
+            try:
+                r = _correct(cur_t0, cur_tofs, rung_ephem)
+            except Exception:
+                diverged = True
+                break
+            # Re-seed the next rung from this rung's converged t0/ToFs.
+            cur_t0 = r.t0_sec
+            cur_tofs = list(r.tof_days)
+        if diverged:
+            continue
+        try:
+            final = _correct(cur_t0, cur_tofs, final_ephemeris)
+        except Exception:
+            continue
+        if best is None or final.max_residual_kms < best.max_residual_kms:
+            best = final
+            best_epoch = t0
+
+    if best is None:
+        return NarcContinuationResult(
+            converged=False,
+            max_residual_kms=inf,
+            emerged_vinf_kms=(),
+            t0_sec=epochs[0],
+            tof_days=(),
+            bend_feasible=False,
+            winning_epoch_sec=epochs[0],
+        )
+
+    return NarcContinuationResult(
+        converged=best.max_residual_kms < tol_kms,
+        max_residual_kms=best.max_residual_kms,
+        emerged_vinf_kms=best.vinf_per_encounter_kms,
+        t0_sec=best.t0_sec,
+        tof_days=best.tof_days,
+        bend_feasible=best.constraints_satisfied,
+        winning_epoch_sec=best_epoch,
+    )

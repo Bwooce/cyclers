@@ -50,3 +50,32 @@ def test_candidate_epochs_match_phase() -> None:
         delta = parent_phase_angle(ephem, t0) - target_phase
         err = abs(((delta + 3.14159265) % 6.2831853) - 3.14159265)
         assert err < 0.16
+
+
+def test_narc_driver_circular_rung_smoke() -> None:
+    import cyclerfinder.search.continuation as cont
+    from cyclerfinder.data.catalog import load_catalog
+    from cyclerfinder.search.cycler_assembly import assemble_cycler, descriptor_to_phsi
+    from cyclerfinder.search.generic_return import RussellModel
+    from cyclerfinder.search.narc_continuation import (
+        NarcContinuationResult,
+        narc_continuation_correct,
+        russell_parent_to_ballistic_seed,
+    )
+
+    row = load_catalog().by_id["russell-ch4-4.991gG2"].raw
+    m = RussellModel()
+    phsi = descriptor_to_phsi(row)
+    assert phsi is not None
+    cyc = assemble_cycler(m, phsi)
+    assert cyc is not None
+    seed = russell_parent_to_ballistic_seed(m, cyc, row)
+    circ = cont.ramped_ephemeris(0.0, 0.0)  # circular-coplanar backend
+    res = narc_continuation_correct(
+        seed, ladder=(1,), final_ephemeris=circ, epochs=[0.0], vinf_cap=99.0
+    )
+    assert isinstance(res, NarcContinuationResult)
+    assert isinstance(res.converged, bool)
+    assert res.max_residual_kms >= 0.0
+    assert isinstance(res.emerged_vinf_kms, tuple)
+    assert isinstance(res.bend_feasible, bool)
