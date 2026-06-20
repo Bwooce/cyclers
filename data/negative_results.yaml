@@ -107,7 +107,19 @@ entries:
     patch dV, with rigorous Radau verification before any closed-cycle claim. Sufficiency
     (does patch dV stay LOW on the theta-closure curve?) is the open question. Alternative
     venue: BCR4BP Phase B with an SE-scale seed (#412). NOT a multi-revolution corrector
-    and NOT a finer fixed-amplitude grid.'
+    and NOT a finer fixed-amplitude grid. UPDATE (2026-06-20,
+    docs/notes/2026-06-20-411-corrector-outcome.md): the coupled single-rev corrector
+    (correct_cross_cycle, committed f563ab3) was BUILT and run on EM-L2/SE-L2 n=(1,1). Both
+    legs stay ballistic-cheap (~0.8 km/s total, ~1.06 yr) but the Newton STALLS: it closes
+    R1 (->0.008) while R2 floors at ~-0.58 -> |R| stalls at ~0.59 rad, NOT closed.
+    Working hypothesis (not firmly established; standalone diagnostics were confounded by
+    the connection-curve coupling + return-branch selection): the both-legs-converged set
+    is a CURVE in (c_em, c_se), so only ONE phase DOF is available -- it zeroes one of the
+    two consistency residuals, not both. So the amplitude-knob feasibility OVER-counted the
+    DOF (the connection-existence constraint removes one). Resweep: (1) rev-count variation
+    n_em/n_se in {2,3} (cheapest); (2) other libration pairs (L1/L1, L1/L2, L2/L1); (3)
+    pseudo-arclength continuation ALONG the connection curve to measure R1,R2 vs the single
+    curve parameter and confirm/deny the 1-DOF obstruction; (4) BCR4BP SE-scale seed.'
 - id: bcr4bp_phase_b_em_libration_seed
   issue: 412
   method: 'BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
