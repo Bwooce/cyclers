@@ -96,6 +96,11 @@ class GenericReturn:
         branch -- see :func:`_russell_branch`.
     vinf:
         Hyperbolic excess speed magnitude (canonical AU/TU).
+    arrival_vinf_vec:
+        Optional incoming v_inf vector at the body return (canonical AU/TU),
+        carried straight from the Lambert arrival velocity ``v2 - v_body(r2)``
+        when the return originates from a single-ToF Lambert solve. ``None`` for
+        grid-refined returns, whose consumers reconstruct it by propagation.
     """
 
     psi_deg: float
@@ -104,6 +109,7 @@ class GenericReturn:
     n_revs: int
     branch: str
     vinf: float
+    arrival_vinf_vec: tuple[float, float, float] | None = None
 
 
 def psi_of_vinf_vec(

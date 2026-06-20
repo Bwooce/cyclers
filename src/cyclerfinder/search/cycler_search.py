@@ -245,7 +245,7 @@ def generic_returns_at_tof(
     """
     p_tu = 2.0 * pi * model.sma_au(body) ** 1.5
     r1, v_b0 = model.body_state(body, 0.0)
-    r2, _ = model.body_state(body, 2.0 * pi * tof_body_periods)
+    r2, v_b_arr = model.body_state(body, 2.0 * pi * tof_body_periods)
     tof_canonical = tof_body_periods * p_tu
     r1_n = float(np.linalg.norm(r1))
 
@@ -273,6 +273,11 @@ def generic_returns_at_tof(
             continue
         a_au = a_sma**1.5
 
+        # Arrival v_inf is exact from the converged Lambert arc (``v2`` at
+        # ``r2``); carrying it avoids a fragile universal-variable re-propagation
+        # over the long multi-rev transfer in :func:`_arrival_vinf_vec`.
+        arrival_vinf = sol.v2 - v_b_arr
+
         returns.append(
             GenericReturn(
                 psi_deg=psi_deg,
@@ -281,6 +286,11 @@ def generic_returns_at_tof(
                 n_revs=int(sol.n_revs),
                 branch=_russell_branch(tof_canonical, a_sma, model.mu_sun),
                 vinf=vinf,
+                arrival_vinf_vec=(
+                    float(arrival_vinf[0]),
+                    float(arrival_vinf[1]),
+                    float(arrival_vinf[2]),
+                ),
             )
         )
 
@@ -290,11 +300,17 @@ def generic_returns_at_tof(
 def _arrival_vinf_vec(model: RussellModel, body: str, ret: GenericReturn) -> np.ndarray:
     """Incoming v_inf vector at the Earth return of a generic return (canonical).
 
-    Reconstructs the departure state from ``ret``'s ``psi``/``vinf`` in the same
-    in-plane basis :func:`psi_of_vinf_vec` uses, propagates it forward over the
-    transfer time of flight, and differences the arrival velocity against the
-    body's velocity at the arrival angle to recover the arrival v_inf vector.
+    When ``ret`` carries an exact Lambert-arrival vector
+    (:attr:`GenericReturn.arrival_vinf_vec`, set by
+    :func:`generic_returns_at_tof`), that is returned directly. Otherwise the
+    departure state is reconstructed from ``ret``'s ``psi``/``vinf`` in the same
+    in-plane basis :func:`psi_of_vinf_vec` uses, propagated forward over the
+    transfer time of flight, and differenced against the body's velocity at the
+    arrival angle to recover the arrival v_inf vector.
     """
+    if ret.arrival_vinf_vec is not None:
+        return np.array(ret.arrival_vinf_vec, dtype=np.float64)
+
     r1, v_b0 = model.body_state(body, 0.0)
 
     e1 = v_b0 / np.linalg.norm(v_b0)

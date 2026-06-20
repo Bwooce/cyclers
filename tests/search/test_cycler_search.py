@@ -58,3 +58,35 @@ def test_generic_returns_at_tof_single_solve() -> None:
 
     rs = generic_returns_at_tof(RussellModel(), "E", 3.0, max_revs_cap=4)
     assert all(r.vinf > 0 for r in rs)
+
+
+import pytest  # noqa: E402
+
+
+@pytest.mark.slow
+def test_golden_table_3_4_recovers_anchor_cyclers() -> None:
+    """Russell Table 3.4: recover the sourced anchor cyclers 4.3.1.-5 and Aldrin
+    2.1.1.+2, and a count in the neighbourhood of the 44 tabulated."""
+    from cyclerfinder.search.cycler_search import Cycler, search_cyclers
+    from cyclerfinder.search.generic_return import RussellModel
+
+    m = RussellModel()
+    kms = m.au_km / m.tu_days / 86400.0  # AU/TU -> km/s
+    cs = search_cyclers(m, p_max=6, ar_min=0.9, tr_min=0.85, max_revs_cap=15)
+
+    def find(p: int, h: int, s: int, i: int) -> list[Cycler]:
+        return [c for c in cs if c.p == p and c.h == h and c.s == s and c.i == i]
+
+    # 4.3.1.-5: v∞_E ≈ 3.10 km/s, AR ≈ 0.992
+    c435 = find(4, 3, 1, -5)
+    assert c435, "Cycler 4.3.1.-5 not recovered"
+    assert abs(c435[0].vinf_e * kms - 3.10) <= 0.15
+    assert abs(c435[0].ar - 0.992) <= 0.02
+
+    # Aldrin 2.1.1.+2 present
+    assert find(2, 1, 1, 2), "Aldrin cycler 2.1.1.+2 not recovered"
+
+    # count in the neighbourhood of 44 (allow grid-resolution variance; log if < 44)
+    if len(cs) < 44:
+        print(f"NOTE: recovered {len(cs)} cyclers vs Russell's 44 (grid/resolution variance)")
+    assert len(cs) >= 30
