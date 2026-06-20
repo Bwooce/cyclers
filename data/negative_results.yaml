@@ -1,64 +1,82 @@
 entries:
-  - id: branch_C32_b0
-    issue: 389
-    method: "Floquet continuation / bifurcation"
-    regime: "Earth-Moon CR3BP"
-    failed_rung: "V4"
-    physical_reason: "Far-amplitude orbit (~0.77x Earth-Sun Hill radius) is destroyed by solar tides (30% of Earth gravity) on real ephemeris."
-    resweep_condition: "None. Orbit is fundamentally destroyed by N-body forces."
-  
-  - id: branch_C32_C_3.1774
-    issue: 392
-    method: "Floquet continuation / bifurcation"
-    regime: "Earth-Moon CR3BP"
-    failed_rung: "V4"
-    physical_reason: "Low-amplitude orbit still experiences mild intrinsic instability (Floquet multiplier ~37), acting as a massive gain stage that amplifies real lunar eccentricity and small solar tides into exponential escape trajectories."
-    resweep_condition: "None."
-
-  - id: branch_C11a_b0
-    issue: 393
-    method: "Floquet continuation / bifurcation"
-    regime: "Earth-Moon CR3BP"
-    failed_rung: "V4"
-    physical_reason: "Same as C32 low-amp; instability-driven perturbation amplification leads to structural failure across all epochs. EM-only control max drift is ~7e5 km while full N-body drift is ~1.4e9 km."
-    resweep_condition: "None."
-
-  - id: em_node_floquet_branches
-    issue: 392
-    method: "Floquet continuation / bifurcation"
-    regime: "Earth-Moon CR3BP"
-    failed_rung: "V4"
-    physical_reason: "The Floquet branch families off the EM cycler nodes have no V4-survivable amplitude window. At far-amplitude they die from solar tides; at low-amplitude they die from instability amplifying lunar eccentricity."
-    resweep_condition: "None."
-
-  - id: russell-ocampo-3.1.2+1
-    issue: 365
-    method: "Single-arc closer_sweep_v1"
-    regime: "Earth-Mars Ballistic"
-    failed_rung: "V1"
-    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity by tens of km/s."
-    resweep_condition: "Implement multi-arc closure infrastructure."
-
-  - id: russell-ocampo-4.3.1-5
-    issue: 365
-    method: "Single-arc closer_sweep_v1"
-    regime: "Earth-Mars Ballistic"
-    failed_rung: "V1"
-    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse (NO-CLOSE)."
-    resweep_condition: "Implement multi-arc closure infrastructure."
-
-  - id: russell-ocampo-4.5.2-2
-    issue: 365
-    method: "Single-arc closer_sweep_v1"
-    regime: "Earth-Mars Ballistic"
-    failed_rung: "V1"
-    physical_reason: "Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity."
-    resweep_condition: "Implement multi-arc closure infrastructure."
-
-  - id: mcconaghy-2006-em-k2
-    issue: 365
-    method: "Single-arc closer_sweep_v1"
-    regime: "Earth-Mars Ballistic"
-    failed_rung: "V1"
-    physical_reason: "Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby. Single ellipse representation breaks V_inf continuity."
-    resweep_condition: "Implement multi-arc closure infrastructure."
+- id: branch_C32_b0
+  issue: 389
+  method: Floquet continuation / bifurcation
+  regime: Earth-Moon CR3BP
+  failed_rung: V4
+  physical_reason: Far-amplitude orbit (~0.77x Earth-Sun Hill radius) is destroyed
+    by solar tides (30% of Earth gravity) on real ephemeris.
+  resweep_condition: None. Orbit is fundamentally destroyed by N-body forces.
+- id: branch_C32_C_3.1774
+  issue: 392
+  method: Floquet continuation / bifurcation
+  regime: Earth-Moon CR3BP
+  failed_rung: V4
+  physical_reason: Low-amplitude orbit still experiences mild intrinsic instability
+    (Floquet multiplier ~37), acting as a massive gain stage that amplifies real lunar
+    eccentricity and small solar tides into exponential escape trajectories.
+  resweep_condition: None.
+- id: branch_C11a_b0
+  issue: 393
+  method: Floquet continuation / bifurcation
+  regime: Earth-Moon CR3BP
+  failed_rung: V4
+  physical_reason: Same as C32 low-amp; instability-driven perturbation amplification
+    leads to structural failure across all epochs. EM-only control max drift is ~7e5
+    km while full N-body drift is ~1.4e9 km.
+  resweep_condition: None.
+- id: em_node_floquet_branches
+  issue: 392
+  method: Floquet continuation / bifurcation
+  regime: Earth-Moon CR3BP
+  failed_rung: V4
+  physical_reason: The Floquet branch families off the EM cycler nodes have no V4-survivable
+    amplitude window. At far-amplitude they die from solar tides; at low-amplitude
+    they die from instability amplifying lunar eccentricity.
+  resweep_condition: None.
+- id: russell-ocampo-3.1.2+1
+  issue: 365
+  method: Single-arc closer_sweep_v1
+  regime: Earth-Mars Ballistic
+  failed_rung: V1
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse, breaking V_inf continuity
+    by tens of km/s.'
+  resweep_condition: Implement multi-arc closure infrastructure.
+- id: russell-ocampo-4.3.1-5
+  issue: 365
+  method: Single-arc closer_sweep_v1
+  regime: Earth-Mars Ballistic
+  failed_rung: V1
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse (NO-CLOSE).'
+  resweep_condition: Implement multi-arc closure infrastructure.
+- id: russell-ocampo-4.5.2-2
+  issue: 365
+  method: Single-arc closer_sweep_v1
+  regime: Earth-Mars Ballistic
+  failed_rung: V1
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse, breaking V_inf continuity.'
+  resweep_condition: Implement multi-arc closure infrastructure.
+- id: mcconaghy-2006-em-k2
+  issue: 365
+  method: Single-arc closer_sweep_v1
+  regime: Earth-Mars Ballistic
+  failed_rung: V1
+  physical_reason: 'Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby.
+    Single ellipse representation breaks V_inf continuity.'
+  resweep_condition: Implement multi-arc closure infrastructure.
+- id: cross_system_se_em_L2_patched_cr3bp
+  issue: 405
+  method: patched-CR3BP SE<->EM connection matcher + bounded closure search (#405
+    Phase A)
+  regime: Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
+  failed_rung: closure-search
+  physical_reason: 'Forward EM-L2->SE-L2 leg closes near-ballistically (pos gap ~0.4
+    km, dV ~0.36 km/s), but the SE->EM return leg does not co-reach the patch section
+    on a bounded single-revolution grid and theta does not return commensurately;
+    closed=False. Consistent with the ~19yr Metonic (235:19) natural-closure prediction
+    (note #316), which lies outside any bounded single-revolution grid.'
+  resweep_condition: BCR4BP Phase B refinement (coherent 4-body resonant closure)
+    OR a multi-revolution / Metonic-commensurate grid with longer integration horizons.
