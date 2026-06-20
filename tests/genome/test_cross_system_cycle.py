@@ -155,6 +155,40 @@ def test_em_to_se_connection_is_low_energy() -> None:
     assert conn.patch_dv_kms < 1.0
 
 
+@pytest.mark.slow
+def test_se_to_em_return_leg_converges() -> None:
+    """The SE-L2 unstable -> EM-L2 stable RETURN leg converges at low ΔV (#411).
+
+    Once each manifold is propagated in ITS OWN system (the #411 direction fix), the
+    return leg closes near-ballistically (observed ΔV ~0.15 km/s) — both cross-system
+    legs exist. This guards against regressing to the pre-fix behaviour, where the
+    return manifold was propagated in the WRONG system and never converged (which the
+    #405 clean-negative had mis-attributed to a narrow-basin physics limit)."""
+    se = se_earth_system()
+    em = em_moon_system()
+    bridge = FrameBridge(se=se, em=em)
+    em_l2 = LyapunovNode.from_libration(
+        em, x0_guess=1.18, jacobi=3.15, period_guess=3.4, label="EM-L2", ydot0_sign=-1.0
+    )
+    se_l2 = LyapunovNode.from_libration(
+        se, x0_guess=1.009, jacobi=CANALIAS_C_SE, period_guess=3.06, label="SE-L2", ydot0_sign=-1.0
+    )
+    conn = correct_cross_connection(
+        bridge,
+        se_l2,
+        em_l2,
+        label_from="SE-L2",
+        label_to="EM-L2",
+        branch_u=-1,
+        branch_s=+1,
+        scan_n=8,
+        scan_n_tau=3,
+    )
+    assert conn.converged, f"return leg must converge; res={conn.residual:.3e} km"
+    assert conn.residual < 1e2  # inertial position match on the patch section
+    assert conn.patch_dv_kms < 1.0  # near-ballistic (observed ~0.15 km/s)
+
+
 from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
     CrossCycle,
     search_cross_cycle,
