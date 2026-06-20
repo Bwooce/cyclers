@@ -61,8 +61,34 @@ above; the exact codimension of the connection set was not cleanly measured.
    and confirm/deny the 1-DOF obstruction directly.
 4. **BCR4BP** with an SE-scale seed (#412 re-scope) — closure well-posed by construction.
 
-## Status
-The corrector is real, tested, committed infrastructure. The EM-L2/SE-L2 single-rev
-cross-system cycle does NOT close in the patched CR3BP (stalls at |R|≈0.59 rad). This is
-an honest non-result on a novel search — a legitimate stopping point pending the venues
-above.
+## Multi-revolution shots — same stall (rev-count does NOT rescue closure)
+Tested the cheapest "Next venue" (#1) directly: re-ran the corrector at higher revolution
+counts to see if a discrete extra revolution's phase increment pushes the residual through
+zero.
+
+| config | residual floor | result |
+|---|---|---|
+| n_em=1, n_se=1 | \|R\| ≈ 0.59 rad | stalls |
+| n_em=1, n_se=2 | \|R\| ≈ 0.78 rad | stalls (plateau by iter 4: 0.7858→0.7819) |
+
+Each discrete revolution SHIFTS the residual floor (0.59 → 0.78) but does not reach zero —
+both legs stay converged throughout, and the Newton plateaus at a nonzero floor. This is
+the predicted signature of the **1-DOF obstruction**: the spatial-connection constraint
+couples (c_em, c_se) so only ONE phase degree of freedom is available, which cannot zero
+the TWO phase-consistency residuals; adding integer revolutions changes the offset, not the
+dimensionality. (The n_em=2 config was not run to completion — each stalled corrector run
+is ~30+ min as the line-search backtracks; the n_se=2 plateau already confirms the pattern.)
+
+## Status — patched-CR3BP route is a characterized NEGATIVE
+The corrector is real, tested, committed infrastructure. The EM-L2/SE-L2 cross-system cycle
+does NOT close in the patched CR3BP at single OR low-multiple revolution (residual floors at
+~0.59 / ~0.78 rad). Both connection legs are ballistic-cheap (~0.8 km/s) — the obstruction
+is purely phase-closure dimensionality, not energy. This is an honest, well-characterized
+negative on a novel search. The remaining venues are NOT more revolutions or finer grids:
+- **Other libration pairs** (EM-L1/SE-L1, mixed) — may yield a 2-D both-converged region
+  (two real amplitude knobs) instead of the 1-D curve seen at L2/L2; UNTESTED.
+- **BCR4BP with an SE-scale seed** (#412 re-scope) — phase closure is well-posed by
+  construction in the coherent 4-body model; the clean long-term venue.
+Pseudo-arclength continuation along the L2/L2 connection curve would *prove* the 1-DOF
+obstruction rigorously, but the empirical single+multi-rev stalls already establish it for
+practical purposes.

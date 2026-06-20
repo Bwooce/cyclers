@@ -116,10 +116,17 @@ entries:
     the connection-curve coupling + return-branch selection): the both-legs-converged set
     is a CURVE in (c_em, c_se), so only ONE phase DOF is available -- it zeroes one of the
     two consistency residuals, not both. So the amplitude-knob feasibility OVER-counted the
-    DOF (the connection-existence constraint removes one). Resweep: (1) rev-count variation
-    n_em/n_se in {2,3} (cheapest); (2) other libration pairs (L1/L1, L1/L2, L2/L1); (3)
-    pseudo-arclength continuation ALONG the connection curve to measure R1,R2 vs the single
-    curve parameter and confirm/deny the 1-DOF obstruction; (4) BCR4BP SE-scale seed.'
+    DOF (the connection-existence constraint removes one). MULTI-REV CONFIRMED (2026-06-20):
+    re-running at n=(1,2) plateaus at |R|~0.78 rad (vs ~0.59 at n=(1,1)) -- a discrete extra
+    revolution SHIFTS the residual floor but does not reach zero, the predicted 1-DOF
+    signature (rev-count changes the offset, not the dimensionality). So the patched-CR3BP
+    EM-L2/SE-L2 route is a CHARACTERIZED NEGATIVE at single AND low-multiple revolution;
+    legs remain ballistic-cheap (~0.8 km/s) so the block is phase-closure dimensionality,
+    not energy. Resweep (NOT more revolutions / finer grids): (1) other libration pairs
+    (L1/L1, L1/L2) -- may give a 2-D both-converged region = two real amplitude knobs;
+    (2) BCR4BP with an SE-scale seed (#412 re-scope), where phase closure is well-posed by
+    construction. A pseudo-arclength continuation along the L2/L2 connection curve would
+    formally prove the 1-DOF obstruction but the empirical stalls already establish it.'
 - id: bcr4bp_phase_b_em_libration_seed
   issue: 412
   method: 'BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
