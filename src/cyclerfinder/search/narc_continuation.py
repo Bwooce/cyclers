@@ -335,39 +335,59 @@ def narc_continuation_correct(
     nstep = ladder[0]
     rung_ephems = _ramp_rung_ephemerides(nstep)
 
-    def _correct(t0: float, tofs: list[float], ephem: Ephemeris) -> BallisticClosureResult:
+    # ``ballistic_correct`` eliminates ONE slack leg: ``tof_seed_days`` must carry
+    # only the FREE legs (``nlegs - 1`` entries) and the slack leg is
+    # reconstructed as ``period - sum(free legs)`` (correct.py:_reconstruct_tofs).
+    # Pin the longest seed leg as slack (most slack to absorb the period) and feed
+    # the corrector only the remaining free legs. The corrector RETURNS the full
+    # ``nlegs`` ToF list, so re-seeding the next rung must strip the slack index
+    # back out — otherwise the free-var vector grows by one leg per rung
+    # (4 -> 5 -> 6 ...), eventually outnumbering the residuals and tripping the
+    # ``lm`` m<n guard. We also drive the corrector with ``trf`` (which handles
+    # m<=n) for robustness on short/under-determined rungs (#388).
+    full_seed_tofs = list(seed.tof_seed_days)
+    slack_leg = int(max(range(len(full_seed_tofs)), key=lambda i: full_seed_tofs[i]))
+
+    def _free(tofs: Sequence[float]) -> list[float]:
+        """Drop the slack-leg ToF, leaving the corrector's free legs."""
+        return [float(t) for j, t in enumerate(tofs) if j != slack_leg]
+
+    def _correct(t0: float, free_tofs: list[float], ephem: Ephemeris) -> BallisticClosureResult:
         return ballistic_correct(
             seed.sequence,
             seed.per_leg_revs,
             seed.per_leg_branch,
             t0_seed_sec=t0,
-            tof_seed_days=tofs,
+            tof_seed_days=free_tofs,
             period_sec=seed.period_sec,
             ephem=ephem,
             vinf_cap=vinf_cap,
             residual_mode=residual_mode,
             tol_kms=tol_kms,
+            slack_leg=slack_leg,
+            method="trf",
         )
 
     best: BallisticClosureResult | None = None
     best_epoch = epochs[0]
     for t0 in epochs:
         cur_t0 = t0
-        cur_tofs = list(seed.tof_seed_days)
+        cur_free_tofs = _free(full_seed_tofs)
         diverged = False
         for rung_ephem in rung_ephems:
             try:
-                r = _correct(cur_t0, cur_tofs, rung_ephem)
+                r = _correct(cur_t0, cur_free_tofs, rung_ephem)
             except Exception:
                 diverged = True
                 break
-            # Re-seed the next rung from this rung's converged t0/ToFs.
+            # Re-seed the next rung from this rung's converged t0/ToFs, stripping
+            # the reconstructed slack leg back out so the free-var count is stable.
             cur_t0 = r.t0_sec
-            cur_tofs = list(r.tof_days)
+            cur_free_tofs = _free(r.tof_days)
         if diverged:
             continue
         try:
-            final = _correct(cur_t0, cur_tofs, final_ephemeris)
+            final = _correct(cur_t0, cur_free_tofs, final_ephemeris)
         except Exception:
             continue
         if best is None or final.max_residual_kms < best.max_residual_kms:

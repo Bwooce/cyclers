@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import Literal
 
 import numpy as np
 from scipy.optimize import least_squares
@@ -356,6 +357,7 @@ def ballistic_correct(
     slack_leg: int | None = None,
     tol_kms: float = 0.1,
     residual_mode: str = "magnitude",
+    method: Literal["trf", "dogbox", "lm"] = "lm",
     mu_central: float = MU_SUN_KM3_S2,
 ) -> BallisticClosureResult:
     """N-arc ballistic differential corrector (spec §2.1; generalises
@@ -363,10 +365,17 @@ def ballistic_correct(
 
     Free vars ``x = [t0_sec, *tof_seed_days]`` (the slack leg is eliminated and
     reconstructed as ``period - sum(free legs)``). Drives the V_inf-continuity +
-    closure residuals to zero with ``least_squares(method="lm")``; converged iff
+    closure residuals to zero with ``least_squares(method=method)``; converged iff
     the max residual is below ``tol_kms`` (default 0.1, the prototype threshold
     ``correct_s1l1_twoarc.py:169``). Bend feasibility and the V_inf cap are
     evaluated post-hoc.
+
+    ``method`` selects the least_squares algorithm; the default ``"lm"``
+    (Levenberg-Marquardt) is the historical, well-conditioned choice when the
+    residual count exceeds the free-var count (m > n). Callers whose problem can
+    be under-determined (m <= n; e.g. a short 2-encounter chain in vector mode)
+    must pass ``method="trf"``, which handles m<n, m=n and m>n. ``lm`` raises a
+    ``ValueError`` for m<n.
     """
     period_days = period_sec / DAY_S
     n_encounters = len(sequence)
@@ -389,7 +398,7 @@ def ballistic_correct(
         )
 
     x0 = np.array([t0_seed_sec, *tof_seed_days], dtype=np.float64)
-    sol = least_squares(_res, x0, method="lm", max_nfev=80, xtol=1e-9, ftol=1e-9)
+    sol = least_squares(_res, x0, method=method, max_nfev=80, xtol=1e-9, ftol=1e-9)
     x = sol.x
     # least_squares stores the residual vector evaluated at the returned x in
     # sol.fun (LM's final fvec); reuse it instead of a redundant full re-eval of

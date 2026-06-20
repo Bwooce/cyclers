@@ -79,3 +79,39 @@ def test_narc_driver_circular_rung_smoke() -> None:
     assert res.max_residual_kms >= 0.0
     assert isinstance(res.emerged_vinf_kms, tuple)
     assert isinstance(res.bend_feasible, bool)
+
+
+def test_narc_driver_multi_rung_no_lm_crash() -> None:
+    """#388 regression: the multi-rung homotopy walk must NOT raise the ``lm``
+    m<n ``ValueError``.
+
+    Previously the driver re-seeded each rung with the corrector's FULL ToF list
+    (which re-inserts the eliminated slack leg), so the free-var vector grew by
+    one leg per rung (4 -> 5 -> 6 ...) until it outnumbered the residuals and
+    ``least_squares(method="lm")`` raised. The fix strips the slack leg on every
+    re-seed and drives with ``trf``; the walk must now reach the final ephemeris
+    and return a result (converged True or False, but never raise).
+    """
+    import cyclerfinder.search.continuation as cont
+    from cyclerfinder.search.narc_continuation import (
+        NarcContinuationResult,
+        narc_continuation_correct,
+        russell_parent_to_ballistic_seed,
+    )
+
+    row = load_catalog().by_id["russell-ch4-4.991gG2"].raw
+    m = RussellModel()
+    phsi = descriptor_to_phsi(row)
+    assert phsi is not None
+    cyc = assemble_cycler(m, phsi)
+    assert cyc is not None
+    seed = russell_parent_to_ballistic_seed(m, cyc, row)
+
+    # A ramped lambda=1 final target reached via the DEFAULT ladder (LADDER[0]=1
+    # -> 3 rungs), the exact path that tripped the lm m<n crash before the fix.
+    fin = cont.ramped_ephemeris(1.0, 1.0, 1.0)
+    res = narc_continuation_correct(seed, final_ephemeris=fin, epochs=[0.0], vinf_cap=9.0)
+
+    assert isinstance(res, NarcContinuationResult)
+    assert isinstance(res.converged, bool)
+    assert res.max_residual_kms >= 0.0
