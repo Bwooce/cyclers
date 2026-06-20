@@ -10,10 +10,13 @@ only match in this exact model.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from itertools import pairwise
 from math import degrees, pi, sqrt
 
 import numpy as np
+from scipy.optimize import least_squares
 
+from cyclerfinder.core.kepler import propagate
 from cyclerfinder.core.lambert import LambertError, lambert
 
 YEAR_DAYS = 365.25
@@ -233,3 +236,127 @@ def generate_generic_returns(
             )
 
     return returns
+
+
+def bin_sub_families(
+    returns: list[GenericReturn],
+) -> dict[tuple[int, str], list[GenericReturn]]:
+    """Group generic returns into sub-families keyed by ``(n_revs, branch)``.
+
+    Each value list is sorted ascending by hyperbolic-excess speed ``.vinf``,
+    so that consecutive entries bracket intermediate target speeds for the
+    interpolation step in :func:`returns_at_vinf` (Russell §A.2).
+    """
+    bins: dict[tuple[int, str], list[GenericReturn]] = {}
+    for g in returns:
+        bins.setdefault((g.n_revs, g.branch), []).append(g)
+    for lst in bins.values():
+        lst.sort(key=lambda g: g.vinf)
+    return bins
+
+
+def returns_at_vinf(
+    model: RussellModel,
+    body: str,
+    vinf: float,
+    *,
+    max_tof_body_periods: float = 6.0,
+    dtheta_deg: float = 0.5,
+    max_revs_cap: int = 15,
+) -> list[GenericReturn]:
+    """Generic returns at an exact target ``|v_inf|`` (Russell §A.2).
+
+    Generates the coarse grid, bins it into ``(n_revs, branch)`` sub-families,
+    and for each consecutive pair bracketing the target ``vinf`` linearly
+    interpolates a seed ``(psi, tof)``. The seed is then refined with a 1-D
+    Kepler corrector that fixes ``|v_inf| = vinf`` and drives the two in-plane
+    position residuals (re-encounter of the body) to zero. One refined
+    :class:`GenericReturn` is returned per converged bracket.
+
+    Parameters
+    ----------
+    model:
+        The :class:`RussellModel`.
+    body:
+        Body key understood by :meth:`RussellModel.body_state`.
+    vinf:
+        Target hyperbolic-excess speed magnitude (canonical AU/TU).
+    max_tof_body_periods, dtheta_deg, max_revs_cap:
+        Passed through to :func:`generate_generic_returns`.
+
+    Returns
+    -------
+    list[GenericReturn]
+        Refined returns (``vinf`` exact by construction) for every bracket that
+        converged to a sub-micro position miss; non-converged brackets skipped.
+    """
+    rs = generate_generic_returns(
+        model,
+        body,
+        max_tof_body_periods=max_tof_body_periods,
+        dtheta_deg=dtheta_deg,
+        max_revs_cap=max_revs_cap,
+    )
+    bins = bin_sub_families(rs)
+
+    p_tu = 2.0 * pi * model.sma_au(body) ** 1.5
+    r1, v_b0 = model.body_state(body, 0.0)
+    r1_n = float(np.linalg.norm(r1))
+
+    e1 = v_b0 / np.linalg.norm(v_b0)
+    rhat = r1 / r1_n
+    e2 = rhat - np.dot(rhat, e1) * e1
+    e2 = e2 / np.linalg.norm(e2)
+
+    def residual(x: np.ndarray) -> np.ndarray:
+        tof_canonical, psi = float(x[0]), float(x[1])
+        vinf_vec = vinf * (np.cos(psi) * e1 + np.sin(psi) * e2)
+        v0 = v_b0 + vinf_vec
+        r_prop, _ = propagate(r1, v0, tof_canonical, model.mu_sun)
+        theta_arr = 2.0 * pi * tof_canonical / p_tu
+        r_body, _ = model.body_state(body, theta_arr)
+        miss: np.ndarray = (r_prop - r_body)[:2]
+        return miss
+
+    refined: list[GenericReturn] = []
+    for (n_revs, branch), lst in bins.items():
+        for g_lo, g_hi in pairwise(lst):
+            if not (g_lo.vinf <= vinf <= g_hi.vinf):
+                continue
+            span = g_hi.vinf - g_lo.vinf
+            t = 0.0 if span == 0.0 else (vinf - g_lo.vinf) / span
+            psi_seed_rad = np.radians(g_lo.psi_deg + t * (g_hi.psi_deg - g_lo.psi_deg))
+            tof_bp_seed = g_lo.tof_body_periods + t * (
+                g_hi.tof_body_periods - g_lo.tof_body_periods
+            )
+
+            sol = least_squares(
+                residual,
+                [tof_bp_seed * p_tu, psi_seed_rad],
+                xtol=1e-12,
+                ftol=1e-12,
+            )
+            if float(np.max(np.abs(sol.fun))) >= 1e-6:
+                continue
+
+            tof_solved, psi_solved = float(sol.x[0]), float(sol.x[1])
+            vinf_vec = vinf * (np.cos(psi_solved) * e1 + np.sin(psi_solved) * e2)
+            v0 = v_b0 + vinf_vec
+            speed = float(np.linalg.norm(v0))
+            denom = 2.0 / r1_n - speed * speed / model.mu_sun
+            if abs(denom) < 1.0e-12:
+                continue
+            a_au = 1.0 / denom
+
+            refined.append(
+                GenericReturn(
+                    psi_deg=degrees(psi_solved),
+                    tof_body_periods=tof_solved / p_tu,
+                    a_au=a_au,
+                    n_revs=n_revs,
+                    branch=branch,
+                    vinf=vinf,
+                )
+            )
+
+    return refined

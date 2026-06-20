@@ -74,3 +74,25 @@ def test_generate_returns_coarse_grid() -> None:
     assert any(g.n_revs >= 1 for g in rs)  # multi-rev solutions found
     assert all(g.vinf > 0 for g in rs)
     assert all(g.a_au > 0 for g in rs)
+
+
+def test_bin_and_query_at_vinf() -> None:
+    from cyclerfinder.search.generic_return import (
+        RussellModel,
+        bin_sub_families,
+        generate_generic_returns,
+        returns_at_vinf,
+    )
+
+    m = RussellModel()
+    rs = generate_generic_returns(m, "E", dtheta_deg=2.0, max_revs_cap=4)
+    bins = bin_sub_families(rs)
+    assert bins
+    assert all(isinstance(k, tuple) and len(k) == 2 for k in bins)
+    # each sub-family sorted by vinf
+    for lst in bins.values():
+        vs = [g.vinf for g in lst]
+        assert vs == sorted(vs)
+    got = returns_at_vinf(m, "E", 0.5, dtheta_deg=2.0, max_revs_cap=4)
+    assert got
+    assert all(abs(g.vinf - 0.5) < 1e-3 for g in got)  # refined to target |v∞|
