@@ -82,7 +82,7 @@ In `seed_dsm_chain_from_descriptor`, add `max_revs: int` to `DsmChainSeed`:
 ```python
 def _leg_rev_cap(arc_tof_days: float, body: str) -> int:
     period_days = 2*pi*sqrt((PLANETS[body].sma_au*AU_KM)**3 / MU_SUN_KM3_S2)/DAY_S
-    return ceil(arc_tof_days / period_days) + 1          # Russell §2.1 fast/slow headroom
+    return floor(arc_tof_days / period_days) + 1         # max complete revs in ToF + Russell §2.1 fast/slow headroom
 
 RUSSELL_GENERIC_RETURN_BODY_PERIOD_CAP = 6               # Russell §2.1 ToF ceiling
 max_revs = min(max(per_leg_rev_caps), RUSSELL_GENERIC_RETURN_BODY_PERIOD_CAP)
