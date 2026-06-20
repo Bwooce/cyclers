@@ -9,18 +9,17 @@ from __future__ import annotations
 
 import pytest
 
-from cyclerfinder.data.catalog import load_catalog
 from cyclerfinder.search.sequence import Cell
 from cyclerfinder.verify.fidelity import solve_at_fidelity
 
-_ALDRIN_ID = "aldrin-classic-em-k1-outbound"
-
-
-def _aldrin_sourced_ae() -> tuple[float, float]:
-    """Read the SOURCED Aldrin (a, e) from the catalogue row (no magic numbers)."""
-    entry = load_catalog().by_id[_ALDRIN_ID]
-    oe = entry.raw["orbit_elements"]
-    return float(oe["a_au"]), float(oe["e"])
+# Concrete Earth-Mars cycler (a, e) used ONLY as solver inputs to exercise the
+# inclined-rung consistency invariant below (inclined ToF/V_inf must equal the
+# coplanar rung — inc-only lift is pure frame geometry, so the invariant holds for any
+# plausible a, e). These are the SAIC Aldrin (a, e) that #368 retired from the
+# catalogue as non-authoritative; the test no longer reads them from the row and they
+# carry NO sourced claim here — they are just a concrete cell to resolve.
+_FIXTURE_A_AU = 1.60
+_FIXTURE_E = 0.393
 
 
 def _aldrin_cell() -> Cell:
@@ -35,7 +34,7 @@ def _aldrin_cell() -> Cell:
 
 def test_inclined_rung_resolves_and_matches_coplanar_scalars() -> None:
     cell = _aldrin_cell()
-    a_au, e = _aldrin_sourced_ae()
+    a_au, e = _FIXTURE_A_AU, _FIXTURE_E
     coplanar = solve_at_fidelity(cell, "circular-coplanar", a_au=a_au, e=e)
     inclined = solve_at_fidelity(cell, "circular-inclined", a_au=a_au, e=e)
     assert inclined.fidelity == "circular-inclined"
