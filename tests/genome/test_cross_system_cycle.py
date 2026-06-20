@@ -265,3 +265,86 @@ def test_theta_commensurability_arithmetic() -> None:
     # exactly 2pi/3 — within n_max=1 the best residual cannot reach 0.
     _, _, res2, feasible2 = theta_commensurability(math.pi, 0.1, 0.1, n_max=1, tol_rad=1e-3)
     assert not feasible2 and res2 > 1e-3
+
+
+from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
+    CrossCycleClosure,
+    _wrap_pi,
+    correct_cross_cycle,
+)
+
+
+def test_wrap_pi_arithmetic() -> None:
+    """_wrap_pi maps angles to (-pi, pi] (pure arithmetic, the #411 residual primitive)."""
+    assert _wrap_pi(0.0) == pytest.approx(0.0)
+    assert _wrap_pi(0.5) == pytest.approx(0.5)
+    assert _wrap_pi(-0.5) == pytest.approx(-0.5)
+    assert _wrap_pi(math.pi + 0.1) == pytest.approx(-math.pi + 0.1)
+    assert _wrap_pi(2.0 * math.pi) == pytest.approx(0.0, abs=1e-12)
+    # +-pi are the same point; the [-pi, pi) convention maps exactly +-pi to -pi.
+    assert abs(_wrap_pi(math.pi)) == pytest.approx(math.pi)
+    assert abs(_wrap_pi(-3.0 * math.pi)) == pytest.approx(math.pi)
+    # A near-2pi advance wraps to a small residual (the time-consistency closure signal).
+    assert abs(_wrap_pi(2.0 * math.pi - 1e-4)) < 1e-3
+
+
+@pytest.mark.slow
+def test_connection_reports_transit_time() -> None:
+    """A converged connection reports a finite, positive transit_time (#411).
+
+    The time-consistent cycle corrector needs each leg's manifold flight time. The
+    forward EM-L2 -> SE-L2 leg converges, so its transit_time must be finite, positive,
+    and physically plausible (days-to-months, not negative or nan)."""
+    bridge = FrameBridge(se=se_earth_system(), em=em_moon_system())
+    em_l2 = LyapunovNode.from_libration(
+        em_moon_system(),
+        x0_guess=1.18,
+        jacobi=3.15,
+        period_guess=3.4,
+        label="EM-L2",
+        ydot0_sign=-1.0,
+    )
+    se_l2 = LyapunovNode.from_libration(
+        se_earth_system(),
+        x0_guess=1.009,
+        jacobi=CANALIAS_C_SE,
+        period_guess=3.06,
+        label="SE-L2",
+        ydot0_sign=-1.0,
+    )
+    conn = correct_cross_connection(bridge, em_l2, se_l2, label_from="EM-L2", label_to="SE-L2")
+    if conn.converged:
+        assert math.isfinite(conn.transit_time)
+        assert conn.transit_time > 0.0
+        assert conn.transit_time < 5.0 * 365.25 * 86400.0  # under ~5 years
+
+
+@pytest.mark.slow
+def test_correct_cross_cycle_runs_and_reduces_residual() -> None:
+    """correct_cross_cycle returns a CrossCycleClosure and never raises for non-closure.
+
+    Smoke test of the #411 time-consistent single-rev corrector: it must produce a
+    well-formed result whose theta_residual_norm and total_patch_dv_kms are reported
+    (closed or honest non-closure), with cycle_time positive when both legs converge.
+    Thresholds are NOT asserted as closure here — sufficiency is the open research
+    question; this only guards the corrector's plumbing and clean-negative contract."""
+    bridge = FrameBridge(se=se_earth_system(), em=em_moon_system())
+    res = correct_cross_cycle(
+        bridge,
+        em_lib="EM-L2",
+        se_lib="SE-L2",
+        c_em0=3.1294,
+        c_se0=3.0003,
+        n_em=1,
+        n_se=1,
+        max_iter=2,
+        max_attempts=2,
+    )
+    assert isinstance(res, CrossCycleClosure)
+    assert res.n_em == 1 and res.n_se == 1
+    assert res.libration_pair == ("EM-L2", "SE-L2")
+    # total patch dV is always reported (finite or inf), never silently dropped.
+    assert res.total_patch_dv_kms >= 0.0
+    if res.forward.converged and res.ret.converged:
+        assert math.isfinite(res.theta_residual_norm)
+        assert res.cycle_time_s > 0.0

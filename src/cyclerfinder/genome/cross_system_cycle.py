@@ -144,9 +144,10 @@ class CrossConnection:
     converged: bool
     n_iter: int
     notes: str = ""
+    transit_time: float = float("nan")  # seconds, |t_u| + |t_s| at the converged crossing
 
 
-def _manifold_inertial_at_section(
+def _manifold_crossing_timed(
     bridge: FrameBridge,
     system: cr3bp.CR3BPSystem,
     node: LyapunovNode,
@@ -163,15 +164,13 @@ def _manifold_inertial_at_section(
     rtol: float = 1e-11,
     atol: float = 1e-11,
     method: str = "DOP853",
-) -> NDArray[np.float64] | None:
-    """Inertial 6-state where ``node``'s manifold first crosses {x_inertial = x0_km}.
+) -> tuple[NDArray[np.float64], float] | None:
+    """Core crossing detector: ``(inertial_state, t_cross)`` or ``None``.
 
-    Seeds the manifold in-system, propagates forward (unstable) or backward (stable)
-    over a bounded horizon, samples densely, transforms each sample to the common
-    inertial frame (EM side via ``em_rot_to_inertial``, SE side via
-    ``se_rot_to_inertial``), and returns the first sign-changing crossing of the
-    section plane (linearly refined). Returns ``None`` if the manifold never reaches
-    the plane within ``max_time`` (bounded — never hangs, never fabricates a crossing).
+    ``t_cross`` is the SIGNED integration time at the crossing (positive for unstable
+    forward, negative for stable backward); its magnitude is the manifold flight time
+    to/from the patch, needed for the #411 time-consistent cycle theta closure. See
+    :func:`_manifold_inertial_at_section` for the geometry.
     """
     if side not in {"em", "se"}:
         raise ValueError(f"side must be 'em' or 'se'; got {side!r}")
@@ -204,14 +203,65 @@ def _manifold_inertial_at_section(
 
     prev_in: NDArray[np.float64] | None = None
     prev_g = 0.0
+    prev_t = 0.0
     for k in range(sol.y.shape[1]):
         inert = _to_inertial(sol.y[:, k])
         g = float(inert[0] - x0_km)
         if prev_in is not None and prev_g != g and (prev_g <= 0.0 <= g or g <= 0.0 <= prev_g):
             frac = prev_g / (prev_g - g)  # linear interpolation of the crossing
-            return (prev_in + frac * (inert - prev_in)).astype(np.float64)
-        prev_in, prev_g = inert, g
+            crossing = (prev_in + frac * (inert - prev_in)).astype(np.float64)
+            t_cross = prev_t + frac * (float(sol.t[k]) - prev_t)
+            return crossing, float(t_cross)
+        prev_in, prev_g, prev_t = inert, g, float(sol.t[k])
     return None
+
+
+def _manifold_inertial_at_section(
+    bridge: FrameBridge,
+    system: cr3bp.CR3BPSystem,
+    node: LyapunovNode,
+    *,
+    side: str,
+    tau: float,
+    direction: str,
+    branch: int,
+    theta: float,
+    x0_km: float,
+    epsilon: float,
+    max_time: float,
+    n_samples: int = 1200,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    method: str = "DOP853",
+) -> NDArray[np.float64] | None:
+    """Inertial 6-state where ``node``'s manifold first crosses {x_inertial = x0_km}.
+
+    Seeds the manifold in-system, propagates forward (unstable) or backward (stable)
+    over a bounded horizon, samples densely, transforms each sample to the common
+    inertial frame (EM side via ``em_rot_to_inertial``, SE side via
+    ``se_rot_to_inertial``), and returns the first sign-changing crossing of the
+    section plane (linearly refined). Returns ``None`` if the manifold never reaches
+    the plane within ``max_time`` (bounded — never hangs, never fabricates a crossing).
+    Thin state-only wrapper over :func:`_manifold_crossing_timed`.
+    """
+    res = _manifold_crossing_timed(
+        bridge,
+        system,
+        node,
+        side=side,
+        tau=tau,
+        direction=direction,
+        branch=branch,
+        theta=theta,
+        x0_km=x0_km,
+        epsilon=epsilon,
+        max_time=max_time,
+        n_samples=n_samples,
+        rtol=rtol,
+        atol=atol,
+        method=method,
+    )
+    return None if res is None else res[0]
 
 
 def _cross_residual(
@@ -440,6 +490,45 @@ def correct_cross_connection(
     final_rn = float(np.linalg.norm(pos_gap)) if pos_gap is not None else float("inf")
     patch_dv = float(np.linalg.norm(vel_gap)) if vel_gap is not None else float("inf")
     converged = pos_gap is not None and final_rn < tol_km
+
+    # Transit time at the converged crossing: |t_u| (unstable flight to patch) + |t_s|
+    # (stable flight from patch), in seconds. Needed for the #411 time-consistent cycle
+    # theta closure. Computed only on convergence (one extra propagation pair); nan otherwise.
+    transit_time = float("nan")
+    if converged:
+        sys_of = {"em": bridge.em, "se": bridge.se}
+        cu = _manifold_crossing_timed(
+            bridge,
+            sys_of[from_side],
+            orbit_from,
+            side=from_side,
+            tau=tau_u,
+            direction="unstable",
+            branch=branch_u,
+            theta=theta,
+            x0_km=x0_km,
+            epsilon=epsilon,
+            max_time=max_time_u,
+        )
+        cs = _manifold_crossing_timed(
+            bridge,
+            sys_of[to_side],
+            orbit_to,
+            side=to_side,
+            tau=tau_s,
+            direction="stable",
+            branch=branch_s,
+            theta=theta,
+            x0_km=x0_km,
+            epsilon=epsilon,
+            max_time=max_time_s,
+        )
+        if cu is not None and cs is not None:
+            # Crossing times are each in the manifold's OWN nondim time; scale each by its
+            # system's t_s to seconds (cu is from_side, cs is to_side -- possibly different
+            # systems with different t_s).
+            transit_time = abs(cu[1]) * sys_of[from_side].t_s + abs(cs[1]) * sys_of[to_side].t_s
+
     return CrossConnection(
         label_from=label_from,
         label_to=label_to,
@@ -454,6 +543,7 @@ def correct_cross_connection(
         converged=converged,
         n_iter=n_iter,
         notes="" if converged else "did not reach tol_km",
+        transit_time=transit_time,
     )
 
 
@@ -518,6 +608,11 @@ def _theta_gap(theta_a: float, theta_b: float) -> float:
     """|theta_a - theta_b| reduced to [0, pi] (relative-phase commensurability gap)."""
     d = (theta_a - theta_b) % (2.0 * math.pi)
     return float(min(d, 2.0 * math.pi - d))
+
+
+def _wrap_pi(x: float) -> float:
+    """Wrap an angle (rad) to [-pi, pi) (exactly +pi maps to -pi; same point)."""
+    return float((x + math.pi) % (2.0 * math.pi) - math.pi)
 
 
 def theta_commensurability(
@@ -832,3 +927,267 @@ def search_cross_cycle(
                     )
                 )
     return results
+
+
+# --- Task 5 (#411): time-consistent single-revolution cross-cycle corrector ------
+#
+# search_cross_cycle's theta_closure_residual is the FROZEN-orientation proxy
+# |theta_ret - theta_fwd|; it ignores the relative phase advancing at omega_rel during
+# the legs' transits and the orbit dwells. The true periodic-up-to-rotation cycle must
+# satisfy TWO phase-consistency conditions (one per handoff), accounting for that time:
+#
+#   R1 = wrap[ theta_ret - theta_fwd - omega_rel*(t_fwd + n_se*T_se) ]   (fwd -> ret)
+#   R2 = wrap[ theta_fwd - theta_ret - omega_rel*(t_ret + n_em*T_em) ]   (ret -> fwd)
+#
+# theta_fwd, theta_ret are OUTPUTS of each leg's spatial corrector (it solves theta to
+# make the manifolds meet), so (R1, R2) are two scalar functions of the continuous
+# amplitude knobs (c_em, c_se). Two equations, two unknowns -> isolated solutions. The
+# #411 amplitude-knob analysis (docs/notes/2026-06-20-411-amplitude-theta-closure.md)
+# shows each Delta-theta(C) sweeps the full circle within the manifold shadow budget, so
+# a single-revolution (n_em=n_se=1) solution generically EXISTS. This corrector finds it
+# by a damped finite-difference Newton over (c_em, c_se), holding the return-leg branch
+# fixed (selected once at the seed) so the residual is a smooth function of the knobs.
+#
+# SUFFICIENCY remains the open scientific question: theta may close where the patch dV is
+# high. The result carries total_patch_dv_kms so a high-dV closure is reported honestly,
+# not hidden. Independent Radau verification is via crosscheck on the leg connections.
+
+
+@dataclass(frozen=True)
+class CrossCycleClosure:
+    """Result of the #411 time-consistent single-rev cross-system cycle corrector.
+
+    ``closed`` is True only when BOTH legs converged spatially AND the phase-consistency
+    residual norm ``theta_residual_norm = hypot(R1, R2)`` is below ``theta_tol_rad``
+    (periodic-up-to-rotation). ``total_patch_dv_kms`` is the sum of both legs' patch
+    maneuvers -- the cost of the cycle, reported even when high so a theta-closed but
+    expensive cycle is surfaced as a clean (non-)result, never hidden. ``cycle_time_s``
+    is t_fwd + n_se*T_se + t_ret + n_em*T_em.
+    """
+
+    c_em: float
+    c_se: float
+    n_em: int
+    n_se: int
+    libration_pair: tuple[str, str]
+    forward: CrossConnection
+    ret: CrossConnection
+    r1_rad: float
+    r2_rad: float
+    theta_residual_norm: float
+    max_leg_residual_km: float
+    total_patch_dv_kms: float
+    cycle_time_s: float
+    closed: bool
+    n_iter: int
+    notes: str = ""
+
+
+_RETURN_VARIANTS: tuple[dict[str, int], ...] = (
+    {"branch_u": +1, "branch_s": -1, "k": 1},
+    {"branch_u": -1, "branch_s": +1, "k": 1},
+    {"branch_u": +1, "branch_s": +1, "k": 1},
+    {"branch_u": -1, "branch_s": -1, "k": 1},
+)
+
+
+def correct_cross_cycle(
+    bridge: FrameBridge,
+    *,
+    em_lib: str,
+    se_lib: str,
+    c_em0: float,
+    c_se0: float,
+    n_em: int = 1,
+    n_se: int = 1,
+    theta_tol_rad: float = 1e-2,
+    tol_km: float = 1e2,
+    max_iter: int = 10,
+    fd_em: float = 2e-4,
+    fd_se: float = 5e-7,
+    max_attempts: int = 4,
+    return_scan_n: int = 4,
+    return_scan_n_tau: int = 2,
+    return_max_time_factor: float = 4.0,
+    on_iter: Callable[[int, float, float, float, float], None] | None = None,
+    **conn_kwargs: object,
+) -> CrossCycleClosure:
+    """Solve the time-consistent single-rev cross-system cycle over (c_em, c_se).
+
+    Damped finite-difference Newton on the two phase-consistency residuals (R1, R2)
+    [see module Task-5 note], with the return-leg branch fixed after seed selection so
+    the residual is smooth in the amplitude knobs. ``fd_se`` is ~400x smaller than
+    ``fd_em``: the SE per-rev phase advance is hypersensitive to c_se (Delta-theta_se mod
+    2pi sweeps the full circle over ~1e-4 in C, since omega_rel*T_se ~ 38 rad before the
+    mod), so a larger step would wrap the phase and corrupt the finite-difference
+    derivative. NEVER raises for non-closure -- returns
+    ``closed=False`` with diagnostics; thresholds are NEVER loosened to manufacture
+    closure, and ``total_patch_dv_kms`` is always reported.
+    """
+    em, se = bridge.em, bridge.se
+    omega_rel = 1.0 / em.t_s - 1.0 / se.t_s
+    variants = list(_RETURN_VARIANTS[: max(1, int(max_attempts))])
+
+    def _solve(
+        c_em: float, c_se: float, variant: dict[str, int] | None
+    ) -> tuple[CrossConnection, CrossConnection, float, float, dict[str, int]] | None:
+        """Build nodes, solve both legs; return (fwd, ret, T_em_s, T_se_s, variant)."""
+        try:
+            em_node = _build_em_node(em, em_lib, c_em)
+            se_node = _build_se_node(se, se_lib, c_se)
+        except (RuntimeError, ValueError):
+            return None
+        if not (em_node.converged and se_node.converged):
+            return None
+        fwd = correct_cross_connection(
+            bridge,
+            em_node,
+            se_node,
+            label_from=em_lib,
+            label_to=se_lib,
+            tol_km=tol_km,
+            **conn_kwargs,  # type: ignore[arg-type]
+        )
+        chosen = variant
+        if chosen is None:
+            best: CrossConnection | None = None
+            for v in variants:
+                cand = correct_cross_connection(
+                    bridge,
+                    se_node,
+                    em_node,
+                    label_from=se_lib,
+                    label_to=em_lib,
+                    tol_km=tol_km,
+                    branch_u=v["branch_u"],
+                    branch_s=v["branch_s"],
+                    k=v["k"],
+                    scan_n=return_scan_n,
+                    scan_n_tau=return_scan_n_tau,
+                    max_time_factor=return_max_time_factor,
+                    **conn_kwargs,  # type: ignore[arg-type]
+                )
+                if best is None or cand.residual < best.residual:
+                    best, chosen = cand, v
+                if cand.converged:
+                    break
+            assert best is not None and chosen is not None
+            ret = best
+        else:
+            ret = correct_cross_connection(
+                bridge,
+                se_node,
+                em_node,
+                label_from=se_lib,
+                label_to=em_lib,
+                tol_km=tol_km,
+                branch_u=chosen["branch_u"],
+                branch_s=chosen["branch_s"],
+                k=chosen["k"],
+                scan_n=return_scan_n,
+                scan_n_tau=return_scan_n_tau,
+                max_time_factor=return_max_time_factor,
+                **conn_kwargs,  # type: ignore[arg-type]
+            )
+        return fwd, ret, em_node.period * em.t_s, se_node.period * se.t_s, chosen
+
+    def _resid(
+        fwd: CrossConnection, ret: CrossConnection, t_em: float, t_se: float
+    ) -> tuple[float, float]:
+        r1 = _wrap_pi(ret.theta - fwd.theta - omega_rel * (fwd.transit_time + n_se * t_se))
+        r2 = _wrap_pi(fwd.theta - ret.theta - omega_rel * (ret.transit_time + n_em * t_em))
+        return r1, r2
+
+    def _result(
+        c_em: float,
+        c_se: float,
+        fwd: CrossConnection,
+        ret: CrossConnection,
+        t_em: float,
+        t_se: float,
+        n_iter: int,
+        notes: str,
+    ) -> CrossCycleClosure:
+        legs_ok = fwd.converged and ret.converged
+        if legs_ok:
+            r1, r2 = _resid(fwd, ret, t_em, t_se)
+            res_norm = math.hypot(r1, r2)
+            cycle_time = fwd.transit_time + n_se * t_se + ret.transit_time + n_em * t_em
+        else:
+            r1 = r2 = res_norm = cycle_time = float("nan")
+        closed = legs_ok and res_norm < theta_tol_rad
+        return CrossCycleClosure(
+            c_em=c_em,
+            c_se=c_se,
+            n_em=n_em,
+            n_se=n_se,
+            libration_pair=(em_lib, se_lib),
+            forward=fwd,
+            ret=ret,
+            r1_rad=r1,
+            r2_rad=r2,
+            theta_residual_norm=res_norm,
+            max_leg_residual_km=max(fwd.residual, ret.residual),
+            total_patch_dv_kms=fwd.patch_dv_kms + ret.patch_dv_kms,
+            cycle_time_s=cycle_time,
+            closed=closed,
+            n_iter=n_iter,
+            notes=notes,
+        )
+
+    seed = _solve(c_em0, c_se0, None)
+    if seed is None:
+        raise ValueError(f"seed node construction failed at c_em={c_em0}, c_se={c_se0}")
+    fwd, ret, t_em, t_se, variant = seed
+    if not (fwd.converged and ret.converged):
+        return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "seed legs did not converge")
+
+    c = np.array([c_em0, c_se0], dtype=np.float64)
+    fd = np.array([fd_em, fd_se], dtype=np.float64)
+    r1, r2 = _resid(fwd, ret, t_em, t_se)
+    f = np.array([r1, r2], dtype=np.float64)
+    if on_iter is not None:
+        on_iter(0, float(c[0]), float(c[1]), float(f[0]), float(f[1]))
+    n_iter = 0
+    for n_iter in range(1, max_iter + 1):
+        if math.hypot(*f) < theta_tol_rad:
+            break
+        jac = np.zeros((2, 2), dtype=np.float64)
+        ok = True
+        for j in range(2):
+            cp = c.copy()
+            cp[j] += fd[j]
+            probe = _solve(float(cp[0]), float(cp[1]), variant)
+            if probe is None or not (probe[0].converged and probe[1].converged):
+                ok = False
+                break
+            fp1, fp2 = _resid(probe[0], probe[1], probe[2], probe[3])
+            jac[:, j] = (np.array([fp1, fp2]) - f) / fd[j]
+        if not ok:
+            break
+        try:
+            step = np.linalg.solve(jac, -f)
+        except np.linalg.LinAlgError:
+            break
+        alpha = 1.0
+        improved = False
+        for _ in range(20):
+            ct = c + alpha * step
+            cand = _solve(float(ct[0]), float(ct[1]), variant)
+            if cand is not None and cand[0].converged and cand[1].converged:
+                cf1, cf2 = _resid(cand[0], cand[1], cand[2], cand[3])
+                if math.hypot(cf1, cf2) < math.hypot(*f):
+                    c = ct
+                    fwd, ret, t_em, t_se = cand[0], cand[1], cand[2], cand[3]
+                    f = np.array([cf1, cf2])
+                    improved = True
+                    break
+            alpha *= 0.5
+        if on_iter is not None:
+            on_iter(n_iter, float(c[0]), float(c[1]), float(f[0]), float(f[1]))
+        if not improved:
+            break
+
+    res_norm = math.hypot(*f)
+    notes = "" if res_norm < theta_tol_rad else f"theta residual {res_norm:.3e} rad > tol"
+    return _result(float(c[0]), float(c[1]), fwd, ret, t_em, t_se, n_iter, notes)
