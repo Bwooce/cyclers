@@ -74,9 +74,20 @@ entries:
   regime: Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
   failed_rung: closure-search
   physical_reason: 'Forward EM-L2->SE-L2 leg closes near-ballistically (pos gap ~0.4
-    km, dV ~0.36 km/s), but the SE->EM return leg does not co-reach the patch section
-    on a bounded single-revolution grid and theta does not return commensurately;
-    closed=False. Consistent with the ~19yr Metonic (235:19) natural-closure prediction
-    (note #316), which lies outside any bounded single-revolution grid.'
-  resweep_condition: BCR4BP Phase B refinement (coherent 4-body resonant closure)
-    OR a multi-revolution / Metonic-commensurate grid with longer integration horizons.
+    km, dV ~0.36 km/s), but the SE->EM return leg does not close on a bounded
+    single-revolution grid and theta does not return commensurately; closed=False.
+    MECHANISM (2026-06-20 reachability probe): the return is NOT structurally blocked
+    -- the SE-L2 unstable manifold DOES span the inertial patch plane (its inertial-X
+    sweeps roughly [-2e7, +1e7] km, crossing x=1.5e6). The failure is a NARROW-BASIN
+    SCALE MISMATCH: the SE-L2 unstable manifold is broad/energetic (ranges +-10-20 Mkm
+    from Earth) while the EM-L2 stable manifold is confined near Earth (~+-0.4-1.5 Mkm),
+    so the matching window where an SE-unstable section crossing lands inside the
+    EM-stable region is tiny -> a near-singular Newton basin, and a brute-force scan of
+    useful resolution is computationally impractical (a lean 5-config probe timed out at
+    20 min). Consistent with the ~19yr Metonic (235:19) natural-closure prediction (note
+    #316), which lies outside any bounded single-revolution grid.'
+  resweep_condition: 'BCR4BP Phase B refinement (coherent 4-body resonant closure) OR
+    a multi-revolution / Metonic-commensurate grid with longer horizons. Given the
+    narrow-basin scale mismatch, brute-force Newton is the wrong tool -- a continuation
+    method (track the converged forward connection in energy/theta) or the BCR4BP, not a
+    finer grid, is the productive path.'
