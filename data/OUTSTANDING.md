@@ -88,7 +88,7 @@ lives on the orthogonal gauntlet axis). See
   published mission-page values to <=1% (Cassini distant Jupiter ~3%); terminal
   captures (Cassini SOI, Juno/BepiColombo MOI) recorded without a fabricated
   V_inf. BepiColombo (1 Earth + 2 Venus + 6 Mercury) used the ESA SPICE Service
-  reconstructed MPO kernel (NAIF -121). Catalogue now 311 rows, 12 mga_tour.
+  reconstructed MPO kernel (NAIF -121). Catalogue now 312 rows, 13 mga_tour.
   EXCLUSIONS (deliberate, out of scope): Mariner-10 Venus + Mercury-II/III V_inf
   (only Mercury-I in the public NAIF M10 archive — sourced negative); Mariner 6/7
   (pre-gravity-assist-era direct Mars flybys, no assist — not mga_tour).
