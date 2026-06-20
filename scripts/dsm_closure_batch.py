@@ -87,6 +87,8 @@ def main() -> None:
             "anchor_match": res.anchor_match,
             "dsm_dv_kms": list(res.dv_dsm_kms),
             "hyperbolic_impossible": res.hyperbolic_impossible,
+            "max_revs_used": res.max_revs_used,
+            "n_revs_per_leg": list(res.n_revs_per_leg),
             "proposed_promotion": "V0->V1" if promote else None,
             "wall_s": round(dt, 1),
         }
@@ -96,7 +98,7 @@ def main() -> None:
             f"[{time.time() - t0:6.0f}s] {rid:24s} [{vlevel}] "
             f"conv={res.converged!s:5} res={res.max_residual_kms:.3e} "
             f"anchor={res.vinf_anchor_kms:.3f} match={res.anchor_match!s:5} "
-            f"dsmdV={sum(res.dv_dsm_kms):.3f}{tag}",
+            f"dsmdV={sum(res.dv_dsm_kms):.3f} revs={list(res.n_revs_per_leg)}{tag}",
             flush=True,
         )
 
