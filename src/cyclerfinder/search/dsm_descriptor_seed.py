@@ -257,6 +257,8 @@ class DsmClosureResult:
     anchor_match: bool
     hyperbolic_impossible: bool
     seed: DsmChainSeed | None
+    max_revs_used: int = 0  # the Russell rev cap passed to the corrector
+    n_revs_per_leg: tuple[int, ...] = ()  # EMERGED per-leg back-arc rev count (audit)
 
 
 def close_row_dsm(
@@ -311,6 +313,7 @@ def close_row_dsm(
         ephem=ephem,
         bounds=seed.bounds,
         tol_kms=tol_kms,
+        max_revs=seed.max_revs,
         charge_flyby_continuity=True,
         gradient=gradient,
     )
@@ -331,4 +334,6 @@ def close_row_dsm(
         anchor_match=best <= V1_TOLERANCE_KMS,
         hyperbolic_impossible=hyper,
         seed=seed,
+        max_revs_used=int(seed.max_revs),
+        n_revs_per_leg=tuple(int(n) for n in res.n_revs_per_leg),
     )

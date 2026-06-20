@@ -90,3 +90,14 @@ def test_close_reachable_row_emerges_vinf_near_anchor() -> None:
     if res.converged:
         assert res.anchor_match
         assert min(res.dv_dsm_kms) >= 0.0
+
+
+def test_closure_result_carries_seed_max_revs_and_n_revs() -> None:
+    # close_row_dsm threads the seed's Russell rev cap into the corrector and reports
+    # the emerged per-leg revolution count for the runlog/audit.
+    row = _row("russell-ch4-4.991gG2")
+    ephem = Ephemeris("astropy")
+    res = dds.close_row_dsm(row, ephem)
+    assert res.max_revs_used == 2
+    assert isinstance(res.n_revs_per_leg, tuple)
+    assert len(res.n_revs_per_leg) == 3  # E-E-M-M -> 3 legs
