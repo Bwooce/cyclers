@@ -226,9 +226,9 @@ def _cross_residual(
     bridge: FrameBridge,
     orbit_from: LyapunovNode,
     orbit_to: LyapunovNode,
-    em: cr3bp.CR3BPSystem,
-    se: cr3bp.CR3BPSystem,
     *,
+    from_side: str,
+    to_side: str,
     tau_u: float,
     tau_s: float,
     theta: float,
@@ -241,15 +241,18 @@ def _cross_residual(
 ) -> tuple[NDArray[np.float64] | None, NDArray[np.float64] | None, NDArray[np.float64] | None]:
     """Return ``(pos_gap_km(3), patch_state_inertial(6), vel_gap_kms(3))`` or Nones.
 
-    ``pos_gap`` and ``vel_gap`` are the inertial position/velocity differences of the
-    EM unstable and SE stable manifolds at the section; ``patch_state_inertial`` is
-    the EM-side crossing 6-state.
+    ``pos_gap`` / ``vel_gap`` are the inertial position/velocity differences of the
+    ``orbit_from`` UNSTABLE manifold and the ``orbit_to`` STABLE manifold at the
+    section; ``patch_state_inertial`` is the from-side crossing 6-state. Each manifold
+    is propagated in ITS OWN system (``from_side``/``to_side`` in {"em","se"}), so the
+    matcher is direction-agnostic (EM->SE forward AND SE->EM return both correct).
     """
+    sys_of = {"em": bridge.em, "se": bridge.se}
     p_u = _manifold_inertial_at_section(
         bridge,
-        em,
+        sys_of[from_side],
         orbit_from,
-        side="em",
+        side=from_side,
         tau=tau_u,
         direction="unstable",
         branch=branch_u,
@@ -260,9 +263,9 @@ def _cross_residual(
     )
     p_s = _manifold_inertial_at_section(
         bridge,
-        se,
+        sys_of[to_side],
         orbit_to,
-        side="se",
+        side=to_side,
         tau=tau_s,
         direction="stable",
         branch=branch_s,
@@ -346,11 +349,18 @@ def correct_cross_connection(
     """
     if max_iter < 1:
         raise ValueError(f"max_iter must be >= 1; got {max_iter}")
-    em, se = bridge.em, bridge.se
+    # Direction-aware: each manifold is propagated in its OWN system. Infer the side of
+    # each node from its label ("EM-..." -> em, "SE-..." -> se) so the matcher is correct
+    # for BOTH the EM->SE forward leg AND the SE->EM return leg (the prior code hardwired
+    # from=EM/to=SE, silently mis-propagating the return — #411).
+    from_side = "em" if orbit_from.label.upper().startswith("EM") else "se"
+    to_side = "em" if orbit_to.label.upper().startswith("EM") else "se"
     max_time_u = max_time_factor * orbit_from.period
     max_time_s = max_time_factor * orbit_to.period
-    c_em = orbit_from.jacobi
-    c_se = orbit_to.jacobi
+    # Record c_em / c_se by SIDE (not by from/to position) so the result is consistent
+    # in both directions.
+    c_em = orbit_from.jacobi if from_side == "em" else orbit_to.jacobi
+    c_se = orbit_from.jacobi if from_side == "se" else orbit_to.jacobi
 
     def _resid(
         tu: float, ts: float, th: float
@@ -359,8 +369,8 @@ def correct_cross_connection(
             bridge,
             orbit_from,
             orbit_to,
-            em,
-            se,
+            from_side=from_side,
+            to_side=to_side,
             tau_u=tu,
             tau_s=ts,
             theta=th,
