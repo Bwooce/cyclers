@@ -100,3 +100,25 @@ entries:
     before any closed-cycle claim); sufficiency (do the multi-rev connections re-converge?)
     is the open question. Alternative venue: BCR4BP Phase B (#412). NOT a finer
     single-revolution grid.'
+- id: bcr4bp_phase_b_em_libration_seed
+  issue: 412
+  method: BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
+    scoping)
+  regime: Sun-Earth-Moon BCR4BP (Andreu 1998, coherent 4-body)
+  failed_rung: scoping-spike
+  physical_reason: 'An Earth-Moon-libration family is the WRONG vehicle for a both-region-spanning
+    cross-system cycle. For EM-L1 Lyapunov seeds (C=3.1294/3.05/2.95) cast into the
+    BCR4BP and mu_sun-continued, the max Earth-relative reach stays ~0.9-1.16 lunar
+    distances (LD) -- flat under the Sun term, nowhere near the 3.90 LD needed to span
+    to the Sun-Earth-L region (1.5e6 km patch plane). Two signals agree: (1) reach does
+    not trend upward as mu_sun grows; (2) the family does not survive continuation to
+    full Sun strength -- each walk broke after 9-12 of 40 steps (reached only mu_sun~16-44
+    vs the full 328900). EM-libration orbits are Earth-Moon-Hill-bounded; turning on the
+    Sun neither stretches them outward nor preserves the family to full strength. See
+    docs/notes/2026-06-20-412-bcr4bp-reach-spike.md.'
+  resweep_condition: 'NOT from the EM-libration family -- that route is structurally
+    closed. The geometrically correct BCR4BP vehicle is a Sun-Earth-scale seed (an
+    SE-libration orbit or a transfer manifold reaching the 3.9 LD region), which is a
+    from-scratch Phase-B build, not a continuation of the EM family. Resweep when such an
+    SE-scale BCR4BP seed family is built. Near-term, the patched-model #411 multi-rev
+    theta-closure corrector is the more direct venue.'
