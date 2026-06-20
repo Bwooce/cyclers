@@ -79,11 +79,21 @@ class GenericReturn:
     tof_body_periods:
         Time of flight in body orbital periods.
     a_au:
-        Heliocentric transfer semi-major axis (AU).
+        Russell's tabulated transfer "a" value (his Tables 2.2/2.3 "a (AU)"
+        column). Reproduction of those tables (golden test A5) shows this
+        column is the transfer *orbital period* in canonical Earth-period
+        units, i.e. ``a_sma ** 1.5`` (Kepler III with ``mu_sun = 1``), NOT the
+        semi-major axis itself. We therefore report that same quantity here so
+        the field mirrors Russell's column exactly; the heliocentric semi-major
+        axis is ``a_au ** (2/3)``.
     n_revs:
         Number of complete heliocentric revolutions on the transfer.
     branch:
-        Lambert/transfer branch label, e.g. ``"slow"`` or ``"fast"``.
+        Russell slow/fast transfer label (``"slow"`` for his signed ``N > 0``,
+        ``"fast"`` for ``N < 0``). Determined by the phase of the final partial
+        revolution: the spacecraft past apoapsis on arrival (mean-anomaly
+        fraction ``> 1/2``) is the slow branch, before apoapsis is the fast
+        branch -- see :func:`_russell_branch`.
     vinf:
         Hyperbolic excess speed magnitude (canonical AU/TU).
     """
@@ -132,11 +142,24 @@ def psi_of_vinf_vec(
     return float(np.arctan2(np.dot(vinf, e2), np.dot(vinf, e1)))
 
 
-# Provisional Lambert-branch -> Russell-branch label mapping (Russell §2.7.4).
-# Maps the multi-rev energy branch ("low"->"slow", "high"->"fast") and the
-# single-rev transfer ("single"->"slow"). This is a provisional assignment; the
-# later golden test A5 (against Russell's tables) will confirm or correct it.
-_BRANCH_MAP: dict[str, str] = {"single": "slow", "low": "slow", "high": "fast"}
+def _russell_branch(tof_canonical: float, a_sma: float, mu: float) -> str:
+    """Russell slow/fast label of a transfer from its final-rev phase.
+
+    Russell (2004) signs his revolution count ``N`` as ``+`` for slow and ``-``
+    for fast returns. Reproducing his Tables 2.2 and 2.3 (golden test A5) shows
+    the Lambert energy branch ("low"/"high") does NOT track this sign -- the
+    energy ordering swaps as the min-energy boundary is crossed. The invariant
+    that does track it is the phase of the transfer's final (partial)
+    revolution: with ``M`` the mean anomaly swept over the flight time,
+    ``frac = (M / 2pi) mod 1`` is the fraction of the last loop completed.
+    ``frac > 1/2`` (spacecraft past apoapsis, descending toward periapsis on
+    arrival) is Russell's slow branch; ``frac < 1/2`` (still outbound, before
+    apoapsis) is the fast branch. This matches all seven anchor rows across both
+    tables.
+    """
+    period = 2.0 * pi * a_sma**1.5
+    frac = (tof_canonical / period) % 1.0
+    return "slow" if frac > 0.5 else "fast"
 
 
 def generate_generic_returns(
@@ -220,9 +243,15 @@ def generate_generic_returns(
             if abs(denom) < 1.0e-12:
                 # Parabolic transfer -- semi-major axis undefined; skip.
                 continue
-            a_au = 1.0 / denom
+            a_sma = 1.0 / denom
+            if a_sma <= 0.0:
+                # Hyperbolic transfer -- no orbital period; not a Russell return.
+                continue
+            # Russell's "a (AU)" column is the transfer period in canonical
+            # Earth-period units (a_sma ** 1.5); see GenericReturn.a_au.
+            a_au = a_sma**1.5
 
-            branch = _BRANCH_MAP.get(sol.branch, sol.branch)
+            branch = _russell_branch(tof_canonical, a_sma, model.mu_sun)
 
             returns.append(
                 GenericReturn(
@@ -319,9 +348,16 @@ def returns_at_vinf(
         return miss
 
     refined: list[GenericReturn] = []
-    for (n_revs, branch), lst in bins.items():
-        for g_lo, g_hi in pairwise(lst):
-            if not (g_lo.vinf <= vinf <= g_hi.vinf):
+    seen: list[tuple[float, float]] = []  # (tof_bp, psi_deg) of accepted returns
+    for (n_revs, _branch), lst in bins.items():
+        # Bracket along the time-of-flight grid: within a single (n_revs, branch)
+        # sub-family the v_inf-vs-ToF curve is non-monotonic, so consecutive
+        # ToF-ordered grid points -- not the v_inf-sorted order used for the
+        # public binning -- bracket EVERY crossing of the target |v_inf|.
+        ordered = sorted(lst, key=lambda g: g.tof_body_periods)
+        for g_lo, g_hi in pairwise(ordered):
+            lo, hi = sorted((g_lo.vinf, g_hi.vinf))
+            if not (lo <= vinf <= hi):
                 continue
             span = g_hi.vinf - g_lo.vinf
             t = 0.0 if span == 0.0 else (vinf - g_lo.vinf) / span
@@ -346,15 +382,28 @@ def returns_at_vinf(
             denom = 2.0 / r1_n - speed * speed / model.mu_sun
             if abs(denom) < 1.0e-12:
                 continue
-            a_au = 1.0 / denom
+            a_sma = 1.0 / denom
+            if a_sma <= 0.0:
+                continue
+            a_au = a_sma**1.5
+
+            tof_bp_solved = tof_solved / p_tu
+            psi_deg_solved = degrees(psi_solved)
+            # Adjacent ToF brackets can converge to the same crossing; dedupe.
+            if any(
+                abs(tof_bp_solved - tt) < 1e-4 and abs(psi_deg_solved - pp) < 1e-3
+                for tt, pp in seen
+            ):
+                continue
+            seen.append((tof_bp_solved, psi_deg_solved))
 
             refined.append(
                 GenericReturn(
-                    psi_deg=degrees(psi_solved),
-                    tof_body_periods=tof_solved / p_tu,
+                    psi_deg=psi_deg_solved,
+                    tof_body_periods=tof_bp_solved,
                     a_au=a_au,
                     n_revs=n_revs,
-                    branch=branch,
+                    branch=_russell_branch(tof_solved, a_sma, model.mu_sun),
                     vinf=vinf,
                 )
             )

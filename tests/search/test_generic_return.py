@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import math
 
-from cyclerfinder.search.generic_return import RussellModel
+import pytest
+
+from cyclerfinder.search.generic_return import GenericReturn, RussellModel
 
 
 def test_russell_model_constants() -> None:
@@ -96,3 +98,44 @@ def test_bin_and_query_at_vinf() -> None:
     got = returns_at_vinf(m, "E", 0.5, dtheta_deg=2.0, max_revs_cap=4)
     assert got
     assert all(abs(g.vinf - 0.5) < 1e-3 for g in got)  # refined to target |v∞|
+
+
+def _match(
+    returns: list[GenericReturn],
+    psi_deg: float,
+    a_au: float,
+    n_revs: int,
+    branch: str,
+    *,
+    psi_tol: float = 1.0,
+    a_tol: float = 0.05,
+) -> bool:
+    return any(
+        abs(g.psi_deg - psi_deg) <= psi_tol
+        and abs(g.a_au - a_au) <= a_tol
+        and g.n_revs == n_revs
+        and g.branch == branch
+        for g in returns
+    )
+
+
+@pytest.mark.slow
+def test_golden_table_2_2_N1_returns() -> None:  # noqa: N802 -- Russell's table name
+    from cyclerfinder.search.generic_return import RussellModel, returns_at_vinf
+
+    m = RussellModel()
+    vinf = 0.5 * m.body_circular_speed("E")  # Table 2.2: |v∞| = half Earth circular vel
+    rs = returns_at_vinf(m, "E", vinf, dtheta_deg=0.5, max_revs_cap=6)
+    assert _match(rs, 114.0, 0.804, 1, "slow")
+    assert _match(rs, -139.5, 0.540, 1, "slow")
+    assert _match(rs, -73.19, 3.114, 1, "fast")
+
+
+@pytest.mark.slow
+def test_golden_table_2_3_vinf_0p1838() -> None:
+    from cyclerfinder.search.generic_return import RussellModel, returns_at_vinf
+
+    m = RussellModel()
+    rs = returns_at_vinf(m, "E", 0.1838, dtheta_deg=0.5, max_revs_cap=15)
+    assert _match(rs, -86.96, 1.086, 1, "fast")
+    assert _match(rs, 104.2, 0.921, 1, "fast")
