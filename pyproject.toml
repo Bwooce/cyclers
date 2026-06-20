@@ -75,6 +75,8 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
 # the way every textbook writes it.
 "src/cyclerfinder/ml/*.py" = ["N803", "N806"]
 "tests/ml/*.py" = ["N803", "N806"]
+# Russell generic-return geometry uses the source's body-vector notation r_B/v_B.
+"tests/search/test_generic_return.py" = ["N806"]
 
 [tool.ruff.format]
 # Defaults are PEP 8 compatible; keep them.

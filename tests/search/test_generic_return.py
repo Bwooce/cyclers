@@ -33,3 +33,31 @@ def test_body_state_coplanar_circular() -> None:
     assert abs(r[2]) < 1e-12 and abs(v[2]) < 1e-12  # coplanar (z=0)
     # velocity perpendicular to radius (circular)
     assert abs(float(np.dot(r, v))) < 1e-9
+
+
+def test_psi_reference_geometry() -> None:
+    import numpy as np
+
+    from cyclerfinder.search.generic_return import RussellModel, psi_of_vinf_vec
+
+    m = RussellModel()
+    r_B, v_B = m.body_state("E", 0.0)
+    r_B = np.asarray(r_B)
+    v_B = np.asarray(v_B)
+    # v∞ aligned with +v_B -> psi 0
+    vinf_along_v = v_B / np.linalg.norm(v_B) * 0.1
+    assert abs(psi_of_vinf_vec(vinf_along_v, r_B, v_B)) < 1e-9
+    # v∞ aligned with +r_B -> psi = +pi/2
+    rhat = r_B / np.linalg.norm(r_B)
+    vinf_along_r = rhat * 0.1
+    assert abs(psi_of_vinf_vec(vinf_along_r, r_B, v_B) - np.pi / 2) < 1e-6
+
+
+def test_generic_return_dataclass() -> None:
+    from cyclerfinder.search.generic_return import GenericReturn
+
+    g = GenericReturn(
+        psi_deg=114.0, tof_body_periods=1.25, a_au=0.804, n_revs=1, branch="slow", vinf=0.5
+    )
+    assert g.branch == "slow"
+    assert g.n_revs == 1

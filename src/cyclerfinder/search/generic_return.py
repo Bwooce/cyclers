@@ -60,3 +60,68 @@ class RussellModel:
         r = np.array([a * np.cos(theta), a * np.sin(theta), 0.0], dtype=np.float64)
         v = np.array([-v_circ * np.sin(theta), v_circ * np.cos(theta), 0.0], dtype=np.float64)
         return r, v
+
+
+@dataclass(frozen=True)
+class GenericReturn:
+    """A single generic-return solution in Russell's referencing-angle space.
+
+    Fields
+    ------
+    psi_deg:
+        Referencing angle psi (degrees) of the v_inf vector -- see
+        :func:`psi_of_vinf_vec`.
+    tof_body_periods:
+        Time of flight in body orbital periods.
+    a_au:
+        Heliocentric transfer semi-major axis (AU).
+    n_revs:
+        Number of complete heliocentric revolutions on the transfer.
+    branch:
+        Lambert/transfer branch label, e.g. ``"slow"`` or ``"fast"``.
+    vinf:
+        Hyperbolic excess speed magnitude (canonical AU/TU).
+    """
+
+    psi_deg: float
+    tof_body_periods: float
+    a_au: float
+    n_revs: int
+    branch: str
+    vinf: float
+
+
+def psi_of_vinf_vec(
+    vinf_vec: np.typing.ArrayLike,
+    r_B: np.typing.ArrayLike,  # noqa: N803 -- Russell's body-vector notation r_B/v_B
+    v_B: np.typing.ArrayLike,  # noqa: N803 -- Russell's body-vector notation r_B/v_B
+) -> float:
+    """Referencing angle psi of a v_inf vector (radians).
+
+    Russell (2004) Sec. 2.7.3, verbatim: "the angular coordinate ... [of the
+    v_inf solution] location in the ecliptic plane on the v_inf sphere
+    referenced to v_B, with positive being aligned with r_B".
+
+    That is, psi is the in-plane angle of the v_inf vector measured FROM the
+    body velocity direction ``v_hat_B``, POSITIVE rotating toward the body
+    position direction ``r_hat_B``.
+
+    The in-plane orthonormal basis is built as::
+
+        e1 = v_hat_B
+        e2 = (r_hat_B - (r_hat_B . e1) e1) normalised
+
+    so ``e2`` is the component of ``r_hat_B`` orthogonal to ``e1`` (pointing
+    toward ``r_B``), giving positive psi toward ``r_B`` as Russell defines.
+    Then ``psi = atan2(vinf . e2, vinf . e1)``.
+    """
+    vinf = np.asarray(vinf_vec, dtype=np.float64)
+    r = np.asarray(r_B, dtype=np.float64)
+    v = np.asarray(v_B, dtype=np.float64)
+
+    e1 = v / np.linalg.norm(v)
+    rhat = r / np.linalg.norm(r)
+    e2 = rhat - np.dot(rhat, e1) * e1
+    e2 = e2 / np.linalg.norm(e2)
+
+    return float(np.arctan2(np.dot(vinf, e2), np.dot(vinf, e1)))
