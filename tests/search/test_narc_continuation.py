@@ -27,3 +27,26 @@ def test_bridge_builds_real_seed() -> None:
     assert abs(seed.period_sec - cyc.p * real_syn_yr * 365.25 * 86400.0) < 1.0e7
     assert seed.vinf_anchor_e_kms > 0 and seed.vinf_anchor_m_kms > 0
     assert all(b in ("single", "low", "high") for b in seed.per_leg_branch)
+
+
+def test_parent_phase_angle_range() -> None:
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.search.narc_continuation import parent_phase_angle
+
+    ph = parent_phase_angle(Ephemeris("astropy"), 0.0)
+    assert -3.14159 - 1e-6 <= ph <= 3.14159 + 1e-6
+
+
+def test_candidate_epochs_match_phase() -> None:
+    from cyclerfinder.core.ephemeris import Ephemeris
+    from cyclerfinder.search.narc_continuation import candidate_epochs, parent_phase_angle
+
+    ephem = Ephemeris("astropy")
+    target_phase = 1.0  # rad
+    epochs = candidate_epochs(ephem, target_phase, launch_window_synodics=range(1, 6), grid=50)
+    assert epochs  # at least one epoch found
+    for t0 in epochs:
+        # wrapped phase error within ~9 deg of target
+        delta = parent_phase_angle(ephem, t0) - target_phase
+        err = abs(((delta + 3.14159265) % 6.2831853) - 3.14159265)
+        assert err < 0.16

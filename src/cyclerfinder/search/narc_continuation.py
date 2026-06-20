@@ -24,12 +24,16 @@ carries no descriptor.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import atan2, pi, tau
 from typing import TYPE_CHECKING, Any
 
 from cyclerfinder.search.dsm_descriptor_seed import seed_dsm_chain_from_descriptor
 from cyclerfinder.search.generic_return import RussellModel
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from cyclerfinder.core.ephemeris import Ephemeris
     from cyclerfinder.search.cycler_search import Cycler
 
 # Real Earth-Mars synodic-year scaling. The synodic-normalized Russell parent
@@ -150,3 +154,82 @@ def russell_parent_to_ballistic_seed(
         vinf_anchor_e_kms=_vinf_anchor(row, "E"),
         vinf_anchor_m_kms=_vinf_anchor(row, "M"),
     )
+
+
+# Real Earth-Mars synodic period (years). Russell §5.3 derives candidate launch
+# epochs by scanning whole-synodic LaunchWindow intervals from the J2000 epoch.
+EARTH_MARS_SYNODIC_YEARS = 2.1354
+
+
+def _wrap_pi(x: float) -> float:
+    """Wrap an angle (radians) to the half-open interval ``(-pi, pi]``."""
+    w = (x + pi) % tau - pi
+    # ``(x + pi) % tau`` lands in ``[0, tau)`` so the result is in ``[-pi, pi)``;
+    # map the -pi endpoint to +pi to match the (-pi, pi] convention.
+    if w <= -pi:
+        w += tau
+    return w
+
+
+def parent_phase_angle(ephem: Ephemeris, t0_sec: float) -> float:
+    """Signed in-ecliptic Earth->Mars relative phase angle (radians) at ``t0_sec``.
+
+    The angle from Earth's heliocentric direction to Mars's, measured in the
+    ecliptic plane (xy components only), wrapped to ``(-pi, pi]``. Requires a
+    real-ephemeris backend (``Ephemeris("astropy")``) for an absolute-calendar
+    meaning; the circular backend places both planets at theta=0 at t=0.
+    """
+    r_e, _ = ephem.state("E", t0_sec)
+    r_m, _ = ephem.state("M", t0_sec)
+    ang = atan2(float(r_m[1]), float(r_m[0])) - atan2(float(r_e[1]), float(r_e[0]))
+    return _wrap_pi(ang)
+
+
+def candidate_epochs(
+    ephem: Ephemeris,
+    target_phase: float,
+    *,
+    launch_window_synodics: Iterable[int] = range(1, 22),
+    grid: int = 100,
+) -> list[float]:
+    """Real-ephemeris epochs (seconds since J2000) at a target Earth-Mars phase.
+
+    Russell §5.3: scan each whole-synodic LaunchWindow interval
+    ``[w*T_syn, (w+1)*T_syn)`` from the J2000 epoch on a ``grid``-point grid,
+    and record the epoch minimising the wrapped phase error against
+    ``target_phase``. One best epoch is returned per window; the list is sorted
+    ascending by phase error (best-first).
+
+    Parameters
+    ----------
+    ephem:
+        Real-ephemeris provider (``Ephemeris("astropy")``).
+    target_phase:
+        Desired signed Earth->Mars relative phase angle (radians).
+    launch_window_synodics:
+        Whole-synodic LaunchWindow indices to scan (default ``1..21``).
+    grid:
+        Number of equally-spaced epochs per window interval (default 100).
+
+    Returns
+    -------
+    list[float]
+        Per-window best epochs (seconds since J2000), best-first.
+    """
+    t_syn = EARTH_MARS_SYNODIC_YEARS * YEAR_DAYS * DAY_S
+
+    best: list[tuple[float, float]] = []  # (phase_error, epoch)
+    for w in launch_window_synodics:
+        t_start = w * t_syn
+        win_best_err = float("inf")
+        win_best_t = t_start
+        for k in range(grid):
+            t = t_start + (k / grid) * t_syn
+            err = abs(_wrap_pi(parent_phase_angle(ephem, t) - target_phase))
+            if err < win_best_err:
+                win_best_err = err
+                win_best_t = t
+        best.append((win_best_err, win_best_t))
+
+    best.sort(key=lambda pe: pe[0])
+    return [t for _, t in best]
