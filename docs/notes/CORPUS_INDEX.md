@@ -101,6 +101,12 @@ is now digested, mined, or triaged.
 | landau-longuski-2009-comparative-assessment-human-mars-technologies-architectures.pdf | 2026-06-04-agrawal-landau-howe-mining.md | Comparative assessment of human Mars architectures | mined | text-layer |
 | nock-friedlander-1987-elements-mars-transportation-system-...0094-5765(87)90189-5.pdf | 2026-06-17-digest-nock-friedlander-1987.md | Elements of a Mars transportation system | digested | text-layer |
 | vasile-summerer-depascale-2005-earth-mars-evolutionary-branching-ActaAstro.pdf | 2026-06-05-v42-backfill-sweep.md; 2026-06-07-external-algorithms-survey.md | E-M evolutionary-branching global search | mined | text-layer |
+| chen-2002-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Earth-Mars cyclers (Master's thesis) | triaged | text-layer |
+| chen-2012.pdf | 2026-06-20-digest-new-papers.md | K.J. Chen 2012 work on Earth-Mars trajectories | triaged | text-layer |
+| chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with free-return trajectories | triaged | text-layer |
+| chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with multiple-impulse free-return | triaged | text-layer |
+| machado-2020.pdf | 2026-06-20-digest-new-papers.md | Parametric design of E-M cycler crew transfer vehicle | triaged | text-layer |
+| russell-2006-systematic-method-design-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Systematic method for E-M cycler design (journal) | triaged | text-layer |
 
 ## Mars free-return / human-flyby missions
 
@@ -241,6 +247,7 @@ is now digested, mined, or triaged.
 | rickman-intro-orbital-mechanics-spacecraft-attitudes-thermal-engineers-NASA-NESC-slides.pdf | 2026-06-10-rickman-nesc-slides-triage.md | Intro orbital-mechanics lecture slides (NESC) | triaged | text-layer |
 | acton-1996-ancillary-data-services-NASA-NAIF-SPICE-planet-space-sci-...95)00107-7.pdf | 2026-06-17-digest-acton-1996.md; catalogue | SPICE/NAIF ancillary data services | digested + mined-by-catalogue | text-layer |
 | ccsds-2023-orbit-data-messages-502.0-B-3-blue-book.pdf | 2026-06-05-ccsds-odm-502-mining.md | CCSDS Orbit Data Messages standard | mined | text-layer |
+| vergaaij-2018-time-optimal-solar-sail-heteroclinic-connections.pdf | 2026-06-20-digest-new-papers.md | Time-optimal solar sail heteroclinic connections | triaged | text-layer |
 
 ## Gaps — `undigested-unmined` + image-only OCR backlog
 
@@ -289,3 +296,5 @@ recur in the current corpus.
 - **peralta-flanagan-1995-cassini-interplanetary-trajectory-design-cep.pdf** | undigested | Cassini interplanetary leg | - | text-layer |
 - **wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-control-eng-practice-doi-10.1016-0967-0661(95)00172-7.pdf** | digested | Cassini tour trajectory | KNOWN_CORPUS | text-layer |
 - **wolf-1996-touring-saturnian-system-spie.pdf** | 2026-06-20-digest-wolf-1996.md | Cassini touring | - | text-layer |
+- **canales-howell-2023-arxiv-2308.10029.pdf** | undigested | Transport corridor reproduction | - | text-layer |
+- **kumar-2025-arxiv-2509.12675.pdf** | undigested | Resonant orbits (r41u, 3:1 to 2:1 heteroclinic) | - | text-layer |
