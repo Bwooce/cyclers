@@ -143,6 +143,31 @@ def test_earth_moon_mu_physical() -> None:
     assert sysm.t_s == pytest.approx(math.sqrt(sysm.l_km**3 / gm_system), rel=1e-12)
 
 
+def test_sun_earth_registry_system() -> None:
+    # #409: cr3bp_system serves Sun-primary heliocentric pairs from the planet
+    # registry (PLANETS + MU_SUN_KM3_S2), the single source of truth for the
+    # #405/#411 cross-system work.
+    #
+    # SOURCED cross-checks (no circular dependence on our own derived value):
+    #   1. The Sun-Earth (Earth-only) CR3BP mass parameter is the standard
+    #      textbook value mu ~ 3.0035e-6 (e.g. Koon-Lo-Marsden-Ross system table
+    #      lists the Sun-Earth ratio at this order; Earth-only, not Earth+Moon).
+    #   2. The characteristic time satisfies 2*pi*t_s = Earth's orbital period,
+    #      which must be one year. Earth orbiting the Sun in ~1 yr is the physical
+    #      anchor independent of the GM arithmetic.
+    se = cr3bp.cr3bp_system("Sun", "Earth")
+    assert se.mu == pytest.approx(3.0035e-6, rel=2e-4)
+    year_s = 365.25 * 86400.0
+    assert (2.0 * math.pi * se.t_s) == pytest.approx(year_s, rel=1e-3)
+    # Convention identical to the moon path: t_s = sqrt(l^3 / G(m1+m2)).
+    gm_pair = 1.32712440018e11 + 3.98600435507e5  # MU_SUN + Earth-only GM
+    assert se.t_s == pytest.approx(math.sqrt(se.l_km**3 / gm_pair), rel=1e-12)
+    assert se.mu == pytest.approx(3.98600435507e5 / gm_pair, rel=1e-12)
+    # Unknown Sun-secondary names fail loudly (parallels SATELLITES[bad] KeyError).
+    with pytest.raises(KeyError):
+        cr3bp.cr3bp_system("Sun", "Nibiru")
+
+
 def test_saturnian_mu_double_count_was_negligible() -> None:
     # Quantify the SAME double-count effect (#212 Part A) for the Saturnian
     # pairs backing the 14 SILVER Lyapunov members. The relative shift between

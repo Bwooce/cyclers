@@ -18,26 +18,18 @@ from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
-from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.genome.heteroclinic_cycle import LyapunovNode, _seed_on_manifold
 
 
 def se_earth_system() -> cr3bp.CR3BPSystem:
     """Build the Sun-Earth CR3BP system (Earth is the SE secondary at 1-mu_SE).
 
-    The shared registry (``core.satellites``) carries Earth only as a *primary* and
-    has no Sun entry, so ``cr3bp.cr3bp_system("Sun", "Earth")`` cannot construct the
-    SE pair. We assemble it here from the same sourced constants used everywhere else:
-    ``MU_SUN_KM3_S2`` (IAU 2015 nominal solar GM), Earth's planet-only GM, and Earth's
-    heliocentric SMA. Convention matches ``cr3bp.cr3bp_system``: pair GM = G(m1+m2),
-    ``l_km`` = secondary SMA about primary, ``t_s`` = sqrt(l_km^3 / G(m1+m2)).
+    Thin alias for the shared registry, which now serves Sun-primary heliocentric
+    pairs from ``core.constants.PLANETS`` + ``MU_SUN_KM3_S2`` (see
+    ``cr3bp.cr3bp_system``, #409). Kept as a named convenience for the #405/#411
+    cross-system call sites; the registry is the single source of truth.
     """
-    earth = PLANETS["E"]
-    gm_pair = MU_SUN_KM3_S2 + earth.mu_km3_s2
-    mu = earth.mu_km3_s2 / gm_pair
-    l_km = earth.sma_au * AU_KM
-    t_s = math.sqrt(l_km**3 / gm_pair)
-    return cr3bp.CR3BPSystem(mu=mu, primary="Sun", secondary="Earth", l_km=l_km, t_s=t_s)
+    return cr3bp.cr3bp_system("Sun", "Earth")
 
 
 def em_moon_system() -> cr3bp.CR3BPSystem:

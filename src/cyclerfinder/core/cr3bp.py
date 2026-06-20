@@ -15,6 +15,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
+from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS, PlanetData
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 
 # STM integration modes. See ``propagate(with_stm=True, stm_mode=...)`` for the
@@ -377,10 +378,41 @@ def cr3bp_system(primary: str, secondary: str) -> CR3BPSystem:
     primary term (<= 2.4e-4 of the system GM, dominated by Titan/the Galileans)
     — the best decomposition available from system GMs, and far below the
     SILVER members' reported precision (quantified in tests/core/test_cr3bp.py).
+
+    Sun-primary heliocentric pairs (e.g. ``cr3bp_system("Sun", "Earth")``) are
+    served from the planet registry (``core.constants.PLANETS``) instead of the
+    moon registry: the secondary's GM and heliocentric SMA come from ``PLANETS``
+    and the primary GM is ``MU_SUN_KM3_S2`` (IAU 2015 nominal solar GM). The
+    convention is identical — pair GM = G(m1+m2), ``l_km`` = secondary SMA about
+    primary, ``t_s`` = sqrt(l_km^3 / G(m1+m2)). This is the single source of
+    truth for the #405/#411 cross-system (Sun-Earth <-> Earth-Moon) work.
     """
+    if primary == "Sun":
+        planet = _planet_by_name(secondary)
+        gm2 = planet.mu_km3_s2
+        gm_pair = MU_SUN_KM3_S2 + gm2  # G(Sun + planet)
+        mu = gm2 / gm_pair
+        l_km = planet.sma_au * AU_KM
+        t_s = float(math.sqrt(l_km**3 / gm_pair))
+        return CR3BPSystem(mu=mu, primary=primary, secondary=secondary, l_km=l_km, t_s=t_s)
     gm2 = SATELLITES[secondary].mu_km3_s2
     gm_pair = PRIMARIES[primary]  # system GM == G(m1 + m2 [+ other moons])
     mu = gm2 / gm_pair
     l_km = SATELLITES[secondary].sma_km
     t_s = float(math.sqrt(l_km**3 / gm_pair))
     return CR3BPSystem(mu=mu, primary=primary, secondary=secondary, l_km=l_km, t_s=t_s)
+
+
+def _planet_by_name(name: str) -> PlanetData:
+    """Resolve a full English planet name (e.g. ``"Earth"``) to its PLANETS entry.
+
+    ``PLANETS`` is keyed by short code (``"E"``, ``"M"``, ...); cross-system callers
+    name the secondary by its English name, matching the ``(primary, secondary)``
+    string convention of the moon-registry path. Raises KeyError with the valid
+    names if no match (parallels ``SATELLITES[secondary]`` failing for a bad moon).
+    """
+    for planet in PLANETS.values():
+        if planet.name == name:
+            return planet
+    valid = sorted(p.name for p in PLANETS.values())
+    raise KeyError(f"no Sun-primary planet named {name!r}; valid secondaries: {valid}")
