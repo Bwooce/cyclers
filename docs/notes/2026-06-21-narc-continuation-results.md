@@ -93,3 +93,45 @@ real-ephemeris continuation lane reaches DE440 for every descriptor-bearing row
 and produces a clean, characterized negative — the next iteration is gated on the
 seed/homotopy modelling (multi-arc legs, anchor-targeted continuation), not on a
 solver bug.
+
+## Post-run analysis — "why can't we replicate Russell?" (2026-06-21)
+
+Three follow-up findings sharpen the diagnosis. The negative is NOT "Russell's
+result is unreproducible"; it is a **seeding / family-selection wall**, and the
+faithful machinery to test it already exists.
+
+1. **The target model is NOT the cause.** Re-ran the continuation targeting
+   Russell's own accurate model — the fully-ramped mean-element-J2000 backend
+   `continuation.ramped_ephemeris(1.0, 1.0)` (real e,i; a,Ω,ω,ν at J2000 mean) —
+   instead of DE440. Result is the SAME for all three probed rows: res ≈ 2.35–2.46
+   km/s, same low-energy off-anchor basin, emerged V∞ ≈ [1.4–1.8, 2.4–2.6, 1.2,
+   0.0]. So continuing to DE440 (perturbed) vs Russell's mean-element model makes
+   no difference — the divergence from Russell is not the model.
+
+2. **We were not running Russell's actual corrector.** `correct.ballistic_correct`
+   is Russell §5.4.4 *simplified*: magnitude-continuity + `[t0, ToFs]` free vars.
+   Russell's real solve is **5n multiple-shooting** — per-leg full v∞ *vector* +
+   t0 + tf, with position-match + Δv=0 constraints, from a seven-cycle seed at a
+   phase-matched epoch, under SNOPT elastic mode. The magnitude-only reduced-DOF
+   version admits the degenerate low-energy family member (trailing v∞→0) that
+   Russell's full-DOF solve + seed does not.
+
+3. **The full corrector already exists, and this was already diagnosed (#135).**
+   `nbody/shooter.py` IS the full-state multiple-shooting corrector (the Jones/SNOPT
+   analogue). Its docstring records the binding **#135 verdict**: the full shooter
+   "closes geometrically but lands OFF-ANCHOR (V∞ 9-28 vs sourced 3-10 km/s); the
+   verdict is **seeding/basin, not solver deficiency**," and it "MUST be seeded from
+   the #133 near-miss conic survey, NEVER from a blind scan." The S1L1 saga
+   ([[project_s1l1_realeph_closure_blocker]]) confirms even the complete stack fails
+   on family selection.
+
+**Conclusion.** The reason we don't land Russell's published cyclers is the **seed
+basin / family selection**, not the model and not a missing corrector. The full
+shooter exists; the only lever never tried is feeding it the *constructed,
+golden-validated Russell ψ generic-return parent* (new this session) instead of the
+searched #133 near-miss survey. That is the next build: a seed bridge
+(Russell parent v∞-vector nodes → `nbody/shooter.seed_from_conic` → `shoot()` on
+the real n-body model). It is the strongest remaining shot at breaking the
+seeding/family-selection wall — or the most well-earned confirmation that these
+specific cyclers are not landable by our stack even from the literal parent. Spec
+to follow: `2026-06-21-shooter-russell-seed-*`.
