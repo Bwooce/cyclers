@@ -39,3 +39,22 @@ def test_generic_return_aphelion_reconstructs() -> None:
     assert rs
     aph = generic_return_aphelion(m, "E", rs[0])
     assert aph > 0.0  # AU
+
+
+def test_search_small_returns_gated_cyclers() -> None:
+    from cyclerfinder.search.cycler_search import search_cyclers
+    from cyclerfinder.search.generic_return import RussellModel
+
+    cs = search_cyclers(RussellModel(), p_max=2, ar_min=0.9, tr_min=0.85, max_revs_cap=6)
+    assert isinstance(cs, list)
+    for c in cs:
+        assert c.ar > 0.9 and c.tr > 0.85
+        assert c.p >= 1 and c.s >= 1
+
+
+def test_generic_returns_at_tof_single_solve() -> None:
+    from cyclerfinder.search.cycler_search import generic_returns_at_tof
+    from cyclerfinder.search.generic_return import RussellModel
+
+    rs = generic_returns_at_tof(RussellModel(), "E", 3.0, max_revs_cap=4)
+    assert all(r.vinf > 0 for r in rs)
