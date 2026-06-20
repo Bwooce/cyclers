@@ -92,18 +92,26 @@ entries:
     still under-resolves and reports the return non-converged; a full-scan return
     converges.)'
   resweep_condition: 'Both spatial legs exist at low dV, so the open work is PHASE
-    closure. FEASIBILITY CONFIRMED (2026-06-20, docs/notes/2026-06-20-411-theta-closure-feasibility.md):
-    the 2.2 rad gap IS nullable by multi-revolution phasing -- (n_em=41, n_se=19) closes
-    it to 2e-4 rad at a ~11 yr cycle (Metonic ballpark). So the productive next step is
-    the FULL multi-revolution theta-closure corrector (n-rev manifold departure + joint
-    solve of both legs + theta-consistency near (41,19), with rigorous Radau verification
-    before any closed-cycle claim); sufficiency (do the multi-rev connections re-converge?)
-    is the open question. Alternative venue: BCR4BP Phase B (#412). NOT a finer
-    single-revolution grid.'
+    closure. The (n_em=41, n_se=19) ~11yr "feasibility" (2026-06-20-411-theta-closure-feasibility.md)
+    was SUPERSEDED (2026-06-20, docs/notes/2026-06-20-411-amplitude-theta-closure.md): it
+    held both amplitudes FIXED and is physically INFEASIBLE -- a manifold seeded at eps
+    shadows its orbit only ~ln(eps_range)/ln(|lambda_u|) revs before exponential departure,
+    and the EM-L2 Lyapunov |lambda_u|~1.2e3 caps that at ~2-4 revs (n_em=41 is >10x over
+    budget). The CORRECT model: amplitude is a continuous phase knob -- over each Lyapunov
+    family Delta-theta(C) mod 2pi sweeps ~the full circle (EM 89%, SE 69%), the EM side
+    doing so WITHIN its 2-4 rev shadow budget. So the theta-closure equation at
+    n_em=n_se=1 is ONE equation in TWO continuous amplitude knobs -> a 1-D solution curve
+    exists at SINGLE revolution. Productive next step: a coupled single-rev corrector --
+    free vars (c_em, c_se) + both legs'' phases + theta at n=1; residual = both inertial
+    position gaps + theta-time-consistency; solve along the closure curve and read the
+    patch dV, with rigorous Radau verification before any closed-cycle claim. Sufficiency
+    (does patch dV stay LOW on the theta-closure curve?) is the open question. Alternative
+    venue: BCR4BP Phase B with an SE-scale seed (#412). NOT a multi-revolution corrector
+    and NOT a finer fixed-amplitude grid.'
 - id: bcr4bp_phase_b_em_libration_seed
   issue: 412
-  method: BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
-    scoping)
+  method: 'BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
+    scoping)'
   regime: Sun-Earth-Moon BCR4BP (Andreu 1998, coherent 4-body)
   failed_rung: scoping-spike
   physical_reason: 'An Earth-Moon-libration family is the WRONG vehicle for a both-region-spanning
