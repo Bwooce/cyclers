@@ -236,6 +236,30 @@ candidates cannot pass V4.
   registered `negative_results.yaml` `cross_system_se_em_L2_patched_cr3bp`) —
   consistent with #316's ~19yr Metonic natural-closure prediction. Re-sweep: a
   Metonic/multi-rev grid OR BCR4BP Phase B. Spec/plan in docs/superpowers/.
+  SUPERSEDED by #411 below: the "0/6 clean negative" was a corrector DIRECTION BUG,
+  not physics — both legs actually converge.
+- **#411 ⧗ IN PROGRESS (2026-06-20)** Cross-system closure pursuit, post-bugfix.
+  Fixed the #405 corrector direction bug (return-leg manifold was propagated in the
+  wrong system): BOTH legs now converge ballistically (fwd EM-L2→SE-L2 0.36, return
+  SE-L2→EM-L2 0.44 km/s). Corrected the closure model: the (n_em=41,n_se=19) ~11yr
+  multi-rev "feasibility" is INFEASIBLE (EM-L2 |λ_u|~1.2e3 caps manifold shadowing at
+  ~3-4 revs); instead amplitude is a continuous phase knob (Δθ(C) mod 2π sweeps the
+  full circle within the shadow budget), so single-rev θ-closure is admissible
+  (`docs/notes/2026-06-20-411-amplitude-theta-closure.md`). Built `correct_cross_cycle`
+  (time-consistent 2×2 Newton over c_em,c_se). Status: legs stay cheap (~0.8 km/s
+  total, ~1.06 yr) but the Newton STALLS at |R|≈0.59 rad — c_se steps fall off the
+  finicky SE family near the Canalias bifurcation. Next: test closure-curve existence
+  (c_se scan) → robustify solver OR pivot libration-pair/rev-count.
+- **#412 ✓ scoped negative (2026-06-20)** BCR4BP Phase-B from an EM-libration seed is
+  the WRONG vehicle: μ_sun-continuing an EM-L1 Lyapunov keeps Earth-reach ~1 LD (vs
+  3.9 LD SE-L target) and the family breaks before full Sun strength
+  (`negative_results.yaml` `bcr4bp_phase_b_em_libration_seed`). Re-scoped to need an
+  SE-scale BCR4BP seed (from-scratch).
+- **#409 ✓ DONE (2026-06-20)** `cr3bp_system("Sun","Earth")` now served from the
+  planet registry (PLANETS + MU_SUN); `se_earth_system()` is a thin alias. Sourced
+  checks: μ~3.0035e-6, 2π·t_s = 1 yr.
+- **#413 ✓ DONE (2026-06-20)** Cleaned ~25 untracked scratch files; gitignored
+  `.playwright-mcp/`.
 - **#315** Circumbinary/binary-star μ-gap sweep
 - **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds)
 - **#320** First quasi_cycler discovery sweep (blocked by #319)
