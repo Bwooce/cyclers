@@ -225,6 +225,17 @@ candidates cannot pass V4.
   closes to ~1e-10, crossing matches the published value to ~4e-3 (linear-seed
   fidelity), L2→L1 return leg is the exact time-reversal mirror. Spec/plan in
   docs/superpowers/. Unblocks #405 (cross-system novel search).
+- **#405 ✓ Phase A DONE (2026-06-20)** Cross-system SE↔EM heteroclinic-cycle
+  search. Delivered `genome/cross_system_cycle.py`: SE↔EM frame bridge (Earth-
+  centered inertial, round-trip 1e-9 + physical Moon-position anchor) + patched-
+  CR3BP cross-system connection corrector + bounded closure search + Radau
+  cross-check. Validated against Canalias 2007 SE C=3.000863625 (golden #407,
+  conventions match, no offset). RESULT: a near-ballistic forward connection
+  EM-L2→SE-L2 (pos gap 0.38 km, ΔV 0.36 km/s, Radau-checked 0.89 km), but the
+  bounded single-revolution closure search is a CLEAN NEGATIVE (0/6 grid points;
+  registered `negative_results.yaml` `cross_system_se_em_L2_patched_cr3bp`) —
+  consistent with #316's ~19yr Metonic natural-closure prediction. Re-sweep: a
+  Metonic/multi-rev grid OR BCR4BP Phase B. Spec/plan in docs/superpowers/.
 - **#315** Circumbinary/binary-star μ-gap sweep
 - **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds)
 - **#320** First quasi_cycler discovery sweep (blocked by #319)
