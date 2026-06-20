@@ -19,12 +19,15 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from scipy.optimize import brentq
 
-from cyclerfinder.search.generic_return import RussellModel
+from cyclerfinder.search.generic_return import RussellModel, returns_at_vinf
+
+if TYPE_CHECKING:
+    from cyclerfinder.search.cycler_search import Cycler
 
 _OMEGA_EPS = 1e-12
 
@@ -401,4 +404,78 @@ def descriptor_to_phsi(row: dict[str, Any]) -> PhsiSpec | None:
         vinf_e_kms=vinf_e_kms,
         vinf_m_kms=vinf_m_kms,
         sequence=sequence,
+    )
+
+
+def assemble_cycler(model: RussellModel, phsi: PhsiSpec) -> Cycler | None:
+    """Assemble a :class:`Cycler` from a p.h.s.i descriptor (Phase D, #388).
+
+    Bridges Russell's structural descriptor :class:`PhsiSpec` to the concrete
+    generic-return geometry: it converts the sourced Earth flyby ``v_inf`` to
+    canonical units, generates the same-body Earth returns at that ``|v_inf|``
+    (:func:`returns_at_vinf`), and selects the one whose revolution count matches
+    ``|i|`` and whose branch matches the sign of ``i`` (``+`` slow, ``-`` fast).
+    If no branch match exists it falls back to any return with the matching rev
+    count; if none has the matching rev count it returns ``None``.
+
+    The selected return drives the aphelion-ratio (AR) and turn-ratio (TR) gates
+    via the existing :mod:`cyclerfinder.search.cycler_search` machinery. The
+    emerged Earth ``v_inf`` (``vinf_e``) is the return's converged ``|v_inf|``
+    converted back to km/s; the Mars ``v_inf`` (``vinf_m``) is carried straight
+    from the sourced anchor ``phsi.vinf_m_kms`` -- the idealized model's Mars
+    ``v_inf`` emergence is a downstream leg not solved here, so the sourced value
+    is retained as the anchor.
+
+    Returns ``None`` when no generic return matches the requested rev count.
+    """
+    # Local import to avoid a circular import: cycler_search imports from this
+    # module (group_half_years). _arrival_vinf_vec is private but its cross-module
+    # use within the same package is acceptable here.
+    from cyclerfinder.search.cycler_search import (
+        Cycler,
+        _arrival_vinf_vec,
+        aphelion_ratio,
+        generic_return_aphelion,
+        max_earth_flyby_bend,
+        turn_ratio,
+    )
+
+    kms = model.au_km / model.tu_days / 86400.0
+    vinf_can = phsi.vinf_e_kms / kms
+
+    rets = returns_at_vinf(model, "E", vinf_can, dtheta_deg=0.5, max_revs_cap=15)
+
+    want_branch = "slow" if phsi.i >= 0 else "fast"
+    want_revs = abs(phsi.i)
+
+    ret = next(
+        (r for r in rets if r.n_revs == want_revs and r.branch == want_branch),
+        None,
+    )
+    if ret is None:
+        ret = next((r for r in rets if r.n_revs == want_revs), None)
+    if ret is None:
+        return None
+
+    aph = generic_return_aphelion(model, "E", ret)
+    ar = aphelion_ratio(aph)
+
+    vinf_in_vec = _arrival_vinf_vec(model, "E", ret)
+    _hs, omega_max = group_half_years(model, "E", ret.vinf, vinf_in_vec, phsi.h, phsi.s)
+    tr = turn_ratio(max_earth_flyby_bend(model, ret.vinf), omega_max) if omega_max > 0.0 else 0.0
+
+    vinf_e = ret.vinf * kms  # km/s, emerged from the converged generic return
+    vinf_m = phsi.vinf_m_kms  # sourced anchor; Mars v_inf emergence is downstream
+
+    return Cycler(
+        p=phsi.p,
+        h=phsi.h,
+        s=phsi.s,
+        i=phsi.i,
+        generic_return=ret,
+        turn_angles=(),
+        ar=ar,
+        tr=tr,
+        vinf_e=vinf_e,
+        vinf_m=vinf_m,
     )

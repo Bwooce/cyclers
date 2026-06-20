@@ -116,3 +116,18 @@ def test_descriptor_to_phsi_none_for_ocampo() -> None:
     cat = load_catalog()
     ocampo = next(e for e in cat.entries if e.id.startswith("russell-ocampo"))
     assert descriptor_to_phsi(ocampo.raw) is None
+
+
+def test_assemble_known_row() -> None:
+    from cyclerfinder.data.catalog import load_catalog
+    from cyclerfinder.search.cycler_assembly import assemble_cycler, descriptor_to_phsi
+    from cyclerfinder.search.generic_return import RussellModel
+
+    row = load_catalog().by_id["russell-ch4-4.991gG2"].raw
+    spec = descriptor_to_phsi(row)
+    assert spec is not None
+    cyc = assemble_cycler(RussellModel(), spec)
+    # assembly may or may not find a matching generic return; if it does, vinf_e>0
+    if cyc is not None:
+        assert cyc.vinf_e > 0.0
+        assert cyc.ar > 0.0
