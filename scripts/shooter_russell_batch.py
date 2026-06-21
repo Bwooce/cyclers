@@ -13,25 +13,25 @@ full shooter from the literal constructed parent rather than from the blind /
 near-miss-survey basin. See ``docs/notes/2026-06-21-narc-continuation-results.md``
 (post-run analysis) for the rationale.
 
-Coverage caps (DOCUMENTED — full n-body ``shoot()`` per epoch is expensive):
+**STM Jacobian (2026-06-21).** The earlier FD run was compute-infeasible: the
+LM solver's internal finite-difference Jacobian is (6*n_nodes+1) full-state
+residuals per iteration (~1000 s/iteration serially), which forced a K=1 /
+max_nfev=2 coverage cap that could only see the seed basin, never convergence.
+This batch uses the analytic block-bidiagonal STM Jacobian
+(``shooter.shoot(jacobian="stm")``) — ONE co-integrated variational propagation
+per leg instead of the 6*n_nodes+1 FD re-propagations — so the corrector can run
+to convergence. The coverage cap is therefore removed: the methodologically
+-correct K best-phase-error epochs over LaunchWindow 1..21 are shot to
+completion, however long that takes (per ``feedback_long_runs_acceptable`` —
+monitorability is not the measure of the best path).
 
-- ``K`` epochs per row: only the best-K phase-error candidate epochs (from the
-  Russell §5.3 LaunchWindow scan) are actually shot. This is a logged coverage
-  cap, not a physics choice; the lowest-defect ShootResult across the K epochs is
-  retained per row.
-- ``LAUNCH_WINDOW_SYNODICS`` / ``EPOCH_GRID`` size the candidate-epoch scan.
+**Detached + checkpointed.** Each (row, epoch) record is written to the JSONL
+runlog immediately on completion (append + flush), so a kill/restart loses
+nothing. ``--resume`` skips (row, epoch) pairs already present in the runlog.
+Launch detached so the run survives agent reaping:
 
-CAP REDUCTION (2026-06-21, measured): a single full-state ``defect_residual``
-on these E-E-M-M rows (ToFs up to ~1026 days) costs ~40 s wall *regardless* of
-``max_wall_sec`` (the individual legs each complete under budget, so the guard
-never trips; it is the sum of 3 legs that dominates). The LM solver's internal
-finite-difference Jacobian is (6*n_nodes + 1) ≈ 25 such residuals per iteration,
-i.e. ~1000 s/iteration serially — intractable. The original plan's ``K=3`` /
-``range(1, 22)`` was therefore reduced to ``K=1`` / ``range(1, 6)`` and the
-Jacobian is parallelised across all cores (``N_JOBS``). This keeps each row to a
-small number of LM iterations within the batch wall budget. The reduction is a
-COVERAGE cap (fewer epochs probed), not a physics relaxation; it is recorded in
-``docs/notes/2026-06-21-shooter-russell-results.md``.
+    setsid nohup uv run python scripts/shooter_russell_batch.py --resume \
+        > data/runs/shooter-stm-batch.log 2>&1 &
 
 Per the standing discipline: HELD — no writeback. This script never touches
 ``data/catalogue.yaml`` or ``validate.py``; it only writes a JSONL runlog and
@@ -42,6 +42,7 @@ bend-feasible — and even then it is recorded, never applied.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -59,47 +60,83 @@ from cyclerfinder.search.narc_continuation import (
 )
 from cyclerfinder.search.shooter_russell_seed import russell_shooting_seed
 
-# --- Coverage caps (documented; see module docstring) -------------------------
-# Full n-body shoot per epoch is expensive. Only the best-K phase-error epochs
-# are run. If a single row exceeds the wall budget, K and the launch window are
-# reduced (and that reduction is documented inline + in the results note).
-# Reduced from the plan's K=3 / range(1, 22) after the measured ~40 s/residual
-# cost (see module docstring "CAP REDUCTION"); K=1 shoots only the single
-# best-phase epoch per row, range(1, 6) scans 5 LaunchWindows to find it.
-K: int = 1
-LAUNCH_WINDOW_SYNODICS: range = range(1, 6)
+# --- Epoch scan (methodologically correct; NO monitorability cap) -------------
+# The best-K phase-error epochs over a LaunchWindow 1..21 synodic scan are shot to
+# completion. With the STM Jacobian each shoot is tractable, so the earlier
+# FD-era K=1 / range(1, 6) coverage cap is removed (see module docstring).
+K: int = 3
+LAUNCH_WINDOW_SYNODICS: range = range(1, 22)
 EPOCH_GRID: int = 100
 
 # --- shoot() budget -----------------------------------------------------------
-# accuracy mirrors tests/nbody/test_shooter_jones_gate.py. max_nfev is kept small
-# (the convergence/family-selection signal, not a fine optimum, is the #388
-# deliverable) and the Jacobian is parallelised across cores via N_JOBS.
+# accuracy mirrors tests/nbody/test_shooter_jones_gate.py. With the analytic STM
+# Jacobian the per-iteration cost is one residual (~40 s) + one variational
+# propagation per leg, not the (6*n_nodes+1) FD residuals — so the corrector can
+# run to a real fixed point. max_nfev is generous; the LM solve stops on its own
+# ftol/xtol when it converges or stalls.
 SHOOT_ACCURACY: float = 1e-9
-SHOOT_MAX_NFEV: int = 12
-LEG_WALL_BUDGET_SEC: float = 5.0
-N_JOBS: int = 16
+SHOOT_MAX_NFEV: int = 100
+LEG_WALL_BUDGET_SEC: float = 30.0
+SHOOT_JACOBIAN: str = "stm"
 
 # The anchor-match tolerance: an emerged per-encounter V∞ must land within this
 # of the SOURCED E and M anchors for the row to count as anchor-matched.
 ANCHOR_MATCH_TOL_KMS: float = 0.5
 
+RUNLOG = Path("data/runs/shooter-stm-batch.jsonl")
+
+
+def _load_done(runlog: Path) -> set[tuple[str, int]]:
+    """(id, epoch_index) pairs already recorded in the runlog (for --resume)."""
+    done: set[tuple[str, int]] = set()
+    if not runlog.exists():
+        return done
+    with runlog.open(encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if "id" in rec and "epoch_index" in rec:
+                done.add((str(rec["id"]), int(rec["epoch_index"])))
+    return done
+
+
+def _append(runlog: Path, rec: dict[str, Any]) -> None:
+    """Append one record and flush+fsync so a kill loses nothing."""
+    runlog.parent.mkdir(parents=True, exist_ok=True)
+    with runlog.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec) + "\n")
+        fh.flush()
+        import os
+
+        os.fsync(fh.fileno())
+
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="skip (row, epoch) pairs already present in the runlog",
+    )
+    args = parser.parse_args()
+
     # Line-buffer stdout so per-row progress flushes promptly when piped (each
     # shoot() is minutes long; buffered output would hide all progress).
     sys.stdout.reconfigure(line_buffering=True)
 
     m = RussellModel()
     ephem = Ephemeris("astropy")
-    records: list[dict[str, Any]] = []
+    done = _load_done(RUNLOG) if args.resume else set()
+    if args.resume:
+        print(f"[resume] {len(done)} (row,epoch) pairs already in {RUNLOG}")
 
     t_wall0 = time.monotonic()
     catalog = load_catalog()
-
-    descriptor_rows = 0
-    converged_rows = 0
-    anchor_matched_rows = 0
-    promotions = 0
 
     for e in catalog.entries:
         wall = time.monotonic() - t_wall0
@@ -115,7 +152,6 @@ def main() -> None:
             except ValueError:
                 continue
 
-            descriptor_rows += 1
             vlevel = str(e.raw.get("validation_level", "V0"))
             bodies = tuple(dict.fromkeys(seed.sequence))
 
@@ -126,10 +162,13 @@ def main() -> None:
                 grid=EPOCH_GRID,
             )[:K]
 
-            best: shooter.ShootResult | None = None
-            best_epoch: float | None = None
-            row_error: str | None = None
-            for t0 in epochs:
+            for epoch_index, t0 in enumerate(epochs):
+                if (e.id, epoch_index) in done:
+                    continue
+                wall = time.monotonic() - t_wall0
+                t_shoot0 = time.monotonic()
+                row_error: str | None = None
+                res: shooter.ShootResult | None = None
                 try:
                     sseed = russell_shooting_seed(seed, t0_sec=t0, ephem=ephem)
                     res = shooter.shoot(
@@ -139,98 +178,87 @@ def main() -> None:
                         accuracy=SHOOT_ACCURACY,
                         max_nfev=SHOOT_MAX_NFEV,
                         max_wall_sec=LEG_WALL_BUDGET_SEC,
-                        n_jobs=N_JOBS,
+                        jacobian=SHOOT_JACOBIAN,  # type: ignore[arg-type]
                     )
-                except Exception as exc:  # honest per-epoch record, never raised
+                except Exception as exc:  # honest per-(row,epoch) record, never raised
                     row_error = f"{type(exc).__name__}: {exc}"
-                    continue
-                if best is None or res.defect_norm < best.defect_norm:
-                    best = res
-                    best_epoch = t0
 
-            if best is None:
+                shoot_wall = time.monotonic() - t_shoot0
+                if res is None:
+                    rec = {
+                        "id": e.id,
+                        "validation_level": vlevel,
+                        "sequence": list(seed.sequence),
+                        "epoch_index": epoch_index,
+                        "epoch_sec": t0,
+                        "shot": False,
+                        "error": row_error,
+                        "shoot_wall_sec": shoot_wall,
+                        "anchor_e_kms": seed.vinf_anchor_e_kms,
+                        "anchor_m_kms": seed.vinf_anchor_m_kms,
+                    }
+                    _append(RUNLOG, rec)
+                    print(
+                        f"[{wall:.0f}s] {e.id:24s} [{vlevel}] ep{epoch_index} "
+                        f"NO SHOOT ({shoot_wall:.0f}s, error={row_error})"
+                    )
+                    continue
+
+                vinf = list(res.vinf_per_encounter_kms)
+                best_e = min((abs(v - seed.vinf_anchor_e_kms) for v in vinf), default=float("inf"))
+                best_m = min((abs(v - seed.vinf_anchor_m_kms) for v in vinf), default=float("inf"))
+                anchor_match = best_e <= ANCHOR_MATCH_TOL_KMS and best_m <= ANCHOR_MATCH_TOL_KMS
+                converged = res.converged
+                bend = res.bend_feasible
+                promote = e.id == "mcconaghy-2006-em-k2" and converged and anchor_match and bend
+
                 rec = {
                     "id": e.id,
                     "validation_level": vlevel,
                     "sequence": list(seed.sequence),
-                    "shot": False,
-                    "error": row_error,
+                    "epoch_index": epoch_index,
+                    "epoch_sec": t0,
+                    "shot": True,
+                    "converged": converged,
+                    "defect_norm": res.defect_norm,
+                    "seed_defect_norm": res.seed_defect_norm,
+                    "vinf_per_encounter_kms": vinf,
+                    "correction_dv_kms": res.correction_dv_kms,
+                    "bend_feasible": bend,
+                    "n_iterations": res.n_iterations,
                     "anchor_e_kms": seed.vinf_anchor_e_kms,
                     "anchor_m_kms": seed.vinf_anchor_m_kms,
+                    "best_e_residual_kms": best_e,
+                    "best_m_residual_kms": best_m,
+                    "anchor_match": anchor_match,
+                    "promote_proposed_held": promote,
+                    "jacobian": SHOOT_JACOBIAN,
+                    "shoot_wall_sec": shoot_wall,
+                    "error": row_error,
                 }
-                records.append(rec)
-                print(f"[{wall:.0f}s] {e.id:24s} [{vlevel}] NO SHOOT (error={row_error})")
-                continue
-
-            vinf = list(best.vinf_per_encounter_kms)
-            best_e = min(abs(v - seed.vinf_anchor_e_kms) for v in vinf) if vinf else float("inf")
-            best_m = min(abs(v - seed.vinf_anchor_m_kms) for v in vinf) if vinf else float("inf")
-            anchor_match = best_e <= ANCHOR_MATCH_TOL_KMS and best_m <= ANCHOR_MATCH_TOL_KMS
-            converged = best.converged
-            bend = best.bend_feasible
-            promote = e.id == "mcconaghy-2006-em-k2" and converged and anchor_match and bend
-
-            if converged:
-                converged_rows += 1
-            if anchor_match:
-                anchor_matched_rows += 1
-            if promote:
-                promotions += 1
-
-            rec = {
-                "id": e.id,
-                "validation_level": vlevel,
-                "sequence": list(seed.sequence),
-                "shot": True,
-                "converged": converged,
-                "defect_norm": best.defect_norm,
-                "seed_defect_norm": best.seed_defect_norm,
-                "vinf_per_encounter_kms": vinf,
-                "correction_dv_kms": best.correction_dv_kms,
-                "bend_feasible": bend,
-                "n_iterations": best.n_iterations,
-                "best_epoch_sec": best_epoch,
-                "anchor_e_kms": seed.vinf_anchor_e_kms,
-                "anchor_m_kms": seed.vinf_anchor_m_kms,
-                "best_e_residual_kms": best_e,
-                "best_m_residual_kms": best_m,
-                "anchor_match": anchor_match,
-                "promote_proposed_held": promote,
-                "error": row_error,
-            }
-            records.append(rec)
-            flag = " *** PROPOSED V0->V1 (HELD) ***" if promote else ""
-            print(
-                f"[{wall:.0f}s] {e.id:24s} [{vlevel}] conv={converged} "
-                f"defect={best.defect_norm:.3e} "
-                f"vinf={[round(v, 2) for v in vinf]} "
-                f"anchorE/M={best_e:.2f}/{best_m:.2f} "
-                f"match={anchor_match} bend={bend}{flag}"
-            )
+                _append(RUNLOG, rec)
+                flag = " *** PROPOSED V0->V1 (HELD) ***" if promote else ""
+                print(
+                    f"[{wall:.0f}s] {e.id:24s} [{vlevel}] ep{epoch_index} "
+                    f"conv={converged} defect={res.defect_norm:.3e} "
+                    f"vinf={[round(v, 2) for v in vinf]} "
+                    f"anchorE/M={best_e:.2f}/{best_m:.2f} "
+                    f"match={anchor_match} bend={bend} "
+                    f"({shoot_wall:.0f}s, nfev={res.n_iterations}){flag}"
+                )
         except Exception as exc:  # one bad row must not abort the batch
-            records.append(
-                {"id": e.id, "shot": False, "error": f"row-fatal {type(exc).__name__}: {exc}"}
+            _append(
+                RUNLOG,
+                {"id": e.id, "shot": False, "error": f"row-fatal {type(exc).__name__}: {exc}"},
             )
             print(f"[{wall:.0f}s] {e.id:24s} ROW-FATAL {type(exc).__name__}: {exc}")
-
-    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    out = Path("data/runs") / f"shooter-russell-{stamp}.jsonl"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    with out.open("w", encoding="utf-8") as fh:
-        for rec in records:
-            fh.write(json.dumps(rec) + "\n")
 
     print()
     print("=" * 72)
     print(
-        f"Batch summary: descriptor rows {descriptor_rows}, converged "
-        f"{converged_rows}, anchor-matched {anchor_matched_rows}, "
-        f"proposed-promotions {promotions} (held)."
-    )
-    print(f"Runlog: {out}")
-    print(
-        f"K={K}, launch_window_synodics={LAUNCH_WINDOW_SYNODICS}, grid={EPOCH_GRID}, "
-        f"max_nfev={SHOOT_MAX_NFEV}, n_jobs={N_JOBS}"
+        f"Batch complete. Runlog: {RUNLOG} "
+        f"(K={K}, launch_window_synodics={LAUNCH_WINDOW_SYNODICS}, grid={EPOCH_GRID}, "
+        f"max_nfev={SHOOT_MAX_NFEV}, jacobian={SHOOT_JACOBIAN})"
     )
     print("HELD — no writeback (data/catalogue.yaml and validate.py untouched).")
 
