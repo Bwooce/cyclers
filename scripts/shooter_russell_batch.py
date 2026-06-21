@@ -169,6 +169,24 @@ def main() -> None:
                 t_shoot0 = time.monotonic()
                 row_error: str | None = None
                 res: shooter.ShootResult | None = None
+
+                def _heartbeat(
+                    kind: str,
+                    count: int,
+                    defect_norm: float,
+                    elapsed: float,
+                    _id: str = e.id,
+                    _ep: int = epoch_index,
+                ) -> None:
+                    # Per-evaluation intermediate output (~residual/Jacobian, i.e.
+                    # ~1-2 min apart): streams to the .log so the long detached run
+                    # is observable without waiting for the per-(row,epoch) record.
+                    now = time.monotonic() - t_wall0
+                    print(
+                        f"[{now:.0f}s]   {_id:24s} ep{_ep} {kind}{count} "
+                        f"defect={defect_norm:.3e} ({elapsed:.0f}s)"
+                    )
+
                 try:
                     sseed = russell_shooting_seed(seed, t0_sec=t0, ephem=ephem)
                     res = shooter.shoot(
@@ -179,6 +197,7 @@ def main() -> None:
                         max_nfev=SHOOT_MAX_NFEV,
                         max_wall_sec=LEG_WALL_BUDGET_SEC,
                         jacobian=SHOOT_JACOBIAN,  # type: ignore[arg-type]
+                        progress=_heartbeat,
                     )
                 except Exception as exc:  # honest per-(row,epoch) record, never raised
                     row_error = f"{type(exc).__name__}: {exc}"

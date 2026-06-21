@@ -741,6 +741,7 @@ def shoot(
     max_wall_sec: float = 90.0,
     n_jobs: int = 1,
     jacobian: Literal["fd", "stm"] = "fd",
+    progress: Callable[[str, int, float, float], None] | None = None,
 ) -> ShootResult:
     """Multiple-shooting differential correction (the SNOPT analogue, design §3).
 
@@ -782,17 +783,37 @@ def shoot(
     multi-year multi-rev shoot tractable. The STM and FD Jacobians agree to ~5e-3
     relative on the fixture (asserted in the tests); ``"stm"`` ignores ``n_jobs``
     (it is already one propagation per leg, nothing to fan out).
+
+    ``progress`` (optional heartbeat): if given, it is called as
+    ``progress(kind, count, defect_norm, elapsed_sec)`` after each residual
+    evaluation (``kind="f"``) and each STM-Jacobian build (``kind="J"``, with
+    ``defect_norm`` carried from the last residual), where ``elapsed_sec`` is the
+    wall time that single evaluation took. This gives a long detached solve a
+    per-evaluation intermediate-output stream (every ~residual/Jacobian, i.e.
+    seconds-to-minutes) instead of only a per-row record at the very end.
     """
+    import time as _time
+
     from scipy.optimize import least_squares
 
     n = len(seed.sequence)
+    _f_count = [0]
+    _j_count = [0]
+    _last_norm = [float("inf")]
 
     def residual_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        t_eval = _time.monotonic()
         states = _x_to_states(x, n)
         trial = _seed_with_states(seed, states)
-        return defect_residual(
+        res = defect_residual(
             trial, ephem=ephem, bodies=bodies, accuracy=accuracy, max_wall_sec=max_wall_sec
         )
+        if progress is not None:
+            _f_count[0] += 1
+            norm = float(np.linalg.norm(res))
+            _last_norm[0] = norm
+            progress("f", _f_count[0], norm, _time.monotonic() - t_eval)
+        return res
 
     x0 = _states_to_x(seed.node_states)
     seed_res = residual_of_x(x0)
@@ -801,7 +822,8 @@ def shoot(
     if jacobian == "stm":
 
         def jac_of_x_stm(x: NDArray[np.float64]) -> NDArray[np.float64]:
-            return _stm_jacobian(
+            t_eval = _time.monotonic()
+            jac = _stm_jacobian(
                 seed,
                 x,
                 ephem=ephem,
@@ -809,6 +831,10 @@ def shoot(
                 accuracy=accuracy,
                 max_wall_sec=max_wall_sec,
             )
+            if progress is not None:
+                _j_count[0] += 1
+                progress("J", _j_count[0], _last_norm[0], _time.monotonic() - t_eval)
+            return jac
 
         sol = least_squares(residual_of_x, x0, jac=jac_of_x_stm, method="lm", max_nfev=max_nfev)
     elif n_jobs <= 1:
