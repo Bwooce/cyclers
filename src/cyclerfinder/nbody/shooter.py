@@ -32,7 +32,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -597,6 +597,97 @@ def _serial_columns(
     return [residual_of_x(xj) for xj in perturbed]
 
 
+# --- Analytic block-bidiagonal STM Jacobian (perf lever, #388) -----------------
+#
+# The FD Jacobian is (6*n_nodes+1) full residual re-propagations per LM step; on
+# the multi-year, multi-rev SnLm cyclers that is the compute wall (a single FD
+# shoot >400 s no-return). The defects are full-state continuity, so the Jacobian
+# is exactly known from per-leg state-transition matrices — ONE augmented
+# (variational) propagation per leg replaces the (6*n_nodes+1) FD re-propagations.
+# FD stays the default + the parity oracle; this is the opt-in `jacobian="stm"`.
+
+
+def _stm_jacobian(
+    seed: ShootingSeed,
+    x: NDArray[np.float64],
+    *,
+    ephem: Ephemeris,
+    bodies: Sequence[str],
+    accuracy: float = 1e-10,
+    max_wall_sec: float = 90.0,
+) -> NDArray[np.float64]:
+    """Analytic Jacobian of :func:`defect_residual` w.r.t. the node-state vector.
+
+    The free variables are the per-node full Cartesian states (6 each, the same
+    packing as :func:`_states_to_x`); the residual is, in order, the ``n-1`` leg
+    continuity defects (6 each), the ``n-2`` interior flyby hinges (1 each), and
+    the 6-component periodicity wrap. The Jacobian is **block-bidiagonal**:
+
+    - Leg defect ``c_i = propagate(node_i, leg_i) - node_{i+1}`` gives
+      ``dc_i/dnode_i = Phi_i`` (the 6x6 per-leg STM, co-integrated in ONE
+      augmented propagation via ``propagate(with_stm=True)``) and
+      ``dc_i/dnode_{i+1} = -I_6``; every other block is zero.
+    - The flyby hinges read ``seed.vinf_in/out`` (carried constants, never
+      recomputed from the node states), so their rows are identically zero —
+      matching what FD sees (a small node-state perturbation leaves them fixed).
+    - The wrap residual ``(node_{n-1} - r_wrap_pl) - (node_0 - r_home)`` gives
+      ``-I_6`` on node 0 and ``+I_6`` on node ``n-1`` (the planet states are
+      epoch-fixed constants).
+
+    A leg that does not converge (divergence sentinel in the residual) leaves its
+    ``Phi_i`` block zero — the sentinel is a constant in ``x`` there, so a zero
+    derivative is the honest local linearisation (and the FD oracle agrees: the
+    constant sentinel differences to ~0). ``-I_6`` on the next node is kept so the
+    defect still couples the nodes.
+    """
+    from cyclerfinder.nbody.forces import RailsEphemerisCache
+    from cyclerfinder.nbody.propagator import RestrictedNBody
+
+    n = len(seed.sequence)
+    states = _x_to_states(x, n)
+    bodies = tuple(bodies)
+    prop = RestrictedNBody("rebound")
+    cache = (
+        RailsEphemerisCache(bodies, ephem, min(seed.epochs), max(seed.epochs)) if bodies else None
+    )
+
+    n_leg = (n - 1) * _STATE_DIM
+    n_hinge = max(0, n - 2)
+    n_rows = n_leg + n_hinge + _STATE_DIM
+    n_cols = n * _STATE_DIM
+    jac = np.zeros((n_rows, n_cols), dtype=np.float64)
+    eye6 = np.eye(_STATE_DIM)
+
+    for i in range(n - 1):
+        s_i = states[i]
+        r0 = np.asarray(s_i[:3], dtype=np.float64)
+        v0 = np.asarray(s_i[3:], dtype=np.float64)
+        arc = prop.propagate(
+            r0,
+            v0,
+            t0_sec=seed.epochs[i],
+            t1_sec=seed.epochs[i + 1],
+            bodies=bodies,
+            accuracy=accuracy,
+            ephem=ephem,
+            cache=cache,
+            max_wall_sec=max_wall_sec,
+            with_stm=True,
+        )
+        rows = slice(i * _STATE_DIM, (i + 1) * _STATE_DIM)
+        if arc.converged and arc.stm is not None and np.all(np.isfinite(arc.stm)):
+            jac[rows, i * _STATE_DIM : (i + 1) * _STATE_DIM] = arc.stm
+        jac[rows, (i + 1) * _STATE_DIM : (i + 2) * _STATE_DIM] = -eye6
+
+    # Hinge rows (n_leg : n_leg + n_hinge) are constant in x -> left zero.
+
+    # Periodicity wrap rows.
+    wrap = slice(n_leg + n_hinge, n_rows)
+    jac[wrap, 0:_STATE_DIM] = -eye6
+    jac[wrap, (n - 1) * _STATE_DIM : n * _STATE_DIM] = eye6
+    return jac
+
+
 def _parallel_columns_for_test(
     seed: ShootingSeed,
     ephem: Ephemeris,
@@ -649,6 +740,7 @@ def shoot(
     max_nfev: int = 200,
     max_wall_sec: float = 90.0,
     n_jobs: int = 1,
+    jacobian: Literal["fd", "stm"] = "fd",
 ) -> ShootResult:
     """Multiple-shooting differential correction (the SNOPT analogue, design §3).
 
@@ -680,6 +772,16 @@ def shoot(
     matches ``scipy``'s ``lm`` step to working precision. The serial and parallel
     Jacobians agree on a fixture to ~1e-9 relative (asserted in the tests). The
     speedup is bounded by ``min(n_jobs, 3*n_nodes+1)``.
+
+    ``jacobian`` (perf lever, #388): ``"fd"`` (default) is the finite-difference
+    path above (serial scipy-internal FD for ``n_jobs == 1``, the parallel FD pool
+    for ``n_jobs > 1``) and stays the parity oracle. ``"stm"`` supplies the analytic
+    block-bidiagonal Jacobian assembled from per-leg state-transition matrices
+    (:func:`_stm_jacobian`) — ONE co-integrated variational propagation per leg
+    instead of the ``6*n_nodes+1`` FD re-propagations, the lever that makes the
+    multi-year multi-rev shoot tractable. The STM and FD Jacobians agree to ~5e-3
+    relative on the fixture (asserted in the tests); ``"stm"`` ignores ``n_jobs``
+    (it is already one propagation per leg, nothing to fan out).
     """
     from scipy.optimize import least_squares
 
@@ -696,7 +798,20 @@ def shoot(
     seed_res = residual_of_x(x0)
     seed_defect_norm = float(np.linalg.norm(seed_res))
 
-    if n_jobs <= 1:
+    if jacobian == "stm":
+
+        def jac_of_x_stm(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            return _stm_jacobian(
+                seed,
+                x,
+                ephem=ephem,
+                bodies=bodies,
+                accuracy=accuracy,
+                max_wall_sec=max_wall_sec,
+            )
+
+        sol = least_squares(residual_of_x, x0, jac=jac_of_x_stm, method="lm", max_nfev=max_nfev)
+    elif n_jobs <= 1:
         sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
     else:
         from concurrent.futures import ProcessPoolExecutor
