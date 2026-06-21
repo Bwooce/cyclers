@@ -108,24 +108,18 @@ def test_perturbed_stm_matches_fd() -> None:
 
 
 @pytest.mark.slow
-@pytest.mark.xfail(
-    reason="REBOUND order-1 variation omits the custom additional_forces (rails "
-    "perturber) gradient; the variational STM is Sun-gravity-only. On a leg where "
-    "the perturber gradient is non-negligible (here ~4e-2 of Phi) the variational "
-    "STM diverges from a full-dynamics FD reference by ~7e-2 — see Task-2 report. "
-    "The weakly-perturbed gate above PASSES only because the gradient is ~2e-5 there.",
-    strict=True,
-)
-def test_perturbed_stm_earthclose_omits_rails_gradient() -> None:
-    """Earth-close leg where the rails gradient is large — exposes the omission.
+def test_perturbed_stm_earthclose_includes_rails_gradient() -> None:
+    """Earth-close leg where the rails gradient is large — the analytic fix.
 
     Seeded ~2e6 km from Earth (well outside the SOI softening clamp) so the Earth
     third-body term materially shapes the STM (||Phi_pert - Phi_sun|| / ||Phi_sun||
     ~ 4e-2). REBOUND's native first-order variation differentiates only the in-sim
-    Sun gravity, NOT the Python ``additional_forces`` rails callback, so the
-    variational STM is Sun-gravity-only and disagrees with a full-dynamics FD STM
-    well past the 5e-3 gate (overall ~7.5e-2; x-position column ~5.5e-1). This is a
-    documented structural finding, not a tolerance to loosen.
+    Sun gravity, NOT the Python ``additional_forces`` rails callback. The callback
+    therefore applies the perturber gravity-gradient tensor
+    ``G_p = mu_p (3 d d^T/|d|^5 - I/|d|^3)`` (``d = r_p - r_sc``) to the variational
+    particles, so the co-integrated variational equations carry the full dynamics
+    and the STM matches a full-dynamics FD reference inside the 5e-3 gate — the
+    leg that previously diverged by ~7.5e-2 with the gradient omitted.
     """
     prop = RestrictedNBody()
     ephem = Ephemeris("astropy")

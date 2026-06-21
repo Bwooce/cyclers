@@ -290,6 +290,22 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], cache: RailsEphe
     from the shared DE440 reader) — the per-force-eval read that is the harness's
     cost (design Risk 3), made tractable by interpolation. Sun-frame indirect term
     included so the heliocentric (non-inertial) frame is consistent.
+
+    **Variational (STM) coupling.** REBOUND's native first-order variational
+    particles co-integrate only the *in-sim* gravity (the central Sun); the rails
+    perturbation lives in this Python ``additional_forces`` callback, which REBOUND
+    does NOT differentiate. So when variational particles are present (``with_stm``)
+    this callback must also apply the linearised perturber force to them, otherwise
+    the STM is correct on cruise legs but qualitatively wrong near a perturber. The
+    linearisation is the gravity-gradient tensor of the *direct* term,
+    ``G_p = mu_p * (3 d d^T / |d|^5 - I/|d|^3)`` with ``d = r_p - r_sc`` (the
+    indirect ``-r_p/|r_p|^3`` term is spacecraft-independent, so it drops out), and
+    in the softened core (``|d| <= d_safe``, ``d_safe`` constant) it degenerates to
+    ``-mu_p/d_safe^3 * I`` — matching the gradient of the clamped direct force so
+    the analytic STM agrees with a finite-difference of THIS callback. The summed
+    tensor ``G`` is applied as ``delta_a = G @ delta_r`` to each variational
+    particle's spacecraft component. Built only when ``N_var_config > 0`` so the
+    non-STM path keeps its exact prior cost.
     """
     from cyclerfinder.core.constants import PLANETS
 
@@ -298,6 +314,8 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], cache: RailsEphe
         t_sec = float(reb_sim.t)
         sc = reb_sim.particles[1]
         r = np.array([sc.x, sc.y, sc.z], dtype=np.float64)
+        n_var = int(reb_sim.N_var_config)
+        grad = np.zeros((3, 3), dtype=np.float64) if n_var else None
         ax = ay = az = 0.0
         for body in bodies:
             pdata = PLANETS[body]
@@ -319,9 +337,26 @@ def _install_rails_forces(sim: object, bodies: tuple[str, ...], cache: RailsEphe
             ax += float(acc[0])
             ay += float(acc[1])
             az += float(acc[2])
+            if grad is not None:
+                # Gravity-gradient tensor of the direct term wrt the spacecraft
+                # position, consistent with the (possibly softened) force above.
+                if d_norm > d_safe:
+                    grad += mu_p * (3.0 * np.outer(d, d) / (d_norm**5) - np.eye(3) / (d_norm**3))
+                else:
+                    grad += -mu_p / (d_safe**3) * np.eye(3)
         sc.ax += ax
         sc.ay += ay
         sc.az += az
+        if grad is not None:
+            pv = reb_sim.particles_var
+            for i in range(n_var):
+                idx = int(reb_sim.var_config[i].index)
+                vp = pv[idx + 1]  # spacecraft (i_sc=1) variational component of config i
+                dr = np.array([vp.x, vp.y, vp.z], dtype=np.float64)
+                da = grad @ dr
+                vp.ax += float(da[0])
+                vp.ay += float(da[1])
+                vp.az += float(da[2])
 
     # The setter wraps `func` in a CFUNCTYPE and stores it in the simulation's
     # own `_afp` slot, so the callback is kept alive for us (REBOUND 5.0); we do
