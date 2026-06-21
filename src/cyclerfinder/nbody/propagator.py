@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 import numpy as np
 from numpy.typing import NDArray
@@ -59,6 +59,18 @@ class NBodyArc:
     integrator_accuracy: float
     bodies: tuple[str, ...]
     converged: bool
+    stm: NDArray[np.float64] | None = None
+    """6x6 state-transition matrix ``Phi[:, k] = d(final_state) / d(init_state_k)``.
+
+    ``None`` unless ``propagate(with_stm=True)`` (default), so existing callers are
+    unchanged. The state ordering is ``[x, y, z, vx, vy, vz]`` (km, km/s) — the same
+    convention as :class:`cyclerfinder.core.cr3bp.CR3BPArc.stm`. Co-integrated via
+    REBOUND's native first-order variational particles in the SAME adaptive
+    integration as the state path (the variational ODE is linear given that path),
+    so it costs one extra integration, not six finite-difference re-propagations.
+    If the integration budgets out / diverges (``converged=False``), ``stm`` carries
+    the best-effort variational state at the last finite step rather than crashing.
+    """
 
 
 class Propagator(Protocol):
@@ -73,6 +85,7 @@ class Propagator(Protocol):
         *,
         bodies: Sequence[str],
         accuracy: float,
+        with_stm: bool = ...,
     ) -> NBodyArc: ...
 
 
@@ -103,6 +116,7 @@ class RestrictedNBody:
         cache: RailsEphemerisCache | None = None,
         max_steps: int = 2_000_000,
         max_wall_sec: float = 90.0,
+        with_stm: bool = False,
     ) -> NBodyArc:
         """Propagate ``(r0, v0)`` from ``t0_sec`` to ``t1_sec`` in restricted n-body.
 
@@ -126,6 +140,14 @@ class RestrictedNBody:
         integration is budgeted by ``max_steps`` and ``max_wall_sec``; hitting
         either returns ``converged=False`` with the last finite state — the honest
         DIVERGENT signal the SILVER rung grades as an ARTIFACT.
+
+        When ``with_stm`` is True the returned :class:`NBodyArc` carries the 6x6
+        per-leg state-transition matrix ``Phi[:, k] = d(final_state)/d(init_k)``
+        (#388), co-integrated via REBOUND's native first-order variational
+        particles on the same adaptive step. When False the call is byte-identical
+        to the prior behaviour (no variations are added) and ``stm`` stays ``None``.
+        On a budget-out / divergence the best-effort variational state at the last
+        finite step is returned (``converged=False``), never a crash.
         """
         import time
 
@@ -167,6 +189,25 @@ class RestrictedNBody:
             if cache is None:
                 cache = RailsEphemerisCache(bodies, ephem, t0_sec, t1_sec)
             _install_rails_forces(sim, bodies, cache)
+
+        # First-order variational particles for the STM (#388). The spacecraft is
+        # particle index 1 (Sun is 0). Six variations seed the six unit basis
+        # perturbations of the spacecraft initial state (e_0..e_2 position,
+        # e_3..e_5 velocity); each co-integrates with the state on the SAME
+        # adaptive IAS15 step, and its final spacecraft state is column k of Phi.
+        i_sc = 1
+        variations: list[Any] = []
+        if with_stm:
+            for k in range(6):
+                var = sim.add_variation(order=1)
+                vp = var.particles[i_sc]
+                vp.x = 1.0 if k == 0 else 0.0
+                vp.y = 1.0 if k == 1 else 0.0
+                vp.z = 1.0 if k == 2 else 0.0
+                vp.vx = 1.0 if k == 3 else 0.0
+                vp.vy = 1.0 if k == 4 else 0.0
+                vp.vz = 1.0 if k == 5 else 0.0
+                variations.append(var)
 
         e0 = float(sim.energy())
         t_target = float(t1_sec)
@@ -216,6 +257,14 @@ class RestrictedNBody:
         r_km = np.array([sc.x, sc.y, sc.z], dtype=np.float64)
         v_km_s = np.array([sc.vx, sc.vy, sc.vz], dtype=np.float64)
 
+        stm: NDArray[np.float64] | None = None
+        if with_stm:
+            phi = np.empty((6, 6), dtype=np.float64)
+            for k, var in enumerate(variations):
+                vp = var.particles[i_sc]
+                phi[:, k] = [vp.x, vp.y, vp.z, vp.vx, vp.vy, vp.vz]
+            stm = phi
+
         return NBodyArc(
             r_km=r_km,
             v_km_s=v_km_s,
@@ -229,6 +278,7 @@ class RestrictedNBody:
             integrator_accuracy=float(accuracy),
             bodies=bodies,
             converged=converged,
+            stm=stm,
         )
 
 
