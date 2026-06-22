@@ -60,6 +60,42 @@ real S1L1 cycler.
   detached/checkpointed batch (days-scale) = the V0→V3 mass-promotion / validation-ceiling
   lift. Expect a residue of unshootable (off-anchor / high-V∞) rows that stay V0 honestly.
 
+## Phase 2 coverage scan (2026-06-23) — M7 is DATA-gated, not compute-gated
+
+Ran `scripts/m7_phase2_coverage.py` (`verify_real_closure(compute_tcm=True, n_cycles=2)`)
+over all 318 cycler-type rows. Result: **measured (finite TCM) = 8, diverged = 5,
+skip (can't construct / no window / error) = 305.**
+
+The decisive finding: **305/318 rows cannot even construct a real-eph cycler** — their
+full per-leg node sequences are not tabulated (incomplete leg data, the "M7's
+catalogue-completion concern" already noted in `real_closure.EXPECTED_SKIPS`). And the
+8 that *do* return a finite number are **non-trustworthy**: 11k–126k m/s, all
+`v3-real-closure-fail` (e.g. `rall-1970-m4-1` = 126,417 m/s). Those are
+`real_closure`'s AUTO-constructed cyclers run WITHOUT sourced per-leg v∞ seeds — the
+same single-rev / wrong-basin pathology that gave S1L1 530,000 m/s before seeding.
+
+So a meaningful catalogue-wide M7 measurement is gated on TWO data inputs, not compute:
+1. **Full-cycle leg sequences** (305 rows lack them) — the catalogue-completion task.
+2. **Sourced per-leg v∞ seeds** so the targeting stays in the rev-correct basin — only
+   the App-C-block rows (S1L1, #188, #192) carry these today.
+
+The only trustworthy computed M7 numbers come from the sourced App-C blocks:
+- **S1L1**: 40 m/s/7cyc (ballistic; the validated golden).
+- **#188 / #192**: honestly diverge (powered; not ballistically maintainable — rest on
+  their published 420 / 1678 m/s budget).
+
+Note S1L1's computed continuous TCM (40 m/s) lands in the **low_maintenance** band
+(10–300), while its *sourced* band (#417) is **essentially_ballistic** (<10). Not a
+contradiction — sourced = best-window ΔV, M7 = continuous-from-one-seed TCM (different
+bases, exactly the #424 rationale). This is a sourced-vs-measured band MISMATCH to
+surface for review, not silently overwrite.
+
+**Phase 3 (catalogue-wide V0→V3) is therefore blocked on leg-data + seed reconstruction,
+not on the shoot.** It should be sequenced after (or merged with) the full-cycle
+leg-completion effort; running the shoot blindly now produces garbage on auto-constructed
+rows. Recommend NOT mass-promoting; instead drive M7 from sourced node+seed data per row
+as that data is reconstructed.
+
 ## Gate status
 
 Per `project_dvband_validation_coupling_gate`: the gate to resume discovery+validation
