@@ -53,12 +53,18 @@ The local-PDF pass (targets 1–6) + Rauwolf are extracted and folded into
 local corpus corroborates the *magnitude* (Pascarella real-eph ≈ low-hundreds m/s;
 McConaghy S1L1 ~10 m/s) but not the *exact thresholds in the same basis*.
 
-**The one acquisition that would actually close it:**
-- **Russell & Ocampo, "Optimization of a Broad Class of Ephemeris Model Earth-Mars
-  Cyclers," JGCD 29 (2006)** — a *different* Russell primary in the real-ephemeris
-  basis; the natural second source for the per-cycle tiers. NOT in the corpus.
-  (Secondary: Net/Pellegrini/Parker et al. JSR 2022 "Pony Express" — published
-  version, may give maintenance in m/s; McConaghy-Longuski-Byrnes JSR 41(4) 2004.)
+**CORRECTION (2026-06-22):** Russell-Ocampo 2006 JGCD 29(2) was **already in the
+corpus** — filed (misnamed `russell-2006-systematic-method-design`) and digested
+in `2026-06-20-digest-new-papers.md`. Its abstract carries the tiers verbatim
+("nine … less than 1 m/s over seven full cycles … 39 and 74 … less than 10 and
+300 m/s"). This **upgrades the cutoffs to a peer-reviewed JGCD primary** but is the
+same author's work (= the 2004 dissertation), so it is not an *independent* second
+source. Renamed 2026-06-22 to
+`russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf`.
+
+**What would give a truly independent second anchor (different author lineage):**
+- Net/Pellegrini/Parker et al. JSR 2022 "Pony Express" — published version, may
+  give maintenance in m/s; McConaghy-Longuski-Byrnes JSR 41(4) 2004.
 
 ## Deliverable
 

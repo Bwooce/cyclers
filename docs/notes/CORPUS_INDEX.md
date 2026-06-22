@@ -110,7 +110,8 @@ is now digested, mined, or triaged.
 | chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with free-return trajectories | digested | text-layer |
 | chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with multiple-impulse free-return | digested | text-layer |
 | machado-2020.pdf | 2026-06-20-digest-new-papers.md | Parametric design of E-M cycler crew transfer vehicle | digested | text-layer |
-| russell-2006-systematic-method-design-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Systematic method for E-M cycler design (journal) | digested | text-layer |
+| russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf | 2026-06-20-digest-new-papers.md; 2026-06-22-dv-band-definitions.md | Optimization of a Broad Class of Ephemeris-Model E-M Cyclers (JGCD 29(2), DOI 10.2514/1.13652) — the peer-reviewed source for the <1/<10/<300 m/s-per-7-cycle tiers (9/39/74 parent cyclers). NOTE: previously misfiled as `russell-2006-systematic-method-design-earth-mars-cyclers.pdf`; the actual "systematic method" paper is the 2003 AAS-03-145 (separate row above). | digested | text-layer |
+| rauwolf-friedlander-nock-2002-mars-cycler-low-thrust-AIAA-2002-5046.pdf | 2026-06-22-digest-rauwolf-friedlander-nock-2002.md; 2026-06-22-dv-band-definitions.md | A Mars Cycler Architecture Utilizing Low-Thrust Propulsion (AIAA 2002-5046) — Aldrin maintenance 1.56/1.61 km/s/15yr; SEP exec ~3mt/15yr; powered-class ΔV-band anchor (#416) | digested | text-layer |
 
 ## Mars free-return / human-flyby missions
 

@@ -54,9 +54,9 @@ kept as a separate descriptor. Axis-B basis is fixed below.
 
 | Band | Definition (Axis B) | Threshold | Tag |
 |------|--------------------|-----------|-----|
-| **strictly-ballistic** | total deterministic maneuver over a 7-cycle real-ephemeris propagation, at the best launch window | **< 1 m/s / 7 cycles** | [sourced] Russell 2004 Table 5.5 ("completely ballistic"; 9 parents) |
-| **essentially-ballistic** | same basis | **< 10 m/s / 7 cycles** | [sourced] Russell 2004 ("essentially ballistic for all launch dates"; 39 parents); corroborated by McConaghy 2006 S1L1 ~10 m/s/30 yr |
-| **low-maintenance cycler** (≈ "near-ballistic") | same basis | **< 300 m/s / 7 cycles** | [sourced] Russell 2004 (widest low-maneuver net; 74 parents) |
+| **strictly-ballistic** | total deterministic maneuver over a 7-cycle real-ephemeris propagation, at the best launch window | **< 1 m/s / 7 cycles** | [sourced] Russell-Ocampo 2006 JGCD abstract ("nine parent cyclers … less than 1 m/s over seven full cycles") = Russell 2004 Table 5.5 (9 parents) |
+| **essentially-ballistic** | same basis | **< 10 m/s / 7 cycles** | [sourced] Russell-Ocampo 2006 JGCD ("39 … parent cyclers … less than 10 … m/s") = Russell 2004 (39 parents); magnitude corroborated by McConaghy 2006 S1L1 ~10 m/s/30 yr |
+| **low-maintenance cycler** (≈ "near-ballistic") | same basis | **< 300 m/s / 7 cycles** | [sourced] Russell-Ocampo 2006 JGCD ("74 parent cyclers … less than … 300 m/s") = Russell 2004 (74 parents) |
 | **powered cycler (DSM)** | discrete deterministic maneuvers above the low-maintenance ceiling, cycle still repeats | **≥ 300 m/s / 7 cycles**, impulsive | [project-convention] (boundary = top of Russell's net; McConaghy 2006 DSM trades 0.11–0.81 km/s/synodic sit here) |
 | **low-thrust / SEP** | continuous propulsion over transit legs; Lambert inapplicable | n/a (regime, not magnitude) | [sourced] data/README §trajectory_regime; out of v1 scope |
 
@@ -167,10 +167,18 @@ the digests) + the user-supplied Rauwolf 2002. Evidence base, by claim:
   km/s per synodic"), Chen-McConaghy-Landau-Longuski-Aldrin 2005 (0.58–1.05 km/s
   per synodic per vehicle), Landau-Longuski 2006 (0.78 km/s avg cycler DSM). All
   agree at the ~km/s-per-15-yr / hundreds-of-m/s-to-~1-km/s-per-synodic scale.
-- **Near-ballistic *m/s cutoffs* (< 1 / < 10 / < 300 m/s per-7-cycle):** STILL
-  effectively **single-primary in basis** (Russell 2004 Table 5.5/5.6). The
-  corpus-wide pass did NOT find a second source reporting the *same quantity*
-  (real-ephemeris deterministic ΔV per-7-cycle, best window):
+- **Near-ballistic *m/s cutoffs* (< 1 / < 10 / < 300 m/s per-7-cycle):** now in a
+  **peer-reviewed JGCD primary** — **Russell-Ocampo 2006 JGCD 29(2)** states the
+  tiers in its abstract verbatim ("nine parent cyclers … less than 1 m/s over
+  seven full cycles … 39 and 74 parent cyclers … less than 10 and 300 m/s,
+  respectively"), with the **same 9/39/74 parent counts** as Russell 2004 Table
+  5.5/5.6. CAVEAT: this is the *published version of the same author's
+  dissertation work*, not an independent re-derivation — so the cutoffs are now
+  **publication-grade (JGCD, peer-reviewed)** but still rest on the **single
+  Russell line of work** in this exact basis. (This corrects the earlier draft,
+  which wrongly called Russell-Ocampo 2006 "NOT in the corpus" — it was filed,
+  misnamed `russell-2006-systematic-method-design`, and already digested.) An
+  independent second-author same-basis source is still not in hand:
   - **Pascarella/Pony-Express AAS-22-015** (the paper I'd mis-listed as the
     paywalled JSR) corroborates the *magnitude* — real-ephemeris maintenance is
     cheap ("< 5 kg … ~2 kg of propellant" over 8 flybys / ~6 yr; ≈ 175 m/s/6 yr
@@ -180,20 +188,26 @@ the digests) + the user-supplied Rauwolf 2002. Evidence base, by claim:
     tier magnitude. Also consistent, also not the same basis.
 
 **Net:** the powered band and the ballistic concept are now genuinely
-multi-sourced; the **near-ballistic numeric cutoffs remain Russell-only in basis**,
-with the magnitude independently corroborated (Pascarella, McConaghy) but not the
-exact thresholds. The < 1/< 10/< 300 m/s tiers should be cited as **"Russell 2004
-(sole same-basis primary); magnitude independently corroborated (Pascarella 2022
-real-ephemeris ≈ low-hundreds m/s; McConaghy 2006 S1L1 ~10 m/s); exact cutoffs
-pending a second same-basis primary."**
+multi-sourced; the **near-ballistic numeric cutoffs are now publication-grade**
+(Russell-Ocampo 2006 JGCD, peer-reviewed) but **still rest on the single Russell
+line of work** in this exact basis, with the magnitude independently corroborated
+(Pascarella, McConaghy). The < 1/< 10/< 300 m/s tiers should be cited as
+**"Russell-Ocampo 2006 JGCD 29(2) (peer-reviewed primary; = Russell 2004
+dissertation Table 5.5/5.6, same 9/39/74 parents); magnitude independently
+corroborated (Pascarella 2022 real-ephemeris ≈ low-hundreds m/s; McConaghy 2006
+S1L1 ~10 m/s); an independent second-author same-basis derivation still
+outstanding."**
 
-**Remaining acquisition target (the one that would actually close the gap):**
-- **Russell & Ocampo, "Optimization of a Broad Class of Ephemeris Model
-  Earth-Mars Cyclers," JGCD 29 (2006)** — a *different* Russell primary, in the
-  real-ephemeris basis, the natural second source for the per-cycle tiers. NOT in
-  the corpus. (Secondary: Net/Pellegrini/Parker et al. JSR 2022 — the published
-  Pony Express, may give maintenance in m/s; McConaghy-Longuski-Byrnes JSR 41(4)
-  2004.)
+**Remaining target (would give a truly independent second anchor):**
+- **Russell-Ocampo 2006 JGCD 29(2)** is **already in the corpus + digested** (it
+  was misfiled as `russell-2006-systematic-method-design`; renamed 2026-06-22 to
+  `russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf`).
+  It upgrades the cutoffs to peer-reviewed but is the same author's work, so it is
+  *not* the independent second source.
+- The genuinely independent candidates (different author lineage, same basis) are:
+  Net/Pellegrini/Parker et al. JSR 2022 (published Pony Express — may give
+  maintenance in m/s); McConaghy-Longuski-Byrnes JSR 41(4) 2004. These remain the
+  real acquisition targets if full independence is wanted.
 - Rauwolf 2002 (was the prior #1 gap) is **acquired + digested** (powered-band
   anchor); it does not address the near-ballistic cutoffs (it's the Aldrin
   powered cycler).
@@ -203,6 +217,9 @@ pending a second same-basis primary."**
 - Russell 2004 dissertation (`russell-2004-member-tables-transcription.md`,
   `russell-2004-continuation-deepdive.md`): TR_MIN=0.85; Table 5.5/5.6 the
   < 1/< 10/< 300 m/s/7-cycle tiers; Aldrin 0-m/s window; S1L1 0-m/s window.
+- Russell-Ocampo 2006 JGCD 29(2), DOI 10.2514/1.13652
+  (`2026-06-20-digest-new-papers.md` §3): peer-reviewed publication of the above
+  tiers (9/39/74 parents at <1/<10/<300 m/s over 7 cycles); 203 parent cyclers.
 - McConaghy 2002 (`digest-mcconaghy-2002.md`): required-turn < max-turn; n=7 ballistic.
 - McConaghy 2006 (`digest-mcconaghy-2006.md`): S1L1 "nearly ballistic ~10 m/s",
   DSM per-synodic trades.

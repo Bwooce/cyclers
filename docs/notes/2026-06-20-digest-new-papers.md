@@ -12,10 +12,11 @@ This digest processes the batch of papers acquired on 2026-06-20.
 * **Digest:** Investigates using continuous low-thrust (solar sails) to traverse heteroclinic-like connections between the L1/L2 libration points of the Earth-Sun and Mars-Sun systems. Time-optimal framework.
 * **Verdict:** **Digested** (Advanced dynamics continuous-thrust application, complementary to our ballistic patched-conic/CR3BP catalogue).
 
-## 3. russell-2006-systematic-method-design-earth-mars-cyclers.pdf
-* **Title:** Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers
-* **Digest:** Develops a continuation algorithm to transition idealized circular-coplanar parent cycler solutions into highly accurate finite-duration ephemeris solutions over 7 full cycles. Applied to 203 parent cyclers (including the Aldrin cycler), finding 9 parent cyclers capable of < 1m/s total maneuver requirements, and establishing practical feasibility for ephemeris cyclers.
-* **Verdict:** **Digested** (A crucial bridge methodology from theoretical to flown cyclers; S/L naming conventions apply).
+## 3. russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf
+* **Title:** Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers (Russell & Ocampo, JGCD 29(2), Mar–Apr 2006, DOI 10.2514/1.13652)
+* **Filename note:** this file was previously misnamed `russell-2006-systematic-method-design-earth-mars-cyclers.pdf` — the actual "systematic method" paper is the 2003 AAS-03-145 (`russell-ocampo-2003-...`). Renamed 2026-06-22.
+* **Digest:** Develops a continuation algorithm to transition idealized circular-coplanar parent cycler solutions into highly accurate finite-duration ephemeris solutions over 7 full cycles. Applied to 203 parent cyclers (including the Aldrin cycler). **Tier result (abstract, verbatim):** "nine parent cyclers ... have at least one finite-duration cycler with a total maneuver requirement of less than 1 m/s over seven full cycles. Additionally, 39 and 74 parent cyclers have at least one launch date with a maneuver requirement of less than 10 and 300 m/s, respectively." This is the **peer-reviewed JGCD primary** for the <1/<10/<300 m/s-per-7-cycle ΔV-band tiers (#415/#416) — basis is best-launch-window total deterministic maneuver over a real-ephemeris 7-cycle propagation. Tables 1–2: E-M resonances (15:8, 17:9, 32:17 …) and integer-multiple circular-coplanar repeat times (1/2/3/4-synodic).
+* **Verdict:** **Digested** (A crucial bridge methodology from theoretical to flown cyclers; S/L naming conventions apply; the ΔV-band tier source).
 
 ## 4. chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf
 * **Title:** A Low-Thrust Version of the Aldrin Cycler

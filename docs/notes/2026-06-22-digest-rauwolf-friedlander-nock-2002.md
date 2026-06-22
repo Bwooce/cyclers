@@ -2,8 +2,9 @@
 
 **Acquired 2026-06-22** (the lone #416 acquisition gap; user-supplied PDF). AIAA/AAS
 Astrodynamics Specialist Conf., Monterey CA, 5–8 Aug 2002. SAIC (Rauwolf,
-Friedlander) + Global Aerospace (Nock). NIAC-funded. **PDF needs filing into
-`cyclers_pdf/papers/` + CORPUS_INDEX registration.**
+Friedlander) + Global Aerospace (Nock). NIAC-funded. **Filed 2026-06-22** to
+`cyclers_pdf/papers/rauwolf-friedlander-nock-2002-mars-cycler-low-thrust-AIAA-2002-5046.pdf`
+and registered in `CORPUS_INDEX.md`.
 
 Purpose here: the missing independent primary for the #415 ΔV-band Axis-B
 (real-ephemeris cycler maintenance ΔV). All numbers verbatim with table/figure
