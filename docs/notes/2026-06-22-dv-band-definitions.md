@@ -149,40 +149,54 @@ conflict C1].
   **uncaptured** paper (Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046) — treat as
   unverified until that source is acquired.
 
-## Multi-sourcing status — the ΔV thresholds are under-cited (acquisition needed)
+## Multi-sourcing status (updated 2026-06-22 after a corpus-wide ΔV extraction)
 
-Honest assessment of the evidence base, by axis:
-- **Axis A (geometric ballistic criterion, AR ≥ 1 / TR ≥ 1):** **well multi-sourced**
-  — Russell-Ocampo 2003, Russell 2004, and McConaghy 2002 independently state the
-  same turn-angle/aphelion criterion. Solid.
-- **Axis B (real-ephemeris ΔV *magnitude* thresholds, < 1 / < 10 / < 300 m/s
-  per-7-cycle):** rests on **one primary source** (Russell 2004 Table 5.5/5.6).
-  This is the weak point — single-primary-sourced numeric cutoffs.
+A 2026-06-22 pass read the **local primary PDFs** (`cyclers_pdf/papers/`, not just
+the digests) + the user-supplied Rauwolf 2002. Evidence base, by claim:
 
-A 2026-06-22 web pass for independent corroboration found (leads, NOT yet pinned
-to citable primaries — do not treat as golden):
-- The broader Mars-cycler literature cites **annual station-keeping of ~20–100
-  m/s/yr** to realign cyclers (matches Russell's tens-of-m/s near-ballistic tier
-  in magnitude) — but the figure surfaced via a secondary aggregator, not a
-  primary; its source must be traced before use.
-- McConaghy 2006 (the S1L1 / `mcconaghy-2006-em-k2` paper) is independently
-  confirmed: 153-day legs, V∞ 4.7/5.0 km/s, "total required ΔV very small, though
-  not zero" — corroborates *essentially-ballistic*, not strict-ballistic.
+- **Axis A (geometric ballistic criterion, AR ≥ 1 / TR ≥ 1):** **well
+  multi-sourced** — Russell-Ocampo 2003, Russell 2004, McConaghy 2002 agree. Solid.
+- **The ballistic *concept* (zero deterministic ΔV is achievable for a good
+  cycler):** **multi-sourced** — Russell 2004, McConaghy 2006 (S1L1), Patel 2019
+  ("no Δv maneuvers necessary … 'Ballistic S1L1 Cycler'"), Landau-Longuski 2006
+  ("ballistic … DSM ΔV = 0 versions exist"). Robust, qualitatively.
+- **Powered-cycler maintenance ΔV magnitude (~0.5–2 km/s per synodic / per 15 yr):**
+  **now firmly multi-sourced (5+ primaries):** Rauwolf 2002 (Aldrin 1.561/1.605
+  km/s per 15 yr, 3 of 7 orbits — `digest-rauwolf-friedlander-nock-2002.md`),
+  Byrnes-Longuski-Aldrin 1993 (1.73/2.04 km/s/15 yr), Chen 2002 (Aldrin "≈ 0.54
+  km/s per synodic"), Chen-McConaghy-Landau-Longuski-Aldrin 2005 (0.58–1.05 km/s
+  per synodic per vehicle), Landau-Longuski 2006 (0.78 km/s avg cycler DSM). All
+  agree at the ~km/s-per-15-yr / hundreds-of-m/s-to-~1-km/s-per-synodic scale.
+- **Near-ballistic *m/s cutoffs* (< 1 / < 10 / < 300 m/s per-7-cycle):** STILL
+  effectively **single-primary in basis** (Russell 2004 Table 5.5/5.6). The
+  corpus-wide pass did NOT find a second source reporting the *same quantity*
+  (real-ephemeris deterministic ΔV per-7-cycle, best window):
+  - **Pascarella/Pony-Express AAS-22-015** (the paper I'd mis-listed as the
+    paywalled JSR) corroborates the *magnitude* — real-ephemeris maintenance is
+    cheap ("< 5 kg … ~2 kg of propellant" over 8 flybys / ~6 yr; ≈ 175 m/s/6 yr
+    by back-calc) — but reports **propellant mass, not ΔV in m/s**, so it cannot
+    be band-mapped to the cutoffs.
+  - McConaghy 2006 S1L1 "~10 m/s / 30 yr" corroborates the *essentially-ballistic*
+    tier magnitude. Also consistent, also not the same basis.
 
-**Acquisition targets to give Axis B ≥ 3 independent anchors** (currently 1):
-1. **Genova-Aldrin, "Cycler Orbits and Solar System Pony Express," JSR (2021),
-   DOI 10.2514/1.A35091** — reports impulsive + SEP cycler-maintenance ΔV
-   sequences (paywalled; acquire via the private corpus / institutional access).
-2. **The primary source of the "~20–100 m/s/yr station-keeping" figure** — trace
-   from the aggregator to a citable cycler review / station-keeping paper.
-3. **Rauwolf-Friedlander-Nock 2002 (AIAA 2002-5046)** — the 1500 m/s/15-yr SEP
-   maintenance figure (flagged uncaptured above; #384-adjacent acquisition).
+**Net:** the powered band and the ballistic concept are now genuinely
+multi-sourced; the **near-ballistic numeric cutoffs remain Russell-only in basis**,
+with the magnitude independently corroborated (Pascarella, McConaghy) but not the
+exact thresholds. The < 1/< 10/< 300 m/s tiers should be cited as **"Russell 2004
+(sole same-basis primary); magnitude independently corroborated (Pascarella 2022
+real-ephemeris ≈ low-hundreds m/s; McConaghy 2006 S1L1 ~10 m/s); exact cutoffs
+pending a second same-basis primary."**
 
-Until ≥ 2 independent primaries corroborate the Axis-B cutoffs, the < 1 / < 10 /
-< 300 m/s tiers should be cited as **"Russell 2004 (sole primary); magnitude
-consistent with the broader literature (~tens of m/s station-keeping), pending
-multi-source confirmation."** The band *structure* (two axes + the geometric
-criterion) is firm; the *numeric Axis-B cutoffs* are provisional on acquisition.
+**Remaining acquisition target (the one that would actually close the gap):**
+- **Russell & Ocampo, "Optimization of a Broad Class of Ephemeris Model
+  Earth-Mars Cyclers," JGCD 29 (2006)** — a *different* Russell primary, in the
+  real-ephemeris basis, the natural second source for the per-cycle tiers. NOT in
+  the corpus. (Secondary: Net/Pellegrini/Parker et al. JSR 2022 — the published
+  Pony Express, may give maintenance in m/s; McConaghy-Longuski-Byrnes JSR 41(4)
+  2004.)
+- Rauwolf 2002 (was the prior #1 gap) is **acquired + digested** (powered-band
+  anchor); it does not address the near-ballistic cutoffs (it's the Aldrin
+  powered cycler).
 
 ## References (all [sourced] items above)
 - Russell-Ocampo 2003 (`digest-russell-ocampo-2003.md`): AR/TR criteria, TR_MIN=0.9.

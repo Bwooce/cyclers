@@ -37,11 +37,28 @@ is mostly **digest the local holdings**, runnable now with no paper access. Only
    `mcconaghy-landau-yam-2006-notable...`, `russell-2004-dissertation.pdf`,
    `byrnes-longuski-aldrin-1993-...`.
 
-## Target — ACQUIRE (the one genuine gap)
+## Target — ACQUIRE
 
-7. **Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046** — 1500 m/s/15-yr SEP
-   maintenance figure; **not on disk**. Lower priority (band-4 / SEP boundary).
-   #384-adjacent acquisition.
+7. ~~Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046~~ — **DONE 2026-06-22**
+   (user-supplied; digested → `2026-06-22-digest-rauwolf-friedlander-nock-2002.md`;
+   Aldrin maintenance 1.56/1.61 km/s/15yr — a powered-class anchor, not the
+   near-ballistic cutoffs).
+
+## STATUS (2026-06-22) — local pass DONE; one acquisition would close the real gap
+
+The local-PDF pass (targets 1–6) + Rauwolf are extracted and folded into
+`2026-06-22-dv-band-definitions.md`. Outcome: the **powered-cycler band** and the
+**ballistic concept** are now well multi-sourced; the **near-ballistic m/s cutoffs
+(< 1/< 10/< 300 per-7-cycle) remain single-primary in basis** (Russell 2004) — the
+local corpus corroborates the *magnitude* (Pascarella real-eph ≈ low-hundreds m/s;
+McConaghy S1L1 ~10 m/s) but not the *exact thresholds in the same basis*.
+
+**The one acquisition that would actually close it:**
+- **Russell & Ocampo, "Optimization of a Broad Class of Ephemeris Model Earth-Mars
+  Cyclers," JGCD 29 (2006)** — a *different* Russell primary in the real-ephemeris
+  basis; the natural second source for the per-cycle tiers. NOT in the corpus.
+  (Secondary: Net/Pellegrini/Parker et al. JSR 2022 "Pony Express" — published
+  version, may give maintenance in m/s; McConaghy-Longuski-Byrnes JSR 41(4) 2004.)
 
 ## Deliverable
 
