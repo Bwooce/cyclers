@@ -36,6 +36,8 @@
   vinf_fidelity: circular-coplanar
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
+  dv_band: powered_dsm   # schema v4.8 (2026-06-22, task #417); Axis-B real-eph maintenance band. SOURCED: Byrnes-Longuski-Aldrin 1993 report ~1.73-2.04 km/s per 15 yr for the Aldrin (1L1) cycler (corroborated Rauwolf 2002 1.561-1.605 km/s/15yr; Chen 2002 ~0.54 km/s/synodic) — well above the 300 m/s/7-cycle powered ceiling. NOT derived from the computed maintenance_dv_kms_per_synodic surrogate above. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: byrnes-longuski-aldrin-1993   # SOURCED powered-band maintenance ΔV (1.73/2.04 km/s per 15 yr); digest docs/notes/2026-06-17-digest-byrnes-longuski-aldrin-1993.md
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -233,6 +235,8 @@
       tof_years: 2.8096
       raw_descriptor: "G(2.8096,651.46,U)"
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
+  dv_band: essentially_ballistic   # schema v4.8 (2026-06-22, task #417); Axis-B real-eph maintenance band. SOURCED: McConaghy 2006 (JSR 43(2):456-465, p.461) states S1L1 is "only NEARLY ballistic in the ephemeris model" — ~10 m/s over ~30 yr outbound, below the <10 m/s/7-cycle essentially-ballistic tier (a modest inbound DSM aside). Axis-A geometric label stays ballistic (trajectory_regime); this is the orthogonal Axis-B magnitude. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: mcconaghy-2006   # SOURCED near-zero maintenance (~10 m/s/30 yr); digest docs/notes/2026-06-17-digest-mcconaghy-2006.md
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -2604,6 +2608,8 @@
   vinf_fidelity: circular-coplanar
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   maintenance_dv_kms_per_synodic: 1.52   # schema v3 (2026-06-01); COMPUTED output (NOT source-attested), single-impulse turn-deficit surrogate from the sourced a=1.60/e=0.393 + 200 km Earth flyby (~84.7 deg required vs ~71.4 deg achievable). Over-estimates the optimal cost. NEVER a golden-test target; the SOURCED, golden side is the turn angles only (see trajectory.maneuvers[E]).
+  dv_band: powered_dsm   # schema v4.8 (2026-06-22, task #417); Axis-B real-eph maintenance band (time-mirror of the outbound row). SOURCED: Byrnes-Longuski-Aldrin 1993 ~1.73-2.04 km/s per 15 yr for the Aldrin (1L1) cycler (corroborated Rauwolf 2002; Chen 2002) — above the 300 m/s/7-cycle powered ceiling. NOT derived from the computed maintenance_dv_kms_per_synodic surrogate above. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: byrnes-longuski-aldrin-1993   # SOURCED powered-band maintenance ΔV (1.73/2.04 km/s per 15 yr); digest docs/notes/2026-06-17-digest-byrnes-longuski-aldrin-1993.md
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source
@@ -49943,6 +49949,8 @@ days\" per the NTRS abstract.
   n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
   validation_level: V0   # per-flyby data published as FIGURES ONLY (no numeric per-flyby table); V0/V1 ceiling until authors' data obtained
   delta_v_kms: null
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #417); Axis-B real-eph maintenance band. SOURCED: Liang et al. 2024 (JGCD, doi 10.2514/1.G008387, p.18-19) — Member D is the SPICE-ephemeris (JUP365.bsp) real-ephemeris model and reports "max required Delta-v for one cycle 1.0383e-7 m/s (negligible)", i.e. ~1e-6 m/s over 10 cycles, far below the <1 m/s/7-cycle strictly-ballistic floor. Applies to THIS real-eph member only — the idealized members A-C carry the paper's own "Flyby Altitude" Delta-v-fiction caveat and stay null. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: liang-2024   # SOURCED real-eph maintenance 1.0383e-7 m/s/cycle (negligible); Liang et al. 2024 JGCD doi 10.2514/1.G008387 p.18-19
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null

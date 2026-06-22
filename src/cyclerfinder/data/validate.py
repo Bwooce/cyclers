@@ -1135,6 +1135,53 @@ def validate_validation_level(rows: list[dict[str, Any]]) -> list[str]:
     return errors
 
 
+_DV_BANDS: frozenset[str] = frozenset(
+    {
+        "strictly_ballistic",
+        "essentially_ballistic",
+        "low_maintenance",
+        "powered_dsm",
+        "low_thrust_sep",
+    }
+)
+
+
+def validate_dv_band(rows: list[dict[str, Any]]) -> list[str]:
+    """Validate the v4.8 ``dv_band`` / ``dv_band_source`` tags (task #417).
+
+    The Axis-B real-ephemeris deterministic maintenance-ΔV band
+    (docs/notes/2026-06-22-dv-band-definitions.md). This gate enforces what
+    JSON Schema cannot express cross-field:
+
+    * ``dv_band`` (where present and non-null) must be one of the five enum
+      values;
+    * whenever ``dv_band`` is non-null, ``dv_band_source`` MUST be a non-empty
+      string — the honesty gate that every band magnitude traces to a sourced
+      ΔV with a known basis (no band guessed from regime / V∞).
+
+    Absent/null ``dv_band`` is the common, valid default and is a no-op.
+
+    Returns a list of violation strings (empty when clean); never raises.
+    """
+    errors: list[str] = []
+    for row in rows:
+        rid = str(row.get("id") or "<unknown>")
+        band = row.get("dv_band")
+        if band is None:
+            continue
+        if not isinstance(band, str) or band not in _DV_BANDS:
+            errors.append(f"{rid}: dv_band={band!r} is not one of {sorted(_DV_BANDS)}")
+            continue
+        source = row.get("dv_band_source")
+        if not isinstance(source, str) or not source.strip():
+            errors.append(
+                f"{rid}: dv_band={band!r} requires a non-empty dv_band_source "
+                f"(honesty gate — every band traces to a sourced ΔV); "
+                f"got {source!r}"
+            )
+    return errors
+
+
 def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
     """Run BOTH validation layers over *rows*, returning all violations.
 
@@ -1152,6 +1199,8 @@ def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
     4. :func:`validate_validation_level` — the v4.5 ``validation_level``
        over-claim guard (a row may declare V1+ only with recorded mechanical
        evidence; spec §16.7.12 / §14).
+    5. :func:`validate_dv_band` — the v4.8 ``dv_band`` enum + the
+       ``dv_band_source``-required-when-non-null honesty gate (task #417).
 
     The JSON-Schema *structural* layer (draft-2020 via the ``check-jsonschema``
     pre-commit hook) is the further, out-of-process layer; this function is the
@@ -1165,6 +1214,7 @@ def validate_catalogue(rows: list[dict[str, Any]]) -> list[str]:
         + validate_physical_invariants(rows)
         + validate_provenance_tags(rows)
         + validate_validation_level(rows)
+        + validate_dv_band(rows)
     )
 
 
@@ -1222,6 +1272,7 @@ __all__ = [
     "anchors_for",
     "has_level_evidence",
     "validate_catalogue",
+    "validate_dv_band",
     "validate_physical_invariants",
     "validate_provenance_tags",
     "validate_schema_invariants",
