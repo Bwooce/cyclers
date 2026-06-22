@@ -17,8 +17,12 @@ rebound = pytest.importorskip("rebound")
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS  # noqa: E402
 from cyclerfinder.core.ephemeris import Ephemeris  # noqa: E402
+from cyclerfinder.core.flyby import flyby_dv_for  # noqa: E402
 from cyclerfinder.core.lambert import lambert  # noqa: E402
-from cyclerfinder.nbody.maintenance_shoot import target_leg  # noqa: E402
+from cyclerfinder.nbody.maintenance_shoot import (  # noqa: E402
+    continuous_maintenance_chain,
+    target_leg,
+)
 from cyclerfinder.nbody.propagator import RestrictedNBody  # noqa: E402
 
 _DAY_S = 86400.0
@@ -96,3 +100,75 @@ def test_target_leg_mars_perturbed_converges_in_band() -> None:
     assert res.converged, f"Mars-perturbed targeting did not converge (miss {res.miss_km:.1f} km)"
     assert res.miss_km < 1.0, f"arrival miss {res.miss_km:.3f} km exceeds 1 km"
     assert res.miss_km / AU_KM < 3.0 * mars_soi_au  # trivially true; documents the band
+
+
+def test_maintenance_chain_sun_only_matches_lambert_accounting() -> None:
+    """Sun-only 3-node E-M-E chain: the flyby ΔV equals the independent Lambert accounting.
+
+    Build a real E->M->E node sequence from DE440. In Sun-only mode each targeted leg
+    is the two-body Lambert (Task-1 golden), so the interior Mars-flyby maintenance ΔV
+    must equal ``flyby_dv_for("M", vinf_in, vinf_out)`` computed directly from the two
+    independent Lambert legs' velocities. This validates the chain's per-node ΔV
+    accounting end-to-end against an independent solver (no circularity)."""
+    ephem = Ephemeris("astropy")
+    prop = RestrictedNBody("rebound")
+
+    t0 = 27.0 * 365.25 * _DAY_S
+    t1 = t0 + 210.0 * _DAY_S
+    t2 = t1 + 360.0 * _DAY_S
+    epochs = [t0, t1, t2]
+    chain_bodies = ["E", "M", "E"]
+
+    r_e0, _ = (np.asarray(x, dtype=np.float64) for x in ephem.state("E", t0))
+    r_m1, v_m1 = (np.asarray(x, dtype=np.float64) for x in ephem.state("M", t1))
+    r_e2, _ = (np.asarray(x, dtype=np.float64) for x in ephem.state("E", t2))
+
+    # Independent two-body Lambert accounting for the interior Mars flyby.
+    leg0 = lambert(r_e0, r_m1, t1 - t0, mu=MU_SUN_KM3_S2)[0]  # E->M
+    leg1 = lambert(r_m1, r_e2, t2 - t1, mu=MU_SUN_KM3_S2)[0]  # M->E
+    vinf_in_mars = np.asarray(leg0.v2, dtype=np.float64) - v_m1  # arrival at Mars
+    vinf_out_mars = np.asarray(leg1.v1, dtype=np.float64) - v_m1  # departure from Mars
+    expected_dv_kms = flyby_dv_for("M", vinf_in_mars, vinf_out_mars)
+
+    chain = continuous_maintenance_chain(epochs, chain_bodies, ephem, prop, bodies=(), n_cycles=1)
+
+    assert not chain.diverged, "Sun-only E-M-E chain should fully converge"
+    assert chain.n_legs_converged == 2
+    assert len(chain.nodes) == 3
+    assert chain.nodes[0].is_flyby is False  # departure node, no flyby ΔV
+    assert chain.nodes[2].is_flyby is False  # final arrival node, no flyby ΔV
+    mars_node = chain.nodes[1]
+    assert mars_node.is_flyby and mars_node.body == "M"
+    # The chain's flyby ΔV reproduces the independent Lambert-based accounting.
+    assert mars_node.dv_kms == pytest.approx(expected_dv_kms, rel=1e-3, abs=1e-4)
+    assert chain.horizon_tcm_mps == pytest.approx(expected_dv_kms * 1000.0, rel=1e-3, abs=0.1)
+
+
+@pytest.mark.slow
+def test_maintenance_chain_naive_mars_perturbed_departure_leg_diverges() -> None:
+    """Naive continuous Mars-perturbation on a leg DEPARTING Mars diverges (the artifact).
+
+    PINNED FINDING (the patched-conic handoff the M7 plan flagged as hard-part #1):
+    propagating the M->E return leg with Mars as a continuous perturber while STARTING
+    at the Mars node makes the spacecraft begin at the Mars centre, inside the softened
+    core, where the perturber term is degenerate — the targeting cannot converge. The
+    E->M leg (starting far from Mars at Earth) converges fine; only the leg departing
+    the flyby planet blows up. This is a modelling ARTIFACT, not a fuel cost: the flyby
+    is patched-conic at the node, and for Earth-Mars cyclers no third body materially
+    perturbs the heliocentric cruise, so the FAITHFUL M7 measure is the Sun-cruise +
+    real-flyby position-targeted chain (the non-slow test above), not naive continuous
+    integration of the flyby planet from its own centre. If a future SOI-edge patch
+    makes this leg converge, re-pin this test deliberately."""
+    ephem = Ephemeris("astropy")
+    prop = RestrictedNBody("rebound")
+
+    t0 = 27.0 * 365.25 * _DAY_S
+    epochs = [t0, t0 + 210.0 * _DAY_S, t0 + 570.0 * _DAY_S]
+    chain = continuous_maintenance_chain(
+        epochs, ["E", "M", "E"], ephem, prop, bodies=("M",), n_cycles=1
+    )
+
+    # The E->M leg converges; the M->E leg departing Mars does not -> chain diverged.
+    assert chain.diverged, "expected the naive Mars-from-centre departure leg to diverge"
+    assert chain.n_legs_converged < chain.n_legs_total
+    assert chain.horizon_tcm_mps == float("inf")  # unmeasurable -> honest, not forced
