@@ -323,7 +323,7 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # a cell and files it under MISSING_PERIOD. Pure census shift; the row carries
     # its own V0 SPK-derived evidence (Jupiter V_inf 8.516 km/s; CA 2.841 R_J
     # reproduces the NASA Pioneer-10 page 130,354 km to ~1%).
-    ExclusionReason.MISSING_PERIOD: 2,
+    ExclusionReason.MISSING_PERIOD: 9,
     # 0 -> 1 (2026-06-16, #336): +1 Heaton-Longuski 2003 Uranian satellite tour
     # U00-01 (the heaton-longuski-2003-uranian-tour-u00-01 row, admitted under
     # the v4.7 catalogue scope expansion as orbit_class=mga_tour — the second

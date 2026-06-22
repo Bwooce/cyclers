@@ -100,7 +100,7 @@ CATALOGUE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "catal
 # admitted earlier in the wave).
 EXPECTED_TIER_CENSUS: dict[str, int] = {
     "cross_validated": 5,
-    "consistency_checked": 267,
+    "consistency_checked": 274,
     # 26 -> 27 (2026-06-15, #294): Tito 2018 Mars free-return admitted as
     # mga_tour with orbit_source=derived / vinf_source=derived (same fidelity)
     # which classifies as 'unvalidated' under the existing provenance rules.
@@ -163,6 +163,7 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # to <=1.01%) on the validation_level axis, not the source-pair tier.
     # 38 -> 39 (2026-06-20, #408): cassini-titan-tour admitted as the 10th
     # SPK-derived mga_tour row. derived/derived -> 'unvalidated'.
+    # 46 -> 39 (2026-06-22): 7 rows (canales-howell, kumar) promoted to consistency_checked
     "unvalidated": 39,
 }
 

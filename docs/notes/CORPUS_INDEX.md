@@ -75,6 +75,9 @@ is now digested, mined, or triaged.
 | doedel-paffenroth-keller-2003-computation-periodic-solutions-conservative-systems-3-body-IJBC.pdf | 2026-06-17-digest-doedel-2003.md | Periodic-solution computation in conservative 3-body systems | digested | text-layer |
 | bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-princetonUP-...textbook.pdf | 2026-06-19-digest-bond-allman-2021-modern-astrodynamics.md | Bond/Allman two-body + perturbation textbook; Sundman/Sperling-Burdet regularization (Ch 9, feeds tulip Sundman), universal-variable f/g + Lambert (Ch 5-6), VOP element rates (Ch 8), metre-level L4/L5 perturbed-two-body case (Table 9.3) usable as CR3BP golden | digested | text-layer |
 | willis-2008-book-review-modern-astrodynamics-gurfil-ed-asr-doi-10.1016-j.asr.2007.07.047.pdf | 2026-06-19-digest-willis-2008-book-review.md | 2-page book review of the Gurfil-ed 2007 volume; corroborating metadata only (defer to the #395 Gurfil digest), zero catalogue impact | digested | text-layer |
+| canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md; canalias_se_em_connection.yaml | SE-EM manifold connections, heteroclinic bifurcations PhD | digested + mined | text-layer |
+| koon-lo-marsden-ross-2000-shoot-the-moon.pdf | 2026-06-21-digest-koon-2000-shoot-the-moon.md | Shoot the Moon - Hiten trajectory via invariant manifolds | digested | text-layer |
+| koon-lo-marsden-ross-2006-dynamical-systems-mission-design.pdf | 2026-06-21-digest-klmr-2006-book.md | KLMR Dynamical Systems and Space Mission Design book | digested | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
@@ -101,12 +104,12 @@ is now digested, mined, or triaged.
 | landau-longuski-2009-comparative-assessment-human-mars-technologies-architectures.pdf | 2026-06-04-agrawal-landau-howe-mining.md | Comparative assessment of human Mars architectures | mined | text-layer |
 | nock-friedlander-1987-elements-mars-transportation-system-...0094-5765(87)90189-5.pdf | 2026-06-17-digest-nock-friedlander-1987.md | Elements of a Mars transportation system | digested | text-layer |
 | vasile-summerer-depascale-2005-earth-mars-evolutionary-branching-ActaAstro.pdf | 2026-06-05-v42-backfill-sweep.md; 2026-06-07-external-algorithms-survey.md | E-M evolutionary-branching global search | mined | text-layer |
-| chen-2002-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Earth-Mars cyclers (Master's thesis) | triaged | text-layer |
-| chen-2012.pdf | 2026-06-20-digest-new-papers.md | K.J. Chen 2012 work on Earth-Mars trajectories | triaged | text-layer |
-| chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with free-return trajectories | triaged | text-layer |
-| chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with multiple-impulse free-return | triaged | text-layer |
-| machado-2020.pdf | 2026-06-20-digest-new-papers.md | Parametric design of E-M cycler crew transfer vehicle | triaged | text-layer |
-| russell-2006-systematic-method-design-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Systematic method for E-M cycler design (journal) | triaged | text-layer |
+| chen-2002-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Earth-Mars cyclers (Master's thesis) | digested | text-layer |
+| chen-2012.pdf | 2026-06-20-digest-new-papers.md | K.J. Chen 2012 work on Earth-Mars trajectories | digested | text-layer |
+| chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with free-return trajectories | digested | text-layer |
+| chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with multiple-impulse free-return | digested | text-layer |
+| machado-2020.pdf | 2026-06-20-digest-new-papers.md | Parametric design of E-M cycler crew transfer vehicle | digested | text-layer |
+| russell-2006-systematic-method-design-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Systematic method for E-M cycler design (journal) | digested | text-layer |
 
 ## Mars free-return / human-flyby missions
 
@@ -153,7 +156,9 @@ is now digested, mined, or triaged.
 | andreu-1998-quasi-bicircular-problem-phd-thesis.pdf | 2026-06-14-andreu-quasi-bicircular-digest.md | Quasi-bicircular problem PhD thesis (POL1/POL2 ICs) | digested | text-layer |
 | andreu-1998-quasi-bicircular-problem-phd-thesis.ps.gz | (PostScript source of the PDF above) | Original PS of the andreu thesis — same content | digested (via PDF) | n/a (compressed PS) |
 | de-la-fuente-marcos-2018-geometric-characterization-arjuna-orbital-domain-arxiv-1410.4104v2.pdf | 2026-06-17-digest-fuente-marcos-2018.md | Geometric characterization of the Arjuna orbital domain | digested | text-layer |
+| Wilczak-Zgliczynski-2002-Heteroclinic-Part-I.pdf | (duplicate of wilczak-zgliczynski-2003) | Same paper, different date/version | digested + KNOWN_CORPUS | text-layer |
 | wilczak-zgliczynski-2003-heteroclinic-connections-part-I-math-0201278.pdf | 2026-06-19-digest-wilczak-zgliczynski-oterma-heteroclinic.md; KNOWN_CORPUS | W-Z Part I: L1<->L2 heteroclinic cycle proof | digested + KNOWN_CORPUS | text-layer |
+| Wilczak-Zgliczynski-2005-Heteroclinic-Part-II.pdf | (duplicate of wilczak-zgliczynski-2006) | Same paper, different date/version | digested + KNOWN_CORPUS | text-layer |
 | wilczak-zgliczynski-2006-heteroclinic-connections-part-II-math-0401146.pdf | 2026-06-19-digest-wilczak-zgliczynski-oterma-heteroclinic.md; KNOWN_CORPUS | W-Z Part II: rigorous numerics for the proof | digested + KNOWN_CORPUS | text-layer |
 | canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md | SE-EM manifold connections and heteroclinic bifurcations (PhD thesis) | digested | text-layer |
 

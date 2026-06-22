@@ -105,6 +105,14 @@ _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC: frozenset[str] = frozenset(
         # four Liang members; they state no AR/TR in their notes, so the
         # note-consistency sweeps do not fire.
         "liang-2024-cgcec-ephemeris-2033",
+        # Task #408: Russell 2006 cyclers added from Table 5 without trajectory segments.
+        "russell-2006-54-3.768ghminus3",
+        "russell-2006-55-3.768ghplus3",
+        "russell-2006-111-5.219gghminus3",
+        "russell-2006-112-5.219gghplus3",
+        "russell-2006-117-5.225ggg3",
+        "russell-2006-177-5.751ggf3",
+        "russell-2006-178-5.751ggf3",
     }
 )
 

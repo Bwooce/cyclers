@@ -397,11 +397,18 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         # Cassini Titan Tour (#408, 2026-06-20): 50-flyby Saturn-Titan resonant tour
         # derived from JPL Horizons (NAIF -82 vs 606). structural multi-arc.
         "cassini-titan-tour",
+        "russell-2006-54-3.768ghminus3",
+        "russell-2006-55-3.768ghplus3",
+        "russell-2006-111-5.219gghminus3",
+        "russell-2006-112-5.219gghplus3",
+        "russell-2006-117-5.225ggg3",
+        "russell-2006-177-5.751ggf3",
+        "russell-2006-178-5.751ggf3",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 253, (
-    f"Allowlist must have 253 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 260, (
+    f"Allowlist must have 260 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -498,7 +505,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 253, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 260, "non-keplerian": 12}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

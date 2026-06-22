@@ -52,6 +52,11 @@ SOURCE_REGISTRY: dict[str, str] = {
         "Russell, R.P., Ocampo, C.A. (2004), Table 4.9 / family 4.13 "
         "(Earth-Mars cycler V_inf at encounters)."
     ),
+    "russell-2006-table5": (
+        "Russell, R.P. (2006). 'Global Search for Symmetric Free-Return "
+        "Multiple Gravity Assist Trajectories.' JGCD, Vol 29, No 1. Table 5 "
+        "(Symmetric Full-Rev and Half-Rev Earth-to-Earth Arcs)."
+    ),
     "mcconaghy-2002": (
         "McConaghy, T.T., Longuski, J.M., et al. (2002). Earth-Mars cycler "
         "trajectory analysis (S_nL_m taxonomy and V_inf tabulation)."
@@ -78,6 +83,14 @@ SOURCE_REGISTRY: dict[str, str] = {
     "friedlander-1986": (
         "Friedlander, A.L., et al. (1986). Circulating (cycler) transportation "
         "systems for Mars (orbital elements and V_inf)."
+    ),
+    "canales-howell-2023": (
+        "Canales, D., Howell, K.C. (2023). 'Periodic and Quasi-Periodic Orbits "
+        "for Earth-Mars Cyclers.' arXiv:2308.10029."
+    ),
+    "kumar-2025": (
+        "Kumar, A. et al. (2025). 'A Comprehensive Catalogue of Earth-Mars "
+        "Cyclers.' arXiv:2509.12675."
     ),
     # Pseudo-sources: not a citation but an in-row provenance class.
     "derived": (
