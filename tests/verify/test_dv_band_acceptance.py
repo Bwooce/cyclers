@@ -345,3 +345,70 @@ def test_assign_uses_7cycle_scaling_for_mismatch() -> None:
     c = assign_dv_band_from_measurement(1.0, n_cycles=1, sourced_dv_band="strictly_ballistic")
     assert c.measured_band == "essentially_ballistic"
     assert c.mismatch is True
+
+
+# --- #424: V3 ballistic/powered class-split (formalises the #175 manual rule) ---
+from cyclerfinder.verify.dv_band_acceptance import (  # noqa: E402
+    v3_class_split_verdict,
+)
+
+
+class TestV3ClassSplitVerdict:
+    """Reproduce the recorded #175 V3 class-split decisions + the basis subtlety."""
+
+    def test_s1l1_passes_v3_ballistic_at_62_not_judged_against_band_tier(self) -> None:
+        # S1L1 is SOURCED essentially_ballistic (<10 m/s, McConaghy best window) but
+        # REPRODUCES at 62 m/s continuous TCM (#169). It must PASS V3-ballistic
+        # against the generic 120 m/s bar — NOT fail against the <10 band tier.
+        v = v3_class_split_verdict(
+            62.0, n_cycles=7, dv_band="essentially_ballistic", trajectory_regime="ballistic"
+        )
+        assert v.cls == "ballistic"
+        assert v.passed is True
+        assert v.bar_mps == 120.0  # the generic bar, NOT 10
+
+    def test_appc_188_passes_v3_powered_within_documented_budget(self) -> None:
+        # russell-ch4-8.049gGf2 (App-C #188): 163.6 m/s vs documented 420 m/s budget.
+        v = v3_class_split_verdict(
+            163.6, n_cycles=7, trajectory_regime="powered", documented_budget_mps=420.0
+        )
+        assert v.cls == "powered"
+        assert v.passed is True
+        assert v.bar_mps == 420.0 * 1.10
+
+    def test_appc_192_fails_v3_powered_over_its_own_budget(self) -> None:
+        # sibling #192: 2040.6 m/s EXCEEDS its own 1678 m/s budget (x1.10) -> FAIL.
+        v = v3_class_split_verdict(
+            2040.6, n_cycles=7, trajectory_regime="powered", documented_budget_mps=1678.0
+        )
+        assert v.cls == "powered"
+        assert v.passed is False
+
+    def test_powered_dsm_band_routes_to_powered_path(self) -> None:
+        v = v3_class_split_verdict(
+            500.0, n_cycles=7, dv_band="powered_dsm", documented_budget_mps=2000.0
+        )
+        assert v.cls == "powered"
+        assert v.passed is True
+
+    def test_powered_without_budget_raises(self) -> None:
+        with pytest.raises(ValueError):
+            v3_class_split_verdict(100.0, n_cycles=7, trajectory_regime="powered")
+
+    def test_ballistic_with_no_band_uses_generic_bar(self) -> None:
+        v = v3_class_split_verdict(119.0, n_cycles=7)
+        assert v.cls == "ballistic"
+        assert v.passed is True
+        assert v3_class_split_verdict(121.0, n_cycles=7).passed is False
+
+    def test_pro_rata_cycle_scaling(self) -> None:
+        # 14 cycles -> ballistic bar doubles to 240.
+        v = v3_class_split_verdict(200.0, n_cycles=14)
+        assert v.bar_mps == 240.0
+        assert v.passed is True
+
+    def test_rejects_negative_and_zero_cycles(self) -> None:
+        with pytest.raises(ValueError):
+            v3_class_split_verdict(-1.0, n_cycles=7)
+        with pytest.raises(ValueError):
+            v3_class_split_verdict(10.0, n_cycles=0)

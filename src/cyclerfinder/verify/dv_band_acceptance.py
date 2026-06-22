@@ -435,12 +435,113 @@ def accept_maintenance_dv(
     return lower <= total_maintenance_dv_mps <= upper
 
 
+# --- #424: formalise the §14 / #175 V3 ballistic-vs-powered class-split ---------
+#
+# spec §14 V3 has a class-split (#175): a BALLISTIC row's reproduced maintenance
+# ΔV is held to a generic 120 m/s budget; a POWERED row is held to its OWN
+# documented ΔV budget (x a 1.10 margin) — NOT failed for being non-ballistic.
+# This was applied by hand in catalogue evidence text; the function below makes it
+# a single tested decision.
+#
+# CRITICAL basis distinction (do NOT "improve" this to use the dv_band tier):
+# the V3 bar is REGIME-driven, not Axis-B-tier-driven. The dv_band is the SOURCED
+# best-window maintenance ΔV (e.g. McConaghy's S1L1 ~10 m/s -> essentially_ballistic);
+# the V3 input is the REPRODUCED continuous-from-one-seed horizon TCM (#169), a
+# different quantity in a different basis (S1L1 reproduces at 62 m/s). 62 m/s is a
+# valid V3-ballistic close (< 120) even though the row is sourced essentially_ballistic
+# (< 10). Judging the 62 m/s reproduction against the <10 tier would WRONGLY demote a
+# legitimately-reproduced row. So dv_band is used ONLY to identify the powered class.
+V3_BALLISTIC_BUDGET_MPS: Final[float] = 120.0  # spec §14 generic V3-ballistic bar (7-cycle basis)
+V3_POWERED_MARGIN: Final[float] = 1.10  # #175: continuous TCM <= documented budget x this
+
+
+@dataclass(frozen=True)
+class V3ClassVerdict:
+    """Outcome of the §14/#175 V3 ballistic/powered class-split.
+
+    Attributes
+    ----------
+    passed:
+        ``True`` when the reproduced continuous TCM is within the class bar.
+    cls:
+        ``"ballistic"`` or ``"powered"`` — which bar was applied.
+    bar_mps:
+        The acceptance bar actually compared against, scaled to ``n_cycles``.
+    basis:
+        Human-readable note on which bar + why.
+    """
+
+    passed: bool
+    cls: str
+    bar_mps: float
+    basis: str
+
+
+def v3_class_split_verdict(
+    measured_tcm_mps: float,
+    *,
+    n_cycles: int,
+    dv_band: str | None = None,
+    trajectory_regime: str | None = None,
+    documented_budget_mps: float | None = None,
+    powered_margin: float = V3_POWERED_MARGIN,
+    ballistic_budget_mps: float = V3_BALLISTIC_BUDGET_MPS,
+) -> V3ClassVerdict:
+    """Judge a reproduced V3 continuous-TCM ΔV under the §14/#175 class-split.
+
+    A row is POWERED iff ``dv_band == "powered_dsm"`` or
+    ``trajectory_regime == "powered"``; then the bar is its own
+    ``documented_budget_mps * powered_margin``. Otherwise it is BALLISTIC and the
+    bar is ``ballistic_budget_mps`` (the generic 120 m/s, NOT the dv_band tier —
+    see the module note above). Both bars are stated in the Russell 7-cycle basis
+    and pro-rata scaled to ``n_cycles``.
+
+    Reproduces the recorded #175 decisions: S1L1 (62 m/s, ballistic) PASS at < 120;
+    russell-ch4-8.049gGf2 / App-C #188 (163.6 m/s, powered, budget 420) PASS; its
+    sibling #192 (2040.6 m/s, powered, budget 1678) FAIL.
+    """
+    if measured_tcm_mps < 0.0:
+        raise ValueError(f"measured_tcm_mps must be non-negative, got {measured_tcm_mps}")
+    if n_cycles < 1:
+        raise ValueError(f"n_cycles must be >= 1, got {n_cycles}")
+
+    scale = n_cycles / RUSSELL_BASIS_CYCLES
+    is_powered = dv_band == "powered_dsm" or trajectory_regime == "powered"
+    if is_powered:
+        if documented_budget_mps is None or documented_budget_mps <= 0.0:
+            raise ValueError(
+                "powered V3 class-split (#175) requires a positive documented_budget_mps "
+                f"(the row's own published maintenance budget), got {documented_budget_mps!r}"
+            )
+        bar = documented_budget_mps * powered_margin * scale
+        return V3ClassVerdict(
+            passed=measured_tcm_mps <= bar,
+            cls="powered",
+            bar_mps=bar,
+            basis=(
+                f"V3-powered (#175): continuous TCM <= documented "
+                f"{documented_budget_mps:g} m/s x {powered_margin:g}"
+            ),
+        )
+    bar = ballistic_budget_mps * scale
+    return V3ClassVerdict(
+        passed=measured_tcm_mps <= bar,
+        cls="ballistic",
+        bar_mps=bar,
+        basis=f"V3-ballistic (#175): continuous TCM <= {ballistic_budget_mps:g} m/s generic budget",
+    )
+
+
 __all__ = [
     "RUSSELL_BASIS_CYCLES",
+    "V3_BALLISTIC_BUDGET_MPS",
+    "V3_POWERED_MARGIN",
     "BandThreshold",
     "DvBandClassification",
+    "V3ClassVerdict",
     "accept_maintenance_dv",
     "assign_dv_band_from_measurement",
     "classify_dv_band",
     "dv_band_threshold",
+    "v3_class_split_verdict",
 ]

@@ -39,10 +39,12 @@ from cyclerfinder.verify.crosscheck import (
 from cyclerfinder.verify.dv_band_acceptance import (
     BandThreshold,
     DvBandClassification,
+    V3ClassVerdict,
     accept_maintenance_dv,
     assign_dv_band_from_measurement,
     classify_dv_band,
     dv_band_threshold,
+    v3_class_split_verdict,
 )
 from cyclerfinder.verify.fidelity import (
     FidelityRungUnavailableError,
@@ -86,6 +88,7 @@ __all__ = [
     "RealClosureConstructionError",
     "RealClosureResult",
     "StabilityReport",
+    "V3ClassVerdict",
     "accept_maintenance_dv",
     "assign_dv_band_from_measurement",
     "classify_dv_band",
@@ -98,6 +101,7 @@ __all__ = [
     "multi_lap_propagation",
     "propagate_lap",
     "solve_at_fidelity",
+    "v3_class_split_verdict",
     "verify_long_term_stability",
     "verify_real_closure",
 ]
