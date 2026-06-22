@@ -149,6 +149,41 @@ conflict C1].
   **uncaptured** paper (Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046) — treat as
   unverified until that source is acquired.
 
+## Multi-sourcing status — the ΔV thresholds are under-cited (acquisition needed)
+
+Honest assessment of the evidence base, by axis:
+- **Axis A (geometric ballistic criterion, AR ≥ 1 / TR ≥ 1):** **well multi-sourced**
+  — Russell-Ocampo 2003, Russell 2004, and McConaghy 2002 independently state the
+  same turn-angle/aphelion criterion. Solid.
+- **Axis B (real-ephemeris ΔV *magnitude* thresholds, < 1 / < 10 / < 300 m/s
+  per-7-cycle):** rests on **one primary source** (Russell 2004 Table 5.5/5.6).
+  This is the weak point — single-primary-sourced numeric cutoffs.
+
+A 2026-06-22 web pass for independent corroboration found (leads, NOT yet pinned
+to citable primaries — do not treat as golden):
+- The broader Mars-cycler literature cites **annual station-keeping of ~20–100
+  m/s/yr** to realign cyclers (matches Russell's tens-of-m/s near-ballistic tier
+  in magnitude) — but the figure surfaced via a secondary aggregator, not a
+  primary; its source must be traced before use.
+- McConaghy 2006 (the S1L1 / `mcconaghy-2006-em-k2` paper) is independently
+  confirmed: 153-day legs, V∞ 4.7/5.0 km/s, "total required ΔV very small, though
+  not zero" — corroborates *essentially-ballistic*, not strict-ballistic.
+
+**Acquisition targets to give Axis B ≥ 3 independent anchors** (currently 1):
+1. **Genova-Aldrin, "Cycler Orbits and Solar System Pony Express," JSR (2021),
+   DOI 10.2514/1.A35091** — reports impulsive + SEP cycler-maintenance ΔV
+   sequences (paywalled; acquire via the private corpus / institutional access).
+2. **The primary source of the "~20–100 m/s/yr station-keeping" figure** — trace
+   from the aggregator to a citable cycler review / station-keeping paper.
+3. **Rauwolf-Friedlander-Nock 2002 (AIAA 2002-5046)** — the 1500 m/s/15-yr SEP
+   maintenance figure (flagged uncaptured above; #384-adjacent acquisition).
+
+Until ≥ 2 independent primaries corroborate the Axis-B cutoffs, the < 1 / < 10 /
+< 300 m/s tiers should be cited as **"Russell 2004 (sole primary); magnitude
+consistent with the broader literature (~tens of m/s station-keeping), pending
+multi-source confirmation."** The band *structure* (two axes + the geometric
+criterion) is firm; the *numeric Axis-B cutoffs* are provisional on acquisition.
+
 ## References (all [sourced] items above)
 - Russell-Ocampo 2003 (`digest-russell-ocampo-2003.md`): AR/TR criteria, TR_MIN=0.9.
 - Russell 2004 dissertation (`russell-2004-member-tables-transcription.md`,
