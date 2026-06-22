@@ -38,7 +38,10 @@ from cyclerfinder.verify.crosscheck import (
 )
 from cyclerfinder.verify.dv_band_acceptance import (
     BandThreshold,
+    DvBandClassification,
     accept_maintenance_dv,
+    assign_dv_band_from_measurement,
+    classify_dv_band,
     dv_band_threshold,
 )
 from cyclerfinder.verify.fidelity import (
@@ -74,6 +77,7 @@ __all__ = [
     "REAL_DRIFT_TOLERANCE_KM",
     "V1_TOLERANCE_MPS",
     "BandThreshold",
+    "DvBandClassification",
     "FidelityRungUnavailableError",
     "FidelitySolution",
     "LambertCrosscheckResult",
@@ -83,6 +87,8 @@ __all__ = [
     "RealClosureResult",
     "StabilityReport",
     "accept_maintenance_dv",
+    "assign_dv_band_from_measurement",
+    "classify_dv_band",
     "construct_real_ephemeris_cycler",
     "crosscheck_cycler",
     "crosscheck_leg",

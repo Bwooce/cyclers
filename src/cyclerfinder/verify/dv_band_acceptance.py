@@ -158,6 +158,226 @@ def dv_band_threshold(dv_band: str | None) -> BandThreshold | None:
     return _BAND_WINDOWS.get(dv_band)
 
 
+def classify_dv_band(
+    total_maintenance_dv_mps: float, *, n_cycles: int = RUSSELL_BASIS_CYCLES
+) -> str:
+    """Assign a ``dv_band`` from a MEASURED real-ephemeris maintenance ΔV (task #422).
+
+    This is the *output* direction of the band↔threshold map: where
+    :func:`dv_band_threshold` answers "what window does this *literature* band
+    imply?", this answers "what band does this *measured* real-ephemeris
+    maintenance ΔV fall in?". It is what lets the ~215 null-band rows acquire a
+    band by being reproduced (rather than only carrying a literature label).
+
+    The classification is on Russell's native basis — TOTAL deterministic
+    maintenance ΔV over a 7-cycle real-ephemeris propagation, best launch window
+    (band-definitions §"Mandatory basis"). A gate that propagated a different
+    cycle count passes its real ``n_cycles``; the measured total is scaled
+    pro-rata to the 7-cycle basis *before* binning, so the returned band is
+    always expressed in Russell's basis regardless of how many cycles were run.
+
+    Bins (the sourced Russell-Ocampo 2006 JGCD 29(2) ceilings, on the 7-cycle
+    basis):
+
+    * ``< 1 m/s``   → ``"strictly_ballistic"``
+    * ``< 10 m/s``  → ``"essentially_ballistic"``
+    * ``< 300 m/s`` → ``"low_maintenance"``
+    * ``>= 300 m/s`` → ``"powered_dsm"``
+
+    Note the bins are half-open at the *top* (``< ceiling``), matching the
+    literature wording ("less than 1 m/s", etc.) and the inclusive-upper windows
+    of :func:`dv_band_threshold` (a value exactly ON a ballistic ceiling, e.g.
+    1.0 m/s, falls into the *next* band — it is not ``< 1``). ``low_thrust_sep``
+    is never returned: it is a propulsion regime, not a measured impulsive
+    magnitude, so it cannot be inferred from a ΔV number.
+
+    Parameters
+    ----------
+    total_maintenance_dv_mps:
+        Measured TOTAL deterministic maintenance ΔV over ``n_cycles`` (m/s),
+        non-negative.
+    n_cycles:
+        Number of consecutive cycles the gate actually propagated (>= 1).
+        Defaults to the 7-cycle Russell basis (the common case where the
+        measurement is already a 7-cycle total — pass it through unscaled).
+
+    Returns
+    -------
+    str
+        One of ``"strictly_ballistic"`` / ``"essentially_ballistic"`` /
+        ``"low_maintenance"`` / ``"powered_dsm"``.
+    """
+    if total_maintenance_dv_mps < 0.0:
+        raise ValueError(
+            f"total_maintenance_dv_mps must be non-negative, got {total_maintenance_dv_mps}"
+        )
+    if n_cycles < 1:
+        raise ValueError(f"n_cycles must be >= 1, got {n_cycles}")
+
+    # Scale the measured total to Russell's 7-cycle basis before binning.
+    dv_7cycle = total_maintenance_dv_mps * RUSSELL_BASIS_CYCLES / n_cycles
+    if dv_7cycle < _STRICTLY_BALLISTIC_MAX_MPS:
+        return "strictly_ballistic"
+    if dv_7cycle < _ESSENTIALLY_BALLISTIC_MAX_MPS:
+        return "essentially_ballistic"
+    if dv_7cycle < _LOW_MAINTENANCE_MAX_MPS:
+        return "low_maintenance"
+    return "powered_dsm"
+
+
+# Band ordering by maintenance cost (cheapest → most powered). Used to decide
+# whether a MEASURED band is *worse* (more powered) than a SOURCED band, which
+# is the human-review-flag condition (per orbit-closure discipline: a measured
+# band that costs MORE than the sourced literature label is a real conflict;
+# a measured band that is cheaper is consistent with — and bounded by — the
+# sourced ceiling). ``low_thrust_sep`` is intentionally absent (a regime, not a
+# point on this cost scale); a sourced ``low_thrust_sep`` never participates in
+# the impulsive measured-vs-sourced comparison.
+_BAND_COST_ORDER: Final[tuple[str, ...]] = (
+    "strictly_ballistic",
+    "essentially_ballistic",
+    "low_maintenance",
+    "powered_dsm",
+)
+
+
+@dataclass(frozen=True)
+class DvBandClassification:
+    """The dv_band assignment for a reproduced row + its provenance (task #422).
+
+    Attributes
+    ----------
+    dv_band:
+        The band assigned to the row. When the row carried a *sourced* band this
+        is the sourced band UNCHANGED (a sourced literature value is never
+        silently overwritten — orbit-closure discipline); otherwise it is the
+        :func:`classify_dv_band` of the measured ΔV.
+    dv_band_source:
+        Provenance marker. ``"computed-v3"`` when the band was assigned from the
+        measured real-ephemeris maintenance ΔV; ``"sourced"`` when the row
+        already carried a literature band that was kept.
+    measured_band:
+        The band the MEASURED ΔV classifies into (always populated). Equals
+        ``dv_band`` in the computed case; may differ from it in the sourced case
+        (that difference is what ``mismatch`` reports).
+    measured_total_dv_mps:
+        The measured total deterministic maintenance ΔV (m/s) that was
+        classified, echoed for provenance.
+    n_cycles:
+        The cycle count the measurement spanned.
+    sourced_band:
+        The row's pre-existing sourced band, or ``None`` if it carried none.
+    mismatch:
+        ``True`` when the row had a sourced band AND the measured band is
+        STRICTLY WORSE (more powered) than it — a real-ephemeris reproduction
+        that costs more than the literature claim. This is surfaced for human
+        review; it never auto-overwrites the sourced value.
+    detail:
+        Human-readable summary of the assignment / mismatch.
+    """
+
+    dv_band: str
+    dv_band_source: str
+    measured_band: str
+    measured_total_dv_mps: float
+    n_cycles: int
+    sourced_band: str | None
+    mismatch: bool
+    detail: str
+
+
+def assign_dv_band_from_measurement(
+    total_maintenance_dv_mps: float,
+    *,
+    n_cycles: int,
+    sourced_dv_band: str | None,
+) -> DvBandClassification:
+    """Assign a row's dv_band from a measured ΔV, respecting any sourced band.
+
+    The #422 "dv_band as a reproduction OUTPUT" rule, with the orbit-closure
+    discipline conflict-surfacing guarantee:
+
+    * **No sourced band** (the ~215 null rows): assign the measured band
+      (:func:`classify_dv_band`) with ``dv_band_source="computed-v3"``. The row
+      acquires a band *by being reproduced*.
+    * **Has a sourced band**: keep the sourced band (``dv_band_source="sourced"``,
+      ``dv_band`` UNCHANGED — a literature value is never silently overwritten).
+      If the measured band is strictly WORSE (more powered) than the sourced one,
+      set ``mismatch=True`` so a human reviews the conflict. A measured band that
+      is *cheaper* than (or equal to) the sourced band is consistent and not
+      flagged. A sourced ``low_thrust_sep`` (a regime, off the impulsive cost
+      scale) never produces a mismatch from an impulsive measurement.
+
+    Parameters
+    ----------
+    total_maintenance_dv_mps:
+        Measured TOTAL deterministic maintenance ΔV over ``n_cycles`` (m/s).
+    n_cycles:
+        Cycle count the measurement spanned (>= 1).
+    sourced_dv_band:
+        The row's pre-existing literature band, or ``None``.
+
+    Returns
+    -------
+    DvBandClassification
+    """
+    measured = classify_dv_band(total_maintenance_dv_mps, n_cycles=n_cycles)
+
+    if sourced_dv_band is None:
+        return DvBandClassification(
+            dv_band=measured,
+            dv_band_source="computed-v3",
+            measured_band=measured,
+            measured_total_dv_mps=float(total_maintenance_dv_mps),
+            n_cycles=n_cycles,
+            sourced_band=None,
+            mismatch=False,
+            detail=(
+                f"computed-v3: assigned '{measured}' from measured "
+                f"{total_maintenance_dv_mps:.4g} m/s over {n_cycles} cycle(s)"
+            ),
+        )
+
+    # Row carries a sourced band: keep it, compare, flag a worse measurement.
+    mismatch = _measured_band_is_worse(measured=measured, sourced=sourced_dv_band)
+    if mismatch:
+        detail = (
+            f"MISMATCH: measured band '{measured}' "
+            f"({total_maintenance_dv_mps:.4g} m/s over {n_cycles} cycle(s)) is more "
+            f"powered than sourced band '{sourced_dv_band}' — flagged for human "
+            f"review; sourced band NOT overwritten"
+        )
+    else:
+        detail = (
+            f"sourced: kept '{sourced_dv_band}'; measured '{measured}' "
+            f"({total_maintenance_dv_mps:.4g} m/s over {n_cycles} cycle(s)) is "
+            f"consistent (not more powered)"
+        )
+    return DvBandClassification(
+        dv_band=sourced_dv_band,
+        dv_band_source="sourced",
+        measured_band=measured,
+        measured_total_dv_mps=float(total_maintenance_dv_mps),
+        n_cycles=n_cycles,
+        sourced_band=sourced_dv_band,
+        mismatch=mismatch,
+        detail=detail,
+    )
+
+
+def _measured_band_is_worse(*, measured: str, sourced: str) -> bool:
+    """True when ``measured`` is strictly more powered (costlier) than ``sourced``.
+
+    Both must be impulsive magnitude bands for the comparison to apply; a band
+    off the impulsive cost scale (``low_thrust_sep`` or any unknown band) is not
+    comparable and yields ``False`` (no mismatch flagged — the conflict, if any,
+    is not an impulsive-magnitude one).
+    """
+    if measured not in _BAND_COST_ORDER or sourced not in _BAND_COST_ORDER:
+        return False
+    return _BAND_COST_ORDER.index(measured) > _BAND_COST_ORDER.index(sourced)
+
+
 def accept_maintenance_dv(
     total_maintenance_dv_mps: float,
     *,
@@ -218,6 +438,9 @@ def accept_maintenance_dv(
 __all__ = [
     "RUSSELL_BASIS_CYCLES",
     "BandThreshold",
+    "DvBandClassification",
     "accept_maintenance_dv",
+    "assign_dv_band_from_measurement",
+    "classify_dv_band",
     "dv_band_threshold",
 ]

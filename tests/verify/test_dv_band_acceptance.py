@@ -20,6 +20,8 @@ import pytest
 from cyclerfinder.verify.dv_band_acceptance import (
     RUSSELL_BASIS_CYCLES,
     accept_maintenance_dv,
+    assign_dv_band_from_measurement,
+    classify_dv_band,
     dv_band_threshold,
 )
 from cyclerfinder.verify.v2_powered import _MAINTENANCE_DV_SANITY_MAX_KMS, _maintenance_dv_ok
@@ -205,3 +207,141 @@ def test_v2powered_strictly_ballistic_accepts_near_zero() -> None:
     assert _maintenance_dv_ok(0.0, dv_band="strictly_ballistic")
     # but rejects an Aldrin-scale powered value.
     assert not _maintenance_dv_ok(2.9, dv_band="strictly_ballistic")
+
+
+# ---------------------------------------------------------------------------
+# classify_dv_band — dv_band as a reproduction OUTPUT (task #422)
+# ---------------------------------------------------------------------------
+
+
+def test_classify_boundary_values_default_7cycle_basis() -> None:
+    """The four specified boundary measurements bin to the four bands (7-cycle)."""
+    assert classify_dv_band(0.5) == "strictly_ballistic"
+    assert classify_dv_band(5.0) == "essentially_ballistic"
+    assert classify_dv_band(150.0) == "low_maintenance"
+    assert classify_dv_band(1000.0) == "powered_dsm"
+
+
+def test_classify_is_half_open_at_the_top() -> None:
+    """Bins are ``< ceiling`` — a value exactly ON a ballistic ceiling falls into
+    the next band (matches the literature 'less than 1 m/s' wording and the
+    inclusive-upper dv_band_threshold windows)."""
+    assert classify_dv_band(0.999) == "strictly_ballistic"
+    assert classify_dv_band(1.0) == "essentially_ballistic"
+    assert classify_dv_band(9.999) == "essentially_ballistic"
+    assert classify_dv_band(10.0) == "low_maintenance"
+    assert classify_dv_band(299.999) == "low_maintenance"
+    assert classify_dv_band(300.0) == "powered_dsm"
+
+
+def test_classify_zero_is_strictly_ballistic() -> None:
+    assert classify_dv_band(0.0) == "strictly_ballistic"
+
+
+def test_classify_scales_to_7cycle_basis() -> None:
+    """A measurement over n_cycles is scaled to Russell's 7-cycle basis before
+    binning. 1 m/s over 1 cycle == 7 m/s over 7 cycles -> essentially_ballistic;
+    over 7 cycles the same 1 m/s total is exactly the strictly/essentially
+    boundary -> essentially_ballistic."""
+    # 1 m/s over a SINGLE cycle = 7 m/s / 7 cycles -> essentially_ballistic.
+    assert classify_dv_band(1.0, n_cycles=1) == "essentially_ballistic"
+    # 0.1 m/s over a single cycle = 0.7 m/s / 7 cycles -> strictly_ballistic.
+    assert classify_dv_band(0.1, n_cycles=1) == "strictly_ballistic"
+    # 700 m/s over 14 cycles = 350 m/s / 7 cycles -> powered_dsm.
+    assert classify_dv_band(700.0, n_cycles=14) == "powered_dsm"
+    # 200 m/s over 14 cycles = 100 m/s / 7 cycles -> low_maintenance.
+    assert classify_dv_band(200.0, n_cycles=14) == "low_maintenance"
+
+
+def test_classify_never_returns_low_thrust_sep() -> None:
+    """low_thrust_sep is a regime, not an inferable magnitude — classify_dv_band
+    only ever returns the four impulsive bands."""
+    bands = {classify_dv_band(v, n_cycles=7) for v in (0.0, 0.5, 5.0, 150.0, 1000.0, 1e6)}
+    assert "low_thrust_sep" not in bands
+    assert bands <= {
+        "strictly_ballistic",
+        "essentially_ballistic",
+        "low_maintenance",
+        "powered_dsm",
+    }
+
+
+def test_classify_negative_dv_raises() -> None:
+    with pytest.raises(ValueError):
+        classify_dv_band(-1.0)
+
+
+def test_classify_nonpositive_cycle_count_raises() -> None:
+    with pytest.raises(ValueError):
+        classify_dv_band(1.0, n_cycles=0)
+
+
+# ---------------------------------------------------------------------------
+# assign_dv_band_from_measurement — provenance + mismatch flagging (task #422)
+# ---------------------------------------------------------------------------
+
+
+def test_assign_null_band_acquires_computed_band() -> None:
+    """A null-band row (the ~215 case) acquires the measured band, marked
+    computed-v3."""
+    c = assign_dv_band_from_measurement(5.0, n_cycles=7, sourced_dv_band=None)
+    assert c.dv_band == "essentially_ballistic"
+    assert c.dv_band_source == "computed-v3"
+    assert c.measured_band == "essentially_ballistic"
+    assert c.sourced_band is None
+    assert c.mismatch is False
+    assert c.measured_total_dv_mps == pytest.approx(5.0)
+    assert c.n_cycles == 7
+
+
+def test_assign_sourced_band_is_never_overwritten() -> None:
+    """A sourced band is kept verbatim even when the measurement classifies
+    differently; provenance stays 'sourced'."""
+    # Measured is WORSE than sourced -> kept + flagged.
+    c = assign_dv_band_from_measurement(1000.0, n_cycles=7, sourced_dv_band="strictly_ballistic")
+    assert c.dv_band == "strictly_ballistic"  # NOT overwritten
+    assert c.dv_band_source == "sourced"
+    assert c.measured_band == "powered_dsm"
+
+
+def test_assign_mismatch_flagged_when_measured_more_powered() -> None:
+    """orbit-closure discipline: a measured band STRICTLY worse (more powered)
+    than the sourced band is flagged for human review."""
+    c = assign_dv_band_from_measurement(50.0, n_cycles=7, sourced_dv_band="strictly_ballistic")
+    assert c.measured_band == "low_maintenance"
+    assert c.mismatch is True
+    assert "MISMATCH" in c.detail
+
+
+def test_assign_no_mismatch_when_measured_cheaper_or_equal() -> None:
+    """A measured band cheaper than (or equal to) the sourced band is consistent
+    — bounded by the sourced ceiling — and is NOT flagged."""
+    # Cheaper: sourced powered_dsm, measured strictly_ballistic.
+    cheaper = assign_dv_band_from_measurement(0.5, n_cycles=7, sourced_dv_band="powered_dsm")
+    assert cheaper.measured_band == "strictly_ballistic"
+    assert cheaper.mismatch is False
+    # Equal: sourced essentially_ballistic, measured essentially_ballistic.
+    equal = assign_dv_band_from_measurement(
+        5.0, n_cycles=7, sourced_dv_band="essentially_ballistic"
+    )
+    assert equal.measured_band == "essentially_ballistic"
+    assert equal.mismatch is False
+
+
+def test_assign_sourced_low_thrust_sep_never_mismatches() -> None:
+    """A sourced low_thrust_sep (a regime off the impulsive cost scale) is not
+    comparable to an impulsive measurement -> never a mismatch, kept verbatim."""
+    c = assign_dv_band_from_measurement(2000.0, n_cycles=7, sourced_dv_band="low_thrust_sep")
+    assert c.dv_band == "low_thrust_sep"
+    assert c.dv_band_source == "sourced"
+    assert c.mismatch is False
+
+
+def test_assign_uses_7cycle_scaling_for_mismatch() -> None:
+    """The mismatch decision uses the SAME 7-cycle-scaled band as classify, so a
+    single-cycle measurement is judged on the right basis."""
+    # 1 m/s over 1 cycle = 7 m/s / 7 cycles -> essentially_ballistic; worse than
+    # a sourced strictly_ballistic -> mismatch.
+    c = assign_dv_band_from_measurement(1.0, n_cycles=1, sourced_dv_band="strictly_ballistic")
+    assert c.measured_band == "essentially_ballistic"
+    assert c.mismatch is True
