@@ -1,19 +1,52 @@
-import json
+"""Task #315 — binary-star cycler μ-continuation sweep.
+
+Track the Earth-Moon (3,1) and (1,1) prograde cycler families up the
+mass-parameter (μ) branch via pseudo-arclength continuation, to test whether the
+stable prograde binary-star cyclers depicted in Roberts-Tsoukkas & Ross 2026
+(μ = 0.3, 0.5) lie on the *continuous* branch of the Earth-Moon families
+(complements #255, which seeded the figure ICs directly).
+
+When a branch folds before reaching its target μ, records a first-class,
+method-versioned negative via :func:`append_empty_region` — capturing the
+**maximum μ the branch actually reaches** (the physically meaningful number),
+not the arclength endpoint where the walk happens to underflow.
+"""
+
 import logging
+import subprocess
+
+import numpy as np
 
 from cyclerfinder.core.cr3bp import CR3BPSystem
+from cyclerfinder.data.empty_regions import (
+    DEFAULT_EMPTY_REGIONS_PATH,
+    EmptyRegionReport,
+    append_empty_region,
+)
+from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.search.binary_star_search import winding_topology
-from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
+from cyclerfinder.search.cr3bp_periodic import _xaxis_crossings, correct_symmetric_fixed_jacobi
 from cyclerfinder.search.mu_continuation import continue_in_mu, scan_c_family_at_mu
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-seeds = [
+EARTH_MOON_MU = 1.2150584270572e-2
+
+# Continuation parameters — recorded with every negative so the empty-region is
+# conditional on the method, per the negative-results-registry convention.
+CONT_PARAMS = {
+    "ds0": 8e-3,
+    "ds_max": 1e-2,
+    "ds_min": 1e-6,
+    "period_jump_frac": 0.3,
+    "max_steps": 5000,
+}
+
+SEEDS = [
     {
         "id": "ross-rt-em-cycler-31-2025",
         "k1": 3,
         "k2": 1,
-        "mu_start": 1.2150584270572e-2,
         "c_start": 3.161784147013429,
         "period_start": 14.78849241668140,
         "x0_guess": -0.3209891696,
@@ -24,7 +57,6 @@ seeds = [
         "id": "ross-rt-em-cycler-11-2025",
         "k1": 1,
         "k2": 1,
-        "mu_start": 1.2150584270572e-2,
         "c_start": 3.151175879508174,
         "period_start": 10.29206921007976,
         "x0_guess": -0.7682140805,
@@ -34,142 +66,161 @@ seeds = [
 ]
 
 
-def main():
-    negatives = []
+def _git_sha():
+    try:
+        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+    except Exception:
+        return "unknown"
 
-    for seed_info in seeds:
-        logging.info(f"=== Sweeping {seed_info['id']} to mu = {seed_info['mu_target']} ===")
-        system_start = CR3BPSystem(
-            mu=seed_info["mu_start"], primary="Earth", secondary="Moon", l_km=384400.0, t_s=375699.8
+
+def build_fold_report(seed_info, *, mu_max, mu_min, n_members, stop_reason, git_sha):
+    """A first-class empty-region report for a branch that folds before its target.
+
+    Pure (no integration) so the verified numbers from a completed run can be
+    re-serialised without re-walking the (expensive) continuation.
+    """
+    k1, k2 = seed_info["k1"], seed_info["k2"]
+    target = seed_info["mu_target"]
+    return EmptyRegionReport(
+        region_id=f"binary-star-mu-continuation-em-{k1}{k2}-to-mu{target}",
+        family="binary-star cycler (μ-continuation from Earth-Moon)",
+        centre="Earth-Moon → binary-star μ",
+        topologies=(
+            {"k1": k1, "k2": k2, "prograde": True, "period_tu": seed_info["period_start"]},
+        ),
+        method_capability=MethodCapability(
+            genome=f"CR3BP symmetric prograde cycler, winding ({k1},{k2})",
+            corrector="pseudo-arclength continuation + Radau full-period closure",
+            capability_tags=frozenset(
+                {"mu-continuation", "pseudo-arclength", "radau-closure", "cr3bp", "planar"}
+            ),
+            git_sha=git_sha,
+        ),
+        search_extent={
+            "points_total": int(n_members),
+            "mu_start": EARTH_MOON_MU,
+            "mu_target": target,
+            "mu_max_reached": mu_max,
+            "mu_min_reached": mu_min,
+            "ephem_model": "cr3bp",
+            **CONT_PARAMS,
+        },
+        prune_gates=(
+            f"period_jump_frac={CONT_PARAMS['period_jump_frac']} (branch-switch/fold guard)",
+            f"step_underflow at ds_min={CONT_PARAMS['ds_min']}",
+        ),
+        result={
+            "target_reached": False,
+            "mu_max_reached": mu_max,
+            "mu_min_reached": mu_min,
+            "n_members": int(n_members),
+            "stop_reason": stop_reason,
+        },
+        verdict="EMPTY — family folds before reaching target μ",
+        interpretation=(
+            f"The Earth-Moon ({k1},{k2}) prograde cycler family, pseudo-arclength-continued in "
+            f"μ from the seed (μ={EARTH_MOON_MU:.6f}), climbs to μ_max={mu_max:.6f} then folds; "
+            f"it does NOT connect to the Roberts-Tsoukkas/Ross 2026 binary-star target μ={target} "
+            f"on the continuous CR3BP branch. Arclength walk ran to μ={mu_min:.6f} before "
+            f"{stop_reason}. Confirms the #255 direct-seed negative structurally."
+        ),
+        source_anchors="roberts-tsoukkas-ross-2026 (AAS 25-621 / journal); complements #255",
+        run={"task": 315, "script": "scripts/binary_star_mu_continuation_sweep.py"},
+    )
+
+
+def sweep_seed(seed_info, git_sha):
+    """Continue one seed toward its target μ; return a fold report dict or None."""
+    logging.info("=== %s -> mu = %s ===", seed_info["id"], seed_info["mu_target"])
+    system = CR3BPSystem(
+        mu=EARTH_MOON_MU, primary="Earth", secondary="Moon", l_km=384400.0, t_s=375699.8
+    )
+    seed = correct_symmetric_fixed_jacobi(
+        system=system,
+        x0_guess=seed_info["x0_guess"],
+        jacobi=seed_info["c_start"],
+        period_guess=seed_info["period_start"],
+        ydot0_sign=seed_info["ydot0_sign"],
+        half_crossings=None,
+    )
+    if not seed.converged:
+        logging.error("Seed %s failed to converge; skipping.", seed_info["id"])
+        return None
+
+    state0 = np.array([seed.x0, 0.0, 0.0, 0.0, seed.ydot0, 0.0])
+    times, _ = _xaxis_crossings(
+        system, state0, seed.t_half * 1.1, with_stm=False, rtol=1e-12, atol=1e-12
+    )
+    idx = int(np.argmin(np.abs(times - seed.t_half))) + 1
+    logging.info("Seed recovered: x0=%.6f period=%.4f half_crossings=%d", seed.x0, seed.period, idx)
+
+    branch = continue_in_mu(
+        seed=seed,
+        mu_start=EARTH_MOON_MU,
+        half_crossings=idx,
+        ydot0_sign=seed_info["ydot0_sign"],
+        mu_target=seed_info["mu_target"],
+        ds0=CONT_PARAMS["ds0"],
+        ds_max=CONT_PARAMS["ds_max"],
+        ds_min=CONT_PARAMS["ds_min"],
+        max_steps=CONT_PARAMS["max_steps"],
+        period_jump_frac=CONT_PARAMS["period_jump_frac"],
+    )
+    if not branch.members:
+        logging.error("No members on branch for %s.", seed_info["id"])
+        return None
+
+    mus = np.array([m.mu for m in branch.members])
+    mu_max, mu_min = float(mus.max()), float(mus.min())
+    logging.info(
+        "Branch: n=%d stop=%s mu_max=%.6f mu_min=%.6f", len(mus), branch.stop_reason, mu_max, mu_min
+    )
+
+    if mu_max < seed_info["mu_target"] - 1e-6:
+        return build_fold_report(
+            seed_info,
+            mu_max=mu_max,
+            mu_min=mu_min,
+            n_members=len(mus),
+            stop_reason=branch.stop_reason,
+            git_sha=git_sha,
         )
 
-        logging.info("Recovering the seed...")
-        seed_orbit = correct_symmetric_fixed_jacobi(
-            system=system_start,
-            x0_guess=seed_info["x0_guess"],
-            jacobi=seed_info["c_start"],
-            period_guess=seed_info["period_start"],
-            ydot0_sign=seed_info["ydot0_sign"],
-            half_crossings=None,
-        )
-
-        if not seed_orbit.converged:
-            logging.error("Failed to recover seed.")
-            continue
-
-        logging.info(
-            f"Seed recovered: x0={seed_orbit.x0}, period={seed_orbit.period}, half_crossings guess established."
-        )
-
-        # We need to determine the half_crossings index that `correct_symmetric_fixed_jacobi` auto-determined
-        # We can just look at `seed_orbit.t_half` and how it corresponds to the crossings? Wait, `continue_in_mu` requires `half_crossings` as an int.
-        # How do we get the half_crossings index?
-        # Let's count the crossings up to t_half + eps
-        import numpy as np
-
-        from cyclerfinder.search.cr3bp_periodic import _xaxis_crossings
-
-        state0 = np.array([seed_orbit.x0, 0.0, 0.0, 0.0, seed_orbit.ydot0, 0.0])
-        times, _ = _xaxis_crossings(
-            system_start, state0, seed_orbit.t_half * 1.1, with_stm=False, rtol=1e-12, atol=1e-12
-        )
-        idx = int(np.argmin(np.abs(times - seed_orbit.t_half))) + 1
-        logging.info(f"Seed half_crossings index determined as: {idx}")
-
-        logging.info(f"Continuing {seed_info['id']} to mu = {seed_info['mu_target']} ...")
-        branch = continue_in_mu(
-            seed=seed_orbit,
-            mu_start=seed_info["mu_start"],
-            half_crossings=idx,
-            ydot0_sign=seed_info["ydot0_sign"],
-            mu_target=seed_info["mu_target"],
-            ds_max=1e-2,
-            period_jump_frac=0.3,  # safeguard against branch switching
-        )
-
-        logging.info(f"Branch stopped with reason: {branch.stop_reason}")
-        if not branch.members:
-            logging.error("No members on branch.")
-            continue
-
-        final_member = branch.members[-1]
-        logging.info(f"Final reached mu: {final_member.mu}")
-
-        target_reached = abs(final_member.mu - seed_info["mu_target"]) < 1e-6
-        if target_reached:
-            logging.info("Target mu reached. Checking topology...")
-            topo = winding_topology(final_member.mu, final_member.state0, final_member.period)
-            logging.info(
-                f"Topology at target: k1={topo.k1}, k2={topo.k2}, prograde={topo.prograde}"
-            )
-
-            if topo.k1 == seed_info["k1"] and topo.k2 == seed_info["k2"] and topo.prograde:
-                logging.info("Topology matches target cycler family! Checking stability...")
-                if final_member.stable:
-                    logging.info(f"STABLE WINDOW FOUND at target mu! nu = {final_member.nu}")
-                    # Novelty check required!
-                else:
-                    logging.info(
-                        f"Member at target mu is unstable (nu = {final_member.nu}). Scanning C-family..."
-                    )
-                    members = scan_c_family_at_mu(
-                        mu=seed_info["mu_target"],
-                        x0_guess=final_member.x0,
-                        c_center=final_member.jacobi,
-                        period_guess=final_member.period,
-                        half_crossings=idx,
-                        ydot0_sign=seed_info["ydot0_sign"],
-                        dc=5e-4,
-                        n_each=20,
-                    )
-                    stable_members = [m for m in members if m.stable]
-                    if stable_members:
-                        logging.info(
-                            f"Found {len(stable_members)} stable members in C-scan! Novelty check required."
-                        )
-                    else:
-                        logging.info("No stable members found in C-scan.")
-                        negatives.append(
-                            {
-                                "task": 315,
-                                "method": "mu-continuation",
-                                "seed_id": seed_info["id"],
-                                "target_mu": seed_info["mu_target"],
-                                "result": "Topology reached, but C-scan found no stable window.",
-                            }
-                        )
-            else:
-                logging.info(
-                    f"Topology mismatch. Expected ({seed_info['k1']},{seed_info['k2']}), got ({topo.k1},{topo.k2})."
-                )
-                negatives.append(
-                    {
-                        "task": 315,
-                        "method": "mu-continuation",
-                        "seed_id": seed_info["id"],
-                        "target_mu": seed_info["mu_target"],
-                        "result": f"Target mu reached but topology changed to ({topo.k1},{topo.k2}) prograde={topo.prograde}.",
-                    }
-                )
+    # Target μ reached — check topology + stability (the positive path).
+    final = max(branch.members, key=lambda m: m.mu)
+    topo = winding_topology(final.mu, final.state0, final.period)
+    logging.info("At mu_max: topology k1=%d k2=%d prograde=%s", topo.k1, topo.k2, topo.prograde)
+    if topo.k1 == seed_info["k1"] and topo.k2 == seed_info["k2"] and topo.prograde:
+        if final.stable:
+            logging.info("STABLE member at target mu (nu=%s) — novelty check required.", final.nu)
         else:
+            logging.info("Unstable at target mu; scanning C-family...")
+            members = scan_c_family_at_mu(
+                mu=seed_info["mu_target"],
+                x0_guess=final.x0,
+                c_center=final.jacobi,
+                period_guess=final.period,
+                half_crossings=idx,
+                ydot0_sign=seed_info["ydot0_sign"],
+                dc=5e-4,
+                n_each=20,
+            )
             logging.info(
-                f"Target mu NOT reached. Branch stopped at mu = {final_member.mu} due to {branch.stop_reason}"
+                "C-scan stable members: %d (novelty check if > 0).", sum(m.stable for m in members)
             )
-            negatives.append(
-                {
-                    "task": 315,
-                    "method": "mu-continuation",
-                    "seed_id": seed_info["id"],
-                    "target_mu": seed_info["mu_target"],
-                    "result": f"Branch terminated early at mu={final_member.mu:.6f} due to {branch.stop_reason}.",
-                }
-            )
+    else:
+        logging.info("Reached target mu but topology changed to (%d,%d).", topo.k1, topo.k2)
+    return None
 
-    if negatives:
-        with open("data/empty_regions.jsonl", "a") as f:
-            for neg in negatives:
-                f.write(json.dumps(neg) + "\n")
-        logging.info(f"Appended {len(negatives)} negative results to data/empty_regions.jsonl")
+
+def main():
+    git_sha = _git_sha()
+    reports = [r for seed in SEEDS if (r := sweep_seed(seed, git_sha)) is not None]
+    for report in reports:
+        append_empty_region(DEFAULT_EMPTY_REGIONS_PATH, report)
+    logging.info(
+        "Appended %d empty-region report(s) to %s", len(reports), DEFAULT_EMPTY_REGIONS_PATH
+    )
 
 
 if __name__ == "__main__":
