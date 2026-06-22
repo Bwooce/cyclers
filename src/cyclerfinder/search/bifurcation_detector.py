@@ -196,13 +196,20 @@ def monodromy(
 def floquet_multipliers(monodromy_matrix: NDArray[np.float64]) -> NDArray[np.complex128]:
     """Return the monodromy's eigenvalues sorted by magnitude descending.
 
+    Uses Schur decomposition to re-orthonormalize the eigenvector basis
+    (Gram-Schmidt) so clustered/degenerate multipliers don't collapse the basis,
+    fixing numerical conditioning per Doedel 1991.
+
     The CR3BP monodromy has reciprocal-pair structure (Liouville / time-reversal
     symmetry): if ``lambda`` is an eigenvalue so is ``1/lambda``. One pair is
     always ``(1, 1)`` (energy/time-translation). The detector below uses these
     multipliers, sorted, without separating the trivial pair -- the
     period-multiplying check is on every multiplier individually.
     """
-    eigs = np.linalg.eigvals(monodromy_matrix)
+    import scipy.linalg
+
+    t_mat, _ = scipy.linalg.schur(monodromy_matrix, output="complex")
+    eigs = np.diag(t_mat)
     order = np.argsort(-np.abs(eigs))
     return np.asarray(eigs[order], dtype=np.complex128)
 
@@ -464,6 +471,23 @@ def _classify_secondary_pair(eigs: NDArray[np.complex128]) -> tuple[str, complex
     return "real_far", lam_a, lam_b
 
 
+def _deflated_determinant(eigs: NDArray[np.complex128]) -> float:
+    """Compute the deflated determinant of (M - I) as a scalar test function.
+
+    The determinant of the augmented Jacobian (Doedel 1991 Part I Eq. 2.9) is
+    proportional to the product of (lambda - 1) for the non-trivial eigenvalues.
+    This scalar test function changes sign across any true bifurcation but does
+    not change sign across a simple fold, providing a robust dual-detector check
+    for the saddle-center (k=1) bracket.
+    """
+    dists = np.abs(eigs - 1.0)
+    # Exclude the 2 eigenvalues closest to +1 (the trivial pair)
+    triv_idx = set(int(i) for i in np.argsort(dists)[:2])
+    non_triv = [eigs[i] for i in range(len(eigs)) if i not in triv_idx]
+    p = np.prod([lam - 1.0 for lam in non_triv])
+    return float(p.real)
+
+
 def detect_saddle_center_bracket(
     seeds: Sequence[FamilyMember],
     *,
@@ -518,6 +542,7 @@ def detect_saddle_center_bracket(
     per_member_kind: list[str] = []
     per_member_eigs: list[NDArray[np.complex128]] = []
     per_member_pair: list[tuple[complex, complex]] = []
+    per_member_det: list[float] = []
     for mem in seeds:
         sysm = cr3bp.CR3BPSystem(
             mu=mem.mu,
@@ -532,21 +557,42 @@ def detect_saddle_center_bracket(
         per_member_kind.append(kind)
         per_member_eigs.append(eigs)
         per_member_pair.append((lam_a, lam_b))
+        per_member_det.append(_deflated_determinant(eigs))
 
     brackets: list[BifurcationPoint] = []
     transition_kinds = {"complex_unit_circle", "real_near_one"}
     for i in range(len(seeds) - 1):
         k_a = per_member_kind[i]
         k_b = per_member_kind[i + 1]
-        if k_a == k_b:
+
+        # Detector 1: Eigenvalue classification transition
+        class_transition = (k_a != k_b) and (k_a in transition_kinds) and (k_b in transition_kinds)
+
+        # Detector 2: Scalar test function sign change (augmented Jacobian det)
+        det_a = per_member_det[i]
+        det_b = per_member_det[i + 1]
+        det_sign_change = det_a * det_b < 0.0
+
+        if not (class_transition or det_sign_change):
             continue
-        if k_a not in transition_kinds or k_b not in transition_kinds:
-            continue
+
         a, b = seeds[i], seeds[i + 1]
         lam_a, _ = per_member_pair[i]
         lam_b, _ = per_member_pair[i + 1]
         pa = a.parameter if a.parameter is not None else float("nan")
         pb = b.parameter if b.parameter is not None else float("nan")
+
+        ca = (
+            0.0
+            if k_a == "complex_unit_circle"
+            else (1.0 if k_a == "real_near_one" else float("nan"))
+        )
+        cb = (
+            0.0
+            if k_b == "complex_unit_circle"
+            else (1.0 if k_b == "real_near_one" else float("nan"))
+        )
+
         brackets.append(
             BifurcationPoint(
                 k=1,
@@ -559,8 +605,8 @@ def detect_saddle_center_bracket(
                 extras={
                     "param_before": pa,
                     "param_after": pb,
-                    "classification_before": float(0.0 if k_a == "complex_unit_circle" else 1.0),
-                    "classification_after": float(0.0 if k_b == "complex_unit_circle" else 1.0),
+                    "classification_before": ca,
+                    "classification_after": cb,
                 },
             )
         )

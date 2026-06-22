@@ -1,5 +1,12 @@
 """Asymmetric / 3D branch corrector at a saddle-center bifurcation (#347 Phase 1).
 
+Methodology Note (Doedel et al. 1991 Part I §2.2):
+This project uses a monodromy-eigenvector shortcut for bifurcation detection and
+branch switching. As shown in the canonical Doedel-Keller-Kernévez 1991 paper,
+this is mathematically equivalent to the rigorous BVP-Jacobian null-vector
+approach but avoids the heavy BVP-collocation infrastructure, making it highly
+efficient for periodic orbits in conservative systems.
+
 Mirrors :mod:`cyclerfinder.genome.family_switch` (which handles period-multiplying
 k>=2 bifurcations and ALWAYS re-corrects via the SYMMETRIC perpendicular-x-axis-
 crossing corrector :func:`cyclerfinder.search.nrho_continuation.correct_symmetric_nrho`)
