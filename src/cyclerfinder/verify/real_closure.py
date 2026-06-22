@@ -648,6 +648,72 @@ def _empty_result(
     )
 
 
+def _compute_horizon_tcm(
+    constructed: Cycler,
+    n_cycles: int,
+    ephem: Ephemeris,
+    *,
+    tcm_perturbers: tuple[str, ...] | None = None,
+) -> tuple[float, tuple[float, ...]]:
+    """M7: real-ephemeris maintenance ΔV over ``n_cycles`` for a constructed cycler.
+
+    Builds the continuous N-cycle encounter sequence from ``constructed`` (repeating
+    the one-cycle encounters by the encounter-span offset so the inter-cycle HOME
+    flyby is included — dropping it would undercount), then runs
+    :func:`cyclerfinder.nbody.maintenance_shoot.continuous_maintenance_chain`
+    (position-targeted, per-leg endpoint-excluded perturbers). Returns
+    ``(horizon_tcm_mps, per_cycle_tcm_mps)``. On any non-converging leg the chain is
+    honestly unmeasurable: returns ``(inf, (inf,)*n_cycles)`` — the row stays V0,
+    never forced to a fake ballistic 0.0.
+
+    Lazy import of the nbody/rebound stack keeps the module's cheap astropy-only
+    import contract for the M6b path.
+    """
+    from cyclerfinder.nbody.maintenance_shoot import continuous_maintenance_chain
+    from cyclerfinder.nbody.propagator import RestrictedNBody
+
+    encounters = constructed.encounters
+    m = len(encounters)
+    if m < 2 or n_cycles < 1:
+        return 0.0, (0.0,) * max(n_cycles, 0)
+
+    # Repeat by the actual encounter span (not the published period) so the seam node
+    # epoch is exact: encounters[0].t + span == encounters[-1].t, making the home
+    # flyby between cycles continuous.
+    span = encounters[-1].t - encounters[0].t
+    node_epochs: list[float] = []
+    node_bodies: list[str] = []
+    for c in range(n_cycles):
+        for j in range(m - 1):
+            node_epochs.append(encounters[j].t + c * span)
+            node_bodies.append(encounters[j].body)
+    node_epochs.append(encounters[-1].t + (n_cycles - 1) * span)
+    node_bodies.append(encounters[-1].body)
+
+    if tcm_perturbers is None:
+        # System significant perturbers = the cycler's own flyby bodies. Endpoint
+        # exclusion (chain default) drops each from legs it bounds; a body that is a
+        # flyby target but NOT this leg's endpoint still perturbs that leg's cruise.
+        tcm_perturbers = tuple(sorted(set(node_bodies)))
+
+    prop = RestrictedNBody("rebound")
+    chain = continuous_maintenance_chain(
+        node_epochs,
+        node_bodies,
+        ephem,
+        prop,
+        cruise_perturbers=tcm_perturbers,
+        n_cycles=n_cycles,
+    )
+    if chain.diverged:
+        return float("inf"), (float("inf"),) * n_cycles
+    # Per-cycle reporting: uniform average over the horizon (the position-targeted
+    # model has no cross-cycle accumulation; real per-cycle variation across the
+    # N-cycle walk is a Phase-2 refinement).
+    per_cycle = chain.horizon_tcm_mps / n_cycles
+    return chain.horizon_tcm_mps, (per_cycle,) * n_cycles
+
+
 def verify_real_closure(
     cycler: Cycler | dict[str, Any],
     n_cycles: int,
@@ -657,6 +723,8 @@ def verify_real_closure(
     frame_bodies: tuple[str, ...] | None = None,
     cycler_id: str | None = None,
     signature_priority_date: datetime | None = None,
+    compute_tcm: bool = False,
+    tcm_perturbers: tuple[str, ...] | None = None,
 ) -> RealClosureResult:
     """Spec §14 V2-real gate machinery; M6b's binding entry point.
 
@@ -777,6 +845,21 @@ def verify_real_closure(
 
     # ----- Step 5: diagnostics + result -----
     vinf_mismatch = _check_vinf_continuity(constructed, ephem)
+
+    # ----- Step 5b (M7): real-ephemeris maintenance ΔV (horizon TCM) -----
+    # Opt-in (compute_tcm): the Mars-perturbed/position-targeted shoot is minutes/row.
+    # Off by default => the historical 0.0 placeholders, preserving M6b behaviour and
+    # the cheap astropy-only import (the nbody/rebound import is lazy, inside the branch).
+    horizon_tcm_mps = 0.0
+    per_cycle_tcm_mps: tuple[float, ...] = (0.0,) * stability.n_laps_propagated
+    if compute_tcm:
+        horizon_tcm_mps, per_cycle_tcm_mps = _compute_horizon_tcm(
+            constructed,
+            stability.n_laps_propagated,
+            ephem,
+            tcm_perturbers=tcm_perturbers,
+        )
+
     return RealClosureResult(
         cycler_id=cycler_id,
         n_cycles_propagated=stability.n_laps_propagated,
@@ -785,8 +868,8 @@ def verify_real_closure(
         per_encounter_vinf_mismatch_kms=vinf_mismatch,
         closes=closes,
         v3_status=v3_status,
-        horizon_tcm_mps=0.0,
-        per_cycle_tcm_mps=(0.0,) * stability.n_laps_propagated,
+        horizon_tcm_mps=horizon_tcm_mps,
+        per_cycle_tcm_mps=per_cycle_tcm_mps,
         frame_used="dynamic",
         t_start_sec=resolved_t_start,
     )
