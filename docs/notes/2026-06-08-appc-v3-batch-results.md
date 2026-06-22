@@ -1,5 +1,12 @@
 # App-C V3 batch — scaling the S1L1 closure pipeline to the 9 `russell-ch4-*` V0 parents (#170)
 
+> **CORRECTION (2026-06-23):** the Sun-only continuous-TCM proxy numbers below
+> (163.6 m/s #188, 2040.6 m/s #192) were computed under a since-fixed 63 s UTC/TDB
+> epoch bug (#198, commit 439d279). Corrected: **114.4 / 2020.7 m/s**. The PARTIAL
+> verdict is **unchanged** — it rests on the sourced published App-C total Δv
+> (420 / 1678 m/s), not the proxy. See
+> `docs/notes/2026-06-23-appc-s1l1-tcm-epoch-rederivation.md`.
+
 **Date:** 2026-06-08
 **Task:** #170 — apply the proven S1L1 closure pipeline (tasks #166/#167/#169,
 `russell-ch4-4.991gG2` = first V3) to the 9 remaining V0 `russell-ch4-*` parent

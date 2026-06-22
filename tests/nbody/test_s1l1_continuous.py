@@ -35,8 +35,12 @@ VERDICT (see ``docs/notes/2026-06-08-s1l1-continuous-v4-results.md``): **PARTIAL
 In Russell's OWN model (Sun-only patched-conic, flybys instantaneous at the
 patch points) the continuous single-seed trajectory holds all 20 nodes (E miss
 <= 18,434 km, M miss <= 3,173 km — all << SOI) at the App-C v_inf (|v_inf| matched
-to <= 2.7 m/s) with a BOUNDED total maintenance dv of ~62 m/s — UNDER the 120 m/s
-V3 budget (STRENGTHENS V3). BUT once Mars's finite continuous gravity is modelled
+to <= 2.7 m/s) with a BOUNDED total maintenance dv of ~40.2 m/s — UNDER the 120 m/s
+V3 budget (STRENGTHENS V3). (Originally recorded ~62 m/s; re-derived to ~40.2 m/s
+after the #198 63 s UTC/TDB epoch fix, commit 439d279 — both well under budget, so
+the CLEAN verdict is unchanged. See
+``docs/notes/2026-06-23-appc-s1l1-tcm-epoch-rederivation.md``.) BUT once Mars's
+finite continuous gravity is modelled
 (Mars-perturbed), the legs AFTER each Mars flyby (the M->E returns) diverge
 (>1e8 km, integrator non-converged) because the App-C nodes are patched-conic
 states that do not account for the continuous deflection through the Mars

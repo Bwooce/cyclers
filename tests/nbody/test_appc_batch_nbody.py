@@ -8,12 +8,22 @@ number / block) and are recorded+skipped in the batch note, not forced.
 
 VERDICT (pinned): **PARTIAL** for both. The Mars encounters reconstruct cleanly and
 land in-band on an INDEPENDENT integrator at the published per-leg v_inf — but neither
-meets the spec §14 V3 maintenance budget (120 m/s): the continuous-from-one-seed
-horizon TCM is 164 m/s (#188) and 2041 m/s (#192), consistent with Russell's OWN
-published App-C total Δv (420 / 1678 m/s — these are POWERED cyclers, not ballistic
-like S1L1). So: NO V3 writeback. This is a clean, honest negative — the encounter
-geometry is real, the fuel cost is not V3-grade. See
-``docs/notes/2026-06-08-appc-v3-batch-results.md``.
+is V3-grade: both are POWERED cyclers whose OWN published App-C total Δv (420 / 1678
+m/s over 7 cycles, Table 5.5 = the ``block.total_dv_kms`` field) is far over the spec
+§14 V3 maintenance budget (120 m/s). That sourced total is the BINDING V3-rejection
+here — it is Russell's number, epoch- and model-independent. So: NO V3 writeback. The
+encounter geometry is real, the fuel cost is not V3-grade.
+
+The Sun-only patched-conic continuous-from-one-seed TCM (the #169 proxy) is recorded
+as corroborating EVIDENCE only: it is a LOWER bound on the real maintenance and is NOT
+the gate. After the #198 63 s UTC/TDB epoch fix (commit 439d279) it re-derives to
+114.4 m/s (#188) and 2020.7 m/s (#192) — down from the pre-fix 163.6 / 2040.6 m/s
+recorded in ``docs/notes/2026-06-08-appc-v3-batch-results.md``. Note #188's proxy now
+sits UNDER the 120 m/s budget (114.4) even though the published powered total is 420
+m/s — exactly why the verdict is grounded on the sourced total, not the Sun-only proxy.
+A faithful continuous measure needs the Mars-perturbed run with B-plane flyby targeting
+(M7); that is not this test's job. See
+``docs/notes/2026-06-23-appc-s1l1-tcm-epoch-rederivation.md``.
 
 What independence means (same as the S1L1 gate): the only thing seeded is each leg's
 departure state (App-C v_inf + the real DE440 planet velocity at the printed epoch +
@@ -50,6 +60,18 @@ _MARS_SOI_AU = PLANETS["M"].sma_au * (PLANETS["M"].mu_km3_s2 / MU_SUN_KM3_S2) **
 _ENCOUNTER_MISS_TOL_AU = 3.0 * _MARS_SOI_AU  # ~0.0116 AU
 _V3_TCM_BUDGET_KMS = 0.120  # spec §14 V3 maintenance budget
 
+# Computed regression anchors (NOT validation goldens, NOT the verdict gate): the
+# Sun-only patched-conic continuous-from-one-seed TCM (#169 proxy) under the
+# CORRECTED ephemeris (post-#198 63 s UTC/TDB epoch fix, commit 439d279). These pin
+# "the code still computes the same proxy"; the V3-rejection is grounded on the
+# sourced ``block.total_dv_kms`` (420 / 1678 m/s). The proxy is a lower bound — for
+# #188 it sits UNDER 120 m/s, which is the whole reason it is not the gate. See
+# docs/notes/2026-06-23-appc-s1l1-tcm-epoch-rederivation.md.
+_SUNONLY_PROXY_TCM_MPS: dict[str, float] = {
+    "russell-ch4-8.049gGf2": 114.4,
+    "russell-ch4-8.165Gfh-f2": 2020.7,
+}
+
 
 def _propagate_with_dv_nbody(
     arc: AppCArc, ephem: Ephemeris, prop: RestrictedNBody
@@ -84,16 +106,22 @@ def _propagate_with_dv_nbody(
 
 @pytest.mark.slow
 @pytest.mark.parametrize("catalogue_id", sorted(REACHABLE_BLOCKS))
-def test_appc_batch_encounters_in_band_but_tcm_over_v3_budget(catalogue_id: str) -> None:
-    """Independent n-body: App-C parents reconstruct in-band but exceed the V3 TCM budget.
+def test_appc_batch_encounters_in_band_but_published_dv_over_v3_budget(
+    catalogue_id: str,
+) -> None:
+    """Independent n-body: App-C parents reconstruct in-band; published Δv > V3 budget.
 
     PINNED VERDICT: PARTIAL. (1) all 7 Mars encounters land in-band on an INDEPENDENT
     Sun-only IAS15 at the published per-leg v_inf (the encounter geometry IS real);
-    (2) the continuous-from-one-seed horizon TCM exceeds the 120 m/s V3 budget,
-    consistent with Russell's published App-C total Δv (these are powered cyclers).
-    Therefore NO V3 writeback. If a future change moves an encounter out of band or
-    drops the TCM under budget, this asserts deliberately — re-derive, do not loosen
-    the band or the budget to manufacture a CONFIRMED."""
+    (2) the SOURCED published App-C total Δv (``block.total_dv_kms`` = 420 / 1678 m/s,
+    Table 5.5) exceeds the 120 m/s V3 budget — these are powered cyclers. That sourced
+    total is the binding V3-rejection (epoch- and model-independent). Therefore NO V3
+    writeback. The Sun-only continuous-from-one-seed TCM (#169 proxy) is checked only
+    as corroborating EVIDENCE / a regression anchor — it is a lower bound and for #188
+    now reads UNDER 120 m/s after the #198 epoch fix, which is exactly why it is not
+    the gate. If a future change moves an encounter out of band, drops the published
+    total under budget, or drifts the proxy off its corrected anchor, this asserts
+    deliberately — re-derive, do not loosen the band or the budget."""
     block: AppCBlock = REACHABLE_BLOCKS[catalogue_id]
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")  # astropy ERFA dubious-year at far-future epochs
@@ -116,12 +144,23 @@ def test_appc_batch_encounters_in_band_but_tcm_over_v3_budget(catalogue_id: str)
                 f"{catalogue_id} M{arrival_no}: v_inf {vinf_kms:.4f} vs published {pub_vinf}"
             )
 
-        # (2) Continuous-from-one-seed horizon TCM (Sun-only patched-conic, the V3 tier).
+        # (2) Sun-only patched-conic continuous-from-one-seed TCM (#169 proxy).
         nodes = continuous_chain(block, ephem)
         tcm_kms = sum(n.dv_total_kms for n in nodes)
 
-    # The encounters are in-band, but the maintenance is NOT V3-grade — PARTIAL.
-    assert tcm_kms > _V3_TCM_BUDGET_KMS, (
-        f"{catalogue_id}: continuous TCM {tcm_kms * 1000:.1f} m/s is UNDER the V3 "
-        f"budget — if real, this row would be a CONFIRMED candidate; re-examine."
+    # BINDING V3-rejection: the SOURCED published App-C total Δv (Russell Table 5.5)
+    # is far over the 120 m/s budget — these are powered cyclers. Epoch-independent.
+    assert block.total_dv_kms > _V3_TCM_BUDGET_KMS, (
+        f"{catalogue_id}: published App-C total Δv {block.total_dv_kms * 1000:.0f} m/s "
+        f"should exceed the 120 m/s V3 budget (these are powered parents)."
+    )
+
+    # CORROBORATING EVIDENCE (regression anchor, NOT the gate): the Sun-only proxy is a
+    # lower bound on the real maintenance. Pinned to its corrected-ephemeris value; for
+    # #188 this is UNDER 120 m/s, which is precisely why the gate above uses the sourced
+    # published total, not this proxy. Drift off the anchor => re-derive (see note).
+    assert tcm_kms * 1000.0 == pytest.approx(_SUNONLY_PROXY_TCM_MPS[catalogue_id], abs=1.0), (
+        f"{catalogue_id}: Sun-only proxy TCM {tcm_kms * 1000:.1f} m/s drifted from the "
+        f"corrected-epoch anchor {_SUNONLY_PROXY_TCM_MPS[catalogue_id]} m/s "
+        f"(post-#198 epoch fix). Re-derive; do not silently re-pin."
     )
