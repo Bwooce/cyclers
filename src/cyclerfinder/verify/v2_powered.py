@@ -70,6 +70,7 @@ from cyclerfinder.core.constants import DAYS_PER_JULIAN_YEAR, MU_SUN_KM3_S2
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.maintain import optimise_aldrin_maintenance_dv
 from cyclerfinder.verify.agreement import crosscheck_code_paths
+from cyclerfinder.verify.dv_band_acceptance import accept_maintenance_dv, dv_band_threshold
 
 # Encounter tolerance for clause (a): interior-flyby |V∞| continuity, km/s. The
 # existing free-return genome-honesty convention (free_return_v1).
@@ -81,8 +82,39 @@ INTRA_CYCLE_DRIFT_TOL_KM: Final[float] = 1.0
 
 # Upper sanity bound on the per-cycle maintenance ΔV (km/s). NOT a sourced target
 # (McConaghy 2002 defers the magnitude); a loose bound that rejects an
-# off-family degenerate (the ~55 km/s high-energy basin, finding #114).
+# off-family degenerate (the ~55 km/s high-energy basin, finding #114). This is
+# the generic (``dv_band=None``) per-cycle ceiling; when a row carries a
+# ``dv_band`` the per-cycle acceptance is band-parameterised via
+# :func:`cyclerfinder.verify.dv_band_acceptance.accept_maintenance_dv` (task
+# #420) — the powered-DSM band's window has this same 3.5 km/s upper bound.
 _MAINTENANCE_DV_SANITY_MAX_KMS: Final[float] = 3.5
+
+
+def _maintenance_dv_ok(dv_kms: float, *, dv_band: str | None) -> bool:
+    """Per-cycle maintenance-ΔV acceptance for clause (a) (task #420).
+
+    When ``dv_band`` is ``None`` (or carries no impulsive window), this is the
+    existing generic criterion verbatim: a strictly-positive, sanity-bounded
+    maintenance ΔV (``0 < dv < _MAINTENANCE_DV_SANITY_MAX_KMS``) — the cycle is
+    genuinely powered, not a ballistic ΔV≈0 neighbour, and not the off-family
+    ~55 km/s degenerate.
+
+    When ``dv_band`` carries a window, the per-cycle ΔV is judged against the
+    band's per-7-cycle acceptance window scaled to a single cycle
+    (:func:`cyclerfinder.verify.dv_band_acceptance.accept_maintenance_dv` with
+    ``n_cycles=1``). The band window already encodes the powered-vs-ballistic
+    floor (powered_dsm requires >= 300 m/s / 7 cycles; the ballistic bands admit
+    near-zero), so the generic ``> 0`` rule is *subsumed* by the window and not
+    re-applied — a ballistic band correctly accepts a ΔV≈0 close.
+    """
+    if dv_band_threshold(dv_band) is None:
+        return 0.0 < dv_kms < _MAINTENANCE_DV_SANITY_MAX_KMS
+    return accept_maintenance_dv(
+        dv_kms * 1000.0,
+        dv_band=dv_band,
+        n_cycles=1,
+        generic_max_mps=_MAINTENANCE_DV_SANITY_MAX_KMS * 1000.0,
+    )
 
 
 @dataclass(frozen=True)
@@ -150,6 +182,7 @@ def verify_aldrin_v2_powered(
     period_years: float,
     n_cycles: int = 3,
     mu: float = MU_SUN_KM3_S2,
+    dv_band: str | None = None,
 ) -> V2PoweredResult:
     """Run the §14 V2-powered gate on the Aldrin E→M→E cycler.
 
@@ -171,6 +204,15 @@ def verify_aldrin_v2_powered(
         Number of consecutive cycles (≥3 for the gate). Default 3.
     mu:
         Heliocentric gravitational parameter, km³/s².
+    dv_band:
+        Optional catalogue ``dv_band`` (task #420). When supplied, the per-cycle
+        maintenance-ΔV half of clause (a) is judged against the band's
+        per-7-cycle acceptance window (scaled to a single cycle) instead of the
+        generic ``0 < dv < 3.5 km/s`` ceiling — so a ``powered_dsm`` row must
+        close to its strictly-positive powered budget (>= 300 m/s / 7 cycles,
+        not zero), while a ballistic band would require near-zero ΔV. ``None``
+        (the default, most rows) keeps the existing generic criterion verbatim;
+        a row is never promoted on a band it does not carry.
 
     Returns
     -------
@@ -191,11 +233,8 @@ def verify_aldrin_v2_powered(
         vinf_out = float(np.linalg.norm(mars.vinf_out))
         continuity = abs(vinf_in - vinf_out)
         dv = float(res.maintenance_dv_kms)
-        encounter_ok = (
-            res.converged
-            and continuity <= ENCOUNTER_VINF_TOL_KMS
-            and 0.0 < dv < _MAINTENANCE_DV_SANITY_MAX_KMS
-        )
+        dv_ok = _maintenance_dv_ok(dv, dv_band=dv_band)
+        encounter_ok = res.converged and continuity <= ENCOUNTER_VINF_TOL_KMS and dv_ok
 
         # Clause (b): intra-cycle Kepler forward-reprop residual (reset per leg).
         report = crosscheck_code_paths(cyc, ephem, mu=mu)
