@@ -187,30 +187,35 @@ the digests) + the user-supplied Rauwolf 2002. Evidence base, by claim:
   - McConaghy 2006 S1L1 "~10 m/s / 30 yr" corroborates the *essentially-ballistic*
     tier magnitude. Also consistent, also not the same basis.
 
-**Net:** the powered band and the ballistic concept are now genuinely
-multi-sourced; the **near-ballistic numeric cutoffs are now publication-grade**
-(Russell-Ocampo 2006 JGCD, peer-reviewed) but **still rest on the single Russell
-line of work** in this exact basis, with the magnitude independently corroborated
-(Pascarella, McConaghy). The < 1/< 10/< 300 m/s tiers should be cited as
-**"Russell-Ocampo 2006 JGCD 29(2) (peer-reviewed primary; = Russell 2004
-dissertation Table 5.5/5.6, same 9/39/74 parents); magnitude independently
-corroborated (Pascarella 2022 real-ephemeris ≈ low-hundreds m/s; McConaghy 2006
-S1L1 ~10 m/s); an independent second-author same-basis derivation still
-outstanding."**
+  - **NEW (2026-06-22, #416 corpus-wide + Friedlander acquisition):** the ballistic
+    *floor* and the **~200–300 m/s "differentially-correctable-to-ballistic"
+    boundary** are now corroborated by **genuinely independent** sources, in three
+    systems: **Friedlander-Niehoff-Byrnes-Longuski 1986** (VISIT "free orbit",
+    pre-Russell — the earliest primary), **Jones-Hernandez-Jesick 2017** (VEM triple,
+    JPL/Jesick, real-eph: "velocity increments below 200 m/s … differentially
+    corrected … to be entirely ballistic"), and **Liang 2024** (Callisto-Ganymede-
+    Europa, real-eph: max 1.04e-7 m/s/cycle). See `2026-06-22-416-cycler-dv-universe-sweep.md`.
 
-**Remaining target (would give a truly independent second anchor):**
-- **Russell-Ocampo 2006 JGCD 29(2)** is **already in the corpus + digested** (it
-  was misfiled as `russell-2006-systematic-method-design`; renamed 2026-06-22 to
-  `russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf`).
-  It upgrades the cutoffs to peer-reviewed but is the same author's work, so it is
-  *not* the independent second source.
-- The genuinely independent candidates (different author lineage, same basis) are:
-  Net/Pellegrini/Parker et al. JSR 2022 (published Pony Express — may give
-  maintenance in m/s); McConaghy-Longuski-Byrnes JSR 41(4) 2004. These remain the
-  real acquisition targets if full independence is wanted.
-- Rauwolf 2002 (was the prior #1 gap) is **acquired + digested** (powered-band
-  anchor); it does not address the near-ballistic cutoffs (it's the Aldrin
-  powered cycler).
+**Net (#416 CLOSED, 2026-06-22):** the powered band and the ballistic concept are
+genuinely multi-sourced; the **near-ballistic band is now well-grounded** — its
+*floor* and its *~200–300 m/s boundary* are corroborated across independent author
+groups and three systems (Friedlander 1986, Jones 2017 VEM, Liang 2024 CGE,
+McConaghy 2004/2006). The **exact < 1 / < 10 / < 300 m/s tiered census (9/39/74
+parents)** remains **Russell-Ocampo's own published quantification** (JGCD 29(2)
+2006 = Russell 2004 diss.) — no other paper reproduces that specific parent-count
+census in the same basis, but it is no longer a *fragile* single source. Cite the
+cutoffs as: **"Russell-Ocampo 2006 JGCD 29(2) census (9/39/74 parents at
+<1/<10/<300 m/s over 7 cycles, real-eph best window); ballistic floor + ~200–300
+m/s correctable-to-ballistic boundary independently corroborated (Friedlander 1986;
+Jones 2017 VEM; Liang 2024 CGE; McConaghy 2004/2006)."**
+
+**Acquisition status: no gap remaining.** Friedlander 1986 (the last genuine cycler-
+ΔV primary not in the corpus, the #116/#416 wishlist item) was user-supplied and is
+now filed + digested (`2026-06-22-digest-friedlander-niehoff-byrnes-longuski-1986.md`).
+Russell-Ocampo 2006 JGCD is in-corpus (was misfiled). Pony Express is **not** a
+cutoff corroboration: Sanchez-Net 2022 is patched-conic and defers real-eph ΔV as
+"large"; Pascarella 2022 is low-thrust fuel-optimal (~163 m/s, one candidate,
+magnitude only). Rauwolf 2002 is a powered-band anchor (Aldrin), not near-ballistic.
 
 ## References (all [sourced] items above)
 - Russell-Ocampo 2003 (`digest-russell-ocampo-2003.md`): AR/TR criteria, TR_MIN=0.9.

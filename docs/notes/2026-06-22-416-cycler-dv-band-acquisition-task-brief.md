@@ -1,6 +1,15 @@
 # Task #416 — Acquire + digest cycler-ΔV-band primary references (multi-source the #415 bands)
 
-**Status:** task brief. Created 2026-06-22 out of #415: the cycler ΔV-band
+**STATUS: ✅ CLOSED 2026-06-22.** Corpus-wide 5-agent sweep of ~45 cycler papers +
+Friedlander 1986 acquisition. Result + evidence table:
+`2026-06-22-416-cycler-dv-universe-sweep.md`. Outcome: ballistic floor + ~200–300
+m/s boundary independently corroborated across 3 systems (Friedlander 1986, Jones
+2017 VEM, Liang 2024 CGE, McConaghy 2004/2006); exact 9/39/74-parent tier census
+stays Russell-Ocampo 2006's published quantification; **no acquisition gap remains**
+(Friedlander 1986 filed + digested). Folded into the band note's multi-sourcing
+section. Original brief below for history.
+
+**Status (historical):** task brief. Created 2026-06-22 out of #415: the cycler ΔV-band
 *structure* (two axes; geometric AR/TR criterion) is well multi-sourced, but the
 **Axis-B real-ephemeris ΔV magnitude thresholds** (Russell 2004's < 1 / < 10 /
 < 300 m/s per-7-cycle) rest on **one primary source**. This task acquires +

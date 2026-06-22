@@ -83,8 +83,9 @@ is now digested, mined, or triaged.
 
 | File | Pointer | One-line summary | Status | OCR |
 |---|---|---|---|---|
+| friedlander-niehoff-byrnes-longuski-1986-circulating-transportation-orbits-earth-mars.pdf | 2026-06-22-digest-friedlander-niehoff-byrnes-longuski-1986.md; 2026-06-22-dv-band-definitions.md | Canonical early cycler paper: VISIT "free orbit" (near-ballistic, V∞ 4.2–4.5 km/s) + Up/Down Escalator (230 m/s/orbit → ~1.6 km/s/15yr). The last #116/#416 acquisition gap (filed 2026-06-22) | digested | text-layer |
 | byrnes-longuski-aldrin-1993-cycler-orbit-earth-mars-jsr-doi-10.2514-3.25519.pdf | 2026-06-17-digest-byrnes-longuski-aldrin-1993.md; KNOWN_CORPUS; catalogue | The Aldrin cycler paper | digested + mined-by-catalogue + KNOWN_CORPUS | text-layer |
-| rauwolf-friedlander-nock-2002-mars-cycler-low-thrust-AIAA-2002-5046.pdf (PENDING FILE into cyclers_pdf/papers/ — user-supplied 2026-06-22, currently only in .claude uploads) | 2026-06-22-digest-rauwolf-friedlander-nock-2002.md | SEP Aldrin cycler architecture; maintenance ΔV 1.56/1.61 km/s/15yr (3 of 7 orbits) + SEP exec; #415/#416 ΔV-band powered-class anchor | digested (PDF needs filing) | text-layer |
+| rauwolf-friedlander-nock-2002-mars-cycler-low-thrust-AIAA-2002-5046.pdf | 2026-06-22-digest-rauwolf-friedlander-nock-2002.md | SEP Aldrin cycler architecture; maintenance ΔV 1.56/1.61 km/s/15yr (3 of 7 orbits) + SEP exec; #415/#416 ΔV-band powered-class anchor | digested | text-layer |
 | mcconaghy-longuski-byrnes-2002-analysis-broad-class-earth-mars-cycler-...AIAA-2002-4420.pdf | 2026-06-17-digest-mcconaghy-2002.md; catalogue | Broad-class E-M cycler analysis (conference) | digested + mined-by-catalogue | text-layer |
 | byrnes-mcconaghy-longuski-2002-various-two-synodic-period-earth-mars-cycler-trajectories-AIAA-AAS-monterey.pdf | 2026-06-19-digest-byrnes-mcconaghy-longuski-2002-two-synodic-cyclers.md | Byrnes-led sibling to AIAA 2002-4420 (#384); three 2-synodic E-M cycler Cases (1/2/3) circular-coplanar + Case 3 real-eph V_inf table; Case 3 ≈ S1L1-B near-twin; precedence/envelope source for the s1l1 V_inf | digested | text-layer |
 | mcconaghy-longuski-byrnes-2004-analysis-class-earth-mars-cycler-...jsr-doi-10.2514-1.11939.pdf | 2026-06-17-digest-mcconaghy-2004.md; catalogue | Broad-class E-M cycler analysis (journal) | digested + mined-by-catalogue | text-layer |
@@ -107,11 +108,10 @@ is now digested, mined, or triaged.
 | vasile-summerer-depascale-2005-earth-mars-evolutionary-branching-ActaAstro.pdf | 2026-06-05-v42-backfill-sweep.md; 2026-06-07-external-algorithms-survey.md | E-M evolutionary-branching global search | mined | text-layer |
 | chen-2002-earth-mars-cyclers.pdf | 2026-06-20-digest-new-papers.md | Earth-Mars cyclers (Master's thesis) | digested | text-layer |
 | chen-2012.pdf | 2026-06-20-digest-new-papers.md | K.J. Chen 2012 work on Earth-Mars trajectories | digested | text-layer |
-| chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with free-return trajectories | digested | text-layer |
-| chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf | 2026-06-20-digest-new-papers.md | E-M cyclers with multiple-impulse free-return | digested | text-layer |
+| chen-mcconaghy-okutsu-longuski-2002-low-thrust-aldrin-cycler-AIAA-2002-4421.pdf | 2026-06-20-digest-new-papers.md | "A Low-Thrust Version of the Aldrin Cycler" (AIAA 2002-4421). NOTE: was misnamed `chen-russell-ocampo-2002-...-free-return` (wrong authors + not free-return); renamed 2026-06-22 | digested | text-layer |
+| chen-mcconaghy-landau-longuski-aldrin-2005-powered-em-cycler-three-synodic-JSR-42-5.pdf | 2026-06-20-digest-new-papers.md | "Powered Earth-Mars Cycler with Three-Synodic-Period Repeat Time" (JSR 42(5)). NOTE: was misnamed `chen-russell-ocampo-2005-...-multiple-impulse-free-return`; renamed 2026-06-22 | digested | text-layer |
 | machado-2020.pdf | 2026-06-20-digest-new-papers.md | Parametric design of E-M cycler crew transfer vehicle | digested | text-layer |
 | russell-ocampo-2006-optimization-broad-class-ephemeris-model-earth-mars-cyclers-JGCD-29.pdf | 2026-06-20-digest-new-papers.md; 2026-06-22-dv-band-definitions.md | Optimization of a Broad Class of Ephemeris-Model E-M Cyclers (JGCD 29(2), DOI 10.2514/1.13652) — the peer-reviewed source for the <1/<10/<300 m/s-per-7-cycle tiers (9/39/74 parent cyclers). NOTE: previously misfiled as `russell-2006-systematic-method-design-earth-mars-cyclers.pdf`; the actual "systematic method" paper is the 2003 AAS-03-145 (separate row above). | digested | text-layer |
-| rauwolf-friedlander-nock-2002-mars-cycler-low-thrust-AIAA-2002-5046.pdf | 2026-06-22-digest-rauwolf-friedlander-nock-2002.md; 2026-06-22-dv-band-definitions.md | A Mars Cycler Architecture Utilizing Low-Thrust Propulsion (AIAA 2002-5046) — Aldrin maintenance 1.56/1.61 km/s/15yr; SEP exec ~3mt/15yr; powered-class ΔV-band anchor (#416) | digested | text-layer |
 
 ## Mars free-return / human-flyby missions
 
@@ -129,8 +129,7 @@ is now digested, mined, or triaged.
 
 | File | Pointer | One-line summary | Status | OCR |
 |---|---|---|---|---|
-| genova-aldrin-2015-earth-moon-cycler-AAS-15.pdf | 2026-06-10-genova-aldrin-2015-mining.md | E-M cycler (AAS 2015) | mined | text-layer |
-| genova-aldrin-2015-free-return-earth-moon-cycler-AAS-15.pdf | 2026-06-10-genova-aldrin-2015-mining.md (free-return arc) | Free-return E-M cycler companion | mined | text-layer |
+| genova-aldrin-2015-earth-moon-cycler-AAS-15.pdf | 2026-06-10-genova-aldrin-2015-mining.md | Genova & Aldrin, "A Free-Return Earth-Moon Cycler Orbit" (AAS 2015); real-eph maintenance 20–62 m/s/cycle (~39 m/s/month). NOTE: byte-identical dup `...-free-return-...pdf` removed 2026-06-22 | mined | text-layer |
 | ross-roberts-tsoukkas-2025-stable-ballistic-earth-moon-cyclers-AAS-25-621.pdf | 2026-06-11-ross-roberts-tsoukkas-2025-mining.md; 2026-06-12-ross-adoption-results.md; catalogue | Stable ballistic E-M cyclers (5 families) | mined + mined-by-catalogue | text-layer |
 | roberts-tsoukkas-ross-2026-stable-prograde-em-cyclers-journal.pdf | 2026-06-13-roberts-tsoukkas-2026-multi-orbiter-journal-mining.md; KNOWN_CORPUS | Stable prograde E-M cyclers (journal) | mined + KNOWN_CORPUS | text-layer |
 | roberts-tsoukkas-2026-vsgc-multiorbiter-cyclers-student-summary.pdf | 2026-06-13-roberts-tsoukkas-2026-multi-orbiter-mining.md | VSGC multi-orbiter cyclers (student summary, companion) | mined | text-layer |
