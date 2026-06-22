@@ -197,6 +197,23 @@ def _perilune_event(mu: float) -> Callable[..., float]:
     return event
 
 
+def _perigee_event(mu: float) -> Callable[..., float]:
+    """``rdot . r1 = 0`` event for Earth perigee passages.
+
+    The Earth sits at ``(-mu, 0, 0)`` in the rotating frame.
+    Returns a closure suitable as a :func:`scipy.integrate.solve_ivp` event.
+    """
+
+    def event(t: float, y: NDArray[np.float64], _mu_ignored: float) -> float:
+        dx = float(y[0]) + mu
+        dy = float(y[1])
+        return dx * float(y[3]) + dy * float(y[4])
+
+    event.terminal = False  # type: ignore[attr-defined]
+    event.direction = -1.0  # type: ignore[attr-defined]  # perigee (going through minimum)
+    return event
+
+
 # ---------------------------------------------------------------------------
 # Family recovery.
 # ---------------------------------------------------------------------------
@@ -225,6 +242,14 @@ _RESONANT_SEEDS: dict[str, tuple[float, float, float]] = {
     # sourced period is left NaN and the reproduce-gate test is xfail for this
     # family.
     "R41-U": (0.65, -1.0, float("nan")),
+    # Kumar 2025 (arXiv:2509.12675) sourced seeds for heteroclinic chain reproduction
+    # 4:1 unstable at C_J=3.15 (Table 6 ICs, period from Figure 7 caption: 6.3089 TU;
+    # Earth-Moon 1 TU = 4.34247 days -> 27.396 days)
+    "R41-U-Kumar": (0.737385941470, -1.0, 27.396),
+    # 3:1 unstable at C_J=3.10 (Table 6 ICs)
+    "R31-U-Kumar": (0.354146033959, 1.0, float("nan")),
+    # 2:1 unstable at C_J=3.10 (Table 6 ICs)
+    "R21-U-Kumar": (0.878280334961, -1.0, float("nan")),
 }
 
 
@@ -312,9 +337,19 @@ def recover_resonant_family(
     module docstring) the period check is skipped and the gate flags the missing
     source via ``confirmed=False`` with note ``sourced_period_days=nan``.
     """
-    if resonance not in {"3:1", "4:1", "2:1"}:
-        raise ValueError(f"resonance must be one of '3:1', '4:1', '2:1'; got {resonance!r}")
-    label = {"3:1": "R31-U", "4:1": "R41-U", "2:1": "R21-U"}[resonance]
+    if resonance not in {"3:1", "4:1", "2:1", "4:1-Kumar", "3:1-Kumar", "2:1-Kumar"}:
+        raise ValueError(
+            f"resonance must be one of '3:1', '4:1', '2:1', "
+            f"'4:1-Kumar', '3:1-Kumar', '2:1-Kumar'; got {resonance!r}"
+        )
+    label = {
+        "3:1": "R31-U",
+        "4:1": "R41-U",
+        "2:1": "R21-U",
+        "4:1-Kumar": "R41-U-Kumar",
+        "3:1-Kumar": "R31-U-Kumar",
+        "2:1-Kumar": "R21-U-Kumar",
+    }[resonance]
     x0_seed, ydot0_sign, sourced_days = _RESONANT_SEEDS[label]
     # Seed the period guess at the sourced period (when present) or a generic
     # 30 days (the band spanning R31-U / R41-U / R21-U at C_J=3.1294 is
@@ -368,6 +403,7 @@ def compute_floquet_manifold(
     rtol: float = 1e-12,
     atol: float = 1e-12,
     method: str = "DOP853",
+    section_body: str = "Moon",
 ) -> Manifold:
     """Build a single-branch Floquet manifold of ``member`` and its perigee section.
 
@@ -393,6 +429,8 @@ def compute_floquet_manifold(
         ``"Radau"`` (an implicit Runge-Kutta) for the independent-integrator
         cross-check used in
         :func:`cyclerfinder.search.resonance_network` tests.
+    section_body :
+        Body to define the Poincaré section around (Earth or Moon). Defaults to Moon.
     """
     if direction not in {"stable", "unstable"}:
         raise ValueError(f"direction must be 'stable' or 'unstable'; got {direction!r}")
@@ -408,7 +446,7 @@ def compute_floquet_manifold(
     # t_span=(0, -horizon) so the perilune event-direction stays self-consistent.
     t_span = (0.0, -horizon) if direction == "stable" else (0.0, horizon)
 
-    event = _perilune_event(system.mu)
+    event = _perigee_event(system.mu) if section_body == "Earth" else _perilune_event(system.mu)
     # solve_ivp forwards ``args`` to events too, so ``event`` is signed with
     # the same trailing-arg shape as ``cr3bp.cr3bp_eom`` (accepts and ignores
     # the system mu). The ``# type: ignore[call-overload]`` mirrors the same
@@ -539,7 +577,7 @@ def perigee_overlap(
     if feat_a.size == 0 or feat_b.size == 0:
         return math.inf
     if metric is not None:
-        dists = metric(feat_a, feat_b)
+        dists = metric(manifold_a.perigee_section, manifold_b.perigee_section)
     else:
         w = np.asarray(weights, dtype=np.float64)
         # Broadcast: (N_a, 1, 3) - (1, N_b, 3) -> (N_a, N_b, 3)
@@ -596,6 +634,8 @@ class ResonanceNetworkScorer:
         caller can re-threshold.
     accessible_tol :
         A looser threshold for the boolean ``accessible`` flag; default 0.15.
+    section_body :
+        The primary body defining the Poincaré section. Defaults to "Moon".
 
     Methods
     -------
@@ -609,6 +649,8 @@ class ResonanceNetworkScorer:
     epsilon: float = 1e-6
     heteroclinic_tol: float = 0.05
     accessible_tol: float = 0.15
+    metric: Callable[[NDArray[np.float64], NDArray[np.float64]], NDArray[np.float64]] | None = None
+    section_body: str = "Moon"
     _manifold_cache: dict[tuple[str, str, int], Manifold] = field(default_factory=dict, repr=False)
 
     def _manifold(self, member: ResonantMember, direction: str, branch: int) -> Manifold:
@@ -622,6 +664,7 @@ class ResonanceNetworkScorer:
             branch=branch,
             epsilon=self.epsilon,
             integration_time=self.integration_time_factor * member.period,
+            section_body=self.section_body,
         )
         self._manifold_cache[key] = man
         return man
@@ -662,7 +705,7 @@ class ResonanceNetworkScorer:
             unstable = self._manifold(member_a, "unstable", ba)
             for bb in (+1, -1):
                 stable = self._manifold(member_b, "stable", bb)
-                d = perigee_overlap(unstable, stable, mu=self.system.mu)
+                d = perigee_overlap(unstable, stable, mu=self.system.mu, metric=self.metric)
                 if d < best:
                     best = d
         strength = 1.0 / (1.0 + best) if math.isfinite(best) else 0.0
