@@ -690,6 +690,16 @@ def _compute_horizon_tcm(
     node_epochs.append(encounters[-1].t + (n_cycles - 1) * span)
     node_bodies.append(encounters[-1].body)
 
+    # Per-leg seeds = the constructed cycler's rev-correct departure velocities
+    # (construct_real_ephemeris_cycler solved Lambert at the catalogue n_revs/branch).
+    # The concatenated N-cycle leg list is exactly the one-cycle legs repeated, so the
+    # seeds repeat per cycle. Essential for multi-rev resonant cyclers (a single-rev
+    # re-guess lands a high-energy transfer and inflates the TCM by orders of magnitude).
+    leg_v_guess: list[NDArray[np.float64]] | None = None
+    if len(constructed.legs) == m - 1:
+        one_cycle = [np.asarray(leg.v_depart, dtype=np.float64) for leg in constructed.legs]
+        leg_v_guess = one_cycle * n_cycles
+
     if tcm_perturbers is None:
         # System significant perturbers = the cycler's own flyby bodies. Endpoint
         # exclusion (chain default) drops each from legs it bounds; a body that is a
@@ -703,6 +713,7 @@ def _compute_horizon_tcm(
         ephem,
         prop,
         cruise_perturbers=tcm_perturbers,
+        leg_v_guess=leg_v_guess,
         n_cycles=n_cycles,
     )
     if chain.diverged:

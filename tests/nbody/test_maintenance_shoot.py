@@ -213,3 +213,51 @@ def test_maintenance_chain_nonendpoint_perturber_is_captured() -> None:
     assert jovian.horizon_tcm_mps < float("inf")
     # Jupiter genuinely perturbs the cruise -> a different (here, tiny but non-zero) shift.
     assert jovian.horizon_tcm_mps != sun_only.horizon_tcm_mps
+
+
+@pytest.mark.slow
+def test_maintenance_chain_s1l1_reproduces_corrected_proxy() -> None:
+    """M7 on the real multi-rev S1L1 cycler reproduces the corrected #169 Sun-only proxy.
+
+    The decisive whole-stack golden: walk S1L1's full 22-node App-C sequence (the same
+    nodes the #169 proxy uses) with the position-targeted chain, SEEDED PER LEG by the
+    sourced departure V_inf (so the multi-rev resonant E-E legs stay in the right basin
+    — a single-rev Lambert re-guess otherwise inflates the TCM by ~4 orders of
+    magnitude). The horizon TCM must land near the corrected Sun-only proxy
+    (~40.2 m/s, post-#198 epoch fix; see docs/notes/2026-06-23-appc-s1l1-tcm-epoch-
+    rederivation.md) — confirming M7's real-planet-position targeting and the proxy's
+    sourced-direction accounting measure the same (ballistic) physics on a real
+    resonant cycler. Pinned as a computed regression anchor, NOT a sourced golden."""
+    from cyclerfinder.search import s1l1_corrected as s1l1
+
+    ephem = Ephemeris("astropy")
+    prop = RestrictedNBody("rebound")
+
+    node_epochs = [(s1l1.APPC_EPOCH_DAYS + ts) * s1l1.DAY_S for (_n, _b, ts, _v) in s1l1.APPC_LEGS]
+    node_bodies = [b for (_n, b, _ts, _v) in s1l1.APPC_LEGS]
+    # Per-leg seed = sourced departure V_inf at the departing node (rev-correct basin).
+    leg_seeds = []
+    for i in range(len(s1l1.APPC_LEGS) - 1):
+        _n, body_i, _ts, vinf_i = s1l1.APPC_LEGS[i]
+        _r, v_pl = (np.asarray(x, dtype=np.float64) for x in ephem.state(body_i, node_epochs[i]))
+        leg_seeds.append(v_pl + s1l1._vinf_vec(vinf_i))
+
+    chain = continuous_maintenance_chain(
+        node_epochs,
+        node_bodies,
+        ephem,
+        prop,
+        cruise_perturbers=(),  # Earth-Mars: Sun-cruise (endpoint exclusion would do the same)
+        leg_v_guess=leg_seeds,
+        n_cycles=7,
+    )
+
+    assert not chain.diverged, "S1L1 sourced-seeded chain should fully converge"
+    assert chain.n_legs_converged == chain.n_legs_total
+    # Reproduces the corrected Sun-only proxy (~40.2 m/s) — same ballistic physics.
+    assert chain.horizon_tcm_mps == pytest.approx(40.2, abs=5.0), (
+        f"S1L1 M7 horizon {chain.horizon_tcm_mps:.1f} m/s should track the corrected "
+        f"proxy ~40.2 m/s"
+    )
+    # Far under the 120 m/s V3 ballistic budget -> S1L1 stays essentially_ballistic.
+    assert chain.horizon_tcm_mps < 120.0

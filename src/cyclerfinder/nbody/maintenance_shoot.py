@@ -231,6 +231,7 @@ def continuous_maintenance_chain(
     *,
     cruise_perturbers: tuple[str, ...] = (),
     exclude_endpoint_bodies: bool = True,
+    leg_v_guess: Sequence[Vec3] | None = None,
     n_cycles: int = 1,
     tol_km: float = DEFAULT_TOL_KM,
     max_iter: int = DEFAULT_MAX_ITER,
@@ -287,6 +288,12 @@ def continuous_maintenance_chain(
         When True (default, the correct model) each leg drops its own endpoint flyby
         bodies from the perturber set. Set False ONLY to reproduce the naive-handoff
         divergence artifact in tests.
+    leg_v_guess:
+        Optional per-leg departure-velocity seeds (length ``n-1``, km/s). REQUIRED in
+        practice for multi-rev resonant cyclers: pass the rev-correct sourced /
+        constructed departure velocities so the Newton stays in the intended transfer
+        basin. Without it the chain seeds from a single-rev Lambert, which lands a
+        high-energy single-rev solution on multi-rev legs (wildly inflated TCM).
     n_cycles:
         Number of cycles the node span covers (for ``per_cycle_tcm_mps``).
     tol_km, max_iter, accuracy, max_wall_sec:
@@ -301,6 +308,8 @@ def continuous_maintenance_chain(
         raise ValueError("node_epochs_sec and node_bodies must have equal length")
     if n < 2:
         raise ValueError(f"need >= 2 nodes, got {n}")
+    if leg_v_guess is not None and len(leg_v_guess) != n - 1:
+        raise ValueError(f"leg_v_guess must have length n-1={n - 1}, got {len(leg_v_guess)}")
 
     states = [
         tuple(
@@ -318,10 +327,19 @@ def continuous_maintenance_chain(
         r_i, v_i = states[i]
         r_j, _v_j = states[i + 1]
         tof = node_epochs_sec[i + 1] - node_epochs_sec[i]
-        try:
-            v_guess = np.asarray(lambert(r_i, r_j, tof, mu=MU_SUN_KM3_S2)[0].v1, dtype=np.float64)
-        except (LambertError, ValueError):
-            v_guess = v_i  # degenerate geometry — let the Newton work from the planet velocity
+        if leg_v_guess is not None:
+            # Caller-supplied departure-velocity seed (the rev-correct sourced /
+            # constructed value). ESSENTIAL for multi-rev resonant legs: a single-rev
+            # Lambert guess lands the Newton on a high-energy single-rev transfer (wildly
+            # wrong V_inf), so the sourced seed keeps it in the intended basin.
+            v_guess = np.asarray(leg_v_guess[i], dtype=np.float64)
+        else:
+            try:
+                v_guess = np.asarray(
+                    lambert(r_i, r_j, tof, mu=MU_SUN_KM3_S2)[0].v1, dtype=np.float64
+                )
+            except (LambertError, ValueError):
+                v_guess = v_i  # degenerate geometry — Newton works from the planet velocity
         # Per-leg perturbers: the system set minus this leg's endpoint flyby bodies
         # (those are patched-conic at the nodes — see the perturber rule in the docstring).
         if exclude_endpoint_bodies:
