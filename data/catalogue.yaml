@@ -51304,6 +51304,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51336,6 +51338,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51368,6 +51372,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51400,6 +51406,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51432,6 +51440,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51464,6 +51474,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 1.0
+  dv_band: essentially_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 1 m/s over 7 cycles (real-ephemeris continuation): definitively <10 m/s (essentially-ballistic) but the integer-rounded 1 m/s is at the <1 m/s boundary, so the strictly-ballistic floor is not unambiguously met. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 1 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
@@ -51496,6 +51508,8 @@ days\" per the NTRS abstract.
     turn_ratio: null
   free_return_arcs: []
   delta_v_kms: 0.0
+  dv_band: strictly_ballistic   # schema v4.8 (2026-06-22, task #419); Axis-B real-eph maintenance band. SOURCED: Russell-Ocampo 2006 (JGCD 29(2), DOI 10.2514/1.13652) Table 5 lists this parent cycler's minimum-dV launch-window solution at total dV = 0 m/s over 7 cycles (real-ephemeris continuation), below the <1 m/s/7-cycle strictly-ballistic floor. See docs/notes/2026-06-22-dv-band-definitions.md.
+  dv_band_source: russell-ocampo-2006   # SOURCED real-eph total dV = 0 m/s/7-cycle (Russell-Ocampo 2006 JGCD 29(2) Table 5, min-dV launch window); digest docs/notes/2026-06-20-digest-new-papers.md §3
   v_infinity_leveraging_dv_kms: null
   fleet_size: null
   flyby_mechanics: null
