@@ -51317,6 +51317,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #54; parent cycler 3.768Gh-3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-55-3.768ghplus3
   name: "Russell 2006 cycler 3.768Gh+3 (#55)"
@@ -51351,6 +51358,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #55; parent cycler 3.768Gh+3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-111-5.219gghminus3
   name: "Russell 2006 cycler 5.219Ggh-3 (#111)"
@@ -51385,6 +51399,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #111; parent cycler 5.219Ggh-3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-112-5.219gghplus3
   name: "Russell 2006 cycler 5.219Ggh+3 (#112)"
@@ -51419,6 +51440,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #112; parent cycler 5.219Ggh+3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-117-5.225ggg3
   name: "Russell 2006 cycler 5.225Ggg3 (#117)"
@@ -51453,6 +51481,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #117; parent cycler 5.225Ggg3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-177-5.751ggf3
   name: "Russell 2006 cycler 5.751Ggf3 (#177)"
@@ -51487,6 +51522,13 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #177; parent cycler 5.751Ggf3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
 
 - id: russell-2006-178-5.751ggf3
   name: "Russell 2006 cycler 5.751ggF3 (#178)"
@@ -51521,3 +51563,10 @@ days\" per the NTRS abstract.
     - text: "Table 5 row #178; parent cycler 5.751ggF3. One of 9 high-fidelity cyclers achieving < 1 m/s dV."
       page: 21
       context: "Systematic Method for the Design of Earth-Mars Cyclers"
+  first_published:
+    authors: ["Russell, R. P.", "Ocampo, C. A."]
+    year: 2006
+    title: "Optimization of a Broad Class of Ephemeris Model Earth-Mars Cyclers"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
+    doi: "10.2514/1.13652"
+    url: "https://arc.aiaa.org/doi/10.2514/1.13652"
