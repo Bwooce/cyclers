@@ -229,9 +229,9 @@ def continuous_maintenance_chain(
     ephem: Ephemeris,
     prop: RestrictedNBody,
     *,
-    bodies: tuple[str, ...] = ("M",),
+    cruise_perturbers: tuple[str, ...] = (),
+    exclude_endpoint_bodies: bool = True,
     n_cycles: int = 1,
-    cache: RailsEphemerisCache | None = None,
     tol_km: float = DEFAULT_TOL_KM,
     max_iter: int = DEFAULT_MAX_ITER,
     accuracy: float = 1e-10,
@@ -241,17 +241,36 @@ def continuous_maintenance_chain(
 
     The patched-conic-node model with REAL flybys: each node sits at the real planet
     position (position continuity is exact); each leg is propagated in restricted
-    n-body (Mars-perturbed by default) and **targeted** to hit the next node's planet
-    via :func:`target_leg` (Lambert-seeded). At each interior node the arrival ``V_inf``
-    (from the incoming leg) and the departure ``V_inf`` (targeting the outgoing leg)
-    differ; the maintenance ΔV is what a free ballistic flyby cannot bridge
-    (:func:`flyby_dv_for`). Summing those over the node span is the horizon TCM.
+    n-body and **targeted** to hit the next node's planet via :func:`target_leg`
+    (Lambert-seeded). At each interior node the arrival ``V_inf`` (incoming leg) and the
+    departure ``V_inf`` (targeting the outgoing leg) differ; the maintenance ΔV is what
+    a free ballistic flyby cannot bridge (:func:`flyby_dv_for`). Summing those over the
+    node span is the horizon TCM.
 
-    This generalises the Sun-only proxy
+    Generalises the Sun-only proxy
     (:func:`cyclerfinder.search.appc_corrected.continuous_chain`) by (a) propagating
-    legs with the perturber instead of Kepler and (b) targeting the next planet
-    position (n-body Lambert) instead of using the sourced ``V_inf`` direction — which
-    is what makes the perturbed chain self-consistent rather than divergent.
+    legs with the configured perturbers instead of Kepler and (b) targeting the next
+    planet position (n-body Lambert) instead of using the sourced ``V_inf`` direction —
+    which is what makes the perturbed chain self-consistent rather than divergent.
+
+    **Perturber rule (the general, artifact-free model).** ``cruise_perturbers`` lists
+    the *system's* significant gravitating bodies (beyond the heliocentric central
+    body) that perturb the cruise — e.g. ``()`` for Earth-Mars (no third body
+    materially perturbs the 1-2 AU heliocentric cruise), or other planets for a
+    multi-flyby heliocentric cycler (a Venus-Earth-Mars chain, Jupiter, ...). With
+    ``exclude_endpoint_bodies=True`` (default) each leg's perturber set has the leg's
+    OWN two endpoint flyby bodies removed: those flybys are modelled patched-conic AT
+    the nodes, so integrating an endpoint body continuously from its own node centre
+    would start the spacecraft inside that body's softened core — the divergent
+    patched-conic handoff artifact, not a fuel cost. Excluding only the endpoints keeps
+    every genuine third-body perturbation (a body that is never this leg's endpoint)
+    while avoiding the artifact. For Earth-Mars this reduces to Sun-cruise; for a moon
+    tour or a Venus-flyby chain it captures the real cross-cruise perturbation.
+
+    Note: this is the heliocentric-central-body lane (the Lambert seed uses ``MU_SUN``
+    and the propagator is Sun-central). Planet-central moon-tour M7 (Saturn/Uranus as
+    the central body) is a separate generalisation; those rows currently validate via
+    their own V3/V4 lanes, not :func:`real_closure.verify_real_closure`.
 
     Parameters
     ----------
@@ -261,14 +280,17 @@ def continuous_maintenance_chain(
         ``n-2`` interior flybys.
     ephem, prop:
         Ephemeris backend and :class:`RestrictedNBody` propagator.
-    bodies:
-        Perturber codes for the leg propagations (``("M",)`` = Mars-perturbed;
-        ``()`` = Sun-only, the two-body consistency mode).
+    cruise_perturbers:
+        System significant perturber body codes (see the perturber rule above).
+        ``()`` => Sun-only cruise.
+    exclude_endpoint_bodies:
+        When True (default, the correct model) each leg drops its own endpoint flyby
+        bodies from the perturber set. Set False ONLY to reproduce the naive-handoff
+        divergence artifact in tests.
     n_cycles:
         Number of cycles the node span covers (for ``per_cycle_tcm_mps``).
-    cache, tol_km, max_iter, accuracy, max_wall_sec:
-        Forwarded to :func:`target_leg` (``cache`` reused across legs to amortise
-        the rails spline build).
+    tol_km, max_iter, accuracy, max_wall_sec:
+        Forwarded to :func:`target_leg`.
 
     Returns
     -------
@@ -300,6 +322,13 @@ def continuous_maintenance_chain(
             v_guess = np.asarray(lambert(r_i, r_j, tof, mu=MU_SUN_KM3_S2)[0].v1, dtype=np.float64)
         except (LambertError, ValueError):
             v_guess = v_i  # degenerate geometry — let the Newton work from the planet velocity
+        # Per-leg perturbers: the system set minus this leg's endpoint flyby bodies
+        # (those are patched-conic at the nodes — see the perturber rule in the docstring).
+        if exclude_endpoint_bodies:
+            endpoints = {node_bodies[i], node_bodies[i + 1]}
+            leg_bodies = tuple(b for b in cruise_perturbers if b not in endpoints)
+        else:
+            leg_bodies = tuple(cruise_perturbers)
         res = target_leg(
             prop,
             r_i,
@@ -307,9 +336,9 @@ def continuous_maintenance_chain(
             node_epochs_sec[i + 1],
             r_j,
             v_guess,
-            bodies=bodies,
+            bodies=leg_bodies,
             ephem=ephem,
-            cache=cache,
+            cache=None,
             tol_km=tol_km,
             max_iter=max_iter,
             accuracy=accuracy,

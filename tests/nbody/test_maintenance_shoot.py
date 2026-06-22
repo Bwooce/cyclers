@@ -130,7 +130,9 @@ def test_maintenance_chain_sun_only_matches_lambert_accounting() -> None:
     vinf_out_mars = np.asarray(leg1.v1, dtype=np.float64) - v_m1  # departure from Mars
     expected_dv_kms = flyby_dv_for("M", vinf_in_mars, vinf_out_mars)
 
-    chain = continuous_maintenance_chain(epochs, chain_bodies, ephem, prop, bodies=(), n_cycles=1)
+    chain = continuous_maintenance_chain(
+        epochs, chain_bodies, ephem, prop, cruise_perturbers=(), n_cycles=1
+    )
 
     assert not chain.diverged, "Sun-only E-M-E chain should fully converge"
     assert chain.n_legs_converged == 2
@@ -145,30 +147,69 @@ def test_maintenance_chain_sun_only_matches_lambert_accounting() -> None:
 
 
 @pytest.mark.slow
-def test_maintenance_chain_naive_mars_perturbed_departure_leg_diverges() -> None:
-    """Naive continuous Mars-perturbation on a leg DEPARTING Mars diverges (the artifact).
+def test_maintenance_chain_naive_endpoint_perturber_diverges_but_exclusion_fixes_it() -> None:
+    """Endpoint-exclusion is what makes the perturbed chain work (the artifact + its fix).
 
-    PINNED FINDING (the patched-conic handoff the M7 plan flagged as hard-part #1):
-    propagating the M->E return leg with Mars as a continuous perturber while STARTING
-    at the Mars node makes the spacecraft begin at the Mars centre, inside the softened
-    core, where the perturber term is degenerate — the targeting cannot converge. The
-    E->M leg (starting far from Mars at Earth) converges fine; only the leg departing
-    the flyby planet blows up. This is a modelling ARTIFACT, not a fuel cost: the flyby
-    is patched-conic at the node, and for Earth-Mars cyclers no third body materially
-    perturbs the heliocentric cruise, so the FAITHFUL M7 measure is the Sun-cruise +
-    real-flyby position-targeted chain (the non-slow test above), not naive continuous
-    integration of the flyby planet from its own centre. If a future SOI-edge patch
-    makes this leg converge, re-pin this test deliberately."""
+    PINNED FINDING (the patched-conic handoff the M7 plan flagged as hard-part #1). With
+    ``exclude_endpoint_bodies=False`` the M->E return leg is propagated with Mars as a
+    continuous perturber while STARTING at the Mars node — the spacecraft begins at the
+    Mars centre, inside the softened core, and the targeting cannot converge. That is a
+    modelling ARTIFACT, not a fuel cost. With the default ``exclude_endpoint_bodies=True``
+    Mars is dropped from each leg whose endpoint it is (the flyby is patched-conic at the
+    node), so the SAME ``cruise_perturbers=("M",)`` request converges — proving the
+    general perturber rule removes the artifact while keeping every genuine (non-endpoint)
+    third-body perturbation."""
     ephem = Ephemeris("astropy")
     prop = RestrictedNBody("rebound")
 
     t0 = 27.0 * 365.25 * _DAY_S
     epochs = [t0, t0 + 210.0 * _DAY_S, t0 + 570.0 * _DAY_S]
-    chain = continuous_maintenance_chain(
-        epochs, ["E", "M", "E"], ephem, prop, bodies=("M",), n_cycles=1
+
+    # Naive: Mars integrated continuously from the Mars node -> divergence artifact.
+    naive = continuous_maintenance_chain(
+        epochs,
+        ["E", "M", "E"],
+        ephem,
+        prop,
+        cruise_perturbers=("M",),
+        exclude_endpoint_bodies=False,
+    )
+    assert naive.diverged, "expected the naive Mars-from-centre departure leg to diverge"
+    assert naive.horizon_tcm_mps == float("inf")  # unmeasurable -> honest, not forced
+
+    # The fix: endpoint exclusion drops Mars on its own legs -> converges (== Sun-cruise).
+    fixed = continuous_maintenance_chain(
+        epochs, ["E", "M", "E"], ephem, prop, cruise_perturbers=("M",), exclude_endpoint_bodies=True
+    )
+    assert not fixed.diverged, "endpoint exclusion should remove the handoff artifact"
+    assert fixed.horizon_tcm_mps < float("inf")
+
+
+@pytest.mark.slow
+def test_maintenance_chain_nonendpoint_perturber_is_captured() -> None:
+    """A genuine third-body (non-endpoint) perturber is captured, not excluded.
+
+    The general-system case (moon tours / Venus-flyby chains have real cross-cruise
+    perturbers). On the E->M->E sequence, Jupiter is NEVER a leg endpoint, so with
+    ``cruise_perturbers=("J",)`` it perturbs every cruise leg. The chain must still
+    converge (Jupiter is far, no centre-of-body artifact) and its horizon TCM must
+    differ from the Sun-only value — i.e. real third-body perturbation moves the
+    measurement, confirming the model is not silently Sun-only for non-Earth-Mars
+    systems."""
+    ephem = Ephemeris("astropy")
+    prop = RestrictedNBody("rebound")
+
+    t0 = 27.0 * 365.25 * _DAY_S
+    epochs = [t0, t0 + 210.0 * _DAY_S, t0 + 570.0 * _DAY_S]
+
+    sun_only = continuous_maintenance_chain(
+        epochs, ["E", "M", "E"], ephem, prop, cruise_perturbers=()
+    )
+    jovian = continuous_maintenance_chain(
+        epochs, ["E", "M", "E"], ephem, prop, cruise_perturbers=("J",)
     )
 
-    # The E->M leg converges; the M->E leg departing Mars does not -> chain diverged.
-    assert chain.diverged, "expected the naive Mars-from-centre departure leg to diverge"
-    assert chain.n_legs_converged < chain.n_legs_total
-    assert chain.horizon_tcm_mps == float("inf")  # unmeasurable -> honest, not forced
+    assert not sun_only.diverged and not jovian.diverged
+    assert jovian.horizon_tcm_mps < float("inf")
+    # Jupiter genuinely perturbs the cruise -> a different (here, tiny but non-zero) shift.
+    assert jovian.horizon_tcm_mps != sun_only.horizon_tcm_mps

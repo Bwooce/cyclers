@@ -35,10 +35,35 @@ trajectory, Mars-perturbed, no re-anchoring of velocity:
    verbatim — same decomposition as the Sun-only `continuous_chain`.
 4. `horizon_tcm_mps = Σ dv over all flybys over N cycles`; `per_cycle_tcm_mps` likewise.
 
-This reuses: `propagator` (Mars perturbers + co-integrated STM, gravity-gradient tensor
+This reuses: `propagator` (perturbers + co-integrated STM, gravity-gradient tensor
 already applied to variational particles — REBOUND-variation gotcha handled), the Jones
 bend kernel (`core.flyby` / `nbody.bplane`), `flyby_dv`, and `real_closure`'s
 `construct_real_ephemeris_cycler` (the seed). It does **not** touch `shooter.py`.
+
+### Perturber rule (general — not Earth-Mars-only)
+
+Earlier framing wrongly said "no third body perturbs the cruise" — that is true ONLY
+for Earth-Mars. The catalogue has multi-flyby heliocentric cyclers (Venus-Earth-Mars
+chains, Jupiter-perturbed) where a third body genuinely perturbs the cruise. The
+correct general rule (`continuous_maintenance_chain(cruise_perturbers=..., 
+exclude_endpoint_bodies=True)`): each leg's perturber set = the system's significant
+bodies MINUS that leg's two endpoint flyby bodies. The endpoint bodies are modelled
+patched-conic AT the nodes; integrating one continuously from its own node centre
+starts the spacecraft inside its softened core = the divergent handoff artifact (the
+M7 plan's hard-part #1). Excluding ONLY the endpoints keeps every genuine non-endpoint
+third-body perturbation while removing the artifact. For Earth-Mars this reduces to
+Sun-cruise; for a Venus-flyby chain it captures the real Venus/Jupiter cross-cruise pull.
+Validated: naive (`exclude_endpoint_bodies=False`) diverges; default converges; a
+non-endpoint Jupiter perturber shifts the measured TCM (real signal, not silently
+Sun-only).
+
+**Scope note:** this is the HELIOCENTRIC-central-body lane (Lambert seed uses `MU_SUN`,
+propagator is Sun-central) — which is exactly the `real_closure` cycler lane (the ~215
+V0 Earth-Mars SnLm census + any heliocentric multi-planet cycler). Planet-central
+moon-tour M7 (Saturn/Uranus as the central body) is a SEPARATE generalisation (needs a
+central-body parameter on the Lambert seed + propagator); those rows currently validate
+via their own V3/V4 lanes (`v2_moontour`/`v3_3d`/`v4_uranus`), not `real_closure`. M7
+here does not regress them; a unified planet-central M7 is future work if wanted.
 
 ## Tasks (TDD, incremental commits)
 
