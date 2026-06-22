@@ -1413,6 +1413,65 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "closed L1<->L2 Lyapunov heteroclinic cycles.",
         doi="10.1007/s00220-005-1374-x",
     ),
+    # -----------------------------------------------------------------------
+    # Task #377 -- Restrepo-Russell 2018 JPL 3BP catalogue anchor.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Restrepo-Russell JPL planar axisymmetric CR3BP database",
+        primary="any",
+        body_set=frozenset(
+            {
+                "Me",
+                "V",
+                "E",
+                "M",
+                "J",
+                "Jupiter",
+                "S",
+                "Saturn",
+                "Uranus",
+                "Neptune",
+                "Moon",
+                "Io",
+                "Europa",
+                "Ganymede",
+                "Callisto",
+                "Enceladus",
+                "Tethys",
+                "Dione",
+                "Rhea",
+                "Titan",
+                "Iapetus",
+                "Ariel",
+                "Umbriel",
+                "Titania",
+                "Oberon",
+                "Triton",
+            }
+        ),
+        authors=("Restrepo", "Russell"),
+        keywords=(
+            "CR3BP periodic orbit database",
+            "planar axisymmetric",
+            "connecting resonance",
+            "heteroclinic",
+            "Lyapunov LL1 LL2",
+            "distant retrograde orbit",
+            "DRO",
+            "QDRO",
+            "Hg Hb Hm",
+        ),
+        citation=(
+            "Restrepo, R. L. & Russell, R. P., "
+            "'A database of planar axisymmetric periodic orbits for the "
+            "Solar system,' Celest. Mech. Dyn. Astron. 130:49 (2018), "
+            "DOI 10.1007/s10569-018-9844-6; database online at "
+            "russell.ae.utexas.edu/index_files/POdatabase.htm"
+        ),
+        doi="10.1007/s10569-018-9844-6",
+        topology_label=frozenset({"planar", "axisymmetric"}),
+        period_band_tu=None,
+    ),
 )
 
 
