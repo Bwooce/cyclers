@@ -60,7 +60,7 @@ is now digested, mined, or triaged.
 
 | File | Pointer | One-line summary | Status | OCR |
 |---|---|---|---|---|
-| szebehely-1967-theory-of-orbits-restricted-problem-three-bodies-book.pdf | 2026-06-19-digest-szebehely-1967.md; -mining; -goldens | The foundational CR3BP textbook (Jacobi integral, periodic-orbit families, stability) — the genome's implicit base | digested + mined | image-only (OCR done, #400) |
+| szebehely-1967-theory-of-orbits-restricted-problem-three-bodies-book.pdf | 2026-06-19-digest-szebehely-1967.md; -mining; -goldens | The foundational CR3BP textbook (Jacobi integral, periodic-orbit families, stability) — the genome's implicit base | digested + mined | image-only → OCR'd .txt committed (2026-06-22; 217676 words; #400 cache never persisted) |
 | gurfil-ed-2007-modern-astrodynamics-elsevier-astrodynamics-series-vol-1-textbook.pdf | 2026-06-19-digest-gurfil-2007-modern-astrodynamics.md | Methods reference (Elsevier Astrodynamics vol. 1); perturbation / optimization methods | digested | text-layer |
 | hintz-2023-orbital-mechanics-astrodynamics-techniques-tools-space-missions-springer-textbook.pdf | 2026-06-17-digest-hintz-2023.md | Springer astrodynamics textbook; techniques/tools reference | digested | text-layer |
 | belbruno-2004-capture-dynamics-chaotic-motions-...-low-energy-transfers-princetonUP-textbook.pdf | 2026-06-17-digest-belbruno-2004.md | Low-energy/ballistic-capture dynamics textbook (WSB transfers) | digested | text-layer |
@@ -117,7 +117,7 @@ is now digested, mined, or triaged.
 
 | File | Pointer | One-line summary | Status | OCR |
 |---|---|---|---|---|
-| okutsu-longuski-2002-mars-free-returns-via-gravity-assist-venus-JSR-39-1.pdf | 2026-06-07-okutsu-tito-free-returns-mining.md | Mars free returns via Venus GA | mined | image-only |
+| okutsu-longuski-2002-mars-free-returns-via-gravity-assist-venus-JSR-39-1.pdf | 2026-06-07-okutsu-tito-free-returns-mining.md | Mars free returns via Venus GA | mined | image-only → OCR'd .txt (2026-06-22) |
 | hughes-edelman-longuski-2014-fast-mars-free-returns-venus-ga-AIAA-2014-4109.pdf | 2026-06-07-hughes-2014-fast-mars-free-returns-mining.md | Fast Mars free returns via Venus GA | mined | text-layer |
 | tito-maccallum-carrico-2013-feasibility-manned-mars-free-return-2018-IEEE-aerospace.pdf | 2026-06-07-okutsu-tito-free-returns-mining.md; 2026-06-13-tito-maccallum-2018-free-return-reproduction.md | Inspiration Mars 2018 manned free-return feasibility | mined | text-layer |
 | donahue-duggan-2022-boeing-mars-2033-human-flyby-IAC-22-B3-8-x70674.pdf | 2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md | Boeing Mars-2033 human flyby | mined | text-layer |
@@ -173,7 +173,7 @@ is now digested, mined, or triaged.
 | campagnola-russell-2009-endgame-partB-multibody-tp-graph-AAS-09-227.pdf | 2026-06-05-endgame-tisserand-mining.md | Endgame Part B (multibody Tisserand-Poincaré graph) | mined | text-layer |
 | campagnola-buffington-petropoulos-2014-jovian-tour-design-europa-orbiter-lander-...actaastro.pdf | 2026-06-17-digest-campagnola-2014.md; KNOWN_CORPUS | Jovian tour design (Europa orbiter/lander) | digested + KNOWN_CORPUS | text-layer |
 | strange-russell-buffington-2007-mapping-v-infinity-globe-AAS-07-277.pdf | KNOWN_CORPUS (Mapping the V∞ globe) | Mapping the V∞ globe (multi-body resonance hopping) | mined-by-KNOWN_CORPUS | text-layer |
-| heaton-longuski-2003-feasibility-galileo-style-tour-uranian-satellites-jsr-doi-10.2514-2.3981.pdf | catalogue Heaton-Longuski U00-01 (Table 5 transcribed); KNOWN_CORPUS | Galileo-style Uranian satellite tour feasibility | mined-by-catalogue + KNOWN_CORPUS | image-only |
+| heaton-longuski-2003-feasibility-galileo-style-tour-uranian-satellites-jsr-doi-10.2514-2.3981.pdf | catalogue Heaton-Longuski U00-01 (Table 5 transcribed); KNOWN_CORPUS | Galileo-style Uranian satellite tour feasibility | mined-by-catalogue + KNOWN_CORPUS | image-only → OCR'd .txt (2026-06-22) |
 | davis-phillips-mccarthy-2018-saturnian-ocean-worlds-poincare-maps-...j.actaastro.2017.11.004.pdf | 2026-06-17-346-davis-2018-deep-read.md; KNOWN_CORPUS | Saturnian ocean-worlds tour via Poincaré maps | digested + KNOWN_CORPUS | text-layer |
 | takao-2025-mission-analysis-first-saturn-trojan-2019-uo14-arxiv-2501.06586.pdf | 2026-06-07-takao-2025-mpga-1dsm-mining.md | First Saturn-Trojan (2019 UO14) MPGA+1DSM mission | mined | text-layer |
 | liang-2024-callisto-ganymede-europa-triple-cyclers-JGCD.pdf | 2026-06-11-liang-2024-cge-triple-cyclers-mining.md; KNOWN_CORPUS; catalogue | Callisto-Ganymede-Europa triple cyclers | mined + mined-by-catalogue + KNOWN_CORPUS | text-layer |
@@ -195,13 +195,13 @@ is now digested, mined, or triaged.
 | diehl-kaplan-penzo-1983-satellite-tour-design-galileo-mission-AIAA-83-0101.pdf | 2026-06-17-digest-diehl-1983.md; catalogue | Galileo satellite-tour design | digested + mined-by-catalogue | text-layer |
 | damario-byrnes-1983-interplanetary-trajectory-design-galileo-mission-AIAA-83-0099.pdf | 2026-06-19-digest-damario-byrnes-1983-galileo-interplanetary.md | D'Amario-Byrnes 1986 DIRECT E→J Galileo interplanetary leg (pre-Challenger, never flown; companion to Diehl-Kaplan-Penzo 0101); Jupiter VHP 5.8/6.1 km/s, no GA flybys; Galileo errata corroborator, not catalogue-admissible (#384) | digested | text-layer |
 | young-1998-galileo-probe-mission-jupiter-science-overview-jgr-doi-10.1029-98JE01051.pdf | 2026-06-17-digest-damario-1992-galileo.md (probe context); catalogue | Galileo probe mission science overview | digested + mined-by-catalogue | text-layer |
-| young-2000-correction-galileo-probe-mission-jupiter-science-overview-jgr-...2000JE001251.pdf | (errata to young-1998 above) | Correction to the Galileo probe overview | digested (via 1998) | text-layer |
+| young-2000-correction-galileo-probe-mission-jupiter-science-overview-jgr-...2000JE001251.pdf | (errata to young-1998 above) | Correction to the Galileo probe overview | digested (via 1998) | image-only → OCR'd .txt (2026-06-22; 105-word erratum) |
 | wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-...0967-0661(95)00172-7.pdf | 2026-06-17-digest-wolf-smith-1995-cassini.md; catalogue | Cassini tour trajectory design | digested + mined-by-catalogue | text-layer |
 | bellerose-roth-wagner-2018-cassini-reconstructing-thirteen-years-...2018-2646.pdf | 2026-06-17-digest-bellerose-2018-cassini.md | Cassini: reconstructing 13 years of gravity assists | digested | text-layer |
 | valerino-2014-updating-reference-trajectory-cassini-solstice-mission-spaceops-...2014-1880.pdf | 2026-06-17-digest-bellerose-2018-cassini.md (Solstice context); KNOWN_CORPUS | Updating Cassini Solstice reference trajectory | digested + KNOWN_CORPUS | text-layer |
 | yam-davis-longuski-2009-saturn-impact-trajectories-cassini-end-of-mission-jsr-...38760.pdf | 2026-06-04-agrawal-landau-howe-mining.md; catalogue | Cassini end-of-mission Saturn-impact trajectories | mined + mined-by-catalogue | text-layer |
 | lam-johannesen-kowalkowski-2008-planetary-protection-trajectory-analysis-juno-...2008-7368.pdf | 2026-06-17-digest-lam-2008-juno.md | Juno planetary-protection trajectory analysis | digested | text-layer |
-| hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf | catalogue hollister-menning-1970-ev-orbit-01..15 family | Earth-Venus periodic swingby (E-V cycler family) | mined-by-catalogue | image-only |
+| hollister-menning-1970-periodic-swingby-earth-venus-JSR-7-10.pdf | catalogue hollister-menning-1970-ev-orbit-01..15 family | Earth-Venus periodic swingby (E-V cycler family) | mined-by-catalogue | image-only → OCR'd .txt (2026-06-22) |
 | hollister-rall-1970-periodic-orbits-NASA-CR.pdf | 2026-06-07-hollister-rall-1970-periodic-orbits-mining.md; -appendices-transcription | Periodic orbits NASA-CR (appendix tables transcribed) | mined | text-layer |
 
 ## Methods: optimization, STM, primer-vector, low-thrust, reachable sets
@@ -223,7 +223,7 @@ is now digested, mined, or triaged.
 | beeson-englander-hughes-2015-emtg-gmat-lowthrust-tool-chain-AAS-15-278.pdf | 2026-06-07-beeson-2015-emtg-gmat-toolchain-mining.md | EMTG/GMAT low-thrust toolchain | mined | text-layer |
 | englander-englander-2014-tuning-monotonic-basin-hopping-ISSFD24-S7-3.pdf | 2026-06-07-englander-2014-mbh-tuning-mining.md | Tuning monotonic basin hopping (MBH) | mined | text-layer |
 | ozimek-2019-linx-lowthrust-mga-trajectory-optimization-AAS-19-348.pdf | 2026-06-07-ozimek-linx-aas19-348-mining.md | LinX low-thrust MGA optimization | mined | text-layer |
-| shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf | 2026-06-19-digest-shepperd-1985-universal-keplerian-stm.md | Closed-form universal-variables (Goodyear/Sundman/Stumpff) two-body STM valid for all conics; Kepler solve via one transcendental (q-variable, Newton dt/du=4(1-q)r), STM from 9 M-coefficients + W,U; canonical analytic STM for conic-leg correctors (cf. Pellegrini-Russell #372) | digested | text-layer (thin) |
+| shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf | 2026-06-19-digest-shepperd-1985-universal-keplerian-stm.md | Closed-form universal-variables (Goodyear/Sundman/Stumpff) two-body STM valid for all conics; Kepler solve via one transcendental (q-variable, Newton dt/du=4(1-q)r), STM from 9 M-coefficients + W,U; canonical analytic STM for conic-leg correctors (cf. Pellegrini-Russell #372) | digested | image-only → OCR'd .txt (2026-06-22; was thin) |
 | montenbruck-markgraf-2004-gps-sensor-impact-point-prediction-sounding-rockets-jsr-...1962.pdf | 2026-06-17-digest-montenbruck-2004.md | GPS impact-point prediction for sounding rockets | digested | text-layer |
 | rinker-jacobson-wood-1976-statistical-analysis-trim-maneuvers-low-thrust-interplanetary-navigation-jsr.pdf | 2026-06-19-345-voyager-mariner-mission-digests.md — off-scope for #345 | Statistical analysis of nav trim maneuvers | triaged | text-layer |
 
@@ -278,25 +278,26 @@ digested, mined, or triaged):
    2007 volume; corroborating metadata only, zero catalogue impact — defer to
    the #395 Gurfil digest).
 
-### Image-only files needing OCR before any future digest (4)
+### Image-only OCR backlog — CLEARED 2026-06-22 (0 remaining)
 
-All are currently classified but would need `ocrmypdf` (via `verify/ocr.py`)
-before a `pdftotext` digest; precision values vision-read per policy §1.
+A corpus-wide `pdftotext` sweep (2026-06-22) found 6 image-only / near-zero-text
+PDFs with no committed `.txt`. **All 6 were OCR'd (`ocrmypdf --force-ocr`) to
+committed `.txt` sidecars** — the corpus is now fully text-searchable, and the
+text survives a fresh clone / `git clean` (the prior #400 OCRs went to a
+throwaway astropy cache that never persisted — so the index's "OCR done" claims
+were false-confident; now made real):
 
-- **szebehely-1967-...book.pdf** — already OCR'd + digested (task #400 / #185).
-  Listed for completeness; no action.
-- **heaton-longuski-2003-...uranian-satellites-...pdf** — *mined-by-catalogue*
-  (U00-01 tour, Table 5 transcribed via vision already). OCR only needed if a
-  future re-mine wants greppable body text.
-- **okutsu-longuski-2002-mars-free-returns-via-gravity-assist-venus-...pdf** —
-  *mined* (free-returns note). OCR only needed for a future deeper re-mine.
-- **hollister-menning-1970-periodic-swingby-earth-venus-...pdf** —
-  *mined-by-catalogue* (E-V family). OCR only needed for a future re-mine.
+- **szebehely-1967-...book.pdf** — 661pp textbook → 217 676 words.
+- **heaton-longuski-2003-...uranian-satellites-...pdf** — 5 475 words.
+- **okutsu-longuski-2002-mars-free-returns-...pdf** — 6 062 words.
+- **hollister-menning-1970-periodic-swingby-earth-venus-...pdf** — 5 331 words.
+- **shepperd-1985-...keplerian-stm-...pdf** — 4 671 words (was a thin/garbled layer).
+- **young-2000-correction-...galileo-probe-...pdf** — 105 words (short erratum).
 
-None of the image-only files is an *unprocessed* black box — each is already
-mined/digested; OCR is a convenience for any future greppable re-read, not a
-blocker. The Szebehely failure mode (image-only **and** unprocessed) does not
-recur in the current corpus.
+Also committed 8 previously-uncommitted text-extract sidecars (chen ×4,
+klmr-2006, machado-2020, shoot-the-moon-2000, vergaaij-2018). Per policy §1 the
+OCR text is for **navigation**; precision values (equations, table cells) must
+still be vision-read from the page images. No image-only black box remains.
 
 ### Recent Acquisitions (Cassini)
 
