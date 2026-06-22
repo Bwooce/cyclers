@@ -378,3 +378,68 @@ def test_is_practically_irrational() -> None:
     # Far from any small p/q
     assert is_practically_irrational(0.2718281828, max_denominator=10, tol=1e-4)
     assert is_practically_irrational(math.pi - 3.0, max_denominator=10, tol=1e-4)
+
+
+# ---------------------------------------------------------------------------
+# Test 6: QP Torus Family Continuation
+# ---------------------------------------------------------------------------
+
+
+def test_structural_qp_continuation() -> None:
+    """Test family continuation of QP tori from a Neimark-Sacker bracket.
+
+    Golden vs Structural: The parent family is sourced to Antoniadou-Voyatzis
+    2018 / Roberts-Tsoukkas-Ross 2026. However, those papers report the
+    *periodic* parent orbits and their bifurcations, not specific
+    quasi-periodic torus members (rho, energy, period). Since no usable
+    published golden values exist for the tori themselves, this test is a
+    STRUCTURAL self-consistency test.
+
+    The test verifies:
+      - The continuation driver successfully traces a small branch without
+        crashing.
+      - The GMOS residual and independent closure gates remain below tolerance.
+      - The rotation number (rho) varies consistently (monotonically) along
+        the fold-free branch.
+    """
+    from cyclerfinder.genome.qp_tori_continuation import continue_qp_family
+
+    br, parent = _load_first_neimark_sacker_bracket()
+    system = _em_system()
+    parent_state = np.asarray(parent["state_nd"], dtype=np.float64)
+    parent_period = float(parent["T_TU"])
+    k = int(br["k"])
+    lam_a = complex(br["eig_a_re"], br["eig_a_im"])
+    lam_b = complex(br["eig_b_re"], br["eig_b_im"])
+
+    result = continue_qp_family(
+        system,
+        parent_state,
+        parent_period,
+        (lam_a, lam_b),
+        k=k,
+        n_long=16,
+        n_trans=2,
+        amplitude_start=5e-4,
+        amplitude_end=1e-3,
+        n_steps=3,
+        tol=1e-8,
+        max_iter=40,
+        independent_tol=1e-3,
+        notes="structural_continuation_test",
+    )
+
+    assert result.family_converged, "Continuation branch failed to converge"
+    assert not result.fold_detected, "Unexpected fold detected on small branch"
+    assert len(result.steps) == 3
+
+    rhos = []
+    for step in result.steps:
+        # Check tolerance (relaxed to 1e-5 to match test_sourced_neimark_sacker_smoke)
+        assert step.torus.invariance_residual < 1e-5
+        assert step.torus.independent_closure_residual < 1e-3
+        rhos.append(step.torus.rho)
+
+    # Verify structural consistency: rho should be monotonic along this fold-free branch
+    diffs = np.diff(rhos)
+    assert np.all(diffs > 0) or np.all(diffs < 0), f"Rotation number rho is not monotonic: {rhos}"

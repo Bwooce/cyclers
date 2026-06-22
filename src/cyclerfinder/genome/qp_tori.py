@@ -500,6 +500,57 @@ def _residual_size(n_modes: int) -> int:
     return 6 + 4 * 6 * n_modes + 2
 
 
+def _correct_gmos(
+    system: cr3bp.CR3BPSystem,
+    x0: NDArray[np.float64],
+    n_trans: int,
+    n_samples: int,
+    phase_pin_idx: int,
+    amplitude_pin: float,
+    tol: float,
+    max_iter: int,
+) -> tuple[NDArray[np.float64], float, int]:
+    """Execute the GMOS least-squares Newton step from an initial guess vector.
+
+    Returns (x_final, residual_norm, n_iter).
+    Raises RuntimeError or ValueError if the propagation fails or solver blows up.
+    """
+    # Least-squares Newton via scipy. Trust-region 'trf' with bounded box
+    # keeps propagations physical (the unknowns can't wander off into
+    # collisional regions). Empirically reaches an invariance-residual floor
+    # of O(1e-7) for n_modes=2 at amp=5e-4 -- the floor is dominated by the
+    # finite-difference Jacobian conditioning at this mode count.
+    from scipy.optimize import least_squares
+
+    t_strob0 = float(x0[-1])
+
+    # Bounds keep propagations physical: |c_n| stays inside O(10), rho in
+    # (-pi, pi), t_strob positive and within 10x the seed value.
+    lb = -10.0 * np.ones_like(x0)
+    ub = 10.0 * np.ones_like(x0)
+    lb[-2] = -math.pi
+    ub[-2] = math.pi
+    lb[-1] = 0.1 * t_strob0
+    ub[-1] = 10.0 * t_strob0
+
+    res = least_squares(
+        _residual_real,
+        x0,
+        args=(system, n_trans, n_samples, phase_pin_idx, amplitude_pin),
+        method="trf",
+        bounds=(lb, ub),
+        xtol=tol * 1e-2,
+        ftol=tol * 1e-2,
+        gtol=1e-15,
+        max_nfev=max_iter * (len(x0) + 1),
+        diff_step=np.array(1e-5),
+    )
+    x_final = res.x
+    n_iter = int(res.nfev)
+    residual_norm = float(np.linalg.norm(res.fun))
+    return x_final, residual_norm, n_iter
+
+
 def correct_qp_torus(
     system: cr3bp.CR3BPSystem,
     seed_orbit: NDArray[np.float64],
@@ -517,6 +568,9 @@ def correct_qp_torus(
     notes: str = "",
 ) -> QPTorus:
     """Newton-correct a QP-torus from a Neimark-Sacker bifurcation seed.
+
+    Note: The core Newton-solve logic has been extracted into the private helper
+    ``_correct_gmos(...)`` so that it can be reused by continuation drivers.
 
     Parameters
     ----------
@@ -607,39 +661,19 @@ def correct_qp_torus(
     # keeping the propagation cost linear in N.
     n_samples = 2 * n_trans + 3
 
-    # Least-squares Newton via scipy. Trust-region 'trf' with bounded box
-    # keeps propagations physical (the unknowns can't wander off into
-    # collisional regions). Empirically reaches an invariance-residual floor
-    # of O(1e-7) for n_modes=2 at amp=5e-4 -- the floor is dominated by the
-    # finite-difference Jacobian conditioning at this mode count. Phase 2
-    # will add an analytic Jacobian to tighten this below 1e-10.
-    from scipy.optimize import least_squares
-
     x0 = _pack_unknowns(coeffs0, rho0, t_strob0)
-    # Bounds keep propagations physical: |c_n| stays inside O(10), rho in
-    # (-pi, pi), t_strob positive and within 10x the seed value.
-    lb = -10.0 * np.ones_like(x0)
-    ub = 10.0 * np.ones_like(x0)
-    lb[-2] = -math.pi
-    ub[-2] = math.pi
-    lb[-1] = 0.1 * t_strob0
-    ub[-1] = 10.0 * t_strob0
+
     try:
-        res = least_squares(
-            _residual_real,
-            x0,
-            args=(system, n_trans, n_samples, phase_pin_idx, initial_torus_amplitude),
-            method="trf",
-            bounds=(lb, ub),
-            xtol=tol * 1e-2,
-            ftol=tol * 1e-2,
-            gtol=1e-15,
-            max_nfev=max_iter * (len(x0) + 1),
-            diff_step=np.array(1e-5),
+        x_final, residual_norm, n_iter = _correct_gmos(
+            system=system,
+            x0=x0,
+            n_trans=n_trans,
+            n_samples=n_samples,
+            phase_pin_idx=phase_pin_idx,
+            amplitude_pin=initial_torus_amplitude,
+            tol=tol,
+            max_iter=max_iter,
         )
-        x_final = res.x
-        n_iter = int(res.nfev)
-        residual_norm = float(np.linalg.norm(res.fun))
     except (RuntimeError, ValueError) as e:
         coeffs0 = _enforce_reality(coeffs0)
         return QPTorus(
