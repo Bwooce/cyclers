@@ -18,12 +18,14 @@ This digest processes the batch of papers acquired on 2026-06-20.
 * **Digest:** Develops a continuation algorithm to transition idealized circular-coplanar parent cycler solutions into highly accurate finite-duration ephemeris solutions over 7 full cycles. Applied to 203 parent cyclers (including the Aldrin cycler). **Tier result (abstract, verbatim):** "nine parent cyclers ... have at least one finite-duration cycler with a total maneuver requirement of less than 1 m/s over seven full cycles. Additionally, 39 and 74 parent cyclers have at least one launch date with a maneuver requirement of less than 10 and 300 m/s, respectively." This is the **peer-reviewed JGCD primary** for the <1/<10/<300 m/s-per-7-cycle ΔV-band tiers (#415/#416) — basis is best-launch-window total deterministic maneuver over a real-ephemeris 7-cycle propagation. Tables 1–2: E-M resonances (15:8, 17:9, 32:17 …) and integer-multiple circular-coplanar repeat times (1/2/3/4-synodic).
 * **Verdict:** **Digested** (A crucial bridge methodology from theoretical to flown cyclers; S/L naming conventions apply; the ΔV-band tier source).
 
-## 4. chen-russell-ocampo-2002-earth-mars-cyclers-free-return.pdf
+## 4. chen-mcconaghy-okutsu-longuski-2002-low-thrust-aldrin-cycler-AIAA-2002-4421.pdf
+*(renamed 2026-06-22 from the misnamed `chen-russell-ocampo-2002-...-free-return.pdf`)*
 * **Title:** A Low-Thrust Version of the Aldrin Cycler
 * **Digest:** Seeks a low-thrust version of the Aldrin cycler to reduce the infeasibly large hyperbolic excess velocities (V_inf) at the planetary encounters, especially at Mars, in exchange for cycler propellant expenditure. Shows trade studies over 7 synodic periods minimizing total system mass.
 * **Verdict:** **Digested** (Powered cycler category; provides comparison metrics for ballistic trajectories).
 
-## 5. chen-russell-ocampo-2005-earth-mars-cyclers-multiple-impulse-free-return.pdf
+## 5. chen-mcconaghy-landau-longuski-aldrin-2005-powered-em-cycler-three-synodic-JSR-42-5.pdf
+*(renamed 2026-06-22 from the misnamed `chen-russell-ocampo-2005-...-multiple-impulse-free-return.pdf`)*
 * **Title:** Powered Earth-Mars Cycler with Three-Synodic-Period Repeat Time
 * **Digest:** Constructs a cycler with acceptable transfer times and moderate encounter velocities by patching 3-synodic-period semicyclers using high-efficiency low-thrust propulsion. Reduces required cycler vehicle count to only three (instead of four+ for unpowered ballistic).
 * **Verdict:** **Digested** (Powered cycler extension).
