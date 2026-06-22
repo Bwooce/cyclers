@@ -7,31 +7,41 @@
 digests additional primaries to give Axis B **≥ 3 independent anchors** and
 either corroborate or correct those cutoffs.
 
-**Access note (gating):** this is an **acquisition** task — it needs the papers,
-which are paywalled / not yet in the corpus. Run it only with paper access (the
-private `Bwooce/cyclers_pdf` repo at `/home/bruce/dev/cyclers_pdf/papers/`, or
-institutional / open-access copies). A 2026-06-22 web pass confirmed the leads
-below exist but could not retrieve them (AIAA returned 403). If a target can't be
-obtained, record it as an acquisition gap — do not fabricate its numbers.
+**CORRECTION (2026-06-22, after inventorying `/home/bruce/dev/cyclers_pdf/papers/`
+— 161 PDFs):** this is **NOT primarily an acquisition task**. The original brief
+wrongly assumed the targets were paywalled; a direct inventory shows the key
+papers are **already on disk, just undigested for the ΔV-band question**. So #416
+is mostly **digest the local holdings**, runnable now with no paper access. Only
+**Rauwolf 2002 is a genuine acquisition gap** (confirmed not local).
 
-## Acquisition targets (priority order)
+## Targets — LOCAL (read these PDFs; no acquisition needed)
 
-1. **Genova-Aldrin, "Cycler Orbits and Solar System Pony Express," J. Spacecraft
-   & Rockets (2021), DOI 10.2514/1.A35091** — reports impulsive *and* SEP
-   cycler-maintenance ΔV sequences (the corpus has only the 2015 conference
-   mining note; this JSR version is the citable one). HIGHEST priority — it is the
-   most likely second independent Axis-B anchor.
-2. **The primary behind the "~20–100 m/s/yr station-keeping" figure** — the web
-   pass surfaced this magnitude for Mars cyclers via a secondary aggregator; trace
-   it to a citable cycler-review / station-keeping paper (candidates: a Genova or
-   McConaghy/Longuski review; the Conte-Spencer 2018 cycler survey already in the
-   corpus may cite it — check `docs/notes/2026-06-17-digest-conte-spencer-2018.md`
-   first, it may already contain a usable figure with a primary citation).
-3. **Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046** — the 1500 m/s/15-yr SEP
-   maintenance figure (flagged uncaptured in #415; #384-adjacent). Lower priority
-   (it's SEP/low-thrust maintenance, band 4) but it pins that boundary.
-4. (Opportunistic) any **Landau-Longuski** cycler-ΔV paper or **Chen et al.**
-   cycler station-keeping reference encountered while acquiring the above.
+1. **`AAS-22-015-pascarella-pony-express.pdf`** — the "Pony Express" cycler paper
+   (the conference version of the Genova/Pascarella work I'd mis-listed as the
+   paywalled JSR 10.2514/1.A35091). **Local, no digest.** HIGHEST priority — most
+   likely second independent Axis-B (impulsive + SEP maintenance ΔV) anchor.
+2. **`cuevas-del-valle-2023-optimal-floquet-stationkeeping-relative-dynamics-three-body-aerospace.pdf`**
+   — a dedicated **station-keeping** paper (maintenance ΔV in the 3-body problem).
+   Local, no digest. Directly band-relevant (the maintenance/near-ballistic band).
+3. **`chen-2002-earth-mars-cyclers.pdf`** (+ `.txt` OCR),
+   **`chen-russell-ocampo-2002/2005-...free-return.pdf`** (+ `.txt`),
+   **`chen-2012.pdf`** (+ `.txt`) — Chen cycler / multiple-impulse-free-return ΔV
+   content. Local, OCR'd, no digest.
+4. **`patel-2019-earth-mars-cycler-vehicle-conceptual-design-FIT-etd.pdf`** —
+   cycler vehicle design, likely a ΔV/station-keeping budget. Local, no digest.
+5. **`landau-longuski-2006-human-mars-trajectories-pt1-impulsive-JSR.pdf`** and
+   **`landau-longuski-2009-comparative-assessment...`** — human-Mars cycler ΔV.
+   Local; only tangentially covered by `2026-06-04-agrawal-landau-howe-mining.md`.
+6. Re-mine the already-digested canonical PDFs for ΔV-*magnitude* specifically
+   (the existing digests captured geometry/AR-TR, not necessarily every ΔV figure):
+   `mcconaghy-landau-yam-2006-notable...`, `russell-2004-dissertation.pdf`,
+   `byrnes-longuski-aldrin-1993-...`.
+
+## Target — ACQUIRE (the one genuine gap)
+
+7. **Rauwolf-Friedlander-Nock 2002, AIAA 2002-5046** — 1500 m/s/15-yr SEP
+   maintenance figure; **not on disk**. Lower priority (band-4 / SEP boundary).
+   #384-adjacent acquisition.
 
 ## Deliverable
 
