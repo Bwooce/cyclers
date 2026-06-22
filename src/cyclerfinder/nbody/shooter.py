@@ -203,6 +203,8 @@ def defect_residual(
     bodies: Sequence[str],
     accuracy: float = 1e-10,
     max_wall_sec: float = 90.0,
+    vinf_anchors: Mapping[str, float] | None = None,
+    vinf_weight: float = 0.0,
 ) -> NDArray[np.float64]:
     """Full-state multiple-shooting residual in restricted n-body (design §3).
 
@@ -290,6 +292,26 @@ def defect_residual(
     reln_v = np.asarray(sn[3:], dtype=np.float64) - np.asarray(v_wrap_pl, dtype=np.float64)
     res.extend(float(x) for x in (reln_r - rel0_r))
     res.extend(float(x) for x in (reln_v - rel0_v))
+
+    # 4. V∞-anchor penalty (family-pinned homotopy, #388). Opt-in: only when
+    #    anchors are supplied AND the weight is positive. Each penalty row pulls a
+    #    node's V∞ magnitude toward the SOURCED anchor for its body; the homotopy
+    #    driver ramps vinf_weight to zero so the recorded V∞ emerges from the
+    #    unpenalized (weight=0) solve. Appended after leg/hinge/wrap, in node order.
+    if vinf_anchors and vinf_weight > 0.0:
+        sw = float(np.sqrt(vinf_weight))
+        for i, body in enumerate(seed.sequence):
+            anchor = vinf_anchors.get(body)
+            if anchor is None:
+                continue
+            s_i = seed.node_states[i]
+            _, v_pl = ephem.state(body, seed.epochs[i])
+            vinf_mag = float(
+                np.linalg.norm(
+                    np.asarray(s_i[3:], dtype=np.float64) - np.asarray(v_pl, dtype=np.float64)
+                )
+            )
+            res.append(sw * (vinf_mag - float(anchor)))
 
     return np.asarray(res, dtype=np.float64)
 
@@ -615,6 +637,8 @@ def _stm_jacobian(
     bodies: Sequence[str],
     accuracy: float = 1e-10,
     max_wall_sec: float = 90.0,
+    vinf_anchors: Mapping[str, float] | None = None,
+    vinf_weight: float = 0.0,
 ) -> NDArray[np.float64]:
     """Analytic Jacobian of :func:`defect_residual` w.r.t. the node-state vector.
 
@@ -653,7 +677,13 @@ def _stm_jacobian(
 
     n_leg = (n - 1) * _STATE_DIM
     n_hinge = max(0, n - 2)
-    n_rows = n_leg + n_hinge + _STATE_DIM
+    # Penalty node indices (those whose body has an anchor), in node order — must
+    # match the residual's penalty-row order in defect_residual (block 4).
+    pen_nodes: list[int] = []
+    if vinf_anchors and vinf_weight > 0.0:
+        pen_nodes = [i for i, b in enumerate(seed.sequence) if b in vinf_anchors]
+    n_pen = len(pen_nodes)
+    n_rows = n_leg + n_hinge + _STATE_DIM + n_pen
     n_cols = n * _STATE_DIM
     jac = np.zeros((n_rows, n_cols), dtype=np.float64)
     eye6 = np.eye(_STATE_DIM)
@@ -682,9 +712,25 @@ def _stm_jacobian(
     # Hinge rows (n_leg : n_leg + n_hinge) are constant in x -> left zero.
 
     # Periodicity wrap rows.
-    wrap = slice(n_leg + n_hinge, n_rows)
+    wrap = slice(n_leg + n_hinge, n_leg + n_hinge + _STATE_DIM)
     jac[wrap, 0:_STATE_DIM] = -eye6
     jac[wrap, (n - 1) * _STATE_DIM : n * _STATE_DIM] = eye6
+
+    # Penalty rows: d(sqrt(w)*|v∞_i|)/d(node_i velocity) = sqrt(w) * v̂∞_i, zero on
+    # the position block and on every other node. Matches the residual's penalty
+    # rows (defect_residual block 4). A near-zero-V∞ node -> zero row.
+    if n_pen:
+        sw = float(np.sqrt(vinf_weight))
+        base = n_leg + n_hinge + _STATE_DIM
+        for k, i in enumerate(pen_nodes):
+            s_i = states[i]
+            _, v_pl = ephem.state(seed.sequence[i], seed.epochs[i])
+            dv = np.asarray(s_i[3:], dtype=np.float64) - np.asarray(v_pl, dtype=np.float64)
+            mag = float(np.linalg.norm(dv))
+            if mag > 1e-12:
+                vhat = dv / mag
+                jac[base + k, i * _STATE_DIM + 3 : i * _STATE_DIM + 6] = sw * vhat
+
     return jac
 
 
@@ -742,6 +788,8 @@ def shoot(
     n_jobs: int = 1,
     jacobian: Literal["fd", "stm"] = "fd",
     progress: Callable[[str, int, float, float], None] | None = None,
+    vinf_anchors: Mapping[str, float] | None = None,
+    vinf_weight: float = 0.0,
 ) -> ShootResult:
     """Multiple-shooting differential correction (the SNOPT analogue, design §3).
 
@@ -797,6 +845,11 @@ def shoot(
     from scipy.optimize import least_squares
 
     n = len(seed.sequence)
+    if vinf_anchors and vinf_weight > 0.0 and n_jobs > 1:
+        raise ValueError(
+            "vinf penalty (family-pinned homotopy) is supported only with n_jobs=1 "
+            "(the parallel FD worker path does not carry anchors); use jacobian='stm'."
+        )
     _f_count = [0]
     _j_count = [0]
     _last_norm = [float("inf")]
@@ -806,7 +859,13 @@ def shoot(
         states = _x_to_states(x, n)
         trial = _seed_with_states(seed, states)
         res = defect_residual(
-            trial, ephem=ephem, bodies=bodies, accuracy=accuracy, max_wall_sec=max_wall_sec
+            trial,
+            ephem=ephem,
+            bodies=bodies,
+            accuracy=accuracy,
+            max_wall_sec=max_wall_sec,
+            vinf_anchors=vinf_anchors,
+            vinf_weight=vinf_weight,
         )
         if progress is not None:
             _f_count[0] += 1
@@ -830,6 +889,8 @@ def shoot(
                 bodies=bodies,
                 accuracy=accuracy,
                 max_wall_sec=max_wall_sec,
+                vinf_anchors=vinf_anchors,
+                vinf_weight=vinf_weight,
             )
             if progress is not None:
                 _j_count[0] += 1
