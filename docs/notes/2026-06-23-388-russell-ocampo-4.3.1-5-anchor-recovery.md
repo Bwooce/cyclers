@@ -67,3 +67,31 @@ anchor-recovery (no promotion), and the residual is the real DSM.
 - `negative_results.yaml` 4.3.1-5 entry updated: now RUN; outcome = anchor-recovered
   near-ballistic (0.485 km/s floor), distinct from the off-anchor collapse; promotion
   pending the Mars-perihelion epoch trial + cross-check.
+
+## Validation-level determination (2026-06-23) — STAYS V0 (no promotion)
+
+Ran the canonical per-row determination `close_row_dsm(row, Ephemeris("astropy"))`
+(single descriptor seed, its default epoch) — the path the gauntlet invokes:
+
+- **converged=False, max_residual=12.64 km/s, anchor_match=False**, total DSM 24 km/s,
+  emerged V∞ [3.1, 1.54, 7.01, 0.0005] (garbage off-phase basin).
+
+So the 0.0962 km/s anchor-matched close is **REAL but epoch+seed-fragile**: it appears
+only with (a) the 25-seed multi-start enumeration AND (b) epoch-targeting to the
+Mars-favorable +57d phase. The canonical single-shot determination does not reproduce it.
+
+Per the `_LEVEL_EVIDENCE` discipline (a level is only as high as the recorded mechanical
+evidence supports; when in doubt, V0):
+- **V1** (spec §14 conic izzo+gooding per-leg < 1e-3 m/s + Kepler re-prop): NOT shown;
+  the f (full-rev 1:1, θ=2π) and h (half-rev, θ=π) legs are singular Lambert cases.
+- **V2** (≥3-cycle ballistic closure): NO — the close is single-cycle and 164 m/s
+  **low_maintenance**, not ballistic.
+- **V3** (real n-body reproduction): the close exists at +57d but fails the canonical
+  single-shot path and is 164 m/s single-cycle, not a multi-cycle horizon TCM.
+
+**Determination: russell-ocampo-4.3.1-5 STAYS V0.** No `_LEVEL_EVIDENCE` entry added;
+`validation_level` unchanged. The descriptor ingestion stands (data win). The
+anchor-recovery is recorded as a characterized #388 result — the first #365 census
+cycler shown anchor-recoverable in real ephemeris (Mars-perihelion epoch, low_maintenance
+164 m/s) — but it does not clear a validation gate. Closure discipline upheld: a 96 m/s
+"converged" close that looked promotable is epoch/seed-fragile and is NOT promoted.
