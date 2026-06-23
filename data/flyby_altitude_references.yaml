@@ -102,6 +102,12 @@ planets:
       date:
       citation: Stern-Tapley-Finley-Scherrer 2020 JSR A34658 Sec.III; 2026-06-23-digest-stern-2020-pluto-orbiter.md
       confidence: sourced
+    - altitude_km: 12507
+      type: observed-flown
+      mission: New Horizons Pluto flyby (C/A 13,695 km from centre; radius 1188.3 km)
+      date: '2015-07-14'
+      citation: Harch et al. 2016 SpaceOps DOI 10.2514/6.2016-2623 Fig.1; 2026-06-23-digest-harch-2016-pluto-encounter-sequence.md
+      confidence: sourced
 moons:
   Titan:
     primary: Saturn
@@ -217,10 +223,20 @@ moons:
 #     known), Miranda design floor (not a tour flyby body; only the flown mass-pass),
 #     Charon/Nix/Hydra (Pluto), Amalthea/Hyperion, small Saturn moons, Mercury design-min,
 #     Uranus & Neptune PLANET design floor (flown-only Voyager-2 C/A above; no design min).
+  Charon:
+    primary: Pluto
+    safe_alt_km_floor: 100
+    references:
+    - altitude_km: 28826
+      type: observed-flown
+      mission: New Horizons Charon flyby (C/A 29,432 km from centre; radius 606 km)
+      date: '2015-07-14'
+      citation: Harch et al. 2016 SpaceOps DOI 10.2514/6.2016-2623 Fig.1; 2026-06-23-digest-harch-2016-pluto-encounter-sequence.md
+      confidence: sourced
 gaps:
 - {body: "Proteus", reason: "Voyager 2 did no targeted flyby (Stone-Miner 1989 gives only orbital distance 117,600 km); registry-only"}
 - {body: "Miranda (design floor)", reason: "not used as a flyby body in Heaton-Longuski U00-01 tour; only Voyager-2 flown mass-pass (28,260 km) known"}
-- {body: "Charon/Nix/Hydra (Pluto)", reason: "Charon/Nix/Hydra/Kerberos/Styx flyby floors registry-only; Stern 2020 uses Charon GA but gives no periapsis number (deferred to Finley et al. [5], #279). Pluto PLANET floor now sourced 100 km (Stern 2020)."}
+- {body: "Charon/Nix/Hydra/Kerberos/Styx (Pluto) DESIGN floor", reason: "DESIGN floor still registry-only: Charon now has a NH observed-flown C/A (28,826 km alt, Harch 2016) but that carries nav margin, not a design min; the Charon-GA tour design floors were in the unpublished Finley paper (#279, no DOI). Pluto PLANET design floor sourced 100 km (Stern 2020)."}
 - {body: "Amalthea/Hyperion; small Saturn moons (Phoebe/Telesto/Helene/Epimetheus/Methone/Pallene)", reason: "registry-only"}
 - {body: "Mercury design-min", reason: "flown ~165-200 km (BepiColombo) but no sourced DESIGN minimum"}
 - {body: "Uranus/Neptune PLANET design floor", reason: "flown-only (Voyager 2 C/A now sourced); no sourced design minimum"}
