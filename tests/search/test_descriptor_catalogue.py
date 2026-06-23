@@ -29,11 +29,10 @@ def _rows_with_arcs() -> list[tuple[str, list[dict[str, Any]]]]:
     return [(r["id"], r["free_return_arcs"]) for r in rows if r.get("free_return_arcs")]
 
 
-def test_exactly_thirteen_sourced_descriptor_rows() -> None:
-    # 13 since #388 (2026-06-23): russell-ocampo-4.3.1-5 ingested its
-    # McConaghy-Russell-Longuski 2005 Table 2 per-arc descriptor
-    # (4 g(7-1/14,5-1/14 rev,L) f(1:1,...) h(0.5,...)) — was 12.
-    assert len(_rows_with_arcs()) == 13
+def test_exactly_fourteen_sourced_descriptor_rows() -> None:
+    # 14 since #388 (2026-06-23): McConaghy-2005 Table 2 per-arc descriptors
+    # ingested for russell-ocampo-4.3.1-5 (12->13) then -2.5.1+0 (13->14).
+    assert len(_rows_with_arcs()) == 14
 
 
 @pytest.mark.parametrize(

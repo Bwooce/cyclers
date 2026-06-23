@@ -1556,6 +1556,23 @@
 # ---------------------------------------------------------------------------
 # 5. Niehoff VISIT-1 (inertially-fixed Earth-Mars cycler)
 # ---------------------------------------------------------------------------
+  free_return_arcs:
+  - arc_type: generic
+    resonance:
+    tof_years: 1.785714
+    raw_descriptor: g(1-11/14, 11/14 rev, U)
+  - arc_type: full-rev
+    resonance: '1:1'
+    tof_years:
+    raw_descriptor: f(1:1, 74.919, ∓144.069)
+  - arc_type: half-rev
+    resonance:
+    tof_years: 0.5
+    raw_descriptor: h(0.5, 0, U, ±15.081)
+  - arc_type: full-rev
+    resonance: '1:1'
+    tof_years:
+    raw_descriptor: f(1:1, 74.919, ±35.931)
 - id: niehoff-visit1
   name: "Niehoff VISIT-1 Earth-Mars cycler"
   source: literature
