@@ -131,7 +131,10 @@ SATELLITES: dict[str, SatelliteData] = {
     # Ganymede: GM 9887.834, mean R 2631.2 km, a 1070400 km (JPL SSD).
     "Ganymede": _sat("Ganymede", "Jupiter", 9887.834, 2631.2, 1070400.0, 100.0),
     # Callisto: GM 7179.289, mean R 2410.3 km, a 1882700 km (JPL SSD).
-    "Callisto": _sat("Callisto", "Jupiter", 7179.289, 2410.3, 1882700.0, 100.0),
+    # safe_alt 200 km: SOURCED Galilean flyby floor (Campagnola 2014 Europa-tour,
+    # docs/notes/2026-06-17-digest-campagnola-2014.md line 201; #428). Europa/Ganymede
+    # share the 100 km Campagnola floor (already at 100); Callisto's is explicitly 200.
+    "Callisto": _sat("Callisto", "Jupiter", 7179.289, 2410.3, 1882700.0, 200.0),
     # --- Saturnian midsize + Titan (Saturn) ---
     # Mimas: GM 2.503, mean R 198.2 km, a 185540 km (JPL SSD).
     "Mimas": _sat("Mimas", "Saturn", 2.503, 198.2, 185540.0, 100.0),

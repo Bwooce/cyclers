@@ -159,8 +159,8 @@
       },
       "flyby_altitudes_source": {
         "type": ["string", "null"],
-        "enum": ["sourced", "computed-m7", null],
-        "description": "Schema v4.9 (task #427): provenance of flyby_altitudes_km. 'sourced' = published per-flyby altitudes; 'computed-m7' = computed by the M7 continuous-maintenance chain (geometry-determined minimal-thrust heights). Sourced takes precedence when both exist. Null/absent when flyby_altitudes_km is null."
+        "enum": ["sourced", "computed-m7", "derived", null],
+        "description": "Schema v4.9 (tasks #427/#428): provenance of flyby_altitudes_km. 'sourced' = published per-flyby altitudes (literature-stated); 'computed-m7' = computed by the M7 continuous-maintenance chain (geometry-determined minimal-thrust heights); 'derived' = SPK/Horizons-extracted per-flyby altitudes (our own reconstruction — high fidelity but not literature-sourced, so not golden-test-eligible). Sourced takes precedence. Null/absent when flyby_altitudes_km is null."
       },
       "superseded_by": {
         "type": ["array", "null"],

@@ -50448,6 +50448,8 @@ days\" per the NTRS abstract.
     "n_returns": "Per #330 data/silver_327_moontour_v2_verdicts.jsonl: n_cycles=10 verdict with bounded drift; #331 V3 reproduces same 10 cycles; n_returns=10 reflects the convergent-with-bounded-drift count, NOT a strict periodic-cycler infinity (which would require strict-periodic n_returns='infinite' per v4.7 cycler-class definition)."
 
 - id: damario-1992-galileo-veega
+  flyby_altitudes_km: [{node_index: 0, body: V, altitude_km: 16123}, {node_index: 1, body: E, altitude_km: 960}, {node_index: 2, body: E, altitude_km: 300}]
+  flyby_altitudes_source: sourced
   name: "Galileo VEEGA flown trajectory (D'Amario-Bright-Wolf 1992)"
   source: literature
   trajectory_regime: ballistic   # patched-conic with Venus + Earth + Earth gravity assists (+Gaspra/Ida asteroid science flybys) + JOI dV at Jupiter (outside the heliocentric tour)
@@ -50575,6 +50577,8 @@ days\" per the NTRS abstract.
     "n_returns": "D'Amario 1992 §2 confirms single Earth launch and single Jupiter capture (JOI); n_returns=1 per v4.7 mga_tour invariant."
 
 - id: voyager-1-jupiter-saturn-grand-tour
+  flyby_altitudes_km: [{node_index: 0, body: J, altitude_km: 277369}, {node_index: 1, body: S, altitude_km: 123875}]
+  flyby_altitudes_source: derived
   name: "Voyager 1 Jupiter-Saturn gravity-assist tour (MJS77 JST), SPK-derived V_inf"
   source: literature
   trajectory_regime: ballistic   # gravity-assist tour; the heliocentric arcs E->J and J->S are ballistic (TCMs are tiny corrections, McKinley-Van Allen 1976 total nav <=155 m/s)
@@ -50666,6 +50670,8 @@ days\" per the NTRS abstract.
     "n_returns": "Single Earth launch (1977-09-05) and single Saturn arrival (1980-11-12); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
 - id: voyager-2-grand-tour
+  flyby_altitudes_km: [{node_index: 0, body: J, altitude_km: 650060}, {node_index: 1, body: S, altitude_km: 101050}, {node_index: 2, body: U, altitude_km: 81573}, {node_index: 3, body: N, altitude_km: 4507}]
+  flyby_altitudes_source: derived
   name: "Voyager 2 Grand Tour E-J-S-U-N (MJS77/JSX), SPK-derived V_inf"
   source: literature
   trajectory_regime: ballistic   # the four giant-planet gravity-assist arcs are ballistic (TCMs are small corrections)
@@ -51090,6 +51096,8 @@ days\" per the NTRS abstract.
     "n_returns": "Single Earth launch (2011-08-05) and single Jupiter arrival (2016-07-05); n_returns=1 per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
 - id: mariner-10-venus-mercury
+  flyby_altitudes_km: [{node_index: 0, body: V, altitude_km: 5794}, {node_index: 1, body: Me, altitude_km: 713}]
+  flyby_altitudes_source: derived
   name: "Mariner 10 Venus-Mercury gravity-assist tour (Mercury-I SPK-derived V_inf)"
   source: literature
   trajectory_regime: ballistic   # Venus gravity assist to Mercury + the 2:1 resonant repeated-Mercury encounters; heliocentric arcs ballistic
@@ -51164,6 +51172,8 @@ days\" per the NTRS abstract.
     "n_returns": "Single Earth launch (1973-11-03); n_returns=1. Mariner 10's repeated-Mercury encounters are a 2:1 resonance about the Sun, not Earth returns; per the v4.7 mga_tour invariant (no continuing tour at Earth)."
 
 - id: bepicolombo-earth-venus-mercury
+  flyby_altitudes_km: [{node_index: 0, body: E, altitude_km: 12677}, {node_index: 1, body: V, altitude_km: 10720}, {node_index: 2, body: V, altitude_km: 552}, {node_index: 3, body: Me, altitude_km: 200}, {node_index: 4, body: Me, altitude_km: 236}, {node_index: 5, body: Me, altitude_km: 295}]
+  flyby_altitudes_source: derived
   name: "BepiColombo Earth-Venus-Mercury gravity-assist cruise, SPK-derived V_inf"
   source: literature
   trajectory_regime: ballistic   # solar-electric-propulsion + 9 gravity-assist flybys (1 Earth, 2 Venus, 6 Mercury); the gravity-assist flybys are ballistic encounters; terminal Mercury Orbit Insertion is a capture
@@ -51270,6 +51280,8 @@ days\" per the NTRS abstract.
 
 
 - id: cassini-titan-tour
+  flyby_altitudes_km: [{node_index: 0, body: Titan, altitude_km: 1500}, {node_index: 1, body: Titan, altitude_km: 1250}, {node_index: 2, body: Titan, altitude_km: 2397}, {node_index: 3, body: Titan, altitude_km: 4408}, {node_index: 4, body: Titan, altitude_km: 958}]
+  flyby_altitudes_source: sourced
   name: "Cassini Titan Tour"
   source: literature
   trajectory_regime: ballistic

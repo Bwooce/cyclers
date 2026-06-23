@@ -355,9 +355,12 @@ PLANETS: Final[dict[str, PlanetData]] = {
         radius_eq_km=2440.53,
         sma_au=_MERCURY_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_MERCURY_SMA_AU),
-        # Engineering default (convention, not sourced physics): no atmosphere,
-        # but solar-thermal + sparse-tracking nav margins → larger standoff.
-        safe_alt_km=1000.0,
+        # 200 km: DEMONSTRATED practical floor (#428) — BepiColombo flew Mercury at
+        # 199/200/236 km (Mercury-1/2/3); Mariner-10 ~703 km. Mercury is airless so the
+        # floor is surface + nav margin, not atmosphere. Not a published *design minimum*
+        # (none in corpus); the prior 1000 km was an unsourced conservative convention.
+        # docs/notes/2026-06-23-flyby-altitude-corpus-mining.md (Mercury section).
+        safe_alt_km=200.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.20563593,
         # J2000 longitude of perihelion / mean longitude, Standish & Williams
