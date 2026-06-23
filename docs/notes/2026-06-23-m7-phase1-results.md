@@ -96,6 +96,47 @@ leg-completion effort; running the shoot blindly now produces garbage on auto-co
 rows. Recommend NOT mass-promoting; instead drive M7 from sourced node+seed data per row
 as that data is reconstructed.
 
+## Option C reproduction attempt (2026-06-23) — STOP & REASSESS
+
+Directive: "scope and execute option C; if we don't reproduce, stop and reassess."
+Attempted reconstruction of the Russell-2006 strictly-ballistic census rows (the V0
+ceiling) → M7. **Verified blocker, three independent confirmations:**
+
+1. **No per-member data in the catalogue.** e.g. `russell-2006-117-5.225Ggg3`:
+   `invariants` all null, `transit_times_days` [], `free_return_arcs` [],
+   `trajectory.segments` []. Sole sourced content = the descriptor `5.225Ggg3` + the
+   claim "one of 9 cyclers < 1 m/s". Exactly the validation-ceiling publication gap:
+   the per-member reproducible state was never printed.
+2. **Current reconstruction tooling returns None** for all 9 strictly-ballistic rows
+   (`seed_dsm_chain_from_descriptor` → None; only S1L1 / mcconaghy-2006-em-k2 returns a
+   chain — and it already reproduces, 40 m/s).
+3. **Reconstructing the specific member from the bare descriptor hits the #388
+   family-selection wall** (documented, `2026-06-08-multiarc-basin-selection-results.md`):
+   the reconstruction relaxes to off-anchor families (emerged V∞ ~9–16 km/s vs published
+   ~5.2) — the published cycler is NOT uniquely recovered. The descriptor underdetermines
+   the family.
+
+**Conclusion:** M7 (the measurement) is sound and validated, but we **cannot reproduce
+the per-member real-eph state of the Russell census** with current inputs/tools — it is
+gated by (a) a publication gap (data never printed) and (b) the #388 family-selection
+wall on descriptor-only reconstruction. Reproducible today: S1L1 (40 m/s ballistic) +
+the 2 App-C powered rows (diverge → published budget). The other ~215 stay V0 honestly.
+
+**Reassessment — the tractable route is DATA, the hard route is ALGORITHM:**
+- **(A) Data path (the S1L1 recipe, tractable):** Russell 2004 dissertation Appendix C
+  (pp.201–245, readable, 43 dense pages) holds per-leg "DATA NECESSARY TO REPRODUCE"
+  blocks, parent-indexed — but only #188/#192 are transcribed. If the strictly-ballistic
+  parents (#54/#117/#177/…) have App-C blocks (gated by the Table5↔App-C parent-number
+  bridge, the #170 caveat), transcribing them makes those rows reconstructible + M7-
+  measurable exactly as S1L1 was. Bounded corpus transcription, not research.
+- **(B) Algorithm path (#388 frontier, open):** a global/family-targeted reconstruction
+  that recovers the specific published member from the descriptor. Multi-week; #388
+  characterized this to the bottom as hard.
+- **(C) Accept the ceiling:** census rows are V0 by an irreducible publication gap;
+  reproduce only what has sourced data.
+
+Discovery stays gated (the "reproduce reliably first" bar is NOT met). Recommend (A).
+
 ## Gate status
 
 Per `project_dvband_validation_coupling_gate`: the gate to resume discovery+validation
