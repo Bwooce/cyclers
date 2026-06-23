@@ -20,68 +20,68 @@ planets:
     code: Me
     safe_alt_km_floor: 200          # constants.py (was 1000; #428)
     references:
-      - {altitude_km: 199, type: aim-point, mission: "BepiColombo Mercury-1", date: "2021-10-01", citation: "2026-06-19-bepicolombo-kernel-recon.md flyby table", confidence: secondary}
-      - {altitude_km: 200, type: observed-flown, mission: "BepiColombo Mercury-2", date: "2022-06-23", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 236, type: observed-flown, mission: "BepiColombo Mercury-3", date: "2023-06-19", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 165, type: observed-flown, mission: "BepiColombo Mercury-4", date: "2024-09-04", citation: "ESA fourth-Mercury-flyby press release", confidence: secondary}
-      - {altitude_km: 295, type: observed-flown, mission: "BepiColombo Mercury-6", date: "2025-01-08", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 713, type: observed-flown, mission: "Mariner-10 Mercury-I (1.29 R_Me)", date: "1974-03-29", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 703, type: observed-flown, mission: "Mariner-10 Mercury-I", date: "1974-03-29", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md (NASA fact sheet)", confidence: secondary}
-      - {altitude_km: 327, type: observed-flown, mission: "Mariner-10 Mercury-III", date: "1975-03-16", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md (NASA fact sheet)", confidence: secondary}
+    - {altitude_km: 199, type: aim-point, mission: "BepiColombo Mercury-1", date: "2021-10-01", citation: "2026-06-19-bepicolombo-kernel-recon.md flyby table", confidence: secondary}
+    - {altitude_km: 200, type: observed-flown, mission: "BepiColombo Mercury-2", date: "2022-06-23", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 236, type: observed-flown, mission: "BepiColombo Mercury-3", date: "2023-06-19", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 165, type: observed-flown, mission: "BepiColombo Mercury-4", date: "2024-09-04", citation: "ESA fourth-Mercury-flyby press release", confidence: secondary}
+    - {altitude_km: 295, type: observed-flown, mission: "BepiColombo Mercury-6", date: "2025-01-08", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 713, type: observed-flown, mission: "Mariner-10 Mercury-I (1.29 R_Me)", date: "1974-03-29", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 703, type: observed-flown, mission: "Mariner-10 Mercury-I", date: "1974-03-29", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md (NASA fact sheet)", confidence: secondary}
+    - {altitude_km: 327, type: observed-flown, mission: "Mariner-10 Mercury-III", date: "1975-03-16", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md (NASA fact sheet)", confidence: secondary}
   Venus:
     code: V
     safe_alt_km_floor: 300
     references:
-      - {altitude_km: 5794, type: observed-flown, mission: "Mariner-10 Venus", date: "1974-02-05", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md line 52/84", confidence: sourced}
-      - {altitude_km: 5000, type: aim-point, mission: "Mariner-10 Venus (aimed 4800; Giberson-Cunningham 1975)", date: "1974-02-05", citation: "2026-06-19-345-voyager-mariner-mission-digests.md line 54", confidence: sourced}
-      - {altitude_km: 16123, type: design-CA, mission: "Galileo Venus (V_inf 6.2)", date: "1990-02-10", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
-      - {altitude_km: 10720, type: observed-flown, mission: "BepiColombo Venus-1", date: "2020-10-15", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 552, type: observed-flown, mission: "BepiColombo Venus-2", date: "2021-08-10", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 300, type: design-floor, mission: "Campagnola 2014 Europa-tour Venus flyby (V_inf 6.62)", date: "2022-05-14", citation: "2026-06-17-digest-campagnola-2014.md Table 1", confidence: sourced}
-      - {altitude_km: 300, type: design-floor, mission: "Hughes 2014 EVE STOUR ALTMIN at Venus", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 151/202", confidence: sourced}
-      - {altitude_km: 200, type: design-floor, mission: "Hughes 2014 EVME STOUR ALTMIN at Venus", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 105/199", confidence: sourced}
-      - {altitude_km: 10855, type: design-CA, mission: "Donahue-Duggan 2022 Mars-2035 Venus passage", date: "2036-04-08", citation: "2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md line 83", confidence: sourced}
+    - {altitude_km: 5794, type: observed-flown, mission: "Mariner-10 Venus", date: "1974-02-05", citation: "2026-06-17-digest-dunne-burgess-1978-mariner-10.md line 52/84", confidence: sourced}
+    - {altitude_km: 5000, type: aim-point, mission: "Mariner-10 Venus (aimed 4800; Giberson-Cunningham 1975)", date: "1974-02-05", citation: "2026-06-19-345-voyager-mariner-mission-digests.md line 54", confidence: sourced}
+    - {altitude_km: 16123, type: design-CA, mission: "Galileo Venus (V_inf 6.2)", date: "1990-02-10", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
+    - {altitude_km: 10720, type: observed-flown, mission: "BepiColombo Venus-1", date: "2020-10-15", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 552, type: observed-flown, mission: "BepiColombo Venus-2", date: "2021-08-10", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 300, type: design-floor, mission: "Campagnola 2014 Europa-tour Venus flyby (V_inf 6.62)", date: "2022-05-14", citation: "2026-06-17-digest-campagnola-2014.md Table 1", confidence: sourced}
+    - {altitude_km: 300, type: design-floor, mission: "Hughes 2014 EVE STOUR ALTMIN at Venus", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 151/202", confidence: sourced}
+    - {altitude_km: 200, type: design-floor, mission: "Hughes 2014 EVME STOUR ALTMIN at Venus", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 105/199", confidence: sourced}
+    - {altitude_km: 10855, type: design-CA, mission: "Donahue-Duggan 2022 Mars-2035 Venus passage", date: "2036-04-08", citation: "2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md line 83", confidence: sourced}
   Earth:
     code: E
     safe_alt_km_floor: 200          # constants.py (Russell 2004 p.165; #426)
     references:
-      - {altitude_km: 200, type: design-floor, mission: "Russell-Ocampo 2003 Earth-Mars cycler TR>1 floor", date: null, citation: "2026-06-17-digest-russell-ocampo-2003.md line 74", confidence: sourced}
-      - {altitude_km: 200, type: design-floor, mission: "Campagnola 2014 Europa-tour Earth escape (V_inf 3.77)", date: "2021-11-22", citation: "2026-06-17-digest-campagnola-2014.md Table 1", confidence: sourced}
-      - {altitude_km: 960, type: design-CA, mission: "Galileo Earth-1 (V_inf 8.9)", date: "1990-12-08", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
-      - {altitude_km: 300, type: design-CA, mission: "Galileo Earth-2 (V_inf 8.9)", date: "1992-12-08", citation: "2026-06-17-digest-damario-1992-galileo.md Fig 8", confidence: sourced}
-      - {altitude_km: 12677, type: observed-flown, mission: "BepiColombo Earth flyby (V_inf 3.99)", date: "2020-04-10", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
-      - {altitude_km: 3000, type: design-CA, mission: "Genova-Aldrin 2015 free-return Earth perigee", date: null, citation: "2026-06-10-genova-aldrin-2015-mining.md lines 36/57", confidence: sourced}
+    - {altitude_km: 200, type: design-floor, mission: "Russell-Ocampo 2003 Earth-Mars cycler TR>1 floor", date: null, citation: "2026-06-17-digest-russell-ocampo-2003.md line 74", confidence: sourced}
+    - {altitude_km: 200, type: design-floor, mission: "Campagnola 2014 Europa-tour Earth escape (V_inf 3.77)", date: "2021-11-22", citation: "2026-06-17-digest-campagnola-2014.md Table 1", confidence: sourced}
+    - {altitude_km: 960, type: design-CA, mission: "Galileo Earth-1 (V_inf 8.9)", date: "1990-12-08", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
+    - {altitude_km: 300, type: design-CA, mission: "Galileo Earth-2 (V_inf 8.9)", date: "1992-12-08", citation: "2026-06-17-digest-damario-1992-galileo.md Fig 8", confidence: sourced}
+    - {altitude_km: 12677, type: observed-flown, mission: "BepiColombo Earth flyby (V_inf 3.99)", date: "2020-04-10", citation: "2026-06-19-bepicolombo-kernel-recon.md", confidence: derived}
+    - {altitude_km: 3000, type: design-CA, mission: "Genova-Aldrin 2015 free-return Earth perigee", date: null, citation: "2026-06-10-genova-aldrin-2015-mining.md lines 36/57", confidence: sourced}
   Mars:
     code: M
     safe_alt_km_floor: 200          # constants.py (Russell 2004 p.165; #426)
     references:
-      - {altitude_km: 200, type: design-floor, mission: "Russell-Ocampo 2003 / Hughes 2014 STOUR ALTMIN at Mars (EVME)", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 105/199/226", confidence: sourced}
-      - {altitude_km: 100, type: design-CA, mission: "Tito-MacCallum 2018 Mars free-return (dark-side periapsis; V_inf 5.42)", date: "2017-2019", citation: "2026-06-13-tito-maccallum-2018-free-return-reproduction.md lines 34/76", confidence: sourced}
-      - {altitude_km: 250, type: design-CA, mission: "Donahue-Duggan 2022 Mars-2033 passage (V_inf 5.113; by-design constraint)", date: "2033-08-09", citation: "2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md lines 67/150", confidence: sourced}
+    - {altitude_km: 200, type: design-floor, mission: "Russell-Ocampo 2003 / Hughes 2014 STOUR ALTMIN at Mars (EVME)", date: null, citation: "2026-06-07-hughes-2014-fast-mars-free-returns-mining.md lines 105/199/226", confidence: sourced}
+    - {altitude_km: 100, type: design-CA, mission: "Tito-MacCallum 2018 Mars free-return (dark-side periapsis; V_inf 5.42)", date: "2017-2019", citation: "2026-06-13-tito-maccallum-2018-free-return-reproduction.md lines 34/76", confidence: sourced}
+    - {altitude_km: 250, type: design-CA, mission: "Donahue-Duggan 2022 Mars-2033 passage (V_inf 5.113; by-design constraint)", date: "2033-08-09", citation: "2026-06-07-donahue-duggan-2022-mars2033-flyby-mining.md lines 67/150", confidence: sourced}
   Jupiter:
     code: J
     safe_alt_km_floor: 5000
     references:
-      - {altitude_km: 4500, type: design-CA, mission: "Juno perijove (1-bar; apojove 39 R_J)", date: "2016-08-03", citation: "2026-06-17-digest-lam-2008-juno.md lines 21/57/146", confidence: sourced}
-      - {altitude_km: 277369, type: observed-flown, mission: "Voyager 1 Jupiter (4.88 R_J; V_inf 10.773)", date: "1979-03-05", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 650060, type: observed-flown, mission: "Voyager 2 Jupiter (10.09 R_J; V_inf 7.639)", date: "1979-07-09", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 3470, type: design-CA, mission: "Bourke 1971 JSP'76 Jupiter CA (launch-period end)", date: "1977-12-27", citation: "2026-06-17-digest-bourke-1971.md line 74", confidence: sourced}
+    - {altitude_km: 4500, type: design-CA, mission: "Juno perijove (1-bar; apojove 39 R_J)", date: "2016-08-03", citation: "2026-06-17-digest-lam-2008-juno.md lines 21/57/146", confidence: sourced}
+    - {altitude_km: 277369, type: observed-flown, mission: "Voyager 1 Jupiter (4.88 R_J; V_inf 10.773)", date: "1979-03-05", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 650060, type: observed-flown, mission: "Voyager 2 Jupiter (10.09 R_J; V_inf 7.639)", date: "1979-07-09", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 3470, type: design-CA, mission: "Bourke 1971 JSP'76 Jupiter CA (launch-period end)", date: "1977-12-27", citation: "2026-06-17-digest-bourke-1971.md line 74", confidence: sourced}
   Saturn:
     code: S
     safe_alt_km_floor: 5000        # atmosphere floor; NOTE the binding floor for an
     # equatorial ring-plane crossing is the RINGS at >= 2.7 R_S (~102,000 km), geometry-dependent.
     references:
-      - {altitude_km: 102000, type: design-floor, mission: "Wolf-Smith 1995 Cassini ring-plane crossing constraint (>= 2.7 R_S)", date: null, citation: "2026-06-17-digest-wolf-smith-1995-cassini.md line 40", confidence: sourced}
-      - {altitude_km: 123875, type: observed-flown, mission: "Voyager 1 Saturn (3.06 R_S; V_inf 15.167)", date: "1980-11-12", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 101050, type: observed-flown, mission: "Voyager 2 Saturn (2.68 R_S; V_inf 10.674)", date: "1981-08-26", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 102000, type: design-floor, mission: "Wolf-Smith 1995 Cassini ring-plane crossing constraint (>= 2.7 R_S)", date: null, citation: "2026-06-17-digest-wolf-smith-1995-cassini.md line 40", confidence: sourced}
+    - {altitude_km: 123875, type: observed-flown, mission: "Voyager 1 Saturn (3.06 R_S; V_inf 15.167)", date: "1980-11-12", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 101050, type: observed-flown, mission: "Voyager 2 Saturn (2.68 R_S; V_inf 10.674)", date: "1981-08-26", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
   Uranus:
     code: U
     safe_alt_km_floor: 1000        # still no sourced *planet* design floor (flown-only + Bourke design CAs)
     references:
       # Sourced flown C/A (Stone & Miner 1986): 107,000 km from centre - 25,559 km
       # (IAU 2015 1-bar radius, constants.py) = 81,441 km. A FLOWN value, NOT a design floor.
-      - {altitude_km: 81441, type: observed-flown, mission: "Voyager 2 Uranus (C/A 107,000 km from centre; radius 25,559 km IAU 2015)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:39 (abstract); 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 81573, type: observed-flown, mission: "Voyager 2 Uranus (4.19 R_U; V_inf 14.732; SPK reconstruction)", date: "1986-01-24", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 81441, type: observed-flown, mission: "Voyager 2 Uranus (C/A 107,000 km from centre; radius 25,559 km IAU 2015)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:39 (abstract); 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 81573, type: observed-flown, mission: "Voyager 2 Uranus (4.19 R_U; V_inf 14.732; SPK reconstruction)", date: "1986-01-24", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
   Neptune:
     code: N
     safe_alt_km_floor: 1000        # still no sourced *planet* design floor (flown-only)
@@ -89,59 +89,59 @@ planets:
       # Sourced flown C/A (Stone & Miner 1989): 29,240 km from centre - 24,764 km
       # (IAU 2015 1-bar radius, constants.py) = 4,476 km (paper's own 1-bar radius
       # 24,760 km gives 4,480 km). A FLOWN value, NOT a design floor.
-      - {altitude_km: 4476, type: observed-flown, mission: "Voyager 2 Neptune (C/A 29,240 km from centre; radius 24,764 km IAU 2015)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 4507, type: observed-flown, mission: "Voyager 2 Neptune (1.18 R_N; V_inf 16.742; SPK reconstruction)", date: "1989-08-25", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
+    - {altitude_km: 4476, type: observed-flown, mission: "Voyager 2 Neptune (C/A 29,240 km from centre; radius 24,764 km IAU 2015)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 4507, type: observed-flown, mission: "Voyager 2 Neptune (1.18 R_N; V_inf 16.742; SPK reconstruction)", date: "1989-08-25", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
 
 moons:
   Titan:
     primary: Saturn
     safe_alt_km_floor: 1500        # satellites.py; sourced design/flown floor is ~950
     references:
-      - {altitude_km: 950, type: design-floor, mission: "Wolf-Smith 1995 minimum Titan flyby altitude", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md lines 39/95-107", confidence: sourced}
-      - {altitude_km: 960, type: observed-flown, mission: "Cassini T22 (lowest flown)", date: "2006", citation: "2026-06-19-digest-cassini-vinf.md", confidence: derived}
+    - {altitude_km: 950, type: design-floor, mission: "Wolf-Smith 1995 minimum Titan flyby altitude", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md lines 39/95-107", confidence: sourced}
+    - {altitude_km: 960, type: observed-flown, mission: "Cassini T22 (lowest flown)", date: "2006", citation: "2026-06-19-digest-cassini-vinf.md", confidence: derived}
   Io:
     primary: Jupiter
     references:
-      - {altitude_km: 1000, type: design-CA, mission: "Galileo Io flyby at JOI", date: "1995-12-07", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
+    - {altitude_km: 1000, type: design-CA, mission: "Galileo Io flyby at JOI", date: "1995-12-07", citation: "2026-06-17-digest-damario-1992-galileo.md Table I", confidence: sourced}
   Europa:
     primary: Jupiter
     safe_alt_km_floor: 100
     references:
-      - {altitude_km: 100, type: design-floor, mission: "Campagnola 2014 Europa min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md lines 200-201", confidence: sourced}
+    - {altitude_km: 100, type: design-floor, mission: "Campagnola 2014 Europa min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md lines 200-201", confidence: sourced}
   Ganymede:
     primary: Jupiter
     safe_alt_km_floor: 100
     references:
-      - {altitude_km: 100, type: design-floor, mission: "Campagnola 2014 Ganymede min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md line 200", confidence: sourced}
+    - {altitude_km: 100, type: design-floor, mission: "Campagnola 2014 Ganymede min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md line 200", confidence: sourced}
   Callisto:
     primary: Jupiter
     safe_alt_km_floor: 200          # satellites.py (raised 100->200; #428)
     references:
-      - {altitude_km: 200, type: design-floor, mission: "Campagnola 2014 Callisto min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md line 201", confidence: sourced}
+    - {altitude_km: 200, type: design-floor, mission: "Campagnola 2014 Callisto min flyby altitude", date: null, citation: "2026-06-17-digest-campagnola-2014.md line 201", confidence: sourced}
   Rhea:
     primary: Saturn
     references:
-      - {altitude_km: 999, type: design-CA, mission: "Wolf-Smith 1995 Rhea-4 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
+    - {altitude_km: 999, type: design-CA, mission: "Wolf-Smith 1995 Rhea-4 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
   Dione:
     primary: Saturn
     references:
-      - {altitude_km: 1005, type: design-CA, mission: "Wolf-Smith 1995 Dione-7 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
+    - {altitude_km: 1005, type: design-CA, mission: "Wolf-Smith 1995 Dione-7 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
   Iapetus:
     primary: Saturn
     references:
-      - {altitude_km: 931, type: design-CA, mission: "Wolf-Smith 1995 Iapetus-13 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
+    - {altitude_km: 931, type: design-CA, mission: "Wolf-Smith 1995 Iapetus-13 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
   Tethys:
     primary: Saturn
     references:
-      - {altitude_km: 648, type: design-CA, mission: "Wolf-Smith 1995 Tethys-21 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
+    - {altitude_km: 648, type: design-CA, mission: "Wolf-Smith 1995 Tethys-21 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
   Enceladus:
     primary: Saturn
     references:
-      - {altitude_km: 605, type: design-CA, mission: "Wolf-Smith 1995 Enceladus-25 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
+    - {altitude_km: 605, type: design-CA, mission: "Wolf-Smith 1995 Enceladus-25 targeted", date: "2004-2008", citation: "2026-06-17-digest-wolf-smith-1995-cassini.md Table 2", confidence: sourced}
   Moon:
     primary: Earth
     references:
-      - {altitude_km: 3000, type: design-CA, mission: "Genova-Aldrin 2015 free-return perilune (farside)", date: null, citation: "2026-06-10-genova-aldrin-2015-mining.md lines 36/61", confidence: sourced}
+    - {altitude_km: 3000, type: design-CA, mission: "Genova-Aldrin 2015 free-return perilune (farside)", date: null, citation: "2026-06-10-genova-aldrin-2015-mining.md lines 36/61", confidence: sourced}
   # --- Uranian major moons (#429): DESIGN floor from Heaton-Longuski 2003 ---
   # Table 4 constraint "Flyby altitude > 50 km" is the sourced design floor for ALL
   # four major flyby moons. Per-moon min design altitudes are the Tour U00-01 (Table 5)
@@ -152,31 +152,31 @@ moons:
     safe_alt_km_floor: 100          # satellites.py engineering default
     references:
       # Doppler mass-determination pass, NOT a targeted CA and NOT a design floor.
-      - {altitude_km: 28024, type: observed-flown, mission: "Voyager 2 Miranda mass pass (within 28,260 km of satellite; radius 235.8 km)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:411; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 28024, type: observed-flown, mission: "Voyager 2 Miranda mass pass (within 28,260 km of satellite; radius 235.8 km)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:411; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
   Ariel:
     primary: Uranus
-    safe_alt_km_floor: 100          # satellites.py engineering default
+    safe_alt_km_floor: 50           # satellites.py engineering default
     references:
-      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 35, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Ariel min flyby (event 12; range 35-651)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+    - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 35, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Ariel min flyby (event 12; range 35-651)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
   Umbriel:
     primary: Uranus
-    safe_alt_km_floor: 100          # satellites.py engineering default
+    safe_alt_km_floor: 50           # satellites.py engineering default
     references:
-      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 54, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Umbriel min flyby (event 14; range 54-432)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+    - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 54, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Umbriel min flyby (event 14; range 54-432)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
   Titania:
     primary: Uranus
-    safe_alt_km_floor: 100          # satellites.py engineering default
+    safe_alt_km_floor: 50           # satellites.py engineering default
     references:
-      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 58, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Titania min flyby (event 3; range 54-2189)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+    - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 58, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Titania min flyby (event 3; range 54-2189)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
   Oberon:
     primary: Uranus
-    safe_alt_km_floor: 100          # satellites.py engineering default
+    safe_alt_km_floor: 50           # satellites.py engineering default
     references:
-      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 109, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Oberon min flyby (event 19; range 109-584)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+    - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 109, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Oberon min flyby (event 19; range 109-584)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
   # --- Neptune moons (#429) ---
   Triton:
     primary: Neptune
@@ -184,20 +184,20 @@ moons:
     references:
       # Sourced flown C/A (Stone & Miner 1989): 39,800 km from centre - 1,352.6 km
       # (radius from satellites.py; paper diameter 2705 km -> r 1352.5). FLOWN, not a floor.
-      - {altitude_km: 38447, type: observed-flown, mission: "Voyager 2 Triton (C/A 39,800 km from centre; radius 1,352.6 km)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 38447, type: observed-flown, mission: "Voyager 2 Triton (C/A 39,800 km from centre; radius 1,352.6 km)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
   # --- Mars moons (#429): DESIGN floor from PADME / Mars-Phobos DRO studies ---
   Phobos:
     primary: Mars
     safe_alt_km_floor: 10           # satellites.py engineering default (tiny irregular)
     references:
-      - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
-      - {altitude_km: 89, type: observed-flown, mission: "Mars Global Surveyor 14 Phobos flybys (altitude range 89-213 km)", date: "1998-2003", citation: "genova-2016 PADME p.1 (citing prior MGS results)", confidence: sourced}
-      - {altitude_km: 10, type: design-CA, mission: "Conte-Spencer 2018 Mars-Phobos DRO (<10 km from Phobos; A_x 15-300 km)", date: null, citation: "conte-spencer-2018 Acta Astro p.1; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 89, type: observed-flown, mission: "Mars Global Surveyor 14 Phobos flybys (altitude range 89-213 km)", date: "1998-2003", citation: "genova-2016 PADME p.1 (citing prior MGS results)", confidence: sourced}
+    - {altitude_km: 10, type: design-CA, mission: "Conte-Spencer 2018 Mars-Phobos DRO (<10 km from Phobos; A_x 15-300 km)", date: null, citation: "conte-spencer-2018 Acta Astro p.1; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
   Deimos:
     primary: Mars
     safe_alt_km_floor: 10           # satellites.py engineering default (tiny irregular)
     references:
-      - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+    - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
 
 # Bodies with NO sourced flyby altitude (acquisition targets) — updated #429:
 #   CLOSED by #429: Uranian moons Ariel/Umbriel/Titania/Oberon (Heaton-Longuski 2003
@@ -208,9 +208,9 @@ moons:
 #     Charon/Nix/Hydra (Pluto), Amalthea/Hyperion, small Saturn moons, Mercury design-min,
 #     Uranus & Neptune PLANET design floor (flown-only Voyager-2 C/A above; no design min).
 gaps:
-  - {body: "Proteus", reason: "Voyager 2 did no targeted flyby (Stone-Miner 1989 gives only orbital distance 117,600 km); registry-only"}
-  - {body: "Miranda (design floor)", reason: "not used as a flyby body in Heaton-Longuski U00-01 tour; only Voyager-2 flown mass-pass (28,260 km) known"}
-  - {body: "Charon/Nix/Hydra (Pluto)", reason: "registry-only; no flyby/design altitude in corpus"}
-  - {body: "Amalthea/Hyperion; small Saturn moons (Phoebe/Telesto/Helene/Epimetheus/Methone/Pallene)", reason: "registry-only"}
-  - {body: "Mercury design-min", reason: "flown ~165-200 km (BepiColombo) but no sourced DESIGN minimum"}
-  - {body: "Uranus/Neptune PLANET design floor", reason: "flown-only (Voyager 2 C/A now sourced); no sourced design minimum"}
+- {body: "Proteus", reason: "Voyager 2 did no targeted flyby (Stone-Miner 1989 gives only orbital distance 117,600 km); registry-only"}
+- {body: "Miranda (design floor)", reason: "not used as a flyby body in Heaton-Longuski U00-01 tour; only Voyager-2 flown mass-pass (28,260 km) known"}
+- {body: "Charon/Nix/Hydra (Pluto)", reason: "registry-only; no flyby/design altitude in corpus"}
+- {body: "Amalthea/Hyperion; small Saturn moons (Phoebe/Telesto/Helene/Epimetheus/Methone/Pallene)", reason: "registry-only"}
+- {body: "Mercury design-min", reason: "flown ~165-200 km (BepiColombo) but no sourced DESIGN minimum"}
+- {body: "Uranus/Neptune PLANET design floor", reason: "flown-only (Voyager 2 C/A now sourced); no sourced design minimum"}

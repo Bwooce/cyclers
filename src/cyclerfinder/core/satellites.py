@@ -160,16 +160,22 @@ SATELLITES: dict[str, SatelliteData] = {
     # All values JPL SSD satellite physical (phys_par, ref URA111) + mean elements
     # (sats/elem), accessed 2026-06-14. The five classical regular moons; the most
     # interesting outer-planet additions (moderate GM, prograde, low inclination).
+    # safe_alt 50 km for the four tour flyby bodies (Ariel/Umbriel/Titania/Oberon):
+    # SOURCED design floor, Heaton-Longuski 2003 Table 4 minimum flyby altitude
+    # (docs/notes/2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md; #429).
+    # Was an unsourced 100 km convention; lowered to the published design minimum.
+    # Miranda stays 100 km (convention): it was a Voyager-2 mass-pass only, not a
+    # Heaton-Longuski tour flyby body, so no published design floor exists for it.
     # Miranda: GM 4.3 km^3/s^2, mean R 235.8 km, a 129846 km.
     "Miranda": _sat("Miranda", "Uranus", 4.3, 235.8, 129846.0, 100.0),
     # Ariel: GM 83.5 km^3/s^2, mean R 578.9 km, a 190929 km.
-    "Ariel": _sat("Ariel", "Uranus", 83.5, 578.9, 190929.0, 100.0),
+    "Ariel": _sat("Ariel", "Uranus", 83.5, 578.9, 190929.0, 50.0),
     # Umbriel: GM 85.1 km^3/s^2, mean R 584.7 km, a 265986 km.
-    "Umbriel": _sat("Umbriel", "Uranus", 85.1, 584.7, 265986.0, 100.0),
+    "Umbriel": _sat("Umbriel", "Uranus", 85.1, 584.7, 265986.0, 50.0),
     # Titania: GM 226.9 km^3/s^2, mean R 788.9 km, a 436298 km.
-    "Titania": _sat("Titania", "Uranus", 226.9, 788.9, 436298.0, 100.0),
+    "Titania": _sat("Titania", "Uranus", 226.9, 788.9, 436298.0, 50.0),
     # Oberon: GM 205.3 km^3/s^2, mean R 761.4 km, a 583511 km.
-    "Oberon": _sat("Oberon", "Uranus", 205.3, 761.4, 583511.0, 100.0),
+    "Oberon": _sat("Oberon", "Uranus", 205.3, 761.4, 583511.0, 50.0),
     # --- Neptune system (added 2026-06-14) ---
     # JPL SSD satellite physical (phys_par, ref NEP097/NEP101) + mean elements,
     # accessed 2026-06-14. Triton is large (GM ~ 1428) but RETROGRADE + inclined
