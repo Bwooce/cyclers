@@ -237,6 +237,28 @@
   delta_v_kms: null   # schema v2; near-ballistic / not-extracted — actual value deferred (per-row Russell ΔV extraction)
   dv_band: essentially_ballistic   # schema v4.8 (2026-06-22, task #417); Axis-B real-eph maintenance band. SOURCED: McConaghy 2006 (JSR 43(2):456-465, p.461) states S1L1 is "only NEARLY ballistic in the ephemeris model" — ~10 m/s over ~30 yr outbound, below the <10 m/s/7-cycle essentially-ballistic tier (a modest inbound DSM aside). Axis-A geometric label stays ballistic (trajectory_regime); this is the orthogonal Axis-B magnitude. See docs/notes/2026-06-22-dv-band-definitions.md.
   dv_band_source: mcconaghy-2006   # SOURCED near-zero maintenance (~10 m/s/30 yr); digest docs/notes/2026-06-17-digest-mcconaghy-2006.md
+  flyby_altitudes_km:   # schema v4.9 (task #427, M7); per-node minimal-thrust flyby periapsis altitude (km), computed by the M7 continuous-maintenance chain at the sourced 200 km Earth/Mars floor (#426). The one bend-binding flyby sits at the floor; gentle flybys fly far higher.
+    - {node_index: 1, body: E, altitude_km: 31746.2}
+    - {node_index: 2, body: M, altitude_km: 12978.8}
+    - {node_index: 3, body: E, altitude_km: 26605.5}
+    - {node_index: 4, body: E, altitude_km: 38988.4}
+    - {node_index: 5, body: M, altitude_km: 10680.7}
+    - {node_index: 6, body: E, altitude_km: 22915.9}
+    - {node_index: 7, body: E, altitude_km: 9768.6}
+    - {node_index: 8, body: M, altitude_km: 16223.4}
+    - {node_index: 9, body: E, altitude_km: 27190.8}
+    - {node_index: 10, body: E, altitude_km: 23834.5}
+    - {node_index: 11, body: M, altitude_km: 13254.7}
+    - {node_index: 12, body: E, altitude_km: 25276.2}
+    - {node_index: 13, body: E, altitude_km: 38006.8}
+    - {node_index: 14, body: M, altitude_km: 6022.5}
+    - {node_index: 15, body: E, altitude_km: 21315.3}
+    - {node_index: 16, body: E, altitude_km: 30873.1}
+    - {node_index: 17, body: M, altitude_km: 6144.3}
+    - {node_index: 18, body: E, altitude_km: 22826.9}
+    - {node_index: 19, body: E, altitude_km: 200.3}
+    - {node_index: 20, body: M, altitude_km: 20610.5}
+  flyby_altitudes_source: computed-m7   # schema v4.9 (task #427); geometry-determined minimal-thrust heights, not published per-flyby values
   v_infinity_leveraging_dv_kms: null   # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size: null   # schema v2; integer count; null where not stated by source
   flyby_mechanics: null   # schema v2; per-encounter turning_angle_deg + min_altitude_km; null = not yet extracted from source

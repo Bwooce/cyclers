@@ -131,6 +131,37 @@
         "type": ["string", "null"],
         "description": "Schema v4.8 (task #417): the published source the dv_band assignment traces to (e.g. 'byrnes-longuski-aldrin-1993', 'mcconaghy-2006', 'liang-2024'). MANDATORY whenever dv_band is non-null — the honesty gate that every band magnitude traces to a sourced ΔV with a known basis (enforced by the Python semantic gate). Null/absent when dv_band is null."
       },
+      "flyby_altitudes_km": {
+        "type": ["array", "null"],
+        "description": "Schema v4.9 (task #427, M7): per-interior-flyby minimal-thrust periapsis ALTITUDE (km above the body surface) — the height that delivers the node's required turn ballistically (Jones Eq.2), capped at the body's sourced flyby floor (#426) where the turn over-demands. Sourced where a paper publishes per-flyby altitudes; otherwise computed by the M7 continuous-maintenance chain (flyby_altitudes_source distinguishes). Null/absent for the many rows with no reproduced trajectory (honest — never fabricated). Distinct from a single floor: each node carries its own optimal height.",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["node_index", "body", "altitude_km"],
+          "properties": {
+            "node_index": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Index of this flyby encounter within the cycler's node sequence."
+            },
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One-letter flyby body code (e.g. 'E', 'M') matching the PLANETS registry."
+            },
+            "altitude_km": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Minimal-thrust periapsis altitude above the body surface, km. At the body floor (#426) when the flyby is bend-binding (then the node carries a maintenance ΔV); higher for gentle flybys that need less turn."
+            }
+          }
+        }
+      },
+      "flyby_altitudes_source": {
+        "type": ["string", "null"],
+        "enum": ["sourced", "computed-m7", null],
+        "description": "Schema v4.9 (task #427): provenance of flyby_altitudes_km. 'sourced' = published per-flyby altitudes; 'computed-m7' = computed by the M7 continuous-maintenance chain (geometry-determined minimal-thrust heights). Sourced takes precedence when both exist. Null/absent when flyby_altitudes_km is null."
+      },
       "superseded_by": {
         "type": ["array", "null"],
         "description": "Schema v4.3 (spec §16.7.10): ids of catalogue rows that supersede this one (CCSDS NEXT_MESSAGE_ID analogue). Used when a row's premise is invalidated and one or more sibling rows now carry the attested truth. Each item must resolve to an existing row id and must not equal this row's own id; referential integrity is checked by the Python semantic gate. Null/absent for the common (non-superseded) case.",
