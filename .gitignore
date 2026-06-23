@@ -46,3 +46,6 @@ nohup.out
 
 # Playwright-MCP browser-automation session detritus (regenerated per run)
 .playwright-mcp/
+
+# Transient run-logs from detached long runs (scratch, not deliverables)
+data/runlogs/
