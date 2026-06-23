@@ -123,8 +123,8 @@ altitude, per celestial body, with citations.
 
 | body | altitude_km | CA radius | type | mission/paper | date | citation | confidence |
 |---|---|---|---|---|---|---|---|
-| U | 81,573 | 4.19 R_U | observed-flown | Voyager 2 Uranus (SPK; V∞ 14.732; cross-check 81,500 km above cloud tops) | 1986-01-24 | `2026-06-19-390-spk-vinf-extractor.md` lines 101/108 | derived (vs secondary 81,500) |
-| U | 81,500 | — | observed-flown | Voyager 2 Uranus (Wikipedia / NASA "35 Years Ago" 50,700 mi) | 1986-01-24 | same digest line 108 | secondary |
+| U | **81,441** | — | observed-flown | Voyager 2 Uranus (C/A 107,000 km from centre − 25,559 km IAU 2015 radius) | 1986-01-24 | **Stone & Miner 1986 Science 233:39** (#429); `2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md` | **sourced** |
+| U | 81,573 | 4.19 R_U | observed-flown | Voyager 2 Uranus (SPK; V∞ 14.732) | 1986-01-24 | `2026-06-19-390-spk-vinf-extractor.md` lines 101/108 | derived |
 | U | — | 0.7–5.1 R_U | design-CA | Bourke 1971 Table 1 U-alt rows (0.7, 0.9, 1.3, 1.7, 3.8, 5.1 R_U; "open" direct-Uranus) | 1976-79 | `2026-06-17-digest-bourke-1971.md` Table 1 | primary |
 
 **Recommended physical design floor (Uranus):** no clean sourced *floor* — only Voyager 2's flown 81,500 km (4.19 R_U) and Bourke design CAs as low as 0.7 R_U. Project engineering default `safe_alt_km` = **1,000 km** (atmosphere-plus-margin, explicitly "pending mission-specific analysis"). GAP — no sourced design floor; the Heaton-Longuski Uranian *moon* tour is the cycler-relevant work but per-moon altitudes are not in the digest (see Moons GAP below).
@@ -133,8 +133,8 @@ altitude, per celestial body, with citations.
 
 | body | altitude_km | CA radius | type | mission/paper | date | citation | confidence |
 |---|---|---|---|---|---|---|---|
-| N | 4,507 | 1.18 R_N | observed-flown | Voyager 2 Neptune (SPK; V∞ 16.742; cross-check ~4,950 km above N pole) | 1989-08-25 | `2026-06-19-390-spk-vinf-extractor.md` lines 102/110 | derived (vs secondary 4,950) |
-| N | ~4,950 | — | observed-flown | Voyager 2 Neptune (Wikipedia; 29,240 km from centre) | 1989-08-25 | same digest line 110 | secondary |
+| N | **4,476** | — | observed-flown | Voyager 2 Neptune (C/A 29,240 km from centre − 24,764 km IAU 2015 radius; paper 1-bar radius 24,760 → 4,480) | 1989-08-25 | **Stone & Miner 1989 Science 246:1418** (#429); `2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md` | **sourced** |
+| N | 4,507 | 1.18 R_N | observed-flown | Voyager 2 Neptune (SPK; V∞ 16.742) | 1989-08-25 | `2026-06-19-390-spk-vinf-extractor.md` lines 102/110 | derived |
 
 **Recommended physical design floor (Neptune):** only the flown Voyager 2 value (~4,500–4,950 km). Project engineering default `safe_alt_km` = **1,000 km** (atmosphere-plus-margin, "pending mission-specific analysis"). GAP — no sourced *design* floor; the one flown point is the only literature anchor.
 
@@ -193,12 +193,25 @@ Cassini flown (Bellerose 2018) gives only *flyby counts* (117 Titan, 28 Enceladu
 
 ## Uranian moons: Ariel / Umbriel / Titania / Oberon / Miranda
 
+**#429 CLOSED (design floor)** — Heaton & Longuski 2003 (JSR, doi:10.2514/2.3981)
+Table 4 + Table 5 vision-read for #429 (`2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md`).
+
 | moon | altitude_km | type | source | confidence |
 |---|---|---|---|---|
-| — | GAP | — | Heaton-Longuski 2003 "Galileo-style tour of the Uranian satellites" (40+ flybys incl. Titania & Oberon) is the foundational tour paper, but the digest (`2026-06-16-328-uranian-cycler-lit-deep-dive.md`) does NOT transcribe per-moon flyby altitudes | — |
-| Umbriel | — (V∞_O 0.96, V∞ 14.7°/39° bend at safe alt) | derived candidate | `2026-06-16-328-uranian-cycler-lit-deep-dive.md` / `2026-06-16-327-umbriel-silver-verification.md` — our own (1,1) Umbriel-Oberon cycler candidate; V∞ only, no sourced altitude | derived (V∞ only) |
+| Ariel/Umbriel/Titania/Oberon | **50 (constraint)** | design-floor | Heaton-Longuski 2003 Table 4 "Flyby altitude > 50 km" (Ariel-orbiter tour guidelines) | sourced |
+| Ariel | 35 (min); 35–651 | design-CA (per-encounter) | Heaton-Longuski 2003 Table 5 Tour U00-01 (event 12 min) | sourced |
+| Umbriel | 54 (min); 54–432 | design-CA | Table 5 (event 14 min) | sourced |
+| Titania | 58 (min); 54–2189 | design-CA | Table 5 (event 3 min) | sourced |
+| Oberon | 109 (min); 109–584 | design-CA | Table 5 (event 19 min) | sourced |
+| Miranda | 28,024 (flown mass-pass) | observed-flown | Stone-Miner 1986 Science 233:411 (within 28,260 km of satellite; r 235.8) — NOT a tour flyby body, no design floor | sourced |
+| Umbriel | — (V∞_O 0.96, V∞ 14.7°/39° bend at safe alt) | derived candidate | `2026-06-16-328-uranian-cycler-lit-deep-dive.md` / `2026-06-16-327-umbriel-silver-verification.md` — our own (1,1) Umbriel-Oberon cycler candidate; V∞ only | derived (V∞ only) |
 
-**Recommended physical design floor (Uranian moons):** **GAP — no sourced flyby altitude for any Uranian moon.** Voyager 2 did single flybys (Miranda/Ariel 1986) but the digests carry no CA-altitude numbers. Heaton-Longuski 2003 tour altitudes are an acquisition target. Project `core/satellites.py` uses the 100 km engineering default for Miranda/Ariel/Umbriel/Titania/Oberon (`2026-06-14-full-body-registry.md`).
+**Recommended physical design floor (Uranian moons):** **50 km** (Heaton & Longuski
+2003 Table 4) is the sourced design floor for Ariel/Umbriel/Titania/Oberon; the
+Tour U00-01 example even dips to 35 km (Ariel). Miranda is not a tour flyby body
+(only the Voyager-2 flown mass-pass at ~28,000 km). Project `core/satellites.py`
+uses the 100 km engineering default for all five (`2026-06-14-full-body-registry.md`) —
+2× the 50 km sourced design floor (conservative; left as-is per #429 scope).
 
 ## Earth's Moon
 
@@ -210,7 +223,20 @@ Cassini flown (Bellerose 2018) gives only *flyby counts* (117 Titan, 28 Enceladu
 
 ## Triton / Proteus (Neptune); Phobos / Deimos (Mars); Charon (Pluto); minor Saturn/Jupiter moons
 
-**GAP — no sourced flyby/CA altitude.** These appear only in `core/satellites.py` as physical-parameter registry entries (GM, radius, semi-major axis from JPL SSD; `safe_alt_km` = engineering default 10 km for tiny irregulars / 100 km otherwise — `2026-06-14-full-body-registry.md`). No mission/design study in the corpus flies past any of them with a published altitude. Triton (large, retrograde, inclined) is the most cycler-relevant of these and is a clear acquisition target.
+**#429 update:** Triton, Phobos, Deimos now have sourced altitudes.
+
+| body | altitude_km | type | source | confidence |
+|---|---|---|---|---|
+| Triton | **38,447** | observed-flown | Stone-Miner 1989 Science 246:1418 (C/A 39,800 km from centre − 1,352.6 km radius); FLOWN, not a floor | sourced |
+| Phobos | **2** (floor); 89–213 (flown) | design-floor / observed-flown | Genova 2016 PADME 2-10 km flyby req; MGS 14 flybys 89-213 km; Conte-Spencer 2018 DRO <10 km | sourced |
+| Deimos | **2** (floor) | design-floor | Genova 2016 PADME 2-10 km flyby req | sourced |
+| Proteus | — GAP | — | Voyager 2 did NO targeted flyby (Stone-Miner 1989 gives only orbital distance 117,600 km) | — |
+| Charon/Nix/Hydra; Amalthea/Hyperion; small Saturn moons | — GAP | — | registry-only; no mission/design study in corpus | — |
+
+Triton (large, retrograde, inclined) is the most cycler-relevant; its single
+Voyager-2 flown C/A is now sourced but no *design* floor exists. The remaining
+registry-only bodies (`core/satellites.py`, `safe_alt_km` default 10 km tiny /
+100 km otherwise — `2026-06-14-full-body-registry.md`) stay GAPs.
 
 ---
 
@@ -227,14 +253,23 @@ Cassini flown (Bellerose 2018) gives only *flyby counts* (117 Titan, 28 Enceladu
 
 # GAPS (bodies with NO sourced flyby/CA altitude) — acquisition targets
 
+> **#429 update (2026-06-23):** several GAPs below now CLOSED via Stone & Miner
+> 1986/1989 (Voyager-2 flown C/A for Uranus, Neptune, Triton), Heaton & Longuski
+> 2003 (Uranian-moon DESIGN floor 50 km + Tour U00-01 per-moon altitudes), and
+> Genova 2016 PADME / Conte-Spencer 2018 (Phobos/Deimos 2-10 km design floor + MGS
+> 89-213 km flown). See `2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md`
+> and `data/flyby_altitude_references.yaml`. A **flown** Voyager-2 C/A is NOT a
+> design floor — recorded `observed-flown` only.
+
 | body | status | note |
 |---|---|---|
-| Uranus (planet) | no sourced *design floor* | only Voyager-2 flown 81,500 km; Bourke 1971 design CAs in R_U |
-| Neptune (planet) | no sourced *design floor* | only Voyager-2 flown ~4,950 km |
-| Uranian moons (Miranda/Ariel/Umbriel/Titania/Oberon) | full GAP | Heaton-Longuski 2003 tour altitudes not transcribed → acquisition |
-| Triton (Neptune) | full GAP | cycler-relevant (large); registry-only |
-| Proteus (Neptune) | full GAP | registry-only |
-| Phobos / Deimos (Mars) | full GAP | registry-only |
+| Uranus (planet) | flown sourced; no design floor | Voyager-2 flown **81,441 km** now `sourced` (Stone-Miner 1986; 107,000 km from centre − 25,559 km). Still no sourced *design* floor; Bourke 1971 design CAs in R_U |
+| Neptune (planet) | flown sourced; no design floor | Voyager-2 flown **4,476 km** now `sourced` (Stone-Miner 1989; 29,240 km from centre − 24,764 km). Still no sourced *design* floor |
+| Ariel/Umbriel/Titania/Oberon (Uranus) | **CLOSED (design)** | Heaton-Longuski 2003 Table 4 floor **>50 km**; Tour U00-01 per-moon min: Ariel 35, Umbriel 54, Titania 58, Oberon 109 km |
+| Miranda (Uranus) | partial | only Voyager-2 flown mass-pass (within 28,260 km of satellite, Stone-Miner 1986); NOT a tour flyby body → no design floor |
+| Triton (Neptune) | **CLOSED (flown)** | Voyager-2 flown **38,447 km** now `sourced` (Stone-Miner 1989; 39,800 km from centre − 1,352.6 km). Cycler-relevant (large, retrograde, inclined) |
+| Proteus (Neptune) | full GAP | Voyager 2 did NO targeted flyby; Stone-Miner 1989 gives only orbital distance 117,600 km; registry-only |
+| Phobos / Deimos (Mars) | **CLOSED (design)** | Genova 2016 PADME 2-10 km flyby req (floor ~2 km); MGS 14 Phobos flybys 89-213 km flown; Conte-Spencer 2018 DRO <10 km |
 | Charon / Nix / Hydra (Pluto) | full GAP | registry-only |
 | Amalthea, Hyperion (Jupiter/Saturn small) | full GAP | registry-only; Hyperion in flown Cassini tour but no per-flyby alt |
 | Phoebe, Telesto, Helene, Epimetheus, Methone, Pallene (Saturn small) | full GAP | named in Cassini tour (Bellerose) but no altitudes |

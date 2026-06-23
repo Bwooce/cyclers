@@ -76,16 +76,21 @@ planets:
       - {altitude_km: 101050, type: observed-flown, mission: "Voyager 2 Saturn (2.68 R_S; V_inf 10.674)", date: "1981-08-26", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
   Uranus:
     code: U
-    safe_alt_km_floor: 1000        # GAP - no sourced design floor (flown-only)
+    safe_alt_km_floor: 1000        # still no sourced *planet* design floor (flown-only + Bourke design CAs)
     references:
-      - {altitude_km: 81573, type: observed-flown, mission: "Voyager 2 Uranus (4.19 R_U; V_inf 14.732)", date: "1986-01-24", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 81500, type: observed-flown, mission: "Voyager 2 Uranus", date: "1986-01-24", citation: "NASA '35 Years Ago' (50,700 mi)", confidence: secondary}
+      # Sourced flown C/A (Stone & Miner 1986): 107,000 km from centre - 25,559 km
+      # (IAU 2015 1-bar radius, constants.py) = 81,441 km. A FLOWN value, NOT a design floor.
+      - {altitude_km: 81441, type: observed-flown, mission: "Voyager 2 Uranus (C/A 107,000 km from centre; radius 25,559 km IAU 2015)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:39 (abstract); 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 81573, type: observed-flown, mission: "Voyager 2 Uranus (4.19 R_U; V_inf 14.732; SPK reconstruction)", date: "1986-01-24", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
   Neptune:
     code: N
-    safe_alt_km_floor: 1000        # GAP - no sourced design floor (flown-only)
+    safe_alt_km_floor: 1000        # still no sourced *planet* design floor (flown-only)
     references:
-      - {altitude_km: 4507, type: observed-flown, mission: "Voyager 2 Neptune (1.18 R_N; V_inf 16.742)", date: "1989-08-25", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
-      - {altitude_km: 4950, type: observed-flown, mission: "Voyager 2 Neptune", date: "1989-08-25", citation: "Wikipedia (29,240 km from centre)", confidence: secondary}
+      # Sourced flown C/A (Stone & Miner 1989): 29,240 km from centre - 24,764 km
+      # (IAU 2015 1-bar radius, constants.py) = 4,476 km (paper's own 1-bar radius
+      # 24,760 km gives 4,480 km). A FLOWN value, NOT a design floor.
+      - {altitude_km: 4476, type: observed-flown, mission: "Voyager 2 Neptune (C/A 29,240 km from centre; radius 24,764 km IAU 2015)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 4507, type: observed-flown, mission: "Voyager 2 Neptune (1.18 R_N; V_inf 16.742; SPK reconstruction)", date: "1989-08-25", citation: "2026-06-19-390-spk-vinf-extractor.md", confidence: derived}
 
 moons:
   Titan:
@@ -137,15 +142,75 @@ moons:
     primary: Earth
     references:
       - {altitude_km: 3000, type: design-CA, mission: "Genova-Aldrin 2015 free-return perilune (farside)", date: null, citation: "2026-06-10-genova-aldrin-2015-mining.md lines 36/61", confidence: sourced}
+  # --- Uranian major moons (#429): DESIGN floor from Heaton-Longuski 2003 ---
+  # Table 4 constraint "Flyby altitude > 50 km" is the sourced design floor for ALL
+  # four major flyby moons. Per-moon min design altitudes are the Tour U00-01 (Table 5)
+  # lowest per-encounter values. Voyager 2 (Stone & Miner 1986) flew single passes but
+  # the overview paper gives NO per-moon C/A (those live in the navigation paper).
+  Miranda:
+    primary: Uranus
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      # Doppler mass-determination pass, NOT a targeted CA and NOT a design floor.
+      - {altitude_km: 28024, type: observed-flown, mission: "Voyager 2 Miranda mass pass (within 28,260 km of satellite; radius 235.8 km)", date: "1986-01-24", citation: "Stone & Miner 1986 Science 233:411; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+  Ariel:
+    primary: Uranus
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 35, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Ariel min flyby (event 12; range 35-651)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+  Umbriel:
+    primary: Uranus
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 54, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Umbriel min flyby (event 14; range 54-432)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+  Titania:
+    primary: Uranus
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 58, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Titania min flyby (event 3; range 54-2189)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+  Oberon:
+    primary: Uranus
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      - {altitude_km: 50, type: design-floor, mission: "Heaton-Longuski 2003 Uranian tour min flyby altitude (Table 4 constraint)", date: null, citation: "heaton-longuski-2003 Table 4; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 109, type: design-CA, mission: "Heaton-Longuski 2003 Tour U00-01 Oberon min flyby (event 19; range 109-584)", date: null, citation: "heaton-longuski-2003 Table 5", confidence: sourced}
+  # --- Neptune moons (#429) ---
+  Triton:
+    primary: Neptune
+    safe_alt_km_floor: 100          # satellites.py engineering default
+    references:
+      # Sourced flown C/A (Stone & Miner 1989): 39,800 km from centre - 1,352.6 km
+      # (radius from satellites.py; paper diameter 2705 km -> r 1352.5). FLOWN, not a floor.
+      - {altitude_km: 38447, type: observed-flown, mission: "Voyager 2 Triton (C/A 39,800 km from centre; radius 1,352.6 km)", date: "1989-08-25", citation: "Stone & Miner 1989 Science 246:1418; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+  # --- Mars moons (#429): DESIGN floor from PADME / Mars-Phobos DRO studies ---
+  Phobos:
+    primary: Mars
+    safe_alt_km_floor: 10           # satellites.py engineering default (tiny irregular)
+    references:
+      - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+      - {altitude_km: 89, type: observed-flown, mission: "Mars Global Surveyor 14 Phobos flybys (altitude range 89-213 km)", date: "1998-2003", citation: "genova-2016 PADME p.1 (citing prior MGS results)", confidence: sourced}
+      - {altitude_km: 10, type: design-CA, mission: "Conte-Spencer 2018 Mars-Phobos DRO (<10 km from Phobos; A_x 15-300 km)", date: null, citation: "conte-spencer-2018 Acta Astro p.1; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
+  Deimos:
+    primary: Mars
+    safe_alt_km_floor: 10           # satellites.py engineering default (tiny irregular)
+    references:
+      - {altitude_km: 2, type: design-floor, mission: "Genova 2016 PADME low-altitude flyby requirement (2-10 km passes)", date: null, citation: "genova-2016-phobos-deimos-PADME AIAA-2016-5681 p.1/req-table; 2026-06-23-digest-stone-miner-voyager2-uranus-neptune.md", confidence: sourced}
 
-# Bodies with NO sourced flyby altitude (acquisition targets, #428):
-#   Uranian moons (Miranda/Ariel/Umbriel/Titania/Oberon) - Heaton-Longuski 2003 not transcribed
-#   Triton, Proteus (Neptune); Phobos/Deimos (Mars); Charon/Nix/Hydra (Pluto)
-#   Amalthea, Hyperion; small Saturn moons (Phoebe/Telesto/Helene/Epimetheus/Methone/Pallene)
-#   Uranus & Neptune planets: no sourced DESIGN floor (flown-only Voyager-2 values above).
+# Bodies with NO sourced flyby altitude (acquisition targets) — updated #429:
+#   CLOSED by #429: Uranian moons Ariel/Umbriel/Titania/Oberon (Heaton-Longuski 2003
+#     design floor 50 km + Tour U00-01 per-moon min altitudes); Triton (Voyager-2 flown
+#     C/A); Phobos/Deimos (PADME 2-10 km design floor + MGS 89-213 km flown + Conte DRO).
+#   STILL OPEN: Proteus (Voyager 2 did NOT do a targeted flyby; only orbital distance
+#     known), Miranda design floor (not a tour flyby body; only the flown mass-pass),
+#     Charon/Nix/Hydra (Pluto), Amalthea/Hyperion, small Saturn moons, Mercury design-min,
+#     Uranus & Neptune PLANET design floor (flown-only Voyager-2 C/A above; no design min).
 gaps:
-  - {body: "Uranian moons (Miranda/Ariel/Umbriel/Titania/Oberon)", reason: "Heaton-Longuski 2003 tour altitudes not transcribed"}
-  - {body: "Triton", reason: "cycler-relevant; registry-only"}
-  - {body: "Proteus", reason: "registry-only"}
-  - {body: "Phobos/Deimos", reason: "registry-only"}
-  - {body: "Uranus/Neptune design floor", reason: "flown-only (Voyager 2); no sourced design minimum"}
+  - {body: "Proteus", reason: "Voyager 2 did no targeted flyby (Stone-Miner 1989 gives only orbital distance 117,600 km); registry-only"}
+  - {body: "Miranda (design floor)", reason: "not used as a flyby body in Heaton-Longuski U00-01 tour; only Voyager-2 flown mass-pass (28,260 km) known"}
+  - {body: "Charon/Nix/Hydra (Pluto)", reason: "registry-only; no flyby/design altitude in corpus"}
+  - {body: "Amalthea/Hyperion; small Saturn moons (Phoebe/Telesto/Helene/Epimetheus/Methone/Pallene)", reason: "registry-only"}
+  - {body: "Mercury design-min", reason: "flown ~165-200 km (BepiColombo) but no sourced DESIGN minimum"}
+  - {body: "Uranus/Neptune PLANET design floor", reason: "flown-only (Voyager 2 C/A now sourced); no sourced design minimum"}
