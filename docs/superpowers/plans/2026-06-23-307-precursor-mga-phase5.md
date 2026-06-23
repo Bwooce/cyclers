@@ -76,12 +76,18 @@ target terminal-Earth phase window from the catalogue cycler row; Test
 
 ### Task 4: Re-run the Aldrin + S1L1 precursor scans through the upgraded substrate
 
-- [ ] Run the #302 matcher with Tasks 1–3 enabled; record closure quality + flyby
+- [x] Run the #302 matcher with Tasks 1–3 enabled; record closure quality + flyby
   continuity + literature-check verdict in a results note.
-- [ ] Expected (per the Phase-4 note): closure ≤1 km/s, continuity ≤0.1 km/s, and the
+  → `docs/superpowers/plans/2026-06-23-307-task4-multirev-precursor-verdict.md`.
+- [x] Expected (per the Phase-4 note): closure ≤1 km/s, continuity ≤0.1 km/s, and the
   lit-check still flags 0 novel (the structural test) — OR, if a literature-fresh
   precursor survives, route it through the V0–V5 gauntlet + ML flagger + #256 FP guard
   before any catalogue claim (closure discipline: independent cross-check mandatory).
+  → OUTCOME: honest negative. `max_revs=2` shifts the validated distribution
+  (median continuity −2 km/s) but 0/394 cross the 0.10 km/s gate on either target;
+  min continuity stays 4.15 (Aldrin) / 3.95 (S1L1) km/s; 0 literature-fresh. The
+  expectation that the upgraded substrate would close the gap is falsified — the
+  coplanar/circular-body model wall holds. Both rows stay V0.
 
 ## Self-review
 - Spec coverage: Tasks 1–3 = the three Phase-5 deficiencies in the #302 note; Task 4 =
