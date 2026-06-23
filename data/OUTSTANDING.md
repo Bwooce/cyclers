@@ -13,7 +13,51 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-17)
+# Project state at a glance (updated 2026-06-23)
+
+## DELTA SINCE 2026-06-17 (06-20→06-23 sprint) — read this first
+
+This block carries only the 06-20→06-23 deltas; the 06-16 block below remains
+the orientation map for everything prior. Catalogue row count + validation tiers
+UNCHANGED this sprint (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows; no new
+rows, no level changes) — the work was capability, provenance, and
+characterization, not admissions.
+
+**Band-aware validation + M7 maintenance-ΔV (the discovery gate).** #423 (M7
+per-row real-eph horizon-TCM stage) + #424 (band-aware V3 acceptance) LANDED, so
+the dv_band→validation coupling gate is RELEASED — discovery + validation
+campaigns are ungated. M7 Phase-1 proven on S1L1 (strictly-ballistic at the
+sourced floor); M7 Phase-2 coverage scan found catalogue-wide measured bands are
+#388-data-gated (305/318 rows can't construct: descriptor-only census rows).
+
+**Sourced flyby-altitude floors (#426/#427/#428/#429).** Per-body sourced floor
+config + per-row `flyby_altitudes_km` + `data/flyby_altitude_references.yaml`
+(8 planets / 20 moons / 6 gaps). Floors corrected to sourced design minima:
+Earth/Mars 300→200 (Russell 2004), Mercury 1000→200 (BepiColombo), Callisto
+100→200 (Campagnola 2014), Uranian moons 100→50 (Heaton-Longuski 2003), Pluto
+100 km now sourced (Stern 2020). Corpus mining filed Stone-Miner 1986/1989
+(Voyager Uranus/Neptune/Triton C/As), Stern 2020 + Harch 2016 (Pluto system).
+Param audit (#428): the flyby floor was the only unsourced-default-shadowing-a-
+digested-value bug; everything else sourced or labelled-convention.
+
+**#425 negative-registry staleness audit.** 0/31 negatives invalidated by the
+#198 epoch fix or the #426/#428 floor fixes (binding constraints provably
+untouched). All entries stamped.
+
+**#388 reproduction wall — sharpened, no new promotions.** The direct multi-arc
+closure lane is characterized to the bottom. NEW finding: the wall is
+ENERGY-SELECTIVE, not universal — russell-ocampo-4.3.1-5 (lowest-V∞ near-Hohmann,
+anchor 3.1/2.5) RECOVERS its anchor in real DE440 (first #365 census cycler to do
+so), but only at a Mars-perihelion epoch, with a 164 m/s low_maintenance close
+that is epoch/seed-fragile (canonical close_row_dsm fails 12.6 km/s) → STAYS V0.
+High-energy rows (2.5.1+0 at 7.8/9.9; S1L1 at 4.7/5.0) collapse off-anchor.
+McConaghy-2005 Table 2 descriptors ingested for 4.3.1-5 + 2.5.1+0 (descriptor
+count 12→14). The f/h-leg cyclers can't use the §14 V1 conic Lambert crosscheck
+(singular legs) — the real promotion lever is a §14-V1 build that handles
+full-rev/half-rev legs. Russell 2004 dissertation confirmed already in corpus
+(hdl:2152/1253); the 2 remaining #365 negatives are publication-gap (n.m.k
+summary only, no per-arc geometry anywhere). Finley "Orbital Tour of Pluto"
+paper confirmed never published (no DOI; #279 corrected).
 
 ## DELTA SINCE 2026-06-16 — read this first
 

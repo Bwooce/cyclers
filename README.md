@@ -38,7 +38,7 @@ for the full taxonomy, V0–V5 gauntlet extension, and migration record.
 | Low-thrust (v2) — Sims-Flanagan model: leg model, feasibility/NLP constraints, two-phase DE+SLSQP solve, powered-maintenance evaluator (machinery only — no sourced powered rows exist) | ✓ done |
 
 **Companion catalogue** at [`data/catalogue.yaml`](data/catalogue.yaml) carries the
-312-entry published-cycler seed library (incl. Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 13 `mga_tour` rows + the catalogue's **first computed `quasi_cycler` row** — Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic resonance with an 84-yr validity window — discovered + validated end-to-end by the cyclerfinder project during the 2026-06-15→06-17 frontier-capability sprint) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
+318-entry published-cycler seed library (incl. Tito 2018 Mars free-return + Heaton-Longuski 2003 Uranian satellite tour U00-01 as part of the 12 `mga_tour` rows + the catalogue's **first computed `quasi_cycler` row** — Umbriel-Oberon-Umbriel (1,1) Uranian near-5:1 synodic resonance with an 84-yr validity window — discovered + validated end-to-end by the cyclerfinder project during the 2026-06-15→06-17 frontier-capability sprint) (Aldrin family, Russell-Ocampo Table 3.4, McConaghy SnLm
 broad classes, Niehoff VISIT, Jones VEM family, the 15-orbit Hollister–Menning Earth–Venus
 family, plus lunar and Jovian family seeds). Every numerical value carries a source quote per [`data/README.md`](data/README.md)
 conventions. Real-ephemeris launch windows for each ballistic Earth-touching entry are
