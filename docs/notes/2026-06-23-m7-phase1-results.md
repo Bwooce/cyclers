@@ -137,6 +137,30 @@ the 2 App-C powered rows (diverge → published budget). The other ~215 stay V0 
 
 Discovery stays gated (the "reproduce reliably first" bar is NOT met). Recommend (A).
 
+## S1L1 published-number reproduction attempt (2026-06-23) — epoch is NOT the gap
+
+Tried to close S1L1's M7 (40 m/s) vs published essentially_ballistic (<10 m/s) by
+launch-epoch/phasing optimization. **Verified dead end:** an epoch sweep of ±780 d
+(one E-M synodic) in 60 d steps converges ONLY at the App-C design epoch (40.1 m/s);
+EVERY other shift diverges. A cycler's phasing is locked to its synodic alignment, so
+shifting the launch date breaks the fixed-ToF resonant structure and no ballistic chain
+exists. The App-C epoch is already optimal — epoch is not the 40-vs-<10 gap.
+
+**So the gap is the optimization METHOD, not phasing.** M7 does **flyby-only**
+maintenance at **exact** node positions (the most constrained model) → it is a
+CONSERVATIVE UPPER BOUND on the true maintenance. Russell's published <10 m/s comes
+from his **joint trajectory optimizer** (free mid-leg DSMs, corridor relaxation, jointly
+minimized). M7's 40 is consistent with (an upper bound on) <10 — it confirms
+ballistic-CLASS / V3-pass (≪120 m/s budget) but does NOT reproduce the published
+sub-tier. Reproducing the published *number* requires re-implementing the joint
+optimizer (free DSMs) — the #388 full-shooter frontier (compute-heavy, previously
+walled), or at least extending the M7 chain with a per-leg mid-leg-DSM degree of freedom
+(`search/dsm_leg.py` exists) and joint minimization.
+
+**Net:** no multi-leg cycler is reproduced to its published maintenance tier. M7 gives a
+sound conservative bound (class, not tier). Closing to the published number is an
+optimizer build, not a tweak — STOP and reassess per directive.
+
 ## Gate status
 
 Per `project_dvband_validation_coupling_gate`: the gate to resume discovery+validation
