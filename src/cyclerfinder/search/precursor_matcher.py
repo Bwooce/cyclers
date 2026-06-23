@@ -343,28 +343,34 @@ def _survivor_to_match(
     survivor: Any,
     cycler_id: str,
     seed_vinf: float,
+    literature_check_search: SearchFn | None = None,
 ) -> PrecursorMatch:
     """Convert a global-engine :class:`PrecursorSurvivor` to a :class:`PrecursorMatch`.
 
     The survivor already carries the closed :class:`EpochLockedTrajectory`
     (``survivor.eval.closure.trajectory``), so it is reused directly rather
     than rebuilt via :func:`_candidate_to_trajectory`. The literature verdict
-    is set to the same ``inconclusive`` / deferred sentinel the local path uses
-    when no ``literature_check_search`` is available — the engine path does not
-    run the literature check (the survivor stream is the discovery probe; the
-    caller decides what to do with it).
+    is computed via :func:`check_literature` when ``literature_check_search`` is
+    supplied (mirroring the local path); otherwise it falls back to the same
+    ``inconclusive`` / deferred sentinel the local path uses when no search fn
+    is available.
     """
     closure = survivor.eval.closure
     trajectory_record = closure.trajectory
     vinf_match_residual_kms = abs(_terminal_vinf_kms(closure) - seed_vinf)
-    lit = LiteratureCheckResult(
-        status="inconclusive",
-        citation=None,
-        doi=None,
-        confidence=0.0,
-        query_trail=[],
-        notes="Global engine path; literature verdict deferred",
-    )
+    if literature_check_search is None:
+        lit = LiteratureCheckResult(
+            status="inconclusive",
+            citation=None,
+            doi=None,
+            confidence=0.0,
+            query_trail=[],
+            notes="No literature_check_search provided; verdict deferred",
+        )
+    else:
+        lit = check_literature(
+            _signature_from_candidate(trajectory_record), search=literature_check_search
+        )
     return PrecursorMatch(
         candidate=trajectory_record,
         cycler_id=cycler_id,
@@ -545,7 +551,7 @@ def find_cycler_precursors(
             epoch_step_days=epoch_step_days,
         )
         engine_matches: list[PrecursorMatch] = [
-            _survivor_to_match(s, cycler_id, seed_vinf) for s in survivors
+            _survivor_to_match(s, cycler_id, seed_vinf, literature_check_search) for s in survivors
         ]
         if max_candidates_to_validate is not None:
             engine_matches = engine_matches[:max_candidates_to_validate]
