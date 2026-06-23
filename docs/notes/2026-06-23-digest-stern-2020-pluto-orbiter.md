@@ -56,7 +56,17 @@ do NOT read 2376/1212 as radii. Styx GM 0.001, Nix 0.003, Kerberos 0.0011, Hydra
 ## Catalogue / task implications
 - **#429 gap partially closed:** Pluto planet now has a **sourced** design floor (100 km),
   upgrading the convention. Charon + small Pluto moons remain gaps (periapsis numbers
-  live in Finley [5], #279 — a targeted re-read is the next acquisition-free step).
+  live in Finley [5]).
+- **Reference [5] resolves the #279 "does the Finley paper exist?" question — IT DOES.**
+  Full citation from Stern's reference list: **Finley, T., Barth, E., Howett, C.,
+  Zangari, A., Tapley, M., Scherrer, J., and Stern, A., "An Orbital Tour of Pluto and
+  Its Moons," *Journal of Spacecraft and Rockets* (to be published)** — a real,
+  separate, Finley-first-author JSR paper (in-press 2020 → likely published 2020-2021).
+  This corrects the #279 disposition note ("no separate Finley publication appears to
+  exist"); acquisition re-opened as a precise target — it holds the Charon GA periapsis
+  altitudes. Reference **[4] Brozović, Showalter, Jacobson & Buie 2015, *Icarus*
+  246:317-329** (DOI 10.1016/j.icarus.2014.03.015) is the Pluto-system masses source
+  behind Table 2 and our `satellites.py` Charon/Nix/Hydra GMs.
 - **Not catalogue-admissible** as a cycler/tour row: it is a notional study, not flown,
   and the tour is a one-off orbital tour (not a repeating cycler). Recorded as corpus +
   flyby-floor provenance only.

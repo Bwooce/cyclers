@@ -1,10 +1,35 @@
 # #279 disposition — Finley et al. JSR Pluto moon-tour paper
 
 **Date:** 2026-06-15
-**Disposition:** **DISSOLVED.** The orbital-tour content is contained within the
+**Disposition:** **DISSOLVED** (2026-06-15) — **PARTIALLY CORRECTED 2026-06-23.**
+
+> **CORRECTION (2026-06-23, #429):** The "no separate Finley-first-author
+> publication appears to exist" conclusion below was **WRONG**. The full Stern et
+> al. 2020 PDF (now actually filed in the corpus, not merely characterized from
+> press releases) cites it explicitly as reference **[5]: Finley, T., Barth, E.,
+> Howett, C., Zangari, A., Tapley, M., Scherrer, J., and Stern, A., "An Orbital
+> Tour of Pluto and Its Moons," *Journal of Spacecraft and Rockets* (to be
+> published)** — a real, separate, Finley-FIRST-author JSR paper (was in-press in
+> 2020; likely published 2020-2021). It is the detailed Charon-gravity-assist
+> trajectory paper and is the source for the Charon (and small-moon) flyby
+> periapsis altitudes that Stern 2020 omits. **Acquisition is RE-OPENED as a
+> precise target** (JSR, Finley et al., "An Orbital Tour of Pluto and Its Moons",
+> ~2020-2021). The risk *conclusion* below likely still holds (a companion paper
+> shares Stern's Charon-GA framing, structurally distinct from the 12 patched-conic
+> candidates), but the factual basis "no such paper exists" is retracted: it
+> exists and was never literature-checked. Re-run the #270 check against it once
+> acquired. The Pluto-system masses in Stern Table 2 trace to ref **[4] Brozović,
+> Showalter, Jacobson & Buie 2015, Icarus 246:317-329** (DOI
+> 10.1016/j.icarus.2014.03.015) — already the cited source for our satellites.py
+> Charon/Nix/Hydra GMs.
+
+The orbital-tour content is contained within the
 already-characterized Stern-Tapley-Finley-Scherrer 2020 paper
-(DOI `10.2514/1.A34658`, *J. Spacecraft & Rockets* 57(5):956). No separate
-Finley-first-author publication appears to exist.
+(DOI `10.2514/1.A34658`, *J. Spacecraft & Rockets* 57(5):956; full PDF filed
+2026-06-23 as
+`stern-tapley-finley-scherrer-2020-pluto-orbiter-kuiper-belt-explorer-jsr-a34658.pdf`,
+digest `2026-06-23-digest-stern-2020-pluto-orbiter.md`). A separate
+Finley-first-author publication **does** exist (ref [5], see correction above).
 
 ## Investigation summary
 Multiple WebSearch + WebFetch attempts (this session):
