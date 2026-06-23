@@ -420,6 +420,16 @@ def find_cycler_precursors(
 ) -> list[PrecursorMatch]:
     """Find precursor MGA chains that insert a spacecraft into a cycler row.
 
+    By default (``use_global_engine=True``, #430) this delegates to the unified
+    global MGA-DSM engine (:func:`global_precursor_engine.search_precursors`):
+    eccentric-aware Tisserand-Poincaré seeds + a global differential_evolution
+    search over (epoch, per-leg TOFs, per-leg DSM), ranked by ``dv_band`` /
+    total ΔV. ``max_revs`` is forwarded; the engine-only knobs (``popsize``,
+    ``maxiter``, ``seed``, ``dsm_max_kms``) are NOT exposed here and use
+    :func:`search_precursors` defaults. Set ``use_global_engine=False`` to run
+    the original local Nelder-Mead path described below (unchanged; used by the
+    #302/#307 reproductions).
+
     Reads the cycler's first encounter body and seed V_inf from the
     catalogue row (``catalogue.by_id[cycler_id].vinf_kms_at_encounters[0]``);
     enumerates Earth-launched chains via
@@ -549,6 +559,7 @@ def find_cycler_precursors(
             vinf_grid_kms=vinf_grid_kms,
             tof_box_days_per_leg=tof_box_days_per_leg,
             epoch_step_days=epoch_step_days,
+            max_revs=max_revs,
         )
         engine_matches: list[PrecursorMatch] = [
             _survivor_to_match(s, cycler_id, seed_vinf, literature_check_search) for s in survivors

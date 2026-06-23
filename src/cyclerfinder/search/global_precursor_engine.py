@@ -239,8 +239,13 @@ def decision_cost(ev: DecisionEval, *, w_cont: float = 1.0, w_dsm: float = 0.5) 
 
 
 def rank_band(total_dsm_dv_kms: float) -> str:
-    """dv_band for a candidate's total DSM ΔV, via the sourced classifier
-    (m/s input, Russell 7-cycle basis)."""
+    """dv_band for a candidate's total DSM ΔV, via the sourced classifier.
+
+    NB: ``classify_dv_band`` is a *7-cycle maintenance*-ΔV classifier; here we
+    reinterpret its sourced bin edges (1/10/300 m/s) for a one-shot *insertion*
+    DSM total. At the default ``n_cycles`` no pro-rata scaling occurs, so the
+    bins apply as-is — we reuse the sourced thresholds rather than inventing new
+    ones, accepting that the budget being binned is insertion not maintenance."""
     return classify_dv_band(total_dsm_dv_kms * 1000.0)
 
 
