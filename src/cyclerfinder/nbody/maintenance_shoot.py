@@ -30,14 +30,23 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
-from cyclerfinder.core.constants import MU_SUN_KM3_S2
+from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.core.flyby import flyby_dv_for
+from cyclerfinder.core.flyby import flyby_dv
 from cyclerfinder.core.lambert import LambertError, lambert
 from cyclerfinder.nbody.forces import RailsEphemerisCache
 from cyclerfinder.nbody.propagator import RestrictedNBody
 
 Vec3 = NDArray[np.float64]
+
+# Minimum unpowered-flyby altitude (km). Russell 2004 p.165 designs the Earth-Mars
+# cyclers with r_p,min = 6578.0 km (Earth) / 3598.5 km (Mars) — i.e. a 200 km floor —
+# and Table 3.4 footnote b ("all flybys have min altitude > 200 km") is the
+# strictly-ballistic condition. A 300 km floor (our old default) is unsourced and
+# over-conservative: it spuriously charges ~40 m/s to a single marginal S1L1 flyby whose
+# required 95.0 deg bend is feasible at 200 km (max bend 95.0) but not at 300 km (94.5).
+# To REPRODUCE the published cyclers we must use the model's own floor.
+DEFAULT_MIN_FLYBY_ALT_KM = 200.0
 
 # Default convergence tolerance on the arrival miss. 1 km is far inside any flyby
 # SOI band (Mars 3-SOI ~ 1.7e6 km) and well below the patched-conic miss the chain
@@ -232,6 +241,7 @@ def continuous_maintenance_chain(
     cruise_perturbers: tuple[str, ...] = (),
     exclude_endpoint_bodies: bool = True,
     leg_v_guess: Sequence[Vec3] | None = None,
+    min_flyby_alt_km: float = DEFAULT_MIN_FLYBY_ALT_KM,
     n_cycles: int = 1,
     tol_km: float = DEFAULT_TOL_KM,
     max_iter: int = DEFAULT_MAX_ITER,
@@ -294,6 +304,11 @@ def continuous_maintenance_chain(
         constructed departure velocities so the Newton stays in the intended transfer
         basin. Without it the chain seeds from a single-rev Lambert, which lands a
         high-energy single-rev solution on multi-rev legs (wildly inflated TCM).
+    min_flyby_alt_km:
+        Minimum unpowered-flyby altitude (km) for the per-flyby bend feasibility /
+        ΔV (default :data:`DEFAULT_MIN_FLYBY_ALT_KM` = 200 km, the Russell 2004 p.165
+        design floor). Must match the model the cycler was designed under to reproduce
+        its published maintenance — a too-high floor spuriously charges marginal flybys.
     n_cycles:
         Number of cycles the node span covers (for ``per_cycle_tcm_mps``).
     tol_km, max_iter, accuracy, max_wall_sec:
@@ -379,9 +394,13 @@ def continuous_maintenance_chain(
         conv = True
         if is_flyby:
             conv = leg_conv[i - 1] and leg_conv[i]
-            dv = flyby_dv_for(node_bodies[i], vin, vout) if conv else float("inf")
             if conv:
+                pdata = PLANETS[node_bodies[i]]
+                rp_min = pdata.radius_eq_km + min_flyby_alt_km
+                dv = flyby_dv(vin, vout, pdata.mu_km3_s2, rp_min)
                 horizon_kms += dv
+            else:
+                dv = float("inf")
         nodes.append(
             MaintenanceNode(
                 index=i,

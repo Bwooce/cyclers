@@ -17,9 +17,10 @@ rebound = pytest.importorskip("rebound")
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS  # noqa: E402
 from cyclerfinder.core.ephemeris import Ephemeris  # noqa: E402
-from cyclerfinder.core.flyby import flyby_dv_for  # noqa: E402
+from cyclerfinder.core.flyby import flyby_dv  # noqa: E402
 from cyclerfinder.core.lambert import lambert  # noqa: E402
 from cyclerfinder.nbody.maintenance_shoot import (  # noqa: E402
+    DEFAULT_MIN_FLYBY_ALT_KM,
     continuous_maintenance_chain,
     target_leg,
 )
@@ -123,12 +124,14 @@ def test_maintenance_chain_sun_only_matches_lambert_accounting() -> None:
     r_m1, v_m1 = (np.asarray(x, dtype=np.float64) for x in ephem.state("M", t1))
     r_e2, _ = (np.asarray(x, dtype=np.float64) for x in ephem.state("E", t2))
 
-    # Independent two-body Lambert accounting for the interior Mars flyby.
+    # Independent two-body Lambert accounting for the interior Mars flyby, using the
+    # SAME min-flyby-altitude floor the chain defaults to (Russell 200 km).
     leg0 = lambert(r_e0, r_m1, t1 - t0, mu=MU_SUN_KM3_S2)[0]  # E->M
     leg1 = lambert(r_m1, r_e2, t2 - t1, mu=MU_SUN_KM3_S2)[0]  # M->E
     vinf_in_mars = np.asarray(leg0.v2, dtype=np.float64) - v_m1  # arrival at Mars
     vinf_out_mars = np.asarray(leg1.v1, dtype=np.float64) - v_m1  # departure from Mars
-    expected_dv_kms = flyby_dv_for("M", vinf_in_mars, vinf_out_mars)
+    rp_min_mars = PLANETS["M"].radius_eq_km + DEFAULT_MIN_FLYBY_ALT_KM
+    expected_dv_kms = flyby_dv(vinf_in_mars, vinf_out_mars, PLANETS["M"].mu_km3_s2, rp_min_mars)
 
     chain = continuous_maintenance_chain(
         epochs, chain_bodies, ephem, prop, cruise_perturbers=(), n_cycles=1
@@ -216,18 +219,19 @@ def test_maintenance_chain_nonendpoint_perturber_is_captured() -> None:
 
 
 @pytest.mark.slow
-def test_maintenance_chain_s1l1_reproduces_corrected_proxy() -> None:
-    """M7 on the real multi-rev S1L1 cycler reproduces the corrected #169 Sun-only proxy.
+def test_maintenance_chain_s1l1_reproduces_published_strictly_ballistic() -> None:
+    """M7 on the real multi-rev S1L1 cycler reproduces the PUBLISHED strictly-ballistic tier.
 
-    The decisive whole-stack golden: walk S1L1's full 22-node App-C sequence (the same
-    nodes the #169 proxy uses) with the position-targeted chain, SEEDED PER LEG by the
-    sourced departure V_inf (so the multi-rev resonant E-E legs stay in the right basin
-    — a single-rev Lambert re-guess otherwise inflates the TCM by ~4 orders of
-    magnitude). The horizon TCM must land near the corrected Sun-only proxy
-    (~40.2 m/s, post-#198 epoch fix; see docs/notes/2026-06-23-appc-s1l1-tcm-epoch-
-    rederivation.md) — confirming M7's real-planet-position targeting and the proxy's
-    sourced-direction accounting measure the same (ballistic) physics on a real
-    resonant cycler. Pinned as a computed regression anchor, NOT a sourced golden."""
+    The decisive whole-stack reproduction: walk S1L1's full 22-node App-C sequence with the
+    position-targeted chain, SEEDED PER LEG by the sourced departure V_inf (so the multi-rev
+    resonant E-E legs stay in the right basin — a single-rev re-guess otherwise inflates the
+    TCM ~4 orders of magnitude), using Russell 2004's SOURCED 200 km flyby floor (p.165:
+    r_p,min 6578.0 km Earth / 3598.5 km Mars). Under that floor the chain measures ~0 m/s =
+    strictly ballistic, REPRODUCING the published claim (Russell-Ocampo: S1L1 strictly
+    ballistic). At the old unsourced 300 km floor a single marginal flyby (node 19, required
+    95.0 deg bend vs 94.5 deg max) spuriously charged ~40 m/s — the floor, not the cycler,
+    was the cost. See docs/notes/2026-06-23-m7-phase1-results.md. First clean multi-leg
+    cycler reproduction to its published maintenance tier."""
     from cyclerfinder.search import s1l1_corrected as s1l1
 
     ephem = Ephemeris("astropy")
@@ -254,10 +258,8 @@ def test_maintenance_chain_s1l1_reproduces_corrected_proxy() -> None:
 
     assert not chain.diverged, "S1L1 sourced-seeded chain should fully converge"
     assert chain.n_legs_converged == chain.n_legs_total
-    # Reproduces the corrected Sun-only proxy (~40.2 m/s) — same ballistic physics.
-    assert chain.horizon_tcm_mps == pytest.approx(40.2, abs=5.0), (
-        f"S1L1 M7 horizon {chain.horizon_tcm_mps:.1f} m/s should track the corrected "
-        f"proxy ~40.2 m/s"
+    # Reproduces the published STRICTLY BALLISTIC tier under Russell's 200 km floor (~0 m/s).
+    assert chain.horizon_tcm_mps < 1.0, (
+        f"S1L1 M7 horizon {chain.horizon_tcm_mps:.2f} m/s should be ~0 (strictly ballistic) "
+        f"at the sourced 200 km flyby floor"
     )
-    # Far under the 120 m/s V3 ballistic budget -> S1L1 stays essentially_ballistic.
-    assert chain.horizon_tcm_mps < 120.0
