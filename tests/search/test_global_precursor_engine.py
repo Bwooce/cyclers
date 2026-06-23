@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import pytest
+
 from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.search.global_precursor_engine import (
+    decision_cost,
     eccentric_tp_linkable_radius_au,
     eccentric_tp_seeds,
+    rank_band,
 )
 
 
@@ -104,3 +108,34 @@ def test_negative_tof_vector_is_infeasible_with_cost_floor() -> None:
     assert result.closure.converged is False
     assert result.total_dsm_dv_kms >= 1.0e6
     assert result.per_leg_dsm_kms == ()
+
+
+def test_ballistic_scores_below_equal_powered() -> None:
+    """Two evals with identical closure+continuity but different DSM cost:
+    the ballistic (0 DSM) one must have the strictly lower cost."""
+
+    class _FakeClosure:
+        closure_residual_kms = 2.0
+        flyby_continuity_max_dv_kms = 1.0
+
+    class _FakeEval:
+        def __init__(self, dsm: float) -> None:
+            self.closure = _FakeClosure()
+            self.total_dsm_dv_kms = dsm
+
+    ballistic = decision_cost(_FakeEval(0.0))  # type: ignore[arg-type]
+    powered = decision_cost(_FakeEval(0.4))  # type: ignore[arg-type]
+    assert ballistic < powered
+
+
+@pytest.mark.parametrize(
+    "dv_kms,expected",
+    [
+        (0.0005, "strictly_ballistic"),  # 0.5 m/s < 1
+        (0.005, "essentially_ballistic"),  # 5 m/s < 10
+        (0.250, "low_maintenance"),  # 250 m/s < 300
+        (0.500, "powered_dsm"),  # 500 m/s >= 300
+    ],
+)
+def test_rank_band_boundaries(dv_kms: float, expected: str) -> None:
+    assert rank_band(dv_kms) == expected

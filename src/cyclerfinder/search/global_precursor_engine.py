@@ -25,6 +25,7 @@ from cyclerfinder.search.tisserand_mga_window import (
     _add_days_utc,
     find_mga_chains,
 )
+from cyclerfinder.verify.dv_band_acceptance import classify_dv_band
 
 
 def eccentric_tp_linkable_radius_au(body: str, t_sec: float, ephemeris: Ephemeris) -> float:
@@ -224,3 +225,19 @@ def _infeasible(
         per_leg_dsm_kms=(),
         feasible=False,
     )
+
+
+def decision_cost(ev: DecisionEval, *, w_cont: float = 1.0, w_dsm: float = 0.5) -> float:
+    """Scalar objective: closure + w_cont*continuity + w_dsm*total_DSM (km/s).
+    w_dsm > 0 makes a ballistic solution always score below an equal powered one."""
+    return (
+        ev.closure.closure_residual_kms
+        + w_cont * ev.closure.flyby_continuity_max_dv_kms
+        + w_dsm * ev.total_dsm_dv_kms
+    )
+
+
+def rank_band(total_dsm_dv_kms: float) -> str:
+    """dv_band for a candidate's total DSM ΔV, via the sourced classifier
+    (m/s input, Russell 7-cycle basis)."""
+    return classify_dv_band(total_dsm_dv_kms * 1000.0)
