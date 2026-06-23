@@ -110,7 +110,15 @@ def test_stm_jacobian_with_penalty_matches_fd() -> None:
 
 
 def test_shoot_penalty_off_matches_plain() -> None:
-    """vinf_weight=0 leaves shoot byte-for-byte unchanged."""
+    """vinf_weight=0 makes the penalty layer a true no-op.
+
+    The penalty block is gated on ``vinf_anchors and vinf_weight > 0.0``
+    (shooter.py block 4), so at ``vinf_weight=0.0`` both calls run the IDENTICAL
+    residual/Jacobian path. The two solves agree to FP precision; we assert
+    numerical identity (rtol 1e-9) rather than exact ``==`` because ``shoot``'s
+    least-squares solve carries multithreaded-BLAS summation-order noise (~1e-10
+    rel) that is not a behavioural difference.
+    """
     seed, ephem = _two_body_seed()
     plain = shoot(seed, ephem=ephem, bodies=(), accuracy=1e-11, max_nfev=20, jacobian="stm")
     off = shoot(
@@ -123,9 +131,9 @@ def test_shoot_penalty_off_matches_plain() -> None:
         vinf_anchors={"E": 5.0, "M": 6.0},
         vinf_weight=0.0,
     )
-    assert plain.defect_norm == off.defect_norm
+    assert plain.defect_norm == pytest.approx(off.defect_norm, rel=1e-9)
     for a, b in zip(plain.corrected_states, off.corrected_states, strict=True):
-        np.testing.assert_array_equal(a, b)
+        np.testing.assert_allclose(a, b, rtol=1e-9, atol=1e-9)
 
 
 def test_shoot_penalty_rejects_parallel_fd() -> None:
