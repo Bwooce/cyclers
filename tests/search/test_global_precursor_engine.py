@@ -37,3 +37,70 @@ def test_eccentric_tp_seeds_returns_candidates_terminating_at_target() -> None:
     for s in seeds:
         assert s.sequence[-1] == "E"
         assert abs(s.vinf_tuple_kms[-1] - 6.5) <= 0.8 + 1e-9
+
+
+def test_zero_dsm_vector_matches_plain_ballistic_closure() -> None:
+    """A decision vector with all DSM magnitudes 0 closes identically to a
+    plain EpochLockedTrajectory with no dsm_specs (the DSM layer is a no-op)."""
+    from cyclerfinder.genome.epoch_aware_genome import (
+        EpochLockedTrajectory,
+        close_epoch_locked,
+    )
+    from cyclerfinder.search.global_precursor_engine import evaluate_decision_vector
+
+    eph = Ephemeris("astropy")
+    sequence = ("E", "M")
+    leg_tofs = (250.0,)
+    vinf_expected = (6.5, 9.7)
+    launch = "2031-03-01T00:00:00"
+
+    plain = close_epoch_locked(
+        EpochLockedTrajectory(
+            sequence=sequence,
+            leg_tofs_days=leg_tofs,
+            vinf_kms_at_encounters=vinf_expected,
+            launch_epoch_utc=launch,
+            orbit_class="precursor_mga",
+            n_returns=1,
+            validity_window_start_utc=launch,
+            validity_window_end_utc="2032-03-01T00:00:00",
+            inserts_into="aldrin-classic-em-k1-outbound",
+        ),
+        eph,
+        closure_tol_kms=1.0e6,
+        flyby_continuity_tol_kms=1.0e6,
+        independent_cross_check=False,
+        independent_tol_kms=1.0e6,
+    )
+    x = [0.0, 250.0, 0.5, 0.0, 0.0, 0.0]
+    result = evaluate_decision_vector(
+        x,
+        sequence=sequence,
+        seed_launch_epoch_utc=launch,
+        vinf_expected_kms=vinf_expected,
+        ephemeris=eph,
+        inserts_into="aldrin-classic-em-k1-outbound",
+    )
+    assert abs(result.closure.closure_residual_kms - plain.closure_residual_kms) < 1e-6
+    assert result.total_dsm_dv_kms == 0.0
+
+
+def test_negative_tof_vector_is_infeasible_with_cost_floor() -> None:
+    from cyclerfinder.search.global_precursor_engine import evaluate_decision_vector
+
+    eph = Ephemeris("astropy")
+    x = [0.0, -10.0, 0.5, 0.0, 0.0, 0.0]
+    result = evaluate_decision_vector(
+        x,
+        sequence=("E", "M"),
+        seed_launch_epoch_utc="2031-03-01T00:00:00",
+        vinf_expected_kms=(6.5, 9.7),
+        ephemeris=eph,
+        inserts_into="aldrin-classic-em-k1-outbound",
+    )
+    assert result.feasible is False
+    assert result.closure.closure_residual_kms >= 1.0e6
+    assert result.closure.flyby_continuity_max_dv_kms >= 1.0e6
+    assert result.closure.converged is False
+    assert result.total_dsm_dv_kms >= 1.0e6
+    assert result.per_leg_dsm_kms == ()

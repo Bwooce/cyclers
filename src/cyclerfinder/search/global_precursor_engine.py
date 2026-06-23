@@ -8,11 +8,23 @@ dv_band / total ΔV. See docs/superpowers/specs/2026-06-23-global-precursor-engi
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import numpy as np
 
 from cyclerfinder.core.constants import AU_KM
 from cyclerfinder.core.ephemeris import Ephemeris
-from cyclerfinder.search.tisserand_mga_window import MGAChainCandidate, find_mga_chains
+from cyclerfinder.genome.epoch_aware_genome import (
+    DSMSpec,
+    EpochLockedClosure,
+    EpochLockedTrajectory,
+    close_epoch_locked,
+)
+from cyclerfinder.search.tisserand_mga_window import (
+    MGAChainCandidate,
+    _add_days_utc,
+    find_mga_chains,
+)
 
 
 def eccentric_tp_linkable_radius_au(body: str, t_sec: float, ephemeris: Ephemeris) -> float:
@@ -71,3 +83,144 @@ def eccentric_tp_seeds(
             continue
         out.append(c)
     return out
+
+
+_COST_FLOOR = 1.0e6
+_DSM_EPS_KMS = 1.0e-4  # below this magnitude a leg is treated as ballistic (no DSMSpec)
+_FRACTION_CLAMP = 1.0e-3  # keep fraction_along_leg strictly inside (0, 1)
+
+
+@dataclass(frozen=True)
+class DecisionEval:
+    """Result of evaluating one DE decision vector against the real-DE440 oracle."""
+
+    closure: EpochLockedClosure
+    total_dsm_dv_kms: float
+    per_leg_dsm_kms: tuple[float, ...]
+    feasible: bool
+
+
+def evaluate_decision_vector(
+    x: list[float] | np.ndarray,
+    *,
+    sequence: tuple[str, ...],
+    seed_launch_epoch_utc: str,
+    vinf_expected_kms: tuple[float, ...],
+    ephemeris: Ephemeris,
+    inserts_into: str,
+    max_revs: int = 2,
+) -> DecisionEval:
+    """Map a flat decision vector to a closed :class:`EpochLockedTrajectory`.
+
+    Decision-vector layout for an ``N``-leg chain (``len(sequence) == N + 1``)::
+
+        x = [epoch_offset_days,
+             tof_1 .. tof_N,
+             (eta_i, dvx_i, dvy_i, dvz_i) * N]
+
+    i.e. length ``1 + N + 4 * N``. ``epoch_offset_days`` is added to
+    ``seed_launch_epoch_utc``; each per-leg ``(eta, dv)`` block places one
+    optional DSM (only legs whose ``|dv| >= _DSM_EPS_KMS`` get a
+    :class:`DSMSpec`, so an all-zero DSM block is a ballistic no-op). The
+    trajectory is closed against the reused real-ephemeris oracle
+    (:func:`close_epoch_locked`).
+
+    Non-convergence / infeasible geometry (non-positive TOF, constructor or
+    closure failure) returns a :class:`DecisionEval` with ``_COST_FLOOR``
+    residuals and ``feasible=False``.
+    """
+    xv = np.asarray(x, dtype=np.float64)
+    n_legs = len(sequence) - 1
+    epoch_offset = float(xv[0])
+    tofs = tuple(float(t) for t in xv[1 : 1 + n_legs])
+    if any(t <= 0.0 for t in tofs):
+        return _infeasible(sequence, vinf_expected_kms, seed_launch_epoch_utc, inserts_into)
+    dsm_block = xv[1 + n_legs :]
+    dsm_specs: list[DSMSpec] = []
+    per_leg_dsm: list[float] = []
+    for i in range(n_legs):
+        eta, dvx, dvy, dvz = (float(v) for v in dsm_block[4 * i : 4 * i + 4])
+        mag = float(np.linalg.norm((dvx, dvy, dvz)))
+        per_leg_dsm.append(mag)
+        if mag < _DSM_EPS_KMS:
+            continue
+        frac = min(1.0 - _FRACTION_CLAMP, max(_FRACTION_CLAMP, eta))
+        dsm_specs.append(
+            DSMSpec(leg_index=i, fraction_along_leg=frac, delta_v_kms=(dvx, dvy, dvz)),
+        )
+    launch = _add_days_utc(seed_launch_epoch_utc, epoch_offset)
+    end_utc = _add_days_utc(launch, sum(tofs))
+    try:
+        traj = EpochLockedTrajectory(
+            sequence=sequence,
+            leg_tofs_days=tofs,
+            vinf_kms_at_encounters=vinf_expected_kms,
+            launch_epoch_utc=launch,
+            orbit_class="precursor_mga",
+            n_returns=1,
+            validity_window_start_utc=launch,
+            validity_window_end_utc=end_utc,
+            inserts_into=inserts_into,
+            dsm_specs=tuple(dsm_specs) if dsm_specs else None,
+        )
+        closure = close_epoch_locked(
+            traj,
+            ephemeris,
+            closure_tol_kms=1.0e6,
+            flyby_continuity_tol_kms=1.0e6,
+            independent_cross_check=False,
+            independent_tol_kms=1.0e6,
+            max_revs=max_revs,
+        )
+    except Exception:
+        return _infeasible(sequence, vinf_expected_kms, seed_launch_epoch_utc, inserts_into)
+    return DecisionEval(
+        closure=closure,
+        total_dsm_dv_kms=float(sum(per_leg_dsm)),
+        per_leg_dsm_kms=tuple(per_leg_dsm),
+        feasible=True,
+    )
+
+
+def _infeasible(
+    sequence: tuple[str, ...],
+    vinf_expected_kms: tuple[float, ...],
+    launch: str,
+    inserts_into: str,
+) -> DecisionEval:
+    """Sentinel :class:`DecisionEval` for an infeasible vector: ``_COST_FLOOR`` residuals.
+
+    Assumes ``len(vinf_expected_kms) == len(sequence)`` (the same caller
+    precondition the feasible path enforces); a mismatch raises here from the
+    sentinel's own ``EpochLockedTrajectory`` constructor rather than being
+    silently absorbed, which is the intended behaviour for a caller bug.
+    """
+    n = len(sequence)
+    end = _add_days_utc(launch, 1.0)
+    traj = EpochLockedTrajectory(
+        sequence=sequence,
+        leg_tofs_days=tuple(1.0 for _ in range(n - 1)),
+        vinf_kms_at_encounters=vinf_expected_kms,
+        launch_epoch_utc=launch,
+        orbit_class="precursor_mga",
+        n_returns=1,
+        validity_window_start_utc=launch,
+        validity_window_end_utc=end,
+        inserts_into=inserts_into,
+    )
+    closure = EpochLockedClosure(
+        trajectory=traj,
+        closure_residual_kms=_COST_FLOOR,
+        flyby_continuity_max_dv_kms=_COST_FLOOR,
+        per_leg_lambert_solutions=(),
+        per_encounter_vinf_kms=tuple(0.0 for _ in range(n)),
+        independent_check_residual_kms=None,
+        converged=False,
+        dsm_delta_v_kms_per_leg=(),
+    )
+    return DecisionEval(
+        closure=closure,
+        total_dsm_dv_kms=_COST_FLOOR,
+        per_leg_dsm_kms=(),
+        feasible=False,
+    )
