@@ -103,8 +103,12 @@ Dwarf planets / planetoids (added 2026-06-14, #260):
             i=43.926; Makemake a=45.5709 e=0.15889 i=29.028; Haumea a=43.0603
             e=0.19444 i=28.208; Vesta a=2.36137 e=0.09020 i=7.144; Pallas
             a=2.76956 e=0.23070 i=34.933.
-      * ``safe_alt_km`` — engineering default 100 km for all (no atmosphere /
-        small body); convention, not sourced physics.
+      * ``safe_alt_km`` — engineering default 100 km for all; convention, not
+        sourced physics — EXCEPT Pluto, whose 100 km is now SOURCED as a design
+        floor (Stern-Tapley-Finley-Scherrer 2020 JSR A34658 tour spec 3: Pluto
+        periapse 100-500 km for in-situ atmospheric measurement; #429). Same
+        value -> no change, provenance upgrade only. See
+        data/flyby_altitude_references.yaml + 2026-06-23-digest-stern-2020-pluto-orbiter.md.
     The non-coplanar inclinations (Pluto 17°, Eris 44°, Makemake 29°,
     Haumea 28°) matter for the 3-D Tisserand screen but, per the existing
     convention, ``inc_deg``/``lan_deg`` stay at the coplanar 0.0 default in
@@ -479,8 +483,11 @@ PLANETS: Final[dict[str, PlanetData]] = {
         radius_eq_km=1188.3,
         sma_au=_PLUTO_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_PLUTO_SMA_AU),
-        # Engineering default (convention): no atmosphere of consequence, small
-        # body -> 100 km standoff.
+        # 100 km: SOURCED design floor (Stern-Tapley-Finley-Scherrer 2020 JSR
+        # A34658 tour spec 3 — Pluto periapse 100-500 km for in-situ ATMOSPHERIC
+        # measurement; #429). Was an unsourced "no atmosphere" convention at the
+        # same value; Pluto does have a thin atmosphere, so the 100 km is a real
+        # atmospheric-pass design minimum. Provenance upgrade, no value change.
         safe_alt_km=100.0,
         # Standish & Williams Table 2a (3000 BC-3000 AD) — the only Standish
         # table retaining Pluto. e0/varpi0/L0 from that same row.
