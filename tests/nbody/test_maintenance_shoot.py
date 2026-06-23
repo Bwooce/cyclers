@@ -262,3 +262,10 @@ def test_maintenance_chain_s1l1_reproduces_published_strictly_ballistic() -> Non
         f"S1L1 M7 horizon {chain.horizon_tcm_mps:.2f} m/s should be ~0 (strictly ballistic) "
         f"at the sourced 200 km flyby floor"
     )
+    # Per-node minimal-thrust flyby heights (#427): the one binding flyby (node 19) sits
+    # AT the 200 km floor; every other flyby flies far higher (needs less bend). This is
+    # the structured per-row tuple the catalogue/website consume.
+    flybys = [nd for nd in chain.nodes if nd.is_flyby]
+    assert all(nd.flyby_alt_km >= 200.0 - 1e-6 for nd in flybys)  # never below the floor
+    assert min(nd.flyby_alt_km for nd in flybys) == pytest.approx(200.0, abs=2.0)  # node 19
+    assert max(nd.flyby_alt_km for nd in flybys) > 1000.0  # gentle flybys fly high

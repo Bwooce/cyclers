@@ -34,6 +34,7 @@ from cyclerfinder.core.constants import MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.flyby import flyby_dv
 from cyclerfinder.core.lambert import LambertError, lambert
+from cyclerfinder.nbody.bplane import periapsis_radius_km
 from cyclerfinder.nbody.forces import RailsEphemerisCache
 from cyclerfinder.nbody.propagator import RestrictedNBody
 
@@ -211,6 +212,13 @@ class MaintenanceNode:
     vinf_out_kms: float
     dv_kms: float
     converged: bool
+    flyby_alt_km: float = 0.0
+    """Minimal-thrust flyby periapsis altitude (km) at this node — the geometry-
+    determined height that delivers the required turn ballistically, capped at the
+    body floor where the turn over-demands. ``max(alt_for_required_bend, floor)``;
+    where ``> floor`` the flyby is ballistic (dv from the magnitude term only),
+    where ``== floor`` the bend is un-achievable and ``dv_kms`` carries the deficit.
+    0.0 for the non-flyby endpoint nodes and for non-converged nodes."""
 
 
 @dataclass(frozen=True)
@@ -390,6 +398,7 @@ def continuous_maintenance_chain(
         miss_km = leg_miss[i - 1] if i > 0 else 0.0
         dv = 0.0
         conv = True
+        flyby_alt = 0.0
         if is_flyby:
             conv = leg_conv[i - 1] and leg_conv[i]
             if conv:
@@ -399,6 +408,11 @@ def continuous_maintenance_chain(
                 rp_min = pdata.radius_eq_km + alt
                 dv = flyby_dv(vin, vout, pdata.mu_km3_s2, rp_min)
                 horizon_kms += dv
+                # Minimal-thrust flyby height: the periapsis delivering the required
+                # turn ballistically (Jones Eq.2), capped at the body floor where the
+                # turn over-demands (then dv carries the deficit).
+                rp_req = periapsis_radius_km(vin, vout, node_bodies[i])
+                flyby_alt = max(rp_req - pdata.radius_eq_km, alt)
             else:
                 dv = float("inf")
         nodes.append(
@@ -411,6 +425,7 @@ def continuous_maintenance_chain(
                 vinf_out_kms=float(np.linalg.norm(vout)) if i < n - 1 else 0.0,
                 dv_kms=dv,
                 converged=conv,
+                flyby_alt_km=flyby_alt,
             )
         )
 
