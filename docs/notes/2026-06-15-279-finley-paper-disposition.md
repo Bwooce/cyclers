@@ -19,6 +19,20 @@
 > candidates), but the factual basis "no such paper exists" is retracted: it
 > exists and was never literature-checked. Re-run the #270 check against it once
 > acquired. The Pluto-system masses in Stern Table 2 trace to ref **[4] Brozović,
+>
+> **FOLLOW-UP (2026-06-23, same day): NO DOI EXISTS — apparently never published.**
+> A Crossref check (title search; JSR-journal-scoped; author=Finley + Pluto across
+> ALL venues) returns **no record** of a separate Finley-first-author "An Orbital
+> Tour of Pluto and Its Moons" in JSR or anywhere. The only Crossref-indexed
+> Finley Pluto items are co-authorships: Stern 2020 (10.2514/1.A34658) and Harch
+> et al. 2017 "Accommodating Navigation Uncertainties in the Pluto Encounter
+> Sequence Design" (10.1007/978-3-319-51941-8_21). So ref [5] was a genuine
+> *in-press/planned* paper in 2020 that **never received a DOI / never published**
+> (folded into Stern 2020 or dropped). NET: the paper is real-but-unpublished, so
+> it is **NOT acquirable** — the Charon GA periapsis numbers it would have carried
+> have no published source. The #429 Charon/small-Pluto-moon flyby-floor gap
+> therefore cannot be closed via Finley; alternative sources would be needed
+> (e.g. Harch 2017 encounter-sequence paper, or a future Pluto-orbiter study).
 > Showalter, Jacobson & Buie 2015, Icarus 246:317-329** (DOI
 > 10.1016/j.icarus.2014.03.015) — already the cited source for our satellites.py
 > Charon/Nix/Hydra GMs.
