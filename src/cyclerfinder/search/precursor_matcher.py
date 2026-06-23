@@ -363,6 +363,7 @@ def find_cycler_precursors(
     max_candidates_to_validate: int | None = 200,
     literature_check_search: SearchFn | None = None,
     progress_hook: object | None = None,
+    max_revs: int = 0,
 ) -> list[PrecursorMatch]:
     """Find precursor MGA chains that insert a spacecraft into a cycler row.
 
@@ -562,6 +563,7 @@ def find_cycler_precursors(
                 alpha_flyby_continuity=2.0,
                 accept_loss_kms=None,
                 independent_cross_check=False,
+                max_revs=max_revs,
             )
             if opt_result is None:
                 continue
@@ -583,6 +585,7 @@ def find_cycler_precursors(
                     flyby_continuity_tol_kms=1.0e6,
                     independent_cross_check=False,
                     independent_tol_kms=1.0e6,
+                    max_revs=max_revs,
                 )
             except Exception:
                 continue

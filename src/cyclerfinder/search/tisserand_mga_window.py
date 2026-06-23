@@ -898,6 +898,7 @@ def _epoch_locked_loss(
     independent_tol_kms: float,
     closure_residual_weight: float,
     flyby_continuity_weight: float,
+    max_revs: int = 0,
 ) -> tuple[float, EpochLockedClosure | None]:
     """Run :func:`close_epoch_locked` on a candidate, return (loss, closure).
 
@@ -933,6 +934,7 @@ def _epoch_locked_loss(
             flyby_continuity_tol_kms=1.0e6,
             independent_cross_check=independent_cross_check,
             independent_tol_kms=independent_tol_kms,
+            max_revs=max_revs,
         )
     except Exception:
         return 1.0e6, None
@@ -959,6 +961,7 @@ def optimise_chain_tofs(
     accept_loss_kms: float | None = 1.0,
     independent_cross_check: bool = False,
     independent_tol_kms: float = 0.1,
+    max_revs: int = 0,
 ) -> tuple[MGAChainCandidate, EpochLockedClosure, float] | None:
     """Optimise a candidate's (launch epoch, per-leg TOFs) to minimise closure loss.
 
@@ -1059,6 +1062,7 @@ def optimise_chain_tofs(
             independent_tol_kms=independent_tol_kms,
             closure_residual_weight=1.0,
             flyby_continuity_weight=alpha_flyby_continuity,
+            max_revs=max_revs,
         )
         return loss
 
@@ -1117,6 +1121,7 @@ def optimise_chain_tofs(
         independent_tol_kms=independent_tol_kms,
         closure_residual_weight=1.0,
         flyby_continuity_weight=alpha_flyby_continuity,
+        max_revs=max_revs,
     )
     if final_closure is None:
         return None
