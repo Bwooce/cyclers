@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
+from scipy.optimize import Bounds, differential_evolution
 
 from cyclerfinder.core.constants import AU_KM
 from cyclerfinder.core.ephemeris import Ephemeris
@@ -241,3 +242,155 @@ def rank_band(total_dsm_dv_kms: float) -> str:
     """dv_band for a candidate's total DSM ΔV, via the sourced classifier
     (m/s input, Russell 7-cycle basis)."""
     return classify_dv_band(total_dsm_dv_kms * 1000.0)
+
+
+def _bounds_for(
+    n_legs: int,
+    *,
+    epoch_half_width_days: float,
+    tof_box_days_per_leg: tuple[float, float],
+    dsm_max_kms: float,
+) -> Bounds:
+    """Decision-box bounds matching :func:`evaluate_decision_vector`'s layout:
+    ``[epoch_offset, tof_1..tof_N, (eta, dvx, dvy, dvz) * N]``."""
+    lo = [-epoch_half_width_days]
+    hi = [epoch_half_width_days]
+    lo += [tof_box_days_per_leg[0]] * n_legs
+    hi += [tof_box_days_per_leg[1]] * n_legs
+    for _ in range(n_legs):  # (eta, dvx, dvy, dvz) per leg
+        lo += [0.0, -dsm_max_kms, -dsm_max_kms, -dsm_max_kms]
+        hi += [1.0, dsm_max_kms, dsm_max_kms, dsm_max_kms]
+    return Bounds(lo, hi)
+
+
+def search_sequence(
+    *,
+    sequence: tuple[str, ...],
+    seed_launch_epoch_utc: str,
+    vinf_expected_kms: tuple[float, ...],
+    ephemeris: Ephemeris,
+    inserts_into: str,
+    epoch_half_width_days: float = 120.0,
+    tof_box_days_per_leg: tuple[float, float] = (80.0, 500.0),
+    dsm_max_kms: float = 2.0,
+    max_revs: int = 2,
+    popsize: int = 15,
+    maxiter: int = 60,
+    seed: int = 0,
+    w_cont: float = 1.0,
+    w_dsm: float = 0.5,
+) -> DecisionEval:
+    """Global differential_evolution over the decision box for ONE sequence.
+    Returns the best DecisionEval."""
+    n_legs = len(sequence) - 1
+    bounds = _bounds_for(
+        n_legs,
+        epoch_half_width_days=epoch_half_width_days,
+        tof_box_days_per_leg=tof_box_days_per_leg,
+        dsm_max_kms=dsm_max_kms,
+    )
+
+    def _obj(x: np.ndarray) -> float:
+        ev = evaluate_decision_vector(
+            x,
+            sequence=sequence,
+            seed_launch_epoch_utc=seed_launch_epoch_utc,
+            vinf_expected_kms=vinf_expected_kms,
+            ephemeris=ephemeris,
+            inserts_into=inserts_into,
+            max_revs=max_revs,
+        )
+        return decision_cost(ev, w_cont=w_cont, w_dsm=w_dsm)
+
+    # workers=1: this repo has documented BLAS reduction-order noise (see the
+    # tests/nbody flake fixes); single-worker keeps the DE bit-reproducible
+    # under a fixed seed so the determinism test holds.
+    result = differential_evolution(
+        _obj,
+        bounds,
+        popsize=popsize,
+        maxiter=maxiter,
+        seed=seed,
+        polish=True,
+        tol=1e-8,
+        workers=1,
+    )
+    return evaluate_decision_vector(
+        result.x,
+        sequence=sequence,
+        seed_launch_epoch_utc=seed_launch_epoch_utc,
+        vinf_expected_kms=vinf_expected_kms,
+        ephemeris=ephemeris,
+        inserts_into=inserts_into,
+        max_revs=max_revs,
+    )
+
+
+@dataclass(frozen=True)
+class PrecursorSurvivor:
+    sequence: tuple[str, ...]
+    eval: DecisionEval
+    dv_band: str
+    cost: float
+
+
+def search_precursors(
+    *,
+    cycler_id: str,
+    first_body: str,
+    seed_vinf_kms: float,
+    launch_window: tuple[str, str],
+    ephemeris: Ephemeris,
+    intermediate_bodies: tuple[str, ...] = ("V", "E"),
+    max_legs: int = 3,
+    vinf_grid_kms: tuple[float, ...] = (4.0, 5.0, 6.0, 7.0, 8.0),
+    tof_box_days_per_leg: tuple[float, float] = (80.0, 500.0),
+    epoch_step_days: float = 60.0,
+    dsm_max_kms: float = 2.0,
+    max_revs: int = 2,
+    popsize: int = 15,
+    maxiter: int = 60,
+    seed: int = 0,
+) -> list[PrecursorSurvivor]:
+    """Enumerate sequences (eccentric-T-P seeds), run a global DE per distinct
+    sequence, rank survivors by total ΔV ascending (ballistic first)."""
+    seeds = eccentric_tp_seeds(
+        first_body=first_body,
+        seed_vinf_kms=seed_vinf_kms,
+        launch_window=launch_window,
+        ephemeris=ephemeris,
+        intermediate_bodies=intermediate_bodies,
+        max_legs=max_legs,
+        vinf_grid_kms=vinf_grid_kms,
+        tof_box_days_per_leg=tof_box_days_per_leg,
+        epoch_step_days=epoch_step_days,
+    )
+    survivors: list[PrecursorSurvivor] = []
+    seen: set[tuple[str, ...]] = set()
+    for s in seeds:
+        if s.sequence in seen:
+            continue
+        seen.add(s.sequence)
+        ev = search_sequence(
+            sequence=s.sequence,
+            seed_launch_epoch_utc=s.launch_epoch_utc,
+            vinf_expected_kms=s.vinf_tuple_kms,
+            ephemeris=ephemeris,
+            inserts_into=cycler_id,
+            tof_box_days_per_leg=tof_box_days_per_leg,
+            dsm_max_kms=dsm_max_kms,
+            max_revs=max_revs,
+            popsize=popsize,
+            maxiter=maxiter,
+            seed=seed,
+        )
+        survivors.append(
+            PrecursorSurvivor(
+                sequence=s.sequence,
+                eval=ev,
+                dv_band=rank_band(ev.total_dsm_dv_kms),
+                cost=decision_cost(ev),
+            )
+        )
+    survivors.sort(key=lambda s: s.eval.total_dsm_dv_kms)
+    return survivors

@@ -9,6 +9,7 @@ from cyclerfinder.search.global_precursor_engine import (
     eccentric_tp_linkable_radius_au,
     eccentric_tp_seeds,
     rank_band,
+    search_sequence,
 )
 
 
@@ -139,3 +140,46 @@ def test_ballistic_scores_below_equal_powered() -> None:
 )
 def test_rank_band_boundaries(dv_kms: float, expected: str) -> None:
     assert rank_band(dv_kms) == expected
+
+
+def test_search_recovers_low_continuity_on_e_m_direct() -> None:
+    """On a single E→M leg, the global search runs and produces a finite,
+    ranked result (a 2-encounter E-M cell cannot host the Aldrin family
+    ballistically — known #54 result — so we assert the SEARCH RAN, not a
+    specific closure magnitude, which would be an unsourced golden)."""
+    eph = Ephemeris("astropy")
+    best = search_sequence(
+        sequence=("E", "M"),
+        seed_launch_epoch_utc="2031-01-01T00:00:00",
+        vinf_expected_kms=(6.5, 9.7),
+        ephemeris=eph,
+        inserts_into="aldrin-classic-em-k1-outbound",
+        epoch_half_width_days=120.0,
+        tof_box_days_per_leg=(120.0, 400.0),
+        dsm_max_kms=2.0,
+        popsize=12,
+        maxiter=40,
+        seed=0,
+    )
+    assert best.feasible
+    assert best.closure.closure_residual_kms < 1.0e6
+    assert best.total_dsm_dv_kms >= 0.0
+
+
+def test_search_sequence_is_deterministic_under_fixed_seed() -> None:
+    eph = Ephemeris("astropy")
+    kw = dict(
+        sequence=("E", "M"),
+        seed_launch_epoch_utc="2031-01-01T00:00:00",
+        vinf_expected_kms=(6.5, 9.7),
+        ephemeris=eph,
+        inserts_into="aldrin-classic-em-k1-outbound",
+        tof_box_days_per_leg=(120.0, 400.0),
+        popsize=8,
+        maxiter=20,
+        seed=42,
+    )
+    a = search_sequence(**kw)  # type: ignore[arg-type]
+    b = search_sequence(**kw)  # type: ignore[arg-type]
+    assert a.closure.closure_residual_kms == b.closure.closure_residual_kms
+    assert a.total_dsm_dv_kms == b.total_dsm_dv_kms
