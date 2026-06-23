@@ -43,6 +43,7 @@ class semantics.
 
 from __future__ import annotations
 
+import itertools
 from dataclasses import dataclass, replace
 from typing import Any, Literal
 
@@ -377,6 +378,7 @@ def close_epoch_locked(
     flyby_continuity_tol_kms: float = 0.05,
     independent_cross_check: bool = True,
     independent_tol_kms: float = 0.1,
+    max_revs: int = 0,
 ) -> EpochLockedClosure:
     """Close a candidate epoch-locked trajectory at its ``launch_epoch_utc``.
 
@@ -453,6 +455,8 @@ def close_epoch_locked(
         )
     if independent_tol_kms <= 0.0:
         raise ValueError(f"independent_tol_kms must be positive, got {independent_tol_kms}")
+    if max_revs < 0:
+        raise ValueError(f"max_revs must be non-negative, got {max_revs}")
 
     seq = trajectory_spec.sequence
     n_legs = len(seq) - 1
@@ -539,6 +543,24 @@ def close_epoch_locked(
         # DSM cost = magnitude of the prescribed ΔV (the spacecraft pays
         # this regardless of whether the DSM is well-targeted).
         per_dsm_delta_v_kms[k] = float(np.linalg.norm(dv_vec))
+
+    # Multi-rev Lambert branch selection (#307 Task 1). At ``max_revs == 0`` each
+    # non-DSM leg has exactly one (single-rev) candidate, so this is a no-op and
+    # ``per_leg_sols`` stays byte-identical to the single-rev path above. At
+    # ``max_revs > 0`` each non-DSM leg enumerates its multi-rev Lambert branches
+    # and we keep the branch COMBINATION minimising the closure residual; the
+    # single-rev solution is always in the candidate set, so the result is never
+    # worse than single-rev. DSM legs keep their single synthetic two-arc solution.
+    if max_revs > 0:
+        per_leg_sols = _select_multirev_branches(
+            per_leg_sols,
+            body_states=body_states,
+            t_encounter_sec=t_encounter_sec,
+            sequence=seq,
+            dsm_legs=set(dsm_by_leg),
+            expected_vinf_kms=trajectory_spec.vinf_kms_at_encounters,
+            max_revs=max_revs,
+        )
 
     # Per-encounter |V_inf|: at endpoints it's the leg V_inf; at intermediate
     # bodies it's the MEAN of inbound and outbound (the ballistic-continuity
@@ -674,6 +696,88 @@ def close_epoch_locked(
         converged=bool(converged),
         dsm_delta_v_kms_per_leg=dsm_dv_tuple,
     )
+
+
+# --------------------------------------------------------------------------- #
+# Multi-rev Lambert branch selection (#307 Task 1)
+# --------------------------------------------------------------------------- #
+
+
+def _per_encounter_vinf(
+    per_leg_sols: list[LambertSolution],
+    body_states: list[tuple[Any, Any]],
+    sequence: tuple[str, ...],
+) -> list[float]:
+    """Per-encounter ``|V_inf|`` (km/s) for a per-leg Lambert-solution sequence.
+
+    Mirrors the close_epoch_locked convention EXACTLY: endpoints use the single
+    leg V_inf; intermediate bodies use the mean of inbound and outbound (the
+    ballistic-continuity ideal). Kept in lock-step with the inline computation in
+    :func:`close_epoch_locked` so multi-rev selection ranks by the same metric.
+    """
+    per: list[float] = []
+    _, v_body_0 = body_states[0]
+    per.append(float(np.linalg.norm(per_leg_sols[0].v1 - v_body_0)))
+    for k in range(1, len(sequence) - 1):
+        _, v_body_k = body_states[k]
+        v_in = float(np.linalg.norm(per_leg_sols[k - 1].v2 - v_body_k))
+        v_out = float(np.linalg.norm(per_leg_sols[k].v1 - v_body_k))
+        per.append(0.5 * (v_in + v_out))
+    _, v_body_n = body_states[-1]
+    per.append(float(np.linalg.norm(per_leg_sols[-1].v2 - v_body_n)))
+    return per
+
+
+def _closure_residual_kms(
+    per_leg_sols: list[LambertSolution],
+    body_states: list[tuple[Any, Any]],
+    sequence: tuple[str, ...],
+    expected_vinf_kms: tuple[float, ...],
+) -> float:
+    """Worst absolute per-encounter ``|V_inf|`` disagreement vs expected (km/s)."""
+    per = _per_encounter_vinf(per_leg_sols, body_states, sequence)
+    return max(abs(ours - exp) for ours, exp in zip(per, expected_vinf_kms, strict=True))
+
+
+def _select_multirev_branches(
+    single_rev_sols: list[LambertSolution],
+    *,
+    body_states: list[tuple[Any, Any]],
+    t_encounter_sec: list[float],
+    sequence: tuple[str, ...],
+    dsm_legs: set[int],
+    expected_vinf_kms: tuple[float, ...],
+    max_revs: int,
+) -> list[LambertSolution]:
+    """Return the per-leg branch combination with the lowest closure residual.
+
+    Non-DSM legs enumerate their ``lambert(..., max_revs=max_revs)`` branches; DSM
+    legs keep their single synthetic two-arc solution. The Cartesian product is
+    swept and the combination minimising :func:`_closure_residual_kms` is returned.
+    The single-rev-only combination is always evaluated (the baseline), so the
+    result is never worse; ties resolve to single-rev (deterministic).
+    """
+    n_legs = len(sequence) - 1
+    candidates: list[list[LambertSolution]] = []
+    for k in range(n_legs):
+        if k in dsm_legs:
+            candidates.append([single_rev_sols[k]])
+            continue
+        r1, _ = body_states[k]
+        r2, _ = body_states[k + 1]
+        tof_s = t_encounter_sec[k + 1] - t_encounter_sec[k]
+        sols = lambert(r1, r2, tof_s, prograde=True, max_revs=max_revs)
+        candidates.append(list(sols) if sols else [single_rev_sols[k]])
+
+    best_combo = list(single_rev_sols)
+    best_res = _closure_residual_kms(best_combo, body_states, sequence, expected_vinf_kms)
+    for combo in itertools.product(*candidates):
+        combo_list = list(combo)
+        res = _closure_residual_kms(combo_list, body_states, sequence, expected_vinf_kms)
+        if res < best_res:
+            best_res = res
+            best_combo = combo_list
+    return best_combo
 
 
 # --------------------------------------------------------------------------- #
