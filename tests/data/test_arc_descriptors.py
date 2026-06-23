@@ -387,11 +387,12 @@ def test_entries_without_descriptors_have_null_arcs(catalog: Any) -> None:
 
     This is the 'gap, not error' contract from spec §16.7.7.
     """
-    # These entries have no explicit descriptor in the current notes
+    # These entries have no explicit descriptor in the current notes.
+    # (russell-ocampo-4.3.1-5 removed #388 2026-06-23: its McConaghy-2005 Table 2
+    # per-arc descriptor was ingested — it is now descriptor-bearing.)
     no_descriptor_ids = [
         "russell-ocampo-2.1.1+2-case2",
         "russell-ocampo-2.3.1+1-case3",
-        "russell-ocampo-4.3.1-5",
         "russell-ch4-5.66Gfh3",
     ]
     for eid in no_descriptor_ids:

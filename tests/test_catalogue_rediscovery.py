@@ -274,8 +274,12 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # MULTI_ENCOUNTER_SEQUENCE. Pure census shift; the row carries its own
     # V0 sourced-and-real-eph-reproduced evidence (see the row's notes
     # and docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md).
-    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 224,
-    ExclusionReason.DESCRIPTOR_CLOSABLE: 12,  # #106: free_return_arcs[]-bearing SnLm rows
+    # 224 -> 223 (2026-06-23, #388): russell-ocampo-4.3.1-5 ingested its
+    # McConaghy-2005 Table 2 descriptor, so it moves from MULTI_ENCOUNTER_SEQUENCE
+    # to DESCRIPTOR_CLOSABLE. Pure census shift.
+    ExclusionReason.MULTI_ENCOUNTER_SEQUENCE: 223,
+    # #106: free_return_arcs[]-bearing SnLm rows; 12->13 (#388, 4.3.1-5 ingested)
+    ExclusionReason.DESCRIPTOR_CLOSABLE: 13,
     ExclusionReason.MISSING_LEG_TOFS: 15,
     # 6 -> 15 (2026-06-12, #216): +5 Ross-Roberts-Tsoukkas EM CR3BP cycler rows
     # (non-keplerian, Earth primary) + 4 Liang CGE Jovian triple-cycler rows
