@@ -53,23 +53,34 @@ Literature-fresh survivors: 0 (every survivor matches a published anchor).
   of a large terminal V∞-mismatch (~4 km/s); pushing one residual down lifts the
   other.
 
-- **This is the publication-gap result, re-confirmed with a stronger tool.**
-  Ballistic precursor-MGA insertion into the published classic Earth–Mars
-  cyclers is not reachable in the coplanar/circular-body epoch-locked model,
-  even with multi-rev Lambert branches. The negative is consistent with the
-  #302 Phase-4 note (the precursor-MGA space into these cyclers is itself
-  published) and with the #388/S1L1 family-selection findings (the real geometry
-  needs body eccentricity — the model, not the search, is the limiter).
+- **This is a SEARCH-method limit, not proof of non-existence.** Be precise
+  about what closes the door. The closure (`close_epoch_locked`,
+  `epoch_aware_genome.py`) already uses **real DE440 ephemeris** body states —
+  the flyby-continuity residual is computed against eccentric, real-position
+  bodies, not a circular-body model. What stays circular-body is the **seed
+  enumerator** (`tisserand_mga_window.py`, `PLANETS[body].sma_au`), and the TOF
+  refinement is a **local** Nelder-Mead (±25 % TOF, ±15-day epoch). So the
+  honest claim is: the (circular-body Tisserand seed + local TOF optimiser +
+  multi-rev branches) METHOD does not reach a ballistic precursor into either
+  cycler under real ephemeris. It does **not** establish that no ballistic
+  precursor exists — a global epoch/geometry search, or eccentric-body seeds
+  that start the local optimiser in a different basin, remain untested. Consistent
+  with the #302 Phase-4 note (this precursor-MGA space is itself published) and
+  the #388/S1L1 family-selection findings.
 
 ## Disposition
 
 - `aldrin-classic-em-k1-outbound` and `s1l1-2syn-em-cpom` precursor scans stay
   **V0**. No promotion; no novelty claim (0 literature-fresh).
-- The next lever is *not* more branches but a more faithful model: an
-  eccentric-body Tisserand enumerator and/or DSM post-repair on the
-  near-continuous arcs to absorb the residual V∞-mismatch (Task 2's standalone
-  optimiser is the building block, deliberately left un-wired here — wiring it is
-  a separate, sourced build, not part of the #307 plan scope).
+- The next lever is *not* more branches but a better SEARCH over the (already
+  real-eph) closure: an eccentric-body Tisserand enumerator to seed the optimiser
+  in real-geometry basins, a global (not local) epoch/TOF search, and/or DSM
+  post-repair on the near-continuous arcs to absorb the residual V∞-mismatch
+  (Task 2's standalone optimiser is the building block, deliberately left
+  un-wired here — wiring it is a separate, sourced build, not part of the #307
+  plan scope). Note this is distinct from the ER3BP genome (#293), which makes
+  the rotating-frame *primaries* eccentric — a different model for a different
+  (libration/NRHO-family) question, not this heliocentric patched-conic seed gap.
 - #307 Tasks 1–4 complete. The eccentric-Earth Tisserand named in the issue
   title was never decomposed into a plan task and is logged here as the
   motivated follow-on.
