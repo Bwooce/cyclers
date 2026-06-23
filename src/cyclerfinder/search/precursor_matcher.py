@@ -259,6 +259,35 @@ def _epoch_alignment_score(
     return max(0.0, 1.0 - gap_days / fall_off_days)
 
 
+def _phase_window_for_entry(
+    entry: CatalogueEntry,
+    override: tuple[str, str] | None,
+) -> tuple[str, str] | None:
+    """Resolve the cycler-cadence target phase window (#307 Task 3).
+
+    An explicit ``override`` always wins. Otherwise, auto-derive the window from
+    the cycler row's published ``validity_window`` (the epoch span over which the
+    cycler is insertion-ready) — the natural target window for the precursor's
+    terminal-Earth arrival. Returns ``None`` when neither is available (the row
+    publishes no validity window — the common case; the alignment score then
+    stays the informational, ungated 0.0 per :func:`_epoch_alignment_score`).
+
+    A *period* alone cannot anchor a phase window (it gives the cadence interval,
+    not the phase), so only an epoch-anchored ``validity_window`` is used.
+    """
+    if override is not None:
+        return override
+    raw = getattr(entry, "raw", None)
+    if not isinstance(raw, dict):
+        return None
+    vw = raw.get("validity_window")
+    if isinstance(vw, dict):
+        start, end = vw.get("start"), vw.get("end")
+        if start and end:
+            return (str(start), str(end))
+    return None
+
+
 def _signature_from_candidate(
     candidate: EpochLockedTrajectory,
 ) -> CandidateSignature:
@@ -448,6 +477,10 @@ def find_cycler_precursors(
 
     entry = catalogue.by_id[cycler_id]
     target_body, seed_vinf = _first_encounter_body_and_vinf(entry)
+    # #307 Task 3: auto-derive the cycler-cadence target phase window from the
+    # row's validity_window when the caller does not override it (informational
+    # alignment score only — never gated; see _epoch_alignment_score).
+    target_phase_window_utc = _phase_window_for_entry(entry, target_phase_window_utc)
 
     # The matcher's planet_set is the launch body (Earth) + intermediate
     # bodies + target body.  Earth is always included (we launch from
