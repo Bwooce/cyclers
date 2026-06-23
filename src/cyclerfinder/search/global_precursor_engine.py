@@ -37,9 +37,12 @@ def eccentric_tp_seeds(
     epoch_step_days: float = 60.0,
     vinf_terminal_tol_kms: float = 0.8,
 ) -> list[MGAChainCandidate]:
-    """Enumerate Earth-launched MGA chains terminating at ``first_body`` near
-    ``seed_vinf_kms``, ranked with eccentric-body (real-radius) Tisserand-Poincaré
-    linkability. Returns the DE init population (MGAChainCandidate list).
+    """Enumerate Earth-launched MGA chains, filtered to those terminating at
+    ``first_body`` with terminal V_inf within ``vinf_terminal_tol_kms`` of
+    ``seed_vinf_kms``. Returns the DE init population (MGAChainCandidate list).
+    Eccentric-body (real-radius) re-screening via
+    :func:`eccentric_tp_linkable_radius_au` is a planned follow-on consumer (it
+    is not applied here — the enumerator order is preserved).
 
     Notes
     -----
