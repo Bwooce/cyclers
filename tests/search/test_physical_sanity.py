@@ -82,13 +82,13 @@ def test_galileo_earth_flyby_admitted() -> None:
     """Galileo's Earth flybys (V_inf~6.232 km/s) sit at ~74 deg max bend → admit.
 
     V_inf=6.232 km/s is the Galileo-1 Earth-encounter value (D'Amario,
-    Bright & Wolf 1992, Space Sci Rev 60:23, Table 2). At Earth's 300 km
-    safe-altitude default the max bend is ~74.6 deg — comfortably above any
-    sensible useful-bend floor.
+    Bright & Wolf 1992, Space Sci Rev 60:23, Table 2). At Earth's sourced 200 km
+    flyby floor (#426, Russell 2004 p.165) the max bend is ~75.1 deg — comfortably
+    above any sensible useful-bend floor.
     """
     verdict = flyby_is_useful("E", 6.232)
     assert verdict.is_useful is True
-    assert verdict.max_bend_deg == pytest.approx(74.57, abs=0.1)
+    assert verdict.max_bend_deg == pytest.approx(75.09, abs=0.1)
 
 
 def test_aldrin_mars_flyby_admitted() -> None:
@@ -96,11 +96,11 @@ def test_aldrin_mars_flyby_admitted() -> None:
 
     The classic Aldrin 1L1 cycler's Mars encounter V_inf is ~5.5 km/s
     (Russell & Ocampo 2005; McConaghy 2002 Table 4 lists Earth V_inf=8 km/s;
-    the Mars side runs cooler). Max bend at Mars (300 km alt) is ~32 deg.
+    the Mars side runs cooler). Max bend at Mars (sourced 200 km floor, #426) is ~32.8 deg.
     """
     verdict = flyby_is_useful("M", 5.5)
     assert verdict.is_useful is True
-    assert verdict.max_bend_deg == pytest.approx(32.16, abs=0.1)
+    assert verdict.max_bend_deg == pytest.approx(32.82, abs=0.1)
 
 
 def test_cassini_venus_flyby_admitted() -> None:
@@ -228,7 +228,7 @@ def test_planet_code_lookup_works() -> None:
     """Single-letter planet codes resolve via PLANETS first."""
     v = flyby_is_useful("E", 6.232)
     assert v.body == "E"
-    assert v.periapsis_radius_km == pytest.approx(6378.137 + 300.0)
+    assert v.periapsis_radius_km == pytest.approx(6378.137 + 200.0)  # #426 sourced floor
 
 
 def test_moon_name_lookup_works() -> None:

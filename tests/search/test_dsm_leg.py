@@ -20,7 +20,7 @@ import warnings
 import numpy as np
 import pytest
 
-from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2
+from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, SAFE_PERIHELION_KM
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.core.kepler import propagate
 from cyclerfinder.core.lambert import lambert
@@ -985,7 +985,9 @@ def test_dsm_s1l1_4991gg2_two_arc_multirev_reprobe() -> None:
 
 # Mars flyby constants (cyclerfinder.core.constants PLANETS["M"]).
 _MU_MARS = 4.282837521e4  # km^3/s^2
-_RP_MIN_MARS = 3396.19 + 300.0  # radius_eq_km + safe_alt_km, km
+# Derive from the single source of truth so it tracks the per-body sourced floor
+# (#426: Mars 200 km, Russell 2004 p.165) and cannot silently drift from the residual.
+_RP_MIN_MARS = SAFE_PERIHELION_KM["M"]  # radius_eq_km + safe_alt_km, km
 
 
 def _rotate_in_plane(vec: np.ndarray, angle_rad: float) -> np.ndarray:

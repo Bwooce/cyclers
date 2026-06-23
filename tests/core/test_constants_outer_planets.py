@@ -123,10 +123,12 @@ def test_vem_entries_unchanged() -> None:
     assert PLANETS["V"].safe_alt_km == 300.0
     assert PLANETS["E"].mu_km3_s2 == 3.98600435507e5
     assert PLANETS["E"].radius_eq_km == 6378.137
-    assert PLANETS["E"].safe_alt_km == 300.0
+    # #426: Earth/Mars flyby floor corrected 300 -> 200 km (SOURCED, Russell 2004 p.165
+    # r_p,min 6578.0 / 3598.5 km). Intentional; Venus stays 300 (no sourced revision).
+    assert PLANETS["E"].safe_alt_km == 200.0
     assert PLANETS["M"].mu_km3_s2 == 4.282837521e4
     assert PLANETS["M"].radius_eq_km == 3396.19
-    assert PLANETS["M"].safe_alt_km == 300.0
+    assert PLANETS["M"].safe_alt_km == 200.0
     # inc/lan still coplanar default for all three live entries.
     for code in ("V", "E", "M"):
         assert PLANETS[code].inc_deg == 0.0

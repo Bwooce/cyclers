@@ -20,7 +20,6 @@ from cyclerfinder.core.ephemeris import Ephemeris  # noqa: E402
 from cyclerfinder.core.flyby import flyby_dv  # noqa: E402
 from cyclerfinder.core.lambert import lambert  # noqa: E402
 from cyclerfinder.nbody.maintenance_shoot import (  # noqa: E402
-    DEFAULT_MIN_FLYBY_ALT_KM,
     continuous_maintenance_chain,
     target_leg,
 )
@@ -130,7 +129,7 @@ def test_maintenance_chain_sun_only_matches_lambert_accounting() -> None:
     leg1 = lambert(r_m1, r_e2, t2 - t1, mu=MU_SUN_KM3_S2)[0]  # M->E
     vinf_in_mars = np.asarray(leg0.v2, dtype=np.float64) - v_m1  # arrival at Mars
     vinf_out_mars = np.asarray(leg1.v1, dtype=np.float64) - v_m1  # departure from Mars
-    rp_min_mars = PLANETS["M"].radius_eq_km + DEFAULT_MIN_FLYBY_ALT_KM
+    rp_min_mars = PLANETS["M"].radius_eq_km + PLANETS["M"].safe_alt_km  # per-body sourced floor
     expected_dv_kms = flyby_dv(vinf_in_mars, vinf_out_mars, PLANETS["M"].mu_km3_s2, rp_min_mars)
 
     chain = continuous_maintenance_chain(

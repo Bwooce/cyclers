@@ -313,7 +313,12 @@ PLANETS: Final[dict[str, PlanetData]] = {
         radius_eq_km=6378.137,
         sma_au=_EARTH_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_EARTH_SMA_AU),
-        safe_alt_km=300.0,
+        # SOURCED design floor: Russell 2004 p.165 r_p,min,Earth = 6578.0 km (= 200 km),
+        # Table 3.4 footnote b ("all flybys min altitude > 200 km" = strictly ballistic).
+        # The model the Earth-Mars cyclers were designed under; the prior unsourced 300 km
+        # spuriously charged ~40 m/s to S1L1's one marginal flyby. Mission cross-check:
+        # Galileo EGA2 flew 303 km (D'Amario-Bright-Wolf 1992) — above this physical floor.
+        safe_alt_km=200.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.01671123,
         # J2000 longitude of perihelion / mean longitude, Standish & Williams
@@ -328,7 +333,9 @@ PLANETS: Final[dict[str, PlanetData]] = {
         radius_eq_km=3396.19,
         sma_au=_MARS_SMA_AU,
         mean_motion_deg_day=_mean_motion_deg_day(_MARS_SMA_AU),
-        safe_alt_km=300.0,
+        # SOURCED design floor: Russell 2004 p.165 r_p,min,Mars = 3598.5 km (= 200 km),
+        # Table 3.4 footnote b. Parallels Earth; the model the cyclers were designed under.
+        safe_alt_km=200.0,
         # J2000 mean eccentricity, Standish & Williams Table 1, e_0 column.
         ecc=0.09340065,
         # J2000 longitude of perihelion / mean longitude, Standish & Williams
