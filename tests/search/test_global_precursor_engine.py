@@ -4,12 +4,17 @@ import pytest
 
 from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
+from cyclerfinder.data.catalog import load_catalog
 from cyclerfinder.search.global_precursor_engine import (
     decision_cost,
     eccentric_tp_linkable_radius_au,
     eccentric_tp_seeds,
     rank_band,
     search_sequence,
+)
+from cyclerfinder.search.precursor_matcher import (
+    find_cycler_precursors,
+    precursor_match_to_jsonl_record,
 )
 
 
@@ -183,3 +188,26 @@ def test_search_sequence_is_deterministic_under_fixed_seed() -> None:
     b = search_sequence(**kw)  # type: ignore[arg-type]
     assert a.closure.closure_residual_kms == b.closure.closure_residual_kms
     assert a.total_dsm_dv_kms == b.total_dsm_dv_kms
+
+
+def test_jsonl_record_carries_dsm_and_band_fields() -> None:
+    """A PrecursorMatch produced by the global engine serialises per-leg DSM,
+    total DSM ΔV, and dv_band."""
+    cat = load_catalog()
+    eph = Ephemeris("astropy")
+    matches = find_cycler_precursors(
+        cycler_id="aldrin-classic-em-k1-outbound",
+        catalogue=cat,
+        ephemeris=eph,
+        launch_window=("2031-01-01T00:00:00", "2031-12-31T00:00:00"),
+        max_legs=2,
+        intermediate_bodies=("V",),
+        vinf_grid_kms=(6.0, 7.0),
+        max_candidates_to_validate=2,
+        use_global_engine=True,
+    )
+    assert matches, "expected at least one survivor"
+    rec = precursor_match_to_jsonl_record(matches[0])
+    assert "dv_band" in rec
+    assert "total_dsm_dv_kms" in rec
+    assert "per_leg_dsm_kms" in rec

@@ -347,6 +347,7 @@ def test_find_cycler_precursors_smoke_returns_list() -> None:
         multi_shell=True,
         max_candidates_to_validate=20,
         literature_check_search=_empty_search,
+        use_global_engine=False,
     )
     assert isinstance(matches, list)
     for m in matches:

@@ -117,6 +117,12 @@ class PrecursorMatch:
     epoch_alignment_score: float
     closure: EpochLockedClosure
     literature_check: LiteratureCheckResult
+    # #430: DSM accounting populated by the global engine path. The local
+    # (Nelder-Mead) path leaves these at their defaults so its records still
+    # construct and serialise unchanged.
+    per_leg_dsm_kms: tuple[float, ...] = ()
+    total_dsm_dv_kms: float = 0.0
+    dv_band: str | None = None
 
     def is_literature_fresh(self) -> bool:
         """``True`` iff the literature-check verdict is a clean not-found.
@@ -333,6 +339,46 @@ def _candidate_to_trajectory(
         return None
 
 
+def _survivor_to_match(
+    survivor: Any,
+    cycler_id: str,
+    seed_vinf: float,
+) -> PrecursorMatch:
+    """Convert a global-engine :class:`PrecursorSurvivor` to a :class:`PrecursorMatch`.
+
+    The survivor already carries the closed :class:`EpochLockedTrajectory`
+    (``survivor.eval.closure.trajectory``), so it is reused directly rather
+    than rebuilt via :func:`_candidate_to_trajectory`. The literature verdict
+    is set to the same ``inconclusive`` / deferred sentinel the local path uses
+    when no ``literature_check_search`` is available — the engine path does not
+    run the literature check (the survivor stream is the discovery probe; the
+    caller decides what to do with it).
+    """
+    closure = survivor.eval.closure
+    trajectory_record = closure.trajectory
+    vinf_match_residual_kms = abs(_terminal_vinf_kms(closure) - seed_vinf)
+    lit = LiteratureCheckResult(
+        status="inconclusive",
+        citation=None,
+        doi=None,
+        confidence=0.0,
+        query_trail=[],
+        notes="Global engine path; literature verdict deferred",
+    )
+    return PrecursorMatch(
+        candidate=trajectory_record,
+        cycler_id=cycler_id,
+        cycler_seed_vinf_kms=seed_vinf,
+        vinf_match_residual_kms=vinf_match_residual_kms,
+        epoch_alignment_score=0.0,
+        closure=closure,
+        literature_check=lit,
+        per_leg_dsm_kms=survivor.eval.per_leg_dsm_kms,
+        total_dsm_dv_kms=survivor.eval.total_dsm_dv_kms,
+        dv_band=survivor.dv_band,
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Public surface
 # --------------------------------------------------------------------------- #
@@ -364,6 +410,7 @@ def find_cycler_precursors(
     literature_check_search: SearchFn | None = None,
     progress_hook: object | None = None,
     max_revs: int = 0,
+    use_global_engine: bool = True,
 ) -> list[PrecursorMatch]:
     """Find precursor MGA chains that insert a spacecraft into a cycler row.
 
@@ -478,6 +525,32 @@ def find_cycler_precursors(
 
     entry = catalogue.by_id[cycler_id]
     target_body, seed_vinf = _first_encounter_body_and_vinf(entry)
+
+    if use_global_engine:
+        # #430: route through the unified global MGA-DSM engine. Local import
+        # avoids a potential import cycle (the engine imports closure helpers
+        # this module also pulls in).
+        from cyclerfinder.search.global_precursor_engine import search_precursors
+
+        survivors = search_precursors(
+            cycler_id=cycler_id,
+            first_body=target_body,
+            seed_vinf_kms=seed_vinf,
+            launch_window=launch_window,
+            ephemeris=ephemeris,
+            intermediate_bodies=intermediate_bodies,
+            max_legs=max_legs,
+            vinf_grid_kms=vinf_grid_kms,
+            tof_box_days_per_leg=tof_box_days_per_leg,
+            epoch_step_days=epoch_step_days,
+        )
+        engine_matches: list[PrecursorMatch] = [
+            _survivor_to_match(s, cycler_id, seed_vinf) for s in survivors
+        ]
+        if max_candidates_to_validate is not None:
+            engine_matches = engine_matches[:max_candidates_to_validate]
+        return engine_matches
+
     # #307 Task 3: auto-derive the cycler-cadence target phase window from the
     # row's validity_window when the caller does not override it (informational
     # alignment score only — never gated; see _epoch_alignment_score).
@@ -696,6 +769,9 @@ def precursor_match_to_jsonl_record(match: PrecursorMatch) -> dict[str, Any]:
         "vinf_match_residual_kms": match.vinf_match_residual_kms,
         "epoch_alignment_score": match.epoch_alignment_score,
         "quality_score": match.quality_score(),
+        "per_leg_dsm_kms": list(match.per_leg_dsm_kms),
+        "total_dsm_dv_kms": match.total_dsm_dv_kms,
+        "dv_band": match.dv_band,
         "candidate": {
             "sequence": list(traj.sequence),
             "leg_tofs_days": list(traj.leg_tofs_days),
