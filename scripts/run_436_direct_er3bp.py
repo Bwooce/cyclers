@@ -44,6 +44,8 @@ import time
 from collections.abc import Iterator, Sequence
 from pathlib import Path
 
+from joblib import Parallel, delayed
+
 from cyclerfinder.core.cr3bp import cr3bp_system
 from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.genome.er3bp_branching import branch_at_saddle_center_er3bp
@@ -94,6 +96,10 @@ _SYSTEMS: tuple[tuple[str, str, float], ...] = (
 # each seed's converge+classify with a SIGALRM budget: a seed that blows the
 # budget is treated as a non-convergence (skipped), not a campaign-wide hang.
 _SEED_BUDGET_S = 20
+
+# Parallel workers for the independent per-seed converge+classify tasks. Leave a
+# few cores free (concurrent #434 sweep + BLAS/system overhead).
+_N_JOBS = int(os.environ.get("CYCLERS_436_NJOBS", "12"))
 
 
 class _SeedBudgetError(Exception):
@@ -199,11 +205,50 @@ def _adjudicate_candidate(
     }
 
 
+def _eval_one_seed(system: ER3BPSystem, seed: DirectEr3bpSeed) -> dict[str, object]:
+    """Converge + classify ONE seed (the parallel work unit).
+
+    Runs in a joblib worker process; the SIGALRM per-seed budget fires in the
+    worker's own main thread. Returns a small picklable result dict; the parent
+    aggregates the tally and writes records (so no shared mutable state).
+    """
+    try:
+        with _seed_budget(_SEED_BUDGET_S):
+            orbit = converge_direct_seed(seed)
+            if orbit is None:
+                return {"outcome": "nonconverged"}
+            cls = classify_no_cr3bp_limit(orbit, system)
+    except _SeedBudgetError:
+        return {"outcome": "timeout"}
+    status = str(cls["status"])
+    rec: dict[str, object] = {
+        "label": seed.label,
+        "primary": system.primary_name,
+        "secondary": system.secondary_name,
+        "mu": system.mu,
+        "target_e": seed.target_e,
+        "period_f_guess": seed.period_f,
+        "x0": float(seed.state0[0]),
+        "ydot0": float(seed.state0[4]),
+        "status": status,
+        "min_e": cls.get("min_e"),
+        "death_e": cls.get("death_e"),
+        "corrector_residual": orbit.corrector_residual,
+        "source": seed.source,
+    }
+    if status == "e_only_candidate":
+        rec.update(_adjudicate_candidate(seed, orbit))
+    return {"outcome": "converged", "status": status, "record": rec}
+
+
 def _process_grid(
     system: ER3BPSystem,
     seeds: Sequence[DirectEr3bpSeed],
 ) -> tuple[list[dict[str, object]], dict[str, int]]:
-    """Converge + classify a grid; return (records, tally)."""
+    """Converge + classify a grid IN PARALLEL across _N_JOBS workers."""
+    results = Parallel(n_jobs=_N_JOBS, backend="loky")(
+        delayed(_eval_one_seed)(system, seed) for seed in seeds
+    )
     records: list[dict[str, object]] = []
     tally = {
         "grid_size": len(seeds),
@@ -213,50 +258,25 @@ def _process_grid(
         "inconclusive": 0,
         "timed_out": 0,
     }
-    n = len(seeds)
-    n_timeout = 0
-    for idx, seed in enumerate(seeds, 1):
-        if idx == 1 or idx % 10 == 0 or idx == n:
-            _print_progress(
-                f"    seed {idx}/{n} (converged so far={tally['converged']}, timed-out={n_timeout})"
-            )
-        try:
-            with _seed_budget(_SEED_BUDGET_S):
-                orbit = converge_direct_seed(seed)
-                if orbit is None:
-                    continue
-                tally["converged"] += 1
-                cls = classify_no_cr3bp_limit(orbit, system)
-        except _SeedBudgetError:
-            n_timeout += 1
+    for res in results:
+        outcome = res["outcome"]
+        if outcome == "timeout":
             tally["timed_out"] += 1
             continue
-        status = str(cls["status"])
+        if outcome == "nonconverged":
+            continue
+        tally["converged"] += 1
+        status = str(res["status"])
         tally[status] = tally.get(status, 0) + 1
-
-        rec: dict[str, object] = {
-            "label": seed.label,
-            "primary": system.primary_name,
-            "secondary": system.secondary_name,
-            "mu": system.mu,
-            "target_e": seed.target_e,
-            "period_f_guess": seed.period_f,
-            "x0": float(seed.state0[0]),
-            "ydot0": float(seed.state0[4]),
-            "status": status,
-            "min_e": cls.get("min_e"),
-            "death_e": cls.get("death_e"),
-            "corrector_residual": orbit.corrector_residual,
-            "source": seed.source,
-        }
+        rec = res["record"]
+        assert isinstance(rec, dict)
         if status == "e_only_candidate":
             _print_progress(
-                f"  *** e_only_candidate: {seed.label} "
+                f"  *** e_only_candidate: {rec['label']} "
                 f"({system.primary_name}-{system.secondary_name}) "
-                f"x0={float(seed.state0[0]):.4f} ydot0={float(seed.state0[4]):.4f} "
-                f"death_e={cls.get('death_e')}"
+                f"x0={float(rec['x0']):.4f} ydot0={float(rec['ydot0']):.4f} "  # type: ignore[arg-type]
+                f"death_e={rec.get('death_e')}"
             )
-            rec.update(_adjudicate_candidate(seed, orbit))
         records.append(rec)
     return records, tally
 
