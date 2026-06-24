@@ -16,7 +16,9 @@ import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_periodic as cp
 from cyclerfinder.search.binary_star_search import (
     collinear_lpoints,
+    topology_3d,
     winding_topology,
+    z_oscillation_count,
 )
 
 ROSS_MU = 1.2150584270572e-2
@@ -59,3 +61,36 @@ def test_winding_classifier_reproduces_known_em_members(
     assert (topo.k1, topo.k2) == (k1, k2), f"{label}: got ({topo.k1},{topo.k2})"
     assert topo.prograde, f"{label}: published cyclers are prograde"
     assert topo.reaches_secondary, f"{label}: a cycler must reach the secondary realm"
+
+
+def test_z_oscillation_count_conventions() -> None:
+    # planar: z identically 0 -> no crossings
+    assert z_oscillation_count(np.zeros(100)) == 0
+    # one full sine period sin(2*pi*t) over [0,1) has two sign changes
+    t = np.linspace(0, 1, 1001, endpoint=False)
+    assert z_oscillation_count(np.sin(2 * np.pi * t)) == 2
+
+
+def test_z_oscillation_count_ignores_exact_zero_samples() -> None:
+    # exact-zero samples must not be double-counted; periodic convention closes
+    # the loop, so + 0 - over a period crosses going down then back up: 2.
+    assert z_oscillation_count(np.array([1.0, 0.0, -1.0])) == 2
+    # touching zero and returning to the same sign is zero crossings
+    assert z_oscillation_count(np.array([1.0, 0.0, 1.0])) == 0
+    # z_center offset shifts the reference plane; signs (-, 0, +) over a period
+    # cross up then wrap back down: 2.
+    assert z_oscillation_count(np.array([1.0, 2.0, 3.0]), z_center=2.0) == 2
+
+
+def test_topology_3d_planar_orbit_has_kz_zero() -> None:
+    """A genuinely planar (z=0) CR3BP orbit must have k_z == 0 while still
+    reproducing the published planar (k1, k2) label."""
+    system = _system(ROSS_MU)
+    o = cp.correct_symmetric_fixed_jacobi(
+        system, -0.3209891696, 3.161784147013429, 12.0, ydot0_sign=-1.0, half_crossings=3, tol=1e-11
+    )
+    assert o.converged
+    state0 = np.array([o.x0, 0.0, 0.0, 0.0, o.ydot0, 0.0])
+    topo = topology_3d(ROSS_MU, state0, o.period)
+    assert (topo.k1, topo.k2) == (3, 1)
+    assert topo.k_z == 0

@@ -70,6 +70,7 @@ class Topology:
     x_min: float
     x_max: float
     reaches_secondary: bool  # x-extent passes the L1 neck into the secondary realm
+    k_z: int = 0  # equatorial-plane (z=z_center) crossings over one period; 0 for planar orbits
 
 
 def winding_topology(
@@ -110,6 +111,71 @@ def winding_topology(
         x_min=float(x.min()),
         x_max=float(x.max()),
         reaches_secondary=bool(x.max() > l1),
+    )
+
+
+def z_oscillation_count(z_series: NDArray[np.float64], *, z_center: float = 0.0) -> int:
+    """Count equatorial-plane crossings of ``z_series`` relative to ``z_center``.
+
+    Counts the number of sign changes of ``(z_series - z_center)``: the number of
+    times the trajectory crosses the reference plane over one period. The series
+    is treated as periodic (one full closed period), so the implicit wrap from
+    the last sample back to the first is included -- a full sine period over
+    ``[0, 1)`` therefore has two crossings (up and down), matching the closed
+    periodic-orbit convention. Robust to samples that sit exactly on the plane
+    and to endpoints: a sample exactly at ``z_center`` is not counted, and a
+    touch-and-return to the same side is zero crossings. Only consecutive
+    *nonzero* samples of differing sign contribute.
+    """
+    s = np.sign(np.asarray(z_series, float) - z_center)
+    nz = s[s != 0.0]
+    if nz.size < 2:
+        return 0
+    # close the loop: a periodic orbit's last nonzero sample is adjacent to its
+    # first, so include that wrap-around transition.
+    closed = np.append(nz, nz[0])
+    return int(np.count_nonzero(np.diff(closed) != 0.0))
+
+
+def topology_3d(
+    mu: float,
+    state0: NDArray[np.float64],
+    period: float,
+    *,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    n_samples: int = 4000,
+    z_center: float = 0.0,
+) -> Topology:
+    """Classify a (possibly out-of-plane) CR3BP periodic orbit.
+
+    Computes the planar winding numbers ``(k1, k2)`` via :func:`winding_topology`
+    and the out-of-plane oscillation count ``k_z`` (equatorial-plane crossings)
+    via :func:`z_oscillation_count`, propagating the orbit with the same DOP853
+    integrator. A planar (``z == 0``) orbit yields ``k_z == 0``.
+    """
+    topo = winding_topology(mu, state0, period, rtol=rtol, atol=atol, n_samples=n_samples)
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, period),
+        np.asarray(state0, float),
+        args=(mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=period / n_samples,
+    )
+    k_z = z_oscillation_count(sol.y[2], z_center=z_center)
+    return Topology(
+        k1=topo.k1,
+        k2=topo.k2,
+        w1=topo.w1,
+        w2=topo.w2,
+        prograde=topo.prograde,
+        x_min=topo.x_min,
+        x_max=topo.x_max,
+        reaches_secondary=topo.reaches_secondary,
+        k_z=k_z,
     )
 
 
