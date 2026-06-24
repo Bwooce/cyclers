@@ -72,6 +72,14 @@ Vec3 = NDArray[np.float64]
 
 _DEFECT_PENALTY: float = 1.0e3
 
+# SLSQP can terminate far from feasibility when its line search stalls — a failure
+# mode that is sensitive to BLAS reduction order (it converges to ~1e-11 locally
+# but has intermittently stalled in CI). Warm-restarting SLSQP from its own output
+# reliably pushes it the rest of the way. Each restart only ADDS refinement and
+# cannot worsen an already-feasible solve (a feasible point triggers an immediate
+# break), so this is a pure robustness guard, not a tolerance change.
+_FBS_MAX_RESTARTS: int = 8
+
 
 @dataclass(frozen=True)
 class FlybyChainSpec:
@@ -497,15 +505,32 @@ def optimize_chain_fbs_flyby(
 
     x0 = _pack_x0(spec, list(dv0_per_leg), list(varr0), list(vdep0))
 
+    def _solve(x_init: NDArray[np.float64]) -> Any:
+        return minimize(
+            _obj,
+            x_init,
+            jac=_obj_grad,
+            method="SLSQP",
+            constraints=constraints,
+            options={"maxiter": maxiter, "ftol": ftol},
+        )
+
+    def _max_eq_violation(x: NDArray[np.float64]) -> float:
+        cv = _flyby_constraint_vector(spec, x, mu=mu)
+        eq = cv[: 6 * m + n_int]
+        return float(np.max(np.abs(eq))) if eq.size else 0.0
+
+    # Warm-restart SLSQP from its own output until the equality block is feasible
+    # (or the restart budget is spent). The bar uses the stricter of the two
+    # equality tolerances so both the match-point defect and the v∞-continuity
+    # block clear. A first solve that already converges breaks immediately.
+    _restart_bar = min(feas_tol, flyby_tol)
     t_start = time.perf_counter()
-    res: Any = minimize(
-        _obj,
-        x0,
-        jac=_obj_grad,
-        method="SLSQP",
-        constraints=constraints,
-        options={"maxiter": maxiter, "ftol": ftol},
-    )
+    res: Any = _solve(x0)
+    for _ in range(_FBS_MAX_RESTARTS):
+        if _max_eq_violation(np.asarray(res.x, dtype=np.float64)) < _restart_bar:
+            break
+        res = _solve(np.asarray(res.x, dtype=np.float64))
     wall = time.perf_counter() - t_start
 
     x_sol = np.asarray(res.x, dtype=np.float64)
