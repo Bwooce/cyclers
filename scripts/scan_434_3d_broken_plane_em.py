@@ -43,11 +43,13 @@ controller (Task 5), NOT by the smoke.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
 
 import numpy as np
+from joblib import Parallel, delayed
 
 from cyclerfinder.core.cr3bp import CR3BPSystem
 from cyclerfinder.search.binary_star_search import topology_3d
@@ -76,6 +78,12 @@ _Z0_LADDER: tuple[float, ...] = (0.05, 0.10, 0.15, 0.20, 0.24)
 
 # Collinear points whose vertical (out-of-plane) mode is oscillatory.
 _LYAPUNOV_POINTS: tuple[str, ...] = ("L1", "L2")
+
+# Parallel workers for the independent per-family lift+continue units. Each unit
+# (one route-(i) libration point, or one route-(ii) (cycler, z0) pair) is fully
+# independent, so they fan out across cores. loky's backend auto-caps inner
+# (BLAS) threads per worker, so no manual thread-env capping is needed.
+_N_JOBS = int(os.environ.get("CYCLERS_434_NJOBS", "12"))
 
 
 # Planar Braik-Ross Earth-Moon cycler roots are recovered at run time via
@@ -189,6 +197,83 @@ def _lock_planar_root(
     return None
 
 
+def _worker_lyapunov(
+    system: CR3BPSystem,
+    point: str,
+    *,
+    n_steps_max: int,
+    monodromy_eval: bool,
+) -> dict[str, object]:
+    """Route-(i) work unit: one libration point -> lyapunov_seed_3d -> continue.
+
+    Runs in a joblib worker process. Returns a small picklable result dict; the
+    parent aggregates counts/records (no shared mutable state).
+    """
+    label = f"lyapunov3d-{point}"
+    try:
+        state0, period = lyapunov_seed_3d(system, point=point)
+    except ValueError as exc:
+        return {"kind": "lyapunov", "label": label, "status": "seed_failed", "detail": str(exc)}
+    family = _continue_seed(
+        system, state0, period, n_steps_max=n_steps_max, monodromy_eval=monodromy_eval
+    )
+    recs = _records_for_family(system, family, "lyapunov3d", label)
+    return {
+        "kind": "lyapunov",
+        "label": label,
+        "status": "ok",
+        "z0": float(state0[2]),
+        "period": float(period),
+        "records": recs,
+    }
+
+
+def _worker_z0_lift(
+    system: CR3BPSystem,
+    root: Representative,
+    z0: float,
+    *,
+    n_steps_max: int,
+    monodromy_eval: bool,
+) -> dict[str, object]:
+    """Route-(ii) work unit: one (cycler, z0) -> lock -> if locked, continue.
+
+    Runs in a joblib worker process. Returns a small picklable result dict; the
+    parent aggregates the lock/collapse tally and records (no shared mutable
+    state).
+    """
+    cycler_label = f"braik-ross-{root.label}-em"
+    orbit = _lock_planar_root(system, root, -z0)  # negative z0 per spike branch
+    if orbit is None:
+        return {
+            "kind": "z0_lift",
+            "cycler": root.label,
+            "cycler_label": cycler_label,
+            "z0": z0,
+            "status": "collapse",
+        }
+    seed_label = f"{cycler_label}-z0_{z0:.2f}"
+    family = _continue_seed(
+        system,
+        orbit.state0,
+        orbit.T_TU,
+        n_steps_max=n_steps_max,
+        monodromy_eval=monodromy_eval,
+    )
+    recs = _records_for_family(system, family, "z0_lift", seed_label)
+    return {
+        "kind": "z0_lift",
+        "cycler": root.label,
+        "cycler_label": cycler_label,
+        "z0": z0,
+        "status": "lock",
+        "seed_label": seed_label,
+        "locked_z0": float(orbit.state0[2]),
+        "locked_T": float(orbit.T_TU),
+        "records": recs,
+    }
+
+
 def _closure_summary(records: list[dict[str, object]]) -> dict[str, float]:
     if not records:
         return {"n": 0, "max": float("nan"), "median": float("nan")}
@@ -240,58 +325,72 @@ def main(*, smoke: bool = False) -> None:
     if smoke:
         confirmed_roots = confirmed_roots[:1]
 
+    # --- Build the flat list of INDEPENDENT lift+continue work units --------
+    # route (i): one libration point each; route (ii): one (cycler, z0) each.
+    monodromy_eval = not smoke
+    n_route_i = len(points)
+    n_route_ii = len(confirmed_roots) * len(z0_ladder)
+    _print_progress(
+        f"dispatching {n_route_i + n_route_ii} independent units "
+        f"(route(i)={n_route_i}, route(ii)={n_route_ii}) across n_jobs={_N_JOBS}"
+    )
+
+    jobs = [
+        delayed(_worker_lyapunov)(
+            system, point, n_steps_max=n_steps_max, monodromy_eval=monodromy_eval
+        )
+        for point in points
+    ]
+    jobs += [
+        delayed(_worker_z0_lift)(
+            system, root, z0, n_steps_max=n_steps_max, monodromy_eval=monodromy_eval
+        )
+        for root in confirmed_roots
+        for z0 in z0_ladder
+    ]
+    results: list[dict[str, object]] = Parallel(n_jobs=_N_JOBS, backend="loky")(jobs)
+
+    # --- Aggregate in the parent (order may differ; that's fine) ------------
     all_records: list[dict[str, object]] = []
     per_seed_counts: list[tuple[str, int]] = []
+    lock_tally: dict[str, tuple[int, int]] = {  # cycler -> (locks, collapses)
+        root.label: (0, 0) for root in confirmed_roots
+    }
 
-    # --- Route (i): vertical-Lyapunov / halo seeds --------------------------
-    for point in points:
-        label = f"lyapunov3d-{point}"
-        try:
-            state0, period = lyapunov_seed_3d(system, point=point)
-        except ValueError as exc:
-            _print_progress(f"route(i) {label}: seed FAILED ({exc}); skipping")
-            continue
-        _print_progress(
-            f"route(i) {label}: seed locked z0={state0[2]:.4f} T={period:.4f}; continuing"
-        )
-        family = _continue_seed(
-            system, state0, period, n_steps_max=n_steps_max, monodromy_eval=not smoke
-        )
-        recs = _records_for_family(system, family, "lyapunov3d", label)
-        all_records.extend(recs)
-        per_seed_counts.append((label, len(recs)))
-        _print_progress(f"route(i) {label}: {len(recs)} converged member(s)")
-
-    # --- Route (ii): z0-amplitude lock per confirmed Braik-Ross cycler ------
-    lock_tally: dict[str, tuple[int, int]] = {}  # cycler -> (locks, collapses)
-    for root in confirmed_roots:
-        cycler_label = f"braik-ross-{root.label}-em"
-        locks = 0
-        collapses = 0
-        for z0 in z0_ladder:
-            orbit = _lock_planar_root(system, root, -z0)  # negative z0 per spike branch
-            if orbit is None:
-                collapses += 1
-                _print_progress(f"route(ii) {cycler_label} |z0|={z0:.2f}: COLLAPSE / no 3D lock")
+    for res in results:
+        if res["kind"] == "lyapunov":
+            label = str(res["label"])
+            if res["status"] == "seed_failed":
+                _print_progress(f"route(i) {label}: seed FAILED ({res['detail']}); skipping")
                 continue
-            locks += 1
-            seed_label = f"{cycler_label}-z0_{z0:.2f}"
+            recs = res["records"]
+            assert isinstance(recs, list)
             _print_progress(
-                f"route(ii) {seed_label}: LOCK z0={orbit.state0[2]:.4f} "
-                f"T={orbit.T_TU:.4f}; continuing"
+                f"route(i) {label}: seed locked z0={float(res['z0']):.4f} "  # type: ignore[arg-type]
+                f"T={float(res['period']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
             )
-            family = _continue_seed(
-                system,
-                orbit.state0,
-                orbit.T_TU,
-                n_steps_max=n_steps_max,
-                monodromy_eval=not smoke,
+            all_records.extend(recs)
+            per_seed_counts.append((label, len(recs)))
+        else:  # z0_lift
+            cycler = str(res["cycler"])
+            locks, collapses = lock_tally[cycler]
+            if res["status"] == "collapse":
+                lock_tally[cycler] = (locks, collapses + 1)
+                _print_progress(
+                    f"route(ii) {res['cycler_label']} |z0|={float(res['z0']):.2f}: "  # type: ignore[arg-type]
+                    f"COLLAPSE / no 3D lock"
+                )
+                continue
+            lock_tally[cycler] = (locks + 1, collapses)
+            seed_label = str(res["seed_label"])
+            recs = res["records"]
+            assert isinstance(recs, list)
+            _print_progress(
+                f"route(ii) {seed_label}: LOCK z0={float(res['locked_z0']):.4f} "  # type: ignore[arg-type]
+                f"T={float(res['locked_T']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
             )
-            recs = _records_for_family(system, family, "z0_lift", seed_label)
             all_records.extend(recs)
             per_seed_counts.append((seed_label, len(recs)))
-            _print_progress(f"route(ii) {seed_label}: {len(recs)} converged member(s)")
-        lock_tally[root.label] = (locks, collapses)
 
     # --- Write JSONL --------------------------------------------------------
     _OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -318,7 +417,9 @@ def main(*, smoke: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    import os
-
-    smoke_mode = "--smoke" in sys.argv or os.environ.get("SCAN_434_SMOKE") == "1"
+    smoke_mode = (
+        "--smoke" in sys.argv
+        or os.environ.get("SCAN_434_SMOKE") == "1"
+        or os.environ.get("CYCLERS_434_SMOKE") == "1"
+    )
     main(smoke=smoke_mode)
