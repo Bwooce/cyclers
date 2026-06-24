@@ -119,3 +119,94 @@ def continue_er3bp_family_in_e(
         history.append(current_orbit)
 
     return history
+
+
+def continue_er3bp_family_in_e_partial(
+    sys_base: ER3BPSystem,
+    seed_state: NDArray[np.float64],
+    period_f: float,
+    e_target: float,
+    n_steps: int,
+    *,
+    is_half_period_residual: bool = True,
+    tol: float = 1e-10,
+) -> tuple[list[ER3BPPeriodicOrbit], float | None]:
+    """Continue an ER3BP periodic orbit family in eccentricity, non-raising.
+
+    Mirrors :func:`continue_er3bp_family_in_e` exactly (same zeroth/secant
+    predictor and corrector configuration) but, instead of raising
+    :class:`ContinuationError` on a failed step, returns the orbits converged so
+    far together with the eccentricity at which the step failed.
+
+    Returns:
+        ``(orbits, death_e)`` where ``orbits`` is the list of converged orbits
+        (including the initial seed) and ``death_e`` is the target eccentricity
+        of the first step that failed to converge, or ``None`` if the
+        continuation reached ``e_target``.
+    """
+    history: list[ER3BPPeriodicOrbit] = []
+
+    current_e = sys_base.e
+    e_step = (e_target - current_e) / n_steps
+
+    # First, converge the seed exactly at the starting eccentricity
+    try:
+        current_orbit = correct_er3bp_periodic(
+            system=sys_base,
+            state_guess=seed_state,
+            period_f=period_f,
+            is_half_period_residual=is_half_period_residual,
+            free_vars=(IDX_X, IDX_YDOT),
+            residual_indices=(IDX_Y, IDX_XDOT),
+            tol=tol,
+        )
+    except Exception:
+        return history, current_e
+
+    history.append(current_orbit)
+
+    # Secant predictor states
+    prev_state = current_orbit.state0
+    prev_e = current_e
+
+    for i in range(1, n_steps + 1):
+        target_e = sys_base.e + i * e_step
+        next_sys = ER3BPSystem(
+            mu=sys_base.mu,
+            e=target_e,
+            primary_name=sys_base.primary_name,
+            secondary_name=sys_base.secondary_name,
+        )
+
+        # Predictor (Secant if we have at least 2 points, otherwise zeroth-order)
+        if len(history) >= 2:
+            e_diff = current_e - prev_e
+            if abs(e_diff) > 1e-14:
+                dstate_de = (current_orbit.state0 - prev_state) / e_diff
+                state_guess = current_orbit.state0 + dstate_de * (target_e - current_e)
+            else:
+                state_guess = current_orbit.state0.copy()
+        else:
+            state_guess = current_orbit.state0.copy()
+
+        try:
+            converged = correct_er3bp_periodic(
+                system=next_sys,
+                state_guess=state_guess,
+                period_f=period_f,
+                is_half_period_residual=is_half_period_residual,
+                free_vars=(IDX_X, IDX_YDOT),
+                residual_indices=(IDX_Y, IDX_XDOT),
+                tol=tol,
+            )
+        except Exception:
+            return history, target_e
+
+        prev_state = current_orbit.state0
+        prev_e = current_e
+
+        current_orbit = converged
+        current_e = target_e
+        history.append(current_orbit)
+
+    return history, None

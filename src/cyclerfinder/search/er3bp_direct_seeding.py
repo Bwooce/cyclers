@@ -19,6 +19,11 @@ import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core.er3bp import ER3BPSystem
+from cyclerfinder.genome.er3bp_continuation import continue_er3bp_family_in_e_partial
+from cyclerfinder.genome.er3bp_periodic import (
+    ER3BPPeriodicOrbit,
+    correct_er3bp_periodic,
+)
 
 
 @dataclass(frozen=True)
@@ -77,3 +82,82 @@ def direct_e_seed_grid(
                 )
             )
     return seeds
+
+
+def converge_direct_seed(
+    seed: DirectEr3bpSeed,
+    *,
+    tol: float = 1e-10,
+) -> ER3BPPeriodicOrbit | None:
+    """Forward-converge a direct seed at its target eccentricity.
+
+    Runs the strict-periodicity corrector on ``seed.state0`` in ``seed.system``
+    (whose ``e`` is the target eccentricity). The corrector's ``period_f`` is
+    the integration span: when ``is_half_period_residual`` is set this is the
+    half-period, but ``seed.period_f`` stores the FULL period, so it is halved
+    here (matching ``er3bp_discovery.continue_and_monitor``).
+
+    Returns the converged orbit if both the orbit's own ``converged`` state
+    (no exception raised) and ``corrector_residual < tol`` hold, else ``None``.
+    """
+    integration_f = seed.period_f / 2.0 if seed.is_half_period_residual else seed.period_f
+    try:
+        orbit = correct_er3bp_periodic(
+            system=seed.system,
+            state_guess=seed.state0,
+            period_f=integration_f,
+            is_half_period_residual=seed.is_half_period_residual,
+            tol=tol,
+        )
+    except Exception:
+        return None
+    if orbit.corrector_residual < tol:
+        return orbit
+    return None
+
+
+def classify_no_cr3bp_limit(
+    converged_orbit: ER3BPPeriodicOrbit,
+    system: ER3BPSystem,
+    *,
+    n_steps: int = 30,
+    death_floor: float = 1e-3,
+) -> dict[str, object]:
+    """Reverse-continue a converged e>0 orbit toward e=0 to test CR3BP ancestry.
+
+    Continues the family from ``system.e`` down to ``e_target=0.0``. The
+    corrector's integration span is ``converged_orbit.period_f / 2`` for a
+    half-period residual (the orbit stores the FULL period), matching the
+    convention in :func:`converge_direct_seed`.
+
+    Returns one of:
+      * ``{"status": "cr3bp_continuous", "min_e": <final e>}`` if the
+        continuation reaches ~0 (a CR3BP ancestor exists -> negative result);
+      * ``{"status": "e_only_candidate", "death_e": <e>}`` if it dies at
+        ``death_e > death_floor`` (no CR3BP limit -> candidate);
+      * ``{"status": "inconclusive", "death_e": <e>}`` if it dies at
+        ``death_e <= death_floor`` (numerical noise near e=0).
+    """
+    # The continuation corrector uses a half-period symmetric residual, so its
+    # integration span is the half-period. ``converged_orbit.period_f`` is the
+    # FULL period (the corrector returns ``period_f * 2`` when given a
+    # half-period span), so halve it.
+    integration_f = converged_orbit.period_f / 2.0
+
+    orbits, death_e = continue_er3bp_family_in_e_partial(
+        system,
+        converged_orbit.state0,
+        integration_f,
+        0.0,
+        n_steps,
+        is_half_period_residual=True,
+    )
+
+    if death_e is None:
+        final_e = orbits[-1].e if orbits else 0.0
+        return {"status": "cr3bp_continuous", "min_e": final_e}
+
+    if abs(death_e) > death_floor:
+        return {"status": "e_only_candidate", "death_e": death_e}
+
+    return {"status": "inconclusive", "death_e": death_e}
