@@ -11,11 +11,15 @@ structure:
 
   (i)  vertical-Lyapunov / halo generator -- ``lyapunov_seed_3d`` produces
        genuinely out-of-plane ICs at the collinear point; continue each.
-  (ii) z0-amplitude lock per planar root -- for each planar Aldrin/Braik-Ross
-       root, step |z0| up from a MODERATE start in {0.05,0.10,0.15,0.20,0.24}
-       and let ``correct_general_periodic_3d`` find the 3D branch (try
-       symmetric-tulip free vars first; fall back to full-asymmetric); record
-       which roots HAVE a 3D extension (lock) vs collapse-only.
+  (ii) z0-amplitude lock per planar cycler -- recover ALL FOUR Braik-Ross
+       Earth-Moon cyclers (C11a, C11b, C21, C32) via
+       ``recover_all_cyclers_braik_ross`` and, for each CONFIRMED planar root,
+       step |z0| up from a MODERATE start in {0.05,0.10,0.15,0.20,0.24} and let
+       ``correct_general_periodic_3d`` find the 3D branch (try symmetric-tulip
+       free vars first; fall back to full-asymmetric); record which cyclers HAVE
+       a 3D extension (lock) vs collapse-only. C11b/C21/C32 carry DIFFERENT
+       planar winding topology than C11a, so their 3D extensions are the genuine
+       novel-family candidates (#438 unlock of the #434 frontier).
 
 For each converged 3D seed the sweep runs the pseudo-arclength family tracer and
 logs every closure-verified member.
@@ -29,10 +33,11 @@ Usage::
     uv run python scripts/scan_434_3d_broken_plane_em.py            # full sweep
     SCAN_434_SMOKE=1 uv run python scripts/scan_434_3d_broken_plane_em.py  # tiny
 
-The smoke mode (env var ``SCAN_434_SMOKE=1`` or ``--smoke``) runs only the L1
-vertical-Lyapunov seed + one planar root with ``n_steps_max=20`` to confirm the
-pipeline lifts, converges, continues, and writes records. The full sweep is
-launched by the controller (Task 5), NOT by the smoke.
+The smoke mode (env var ``SCAN_434_SMOKE=1`` or ``--smoke``) recovers the four
+cyclers + lifts only the FIRST confirmed one at one z0 (plus the L1 vertical-
+Lyapunov seed) with ``n_steps_max=20`` to confirm the pipeline recovers, lifts,
+converges, continues, and writes records. The full sweep is launched by the
+controller (Task 5), NOT by the smoke.
 """
 
 from __future__ import annotations
@@ -40,12 +45,11 @@ from __future__ import annotations
 import json
 import sys
 import time
-from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 
-from cyclerfinder.core.cr3bp import CR3BPSystem, cr3bp_system
+from cyclerfinder.core.cr3bp import CR3BPSystem
 from cyclerfinder.search.binary_star_search import topology_3d
 from cyclerfinder.search.cr3bp_3d_family_tracer import Family3D, continue_general_3d_family
 from cyclerfinder.search.cr3bp_general_periodic_3d import (
@@ -56,6 +60,11 @@ from cyclerfinder.search.cr3bp_general_periodic_3d import (
     correct_general_periodic_3d,
 )
 from cyclerfinder.search.cr3bp_seed_generator import lyapunov_seed_3d
+from cyclerfinder.search.reachable_representatives import (
+    Representative,
+    braik_ross_system,
+    recover_all_cyclers_braik_ross,
+)
 
 _DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 _OUT_PATH = _DATA_DIR / "scan_434_3d_broken_plane_em.jsonl"
@@ -69,38 +78,14 @@ _Z0_LADDER: tuple[float, ...] = (0.05, 0.10, 0.15, 0.20, 0.24)
 _LYAPUNOV_POINTS: tuple[str, ...] = ("L1", "L2")
 
 
-# Planar Aldrin/Braik-Ross Earth-Moon roots (rotating-frame CR3BP ICs).
-#
-# SOURCING: the catalogue rows (data/catalogue.yaml) carry HELIOCENTRIC mission
-# elements, not rotating-frame CR3BP ICs, so they are not machine-loadable as
-# corrector seeds. The canonical planar Earth-Moon Braik-Ross C11a (1,1) root is
-# taken from the #287 spike's published-on-disk planar baseline
-# (data/spike_287.jsonl, case "planar_baseline_z0eq0"): the perpendicular-
-# crossing IC (x0, 0, 0, 0, ydot0, 0) at jacobi 3.1294, the same baseline used by
-# the #287 spike and the v3_3d / v2_3d Braik-Ross (1,1) validation closures.
-@dataclass(frozen=True)
-class PlanarRoot:
-    label: str
-    x0: float
-    ydot0: float
-    period: float
-    source: str
-
-
-_PLANAR_ROOTS: tuple[PlanarRoot, ...] = (
-    PlanarRoot(
-        label="braik-ross-C11a-em-k1",
-        x0=-0.8116406668238195,
-        ydot0=-0.11859055759763637,
-        period=9.69107744379376,
-        source=(
-            "#287 spike planar baseline (data/spike_287.jsonl case "
-            "planar_baseline_z0eq0); Braik-Ross (1,1) Earth-Moon C11a at jacobi 3.1294"
-        ),
-    ),
-)
-
-
+# Planar Braik-Ross Earth-Moon cycler roots are recovered at run time via
+# ``recover_all_cyclers_braik_ross`` (C11a, C11b, C21, C32). Each Representative
+# carries the perpendicular-crossing planar IC (x0, 0, 0, 0, ydot0, 0), the
+# nondim full period, the per-family Jacobi, and a ``.confirmed`` flag (period
+# matched the Braik-Ross Table-2 sourced value within tolerance). ONLY confirmed
+# cyclers are lifted; the rest are logged. The four cyclers do NOT share planar
+# winding topology, so C11b/C21/C32's 3D extensions are the genuine novel-family
+# candidates the #438 broadening is after.
 def _print_progress(msg: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
@@ -168,16 +153,18 @@ def _continue_seed(
 
 def _lock_planar_root(
     system: CR3BPSystem,
-    root: PlanarRoot,
+    root: Representative,
     z0: float,
 ) -> Periodic3DOrbit | None:
-    """Attempt the z0-amplitude lock for one (root, z0); return a non-degenerate
+    """Attempt the z0-amplitude lock for one (cycler, z0); return a non-degenerate
     3D orbit, or None on collapse / non-convergence.
 
     Tries the symmetric-tulip free vars first; if that collapses to the planar
     manifold, retries with the full-asymmetric mask.
     """
-    seed_state = np.array([root.x0, 0.0, z0, 0.0, root.ydot0, 0.0], dtype=np.float64)
+    x0 = float(root.state0[0])
+    ydot0 = float(root.state0[4])
+    seed_state = np.array([x0, 0.0, z0, 0.0, ydot0, 0.0], dtype=np.float64)
     # Symmetric-tulip first (perpendicular half-period residual); fall back to
     # the full-asymmetric mask (full-state closure at T) if it collapses.
     tulip = correct_general_periodic_3d(
@@ -220,14 +207,38 @@ def main(*, smoke: bool = False) -> None:
     t0 = time.time()
     n_steps_max = 20 if smoke else 100
     points = (_LYAPUNOV_POINTS[0],) if smoke else _LYAPUNOV_POINTS
-    roots = (_PLANAR_ROOTS[0],) if smoke else _PLANAR_ROOTS
     z0_ladder = (_Z0_LADDER[0],) if smoke else _Z0_LADDER
 
     _print_progress(
         f"#434 3D broken-plane discovery (Earth-Moon){' [SMOKE]' if smoke else ''} "
         f"n_steps_max={n_steps_max}"
     )
-    system = cr3bp_system("Earth", "Moon")
+    # Use the Braik-Ross / Ross-RT nondimensional Earth-Moon system (the mu the
+    # cycler recovery is pinned to). The (2,1) C21 family has Jacobi extent
+    # ~4e-12 (a single point in C) and only converges at the Braik-Ross mu; the
+    # generic cr3bp_system("Earth","Moon") mu is ~1.2e-10 off and drops C21,
+    # which defeats the #438 broadening. The mu difference is negligible for the
+    # L1 vertical-Lyapunov route-(i) seed.
+    system = braik_ross_system()
+
+    # --- Recover the four planar Braik-Ross cyclers (route (ii) seed source) -
+    recovered = recover_all_cyclers_braik_ross(system)
+    confirmed_roots: list[Representative] = []
+    for rep in recovered:
+        status = (
+            "CONFIRMED"
+            if rep.confirmed
+            else ("converged-UNCONFIRMED" if rep.converged else "NOT-CONVERGED")
+        )
+        _print_progress(
+            f"recover {rep.label}: {status} "
+            f"period={rep.period_days:.3f}d (sourced {rep.sourced_period_days:.3f}d) "
+            f"jacobi={rep.jacobi:.6f} x0={rep.state0[0]:.6f} ydot0={rep.state0[4]:.6f}"
+        )
+        if rep.confirmed:
+            confirmed_roots.append(rep)
+    if smoke:
+        confirmed_roots = confirmed_roots[:1]
 
     all_records: list[dict[str, object]] = []
     per_seed_counts: list[tuple[str, int]] = []
@@ -251,19 +262,20 @@ def main(*, smoke: bool = False) -> None:
         per_seed_counts.append((label, len(recs)))
         _print_progress(f"route(i) {label}: {len(recs)} converged member(s)")
 
-    # --- Route (ii): z0-amplitude lock per planar root ----------------------
-    lock_tally: dict[str, tuple[int, int]] = {}  # label -> (locks, collapses)
-    for root in roots:
+    # --- Route (ii): z0-amplitude lock per confirmed Braik-Ross cycler ------
+    lock_tally: dict[str, tuple[int, int]] = {}  # cycler -> (locks, collapses)
+    for root in confirmed_roots:
+        cycler_label = f"braik-ross-{root.label}-em"
         locks = 0
         collapses = 0
         for z0 in z0_ladder:
             orbit = _lock_planar_root(system, root, -z0)  # negative z0 per spike branch
             if orbit is None:
                 collapses += 1
-                _print_progress(f"route(ii) {root.label} |z0|={z0:.2f}: COLLAPSE / no 3D lock")
+                _print_progress(f"route(ii) {cycler_label} |z0|={z0:.2f}: COLLAPSE / no 3D lock")
                 continue
             locks += 1
-            seed_label = f"{root.label}-z0_{z0:.2f}"
+            seed_label = f"{cycler_label}-z0_{z0:.2f}"
             _print_progress(
                 f"route(ii) {seed_label}: LOCK z0={orbit.state0[2]:.4f} "
                 f"T={orbit.T_TU:.4f}; continuing"
