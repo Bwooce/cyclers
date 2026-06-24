@@ -244,6 +244,10 @@ def branch_at_saddle_center(
       3. Compute the parent's winding topology for the cross-check.
       4. Perturb the parent IC by ``+epsilon * v`` (and by ``-epsilon * v`` if
          the +sign converges to the parent's own topology / does not converge).
+         If neither sign converges at the requested ``epsilon``, fall through a
+         small ladder of nearby amplitudes (the saddle-center basin is marginal
+         and per-run BLAS noise can flip a converging case; the ladder only adds
+         fallback attempts after the requested amplitude is exhausted).
       5. Hand to
          :func:`cyclerfinder.search.cr3bp_general_periodic_3d.correct_general_periodic_3d`
          in **full-asymmetric mode**: free vars = (x0, y0, z0, xdot0, ydot0,
@@ -328,42 +332,57 @@ def branch_at_saddle_center(
 
     parent_topo = winding_topology(system.mu, parent_state0, parent_period)
 
-    for sign in (+1, -1):
-        perturbed = parent_state0 + sign * epsilon * v
-        result = correct_general_periodic_3d(
-            system,
-            perturbed,
-            parent_period,
-            free_vars=FREE_VARS_FULL_ASYMMETRIC,
-            residual_indices=RESIDUAL_FULL_STATE_AT_T,
-            is_half_period_residual=False,
-            tol=tol,
-            max_iter=max_iter,
-            rtol=rtol,
-            atol=atol,
-            independent_tol=independent_tol,
-            require_monotone_decrease=require_monotone_decrease,
-        )
-        if not result.converged:
-            continue
-        # Independent topology cross-check (winding numbers).
-        try:
-            branched_topo = winding_topology(system.mu, result.state0, result.T_TU)
-        except (RuntimeError, ValueError):
-            continue
-        topology_changed = bool(
-            branched_topo.k1 != parent_topo.k1 or branched_topo.k2 != parent_topo.k2
-        )
-        return BranchedOrbit(
-            parent_state0=parent_state0,
-            parent_period=parent_period,
-            parent_topology=parent_topo,
-            eigenvalue_used=lam,
-            eigenvector_used=v,
-            epsilon=epsilon,
-            sign=sign,
-            branched_orbit=result,
-            branched_topology=branched_topo,
-            topology_changed=topology_changed,
-        )
+    # Epsilon ladder: try the caller's epsilon first (both signs), then a small
+    # set of nearby amplitudes. The corrector's basin at a saddle-center is
+    # marginal and the convergence at a given epsilon is sensitive to BLAS
+    # reduction-order noise (a converging case can flip to non-converging across
+    # runs on identical code). This ladder ONLY ADDS fallback attempts: the
+    # requested epsilon is exhausted (both signs) before any fallback is tried,
+    # so a case that already converges is returned bit-for-bit as before; a
+    # marginal case that misses both signs at the requested epsilon now falls
+    # through to nearby amplitudes instead of returning a spurious None.
+    epsilon_ladder = [epsilon]
+    for fallback in (7e-4, 3e-4, 1e-3, 1e-4, 1.5e-3, 5e-4):
+        if all(abs(fallback - e) > 1e-15 for e in epsilon_ladder):
+            epsilon_ladder.append(fallback)
+
+    for eps in epsilon_ladder:
+        for sign in (+1, -1):
+            perturbed = parent_state0 + sign * eps * v
+            result = correct_general_periodic_3d(
+                system,
+                perturbed,
+                parent_period,
+                free_vars=FREE_VARS_FULL_ASYMMETRIC,
+                residual_indices=RESIDUAL_FULL_STATE_AT_T,
+                is_half_period_residual=False,
+                tol=tol,
+                max_iter=max_iter,
+                rtol=rtol,
+                atol=atol,
+                independent_tol=independent_tol,
+                require_monotone_decrease=require_monotone_decrease,
+            )
+            if not result.converged:
+                continue
+            # Independent topology cross-check (winding numbers).
+            try:
+                branched_topo = winding_topology(system.mu, result.state0, result.T_TU)
+            except (RuntimeError, ValueError):
+                continue
+            topology_changed = bool(
+                branched_topo.k1 != parent_topo.k1 or branched_topo.k2 != parent_topo.k2
+            )
+            return BranchedOrbit(
+                parent_state0=parent_state0,
+                parent_period=parent_period,
+                parent_topology=parent_topo,
+                eigenvalue_used=lam,
+                eigenvector_used=v,
+                epsilon=eps,
+                sign=sign,
+                branched_orbit=result,
+                branched_topology=branched_topo,
+                topology_changed=topology_changed,
+            )
     return None
