@@ -153,7 +153,14 @@ def _generate_seeds(primary: str, secondary: str, target_e: float) -> list[Er3bp
     system = ER3BPSystem.from_cr3bp(cr3bp, target_e)
     seeds: list[Er3bpSeed] = []
 
-    st, period_f = lyapunov_seed(cr3bp, point="L1")
+    # Amplitude 3e-3 (not the 1e-3 default): at the very small Sun-planet mass
+    # ratios (μ~1e-7) the smallest-amplitude ladder rung lands a Lyapunov orbit
+    # so close to L1 (ydot0~6e-4) that the (x,ydot)/(y,xdot) ER3BP corrector
+    # plateaus at ~1e-7 and misses the 1e-10 tol on the first e-step — a
+    # conditioning artifact, not a physical family termination. A modestly larger
+    # (still small-amplitude, ydot0~3e-2) Lyapunov is well-conditioned and
+    # continues smoothly to the target e at Mercury/Mars/Pluto alike.
+    st, period_f = lyapunov_seed(cr3bp, point="L1", amplitude=3e-3)
     seeds.append(
         Er3bpSeed(
             label=f"{secondary}-L1-lyapunov",
