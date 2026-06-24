@@ -120,6 +120,29 @@ class CandidateSignature:
     ``"nrho"``, ``"resonant"``, ``"binary-coorbital"``.
     """
 
+    topology_3d: dict[str, Any] | None = None
+    """Optional spatial-CR3BP (out-of-plane) topology descriptor.
+
+    Carries the 3D winding / z-oscillation fingerprint of a swept broken-plane
+    candidate, e.g. ``{"k1": 1, "k2": 1, "k_z": 0, "max_z_km": 92567}`` (the
+    #287 3D Braik-Ross (1,1) family) or ``{"k1": 1, "k2": 1, "k_z": 2,
+    "jacobi": 3.15}`` (a vertical/halo-class member). The integer keys
+    ``k1, k2`` are the planar winding from ``winding_topology``; ``k_z`` is the
+    equatorial-plane crossing count from ``z_oscillation_count`` (``k_z == 0``
+    is a planar member, ``k_z > 0`` is genuinely out-of-plane). An optional
+    ``jacobi`` key carries the member's Jacobi constant for band-overlap
+    matching against an anchor's published Jacobi range.
+
+    When set AND an overlapping anchor (from :data:`known_corpus_3d`) also
+    declares a ``topology_3d``, the matcher requires the ``(k1, k2, k_z)``
+    tuple to agree (and the candidate's ``jacobi`` to fall inside the anchor's
+    Jacobi band if the anchor records one) before flagging a rediscovery.
+    ``None`` (the historical default) is fully backward-compatible: no spatial
+    filter is applied and every existing construction site / frozen-census
+    ratchet keeps its prior behaviour. Added by #434 Task 4 to adjudicate 3D
+    broken-plane cyclers against the spatial-CR3BP corpus.
+    """
+
     @property
     def is_moon_tour(self) -> bool:
         """A non-solar primary => a planetary-satellite (moon-tour) cycler."""
@@ -242,6 +265,28 @@ class CorpusAnchor:
     repeated-moon cycler despite shared {Titan, Rhea} body subset. See the
     sibling field on ``CandidateSignature`` for the standard labels.
     """
+
+    topology_3d: dict[str, Any] | None = None
+    """Optional spatial-CR3BP (out-of-plane) topology descriptor the anchor
+    covers, e.g. ``{"k1": 1, "k2": 1, "k_z": 2}`` for a vertical/halo family.
+
+    Sibling of :attr:`CandidateSignature.topology_3d`. When BOTH this anchor
+    AND a candidate carry a ``topology_3d``, the matcher additionally requires
+    the ``(k1, k2, k_z)`` tuples to agree (and the candidate's ``jacobi`` to
+    fall inside :attr:`jacobi_band` when set) before treating the anchor as a
+    rediscovery match. ``None`` (the default) means the anchor declares no 3D
+    topology scope -- it is unaffected by a candidate's 3D fingerprint and a 3D
+    candidate is never matched to it on spatial grounds. Added by #434 Task 4
+    for the spatial-CR3BP known corpus (:mod:`cyclerfinder.genome.known_corpus_3d`).
+    """
+
+    jacobi_band: tuple[float, float] | None = None
+    """Optional Jacobi-constant band (C_min, C_max) the 3D anchor's published
+    family spans (nondim CR3BP Jacobi). When set AND the candidate's
+    ``topology_3d`` carries a ``jacobi`` value, the spatial match additionally
+    requires that value to fall within the band -- a member at a Jacobi level
+    the published family does not reach is out-of-scope. ``None`` means no
+    Jacobi restriction (the ``(k1, k2, k_z)`` tuple alone decides)."""
 
 
 # Hand-curated from the catalogue's published rows + the task's named corpus.
@@ -1475,6 +1520,49 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
 )
 
 
+def _spatial_topology_matches(sig: CandidateSignature, anchor: CorpusAnchor) -> bool:
+    """Does the candidate's 3D fingerprint match this anchor's 3D scope?
+
+    Only consulted when BOTH the signature and the anchor carry a
+    ``topology_3d``. Requires the ``(k1, k2, k_z)`` integer tuples to agree
+    and, when the anchor records a :attr:`CorpusAnchor.jacobi_band` and the
+    candidate carries a ``jacobi`` value, that value to fall inside the band.
+    A missing component on either side is treated as "unspecified" and does
+    NOT, on its own, block the match -- only a present-and-disagreeing
+    component does. Returns ``True`` when the candidate is in the anchor's
+    spatial scope (and should be flagged a rediscovery).
+    """
+    c_topo = sig.topology_3d
+    a_topo = anchor.topology_3d
+    if c_topo is None or a_topo is None:
+        return False
+    for key in ("k1", "k2", "k_z"):
+        c_val = c_topo.get(key)
+        a_val = a_topo.get(key)
+        if c_val is not None and a_val is not None and int(c_val) != int(a_val):
+            return False
+    if anchor.jacobi_band is not None and c_topo.get("jacobi") is not None:
+        c_min, c_max = anchor.jacobi_band
+        if not (c_min <= float(c_topo["jacobi"]) <= c_max):
+            return False
+    return True
+
+
+def _corpus_for(sig: CandidateSignature) -> tuple[CorpusAnchor, ...]:
+    """The anchor pool to search: the planar corpus, plus the spatial-CR3BP
+    corpus when the candidate carries a 3D fingerprint.
+
+    The 3D corpus lives in :mod:`cyclerfinder.genome.known_corpus_3d`; it is
+    imported lazily so the planar literature-check has no import-time
+    dependency on the genome package (and to avoid any import cycle).
+    """
+    if sig.topology_3d is None:
+        return KNOWN_CORPUS
+    from cyclerfinder.genome.known_corpus_3d import KNOWN_CORPUS_3D
+
+    return KNOWN_CORPUS + tuple(KNOWN_CORPUS_3D)
+
+
 def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
     """Corpus anchors whose structural footprint overlaps the signature.
 
@@ -1484,7 +1572,7 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
     """
     seq_set = frozenset(sig.sequence)
     anchors: list[CorpusAnchor] = []
-    for anchor in KNOWN_CORPUS:
+    for anchor in _corpus_for(sig):
         if anchor.primary != sig.primary:
             continue
         overlap = seq_set & anchor.body_set
@@ -1512,6 +1600,22 @@ def _candidate_anchors(sig: CandidateSignature) -> list[CorpusAnchor]:
             sig.topology_label
             and anchor.topology_label
             and not (sig.topology_label & anchor.topology_label)
+        ):
+            continue
+        # Optional spatial-CR3BP topology filter (#434): when BOTH the
+        # candidate AND the anchor carry a ``topology_3d``, the (k1, k2, k_z)
+        # tuple must agree (+ Jacobi-band overlap if the anchor records one)
+        # for the anchor to flag the candidate a spatial rediscovery. A planar
+        # (k_z=0) candidate is therefore NOT matched to a halo (k_z>0) anchor
+        # and vice versa. When the anchor declares no 3D scope it falls through
+        # unchanged (historical body-set + label match); when the candidate
+        # declares no 3D scope (``topology_3d is None``) this branch is never
+        # reached (the 3D corpus is not even loaded), preserving prior
+        # behaviour for every existing call site.
+        if (
+            sig.topology_3d is not None
+            and anchor.topology_3d is not None
+            and not _spatial_topology_matches(sig, anchor)
         ):
             continue
         anchors.append(anchor)
