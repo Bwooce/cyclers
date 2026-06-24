@@ -14,7 +14,7 @@ import numpy as np
 import pytest
 
 from cyclerfinder.core.cr3bp import cr3bp_system, jacobi_constant, propagate
-from cyclerfinder.search.cr3bp_seed_generator import dro_seed, lyapunov_seed
+from cyclerfinder.search.cr3bp_seed_generator import dro_seed, lyapunov_seed, lyapunov_seed_3d
 
 
 def test_lyapunov_seed_closes_on_earth_moon_l1() -> None:
@@ -58,6 +58,17 @@ def test_lyapunov_seed_bad_point_raises() -> None:
     sysem = cr3bp_system("Earth", "Moon")
     with pytest.raises(ValueError):
         lyapunov_seed(sysem, point="L9", amplitude=1e-3)
+
+
+def test_lyapunov_seed_3d_earth_moon_l1_closes_nonplanar() -> None:
+    sysem = cr3bp_system("Earth", "Moon")
+    state0, period = lyapunov_seed_3d(sysem, point="L1", amplitude_z=0.02)
+    assert state0.shape == (6,)
+    assert abs(state0[2]) > 0.01  # genuinely out-of-plane, not a planar collapse
+    assert period > 0
+    # Independent closure: propagate one full period, assert it returns near itself.
+    arc = propagate(sysem, state0, period)
+    assert np.linalg.norm(arc.state_f - state0) < 1e-6
 
 
 def test_dro_seed_closes_on_earth_moon() -> None:

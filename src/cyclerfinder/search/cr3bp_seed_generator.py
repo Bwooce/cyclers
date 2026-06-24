@@ -27,6 +27,11 @@ import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core.cr3bp import CR3BPSystem, jacobi_constant
+from cyclerfinder.search.cr3bp_general_periodic_3d import (
+    FREE_VARS_SYMMETRIC_TULIP,
+    RESIDUAL_PERPENDICULAR_HALF_PERIOD,
+    correct_general_periodic_3d,
+)
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.reachable_representatives import lagrange_collinear_x
 
@@ -36,6 +41,12 @@ from cyclerfinder.search.reachable_representatives import lagrange_collinear_x
 # the linear regime, genuine small-amplitude Lyapunov, period ~ 2π/ω) converge
 # cleanly. We try the caller's amplitude first, then walk this ladder.
 _LYAPUNOV_AMPLITUDE_LADDER = (1.0e-4, 5.0e-5, 1.0e-5, 3.0e-4, 1.0e-3, 3.0e-3, 1.0e-2)
+
+# Vertical (z) amplitude ladder (smallest-first) for the 3D vertical-Lyapunov /
+# halo seed. The 3D corrector's convergence basin is non-monotonic in the
+# vertical amplitude and μ-dependent; we try the caller's amplitude_z first,
+# then walk this ladder (smallest-first, deepest in the linear regime).
+_LYAPUNOV_Z_AMPLITUDE_LADDER = (0.02, 0.01, 5.0e-3, 0.03, 0.05, 0.08)
 
 
 def _collinear_c2(x_l: float, mu: float) -> float:
@@ -127,6 +138,108 @@ def lyapunov_seed(
     raise ValueError(
         f"lyapunov_seed: corrector did not converge at {point} for any amplitude "
         f"in {tried} (last residual={last_residual:.3e}, n_iter={last_iter}, mu={mu:.3e})"
+    )
+
+
+def lyapunov_seed_3d(
+    system: CR3BPSystem,
+    *,
+    point: str = "L1",
+    amplitude_z: float = 0.02,
+    amplitude_x: float = 1e-3,
+) -> tuple[NDArray[np.float64], float]:
+    """Converged genuinely-3D vertical-Lyapunov / halo orbit at a collinear point.
+
+    The existing :func:`lyapunov_seed` produces only PLANAR orbits. This builds
+    the textbook small-amplitude *vertical* (out-of-plane) linear seed at the
+    collinear point ``point`` ("L1" or "L2") and refines it with the full-3D
+    symmetric (tulip / NRHO style) corrector.
+
+    The out-of-plane linear mode at a collinear point decouples from the in-plane
+    motion as ``z'' + c2 z = 0`` (Koon, Lo, Marsden & Ross 2011 §2.5), so the
+    vertical frequency is ``omega_z = sqrt(c2)`` with
+    ``c2 = _collinear_c2(x_L, mu)``. The seed IC is the perpendicular x-z-plane
+    crossing
+
+        x0  = x_L,   y0 = 0,   z0 = amplitude_z,
+        vx0 = 0,     vy0 = <small in-plane>,   vz0 = 0,
+
+    with the in-plane ``vy0`` taken from the planar-Lyapunov linear expression at
+    ``amplitude_x`` (small; the corrector refines it). Refinement uses
+    :func:`cyclerfinder.search.cr3bp_general_periodic_3d.correct_general_periodic_3d`
+    with the symmetric tulip free vars ``(z0, ydot0, T)`` and the
+    perpendicular-half-period residual ``(y, xdot, zdot)`` at ``T/2``.
+
+    Parameters
+    ----------
+    system :
+        CR3BP system (only ``system.mu`` is used).
+    point :
+        Collinear point ("L1" or "L2") with an oscillatory vertical mode.
+    amplitude_z :
+        Nondimensional out-of-plane amplitude of the linear seed. If the
+        corrector is fragile here, a small smallest-first ladder is walked.
+    amplitude_x :
+        Nondimensional in-plane x-amplitude used only to seed ``vy0``.
+
+    Returns
+    -------
+    (state0, period)
+        The corrected genuinely-3D 6-state (``|z0| > 0``) and the FULL
+        nondimensional period.
+
+    Raises
+    ------
+    ValueError
+        If no amplitude in the ladder converges (message names point, mu, and
+        the last residual).
+    """
+    mu = system.mu
+    x_l = lagrange_collinear_x(mu, point)
+    c2 = _collinear_c2(x_l, mu)
+    if c2 <= 0.0:
+        raise ValueError(
+            f"lyapunov_seed_3d: no vertical oscillatory mode at {point} "
+            f"(c2={c2:.6e} <= 0, mu={mu:.3e})"
+        )
+    omega_z = math.sqrt(c2)
+    period_guess = 2.0 * math.pi / omega_z
+
+    # In-plane vy0 seed from the planar-Lyapunov linear expression (the corrector
+    # refines it). Only used if the in-plane radicand is non-negative; otherwise
+    # start vy0 small.
+    radicand = 9.0 * c2 * c2 - 8.0 * c2
+    if radicand >= 0.0:
+        omega_xy = math.sqrt((2.0 - c2 + math.sqrt(radicand)) / 2.0)
+        tau = -(omega_xy * omega_xy + 1.0 + 2.0 * c2) / (2.0 * omega_xy)
+        vy0_seed = -float(amplitude_x) * omega_xy * tau
+    else:
+        vy0_seed = float(amplitude_x)
+
+    tried: list[float] = []
+    last_residual = math.inf
+    last_iter = 0
+    for az in (float(amplitude_z), *_LYAPUNOV_Z_AMPLITUDE_LADDER):
+        if any(abs(az - t) <= 1e-15 for t in tried):
+            continue
+        tried.append(az)
+        seed_state = np.array([x_l, 0.0, az, 0.0, vy0_seed, 0.0], dtype=np.float64)
+        orbit = correct_general_periodic_3d(
+            system,
+            state0_guess=seed_state,
+            period_guess=period_guess,
+            free_vars=FREE_VARS_SYMMETRIC_TULIP,
+            residual_indices=RESIDUAL_PERPENDICULAR_HALF_PERIOD,
+            is_half_period_residual=True,
+        )
+        if orbit.converged and not orbit.degenerate_planar:
+            return orbit.state0, orbit.T_TU
+        last_residual = orbit.independent_closure_residual
+        last_iter = orbit.n_iter
+    raise ValueError(
+        f"lyapunov_seed_3d: corrector did not converge to a non-planar orbit at "
+        f"{point} for any amplitude_z in {tried} "
+        f"(last residual={last_residual:.3e}, n_iter={last_iter}, mu={mu:.3e})"
     )
 
 
