@@ -92,7 +92,18 @@ def test_known_corpus_3d_all_have_provenance() -> None:
 
 
 def test_known_corpus_3d_anchors_carry_3d_topology() -> None:
-    """Each 3D anchor declares a topology_3d descriptor with a k_z."""
+    """A coordinate anchor's topology_3d declares a k_z; taxonomy anchors may omit it.
+
+    Not every anchor is a coordinate anchor. Antoniadou & Libert 2019, for
+    instance, is a TAXONOMY/mechanism anchor (mu=0.001 planetary MMRs, no
+    state-vector ICs), so it legitimately carries topology_3d=None — pinning a
+    fabricated (k1,k2,k_z) tuple it cannot supply would be unfaithful. We require
+    only that (a) any anchor that DOES declare topology_3d includes k_z, and
+    (b) at least one coordinate anchor exists so the gate can tuple-match.
+    """
+    has_coordinate_anchor = False
     for anchor in KNOWN_CORPUS_3D:
-        assert anchor.topology_3d is not None, f"{anchor.name}: missing topology_3d"
-        assert "k_z" in anchor.topology_3d, f"{anchor.name}: topology_3d has no k_z"
+        if anchor.topology_3d is not None:
+            assert "k_z" in anchor.topology_3d, f"{anchor.name}: topology_3d has no k_z"
+            has_coordinate_anchor = True
+    assert has_coordinate_anchor, "no coordinate (topology_3d) anchor in the 3D corpus"

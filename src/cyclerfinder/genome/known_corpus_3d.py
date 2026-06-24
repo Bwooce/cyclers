@@ -117,32 +117,38 @@ KNOWN_CORPUS_3D: tuple[CorpusAnchor, ...] = (
         doi="10.1016/j.actaastro.2014.07.037",
     ),
     CorpusAnchor(
-        # Antoniadou-Voyatzis 2018 -- spatial resonant periodic orbits in the
-        # CR3BP. The published catalogue of out-of-plane resonant families; a
-        # 3D resonant-lift candidate would land here. Resonant spatial orbits
-        # cross the plane (k_z > 0). Jacobi band left None: the paper spans a
-        # broad resonance range and we do not pin a single sourced C here.
-        name="Antoniadou-Voyatzis spatial resonant periodic orbits in the CR3BP (2018)",
+        # Antoniadou & Libert 2019 -- spatial resonant periodic orbits in the
+        # RTBP (digest 2026-06-25). TAXONOMY/MECHANISM anchor, NOT a coordinate
+        # anchor: the paper is mu=0.001 (Jupiter-mass) planetary MMRs (3/2, 2/1,
+        # 5/2, 3/1, 4/1, 5/1), NOT Earth-Moon, and tabulates NO state-vector ICs
+        # (only a resonance/multiplicity occurrence map, Table A1). Its value is
+        # the bifurcation MECHANISM: spatial families (k_z>0) emanate from
+        # vertical-critical-orbits of planar families. So topology_3d is None --
+        # we do NOT pin a (k1,k2,k_z) tuple this paper cannot supply. It does
+        # NOT cover asymmetric / spatial-isolated families, so 3D novelty stays
+        # open for those.
+        name="Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
         primary="Earth",
         body_set=frozenset({"Moon"}),
         topology_label=frozenset({"resonant"}),
-        topology_3d={"k1": 1, "k2": 1, "k_z": 2},
+        topology_3d=None,
         jacobi_band=None,
-        authors=("Antoniadou", "Voyatzis"),
+        authors=("Antoniadou", "Libert"),
         keywords=(
             "spatial resonant periodic orbit restricted three-body problem",
-            "3D CR3BP resonant family out-of-plane",
-            "vertical critical orbit spatial resonance",
+            "vertical critical orbit spatial resonance bifurcation",
+            "out-of-plane resonant family taxonomy",
         ),
         citation=(
-            "Antoniadou, K. I. & Voyatzis, G., 'Orbital stability of coplanar "
-            "two-planet systems / spatial resonant periodic orbits in the "
-            "restricted three-body problem,' (2018); arXiv:1811.09442. The "
-            "published spatial-CR3BP resonant-orbit catalogue; anchor for a 3D "
-            "resonant broken-plane lift (also pre-registered in the planar "
-            "KNOWN_CORPUS for #287's 3D Braik-Ross (1,1) family extension)."
+            "Antoniadou, K. I. & Libert, A.-S., 'Spatial resonant periodic "
+            "orbits in the restricted three-body problem,' MNRAS 483(3):"
+            "2923-2940 (2019); DOI 10.1093/mnras/sty3195; arXiv:1811.09442. "
+            "Taxonomy/mechanism anchor (mu=0.001 planetary MMRs; spatial "
+            "families born at vertical-critical-orbits) -- supplies no "
+            "Earth-Moon coordinate ICs; does not cover asymmetric/isolated "
+            "spatial families."
         ),
-        doi="arXiv:1811.09442",
+        doi="10.1093/mnras/sty3195",
     ),
 )
 
