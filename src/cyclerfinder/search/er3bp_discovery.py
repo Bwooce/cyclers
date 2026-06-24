@@ -11,6 +11,8 @@ import numpy as np
 from numpy.typing import NDArray
 
 from cyclerfinder.core.er3bp import ER3BPSystem
+from cyclerfinder.genome.er3bp_continuation import continue_er3bp_family_in_e
+from cyclerfinder.search.er3bp_floquet import er3bp_monodromy, floquet_classify
 
 
 @dataclass(frozen=True)
@@ -47,3 +49,85 @@ def standard_family_seeds(*, target_e: float = 0.0549) -> list[Er3bpSeed]:
             source="Broucke 1969 TR 32-1360 Table 12 Family 7P Orbit 1 (mu=0.0121550)",
         )
     ]
+
+
+@dataclass(frozen=True)
+class Er3bpStep:
+    e: float
+    corrector_residual: float
+    stability_tag: str
+    on_unit_circle: bool
+
+
+@dataclass(frozen=True)
+class Er3bpContinuationTrace:
+    seed_label: str
+    outcome: str  # "survives" | "dies" | "bifurcates"
+    steps: tuple[Er3bpStep, ...]
+    e_max_reached: float
+    e_star: float | None  # first bifurcation eccentricity, if any
+    target_e: float
+
+
+def continue_and_monitor(seed: Er3bpSeed, *, n_steps: int = 20) -> Er3bpContinuationTrace:
+    """Continue ``seed`` e=0->target_e, Floquet-monitor each step, classify."""
+    # The corrector's ``period_f`` is the integration span: the half-period when
+    # the symmetry flag is set. The seed stores the FULL period, so halve it.
+    integration_f = seed.period_f / 2.0 if seed.is_half_period_residual else seed.period_f
+    try:
+        family = continue_er3bp_family_in_e(
+            ER3BPSystem(
+                mu=seed.system.mu,
+                e=0.0,
+                primary_name=seed.system.primary_name,
+                secondary_name=seed.system.secondary_name,
+            ),
+            seed.state0,
+            integration_f,
+            seed.target_e,
+            n_steps,
+            is_half_period_residual=seed.is_half_period_residual,
+        )
+    except Exception:
+        family = []
+    steps: list[Er3bpStep] = []
+    e_star: float | None = None
+    for orb in family:
+        sys_e = ER3BPSystem(
+            mu=orb.mu,
+            e=orb.e,
+            primary_name=seed.system.primary_name,
+            secondary_name=seed.system.secondary_name,
+        )
+        try:
+            mono = er3bp_monodromy(orb.state0, orb.period_f, sys_e)
+            fl = floquet_classify(mono)
+            tag, on_uc = fl.stability_tag, fl.on_unit_circle
+        except Exception:
+            tag, on_uc = "unknown", False
+        steps.append(
+            Er3bpStep(
+                e=orb.e,
+                corrector_residual=orb.corrector_residual,
+                stability_tag=tag,
+                on_unit_circle=on_uc,
+            )
+        )
+        if on_uc and e_star is None:
+            e_star = orb.e
+    e_max = steps[-1].e if steps else 0.0
+    reached_target = bool(steps) and abs(e_max - seed.target_e) <= 1e-6
+    if e_star is not None:
+        outcome = "bifurcates"
+    elif reached_target:
+        outcome = "survives"
+    else:
+        outcome = "dies"
+    return Er3bpContinuationTrace(
+        seed_label=seed.label,
+        outcome=outcome,
+        steps=tuple(steps),
+        e_max_reached=e_max,
+        e_star=e_star,
+        target_e=seed.target_e,
+    )
