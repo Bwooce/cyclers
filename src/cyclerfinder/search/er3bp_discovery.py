@@ -10,8 +10,10 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
+from cyclerfinder.core.cr3bp import cr3bp_system
 from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.genome.er3bp_continuation import continue_er3bp_family_in_e
+from cyclerfinder.genome.tulip import KOBLICK_2023_TABLE4
 from cyclerfinder.search.er3bp_floquet import er3bp_monodromy, floquet_classify
 
 
@@ -49,6 +51,40 @@ def standard_family_seeds(*, target_e: float = 0.0549) -> list[Er3bpSeed]:
             source="Broucke 1969 TR 32-1360 Table 12 Family 7P Orbit 1 (mu=0.0121550)",
         )
     ]
+
+
+def catalogue_cr3bp_seeds(*, target_e: float = 0.0549) -> tuple[list[Er3bpSeed], int]:
+    """Best-effort ICs for CR3BP-class catalogue cyclers.
+
+    The catalogue rows store no rotating-frame ICs, so we recover only where an
+    encoded constant exists (currently the Koblick NRHO table, Earth-Moon).
+    Returns (seeds, n_skipped). The campaign floor (standard_family_seeds) does
+    NOT depend on this.
+    """
+    em_mu = float(cr3bp_system("Earth", "Moon").mu)
+    seeds: list[Er3bpSeed] = []
+    skipped = 0
+    for np_count, row in KOBLICK_2023_TABLE4.items():
+        x0 = row.get("x0")
+        z0 = row.get("z0")
+        ydot0 = row.get("ydot0", row.get("vy0"))
+        if x0 is None or ydot0 is None:
+            skipped += 1
+            continue
+        state0 = np.array([float(x0), 0.0, float(z0 or 0.0), 0.0, float(ydot0), 0.0])
+        sys = ER3BPSystem(mu=em_mu, e=target_e, primary_name="E", secondary_name="M")
+        seeds.append(
+            Er3bpSeed(
+                label=f"koblick-nrho-np{np_count}",
+                system=sys,
+                state0=state0,
+                period_f=2.0 * np.pi,
+                is_half_period_residual=True,
+                target_e=target_e,
+                source=f"Koblick 2023 Table 4 NRHO Np={np_count}",
+            )
+        )
+    return seeds, skipped
 
 
 @dataclass(frozen=True)

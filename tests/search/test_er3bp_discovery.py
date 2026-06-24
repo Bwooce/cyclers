@@ -6,6 +6,7 @@ import pytest
 from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.search.er3bp_discovery import (
     Er3bpSeed,
+    catalogue_cr3bp_seeds,
     continue_and_monitor,
     standard_family_seeds,
 )
@@ -62,3 +63,14 @@ def test_continue_and_monitor_dies_on_infeasible_seed() -> None:
     trace = continue_and_monitor(seed, n_steps=3)
     assert trace.outcome == "dies"
     assert trace.e_max_reached < 0.5
+
+
+def test_catalogue_cr3bp_seeds_returns_list_and_skip_count() -> None:
+    seeds, skipped = catalogue_cr3bp_seeds(target_e=0.0549)
+    assert isinstance(seeds, list)
+    assert isinstance(skipped, int)
+    assert skipped >= 0
+    for s in seeds:
+        assert s.state0.shape == (6,)
+        assert s.source
+        assert 0.0 < s.target_e < 1.0
