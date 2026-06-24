@@ -6,10 +6,18 @@ import pytest
 from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.search.er3bp_discovery import (
     Er3bpSeed,
+    adjudicate_trace,
     catalogue_cr3bp_seeds,
     continue_and_monitor,
     standard_family_seeds,
 )
+
+
+def test_adjudicate_trace_deferred_without_search_fn() -> None:
+    seed = standard_family_seeds(target_e=0.01)[0]
+    trace = continue_and_monitor(seed, n_steps=5)
+    verdict = adjudicate_trace(trace, seed, literature_check_search=None)
+    assert verdict.status in {"inconclusive", "not-found", "published"}
 
 
 @pytest.mark.slow

@@ -15,6 +15,18 @@ from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.genome.er3bp_continuation import continue_er3bp_family_in_e
 from cyclerfinder.genome.tulip import KOBLICK_2023_TABLE4
 from cyclerfinder.search.er3bp_floquet import er3bp_monodromy, floquet_classify
+from cyclerfinder.search.literature_check import (
+    CandidateSignature,
+    LiteratureCheckResult,
+    SearchFn,
+    check_literature,
+)
+
+# Short body codes -> full names for the literature signature. The Broucke /
+# Koblick ER3BP seeds carry "E"/"M" codes where "M" denotes the *Moon* (these
+# are Earth-Moon CR3BP families), so we map explicitly rather than reuse the
+# literature_check ``_BODY_LONG`` map (where "M" is Mars).
+_ER3BP_BODY_LONG = {"E": "Earth", "M": "Moon"}
 
 
 @dataclass(frozen=True)
@@ -185,3 +197,52 @@ def continue_and_monitor(seed: Er3bpSeed, *, n_steps: int = 20) -> Er3bpContinua
         e_star=e_star,
         target_e=seed.target_e,
     )
+
+
+def _signature_from_trace(trace: Er3bpContinuationTrace, seed: Er3bpSeed) -> CandidateSignature:
+    """Build the literature-check signature for an ER3BP survivor.
+
+    The physics identity of an ER3BP-continued family is the primary/secondary
+    system, the mass parameter, and the eccentricity it reaches — the trajectory
+    is a rotating-frame periodic orbit, not a heliocentric MGA cycler, so the
+    resonance / V_inf / period-year fields of :class:`CandidateSignature` do not
+    apply and are left at their empty defaults.
+    """
+    primary = _ER3BP_BODY_LONG.get(seed.system.primary_name, seed.system.primary_name)
+    secondary = _ER3BP_BODY_LONG.get(seed.system.secondary_name, seed.system.secondary_name)
+    return CandidateSignature(
+        primary=primary,
+        sequence=(secondary,),
+        period_k=None,
+        period_years=None,
+        vinf_per_encounter_kms=(),
+        resonances=(),
+        n_rev=(),
+    )
+
+
+def adjudicate_trace(
+    trace: Er3bpContinuationTrace,
+    seed: Er3bpSeed,
+    literature_check_search: SearchFn | None = None,
+) -> LiteratureCheckResult:
+    """Literature-adjudicate one ER3BP continuation survivor.
+
+    When ``literature_check_search`` is ``None`` the verdict is deferred to the
+    same ``inconclusive`` sentinel the precursor matcher uses (a "not-found" must
+    never be inferred from a search that was not run). Otherwise the candidate's
+    structural signature is searched via :func:`check_literature`. Per the
+    :mod:`cyclerfinder.search.literature_check` discipline preamble, a "not-found"
+    is NECESSARY-NOT-SUFFICIENT for novelty.
+    """
+    if literature_check_search is None:
+        return LiteratureCheckResult(
+            status="inconclusive",
+            citation=None,
+            doi=None,
+            confidence=0.0,
+            query_trail=[],
+            notes="No literature_check_search provided; verdict deferred",
+        )
+    sig = _signature_from_trace(trace, seed)
+    return check_literature(sig, search=literature_check_search)
