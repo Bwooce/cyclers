@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from cyclerfinder.core.er3bp import ER3BPSystem
 from cyclerfinder.search.er3bp_discovery import (
@@ -8,6 +9,22 @@ from cyclerfinder.search.er3bp_discovery import (
     continue_and_monitor,
     standard_family_seeds,
 )
+
+
+@pytest.mark.slow
+def test_bifurcation_detector_no_spurious_flag_at_e0() -> None:
+    """A bifurcation is an elliptic<->hyperbolic stability TRANSITION along the
+    continuation, never just 'an eigenvalue sits on the unit circle' (true for
+    every elliptic component). So a family with a consistent stability character
+    must NOT be flagged bifurcating at e=0. The Broucke EM floor seed, continued
+    with adequate step size to real e=0.0549, must (a) actually progress (not a
+    coarse-step die) and (b) if it bifurcates, do so at e_star strictly > 0."""
+    seed = standard_family_seeds(target_e=0.0549)[0]
+    trace = continue_and_monitor(seed, n_steps=30)
+    assert trace.outcome in {"survives", "bifurcates"}
+    assert trace.e_max_reached > 0.0  # continuation progressed (step size adequate)
+    if trace.outcome == "bifurcates":
+        assert trace.e_star is not None and trace.e_star > 0.0  # never spurious at e=0
 
 
 def test_standard_family_seeds_returns_usable_floor() -> None:

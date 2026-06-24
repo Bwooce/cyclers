@@ -92,6 +92,11 @@ def continue_and_monitor(seed: Er3bpSeed, *, n_steps: int = 20) -> Er3bpContinua
         family = []
     steps: list[Er3bpStep] = []
     e_star: float | None = None
+    # Bifurcation in a Hamiltonian family is an elliptic<->hyperbolic stability
+    # TRANSITION along the continuation (an eigenvalue leaving the unit circle),
+    # NOT "an eigenvalue sits on the unit circle" (which is true for EVERY stable
+    # orbit). We track the regime across steps and flag the first flip.
+    prev_regime: str | None = None
     for orb in family:
         sys_e = ER3BPSystem(
             mu=orb.mu,
@@ -113,8 +118,21 @@ def continue_and_monitor(seed: Er3bpSeed, *, n_steps: int = 20) -> Er3bpContinua
                 on_unit_circle=on_uc,
             )
         )
-        if on_uc and e_star is None:
-            e_star = orb.e
+        regime = (
+            "hyperbolic"
+            if tag == "unstable"
+            else ("elliptic" if tag in ("stable", "marginal") else "unknown")
+        )
+        if (
+            regime != "unknown"
+            and prev_regime is not None
+            and prev_regime != "unknown"
+            and regime != prev_regime
+            and e_star is None
+        ):
+            e_star = orb.e  # first genuine elliptic<->hyperbolic transition
+        if regime != "unknown":
+            prev_regime = regime
     e_max = steps[-1].e if steps else 0.0
     reached_target = bool(steps) and abs(e_max - seed.target_e) <= 1e-6
     if e_star is not None:
