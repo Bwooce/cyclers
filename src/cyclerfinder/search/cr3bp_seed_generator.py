@@ -30,6 +30,13 @@ from cyclerfinder.core.cr3bp import CR3BPSystem, jacobi_constant
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.reachable_representatives import lagrange_collinear_x
 
+# Amplitude ladder (smallest-first) for the Lyapunov linear seed. The corrector's
+# convergence basin is non-monotonic in amplitude and μ-dependent: at some μ the
+# nominal 1e-3 lands in a non-convergent gap while smaller amplitudes (deeper in
+# the linear regime, genuine small-amplitude Lyapunov, period ~ 2π/ω) converge
+# cleanly. We try the caller's amplitude first, then walk this ladder.
+_LYAPUNOV_AMPLITUDE_LADDER = (1.0e-4, 5.0e-5, 1.0e-5, 3.0e-4, 1.0e-3, 3.0e-3, 1.0e-2)
+
 
 def _collinear_c2(x_l: float, mu: float) -> float:
     """In-plane linear coefficient c2 at a collinear point.
@@ -88,29 +95,39 @@ def lyapunov_seed(
         )
     omega = math.sqrt((2.0 - c2 + math.sqrt(radicand)) / 2.0)
     tau = -(omega * omega + 1.0 + 2.0 * c2) / (2.0 * omega)
-
-    ax = float(amplitude)
-    x0 = x_l - ax
-    vy0 = -ax * omega * tau
-    seed_state = np.array([x0, 0.0, 0.0, 0.0, vy0, 0.0], dtype=np.float64)
-    jacobi = jacobi_constant(seed_state, mu)
     period_guess = 2.0 * math.pi / omega
 
-    orbit = correct_symmetric_fixed_jacobi(
-        system,
-        x0_guess=x0,
-        jacobi=jacobi,
-        period_guess=period_guess,
-        ydot0_sign=math.copysign(1.0, vy0) if vy0 != 0.0 else 1.0,
-        half_crossings=1,
-    )
-    if not orbit.converged:
-        raise ValueError(
-            f"lyapunov_seed: corrector did not converge at {point} "
-            f"(residual={orbit.crossing_residual:.3e}, n_iter={orbit.n_iter})"
+    # Try the requested amplitude first, then the smallest-first ladder. The
+    # corrector's basin is non-monotonic in (amplitude, μ); walking the ladder
+    # makes the generator reliable across Sun-Mercury/Mars/Pluto/Earth-Moon.
+    tried: list[float] = []
+    last_residual = math.inf
+    last_iter = 0
+    for ax in (float(amplitude), *_LYAPUNOV_AMPLITUDE_LADDER):
+        if any(abs(ax - t) <= 1e-15 for t in tried):
+            continue
+        tried.append(ax)
+        x0 = x_l - ax
+        vy0 = -ax * omega * tau
+        seed_state = np.array([x0, 0.0, 0.0, 0.0, vy0, 0.0], dtype=np.float64)
+        jacobi = jacobi_constant(seed_state, mu)
+        orbit = correct_symmetric_fixed_jacobi(
+            system,
+            x0_guess=x0,
+            jacobi=jacobi,
+            period_guess=period_guess,
+            ydot0_sign=math.copysign(1.0, vy0) if vy0 != 0.0 else 1.0,
+            half_crossings=1,
         )
-    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0], dtype=np.float64)
-    return state0, orbit.period
+        if orbit.converged:
+            state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0], dtype=np.float64)
+            return state0, orbit.period
+        last_residual = orbit.crossing_residual
+        last_iter = orbit.n_iter
+    raise ValueError(
+        f"lyapunov_seed: corrector did not converge at {point} for any amplitude "
+        f"in {tried} (last residual={last_residual:.3e}, n_iter={last_iter}, mu={mu:.3e})"
+    )
 
 
 def dro_seed(
