@@ -142,3 +142,33 @@ Ran the full #446 ladder with trust-region/LM correctors + e2-continuation
 - **DELIVERABLE:** path 1 produced a reproducible, published-value-matching family
   (capability win). The isolated-family gate remains seed-data-limited exactly as the
   digest §7.2 forecast (direct high-e seeding needs the paper's ICs, which it omits).
+
+## UPDATE 2026-06-25 (d) — EXHAUSTIVE data-availability check (author email VETOED by user)
+User vetoed contacting the authors and asked whether the ICs exist anywhere / in software.
+Checked every realistic source — the answer is a DEFINITIVE NEGATIVE on data availability:
+- **arXiv:1805.00288 ancillary files:** NONE (only PDF + TeX source).
+- **arXiv TeX source (downloaded + inspected, /tmp):** `arxiv.tex` + 59 pre-rendered PDF
+  figures + `.bbl`. `\begin{tabular}` count = 0; no `.dat`/`.csv`/`.txt` data files. The
+  only numeric ICs in the prose are three CIRCULAR-family bifurcation x-values
+  (3/2 x≈0.763143, 5/2 x≈0.542884, 4/1 x≈0.39685 — and NONE printed for 3/1) plus
+  figure-caption (e1,e2) pairs. NO state-vector tables, NO isolated-family ICs.
+- **2019 spatial sister paper:** our digest is explicit — "no IC table anywhere"; Table A1
+  is a structural map, not state vectors.
+- **Web (thesis / repository / periodic-orbit database / group code):** none found. The
+  Voyatzis–Antoniadou (Thessaloniki) school publishes families as graphical characteristic
+  curves / DS-maps as a consistent NORM — state vectors are not tabulated anywhere.
+- **JPL three-body catalogue:** no match (checked during #444).
+CONCLUSION: the isolated-family ICs are genuinely unpublished and unretrievable without the
+authors. With email vetoed, the isolated prize is now purely METHOD-gated, not data-gated.
+
+**Bonus — the source TEXT clarifies the 3/1 mechanism (corrects this doc's "no e=0 limit"
+framing).** §"3/1 MMR" of arxiv.tex: the circular family is UNSTABLE through the 3/1
+neighbourhood; at the two ENDINGS of that unstable segment sit critical orbits (double
+eigenvalue −1) from which branches bifurcate at T=2T0=2π (Scheme II): branch **I (stable)**
+and branch **II (unstable)**. The published ISOLATED stable family ("Ic stable for
+0.75<e1<0.98") is the HIGH-e STABLE SEGMENT OF BRANCH II. #442's converger reached branch I
+(stable, low-e, e1 grows monotonically with e2). The isolated prize is therefore reachable
+by continuing **branch II** (the unstable circular-bifurcation branch) in e1 to its high-e
+stable segment — a method path (er3bp_branching.py + #437 fold-aware pseudo-arclength),
+needing NO author data. Recorded as the concrete next-method (was task #455's prize; #455
+the EMAIL approach is retired). This is the live, ours-to-build route to the isolated family.
