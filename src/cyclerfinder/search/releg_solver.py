@@ -55,6 +55,8 @@ from cyclerfinder.core.kepler import KeplerError
 from cyclerfinder.core.lambert import LambertError, LambertSolution, lambert
 from cyclerfinder.core.sims_flanagan import SimsFlanaganError, SimsFlanaganLeg, segment_dv_bounds
 from cyclerfinder.search.dsm_leg import dsm_leg
+from cyclerfinder.search.leveraging_chain import walk_vinf_down
+from cyclerfinder.search.leveraging_leg import LeveragingLegResult
 from cyclerfinder.search.lowthrust import solve_leg_min_dv
 
 Vec3 = NDArray[np.float64]
@@ -93,6 +95,7 @@ class RelegResult:
     vinf_in: float
     dv_kms: float
     feasible: bool
+    chain_hops: tuple[LeveragingLegResult, ...] = ()
 
 
 @runtime_checkable
@@ -118,13 +121,17 @@ class Releg(Protocol):
         n_rev: int = 0,
         vinf_target_in: float | None = None,
         vinf_depart_mag: float | None = None,
+        arrival_moon: str | None = None,
     ) -> RelegResult:
         """Solve one moon-to-moon leg; return its V_inf chain + delivered ΔV.
 
         ``vinf_target_in`` retargets the arrival V_inf (powered backends only);
         ``vinf_depart_mag`` pins the departure V_inf magnitude (powered backends
         only, used by the moon-tour driver for by-construction flyby continuity).
-        The ballistic backend ignores both.
+        The ballistic backend ignores both. ``arrival_moon`` names the arrival
+        flyby body (the leverage body); only the multi-rev leveraging backend
+        uses it — the ballistic/DSM/SF backends read V_inf off the Lambert seed
+        and ignore it (a backwards-compatible protocol add, #465).
         """
         ...
 
@@ -156,6 +163,7 @@ class BallisticReleg:
         n_rev: int = 0,
         vinf_target_in: float | None = None,
         vinf_depart_mag: float | None = None,
+        arrival_moon: str | None = None,
     ) -> RelegResult:
         r_a = np.asarray(r_a, dtype=np.float64)
         v_a = np.asarray(v_a, dtype=np.float64)
@@ -213,6 +221,7 @@ class DsmReleg:
         n_rev: int = 0,
         vinf_target_in: float | None = None,
         vinf_depart_mag: float | None = None,
+        arrival_moon: str | None = None,
     ) -> RelegResult:
         r_a = np.asarray(r_a, dtype=np.float64)
         v_a = np.asarray(v_a, dtype=np.float64)
@@ -424,6 +433,7 @@ class LowThrustReleg:
         n_rev: int = 0,
         vinf_target_in: float | None = None,
         vinf_depart_mag: float | None = None,
+        arrival_moon: str | None = None,
     ) -> RelegResult:
         r_a = np.asarray(r_a, dtype=np.float64)
         v_a = np.asarray(v_a, dtype=np.float64)
@@ -502,6 +512,126 @@ class LowThrustReleg:
         vinf_in = float(np.linalg.norm(vf - v_b))
         return RelegResult(
             vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=float(res.total_dv_kms), feasible=True
+        )
+
+
+class MultiRevLeveragingReleg:
+    """Powered multi-rev leveraging leg — a CHAIN of resonant hops (#465).
+
+    The third powered :class:`Releg`, behind the same protocol as
+    :class:`DsmReleg` / :class:`LowThrustReleg` (swappable into the moon-tour
+    driver with no driver rewrite). Where the DSM backend sheds the leg's whole
+    V_inf defect in ONE impulse — paying the single-VILM *maximum* (``vilm`` Eq.14)
+    — this backend internally CHAINS N resonant-hop legs
+    (:func:`cyclerfinder.search.leveraging_chain.walk_vinf_down`, each one a #179
+    apse VILM) to walk the arrival V_inf from its natural high value DOWN to the
+    common flyby target step by step. The total delivered ΔV is the sum of the
+    per-hop apse burns, which approaches the Eq.(13) multi-VILM *minimum* — roughly
+    an order of magnitude cheaper than the single-impulse shed (design §1.2).
+
+    Contract (preserving the driver's by-construction continuity):
+
+    * Seed: the ballistic Lambert leg fixes the geometry + the NATURAL arrival
+      V_inf magnitude ``V_inf_H`` (lowest-energy branch — the same seed
+      :class:`DsmReleg` / :class:`LowThrustReleg` use).
+    * ``vinf_target_in`` RETARGETS the arrival V_inf to the common flyby target
+      ``T``: the chain walks ``V_inf_H`` down to ``T`` at the ARRIVAL moon.
+    * ``vinf_depart_mag`` PINS the departure V_inf magnitude to ``T`` (continuity
+      by construction — every leg departs/arrives at the same ``T``).
+    * Zero-retarget limit: ``vinf_target_in is None`` ⇒ no hops ⇒ ``dv_kms = 0``,
+      reproducing :class:`BallisticReleg` (the regression limit every backend
+      honours, ``feedback_orbit_closure_discipline``).
+
+    The arrival flyby body (the leverage body) is named by ``arrival_moon`` (the
+    driver threads ``sequence[k+1]``); a constructor default ``moon`` is the
+    fallback for direct callers. The chain ΔV is golden-anchored from below by the
+    Eq.(13) leverage quadrature (a finite integer-resonance chain cannot beat the
+    continuous minimum) and from above by the published finite-chain penalty
+    (``leveraging_chain`` golden) — the same sourced floor the DSM branch uses.
+
+    No new optimiser, no new cost model: the per-hop primitive
+    (``leveraging_leg``, #179) and the floor (``vilm``, golden) both exist; this
+    backend is the chain ORCHESTRATION (choose hop resonances, sum ΔV).
+    """
+
+    def __init__(
+        self,
+        *,
+        moon: str | None = None,
+        exterior: bool = True,
+        max_hops: int = 500,
+        max_revs: int = 5000,
+    ) -> None:
+        self._moon = moon
+        self._exterior = exterior
+        self._max_hops = max_hops
+        self._max_revs = max_revs
+
+    def solve(
+        self,
+        r_a: Vec3,
+        v_a: Vec3,
+        r_b: Vec3,
+        v_b: Vec3,
+        tof_s: float,
+        mu: float,
+        *,
+        n_rev: int = 0,
+        vinf_target_in: float | None = None,
+        vinf_depart_mag: float | None = None,
+        arrival_moon: str | None = None,
+    ) -> RelegResult:
+        r_a = np.asarray(r_a, dtype=np.float64)
+        v_a = np.asarray(v_a, dtype=np.float64)
+        r_b = np.asarray(r_b, dtype=np.float64)
+        v_b = np.asarray(v_b, dtype=np.float64)
+
+        # The ballistic Lambert leg fixes the geometry + the NATURAL arrival V_inf.
+        try:
+            sols = lambert(r_a, r_b, tof_s, mu=mu, max_revs=max(0, n_rev))
+        except (LambertError, ValueError):
+            return _infeasible()
+        wanted = [s for s in sols if s.n_revs == n_rev]
+        if not wanted:
+            return _infeasible()
+        seed = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a)))
+        vinf_out_seed = float(np.linalg.norm(seed.v1 - v_a))
+        vinf_in_seed = float(np.linalg.norm(seed.v2 - v_b))
+
+        # No retarget ⇒ ballistic-equivalent (no leveraging walk needed).
+        if vinf_target_in is None:
+            return RelegResult(
+                vinf_out=vinf_out_seed, vinf_in=vinf_in_seed, dv_kms=0.0, feasible=True
+            )
+
+        moon = arrival_moon if arrival_moon is not None else self._moon
+        if moon is None:
+            # The leverage body must be named (the driver threads sequence[k+1]).
+            return _infeasible()
+
+        # CHAIN: walk the arrival V_inf from its natural high value down to the
+        # common flyby target via N resonant hops at the arrival moon.
+        chain = walk_vinf_down(
+            moon,
+            vinf_in_seed,
+            vinf_target_in,
+            exterior=self._exterior,
+            max_hops=self._max_hops,
+            max_revs=self._max_revs,
+        )
+        if not chain.converged:
+            return _infeasible()
+
+        # Departure V_inf is pinned to T by construction (the cycle is continuous
+        # because every leg departs/arrives at the same T); arrival V_inf is the
+        # retargeted T the chain reached.
+        vinf_out = vinf_depart_mag if vinf_depart_mag is not None else vinf_out_seed
+        return RelegResult(
+            vinf_out=vinf_out,
+            vinf_in=chain.vinf_end_kms,
+            dv_kms=chain.total_dv_kms,
+            feasible=True,
+            chain_hops=chain.hops,
         )
 
 

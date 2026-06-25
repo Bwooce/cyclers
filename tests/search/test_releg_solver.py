@@ -29,6 +29,7 @@ from cyclerfinder.search.releg_solver import (
     BallisticReleg,
     DsmReleg,
     LowThrustReleg,
+    MultiRevLeveragingReleg,
     RelegResult,
 )
 from cyclerfinder.search.vilm import vilm_dv_min
@@ -249,3 +250,99 @@ def test_lowthrust_releg_brackets_dsm() -> None:
     # The retargeted V_inf chain is pinned to the common flyby target by construction.
     assert result.vinf_out == pytest.approx(target, abs=1.0e-6)
     assert result.vinf_in == pytest.approx(target, abs=1.0e-6)
+
+
+# ---------------------------------------------------------------------------
+# Task 2 (#465) — MultiRevLeveragingReleg: chained VILM endgame releg
+# ---------------------------------------------------------------------------
+
+
+def test_multirev_releg_zero_retarget_matches_ballistic() -> None:
+    """With ``vinf_target_in is None`` the chain runs no hops — dv ≈ 0.
+
+    The regression limit every backend honours: no retarget ⇒ no leveraging walk
+    ⇒ the leg reduces to the ballistic Lambert close (dv == 0), with the V_inf
+    chain read off the lowest-energy ballistic branch.
+    """
+    r_a, v_a, r_b, v_b, tof_s, mu = _jovian_leg("Ganymede", "Europa", tof_days=7.5)
+    ballistic = BallisticReleg().solve(r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0)
+
+    result = MultiRevLeveragingReleg().solve(
+        r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0, arrival_moon="Europa"
+    )
+    assert result.feasible is True
+    assert result.dv_kms == 0.0
+    assert result.vinf_in == pytest.approx(ballistic.vinf_in, abs=1.0e-9)
+    assert result.vinf_out == pytest.approx(ballistic.vinf_out, abs=1.0e-9)
+
+
+def test_multirev_releg_retargets_via_chain() -> None:
+    """On a Ganymede->Europa leg, the chain retargets arrival V_inf down to T.
+
+    The chain walks the natural (high) arrival V_inf down to the common flyby
+    target via N resonant hops; the arrival V_inf lands on T, the delivered ΔV is
+    strictly positive, AND it is BELOW the single-impulse ``DsmReleg`` cost on the
+    same leg — the multi-rev win (the chain spends the multi-VILM *minimum*, the
+    DSM the single-VILM *maximum*).
+    """
+    r_a, v_a, r_b, v_b, tof_s, mu = _jovian_leg("Ganymede", "Europa", tof_days=7.5)
+    target = 4.0
+    dsm = DsmReleg().solve(
+        r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0, vinf_target_in=target, vinf_depart_mag=target
+    )
+    assert dsm.feasible is True
+
+    result = MultiRevLeveragingReleg().solve(
+        r_a,
+        v_a,
+        r_b,
+        v_b,
+        tof_s,
+        mu,
+        n_rev=0,
+        vinf_target_in=target,
+        vinf_depart_mag=target,
+        arrival_moon="Europa",
+    )
+    assert result.feasible is True
+    assert result.vinf_in == pytest.approx(target, abs=1.0e-2)
+    assert result.dv_kms > 0.0
+    # The whole point: chaining the endgame is cheaper than one big retarget impulse.
+    assert result.dv_kms < dsm.dv_kms
+
+
+def test_multirev_releg_dv_geq_leverage_floor() -> None:
+    """The chain ΔV respects the Eq.(13) leverage floor (golden, sourced).
+
+    A finite chain of integer-resonance hops cannot beat the continuous
+    quadrature minimum: each hop's ΔV is anchored ≥ its Γ-floor by construction
+    (``leveraging_leg.gamma_floor_ok``), so the summed chain ΔV is ≥ the sum of
+    the per-hop Γ floors. EXPECTED side traces to the Campagnola-Russell Eq.(13)
+    quadrature (``feedback_golden_tests_sourced_only``), never a chain-computed
+    number.
+    """
+    from cyclerfinder.search.leveraging_leg import gamma_floor_kms
+
+    r_a, v_a, r_b, v_b, tof_s, mu = _jovian_leg("Ganymede", "Europa", tof_days=7.5)
+    result = MultiRevLeveragingReleg().solve(
+        r_a,
+        v_a,
+        r_b,
+        v_b,
+        tof_s,
+        mu,
+        n_rev=0,
+        vinf_target_in=4.0,
+        vinf_depart_mag=4.0,
+        arrival_moon="Europa",
+    )
+    assert result.feasible is True
+    # Every realised hop respects its own Γ floor (the sourced per-hop lower bound).
+    for hop in result.chain_hops:
+        floor = gamma_floor_kms(
+            moon="Europa",
+            vinf_lo_kms=hop.vinf_out_kms,
+            vinf_hi_kms=hop.vinf_in_kms,
+            exterior=True,
+        )
+        assert hop.dv_dsm_kms >= floor - 1.0e-9
