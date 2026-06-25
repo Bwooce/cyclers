@@ -30,15 +30,27 @@ DSM leg solver (#307) and the VILM cost model are imported, not re-derived.
 
 from __future__ import annotations
 
+import math
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
+from scipy.optimize import minimize
 
+from cyclerfinder.core.kepler import KeplerError
 from cyclerfinder.core.lambert import LambertError, lambert
+from cyclerfinder.search.dsm_leg import dsm_leg
 
 Vec3 = NDArray[np.float64]
+
+# DSM timing fraction is clamped this far from the singular endpoints {0, 1}
+# (see ``dsm_leg._ETA_EPS``): at eta=0 the ballistic front arc is degenerate, at
+# eta=1 the Lambert back arc is singular. The retarget sweep stays strictly
+# inside this open interval.
+_ETA_LO: float = 0.02
+_ETA_HI: float = 0.98
 
 
 @dataclass(frozen=True)
@@ -138,3 +150,143 @@ class BallisticReleg:
         vinf_out = float(np.linalg.norm(best.v1 - v_a))
         vinf_in = float(np.linalg.norm(best.v2 - v_b))
         return RelegResult(vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=0.0, feasible=True)
+
+
+class DsmReleg:
+    """Powered one-DSM leg — retargets arrival V_inf, spends a budgeted ΔV (#449).
+
+    The primary powered backend. Wraps :func:`cyclerfinder.search.dsm_leg.dsm_leg`
+    (one deep-space maneuver splitting the leg into two Lambert sub-arcs joined at
+    a free interior point — the Takao eta-coordinate / Vasile-Campagnola BS3
+    "one-DSM-per-leg" model). The departure velocity is seeded from the ballistic
+    Lambert leg connecting the two moons; the DSM timing fraction ``eta`` is then
+    optimised so the *arrival* V_inf hits the next leg's required departure V_inf
+    (``vinf_target_in``), satisfying flyby continuity AFTER the maneuver. The
+    delivered ΔV is the DSM impulse magnitude ``dv_dsm_kms``.
+
+    When ``vinf_target_in`` is ``None`` the leg minimises the delivered ΔV over
+    ``eta`` (the cheapest powered close), which in the limit recovers a near-zero
+    impulse where the ballistic leg already closes.
+
+    The delivered ΔV is golden-anchored from below by the analytic VILM leveraging
+    floor (:func:`cyclerfinder.search.vilm.vilm_dv_min`): a single in-leg DSM that
+    performs the inter-moon V_inf change cannot beat the theoretical-minimum VILM
+    ΔV for that transfer (the floor is the published Campagnola-Russell Endgame
+    Part-1 Table 1/2 ΔV_min, already golden-validated in ``vilm.py``).
+    """
+
+    def __init__(self, *, max_revs: int = 0, n_eta: int = 25) -> None:
+        self._max_revs = max_revs
+        self._n_eta = max(3, n_eta)
+
+    def solve(
+        self,
+        r_a: Vec3,
+        v_a: Vec3,
+        r_b: Vec3,
+        v_b: Vec3,
+        tof_s: float,
+        mu: float,
+        *,
+        n_rev: int = 0,
+        vinf_target_in: float | None = None,
+    ) -> RelegResult:
+        r_a = np.asarray(r_a, dtype=np.float64)
+        v_a = np.asarray(v_a, dtype=np.float64)
+        r_b = np.asarray(r_b, dtype=np.float64)
+        v_b = np.asarray(v_b, dtype=np.float64)
+
+        # The ballistic Lambert leg fixes the *seed* departure V_inf direction.
+        # A pure-eta DSM with that exact departure reconstructs the same arc
+        # (DSM impulse == 0): the leg geometry is pinned by (r_a, r_b, tof). The
+        # retarget lever is the DEPARTURE V_inf — its magnitude factor + an
+        # in-plane direction perturbation (the Takao vinf_out0/alpha0 genome) —
+        # which moves the DSM point so the back-arc Lambert delivers a different
+        # arrival V_inf, the DSM impulse paying for the mismatch.
+        try:
+            sols = lambert(r_a, r_b, tof_s, mu=mu, max_revs=max(0, n_rev))
+        except (LambertError, ValueError):
+            return _infeasible()
+        wanted = [s for s in sols if s.n_revs == n_rev]
+        if not wanted:
+            return _infeasible()
+        seed = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a)))
+        vinf_seed = np.asarray(seed.v1, dtype=np.float64) - v_a
+        vinf_seed_mag = float(np.linalg.norm(vinf_seed))
+        if vinf_seed_mag < 1.0e-9:
+            return _infeasible()
+        u_hat = vinf_seed / vinf_seed_mag
+        # Orthonormal in-plane perturbation axis (the moon orbits are coplanar in
+        # the +z plane, so the +z normal gives a well-defined in-plane rotation).
+        z_hat = np.array([0.0, 0.0, 1.0])
+        e1 = np.cross(u_hat, z_hat)
+        n_e1 = float(np.linalg.norm(e1))
+        e1 = e1 / n_e1 if n_e1 > 1.0e-12 else np.array([1.0, 0.0, 0.0])
+
+        def _depart(mag_factor: float, ang: float) -> Vec3:
+            v_dir = math.cos(ang) * u_hat + math.sin(ang) * e1
+            return v_a + (vinf_seed_mag * mag_factor) * v_dir
+
+        def _eval(params: Sequence[float]) -> tuple[float, float, float] | None:
+            """``(mag_factor, ang, eta) -> (vinf_out, vinf_in, dv_dsm)`` or None."""
+            mag_factor, ang, eta = float(params[0]), float(params[1]), float(params[2])
+            eta = min(max(eta, _ETA_LO), _ETA_HI)
+            v_depart = _depart(mag_factor, ang)
+            try:
+                leg = dsm_leg(r_a, v_depart, tof_s, float(eta), r_b, mu=mu, max_revs=self._max_revs)
+            except (LambertError, KeplerError, ValueError):
+                # A too-energetic departure can drive the ballistic front arc
+                # hyperbolic past Newton convergence, or the back-arc Lambert
+                # degenerate; treat that sample as infeasible (the search skips
+                # it) rather than crashing the leg solve.
+                return None
+            vinf_out = float(np.linalg.norm(v_depart - v_a))
+            vinf_in = float(np.linalg.norm(leg.v_arrive - v_b))
+            return vinf_out, vinf_in, float(leg.dv_dsm_kms)
+
+        def _cost(params: Sequence[float]) -> float:
+            ev = _eval(params)
+            if ev is None:
+                return 1.0e9
+            _, vinf_in, dv = ev
+            if vinf_target_in is None:
+                # Cheapest powered close: minimise the delivered ΔV (recovers the
+                # ballistic dv≈0 leg where it already closes).
+                return dv
+            # Retarget the arrival V_inf to the requested value (flyby continuity
+            # after the maneuver); the ΔV is whatever the DSM must spend to do so.
+            return abs(vinf_in - vinf_target_in)
+
+        # Coarse grid over (magnitude factor, direction angle, eta) — the cost is
+        # multi-modal in all three — then a Nelder-Mead refine from the best node.
+        mag_grid = np.linspace(0.6, 1.4, 5)
+        ang_grid = np.linspace(-0.5, 0.5, 7)
+        eta_grid = np.linspace(_ETA_LO, _ETA_HI, max(3, self._n_eta // 4))
+        best_params: tuple[float, float, float] | None = None
+        best_cost = 1.0e9
+        for mf in mag_grid:
+            for ag in ang_grid:
+                for et in eta_grid:
+                    c = _cost((float(mf), float(ag), float(et)))
+                    if c < best_cost:
+                        best_cost = c
+                        best_params = (float(mf), float(ag), float(et))
+        if best_params is None or best_cost >= 1.0e9:
+            return _infeasible()
+
+        def _cost_arr(x: NDArray[np.float64]) -> float:
+            return _cost([float(x[0]), float(x[1]), float(x[2])])
+
+        refined = minimize(
+            _cost_arr,
+            np.array(best_params, dtype=np.float64),
+            method="Nelder-Mead",
+            options={"xatol": 1e-4, "fatol": 1e-6, "maxiter": 400},
+        )
+        refined_x = [float(v) for v in refined.x]
+        final_params = refined_x if _cost(refined_x) <= best_cost else list(best_params)
+        ev = _eval(final_params)
+        if ev is None:
+            return _infeasible()
+        vinf_out, vinf_in, dv_dsm = ev
+        return RelegResult(vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=dv_dsm, feasible=True)
