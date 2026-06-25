@@ -256,13 +256,24 @@ def close_powered_cycle(
     targets: tuple[float | None, ...]
     targets = _VINF_PROBE_KMS if isinstance(releg, DsmReleg) else (None,)
 
+    # Select the common flyby V_inf ``T`` that CLOSES continuity (residual below
+    # the gate) at minimum ΔV; if no probed ``T`` closes, keep the one with the
+    # smallest continuity residual (so the verdict reports the honest best-effort
+    # defect, which the caller's gate then fails). Sort key: (does-not-close,
+    # continuity-if-not-closed, total-ΔV) — a closing target always beats a
+    # non-closing one, and among closing targets the cheapest ΔV wins.
     best: tuple[bool, float, float, tuple[float, ...]] | None = None
+    best_key: tuple[int, float, float] | None = None
     best_target = math.nan
     for target in targets:
         out = _close_at_target(sequence, states, leg_tofs_days, n_revs, releg, mu, target)
         if out is None:
             continue
-        if best is None or out[1] < best[1]:
+        _, total_dv_t, continuity_t, _ = out
+        closes = continuity_t < _CONTINUITY_GATE_KMS
+        key = (0 if closes else 1, 0.0 if closes else continuity_t, total_dv_t)
+        if best_key is None or key < best_key:
+            best_key = key
             best = out
             best_target = target if target is not None else math.nan
     if best is None:

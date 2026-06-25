@@ -76,6 +76,9 @@ import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.lambert import lambert as _lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day, _moon_state
+from cyclerfinder.search.releg_moontour import close_powered_cycle
+from cyclerfinder.search.releg_solver import Releg
+from cyclerfinder.verify.dv_band_acceptance import classify_dv_band
 
 V2_MOONTOUR_N_CYCLES_MIN: Final[int] = 3
 """Spec §14 V2-ballistic minimum: ``>= 3`` continuous laps. Spec-fixed."""
@@ -165,6 +168,14 @@ class V2MoontourVerdict:
         ``n_cycles_completed >= n_cycles_min AND max_drift_kms <=
         drift_floor_kms AND max_closure_residual_kms <= closure_floor_kms``.
         The headline boolean.
+    powered_total_dv_kms:
+        Mean per-cycle delivered ΔV (km/s) when a powered ``releg`` backend was
+        passed (#449); ``None`` on the default ballistic path. A powered cycle
+        closes to a strictly-POSITIVE budget, not a near-zero ballistic residual.
+    measured_dv_band:
+        The dv-band classification of ``powered_total_dv_kms`` (from
+        :func:`cyclerfinder.verify.dv_band_acceptance.classify_dv_band`) when a
+        powered backend was passed; ``None`` on the default ballistic path.
     notes:
         Free-form audit string.
     """
@@ -182,6 +193,8 @@ class V2MoontourVerdict:
     n_cycles_min: int
     passes_v2: bool
     notes: str = ""
+    powered_total_dv_kms: float | None = None
+    measured_dv_band: str | None = None
 
 
 def _resolve_primary(system: cr3bp.CR3BPSystem | None, sequence: tuple[str, ...]) -> str:
@@ -310,6 +323,8 @@ def run_v2_moontour(
     n_revs: tuple[int, ...] | None = None,
     phase0_deg: float = 0.0,
     notes: str = "",
+    releg: Releg | None = None,
+    dv_band: str | None = None,
 ) -> V2MoontourVerdict:
     """Run V2 for a moontour: re-solve Lambert legs over ``n_cycles``.
 
@@ -491,6 +506,46 @@ def run_v2_moontour(
         )
         n_completed += 1
 
+    # --- Powered (releg) classification (#449). Default-off: a ``None`` releg
+    # leaves the ballistic verdict EXACTLY as before. When a powered backend is
+    # passed, each completed cycle is re-closed with the powered leg solver at
+    # the cycle's advanced phasing (continuity by construction), and the mean
+    # per-cycle delivered ΔV is binned by the dv-band map. ---
+    powered_total_dv_kms: float | None = None
+    measured_dv_band: str | None = None
+    if releg is not None and n_completed >= 1:
+        powered_dvs: list[float] = []
+        powered_residuals: list[float] = []
+        for k in range(n_completed):
+            t_offset_days = k * cycle_period_days
+            # The cycle-k phasing is the base longitude advanced by the moons'
+            # natural mean motion through the prior cycles (same advance the
+            # ballistic _cycle_residual applies via t_cycle_offset_days).
+            phasing_k = {
+                moon: theta_base[moon] + consts[moon][1] * t_offset_days for moon in distinct_moons
+            }
+            verdict_k = close_powered_cycle(
+                primary=primary,
+                sequence=sequence,
+                leg_tofs_days=leg_tofs_days,
+                n_revs=n_revs if n_revs is not None else tuple(0 for _ in range(n_legs)),
+                releg=releg,
+                phasing=phasing_k,
+                dv_band=dv_band,
+            )
+            if verdict_k.prefilter_skipped or not math.isfinite(verdict_k.total_dv_kms):
+                powered_dvs = []
+                break
+            powered_dvs.append(verdict_k.total_dv_kms)
+            powered_residuals.append(verdict_k.continuity_residual_kms)
+        if powered_dvs:
+            powered_total_dv_kms = float(sum(powered_dvs) / len(powered_dvs))
+            measured_dv_band = classify_dv_band(powered_total_dv_kms * 1000.0, n_cycles=1)
+            # The powered close pins continuity by construction; carry its worst
+            # residual into the closure metric so the headline reflects the
+            # powered (not the raw ballistic) continuity.
+            max_closure = max(powered_residuals) if powered_residuals else max_closure
+
     passes_v2 = bool(
         n_completed >= V2_MOONTOUR_N_CYCLES_MIN
         and max_drift_kms <= drift_floor_kms
@@ -511,6 +566,8 @@ def run_v2_moontour(
         n_cycles_min=V2_MOONTOUR_N_CYCLES_MIN,
         passes_v2=passes_v2,
         notes=notes,
+        powered_total_dv_kms=powered_total_dv_kms,
+        measured_dv_band=measured_dv_band,
     )
 
 
