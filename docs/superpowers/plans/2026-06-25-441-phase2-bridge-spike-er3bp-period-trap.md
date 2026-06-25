@@ -64,3 +64,22 @@ notes).
   the reverse-continue isolated-family detection.
 - The period_f trap is the durable artifact — recorded here so no future ER3BP
   continuation pass repeats it.
+
+## Update 2026-06-25 — recommendation (3.2) independent-closure gate LANDED
+Step (a)'s *gate half* is implemented:
+`continue_er3bp_family_in_e_arclength(..., independent_gate: float | None = None)`
+now stops the walk at the first member whose `independent_residual` exceeds the
+gate (and raises `ContinuationError` if the seed itself fails the gate — the
+signature of a bad/non-commensurate `period_f`). `None` preserves legacy
+behaviour. Regression test `tests/genome/test_er3bp_independent_gate.py`
+(slow) pins the mechanism with numbers measured on the Broucke EM Family-7P
+family: a 1e-8 production gate preserves the whole valid family (members close
+to ~1e-10), while a 2e-10 gate set inside the family's residual range truncates
+the walk and every returned member honours the gate.
+
+STILL OPEN for Phase 2: the **full T/2-convention reproduction test** (continue a
+#440 Phase-1 resonant seed on `period_f = T/2` and show the independent residual
+DIVERGES to ~1.44 by e=0.30 while the commensurate `period_f = T₀` stays ~1e-12)
+— needs the #440 seed machinery — plus the high-(e1,e2) digitization and the
+reverse-continue isolated-family detection. These belong in the #441 Phase 2
+plan, not this spike doc.

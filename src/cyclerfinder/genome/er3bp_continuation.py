@@ -412,6 +412,7 @@ def continue_er3bp_family_in_e_arclength(
     max_steps: int = 400,
     is_half_period_residual: bool = True,
     tol: float = 1e-10,
+    independent_gate: float | None = None,
 ) -> list[ER3BPPeriodicOrbit]:
     """Pseudo-arclength continuation of an ER3BP family in eccentricity `e`.
 
@@ -434,6 +435,18 @@ def continue_er3bp_family_in_e_arclength(
         max_steps: Maximum continuation steps.
         is_half_period_residual: Symmetry flag for the corrector / residual.
         tol: Convergence tolerance for the residual L2 norm.
+        independent_gate: If set, every member is gated on its
+            ``independent_residual`` (the full-period closure from the
+            corrector's independent Radau re-propagation), not on
+            ``corrector_residual`` alone. The walk STOPS at the first member
+            whose independent residual exceeds the gate, returning only the
+            validated prefix. This is the #441 period_f-trap guard: a symmetric
+            corrector reports a member converged (it only zeroes the crossing
+            residual) even when the full orbit does not close on a
+            non-commensurate span; only the independent residual catches it.
+            ``None`` (default) preserves the legacy ungated behaviour. A seed
+            that itself fails the gate raises :class:`ContinuationError` — a
+            non-closing seed signals a bad ``period_f`` convention.
 
     Returns:
         List of converged :class:`ER3BPPeriodicOrbit` members along the
@@ -441,7 +454,8 @@ def continue_er3bp_family_in_e_arclength(
         member at ``sys_base.e``; the last reaches (or brackets) ``e_target``.
 
     Raises:
-        ContinuationError: If the initial seed fails to converge.
+        ContinuationError: If the initial seed fails to converge, or (when
+            ``independent_gate`` is set) the seed fails the independent gate.
     """
     history: list[ER3BPPeriodicOrbit] = []
 
@@ -459,6 +473,15 @@ def continue_er3bp_family_in_e_arclength(
         raise ContinuationError(
             f"Failed to converge initial seed at e={sys_base.e}: {exc}"
         ) from exc
+
+    if independent_gate is not None and seed_orbit.independent_residual > independent_gate:
+        raise ContinuationError(
+            f"Seed at e={sys_base.e} converged the crossing residual but did NOT "
+            f"close the full orbit (independent_residual "
+            f"{seed_orbit.independent_residual:.3e} > gate {independent_gate:.3e}). "
+            "This is the #441 period_f trap: the integration span is likely not a "
+            "multiple of pi. Use a commensurate period_f."
+        )
 
     history.append(seed_orbit)
 
@@ -534,7 +557,9 @@ def continue_er3bp_family_in_e_arclength(
                 )
             except Exception:
                 final_orbit = None
-            if final_orbit is not None:
+            if final_orbit is not None and not (
+                independent_gate is not None and final_orbit.independent_residual > independent_gate
+            ):
                 history.append(final_orbit)
             break
         sys_next = ER3BPSystem(
@@ -558,6 +583,12 @@ def continue_er3bp_family_in_e_arclength(
                 tol=tol,
             )
         except Exception:
+            break
+
+        # Independent-closure gate (#441): stop at the first member whose full
+        # orbit does not close, BEFORE appending it — never manufacture a family
+        # from converged-but-non-closing members.
+        if independent_gate is not None and orbit.independent_residual > independent_gate:
             break
 
         history.append(orbit)
