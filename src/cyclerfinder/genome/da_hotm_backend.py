@@ -382,6 +382,8 @@ class DASectionMap(SamplingSectionMap):
         is returned -- the corrector still finishes from there (Task 5).
         """
         cur = s_ref
+        prev_step = float("inf")
+        stagnant = 0
         for _ in range(max_iter):
             try:
                 tmap = self.taylor_single_rev(cur, order=order, h=h, samples=samples)
@@ -392,8 +394,18 @@ class DASectionMap(SamplingSectionMap):
             if d is None:
                 return cur
             cur = SectionPoint(x=cur.x + float(d[0]), xdot=cur.xdot + float(d[1]))
-            if math.hypot(float(d[0]), float(d[1])) < 1e-11:
+            step = math.hypot(float(d[0]), float(d[1]))
+            if step < 1e-11:
                 break
+            # Stagnation break: if the step stops shrinking, further passes only
+            # burn propagations at the FD floor. Bail after a couple of stalls.
+            if step >= 0.9 * prev_step:
+                stagnant += 1
+                if stagnant >= 2:
+                    break
+            else:
+                stagnant = 0
+            prev_step = step
         return cur
 
 
