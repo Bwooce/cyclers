@@ -164,7 +164,13 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 38 -> 39 (2026-06-20, #408): cassini-titan-tour admitted as the 10th
     # SPK-derived mga_tour row. derived/derived -> 'unvalidated'.
     # 46 -> 39 (2026-06-22): 7 rows (canales-howell, kumar) promoted to consistency_checked
-    "unvalidated": 39,
+    # 39 -> 40 (2026-06-25, #444): em-cycler-21-3d-spatial-2026 (the C21 3D
+    # known-class-member) carries no orbit_source/vinf_source provenance tags
+    # (it is a computed CR3BP member, sourced only by CLASS via
+    # corroborating_sources) -> classifies 'unvalidated' on the source-pair tier
+    # axis. Its V2 evidence (run_v1_3d + run_v2_3d) lives on the validation_level
+    # axis, not the source-pair tier -- same orthogonal-axis convention.
+    "unvalidated": 40,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

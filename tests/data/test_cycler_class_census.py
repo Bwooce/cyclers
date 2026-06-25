@@ -442,10 +442,16 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "braik-ross-c11a-cycler-2026",
         "braik-ross-c11b-cycler-2026",
         "braik-ross-c32-cycler-2026",
+        # #444 (2026-06-25): the C21 stable 3D out-of-plane spatial extension of
+        # the planar (2,1) cycler (ross-rt-em-cycler-21-2025). A computed
+        # known-class member of the Antoniadou & Libert 2019 spatial-resonant
+        # class (our_status=known-class-member, NOT first_published); genuine 3D
+        # CR3BP periodic orbit (rotating-frame, Jacobi-constant identity).
+        "em-cycler-21-3d-spatial-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 12
+assert len(NON_KEPLERIAN_IDS) == 13
 
 
 # ---------------------------------------------------------------------------
@@ -502,10 +508,14 @@ def test_census_distribution() -> None:
 
     #408 (2026-06-20) admitted Cassini Titan tour (cassini-titan-tour) as an
     mga_tour, cycler_class=multi-arc: multi-arc 252->253.
+
+    #444 (2026-06-25) admitted the C21 3D out-of-plane spatial extension
+    (em-cycler-21-3d-spatial-2026) as a non-keplerian known-class-member
+    cycler: non-keplerian 12->13.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 260, "non-keplerian": 12}
+    expected = {"single-ellipse": 46, "multi-arc": 260, "non-keplerian": 13}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

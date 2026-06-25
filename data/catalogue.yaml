@@ -48848,6 +48848,100 @@
     "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2025 Table 3 (p. 11): (2,1) T^stable = 19.44043166795154 TU; Table 4 (p. 13) 84.534335 d."
     "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
 
+- id: em-cycler-21-3d-spatial-2026
+  name: "Computed 3D out-of-plane (2,1) Earth-Moon cycler — spatial extension of ross-rt-em-cycler-21-2025 (CR3BP, KNOWN-CLASS member of the Antoniadou-Libert spatial-resonant family)"
+  source: this-project   # computed by our #291 3D genome (#438 broken-plane lift); its CLASS is published (Antoniadou & Libert 2019)
+  our_status: known-class-member   # spec §16.4 (#444): computed member of a published CLASS; NOT a literal copy of any published orbit (no first_published), NOT novel (class is known)
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V2   # spec §14 V2-ballistic (3D): run_v1_3d same-model 6D closure (independent Radau 3.2e-12 km/s) + run_v2_3d 6-cycle bounded drift (1.7 mm, linear) + Floquet all |ev|=1 STABLE. tests/data/test_em_cycler_21_3d_knownclass.py. No real-ephemeris claim.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      Full nondim period T = 18.167169790651315 TU. The 3D out-of-plane branch
+      of the planar (2,1) cycler (ross-rt-em-cycler-21-2025); the spatial family
+      bifurcates from the planar family's vertical-critical orbit (Antoniadou &
+      Libert 2019 mechanism). years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same — Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0~-0.206); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "(2,1) prograde Earth-Moon cycler, 3D out-of-plane spatial extension (winding k1=2, k2=0, k_z=10)"
+      mass_ratio: 1.2150584270572e-2
+      libration_point:
+      jacobi_constant: 3.025791614769996   # DERIVED (our 3D corrector); NOT a golden.
+      period_nd: 18.167169790651315   # DERIVED (our 3D corrector); NOT a golden.
+      stability_index: 0.0   # DERIVED: Floquet monodromy all six |eigenvalue|=1.0000 -> linearly STABLE. NOT a golden.
+      state_nd: [0.7440212218499672, 0.0, -0.2057098355650995, 0.0, 0.35368280201143637, 0.0]   # DERIVED (NOT a golden): 3D IC (x0,0,z0,0,ydot0,0); z0=-0.2057 out-of-plane. Recovered by the #291 3D corrector; V1 re-closure n_iter=1 (already periodic), independent Radau 3.2e-12 km/s.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      max_z_nd: -0.2057098355650995   # out-of-plane amplitude signature
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "derive"
+    note: "No published IC for THIS Earth-Moon spatial member (Antoniadou & Libert 2019 is mu=0.001 planetary, no Earth-Moon ICs; JPL no match). state_nd DERIVED by our #291 3D corrector from the #438 broken-plane lift of the planar (2,1) cycler, V1/V2 re-verified. Never a golden. This is WHY our_status is known-class-member, not known-reproduction."
+    source_hint: "scripts/scan_434_3d_broken_plane_em.py; src/cyclerfinder/data/validation/v1_3d.py + v2_3d.py; tests/data/test_em_cycler_21_3d_knownclass.py."
+    todo_ref: "#444"
+  legs: []
+  corroborating_sources:
+  - authors: ["Antoniadou, K. I.", "Libert, A.-S."]
+    year: 2019
+    title: "Spatial resonant periodic orbits in the restricted three-body problem"
+    venue: "Monthly Notices of the Royal Astronomical Society 483(3):2923-2940"
+    doi: "10.1093/mnras/sty3195"
+    note: |
+      The published CLASS source (NOT first_published): stable spatial resonant
+      periodic families exist for the 2/1 (and 3/2,5/2,3/1,4/1,5/1) resonances,
+      born from the vertical-critical orbits of the planar resonant family.
+      Computed at mu=0.001 (planetary); supplies NO Earth-Moon IC — so this
+      specific EM-mu member is a computed known-class member, not a literal
+      reproduction.
+  - authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2025
+    title: "Stable, Low-Energy Prograde Earth-Moon Cycler Orbits"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference 2025, paper AAS 25-621"
+    doi:
+    url: "https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf"
+    note: "The PLANAR parent (ross-rt-em-cycler-21-2025) whose vertical-critical orbit this 3D family bifurcates from."
+  priority_date: "2026-06-25"
+  notes: |
+    KNOWN-CLASS MEMBER (spec §16.4, #444). A computed, V1+V2-verified, Floquet-
+    STABLE 3D out-of-plane Earth-Moon cycler: the spatial extension of the planar
+    (2,1) cycler ross-rt-em-cycler-21-2025. Member of the PUBLISHED spatial-
+    resonant family CLASS (Antoniadou & Libert 2019) but NOT a literal copy of any
+    published orbit (that paper is mu=0.001 with no Earth-Moon IC; JPL's three-body
+    catalogue has no match). NOT novelty-claimable (class known) AND NOT a known-
+    reproduction (no specific published orbit) -> our_status known-class-member.
+    Verification (#444): run_v1_3d full-asymmetric 6D closure n_iter=1, independent
+    Radau 3.2e-12 km/s, degenerate_planar=False; run_v2_3d 6-cycle drift 1.7 mm
+    (linear) vs 50000 km floor; Floquet all six |ev|=1.0000. CR3BP-only; no real-
+    ephemeris claim.
+  source_quotes:
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2 (shared with the planar parent ross-rt-em-cycler-21-2025)."
+
 - id: ross-rt-em-cycler-31-2025
   name: "Ross/Roberts-Tsoukkas stable Earth-Moon (3,1) prograde cycler (CR3BP)"
   source: literature

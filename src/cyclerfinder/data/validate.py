@@ -771,6 +771,18 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "docs/notes/2026-06-13-ross-v2-longspan-evidence.md + "
         "tests/search/test_cr3bp_v2_longspan.py + scripts/ross_v2_longspan.py."
     ),
+    ("em-cycler-21-3d-spatial-2026", "V2"): (
+        "spec §14 V2-ballistic (3D, #444): the C21 stable 3D out-of-plane spatial "
+        "extension of the planar (2,1) cycler (ross-rt-em-cycler-21-2025). run_v1_3d "
+        "(FREE_VARS_FULL_ASYMMETRIC full-period 6D closure + independent Radau "
+        "rtol=atol=1e-12) closes n_iter=1, independent_closure 3.2e-12 km/s (9 orders "
+        "under the 1 m/s V1 floor), degenerate_planar=False; run_v2_3d 6-cycle bounded "
+        "drift 1.7 mm (LINEAR growth, no exponential blow-up) vs 50000 km floor; "
+        "Floquet monodromy all six |eigenvalue|=1.0000 -> STABLE. state_nd DERIVED "
+        "(not a golden). tests/data/test_em_cycler_21_3d_knownclass.py. CR3BP-only; no "
+        "real-ephemeris claim. our_status known-class-member (computed member of the "
+        "published Antoniadou & Libert 2019 spatial-resonant class)."
+    ),
     ("ross-rt-em-cycler-31-2025", "V2"): (
         "spec §14 V1 (#216): same-model CR3BP reproduction of Ross & "
         "Roberts-Tsoukkas 2025 Table 3 (3,1) stable cycler — fixed-Jacobi "

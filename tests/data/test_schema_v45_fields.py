@@ -156,7 +156,7 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     tests/verify/test_silver_327_v*.py wrapping the project-output verdict
     JSONLs from #306/#330/#331/#335/#338;
     docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md).
-    (V1=21, V2=6, V3=2, V4=1.)"""
+    (V1=21, V2=7, V3=2, V4=1.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -232,6 +232,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "ross-rt-em-cycler-31-2025": "V2",
         "ross-rt-em-cycler-32-2025": "V2",
         "ross-rt-em-cycler-33-2025": "V2",
+        # #444 (2026-06-25): the C21 3D out-of-plane spatial extension of the
+        # planar (2,1) cycler — V2-ballistic (3D) via run_v1_3d + run_v2_3d +
+        # Floquet-stable. known-class-member (Antoniadou & Libert 2019 class).
+        # tests/data/test_em_cycler_21_3d_knownclass.py.
+        "em-cycler-21-3d-spatial-2026": "V2",
         # #222 (2026-06-13, USER-approved): Liang A/B/C same-model reproduction.
         "liang-2024-cgcec-111-highperijove": "V1",
         "liang-2024-cgcec-110-highperijove": "V1",
@@ -268,7 +273,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # (#175/#170 — the first V3-powered, App-C #188 under its documented budget).
     # One row carries V4: the SILVER Umbriel-Oberon-Umbriel quasi_cycler (#340,
     # #335 V4-strict URA111 + #338 annual epoch sweep EFFECTIVELY_CYCLIC).
-    assert sum(1 for lvl in byid.values() if lvl == "V2") == 6
+    # 6 -> 7 (#444): + em-cycler-21-3d-spatial-2026 (C21 3D known-class-member, V2).
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 7
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     assert sum(1 for lvl in byid.values() if lvl == "V4") == 1
     assert not any(lvl == "V5" for lvl in byid.values())
