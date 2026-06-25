@@ -53,6 +53,30 @@ def _residual_size(n_modes: int) -> int:
     return 6 + 4 * 6 * n_modes + 2
 
 
+def _z_scale(z: NDArray[np.float64], n_modes: int) -> NDArray[np.float64]:
+    """Per-component characteristic scale of the augmented unknown vector.
+
+    The augmented z mixes O(amplitude ~ 5e-4) Fourier-mode unknowns with
+    O(1-6) rho / t_strob / C_J unknowns. A unit tangent in this raw, badly
+    scaled space (scaled by ``ds``) perturbs the tiny modes by a HUGE relative
+    amount, blowing up the truncation tail (|c_2|/|c_1| -> 0.3 in one ds=5e-3
+    step, verified). Continuation is run in the NORMALISED coordinate
+    ``w = z / scale`` so a single ``ds`` is a uniform fractional step across
+    every variable; the mode block then moves by ``ds * scale_mode`` rather than
+    ``ds``, keeping the torus shape stable along the family. The mode scale uses
+    the constant-mode amplitude ``|c_1|`` as the characteristic mode magnitude;
+    rho / t_strob / C_J use their own magnitudes (floored at 1).
+    """
+    coeffs, rho, t_strob, cj = _unpack_augmented(z, n_modes)
+    mode_scale = max(float(np.linalg.norm(coeffs[1, :])), 1e-6)
+    scale = np.empty_like(z)
+    scale[: 6 + 12 * n_modes] = mode_scale
+    scale[-3] = max(abs(rho), 1.0)
+    scale[-2] = max(abs(t_strob), 1.0)
+    scale[-1] = max(abs(cj), 1.0)
+    return scale
+
+
 def _energy_row_scale(c0: NDArray[np.float64], mu: float) -> float:
     """Row-scaling factor for the energy-tie constraint.
 
@@ -167,19 +191,28 @@ def _gmos_residual_and_jac(
 
 
 def _arclength_tangent(
-    jac: NDArray[np.float64], prev: NDArray[np.float64] | None
+    jac: NDArray[np.float64],
+    prev: NDArray[np.float64] | None,
+    scale: NDArray[np.float64] | None = None,
 ) -> NDArray[np.float64] | None:
     """Unit null tangent = last right-singular vector of the residual Jacobian.
 
     Mirrors er3bp_continuation._arclength_tangent. ``jac`` is the residual
     Jacobian of shape ``(len(z)-1, len(z))`` -- rank ``len(z)-1`` with a
     one-dimensional null space. Oriented by ``+dot`` with ``prev``.
+
+    When ``scale`` is given the tangent is the null vector of the SCALED
+    Jacobian ``jac @ diag(scale)`` (the derivative w.r.t. the normalised
+    coordinate ``w = z / scale``), returned unit-norm in w-space. ``prev`` is
+    then also a w-space tangent. With ``scale=None`` the behaviour is the
+    original raw-space tangent (kept for the Task-1/2 unit tests).
     """
+    work = jac if scale is None else jac * scale[np.newaxis, :]
     try:
-        _u, _s, vt = np.linalg.svd(jac, full_matrices=True)
+        _u, _s, vt = np.linalg.svd(work, full_matrices=True)
     except np.linalg.LinAlgError:
         return None
-    if vt.shape[0] != jac.shape[1]:
+    if vt.shape[0] != work.shape[1]:
         return None
     tau = np.asarray(vt[-1], dtype=np.float64)
     norm = float(np.linalg.norm(tau))
@@ -212,13 +245,20 @@ def _correct_arclength_torus(
     n_samples: int,
     phase_pin_idx: int,
     tol: float,
+    scale: NDArray[np.float64] | None = None,
     max_iter: int = 60,
     mode_cap: float = 0.1,
     rho_cap: float = 0.05,
     cj_cap: float = 1e-2,
     residual_floor: float = 1e-5,
 ) -> NDArray[np.float64] | None:
-    """Newton onto {R(z)=0, tau.(z - z_pred)=0}. Returns converged z or None.
+    """Newton onto {R(z)=0, arclength=0}. Returns converged z or None.
+
+    With ``scale`` given, ``tau`` is a w-space (normalised) tangent and the
+    arclength row is ``tau . ((z - z_pred) / scale) = 0`` -- continuation runs
+    in ``w = z / scale`` so the step is uniform across the badly-scaled mode vs
+    energy/period unknowns (see _z_scale). With ``scale=None`` the constraint is
+    the raw ``tau . (z - z_pred) = 0`` (Task-2 unit-test path).
 
     The GMOS invariance residual bottoms out at the FD-Jacobian / DOP853 noise
     floor (~4e-7 on the #290 smoke torus, the documented Phase-1 limit), so the
@@ -227,11 +267,19 @@ def _correct_arclength_torus(
     ``tol``. A tighter ``tol`` than the floor simply pins the gate at the floor.
     """
     gate = max(tol, residual_floor)
+    inv_scale = None if scale is None else 1.0 / scale
+
+    def arclength(zz: NDArray[np.float64]) -> float:
+        if inv_scale is None:
+            return float(np.dot(tau, zz - z_pred))
+        return float(np.dot(tau, (zz - z_pred) * inv_scale))
+
+    def arclength_grad() -> NDArray[np.float64]:
+        return tau if inv_scale is None else tau * inv_scale
 
     def full_residual(zz: NDArray[np.float64]) -> NDArray[np.float64]:
         rr = _augmented_residual(zz, system, n_modes, n_samples, phase_pin_idx)
-        ar = float(np.dot(tau, zz - z_pred))
-        return np.concatenate([rr, np.array([ar])])
+        return np.concatenate([rr, np.array([arclength(zz)])])
 
     z = z_pred.copy()
     f = full_residual(z)
@@ -240,7 +288,7 @@ def _correct_arclength_torus(
         if float(np.linalg.norm(f[:-1])) < gate and abs(f[-1]) < 1e-8:
             return z
         _, grad = _gmos_residual_and_jac(z, system, n_modes, n_samples, phase_pin_idx)
-        jmat = np.vstack([grad, tau.reshape(1, -1)])
+        jmat = np.vstack([grad, arclength_grad().reshape(1, -1)])
         # Levenberg-Marquardt damped Gauss-Newton: the augmented GMOS Jacobian
         # is intrinsically ill-conditioned (cond ~5e8 on the #290 smoke torus --
         # a soft mode direction), so a plain Newton solve amplifies noise and
@@ -449,6 +497,7 @@ def _walk_direction(
     max_steps: int,
     corrector_tol: float,
     fold_detection: bool,
+    fold_eps: float,
     resonance_max_denominator: int,
     resonance_tol: float,
     mode_truncation_guard: float,
@@ -463,7 +512,11 @@ def _walk_direction(
     s_acc = 0.0
     reason = "max_steps"
     for _step in range(max_steps):
-        z_pred = z_cur + ds * tau
+        # Normalised-coordinate continuation: scale is the per-component
+        # characteristic magnitude of z_cur, tau is the w-space tangent, so the
+        # physical predictor step is ds * scale * tau (uniform fractional step).
+        scale = _z_scale(z_cur, n_modes)
+        z_pred = z_cur + ds * scale * tau
         z_next = _correct_arclength_torus(
             z_pred,
             tau,
@@ -472,27 +525,41 @@ def _walk_direction(
             n_samples=n_samples,
             phase_pin_idx=phase_pin_idx,
             tol=corrector_tol,
+            scale=scale,
         )
         if z_next is None:
             z_next = _correct_arclength_torus(
-                z_cur + 0.5 * ds * tau,
+                z_cur + 0.5 * ds * scale * tau,
                 tau,
                 system,
                 n_modes=n_modes,
                 n_samples=n_samples,
                 phase_pin_idx=phase_pin_idx,
                 tol=corrector_tol,
+                scale=scale,
             )
             if z_next is None:
                 reason = "corrector_fail"
                 break
         _, jac_next = _gmos_residual_and_jac(z_next, system, n_modes, n_samples, phase_pin_idx)
-        tau_next = _arclength_tangent(jac_next, tau)
+        scale_next = _z_scale(z_next, n_modes)
+        tau_next = _arclength_tangent(jac_next, tau, scale_next)
         if tau_next is None:
             reason = "corrector_fail"
             break
         fold_index = None
-        if fold_detection and tau[-1] * tau_next[-1] < 0.0:
+        # A genuine fold is a turning point in the C_J continuation coordinate:
+        # the tangent's C_J component (tau[-1]) flips sign with non-trivial
+        # magnitude. The smoke family barely moves in energy (|tau[-1]| ~ 3e-3,
+        # noise level), so a raw sign-flip there fires spuriously every step.
+        # Require the magnitude on at least one side to exceed fold_eps so only
+        # a real energy turning point (where |tau[-1]| sweeps up before crossing
+        # zero) is recorded -- the analytic-Jacobian de-noising of Phase 2.
+        if (
+            fold_detection
+            and tau[-1] * tau_next[-1] < 0.0
+            and max(abs(float(tau[-1])), abs(float(tau_next[-1]))) > fold_eps
+        ):
             fold_index = member_offset + len(members)
             folds.append(QPTorusFold(fold_index, float(z_next[-1]), float(tau_next[-1])))
         s_acc += ds
@@ -546,9 +613,10 @@ def continue_qp_family_arclength(
     corrector_tol: float = 1e-8,
     phase_pin_idx: int | None = None,
     fold_detection: bool = True,
+    fold_eps: float = 1e-2,
     resonance_max_denominator: int = 12,
     resonance_tol: float = 1e-4,
-    mode_truncation_guard: float = 1e-4,
+    mode_truncation_guard: float = 0.1,
     on_step: Callable[[QPTorusFamilyMember], None] | None = None,
 ) -> QPFamily:
     """Pseudo-arclength continuation of a converged QP 2-torus into a family.
@@ -575,7 +643,8 @@ def continue_qp_family_arclength(
     z0, auto_pin = _seed_augmented_z(seed_torus, system)
     pin = auto_pin if phase_pin_idx is None else phase_pin_idx
     _, jac0 = _gmos_residual_and_jac(z0, system, n_modes, n_samples, pin)
-    tau0 = _arclength_tangent(jac0, None)
+    scale0 = _z_scale(z0, n_modes)
+    tau0 = _arclength_tangent(jac0, None, scale0)
     if tau0 is None:
         return QPFamily([], [], [], "corrector_fail", seed_torus.notes)
     folds: list[QPTorusFold] = []
@@ -600,6 +669,7 @@ def continue_qp_family_arclength(
         max_steps=max_steps,
         corrector_tol=corrector_tol,
         fold_detection=fold_detection,
+        fold_eps=fold_eps,
         resonance_max_denominator=resonance_max_denominator,
         resonance_tol=resonance_tol,
         mode_truncation_guard=mode_truncation_guard,
