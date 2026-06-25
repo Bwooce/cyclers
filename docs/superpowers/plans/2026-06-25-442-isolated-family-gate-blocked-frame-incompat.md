@@ -69,3 +69,38 @@ residual < 1e-8). This is compute-expensive (e2≈0.90 is the near-collision cha
 corner) and follows the #446 escalation ladder (apse/sign/θ0/e2-scan variants).
 Next: promote the validated EOM to a proper module + test once a member converges
 (or the convergence is honestly characterised).
+
+## UPDATE 2026-06-25 (b) — convergence WALL characterised; answers the digitization question
+Two corrections + a decisive convergence finding (two independent correctors):
+- **PREMISE CORRECTION:** Antoniadou & Libert 2018 "Eq. 7" is the PERIODICITY
+  CONDITION, not the EOM. The dynamics are the Lagrangian **Eq. 1**, integrated in
+  **TIME t** (not true anomaly f), non-pulsating rotating frame, primaries sliding
+  on Ox on their Keplerian ellipse. The validated EOM was built from Eq. 1 (the
+  e2=0→CR3BP reduction confirms it term-by-term: Euler θ̈y / Coriolis 2θ̇v /
+  centrifugal θ̇²x / two-moving-primary gravity).
+- **3/1 (π,0) ISOLATED member does NOT converge.** Cold-shoot from the analytic
+  graphical seed (a1=0.4807, e1=0.659951, e2≈0.90, P2 apocentre θ0=π) stalls at
+  crossing residual ~0.3–0.5; the concurrent heavier LM/dogbox 13×13-grid corrector
+  (`_scratch_442_converge.py`, same frame) reached crossing 2.3e-4 / **independent
+  1.1e-2 — still ~6 orders short of the 1e-8 gate**. TWO independent correctors
+  confirm: removing the frame incompatibility did NOT close the gate.
+- **This IS the digitization-precision answer.** The binding constraint is now the
+  graphical-only `(e1,e2)` seed precision into the isolated family's STEEP basin —
+  and because the family is ISOLATED (no e=0 / circular limit by definition), there
+  is **no continuation fallback** to rescue an imprecise seed. So for *this* family
+  the digitization is demonstrably NOT good enough (confirmed by two solvers). The
+  earlier "self-certifying via convergence" logic holds — it just certified the
+  NEGATIVE: the seed never reached a converging basin.
+
+## The next-step path (higher-probability than cold-shoot)
+1. **Continuation from the e=0 CRTBP bifurcation** B^{3/1}_{I,1} (Scheme II, where the
+   IC is EXACT), continued in e2 toward 0.90, freeing the period — this lands the
+   CONNECTED 3/1 family (guaranteed capability win; reproduces a published family)
+   and may give a homotopy bridge toward the isolated branch. NB the ISOLATED family
+   has no e=0 limit, so continuation reaches the CONNECTED family; the isolated one
+   needs either the homotopy-from-connected bridge or better seed data.
+2. **Author/data request** to Antoniadou & Libert for the isolated-family state
+   vectors — now JUSTIFIED (the paper publishes none; the graphical seed is proven
+   insufficient for the isolated basin).
+The validated EOM (Eq. 1 in the natural frame) is the durable capability deliverable
+and is reusable for BOTH paths.
