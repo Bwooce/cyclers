@@ -83,3 +83,35 @@ DIVERGES to ~1.44 by e=0.30 while the commensurate `period_f = T₀` stays ~1e-1
 — needs the #440 seed machinery — plus the high-(e1,e2) digitization and the
 reverse-continue isolated-family detection. These belong in the #441 Phase 2
 plan, not this spike doc.
+
+## RECONCILIATION 2026-06-26 — #441 CLOSED (method SUPERSEDED by #457; objective re-homed)
+This task's planned approach (pulsating-frame `er3bp_continuation` + DIGITIZE the
+paper's high-(e1,e2) figure + reverse-continue to confirm death before e=0) is
+**RETIRED** in favor of the strictly better #457 method, and its premise was
+partly wrong:
+- **Premise correction:** §5 assumed isolated families are definitionally
+  disconnected and so unreachable by continuation. #457 DISPROVED this for the
+  3/1: reading the arXiv:1805.00288 source showed the isolated stable family is
+  the HIGH-e STABLE SEGMENT of the UNSTABLE branch II, reachable by continuation
+  from the circular bifurcation point (T=2π) — NO digitization, an EXACT seed. The
+  "digitize the figure" path (this doc §5, the MEDIUM-confidence step) is therefore
+  unnecessary; the precision wall it would have hit is moot.
+- **Objective re-homed (nothing dropped):** the isolated-family detection — the
+  whole point of #441 — is now done via #457's paper-frame (Antoniadou Eq.1)
+  branch-II continuation + JOINT doubly-symmetric corrector (`correct_doubly_
+  symmetric_member` in `core/er3bp_paper_frame.py`):
+  - **3/1 (π,0): DONE (#457)** — closed to 4.3e-12, STABLE, matches published
+    a1=0.480674/e1=0.659951.
+  - **4/1, 5/1 (π,0) + 3/2, 5/2 (0,π): TASKED (#460, broadened)** — same method.
+- **Durable #441 deliverable RETAINED:** the `period_f=T/2` TRAP finding (§2) +
+  the independent-closure gate (`continue_er3bp_family_in_e_arclength(...,
+  independent_gate=...)`) + its regression test (`tests/genome/test_er3bp_
+  independent_gate.py`) are landed and stay valid — they protect any future ER3BP
+  continuation pass from the false-positive-closure trap.
+- The CONNECTED-family e>0 continuation (§4) is likewise covered: #442's converger
+  tracked the connected 3/1 to e2=0.90.
+So #441 is marked COMPLETED as **superseded, objective re-homed to #457/#460** — not
+because every MMR's isolated member is reached (3/2, 5/2, 4/1, 5/1 remain, under
+#460), but because this WORKSTREAM/approach is closed and its remaining work lives
+in #460 under the better method. Marking it done removes a stale ledger entry; the
+open isolated-family work is tracked in #460, not lost here.
