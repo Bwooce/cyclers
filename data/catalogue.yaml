@@ -48849,13 +48849,13 @@
     "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2025 p. 3: mu = 1.2150584270572e-2."
 
 - id: em-cycler-21-3d-spatial-2026
-  name: "Computed 3D out-of-plane (2,1) Earth-Moon cycler — spatial extension of ross-rt-em-cycler-21-2025 (CR3BP, KNOWN-CLASS member of the Antoniadou-Libert spatial-resonant family)"
+  name: "Computed 3D out-of-plane (2,1) Earth-Moon resonant periodic orbit — spatial extension of ross-rt-em-cycler-21-2025 (CR3BP, KNOWN-CLASS member of the Antoniadou-Libert spatial-resonant family; libration-class, NO transport utility per Region B #447)"
   source: this-project   # computed by our #291 3D genome (#438 broken-plane lift); its CLASS is published (Antoniadou & Libert 2019)
   our_status: known-class-member   # spec §16.4 (#444): computed member of a published CLASS; NOT a literal copy of any published orbit (no first_published), NOT novel (class is known)
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: non-keplerian
-  orbit_class: cycler
+  orbit_class: resonant_po   # schema v4.9 (#453): stable resonant/libration PO, NOT a transport cycler — Region B (#447) showed closest lunar pass 122,628 km vs SOI 66,183 km, so it never encounters the Moon. Shares cycler periodicity invariants (epoch_locked=false / n_returns=infinite) but no transport utility.
   epoch_locked: false
   n_returns: infinite
   validation_level: V2   # spec §14 V2-ballistic (3D): run_v1_3d same-model 6D closure (independent Radau 3.2e-12 km/s) + run_v2_3d 6-cycle bounded drift (1.7 mm, linear) + Floquet all |ev|=1 STABLE. tests/data/test_em_cycler_21_3d_knownclass.py. No real-ephemeris claim.
@@ -48929,8 +48929,13 @@
   priority_date: "2026-06-25"
   notes: |
     KNOWN-CLASS MEMBER (spec §16.4, #444). A computed, V1+V2-verified, Floquet-
-    STABLE 3D out-of-plane Earth-Moon cycler: the spatial extension of the planar
-    (2,1) cycler ross-rt-em-cycler-21-2025. Member of the PUBLISHED spatial-
+    STABLE 3D out-of-plane Earth-Moon resonant/libration periodic orbit (orbit_class
+    resonant_po, schema v4.9, #453 — NOT a transport cycler): the spatial extension
+    of the planar (2,1) cycler ross-rt-em-cycler-21-2025. RECHARACTERIZED (#453) from
+    orbit_class cycler after Region B (#447) showed it has NO transport utility — the
+    closest lunar pass is 122,628 km vs the lunar SOI 66,183 km, so the orbit never
+    encounters the Moon (nor Earth); it is a stable libration-class resonant PO, not a
+    transport cycler. Member of the PUBLISHED spatial-
     resonant family CLASS (Antoniadou & Libert 2019) but NOT a literal copy of any
     published orbit (that paper is mu=0.001 with no Earth-Moon IC; JPL's three-body
     catalogue has no match). NOT novelty-claimable (class known) AND NOT a known-

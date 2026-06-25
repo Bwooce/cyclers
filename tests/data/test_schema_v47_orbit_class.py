@@ -55,7 +55,7 @@ def test_orbit_class_enum_present() -> None:
     props = schema["items"]["properties"]
     assert "orbit_class" in props
     enum = props["orbit_class"]["enum"]
-    assert set(enum) == {"cycler", "quasi_cycler", "precursor_mga", "mga_tour"}
+    assert set(enum) == {"cycler", "quasi_cycler", "precursor_mga", "mga_tour", "resonant_po"}
     assert props["orbit_class"]["default"] == "cycler"
 
 
@@ -104,15 +104,23 @@ def test_live_catalogue_every_row_carries_orbit_class() -> None:
 
 
 def test_cycler_rows_are_not_epoch_locked() -> None:
-    """orbit_class=cycler MUST have epoch_locked=false and n_returns='infinite'."""
+    """orbit_class in {cycler, resonant_po} MUST have epoch_locked=false and n_returns='infinite'.
+
+    resonant_po (schema v4.9, #453) is a stable resonant/libration periodic orbit: it shares
+    the cycler reachability/periodicity invariants (any epoch, infinite returns) but has no
+    transport utility. Both classes are pinned to the not-epoch-locked side here.
+    """
     rows = _load_catalogue()
+    not_epoch_locked = {"cycler", "resonant_po"}
     bad = [
         r["id"]
         for r in rows
-        if r.get("orbit_class") == "cycler"
+        if r.get("orbit_class") in not_epoch_locked
         and (r.get("epoch_locked") is not False or r.get("n_returns") != "infinite")
     ]
-    assert not bad, f"cycler rows must be epoch_locked=false / n_returns=infinite: {bad}"
+    assert not bad, (
+        f"cycler/resonant_po rows must be epoch_locked=false / n_returns=infinite: {bad}"
+    )
 
 
 def test_non_cycler_rows_are_epoch_locked_with_finite_returns() -> None:

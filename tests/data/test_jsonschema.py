@@ -25,12 +25,14 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '4.8' (v4.8 adds the Axis-B dv_band
-    enum + its mandatory dv_band_source companion for the real-ephemeris
-    maintenance-ΔV band taxonomy, task #417; v4.7 added the four-class
-    orbit_class taxonomy for the catalogue-scope expansion, task #294)."""
+    """The schema carries version == '4.9' (v4.9 adds the resonant_po
+    orbit_class enum value for stable resonant/libration POs with no transport
+    utility, task #453; v4.8 added the Axis-B dv_band enum + its mandatory
+    dv_band_source companion for the real-ephemeris maintenance-ΔV band
+    taxonomy, task #417; v4.7 added the four-class orbit_class taxonomy for the
+    catalogue-scope expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "4.8"
+    assert schema["version"] == "4.9"
 
 
 def test_catalogue_matches_jsonschema() -> None:
