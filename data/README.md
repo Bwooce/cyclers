@@ -647,6 +647,14 @@ express cross-row referential integrity):
 - `quasi_cycler` / `precursor_mga` / `mga_tour` ⇒ `epoch_locked=true`, `n_returns` is a finite integer ≥ 1
 - `precursor_mga` ⇒ `inserts_into` resolves to an existing `cycler` row
 
+`precursor_mga` rows may carry an optional additive `sub_classification`
+annotation (task #386, per the Pontani & Conway 2018 taxonomy): one of
+`mga_sequence` (multi-flyby V-infinity-leveraging insertion chain — e.g. the
+Rogers 2015 `*-establishment*` rows), `rendezvous_only` (pure hyperbolic
+rendezvous taxi), or `low_thrust_rendezvous` (continuous-thrust taxi). It is a
+free-text controlled vocabulary, **not** a fifth `orbit_class` enum value; see
+`docs/notes/2026-06-16-catalogue-scope-taxonomy.md`.
+
 One-time migration: `scripts/migrate_catalogue_scope_2026-06-15.py` (idempotent;
 preserves comments and formatting via ruamel.yaml). Full taxonomy + V0–V5
 gauntlet extension is documented in

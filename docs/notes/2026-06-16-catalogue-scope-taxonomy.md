@@ -53,6 +53,30 @@ the schema cannot express cross-row referential integrity):
 - `quasi_cycler` / `precursor_mga` / `mga_tour` ⇒ `epoch_locked=true`, `n_returns` is a finite integer ≥ 1
 - `precursor_mga` ⇒ `inserts_into` resolves to an existing `cycler` row
 
+## `precursor_mga` sub-classification (additive convention, task #386)
+
+The `precursor_mga` class covers any non-repeating chain that inserts a
+spacecraft *into* a steady-state cycler. Per Pontani & Conway 2018 ("Optimal
+Trajectories for Hyperbolic Rendezvous with Earth-Mars Cycling Spacecraft",
+*J. Guid. Control Dyn.*, DOI 10.2514/1.G002984), that insertion can be
+mechanistically distinct, so the class carries an **additive
+`sub_classification` annotation** (task #386, 2026-06-17 digest wave; see
+`docs/notes/2026-06-17-digest-pontani-2018.md` Sec 6.2). This is a free-text
+controlled vocabulary, **not a fifth `orbit_class` enum** — Pontani 2018 is a
+methodology paper and is *not* admitted as a row.
+
+| `sub_classification` | Insertion mechanism | Type case |
+|---|---|---|
+| `mga_sequence` | multi-flyby V-infinity-leveraging gravity-assist chain | Rogers 2015 establishment trajectories (the 20 `*-establishment*` rows) |
+| `rendezvous_only` | pure hyperbolic rendezvous, no gravity assists | Pontani 2018 impulsive taxi (methodology only; not catalogued) |
+| `low_thrust_rendezvous` | continuous-thrust (electric) rendezvous taxi | Pontani 2018 low-thrust taxi (methodology only; not catalogued) |
+
+The field is optional and additive (the schema's `additionalProperties: true`
+permits it); it changes no class/tier/validation census. The 20 Rogers 2015
+establishment rows were tagged `mga_sequence` under #386. If a second/third
+taxi-side paper is ever catalogued, schema v4.x may promote the vocabulary to a
+JSON-Schema enum (Pontani 2018 Sec 6.2 Option A).
+
 ## Migration (one-time, 2026-06-15)
 
 `scripts/migrate_catalogue_scope_2026-06-15.py` annotates every pre-v4.7 row

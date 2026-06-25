@@ -2767,6 +2767,7 @@
   epoch_locked: true   # schema v4.7 (task #367); precursor_mga insertion trajectories exist only for a specific real-ephemeris launch window (Rogers 2015 Table 4 publishes the LD: 01/03/2023 for the 4:3(2)- variant).
   n_returns: 1   # schema v4.7 (task #367); single Earth-launch / single insertion into the Aldrin cycler; n_returns=1 per the precursor_mga invariant.
   inserts_into: aldrin-classic-em-k1-outbound   # schema v4.7 (task #367): cross-row pointer to the steady-state Aldrin outbound cycler this precursor establishes.
+  sub_classification: mga_sequence              # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:   # schema v4.7 (task #367); Rogers 2015 Table 4 LD (01/03/2023) + ToF 161 d to Mars; nominal validity_window = LD +/- ~30 d phasing
     start: "2023-01-03T00:00:00Z"
     end: "2023-06-13T00:00:00Z"
@@ -2913,6 +2914,7 @@
   epoch_locked: true   # schema v4.7 (task #367); precursor_mga insertion trajectories exist only for a specific real-ephemeris launch window (Rogers 2015 Table 4 LD: 12/09/2023 for the 3:2(1)- variant).
   n_returns: 1   # schema v4.7 (task #367); single Earth-launch / single insertion into the Aldrin cycler; n_returns=1 per the precursor_mga invariant.
   inserts_into: aldrin-classic-em-k1-outbound   # schema v4.7 (task #367): cross-row pointer to the steady-state Aldrin outbound cycler this precursor establishes.
+  sub_classification: mga_sequence              # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:   # schema v4.7 (task #367); Rogers 2015 Table 4 LD (12/09/2023) + ToF 172 d to Mars; nominal validity_window = LD +/- ~30 d phasing
     start: "2023-12-09T00:00:00Z"
     end: "2024-05-29T00:00:00Z"
@@ -3066,6 +3068,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: niehoff-visit1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2046-06-12T00:00:00Z"
     end: "2046-12-30T00:00:00Z"
@@ -3151,6 +3154,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: niehoff-visit2
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2023-12-27T00:00:00Z"
     end: "2024-07-21T00:00:00Z"
@@ -3229,6 +3233,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-case1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2024-12-14T00:00:00Z"
     end: "2025-12-14T00:00:00Z"
@@ -3308,6 +3313,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: russell-ocampo-2.1.1+2-case2
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2029-04-22T00:00:00Z"
     end: "2029-10-10T00:00:00Z"
@@ -3387,6 +3393,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: russell-ocampo-2.3.1+1-case3
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2022-12-20T00:00:00Z"
     end: "2023-07-24T00:00:00Z"
@@ -3466,6 +3473,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: s1l1-2syn-em-cpom
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2022-12-20T00:00:00Z"
     end: "2023-07-29T00:00:00Z"
@@ -3548,6 +3556,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-u0l1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   validity_window:
     start: "2025-11-25T00:00:00Z"
     end: "2026-03-02T00:00:00Z"
@@ -3651,6 +3660,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: niehoff-visit1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -3733,6 +3743,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: niehoff-visit2
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -3809,6 +3820,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: niehoff-visit2
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -3885,6 +3897,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-case1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -3962,6 +3975,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-case1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4039,6 +4053,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: russell-ocampo-2.1.1+2-case2
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4116,6 +4131,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: russell-ocampo-2.3.1+1-case3
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4193,6 +4209,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: s1l1-2syn-em-cpom
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4272,6 +4289,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: s1l1-2syn-em-cpom
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4349,6 +4367,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-u0l1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
@@ -4428,6 +4447,7 @@
   epoch_locked: true
   n_returns: 1
   inserts_into: mcconaghy-2005-em-u0l1
+  sub_classification: mga_sequence  # schema additive (task #386, 2026-06-19): precursor_mga sub-classification per Pontani 2018 taxonomy (docs/notes/2026-06-17-digest-pontani-2018.md Sec 6.2). mga_sequence = multi-flyby V-infinity-leveraging insertion chain (vs rendezvous_only / low_thrust_rendezvous).
   orbit_source: rogers-2012-t1
   orbit_fidelity: circular-coplanar
   vinf_source: rogers-2012-t1
