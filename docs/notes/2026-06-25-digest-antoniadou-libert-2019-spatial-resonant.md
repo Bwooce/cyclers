@@ -38,14 +38,35 @@ planet-spacecraft-satellite and binary star-circumprimary planet" — and Sect.
 5.2 applies them to asteroid dynamics. This transferability claim is what makes
 the family taxonomy relevant to us (see §7 below for the honest assessment).
 
-It is a **continuation/bifurcation + stability** paper. It does NOT publish
-tabulated initial conditions: there is **no IC table anywhere in the paper**.
-All families are presented graphically (Figs. 2–33) as characteristic curves in
-projected planes — e.g. (e1, i1), (e1, e2, i1), (x, e1) — with bifurcation
-points called out by coordinate value in the text/captions. See §4 for what IS
-and is NOT tabulated. This matters: we cannot match a swept 3D orbit against a
-printed state vector from this paper; we can only match the (resonance,
-configuration, prograde/retrograde, inclination-range, stability) signature.
+It is a **continuation/bifurcation + stability** paper. It does NOT publish a
+Cartesian state-vector IC table — there is no `(x0, z0, ẏ0)`/`(x0, ẏ0, ż0)`
+table anywhere. All families are presented graphically (Figs. 2–33) as
+characteristic curves in projected planes — e.g. (e1, i1), (e1, e2, i1),
+(x, e1).
+
+> **#459 SOURCE-RECOVERY CORRECTION (from the #458 arXiv-source sweep).** The
+> earlier framing here — "graphical only / no matchable numeric ICs" — was
+> **over-broad and is now corrected**. The published *figures* render the
+> bifurcation points and DS-map base orbits only as grey/magenta/green dots, but
+> the **arXiv TeX source `SPA.tex` carries FULL-PRECISION numeric anchors in the
+> prose and captions**: the (e1, i1) bifurcation coordinates AND, for the
+> DS-maps, the **complete constant orbital-element sets** (a2/a1 + all six angles
+> per body + i2). A DS-map element set is a *complete, reproducible* element
+> specification (only the swept plane is free), not a curve endpoint. These are
+> µ = 0.001 exoplanetary orbital elements (NOT Earth-Moon Cartesian state, so
+> they do NOT transfer to a (k1,k2,k_z) tuple), but they ARE matchable, sourced
+> anchors. They are now pinned verbatim with their SPA.tex line numbers in
+> `ANTONIADOU_LIBERT_2019_PROSE_ANCHORS` in
+> `src/cyclerfinder/genome/known_corpus_3d.py`. So the correct statement is: *no
+> Cartesian state-vector table, but full-precision prose-level orbital-element
+> anchors DO exist* — the corpus no longer records a false "graphical-only" gap.
+> See §6 (extracted) and §8.4. Cf. SPA.tex L438 (5/2), L513/L523 (four 3/1),
+> L719/L733/L747 (the three DS-map element sets).
+
+For the literature *matcher* the conclusion is unchanged: we still adjudicate a
+swept 3D Earth-Moon orbit on its (resonance, configuration, prograde/retrograde,
+inclination-range, stability) signature, not on these exoplanetary numbers (wrong
+µ). The recovery matters for honesty of the corpus record, not for the matcher.
 
 ## 3. The model (§2, pp. 1–3)
 
@@ -137,22 +158,31 @@ This is the core structural content for our k_z topology gate.
 
 ## 5. What is tabulated vs graphical (for matching)
 
-- **No initial-condition table exists.** There is exactly one table in the body
-  (**Table A1**, Appendix A) and it is a **resonance-vs-multiplicity occurrence
-  map** of which MMRs possess a v.c.o. — it lists MMR *labels* (e.g. 7/3, 11/5,
-  5/2, 3/1, 4/1, 5/1, ...) against multiplicity i = 1..9. No (x0, z0, ẏ0), no
-  Jacobi constant, no stability column. It cannot be used to match a numerical
-  orbit.
-- All families, bifurcation eccentricities, and inclination ranges are given
-  **graphically** (Figs. 2–33) and as **named coordinate points in captions/text**
-  (e.g. "F_I^{3/2} bifurcates from the v.c.o. at e1 = 0.39"; "G_I^{3/2}
-  bifurcates to the 3D-ERTBP at (e1, i1) = (0.42, 69°)"). These bifurcation
-  coordinates ARE extractable per-resonance (see §6) but they are
-  curve-endpoints, not orbit ICs.
-- **Verdict for our matcher**: we can populate (resonance, configuration,
-  prograde/retrograde, inclination-stability-range) signatures, NOT exact
-  state-vector anchors. This is consistent with how `known_corpus_3d.py` already
-  works — it matches on `(k1, k2, k_z)` + Jacobi-band, never on fabricated ICs.
+- **No Cartesian state-vector IC table exists.** There is exactly one table in
+  the body (**Table A1**, Appendix A) and it is a **resonance-vs-multiplicity
+  occurrence map** of which MMRs possess a v.c.o. — it lists MMR *labels* (e.g.
+  7/3, 11/5, 5/2, 3/1, 4/1, 5/1, ...) against multiplicity i = 1..9. No
+  (x0, z0, ẏ0), no Jacobi constant, no stability column.
+- **BUT (#459 / #458 source-recovery): full-precision ORBITAL-ELEMENT anchors DO
+  exist in the prose.** The bifurcation eccentricities/inclinations are given as
+  **named full-precision coordinate points in the text/captions** (e.g. SPA.tex
+  L438 "G^{5/2}_{C3} bifurcates to the 3D-ERTBP at (e1,i1) = (0.0891812, 90°)";
+  L523 the four 3/1 points (0.000178,84°), (0.0002327,101°), (0.0003454,101°),
+  (0.0004451,84°)). The DS-map captions further give the **complete constant
+  orbital-element set** for the swept map (SPA.tex L719/L733/L747:
+  a2/a1 + ω1,Ω1,M1,i2,ω2,Ω2,M2). A DS-map element set is a *complete,
+  reproducible* element specification (only the swept plane is free) — so these
+  are matchable, sourced anchors, NOT mere curve-endpoint sketches. They are
+  pinned in `ANTONIADOU_LIBERT_2019_PROSE_ANCHORS`. (The figures only render
+  them as dots, which is why the first pass mislabelled the paper "graphical
+  only".)
+- **Verdict for our matcher**: we still adjudicate a swept Earth-Moon 3D orbit on
+  its (resonance, configuration, prograde/retrograde, inclination-stability-range)
+  signature, NOT on these µ=0.001 exoplanetary element values (wrong µ; see §7).
+  The matcher record (`KNOWN_CORPUS_3D` CorpusAnchor) keeps `topology_3d=None`;
+  the recovered numbers are pinned as sourced taxonomy data, not folded into the
+  Cartesian `(k1, k2, k_z)` tuple match. This stays consistent with the no-
+  fabricated-ICs discipline.
 
 ## 6. Stability findings per MMR (the headline result, Conclusions p. 17)
 
@@ -320,10 +350,19 @@ are published here. The match is on `(k1, k2, k_z)` topology +
 
 ### 8.4 Net effect on the corpus
 The corpus already has the right SHAPE (Howell halo + Folta NRHO + this
-resonant anchor). The only change this digest forces is the **provenance
-correction in §8.1** (Antoniadou-Libert 2019, not Antoniadou-Voyatzis 2018;
-published DOI 10.1093/mnras/sty3195). No new anchor topology is needed; no
-Jacobi band can be sourced; the `(1,1,2)` resonant tuple stands.
+resonant anchor). The provenance correction in §8.1 (Antoniadou-Libert 2019, not
+Antoniadou-Voyatzis 2018; published DOI 10.1093/mnras/sty3195) is landed. No new
+*matcher* anchor topology is needed for the Earth-Moon `(k1,k2,k_z)` gate; no
+Jacobi band can be sourced (wrong µ); the matcher CorpusAnchor keeps
+`topology_3d=None`.
+
+**#459 update.** The recovered full-precision prose anchors (§5, §6) are now
+pinned as sourced taxonomy data in `ANTONIADOU_LIBERT_2019_PROSE_ANCHORS`
+(`known_corpus_3d.py`), with a sourced golden test
+(`test_antoniadou_libert_2019_prose_anchors_sourced`). This corrects the corpus
+record — the paper is NOT "graphical only" — without changing matcher behaviour
+(the numbers are µ=0.001 exoplanetary elements, kept out of the Earth-Moon
+Cartesian tuple match).
 
 ## 9. Errata / cross-reference notes
 

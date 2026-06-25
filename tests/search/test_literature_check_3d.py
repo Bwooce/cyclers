@@ -24,7 +24,11 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from cyclerfinder.genome.known_corpus_3d import KNOWN_CORPUS_3D
+from cyclerfinder.genome import known_corpus_3d
+from cyclerfinder.genome.known_corpus_3d import (
+    ANTONIADOU_LIBERT_2019_PROSE_ANCHORS,
+    KNOWN_CORPUS_3D,
+)
 from cyclerfinder.search.literature_check import (
     CandidateSignature,
     SearchResult,
@@ -107,3 +111,39 @@ def test_known_corpus_3d_anchors_carry_3d_topology() -> None:
             assert "k_z" in anchor.topology_3d, f"{anchor.name}: topology_3d has no k_z"
             has_coordinate_anchor = True
     assert has_coordinate_anchor, "no coordinate (topology_3d) anchor in the 3D corpus"
+
+
+def test_antoniadou_libert_2019_prose_anchors_sourced() -> None:
+    """#459: the full-precision PROSE anchors recovered from SPA.tex are pinned.
+
+    The #458 arXiv-source sweep showed arXiv:1811.09442 carries full-precision
+    orbital-element anchors in the TeX prose (the figures render them only as
+    grey dots), correcting the prior "graphical only / no matchable numeric ICs"
+    digest claim. Every value below is transcribed VERBATIM from SPA.tex; the
+    EXPECTED side traces to the paper ONLY (golden-sourced discipline), never to
+    a value our code computed.
+    """
+    # mu=0.001 (Jupiter-mass giant), NOT Earth-Moon -- the transferability caveat.
+    assert ANTONIADOU_LIBERT_2019_PROSE_ANCHORS["mu"] == 0.001
+    assert "1811.09442" in known_corpus_3d._AL2019_SOURCE
+
+    bifs = {(b["mmr"], b["e1"], b["i1_deg"]): b for b in known_corpus_3d._AL2019_BIFURCATION_POINTS}
+    # 5/2 G^{5/2}_{C3} v.c.o. bifurcation, SPA.tex L438.
+    assert ("5/2", 0.0891812, 90.0) in bifs
+    assert bifs[("5/2", 0.0891812, 90.0)]["spa_tex_line"] == 438
+    # The four 3/1 bifurcation points, SPA.tex L513/L523.
+    assert ("3/1", 0.000178, 84.0) in bifs
+    assert ("3/1", 0.0002327, 101.0) in bifs
+    assert ("3/1", 0.0003454, 101.0) in bifs
+    assert ("3/1", 0.0004451, 84.0) in bifs
+
+    ds = {d["mmr"]: d for d in known_corpus_3d._AL2019_DS_MAP_CONSTANT_ELEMENTS}
+    # 2/1 (pi,0) DS-map constant elements, SPA.tex L719.
+    assert ds["2/1"]["a2_over_a1"] == 0.6312
+    assert ds["2/1"]["M1_deg"] == 180.0 and ds["2/1"]["omega1_deg"] == 270.0
+    # 3/2 (0,pi) DS-map constant elements, SPA.tex L733.
+    assert ds["3/2"]["a2_over_a1"] == 0.7595
+    assert ds["3/2"]["M2_deg"] == 180.0
+    # 3/1 F^{3/1}_I 3D-CRTBP DS-map constant elements, SPA.tex L747.
+    assert ds["3/1"]["a2_over_a1"] == 0.4806
+    assert ds["3/1"]["e2"] == 0.0 and ds["3/1"]["M1_deg"] == 0.0
