@@ -97,19 +97,35 @@ def load_parent_family(path: Path | None = None) -> list[ParentMember]:
     return members
 
 
-def _nearest_unit_complex_pair(floquet: NDArray[np.complex128]) -> tuple[complex, complex] | None:
-    """Return the conjugate complex Floquet pair nearest the unit circle, or None.
+def _nearest_unit_complex_pair(
+    floquet: NDArray[np.complex128], *, angle_min: float = 0.05
+) -> tuple[complex, complex] | None:
+    """Return the GENUINE rotation Floquet pair on the unit circle, or None.
 
-    The QP-torus exists about the central rotation pair (a complex eigenvalue ON the
-    unit circle). Returns (lam, conj(lam)) for the nearest such eigenvalue with
-    non-trivial imaginary part.
+    A 3D vertical-family member carries TWO complex unit-circle pairs: (a) the
+    trivial central/energy pair near +1 (eigen-angle ~0, an artefact of the
+    conserved-energy + autonomous-period directions), and (b) the genuine
+    Neimark-Sacker ROTATION pair at a non-trivial angle (the QP-torus center,
+    e.g. ~1.66 rad at the k=4 bracket). Selecting by "nearest |lam|=1" picks (a)
+    arbitrarily and the seeded torus then collapses to the parent periodic orbit
+    (rho->0). We instead require a non-trivial eigen-angle ``|phi| > angle_min``
+    (excludes the near-+1 and near--1 trivial directions) and, among those on the
+    unit circle, pick the one with the SMALLEST non-trivial angle (the leading
+    rotation mode -- highest k -- whose torus is thinnest / closest to the family).
     """
-    cands = [ev for ev in floquet if abs(ev.imag) > 1e-6]
+    cands = []
+    for ev in floquet:
+        if abs(ev.imag) <= 1e-6:
+            continue
+        if abs(abs(ev) - 1.0) > 0.2:
+            continue
+        phi = math.atan2(ev.imag, ev.real)
+        if abs(phi) < angle_min or abs(abs(phi) - math.pi) < angle_min:
+            continue  # trivial near-+1 / near--1 direction, not a rotation
+        cands.append(ev)
     if not cands:
         return None
-    lam = min(cands, key=lambda ev: abs(abs(ev) - 1.0))
-    if abs(abs(lam) - 1.0) > 0.2:
-        return None
+    lam = min(cands, key=lambda ev: abs(math.atan2(ev.imag, ev.real)))
     # orient to upper-half-plane so the rho seed (atan2) is positive
     if lam.imag < 0:
         lam = lam.conjugate()
@@ -298,10 +314,12 @@ def walk_energy(
     prev_cj = cj_seed
     for st in walk_steps:
         parent = by_step[st]
-        if cj_target is not None and (parent.jacobi - cj_target) * sgn < 0:
+        # Stop once the next member would lie BEYOND the target in the walk
+        # direction (descending: parent energy/step strictly below the target).
+        if cj_target is not None and (parent.jacobi - cj_target) * sgn > 0:
             reason = "reached_target"
             break
-        if target_step is not None and (st - target_step) * sgn < 0:
+        if target_step is not None and (st - target_step) * sgn > 0:
             reason = "reached_target"
             break
         torus = _converge_member_torus(
