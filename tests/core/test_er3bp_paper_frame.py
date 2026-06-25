@@ -17,9 +17,12 @@ from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.cr3bp import cr3bp_eom
 from cyclerfinder.core.er3bp_paper_frame import (
+    correct_doubly_symmetric_member,
     correct_resonant_member,
     osculating_a1,
+    osculating_e1,
     paper_frame_eom,
+    primary_kepler,
 )
 
 MU = 0.001
@@ -115,3 +118,97 @@ def test_connected_family_osculating_a1_matches_published(e2: float) -> None:
     assert float(res["residual"]) < 1e-8  # member genuinely closes
     a1 = osculating_a1(float(res["x"]), float(res["vy"]), THETA0, MU, e2)
     assert abs(a1 - PUBLISHED_A1) < 2e-3, f"e2={e2}: osc a1={a1:.6f} vs published {PUBLISHED_A1}"
+
+
+# Published Antoniadou & Libert 2018 3/1 ISOLATED stable family (I_c)
+# representative, Fig. 11(e) DS-map header (config (theta3,theta1)=(pi,0)):
+# a1/a2 = 0.480674, e1 = 0.659951 (display-rounded at the nominal e2 ~ 0.90).
+# SOURCED: arXiv:1805.00288 Fig. 11(e) header + Sec. 5.3. These are the EXPECTED
+# side of the golden test and trace to the paper, never to our own code.
+PUBLISHED_IC_A1 = 0.480674
+PUBLISHED_IC_E1 = 0.659951
+
+
+def test_isolated_ic_stable_member_reached_and_closed() -> None:
+    """GOLDEN (#457): the 3/1 ISOLATED stable family (I_c) representative is
+    reached + closed by the joint doubly-symmetric corrector.
+
+    Seed the published (pi,0) config (P1 at pericentre, theta0=pi) at e2=0.91 and
+    converge with :func:`correct_doubly_symmetric_member` (the joint residual
+    ``[y(T/2),vx(T/2),y(T),vx(T)]`` that selects the true doubly-symmetric member
+    where the plain 2-var full-period objective floors ~2e-6). Assert:
+      * the member CLOSES (independent full-period residual < 1e-8);
+      * it is genuinely DOUBLY-symmetric (perpendicular at t=0 and t=T/2);
+      * its osculating (a1, e1) match the published I_c representative
+        (a1=0.480674, e1=0.659951) -- the exact member sits at e2=0.91 vs the
+        header's nominal e2~0.90, so a small per-member offset is expected and a
+        4e-3 tolerance is a meaningful match to the sourced values;
+      * it is STABLE (monodromy eigenvalues on the unit circle), matching the
+        published stable I_c segment.
+    """
+    e2 = 0.91
+    half_period = math.pi
+    # Build the published (pi,0) P1-pericentre perpendicular-crossing seed.
+    r_prim, _rdot, thetadot, _thetaddot = primary_kepler(THETA0, e2)
+    x_star = -MU * r_prim
+    r1 = PUBLISHED_IC_A1 * (1.0 - PUBLISHED_IC_E1)
+    v1 = math.sqrt((1.0 - MU) * (2.0 / r1 - 1.0 / PUBLISHED_IC_A1))
+    x_seed = x_star + r1
+    vy_seed = v1 - thetadot * x_seed
+
+    res = correct_doubly_symmetric_member(
+        x_seed, vy_seed, theta0=THETA0, mu=MU, e2=e2, half_period=half_period
+    )
+    x, vy = float(res["x"]), float(res["vy"])
+
+    # (1) member genuinely closes over the full period.
+    assert float(res["residual"]) < 1e-8, f"independent residual {res['residual']}"
+
+    # (2) doubly-symmetric: perpendicular crossing at t=0 (IC) and at t=T/2.
+    sol = solve_ivp(
+        paper_frame_eom,
+        (0.0, half_period),
+        np.array([x, 0.0, 0.0, vy, THETA0]),
+        args=(MU, e2),
+        method="DOP853",
+        rtol=1e-13,
+        atol=1e-13,
+    )
+    assert sol.success
+    y_half, vx_half = float(sol.y[1, -1]), float(sol.y[2, -1])
+    assert abs(y_half) < 1e-6 and abs(vx_half) < 1e-6, (
+        f"t=T/2 not perpendicular: y={y_half}, vx={vx_half}"
+    )
+
+    # (3) osculating (a1, e1) match the published representative.
+    a1 = osculating_a1(x, vy, THETA0, MU, e2)
+    e1 = osculating_e1(x, vy, THETA0, MU, e2)
+    assert abs(a1 - PUBLISHED_IC_A1) < 4e-3, f"a1={a1:.6f} vs published {PUBLISHED_IC_A1}"
+    assert abs(e1 - PUBLISHED_IC_E1) < 4e-3, f"e1={e1:.6f} vs published {PUBLISHED_IC_E1}"
+
+    # (4) STABLE: full-period monodromy eigenvalues on the unit circle.
+    period = 2.0 * half_period
+
+    def _prop(s0: np.ndarray) -> np.ndarray:
+        out = solve_ivp(
+            paper_frame_eom,
+            (0.0, period),
+            s0,
+            args=(MU, e2),
+            method="DOP853",
+            rtol=1e-13,
+            atol=1e-13,
+        )
+        return np.asarray(out.y[:4, -1])
+
+    base = np.array([x, 0.0, 0.0, vy, THETA0])
+    stm = np.zeros((4, 4))
+    h = 1e-7
+    for j in range(4):
+        sp = base.copy()
+        sp[j] += h
+        sm = base.copy()
+        sm[j] -= h
+        stm[:, j] = (_prop(sp) - _prop(sm)) / (2.0 * h)
+    eig_mod_max = float(np.max(np.abs(np.linalg.eigvals(stm))))
+    assert eig_mod_max < 1.01, f"|eig|max={eig_mod_max:.5f} (expected stable, on unit circle)"

@@ -45,8 +45,10 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import least_squares
 
 __all__ = [
+    "correct_doubly_symmetric_member",
     "correct_resonant_member",
     "osculating_a1",
+    "osculating_e1",
     "paper_frame_eom",
     "primary_kepler",
 ]
@@ -219,5 +221,127 @@ def correct_resonant_member(
     if best is None:
         raise RuntimeError(
             f"correct_resonant_member: all least_squares methods failed (e2={e2}, theta0={theta0})"
+        )
+    return best
+
+
+def osculating_e1(x: float, vy: float, theta0: float, mu: float, e2: float) -> float:
+    """Osculating heliocentric eccentricity of P1 at a perpendicular crossing.
+
+    At a perpendicular x-axis crossing ``[x, 0, 0, vy, theta0]`` the heliocentric
+    position is purely radial and the velocity purely tangential, so the crossing
+    is an APSE of the osculating ellipse and ``e1 = |r1/a1 - 1|`` with
+    ``r1 = |x - x_star|`` and ``a1`` from :func:`osculating_a1`. This is the
+    quantity the paper plots as ``e1`` in its DS-maps.
+    """
+    r_prim, _rdot, _thetadot, _thetaddot = primary_kepler(theta0, e2)
+    x_star = -mu * r_prim
+    r1 = abs(x - x_star)
+    a1 = osculating_a1(x, vy, theta0, mu, e2)
+    if not math.isfinite(a1) or a1 <= 0.0:
+        return float("nan")
+    return abs(r1 / a1 - 1.0)
+
+
+def _doubly_symmetric_residual(
+    free: NDArray[np.float64],
+    theta0: float,
+    mu: float,
+    e2: float,
+    half_period: float,
+    rtol: float,
+    atol: float,
+) -> NDArray[np.float64]:
+    """4-vector residual ``[y(T/2), vx(T/2), y(T), vx(T)]`` for ``(x, vy)``.
+
+    Enforces a perpendicular x-axis crossing at BOTH the half-period ``T/2`` and
+    the full period ``T = 2*half_period`` from the symmetric IC
+    ``[x, 0, 0, vy, theta0]``. For a Scheme-II doubly-symmetric resonant orbit
+    both ``t=0`` and ``t=T/2`` are perpendicular crossings, so zeroing this
+    residual selects the TRUE doubly-symmetric member -- unlike the 2-variable
+    full-period objective, which can settle on a non-doubly-symmetric compromise
+    point (the #457 ~2e-6 floor). Returns a large constant vector on blow-up.
+    """
+    x, vy = float(free[0]), float(free[1])
+    if not (abs(x) < 50.0 and abs(vy) < 50.0):
+        return np.array([1e3, 1e3, 1e3, 1e3])
+    s0 = np.array([x, 0.0, 0.0, vy, theta0], dtype=np.float64)
+    sol = solve_ivp(
+        paper_frame_eom,
+        (0.0, 2.0 * half_period),
+        s0,
+        args=(mu, e2),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        dense_output=True,
+    )
+    if not sol.success or sol.sol is None:
+        return np.array([1e3, 1e3, 1e3, 1e3])
+    sh = sol.sol(half_period)
+    sf = sol.y[:, -1]
+    return np.array([sh[1], sh[2], sf[1], sf[2]])  # y(T/2), vx(T/2), y(T), vx(T)
+
+
+def correct_doubly_symmetric_member(
+    x0: float,
+    vy0: float,
+    *,
+    theta0: float,
+    mu: float,
+    e2: float,
+    half_period: float = math.pi,
+    rtol: float = 1e-13,
+    atol: float = 1e-13,
+    max_nfev: int = 2000,
+) -> dict[str, float | str]:
+    """Converge a Scheme-II doubly-symmetric resonant member in the paper frame.
+
+    Drives the joint residual ``[y(T/2), vx(T/2), y(T), vx(T)]`` (perpendicular
+    crossing at BOTH the half-period and the full period) to zero with
+    ``scipy.least_squares`` over the free variables ``(x, vy)``, trying
+    ``lm`` / ``trf`` / ``dogbox`` and keeping the best by INDEPENDENT closure.
+
+    This is the #457 corrector that reaches the Antoniadou & Libert 2018 3/1
+    ISOLATED stable family (``I_c``) representative -- the ordinary 2-variable
+    full-period objective (:func:`correct_resonant_member`) floors ~2e-6 on it
+    because it admits a non-doubly-symmetric compromise point; enforcing
+    perpendicularity at both crossings selects the true member.
+
+    Returns a dict with the converged ``x``, ``vy``, the winning ``method``, and
+    ``residual`` -- the INDEPENDENT full-period closure
+    ``max|state(T) - state(0)|`` recomputed from the converged IC.
+    """
+    period = 2.0 * half_period
+    best: dict[str, float | str] | None = None
+    for method in ("lm", "trf", "dogbox"):
+        try:
+            res = least_squares(
+                _doubly_symmetric_residual,
+                x0=np.array([x0, vy0], dtype=np.float64),
+                args=(theta0, mu, e2, half_period, rtol, atol),
+                method=method,
+                xtol=1e-15,
+                ftol=1e-15,
+                gtol=1e-15,
+                max_nfev=max_nfev,
+            )
+        except Exception:
+            continue
+        xc, vyc = float(res.x[0]), float(res.x[1])
+        indep = _period_residual(np.array([xc, vyc]), theta0, mu, e2, period, rtol, atol)
+        residual = float(np.max(np.abs(indep)))
+        cand: dict[str, float | str] = {
+            "x": xc,
+            "vy": vyc,
+            "residual": residual,
+            "method": method,
+        }
+        if best is None or residual < float(best["residual"]):
+            best = cand
+    if best is None:
+        raise RuntimeError(
+            f"correct_doubly_symmetric_member: all least_squares methods failed "
+            f"(e2={e2}, theta0={theta0})"
         )
     return best
