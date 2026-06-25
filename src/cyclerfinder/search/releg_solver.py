@@ -31,7 +31,7 @@ DSM leg solver (#307) and the VILM cost model are imported, not re-derived.
 from __future__ import annotations
 
 import math
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
@@ -39,8 +39,9 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.optimize import minimize
 
+from cyclerfinder.core.constants import MU_SUN_KM3_S2
 from cyclerfinder.core.kepler import KeplerError
-from cyclerfinder.core.lambert import LambertError, lambert
+from cyclerfinder.core.lambert import LambertError, LambertSolution, lambert
 from cyclerfinder.search.dsm_leg import dsm_leg
 
 Vec3 = NDArray[np.float64]
@@ -314,3 +315,46 @@ class DsmReleg:
             return _infeasible()
         vinf_out, vinf_in, dv_dsm = ev
         return RelegResult(vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=dv_dsm, feasible=True)
+
+
+# ---------------------------------------------------------------------------
+# Swap-seam adapter: expose a Releg backend at the injected-`lambert` call site
+# (discovery_campaign._close_one_phasing line 463 / v2_moontour._cycle_residual)
+# WITHOUT changing the default. The ballistic adapter is the regression lock —
+# it must reproduce the baseline lambert path bit-for-bit (design §3 / §7 risk
+# "the two swap sites drift out of sync").
+# ---------------------------------------------------------------------------
+
+
+def ballistic_lambert_adapter(releg: BallisticReleg) -> Callable[..., list[LambertSolution]]:
+    """A ``lambert``-signature callable backed by ``BallisticReleg`` (the seam).
+
+    ``_close_one_phasing`` / ``_cycle_residual`` call the injected solver as
+    ``lambert(r_a, r_b, tof_s, mu=mu, max_revs=...) -> list[LambertSolution]``
+    and select the lowest-energy branch themselves. The ballistic releg is the
+    ``dv_kms == 0`` zero-impulse limit that wraps exactly ``core.lambert.lambert``
+    with the same lowest-energy branch pick, so the adapter returns the SAME
+    ``LambertSolution`` list — proving the swap is a drop-in for the ballistic
+    backend (bit-for-bit). The ``releg`` argument is the explicit backend the
+    adapter is bound to (so a future powered adapter is a parallel constructor,
+    not a hidden default).
+    """
+    if not isinstance(releg, BallisticReleg):  # pragma: no cover - guard
+        raise TypeError(
+            "ballistic_lambert_adapter requires a BallisticReleg (the zero-ΔV "
+            "regression-locked backend); powered backends use the releg_moontour "
+            "driver, not the lambert-compatible seam"
+        )
+
+    def _adapter(
+        r1: Vec3,
+        r2: Vec3,
+        tof: float,
+        *,
+        mu: float = MU_SUN_KM3_S2,
+        prograde: bool = True,
+        max_revs: int = 0,
+    ) -> list[LambertSolution]:
+        return lambert(r1, r2, tof, mu=mu, prograde=prograde, max_revs=max_revs)
+
+    return _adapter
