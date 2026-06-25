@@ -391,10 +391,13 @@ def main(*, smoke: bool = False) -> None:
         root.label: (0, 0) for root in confirmed_roots
     }
 
-    _OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # Smoke runs write to a *_smoke.jsonl path so a smoke-test never clobbers the
+    # real campaign output (the 2260-member scan data) under the canonical path.
+    out_path = _OUT_PATH if not smoke else _OUT_PATH.with_name(f"{_OUT_PATH.stem}_smoke.jsonl")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     gen = Parallel(n_jobs=_N_JOBS, backend="loky", return_as="generator_unordered")(jobs)
     k = 0
-    with _OUT_PATH.open("w") as f:
+    with out_path.open("w") as f:
         while True:
             try:
                 res = next(gen)
@@ -478,7 +481,7 @@ def main(*, smoke: bool = False) -> None:
                     "logged, continuing with remaining units"
                 )
 
-    _print_progress(f"Wrote {_OUT_PATH.relative_to(_DATA_DIR.parent)} ({len(all_records)} records)")
+    _print_progress(f"Wrote {out_path.relative_to(_DATA_DIR.parent)} ({len(all_records)} records)")
 
     # --- Report -------------------------------------------------------------
     _print_progress("per-seed family member counts:")

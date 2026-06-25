@@ -394,7 +394,9 @@ def main() -> None:
 
     # Open the output JSONL ONCE; records stream in and flush per-unit (a kill
     # mid-run preserves all completed seeds).
-    out_path = _DATA_DIR / "er3bp_direct_436.jsonl"
+    # Smoke runs write to a *_smoke.jsonl path so a smoke-test never clobbers the
+    # real campaign output under the canonical path.
+    out_path = _DATA_DIR / ("er3bp_direct_436_smoke.jsonl" if smoke else "er3bp_direct_436.jsonl")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     sys_tally_by_pair: dict[tuple[str, str], dict[str, int]] = {}
