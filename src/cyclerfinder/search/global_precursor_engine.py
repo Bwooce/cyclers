@@ -13,13 +13,14 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.optimize import Bounds, differential_evolution
 
-from cyclerfinder.core.constants import AU_KM
+from cyclerfinder.core.constants import AU_KM, PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.genome.epoch_aware_genome import (
     DSMSpec,
     EpochLockedClosure,
     EpochLockedTrajectory,
     close_epoch_locked,
+    utc_to_tsec,
 )
 from cyclerfinder.search.tisserand_mga_window import (
     MGAChainCandidate,
@@ -38,6 +39,63 @@ def eccentric_tp_linkable_radius_au(body: str, t_sec: float, ephemeris: Ephemeri
     return float(np.linalg.norm(np.asarray(r_km, dtype=np.float64))) / AU_KM
 
 
+_LAUNCH_BODY = "E"  # #429: a precursor is an Earth-departure trajectory.
+# #430: relative tolerance on the eccentric-radius reachability window. A real
+# encounter radius is admitted if it lies within the seed transfer's apsidal
+# span widened by this fraction (absorbs the modest planetary eccentricities —
+# Earth e~0.017, Mars e~0.093 — without re-admitting a leg the circular screen
+# already rejected on geometry).
+_ECCENTRIC_RADIUS_REL_TOL = 0.05
+
+
+def eccentric_radius_rescreen(
+    candidate: MGAChainCandidate,
+    *,
+    ephemeris: Ephemeris,
+    rel_tol: float = _ECCENTRIC_RADIUS_REL_TOL,
+) -> bool:
+    """#430 eccentric-radius re-screen of a circular-screened chain candidate.
+
+    The enumerator (:func:`find_mga_chains`) admits a leg using each body's
+    *mean* (circular) heliocentric radius ``sma_au`` (via
+    :func:`cyclerfinder.search.tisserand._orbit_crosses_planet`, which tests
+    ``perihelion <= a_p <= aphelion``). Bodies with non-zero eccentricity are
+    NOT at their mean radius at the encounter epoch, so a seed that links on
+    circular radii can be infeasible on the real ones (and vice versa).
+
+    This re-screen re-evaluates the orbit-crossing condition with each body's
+    *actual* heliocentric radius at its encounter epoch (Campagnola-Russell
+    2009 Part B / Strange-Russell-Buffington 2007). For every leg it forms the
+    seed transfer ellipse's apsidal span from the two endpoints' *mean* radii
+    (``[min, max]`` of the circular ``sma_au`` — the geometry the enumerator
+    accepted) and requires each endpoint's *real* radius to lie inside that
+    span, widened by ``rel_tol``. Returns ``True`` iff every leg passes.
+
+    Reduces to a no-op on the circular backend (real radius == ``sma_au`` for
+    every body, so the span check is trivially satisfied).
+    """
+    seq = candidate.sequence
+    tofs = candidate.leg_tofs_days
+    # Real heliocentric radius (AU) at each body's encounter epoch.
+    epoch_utc = candidate.launch_epoch_utc
+    real_radii_au: list[float] = []
+    for i, body in enumerate(seq):
+        t_sec = utc_to_tsec(epoch_utc)
+        real_radii_au.append(eccentric_tp_linkable_radius_au(body, t_sec, ephemeris))
+        if i < len(tofs):
+            epoch_utc = _add_days_utc(epoch_utc, tofs[i])
+    for k in range(len(seq) - 1):
+        a_a = PLANETS[seq[k]].sma_au
+        a_b = PLANETS[seq[k + 1]].sma_au
+        peri = min(a_a, a_b) * (1.0 - rel_tol)
+        apo = max(a_a, a_b) * (1.0 + rel_tol)
+        if not (peri <= real_radii_au[k] <= apo):
+            return False
+        if not (peri <= real_radii_au[k + 1] <= apo):
+            return False
+    return True
+
+
 def eccentric_tp_seeds(
     *,
     first_body: str,
@@ -51,12 +109,20 @@ def eccentric_tp_seeds(
     epoch_step_days: float = 60.0,
     vinf_terminal_tol_kms: float = 0.8,
 ) -> list[MGAChainCandidate]:
-    """Enumerate Earth-launched MGA chains, filtered to those terminating at
+    """Enumerate **Earth-launched** MGA chains, filtered to those terminating at
     ``first_body`` with terminal V_inf within ``vinf_terminal_tol_kms`` of
-    ``seed_vinf_kms``. Returns the DE init population (MGAChainCandidate list).
-    Eccentric-body (real-radius) re-screening via
-    :func:`eccentric_tp_linkable_radius_au` is a planned follow-on consumer (it
-    is not applied here — the enumerator order is preserved).
+    ``seed_vinf_kms``, then re-screened against the bodies' eccentric (real)
+    encounter radii. Returns the DE init population (MGAChainCandidate list).
+
+    #429: the chain enumeration is constrained to start at Earth
+    (``start_body_filter=("E",)``) — a precursor is an Earth-departure
+    trajectory, so non-Earth-launch sequences are never generated. A defensive
+    ``sequence[0] == "E"`` guard mirrors the local matcher path.
+
+    #430: each surviving candidate is passed through
+    :func:`eccentric_radius_rescreen`; seeds that pass the circular enumerator
+    screen but fail the eccentric-radius reachability window are dropped before
+    they reach the optimiser.
 
     Notes
     -----
@@ -65,23 +131,28 @@ def eccentric_tp_seeds(
     geometry (it does NOT accept an ``ephemeris`` argument — the ephemeris is
     consumed later by the Phase-1 closure/validation functions), and returns a
     lazy ``Iterator[MGAChainCandidate]``. The ``ephemeris`` parameter here is
-    retained for the eccentric-radius linkability (see
-    :func:`eccentric_tp_linkable_radius_au`) and for downstream DE seeding; it
-    is not forwarded into the pure-geometry enumerator.
+    consumed by the eccentric-radius re-screen (:func:`eccentric_radius_rescreen`
+    / :func:`eccentric_tp_linkable_radius_au`); it is not forwarded into the
+    pure-geometry enumerator.
     """
     candidates = find_mga_chains(
         launch_window,
-        tuple(dict.fromkeys((first_body, *intermediate_bodies))),
+        tuple(dict.fromkeys((_LAUNCH_BODY, first_body, *intermediate_bodies))),
         max_legs=max_legs,
         vinf_grid_kms=vinf_grid_kms,
         tof_box_days_per_leg=tof_box_days_per_leg,
         epoch_step_days=epoch_step_days,
+        start_body_filter=(_LAUNCH_BODY,),
     )
     out: list[MGAChainCandidate] = []
     for c in candidates:
+        if c.sequence[0] != _LAUNCH_BODY:  # defensive (start_body_filter already enforces this)
+            continue
         if c.sequence[-1] != first_body:
             continue
         if abs(c.vinf_tuple_kms[-1] - seed_vinf_kms) > vinf_terminal_tol_kms:
+            continue
+        if not eccentric_radius_rescreen(c, ephemeris=ephemeris):
             continue
         out.append(c)
     return out

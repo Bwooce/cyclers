@@ -5,8 +5,10 @@ import pytest
 from cyclerfinder.core.constants import PLANETS
 from cyclerfinder.core.ephemeris import Ephemeris
 from cyclerfinder.data.catalog import load_catalog
+from cyclerfinder.genome.epoch_aware_genome import utc_to_tsec
 from cyclerfinder.search.global_precursor_engine import (
     decision_cost,
+    eccentric_radius_rescreen,
     eccentric_tp_linkable_radius_au,
     eccentric_tp_seeds,
     rank_band,
@@ -16,6 +18,7 @@ from cyclerfinder.search.precursor_matcher import (
     find_cycler_precursors,
     precursor_match_to_jsonl_record,
 )
+from cyclerfinder.search.tisserand_mga_window import MGAChainCandidate, _add_days_utc
 
 
 def test_eccentric_radius_reduces_to_mean_a_for_circular_backend() -> None:
@@ -47,6 +50,73 @@ def test_eccentric_tp_seeds_returns_candidates_terminating_at_target() -> None:
     for s in seeds:
         assert s.sequence[-1] == "E"
         assert abs(s.vinf_tuple_kms[-1] - 6.5) <= 0.8 + 1e-9
+
+
+def test_eccentric_tp_seeds_are_all_earth_launched() -> None:
+    """#429: every enumerated precursor sequence must start at Earth (a precursor
+    is an Earth-departure trajectory). The terminal body here is Venus, so a
+    non-Earth-start chain (e.g. V-E) is only excluded by the launch constraint,
+    not by the terminate-at-target filter."""
+    eph = Ephemeris("astropy")
+    seeds = eccentric_tp_seeds(
+        first_body="V",
+        seed_vinf_kms=5.0,
+        launch_window=("2030-01-01T00:00:00", "2032-12-31T00:00:00"),
+        ephemeris=eph,
+        intermediate_bodies=("V", "E"),
+        max_legs=3,
+        vinf_grid_kms=(4.0, 5.0, 6.0),
+        tof_box_days_per_leg=(80.0, 500.0),
+        epoch_step_days=120.0,
+        vinf_terminal_tol_kms=1.0,
+    )
+    assert len(seeds) > 0
+    for s in seeds:
+        assert s.sequence[0] == "E", f"non-Earth-launched sequence leaked: {s.sequence}"
+
+
+def test_eccentric_rescreen_drops_seed_outside_real_radius_window() -> None:
+    """#430: a candidate that passes the circular screen but whose endpoint is at
+    a real radius outside the eccentric reachability window is dropped.
+
+    We hand the re-screen an E->M leg at a real-epoch where Mars (e~0.093) sits
+    near aphelion (~1.666 AU), which is outside the seed transfer apsidal span
+    formed from the *mean* radii [E.sma, M.sma] widened by the 5% tolerance
+    (upper edge ~1.60 AU). A near-perihelion epoch (Mars ~1.38 AU) passes."""
+    eph = Ephemeris("astropy")
+
+    def _leg_candidate(launch_utc: str, tof_days: float) -> MGAChainCandidate:
+        return MGAChainCandidate(
+            sequence=("E", "M"),
+            vinf_tuple_kms=(6.5, 9.7),
+            leg_tofs_days=(tof_days,),
+            launch_epoch_utc=launch_utc,
+            tisserand_parameter=0.0,
+            chain_score=0.0,
+        )
+
+    # Find a launch epoch where Mars is near aphelion at arrival, and one near
+    # perihelion, by scanning the synodic period. Assert the apo case is dropped
+    # and the peri case is kept — proving the eccentric radius gates the seed.
+    apo_dropped = False
+    peri_kept = False
+    base_year = 2030
+    for month in range(0, 60):  # ~5 yr, > one Mars year, to bracket peri & apo
+        yr = base_year + month // 12
+        mo = month % 12 + 1
+        launch = f"{yr:04d}-{mo:02d}-01T00:00:00"
+        cand = _leg_candidate(launch, 200.0)
+        # Mars' real radius at the E->M arrival epoch (launch + tof) is what the
+        # re-screen checks at seq[-1].
+        arrival = _add_days_utc(launch, 200.0)
+        r_mars = eccentric_tp_linkable_radius_au("M", utc_to_tsec(arrival), eph)
+        passed = eccentric_radius_rescreen(cand, ephemeris=eph)
+        if r_mars > 1.62 and not passed:
+            apo_dropped = True
+        if r_mars < 1.45 and passed:
+            peri_kept = True
+    assert apo_dropped, "expected an aphelion-Mars seed to be dropped by the eccentric re-screen"
+    assert peri_kept, "expected a perihelion-Mars seed to pass the eccentric re-screen"
 
 
 def test_zero_dsm_vector_matches_plain_ballistic_closure() -> None:
