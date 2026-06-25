@@ -172,3 +172,22 @@ by continuing **branch II** (the unstable circular-bifurcation branch) in e1 to 
 stable segment — a method path (er3bp_branching.py + #437 fold-aware pseudo-arclength),
 needing NO author data. Recorded as the concrete next-method (was task #455's prize; #455
 the EMAIL approach is retired). This is the live, ours-to-build route to the isolated family.
+
+## UPDATE 2026-06-25 (e) — ISOLATED FAMILY SOLVED (#457), method-only, no author data
+The UPDATE (d) branch-II method path was EXECUTED in #457 and SUCCEEDED. The published 3/1
+isolated stable I_c representative is now REACHED + CLOSED without author data:
+- IC (paper-frame): x=0.16151871386593838, y=0, vx=0, vy=3.166889839559741, θ0=π, e2=0.91, T=2π.
+- Independent full-period residual 4.3e-12 (gate 1e-8), integrator-invariant (DOP853 1e-12/1e-13/3e-14 + Radau); doubly-symmetric (perpendicular at t=0 AND t=π); STABLE (monodromy on unit circle).
+- a1=0.480353 vs published 0.480674 (dev 3e-4); e1=0.659774 vs published 0.659951 (dev 1.8e-4) — the small offsets are because the exact member sits at e2=0.91 vs the figure header's nominal e2≈0.90.
+- KEY FIX (broke the #442/#457-interim wall): the plain 2-var full-period corrector floors at ~2e-6
+  on a non-doubly-symmetric compromise point; a JOINT doubly-symmetric corrector enforcing
+  perpendicularity at BOTH crossings (residual [y(T/2),vx(T/2),y(T),vx(T)]) selects the true member.
+- DELIVERABLES: src/cyclerfinder/core/er3bp_paper_frame.py::correct_doubly_symmetric_member +
+  osculating_e1; golden test tests/core/test_er3bp_paper_frame.py::test_isolated_ic_stable_member_reached_and_closed
+  (sourced expected values). Verified independently: 8/8 tests pass, ruff/mypy clean.
+- DISPOSITION: this is a CAPABILITY win + a REPRODUCTION of a published family — it is a µ=0.001
+  planetary resonant PO, NOT a cycler and NOT Earth-Moon, so NOT a catalogue row. The original
+  #442 "novel Earth-Moon CYCLER prize" remains unachieved, but the capability that blocked it
+  (reaching isolated elliptic resonant families) is now SOLVED. So UPDATE (d)'s "author-data-gated"
+  is CORRECTED: the isolated family was method-gated, and the method now exists. 4/1 + 5/1 isolated
+  members are the natural extension (follow-up task).
