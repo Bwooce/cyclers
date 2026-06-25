@@ -52,6 +52,7 @@ import numpy as np
 from joblib import Parallel, delayed
 
 from cyclerfinder.core.cr3bp import CR3BPSystem
+from cyclerfinder.genome.spatial_novelty_prefilter import classify_spatial_extension
 from cyclerfinder.search.binary_star_search import topology_3d
 from cyclerfinder.search.cr3bp_3d_family_tracer import Family3D, continue_general_3d_family
 from cyclerfinder.search.cr3bp_general_periodic_3d import (
@@ -139,6 +140,20 @@ def _records_for_family(
                 "floquet_tag": m.stability_tag,
             }
         )
+    # #444 novelty pre-filter: this campaign lifts KNOWN planar cyclers (the
+    # catalogued Aldrin/Braik-Ross roots + the L1 vertical-Lyapunov family) out
+    # of plane, so every out-of-plane (k_z>0) member is a PUBLISHED-class
+    # spatial-bifurcation member (Antoniadou & Libert 2019 mechanism) — route to
+    # reproduction, NOT a discovery gauntlet. Annotate each record up front so a
+    # consumer never re-spends a gauntlet chasing novelty (the C21 lesson).
+    for rec in records:
+        verdict = classify_spatial_extension(
+            k_z=int(rec["k_z"]),  # type: ignore[arg-type]
+            planar_root_is_known_periodic=True,
+        )
+        rec["novelty_published_mechanism"] = verdict.published_mechanism
+        if verdict.published_mechanism:
+            rec["novelty_class_doi"] = verdict.doi
     return records
 
 
@@ -478,6 +493,18 @@ def main(*, smoke: bool = False) -> None:
     _print_progress(
         f"closure distribution: n={summary['n']} "
         f"max={summary['max']:.3e} median={summary['median']:.3e}"
+    )
+
+    # #444 novelty pre-filter summary: every out-of-plane member here is a
+    # published-class spatial-bifurcation of a KNOWN planar cycler. Surfaced up
+    # front so this campaign's output is routed to REPRODUCTION, never re-spent
+    # on a discovery gauntlet (the C21 lesson). Genuine 3D novelty needs a
+    # PARENTLESS root (no vertical-critical orbit) -- not produced by this lift.
+    n_pub = sum(1 for r in all_records if r.get("novelty_published_mechanism"))
+    _print_progress(
+        f"novelty pre-filter: {n_pub}/{len(all_records)} members are PUBLISHED-CLASS "
+        "(out-of-plane extensions of known planar cyclers; Antoniadou & Libert 2019 "
+        "mechanism) -> route to reproduction, NOT the discovery gauntlet."
     )
     _print_progress(f"Campaign complete in {time.time() - t0:.1f}s")
 
