@@ -189,3 +189,90 @@ def test_corrector_ds_zero_reproduces_seed(smoke_torus: SmokeTorus) -> None:
     assert np.linalg.norm(z_out - z) < 1e-5
     r = qpa._augmented_residual(z_out, system, torus.n_modes, n_samples, phase_pin_idx)
     assert np.linalg.norm(r) < 1e-5
+
+
+# ---------------------------------------------------------------------------
+# Task 3: dataclasses + single forward family step.
+# ---------------------------------------------------------------------------
+
+
+def test_single_forward_step_shifts_cj(smoke_torus: SmokeTorus) -> None:
+    system, torus = smoke_torus
+    z, phase_pin_idx, n_samples = _seed_z(system, torus)
+    _, jac = qpa._gmos_residual_and_jac(z, system, torus.n_modes, n_samples, phase_pin_idx)
+    tau = qpa._arclength_tangent(jac, None)
+    assert tau is not None
+    ds = 5e-3
+    z_pred = z + ds * tau
+    z_next = qpa._correct_arclength_torus(
+        z_pred,
+        tau,
+        system,
+        n_modes=torus.n_modes,
+        n_samples=n_samples,
+        phase_pin_idx=phase_pin_idx,
+        tol=1e-7,
+    )
+    assert z_next is not None
+    member = qpa._member_from_z(
+        z_next,
+        system,
+        torus.n_modes,
+        n_samples,
+        phase_pin_idx,
+        tau=tau,
+        arclength_s=ds,
+        fold_index=None,
+    )
+    # A genuinely NEW torus: moved off the seed
+    assert np.linalg.norm(z_next - z) > 1e-4
+    # converged invariance
+    assert member.residual_norm < 1e-5
+    # still a torus (irrational frequency ratio), not phase-locked
+    assert member.is_practically_irrational
+    # C_J shifted ~ ds * tangent_Cj from the seed
+    cj_seed = float(z[-1])
+    expected_dcj = ds * float(tau[-1])
+    assert abs((member.jacobi - cj_seed) - expected_dcj) < 5e-3
+
+
+# ---------------------------------------------------------------------------
+# Task 4: both-directions driver + monotone energy.
+# ---------------------------------------------------------------------------
+
+
+def test_both_directions_brackets_seed_energy(smoke_torus: SmokeTorus) -> None:
+    system, torus = smoke_torus
+    fam = qpa.continue_qp_family_arclength(
+        torus,
+        ds=5e-3,
+        max_steps=4,
+        direction="both",
+        corrector_tol=1e-7,
+    )
+    cj_vals = [m.jacobi for m in fam.members]
+    cj_seed = jacobi_constant(np.real(torus.fourier_coeffs[0, :]), system.mu)
+    # seed energy is bracketed by the family endpoints
+    assert min(cj_vals) <= cj_seed <= max(cj_vals)
+    # at least one member each side of the seed
+    assert any(c < cj_seed - 1e-6 for c in cj_vals)
+    assert any(c > cj_seed + 1e-6 for c in cj_vals)
+    # absent a fold in this short walk, members are ordered monotone in C_J
+    assert cj_vals == sorted(cj_vals) or cj_vals == sorted(cj_vals, reverse=True)
+    # every member is a genuine (irrational) torus
+    assert all(m.is_practically_irrational for m in fam.members)
+
+
+def test_on_step_callback_fires(smoke_torus: SmokeTorus) -> None:
+    _system, torus = smoke_torus
+    seen: list[qpa.QPTorusFamilyMember] = []
+    qpa.continue_qp_family_arclength(
+        torus,
+        ds=5e-3,
+        max_steps=3,
+        direction="fwd",
+        corrector_tol=1e-7,
+        on_step=seen.append,
+    )
+    assert len(seen) >= 2
+    assert all(isinstance(m, qpa.QPTorusFamilyMember) for m in seen)

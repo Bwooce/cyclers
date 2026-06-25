@@ -14,6 +14,9 @@ OUR computation.
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -21,10 +24,13 @@ from numpy.typing import NDArray
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.cr3bp import jacobi_constant
 from cyclerfinder.genome.qp_tori import (
+    QPTorus,
     _enforce_reality,
     _gmos_residual,
     _pack_unknowns,
     _unpack_unknowns,
+    evaluate_invariant_circle,
+    is_practically_irrational,
 )
 
 
@@ -45,6 +51,22 @@ def _unpack_augmented(
 def _residual_size(n_modes: int) -> int:
     """GMOS rows (6 + 4*6*N) + phase pin (1) + energy tie (1)."""
     return 6 + 4 * 6 * n_modes + 2
+
+
+def _energy_row_scale(c0: NDArray[np.float64], mu: float) -> float:
+    """Row-scaling factor for the energy-tie constraint.
+
+    The Jacobi gradient has near-Moon ``1/r2**3`` terms that make the energy
+    row's gradient O(1e3-1e4) while every GMOS / phase row is O(1). Left
+    unscaled, that single row drives the augmented Jacobian's condition number
+    to ~1e8 (verified on the #290 smoke torus) and the Newton step explodes.
+    Dividing the energy residual + its Jacobian row by ``||grad jacobi||``
+    brings the row to O(1) and restores a well-conditioned solve. The reported
+    ``C_J`` coordinate (read straight from ``z[-1]``) is unaffected by this
+    purely numerical rescaling of the constraint equation.
+    """
+    g = _jacobi_state_grad(c0, mu)
+    return max(float(np.linalg.norm(g)), 1.0)
 
 
 def _augmented_residual(
@@ -69,8 +91,10 @@ def _augmented_residual(
         parts.append(np.real(f_res[n_total_sig - n, :]))
         parts.append(np.imag(f_res[n_total_sig - n, :]))
     parts.append(np.array([float(np.imag(coeffs[1, phase_pin_idx]))]))
-    cj_state = jacobi_constant(np.real(coeffs[0, :]), system.mu)
-    parts.append(np.array([cj_state - cj]))
+    c0 = np.real(coeffs[0, :]).astype(np.float64)
+    cj_state = jacobi_constant(c0, system.mu)
+    scale = _energy_row_scale(c0, system.mu)
+    parts.append(np.array([(cj_state - cj) / scale]))
     return np.concatenate(parts)
 
 
@@ -120,12 +144,16 @@ def _gmos_residual_and_jac(
         jac[:, j] = (rj - r0) / h
     if analytic:
         # Energy row (row -1): d/d(c_0 real components) = grad jacobi; d/dC_J = -1.
+        # Row-scaled by ||grad jacobi|| (see _energy_row_scale) so the residual
+        # and Jacobian energy row stay consistent and the augmented solve is
+        # well-conditioned.
         coeffs, _, _, _ = _unpack_augmented(z, n_modes)
         c0 = np.real(coeffs[0, :]).astype(np.float64)
         g = _jacobi_state_grad(c0, system.mu)
+        scale = _energy_row_scale(c0, system.mu)
         jac[-1, :] = 0.0
-        jac[-1, 0:6] = g
-        jac[-1, -1] = -1.0
+        jac[-1, 0:6] = g / scale
+        jac[-1, -1] = -1.0 / scale
         # Phase row (row -2): Im(c_1[phase_pin_idx]) -> 1.0 on that imag unknown.
         # c_1 imag block starts at offset 6 + 0*12 + 6 = 12 (n=1 mode).
         jac[-2, :] = 0.0
@@ -188,23 +216,424 @@ def _correct_arclength_torus(
     mode_cap: float = 0.1,
     rho_cap: float = 0.05,
     cj_cap: float = 1e-2,
+    residual_floor: float = 1e-5,
 ) -> NDArray[np.float64] | None:
-    """Newton onto {R(z)=0, tau.(z - z_pred)=0}. Returns converged z or None."""
+    """Newton onto {R(z)=0, tau.(z - z_pred)=0}. Returns converged z or None.
+
+    The GMOS invariance residual bottoms out at the FD-Jacobian / DOP853 noise
+    floor (~4e-7 on the #290 smoke torus, the documented Phase-1 limit), so the
+    convergence gate is ``max(tol, residual_floor)`` -- mirroring the legacy
+    amplitude stub's ``max(tol, 1e-5)`` -- rather than the (unreachable) raw
+    ``tol``. A tighter ``tol`` than the floor simply pins the gate at the floor.
+    """
+    gate = max(tol, residual_floor)
+
+    def full_residual(zz: NDArray[np.float64]) -> NDArray[np.float64]:
+        rr = _augmented_residual(zz, system, n_modes, n_samples, phase_pin_idx)
+        ar = float(np.dot(tau, zz - z_pred))
+        return np.concatenate([rr, np.array([ar])])
+
     z = z_pred.copy()
+    f = full_residual(z)
+    lam = 1e-3
     for _ in range(max_iter):
-        r0, grad = _gmos_residual_and_jac(z, system, n_modes, n_samples, phase_pin_idx)
-        arc = float(np.dot(tau, z - z_pred))
-        if float(np.linalg.norm(r0)) < tol and abs(arc) < 1e-10:
+        if float(np.linalg.norm(f[:-1])) < gate and abs(f[-1]) < 1e-8:
             return z
+        _, grad = _gmos_residual_and_jac(z, system, n_modes, n_samples, phase_pin_idx)
         jmat = np.vstack([grad, tau.reshape(1, -1)])
-        rhs = -np.concatenate([r0, np.array([arc])])
-        try:
-            dz = np.linalg.solve(jmat, rhs)
-        except np.linalg.LinAlgError:
-            dz, *_ = np.linalg.lstsq(jmat, rhs, rcond=None)
-        dz = _apply_step_caps(np.asarray(dz, dtype=np.float64), n_modes, mode_cap, rho_cap, cj_cap)
-        z = z + dz
-        coeffs, rho, t_strob, cj = _unpack_augmented(z, n_modes)
-        coeffs = _enforce_reality(coeffs)
-        z = _pack_augmented(coeffs, rho, t_strob, cj)
+        # Levenberg-Marquardt damped Gauss-Newton: the augmented GMOS Jacobian
+        # is intrinsically ill-conditioned (cond ~5e8 on the #290 smoke torus --
+        # a soft mode direction), so a plain Newton solve amplifies noise and
+        # diverges. LM damping (matching the trust-region behaviour of the
+        # Phase-1 scipy.least_squares corrector) keeps the step stable; lambda
+        # adapts down on accepted steps and up on rejected ones.
+        jtj = jmat.T @ jmat
+        jtf = jmat.T @ f
+        diag = np.diag(jtj).copy()
+        diag[diag <= 0] = 1.0
+        accepted = False
+        for _inner in range(12):
+            try:
+                dz = np.linalg.solve(jtj + lam * np.diag(diag), -jtf)
+            except np.linalg.LinAlgError:
+                dz, *_ = np.linalg.lstsq(jtj + lam * np.diag(diag), -jtf, rcond=None)
+            dz = _apply_step_caps(
+                np.asarray(dz, dtype=np.float64), n_modes, mode_cap, rho_cap, cj_cap
+            )
+            z_try = z + dz
+            coeffs, rho, t_strob, cj = _unpack_augmented(z_try, n_modes)
+            coeffs = _enforce_reality(coeffs)
+            z_try = _pack_augmented(coeffs, rho, t_strob, cj)
+            f_try = full_residual(z_try)
+            if float(np.linalg.norm(f_try)) < float(np.linalg.norm(f)):
+                z, f = z_try, f_try
+                lam = max(lam * 0.5, 1e-12)
+                accepted = True
+                break
+            lam = min(lam * 4.0, 1e8)
+        if not accepted:
+            return None
     return None
+
+
+# ---------------------------------------------------------------------------
+# Task 3: family-member records + single forward arclength step.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class ResonanceFlag:
+    p: int
+    q: int
+    distance: float
+
+
+@dataclass(frozen=True)
+class ResonanceCrossing:
+    member_index: int
+    p: int
+    q: int
+    freq_ratio: float
+
+
+@dataclass(frozen=True)
+class QPTorusFold:
+    member_index: int
+    param_at_fold: float
+    tangent_param_component: float
+
+
+@dataclass(frozen=True)
+class QPTorusFamilyMember:
+    torus: QPTorus
+    jacobi: float
+    arclength_s: float
+    tangent: NDArray[np.float64]
+    rho: float
+    freq_ratio: float
+    is_practically_irrational: bool
+    near_resonance: ResonanceFlag | None
+    fold_index: int | None
+    residual_norm: float
+    extras: dict[str, float] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class QPFamily:
+    members: list[QPTorusFamilyMember]
+    folds: list[QPTorusFold]
+    resonance_crossings: list[ResonanceCrossing]
+    terminated_reason: str
+    seed_torus_id: str
+
+
+def _nearest_rational(ratio: float, max_denominator: int) -> tuple[int, int, float]:
+    """Closest p/q (|q| <= max_denominator) to ratio; returns (p, q, distance)."""
+    from fractions import Fraction
+
+    fr = Fraction(ratio).limit_denominator(max_denominator)
+    return fr.numerator, fr.denominator, abs(ratio - float(fr))
+
+
+def _independent_residual(
+    coeffs: NDArray[np.complex128],
+    rho: float,
+    t_strob: float,
+    system: cr3bp.CR3BPSystem,
+    *,
+    n_off_grid: int = 16,
+) -> float:
+    rng = np.random.default_rng(seed=0xC0FFEE)
+    grid_thetas = 2 * math.pi * np.arange(2 * coeffs.shape[0]) / (2 * coeffs.shape[0])
+    max_err = 0.0
+    for _ in range(n_off_grid):
+        theta = rng.uniform(0.0, 2 * math.pi)
+        while np.any(np.abs(theta - grid_thetas) < 1e-6):
+            theta = rng.uniform(0.0, 2 * math.pi)
+        u0 = evaluate_invariant_circle(coeffs, theta)
+        try:
+            arc = cr3bp.propagate(system, u0, t_strob, with_stm=False)
+        except RuntimeError:
+            return float("inf")
+        u_target = evaluate_invariant_circle(coeffs, theta + rho)
+        max_err = max(max_err, float(np.linalg.norm(arc.state_f - u_target)))
+    return max_err
+
+
+def _member_from_z(
+    z: NDArray[np.float64],
+    system: cr3bp.CR3BPSystem,
+    n_modes: int,
+    n_samples: int,
+    phase_pin_idx: int,
+    *,
+    tau: NDArray[np.float64],
+    arclength_s: float,
+    fold_index: int | None,
+    resonance_max_denominator: int = 12,
+    resonance_tol: float = 1e-4,
+) -> QPTorusFamilyMember:
+    coeffs, rho, t_strob, cj = _unpack_augmented(z, n_modes)
+    coeffs = _enforce_reality(coeffs)
+    omega_long = 2 * math.pi / t_strob
+    omega_trans = rho / t_strob
+    freq_ratio = omega_trans / omega_long if omega_long != 0.0 else float("nan")
+    r = _augmented_residual(z, system, n_modes, n_samples, phase_pin_idx)
+    residual_norm = float(np.linalg.norm(r))
+    indep = _independent_residual(coeffs, rho, t_strob, system)
+    irrational = is_practically_irrational(
+        freq_ratio, max_denominator=resonance_max_denominator, tol=resonance_tol
+    )
+    p, q, dist = _nearest_rational(freq_ratio, resonance_max_denominator)
+    near = ResonanceFlag(p, q, dist) if dist < resonance_tol else None
+    torus = QPTorus(
+        system=system,
+        omega_long=omega_long,
+        omega_trans=omega_trans,
+        rho=rho,
+        t_strob=t_strob,
+        fourier_coeffs=coeffs,
+        n_modes=n_modes,
+        n_samples=n_samples,
+        invariance_residual=residual_norm,
+        independent_closure_residual=indep,
+        converged=(residual_norm < 1e-5 and indep < 1e-4),
+        n_iter=0,
+        notes="333_arclength_member",
+    )
+    return QPTorusFamilyMember(
+        torus=torus,
+        jacobi=float(cj),
+        arclength_s=float(arclength_s),
+        tangent=tau.copy(),
+        rho=float(rho),
+        freq_ratio=float(freq_ratio),
+        is_practically_irrational=bool(irrational),
+        near_resonance=near,
+        fold_index=fold_index,
+        residual_norm=residual_norm,
+        extras={"independent_residual": indep},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Task 4: both-directions arclength driver.
+# ---------------------------------------------------------------------------
+
+
+def _seed_augmented_z(
+    seed_torus: QPTorus, system: cr3bp.CR3BPSystem
+) -> tuple[NDArray[np.float64], int]:
+    cj = jacobi_constant(np.real(seed_torus.fourier_coeffs[0, :]), system.mu)
+    phase_pin_idx = int(np.argmax(np.abs(np.real(seed_torus.fourier_coeffs[1, :]))))
+    z = _pack_augmented(seed_torus.fourier_coeffs, seed_torus.rho, seed_torus.t_strob, cj)
+    return z, phase_pin_idx
+
+
+def _tail_energy_ratio(coeffs: NDArray[np.complex128], n_modes: int) -> float:
+    c1 = float(np.linalg.norm(coeffs[1, :]))
+    c_n = float(np.linalg.norm(coeffs[n_modes, :]))
+    return c_n / c1 if c1 > 0 else float("inf")
+
+
+def _walk_direction(
+    z0: NDArray[np.float64],
+    tau0: NDArray[np.float64],
+    sign: float,
+    system: cr3bp.CR3BPSystem,
+    n_modes: int,
+    n_samples: int,
+    phase_pin_idx: int,
+    *,
+    ds: float,
+    max_steps: int,
+    corrector_tol: float,
+    fold_detection: bool,
+    resonance_max_denominator: int,
+    resonance_tol: float,
+    mode_truncation_guard: float,
+    on_step: Callable[[QPTorusFamilyMember], None] | None,
+    folds: list[QPTorusFold],
+    crossings: list[ResonanceCrossing],
+    member_offset: int,
+) -> tuple[list[QPTorusFamilyMember], str]:
+    members: list[QPTorusFamilyMember] = []
+    z_cur = z0.copy()
+    tau = sign * tau0
+    s_acc = 0.0
+    reason = "max_steps"
+    for _step in range(max_steps):
+        z_pred = z_cur + ds * tau
+        z_next = _correct_arclength_torus(
+            z_pred,
+            tau,
+            system,
+            n_modes=n_modes,
+            n_samples=n_samples,
+            phase_pin_idx=phase_pin_idx,
+            tol=corrector_tol,
+        )
+        if z_next is None:
+            z_next = _correct_arclength_torus(
+                z_cur + 0.5 * ds * tau,
+                tau,
+                system,
+                n_modes=n_modes,
+                n_samples=n_samples,
+                phase_pin_idx=phase_pin_idx,
+                tol=corrector_tol,
+            )
+            if z_next is None:
+                reason = "corrector_fail"
+                break
+        _, jac_next = _gmos_residual_and_jac(z_next, system, n_modes, n_samples, phase_pin_idx)
+        tau_next = _arclength_tangent(jac_next, tau)
+        if tau_next is None:
+            reason = "corrector_fail"
+            break
+        fold_index = None
+        if fold_detection and tau[-1] * tau_next[-1] < 0.0:
+            fold_index = member_offset + len(members)
+            folds.append(QPTorusFold(fold_index, float(z_next[-1]), float(tau_next[-1])))
+        s_acc += ds
+        member = _member_from_z(
+            z_next,
+            system,
+            n_modes,
+            n_samples,
+            phase_pin_idx,
+            tau=tau_next,
+            arclength_s=s_acc,
+            fold_index=fold_index,
+            resonance_max_denominator=resonance_max_denominator,
+            resonance_tol=resonance_tol,
+        )
+        coeffs, _, _, _ = _unpack_augmented(z_next, n_modes)
+        if _tail_energy_ratio(coeffs, n_modes) > mode_truncation_guard:
+            members.append(member)
+            if on_step is not None:
+                on_step(member)
+            reason = "mode_truncation_breach"
+            break
+        if member.near_resonance is not None and not member.is_practically_irrational:
+            crossings.append(
+                ResonanceCrossing(
+                    member_offset + len(members),
+                    member.near_resonance.p,
+                    member.near_resonance.q,
+                    member.freq_ratio,
+                )
+            )
+            reason = "resonance_lock"
+            members.append(member)
+            if on_step is not None:
+                on_step(member)
+            break
+        members.append(member)
+        if on_step is not None:
+            on_step(member)
+        z_cur, tau = z_next, tau_next
+    return members, reason
+
+
+def continue_qp_family_arclength(
+    seed_torus: QPTorus,
+    *,
+    param: Literal["jacobi", "rho"] = "jacobi",
+    ds: float = 5e-3,
+    max_steps: int = 200,
+    direction: Literal["both", "fwd", "rev"] = "both",
+    corrector_tol: float = 1e-8,
+    phase_pin_idx: int | None = None,
+    fold_detection: bool = True,
+    resonance_max_denominator: int = 12,
+    resonance_tol: float = 1e-4,
+    mode_truncation_guard: float = 1e-4,
+    on_step: Callable[[QPTorusFamilyMember], None] | None = None,
+) -> QPFamily:
+    """Pseudo-arclength continuation of a converged QP 2-torus into a family.
+
+    Predictor z_pred = z_cur + ds*tau (SVD null tangent); corrector
+    _correct_arclength_torus. Walks BOTH directions by default. param="rho"
+    monitors/drives the rotation number instead of energy (the resonance
+    monitor fires off freq_ratio either way); "jacobi" (default) crosses Arnold
+    tongues transversally. Report-only -- NO catalogue writeback.
+
+    ``resonance_tol`` defaults to 1e-4 (not 1e-3): a thin Neimark-Sacker torus
+    born off a k:1 bracket sits at ``freq_ratio = 1/k + O(amplitude^2)``. For
+    the #290 smoke seed (k=4, amp=5e-4) the drift from 1/4 is ~3e-4, so a 1e-3
+    band would falsely classify the genuine seed AND every family member as
+    phase-locked. 1e-4 distinguishes that real torus drift from a true rational
+    lock (which sits at ~1e-15 from p/q), matching the Phase-1 smoke test's
+    "drift > 1e-6 => genuine torus, not the bifurcation periodic orbit" gate.
+    """
+    if param not in ("jacobi", "rho"):
+        raise ValueError(f"param must be 'jacobi' or 'rho', got {param!r}")
+    system = seed_torus.system
+    n_modes = seed_torus.n_modes
+    n_samples = seed_torus.n_samples
+    z0, auto_pin = _seed_augmented_z(seed_torus, system)
+    pin = auto_pin if phase_pin_idx is None else phase_pin_idx
+    _, jac0 = _gmos_residual_and_jac(z0, system, n_modes, n_samples, pin)
+    tau0 = _arclength_tangent(jac0, None)
+    if tau0 is None:
+        return QPFamily([], [], [], "corrector_fail", seed_torus.notes)
+    folds: list[QPTorusFold] = []
+    crossings: list[ResonanceCrossing] = []
+    seed_member = _member_from_z(
+        z0,
+        system,
+        n_modes,
+        n_samples,
+        pin,
+        tau=tau0,
+        arclength_s=0.0,
+        fold_index=None,
+        resonance_max_denominator=resonance_max_denominator,
+        resonance_tol=resonance_tol,
+    )
+    rev: list[QPTorusFamilyMember] = []
+    fwd: list[QPTorusFamilyMember] = []
+    reason = "max_steps"
+    kw: dict[str, object] = dict(
+        ds=ds,
+        max_steps=max_steps,
+        corrector_tol=corrector_tol,
+        fold_detection=fold_detection,
+        resonance_max_denominator=resonance_max_denominator,
+        resonance_tol=resonance_tol,
+        mode_truncation_guard=mode_truncation_guard,
+        on_step=on_step,
+    )
+    if direction in ("both", "rev"):
+        rev, r1 = _walk_direction(
+            z0,
+            tau0,
+            -1.0,
+            system,
+            n_modes,
+            n_samples,
+            pin,
+            folds=folds,
+            crossings=crossings,
+            member_offset=0,
+            **kw,  # type: ignore[arg-type]
+        )
+        reason = r1
+    if direction in ("both", "fwd"):
+        fwd, r2 = _walk_direction(
+            z0,
+            tau0,
+            +1.0,
+            system,
+            n_modes,
+            n_samples,
+            pin,
+            folds=folds,
+            crossings=crossings,
+            member_offset=len(rev) + 1,
+            **kw,  # type: ignore[arg-type]
+        )
+        reason = r2
+    members = [*reversed(rev), seed_member, *fwd]
+    return QPFamily(members, folds, crossings, reason, seed_torus.notes)
