@@ -15,6 +15,22 @@ lane, re-opens the dead region) and defers the DA-acceleration backend to a fina
 gated task. This front-loads the capability win and the published validation
 target, per the design draft §0 / §10 recommendation.
 
+> **USER DECISION 2026-06-25 (#450 backend): pure-Python truncated Taylor-map
+> fallback (design-draft §8.1 option b — NO MOSEK, no DACEyPy).** The chosen
+> *deliverable* backend is `DASectionMap` implemented as a pure-Python truncated
+> Taylor-map (single-rev section map expanded to a chosen order about a section
+> reference, composed to `Pⁿ` by truncated polynomial composition) with a
+> non-commercial fixed-point root-finder (e.g. `scipy.optimize` / polynomial
+> homotopy — never MOSEK/cvxpy-commercial). Build order is UNCHANGED and
+> de-risks this: build the cheap `SamplingSectionMap` FIRST (Tasks 3–6) as the
+> *validation oracle* + Png' recovery proof, THEN build the pure-Python
+> Taylor-map `DASectionMap` to the SAME `SectionMap` interface (the former Task 7
+> "DA acceleration, deferred" is now PROMOTED to an in-scope deliverable) and
+> validate it against BOTH the sourced Png' golden AND the sampling oracle
+> (assert the two backends agree on the recovered fixed points to a tolerance).
+> Task 0's decision record should reflect this choice rather than "ship sampling,
+> defer DA". Do NOT vendor DACEyPy or require MOSEK at any point.
+
 ---
 
 ## Task 0 — DA backend decision record (acquisition gate, no code)
