@@ -49,6 +49,34 @@ SF-low-thrust second backend (Task 7) are explicit FOLLOW-ONs. The "blocked by
 #450" tag on #449 is incorrect (design §5: #450 is a CR3BP-PO enumerator, no
 shared data path) and should be dropped.
 
+**Multi-rev leveraging releg (#465) — CAPABILITY SHIPPED, brings the moon-tour
+IN-BAND.** The chained follow-on to #449/#464: instead of shedding a leg's whole
+V∞ defect in ONE impulse (the single-VILM *maximum*, the 13.18/12.03 km/s
+out-of-band close), `MultiRevLeveragingReleg` (`search/releg_solver.py`) CHAINS N
+resonant-hop legs (`search/leveraging_chain.py::walk_vinf_down`, each one a #179
+apse VILM) to walk the arrival V∞ DOWN to the common flyby target step by step —
+the multi-VILM *minimum* (Eq.13). Behind the EXISTING `Releg` protocol, swapped
+into `close_powered_cycle` with only an `arrival_moon` hint (backwards-compatible
+protocol add; ballistic/DSM/SF ignore it). RESULT: the Galilean
+Io-Europa-Ganymede-Io cycle CLOSES IN-BAND at ≈0.71 km/s/cycle (vs 13.18 km/s
+single-DSM, vs the 3.5 km/s ceiling), and a Saturnian Titan-Rhea-Dione-Titan cycle
+at ≈0.65 km/s/cycle — the first in-band powered moon-tour closes of the round.
+Uranus/Neptune stay a STRONGER powered-empty (disjoint contours; the chain walks
+V∞ within a contour, can't jump disjoint ones — prefilter skips before any solve;
+`multi-rev-leveraging` ⊐ `one-dsm-per-leg` re-stamp). GOLDEN: the Europa endgame
+walk realises ≈137 m/s inside the sourced `[128 Eq.13 floor, 154 published 3-VILM]`
+bracket; the decomposition `lev-only + escape + capture == published Table-1` holds
+to print precision. HONEST OPEN RISK characterised: finite-chain reachability bites
+at high arrival V∞ (≳ ~2·V_M at the flyby moon — the resonant orbits stop crossing
+the moon), so a too-high-V∞ leg is honestly infeasible (never a fabricated bridge);
+the Galilean legs are below the ceiling and a phasing-tuned Saturnian skeleton is
+too. NO catalogue row self-admitted — the in-band Galilean tour is FLAGGED for
+human gauntlet review (strong prior: V0-KNOWN, a reproduction of the published
+Campagnola/Strange Galilean endgame tours — lit-check mandatory). Verdict
+`docs/superpowers/plans/2026-06-26-465-multirev-leveraging-verdict.md`. The at-scale
+discovery campaign (sweep ToF/phasing, re-stamp the registry) is the explicit
+FOLLOW-ON.
+
 **Cislunar BCT substrate (#378) — CAPABILITY SHIPPED, clean negative on the
 quasi-cycler.** Belbruno weak-stability-boundary / ballistic-capture-transfer
 machinery integrated into the BCR4BP discovery stack: `core/wsb.py` (E_2, the W
