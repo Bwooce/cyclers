@@ -65,6 +65,46 @@ A verdict note committed to `docs/notes/YYYY-MM-DD-digest-<slug>.md`.
 - Every numeric value / claim carries a section/page citation
   (sourced-only discipline).
 
+### 2b. arXiv-source data-recovery (before declaring "graphical-only")
+**Adopted 2026-06-25 (#458; precedent #442).** A paper's rendered PDF
+hides machine-readable data the arXiv **e-print source** carries: numeric
+values printed full-precision in prose, ancillary `.dat`/`.csv`/`.txt`
+data files, `\addplot table` / `\pgfplotstableread` figure data,
+TikZ coordinate dumps, full-precision `\def`/`\newcommand` macros, and
+commented-out `%` numeric blocks. **Before** declaring any paper value
+"graphical-only" / "no IC table" / "not tabulated", or filing a
+digitization gap, **PULL THE ARXIV E-PRINT SOURCE** and check it:
+
+```
+mkdir -p /tmp/x/<id> && cd /tmp/x/<id>
+curl -sL -A "Mozilla/5.0 (research)" "https://arxiv.org/e-print/<id>" -o e.tar.gz
+tar xzf e.tar.gz   # may instead be a single .tex.gz, or a bare PDF (no source)
+find . -type f \( -name "*.dat" -o -name "*.csv" -o -name "*.txt" -o -name "*.tsv" \)
+grep -rnE "begin\{tabular\}|addplot table|pgfplotstableread" *.tex
+grep -rnoE "[0-9]+\.[0-9]{4,}" *.tex   # full-precision prose values + macros
+```
+
+- **Caveat (no source exists):** `arxiv.org/e-print` sometimes returns a
+  bare PDF (author uploaded a PDF, not TeX) — then there is no source to
+  mine and the graphical gap stands (e.g. Vasile-Campagnola 2009
+  arXiv:1105.1823, #458). Conference/journal-only papers (AAS, IAC,
+  MDPI) have **no arXiv ID at all** → no source path; skip.
+- **What this recovers (real precedent, #458):** Antoniadou-Libert 2019
+  (arXiv:1811.09442) renders all families graphically with "no IC table",
+  yet the `SPA.tex` prose carries the v.c.o./bifurcation anchor points to
+  full precision (`(e_1,i_1)=(0.0891812,90°)`, `0.000178`, `0.0002327`,
+  …) and the per-DS-map constant orbital elements (`a_2/a_1=0.6312` /
+  `0.7595` / `0.4806`, ω/Ω/M angles) — anchor data the figures hide.
+- **Fidelity win:** a source-printed value is **sourced**, not
+  figure-derived — it satisfies §1's digitize rung directly (no lossy
+  plot-read), so the recovered value may go straight into a sourced
+  numeric field. This is strictly better than digitizing the rendered
+  figure. Still confirm topology before adopting.
+- **Negatives still harden:** if the source carries only ΔV/TOF/proxy
+  tables and no state vectors (Braik-Ross 2026 arXiv:2605.31543;
+  Hiraiwa 2026 arXiv:2602.17444 — lobe radii stay histogram-only), the
+  graphical-only verdict is now rigorously confirmed, not assumed.
+
 ### 3. Registered in the master index
 One line in `docs/notes/CORPUS_INDEX.md` per `papers/` file:
 `<filename> → <digest-note or mined-by pointer> | <one-line summary> | <status>`
