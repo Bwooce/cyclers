@@ -25,14 +25,20 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '4.9' (v4.9 adds the resonant_po
-    orbit_class enum value for stable resonant/libration POs with no transport
-    utility, task #453; v4.8 added the Axis-B dv_band enum + its mandatory
-    dv_band_source companion for the real-ephemeris maintenance-ΔV band
+    """The schema carries version == '5.0' (v5.0 adds the additive optional
+    nullable nested bcr4bp_provenance block {mu_sun, sun_commensurate_n,
+    sun_phase_drift} for a future Andreu/Rosales-Jorba known-reproduction row
+    admitted via the BCR4BP V0-V5 gauntlet, task #305 — absent on every existing
+    row so no census count changes. Bumped 4.9 -> 5.0 (not 4.10) because the
+    version ratchets compare float(version) and float('4.10')==4.1 < 4.9 would
+    regress the >= 4.x gates; the change itself is purely additive. v4.9 added
+    the resonant_po orbit_class enum value for stable resonant/libration POs with
+    no transport utility, task #453; v4.8 added the Axis-B dv_band enum + its
+    mandatory dv_band_source companion for the real-ephemeris maintenance-ΔV band
     taxonomy, task #417; v4.7 added the four-class orbit_class taxonomy for the
     catalogue-scope expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "4.9"
+    assert schema["version"] == "5.0"
 
 
 def test_catalogue_matches_jsonschema() -> None:
