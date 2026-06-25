@@ -1,0 +1,74 @@
+# Png' hybrid DRO/Lyapunov-bridge family — sourced golden (#450)
+#
+# Source: Zhou, Anoè, Armellin, Qiao, Li, "Identifying Fixed Points in the
+# Three-Body Problem Using a High-Order Transfer Map," arXiv:2509.12671 (v1,
+# 16 Sep 2025). Table 3 (first planar case, C_J = 3.00022) + Table 5 (second
+# planar case, C_J = 3.020052). Transcribed verbatim in
+# docs/notes/2026-06-13-high-order-transfer-map-2509.12671-mining.md.
+#
+# EXPECTED side traces ONLY to the paper — never to a value our own
+# enumerator/corrector computed (feedback_golden_tests_sourced_only).
+#
+# Earth-Moon CRTBP, paper mu = 0.012150584269940354 (Table 1). Planar state
+# [x0, 0, 0, xdot0, ydot0, 0] on the y=0 Poincare section. "n" is the revolution
+# (g'-bifurcation) count. Png' members are NON-symmetric (xdot0 != 0) and
+# multi-revolution g'-bifurcations — structurally out of reach for single-family
+# continuation from symmetric perpendicular-crossing seeds. Png' is a CR3BP
+# PERIODIC ORBIT, not a cycler: a validation/cross-check target only, never a
+# catalogue row.
+
+source: "arXiv:2509.12671"
+system: "Earth-Moon"
+paper_mu: 0.012150584269940354
+jacobi_convention: "C = (x^2+y^2) + 2(1-mu)/r1 + 2mu/r2 - (vx^2+vy^2+vz^2)"
+state_convention: "planar [x0, 0, 0, xdot0, ydot0, 0] on the y=0 section"
+
+members:
+  - label: "P5g'"
+    table: 3
+    n: 5
+    x0: 0.807357887647950
+    xdot0: -0.0956081545978604
+    ydot0: 0.433518861583397
+    period: 11.1751086919436
+    jacobi: 3.00022
+  - label: "P7g'-I"
+    table: 3
+    n: 7
+    x0: 0.916929181700578
+    xdot0: -0.175717632213615
+    ydot0: 0.528042521610021
+    period: 11.6960585356669
+    jacobi: 3.00022
+  - label: "P7g'-II"
+    table: 3
+    n: 7
+    x0: 0.843301779064331
+    xdot0: 0.0264518382948230
+    ydot0: 0.433467279267690
+    period: 11.6716427018773
+    jacobi: 3.00022
+  - label: "P7g'"
+    table: 3
+    n: 7
+    x0: 0.800533327625822
+    xdot0: -0.0783668113509505
+    ydot0: 0.441933007711387
+    period: 15.0692523706070
+    jacobi: 3.00022
+  - label: "P9g'"
+    table: 3
+    n: 9
+    x0: 0.807337935300132
+    xdot0: -0.0956506138795539
+    ydot0: 0.433522872600990
+    period: 20.9914771396290
+    jacobi: 3.00022
+  - label: "P3g'"
+    table: 5
+    n: 3
+    x0: 0.852098052983502
+    xdot0: -0.187721536949396
+    ydot0: 0.368541113320107
+    period: 9.25206400352203
+    jacobi: 3.020052
