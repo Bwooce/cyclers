@@ -50,3 +50,22 @@ the unblock path is concrete.**
   remains SPECULATIVE (gap analysis: thin prior + semantic mismatch) with its own
   kill-criterion. Path 1 is justified by its standalone capability value, not the
   EM prize alone.
+
+## UPDATE 2026-06-25 — Path 1 EOM VALIDATED (frame incompatibility UNBLOCKED)
+Built the ER3BP EOM in Antoniadou's Eq.7 frame (`scripts/_scratch_442_paper_frame.py`,
+`paper_frame_eom(t, state5, mu, e2)`) and ran the validation gate:
+- **(a) e2=0 → CR3BP reduction: PASS, 8.16e-12** (paper-frame EOM reproduces our
+  `cr3bp_eom` to machine precision at e2=0).
+- **(b1) e2=0 Jacobi conservation: PASS, 3.36e-12.**
+- **(b2) known-orbit closure (L4 equilibrium + a converged CR3BP DRO): PASS, 1.03e-14.**
+- **OVERALL GATE: PASS** (runs in <1 s — the prior agent hangs were entirely in
+  the high-e2 step-3 isolated-family hunt, NOT the EOM).
+
+So the frame-incompatibility blocker is RESOLVED: we now have a validated ER3BP
+corrector in the paper's OWN frame, where the published `(e1,e2)` configs are the
+natural seed coordinates. Remaining: converge the actual 3/1 (π,0) isolated member
+(`build_paper_ic` + `correct_paper_member`, period_f T=2π, gate on independent
+residual < 1e-8). This is compute-expensive (e2≈0.90 is the near-collision chaotic
+corner) and follows the #446 escalation ladder (apse/sign/θ0/e2-scan variants).
+Next: promote the validated EOM to a proper module + test once a member converges
+(or the convergence is honestly characterised).
