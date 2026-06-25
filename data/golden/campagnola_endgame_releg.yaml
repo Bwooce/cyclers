@@ -1,0 +1,124 @@
+# Campagnola-Russell Endgame Part-1 powered-releg golden (#449)
+#
+# Source: S. Campagnola and R. P. Russell, "The Endgame Problem Part 1:
+# V-infinity-Leveraging Technique and the Leveraging Graph," Journal of Guidance,
+# Control, and Dynamics, Vol. 33, No. 2, 2010, pp. 463-475, DOI 10.2514/1.44258
+# (preprint AAS 09-224). Transcribed verbatim in
+# docs/notes/2026-06-05-endgame-tisserand-mining.md (sections A2 Table 1, A3
+# Table 2, A5/A6 worked Europa-endgame scalars).
+#
+# EXPECTED side traces ONLY to the paper's printed tables / worked-transfer
+# scalars — never to a value our own releg solver / vilm.py computed
+# (feedback_golden_tests_sourced_only). The releg genome's delivered ΔV for a
+# powered moon-to-moon V-infinity change must be bounded below by these published
+# theoretical-minimum (ΔV_min) values: a single in-leg DSM is the over-cost
+# realisation of the same inter-moon V-infinity transfer, so it cannot beat the
+# multi-VILM theoretical minimum.
+#
+# Units: ΔV in km/s (Europa-endgame scalars in m/s, as the paper prints them).
+# "ΔV_min assumes infinite transfer time (escape + begingame + endgame + capture);
+# ΔV_max = the Hohmann transfer without VILMs" (Table 1 caption). Circular orbits
+# at 100 km (Titan at 1500 km).
+
+source: "Campagnola & Russell 2010, JGCD 33(2) 463-475 (AAS 09-224)"
+digest: "docs/notes/2026-06-05-endgame-tisserand-mining.md"
+units: "km/s (intermoon ΔV); m/s (Europa endgame)"
+
+# --- Part 1, Table 1 (p.16): no-gravity-assist VILM intermoon ΔV_min/ΔV_max. ---
+# A subset (>= 2 Jovian + Saturnian pairs) sufficient for the releg golden; each
+# value verbatim from A2.
+table1_no_ga:
+  - transfer: "Callisto-Ganymede"
+    moon_a: "Callisto"
+    moon_b: "Ganymede"
+    dv_min_kms: 1.81
+    dv_max_kms: 2.13
+    source: "Part-1 Table 1 p.16 (digest A2)"
+  - transfer: "Ganymede-Europa"
+    moon_a: "Ganymede"
+    moon_b: "Europa"
+    dv_min_kms: 1.71
+    dv_max_kms: 2.18
+    source: "Part-1 Table 1 p.16 (digest A2); cross-checked Part-2 text p.13 (digest A5)"
+  - transfer: "Europa-Io"
+    moon_a: "Europa"
+    moon_b: "Io"
+    dv_min_kms: 1.76
+    dv_max_kms: 2.54
+    source: "Part-1 Table 1 p.16 (digest A2)"
+  - transfer: "Callisto-Europa"
+    moon_a: "Callisto"
+    moon_b: "Europa"
+    dv_min_kms: 1.94
+    dv_max_kms: 3.75
+    source: "Part-1 Table 1 p.16 (digest A2)"
+  - transfer: "Rhea-Dione"
+    moon_a: "Rhea"
+    moon_b: "Dione"
+    dv_min_kms: 0.52
+    dv_max_kms: 1.12
+    source: "Part-1 Table 1 p.16 (digest A2)"
+  - transfer: "Dione-Tethys"
+    moon_a: "Dione"
+    moon_b: "Tethys"
+    dv_min_kms: 0.42
+    dv_max_kms: 0.97
+    source: "Part-1 Table 1 p.16 (digest A2)"
+
+# --- Part 1, Table 2 (p.16): with-intermoon-gravity-assist VILM ΔV_min/ΔV_max. ---
+# A GA strictly reduces ΔV (Table 2 ΔV_min < Table 1 ΔV_min for the same ends).
+table2_with_ga:
+  - transfer: "Callisto-G-Europa"
+    moon_a: "Callisto"
+    moon_b: "Europa"
+    via: ["Ganymede"]
+    dv_min_kms: 1.61
+    dv_max_kms: 2.07
+    source: "Part-1 Table 2 p.16 (digest A3)"
+  - transfer: "Ganymede-E-Io"
+    moon_a: "Ganymede"
+    moon_b: "Io"
+    via: ["Europa"]
+    dv_min_kms: 1.91
+    dv_max_kms: 2.45
+    source: "Part-1 Table 2 p.16 (digest A3)"
+
+# --- Europa endgame worked scalars (Part 1 pp.10-11, A6; Part 2 cross-check). ---
+# The 3-VILM design reduces V-bar-infinity from 1.8 to 0.77 km/s in 46 days for
+# 154 m/s; the CR3BP re-optimised long-transfer is 147 m/s. The continuous-VILM
+# quadrature floor (vilm.europa_endgame_dv()) is a valid lower bound on both.
+europa_endgame:
+  vinf_high_kms: 1.8
+  vinf_low_kms: 0.77
+  duration_days: 46.0
+  dv_discrete_3vilm_ms: 154.0
+  dv_cr3bp_long_transfer_ms: 147.0
+  source: "Part-1 pp.10-11 (digest A6); CR3BP re-opt Part-2 p.6 (digest A6)"
+
+# --- Structural-emptiness assertion (the honesty golden). ---
+# The Uranian regular-moon Tisserand contours are DISJOINT at every V-infinity in
+# 4-15 km/s, so NO leveraging-VILM leg can bridge consecutive moons: the powered
+# releg must honestly report these pairs UNBRIDGEABLE rather than fabricate a
+# bridge. This reproduces the structural negative
+# uranus-neptune-regular-moon-endgame-vilm-2026-06-23 as a powered re-test that
+# ALSO finds the region empty. The Jovian Io-Europa-Ganymede positive control
+# (both link at V-infinity=4) is the contrast: it is NOT in this list.
+disjoint_contour_pairs:
+  - moon_a: "Ariel"
+    moon_b: "Umbriel"
+    primary: "Uranus"
+    bridgeable: false
+    reason: "disjoint Tisserand/resonance contours at all V_inf 4-15 km/s (tightest adjacent Uranian pair)"
+    source: "uranus-neptune-regular-moon-endgame-vilm-2026-06-23 (empty_regions.jsonl)"
+  - moon_a: "Umbriel"
+    moon_b: "Titania"
+    primary: "Uranus"
+    bridgeable: false
+    reason: "disjoint Tisserand/resonance contours at all V_inf 4-15 km/s"
+    source: "uranus-neptune-regular-moon-endgame-vilm-2026-06-23 (empty_regions.jsonl)"
+  - moon_a: "Titania"
+    moon_b: "Oberon"
+    primary: "Uranus"
+    bridgeable: false
+    reason: "disjoint Tisserand/resonance contours at all V_inf 4-15 km/s"
+    source: "uranus-neptune-regular-moon-endgame-vilm-2026-06-23 (empty_regions.jsonl)"
