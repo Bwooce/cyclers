@@ -15,6 +15,12 @@ from cyclerfinder.data.validation.v1_3d import (
     V1Verdict3D,
     run_v1_3d,
 )
+from cyclerfinder.data.validation.v1_bcr4bp import (
+    V1_BCR4BP_FLOOR_KMS,
+    V1_BCR4BP_FLOOR_NONDIM,
+    V1VerdictBCR4BP,
+    run_v1_bcr4bp,
+)
 from cyclerfinder.data.validation.v2_3d import (
     V2_DRIFT_FLOOR_KMS,
     V2_N_CYCLES_MIN,
@@ -60,6 +66,8 @@ __all__ = [
     "URANIAN_PERTURBER_MOONS",
     "URANUS_J2",
     "URANUS_R_EQ_KM",
+    "V1_BCR4BP_FLOOR_KMS",
+    "V1_BCR4BP_FLOOR_NONDIM",
     "V1_FLOOR_KMS",
     "V1_FLOOR_NONDIM_DEFAULT",
     "V2_DRIFT_FLOOR_KMS",
@@ -76,6 +84,7 @@ __all__ = [
     "V4_N_CYCLES_MIN",
     "MoontourCycleVerdict",
     "V1Verdict3D",
+    "V1VerdictBCR4BP",
     "V2MoontourVerdict",
     "V2Verdict3D",
     "V3CycleVerdict3D",
@@ -85,6 +94,7 @@ __all__ = [
     "V4CycleVerdictUranus",
     "V4UranusVerdict",
     "run_v1_3d",
+    "run_v1_bcr4bp",
     "run_v2_3d",
     "run_v2_moontour",
     "run_v3_3d",
