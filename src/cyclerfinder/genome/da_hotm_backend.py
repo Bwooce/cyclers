@@ -191,9 +191,217 @@ class SamplingSectionMap(SectionMap):
         )
 
 
+# ---------------------------------------------------------------------------
+# Pure-Python truncated Taylor-map backend (#450 Task 8; USER DECISION 2026-06-25
+# option (b): NO MOSEK / DACEyPy / dace / pyaudi). A 2-variable truncated
+# polynomial in the section offset (dx, dxdot) about a reference; the single-rev
+# map is fitted by finite differences of the float propagator, composed to P^n by
+# truncated polynomial composition, and its fixed point found by an iterated
+# (re-expanded) trust-region Newton.
+# ---------------------------------------------------------------------------
+
+# A monomial dict maps an exponent pair (a, b) -> coefficient for dx^a dxdot^b.
+_Poly = dict[tuple[int, int], float]
+
+
+def _exponents(order: int) -> list[tuple[int, int]]:
+    """All exponent pairs (a, b) with a + b <= ``order``."""
+    return [(a, total - a) for total in range(order + 1) for a in range(total + 1)]
+
+
+def _poly_mul(p: _Poly, q: _Poly, order: int) -> _Poly:
+    """Multiply two scalar polynomials, truncating at total degree ``order``."""
+    out: _Poly = {}
+    for (a1, b1), c1 in p.items():
+        for (a2, b2), c2 in q.items():
+            if a1 + a2 + b1 + b2 <= order:
+                key = (a1 + a2, b1 + b2)
+                out[key] = out.get(key, 0.0) + c1 * c2
+    return out
+
+
+def _poly_subst(p: _Poly, sx: _Poly, sy: _Poly, order: int) -> _Poly:
+    """Substitute (dx, dxdot) -> (sx, sy) into ``p``, truncated at ``order``."""
+    max_a = max((a for a, _ in p), default=0)
+    max_b = max((b for _, b in p), default=0)
+    pow_x: dict[int, _Poly] = {0: {(0, 0): 1.0}}
+    for i in range(1, max_a + 1):
+        pow_x[i] = _poly_mul(pow_x[i - 1], sx, order)
+    pow_y: dict[int, _Poly] = {0: {(0, 0): 1.0}}
+    for i in range(1, max_b + 1):
+        pow_y[i] = _poly_mul(pow_y[i - 1], sy, order)
+    out: _Poly = {}
+    for (a, b), c in p.items():
+        term = _poly_mul(pow_x[a], pow_y[b], order)
+        for e, v in term.items():
+            out[e] = out.get(e, 0.0) + c * v
+    return out
+
+
+def _poly_eval(p: _Poly, dx: float, dxd: float) -> float:
+    return float(sum(c * dx**a * dxd**b for (a, b), c in p.items()))
+
+
+@dataclass(frozen=True)
+class TaylorMap2:
+    """A 2-D truncated Taylor map: section offset (dx, dxdot) -> output offset.
+
+    ``px`` / ``pxd`` are the polynomials for the x and xdot output offsets
+    (relative to the reference about which the map was expanded), of total degree
+    <= ``order``.
+    """
+
+    px: _Poly
+    pxd: _Poly
+    order: int
+
+    def evaluate(self, dx: float, dxd: float) -> tuple[float, float]:
+        """Output offset (dx_out, dxdot_out) at input offset ``(dx, dxd)``."""
+        return _poly_eval(self.px, dx, dxd), _poly_eval(self.pxd, dx, dxd)
+
+    def compose_self(self, n: int) -> TaylorMap2:
+        """The n-fold composition ``map o map o ... o map`` (n times)."""
+        if n < 1:
+            raise ValueError(f"compose_self: n must be >= 1, got {n}")
+        cx, cy = self.px, self.pxd
+        for _ in range(n - 1):
+            cx, cy = (
+                _poly_subst(cx, self.px, self.pxd, self.order),
+                _poly_subst(cy, self.px, self.pxd, self.order),
+            )
+        return TaylorMap2(px=cx, pxd=cy, order=self.order)
+
+
+class DASectionMap(SamplingSectionMap):
+    """Pure-Python truncated Taylor-map section-map backend (the deliverable).
+
+    Inherits the float ``single_rev`` from :class:`SamplingSectionMap` (so
+    single_rev / compose are bit-for-bit the same geometry -- the swappable-seam
+    parity the design requires). The Taylor layer adds:
+
+    * :meth:`taylor_single_rev` -- fit the single-rev map to a truncated
+      polynomial about a reference by finite differences;
+    * :meth:`taylor_fixed_point` -- compose to ``P^n`` and find its fixed point by
+      an iterated (re-expanded) trust-region Newton, returning the section point.
+
+    No differential-algebra library, no MOSEK. The FD-coefficient accuracy floors
+    the achievable fixed-point distance for strongly-unstable multi-rev orbits
+    (~3e-5 for P5g'); the corrector finishes the closure (Task 5).
+    """
+
+    def taylor_single_rev(
+        self, s_ref: SectionPoint, *, order: int, h: float, samples: int
+    ) -> TaylorMap2:
+        """Fit the single-rev map about ``s_ref`` to a degree-``order`` polynomial.
+
+        Samples a ``samples x samples`` tensor grid of offsets in ``[-h, h]^2``,
+        evaluates the float single-rev image at each feasible sample, and
+        least-squares fits the output OFFSET (image minus reference) to the
+        monomial basis. Raises ``ValueError`` if too few samples survive.
+        """
+        exps = _exponents(order)
+        offs = np.linspace(-h, h, samples)
+        rows: list[tuple[float, float]] = []
+        outs: list[tuple[float, float]] = []
+        for a in offs:
+            for c in offs:
+                try:
+                    img = self.single_rev(
+                        SectionPoint(x=s_ref.x + float(a), xdot=s_ref.xdot + float(c))
+                    )
+                except (ValueError, RuntimeError):
+                    continue
+                rows.append((float(a), float(c)))
+                outs.append((img.point.x - s_ref.x, img.point.xdot - s_ref.xdot))
+        if len(rows) < len(exps) + 2:
+            raise ValueError(
+                f"taylor_single_rev: only {len(rows)} feasible samples for "
+                f"{len(exps)} coefficients at s_ref={s_ref}, h={h}"
+            )
+        offs_arr = np.array(rows, dtype=np.float64)
+        out_arr = np.array(outs, dtype=np.float64)
+        design = np.column_stack([(offs_arr[:, 0] ** a) * (offs_arr[:, 1] ** b) for a, b in exps])
+        cx, *_ = np.linalg.lstsq(design, out_arr[:, 0], rcond=None)
+        cxd, *_ = np.linalg.lstsq(design, out_arr[:, 1], rcond=None)
+        px = {e: float(cx[i]) for i, e in enumerate(exps)}
+        pxd = {e: float(cxd[i]) for i, e in enumerate(exps)}
+        return TaylorMap2(px=px, pxd=pxd, order=order)
+
+    @staticmethod
+    def _poly_fixed_point(pn: TaylorMap2, trust: float) -> NDArray[np.float64] | None:
+        """Solve ``P^n(d) = d`` for the offset ``d`` by trust-region Newton.
+
+        ``P^n`` is the offset-out map, so the fixed-point condition is
+        ``px(d) - dx = 0, pxd(d) - dxd = 0``. Returns ``None`` if the iterate
+        leaves the trust region (a spurious out-of-domain polynomial root).
+        """
+        d = np.zeros(2, dtype=np.float64)
+
+        def _resid(v: NDArray[np.float64]) -> NDArray[np.float64]:
+            ex, ey = pn.evaluate(float(v[0]), float(v[1]))
+            return np.array([ex - v[0], ey - v[1]], dtype=np.float64)
+
+        for _ in range(80):
+            f = _resid(d)
+            if float(np.linalg.norm(f)) < 1e-15:
+                break
+            eps = 1e-8
+            jac = np.zeros((2, 2))
+            for k in range(2):
+                dp = d.copy()
+                dp[k] += eps
+                jac[:, k] = (_resid(dp) - f) / eps
+            try:
+                step = np.linalg.solve(jac, -f)
+            except np.linalg.LinAlgError:
+                break
+            ns = float(np.linalg.norm(step))
+            if ns > trust:
+                step = step * (trust / ns)
+            d = d + step
+            if float(np.linalg.norm(d)) > 4.0 * trust:
+                return None
+        return d
+
+    def taylor_fixed_point(
+        self,
+        s_ref: SectionPoint,
+        *,
+        n: int,
+        order: int,
+        h: float,
+        samples: int,
+        max_iter: int = 30,
+    ) -> SectionPoint:
+        """Iterated Taylor-map fixed point of ``P^n`` from a coarse reference.
+
+        Each pass re-expands the single-rev map about the current iterate, composes
+        to ``P^n``, solves the polynomial fixed point in a trust region, and moves
+        the reference there. Returns the converged section point. If a pass fails
+        (too few feasible samples or an out-of-domain root) the best iterate so far
+        is returned -- the corrector still finishes from there (Task 5).
+        """
+        cur = s_ref
+        for _ in range(max_iter):
+            try:
+                tmap = self.taylor_single_rev(cur, order=order, h=h, samples=samples)
+            except ValueError:
+                return cur
+            pn = tmap.compose_self(n)
+            d = self._poly_fixed_point(pn, trust=h * 3.0)
+            if d is None:
+                return cur
+            cur = SectionPoint(x=cur.x + float(d[0]), xdot=cur.xdot + float(d[1]))
+            if math.hypot(float(d[0]), float(d[1])) < 1e-11:
+                break
+        return cur
+
+
 __all__ = [
+    "DASectionMap",
     "SamplingSectionMap",
     "SectionMap",
     "SectionPoint",
     "SectionReturn",
+    "TaylorMap2",
 ]

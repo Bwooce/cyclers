@@ -68,3 +68,36 @@ order, finer reference placement, better root-finder, domain splitting), that is
 REAL finding to report honestly — the sampling backend carries the validation in
 that case, and a characterized honest negative on the Taylor backend is an
 acceptable outcome. A faked pass is not.
+
+## Build finding (2026-06-25): FD Taylor map reaches the corrector neighbourhood, not the basin
+
+The pure-Python truncated Taylor map was built and validated. Two facts emerged
+that the design draft §8.3 anticipated and that shape the lane architecture:
+
+1. **The sampling backend structurally cannot grid-recover the multi-rev Png'
+   family.** P5g' is strongly unstable (max|lambda| ~ 3600, mining note), so its
+   Poincare-section fixed-point basin is narrower than ~1e-5. The
+   `correct_general_periodic` reliable convergence basin is ~1e-5 (measured:
+   12/12 at radius 1e-5, 5/12 at 3e-5). A brute-force grid landing within 1e-5
+   over the ~0.04 x 0.12 section box would need ~4000 x 12000 cells x 5
+   propagations -- infeasible. The sampling grid DOES robustly recover the
+   well-conditioned n=1 DRO (single-rev), used for the base-family triangulation.
+
+2. **The FD Taylor map descends to ~3e-5, not into the ~1e-5 basin.** Best
+   achieved with order-2 (lower order is MORE robust here: FD noise corrupts
+   high-order coefficients), h=3e-4, 6x6 samples, iterated re-expansion. The
+   floor is FD-coefficient noise against the condition-3600 composition --
+   exactly what the paper's automatic-differentiation DA (DACEyPy, not
+   installable) avoids by computing exact derivatives. This is the honest
+   characterized limit of the pure-Python (non-DA) Taylor map.
+
+**Lane architecture (working).** The Taylor map gives a smooth, composable map
+whose iterated fixed point reaches the corrector's neighbourhood (~3e-5) from a
+coarse reference -- which the sampling grid cannot. A small corrector
+**micro-multistart** (a 5x5 cluster at ~1.2e-5 spacing around the Taylor point)
+then lands inside the ~1e-5 basin and closes P5g' to residual ~2e-12, period
+11.17510878 (8 sig figs vs the golden 11.17510869). This hybrid
+Taylor-map-then-corrector-multistart IS the lane-recovery proof (Task 5): the
+enumerator EMITS the coarse P5g' candidate (not handed in), and it closes to
+<= 1e-11. The Taylor map is a genuine, necessary capability here -- not merely an
+acceleration -- because the sampling grid cannot surface this needle basin at all.
