@@ -16,6 +16,13 @@
 # continuation from symmetric perpendicular-crossing seeds. Png' is a CR3BP
 # PERIODIC ORBIT, not a cycler: a validation/cross-check target only, never a
 # catalogue row.
+#
+# half_crossings / ydot0_sign: the y=0-return-map mapping for
+# search.cr3bp_general_periodic.correct_general_periodic. The full state returns
+# to the IC at the (2n)-th y=0 crossing, so half_crossings = 2*n (derived
+# geometrically: the published period equals the time of the 2n-th crossing for
+# every member). The paper's ydot0 are all positive, so ydot0_sign = +1.0. These
+# are the corrector's per-member seeding parameters, NOT golden expected values.
 
 source: "arXiv:2509.12671"
 system: "Earth-Moon"
@@ -32,6 +39,8 @@ members:
     ydot0: 0.433518861583397
     period: 11.1751086919436
     jacobi: 3.00022
+    half_crossings: 10
+    ydot0_sign: 1.0
   - label: "P7g'-I"
     table: 3
     n: 7
@@ -40,6 +49,8 @@ members:
     ydot0: 0.528042521610021
     period: 11.6960585356669
     jacobi: 3.00022
+    half_crossings: 14
+    ydot0_sign: 1.0
   - label: "P7g'-II"
     table: 3
     n: 7
@@ -48,6 +59,8 @@ members:
     ydot0: 0.433467279267690
     period: 11.6716427018773
     jacobi: 3.00022
+    half_crossings: 14
+    ydot0_sign: 1.0
   - label: "P7g'"
     table: 3
     n: 7
@@ -56,6 +69,8 @@ members:
     ydot0: 0.441933007711387
     period: 15.0692523706070
     jacobi: 3.00022
+    half_crossings: 14
+    ydot0_sign: 1.0
   - label: "P9g'"
     table: 3
     n: 9
@@ -64,6 +79,8 @@ members:
     ydot0: 0.433522872600990
     period: 20.9914771396290
     jacobi: 3.00022
+    half_crossings: 18
+    ydot0_sign: 1.0
   - label: "P3g'"
     table: 5
     n: 3
@@ -72,3 +89,5 @@ members:
     ydot0: 0.368541113320107
     period: 9.25206400352203
     jacobi: 3.020052
+    half_crossings: 6
+    ydot0_sign: 1.0
