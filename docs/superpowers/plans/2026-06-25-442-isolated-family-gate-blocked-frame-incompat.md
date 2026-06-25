@@ -104,3 +104,41 @@ Two corrections + a decisive convergence finding (two independent correctors):
    insufficient for the isolated basin).
 The validated EOM (Eq. 1 in the natural frame) is the durable capability deliverable
 and is reusable for BOTH paths.
+
+## UPDATE 2026-06-25 (c) — CONNECTED 3/1 (π,0) family CONVERGED e2=0→0.90 (path 1 executed)
+Ran the full #446 ladder with trust-region/LM correctors + e2-continuation
+(`scripts/_scratch_442_converge.py`, `_scratch_442_converge2.py`,
+`_scratch_442_arclength.py`). Decisive results:
+- **The 6e-4 / 1e-2 "wall" was a SOLVER artifact, not dynamics.** Replacing the
+  2-var half-period (y,vx) damped-Newton with a **4-vector full-period periodicity
+  objective** `[x(2π)−x, y(2π), vx(2π), vy(2π)−vy]` under `scipy.least_squares`
+  (lm/trf/dogbox), the family converges CLEANLY. From a geometric apse seed at LOW
+  e2 (where the basin is wide) the corrector hits indep ~1e-11 immediately.
+- **CONNECTED 3/1 (π,0) family fully tracked e2=0 → 0.90**, every member
+  independently re-integrated at rtol=1e-13 closing < 2e-10 (gate 1e-8):
+  - e2=0.00: x=0.4793554969, vy=0.9624369118, indep=3.1e-12, a1=0.48014, e1≈0
+  - e2=0.30: x=0.6909309271, vy=0.5087470978, indep=5.1e-11, a1=0.48062, e1=0.440
+  - e2=0.55: x=0.8217405562, vy=0.3046047985, indep=5.8e-11, a1=0.48065, e1=0.713
+  - e2=0.85: x=0.9457500071, vy=0.0255730480, indep=3.0e-11, a1=0.48047, e1=0.972
+  - e2=0.90: x=0.9341012757, vy=−0.3487825823, indep=1.9e-10, a1=0.48054, e1=0.948
+  (IC = [x, y=0, vx=0, vy, θ0=π], T=2π.) osc a1≈0.4806 throughout = the published
+  3/1 DS-map value (Fig 3 caption 0.4807). Adaptive natural-parameter AND
+  pseudo-arclength continuation agree; arclength reached e2=0.91.
+- **It is CONNECTED, not isolated.** Reverse-continuation reaches e2=0 cleanly
+  (indep 3e-12, a genuine circular CR3BP 3/1 PO at x=0.4794, vy=0.9624) — i.e. this
+  is the Scheme-II BIFURCATING branch, exactly as the digest predicted. Its e1
+  GROWS monotonically with e2 (0→0.97), so at e2=0.90 it sits at e1=0.948, NOT the
+  paper's ISOLATED representative e1=0.659951.
+- **ISOLATED member NOT reached (honest negative, well-characterised).** A coarse
+  (x,vy) periodicity-residual map over the whole section at e2=0.90, θ0=π shows the
+  ONLY clean a1≈0.48 doubly-symmetric PO is the connected one (3 distinct basins all
+  polish to the same x=0.9341, e1=0.948 member). The geometric isolated seed
+  (e1=0.659951, M1=0 pericentre → x=0.16, near-collision) sits at residual 0.24 with
+  NO low-residual basin within ±0.1×±0.4. The complementary θ0=0 section is
+  unphysical (P2 pericentre r=0.1 → all orbits blow up, resid ~3e3). So the isolated
+  family is genuinely disconnected and its representative is not a simple
+  (x,0,0,vy)|θ0=π perpendicular crossing reachable from the graphical seed — it needs
+  the family's own state vectors or a homotopy bridge that this section does not expose.
+- **DELIVERABLE:** path 1 produced a reproducible, published-value-matching family
+  (capability win). The isolated-family gate remains seed-data-limited exactly as the
+  digest §7.2 forecast (direct high-e seeding needs the paper's ICs, which it omits).
