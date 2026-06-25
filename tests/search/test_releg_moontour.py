@@ -195,6 +195,34 @@ def test_multirev_uranus_disjoint_prefiltered_empty() -> None:
     assert verdict.total_dv_kms == math.inf
 
 
+def test_saturnian_positive_control_in_band() -> None:
+    """A Saturnian Titan-Rhea-Dione-Titan cycle closes IN-BAND with the chain.
+
+    A second system confirming the in-band capability is not Jovian-specific. The
+    cycle closes (continuity below the gate) with a total ΔV under the 3.5 km/s
+    powered ceiling. (The geomean-tof skeleton scale is chosen so the per-leg
+    arrival V_inf is within the chain's leveraging reach at the heavy Titan flyby
+    — see the verdict doc's finite-chain-reachability note; a too-high arrival
+    V_inf at Titan is unreachable by coplanar leveraging, the honest open risk.)
+    """
+    sequence = ("Titan", "Rhea", "Dione", "Titan")
+    leg_tofs_days = _geomean_tofs(sequence, scale=1.2)
+    verdict = close_powered_cycle(
+        primary="Saturn",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0, 0),
+        releg=MultiRevLeveragingReleg(),
+        phasing={"Titan": 0.0, "Rhea": 1.0, "Dione": 2.0},
+        dv_band="powered_dsm",
+    )
+    assert verdict.prefilter_skipped is False
+    assert verdict.feasible is True
+    assert verdict.continuity_residual_kms < 0.05
+    assert verdict.total_dv_kms < 3.5
+    assert verdict.dv_band is not None
+
+
 # ---------------------------------------------------------------------------
 # helpers
 # ---------------------------------------------------------------------------
