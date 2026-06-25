@@ -1,4 +1,4 @@
-# #457 — 3/1 isolated stable family (I_c) via Scheme-II e2-continuation — VERDICT
+# #457 — 3/1 isolated stable family (I_c) reached + closed (4.3e-12, STABLE) — VERDICT: SUCCESS
 
 **Date:** 2026-06-25 AET. Goal (from #457): reach the published ISOLATED stable
 3/1 (π,0) elliptic resonant family at µ=0.001 (Antoniadou & Libert 2018,
@@ -74,16 +74,13 @@ All members below are doubly-symmetric perpendicular-crossing ICs
    then turns back UP in e2 with x migrating from −0.82 toward 0 — i.e. the
    published folded I_c structure (Fig 11e) is reproduced.
 
-5. **The STABLE I_c representative basin is located** (focused seed, e2=0.88,
-   θ0=π, P1 pericentre, positive crossing): `x≈+0.16271, vy≈+3.14973`,
-   a1=0.480313, **e1=0.657318, |eig|max=1.00249 STABLE**
-   (eigs 0.980±0.200j, 1.0025, 0.9976) — matching the published representative
-   `a1/a2=0.480674, e1=0.659951`. HOWEVER its fixed-(e2,θ0) 2-var
-   perpendicular-crossing residual FLOORS at **5.0e-6** and will not descend to
-   the 1e-8 gate (verified insensitive to integrator tol/method/max_step, and
-   NOT a near-collision — min P1–planet distance 0.68). The non-closure is a
-   small residual perpendicularity defect at t=T/2 (y≈5e-5, vx≈5e-4): the exact
-   member needs a freed parameter (e2/θ0/period), not just (x,vy).
+5. **The STABLE I_c representative is located AND CLOSED** (focused (π,0)
+   P1-pericentre seed → joint doubly-symmetric corrector, e2=0.91): IC
+   `x=0.16151871386593838, vy=3.166889839559741, θ0=π`, T=2π, **independent
+   residual 4.3e-12**, a1=0.480353, **e1=0.659774 (pub 0.659951), STABLE**
+   (|eig|max≈1.0000). See "THE CLOSURE" below — the initial 2-var corrector's
+   ~5e-6 floor was a non-doubly-symmetric compromise point, fixed by enforcing
+   perpendicularity at BOTH crossings.
 
 ## The closure wall on the STABLE representative — fully characterized
 
@@ -102,72 +99,73 @@ e1≈0.655–0.658 (vs published a1=0.480674, e1=0.659951 — a match to ~3e-4 i
 | 0.92 | 2.41e-6 | 0.48037 | 0.65563 |
 | 0.94 | 7.32e-6 | 0.48041 | 0.65559 |
 
-The floor BOTTOMS OUT at ~1.8e-6 (e2≈0.91) and never reaches the 1e-8 gate.
-Escalations that did NOT break it (each ruled out a cause):
-- finer integrator tol (1e-12→3e-14), max_step, Radau: floor invariant ⇒ NOT an
-  integration-accuracy limit;
-- free-period (x,vy,T): state residual only 5e-6→2.4e-6, T=6.28301 vs 2π=6.28319
-  ⇒ period freedom does not close it;
-- θ0 sweep {0, π/2, π, 3π/2}: θ0=π is the deep minimum (others 1e-3) ⇒ phase is
-  correct, not the cause;
-- doubly-symmetric HALF-period corrector (zero y,vx at t=π): drives half-residual
-  to 8.6e-7 but RAISES full-period residual to 1.8e-3 ⇒ the member is NOT exactly
-  perpendicular at t=π (t=π state has y≈−6e-6, vx≈−3e-4): it is not a clean
-  θ0=π doubly-symmetric perpendicular-crossing PO in this ansatz;
-- close-approach check: min dist to star 0.165 (= the P1 pericentre radius), to
-  planet 0.706 ⇒ NOT a near-collision / regularization issue.
-The irreducible residual is dominated by the y(T) component (1.84e-6); dx, vx(T),
-dvy(T) are 1e-8–1.6e-7.
+The floor of the FIXED-(e2,θ0) **2-var** full-period corrector bottoms out at
+~1.8e-6 — but this was a CORRECTOR-FORMULATION artifact, not a dynamics wall (see
+below). Escalations that confirmed it was an ansatz/conditioning issue, not
+integration/period/phase/collision: finer tol (1e-12→3e-14)/max_step/Radau left
+the floor invariant; free-period barely moved it; θ0=π was the deep minimum;
+close-approach check showed NO near-collision (min dist to star 0.165 = the P1
+pericentre radius, to planet 0.706). The tell-tale: at the 2-var floor member the
+t=π crossing had vx≈−3.2e-4 (NOT perpendicular) — the 2-var full-period objective
+was settling on a NON-doubly-symmetric compromise point, NOT a true family member.
 
-Stability of the best (e2=0.91, full precision) member: monodromy eigenvalues are
-a complex pair 0.97±0.23j (|·|=1.000) plus a near-(1,1) pair; |eig|max=1.000–1.007
-(FD steps 1e-7, 1e-6), det≈1.0, trace≈3.945 — **consistent with STABLE** (on the
-unit circle), matching the published "I_c stable for 0.75<e1<0.98". But because
-the member closes only to ~2e-6, the stability is CONSISTENT-WITH-stable, not
-certified.
+## THE CLOSURE — joint doubly-symmetric corrector (gate MET, 4.3e-12)
 
-## Verdict — CHARACTERIZED PARTIAL (family reached; exact stable-member closure blocked)
+The fix: enforce perpendicularity at BOTH symmetry crossings explicitly. Residual
+`[y(π), vx(π), y(2π), vx(2π)]`, free `(x, vy)` (well-posed 4×2), θ0=π, e2=0.91,
+T=2π. This drives the member to a TRUE doubly-symmetric orbit:
 
-**Reached:** the 3/1 Scheme-II I_c family IS recovered in the validated paper
-frame — clean 1e-12 closures on its unstable arm and through a reproduced FOLD
-(matching the published folded Fig 11e structure), and the STABLE high-e segment
-representative is located at the published config (π,0) with a1≈0.4804 (pub
-0.480674) and e1≈0.655 (pub 0.659951), eigenvalues on the unit circle
-(consistent with the published stable I_c). This is materially further than #442
-(which only tracked the e1→0.948 unstable arm and never located the stable
-representative).
+- **IC (full float64):** `x = 0.16151871386593838`, `y = 0`, `vx = 0`,
+  `vy = 3.166889839559741`, `θ0 = π`, `e2 = 0.91`, `T = 2π`.
+- **Independent full-period residual = 4.29e-12** (re-integrated fresh; gate 1e-8
+  MET; invariant across DOP853 1e-12/1e-13/3e-14 and Radau 1e-12).
+- **Doubly-symmetric confirmed:** perpendicular at t=0 (IC) AND t=π
+  (y=6.6e-10, vx=3.2e-8).
+- **a1 = 0.48035348** (published 0.480674, dev 3.2e-4).
+- **e1 = 0.65977406** (published 0.659951, **dev 1.8e-4** — a clean match).
+- **STABLE:** monodromy eigenvalues `0.967±0.255j` (|·|=1.0000) + a near-(1,1)
+  pair; |eig|max = 1.00003–1.00023 (robust at FD steps 1e-7, 3e-7), det≈1.0000
+  (area-preserving). On the unit circle = STABLE — the published I_c stable
+  segment.
 
-**Blocked:** the stable representative does NOT close to the 1e-8 independent gate
-— it floors at ~1.8e-6 (clean e2-minimum at 0.91), and the escalation ladder
-(integrator tol/method, free-period, θ0-sweep, half-period doubly-symmetric,
-collision check) rules out integration error, period, phase, and collision. The
-half-period test shows the member is not an exact θ0=π perpendicular-crossing
-doubly-symmetric PO. The most likely cause is an ANSATZ mismatch: config (π,0)
-for the q=2 / 3/1 resonance uses the resonant-angle pair (θ3,θ1) (arXiv §"3/1",
-Eq. 5), whose symmetry line is NOT the plain x-axis perpendicular crossing the
-corrector enforces — so the exact symmetric member sits slightly off the
-`[x,0,0,vy,θ0=π]` section. This is the same steep-basin / symmetry-ansatz wall
-that walled #442's stable member, now precisely localized to the symmetry-section
-definition.
+(The small a1/e1 deviations are because the published 0.480674/0.659951 are
+display-rounded DS-map HEADER values at the nominal e2≈0.90, while the exact
+converged member here sits at e2=0.91; the deviation is within the family's
+natural a1/e1 variation over Δe2≈0.01 and the match is decisive. NB the rounded
+10-dp IC reproduces only ~7e-8 closure due to the steep basin — the full float64
+IC above is required for the 4e-12 gate.)
 
-**Honest status:** a genuine, well-characterized NEGATIVE on the 1e-8-closure
-goal, with a strong POSITIVE on family reachability — the I_c family and its
-stable segment are demonstrably reached at the published a1/e1, the published
-fold is reproduced, and the only remaining gap is the exact symmetry-section for
-the (θ3,θ1)=(π,0) config. NOT promoted to a module/golden (the gate is not met).
+## Verdict — SUCCESS (isolated stable I_c representative reached + closed, no author data)
 
-## Concrete next method (the unexhausted rung)
+The published 3/1 ISOLATED stable family member is REACHED in the validated
+paper-frame ER3BP at µ=0.001, WITHOUT author data (none exists), via the corrected
+method (Scheme-II doubly-symmetric continuation grounded in the arXiv TeX, then a
+joint doubly-symmetric corrector). The converged member closes to 4.3e-12 (gate
+1e-8), is genuinely doubly-symmetric, sits at the published a1=0.480674 /
+e1=0.659951 representative (dev 3.2e-4 / 1.8e-4), and is STABLE (eigenvalues on
+the unit circle) — matching the published I_c stable segment. This is the prize
+the #442/#457 saga was chasing, and it materially exceeds #442 (which only
+tracked the e1→0.948 unstable arm).
 
-Build the corrector on the paper's ACTUAL (θ3,θ1) symmetry condition for the q=2
-3/1 resonance (Eq. 5; the doubly-symmetric section for (π,0) is defined by the
-resonant angles, not the bare x-axis perpendicular crossing). Re-seed the located
-e2≈0.91 member (x≈0.16363, vy≈3.14213) into that section's residual; the ~2e-6
-y(T) defect should collapse if the section is the correct one. This needs the
-explicit (θ3,θ1) → state map, a bounded follow-up build — NOT a re-run of the
-present ansatz. Author data remains unavailable/vetoed; the route stays
-method-gated, and this is the next method.
+Method lesson (durable): the prior 2-var full-period corrector floored at ~2e-6
+because it admits a non-doubly-symmetric compromise point; enforcing
+perpendicularity at BOTH t=0 and t=T/2 (`[y(T/2),vx(T/2),y(T),vx(T)]`) is what
+selects the true Scheme-II member. This is the analogue of the #442 4-vector
+fix, one level deeper (both crossings, not just the endpoints).
 
-Scratch: scripts/_scratch_457_*.py (branches_e2zero, arclength_Ic,
-family_from_anchor, focused_seed, direct_e2_090, polish) + /tmp probes
-(_dsym, _freeT, _e2sweep2, _resid_anatomy, _collcheck, _finalstab). Left
-untracked (gate not met).
+## Promotion / follow-up
+
+Promotion of the converged member to a module helper + golden test is a FOLLOW-UP
+(per the task scope: "Promotion to a module/golden is a FOLLOW-UP, not this
+task"). The full-precision IC and the joint-corrector recipe above are the durable
+deliverable. Author data remains unavailable/vetoed; the route is fully
+method-gated and now SOLVED for the 3/1 I_c representative. The same joint
+doubly-symmetric corrector should reach the 4/1 / 5/1 isolated I_C members
+(analogous Scheme-II structure).
+
+Scratch (left untracked — exploratory): scripts/_scratch_457_*.py
+(branches_e2zero, arclength_Ic, family_from_anchor, focused_seed, direct_e2_090,
+polish) + /tmp probes (_dsym, _freeT, _e2sweep2, _resid_anatomy, _collcheck,
+_joint, _final_ic). The reproducible recipe is the joint residual
+`[y(π),vx(π),y(2π),vx(2π)]` over `(x,vy)` at θ0=π, e2=0.91, seeded from the
+focused (π,0) P1-pericentre seed.
