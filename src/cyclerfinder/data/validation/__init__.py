@@ -33,6 +33,12 @@ from cyclerfinder.data.validation.v2_3d import (
     V2Verdict3D,
     run_v2_3d,
 )
+from cyclerfinder.data.validation.v2_bcr4bp import (
+    V2_BCR4BP_DRIFT_FLOOR_KMS,
+    V2_BCR4BP_N_CYCLES_MIN,
+    V2VerdictBCR4BP,
+    run_v2_bcr4bp,
+)
 from cyclerfinder.data.validation.v2_moontour import (
     V2_MOONTOUR_CLOSURE_FLOOR_KMS,
     V2_MOONTOUR_DRIFT_FLOOR_KMS,
@@ -78,6 +84,8 @@ __all__ = [
     "V1_BCR4BP_FLOOR_NONDIM",
     "V1_FLOOR_KMS",
     "V1_FLOOR_NONDIM_DEFAULT",
+    "V2_BCR4BP_DRIFT_FLOOR_KMS",
+    "V2_BCR4BP_N_CYCLES_MIN",
     "V2_DRIFT_FLOOR_KMS",
     "V2_MOONTOUR_CLOSURE_FLOOR_KMS",
     "V2_MOONTOUR_DRIFT_FLOOR_KMS",
@@ -96,6 +104,7 @@ __all__ = [
     "V1VerdictBCR4BP",
     "V2MoontourVerdict",
     "V2Verdict3D",
+    "V2VerdictBCR4BP",
     "V3CycleVerdict3D",
     "V3PeriodicRegressionVerdict",
     "V3PeriodicVerdict3D",
@@ -106,6 +115,7 @@ __all__ = [
     "run_v1_3d",
     "run_v1_bcr4bp",
     "run_v2_3d",
+    "run_v2_bcr4bp",
     "run_v2_moontour",
     "run_v3_3d",
     "run_v3_3d_periodic",
