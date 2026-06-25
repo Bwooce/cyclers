@@ -103,8 +103,15 @@ class Releg(Protocol):
         *,
         n_rev: int = 0,
         vinf_target_in: float | None = None,
+        vinf_depart_mag: float | None = None,
     ) -> RelegResult:
-        """Solve one moon-to-moon leg; return its V_inf chain + delivered ΔV."""
+        """Solve one moon-to-moon leg; return its V_inf chain + delivered ΔV.
+
+        ``vinf_target_in`` retargets the arrival V_inf (powered backends only);
+        ``vinf_depart_mag`` pins the departure V_inf magnitude (powered backends
+        only, used by the moon-tour driver for by-construction flyby continuity).
+        The ballistic backend ignores both.
+        """
         ...
 
 
@@ -134,6 +141,7 @@ class BallisticReleg:
         *,
         n_rev: int = 0,
         vinf_target_in: float | None = None,
+        vinf_depart_mag: float | None = None,
     ) -> RelegResult:
         r_a = np.asarray(r_a, dtype=np.float64)
         v_a = np.asarray(v_a, dtype=np.float64)
@@ -190,6 +198,7 @@ class DsmReleg:
         *,
         n_rev: int = 0,
         vinf_target_in: float | None = None,
+        vinf_depart_mag: float | None = None,
     ) -> RelegResult:
         r_a = np.asarray(r_a, dtype=np.float64)
         v_a = np.asarray(v_a, dtype=np.float64)
@@ -227,9 +236,15 @@ class DsmReleg:
             v_dir = math.cos(ang) * u_hat + math.sin(ang) * e1
             return v_a + (vinf_seed_mag * mag_factor) * v_dir
 
+        pinned_mag_factor = vinf_depart_mag / vinf_seed_mag if vinf_depart_mag is not None else None
+
         def _eval(params: Sequence[float]) -> tuple[float, float, float] | None:
             """``(mag_factor, ang, eta) -> (vinf_out, vinf_in, dv_dsm)`` or None."""
             mag_factor, ang, eta = float(params[0]), float(params[1]), float(params[2])
+            if pinned_mag_factor is not None:
+                # Departure V_inf magnitude is pinned (flyby continuity by
+                # construction); the optimiser only moves the direction + eta.
+                mag_factor = pinned_mag_factor
             eta = min(max(eta, _ETA_LO), _ETA_HI)
             v_depart = _depart(mag_factor, ang)
             try:
@@ -259,7 +274,16 @@ class DsmReleg:
 
         # Coarse grid over (magnitude factor, direction angle, eta) — the cost is
         # multi-modal in all three — then a Nelder-Mead refine from the best node.
-        mag_grid = np.linspace(0.6, 1.4, 5)
+        # When the caller PINS the departure V_inf magnitude (``vinf_depart_mag``,
+        # used by the moon-tour driver to make every interior flyby V_inf-continuous
+        # by construction), the magnitude factor is fixed so departure V_inf equals
+        # the pinned value exactly; only the direction + eta are free.
+        if pinned_mag_factor is not None:
+            # _eval overrides the magnitude factor to the pinned value; the grid
+            # node value is irrelevant, so a single placeholder suffices.
+            mag_grid = np.array([pinned_mag_factor])
+        else:
+            mag_grid = np.linspace(0.6, 1.4, 5)
         ang_grid = np.linspace(-0.5, 0.5, 7)
         eta_grid = np.linspace(_ETA_LO, _ETA_HI, max(3, self._n_eta // 4))
         best_params: tuple[float, float, float] | None = None
