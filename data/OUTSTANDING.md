@@ -49,6 +49,25 @@ SF-low-thrust second backend (Task 7) are explicit FOLLOW-ONs. The "blocked by
 #450" tag on #449 is incorrect (design §5: #450 is a CR3BP-PO enumerator, no
 shared data path) and should be dropped.
 
+**Cislunar BCT substrate (#378) — CAPABILITY SHIPPED, clean negative on the
+quasi-cycler.** Belbruno weak-stability-boundary / ballistic-capture-transfer
+machinery integrated into the BCR4BP discovery stack: `core/wsb.py` (E_2, the W
+surface eq 3.29, C_1 validity, numerical stability-class — sourced goldens:
+parabolic C=±√2, C_1≈3.184, E_2(L)<0 sign), `genome/bct_transfer.py` (backward
+BCT constructor + forward 2×2 targeting + BCT novelty self-test),
+`search/cislunar_bct_search.py` (θ_2-family sweep + transfer-vs-quasi-cycler
+classifier). Phase-0 gate PASSED (incoherent BCR4BP shapes a 4.6–5.6 LD Sun
+apoapsis from LEO); the Hiten apoapsis signature is REPRODUCED (θ_2=1.25 →
+3.95 LD, bullseye on Belbruno's 3.9 LD, exact on-W ballistic capture E_2<0).
+HONEST VERDICT: capability-only — NO BCT return leg re-acquires W across the
+sweep (0 quasi_cycler_candidates), consistent with Belbruno Thm 3.58 (capture on
+W is chaotic). This IS the from-scratch SE-scale BCR4BP build the #412 spike
+called for. Clean negative logged to `data/empty_regions.jsonl`
+(`cislunar-bct-wsb-quasicycler-2026-06-26`) with two re-open keys
+(forward-from-LEO on-W convergence; coherent QBCP). No catalogue edit; Hiten
+correctly flagged non-novel. Verdict note
+`docs/notes/2026-06-26-378-cislunar-bct-verdict.md`.
+
 **Band-aware validation + M7 maintenance-ΔV (the discovery gate).** #423 (M7
 per-row real-eph horizon-TCM stage) + #424 (band-aware V3 acceptance) LANDED, so
 the dv_band→validation coupling gate is RELEASED — discovery + validation
