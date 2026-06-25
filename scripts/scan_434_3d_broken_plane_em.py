@@ -85,6 +85,11 @@ _LYAPUNOV_POINTS: tuple[str, ...] = ("L1", "L2")
 # (BLAS) threads per worker, so no manual thread-env capping is needed.
 _N_JOBS = int(os.environ.get("CYCLERS_434_NJOBS", "12"))
 
+# Soft per-unit wall-clock threshold (seconds). A unit that exceeds this is
+# logged as pathological-but-PRODUCTIVE and is NEVER terminated or skipped — a
+# slow-but-converging lift/continuation may still prove out a novel family.
+_SLOW_UNIT_WARN_S = 1800.0
+
 
 # Planar Braik-Ross Earth-Moon cycler roots are recovered at run time via
 # ``recover_all_cyclers_braik_ross`` (C11a, C11b, C21, C32). Each Representative
@@ -209,11 +214,18 @@ def _worker_lyapunov(
     Runs in a joblib worker process. Returns a small picklable result dict; the
     parent aggregates counts/records (no shared mutable state).
     """
+    t_unit = time.time()
     label = f"lyapunov3d-{point}"
     try:
         state0, period = lyapunov_seed_3d(system, point=point)
     except ValueError as exc:
-        return {"kind": "lyapunov", "label": label, "status": "seed_failed", "detail": str(exc)}
+        return {
+            "kind": "lyapunov",
+            "label": label,
+            "status": "seed_failed",
+            "detail": str(exc),
+            "wall_s": time.time() - t_unit,
+        }
     family = _continue_seed(
         system, state0, period, n_steps_max=n_steps_max, monodromy_eval=monodromy_eval
     )
@@ -225,6 +237,7 @@ def _worker_lyapunov(
         "z0": float(state0[2]),
         "period": float(period),
         "records": recs,
+        "wall_s": time.time() - t_unit,
     }
 
 
@@ -242,6 +255,7 @@ def _worker_z0_lift(
     parent aggregates the lock/collapse tally and records (no shared mutable
     state).
     """
+    t_unit = time.time()
     cycler_label = f"braik-ross-{root.label}-em"
     orbit = _lock_planar_root(system, root, -z0)  # negative z0 per spike branch
     if orbit is None:
@@ -251,6 +265,7 @@ def _worker_z0_lift(
             "cycler_label": cycler_label,
             "z0": z0,
             "status": "collapse",
+            "wall_s": time.time() - t_unit,
         }
     seed_label = f"{cycler_label}-z0_{z0:.2f}"
     family = _continue_seed(
@@ -271,6 +286,7 @@ def _worker_z0_lift(
         "locked_z0": float(orbit.state0[2]),
         "locked_T": float(orbit.T_TU),
         "records": recs,
+        "wall_s": time.time() - t_unit,
     }
 
 
@@ -348,55 +364,105 @@ def main(*, smoke: bool = False) -> None:
         for root in confirmed_roots
         for z0 in z0_ladder
     ]
-    results: list[dict[str, object]] = Parallel(n_jobs=_N_JOBS, backend="loky")(jobs)
+    n_total = len(jobs)
 
-    # --- Aggregate in the parent (order may differ; that's fine) ------------
+    # --- Stream results in completion order; write records INCREMENTALLY ----
+    # return_as="generator_unordered" yields each unit's result as it finishes,
+    # so a kill mid-run keeps every record already flushed to disk. The parent
+    # still accumulates the in-memory aggregates for the final summary.
     all_records: list[dict[str, object]] = []
     per_seed_counts: list[tuple[str, int]] = []
     lock_tally: dict[str, tuple[int, int]] = {  # cycler -> (locks, collapses)
         root.label: (0, 0) for root in confirmed_roots
     }
 
-    for res in results:
-        if res["kind"] == "lyapunov":
-            label = str(res["label"])
-            if res["status"] == "seed_failed":
-                _print_progress(f"route(i) {label}: seed FAILED ({res['detail']}); skipping")
-                continue
-            recs = res["records"]
-            assert isinstance(recs, list)
-            _print_progress(
-                f"route(i) {label}: seed locked z0={float(res['z0']):.4f} "  # type: ignore[arg-type]
-                f"T={float(res['period']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
-            )
-            all_records.extend(recs)
-            per_seed_counts.append((label, len(recs)))
-        else:  # z0_lift
-            cycler = str(res["cycler"])
-            locks, collapses = lock_tally[cycler]
-            if res["status"] == "collapse":
-                lock_tally[cycler] = (locks, collapses + 1)
+    _OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    gen = Parallel(n_jobs=_N_JOBS, backend="loky", return_as="generator_unordered")(jobs)
+    k = 0
+    with _OUT_PATH.open("w") as f:
+        while True:
+            try:
+                res = next(gen)
+            except StopIteration:
+                break
+            except Exception as exc:  # a worker propagated; log + keep draining
+                k += 1
                 _print_progress(
-                    f"route(ii) {res['cycler_label']} |z0|={float(res['z0']):.2f}: "  # type: ignore[arg-type]
-                    f"COLLAPSE / no 3D lock"
+                    f"ERROR: unit {k}/{n_total} raised in worker ({exc!r}); "
+                    "logged, continuing with remaining units"
                 )
                 continue
-            lock_tally[cycler] = (locks + 1, collapses)
-            seed_label = str(res["seed_label"])
-            recs = res["records"]
-            assert isinstance(recs, list)
-            _print_progress(
-                f"route(ii) {seed_label}: LOCK z0={float(res['locked_z0']):.4f} "  # type: ignore[arg-type]
-                f"T={float(res['locked_T']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
-            )
-            all_records.extend(recs)
-            per_seed_counts.append((seed_label, len(recs)))
+            k += 1
+            try:
+                wall_s = float(res.get("wall_s", float("nan")))  # type: ignore[union-attr]
+                unit_records: list[dict[str, object]] = []
+                if res["kind"] == "lyapunov":
+                    label = str(res["label"])
+                    if res["status"] == "seed_failed":
+                        _print_progress(
+                            f"route(i) {label}: seed FAILED ({res['detail']}); skipping"
+                        )
+                    else:
+                        recs = res["records"]
+                        assert isinstance(recs, list)
+                        _print_progress(
+                            f"route(i) {label}: seed locked z0={float(res['z0']):.4f} "  # type: ignore[arg-type]
+                            f"T={float(res['period']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
+                        )
+                        all_records.extend(recs)
+                        per_seed_counts.append((label, len(recs)))
+                        unit_records = recs
+                    unit_label = label
+                else:  # z0_lift
+                    cycler = str(res["cycler"])
+                    locks, collapses = lock_tally[cycler]
+                    if res["status"] == "collapse":
+                        lock_tally[cycler] = (locks, collapses + 1)
+                        unit_label = str(res["cycler_label"])
+                        _print_progress(
+                            f"route(ii) {res['cycler_label']} |z0|={float(res['z0']):.2f}: "  # type: ignore[arg-type]
+                            f"COLLAPSE / no 3D lock"
+                        )
+                    else:
+                        lock_tally[cycler] = (locks + 1, collapses)
+                        seed_label = str(res["seed_label"])
+                        unit_label = seed_label
+                        recs = res["records"]
+                        assert isinstance(recs, list)
+                        _print_progress(
+                            f"route(ii) {seed_label}: LOCK z0={float(res['locked_z0']):.4f} "  # type: ignore[arg-type]
+                            f"T={float(res['locked_T']):.4f}; {len(recs)} converged member(s)"  # type: ignore[arg-type]
+                        )
+                        all_records.extend(recs)
+                        per_seed_counts.append((seed_label, len(recs)))
+                        unit_records = recs
 
-    # --- Write JSONL --------------------------------------------------------
-    _OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with _OUT_PATH.open("w") as f:
-        for rec in all_records:
-            f.write(json.dumps(rec) + "\n")
+                # Incremental write: flush this unit's records immediately so a
+                # kill mid-run preserves everything already completed.
+                for rec in unit_records:
+                    f.write(json.dumps(rec) + "\n")
+                f.flush()
+
+                # Per-unit progress + ETA.
+                elapsed = time.time() - t0
+                avg = elapsed / k
+                eta = (n_total - k) * avg
+                _print_progress(
+                    f"unit {k}/{n_total} done | {unit_label} | "
+                    f"{len(unit_records)} recs | wall {wall_s:.1f}s | "
+                    f"elapsed {elapsed:.1f}s | ETA {eta:.1f}s"
+                )
+                if wall_s > _SLOW_UNIT_WARN_S:
+                    _print_progress(
+                        f"WARNING: unit {unit_label} took {wall_s:.1f}s "
+                        f"(>{_SLOW_UNIT_WARN_S}s) — productive-but-slow, NOT terminated"
+                    )
+            except Exception as exc:  # one bad unit must not lose the good ones
+                _print_progress(
+                    f"ERROR: unit {k}/{n_total} raised ({exc!r}); "
+                    "logged, continuing with remaining units"
+                )
+
     _print_progress(f"Wrote {_OUT_PATH.relative_to(_DATA_DIR.parent)} ({len(all_records)} records)")
 
     # --- Report -------------------------------------------------------------

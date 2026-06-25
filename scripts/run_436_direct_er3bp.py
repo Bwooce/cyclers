@@ -101,6 +101,12 @@ _SEED_BUDGET_S = 20
 # few cores free (concurrent #434 sweep + BLAS/system overhead).
 _N_JOBS = int(os.environ.get("CYCLERS_436_NJOBS", "12"))
 
+# Soft per-seed wall-clock threshold (seconds) for pathological-state visibility.
+# A seed slower than this is logged as productive-but-slow and NEVER terminated
+# by the runner (the SIGALRM _SEED_BUDGET_S is a separate, intentional hard cap
+# inside the worker; this constant only governs the parent's warning line).
+_SLOW_UNIT_WARN_S = 1800.0
+
 
 class _SeedBudgetError(Exception):
     """Raised when a single seed's converge+classify exceeds its wall-clock budget."""
@@ -212,14 +218,19 @@ def _eval_one_seed(system: ER3BPSystem, seed: DirectEr3bpSeed) -> dict[str, obje
     worker's own main thread. Returns a small picklable result dict; the parent
     aggregates the tally and writes records (so no shared mutable state).
     """
+    t_unit = time.time()
     try:
         with _seed_budget(_SEED_BUDGET_S):
             orbit = converge_direct_seed(seed)
             if orbit is None:
-                return {"outcome": "nonconverged"}
+                return {
+                    "outcome": "nonconverged",
+                    "label": seed.label,
+                    "wall_s": time.time() - t_unit,
+                }
             cls = classify_no_cr3bp_limit(orbit, system)
     except _SeedBudgetError:
-        return {"outcome": "timeout"}
+        return {"outcome": "timeout", "label": seed.label, "wall_s": time.time() - t_unit}
     status = str(cls["status"])
     rec: dict[str, object] = {
         "label": seed.label,
@@ -238,15 +249,33 @@ def _eval_one_seed(system: ER3BPSystem, seed: DirectEr3bpSeed) -> dict[str, obje
     }
     if status == "e_only_candidate":
         rec.update(_adjudicate_candidate(seed, orbit))
-    return {"outcome": "converged", "status": status, "record": rec}
+    return {
+        "outcome": "converged",
+        "status": status,
+        "record": rec,
+        "label": seed.label,
+        "wall_s": time.time() - t_unit,
+    }
 
 
 def _process_grid(
     system: ER3BPSystem,
     seeds: Sequence[DirectEr3bpSeed],
+    progress: dict[str, object],
 ) -> tuple[list[dict[str, object]], dict[str, int]]:
-    """Converge + classify a grid IN PARALLEL across _N_JOBS workers."""
-    results = Parallel(n_jobs=_N_JOBS, backend="loky")(
+    """Converge + classify a grid IN PARALLEL across _N_JOBS workers.
+
+    Streams results in completion order (return_as="generator_unordered") and
+    writes every converged record to the shared open file handle in
+    ``progress["f"]`` IMMEDIATELY (with flush), so a kill mid-run preserves all
+    completed seeds. ``progress`` carries the cross-grid unit counter ``k``, the
+    campaign total ``n_total``, the campaign start ``t0`` and the file handle.
+    """
+    f = progress["f"]
+    n_total = int(progress["n_total"])  # type: ignore[call-overload]
+    t0 = float(progress["t0"])  # type: ignore[arg-type]
+
+    gen = Parallel(n_jobs=_N_JOBS, backend="loky", return_as="generator_unordered")(
         delayed(_eval_one_seed)(system, seed) for seed in seeds
     )
     records: list[dict[str, object]] = []
@@ -258,26 +287,66 @@ def _process_grid(
         "inconclusive": 0,
         "timed_out": 0,
     }
-    for res in results:
-        outcome = res["outcome"]
-        if outcome == "timeout":
-            tally["timed_out"] += 1
-            continue
-        if outcome == "nonconverged":
-            continue
-        tally["converged"] += 1
-        status = str(res["status"])
-        tally[status] = tally.get(status, 0) + 1
-        rec = res["record"]
-        assert isinstance(rec, dict)
-        if status == "e_only_candidate":
+    while True:
+        try:
+            res = next(gen)
+        except StopIteration:
+            break
+        except Exception as exc:  # a worker propagated; log + keep draining
+            progress["k"] = int(progress["k"]) + 1  # type: ignore[call-overload]
             _print_progress(
-                f"  *** e_only_candidate: {rec['label']} "
-                f"({system.primary_name}-{system.secondary_name}) "
-                f"x0={float(rec['x0']):.4f} ydot0={float(rec['ydot0']):.4f} "  # type: ignore[arg-type]
-                f"death_e={rec.get('death_e')}"
+                f"ERROR: unit {progress['k']}/{n_total} raised in worker "
+                f"({exc!r}); logged, continuing with remaining seeds"
             )
-        records.append(rec)
+            continue
+        progress["k"] = int(progress["k"]) + 1  # type: ignore[call-overload]
+        k = int(progress["k"])  # type: ignore[call-overload]
+        try:
+            wall_s = float(res.get("wall_s", float("nan")))  # type: ignore[union-attr]
+            label = str(res.get("label", "?"))  # type: ignore[union-attr]
+            outcome = res["outcome"]
+            n_recs = 0
+            if outcome == "timeout":
+                tally["timed_out"] += 1
+            elif outcome == "nonconverged":
+                pass
+            else:
+                tally["converged"] += 1
+                status = str(res["status"])
+                tally[status] = tally.get(status, 0) + 1
+                rec = res["record"]
+                assert isinstance(rec, dict)
+                if status == "e_only_candidate":
+                    _print_progress(
+                        f"  *** e_only_candidate: {rec['label']} "
+                        f"({system.primary_name}-{system.secondary_name}) "
+                        f"x0={float(rec['x0']):.4f} ydot0={float(rec['ydot0']):.4f} "  # type: ignore[arg-type]
+                        f"death_e={rec.get('death_e')}"
+                    )
+                records.append(rec)
+                # Incremental write: flush each converged record immediately so a
+                # kill mid-run preserves everything already completed.
+                f.write(json.dumps(rec) + "\n")  # type: ignore[union-attr]
+                f.flush()  # type: ignore[union-attr]
+                n_recs = 1
+
+            elapsed = time.time() - t0
+            avg = elapsed / k
+            eta = (n_total - k) * avg
+            _print_progress(
+                f"unit {k}/{n_total} done | {label} | {outcome} | {n_recs} recs | "
+                f"wall {wall_s:.1f}s | elapsed {elapsed:.1f}s | ETA {eta:.1f}s"
+            )
+            if wall_s > _SLOW_UNIT_WARN_S:
+                _print_progress(
+                    f"WARNING: unit {label} took {wall_s:.1f}s "
+                    f"(>{_SLOW_UNIT_WARN_S}s) — productive-but-slow, NOT terminated"
+                )
+        except Exception as exc:  # one bad unit must not lose the good ones
+            _print_progress(
+                f"ERROR: unit {k}/{n_total} post-processing raised ({exc!r}); "
+                "logged, continuing with remaining seeds"
+            )
     return records, tally
 
 
@@ -305,17 +374,11 @@ def main() -> None:
     }
     candidate_records: list[dict[str, object]] = []
 
+    # Pre-build every (system, period_f) grid up front so the campaign-wide unit
+    # total (n_total) is known before streaming — needed for the per-unit ETA.
+    grids: list[tuple[ER3BPSystem, str, str, float, float, Sequence[DirectEr3bpSeed]]] = []
     for primary, secondary, e in systems:
         system = _build_system(primary, secondary, e)
-        _print_progress(f"=== {primary}-{secondary} (mu={system.mu:.6g}, e={e}) ===")
-        sys_tally = {
-            "grid_size": 0,
-            "converged": 0,
-            "cr3bp_continuous": 0,
-            "e_only_candidate": 0,
-            "inconclusive": 0,
-            "timed_out": 0,
-        }
         for period_f in _PERIOD_FS:
             seeds = direct_e_seed_grid(
                 system,
@@ -326,16 +389,44 @@ def main() -> None:
                 period_f,
                 is_half_period_residual=True,
             )
+            grids.append((system, primary, secondary, e, period_f, seeds))
+    n_total = sum(len(seeds) for *_, seeds in grids)
+
+    # Open the output JSONL ONCE; records stream in and flush per-unit (a kill
+    # mid-run preserves all completed seeds).
+    out_path = _DATA_DIR / "er3bp_direct_436.jsonl"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    sys_tally_by_pair: dict[tuple[str, str], dict[str, int]] = {}
+    with out_path.open("w") as f:
+        progress: dict[str, object] = {"f": f, "k": 0, "n_total": n_total, "t0": t0}
+        last_pair: tuple[str, str] | None = None
+        for system, primary, secondary, e, period_f, seeds in grids:
+            pair = (primary, secondary)
+            if pair != last_pair:
+                _print_progress(f"=== {primary}-{secondary} (mu={system.mu:.6g}, e={e}) ===")
+                sys_tally_by_pair[pair] = {
+                    "grid_size": 0,
+                    "converged": 0,
+                    "cr3bp_continuous": 0,
+                    "e_only_candidate": 0,
+                    "inconclusive": 0,
+                    "timed_out": 0,
+                }
+                last_pair = pair
+            sys_tally = sys_tally_by_pair[pair]
             _print_progress(
                 f"{primary}-{secondary}: period_f={period_f:.4f} grid -> "
                 f"{len(seeds)} seeds; converging..."
             )
-            records, tally = _process_grid(system, seeds)
+            records, tally = _process_grid(system, seeds, progress)
             for key in sys_tally:
                 sys_tally[key] += tally.get(key, 0)
             all_records.extend(records)
             candidate_records.extend(r for r in records if r["status"] == "e_only_candidate")
 
+    for pair, sys_tally in sys_tally_by_pair.items():
+        primary, secondary = pair
         _print_progress(
             f"{primary}-{secondary} tally: grid={sys_tally['grid_size']} "
             f"converged={sys_tally['converged']} "
@@ -347,12 +438,6 @@ def main() -> None:
         for key in overall:
             overall[key] += sys_tally[key]
 
-    # Write the per-converged-seed JSONL.
-    out_path = _DATA_DIR / "er3bp_direct_436.jsonl"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open("w") as f:
-        for rec in all_records:
-            f.write(json.dumps(rec) + "\n")
     _print_progress(f"Wrote {out_path.relative_to(_DATA_DIR.parent)} ({len(all_records)} records)")
 
     _print_progress(
