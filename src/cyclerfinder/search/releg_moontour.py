@@ -173,6 +173,10 @@ def _close_at_target(
             n_rev=n_revs[k],
             vinf_target_in=target,
             vinf_depart_mag=target,
+            # The arrival flyby body (sequence[k+1]) is the leverage body the
+            # multi-rev leveraging backend chains its endgame at; the
+            # ballistic/DSM/SF backends ignore it (a backwards-compatible #465 add).
+            arrival_moon=sequence[k + 1],
         )
         if not res.feasible:
             return None

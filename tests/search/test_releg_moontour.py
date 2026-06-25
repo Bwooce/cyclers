@@ -21,7 +21,11 @@ from __future__ import annotations
 import math
 
 from cyclerfinder.search.releg_moontour import close_powered_cycle
-from cyclerfinder.search.releg_solver import BallisticReleg, DsmReleg
+from cyclerfinder.search.releg_solver import (
+    BallisticReleg,
+    DsmReleg,
+    MultiRevLeveragingReleg,
+)
 
 
 def test_jovian_positive_control_closes_powered() -> None:
@@ -98,6 +102,97 @@ def test_ballistic_backend_also_runs_through_driver() -> None:
     # A ballistic backend delivers no ΔV (it cannot retarget); the per-leg ΔV
     # is all zero. The continuity residual is whatever the ballistic legs leave.
     assert verdict.total_dv_kms == 0.0
+
+
+# ---------------------------------------------------------------------------
+# Task 3 (#465) — multi-rev leveraging backend brings the Galilean tour IN-BAND
+# ---------------------------------------------------------------------------
+
+
+def test_multirev_galilean_positive_control_in_band() -> None:
+    """The Galilean Io-Europa-Ganymede-Io cycle closes IN-BAND with the chain.
+
+    The #449/#464 single-leg relegs closed this cycle geometrically but
+    OUT-OF-BAND (13.18 km/s DSM / 12.03 km/s SF). The multi-rev leveraging chain
+    walks each leg's arrival V_inf down to the common flyby target step by step,
+    so the cycle closes (continuity below the ballistic gate, by construction)
+    AND the total ΔV lands INSIDE the powered dv-band — the in-band closure the
+    prior relegs missed (#465 gate).
+    """
+    sequence = ("Io", "Europa", "Ganymede", "Io")
+    leg_tofs_days = _geomean_tofs(sequence, scale=1.5)
+    verdict = close_powered_cycle(
+        primary="Jupiter",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0, 0),
+        releg=MultiRevLeveragingReleg(),
+        phasing={"Io": 0.0, "Europa": 1.0, "Ganymede": 2.0},
+        dv_band="powered_dsm",
+    )
+    assert verdict.prefilter_skipped is False
+    assert verdict.feasible is True
+    assert verdict.continuity_residual_kms < 0.05
+    assert math.isfinite(verdict.total_dv_kms)
+    assert verdict.total_dv_kms > 0.0
+    # IN-BAND: total ΔV under the 3.5 km/s/cycle powered ceiling. classify_dv_band
+    # returns the powered window class for a ΔV in [300 m/s, 3.5 km/s].
+    assert verdict.total_dv_kms < 3.5
+    assert verdict.dv_band is not None
+
+
+def test_multirev_galilean_cheaper_than_dsm() -> None:
+    """The multi-rev chain closes the Galilean cycle far below the single-DSM cost.
+
+    Same skeleton: the chain's total ΔV is well under the single-DSM total (the
+    #449 close was 13.18 km/s/cycle). The chain spends the multi-VILM *minimum*,
+    the single DSM the single-VILM *maximum* — the multi-rev win, reproduced
+    end-to-end through the driver.
+    """
+    sequence = ("Io", "Europa", "Ganymede", "Io")
+    leg_tofs_days = _geomean_tofs(sequence, scale=1.5)
+    multirev = close_powered_cycle(
+        primary="Jupiter",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0, 0),
+        releg=MultiRevLeveragingReleg(),
+        phasing={"Io": 0.0, "Europa": 1.0, "Ganymede": 2.0},
+    )
+    dsm = close_powered_cycle(
+        primary="Jupiter",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0, 0),
+        releg=DsmReleg(),
+        phasing={"Io": 0.0, "Europa": 1.0, "Ganymede": 2.0},
+    )
+    assert multirev.feasible is True
+    assert dsm.feasible is True
+    # The chain is dramatically cheaper than the single-impulse retarget.
+    assert multirev.total_dv_kms < 0.5 * dsm.total_dv_kms
+
+
+def test_multirev_uranus_disjoint_prefiltered_empty() -> None:
+    """The chain backend still reports the Uranian disjoint case EMPTY.
+
+    A multi-rev chain walks V_inf WITHIN a Tisserand contour — it cannot bridge
+    disjoint contours. The prefilter skips the unbridgeable Uranian legs before
+    any chain solve, so the structural negative is preserved with the new backend.
+    """
+    sequence = ("Ariel", "Umbriel", "Ariel")
+    leg_tofs_days = _geomean_tofs(sequence, scale=1.0)
+    verdict = close_powered_cycle(
+        primary="Uranus",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0),
+        releg=MultiRevLeveragingReleg(),
+        phasing={"Ariel": 0.0, "Umbriel": 1.0},
+    )
+    assert verdict.prefilter_skipped is True
+    assert verdict.feasible is False
+    assert verdict.total_dv_kms == math.inf
 
 
 # ---------------------------------------------------------------------------
