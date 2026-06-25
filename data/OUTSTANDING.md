@@ -197,6 +197,13 @@ multi-week Track-A builds the speculative-high-effort rule mandated:
   residual** (single-shell saturation gap; Phase 5/#307 needs eccentric-Earth
   Tisserand + automated DSM placement). Aldrin/S1L1 precursor probe clean negative
   (788/788 covered by Jones-Hernandez-Jesick VEM corpus).
+  **#289 CLOSED 2026-06-25:** all 5 phases shipped — Phase 5 (#307) closed the
+  eccentric-Earth-Tisserand + automated-DSM-placement gap flagged above, and the
+  substrate was extended by the #430 global MGA-DSM precursor engine (#428).
+  Modules live (`epoch_aware_genome`, `tisserand_mga_window`, `precursor_matcher`,
+  `mga_dsm_placement`, `global_precursor_engine`, `s1l1_corrected`, `dsm_leg`); 55
+  precursor_mga/quasi_cycler catalogue rows. The umbrella #289 is COMPLETE; the
+  only open MGA work is the #430-engine follow-ons (#429/#430/#431).
 - **Axis 4 — QP 2-tori** (#290): Olikara-Howell GMOS substrate + Neimark-Sacker-
   seeded smoke test. **First quasi-periodic invariant 2-torus computed by the
   project.** CI flake noted: smoke test gate 1e-6 occasionally exceeded by ~3×
