@@ -40,6 +40,8 @@ from dataclasses import dataclass
 import numpy as np
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+from cyclerfinder.data.empty_regions import EmptyRegionReport
+from cyclerfinder.data.method_capability import MethodCapability
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day, _moon_state
 from cyclerfinder.search.moon_prune import moon_leg_admissible
 from cyclerfinder.search.releg_solver import Releg, RelegResult
@@ -305,4 +307,111 @@ def close_powered_cycle(
         dv_band=band,
         prefilter_skipped=False,
         prefilter_reasons=tuple(reasons),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Capability-subsumption re-stamp (design §4.7 / honesty contract). A powered
+# re-test that ALSO finds a region empty (the Uranus disjoint-contour case)
+# produces a SUBSUMING method+version record suitable for appending to
+# empty_regions.jsonl — but the writeback itself is a campaign-issue action, NOT
+# a build action. This module only BUILDS the record (the test asserts its
+# shape); it never writes it.
+# ---------------------------------------------------------------------------
+
+# The powered-releg capability envelope: it strictly subsumes the ballistic
+# repeated-moon lane AND the phase-full VILM endgame lane (it adds the in-leg
+# one-DSM impulse DOF on top of the leveraging genome). Tags are drawn from the
+# method_capability partial order (``data.method_capability._CAPABILITY_EDGES``):
+# ``one-dsm-per-leg`` ⊐ ``single-arc``, ``powered`` ⊐ ``ballistic``,
+# ``leveraging`` ⊐ ``single-arc``.
+_RELEG_CAPABILITY_TAGS = frozenset(
+    {"powered", "one-dsm-per-leg", "leveraging", "multi-arc", "patched-conic", "coplanar"}
+)
+
+
+def powered_releg_method_capability(*, git_sha: str = "uncommitted") -> MethodCapability:
+    """The DSM powered-releg capability envelope (capability-subsumption record).
+
+    The genome adds a one-DSM-per-leg in-leg impulse to the leveraging moon-tour
+    lane, so it strictly subsumes both the ballistic repeated-moon lane and the
+    phase-full VILM endgame lane (it reaches every tour they reach, plus the
+    powered ones). ``git_sha`` is the producing commit (reproducibility, NOT the
+    capability — that is the tag set).
+    """
+    return MethodCapability(
+        genome="DSM powered releg (one-DSM-per-leg V_inf-retarget moon tour, #449)",
+        corrector="releg_moontour.close_powered_cycle (DsmReleg, VILM-floor prefilter)",
+        capability_tags=_RELEG_CAPABILITY_TAGS,
+        git_sha=git_sha,
+    )
+
+
+def build_powered_empty_restamp(
+    *,
+    region_id: str,
+    family: str,
+    centre: str,
+    sequence: tuple[str, ...],
+    verdict: PoweredCycleVerdict,
+    git_sha: str = "uncommitted",
+    run_date: str = "",
+) -> EmptyRegionReport:
+    """Build (NOT write) a capability-subsumption re-stamp for a powered-empty region.
+
+    When a powered re-test of a moon-tour dead region ALSO finds it empty — the
+    Uranian disjoint-Tisserand-contour case (``verdict.prefilter_skipped`` true),
+    or a feasible close whose ΔV exceeds the powered band — the negative is
+    re-stamped with the SUBSUMING powered method+version (a powered emptiness is a
+    stronger, more final negative than a ballistic one; design §1.2 honesty
+    caveat). This builds the :class:`EmptyRegionReport` for that re-stamp; the
+    ACTUAL append to ``empty_regions.jsonl`` is a campaign-issue action, not done
+    here (the #449 plan ships the capability + golden; the campaign spends it).
+
+    The record is :func:`validate_empty_region`-valid (bounded extent, recorded
+    prune gates, non-empty capability tags).
+    """
+    if verdict.prefilter_skipped:
+        reason = "all legs unbridgeable: disjoint Tisserand/resonance contours at all probed V_inf"
+        n_probed = len(_VINF_PROBE_KMS)
+    else:
+        reason = (
+            f"powered close exceeds the powered dv-band ceiling "
+            f"(total {verdict.total_dv_kms:.3f} km/s/cycle)"
+        )
+        n_probed = len(_VINF_PROBE_KMS)
+    return EmptyRegionReport(
+        region_id=region_id,
+        family=family,
+        centre=centre,
+        topologies=({"sequence": list(sequence), "period_k": 1},),
+        method_capability=powered_releg_method_capability(git_sha=git_sha),
+        search_extent={
+            "vinf_seeds_probed_kms": list(_VINF_PROBE_KMS),
+            "points_total": n_probed,
+            "ephem_model": "circular",
+            "center": centre,
+        },
+        prune_gates=(
+            "linkable (Tisserand/resonance contour overlap)",
+            "vilm_dv_floor<=budget",
+            "powered dv-band ceiling",
+        ),
+        result={
+            "prefilter_skipped": verdict.prefilter_skipped,
+            "total_dv_kms": verdict.total_dv_kms,
+            "continuity_residual_kms": verdict.continuity_residual_kms,
+            "prefilter_reasons": list(verdict.prefilter_reasons),
+        },
+        verdict=(
+            "EMPTY (STRUCTURAL, powered re-test) — disjoint contours; powered releg "
+            "cannot bridge what is unlinkable at all V_inf"
+            if verdict.prefilter_skipped
+            else "EMPTY (powered) — closes only above the powered dv-band ceiling"
+        ),
+        interpretation=reason,
+        source_anchors=(
+            "capability-subsumption re-stamp of the prior ballistic/VILM negative (#449)"
+        ),
+        run={"date": run_date, "git_sha": git_sha, "method": "releg_moontour (DSM)"},
     )

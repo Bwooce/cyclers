@@ -121,3 +121,99 @@ def _geomean_tofs(sequence: tuple[str, ...], *, scale: float) -> tuple[float, ..
         scale * math.sqrt(period_days(sequence[k]) * period_days(sequence[k + 1]))
         for k in range(len(sequence) - 1)
     )
+
+
+# ---------------------------------------------------------------------------
+# Task 8 — capability-subsumption re-stamp record (built, NOT written)
+# ---------------------------------------------------------------------------
+
+
+def test_powered_empty_restamp_records_method() -> None:
+    """A powered-empty Uranus region yields a SUBSUMING re-stamp record.
+
+    The driver, run on the Uranian Ariel-Umbriel-Ariel disjoint case, returns
+    ``prefilter_skipped``; ``build_powered_empty_restamp`` then produces an
+    :class:`EmptyRegionReport` whose method-capability STRICTLY SUBSUMES the prior
+    VILM-endgame negative's capability (so ``should_sweep`` would NOT re-sweep it
+    under the powered method). The record is ``validate_empty_region``-valid and
+    carries method + version (git_sha) — suitable for appending to
+    ``empty_regions.jsonl``, but NOT written here (campaign-issue action).
+    """
+    from cyclerfinder.data.empty_regions import EmptyRegionReport, validate_empty_region
+    from cyclerfinder.data.method_capability import MethodCapability, subsumes
+    from cyclerfinder.search.releg_moontour import (
+        build_powered_empty_restamp,
+        powered_releg_method_capability,
+    )
+
+    sequence = ("Ariel", "Umbriel", "Ariel")
+    leg_tofs_days = _geomean_tofs(sequence, scale=1.0)
+    verdict = close_powered_cycle(
+        primary="Uranus",
+        sequence=sequence,
+        leg_tofs_days=leg_tofs_days,
+        n_revs=(0, 0),
+        releg=DsmReleg(),
+        phasing={"Ariel": 0.0, "Umbriel": 1.0},
+        dv_band="powered_dsm",
+    )
+    assert verdict.prefilter_skipped is True
+
+    record = build_powered_empty_restamp(
+        region_id="uranus-neptune-regular-moon-endgame-vilm-2026-06-23",
+        family="planet-centric moon system (Uranus + Neptune regular moons)",
+        centre="Uranus/Neptune",
+        sequence=sequence,
+        verdict=verdict,
+        git_sha="testsha",
+        run_date="2026-06-26",
+    )
+    assert isinstance(record, EmptyRegionReport)
+    # The record is first-class (bounded, prune-gated, capability-tagged).
+    validate_empty_region(record)
+    assert record.method_capability.git_sha == "testsha"
+    assert "STRUCTURAL" in record.verdict
+
+    # The powered capability STRICTLY SUBSUMES the prior VILM-endgame method:
+    # under capability-subsumption the region stays empty without a re-sweep.
+    prior_vilm = MethodCapability(
+        genome="phase-full VILM endgame (leveraging, planet-centric moon tour)",
+        corrector="discover_endgame_moon -> solve_endgame (VILM V_inf-lowering chain)",
+        capability_tags=frozenset(
+            {"coplanar", "leveraging", "multi-arc", "patched-conic", "powered"}
+        ),
+        git_sha="0a6d0a3",
+    )
+    powered = powered_releg_method_capability(git_sha="testsha")
+    assert subsumes(powered, prior_vilm)
+
+
+def test_powered_restamp_not_written_to_disk(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Building the re-stamp record does NOT write empty_regions.jsonl.
+
+    The build step is pure; the actual append is a campaign-issue action. This
+    guards against an accidental writeback in the build path.
+    """
+    from cyclerfinder.search.releg_moontour import build_powered_empty_restamp
+
+    sequence = ("Ariel", "Umbriel", "Ariel")
+    verdict = close_powered_cycle(
+        primary="Uranus",
+        sequence=sequence,
+        leg_tofs_days=_geomean_tofs(sequence, scale=1.0),
+        n_revs=(0, 0),
+        releg=DsmReleg(),
+        phasing={"Ariel": 0.0, "Umbriel": 1.0},
+        dv_band="powered_dsm",
+    )
+    target = tmp_path / "empty_regions.jsonl"
+    build_powered_empty_restamp(
+        region_id="r",
+        family="f",
+        centre="Uranus",
+        sequence=sequence,
+        verdict=verdict,
+    )
+    # No file created by the build step.
+    assert not target.exists()
+    assert list(tmp_path.iterdir()) == []

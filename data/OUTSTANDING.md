@@ -23,6 +23,32 @@ UNCHANGED this sprint (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows; no new
 rows, no level changes) — the work was capability, provenance, and
 characterization, not admissions.
 
+**Powered DSM releg genome (#449, DSM branch) — CAPABILITY SHIPPED, no rows.**
+The leg-swap genome that re-solves moon-tour TRANSFER LEGS with a one-DSM-per-leg
+powered arc instead of a pure ballistic Lambert, so the V∞-continuity defect that
+kills a ballistic tour becomes a BUDGETED ΔV the powered leg absorbs. Design
+`docs/superpowers/specs/2026-06-25-449-lowthrust-dsm-releg-genome-design-draft.md`,
+plan `…/plans/2026-06-25-449-lowthrust-dsm-releg-genome-plan.md`. New:
+`search/releg_solver.py` (`Releg` protocol + `BallisticReleg`/`DsmReleg` — reuses
+the #307 DSM leg solver + `vilm.py` cost model, no new optimiser),
+`search/releg_moontour.py` (`close_powered_cycle` driver: VILM/linkability
+prefilter → powered close → dv-band classification + the capability-subsumption
+re-stamp builder), `data/golden/campagnola_endgame_releg.yaml` (sourced Endgame
+Part-1 Tables 1/2 + Europa 154/147 m/s + Uranus disjoint-contour assertion). The
+V2-moontour gate is now releg-aware (`releg=`/`dv_band=` params; default path
+unchanged). GOLDEN: the DSM releg's delivered ΔV reproduces the Campagnola-Russell
+VILM leveraging floor (Ganymede-Europa ≥ 1.71 km/s). HONESTY: the Uranian
+Ariel→Umbriel disjoint-contour case is correctly reported UNBRIDGEABLE (prefilter
+skip, no fabricated bridge) — the structural negative stands under the powered
+re-test. The Jovian Io-Europa-Ganymede positive control CLOSES (continuity exact
+post-retarget) but at ~7-13 km/s/cycle — ABOVE the powered dv-band ceiling, so a
+single-DSM-per-leg powered close of the Galilean tour at simple coplanar phasing
+is a *powered-empty* result, not an in-band cycler. This plan ships the capability
++ golden; the at-scale discovery campaign (re-stamping the registry) + the
+SF-low-thrust second backend (Task 7) are explicit FOLLOW-ONs. The "blocked by
+#450" tag on #449 is incorrect (design §5: #450 is a CR3BP-PO enumerator, no
+shared data path) and should be dropped.
+
 **Band-aware validation + M7 maintenance-ΔV (the discovery gate).** #423 (M7
 per-row real-eph horizon-TCM stage) + #424 (band-aware V3 acceptance) LANDED, so
 the dv_band→validation coupling gate is RELEASED — discovery + validation
