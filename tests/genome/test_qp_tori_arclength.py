@@ -21,11 +21,14 @@ from typing import Any
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.cr3bp import jacobi_constant
 from cyclerfinder.genome import qp_tori_arclength as qpa
-from cyclerfinder.genome.qp_tori import _pack_unknowns, correct_qp_torus
+from cyclerfinder.genome.qp_tori import QPTorus, _pack_unknowns, correct_qp_torus
+
+SmokeTorus = tuple[cr3bp.CR3BPSystem, QPTorus]
 
 ROOT = Path(__file__).resolve().parents[2]
 SUBFAMILIES_FILE = ROOT / "data" / "family_296_3d_subfamilies_299.jsonl"
@@ -78,7 +81,7 @@ def _load_first_neimark_sacker_bracket() -> tuple[dict[str, Any], dict[str, Any]
 
 
 @pytest.fixture(scope="module")
-def smoke_torus():
+def smoke_torus() -> SmokeTorus:
     """The #290 converged smoke torus (n_trans=2, amplitude=5e-4)."""
     br, parent = _load_first_neimark_sacker_bracket()
     system = _em_system()
@@ -103,7 +106,7 @@ def smoke_torus():
     return system, torus
 
 
-def _seed_z(system, torus):
+def _seed_z(system: cr3bp.CR3BPSystem, torus: QPTorus) -> tuple[NDArray[np.float64], int, int]:
     """Build the augmented z0 from a converged QPTorus."""
     cj = jacobi_constant(np.real(torus.fourier_coeffs[0, :]), system.mu)
     # phase pin: coordinate where Re(c_1) is largest (matches qp_tori corrector)
@@ -119,7 +122,7 @@ def _seed_z(system, torus):
 # ---------------------------------------------------------------------------
 
 
-def test_pack_unpack_roundtrip(smoke_torus):
+def test_pack_unpack_roundtrip(smoke_torus: SmokeTorus) -> None:
     system, torus = smoke_torus
     z, _, _ = _seed_z(system, torus)
     coeffs, rho, t_strob, cj = qpa._unpack_augmented(z, torus.n_modes)
@@ -128,7 +131,7 @@ def test_pack_unpack_roundtrip(smoke_torus):
     assert z.shape[0] == 6 + 12 * torus.n_modes + 3
 
 
-def test_energy_row_zero_at_seed(smoke_torus):
+def test_energy_row_zero_at_seed(smoke_torus: SmokeTorus) -> None:
     system, torus = smoke_torus
     z, phase_pin_idx, n_samples = _seed_z(system, torus)
     r = qpa._augmented_residual(z, system, torus.n_modes, n_samples, phase_pin_idx)
@@ -136,7 +139,7 @@ def test_energy_row_zero_at_seed(smoke_torus):
     assert abs(r[-1]) < 1e-12
 
 
-def test_analytic_jacobian_matches_fd(smoke_torus):
+def test_analytic_jacobian_matches_fd(smoke_torus: SmokeTorus) -> None:
     system, torus = smoke_torus
     z, phase_pin_idx, n_samples = _seed_z(system, torus)
     _, j_an = qpa._gmos_residual_and_jac(

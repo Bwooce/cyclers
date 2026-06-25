@@ -23,9 +23,20 @@ This module is the **swap target**: a single ``Releg`` protocol with backends.
   is golden-anchored to the analytic VILM leveraging floor
   (``search.vilm.vilm_dv_min``), which is already golden-validated against
   Campagnola-Russell Endgame Part-1 Tables 1/2.
+* :class:`LowThrustReleg` — the secondary powered backend (#449 Task 7). Wraps the
+  Sims-Flanagan N-segment low-thrust leg (``core.sims_flanagan.SimsFlanaganLeg`` +
+  ``search.lowthrust.solve_leg_min_dv``, #309): the boundary states are pinned to
+  the moon encounter states retargeted to the requested departure/arrival V_inf,
+  and the deliverable ΔV is distributed across the thrust train (so a low-thrust
+  leg is strictly more ΔV-efficient than the single-impulse DSM for the same V_inf
+  change). Gated behind the DSM branch (design §7): SF is slower to converge and
+  its leg-model golden is bracket-only — the SF delivered ΔV is asserted to BRACKET
+  the DSM/VILM-floor result (a different transcription, so bracket not equal), with
+  the same sourced VILM floor as the non-circular lower bound.
 
 Reuse over rebuild: no optimiser is written here and no corrector is changed; the
-DSM leg solver (#307) and the VILM cost model are imported, not re-derived.
+DSM leg solver (#307), the SF low-thrust leg solver (#309) and the VILM cost model
+are imported, not re-derived.
 """
 
 from __future__ import annotations
@@ -42,7 +53,9 @@ from scipy.optimize import minimize
 from cyclerfinder.core.constants import MU_SUN_KM3_S2
 from cyclerfinder.core.kepler import KeplerError
 from cyclerfinder.core.lambert import LambertError, LambertSolution, lambert
+from cyclerfinder.core.sims_flanagan import SimsFlanaganError, SimsFlanaganLeg, segment_dv_bounds
 from cyclerfinder.search.dsm_leg import dsm_leg
+from cyclerfinder.search.lowthrust import solve_leg_min_dv
 
 Vec3 = NDArray[np.float64]
 
@@ -315,6 +328,181 @@ class DsmReleg:
             return _infeasible()
         vinf_out, vinf_in, dv_dsm = ev
         return RelegResult(vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=dv_dsm, feasible=True)
+
+
+class LowThrustReleg:
+    r"""Powered Sims-Flanagan low-thrust leg — distributed-ΔV V_inf retarget (#449).
+
+    The secondary powered backend (Task 7), wrapping the #309 Sims-Flanagan leg
+    solver as a third :class:`Releg` behind the same protocol as :class:`DsmReleg`
+    (swappable into the moon-tour driver with no driver rewrite). Where the DSM
+    backend delivers the V_inf retarget with a SINGLE in-leg impulse, the
+    low-thrust backend distributes the deliverable ΔV across an ``n_segments``
+    thrust train, which is strictly more ΔV-efficient for the same V_inf change
+    (the physics the whole #449 low-thrust bet rests on).
+
+    Boundary states (the moon-tour driver's continuity-by-construction contract):
+
+    * Departure ``v0 = v_a_moon + vinf_depart_mag * û_depart`` — the departure
+      V_inf magnitude is PINNED to ``vinf_depart_mag`` (the driver's common flyby
+      target ``T``) along the ballistic-Lambert departure direction.
+    * Arrival ``vf = v_b_moon + vinf_target_in * û_arrive`` — the arrival V_inf
+      magnitude is RETARGETED to ``vinf_target_in`` (again ``T``) along the
+      ballistic-Lambert arrival direction.
+
+    The SF leg then solves the minimum-ΔV thrust schedule connecting those fixed
+    boundary states over the leg ToF (``search.lowthrust.solve_leg_min_dv``); the
+    delivered ΔV is ``total_dv_kms``. When neither V_inf is retargeted (both
+    ``None``) the boundary states are the ballistic Lambert endpoints and the leg's
+    all-zero schedule closes at ΔV ≈ 0 — the coplanar/zero-retarget regression
+    limit that reproduces :class:`BallisticReleg` (the SF leg's zero-thrust limit
+    IS the ballistic leg).
+
+    Thrust capability is auto-scaled (``thrust_reach``) so the per-leg
+    segment-ΔV budget comfortably exceeds the requested V_inf change: a leg with
+    too little thrust capability simply cannot reach the retargeted boundary state
+    (the defect never closes), so the backend sizes ``tmax_kn`` from the V_inf
+    delta. This is a *capability* knob, not a spacecraft-specific number: the
+    backend reports the ΔV the distributed train must spend to deliver the
+    retarget, which is what the driver scores against the powered dv-band.
+
+    Golden discipline (design §6/§8). The SF leg model has no clean state-level
+    literature anchor (its own ``lowthrust.py`` docstring: "there is no usable
+    literature anchor for the leg model"; the Vasile-Campagnola 2009 DFET
+    transcription "DOES NOT MAP" to our SF leg, digest
+    ``2026-06-07-vasile-campagnola-dfet-method-mining.md`` §2.6). So the SF golden
+    is BRACKET-only: the delivered ΔV must be ≥ the same sourced VILM floor
+    (``vilm.vilm_dv_min``) the DSM branch uses (a powered leg cannot beat the
+    theoretical-minimum VILM ΔV for the transfer) and ≤ the single-impulse DSM
+    cost (distributed thrust is more efficient than one impulse). The non-circular
+    lower bound is the published Campagnola-Russell floor, never a value SF
+    computed.
+    """
+
+    def __init__(
+        self,
+        *,
+        n_segments: int = 10,
+        m0_kg: float = 1000.0,
+        isp_s: float = 3000.0,
+        n_starts: int = 2,
+        thrust_reach: float = 4.0,
+        min_tmax_kn: float = 1.0e-3,
+    ) -> None:
+        self._n_segments = max(2, n_segments)
+        self._m0_kg = m0_kg
+        self._isp_s = isp_s
+        self._n_starts = max(1, n_starts)
+        # The per-leg segment-ΔV budget is sized to ``thrust_reach`` times the
+        # requested V_inf delta so the leg has the reach to deliver the retarget
+        # (a too-weak train cannot close the boundary defect). >= 1 is required for
+        # any reach; 4x leaves comfortable margin without making the box wild.
+        self._thrust_reach = max(1.5, thrust_reach)
+        self._min_tmax_kn = min_tmax_kn
+
+    def _tmax_kn_for_reach(self, dv_reach_kms: float, tof_s: float) -> float:
+        r"""Choose ``tmax_kn`` so the leg's total segment-ΔV budget ≈ ``dv_reach``.
+
+        ``segment_dv_bounds`` returns ``Δv_max,i = (T_max / m_i) * dt_seg``; summed
+        over ``N`` segments the (constant-mass) total budget is
+        ``N * (T_max / m0) * (tof / N) = (T_max / m0) * tof``. Inverting for the
+        thrust that yields a total budget of ``dv_reach`` km/s gives
+        ``T_max = m0 * dv_reach / tof`` (kN, since the unit system is km/km/s/s).
+        """
+        tmax = self._m0_kg * dv_reach_kms / tof_s
+        return max(self._min_tmax_kn, tmax)
+
+    def solve(
+        self,
+        r_a: Vec3,
+        v_a: Vec3,
+        r_b: Vec3,
+        v_b: Vec3,
+        tof_s: float,
+        mu: float,
+        *,
+        n_rev: int = 0,
+        vinf_target_in: float | None = None,
+        vinf_depart_mag: float | None = None,
+    ) -> RelegResult:
+        r_a = np.asarray(r_a, dtype=np.float64)
+        v_a = np.asarray(v_a, dtype=np.float64)
+        r_b = np.asarray(r_b, dtype=np.float64)
+        v_b = np.asarray(v_b, dtype=np.float64)
+
+        # The ballistic Lambert leg fixes the departure/arrival V_inf DIRECTIONS;
+        # the requested magnitudes (pin/retarget) set the boundary states. With no
+        # retarget the boundary states are exactly the ballistic Lambert endpoints
+        # (the zero-thrust SF leg then closes at ΔV ~ 0 — the regression limit).
+        try:
+            sols = lambert(r_a, r_b, tof_s, mu=mu, max_revs=max(0, n_rev))
+        except (LambertError, ValueError):
+            return _infeasible()
+        wanted = [s for s in sols if s.n_revs == n_rev]
+        if not wanted:
+            return _infeasible()
+        seed = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a)))
+
+        vinf_dep_seed = np.asarray(seed.v1, dtype=np.float64) - v_a
+        vinf_arr_seed = np.asarray(seed.v2, dtype=np.float64) - v_b
+        dep_mag_seed = float(np.linalg.norm(vinf_dep_seed))
+        arr_mag_seed = float(np.linalg.norm(vinf_arr_seed))
+        if dep_mag_seed < 1.0e-9 or arr_mag_seed < 1.0e-9:
+            return _infeasible()
+        u_dep = vinf_dep_seed / dep_mag_seed
+        u_arr = vinf_arr_seed / arr_mag_seed
+
+        dep_mag = vinf_depart_mag if vinf_depart_mag is not None else dep_mag_seed
+        arr_mag = vinf_target_in if vinf_target_in is not None else arr_mag_seed
+        v0 = v_a + dep_mag * u_dep
+        vf = v_b + arr_mag * u_arr
+
+        # The boundary V_inf change the thrust train must bridge: the magnitude
+        # change at departure + arrival vs the ballistic endpoints (the leg geometry
+        # is otherwise the same arc). Size the thrust budget to cover it with reach.
+        dv_reach = self._thrust_reach * (
+            abs(dep_mag - dep_mag_seed) + abs(arr_mag - arr_mag_seed) + 0.5 * (dep_mag + arr_mag)
+        )
+        # Floor the reach so even the zero-retarget leg carries a small live thrust
+        # budget (so the optimiser has room to drive the defect to zero, recovering
+        # the ~0-ΔV ballistic close rather than being clamped to coast-only).
+        dv_reach = max(dv_reach, 0.5)
+        tmax_kn = self._tmax_kn_for_reach(dv_reach, tof_s)
+
+        try:
+            leg = SimsFlanaganLeg(
+                r0=r_a,
+                v0=v0,
+                rf=r_b,
+                vf=vf,
+                tof_s=tof_s,
+                n_segments=self._n_segments,
+                m0_kg=self._m0_kg,
+                isp_s=self._isp_s,
+                tmax_kn=tmax_kn,
+                mu=mu,
+            )
+        except SimsFlanaganError:
+            return _infeasible()
+
+        # Guard: if the sized budget still cannot span the boundary V_inf change the
+        # leg can never close; report infeasible rather than a non-converged ΔV.
+        cap_total = float(np.sum(segment_dv_bounds(leg, np.zeros((self._n_segments, 3)))))
+        if cap_total < (abs(dep_mag - dep_mag_seed) + abs(arr_mag - arr_mag_seed)):
+            return _infeasible()
+
+        try:
+            res = solve_leg_min_dv(leg, n_starts=self._n_starts, use_de=False)
+        except (SimsFlanaganError, KeplerError, ValueError):
+            return _infeasible()
+        if not res.converged:
+            return _infeasible()
+
+        vinf_out = float(np.linalg.norm(v0 - v_a))
+        vinf_in = float(np.linalg.norm(vf - v_b))
+        return RelegResult(
+            vinf_out=vinf_out, vinf_in=vinf_in, dv_kms=float(res.total_dv_kms), feasible=True
+        )
 
 
 # ---------------------------------------------------------------------------

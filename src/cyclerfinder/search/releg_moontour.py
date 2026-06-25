@@ -252,11 +252,15 @@ def close_powered_cycle(
     states = _moon_states(sequence, leg_tofs_days, phasing, mu)
 
     # --- Stage 2: powered close at the cheapest common flyby V_inf. ---
-    # The ballistic backend cannot retarget; run it once unconstrained.
-    from cyclerfinder.search.releg_solver import DsmReleg
+    # A powered backend (DsmReleg / LowThrustReleg) retargets each leg to a common
+    # flyby V_inf so continuity holds by construction; the ballistic backend has no
+    # retarget knob, so it runs once unconstrained. A backend is powered iff it is
+    # NOT the regression-locked BallisticReleg — so LowThrustReleg swaps in for
+    # DsmReleg with no driver change (the #449 Task 7 swap contract).
+    from cyclerfinder.search.releg_solver import BallisticReleg
 
     targets: tuple[float | None, ...]
-    targets = _VINF_PROBE_KMS if isinstance(releg, DsmReleg) else (None,)
+    targets = (None,) if isinstance(releg, BallisticReleg) else _VINF_PROBE_KMS
 
     # Select the common flyby V_inf ``T`` that CLOSES continuity (residual below
     # the gate) at minimum ΔV; if no probed ``T`` closes, keep the one with the

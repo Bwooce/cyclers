@@ -25,7 +25,12 @@ import pytest
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.search.discovery_campaign import _mean_motion_rad_day, _moon_state
-from cyclerfinder.search.releg_solver import BallisticReleg, DsmReleg, RelegResult
+from cyclerfinder.search.releg_solver import (
+    BallisticReleg,
+    DsmReleg,
+    LowThrustReleg,
+    RelegResult,
+)
 from cyclerfinder.search.vilm import vilm_dv_min
 
 DAY_S = 86400.0
@@ -173,3 +178,74 @@ def test_dsm_releg_dv_geq_vilm_floor() -> None:
     assert result.dv_kms >= floor - 1.0e-3
     # ...and inside the powered band's sanity ceiling (3.5 km/s/cycle x reach).
     assert result.dv_kms < 25.0
+
+
+# ---------------------------------------------------------------------------
+# Task 7 — LowThrustReleg: Sims-Flanagan backend, regression + bracket golden
+# ---------------------------------------------------------------------------
+
+
+def test_lowthrust_releg_zero_retarget_matches_ballistic() -> None:
+    """REGRESSION (coplanar limit): a zero-retarget SF leg ≈ ballistic (dv ≈ 0).
+
+    With neither departure nor arrival V_inf retargeted, the SF leg's boundary
+    states ARE the ballistic Lambert endpoints, so its all-zero thrust schedule
+    closes at ΔV ≈ 0 — the SF leg's zero-thrust limit is the ballistic leg (the
+    same regression anchor :class:`BallisticReleg` provides). The reported V_inf
+    chain matches the ballistic leg's lowest-energy branch.
+    """
+    r_a, v_a, r_b, v_b, tof_s, mu = _jovian_leg("Io", "Europa", tof_days=5.0)
+    ballistic = BallisticReleg().solve(r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0)
+
+    result = LowThrustReleg().solve(r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0)
+    assert result.feasible is True
+    # The SF leg's zero-thrust limit closes at ~zero ΔV (the ballistic leg).
+    assert result.dv_kms == pytest.approx(0.0, abs=1.0e-2)
+    # V_inf chain matches the ballistic lowest-energy branch (same boundary states).
+    assert result.vinf_out == pytest.approx(ballistic.vinf_out, abs=1.0e-3)
+    assert result.vinf_in == pytest.approx(ballistic.vinf_in, abs=1.0e-3)
+
+
+def test_lowthrust_releg_brackets_dsm() -> None:
+    """BRACKET GOLDEN (sourced floor): the SF low-thrust ΔV brackets DSM/VILM-floor.
+
+    On the Ganymede->Europa leg, retarget both departure and arrival V_inf to a
+    common ``T`` (the moon-tour driver's continuity-by-construction contract).
+    The SF low-thrust delivered ΔV must:
+
+    * be ≥ the published VILM leveraging floor ``vilm.vilm_dv_min`` (a powered leg
+      cannot beat the theoretical-minimum VILM ΔV for the transfer — the SOURCED,
+      non-circular lower bound that reproduces Campagnola-Russell Part-1 Table 1
+      Ganymede-Europa ΔV_min = 1.71 km/s);
+    * be ≤ the single-impulse :class:`DsmReleg` cost (distributing the ΔV across a
+      thrust train is strictly more efficient than one impulse — the physics the
+      whole #449 low-thrust bet rests on).
+
+    The SF leg model has no clean state-level literature anchor (the Vasile-
+    Campagnola 2009 DFET transcription "DOES NOT MAP" to our SF leg, digest
+    ``2026-06-07-vasile-campagnola-dfet-method-mining.md`` §2.6), so this is a
+    bracket, not an equality — and the bracket's lower edge is the SAME sourced
+    VILM floor the tight DSM golden uses, never a number SF itself computed.
+    """
+    floor = vilm_dv_min("Ganymede", "Europa")
+    assert floor == pytest.approx(1.71, abs=0.17)  # reproduces the published value
+
+    r_a, v_a, r_b, v_b, tof_s, mu = _jovian_leg("Ganymede", "Europa", tof_days=6.0)
+    target = 4.0
+    dsm = DsmReleg().solve(
+        r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0, vinf_target_in=target, vinf_depart_mag=target
+    )
+    assert dsm.feasible is True
+
+    result = LowThrustReleg().solve(
+        r_a, v_a, r_b, v_b, tof_s, mu, n_rev=0, vinf_target_in=target, vinf_depart_mag=target
+    )
+    assert result.feasible is True
+    # Lower edge: the sourced VILM floor (cannot beat the theoretical minimum).
+    assert result.dv_kms >= floor - 1.0e-3
+    # Upper edge: at or below the single-impulse DSM cost (distributed is cheaper).
+    # A 10% slack absorbs the different-transcription / convergence-tolerance gap.
+    assert result.dv_kms <= dsm.dv_kms * 1.1
+    # The retargeted V_inf chain is pinned to the common flyby target by construction.
+    assert result.vinf_out == pytest.approx(target, abs=1.0e-6)
+    assert result.vinf_in == pytest.approx(target, abs=1.0e-6)
