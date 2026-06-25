@@ -355,6 +355,45 @@ def powered_releg_method_capability(*, git_sha: str = "uncommitted") -> MethodCa
     )
 
 
+# The multi-rev leveraging capability envelope (#465): it adds the multi-rev
+# resonant-hop VILM-endgame chain DOF on top of the single-DSM retarget, so it
+# strictly subsumes the DSM powered-releg lane AND the single leveraging leg
+# (``multi-rev-leveraging`` ⊐ ``one-dsm-per-leg`` and ``leveraging`` in the
+# method_capability partial order). It reaches every tour the DSM releg reaches,
+# plus the in-band ones the single impulse could not (the cheap multi-VILM
+# minimum vs the single-VILM maximum).
+_MULTIREV_LEVERAGING_CAPABILITY_TAGS = frozenset(
+    {
+        "powered",
+        "multi-rev-leveraging",
+        "one-dsm-per-leg",
+        "leveraging",
+        "multi-arc",
+        "patched-conic",
+        "coplanar",
+    }
+)
+
+
+def multirev_leveraging_method_capability(*, git_sha: str = "uncommitted") -> MethodCapability:
+    """The multi-rev leveraging-releg capability envelope (#465).
+
+    The genome chains N resonant-hop VILM legs to walk V_inf down (the endgame
+    structure), so it strictly subsumes the single-DSM powered-releg lane and the
+    single leveraging leg. ``git_sha`` is the producing commit (reproducibility,
+    NOT the capability — that is the tag set).
+    """
+    return MethodCapability(
+        genome=("multi-rev leveraging releg (chained VILM-endgame V_inf-walk moon tour, #465)"),
+        corrector=(
+            "releg_moontour.close_powered_cycle (MultiRevLeveragingReleg, "
+            "leveraging_chain.walk_vinf_down, VILM-floor prefilter)"
+        ),
+        capability_tags=_MULTIREV_LEVERAGING_CAPABILITY_TAGS,
+        git_sha=git_sha,
+    )
+
+
 def build_powered_empty_restamp(
     *,
     region_id: str,
@@ -362,6 +401,7 @@ def build_powered_empty_restamp(
     centre: str,
     sequence: tuple[str, ...],
     verdict: PoweredCycleVerdict,
+    method_capability: MethodCapability | None = None,
     git_sha: str = "uncommitted",
     run_date: str = "",
 ) -> EmptyRegionReport:
@@ -376,9 +416,24 @@ def build_powered_empty_restamp(
     ACTUAL append to ``empty_regions.jsonl`` is a campaign-issue action, not done
     here (the #449 plan ships the capability + golden; the campaign spends it).
 
+    ``method_capability`` is the subsuming method the re-stamp records; it
+    defaults to the DSM powered-releg capability (#449). For the #465 multi-rev
+    chain re-test, pass :func:`multirev_leveraging_method_capability` — a powered
+    CHAIN that ALSO cannot bridge is a STRONGER negative than the single-DSM one.
+
     The record is :func:`validate_empty_region`-valid (bounded extent, recorded
     prune gates, non-empty capability tags).
     """
+    capability = (
+        method_capability
+        if method_capability is not None
+        else powered_releg_method_capability(git_sha=git_sha)
+    )
+    method_label = (
+        "releg_moontour (multi-rev leveraging)"
+        if "multi-rev-leveraging" in capability.capability_tags
+        else "releg_moontour (DSM)"
+    )
     if verdict.prefilter_skipped:
         reason = "all legs unbridgeable: disjoint Tisserand/resonance contours at all probed V_inf"
         n_probed = len(_VINF_PROBE_KMS)
@@ -393,7 +448,7 @@ def build_powered_empty_restamp(
         family=family,
         centre=centre,
         topologies=({"sequence": list(sequence), "period_k": 1},),
-        method_capability=powered_releg_method_capability(git_sha=git_sha),
+        method_capability=capability,
         search_extent={
             "vinf_seeds_probed_kms": list(_VINF_PROBE_KMS),
             "points_total": n_probed,
@@ -421,5 +476,5 @@ def build_powered_empty_restamp(
         source_anchors=(
             "capability-subsumption re-stamp of the prior ballistic/VILM negative (#449)"
         ),
-        run={"date": run_date, "git_sha": git_sha, "method": "releg_moontour (DSM)"},
+        run={"date": run_date, "git_sha": git_sha, "method": method_label},
     )

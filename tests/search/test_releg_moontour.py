@@ -340,3 +340,75 @@ def test_powered_restamp_not_written_to_disk(tmp_path) -> None:  # type: ignore[
     # No file created by the build step.
     assert not target.exists()
     assert list(tmp_path.iterdir()) == []
+
+
+# ---------------------------------------------------------------------------
+# Task 5 (#465) — multi-rev-leveraging capability + stronger powered-empty
+# ---------------------------------------------------------------------------
+
+
+def test_multirev_capability_subsumes_dsm() -> None:
+    """The multi-rev-leveraging capability strictly subsumes the DSM releg.
+
+    The chain adds the multi-rev leveraging endgame DOF on top of the single-DSM
+    retarget, so ``multirev_leveraging_method_capability`` strictly subsumes
+    ``powered_releg_method_capability`` (via the ``multi-rev-leveraging`` ⊐
+    ``one-dsm-per-leg`` / ``leveraging`` edges in ``data/method_capability``).
+    """
+    from cyclerfinder.data.method_capability import subsumes
+    from cyclerfinder.search.releg_moontour import (
+        multirev_leveraging_method_capability,
+        powered_releg_method_capability,
+    )
+
+    multirev = multirev_leveraging_method_capability(git_sha="testsha")
+    dsm = powered_releg_method_capability(git_sha="testsha")
+    assert subsumes(multirev, dsm)
+    # ... and strictly (the DSM does NOT subsume the multi-rev chain back).
+    assert not subsumes(dsm, multirev)
+    assert "multi-rev-leveraging" in multirev.capability_tags
+
+
+def test_multirev_uranus_powered_empty_restamp() -> None:
+    """A prefiltered-empty Uranian skeleton re-stamps with the multi-rev method.
+
+    The Uranian disjoint case, run with the chain backend, is still prefiltered
+    EMPTY; ``build_powered_empty_restamp`` with the multi-rev capability produces
+    a ``validate_empty_region``-valid record whose method STRICTLY SUBSUMES the
+    single-DSM powered-empty (a powered CHAIN that ALSO cannot bridge is a
+    stronger negative than the single-DSM one).
+    """
+    from cyclerfinder.data.empty_regions import EmptyRegionReport, validate_empty_region
+    from cyclerfinder.data.method_capability import subsumes
+    from cyclerfinder.search.releg_moontour import (
+        build_powered_empty_restamp,
+        multirev_leveraging_method_capability,
+        powered_releg_method_capability,
+    )
+
+    sequence = ("Ariel", "Umbriel", "Ariel")
+    verdict = close_powered_cycle(
+        primary="Uranus",
+        sequence=sequence,
+        leg_tofs_days=_geomean_tofs(sequence, scale=1.0),
+        n_revs=(0, 0),
+        releg=MultiRevLeveragingReleg(),
+        phasing={"Ariel": 0.0, "Umbriel": 1.0},
+    )
+    assert verdict.prefilter_skipped is True
+
+    record = build_powered_empty_restamp(
+        region_id="uranus-neptune-regular-moon-endgame-vilm-2026-06-23",
+        family="planet-centric moon system (Uranus + Neptune regular moons)",
+        centre="Uranus/Neptune",
+        sequence=sequence,
+        verdict=verdict,
+        method_capability=multirev_leveraging_method_capability(git_sha="msha"),
+        git_sha="msha",
+        run_date="2026-06-26",
+    )
+    assert isinstance(record, EmptyRegionReport)
+    validate_empty_region(record)
+    assert "multi-rev-leveraging" in record.method_capability.capability_tags
+    # Strictly stronger than the single-DSM powered-empty.
+    assert subsumes(record.method_capability, powered_releg_method_capability(git_sha="msha"))

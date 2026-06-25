@@ -71,6 +71,11 @@ _CAPABILITY_EDGES: frozenset[tuple[str, str]] = frozenset(
         ("one-dsm-per-leg", "single-arc"),
         ("broken-plane", "coplanar"),
         ("leveraging", "single-arc"),  # VILM resonant-leg DOF ⊐ no-leveraging
+        # A multi-rev leveraging CHAIN (the VILM endgame, #465) walks V_inf down
+        # across many resonant hops, so it strictly subsumes both the single-DSM
+        # retarget leg and the single leveraging leg.
+        ("multi-rev-leveraging", "one-dsm-per-leg"),
+        ("multi-rev-leveraging", "leveraging"),
     }
 )
 
