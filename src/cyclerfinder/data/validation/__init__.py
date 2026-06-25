@@ -38,6 +38,13 @@ from cyclerfinder.data.validation.v3_3d import (
     run_v3_3d,
     run_v3_periodic_regression,
 )
+from cyclerfinder.data.validation.v3_3d_periodic import (
+    V3_PERIODIC_CLOSURE_FLOOR_NONDIM,
+    V3_PERIODIC_DRIFT_AGREEMENT_FLOOR_KMS,
+    V3_PERIODIC_N_CYCLES_MIN,
+    V3PeriodicVerdict3D,
+    run_v3_3d_periodic,
+)
 from cyclerfinder.data.validation.v4_uranus import (
     URANIAN_PERTURBER_MOONS,
     URANUS_J2,
@@ -62,6 +69,9 @@ __all__ = [
     "V2_N_CYCLES_MIN",
     "V3_AGREEMENT_FLOOR_KMS",
     "V3_N_CYCLES_MIN",
+    "V3_PERIODIC_CLOSURE_FLOOR_NONDIM",
+    "V3_PERIODIC_DRIFT_AGREEMENT_FLOOR_KMS",
+    "V3_PERIODIC_N_CYCLES_MIN",
     "V4_AGREEMENT_FLOOR_KMS",
     "V4_N_CYCLES_MIN",
     "MoontourCycleVerdict",
@@ -70,6 +80,7 @@ __all__ = [
     "V2Verdict3D",
     "V3CycleVerdict3D",
     "V3PeriodicRegressionVerdict",
+    "V3PeriodicVerdict3D",
     "V3Verdict3D",
     "V4CycleVerdictUranus",
     "V4UranusVerdict",
@@ -77,6 +88,7 @@ __all__ = [
     "run_v2_3d",
     "run_v2_moontour",
     "run_v3_3d",
+    "run_v3_3d_periodic",
     "run_v3_periodic_regression",
     "run_v4_uranus",
 ]
