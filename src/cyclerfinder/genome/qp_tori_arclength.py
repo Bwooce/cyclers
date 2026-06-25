@@ -21,6 +21,7 @@ from numpy.typing import NDArray
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.cr3bp import jacobi_constant
 from cyclerfinder.genome.qp_tori import (
+    _enforce_reality,
     _gmos_residual,
     _pack_unknowns,
     _unpack_unknowns,
@@ -130,3 +131,80 @@ def _gmos_residual_and_jac(
         jac[-2, :] = 0.0
         jac[-2, 12 + phase_pin_idx] = 1.0
     return r0, jac
+
+
+# ---------------------------------------------------------------------------
+# Task 2: SVD null tangent + augmented arclength corrector.
+# ---------------------------------------------------------------------------
+
+
+def _arclength_tangent(
+    jac: NDArray[np.float64], prev: NDArray[np.float64] | None
+) -> NDArray[np.float64] | None:
+    """Unit null tangent = last right-singular vector of the residual Jacobian.
+
+    Mirrors er3bp_continuation._arclength_tangent. ``jac`` is the residual
+    Jacobian of shape ``(len(z)-1, len(z))`` -- rank ``len(z)-1`` with a
+    one-dimensional null space. Oriented by ``+dot`` with ``prev``.
+    """
+    try:
+        _u, _s, vt = np.linalg.svd(jac, full_matrices=True)
+    except np.linalg.LinAlgError:
+        return None
+    if vt.shape[0] != jac.shape[1]:
+        return None
+    tau = np.asarray(vt[-1], dtype=np.float64)
+    norm = float(np.linalg.norm(tau))
+    if not np.all(np.isfinite(tau)) or norm < 1e-12:
+        return None
+    tau = tau / norm
+    if prev is not None and float(np.dot(tau, prev)) < 0.0:
+        tau = -tau
+    return tau
+
+
+def _apply_step_caps(
+    dz: NDArray[np.float64], n_modes: int, mode_cap: float, rho_cap: float, cj_cap: float
+) -> NDArray[np.float64]:
+    out = dz.copy()
+    out[: 6 + 12 * n_modes] = np.clip(out[: 6 + 12 * n_modes], -mode_cap, mode_cap)
+    out[-3] = float(np.clip(out[-3], -rho_cap, rho_cap))  # rho
+    # t_strob (out[-2]) capped at mode_cap-scale; cj (out[-1]) at cj_cap
+    out[-2] = float(np.clip(out[-2], -mode_cap, mode_cap))
+    out[-1] = float(np.clip(out[-1], -cj_cap, cj_cap))
+    return out
+
+
+def _correct_arclength_torus(
+    z_pred: NDArray[np.float64],
+    tau: NDArray[np.float64],
+    system: cr3bp.CR3BPSystem,
+    *,
+    n_modes: int,
+    n_samples: int,
+    phase_pin_idx: int,
+    tol: float,
+    max_iter: int = 60,
+    mode_cap: float = 0.1,
+    rho_cap: float = 0.05,
+    cj_cap: float = 1e-2,
+) -> NDArray[np.float64] | None:
+    """Newton onto {R(z)=0, tau.(z - z_pred)=0}. Returns converged z or None."""
+    z = z_pred.copy()
+    for _ in range(max_iter):
+        r0, grad = _gmos_residual_and_jac(z, system, n_modes, n_samples, phase_pin_idx)
+        arc = float(np.dot(tau, z - z_pred))
+        if float(np.linalg.norm(r0)) < tol and abs(arc) < 1e-10:
+            return z
+        jmat = np.vstack([grad, tau.reshape(1, -1)])
+        rhs = -np.concatenate([r0, np.array([arc])])
+        try:
+            dz = np.linalg.solve(jmat, rhs)
+        except np.linalg.LinAlgError:
+            dz, *_ = np.linalg.lstsq(jmat, rhs, rcond=None)
+        dz = _apply_step_caps(np.asarray(dz, dtype=np.float64), n_modes, mode_cap, rho_cap, cj_cap)
+        z = z + dz
+        coeffs, rho, t_strob, cj = _unpack_augmented(z, n_modes)
+        coeffs = _enforce_reality(coeffs)
+        z = _pack_augmented(coeffs, rho, t_strob, cj)
+    return None

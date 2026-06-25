@@ -150,3 +150,42 @@ def test_analytic_jacobian_matches_fd(smoke_torus: SmokeTorus) -> None:
     )
     assert j_an.shape == j_fd.shape
     assert np.max(np.abs(j_an - j_fd)) < 1e-6
+
+
+# ---------------------------------------------------------------------------
+# Task 2: SVD null tangent + corrector generalization.
+# ---------------------------------------------------------------------------
+
+
+def test_tangent_is_unit_and_in_nullspace(smoke_torus: SmokeTorus) -> None:
+    system, torus = smoke_torus
+    z, phase_pin_idx, n_samples = _seed_z(system, torus)
+    _, jac = qpa._gmos_residual_and_jac(z, system, torus.n_modes, n_samples, phase_pin_idx)
+    tau = qpa._arclength_tangent(jac, None)
+    assert tau is not None
+    assert abs(np.linalg.norm(tau) - 1.0) < 1e-9
+    # near-null: ||J tau|| small relative to the dominant singular value
+    sv = np.linalg.svd(jac, compute_uv=False)
+    assert np.linalg.norm(jac @ tau) < 1e-6 * sv[0]
+
+
+def test_corrector_ds_zero_reproduces_seed(smoke_torus: SmokeTorus) -> None:
+    system, torus = smoke_torus
+    z, phase_pin_idx, n_samples = _seed_z(system, torus)
+    _, jac = qpa._gmos_residual_and_jac(z, system, torus.n_modes, n_samples, phase_pin_idx)
+    tau = qpa._arclength_tangent(jac, None)
+    assert tau is not None
+    # ds=0: predictor == seed; corrector must return the seed (already converged)
+    z_out = qpa._correct_arclength_torus(
+        z,
+        tau,
+        system,
+        n_modes=torus.n_modes,
+        n_samples=n_samples,
+        phase_pin_idx=phase_pin_idx,
+        tol=1e-6,
+    )
+    assert z_out is not None
+    assert np.linalg.norm(z_out - z) < 1e-5
+    r = qpa._augmented_residual(z_out, system, torus.n_modes, n_samples, phase_pin_idx)
+    assert np.linalg.norm(r) < 1e-5
