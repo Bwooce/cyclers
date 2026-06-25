@@ -16,8 +16,17 @@ insertion trajectory, and that insertion is epoch-locked.
 | `quasi_cycler` | closes-up-to-rotation | YES (10–15 yr window) | 3–15 | cyclers-of-opportunity inside a planetary-alignment window |
 | `precursor_mga` | non-repeating | YES (launch window) | 1 (insertion) | one-shot MGA chain inserting a spacecraft into a steady-state cycler |
 | `mga_tour` | non-repeating | YES (launch window) | 1 (terminal) | Galileo VEEGA; Cassini VVEJGA; Tito 2018 |
+| `resonant_po` (v4.9, #453) | strictly periodic | NO | ∞ | stable resonant/libration PO, NO transport utility (em-cycler-21-3d-spatial-2026) |
 
 The `cycler` class is the original scope and remains the gold standard. The
+fifth class, `resonant_po` (added in schema v4.9, task #453), is NOT
+mission-actionable: it is a stable resonant/libration periodic orbit that
+shares the `cycler` reachability/periodicity invariants but never encounters
+the secondary (no transport). It exists so the catalogue can carry a
+known-class-member resonant PO without mislabelling it a transport cycler — see
+the C21 3D spatial extension, recharacterized from `cycler` after Region B
+(#447) measured its closest lunar pass at 122,628 km vs the 66,183 km lunar SOI.
+The
 other three classes are admitted because they are *mission-actionable*,
 structurally *searchable* (closure equations, not arbitrary flyby chains), and
 have **strong existence priors in literature already in the corpus**.
@@ -27,7 +36,7 @@ have **strong existence priors in literature already in the corpus**.
 Three additive optional row fields (defaults preserve v4.6 behaviour — every
 pre-v4.7 row reads as a strict cycler):
 
-- `orbit_class`: enum {`cycler` | `quasi_cycler` | `precursor_mga` | `mga_tour`}, default `cycler`
+- `orbit_class`: enum {`cycler` | `quasi_cycler` | `precursor_mga` | `mga_tour` | `resonant_po`}, default `cycler` (`resonant_po` added v4.9, #453)
 - `epoch_locked`: bool, default `false`
 - `n_returns`: integer ≥ 1 or string `"infinite"`, default `"infinite"`
 
@@ -40,7 +49,7 @@ Three optional epoch-locked fields (null/absent for `cycler`):
 Class invariants (enforced by the Python semantic gate, not the JSON Schema —
 the schema cannot express cross-row referential integrity):
 
-- `cycler` ⇒ `epoch_locked=false`, `n_returns="infinite"`
+- `cycler` / `resonant_po` ⇒ `epoch_locked=false`, `n_returns="infinite"` (pinned by `tests/data/test_schema_v47_orbit_class.py`)
 - `quasi_cycler` / `precursor_mga` / `mga_tour` ⇒ `epoch_locked=true`, `n_returns` is a finite integer ≥ 1
 - `precursor_mga` ⇒ `inserts_into` resolves to an existing `cycler` row
 
