@@ -109,7 +109,7 @@ def _stumpff_c4(z: float) -> float:
         # c4(z) = 1/24 - z/720 + z**2/40320 - z**3/3628800 + ...
         return 1.0 / 24.0 - z / 720.0 + z * z / 40320.0 - (z * z * z) / 3628800.0
     # c4 = (1/2! - c2(z)) / z
-    return (0.5 - stumpff_c(z)) / z
+    return float(0.5 - stumpff_c(z)) / z
 
 
 def _stumpff_c5(z: float) -> float:
@@ -118,7 +118,7 @@ def _stumpff_c5(z: float) -> float:
         # c5(z) = 1/120 - z/5040 + z**2/362880 - z**3/39916800 + ...
         return 1.0 / 120.0 - z / 5040.0 + z * z / 362880.0 - (z * z * z) / 39916800.0
     # c5 = (1/3! - c3(z)) / z
-    return (1.0 / 6.0 - stumpff_s(z)) / z
+    return float(1.0 / 6.0 - stumpff_s(z)) / z
 
 
 def shepperd_stm(

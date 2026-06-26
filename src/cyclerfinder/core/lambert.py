@@ -19,6 +19,19 @@ Cross-check
 ``lamberthub.gooding1990`` (dev dependency only) and reports the worst
 per-component velocity disagreement. This is the M1 gate.
 
+JIT acceleration (#475)
+-----------------------
+The Stumpff functions imported here are already ``numba.njit`` compiled (see
+:mod:`cyclerfinder.core._stumpff`).  The scalar helpers ``_t_of_z_jit``,
+``_y_of_z_jit``, and ``_dt_dz_jit`` are further compiled with
+``@njit(cache=True)`` so that the tight single-rev Newton loop and the
+Illinois bracket solver run entirely in native code.
+
+Pure-Python reference counterparts (``_t_of_z_py``, ``_y_of_z_py``,
+``_dt_dz_py``) are retained permanently for parity testing; the public aliases
+``_t_of_z``, ``_y_of_z``, ``_dt_dz`` point to the JIT variants for the
+production path.
+
 References
 ----------
 * Vallado, D. A., *Fundamentals of Astrodynamics and Applications*, 4th ed.,
@@ -35,10 +48,11 @@ from dataclasses import dataclass
 from math import acos, copysign, expm1, log1p, sqrt
 from typing import Any
 
+import numba as nb
 import numpy as np
 from numpy.typing import NDArray
 
-from cyclerfinder.core._stumpff import stumpff_c, stumpff_s
+from cyclerfinder.core._stumpff import stumpff_c, stumpff_c_py, stumpff_s, stumpff_s_py
 from cyclerfinder.core.constants import MU_SUN_KM3_S2
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64
@@ -115,16 +129,59 @@ class LambertSolution:
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Scalar math helpers — pure-Python reference variants
+# ---------------------------------------------------------------------------
+# These are the permanent oracle for parity tests.  The production path uses
+# the JIT-compiled variants below.
+
+
+def _t_of_z_py(z: float, a_coef: float, r1_n: float, r2_n: float, mu: float) -> tuple[float, float]:
+    """Pure-Python reference for ``_t_of_z``.  Oracle for parity tests."""
+    c = stumpff_c_py(z)
+    s = stumpff_s_py(z)
+    y = r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
+    t = ((y / c) ** 1.5) * s / sqrt(mu) + a_coef * sqrt(y / mu)
+    return t, y
+
+
+def _y_of_z_py(z: float, a_coef: float, r1_n: float, r2_n: float) -> float:
+    """Pure-Python reference for ``_y_of_z``.  Oracle for parity tests."""
+    c = stumpff_c_py(z)
+    s = stumpff_s_py(z)
+    return r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
+
+
+def _dt_dz_py(z: float, y: float, a_coef: float, mu: float) -> float:
+    """Pure-Python reference for ``_dt_dz``.  Oracle for parity tests."""
+    c = stumpff_c_py(z)
+    s = stumpff_s_py(z)
+    if abs(z) > 1.0e-5:
+        y_over_c_15 = float((y / c) ** 1.5)
+        term1 = float(
+            y_over_c_15 * ((1.0 / (2.0 * z)) * (c - 1.5 * s / c) + 0.75 * (s * s) / c) / sqrt(mu)
+        )
+        term2 = float((a_coef / 8.0) * (3.0 * s * sqrt(y) / c + a_coef * sqrt(c / y)) / sqrt(mu))
+        return term1 + term2
+    y_15 = float(y**1.5)
+    return float(
+        (sqrt(2.0) / 40.0) * y_15 + (a_coef / 8.0) * (sqrt(y) + a_coef * sqrt(1.0 / (2.0 * y)))
+    ) / sqrt(mu)
+
+
+# ---------------------------------------------------------------------------
+# Scalar math helpers — JIT-compiled (#475)
 # ---------------------------------------------------------------------------
 
 
+@nb.njit(cache=True)  # type: ignore[untyped-decorator]
 def _t_of_z(z: float, a_coef: float, r1_n: float, r2_n: float, mu: float) -> tuple[float, float]:
     """Return ``(t, y)`` given current ``z``. Used inside the Newton loop.
 
     Vallado eqs. (Algorithm 5.2 main loop): y(z) and t(z). The argument
     ``a_coef`` is Vallado's ``A``, renamed to satisfy lower-case naming
     conventions while keeping the algebra recognisable.
+
+    JIT-compiled (#475); numerically identical to ``_t_of_z_py``.
     """
     c = stumpff_c(z)
     s = stumpff_s(z)
@@ -133,14 +190,19 @@ def _t_of_z(z: float, a_coef: float, r1_n: float, r2_n: float, mu: float) -> tup
     return t, y
 
 
+@nb.njit(cache=True)  # type: ignore[untyped-decorator]
 def _y_of_z(z: float, a_coef: float, r1_n: float, r2_n: float) -> float:
-    """Vallado's ``y(z)``. Standalone so the Newton safeguard can reject a
-    step that would drive ``y`` negative without raising."""
-    c = stumpff_c(z)
-    s = stumpff_s(z)
+    """Vallado's ``y(z)``.  JIT-compiled (#475); numerically identical to ``_y_of_z_py``.
+
+    Standalone so the Newton safeguard can reject a step that would drive
+    ``y`` negative without raising.
+    """
+    c: float = stumpff_c(z)
+    s: float = stumpff_s(z)
     return r1_n + r2_n + a_coef * (z * s - 1.0) / sqrt(c)
 
 
+@nb.njit(cache=True)  # type: ignore[untyped-decorator]
 def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
     """Analytic derivative dt/dz used for single-rev Newton steps.
 
@@ -148,9 +210,11 @@ def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
     fall back to a Maclaurin truncation to avoid the ``1/z`` divergence. This
     derivative is only valid on the single-revolution ``z`` branch; the
     multi-rev branches use the derivative-free :func:`_solve_uv_branch`.
+
+    JIT-compiled (#475); numerically identical to ``_dt_dz_py``.
     """
-    c = stumpff_c(z)
-    s = stumpff_s(z)
+    c: float = stumpff_c(z)
+    s: float = stumpff_s(z)
     if abs(z) > 1.0e-5:
         # Standard form. Differentiating sqrt(mu)*t = (y/C)^1.5 * S + A*sqrt(y)
         # with the Stumpff identities dC/dz = (1 - z*S - 2*C)/(2z) and
@@ -161,17 +225,22 @@ def _dt_dz(z: float, y: float, a_coef: float, mu: float) -> float:
         # 3*S*sqrt(y)/C^1.5 — one spurious sqrt(C) — which was inconsistent
         # with the z->0 Maclaurin limit below and made Newton oscillate on
         # long-way transfers; see task #205.)
-        y_over_c_15 = float((y / c) ** 1.5)
+        y_over_c_15 = (y / c) ** 1.5
         term1 = (
             y_over_c_15 * ((1.0 / (2.0 * z)) * (c - 1.5 * s / c) + 0.75 * (s * s) / c) / sqrt(mu)
         )
         term2 = (a_coef / 8.0) * (3.0 * s * sqrt(y) / c + a_coef * sqrt(c / y)) / sqrt(mu)
-        return term1 + term2
+        return float(term1 + term2)
     # Near z=0 fallback (Vallado): expansion about z=0.
-    y_15 = float(y**1.5)
-    return (
+    y_15 = y**1.5
+    return float(
         (sqrt(2.0) / 40.0) * y_15 + (a_coef / 8.0) * (sqrt(y) + a_coef * sqrt(1.0 / (2.0 * y)))
     ) / sqrt(mu)
+
+
+# ---------------------------------------------------------------------------
+# Newton / Illinois solvers
+# ---------------------------------------------------------------------------
 
 
 def _solve_single_rev_newton(
@@ -276,11 +345,11 @@ def _find_single_rev_bracket(
     def _y_only(z_in: float) -> float:
         c = stumpff_c(z_in)
         s = stumpff_s(z_in)
-        return r1_n + r2_n + a_coef * (z_in * s - 1.0) / sqrt(c)
+        return float(r1_n + r2_n + a_coef * (z_in * s - 1.0) / sqrt(c))
 
     def _f_of_z(z_in: float) -> float:
         t_z, _y_unused = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
-        return t_z - tof
+        return float(t_z) - tof
 
     # The interior anchor: z = 0 is valid (y > 0) for every well-posed single-
     # rev geometry. If it is not, the transfer has no valid universal-variable
@@ -398,7 +467,7 @@ def _min_time_of_revolution(
 
     def _t(z_in: float) -> float:
         t_z, _ = _t_of_z(z_in, a_coef, r1_n, r2_n, mu)
-        return t_z
+        return float(t_z)
 
     inv_phi = (sqrt(5.0) - 1.0) / 2.0  # 1/golden ratio
     c = b - inv_phi * (b - a)
@@ -656,7 +725,7 @@ def lambert(
     def _y_only(z_in: float) -> float:
         c = stumpff_c(z_in)
         s = stumpff_s(z_in)
-        return r1_n + r2_n + a_coef * (z_in * s - 1.0) / sqrt(c)
+        return float(r1_n + r2_n + a_coef * (z_in * s - 1.0) / sqrt(c))
 
     y0 = _y_only(z)
     if y0 < 0.0:
