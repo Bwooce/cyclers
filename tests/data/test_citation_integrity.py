@@ -35,7 +35,9 @@ import yaml  # type: ignore[import-untyped]
 from cyclerfinder.search.literature_check import (
     KNOWN_CORPUS,
     CorpusAnchor,
+    anchor_for_key,
     build_citation_registry,
+    can_anchor_decision,
     citation_key_exists,
     derive_citation_key,
     resolve_citation_key,
@@ -416,3 +418,68 @@ def test_every_catalogue_strong_link_resolves_to_a_registry_key() -> None:
                 )
                 linked_keys.add(key)
     assert linked_keys, "no catalogue row strong-linked to any registry key (vacuous)."
+
+
+# ---------------------------------------------------------------------------
+# #486 — provenance tags: an inherited-unverified citation cannot anchor a
+# decision until ground-truthed (the #480 false-erratum failure mode).
+# ---------------------------------------------------------------------------
+
+
+def test_new_anchors_default_to_inherited_unverified() -> None:
+    """Provenance defaults conservatively: an anchor that does not explicitly
+    declare ``verified-against-source`` is ``inherited-unverified``.
+
+    A constructed anchor with no provenance set must NOT be decision-grade --
+    the default cannot silently certify an ungrounded citation.
+    """
+    fresh = CorpusAnchor(
+        name="Unverified test anchor",
+        primary="Sun",
+        body_set=frozenset({"E", "M"}),
+        authors=("Nobody",),
+        keywords=("test",),
+        citation="placeholder",
+        doi=None,
+    )
+    assert fresh.provenance == "inherited-unverified"
+    assert not can_anchor_decision(fresh)
+
+
+def test_ground_truthed_citations_are_verified_against_source() -> None:
+    """The two citations we ground-truthed this session are decision-grade."""
+    for key in ("hernandez-2017-ieg-608", "jones-2017-vem-577"):
+        anchor = resolve_citation_key(key)
+        assert anchor.provenance == "verified-against-source", (
+            f"{key!r} should be verified-against-source (ground-truthed this session)."
+        )
+        assert can_anchor_decision(anchor)
+        # anchor_for_key combines key resolution + the provenance gate: a
+        # verified, resolvable key passes it.
+        assert anchor_for_key(key) is anchor
+
+
+def test_inherited_unverified_citation_cannot_anchor_a_decision() -> None:
+    """THE #486 gate: an ``inherited-unverified`` citation cannot anchor a
+    spec / validation-gate / catalogue-row promotion until ground-truthed.
+
+    ``anchor_for_key`` resolves the key (#484) AND enforces the provenance gate
+    (#486): an inherited-unverified work raises ``PermissionError`` even though
+    its key resolves cleanly. This is the exact failure mode that produced the
+    #480 false erratum -- a citation present-but-ungrounded backing a decision.
+    """
+    # Find a real, resolvable, but still-inherited anchor in the corpus.
+    inherited = next(a for a in KNOWN_CORPUS if a.provenance == "inherited-unverified")
+    assert citation_key_exists(inherited.key_resolved), "test anchor must resolve by key"
+    assert not can_anchor_decision(inherited)
+    with pytest.raises(PermissionError):
+        anchor_for_key(inherited.key_resolved)
+
+
+def test_every_anchor_provenance_is_a_known_value() -> None:
+    """Provenance is one of the two defined tags -- no free-text drift."""
+    allowed = {"verified-against-source", "inherited-unverified"}
+    for anchor in KNOWN_CORPUS:
+        assert anchor.provenance in allowed, (
+            f"anchor {anchor.name!r} has unknown provenance {anchor.provenance!r}"
+        )

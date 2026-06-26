@@ -48,6 +48,13 @@ FetchFn = Callable[[str, str], str]
 
 Status = Literal["published", "not-found", "inconclusive"]
 
+# Citation provenance (#486): a citation is either confirmed against the actual
+# source ("verified-against-source") or copied from prior notes without grounding
+# ("inherited-unverified"). New citations default to the conservative
+# "inherited-unverified"; an inherited citation cannot anchor a promotion until
+# ground-truthed (the #480 false-erratum failure mode). See can_anchor_decision.
+Provenance = Literal["verified-against-source", "inherited-unverified"]
+
 
 @dataclass(frozen=True)
 class SearchResult:
@@ -266,6 +273,17 @@ class CorpusAnchor:
     means "not separately pinned"; the full ``citation`` text still carries it."""
     venue: str = ""
     """The cited work's VENUE / journal / conference (#484)."""
+    provenance: Provenance = "inherited-unverified"
+    """Citation provenance (#486): whether this anchor's bodies/system/key/AAS
+    number were confirmed against the ACTUAL source (``"verified-against-source"``
+    -- someone opened the paper's title/abstract/content) or copied from prior
+    notes without grounding (``"inherited-unverified"``, the conservative
+    default). An ``inherited-unverified`` citation CANNOT anchor a spec, a
+    validation-gate, a golden EXPECTED value, or a catalogue-row promotion until
+    it is ground-truthed -- the exact failure mode that produced the #480 false
+    erratum (a wrong AAS number copied forward as fact). See
+    :func:`can_anchor_decision`. Promoted to ``"verified-against-source"`` only
+    by an explicit grounding step against the source."""
     system: str = ""
     """The dynamical SYSTEM the cited work is about, extracted from its
     TITLE/ABSTRACT (the near-verbatim, lowest-hallucination part) -- the #483
@@ -462,6 +480,47 @@ def citation_key_exists(key: str, *, registry: dict[str, CorpusAnchor] | None = 
     return key in reg
 
 
+# ---------------------------------------------------------------------------
+# Provenance gate (#486)
+# ---------------------------------------------------------------------------
+
+
+def can_anchor_decision(anchor: CorpusAnchor) -> bool:
+    """May this citation anchor a promotion / spec / golden-EXPECTED value? (#486).
+
+    Only a ``verified-against-source`` citation -- one confirmed against the
+    actual paper's title/abstract/content -- may anchor a spec, a V-tier
+    promotion, a golden EXPECTED value, or a catalogue-row promotion. An
+    ``inherited-unverified`` citation (copied from prior notes without grounding)
+    must be ground-truthed against the source first. This is the machine surface
+    for the discipline that prevents the #480 false-erratum class: a wrong AAS
+    number copied forward as fact must not back a decision until someone opens
+    the source.
+    """
+    return anchor.provenance == "verified-against-source"
+
+
+def anchor_for_key(key: str, *, registry: dict[str, CorpusAnchor] | None = None) -> CorpusAnchor:
+    """Resolve ``key`` and require it to be decision-grade (#484 + #486).
+
+    Combines the #484 key resolution with the #486 provenance gate: raises
+    :class:`KeyError` if the key does not resolve (wrong-author / fabricated) and
+    :class:`PermissionError` if it resolves to an ``inherited-unverified`` work
+    (not yet ground-truthed). Use this at any site that anchors a decision on a
+    citation key, so neither an unresolvable nor an ungrounded citation can back
+    a promotion.
+    """
+    anchor = resolve_citation_key(key, registry=registry)
+    if not can_anchor_decision(anchor):
+        raise PermissionError(
+            f"citation key {key!r} ({anchor.name!r}) is provenance "
+            f"{anchor.provenance!r}: an inherited-unverified citation cannot "
+            f"anchor a spec / validation-gate / catalogue-row promotion until "
+            f"ground-truthed against the source (#486)."
+        )
+    return anchor
+
+
 # Hand-curated from the catalogue's published rows + the task's named corpus.
 # These are PUBLICATION facts (author/venue/doi), not values our code computed.
 KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
@@ -569,6 +628,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS "
             "17-608; Adv. Astronaut. Sci. Vol. 162 (Univelt), pp. 973-984"
         ),
+        # #486: VERIFIED this session -- the #482 digest read the acquired PDF
+        # page-by-page; title + (c) page confirm AAS 17-608 and the {Io, Europa,
+        # Ganymede} Jovian body set. Decision-grade.
+        provenance="verified-against-source",
         body_set=frozenset({"Io", "Europa", "Ganymede"}),
         # #350: 'triple cycler' = repeated IEG encounter sequence.
         topology_label=frozenset({"repeated-moon"}),
@@ -669,6 +732,10 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
             "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS "
             "17-577 (NTRS 20190028464)"
         ),
+        # #486: VERIFIED this session -- the on-disk title page confirms AAS
+        # 17-577 (Jones-first) and the {Venus, Earth, Mars} heliocentric body
+        # set; NTRS 20190028464. Decision-grade.
+        provenance="verified-against-source",
         body_set=frozenset({"V", "E", "M"}),
         # #350: 'VEM triple cycler' = repeated Venus-Earth-Mars encounter
         # sequence (the Jones-Hernandez-Jesick AAS 17-577 family).
@@ -2126,10 +2193,13 @@ __all__ = [
     "CandidateSignature",
     "CorpusAnchor",
     "LiteratureCheckResult",
+    "Provenance",
     "SearchFn",
     "SearchResult",
+    "anchor_for_key",
     "build_citation_registry",
     "build_queries",
+    "can_anchor_decision",
     "check_literature",
     "citation_key_exists",
     "derive_citation_key",
