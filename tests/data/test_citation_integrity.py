@@ -35,6 +35,10 @@ import yaml  # type: ignore[import-untyped]
 from cyclerfinder.search.literature_check import (
     KNOWN_CORPUS,
     CorpusAnchor,
+    build_citation_registry,
+    citation_key_exists,
+    derive_citation_key,
+    resolve_citation_key,
     system_for_primary,
 )
 
@@ -313,3 +317,102 @@ def test_every_anchor_has_a_grounded_system(anchor: CorpusAnchor) -> None:
     (explicit ``system`` or derived from the title-sourced ``primary``).
     """
     assert anchor.system_grounded, f"anchor {anchor.name!r} has no grounded system"
+
+
+# ---------------------------------------------------------------------------
+# #484 — structured citation-key registry: close the WRONG-AUTHOR gap.
+#
+# #485 (above) catches AUTHOR-CONSISTENT mis-citations (right author, wrong
+# system/bodies -- the Galilean-vs-VEM class). A mis-citation that ALSO names
+# the WRONG authors does not strong-link to any anchor, so #485 never sees it.
+# #484 closes that: a citation resolves to a grounded work THROUGH a stable
+# registry KEY, and a key that does not resolve (a wrong-author / fabricated
+# reference) is FLAGGED.
+# ---------------------------------------------------------------------------
+
+
+def test_citation_registry_builds_with_unique_keys() -> None:
+    """Every KNOWN_CORPUS anchor is registry-addressable by a UNIQUE key.
+
+    ``build_citation_registry`` raises on a duplicate key, so a green build is
+    itself the uniqueness assertion; we also assert the registry covers every
+    anchor (no anchor is unreachable by key).
+    """
+    registry = build_citation_registry()
+    assert len(registry) == len(KNOWN_CORPUS), (
+        "registry key count does not match anchor count -- a key collision "
+        "silently dropped an anchor."
+    )
+    for anchor in KNOWN_CORPUS:
+        assert anchor.key_resolved in registry
+        assert resolve_citation_key(anchor.key_resolved) is anchor
+
+
+def test_ground_truthed_anchors_carry_explicit_stable_keys() -> None:
+    """The two works we ground-truthed this session resolve by their explicit,
+    stable, human-meaningful keys (not just a derived slug).
+    """
+    ieg = resolve_citation_key("hernandez-2017-ieg-608")
+    assert ieg.body_set == frozenset({"Io", "Europa", "Ganymede"})
+    assert ieg.system_grounded == "jovian"
+
+    vem = resolve_citation_key("jones-2017-vem-577")
+    assert vem.body_set == frozenset({"V", "E", "M"})
+    assert vem.system_grounded == "heliocentric"
+
+    # The two same-author sibling papers must NOT collide on one key (the exact
+    # concept-collision the registry disambiguates).
+    assert ieg.key_resolved != vem.key_resolved
+
+
+def test_wrong_author_fabricated_key_is_flagged() -> None:
+    """POSITIVE CONTROL (#484): a fabricated / wrong-author citation key does
+    NOT resolve and is flagged -- the wrong-author gap #485 cannot reach.
+
+    A mis-citation that names authors absent from the grounded record produces
+    a key that is not in the registry; resolving it must raise, and the boolean
+    existence check must report False. (This is the failure #485 misses: it only
+    checks author-consistent citations, so a wrong-author reference slips past
+    it -- here it is caught at the key.)
+    """
+    fabricated_key = "smith-2099-fabricated-galilean-vem-cycler"
+    assert not citation_key_exists(fabricated_key)
+    with pytest.raises(KeyError):
+        resolve_citation_key(fabricated_key)
+
+    # And a plausible-looking but WRONG-AUTHOR variant of a real work (e.g. the
+    # IEG paper mis-attributed to "Longuski") derives a key that does not match
+    # the grounded IEG key -- so it cannot silently bind to the real anchor.
+    wrong_author_key = derive_citation_key(
+        ("Longuski", "Byrnes"), "One Class of Io-Europa-Ganymede Triple Cyclers"
+    )
+    assert not citation_key_exists(wrong_author_key), (
+        "a wrong-author variant of the IEG paper resolved to a registry key -- "
+        "the wrong-author gap is NOT closed."
+    )
+    assert wrong_author_key != "hernandez-2017-ieg-608"
+
+
+def test_every_catalogue_strong_link_resolves_to_a_registry_key() -> None:
+    """Every catalogue row that strong-links to a KNOWN_CORPUS anchor resolves
+    that anchor to a registry key -- the keyed surface the ratchet now guards.
+
+    This wires the #484 registry into the corpus sweep: the same author-set +
+    system strong-link #485 uses to bind a row to its cited work also yields a
+    resolvable registry key for that work. A future anchor added without a
+    resolvable key (or a duplicate that collides) trips this.
+    """
+    rows = _load_rows()
+    registry = build_citation_registry()
+    linked_keys: set[str] = set()
+    for row in rows:
+        claim = _claim_from_row(row)
+        for anchor in KNOWN_CORPUS:
+            if _anchor_represents_claim(anchor, claim):
+                key = anchor.key_resolved
+                assert key in registry, (
+                    f"row {row['id']!r} strong-links to anchor {anchor.name!r} "
+                    f"whose key {key!r} does not resolve in the registry."
+                )
+                linked_keys.add(key)
+    assert linked_keys, "no catalogue row strong-linked to any registry key (vacuous)."

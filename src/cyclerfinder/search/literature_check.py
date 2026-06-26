@@ -243,6 +243,29 @@ class CorpusAnchor:
     citation: str
     doi: str | None
     domains: tuple[str, ...] = ()
+    key: str = ""
+    """Stable citation-registry key for this work (#484).
+
+    The load-bearing surfaces (catalogue ``first_published`` /
+    ``corroborating_sources`` and these anchors) resolve a citation to its
+    grounded record THROUGH this key, closing the #485 ratchet's wrong-author
+    gap: a mis-citation that also names the WRONG AUTHORS does not strong-link
+    to an anchor, so #485 never sees it; but if it is written as a ``cite:``
+    key, the key registry can flag that the key does not resolve to any
+    grounded work. The key is a stable slug (e.g. ``jones-2017-vem-577``,
+    ``hernandez-2017-ieg-608``); when left empty it is DERIVED deterministically
+    from ``authors`` + ``name`` by :func:`derive_citation_key`, so every anchor
+    is registry-addressable without a 53-way manual migration. Anchors we
+    ground-truthed against the source (IEG AAS 17-608, VEM AAS 17-577) carry an
+    EXPLICIT key.
+    """
+    year: int | None = None
+    """Publication year, grounded from the cited work's title page (#484)."""
+    title: str = ""
+    """The cited work's TITLE, near-verbatim from its title page (#484). Empty
+    means "not separately pinned"; the full ``citation`` text still carries it."""
+    venue: str = ""
+    """The cited work's VENUE / journal / conference (#484)."""
     system: str = ""
     """The dynamical SYSTEM the cited work is about, extracted from its
     TITLE/ABSTRACT (the near-verbatim, lowest-hallucination part) -- the #483
@@ -321,6 +344,21 @@ class CorpusAnchor:
             return self.system
         return system_for_primary(self.primary)
 
+    @property
+    def key_resolved(self) -> str:
+        """The anchor's stable citation-registry key (#484).
+
+        Returns the explicit :attr:`key` when set; otherwise DERIVES a stable
+        slug from the anchor's first-author surname + ``name`` via
+        :func:`derive_citation_key`. Every anchor is therefore registry-
+        addressable; only the ground-truthed ones (IEG/VEM) need an explicit
+        key, and an explicit key never collides with a derived one (the registry
+        builder asserts uniqueness).
+        """
+        if self.key:
+            return self.key
+        return derive_citation_key(self.authors, self.name)
+
 
 # The dynamical-system label each primary belongs to (#483). Derived from the
 # anchor's title-sourced ``primary``; the ratchet uses it to assert that a
@@ -342,6 +380,86 @@ _PRIMARY_SYSTEM = {
 def system_for_primary(primary: str) -> str:
     """Map a title-sourced ``primary`` to its dynamical-system label (#483)."""
     return _PRIMARY_SYSTEM.get(primary, primary.lower())
+
+
+# ---------------------------------------------------------------------------
+# Citation-key registry (#484)
+#
+# A canonical, stable KEY for each corpus work, resolving to its grounded record
+# {key, authors, year, title, venue, doi, system, bodies}. The load-bearing
+# citation surfaces (the KNOWN_CORPUS anchors and the catalogue rows' cited
+# works) resolve THROUGH a key, which closes the #485 ratchet's wrong-author
+# gap: a mis-citation that names the wrong authors does not strong-link to an
+# anchor and so #485 never checks it -- but a ``cite:`` key that does not resolve
+# to any grounded work is flagged outright. Keys are derived deterministically so
+# every anchor is addressable without a 53-way manual migration; the explicitly
+# ground-truthed works carry an explicit key.
+# ---------------------------------------------------------------------------
+
+_SLUG_RE = re.compile(r"[^a-z0-9]+")
+
+
+def _slugify(text: str) -> str:
+    return _SLUG_RE.sub("-", text.lower()).strip("-")
+
+
+def derive_citation_key(authors: tuple[str, ...], name: str) -> str:
+    """Derive a stable registry key from an anchor's authors + name (#484).
+
+    Form: ``<first-author-surname>-<short-name-slug>`` (e.g.
+    ``aldrin-earth-mars-cycler``). Deterministic and collision-resistant: the
+    anchor ``name`` is unique within KNOWN_CORPUS, so the slug is too. Anchors
+    that ground-truthed a specific paper override this with an explicit
+    :attr:`CorpusAnchor.key` (e.g. ``jones-2017-vem-577``).
+    """
+    lead = authors[0].split(",")[0].strip() if authors else "anon"
+    return _slugify(f"{lead}-{name}")
+
+
+def build_citation_registry(
+    anchors: tuple[CorpusAnchor, ...] = (),
+) -> dict[str, CorpusAnchor]:
+    """Build the key -> grounded-anchor registry, asserting key uniqueness (#484).
+
+    Defaults to the planar :data:`KNOWN_CORPUS`; pass a wider anchor tuple
+    (e.g. including the spatial corpus) to register those too. Raises if two
+    anchors resolve to the same key -- a duplicate key would let an ambiguous
+    ``cite:`` silently bind to the wrong work.
+    """
+    pool = anchors or KNOWN_CORPUS
+    registry: dict[str, CorpusAnchor] = {}
+    for anchor in pool:
+        key = anchor.key_resolved
+        if key in registry and registry[key] is not anchor:
+            raise ValueError(
+                f"duplicate citation key {key!r}: {registry[key].name!r} vs {anchor.name!r}"
+            )
+        registry[key] = anchor
+    return registry
+
+
+def resolve_citation_key(
+    key: str, *, registry: dict[str, CorpusAnchor] | None = None
+) -> CorpusAnchor:
+    """Resolve a ``cite:`` key to its grounded :class:`CorpusAnchor` (#484).
+
+    Raises :class:`KeyError` if the key does not resolve -- the wrong-author /
+    fabricated-reference failure the registry exists to catch.
+    """
+    reg = registry if registry is not None else build_citation_registry()
+    if key not in reg:
+        raise KeyError(
+            f"citation key {key!r} does not resolve to any grounded work in the "
+            f"registry; a wrong-author / fabricated reference cannot anchor a "
+            f"decision (#484)."
+        )
+    return reg[key]
+
+
+def citation_key_exists(key: str, *, registry: dict[str, CorpusAnchor] | None = None) -> bool:
+    """Does ``key`` resolve to a grounded work in the registry? (#484)."""
+    reg = registry if registry is not None else build_citation_registry()
+    return key in reg
 
 
 # Hand-curated from the catalogue's published rows + the task's named corpus.
@@ -438,16 +556,29 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # 2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf is VEM only)
         # plus Semantic Scholar confirmation the Jovian paper exists separately.
         system="jovian",
+        # #484 (2026-06-26): the #482 digest (docs/notes/2026-06-26-digest-
+        # hernandez-2017-ieg-triple-cyclers-aas-17-608.md) read the acquired PDF
+        # page-by-page and the title + (c) page confirm the AAS number is 17-608
+        # (Hernandez-first), distinct from the VEM sibling AAS 17-577
+        # (Jones-first). The earlier audit doc's candidate "17-462" is corrected
+        # to 17-608 here; the stable registry key follows.
+        key="hernandez-2017-ieg-608",
+        year=2017,
+        title="One Class of Io-Europa-Ganymede Triple Cyclers",
+        venue=(
+            "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS "
+            "17-608; Adv. Astronaut. Sci. Vol. 162 (Univelt), pp. 973-984"
+        ),
         body_set=frozenset({"Io", "Europa", "Ganymede"}),
         # #350: 'triple cycler' = repeated IEG encounter sequence.
         topology_label=frozenset({"repeated-moon"}),
         authors=("Hernandez", "Jones", "Jesick"),
         keywords=("Io-Europa-Ganymede triple cycler", "Jovian triple cycler"),
         citation="Hernandez, S., Jones, D. R. & Jesick, M., 'One Class of "
-        "Io-Europa-Ganymede Triple Cyclers,' AAS/AIAA Astrodynamics Specialist "
-        "Conference, Columbia River Gorge, Stevenson WA, Aug 2017; Advances in "
-        "the Astronautical Sciences Vol. 162 (Univelt), pp. 973-984 (Jovian "
-        "moon-system paper; NOT the heliocentric VEM AAS 17-577).",
+        "Io-Europa-Ganymede Triple Cyclers,' AAS 17-608, AAS/AIAA Astrodynamics "
+        "Specialist Conference, Columbia River Gorge, Stevenson WA, Aug 2017; "
+        "Advances in the Astronautical Sciences Vol. 162 (Univelt), pp. 973-984 "
+        "(Jovian moon-system paper; NOT the heliocentric VEM AAS 17-577).",
         doi=None,
     ),
     CorpusAnchor(
@@ -527,6 +658,17 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # authors, "One Class of Io-Europa-Ganymede Triple Cyclers") is the
         # separate anchor above. Do NOT cite a Galilean moon claim here.
         system="heliocentric",
+        # #484 (2026-06-26): the on-disk title page (cyclers_pdf jones-hernandez-
+        # jesick-2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf) confirms
+        # AAS 17-577 (Jones-first) and the Venus-Earth-Mars body set; NTRS
+        # 20190028464. The stable registry key follows.
+        key="jones-2017-vem-577",
+        year=2017,
+        title="Low Excess Speed Triple Cyclers of Venus, Earth, and Mars",
+        venue=(
+            "AAS/AIAA Astrodynamics Specialist Conference, Stevenson WA, AAS "
+            "17-577 (NTRS 20190028464)"
+        ),
         body_set=frozenset({"V", "E", "M"}),
         # #350: 'VEM triple cycler' = repeated Venus-Earth-Mars encounter
         # sequence (the Jones-Hernandez-Jesick AAS 17-577 family).
@@ -1986,8 +2128,12 @@ __all__ = [
     "LiteratureCheckResult",
     "SearchFn",
     "SearchResult",
+    "build_citation_registry",
     "build_queries",
     "check_literature",
+    "citation_key_exists",
+    "derive_citation_key",
     "is_novelty_claimable",
+    "resolve_citation_key",
     "signature_from_review_entry",
 ]
