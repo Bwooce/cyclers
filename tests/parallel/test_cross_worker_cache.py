@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import functools
 import multiprocessing as mp
+from collections.abc import Generator
 
 import pytest
 
@@ -34,6 +35,36 @@ from cyclerfinder.parallel import ParallelSweepConfig, parallel_sweep
 from cyclerfinder.search import vilm
 from cyclerfinder.search.cache_warm import DEFAULT_LEGS, warm_moon_leg_caches
 from cyclerfinder.search.moon_prune import moon_leg_admissible
+
+# ---------------------------------------------------------------------------
+# Test isolation: reset loky's reusable executor before each test
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _reset_loky_executor_cold() -> Generator[None, None, None]:
+    """Shut down loky's global reusable executor before each test.
+
+    The loky backend maintains a process pool with a reusable executor that
+    persists across test runs. Worker processes retain their per-process cache
+    state (e.g. functools.cache entries), so running a loky-based test after
+    another one with warm caches causes the worker pool to be reused with warm
+    caches already present. This fixture ensures a cold slate for each test by
+    forcing executor shutdown before the test body runs, so subsequent loky
+    calls spawn fresh workers.
+
+    See task #481 and test_loky_workers_start_cold_control for the motivation.
+    """
+    try:
+        from joblib.externals.loky import get_reusable_executor
+
+        executor = get_reusable_executor()
+        executor.shutdown(wait=True)
+    except (ImportError, AttributeError):
+        # loky not available; test will skip anyway if loky is needed
+        pass
+    yield
+
 
 # Representative + edge domain (mirrors the bench skeleton; small for CI speed).
 _LEGS = DEFAULT_LEGS
