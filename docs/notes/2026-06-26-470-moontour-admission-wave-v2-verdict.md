@@ -17,6 +17,28 @@ The 10 in-band proposals in `data/admission_proposals_468.jsonl`:
   Io-Europa-Io, Ganymede-Callisto-Ganymede, Callisto-Ganymede-Europa-Callisto
   (reproduce Hernandez/Jones/Jesick 2017 IEG triple cyclers + Liang et al. 2024
   CGE triple cyclers, JGCD DOI 10.2514/1.G008387).
+
+  > **Citation grounding (#483/#485 audit, 2026-06-26).** The Jovian reference
+  > here is the JOVIAN-MOON paper *"One Class of Io-Europa-Ganymede Triple
+  > Cyclers"* by Hernandez, Jones & Jesick (AAS/AIAA Astrodynamics Specialist
+  > Conf., Stevenson WA, Aug 2017; Adv. Astronaut. Sci. 162, pp. 973-984). It is
+  > **NOT** the same authors' heliocentric paper AAS 17-577 *"Low Excess Speed
+  > Triple Cyclers of Venus, Earth, and Mars"* — a `{Venus, Earth, Mars}`
+  > interplanetary work. The two share the phrase "triple cycler" (a
+  > concept-collision across systems) and the same JPL author team; the original
+  > admission citation was attached by that concept match rather than by opening
+  > the source, the exact failure class in memory
+  > `feedback_ground_citations_against_content`. Ground-truthed 2026-06-26: the
+  > on-disk PDF `cyclers_pdf/papers/jones-hernandez-jesick-2017-low-excess-speed-
+  > vem-triple-cyclers-AAS-17-577.pdf` is VEM-only (title page), and the distinct
+  > Jovian IEG paper is independently confirmed (Semantic Scholar
+  > `7e1de63096852b5422107ffc23a9312ea3de54f3`). The citation as printed above is
+  > body/system-CORRECT (Jovian → Jovian work); this note records that it is now
+  > GROUNDED, not concept-matched. The `data/admission_proposals_468.jsonl`
+  > `matched_source` strings and the catalogue row
+  > `hernandez-2017-jovian-ieg-triple-family` were independently verified to cite
+  > the Jovian work, not AAS 17-577. Full sweep: `docs/notes/2026-06-26-citation-
+  > audit.md`.
 * **Saturnian (5):** Titan-Rhea-Dione-Titan, Rhea-Dione-Tethys-Rhea,
   Dione-Tethys-Enceladus-Dione, Rhea-Dione-Rhea, Tethys-Enceladus-Tethys
   (reproduce the Cassini icy-moon leveraging tour, Wolf & Smith 1995 /

@@ -243,6 +243,26 @@ class CorpusAnchor:
     citation: str
     doi: str | None
     domains: tuple[str, ...] = ()
+    system: str = ""
+    """The dynamical SYSTEM the cited work is about, extracted from its
+    TITLE/ABSTRACT (the near-verbatim, lowest-hallucination part) -- the #483
+    ground-truth field that the #485 citation-integrity ratchet asserts against.
+
+    This is the cited WORK's body/system identity, NOT a claim's. A standard
+    short label: ``"heliocentric"`` (Sun-centred interplanetary cyclers/tours),
+    ``"jovian"`` (Jupiter moon system), ``"saturnian"``, ``"uranian"``,
+    ``"neptunian"``, ``"pluto-charon"``, ``"earth-moon"``, or ``"solar-system"``
+    for cross-system databases. Empty (the default) means "not yet grounded";
+    the ratchet treats an empty ``system`` as un-annotated (it falls back to the
+    ``primary`` + ``body_set`` footprint, which every anchor already carries).
+
+    The discipline (memory ``feedback_ground_citations_against_content``): a
+    citation's system MUST be confirmed against the source's actual title/
+    abstract, NOT a concept-name collision. "Triple cycler" spans systems --
+    it means Venus-Earth-Mars in Jones-Hernandez-Jesick AAS 17-577 (heliocentric)
+    AND is a natural description of a 3-moon Jovian tour; the two are DIFFERENT
+    works. ``system`` makes that distinction structural and machine-checkable.
+    """
     period_band_tu: tuple[float, float] | None = None
     """Optional CR3BP nondim-period band the anchor's published scope covers.
 
@@ -287,6 +307,41 @@ class CorpusAnchor:
     requires that value to fall within the band -- a member at a Jacobi level
     the published family does not reach is out-of-scope. ``None`` means no
     Jacobi restriction (the ``(k1, k2, k_z)`` tuple alone decides)."""
+
+    @property
+    def system_grounded(self) -> str:
+        """The cited work's system label, grounded (#483).
+
+        Returns the explicit :attr:`system` when set; otherwise derives it from
+        the title-sourced :attr:`primary` (every anchor carries one). This keeps
+        the #485 ratchet able to assert system-containment for ALL anchors while
+        only the genuinely ambiguous/cross-system ones need an explicit override.
+        """
+        if self.system:
+            return self.system
+        return system_for_primary(self.primary)
+
+
+# The dynamical-system label each primary belongs to (#483). Derived from the
+# anchor's title-sourced ``primary``; the ratchet uses it to assert that a
+# claim's system matches the cited work's system. ``solar-system`` is reserved
+# for explicit cross-system databases (set via the explicit ``system`` field).
+_PRIMARY_SYSTEM = {
+    "Sun": "heliocentric",
+    "Earth": "earth-moon",
+    "Jupiter": "jovian",
+    "Saturn": "saturnian",
+    "Mars": "mars-system",
+    "Uranus": "uranian",
+    "Neptune": "neptunian",
+    "Pluto": "pluto-charon",
+    "any": "solar-system",
+}
+
+
+def system_for_primary(primary: str) -> str:
+    """Map a title-sourced ``primary`` to its dynamical-system label (#483)."""
+    return _PRIMARY_SYSTEM.get(primary, primary.lower())
 
 
 # Hand-curated from the catalogue's published rows + the task's named corpus.
@@ -371,13 +426,28 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     CorpusAnchor(
         name="Hernandez/Jones/Jesick Io-Europa-Ganymede triple cyclers",
         primary="Jupiter",
+        # #483 (2026-06-26): system GROUNDED against the source title. This is a
+        # DISTINCT Jovian-moon paper -- "One Class of Io-Europa-Ganymede Triple
+        # Cyclers" (Semantic Scholar 7e1de630..., Adv. Astronaut. Sci. 162
+        # pp.973-984) -- NOT the heliocentric Venus-Earth-Mars paper AAS 17-577
+        # ("Low Excess Speed Triple Cyclers of Venus, Earth, and Mars"). Both are
+        # by the same JPL authors and both say "triple cycler"; the concept-name
+        # collision is exactly the #480 hallucination trap (memory
+        # feedback_ground_citations_against_content). Grounded 2026-06-26 against
+        # the on-disk VEM paper title page (cyclers_pdf jones-hernandez-jesick-
+        # 2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf is VEM only)
+        # plus Semantic Scholar confirmation the Jovian paper exists separately.
+        system="jovian",
         body_set=frozenset({"Io", "Europa", "Ganymede"}),
         # #350: 'triple cycler' = repeated IEG encounter sequence.
         topology_label=frozenset({"repeated-moon"}),
         authors=("Hernandez", "Jones", "Jesick"),
         keywords=("Io-Europa-Ganymede triple cycler", "Jovian triple cycler"),
-        citation="Hernandez, Jones & Jesick, 'One Class of Io-Europa-Ganymede "
-        "Triple Cyclers' (AAS/AIAA 2017)",
+        citation="Hernandez, S., Jones, D. R. & Jesick, M., 'One Class of "
+        "Io-Europa-Ganymede Triple Cyclers,' AAS/AIAA Astrodynamics Specialist "
+        "Conference, Columbia River Gorge, Stevenson WA, Aug 2017; Advances in "
+        "the Astronautical Sciences Vol. 162 (Univelt), pp. 973-984 (Jovian "
+        "moon-system paper; NOT the heliocentric VEM AAS 17-577).",
         doi=None,
     ),
     CorpusAnchor(
@@ -450,13 +520,23 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     CorpusAnchor(
         name="Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
         primary="Sun",
+        # #483 (2026-06-26): system GROUNDED against the source title -- "Low
+        # Excess Speed Triple Cyclers of Venus, Earth, and Mars" (AAS 17-577,
+        # NTRS 20190028464), confirmed from the on-disk PDF title page. This is
+        # the HELIOCENTRIC interplanetary paper; its Jovian-moon namesake (same
+        # authors, "One Class of Io-Europa-Ganymede Triple Cyclers") is the
+        # separate anchor above. Do NOT cite a Galilean moon claim here.
+        system="heliocentric",
         body_set=frozenset({"V", "E", "M"}),
         # #350: 'VEM triple cycler' = repeated Venus-Earth-Mars encounter
         # sequence (the Jones-Hernandez-Jesick AAS 17-577 family).
         topology_label=frozenset({"repeated-moon"}),
         authors=("Jones", "Hernandez", "Jesick"),
         keywords=("VEM triple cycler", "Venus-Earth-Mars cycler"),
-        citation="Jones, Hernandez & Jesick, AAS 17-577 (VEM triple cyclers)",
+        citation="Jones, D. R., Hernandez, S. & Jesick, M., 'Low Excess Speed "
+        "Triple Cyclers of Venus, Earth, and Mars,' AAS 17-577, AAS/AIAA "
+        "Astrodynamics Specialist Conference, Stevenson WA, Aug 2017 "
+        "(NTRS 20190028464). Heliocentric VEM paper; NOT the Jovian IEG paper.",
         doi=None,
     ),
     # -----------------------------------------------------------------------
@@ -1464,6 +1544,9 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     CorpusAnchor(
         name="Restrepo-Russell JPL planar axisymmetric CR3BP database",
         primary="any",
+        # #483: a deliberately cross-system database ("...for the Solar system",
+        # title-grounded) -- spans every primary, so its system is solar-system.
+        system="solar-system",
         body_set=frozenset(
             {
                 "Me",
