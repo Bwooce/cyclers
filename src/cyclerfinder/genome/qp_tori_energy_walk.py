@@ -132,13 +132,32 @@ def _nearest_unit_complex_pair(
     return complex(lam), complex(lam.conjugate())
 
 
-def _k_from_pair(lam: complex) -> int:
-    """Integer k such that the multiplier sits near a primitive k-th root of unity."""
-    phi = math.atan2(lam.imag, lam.real)
-    if abs(phi) < 1e-9:
+def _k_from_pair(lam: complex, *, k_max: int = 12) -> int:
+    """Integer k whose nearest PRIMITIVE k-th root of unity is closest to arg(lam).
+
+    The GMOS seeder (``_seed_invariant_circle``) searches for the Neimark-Sacker
+    eigenvalue near a primitive k-th root of unity and rejects the pair if the best
+    match is > 0.5 rad away. A naive ``round(2*pi/phi)`` mis-classifies an angle that
+    sits between two low-order roots (e.g. arg=2.55 rad is round->k=2 whose root pi is
+    0.59 rad away -> seeder rejects, yet k=3's root 2pi/3=2.09 is only 0.46 away ->
+    seeder accepts). We therefore scan k=2..k_max and pick the k minimising the
+    distance from ``arg(lam)`` to its NEAREST primitive k-th root -- exactly the
+    quantity the seeder gates on -- so the rotation pair is classified the way the
+    seeder needs to accept it.
+    """
+    phi = abs(math.atan2(lam.imag, lam.real))
+    if phi < 1e-9:
         return 4
-    k = round(2 * math.pi / abs(phi))
-    return max(k, 2)
+    best_k, best_d = 4, float("inf")
+    for k in range(2, k_max + 1):
+        for j in range(1, k):
+            if math.gcd(j, k) != 1:
+                continue
+            root = 2 * math.pi * j / k
+            d = abs(phi - root)
+            if d < best_d:
+                best_d, best_k = d, k
+    return best_k
 
 
 def _converge_member_torus(
