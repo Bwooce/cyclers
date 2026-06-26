@@ -50,6 +50,7 @@ References
 from __future__ import annotations
 
 import contextlib
+from functools import cache
 from math import sqrt
 from typing import TYPE_CHECKING
 
@@ -59,6 +60,16 @@ from scipy.optimize import brentq, minimize
 
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS
 from cyclerfinder.core.satellites import SATELLITES
+
+# Memoization (task #472): the V∞<->Tisserand scalar conversions and the
+# expensive ``linkable`` contour-intersection predicate are pure functions of
+# their (hashable: str / float / tuple) arguments — they read only the *frozen*
+# module-constant body tables (:data:`PLANETS` / :data:`SATELLITES`, frozen
+# dataclasses built once at import) and the module-constant ``mu``. The
+# moon-prune gate re-evaluates them on the same (body-pair, V∞, a_range, mu)
+# thousands of times, so an exact (no-rounding) in-memory ``functools.cache`` is safe.
+# Parity / key / purity are guarded in tests/search/test_tisserand_memoization.py;
+# bypass with ``.__wrapped__``, inspect with ``.cache_info()``.
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
@@ -76,6 +87,7 @@ _U_MIN_NUM: float = 1.0e-6
 # ---------------------------------------------------------------------------
 
 
+@cache
 def _a_p_km(body: str) -> float:
     """Semi-major axis of ``body`` in km.
 
@@ -96,6 +108,7 @@ def _a_p_km(body: str) -> float:
 # ---------------------------------------------------------------------------
 
 
+@cache
 def vinf_to_tisserand(body: str, vinf_kms: float, *, mu: float = MU_SUN_KM3_S2) -> float:
     """Tisserand parameter ``T_p`` at ``body`` for hyperbolic excess ``vinf_kms`` (km/s).
 
@@ -109,6 +122,7 @@ def vinf_to_tisserand(body: str, vinf_kms: float, *, mu: float = MU_SUN_KM3_S2) 
     return 3.0 - (vinf_kms * vinf_kms) * a_p / mu
 
 
+@cache
 def tisserand_to_vinf(body: str, t_p: float, *, mu: float = MU_SUN_KM3_S2) -> float:
     """Inverse of :func:`vinf_to_tisserand`. Returns 0.0 when ``t_p >= 3``.
 
@@ -321,6 +335,7 @@ def _a_branches_at_e(
     return out
 
 
+@cache
 def linkable(
     body_a: str,
     body_b: str,

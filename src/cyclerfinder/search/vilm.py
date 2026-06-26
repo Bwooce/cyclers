@@ -22,11 +22,27 @@ from __future__ import annotations
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
+from functools import cache
 
 from scipy.integrate import quad
 from scipy.optimize import brentq
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+
+# ---------------------------------------------------------------------------
+# Memoization (task #472) — these VILM cost functions are deterministic and
+# side-effect free: every value is a pure function of the moon string(s) and a
+# float (V∞), read only from the *frozen* module-constant dicts
+# :data:`SATELLITES` / :data:`PRIMARIES` (frozen dataclasses, built once at
+# import — no mutable config). They are re-evaluated thousands of times on
+# repeated discrete args (the same moon pairs, the same V∞ grid) in the
+# moon-tour campaigns, so an in-memory ``functools.cache`` is a safe, exact (no
+# rounding) speed-up. Parity / key-correctness / purity are guarded in
+# ``tests/search/test_vilm_memoization.py``; every cached function exposes
+# ``.__wrapped__`` for a cache-bypass and ``.cache_info()`` / ``.cache_clear()``.
+# The unbounded cache is safe: the key domain is the finite set of moon strings
+# crossed with the discrete V∞ values a campaign sweeps.
+# ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 # n:m_K± leg taxonomy (mining note lines 98-130) — physics-invariant
@@ -93,6 +109,7 @@ def gamma(vinf: float, *, exterior: bool) -> float:
     return num / den
 
 
+@cache
 def _vc_adim(moon: str) -> float:
     """Adimensional flyby circular velocity V_c = sqrt(mu_M / r_π) / V_M.
 
@@ -112,6 +129,7 @@ def _vinf_of_vpi(vpi: float, vc: float) -> float:
     return math.sqrt(val) if val > 0.0 else float("nan")
 
 
+@cache
 def _vbar_vinf_adim(moon: str, *, exterior: bool) -> float:
     """Adimensional V̄∞ — the Eq. (9) efficiency-threshold root for ``moon``.
 
@@ -138,6 +156,7 @@ def _vbar_vinf_adim(moon: str, *, exterior: bool) -> float:
     return _vinf_of_vpi(vpi_bar, vc)
 
 
+@cache
 def min_vinf_for_vilm(moon: str, *, exterior: bool = True) -> float:
     """Minimum *dimensional* V∞ (km/s) at which a VILM at ``moon`` is efficient.
 
@@ -154,6 +173,7 @@ def min_vinf_for_vilm(moon: str, *, exterior: bool = True) -> float:
 # ---------------------------------------------------------------------------
 
 
+@cache
 def _v_m(moon: str) -> float:
     """Circular velocity of ``moon`` about its primary, km/s (V_M)."""
     sat = SATELLITES[moon]
@@ -199,6 +219,7 @@ def _quadrature_dv_adim(vinf_lo: float, vinf_hi: float, *, exterior: bool) -> fl
     return float(val)
 
 
+@cache
 def _leverage_dv_kms(moon: str, vinf_hi_kms: float, *, exterior: bool) -> float:
     """Dimensional begingame/endgame ΔV (km/s) at ``moon``: integrate Eq. (13)
     from the efficiency threshold V̄∞ up to the Hohmann V∞H, scaled by V_M."""
@@ -212,6 +233,24 @@ def _order_by_sma(moon_a: str, moon_b: str) -> tuple[str, str]:
     if SATELLITES[moon_a].sma_km >= SATELLITES[moon_b].sma_km:
         return moon_a, moon_b
     return moon_b, moon_a
+
+
+@cache
+def _vilm_dv_min_pair(moon_a: str, moon_b: str) -> float:
+    """Cached no-GA (two-moon) core of :func:`vilm_dv_min` (task #472).
+
+    Deterministic in the two moon strings (frozen-dict reads only); the hot
+    path the campaigns exercise. The with-GA ``via`` chain is handled (un-cached)
+    in :func:`vilm_dv_min` directly.
+    """
+    outer, inner = _order_by_sma(moon_a, moon_b)
+    dv = _escape_dv(outer, min_vinf_for_vilm(outer)) + _escape_dv(
+        inner, min_vinf_for_vilm(inner, exterior=False)
+    )
+    vinf_o, vinf_i = _hohmann_vinf(outer, inner)
+    dv += _leverage_dv_kms(outer, vinf_o, exterior=True)
+    dv += _leverage_dv_kms(inner, vinf_i, exterior=False)
+    return dv
 
 
 def vilm_dv_min(moon_a: str, moon_b: str, *, via: Sequence[str] | None = None) -> float:
@@ -232,7 +271,18 @@ def vilm_dv_min(moon_a: str, moon_b: str, *, via: Sequence[str] | None = None) -
 
     GOLDEN: reproduces Part-1 Table 1 (no-GA) and Table 2 (with-GA) ΔV_min to
     well inside the 10% linked-conic-vs-CR3BP band (mining note 491-493).
+
+    The hot ``via is None`` path (the only one the moon-tour campaigns exercise)
+    is memoized through :func:`_vilm_dv_min_pair`; the ``via`` (GA-chain) path is
+    left un-cached because its ``Sequence`` argument is unhashable and it is not
+    a hot-loop caller (task #472).
     """
+    if via is None and moon_a != moon_b:
+        # Hot two-distinct-moon path: identical to the ``len(chain_sorted) == 2``
+        # branch below (``set`` collapses nothing for distinct moons), memoized.
+        # The degenerate self-pair (moon_a == moon_b) deliberately keeps the
+        # original (set-collapsing) code path so behaviour is byte-identical.
+        return _vilm_dv_min_pair(moon_a, moon_b)
     chain = [moon_a, *via, moon_b] if via else [moon_a, moon_b]
     # Order the whole chain outer->inner by about-primary SMA.
     chain_sorted = sorted(set(chain), key=lambda m: -SATELLITES[m].sma_km)
@@ -265,6 +315,7 @@ def vilm_dv_min(moon_a: str, moon_b: str, *, via: Sequence[str] | None = None) -
     return dv
 
 
+@cache
 def vilm_dv_floor(moon_a: str, moon_b: str) -> float:
     """Admissible ΔV lower bound (km/s) for search pruning (design §5).
 
@@ -285,6 +336,7 @@ def vilm_dv_floor(moon_a: str, moon_b: str) -> float:
     )
 
 
+@cache
 def europa_endgame_dv() -> tuple[float, float]:
     """The Europa endgame theoretical-minimum ΔV + duration (Part-1 A6).
 

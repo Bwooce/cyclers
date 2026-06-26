@@ -27,6 +27,7 @@ Plan: ``docs/phases/m2-flyby-maps/plan.md`` §3.1.
 
 from __future__ import annotations
 
+from functools import cache
 from math import asin, sin, sqrt
 
 import numpy as np
@@ -36,7 +37,19 @@ from cyclerfinder.core.constants import PLANETS, SAFE_PERIHELION_KM
 
 Vec3 = NDArray[np.float64]  # shape (3,), dtype float64 — matches lambert.py
 
+# Memoization (task #472): the scalar bend / turn-deficit / Oberth cost
+# primitives below are pure functions of their float arguments — no array
+# inputs, no module-constant or mutable-config reads (``mu_planet`` / ``rp_min``
+# are passed in explicitly by the caller). They are re-evaluated on repeated
+# discrete (V∞, geometry) args in the flyby-feasibility hot loops, so an exact
+# (no-rounding) in-memory ``functools.cache`` is safe. The vector functions
+# (:func:`flyby_dv`, :func:`bend_angle`, ...) are NOT cached: their ``Vec3``
+# (ndarray) arguments are unhashable and rounding them to a key would change
+# results. Parity / key / purity are guarded in
+# tests/core/test_flyby_memoization.py (bypass with ``.__wrapped__``).
 
+
+@cache
 def max_bend(mu_planet: float, rp_min: float, vinf: float) -> float:
     """Maximum ballistic deflection angle (rad) for a hyperbolic flyby.
 
@@ -70,6 +83,7 @@ def max_bend(mu_planet: float, rp_min: float, vinf: float) -> float:
     return 2.0 * asin(min(1.0, max(0.0, arg)))
 
 
+@cache
 def dv_from_turn_deficit(vinf: float, delta_required: float, delta_max: float) -> float:
     """``Delta V`` (km/s) to make up a turn-angle deficit at a flyby.
 
@@ -114,6 +128,7 @@ def dv_from_turn_deficit(vinf: float, delta_required: float, delta_max: float) -
     return 2.0 * vinf * sin(0.5 * excess)
 
 
+@cache
 def dv_powered_flyby_periapsis(
     vinf: float,
     delta_required: float,

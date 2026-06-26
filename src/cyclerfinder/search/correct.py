@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from functools import cache
 from typing import Literal
 
 import numpy as np
@@ -288,6 +289,23 @@ def _residuals(
     )
 
 
+@cache
+def _max_bend_deg_nominal(vinf_kms: float, body: str) -> float:
+    """Cached ``rp_factors=None`` core of :func:`_max_bend_deg` (task #472).
+
+    Pure in ``(vinf_kms, body)``: reads only the *frozen* ``PLANETS`` /
+    ``SATELLITES`` body records (``mu_km3_s2`` / ``radius_eq_km`` /
+    ``safe_alt_km``), which are module-constant frozen dataclasses built once at
+    import — no mutable config. The ``rp_factors`` (mutable dict) path is NOT
+    cached (unhashable key) and is computed directly in :func:`_max_bend_deg`.
+    """
+    pl = PLANETS.get(body) or SATELLITES[body]
+    mu = pl.mu_km3_s2
+    r_p = pl.radius_eq_km + pl.safe_alt_km
+    e = 1.0 + r_p * vinf_kms * vinf_kms / mu
+    return float(np.degrees(2.0 * np.arcsin(1.0 / e)))
+
+
 def _max_bend_deg(vinf_kms: float, body: str, rp_factors: dict[str, float] | None = None) -> float:
     """Maximum single-flyby turn angle (deg) for ``vinf_kms`` at ``body``
     (``correct_s1l1_twoarc.py:109-114``). ``rp_factors`` optionally scales the
@@ -296,13 +314,16 @@ def _max_bend_deg(vinf_kms: float, body: str, rp_factors: dict[str, float] | Non
     Resolves a heliocentric planet code via ``PLANETS`` and, failing that, a
     moon code via ``SATELLITES`` (moon-tour Tier-1): both expose
     ``mu_km3_s2``/``radius_eq_km``/``safe_alt_km``, so the V_inf-limited turn
-    formula is centre-blind once the right body record is found."""
+    formula is centre-blind once the right body record is found.
+
+    The nominal (``rp_factors is None`` or ``body`` not in it) path delegates to
+    the memoized :func:`_max_bend_deg_nominal` (task #472); the ``rp_factors``
+    scaling path is computed inline (its dict argument is unhashable)."""
+    if rp_factors is None or body not in rp_factors:
+        return _max_bend_deg_nominal(vinf_kms, body)
     pl = PLANETS.get(body) or SATELLITES[body]
     mu = pl.mu_km3_s2
-    safe_alt = pl.safe_alt_km
-    if rp_factors is not None and body in rp_factors:
-        safe_alt *= rp_factors[body]
-    r_p = pl.radius_eq_km + safe_alt
+    r_p = pl.radius_eq_km + pl.safe_alt_km * rp_factors[body]
     e = 1.0 + r_p * vinf_kms * vinf_kms / mu
     return float(np.degrees(2.0 * np.arcsin(1.0 / e)))
 
