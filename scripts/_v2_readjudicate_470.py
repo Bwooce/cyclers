@@ -30,6 +30,12 @@ from cyclerfinder.search.releg_solver import MultiRevLeveragingReleg
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 from _drift_shape_473 import BOUNDED_SHAPES, classify_drift_shape  # noqa: E402
+from _relative_drift_473 import (  # noqa: E402
+    R_MARGIN,
+    R_REF,
+    normalising_moon,
+    relative_drift_ratio,
+)
 
 _spec = ilu.spec_from_file_location(
     "campaign_468", str(REPO / "scripts" / "campaign_468_multirev_tour.py")
@@ -131,10 +137,15 @@ def main() -> None:
         )
         drifts = [float(c.rendezvous_drift_kms) for c in verdict.per_cycle]
         cls = classify_drift_shape(drifts[1:])
+        # RELATIVE (scale-invariant) drift: max-cycle drift / SMA of the tour's
+        # outermost moon, vs the #339-calibrated bar R_REF~0.91 (margin 1.0).
+        ratio = relative_drift_ratio(verdict.max_drift_kms, sk.sequence)
+        norm_moon = normalising_moon(sk.sequence)
         flipped = (
             verdict.n_cycles_completed >= N_CYCLES
             and cls["shape"] in BOUNDED_SHAPES
             and not verdict.passes_v2  # strict pass would be a STRICT cycler, not a flip
+            and ratio <= R_MARGIN  # RELATIVE drift bar (corrects the absolute-km bug)
         )
         strict_cycler = verdict.passes_v2
         row = {
@@ -149,6 +160,10 @@ def main() -> None:
             "per_cycle_drift_kms": [round(d, 1) for d in drifts],
             "shape": cls["shape"],
             "shape_detail": cls,
+            "norm_moon": norm_moon,
+            "rel_drift_ratio": round(ratio, 4),
+            "r_ref": R_REF,
+            "r_margin": R_MARGIN,
             "flips_to_bounded_quasi": flipped,
             "is_strict_cycler": strict_cycler,
             "verdict_470": "reject (max_drift > 50k floor)",
@@ -169,6 +184,8 @@ def main() -> None:
                     "k_of_N": f"{item_id}/{n_target}",
                     "elapsed_s": round(time.time() - t0, 1),
                     "shape": cls["shape"],
+                    "norm_moon": norm_moon,
+                    "rel_drift_ratio": round(ratio, 4),
                     "per_cycle_drift_kms": [round(d, 1) for d in drifts],
                 },
                 ensure_ascii=True,
@@ -183,7 +200,8 @@ def main() -> None:
         )
         print(
             f"[{_now()}] {sk.label}: shape={cls['shape']} "
-            f"max_drift={verdict.max_drift_kms:,.0f} km {tag}"
+            f"max_drift={verdict.max_drift_kms:,.0f} km "
+            f"ratio={ratio:.3f} (norm={norm_moon}) {tag}"
         )
     runlog.close()
 
@@ -192,6 +210,10 @@ def main() -> None:
     summary = {
         "run_date": "2026-06-26",
         "n_cycles": N_CYCLES,
+        "criterion": "shape=bounded AND relative_drift_ratio<=R_MARGIN",
+        "r_ref": R_REF,
+        "r_margin": R_MARGIN,
+        "r_ref_provenance": "#339 peak 530000 km / Oberon SMA 583511 km = 0.9083",
         "n_tours": len([r for r in rows if "shape" in r]),
         "n_flips_to_bounded_quasi": n_flip,
         "n_strict_cyclers": n_strict,
