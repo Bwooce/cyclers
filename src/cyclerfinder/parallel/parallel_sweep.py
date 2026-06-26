@@ -103,6 +103,21 @@ class ParallelSweepConfig:
         ``False`` (default) swallows per-cell exceptions (the cell's slot
         becomes ``None``, ``n_failed`` is incremented). ``True`` re-raises
         the first exception after joblib drains the in-flight batch.
+    prewarm:
+        Optional zero-arg callable run ONCE in the parent process before any
+        worker is forked. Its purpose (task #474) is to populate the parent's
+        process-local ``functools.cache`` tables (e.g. the #472 per-leg cost
+        memoizations) so that the workers, forked copy-on-write under the
+        ``"multiprocessing"`` backend on Linux, inherit the already-warmed
+        caches for free (the read-only cache pages are shared, not duplicated).
+        ``None`` (default) is a no-op and preserves the legacy behaviour of
+        every existing caller. Under ``"loky"`` / ``"threading"`` the call still
+        runs but has no cross-worker effect (loky spawns fresh interpreters;
+        threading shares memory regardless), so pre-warming is only beneficial
+        paired with ``backend="multiprocessing"``. The callable MUST be pure
+        (it only reads frozen module constants) so the warmed cache is
+        bit-identical to a cold-built one; this is the same purity contract the
+        #472 memoizations already satisfy.
     """
 
     n_workers: int = -1
@@ -111,6 +126,7 @@ class ParallelSweepConfig:
     verbose: int = 0
     timeout_seconds_per_cell: float | None = None
     raise_on_first_error: bool = False
+    prewarm: Callable[[], None] | None = None
 
 
 @dataclass(frozen=True)
@@ -255,6 +271,15 @@ def parallel_sweep(
         )
 
     t0 = time.perf_counter()
+
+    # Pre-warm parent-process caches before forking workers (task #474). Under
+    # the ``"multiprocessing"`` backend on Linux this populates the parent's
+    # ``functools.cache`` tables so the forked workers inherit them copy-on-write
+    # (the 28x #472 speedup otherwise evaporates under cold per-worker caches).
+    # The call is pure, so it changes no result — it only moves the cost build
+    # out of every worker and into the shared parent once.
+    if cfg.prewarm is not None:
+        cfg.prewarm()
 
     parallel_kwargs: dict[str, Any] = {
         "n_jobs": cfg.n_workers,
