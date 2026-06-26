@@ -59,6 +59,7 @@ without touching it.
 
 from __future__ import annotations
 
+import sys
 import time
 import traceback
 from collections.abc import Callable, Sequence
@@ -66,6 +67,62 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 from joblib import Parallel, delayed
+
+# ---------------------------------------------------------------------------
+# Worker-lifecycle helpers (#479)
+# ---------------------------------------------------------------------------
+
+# True iff we can install PR_SET_PDEATHSIG (Linux kernel feature).
+_LINUX = sys.platform == "linux"
+
+
+def _install_pdeathsig() -> None:
+    """Install PR_SET_PDEATHSIG so this worker dies when its parent does.
+
+    Called once per worker process at startup (via the ``initializer``
+    argument to joblib's Parallel / loky executor). On Linux this uses
+    ``prctl(PR_SET_PDEATHSIG, SIGTERM)`` via ctypes so that the kernel
+    delivers SIGTERM to the worker the instant its parent exits — even on
+    SIGKILL of the parent, which no Python signal handler can catch.
+
+    On non-Linux platforms this is a no-op (PR_SET_PDEATHSIG is
+    Linux-only; other OS families have no equivalent at the libc level).
+
+    The function must be module-level (not a closure) so it is picklable
+    under both the loky and multiprocessing backends.
+    """
+    if not _LINUX:
+        return
+    import ctypes
+    import signal
+
+    pr_set_pdeathsig = 1  # <sys/prctl.h> PR_SET_PDEATHSIG
+    libc = ctypes.CDLL("libc.so.6", use_errno=True)
+    ret = libc.prctl(pr_set_pdeathsig, signal.SIGTERM, 0, 0, 0)
+    if ret != 0:
+        # Non-fatal: log to stderr and continue; the worker is still
+        # functional, just not auto-reaped on parent death.
+        import os
+
+        errno = ctypes.get_errno()
+        print(
+            f"[parallel_sweep] prctl(PR_SET_PDEATHSIG) failed in worker "
+            f"pid={os.getpid()} errno={errno}",
+            file=sys.stderr,
+            flush=True,
+        )
+
+
+def _make_worker_initializer() -> tuple[Callable[..., None], tuple[Any, ...]]:
+    """Return ``(initializer, initargs)`` that install PR_SET_PDEATHSIG.
+
+    The returned pair is suitable for passing as ``initializer=`` /
+    ``initargs=`` to joblib's ``Parallel()``.  On non-Linux platforms
+    ``_install_pdeathsig`` is a no-op, so the initializer is always safe
+    to pass regardless of OS.
+    """
+    return _install_pdeathsig, ()
+
 
 # ---------------------------------------------------------------------------
 # Config & result dataclasses
@@ -295,6 +352,26 @@ def parallel_sweep(
         # the dispatch loop below.
         parallel_kwargs["timeout"] = cfg.timeout_seconds_per_cell
 
+    # Worker lifecycle (#479): install PR_SET_PDEATHSIG in every worker so
+    # the kernel auto-delivers SIGTERM when the parent dies -- even on
+    # SIGKILL of the parent, which no Python signal handler can catch. Both
+    # the loky and multiprocessing backends forward ``initializer`` /
+    # ``initargs`` to the underlying pool / executor via ``**backend_kwargs``
+    # on joblib's ``Parallel(**parallel_kwargs)`` call.
+    # Under the ``"threading"`` backend no processes are spawned so the
+    # pdeathsig initializer is not applicable (the main thread already lives
+    # and dies with the parent).
+    # NOTE: ``cfg.prewarm`` is intentionally NOT composed into the worker
+    # initializer: its purpose (task #474) is to populate the parent-process
+    # cache BEFORE the fork so that forked workers inherit the warm cache via
+    # copy-on-write.  Running it again inside each worker would waste time
+    # and defeat the whole COW point.  It has already been called above in
+    # the parent.
+    if cfg.backend != "threading":
+        _init_fn, _init_args = _make_worker_initializer()
+        parallel_kwargs["initializer"] = _init_fn
+        parallel_kwargs["initargs"] = _init_args
+
     # Build the delayed-task list. joblib's ``delayed`` wraps the closure +
     # args in a picklable form; ``_run_one_cell`` is top-level so loky can
     # pickle the wrapping reference.
@@ -304,9 +381,16 @@ def parallel_sweep(
     # time, TimeoutError per cell under the timeout path) and convert them
     # into per-cell failures rather than aborting the whole sweep -- unless
     # the caller asked for raise_on_first_error.
+    #
+    # try/finally (#479): use Parallel as a context manager so that on normal
+    # completion, exception, OR KeyboardInterrupt the backend shuts down and
+    # releases its worker pool / loky reusable executor.  This prevents
+    # "leaked folder objects" warnings and leaves no warm pool alive after the
+    # call returns.
     parallel = Parallel(**parallel_kwargs)
     try:
-        raw_results: list[tuple[bool, Any, float, str]] = parallel(tasks)
+        with parallel:
+            raw_results: list[tuple[bool, Any, float, str]] = parallel(tasks)
     except Exception as exc:
         # Submission-time failure (e.g. PicklingError from a lambda) or a
         # joblib-level error not attributable to a single cell. Propagate;
