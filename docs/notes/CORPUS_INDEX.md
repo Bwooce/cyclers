@@ -177,6 +177,7 @@ is now digested, mined, or triaged.
 | takao-2025-mission-analysis-first-saturn-trojan-2019-uo14-arxiv-2501.06586.pdf | 2026-06-07-takao-2025-mpga-1dsm-mining.md | First Saturn-Trojan (2019 UO14) MPGA+1DSM mission | mined | text-layer |
 | liang-2024-callisto-ganymede-europa-triple-cyclers-JGCD.pdf | 2026-06-11-liang-2024-cge-triple-cyclers-mining.md; KNOWN_CORPUS; catalogue | Callisto-Ganymede-Europa triple cyclers | mined + mined-by-catalogue + KNOWN_CORPUS | text-layer |
 | jones-hernandez-jesick-2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf | 2026-06-05-jones-aas17-577-vem-mining.md; KNOWN_CORPUS; catalogue | Low-excess-speed VEM triple cyclers | mined + mined-by-catalogue + KNOWN_CORPUS | text-layer |
+| hernandez-jones-jesick-2017-one-class-io-europa-ganymede-triple-cyclers-AAS-17-608.pdf | 2026-06-26-digest-hernandez-2017-ieg-triple-cyclers-aas-17-608.md; catalogue | One-class Io-Europa-Ganymede triple cyclers (AAS 17-608; Jovian sibling of VEM 17-577) | digested + catalogued | text-layer |
 | vasile-campagnola-2009-lowthrust-mga-europa-JBIS-arxiv-1105.1823.pdf | 2026-06-07-vasile-campagnola-dfet-method-mining.md; 2026-06-05-vasile-tables-retranscription.md | Low-thrust MGA to Europa (DFET) | mined | text-layer |
 | genova-2016-phobos-deimos-PADME-trajectory-AIAA-2016-5681.pdf | 2026-06-05-v42-backfill-sweep.md §7 (PADME) | Phobos/Deimos PADME trajectory | mined | text-layer |
 
