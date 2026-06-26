@@ -20,11 +20,12 @@ Equation references are to the mining note transcription,
 from __future__ import annotations
 
 import math
+import warnings
 from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cache
 
-from scipy.integrate import quad
+from scipy.integrate import IntegrationWarning, quad
 from scipy.optimize import brentq
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
@@ -211,12 +212,49 @@ def _hohmann_vinf(moon_outer: str, moon_inner: str) -> tuple[float, float]:
     return abs(v_o - math.sqrt(mu / r_o)), abs(v_i - math.sqrt(mu / r_i))
 
 
+@cache
 def _quadrature_dv_adim(vinf_lo: float, vinf_hi: float, *, exterior: bool) -> float:
-    """Adimensional Eq. (13) leverage ΔV = ∫_{V∞L}^{V∞H} V∞ / Γ^(E,I)(V∞) dV∞."""
+    """Adimensional Eq. (13) leverage ΔV = ∫_{V∞L}^{V∞H} V∞ / Γ^(E,I)(V∞) dV∞.
+
+    Performance / robustness (task #477). The integrand V∞/Γ has a pole wherever
+    Γ(V∞) → 0 (Γ crosses zero near V∞ ≈ 1.39 for the Exterior leg); a V∞-band that
+    straddles that root is a *physically infeasible* leverage step, and on it
+    ``scipy.integrate.quad`` grinds through its full subdivision budget (the
+    "integral is probably divergent, or slowly convergent" path — minutes per
+    candidate in the moon-tour campaigns). We bound the work with a finite
+    ``limit`` and use ``full_output`` to DETECT non-convergence cheaply: when quad
+    flags a problem it appends a 4th return element, and we return the infeasible
+    sentinel ``math.inf`` immediately instead of integrating a divergent quadrature.
+
+    Bit-identity (the safety proof): for a CONVERGENT integral ``full_output=1``
+    returns ``len(out) == 3`` and a value byte-for-byte identical to the prior
+    ``quad(...)`` call at the default ``limit=50`` — so every feasible/golden value
+    is UNCHANGED; only the previously-hanging divergent cases change behaviour
+    (they now return ``inf`` fast). The warning spam is suppressed because
+    ``full_output`` makes quad return the message in-band rather than warn.
+
+    Memoization (task #477). The leveraging-chain descent
+    (:func:`cyclerfinder.search.leveraging_chain.walk_vinf_down`) re-evaluates this
+    quadrature ~1e6 times per moon-tour cell over only ~2e3 DISTINCT ``(lo, hi,
+    exterior)`` arg-tuples (a 467x redundancy measured on the #473 resonance-lock
+    cells): the V∞-step grid is discrete and the same bands recur across hops. The
+    quadrature is a pure function of its three args (reads only the frozen Γ shape,
+    no mutable state), so a ``functools.cache`` is exact (no rounding) and collapses
+    the 1e6 calls to 2e3 — the dominant cost of the resonance-lock search. Bypass
+    via ``.__wrapped__``; clear via ``.cache_clear()``.
+    """
     if vinf_hi <= vinf_lo:
         return 0.0
-    val, _ = quad(lambda v: v / gamma(v, exterior=exterior), vinf_lo, vinf_hi)
-    return float(val)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", IntegrationWarning)
+        out = quad(lambda v: v / gamma(v, exterior=exterior), vinf_lo, vinf_hi, full_output=1)
+    # quad appends a 4th element (the explanatory message) ONLY when it could not
+    # converge — i.e. the divergent / slowly-convergent path. A convergent call
+    # returns exactly (value, abserr, infodict): value is bit-identical to the
+    # plain quad(...) at the default limit=50 (regression-locked by the goldens).
+    if len(out) > 3:
+        return math.inf
+    return float(out[0])
 
 
 @cache
