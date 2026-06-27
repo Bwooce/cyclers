@@ -33,7 +33,7 @@ from collections import OrderedDict
 from collections.abc import Sequence
 from dataclasses import replace
 from math import cos, pi, radians, sin
-from typing import Final, Protocol
+from typing import ClassVar, Final, Protocol
 
 import numpy as np
 from numpy.typing import NDArray
@@ -221,6 +221,111 @@ class _CentredCircularBackend:
         r = np.array([a_km * cos_t, a_km * sin_t, 0.0], dtype=np.float64)
         v = np.array([-speed * sin_t, speed * cos_t, 0.0], dtype=np.float64)
         return r, v
+
+
+# Module-level flag so jup365.bsp is furnished into SPICE at most once per
+# interpreter session (spiceypy.furnsh is idempotent for the same file, but
+# a module-level guard avoids even the stat+SPICE lookup on every construction).
+_JUP365_FURNISHED: bool = False
+
+
+class _CentredSpiceBackend:
+    """Real Galilean-moon states from the NAIF jup365.bsp satellite kernel.
+
+    Returns Jupiter-centred ``(r_km, v_km_s)`` in the **J2000 equatorial
+    frame** (SPICE 'J2000' frame, z-axis along the ICRF/J2000 north pole,
+    x-axis toward the J2000 vernal equinox) via ``spiceypy.spkezr``. This
+    is the same frame SPICE uses natively; no rotation is applied here.
+    The Galilean-cycler n-body propagator (``nbody/``) also works in J2000
+    equatorial for Jupiter-system dynamics, so no rotation is needed.
+
+    Frame note (Task 0, #480)
+    -------------------------
+    Unlike the heliocentric ``_AstropyBackend`` (which rotates ICRS to
+    J2000 ecliptic for consistency with the solar-system circular backend),
+    this backend serves a Jupiter-centred context where the rest of
+    cyclerfinder's ecliptic convention does not apply. The shooter passes
+    states directly to the n-body force model, which is frame-agnostic as
+    long as every state in the integration uses the same frame. J2000
+    equatorial is the natural SPICE/NAIF frame for planetary satellite
+    kernels and is what jup365.bsp carries.
+
+    Body → NAIF ID map
+    ------------------
+    ``"Io"`` → 501, ``"Europa"`` → 502, ``"Ganymede"`` → 503,
+    ``"Callisto"`` → 504, ``"Jupiter"`` → 599 (returns zero state —
+    it is the centre).
+
+    Lazy import
+    -----------
+    ``spiceypy`` is imported on first construction (not at module import)
+    so packages that omit the optional SPICE dep can still import
+    ``cyclerfinder.core.ephemeris`` via the circular / astropy paths.
+    """
+
+    # Body name → NAIF SPICE integer ID string.
+    _NAIF_ID: ClassVar[dict[str, str]] = {
+        "Io": "501",
+        "Europa": "502",
+        "Ganymede": "503",
+        "Callisto": "504",
+        "Jupiter": "599",
+    }
+    # Zero state returned for the centre body (Jupiter relative to itself).
+    _ZERO_R: ClassVar[Vec3] = np.zeros(3, dtype=np.float64)
+    _ZERO_V: ClassVar[Vec3] = np.zeros(3, dtype=np.float64)
+
+    def __init__(self, center: str) -> None:
+        global _JUP365_FURNISHED
+        # Lazy import: clear ImportError if spiceypy absent.
+        try:
+            import spiceypy  # noqa: F401
+        except ImportError as exc:
+            raise ImportError(
+                "spiceypy is required for the 'spice' ephemeris backend. "
+                "Install it with: uv add spiceypy"
+            ) from exc
+
+        self._center = center
+
+        # Furnish jup365.bsp once per interpreter session.
+        if not _JUP365_FURNISHED:
+            import spiceypy as s
+
+            from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+            kernel_path = ensure_jup365_kernel()
+            s.furnsh(kernel_path)
+            _JUP365_FURNISHED = True
+
+    def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
+        """Return Jupiter-centred ``(r_km, v_km_s)`` in J2000 equatorial."""
+        import spiceypy as s
+
+        if body not in self._NAIF_ID:
+            raise KeyError(
+                f"unknown body {body!r}; _CentredSpiceBackend handles {tuple(self._NAIF_ID)}"
+            )
+        # Centre body returns zero state (it is the reference frame origin).
+        if body == self._center:
+            return self._ZERO_R.copy(), self._ZERO_V.copy()
+        naif_id = self._NAIF_ID[body]
+        # spkezr(target, et, frame, abcorr, observer) → (state[6], lt)
+        # 'NONE' = no light-time correction (consistent with the circular
+        # and astropy backends which also return geometric positions).
+        state_vec, _ = s.spkezr(naif_id, t_sec, "J2000", "NONE", "599")
+        r = np.array(state_vec[:3], dtype=np.float64)
+        v = np.array(state_vec[3:], dtype=np.float64)
+        return r, v
+
+    def states(self, bodies: Sequence[str], epochs: Sequence[float]) -> list[tuple[Vec3, Vec3]]:
+        """Batch of :meth:`state` over parallel ``(body, epoch)`` lists.
+
+        Iterates over each ``(body, epoch)`` pair; SPICE Chebyshev evaluation
+        is already fast per-call so no vectorised grouping is needed here.
+        Per-element output is identical to looping :meth:`state`.
+        """
+        return [self.state(body, float(t)) for body, t in zip(bodies, epochs, strict=True)]
 
 
 class _InclinedCircularBackend:
@@ -485,17 +590,19 @@ class Ephemeris:
         # read-only internally and copied out on every access.
         self._state_cache: OrderedDict[tuple[str, float], tuple[Vec3, Vec3]] = OrderedDict()
         if center is not None:
-            # Planet-centric Tier-1 moon ephemeris: a moon on its mean-motion
-            # circle about ``center`` (a primary). Only the circular model is
-            # supported for centred moon states in Tier-1; the heliocentric
-            # backends below are entered only when ``center is None``, so they
-            # stay byte-identical.
-            if model != "circular":
+            # Planet-centric moon ephemeris: a moon on a mean-motion circle
+            # (``model='circular'``) or on real SPICE states (``model='spice'``)
+            # about ``center`` (a primary). The heliocentric backends below are
+            # entered only when ``center is None``, so they stay byte-identical.
+            if model == "circular":
+                self._backend_impl: _Backend = _CentredCircularBackend(center)
+            elif model == "spice":
+                self._backend_impl = _CentredSpiceBackend(center)
+            else:
                 raise ValueError(
-                    f"center={center!r} requires model='circular' "
-                    f"(Tier-1 centred moon ephemeris); got model={model!r}",
+                    f"center={center!r} requires model='circular' or model='spice' "
+                    f"(centred moon ephemeris); got model={model!r}",
                 )
-            self._backend_impl: _Backend = _CentredCircularBackend(center)
             self._center: str | None = center
             self._model: str = model
             return
