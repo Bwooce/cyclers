@@ -68,6 +68,32 @@ def astropy_de440_bsp_path() -> str:
     return str(path)
 
 
+NAIF_JUP365_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup365.bsp"
+NAIF_JUP365_LOCAL = Path("~/dev/references/kernels/jup365.bsp")
+
+
+def ensure_jup365_kernel() -> str:
+    """Return the local path of the jup365.bsp Galilean-satellite kernel.
+
+    Resolves ``~/dev/references/kernels/jup365.bsp`` (expanduser). This kernel
+    covers Io, Europa, Ganymede, and Callisto relative to Jupiter barycentre and
+    requires NO leapseconds kernel when passing ET floats directly to
+    ``spiceypy.spkezr``.
+
+    Does **not** auto-download (jup365.bsp is ~50 MB). If the file is absent,
+    a ``RuntimeError`` is raised with the NAIF download URL so the user knows
+    exactly where to fetch it.
+
+    Used by the Galilean cycler real-ephemeris pipeline (#480 Task 1).
+    """
+    path = NAIF_JUP365_LOCAL.expanduser()
+    if not path.exists():
+        raise RuntimeError(
+            f"jup365.bsp kernel not found at {path}. Download it from: {NAIF_JUP365_URL}"
+        )
+    return str(path)
+
+
 def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -> str:
     """Return a path to ``naif0012.tls``, fetching it once if necessary.
 
