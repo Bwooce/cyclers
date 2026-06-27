@@ -156,6 +156,140 @@ def test_ieg_paper_departure_et_sanity() -> None:
     assert 6.0e8 < et < 7.0e8, f"paper ET {et} 10x off (expected ~{PAPER_DEPARTURE_ET_APPROX:.2e})"
 
 
+def test_ieg_multirev_seed_vinf_near_paper() -> None:
+    """Multi-rev EGGIE seed V∞ improvement over single-rev (Task 4b characterised result).
+
+    Sourced targets (Hernandez 2017, AAS 17-608, Table 4):
+      Node 0 Europa departure: 9.12 km/s
+      Node 1 Ganymede arrival: 7.07 km/s
+      Node 2 Ganymede arrival: 7.07 km/s   <- IMPROVED by multi-rev (leg 1 n=1,high)
+      Node 3 Io arrival:       8.38 km/s
+      Node 4 Europa arrival:   9.12 km/s   <- IMPROVED by multi-rev (leg 3 n=1,high)
+
+    CHARACTERISED FINDING at departure_et=0:
+    - Node 2 (Ganymede, from leg 1 n=1,high): 7.04 km/s vs 7.07 target — WITHIN 2.5 km/s.
+    - Node 4 (Europa,   from leg 3 n=1,high): 8.73 km/s vs 9.12 target — WITHIN 2.5 km/s.
+    - Nodes 0,1: leg 0 (1.59 d) has no feasible multi-rev arc; departure_et=0 geometry
+      gives ~5.4/2.4 km/s vs 9.12/7.07.  Gap is geometric, not a solver gap.
+    - Node 3 (Io):  leg 2 Io arrival ~20 km/s vs 8.38 target — best multi-rev n=2,high
+      still cannot match; the Keplerian Lambert arc cannot reproduce the paper's
+      multi-body patched-conic encounter at this geometry/epoch.
+
+    This test asserts the two IMPROVED nodes are within 2.5 km/s and the departure
+    V∞ is also explicitly characterized (the other nodes are sanity-range checked only).
+    """
+    import numpy as np
+
+    from cyclerfinder.search.ieg_seed import EGGIE_SEQUENCE, ieg_eggie_seed
+
+    seed = ieg_eggie_seed()
+
+    # --- Nodes that ARE improved to within 2.5 km/s by multi-rev ---
+    # Node 2: Ganymede arrival from leg 1 (n=1,high): sourced 7.07 km/s.
+    v_node2 = float(np.linalg.norm(seed.vinf_in[2]))
+    assert abs(v_node2 - 7.07) <= 2.5, (
+        f"vinf_in[2] (Ganymede, leg1 n=1,high) = {v_node2:.2f} km/s is more than 2.5 km/s "
+        f"from sourced 7.07 km/s — multi-rev selection may have regressed"
+    )
+
+    # Node 4: Europa arrival from leg 3 (n=1,high): sourced 9.12 km/s.
+    v_node4 = float(np.linalg.norm(seed.vinf_in[4]))
+    assert abs(v_node4 - 9.12) <= 2.5, (
+        f"vinf_in[4] (Europa, leg3 n=1,high) = {v_node4:.2f} km/s is more than 2.5 km/s "
+        f"from sourced 9.12 km/s — multi-rev selection may have regressed"
+    )
+
+    # --- CHARACTERIZED GAP NODES: single-rev only possible / Keplerian geometry gap ---
+    # These are asserted to be in a PHYSICALLY PLAUSIBLE range only (not near the paper target).
+    # Node 0 (Europa departure, from leg 0 n=0 single): not within 2.5 of 9.12 at ET=0.
+    v_dep = float(np.linalg.norm(seed.vinf_out[0]))
+    assert 1.0 <= v_dep <= 30.0, (
+        f"vinf_out[0] (Europa departure) {v_dep:.2f} km/s outside 1-30 km/s sanity range"
+    )
+
+    # Node 1 (Ganymede arrival from leg 0 single): not within 2.5 of 7.07 at ET=0.
+    v_node1 = float(np.linalg.norm(seed.vinf_in[1]))
+    assert 1.0 <= v_node1 <= 30.0, (
+        f"vinf_in[1] (Ganymede, leg0 arrival) {v_node1:.2f} km/s outside 1-30 km/s sanity range"
+    )
+
+    # Node 3 (Io arrival from leg 2 n=2,high): characterized ~20 km/s vs 8.38 target.
+    v_node3 = float(np.linalg.norm(seed.vinf_in[3]))
+    assert 1.0 <= v_node3 <= 30.0, (
+        f"vinf_in[3] (Io arrival) {v_node3:.2f} km/s outside 1-30 km/s sanity range"
+    )
+
+    # Sanity: all vectors are finite.
+    for i in range(5):
+        assert all(np.isfinite(x) for x in seed.vinf_in[i]), f"vinf_in[{i}] not finite"
+        assert all(np.isfinite(x) for x in seed.vinf_out[i]), f"vinf_out[{i}] not finite"
+
+    # Report the full V∞ picture as contextual info (not asserted as golden).
+    _ = EGGIE_SEQUENCE  # suppress unused import warning
+
+
+def test_ieg_multirev_seed_defect_improves() -> None:
+    """Multi-rev seed defect after jovian_shoot is substantially below the single-rev 2.47e6.
+
+    Fast structural assertion: just build the multi-rev seed and compute the seed_defect_norm
+    WITHOUT running the corrector iterations.  Checks that the multi-rev V∞ give a seed
+    substantially closer to the EGGIE basin than the single-rev ~2.47e6.
+    """
+    import math
+
+    import numpy as np
+
+    from cyclerfinder.nbody.jovian import (
+        JovianEphemeris,
+        JovianRailsCache,
+        JovianRestrictedNBody,
+    )
+    from cyclerfinder.search.ieg_seed import ieg_eggie_seed
+    from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+    seed = ieg_eggie_seed(departure_et=0.0)
+    moons = ("Io", "Europa", "Ganymede")
+    jeph = JovianEphemeris(ensure_jup365_kernel())
+    cache = JovianRailsCache(moons, jeph, min(seed.epochs), max(seed.epochs))
+    prop = JovianRestrictedNBody()
+
+    res: list[float] = []
+    n = len(seed.sequence)
+    for i in range(n - 1):
+        s_i = seed.node_states[i]
+        arc = prop.propagate(
+            np.asarray(s_i[:3], dtype=np.float64),
+            np.asarray(s_i[3:], dtype=np.float64),
+            t0_sec=seed.epochs[i],
+            t1_sec=seed.epochs[i + 1],
+            moons=moons,
+            cache=cache,
+            max_wall_sec=30.0,
+        )
+        assert arc.converged, f"leg {i} propagation did not converge"
+        assert np.all(np.isfinite(arc.r_km)) and np.all(np.isfinite(arc.v_km_s))
+        s_next = seed.node_states[i + 1]
+        res.extend(float(x) for x in (arc.r_km - np.asarray(s_next[:3])))
+        res.extend(float(x) for x in (arc.v_km_s - np.asarray(s_next[3:])))
+
+    seed_defect_norm = float(np.linalg.norm(res))
+    assert math.isfinite(seed_defect_norm)
+    # CHARACTERISED IMPROVEMENT: multi-rev seed reduces defect from ~2.47e6 to ~1.58e6
+    # (improvement ~1.57x).  The dominant residual is Leg 2 Io-arrival (~20 km/s vs
+    # 8.38 km/s paper target) which no multi-rev Keplerian arc can resolve at ET=0.
+    # The threshold <2.0e6 confirms the multi-rev legs are materially closer to the basin
+    # than single-rev without asserting a basin that geometry cannot reach.
+    assert seed_defect_norm < 2.0e6, (
+        f"Multi-rev seed defect {seed_defect_norm:.3e} is NOT an improvement over "
+        f"the single-rev ~2.47e6 baseline; multi-rev topology may have regressed."
+    )
+    # Also guard against accidental over-improvement (a sign something is wrong with the test).
+    assert seed_defect_norm > 1.0e4, (
+        f"Multi-rev seed defect {seed_defect_norm:.3e} is unexpectedly tiny; "
+        "if the seed now closes, revisit the Task-4b characterised finding."
+    )
+
+
 def test_ieg_corrects_against_real_ephemeris_at_paper_epoch() -> None:
     """Characterised #480 Task-4 result against the Jovian-correct propagator.
 
