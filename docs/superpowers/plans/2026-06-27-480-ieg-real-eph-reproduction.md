@@ -259,4 +259,57 @@ def test_eggie_reproduction_matches_published_invariants():
 **Risk honesty:** Tasks 4 and 6 are explicitly "math decides" — the plan does NOT assume reproduction succeeds; a characterized real-eph divergence is a legitimate, reportable M1 outcome (and would itself validate #473's "model is the wall" with the *correct* model). Tolerances are sourced and must not be loosened to force a pass.
 
 ## Task 0 findings
-_(to be filled by the implementer in Task 0 before Task 1)_
+
+_(filled 2026-06-27 — read-only spike. Source: `src/cyclerfinder/core/ephemeris.py`, `nbody/shooter.py`, `nbody/forces.py`, `core/satellites.py`; jup365 tested live.)_
+
+### 1. `Ephemeris` class — location + constructor
+
+- **Location:** `src/cyclerfinder/core/ephemeris.py`, class `Ephemeris` (line 445). It is a **concrete class with a backend-strategy** chosen at construction (NOT an ABC). Backends conform to a `_Backend` `Protocol` (line 138) whose sole required method is `state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]`.
+- **Constructor:**
+  ```python
+  Ephemeris(
+      model: str = "circular",
+      *,
+      center: str | None = None,
+      cache: bool = True,
+      cache_size: int = 4096,
+  ) -> None
+  ```
+  `model` ∈ {`"circular"`, `"inclined-circular"`, `"astropy"`}. **Key precedent for this task:** when `center` is set, the constructor *requires* `model="circular"` and installs `_CentredCircularBackend(center)` (lines 487–501) — a **planet-centric** moon provider returning Jupiter-centred `(r, v)` in km. This is the existing seam the Galilean real-eph provider slots into.
+
+### 2. The method the shooter calls — full contract the provider must satisfy
+
+- **Method:** `Ephemeris.state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]` (line 554).
+  - `Vec3 = NDArray[np.float64]`, shape **(3,)**, dtype float64.
+  - **Return:** `(r, v)` — position and velocity 3-vectors.
+  - **Units:** **km** and **km/s** (NOT canonical/nondimensional).
+  - **Frame (heliocentric backends):** heliocentric, **J2000 ecliptic** (z = ecliptic north pole), Sun-centred. For the **centred** (`_CentredCircularBackend`) path: **primary-centred inertial** (Jupiter-centred) km / km·s⁻¹, coplanar circular.
+  - **Time axis:** `t_sec` = TDB seconds since J2000 = JD 2451545.0 TDB = **2000-01-01T12:00:00 TDB**. Explicitly **identical to SPICE ET** (ephemeris.py:45–53). May be negative. So the Galilean provider can pass `t_sec` *straight into* `spkezr(code, t_sec, ...)` with no time conversion.
+- **Batch method (optional but used):** `Ephemeris.states(bodies, epochs) -> list[tuple[Vec3,Vec3]]` (line 594). The astropy backend supplies its own vectorised `states(...)`; the shooter's `RailsEphemerisCache` (forces.py:82) calls `ephem.states([body]*N, grid)`. If the provider/backend does **not** define `states`, `Ephemeris.states` falls back to a per-element `state()` loop via `getattr(self._backend_impl, "states", None)` (ephemeris.py:627) — so implementing only `state()` is **correct but slower**; a batched `states()` is a perf win, not a requirement.
+
+### 3. How `bodies` strings map to ephemeris lookups
+
+Two distinct consumption paths in the shooter, **both** keyed by the same body-code string:
+- **Node states:** `seed_from_conic` / the corrector call `ephem.state(body, epochs[i])` directly (shooter.py:146, 285, 308, 504, 727) where `body` comes from `seed.sequence` — the per-node body code.
+- **Perturber rails:** `shoot(..., bodies=...)` passes the perturber list into `RailsEphemerisCache(bodies, ephem, t_lo, t_hi)` (shooter.py:247) → `forces.ingest_planet_state` → `ephem.states([body]*N, grid)` (forces.py:82). The central two-body force is about the frame centre; `bodies` are point-mass perturbers read on rails.
+- The body string is the **dict key** the backend resolves: heliocentric backends key `PLANETS` (one-letter codes "E","M","V"…); the **centred** backend keys `SATELLITES` by **full name** ("Io","Europa","Ganymede","Callisto") filtered to `sat.primary == center` (ephemeris.py:209, satellites.py:128–137). So the Galilean provider's body strings are **"Io"/"Europa"/"Ganymede"** (matching `SATELLITES`), and it maps each to its NAIF code internally for `spkezr`.
+
+### 4. What a subclass/alternative must implement
+
+A new `galilean_ephem.py` provider must be **duck-compatible with the `_Backend` Protocol**: implement `state(body, t_sec) -> (r_km, v_km_s)` returning Jupiter-centred J2000 km / km·s⁻¹ (optionally `states(...)` for the rails batch). The cleanest integration is to **inject it as the `_backend_impl`** of an `Ephemeris` instance (the `_backend` setter at line 524 exists exactly for post-construction backend swaps and clears the cache), OR subclass/extend the `center=` path. The shooter only ever touches `ephem.state` / `ephem.states` / `ephem.model`, so the LRU cache, `clear_cache`, and `model` property come for free from the outer `Ephemeris`.
+
+### 5. jup365 + NAIF IDs — confirmed live (2026-06-27)
+
+- **Kernel:** `/home/bruce/dev/references/kernels/jup365.bsp` (~1.14 GB) present.
+- **Working NAIF IDs (all resolved from jup365.bsp ALONE, fresh process, `ktotal('ALL')==1`):**
+  - Io **501**, Europa **502**, Ganymede **503**, Callisto **504**, Jupiter body-centre **599** — all OK.
+  - `spkezr('502', t, 'J2000', 'NONE', '599')` returns a clean 6-vector (km, km/s); `'599' wrt '599'` is exact zeros. **Use centre `'599'` (Jupiter body centre)** — `'5'` (Jupiter barycentre) also works but differs by ~40 km (barycentre offset); 599 is the correct primary centre for moon-wrt-Jupiter.
+  - Name strings also resolve from the built-in NAIF body dictionary: `spkezr('EUROPA', t, 'J2000', 'NONE', 'JUPITER')` works with no extra kernel.
+- **Furnish requirements:** **jup365.bsp ALONE is sufficient.** No `de440` and **no `naif0012.tls` leapseconds kernel** are needed for the moon-wrt-Jupiter lookups, because the shooter axis is already ET/TDB seconds (passed as a float to `spkezr`) — leap-second conversion is only needed for UTC-string time, which we never use. (Bonus: jup365.bsp even resolves Jupiter 599 wrt Sun 10, so it carries the SSB↔Jupiter-system chain — not needed here but available.)
+- **Frame note:** jup365 returns J2000 **equatorial (ICRS-aligned)** vectors. The existing astropy backend rotates ICRS→J2000-ecliptic by the obliquity (ephemeris.py:328–337). For the Jupiter-centred cycler the working frame is the moons' own plane; whether to rotate to ecliptic or stay in J2000-equatorial is a Task 1/2 modelling decision (the moons' orbital plane ≈ Jupiter's equator, ~3° to Jupiter's orbit), but the provider should return a **documented, consistent** frame — recommend J2000 equatorial (raw `spkezr` 'J2000') as the natural Jupiter-system frame, matching how `_CentredCircularBackend` defines its own coplanar z=0 plane.
+
+### 6. Surprises that change Tasks 1–2
+
+- **The `center=` seam already exists.** `Ephemeris(center="Jupiter")` is a live, tested code path (`_CentredCircularBackend`) serving Jupiter-centred moon states from `SATELLITES`. Task 1/2 should mirror its *signature and frame contract* (Jupiter-centred km/km·s⁻¹, body keys "Io"/"Europa"/"Ganymede") and swap the analytic-circle math for a `spkezr` call — not invent a new contract. This is a real-eph **drop-in replacement** for the existing circular centred backend.
+- **No leapseconds/de440 dependency** simplifies Task 1: the provider needs only `spiceypy.furnsh(jup365.bsp)` (once, idempotent) and `spkezr(code, t_sec, 'J2000', 'NONE', '599')`. Body-code map: `{"Io":"501","Europa":"502","Ganymede":"503","Callisto":"504"}`.
+- **Frame-rotation decision is the only open modelling question** (equatorial vs ecliptic) — flagged above; not a blocker.
