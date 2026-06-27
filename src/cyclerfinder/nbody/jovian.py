@@ -58,7 +58,7 @@ import math
 import os
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 from numpy.typing import NDArray
@@ -67,6 +67,9 @@ from scipy.interpolate import CubicSpline
 from cyclerfinder.core.constants import SECONDS_PER_DAY
 from cyclerfinder.core.lambert import lambert
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
+
+if TYPE_CHECKING:
+    from cyclerfinder.nbody.shooter import ShootingSeed, ShootResult
 
 Vec3 = NDArray[np.float64]
 
@@ -794,6 +797,224 @@ def shoot_cycle(
     )
 
 
+# --- Jupiter-central multiple-shooting corrector (#480 M1) -------------------------
+#
+# A Jupiter-centred analogue of :func:`cyclerfinder.nbody.shooter.shoot`. The shared
+# heliocentric ``shoot()`` is hardwired to ``RestrictedNBody`` (central MU_SUN, the
+# ``PLANETS`` perturber registry) and so cannot integrate a Galilean-moon tour
+# (KeyError 'Io' + IAS15 step-collapse). Rather than parameterise that core module
+# — which would ripple through ``defect_residual`` / ``_stm_jacobian`` / the worker
+# pool and every frozen heliocentric golden — this is a CONTAINED corrector that
+# reuses the same multiple-shooting structure (``ShootingSeed`` / ``ShootResult`` /
+# ``least_squares``) but propagates each leg with :class:`JovianRestrictedNBody`.
+# The heliocentric ``shoot()`` is untouched.
+
+_STATE_DIM = 6
+
+# SNOPT-analogue continuity floors (mirror shooter.py: Jones AAS 17-577 §2.5,
+# 1e-3 km position / 1e-6 km/s velocity); the Jovian leg defects are compared to
+# the same per-component floor scaled by sqrt(n_legs).
+_POS_CONTINUITY_KM = 1.0e-3
+_VEL_CONTINUITY_KMS = 1.0e-6
+
+# Velocity-residual weight so a 1 m/s velocity defect carries ~1 km of position
+# defect in the least-squares norm (mirror shoot_cycle's _W_VEL above).
+_W_VEL = 1.0e3
+
+
+def _jovian_flyby_hinge_km(vinf_in: Vec3, vinf_out: Vec3, moon: str) -> float:
+    """Bend-feasibility shortfall (km) for a Galilean flyby (mirror shooter hinge).
+
+    An unpowered flyby turns ``vinf_in`` into ``vinf_out`` at constant magnitude;
+    the periapsis needed is ``r_p = (mu/v∞^2)(1/sin(δ/2) - 1)``. Returns
+    ``max(0, r_safe - r_p)`` where ``r_safe = radius_eq_km + min_alt`` (100 km, the
+    paper's flyby floor). Zero when the bend is feasible above the surface.
+    """
+    sat = SATELLITES[moon]
+    r_safe = sat.radius_eq_km + 100.0
+    vi = float(np.linalg.norm(vinf_in))
+    vo = float(np.linalg.norm(vinf_out))
+    vmag = 0.5 * (vi + vo)
+    if vmag <= 0.0:
+        return 0.0
+    cos_d = float(np.dot(vinf_in, vinf_out) / (vi * vo)) if vi > 0 and vo > 0 else 1.0
+    cos_d = max(-1.0, min(1.0, cos_d))
+    delta = math.acos(cos_d)
+    sin_half = math.sin(0.5 * delta)
+    if sin_half <= 1e-12:
+        return 0.0
+    r_p = (sat.mu_km3_s2 / (vmag * vmag)) * (1.0 / sin_half - 1.0)
+    return max(0.0, r_safe - r_p)
+
+
+def jovian_defect_residual(
+    seed: ShootingSeed,
+    *,
+    ephem: JovianEphemeris,
+    cache: JovianRailsCache,
+    moons: Sequence[str] = GALILEAN,
+    accuracy: float = 1e-11,
+    max_wall_sec: float = 30.0,
+) -> NDArray[np.float64]:
+    """Full-state multiple-shooting residual in the Jupiter-central model.
+
+    Jupiter-centred analogue of
+    :func:`cyclerfinder.nbody.shooter.defect_residual`: same residual layout
+    (leg continuity, flyby hinges, periodicity wrap) but each interior leg is
+    propagated with :class:`JovianRestrictedNBody` against moons-on-jup365-rails.
+    Velocity defects are weighted by ``_W_VEL`` so position and velocity enter the
+    least-squares norm on comparable scales. Divergence is an honest large-finite
+    sentinel, never a NaN/raise (mirror the heliocentric residual).
+    """
+    prop = JovianRestrictedNBody()
+    n = len(seed.sequence)
+    res: list[float] = []
+
+    # 1. Leg continuity defects.
+    for i in range(n - 1):
+        s_i = seed.node_states[i]
+        r0 = np.asarray(s_i[:3], dtype=np.float64)
+        v0 = np.asarray(s_i[3:], dtype=np.float64)
+        arc = prop.propagate(
+            r0,
+            v0,
+            seed.epochs[i],
+            seed.epochs[i + 1],
+            moons=moons,
+            cache=cache,
+            accuracy=accuracy,
+            max_wall_sec=max_wall_sec,
+        )
+        s_next = seed.node_states[i + 1]
+        if arc.converged and np.all(np.isfinite(arc.r_km)) and np.all(np.isfinite(arc.v_km_s)):
+            dr = arc.r_km - np.asarray(s_next[:3], dtype=np.float64)
+            dv = arc.v_km_s - np.asarray(s_next[3:], dtype=np.float64)
+            res.extend(float(x) for x in dr)
+            res.extend(float(x) * _W_VEL for x in dv)
+        else:
+            res.extend([1e9] * _STATE_DIM)
+
+    # 2. Flyby bend-feasibility hinges (interior encounters only).
+    for i in range(1, n - 1):
+        res.append(_jovian_flyby_hinge_km(seed.vinf_in[i], seed.vinf_out[i], seed.sequence[i]))
+
+    # 3. Periodicity wrap in the home-moon-relative frame (a pure moon-ephemeris
+    #    shift of the home moon is not charged as a defect).
+    r_home, v_home = ephem.state(seed.sequence[0], seed.epochs[0])
+    r_wrap_pl, v_wrap_pl = ephem.state(seed.sequence[-1], seed.epochs[-1])
+    s0 = seed.node_states[0]
+    sn = seed.node_states[-1]
+    rel0_r = np.asarray(s0[:3], dtype=np.float64) - np.asarray(r_home, dtype=np.float64)
+    rel0_v = np.asarray(s0[3:], dtype=np.float64) - np.asarray(v_home, dtype=np.float64)
+    reln_r = np.asarray(sn[:3], dtype=np.float64) - np.asarray(r_wrap_pl, dtype=np.float64)
+    reln_v = np.asarray(sn[3:], dtype=np.float64) - np.asarray(v_wrap_pl, dtype=np.float64)
+    res.extend(float(x) for x in (reln_r - rel0_r))
+    res.extend(float(x) * _W_VEL for x in (reln_v - rel0_v))
+
+    return np.asarray(res, dtype=np.float64)
+
+
+def jovian_shoot(
+    seed: ShootingSeed,
+    *,
+    kernel_path: str | None = None,
+    moons: Sequence[str] = GALILEAN,
+    accuracy: float = 1e-11,
+    max_nfev: int = 40,
+    max_wall_sec: float = 30.0,
+) -> ShootResult:
+    """Multiple-shooting corrector in the Jupiter-central model (#480 M1).
+
+    Drop-in Jupiter analogue of :func:`cyclerfinder.nbody.shooter.shoot` for a
+    Galilean-moon tour (e.g. the Hernandez 2017 EGGIE cycler). Free variables are
+    the per-node full Cartesian states (6 each); node epochs are held at the seed
+    epochs (same documented choice as the heliocentric shooter). Each leg is
+    propagated with :class:`JovianRestrictedNBody` (central MU_JUPITER, moons on
+    jup365 rails) — so the corrector RUNS where the heliocentric ``shoot()`` raises
+    KeyError on 'Io'. Returns a :class:`~cyclerfinder.nbody.shooter.ShootResult`;
+    divergence is recorded honestly (mirror ``shoot()``), never raised.
+
+    ``kernel_path`` resolves the JUP365 SPK (default: the ensured generic kernel,
+    the same one ``Ephemeris(center='Jupiter', model='spice')`` furnishes), so the
+    propagator's rails match the seed's moon geometry.
+    """
+    from scipy.optimize import least_squares
+
+    from cyclerfinder.nbody.correction_dv import node_impulse_correction_dv
+    from cyclerfinder.nbody.shooter import (
+        ShootResult,
+        _seed_with_states,
+        _states_to_x,
+        _x_to_states,
+    )
+
+    if kernel_path is None:
+        from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+        kernel_path = ensure_jup365_kernel()
+    jeph = JovianEphemeris(kernel_path)
+
+    moons = tuple(moons)
+    n = len(seed.sequence)
+    cache = JovianRailsCache(moons, jeph, min(seed.epochs), max(seed.epochs))
+
+    def residual_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+        trial = _seed_with_states(seed, _x_to_states(x, n))
+        return jovian_defect_residual(
+            trial,
+            ephem=jeph,
+            cache=cache,
+            moons=moons,
+            accuracy=accuracy,
+            max_wall_sec=max_wall_sec,
+        )
+
+    x0 = _states_to_x(seed.node_states)
+    seed_res = residual_of_x(x0)
+    seed_defect_norm = float(np.linalg.norm(seed_res))
+
+    sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
+    corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
+    final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
+    defect_norm = float(np.linalg.norm(final_res))
+
+    # Continuity acceptance reads only the leg-defect block (velocity weighted).
+    n_leg_defects = (n - 1) * _STATE_DIM
+    leg_block = final_res[:n_leg_defects]
+    floor_vec = ([_POS_CONTINUITY_KM] * 3 + [_VEL_CONTINUITY_KMS * _W_VEL] * 3) * (n - 1)
+    continuity_floor = float(np.linalg.norm(floor_vec))
+    converged = bool(sol.success) and float(np.linalg.norm(leg_block)) < continuity_floor
+
+    vinf_mag: list[float] = []
+    for state, body, epoch in zip(corrected_states, seed.sequence, seed.epochs, strict=True):
+        _, v_m = jeph.state(body, epoch)
+        vinf_mag.append(
+            float(np.linalg.norm(np.asarray(state[3:], dtype=np.float64) - np.asarray(v_m)))
+        )
+
+    seed_nodes = {f"b{i}": np.asarray(seed.node_states[i][3:]) for i in range(n)}
+    corr_nodes = {f"b{i}": np.asarray(corrected_states[i][3:]) for i in range(n)}
+    cdv = node_impulse_correction_dv(seed_nodes, corr_nodes)
+
+    bend_feasible = all(
+        _jovian_flyby_hinge_km(seed.vinf_in[i], seed.vinf_out[i], seed.sequence[i]) <= 0.0
+        for i in range(1, n - 1)
+    )
+
+    return ShootResult(
+        converged=converged,
+        defect_norm=defect_norm,
+        seed_defect_norm=seed_defect_norm,
+        corrected_states=corrected_states,
+        vinf_per_encounter_kms=vinf_mag,
+        correction_dv_kms=cdv.total_kms,
+        bend_feasible=bend_feasible,
+        sequence=seed.sequence,
+        integrator_accuracy=accuracy,
+        n_iterations=int(sol.nfev),
+    )
+
+
 __all__ = [
     "BRANCH_PLAN",
     "CGCEC",
@@ -808,6 +1029,8 @@ __all__ = [
     "chain_cycles",
     "flyby_altitude_km",
     "flyby_min_dv",
+    "jovian_defect_residual",
+    "jovian_shoot",
     "jup365_kernel_path",
     "optimize_cycle",
     "periapsis_node",
