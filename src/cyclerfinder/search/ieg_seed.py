@@ -61,6 +61,27 @@ _MU_JUPITER: float = PRIMARIES["Jupiter"]
 # Seconds per day.
 _SPD: float = 86400.0
 
+# Paper EGGIE departure window (Table 4 caption: 29-Sep-2020; page-9 text + Fig 4:
+# 02-Oct-2020 — the digest flags the paper's own date inconsistency). We anchor on
+# 02-Oct-2020 12:00 TDB; the resulting ET is ~6.55e8 s past J2000 (a prior note had
+# this 10x wrong at ~6.6e7 — the sanity guard in PAPER_DEPARTURE_ET_APPROX catches it).
+PAPER_DEPARTURE_UTC: str = "2020-OCT-02 12:00 TDB"
+PAPER_DEPARTURE_ET_APPROX: float = 6.55e8
+
+
+def paper_departure_et() -> float:
+    """SPICE ET (TDB seconds past J2000) for the paper's EGGIE departure epoch.
+
+    Resolves :data:`PAPER_DEPARTURE_UTC` via ``spiceypy.str2et`` after furnishing the
+    NAIF leapseconds kernel. Returns ~6.55e8 s (NOT ~6.6e7 — the historical 10x error).
+    """
+    import spiceypy
+
+    from cyclerfinder.verify.spice_kernels import ensure_leapseconds_kernel
+
+    spiceypy.furnsh(ensure_leapseconds_kernel())
+    return float(spiceypy.str2et(PAPER_DEPARTURE_UTC))
+
 
 def ieg_eggie_seed(departure_et: float = 0.0) -> ShootingSeed:
     """Build the EGGIE Lambert-real seed at ``departure_et`` (TDB seconds past J2000).

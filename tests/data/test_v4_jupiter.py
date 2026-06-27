@@ -111,3 +111,108 @@ def test_ieg_seed_departure_et_offset() -> None:
         assert abs((e1 - e0) - offset) < 1.0, (
             f"epoch not shifted by offset: delta={(e1 - e0):.1f}, expected {offset:.1f}"
         )
+
+
+# ---------------------------------------------------------------------------
+# #480 Task 4 — corrector against real Galilean ephemeris at the paper epoch.
+#
+# CHARACTERISED RESULT (math decided — see scripts/_ieg_epoch_scan_480.py and the
+# Task-4 report). Two independent honest negatives were found:
+#
+#   1. CORRECTOR GAP. ``nbody.shooter.shoot`` integrates a HELIOCENTRIC central mass
+#      (MU_SUN, ~1047x Jupiter's GM) with planet perturbers from ``constants.PLANETS``.
+#      The IEG seed is Jupiter-centred with Galilean-moon nodes (not in PLANETS), so
+#      ``shoot()`` cannot run on it: the REBOUND callback raises KeyError (swallowed),
+#      the wrong central GM makes IAS15 step-collapse, and the call does not terminate
+#      in a usable budget. The Jupiter-correct propagator (``nbody.jovian``) is NOT
+#      wired into ``shoot()``. The prescribed ``shoot(...)`` corrector test is therefore
+#      NOT runnable here; we assert the characterised result with the Jovian-correct
+#      propagator instead (the only physically valid path available).
+#
+#   2. BASIN MISS. Even with the correct propagator, the single-revolution Lambert
+#      EGGIE seed at the paper epoch sits FAR from the basin: per-epoch seed defect
+#      ~2.3e6 (best in a +/-2-synodic window ~1.6e6 at ET 6.55335e8, +4.9 d), seed
+#      V_inf 3-27 km/s vs the paper's 9.12/7.07/7.07/8.38. The construction does not
+#      reach the EGGIE basin anywhere in the launch window.
+#
+# These tests assert STRUCTURE + the characterised negative only; they do NOT assert
+# reproduction pass/fail (Task 6's golden).
+# ---------------------------------------------------------------------------
+
+# Best departure ET from the +/-2-synodic epoch scan (scripts/_ieg_epoch_scan_480.py;
+# runlog /tmp/ieg_epoch_scan_480.jsonl). +4.9 d past the 02-Oct-2020 paper epoch.
+BEST_ET: float = 655335360.0
+PAPER_ET: float = 654912000.0  # 2020-OCT-02 12:00 TDB.
+
+
+def test_ieg_paper_departure_et_sanity() -> None:
+    """Paper-epoch ET resolves to ~6.55e8 s (NOT the historical 10x-wrong ~6.6e7)."""
+    from cyclerfinder.search.ieg_seed import PAPER_DEPARTURE_ET_APPROX, paper_departure_et
+
+    et = paper_departure_et()
+    # Within one day of the hardcoded 02-Oct-2020 12:00 TDB value used by the scan.
+    assert abs(et - PAPER_ET) < 86400.0, f"paper ET {et} not near {PAPER_ET}"
+    # The order-of-magnitude guard: ~6.5e8, never ~6.6e7.
+    assert 6.0e8 < et < 7.0e8, f"paper ET {et} 10x off (expected ~{PAPER_DEPARTURE_ET_APPROX:.2e})"
+
+
+def test_ieg_corrects_against_real_ephemeris_at_paper_epoch() -> None:
+    """Characterised #480 Task-4 result against the Jovian-correct propagator.
+
+    The prescribed ``nbody.shooter.shoot`` corrector cannot run on the Jupiter-centred
+    IEG seed (heliocentric central mass + PLANETS-only perturber registry, see the
+    block comment above). We therefore exercise the only valid propagator
+    (``JovianRestrictedNBody``, central Jupiter, moons on rails) and assert STRUCTURE +
+    finiteness of the best-epoch seed-continuity residual — math decides, no
+    reproduction pass/fail asserted.
+    """
+    import math
+
+    import numpy as np
+
+    from cyclerfinder.nbody.jovian import (
+        JovianEphemeris,
+        JovianRailsCache,
+        JovianRestrictedNBody,
+    )
+    from cyclerfinder.search.ieg_seed import EGGIE_SEQUENCE, ieg_eggie_seed
+    from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+    seed = ieg_eggie_seed(departure_et=BEST_ET)
+    assert seed.sequence == ("Europa", "Ganymede", "Ganymede", "Io", "Europa")
+    assert seed.sequence == EGGIE_SEQUENCE
+    assert len(seed.node_states) == 5
+
+    moons = ("Io", "Europa", "Ganymede")
+    jeph = JovianEphemeris(ensure_jup365_kernel())
+    cache = JovianRailsCache(moons, jeph, min(seed.epochs), max(seed.epochs))
+    prop = JovianRestrictedNBody()
+
+    res: list[float] = []
+    n = len(seed.sequence)
+    for i in range(n - 1):
+        s_i = seed.node_states[i]
+        arc = prop.propagate(
+            np.asarray(s_i[:3], dtype=np.float64),
+            np.asarray(s_i[3:], dtype=np.float64),
+            t0_sec=seed.epochs[i],
+            t1_sec=seed.epochs[i + 1],
+            moons=moons,
+            cache=cache,
+            max_wall_sec=30.0,
+        )
+        assert arc.converged, f"leg {i} propagation did not converge"
+        assert np.all(np.isfinite(arc.r_km)) and np.all(np.isfinite(arc.v_km_s))
+        s_next = seed.node_states[i + 1]
+        res.extend(float(x) for x in (arc.r_km - np.asarray(s_next[:3])))
+        res.extend(float(x) for x in (arc.v_km_s - np.asarray(s_next[3:])))
+
+    seed_defect_norm = float(np.linalg.norm(res))
+    assert math.isfinite(seed_defect_norm)
+    # CHARACTERISED NEGATIVE: the Lambert single-rev seed is far from the EGGIE basin
+    # even at the best epoch (residual ~1.6e6 km/(km/s)). This is the honest result,
+    # NOT a reproduction pass. If a future seed/corrector lands the basin this loosens.
+    assert seed_defect_norm > 1.0e5, (
+        f"seed_defect_norm={seed_defect_norm:.3e} unexpectedly small — if the seed now "
+        "reaches the basin, revisit the Task-4 characterised negative."
+    )
