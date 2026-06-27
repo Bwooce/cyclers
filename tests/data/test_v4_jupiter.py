@@ -372,12 +372,16 @@ def test_ieg_jovian_shoot_at_best_epoch() -> None:
     from cyclerfinder.nbody.jovian import jovian_shoot
     from cyclerfinder.search.ieg_seed import EGGIE_SEQUENCE, ieg_eggie_seed
 
+    # Budget kept well under the 600 s per-test timeout: ~20 s/residual-eval, so
+    # max_nfev=18 (~one FD Jacobian + a step) lands around ~350 s. The deeper
+    # max_nfev=30/120 runs (recorded in the #480 M1 report) confirm the verdict is
+    # stable — the corrector cuts the defect ~5x but stays in the off-paper basin.
     seed = ieg_eggie_seed(departure_et=BEST_ET)
     result = jovian_shoot(
         seed,
         moons=("Io", "Europa", "Ganymede"),
-        max_nfev=30,
-        max_wall_sec=120.0,
+        max_nfev=18,
+        max_wall_sec=45.0,
     )
 
     # STRUCTURE.
