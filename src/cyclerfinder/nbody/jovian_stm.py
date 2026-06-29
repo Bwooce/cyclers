@@ -48,6 +48,7 @@ from cyclerfinder.core.satellites import SATELLITES
 from cyclerfinder.nbody.jovian import _W_VEL, GALILEAN, MU_JUPITER_KM3_S2
 
 if TYPE_CHECKING:
+    from cyclerfinder.nbody.jovian_ideal import SubarcSeed
     from cyclerfinder.nbody.shooter import ShootingSeed
 
 Vec3 = NDArray[np.float64]
@@ -248,4 +249,81 @@ def jovian_stm_jacobian(
     return jac
 
 
-__all__ = ["jovian_stm_jacobian", "propagate_with_stm"]
+def subarc_stm_jacobian(
+    sub: SubarcSeed,
+    x: NDArray[np.float64],
+    *,
+    ephem: _EphemLike,
+    moons: Sequence[str] = GALILEAN,
+    rtol: float = 1e-11,
+    atol: float = 1e-9,
+) -> NDArray[np.float64]:
+    """Analytic block-bidiagonal Jacobian of :func:`subarc_defect_residual` (#480 Stage 4).
+
+    Sub-arc generalisation of :func:`jovian_stm_jacobian`: the free variables are the
+    per-node full states over ALL ``m`` nodes (encounter + interior continuity nodes,
+    :func:`cyclerfinder.nbody.shooter._states_to_x` packing); the residual is, in
+    order, the ``m-1`` sub-arc continuity defects (6 each), the ``n_enc-2`` interior
+    flyby hinges (constant in ``x`` -> zero rows), and the 6-component periodicity wrap
+    between the first and last encounter nodes — exactly the layout of
+    :func:`cyclerfinder.nbody.jovian_ideal.subarc_defect_residual`.
+
+    Each sub-arc ``j`` (node ``j`` -> node ``j+1``) contributes
+    ``dc_j/dnode_j = R_W @ Phi_j`` and ``dc_j/dnode_{j+1} = -R_W`` with the same
+    velocity-row weighting ``R_W = diag(1,1,1,W,W,W)`` as the one-node-per-leg case
+    (``Phi_j`` from one co-integrated :func:`propagate_with_stm` over the sub-arc). A
+    sub-arc whose analytic propagation fails leaves its ``Phi`` block zero (keeping the
+    ``-R_W`` coupling) — the honest local linearisation of the divergence sentinel.
+    With ``sub.n_subarcs == 1`` this is identical to :func:`jovian_stm_jacobian`.
+    """
+    from cyclerfinder.nbody.shooter import _STATE_DIM, _x_to_states
+
+    moons = tuple(moons)
+    m = len(sub.node_states)
+    n_enc = len(sub.encounter_idx)
+    states = _x_to_states(x, m)
+
+    row_w = np.array([1.0, 1.0, 1.0, _W_VEL, _W_VEL, _W_VEL], dtype=np.float64)
+    rw = np.diag(row_w)  # velocity-row weighting (matches subarc_defect_residual)
+
+    n_leg = (m - 1) * _STATE_DIM
+    n_hinge = max(0, n_enc - 2)
+    n_rows = n_leg + n_hinge + _STATE_DIM
+    n_cols = m * _STATE_DIM
+    jac = np.zeros((n_rows, n_cols), dtype=np.float64)
+
+    for j in range(m - 1):
+        s_j = states[j]
+        r0 = np.asarray(s_j[:3], dtype=np.float64)
+        v0 = np.asarray(s_j[3:], dtype=np.float64)
+        rows = slice(j * _STATE_DIM, (j + 1) * _STATE_DIM)
+        try:
+            _, _, phi = propagate_with_stm(
+                r0,
+                v0,
+                sub.epochs[j],
+                sub.epochs[j + 1],
+                ephem=ephem,
+                moons=moons,
+                rtol=rtol,
+                atol=atol,
+            )
+        except Exception:
+            phi = None
+        if phi is not None and np.all(np.isfinite(phi)):
+            jac[rows, j * _STATE_DIM : (j + 1) * _STATE_DIM] = rw @ phi
+        jac[rows, (j + 1) * _STATE_DIM : (j + 2) * _STATE_DIM] = -rw
+
+    # Hinge rows (n_leg : n_leg + n_hinge) are constant in x -> left zero.
+
+    # Periodicity wrap rows (between the first and last encounter nodes).
+    i0 = sub.encounter_idx[0]
+    i_last = sub.encounter_idx[-1]
+    wrap = slice(n_leg + n_hinge, n_leg + n_hinge + _STATE_DIM)
+    jac[wrap, i0 * _STATE_DIM : (i0 + 1) * _STATE_DIM] = -rw
+    jac[wrap, i_last * _STATE_DIM : (i_last + 1) * _STATE_DIM] = rw
+
+    return jac
+
+
+__all__ = ["jovian_stm_jacobian", "propagate_with_stm", "subarc_stm_jacobian"]

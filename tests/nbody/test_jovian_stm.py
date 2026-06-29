@@ -34,9 +34,15 @@ from cyclerfinder.nbody.jovian import (
 from cyclerfinder.nbody.jovian_ideal import (
     EGGIE_MOONS,
     build_eggie_periapsis_seed,
+    build_subarc_seed,
     ideal_ephemeris_from_guess,
+    subarc_defect_residual,
 )
-from cyclerfinder.nbody.jovian_stm import jovian_stm_jacobian, propagate_with_stm
+from cyclerfinder.nbody.jovian_stm import (
+    jovian_stm_jacobian,
+    propagate_with_stm,
+    subarc_stm_jacobian,
+)
 from cyclerfinder.nbody.shooter import (
     _fd_jacobian,
     _seed_with_states,
@@ -245,3 +251,67 @@ def test_stm_jacobian_matches_fd_on_eggie_seed(eggie_guess: EggieGuess) -> None:
     worst = max(worst, block_rel(wrap, slice((n - 1) * 6, n * 6)))
     print(f"worst nonzero-block rel = {worst:.3e}")
     assert worst < 1e-4, f"worst nonzero-block STM-vs-FD rel {worst:.3e} > 1e-4"
+
+
+@pytest.mark.parametrize("n_subarcs", [2, 3])
+def test_subarc_stm_jacobian_matches_fd(eggie_guess: EggieGuess, n_subarcs: int) -> None:
+    """Stage-4 gate: the sub-arc block-bidiagonal Jacobian matches the FD oracle.
+
+    With ``n_subarcs - 1`` interior continuity nodes per leg, :func:`subarc_stm_jacobian`
+    (one analytic STM per sub-arc) must agree per nonzero 6x6 block with a
+    finite-difference Jacobian of :func:`subarc_defect_residual` on the sub-arc seed —
+    to well within the plan's ~1e-4 rel. FD stays the parity oracle. This is the
+    Jacobian the Stage-4 ``n_subarcs>1`` corrector relies on.
+    """
+    ephem = ideal_ephemeris_from_guess(eggie_guess)
+    seed = build_eggie_periapsis_seed(eggie_guess)
+    moons = EGGIE_MOONS
+    sub = build_subarc_seed(seed, n_subarcs, ephem=ephem, moons=moons)
+    m = len(sub.node_states)
+    n_enc = len(sub.encounter_idx)
+    cache = JovianRailsCache(moons, ephem, min(sub.epochs), max(sub.epochs))  # type: ignore[arg-type]
+
+    def residual_of_x(x: np.ndarray) -> np.ndarray:
+        return subarc_defect_residual(
+            sub,
+            _x_to_states(x, m),
+            ephem=ephem,  # type: ignore[arg-type]
+            cache=cache,
+            moons=moons,
+            accuracy=1e-11,
+        )
+
+    x0 = _states_to_x(sub.node_states)
+    f0 = residual_of_x(x0)
+    fd = _fd_jacobian(residual_of_x, x0, f0, column_eval=_serial_columns)
+    stm = subarc_stm_jacobian(sub, x0, ephem=ephem, moons=moons)
+    assert stm.shape == fd.shape
+
+    overall = float(np.linalg.norm(stm - fd) / np.linalg.norm(fd))
+    print(f"n_subarcs={n_subarcs} sub-arc STM vs FD overall rel = {overall:.3e}")
+    assert overall < 1e-4, f"overall sub-arc STM-vs-FD rel {overall:.3e} > 1e-4"
+
+    # Per nonzero 6x6 block (the binding parity criterion).
+    n_leg = (m - 1) * 6
+    n_hinge = max(0, n_enc - 2)
+    wrap0 = n_leg + n_hinge
+
+    def block_rel(rows: slice, cols: slice) -> float:
+        b = fd[rows, cols]
+        bn = float(np.linalg.norm(b))
+        if bn == 0.0:
+            return 0.0
+        return float(np.linalg.norm(stm[rows, cols] - b) / bn)
+
+    worst = 0.0
+    for j in range(m - 1):  # sub-arc continuity blocks (Phi_j and -R_W coupling)
+        rows = slice(j * 6, (j + 1) * 6)
+        worst = max(worst, block_rel(rows, slice(j * 6, (j + 1) * 6)))
+        worst = max(worst, block_rel(rows, slice((j + 1) * 6, (j + 2) * 6)))
+    wrap = slice(wrap0, wrap0 + 6)
+    i0 = sub.encounter_idx[0]
+    i_last = sub.encounter_idx[-1]
+    worst = max(worst, block_rel(wrap, slice(i0 * 6, (i0 + 1) * 6)))
+    worst = max(worst, block_rel(wrap, slice(i_last * 6, (i_last + 1) * 6)))
+    print(f"n_subarcs={n_subarcs} worst nonzero-block rel = {worst:.3e}")
+    assert worst < 1e-4, f"worst sub-arc nonzero-block STM-vs-FD rel {worst:.3e} > 1e-4"
