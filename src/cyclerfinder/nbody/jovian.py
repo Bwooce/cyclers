@@ -356,6 +356,84 @@ def flyby_altitude_km(vinf_in: Vec3, vinf_out: Vec3, moon: str) -> float:
     return sat.mu_km3_s2 * (1.0 / sin_half - 1.0) / v2 - sat.radius_eq_km
 
 
+def flyby_maneuver_dv(
+    vinf_in: Vec3,
+    vinf_out: Vec3,
+    moon: str,
+    *,
+    alt_min: float = 25.0,
+    alt_max: float = 70000.0,
+) -> tuple[float, float, bool]:
+    """Paper's zero-radius-SOI powered-flyby maneuver ΔV (Hernandez 2017 Eqs 3-5).
+
+    This is the EXACT flyby model in which the paper defines EGGIE's 0.70 m/s total
+    ΔV (AAS 17-608, pp.6-7), distinct from the turn-bounded leftover-vector defect
+    :func:`flyby_min_dv`. Here the *bend* is provided ballistically by the gravity
+    assist, and ΔV is charged ONLY for the V∞-magnitude mismatch via a tangential
+    periapsis maneuver:
+
+    * ``δ = angle(vinf_in, vinf_out)`` — the required bend (Eq 3).
+    * Solve ``r_p`` from ``asin(μ/(μ + r_p·|vinf_in|²)) +
+      asin(μ/(μ + r_p·|vinf_out|²)) = δ`` (Eq 4). The left side is strictly
+      decreasing in ``r_p`` (from ``π`` at ``r_p→0`` to ``0`` at ``r_p→∞``), so for
+      any ``δ ∈ (0, π)`` there is a unique root, found by bisection.
+    * ``v_p- = sqrt(|vinf-|² + 2μ/r_p)`` (Eq 5); ``ΔV = |v_p_out - v_p_in|`` - the
+      tangential burn that fixes the energy (magnitude) mismatch at periapsis.
+
+    Feasibility: altitude ``= r_p - R_moon`` must lie in ``[alt_min, alt_max]`` km
+    (paper window 25-70000 km). Equal-magnitude flybys give ``ΔV -> 0`` at a feasible
+    ``r_p`` (the ballistic-cycler property: adjacent same-body encounters at equal
+    V∞). A near-zero bend pushes ``r_p → ∞`` (altitude above ``alt_max`` →
+    infeasible: no real encounter); a bend exceeding what ``alt_min`` can supply
+    pushes ``r_p`` below ``R_moon + alt_min`` (infeasible: cannot bend enough).
+
+    Returns ``(dv_ms, alt_km, feasible)``: ΔV in m/s, periapsis altitude in km, and
+    whether the altitude lies in the window.
+    """
+    sat = SATELLITES[moon]
+    mu = sat.mu_km3_s2
+    vi = float(np.linalg.norm(vinf_in))
+    vo = float(np.linalg.norm(vinf_out))
+    if vi <= 0.0 or vo <= 0.0:
+        return 0.0, float("inf"), False
+    cos_d = float(np.dot(vinf_in, vinf_out) / (vi * vo))
+    delta = math.acos(max(-1.0, min(1.0, cos_d)))
+
+    def bend_of_rp(r_p: float) -> float:
+        a_in = math.asin(min(1.0, mu / (mu + r_p * vi * vi)))
+        a_out = math.asin(min(1.0, mu / (mu + r_p * vo * vo)))
+        return a_in + a_out
+
+    if delta <= 0.0:
+        # No bend required → no encounter (r_p → ∞); ΔV is the pure magnitude burn,
+        # but with no real flyby it is infeasible (altitude above the window).
+        return abs(vo - vi) * 1.0e3, float("inf"), False
+
+    # Bisect the strictly-decreasing bend_of_rp(r_p) - delta for the unique r_p.
+    lo, hi = 1.0e-6, 1.0e15
+    # Guard: if even r_p→0 cannot reach delta (delta ≥ π) it is unachievable.
+    if bend_of_rp(lo) < delta:
+        # delta ~ π: deepest possible pass still under-bends → infeasible.
+        r_p = lo
+    else:
+        for _ in range(200):
+            mid = 0.5 * (lo + hi)
+            if bend_of_rp(mid) > delta:
+                lo = mid
+            else:
+                hi = mid
+            if hi - lo < 1.0e-9 * max(1.0, hi):
+                break
+        r_p = 0.5 * (lo + hi)
+
+    alt_km = r_p - sat.radius_eq_km
+    v_p_in = math.sqrt(vi * vi + 2.0 * mu / r_p)
+    v_p_out = math.sqrt(vo * vo + 2.0 * mu / r_p)
+    dv_ms = abs(v_p_out - v_p_in) * 1.0e3
+    feasible = alt_min <= alt_km <= alt_max
+    return dv_ms, alt_km, feasible
+
+
 @dataclass(frozen=True)
 class ConicCycle:
     """One converged patched-conic CGCEC cycle on real JUP365 geometry."""
