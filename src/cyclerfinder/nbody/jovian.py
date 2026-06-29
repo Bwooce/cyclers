@@ -1000,6 +1000,7 @@ def jovian_shoot(
     accuracy: float = 1e-11,
     max_nfev: int = 40,
     max_wall_sec: float = 30.0,
+    jacobian: str = "fd",
 ) -> ShootResult:
     """Multiple-shooting corrector in the Jupiter-central model (#480 M1).
 
@@ -1015,7 +1016,17 @@ def jovian_shoot(
     ``kernel_path`` resolves the JUP365 SPK (default: the ensured generic kernel,
     the same one ``Ephemeris(center='Jupiter', model='spice')`` furnishes), so the
     propagator's rails match the seed's moon geometry.
+
+    ``jacobian`` (#480 Stage 3 extension): ``"fd"`` (default) is byte-unchanged —
+    ``least_squares`` builds its own internal finite-difference Jacobian and stays
+    the parity oracle. ``"stm"`` supplies the analytic block-bidiagonal Jacobian
+    (:func:`cyclerfinder.nbody.jovian_stm.jovian_stm_jacobian`) assembled from
+    per-leg analytic state-transition matrices co-integrated with the spacecraft
+    state — ONE DOP853+STM propagation per leg instead of the ``6*n_nodes+1`` FD
+    re-propagations. Mirror of the ``ideal_eggie_shoot`` ``jacobian="stm"`` path.
     """
+    import time
+
     from scipy.optimize import least_squares
 
     from cyclerfinder.nbody.correction_dv import node_impulse_correction_dv
@@ -1051,7 +1062,19 @@ def jovian_shoot(
     seed_res = residual_of_x(x0)
     seed_defect_norm = float(np.linalg.norm(seed_res))
 
-    sol = least_squares(residual_of_x, x0, method="trf", x_scale="jac", max_nfev=max_nfev)
+    ls_kwargs: dict[str, object] = {"x_scale": "jac"}
+    if jacobian == "stm":
+        from cyclerfinder.nbody.jovian_stm import jovian_stm_jacobian
+
+        def jac_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            t0_jac = time.monotonic()
+            j = jovian_stm_jacobian(seed, x, ephem=jeph, moons=moons)
+            _ = time.monotonic() - t0_jac  # timing available for callers who log
+            return j
+
+        ls_kwargs["jac"] = jac_of_x
+
+    sol = least_squares(residual_of_x, x0, method="trf", max_nfev=max_nfev, **ls_kwargs)  # type: ignore[arg-type]
     corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
     final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
     defect_norm = float(np.linalg.norm(final_res))
