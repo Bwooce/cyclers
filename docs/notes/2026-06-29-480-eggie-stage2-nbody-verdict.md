@@ -76,6 +76,24 @@ not break it (lm crawled 900 s / nfev≈750 without escaping).
   stays skipped; this note supersedes the M1 verdict's failure mode (it is now an
   in-basin closure wall, not an off-basin relaxation).
 
+## Epoch/ToF freedom RULED OUT as the wall (2026-06-29)
+
+The Jovian corrector frees only node states; the paper varies departure-phase +
+ToFs. Hypothesis: the plateau is a missing-DOF problem, not FD noise. Tested
+(`scripts/_stage2b_epochfree_480.py`): added free node epochs (free leg ToFs +
+departure offset, total pinned to 28.22 d) to the ideal-model corrector.
+
+RESULT: **no improvement.** trf/30 with epoch freedom plateaus at total |r|=6.5e2
+(leg velocity continuity 0.14–0.35 km/s, wrap 0.31 km/s) — the SAME ~0.1–0.3 km/s
+level as the states-only corrector (3.4e2), and the ToFs barely moved from the
+seed (1.598/8.438/7.102/11.082 d, t0_offset ≈ 0). So the missing-DOF hypothesis
+is **falsified**: two independent corrector configurations plateau at the same
+velocity-continuity floor. This isolates the **FD-Jacobian noise floor** (on the
+e≈0.62 flyby-sensitive multi-rev trajectory, the diff-step gradient is in the
+noise below ~0.1 km/s) as the binding wall — confirming the
+`project_dsm_closure_modeljump_blocker` precedent. The analytic STM Jacobian is
+the justified next build.
+
 ## The unblock (next lever, not a re-run)
 
 The corrector, not the seed *family*, is now the wall. To close EGGIE:
