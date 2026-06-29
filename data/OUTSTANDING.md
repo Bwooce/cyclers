@@ -13,7 +13,41 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-29)
+# Project state at a glance (updated 2026-06-30)
+
+## DELTA SINCE 2026-06-29 (2026-06-30 — #480 EIGE positive control) — read this first
+
+Catalogue UNCHANGED (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows). Resumed the #480
+EIGE positive-control construction (the prior session's explicit resume pointer,
+`docs/notes/2026-06-30-480-eige-construction-status.md`, now RESOLVED). Two deliverables:
+
+**(1) Ideal-model EIGE ballistic construction — BUILT + golden-gated** (`5d626cb`,
+`search/eige_ballistic.py`, `tests/search/test_eige_ballistic.py`). The EIGE analog of
+`eggie_ballistic.py`: 3 Lambert legs, equal-in/out |V∞| at Io & Ganymede + Europa
+periodicity seam, the 2 spare DOF pinned by softly targeting the two SOURCED Fig-5
+interior altitudes (Io 2,817 / Ganymede 13,180 km). A feasible ballistic EIGE exists
+(all altitudes in the 25-70,000 km window, total flyby ΔV ~0); the untargeted Europa
+altitude PREDICTS ~1,323 km (same low order as Fig-5's 470 — the ideal↔real gap). Three
+resume-doc corrections, all grounded from the PDF directly: rev count **1:1 confirmed**;
+V∞ is the **LOW-excess-speed 5-9 km/s** regime (Europa 8.70 / Io 5.14 / Ganymede 7.23),
+**not 12-16** (that was the 1-syn/2-rev EGIEIE); the cyclic E-I-G-E order **fits one rev**
+starting at Europa-inbound (topology Europa-in/Io-in/Ganymede-out). Note
+`2026-06-30-480-eige-ballistic-construction-verdict.md`.
+
+**(2) Real-ephemeris maintenance positive control — CHARACTERIZED NEGATIVE**
+(`2026-06-30-480-eige-realeph-maintenance-verdict.md`; lane driver
+`scripts/eige_maintenance_480.py`, reusable for the EGGIE Approach-A lane). The patched-
+conic chain lane (`chain_cycles` on `sequence=EIGE`) finds ballistic real-eph closures in
+the right V∞ regime but **0 feasible members** — the Io & Europa flybys are consistently
+sub-surface (~−1,750 / −1,520 km, near-180° turns) across 40 phase-matched epochs
+(2020-21), even under the EGGIE-style feasibility-first objective that found 9 feasible
+EGGIE members. **Why EIGE fails where EGGIE succeeded:** 1-syn/1-rev/3-leg is geometrically
+too tight (the real ephemeris never approaches the ideal config closer than ~37°, and a
+Lambert leg fixes its V∞ DIRECTION → no independent B-plane orientation DOF). Same wall as
+the EGGIE Table-4 member; the paper's feasible Fig-5 EIGE needs its full 3-D B-plane NLP
+(scope Approach C, "weeks, last resort" — NOT attempted). **The maintenance METHOD remains
+validated via Liang Member D (#223)**, the scope doc's stated alternative control. Core
+#480 verdict UNCHANGED; no catalogue impact.
 
 ## DELTA SINCE 2026-06-23 (2026-06-29 — #480 EGGIE reproduction marathon) — read this first
 

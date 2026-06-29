@@ -1,5 +1,20 @@
 # #480 — EIGE positive-control construction: scoped + first-attempt obstacle (resume fresh)
 
+> **RESOLVED 2026-06-30.** This scoping doc is superseded by two verdict notes:
+> - `2026-06-30-480-eige-ballistic-construction-verdict.md` — the ideal-model EIGE
+>   ballistic construction is BUILT + golden-gated (`search/eige_ballistic.py`). Topology
+>   settled (Europa-in/Io-in/Ganymede-out, cyclic over 1 rev); rev count 1:1 confirmed
+>   from the PDF; V∞ is the LOW-excess-speed 5-9 km/s regime (this doc's "12-16" was a
+>   wrong extrapolation from EGIEIE — corrected); a feasible ballistic member reaches the
+>   two sourced Fig-5 interior altitudes with Europa altitude predicted ~1,323 km.
+> - `2026-06-30-480-eige-realeph-maintenance-verdict.md` — the real-ephemeris maintenance
+>   positive control is a CHARACTERIZED NEGATIVE: the 1-syn/1-rev EIGE is geometrically
+>   too tight; the patched-conic chain lane yields 0 feasible real-eph members (Io/Europa
+>   flybys sub-surface) — the EGGIE B-plane wall, tighter. Maintenance method stays
+>   validated via Liang #223.
+>
+> The original (now-historical) scoping notes follow.
+
 **Date:** 2026-06-30. Status: the EIGE positive control (to validate the maintenance-ΔV
 method before trusting an EGGIE number) requires a full EIGE resonant-conic CONSTRUCTION.
 Energy is solved; the encounter-topology is the open work. Pausing to resume fresh (a clean
