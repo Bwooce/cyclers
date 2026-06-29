@@ -54,12 +54,14 @@ def test_ieg_citation_is_decision_grade() -> None:
     "velocity-continuity wall (localized to the Io perijove) is ROBUST across all four "
     "correctors (FD / analytic-STM / epoch-free / sub-arc): a basin/model feature, not a "
     "numerics one. See docs/notes/2026-06-29-480-eggie-stage4-subarc-verdict.md (+ stage2/3 "
-    "+ M1 verdicts). The zero-SOI patched-conic model (the paper's own, where 0.70 m/s is "
-    "defined) ALSO does not close at Table-4 V∞ in our COPLANAR reconstruction (feasible-closed "
-    "min ~1 km/s, V∞ off-target; SMA-fidelity ruled out) — leading suspect is the missing 3-D "
-    "B-plane flyby DOF (see docs/notes/2026-06-29-480-eggie-zerosoi-verdict.md). Un-skip only "
-    "when a 3-D flyby reconstruction yields a converged ballistic EGGIE — WITHOUT loosening the "
-    "tolerances below."
+    "+ M1 verdicts). CORRECTION (forward-verify): the resonant-conic seed is structurally "
+    "NON-ballistic — the construction pins departure V∞ to the conic but not the equal-in/out "
+    "V∞ ballistic-flyby constraint, so Ganymede #2 collapses to ~4 km/s (vs 7.07) and the Io "
+    "flyby goes sub-surface; spike-4's analytic-V∞ match was necessary-not-sufficient, and the "
+    "3-D-B-plane hypothesis is withdrawn (paper model is coplanar). See "
+    "docs/notes/2026-06-29-480-eggie-forward-verify-correction.md. Un-skip only when a true "
+    "ballistic-cycler construction (equal-V∞ + bend-feasible + periodic) yields a converged "
+    "0.70 m/s EGGIE — WITHOUT loosening the tolerances below."
 )
 def test_eggie_reproduction_matches_published_invariants() -> None:
     """Reproduction gate (currently un-runnable — no converged tour).
