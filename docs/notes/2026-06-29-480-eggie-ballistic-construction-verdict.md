@@ -58,3 +58,38 @@ on-Table-4, ballistic EGGIE with no hardcoded ToFs. Scratch drivers `scripts/_eg
 
 Process note: the agent stalled (background-detached search; no re-wake) — salvaged per
 [[feedback_long_agents_commit_incrementally]]; future search work runs foreground-bounded.
+
+## ROOT CAUSE (debug `scripts/_eggie_topo_{debug,discover}_480.py`, 2026-06-29)
+
+Per-encounter geometry dump (rigid guess, e=0.62) — `|dpos|` = distance from the moon
+to the conic crossing at the encounter time:
+
+| encounter | rev | t (d) | \|dpos\| km | V∞ |
+|---|---|---|---|---|
+| Europa-depart | 0 | 0.0 | 0 | 9.08 ✓ |
+| Ganymede-1 | 1 | 1.61 | 0 | 6.78 ✓ |
+| **Ganymede-2** | 2 | 10.61 | **391,088** | 3.06 ✗ |
+| Io | 4 | 17.51 | 0 | 8.35 ✓ |
+| **Europa-2 (return)** | 5 | 28.02 | **237,764** | 13.83 ✗ |
+
+The three DISTINCT-moon encounters are exact; both REPEATED encounters are hundreds of
+thousands of km off. Three nested facts:
+
+1. **The construction sets each moon's phase from its FIRST encounter only** (`_moon_phase_ics`)
+   and never verifies repeated encounters — so the 2nd Ganymede / 2nd Europa silently
+   drift off the conic. That is the bug class.
+2. **The repeated revs are mis-assigned:** the resonance-consistent Ganymede repeat is
+   rev-1-inbound (t≈10.1 d, the moon only dθ≈4.68° = the designed 5.2°/synodic shift, ≈86,000 km
+   off), but the topology picks the rev that is ~21°/391,000 km off.
+3. **Deeper — a rigid single conic cannot host EGGIE:** the moons are ~5° off every
+   crossing BY DESIGN (the 5.2° shift), and there is NO good Europa-return crossing near
+   t≈28 d (best Europa crossings are t=10.7 d and t=38.7 d). So the conic is only a SEED;
+   the paper's Monte-Carlo Lambert search over (phase, ToFs) finds the actual member where
+   the legs connect the real shifted moon positions ballistically.
+
+**The genuine fix (no hardcoding):** seed the optimizer (`search/eggie_ballistic.py`,
+committed — `build_legs`/`ballistic_residual`/`refine`, no hardcoded ToFs) with the
+RESONANCE-CONSISTENT topology (correct repeat revs) + enforce a per-encounter
+self-consistency invariant (every body, incl. repeats, within its SOI of its node), then
+search phase+ToFs within ±10% of the moon periods. The construction must DISCOVER the
+member; the conic only seeds it. Debug scratch removed.
