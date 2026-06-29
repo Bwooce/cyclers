@@ -93,3 +93,46 @@ RESONANCE-CONSISTENT topology (correct repeat revs) + enforce a per-encounter
 self-consistency invariant (every body, incl. repeats, within its SOI of its node), then
 search phase+ToFs within ±10% of the moon periods. The construction must DISCOVER the
 member; the conic only seeds it. Debug scratch removed.
+
+## UPDATE — corrector EXECUTED; binding constraint pinned to the Europa seam (2026-06-29, later)
+
+The prescribed search was run (commits `cc9a365`, `3b9363c`; module
+`search/eggie_ballistic.py`, tests `tests/search/test_eggie_ballistic.py`). The
+construction now treats each leg as an independent Lambert conic linked by ballistic
+flybys, with free vars = departure phase (Ganymede & Io angle; Europa = gauge) + the 4
+leg ToFs, and SOLVE residuals = equal-in/out |V∞| at every flyby + the Ganymede
+resonant-return (`|V∞_out(G1)| = |V∞_in(G2)|`) + the Europa periodicity seam. This fixes
+the repeated-encounter root cause above: nodes ARE the circular moon positions (so repeats
+are self-consistent by construction), and the resonant-return residual restores the
+equal-Ganymede property the old min-distance seed broke (G#2 was 3-4 km/s; now 7.07).
+
+Results (1045+ ballistic closures across 64 rev/branch plans + feasibility-aware and
+locally-seeded restarts):
+
+* **GATE A — feasible ballistic EGGIE EXISTS** (`feasible_ballistic_eggie()`): equal
+  in/out |V∞| at all 4 flybys, both Ganymede equal, cycle closed at the seam, ALL flyby
+  altitudes in 25-70000 km, total flyby ΔV = **0.0 m/s** — at Europa 9.01 / Ganymede 6.76
+  / Io 6.57 km/s (a real EGGIE-topology member BELOW Table-4 excess speed).
+* **The ballistic manifold passes EXACTLY through Table-4 V∞** (Europa 9.12, both
+  Ganymede 7.07, Io 8.38; ballistic, seam closed) — but with full periodic closure the
+  coplanar flyby bends are ~180° reversals -> all periapsides SUB-SURFACE
+  (`table4_vinf_eggie()`).
+* **Binding constraint pinned to the Europa periodicity SEAM** (`interior_table4_eggie()`):
+  drop the seam and the interior **G->G->I sub-tour reproduces Table-4 V∞ EXACTLY with the
+  3 interior flybys ballistic AND all interior altitudes in-window** (G1 ~1419, G2 ~2233,
+  Io ~7177 km — the paper's ballpark). It is ONLY closing the Europa seam
+  (`|V∞_arr| = |V∞_dep|` + a bend-feasible Europa flyby) that fails in 2-D: the arrival
+  V∞ (~9.37) must be rotated into the departure V∞ at a feasible altitude, and the
+  coplanar geometry forces that rotation sub-surface.
+
+**So this is NOT a discovery/topology bug** (the topology was enumerated; the interior
+DOES discover the paper's feasible Table-4 encounters). The honest verdict: in the strict
+2-D circular-coplanar ideal model the EGGIE interior is a true ballistic equal-V∞ cycler
+at Table-4 V∞, but **full periodic closure of the Europa seam is bend-infeasible in 2-D**.
+The paper's feasible seam (Europa alt 1444 km, ΔV 0.00) needs the out-of-plane B-plane
+freedom of the real (inclined/eccentric) ephemeris — consistent with Table 4's real
+departure date (29-Sep-2020) being the level-2 real-ephemeris solution, and with the
+paper's own note that EGGIE ballistic repeatability "only lasts a few cycles." Reproducing
+the feasible Table-4 cycler is gated on the real-ephemeris conversion, not on more 2-D
+iteration. This REFINES (does not contradict) the withdrawn 3-D hypothesis: 3-D matters
+for ALTITUDE FEASIBILITY at the seam, not for ΔV (the 2-D model already reaches ΔV ~ 0).
