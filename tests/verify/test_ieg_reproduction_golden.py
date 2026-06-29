@@ -48,13 +48,14 @@ def test_ieg_citation_is_decision_grade() -> None:
 
 @pytest.mark.skip(
     reason="#480 EGGIE not yet reproduced as a ballistic n-body cycler. M1: off-paper basin "
-    "(correction dV ~5.9 km/s). Follow-up 1 SOLVED the basin — the resonant-conic generator "
-    "(search/resonant_conic.py) puts all 3 V∞ on the Table-4 targets — but Stage 2 "
-    "(nbody/jovian_ideal.py ideal-model shoot) plateaus at ~0.1-0.2 km/s leg/wrap continuity, "
-    "short of ballistic closure, on the FD-Jacobian multi-rev wall. See "
-    "docs/notes/2026-06-29-480-eggie-stage2-nbody-verdict.md (+ the M1 verdict + diagnosis "
-    "notes). Un-skip only when an analytic-STM / sub-arc / gravity-homotopy corrector yields a "
-    "converged ballistic EGGIE — and then WITHOUT loosening the tolerances below."
+    "(dV ~5.9 km/s). Follow-up 1 SOLVED the basin (resonant-conic seed, all 3 V∞ on Table 4) "
+    "and built the corrector program — analytic state+STM co-integrator + block-bidiagonal "
+    "Jacobian (~40x faster than FD) + sub-arc multiple shooting — but a ~0.06-0.1 km/s "
+    "velocity-continuity wall (localized to the Io perijove) is ROBUST across all four "
+    "correctors (FD / analytic-STM / epoch-free / sub-arc): a basin/model feature, not a "
+    "numerics one. See docs/notes/2026-06-29-480-eggie-stage4-subarc-verdict.md (+ stage2/3 "
+    "+ M1 verdicts). Un-skip only when a gravity-homotopy / zero-SOI-patched-conic / global "
+    "method yields a converged ballistic EGGIE — and then WITHOUT loosening the tolerances below."
 )
 def test_eggie_reproduction_matches_published_invariants() -> None:
     """Reproduction gate (currently un-runnable — no converged tour).
