@@ -1051,7 +1051,7 @@ def jovian_shoot(
     seed_res = residual_of_x(x0)
     seed_defect_norm = float(np.linalg.norm(seed_res))
 
-    sol = least_squares(residual_of_x, x0, method="lm", max_nfev=max_nfev)
+    sol = least_squares(residual_of_x, x0, method="trf", x_scale="jac", max_nfev=max_nfev)
     corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
     final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
     defect_norm = float(np.linalg.norm(final_res))
