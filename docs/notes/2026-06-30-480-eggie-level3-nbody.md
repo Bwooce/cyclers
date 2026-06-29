@@ -39,3 +39,25 @@ Sourced V∞ targets (Table 4): Europa 9.12 / Ganymede 7.07 / Io 8.38 km/s.
 - Exact Table-4 member NOT reproduced (ideal-vs-real-eph gap; paper's own maintenance-ΔV caveat).
 - n-body corrector confirmed to converge on the correct seed (no model wall).
 - No catalogue change; golden stays skipped. Scratch `scripts/_eggie_*level3*_480.py` removed.
+
+## CORRECTION (2026-06-30, after the analytic-STM run `cc4f241`)
+
+The headline above ("CONVERGES on the correct seed (no wall)") was an OVER-CLAIM from a
+12-nfev FD *trend* (defect dropping fast). The fuller analytic-STM run corrects it:
+
+- Real-eph STM Jacobian parity PASSES (rel 5.1e-4); STM build 0.5 s vs FD 16.6 s.
+- Two chunks of 60 nfev each: seed 4.13e5 → **3.89e2** (chunk 1) → **3.77e2** (chunk 2).
+  The 2nd chunk moved only 3.4% — a genuine **PLATEAU**, not an iteration-count problem.
+- So the corrector does **NOT converge** to a ballistic n-body periodic orbit (floor ~5e-3),
+  even with the structurally-correct seed AND the parity-verified analytic Jacobian.
+
+**Corrected conclusion:** the correct seed REMOVES the off-paper-basin collapse (3.8e2 vs the
+broken seed's ~5e4-7.8e4, ~130× better) and the STM removes the FD-noise component (3.8e2 vs
+FD 7.5e2), BUT a residual **continuity plateau at ~0.1-0.4 km/s remains** that neither cures.
+The `correction_dv` (~0.8 km/s) is NOT a valid per-cycle maintenance ΔV — the orbit is not a
+converged periodic solution, so no clean maintenance number can be quoted. The plateau is
+consistent in KIND with the paper's "real-eph EGGIE needs maintenance ΔV" but our multiple-
+shooting does not converge to quantify it; the paper's tens-of-m/s maintenance figures would
+require their full level-3 high-fidelity optimization (different method), not this corrector.
+This matches the ideal-model Stage-3/4 plateau character — a residual closure wall, lower
+than the broken-seed wall but real. V∞ stays ~0.4-0.6 km/s below Table-4 throughout.
