@@ -47,13 +47,14 @@ def test_ieg_citation_is_decision_grade() -> None:
 
 
 @pytest.mark.skip(
-    reason="#480 M1 characterized NEGATIVE: EGGIE does not reconverge in real Galilean "
-    "ephemeris from the published-invariant seed (off-paper basin; correction dV ~5.9 km/s "
-    "vs paper 0.70 m/s). No converged tour to match the sourced invariants. Affirmative "
-    "not-converged assertion lives in tests/data/test_v4_jupiter.py::"
-    "test_ieg_jovian_shoot_at_best_epoch. See docs/notes/2026-06-27-480-ieg-reproduction-"
-    "verdict.md. Un-skip only when a family-targeted/homotopy seed yields a converged "
-    "EGGIE (follow-up 1 in the verdict note) — and then WITHOUT loosening the tolerances below."
+    reason="#480 EGGIE not yet reproduced as a ballistic n-body cycler. M1: off-paper basin "
+    "(correction dV ~5.9 km/s). Follow-up 1 SOLVED the basin — the resonant-conic generator "
+    "(search/resonant_conic.py) puts all 3 V∞ on the Table-4 targets — but Stage 2 "
+    "(nbody/jovian_ideal.py ideal-model shoot) plateaus at ~0.1-0.2 km/s leg/wrap continuity, "
+    "short of ballistic closure, on the FD-Jacobian multi-rev wall. See "
+    "docs/notes/2026-06-29-480-eggie-stage2-nbody-verdict.md (+ the M1 verdict + diagnosis "
+    "notes). Un-skip only when an analytic-STM / sub-arc / gravity-homotopy corrector yields a "
+    "converged ballistic EGGIE — and then WITHOUT loosening the tolerances below."
 )
 def test_eggie_reproduction_matches_published_invariants() -> None:
     """Reproduction gate (currently un-runnable — no converged tour).
