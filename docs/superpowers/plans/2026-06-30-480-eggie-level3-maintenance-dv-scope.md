@@ -1,5 +1,17 @@
 # #480 — Level-3 high-fidelity maintenance-ΔV optimizer (SCOPE, not yet executed)
 
+> **APPROACH A EXECUTED 2026-06-30** — see
+> `docs/notes/2026-06-30-480-eggie-maintenance-verdict.md`. The cycle-by-cycle maintenance
+> lane (`chain_cycles`, validated on Liang #223) was run on a feasibly-discovered real-eph
+> EGGIE member (`scripts/eggie_maintenance_480.py`): **ballistic for exactly 2 cycles, then
+> large impulses (~170-760 m/s/cycle), cumulative ~3.3 km/s over 10** — robust across
+> retarget budgets. Quantitatively reproduces the paper's "ballistic for two cycles, after
+> which large impulses are required" claim (a NOVEL curve at level-2, not a printed-number
+> reproduction). The positive control (the EIGE ~30 m/s/10 paper figure) hits the 1-rev
+> B-plane wall (`...-eige-realeph-maintenance-verdict.md`) so the method's positive control
+> is Liang #223. Approach A is COMPLETE at level-2; Approach C (level-3 B-plane NLP) remains
+> the only un-done lever and stays "weeks, last resort". The original scope follows.
+
 **Status:** scoping doc for a fresh, optional effort. The #480 science is already settled
 (see the 7 dated `docs/notes/2026-06-*-480-eggie-*` notes): construction bug fixed + guarded,
 the IEG ballistic-cycler CLASS reproduced unguided in real ephemeris (~0.5 km/s below

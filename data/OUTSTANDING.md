@@ -49,6 +49,21 @@ the EGGIE Table-4 member; the paper's feasible Fig-5 EIGE needs its full 3-D B-p
 validated via Liang Member D (#223)**, the scope doc's stated alternative control. Core
 #480 verdict UNCHANGED; no catalogue impact.
 
+**(3) EGGIE maintenance-ΔV curve (Approach A) — DONE**
+(`2026-06-30-480-eggie-maintenance-verdict.md`; `scripts/eggie_maintenance_480.py`).
+Positive control FIRST: `liang_member_d_run.py` reproduces the Liang CGCEC cycler at
+sub-nm/s defect (method sound). Then the validated `chain_cycles` lane was run on a
+feasibly-discovered real-eph EGGIE member (departure 2020-09-22; V∞ Europa 9.38 / both
+Ganymede **6.66 equal** / Io 7.35 — ~0.4 km/s below Table-4, no exact-member claim).
+**Result: ballistic for exactly 2 cycles, then large maintenance impulses (~170-760
+m/s/cycle), cumulative ~3.3 km/s over 10** — IDENTICAL across retarget budgets of 2/4/8 d
+(a genuine geometric horizon). This **quantitatively reproduces the paper's qualitative
+claim** ("the solution remains ballistic for two cycles, after which large impulses are
+required to maintain the cycler") — a NOVEL level-2 curve, not a printed-number
+reproduction (the paper prints no EGGIE number; its EIGE ~30 m/s/10 figure hits the 1-rev
+B-plane wall above). The #480 maintenance-ΔV gap is now CLOSED at level-2; only the
+level-3 B-plane NLP (Approach C, "weeks, last resort") remains. No catalogue impact.
+
 ## DELTA SINCE 2026-06-23 (2026-06-29 — #480 EGGIE reproduction marathon) — read this first
 
 Catalogue UNCHANGED (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows). The work was a
