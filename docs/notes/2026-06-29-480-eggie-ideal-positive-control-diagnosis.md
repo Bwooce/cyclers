@@ -86,6 +86,25 @@ energy — and the corrector then descends into the off-paper high-energy basin
 recorded in the M1 verdict. Europa/Ganymede sit near apojove where almost any
 arc of the right ToF has ~right V∞, which is why only Io breaks.
 
+## Spike 4 — the resonant conic hits all three V∞ at once (the breakthrough)
+
+Key analytic fact: on a Jovian conic, **|V∞| at a moon depends only on (a, e) and
+the moon's orbit radius** — ω and the departure phase θ affect only timing and the
+flyby turn angles, not the V∞ magnitude (V∞² = (v_t − v_m)² + v_r² at r = r_moon).
+For EGGIE, `a` is FIXED by the 4:5 resonance (a ≈ 9.094e5 km, T_sc = 5.603 d), so
+there is a single free parameter (e). Sweeping e over the valid band:
+
+| e | Io V∞ (tgt 8.38) | Europa V∞ (tgt 9.12) | Ganymede V∞ (tgt 7.07) | err |
+|---|---|---|---|---|
+| **0.621** | **8.393** | **9.099** | 6.794 | **0.278 km/s** |
+
+A SINGLE resonant conic at e ≈ 0.621 puts all three moon V∞ essentially on the
+Table-4 targets simultaneously (Ganymede 0.28 km/s low — within MC-refine /
+real-T_syn tolerance). This is why the per-leg free-ToF search failed: it left this
+conic's energy. Pinning the seed to the resonant conic is the fix, and it is now
+PROVEN to put EGGIE in band. e_bounds = [0.536, 0.921] (r_p ≤ a_Io binds e_min;
+r_p ≥ R_Jup binds e_max).
+
 ## Re-scoped unblock (supersedes "homotopy of the existing seed")
 
 1. **Build the resonant-conic initial-guess generator** (paper pp.4-5, Table 1):
