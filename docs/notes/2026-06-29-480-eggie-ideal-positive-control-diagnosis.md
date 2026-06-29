@@ -56,6 +56,25 @@ phase — the outer, near-apojove legs are essentially correct. The defect is
 flagged. The inward dip to Io's orbit (a_Io ≈ 0.39·a_Gan) is where independent
 per-leg Lambert arcs pick the wrong energy/branch.
 
+## Spike 3 — global differential-evolution search (ideal model, ToFs ±25%)
+
+Objective = interior ΔV + wrap-closure V∞ mismatch, free [departure phase, 4
+ToFs], `differential_evolution` (popsize 30, 300 iters). Best = **385 m/s**
+(paper 0.70). The wrap CLOSES (Europa in=out=8.95, ~tgt 9.12) and **Io comes
+into range (9.12 vs 8.38)** — but now **Ganymede collapses (3.9 vs 7.07)** and
+carries a 291 m/s flyby mismatch. So the basins FLIP versus spike 2: a loose
+global optimizer gets Europa+Io right xor Ganymede right, never all three. The
+three single-moon basins do not coincide under free ToFs.
+
+This is the key quantitative result: it matches the paper's own method exactly.
+Hernandez also uses per-leg Lambert + free-ToF refinement (pp.6-7) — but seeds
+from the **conic initial-guess tool** and refines within only **±10% of a moon
+period** (p.7; Io ≈ 4 h, Ganymede ≈ 17 h — extremely tight). The narrow ballistic
+basin is unreachable without that accurate seed; a loose search lands in the
+wrong single-moon basins, which is precisely the M1 verdict's off-paper-basin
+result. **The conic initial-guess generator is the missing ingredient, confirmed
+quantitatively.**
+
 ## Interpretation
 
 The EGGIE cycler is **one eccentric Jovian conic** (period = (4 synodic / 5
