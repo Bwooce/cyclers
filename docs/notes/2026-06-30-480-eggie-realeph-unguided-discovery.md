@@ -60,3 +60,31 @@ post-hoc comparison, recorded here. Captured in
    V4-ceiling result, not self-admitted.
 3. Golden (`tests/verify/test_ieg_reproduction_golden.py`) stays skipped until an
    exact-member feasible close (then un-skip WITHOUT loosening tolerances).
+
+## FINER unguided scan (task #2, 2026-06-30) — exact Table-4 member NOT reproduced
+
+Denser unguided scan (4 branch plans × 70 epochs/plan, ToFs seeded from the paper's
+documented values but FREE; objective = ballistic ΔV + feasibility ONLY, V∞ an output):
+
+- **14 feasible ballistic (ΔV≈0) members** found — all cluster **below** Table-4 V∞:
+  closest V[E=8.99, G=6.58, Io=7.56] (feasible, all flybys above-surface).
+- **Exact Table-4 member (feasible AND ballistic, within 0.45 km/s summed): NONE.**
+- The closest-to-Table-4-V∞ feasible solution, V[E=9.50, G=6.86, Io=8.33] (Io ~ spot on),
+  needs **227 m/s** — feasible altitudes but NOT ballistic.
+
+**Honest conclusion for #480.** In our real-ephemeris patched-conic model the ballistic
+IEG triple-cycler family exists at V∞ ~0.5-0.8 km/s BELOW Table 4; the Table-4 V∞ region is
+reachable only with ~hundreds of m/s (non-ballistic) for a single closed cycle. The exact
+Table-4 ballistic member is **not reproduced**, and no claim is made. This is partly
+EXPECTED and grounded in the paper itself: Table 4's 0.70 m/s is the IDEAL-model value, and
+the paper explicitly states the real-ephemeris EGGIE is ballistic for only ~2 cycles then
+needs maintenance ΔV (the EIGE example grows to ~30 m/s over 10 cycles). Matching the
+paper's exact maintenance numbers would require their full level-3 high-fidelity
+optimization at the exact 29-Sep/02-Oct-2020 epoch — beyond the patched-conic level-2 here.
+
+**#480 final standing:** (1) construction bug found+fixed; (2) the IEG ballistic-cycler
+CLASS reproduced unguided in real ephemeris (paper's central claim confirmed); (3) the
+exact Table-4 member NOT reproduced (ideal-vs-real-eph gap, consistent with the paper's own
+maintenance-ΔV caveat). No catalogue change; golden stays skipped. Reusable infra:
+`search/resonant_conic.py`, `search/eggie_ballistic.py`, `nbody/jovian_stm.py`,
+`nbody/jovian_ideal.py`, `nbody/jovian.flyby_maneuver_dv`, `search/tour_self_consistency.py`.
