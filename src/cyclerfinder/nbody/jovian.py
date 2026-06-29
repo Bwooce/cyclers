@@ -436,11 +436,17 @@ def flyby_maneuver_dv(
 
 @dataclass(frozen=True)
 class ConicCycle:
-    """One converged patched-conic CGCEC cycle on real JUP365 geometry."""
+    """One converged patched-conic cycle on real JUP365 geometry.
+
+    Works for any flyby sequence (CGCEC, EIGE, EGGIE, …): the number of legs
+    equals ``len(tofs_days)`` and the number of flyby bodies equals
+    ``len(epochs_sec) - 1``.  The CGCEC-specific 4-leg type annotation is
+    widened to ``tuple[float, ...]`` so generalised callers need no cast.
+    """
 
     index: int  # 1-based cycle number
-    epochs_sec: tuple[float, ...]  # 5 flyby epochs (C, G, C, E, C)
-    tofs_days: tuple[float, float, float, float]
+    epochs_sec: tuple[float, ...]  # n_legs+1 flyby epochs
+    tofs_days: tuple[float, ...]  # n_legs leg ToFs (was: fixed 4-tuple for CGCEC)
     cycle_tof_days: float
     revs: tuple[int, ...]
     branches: tuple[str, ...]
@@ -455,17 +461,23 @@ def _solve_cycle_legs(
     epochs: Sequence[float],
     ephem: JovianEphemeris,
     branch_plan: Sequence[tuple[int, str]],
+    sequence: Sequence[str] = CGCEC,
 ) -> tuple[list[Vec3], list[Vec3]] | None:
-    """Lambert-solve the 4 legs at the given epochs; returns (vinf_out, vinf_in) lists.
+    """Lambert-solve the n_legs legs at the given epochs; returns (vinf_out, vinf_in) lists.
 
-    ``vinf_out[k]`` is the departure V∞ vector at flyby k (k=0..3);
-    ``vinf_in[k]`` the arrival V∞ at flyby k (k=1..4, list index k-1).
+    ``vinf_out[k]`` is the departure V∞ vector at flyby k (k=0..n_legs-1);
+    ``vinf_in[k]`` the arrival V∞ at flyby k+1 (list index k, 0..n_legs-1).
     Returns None when any leg has no Lambert solution on its planned branch.
+
+    ``sequence`` defaults to :data:`CGCEC` (backward-compatible); pass any
+    Galilean-moon encounter sequence of length ``len(branch_plan) + 1`` to
+    drive an arbitrary tour (EIGE, EGGIE, …).
     """
-    states = [ephem.state(m, t) for m, t in zip(CGCEC, epochs, strict=True)]
+    n_legs = len(branch_plan)
+    states = [ephem.state(m, t) for m, t in zip(sequence, epochs, strict=True)]
     vinf_out: list[Vec3] = []
     vinf_in: list[Vec3] = []
-    for k in range(4):
+    for k in range(n_legs):
         tof = epochs[k + 1] - epochs[k]
         if tof <= 0.0:
             return None
@@ -505,40 +517,44 @@ def optimize_cycle(
     vinf_in_prev: Vec3 | None,
     bound_days: float = 3.0,
     min_alt_km: float = 50.0,
+    sequence: Sequence[str] = CGCEC,
+    branch_plan: Sequence[tuple[int, str]] = BRANCH_PLAN,
 ) -> tuple[ConicCycle, Vec3]:
     """Locally optimize one cycle's interior epochs to minimize defect Δv.
 
     Mirrors Liang Sec. III.C (ephemeris variant, Eq. 20): the start epoch and
-    inherited inbound V∞ are FIXED; the four downstream flyby epochs move
-    within ``+/- bound_days`` of the ToF seed; objective = the defect Δv at
-    the flybys charged to this cycle (start Callisto when an inbound V∞ is
-    inherited, plus Ganymede / Callisto / Europa interior flybys). Solver:
-    Nelder-Mead on the summed defect (the defect surface is piecewise-smooth
-    with flat zero plateaus — exactly what their DE solver tolerated; NM is
-    the lightweight local analogue), polished by a second NM restart.
+    inherited inbound V∞ are FIXED; the downstream flyby epochs move within
+    ``+/- bound_days`` of the ToF seed; objective = the defect Δv at the
+    flybys charged to this cycle (start body[0] when an inbound V∞ is
+    inherited, plus interior flybys). Solver: Nelder-Mead on the summed defect
+    (piecewise-smooth with flat zero plateaus), polished by a second NM restart.
 
-    Returns the converged cycle record and the outbound V∞ vector at the
-    cycle-end Callisto flyby's INBOUND side (i.e. the arrival V∞ the next
-    cycle inherits).
+    Returns the converged cycle record and the inbound V∞ vector at the
+    cycle-end flyby (the V∞ the next cycle inherits).
+
+    ``sequence`` defaults to :data:`CGCEC` and ``branch_plan`` to
+    :data:`BRANCH_PLAN` for backward compatibility.  Pass any Galilean-moon
+    sequence + matching branch plan to drive EIGE, EGGIE, or other tours.
     """
     from scipy.optimize import minimize
 
+    n_legs = len(branch_plan)
     tof_seed = np.asarray(tof_seed_days, dtype=np.float64)
 
     def defects_of(x_tofs: NDArray[np.float64]) -> tuple[list[float], object]:
         epochs = [t_start_sec]
         for tof in x_tofs:
             epochs.append(epochs[-1] + float(tof) * SECONDS_PER_DAY)
-        legs = _solve_cycle_legs(epochs, ephem, BRANCH_PLAN)
+        legs = _solve_cycle_legs(epochs, ephem, branch_plan, sequence)
         if legs is None:
-            return [_DEFECT_SENTINEL_MS] * 4, None
+            return [_DEFECT_SENTINEL_MS] * n_legs, None
         vinf_out, vinf_in = legs
         ds: list[float] = []
         if vinf_in_prev is not None:
-            dv, _, _ = flyby_min_dv(vinf_in_prev, vinf_out[0], CGCEC[0], min_alt_km=min_alt_km)
+            dv, _, _ = flyby_min_dv(vinf_in_prev, vinf_out[0], sequence[0], min_alt_km=min_alt_km)
             ds.append(dv * 1.0e3)
-        for k in (1, 2, 3):  # G, C, E interior flybys
-            dv, _, _ = flyby_min_dv(vinf_in[k - 1], vinf_out[k], CGCEC[k], min_alt_km=min_alt_km)
+        for k in range(1, n_legs):  # interior flybys
+            dv, _, _ = flyby_min_dv(vinf_in[k - 1], vinf_out[k], sequence[k], min_alt_km=min_alt_km)
             ds.append(dv * 1.0e3)
         return ds, (epochs, vinf_out, vinf_in)
 
@@ -564,14 +580,14 @@ def optimize_cycle(
         return (
             ConicCycle(
                 index=cycle_index,
-                epochs_sec=(t_start_sec,) * 5,
-                tofs_days=(0.0, 0.0, 0.0, 0.0),
+                epochs_sec=(t_start_sec,) * (n_legs + 1),
+                tofs_days=(0.0,) * n_legs,
                 cycle_tof_days=0.0,
-                revs=tuple(r for r, _ in BRANCH_PLAN),
-                branches=tuple(b for _, b in BRANCH_PLAN),
-                vinf_kms=(0.0,) * 5,
+                revs=tuple(r for r, _ in branch_plan),
+                branches=tuple(b for _, b in branch_plan),
+                vinf_kms=(0.0,) * (n_legs + 1),
                 defects_ms=tuple(ds),
-                altitudes_km=(0.0,) * 3,
+                altitudes_km=(0.0,) * (n_legs - 1),
                 sum_defect_ms=float(sum(ds)),
                 converged=False,
             ),
@@ -579,22 +595,24 @@ def optimize_cycle(
         )
     epochs, vinf_out, vinf_in = cast("tuple[list[float], list[Vec3], list[Vec3]]", detail)
     vinfs = [float(np.linalg.norm(vinf_out[0]))]
-    vinfs += [float(np.linalg.norm(vinf_in[k])) for k in range(4)]
-    alts = tuple(flyby_altitude_km(vinf_in[k - 1], vinf_out[k], CGCEC[k]) for k in (1, 2, 3))
+    vinfs += [float(np.linalg.norm(vinf_in[k])) for k in range(n_legs)]
+    alts = tuple(
+        flyby_altitude_km(vinf_in[k - 1], vinf_out[k], sequence[k]) for k in range(1, n_legs)
+    )
     cycle = ConicCycle(
         index=cycle_index,
         epochs_sec=tuple(float(t) for t in epochs),
-        tofs_days=tuple(float(t) for t in x),  # type: ignore[arg-type]
+        tofs_days=tuple(float(t) for t in x),
         cycle_tof_days=float((epochs[-1] - epochs[0]) / SECONDS_PER_DAY),
-        revs=tuple(r for r, _ in BRANCH_PLAN),
-        branches=tuple(b for _, b in BRANCH_PLAN),
+        revs=tuple(r for r, _ in branch_plan),
+        branches=tuple(b for _, b in branch_plan),
         vinf_kms=tuple(vinfs),
         defects_ms=tuple(ds),
         altitudes_km=alts,
         sum_defect_ms=float(sum(ds)),
         converged=bool(sum(ds) < 1.0),  # < 1 m/s total — reported, not asserted
     )
-    return cycle, vinf_in[3]
+    return cycle, vinf_in[n_legs - 1]
 
 
 def chain_cycles(
@@ -605,13 +623,19 @@ def chain_cycles(
     tof_seed_days: Sequence[float] = (31.8973, 18.1697, 29.9343, 19.9747),
     bound_days: float = 3.0,
     min_alt_km: float = 50.0,
+    sequence: Sequence[str] = CGCEC,
+    branch_plan: Sequence[tuple[int, str]] = BRANCH_PLAN,
     progress: bool = False,
 ) -> list[ConicCycle]:
-    """Chain ``n_cycles`` CGCEC cycles from ``t0_sec`` (Liang's chained scheme).
+    """Chain ``n_cycles`` cycles from ``t0_sec`` (Liang's chained scheme).
 
     The default ToF seed is idealized Member A's printed first-cycle leg ToFs
     (Table 3) — the validated scaffold (#222) phased to the real epoch; each
     later cycle re-seeds from the previous cycle's converged ToFs.
+
+    ``sequence`` defaults to :data:`CGCEC` and ``branch_plan`` to
+    :data:`BRANCH_PLAN` for backward compatibility.  Pass any Galilean-moon
+    sequence + matching branch plan to drive EIGE, EGGIE, or other tours.
     """
     cycles: list[ConicCycle] = []
     t_start = t0_sec
@@ -626,6 +650,8 @@ def chain_cycles(
             vinf_in_prev=vinf_prev,
             bound_days=bound_days,
             min_alt_km=min_alt_km,
+            sequence=sequence,
+            branch_plan=branch_plan,
         )
         cycles.append(cycle)
         if progress:
