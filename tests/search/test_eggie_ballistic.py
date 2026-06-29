@@ -22,6 +22,7 @@ from cyclerfinder.search.eggie_ballistic import (
     ALT_MAX_KM,
     ALT_MIN_KM,
     feasible_ballistic_eggie,
+    interior_table4_eggie,
     table4_vinf_eggie,
 )
 
@@ -82,3 +83,34 @@ def test_gate_b_table4_vinf_reached_but_subsurface() -> None:
     assert not e.all_feasible
     assert e.flyby_alt_km["Io"] < ALT_MIN_KM, e.flyby_alt_km
     assert e.flyby_alt_km["G1"] < ALT_MIN_KM, e.flyby_alt_km
+
+
+def test_gate_b_interior_subtour_reproduces_table4_feasibly() -> None:
+    """The interior G->G->I sub-tour reproduces Table-4 V∞ with FEASIBLE altitudes.
+
+    Pinpoints the binding constraint: with the Europa periodicity seam dropped, the 3
+    interior flybys are exactly ballistic at the sourced Table-4 V∞ and ALL their
+    altitudes lie in the 25-70000 km window; only the seam stays open (Europa arrival
+    != departure, Europa flyby sub-surface). So the interior is feasible at Table-4 V∞
+    in the 2D ideal model — it is full periodic closure (the seam) that fails.
+    """
+    e = interior_table4_eggie()
+
+    # Interior flybys exactly ballistic (equal in/out |V∞|) and Ganymede equal.
+    assert abs(e.vinf_kms["Ganymede1"] - e.vinf_kms["Ganymede1_out"]) < 1.0e-3, e.vinf_kms
+    assert abs(e.vinf_kms["Ganymede2"] - e.vinf_kms["Ganymede2_out"]) < 1.0e-3, e.vinf_kms
+    assert abs(e.vinf_kms["Io"] - e.vinf_kms["Io_out"]) < 1.0e-3, e.vinf_kms
+    assert e.ganymede_equal_resid_kms < 1.0e-3, e.ganymede_equal_resid_kms
+
+    # Interior V∞ match the SOURCED Table-4 levels.
+    assert abs(e.vinf_kms["Europa_dep"] - TABLE4_VINF_EUROPA_KMS) < 0.05, e.vinf_kms
+    assert abs(e.vinf_kms["Ganymede1_out"] - TABLE4_VINF_GANYMEDE_KMS) < 0.05, e.vinf_kms
+    assert abs(e.vinf_kms["Io_out"] - TABLE4_VINF_IO_KMS) < 0.05, e.vinf_kms
+
+    # The 3 interior flyby altitudes are all in-window.
+    for key in ("G1", "G2", "Io"):
+        assert ALT_MIN_KM <= e.flyby_alt_km[key] <= ALT_MAX_KM, (key, e.flyby_alt_km)
+
+    # ...but the periodicity seam is open (the binding constraint).
+    assert e.seam_defect_kms > 0.2, e.seam_defect_kms
+    assert e.flyby_alt_km["E"] < ALT_MIN_KM, e.flyby_alt_km

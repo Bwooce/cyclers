@@ -166,28 +166,32 @@ def _nrm(v: Vec3) -> float:
 
 
 def ballistic_residual(
-    x: NDArray[np.float64], plan: Plan, target_w: float = 0.0
+    x: NDArray[np.float64], plan: Plan, target_w: float = 0.0, *, include_seam: bool = True
 ) -> NDArray[np.float64]:
-    """Ballistic-cycler residual vector (km/s); 5 entries, +3 if ``target_w`` > 0.
+    """Ballistic-cycler residual vector (km/s); +3 entries if ``target_w`` > 0.
 
-    ``x = [phi_gan, phi_io, tof1, tof2, tof3, tof4]`` (ToFs in seconds). The 5 core
-    residuals are the equal-in/out |V∞| ballistic constraints at the 4 flybys plus the
-    Ganymede resonant-return (equal-7.07) constraint. With ``target_w`` > 0 three
-    weighted residuals pull the Europa/Ganymede/Io departure |V∞| toward the sourced
-    Table-4 levels (used to slide along the 1-D ballistic manifold to Table-4 V∞).
+    ``x = [phi_gan, phi_io, tof1, tof2, tof3, tof4]`` (ToFs in seconds). The core
+    residuals are the equal-in/out |V∞| ballistic constraints at the interior flybys
+    (Ganymede, Ganymede, Io), the Ganymede resonant-return (equal-7.07) constraint,
+    and — when ``include_seam`` — the Europa periodicity seam (``|V∞_in(final)| =
+    |V∞_out(depart)|``). Dropping the seam isolates the interior G->G->I sub-tour (the
+    seam is the binding constraint at Table-4 V∞ in the 2-D model). With ``target_w`` > 0
+    three weighted residuals pull the Europa/Ganymede/Io departure |V∞| toward the
+    sourced Table-4 levels (used to slide along the ballistic manifold to Table-4 V∞).
     """
+    n_core = 5 if include_seam else 4
     built = build_legs(x[0], x[1], list(x[2:]), plan)
-    n_res = 8 if target_w else 5
     if built is None:
-        return np.full(n_res, 10.0)
+        return np.full(n_core + (3 if target_w else 0), 10.0)
     vo, vi = built
     res = [
         _nrm(vi[1]) - _nrm(vo[1]),  # Ganymede #1 ballistic
         _nrm(vi[2]) - _nrm(vo[2]),  # Ganymede #2 ballistic
         _nrm(vi[3]) - _nrm(vo[3]),  # Io ballistic
-        _nrm(vi[4]) - _nrm(vo[0]),  # Europa periodicity seam
-        _nrm(vo[1]) - _nrm(vi[2]),  # Ganymede resonant return (-> equal V∞)
     ]
+    if include_seam:
+        res.append(_nrm(vi[4]) - _nrm(vo[0]))  # Europa periodicity seam
+    res.append(_nrm(vo[1]) - _nrm(vi[2]))  # Ganymede resonant return (-> equal V∞)
     if target_w:
         res += [
             target_w * (_nrm(vo[0]) - EGGIE_VINF_TABLE4["Europa"]),
@@ -197,9 +201,11 @@ def ballistic_residual(
     return np.asarray(res, dtype=np.float64)
 
 
-def ballistic_resnorm(x: NDArray[np.float64], plan: Plan) -> float:
-    """Norm of the 5 pure-ballistic residuals (km/s) — the closure measure."""
-    return float(np.linalg.norm(ballistic_residual(x, plan, target_w=0.0)[:5]))
+def ballistic_resnorm(x: NDArray[np.float64], plan: Plan, *, include_seam: bool = True) -> float:
+    """Norm of the core ballistic residuals (km/s) — the closure measure."""
+    n_core = 5 if include_seam else 4
+    res = ballistic_residual(x, plan, target_w=0.0, include_seam=include_seam)
+    return float(np.linalg.norm(res[:n_core]))
 
 
 # --- Result dataclass + evaluator ------------------------------------------------
@@ -282,14 +288,16 @@ def refine(
     plan: Plan,
     *,
     target_w: float = 0.0,
+    include_seam: bool = True,
     max_nfev: int = 600,
 ) -> BallisticEggie:
     """Differential-correct the EGGIE from ``seed_x`` (trf least-squares).
 
-    With ``target_w`` = 0 it drives the pure ballistic residuals to zero (closest
+    With ``target_w`` = 0 it drives the core ballistic residuals to zero (closest
     ballistic point to the seed). With ``target_w`` > 0 it additionally pulls the
-    departure V∞ toward the sourced Table-4 levels (then re-evaluates the pure
-    ballistic closure). Deterministic given the seed.
+    departure V∞ toward the sourced Table-4 levels (then re-evaluates the core
+    ballistic closure). ``include_seam=False`` drops the Europa periodicity seam so the
+    corrector isolates the interior G->G->I sub-tour. Deterministic given the seed.
     """
     x0 = np.asarray(seed_x, dtype=np.float64)
     if target_w:
@@ -297,6 +305,7 @@ def refine(
             ballistic_residual,
             x0,
             args=(plan, target_w),
+            kwargs={"include_seam": include_seam},
             method="trf",
             max_nfev=max_nfev,
             xtol=1e-14,
@@ -307,6 +316,7 @@ def refine(
         ballistic_residual,
         x0,
         args=(plan, 0.0),
+        kwargs={"include_seam": include_seam},
         method="trf",
         max_nfev=max_nfev,
         xtol=1e-14,
@@ -350,6 +360,23 @@ TABLE4_VINF_SEED: tuple[float, ...] = (
     1041265.4073508935,
 )
 
+#: GATE B (refined) — the interior G->G->I sub-tour reproduces Table-4 V∞ (Europa 9.12,
+#: both Ganymede 7.07, Io 8.38) with the 3 interior flybys EXACTLY ballistic AND all
+#: interior altitudes in the 25-70000 km window (G1 ~1419, G2 ~2233, Io ~7177 km, the
+#: paper's ballpark) — only the Europa periodicity SEAM stays open (Europa arrival
+#: ~9.37 vs 9.12 departure; Europa flyby sub-surface). This localises the binding
+#: constraint to the seam: the interior is feasible at Table-4 V∞; full periodic closure
+#: in the strict 2D model is what fails (needs the real-ephemeris/3D B-plane freedom).
+INTERIOR_TABLE4_PLAN: Plan = ((0, "single"), (1, "high"), (1, "low"), (2, "low"))
+INTERIOR_TABLE4_SEED: tuple[float, ...] = (
+    -3.546238161079704,
+    -46.580104582133984,
+    135799.16277979105,
+    727708.8738576599,
+    589043.755322358,
+    1144979.4600162422,
+)
+
 
 def feasible_ballistic_eggie() -> BallisticEggie:
     """Construct the feasible ballistic EGGIE (GATE A) — deterministic.
@@ -372,6 +399,19 @@ def table4_vinf_eggie() -> BallisticEggie:
     return refine(TABLE4_VINF_SEED, TABLE4_VINF_PLAN, target_w=0.5)
 
 
+def interior_table4_eggie() -> BallisticEggie:
+    """Construct the interior-feasible Table-4 EGGIE sub-tour (GATE B refined finding).
+
+    Refines :data:`INTERIOR_TABLE4_SEED` with the seam dropped (``include_seam=False``):
+    the 3 interior flybys (Ganymede, Ganymede, Io) are EXACTLY ballistic at the sourced
+    Table-4 V∞ (Europa entry 9.12, both Ganymede 7.07, Io 8.38) with all interior
+    altitudes inside the 25-70000 km window — but the Europa periodicity seam stays open
+    (Europa arrival ~9.37 km/s, Europa flyby sub-surface). Pinpoints the seam as the
+    binding constraint for full periodic closure in the 2D ideal model.
+    """
+    return refine(INTERIOR_TABLE4_SEED, INTERIOR_TABLE4_PLAN, target_w=0.5, include_seam=False)
+
+
 __all__ = [
     "ALT_MAX_KM",
     "ALT_MIN_KM",
@@ -379,6 +419,8 @@ __all__ = [
     "EGGIE_VINF_TABLE4",
     "FEASIBLE_BALLISTIC_PLAN",
     "FEASIBLE_BALLISTIC_SEED",
+    "INTERIOR_TABLE4_PLAN",
+    "INTERIOR_TABLE4_SEED",
     "TABLE4_VINF_PLAN",
     "TABLE4_VINF_SEED",
     "BallisticEggie",
@@ -387,6 +429,7 @@ __all__ = [
     "build_legs",
     "evaluate",
     "feasible_ballistic_eggie",
+    "interior_table4_eggie",
     "moon_state",
     "refine",
     "table4_vinf_eggie",
