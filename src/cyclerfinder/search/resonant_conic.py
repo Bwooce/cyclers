@@ -472,10 +472,25 @@ def _eval_tour(
     return _TourEval(dvs=dvs, wrap=wrap, vmag=vmag, vinf_out=vinf_out, vinf_in=vinf_in)
 
 
-def _refine_eggie_at_e(
+@dataclass(frozen=True)
+class _RefineCtx:
+    """Frozen optimization context for one eccentricity (shared by refine + guess)."""
+
+    e: float
+    best_x: NDArray[np.float64]
+    total: float
+    phases0: dict[str, float]
+    anchors: dict[str, float]
+    conic_vel: list[Vec3]
+    moons: tuple[str, str, str]
+    mu: float
+    min_alt_km: float
+
+
+def _optimize_eggie_at_e(
     e: float, *, n_restarts: int, seed: int, min_alt_km: float, mu: float
-) -> EggieRefineResult:
-    """Tight, in-basin refine at a single eccentricity (see :func:`refine_eggie`)."""
+) -> _RefineCtx:
+    """Run the tight, in-basin EGGIE refine optimizer at one ``e`` (see refine_eggie)."""
     _a, _nus, times, conic_pos, conic_vel = _eggie_conic_nodes(e, 0.0, mu)
     phases0, anchors = _moon_phase_ics(times, conic_pos)
     # Pin the total ToF to the sourced Table-4 total (28.22 d) and warm-start from
@@ -485,7 +500,7 @@ def _refine_eggie_at_e(
     total = sum(EGGIE_TOFS_TABLE4_DAYS) * SECONDS_PER_DAY
     seed_t = [t * SECONDS_PER_DAY for t in EGGIE_TOFS_TABLE4_DAYS]
     targets = [EGGIE_VINF_TARGET_KMS[m] for m in EGGIE_SEQUENCE]
-    moons = ("Europa", "Ganymede", "Io")
+    moons: tuple[str, str, str] = ("Europa", "Ganymede", "Io")
 
     def vinf_penalty(ev: _TourEval) -> float:
         vin = ev.vinf_in
@@ -529,12 +544,40 @@ def _refine_eggie_at_e(
         if res.fun < best_f:
             best_f = float(res.fun)
             best_x = np.asarray(res.x, dtype=np.float64)
+    return _RefineCtx(
+        e=e,
+        best_x=best_x,
+        total=total,
+        phases0=phases0,
+        anchors=anchors,
+        conic_vel=conic_vel,
+        moons=moons,
+        mu=mu,
+        min_alt_km=min_alt_km,
+    )
 
-    ev = evaluate(best_x)
+
+def _ctx_config(ctx: _RefineCtx) -> tuple[dict[str, float], list[float]]:
+    """Refined moon phase ICs + leg ToFs (sec) from a finished optimization context."""
+    x = ctx.best_x
+    ph = {ctx.moons[i]: ctx.phases0[ctx.moons[i]] + x[i] for i in range(3)}
+    t4 = ctx.total - (x[3] + x[4] + x[5])
+    return ph, [float(x[3]), float(x[4]), float(x[5]), float(t4)]
+
+
+def _refine_eggie_at_e(
+    e: float, *, n_restarts: int, seed: int, min_alt_km: float, mu: float
+) -> EggieRefineResult:
+    """Tight, in-basin refine at a single eccentricity (see :func:`refine_eggie`)."""
+    ctx = _optimize_eggie_at_e(e, n_restarts=n_restarts, seed=seed, min_alt_km=min_alt_km, mu=mu)
+    targets = [EGGIE_VINF_TARGET_KMS[m] for m in EGGIE_SEQUENCE]
+    ph, tofs_sec = _ctx_config(ctx)
+    ev = _eval_tour(e, ph, ctx.anchors, tofs_sec, ctx.conic_vel, mu, min_alt_km)
     if ev is None:  # pragma: no cover - guarded by objective sentinel
         raise ValueError("EGGIE refine produced no feasible tour")
-    t4 = total - (best_x[3] + best_x[4] + best_x[5])
-    tofs = (best_x[3], best_x[4], best_x[5], t4)
+    tofs = tuple(tofs_sec)
+    vmag = tuple(float(v) for v in ev.vmag)
+    in_band = all(abs(vmag[k] - targets[k]) <= 0.5 for k in range(5))
     vmag = tuple(float(v) for v in ev.vmag)
     in_band = all(abs(vmag[k] - targets[k]) <= 0.5 for k in range(5))
     return EggieRefineResult(
@@ -591,6 +634,93 @@ def refine_eggie(
     return min(pool, key=lambda r: r.sum_interior_dv_ms)
 
 
+def _guess_from_ctx(ctx: _RefineCtx) -> EggieGuess:
+    """Assemble a full :class:`EggieGuess` from a finished refine context.
+
+    Uses the refined moon phase ICs + leg ToFs to rebuild the patched-conic tour
+    (moon positions, moon velocities, per-leg Lambert spacecraft velocities) and
+    exposes the moon phase ICs as the inertial angles of the refined moon positions
+    at each moon's FIRST encounter — so an ideal ephemeris built from this guess
+    (anchored on the encounter epochs) places the moons exactly on the node
+    positions the corrector integrates against.
+    """
+    ph, tofs_sec = _ctx_config(ctx)
+    built = _tour_states(ctx.e, ph, ctx.anchors, tofs_sec, ctx.conic_vel, ctx.mu)
+    if built is None:  # pragma: no cover - guarded by objective sentinel
+        raise ValueError("EGGIE refined guess infeasible")
+    moon_pos, moon_vel, sc_dep, sc_arr = built
+    times = [0.0]
+    for t in tofs_sec:
+        times.append(times[-1] + t)
+    phases, _anchors = _moon_phase_ics(times, moon_pos)
+    node_sc_v = [sc_dep[k] for k in range(4)] + [sc_arr[3]]
+    vinf_out = [sc_dep[k] - moon_vel[k] for k in range(4)] + [np.zeros(3)]
+    vinf_in = [np.zeros(3)] + [sc_arr[k] - moon_vel[k + 1] for k in range(4)]
+    return EggieGuess(
+        e=ctx.e,
+        a_km=eggie_resonant_sma(ctx.mu),
+        sequence=EGGIE_SEQUENCE,
+        epochs_days=tuple(t / SECONDS_PER_DAY for t in times),
+        tofs_days=tuple(t / SECONDS_PER_DAY for t in tofs_sec),
+        moon_phases_rad=phases,
+        node_positions=tuple(moon_pos),
+        node_sc_velocities=tuple(node_sc_v),
+        moon_velocities=tuple(moon_vel),
+        vinf_out=tuple(vinf_out),
+        vinf_in=tuple(vinf_in),
+        conic_velocities=tuple(ctx.conic_vel),
+    )
+
+
+def eggie_refined_guess(
+    e: float | None = None,
+    *,
+    n_restarts: int = 6,
+    seed: int = 0,
+    min_alt_km: float = 25.0,
+    mu: float = MU_JUPITER_KM3_S2,
+) -> EggieGuess:
+    """The refined EGGIE conic guess (family-correct seed for the Stage-2 corrector).
+
+    Runs the same tight in-basin refine as :func:`refine_eggie` (V∞ pinned to the
+    sourced Table-4 band) but returns the full tour as an :class:`EggieGuess` — node
+    positions/velocities, refined epochs/ToFs, moon phase ICs, and V∞ vectors — so it
+    can be mapped to a :class:`~cyclerfinder.nbody.shooter.ShootingSeed` whose moon
+    geometry matches an ideal ephemeris built from the same guess. With ``e=None`` the
+    eccentricity is swept over :data:`_EGGIE_E_GRID` and the best in-band (minimum
+    ΣΔV) configuration is returned. Unlike :func:`eggie_initial_guess` (the RAW conic
+    guess, whose per-leg Lambert legs leave Ganymede V∞ ~4 km/s off target), this
+    guess holds all three V∞ in band — it is the Stage-2 positive-control seed.
+    """
+    if e is not None:
+        ctx = _optimize_eggie_at_e(
+            e, n_restarts=n_restarts, seed=seed, min_alt_km=min_alt_km, mu=mu
+        )
+        return _guess_from_ctx(ctx)
+    best: tuple[float, EggieGuess] | None = None
+    best_any: tuple[float, EggieGuess] | None = None
+    targets = [EGGIE_VINF_TARGET_KMS[m] for m in EGGIE_SEQUENCE]
+    for ev in _EGGIE_E_GRID:
+        ctx = _optimize_eggie_at_e(
+            ev, n_restarts=n_restarts, seed=seed, min_alt_km=min_alt_km, mu=mu
+        )
+        ph, tofs_sec = _ctx_config(ctx)
+        teval = _eval_tour(ev, ph, ctx.anchors, tofs_sec, ctx.conic_vel, mu, min_alt_km)
+        if teval is None:
+            continue
+        dv = float(sum(teval.dvs))
+        guess = _guess_from_ctx(ctx)
+        in_band = all(abs(teval.vmag[k] - targets[k]) <= 0.5 for k in range(5))
+        if best_any is None or dv < best_any[0]:
+            best_any = (dv, guess)
+        if in_band and (best is None or dv < best[0]):
+            best = (dv, guess)
+    chosen = best if best is not None else best_any
+    if chosen is None:  # pragma: no cover - the e-grid always yields a feasible tour
+        raise ValueError("no feasible EGGIE refined guess on the e-grid")
+    return chosen[1]
+
+
 __all__ = [
     "EGGIE_N_REV",
     "EGGIE_N_SYN",
@@ -606,6 +736,7 @@ __all__ = [
     "crossing_true_anomalies",
     "ecc_bounds",
     "eggie_initial_guess",
+    "eggie_refined_guess",
     "eggie_resonant_sma",
     "ideal_moon_smas",
     "ideal_t_syn",
