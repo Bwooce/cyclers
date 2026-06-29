@@ -201,6 +201,7 @@ def ideal_eggie_shoot(
     max_wall_sec: float = 20.0,
     periapsis_nodes: bool = True,
     method: str = "lm",
+    jacobian: str = "fd",
     runlog_path: str | None = None,
 ) -> ShootResult:
     """Ideal-model multiple-shooting corrector for the EGGIE tour (Stage 2 gate).
@@ -215,6 +216,14 @@ def ideal_eggie_shoot(
     V∞ (compare to Table 4), and the node-impulse correction ΔV. Divergence is honest
     (never raised). Writes an incremental runlog (append+flush per call) if
     ``runlog_path`` is given — the residual is FD-Jacobian-bound, so never a black box.
+
+    ``jacobian`` (#480 Stage 3): ``"fd"`` (default) is the original finite-difference
+    path (``least_squares`` builds its own internal FD Jacobian — byte-unchanged) and
+    stays the parity oracle. ``"stm"`` supplies the analytic block-bidiagonal Jacobian
+    (:func:`cyclerfinder.nbody.jovian_stm.jovian_stm_jacobian`) assembled from per-leg
+    analytic state-transition matrices — ONE co-integrated variational propagation per
+    leg instead of the ``6*n_nodes+1`` FD re-propagations, the lever built to break the
+    Stage-2 FD-noise plateau (``docs/notes/2026-06-29-480-eggie-stage2-nbody-verdict``).
     """
     from scipy.optimize import least_squares
 
@@ -272,6 +281,20 @@ def ideal_eggie_shoot(
     seed_defect_norm = float(np.linalg.norm(seed_res))
 
     ls_kwargs = {"x_scale": "jac"} if method != "lm" else {}
+    if jacobian == "stm":
+        from cyclerfinder.nbody.jovian_stm import jovian_stm_jacobian
+
+        def jac_of_x(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            t_eval = time.monotonic()
+            jac = jovian_stm_jacobian(seed, x, ephem=ephem, moons=moons)
+            if log is not None:
+                log.write(
+                    f"{time.strftime('%Y-%m-%dT%H:%M:%S')} jac_stm "
+                    f"dt={time.monotonic() - t_eval:.2f}s\n"
+                )
+            return jac
+
+        ls_kwargs["jac"] = jac_of_x  # type: ignore[assignment]
     sol = least_squares(residual_of_x, x0, method=method, max_nfev=max_nfev, **ls_kwargs)  # type: ignore[arg-type]
     corrected_states = _x_to_states(np.asarray(sol.x, dtype=np.float64), n)
     final_res = residual_of_x(np.asarray(sol.x, dtype=np.float64))
