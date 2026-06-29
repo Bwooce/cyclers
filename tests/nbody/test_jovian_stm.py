@@ -29,14 +29,22 @@ from cyclerfinder.nbody.jovian import (
     MU_JUPITER_KM3_S2,
     JovianRailsCache,
     JovianRestrictedNBody,
+    jovian_defect_residual,
 )
 from cyclerfinder.nbody.jovian_ideal import (
     EGGIE_MOONS,
     build_eggie_periapsis_seed,
     ideal_ephemeris_from_guess,
 )
-from cyclerfinder.nbody.jovian_stm import propagate_with_stm
-from cyclerfinder.search.resonant_conic import eggie_refined_guess
+from cyclerfinder.nbody.jovian_stm import jovian_stm_jacobian, propagate_with_stm
+from cyclerfinder.nbody.shooter import (
+    _fd_jacobian,
+    _seed_with_states,
+    _serial_columns,
+    _states_to_x,
+    _x_to_states,
+)
+from cyclerfinder.search.resonant_conic import EggieGuess, eggie_refined_guess
 
 # Per-component FD probe scale (km for position, km/s for velocity) — the v->r STM
 # block scales like the time-of-flight (~1e6 s), so velocity columns need a far
@@ -45,14 +53,20 @@ _PROBE_SCALE = np.array([1.0, 1.0, 1.0, 1e-3, 1e-3, 1e-3])
 
 
 @pytest.fixture(scope="module")
-def flyby_leg() -> dict[str, Any]:
+def eggie_guess() -> EggieGuess:
+    """The refined in-basin EGGIE conic guess (built once per module — ~30 s)."""
+    return eggie_refined_guess()
+
+
+@pytest.fixture(scope="module")
+def flyby_leg(eggie_guess: EggieGuess) -> dict[str, Any]:
     """The EGGIE leg that starts closest to a Galilean moon (interior flyby leg).
 
     Returns the chosen leg's endpoints/epochs, the ideal ephemeris, and the
     closest-approach distance so the test can assert the gate is genuinely a
     near-flyby (within the moon SOI), per the memory rule.
     """
-    guess = eggie_refined_guess()
+    guess = eggie_guess
     ephem = ideal_ephemeris_from_guess(guess)
     seed = build_eggie_periapsis_seed(guess)
     n = len(seed.sequence)
@@ -172,3 +186,62 @@ def test_stm_state_matches_rebound_endpoint(flyby_leg: dict[str, Any]) -> None:
     print(f"REBOUND-endpoint parity: rel_r={rel_r:.3e} rel_v={rel_v:.3e}")
     assert rel_r < 1e-4, f"position parity vs REBOUND {rel_r:.3e} > 1e-4"
     assert rel_v < 1e-4, f"velocity parity vs REBOUND {rel_v:.3e} > 1e-4"
+
+
+def test_stm_jacobian_matches_fd_on_eggie_seed(eggie_guess: EggieGuess) -> None:
+    """Stage-2 gate: the analytic block-bidiagonal Jacobian matches the FD oracle.
+
+    :func:`jovian_stm_jacobian` (assembled from per-leg analytic STMs) must agree
+    with a finite-difference Jacobian of :func:`jovian_defect_residual` on the EGGIE
+    periapsis seed — per nonzero 6x6 block — to well within the plan's ~1e-4 rel.
+    FD stays the parity oracle. This is the Jacobian the Stage-3 ``jacobian="stm"``
+    corrector relies on (and ~40x cheaper to build than the FD oracle).
+    """
+    ephem = ideal_ephemeris_from_guess(eggie_guess)
+    seed = build_eggie_periapsis_seed(eggie_guess)
+    moons = EGGIE_MOONS
+    n = len(seed.sequence)
+    cache = JovianRailsCache(moons, ephem, min(seed.epochs), max(seed.epochs))  # type: ignore[arg-type]
+
+    def residual_of_x(x: np.ndarray) -> np.ndarray:
+        trial = _seed_with_states(seed, _x_to_states(x, n))
+        return jovian_defect_residual(
+            trial,
+            ephem=ephem,  # type: ignore[arg-type]
+            cache=cache,
+            moons=moons,
+            accuracy=1e-11,
+        )
+
+    x0 = _states_to_x(seed.node_states)
+    f0 = residual_of_x(x0)
+    fd = _fd_jacobian(residual_of_x, x0, f0, column_eval=_serial_columns)
+    stm = jovian_stm_jacobian(seed, x0, ephem=ephem, moons=moons)
+    assert stm.shape == fd.shape
+
+    overall = float(np.linalg.norm(stm - fd) / np.linalg.norm(fd))
+    print(f"STM vs FD overall rel = {overall:.3e}")
+    assert overall < 1e-4, f"overall STM-vs-FD rel {overall:.3e} > 1e-4"
+
+    # Per nonzero 6x6 block (the binding parity criterion in the plan).
+    n_leg = (n - 1) * 6
+    n_hinge = max(0, n - 2)
+    wrap0 = n_leg + n_hinge
+
+    def block_rel(rows: slice, cols: slice) -> float:
+        b = fd[rows, cols]
+        bn = float(np.linalg.norm(b))
+        if bn == 0.0:
+            return 0.0
+        return float(np.linalg.norm(stm[rows, cols] - b) / bn)
+
+    worst = 0.0
+    for i in range(n - 1):
+        rows = slice(i * 6, (i + 1) * 6)
+        worst = max(worst, block_rel(rows, slice(i * 6, (i + 1) * 6)))
+        worst = max(worst, block_rel(rows, slice((i + 1) * 6, (i + 2) * 6)))
+    wrap = slice(wrap0, wrap0 + 6)
+    worst = max(worst, block_rel(wrap, slice(0, 6)))
+    worst = max(worst, block_rel(wrap, slice((n - 1) * 6, n * 6)))
+    print(f"worst nonzero-block rel = {worst:.3e}")
+    assert worst < 1e-4, f"worst nonzero-block STM-vs-FD rel {worst:.3e} > 1e-4"

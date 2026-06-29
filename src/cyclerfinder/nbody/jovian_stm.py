@@ -38,14 +38,17 @@ coarse rails cache) for gradient fidelity.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
 import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 from cyclerfinder.core.satellites import SATELLITES
-from cyclerfinder.nbody.jovian import GALILEAN, MU_JUPITER_KM3_S2
+from cyclerfinder.nbody.jovian import _W_VEL, GALILEAN, MU_JUPITER_KM3_S2
+
+if TYPE_CHECKING:
+    from cyclerfinder.nbody.shooter import ShootingSeed
 
 Vec3 = NDArray[np.float64]
 Mat6 = NDArray[np.float64]
@@ -158,4 +161,91 @@ def propagate_with_stm(
     return rf, vf, phi
 
 
-__all__ = ["propagate_with_stm"]
+def jovian_stm_jacobian(
+    seed: ShootingSeed,
+    x: NDArray[np.float64],
+    *,
+    ephem: _EphemLike,
+    moons: Sequence[str] = GALILEAN,
+    rtol: float = 1e-11,
+    atol: float = 1e-9,
+) -> NDArray[np.float64]:
+    """Analytic block-bidiagonal Jacobian of :func:`jovian_defect_residual`.
+
+    Jupiter-central analogue of :func:`cyclerfinder.nbody.shooter._stm_jacobian`,
+    assembled from per-leg state-transition matrices (one analytic co-integrated
+    :func:`propagate_with_stm` per leg) instead of the ``6*n_nodes+1`` REBOUND
+    finite-difference re-propagations. The free variables are the per-node full
+    Cartesian states (6 each, the :func:`cyclerfinder.nbody.shooter._states_to_x`
+    packing); the residual is, in order, the ``n-1`` leg continuity defects (6
+    each), the ``n-2`` interior flyby hinges (1 each), and the 6-component
+    periodicity wrap — exactly the layout of
+    :func:`cyclerfinder.nbody.jovian.jovian_defect_residual`.
+
+    The crucial difference from the heliocentric Jacobian: the Jovian residual
+    weights every velocity row by ``_W_VEL`` (position km vs velocity km/s on
+    comparable least-squares scales). So both the per-leg ``Phi`` block AND the
+    ``-I`` / ``+I`` coupling blocks carry a velocity-row scaling
+    ``diag(1,1,1,W,W,W)``:
+
+    - Leg defect ``c_i = propagate(node_i, leg_i) - node_{i+1}`` gives
+      ``dc_i/dnode_i = R_W @ Phi_i`` and ``dc_i/dnode_{i+1} = -R_W`` (the ``-I_6``
+      with velocity rows scaled), where ``R_W = diag(1,1,1,W,W,W)``.
+    - The flyby hinges read ``seed.vinf_in/out`` (carried constants), so their rows
+      are identically zero — matching what FD sees.
+    - The wrap residual ``(node_{n-1} - r_wrap_pl) - (node_0 - r_home)`` (velocity
+      rows ``*W``) gives ``-R_W`` on node 0 and ``+R_W`` on node ``n-1`` (the moon
+      states are epoch-fixed constants).
+
+    A leg whose analytic propagation fails leaves its ``Phi`` block zero (the
+    ``-R_W`` coupling is kept) — the honest local linearisation of the residual's
+    divergence sentinel (a constant in ``x`` there), matching the FD oracle.
+    """
+    from cyclerfinder.nbody.shooter import _STATE_DIM, _x_to_states
+
+    moons = tuple(moons)
+    n = len(seed.sequence)
+    states = _x_to_states(x, n)
+
+    row_w = np.array([1.0, 1.0, 1.0, _W_VEL, _W_VEL, _W_VEL], dtype=np.float64)
+    rw = np.diag(row_w)  # velocity-row weighting (matches jovian_defect_residual)
+
+    n_leg = (n - 1) * _STATE_DIM
+    n_hinge = max(0, n - 2)
+    n_rows = n_leg + n_hinge + _STATE_DIM
+    n_cols = n * _STATE_DIM
+    jac = np.zeros((n_rows, n_cols), dtype=np.float64)
+
+    for i in range(n - 1):
+        s_i = states[i]
+        r0 = np.asarray(s_i[:3], dtype=np.float64)
+        v0 = np.asarray(s_i[3:], dtype=np.float64)
+        rows = slice(i * _STATE_DIM, (i + 1) * _STATE_DIM)
+        try:
+            _, _, phi = propagate_with_stm(
+                r0,
+                v0,
+                seed.epochs[i],
+                seed.epochs[i + 1],
+                ephem=ephem,
+                moons=moons,
+                rtol=rtol,
+                atol=atol,
+            )
+        except Exception:
+            phi = None
+        if phi is not None and np.all(np.isfinite(phi)):
+            jac[rows, i * _STATE_DIM : (i + 1) * _STATE_DIM] = rw @ phi
+        jac[rows, (i + 1) * _STATE_DIM : (i + 2) * _STATE_DIM] = -rw
+
+    # Hinge rows (n_leg : n_leg + n_hinge) are constant in x -> left zero.
+
+    # Periodicity wrap rows.
+    wrap = slice(n_leg + n_hinge, n_leg + n_hinge + _STATE_DIM)
+    jac[wrap, 0:_STATE_DIM] = -rw
+    jac[wrap, (n - 1) * _STATE_DIM : n * _STATE_DIM] = rw
+
+    return jac
+
+
+__all__ = ["jovian_stm_jacobian", "propagate_with_stm"]
