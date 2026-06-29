@@ -54,6 +54,26 @@ hung before the final verdict); salvaged each via runlogs/scratch drivers. Memor
 [[feedback_long_agents_commit_incrementally]] extended with the liveness-detection
 mitigation (poll runlog mtime / ps / git, never trust the completion notification).
 
+**2026-06-30 continuation (real-eph + maintenance threads).** (1) Unguided real-eph
+discovery reproduces the IEG ballistic-cycler CLASS (feasible ballistic equal-Ganymede
+cyclers exist, ~0.5 km/s BELOW Table-4 V∞); exact Table-4 member NOT reproduced
+(`docs/notes/2026-06-30-480-eggie-realeph-unguided-discovery.md`). (2) Level-3 n-body:
+on the correct seed the corrector beats the off-basin wall (~130×) but PLATEAUS at
+~0.1-0.4 km/s even with the analytic STM (`cc4f241`) wired into `jovian_shoot` — not a
+clean ballistic close (`...-eggie-level3-nbody.md` incl. a self-correction of an
+over-claim). (3) Maintenance-ΔV (approach A): `chain_cycles`/`optimize_cycle` generalized
+to arbitrary sequences (`cf1f72a`, Liang #223 lane preserved). **OPEN / RESUME HERE →
+`docs/notes/2026-06-30-480-eige-construction-status.md`**: the EIGE positive control needs a
+full EIGE resonant-conic construction (energy solved: 1:1, a=a_Gan, V∞ ~12-16 km/s; topology
+is the open work — E-I-G-E doesn't fit a single-rev static crossing order, needs the
+resonance-phasing enumeration + rev-count recheck). Scope:
+`docs/superpowers/plans/2026-06-30-480-eggie-level3-maintenance-dv-scope.md`. New lessons
+banked: [[feedback_constructed_tour_per_encounter_self_consistency]] (+ shared guard
+`search/tour_self_consistency.py`), [[feedback_ground_citations_against_content]] extended to
+spec/target numbers (construct/derive, don't pattern-match from a sibling case). Core #480
+verdict UNCHANGED (bug fixed + guarded; class reproduced; exact member not; no catalogue
+impact). Session task ledger #1-#5 completed; #6 (maintenance curve) paused for fresh resume.
+
 ## DELTA SINCE 2026-06-17 (06-20→06-23 sprint) — read this first
 
 This block carries only the 06-20→06-23 deltas; the 06-16 block below remains
