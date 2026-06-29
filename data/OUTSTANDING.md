@@ -13,7 +13,46 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-23)
+# Project state at a glance (updated 2026-06-29)
+
+## DELTA SINCE 2026-06-23 (2026-06-29 — #480 EGGIE reproduction marathon) — read this first
+
+Catalogue UNCHANGED (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows). The work was a
+deep push on the #480 follow-up (reproduce the Hernandez-Jones-Jesick 2017 AAS 17-608
+EGGIE Io-Europa-Ganymede triple cycler) + the M1 deliverables that were left untracked.
+
+**M1 housekeeping landed** — the #480 M1 verdict note + golden gate (`c260aa6`) were
+committed (they were sitting untracked from the 06-27 session).
+
+**EGGIE reproduction — corrector program BUILT, reproduction is a characterized NEGATIVE
+with one fresh lever left.** 16-commit chain `552e4f3`→`1cbb106`. The arc:
+- M1 had landed an off-paper-basin negative (corrector relaxed to 5.9 km/s). Follow-up 1
+  **solved the basin**: built the paper's resonant-conic initial-guess generator
+  (`search/resonant_conic.py`, `535d2fb`) — a single conic at e≈0.62 puts all 3 Galilean
+  V∞ on the Table-4 targets (diagnosis spikes proved the per-leg free-Lambert seed lands
+  off-basin in the paper's OWN ideal model; the conic seed is the fix).
+- Built the full Jovian corrector toolkit (all reusable for future moon-tours): analytic
+  state+STM co-integrator (`nbody/jovian_stm.py`, `d619c44`) parity-gated AT A REAL FLYBY
+  (1.7e-6 — defeats the [[reference_rebound_variation_custom_force_gotcha]] via hand-coded
+  gravity-gradient), block-bidiagonal analytic Jacobian (`9f98bb1`, ~40× faster than FD),
+  opt-in `jacobian="stm"` + sub-arc multiple shooting (`193569c`/`428ca31`,
+  `nbody/jovian_ideal.py`), and the zero-SOI Eq 3-5 flyby-maneuver ΔV (`722feda`).
+- **EGGIE does NOT close to the paper's 0.70 m/s ballistic** in EITHER model: continuous-
+  gravity n-body plateaus at a ~0.1 km/s velocity-continuity wall ROBUST across all four
+  correctors (FD/STM/epoch-free/sub-arc), localized to the Io perijove; the paper's own
+  zero-SOI patched-conic closes feasibly only at ~1 km/s with V∞ pushed off-target.
+  RULED OUT: seed/basin, ideal-SMA fidelity (Io 1.75 vs 1.77 d), FD noise, epoch DOF,
+  discretisation. LEADING CAUSE: our coplanar reconstruction deletes the paper's 3-D
+  **B-plane flyby orientation DOF** (Eqs 6-7). NEXT LEVER: a 3-D flyby reconstruction.
+- Notes: `docs/notes/2026-06-29-480-eggie-{ideal-positive-control-diagnosis,stage2-nbody,
+  stage3-stm,stage4-subarc,zerosoi}-verdict.md` + plan
+  `docs/superpowers/plans/2026-06-29-480-eggie-{resonant-conic-generator,analytic-stm-corrector}-plan.md`.
+  No catalogue row; golden (`tests/verify/test_ieg_reproduction_golden.py`) stays skipped.
+
+**Process:** delegated subagents silently stalled ~4× (committed their increments but
+hung before the final verdict); salvaged each via runlogs/scratch drivers. Memory
+[[feedback_long_agents_commit_incrementally]] extended with the liveness-detection
+mitigation (poll runlog mtime / ps / git, never trust the completion notification).
 
 ## DELTA SINCE 2026-06-17 (06-20→06-23 sprint) — read this first
 
