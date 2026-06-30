@@ -30,9 +30,9 @@ from cyclerfinder.genome.cross_system_cycle import (
 
 CANALIAS_C_SE = 3.000863625  # SE-L2 saddle-center bifurcation; stay strictly BELOW it
 C_EM0 = 3.150  # EM-L2 Lyapunov seed (family ~[3.108, 3.153]); the covering knob
-C_SE0 = 3.00060  # SE-L2 seed (a CONVERGED node; 3.0004/3.0005 are dead gaps in this finicky family)
+C_SE0 = 3.00086  # SE-L2 seed at the Canalias node (the only known leg-converging region)
 C_EM_BOUNDS = (3.112, 3.152)  # keep c_em inside the EM-L2 family
-C_SE_BOUNDS = (3.00000, 3.00080)  # keep c_se BELOW the Canalias bifurcation (the fix)
+C_SE_BOUNDS = (3.00050, 3.00086)  # node-converging band up to the Canalias bifurcation
 
 
 def _ts() -> str:
