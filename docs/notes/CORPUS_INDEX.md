@@ -78,7 +78,6 @@ is now digested, mined, or triaged.
 | canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md; canalias_se_em_connection.yaml | SE-EM manifold connections, heteroclinic bifurcations PhD | digested + mined | text-layer |
 | koon-lo-marsden-ross-2000-shoot-the-moon.pdf | 2026-06-21-digest-koon-2000-shoot-the-moon.md | Shoot the Moon - Hiten trajectory via invariant manifolds | digested | text-layer |
 | koon-lo-marsden-ross-2006-dynamical-systems-mission-design.pdf | 2026-06-21-digest-klmr-2006-book.md | KLMR Dynamical Systems and Space Mission Design book | digested | text-layer |
-| kumar-rawat-rosengren-ross-2026-cislunar-resonant-transport-heteroclinic-pathways-ASR-77-3815.pdf | 2026-06-30-digest-kumar-rawat-rosengren-ross-2026-cislunar-resonant-transport.md | Cislunar resonant transport + heteroclinic pathways (EM 4:1/3:1/2:1 resonant families; Tables 5/6 IC goldens) | mined | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
@@ -318,4 +317,4 @@ still be vision-read from the page images. No image-only black box remains.
 - **wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-control-eng-practice-doi-10.1016-0967-0661(95)00172-7.pdf** | digested | Cassini tour trajectory | KNOWN_CORPUS | text-layer |
 - **wolf-1996-touring-saturnian-system-spie.pdf** | 2026-06-20-digest-wolf-1996.md | Cassini touring | - | text-layer |
 - **canales-howell-2023-arxiv-2308.10029.pdf** | undigested | Transport corridor reproduction | - | text-layer |
-- **kumar-2025-arxiv-2509.12675.pdf** | undigested | Resonant orbits (r41u, 3:1 to 2:1 heteroclinic) | - | text-layer |
+- **kumar-2025-arxiv-2509.12675.pdf** | 2026-06-20-digest-kumar-2025.md | Cislunar resonant transport + heteroclinic pathways (EM 4:1/3:1/2:1; = ASR 77, 3815; DOI 10.1016/j.asr.2025.12.005) | digested (stale "undigested" corrected 2026-06-30) | text-layer |
