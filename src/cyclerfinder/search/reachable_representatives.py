@@ -45,18 +45,28 @@ from cyclerfinder.verify.jpl_periodic_orbits import query
 #: Braik-Ross common Jacobi constant (Table 2 header / Sec. 2).
 C_J_BRAIK_ROSS = 3.1294
 
-#: Ross & Roberts-Tsoukkas 2025 unrounded Jacobi for the (2,1) C21 cycler family,
-#: AAS-25-621 Table 4 (and our :mod:`tests/search/test_cr3bp_ross_families.py`
-#: ``_FAMILIES``). Braik-Ross 2026 prints "C_J = 3.1294" throughout but the (2,1)
-#: family has full Jacobi extent ΔC ~ 4e-12 — essentially a single point in C, at
+#: Exact Jacobi constant for the (2,1) C21 cycler family at the Braik-Ross
+#: common energy. Braik-Ross 2026 prints "C_J = 3.1294" throughout but the (2,1)
+#: family has full Jacobi extent ΔC ~ 4e-12 — essentially a single point in C at
 #: this value. The literal 3.1294 sits ~1e-5 above the family's C-max, so C21 is
-#: only recoverable at this unrounded Jacobi (see #249 final-disposition note
-#: ``docs/notes/2026-06-14-249-unstable-member-recovery-plan.md``). Standing rule
-#: ``feedback_published_rounded_values_are_display``: a printed C/T/V_inf is a
-#: display value, not a literal — when a search returns no topology-correct
-#: matches, suspect the printed value is rounded and the real value sits in a
-#: sub-resolution band.
-C_J_C21 = 3.129389531088256  # Ross-RT 2025 AAS-25-621 Table 4
+#: only recoverable at this unrounded Jacobi (see #249 / task #495).
+#:
+#: PRIMARY SOURCE (task #495): Braik & Ross 2026 repo (MIT license),
+#: ``src/cr3bp_family_ic.m``, independently computed via correct_po_to_cj313_v2.m.
+#: Value: 3.129389531054557 (15 sig figs), stored verbatim in
+#: ``data/golden/braik_ross_2026_em_family_ics.yaml``.
+#:
+#: CROSS-SOURCE: Ross & Roberts-Tsoukkas 2025 (AAS 25-621, Table 4) gives
+#: 3.129389531088256 — differs at the 12th decimal place (~3e-11); both values
+#: produce a confirmed period recovery. The Braik-repo value is used as the
+#: primary because it is independently computed against the same ICs used in
+#: the accessibility-network analysis.
+#:
+#: Standing rule ``feedback_published_rounded_values_are_display``: a printed
+#: C/T/V_inf is a display value, not a literal — when a search returns no
+#: topology-correct matches, suspect the printed value is rounded.
+C_J_C21 = 3.129389531054557  # Braik & Ross 2026 repo (MIT) — cr3bp_family_ic.m
+C_J_C21_AAS = 3.129389531088256  # cross-source: Ross-RT 2025 AAS-25-621 Table 4
 
 #: Ross & Roberts-Tsoukkas 2025 Earth-Moon mass ratio (AAS 25-621, p. 3). Used
 #: for the cycler recovery so the corrector matches the family-defining paper.
@@ -127,23 +137,23 @@ SOURCED_PERIODS_DAYS: dict[str, float] = {
 #                    :data:`C_J_BRAIK_ROSS`. C21's (2,1) family has ΔC ~ 4e-12
 #                    (essentially a single point in C); the literal 3.1294 sits
 #                    ~1e-5 above the family's C-max so we must use the unrounded
-#                    :data:`C_J_C21` = 3.129389531088256 from Ross-RT 2025
-#                    Table 4 to land in-family.
+#                    :data:`C_J_C21` from the Braik-Ross 2026 repo (MIT) to
+#                    land in-family.
 #
-# Source for the x0 region / half-crossing index / unrounded Jacobi: AAS 25-621
-# Table 3 / Table 4 seeds (carried in tests/search/test_cr3bp_ross_families.py)
-# and the #249 all-roots + winding-topology re-discovery from the published
-# periods (4/4 reproduced; see docs/notes/2026-06-14-249-unstable-member-recovery-plan.md
-# final-disposition section).
+# Source for the x0 region / half-crossing index (task #495, post-#249):
+# Braik & Ross 2026 repo (MIT), src/cr3bp_family_ic.m, independently computed
+# via correct_po_to_cj313_v2.m; stored in data/golden/braik_ross_2026_em_family_ics.yaml.
+# C11a / C21 exact ICs adopted from the MIT-licensed repo (task #495).
 #
-# RECOVERY STATUS at the per-family Jacobi (post-#249, 4/4):
-#   * C11a (1,1): 42.1405 d  — recovered at C_J_BRAIK_ROSS (0.001%).
+# RECOVERY STATUS at the per-family Jacobi (post-#249, 4/4, sourced #495):
+#   * C11a (1,1): 42.1405 d  — corrector converges AT Braik IC (x0 match exact).
 #   * C11b (1,1): 55.9590 d  — recovered at C_J_BRAIK_ROSS (0.06%).
-#   * C21  (2,1): 84.5331 d  — recovered at C_J_C21 (1.4 ppm).
+#   * C21  (2,1): 84.5331 d  — recovered at C_J_C21=3.129389531054557 (0.4 ppm).
 #   * C32  (3,2): 78.6126 d  — recovered at C_J_BRAIK_ROSS (0.0005%).
 _CYCLER_SEEDS: dict[str, dict[str, float | int | None]] = {
     "C11a": {
-        "x0": -0.81164067,
+        # Exact x0 from Braik & Ross 2026 repo cr3bp_family_ic.m (#495)
+        "x0": -0.8116406668238326,
         "ydot0_sign": -1.0,
         "half_crossings": 3,
         "c_override": None,
@@ -155,10 +165,11 @@ _CYCLER_SEEDS: dict[str, dict[str, float | int | None]] = {
         "c_override": None,
     },
     "C21": {
-        "x0": +0.7237335857,
+        # Exact x0 from Braik & Ross 2026 repo cr3bp_family_ic.m (#495)
+        "x0": 7.237366530581342e-01,
         "ydot0_sign": +1.0,
         "half_crossings": 4,
-        "c_override": C_J_C21,
+        "c_override": C_J_C21,  # 3.129389531054557 — Braik-repo sourced
     },
     "C32": {
         "x0": -0.2752115,
@@ -378,17 +389,22 @@ SOURCED_TABLE2: dict[str, tuple[float, float]] = {
 #: collapse onto nearby spurious lower-sigma orbits -- and the 5:2 unstable
 #: resonant R52-U (sigma 0.37). A robust Jacobi-constrained multiple-shooting
 #: corrector (or the JPL oracle, unavailable in this environment) would be needed.
-ROSS_C21_JACOBI = 3.129389531088256  # AAS 25-621 Table 3 (2,1) C^stable
+#: Alias: Braik-repo sourced CJ for C21 (task #495); equals C_J_C21.
+ROSS_C21_JACOBI = C_J_C21  # 3.129389531054557 — Braik & Ross 2026 repo (MIT)
+#: Cross-source value from AAS-25-621 Table 3 for reference only.
+ROSS_C21_JACOBI_AAS = C_J_C21_AAS  # 3.129389531088256 — Ross-RT 2025 AAS-25-621
 OFFLINE_SEEDS: dict[str, tuple[float, float, float]] = {
-    "LL1": (0.8115, 1.0, C_J_BRAIK_ROSS),  # near L1 (x=0.8369), small Lyapunov amplitude
-    "LL2": (1.1006, 1.0, C_J_BRAIK_ROSS),  # near L2 (x=1.1557)
-    "DPO": (1.0608, 1.0, C_J_BRAIK_ROSS),  # distant prograde, exterior to the Moon
-    "R21-S": (0.4485, 1.0, C_J_BRAIK_ROSS),  # 2:1 stable resonant
-    "R21-U": (-0.812, -1.0, C_J_BRAIK_ROSS),  # 2:1 unstable resonant
+    # Exact x0 seeds from Braik & Ross 2026 repo cr3bp_family_ic.m (#495);
+    # others use approximate x0 from literature / manual estimation.
+    "LL1": (0.8115256290557147, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "LL2": (1.100554841329441, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "DPO": (1.060820806800189, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "R21-S": (0.4485378415692721, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "R21-U": (-0.812, -1.0, C_J_BRAIK_ROSS),  # 2:1 unstable resonant (no exact x0 adopted)
     "R31-S": (0.3568, -1.0, C_J_BRAIK_ROSS),  # 3:1 stable resonant
     "R31-U": (0.138, 1.0, C_J_BRAIK_ROSS),  # 3:1 unstable resonant
-    "R52-S": (0.228, 1.0, C_J_BRAIK_ROSS),  # 5:2 stable resonant
-    "C21": (0.7237335857, 1.0, ROSS_C21_JACOBI),  # AAS-25-621 (2,1) stable cycler
+    "R52-S": (0.2278881086717652, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "C21": (7.237366530581342e-01, 1.0, ROSS_C21_JACOBI),  # Braik exact x0 + CJ (#495)
 }
 
 
