@@ -197,6 +197,22 @@ Campagnola/Strange Galilean endgame tours — lit-check mandatory). Verdict
 discovery campaign (sweep ToF/phasing, re-stamp the registry) is the explicit
 FOLLOW-ON.
 
+**#465 at-scale campaign — DONE (capability-breadth, all V0-known)** (2026-06-30;
+`scripts/releg_moontour_campaign_465.py`, `data/releg_moontour_campaign_465.jsonl`,
+verdict `docs/notes/2026-06-30-465-moontour-campaign-verdict.md`). Swept 160 combos
+(Galilean + Saturnian contiguous 3-/4-moon cyclic skeletons × ToF-scale × phasing). The
+chain closes **in-band for 8 distinct skeletons across 2 systems** (Saturn Dione-Rhea-Titan
+0.070, Tethys-Dione-Rhea 0.091, Enceladus-Tethys-Dione 0.469, Enceladus-Tethys-Dione-Rhea
+0.737, Tethys-Dione-Rhea-Titan 0.829; Jupiter Europa-Ganymede-Callisto 0.163,
+Io-Europa-Ganymede-Callisto 0.570, Io-Europa-Ganymede-Io 0.671 km/s/cycle) — all
+continuity-closed (≤7e-4 km/s), all `powered_dsm` band; 89/160 runs honestly chain-stall
+(reachability ceiling, no fabricated bridges). **Lit-novelty (grounded): all 8 are V0-KNOWN**
+reproductions of the published resonant-leveraging family — Jovian via GTOC6 / Campagnola-
+Russell Endgame Part 1, Saturnian = the Strange-Campagnola-Russell Titan→Rhea→Dione→Tethys→
+Enceladus capture tour verbatim. None SILVER-novel (confirms the #465 prior at breadth). No
+catalogue self-admission; the 8 are V0-known candidates flagged for the human gauntlet (a
+human-admitted reproduction is V0-known at most). No new rows.
+
 **Cislunar BCT substrate (#378) — CAPABILITY SHIPPED, clean negative on the
 quasi-cycler.** Belbruno weak-stability-boundary / ballistic-capture-transfer
 machinery integrated into the BCR4BP discovery stack: `core/wsb.py` (E_2, the W
