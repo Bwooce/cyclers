@@ -16,6 +16,7 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
+from scipy.optimize import least_squares
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.genome.heteroclinic_cycle import LyapunovNode, _seed_on_manifold
@@ -1003,6 +1004,9 @@ def correct_cross_cycle(
     theta_tol_rad: float = 1e-2,
     tol_km: float = 1e2,
     max_iter: int = 10,
+    solver: str = "newton",
+    c_em_bounds: tuple[float, float] | None = None,
+    c_se_bounds: tuple[float, float] | None = None,
     fd_em: float = 2e-4,
     fd_se: float = 5e-7,
     max_attempts: int = 4,
@@ -1141,6 +1145,60 @@ def correct_cross_cycle(
     fwd, ret, t_em, t_se, variant = seed
     if not (fwd.converged and ret.converged):
         return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "seed legs did not converge")
+
+    if solver == "bounded_ls":
+        # #496 stall fix (Braik-Ross 2025 / Ross-Scheeres blueprint: bound + feasibility-
+        # first). The unbounded damped Newton below STALLS because its c_se step falls off
+        # the SE Lyapunov family near the Canalias bifurcation -- no improving step keeps
+        # both legs converged, so it breaks at ~0.59 rad (#411). A bounded trust-region
+        # least_squares on (R1, R2) cannot leave the validated family band; infeasible
+        # probes return the max wrapped residual so trf steers back. c_se band defaults
+        # TIGHT (off-bifurcation); widen via c_se_bounds only within the stable family.
+        lo = [
+            c_em_bounds[0] if c_em_bounds is not None else c_em0 - 0.05,
+            c_se_bounds[0] if c_se_bounds is not None else c_se0 - 1.0e-3,
+        ]
+        hi = [
+            c_em_bounds[1] if c_em_bounds is not None else c_em0 + 0.05,
+            c_se_bounds[1] if c_se_bounds is not None else c_se0 + 1.0e-3,
+        ]
+        if lo[0] >= hi[0] or lo[1] >= hi[1]:
+            return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "bounded_ls: degenerate bounds")
+        nfev = [0]
+
+        def _ls_resid(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            nfev[0] += 1
+            cand = _solve(float(x[0]), float(x[1]), variant)
+            if cand is None or not (cand[0].converged and cand[1].converged):
+                return np.array([math.pi, math.pi], dtype=np.float64)  # infeasible -> steer back
+            rr1, rr2 = _resid(cand[0], cand[1], cand[2], cand[3])
+            if on_iter is not None:
+                on_iter(nfev[0], float(x[0]), float(x[1]), rr1, rr2)
+            return np.array([rr1, rr2], dtype=np.float64)
+
+        sol = least_squares(
+            _ls_resid,
+            x0=np.array([c_em0, c_se0], dtype=np.float64),
+            bounds=(lo, hi),
+            method="trf",
+            diff_step=[fd_em / abs(c_em0), fd_se / abs(c_se0)],
+            max_nfev=max(8, max_iter * 4),
+            xtol=1e-12,
+        )
+        ce, cs = float(sol.x[0]), float(sol.x[1])
+        final = _solve(ce, cs, variant)
+        if final is None or not (final[0].converged and final[1].converged):
+            return _result(
+                c_em0,
+                c_se0,
+                fwd,
+                ret,
+                t_em,
+                t_se,
+                nfev[0],
+                "bounded_ls: final eval off-family; reporting seed",
+            )
+        return _result(ce, cs, final[0], final[1], final[2], final[3], nfev[0], "")
 
     c = np.array([c_em0, c_se0], dtype=np.float64)
     fd = np.array([fd_em, fd_se], dtype=np.float64)
