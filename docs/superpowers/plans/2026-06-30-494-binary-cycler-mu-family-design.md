@@ -46,18 +46,22 @@ for the exterior dynamics of the same μ-agnostic solver) — not as a cycler so
 
 ## Goldens (sourced only — never circular; [[feedback_golden_tests_sourced_only]])
 
-1. **PRIMARY — Ross & Roberts-Tsoukkas 2026** (arXiv:2606.29189; journal ext. of AAS 25-621).
-   Stable ballistic prograde (k₁,k₂)-cyclers, families traced in the (x₀, C) plane by
+1. **PRIMARY — Ross & Roberts-Tsoukkas 2026** (arXiv:2606.29189; PRL-format letter, ext. of
+   AAS 25-621). Stable ballistic prograde (k₁,k₂)-cyclers, families traced in the (x₀, C) plane by
    pseudo-arclength continuation, born at a saddle-center bifurcation at maximal C; symmetric
-   members satisfy ẋ=0 at the perpendicular +x̂ crossing → recoverable from `(μ, C, T)` by the
-   existing 1-D solve. **ACQUISITION REQUIRED** (paper is 2 days old; NOT yet in corpus — the
-   filed Ross items are AAS 25-621 (EM only) + Braik-Ross 2605.31543 (orbital networks) +
-   Roberts-Tsoukkas 2026 multi-orbiter, all distinct). Mine its per-μ representative table the
-   way `2026-06-11-ross-roberts-tsoukkas-2025-mining.md` mined the EM slice. **Honest risk:** the
-   B-sourcing agent read the arXiv HTML and saw (x₀,C) in *figures*; the 2025 AAS version printed
-   15-16-digit `(μ,C,T)` per stable representative, so the journal version probably tabulates them
-   too — confirm on acquisition. If only figures, this degrades to a digitize-the-figure golden
-   (still sourced) per [[feedback_never_give_up_reproducing_papers]].
+   members satisfy ẋ=0 at the perpendicular crossing → recoverable from `(μ, C, T)` by the existing
+   1-D solve. **✓ ACQUIRED + MINED 2026-06-30** (user-supplied PDF; filed, digested, indexed). The
+   flagged "figures-only" risk is **RESOLVED**: **Table I tabulates `(μ, x₀, C, T, sₚ, sᵥ)` to
+   15-16 digits** for 6 fully-stable representatives across μ=0.001→0.5 →
+   `data/golden/ross_rt_2026_cycler_families.yaml`; digest
+   `docs/notes/2026-06-30-digest-ross-roberts-tsoukkas-2026-stable-ballistic-cyclers.md`. Jacobi
+   convention is byte-for-byte identical to `core/cr3bp.py` (verified). **The μ=0.1 (3,2) row is the
+   Pluto-Charon (μ=0.10851) Phase-3 anchor.** Pluto-Charon itself is NOT in the paper → a fresh
+   real-system instantiation; the paper's Outlook states binary-star "cycling planets" as an
+   explicit open question (the #315 lead). NOTE: this is a 5-pp letter examining 9 EM families but
+   tabulating only 2 EM rows + 4 others — a **longer companion (full tables, proof, spatial/exterior
+   extensions) is likely**; watch for it (a fuller μ-grid would tighten the Pluto-Charon
+   continuation seed).
 
 2. **SECONDARY — Holman & Wiegert 1999** (AJ 117, 621; DOI 10.1086/300695). P-type critical
    semimajor axis, e=0 reduction `a_c/a_bin = 1.60 + 4.12μ − 5.09μ²`. **Verified in-repo

@@ -1,0 +1,59 @@
+# Ross & Roberts-Tsoukkas (2026) — stable ballistic prograde (k1,k2)-cyclers
+# Sourced from: arXiv:2606.29189v1 [nlin.CD], 28 Jun 2026, "Stable Families of
+#   Ballistic Prograde Cyclers in the Restricted Three-Body Problem", TABLE I.
+# Filed: cyclers_pdf/papers/ross-roberts-tsoukkas-2026-stable-ballistic-prograde-cyclers-rtbp-arxiv-2606.29189.pdf
+# Digest: docs/notes/2026-06-30-digest-ross-roberts-tsoukkas-2026-stable-ballistic-cyclers.md
+#
+# Planar CR3BP. Primaries m1=1-mu at x=-mu, m2=mu at x=1-mu; mu in (0, 1/2].
+# Jacobi convention (paper Eq. 2): C = -2*Ubar - (xdot^2+ydot^2),
+#   Ubar = -1/2(x^2+y^2) - (1-mu)/r1 - mu/r2.  IDENTICAL to core/cr3bp.py::jacobi_constant.
+# Symmetric perpendicular x-axis crossing: y0 = xdot0 = 0; ydot0 from C
+#   (= search/cr3bp_periodic.py::ydot0_from_jacobi, Ross Eq. 9). T = full period.
+# (sp, sv) = full-period planar/vertical stability indices = 1/2(lambda + 1/lambda);
+#   all listed orbits are FULLY stable: max(|sp|,|sv|) < 1.
+
+source: "Ross & Roberts-Tsoukkas 2026, arXiv:2606.29189v1, Table I"
+
+representatives:
+  - mu: 0.001
+    k: [1, 1]
+    x0: -0.647047499999966
+    C:  3.031605708907296
+    T:  14.774502790974823
+    sp: 0.4121
+    sv: -0.2943
+  - mu: 0.012150584270572
+    k: [1, 1]
+    x0: -0.768217354461248
+    C:  3.151175879917331
+    T:  10.291893641936499
+    sp: 0.8210
+    sv: 0.6358
+  - mu: 0.012150584270572
+    k: [3, 3]
+    x0: -0.322477620583087
+    C:  3.183379082910527
+    T:  19.503763587070285
+    sp: 0.9855
+    sv: 0.6207
+  - mu: 0.1                       # adjacent to Pluto-Charon (mu=0.10851) — the #494 Phase-3 anchor
+    k: [3, 2]
+    x0: -0.694376003123377
+    C:  3.573367616904619
+    T:  12.295263874014290
+    sp: 0.5686
+    sv: 0.9175
+  - mu: 0.3
+    k: [3, 1]
+    x0: -0.804725783387797
+    C:  3.701958166478617
+    T:  9.094576400494693
+    sp: 0.0294
+    sv: 0.8307
+  - mu: 0.5                       # equal-mass (binary-star) limit
+    k: [1, 1]
+    x0: -0.519689929077496
+    C:  3.628400000000000
+    T:  8.792013561462247
+    sp: 0.9376
+    sv: 0.2130
