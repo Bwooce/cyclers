@@ -564,3 +564,46 @@ def normalized_centralities(weights_ms: NDArray[np.float64], n_families: int) ->
         harmonic_closeness=raw.harmonic_closeness * s_norm,
         betweenness=raw.betweenness * b_norm,
     )
+
+
+# ---------------------------------------------------------------------------
+# Proxy -> dc-refined calibration (Braik-Ross Sec. 7 / #495 golden adoption).
+# ---------------------------------------------------------------------------
+
+#: Linear calibration slope (proxy -> dc-refined ΔV in m/s).
+#: Fitted by linear regression from 75 valid (dvmatrix_mps, dc_refined_mps) pairs;
+#: Pearson r=0.989 (sourced to #495 golden-adoption digest).
+#: Braik & Ross 2026 arXiv:2605.31543; data from MIT-licensed repo
+#: https://github.com/BinBraik/cislunar-orbital-network.
+CALIB_SLOPE_PROXY_TO_REFINED: float = 1.019560
+
+#: Linear calibration intercept (m/s). See :data:`CALIB_SLOPE_PROXY_TO_REFINED`.
+CALIB_INTERCEPT_PROXY_TO_REFINED: float = 3.778701
+
+
+def calibrate_proxy_matrix(
+    weights_ms: NDArray[np.float64],
+    slope: float = CALIB_SLOPE_PROXY_TO_REFINED,
+    intercept: float = CALIB_INTERCEPT_PROXY_TO_REFINED,
+) -> NDArray[np.float64]:
+    """Apply a linear calibration to a proxy-dV matrix (m/s) toward the dc-refined scale.
+
+    OPT-IN: does not change the default :func:`proxy_matrix` + :func:`apply_budget_cap`
+    pipeline. Intended for experiments comparing proxy -> refined ΔV scale (#495/#497b).
+
+    Applies ``refined ≈ slope * proxy + intercept`` to all finite non-diagonal entries.
+    Coefficients default to those fitted from the Braik-Ross 2026 golden pair data
+    (``data/golden/braik_ross_2026_dvmatrix_mps.csv`` vs ``dc_refined_mps.csv``,
+    75 valid pairs, Pearson r=0.989). See :data:`CALIB_SLOPE_PROXY_TO_REFINED`.
+
+    .. note::
+        The fitted slope ≈ 1.02 shows Braik's proxy and dc-refined ΔV are on the
+        *same* scale (not a compressive mapping). If our :func:`proxy_matrix` produces
+        inflated values (e.g. all edges > 51 m/s per #497), this calibration does not
+        compress them below the Braik budget threshold. See the #497b verdict note.
+    """
+    result = weights_ms.copy()
+    finite = np.isfinite(result)
+    result[finite] = slope * result[finite] + intercept
+    np.fill_diagonal(result, 0.0)
+    return result

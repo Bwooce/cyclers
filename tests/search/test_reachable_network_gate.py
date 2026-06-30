@@ -38,6 +38,12 @@ import cyclerfinder.search.reachable_network as rn
 import cyclerfinder.search.reachable_representatives as rr
 
 _PUBLISHED_DVMATRIX = Path("data/golden/braik_ross_2026_dvmatrix_mps.csv")
+_PUBLISHED_DC_REFINED = Path("data/golden/braik_ross_2026_dc_refined_mps.csv")
+
+#: Braik & Ross 2026 parametric-sweep budget threshold (m/s) at which C32 first wins
+#: all three centrality metrics simultaneously (Fig. 10 / snapshot_summary di=1, dj=6:
+#: DVcap = 51.16 m/s, Tmax >= 11.1 d). Sourced from #495 golden-adoption analysis.
+_DC_REFINED_DV_CAP_MS: float = 51.16
 
 
 def _load_published_dvmatrix() -> tuple[list[str], np.ndarray]:
@@ -49,6 +55,31 @@ def _load_published_dvmatrix() -> tuple[list[str], np.ndarray]:
         dtype=np.float64,
     )
     np.fill_diagonal(mat, 0.0)
+    return header, mat
+
+
+def _load_dc_refined_matrix() -> tuple[list[str], np.ndarray]:
+    """Braik-Ross 2026 dc-refined 13x13 ΔV matrix (m/s) assembled from the pair list.
+
+    Family ordering matches the published proxy dvmatrix (canonical Braik ordering).
+    NaN entries (no accessible path in DC refinement) and pairs absent from the list
+    are represented as inf (no edge). The diagonal is 0.
+    """
+    header, _ = _load_published_dvmatrix()  # canonical 13-family ordering
+    n = len(header)
+    mat = np.full((n, n), math.inf)
+    np.fill_diagonal(mat, 0.0)
+    for row in csv.reader(_PUBLISHED_DC_REFINED.read_text().splitlines()):
+        if not row or row[0].strip() == "A":  # skip header
+            continue
+        a_name, b_name = row[0].strip(), row[1].strip()
+        dv_str = row[2].strip()
+        if dv_str.lower() == "nan" or not dv_str:
+            continue
+        dv = float(dv_str)
+        ia, ib = header.index(a_name), header.index(b_name)
+        mat[ia, ib] = dv
+        mat[ib, ia] = dv
     return header, mat
 
 
@@ -72,6 +103,94 @@ def test_centrality_scorer_reproduces_braik_ross_table4() -> None:
     assert int(np.argmax(cent.strength)) == ic
     assert int(np.argmax(cent.harmonic_closeness)) == ic
     assert int(np.argmax(cent.betweenness)) == ic
+
+
+def test_dc_refined_gate_c32_dominant() -> None:
+    """C32 is the dominant family on the dc-refined ΔV matrix at the Braik budget cap (#497b).
+
+    Assembles the symmetric 13x13 dc-refined ΔV matrix from
+    ``data/golden/braik_ross_2026_dc_refined_mps.csv`` (Braik & Ross 2026,
+    MIT-licensed; DC-corrected maneuver costs in m/s, not proxy estimates), applies
+    the Braik & Ross reference budget cap of 51.16 m/s (the parametric-sweep threshold
+    at which C32 first wins all three metrics, sourced from #495 Fig. 10 / snapshot
+    summary), and verifies C32 is the argmax of strength, harmonic closeness, AND
+    betweenness. EXPECTED: C32 is dominant (sourced to Braik & Ross 2026 Table 4 /
+    Fig. 10). This is a FAST golden test (no orbit propagation) using a STRONGER
+    dataset than the proxy-dvmatrix test: DC-refined ΔV values are actual optimized
+    maneuver costs (not heading-fan proxies), so this confirms the paper's structural
+    claim on the corrected data. The xfail ``test_validation_gate_c32_dominant``
+    remains xfail because OUR proxy (not the published dc-refined) is what drives
+    the gate; this test validates the claim independently of our proxy quality.
+    See docs/notes/2026-06-30-497b-proxy-calibration-verdict.md.
+    """
+    header, mat = _load_dc_refined_matrix()
+    capped = mat.copy()
+    capped[capped > _DC_REFINED_DV_CAP_MS] = math.inf
+    np.fill_diagonal(capped, 0.0)
+    cent = rn.normalized_centralities(capped, n_families=13)
+    ic = header.index("Cycler 32")
+    assert int(np.argmax(cent.strength)) == ic, _rank_msg("strength", header, cent.strength)
+    assert int(np.argmax(cent.harmonic_closeness)) == ic, _rank_msg(
+        "harmonic_closeness", header, cent.harmonic_closeness
+    )
+    assert int(np.argmax(cent.betweenness)) == ic, _rank_msg(
+        "betweenness", header, cent.betweenness
+    )
+
+
+def test_proxy_calibration_is_unit_slope_confirms_clean_negative() -> None:
+    """Proxy->refined linear calibration has slope≈1: cannot compress OUR inflated proxy (#497b).
+
+    Fits a linear calibration from the Braik-Ross golden pair data
+    (``braik_ross_2026_dvmatrix_mps.csv`` proxy ΔV vs ``dc_refined_mps.csv``
+    DC-refined ΔV), using 75 valid pairs. Verifies three conditions:
+    (a) Pearson r²>=0.95 (strong correlation; sourced to #495 digest: r=0.989),
+    (b) calibration slope is near unity (0.5 < slope < 1.5) -- confirming that
+        Braik's proxy and dc-refined ΔV are on the SAME scale (no compression),
+    (c) applying the calibration to the Braik budget threshold (51.16 m/s) produces
+        a value ABOVE 51.16 m/s, proving the calibration cannot rescue OUR proxy
+        (which already empties the network at 51.16 m/s per #497 diagnosis).
+
+    This is the Step 2 clean negative for #497b: the calibration from sourced
+    (proxy, dc_refined) pairs is a unit-slope shift, not a scale compression.
+    Since OUR heading-fan proxy values all exceed 51.16 m/s (per #497), a calibration
+    with slope>=1 and positive intercept leaves them all above 51.16 m/s after
+    transformation, resulting in an empty network and no C32 dominance.
+    See docs/notes/2026-06-30-497b-proxy-calibration-verdict.md.
+    """
+    from scipy import stats
+
+    header, proxy_mat = _load_published_dvmatrix()
+    _hdr, ref_mat = _load_dc_refined_matrix()
+    proxy_vals: list[float] = []
+    refined_vals: list[float] = []
+    n = len(header)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if (
+                math.isfinite(proxy_mat[i, j])
+                and proxy_mat[i, j] > 0
+                and math.isfinite(ref_mat[i, j])
+            ):
+                proxy_vals.append(proxy_mat[i, j])
+                refined_vals.append(ref_mat[i, j])
+    assert len(proxy_vals) >= 70, f"Expected >=70 valid pairs, got {len(proxy_vals)}"
+    lr = stats.linregress(proxy_vals, refined_vals)
+    slope, intercept, r = lr.slope, lr.intercept, lr.rvalue
+    # (a) Strong correlation sourced to #495 (r=0.989)
+    assert r**2 >= 0.95, f"r²={r**2:.3f} below 0.95; weaker than expected from #495"
+    # (b) Slope near unity: proxy and dc-refined are on the same scale
+    assert 0.5 < slope < 1.5, f"slope={slope:.4f} outside (0.5, 1.5); calibration is not unit-slope"
+    # (c) Calibration of the Braik budget threshold itself yields a value above the threshold:
+    #     our proxy values are ALL > 51.16 m/s (the empty-network diagnostic from #497).
+    #     After calibration f(x) = slope*x + intercept, f(51.16) must still exceed 51.16
+    #     for the calibration to leave them above the cap. Slope>=1 and intercept>0 => it does.
+    calibrated_threshold = slope * _DC_REFINED_DV_CAP_MS + intercept
+    assert calibrated_threshold > _DC_REFINED_DV_CAP_MS, (
+        f"calibrate({_DC_REFINED_DV_CAP_MS:.2f} m/s) = {calibrated_threshold:.2f} m/s "
+        f"< threshold; slope={slope:.4f} intercept={intercept:.4f}: calibration IS "
+        f"compressive -- re-evaluate the clean-negative claim"
+    )
 
 
 def _recover_subset() -> list[rr.Representative]:
