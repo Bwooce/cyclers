@@ -549,11 +549,18 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
 - **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
 
 **Tracked-task allocations (2026-06-30)** — see [[project_task_numbering_convention]] (sequential
-`#NNN`, next-unused; max was #486 → #487 next): **#487** = build the V4_qp gauntlet (HFEM analogue
-for 2-tori; DE-PRIORITISED — no novel QP-torus candidate, see #320 lit verdict). **#488** = acquire
-Russell-Strange 2009 "Planetary Moon Cycler Trajectories" JGCD 32(1) (human-gated; the canonical
-moon-cycler census we keep citing as the V0-known authority but don't hold). **#318 Phase 2**
-(real-eph n-body multi-axis joint search) STARTED 2026-06-30. #293 ER3BP still un-started.
+`#NNN`, next-unused; max was #486 → #487 next): **#487** = build the V4_qp gauntlet (DE-PRIORITISED).
+**#488 ✓ DONE** = user acquired **Russell-Strange 2009** "Cycler Trajectories in Planetary Moon
+Systems" JGCD 32(1) (DOI 10.2514/1.36610) **+ Lynam-Longuski 2011** "Laplace-resonant triple-cyclers"
+Acta Astronautica 69 (the #480 IEG prior); both **filed + digested + indexed** (CORPUS_INDEX;
+digests `2026-06-30-digest-{russell-strange-2009-planetary-moon-cyclers,lynam-longuski-2011-laplace-resonant-triple-cyclers}.md`).
+**GROUNDING CORRECTED today's #320 Saturn verdict** — R-S's Saturnian census is **Titan→Enceladus
+ONLY** (Titan the sole flyby body), so the blanket "V0-known via R-S, any two moons" over-extrapolated:
+**Titan-Rhea-Titan stays V0-known** (Rhea is an R-S Titan-flyby target) but the **small-moon-flyby
+pairs (Tethys-Enceladus, Dione-Tethys) are NOT R-S architecture → novelty RE-OPENED** at their low V∞.
+New tasks: **#489** = re-eval those small-moon-flyby Saturn candidates (feasibility + focused lit);
+**#490** = mine R-S Tables 3-4 + L-L members (V1 targets / 2nd #480 IEG golden). **#318 Phase 2a**
+landed (joint-cell evaluator + Liang positive control). #293 ER3BP still un-started.
 - **#314 ✓ DONE (2026-06-20)** Heteroclinic-network mass-transport (new
   "periodic-up-to-rotation" closure). Delivered `genome/heteroclinic_cycle.py`
   (planar CR3BP): Lyapunov nodes + Floquet-manifold seeding + 2-D Newton

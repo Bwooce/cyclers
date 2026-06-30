@@ -1,5 +1,22 @@
 # #320 Saturn two-moon quasi-cycler candidates — lit-novelty verdict: V0-known
 
+> **CORRECTION 2026-06-30 (after acquiring + reading Russell-Strange 2009, task #488):**
+> this verdict's blanket "V0-known via Russell-Strange's enumerative census ('hundreds, any two
+> moons')" was **partly an over-extrapolation** — I cited the paper without holding it
+> ([[feedback_ground_citations_against_content]]). Grounded against the actual content
+> (`2026-06-30-digest-russell-strange-2009-planetary-moon-cyclers.md`): R-S's Saturnian census is
+> **Titan→Enceladus ONLY** (Titan is the sole Saturnian flyby body — "largest by ~2 orders of
+> magnitude"; the icy moons are TARGETS). Refined verdict:
+> - **Titan-Rhea-Titan** (Titan flyby, Rhea target): **V0-known stands** — Rhea is a documented
+>   R-S Titan-flyby target moon.
+> - **Tethys-Enceladus-Tethys, Dione-Tethys-Dione** (SMALL-moon flyby bodies): **NOT R-S's
+>   architecture, NOT established V0-known.** R-S premises that small moons can't be flyby bodies,
+>   but these are LOW-V∞ (1–4 km/s, where bend ∝ 1/V∞² is large) — so **novelty RE-OPENED**,
+>   pending a physical-feasibility re-check of the small-moon flyby at low V∞ + a focused lit-check.
+> The Pluto/Neptune/QP-tori conclusions below are unaffected. The original text follows.
+
+
+
 **Date:** 2026-06-30. Drove the #320 quasi_cycler follow-on (the open candidates from the
 2026-06-17 first sweep) through the mandatory lit-novelty baseline
 ([[feedback_literature_novelty_check_baseline]]) — the decisive gate before any admission
