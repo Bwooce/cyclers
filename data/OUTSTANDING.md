@@ -224,8 +224,15 @@ the Uranian *system* IS published (Heaton-Longuski 2003 mga_tour, now catalogued
 tours) but as one-way epoch-locked pump tours at V∞ 2-4 km/s, a different class/regime than the
 candidate's ~0.9 km/s periodic quasi-cycler. Precise novelty: **"first repeated-moon
 quasi-cycler at Uranus" — fresh topology in a published mga_tour system**, not an untouched
-primary. Still necessary-not-sufficient; admission blocker is the V4 Uranian HFEM gauntlet
-(#332), not novelty. No catalogue writeback.
+primary. **CORRECTION:** the initial "blocked on #332" framing read a STALE 2026-06-16
+OUTSTANDING line — this candidate is **already catalogued at V4** (`umbriel-oberon-1-1-
+uranian-quasi-cycler-2026`, the first computed `quasi_cycler`; #332 V4-scipy + #335 V4-strict
+URA111 real-eph + #339 admission + #340 V0→V4 all COMPLETE; the 4 V-tier gates pass). Today's
+live-web check STRENGTHENS that row's lit basis (offline corpus + Heaton-Longuski direct read)
+with a broader published-record confirmation — it does not gate an admitted row
+([[feedback_check_dont_guess]]: verify recalled refs against the live catalogue). No catalogue
+change. (NB: the discovery-side-queue line below still listing "#332 ... outstanding" is the
+stale reference; #332/#335 shipped June 2026.)
 
 **Cislunar BCT substrate (#378) — CAPABILITY SHIPPED, clean negative on the
 quasi-cycler.** Belbruno weak-stability-boundary / ballistic-capture-transfer
@@ -478,9 +485,13 @@ a verdict — these are NOT rejected, just queued for funding):
 **Gauntlet adaptations (infra blockers for catalogue admission of Phase 1
 outputs):** #305 (BCR4BP V0-V5), #306 (3D V0-V5) — **Phase 1 (V1+V2 for 3D
 periodic), Phase 2 (V2-moontour), and Phase 3 (V3 6D n-body / REBOUND IAS15)
-shipped 2026-06-16; Phase 4 V4 HFEM Uranian-system real-eph (#332)
-outstanding**, #319 (QP-tori V0-V5). Without #332, even literature-fresh
-candidates cannot pass V4.
+shipped 2026-06-16; Phase 4 V4 HFEM Uranian-system real-eph (#332) ✓ DONE
+2026-06-16/17** (#332 V4-scipy + #335 V4-strict URA111 real-eph + #338 +
+#339 admission + #340 V0→V4: the Umbriel-Oberon-Umbriel quasi-cycler is
+catalogued at V4, `umbriel-oberon-1-1-uranian-quasi-cycler-2026`), #319
+(QP-tori V0-V5). [Superseded note: this block formerly read "#332 outstanding";
+that was the stale line that mis-framed the 2026-06-30 #312 lit-grounding —
+the V4 Uranian gauntlet shipped and the candidate is admitted.]
 
 **Discovery probes (the strategic-answer ideas, ranked by novelty leverage):**
 - **#312** Uranus extended sweep (in flight) — 0.062 km/s near-miss is the

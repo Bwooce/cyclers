@@ -43,12 +43,24 @@ class (passes_v2 by bounded drift-oscillation, like #339/#344, not strict closur
   repeated-moon quasi-cycler at Uranus" — a fresh class/topology/V∞-regime in a system whose
   one-way mga_tours are published**, NOT an untouched primary. Grounding the claim against the
   real published record narrows it honestly ([[feedback_ground_citations_against_content]]).
-- **Still necessary-not-sufficient.** Novelty + admission remain gated on the V4 Uranian-system
-  real-eph gauntlet (#332, the outstanding infra blocker) and the human review. No catalogue
-  writeback; the candidate stays flagged, now with a published-record-grounded novelty scope.
+- **CORRECTION (verify recalled refs against current state):** this candidate is **already
+  ADMITTED** — catalogue row `umbriel-oberon-1-1-uranian-quasi-cycler-2026`, the catalogue's
+  first computed `quasi_cycler`, **`validation_level: V4`** (#339 admission + #340 V0→V4
+  promotion; #332 V4-scipy + #335 V4-strict URA111 real-eph + #338 EFFECTIVELY_CYCLIC all
+  COMPLETE). My initial "blocked on #332" framing (and the first draft of this note) read a
+  STALE OUTSTANDING line from 2026-06-16 that predates #335/#339/#340 — corrected here
+  ([[feedback_check_dont_guess]]: verify a recalled doc/flag against the live catalogue before
+  asserting a blocker). The four V-tier frozen gates pass (`tests/verify/test_silver_327_v*`).
+- **What today's live check actually adds:** the admitted row's lit basis was the offline
+  41-anchor corpus + a Heaton-Longuski-2003 direct read. This adds a **broader live-web
+  published-record confirmation** (no published Uranian cycler exists; moon-cycler literature
+  is Jupiter+Saturn only) — strengthening, not gating, the existing V4 row. It also sharpens
+  the novelty wording: "first repeated-moon quasi-cycler at Uranus" (fresh topology in a
+  published mga_tour system), not "untouched fresh primary."
 
 ## Bankable
-The #312 SILVER survives a live published-record lit-check as a fresh Uranian quasi-cycler
-(necessary condition met); the "fresh primary" overstatement is corrected to "fresh
-quasi-cycler topology in a published mga_tour system." The admission blocker is #332 (V4
-Uranian HFEM), not novelty.
+The catalogued V4 Uranian quasi-cycler's novelty survives a fresh live published-record
+lit-check (necessary condition re-confirmed at a broader scope than the admission-time offline
+corpus + Heaton-Longuski read). The "fresh primary" overstatement is corrected to "fresh
+quasi-cycler topology in a published mga_tour system." No catalogue change (the row is already
+V4); the row's lit basis is strengthened, not gated.
