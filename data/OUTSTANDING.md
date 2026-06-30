@@ -61,8 +61,20 @@ m/s/cycle), cumulative ~3.3 km/s over 10** — IDENTICAL across retarget budgets
 claim** ("the solution remains ballistic for two cycles, after which large impulses are
 required to maintain the cycler") — a NOVEL level-2 curve, not a printed-number
 reproduction (the paper prints no EGGIE number; its EIGE ~30 m/s/10 figure hits the 1-rev
-B-plane wall above). The #480 maintenance-ΔV gap is now CLOSED at level-2; only the
-level-3 B-plane NLP (Approach C, "weeks, last resort") remains. No catalogue impact.
+B-plane wall above). The #480 maintenance-ΔV gap is now CLOSED at level-2. No catalogue impact.
+
+**(4) Level-3 high-fidelity maintenance (Approach C) — ATTEMPTED, blocked at the conversion**
+(`2026-06-30-480-level3-approach-c-verdict.md`). Tested the forward-propagate maintenance
+reframe at level-3 for BOTH cyclers (`JovianRestrictedNBody`, flybys integrated, seeded via
+`periapsis_node`). **The patched-conic seed is not n-body-valid**: forward-propagation drifts
+10^4-10^6 km with uncontrolled close encounters (EIGE E→I leg: 11.6 km/s over 0.45 d — a deep
+unintended dive; the weak-Io / near-zero-turn-Europa seed nodes dominate, not leg length). The
+multiple-shooting corrector that would convert it does NOT converge: **FD is compute-infeasible**
+(31-var Jacobian, killed at 10 min) and the **analytic STM plateaus** at ~0.1-0.4 km/s
+(documented `cc4f241`). So a faithful level-3 maintenance number (the paper's EIGE ~30 m/s/10)
+needs the full B-plane SNOPT NLP with a continuation/good-seed strategy — the scope's "weeks,
+last resort", NOT achievable by re-running the corrector. **#480 final standing: closed at
+level-2; level-3 characterized-blocked.** No catalogue impact.
 
 ## DELTA SINCE 2026-06-23 (2026-06-29 — #480 EGGIE reproduction marathon) — read this first
 

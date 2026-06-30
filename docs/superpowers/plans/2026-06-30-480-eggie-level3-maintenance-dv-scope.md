@@ -11,6 +11,15 @@
 > B-plane wall (`...-eige-realeph-maintenance-verdict.md`) so the method's positive control
 > is Liang #223. Approach A is COMPLETE at level-2; Approach C (level-3 B-plane NLP) remains
 > the only un-done lever and stays "weeks, last resort". The original scope follows.
+>
+> **APPROACH C ATTEMPTED 2026-06-30 — blocked at the conversion** (verdict
+> `docs/notes/2026-06-30-480-level3-approach-c-verdict.md`). The forward-propagate reframe was
+> tested at level-3 for both cyclers: the patched-conic seed is not n-body-valid (forward-prop
+> drifts 10^4-10^6 km with uncontrolled close encounters), and the multiple-shooting corrector
+> that would convert it is FD-compute-infeasible (killed at 10 min) and analytic-STM-plateaued
+> (~0.1-0.4 km/s, `cc4f241`). A faithful level-3 number needs the full B-plane SNOPT NLP +
+> continuation/good-seed strategy (the "weeks" path), NOT a corrector re-run. #480 stands
+> closed at level-2; level-3 is characterized-blocked.
 
 **Status:** scoping doc for a fresh, optional effort. The #480 science is already settled
 (see the 7 dated `docs/notes/2026-06-*-480-eggie-*` notes): construction bug fixed + guarded,
