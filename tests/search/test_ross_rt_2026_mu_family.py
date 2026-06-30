@@ -240,31 +240,41 @@ _PC_ANCHOR_C = 3.573367616904619
 _PC_ANCHOR_T = 12.295263874014290
 
 
-def test_494_phase3_pluto_charon_32_cycler() -> None:
-    """Phase-3: instantiate the (3,2) cycler family at Pluto-Charon (mu=0.10851).
+# Stable (3,2) member located by a C-sweep at mu=0.10851 (hc=6 branch).
+# These are DERIVED quantities (our own C-sweep + nu=0 root-find), NOT goldens:
+# they are checked only for self-consistency (genuine, stable, prograde, (3,2),
+# closes independently). The C-sweep that locates them is documented in
+# docs/notes/2026-06-30-494-phase2-3-mu-family-pluto-charon-verdict.md and is
+# the paper's own method (trace the (k1,k2) C-family, find the |nu|<1 island).
+_PC_STABLE_C = 3.579222016200  # nu=0 midpoint of the stable (3,2) island
+_PC_STABLE_X0 = -0.693189765944
+
+
+def _make_pc_system() -> cr3bp.CR3BPSystem:
+    return cr3bp.CR3BPSystem(
+        mu=_PC_MU, primary="Pluto", secondary="Charon", l_km=_PC_L_KM, t_s=_PC_T_S
+    )
+
+
+def test_494_phase3_pluto_charon_32_branch_and_crosschecks() -> None:
+    """Phase-3a: the (3,2) branch exists at Pluto-Charon (mu=0.10851) + the
+    sourced physical cross-checks.
 
     Seed the fixed-Jacobi corrector at mu=0.10851 from the mu=0.1 anchor IC
-    (Rep 4, Table I).  Delta_mu = 0.00851 is small enough that the seed lies
-    in the basin of the (3,2) branch at the anchor Jacobi constant.
+    (Rep 4, Table I) at the anchor Jacobi constant.  The (3,2) branch is
+    present (converged, correct winding, prograde, closes independently).
+
+    NOTE: at the *anchor* Jacobi constant C=3.5734, the recovered (3,2) member
+    is far off the stable island (nu is large); stability is C-selective and
+    the stable island sits ~0.006 higher in C (see the Phase-3b test below).
+    Stability is therefore NOT asserted here.
 
     Physical cross-checks (sourced):
       * C(L1) at mu=0.10851: Jbara 2025 reports ~3.6210 for mu~0.109; tol 0.005.
       * Holman-Wiegert (1999) critical semi-major axis formula
         a_c/a_bin = 1.60 + 4.12*mu - 5.09*mu^2  =>  a_crit ~ 38,947 km.
-
-    STABILITY FINDING: at the anchor Jacobi constant C=3.5734, the (3,2) orbit
-    recovered at mu=0.10851 is UNSTABLE (nu ~ 1903).  The family likely loses
-    linear stability in the mu in [0.1, 0.10851] interval at this C value.
-    Stability is measured but NOT asserted; convergence, topology, and physical
-    cross-checks are asserted.  See the Phase-3 verdict note.
     """
-    system_pc = cr3bp.CR3BPSystem(
-        mu=_PC_MU,
-        primary="Pluto",
-        secondary="Charon",
-        l_km=_PC_L_KM,
-        t_s=_PC_T_S,
-    )
+    system_pc = _make_pc_system()
 
     # Correct at mu=0.10851 seeded from mu=0.1 anchor.
     # half_crossings=6: the (3,2) half-period crossing is the 6th x-axis crossing
@@ -291,11 +301,6 @@ def test_494_phase3_pluto_charon_32_cycler() -> None:
     )
     assert topo_pc.prograde, "Pluto-Charon (3,2) orbit must be prograde"
 
-    # Stability -- measured but NOT asserted (UNSTABLE at anchor C; see docstring).
-    nu_pc, _lam_pc = cp.barden_stability(system_pc, orbit_pc)
-    # nu_pc ~ 1903; the (3,2) orbit is UNSTABLE at mu=0.10851 with C=3.5734.
-    _ = nu_pc
-
     # --- Physical cross-check 1: C(L1) vs Jbara 2025 ---
     # Source: Jbara, R. 2025 -- C_L1 ~ 3.6210 at mu ~ 0.109; tolerance 0.005.
     l1, _l2, _l3 = collinear_lpoints(_PC_MU)
@@ -317,3 +322,47 @@ def test_494_phase3_pluto_charon_32_cycler() -> None:
     # --- Independent Radau cross-check ---
     ok_cc, dj = _crosscheck(system_pc, orbit_pc)
     assert ok_cc, f"Pluto-Charon (3,2) independent cross-check failed (dj={dj:.2e})"
+
+
+def test_494_phase3_pluto_charon_32_stable_member_exists() -> None:
+    """Phase-3b: a STABLE (3,2) cycler exists at Pluto-Charon (mu=0.10851).
+
+    A C-sweep along the (3,2) branch at mu=0.10851 (the paper's own method:
+    trace the (k1,k2) C-family and find the |nu|<1 island) reveals a razor-thin
+    stable window (~1.1e-5 wide in C) centred on the nu=0 midpoint at
+    C ~ 3.5792220, ~0.006 above the anchor Jacobi constant.  This test re-derives
+    the stable member by seeding the corrector at that located C and asserts it
+    is a genuine, linearly-stable, prograde, (3,2) periodic orbit that closes
+    under the independent integrator.
+
+    The located (C, x0) are DERIVED (our C-sweep), NOT goldens; the assertions
+    check self-consistency and the *stability verdict*, not a sourced number.
+    """
+    system_pc = _make_pc_system()
+    orbit = cp.correct_symmetric_fixed_jacobi(
+        system_pc,
+        _PC_STABLE_X0,
+        _PC_STABLE_C,
+        _PC_ANCHOR_T,
+        ydot0_sign=-1.0,
+        half_crossings=6,
+        tol=1e-11,
+        rtol=1e-13,
+        atol=1e-13,
+    )
+    assert orbit.converged, (
+        f"PC stable (3,2) corrector did not converge (res={orbit.crossing_residual:.2e})"
+    )
+
+    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0])
+    topo = winding_topology(_PC_MU, state0, orbit.period)
+    assert (topo.k1, topo.k2) == (3, 2), f"expected (3,2), got ({topo.k1},{topo.k2})"
+    assert topo.prograde, "PC stable (3,2) orbit must be prograde"
+
+    # The key finding: this member is LINEARLY STABLE (|nu| < 1).
+    nu, _lam = cp.barden_stability(system_pc, orbit, rtol=1e-13, atol=1e-13)
+    assert abs(nu) < 1.0, f"PC (3,2) stable member expected |nu|<1, got nu={nu:.4f}"
+
+    # Independent Radau cross-check: genuine periodic orbit.
+    ok_cc, dj = _crosscheck(system_pc, orbit)
+    assert ok_cc, f"PC stable (3,2) independent cross-check failed (dj={dj:.2e})"

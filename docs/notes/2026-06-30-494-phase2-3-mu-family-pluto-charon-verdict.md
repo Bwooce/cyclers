@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-30
 **Task:** #494, Phases 2 and 3
-**Verdict:** Phase 2 PASS (6/6); Phase 3 TOPOLOGY PASS, STABILITY FAIL
+**Verdict:** Phase 2 PASS (6/6); Phase 3 PASS — a STABLE Pluto-Charon (3,2) cycler exists
 
 ---
 
@@ -13,10 +13,22 @@ Phase 2 recovers all six Table-I representatives from Ross & Roberts-Tsoukkas 20
 show correct winding topology (or nth-iterate form for Rep 6), are prograde, are
 linearly stable (|nu|<1), and pass the independent Radau cross-check.
 
-Phase 3 instantiates the (3,2) family at Pluto-Charon (mu=0.10851) from the mu=0.1
-anchor.  The orbit converges and has the correct (3,2) topology, but is UNSTABLE
-(nu~1903) at the anchor Jacobi constant C=3.5734.  Physical cross-checks (C_L1 and
-Holman-Wiegert a_crit) pass.
+Phase 3 instantiates the (3,2) family at Pluto-Charon (mu=0.10851).  Seeding the
+corrector at the mu=0.1 anchor Jacobi constant C=3.5734 lands on the (3,2) branch
+but FAR off the stable island (nu is large) — stability is C-selective.  A C-sweep
+along the (3,2) branch at mu=0.10851 (the paper's own method: trace the (k1,k2)
+C-family and find the |nu|<1 island) locates a **razor-thin stable window** (~1.1e-5
+wide in C) centred on the nu=0 midpoint at **C = 3.5792220, ~0.006 above the anchor
+C**.  That member is a genuine, linearly-stable, prograde (3,2) periodic orbit that
+closes under the independent integrator: **a stable Pluto-Charon (3,2) cycler exists.**
+Physical cross-checks (C_L1 vs Jbara 2025 and Holman-Wiegert a_crit) pass.
+
+> CORRECTION (this pass): an earlier draft concluded "STABILITY FAIL / no admission"
+> from the anchor-C orbit alone.  That was an artefact of holding C at the mu=0.1
+> value; the stable island sits ~0.006 higher in C at the shifted mu and was found
+> by the C-sweep below.  This matches the [[feedback_published_rounded_values_are_display]]
+> / family-extent lesson: a sourced anchor value need not sit on the stable subfamily
+> after a parameter shift — check the family extent before declaring a negative.
 
 ---
 
@@ -86,67 +98,121 @@ requires a specific binary system (l_km, t_s).
 | GM_system | 975.5 km^3/s^2 | JPL DE440, satellites.py |
 | t_s | 552014 s = 6.389 d | 2*pi*sqrt(a^3/GM) |
 
-### Corrected orbit at mu=0.10851
+### Branch-establishing orbit at the anchor C (Phase-3a)
 
-Seeded from Rep 4 anchor (mu=0.1, C=3.5734, (3,2)) with half_crossings=6.
+Seeded from Rep 4 anchor (mu=0.1, C=3.5734, (3,2)) with half_crossings=6, the
+(3,2) branch is present at mu=0.10851 (converged, (3,2), prograde, crosscheck
+PASS) but lies far off the stable island at the anchor C (nu is large).  The
+crosscheck PASSES (closure, Jacobi conservation), confirming a genuine periodic
+(3,2) orbit — it simply sits outside the |nu|<1 window at C=3.5734.
+
+### Stable (3,2) member at mu=0.10851 (Phase-3b — the deliverable)
+
+A C-sweep along the (3,2) branch (hc=6) at fixed mu=0.10851 reveals a stable
+window. nu vs C has a very steep slope here (~2e5 per unit C), so the |nu|<1
+island is razor-thin (~1.1e-5 wide in C) — analogous to the EM (2,1) family.
+nu=0 midpoint (Barden), located by brentq root-find on nu(C):
 
 | Quantity | Value |
 |----------|-------|
-| x0 | -0.693353687114568 |
-| ydot0 | -0.304877058365371 |
-| C (Jacobi) | 3.573367616904619 (=anchor C, enforced) |
-| T (TU) | 11.984949101055731 |
-| Topology | (3,2), prograde=True |
-| nu (Barden) | 1903.5 |
-| Stable | NO (|nu| >> 1) |
-| Crosscheck | PASS (closure < 1e-6, dJ = 8e-13) |
+| C (Jacobi) | 3.579222016200 |
+| x0 | -0.693189765944 |
+| ydot0 | -0.296204695856 |
+| T (TU) | 11.8366755503 |
+| T (days) | 12.0361 d (Charon P = 6.3891 d; TU = P/2pi) |
+| Topology | (3,2), prograde=True, reaches_secondary=True |
+| nu (Barden) | -1.1e-08 (nu=0 midpoint — maximally stable) |
+| Stable | YES (|nu| << 1) |
+| Crosscheck | PASS (closure < 1e-6, dJ = 8.8e-13) |
+
+The located (C, x0) are DERIVED (our C-sweep), NOT goldens; the test asserts
+self-consistency + the stability VERDICT, not a sourced number.  The stable
+window spans roughly C in [3.5792165, 3.5792275] (nu from +1 to -1).
 
 ### Physical cross-checks
 
 **C(L1):** L1 at mu=0.10851 is at x_L1=0.5930 (non-dimensional).
 C_L1 = jacobi_constant([x_L1, 0, 0, 0, 0, 0], 0.10851) = 3.6203.
-Jbara 2025 reports C_L1 ~ 3.6210 at mu~0.109; |difference| = 0.0007 < 0.005.
+Jbara 2025 (arXiv:2510.13479) reports C_L1 ~ 3.6210 at mu~0.109; |diff| = 0.0007 < 0.005.
 CHECK: PASS.
 
 **Holman-Wiegert a_crit:**
 a_c/a_bin = 1.60 + 4.12*0.10851 - 5.09*0.10851^2 = 1.9871.
 a_crit = 1.9871 * 19600 = 38,948 km.
 Source: Holman & Wiegert 1999, Eq. 1.  Tolerance 100 km.
-CHECK: PASS (|38948 - 38947| < 100).
+CHECK: PASS (|38948 - 38947| < 100).  (Exterior P-type stability bound only — a
+sanity anchor for the regime, NOT the cycler itself, which is an interior capture
+orbit; consistent.)
 
-### Stability finding
+### Literature-novelty check (necessary-not-sufficient)
 
-At the anchor Jacobi constant C=3.5734 (the mu=0.1 Rep-4 value), the (3,2)
-orbit at mu=0.10851 is HIGHLY UNSTABLE (nu~1903).  This is physically
-meaningful: a small change in mu (0.00851) has moved the orbit far outside
-the stable island.
+WebSearch over arXiv / ADS for the Pluto-Charon (3,2) prograde capture cycler:
 
-The (3,2) STABLE family likely exists at mu=0.10851 but at a DIFFERENT Jacobi
-constant (C value) than the mu=0.1 anchor.  Finding the stable member would
-require a mu-continuation sweep over C at mu=0.10851, which is beyond the
-Phase-3 scope.
+- The (k1,k2) ballistic-prograde-cycler **family** is published: Ross &
+  Roberts-Tsoukkas 2026, arXiv:2606.29189 — but it does NOT instantiate
+  Pluto-Charon (it spans mu=0.001->0.5 generic representatives; PC is not a row).
+- Pluto-Charon CR3BP literature exists but reports *different* objects: Jbara 2025
+  (arXiv:2510.13479, chaotic dynamics + zero-velocity structures); orbit
+  classification (arXiv:1512.08683); near-optimal **capture** (Sci.Direct 2018,
+  not a periodic cycler); circumbinary P-type theory (Langford & Weiss 2023,
+  AJ 165 140); "Sailboat island" periodic orbits *of the first kind* (Giuliatti
+  Winter et al.) — a distinct family from a (3,2) capture cycler.
+- **No published Pluto-Charon (3,2) prograde capture cycler surfaced.**
 
-The crosscheck PASSES (closure and Jacobi conservation), confirming the
-recovered orbit IS a genuine periodic (3,2) orbit — it simply lies outside
-the stable island at this C.
+Verdict: **not-found** (NECESSARY-not-sufficient for novelty per the #261 rule;
+web search is partial).  This clears — does not certify — the candidate as a
+**fresh real-system instantiation of a published family** (the #312-Uranus framing).
+No novel-discovery claim beyond the instantiation.
 
 ### PC admission recommendation
 
-NO V1 admission for the recovered Pluto-Charon (3,2) orbit at C=3.5734.
-The orbit is unstable and does not meet the stable-cycler criterion.
+**RECOMMEND admit the stable Pluto-Charon (3,2) member** (the nu=0 midpoint above)
+as a catalogue cycler row, pending human adjudication.  Proposed row (RECOMMENDATION
+ONLY — NOT written; adjudicator decides level + final fields):
 
-To admit a Pluto-Charon (3,2) catalogue row, a mu-continuation at fixed
-topology from the mu=0.1 anchor sweeping C until |nu|<1 is required.  This
-is a Phase-3b task (not in scope for #494).
+```yaml
+# orbit_class: cycler
+# primary: Pluto
+# bodies: [Pluto, Charon]
+# model: cr3bp
+# mu: 0.10851
+# jacobi_C: 3.579222016200
+# x0: -0.693189765944          # rotating-frame nd, IC (x0,0,0,0,ydot0,0)
+# ydot0: -0.296204695856
+# period_tu: 11.8366755503     # ~12.036 d (TU = Charon_P / 2pi)
+# topology_k1k2: [3, 2]        # prograde, reaches secondary
+# stability_nu: ~0 (Barden, |nu|<1 -> linearly stable)
+# source: Ross & Roberts-Tsoukkas 2026 (family); fresh PC instantiation (this work)
+# validation_level: V0 -> V1 candidate (see below)
+```
+
+**Level recommendation: V1.**  The Ross-RT 2026 (3,2) FAMILY is sourced (the
+mu=0.1 anchor is Table-I row 4, recovered at V1 in Phase 2); the Pluto-Charon
+member is a same-model continuation/instantiation of that sourced family at a
+real-system mu — a faithful sourced-family instantiation, not a novel discovery.
+It is NOT V2: no long-span REBOUND/IAS15 bounded-band run was done here (the EM
+five reached V2 via the 100-period IAS15 evidence in
+`2026-06-13-ross-v2-longspan-evidence.md`); a PC V2 would need the same long-span
+evidence at mu=0.10851.  Real-ephemeris Pluto-Charon validation (SPICE) is the
+optional V3/V4 lever.
+
+### mu (0.10851 vs 0.10877) note
+
+The task specifies mu=0.10851.  satellites.py gives Charon GM 106.1 / system GM
+975.5 = 0.10877 (a 2.4e-3 relative difference).  All Phase-3 numbers above use the
+task value 0.10851.  The stable island's C and x0 shift slightly at 0.10877; if the
+catalogue row uses the repo's GM ratio, re-locate the midpoint at 0.10877 first.
+This is flagged for the adjudicator, not silently resolved.
 
 ---
 
 ## Test file added
 
-`tests/search/test_ross_rt_2026_mu_family.py` — 8 tests, all PASS:
+`tests/search/test_ross_rt_2026_mu_family.py` — 9 tests, all PASS:
 
 - `test_494_phase2_recover_table_i_representative[...]` x6 (parametrized)
 - `test_494_phase2_rep6_fundamental_winding_is_11`
-- `test_494_phase3_pluto_charon_32_cycler`
+- `test_494_phase3_pluto_charon_32_branch_and_crosschecks` (Phase-3a: branch + C_L1 + a_crit)
+- `test_494_phase3_pluto_charon_32_stable_member_exists` (Phase-3b: the stable member)
 
-Runtime: ~33 s (parallel, 16 workers).
+Runtime: ~35 s (parallel, 16 workers).
