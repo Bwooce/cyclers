@@ -123,6 +123,48 @@ def test_make_sobol_cells_different_seeds() -> None:
 # --- kernel-backed positive control ------------------------------------
 
 
+# --- #501 broadened-campaign structural tests (kernel-free) -------------------
+
+
+@pytest.mark.parametrize(
+    "tag,sequence,tof_range",
+    [
+        ("EGE", ("Europa", "Ganymede", "Europa"), (5.0, 40.0)),
+        ("GCG", ("Ganymede", "Callisto", "Ganymede"), (10.0, 50.0)),
+        ("EGCE", ("Europa", "Ganymede", "Callisto", "Europa"), (5.0, 40.0)),
+        ("IEI", ("Io", "Europa", "Io"), (3.0, 20.0)),
+        ("IEGI", ("Io", "Europa", "Ganymede", "Io"), (3.0, 30.0)),
+        ("EGCGE", ("Europa", "Ganymede", "Callisto", "Ganymede", "Europa"), (10.0, 50.0)),
+    ],
+)
+def test_make_sobol_cells_broadened_sequences(
+    tag: str, sequence: tuple[str, ...], tof_range: tuple[float, float]
+) -> None:
+    """#501 broadened sequences all produce valid closed cells (kernel-free)."""
+    n_legs = len(sequence) - 1
+    cells = make_sobol_cells(
+        n_samples=8,
+        sequence=list(sequence),
+        epoch_window=("2030-01-01", "2040-01-01"),
+        n_revs_range=(1, 3),
+        tof_seed_range=tof_range,
+    )
+    assert len(cells) == 8, f"{tag}: expected 8 cells, got {len(cells)}"
+    for cell in cells:
+        assert cell.sequence == sequence, f"{tag}: sequence mismatch"
+        assert cell.sequence[0] == cell.sequence[-1], f"{tag}: not closed"
+        assert len(cell.n_revs) == n_legs, f"{tag}: n_revs length"
+        assert len(cell.branches) == n_legs, f"{tag}: branches length"
+        assert len(cell.tof_seed_days) == n_legs, f"{tag}: tof_seed_days length"
+        assert all(1 <= r <= 3 for r in cell.n_revs), f"{tag}: n_revs out of range {cell.n_revs}"
+        assert all(b in ("high", "low") for b in cell.branches), (
+            f"{tag}: bad branch {cell.branches}"
+        )
+        assert all(tof_range[0] <= t <= tof_range[1] for t in cell.tof_seed_days), (
+            f"{tag}: tof out of range {cell.tof_seed_days}"
+        )
+
+
 @pytest.mark.skipif(_KERNEL is None, reason="needs JUP365 kernel")
 def test_sobol_pipeline_positive_control() -> None:
     """POSITIVE CONTROL: Liang Member D must survive the Sobol-pipeline prefilter.
