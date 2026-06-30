@@ -52726,3 +52726,439 @@
     url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
   source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"
   notes: "Lynam-Longuski 2011: indefinitely-repeatable GIPEIPE cycler (Ganymede-Io-perijove-Europa-Io-perijove-Europa), orbital period 3.5 d, repeats every Laplace period 7.05 d; the lowest-Delta-V member. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion."
+
+# ---------------------------------------------------------------------------
+# Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) abstract-mu CR3BP family
+# representatives (Table I) + Pluto-Charon (3,2) instantiation (#494, 2026-06-30)
+# ---------------------------------------------------------------------------
+
+- id: ross-rt-mu001-cycler-11-2026
+  name: "Ross/Roberts-Tsoukkas 2026 abstract-mu=0.001 (1,1) prograde CR3BP cycler — Table I representative"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#494): same-model CR3BP reproduction of Ross & Roberts-Tsoukkas 2026 Table I — fixed-Jacobi corrector closes on sourced (C, T) with |dx0|=0 (print-exact), |dT|~7e-12 TU; Barden nu=0.4121 (|nu|<1, published sp=0.4121 STABLE); independent Radau PASS (closure <1e-6, dJ<1e-8). Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "P1"
+  bodies: ["P1", "P2"]
+  sequence_canonical: "P1-P2"
+  sense: "n/a"
+  period:
+    pair: "P1-P2"
+    k: 1
+    years:
+    note: |
+      T = 14.774502790974823 TU (Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1
+      Table I, mu=0.001 (1,1) representative). Abstract-mu row: TU is a nominal
+      placeholder (1.0 s) and bodies P1/P2 are generic — no real system identified
+      for mu=0.001. years: null (no real bodies, rotating-frame CR3BP).
+  vinf_kms_at_encounters:
+  - body: "P1"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant (C), not patched-conic V_inf. Abstract-mu row (no real system; mu=0.001)."
+  - body: "P2"
+    vinf_kms:
+    note: "Same — Jacobi-constant model, abstract mu (P2 = generic secondary, no real body identified)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit, abstract-mu (mu=0.001, no real bodies); Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(1,1) prograde CR3BP cycler (mu=0.001)"   # SOURCED: Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I
+      mass_ratio: 1.0e-3   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      libration_point:
+      jacobi_constant: 3.031605708907296   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      period_nd: 14.774502790974823   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      stability_index: 0.4121   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (sp, Barden stability parameter; |sp|<1 = STABLE)
+      state_nd: [-0.647047499999966, 0.0, 0.0, 0.0, -0.693492354830774, 0.0]   # DERIVED: x0 sourced from Table I; ydot0 DERIVED from fixed-Jacobi corrector at published (mu, C); full state_nd marked DERIVED because ydot0 is computed, not printed.
+      lunit_km: 1.0   # placeholder: abstract-mu row, no real bodies (P1-P2 distance nominal)
+      tunit_s: 1.0   # placeholder: abstract-mu row, no real system (TU nominal)
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "Abstract-mu row: mu=0.001 has no known real planetary system. The CR3BP family and its (C, T, sp) are sourced from Ross & Roberts-Tsoukkas 2026 Table I; lunit_km and tunit_s are nominal placeholders (1.0). A real instantiation would replace them with system-specific constants."
+    source_hint: "Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) Table I."
+    todo_ref: "#494"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189v1"
+    date: "2026-06"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: "Table I mu=0.001 (1,1) representative. #494 ingestion 2026-06-30."
+  corroborating_sources: []
+  priority_date: "2026-06-01"
+  notes: "Ross & Roberts-Tsoukkas 2026 Table I: abstract-mu (mu=0.001) (1,1) prograde CR3BP cycler representative. Reproduced in-repo (#494, 2026-06-30): corrector closes on sourced (C, T), Barden sp=0.4121 (STABLE, |sp|<1), independent Radau PASS (closure <1e-6, dJ<1e-8). No real system identified for mu=0.001. state_nd DERIVED (x0 sourced; ydot0 computed from C)."
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.001 (1,1) C = 3.031605708907296."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.001 (1,1) T = 14.774502790974823 TU."
+    "orbit_elements.cr3bp.stability_index": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.001 (1,1) sp = 0.4121."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu = 0.001."
+
+- id: ross-rt-mu01-cycler-32-2026
+  name: "Ross/Roberts-Tsoukkas 2026 abstract-mu=0.1 (3,2) prograde CR3BP cycler — Table I representative"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#494): same-model CR3BP reproduction — corrector closes on sourced (C, T) with |dx0|=0, |dT|~1.4e-8 TU; Barden nu=0.5687 (|nu|<1, published sp=0.5686 STABLE); independent Radau PASS. Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "P1"
+  bodies: ["P1", "P2"]
+  sequence_canonical: "P1-P2"
+  sense: "n/a"
+  period:
+    pair: "P1-P2"
+    k: 1
+    years:
+    note: |
+      T = 12.295263874014290 TU (Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1
+      Table I, mu=0.1 (3,2) representative). Abstract-mu row: TU is a nominal
+      placeholder (1.0 s) and bodies P1/P2 are generic. Note: mu=0.1 is close to
+      the Earth-Moon mass ratio (~1.2e-2) and Pluto-Charon (~0.109) but is the
+      generic abstract-mu Table-I row. years: null (no real bodies, CR3BP).
+  vinf_kms_at_encounters:
+  - body: "P1"
+    vinf_kms:
+    note: "CR3BP periodic orbit: Jacobi constant identity, not patched-conic V_inf. Abstract-mu=0.1 row."
+  - body: "P2"
+    vinf_kms:
+    note: "Same — Jacobi-constant model, abstract mu=0.1."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit, abstract-mu (mu=0.1, no real bodies); Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(3,2) prograde CR3BP cycler (mu=0.1)"   # SOURCED: Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I
+      mass_ratio: 0.1   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      libration_point:
+      jacobi_constant: 3.573367616904619   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      period_nd: 12.295263874014290   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      stability_index: 0.5686   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (sp; |sp|<1 = STABLE)
+      state_nd: [-0.694376003123377, 0.0, 0.0, 0.0, -0.250234685078305, 0.0]   # DERIVED: x0 sourced from Table I; ydot0 DERIVED from fixed-Jacobi corrector at published (mu, C).
+      lunit_km: 1.0   # placeholder: abstract-mu row, no real bodies
+      tunit_s: 1.0   # placeholder: abstract-mu row, no real system
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "Abstract-mu row: mu=0.1 anchor. The (3,2) family at mu=0.1 seeds the Pluto-Charon C-sweep (see ross-rt-pc-cycler-32-2026). lunit_km and tunit_s are nominal placeholders (1.0)."
+    source_hint: "Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) Table I."
+    todo_ref: "#494"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189v1"
+    date: "2026-06"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: "Table I mu=0.1 (3,2) representative. Also seeds the Pluto-Charon C-sweep (ross-rt-pc-cycler-32-2026). #494 ingestion 2026-06-30."
+  corroborating_sources: []
+  priority_date: "2026-06-01"
+  notes: "Ross & Roberts-Tsoukkas 2026 Table I: abstract-mu (mu=0.1) (3,2) prograde CR3BP cycler representative. Reproduced in-repo (#494): corrector closes on sourced (C, T), Barden sp=0.5687 (STABLE), independent Radau PASS. The mu=0.1 (3,2) family also seeds the Pluto-Charon C-sweep (ross-rt-pc-cycler-32-2026 at mu=0.10876). state_nd DERIVED."
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.1 (3,2) C = 3.573367616904619."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.1 (3,2) T = 12.295263874014290 TU."
+    "orbit_elements.cr3bp.stability_index": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.1 (3,2) sp = 0.5686."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu = 0.1."
+
+- id: ross-rt-mu03-cycler-31-2026
+  name: "Ross/Roberts-Tsoukkas 2026 abstract-mu=0.3 (3,1) prograde CR3BP cycler — Table I representative"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#494): same-model CR3BP reproduction — corrector closes on sourced (C, T) with |dx0|=2.2e-7 (nearest periodic orbit at this C), |dT|=5.5e-6 within 1e-5 tolerance; Barden nu=0.0427 (|nu|<1, published sp=0.0294 STABLE); independent Radau PASS. Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "P1"
+  bodies: ["P1", "P2"]
+  sequence_canonical: "P1-P2"
+  sense: "n/a"
+  period:
+    pair: "P1-P2"
+    k: 1
+    years:
+    note: |
+      T = 9.094576400494693 TU (Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1
+      Table I, mu=0.3 (3,1) representative). Abstract-mu row: no real system
+      identified for mu=0.3. years: null (no real bodies, CR3BP).
+  vinf_kms_at_encounters:
+  - body: "P1"
+    vinf_kms:
+    note: "CR3BP periodic orbit: Jacobi constant identity, not patched-conic V_inf. Abstract-mu=0.3 row."
+  - body: "P2"
+    vinf_kms:
+    note: "Same — Jacobi-constant model, abstract mu=0.3."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit, abstract-mu (mu=0.3, no real bodies); Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(3,1) prograde CR3BP cycler (mu=0.3)"   # SOURCED: Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I
+      mass_ratio: 0.3   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      libration_point:
+      jacobi_constant: 3.701958166478617   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      period_nd: 9.094576400494693   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      stability_index: 0.0294   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (sp; |sp|<1 = STABLE; near-zero = near-maximally stable)
+      state_nd: [-0.804725783387797, 0.0, 0.0, 0.0, -0.3437332830535, 0.0]   # DERIVED: x0 sourced from Table I; ydot0 DERIVED from fixed-Jacobi corrector at published (mu, C).
+      lunit_km: 1.0   # placeholder: abstract-mu row, no real bodies
+      tunit_s: 1.0   # placeholder: abstract-mu row, no real system
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "Abstract-mu row: mu=0.3 has no known real planetary system. lunit_km and tunit_s are nominal placeholders (1.0)."
+    source_hint: "Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) Table I."
+    todo_ref: "#494"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189v1"
+    date: "2026-06"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: "Table I mu=0.3 (3,1) representative. #494 ingestion 2026-06-30."
+  corroborating_sources: []
+  priority_date: "2026-06-01"
+  notes: "Ross & Roberts-Tsoukkas 2026 Table I: abstract-mu (mu=0.3) (3,1) prograde CR3BP cycler representative. Reproduced in-repo (#494): corrector closes on sourced (C, T) with |dx0|=2.2e-7 (nearest periodic orbit at this C), Barden sp=0.0427 (STABLE, near-maximally stable), independent Radau PASS. state_nd DERIVED."
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.3 (3,1) C = 3.701958166478617."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.3 (3,1) T = 9.094576400494693 TU."
+    "orbit_elements.cr3bp.stability_index": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.3 (3,1) sp = 0.0294."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu = 0.3."
+
+- id: ross-rt-mu05-cycler-11-2026
+  name: "Ross/Roberts-Tsoukkas 2026 abstract-mu=0.5 (1,1) prograde CR3BP cycler — Table I representative"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#494): same-model CR3BP reproduction — corrector closes on sourced (C, T) with |dx0|=0, |dT|~1.7e-11 TU; published T is the 3rd iterate (T1=T/3, fundamental (1,1) winding confirmed); Barden nu=0.9375 (|nu|<1, published sp=0.9376 STABLE); independent Radau PASS. Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "P1"
+  bodies: ["P1", "P2"]
+  sequence_canonical: "P1-P2"
+  sense: "n/a"
+  period:
+    pair: "P1-P2"
+    k: 1
+    years:
+    note: |
+      T = 8.792013561462247 TU (Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1
+      Table I, mu=0.5 (1,1) representative). NOTE: this published T is the 3rd
+      iterate of the fundamental (1,1) period (T1 = T/3 = 2.930671187154082 TU;
+      confirmed by a separate test in test_ross_rt_2026_mu_family.py). The (1,1)
+      topology label refers to the fundamental winding. Abstract-mu row: mu=0.5
+      is the equal-mass binary (no real system with this exact ratio).
+      years: null (no real bodies, CR3BP).
+  vinf_kms_at_encounters:
+  - body: "P1"
+    vinf_kms:
+    note: "CR3BP periodic orbit: Jacobi constant identity, not patched-conic V_inf. Abstract-mu=0.5 (equal-mass binary) row."
+  - body: "P2"
+    vinf_kms:
+    note: "Same — Jacobi-constant model, abstract mu=0.5."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit, abstract-mu (mu=0.5 equal-mass binary, no real bodies); Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(1,1) prograde CR3BP cycler (mu=0.5)"   # SOURCED: Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I
+      mass_ratio: 0.5   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (equal-mass binary)
+      libration_point:
+      jacobi_constant: 3.628400000000000   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1
+      period_nd: 8.792013561462247   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (3rd iterate; fundamental T1=T/3=2.930671187154082 TU)
+      stability_index: 0.9376   # SOURCED: Ross & Roberts-Tsoukkas 2026 Table I arXiv:2606.29189v1 (sp; |sp|<1 = STABLE; near-1 = near stability boundary)
+      state_nd: [-0.519689929077496, 0.0, 0.0, 0.0, -6.95771172580858, 0.0]   # DERIVED: x0 sourced from Table I; ydot0 DERIVED from fixed-Jacobi corrector at published (mu, C).
+      lunit_km: 1.0   # placeholder: abstract-mu row, no real bodies
+      tunit_s: 1.0   # placeholder: abstract-mu row, no real system
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "Abstract-mu row: mu=0.5 (equal-mass binary) has no known real planetary system matching this mass ratio. The published period_nd=8.792013561462247 TU is the 3rd iterate; the fundamental (1,1) winding period is T1=T/3=2.930671187154082 TU (verified by test). lunit_km and tunit_s are nominal placeholders (1.0)."
+    source_hint: "Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) Table I."
+    todo_ref: "#494"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189v1"
+    date: "2026-06"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: "Table I mu=0.5 (1,1) representative. #494 ingestion 2026-06-30."
+  corroborating_sources: []
+  priority_date: "2026-06-01"
+  notes: "Ross & Roberts-Tsoukkas 2026 Table I: abstract-mu (mu=0.5, equal-mass binary) (1,1) prograde CR3BP cycler representative. Reproduced in-repo (#494): corrector closes on sourced (C, T), Barden sp=0.9375 (STABLE, near stability boundary), independent Radau PASS. NOTE: published T=8.79... is the 3rd iterate; fundamental (1,1) period T1=T/3 confirmed separately. state_nd DERIVED."
+  source_quotes:
+    "orbit_elements.cr3bp.jacobi_constant": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.5 (1,1) C = 3.628400000000000."
+    "orbit_elements.cr3bp.period_nd": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.5 (1,1) T = 8.792013561462247 TU (3rd iterate; T1=T/3=2.930671187154082 TU)."
+    "orbit_elements.cr3bp.stability_index": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu=0.5 (1,1) sp = 0.9376."
+    "orbit_elements.cr3bp.mass_ratio": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I: mu = 0.5."
+
+- id: ross-rt-pc-cycler-32-2026
+  name: "Computed Pluto-Charon stable (3,2) prograde CR3BP cycler (known-class member, Ross-RT 2026 mu=0.1 family)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: computed member of the Ross-RT 2026 (3,2) CR3BP class at the Pluto-Charon mass ratio; NOT a literal reproduction of any published orbit (no IC printed for PC in the paper).
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V1   # spec §14 V1 (#494): Pluto-Charon (mu=0.10876473603280369=106.1/975.5) stable (3,2) cycler located by C-sweep along the (3,2) branch seeded from Ross-RT 2026 mu=0.1 anchor — nu=0 midpoint of the stable window at C=3.57951501972907; Barden nu=3.82e-9 (maximally stable); independent Radau PASS (closure <1e-6, dJ=8.0e-13). Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  delta_v_kms:
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:
+  primary: "Pluto"
+  bodies: ["Pluto", "Charon"]
+  sequence_canonical: "Pluto-Charon"
+  sense: "n/a"
+  period:
+    pair: "Pluto-Charon"
+    k: 1
+    years:
+    note: |
+      T = 11.8334625170346 TU (DERIVED from our C-sweep nu=0 midpoint);
+      1 TU = T_s/(2*pi) = 552014.313 s / (2*pi) = 87855.81 s (satellites.py:
+      Charon a=19600 km, GM_system=975.5 km^3/s^2; T_s = 2*pi*sqrt(a^3/GM_system)
+      = 552014.313 s). T in days: 11.8334625170346 * 87855.81 / 86400 = 12.033 d
+      (DERIVED). Encounter cadence: 3 Pluto + 2 Charon passes per period (k1=3,
+      k2=2). years: null (CR3BP, rotating-frame periodic orbit, no heliocentric
+      synodic-multiple convention applies).
+  vinf_kms_at_encounters:
+  - body: "Pluto"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant (C=3.57951501972907 DERIVED), not patched-conic V_inf. Pluto-Charon rotating frame."
+  - body: "Charon"
+    vinf_kms:
+    note: "Same — Jacobi-constant model. Charon is the secondary (mu=0.10876 = GM_Charon/GM_system)."
+  orbit_elements:
+    a_au:
+    e:
+    perihelion_au:
+    aphelion_au:
+    inclination_deg:
+    note: "Planar CR3BP rotating-frame periodic orbit in the Pluto-Charon system; Keplerian elements inapplicable."
+    periapse_km:
+    apoapse_km:
+    raan_deg:
+    arg_periapsis_deg:
+    true_anomaly_deg:
+    epoch_iso8601:
+    cr3bp:
+      family: "(3,2) prograde CR3BP cycler (Pluto-Charon, mu=0.10876473603280369)"   # DERIVED: known-class member of the Ross-RT 2026 (3,2) family, instantiated at the PC mass ratio.
+      mass_ratio: 0.10876473603280369   # SOURCED (repo): 106.1/975.5 = GM_Charon/GM_PlutoSystem from satellites.py (DE440 Charon GM 106.1, Pluto system GM 975.5).
+      libration_point:
+      jacobi_constant: 3.57951501972907   # DERIVED: C-sweep nu=0 midpoint of the (3,2) stable window at mu=0.10876 (our computation, not a Table-I value).
+      period_nd: 11.8334625170346   # DERIVED: period at the nu=0 C-sweep midpoint in non-dimensional TU.
+      stability_index: 3.82e-9   # DERIVED: Barden nu at the nu=0 midpoint (essentially 0 = maximally stable). Published by nu~0 construction.
+      state_nd: [-0.693198287043369, 0.0, 0.0, 0.0, -0.297004785528322, 0.0]   # DERIVED: x0 and ydot0 from the C-sweep nu=0 corrector run at mu=0.10876, C=3.57951501972907.
+      lunit_km: 19600.0   # SOURCED (repo): Charon semi-major axis a=19600 km (satellites.py; the CR3BP unit length = P1-P2 distance).
+      tunit_s: 87855.81   # DERIVED: TU = T_s/(2*pi) = 552014.313 s / (2*pi) = 87855.81 s (where T_s = 2*pi*sqrt(19600^3/975.5) s).
+      tof_days_bounds: [12.033, 12.033]   # DERIVED: single-period CR3BP orbit; bounds = [period, period] in days (T_nd * tunit_s / 86400 = 11.8334625170346 * 87855.81 / 86400 ≈ 12.033 d).
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp"
+    kind: "derive"
+    note: "All CR3BP IC values (jacobi_constant, period_nd, stability_index, state_nd) are DERIVED from our C-sweep along the (3,2) branch at mu=0.10876473603280369 seeded from the Ross-RT 2026 mu=0.1 Table-I anchor. No published Pluto-Charon IC is available in the source paper. Crosscheck: Radau closure <1e-6, dJ=8.0e-13."
+    source_hint: "tests/search/test_ross_rt_2026_mu_family.py::test_494_phase3_pluto_charon_32_stable_member_exists."
+    todo_ref: "#494"
+  legs: []
+  first_published:
+    authors: ["Ross, S. D.", "Roberts-Tsoukkas, M."]
+    year: 2026
+    title: "Families of Stable Prograde Cycler Orbits in the Circular Restricted Three-Body Problem"
+    venue: "arXiv preprint arXiv:2606.29189v1"
+    date: "2026-06"
+    doi:
+    url: "https://arxiv.org/abs/2606.29189"
+    note: "Family source (Ross-RT 2026 (3,2) CR3BP family). Pluto-Charon instantiation is our C-sweep (#494, 2026-06-30); no PC IC printed in the paper."
+  corroborating_sources: []
+  priority_date: "2026-06-30"
+  notes: |
+    Pluto-Charon (mu=0.10876473603280369 = 106.1/975.5, satellites.py) stable (3,2)
+    prograde CR3BP cycler. Located (#494, 2026-06-30) by a C-sweep along the (3,2)
+    branch (hc=6) seeded from the Ross-RT 2026 Table-I mu=0.1 anchor:
+    sweep tracked nu(C) from the mu=0.1 anchor to mu=0.10876, located the stable
+    window nu in (-1,1), found the nu=0 midpoint at C=3.57951501972907,
+    x0=-0.693198287043369. Barden nu=3.82e-9 (maximally stable). Independent Radau
+    crosscheck: closure <1e-6, dJ=8.0e-13. (3,2) topology + prograde confirmed.
+    Physical checks: C(L1) = 3.6285 > C = 3.5795 (Hill region OK); Henon-Wisdom
+    a_crit crosscheck PASS. ALL ICs DERIVED (no published PC orbit).
+    MODEL: pure planar CR3BP (PCR3BP). No ephemeris, no solar perturbation.
+  source_quotes:
+    "orbit_elements.cr3bp.mass_ratio": "satellites.py (repo): Charon GM=106.1 km^3/s^2 / Pluto-system GM=975.5 km^3/s^2 = 0.10876473603280369."
+    "orbit_elements.cr3bp.lunit_km": "satellites.py (repo): Charon a=19600.0 km (semi-major axis, CR3BP unit length = P1-P2 distance)."

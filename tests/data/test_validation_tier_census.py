@@ -174,7 +174,12 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # (Russell-Strange 2009: 10 Jovian + 20 Titan-Enceladus; Lynam-Longuski 2011:
     # 2 IEG triple) -> 'unvalidated' on the source-pair tier (one source each; V0
     # sourced lives on the orthogonal validation_level axis).
-    "unvalidated": 72,
+    # 72 -> 77 (2026-06-30, #494): +5 Ross & Roberts-Tsoukkas 2026 mu-family
+    # representatives (4 Table-I abstract-mu rows + 1 Pluto-Charon instantiation),
+    # all non-keplerian CR3BP (no orbit_source/vinf_source tags) -> 'unvalidated'
+    # on the source-pair tier axis. Their V1 evidence lives on the orthogonal
+    # validation_level axis (tests/search/test_ross_rt_2026_mu_family.py).
+    "unvalidated": 77,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

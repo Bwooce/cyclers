@@ -483,10 +483,18 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # class (our_status=known-class-member, NOT first_published); genuine 3D
         # CR3BP periodic orbit (rotating-frame, Jacobi-constant identity).
         "em-cycler-21-3d-spatial-2026",
+        # #494 (2026-06-30): five Ross & Roberts-Tsoukkas 2026 mu-family
+        # representatives: four generic-mu Table-I rows + one Pluto-Charon
+        # (3,2) instantiation (all non-keplerian CR3BP periodic orbits).
+        "ross-rt-mu001-cycler-11-2026",
+        "ross-rt-mu01-cycler-32-2026",
+        "ross-rt-mu03-cycler-31-2026",
+        "ross-rt-mu05-cycler-11-2026",
+        "ross-rt-pc-cycler-32-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 13
+assert len(NON_KEPLERIAN_IDS) == 18
 
 
 # ---------------------------------------------------------------------------
@@ -547,10 +555,14 @@ def test_census_distribution() -> None:
     #444 (2026-06-25) admitted the C21 3D out-of-plane spatial extension
     (em-cycler-21-3d-spatial-2026) as a non-keplerian known-class-member
     cycler: non-keplerian 12->13.
+
+    #494 (2026-06-30) admitted 5 Ross & Roberts-Tsoukkas 2026 mu-family
+    representatives (4 Table-I abstract-mu rows + 1 Pluto-Charon instantiation),
+    all non-keplerian CR3BP periodic orbits: non-keplerian 13->18.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 292, "non-keplerian": 13}
+    expected = {"single-ellipse": 46, "multi-arc": 292, "non-keplerian": 18}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

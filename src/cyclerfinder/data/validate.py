@@ -961,6 +961,67 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "src/cyclerfinder/search/reachable_representatives.py + "
         "docs/notes/2026-06-14-249-unstable-member-recovery-plan.md."
     ),
+    # #494 (2026-06-30): Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) mu-family
+    # Table-I representatives (5 rows) + Pluto-Charon (3,2) instantiation.
+    # Spec §14 V1 like-for-like in the planar CR3BP: same-model fixed-Jacobi corrector
+    # closes on published (mu, C, T) IC with x0 within print precision, Barden |nu|<1
+    # (published sp<1 STABLE), AND independent Radau integrator closes full period
+    # (closure <1e-6, dJ<1e-8). state_nd DERIVED (not a golden).
+    # Tests: tests/search/test_ross_rt_2026_mu_family.py
+    ("ross-rt-mu001-cycler-11-2026", "V1"): (
+        "spec §14 V1 (#494): same-model CR3BP reproduction of Ross & Roberts-Tsoukkas "
+        "2026 (arXiv:2606.29189v1) Table I, mu=0.001 (1,1) representative — "
+        "fixed-Jacobi corrector closes on sourced (C=3.031605708907296, "
+        "T=14.774502790974823 TU) with |dx0|=0 (print-exact) and |dT|~7e-12 TU, "
+        "Barden nu=0.4121 (|nu|<1, published sp=0.4121 STABLE), AND independent "
+        "Radau crosscheck PASS (closure <1e-6, dJ<1e-8). (1,1) topology + prograde "
+        "confirmed. state_nd DERIVED. "
+        "tests/search/test_ross_rt_2026_mu_family.py::"
+        "test_494_phase2_recover_table_i_representative[mu0_001_k1_1]."
+    ),
+    ("ross-rt-mu01-cycler-32-2026", "V1"): (
+        "spec §14 V1 (#494): same-model CR3BP reproduction of Ross & Roberts-Tsoukkas "
+        "2026 Table I, mu=0.1 (3,2) representative — fixed-Jacobi corrector closes on "
+        "sourced (C=3.573367616904619, T=12.295263874014290 TU) with |dx0|=0 and "
+        "|dT|~1.4e-8 TU, Barden nu=0.5687 (|nu|<1, published sp=0.5686 STABLE), AND "
+        "independent Radau crosscheck PASS. (3,2) topology + prograde confirmed. "
+        "state_nd DERIVED. "
+        "tests/search/test_ross_rt_2026_mu_family.py::"
+        "test_494_phase2_recover_table_i_representative[mu0_1_k3_2]."
+    ),
+    ("ross-rt-mu03-cycler-31-2026", "V1"): (
+        "spec §14 V1 (#494): same-model CR3BP reproduction of Ross & Roberts-Tsoukkas "
+        "2026 Table I, mu=0.3 (3,1) representative — fixed-Jacobi corrector closes on "
+        "sourced (C=3.701958166478617, T=9.094576400494693 TU) with |dx0|=2.2e-7 "
+        "(nearest periodic orbit at this C) and |dT|=5.5e-6 within 1e-5 tolerance, "
+        "Barden nu=0.0427 (|nu|<1, published sp=0.0294 STABLE), AND independent "
+        "Radau crosscheck PASS. (3,1) topology + prograde confirmed. state_nd DERIVED. "
+        "tests/search/test_ross_rt_2026_mu_family.py::"
+        "test_494_phase2_recover_table_i_representative[mu0_3_k3_1]."
+    ),
+    ("ross-rt-mu05-cycler-11-2026", "V1"): (
+        "spec §14 V1 (#494): same-model CR3BP reproduction of Ross & Roberts-Tsoukkas "
+        "2026 Table I, mu=0.5 (1,1) representative — fixed-Jacobi corrector closes on "
+        "sourced (C=3.628400000000000, T=8.792013561462247 TU) with |dx0|=0 and "
+        "|dT|~1.7e-11 TU; published T is the 3rd iterate (T1=T/3, fundamental (1,1) "
+        "winding confirmed at T/3 by separate test), Barden nu=0.9375 (|nu|<1, published "
+        "sp=0.9376 STABLE), AND independent Radau crosscheck PASS. state_nd DERIVED. "
+        "tests/search/test_ross_rt_2026_mu_family.py::"
+        "test_494_phase2_recover_table_i_representative[mu0_5_k1_1] + "
+        "test_494_phase2_rep6_fundamental_winding_is_11."
+    ),
+    ("ross-rt-pc-cycler-32-2026", "V1"): (
+        "spec §14 V1 (#494): Pluto-Charon (mu=0.10876473603280369=106.1/975.5) "
+        "stable (3,2) cycler located by a C-sweep along the (3,2) branch (hc=6) "
+        "seeded from the Ross-RT 2026 Table I mu=0.1 anchor — nu=0 midpoint of the "
+        "stable window at C=3.57951501972907, x0=-0.693198287043369; Barden "
+        "nu=3.82e-9 (|nu|<<1, maximally stable), AND independent Radau crosscheck "
+        "PASS (closure <1e-6, dJ=8.0e-13). (3,2) topology + prograde confirmed. "
+        "C-sweep method: paper's own (k1,k2) C-family trace + brentq nu=0 root. "
+        "ALL ICs DERIVED (our sweep). Physical C(L1) and H-W a_crit cross-checks PASS. "
+        "tests/search/test_ross_rt_2026_mu_family.py::"
+        "test_494_phase3_pluto_charon_32_stable_member_exists."
+    ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each
     # achieving its encounters with the per-cycle maintenance applied AND bounded

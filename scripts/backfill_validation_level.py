@@ -168,6 +168,13 @@ _LEVEL_BY_ID: dict[str, str] = {
     "braik-ross-c11a-cycler-2026": "V1",
     "braik-ross-c11b-cycler-2026": "V1",
     "braik-ross-c32-cycler-2026": "V1",
+    # #494 (2026-06-30): Ross & Roberts-Tsoukkas 2026 mu-family Table-I
+    # representatives + Pluto-Charon (3,2) instantiation (all V1, task #494).
+    "ross-rt-mu001-cycler-11-2026": "V1",
+    "ross-rt-mu01-cycler-32-2026": "V1",
+    "ross-rt-mu03-cycler-31-2026": "V1",
+    "ross-rt-mu05-cycler-11-2026": "V1",
+    "ross-rt-pc-cycler-32-2026": "V1",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

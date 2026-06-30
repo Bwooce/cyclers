@@ -293,7 +293,11 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # 18 -> 19 (2026-06-25, #444): +1 em-cycler-21-3d-spatial-2026 (the C21 3D
     # out-of-plane known-class-member, Earth-primary CR3BP; not heliocentric /
     # not v1-gauntlet-reachable). Pure census shift.
-    ExclusionReason.NON_HELIOCENTRIC: 51,
+    # 19 -> 24 (2026-06-30, #494): +5 Ross & Roberts-Tsoukkas 2026 mu-family rows
+    # (4 abstract-mu CR3BP rows with primary=P1 + 1 Pluto-Charon (3,2) CR3BP row
+    # with primary=Pluto). None is v1-gauntlet-reachable (non-heliocentric primary).
+    # Pure census shift.
+    ExclusionReason.NON_HELIOCENTRIC: 56,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes

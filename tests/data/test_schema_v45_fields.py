@@ -156,7 +156,9 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     tests/verify/test_silver_327_v*.py wrapping the project-output verdict
     JSONLs from #306/#330/#331/#335/#338;
     docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md).
-    (V1=21, V2=7, V3=2, V4=1.)"""
+    (#494 2026-06-30): Five Ross & Roberts-Tsoukkas 2026 mu-family Table-I
+    representatives (4 abstract-mu rows + 1 Pluto-Charon instantiation) clear §14
+    V1 like-for-like in the planar CR3BP. (V1=26, V2=7, V3=2, V4=1.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -256,6 +258,17 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "braik-ross-c11a-cycler-2026": "V1",
         "braik-ross-c11b-cycler-2026": "V1",
         "braik-ross-c32-cycler-2026": "V1",
+        # #494 (2026-06-30): Ross & Roberts-Tsoukkas 2026 (arXiv:2606.29189v1) mu-family
+        # Table-I representatives (4 abstract-mu rows) + Pluto-Charon (3,2) instantiation.
+        # All clear §14 V1 like-for-like in the planar CR3BP: same-model fixed-Jacobi
+        # corrector closes on sourced (mu, C, T), Barden |nu|<1 (STABLE), independent
+        # Radau PASS (closure <1e-6, dJ<1e-8). state_nd DERIVED.
+        # tests/search/test_ross_rt_2026_mu_family.py.
+        "ross-rt-mu001-cycler-11-2026": "V1",
+        "ross-rt-mu01-cycler-32-2026": "V1",
+        "ross-rt-mu03-cycler-31-2026": "V1",
+        "ross-rt-mu05-cycler-11-2026": "V1",
+        "ross-rt-pc-cycler-32-2026": "V1",
         # #340 (2026-06-17): SILVER (umbriel-oberon-1-1-uranian-quasi-cycler-2026)
         # promoted V0 -> V4 — the catalogue's first computed quasi_cycler row
         # and the first V4 anywhere. V4 is the URA111 SPICE real-eph + annual
