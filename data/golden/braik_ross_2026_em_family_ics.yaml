@@ -1,0 +1,200 @@
+# Braik-Ross 2026 Earth-Moon CR3BP representative periodic orbit ICs
+#
+# Source: Abdullah Braik & Shane D. Ross, "Orbital Networks in the Three-Body
+#   Problem", arXiv:2605.31543 (2026).
+#   Repository: https://github.com/BinBraik/cislunar-orbital-network
+#   License: MIT  (© Braik & Ross 2026)
+#
+# Extracted verbatim from src/cr3bp_family_ic.m (function cr3bp_family_ic).
+# ICs were computed with correct_po_to_cj313_v2.m and verified against
+# the instability rates and periods in Table 2 of the paper.
+# These are INDEPENDENTLY COMPUTED values (not extracted from our own code).
+#
+# Convention: all 13 representatives are planar Earth-Moon CR3BP periodic
+# orbits at a common Jacobi constant CJ ≈ 3.1294.  Each IC sits on the
+# y = 0, xdot = 0 perpendicular x-axis crossing (symmetric orbit convention).
+# State at half-period: (x0, 0, 0, 0, ydot0, 0) in the CR3BP rotating frame.
+# Period is in nondimensional time units (TU = T_EM/2π = 27.321661/(2π) days).
+#
+# Note (from cr3bp_family_ic.m docstring): "a handful of families could not
+# be converged to CJ = 3.1294 exactly; their stored CJ values differ in the
+# last few digits (e.g., Cycler 21 at CJ = 3.129389...). This is noted in
+# Table 2 of the paper and does not affect the shared-energy-manifold
+# analysis because all representatives lie within < 0.001% of the nominal."
+#
+# CRITICAL (task #495 / feedback_published_rounded_values_are_display):
+# The Cycler 21 (C21) Jacobi constant is CJ = 3.129389531054557 (15 sig figs).
+# "CJ = 3.1294" in the paper is a rounded display value; the literal 3.1294
+# sits ~1.05e-5 above the (2,1) family's C-max, making C21 unrecoverable at
+# the rounded value.  Our corrector must use the exact stored CJ for C21.
+#
+# TU_DAYS = 27.321661 / (2π) ≈ 4.348377 days / TU
+# mu (Earth-Moon) = 0.012150584270572 (Braik-Ross / Ross-RT 2025 value)
+# Note: the resonant families (R21-S/U, R31-S/U, R52-S/U, DPO) use mu =
+# 0.0121505842705716 in cr3bp_family_ic.m (differs in last digit only;
+# both round to 0.012150584270572 at all significant digits printed in the
+# paper; our code uses ROSS_MU = 1.2150584270572e-2 throughout).
+
+families:
+  - label: LL1
+    braik_name: "Lyapunov L1"
+    abbrev_table2: LL1
+    mu: 0.012150584270572
+    jacobi: 3.1294
+    period_nd: 2.946253150022597
+    period_days: 12.811   # Table 2 sourced (= period_nd * TU_DAYS)
+    x0: 0.8115256290557147
+    ydot0: 0.2561843220006502
+    ydot0_sign: +1
+
+  - label: LL2
+    braik_name: "Lyapunov L2"
+    abbrev_table2: LL2
+    mu: 0.012150584270572
+    jacobi: 3.1294
+    period_nd: 3.476412471522109
+    period_days: 15.117
+    x0: 1.100554841329441
+    ydot0: 0.2702199577829618
+    ydot0_sign: +1
+
+  - label: C21
+    braik_name: "Cycler 21"
+    abbrev_table2: C21
+    mu: 0.012150584270572
+    # EXACT (not rounded) Jacobi — 15 significant figures.
+    # The paper prints "CJ = 3.1294" (rounded); the literal 3.1294 sits ~1.05e-5
+    # above the family's C-max so C21 only exists at this precise value.
+    # Previously sourced as 3.129389531088256 from AAS-25-621 Table 4;
+    # this Braik-repo value is independently computed from the same family.
+    jacobi: 3.129389531054557
+    period_nd: 1.944007511640499e+01
+    period_days: 84.533
+    x0: 7.237366530581342e-01
+    ydot0: 4.137638707606867e-01
+    ydot0_sign: +1
+
+  - label: C11a
+    braik_name: "Cycler 11a"
+    abbrev_table2: C11a
+    mu: 0.012150584270572
+    jacobi: 3.1294
+    period_nd: 9.691077443795967
+    period_days: 42.140
+    x0: -0.8116406668238326
+    ydot0: -0.1185905575975559
+    ydot0_sign: -1
+
+  - label: C11b
+    braik_name: "Cycler 11b"
+    abbrev_table2: C11b
+    mu: 0.012150584270572
+    jacobi: 3.1294
+    period_nd: 1.287711489493616e+01
+    period_days: 55.995
+    x0: -0.7601803401119139
+    ydot0: -0.3218380227492717
+    ydot0_sign: -1
+
+  - label: C32
+    braik_name: "Cycler 32"
+    abbrev_table2: C32
+    mu: 0.012150584270572
+    # Converged to 3.1294 only to last digit; see note above.
+    jacobi: 3.129399999999999
+    period_nd: 1.807860804203491e+01
+    period_days: 78.613
+    x0: -0.2752114538522783
+    ydot0: -2.115657313283594
+    ydot0_sign: -1
+
+  - label: R21-S
+    braik_name: "Resonant 2to1 Stable"
+    abbrev_table2: R21-S
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 6.09412703751587
+    period_days: 26.500
+    x0: 0.4485378415692721
+    ydot0: 1.185506250841159
+    ydot0_sign: +1
+
+  - label: R21-U
+    braik_name: "Resonant 2to1 Unstable"
+    abbrev_table2: R21-U
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 7.138022234549252
+    period_days: 31.039
+    x0: 0.86975081578361
+    ydot0: -0.2703857273991174
+    ydot0_sign: -1
+
+  - label: R31-S
+    braik_name: "Resonant 3to1 Stable"
+    abbrev_table2: R31-S
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 6.267093371035164
+    period_days: 27.252
+    x0: -0.8081272737956029
+    ydot0: 0.1389495551262821
+    ydot0_sign: +1
+
+  - label: R31-U
+    braik_name: "Resonant 3to1 Unstable"
+    abbrev_table2: R31-U
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 6.454444248544365
+    period_days: 28.066
+    x0: 0.8137553067908899
+    ydot0: -0.2540548036743875
+    ydot0_sign: -1
+
+  - label: R52-S
+    braik_name: "Resonant 5to2 Stable"
+    abbrev_table2: R52-S
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 1.260275494862142e+01
+    period_days: 54.802
+    x0: 0.2278881086717652
+    ydot0: 2.277116891512287
+    ydot0_sign: +1
+
+  - label: R52-U
+    braik_name: "Resonant 5to2 Unstable"
+    abbrev_table2: R52-U
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 1.297870170292832e+01
+    period_days: 56.436
+    x0: -0.2719428329684943
+    ydot0: -2.137466033981196
+    ydot0_sign: -1
+
+  - label: DPO
+    braik_name: "Distant Prograde Orbit"
+    abbrev_table2: DPO
+    mu: 0.0121505842705716
+    jacobi: 3.1294
+    period_nd: 2.572014144294218
+    period_days: 11.184
+    x0: 1.060820806800189
+    ydot0: 0.4126719472859519
+    ydot0_sign: +1
+
+# Metadata
+source:
+  paper: "Braik & Ross 2026, arXiv:2605.31543"
+  repo: "https://github.com/BinBraik/cislunar-orbital-network"
+  file: "src/cr3bp_family_ic.m"
+  license: MIT
+  extraction_date: "2026-06-30"
+  extractor: "task #495"
+  note: >
+    ICs computed with correct_po_to_cj313_v2.m and verified against
+    Table 2 instability rates and periods. All 13 families are independently
+    computed from orbit differential correction at CJ≈3.1294; they are NOT
+    extracted from any code in this repository.
