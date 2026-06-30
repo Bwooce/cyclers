@@ -558,9 +558,15 @@ digests `2026-06-30-digest-{russell-strange-2009-planetary-moon-cyclers,lynam-lo
 ONLY** (Titan the sole flyby body), so the blanket "V0-known via R-S, any two moons" over-extrapolated:
 **Titan-Rhea-Titan stays V0-known** (Rhea is an R-S Titan-flyby target) but the **small-moon-flyby
 pairs (Tethys-Enceladus, Dione-Tethys) are NOT R-S architecture → novelty RE-OPENED** at their low V∞.
-New tasks: **#489** = re-eval those small-moon-flyby Saturn candidates (feasibility + focused lit);
-**#490** = mine R-S Tables 3-4 + L-L members (V1 targets / 2nd #480 IEG golden). **#318 Phase 2a**
-landed (joint-cell evaluator + Liang positive control). #293 ER3BP still un-started.
+**#489 ✓ DONE** = re-eval'd the small-moon-flyby Saturn candidates → **physically INFEASIBLE**
+(Tethys flyby 0.44° / Dione 3-5° max-bend vs Titan ~50°; the #320 #324 gate already recorded
+`physical_gate_passed: FALSE`; my low-V∞ hypothesis was wrong, mass deficit dominates).
+Russell-Strange's "only Titan" premise CONFIRMED; Titan-Rhea-Titan stays V0-known; NO novel
+Saturn candidate (`2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`). **#490** (open)
+= mine R-S Tables 3-4 + L-L members (V1 targets / 2nd #480 IEG golden). **#318 Phase 2a** landed
+(joint-cell evaluator + Liang positive control). #293 ER3BP still un-started. **Net of the whole
+#312→#320 arc: the only genuinely-novel admitted hit is the #312 Uranus quasi-cycler (V4); all
+else V0-known / infeasible / published-class.**
 - **#314 ✓ DONE (2026-06-20)** Heteroclinic-network mass-transport (new
   "periodic-up-to-rotation" closure). Delivered `genome/heteroclinic_cycle.py`
   (planar CR3BP): Lyapunov nodes + Floquet-manifold seeding + 2-D Newton

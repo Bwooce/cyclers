@@ -11,8 +11,13 @@
 >   R-S Titan-flyby target moon.
 > - **Tethys-Enceladus-Tethys, Dione-Tethys-Dione** (SMALL-moon flyby bodies): **NOT R-S's
 >   architecture, NOT established V0-known.** R-S premises that small moons can't be flyby bodies,
->   but these are LOW-V∞ (1–4 km/s, where bend ∝ 1/V∞² is large) — so **novelty RE-OPENED**,
->   pending a physical-feasibility re-check of the small-moon flyby at low V∞ + a focused lit-check.
+>   but these are LOW-V∞ (1–4 km/s) — *was* flagged novelty-RE-OPENED pending a feasibility check.
+>   **RESOLVED by #489 (same day): physically INFEASIBLE** — the small-moon flyby provides only
+>   ~0.4–5° max-bend (Tethys 0.44°, Dione 3–5°; vs Titan ~50°), failing the #324 gate; the
+>   #320 pipeline already recorded `physical_gate_passed: FALSE` for all of them. Russell-Strange's
+>   "only Titan" premise CONFIRMED; the low-V∞ hypothesis was wrong (mass deficit dominates). So
+>   NO novel Saturn candidate; **Titan-Rhea-Titan stays V0-known**. Verdict
+>   `2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`.
 > The Pluto/Neptune/QP-tori conclusions below are unaffected. The original text follows.
 
 
