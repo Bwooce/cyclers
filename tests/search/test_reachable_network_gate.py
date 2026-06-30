@@ -27,13 +27,51 @@ Fig. 10. Recovered ICs are derived quantities (never goldens).
 
 from __future__ import annotations
 
+import csv
 import math
+from pathlib import Path
 
 import numpy as np
 import pytest
 
 import cyclerfinder.search.reachable_network as rn
 import cyclerfinder.search.reachable_representatives as rr
+
+_PUBLISHED_DVMATRIX = Path("data/golden/braik_ross_2026_dvmatrix_mps.csv")
+
+
+def _load_published_dvmatrix() -> tuple[list[str], np.ndarray]:
+    """Braik-Ross 2026 published 13x13 proxy-dV matrix (m/s), NaN -> inf (no edge)."""
+    rows = list(csv.reader(_PUBLISHED_DVMATRIX.read_text().splitlines()))
+    header = rows[0][1:]
+    mat = np.array(
+        [[float(x) if x.strip().lower() != "nan" else math.inf for x in r[1:]] for r in rows[1:]],
+        dtype=np.float64,
+    )
+    np.fill_diagonal(mat, 0.0)
+    return header, mat
+
+
+def test_centrality_scorer_reproduces_braik_ross_table4() -> None:
+    """Centrality scorer reproduces Braik-Ross Table 4 from the PUBLISHED dV matrix (#497).
+
+    Fed Braik & Ross 2026's own published proxy-dV matrix (data/golden/
+    braik_ross_2026_dvmatrix_mps.csv, adopted #495), ``normalized_centralities``
+    reproduces the Table-4 C32-dominant values to print precision (0.2850 / 0.2891 /
+    0.5000) and C32 is the argmax of all three metrics. EXPECTED values are the
+    PUBLISHED Table 4 (sourced, never circular). This ISOLATES the #249 gate failure
+    (``test_validation_gate_c32_dominant``, xfail) to OUR proxy-dV fidelity -- the
+    centrality math itself is correct.
+    """
+    header, mat = _load_published_dvmatrix()
+    cent = rn.normalized_centralities(mat, n_families=13)
+    ic = header.index("Cycler 32")
+    assert cent.strength[ic] == pytest.approx(0.2850, abs=5e-4)
+    assert cent.harmonic_closeness[ic] == pytest.approx(0.2891, abs=5e-4)
+    assert cent.betweenness[ic] == pytest.approx(0.5000, abs=5e-4)
+    assert int(np.argmax(cent.strength)) == ic
+    assert int(np.argmax(cent.harmonic_closeness)) == ic
+    assert int(np.argmax(cent.betweenness)) == ic
 
 
 def _recover_subset() -> list[rr.Representative]:
@@ -177,12 +215,17 @@ def test_stable_resonants_are_hard_access_on_subset() -> None:
         "play, C32 does NOT emerge as the dominant family node under our scorer. "
         "Observed ranking on this run: strength argmax = C11a; harmonic-closeness "
         "argmax = C21; betweenness argmax = R21-U; C32 has ZERO betweenness (no "
-        "relay role at all). Whether this is a real limitation of the heading-fan "
-        "reachable-set proxy on our model (e.g. a voxel-grid resolution or "
-        "horizon-T_a difference vs Braik-Ross's grid) or a missing-node effect "
-        "(R52-U is still absent) is not yet diagnosed -- the test stays xfail and "
-        "the scorer stays GATED for our families. Parameters are NOT tuned. See "
-        "docs/notes/2026-06-13-reachable-scorer-ungate.md."
+        "relay role at all). DIAGNOSED (#497, post-#495 golden adoption): the cause "
+        "is OUR proxy-dV FIDELITY, not the centrality math nor a missing node. The "
+        "centrality scorer reproduces Braik Table 4 EXACTLY from the published dV "
+        "matrix (test_centrality_scorer_reproduces_braik_ross_table4 PASSES: "
+        "0.2850/0.2891/0.5000). Our heading-fan proxy OVERESTIMATES dV (per #495: "
+        "dc_refined < proxy in every pair), so recalibrating DV_CAP_MS to the Braik "
+        "51 m/s reference EMPTIES our network (all centralities 0), and at 409.3 our "
+        "proxy mis-ranks betweenness to R21-U. The fix is proxy-dV calibration / "
+        "rebuilding from the adopted dc_refined golden -- NOT a cap value, so the "
+        "test stays xfail and the scorer stays GATED for OUR proxy. Parameters are "
+        "NOT tuned. See docs/notes/2026-06-30-497-c32-gate-diagnosis.md."
     ),
     strict=True,
 )
