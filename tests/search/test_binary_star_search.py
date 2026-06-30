@@ -63,6 +63,60 @@ def test_winding_classifier_reproduces_known_em_members(
     assert topo.reaches_secondary, f"{label}: a cycler must reach the secondary realm"
 
 
+# #494 Phase-0 positive control: winding topology for ALL 5 Ross EM families.
+# Sources: Ross & Roberts-Tsoukkas 2025, AAS 25-621, Table 3 (p. 11) and Def. 1 (p. 5).
+# (k1, k2) = published family label; sign = ydot0 sign at the perpendicular crossing;
+# hc = half_crossings index; t = sourced T^stable (TU). The EXPECTED (k1, k2) values
+# are the primary sourced golden: they are printed in the paper, not computed by us.
+# Complements test_cr3bp_ross_families.py (period + stability + crosscheck) to form the
+# full Phase-0 gate before trusting any mu-extension (design doc #494 Phase 0).
+_ALL_5_FAMILIES: list[tuple[str, float, float, float, float, int, int, int]] = [
+    # (label, x0_seed, C^stable, T^stable, ydot0_sign, half_crossings, k1, k2)
+    # SOURCED C^stable / T^stable: Ross Table 3, p. 11.  SOURCED (k1,k2): Ross Def. 1, p. 5.
+    ("(1,1)", -0.7682140805, 3.151175879508174, 10.29206921007976, -1.0, 3, 1, 1),
+    ("(2,1)", 0.7237335857, 3.129389531088256, 19.44043166795154, +1.0, 4, 2, 1),
+    ("(3,1)", -0.3209891696, 3.161784147013429, 14.78849241668140, -1.0, 3, 3, 1),
+    ("(3,2)", -0.3210000000, 3.182762663084288, 17.90058010350006, -1.0, 6, 3, 2),
+    ("(3,3)", -0.3217380626, 3.177224018696528, 18.14546057589189, -1.0, 5, 3, 3),
+]
+
+
+@pytest.mark.parametrize(
+    ("label", "x0", "c", "t_sourced", "sign", "hc", "k1", "k2"),
+    _ALL_5_FAMILIES,
+    ids=[f[0] for f in _ALL_5_FAMILIES],
+)
+def test_494_phase0_winding_topology_all_5_em_families(
+    label: str,
+    x0: float,
+    c: float,
+    t_sourced: float,
+    sign: float,
+    hc: int,
+    k1: int,
+    k2: int,
+) -> None:
+    """#494 Phase-0 positive-control gate: recover each Ross EM family from its
+    SOURCED (mu, C^stable, T^stable) and confirm winding_topology returns the
+    published (k1, k2) label, prograde.
+
+    All 5 must pass before any mu-extension (Phase 2) is trusted
+    ([[feedback_verify_gauntlet_with_positive_control]]).
+    """
+    system = _system(ROSS_MU)
+    o = cp.correct_symmetric_fixed_jacobi(
+        system, x0, c, t_sourced, ydot0_sign=sign, half_crossings=hc, tol=1e-11
+    )
+    assert o.converged, f"{label}: corrector did not converge"
+    state0 = np.array([o.x0, 0.0, 0.0, 0.0, o.ydot0, 0.0])
+    topo = winding_topology(ROSS_MU, state0, o.period)
+    assert (topo.k1, topo.k2) == (k1, k2), (
+        f"{label}: topology mismatch — expected ({k1},{k2}), got ({topo.k1},{topo.k2})"
+    )
+    assert topo.prograde, f"{label}: Ross families are prograde (both winding numbers positive)"
+    assert topo.reaches_secondary, f"{label}: cycler must cross L1 neck into the lunar realm"
+
+
 def test_z_oscillation_count_conventions() -> None:
     # planar: z identically 0 -> no crossings
     assert z_oscillation_count(np.zeros(100)) == 0
