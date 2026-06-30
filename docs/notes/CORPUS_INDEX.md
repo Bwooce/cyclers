@@ -90,10 +90,10 @@ is now digested, mined, or triaged.
 | koon-lo-marsden-ross-1999-genesis-trajectory-heteroclinic-AAS-99-451.pdf | 2026-06-30-digest-genesis1999-heteroclinic.md | Genesis trajectory + heteroclinic connections | #499 | text-layer |
 | dellnitz-et-al-2005-transport-mars-crossing-asteroids-quasi-hilda-PRL-94.pdf | 2026-06-30-digest-dellnitz2005-mars-transport-gaio.md | Transport of Mars-crossing asteroids from quasi-Hilda (set-oriented GAIO) | #499/#308 | text-layer |
 | ross-bozorgmagham-naik-virgin-2018-phase-space-conduits-transition-PRE-98.pdf | 2026-06-30-digest-rbnv2018-phase-space-conduits.md | Phase-space conduits (dC tube-cross-section scaling A~T_po*dC, ref[28]; -> #494 seed window) | digested | text-layer |
-| rawat-kumar-rosengren-ross-2026-cislunar-mean-motion-resonances-JGCD-49-4.pdf | undigested (#503) | Cislunar mean-motion resonances (widths, comparisons) | #503 | text-layer |
-| onozaki-yoshimura-ross-2017-tube-dynamics-low-energy-em-transfers-4body-ASR-60.pdf | undigested (#503) | Tube dynamics + low-energy EM transfers, 4-body | #503 | text-layer |
-| fitzgerald-ross-2022-geometry-transit-orbits-periodically-perturbed-rtbp-ASR-70.pdf | undigested (#503) | Geometry of transit orbits, periodically-perturbed RTBP | #503/#293 | text-layer |
-| naik-lekien-ross-2017-phase-space-transport-lobe-dynamics-rate-escape-RCD-22-3.pdf | undigested (#503) | Phase-space transport, lobe dynamics, rate of escape (+Lober software) | #503 | text-layer |
+| rawat-kumar-rosengren-ross-2026-cislunar-mean-motion-resonances-JGCD-49-4.pdf | 2026-06-30-digest-rawat2026-cislunar-mmr.md | Cislunar mean-motion resonances (widths, comparisons) | #503 | text-layer |
+| onozaki-yoshimura-ross-2017-tube-dynamics-low-energy-em-transfers-4body-ASR-60.pdf | 2026-06-30-digest-onozaki2017-tube-4body.md | Tube dynamics + low-energy EM transfers, 4-body | #503 | text-layer |
+| fitzgerald-ross-2022-geometry-transit-orbits-periodically-perturbed-rtbp-ASR-70.pdf | 2026-06-30-digest-fitzgerald2022-transit-perturbed-rtbp.md | Geometry of transit orbits, periodically-perturbed RTBP | #503/#293 | text-layer |
+| naik-lekien-ross-2017-phase-space-transport-lobe-dynamics-rate-escape-RCD-22-3.pdf | 2026-06-30-digest-naik2017-lobe-dynamics-transport.md | Phase-space transport, lobe dynamics, rate of escape (+Lober software) | #503 | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
