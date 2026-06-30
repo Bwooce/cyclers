@@ -567,7 +567,7 @@ Saturn candidate (`2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`)
 moon cyclers** (10 Jovian EurGan/GanCal/GanEur/GanIo + 19 Titan-Enceladus, full Table-3/4 invariants)
 + **2 L-L IEG triple cyclers** (GIPEIPE + single-period E-I-G-E 11 m/s, a 2nd independent #480 IEG
 source) — all sourced, published, NOT in catalogue → the richest new-V0-row source this session.
-Spawned **#491** (ingest the ~31 as V0 rows — careful multi-row edit + full ratchets) and **#492**
+**#491** (ingest the ~31 as V0 rows): **sourced-invariant extraction DONE** (staging note 2026-06-30-491-russell-strange-lynam-v0-staging.md — all ~31 cyclers transcribed from R-S Tables 3/4/5/6 + L-L, verified vs the printed cells); row-construction + census-ratchet coordination is the bounded mechanical follow-on (not rushed at session-tail). **#492 ✓ DONE** — novel sweep Neptune (clean negative) + Pluto (infeasible/binary-invalid/published); the only novel moon-cycler hit remains #312 Uranus. **#492 originally** also
 (the genuinely-NOVEL moon-cycler discovery frontier: Uranus deeper + Neptune Triton-flyby +
 Pluto-Charon — the systems with no published cycler lit AND a massive flyby body per #489; the
 Uranus #312 precedent proves novel hits exist there). **#318 Phase 2a** landed
