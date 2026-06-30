@@ -113,6 +113,42 @@ _FAMILY_SEED_NULL_NUMERIC_MULTI_ARC: frozenset[str] = frozenset(
         "russell-2006-117-5.225ggg3",
         "russell-2006-177-5.751ggf3",
         "russell-2006-178-5.751ggf3",
+        # #491 (2026-06-30): Russell-Strange 2009 (10 Jovian + 20 Titan-Enceladus)
+        # + Lynam-Longuski 2011 (2 IEG) moon cyclers added from the papers' tables
+        # (citation + V_inf + qualitative geometry; no sourced per-leg trajectory
+        # segments) -> family-seed null-numeric, exempt like the russell-2006 rows.
+        "russell-strange-2009-eurgan-131",
+        "russell-strange-2009-eurgan-159",
+        "russell-strange-2009-gancal-1",
+        "russell-strange-2009-gancal-5",
+        "russell-strange-2009-ganeur-5",
+        "russell-strange-2009-ganeur-43",
+        "russell-strange-2009-ganeur-316",
+        "russell-strange-2009-ganio-53",
+        "russell-strange-2009-ganio-185",
+        "russell-strange-2009-ganio-403",
+        "russell-strange-2009-titenc-37",
+        "russell-strange-2009-titenc-145",
+        "russell-strange-2009-titenc-183",
+        "russell-strange-2009-titenc-207",
+        "russell-strange-2009-titenc-217",
+        "russell-strange-2009-titenc-227",
+        "russell-strange-2009-titenc-231",
+        "russell-strange-2009-titenc-235",
+        "russell-strange-2009-titenc-314",
+        "russell-strange-2009-titenc-370",
+        "russell-strange-2009-titenc-492",
+        "russell-strange-2009-titenc-510",
+        "russell-strange-2009-titenc-539",
+        "russell-strange-2009-titenc-552",
+        "russell-strange-2009-titenc-572",
+        "russell-strange-2009-titenc-586",
+        "russell-strange-2009-titenc-594",
+        "russell-strange-2009-titenc-602",
+        "russell-strange-2009-titenc-624",
+        "russell-strange-2009-titenc-631",
+        "lynam-longuski-2011-ieg-single-period",
+        "lynam-longuski-2011-gipeipe",
     }
 )
 

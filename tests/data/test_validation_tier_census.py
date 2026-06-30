@@ -170,7 +170,11 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # corroborating_sources) -> classifies 'unvalidated' on the source-pair tier
     # axis. Its V2 evidence (run_v1_3d + run_v2_3d) lives on the validation_level
     # axis, not the source-pair tier -- same orthogonal-axis convention.
-    "unvalidated": 40,
+    # 40 -> 72 (2026-06-30, #491): +32 single-literature-source moon cyclers
+    # (Russell-Strange 2009: 10 Jovian + 20 Titan-Enceladus; Lynam-Longuski 2011:
+    # 2 IEG triple) -> 'unvalidated' on the source-pair tier (one source each; V0
+    # sourced lives on the orthogonal validation_level axis).
+    "unvalidated": 72,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

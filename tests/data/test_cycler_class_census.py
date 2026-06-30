@@ -2,8 +2,8 @@
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 28, multi-arc: 240, non-keplerian: 9}.
-3. The set of ids tagged multi-arc exactly equals the 240-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 46, multi-arc: 292, non-keplerian: 13}.
+3. The set of ids tagged multi-arc exactly equals the 292-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 9 non-keplerian ids match the §3 list.
 
@@ -404,11 +404,46 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "russell-2006-117-5.225ggg3",
         "russell-2006-177-5.751ggf3",
         "russell-2006-178-5.751ggf3",
+        # #491 (2026-06-30) Russell-Strange 2009 moon cyclers (30: 10 Jovian Table 3 +
+        # 20 Titan-Enceladus Table 4) + Lynam-Longuski 2011 IEG triple cyclers (2);
+        # all multi-arc (patched-conic free-return moon cyclers). multi-arc 260->292.
+        "russell-strange-2009-eurgan-131",
+        "russell-strange-2009-eurgan-159",
+        "russell-strange-2009-gancal-1",
+        "russell-strange-2009-gancal-5",
+        "russell-strange-2009-ganeur-5",
+        "russell-strange-2009-ganeur-43",
+        "russell-strange-2009-ganeur-316",
+        "russell-strange-2009-ganio-53",
+        "russell-strange-2009-ganio-185",
+        "russell-strange-2009-ganio-403",
+        "russell-strange-2009-titenc-37",
+        "russell-strange-2009-titenc-145",
+        "russell-strange-2009-titenc-183",
+        "russell-strange-2009-titenc-207",
+        "russell-strange-2009-titenc-217",
+        "russell-strange-2009-titenc-227",
+        "russell-strange-2009-titenc-231",
+        "russell-strange-2009-titenc-235",
+        "russell-strange-2009-titenc-314",
+        "russell-strange-2009-titenc-370",
+        "russell-strange-2009-titenc-492",
+        "russell-strange-2009-titenc-510",
+        "russell-strange-2009-titenc-539",
+        "russell-strange-2009-titenc-552",
+        "russell-strange-2009-titenc-572",
+        "russell-strange-2009-titenc-586",
+        "russell-strange-2009-titenc-594",
+        "russell-strange-2009-titenc-602",
+        "russell-strange-2009-titenc-624",
+        "russell-strange-2009-titenc-631",
+        "lynam-longuski-2011-ieg-single-period",
+        "lynam-longuski-2011-gipeipe",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 260, (
-    f"Allowlist must have 260 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 292, (
+    f"Allowlist must have 292 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -515,7 +550,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 260, "non-keplerian": 13}
+    expected = {"single-ellipse": 46, "multi-arc": 292, "non-keplerian": 13}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

@@ -51748,3 +51748,981 @@
     venue: "Journal of Guidance, Control, and Dynamics, Vol. 29, No. 2, pp. 354-367"
     doi: "10.2514/1.13652"
     url: "https://arc.aiaa.org/doi/10.2514/1.13652"
+
+- id: russell-strange-2009-eurgan-131
+  name: "Russell-Strange Europa-Ganymede ideal-model ballistic moon cycler #131 (Table 3; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Europa", "Ganymede"]
+  sequence_canonical: "Europa-Ganymede-Europa"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Europa"
+    vinf_kms: 2.4
+    note: "Russell-Strange 2009 Table 3, cycler EurGan#131: flyby-body V_inf. 2-leg ideal free-return cycler, period 21.2 d, min Ganymede flyby altitude 1113 km."
+  - body: "Ganymede"
+    vinf_kms: 4.1
+    note: "Russell-Strange 2009 Table 3, cycler EurGan#131: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=2, period 21.2 d. #491 ingestion."
+
+- id: russell-strange-2009-eurgan-159
+  name: "Russell-Strange Europa-Ganymede ideal-model ballistic moon cycler #159 (Table 3; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Europa", "Ganymede"]
+  sequence_canonical: "Europa-Ganymede-Europa"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Europa"
+    vinf_kms: 2.45
+    note: "Russell-Strange 2009 Table 3, cycler EurGan#159: flyby-body V_inf. 3-leg ideal free-return cycler, period 28.2 d, min Ganymede flyby altitude 1261 km."
+  - body: "Ganymede"
+    vinf_kms: 4.11
+    note: "Russell-Strange 2009 Table 3, cycler EurGan#159: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=3, period 28.2 d. #491 ingestion."
+
+- id: russell-strange-2009-gancal-1
+  name: "Russell-Strange Ganymede-Callisto ideal-model ballistic moon cycler #1 (Table 3; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Callisto"]
+  sequence_canonical: "Ganymede-Callisto-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 3.18
+    note: "Russell-Strange 2009 Table 3, cycler GanCal#1: flyby-body V_inf. 3-leg ideal free-return cycler, period 37.6 d, min Callisto flyby altitude 247 km."
+  - body: "Callisto"
+    vinf_kms: 3.26
+    note: "Russell-Strange 2009 Table 3, cycler GanCal#1: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=3, period 37.6 d. #491 ingestion."
+
+- id: russell-strange-2009-gancal-5
+  name: "Russell-Strange Ganymede-Callisto ideal-model ballistic moon cycler #5 (Table 3; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Callisto"]
+  sequence_canonical: "Ganymede-Callisto-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 3.24
+    note: "Russell-Strange 2009 Table 3, cycler GanCal#5: flyby-body V_inf. 2-leg ideal free-return cycler, period 37.6 d, min Callisto flyby altitude 328 km."
+  - body: "Callisto"
+    vinf_kms: 3.34
+    note: "Russell-Strange 2009 Table 3, cycler GanCal#5: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=2, period 37.6 d. #491 ingestion."
+
+- id: russell-strange-2009-ganeur-5
+  name: "Russell-Strange Ganymede-Europa ideal-model ballistic moon cycler #5 (Table 3; 1-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Europa"]
+  sequence_canonical: "Ganymede-Europa-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 1.66
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#5: flyby-body V_inf. 1-leg ideal free-return cycler, period 35.3 d, min Europa flyby altitude 1819 km."
+  - body: "Europa"
+    vinf_kms: 2.57
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#5: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=1, period 35.3 d. #491 ingestion."
+
+- id: russell-strange-2009-ganeur-43
+  name: "Russell-Strange Ganymede-Europa ideal-model ballistic moon cycler #43 (Table 3; 1-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Europa"]
+  sequence_canonical: "Ganymede-Europa-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 1.87
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#43: flyby-body V_inf. 1-leg ideal free-return cycler, period 14.1 d, min Europa flyby altitude 8861 km."
+  - body: "Europa"
+    vinf_kms: 3.89
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#43: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=1, period 14.1 d. #491 ingestion."
+
+- id: russell-strange-2009-ganeur-316
+  name: "Russell-Strange Ganymede-Europa ideal-model ballistic moon cycler #316 (Table 3; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Europa"]
+  sequence_canonical: "Ganymede-Europa-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 3.2
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#316: flyby-body V_inf. 4-leg ideal free-return cycler, period 49.4 d, min Europa flyby altitude 1447 km."
+  - body: "Europa"
+    vinf_kms: 3.81
+    note: "Russell-Strange 2009 Table 3, cycler GanEur#316: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=4, period 49.4 d. #491 ingestion."
+
+- id: russell-strange-2009-ganio-53
+  name: "Russell-Strange Ganymede-Io ideal-model ballistic moon cycler #53 (Table 3; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Io"]
+  sequence_canonical: "Ganymede-Io-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 3.9
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#53: flyby-body V_inf. 2-leg ideal free-return cycler, period 21.2 d, min Io flyby altitude 518 km."
+  - body: "Io"
+    vinf_kms: 3.9
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#53: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=2, period 21.2 d. #491 ingestion."
+
+- id: russell-strange-2009-ganio-185
+  name: "Russell-Strange Ganymede-Io ideal-model ballistic moon cycler #185 (Table 3; 6-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Io"]
+  sequence_canonical: "Ganymede-Io-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 3.97
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#185: flyby-body V_inf. 6-leg ideal free-return cycler, period 49.4 d, min Io flyby altitude 603 km."
+  - body: "Io"
+    vinf_kms: 9.9
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#185: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=6, period 49.4 d. #491 ingestion."
+
+- id: russell-strange-2009-ganio-403
+  name: "Russell-Strange Ganymede-Io ideal-model ballistic moon cycler #403 (Table 3; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Ganymede", "Io"]
+  sequence_canonical: "Ganymede-Io-Ganymede"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ganymede"
+    vinf_kms: 4.29
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#403: flyby-body V_inf. 2-leg ideal free-return cycler, period 56.4 d, min Io flyby altitude 540 km."
+  - body: "Io"
+    vinf_kms: 4.34
+    note: "Russell-Strange 2009 Table 3, cycler GanIo#403: target-body V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 3 + Table 5 leg descriptor; V0 = sourced ideal-model ballistic moon cycler; n_legs=2, period 56.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-37
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #37 (Table 4; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 2.5
+    note: "Russell-Strange 2009 Table 4, TitEnc#37: Titan (flyby-body) V_inf. 2-leg ideal free-return cycler, period 94.4 d, petal -3.34 yr, min Titan flyby altitude 1377 km."
+  - body: "Enceladus"
+    vinf_kms: 5.17
+    note: "Russell-Strange 2009 Table 4, TitEnc#37: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=2, period 94.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-145
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #145 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 2.78
+    note: "Russell-Strange 2009 Table 4, TitEnc#145: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 94.4 d, petal -3.34 yr, min Titan flyby altitude 1067 km."
+  - body: "Enceladus"
+    vinf_kms: 7.33
+    note: "Russell-Strange 2009 Table 4, TitEnc#145: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 94.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-183
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #183 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 2.98
+    note: "Russell-Strange 2009 Table 4, TitEnc#183: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 64.5 d, petal 4.16 yr, min Titan flyby altitude 3304 km."
+  - body: "Enceladus"
+    vinf_kms: 4.66
+    note: "Russell-Strange 2009 Table 4, TitEnc#183: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 64.5 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-207
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #207 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.03
+    note: "Russell-Strange 2009 Table 4, TitEnc#207: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 63.0 d, petal -3.34 yr, min Titan flyby altitude 3905 km."
+  - body: "Enceladus"
+    vinf_kms: 5.08
+    note: "Russell-Strange 2009 Table 4, TitEnc#207: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 63.0 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-217
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #217 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.03
+    note: "Russell-Strange 2009 Table 4, TitEnc#217: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 63.0 d, petal -3.34 yr, min Titan flyby altitude 10059 km."
+  - body: "Enceladus"
+    vinf_kms: 5.08
+    note: "Russell-Strange 2009 Table 4, TitEnc#217: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 63.0 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-227
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #227 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.17
+    note: "Russell-Strange 2009 Table 4, TitEnc#227: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 80.9 d, petal 2.9 yr, min Titan flyby altitude 1183 km."
+  - body: "Enceladus"
+    vinf_kms: 5.98
+    note: "Russell-Strange 2009 Table 4, TitEnc#227: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 80.9 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-231
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #231 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.18
+    note: "Russell-Strange 2009 Table 4, TitEnc#231: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 97.4 d, petal 2.41 yr, min Titan flyby altitude 2140 km."
+  - body: "Enceladus"
+    vinf_kms: 6.04
+    note: "Russell-Strange 2009 Table 4, TitEnc#231: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 97.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-235
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #235 (Table 4; 5-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.18
+    note: "Russell-Strange 2009 Table 4, TitEnc#235: Titan (flyby-body) V_inf. 5-leg ideal free-return cycler, period 97.4 d, petal 2.41 yr, min Titan flyby altitude 1843 km."
+  - body: "Enceladus"
+    vinf_kms: 6.04
+    note: "Russell-Strange 2009 Table 4, TitEnc#235: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=5, period 97.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-314
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #314 (Table 4; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.59
+    note: "Russell-Strange 2009 Table 4, TitEnc#314: Titan (flyby-body) V_inf. 2-leg ideal free-return cycler, period 49.5 d, petal 1.32 yr, min Titan flyby altitude 1218 km."
+  - body: "Enceladus"
+    vinf_kms: 6.88
+    note: "Russell-Strange 2009 Table 4, TitEnc#314: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=2, period 49.5 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-370
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #370 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 3.69
+    note: "Russell-Strange 2009 Table 4, TitEnc#370: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 97.4 d, petal 2.41 yr, min Titan flyby altitude 1343 km."
+  - body: "Enceladus"
+    vinf_kms: 4.15
+    note: "Russell-Strange 2009 Table 4, TitEnc#370: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 97.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-492
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #492 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 4.63
+    note: "Russell-Strange 2009 Table 4, TitEnc#492: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 97.4 d, petal 2.41 yr, min Titan flyby altitude 4085 km."
+  - body: "Enceladus"
+    vinf_kms: 5.61
+    note: "Russell-Strange 2009 Table 4, TitEnc#492: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 97.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-510
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #510 (Table 4; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.03
+    note: "Russell-Strange 2009 Table 4, TitEnc#510: Titan (flyby-body) V_inf. 2-leg ideal free-return cycler, period 80.9 d, petal 2.9 yr, min Titan flyby altitude 1852 km."
+  - body: "Enceladus"
+    vinf_kms: 7.27
+    note: "Russell-Strange 2009 Table 4, TitEnc#510: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=2, period 80.9 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-539
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #539 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.14
+    note: "Russell-Strange 2009 Table 4, TitEnc#539: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 97.4 d, petal 2.41 yr, min Titan flyby altitude 1821 km."
+  - body: "Enceladus"
+    vinf_kms: 8.08
+    note: "Russell-Strange 2009 Table 4, TitEnc#539: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 97.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-552
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #552 (Table 4; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.16
+    note: "Russell-Strange 2009 Table 4, TitEnc#552: Titan (flyby-body) V_inf. 2-leg ideal free-return cycler, period 112.4 d, petal 6.06 yr, min Titan flyby altitude 3784 km."
+  - body: "Enceladus"
+    vinf_kms: 7.69
+    note: "Russell-Strange 2009 Table 4, TitEnc#552: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=2, period 112.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-572
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #572 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.28
+    note: "Russell-Strange 2009 Table 4, TitEnc#572: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 112.4 d, petal 6.06 yr, min Titan flyby altitude 1798 km."
+  - body: "Enceladus"
+    vinf_kms: 4.69
+    note: "Russell-Strange 2009 Table 4, TitEnc#572: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 112.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-586
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #586 (Table 4; 2-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.43
+    note: "Russell-Strange 2009 Table 4, TitEnc#586: Titan (flyby-body) V_inf. 2-leg ideal free-return cycler, period 112.4 d, petal 6.06 yr, min Titan flyby altitude 3874 km."
+  - body: "Enceladus"
+    vinf_kms: 6.68
+    note: "Russell-Strange 2009 Table 4, TitEnc#586: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=2, period 112.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-594
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #594 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.55
+    note: "Russell-Strange 2009 Table 4, TitEnc#594: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 127.4 d, petal -38.2 yr, min Titan flyby altitude 6348 km."
+  - body: "Enceladus"
+    vinf_kms: 5.76
+    note: "Russell-Strange 2009 Table 4, TitEnc#594: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 127.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-602
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #602 (Table 4; 4-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.55
+    note: "Russell-Strange 2009 Table 4, TitEnc#602: Titan (flyby-body) V_inf. 4-leg ideal free-return cycler, period 127.4 d, petal -38.2 yr, min Titan flyby altitude 1469 km."
+  - body: "Enceladus"
+    vinf_kms: 5.76
+    note: "Russell-Strange 2009 Table 4, TitEnc#602: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=4, period 127.4 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-624
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #624 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.79
+    note: "Russell-Strange 2009 Table 4, TitEnc#624: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 95.9 d, petal 15.77 yr, min Titan flyby altitude 1961 km."
+  - body: "Enceladus"
+    vinf_kms: 7.97
+    note: "Russell-Strange 2009 Table 4, TitEnc#624: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 95.9 d. #491 ingestion."
+
+- id: russell-strange-2009-titenc-631
+  name: "Russell-Strange Titan-Enceladus ideal-model ballistic cycler #631 (Table 4; 3-leg)"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Saturn"
+  bodies: ["Titan", "Enceladus"]
+  sequence_canonical: "Titan-Enceladus-Titan"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titan"
+    vinf_kms: 5.91
+    note: "Russell-Strange 2009 Table 4, TitEnc#631: Titan (flyby-body) V_inf. 3-leg ideal free-return cycler, period 127.4 d, petal -38.2 yr, min Titan flyby altitude 4243 km."
+  - body: "Enceladus"
+    vinf_kms: 7.49
+    note: "Russell-Strange 2009 Table 4, TitEnc#631: Enceladus (target-body) V_inf."
+  first_published:
+    authors: ["R. P. Russell", "N. J. Strange"]
+    year: 2009
+    title: "Cycler Trajectories in Planetary Moon Systems"
+    venue: "Journal of Guidance, Control, and Dynamics, Vol. 32, No. 1, pp. 143-157"
+    doi: "10.2514/1.36610"
+    url: "https://arc.aiaa.org/doi/10.2514/1.36610"
+  source_ephemeris: "ideal circular-coplanar Saturnian model (Russell-Strange 2009 §III)"
+  notes: "Russell-Strange 2009 (DOI 10.2514/1.36610) Table 4 + Table 6 leg descriptor; V0 = sourced ideal-model ballistic Titan-Enceladus cycler; n_legs=3, period 127.4 d. #491 ingestion."
+
+- id: lynam-longuski-2011-ieg-single-period
+  name: "Lynam-Longuski single-period Laplace-resonant Io-Europa-Ganymede triple cycler"
+  source: literature
+  trajectory_regime: powered
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Io", "Europa", "Ganymede"]
+  sequence_canonical: "Europa-Io-Ganymede-Europa"
+  sense: "n/a"
+  first_published:
+    authors: ["A. E. Lynam", "J. M. Longuski"]
+    year: 2011
+    title: "Laplace-resonant triple-cyclers for missions to Jupiter"
+    venue: "Acta Astronautica, Vol. 69, No. 3-4, pp. 158-167"
+    doi: "10.1016/j.actaastro.2011.03.011"
+    url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"
+  notes: "Lynam-Longuski 2011: single-period IEG triple cycler (E-perijove-I-G-apojove-E), Laplace period 7.05 d, total Delta-V ~11 m/s (patched-conic ephemeris/MALTO); ballistic version needs a -175 km Europa flyby. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion."
+
+- id: lynam-longuski-2011-gipeipe
+  name: "Lynam-Longuski indefinitely-repeatable GIPEIPE Io-Europa-Ganymede triple cycler"
+  source: literature
+  trajectory_regime: ballistic
+  model_assumption: circular-coplanar
+  cycler_class: multi-arc
+  orbit_class: cycler
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0
+  primary: "Jupiter"
+  bodies: ["Io", "Europa", "Ganymede"]
+  sequence_canonical: "Ganymede-Io-Europa-Io-Europa"
+  sense: "n/a"
+  first_published:
+    authors: ["A. E. Lynam", "J. M. Longuski"]
+    year: 2011
+    title: "Laplace-resonant triple-cyclers for missions to Jupiter"
+    venue: "Acta Astronautica, Vol. 69, No. 3-4, pp. 158-167"
+    doi: "10.1016/j.actaastro.2011.03.011"
+    url: "https://doi.org/10.1016/j.actaastro.2011.03.011"
+  source_ephemeris: "ideal circular-coplanar Galilean model (Lynam-Longuski 2011, Laplace phase-angle analysis)"
+  notes: "Lynam-Longuski 2011: indefinitely-repeatable GIPEIPE cycler (Ganymede-Io-perijove-Europa-Io-perijove-Europa), orbital period 3.5 d, repeats every Laplace period 7.05 d; the lowest-Delta-V member. A 2nd independent source for the #480 IEG triple-cycler class (Hernandez 2017 ref [7]). #491 ingestion."
