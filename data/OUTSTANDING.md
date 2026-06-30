@@ -562,8 +562,15 @@ pairs (Tethys-Enceladus, Dione-Tethys) are NOT R-S architecture → novelty RE-O
 (Tethys flyby 0.44° / Dione 3-5° max-bend vs Titan ~50°; the #320 #324 gate already recorded
 `physical_gate_passed: FALSE`; my low-V∞ hypothesis was wrong, mass deficit dominates).
 Russell-Strange's "only Titan" premise CONFIRMED; Titan-Rhea-Titan stays V0-known; NO novel
-Saturn candidate (`2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`). **#490** (open)
-= mine R-S Tables 3-4 + L-L members (V1 targets / 2nd #480 IEG golden). **#318 Phase 2a** landed
+Saturn candidate (`2026-06-30-489-saturn-smallmoon-flyby-infeasible-verdict.md`). **#490 ✓ DONE**
+= mined R-S + L-L (`2026-06-30-490-russell-strange-lynam-mining.md`): **~29 documented R-S two-moon
+moon cyclers** (10 Jovian EurGan/GanCal/GanEur/GanIo + 19 Titan-Enceladus, full Table-3/4 invariants)
++ **2 L-L IEG triple cyclers** (GIPEIPE + single-period E-I-G-E 11 m/s, a 2nd independent #480 IEG
+source) — all sourced, published, NOT in catalogue → the richest new-V0-row source this session.
+Spawned **#491** (ingest the ~31 as V0 rows — careful multi-row edit + full ratchets) and **#492**
+(the genuinely-NOVEL moon-cycler discovery frontier: Uranus deeper + Neptune Triton-flyby +
+Pluto-Charon — the systems with no published cycler lit AND a massive flyby body per #489; the
+Uranus #312 precedent proves novel hits exist there). **#318 Phase 2a** landed
 (joint-cell evaluator + Liang positive control). #293 ER3BP still un-started. **Net of the whole
 #312→#320 arc: the only genuinely-novel admitted hit is the #312 Uranus quasi-cycler (V4); all
 else V0-known / infeasible / published-class.**
