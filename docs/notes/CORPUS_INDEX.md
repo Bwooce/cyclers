@@ -84,12 +84,12 @@ is now digested, mined, or triaged.
 | grover-ross-2009-controlled-keplerian-map-planet-moon-JGCD-32-2.pdf | undigested (#498) | Designing trajectories in a planet-moon env via the controlled Keplerian map | #498 | text-layer |
 | koon-lo-marsden-ross-2001-resonance-capture-jupiter-comets-CMDA-81.pdf | undigested (#498) | Resonance and capture of Jupiter comets | #498 | text-layer |
 | koon-marsden-ross-lo-scheeres-2004-geometric-mechanics-asteroid-pairs-NYAS-1017.pdf | undigested (#498) | Geometric mechanics and dynamics of asteroid pairs (binary dynamics) | #498/#494 | text-layer |
-| koon-lo-marsden-ross-2000-heteroclinic-connections-resonance-transitions-chaos-10-2.pdf | undigested (#499) | Heteroclinic connections between periodic orbits + resonance transitions (Chaos 10) | #499 | text-layer |
-| braik-ross-2025-heteroclinic-transfer-L1-L3-earth-moon-AAS-25-716.pdf | undigested (#499) | Heteroclinic transfer L1<->L3 Earth-Moon | #499 | text-layer |
+| koon-lo-marsden-ross-2000-heteroclinic-connections-resonance-transitions-chaos-10-2.pdf | 2026-06-30-digest-klmr2000-heteroclinic-chaos.md | Heteroclinic connections + resonance transitions (Chaos 10; (2,2) conn at C=3.037 = #314 control) | mined-by-#314 | text-layer |
+| braik-ross-2025-heteroclinic-transfer-L1-L3-earth-moon-AAS-25-716.pdf | 2026-06-30-digest-braik-ross-2025-heteroclinic-L1-L3.md | Heteroclinic transfer L1<->L3 EM (multi-crossing Poincare + closest-pair seed -> #411/#496 blueprint) | digested | text-layer |
 | gomez-koon-lo-marsden-masdemont-ross-2004-connecting-orbits-spatial-rtbp-nonlinearity-17.pdf | undigested (#499) | Connecting orbits + invariant manifolds, spatial RTBP (ref[26] of Ross-RT) | #499 | text-layer |
 | koon-lo-marsden-ross-1999-genesis-trajectory-heteroclinic-AAS-99-451.pdf | undigested (#499) | Genesis trajectory + heteroclinic connections | #499 | text-layer |
 | dellnitz-et-al-2005-transport-mars-crossing-asteroids-quasi-hilda-PRL-94.pdf | undigested (#499) | Transport of Mars-crossing asteroids from quasi-Hilda (set-oriented GAIO) | #499/#308 | text-layer |
-| ross-bozorgmagham-naik-virgin-2018-phase-space-conduits-transition-PRE-98.pdf | undigested (#499) | Phase-space conduits of transition (dC tube-cross-section scaling, ref[28] of Ross-RT) | #499/#494 | text-layer |
+| ross-bozorgmagham-naik-virgin-2018-phase-space-conduits-transition-PRE-98.pdf | 2026-06-30-digest-rbnv2018-phase-space-conduits.md | Phase-space conduits (dC tube-cross-section scaling A~T_po*dC, ref[28]; -> #494 seed window) | digested | text-layer |
 | rawat-kumar-rosengren-ross-2026-cislunar-mean-motion-resonances-JGCD-49-4.pdf | undigested (#503) | Cislunar mean-motion resonances (widths, comparisons) | #503 | text-layer |
 | onozaki-yoshimura-ross-2017-tube-dynamics-low-energy-em-transfers-4body-ASR-60.pdf | undigested (#503) | Tube dynamics + low-energy EM transfers, 4-body | #503 | text-layer |
 | fitzgerald-ross-2022-geometry-transit-orbits-periodically-perturbed-rtbp-ASR-70.pdf | undigested (#503) | Geometry of transit orbits, periodically-perturbed RTBP | #503/#293 | text-layer |
