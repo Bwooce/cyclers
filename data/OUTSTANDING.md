@@ -538,6 +538,13 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   tables — paywalled JGCD, #116-style — would pin exact Saturn membership but not the
   not-novel conclusion.)
 - **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
+
+**Tracked-task allocations (2026-06-30)** — see [[project_task_numbering_convention]] (sequential
+`#NNN`, next-unused; max was #486 → #487 next): **#487** = build the V4_qp gauntlet (HFEM analogue
+for 2-tori; DE-PRIORITISED — no novel QP-torus candidate, see #320 lit verdict). **#488** = acquire
+Russell-Strange 2009 "Planetary Moon Cycler Trajectories" JGCD 32(1) (human-gated; the canonical
+moon-cycler census we keep citing as the V0-known authority but don't hold). **#318 Phase 2**
+(real-eph n-body multi-axis joint search) STARTED 2026-06-30. #293 ER3BP still un-started.
 - **#314 ✓ DONE (2026-06-20)** Heteroclinic-network mass-transport (new
   "periodic-up-to-rotation" closure). Delivered `genome/heteroclinic_cycle.py`
   (planar CR3BP): Lyapunov nodes + Floquet-manifold seeding + 2-D Newton
