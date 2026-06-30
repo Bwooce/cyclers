@@ -81,6 +81,11 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
 "tests/ml/*.py" = ["N803", "N806"]
 # Russell generic-return geometry uses the source's body-vector notation r_B/v_B.
 "tests/search/test_generic_return.py" = ["N806"]
+# Keplerian-map module (#500) uses source-notation: K = Keplerian energy, C_J = Jacobi
+# constant, E = eccentric anomaly, M = mean anomaly, T_sc = spacecraft period.
+# N802: semimajor_from_K is a public API; renaming would break the source mapping.
+"src/cyclerfinder/genome/keplerian_map.py" = ["N802", "N803", "N806"]
+"tests/genome/test_keplerian_map.py" = ["N803", "N806"]
 
 [tool.ruff.format]
 # Defaults are PEP 8 compatible; keep them.
