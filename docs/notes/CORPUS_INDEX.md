@@ -78,6 +78,22 @@ is now digested, mined, or triaged.
 | canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md; canalias_se_em_connection.yaml | SE-EM manifold connections, heteroclinic bifurcations PhD | digested + mined | text-layer |
 | koon-lo-marsden-ross-2000-shoot-the-moon.pdf | 2026-06-21-digest-koon-2000-shoot-the-moon.md | Shoot the Moon - Hiten trajectory via invariant manifolds | digested | text-layer |
 | koon-lo-marsden-ross-2006-dynamical-systems-mission-design.pdf | 2026-06-21-digest-klmr-2006-book.md | KLMR Dynamical Systems and Space Mission Design book | digested | text-layer |
+| ross-koon-lo-marsden-2003-multi-moon-orbiter-AAS-03-143.pdf | undigested (#498) | Design of a multi-moon orbiter (manifold Jovian moon tour) | #498 | text-layer |
+| ross-scheeres-2007-multiple-gravity-assists-capture-escape-rtbp-SIADS-6-3.pdf | undigested (#498) | Multiple gravity assists, capture, escape in RTBP (controlled Keplerian map) | #498 | text-layer |
+| koon-lo-marsden-ross-2002-low-energy-transfer-jovian-moons-contemp-math-292.pdf | undigested (#498) | Constructing a low energy transfer between Jovian moons | #498 | text-layer |
+| grover-ross-2009-controlled-keplerian-map-planet-moon-JGCD-32-2.pdf | undigested (#498) | Designing trajectories in a planet-moon env via the controlled Keplerian map | #498 | text-layer |
+| koon-lo-marsden-ross-2001-resonance-capture-jupiter-comets-CMDA-81.pdf | undigested (#498) | Resonance and capture of Jupiter comets | #498 | text-layer |
+| koon-marsden-ross-lo-scheeres-2004-geometric-mechanics-asteroid-pairs-NYAS-1017.pdf | undigested (#498) | Geometric mechanics and dynamics of asteroid pairs (binary dynamics) | #498/#494 | text-layer |
+| koon-lo-marsden-ross-2000-heteroclinic-connections-resonance-transitions-chaos-10-2.pdf | undigested (#499) | Heteroclinic connections between periodic orbits + resonance transitions (Chaos 10) | #499 | text-layer |
+| braik-ross-2025-heteroclinic-transfer-L1-L3-earth-moon-AAS-25-716.pdf | undigested (#499) | Heteroclinic transfer L1<->L3 Earth-Moon | #499 | text-layer |
+| gomez-koon-lo-marsden-masdemont-ross-2004-connecting-orbits-spatial-rtbp-nonlinearity-17.pdf | undigested (#499) | Connecting orbits + invariant manifolds, spatial RTBP (ref[26] of Ross-RT) | #499 | text-layer |
+| koon-lo-marsden-ross-1999-genesis-trajectory-heteroclinic-AAS-99-451.pdf | undigested (#499) | Genesis trajectory + heteroclinic connections | #499 | text-layer |
+| dellnitz-et-al-2005-transport-mars-crossing-asteroids-quasi-hilda-PRL-94.pdf | undigested (#499) | Transport of Mars-crossing asteroids from quasi-Hilda (set-oriented GAIO) | #499/#308 | text-layer |
+| ross-bozorgmagham-naik-virgin-2018-phase-space-conduits-transition-PRE-98.pdf | undigested (#499) | Phase-space conduits of transition (dC tube-cross-section scaling, ref[28] of Ross-RT) | #499/#494 | text-layer |
+| rawat-kumar-rosengren-ross-2026-cislunar-mean-motion-resonances-JGCD-49-4.pdf | undigested (#503) | Cislunar mean-motion resonances (widths, comparisons) | #503 | text-layer |
+| onozaki-yoshimura-ross-2017-tube-dynamics-low-energy-em-transfers-4body-ASR-60.pdf | undigested (#503) | Tube dynamics + low-energy EM transfers, 4-body | #503 | text-layer |
+| fitzgerald-ross-2022-geometry-transit-orbits-periodically-perturbed-rtbp-ASR-70.pdf | undigested (#503) | Geometry of transit orbits, periodically-perturbed RTBP | #503/#293 | text-layer |
+| naik-lekien-ross-2017-phase-space-transport-lobe-dynamics-rate-escape-RCD-22-3.pdf | undigested (#503) | Phase-space transport, lobe dynamics, rate of escape (+Lober software) | #503 | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
