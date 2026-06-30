@@ -513,7 +513,11 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   **real-ephemeris n-body joint search** (where 3D/epoch/powered/multi-rev co-vary naturally),
   treating CR3BP-3D as a separate lane — a multi-week build, honest cost. Verdict
   `docs/notes/2026-06-30-318-phase2-blocker-diagnosis-reframe.md`. No code/catalogue change.
-- **#319** QP-tori V0-V5 gauntlet — **V1_qp + V2_qp shipped; V3/V4/V5 scoped & DEFERRED.**
+- **#319** QP-tori V0-V5 gauntlet — V1_qp + V2_qp + **V3_qp now SHIPPED 2026-06-30**
+  (`src/cyclerfinder/data/validation/v3_qp.py` + tests; REBOUND IAS15 independent-integrator
+  invariance check, the QP analogue of `v3_3d_periodic`). V4_qp/V5_qp still scoped/deferred
+  (V4 = the QP analogue of #332's HFEM, undefined). Verdict
+  `docs/notes/2026-06-30-319-v3qp-gauntlet-320-silvers-pass.md`.
 - **#320** First quasi_cycler sweep (2026-06-17). **Candidates ADJUDICATED 2026-06-30**
   (`docs/notes/2026-06-30-320-saturn-quasicycler-litnovelty-verdict.md`): the Saturn two-moon
   quasi-cyclers (Tethys-Enceladus 0.026, Titan-Rhea 0.032, Dione-Tethys 0.039 km/s) are
@@ -522,8 +526,10 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   FAILS. Pluto Hydra-Nix (4-anchor) V0-known. Neptune 0.058 is lit-fresh-class but DOESN'T
   CLOSE (above gate). **The only genuinely-fresh + closing #320 candidates are the Earth-Moon
   QP-tori SILVERs (brackets 2 & 10, k=4)** — a distinct class (invariant 2-tori, not the
-  published moon-cycler family); they pass V1_qp+V2_qp but are blocked on **#319 V3_qp/V4_qp
-  (deferred)** — the real novel #320 follow-on. (Acquiring Russell-Strange 2009's Saturnian
+  published moon-cycler family); they pass V1_qp+V2_qp and now **V3_qp (both PASS 2026-06-30**, IAS15 reproduces the DOP853
+  invariance, integrators agree to 9e-6/3e-7 nondim; `data/silver_320_qp_v3_verdicts.jsonl`);
+  remaining gates = V4_qp (undefined) + live lit-novelty (is THIS Antoniadou-Voyatzis-seeded
+  Earth-Moon 3D torus family published?) + human review. (Acquiring Russell-Strange 2009's Saturnian
   tables — paywalled JGCD, #116-style — would pin exact Saturn membership but not the
   not-novel conclusion.)
 - **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
