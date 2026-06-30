@@ -503,10 +503,16 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
 - **#308** Asteroid-leveraging — Phase 1 substrate done; structurally weak (NEAs ~25 m–16 km
   → patched-conic bend well below the 5° floor at cycler V∞; the gate correctly rejects).
   Effectively a characterized near-dead-end. `…-308-asteroid-leveraging-phase1.md`.
-- **#318 OPEN (the top open probe)** Multi-axis joint search (powered × multi-rev × 3D ×
-  epoch-locked) — strategic-answer keystone, no published paper has done this joint sweep.
-  **Phase 1 substrate complete; Phase 2 (the actual joint sweep) scoped & un-run.**
-  `…-318-multi-axis-joint-search-phase1.md`.
+- **#318 OPEN — Phase-2 REFRAMED 2026-06-30** Multi-axis joint search (powered × multi-rev ×
+  3D × epoch-locked). Took it as the top open probe; the diagnosis corrected Phase 1's "just
+  needs smarter sampling" framing: **the real blocker is a MODEL mismatch** — axes A/B/D are
+  the heliocentric Lambert cycler (#309/#289) but axis C is a CR3BP periodic-orbit corrector
+  (#291) with no shared state, so the "joint sweep" is structurally NOT jointly 3D in the
+  substrate as built (the z0 axis is inert in the Lambert model — Phase 1's "3D request
+  converges identically to planar" IS this). Reframe: the right keystone build is a
+  **real-ephemeris n-body joint search** (where 3D/epoch/powered/multi-rev co-vary naturally),
+  treating CR3BP-3D as a separate lane — a multi-week build, honest cost. Verdict
+  `docs/notes/2026-06-30-318-phase2-blocker-diagnosis-reframe.md`. No code/catalogue change.
 - **#319** QP-tori V0-V5 gauntlet — **V1_qp + V2_qp shipped; V3/V4/V5 scoped & DEFERRED.**
 - **#320** First quasi_cycler sweep (2026-06-17) — found additional candidates: Saturn
   Titan-Rhea-Titan (1,1) 0.032 km/s SILVER (1-anchor overlap), Pluto Hydra-Nix pair ~1e-3
