@@ -514,10 +514,18 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   treating CR3BP-3D as a separate lane — a multi-week build, honest cost. Verdict
   `docs/notes/2026-06-30-318-phase2-blocker-diagnosis-reframe.md`. No code/catalogue change.
 - **#319** QP-tori V0-V5 gauntlet — **V1_qp + V2_qp shipped; V3/V4/V5 scoped & DEFERRED.**
-- **#320** First quasi_cycler sweep (2026-06-17) — found additional candidates: Saturn
-  Titan-Rhea-Titan (1,1) 0.032 km/s SILVER (1-anchor overlap), Pluto Hydra-Nix pair ~1e-3
-  (4-anchor → likely V0-known), Neptune 0.058 lit-fresh near-miss. Their V3/V4/admission
-  follow-on is open.
+- **#320** First quasi_cycler sweep (2026-06-17). **Candidates ADJUDICATED 2026-06-30**
+  (`docs/notes/2026-06-30-320-saturn-quasicycler-litnovelty-verdict.md`): the Saturn two-moon
+  quasi-cyclers (Tethys-Enceladus 0.026, Titan-Rhea 0.032, Dione-Tethys 0.039 km/s) are
+  **V0-known** — live lit-check places them within Russell-Strange 2009's enumerative
+  Saturnian two-moon cycler census ("hundreds, any two moons"); novelty necessary condition
+  FAILS. Pluto Hydra-Nix (4-anchor) V0-known. Neptune 0.058 is lit-fresh-class but DOESN'T
+  CLOSE (above gate). **The only genuinely-fresh + closing #320 candidates are the Earth-Moon
+  QP-tori SILVERs (brackets 2 & 10, k=4)** — a distinct class (invariant 2-tori, not the
+  published moon-cycler family); they pass V1_qp+V2_qp but are blocked on **#319 V3_qp/V4_qp
+  (deferred)** — the real novel #320 follow-on. (Acquiring Russell-Strange 2009's Saturnian
+  tables — paywalled JGCD, #116-style — would pin exact Saturn membership but not the
+  not-novel conclusion.)
 - **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
 - **#314 ✓ DONE (2026-06-20)** Heteroclinic-network mass-transport (new
   "periodic-up-to-rotation" closure). Delivered `genome/heteroclinic_cycle.py`
