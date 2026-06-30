@@ -213,6 +213,20 @@ Enceladus capture tour verbatim. None SILVER-novel (confirms the #465 prior at b
 catalogue self-admission; the 8 are V0-known candidates flagged for the human gauntlet (a
 human-admitted reproduction is V0-known at most). No new rows.
 
+**#312 Uranus quasi-cycler — live-web lit-novelty grounding (2026-06-30)**
+(`docs/notes/2026-06-30-312-uranus-quasicycler-litnovelty-grounding.md`). The session's
+highest-novelty SILVER (Umbriel-Oberon-Umbriel (1,1), residual 0.0252 km/s, V∞ ~0.9 km/s,
+`quasi_cycler`) had only an OFFLINE corpus not-found. A live 3-query web search confirms the
+**lit-novelty necessary condition at the PUBLISHED-record level**: no published Uranian cycler
+exists (the moon-cycler literature — Russell-Strange 2009, Lynam-Longuski 2011 — is Jupiter +
+Saturn only). **Framing CORRECTION:** #312's "no Uranian prior / fresh primary" is outdated —
+the Uranian *system* IS published (Heaton-Longuski 2003 mga_tour, now catalogued, + orbiter
+tours) but as one-way epoch-locked pump tours at V∞ 2-4 km/s, a different class/regime than the
+candidate's ~0.9 km/s periodic quasi-cycler. Precise novelty: **"first repeated-moon
+quasi-cycler at Uranus" — fresh topology in a published mga_tour system**, not an untouched
+primary. Still necessary-not-sufficient; admission blocker is the V4 Uranian HFEM gauntlet
+(#332), not novelty. No catalogue writeback.
+
 **Cislunar BCT substrate (#378) — CAPABILITY SHIPPED, clean negative on the
 quasi-cycler.** Belbruno weak-stability-boundary / ballistic-capture-transfer
 machinery integrated into the BCR4BP discovery stack: `core/wsb.py` (E_2, the W
