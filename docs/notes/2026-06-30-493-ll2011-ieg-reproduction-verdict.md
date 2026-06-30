@@ -139,3 +139,31 @@ Evidence basis: `src/cyclerfinder/search/ll2011_ballistic.py` + `tests/search/te
 - `scripts/ll2011_493_reproduce.py` — characterisation driver (new, #493)
 - `tests/search/test_ll2011_ballistic.py` — golden test (8 tests, all pass, #493)
 - `docs/notes/2026-06-30-493-ll2011-ieg-reproduction-verdict.md` — this file
+
+---
+
+## HUMAN ADJUDICATION (2026-06-30) — both rows STAY V0 (override the V1 recommendation)
+
+The agent recommended V1 for both; on review against the #480 precedent and the V1 bar, **both stay
+V0**. Reasoning:
+
+1. **GIPEIPE — characterized NEGATIVE, not V1.** The geometric closure (resnorm 5.7e-14) is into a
+   **physically-infeasible basin**: all four interior flybys are sub-surface (−1,172 to −1,803 km).
+   Per [[feedback_orbit_closure_discipline]], "it closed!" with a binding constraint (flyby altitude)
+   left out of the feasibility verdict is the danger signal, not a pass. Identical to #480 EGGIE
+   Gate-B, which stayed V0.
+2. **Single-period IEG — same EIGE construction as #480, which stayed V0.** The agent reused #480's
+   `eige_ballistic.feasible_ballistic_eige()`. The feasible ballistic member it finds is a DIFFERENT
+   member than L-L's catalogued one (the row is `trajectory_regime: powered`, L-L's specific member =
+   11 m/s powered + −175 km sub-surface Europa). We reproduced the family period+topology, NOT the
+   catalogued row's defining quantity (the 11 m/s powered member). The #480 EIGE rows on this exact
+   construction were NOT promoted; promoting the L-L row (an explicit "2nd independent source for the
+   #480 IEG class") would be inconsistent.
+3. **What IS established (valuable, V0-level):** period reproduced to <1% from a 2nd independent
+   published source (L-L 2011), the resonant 1:2:4 geometry confirmed, a new GIPEIPE 1:2 topology
+   characterized, and the sub-surface-flyby wall confirmed family-wide. This strengthens the V0
+   provenance; it does not clear the V1 (feasible-closure-to-sourced-invariants) bar.
+
+The reproduction code + 8 golden tests (sourced invariants) are kept as characterization. No
+catalogue `validation_level` change. Consistent with "#480 final standing: closed at level-2 /
+no catalogue impact."

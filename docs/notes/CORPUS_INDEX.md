@@ -78,6 +78,7 @@ is now digested, mined, or triaged.
 | canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md; canalias_se_em_connection.yaml | SE-EM manifold connections, heteroclinic bifurcations PhD | digested + mined | text-layer |
 | koon-lo-marsden-ross-2000-shoot-the-moon.pdf | 2026-06-21-digest-koon-2000-shoot-the-moon.md | Shoot the Moon - Hiten trajectory via invariant manifolds | digested | text-layer |
 | koon-lo-marsden-ross-2006-dynamical-systems-mission-design.pdf | 2026-06-21-digest-klmr-2006-book.md | KLMR Dynamical Systems and Space Mission Design book | digested | text-layer |
+| kumar-rawat-rosengren-ross-2026-cislunar-resonant-transport-heteroclinic-pathways-ASR-77-3815.pdf | 2026-06-30-digest-kumar-rawat-rosengren-ross-2026-cislunar-resonant-transport.md | Cislunar resonant transport + heteroclinic pathways (EM 4:1/3:1/2:1 resonant families; Tables 5/6 IC goldens) | mined | text-layer |
 
 ## Earth-Mars cyclers (core domain)
 
