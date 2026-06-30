@@ -15,6 +15,49 @@ Do not delete the original question text — the audit trail matters.
 
 # Project state at a glance (updated 2026-06-30)
 
+## DELTA 2026-07-01 (session B cont. — admission + capability fixes + Ross-corpus mined) — read this first
+
+The #286 CAPABILITY FRONTIER IS NOW ESSENTIALLY COMPLETE (3D / BCR4BP / QP-tori / epoch-MGA all
+built; #293 ER3BP — the last un-started axis — building now). The program pivots from BUILDING
+capabilities to RUNNING discovery on them. Landed this block:
+- **#494 ADMITTED** (e7bca1b): **5 new V1 rows → catalogue 356** (V0:319/V1:27/V2:7/V3:2/V4:1).
+  4 binary (k₁,k₂)-cycler μ-family reps (μ=0.001 SJ / 0.1 / 0.3 / 0.5 equal-mass, P1/P2 generic
+  primaries) + the **first-ever Pluto-Charon (3,2) cycler** (`ross-rt-pc-cycler-32-2026`, μ=0.10876,
+  C=3.5795, ν≈0; fresh real-system instantiation, lit not-found). **Closes #315/#252/#255** positively.
+  The 2 EM reps were SKIPPED (already V2 as ross-rt-em-cycler-*). Verified green (tests/data+search).
+- **#496** bounded_ls cross-cycle solver shipped (825687e) but #411 NOT closed (d2b8d78): the binding
+  blocker is UPSTREAM leg-convergence (217k km gap at the only accessible seed), not the c_se stall.
+  Real fix = feasibility-first leg-gap residual + the Gómez-2004 z-slicing 3D lift (now in corpus).
+- **#497 + #497b** (f56719b / 349229b / 0d6fba1): cap recalibration DISPROVEN; instead the centrality
+  scorer is VALIDATED on BOTH Braik datasets (published proxy matrix → Table 4 exact 0.2850/0.2891/
+  0.5000; dc_refined → C32 dominant), and the proxy→refined calibration is a CLEAN NEGATIVE (slope≈1;
+  our heading-fan proxy is 30-60× off-scale). The C32 xfail correctly stands, precisely diagnosed as
+  proxy-FIDELITY (a rebuild), not a cap. Two new passing golden gates + opt-in calibrate_proxy_matrix().
+- **#498/#499/#503 DONE** (4aef28f / a4cc3c1 / 1b332b0): **16 Ross-group papers fetched from
+  ross.aoe.vt.edu (no denials), filed, mined, indexed.** Key reuse unlocked: Ross-Scheeres 2007
+  Keplerian map + Grover-Ross 2009 → #500; Gómez 2004 z-slicing (4D→1-param 2D intersections) →
+  #496 3D lift + #291/#306; **Fitzgerald 2022 ER3BP L1 IC+monodromy → #293 (unblocked the un-started
+  axis)**; Onozaki 2017 full BCR4BP constants → #292; Koon 2002 Petit Grand Tour (1208 m/s, 57%
+  Hohmann) → #318; Naik-Lekien 2017 + Lober → transport scoring; KLMR2001 tube↔resonance → #267.
+- **#500 DONE** (f9adc1a/86c1bc5): Keplerian map built + **17/17 sourced positive controls PASS**
+  (RS07 1:2 fixed point a_res=2^(2/3)=1.587; chaotic migration; GR09 controlled ΔV brackets 160 m/s).
+  Genome verdict = **clean negative for catalogue**: it's a Jovian moon-to-moon sub-leg planner, NOT
+  an interplanetary cycler genome — banked as a tool for a future #318 Jovian sub-leg pipeline.
+- **IN FLIGHT:** #293 (ER3BP corrector + e-continuation).
+- Process note: subagents hit a monthly spend limit mid-session (the #494 admission agent died AFTER
+  committing — verified via git, not its message; [[feedback_long_agents_commit_incrementally]]).
+  Also a Kumar 2509.12675 DUPLICATE was caught + reverted (cfcd7e5; [[feedback_corpus_check_index_not_filenames]]
+  — checked md5 but not the arXiv id; fixed).
+
+**FORWARD PLAN (the post-capability-frontier phase):**
+- **Tier 1 (the deliverable — RUN discovery on the built substrate):** #501 broadened real-eph #318
+  joint search (not CGCEC-densify); circumbinary Pluto-Charon deeper + other-binary (k₁,k₂) sweep;
+  #500 Keplerian-map tour search if its genome is cycler-viable. HONEST: novel hits are rare (#492;
+  only #312 Uranus across the whole arc) — expect mostly V0-known + occasional fresh instantiations.
+- **Tier 2 (deep fixes):** #496 3D z-slicing cross-system closure; #497 proxy-fidelity rebuild.
+- **Tier 3 (validation + consolidation):** push Pluto-Charon (3,2) → V2 (long-span IAS15) / V3 (SPICE);
+  #487 V4_qp gauntlet (de-prioritised).
+
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
 
 Multi-thread campaign off the "novel cyclers are the deliverable" frame, after #492 established the
