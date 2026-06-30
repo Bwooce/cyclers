@@ -15,6 +15,62 @@ Do not delete the original question text — the audit trail matters.
 
 # Project state at a glance (updated 2026-06-30)
 
+## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
+
+Multi-thread campaign off the "novel cyclers are the deliverable" frame, after #492 established the
+ideal-model moon-cycler frontier is exhausted (novel ground is now capability-gated). Landed:
+- **#493** L-L 2011 IEG (EIGE + GIPEIPE) reproduced in the ideal model; period <1% vs sourced, but
+  **adjudicated V0 (override of the agent's V1)** — sub-surface flybys / different member, same wall as
+  #480; characterization kept (`afc7a64`, verdict note has the adjudication).
+- **#494** binary (k₁,k₂)-cycler μ-family — REFRAMED (not new dynamics; the CR3BP solver is μ-agnostic and
+  the EM slice is already V2). Acquired+mined **Ross-Roberts-Tsoukkas 2026 (arXiv:2606.29189)** Table I
+  golden (`data/golden/ross_rt_2026_cycler_families.yaml`); Phase-0 positive control GO (5/5 EM recovered,
+  `f872d07`); Phase 2/3 (μ-extension closing #315/#252/#255 + Pluto-Charon μ=0.1085) RUNNING. Design
+  `docs/superpowers/plans/2026-06-30-494-binary-cycler-mu-family-design.md`.
+- **#495** adopted Braik-Ross 2026 MIT-repo goldens — **C21 recovers at exact CJ=3.129389531054557** (the
+  rounded 3.1294 gives a >5-d-different orbit → confirms the #249 bug + [[feedback_published_rounded_values_are_display]]);
+  proxy ΔV is a strong screen (ρ=0.96) not a strict bound (`2b589b5`/`9b0d88c`/`42b3b16`). Repo survey
+  `docs/notes/2026-06-30-binbraik-orbital-network-repo-reuse-survey.md`.
+- **#318 Phase 2b** Sobol joint-search built + positive-control PASS + smoke = clean empty (`b262284`).
+- Corpus: filed+mined Ross-RT 2026; **Kumar 2509.12675 was a DUPLICATE** (already digested 2026-06-20 +
+  coded in resonance_network.py) — re-processing reverted, stale "undigested" index label fixed (`cfcd7e5`).
+- Reviewed the FULL ross.aoe.vt.edu/papers list; the relevant gaps are allocated below. EXPLICITLY
+  OUT OF SCOPE (dynamical-systems method in non-astro domains, NOT acquired): atmospheric LCS/FTLE,
+  gliding & biomechanics, microbial dispersal, ship-motion & snap-through-buckling tube dynamics,
+  chemistry non-RRKM rates, formation-flying/alpha-shapes.
+
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #487-#496 used earlier; #497-#503 here):**
+- **#497** — #249 gate recalibration: set `DV_CAP_MS` ≈ 51 m/s (from #495: C32 wins centrality in 80% of
+  Braik's budget sweep there; our xfail gate uses 409.3 = near-full connectivity, no betweenness signal) →
+  flip the C32-dominance gate. [active follow-on]
+- **#498** — Acquire+mine MOON-TOUR / GRAVITY-ASSIST Ross papers (all MISSING): "Design of a multi-moon
+  orbiter" (Ross-Koon-Lo-Marsden 2003, AAS 03-143); "Multiple gravity assists, capture, and escape in the
+  RTBP" (Ross-Scheeres 2007, SIADS 6(3), +control-map software); "Constructing a low energy transfer between
+  Jovian moons" (KLMR 2002, Contemp. Math. 292); "Controlled Keplerian map" (Grover-Ross 2009, JGCD 32(2));
+  "Resonance and capture of Jupiter comets" (KLMR 2001, CMDA 81); "Geometric mechanics and the dynamics of
+  asteroid pairs" (Koon-Marsden-Ross-Lo-Scheeres 2004 — binary dynamics, also #494/#308). Feeds
+  #318/#465/#494/#500.
+- **#499** — Acquire+mine HETEROCLINIC FOUNDATIONS (MISSING): "Heteroclinic connections between periodic
+  orbits and resonance transitions" (KLMR 2000, Chaos 10(2) 427-469 — ref [25] of Ross-RT); "Heteroclinic
+  Transfer Between L1 and L3 in EM" (Braik-Ross 2025, AAS 25-716); "Connecting orbits and invariant
+  manifolds in the spatial RTBP" (Gomez et al. 2004, Nonlinearity 17 — ref [26]); "The Genesis trajectory
+  and heteroclinic connections" (KLMR 1999, AAS 99-451); "Transport of Mars-crossing asteroids from the
+  quasi-Hilda region" (Dellnitz et al. 2005, PRL 94 — set-oriented GAIO, also #308); "Experimental
+  validation of phase space conduits" (Ross-BozorgMagham-Naik-Virgin 2018, PRE 98 052214 — the ΔC
+  tube-cross-section scaling = ref [28], underpins the #494 construction). Feeds #314/#405/#411/#496.
+- **#500** — SPECULATIVE genome: evaluate the controlled Keplerian map (Ross-Scheeres 2007 / Grover-Ross
+  2009) as a moon-tour gravity-assist cycler genome — complements #465 multi-rev leveraging + #318 joint
+  search. Gated on #498.
+- **#501** — #318 full-scale, REFRAMED: broaden sequences/systems (NOT densify CGCEC — smoke showed a mined
+  regime, 0/256) joint-search campaign with post-hoc lit-novelty. [held — the deferred #318 decision]
+- **#502** — Watch/acquire the LONGER companion of Ross-RT 2026 (full μ-grid + all 9 EM family tables) for a
+  tighter #494 Pluto-Charon continuation seed. [watch]
+- **#503** — Acquire+mine cislunar-resonance / transport companions: Rawat-Kumar-Rosengren-Ross 2026 JGCD
+  49(4) "Cislunar Mean-Motion Resonances"; Onozaki-Yoshimura-Ross 2017 ASR 60 (4-body tube dynamics);
+  Fitzgerald-Ross 2022 ASR 70 (periodically-perturbed RTBP, → #292/#293); Naik-Lekien-Ross 2017 RCD 22(3)
+  "Phase Space Transport / Lobe Dynamics" (+Lober software). → expand #267 resonance_network goldens.
+  [lower priority]
+
 ## DELTA SINCE 2026-06-29 (2026-06-30 — #480 EIGE positive control) — read this first
 
 Catalogue UNCHANGED (V0:287 / V1:22 / V2:6 / V3:2 / V4:1 = 318 rows). Resumed the #480
