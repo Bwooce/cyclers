@@ -526,10 +526,15 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   FAILS. Pluto Hydra-Nix (4-anchor) V0-known. Neptune 0.058 is lit-fresh-class but DOESN'T
   CLOSE (above gate). **The only genuinely-fresh + closing #320 candidates are the Earth-Moon
   QP-tori SILVERs (brackets 2 & 10, k=4)** — a distinct class (invariant 2-tori, not the
-  published moon-cycler family); they pass V1_qp+V2_qp and now **V3_qp (both PASS 2026-06-30**, IAS15 reproduces the DOP853
-  invariance, integrators agree to 9e-6/3e-7 nondim; `data/silver_320_qp_v3_verdicts.jsonl`);
-  remaining gates = V4_qp (undefined) + live lit-novelty (is THIS Antoniadou-Voyatzis-seeded
-  Earth-Moon 3D torus family published?) + human review. (Acquiring Russell-Strange 2009's Saturnian
+  published moon-cycler family); they pass V1_qp+V2_qp+**V3_qp (both PASS 2026-06-30**, integrator-independent;
+  `data/silver_320_qp_v3_verdicts.jsonl`) — BUT the **live lit-novelty check (2026-06-30) finds
+  a WELL-PUBLISHED CLASS, not novel**: Earth-Moon CR3BP QP invariant 2-tori are exhaustively
+  mapped (GMOS / Olikara-Howell; parent family Antoniadou-Voyatzis 2018) — a mapped frontier,
+  the opposite of the virgin-ground Uranus case. So the #320 QP-tori are V0-known-class, NOT a
+  novel admission; V4_qp build de-prioritised. The V3_qp INFRA stands (reusable). Verdict
+  `docs/notes/2026-06-30-320-qptori-litnovelty-verdict.md`. **Net: the entire #312→#320
+  discovery arc's ONLY genuinely-novel hit is the #312 Uranus quasi-cycler (already V4-catalogued);
+  Saturn/Pluto/Earth-Moon-QP all resolve to published classes.** (Acquiring Russell-Strange 2009's Saturnian
   tables — paywalled JGCD, #116-style — would pin exact Saturn membership but not the
   not-novel conclusion.)
 - **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
