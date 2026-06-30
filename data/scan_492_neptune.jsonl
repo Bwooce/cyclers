@@ -1,0 +1,1 @@
+{"_meta": true, "task": "#285 prioritized repeated-moon scan", "primary": "Neptune", "moons": ["Triton", "Proteus"], "seq_lengths": [3], "n_rev_grid": [0, 1, 2, 3, 4, 5], "gate_residual_kms": 0.05, "phase_samples": 12, "tof_resonance_grid": [0.5, 1.0, 1.5, 2.0], "git_sha": "492-neptune-pluto"}
