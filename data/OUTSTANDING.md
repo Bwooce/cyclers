@@ -512,7 +512,16 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   converges identically to planar" IS this). Reframe: the right keystone build is a
   **real-ephemeris n-body joint search** (where 3D/epoch/powered/multi-rev co-vary naturally),
   treating CR3BP-3D as a separate lane — a multi-week build, honest cost. Verdict
-  `docs/notes/2026-06-30-318-phase2-blocker-diagnosis-reframe.md`. No code/catalogue change.
+  `docs/notes/2026-06-30-318-phase2-blocker-diagnosis-reframe.md`.
+  **Phase 2 STARTED 2026-06-30** (design `…-318-phase2-realeph-joint-search-design.md`): the
+  unified real-eph n-body joint-cell where all 4 axes co-vary (3D intrinsic / epoch=phasing /
+  powered=flyby ΔV / multi-rev=Lambert branch), compute-aware (short cyclers, analytic-STM,
+  patched-conic surrogate pre-filter before any shoot). **Phase 2a LANDED**
+  (`src/cyclerfinder/search/joint_cell.py` + tests): `evaluate_joint_cell` surrogate +
+  POSITIVE CONTROL — reproduces the #223 Liang Member D CGCEC closure (1.96e-10 m/s, feasible)
+  AND records the 4 axis coords incl. axis-C real out-of-plane extent 269,306 km (the
+  broken-plane info the Phase-1 coplanar substrate discarded). Next: Phase 2b = compute-aware
+  Sobol search on a short-cycler system + post-hoc lit-novelty (strong-prior-empty).
 - **#319** QP-tori V0-V5 gauntlet — V1_qp + V2_qp + **V3_qp now SHIPPED 2026-06-30**
   (`src/cyclerfinder/data/validation/v3_qp.py` + tests; REBOUND IAS15 independent-integrator
   invariance check, the QP analogue of `v3_3d_periodic`). V4_qp/V5_qp still scoped/deferred
