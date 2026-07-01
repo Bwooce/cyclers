@@ -2,7 +2,7 @@
 
 This is the *code layer* of the OCR-first rule in
 ``docs/notes/corpus-document-policy.md`` §1. A document in the private
-``cyclers_pdf/papers/`` corpus is only "processed" once it is text-searchable;
+the private paper corpus is only "processed" once it is text-searchable;
 this module makes that step a single idempotent call any future digest agent
 reuses, instead of vision-reading hundreds of page-images through the Read tool
 (the cost trap the policy was adopted to close — Szebehely 1967, a 661-page

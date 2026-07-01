@@ -58,7 +58,7 @@ Frame conventions (match cr3bp.py)
 
 References
 ----------
-  * Andreu (1998) PhD thesis (filed as cyclers_pdf, not in-session readable).
+  * Andreu (1998) PhD thesis, Universitat de Barcelona.
   * Gimeno, Jorba et al. (2018), Frontiers AMS 4:32. Table 3 (parameters).
   * Rosales, Jorba et al. (2023), CeMDA 135:15. Table 3 (parameters), Table 4
     (POL1/POL2 dynamical substitute ICs for the QBCP -- used as the BCR4BP

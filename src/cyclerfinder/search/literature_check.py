@@ -611,8 +611,7 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # by the same JPL authors and both say "triple cycler"; the concept-name
         # collision is exactly the #480 hallucination trap (memory
         # feedback_ground_citations_against_content). Grounded 2026-06-26 against
-        # the on-disk VEM paper title page (cyclers_pdf jones-hernandez-jesick-
-        # 2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf is VEM only)
+        # the on-disk title page (AAS 17-577 NTRS 20190028464, VEM only)
         # plus Semantic Scholar confirmation the Jovian paper exists separately.
         system="jovian",
         # #484 (2026-06-26): the #482 digest (docs/notes/2026-06-26-digest-
@@ -721,8 +720,7 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # authors, "One Class of Io-Europa-Ganymede Triple Cyclers") is the
         # separate anchor above. Do NOT cite a Galilean moon claim here.
         system="heliocentric",
-        # #484 (2026-06-26): the on-disk title page (cyclers_pdf jones-hernandez-
-        # jesick-2017-low-excess-speed-vem-triple-cyclers-AAS-17-577.pdf) confirms
+        # #484 (2026-06-26): the on-disk title page (AAS 17-577 NTRS 20190028464) confirms
         # AAS 17-577 (Jones-first) and the Venus-Earth-Mars body set; NTRS
         # 20190028464. The stable registry key follows.
         key="jones-2017-vem-577",

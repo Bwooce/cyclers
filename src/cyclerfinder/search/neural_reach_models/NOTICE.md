@@ -8,7 +8,7 @@ These CSV files are pretrained model weights for the Zhang–Acciarini–Izzo–
 - **Upstream:** https://github.com/zhong-zh15/neural-low-thrust-approximator
 - **Paper:** Zhang, Acciarini, Izzo, Baoyin, Topputo (2026), "Pretrained Approximators
   for Low-Thrust Trajectory Cost and Reachability," arXiv:2605.26790.
-- **Local copy:** `cyclers_pdf/papers/zhang-acciarini-2026-pretrained-approximators-lowthrust-cost-reachability-arxiv-2605.26790.pdf`
+- **Paper DOI/arXiv:** arXiv:2605.26790; doi:10.48550/arXiv.2605.26790
 
 ## Vendored content
 - `eigen_model_large/` — ΔV surrogate (~2.1 MB; 10-layer MLP, CSV per layer).

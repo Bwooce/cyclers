@@ -2,13 +2,14 @@
 
 Everything here SKIPS cleanly (never fails) when the optional ``ocr`` extra /
 system binaries (tesseract, ghostscript, ocrmypdf, poppler) or the private
-``cyclers_pdf/papers/`` corpus is absent — mirroring how the SPICE/rebound
+paper corpus is absent — mirroring how the SPICE/rebound
 cross-check tests skip when their data/extra is missing. CI without the corpus
 or the OCR toolchain therefore reports skips, not failures.
 """
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -21,9 +22,9 @@ from cyclerfinder.verify.ocr import (
     has_text_layer,
 )
 
-# Private corpus root (see project memory: reference_cyclers_pdf_private_repo).
+# Private corpus root (see project memory: reference for the private corpus).
 # Never linked from the public repo; this test only reads it if present locally.
-_PAPERS = Path("/home/bruce/dev/cyclers_pdf/papers")
+_PAPERS = Path(os.environ.get("CYCLERS_CORPUS_DIR", "/home/bruce/dev/corpus/papers"))
 
 # A modern, text-layer-abundant arXiv paper in the corpus (chosen for plentiful
 # embedded text — the has_text_layer-true case).
