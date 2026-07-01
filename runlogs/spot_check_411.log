@@ -1,0 +1,4 @@
+Spot-check c_em=3.15, c_se=3.0006
+  EM node converged=True, SE node converged=True
+  fwd: converged=False, residual=inf km
+  (return leg skipped — fwd check only)
