@@ -43,7 +43,22 @@ capabilities to RUNNING discovery on them. Landed this block:
   (RS07 1:2 fixed point a_res=2^(2/3)=1.587; chaotic migration; GR09 controlled ΔV brackets 160 m/s).
   Genome verdict = **clean negative for catalogue**: it's a Jovian moon-to-moon sub-leg planner, NOT
   an interplanetary cycler genome — banked as a tool for a future #318 Jovian sub-leg pipeline.
-- **IN FLIGHT:** #293 (ER3BP corrector + e-continuation).
+- **#293 DONE** (b9a7d27/e3a8896): ER3BP corrector + e-continuation, positive control PASS (Fitzgerald
+  2022 ER3BP L1 via the paper's own non-pulsating frame transform, x to 0.078%; monodromy structure
+  matched), e-continuation 21/21 smooth. **#286 axis-closure verdict: NO new species** (e>0 refines
+  CR3BP families, no novel cycler topology — confirms the prediction). This **FORMALLY COMPLETES the
+  #286 capability frontier** (all 5 Track-A axes built).
+
+**TIER-1 DISCOVERY RESULTS (both clean negatives — the frontier is mined):**
+- **#501** broadened real-eph Galilean joint search (e5b2339/d0c8def): 6 sequences × 512 Sobol = 3072
+  cells / 213 feasible / 26 shot / **0 closed**; positive control (Liang Member D) PASSED → trustworthy.
+  Clean empty-region map registered. The strongest novel lane yields no novel Galilean cycler at breadth.
+- **#504** deeper Pluto-Charon (k₁,k₂) sweep (2b2f74a/d289fcd): only (3,2) yields a stable member (the
+  already-admitted ross-rt-pc-cycler-32-2026); (1,1)/(2,1)/(2,2)/(3,1)/(3,3) all clean negatives (the
+  (3,1) wrong-topology near-primary correctly discarded). Pluto-Charon admits exactly ONE cycler family.
+  NO new admissions.
+Net Tier-1: discovery on the built substrate confirms #492 exhaustion — no novel cyclers; the deliverable
+is the honest empty-region maps + the confirmation that the admitted rows are the frontier.
 - Process note: subagents hit a monthly spend limit mid-session (the #494 admission agent died AFTER
   committing — verified via git, not its message; [[feedback_long_agents_commit_incrementally]]).
   Also a Kumar 2509.12675 DUPLICATE was caught + reverted (cfcd7e5; [[feedback_corpus_check_index_not_filenames]]
