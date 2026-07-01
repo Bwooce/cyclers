@@ -1,7 +1,6 @@
 # Corpus Master Index (CORPUS_INDEX.md)
 
-**LIVING DOCUMENT.** One row per file in the private corpus
-`cyclers_pdf/papers/`. This is the discoverability layer **and** the anti-slip
+**LIVING DOCUMENT.** One row per file in the private paper corpus. This is the discoverability layer **and** the anti-slip
 ledger mandated by `docs/notes/corpus-document-policy.md` §3 — its absence is
 precisely what let Szebehely 1967 (the foundational CR3BP textbook the genome
 rests on) sit undigested for weeks.

@@ -2,14 +2,14 @@
 
 **Adopted:** 2026-06-19. **Motivation:** Szebehely 1967 "Theory of Orbits"
 — the foundational CR3BP textbook the entire genome rests on — sat in
-`cyclers_pdf/papers/` for weeks **undigested**, because every digest wave
+the private paper corpus for weeks **undigested**, because every digest wave
 swept only newly-*acquired* papers and never the pre-existing corpus. It
 was also a 661-page image-only scan needing OCR. This policy closes both
 gaps so no document silently goes unprocessed again.
 
 ## The rule
 
-A document in the private `cyclers_pdf/papers/` corpus is **"processed"**
+A document in the private paper corpus is **"processed"**
 only when ALL THREE hold:
 
 ### 1. OCR-first (text-searchable) — use a tool, not Claude tokens
@@ -116,7 +116,7 @@ Updated in the SAME commit as the filing or digest.
 ## Where this binds
 
 - **New acquisition flow** (see the filing standard in the
-  `cyclers_pdf` repo + the project memory): filing a PDF is not "done"
+  private paper corpus + the project memory): filing a PDF is not "done"
   until its digest note + index line exist. "Filed, digested, indexed."
 - **Periodic audit**: sweep `papers/` against the index + `catalogue.yaml`
   (first_published / corroborating_sources DOIs) + `literature_check.py`
