@@ -1010,7 +1010,7 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "test_494_phase2_recover_table_i_representative[mu0_5_k1_1] + "
         "test_494_phase2_rep6_fundamental_winding_is_11."
     ),
-    ("ross-rt-pc-cycler-32-2026", "V1"): (
+    ("ross-rt-pc-cycler-32-2026", "V2"): (
         "spec §14 V1 (#494): Pluto-Charon (mu=0.10876473603280369=106.1/975.5) "
         "stable (3,2) cycler located by a C-sweep along the (3,2) branch (hc=6) "
         "seeded from the Ross-RT 2026 Table I mu=0.1 anchor — nu=0 midpoint of the "
@@ -1021,6 +1021,16 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "ALL ICs DERIVED (our sweep). Physical C(L1) and H-W a_crit cross-checks PASS. "
         "tests/search/test_ross_rt_2026_mu_family.py::"
         "test_494_phase3_pluto_charon_32_stable_member_exists."
+        " V2-BALLISTIC UPGRADE (#505, 2026-07-01): spec §14 V2-ballistic — 100-period "
+        "inertial REBOUND/IAS15 propagation (3x N_req=33.7) stays in a bounded "
+        "oscillation band (max rotating-frame recurrence drift 6.6e-9 nd vs 3A band "
+        "4.919 nd = 8.9 orders inside; Jacobi drift 4e-10 over the span; half-ratio "
+        "1.90 vs ~1e15 for |lambda|=2 — exponential growth excluded), evaluated in "
+        "the row's DEFINING MODEL (CR3BP, like-for-like scope per the V1 convention). "
+        "STABLE verdict derives from Barden nu + the long-span run, never the 5-period "
+        "gate. No real-ephemeris claim; V2-ballistic is this lane's ceiling. "
+        "docs/notes/2026-07-01-505-pluto-charon-v2-longspan.md + "
+        "tests/search/test_505_pc_v2_longspan.py."
     ),
     # 2026-06-07: the §14 V2 class-split amendment. The powered Aldrin outbound
     # clears the amended V2-POWERED gate (>=3 consecutive in-family cycles, each

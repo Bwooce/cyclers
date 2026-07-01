@@ -174,7 +174,7 @@ _LEVEL_BY_ID: dict[str, str] = {
     "ross-rt-mu01-cycler-32-2026": "V1",
     "ross-rt-mu03-cycler-31-2026": "V1",
     "ross-rt-mu05-cycler-11-2026": "V1",
-    "ross-rt-pc-cycler-32-2026": "V1",
+    "ross-rt-pc-cycler-32-2026": "V2",
     "mcconaghy-2006-em-k2": "V0",
     "russell-ocampo-2.1.1+2-case2": "V0",
     "russell-ocampo-2.5.1+0": "V0",

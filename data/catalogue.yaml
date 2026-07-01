@@ -53077,7 +53077,7 @@
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
-  validation_level: V1   # spec §14 V1 (#494): Pluto-Charon (mu=0.10876473603280369=106.1/975.5) stable (3,2) cycler located by C-sweep along the (3,2) branch seeded from Ross-RT 2026 mu=0.1 anchor — nu=0 midpoint of the stable window at C=3.57951501972907; Barden nu=3.82e-9 (maximally stable); independent Radau PASS (closure <1e-6, dJ=8.0e-13). Tests: tests/search/test_ross_rt_2026_mu_family.py.
+  validation_level: V2   # spec §14 V2-ballistic (#505, 2026-07-01): V1 base (#494) — Pluto-Charon (mu=0.10876473603280369=106.1/975.5) stable (3,2) cycler located by C-sweep, nu=0 midpoint at C=3.57951501972907; Barden nu=3.82e-9 (maximally stable); independent Radau PASS (closure <1e-6, dJ=8.0e-13). V2-ballistic upgrade: 100-period inertial REBOUND/IAS15 run (3x N_req=33.7), bounded rotating-frame drift (max 6.6e-9 nd vs 3A band 4.919 nd = 8.9 orders margin), half-ratio 1.90 (linear phase drift, not exponential), Jacobi drift 4e-10; evaluated in the row's defining CR3BP model (like-for-like). STABLE verdict from Barden nu + long-span run. No real-ephemeris claim; V2-ballistic is this lane's ceiling. docs/notes/2026-07-01-505-pluto-charon-v2-longspan.md; tests/search/test_505_pc_v2_longspan.py.
   delta_v_kms:
   v_infinity_leveraging_dv_kms:
   fleet_size:

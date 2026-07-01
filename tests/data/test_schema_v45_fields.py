@@ -158,7 +158,8 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md).
     (#494 2026-06-30): Five Ross & Roberts-Tsoukkas 2026 mu-family Table-I
     representatives (4 abstract-mu rows + 1 Pluto-Charon instantiation) clear §14
-    V1 like-for-like in the planar CR3BP. (V1=26, V2=7, V3=2, V4=1.)"""
+    V1 like-for-like in the planar CR3BP. (#505 2026-07-01): ross-rt-pc-cycler-32-2026
+    promoted V1 -> V2-ballistic (100-period IAS15 bounded-band run). (V1=26, V2=8, V3=2, V4=1.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -268,7 +269,7 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "ross-rt-mu01-cycler-32-2026": "V1",
         "ross-rt-mu03-cycler-31-2026": "V1",
         "ross-rt-mu05-cycler-11-2026": "V1",
-        "ross-rt-pc-cycler-32-2026": "V1",
+        "ross-rt-pc-cycler-32-2026": "V2",
         # #340 (2026-06-17): SILVER (umbriel-oberon-1-1-uranian-quasi-cycler-2026)
         # promoted V0 -> V4 — the catalogue's first computed quasi_cycler row
         # and the first V4 anywhere. V4 is the URA111 SPICE real-eph + annual
@@ -287,7 +288,10 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # One row carries V4: the SILVER Umbriel-Oberon-Umbriel quasi_cycler (#340,
     # #335 V4-strict URA111 + #338 annual epoch sweep EFFECTIVELY_CYCLIC).
     # 6 -> 7 (#444): + em-cycler-21-3d-spatial-2026 (C21 3D known-class-member, V2).
-    assert sum(1 for lvl in byid.values() if lvl == "V2") == 7
+    # 7 -> 8 (#505, 2026-07-01): + ross-rt-pc-cycler-32-2026 (Pluto-Charon (3,2)
+    # stable CR3BP cycler, V2-ballistic; 100-period IAS15 bounded-band, 8.9 orders
+    # margin, half-ratio 1.90, nu~0; docs/notes/2026-07-01-505-pluto-charon-v2-longspan.md).
+    assert sum(1 for lvl in byid.values() if lvl == "V2") == 8
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
     assert sum(1 for lvl in byid.values() if lvl == "V4") == 1
     assert not any(lvl == "V5" for lvl in byid.values())
