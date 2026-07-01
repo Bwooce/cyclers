@@ -62,6 +62,12 @@ jobs:
             gh issue create --title "$TITLE" --body-file kernel_freshness_report.txt
           fi
 
-      - name: Fail the run if the check found staleness or errored
-        if: steps.check.outputs.exit_code != '0'
-        run: exit ${{ steps.check.outputs.exit_code }}
+      # Staleness (exit_code=1) is EXPECTED, actionable drift, not a broken
+      # pipeline -- the filed/updated issue above is the notification channel,
+      # matching this repo's other scheduled-drift workflow (refresh-windows.yml),
+      # which acts on drift and stays green rather than failing the run. Only a
+      # genuine tool error (exit_code=2: the NAIF fetch itself failed, e.g.
+      # network/site outage) is worth a red X in the Actions history.
+      - name: Fail the run only on a genuine checker error (not staleness)
+        if: steps.check.outputs.exit_code == '2'
+        run: exit 2
