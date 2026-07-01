@@ -94,6 +94,33 @@ def ensure_jup365_kernel() -> str:
     return str(path)
 
 
+NAIF_PLU060_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/plu060.bsp"
+NAIF_PLU060_LOCAL = Path("~/dev/references/kernels/plu060.bsp")
+
+
+def ensure_pluto_kernel() -> str:
+    """Return the local path of the plu060.bsp Pluto-system kernel.
+
+    Resolves ``~/dev/references/kernels/plu060.bsp`` (expanduser). This kernel
+    covers Charon (901), Nix (902), Hydra (903), Kerberos (904), Styx (905),
+    and Pluto (999) relative to the solar-system barycentre, 1800-2199. Same
+    NAIF data source (PLU060) already cited in ``core/satellites.py`` for the
+    Charon/Nix/Hydra GM values used by the catalogue's Pluto-Charon rows, so
+    there is no model-mismatch risk versus the mass data already in the repo.
+
+    Mirrors :func:`ensure_jup365_kernel` exactly: does **not** auto-download
+    (129 MB). If the file is absent, a ``RuntimeError`` is raised with the
+    NAIF download URL. Used by the Pluto-Charon real-ephemeris differential
+    corrector (#511).
+    """
+    path = NAIF_PLU060_LOCAL.expanduser()
+    if not path.exists():
+        raise RuntimeError(
+            f"plu060.bsp kernel not found at {path}. Download it from: {NAIF_PLU060_URL}"
+        )
+    return str(path)
+
+
 def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -> str:
     """Return a path to ``naif0012.tls``, fetching it once if necessary.
 
