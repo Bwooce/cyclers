@@ -382,13 +382,13 @@ SOURCED_TABLE2: dict[str, tuple[float, float]] = {
 #: Table 2. Only families that CONFIRM (period within tolerance AND sigma within
 #: tolerance) are admitted by :func:`recover_offline_set` -- no faked members.
 #:
-#: RECOVERED (period + sigma both confirmed offline, #247): the nine below.
+#: RECOVERED (period + sigma both confirmed offline, #247 + #513): the ten below.
 #: NOT RECOVERED at this off-stable common energy with the available single-/
 #: free-period shooting correctors (excluded, not faked): the three unstable
 #: cyclers C11a (sigma 1.05), C11b (sigma 0.93), C32 (sigma 0.69) -- which all
-#: collapse onto nearby spurious lower-sigma orbits -- and the 5:2 unstable
-#: resonant R52-U (sigma 0.37). A robust Jacobi-constrained multiple-shooting
-#: corrector (or the JPL oracle, unavailable in this environment) would be needed.
+#: collapse onto nearby spurious lower-sigma orbits when seeded from an
+#: approximate x0 -- these are instead recovered via the dedicated cycler route
+#: (:func:`recover_all_cyclers_braik_ross`) using AAS-25-621 seed regions.
 #: Alias: Braik-repo sourced CJ for C21 (task #495); equals C_J_C21.
 ROSS_C21_JACOBI = C_J_C21  # 3.129389531054557 — Braik & Ross 2026 repo (MIT)
 #: Cross-source value from AAS-25-621 Table 3 for reference only.
@@ -404,6 +404,7 @@ OFFLINE_SEEDS: dict[str, tuple[float, float, float]] = {
     "R31-S": (0.3568, -1.0, C_J_BRAIK_ROSS),  # 3:1 stable resonant
     "R31-U": (0.138, 1.0, C_J_BRAIK_ROSS),  # 3:1 unstable resonant
     "R52-S": (0.2278881086717652, 1.0, C_J_BRAIK_ROSS),  # Braik exact x0
+    "R52-U": (-0.2719428329684943, -1.0, C_J_BRAIK_ROSS),  # Braik exact x0 (#513)
     "C21": (7.237366530581342e-01, 1.0, ROSS_C21_JACOBI),  # Braik exact x0 + CJ (#495)
 }
 

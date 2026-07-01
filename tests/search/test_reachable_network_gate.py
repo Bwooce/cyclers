@@ -9,16 +9,16 @@ their common energy C_J = 3.1294 (paper Table 4 / Fig. 10):
   * the 2:1 stable resonant R21-S is the persistent HARD-ACCESS family (last in
     strength and closeness, zero betweenness).
 
-RECOVERY STATUS (#262, post-#249 4/4 cycler recovery): all four Braik-Ross
-cycler members (C11a, C11b, C21, C32) are now rigorously reproduced via the
-symmetric perpendicular-x-axis-crossing corrector at the correct per-family
-Jacobi (literal :data:`C_J_BRAIK_ROSS` = 3.1294 for C11a/C11b/C32; the unrounded
-:data:`C_J_C21` = 3.129389531088256 for C21, whose (2,1) family spans ΔC ~ 4e-12
-and does not exist at the literal printed value). Combined with the eight
-network-independent offline confirmations (LL1, LL2, DPO, R21-S, R21-U, R31-S,
-R31-U, R52-S), the gate now runs on TWELVE source-confirmable nodes -- the
-full Braik-Ross representative set minus only the 5:2 unstable resonant R52-U
-(still unrecovered; excluded rather than faked).
+RECOVERY STATUS (#262, post-#249 4/4 cycler recovery; #513 R52-U recovery): all
+four Braik-Ross cycler members (C11a, C11b, C21, C32) are rigorously reproduced
+via the symmetric perpendicular-x-axis-crossing corrector at the correct
+per-family Jacobi (literal :data:`C_J_BRAIK_ROSS` = 3.1294 for C11a/C11b/C32; the
+unrounded :data:`C_J_C21` = 3.129389531088256 for C21, whose (2,1) family spans
+ΔC ~ 4e-12 and does not exist at the literal printed value). Combined with the
+nine network-independent offline confirmations (LL1, LL2, DPO, R21-S, R21-U,
+R31-S, R31-U, R52-S, R52-U -- the last recovered #513 from the Braik-Ross repo's
+own sourced IC), the gate now runs on the FULL THIRTEEN-node source-confirmable
+set -- no member excluded.
 
 All EXPECTED values trace to a published source: sourced periods + sigma to
 Braik-Ross Table 2, and the C32-dominant / R21-S-hard-access ranking to Table 4 /
@@ -273,6 +273,7 @@ def _recover_subset() -> list[rr.Representative]:
         "R31-S",
         "R31-U",
         "R52-S",
+        "R52-U",
         "C11a",
         "C11b",
         "C21",
@@ -376,25 +377,20 @@ def test_stable_resonants_are_hard_access_on_subset() -> None:
 @pytest.mark.slow
 @pytest.mark.xfail(
     reason=(
-        "FAITHFUL NEGATIVE on the 12-node source-confirmable set: C32 does NOT "
-        "emerge as the dominant node -- C11a is the strength/closeness hub. "
-        "ROOT CAUSE (#497 proxy rebuild, post-fix): NOT a proxy-fidelity defect. "
-        "The #497 rebuild FIXED the 30-60x proxy overestimate -- the old patch was "
-        "a CONSTANT ~89 m/s pedestal (dv_turn with a unit reference speed at the "
-        "coarse grid, added to every pair); the physical local-speed x actual "
-        "heading-mismatch patch drops the median our/Braik edge ratio to ~1-2x "
-        "(see docs/notes/2026-07-01-497-proxy-rebuild-verdict.md). C32-dominance "
-        "still does not hold because the 12-node set EXCLUDES the 5:2 unstable "
-        "resonant R52-U (never source-confirmed; sigma 0.37 collapses onto spurious "
-        "orbits with the available correctors). R52-U carries C32's single strongest "
-        "edge (C32-R52-U = 0.62 m/s, the smallest in the whole published matrix). "
-        "PROVEN on Braik's OWN published matrix "
-        "(test_braik_matrix_c32_dominance_requires_r52u PASSES): full 13 nodes -> "
-        "C32 dominant; drop R52-U -> C11a becomes the hub and C32 falls to strength "
-        "rank 3, exactly reproducing our scorer's 12-node ranking. So the xfail is a "
-        "NODE-SET incompleteness (missing R52-U), not our proxy. Flipping it needs a "
-        "robust Jacobi-constrained multiple-shooter to recover R52-U -- NOT a "
-        "parameter tune. See docs/notes/2026-07-01-497-proxy-rebuild-verdict.md."
+        "PARTIAL FLIP on the 13-node source-confirmable set (#513: R52-U "
+        "recovered from the Braik-Ross repo's own sourced IC, x0="
+        "-0.2719428329684943, period=56.436d matching Table 2 exactly). C32 now "
+        "wins BOTH strength (3.038 vs C11a 2.581) AND harmonic-closeness (3.362 "
+        "vs R52-U 3.074) -- 2 of 3 metrics, matching Braik's published Table 4 on "
+        "those axes. The residual gap is BETWEENNESS ONLY: C21 (0.3788) narrowly "
+        "beats C32 (0.3485), a close margin (~9%), not the wide separation seen "
+        "pre-R52-U. This is a genuine, sourced-IC-driven improvement over the "
+        "prior #497 'missing node' diagnosis -- the remaining discrepancy is "
+        "specific to betweenness routing through R52-U-C21-C32 and is NOT yet "
+        "root-caused (candidate causes: residual proxy-fidelity on that specific "
+        "path, or a genuine second-order network-topology difference from "
+        "Braik's grid/horizon choices -- not investigated further this session). "
+        "See docs/notes/2026-07-01-513-r52u-recovery-verdict.md."
     ),
     strict=True,
 )
@@ -424,34 +420,43 @@ def test_validation_gate_c32_dominant() -> None:
 
 @pytest.mark.slow
 def test_validation_gate_c32_undominant_faithful_negative() -> None:
-    """RECORD the faithful negative: C32 is NOT the dominant node on our 12-set.
+    """RECORD the faithful (partial) negative: C32 wins strength+harmonic, NOT betweenness.
 
     Companion to ``test_validation_gate_c32_dominant`` (xfail): asserts the
-    *observed* ranking on the post-#249 4/4-cycler 12-node source-confirmable
-    set so the negative is captured as a passing test (not just an xfail), and
-    will fail-loud if the ranking ever changes (e.g. if we add R52-U later or if
-    a corrector change shifts the scoring). Parameters are NOT tuned -- this
-    test reports what the unmodified scorer produces.
+    *observed* ranking on our 13-node source-confirmable set (R52-U recovered,
+    #513) so the residual gap is captured as a passing test, not just an xfail,
+    and will fail-loud if the ranking shifts further. Parameters are NOT tuned --
+    this test reports what the unmodified scorer produces.
 
-    Findings (post-#497 proxy patch fix): C11a -- not C32 -- is the strength /
-    closeness hub, and C32 has zero betweenness at the max-budget cap. This is the
-    SAME ranking Braik's OWN published matrix produces once R52-U is removed
-    (test_braik_matrix_c32_dominance_requires_r52u), confirming the negative is a
-    missing-node effect rather than a proxy defect: after the patch fix our proxy
-    tracks Braik's (Spearman rho ~0.84, median edge ratio ~1.9x). C32 dominance
-    would return only with R52-U in the set. See
-    docs/notes/2026-07-01-497-proxy-rebuild-verdict.md.
+    Findings (post-#513 R52-U recovery, sourced IC from the Braik-Ross repo,
+    x0=-0.2719428329684943, period=56.436d matching Table 2): recovering the
+    13th node FLIPS TWO of three metrics -- C32 is now the strength (3.038 vs
+    C11a 2.581) AND harmonic-closeness (3.362 vs R52-U 3.074) argmax, matching
+    Braik's published Table-4 result on those two axes. Betweenness is the sole
+    remaining gap: C21 (0.3788) narrowly beats C32 (0.3485) -- a real, close
+    residual, not the wide 0-vs-others gap seen before R52-U was recovered. This
+    demotes ``test_validation_gate_c32_dominant`` from "node-set incomplete" (the
+    #497 diagnosis) to "betweenness-specific residual with R52-U present" -- the
+    remaining discrepancy is likely proxy-fidelity/discretization on the specific
+    shortest-path routing through R52-U-C21-C32, not another missing node. See
+    docs/notes/2026-07-01-513-r52u-recovery-verdict.md.
     """
     reps = _recover_subset()
     labels, cent = _run_network(reps)
     i_c32 = labels.index("C32")
-    # C32 is NOT rank 1 in any metric on this set.
-    assert int(np.argmax(cent.strength)) != i_c32, _rank_msg("strength", labels, cent.strength)
-    assert int(np.argmax(cent.harmonic_closeness)) != i_c32, _rank_msg(
+    i_c21 = labels.index("C21")
+    # C32 now wins BOTH strength and harmonic-closeness (the #513 R52-U recovery).
+    assert int(np.argmax(cent.strength)) == i_c32, _rank_msg("strength", labels, cent.strength)
+    assert int(np.argmax(cent.harmonic_closeness)) == i_c32, _rank_msg(
         "harmonic_closeness", labels, cent.harmonic_closeness
     )
-    # And C32 has no relay role (betweenness == 0).
-    assert cent.betweenness[i_c32] == 0.0, _rank_msg("betweenness", labels, cent.betweenness)
+    # Betweenness is the sole residual gap: C21 narrowly beats C32 (not a wide margin).
+    assert int(np.argmax(cent.betweenness)) == i_c21, _rank_msg(
+        "betweenness", labels, cent.betweenness
+    )
+    assert cent.betweenness[i_c32] > 0.9 * cent.betweenness[i_c21], _rank_msg(
+        "betweenness", labels, cent.betweenness
+    )
 
 
 def _rank_msg(name: str, labels: list[str], values: np.ndarray) -> str:
