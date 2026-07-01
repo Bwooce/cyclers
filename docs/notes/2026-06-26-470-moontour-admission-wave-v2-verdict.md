@@ -29,8 +29,7 @@ The 10 in-band proposals in `data/admission_proposals_468.jsonl`:
   > admission citation was attached by that concept match rather than by opening
   > the source, the exact failure class in memory
   > `feedback_ground_citations_against_content`. Ground-truthed 2026-06-26: the
-  > on-disk PDF `cyclers_pdf/papers/jones-hernandez-jesick-2017-low-excess-speed-
-  > vem-triple-cyclers-AAS-17-577.pdf` is VEM-only (title page), and the distinct
+  > on-disk PDF (AAS 17-577, NTRS 20190028464) is VEM-only (title page), and the distinct
   > Jovian IEG paper is independently confirmed (Semantic Scholar
   > `7e1de63096852b5422107ffc23a9312ea3de54f3`). The citation as printed above is
   > body/system-CORRECT (Jovian → Jovian work); this note records that it is now

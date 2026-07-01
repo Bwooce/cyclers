@@ -14,7 +14,7 @@
   - **James M. Longuski** — Professor, Purdue (Associate Fellow AIAA, Member AAS)
 - **Affiliations**: Jet Propulsion Laboratory, California Institute of Technology, Pasadena, California 91109-8099; Purdue University, West Lafayette IN 47907-1282
 - **Venue**: AIAA/AAS Astrodynamics Specialist Conference, Monterey CA, August 2002 (per title + the paper's own ref 4 citing the companion as "AIAA/AAS Astrodynamics Specialist Conference, Monterey, CA, Aug. 2002")
-- **cyclers_pdf path**: `papers/byrnes-mcconaghy-longuski-2002-various-two-synodic-period-earth-mars-cycler-trajectories-AIAA-AAS-monterey.pdf`
+- **Source**: AIAA/AAS Astrodynamics Specialist Conf., Monterey CA, Aug 2002
 - **Page count**: 8 pages, text layer present
 
 ### Relationship to the companion paper (NOT the same paper)

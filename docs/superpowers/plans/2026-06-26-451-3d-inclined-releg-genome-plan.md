@@ -43,10 +43,9 @@ sources are already in-corpus; this is transcription, not acquisition.
     and rotates the V∞ vector; the per-flyby rotation is bounded; pumping changes
     `|V∞|`, cranking changes its declination/inclination). **If the cassini note
     is only a pointer (not a full relation transcription), deep-read the AAS
-    07-277 PDF body in `cyclers_pdf` for the exact crank-angle relation; flag if
+    07-277 PDF body in the private paper corpus for the exact crank-angle relation; flag if
     a deeper acquisition is needed.**
-  - Heaton-Longuski 2003 (Uranian, JSR), OCR'd at
-    `cyclers_pdf/papers/heaton-longuski-…2.3981.txt`. Extract the bracketed tour
+  - Heaton-Longuski 2003 (Uranian, JSR), private corpus (OCR'd text). Extract the bracketed tour
     ΔV / inclination targets (V∞ ≤7.5 km/s arrival, 0.5 km/s Tisserand
     increments, 14 deg inclination reduction via Titania flybys, 0.92 km/s Ariel
     insertion).

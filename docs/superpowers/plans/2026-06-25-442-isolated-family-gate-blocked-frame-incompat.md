@@ -7,7 +7,7 @@ resonant family (the 3/1 MMR, µ=0.001) and confirm it is isolated? Verdict:
 the unblock path is concrete.**
 
 ## What was established (a thorough negative, ladder cleared for this approach)
-- **Paper + figure found & readable.** `cyclers_pdf/papers/antoniadou-libert-2018-...-arxiv-1805.00288.pdf`. The 3/1 isolated family: Sec 5.3 p.17, config (π,0), "only stable periodic orbits, both bodies highly eccentric." Most transcribable representative: Fig 11(e) header `a1/a2=0.480674, e1=0.659951, ϖ1=M1=0°, ϖ2=M2=180°`, guiding `e2≈0.90`.
+- **Paper + figure found & readable.** arXiv:1805.00288 (Antoniadou-Libert 2018). The 3/1 isolated family: Sec 5.3 p.17, config (π,0), "only stable periodic orbits, both bodies highly eccentric." Most transcribable representative: Fig 11(e) header `a1/a2=0.480674, e1=0.659951, ϖ1=M1=0°, ϖ2=M2=180°`, guiding `e2≈0.90`.
 - **NO state vectors anywhere in the paper** (graphical DS-maps only) — the digest's "graphical only" is correct.
 - **224-cell convention/sign grid** (both P1 apses, ϖ1∈{0,π}, both P2 apses; e1∈[0.55,0.95], e2∈[0.70,0.95], period_f=2π): NO member reached `independent_residual < 1e-8`. P2-pericentre seeds diverge (residual 1e2–1e5); the physically-correct P2-apocentre best case descends to crossing residual **6.0e-4** then the line search **stalls 5–7 orders short** of tol — the independent-closure gate is never even reached.
 

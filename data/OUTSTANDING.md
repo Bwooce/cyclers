@@ -25,14 +25,18 @@ capabilities to RUNNING discovery on them. Landed this block:
   primaries) + the **first-ever Pluto-Charon (3,2) cycler** (`ross-rt-pc-cycler-32-2026`, μ=0.10876,
   C=3.5795, ν≈0; fresh real-system instantiation, lit not-found). **Closes #315/#252/#255** positively.
   The 2 EM reps were SKIPPED (already V2 as ross-rt-em-cycler-*). Verified green (tests/data+search).
-- **#496** bounded_ls cross-cycle solver shipped (825687e) but #411 NOT closed (d2b8d78): the binding
-  blocker is UPSTREAM leg-convergence (217k km gap at the only accessible seed), not the c_se stall.
-  Real fix = feasibility-first leg-gap residual + the Gómez-2004 z-slicing 3D lift (now in corpus).
-- **#497 + #497b** (f56719b / 349229b / 0d6fba1): cap recalibration DISPROVEN; instead the centrality
-  scorer is VALIDATED on BOTH Braik datasets (published proxy matrix → Table 4 exact 0.2850/0.2891/
-  0.5000; dc_refined → C32 dominant), and the proxy→refined calibration is a CLEAN NEGATIVE (slope≈1;
-  our heading-fan proxy is 30-60× off-scale). The C32 xfail correctly stands, precisely diagnosed as
-  proxy-FIDELITY (a rebuild), not a cap. Two new passing golden gates + opt-in calibrate_proxy_matrix().
+- **#496** feasibility-first corrector shipped (627228d/1edfe3c): scan-resolution wall BROKEN (both
+  legs DO converge at c_em=3.150, c_se=3.00086 with return_scan_n=8; prior 217 km gap was scan
+  coarseness, not physics). Phase-closure wall CONFIRMED for n_em=1/n_se=1: convergent strip is only
+  6.2 μu wide [3.000854, 3.00086]; best |R|=0.52 rad; Newton step requires c_em≈3.158 (outside EM-L2
+  family) AND c_se≈3.000844 (dead zone). **#411 NOT CLOSED.** Next: (n_em,n_se) sweep; 3D z-slicing.
+- **#497 + #497b** (f56719b / 349229b / 0d6fba1): cap recalibration DISPROVEN; scorer VALIDATED on
+  Braik data (Table 4 exact; dc_refined → C32 dominant); proxy was 30-60× off-scale. **be64207 FIXED
+  the pedestal**: heading-mismatch patch was a constant ~89 m/s term (dv_turn used unit speed, not
+  per-family min-turn cost). After fix: median ratio ~1.9×, Spearman ρ=0.84 vs Braik. C32 xfail
+  re-diagnosed as NODE-SET effect: R52-U (excluded from our 12-node set) carries C32's strongest edge
+  (0.62 m/s); removing R52-U from Braik's own matrix reproduces our ranking. Flipping C32 gate needs
+  R52-U recovery. Verdict: docs/notes/2026-07-01-497-proxy-rebuild-verdict.md.
 - **#498/#499/#503 DONE** (4aef28f / a4cc3c1 / 1b332b0): **16 Ross-group papers fetched from
   ross.aoe.vt.edu (no denials), filed, mined, indexed.** Key reuse unlocked: Ross-Scheeres 2007
   Keplerian map + Grover-Ross 2009 → #500; Gómez 2004 z-slicing (4D→1-param 2D intersections) →
@@ -57,6 +61,11 @@ capabilities to RUNNING discovery on them. Landed this block:
   already-admitted ross-rt-pc-cycler-32-2026); (1,1)/(2,1)/(2,2)/(3,1)/(3,3) all clean negatives (the
   (3,1) wrong-topology near-primary correctly discarded). Pluto-Charon admits exactly ONE cycler family.
   NO new admissions.
+- **#505 DONE** (4905f11/3e15444): PC (3,2) promoted V1→V2-ballistic via long-span IAS15 evidence
+  (10 synodic periods, pos error <3 km drift at T=600 d). SPICE lane not needed for V2-ballistic.
+- **#506 DONE** (5004822): PC (3,2) V3-scope assessment — **stays V2-ballistic**; JPL Horizons not
+  available for Charon, requires NAIF SPK kernel (SAT441l) not present on this host. V3 upgrade gated
+  on acquiring the kernel; V2-ballistic is the correct current tier.
 Net Tier-1: discovery on the built substrate confirms #492 exhaustion — no novel cyclers; the deliverable
 is the honest empty-region maps + the confirmation that the admitted rows are the frontier.
 - Process note: subagents hit a monthly spend limit mid-session (the #494 admission agent died AFTER
@@ -69,8 +78,9 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   joint search (not CGCEC-densify); circumbinary Pluto-Charon deeper + other-binary (k₁,k₂) sweep;
   #500 Keplerian-map tour search if its genome is cycler-viable. HONEST: novel hits are rare (#492;
   only #312 Uranus across the whole arc) — expect mostly V0-known + occasional fresh instantiations.
-- **Tier 2 (deep fixes):** #496 3D z-slicing cross-system closure; #497 proxy-fidelity rebuild.
-- **Tier 3 (validation + consolidation):** push Pluto-Charon (3,2) → V2 (long-span IAS15) / V3 (SPICE);
+- **Tier 2 (deep fixes):** #496 (n_em,n_se) sweep → 3D z-slicing (Gómez 2004) for cross-system closure;
+  #497 R52-U recovery to flip C32 gate (node-set, not proxy).
+- **Tier 3 (validation + consolidation):** PC (3,2) V3 upgrade gated on SAT441l kernel (#506 scope done);
   #487 V4_qp gauntlet (de-prioritised).
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first

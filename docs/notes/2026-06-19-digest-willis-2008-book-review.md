@@ -1,7 +1,7 @@
 # Digest — Willis 2008 book review of "Modern Astrodynamics" (Gurfil ed.)
 
 **Date:** 2026-06-19 AET
-**Source:** `cyclers_pdf/papers/willis-2008-book-review-modern-astrodynamics-gurfil-ed-asr-doi-10.1016-j.asr.2007.07.047.pdf` (2 pp, born-digital)
+**Source:** doi:10.1016/j.asr.2007.07.047 (2 pp, born-digital)
 **Citation:** P. Willis, "Modern Astrodynamics" (book review), *Advances in Space Research* 41(2):230–231 (2008), DOI 10.1016/j.asr.2007.07.047. Reviewer: Pascal Willis, Institut Géographique National / Institut de Physique du Globe de Paris.
 
 ## What it is

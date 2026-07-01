@@ -2,8 +2,7 @@
 
 **Journal of Spacecraft and Rockets**, Article in Advance, 2020. DOI 10.2514/1.A34658.
 Received 2019-11-19; accepted 2020-03-01. SwRI + Ponderosa Labs (T. Finley) + JHU/APL.
-Corpus file (private `cyclers_pdf/papers/`):
-`stern-tapley-finley-scherrer-2020-pluto-orbiter-kuiper-belt-explorer-jsr-a34658.pdf`.
+Source: doi:10.2514/1.A34658 (private paper corpus).
 Processed 2026-06-23 (#429 follow-on, user-supplied).
 
 ## What it is

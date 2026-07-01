@@ -2,7 +2,7 @@
 
 **Citation:** Shepperd, S.W. (1985), "Universal Keplerian State Transition Matrix," *Celestial Mechanics* **35**, 129–144. DOI/Bibcode: 1985CeMec..35..129S. (Charles Stark Draper Laboratory; supported by NASA under contract NAS9-16023.)
 
-**Corpus file:** `/home/bruce/dev/cyclers_pdf/papers/shepperd-1985-universal-keplerian-state-transition-matrix-celest-mech-35.pdf` (16 pp; born-digital text layer, no OCR.)
+**Source:** *Celestial Mechanics* 35 (1985) (16 pp; born-digital text layer, no OCR.)
 
 **Status:** digested · text-layer · methodology paper (read fully).
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-23 AET
 **Task:** #429 (flyby-altitude design floors / sourced altitudes for GAP bodies).
-**Corpus files digested (private `cyclers_pdf/papers/`):**
+**Corpus files digested (private paper corpus):**
 - `stone-miner-1986-voyager-2-encounter-uranian-system-science-233-4759.pdf`
   — E. C. Stone & E. D. Miner, "The Voyager 2 Encounter with the Uranian System,"
   *Science* **233** (4759), 39–43, 4 July 1986. (text-layer PDF; 25k words)

@@ -475,7 +475,7 @@ campaign answers.
      deeper read for the exact crank-angle relation).
    - **Heaton-Longuski 2003 (Uranian, JSR)** — transcribe the published per-flyby
      V∞ / inclination table (the .txt is OCR'd at
-     `cyclers_pdf/papers/heaton-longuski-…2.3981.txt`; V∞ ≤7.5 km/s, 0.5 km/s
+     private corpus (OCR'd text); V∞ ≤7.5 km/s, 0.5 km/s
      Tisserand increments, 14 deg inclination reduction, 0.92 km/s Ariel
      insertion are visible) into the same golden YAML as the bracketed tour-ΔV
      target.
@@ -489,7 +489,7 @@ campaign answers.
    The work is transcription + sourcing, not acquisition. BUT: if the deeper read
    of AAS 07-277 reveals the crank-angle relation is not numerically reproducible
    from the digested material, flag a **targeted deep-read of the AAS 07-277 PDF
-   body** as the one possible new corpus task (it is in `cyclers_pdf`, just not
+   body** as the one possible new corpus task (it is in the private paper corpus, just not
    fully digested at the relation level).
 4. **No environment/install gate** — pure-Python on the existing scipy stack
    (3D Lambert, flyby cone, rotations are all numpy).

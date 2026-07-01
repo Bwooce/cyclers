@@ -40,7 +40,7 @@ content. The trajectory model is suborbital ballistic with atmosphere.
 
 **None whatsoever.**
 
-The paper was filed in `cyclers_pdf/papers/` because it appeared in the
+The paper was filed in the private paper corpus because it appeared in the
 **same JSR 41(4) July-August 2004 issue** as McConaghy-Longuski-Byrnes
 "Analysis of a Class of Earth-Mars Cycler Trajectories" (DOI
 10.2514/1.11939) — the issue-level metadata caught the paper in a
@@ -61,10 +61,10 @@ and without qualification.
 ## Action items for parent
 
 1. **No KNOWN_CORPUS change.** No catalogue change.
-2. **Archive-and-skip:** the paper is correctly filed in `cyclers_pdf`
+2. **Archive-and-skip:** the paper is correctly filed in the private paper corpus
    for venue-completeness (JSR 41(4) coverage) but should be flagged in
    any future acquisition-script logic as "off-topic — venue-coupled
    acquisition only" so it doesn't trigger a re-triage cycle.
-3. **Optional housekeeping:** if `cyclers_pdf` ever gets an
+3. **Optional housekeeping:** if the private paper corpus ever gets an
    off-topic-flag system, this paper is a canonical example of "archived
    for venue completeness, not cycler relevance".

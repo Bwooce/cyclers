@@ -3,8 +3,7 @@
 **Citation:** Shane D. Ross & Michael Roberts-Tsoukkas, *"Stable Families of Ballistic Prograde
 Cyclers in the Restricted Three-Body Problem,"* arXiv:2606.29189v1 [nlin.CD], 28 Jun 2026 (dated
 June 30 2026). Virginia Tech, Aerospace & Ocean Engineering. PRL-format letter, 5 pp.
-**Filed:** `cyclers_pdf/papers/ross-roberts-tsoukkas-2026-stable-ballistic-prograde-cyclers-rtbp-arxiv-2606.29189.pdf`
-(text-layer, no OCR). **Mined for:** #494 (binary (k₁,k₂)-cycler μ-family). User-acquired 2026-06-30.
+**Source:** arXiv:2606.29189 (text-layer, no OCR). **Mined for:** #494 (binary (k₁,k₂)-cycler μ-family). User-acquired 2026-06-30.
 
 ## What it is
 The formal μ-family generalization of AAS 25-621 (ref [30]; the source of the catalogue's 5 EM

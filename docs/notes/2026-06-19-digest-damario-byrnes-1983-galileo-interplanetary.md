@@ -13,7 +13,7 @@
 - **Affiliation**: Jet Propulsion Laboratory, California Institute of Technology, Pasadena, California 91109
 - **Venue**: AIAA 21st Aerospace Sciences Meeting, January 10-13, 1983, Reno, Nevada (cover page)
 - **Copyright**: American Institute of Aeronautics and Astronautics, Inc., 1983 (p.1 footer)
-- **cyclers_pdf path**: `papers/damario-byrnes-1983-interplanetary-trajectory-design-galileo-mission-AIAA-83-0099.pdf`
+- **Source**: AIAA 83-0099
 - **Page count**: 10 pages (cover + 9 body), text layer present
 
 ## 2. What the paper actually is

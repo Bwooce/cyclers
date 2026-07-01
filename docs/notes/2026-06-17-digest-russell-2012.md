@@ -21,7 +21,7 @@ budget); no chapter-summary caveat needed.
   No. 3, 2012, pp. 705-720
 - **DOI:** 10.2514/1.56813
 - **Manuscript version note:** the published PDF in
-  `cyclers_pdf/papers/` is the **approved manuscript with errata for
+  the private paper corpus is the **approved manuscript with errata for
   Table 1 and Figure 1** corrected (footnotes on pp. 4 and 5 of the
   manuscript flag the JGCD-printed typos). The manuscript paginates
   1/38-38/38 vs. the journal pages 705-720.

@@ -393,7 +393,7 @@ HR4BP-class methods (paper 11 substrate) would be a subsumption target.
 13. arXiv [2509.12675](https://arxiv.org/pdf/2509.12675) (2025).
 14. Ross, Roberts, Tsoukkas (2025), AAS 25-621.
     [ross.aoe.vt.edu](https://ross.aoe.vt.edu/papers/ross-roberts-tsoukkas-2025-AAS-25-621.pdf)
-15. Genova & Aldrin (2015), AAS 15- (in `cyclers_pdf` per memory).
+15. Genova & Aldrin (2015), AAS 15- (in the private paper corpus per memory).
 16. Castelli (2006/2012), [ScienceDirect S0094576506000981](https://www.sciencedirect.com/science/article/abs/pii/S0094576506000981).
 17. Anderson, Lo et al. — JPL patched-CR3BP series (DOI search via JPL TRS).
 18. Bosanac et al. — [Springer s11071-022-07829-1](https://link.springer.com/article/10.1007/s11071-022-07829-1), [s10569-022-10063-x](https://link.springer.com/article/10.1007/s10569-022-10063-x).

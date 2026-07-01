@@ -97,7 +97,7 @@ surface an off-ladder torus, it would be flagged for human gauntlet review after
 
 NOT in the corpus. `grep -ci olikara docs/notes/CORPUS_INDEX.md` → 0; no
 Olikara-Scheeres / Olikara 2016 / Henderson-Howell QP-tori family table PDF is present
-in `cyclers_pdf/papers/`. Registered as a **standing acquisition gap** (per #333
+in the private paper corpus. Registered as a **standing acquisition gap** (per #333
 follow-on + `feedback_never_give_up_reproducing_papers`). The walk ships with
 self-consistency goldens (energy genuinely moves — the inverse of the #333 containment
 assertion; irrationality; corrector-independent off-grid closure). The energy walk was

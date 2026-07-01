@@ -93,4 +93,4 @@ the V0-V5 gauntlet (#274).
 
 When institutional access is available, the Stern et al. 2020 paper (and any
 companion Finley paper if it exists) should be filed at
-`cyclers_pdf/papers/stern-tapley-finley-scherrer-2020-pluto-orbiter-kuiper-belt-explorer-jsr-doi-10.2514-1.A34658.pdf`.
+`doi:10.2514/1.A34658` (Stern et al. 2020, JSR).

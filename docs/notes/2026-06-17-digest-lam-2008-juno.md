@@ -95,7 +95,7 @@ Lam-Johannesen-Kowalkowski 2008 publishes:
 
 ### 4.2 Two layered problems
 
-1. **V_∞ absent.** The paper's scope is planetary-protection (post-JOI), not flight-design (pre-JOI). The flight-design data is in the **sibling paper Kowalkowski-Johannesen-Lam 2008** (Ref. 1 p. 11 — "Launch Period Development of the Juno Mission to Jupiter") which is referenced but not in this PDF and not in cyclers_pdf at commit `fa38aae` for this admission cycle. **The flight-design paper IS the correct source; this PP paper is not.**
+1. **V_∞ absent.** The paper's scope is planetary-protection (post-JOI), not flight-design (pre-JOI). The flight-design data is in the **sibling paper Kowalkowski-Johannesen-Lam 2008** (Ref. 1 p. 11 — "Launch Period Development of the Juno Mission to Jupiter") which is referenced but not in this PDF and not in the private paper corpus at commit `fa38aae` for this admission cycle. **The flight-design paper IS the correct source; this PP paper is not.**
 
 2. **Juno orbit_class question.** The catalogue admission asks for `mga_tour`, but Juno is a 1-leg E-E-J trajectory (one Earth gravity assist between two DSMs, then JOI). It is not a multi-body MGA tour in the Cassini / Galileo / Voyager sense. It is more accurately characterized as:
    - **mga_tour with single Earth flyby:** if any pre-JOI gravity assist counts (Juno's single EGA does qualify under a strict reading of "mga_tour" = "any multi-gravity-assist trajectory"). The "2+ ΔV-EGA" trajectory archetype IS a recognized mga subclass (Diehl-Kaplan-Penzo 1983, Sims-Longuski-Staugler 1997 ΔV-EGA papers).
@@ -210,6 +210,6 @@ For the parent / #382 / #345:
 
 5. **(Action — Juno planetary-protection data)** Lam 2008's Jupiter gravity-field table (Table 1) and Atreya atmospheric model (Table 2) are useful as a sourced Jupiter-system data reference. If the Jupiter-system gravity / atmosphere models are needed for any cyclerfinder N-body validation, this paper is a citable source.
 
-6. **(Action — Sims-Longuski-Staugler 1997 ΔV-EGA family)** Juno's "2+ ΔV-EGA" archetype is documented in Sims-Longuski-Staugler 1997 (the canonical ΔV-EGA paper). If that paper is not yet in cyclers_pdf, it is a natural acquisition to anchor the flight-design archetype.
+6. **(Action — Sims-Longuski-Staugler 1997 ΔV-EGA family)** Juno's "2+ ΔV-EGA" archetype is documented in Sims-Longuski-Staugler 1997 (the canonical ΔV-EGA paper). If that paper is not yet in the private paper corpus, it is a natural acquisition to anchor the flight-design archetype.
 
 End of digest paper 3 of 4.

@@ -123,4 +123,4 @@ practicality.
   `docs/notes/2026-06-16-332-v4-uranus-phase4.md` (renamed during ordering),
   `docs/notes/2026-06-16-335-v4-strict-phase41.md`,
   `docs/notes/2026-06-16-338-silver-epoch-sweep-boundary.md`
-* Heaton-Longuski 2003 PDF (private repo): `cyclers_pdf` commit `0c26264`
+* Heaton-Longuski 2003 PDF (private corpus): commit `0c26264`

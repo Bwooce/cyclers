@@ -2,7 +2,7 @@
 
 **Full citation:** Bond, V.R. & Allman, M.C., *Modern Astrodynamics: Fundamentals and Perturbation Methods*, Princeton University Press, 1996 (2021 reissue), DOI 10.1515/9780691223902. ISBN 0-691-04459-7. 264 pp. (LoC TL1050.B66 1996). First author Victor R. Bond (NASA-JSC Mission Planning & Analysis Division); developed from graduate courses at the University of Houston–Clear Lake.
 
-**cyclers_pdf file:** `/home/bruce/dev/cyclers_pdf/papers/bond-allman-2021-modern-astrodynamics-fundamentals-perturbation-methods-princetonUP-doi-10.1515-9780691223902-textbook.pdf` (born-digital, has a text layer — no OCR needed).
+**Source:** doi:10.1515/9780691223902 (born-digital, has a text layer — no OCR needed).
 
 **Scope:** chapter-summary (TOC + 5 deep chapters/appendices). Deep-read: **Ch 5** (f/g universal-variable, pp. 58–80), **Ch 6** (Two-point BVP / Lambert, pp. 81–90), **Ch 8** (Perturbation theory / VOP, pp. 117–146), **Ch 9** (Special perturbation methods: regularization / Sundman / Sperling-Burdet, pp. 147–183), and **Appendix E** (Stumpff functions, pp. 236–238). Sampled: Ch 1–4, 7, 10, 11, App A–D, F. The book's intellectual center of gravity is Bond's own JSC lineage (Sperling 1961 → Burdet 1968 → Bond-Fraietta, Bond-Gottlieb), so the regularization/Sperling-Burdet material (Ch 9) is the unique contribution and got the deepest read.
 

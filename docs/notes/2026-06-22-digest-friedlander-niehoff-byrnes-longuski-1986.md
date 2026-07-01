@@ -4,7 +4,7 @@
 gap). JPL + SAIC. The **canonical early cycler paper** — predates Russell entirely
 and is the primary source for the **VISIT** circulating-orbit family (Niehoff) and a
 co-canonical source (with Aldrin) for the **Up/Down Escalator**. 13 pp, text-layer.
-Filed `cyclers_pdf/papers/friedlander-niehoff-byrnes-longuski-1986-circulating-transportation-orbits-earth-mars.pdf`;
+Source: AAS/AIAA Astrodynamics Specialist Conf., Williamsburg VA, 1986;
 CORPUS_INDEX registered.
 
 Purpose here: the genuinely-independent (1986, pre-Russell) primary for the #415/#416

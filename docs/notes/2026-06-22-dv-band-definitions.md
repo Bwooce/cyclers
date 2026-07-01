@@ -151,7 +151,7 @@ conflict C1].
 
 ## Multi-sourcing status (updated 2026-06-22 after a corpus-wide ΔV extraction)
 
-A 2026-06-22 pass read the **local primary PDFs** (`cyclers_pdf/papers/`, not just
+A 2026-06-22 pass read the **local primary PDFs** (private paper corpus, not just
 the digests) + the user-supplied Rauwolf 2002. Evidence base, by claim:
 
 - **Axis A (geometric ballistic criterion, AR ≥ 1 / TR ≥ 1):** **well

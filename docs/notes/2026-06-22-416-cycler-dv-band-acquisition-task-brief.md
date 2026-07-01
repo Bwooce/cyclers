@@ -16,7 +16,7 @@ section. Original brief below for history.
 digests additional primaries to give Axis B **≥ 3 independent anchors** and
 either corroborate or correct those cutoffs.
 
-**CORRECTION (2026-06-22, after inventorying `/home/bruce/dev/cyclers_pdf/papers/`
+**CORRECTION (2026-06-22, after inventorying the private paper corpus
 — 161 PDFs):** this is **NOT primarily an acquisition task**. The original brief
 wrongly assumed the targets were paywalled; a direct inventory shows the key
 papers are **already on disk, just undigested for the ΔV-band question**. So #416
@@ -115,4 +115,4 @@ source. Renamed 2026-06-22 to
 - `docs/notes/2026-06-22-dv-band-definitions.md` (#415 — the bands this multi-sources),
   `docs/notes/2026-06-22-415-dv-band-definitions-task-brief.md`.
 - `docs/notes/CORPUS_INDEX.md`; `feedback_corpus_document_policy`,
-  `reference_cyclers_pdf_private_repo`.
+  `reference_private_corpus`.

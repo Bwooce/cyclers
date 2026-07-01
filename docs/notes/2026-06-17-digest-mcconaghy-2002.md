@@ -145,7 +145,7 @@ No errata required.
 
 ### 4.2 New anchor opportunity — Byrnes-McConaghy-Longuski 2002 (Ref 30, p.10)
 
-The same Monterey conference produced a companion paper: **Byrnes, D.V., McConaghy, T.T., Longuski, J.M., "Analysis of Various Two Synodic Period Earth-Mars Cycler Trajectories"** — referenced as Ref 30 on p.10. **NOT IN cyclers_pdf**. This is the explicit S1L1 / Case 3 cycler companion paper. Worth acquiring as #116 backfill since the catalogue's S1L1 row currently anchors on McConaghy 2004 JSR (#352) — but the Byrnes-McConaghy-Longuski 2002 conference paper may predate it.
+The same Monterey conference produced a companion paper: **Byrnes, D.V., McConaghy, T.T., Longuski, J.M., "Analysis of Various Two Synodic Period Earth-Mars Cycler Trajectories"** — referenced as Ref 30 on p.10. **NOT IN private paper corpus**. This is the explicit S1L1 / Case 3 cycler companion paper. Worth acquiring as #116 backfill since the catalogue's S1L1 row currently anchors on McConaghy 2004 JSR (#352) — but the Byrnes-McConaghy-Longuski 2002 conference paper may predate it.
 
 ### 4.3 S1L1 first-publication date corrected
 
@@ -193,12 +193,12 @@ These bounds are method-specific to the planar circular conic assumption. They a
 2. **Companion paper Byrnes-McConaghy-Longuski 2002 (Ref 30) is the explicit two-synodic-period paper**; calls S1L1 "Case 3". Not in corpus — flag for #116.
 3. The paper acknowledges "Dr. Buzz Aldrin for his advice and inspiration" (p.9 Acknowledgments) and notes Wisuwat Bhosri's helpful suggestions. This is the canonical 2002 collaboration anchor.
 4. **Hollister castles-in-space reference IS Hollister 1969** (Ref 3, p.9) "Castles in Space" *Astronautica Acta* 14:2 pp.311-316 — the 1969 Hollister castles-in-space concept paper that anchors all subsequent Venus-Earth cycler literature.
-5. **n=2 r=3 S1L1 paper**: this is the OPEN CONFERENCE paper. The closed-form S1L1 paper is the 2004 JSR (in cyclers_pdf). The catalogue currently treats them as one anchor; they're actually two (2002 conference + 2004 JSR).
+5. **n=2 r=3 S1L1 paper**: this is the OPEN CONFERENCE paper. The closed-form S1L1 paper is the 2004 JSR (in the private paper corpus). The catalogue currently treats them as one anchor; they're actually two (2002 conference + 2004 JSR).
 
 ## 7. Action items for parent
 
 - **No code changes** to KNOWN_CORPUS required — the existing AIAA 2002-4420 anchor is correctly cited. The verbatim title/author/venue/paper-ID all match.
-- **Memory update**: the `project_s1l1_realeph_closure_blocker.md` memory should add a note that S1L1's 2002 conference precedence is in this paper (Table 6), with the V_∞_E = 4.7 / V_∞_M = 5.0 km/s tuple. This is the **earliest sourced S1L1 publication** in the cyclers_pdf corpus and supersedes the 2004 JSR for citation precedence.
+- **Memory update**: the `project_s1l1_realeph_closure_blocker.md` memory should add a note that S1L1's 2002 conference precedence is in this paper (Table 6), with the V_∞_E = 4.7 / V_∞_M = 5.0 km/s tuple. This is the **earliest sourced S1L1 publication** in the private paper corpus and supersedes the 2004 JSR for citation precedence.
 - **Byrnes-McConaghy-Longuski 2002** "Analysis of Various Two Synodic Period Earth-Mars Cycler Trajectories" AIAA/AAS Monterey Aug 2002 — flag for #116 acquisitions. Per the Ref 30 description, this paper has the explicit "Case 3" treatment that precedes S1L1 nomenclature.
 - **Possible new precursor_mga rows**: the ballistic n=7 cyclers (VISIT 1, VISIT 2) might warrant precursor_mga admissions in the expanded scope (memory `project_catalogue_scope_expanded_2026-06-15.md`). Table 5 gives aphelion ranges, repeat periods, and Earth/Mars encounter intervals. **However**: a single (R_p, R_a) range pair without a chosen epoch is family-spec, not member-spec — V_min for admission would still need the family member chosen, and the canonical Friedlander-Niehoff-Byrnes-Longuski 1986 VISIT papers (Refs 11-14) are the proper anchors for that — those papers ARE the V0 sources, not this one.
 - **6S7, 6S8, 6S9 ballistic cyclers**: the n=6 ballistic family in Table 4 (footnote e). These have low V_∞ (4.0-5.0 km/s) and are ballistic — worth checking whether the catalogue already has rows for them or whether they're a novel admission opportunity. (Quick check: catalogue does NOT obviously have n=6 ballistic rows; merits a separate task.)

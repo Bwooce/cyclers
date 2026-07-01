@@ -16,7 +16,7 @@ Bourke 1971 Voyager #382, Lam 2008 Juno #382, Bellerose 2018 Cassini #382).
 ## Kohlhase & Penzo 1977 — "Voyager Mission Description"
 
 * **Citation:** Space Science Reviews 21(2):77-101 (1977). C.E. Kohlhase,
-  P.A. Penzo (JPL/Caltech). Cached: `cyclers_pdf` commit `26e66d0`.
+  P.A. Penzo (JPL/Caltech). Cached: private corpus commit `26e66d0`.
 * **What it is:** the canonical Voyager (MJS77) flight-design summary —
   the flown two-spacecraft Jupiter-gravity-assist-to-Saturn design with
   the Voyager 2 Saturn-gravity-assist continuation option to Uranus.
@@ -44,7 +44,7 @@ Bourke 1971 Voyager #382, Lam 2008 Juno #382, Bellerose 2018 Cassini #382).
 
 * **Citation:** Acta Astronautica 2(7-8):715-743 (1975), DOI
   10.1016/0094-5765(75)90012-0. W.E. Giberson (Project Manager),
-  N.W. Cunningham (Program Manager), JPL. Cached: `cyclers_pdf` commit
+  N.W. Cunningham (Program Manager), JPL. Cached: private corpus commit
   `28d8531`.
 * **What it is:** the contemporaneous JPL project-manager mission paper
   for MVM'73 / Mariner 10 — the first dual-planet gravity-assist mission
@@ -69,7 +69,7 @@ Bourke 1971 Voyager #382, Lam 2008 Juno #382, Bellerose 2018 Cassini #382).
 
 * **Citation:** J. Spacecraft & Rockets 13(8):494-501 (1976), DOI
   10.2514/3.57113. E.L. McKinley, R.E. Van Allen (JPL). Cached:
-  `cyclers_pdf` commit `aca2a36`. The DEDICATED Voyager (MJS77)
+  Private corpus commit `aca2a36`. The DEDICATED Voyager (MJS77)
   navigation paper — the Tier-1 V∞ source flagged in the section above.
 * **What it is:** trajectory-correction-maneuver (TCM) strategy +
   propellant costs + delivery accuracies + planetary-quarantine analysis.
@@ -90,7 +90,7 @@ Bourke 1971 Voyager #382, Lam 2008 Juno #382, Bellerose 2018 Cassini #382).
 
 ## Rinker, Jacobson & Wood 1976 — off-scope for #345
 
-`cyclers_pdf` commit `aca2a36`. "Statistical Analysis of Trim Maneuvers in
+Private corpus commit `aca2a36`. "Statistical Analysis of Trim Maneuvers in
 Low-Thrust Interplanetary Navigation," JSR (1976). Solar-electric-propulsion
 navigation trim-maneuver methodology for comet/asteroid missions. A
 low-thrust-navigation reference for #309 / #359, NOT a #345 mission-tour

@@ -1,6 +1,6 @@
 # Doedel-Keller-Kernévez 1991 Part I + Part II — full-page deep-read verdict
 
-**Read 2026-06-17 AET.** Combined verdict for task #375, the canonical methodology reference for #347 Phase 1 (Floquet bifurcation framework, just shipped at commit `e98e49b`). Source: every page of both PDFs in `/home/bruce/dev/cyclers_pdf/papers/`:
+**Read 2026-06-17 AET.** Combined verdict for task #375, the canonical methodology reference for #347 Phase 1 (Floquet bifurcation framework, just shipped at commit `e98e49b`). Source: every page of both PDFs in the private paper corpus:
 
 - `doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-I-finite-dimensions-IJBC-1(3)-493-520.pdf` (28 pp.)
 - `doedel-keller-kernevez-1991-numerical-analysis-bifurcation-problems-II-infinite-dimensions-IJBC-1(4)-745-772.pdf` (28 pp.)

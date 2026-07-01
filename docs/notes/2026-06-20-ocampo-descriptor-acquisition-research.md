@@ -53,8 +53,8 @@ member tables do not.
 
 ## Evidence — what each source actually prints
 
-Checked against the digests/transcriptions (all sourced from the private corpus
-`cyclers_pdf/papers`, vision-read, page-cited) and the catalogue:
+Checked against the digests/transcriptions (all sourced from the private paper corpus,
+vision-read, page-cited) and the catalogue:
 
 | Source (corpus file / table) | What it prints for `n.m.k` cyclers | Per-arc descriptor? |
 |---|---|---|
@@ -104,7 +104,7 @@ The only published pointer to broader per-member geometry is:
 
 - **McConaghy, Yam, Landau & Longuski, "Two-Synodic-Period Earth-Mars Cyclers with
   Intermediate Earth Encounter," AAS 03-509** (Aug 2003) — ref 14 in McConaghy 2005,
-  cited as the S1L1 primary source. **NOT in the corpus** (`cyclers_pdf/papers` scan:
+  cited as the S1L1 primary source. **NOT in the private paper corpus** (scan:
   not found). Also **AAS 03-508** (Russell-Ocampo, ref 13) — not in corpus.
   - Acquisition value: these are 2-synodic-focused; even if acquired they would at most
     add descriptor detail for the S1L1/S2 family already covered by `mcconaghy-2006-em-k2`
@@ -149,4 +149,4 @@ electronic file** (author contact), which is outside the published-corpus mining
 - `docs/notes/2026-06-17-365-phase-d-results.md` (#365 promotion wave; the single-ellipse closer path)
 - `docs/notes/2026-06-07-russell-2004-dissertation-method-mining.md`; `docs/notes/CORPUS_INDEX.md`
 - `data/catalogue.yaml` (`mcconaghy-2006-em-k2` descriptor control vs `russell-ocampo-*` rows; YAML scan of free_return_arcs + validation levels)
-- Corpus listing `cyclers_pdf/papers/` (confirmed AAS 03-509 / 03-508 absent)
+- Corpus listing (confirmed AAS 03-509 / 03-508 absent)

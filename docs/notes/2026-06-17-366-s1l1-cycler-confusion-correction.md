@@ -15,7 +15,7 @@ Scope of this note:
 
 ### A.1 Table 4 row 2L3 (p.625)
 
-Direct PDF read (`/home/bruce/dev/cyclers_pdf/papers/mcconaghy-longuski-byrnes-2004-analysis-class-earth-mars-cycler-trajectories-jsr-doi-10.2514-1.11939.pdf`, page 4 of PDF = JSR p.625):
+Direct PDF read (McConaghy-Longuski-Byrnes 2004, doi:10.2514/1.11939, page 4 of PDF = JSR p.625):
 
 | Cycler nPr | Aphelion AU | V∞ at Earth km/s | V∞ at Mars km/s | Shortest transfer days | Req turn deg | Max turn deg |
 |---|---|---|---|---|---|---|

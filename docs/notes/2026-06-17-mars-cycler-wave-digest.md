@@ -1,9 +1,9 @@
 # Mars-cycler wave acquisition digest (2026-06-17)
 
-**Trigger:** user uploaded 17 papers to cyclers_pdf 2026-06-17 16:39 AET
-(commits `069e376`, `6b4ca1a`, `ae070aa` on `Bwooce/cyclers_pdf:main`).
-Filed atomically at cyclers_pdf commit `b04d944` per the
-`feedback_cyclers_pdf_filing_pattern` standard.
+**Trigger:** user uploaded 17 papers to the private paper corpus 2026-06-17 16:39 AET
+(commits `069e376`, `6b4ca1a`, `ae070aa`).
+Filed atomically at commit `b04d944` per the
+`feedback_corpus_filing_pattern` standard.
 
 **Scope of this note:** one-paragraph digest per paper + recommended
 follow-on action. Where a paper has substantial catalogue / corpus

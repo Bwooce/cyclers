@@ -289,7 +289,7 @@ sits at 6.7e-7 to 1.7e-7 (three orders of magnitude below).
 ## 8. References
 
 - **Andreu, M. A.** (1998). *The Quasi-Bicircular Problem.* PhD dissertation,
-  Universitat de Barcelona. (Filed in `cyclers_pdf/papers` — not publicly
+  Universitat de Barcelona. (In the private paper corpus — not publicly
   cited from this repo per project policy.)
 - **Simó, C., Gómez, G., Jorba, À., Masdemont, J.** (1995). The bicircular
   model near the triangular libration points of the RTBP. In *The dynamical

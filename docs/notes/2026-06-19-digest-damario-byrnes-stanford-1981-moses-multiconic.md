@@ -12,7 +12,7 @@
 - **Affiliation**: Jet Propulsion Laboratory, California Institute of Technology, Pasadena, Calif.
 - **Journal**: J. Guidance and Control, Vol. 4, No. 6, Nov.-Dec. 1981, pp. 591-596. DOI 10.2514/3.56115
 - **Originally**: AIAA Paper 80-1676 / AIAA-80-1676R, AIAA/AAS Astrodynamics Conference, Danvers Mass., Aug 11-13, 1980 (submitted Sept 16, 1980) (p.591 footnote)
-- **cyclers_pdf path**: `papers/damario-byrnes-stanford-1981-new-method-optimizing-multiple-flyby-trajectories-jgc-doi-10.2514-3.56115.pdf`
+- **Source**: doi:10.2514/3.56115
 - **Page count**: 6 pages (591-596), text layer present
 
 ## 2. What the paper is

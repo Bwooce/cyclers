@@ -4,8 +4,7 @@
 `10.2514/6.2016-2623`. (The book-chapter version is *Space Operations: Contributions
 from the Global Community*, Springer 2017, DOI `10.1007/978-3-319-51941-8_21`.)
 SwRI + JHU/APL + KinetX + JPL + NASA Ames; many authors incl. Finley, Olkin, Stern,
-Young. Corpus file (private `cyclers_pdf/papers/`):
-`harch-bhaskaran-2017-accommodating-navigation-uncertainties-pluto-encounter-sequence-design-space-operations-springer.pdf`.
+Young. Source: doi:10.1007/978-3-319-51941-8_21 (private paper corpus).
 Processed 2026-06-23 (#429 follow-on, user-supplied).
 
 ## What it is
