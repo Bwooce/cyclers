@@ -1,6 +1,15 @@
 from pathlib import Path
 
+import pytest
+
 from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+try:
+    _KERNEL: str | None = ensure_jup365_kernel()
+except Exception:  # jup365.bsp is local-only (~50 MB, absent in CI) -> skip, don't error
+    _KERNEL = None
+
+pytestmark = pytest.mark.skipif(_KERNEL is None, reason="JUP365 kernel not furnished (local-only)")
 
 
 def test_jup365_kernel_path_exists() -> None:

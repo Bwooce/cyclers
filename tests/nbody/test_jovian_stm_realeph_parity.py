@@ -123,6 +123,14 @@ def _build_realeph_periapsis_seed(departure_et: float, jeph: JovianEphemeris) ->
     )
 
 
+try:
+    _KERNEL: str | None = ensure_jup365_kernel()
+except Exception:  # jup365.bsp is local-only (~50 MB, absent in CI) -> skip, don't error
+    _KERNEL = None
+
+pytestmark = pytest.mark.skipif(_KERNEL is None, reason="JUP365 kernel not furnished (local-only)")
+
+
 @pytest.fixture(scope="module")
 def realeph_periapsis_seed() -> ShootingSeed:
     """Real-eph EGGIE periapsis seed at paper_et + 3.78 d (built once per module)."""

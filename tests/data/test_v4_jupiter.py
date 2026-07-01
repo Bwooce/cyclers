@@ -18,6 +18,15 @@ import math
 
 import pytest
 
+from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel
+
+try:
+    _KERNEL: str | None = ensure_jup365_kernel()
+except Exception:  # jup365.bsp is local-only (~50 MB, absent in CI); the IEG seed needs it -> skip
+    _KERNEL = None
+
+pytestmark = pytest.mark.skipif(_KERNEL is None, reason="JUP365 kernel not furnished (local-only)")
+
 
 def test_ieg_eggie_seed_structure() -> None:
     """EGGIE seed has the correct sequence, node count, ToFs, and period."""

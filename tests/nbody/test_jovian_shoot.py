@@ -27,6 +27,13 @@ from cyclerfinder.nbody.jovian import (  # noqa: E402
 from cyclerfinder.search.ieg_seed import ieg_eggie_seed  # noqa: E402
 from cyclerfinder.verify.spice_kernels import ensure_jup365_kernel  # noqa: E402
 
+try:
+    _KERNEL: str | None = ensure_jup365_kernel()
+except Exception:  # jup365.bsp is local-only (~50 MB, absent in CI) -> skip, don't error
+    _KERNEL = None
+
+pytestmark = pytest.mark.skipif(_KERNEL is None, reason="JUP365 kernel not furnished (local-only)")
+
 
 def test_jovian_leg_propagates_finite() -> None:
     """Fast smoke (non-slow): one Jovian leg of the IEG seed propagates finite.
