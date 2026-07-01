@@ -1,0 +1,67 @@
+name: Kernel freshness
+
+# #514: mechanical check that the tracked NAIF satellite SPK kernels
+# (scripts/check_kernel_freshness.py's KERNEL_MANIFEST) are still the
+# current version upstream. Triggered by #506/#510: plu058.bsp was assumed
+# current but had already been superseded by plu060.bsp on NAIF's archive --
+# this catches that class of drift automatically instead of by accident.
+#
+# CI never holds the actual multi-GB kernel binaries (they are never
+# committed to the repo), so this only ever runs the checker's pure
+# manifest-vs-remote-listing comparison -- no local-file setup needed, and
+# the script has zero third-party dependencies (stdlib urllib only).
+
+on:
+  schedule:
+    - cron: '17 4 1 * *'    # monthly: 04:17 UTC on the 1st
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: kernel-freshness
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'  # cyclerfinder pyproject pins >=3.11,<3.12
+
+      - name: Check kernel freshness
+        id: check
+        run: |
+          set +e
+          python scripts/check_kernel_freshness.py > kernel_freshness_report.txt 2>&1
+          code=$?
+          set -e
+          cat kernel_freshness_report.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+
+      # Exit code 1 = at least one tracked kernel is STALE (a newer version
+      # exists upstream in the same numbered series). Exit code 2 = the NAIF
+      # fetch itself failed (network/site issue) -- that is not evidence of
+      # staleness, so it is surfaced only via the final failing step below,
+      # not filed as an issue (avoids noisy issues on transient NAIF outages).
+      - name: File or update issue on staleness
+        if: steps.check.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Kernel freshness: tracked NAIF kernel(s) superseded"
+          existing=$(gh issue list --search "$TITLE in:title" --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file kernel_freshness_report.txt
+          else
+            gh issue create --title "$TITLE" --body-file kernel_freshness_report.txt
+          fi
+
+      - name: Fail the run if the check found staleness or errored
+        if: steps.check.outputs.exit_code != '0'
+        run: exit ${{ steps.check.outputs.exit_code }}

@@ -142,7 +142,8 @@ def fetch_directory_listing(url: str, timeout: float = 30.0) -> str:
     """Fetch a NAIF directory listing page. Network I/O -- not called from tests."""
     req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8", errors="replace")
+        body: bytes = resp.read()
+        return body.decode("utf-8", errors="replace")
 
 
 @dataclass(frozen=True)
