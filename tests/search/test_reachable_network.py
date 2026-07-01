@@ -131,15 +131,16 @@ def test_pair_proxy_no_overlap_inaccessible() -> None:
 def test_pair_proxy_overlap_sums_costs_plus_patch() -> None:
     grid = rn.VoxelGrid(dx=0.01, dy=0.01, dtheta=math.radians(10.0))
     fa = rn.ReachableSet()
-    fa._log((2, 2, 2), 0.10, 0.3)
+    fa._log((2, 2, 2), 0.10, 0.3, heading=0.20, speed=0.5)
     fa._log((3, 3, 3), 0.40, 0.1)
     bb = rn.ReachableSet()
-    bb._log((2, 2, 2), 0.05, 0.2)  # shared voxel
+    bb._log((2, 2, 2), 0.05, 0.2, heading=0.30, speed=0.5)  # shared voxel
     bb._log((7, 7, 7), 0.01, 0.1)
     p = rn.pair_proxy(fa, bb, grid)
     assert p.accessible
     assert p.voxel == (2, 2, 2)
-    patch = rn.dv_turn(1.0, 0.5 * grid.dtheta)
+    # Physical patch: local speed (0.5) x actual heading mismatch (|0.20-0.30|).
+    patch = rn.dv_turn(0.5, 0.20 - 0.30)
     assert p.proxy_dv == pytest.approx(0.10 + 0.05 + patch)
     assert p.proxy_time == pytest.approx(0.3 + 0.2)
 
@@ -170,7 +171,7 @@ def test_mirror_reachable_set_is_time_reversal() -> None:
     grid = rn.VoxelGrid(dx=0.01, dy=0.01, dtheta=math.radians(10.0))
     fwd = rn.ReachableSet()
     idx = grid.index(0.3, 0.2, math.radians(35.0))
-    fwd._log(idx, 0.123, 4.5)
+    fwd._log(idx, 0.123, 4.5, heading=math.radians(35.0), speed=0.42)
     back = rn.mirror_reachable_set(fwd, grid)
     cx, cy, ct = grid.center(idx)
     mx, my, mt = rn.time_reversal(cx, cy, ct)
@@ -178,6 +179,9 @@ def test_mirror_reachable_set_is_time_reversal() -> None:
     assert midx in back.voxels
     assert back.voxels[midx] == pytest.approx(0.123)
     assert back.times[midx] == pytest.approx(4.5)
+    # Heading time-reverses (pi - theta); speed is preserved.
+    assert back.headings[midx] == pytest.approx(rn.wrap_angle(math.pi - math.radians(35.0)))
+    assert back.speeds[midx] == pytest.approx(0.42)
 
 
 # ---------------------------------------------------------------------------

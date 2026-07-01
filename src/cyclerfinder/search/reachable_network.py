@@ -193,19 +193,37 @@ class ReachableSet:
     used to first reach that voxel (the cheapest maneuver across all seeds/fans
     whose propagated arc crossed it). ``times`` maps voxel index -> the minimum
     proxy time (seconds-free; nondimensional propagation time) at which the voxel
-    was first crossed by the cheapest-cost arc reaching it.
+    was first crossed by the cheapest-cost arc reaching it. ``headings`` /
+    ``speeds`` map voxel index -> the *actual* rotating-frame velocity heading
+    (rad) and speed (nondimensional) of that cheapest-cost arc where it crossed
+    the voxel -- these carry the sub-voxel state needed for the physical
+    heading-mismatch patch term (Braik-Ross Sec. 4). Synthetic sets that only log
+    ``(cost, t)`` default heading/speed to 0.0 (patch degenerates to 0).
     """
 
     voxels: dict[tuple[int, int, int], float] = field(default_factory=dict)
     times: dict[tuple[int, int, int], float] = field(default_factory=dict)
+    headings: dict[tuple[int, int, int], float] = field(default_factory=dict)
+    speeds: dict[tuple[int, int, int], float] = field(default_factory=dict)
 
-    def _log(self, idx: tuple[int, int, int], cost: float, t: float) -> None:
+    def _log(
+        self,
+        idx: tuple[int, int, int],
+        cost: float,
+        t: float,
+        heading: float = 0.0,
+        speed: float = 0.0,
+    ) -> None:
         prev = self.voxels.get(idx)
         if prev is None or cost < prev:
             self.voxels[idx] = cost
             self.times[idx] = t
+            self.headings[idx] = heading
+            self.speeds[idx] = speed
         elif cost == prev and t < self.times[idx]:
             self.times[idx] = t
+            self.headings[idx] = heading
+            self.speeds[idx] = speed
 
 
 def _seeds_on_orbit(
@@ -303,8 +321,9 @@ def build_reachable_set(
                 cur = arc.state_f
                 t_prev = float(tt)
                 th = heading(float(cur[3]), float(cur[4]))
+                spd = math.hypot(float(cur[3]), float(cur[4]))
                 idx = grid.index(float(cur[0]), float(cur[1]), th)
-                rs._log(idx, cost, float(tt))
+                rs._log(idx, cost, float(tt), heading=th, speed=spd)
             if not ok:
                 continue
     return rs
@@ -325,7 +344,11 @@ def mirror_reachable_set(forward: ReachableSet, grid: VoxelGrid) -> ReachableSet
         cx, cy, ct = grid.center(idx)
         mx, my, mt = time_reversal(cx, cy, ct)
         midx = grid.index(mx, my, mt)
-        back._log(midx, cost, forward.times[idx])
+        # The *actual* arc heading time-reverses the same way as the voxel-center
+        # theta (Eq. 14): a forward arc at heading ``h`` becomes, run backward, an
+        # arriving arc at heading ``pi - h``. Speed is a time-reversal invariant.
+        mh = wrap_angle(math.pi - forward.headings[idx])
+        back._log(midx, cost, forward.times[idx], heading=mh, speed=forward.speeds[idx])
     return back
 
 
@@ -354,11 +377,22 @@ def pair_proxy(
     A -> B is directly accessible iff ``forward(A) & backward(B) != {}``. For each
     shared voxel the proxy ``dV`` is the source-side turn cost (to reach the
     voxel from A) plus the target-side turn cost (to arrive at B, from the mirror
-    set) plus a *voxel-scale heading-mismatch patch term*: the cost of the small
-    residual turn needed to reconcile the two arcs' headings within the voxel,
-    bounded by half a voxel of heading, ``dV_turn(v, dtheta/2)``. The pair value
-    is the minimum-proxy-dV voxel; its proxy time is the sum of the two arcs'
-    crossing times. NECESSARY-NOT-SUFFICIENT screening.
+    set) plus a *heading-mismatch patch term*: the cost of the residual turn
+    needed to reconcile the two arcs' *actual* headings where they meet in the
+    voxel, ``dV_turn(v_local, |theta_A - theta_B|)`` (Braik-Ross Sec. 4). Here
+    ``v_local`` is the arc's true rotating-frame speed at the voxel (a
+    C_J-manifold quantity, stored per voxel) and ``|theta_A - theta_B|`` is the
+    actual heading difference between the forward arc of A and the backward arc
+    of B -- both bounded by one voxel of heading but typically much smaller. The
+    pair value is the minimum-proxy-dV voxel; its proxy time is the sum of the
+    two arcs' crossing times. NECESSARY-NOT-SUFFICIENT screening.
+
+    .. note::
+       The patch was previously a *constant* ``dV_turn(1.0, dtheta/2)`` using a
+       unit reference speed -- a ~89 m/s pedestal at a 10 deg grid that dominated
+       the physical turn costs and inflated every pair's ΔV 30-60x above Braik's
+       (see docs/notes/2026-07-01-497-proxy-rebuild-verdict.md). The physical
+       local-speed / actual-mismatch form below removes that pedestal.
     """
     shared = forward_a.voxels.keys() & backward_b.voxels.keys()
     if not shared:
@@ -369,10 +403,11 @@ def pair_proxy(
     for idx in shared:
         src = forward_a.voxels[idx]
         tgt = backward_b.voxels[idx]
-        # Voxel-scale heading-mismatch patch: a half-voxel residual turn. The
-        # local speed is reconstructed from the voxel center on the C_J manifold;
-        # it is independent of the pair, so it only breaks ties geometrically.
-        patch = _patch_cost(idx, grid)
+        # Physical heading-mismatch patch: the residual turn reconciling the two
+        # arcs' ACTUAL headings at their true LOCAL speed (both stored per voxel).
+        v_local = forward_a.speeds[idx]
+        mismatch = angular_diff(forward_a.headings[idx], backward_b.headings[idx])
+        patch = dv_turn(v_local, mismatch)
         dv = src + tgt + patch
         t = forward_a.times[idx] + backward_b.times[idx]
         if dv < best_dv or (dv == best_dv and t < best_t):
@@ -380,17 +415,6 @@ def pair_proxy(
             best_t = t
             best_idx = idx
     return PairProxy(accessible=True, proxy_dv=best_dv, proxy_time=best_t, voxel=best_idx)
-
-
-def _patch_cost(idx: tuple[int, int, int], grid: VoxelGrid) -> float:
-    """Voxel-scale heading-mismatch patch term (a half-voxel residual turn).
-
-    Uses a unit reference speed so the term is purely a geometric tie-breaker of
-    order ``dtheta`` and never dominates the physical source/target turn costs;
-    it encodes that two arcs landing in the same voxel may differ by up to one
-    voxel of heading and need a small patch maneuver to reconcile.
-    """
-    return dv_turn(1.0, 0.5 * grid.dtheta)
 
 
 def proxy_matrix(

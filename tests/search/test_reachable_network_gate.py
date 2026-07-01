@@ -138,6 +138,54 @@ def test_dc_refined_gate_c32_dominant() -> None:
     )
 
 
+def test_braik_matrix_c32_dominance_requires_r52u() -> None:
+    """C32-dominance is CONTINGENT on R52-U -- proven on Braik's OWN published matrix (#497).
+
+    The slow gate ``test_validation_gate_c32_dominant`` xfails because our 12-node
+    source-confirmable set excludes the 5:2 unstable resonant R52-U (never
+    source-confirmed). This FAST, sourced test shows the demotion is a NODE-SET
+    effect, not a defect in our proxy: taking Braik & Ross's own published proxy-dV
+    matrix (``braik_ross_2026_dvmatrix_mps.csv``) and simply *removing R52-U* --
+    the node carrying C32's single strongest edge (C32-R52-U = 0.62 m/s, the
+    smallest entry in the whole matrix) -- collapses C32's dominance exactly the way
+    our scorer does on the recovered members:
+
+      * full 13 nodes  -> C32 is the argmax of strength AND harmonic closeness
+        (the published Table-4 result), and
+      * drop R52-U      -> C11a becomes the strength/closeness hub and C32 falls to
+        strength rank 3.
+
+    EXPECTED behaviour traces entirely to Braik's published matrix (sourced, never
+    circular). This is the #497 root-cause pin: after the proxy patch fix (30-60x
+    overestimate removed; median our/Braik edge ratio ~1.9x, Spearman rho 0.84), the
+    residual xfail is the missing R52-U node, not proxy fidelity.
+    See docs/notes/2026-07-01-497-proxy-rebuild-verdict.md.
+    """
+    header, mat = _load_published_dvmatrix()
+    ic_full = header.index("Cycler 32")
+    cent_full = rn.normalized_centralities(mat, n_families=len(header))
+    # Full 13-node set: C32 is the published hub (Table 4).
+    assert int(np.argmax(cent_full.strength)) == ic_full
+    assert int(np.argmax(cent_full.harmonic_closeness)) == ic_full
+
+    # Drop R52-U -> our 12-node source-confirmable set.
+    keep = [i for i, h in enumerate(header) if h != "Resonant 5to2 Unstable"]
+    labels12 = [header[i] for i in keep]
+    mat12 = mat[np.ix_(keep, keep)]
+    ic12 = labels12.index("Cycler 32")
+    i_c11a = labels12.index("Cycler 11a")
+    cent12 = rn.normalized_centralities(mat12, n_families=len(labels12))
+    # C11a -- not C32 -- is now the hub, and C32 is demoted (rank > 1) in strength.
+    assert int(np.argmax(cent12.strength)) == i_c11a, _rank_msg(
+        "strength(-R52U)", labels12, cent12.strength
+    )
+    assert int(np.argmax(cent12.harmonic_closeness)) == i_c11a
+    c32_strength_rank = int(np.sum(cent12.strength > cent12.strength[ic12])) + 1
+    assert c32_strength_rank >= 2, (
+        f"C32 strength rank {c32_strength_rank} on the R52-U-excluded set; expected demotion (>=2)"
+    )
+
+
 def test_proxy_calibration_is_unit_slope_confirms_clean_negative() -> None:
     """Proxy->refined linear calibration has slope≈1: cannot compress OUR inflated proxy (#497b).
 
@@ -328,23 +376,25 @@ def test_stable_resonants_are_hard_access_on_subset() -> None:
 @pytest.mark.slow
 @pytest.mark.xfail(
     reason=(
-        "FAITHFUL NEGATIVE on the 12-node source-confirmable set (#262, post-#249 "
-        "4/4 cycler recovery): with all four Braik-Ross cyclers (C11a, C11b, C21, "
-        "C32) and the eight offline-confirmable resonant/libration/DPO nodes in "
-        "play, C32 does NOT emerge as the dominant family node under our scorer. "
-        "Observed ranking on this run: strength argmax = C11a; harmonic-closeness "
-        "argmax = C21; betweenness argmax = R21-U; C32 has ZERO betweenness (no "
-        "relay role at all). DIAGNOSED (#497, post-#495 golden adoption): the cause "
-        "is OUR proxy-dV FIDELITY, not the centrality math nor a missing node. The "
-        "centrality scorer reproduces Braik Table 4 EXACTLY from the published dV "
-        "matrix (test_centrality_scorer_reproduces_braik_ross_table4 PASSES: "
-        "0.2850/0.2891/0.5000). Our heading-fan proxy OVERESTIMATES dV (per #495: "
-        "dc_refined < proxy in every pair), so recalibrating DV_CAP_MS to the Braik "
-        "51 m/s reference EMPTIES our network (all centralities 0), and at 409.3 our "
-        "proxy mis-ranks betweenness to R21-U. The fix is proxy-dV calibration / "
-        "rebuilding from the adopted dc_refined golden -- NOT a cap value, so the "
-        "test stays xfail and the scorer stays GATED for OUR proxy. Parameters are "
-        "NOT tuned. See docs/notes/2026-06-30-497-c32-gate-diagnosis.md."
+        "FAITHFUL NEGATIVE on the 12-node source-confirmable set: C32 does NOT "
+        "emerge as the dominant node -- C11a is the strength/closeness hub. "
+        "ROOT CAUSE (#497 proxy rebuild, post-fix): NOT a proxy-fidelity defect. "
+        "The #497 rebuild FIXED the 30-60x proxy overestimate -- the old patch was "
+        "a CONSTANT ~89 m/s pedestal (dv_turn with a unit reference speed at the "
+        "coarse grid, added to every pair); the physical local-speed x actual "
+        "heading-mismatch patch drops the median our/Braik edge ratio to ~1-2x "
+        "(see docs/notes/2026-07-01-497-proxy-rebuild-verdict.md). C32-dominance "
+        "still does not hold because the 12-node set EXCLUDES the 5:2 unstable "
+        "resonant R52-U (never source-confirmed; sigma 0.37 collapses onto spurious "
+        "orbits with the available correctors). R52-U carries C32's single strongest "
+        "edge (C32-R52-U = 0.62 m/s, the smallest in the whole published matrix). "
+        "PROVEN on Braik's OWN published matrix "
+        "(test_braik_matrix_c32_dominance_requires_r52u PASSES): full 13 nodes -> "
+        "C32 dominant; drop R52-U -> C11a becomes the hub and C32 falls to strength "
+        "rank 3, exactly reproducing our scorer's 12-node ranking. So the xfail is a "
+        "NODE-SET incompleteness (missing R52-U), not our proxy. Flipping it needs a "
+        "robust Jacobi-constrained multiple-shooter to recover R52-U -- NOT a "
+        "parameter tune. See docs/notes/2026-07-01-497-proxy-rebuild-verdict.md."
     ),
     strict=True,
 )
@@ -383,10 +433,14 @@ def test_validation_gate_c32_undominant_faithful_negative() -> None:
     a corrector change shifts the scoring). Parameters are NOT tuned -- this
     test reports what the unmodified scorer produces.
 
-    Findings (commit-time): C32 is below the median in strength AND in harmonic
-    closeness, and has zero betweenness. The hub/gateway/relay node identities
-    differ from Braik-Ross Table 4 -- which means the scorer is not yet a
-    reliable family-selection prioritizer on our families.
+    Findings (post-#497 proxy patch fix): C11a -- not C32 -- is the strength /
+    closeness hub, and C32 has zero betweenness at the max-budget cap. This is the
+    SAME ranking Braik's OWN published matrix produces once R52-U is removed
+    (test_braik_matrix_c32_dominance_requires_r52u), confirming the negative is a
+    missing-node effect rather than a proxy defect: after the patch fix our proxy
+    tracks Braik's (Spearman rho ~0.84, median edge ratio ~1.9x). C32 dominance
+    would return only with R52-U in the set. See
+    docs/notes/2026-07-01-497-proxy-rebuild-verdict.md.
     """
     reps = _recover_subset()
     labels, cent = _run_network(reps)
