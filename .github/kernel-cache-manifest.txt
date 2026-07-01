@@ -1,0 +1,18 @@
+# #509: manifest of real-ephemeris SPK kernels provisioned in CI via
+# actions/cache. One line per kernel: <filename> <NAIF URL> <expected size in bytes>.
+#
+# This file's content (not just its existence) is hashed into the CI cache
+# key (see .github/workflows/ci.yml, "Cache real-ephemeris SPK kernels"), so
+# bumping a pinned filename here (e.g. after #514's monthly freshness checker
+# reports a newer version upstream) naturally invalidates the old cache entry
+# and forces a fresh download under the new key -- no manual cache-busting
+# needed.
+#
+# Kept in lockstep with scripts/check_kernel_freshness.py's KERNEL_MANIFEST
+# and src/cyclerfinder/verify/spice_kernels.py's ensure_*_kernel() functions,
+# which resolve to the SAME local path this manifest downloads into
+# (~/dev/references/kernels/<filename>) -- see docs/notes/2026-07-01-509-ci-kernel-provisioning-verdict.md
+# for why Uranus (ura111.bsp) is deliberately NOT listed here: it resolves
+# under a full local GMAT install tree, not this kernel directory.
+jup365.bsp https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/jup365.bsp 1136581632
+plu060.bsp https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/plu060.bsp 135207936

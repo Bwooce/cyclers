@@ -46,5 +46,52 @@ jobs:
             sleep 30
           done
 
+      # #509: provision the local-only real-ephemeris satellite SPK kernels
+      # (Jupiter/Galilean jup365.bsp, Pluto-system plu060.bsp) so the tests
+      # that are currently pytest.mark.skipif-gated on their absence
+      # (tests/nbody/test_galilean_ephem.py, test_jovian_stm_realeph_parity.py,
+      # test_jovian_shoot.py, tests/data/test_v4_jupiter.py,
+      # tests/verify/test_511_pc_realeph_correction.py) actually RUN in CI
+      # instead of silently skipping. Same actions/cache pattern as the DE440
+      # step above; the cache key is a hash of the manifest file below so a
+      # future #514-detected version bump naturally busts the cache.
+      #
+      # Uranus (ura111.bsp) is deliberately NOT provisioned here: the V4-strict
+      # Uranian gauntlet (tests/data/test_v4_uranus_strict.py) resolves its
+      # kernel paths under a full local GMAT R2022a install
+      # (~/GMAT/R2022a/data/...), not a standalone kernel file -- reproducing
+      # that install in CI is a materially bigger undertaking than caching a
+      # single .bsp and is out of scope for #509 (see the verdict doc).
+      - name: Cache real-ephemeris SPK kernels (Jupiter, Pluto)
+        uses: actions/cache@v4
+        with:
+          path: ~/dev/references/kernels
+          key: real-eph-kernels-${{ hashFiles('.github/kernel-cache-manifest.txt') }}
+
+      - name: Fetch real-ephemeris SPK kernels (cache miss only)
+        run: |
+          set -euo pipefail
+          mkdir -p ~/dev/references/kernels
+          while read -r name url expected_bytes; do
+            [[ "$name" =~ ^#.*$ || -z "$name" ]] && continue
+            target=~/dev/references/kernels/"$name"
+            if [[ -f "$target" ]]; then
+              have_bytes=$(stat -c %s "$target")
+              if [[ "$have_bytes" == "$expected_bytes" ]]; then
+                echo "[$name] already cached at $target ($have_bytes bytes); skipping download."
+                continue
+              fi
+              echo "[$name] cached file is $have_bytes bytes, expected $expected_bytes; re-fetching."
+            fi
+            echo "[$name] downloading from $url"
+            curl -L --fail --retry 3 --retry-delay 10 -o "$target" "$url"
+            have_bytes=$(stat -c %s "$target")
+            if [[ "$have_bytes" != "$expected_bytes" ]]; then
+              echo "[$name] downloaded $have_bytes bytes, expected $expected_bytes" >&2
+              exit 1
+            fi
+            echo "[$name] OK ($have_bytes bytes)"
+          done < .github/kernel-cache-manifest.txt
+
       - name: Pytest
         run: uv run pytest
