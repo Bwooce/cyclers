@@ -501,8 +501,8 @@ lives on the orthogonal gauntlet axis). See
   user editing.
 - `feedback_check_dont_guess` — when a quick command tells you the
   state, RUN it instead of approximating.
-- `feedback_cyclers_pdf_filing_pattern` — when user uploads a PDF to
-  cyclers_pdf root, I file + rename into `papers/` per the documented
+- `feedback_corpus_filing_pattern` — when user uploads a PDF to
+  the private corpus root, I file + rename into `papers/` per the documented
   standard, not the user.
 - `feedback_times_in_aet` — all ETAs / status times in Australian
   Eastern Time (UTC+10).
@@ -927,8 +927,8 @@ of the EM member — they need a DIRECT fixed-μ search. Note:
 `docs/notes/2026-06-14-binary-star-mu-continuation-discovery.md`.
 
 **Infra:** WebFetch broadly enabled (blanket allow) so agents can fetch arXiv/PDFs;
-standing rule — every fetched PDF is filed + committed to the private `cyclers_pdf`
-repo (4 filed this session). Roberts-Tsoukkas journal (#251) = no numeric tables
+standing rule — every fetched PDF is filed + committed to the private paper corpus
+(4 filed this session). Roberts-Tsoukkas journal (#251) = no numeric tables
 (figures only) → no sourced row, only a qualitative prior. Long agents now commit
 incrementally (quota walls + polling-loop hangs lose un-committed work otherwise).
 

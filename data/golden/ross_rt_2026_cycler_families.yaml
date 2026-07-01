@@ -1,7 +1,7 @@
 # Ross & Roberts-Tsoukkas (2026) — stable ballistic prograde (k1,k2)-cyclers
 # Sourced from: arXiv:2606.29189v1 [nlin.CD], 28 Jun 2026, "Stable Families of
 #   Ballistic Prograde Cyclers in the Restricted Three-Body Problem", TABLE I.
-# Filed: cyclers_pdf/papers/ross-roberts-tsoukkas-2026-stable-ballistic-prograde-cyclers-rtbp-arxiv-2606.29189.pdf
+# Source: arXiv:2606.29189 (Ross, Roberts-Tsoukkas 2026)
 # Digest: docs/notes/2026-06-30-digest-ross-roberts-tsoukkas-2026-stable-ballistic-cyclers.md
 #
 # Planar CR3BP. Primaries m1=1-mu at x=-mu, m2=mu at x=1-mu; mu in (0, 1/2].

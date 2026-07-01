@@ -50506,7 +50506,7 @@
       not-found. Heaton-Longuski 2003 (the only known paywalled adjacent
       Uranian-tour paper) was flagged for #329 acquisition.
     * #329 (Heaton-Longuski 2003 paywall, resolved 2026-06-16): user
-      acquired the PDF via AIAA institutional access (filed in cyclers_pdf
+      acquired the PDF via AIAA institutional access (filed in the private paper corpus
       commit 0c26264). Direct read confirmed the paper is a Galileo-style
       mga_tour (40 flybys, 810.7 d, Ariel orbit insertion at V_inf=0.92 km/s
       AT ARIEL, not at Umbriel-Oberon). The SILVER's V_inf tuple
