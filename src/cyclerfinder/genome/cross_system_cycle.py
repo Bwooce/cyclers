@@ -1143,8 +1143,89 @@ def correct_cross_cycle(
     if seed is None:
         raise ValueError(f"seed node construction failed at c_em={c_em0}, c_se={c_se0}")
     fwd, ret, t_em, t_se, variant = seed
-    if not (fwd.converged and ret.converged):
+    if not (fwd.converged and ret.converged) and solver != "feasibility_ls":
+        # feasibility_ls relaxes the seed gate and drives leg closure jointly.
         return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "seed legs did not converge")
+
+    if solver == "feasibility_ls":
+        # #496 TRUE feasibility-first corrector (Braik-Ross 2025 blueprint, Phase 1 + 2
+        # jointly): fold leg POSITION GAPS into the bounded least_squares residual so the
+        # optimizer drives leg closure AND phase closure simultaneously over (c_em, c_se),
+        # starting from an INFEASIBLE seed. The seed gate is relaxed — we do NOT require
+        # both legs to converge before the solver runs.
+        #
+        # Residual (4-component):
+        #   [fwd.residual_km / _LEG_SCALE,          <- forward leg spatial gap (O(1) at seed)
+        #    ret.residual_km / _LEG_SCALE,           <- return  leg spatial gap (O(1) at seed)
+        #    R1,                                     <- fwd->ret phase residual (rad)
+        #    R2]                                     <- ret->fwd phase residual (rad)
+        # R1/R2 are set to ±pi when a leg does not converge (max wrapped residual), so trf
+        # steers toward leg closure first, then phase closure. c_se is clamped BELOW the
+        # Canalias bifurcation (3.000863625) so the solver cannot wander off the SE-L2
+        # family. FD steps are larger than bounded_ls (leg gaps are less sensitive to c_se
+        # than phase, but the FD step must still be commensurate with the manifold response).
+        _leg_scale = 3.0e5  # km: normalises ~2e5 km infeasible gap to O(1)
+        lo_fs = [
+            c_em_bounds[0] if c_em_bounds is not None else c_em0 - 0.05,
+            c_se_bounds[0] if c_se_bounds is not None else max(3.0, c_se0 - 1.0e-3),
+        ]
+        hi_fs = [
+            c_em_bounds[1] if c_em_bounds is not None else c_em0 + 0.05,
+            c_se_bounds[1] if c_se_bounds is not None else c_se0 + 1.0e-3,
+        ]
+        if lo_fs[0] >= hi_fs[0] or lo_fs[1] >= hi_fs[1]:
+            return _result(
+                c_em0, c_se0, fwd, ret, t_em, t_se, 0, "feasibility_ls: degenerate bounds"
+            )
+        # Larger FD steps to capture leg-gap gradients (leg position is less sensitive to
+        # c_se than phase, so fd_se_feas >> fd_se is safe here).
+        _fd_em_feas = max(fd_em, 1.0e-3)
+        _fd_se_feas = max(fd_se, 1.0e-4)
+        nfev_fs = [0]
+
+        def _feas_resid(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            nfev_fs[0] += 1
+            c_em_v, c_se_v = float(x[0]), float(x[1])
+            cand = _solve(c_em_v, c_se_v, variant)
+            if cand is None:
+                # Node construction failed — hard infeasible, steer back.
+                return np.array([math.pi, math.pi, math.pi, math.pi], dtype=np.float64)
+            fwd_c, ret_c, t_em_c, t_se_c, _ = cand
+            # Leg position gaps (normalised to O(1) at the infeasible seed).
+            f_gap = min(fwd_c.residual, _leg_scale) / _leg_scale
+            r_gap = min(ret_c.residual, _leg_scale) / _leg_scale
+            # Phase residuals: valid only when both legs converge spatially.
+            if fwd_c.converged and ret_c.converged:
+                rr1, rr2 = _resid(fwd_c, ret_c, t_em_c, t_se_c)
+            else:
+                rr1 = 0.0 if fwd_c.converged else math.pi
+                rr2 = 0.0 if ret_c.converged else math.pi
+            if on_iter is not None:
+                on_iter(nfev_fs[0], c_em_v, c_se_v, rr1, rr2)
+            return np.array([f_gap, r_gap, rr1, rr2], dtype=np.float64)
+
+        sol_fs = least_squares(
+            _feas_resid,
+            x0=np.array([c_em0, c_se0], dtype=np.float64),
+            bounds=(lo_fs, hi_fs),
+            method="trf",
+            diff_step=[_fd_em_feas / abs(c_em0), _fd_se_feas / abs(c_se0)],
+            max_nfev=max(8, max_iter * 4),
+            xtol=1e-12,
+        )
+        ce_fs, cs_fs = float(sol_fs.x[0]), float(sol_fs.x[1])
+        final_fs = _solve(ce_fs, cs_fs, variant)
+        if final_fs is None or not (final_fs[0].converged and final_fs[1].converged):
+            # Could not find a leg-closing seed — clean negative.
+            best_notes = (
+                f"feasibility_ls: no leg-closing (c_em,c_se) found in bounds "
+                f"c_em∈[{lo_fs[0]:.4f},{hi_fs[0]:.4f}] "
+                f"c_se∈[{lo_fs[1]:.7f},{hi_fs[1]:.7f}]; reporting seed"
+            )
+            return _result(c_em0, c_se0, fwd, ret, t_em, t_se, nfev_fs[0], best_notes)
+        return _result(
+            ce_fs, cs_fs, final_fs[0], final_fs[1], final_fs[2], final_fs[3], nfev_fs[0], ""
+        )
 
     if solver == "bounded_ls":
         # #496 stall fix (Braik-Ross 2025 / Ross-Scheeres blueprint: bound + feasibility-

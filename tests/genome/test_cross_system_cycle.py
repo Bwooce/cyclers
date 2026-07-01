@@ -348,3 +348,43 @@ def test_correct_cross_cycle_runs_and_reduces_residual() -> None:
     if res.forward.converged and res.ret.converged:
         assert math.isfinite(res.theta_residual_norm)
         assert res.cycle_time_s > 0.0
+
+
+@pytest.mark.slow
+def test_feasibility_ls_accepts_infeasible_seed() -> None:
+    """solver="feasibility_ls" must run without raising from an infeasible seed.
+
+    The feasibility_ls mode relaxes the seed gate — it does NOT require both legs to
+    converge before the optimizer runs (unlike newton/bounded_ls which return early
+    with "seed legs did not converge").  At c_em=3.1294, c_se=3.0003 both legs fail
+    the default-scan convergence check (the grid is too coarse at 3.0003), so this
+    seed exercises the relaxed gate. The test guards only the structural contract:
+      - returns a CrossCycleClosure (no exceptions raised)
+      - total_patch_dv_kms is always reported (never silently inf/nan without notes)
+      - notes field documents the outcome honestly
+    Closure is NOT asserted here — the full run is compute-heavy and is in the
+    scripts/close_411_feasibility_ls.py driver (compute result in verdict note).
+    """
+    bridge = FrameBridge(se=se_earth_system(), em=em_moon_system())
+    res = correct_cross_cycle(
+        bridge,
+        em_lib="EM-L2",
+        se_lib="SE-L2",
+        c_em0=3.1294,
+        c_se0=3.0003,
+        n_em=1,
+        n_se=1,
+        max_iter=2,
+        max_attempts=2,
+        solver="feasibility_ls",
+        c_em_bounds=(3.110, 3.152),
+        c_se_bounds=(3.0000, 3.00086),
+    )
+    assert isinstance(res, CrossCycleClosure)
+    assert res.n_em == 1 and res.n_se == 1
+    assert res.libration_pair == ("EM-L2", "SE-L2")
+    # The solver must always set total_patch_dv_kms (finite or inf, never unset).
+    assert math.isfinite(res.total_patch_dv_kms) or math.isinf(res.total_patch_dv_kms)
+    # When infeasible seed: notes must be non-empty (clean-negative contract).
+    if not (res.forward.converged and res.ret.converged):
+        assert res.notes, "feasibility_ls must set notes when legs did not converge"

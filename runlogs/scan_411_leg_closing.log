@@ -1,0 +1,4 @@
+[2026-07-01T00:46:42+00:00] #496 leg-closing seed scan: c_em x7 c_se x4
+[2026-07-01T00:46:42+00:00] dense scan: fwd=(12,4) ret=(8,3)
+    c_em        c_se        fwd_km  fwd_ok        ret_km  ret_ok    both  note
+[2026-07-01T00:47:50+00:00]   3.1100   3.0000000           inf   False           inf   False   False  neither
