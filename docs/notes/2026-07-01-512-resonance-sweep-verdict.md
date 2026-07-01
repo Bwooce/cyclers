@@ -126,7 +126,7 @@ candidate, and even at 0.026 rad the residual is still ~2.6x the closure toleran
 
 ---
 
-## 4. Step 2 — bounded_ls re-solve at the top practical-grid candidates
+## 4. Step 2 — bounded_ls re-solve at the top practical-grid candidates (COMPLETE)
 
 (1,1) is already fully characterized by #496 (`feasibility_ls`/`bounded_ls`,
 best `|R| = 0.517-0.518 rad`, `closed=False`) — not re-run here (existing result
@@ -136,13 +136,45 @@ Top NEW candidates solved: (n_em, n_se) = (1,2), (3,1), (1,3), using the same #4
 bounds (`c_em_bounds=(3.112, 3.152)`, `c_se_bounds=(3.00050, 3.00086)`) and seed
 (c_em0=3.150, c_se0=3.00086).
 
-<!-- RESULTS TABLE FILLED IN BELOW ONCE THE DRIVER COMPLETES -->
+| (n_em, n_se) | seed \|R\| (analytic, Step 1) | solved \|R\| (bounded_ls) | closed | c_em | c_se |
+|---|---|---|---|---|---|
+| (1,1) [#496, reused] | 0.7128 | **0.517-0.518** | False | ~3.150 | ~3.00086 |
+| (1,2) | 0.7592 | **0.4255** | False | 3.149959 | 3.000852028 |
+| (3,1) | 0.7594 | **0.3683** | False | 3.150000 | 3.000852093 |
+| (1,3) | 0.9515 | **0.8078** | False | 3.146923 | 3.000844321 |
+
+**Important correction to the Step-1 framing:** the analytic seed ranking (§3.1)
+predicts which `(n_em, n_se)` starts closest to zero *before* any `(c_em, c_se)`
+re-optimization — it does NOT predict which pair the `bounded_ls` solver can push
+lowest. Empirically, **(3,1) and (1,2) both solve to a LOWER residual than (1,1)**
+despite ranking worse analytically (rank 3 and 2 respectively vs rank 1). The
+solver's local-descent path from the shared seed clearly differs in quality across
+pairs in a way the linear seed-offset table doesn't capture. This is a genuine,
+useful correction — cite the SOLVED table above, not the Step-1 ranking, for any
+claim about which resonance pair gets closest.
+
+None of the four solved pairs comes remotely close to closing
+(`theta_tol_rad = 1e-2`): the best, (3,1) at `|R| = 0.368` rad, is still **~37x**
+the closure tolerance. This is not a near-miss at any of the four pairs tested.
 
 ---
 
 ## 5. Verdict
 
-<!-- FILLED IN BELOW -->
+**#411 does NOT close at any of the four (n_em, n_se) pairs tested — clean
+negative, small-integer resonance-counting is not the unblock.** The best
+achieved, (3,1) at 0.368 rad, is 37x above the closure tolerance; the phase-closure
+wall #496 characterized is not resolved by adding EM/SE dwell revolutions in the
+practical range (1-8 EM revs, 1-4 SE revs). The wide diagnostic scan (§3.2) shows
+even the mathematically-optimal-but-impractical (n_em=104, n_se=36) pair — a 20+
+year cycle — only reaches 0.026 rad post-seed, still above tolerance before any
+solver re-optimization, and was not attempted here (out of practical scope).
+
+**Standing:** #411 remains open. Two levers are now exhausted (bounded_ls
+feasibility-first solving at #496; integer resonance-counting at #512). The
+remaining honest next lever is the 3D lift (Gomez 2004 z-slicing, digested #499) —
+the planar model may simply lack the out-of-plane DOF needed for the legs to
+co-reach a phase-consistent patch. Not attempted here; a genuinely bigger build.
 
 ---
 
