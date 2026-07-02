@@ -325,6 +325,30 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   the catalogue. Positive control: recover manifold-consistent unstable POs per Guido & Efthymiopoulos,
   arXiv:2604.00679 (2026-04-01), before any negative is trusted. Cheapest of the second-pass proposals — a
   config/target change, no new build (proposed 2026-07-02 second-pass independent review; not yet built).
+  **RUN 2026-07-02 (this session): CLEAN, HONEST NEGATIVE — registered in `data/empty_regions.jsonl`
+  (`sun-jupiter-hilda-32-mmr-dahotm`).** `scripts/run_527_hilda_dahotm_search.py` built + run end-to-end.
+  Independently re-verified the positive-control paper is real (WebFetch confirmed title/authors/abstract match
+  exactly). Derived the Hilda 3:2 interior-MMR seed from first principles (Kepler III on Jupiter's sourced SMA
+  -> a=3.9705 AU, matching the real, independently-documented Hilda asteroid group; back-derived GM_sun matched
+  the IAU-standard value exactly -- both are hard independent cross-checks, not invented numbers). Found and
+  fixed a real bug before it could cause a false negative: the #450 driver's defaults (`t_max=8.0`,
+  `period_guess=2n*2.5`) are tuned for Earth-Moon-scale periods and would have silently found nothing here,
+  where the natural section-return period is ~12.6 nondim units (verified by direct integration) -- the script
+  builds its own correctly-scaled backend instead of reusing the driver unmodified. Positive control PASSED
+  (residual 4.25e-3) before the full scan ran. Full scan (8 Jacobi values x 2 rev counts x 651-point grid =
+  10,416 points, timed pilot measured 0.007-0.043 s/point beforehand per #521) certified 33 real periodic-orbit
+  family members (residuals ~1e-14, well-converged) across the Hilda-resonance Jacobi band. **Verdict: the
+  #527 premise does not hold for this method.** The closest Jupiter approach across all 33 certified orbits is
+  1.85 Jupiter Hill radii (98.5M km vs Hill radius 53.1M km = 0.355 AU, itself matching the known literature
+  value) -- safely OUTSIDE Jupiter's sphere of gravitational dominance. This is physically expected, not a
+  search failure: stable 3:2-resonance libration is WHY the Hilda group avoids close Jupiter encounters, so a
+  periodic-orbit enumeration of the STABLE resonant backbone structurally cannot find the close-approach
+  "cycler" mechanism #527 hypothesized. The Guido-Efthymiopoulos heteroclinic/chaotic-transport structure this
+  proposal was grounded in lives on the UNSTABLE manifolds near the resonance separatrix, a different dynamical
+  object DA/HOTM's periodic-orbit enumeration cannot surface. Resweep condition: NOT more grid/Jacobi resolution
+  on this stable-orbit search -- a genuinely different method (invariant-manifold propagation from the unstable
+  separatrix orbits) would be needed to test the actual chaotic-transport cycler hypothesis; scope as a fresh
+  task if pursued.
 - **#528** — Low-Thrust-Native Validation Gate: build a continuous-thrust acceptance criterion for
   `dv_band: low_thrust_sep` (currently a schema field with zero catalogue rows and a gate that `return`s `None`
   — no acceptance window exists), reusing `core/sims_flanagan.py`. Positive control: reproduce Pascarella et al.
