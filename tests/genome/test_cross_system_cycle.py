@@ -14,6 +14,10 @@ import pytest
 
 from cyclerfinder.genome.cross_system_cycle import (
     FrameBridge,
+    Periodic3DNode,
+    _build_em_node_3d,
+    _build_se_node_3d,
+    correct_cross_cycle_3d,
     em_moon_system,
     se_earth_system,
 )
@@ -388,3 +392,64 @@ def test_feasibility_ls_accepts_infeasible_seed() -> None:
     # When infeasible seed: notes must be non-empty (clean-negative contract).
     if not (res.forward.converged and res.ret.converged):
         assert res.notes, "feasibility_ls must set notes when legs did not converge"
+
+
+@pytest.mark.slow
+def test_3d_node_build_and_floquet() -> None:
+    """_build_em_node_3d successfully corrects a 3D orbit and extracts 6D Floquet eigenvectors."""
+    em = em_moon_system()
+    node = _build_em_node_3d(em, "EM-L2", 3.15, -0.02)
+    assert isinstance(node, Periodic3DNode)
+    assert node.converged
+    # Verify it is out of plane
+    assert abs(node.state0[2]) > 0.01
+    assert len(node.unstable_eigvec) == 6
+    assert len(node.stable_eigvec) == 6
+    assert math.isclose(np.linalg.norm(node.unstable_eigvec), 1.0, rel_tol=1e-9)
+
+
+@pytest.mark.slow
+def test_3d_cross_connection() -> None:
+    """A 3D EM-L2 unstable -> 3D SE-L2 stable connection closes its 3D position gap."""
+    se = se_earth_system()
+    em = em_moon_system()
+    bridge = FrameBridge(se=se, em=em)
+
+    # Correct both nodes in 3D
+    em_l2_3d = _build_em_node_3d(em, "EM-L2", 3.15, -0.02)
+    se_l2_3d = _build_se_node_3d(se, "SE-L2", CANALIAS_C_SE, -5.139e-5)
+
+    # Match the connection
+    conn = correct_cross_connection(
+        bridge, em_l2_3d, se_l2_3d, label_from="EM-L2", label_to="SE-L2"
+    )
+    assert isinstance(conn, CrossConnection)
+    assert conn.converged
+    assert conn.residual < 1e2  # position match < 100 km
+    assert conn.patch_dv_kms < 1.5  # physically reasonable patch dV
+    assert math.isfinite(conn.transit_time)
+
+
+@pytest.mark.slow
+def test_correct_cross_cycle_3d_runs() -> None:
+    """correct_cross_cycle_3d runs a smoke test of the 3D time-consistent single-rev corrector."""
+    bridge = FrameBridge(se=se_earth_system(), em=em_moon_system())
+    res = correct_cross_cycle_3d(
+        bridge,
+        em_lib="EM-L2",
+        se_lib="SE-L2",
+        c_em0=3.15,
+        c_se0=CANALIAS_C_SE,
+        z_em=-0.02,
+        z_se=-5.139e-5,
+        n_em=1,
+        n_se=1,
+        max_iter=2,
+        max_attempts=2,
+        scan_n=4,
+        scan_n_tau=2,
+    )
+    assert isinstance(res, CrossCycleClosure)
+    assert res.n_em == 1 and res.n_se == 1
+    assert res.libration_pair == ("EM-L2", "SE-L2")
+    assert res.total_patch_dv_kms >= 0.0

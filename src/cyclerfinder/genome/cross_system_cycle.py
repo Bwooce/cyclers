@@ -19,7 +19,8 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import least_squares
 
 import cyclerfinder.core.cr3bp as cr3bp
-from cyclerfinder.genome.heteroclinic_cycle import LyapunovNode, _seed_on_manifold
+from cyclerfinder.genome.heteroclinic_cycle import LyapunovNode
+from cyclerfinder.search.cr3bp_general_periodic_3d import correct_general_periodic_3d
 
 
 def se_earth_system() -> cr3bp.CR3BPSystem:
@@ -148,10 +149,62 @@ class CrossConnection:
     transit_time: float = float("nan")  # seconds, |t_u| + |t_s| at the converged crossing
 
 
+@dataclass(frozen=True)
+class Periodic3DNode:
+    """A 3D periodic orbit serving as a cycle node.
+
+    ``state0`` is the full 6-vector IC ``(x0, y0, z0, vx0, vy0, vz0)``;
+    ``unstable_eigvec`` / ``stable_eigvec`` are the full 6-vectors of the
+    Floquet saddle pair, used to seed the manifolds.
+    """
+
+    label: str
+    state0: NDArray[np.float64]
+    period: float
+    jacobi: float
+    unstable_eigvec: NDArray[np.float64]  # 6-vector
+    stable_eigvec: NDArray[np.float64]  # 6-vector
+    converged: bool
+
+
+def _seed_on_manifold_3d(
+    system: cr3bp.CR3BPSystem,
+    node: LyapunovNode | Periodic3DNode,
+    *,
+    tau: float,
+    direction: str,
+    branch: int,
+    epsilon: float,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> NDArray[np.float64]:
+    """Manifold seed at phase ``tau`` along a planar or 3D ``node``."""
+    if direction not in {"stable", "unstable"}:
+        raise ValueError(f"direction must be 'stable' or 'unstable'; got {direction!r}")
+    if branch not in (+1, -1):
+        raise ValueError(f"branch must be +1 or -1; got {branch!r}")
+    tau = float(tau) % float(node.period)
+    if tau <= 0.0:
+        state_tau = np.asarray(node.state0, float)
+        phi = np.eye(6)
+    else:
+        arc = cr3bp.propagate(system, node.state0, tau, with_stm=True, rtol=rtol, atol=atol)
+        assert arc.stm is not None
+        state_tau = arc.state_f
+        phi = arc.stm
+    v = node.unstable_eigvec if direction == "unstable" else node.stable_eigvec
+    v6 = v if len(v) == 6 else np.array([v[0], v[1], 0.0, v[2], v[3], 0.0], dtype=np.float64)
+    v_tau = phi @ v6
+    n = float(np.linalg.norm(v_tau))
+    if n > 0.0:
+        v_tau = v_tau / n
+    return (state_tau + float(branch) * float(epsilon) * v_tau).astype(np.float64)
+
+
 def _manifold_crossing_timed(
     bridge: FrameBridge,
     system: cr3bp.CR3BPSystem,
-    node: LyapunovNode,
+    node: LyapunovNode | Periodic3DNode,
     *,
     side: str,
     tau: float,
@@ -176,7 +229,7 @@ def _manifold_crossing_timed(
     if side not in {"em", "se"}:
         raise ValueError(f"side must be 'em' or 'se'; got {side!r}")
     try:
-        seed = _seed_on_manifold(
+        seed = _seed_on_manifold_3d(
             system, node, tau=tau, direction=direction, branch=branch, epsilon=epsilon
         )
     except (RuntimeError, ValueError):
@@ -220,7 +273,7 @@ def _manifold_crossing_timed(
 def _manifold_inertial_at_section(
     bridge: FrameBridge,
     system: cr3bp.CR3BPSystem,
-    node: LyapunovNode,
+    node: LyapunovNode | Periodic3DNode,
     *,
     side: str,
     tau: float,
@@ -267,8 +320,8 @@ def _manifold_inertial_at_section(
 
 def _cross_residual(
     bridge: FrameBridge,
-    orbit_from: LyapunovNode,
-    orbit_to: LyapunovNode,
+    orbit_from: LyapunovNode | Periodic3DNode,
+    orbit_to: LyapunovNode | Periodic3DNode,
     *,
     from_side: str,
     to_side: str,
@@ -334,34 +387,49 @@ def _scan_cross_starts(
     *,
     n_theta: int,
     n_tau: int,
+    pos_tol_km: float = 2.0e5,
 ) -> tuple[float, float, float]:
-    """Coarse 3-D grid over (tau_u, tau_s, theta) -> least inertial position-gap cell.
+    """Coarse 3-D grid search that prioritizes low velocity gap (patch dV).
 
-    theta is the most sensitive variable (it rotates one whole frame relative to the
-    other) so it is gridded most densely. Falls back to the geometric centres if every
-    cell misses the section.
+    Among cells that co-reach the section with a position gap below pos_tol_km,
+    selects the one that minimizes the velocity gap. If no cells are below
+    pos_tol_km, falls back to the one with the smallest position gap.
     """
     thetas = [2.0 * math.pi * (i + 0.5) / n_theta for i in range(n_theta)]
     us = [period_u * (i + 0.5) / n_tau for i in range(n_tau)]
     ss = [period_s * (j + 0.5) / n_tau for j in range(n_tau)]
-    best = float("inf")
+
     best_tu, best_ts, best_th = 0.5 * period_u, 0.5 * period_s, math.pi
+    candidates = []
+
     for th in thetas:
         for tu in us:
             for ts in ss:
-                pos_gap, _, _ = resid(tu, ts, th)
-                if pos_gap is None:
+                pos_gap, _, vel_gap = resid(tu, ts, th)
+                if pos_gap is None or vel_gap is None:
                     continue
-                rn = float(np.linalg.norm(pos_gap))
-                if rn < best:
-                    best, best_tu, best_ts, best_th = rn, tu, ts, th
+                rn_pos = float(np.linalg.norm(pos_gap))
+                rn_dv = float(np.linalg.norm(vel_gap))
+                candidates.append((rn_pos, rn_dv, tu, ts, th))
+
+    if not candidates:
+        return best_tu, best_ts, best_th
+
+    good_pos = [c for c in candidates if c[0] < pos_tol_km]
+    if good_pos:
+        good_pos.sort(key=lambda x: x[1])
+        _, _, best_tu, best_ts, best_th = good_pos[0]
+    else:
+        candidates.sort(key=lambda x: x[0])
+        _, _, best_tu, best_ts, best_th = candidates[0]
+
     return best_tu, best_ts, best_th
 
 
 def correct_cross_connection(
     bridge: FrameBridge,
-    orbit_from: LyapunovNode,
-    orbit_to: LyapunovNode,
+    orbit_from: LyapunovNode | Periodic3DNode,
+    orbit_to: LyapunovNode | Periodic3DNode,
     *,
     label_from: str,
     label_to: str,
@@ -648,6 +716,58 @@ def theta_commensurability(
     return best_n_em, best_n_se, float(best_res), bool(best_res < tol_rad)
 
 
+def _real_unit_6d(v: NDArray[np.complex128]) -> NDArray[np.float64]:
+    vr = np.real(v)
+    n = float(np.linalg.norm(vr))
+    if n < 1e-14:
+        vr = np.real(v) + np.imag(v)
+        n = float(np.linalg.norm(vr))
+    if n < 1e-14:
+        raise ValueError("eigenvector is numerically zero")
+    return (vr / n).astype(np.float64)
+
+
+def _3d_floquet_pair(
+    system: cr3bp.CR3BPSystem,
+    state0: NDArray[np.float64],
+    period: float,
+    *,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> tuple[float, NDArray[np.float64], float, NDArray[np.float64]]:
+    """Return (|lam_u|, v_u, |lam_s|, v_s) for the 3D monodromy saddle pair.
+
+    Integrates the 6x6 STM over one period, computes eigenvalues, and returns the
+    largest-magnitude eigenvalue (> 1) and smallest-magnitude eigenvalue (< 1)
+    with their real-normalised 6D right eigenvectors.
+    """
+    arc = cr3bp.propagate(system, state0, period, with_stm=True, rtol=rtol, atol=atol)
+    assert arc.stm is not None
+    eigs, vecs = np.linalg.eig(arc.stm)
+    mags = np.abs(eigs)
+
+    # Filter out complex conjugate pairs that are close to the unit circle
+    hyperbolic_indices = []
+    for i, mag in enumerate(mags):
+        if abs(mag - 1.0) > 1e-3:
+            hyperbolic_indices.append(i)
+
+    if len(hyperbolic_indices) >= 2:
+        idx_u = max(hyperbolic_indices, key=lambda i: mags[i])
+        idx_s = min(hyperbolic_indices, key=lambda i: mags[i])
+    else:
+        idx_u = int(np.argmax(mags))
+        idx_s = int(np.argmin(mags))
+
+    lam_u = eigs[idx_u]
+    lam_s = eigs[idx_s]
+
+    v_u = _real_unit_6d(vecs[:, idx_u])
+    v_s = _real_unit_6d(vecs[:, idx_s])
+
+    return float(np.abs(lam_u)), v_u, float(np.abs(lam_s)), v_s
+
+
 def _build_em_node(em: cr3bp.CR3BPSystem, label: str, c_em: float) -> LyapunovNode:
     x0, sign = _EM_SEEDS.get(label, (1.155, -1.0))
     return LyapunovNode.from_libration(
@@ -659,6 +779,138 @@ def _build_se_node(se: cr3bp.CR3BPSystem, label: str, c_se: float) -> LyapunovNo
     x0, sign = _SE_SEEDS.get(label, (1.0101, -1.0))
     return LyapunovNode.from_libration(
         se, x0_guess=x0, jacobi=c_se, period_guess=_SE_PERIOD_GUESS, label=label, ydot0_sign=sign
+    )
+
+
+def _build_em_node_3d(em: cr3bp.CR3BPSystem, label: str, c_em: float, z0: float) -> Periodic3DNode:
+    planar = _build_em_node(em, label, c_em)
+    if abs(z0) < 1e-9:
+        _, v_u, _, v_s = _3d_floquet_pair(em, planar.state0, planar.period)
+        return Periodic3DNode(
+            label=label,
+            state0=planar.state0,
+            period=planar.period,
+            jacobi=planar.jacobi,
+            unstable_eigvec=v_u,
+            stable_eigvec=v_s,
+            converged=planar.converged,
+        )
+
+    state0_guess = np.array(
+        [planar.state0[0], 0.0, z0, 0.0, planar.state0[4], 0.0], dtype=np.float64
+    )
+    orbit = correct_general_periodic_3d(
+        em,
+        state0_guess,
+        planar.period,
+        free_vars=(0, 4, 6),
+        residual_indices=(1, 3, 5),
+        is_half_period_residual=True,
+    )
+    jac = cr3bp.jacobi_constant(orbit.state0, em.mu)
+    _, v_u, _, v_s = _3d_floquet_pair(em, orbit.state0, orbit.T_TU)
+
+    v_u_planar = np.array(
+        [
+            planar.unstable_eigvec[0],
+            planar.unstable_eigvec[1],
+            0.0,
+            planar.unstable_eigvec[2],
+            planar.unstable_eigvec[3],
+            0.0,
+        ],
+        dtype=np.float64,
+    )
+    if np.dot(v_u, v_u_planar) < 0.0:
+        v_u = -v_u
+    v_s_planar = np.array(
+        [
+            planar.stable_eigvec[0],
+            planar.stable_eigvec[1],
+            0.0,
+            planar.stable_eigvec[2],
+            planar.stable_eigvec[3],
+            0.0,
+        ],
+        dtype=np.float64,
+    )
+    if np.dot(v_s, v_s_planar) < 0.0:
+        v_s = -v_s
+
+    return Periodic3DNode(
+        label=label,
+        state0=orbit.state0,
+        period=orbit.T_TU,
+        jacobi=jac,
+        unstable_eigvec=v_u,
+        stable_eigvec=v_s,
+        converged=orbit.converged,
+    )
+
+
+def _build_se_node_3d(se: cr3bp.CR3BPSystem, label: str, c_se: float, z0: float) -> Periodic3DNode:
+    planar = _build_se_node(se, label, c_se)
+    if abs(z0) < 1e-9:
+        _, v_u, _, v_s = _3d_floquet_pair(se, planar.state0, planar.period)
+        return Periodic3DNode(
+            label=label,
+            state0=planar.state0,
+            period=planar.period,
+            jacobi=planar.jacobi,
+            unstable_eigvec=v_u,
+            stable_eigvec=v_s,
+            converged=planar.converged,
+        )
+
+    state0_guess = np.array(
+        [planar.state0[0], 0.0, z0, 0.0, planar.state0[4], 0.0], dtype=np.float64
+    )
+    orbit = correct_general_periodic_3d(
+        se,
+        state0_guess,
+        planar.period,
+        free_vars=(0, 4, 6),
+        residual_indices=(1, 3, 5),
+        is_half_period_residual=True,
+    )
+    jac = cr3bp.jacobi_constant(orbit.state0, se.mu)
+    _, v_u, _, v_s = _3d_floquet_pair(se, orbit.state0, orbit.T_TU)
+
+    v_u_planar = np.array(
+        [
+            planar.unstable_eigvec[0],
+            planar.unstable_eigvec[1],
+            0.0,
+            planar.unstable_eigvec[2],
+            planar.unstable_eigvec[3],
+            0.0,
+        ],
+        dtype=np.float64,
+    )
+    if np.dot(v_u, v_u_planar) < 0.0:
+        v_u = -v_u
+    v_s_planar = np.array(
+        [
+            planar.stable_eigvec[0],
+            planar.stable_eigvec[1],
+            0.0,
+            planar.stable_eigvec[2],
+            planar.stable_eigvec[3],
+            0.0,
+        ],
+        dtype=np.float64,
+    )
+    if np.dot(v_s, v_s_planar) < 0.0:
+        v_s = -v_s
+
+    return Periodic3DNode(
+        label=label,
+        state0=orbit.state0,
+        period=orbit.T_TU,
+        jacobi=jac,
+        unstable_eigvec=v_u,
+        stable_eigvec=v_s,
+        converged=orbit.converged,
     )
 
 
@@ -774,6 +1026,105 @@ def crosscheck_cross_cycle(
         worst = float("inf")
 
     return dataclasses.replace(cycle, independent_residual=worst)
+
+
+def crosscheck_cross_cycle_3d(
+    bridge: FrameBridge,
+    cycle: CrossCycleClosure,
+    z_em: float,
+    z_se: float,
+    *,
+    method: str = "Radau",
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    epsilon: float = 1e-6,
+    max_time_factor: float = 8.0,
+) -> float:
+    """Re-derive each converged 3D leg's patch-state with an independent integrator.
+
+    Returns the maximum position disagreement (km) across all re-derived legs.
+    """
+    em, se = bridge.em, bridge.se
+    worst: float = 0.0
+    any_converged = False
+
+    for conn in [cycle.forward, cycle.ret]:
+        if not conn.converged:
+            continue
+        any_converged = True
+        if conn.label_from.startswith("EM"):
+            system = em
+            side = "em"
+            label = conn.label_from
+            try:
+                node = _build_em_node_3d(em, label, conn.c_em, z_em)
+            except Exception:
+                worst = float("inf")
+                continue
+            if not node.converged:
+                worst = float("inf")
+                continue
+            max_time = max_time_factor * node.period
+            recheck = _manifold_inertial_at_section(
+                bridge,
+                system,
+                node,
+                side=side,
+                tau=conn.tau_u,
+                direction="unstable",
+                branch=+1,
+                theta=conn.theta,
+                x0_km=float(conn.patch_state_inertial[0])
+                if np.any(conn.patch_state_inertial[:3] != 0.0)
+                else _PATCH_X0_KM_DEFAULT,
+                epsilon=epsilon,
+                max_time=max_time,
+                method=method,
+                rtol=rtol,
+                atol=atol,
+            )
+        else:
+            system = se
+            side = "se"
+            label = conn.label_from
+            try:
+                node = _build_se_node_3d(se, label, conn.c_se, z_se)
+            except Exception:
+                worst = float("inf")
+                continue
+            if not node.converged:
+                worst = float("inf")
+                continue
+            max_time = max_time_factor * node.period
+            recheck = _manifold_inertial_at_section(
+                bridge,
+                system,
+                node,
+                side=side,
+                tau=conn.tau_u,
+                direction="unstable",
+                branch=+1,
+                theta=conn.theta,
+                x0_km=float(conn.patch_state_inertial[0])
+                if np.any(conn.patch_state_inertial[:3] != 0.0)
+                else _PATCH_X0_KM_DEFAULT,
+                epsilon=epsilon,
+                max_time=max_time,
+                method=method,
+                rtol=rtol,
+                atol=atol,
+            )
+
+        if recheck is None:
+            worst = float("inf")
+            continue
+        pos_gap = float(np.linalg.norm(recheck[:3] - conn.patch_state_inertial[:3]))
+        worst = max(worst, pos_gap)
+
+    if not any_converged:
+        worst = float("inf")
+
+    return worst
 
 
 def search_cross_cycle(
@@ -1053,6 +1404,10 @@ def correct_cross_cycle(
             **conn_kwargs,  # type: ignore[arg-type]
         )
         chosen = variant
+        ret_kwargs = dict(conn_kwargs)
+        ret_kwargs.pop("scan_n", None)
+        ret_kwargs.pop("scan_n_tau", None)
+        ret_kwargs.pop("max_time_factor", None)
         if chosen is None:
             best: CrossConnection | None = None
             for v in variants:
@@ -1069,7 +1424,7 @@ def correct_cross_cycle(
                     scan_n=return_scan_n,
                     scan_n_tau=return_scan_n_tau,
                     max_time_factor=return_max_time_factor,
-                    **conn_kwargs,  # type: ignore[arg-type]
+                    **ret_kwargs,  # type: ignore[arg-type]
                 )
                 if best is None or cand.residual < best.residual:
                     best, chosen = cand, v
@@ -1091,7 +1446,7 @@ def correct_cross_cycle(
                 scan_n=return_scan_n,
                 scan_n_tau=return_scan_n_tau,
                 max_time_factor=return_max_time_factor,
-                **conn_kwargs,  # type: ignore[arg-type]
+                **ret_kwargs,  # type: ignore[arg-type]
             )
         return fwd, ret, em_node.period * em.t_s, se_node.period * se.t_s, chosen
 
@@ -1252,6 +1607,316 @@ def correct_cross_cycle(
             cand = _solve(float(x[0]), float(x[1]), variant)
             if cand is None or not (cand[0].converged and cand[1].converged):
                 return np.array([math.pi, math.pi], dtype=np.float64)  # infeasible -> steer back
+            rr1, rr2 = _resid(cand[0], cand[1], cand[2], cand[3])
+            if on_iter is not None:
+                on_iter(nfev[0], float(x[0]), float(x[1]), rr1, rr2)
+            return np.array([rr1, rr2], dtype=np.float64)
+
+        sol = least_squares(
+            _ls_resid,
+            x0=np.array([c_em0, c_se0], dtype=np.float64),
+            bounds=(lo, hi),
+            method="trf",
+            diff_step=[fd_em / abs(c_em0), fd_se / abs(c_se0)],
+            max_nfev=max(8, max_iter * 4),
+            xtol=1e-12,
+        )
+        ce, cs = float(sol.x[0]), float(sol.x[1])
+        final = _solve(ce, cs, variant)
+        if final is None or not (final[0].converged and final[1].converged):
+            return _result(
+                c_em0,
+                c_se0,
+                fwd,
+                ret,
+                t_em,
+                t_se,
+                nfev[0],
+                "bounded_ls: final eval off-family; reporting seed",
+            )
+        return _result(ce, cs, final[0], final[1], final[2], final[3], nfev[0], "")
+
+    c = np.array([c_em0, c_se0], dtype=np.float64)
+    fd = np.array([fd_em, fd_se], dtype=np.float64)
+    r1, r2 = _resid(fwd, ret, t_em, t_se)
+    f = np.array([r1, r2], dtype=np.float64)
+    if on_iter is not None:
+        on_iter(0, float(c[0]), float(c[1]), float(f[0]), float(f[1]))
+    n_iter = 0
+    for n_iter in range(1, max_iter + 1):
+        if math.hypot(*f) < theta_tol_rad:
+            break
+        jac = np.zeros((2, 2), dtype=np.float64)
+        ok = True
+        for j in range(2):
+            cp = c.copy()
+            cp[j] += fd[j]
+            probe = _solve(float(cp[0]), float(cp[1]), variant)
+            if probe is None or not (probe[0].converged and probe[1].converged):
+                ok = False
+                break
+            fp1, fp2 = _resid(probe[0], probe[1], probe[2], probe[3])
+            jac[:, j] = (np.array([fp1, fp2]) - f) / fd[j]
+        if not ok:
+            break
+        try:
+            step = np.linalg.solve(jac, -f)
+        except np.linalg.LinAlgError:
+            break
+        alpha = 1.0
+        improved = False
+        for _ in range(20):
+            ct = c + alpha * step
+            cand = _solve(float(ct[0]), float(ct[1]), variant)
+            if cand is not None and cand[0].converged and cand[1].converged:
+                cf1, cf2 = _resid(cand[0], cand[1], cand[2], cand[3])
+                if math.hypot(cf1, cf2) < math.hypot(*f):
+                    c = ct
+                    fwd, ret, t_em, t_se = cand[0], cand[1], cand[2], cand[3]
+                    f = np.array([cf1, cf2])
+                    improved = True
+                    break
+            alpha *= 0.5
+        if on_iter is not None:
+            on_iter(n_iter, float(c[0]), float(c[1]), float(f[0]), float(f[1]))
+        if not improved:
+            break
+
+    res_norm = math.hypot(*f)
+    notes = "" if res_norm < theta_tol_rad else f"theta residual {res_norm:.3e} rad > tol"
+    return _result(float(c[0]), float(c[1]), fwd, ret, t_em, t_se, n_iter, notes)
+
+
+def correct_cross_cycle_3d(
+    bridge: FrameBridge,
+    *,
+    em_lib: str,
+    se_lib: str,
+    c_em0: float,
+    c_se0: float,
+    z_em: float,
+    z_se: float,
+    n_em: int = 1,
+    n_se: int = 1,
+    theta_tol_rad: float = 1e-2,
+    tol_km: float = 1e2,
+    max_iter: int = 10,
+    solver: str = "bounded_ls",
+    c_em_bounds: tuple[float, float] | None = None,
+    c_se_bounds: tuple[float, float] | None = None,
+    fd_em: float = 2e-4,
+    fd_se: float = 5e-7,
+    max_attempts: int = 4,
+    return_scan_n: int = 4,
+    return_scan_n_tau: int = 2,
+    return_max_time_factor: float = 4.0,
+    on_iter: Callable[[int, float, float, float, float], None] | None = None,
+    **conn_kwargs: object,
+) -> CrossCycleClosure:
+    """Solve the time-consistent single-rev cross-system cycle in 3D.
+
+    Solves over (c_em, c_se), holding z_em, z_se fixed. Damped finite-difference Newton
+    or least-squares on the two phase-consistency residuals (R1, R2), building 3D periodic
+    nodes (Halo/NRHO orbits) with the specified out-of-plane amplitudes.
+    """
+    em, se = bridge.em, bridge.se
+    omega_rel = 1.0 / em.t_s - 1.0 / se.t_s
+    variants = list(_RETURN_VARIANTS[: max(1, int(max_attempts))])
+
+    def _solve(
+        c_em: float, c_se: float, variant: dict[str, int] | None
+    ) -> tuple[CrossConnection, CrossConnection, float, float, dict[str, int]] | None:
+        """Build nodes, solve both legs; return (fwd, ret, T_em_s, T_se_s, variant)."""
+        try:
+            em_node = _build_em_node_3d(em, em_lib, c_em, z_em)
+            se_node = _build_se_node_3d(se, se_lib, c_se, z_se)
+        except (RuntimeError, ValueError):
+            return None
+        if not (em_node.converged and se_node.converged):
+            return None
+        fwd = correct_cross_connection(
+            bridge,
+            em_node,
+            se_node,
+            label_from=em_lib,
+            label_to=se_lib,
+            tol_km=tol_km,
+            **conn_kwargs,  # type: ignore[arg-type]
+        )
+        chosen = variant
+        ret_kwargs = dict(conn_kwargs)
+        ret_kwargs.pop("scan_n", None)
+        ret_kwargs.pop("scan_n_tau", None)
+        ret_kwargs.pop("max_time_factor", None)
+        if chosen is None:
+            best: CrossConnection | None = None
+            for v in variants:
+                cand = correct_cross_connection(
+                    bridge,
+                    se_node,
+                    em_node,
+                    label_from=se_lib,
+                    label_to=em_lib,
+                    tol_km=tol_km,
+                    branch_u=v["branch_u"],
+                    branch_s=v["branch_s"],
+                    k=v["k"],
+                    scan_n=return_scan_n,
+                    scan_n_tau=return_scan_n_tau,
+                    max_time_factor=return_max_time_factor,
+                    **ret_kwargs,  # type: ignore[arg-type]
+                )
+                if best is None or cand.residual < best.residual:
+                    best, chosen = cand, v
+                if cand.converged:
+                    break
+            assert best is not None and chosen is not None
+            ret = best
+        else:
+            ret = correct_cross_connection(
+                bridge,
+                se_node,
+                em_node,
+                label_from=se_lib,
+                label_to=em_lib,
+                tol_km=tol_km,
+                branch_u=chosen["branch_u"],
+                branch_s=chosen["branch_s"],
+                k=chosen["k"],
+                scan_n=return_scan_n,
+                scan_n_tau=return_scan_n_tau,
+                max_time_factor=return_max_time_factor,
+                **ret_kwargs,  # type: ignore[arg-type]
+            )
+        return fwd, ret, em_node.period * em.t_s, se_node.period * se.t_s, chosen
+
+    def _resid(
+        fwd: CrossConnection, ret: CrossConnection, t_em: float, t_se: float
+    ) -> tuple[float, float]:
+        r1 = _wrap_pi(ret.theta - fwd.theta - omega_rel * (fwd.transit_time + n_se * t_se))
+        r2 = _wrap_pi(fwd.theta - ret.theta - omega_rel * (ret.transit_time + n_em * t_em))
+        return r1, r2
+
+    def _result(
+        c_em: float,
+        c_se: float,
+        fwd: CrossConnection,
+        ret: CrossConnection,
+        t_em: float,
+        t_se: float,
+        n_iter: int,
+        notes: str,
+    ) -> CrossCycleClosure:
+        legs_ok = fwd.converged and ret.converged
+        if legs_ok:
+            r1, r2 = _resid(fwd, ret, t_em, t_se)
+            res_norm = math.hypot(r1, r2)
+            cycle_time = fwd.transit_time + n_se * t_se + ret.transit_time + n_em * t_em
+        else:
+            r1 = r2 = res_norm = cycle_time = float("nan")
+        closed = legs_ok and res_norm < theta_tol_rad
+        return CrossCycleClosure(
+            c_em=c_em,
+            c_se=c_se,
+            n_em=n_em,
+            n_se=n_se,
+            libration_pair=(em_lib, se_lib),
+            forward=fwd,
+            ret=ret,
+            r1_rad=r1,
+            r2_rad=r2,
+            theta_residual_norm=res_norm,
+            max_leg_residual_km=max(fwd.residual, ret.residual),
+            total_patch_dv_kms=fwd.patch_dv_kms + ret.patch_dv_kms,
+            cycle_time_s=cycle_time,
+            closed=closed,
+            n_iter=n_iter,
+            notes=notes,
+        )
+
+    seed = _solve(c_em0, c_se0, None)
+    if seed is None:
+        raise ValueError(f"seed node construction failed at c_em={c_em0}, c_se={c_se0}")
+    fwd, ret, t_em, t_se, variant = seed
+    if not (fwd.converged and ret.converged) and solver != "feasibility_ls":
+        return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "seed legs did not converge")
+
+    if solver == "feasibility_ls":
+        _leg_scale = 3.0e5
+        lo_fs = [
+            c_em_bounds[0] if c_em_bounds is not None else c_em0 - 0.05,
+            c_se_bounds[0] if c_se_bounds is not None else max(3.0, c_se0 - 1.0e-3),
+        ]
+        hi_fs = [
+            c_em_bounds[1] if c_em_bounds is not None else c_em0 + 0.05,
+            c_se_bounds[1] if c_se_bounds is not None else c_se0 + 1.0e-3,
+        ]
+        if lo_fs[0] >= hi_fs[0] or lo_fs[1] >= hi_fs[1]:
+            return _result(
+                c_em0, c_se0, fwd, ret, t_em, t_se, 0, "feasibility_ls: degenerate bounds"
+            )
+        _fd_em_feas = max(fd_em, 1.0e-3)
+        _fd_se_feas = max(fd_se, 1.0e-4)
+        nfev_fs = [0]
+
+        def _feas_resid(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            nfev_fs[0] += 1
+            c_em_v, c_se_v = float(x[0]), float(x[1])
+            cand = _solve(c_em_v, c_se_v, variant)
+            if cand is None:
+                return np.array([math.pi, math.pi, math.pi, math.pi], dtype=np.float64)
+            fwd_c, ret_c, t_em_c, t_se_c, _ = cand
+            f_gap = min(fwd_c.residual, _leg_scale) / _leg_scale
+            r_gap = min(ret_c.residual, _leg_scale) / _leg_scale
+            if fwd_c.converged and ret_c.converged:
+                rr1, rr2 = _resid(fwd_c, ret_c, t_em_c, t_se_c)
+            else:
+                rr1 = 0.0 if fwd_c.converged else math.pi
+                rr2 = 0.0 if ret_c.converged else math.pi
+            if on_iter is not None:
+                on_iter(nfev_fs[0], c_em_v, c_se_v, rr1, rr2)
+            return np.array([f_gap, r_gap, rr1, rr2], dtype=np.float64)
+
+        sol_fs = least_squares(
+            _feas_resid,
+            x0=np.array([c_em0, c_se0], dtype=np.float64),
+            bounds=(lo_fs, hi_fs),
+            method="trf",
+            diff_step=[_fd_em_feas / abs(c_em0), _fd_se_feas / abs(c_se0)],
+            max_nfev=max(8, max_iter * 4),
+            xtol=1e-12,
+        )
+        ce_fs, cs_fs = float(sol_fs.x[0]), float(sol_fs.x[1])
+        final_fs = _solve(ce_fs, cs_fs, variant)
+        if final_fs is None or not (final_fs[0].converged and final_fs[1].converged):
+            best_notes = (
+                f"feasibility_ls: no leg-closing (c_em,c_se) found in bounds "
+                f"c_em∈[{lo_fs[0]:.4f},{hi_fs[0]:.4f}] "
+                f"c_se∈[{lo_fs[1]:.7f},{hi_fs[1]:.7f}]; reporting seed"
+            )
+            return _result(c_em0, c_se0, fwd, ret, t_em, t_se, nfev_fs[0], best_notes)
+        return _result(
+            ce_fs, cs_fs, final_fs[0], final_fs[1], final_fs[2], final_fs[3], nfev_fs[0], ""
+        )
+
+    if solver == "bounded_ls":
+        lo = [
+            c_em_bounds[0] if c_em_bounds is not None else c_em0 - 0.05,
+            c_se_bounds[0] if c_se_bounds is not None else c_se0 - 1.0e-3,
+        ]
+        hi = [
+            c_em_bounds[1] if c_em_bounds is not None else c_em0 + 0.05,
+            c_se_bounds[1] if c_se_bounds is not None else c_se0 + 1.0e-3,
+        ]
+        if lo[0] >= hi[0] or lo[1] >= hi[1]:
+            return _result(c_em0, c_se0, fwd, ret, t_em, t_se, 0, "bounded_ls: degenerate bounds")
+        nfev = [0]
+
+        def _ls_resid(x: NDArray[np.float64]) -> NDArray[np.float64]:
+            nfev[0] += 1
+            cand = _solve(float(x[0]), float(x[1]), variant)
+            if cand is None or not (cand[0].converged and cand[1].converged):
+                return np.array([math.pi, math.pi], dtype=np.float64)
             rr1, rr2 = _resid(cand[0], cand[1], cand[2], cand[3])
             if on_iter is not None:
                 on_iter(nfev[0], float(x[0]), float(x[1]), rr1, rr2)
