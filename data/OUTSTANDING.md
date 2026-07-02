@@ -15,6 +15,166 @@ Do not delete the original question text — the audit trail matters.
 
 # Project state at a glance (updated 2026-06-30)
 
+## DELTA 2026-07-02 (independent Fable-model review — sustainability audit + novel-orbit discovery proposal) — read this first
+
+Dispatched a fresh, isolated-context review agent (read-only; edited nothing) to audit the codebase's
+sustainability/correctness and propose a genuinely new discovery method, seeded twice with live evidence from
+this session's #513-numbering-collision and #520-abort incidents (see DELTA below). Full transcript not saved;
+findings + task allocations recorded here.
+
+**Audit findings (most-severe first):**
+- **F1 HIGH — the anti-redundancy safeguard is split-brain, and the half that works isn't used.** There are TWO
+  negative registries. `data/empty_regions.jsonl` (50 reports) has a real mechanical gate (`should_sweep()` in
+  `src/cyclerfinder/data/method_capability.py:125`) wired into `DiscoveryCampaign`. `data/negative_results.yaml`
+  (13 entries, the one everyone actually writes to) has **zero programmatic readers anywhere in `src/` or
+  `tests/`** — grep-verified. It is write-only prose; five scripts append to it after finishing, nothing reads it
+  before starting. 192 one-off scripts (44 `run_NNN_*.py`, no shared harness) each bypass the working gate
+  entirely. This is exactly how #515-517 re-ran the approach #411's own entry says NOT to ("NOT more
+  revolutions / finer grids") and how a task number collided twice in 24h with nothing catching it mechanically.
+- **F2 HIGH** — independently confirms the #520 12-hour-abort root cause below: a scoping failure (no timing
+  pilot before an 8,640-point grid), compounded by the same no-incremental-checkpoint / silent-exception-swallow
+  anti-pattern.
+- **F3 MEDIUM** — CI never runs `-m slow` (no scheduled job exists anywhere in `.github/workflows/`); V-tier
+  evidence tests that happen to carry the slow mark could silently rot with nothing mechanically catching it.
+- **F4 MEDIUM — validation-census correction.** Computed directly from `data/catalogue.yaml` (not cached):
+  **V0:79 / V1:26 / V2:8 / V3:2 / V4:1 / V5:0 / null:240** (of 356). This does NOT reconcile with prior
+  DELTA-cited tallies in this file (e.g. "V0:319/V1:27/V2:7/V3:2/V4:1" below) — prior figures likely conflated
+  explicit `V0` tags with UNTAGGED (`null`) rows. 240 rows carry no `validation_level` claim at all and nothing
+  ratchets that count, so tier coverage can silently erode undetected. `scripts/backfill_validation_level.py`
+  already exists to close this; a null-count ratchet does not yet exist.
+- **F5 MEDIUM** — the 192-script sprawl is the structural bypass vector for F1; a shared `scripts/_harness.py`
+  (preflight + runlog + checkpointing + registry append) would close it.
+- **F6 LOW** — test health is genuinely good: independent full-suite + ratchet reruns both green, matching this
+  session's verified **3,061-test** count (correcting the earlier unverified "690 tests passing" claim from the
+  #515-520 cleanup pass — see DELTA below).
+- Credited strengths (agent's words): the digest discipline, DELTA-structured logs, sourced-only goldens, and the
+  #425 negative-registry re-audit are "unusually good research hygiene" — the failures are concentrated
+  specifically in ad-hoc concurrent search dispatch, not the core codebase.
+
+**Proposal — ranked, falsifiable, new task numbers (see TASK ALLOCATIONS):**
+- **#521 (precondition)** — Pre-flight search gate: `preflight_search()` checked against BOTH negative
+  registries + task-number collision + a required timing-pilot/checkpoint declaration for any grid above N
+  points, enforced by an AST-based ratchet requiring every `scripts/run_*.py` to call it. Nothing below should be
+  dispatched via one-off script until this exists.
+- **#522 (P1, recommended first)** — Coherent-model whiskered-torus connection search: reformulate the SE<->EM
+  cross-system question as heteroclinic connections between whiskered invariant TORI of ONE time-periodic
+  BCR4BP/QBCP model, instead of gluing two autonomous CR3BPs — the phase that has never closed becomes an
+  intrinsic torus coordinate BY CONSTRUCTION, dissolving the 1-DOF obstruction (#411/#496/#512/#515-517) rather
+  than re-sampling it at finer resolution. Grounded in Kumar/Anderson/de la Llave (SIAM J. Appl. Dyn. Sys.
+  24(1):219-258, 2025) and Owen & Baresi (Astrodynamics, 2024). Re-scopes/subsumes #518. Positive control: the
+  #405 forward EM-L2->SE-L2 leg must persist as a torus connection under mu_sun-continuation, plus one published
+  BCR4BP/QBCP transfer reproduction.
+- **#523 (P2)** — Co-orbital-exchange cyclers: search horseshoe/tadpole/quasi-satellite topologies (Saturn
+  Janus-Epimetheus swap pair; Earth quasi-satellites; Mars Trojans) where repeated encounters come from slow
+  co-orbital exchange, NOT hyperbolic flyby bend — sidesteps the mass-deficit no-go theorem (#489/#308) that
+  killed every prior small-body lane. Zero existing search code for this topology; ~1-2 weeks. Settle the "does
+  a slow co-orbital pass count as an encounter" criterion in writing BEFORE sweeping (a #339-style criterion
+  trap otherwise).
+- **#524 (precondition alongside #521)** — Continuation + deflated Newton as the mandatory search primitive:
+  replace fixed-grid + independent-Newton-per-cell with pseudo-arclength continuation (follows solution curves
+  instead of sampling them — directly answers why the #520 grid at ~120 uu spacing stepped clean over the #496
+  6.2 uu convergent strip) and deflated Newton (enumerates basins instead of hoping a seed lands in the right
+  one — answers the recurring family-selection pathology, e.g. #343/VEM wrong-family closures). Gate: must
+  re-find >=2 known distinct basins (PC (3,2) + the discarded (3,1) near-primary root from #504) on a control
+  problem before any "only N families exist" claim from it is trusted.
+- **#525 (sequence after #522-524)** — Learned seed generation from the project's own corrector archive:
+  diffusion/generative warm-start (cf. Graebner & Beeson, arXiv 2501.07005) trained on accumulated
+  runlogs/checkpoints to propose seeds in unknown basins; revisits the 2026-06-11 Ozaki (arXiv 2111.11858)
+  "below breakeven" triage, which the reviewer flags as now stale.
+- **#526 (cheap)** — GTOC 13 + Liang operator ingestion: digest GTOC 13 (Oct-Nov 2025 ballistic Jovian
+  gravity-assist tour competition — this project's exact problem class run as a world competition; methods
+  papers due mid-2026) and encode Liang et al.'s alternating-double-cycler construction (JGCD 2024, DOI
+  10.2514/1.G008387) as a reusable genome operator for near-commensurate phase-mismatch walls.
+- **Recommendation**: #522 first, with #521 + #524 landed as preconditions; #523 in parallel (cheap, disjoint
+  code path). Reviewer's closing line: "the last 48 hours demonstrated, twice and expensively, that this
+  project's discipline currently lives in prose, and prose does not gate concurrent agents."
+
+**#521 PHASE 1 DONE (2026-07-02):** the negative-registry migration described in F1 above is complete — see the
+`#521` entry in TASK ALLOCATIONS below for the full report (overlap analysis, migration detail, an honest
+provenance-gap finding on `branch_C32_C_3.1774`, and a permanent regression test proving `should_sweep()` now
+mechanically skips an equal-capability re-run of the #405/#411 SE<->EM search — the exact pattern that produced
+#515-517). Ratchet suite (`tests/data tests/search`) verified green: 1728 passed, 0 failed. Phase 2
+(`preflight_search()` + the AST ratchet enforcing every `scripts/run_*.py` calls it) remains open.
+
+**Second independent pass (2026-07-02, same day, fresh Fable-model context, explicitly told not to repeat
+#521-526):**
+- **#527 (its top pick)** — Point an already-built, zero-usage systematic enumerator at an untouched target.
+  `src/cyclerfinder/search/da_hotm_enumeration.py` (#450, DA/HOTM: a CR3BP fixed-point/periodic-orbit enumerator
+  over a Jacobi-constant band, μ-agnostic, fully tested) has **never been called by any campaign script** —
+  grep-verified. Propose pointing it at the Sun-Jupiter Hilda/quasi-Hilda 3:2-exterior-MMR band — a region in
+  neither negative registry nor the catalogue. Sidesteps the #489 flyby mass-deficit no-go a different way than
+  #523: here Jupiter itself (the massive primary) does the gravitational structuring at each pass, not a small
+  body acting as a flyby node. Sourced positive control (independently re-fetched and confirmed real): Guido &
+  Efthymiopoulos, arXiv:2604.00679 (2026-04-01), computes manifold/heteroclinic structure for exactly this MMR
+  band — the enumerator must recover manifold-consistent unstable POs before any "no Hilda cycler" negative is
+  trusted. Cheapest of the three: no new build, a config/target change plus a one-paper digest.
+- **#528** — A low-thrust-native validation-gate gap (not a search gap). `dv_band: low_thrust_sep` and
+  `trajectory_regime: low-thrust` exist as schema fields and `core/sims_flanagan.py` exists as code, but **zero
+  catalogue rows use either** (grep-verified) and the low-thrust branch of the acceptance gate
+  (`verify/dv_band_acceptance.py`) literally `return`s `None` — no acceptance window at all. The V0/V2 gates
+  hardcode a pure-ballistic "|V∞| preserved across each flyby" assumption. Consequence: if the already-queued
+  #519 (VEM low-thrust search) finds a genuine candidate, there is currently no gate that can grade it. Land
+  before or alongside #519 actually running. Positive control: reproduce Pascarella et al. 2022 (AAS 22-015,
+  already in this project's corpus) under the new gate to a stated tolerance.
+- **#529 (defer — real, but scope-creep risk)** — Inter-cycler networks / taxi-transfer as a catalogue concept
+  the current 5-class taxonomy cannot express. This project's own corpus (Sanchez Net et al. 2022, already
+  digested — `docs/notes/s1l1-target-topology-mining.md:156-263`) describes published fleet-of-cyclers networks
+  (3/5/6-cycler, shared downlink schedules) that a prior note explicitly says "could not be catalogued" — the
+  schema's only inter-row relation is `precursor_mga.inserts_into` (a single pointer), with no concept of a
+  cycler *set* or a taxi transfer between two catalogued cyclers. Reframes as combinatorial phasing-compatibility
+  search over existing/new catalogue rows (reuses `model/score.py`'s `taxi_cost_kms`), not a new integrator.
+  Ranked last deliberately — it changes what a catalogue row/relation can *be*, so it wants a deliberate scoping
+  discussion before a sprint slot, not because the idea is weak.
+- **Additive-not-new** (fold into #524/#525's scope, not standalone): a possibly-stronger multi-rev Lambert
+  solver claim (MDPI *Dynamics* 6(1):3, 2026-01-05 — lower-tier venue, treat with skepticism) that would close a
+  silent false-negative vector in the `run_516_multirev*`-style leg enumeration; a Conley-Zehnder topological
+  invariant (Aydin, arXiv:2602.16354) to strengthen #524's "must re-find known basins" gate cheaply from STM
+  output the codebase already produces; a parity-based seed-initialization scheme (Park & Howell,
+  arXiv:2606.08485) as a non-learned alternative/complement to #525's generative model; and a note that #450's
+  DA/HOTM enumerator already embodies much of #524's "enumerate, don't grid-guess" philosophy — worth checking
+  before building #524's continuation/deflation machinery from scratch.
+- **Recommendation**: #527 first (cheapest — no new build), #528 before #519 actually runs, #529 deferred for a
+  scoping conversation. All three still sit behind #521.
+
+## DELTA 2026-07-01 (session C — 3D Lift capability landed + 16-core parallel sweep search) — read this first
+
+- **#515 (working-tree)**: Shipped the 3D lift framework for cross-system cycles (uncommitted).
+  - Implemented `correct_cross_cycle_3d` over fixed out-of-plane amplitudes ($z_{em}$, $z_{se}$).
+  - Resolved the out-of-plane position gap matching obstruction by physically scaling $z_{se}$ relative to $z_{em}$ by the ratio of system length scales ($384,400 / 149,600,000$).
+  - Aligned 3D Floquet eigenvector signs with planar counterparts to enforce consistent manifold directions.
+  - Refactored search script `scripts/run_515_cross_system_3d_search.py` using `cyclerfinder.parallel.parallel_sweep` (Loky Backend) to execute on all 16 concurrent threads of the amdnuc machine. All unit tests pass.
+- **#516 (New)**: Multi-Revolution 3D Patched Search (n_em, n_se > 1) to bypass the single-revolution phase-closure wall.
+- **#517 (New)**: Asymmetric/Mixed Libration Pairs in 3D (scanning EM-L1 <-> SE-L2 and EM-L2 <-> SE-L1).
+- **#518 (New)**: 3D BCR4BP Continuation using 3D patched orbits as coherent 4-body seeds.
+- **#520 (New, working-tree)**: Comprehensive 3D cross-system closure sweep (`scripts/run_520_comprehensive_3d_search.py`,
+  8,640-point grid: 4 libration pairs x 6x6 (c_em, c_se) x 6 z-amplitudes x 10 rev-count pairs). Dispatched by a
+  separate concurrent agent; was originally mis-numbered `#516` (collision with the Multi-Revolution task above) —
+  renumbered here per [[project_task_numbering_convention]]. CAUTION before trusting a 0/8640 negative from this
+  grid: its `C_SE_GRID` (6 uniform points over [3.0003, 3.0009], ~120 uu spacing) steps clean over the #496
+  convergent strip [3.000854, 3.00086] (6.2 uu wide) -- no n=1 cell in this grid can even reproduce #496's own
+  near-closure. Needs a positive control (recover the #496 n=1 near-closure) and sub-uu c_se resolution near the
+  strip before an all-negative result is trustworthy; otherwise it is largely re-confirming #512's clean negative
+  at high cost with a real chance of stepping over a solution near the strip.
+  **UPDATE 2026-07-02: ABORTED, NOT a negative result.** The run pegged all 16 cores for 12+ hours and never
+  finished -- no entry was ever written to `data/negative_results.yaml` (checked: none present), so it produced
+  ZERO usable output; do not treat its silence as evidence either way. No OOM kill in kernel logs and the machine
+  has not rebooted since before the run started, so this was not a crash -- it was killed (or given up on) after
+  running out of patience, and everything computed up to that point is lost because the script has no incremental
+  checkpointing (writes to `negative_results.yaml` exactly once, only on a fully-completed run) and suppresses
+  per-point output for infeasible/failed points ("silently fail ... to prevent log clutter" -- evaluate_point's
+  except branch), so there was no visible progress or ETA during the whole run. Root-caused via direct timing
+  probe (2026-07-02, this session): even the CHEAPEST cell in the grid (n_em=1, n_se=1, a config #515 already
+  computed) took >16s under load and a single n_em=3/n_se=4 infeasible cell took ~20s just to raise-and-discard
+  its exception. 8,640 points / 16 workers = 540 points/worker; at a plausible 60-90s/point average (higher
+  n_em/n_se pairs up to (4,4) integrate multi-year multi-revolution arcs with an 8-iteration FD-Jacobian
+  bounded_ls solve) that lands at 9-13.5 hours wall-clock -- consistent with the observed ">12h, still running"
+  report. This is a SCOPING failure (grid sized without a timing pilot), not a solver hang. Before re-attempting
+  #520: (1) time a small (~32-64 point) pilot spanning the n_em/n_se and c_em/c_se ranges to get a real per-point
+  cost distribution; (2) append each result to negative_results.yaml (or a runlog) incrementally as it completes,
+  not only at the end; (3) then size the grid (or add a wall-clock budget + checkpoint-and-resume) to what that
+  pilot says is actually affordable. This is IN ADDITION TO the coarse-grid/no-positive-control problem noted
+  above -- #520 as originally scoped was both too coarse to find anything AND too expensive to finish.
+
 ## DELTA 2026-07-01 (session B cont. — admission + capability fixes + Ross-corpus mined) — read this first
 
 The #286 CAPABILITY FRONTIER IS NOW ESSENTIALLY COMPLETE (3D / BCR4BP / QP-tori / epoch-MGA all
@@ -76,12 +236,93 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
 **FORWARD PLAN (the post-capability-frontier phase):**
 - **Tier 1 (the deliverable — RUN discovery on the built substrate):** #501 broadened real-eph #318
   joint search (not CGCEC-densify); circumbinary Pluto-Charon deeper + other-binary (k₁,k₂) sweep;
-  #500 Keplerian-map tour search if its genome is cycler-viable. HONEST: novel hits are rare (#492;
+  #500 Keplerian-map tour search if its genome is cycler-viable; #519 VEM Multi-Synodic Low-Thrust Signal Search. HONEST: novel hits are rare (#492;
   only #312 Uranus across the whole arc) — expect mostly V0-known + occasional fresh instantiations.
 - **Tier 2 (deep fixes):** #496 (n_em,n_se) sweep → 3D z-slicing (Gómez 2004) for cross-system closure;
   #497 R52-U recovery to flip C32 gate (node-set, not proxy).
 - **Tier 3 (validation + consolidation):** PC (3,2) V3 upgrade gated on SAT441l kernel (#506 scope done);
   #487 V4_qp gauntlet (de-prioritised).
+- **Tier 5 (3D Dynamics & Multi-Rev Search):** #515 3D lift framework for cross-system cycles; #516 Multi-Revolution 3D Patched Search (n_em, n_se > 1); #517 Asymmetric/Mixed Libration Pairs in 3D; #518 3D BCR4BP Continuation; #520 Comprehensive 3D sweep (needs a positive control before its negative is trustworthy — see DELTA above).
+- **Tier 6 (Novel-Orbit Discovery Reboot, per the 2026-07-02 independent review — see DELTA above):** #521
+  pre-flight search gate (precondition, blocks one-off script dispatch until it exists; PHASE 1 DONE); #522
+  coherent-model whiskered-torus connection search (recommended first; re-scopes #518); #523 co-orbital-exchange
+  cyclers (parallel, cheap, disjoint code path); #524 continuation + deflated-Newton search primitive
+  (precondition alongside #521); #525 learned seed generation from the corrector archive (sequence after
+  #522-524); #526 GTOC 13 + Liang operator ingestion (cheap); #527 point the idle #450 DA/HOTM enumerator at the
+  Sun-Jupiter Hilda band (cheapest — no new build, recommended first by the second-pass review); #528 low-thrust
+  validation-gate build (land before/alongside #519 running); #529 inter-cycler network taxonomy extension
+  (deferred — needs a scoping discussion).
+
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 next-unused):**
+- **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
+- **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
+- **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
+- **#515** — 3D Lift Framework: Shipped cross-system cycle corrector over fixed out-of-plane amplitudes, physically scaling system lengths and aligning Floquet signs (uncommitted working-tree).
+- **#516** — Multi-Revolution 3D Patched Search: Search with n_em, n_se > 1 to bypass the single-revolution phase-closure wall (uncommitted working-tree).
+- **#517** — Asymmetric/Mixed Libration Pairs in 3D: Scan for EM-L1 <-> SE-L2 and EM-L2 <-> SE-L1 crossings (uncommitted working-tree).
+- **#518** — 3D BCR4BP Continuation: Generate coherent 4-body seeds using 3D patched orbits (uncommitted working-tree).
+- **#519** — VEM Multi-Synodic Low-Thrust Signal Search: Finish the #309 VEM multi-synodic low-thrust signal search using the existing low-thrust search scripts without adding new compiled dependencies.
+- **#520** — Comprehensive 3D Sweep: 8,640-point grid search over `scripts/run_520_comprehensive_3d_search.py` (uncommitted working-tree; dispatched by a separate agent, was mis-numbered #516 on arrival — renumbered). ABORTED 2026-07-02 after 12+ hours with zero output — see DELTA above; not a negative result.
+- **#521** — Pre-flight Search Gate: mandatory `preflight_search()` checked against both negative registries
+  (`data/negative_results.yaml` + `data/empty_regions.jsonl`) plus task-number collision plus a required
+  timing-pilot/checkpoint declaration for any grid above N points, enforced by an AST-based ratchet requiring
+  every `scripts/run_*.py` to call it (proposed 2026-07-02 independent review; not yet built).
+  **#521 PHASE 1 DONE (2026-07-02, this session):** migrated all 13 `data/negative_results.yaml` entries into
+  `data/empty_regions.jsonl` (63 rows now, was 50), each as a validated `EmptyRegionReport` (genome/corrector/
+  capability_tags/git_sha + bounded `search_extent` + `prune_gates`), so `should_sweep()` can actually gate them.
+  Every physical_reason/resweep_condition/ad-hoc field (`audit_425`, `result_388`, `determination_388`, etc.)
+  from the original prose was preserved, either folded into `interpretation` verbatim or kept as a structured
+  `reverification` entry. No genuine duplicates found between the two registries or within the 13 (all are
+  distinct region+method combinations). One provenance gap was FOUND, not fabricated over: for
+  `branch_C32_C_3.1774` (#392), the committed JSONL verdict files at the script's default output path
+  (`data/branch_392_v1..v4_verdict.jsonl`) actually hold a *different* candidate's numbers
+  (`branch_C11a_C_3.1107`, identical to the #393 `branch_C11a_b0` row) — almost certainly overwritten by a
+  later `--target C11a` re-run reusing the same default paths. The V2/V4 gauntlet numbers for
+  `branch_C32_C_3.1774` therefore trace only to the prose in
+  `docs/notes/2026-06-19-392-floquet-low-amplitude.md`, not to a surviving machine artefact; this is flagged
+  in that entry's `interpretation` field rather than silently presented as equally well-sourced. `data/
+  negative_results.yaml` is kept (not deleted) as a frozen human-readable index: every entry now carries a
+  `migrated_to_empty_regions_jsonl: <region_id>` pointer, and a header comment marks it closed to new entries
+  (append to `empty_regions.jsonl` via `append_empty_region()` going forward). Verified query-ability with a
+  real `should_sweep()` call against the migrated #405/#411 SE<->EM region (added as
+  `tests/data/test_method_capability.py::test_real_registry_skips_equal_capability_rerun_of_cross_system_se_em_search`)
+  — an equal-or-weaker re-run of that search, the exact pattern that produced #515-517 this week, is now
+  mechanically skipped. `uv run pytest tests/data tests/search -q` stays green. Building the actual
+  `preflight_search()` gate + AST ratchet (Phase 2) remains open.
+- **#522** — Coherent-Model Torus-Connection Search: reformulate SE<->EM cross-system closure as BCR4BP/QBCP
+  whiskered-torus connections instead of patched-CR3BP grids, dissolving the 1-DOF phase-closure obstruction by
+  construction; re-scopes #518 (proposed 2026-07-02 independent review; not yet built).
+- **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
+  Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
+  mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
+- **#524** — Continuation + Deflated-Newton Search Primitive: replace fixed-grid + independent-Newton-per-cell
+  sweeps with pseudo-arclength continuation and deflated Newton as the default search method (proposed
+  2026-07-02 independent review; not yet built).
+- **#525** — Learned Seed Generation: diffusion/generative corrector-seed model trained on the project's own
+  runlog/checkpoint archive; revisits the 2026-06-11 Ozaki (arXiv 2111.11858) "below breakeven" triage as stale
+  (proposed 2026-07-02 independent review; not yet built).
+- **#526** — GTOC 13 + Liang Operator Ingestion: digest GTOC 13 (Oct-Nov 2025 ballistic Jovian gravity-assist
+  tour competition) methods papers and encode Liang et al.'s alternating-double-cycler construction (JGCD 2024,
+  DOI 10.2514/1.G008387) as a reusable genome operator (proposed 2026-07-02 independent review; not yet built).
+- **#527** — Sun-Jupiter Hilda-Band DA/HOTM Enumeration: point the already-built, zero-usage #450 DA/HOTM
+  enumerator (`src/cyclerfinder/search/da_hotm_enumeration.py`, μ-agnostic, never invoked by any campaign
+  script) at the Sun-Jupiter Hilda/quasi-Hilda 3:2-exterior-MMR band — a region in neither negative registry nor
+  the catalogue. Positive control: recover manifold-consistent unstable POs per Guido & Efthymiopoulos,
+  arXiv:2604.00679 (2026-04-01), before any negative is trusted. Cheapest of the second-pass proposals — a
+  config/target change, no new build (proposed 2026-07-02 second-pass independent review; not yet built).
+- **#528** — Low-Thrust-Native Validation Gate: build a continuous-thrust acceptance criterion for
+  `dv_band: low_thrust_sep` (currently a schema field with zero catalogue rows and a gate that `return`s `None`
+  — no acceptance window exists), reusing `core/sims_flanagan.py`. Positive control: reproduce Pascarella et al.
+  2022 (AAS 22-015, already in this project's corpus) to a stated tolerance. Should land before or alongside
+  #519 actually running, or a genuine low-thrust find would have nothing to grade it against (proposed
+  2026-07-02 second-pass independent review; not yet built).
+- **#529** — Inter-Cycler Network / Taxi-Transfer Catalogue Extension: add a schema relation for cycler *sets*
+  with shared phasing/downlink cadence and taxi transfers between catalogued cyclers (reusing
+  `model/score.py`'s `taxi_cost_kms`) — a published, sourced concept (Sanchez Net et al. 2022, already digested,
+  `docs/notes/s1l1-target-topology-mining.md:156-263`) the current 5-class taxonomy cannot express. Deferred
+  deliberately — changes what a catalogue row/relation can be, wants a scoping discussion before a sprint slot
+  (proposed 2026-07-02 second-pass independent review; not yet built).
+
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
 
