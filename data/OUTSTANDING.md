@@ -386,6 +386,44 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
     digest — reusing the existing `genome/qp_tori.py` GMOS torus generator) should first be validated as a
     SINGLE-SYSTEM positive control (reproducing Owen & Baresi's own Earth-Moon-internal example) independent of
     the cross-system clock question, before attempting genuine SE<->EM.
+  **PHASE 1 BUILT 2026-07-03 (same session): the single-system linking-number screening machinery is complete
+  and lint/mypy/test clean, per the recommended path above.** Four new modules, each independently tested before
+  wiring together (the same "generic primitive + closed-form positive control, then CR3BP wiring" discipline
+  that worked for #524):
+  - `search/linking_number.py` — Owen & Baresi's fan-triangulation + signed segment/triangle crossing count,
+    using the standard Moller-Trumbore ray-triangle test (not a byte-for-byte transcription of the paper's own
+    scanned-PDF inside-triangle formula, which does not match the standard barycentric same-side test closely
+    enough to trust). Validated against a textbook Hopf-link pair of unit circles (linking number exactly +-1,
+    sign flips under orientation reversal) and unlinked/nested/side-by-side coplanar pairs (linking number 0).
+    Found and documented a real degenerate-geometry edge case: a curve piercing exactly through the other's fan
+    centroid over-counts against multiple shared-vertex triangles.
+  - `search/torus_map_contours.py` — periodic-grid marching squares (torus angles wrap at 2*pi, which a plain
+    image-processing contour tracer does not support) with the standard ambiguous-saddle tie-break. Validated
+    against a closed-form circular level set (arc length within 0.05 of the exact 2*pi) and a periodic-wraparound
+    case. Found and fixed a real degenerate-vertex bug (grid value exactly equal to the level emits spurious
+    zero-length segments).
+  - `genome/qp_torus_manifold.py` — the missing per-point "Floquet matrix" step `qp_tori.py` (#290) never
+    computed: STM of the flow over one stroboscopic period at any torus point, stable/unstable eigenpair
+    extraction with continuity-based sign-fixing, and a manifold-endpoint grid generator (perturb + propagate to
+    a surface of section). Validated against the CR3BP monodromy's reciprocal-pair eigenvalue property (a
+    structural fact of Hamiltonian/symplectic STMs already documented in `search/bifurcation_detector.py`, not a
+    value this module computed), reusing the EXISTING sourced #299 Earth-Moon Neimark-Sacker bracket fixture
+    (not deriving a new seed).
+  - `genome/qp_torus_heteroclinic.py` — wires the three pieces above into `scan_linking_number()` (sweep a
+    scanning variable, track linking-number sign changes) and `sign_change_locations()` (Owen & Baresi's own
+    initial-guess extraction rule: average the D-values before/after a sign change). This is a SCREEN only —
+    flags candidate connection locations, does not run the differential-correction refinement Owen & Baresi's
+    method also needs (out of scope for Phase 1).
+  - 18 tests total, all passing; validated as a mechanical wiring smoke test (self-consistency: stable vs.
+    unstable manifold of the SAME sourced torus) — **NOT yet the real positive control.** Reproducing Owen &
+    Baresi's actual Earth-Moon quasi-halo<->quasi-halo result (`mu=0.012153643`, `C=3.15`, 4 connections, their
+    Sec 4.1.1 — see [[2026-07-03-digest-owen-baresi-2024-knot-theory-heteroclinic]] for the full sourced numbers)
+    needs sourcing TWO DISTINCT quasi-halo tori at their specific published L1/L2 latitudinal frequencies
+    (0.2739 / 0.02163) — a real, not-yet-attempted sub-task (likely needs a targeted continuation/search over the
+    existing halo-family + Neimark-Sacker-bracket infrastructure to land on those exact frequencies, not just
+    "any" Neimark-Sacker bracket like the #299 fixture used for the mechanical tests above). This is the next
+    concrete #522 step if pursued further; the cross-system SE<->EM question (path (a) vs (b) above) remains a
+    separate, deferred decision.
 - **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
   Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
   mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
