@@ -53,13 +53,49 @@ numerical refinement — avoiding both blind brute-force search and human-in-the
    and Sun-Earth/Earth-Moon/Jupiter-Ganymede numerical results were not yet extracted; read on
    demand before/while implementing).
 
-## Test Systems (from abstract; page-10 numbers not yet extracted)
+## Test Systems (full numbers extracted, pp. 10-17)
 
 Demonstrated on **Earth-Moon, Sun-Earth, and Jupiter-Ganymede CR3BPs** — each a SEPARATE autonomous
 CR3BP (this paper does NOT itself demonstrate a genuine cross-system SE<->EM connection within one
 coherent 4-body model; each demonstration is single-system, e.g. EM-internal L1<->L2-family
 connections). This matters for #522: Owen & Baresi's own worked example is a same-system positive
 control, not evidence the method already spans SE<->EM.
+
+### Sourced numbers (all Jacobi values are constant per system — connections are isoenergetic)
+
+- **Earth-Moon** (mu=0.012153643, C=3.15):
+  - Quasi-halo <-> quasi-halo (Sec 4.1.1, single surface-of-section crossing, the SIMPLEST case —
+    **recommended #522 Phase-1 validation target**): L1 orbit latitudinal frequency 0.2739, L2 orbit
+    latitudinal frequency 0.02163 -> **4 connections**, matching 4 linking-number sign changes in Fig
+    15 (scanning variable `z`, roughly over `z in [-6e-3, +7e-3]` nondim EM units, read from the
+    figure — exact D-values at each change not numerically tabulated in text, only the plot).
+  - Lissajous <-> Lissajous (Sec 4.1.2): L1 freq 0.3226, L2 freq 0.3578 -> **8 connections** (paired,
+    reflected through x-y plane by symmetry).
+  - Quasi-halo <-> Lissajous (Sec 4.1.3): needs a SECOND surface-of-section crossing — the paper's
+    own §5 Discussion flags this case as having a genuine method LIMITATION (torus maps become
+    discontinuous after the first crossing for quasi-halo manifolds, breaking the closed-curve
+    assumption linking number needs) — avoid this case for a first implementation.
+- **Sun-Earth** (mu=3.039548e-6, C=3.00065):
+  - Lissajous <-> Lissajous (Sec 4.2.1): L1 freq 0.4573, L2 freq 0.4608 -> **8 connections**.
+  - Quasi-halo <-> Lissajous (Sec 4.2.2): L1 freq 0.3745, L2 freq 0.4224 -> **4 connections** (does
+    NOT require a second surface-of-section crossing in the SE system, unlike the EM case).
+- **Jupiter-Ganymede** (mu=7.807083e-5, C=3.0066): L1 freq 0.1787, L2 freq 0.0957 -> **4 connections**.
+
+The typical initial-guess accuracy (state discrepancy between stable/unstable trajectories at the
+surface of section before differential correction) is 1e-6 to 1e-4 nondim (§4, closing paragraph) —
+a useful acceptance-order-of-magnitude reference for a from-scratch reimplementation's own
+initial-guess quality.
+
+### Real limitation, sourced (§5 Discussion)
+
+The linking-number method needs the stable/unstable torus maps to be CONTINUOUS closed curves. For
+manifolds that separate into disjoint trajectory groups after the first surface-of-section crossing
+(quasi-halo orbits in EM specifically, per Fig. 25) — some trajectories return quickly, others
+depart the Moon's vicinity before crossing again much later — the SECOND-crossing torus map becomes
+discontinuous and the method breaks down. This is why quasi-halo-to-Lissajous in EM needs care while
+the SAME orbit-family pair in Sun-Earth does not (different manifold geometry at that mu/C). Not yet
+resolved by the authors; flagged as future work (extending to periapsis/apoapsis maps, which have
+their own issues).
 
 ## Relevance to #522 — RECOMMENDED FIRST-BUILD PATH
 
