@@ -1,83 +1,292 @@
+# STATUS (2026-07-02, #521-phase-1 migration): every entry below has been
+# migrated into the queryable schema at data/empty_regions.jsonl (see the
+# `method_capability`/`should_sweep()` machinery in
+# src/cyclerfinder/data/method_capability.py + src/cyclerfinder/data/empty_regions.py).
+# Each entry now carries a `migrated_to_empty_regions_jsonl: <region_id>` pointer
+# to its counterpart there. This file is FROZEN as a human-readable prose index —
+# do NOT add new entries here. Any future negative result must be appended
+# directly to data/empty_regions.jsonl via append_empty_region() so that
+# should_sweep() (wired into DiscoveryCampaign) actually gates on it; a
+# negative recorded only here is invisible to every mechanical pre-flight
+# check. See data/OUTSTANDING.md under #521 for the full migration rationale.
 entries:
 - id: branch_C32_b0
   issue: 389
   method: Floquet continuation / bifurcation
   regime: Earth-Moon CR3BP
   failed_rung: V4
-  physical_reason: Far-amplitude orbit (~0.77x Earth-Sun Hill radius) is destroyed by solar tides (30% of Earth gravity) on real ephemeris.
+  physical_reason: Far-amplitude orbit (~0.77x Earth-Sun Hill radius) is destroyed
+    by solar tides (30% of Earth gravity) on real ephemeris.
   resweep_condition: None. Orbit is fundamentally destroyed by N-body forces.
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: floquet-branch-c32-b0-em-v4-2026-06-19
 - id: branch_C32_C_3.1774
   issue: 392
   method: Floquet continuation / bifurcation
   regime: Earth-Moon CR3BP
   failed_rung: V4
-  physical_reason: Low-amplitude orbit still experiences mild intrinsic instability (Floquet multiplier ~37), acting as a massive gain stage that amplifies real lunar eccentricity and small solar tides into exponential escape trajectories.
+  physical_reason: Low-amplitude orbit still experiences mild intrinsic instability
+    (Floquet multiplier ~37), acting as a massive gain stage that amplifies real lunar
+    eccentricity and small solar tides into exponential escape trajectories.
   resweep_condition: None.
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: floquet-branch-c32-c-3.1774-em-v4-2026-06-19
 - id: branch_C11a_b0
   issue: 393
   method: Floquet continuation / bifurcation
   regime: Earth-Moon CR3BP
   failed_rung: V4
-  physical_reason: Same as C32 low-amp; instability-driven perturbation amplification leads to structural failure across all epochs. EM-only control max drift is ~7e5 km while full N-body drift is ~1.4e9 km.
+  physical_reason: Same as C32 low-amp; instability-driven perturbation amplification
+    leads to structural failure across all epochs. EM-only control max drift is ~7e5
+    km while full N-body drift is ~1.4e9 km.
   resweep_condition: None.
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: floquet-branch-c11a-b0-em-v4-2026-06-19
 - id: em_node_floquet_branches
   issue: 392
   method: Floquet continuation / bifurcation
   regime: Earth-Moon CR3BP
   failed_rung: V4
-  physical_reason: The Floquet branch families off the EM cycler nodes have no V4-survivable amplitude window. At far-amplitude they die from solar tides; at low-amplitude they die from instability amplifying lunar eccentricity.
+  physical_reason: The Floquet branch families off the EM cycler nodes have no V4-survivable
+    amplitude window. At far-amplitude they die from solar tides; at low-amplitude
+    they die from instability amplifying lunar eccentricity.
   resweep_condition: None.
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: floquet-branches-em-cycler-nodes-v4-aggregate-2026-06-19
 - id: russell-ocampo-3.1.2+1
   issue: 365
   method: Single-arc closer_sweep_v1
   regime: Earth-Mars Ballistic
   failed_rung: V1
-  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity by tens of km/s.'
-  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20): this row is multi-arc but carries NO per-arc free-return descriptor (the Russell-Ocampo n.m.k summary format publishes only the cycle-level summary, never the per-arc g/G geometry), so a multi-arc closer has nothing to seed. The block is a PUBLICATION gap, not missing closer infrastructure. Resweep = acquire the per-arc descriptor (Russell 2004 detailed tables / dissertation), NOT build/run a closer.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse, breaking V_inf continuity
+    by tens of km/s.'
+  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
+    this row is multi-arc but carries NO per-arc free-return descriptor (the Russell-Ocampo
+    n.m.k summary format publishes only the cycle-level summary, never the per-arc
+    g/G geometry), so a multi-arc closer has nothing to seed. The block is a PUBLICATION
+    gap, not missing closer infrastructure. Resweep = acquire the per-arc descriptor
+    (Russell 2004 detailed tables / dissertation), NOT build/run a closer.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: closer-sweep-v1-russell-ocampo-3.1.2+1-2026-06-17
 - id: russell-ocampo-4.3.1-5
   issue: 365
   method: Single-arc closer_sweep_v1
   regime: Earth-Mars Ballistic
   failed_rung: V1
-  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse (NO-CLOSE).'
-  resweep_condition: 'DESCRIPTOR AVAILABLE BUT NOT INGESTED (#404 triage + acquisition research 2026-06-20, docs/notes/2026-06-20-ocampo-descriptor-acquisition-research.md): UNLIKE the other two ocampo #365 negatives, this row''s per-arc g/f/h free-return descriptor IS published -- McConaghy-Russell-Longuski 2005 (JSR 42(4)) Table 2 lists it among the 7 named cyclers. The catalogue row currently carries free_return_arcs=[] (not yet ingested). Resweep = ingest the McConaghy-2005 Table-2 descriptor into the row (then it becomes seedable) and run the multi-arc DSM closure lane. A prior #365 single-arc NO-CLOSE is on record, so promotion requires a genuine two-arc closure at the sourced V_inf -- not automatic.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
-  result_388: "RUN 2026-06-23 (#388): descriptor ingested (McConaghy-2005 Table 2; free_return_arcs g/f/h, repeat-constraint Sum t_f=8.5714=4S exact) and run through close_multiarc_row (lambert, 25 seeds, nfev 400+900 identical). Residual TRUE FLOOR 0.485 km/s (NOT closed to 0.1 gate), total dV ~0.995 km/s. CRITICALLY: emerged Vinf RECOVERS the sourced anchor (Earth ~3.04 vs 3.1; Mars ~2.5 vs 2.5) -- unlike S1L1 and the V3 rows which collapse off-anchor. So the #388 wall is ENERGY-SELECTIVE not universal: low-energy near-Hohmann cyclers recover anchor. 4.3.1-5 is near-ballistic (Russell AR=0.99 'small powered nudge'), so 0.485 km/s may be the genuine DSM. NOT a clean V0->V1 ballistic close; promotion pending a Mars-perihelion epoch trial + independent cross-check. See docs/notes/2026-06-23-388-russell-ocampo-4.3.1-5-anchor-recovery.md"
-  determination_388: 'V-LEVEL DETERMINATION 2026-06-23: STAYS V0. Canonical close_row_dsm (single seed, default epoch) FAILS (res 12.64 km/s, anchor_match=False). The 0.0962 km/s anchor-matched close is epoch+seed-fragile (needs 25-seed multi-start + Mars-perihelion +57d epoch) and is 164 m/s single-cycle LOW_MAINTENANCE, not ballistic -> clears no V1/V2/V3 gate. No promotion; descriptor ingestion + anchor-recovery characterization stand.'
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse (NO-CLOSE).'
+  resweep_condition: 'DESCRIPTOR AVAILABLE BUT NOT INGESTED (#404 triage + acquisition
+    research 2026-06-20, docs/notes/2026-06-20-ocampo-descriptor-acquisition-research.md):
+    UNLIKE the other two ocampo #365 negatives, this row''s per-arc g/f/h free-return
+    descriptor IS published -- McConaghy-Russell-Longuski 2005 (JSR 42(4)) Table 2
+    lists it among the 7 named cyclers. The catalogue row currently carries free_return_arcs=[]
+    (not yet ingested). Resweep = ingest the McConaghy-2005 Table-2 descriptor into
+    the row (then it becomes seedable) and run the multi-arc DSM closure lane. A prior
+    #365 single-arc NO-CLOSE is on record, so promotion requires a genuine two-arc
+    closure at the sourced V_inf -- not automatic.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  result_388: 'RUN 2026-06-23 (#388): descriptor ingested (McConaghy-2005 Table 2;
+    free_return_arcs g/f/h, repeat-constraint Sum t_f=8.5714=4S exact) and run through
+    close_multiarc_row (lambert, 25 seeds, nfev 400+900 identical). Residual TRUE
+    FLOOR 0.485 km/s (NOT closed to 0.1 gate), total dV ~0.995 km/s. CRITICALLY: emerged
+    Vinf RECOVERS the sourced anchor (Earth ~3.04 vs 3.1; Mars ~2.5 vs 2.5) -- unlike
+    S1L1 and the V3 rows which collapse off-anchor. So the #388 wall is ENERGY-SELECTIVE
+    not universal: low-energy near-Hohmann cyclers recover anchor. 4.3.1-5 is near-ballistic
+    (Russell AR=0.99 ''small powered nudge''), so 0.485 km/s may be the genuine DSM.
+    NOT a clean V0->V1 ballistic close; promotion pending a Mars-perihelion epoch
+    trial + independent cross-check. See docs/notes/2026-06-23-388-russell-ocampo-4.3.1-5-anchor-recovery.md'
+  determination_388: 'V-LEVEL DETERMINATION 2026-06-23: STAYS V0. Canonical close_row_dsm
+    (single seed, default epoch) FAILS (res 12.64 km/s, anchor_match=False). The 0.0962
+    km/s anchor-matched close is epoch+seed-fragile (needs 25-seed multi-start + Mars-perihelion
+    +57d epoch) and is 164 m/s single-cycle LOW_MAINTENANCE, not ballistic -> clears
+    no V1/V2/V3 gate. No promotion; descriptor ingestion + anchor-recovery characterization
+    stand.'
+  migrated_to_empty_regions_jsonl: closer-sweep-v1-russell-ocampo-4.3.1-5-2026-06-17
 - id: russell-ocampo-4.5.2-2
   issue: 365
   method: Single-arc closer_sweep_v1
   regime: Earth-Mars Ballistic
   failed_rung: V1
-  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be represented by a single radial-crossing free-return ellipse, breaking V_inf continuity.'
-  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20): multi-arc but NO per-arc free-return descriptor (n.m.k summary format) -> a multi-arc closer has nothing to seed. PUBLICATION gap, not missing infrastructure. Resweep = acquire the per-arc descriptor (Russell 2004 detailed tables), NOT build/run a closer.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  physical_reason: 'Topology mismatch: multi-arc topology fundamentally cannot be
+    represented by a single radial-crossing free-return ellipse, breaking V_inf continuity.'
+  resweep_condition: 'DESCRIPTOR-GATED, not infrastructure-gated (#404 triage 2026-06-20):
+    multi-arc but NO per-arc free-return descriptor (n.m.k summary format) -> a multi-arc
+    closer has nothing to seed. PUBLICATION gap, not missing infrastructure. Resweep
+    = acquire the per-arc descriptor (Russell 2004 detailed tables), NOT build/run
+    a closer.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: closer-sweep-v1-russell-ocampo-4.5.2-2-2026-06-17
 - id: mcconaghy-2006-em-k2
   issue: 365
   method: Single-arc closer_sweep_v1
   regime: Earth-Mars Ballistic
   failed_rung: V1
-  physical_reason: 'Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby. Single ellipse representation breaks V_inf continuity.'
-  resweep_condition: 'IN SCOPE for the multi-arc closer (#404 triage 2026-06-20): unlike the three russell-ocampo #365 negatives, this row IS descriptor-bearing -- it carries 2 generic free-return arcs (tof 1.46 + 2.81 yr), so the DSM eta-leg closure lane (spec docs/superpowers/specs/2026-06-10-dsm-multiarc-closure-lane-design.md) can seed it. The ONE of the four #365 negatives a closer can actually address. Resweep = run that lane; per its single-arc-degenerate guard, only a genuine two-arc closure at the sourced V_inf (4.7/5.0 km/s) promotes it off V0.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  physical_reason: 'Topology mismatch: S1L1 is a two-arc topology joined at Mars flyby.
+    Single ellipse representation breaks V_inf continuity.'
+  resweep_condition: 'IN SCOPE for the multi-arc closer (#404 triage 2026-06-20):
+    unlike the three russell-ocampo #365 negatives, this row IS descriptor-bearing
+    -- it carries 2 generic free-return arcs (tof 1.46 + 2.81 yr), so the DSM eta-leg
+    closure lane (spec docs/superpowers/specs/2026-06-10-dsm-multiarc-closure-lane-design.md)
+    can seed it. The ONE of the four #365 negatives a closer can actually address.
+    Resweep = run that lane; per its single-arc-degenerate guard, only a genuine two-arc
+    closure at the sourced V_inf (4.7/5.0 km/s) promotes it off V0.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: closer-sweep-v1-mcconaghy-2006-em-k2-s1l1-2026-06-17
 - id: cross_system_se_em_L2_patched_cr3bp
   issue: 405
-  method: patched-CR3BP SE<->EM connection matcher + bounded closure search (#405 Phase A)
+  method: patched-CR3BP SE<->EM connection matcher + bounded closure search (#405
+    Phase A)
   regime: Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
   failed_rung: closure-search
-  physical_reason: 'BOTH cross-system connection legs exist at low dV: forward EM-L2->SE-L2 closes at pos gap ~0.4 km / dV ~0.36 km/s, and the SE->EM RETURN leg closes at pos gap ~30 km / dV ~0.15 km/s (validated by test_se_to_em_return_leg_converges). CORRECTION (2026-06-20, #411): the earlier "return leg does not close / narrow-basin scale mismatch" claim was a CODE BUG, not physics -- correct_cross_connection hardwired from=EM/to=SE and propagated the return-leg SE manifold in the EM system (garbage). With each manifold propagated in its own system the return converges. What remains OPEN is the closed CYCLE: a theta-TIME-CONSISTENCY analysis (2026-06-20) quantifies the gate. The forward EM-L2->SE-L2 transit takes ~52 days, over which the SE-EM relative phase advances ~4.88 rad (omega_rel = 2.47e-6 rad/s); the time-consistent prediction theta_f + omega_rel*t_fwd does NOT match the independently-converged return-leg theta_r -- a ~2.2 rad gap AT SINGLE REVOLUTION. The cycle therefore does not close at one rev; that 2.2 rad must be absorbed by MULTI-REVOLUTION phasing (extra orbit revs each advance theta) -- the patched-model analog of the ~19yr Metonic (235:19) commensurate return (note #316). (The bounded search''s cost-tuned return config still under-resolves and reports the return non-converged; a full-scan return converges.)'
-  resweep_condition: 'Both spatial legs exist at low dV, so the open work is PHASE closure. The (n_em=41, n_se=19) ~11yr "feasibility" (2026-06-20-411-theta-closure-feasibility.md) was SUPERSEDED (2026-06-20, docs/notes/2026-06-20-411-amplitude-theta-closure.md): it held both amplitudes FIXED and is physically INFEASIBLE -- a manifold seeded at eps shadows its orbit only ~ln(eps_range)/ln(|lambda_u|) revs before exponential departure, and the EM-L2 Lyapunov |lambda_u|~1.2e3 caps that at ~2-4 revs (n_em=41 is >10x over budget). The CORRECT model: amplitude is a continuous phase knob -- over each Lyapunov family Delta-theta(C) mod 2pi sweeps ~the full circle (EM 89%, SE 69%), the EM side doing so WITHIN its 2-4 rev shadow budget. So the theta-closure equation at n_em=n_se=1 is ONE equation in TWO continuous amplitude knobs -> a 1-D solution curve exists at SINGLE revolution. Productive next step: a coupled single-rev corrector -- free vars (c_em, c_se) + both legs'' phases + theta at n=1; residual = both inertial position gaps + theta-time-consistency; solve along the closure curve and read the patch dV, with rigorous Radau verification before any closed-cycle claim. Sufficiency (does patch dV stay LOW on the theta-closure curve?) is the open question. Alternative venue: BCR4BP Phase B with an SE-scale seed (#412). NOT a multi-revolution corrector and NOT a finer fixed-amplitude grid. UPDATE (2026-06-20, docs/notes/2026-06-20-411-corrector-outcome.md): the coupled single-rev corrector (correct_cross_cycle, committed f563ab3) was BUILT and run on EM-L2/SE-L2 n=(1,1). Both legs stay ballistic-cheap (~0.8 km/s total, ~1.06 yr) but the Newton STALLS: it closes R1 (->0.008) while R2 floors at ~-0.58 -> |R| stalls at ~0.59 rad, NOT closed. Working hypothesis (not firmly established; standalone diagnostics were confounded by the connection-curve coupling + return-branch selection): the both-legs-converged set is a CURVE in (c_em, c_se), so only ONE phase DOF is available -- it zeroes one of the two consistency residuals, not both. So the amplitude-knob feasibility OVER-counted the DOF (the connection-existence constraint removes one). MULTI-REV CONFIRMED (2026-06-20): re-running at n=(1,2) plateaus at |R|~0.78 rad (vs ~0.59 at n=(1,1)) -- a discrete extra revolution SHIFTS the residual floor but does not reach zero, the predicted 1-DOF signature (rev-count changes the offset, not the dimensionality). So the patched-CR3BP EM-L2/SE-L2 route is a CHARACTERIZED NEGATIVE at single AND low-multiple revolution; legs remain ballistic-cheap (~0.8 km/s) so the block is phase-closure dimensionality, not energy. Resweep (NOT more revolutions / finer grids): (1) other libration pairs (L1/L1, L1/L2) -- may give a 2-D both-converged region = two real amplitude knobs; (2) BCR4BP with an SE-scale seed (#412 re-scope), where phase closure is well-posed by construction. A pseudo-arclength continuation along the L2/L2 connection curve would formally prove the 1-DOF obstruction but the empirical stalls already establish it.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  physical_reason: 'BOTH cross-system connection legs exist at low dV: forward EM-L2->SE-L2
+    closes at pos gap ~0.4 km / dV ~0.36 km/s, and the SE->EM RETURN leg closes at
+    pos gap ~30 km / dV ~0.15 km/s (validated by test_se_to_em_return_leg_converges).
+    CORRECTION (2026-06-20, #411): the earlier "return leg does not close / narrow-basin
+    scale mismatch" claim was a CODE BUG, not physics -- correct_cross_connection
+    hardwired from=EM/to=SE and propagated the return-leg SE manifold in the EM system
+    (garbage). With each manifold propagated in its own system the return converges.
+    What remains OPEN is the closed CYCLE: a theta-TIME-CONSISTENCY analysis (2026-06-20)
+    quantifies the gate. The forward EM-L2->SE-L2 transit takes ~52 days, over which
+    the SE-EM relative phase advances ~4.88 rad (omega_rel = 2.47e-6 rad/s); the time-consistent
+    prediction theta_f + omega_rel*t_fwd does NOT match the independently-converged
+    return-leg theta_r -- a ~2.2 rad gap AT SINGLE REVOLUTION. The cycle therefore
+    does not close at one rev; that 2.2 rad must be absorbed by MULTI-REVOLUTION phasing
+    (extra orbit revs each advance theta) -- the patched-model analog of the ~19yr
+    Metonic (235:19) commensurate return (note #316). (The bounded search''s cost-tuned
+    return config still under-resolves and reports the return non-converged; a full-scan
+    return converges.)'
+  resweep_condition: 'Both spatial legs exist at low dV, so the open work is PHASE
+    closure. The (n_em=41, n_se=19) ~11yr "feasibility" (2026-06-20-411-theta-closure-feasibility.md)
+    was SUPERSEDED (2026-06-20, docs/notes/2026-06-20-411-amplitude-theta-closure.md):
+    it held both amplitudes FIXED and is physically INFEASIBLE -- a manifold seeded
+    at eps shadows its orbit only ~ln(eps_range)/ln(|lambda_u|) revs before exponential
+    departure, and the EM-L2 Lyapunov |lambda_u|~1.2e3 caps that at ~2-4 revs (n_em=41
+    is >10x over budget). The CORRECT model: amplitude is a continuous phase knob
+    -- over each Lyapunov family Delta-theta(C) mod 2pi sweeps ~the full circle (EM
+    89%, SE 69%), the EM side doing so WITHIN its 2-4 rev shadow budget. So the theta-closure
+    equation at n_em=n_se=1 is ONE equation in TWO continuous amplitude knobs -> a
+    1-D solution curve exists at SINGLE revolution. Productive next step: a coupled
+    single-rev corrector -- free vars (c_em, c_se) + both legs'' phases + theta at
+    n=1; residual = both inertial position gaps + theta-time-consistency; solve along
+    the closure curve and read the patch dV, with rigorous Radau verification before
+    any closed-cycle claim. Sufficiency (does patch dV stay LOW on the theta-closure
+    curve?) is the open question. Alternative venue: BCR4BP Phase B with an SE-scale
+    seed (#412). NOT a multi-revolution corrector and NOT a finer fixed-amplitude
+    grid. UPDATE (2026-06-20, docs/notes/2026-06-20-411-corrector-outcome.md): the
+    coupled single-rev corrector (correct_cross_cycle, committed f563ab3) was BUILT
+    and run on EM-L2/SE-L2 n=(1,1). Both legs stay ballistic-cheap (~0.8 km/s total,
+    ~1.06 yr) but the Newton STALLS: it closes R1 (->0.008) while R2 floors at ~-0.58
+    -> |R| stalls at ~0.59 rad, NOT closed. Working hypothesis (not firmly established;
+    standalone diagnostics were confounded by the connection-curve coupling + return-branch
+    selection): the both-legs-converged set is a CURVE in (c_em, c_se), so only ONE
+    phase DOF is available -- it zeroes one of the two consistency residuals, not
+    both. So the amplitude-knob feasibility OVER-counted the DOF (the connection-existence
+    constraint removes one). MULTI-REV CONFIRMED (2026-06-20): re-running at n=(1,2)
+    plateaus at |R|~0.78 rad (vs ~0.59 at n=(1,1)) -- a discrete extra revolution
+    SHIFTS the residual floor but does not reach zero, the predicted 1-DOF signature
+    (rev-count changes the offset, not the dimensionality). So the patched-CR3BP EM-L2/SE-L2
+    route is a CHARACTERIZED NEGATIVE at single AND low-multiple revolution; legs
+    remain ballistic-cheap (~0.8 km/s) so the block is phase-closure dimensionality,
+    not energy. Resweep (NOT more revolutions / finer grids): (1) other libration
+    pairs (L1/L1, L1/L2) -- may give a 2-D both-converged region = two real amplitude
+    knobs; (2) BCR4BP with an SE-scale seed (#412 re-scope), where phase closure is
+    well-posed by construction. A pseudo-arclength continuation along the L2/L2 connection
+    curve would formally prove the 1-DOF obstruction but the empirical stalls already
+    establish it.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: cross-system-se-em-l2-patched-cr3bp-2026-06-20
 - id: bcr4bp_phase_b_em_libration_seed
   issue: 412
-  method: 'BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B scoping)'
+  method: 'BCR4BP mu_sun-continuation reach spike (EM-L1 Lyapunov seed; #412 Phase-B
+    scoping)'
   regime: Sun-Earth-Moon BCR4BP (Andreu 1998, coherent 4-body)
   failed_rung: scoping-spike
-  physical_reason: 'An Earth-Moon-libration family is the WRONG vehicle for a both-region-spanning cross-system cycle. For EM-L1 Lyapunov seeds (C=3.1294/3.05/2.95) cast into the BCR4BP and mu_sun-continued, the max Earth-relative reach stays ~0.9-1.16 lunar distances (LD) -- flat under the Sun term, nowhere near the 3.90 LD needed to span to the Sun-Earth-L region (1.5e6 km patch plane). Two signals agree: (1) reach does not trend upward as mu_sun grows; (2) the family does not survive continuation to full Sun strength -- each walk broke after 9-12 of 40 steps (reached only mu_sun~16-44 vs the full 328900). EM-libration orbits are Earth-Moon-Hill-bounded; turning on the Sun neither stretches them outward nor preserves the family to full strength. See docs/notes/2026-06-20-412-bcr4bp-reach-spike.md.'
-  resweep_condition: 'NOT from the EM-libration family -- that route is structurally closed. The geometrically correct BCR4BP vehicle is a Sun-Earth-scale seed (an SE-libration orbit or a transfer manifold reaching the 3.9 LD region), which is a from-scratch Phase-B build, not a continuation of the EM family. Resweep when such an SE-scale BCR4BP seed family is built. Near-term, the patched-model #411 multi-rev theta-closure corrector is the more direct venue.'
-  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279) or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  physical_reason: 'An Earth-Moon-libration family is the WRONG vehicle for a both-region-spanning
+    cross-system cycle. For EM-L1 Lyapunov seeds (C=3.1294/3.05/2.95) cast into the
+    BCR4BP and mu_sun-continued, the max Earth-relative reach stays ~0.9-1.16 lunar
+    distances (LD) -- flat under the Sun term, nowhere near the 3.90 LD needed to
+    span to the Sun-Earth-L region (1.5e6 km patch plane). Two signals agree: (1)
+    reach does not trend upward as mu_sun grows; (2) the family does not survive continuation
+    to full Sun strength -- each walk broke after 9-12 of 40 steps (reached only mu_sun~16-44
+    vs the full 328900). EM-libration orbits are Earth-Moon-Hill-bounded; turning
+    on the Sun neither stretches them outward nor preserves the family to full strength.
+    See docs/notes/2026-06-20-412-bcr4bp-reach-spike.md.'
+  resweep_condition: 'NOT from the EM-libration family -- that route is structurally
+    closed. The geometrically correct BCR4BP vehicle is a Sun-Earth-scale seed (an
+    SE-libration orbit or a transfer manifold reaching the 3.9 LD region), which is
+    a from-scratch Phase-B build, not a continuation of the EM family. Resweep when
+    such an SE-scale BCR4BP seed family is built. Near-term, the patched-model #411
+    multi-rev theta-closure corrector is the more direct venue.'
+  audit_425: '#425 audit (2026-06-23, HEAD 4daa977): NO FLIP vs #198 epoch fix (439d279)
+    or #426/#428 flyby-floor fix (fbe7e56+4daa977). Binding constraint untouched (real-eph
+    fails by ~1e9 km / structural; ballistic fails at single-ellipse closure upstream
+    of any flyby-bend budget; CR3BP/BCR4BP have no epoch & no flyby). See docs/notes/2026-06-23-425-negative-registry-staleness-audit.md'
+  migrated_to_empty_regions_jsonl: bcr4bp-phase-b-em-libration-seed-reach-spike-2026-06-20
+- id: cross_system_se_em_3d_patched_cr3bp
+  issue: 515
+  method: patched-CR3BP 3D SE<->EM connection matcher + 3D bounded closure search
+    (#515)
+  regime: 3D Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
+  failed_rung: closure-search-3d
+  physical_reason: 3D EM->SE and SE->EM legs solved spatially to high accuracy, but
+    the time-consistent phase residuals (R1, R2) do not close simultaneously in the
+    grid scanned. The additional out-of-plane amplitude degrees of freedom (z_em,
+    z_se) did not resolve the phase closure wall within this grid of single-revolution
+    orbits.
+  resweep_condition: BCR4BP 3D halo continuation OR a multi-revolution Metonic-commensurate
+    3D grid.
+  migrated_to_empty_regions_jsonl: cross-system-se-em-3d-patched-cr3bp-2026-07-01
+- id: cross_system_se_em_3d_asymmetric_patched_cr3bp
+  issue: 517
+  method: patched-CR3BP asymmetric 3D SE<->EM connection matcher + 3D bounded closure
+    search (#517)
+  regime: 3D Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
+  failed_rung: asymmetric-closure-search-3d
+  physical_reason: Asymmetric 3D EM->SE and SE->EM legs (connecting L1 to L2 libration
+    regions) solved spatially to high accuracy, but the time-consistent phase residuals
+    (R1, R2) do not close simultaneously in the grid scanned. The asymmetric configurations
+    did not resolve the phase closure wall within this grid of single-revolution orbits.
+  resweep_condition: BCR4BP asymmetric 3D halo continuation OR a multi-revolution
+    Metonic-commensurate 3D grid.
+  migrated_to_empty_regions_jsonl: cross-system-se-em-3d-asymmetric-patched-cr3bp-2026-07-01
+- id: cross_system_se_em_3d_multirev_patched_cr3bp
+  issue: 516
+  method: patched-CR3BP multi-revolution 3D SE<->EM connection matcher + 3D bounded
+    closure search (#516)
+  regime: 3D Sun-Earth + Earth-Moon coupled CR3BP (patched, inertial-frame match)
+  failed_rung: multirev-closure-search-3d
+  physical_reason: Multi-revolution 3D EM->SE and SE->EM legs solved spatially to
+    high accuracy, but the time-consistent phase residuals (R1, R2) do not close simultaneously
+    in the grid scanned. The additional revolution knobs (n_em, n_se > 1) did not
+    resolve the phase closure wall within this grid of 3D orbits.
+  resweep_condition: BCR4BP 3D halo continuation OR a multi-revolution Metonic-commensurate
+    3D grid with longer integration horizons.
+  migrated_to_empty_regions_jsonl: cross-system-se-em-3d-multirev-patched-cr3bp-2026-07-01

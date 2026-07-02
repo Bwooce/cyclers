@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
-from cyclerfinder.data.empty_regions import EmptyRegionReport
+from cyclerfinder.data.empty_regions import (
+    DEFAULT_EMPTY_REGIONS_PATH,
+    EmptyRegionReport,
+    load_empty_regions_list,
+)
 from cyclerfinder.data.method_capability import MethodCapability, should_sweep, subsumes
 
 SINGLE = MethodCapability(
@@ -107,3 +111,53 @@ def test_leveraging_subsumes_ballistic_no_leveraging() -> None:
 
 def test_ballistic_does_not_subsume_leveraging() -> None:
     assert not subsumes(_BALLISTIC, _LEVERAGING)
+
+
+# --- #521-phase-1 migration proof: the real registry gates a real re-run ---------
+#
+# data/negative_results.yaml (prose, zero programmatic readers) was migrated into
+# data/empty_regions.jsonl (this queryable schema) on 2026-07-02. This is the
+# mechanical proof the migration actually works: an equal-or-weaker re-run of the
+# #405/#411 SE<->EM patched-CR3BP closure search -- exactly the kind of re-run that
+# produced #515-517 this week -- is now SKIPPED by should_sweep() reading the real
+# on-disk registry, not a synthetic one.
+
+
+def test_real_registry_skips_equal_capability_rerun_of_cross_system_se_em_search() -> None:
+    registry = load_empty_regions_list(DEFAULT_EMPTY_REGIONS_PATH)
+    proposed_rerun = MethodCapability(
+        genome="patched-CR3BP SE<->EM connection matcher (planar)",
+        corrector="correct_cross_cycle (theta-closure Newton)",
+        capability_tags=frozenset(
+            {"cr3bp", "patched-cr3bp", "coplanar", "sun-earth-moon", "planar"}
+        ),
+        git_sha="hypothetical-rerun",
+    )
+    assert (
+        should_sweep(
+            region_id="cross-system-se-em-l2-patched-cr3bp-2026-06-20",
+            method=proposed_rerun,
+            registry=registry,
+        )
+        is False
+    )
+
+
+def test_real_registry_still_sweeps_an_unrelated_region() -> None:
+    registry = load_empty_regions_list(DEFAULT_EMPTY_REGIONS_PATH)
+    proposed_rerun = MethodCapability(
+        genome="patched-CR3BP SE<->EM connection matcher (planar)",
+        corrector="correct_cross_cycle (theta-closure Newton)",
+        capability_tags=frozenset(
+            {"cr3bp", "patched-cr3bp", "coplanar", "sun-earth-moon", "planar"}
+        ),
+        git_sha="hypothetical-rerun",
+    )
+    assert (
+        should_sweep(
+            region_id="region-that-has-never-been-swept",
+            method=proposed_rerun,
+            registry=registry,
+        )
+        is True
+    )
