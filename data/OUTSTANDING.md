@@ -261,14 +261,40 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
 - **Tier 6 (Novel-Orbit Discovery Reboot, per the 2026-07-02 independent review — see DELTA above):** #521
   pre-flight search gate (precondition — DONE, both phases; new scripts now blocked without it); #522
   coherent-model whiskered-torus connection search (recommended first; re-scopes #518); #523 co-orbital-exchange
-  cyclers (parallel, cheap, disjoint code path); #524 continuation + deflated-Newton search primitive
+  cyclers (RAN, strong-but-incomplete evidence — see below); #524 continuation + deflated-Newton search primitive
   (precondition alongside #521); #525 learned seed generation from the corrector archive (sequence after
   #522-524); #526 GTOC 13 + Liang operator ingestion (cheap); #527 point the idle #450 DA/HOTM enumerator at the
-  Sun-Jupiter Hilda band (cheapest — no new build, recommended first by the second-pass review); #528 low-thrust
+  Sun-Jupiter Hilda band (RAN, clean understood negative — see DELTA above); #528 low-thrust
   validation-gate build (land before/alongside #519 running); #529 inter-cycler network taxonomy extension
-  (deferred — needs a scoping discussion).
+  (deferred — needs a scoping discussion); #530 unstable-manifold propagation for co-orbital/resonance cyclers
+  (new, this-session finding — see below).
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 next-unused):**
+**#530 (new, allocated 2026-07-02 — motivated by this session's #523/#527 results):** Unstable-manifold
+propagation for co-orbital/resonance cyclers. Both #523 (Earth co-orbital horseshoe) and #527 (Sun-Jupiter Hilda
+3:2 MMR) independently found the SAME pattern: every CERTIFIED, truly periodic orbit in these families
+structurally avoids close (sub-Hill-sphere) approaches to the companion body — that is precisely what makes a
+periodic orbit dynamically stable. The genuine close approaches only show up in (a) the TRANSIENT/non-periodic
+drift phase (2006 RH120's real minimoon episode, reproduced by direct integration in #523), or (b) per Guido &
+Efthymiopoulos (arXiv:2604.00679, #527's positive-control paper), chaotic orbits shadowing HETEROCLINIC
+connections between the UNSTABLE manifolds of periodic orbits near a resonance separatrix — a genuinely
+different dynamical object that periodic-orbit enumeration (#450 DA/HOTM, used for both #523 and #527) cannot
+surface by construction, no matter how much the grid is refined.
+
+Proposal: (1) compute Floquet multipliers (`search/bifurcation_detector.py`'s existing `monodromy` /
+`floquet_multipliers`, already used for the #347 Phase 1 work) for the orbits already certified by #523 and
+#527, to identify which family members are genuinely UNSTABLE (|λ|>1 for at least one multiplier) rather than
+assuming it; (2) for the unstable members, propagate their stable/unstable manifolds (eigenvector-seeded, small
+perturbation off the periodic orbit, standard invariant-manifold technique) and test whether trajectories along
+them achieve genuine Hill-sphere encounters with the companion body — the actual mechanism both source papers
+describe. This reuses existing capability (Floquet/monodromy machinery, the two already-built target systems)
+rather than starting from scratch. Distinct from #524 (a search PRIMITIVE for finding more periodic orbits via
+continuation) — #530 is about a different dynamical OBJECT (manifolds of already-found orbits), not a faster way
+to find more periodic orbits; the two are complementary, not overlapping. Positive control: recover a manifold
+consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure (qualitative geometry, not
+exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
+"no manifold-mediated encounter" negative is trusted. Not yet built.
+
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -397,6 +423,13 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   `docs/notes/s1l1-target-topology-mining.md:156-263`) the current 5-class taxonomy cannot express. Deferred
   deliberately — changes what a catalogue row/relation can be, wants a scoping discussion before a sprint slot
   (proposed 2026-07-02 second-pass independent review; not yet built).
+- **#530** — Unstable-Manifold Propagation for Co-Orbital/Resonance Cyclers: compute Floquet multipliers for the
+  periodic orbits already certified by #523/#527 to identify genuinely unstable family members, then propagate
+  their stable/unstable manifolds and test whether trajectories along them achieve genuine Hill-sphere
+  encounters — the actual mechanism both source papers describe, which periodic-orbit enumeration structurally
+  cannot surface. Reuses existing `search/bifurcation_detector.py` Floquet/monodromy machinery + the two
+  already-built target systems (Sun-Earth co-orbital, Sun-Jupiter Hilda). Allocated 2026-07-02, motivated by
+  this session's #523/#527 findings; see the Tier 6 note above for full scoping. Not yet built.
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
