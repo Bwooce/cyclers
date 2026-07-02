@@ -269,7 +269,9 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   (deferred — needs a scoping discussion); #530 unstable-manifold propagation for co-orbital/resonance cyclers
   (RAN, complete local-manifold negative — see below); #531 heteroclinic/homoclinic connection test reusing the
   existing #314 framework (RAN — a genuine certified/cross-checked homoclinic connection found, still no
-  Hill-sphere encounter; see below).
+  Hill-sphere encounter; see below); #532 multi-orbit resonance-hopping search (the actual Guido-Efthymiopoulos
+  hypothesis — cross-family connections, not one orbit's self-connection; medium/uncertain feasibility, needs a
+  scoping pilot first).
 
 **#530 (new, allocated 2026-07-02 — motivated by this session's #523/#527 results):** Unstable-manifold
 propagation for co-orbital/resonance cyclers. Both #523 (Earth co-orbital horseshoe) and #527 (Sun-Jupiter Hilda
@@ -296,7 +298,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -505,6 +507,34 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   the final distance check after ~9 minutes of genuine, already-successful upstream work (positive control +
   connection + crosscheck all completed and printed before the crash); fixed and re-run reusing the
   already-verified combo rather than re-exploring from scratch.
+- **#532** — Multi-Orbit Heteroclinic Resonance-Hopping Search (allocated 2026-07-02, same session — the
+  actual Guido-Efthymiopoulos hypothesis, not yet properly tested). #531 tested only ONE orbit's own homoclinic
+  tangle (a self-connection) and found no encounter. Guido & Efthymiopoulos (arXiv:2604.00679) describe
+  "resonance hopping": heteroclinic connections BETWEEN DIFFERENT periodic orbits across DIFFERENT first-order
+  MMR families (2:1 interior, 3:2 interior/Hilda — where #527/#530/#531's orbit lives, 2:3 exterior) — a
+  genuinely different, larger search than a single orbit's self-connection.
+
+  Required steps: (1) find unstable periodic orbit family members in the 2:1 and 2:3 MMR families (mirroring
+  #527's DA/HOTM approach + Kepler-derived seed method for the semi-major-axis location of each resonance,
+  already validated this session), (2) CRITICALLY, at a Jacobi constant SHARED with an unstable member of the
+  3:2 family — `assemble_cycle`/`correct_connection` hard-require exact same-Jacobi nodes (a real physical
+  constraint: connections only exist between same-energy orbits in this autonomous model), which is NOT
+  guaranteed to exist and was not checked this session, (3) build `LyapunovNode`s for each, (4) search
+  `correct_connection` across ALL cross-family node pairs (not self-connections), exploring
+  `(k_u, k_s, branch_u, branch_s)` per pair as #531 did for one pair, (5) track Hill-sphere distance along every
+  certified leg.
+
+  **Feasibility: MEDIUM, genuinely more uncertain than #531 was** — #531 succeeded partly because a single
+  orbit trivially shares its own Jacobi constant; #532 needs to find (or fails to find) a shared C where
+  MULTIPLE resonance families simultaneously host unstable orbits, which is open science, not just an
+  engineering wire-up. #530 found only 1 of 6 sampled Hilda orbits was genuinely unstable (a ~17% hit rate) —
+  the same low yield likely applies per-family here, so covering three families may need substantially more
+  than 6 sample points each. Recommend a SCOPING PILOT first (per the #521 discipline): before committing to
+  the full multi-family build, spend a bounded, timed search checking whether ANY shared-Jacobi unstable pair
+  exists across even two families (say 3:2 and 2:1) before building out the full three-family connection search.
+  Positive control: the multi-node machinery itself is already validated (`test_assemble_l1_l2_two_cycle_closes`,
+  the W-Z Oterma two-node cycle, re-verified live in #531) — no new machinery-validation control needed, only
+  physical-target validation once real cross-family unstable orbits are found. Not yet built.
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
