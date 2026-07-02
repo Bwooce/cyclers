@@ -310,6 +310,42 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
 - **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
   Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
   mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
+  **ATTEMPTED 2026-07-02 (this session): STRONG BUT INCOMPLETE evidence -- NOT registered as a clean negative.**
+  First settled the encounter criterion in writing (required per the review's #339-style-criterion-trap warning):
+  a certified periodic orbit counts as a genuine co-orbital "encounter" with Earth if it passes within Earth's
+  Hill-sphere radius during its cycle (same standard used for #527's Jupiter analysis). Checked the Jesick 2019
+  Mars-Trojan paper first (already digested, `docs/notes/2026-06-17-digest-jesick-2019.md`) and correctly
+  excluded it from this task: its L4/L5 relay orbit "never encounters Earth or Mars at close range" per the
+  digest's own text -- it's a stationary loiter slot, not a repeated-encounter transport structure, so it's a
+  separate, already-identified `quasi_cycler` admission opportunity (V0-by-publication, item 6 of that digest's
+  action list), not #523 work. Built `scripts/run_523_earth_coorbital_search.py` targeting Earth quasi-satellite/
+  horseshoe orbits instead (a real class: de la Fuente Marcos & de la Fuente Marcos 2018, Astron. Nachr., already
+  digested, gives sourced Keplerian elements for 13 real Earth co-orbital "Arjuna-class" objects). Seeded from
+  2006 RH120 (an object that WAS an actual observationally-confirmed transient Earth minimoon, Jul 2006-Jul 2007)
+  -- direct integration of this seed, before any search code was written, independently reproduced its known
+  qualitative behaviour (an initial close quasi-satellite episode reaching HALF the Hill radius, then a
+  transition to a wider horseshoe libration), unplanned confirmation the model is physically correct.
+  Positive control passed. **Certified 3 distinct real periodic horseshoe orbits** (residuals ~1e-12, periods
+  31.4/44.0/81.7 nondim ~= 5.0/7.0/13.0 years) near this seed. **All three show the same #527 pattern**: minimum
+  Earth approach is 9x/16x/22x Earth's Hill radius -- the certified, truly periodic orbit family stays well
+  outside gravitational relevance, while only the TRANSIENT (non-periodic) drift phase gets genuinely close
+  (matching the real 2006 RH120 case). **Coverage is incomplete**: only ~2 of the intended 6 Jacobi values were
+  actually swept (C=2.9990 thoroughly + one point at C=2.9999) before the run was stopped -- the certification
+  corrector (`correct_general_periodic` via a chained-refinement loop) costs 60-100+s per candidate here (much
+  more than #527's Sun-Jupiter case), making the full 1,890-point band impractical at the current per-candidate
+  cost; two design inefficiencies were found and fixed mid-session (near-duplicate coarse candidates converging
+  to the same certified orbit without a post-certification dedup; non-converging candidates costing MORE time
+  than converging ones under the original 5-pass/max_iter=100 refinement loop) but the remaining per-candidate
+  cost is still too high for a full sweep in reasonable time. Do NOT trust a "no encounter" claim for the full
+  band from this alone -- the sample is real and consistent but small. Resweep condition: NOT more brute-force
+  grid points at this per-candidate cost; needs either a genuinely faster corrector (e.g. warm-starting
+  certification directly from the coarse candidate's already-decent residual with a tighter trust region, or
+  #524's planned continuation/deflated-Newton primitive) or acceptance that the 3-orbit sample is sufficient
+  preliminary evidence to deprioritise this specific (stable-periodic-orbit) angle in favour of the
+  transient/quasi-periodic drift phase, which is where the real close approaches actually live (same conclusion
+  #527 reached for the Hilda case) -- but that phase is not "periodic" in the catalogue's `cycler` sense and
+  would need the `quasi_cycler` epoch-locked framing instead. Janus-Epimetheus and the broader Mars-Trojan-as-
+  transport question remain untouched by this session's work.
 - **#524** — Continuation + Deflated-Newton Search Primitive: replace fixed-grid + independent-Newton-per-cell
   sweeps with pseudo-arclength continuation and deflated Newton as the default search method (proposed
   2026-07-02 independent review; not yet built).
