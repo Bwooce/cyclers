@@ -267,7 +267,8 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   Sun-Jupiter Hilda band (RAN, clean understood negative — see DELTA above); #528 low-thrust
   validation-gate build (land before/alongside #519 running); #529 inter-cycler network taxonomy extension
   (deferred — needs a scoping discussion); #530 unstable-manifold propagation for co-orbital/resonance cyclers
-  (new, this-session finding — see below).
+  (RAN, complete local-manifold negative — see below); #531 heteroclinic/homoclinic connection test reusing the
+  existing #314 framework (recommended next — low build cost, positive control already passes).
 
 **#530 (new, allocated 2026-07-02 — motivated by this session's #523/#527 results):** Unstable-manifold
 propagation for co-orbital/resonance cyclers. Both #523 (Earth co-orbital horseshoe) and #527 (Sun-Jupiter Hilda
@@ -294,7 +295,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -429,7 +430,57 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   encounters — the actual mechanism both source papers describe, which periodic-orbit enumeration structurally
   cannot surface. Reuses existing `search/bifurcation_detector.py` Floquet/monodromy machinery + the two
   already-built target systems (Sun-Earth co-orbital, Sun-Jupiter Hilda). Allocated 2026-07-02, motivated by
-  this session's #523/#527 findings; see the Tier 6 note above for full scoping. Not yet built.
+  this session's #523/#527 findings; see the Tier 6 note above for full scoping.
+  **RUN 2026-07-02 (this session): COMPLETE, clean local/linear-regime negative — registered in
+  `data/empty_regions.jsonl` (`coorbital-resonance-unstable-manifold-encounters`).**
+  `scripts/run_530_unstable_manifold_search.py` re-certified 9 orbits (6 from #527's Hilda family, 3 from #523's
+  Earth co-orbital family) from their already-known-converged (x0, xdot0) — a refinement, not a fresh search —
+  computed each one's monodromy + eigendecomposition, and propagated the manifold of any unstable member.
+  **Positive control PASSED universally**: `det(monodromy)=1.000000` (symplectic, Liouville-consistent) for all
+  9 orbits, validating the machinery independent of any physical claim. **Stability result**: 8 of 9 orbits are
+  linearly stable/marginally-stable (leading multiplier on the unit circle) — no unstable manifold exists for
+  them at all. Exactly **one** genuinely unstable orbit was found (Sun-Jupiter Hilda, C=3.14, x0≈0.7615,
+  λ≈1.718, period≈1.0 yr). Its manifold was propagated for a **Lyapunov-scaled** horizon (20 periods, computed
+  from `ln(target_growth/eps)/ln(|λ|)`, not guessed — an earlier fixed-3-period attempt found the perturbation
+  hadn't grown at all and was caught and fixed before this entry was written). With the corrected horizon, both
+  manifold branches still land within 0.4% of the periodic orbit's own closest approach (3.47-3.48× Jupiter's
+  Hill radius) — nowhere near an encounter. **Honest scope caveat, not glossed over**: this tests the
+  LOCAL/LINEAR-REGIME manifold only (a fixed eigenvector direction scaled by the growing Floquet factor, valid
+  while the true trajectory stays near the linear approximation, ~20-25 e-foldings here) — it does NOT test full
+  nonlinear manifold globalization (re-correcting onto the true invariant surface at each step, e.g.
+  Koon-Lo-Marsden-Ross-style), which is the technique that would actually test the Guido-Efthymiopoulos
+  heteroclinic-transport hypothesis at large distances from the parent orbit. Resweep condition: NOT more
+  re-certified orbits at this same (local-manifold) technique — a genuinely different, more expensive nonlinear
+  globalization method would be needed to test the far-field heteroclinic hypothesis properly; scope as a fresh
+  task if pursued.
+  **CORRECTION (2026-07-02, same session):** "materially different and more expensive" above was written before
+  checking whether this codebase already had heteroclinic-connection machinery — it does. `genome/heteroclinic_cycle.py`
+  (#314) is a full Wu(A)->Ws(B) manifold-connection corrector (`correct_connection`/`assemble_cycle`/
+  `crosscheck_cycle`), already validated against a REAL Sun-Jupiter heteroclinic cycle (Wilczak & Zgliczyński's
+  computer-assisted proof of the Oterma comet's L1<->L2 connection, arXiv:math/0201278, at C=3.03 — inside this
+  session's own Hilda C-band [2.95, 3.14]). `LyapunovNode` (the framework's node type) is a plain dataclass
+  (state0/period/jacobi/unstable_eigvec/stable_eigvec) constructible directly from #530's already-computed
+  monodromy/eigendecomposition data, NOT restricted to libration-point orbits despite the name (`from_libration`
+  is just one convenience constructor). See #531 below — this is the actually-cheap next step, not a from-scratch
+  build.
+- **#531** — Heteroclinic/Homoclinic Connection Test for the #530 Unstable Hilda Orbit (allocated 2026-07-02,
+  same session, superseding the "full nonlinear globalization" framing in #530's note above once #314's existing
+  machinery was found). Wire #530's one genuinely unstable orbit (Sun-Jupiter Hilda, C=3.14, x0≈0.7615, λ≈1.718)
+  into a `genome/heteroclinic_cycle.LyapunovNode` (a plain dataclass — construct it directly from #530's already-
+  computed state0/period/jacobi/eigenvectors, bypassing the libration-specific `from_libration` constructor) and
+  call `assemble_cycle(system, [node])` to test for a HOMOCLINIC connection (the orbit's own unstable manifold
+  reconnecting to its own stable manifold — the degenerate n=1 case `assemble_cycle` explicitly supports).
+  Track the Hill-sphere distance along the actual certified connection geometry (`correct_connection`'s matched
+  crossing + the two manifold legs), not just a short local propagation — this is what #530 could not test.
+  Cross-check with `crosscheck_cycle` (independent Radau re-integration, already built into the framework).
+  Positive control: ALREADY EXISTS and already passes — `tests/genome/test_heteroclinic_cycle.py` reproduces the
+  Wilczak & Zgliczyński Sun-Jupiter-Oterma cycle (arXiv:math/0201278) at C=3.03, inside this session's own Hilda
+  band; no new positive control needs to be built, only cited. If a same-Jacobi Earth co-orbital or Hilda-family
+  pair (not just the single unstable orbit) is later found, `assemble_cycle` also directly supports true
+  multi-node heteroclinic cycles (`nodes` requires matching Jacobi, an autonomous-system physical constraint —
+  connections only exist between same-energy orbits). Feasibility: LOW build cost — this is wiring existing,
+  validated machinery to new node data, not building new manifold/connection-correction capability. Not yet
+  built.
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
