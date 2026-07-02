@@ -268,7 +268,8 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   validation-gate build (land before/alongside #519 running); #529 inter-cycler network taxonomy extension
   (deferred — needs a scoping discussion); #530 unstable-manifold propagation for co-orbital/resonance cyclers
   (RAN, complete local-manifold negative — see below); #531 heteroclinic/homoclinic connection test reusing the
-  existing #314 framework (recommended next — low build cost, positive control already passes).
+  existing #314 framework (RAN — a genuine certified/cross-checked homoclinic connection found, still no
+  Hill-sphere encounter; see below).
 
 **#530 (new, allocated 2026-07-02 — motivated by this session's #523/#527 results):** Unstable-manifold
 propagation for co-orbital/resonance cyclers. Both #523 (Earth co-orbital horseshoe) and #527 (Sun-Jupiter Hilda
@@ -479,8 +480,31 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   pair (not just the single unstable orbit) is later found, `assemble_cycle` also directly supports true
   multi-node heteroclinic cycles (`nodes` requires matching Jacobi, an autonomous-system physical constraint —
   connections only exist between same-energy orbits). Feasibility: LOW build cost — this is wiring existing,
-  validated machinery to new node data, not building new manifold/connection-correction capability. Not yet
-  built.
+  validated machinery to new node data, not building new manifold/connection-correction capability.
+  **RUN 2026-07-02 (this session): COMPLETE — a genuine connection was found, and it's a materially STRONGER
+  negative than #530 alone.** `scripts/run_531_hilda_homoclinic_connection.py` re-ran the #314 framework's own
+  W-Z Oterma golden LIVE first (not cached — residual 1.854e-10, matching the published connection to 5 digits),
+  confirming the machinery works today. Built a `LyapunovNode` directly from the #530 Hilda orbit (reciprocal
+  Floquet pair check: λ_u·λ_s≈1.0000, sanity-passes). Explored 36 `(k_u, k_s, branch_u, branch_s)` combinations
+  (the framework's Oterma-tuned defaults don't transfer to this orbit's geometry) and found a genuine, CERTIFIED,
+  CLOSED homoclinic connection at `(k_u=1, k_s=1, branch_u=-1, branch_s=+1)`: residual 3.582e-08,
+  `assemble_cycle` reports `closed=True`, and an **independent Radau re-integration** (`crosscheck_cycle`)
+  reproduces the identical residual — a real, verified invariant-manifold object, not a numerical artefact.
+  **The Hill-sphere result**: tracking BOTH manifold legs over their FULL span to the actual crossing (51.1
+  nondim time units each way — the genuine test #530's short local propagation could not do) gives
+  `min_dist_to_jupiter=0.23759` for BOTH legs, **exactly matching** the underlying periodic orbit's own baseline
+  closest approach (3.48× the Hill radius, #530's number). The manifold diverges exponentially from the orbit in
+  phase space (that's what makes it unstable) but does NOT visit a spatially different region relative to
+  Jupiter over this connection — for this orbit, the instability is a phase/timing effect, not a spatial-
+  excursion effect. Registered in `data/empty_regions.jsonl`
+  (`hilda-c3.14-homoclinic-connection-hill-encounter`), verified queryable. **Scope note, stated plainly**: this
+  rules out the SINGLE orbit's own homoclinic tangle, not the broader Guido-Efthymiopoulos resonance-hopping
+  hypothesis, which needs heteroclinic connections BETWEEN DIFFERENT orbits/MMR families — a genuinely larger
+  search (same-Jacobi connections across the Hilda family and/or to other resonances), not attempted here.
+  A minor bug (a `t_eval` sort-direction mismatch for backward-time integration) crashed the first run right at
+  the final distance check after ~9 minutes of genuine, already-successful upstream work (positive control +
+  connection + crosscheck all completed and printed before the crash); fixed and re-run reusing the
+  already-verified combo rather than re-exploring from scratch.
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
