@@ -17,6 +17,8 @@ sys.path.insert(0, str(_REPO / "src"))
 
 import yaml  # type: ignore[import-untyped]  # noqa: E402
 
+from cyclerfinder.data.method_capability import MethodCapability  # noqa: E402
+from cyclerfinder.data.preflight import PreflightBlockedError, preflight_search  # noqa: E402
 from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
     CrossCycleClosure,
     FrameBridge,
@@ -41,6 +43,22 @@ Z_EM_GRID = (-0.02,)
 Z_SE_GRID = tuple(z * (384400.0 / 149600000.0) for z in Z_EM_GRID)
 LIBRATION_PAIRS = (("EM-L2", "SE-L2"), ("EM-L1", "SE-L1"))
 N_REV_PAIRS = ((1, 2), (2, 1), (2, 2))
+
+# The region_id this search was already registered under in
+# data/empty_regions.jsonl (#521 phase-1 migration).
+_REGION_ID = "cross-system-se-em-3d-multirev-patched-cr3bp-2026-07-01"
+_METHOD = MethodCapability(
+    genome=(
+        "patched-CR3BP multi-revolution 3D SE<->EM connection matcher over "
+        "(n_em, n_se) revolution-count pairs > 1, out-of-plane amplitudes and "
+        "Jacobi constants"
+    ),
+    corrector="correct_cross_cycle_3d (bounded_ls Newton)",
+    capability_tags=frozenset(
+        {"cr3bp", "patched-cr3bp", "3d", "broken-plane", "sun-earth-moon", "multi-rev"}
+    ),
+    git_sha="working-tree",
+)
 
 _NEG_RESULTS_PATH = _REPO / "data" / "negative_results.yaml"
 _NEW_ENTRY_ID = "cross_system_se_em_3d_multirev_patched_cr3bp"
@@ -130,6 +148,17 @@ def evaluate_point(
 def main() -> None:
     print(f"[{_ts()}] #516 multi-revolution 3D cross-system closure search starting.")
 
+    total_tasks = (
+        len(LIBRATION_PAIRS) * len(C_EM_GRID) * len(C_SE_GRID) * len(Z_EM_GRID) * len(N_REV_PAIRS)
+    )
+    preflight_search(
+        task_no=516,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        n_points=total_tasks,
+    )
+
     # Build list of grid points
     tasks = []
     for pair in LIBRATION_PAIRS:
@@ -141,7 +170,7 @@ def main() -> None:
                         for n_em, n_se in N_REV_PAIRS:
                             tasks.append((c_em, c_se, z_em, z_se, n_em, n_se, em_lib, se_lib))
 
-    total_tasks = len(tasks)
+    assert len(tasks) == total_tasks
     print(f"[{_ts()}] Total grid points to evaluate: {total_tasks}")
     print(f"[{_ts()}] Spawning parallel workers using parallel_sweep ...")
 
@@ -198,4 +227,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except PreflightBlockedError as exc:
+        print(f"[{_ts()}] BLOCKED by preflight_search:\n{exc}")
+        sys.exit(1)

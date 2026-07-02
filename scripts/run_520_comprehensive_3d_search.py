@@ -24,6 +24,8 @@ sys.path.insert(0, str(_REPO / "src"))
 
 import yaml  # type: ignore[import-untyped]  # noqa: E402
 
+from cyclerfinder.data.method_capability import MethodCapability  # noqa: E402
+from cyclerfinder.data.preflight import PreflightBlockedError, preflight_search  # noqa: E402
 from cyclerfinder.genome.cross_system_cycle import (  # noqa: E402
     CrossCycleClosure,
     FrameBridge,
@@ -63,6 +65,35 @@ N_REV_PAIRS = (
     (3, 4),
     (4, 3),
     (4, 4),
+)
+
+# This search was never registered in data/empty_regions.jsonl -- it aborted
+# after 12+ hours with zero output (see data/OUTSTANDING.md under #520), so
+# should_sweep() will correctly report this region as still open. The
+# preflight call below has NO timing_pilot_seconds_per_point on purpose: none
+# was ever measured, and that omission is exactly what produced the 12-hour
+# abort. Do not add one without actually timing a pilot first (see the #520
+# note in OUTSTANDING.md for the recommended pilot size).
+_REGION_ID = "cross-system-se-em-3d-comprehensive-patched-cr3bp"
+_METHOD = MethodCapability(
+    genome=(
+        "patched-CR3BP comprehensive 3D SE<->EM connection matcher over all four "
+        "libration pairs, a wide out-of-plane amplitude range, and revolution "
+        "counts up to 4"
+    ),
+    corrector="correct_cross_cycle_3d (bounded_ls Newton)",
+    capability_tags=frozenset(
+        {
+            "cr3bp",
+            "patched-cr3bp",
+            "3d",
+            "broken-plane",
+            "sun-earth-moon",
+            "multi-rev",
+            "asymmetric-libration-pair",
+        }
+    ),
+    git_sha="working-tree",
 )
 
 _NEG_RESULTS_PATH = _REPO / "data" / "negative_results.yaml"
@@ -148,6 +179,17 @@ def evaluate_point(
 def main() -> None:
     print(f"[{_ts()}] #520 comprehensive 3D cross-system closure search starting.")
 
+    total_tasks = (
+        len(LIBRATION_PAIRS) * len(C_EM_GRID) * len(C_SE_GRID) * len(Z_EM_GRID) * len(N_REV_PAIRS)
+    )
+    preflight_search(
+        task_no=520,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        n_points=total_tasks,
+    )
+
     # Build list of grid points
     tasks = []
     for pair in LIBRATION_PAIRS:
@@ -159,7 +201,7 @@ def main() -> None:
                     for n_em, n_se in N_REV_PAIRS:
                         tasks.append((c_em, c_se, z_em, z_se, n_em, n_se, em_lib, se_lib))
 
-    total_tasks = len(tasks)
+    assert len(tasks) == total_tasks
     print(f"[{_ts()}] Total grid points to evaluate: {total_tasks}")
     print(f"[{_ts()}] Spawning parallel workers using parallel_sweep ...")
 
@@ -218,4 +260,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except PreflightBlockedError as exc:
+        print(f"[{_ts()}] BLOCKED by preflight_search:\n{exc}")
+        sys.exit(1)

@@ -93,8 +93,23 @@ findings + task allocations recorded here.
 `#521` entry in TASK ALLOCATIONS below for the full report (overlap analysis, migration detail, an honest
 provenance-gap finding on `branch_C32_C_3.1774`, and a permanent regression test proving `should_sweep()` now
 mechanically skips an equal-capability re-run of the #405/#411 SE<->EM search — the exact pattern that produced
-#515-517). Ratchet suite (`tests/data tests/search`) verified green: 1728 passed, 0 failed. Phase 2
-(`preflight_search()` + the AST ratchet enforcing every `scripts/run_*.py` calls it) remains open.
+#515-517). Ratchet suite (`tests/data tests/search`) verified green: 1728 passed, 0 failed.
+
+**#521 PHASE 2 DONE (2026-07-02):** the actual gate is built — `src/cyclerfinder/data/preflight.py`'s
+`preflight_search()`, three checks (task-number hygiene against `data/OUTSTANDING.md`'s TASK ALLOCATIONS +
+filename self-consistency; registry subsumption via `should_sweep()`; a timing-pilot requirement above
+`LARGE_GRID_THRESHOLD=500` points), with an explicit, logged `override_reason` escape hatch and every invocation
+appended to `data/runlogs/preflight_runlog.jsonl` (gitignored). Enforced by an AST ratchet
+(`tests/scripts/test_scripts_call_preflight.py`) requiring every `scripts/run_*.py` to call it; the 40
+pre-existing scripts are in a frozen `_LEGACY_EXEMPT` list (retrofitting them is out of scope here), but the four
+scripts whose incidents motivated this gate (#515-517, #520) were retrofitted as the reference pattern —
+verified LIVE against the real on-disk registry: running any of #515/516/517 again now correctly raises
+`PreflightBlockedError` (region already covered — the exact re-run this gate exists to stop), and running #520
+again correctly raises on the missing timing pilot (8,640 points with none measured — the exact scoping failure
+that cost 12+ hours). 14 unit tests (`tests/data/test_preflight.py`) + the AST ratchet all pass; full
+`tests/data tests/search tests/scripts` ratchet green. Not yet built: a `scripts/_harness.py` shared skeleton
+(F5) so future scripts get the preflight call, checkpointing, and registry append for free instead of
+copy-pasting the boilerplate — worth doing before the next batch of #522-529 scripts are written.
 
 **Second independent pass (2026-07-02, same day, fresh Fable-model context, explicitly told not to repeat
 #521-526):**
@@ -244,7 +259,7 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   #487 V4_qp gauntlet (de-prioritised).
 - **Tier 5 (3D Dynamics & Multi-Rev Search):** #515 3D lift framework for cross-system cycles; #516 Multi-Revolution 3D Patched Search (n_em, n_se > 1); #517 Asymmetric/Mixed Libration Pairs in 3D; #518 3D BCR4BP Continuation; #520 Comprehensive 3D sweep (needs a positive control before its negative is trustworthy — see DELTA above).
 - **Tier 6 (Novel-Orbit Discovery Reboot, per the 2026-07-02 independent review — see DELTA above):** #521
-  pre-flight search gate (precondition, blocks one-off script dispatch until it exists; PHASE 1 DONE); #522
+  pre-flight search gate (precondition — DONE, both phases; new scripts now blocked without it); #522
   coherent-model whiskered-torus connection search (recommended first; re-scopes #518); #523 co-orbital-exchange
   cyclers (parallel, cheap, disjoint code path); #524 continuation + deflated-Newton search primitive
   (precondition alongside #521); #525 learned seed generation from the corrector archive (sequence after
