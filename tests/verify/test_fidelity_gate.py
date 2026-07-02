@@ -42,9 +42,9 @@ _ALDRIN_ID = "aldrin-classic-em-k1-outbound"
 def _aldrin_sourced() -> tuple[float, float, int, tuple[float, float]]:
     """Read the SOURCED Aldrin a/e, outbound coplanar ToF, and STOUR band."""
     entry = load_catalog().by_id[_ALDRIN_ID]
-    a_au = float(entry.raw["orbit_elements"]["a_au"])
-    e = float(entry.raw["orbit_elements"]["e"])
     seg = next(s for s in entry.raw["trajectory"]["segments"] if s["id"] == "out-em")
+    a_au = float(seg["a_au"])
+    e = float(seg["e"])
     coplanar_tof_days = int(seg["tof_days"])
     raw_band = seg["tof_days_bounds"]
     assert len(raw_band) == 2
