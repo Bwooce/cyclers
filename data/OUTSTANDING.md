@@ -347,6 +347,45 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
 - **#522** — Coherent-Model Torus-Connection Search: reformulate SE<->EM cross-system closure as BCR4BP/QBCP
   whiskered-torus connections instead of patched-CR3BP grids, dissolving the 1-DOF phase-closure obstruction by
   construction; re-scopes #518 (proposed 2026-07-02 independent review; not yet built).
+  **SCOPING PASS 2026-07-03 (this session): citations grounded (both real), a genuine prerequisite gap found
+  before any torus-connection code should be written.** Two independent audits (fresh forks, "check before
+  build" discipline) plus direct PDF reads of both grounding papers:
+  - **Citations verified real and on-topic** — the first audit's "not found in corpus" was correctly read as
+    unacquired, not fabricated, but per [[feedback_ground_citations_against_content]] this needed independent
+    confirmation before trusting them, given the project's prior same-author citation-collision incident
+    (Hernandez-Jones-Jesick 2017). WebSearch + direct PDF fetch confirm: Kumar/Anderson/de la Llave, SIAM J.
+    Appl. Dyn. Syst. 24(1):219-258 (2025) = arXiv:2109.14814v2 (title matches exactly); Owen & Baresi,
+    Astrodynamics 8:577-595 (2024), DOI 10.1007/s42064-024-0201-0. Both PDFs acquired, filed in the private
+    corpus, and digested — see [[2026-07-03-digest-kumar-anderson-delallave-2025-whiskered-tori-connections]]
+    and [[2026-07-03-digest-owen-baresi-2024-knot-theory-heteroclinic]].
+  - **The 1-DOF obstruction, precisely located**: `genome/cross_system_cycle.py:48-104`'s `FrameBridge` already
+    does an EXACT SE<->EM coordinate transform (real rotation+translation+dimensionalization, gated by
+    round-trip + Moon-position tests) — the frame bridge itself is not the problem. The problem is that the
+    relative SE-vs-EM phase angle `theta` is a *searched Newton unknown* in `correct_cross_cycle`
+    (`cross_system_cycle.py:1346+`), not a state variable with its own consistent dynamics — the SE and EM legs
+    are still propagated under two SEPARATE autonomous CR3BPs with no shared clock tying them together, which
+    is exactly why the closure residual has an irreducible angular component (the same wall #405/#411/#496/
+    #515-517 all independently hit).
+  - **Genuine QBCP does not exist and is a real prerequisite, not a coding task**: `core/bcr4bp.py`'s own
+    docstring (lines 14-30) states outright that Andreu's coherent QBCP needs 8 Fourier tables `alpha_i(theta_S)`
+    that are "NOT in the in-repo digest" and that harvesting them is "a documented *future* step" — this is a
+    literature-data-acquisition gap, not a missing function. The existing `core/bcr4bp.py` is EM-centric only
+    (`l=1` = Earth-Moon distance, Sun at `a_S=388.8` EM-radii, confirmed by direct read of the normalization
+    constants) — SE-scale structures are numerically degenerate in this frame, so it cannot host a genuine
+    SE<->EM connection as-is either.
+  - **Recommended path, NOT yet executed**: do not attempt the full whiskered-torus/knot-theory machinery on top
+    of an unresolved cross-system clock — that would repeat the exact "sophisticated method on an underspecified
+    glue" failure pattern #405/#411/#496 already hit. Two sequenced options, needs a decision before code is
+    written: (a) the full-cost path — acquire + digest Andreu's 8 `alpha_i` Fourier tables and build a genuine
+    QBCP module (real multi-week acquisition+build, matches the "frontier work is multi-week" pattern already
+    established for Track-A axes); or (b) a cheaper proxy — anchor `theta` to the Sun's synodic angle already
+    present as a state in the existing EM-frame `core/bcr4bp.py` (i.e. reframe the Sun's phase, which the BCR4BP
+    already tracks consistently, as the shared SE/EM clock, avoiding a second base model) — unvalidated,
+    proposed as a positive-control-gated spike rather than assumed to work. EITHER WAY, the actual torus/manifold
+    connection-search code (Owen & Baresi's linking-number method is the recommended first build — see its
+    digest — reusing the existing `genome/qp_tori.py` GMOS torus generator) should first be validated as a
+    SINGLE-SYSTEM positive control (reproducing Owen & Baresi's own Earth-Moon-internal example) independent of
+    the cross-system clock question, before attempting genuine SE<->EM.
 - **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
   Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
   mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
