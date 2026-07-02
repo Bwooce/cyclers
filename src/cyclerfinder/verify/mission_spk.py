@@ -42,6 +42,7 @@ from __future__ import annotations
 
 import math
 import os
+import time
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
@@ -126,7 +127,10 @@ def ensure_mission_spk(
     Mirrors :func:`cyclerfinder.verify.spice_kernels.ensure_leapseconds_kernel`:
     the kernel is fetched into the ``cyclerfinder_spice`` astropy-cache subdir
     (never the repo). Network is only touched on the first call; subsequent calls
-    reuse the cached file.
+    reuse the cached file. Fetches with 3 retries (10s backoff) on a transient
+    network failure, matching the fix applied to ``ensure_leapseconds_kernel``
+    after a live NAIF timeout failed CI with no code-change involved
+    (2026-07-02, run 28588092512).
 
     Parameters
     ----------
@@ -139,7 +143,18 @@ def ensure_mission_spk(
     spk_path = cache_path / filename
     if not spk_path.exists():
         url = base_url.rstrip("/") + "/" + filename
-        urllib.request.urlretrieve(url, spk_path)
+        last_error: Exception | None = None
+        for attempt in range(3):
+            try:
+                urllib.request.urlretrieve(url, spk_path)
+                last_error = None
+                break
+            except OSError as exc:
+                last_error = exc
+                if attempt < 2:
+                    time.sleep(10)
+        if last_error is not None:
+            raise last_error
     return str(spk_path)
 
 

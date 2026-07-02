@@ -31,6 +31,7 @@ Kernel sources (documented, not committed to the repo)
 from __future__ import annotations
 
 import os
+import time
 import urllib.request
 from pathlib import Path
 
@@ -128,6 +129,15 @@ def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -
     subdirectory of the astropy cache dir, so it sits alongside the cached BSP
     and is never written into the repo). Returns the local path. Network is only
     touched on the first call; subsequent calls reuse the cached file.
+
+    Fetches with 3 retries (10s backoff) on a transient network failure --
+    the same class of intermittent NAIF-server timeout the CI workflow's
+    "Warm DE440 kernel (retries)" step and the real-eph SPK kernel fetch
+    (``curl --retry 3 --retry-delay 10``) already guard against. This
+    function previously had no retry at all and a single NAIF timeout during
+    a live pytest run failed CI (2026-07-02, run 28588092512) with no
+    connection to any code change -- fixed here at the source rather than
+    only papering over it with more CI-side caching.
     """
     if cache_dir is None:
         from astropy.config.paths import get_cache_dir
@@ -138,5 +148,16 @@ def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -
     lsk_path = cache_path / NAIF_LSK_FILENAME
     if not lsk_path.exists():
         # NAIF_LSK_URL is a fixed https NAIF endpoint (module constant).
-        urllib.request.urlretrieve(NAIF_LSK_URL, lsk_path)
+        last_error: Exception | None = None
+        for attempt in range(3):
+            try:
+                urllib.request.urlretrieve(NAIF_LSK_URL, lsk_path)
+                last_error = None
+                break
+            except OSError as exc:
+                last_error = exc
+                if attempt < 2:
+                    time.sleep(10)
+        if last_error is not None:
+            raise last_error
     return str(lsk_path)
