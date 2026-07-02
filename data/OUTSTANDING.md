@@ -77,6 +77,16 @@ findings + task allocations recorded here.
   one — answers the recurring family-selection pathology, e.g. #343/VEM wrong-family closures). Gate: must
   re-find >=2 known distinct basins (PC (3,2) + the discarded (3,1) near-primary root from #504) on a control
   problem before any "only N families exist" claim from it is trusted.
+  **BUILT 2026-07-02/03 (this session) — see the full writeup in TASK ALLOCATIONS below. Gate note: the
+  literal ">=2 known distinct basins incl. (3,1)" criterion above is only PARTIALLY met** — deflated Newton
+  independently reproduces the (3,2) anchor from sourced #504 data, and is validated on two closed-form
+  multi-root positive controls (cubic, circle/line), but re-finding the SPECIFIC (3,1) near-primary root via
+  deflation from a shared (3,2) seed was not attempted: (3,1) was originally found via a different corrector
+  path (mu-continuation + C-walk, not a shared-seed scalar residual at the same `(C, half_crossings)` as
+  (3,2)), and asserting it as a same-basin deflation partner without checking would itself be the kind of
+  unverified claim these gates exist to prevent. Whether (3,1) is actually reachable by deflating (3,2) at a
+  shared C is an open question for whoever first wires this primitive into a live #522/#532 search, not
+  something this build should force-fit.
 - **#525 (sequence after #522-524)** — Learned seed generation from the project's own corrector archive:
   diffusion/generative warm-start (cf. Graebner & Beeson, arXiv 2501.07005) trained on accumulated
   runlogs/checkpoints to propose seeds in unknown basins; revisits the 2026-06-11 Ozaki (arXiv 2111.11858)
@@ -378,7 +388,43 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   transport question remain untouched by this session's work.
 - **#524** — Continuation + Deflated-Newton Search Primitive: replace fixed-grid + independent-Newton-per-cell
   sweeps with pseudo-arclength continuation and deflated Newton as the default search method (proposed
-  2026-07-02 independent review; not yet built).
+  2026-07-02 independent review).
+  **BUILT 2026-07-02/03 (this session), scope corrected mid-build — see below.** Two independent
+  half-tasks, not one build:
+  - **Continuation half: audit found it already exists, extracted rather than built new.** Before writing
+    code, checked for existing pseudo-arclength continuation and found FOUR specialized implementations
+    already in the tree (`cr3bp_jacobi_arclength.py` for `(x0,C)`, `mu_continuation.py` for `(x0,C,mu)`,
+    plus `qp_tori_arclength.py`, `narc_continuation.py`) — each reimplementing the same
+    predict-correct-tangent machinery for its own hardcoded residual. Built
+    `src/cyclerfinder/search/pseudo_arclength.py` as a generic, CR3BP-agnostic extraction
+    (`continue_curve()`, co-dimension-1 curves only — `M=N-1` constraints, the well-posed unique-tangent
+    case; deliberately NOT generalizing `mu_continuation.py`'s ambiguous 2-surface tangent-selection case).
+    Positive control: a closed-form fold (unit circle `x^2+y^2-1=0`) — the walk sails through the `x=1`
+    fold (where a natural-parameter fix-x-solve-y continuation cannot turn) while staying on the circle to
+    1e-9, and a full `2*pi`-arclength loop returns to its start. 6/6 tests, lint/mypy clean
+    (`tests/search/test_pseudo_arclength.py`, commit `6f22bd7`).
+  - **Deflation half: genuinely absent, built new.** Searched the codebase for existing deflated-Newton /
+    basin-repulsion root enumeration; the only two "deflat" string hits (`core/lambert.py`'s deflation-ANGLE
+    handling, `search/bifurcation_detector.py`'s `_deflated_determinant`, a Doedel-1991 bifurcation TEST
+    FUNCTION for detecting folds along a known branch) are unrelated concepts — this is a real capability
+    gap. Built `src/cyclerfinder/search/deflated_newton.py` implementing Farrell, Birkisson & Funke (2015,
+    SIAM J. Sci. Comput. 37(4):A2026-A2045): deflated system `G(u)=M(u;{u_i})*F(u)`,
+    `M=prod_i(1/||u-u_i||^p+shift)`, repels a Newton iterate from already-found roots without moving other
+    roots, so `enumerate_roots()` walking a seed set finds distinct co-existing roots one at a time.
+    Positive controls: Farrell et al.'s own two worked examples (cubic polynomial roots `{1,2,3}`; unit
+    circle/line-`y=x` intersection, two roots) — both closed-form, EXPECTED values sourced from the
+    published method, not self-computed. Then a REAL CR3BP tie-in: plain (undeflated) Newton on the exact
+    scalar fixed-Jacobi perpendicular-crossing residual `correct_symmetric_fixed_jacobi` already solves,
+    seeded at the sourced #504 Ross-RT 2026 Pluto-Charon (3,2) anchor (`x0=-0.694376003123377`,
+    `C=3.573367616904619`, `half_crossings=6`), independently reproduces that corrector's converged `x0` to
+    1e-6 — an agreement check between two independent Newton implementations on the same physical residual
+    and sourced data, not a fabricated golden. 4/4 tests, lint/mypy clean
+    (`tests/search/test_deflated_newton.py`, commit `4f4a1ab`).
+  - **Net effect:** #524 delivers one genuinely novel capability (deflated Newton) and one
+    already-existing-but-now-reusable one (generic continuation); the original proposal's framing ("replace
+    fixed-grid... sweeps") describes future consumers (#522 and any `scripts/run_*.py`), not something this
+    task itself rewired into existing campaigns. Neither primitive has been wired into a live discovery
+    search yet — that is the #522 (and #532, if pursued) follow-on work.
 - **#525** — Learned Seed Generation: diffusion/generative corrector-seed model trained on the project's own
   runlog/checkpoint archive; revisits the 2026-06-11 Ozaki (arXiv 2111.11858) "below breakeven" triage as stale
   (proposed 2026-07-02 independent review; not yet built).
