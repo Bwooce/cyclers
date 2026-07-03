@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -376,9 +376,9 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   - **Recommended path, NOT yet executed**: do not attempt the full whiskered-torus/knot-theory machinery on top
     of an unresolved cross-system clock — that would repeat the exact "sophisticated method on an underspecified
     glue" failure pattern #405/#411/#496 already hit. Two sequenced options, needs a decision before code is
-    written: (a) the full-cost path — acquire + digest Andreu's 8 `alpha_i` Fourier tables and build a genuine
-    QBCP module (real multi-week acquisition+build, matches the "frontier work is multi-week" pattern already
-    established for Track-A axes); or (b) a cheaper proxy — anchor `theta` to the Sun's synodic angle already
+    written: (a) the full-cost path, now allocated as **#533** — acquire + digest Andreu's 8 `alpha_i` Fourier
+    tables and build a genuine QBCP module (real multi-week acquisition+build, matches the "frontier work is
+    multi-week" pattern already established for Track-A axes); or (b) a cheaper proxy — anchor `theta` to the Sun's synodic angle already
     present as a state in the existing EM-frame `core/bcr4bp.py` (i.e. reframe the Sun's phase, which the BCR4BP
     already tracks consistently, as the shared SE/EM clock, avoiding a second base model) — unvalidated,
     proposed as a positive-control-gated spike rather than assumed to work. EITHER WAY, the actual torus/manifold
@@ -658,6 +658,21 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   Positive control: the multi-node machinery itself is already validated (`test_assemble_l1_l2_two_cycle_closes`,
   the W-Z Oterma two-node cycle, re-verified live in #531) — no new machinery-validation control needed, only
   physical-target validation once real cross-family unstable orbits are found. Not yet built.
+- **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
+  formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
+  the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
+  Andreu's coherent QBCP needs 8 Fourier tables `alpha_i(theta_S)` that are "NOT in the in-repo digest" — a
+  literature-data-acquisition gap, not a missing function. Concrete first step: acquire + digest the Andreu
+  QBCP paper(s) (the alpha_i Fourier-table source; not yet identified/acquired this session — check
+  Gomez-Masdemont-Simo-era QBCP literature and any existing CORPUS_INDEX near-misses first) and extract the 8
+  tables. Then build the QBCP equations-of-motion module (self-consistent Sun trajectory, not the circular
+  approximation `core/bcr4bp.py` already has) with a positive control against a published QBCP invariant-object
+  reproduction (e.g. a QBCP halo/Lissajous family or torus already in the literature). Real multi-week
+  acquisition+build, matching the cost of the other Track-A capability axes. Explicitly an ALTERNATIVE to
+  #522's cheaper, unvalidated path (b) (anchoring `theta` to the Sun's synodic angle already tracked in the
+  existing EM-frame `core/bcr4bp.py`) — the two are not both required; #522's cross-system SE<->EM torus
+  connection can proceed via EITHER #533 (if built) OR path (b) (if it validates), whichever the user/future
+  session picks. Not yet started — no acquisition, no digest, no code.
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
