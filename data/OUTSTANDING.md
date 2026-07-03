@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -424,9 +424,19 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
     "any" Neimark-Sacker bracket like the #299 fixture used for the mechanical tests above). This is the next
     concrete #522 step if pursued further; the cross-system SE<->EM question (path (a) vs (b) above) remains a
     separate, deferred decision.
-  **PHASE 2 EXPLORED 2026-07-03 (same session, exploratory scripts not yet committed): real L1/L2 tori built at
-  matched Jacobi, but exact frequency reproduction abandoned as impractical, and manifold-transit search hit a
-  genuine open sub-problem.**
+  **SPLIT 2026-07-03 (user request): #522 is now considered DONE at Phase 1 scope** (the tested, committed
+  single-system linking-number screening machinery). The actual single-system connection-detection attempt (real
+  L1/L2 tori, manifold globalization, transit-branch problem) is a DIFFERENT kind of work — open numerical
+  research on a specific hard sub-problem, not primitive-building — and is split off as **#534** below. The
+  cross-system SE<->EM question (path (a) `#533` vs path (b) synodic-angle proxy) remains #522's own open
+  decision point if/when the cross-system goal is resumed; neither is required to call #522 Phase 1 complete.
+- **#534** — Single-System Torus Heteroclinic Connection Search (Earth-Moon L1<->L2 quasi-halo transit branch)
+  (allocated 2026-07-03, split off #522's Phase 2 exploration at the user's request). Goal: actually run #522's
+  built-and-tested linking-number pipeline on a REAL, genuinely isoenergetic Earth-Moon L1/L2 quasi-halo pair and
+  report a real connection count — not a mechanical self-test.
+  **PHASE 2 EXPLORED 2026-07-03 (same session as #522's build, exploratory scripts not yet committed): real
+  L1/L2 tori built at matched Jacobi, but exact frequency reproduction abandoned as impractical, and manifold-
+  transit search hit a genuine open sub-problem.**
   - Found TWO independently-sourced, ALREADY-VALIDATED Earth-Moon halo seeds elsewhere in this codebase (not
     #299's family, which tops out at `C=3.148` and is not confirmed to be a halo family at all): the L1 southern
     halo seed task #304 uses (`x0=0.824024728136525, z0=-0.054501847320725, ydot0=0.164671964079122`, chained
@@ -467,7 +477,7 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
     through the interior/exterior realms (the classical Koon-Lo-Marsden-Ross patched-manifold picture) rather
     than a single direct unstable-to-stable connection at this specific `C`, and (3) once ANY genuine crossing
     grid is obtained for both branches, `scan_linking_number` itself is already built and tested and needs no
-    further work to report a real linking-number sequence.
+    further work to report a real linking-number sequence. Not yet resumed.
 - **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
   Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
   mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
@@ -507,6 +517,29 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   #527 reached for the Hilda case) -- but that phase is not "periodic" in the catalogue's `cycler` sense and
   would need the `quasi_cycler` epoch-locked framing instead. Janus-Epimetheus and the broader Mars-Trojan-as-
   transport question remain untouched by this session's work.
+  **REWORK PLAN 2026-07-03 (not yet executed) — use #524's now-built continuation primitive instead of a
+  brute-force resweep.** `scripts/run_523_earth_coorbital_search.py`'s actual bottleneck is per-candidate
+  CERTIFICATION (`_certify_with_refinement`, chained `correct_general_periodic` passes from a coarse DA/HOTM
+  grid guess, 60-100s each), not the coarse enumerator pass itself (~0.05s/point). The coarse enumerator's job
+  — locating an approximate fixed point at a GIVEN fixed `c_target` — is a poor fit for expensive independent
+  re-certification at every new `(C, x0, xdot0)` grid cell when 3 orbits are ALREADY certified nearby in family
+  space. Plan: treat the family as a co-dimension-1 curve in the 3-vector `(x0, xdot0, C)` — exactly
+  `search/pseudo_arclength.py`'s target case (`M=N-1`: the 2-component Poincare-return residual against 3 free
+  unknowns with `C` now free instead of fixed) — and `continue_curve()` OUTWARD from each of the 3 already-
+  certified orbits in both `C` directions, replacing "independently re-certify every coarse grid cell from
+  scratch" with "cheap predictor-corrector steps from an already-converged point," which should need far fewer
+  Newton iterations per new family member than a fresh multi-pass certification from a coarse guess. Concrete
+  steps: (1) wire a `residual_fn(z)` wrapping the same Poincare-return condition `_certify_with_refinement`
+  drives to zero, parameterized by the free `(x0, xdot0, C)` vector; (2) seed `continue_curve()` from each of
+  the 3 certified orbits with a numerically-estimated `jacobian_fn` (or let it fall back to the built-in finite-
+  difference Jacobian); (3) walk both directions in `C` across the original `C_BAND` intended range; (4) at each
+  new certified point, run the SAME Hill-sphere-encounter classification the original script already has, no
+  changes needed there. Expected win: if a single continuation step costs closer to a handful of Newton
+  iterations (~1-5s) rather than the original chained-certification's 60-100s, the SAME 6-Jacobi-value coverage
+  the original scoping wanted becomes a small-minutes job instead of the ~32-52 CPU-hour brute-force estimate
+  for the untried remainder of the 1,890-point grid. Not yet built or timed — this is a plan, not a result;
+  the actual per-step continuation cost on this specific residual is unmeasured and should get its own timing
+  pilot (per the #521 preflight discipline) before committing to a full re-run.
 - **#524** — Continuation + Deflated-Newton Search Primitive: replace fixed-grid + independent-Newton-per-cell
   sweeps with pseudo-arclength continuation and deflated Newton as the default search method (proposed
   2026-07-02 independent review).
