@@ -879,6 +879,30 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   the true extent of the admissible region (is this an isolated point or part of a narrow continuous family?) is
   unknown. The standard V0-V5 catalogue gauntlet is the next step if this candidate is pursued toward admission,
   not run here.
+  **WIDTH CHARACTERIZED 2026-07-03 (same session, before any gauntlet run): the admissible region is a genuine,
+  reproducible but EXTREMELY NARROW corridor, not a broad feature.** A fine `x0` scan (41 points, step 0.0001)
+  at the fixed admissible `C` found admission at ONLY `x0=0.9920` and `x0=0.9921` — a ~1e-4 AU (~15,000 km) wide
+  window out of the 0.004 AU range scanned. A `C` scan (41 points, step 0.0002) at the fixed admissible
+  `x0=0.9920` found ZERO admissible points anywhere in a 0.008-wide range straddling the true admissible `C` on
+  both sides (the two nearest grid points, `C=2.9838` and `C=2.9840`, both non-admissible) — the `C`-direction
+  width is narrower than this 0.0002 step, i.e. the admissible set behaves like a thin FILAMENT in the
+  `(x0,C)`-plane rather than an open 2D patch, a signature of chaotic phase-space structure (consistent with de
+  la Fuente Marcos & de la Fuente Marcos 2018's own Arjuna-population statistic: "~8% of Arjunas have v_rel^2 <
+  v_esc^2 at perigee" -- i.e. MOST nearby phase space genuinely does not lead to a capture episode; narrow
+  corridors are the physically expected structure here, not a search-code artifact). Re-checked the `x0` boundary
+  at tighter tolerance (`rtol=1e-13` vs the standard `1e-11`) and got the IDENTICAL admissible/non-admissible
+  pattern at 5 test points spanning the boundary — the narrowness is a real, reproducible dynamical feature, not
+  integration noise.
+  **Implication**: this is a scientifically valid finding (a real transient-drift `quasi_cycler` corridor exists
+  and was found, not fabricated or a numerical fluke), but its practical/mission relevance is limited by the
+  corridor's own narrowness, and pushing this SPECIFIC point through the full V0-V5 gauntlet (particularly the
+  `quasi_cycler`-scoped V2 bounded-drift-over-the-validity-window gate) risks a fragile pass that a tiny
+  real-ephemeris/perturbation difference could break — the gauntlet should explicitly stress-test sensitivity to
+  small IC perturbations given this characterization, not just check nominal-IC pass/fail. Awaiting a decision on
+  whether to (a) proceed to the V0-V5 gauntlet with this sensitivity caveat carried through, (b) search more
+  broadly across the co-orbital region for a WIDER, more robust corridor before investing further, or (c) treat
+  this as a complete, valuable discovery-catalogue entry as-is (a genuine but narrow corridor) without further
+  gauntlet investment.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
