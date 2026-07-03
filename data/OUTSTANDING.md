@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -795,6 +795,41 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   Positive control: the multi-node machinery itself is already validated (`test_assemble_l1_l2_two_cycle_closes`,
   the W-Z Oterma two-node cycle, re-verified live in #531) — no new machinery-validation control needed, only
   physical-target validation once real cross-family unstable orbits are found. Not yet built.
+- **#535** — Transient-Drift-Phase `quasi_cycler` Search for Co-Orbital/Resonance Objects (allocated 2026-07-03,
+  same session, at the user's request — the deferred follow-up #523 and #527 BOTH independently pointed at, now
+  finally given its own task number instead of remaining a repeated pointer in three different entries).
+  **The precise target, grounded in the catalogue's own class definition** (`docs/notes/2026-06-16-catalogue-
+  scope-taxonomy.md`): `quasi_cycler` = "closes-up-to-rotation" (NOT exact periodicity), `epoch_locked=true`, a
+  finite 10-15 year `validity_window`, `n_returns` in [3,15] — "cyclers-of-opportunity inside a planetary-
+  alignment window." This matches #523's own positive-control object EXACTLY: 2006 RH120 (de la Fuente Marcos &
+  de la Fuente Marcos 2018, an actual observationally-confirmed transient Earth minimoon, Jul 2006-Jul 2007) was
+  independently reproduced this session by direct integration — an initial ~0.7-year close quasi-satellite
+  episode reaching HALF Earth's Hill radius, then a transition to wider horseshoe libration with RECURRING
+  approaches every ~4.6-9.2 years. That is a `quasi_cycler` by the catalogue's own definition, not a `cycler` —
+  #523's search was strictly-periodic-orbit-shaped and could never have found it, however completely it swept
+  (confirmed: 120 certified periodic orbits across the full intended Jacobi band, ALL 4.9-10.3x outside the
+  Hill radius — #523 OUTSTANDING.md entry, 2026-07-03). Same structural point for #527's Sun-Jupiter Hilda case:
+  Guido & Efthymiopoulos (arXiv:2604.00679) locate the actual heteroclinic/chaotic-transport structure on the
+  UNSTABLE MANIFOLDS near the resonance separatrix, a genuinely different dynamical object than the periodic-
+  orbit family core #527's DA/HOTM enumeration searched (and #530/#531 already showed the ONE genuinely-
+  unstable sampled Hilda orbit's own homoclinic tangle stays at 3.48x the Hill radius — ruling out THAT specific
+  narrow angle, not the broader chaotic-transport region near the separatrix itself).
+  **NOT a straightforward reuse of #320's existing quasi_cycler machinery** — #320 targeted epoch-locked
+  MULTI-MOON resonant tours (Saturn/Pluto/Earth-Moon systems, all V0-known-class per its own adjudication) via
+  the SAME kind of construction as strict cyclers, just with a finite window; #535's targets are fundamentally
+  APERIODIC/chaotic trajectories (a captured minimoon's drift-then-libration transition; separatrix-adjacent
+  chaotic transport), which need: (1) broad seeding across the co-orbital/Hilda phase space (not just AT
+  already-certified periodic orbits — the whole point is these are NOT periodic-orbit family members), (2) long
+  non-strictly-periodic propagation, (3) a REPEATED-Hill-sphere-encounter detector as the admission criterion
+  (count and space discrete close passes, don't require any closure residual), (4) the `quasi_cycler`
+  epoch_locked/validity_window/n_returns schema fields populated from the ACTUAL encounter epochs found, not a
+  periodic-orbit period.
+  **Feasibility: MEDIUM, genuinely open on the admission-criterion question** — the physical phenomenon is real
+  and sourced (2006 RH120's OWN behavior IS the positive control, already independently reproduced), but "how
+  many Hill-sphere passes within what epoch window counts as admission" is a genuinely new criterion decision
+  this project has not had to make for a genuinely chaotic (not quasi-periodic-torus, not periodic-orbit-family)
+  trajectory before — settle this in writing BEFORE building the sweep, per the #339-style-criterion-trap
+  discipline #523's original attempt already applied once. Not yet built.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
