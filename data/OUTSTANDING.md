@@ -829,7 +829,20 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   many Hill-sphere passes within what epoch window counts as admission" is a genuinely new criterion decision
   this project has not had to make for a genuinely chaotic (not quasi-periodic-torus, not periodic-orbit-family)
   trajectory before — settle this in writing BEFORE building the sweep, per the #339-style-criterion-trap
-  discipline #523's original attempt already applied once. Not yet built.
+  discipline #523's original attempt already applied once.
+  **CRITERION SETTLED 2026-07-03 (same session, before any sweep code):** see
+  [[2026-07-03-535-quasi-cycler-transient-drift-admission-criterion]] for the full writeup. Summary: (1) encounter
+  = inside the Hill sphere (reuses #523/#527's own threshold, no new distance invented); (2) one maximal
+  continuous Hill-sphere residency = one return (not sub-counting periapsis wiggles inside a single episode); (3)
+  returns must be separated by >=1 year outside the Hill sphere to count as distinct (Earth's own orbital period,
+  chosen to filter numerical noise without presupposing the ~4.6-9.2 yr horseshoe return timescale this session
+  already measured); (4) admissible iff SOME 10-15 year sub-window of the propagated trajectory contains 3-15
+  distinct returns (the catalogue's own `quasi_cycler` schema bounds, `docs/notes/2026-06-16-catalogue-scope-
+  taxonomy.md`), window bounds + actual epochs reported, never silently cherry-picked; (5) bounded-geometry check
+  within that window (loosest return's closest-approach distance <=3x the window's tightest), a genuinely NEW
+  numeric choice flagged as provisional pending real trajectory data, not carried over from an existing gate. The
+  1-year separation floor (Earth-orbital-period-motivated) is explicitly flagged as NOT transferable to the
+  Sun-Jupiter Hilda case without re-deriving from Jupiter's own orbital/libration timescale. Ready to build.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
