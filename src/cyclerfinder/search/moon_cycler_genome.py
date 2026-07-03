@@ -55,6 +55,11 @@ DAY_S: float = 86400.0
 # Galilean moons of Jupiter, inner-to-outer (the Liang CGE system).
 JUPITER_MOONS: tuple[str, ...] = ("Io", "Europa", "Ganymede", "Callisto")
 
+# Saturnian midsize moons + Titan, inner-to-outer (Russell & Strange 2009's
+# double-cycler bodies; used by #526's alternating-double-cycler reusability
+# check, cyclerfinder.genome.alternating_double_cycler).
+SATURN_MOONS: tuple[str, ...] = ("Mimas", "Enceladus", "Tethys", "Dione", "Rhea", "Titan")
+
 
 @dataclass(frozen=True)
 class MoonSystem:
@@ -96,6 +101,11 @@ class MoonSystem:
 def jupiter_system() -> MoonSystem:
     """The Jupiter / Galilean-moon system (the Liang CGE validation target)."""
     return MoonSystem(planet="Jupiter", moons=JUPITER_MOONS)
+
+
+def saturn_system() -> MoonSystem:
+    """The Saturn / midsize-moon system (Russell & Strange 2009 double-cycler bodies)."""
+    return MoonSystem(planet="Saturn", moons=SATURN_MOONS)
 
 
 def moon_vinf_to_tisserand(system: MoonSystem, moon: str, vinf_kms: float) -> float:

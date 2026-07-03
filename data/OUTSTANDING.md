@@ -585,6 +585,38 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
 - **#526** — GTOC 13 + Liang Operator Ingestion: digest GTOC 13 (Oct-Nov 2025 ballistic Jovian gravity-assist
   tour competition) methods papers and encode Liang et al.'s alternating-double-cycler construction (JGCD 2024,
   DOI 10.2514/1.G008387) as a reusable genome operator (proposed 2026-07-02 independent review; not yet built).
+  **DONE 2026-07-03 (this session), with one correction to the proposal text.** Part 1 (GTOC 13): the
+  proposal's "ballistic Jovian gravity-assist tour competition" framing was WRONG — GTOC 13 (JPL, released
+  20 Oct 2025, ran 24 Oct–17 Nov 2025) is a ballistic-flyby + optional ideal-solar-sail tour of a fictional
+  single-star, 10-planet exoplanetary system ("Altaira"), not a Jovian-moon problem at all; there is no moon
+  system in it. Acquired the problem statement PDF (`papers/jpl-gtoc13-team-2025-problem-description-altaira-
+  system-gtoc-jpl-net.pdf`, filed/digested/indexed per the corpus policy:
+  `docs/notes/2026-07-03-digest-gtoc13-problem-statement.md`, `CORPUS_INDEX.md`). Winner: THU-LAD (Tsinghua);
+  101 teams registered (Team 11 "NUAA & Friends" includes Liang and Yang, the Part-2 authors). **Honest
+  negative on methods papers: none exist yet** — searched WebSearch/arXiv/the GTOC13 site/the ESA GTOC-portal
+  mirror; the portal lists the post-competition workshop as still "TBA", consistent with the historical
+  6–18-month workshop→journal-special-issue pipeline for a competition that closed only 8 months ago. No
+  cycler-relevant content in the problem itself (single one-shot 200-yr tour maximizing a score, not a
+  repeating structure) — a problem-statement-only digest, as the proposal itself anticipated as a live
+  possibility. Part 2 (Liang operator): independently re-verified the citation before trusting it (AIAA/ARC +
+  Semantic Scholar + Unpaywall DOI lookups all agree on title/authors/venue; Unpaywall confirms closed-access,
+  no OA copy exists anywhere) — real paper, no same-author collision. Found the paper was **already** filed,
+  deeply mined (`2026-06-11-liang-2024-cge-triple-cyclers-mining.md`) and reproduced
+  (`search/cge_scaffold.py`, `search/moon_cycler_genome.py`) under #216 — nothing duplicated. Built the
+  missing reusable piece: `src/cyclerfinder/genome/alternating_double_cycler.py`
+  (`analyze_near_resonance` — generalizes Eqs. 1–2's near-commensurability analysis to any 3-body chain;
+  `build_alternating_double_cycler_seed` — the "switched-double-cycler" stitching operator itself, composing
+  two hub-sharing double-cycler half-sequences into one repeating `MoonCyclerGenome`). Design pitfall caught
+  by the positive control before trusting the code: a naive closest-fraction search returns 16/9 for Liang's
+  own numbers, not their published 7/4 — fixed via a lowest-order-convergent-above-tolerance search (see
+  `docs/notes/2026-07-03-alternating-double-cycler-operator.md` for the full account). Positive controls:
+  exact reproduction of Liang's Eq. 1–2 (7/4, mismatch 0.7365 d) from their own Table 1; an independent
+  (non-golden) cross-check against this project's JPL-SSD registry mean motions recovers the same 7:4
+  resonance within 2%; exact reconstruction of the published CGCEC sequence from its two halves; a
+  reusability-only (no novelty claim) demo on a Saturn chain (Enceladus-Dione-Rhea) via a newly added
+  `saturn_system()` registry helper. 13/13 new tests pass; `uv run pytest tests/data tests/search tests/genome
+  -q` ratchet, `ruff check`/`ruff format --check`, and `mypy src tests` all clean. No catalogue writeback; no
+  novelty claim.
 - **#527** — Sun-Jupiter Hilda-Band DA/HOTM Enumeration: point the already-built, zero-usage #450 DA/HOTM
   enumerator (`src/cyclerfinder/search/da_hotm_enumeration.py`, μ-agnostic, never invoked by any campaign
   script) at the Sun-Jupiter Hilda/quasi-Hilda 3:2-exterior-MMR band — a region in neither negative registry nor
