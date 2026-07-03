@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -795,6 +795,37 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   Positive control: the multi-node machinery itself is already validated (`test_assemble_l1_l2_two_cycle_closes`,
   the W-Z Oterma two-node cycle, re-verified live in #531) — no new machinery-validation control needed, only
   physical-target validation once real cross-family unstable orbits are found. Not yet built.
+  **SCOPING PILOT RUN 2026-07-03 (same session, per an independent second-opinion review of the plan): a real
+  false positive caught and fixed before being trusted.** `scripts/run_532_resonance_overlap_pilot.py` derived a
+  Kepler-III seed for the 2:1 interior MMR (`r=(1/2)^(2/3)`, `a=3.278 AU` — independently matching the real,
+  documented "Hecuba gap" asteroid-belt feature, mirroring #527's own Hilda a=3.97 AU cross-check) and re-verified
+  the seed-derivation formula against #527's own committed `C_SEED=3.0613` (matched to 4 decimals) before trusting
+  the new 2:1 number. A coarse 8-point-per-family DA/HOTM band scan (reusing #527's enumeration + #530's
+  monodromy-stability classification) found Hilda-unstable C up to 3.1413 and interior-unstable C at 3.1453 — a
+  gap smaller than the 0.03 coarse step, so a finer 0.005-step rescan (`_finegrid.py`) was run in the C=[3.10,3.18]
+  window. **The finer scan appeared to find a genuine 5-point overlap (C=3.14-3.16) — but this was a FALSE
+  POSITIVE, caught before being reported as a finding**: at every "matching" C, both family-labeled scans had
+  converged to the IDENTICAL x0 (5-decimal match) with IDENTICAL eigenvalues. Since `(x0, xdot0=0, C)` uniquely
+  fixes the full state via `ydot0`, an identical x0 at the same C is mathematically the same orbit, not two
+  distinct family members — the two families' DomainBoxes overlap in x (Hilda x in [0.61,0.91], interior x in
+  [0.50,0.76]), and both scans' Newton correction converged onto one single periodic-orbit branch passing through
+  their shared overlap region, mislabeled by which box found it rather than genuine resonance membership.
+  **Fixed properly** (`scripts/run_532_resonance_family_continuation.py`): family membership is only rigorously
+  defined as a connected component of the solution manifold, so this traces each family via NATURAL-PARAMETER
+  CONTINUATION IN C starting from its own verified seed (warm-started Newton correction, previous step's solution
+  as the next step's guess — the same pattern #534's L2 seed continuation used), with an explicit `|x0_hilda -
+  x0_interior| > 1e-3` distinctness check at any shared-C match before calling it a genuine pair. **Corrected
+  result: NO-GO.** Traced Hilda over C=[3.020,3.164] (74 points, 1 unstable) and the 2:1 interior branch over
+  C=[3.000,3.200] (102 points, 0 unstable) — independently re-verified the interior family's "0 unstable" by
+  checking every point's symplectic-det control directly (zero failures across all 101 non-seed points, leading
+  eigenvalue magnitude sits at exactly 1.0000 to 10+ decimals throughout), ruling out a silent monodromy-
+  computation bug masquerading as stability. With one family fully stable across its entire tested range, no
+  shared-Jacobi unstable pair can exist between these two specific traced branches. **Honest scope of this
+  negative**: only ONE branch per family was traced (the `ydot0`-positive, single-rev branch reachable by
+  continuation from the natural circular-orbit seed) — the original box scan surfaced other 2:1-region candidates
+  (x0 around 0.50-0.66) on different branches that this continuation did not trace, so this rules out the tested
+  branches, not the full 2:1/3:2 resonance regions. #532 stays open if those other branches are worth tracing;
+  otherwise treat this pilot as closed with a real, well-verified negative for its own scope.
 - **#535** — Transient-Drift-Phase `quasi_cycler` Search for Co-Orbital/Resonance Objects (allocated 2026-07-03,
   same session, at the user's request — the deferred follow-up #523 and #527 BOTH independently pointed at, now
   finally given its own task number instead of remaining a repeated pointer in three different entries).
@@ -903,6 +934,58 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   broadly across the co-orbital region for a WIDER, more robust corridor before investing further, or (c) treat
   this as a complete, valuable discovery-catalogue entry as-is (a genuine but narrow corridor) without further
   gauntlet investment.
+  **WIDER-SEARCH ATTEMPT ABANDONED 2026-07-03 (same session): a 3111-point `(x0,C)` grid scan
+  (`x0` in [0.94,1.06], `C` in [2.95,3.05], 61x51) launched to look for a WIDER corridor produced ZERO output
+  after ~48 minutes (a real instrumentation gap: unbuffered-stdout blindness on a `nohup`-launched process, not a
+  computation failure — `/proc/<pid>/status` confirmed it was genuinely CPU-bound throughout) and was killed
+  before completing. This is an ABANDONED/inconclusive attempt, not a clean negative — it does not rule out a
+  wider corridor existing elsewhere in that grid.** A parallel investigation into 3753 Cruithne's real orbital
+  elements (`a=0.998 AU, e=0.515, i=19.8°`) as an alternative wide/stable-companion seed found ZERO Hill-sphere
+  returns at all: Cruithne's large eccentricity is PRECISELY what keeps it out of Earth's Hill sphere, i.e. its
+  long-term dynamical stability and #535's repeated-close-encounter admission criterion are in structural
+  tension — searching near a KNOWN STABLE companion was the wrong strategy; genuinely wide, robust admissible
+  corridors may be structurally rare in this co-orbital regime (consistent with the ~8% Arjuna capture-probability
+  statistic already cited above).
+  **SENSITIVITY PRE-CHECK RUN 2026-07-03 (same session), resolving the awaiting-decision above in favour of (c)
+  with an explicit caveat, per the user's own request for "a cheap pre-check" before any V0-V5 investment:
+  `scripts/run_535_er3bp_sensitivity_check.py`, built + run.** Re-propagated the EXACT admissible IC
+  (`x0=0.9920, xdot0=0.0, ydot0=0.13033911`) through the project's existing ER3BP core (`core/er3bp.py`,
+  pulsating-rotating frame, independent variable = true anomaly) at Earth's REAL orbital eccentricity
+  (`e=0.0167`, NASA Earth fact sheet) instead of the idealized `e=0` CR3BP model — a genuine, minimal,
+  physically-motivated perturbation (not an arbitrary IC jitter). Positive control passed first (the ER3BP code
+  path at `e=0` exactly reproduces the CR3BP result: 4 returns, 2 admissible windows) before trusting the
+  perturbed result, per this project's own verify-before-trust discipline. **VERDICT: COLLAPSES.** At
+  `e=0.0167` only the initial pass remains (1 return total, 0 admissible windows) — the trajectory departs and
+  does not return within the full 50-year propagation. This is not a shrinkage, it is a total collapse, and it
+  independently confirms the width-characterization finding above (a filament this narrow in the idealized
+  model's own `(x0,C)` freedoms is exactly the signature of a feature that does not survive real dynamics) —
+  the same pattern this project has hit repeatedly (S1L1, #388, the #480 EGGIE construction): an idealized-model
+  closure on a knife-edge, not a robust dynamical feature. **Decision: do NOT push this candidate into the
+  V0-V5 gauntlet** — it would fail the first real-ephemeris-adjacent gate for a now well-understood reason, not
+  a novel one. The idealized CR3BP finding itself remains valid and stays on record exactly as scoped (a genuine
+  existence result within the idealized circular-restricted model, characterized as fragile from the outset).
+  #535 is complete as a discovery-screen exercise; no further investment planned unless a future broader/smarter
+  search (the abandoned wide scan above, redone with proper `python3 -u`/flush=True instrumentation and likely a
+  coarser first pass) turns up a structurally wider corridor.
+- **#536** — Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
+  (Jovian-Moon Tori) (allocated 2026-07-03, same session, from an independent second-opinion review of the
+  #532/#534 discovery plan). **Motivation**: #534's Earth-Moon L1<->L2 target is not actually a novelty attempt
+  as posed — quasi-halo/torus heteroclinic connections in that specific system are extensively published
+  (Gómez et al., Koon-Lo-Marsden-Ross, Haapala & Howell, Olikara), so a successful #534 run there demonstrates
+  the #522 linking-number pipeline works, it does not discover anything new. The catalogue's own history backs
+  this up: this project's one confirmed genuinely novel find (the Uranus-system cycler, #312) came from an
+  under-searched system, not a re-application of existing machinery to the most heavily-published system
+  available. **Scope**: once #534's transit/non-transit branch-classification blocker is resolved and the
+  pipeline is validated end-to-end against the known Earth-Moon connection (treat that as #534's OWN positive
+  control, not a separate deliverable), re-target `genome/qp_torus_heteroclinic.py`'s `scan_linking_number` at
+  quasi-periodic tori in a Jovian-moon system (e.g. Europa-Ganymede or Io-Europa near-resonant pairs, reusing
+  `search/moon_cycler_genome.py`'s existing Jovian-system definitions) — a system this project has not yet
+  screened for whiskered-torus heteroclinic structure at all. **Feasibility: LOW additional build cost once
+  #534 is unblocked** — same pipeline, new target system and halo/torus seed pair; the real work is finding a
+  genuinely isoenergetic Jovian-moon torus pair the way #534 found one for Earth-Moon (matched-Jacobi
+  continuation), not new machinery. **Explicitly gated on #534's transit/non-transit classification landing
+  first** — do not fork effort into a second system while the first one's own manifold-branch selection is
+  still unresolved. Not yet built.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
