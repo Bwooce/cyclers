@@ -843,6 +843,24 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   numeric choice flagged as provisional pending real trajectory data, not carried over from an existing gate. The
   1-year separation floor (Earth-orbital-period-motivated) is explicitly flagged as NOT transferable to the
   Sun-Jupiter Hilda case without re-deriving from Jupiter's own orbital/libration timescale. Ready to build.
+  **CORRECTION 2026-07-03 (same session, before any sweep ran): the "recurring approaches every ~4.6-9.2 years"
+  claim above (repeated from #523's own docstring) does NOT hold up under careful re-verification.** Propagating
+  #523's literal RH120 seed for 20/40/60 years (both `ydot0` sign branches) shows exactly ONE close approach
+  (matching the confirmed ~0.7-year episode reaching ~half the Hill radius) followed by departure to ~2 AU from
+  Earth with no return found within at least 60 years — not the claimed recurring horseshoe libration. Ruled out
+  a seed-construction bug specifically: independently re-derived the SAME IC from the raw Keplerian elements
+  (`a=0.998625, e=0.019833`) via proper vis-viva mechanics at perihelion (`vr=0` there by definition, confirming
+  the original `xdot0=0` choice was correct, not a simplification artifact) — the re-derived `(x0,ydot0,C)`
+  matches the original seed to 4 significant figures, so the seed itself is not the bug. The genuine physical
+  conclusion: this specific object IS a single-transient encounter, consistent with the REAL 2006 RH120 being an
+  observationally-confirmed ~1-year capture (Jul 2006-Jul 2007), not a multi-decade recurring companion — the
+  "recurring approaches" claim was an error in an earlier interactive check that was never itself re-verified
+  before being written down (`scripts/run_523_earth_coorbital_search.py`'s docstring corrected in the same
+  commit as this note). **Consequence for #535**: the literal RH120 seed is a valid, honest NEGATIVE against its
+  own admission criterion (a single return cannot satisfy `n_returns` in [3,15]) — it motivated the search but is
+  not itself a candidate. Finding a genuine admissible `quasi_cycler` needs a broader seed search (varying
+  `x0`/`C` away from this exact literal seed) for a nearby co-orbital initial condition that DOES show bounded,
+  recurring returns — not yet attempted.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that

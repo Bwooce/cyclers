@@ -40,11 +40,18 @@ Two candidate returns (per §2) count as DISTINCT returns only if they are separ
 least **1 year** (`t_enter` of the second minus `t_exit` of the first) of the trajectory
 remaining outside the Hill sphere. Rationale: Earth's own orbital period is 1 year, so any
 gap shorter than that reflects numerical/short-timescale noise in a grazing crossing, not a
-genuine new approach; the real physical return timescale this session already measured for
-the horseshoe-libration mechanism is ~4.6-9.2 years (#523's positive-control integration), an
-order of magnitude longer than this floor — the 1-year gate cleanly separates signal from
-noise without presupposing the exact multi-year period in advance (which is the whole point:
-a chaotic/aperiodic trajectory's return spacing is not assumed, only measured).
+genuine new approach — the 1-year gate cleanly separates signal from noise without
+presupposing any specific multi-year return period in advance (a chaotic/aperiodic
+trajectory's return spacing is not assumed, only measured from the actual propagated data).
+
+**CORRECTION (2026-07-03, same session, before any sweep ran):** an earlier draft of this
+note cited a "~4.6-9.2 year horseshoe-libration return timescale... already measured" as
+independent motivation for the 1-year floor. That timescale claim does NOT hold up under
+careful re-verification (see the #535 OUTSTANDING.md entry's correction) — #523's literal
+RH120 seed shows a single transient encounter, not a recurring multi-year libration. The
+1-year floor stands on its OWN Earth-orbital-period rationale alone (stated above), not on
+any measured return timescale; no specific return period should be assumed anywhere in this
+criterion until real trajectory data provides one.
 
 ## 4. Admission window: search for a 10-15 year sub-window with 3-15 returns
 

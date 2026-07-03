@@ -22,12 +22,25 @@ Keplerian elements (2006 RH120, de la Fuente Marcos & de la Fuente Marcos
 2018, Astron. Nachr., Table 1: a=0.998625 AU, e=0.019833, i=1.52613 deg --
 notable because 2006 RH120 was an actual, observationally confirmed transient
 Earth minimoon, Jul 2006-Jul 2007). Direct integration of this seed in the
-Sun-Earth CR3BP (verified interactively this session, before writing this
-script) independently reproduces the REAL qualitative behavior: an initial
-~0.7-year close quasi-satellite episode reaching HALF the Hill radius, then a
-transition into a wider horseshoe libration with recurring approaches every
-~4.6-9.2 years -- unplanned, strong confirmation the model is physically
-correct, not fitted to a target.
+Sun-Earth CR3BP independently reproduces the REAL qualitative behavior: an
+initial ~0.7-year close quasi-satellite episode reaching HALF the Hill
+radius.
+
+CORRECTION (2026-07-03, #535 investigation): an earlier interactive check
+claimed this seed ALSO transitions into a wider horseshoe libration with
+recurring approaches every ~4.6-9.2 years. That claim does NOT hold up under
+careful re-verification (long-duration integration + an independent
+vis-viva re-derivation of the same IC from the raw Keplerian elements,
+which reproduces this seed's (x0,ydot0,C) to 4 significant figures,
+confirming the seed itself is NOT the bug): the trajectory makes exactly
+ONE close approach then departs to ~2 AU from Earth and does not return
+within at least 60 years, consistent with the REAL 2006 RH120 being a
+genuinely single, ~1-year transient capture (not a multi-decade recurring
+horseshoe companion). Only the single-encounter part of the original claim
+is confirmed; the "recurring approaches" part was an error, never actually
+re-checked before being written down. See #535's OUTSTANDING.md entry and
+`docs/notes/2026-07-03-535-quasi-cycler-transient-drift-admission-
+criterion.md` for the full investigation.
 
 SYSTEM-SCALE NOTE (learned from #527, re-verified here rather than assumed):
 Sun-Earth's characteristic time t_s ~= 58.13 days (2*pi*t_s ~= 1 year, as
