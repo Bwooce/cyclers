@@ -424,6 +424,50 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
     "any" Neimark-Sacker bracket like the #299 fixture used for the mechanical tests above). This is the next
     concrete #522 step if pursued further; the cross-system SE<->EM question (path (a) vs (b) above) remains a
     separate, deferred decision.
+  **PHASE 2 EXPLORED 2026-07-03 (same session, exploratory scripts not yet committed): real L1/L2 tori built at
+  matched Jacobi, but exact frequency reproduction abandoned as impractical, and manifold-transit search hit a
+  genuine open sub-problem.**
+  - Found TWO independently-sourced, ALREADY-VALIDATED Earth-Moon halo seeds elsewhere in this codebase (not
+    #299's family, which tops out at `C=3.148` and is not confirmed to be a halo family at all): the L1 southern
+    halo seed task #304 uses (`x0=0.824024728136525, z0=-0.054501847320725, ydot0=0.164671964079122`, chained
+    from Howell 1984 / Breakwell-Brown 1979), and the L2 seed `search/nrho_continuation.py` reproduces from
+    Koblick 2023 AMOSTECH Table 4 Np=1 (`x0=1.023731, z0=0.183250, ydot0=-0.106950`). Re-corrected the L1 seed at
+    Owen & Baresi's EXACT `mu=0.012153643` (not this codebase's own slightly different `EM_MU` constant) and
+    found it lands at `C=3.150155` — essentially exactly the target energy already. Continued the L2 seed in
+    `x0` (natural-parameter stepping via `search/nrho_continuation.correct_symmetric_nrho`, through a real fold
+    in `C(x0)` that a naive fixed-step continuation initially missed) to `C=3.150098` — a genuinely ISOENERGETIC
+    pair (`delta C ~ 6e-5`), the physically essential precondition Owen & Baresi themselves state ("heteroclinic
+    connections can only exist between orbits of the same Jacobi integral").
+  - Both halos have a genuine complex-conjugate Floquet pair sitting essentially exactly on the unit circle
+    (`|lambda|=1.000000` to printed precision — a normal feature of STABLE halo family members, not a rare
+    bifurcation point) and both correct into genuine QP tori via `correct_qp_torus` with excellent residuals
+    (invariance `7.9e-9` / `6.0e-8`, independent closure `1.4e-8` / `1.1e-7` — both far inside the existing
+    `1e-5`/`1e-3` published-practice gates). Resulting `omega_trans`: L1 `-0.169934`, L2 `-0.035640` — same order
+    of magnitude as Owen & Baresi's published `0.2739` / `0.02163` but NOT an exact match.
+  - **Decision: abandoned chasing the exact published frequencies as impractical, not as a failure.** The paper
+    does not give enough explicit formula/normalization detail (from the pages read) to unambiguously
+    reverse-engineer their specific "latitudinal frequency" convention, and their exact seed orbit/amplitude is
+    unpublished — matching their literal numbers would require guessing unpublished implementation details, which
+    is a worse use of effort than validating the pipeline on genuinely correct, independently-sourced EM 3D data
+    at the one number that IS fully specified and reproducible (the shared Jacobi constant).
+  - Ran `build_manifold_grids` + `scan_linking_number` end-to-end on the real L1/L2 pair (surface `x=1-mu`,
+    `t_max=8` nondim TU): the L2 stable manifold crossed the surface cleanly (50/100 sample points), but the L1
+    UNSTABLE manifold along the checked eigenvector direction (BOTH signs tried) never crossed `x=1-mu` at all —
+    direct propagation shows it oscillates near the L1 region then escapes toward NEGATIVE x (past Earth), not
+    through the Moon's realm toward L2. **This is a real, expected CR3BP phenomenon, not a pipeline bug**: not
+    every unstable manifold branch of an L1 orbit is a "transit" trajectory that threads through the Moon's Hill
+    sphere toward the L2 realm — distinguishing transit from non-transit branches is itself a known, nontrivial
+    classification problem in CR3BP research (Conley-McGehee), not something to force through with a quick sign
+    flip. Finding the genuine transit branch (if the correct linking eigen-direction even exists at this specific
+    C/orbit pair) is the concrete remaining blocker before a genuine connection count can be reported.
+  - **Not yet committed**: this Phase 2 exploration lived in scratchpad scripts only, to avoid committing
+    half-verified numerical exploration code. If resumed, the concrete next steps are: (1) sample BOTH real
+    eigen-directions' sign combinations and a spread of `t_max`/`eps` values systematically rather than 2 ad hoc
+    checks, (2) consider that the genuine L1-to-L2 transit branch may require an intermediate low-energy transit
+    through the interior/exterior realms (the classical Koon-Lo-Marsden-Ross patched-manifold picture) rather
+    than a single direct unstable-to-stable connection at this specific `C`, and (3) once ANY genuine crossing
+    grid is obtained for both branches, `scan_linking_number` itself is already built and tested and needs no
+    further work to report a real linking-number sequence.
 - **#523** — Co-Orbital-Exchange Cyclers: search horseshoe/tadpole/quasi-satellite topologies (Janus-Epimetheus,
   Earth quasi-satellites, Mars Trojans) whose repeated encounters need no flyby bend, sidestepping the
   mass-deficit no-go theorem (proposed 2026-07-02 independent review; not yet built).
