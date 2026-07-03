@@ -540,6 +540,34 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   for the untried remainder of the 1,890-point grid. Not yet built or timed — this is a plan, not a result;
   the actual per-step continuation cost on this specific residual is unmeasured and should get its own timing
   pilot (per the #521 preflight discipline) before committing to a full re-run.
+  **REWORK BUILT + RUN 2026-07-03 (same session): the plan above worked, and the finding now covers the full
+  intended band densely.** Built `search/cr3bp_general_periodic_free_c.py`: extends
+  `cr3bp_general_periodic.py`'s existing analytic STM Jacobian `dR/d(x0,xdot0)` with a third, EQUALLY analytic
+  `dR/dC` column (free — reuses the same STM already computed, no extra propagation), turning the 2x2
+  fixed-Jacobi residual into the co-dimension-1 curve `search/pseudo_arclength.py` targets. Validated the new
+  `dR/dC` formula against finite differences at the existing positive-control seed before trusting it (an
+  internal-consistency check, not a value invented and self-checked) — also cross-checked the `(x0,xdot0)`
+  columns independently as a sanity check that the shared STM-projection machinery is used correctly. 4 new
+  tests, all passing.
+  Then rewrote the sweep as `scripts/run_523_earth_coorbital_continuation.py`: certify ONE orbit from the SAME
+  2006-RH120-derived positive control as the original script, then walk `continue_curve()` in both directions
+  across `C in [2.9980, 3.0020]` (covers and exceeds the original `C_BAND=[2.9990,3.0010]` with margin).
+  **Measured, not estimated: ~1.4s/continuation-step** (dominated by two STM propagations over the ~80-nondim-TU
+  horizon) vs. the original 60-100s/candidate — confirms the plan's premise directly. The actual run certified
+  **120 points spanning C=2.9980 to 3.0019940 in 224.5s wall-clock** — dense, essentially complete coverage of
+  the intended band (vs. the original attempt's 3 orbits across ~2 of 6 intended values), a ~50-70x per-point
+  speedup that also avoids continuation's main risk (re-discovering already-covered family members, the way
+  independent grid re-sampling does). **Result: EVERY certified point's minimum distance to Earth (0.0488-0.1032
+  nondim) is 4.9-10.3x Earth's Hill radius (0.01000 nondim) — zero encounters**, extending the original
+  3-orbit finding to essentially complete coverage of the intended Jacobi band. Registered as a genuine clean
+  negative in `data/empty_regions.jsonl` (`sun-earth-coorbital-horseshoe-qsat-continuation`, distinct region_id
+  from the original incomplete attempt since the METHOD capability differs materially) — round-trip and
+  `should_sweep()` gating verified live (a same-capability re-sweep correctly returns `False`). **Same caveat as
+  the original attempt, unchanged by this rework**: this negates the STABLE PERIODIC ORBIT mechanism
+  specifically; it does NOT test the transient/quasi-periodic drift phase (where the real close approaches
+  live, per 2006 RH120's own qualitative behavior and the #527 Hilda finding) — that remains a genuinely
+  different search needing the `quasi_cycler` epoch-locked framing. Full ratchet
+  (`tests/data tests/search tests/genome tests/scripts`) verified green.
 - **#524** — Continuation + Deflated-Newton Search Primitive: replace fixed-grid + independent-Newton-per-cell
   sweeps with pseudo-arclength continuation and deflated Newton as the default search method (proposed
   2026-07-02 independent review).
