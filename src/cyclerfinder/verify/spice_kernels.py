@@ -122,6 +122,25 @@ def ensure_pluto_kernel() -> str:
     return str(path)
 
 
+def _download_with_timeout(url: str, dest: Path, *, timeout: float = 20.0) -> None:
+    """Download ``url`` to ``dest`` with an EXPLICIT per-attempt socket timeout.
+
+    ``urllib.request.urlretrieve`` -- used here previously -- takes no
+    ``timeout`` argument at all, so a single call falls back to the
+    process-wide socket default (frequently unset, i.e. block until the OS's
+    own TCP timeout, commonly 60-130s on Linux). That defeats a retry loop's
+    entire purpose: 3 "retries" against an unresponsive host can each hang
+    for over a minute before the loop's own 10s backoff even runs, turning a
+    fast-fail into many minutes of dead waiting (observed directly: CI run
+    28636314125, 2026-07-02, took 48 minutes before finally failing this
+    way). ``urlopen(..., timeout=...)`` DOES support a real per-call timeout;
+    stream the response to disk manually instead of using the convenience
+    wrapper that lacks the option.
+    """
+    with urllib.request.urlopen(url, timeout=timeout) as response, dest.open("wb") as fh:
+        fh.write(response.read())
+
+
 def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -> str:
     """Return a path to ``naif0012.tls``, fetching it once if necessary.
 
@@ -130,14 +149,19 @@ def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -
     and is never written into the repo). Returns the local path. Network is only
     touched on the first call; subsequent calls reuse the cached file.
 
-    Fetches with 3 retries (10s backoff) on a transient network failure --
-    the same class of intermittent NAIF-server timeout the CI workflow's
-    "Warm DE440 kernel (retries)" step and the real-eph SPK kernel fetch
+    Fetches with 3 retries (10s backoff, 20s per-attempt timeout -- see
+    :func:`_download_with_timeout`) on a transient network failure -- the
+    same class of intermittent NAIF-server timeout the CI workflow's "Warm
+    DE440 kernel (retries)" step and the real-eph SPK kernel fetch
     (``curl --retry 3 --retry-delay 10``) already guard against. This
     function previously had no retry at all and a single NAIF timeout during
     a live pytest run failed CI (2026-07-02, run 28588092512) with no
     connection to any code change -- fixed here at the source rather than
-    only papering over it with more CI-side caching.
+    only papering over it with more CI-side caching. A LATER incident
+    (2026-07-02, run 28636314125) showed the retry alone was not enough: an
+    unbounded per-attempt timeout let 3 retries consume the better part of
+    an hour before failing anyway -- the explicit per-attempt timeout above
+    is the fix for that second bug.
     """
     if cache_dir is None:
         from astropy.config.paths import get_cache_dir
@@ -151,7 +175,7 @@ def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -
         last_error: Exception | None = None
         for attempt in range(3):
             try:
-                urllib.request.urlretrieve(NAIF_LSK_URL, lsk_path)
+                _download_with_timeout(NAIF_LSK_URL, lsk_path)
                 last_error = None
                 break
             except OSError as exc:

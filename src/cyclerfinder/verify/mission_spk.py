@@ -43,7 +43,6 @@ from __future__ import annotations
 import math
 import os
 import time
-import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -127,10 +126,15 @@ def ensure_mission_spk(
     Mirrors :func:`cyclerfinder.verify.spice_kernels.ensure_leapseconds_kernel`:
     the kernel is fetched into the ``cyclerfinder_spice`` astropy-cache subdir
     (never the repo). Network is only touched on the first call; subsequent calls
-    reuse the cached file. Fetches with 3 retries (10s backoff) on a transient
-    network failure, matching the fix applied to ``ensure_leapseconds_kernel``
-    after a live NAIF timeout failed CI with no code-change involved
-    (2026-07-02, run 28588092512).
+    reuse the cached file. Fetches with 3 retries (10s backoff, 20s per-attempt
+    timeout) on a transient network failure, matching the fix applied to
+    ``ensure_leapseconds_kernel`` after a live NAIF timeout failed CI with no
+    code-change involved (2026-07-02, run 28588092512) -- AND its follow-up fix
+    (2026-07-02, run 28636314125): ``urllib.request.urlretrieve`` takes no
+    ``timeout`` argument, so a "retry" against an unresponsive host can each
+    hang on the OS's own TCP timeout (60-130s) before the loop's 10s backoff
+    even runs. ``spice_kernels._download_with_timeout`` uses ``urlopen`` with
+    an explicit per-attempt timeout instead.
 
     Parameters
     ----------
@@ -139,6 +143,8 @@ def ensure_mission_spk(
     base_url:
         NAIF directory URL the file lives in (one of the module constants).
     """
+    from cyclerfinder.verify.spice_kernels import _download_with_timeout
+
     cache_path = _spice_cache_dir(cache_dir)
     spk_path = cache_path / filename
     if not spk_path.exists():
@@ -146,7 +152,7 @@ def ensure_mission_spk(
         last_error: Exception | None = None
         for attempt in range(3):
             try:
-                urllib.request.urlretrieve(url, spk_path)
+                _download_with_timeout(url, spk_path)
                 last_error = None
                 break
             except OSError as exc:
