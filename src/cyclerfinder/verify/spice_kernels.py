@@ -23,9 +23,14 @@ Kernel sources (documented, not committed to the repo)
   ``https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp``
   on first use and stores it under the astropy download cache).
 - Leapseconds (LSK): ``naif0012.tls`` from
-  ``https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls``
-  fetched on demand into the astropy cache dir (binary kernels are never
-  committed).
+  ``https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls``,
+  vendored directly in this package (see ``VENDORED_LSK_PATH`` below) --
+  unlike the large binary kernels above, the LSK is a ~5 KB plain-text table
+  that only changes when IERS announces a new leap second (with ~6 months'
+  notice), so committing it removes a genuine CI flake (naif.jpl.nasa.gov was
+  observed intermittently unreachable from GitHub Actions runners at ~10% of
+  recent CI runs, 2026-07-03) without the size/versioning concerns that keep
+  the binary kernels out of the repo.
 """
 
 from __future__ import annotations
@@ -40,6 +45,10 @@ from pathlib import Path
 # the historical leap-second table, so this file is stable.
 NAIF_LSK_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls"
 NAIF_LSK_FILENAME = "naif0012.tls"
+
+# Vendored copy -- see the module docstring for why the LSK (unlike the large
+# binary kernels) is committed directly instead of fetched over the network.
+VENDORED_LSK_PATH = Path(__file__).parent / "kernels" / NAIF_LSK_FILENAME
 
 
 def astropy_de440_bsp_path() -> str:
@@ -142,12 +151,15 @@ def _download_with_timeout(url: str, dest: Path, *, timeout: float = 20.0) -> No
 
 
 def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -> str:
-    """Return a path to ``naif0012.tls``, fetching it once if necessary.
+    """Return a path to ``naif0012.tls``, preferring the vendored copy.
 
-    The LSK is fetched into ``cache_dir`` (default: a ``cyclerfinder_spice``
-    subdirectory of the astropy cache dir, so it sits alongside the cached BSP
-    and is never written into the repo). Returns the local path. Network is only
-    touched on the first call; subsequent calls reuse the cached file.
+    Returns :data:`VENDORED_LSK_PATH` directly if present (the normal case --
+    see the module docstring for why the LSK, unlike the large binary
+    kernels, is committed). Falls back to fetching into ``cache_dir``
+    (default: a ``cyclerfinder_spice`` subdirectory of the astropy cache dir)
+    only if the vendored file is somehow missing, so a future NAIF leap-second
+    update can still be picked up by refreshing the vendored file OR simply
+    deleting it to force a live re-fetch.
 
     Fetches with 3 retries (10s backoff, 20s per-attempt timeout -- see
     :func:`_download_with_timeout`) on a transient network failure -- the
@@ -161,8 +173,13 @@ def ensure_leapseconds_kernel(cache_dir: str | os.PathLike[str] | None = None) -
     (2026-07-02, run 28636314125) showed the retry alone was not enough: an
     unbounded per-attempt timeout let 3 retries consume the better part of
     an hour before failing anyway -- the explicit per-attempt timeout above
-    is the fix for that second bug.
+    is the fix for that second bug. A THIRD incident (2026-07-03, run
+    28638767219) showed the fetch itself is genuinely flaky (~10% of recent
+    CI runs) even with a bounded timeout -- fixed by vendoring the file so
+    the network path is no longer on the critical path at all.
     """
+    if VENDORED_LSK_PATH.exists():
+        return str(VENDORED_LSK_PATH)
     if cache_dir is None:
         from astropy.config.paths import get_cache_dir
 
