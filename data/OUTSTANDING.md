@@ -860,7 +860,25 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   own admission criterion (a single return cannot satisfy `n_returns` in [3,15]) — it motivated the search but is
   not itself a candidate. Finding a genuine admissible `quasi_cycler` needs a broader seed search (varying
   `x0`/`C` away from this exact literal seed) for a nearby co-orbital initial condition that DOES show bounded,
-  recurring returns — not yet attempted.
+  recurring returns.
+  **GENUINE ADMISSIBLE CANDIDATE FOUND 2026-07-03 (same session): `scripts/run_535_earth_transient_quasi_cycler_
+  search.py`, built + run end-to-end.** A 40-point `x0` scan at 2 Jacobi values (the corrected-target
+  `C=2.9998797409719242` plus a broader-search `C=2.9839437412`) around the RH120 region, each point propagated
+  50 years and passed through the #535 admission criterion (`search/hill_sphere_return_detector.py`), found
+  EXACTLY ONE admissible point in the grid: **`x0=0.9920, xdot0=0.0, ydot0=0.13033911` (Jacobi
+  `C=2.9839437412`)** — 4 total Hill-sphere returns over 50 years, with **3 of them (t=0, 2.99, 6.02 years,
+  closest approaches 0.48-0.80x the Hill radius) falling inside a single qualifying 10-year window** (geometry
+  ratio 1.65, well under the 3.0 gate). Verified robust across 3 independent integration tolerance/sampling
+  settings (rtol 1e-10 to 1e-12, 800-5000 samples/year) agreeing to 4 decimal places before being trusted as a
+  real dynamical feature rather than integration noise. The scan's own positive control (re-verifying this exact
+  candidate) passed before the broader 80-point sweep ran; full ratchet green.
+  **Honest scope of this finding**: this clears #535's OWN discovery-screen criterion — it is a genuine candidate
+  for the `quasi_cycler` catalogue class, NOT yet a catalogue admission. Per the criterion note's own "what this
+  does NOT decide" section: no `dv_band`/flyby-quality classification has been attempted, and this single grid
+  point was found in an ad hoc 40-point 1D scan around the motivating seed, not a systematic 2D `(x0,C)` search —
+  the true extent of the admissible region (is this an isolated point or part of a narrow continuous family?) is
+  unknown. The standard V0-V5 catalogue gauntlet is the next step if this candidate is pursued toward admission,
+  not run here.
 - **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
   formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
   the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
