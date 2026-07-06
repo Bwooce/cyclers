@@ -824,8 +824,32 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   negative**: only ONE branch per family was traced (the `ydot0`-positive, single-rev branch reachable by
   continuation from the natural circular-orbit seed) — the original box scan surfaced other 2:1-region candidates
   (x0 around 0.50-0.66) on different branches that this continuation did not trace, so this rules out the tested
-  branches, not the full 2:1/3:2 resonance regions. #532 stays open if those other branches are worth tracing;
-  otherwise treat this pilot as closed with a real, well-verified negative for its own scope.
+  branches, not the full 2:1/3:2 resonance regions.
+  **#532 COMPLETED 2026-07-04 (same session, per "finish 532?"): full-branch census closes the gap above.**
+  `scripts/run_532_full_branch_census.py` ran ONE wide DA/HOTM enumeration at a single representative
+  `C=3.15` across the FULL combined `x in [0.45,0.95]` range spanning both families' original domain boxes
+  (not per-family), finding every distinct periodic orbit passing through this region rather than relying on
+  which of two arbitrary boxes happened to find it (the source of the earlier false positive). Found exactly
+  3 genuinely distinct branches at `C=3.15` (`x0=0.514664`, `0.661391`, `0.738528` — the third is confirmed
+  the SAME branch mislabeled "Hilda" by the original box-overlap bug: its `x0=0.707314` at `C=3.16` matches
+  the earlier bugged trace to 5 decimals). Traced each independently via natural-parameter continuation over
+  `C=[2.90,3.25]`: branch `0.5147` is fully stable across its ENTIRE traced range (176 points, 0 unstable);
+  branch `0.6614` has exactly ONE unstable point (`C=3.092`, traced C=[3.02,3.164]); branch `0.7385` has 8
+  unstable points but its traced range only starts at `C=3.146` (a fold/boundary below that). **Verified the
+  one close call by hand**: branch `0.6614`'s single unstable point (`C=3.092`) falls entirely outside branch
+  `0.7385`'s traced range (which starts at `3.146`) — confirmed by directly re-deriving both branches' unstable
+  points and checking the actual numbers, not just trusting the pairwise-check code. **Exhaustive pairwise
+  check across all 3 branches: VERDICT NO-GO** — no genuinely distinct (`|x0_a - x0_b| > 1e-3`) shared-Jacobi
+  unstable pair exists among any combination. This is now a real, well-verified negative for every branch
+  passing through the shared 2:1/3:2 x-region at this energy scale — not just the two Kepler-seeded branches,
+  and independently checked at the one point where the traced ranges actually overlap. Residual honest scope:
+  this censuses ONE representative C (3.15) and the `ydot0`-positive branch of the y=0 return map only; a
+  different census C or the `ydot0`-negative branch could in principle surface further distinct families not
+  connected to any of these 3 by continuation. Given the effort already invested (coarse pilot -> finegrid ->
+  false-positive catch -> two-seed continuation -> full 3-branch census with a hand-verified overlap check),
+  #532 is now closed as a well-scoped, thoroughly negative scoping pilot; the full three-family
+  (2:1/3:2/2:3-exterior) connection-search build described at the top of this entry is not warranted by this
+  result and is not planned unless a future census at a different C or return-map branch changes the picture.
 - **#535** — Transient-Drift-Phase `quasi_cycler` Search for Co-Orbital/Resonance Objects (allocated 2026-07-03,
   same session, at the user's request — the deferred follow-up #523 and #527 BOTH independently pointed at, now
   finally given its own task number instead of remaining a repeated pointer in three different entries).
