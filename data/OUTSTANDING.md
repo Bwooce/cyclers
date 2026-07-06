@@ -133,7 +133,7 @@ copy-pasting the boilerplate — worth doing before the next batch of #522-529 s
   Efthymiopoulos, arXiv:2604.00679 (2026-04-01), computes manifold/heteroclinic structure for exactly this MMR
   band — the enumerator must recover manifold-consistent unstable POs before any "no Hilda cycler" negative is
   trusted. Cheapest of the three: no new build, a config/target change plus a one-paper digest.
-- **#528** — A low-thrust-native validation-gate gap (not a search gap). `dv_band: low_thrust_sep` and
+- ✓ Resolved (2026-07-06) **#528** — A low-thrust-native validation-gate gap (not a search gap). Resolved in commit cfac8e0: implemented verify_low_thrust_feasibility and a 500 m/s continuous-thrust ceiling, validated on sanchez-net-2022-eem-cycler1. `dv_band: low_thrust_sep` and
   `trajectory_regime: low-thrust` exist as schema fields and `core/sims_flanagan.py` exists as code, but **zero
   catalogue rows use either** (grep-verified) and the low-thrust branch of the acceptance gate
   (`verify/dv_band_acceptance.py`) literally `return`s `None` — no acceptance window at all. The V0/V2 gates
@@ -675,7 +675,7 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   on this stable-orbit search -- a genuinely different method (invariant-manifold propagation from the unstable
   separatrix orbits) would be needed to test the actual chaotic-transport cycler hypothesis; scope as a fresh
   task if pursued.
-- **#528** — Low-Thrust-Native Validation Gate: build a continuous-thrust acceptance criterion for
+- ✓ Resolved (2026-07-06) **#528** — Low-Thrust-Native Validation Gate: build a continuous-thrust acceptance criterion for (commit cfac8e0).
   `dv_band: low_thrust_sep` (currently a schema field with zero catalogue rows and a gate that `return`s `None`
   — no acceptance window exists), reusing `core/sims_flanagan.py`. Positive control: reproduce Pascarella et al.
   2022 (AAS 22-015, already in this project's corpus) to a stated tolerance. Should land before or alongside
