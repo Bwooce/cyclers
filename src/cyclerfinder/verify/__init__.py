@@ -45,6 +45,7 @@ from cyclerfinder.verify.dv_band_acceptance import (
     classify_dv_band,
     dv_band_threshold,
     v3_class_split_verdict,
+    verify_low_thrust_feasibility,
 )
 from cyclerfinder.verify.fidelity import (
     FidelityRungUnavailableError,
@@ -103,5 +104,6 @@ __all__ = [
     "solve_at_fidelity",
     "v3_class_split_verdict",
     "verify_long_term_stability",
+    "verify_low_thrust_feasibility",
     "verify_real_closure",
 ]

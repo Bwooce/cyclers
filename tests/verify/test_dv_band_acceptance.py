@@ -77,9 +77,12 @@ def test_null_band_has_no_window() -> None:
     assert dv_band_threshold(None) is None
 
 
-def test_low_thrust_sep_has_no_impulsive_window() -> None:
-    """low_thrust_sep is a regime, not an impulsive m/s ceiling -> no window."""
-    assert dv_band_threshold("low_thrust_sep") is None
+def test_low_thrust_sep_has_continuous_window() -> None:
+    """low_thrust_sep carries a continuous-thrust ΔV budget ceiling."""
+    w = dv_band_threshold("low_thrust_sep")
+    assert w is not None
+    assert w.lower_mps == 0.0
+    assert w.upper_mps == pytest.approx(500.0)
 
 
 def test_unknown_band_has_no_window() -> None:

@@ -36,25 +36,29 @@ Byrnes-Longuski-Aldrin 1993) — see the ``_POWERED_DSM_*`` basis note (conflict
 C4). The powered band's binding criterion is therefore its strictly-positive
 floor (rejects the ΔV≈0 ballistic neighbour), with the sanity ceiling on top.
 
-``low_thrust_sep`` carries no impulsive m/s ceiling — it is a regime, not a
-magnitude (band-definitions §"Proposed bands"). It is reported as a propellant /
-Isp-converted budget elsewhere (:mod:`cyclerfinder.search.lowthrust_maintenance`)
-and is intentionally *not* band-accepted here; it returns ``None`` (no impulsive
-window) so the caller keeps the generic path rather than silently passing.
+``low_thrust_sep`` carries a continuous-thrust ΔV budget ceiling of 500 m/s (over
+7 cycles, based on the Pascarella 2022 Pony Express baseline of 2 kg propellant
+at Isp 4155 s). It is evaluated using the Sims-Flanagan leg model in
+:func:`verify_low_thrust_feasibility`.
 
 Golden discipline
 -----------------
 The *measured* maintenance ΔV the caller passes in is OUR computed value
 (McConaghy 2002 defers the magnitude); these thresholds are the published
 band *boundaries*, never asserted as a rediscovered per-row number. The powered
-upper bound and the ``None`` low-thrust handling are project-convention,
-flagged as such above.
+upper bound is project-convention, flagged as such above.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Final
+
+import numpy as np
+
+from cyclerfinder.core.constants import MU_SUN_KM3_S2
+from cyclerfinder.core.sims_flanagan import SimsFlanaganLeg, segment_dv_bounds
+from cyclerfinder.model.cycler import Cycler
 
 # Russell's native basis: the m/s tiers are TOTAL deterministic maneuver over a
 # 7-cycle real-ephemeris propagation. A gate that runs a different cycle count
@@ -89,6 +93,11 @@ _POWERED_DSM_LOWER_MPS: Final[float] = 300.0
 # 3.5 km/s/cycle * 7 cycles (project-convention sanity ceiling, not a sourced tier).
 _POWERED_DSM_UPPER_MPS: Final[float] = 3_500.0 * RUSSELL_BASIS_CYCLES
 
+# --- low_thrust_sep window (total over 7 cycles, m/s).
+# The continuous-thrust maintenance budget ceiling (based on Pascarella 2022
+# Pony Express: ~163.6 m/s over 3 cycles, which scales to ~381.7 m/s over 7 cycles).
+_LOW_THRUST_SEP_MAX_MPS: Final[float] = 500.0
+
 
 @dataclass(frozen=True)
 class BandThreshold:
@@ -119,10 +128,7 @@ class BandThreshold:
     upper_mps: float
 
 
-# The single band → per-7-cycle window map. ``low_thrust_sep`` is intentionally
-# absent (regime, not impulsive magnitude — handled as a propellant/Isp budget
-# elsewhere); ``dv_band_threshold`` returns ``None`` for it and for any unknown
-# / null band, which is the caller's signal to keep the generic criterion.
+# The single band → per-7-cycle window map.
 _BAND_WINDOWS: Final[dict[str, BandThreshold]] = {
     "strictly_ballistic": BandThreshold("strictly_ballistic", 0.0, _STRICTLY_BALLISTIC_MAX_MPS),
     "essentially_ballistic": BandThreshold(
@@ -130,6 +136,7 @@ _BAND_WINDOWS: Final[dict[str, BandThreshold]] = {
     ),
     "low_maintenance": BandThreshold("low_maintenance", 0.0, _LOW_MAINTENANCE_MAX_MPS),
     "powered_dsm": BandThreshold("powered_dsm", _POWERED_DSM_LOWER_MPS, _POWERED_DSM_UPPER_MPS),
+    "low_thrust_sep": BandThreshold("low_thrust_sep", 0.0, _LOW_THRUST_SEP_MAX_MPS),
 }
 
 
@@ -148,8 +155,7 @@ def dv_band_threshold(dv_band: str | None) -> BandThreshold | None:
     -------
     BandThreshold | None
         The per-7-cycle acceptance window for the band, or ``None`` when the
-        band is ``None``, unknown, or ``"low_thrust_sep"`` (no impulsive m/s
-        ceiling — a propellant/Isp regime, not a magnitude). A row therefore
+        band is ``None`` or unknown. A row therefore
         **cannot be band-promoted on a band it does not carry** — the generic
         path always applies in the ``None`` case.
     """
@@ -532,6 +538,56 @@ def v3_class_split_verdict(
     )
 
 
+def verify_low_thrust_feasibility(
+    cycler: Cycler,
+    maintenance_dv_kms: float,
+    *,
+    isp_s: float,
+    tmax_kn: float,
+    m0_kg: float,
+    n_segments: int = 20,
+) -> bool:
+    """Verify if a cycler's legs are feasible under low thrust (task #528).
+
+    Constructs a SimsFlanaganLeg for each leg, distributes the maintenance_dv_kms
+    uniformly along-track (using the leg's departure velocity direction), and checks
+    if the segment ΔV magnitudes satisfy the thrust capability bounds.
+    """
+    legs = cycler.legs
+    encounters = cycler.encounters
+    all_feasible = True
+    for j, leg in enumerate(legs):
+        enc_dep = encounters[j]
+        enc_arr = encounters[j + 1]
+        r0 = np.asarray(enc_dep.r, dtype=np.float64)
+        v0 = np.asarray(leg.v_depart, dtype=np.float64)
+        rf = np.asarray(enc_arr.r, dtype=np.float64)
+        vf = np.asarray(leg.v_arrive, dtype=np.float64)
+        tof_s = float(leg.t_arrive - leg.t_depart)
+        sf_leg = SimsFlanaganLeg(
+            r0=r0,
+            v0=v0,
+            rf=rf,
+            vf=vf,
+            tof_s=tof_s,
+            n_segments=n_segments,
+            m0_kg=m0_kg,
+            isp_s=isp_s,
+            tmax_kn=tmax_kn,
+            mu=MU_SUN_KM3_S2,
+        )
+        v_hat = v0 / max(float(np.linalg.norm(v0)), 1.0)
+        per_seg = (maintenance_dv_kms / n_segments) * v_hat
+        dvs = np.tile(per_seg, (n_segments, 1))
+        bounds = segment_dv_bounds(sf_leg, dvs)
+        per_seg_mag = float(np.linalg.norm(per_seg))
+        leg_feasible_here = bool(np.all(bounds >= per_seg_mag - 1e-12))
+        if not leg_feasible_here:
+            all_feasible = False
+            break
+    return all_feasible
+
+
 __all__ = [
     "RUSSELL_BASIS_CYCLES",
     "V3_BALLISTIC_BUDGET_MPS",
@@ -544,4 +600,5 @@ __all__ = [
     "classify_dv_band",
     "dv_band_threshold",
     "v3_class_split_verdict",
+    "verify_low_thrust_feasibility",
 ]
