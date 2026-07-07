@@ -177,6 +177,8 @@ def build_manifold_grids(
     eps: float,
     surface_x: float,
     t_max: float,
+    stable_sign: float = 1.0,
+    unstable_sign: float = 1.0,
 ) -> tuple[ManifoldGrid, ManifoldGrid]:
     """Convenience wrapper: stable manifold of ``stable_torus``, unstable
     manifold of ``unstable_torus``, both to the same surface of section.
@@ -187,6 +189,7 @@ def build_manifold_grids(
         n_lat=n_lat,
         branch="stable",
         eps=eps,
+        sign=stable_sign,
         surface_x=surface_x,
         t_max=t_max,
     )
@@ -196,6 +199,7 @@ def build_manifold_grids(
         n_lat=n_lat,
         branch="unstable",
         eps=eps,
+        sign=unstable_sign,
         surface_x=surface_x,
         t_max=t_max,
     )

@@ -121,12 +121,13 @@ def local_stability(
         if not real_mask[i]:
             continue
         lam = float(np.real(eigvals[i]))
-        if lam > best_u:
-            best_u = lam
+        abs_lam = abs(lam)
+        if abs_lam > best_u:
+            best_u = abs_lam
             lam_u = lam
             vec_u = np.real(eigvecs[:, i]).astype(np.float64)
-        if 0.0 < lam < best_s:
-            best_s = lam
+        if 0.0 < abs_lam < best_s:
+            best_s = abs_lam
             lam_s = lam
             vec_s = np.real(eigvecs[:, i]).astype(np.float64)
 
@@ -198,6 +199,79 @@ def _crossing_state(
     return np.asarray(sol.y_events[0][0], dtype=np.float64)
 
 
+def _compute_longitude_row(
+    args: tuple[
+        int,
+        float,
+        NDArray[np.float64],
+        QPTorus,
+        str,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+    ],
+) -> tuple[int, NDArray[np.float64], NDArray[np.float64], NDArray[np.bool_]]:
+    (
+        i,
+        theta_long,
+        thetas_lat,
+        torus,
+        branch,
+        eps,
+        sign,
+        surface_x,
+        t_max,
+        hyperbolicity_tol,
+        rtol,
+        atol,
+    ) = args
+    n_lat = len(thetas_lat)
+    row_origins = np.zeros((n_lat, 2))
+    row_endpoints = np.full((n_lat, 6), np.nan)
+    row_hyperbolic = np.zeros(n_lat, dtype=bool)
+
+    prev_vec = None
+    for j, theta_trans in enumerate(thetas_lat):
+        row_origins[j, 0] = theta_long
+        row_origins[j, 1] = theta_trans
+        state, stm = torus_point_stm(
+            torus, float(theta_long), float(theta_trans), rtol=rtol, atol=atol
+        )
+        stab = local_stability(
+            state,
+            stm,
+            hyperbolicity_tol=hyperbolicity_tol,
+            prev_vec_u=prev_vec if branch == "unstable" else None,
+            prev_vec_s=prev_vec if branch == "stable" else None,
+        )
+        vec = stab.vec_u if branch == "unstable" else stab.vec_s
+        if vec is None:
+            continue
+        if prev_vec is None and vec[0] * sign < 0.0:
+            vec = -vec
+        row_hyperbolic[j] = True
+        prev_vec = vec
+        perturbed = state + eps * vec
+        direction = 1.0 if branch == "unstable" else -1.0
+        crossing = _crossing_state(
+            torus.system,
+            perturbed,
+            direction=direction,
+            surface_x=surface_x,
+            t_max=t_max,
+            rtol=rtol,
+            atol=atol,
+        )
+        if crossing is not None:
+            row_endpoints[j, :] = crossing
+
+    return i, row_origins, row_endpoints, row_hyperbolic
+
+
 def torus_manifold_grid(
     torus: QPTorus,
     *,
@@ -205,6 +279,7 @@ def torus_manifold_grid(
     n_lat: int,
     branch: str,
     eps: float = 1e-6,
+    sign: float = 1.0,
     surface_x: float,
     t_max: float,
     hyperbolicity_tol: float = 1e-3,
@@ -215,7 +290,7 @@ def torus_manifold_grid(
     (``branch="unstable"``) manifold's surface-of-section endpoint grid.
 
     For each of the ``n_long x n_lat`` torus points, perturbs by
-    ``eps * vec_{s,u}`` and propagates BACKWARD (stable) or FORWARD
+    ``sign * eps * vec_{s,u}`` and propagates BACKWARD (stable) or FORWARD
     (unstable) to ``x = surface_x``, recording the crossing state.
     Eigenvector continuity is threaded along the LATITUDE (``theta_trans``)
     direction within each longitude row (the direction Owen & Baresi's own
@@ -230,39 +305,70 @@ def torus_manifold_grid(
     endpoints = np.full((n_long, n_lat, 6), np.nan, dtype=np.float64)
     hyperbolic = np.zeros((n_long, n_lat), dtype=np.bool_)
 
-    for i, theta_long in enumerate(thetas_long):
-        prev_vec: NDArray[np.float64] | None = None
-        for j, theta_trans in enumerate(thetas_lat):
-            origins[i, j, 0] = theta_long
-            origins[i, j, 1] = theta_trans
-            state, stm = torus_point_stm(
-                torus, float(theta_long), float(theta_trans), rtol=rtol, atol=atol
+    if n_long >= 8:
+        import concurrent.futures
+
+        tasks = [
+            (
+                i,
+                theta_long,
+                thetas_lat,
+                torus,
+                branch,
+                eps,
+                sign,
+                surface_x,
+                t_max,
+                hyperbolicity_tol,
+                rtol,
+                atol,
             )
-            stab = local_stability(
-                state,
-                stm,
-                hyperbolicity_tol=hyperbolicity_tol,
-                prev_vec_u=prev_vec if branch == "unstable" else None,
-                prev_vec_s=prev_vec if branch == "stable" else None,
-            )
-            vec = stab.vec_u if branch == "unstable" else stab.vec_s
-            if vec is None:
-                continue
-            hyperbolic[i, j] = True
-            prev_vec = vec
-            perturbed = state + eps * vec
-            direction = 1.0 if branch == "unstable" else -1.0
-            crossing = _crossing_state(
-                torus.system,
-                perturbed,
-                direction=direction,
-                surface_x=surface_x,
-                t_max=t_max,
-                rtol=rtol,
-                atol=atol,
-            )
-            if crossing is not None:
-                endpoints[i, j, :] = crossing
+            for i, theta_long in enumerate(thetas_long)
+        ]
+        max_workers = min(12, n_long)
+        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+            results = list(executor.map(_compute_longitude_row, tasks))
+
+        for i, row_origins, row_endpoints, row_hyperbolic in results:
+            origins[i] = row_origins
+            endpoints[i] = row_endpoints
+            hyperbolic[i] = row_hyperbolic
+    else:
+        for i, theta_long in enumerate(thetas_long):
+            prev_vec: NDArray[np.float64] | None = None
+            for j, theta_trans in enumerate(thetas_lat):
+                origins[i, j, 0] = theta_long
+                origins[i, j, 1] = theta_trans
+                state, stm = torus_point_stm(
+                    torus, float(theta_long), float(theta_trans), rtol=rtol, atol=atol
+                )
+                stab = local_stability(
+                    state,
+                    stm,
+                    hyperbolicity_tol=hyperbolicity_tol,
+                    prev_vec_u=prev_vec if branch == "unstable" else None,
+                    prev_vec_s=prev_vec if branch == "stable" else None,
+                )
+                vec = stab.vec_u if branch == "unstable" else stab.vec_s
+                if vec is None:
+                    continue
+                if prev_vec is None and vec[0] * sign < 0.0:
+                    vec = -vec
+                hyperbolic[i, j] = True
+                prev_vec = vec
+                perturbed = state + eps * vec
+                direction = 1.0 if branch == "unstable" else -1.0
+                crossing = _crossing_state(
+                    torus.system,
+                    perturbed,
+                    direction=direction,
+                    surface_x=surface_x,
+                    t_max=t_max,
+                    rtol=rtol,
+                    atol=atol,
+                )
+                if crossing is not None:
+                    endpoints[i, j, :] = crossing
 
     return ManifoldGrid(origins=origins, endpoints=endpoints, hyperbolic=hyperbolic)
 
