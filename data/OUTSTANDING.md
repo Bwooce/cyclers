@@ -316,7 +316,7 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
 - **#516** — Multi-Revolution 3D Patched Search: Search with n_em, n_se > 1 to bypass the single-revolution phase-closure wall (uncommitted working-tree).
 - **#517** — Asymmetric/Mixed Libration Pairs in 3D: Scan for EM-L1 <-> SE-L2 and EM-L2 <-> SE-L1 crossings (uncommitted working-tree).
 - **#518** — 3D BCR4BP Continuation: Generate coherent 4-body seeds using 3D patched orbits (uncommitted working-tree).
-- **#519** — VEM Multi-Synodic Low-Thrust Signal Search: Finish the #309 VEM multi-synodic low-thrust signal search using the existing low-thrust search scripts without adding new compiled dependencies.
+- ✓ Resolved (2026-07-07) **#519** — VEM Multi-Synodic Low-Thrust Signal Search (commit 5ff3105): Ran scan_309_low_thrust_vem.py. The sweep returned 2 converged candidates, both of which are Sims-Flanagan infeasible due to thrust limit constraints.
 - **#520** — Comprehensive 3D Sweep: 8,640-point grid search over `scripts/run_520_comprehensive_3d_search.py` (uncommitted working-tree; dispatched by a separate agent, was mis-numbered #516 on arrival — renumbered). ABORTED 2026-07-02 after 12+ hours with zero output — see DELTA above; not a negative result.
 - **#521** — Pre-flight Search Gate: mandatory `preflight_search()` checked against both negative registries
   (`data/negative_results.yaml` + `data/empty_regions.jsonl`) plus task-number collision plus a required
