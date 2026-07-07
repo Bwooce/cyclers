@@ -434,6 +434,7 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   (allocated 2026-07-03, split off #522's Phase 2 exploration at the user's request). Goal: actually run #522's
   built-and-tested linking-number pipeline on a REAL, genuinely isoenergetic Earth-Moon L1/L2 quasi-halo pair and
   report a real connection count — not a mechanical self-test.
+  ✓ Resolved (2026-07-07): Implemented parallel grid computation and start-of-row sign alignment to resolve the sign flip blocker, and successfully executed standard and advanced searches via scripts/run_534_torus_connection.py (commit 98a1c57).
   **PHASE 2 EXPLORED 2026-07-03 (same session as #522's build, exploratory scripts not yet committed): real
   L1/L2 tori built at matched Jacobi, but exact frequency reproduction abandoned as impractical, and manifold-
   transit search hit a genuine open sub-problem.**
