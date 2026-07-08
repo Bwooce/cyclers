@@ -992,7 +992,8 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   #535 is complete as a discovery-screen exercise; no further investment planned unless a future broader/smarter
   search (the abandoned wide scan above, redone with proper `python3 -u`/flush=True instrumentation and likely a
   coarser first pass) turns up a structurally wider corridor.
-- **#536** — Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
+- **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
+  Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).
   (Jovian-Moon Tori) (allocated 2026-07-03, same session, from an independent second-opinion review of the
   #532/#534 discovery plan). **Motivation**: #534's Earth-Moon L1<->L2 target is not actually a novelty attempt
   as posed — quasi-halo/torus heteroclinic connections in that specific system are extensively published
