@@ -7,11 +7,14 @@ at the surface of section, checking for topological intersections via linking nu
 
 import concurrent.futures
 import math
+import pathlib
 
 import numpy as np
 import scipy.integrate
 
 import cyclerfinder.core.cr3bp as cr3bp
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.genome.qp_tori import correct_qp_torus
 from cyclerfinder.genome.qp_torus_heteroclinic import build_manifold_grids, scan_linking_number
 from cyclerfinder.genome.qp_torus_manifold import (
@@ -21,6 +24,19 @@ from cyclerfinder.genome.qp_torus_manifold import (
 )
 from cyclerfinder.search.bifurcation_detector import floquet_multipliers, monodromy
 from cyclerfinder.search.nrho_continuation import correct_symmetric_nrho
+
+_REGION_ID = "earth-moon-l1-l2-torus-linking-number-2026-07-07"
+_METHOD = MethodCapability(
+    genome=(
+        "Earth-Moon L1/L2 quasi-halo torus stable/unstable manifold crossing grids "
+        "(16x16 long/lat), single-system positive control for the #522 pipeline"
+    ),
+    corrector="build_manifold_grids + build_custom_grid + scan_linking_number",
+    capability_tags=frozenset(
+        {"cr3bp", "qp-torus", "heteroclinic", "linking-number", "earth-moon"}
+    ),
+    git_sha="working-tree",
+)
 
 
 def ydot_crossing_state(
@@ -123,6 +139,22 @@ def build_custom_grid(torus, branch, sign, t_max, surface_x):
 
 
 def main():
+    preflight_search(
+        task_no=534,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        n_points=1536,
+        override_reason=(
+            "retrofitting the mandatory #521 preflight gate onto a script that already "
+            "ran to completion (resolved 2026-07-07) before the gate existed; no timing "
+            "pilot was captured at the time, and re-running the full sweep solely to "
+            "measure one is not warranted for an already-complete result. Note: this "
+            "script's Step 3 block is duplicated verbatim (lines further down) -- a "
+            "pre-existing copy-paste artifact found while adding this gate, not "
+            "introduced or fixed here; flagged separately, out of scope for this edit."
+        ),
+    )
     sysm = cr3bp.CR3BPSystem(
         mu=0.012153643, primary="Earth", secondary="Moon", l_km=384400.0, t_s=382981.0
     )

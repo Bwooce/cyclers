@@ -7,11 +7,14 @@ at the surface of section, checking for topological intersections via linking nu
 
 import concurrent.futures
 import math
+import pathlib
 
 import numpy as np
 import scipy.integrate
 
 import cyclerfinder.core.cr3bp as cr3bp
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.genome.qp_tori import correct_qp_torus
 from cyclerfinder.genome.qp_torus_heteroclinic import build_manifold_grids, scan_linking_number
 from cyclerfinder.genome.qp_torus_manifold import (
@@ -20,6 +23,17 @@ from cyclerfinder.genome.qp_torus_manifold import (
     torus_point_stm,
 )
 from cyclerfinder.search.nrho_continuation import correct_symmetric_nrho
+
+_REGION_ID = "jupiter-europa-l1-l2-torus-linking-number-2026-07-08"
+_METHOD = MethodCapability(
+    genome=(
+        "Jupiter-Europa L1/L2 quasi-halo torus stable/unstable manifold crossing grids "
+        "(16x16 long/lat), single Jacobi constant C=3.0015"
+    ),
+    corrector="build_manifold_grids + build_custom_grid + scan_linking_number",
+    capability_tags=frozenset({"cr3bp", "qp-torus", "heteroclinic", "linking-number", "jovian"}),
+    git_sha="working-tree",
+)
 
 
 def ydot_crossing_state(
@@ -122,6 +136,20 @@ def build_custom_grid(torus, branch, sign, t_max, surface_x):
 
 
 def main():
+    preflight_search(
+        task_no=536,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        n_points=1024,
+        override_reason=(
+            "retrofitting the mandatory #521 preflight gate onto a script that already "
+            "ran to completion (resolved 2026-07-08, 0 connections at C=3.0015) before "
+            "the gate existed; no timing pilot was captured at the time, and re-running "
+            "the full 4x16x16-point sweep solely to measure one is not warranted for an "
+            "already-complete negative"
+        ),
+    )
     sysm = cr3bp.cr3bp_system("Jupiter", "Europa")
     print(f"Loaded system: Jupiter-Europa (mu = {sysm.mu:.8e})")
 
