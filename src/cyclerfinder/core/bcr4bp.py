@@ -336,6 +336,7 @@ def propagate_bcr4bp(
     t0: float = 0.0,
     rtol: float = 1e-12,
     atol: float = 1e-12,
+    collision_check: bool = False,
 ) -> BCR4BPArc:
     """Propagate a BCR4BP state (and optionally the STM) from ``t0`` to ``t0+t``.
 
@@ -346,6 +347,18 @@ def propagate_bcr4bp(
     directly via ``scipy.integrate.solve_ivp`` by the genome-level corrector,
     not exposed as a parameter here.
 
+    ``collision_check`` (default ``False``) terminates integration early on a
+    close approach to either primary (r < ~7,700 km of the first primary, r <
+    ~3,800 km of the second) -- an opt-in guard for exploratory manifold
+    sweeps that may otherwise burn compute on a near-singular trajectory.
+    Default OFF because this radius is much larger than several legitimate
+    close-approach targets already built on this function (e.g.
+    ``genome/bct_transfer.py``'s Belbruno ballistic-capture states sit ~1,800
+    km from the Moon's centre by design -- a 100 km capture altitude); turning
+    it on unconditionally silently truncated those propagations (found
+    2026-07-09 debugging a `tests/search/test_cislunar_bct_search.py`
+    regression). Callers that want the guard must opt in explicitly.
+
     Raises
     ------
     RuntimeError
@@ -353,9 +366,28 @@ def propagate_bcr4bp(
         step size below floating-point resolution).
     """
     state0 = np.asarray(state6, dtype=np.float64)
+
+    # 3-arg signature (t, y, system) matches bcr4bp_stm_eom/bcr4bp_eom exactly:
+    # scipy's solve_ivp forwards the same `args=(system,)` tuple to every event
+    # callable it's given, not just `fun` (see scipy.integrate._ivp.ivp.solve_ivp,
+    # `events = [lambda t, x, event=event: event(t, x, *args) for event in events]`)
+    # -- correct at runtime; mypy's solve_ivp stub does not model this, hence the
+    # ignores below.
+    def _collision_event(t: float, y: NDArray[np.float64], system: BCR4BPSystem) -> float:
+        mu = system.mu
+        x, yc, z = y[0], y[1], y[2]
+        r1_sq = (x + mu) ** 2 + yc**2 + z**2
+        r2_sq = (x - 1.0 + mu) ** 2 + yc**2 + z**2
+        if r1_sq < 0.0004 or r2_sq < 0.0001:
+            return 0.0
+        return 1.0
+
+    _collision_event.terminal = True  # type: ignore[attr-defined]
+    events = _collision_event if collision_check else None
+
     if with_stm:
         y0 = np.concatenate([state0, np.eye(6).reshape(36)])
-        sol = solve_ivp(
+        sol = solve_ivp(  # type: ignore[call-overload]
             bcr4bp_stm_eom,
             (t0, t0 + t),
             y0,
@@ -363,12 +395,13 @@ def propagate_bcr4bp(
             rtol=rtol,
             atol=atol,
             method="DOP853",
+            events=events,
         )
         if not sol.success:
             raise RuntimeError(f"BCR4BP STM propagation failed at t={sol.t[-1]}: {sol.message}")
         yf = sol.y[:, -1]
         return BCR4BPArc(state_f=yf[:6], stm=yf[6:].reshape(6, 6), t=float(sol.t[-1]) - t0)
-    sol = solve_ivp(
+    sol = solve_ivp(  # type: ignore[call-overload]
         bcr4bp_eom,
         (t0, t0 + t),
         state0,
@@ -376,6 +409,7 @@ def propagate_bcr4bp(
         rtol=rtol,
         atol=atol,
         method="DOP853",
+        events=events,
     )
     if not sol.success:
         raise RuntimeError(f"BCR4BP propagation failed at t={sol.t[-1]}: {sol.message}")
