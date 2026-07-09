@@ -13,7 +13,7 @@ Do not delete the original question text — the audit trail matters.
 
 ---
 
-# Project state at a glance (updated 2026-06-30)
+# Project state at a glance (updated 2026-07-09)
 
 ## DELTA 2026-07-02 (independent Fable-model review — sustainability audit + novel-orbit discovery proposal) — read this first
 
@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1012,21 +1012,94 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   continuation), not new machinery. **Explicitly gated on #534's transit/non-transit classification landing
   first** — do not fork effort into a second system while the first one's own manifold-branch selection is
   still unresolved. Not yet built.
-- **#533** — Genuine Coherent QBCP Model (allocated 2026-07-03, same session — path (a) from #522's scoping pass,
-  formally split out as its own task at the user's request rather than left as inline prose under #522). Closes
-  the real prerequisite gap #522 found: `core/bcr4bp.py`'s own docstring (lines 14-30) states outright that
-  Andreu's coherent QBCP needs 8 Fourier tables `alpha_i(theta_S)` that are "NOT in the in-repo digest" — a
-  literature-data-acquisition gap, not a missing function. Concrete first step: acquire + digest the Andreu
-  QBCP paper(s) (the alpha_i Fourier-table source; not yet identified/acquired this session — check
-  Gomez-Masdemont-Simo-era QBCP literature and any existing CORPUS_INDEX near-misses first) and extract the 8
-  tables. Then build the QBCP equations-of-motion module (self-consistent Sun trajectory, not the circular
-  approximation `core/bcr4bp.py` already has) with a positive control against a published QBCP invariant-object
-  reproduction (e.g. a QBCP halo/Lissajous family or torus already in the literature). Real multi-week
-  acquisition+build, matching the cost of the other Track-A capability axes. Explicitly an ALTERNATIVE to
-  #522's cheaper, unvalidated path (b) (anchoring `theta` to the Sun's synodic angle already tracked in the
-  existing EM-frame `core/bcr4bp.py`) — the two are not both required; #522's cross-system SE<->EM torus
-  connection can proceed via EITHER #533 (if built) OR path (b) (if it validates), whichever the user/future
-  session picks. Not yet started — no acquisition, no digest, no code.
+- **#533** — ✓ Resolved (2026-07-08). Genuine Coherent QBCP Model: Implemented the QBCP equations of motion and STM in canonical variables using Gimeno-Jorba 2018 Table 4 coefficients, verified against circular BCR4BP limits and finite differences (commit to follow).
+- ✓ Resolved (2026-07-09) **#537** — QBCP Cross-System Torus Connection Search: Completed the cross-system invariant torus connection search from Sun-Earth L2 Torus to Earth-Moon L2 Torus in the QBCP model, finding a highly accurate refined connection candidate with a 12,034 km position gap and a 911 m/s velocity gap at crossing time 3.66 TU (scripts/run_533_qbcp_connection.py). **Caveat found 2026-07-09 while scoping #538**: the refining `least_squares` solve is a **3-equation/4-unknown rank-deficient system that never includes velocity in its residual** — the 12,034 km / 911 m/s numbers are post-hoc diagnostics from a separate propagation, not quantities the optimizer drove toward zero. Treat as a basin seed for #538's properly-posed solve, not a near-converged boundary condition. Plan: `docs/superpowers/plans/2026-07-09-538-qbcp-cross-system-cycler-correction.md`.
+- **#538** — QBCP Cross-System Periodic Orbit (Cycler) Correction: Chain the forward and reverse QBCP torus connections refined in #537, set up a multi-segment boundary value problem, and run a differential corrector to converge on a mathematically exact periodic orbit in the time-periodic QBCP model. Verify its stability and transport utility (close approaches to Earth/Moon) to evaluate it as a potential cislunar cycler. Full task breakdown + recommended model per task in `docs/superpowers/plans/2026-07-09-538-qbcp-cross-system-cycler-correction.md`. **Blocking finding (2026-07-09):** `tests/scripts/test_scripts_call_preflight.py` currently **fails on `main`** — `run_534_torus_connection.py` and `run_536_jupiter_europa_connection.py` (already committed) plus the two uncommitted `run_522_coherent_connection.py`/`run_533_qbcp_connection.py` call no `preflight_search()` and are not in `_LEGACY_EXEMPT`; fix before or as #538's Task 0 (see plan).
+
+## Novel-orbit discovery proposals following #538 (allocated 2026-07-09, this session — read this before dispatching)
+
+Formulated after auditing the #521-538 arc's actual outcomes (not just its headline resolutions): the coherent-model whiskered-torus/heteroclinic-connection pipeline (#522→#533→#537→#538) is this project's newest capability and sits in the "cislunar BCR4BP — under-mined, MEDIUM-yield" slot the 2026-06-26 `docs/superpowers/specs/2026-06-26-next-frontier-prioritization.md` frontier-ranking identified before it existed. #536's Jupiter-Europa screen tested exactly **one** Jacobi constant (C=3.0015) and found 0 connections — per the project's own "no X found is conditional on the search formulation" discipline, a single-point probe does not certify that region empty; it is a starting point, not a completed sweep. The proposals below sequence the natural next moves, ranked by expected new-catalogue-row yield and gated on #538 actually landing (either a confirmed closure or a documented negative) first, since #539/#540 reuse #538's corrector methodology directly.
+
+- **#539** (P1, do first once #538 lands) — Generalize #538's well-posed multi-segment
+  torus-connection corrector out of the one-off `scripts/run_538_qbcp_cycler.py` into a
+  reusable `genome/torus_cycle_corrector.py` module (mirrors how #314's
+  `heteroclinic_cycle.py` became the shared base #405/#530/#531 all reused after their
+  first one-off proved out) — **and** re-run the Jupiter-Europa/Ganymede screen properly:
+  a Jacobi-constant band sweep (not one point) crossed with a synodic-phase-offset sweep
+  between the two moons (the same free coordinate #522's coherent-model reformulation
+  introduced for SE<->EM, generalized to a Jovian-moon pair), using #524's already-built
+  deflated Newton to enumerate basins instead of hoping one seed lands in the right one.
+  This directly supersedes #536's single-point negative rather than duplicating it.
+  **Positive control:** the pipeline must first recover #538's own confirmed SE<->EM
+  connection (or #537's basin) under a parameter-continuation from Earth-Moon mass ratio
+  toward Jupiter-Europa's — proof the generalized module still finds the one connection
+  we already trust before it's pointed at unmapped territory.
+  **Feasibility: MEDIUM** — the corrector logic is proven by #538; the new build is the
+  extraction/generalization plus a genuinely wider sweep, not new physics.
+  **Recommended models:** module extraction/generalization behind #538's existing
+  convergence-residual tests → **Sonnet** (spec-complete refactor, strong regression gate).
+  The Jacobi/phase-sweep design (band bounds, resolution, what counts as a "hit") →
+  **Opus** (the #339/#480-class criterion-definition judgment call the project has
+  repeatedly found itself needing to settle in writing *before* sweeping). Final
+  novelty/empty-region verdict → **Opus**, with a **Fable** independent adversarial pass
+  before any "novel" claim or catalogue writeback (matching #538 Task 5's pattern).
+
+- **#540** (P2, sequence after #539) — Point the now-generalized, cross-checked pipeline at
+  the **Uranian system** (Miranda-Ariel-Umbriel-Oberon lanes) — the *one* system that has
+  ever produced a confirmed novel catalogue row in this project's history (#312,
+  Umbriel-Oberon quasi-cycler, V4). The explicit question: does a strictly-more-capable
+  method (genuine coherent-model torus connections, vs. whatever produced #312) find
+  *more* novel families near the known one, or corroborate #312 as an isolated island?
+  Per the empty-region registry's re-open rule, this is exactly the case where a
+  strictly-more-capable method is licensed to re-open previously-screened territory.
+  **Feasibility: MEDIUM-HIGH** — reuses #539's module; the new work is sourcing/verifying
+  Uranian system ephemeris constants and moon pair selection, not new solver machinery.
+  **Recommended models:** system setup + parameter sourcing (digest-and-reconcile against
+  a published Uranian-system reference, per the "digest ≠ adoption" discipline) →
+  **Sonnet**. Running the sweep and adjudicating any hit against the #312 anchor →
+  **Opus**, **Fable** second-opinion pass before writeback (same pattern as #539/#538).
+
+- **#541** (P3, opportunistic, lower priority than #539/#540) — First-pass Saturnian
+  resonant-moon-pair screen (Mimas-Enceladus or Enceladus-Titan) using the same
+  generalized pipeline — the third giant-planet moon system this project has never
+  screened for whiskered-torus heteroclinic structure at all (extends the #536 Jovian
+  first-pass to a second untouched system, one #536-caliber sweep, not a deep campaign).
+  **Feasibility: MEDIUM** — same caveat as #539: a real sweep (band + phase), not a
+  single-point probe, from the start this time.
+  **Recommended models:** **Sonnet** for the sweep build/execution (spec inherited from
+  #539/#540); **Opus** for the empty-region-vs-hit verdict.
+
+- **#542** (P4, defer until #539-541 have added corrector-run diversity) — The
+  previously-proposed #525 learned-seed generative warm-start (diffusion/generative model
+  trained on the accumulated corrector runlogs/checkpoints, cf. Graebner & Beeson,
+  arXiv:2501.07005) to propose seeds in unknown basins automatically. Still speculative;
+  now has meaningfully more training diversity to draw on once #539-541's runlogs exist,
+  but not yet worth building on #530-538's data alone.
+  **Feasibility: LOW-MEDIUM, genuinely speculative** — the 2026-06-11 Ozaki
+  "below-breakeven" triage already flagged this class of approach as marginal; revisit
+  the triage, don't just proceed.
+  **Recommended models:** research/design (surveying what training signal actually exists
+  in the runlog corpus, whether it's enough) → **Opus**. If it proceeds to a build,
+  implementation behind an explicit train/eval split → **Sonnet**.
+
+- **#543** (parking lot — needs a scoping conversation, not a sprint slot) — #529's
+  deferred inter-cycler-network / taxi-transfer catalogue extension. Still real (this
+  project's own corpus documents published fleet-of-cyclers networks the current 5-class
+  taxonomy cannot express), still ranked last deliberately: it changes what a catalogue
+  row/relation can *be*, which wants a deliberate human scoping discussion before any
+  agent starts building.
+  **Recommended model:** the scoping conversation itself should happen with the user
+  directly; once scoped, schema work → **Sonnet**, search-over-existing-rows logic →
+  **Opus** (it's a discovery-adjacent judgment task, reusing `model/score.py`'s
+  `taxi_cost_kms`, not mechanical).
+
+**Recommendation:** #538 first (unblocks all of the above — #539/#540 both reuse its
+corrector). #539 next (cheapest genuine new-territory attempt, directly closes the
+single-point-negative gap #536 left open). #540 alongside or immediately after (highest
+strategic value — it's the only system with a proven track record of yielding a real
+novel row). #541 opportunistic filler. #542/#543 stay parked until there's more
+runlog diversity / a scoping conversation respectively.
+
 
 
 ## DELTA 2026-06-30 (session B — discovery campaign + Ross-corpus acquisitions) — read this first
