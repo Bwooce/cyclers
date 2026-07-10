@@ -1052,6 +1052,38 @@ bearing numerical-methods judgment, same class of work as #538's Task 1). Implem
 the fix once diagnosed and re-validating against SE-L2's already-clean convergence as a
 positive control → **Sonnet**.
 
+**PARTIALLY RESOLVED (2026-07-10).** The actual bug was none of (a)-(c): it was a
+**singular phase-pin gauge**. `se_lyapunov_to_bcr4bp_torus_seed` / `se_lyapunov_to_qbcp_torus_seed`
+(and the four scripts' inline EM-side duplicates of the same pattern) picked
+`phase_pin_idx = argmax|Im(c_1)|`, but the residual pins `Im(c_1[phase_pin_idx]) = 0`,
+whose gauge derivative w.r.t. a circle rotation is `Re(c_1[phase_pin_idx])` — so the pin
+coordinate needs a *large real part*, not a large imaginary part. For a symmetric
+Lyapunov orbit c_1 splits cleanly real/imaginary by coordinate (x/vy real, y/vx
+imaginary); `argmax|Im|` picks a coordinate whose `Re ≈ 3e-12`, an essentially singular
+gauge the corrector cannot use to fix the rotational phase, so it stalls. Confirmed
+against `qp_tori.py:655`'s `correct_qp_torus`, which correctly uses `argmax|Re|` — the
+EM-side helpers/inline scripts had silently diverged from that pattern. Fixed identically
+in `genome/bcr4bp_torus.py`, `genome/qbcp_torus.py`, and the four scripts' inline
+duplicates (`run_522`/`run_533`/`run_538`/`search_coherent_connections.py`).
+**Result:** SE-L2 stays clean (3.093e-05 → 2.537e-05, slightly better). EM-L2 improves
+~7x (3.439 → 4.771e-01) but does **not** reach the 1e-3 target. The remaining gap is
+candidate (d), not a corrector bug: the EM-L2 Lyapunov at Jacobi 3.17 sits right at
+C_L2≈3.172 and swings deep toward the Moon (closure state x=0.967 vs. Moon at x=0.988),
+giving genuinely high harmonic content (mode-ratio ≈0.87, vs. SE's benign 0.35) that
+`n_modes=2` cannot resolve — a Jacobi scan confirmed the whole EM-L2 family near C_L2 is
+high-harmonic; reaching 1e-3 there would need ~40 modes (infeasible for #538/#539/#540's
+downstream correctors) or an independent off-grid cross-check before trusting a
+masked/oversampled residual (the fix deliberately did not reach for that — a masked low
+residual on an unresolvable torus would be exactly the "it closed!" trap this project's
+orbit-closure discipline warns against). **Open decision for whoever picks up #538 next:
+reconsider the EM-L2 target orbit** (a smaller-amplitude object away from the Moon, or an
+EM-L2 halo, where `n_modes=2-4` should genuinely resolve it as it does for SE) rather than
+pushing more modes at this specific high-harmonic orbit. Validation: ruff/mypy clean,
+`tests/genome/test_bcr4bp_torus.py` + `tests/genome/test_qbcp_torus.py` +
+`tests/core/test_qbcp.py` + `tests/core/test_bcr4bp.py` all pass (18/18). #538's own
+multi-hour closure attempt was deliberately NOT re-run as part of this fix (that decision
+belongs to whoever next works #538, given the EM-L2 target-orbit question above is still open).
+
 ## Novel-orbit discovery proposals following #538 (allocated 2026-07-09, this session — read this before dispatching)
 
 Formulated after auditing the #521-538 arc's actual outcomes (not just its headline resolutions): the coherent-model whiskered-torus/heteroclinic-connection pipeline (#522→#533→#537→#538) is this project's newest capability and sits in the "cislunar BCR4BP — under-mined, MEDIUM-yield" slot the 2026-06-26 `docs/superpowers/specs/2026-06-26-next-frontier-prioritization.md` frontier-ranking identified before it existed. #536's Jupiter-Europa screen tested exactly **one** Jacobi constant (C=3.0015) and found 0 connections — per the project's own "no X found is conditional on the search formulation" discipline, a single-point probe does not certify that region empty; it is a starting point, not a completed sweep. The proposals below sequence the natural next moves, ranked by expected new-catalogue-row yield and gated on #538 actually landing (either a confirmed closure or a documented negative) first, since #539/#540 reuse #538's corrector methodology directly.
