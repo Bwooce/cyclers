@@ -1968,18 +1968,17 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   family/empty-region verdict. Fable second-opinion pass before any catalogue writeback
   (matches #546's own prescribed split for this territory).
 
-- **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
-  #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
-  found 2000-01-15 launches FAIL V4-strict (91,000 km drift) while 2000-06-21 PASSES
-  (12,000 km) — same year, and the 84-year validity window / 100% interior pass rate holds
-  ONLY at June-21-ish launches. The daily-epoch scan across one Umbriel-Oberon synodic cycle
-  that would resolve whether June 21 sits in a wide PASS band or on a knife-edge was scoped,
-  declared non-blocking, and never run (#338's own 100-epoch annual sweep took 42s, so this
-  is well under a minute of compute). Directly affects #312's mission-utility claim and its
-  eventual V5 write-up (a knife-edge DOY dependency is a materially weaker result than a wide
-  tolerant band).
-  **Recommended model:** Sonnet (mechanical parameter sweep behind the existing frozen
-  V4-strict gate, no new judgment call).
+✓ Resolved (2026-07-11, commit `<pending>`) **#559** — Daily DOY-sensitivity scan on #327 SILVER.
+  Ran 731 epochs (2000-01-01..2000-12-31, 2030-01-01..2030-12-31) at daily resolution under
+  V4-strict. **Result: HIGHLY IRREGULAR, NOT a knife-edge or wide tolerant band.** Pass rates:
+  2000: 89.9% (329/366, fails scattered DOY 3-363); 2030: 85.8% (313/365, fails scattered DOY 1-353).
+  The PASS/FAIL boundary exhibits rapid, stochastic transitions (many 1-day FAIL spikes interspersed
+  among PASSes) throughout both years, not a simple deterministic edge. June 21 (DOY 172) PASSes in
+  both years (drift ~14k km vs ~86-96k km when failing). Pattern suggests chaotic/moon-phase-sensitive
+  rather than simple resonant boundary. **Implication for #312 V5:** Mission utility is robust at
+  DOY 06-21-ish across both decades, but the full validity envelope is more nuanced than a simple
+  launch-epoch window (scattered 10% FAIL rate throughout year, not concentrated at edges).
+  Output: `data/silver_327_v4_strict_daily_sweep_559.jsonl`. Script: `scripts/run_559_silver_v4strict_daily_doy_scan.py`.
 
 - **#541** (P3, opportunistic, lower priority than #539/#540) — First-pass Saturnian
   resonant-moon-pair screen (Mimas-Enceladus or Enceladus-Titan) using the same
