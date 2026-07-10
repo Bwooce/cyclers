@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1006,6 +1006,46 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   #535 is complete as a discovery-screen exercise; no further investment planned unless a future broader/smarter
   search (the abandoned wide scan above, redone with proper `python3 -u`/flush=True instrumentation and likely a
   coarser first pass) turns up a structurally wider corridor.
+
+- **#557** (P0, planning phase first — do NOT build/run yet, review the plan before deciding on
+  implementation) — extend #535's validated Hill-sphere-return `quasi_cycler` screen
+  (`search/hill_sphere_return_detector.py`, admission criterion already settled in writing for
+  Earth) to the Sun-Jupiter quasi-Hilda population. Motivation: unlike Earth's RH120 (a
+  documented ONE-SHOT transient, Jul 2006-Jul 2007, no known recurrence — and #535's own
+  admissible Earth corridor turned out to be a ~15,000 km knife-edge that COLLAPSED entirely
+  under real orbital eccentricity, ER3BP e=0.0167 vs the idealized e=0), Jupiter's quasi-Hilda
+  population includes REAL comets with documented, REPEATING temporary satellite captures (e.g.
+  P/Gehrels 3, 111P/Helin-Roman-Crockett) — a recurring phenomenon in the literature, not a
+  hopeful search for something that might not exist. Checked the empty-region registry first:
+  neither existing Jupiter-Hilda entry (`sun-jupiter-hilda-32-mmr-dahotm`, a periodic-orbit-family
+  DA/HOTM enumeration; `hilda-c3.14-homoclinic-connection-hill-encounter`, a single-homoclinic-
+  tangle check) is this method — a broad Hill-sphere-return sweep across quasi-Hilda phase space
+  is genuinely unscreened territory, not already-registered-empty. Matches the pattern behind
+  both of this project's confirmed novel hits (#312 Uranus, PC (3,2) via #494/#504): validated
+  tool pointed at unscreened territory, not a new capability build.
+  **Planning-phase scope (this dispatch):** per #535's own `#339-style-criterion-trap` discipline
+  (settle the admission criterion in writing BEFORE any sweep code, exactly as #535 itself did
+  for Earth before building anything), produce a concrete, reviewable plan covering: (1) re-derive
+  the return-separation timescale from Jupiter's own orbital/libration period (#535's own
+  criterion note explicitly flags its 1-year, Earth-orbital-period-motivated floor as NOT
+  transferable to Jupiter without this re-derivation); (2) decide the seeding strategy — literal
+  ICs from a documented real object's actual orbital elements (P/Gehrels 3 or 111P/Helin-Roman-
+  Crockett, sourced not assumed) as a positive-control-style anchor, a broad quasi-Hilda
+  phase-space scan, or both; (3) adapt the bounded-geometry/window-count admission thresholds
+  (currently Earth-scale numbers) to Jupiter's Hill-sphere scale; (4) identify what, if anything,
+  needs building versus what #535's existing detector/criterion machinery already handles
+  verbatim; (5) an honest cost/risk estimate given #535's own history (a real result was found
+  for Earth, but it was fragile and the broader search attempt was abandoned to an
+  instrumentation gap, not a clean negative — flag what would need to be different this time to
+  avoid repeating that). Do NOT write the sweep script or run anything yet — this is a design
+  document for review, mirroring how #538's plan was written and reviewed before any Task 1
+  code was dispatched.
+  **Recommended model:** Opus for this planning pass (the #339-style-criterion-definition
+  judgment call + Jupiter-timescale re-derivation is exactly the trust-bearing numerical-methods
+  design work this project's model-tiering policy reserves for Opus, not a mechanical task).
+  Implementation model to be decided after the plan is reviewed, per explicit user instruction —
+  do not auto-proceed to a build dispatch on plan completion.
+
 - **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
   Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).
   **⚠ STAMP (2026-07-10, #548): this 0-connection result is METHOD-INVALID — DO-NOT-CERTIFY, not an
