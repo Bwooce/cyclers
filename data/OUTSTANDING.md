@@ -1399,6 +1399,43 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   method-invalid-do-not-certify below.** Did NOT write to `data/catalogue.yaml` (no hit; nothing to
   write). Recommend an Opus/Fable second pass to confirm the shelve or authorize the one L2-near-
   bifurcation retry before permanent retirement.
+  **⚖ ONE-MORE-SHOT AUTHORIZED (2026-07-10, #553 adjudication) — the shelve is NOT ratified as
+  final; #548's substitution rested on a factual error.** Independent verification (vertical
+  stability index a_v of the PLANAR Lyapunov family crossing +1 — a different route from #548's
+  halo z0->0 continuation; script + log in the #553 session scratchpad, `verify553_bif3.py`):
+  the EM **L1 halo bifurcation is at C = 3.1744, not ~3.146** (the L2 value 3.1521 CONFIRMS
+  #548's ~3.152, validating the method). C=3.15 is therefore INSIDE the L1 quasi-halo regime —
+  #548's own L1_TABLE corroborates this (z0^2-vs-C extrapolation from its rows lands the
+  bifurcation near ~3.17; z0=-0.061 at C=3.14523 is nowhere near a pitchfork) — so the ~3.146
+  "snap to planar" was a corrector/continuation artifact misread as physics. Owen & Baresi's
+  demo is self-consistent with the corrected numbers: at C=3.15 the L1 quasi-halo is developed
+  (lat. freq 0.2739) and the L2 halo sits 0.002 below ITS bifurcation (tiny near-planar, lat.
+  freq 0.02163). Consequently the C in [3.05,3.07] substitution was not "the same physics": it
+  dropped the one property that gave the kill criterion its force — KNOWN ground truth. Nobody
+  knows connections exist for the specific tori tested there, so the zero is a FOURTH
+  unscreened-application negative, not a failed positive control; per
+  [[feedback_verify_gauntlet_with_positive_control]] it cannot trigger the kill. Two further
+  oversell findings: (a) the postmortem's "straddling 0.2739" claim is false — the swept L1
+  ratios 0.2944-0.3668 sit entirely ABOVE 0.2739, so BOTH sides were frequency-mismatched;
+  (b) "linking number identically 0" conflates computed-zero with curve-extraction failure
+  (`scan_linking_number` emits 0 when `_first_closed_curve` returns None; the run JSON records
+  no per-D curve-availability counts, and the L2 grid had 166/320 NaN + ~0.001-wide z-overlap +
+  150/170 sheet mixing), so "the curves never link" was never established as a property of
+  actually-extracted curves. AUTHORIZED final shot (one dispatch, time-boxed): (1) L1 quasi-halo
+  at C=3.15 via the EXISTING machinery with careful continuation across the ~3.146 corrector
+  failure (z0~0.05 there — not degenerate); (2) the flagged L2 planar->halo bifurcation seed
+  generator (the #553 verification script already locates the bifurcation orbit: amp=0.0353,
+  x0=1.1204, T=3.4156, C=3.1521 — step off in z and correct); (3) rebuild tori at C=3.15
+  targeting ratios ~0.2739 / ~0.02163 and re-run the scan WITH per-D both-curves-available
+  instrumentation plus a synthetic linked-curve positive control of the extraction step itself.
+  RE-REGISTERED kill criterion (now with a valid precondition): zero sign changes at the
+  genuinely frequency-matched C=3.15 pair -> permanent retirement, no appeal. What STANDS from
+  #548: the #534/#536/#546 method-invalid-do-not-certify stamps (conservative, correct either
+  way), the empirical transit classifier (`qp_torus_transit.py`, a real improvement), and the
+  0-for-4 record. Standing rules compelling this over immediate ratification:
+  [[feedback_never_give_up_reproducing_papers]] (O&B's 4 EM connections are a published result
+  this codebase has never reproduced) — and the cost is ~one session of tool VALIDATION gating
+  the interpretability of three already-run screens, not more corrector-depth discovery.
 
 - **#553** (P1, cheap, read-only review) — Fable ratification pass on #548's shelve verdict.
   #548's own pre-registered kill criterion was written for "zero sign changes at C=3.15"; the
@@ -1418,6 +1455,17 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   sweep, no code changes expected.
   **Recommended model:** Fable (independent adversarial second opinion, matching the project's
   existing pre-writeback pattern).
+  **✓ RESOLVED (2026-07-10) — ONE-MORE-SHOT AUTHORIZED, shelve NOT ratified as final.** Full
+  adjudication appended to the #548 entry above. Key findings: (a) #548's L1 halo-bifurcation
+  claim (~3.146) is wrong — independently recomputed at C=3.1744 via planar-Lyapunov vertical
+  stability (its L2 ~3.152 value was confirmed at 3.1521 by the same method), so C=3.15 IS
+  inside the L1 quasi-halo regime and the substitution's physics rationale fails on the L1
+  side; (b) the substituted band lost the known-ground-truth property the kill criterion
+  required, making the run a fourth unscreened negative rather than a positive control; (c) the
+  postmortem's "straddling 0.2739" claim is false (swept 0.2944-0.3668, all above it) and
+  "identically 0" conflates computed-zero with curve-extraction failure (no per-D availability
+  instrumentation). One final frequency-matched shot at C=3.15 is authorized with a
+  re-registered kill criterion; see the #548 append for the scoped work list.
 
 - **#549** (P0, fire alongside #548, fully disjoint code path) — Real-binary `(k1, k2)`
   genome sweep. The Tier-1 forward-plan line "circumbinary Pluto-Charon deeper + other-binary
