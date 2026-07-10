@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1084,9 +1084,77 @@ pushing more modes at this specific high-harmonic orbit. Validation: ruff/mypy c
 multi-hour closure attempt was deliberately NOT re-run as part of this fix (that decision
 belongs to whoever next works #538, given the EM-L2 target-orbit question above is still open).
 
+**FOLLOW-UP (2026-07-10) — the bug is deeper than a target-orbit choice.** Found a much
+better EM-L2 target (Jacobi 3.13 vs 3.17): the BCR4BP-side mu_sun continuation converges
+beautifully (6.02e-6), but handing that exact converged seed to `correct_qbcp_torus`
+makes it *worse* (2.18e-2, ~3600x), not better — the opposite of what a small QBCP
+refinement of a converged BCR4BP torus should do. A dispatched read-only code-review
+agent found `qbcp_torus_residual`/`bcr4bp_torus_residual` and the PV/PM handoff
+(`propagate_qbcp_pv` correctly calls `state_pv_to_pm`) are both internally consistent —
+ruled out. It flagged a real, empirically-confirmed discrepancy: `bcr4bp._sun_position`
+places the Sun at angle 0 rotating CCW (prograde); `qbcp.evaluate_alphas`'s alpha_7/alpha_8
+place it at angle ~180° rotating CW (retrograde) — confirmed by direct evaluation
+(`t=0`: BCR4BP sun=(388.81,0), QBCP sun=(-392.09,0); the sign flips again by `t=0.1`).
+Testing all 4 x/py mirror-sign combinations on the seed did **not** fix the residual
+(best 2.75, still O(1)), so it isn't a simple axis-relabeling either.
+
+**A positive-control test with Rosales/Jorba (2023) Table 4's own published QBCP
+periodic-orbit substitutes (POL1/POL2, the "dynamical substitutes" for EM-L1/L2) is
+more damning: propagating either published golden ORBIT for one Sun-synodic period
+`T_s` under our own `qbcp_eom` does not close at all** (residual 1.9-4.0 depending on
+sign convention, tested all 4 combinations of the x/py signs — the |x| magnitudes
+0.8369/1.1557 match our own EM-L1/L2 distances suspiciously exactly, so a convention
+difference is likely, but no sign combination tried actually closes). Per this
+project's "verify a filter with a positive control before trusting a negative"
+discipline (`[[feedback_verify_gauntlet_with_positive_control]]`), **this means the
+`correct_qbcp_torus` machinery has never been validated against a real, sourced QBCP
+solution — the EM-L2 non-convergence could be a genuine bug in `evaluate_alphas`'s
+Fourier table transcription (Gimeno/Jorba 2018 Table 4, order k≤13) or in the model's
+epoch/period convention, not (only) a target-orbit or gauge issue.** This is now a
+higher-priority, more fundamental thread than the target-orbit search — the target
+orbit could be arbitrarily well-chosen and the corrector would still fail if the model
+itself doesn't close on its own published golden. **Next step (not yet done): resolve
+the POL1/POL2 closure discrepancy first** (check period assumption, `theta_sun0`
+epoch convention, and the alpha_i table transcription against Gimeno/Jorba 2018 Table 4
+directly) **before further EM-L2 target-orbit or corrector-gauge work.**
+
 ## Novel-orbit discovery proposals following #538 (allocated 2026-07-09, this session — read this before dispatching)
 
 Formulated after auditing the #521-538 arc's actual outcomes (not just its headline resolutions): the coherent-model whiskered-torus/heteroclinic-connection pipeline (#522→#533→#537→#538) is this project's newest capability and sits in the "cislunar BCR4BP — under-mined, MEDIUM-yield" slot the 2026-06-26 `docs/superpowers/specs/2026-06-26-next-frontier-prioritization.md` frontier-ranking identified before it existed. #536's Jupiter-Europa screen tested exactly **one** Jacobi constant (C=3.0015) and found 0 connections — per the project's own "no X found is conditional on the search formulation" discipline, a single-point probe does not certify that region empty; it is a starting point, not a completed sweep. The proposals below sequence the natural next moves, ranked by expected new-catalogue-row yield and gated on #538 actually landing (either a confirmed closure or a documented negative) first, since #539/#540 reuse #538's corrector methodology directly.
+
+**PARTIAL UN-GATING (2026-07-10).** A dispatched Fable advisor pass (standing in for the
+unavailable `advisor` tool) reviewed the whole #521-544 arc and argued the "#539/#540 wait
+for #538" gate is only true of the torus-*connection-corrector* half of #539/#540's scope —
+the Jacobi-band + synodic-phase-offset *screening* half reuses pure CR3BP-level machinery
+(`scripts/run_536_jupiter_europa_connection.py` imports only `core.cr3bp`/`genome.qp_tori`/
+`genome.qp_torus_heteroclinic`, zero QBCP dependency) that already works today, independent
+of #544's still-open QBCP-model bug. Its case: 7 months / ~356 catalogue rows / 1 confirmed
+novel find (#312, Uranus) is a predictable result of an effort allocation skewed toward
+corrector-depth on one stubborn cislunar target, when both #312 and the PC(3,2)
+binary-genome find came from cheap breadth (pointing existing machinery at unscreened
+systems). Splitting the screen out lets it run now and feed #539/#540's eventual corrector
+work later, rather than sitting idle behind #544.
+
+- **#545** (P1, run now, independent of #538/#544) — Jupiter-Europa/Ganymede band screen:
+  a genuine Jacobi-constant band sweep (not #536's single point C=3.0015) crossed with a
+  synodic-phase-offset sweep between the moons, using #524's deflated Newton to enumerate
+  basins, CR3BP-level only. **Positive control: recover #534's own published Earth-Moon
+  L1<->L2 result** (not a not-yet-existing SE<->EM connection) as the pipeline sanity check
+  before pointing it at unmapped Jovian territory. Supersedes #536's single-point negative.
+  **Recommended models:** screen build + running the deterministic sweep behind
+  `preflight_search()` → **Sonnet**. Adjudicating any candidate hit → **Opus**, **Fable**
+  second-opinion before writeback.
+- **#546** (P1, run now, independent of #538/#544) — Uranian-system band screen
+  (Miranda-Ariel-Umbriel-Oberon lanes), same CR3BP-level band+phase sweep as #545, pointed
+  at the one system that has ever produced a confirmed novel row (#312). Per the empty-region
+  registry's re-open rule, a strictly-more-capable method (genuine band+phase sweep vs.
+  whatever produced #312) is licensed to re-open this territory. **Recommended models:**
+  system setup + parameter sourcing (digest-and-reconcile against a published Uranian
+  reference, per `[[feedback_digest_not_adoption]]`) → **Sonnet**. Running the sweep and
+  adjudicating any hit against the #312 anchor → **Opus**, **Fable** second-opinion pass.
+
+#539/#540 keep their original scope (generalizing #538's corrector into a reusable module)
+and stay gated on #538/#544 landing; #545/#546 are the decoupled screen-only predecessors.
 
 - **#539** (P1, do first once #538 lands) — Generalize #538's well-posed multi-segment
   torus-connection corrector out of the one-off `scripts/run_538_qbcp_cycler.py` into a
