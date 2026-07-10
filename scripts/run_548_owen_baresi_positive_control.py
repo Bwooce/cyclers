@@ -38,6 +38,8 @@ import time
 import numpy as np
 
 import cyclerfinder.core.cr3bp as cr3bp
+from cyclerfinder.data.method_capability import MethodCapability
+from cyclerfinder.data.preflight import preflight_search
 from cyclerfinder.genome.qp_tori import QPTorus, correct_qp_torus, evaluate_torus
 from cyclerfinder.genome.qp_torus_heteroclinic import (
     scan_linking_number,
@@ -49,6 +51,31 @@ from cyclerfinder.search.nrho_continuation import correct_symmetric_nrho
 MU = 0.012153643
 SYS = cr3bp.CR3BPSystem(mu=MU, primary="Earth", secondary="Moon", l_km=384400.0, t_s=382981.0)
 SURFACE_X = 1.0 - MU
+
+_REGION_ID = "earth-moon-l1-l2-quasi-halo-owen-baresi-positive-control-2026-07-10"
+_METHOD = MethodCapability(
+    genome=(
+        "Earth-Moon L1/L2 quasi-halo torus manifold crossing grids (20x16 long/lat), "
+        "isoenergetic band sweep at the highest common energy both halo families reach "
+        "(C in [3.05, 3.08]), empirical transit-branch classification"
+    ),
+    corrector=(
+        "correct_symmetric_nrho halo continuation -> correct_qp_torus -> "
+        "genome.qp_torus_transit.transit_torus_manifold_grid + scan_linking_number"
+    ),
+    capability_tags=frozenset(
+        {
+            "cr3bp",
+            "qp-torus",
+            "heteroclinic",
+            "linking-number",
+            "earth-moon",
+            "owen-baresi-positive-control",
+            "empirical-transit-branch",
+        }
+    ),
+    git_sha="working-tree",
+)
 LOG = pathlib.Path(
     "/tmp/claude-1000/-home-bruce-dev-cyclers/"
     "e8a086b8-fae2-4e77-b340-1425b9d3c532/scratchpad/run548_results.json"
@@ -204,6 +231,19 @@ def scan_pair(u_grid, s_grid, comp_idx: int, tag: str, results: list) -> int:
 
 
 def main() -> None:
+    preflight_search(
+        task_no=548,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=pathlib.Path(__file__),
+        n_points=20 * 16 * 2 * 4,  # grid_pts * (stable+unstable) * ~4 C-values
+        override_reason=(
+            "positive-control gate, not a discovery sweep -- testing whether the "
+            "linking-number pipeline detects ANY connection at a known-favorable "
+            "energy band, per the pre-registered #548 kill criterion; a timing "
+            "pilot doesn't apply to a fixed, already-scoped 4-point energy sweep."
+        ),
+    )
     log("=== #548 Owen-Baresi positive-control sweep ===")
     target_cs = [3.05, 3.06, 3.07, 3.08]
     # NOTE: torus frequency ratio is set by the parent halo (energy), NOT by the seed

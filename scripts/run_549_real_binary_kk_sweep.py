@@ -42,6 +42,8 @@ if str(_SRC) not in sys.path:
 import numpy as np  # noqa: E402
 from joblib import Parallel, delayed  # noqa: E402
 
+from cyclerfinder.data.method_capability import MethodCapability  # noqa: E402
+from cyclerfinder.data.preflight import preflight_search  # noqa: E402
 from cyclerfinder.search.pluto_charon_kk_sweep import PC_MU, sweep_32_positive_control  # noqa: E402
 from cyclerfinder.search.real_binary_kk_sweep import (  # noqa: E402
     REAL_BINARY_SYSTEMS,
@@ -51,6 +53,24 @@ from cyclerfinder.search.real_binary_kk_sweep import (  # noqa: E402
 )
 
 OUT_PATH = Path(__file__).parent.parent / "docs" / "notes" / "scratch" / "549_kk_sweep_raw.txt"
+
+_REGION_ID = "real-binary-kk-cycler-sweep-2026-07-10"
+_METHOD = MethodCapability(
+    genome=(
+        "Real-binary (k1,k2) CR3BP cycler genome (#494/#504's fixed-Jacobi symmetric "
+        "corrector + Barden stability + winding-topology classifier + independent Radau "
+        "crosscheck), swept at four sourced real-binary mass ratios (Patroclus-Menoetius, "
+        "Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia) across 6 (k1,k2) topologies"
+    ),
+    corrector=(
+        "anchor-seeded mu-continuation from Ross-RT 2026 Table-I anchors for "
+        "(1,1)/(3,1)/(3,2)/(3,3); bounded (x0,C,hc) grid search for (2,1)/(2,2)"
+    ),
+    capability_tags=frozenset(
+        {"cr3bp", "binary-cycler", "k1k2-genome", "real-binary", "mu-continuation"}
+    ),
+    git_sha="working-tree",
+)
 
 # anchor_key per (k1,k2) for the anchor-seeded families; (2,1)/(2,2) have no
 # Table-I anchor (per #504) and run via grid search instead.
@@ -204,6 +224,21 @@ def main() -> None:
         help="system keys to sweep",
     )
     args = ap.parse_args()
+
+    preflight_search(
+        task_no=549,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=len(REAL_BINARY_SYSTEMS) * len(ANCHOR_TOPOLOGIES)
+        + len(REAL_BINARY_SYSTEMS) * len(GRID_TOPOLOGIES) * 8 * 6 * 3,
+        override_reason=(
+            "reuses #494/#504's already-validated binary-cycler harness verbatim "
+            "(positive control re-finds the committed PC (3,2) row to 9 sig figs); "
+            "the (system, topology) job count is small and bounded by construction, "
+            "not an open-ended discovery grid needing a timing pilot."
+        ),
+    )
 
     if args.phase == "init":
         phase_init()
