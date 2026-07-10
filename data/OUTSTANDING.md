@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1967,18 +1967,181 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   behind deterministic gates). Opus for adjudicating any hit against the #312 anchor and the
   family/empty-region verdict. Fable second-opinion pass before any catalogue writeback
   (matches #546's own prescribed split for this territory).
+  **RESULT (2026-07-11, Sonnet mechanical pass):** Positive control PASSED —
+  `scripts/scan_558_uranus_all_pairs_offset_sweep.py` evaluates the EXACT catalogued point
+  (Umbriel-Oberon, rel_offset=180°, tof_scale=2.0, n_rev=(1,1)) directly and reproduces
+  residual=0.025232 km/s bit-for-bit against the stored `verify_327_umbriel_silver.py` value —
+  not the 0.636 km/s fixed-convention artifact. The residual formula was also verified
+  byte-for-byte against production `_close_one_phasing` (discovery_campaign.py, interior-flyby
+  continuity + #259 anchor-wrap periodicity) — this is not a looser metric manufacturing hits.
 
-✓ Resolved (2026-07-11, commit `<pending>`) **#559** — Daily DOY-sensitivity scan on #327 SILVER.
-  Ran 731 epochs (2000-01-01..2000-12-31, 2030-01-01..2030-12-31) at daily resolution under
-  V4-strict. **Result: HIGHLY IRREGULAR, NOT a knife-edge or wide tolerant band.** Pass rates:
-  2000: 89.9% (329/366, fails scattered DOY 3-363); 2030: 85.8% (313/365, fails scattered DOY 1-353).
-  The PASS/FAIL boundary exhibits rapid, stochastic transitions (many 1-day FAIL spikes interspersed
-  among PASSes) throughout both years, not a simple deterministic edge. June 21 (DOY 172) PASSes in
-  both years (drift ~14k km vs ~86-96k km when failing). Pattern suggests chaotic/moon-phase-sensitive
-  rather than simple resonant boundary. **Implication for #312 V5:** Mission utility is robust at
-  DOY 06-21-ish across both decades, but the full validity envelope is more nuanced than a simple
-  launch-epoch window (scattered 10% FAIL rate throughout year, not concentrated at edges).
-  Output: `data/silver_327_v4_strict_daily_sweep_559.jsonl`. Script: `scripts/run_559_silver_v4strict_daily_doy_scan.py`.
+  Two build-time findings changed the sweep's shape from the literal spec, both in the direction
+  of MORE coverage per unit compute, not less: (1) **n_rev is free** — one `lambert()` call per
+  leg at `max_revs=3` returns every revolution branch in [0,3] simultaneously (shared Stumpff
+  root-finding), so all 16 `(n0,n1)` combinations are scored per grid point at ~zero marginal
+  Lambert-solve cost, fully covering the spec's 0..3 range. (2) **the global `phase0` axis is
+  PROVABLY redundant** — the circular-coplanar Kepler + patched-conic-Lambert closure is exactly
+  rotationally symmetric (adding a constant to both moons' longitudes rigidly rotates the whole
+  3-state configuration; the residual is built only from rotation-invariant vector-norm
+  differences), verified empirically to ~1e-13 agreement across 6+ phase0 samples on 2 different
+  pairs. The original discovery script's 96-sample phase grid was pure wasted compute; this run
+  fixes `phase0=1` sample and reinvests the freed 96x budget into `rel_offset` (360 samples, 1°
+  resolution vs. the original 96) and `tof_scale` (51 samples, 0.05 km/s step — denser than the
+  spec's literal 0.1 ask). Full 20-direction sweep (10 pairs × 2 anchor choices) + #324 physical
+  gate + independent DOP853 cross-check on every sub-0.05 km/s hit ran in ~8 min wall
+  (09:21–09:29 AET) — over the "minutes" framing but justified by the above density increase and
+  by gating thousands of hits, not a scope creep.
+
+  **Headline finding — #540's island-vs-family question is answered decisively: FAMILY, and a
+  LARGE one.** All 12 anchor-flyby directions among the 4 non-Miranda regular moons
+  (Ariel/Umbriel/Titania/Oberon) produce dozens to hundreds of DISTINCT closures (basin-clustered
+  at 3°/0.15-tof_scale separation; 3672 raw sub-gate grid points before clustering, 1092 after)
+  that pass ALL THREE gates — residual (often 100-1000x tighter than #312's own 0.025 km/s),
+  #324 physical max-bend (>5°), and DOP853 cross-check (<1 km, typically 1e-6 to 1e-4 km here) —
+  at V∞ 0.3–2.4 km/s, comparable to or BELOW #312's catalogued 0.89–0.96 km/s. The 8 Miranda-
+  involving directions pass the residual gate just as readily but ALWAYS fail the #324 bend gate
+  (Miranda's GM=4.3 km³/s² is too small to usefully bend a flyby at these V∞ — bend angles 1-8°
+  vs the 5° floor; confirmed real physics via direct inspection, not a formulation bug). Even
+  WITHIN Umbriel-Oberon itself, the dense sweep finds a closure tighter than #312's own:
+  rel_offset=358°, tof_scale=2.40, n_rev=(1,1), residual=0.000152 km/s (165x tighter),
+  V∞=(1.221, 1.995, 1.221) km/s, bend=(9.5°, 6.9°, 9.5°), DOP853=4.5e-5 km — passing every gate
+  #312 itself passed. Per-pair best-representative table (anchor-flyby-anchor, best residual,
+  raw all-gates-passed count, distinct clustered basins):
+
+  | pair | best residual (km/s) | raw hits | distinct basins |
+  |---|---|---|---|
+  | Oberon-Titania-Oberon | 7.2e-7 | 777 | 215 |
+  | Titania-Oberon-Titania | 6.8e-6 | 707 | 212 |
+  | Umbriel-Oberon-Umbriel | 1.5e-4 | 373 | 116 |
+  | Umbriel-Titania-Umbriel | 1.4e-4 | 314 | 97 |
+  | Titania-Umbriel-Titania | 8.7e-4 | 269 | 87 |
+  | Oberon-Umbriel-Oberon | 2.6e-4 | 263 | 80 |
+  | Umbriel-Ariel-Umbriel | 8.4e-5 | 232 | 60 |
+  | Ariel-Umbriel-Ariel | 7.8e-5 | 193 | 57 |
+  | Ariel-Titania-Ariel | 1.2e-4 | 165 | 52 |
+  | Titania-Ariel-Titania | 2.5e-4 | 157 | 48 |
+  | Oberon-Ariel-Oberon | 1.7e-4 | 131 | 41 |
+  | Ariel-Oberon-Ariel | 3.0e-4 | 27 | 27 |
+  | all 8 Miranda-involving directions | 6.4e-6 to 5.2e-4 | 0 | 0 (bend gate) |
+
+  **Methodological flag for Opus/Fable — the load-bearing implication, not a side note:** this is
+  not "more hits like #312" — it shows the #254/#285/#312 repeated-moon periodicity-continuity
+  closure condition is GENERIC across nearly the whole non-Miranda Uranian moon-pair space once
+  the relative-offset degree of freedom is exploited (a 2-constraint condition over the
+  2-continuous-parameter (rel_offset, tof_scale) plane generically has isolated solutions per
+  revolution-count branch, of which there are up to 16 per pair-direction across the swept
+  tof-resonance range). #312 is one of >1000 basins meeting the current residual+bend+DOP853 gate
+  stack, not a uniquely-selected discovery. That gate stack is evidently NOT selective enough to
+  distinguish "an interesting novel cycler" from "a generic closure coincidence" once the search
+  is properly dense in relative offset. Recommend Opus/Fable adjudicate: (a) whether/how to add a
+  stronger selection criterion (tighter residual floor, resonance-structure or launch-window
+  robustness prioritization à la #338/#559, literature-novelty-first triage) before spending
+  further gauntlet compute on this family, and (b) whether #312's catalogue admission still
+  stands on grounds other than "uniquely passed a closure gate" — e.g. its specific #338 DOY-
+  robustness profile, or simply being the first-discovered representative of a large family
+  rather than a rare individual hit. **No candidate from this pass was pushed through the
+  V1-V4-strict gauntlet and nothing was written to `data/catalogue.yaml`** — per task discipline
+  this Sonnet pass stops at the mechanical sweep + gate; adjudication is Opus/Fable's job.
+
+  Artifacts (no catalogue writeback): `scripts/scan_558_uranus_all_pairs_offset_sweep.py`
+  (generalized sweep + gating, ruff-clean); `data/scan_558_positive_control.jsonl`;
+  `data/scan_558_uranus_{anchor}_{flyby}.jsonl` ×20 (per-direction top/full-grid + gate results;
+  `umbriel_oberon` carries the FULL 18360-row landscape per spec item 5, not just top-N);
+  `data/scan_558_uranus_all_pairs_index.jsonl` (cross-pair index + the 3672 raw all-gates-passed
+  candidate records, full detail, for Opus/Fable to consume programmatically). The frozen #312
+  gates (`tests/verify/test_silver_327_v1_passes.py` through `_v4_strict_passes.py`) were
+  re-verified unchanged and still pass.
+
+- **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
+  #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
+  found 2000-01-15 launches FAIL V4-strict (91,000 km drift) while 2000-06-21 PASSES
+  (12,000 km) — same year, and the 84-year validity window / 100% interior pass rate holds
+  ONLY at June-21-ish launches. The daily-epoch scan across one Umbriel-Oberon synodic cycle
+  that would resolve whether June 21 sits in a wide PASS band or on a knife-edge was scoped,
+  declared non-blocking, and never run (#338's own 100-epoch annual sweep took 42s, so this
+  is well under a minute of compute). Directly affects #312's mission-utility claim and its
+  eventual V5 write-up (a knife-edge DOY dependency is a materially weaker result than a wide
+  tolerant band).
+  **Recommended model:** Sonnet (mechanical parameter sweep behind the existing frozen
+  V4-strict gate, no new judgment call). [Ran as Haiku instead — the sweep itself proved
+  genuinely mechanical as scoped; interpreting its result did not, see below.]
+  **✓ RUN (2026-07-11, commit `976eb75`) — result needs a caveat this commit's own write-up
+  did not carry.** 731 daily V4-strict epochs across 2000-01-01..2000-12-31 (366 days) and
+  2030-01-01..2030-12-31 (365 days). Pass rates: 2000 89.9% (329/366), 2030 85.8% (313/365).
+  June 21 (DOY 172) PASSes in both years (~14k km drift vs ~86-96k km when failing),
+  corroborating #338's own anchor choice. The FAIL pattern is NOT a smooth knife-edge or a
+  wide tolerant band — it is dominated by **isolated single-day FAIL spikes** (a FAIL
+  surrounded by PASS on both immediate neighbors): 28/366 in 2000, 29/366 in 2030 (see
+  `tests/data/test_sweep_diagnostics.py::test_559_actual_pattern_reproduces_known_singleton_count`,
+  a regression pin against the real committed data). The original Haiku write-up called this
+  "chaotic/stochastic, not resonant" — **that framing was never actually verified and should
+  NOT be trusted as a diagnosis of the cause.** Isolated single-point flips surrounded by
+  agreeing neighbors on both sides are an unusual pattern for real physical drift-vs-epoch
+  sensitivity (which should vary continuously with small epoch perturbations in a smooth
+  N-body system) and are a strong prior for a NUMERICAL ARTIFACT (a Lambert-solver branch
+  switch, a kernel-interpolation node boundary, a discrete tolerance edge case) rather than
+  genuine chaos — see `[[feedback_isolated_sweep_flips_suspect_artifact]]`. A follow-up
+  diagnostic (sub-day-resolution zoom + code-path tracing), dispatched 2026-07-11, **CONFIRMED
+  the artifact-not-chaos hypothesis with two concrete mechanisms, both in
+  `src/cyclerfinder/data/validation/v4_uranus_strict.py`.** (1) **Discrete Lambert branch-
+  selection flip** (`_cycle_v4_strict` ~line 418): the rev-1 low/high branch tie-break
+  (`min()` on velocity-match residual) has no continuity tracking, and the two branches'
+  match-values cross near-ties between adjacent epochs — caught directly: at 2000-04-09
+  13:00->14:00 the selection flips low->high and the leg terminal miss jumps discontinuously
+  23,448 km -> 1,340 km between adjacent HOURS. (2) **DOP853 integrator failure on non-
+  physical planet-crossing arcs** (`_v4_strict_propagate_leg` ~lines 360-372): at epochs
+  where the Umbriel-Oberon transfer angle collapses to ~3-12 deg (real geometry — the ~5.99 d
+  synodic period sweeps relative phase ~60 deg/day), the fixed-14.94-day rev-1 Lambert
+  "solution" is a near-parabolic (ecc~0.998-1.000) arc with perijove 0-850 km — INSIDE Uranus
+  (R_eq 25,559 km); the propagated arc plunges to r~4,500-11,600 km, the integrator stiffens
+  and dies (`status=-1`), and this integrator failure is silently collapsed into a plain
+  validation FAIL, indistinguishable from a genuine dynamical fail — there is no perijove/
+  collision guard at all. **Verdict: the #559 daily pass-rates (89.9%/85.8%) and the 55/58
+  spike locations are NOT physically meaningful** — they measure daily aliasing of a
+  two-discontinuity solver field (a discrete branch selection + a binary integrator-success
+  gate), not #312's genuine launch-epoch robustness. **This does NOT undermine #312 itself**
+  — the epoch-blind V2->V3->V4-scipy chain and the canonical single-epoch V4-strict result
+  are untouched; it is a limitation of the EPOCH-SWEEP interpretation specifically. **Do not
+  cite the #559 pass-rate numbers as a launch-epoch-robustness characterization for #312's V5
+  write-up** until #560 (allocated below) addresses branch-continuity + degenerate-arc
+  exclusion. Diagnosis-only pass; no repository code was modified investigating this.
+  A reusable guard (`cyclerfinder.data.sweep_diagnostics.detect_isolated_singleton_anomalies`)
+  now exists so future sweep scripts flag this pattern automatically rather than relying on a
+  human noticing it — NOTE its own CAUTION: the 2000/2030 windows must be analyzed SEPARATELY,
+  not concatenated (concatenating manufactures one spurious cross-boundary anomaly at the seam;
+  confirmed empirically, see `tests/data/test_sweep_diagnostics.py`).
+  Output: `data/silver_327_v4_strict_daily_sweep_559.jsonl`. Script:
+  `scripts/run_559_silver_v4strict_daily_doy_scan.py`.
+
+- **#560** (P2, parking lot — not auto-fired) — V4-strict Lambert-branch-continuity +
+  degenerate-arc-exclusion robustness fixes. The #559 diagnostic (above) confirmed two real
+  robustness deficiencies in `src/cyclerfinder/data/validation/v4_uranus_strict.py`, both
+  needed before any epoch-SWEEP interpretation of V4-strict can be trusted (the canonical
+  single-epoch V4-strict result for #312 itself is unaffected and does NOT need this fix):
+  (1) `_cycle_v4_strict`'s rev-1 Lambert branch selection (~line 418) has no continuity
+  tracking across neighboring epochs — near-tie flips between the low/high branches produce
+  discontinuous multi-km-scale jumps in the terminal miss between adjacent HOURS, not just
+  days. Fix direction: branch-continuation (track which branch was selected at the previous
+  epoch and prefer it under a tie-break threshold) or report the min-drift-over-both-branches
+  instead of a single discrete pick. (2) `_v4_strict_propagate_leg` (~lines 360-372) collapses
+  a DOP853 integrator failure into a plain validation FAIL indistinguishable from a genuine
+  dynamical fail — but the actual cause at these epochs is a non-physical planet-crossing
+  Lambert "solution" (perijove 0-850 km, inside Uranus's 25,559 km radius) that only "fails"
+  because the integrator chokes on it, not because of any real dynamical instability. There is
+  no perijove/collision guard at all — a Uranus-crossing arc is silently accepted as a
+  candidate transfer; it only fails downstream, and a more tolerant integrator could
+  conceivably return a garbage PASS instead. Fix direction: add an explicit perijove-vs-body-
+  radius guard on the Lambert solution BEFORE propagation, and exclude design-infeasible-
+  geometry epochs from the pass-rate denominator rather than counting them as dynamical FAILs.
+  **Not auto-fired**: doesn't block #312's own already-valid V4-strict result; needed only if
+  someone wants to trust a future epoch-sweep characterization (e.g. re-running #559 properly
+  once fixed).
+  **Recommended model:** Opus (numerical-methods judgment — the branch-continuity strategy and
+  the infeasible-geometry exclusion criterion are real design decisions, not mechanical fixes)
+  for the design pass; Sonnet for implementation behind a regression test pinning the exact
+  2000-04-09 13:00/14:00 branch-flip and the 2000-07-24/2000-08-17 planet-crossing cases the
+  #559 diagnostic already located, so this fix is verifiably tested against the cases that
+  motivated it.
 
 - **#541** (P3, opportunistic, lower priority than #539/#540) — First-pass Saturnian
   resonant-moon-pair screen (Mimas-Enceladus or Enceladus-Titan) using the same
