@@ -435,6 +435,14 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   built-and-tested linking-number pipeline on a REAL, genuinely isoenergetic Earth-Moon L1/L2 quasi-halo pair and
   report a real connection count — not a mechanical self-test.
   ✓ Resolved (2026-07-07): Implemented parallel grid computation and start-of-row sign alignment to resolve the sign flip blocker, and successfully executed standard and advanced searches via scripts/run_534_torus_connection.py (commit 98a1c57).
+  **⚠ STAMP (2026-07-10, #548): this 0-connection result is METHOD-INVALID — DO-NOT-CERTIFY, not an
+  empty region.** Two reasons established by #548: (a) #534's committed NRHO seeds correct to
+  **C=3.045**, NOT Owen & Baresi's C=3.15 (verified `cr3bp.jacobi_constant`), so this run never
+  tested the paper's positive-control configuration; (b) the qp_tori/qp_torus_heteroclinic
+  linking-number pipeline was SHELVED by #548 after a reframed positive-control sweep at the
+  achievable common energy band found zero sign changes and never produced a nonzero torus-level
+  linking number. Do not cite #534's 0-connection as evidence of anything about Earth-Moon
+  connections. See `docs/notes/2026-07-10-postmortem-548-linking-number-pipeline.md`.
   **PHASE 2 EXPLORED 2026-07-03 (same session as #522's build, exploratory scripts not yet committed): real
   L1/L2 tori built at matched Jacobi, but exact frequency reproduction abandoned as impractical, and manifold-
   transit search hit a genuine open sub-problem.**
@@ -994,6 +1002,12 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   coarser first pass) turns up a structurally wider corridor.
 - **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
   Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).
+  **⚠ STAMP (2026-07-10, #548): this 0-connection result is METHOD-INVALID — DO-NOT-CERTIFY, not an
+  empty region.** The qp_tori/qp_torus_heteroclinic linking-number pipeline was SHELVED by #548
+  (postmortem `docs/notes/2026-07-10-postmortem-548-linking-number-pipeline.md`): a reframed
+  Owen & Baresi positive-control sweep found zero linking-number sign changes and never produced a
+  nonzero torus-level linking number even where connections should exist. This Jupiter-Europa 0/N
+  is uninterpretable output from an unvalidated screen; do not register it as an empty region.
   (Jovian-Moon Tori) (allocated 2026-07-03, same session, from an independent second-opinion review of the
   #532/#534 discovery plan). **Motivation**: #534's Earth-Moon L1<->L2 target is not actually a novelty attempt
   as posed — quasi-halo/torus heteroclinic connections in that specific system are extensively published
@@ -1241,6 +1255,12 @@ work later, rather than sitting idle behind #544.
   construct ANY real transit/heteroclinic connection in a well-studied CR3BP system, e.g.
   resolving #534's own flagged-but-never-closed transit-vs-non-transit branch-classification
   problem) — right now the method is 0-for-3 with no validated positive anywhere in its history.
+  **⚠ STAMP (2026-07-10, #548): the requested follow-up ran and the method is now SHELVED.** #548
+  built the empirical transit-branch classifier and ran the reframed Owen & Baresi positive control
+  at the achievable common energy band — zero sign changes, linking number identically 0, no
+  torus-level positive ever obtained (now 0-for-4). This Uranus-Oberon 0/64 stays METHOD-INVALID —
+  DO-NOT-CERTIFY (already correctly unregistered), and the qp_tori/qp_torus_heteroclinic pipeline is
+  parked. Postmortem: `docs/notes/2026-07-10-postmortem-548-linking-number-pipeline.md`.
 
 - **#547** (P0 follow-up to #546, 2026-07-10) — Transit-vs-non-transit manifold-branch positive
   control for the qp_tori/qp_torus_heteroclinic method family. **RESOLVED (positive control built)
@@ -1339,6 +1359,40 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   after a clean kill — this is a terminal gate, not another diagnostic round.
   **Recommended model:** Opus (trust-bearing numerical-methods judgment + the
   criterion-definition discipline this project keeps needing before sweeps).
+  **✓ RESOLVED (2026-07-10) — SHELVED per the kill criterion (spirit), with two premise
+  corrections found by primary evidence.** Full postmortem: `docs/notes/2026-07-10-postmortem-
+  548-linking-number-pipeline.md`. **(1) The energy premise was wrong:** #534's committed NRHO
+  seeds correct to **C=3.045**, not the C=3.15 #547 recorded — #534 was never at Owen & Baresi's
+  demonstration energy. **(2) Exactly-C=3.15 isoenergetic quasi-halo pairs are impractical:**
+  connections are ISOENERGETIC (both tori share one C), but the EM L1 halo family bifurcates from
+  planar Lyapunov at C~3.146 (so 3.15 is at/above the L1 quasi-halo regime) and the L2 halo family
+  reached via the NRHO branch tops out at a genuine high-C fold ~C=3.087 (confirmed by
+  pseudo-arclength continuation past the x0-fold). The highest COMMON energy both families
+  robustly reach is C in [3.05, 3.087], so the positive control was built there (same physics —
+  both necks open, unstable quasi-halo pairs). **Built** `src/cyclerfinder/genome/qp_torus_transit.py`
+  (`transit_torus_manifold_grid`: adapts #547's empirical transit classifier to the 3D quasi-halo
+  torus grid — propagates BOTH signed perturbations per point, keeps whichever reaches the section
+  first, discarding the untested `vec[0]*sign` heuristic; + `tests/genome/test_qp_torus_transit.py`,
+  2 green) and `scripts/run_548_owen_baresi_positive_control.py`. **Sweep result:** 3 isoenergetic
+  geometry-usable pairs (C=3.05/3.06/3.07; C=3.08 L2 halo at the fold, bisection failed), 12 linking
+  scans across 4 scanning-variable/curve-triple specs — **ZERO sign changes; the linking number was
+  identically 0 in every scan** (the reduced stable/unstable curves never link at any D, any scan
+  variable, any energy). Manifolds DID reach the section and overlap (L1 320/320, L2 166-320/320,
+  ranges overlapping), and the L1 frequency ratio bracketed the published 0.2739 (swept
+  0.3668→0.3300→0.2944 over C), so the pipeline had a fair shot. The `linking_number` PRIMITIVE is
+  sound (returns ±1 on a Hopf link — `tests/search/test_linking_number.py` green), so the
+  identically-0 output is a true property of the extracted manifold curves, not a broken invariant.
+  **Honest caveats (adjudicator to weigh):** the literal "C=3.15" precondition was unsatisfiable;
+  the L2 frequency bracket was poor (0.12-0.45 vs published 0.02163 — the paper's L2 quasi-halo is a
+  near-planar small-z near-bifurcation halo this NRHO-branch machinery can't reach; a future
+  L2-planar→halo bifurcation seed generator could give one final fully-frequency-matched shot); and
+  the L2 stable grid showed some transit-sheet mixing (~150/170 sign balance, because the L2 halo
+  sits almost on the section). This is a shelve-on-persistent-failure (now 0-for-4) with a
+  reversible caveat, NOT a proof of non-existence. **Per the binding pre-registration, no further
+  gauge/mode/branch tinkering is licensed; the #522 family is PARKED and #534/#536/#546 are stamped
+  method-invalid-do-not-certify below.** Did NOT write to `data/catalogue.yaml` (no hit; nothing to
+  write). Recommend an Opus/Fable second pass to confirm the shelve or authorize the one L2-near-
+  bifurcation retry before permanent retirement.
 
 - **#549** (P0, fire alongside #548, fully disjoint code path) — Real-binary `(k1, k2)`
   genome sweep. The Tier-1 forward-plan line "circumbinary Pluto-Charon deeper + other-binary
@@ -1360,6 +1414,65 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   ratchet gate → **Sonnet** (spec-complete, strong deterministic gate). Any hit's
   admission verdict → **Opus**, **Fable** second-opinion pass before catalogue writeback
   (standard pattern for this project).
+  **✓ RUN (2026-07-10) — CLEAN NEGATIVE across all four systems; no catalogue writeback.**
+  **Positive control PASSED**: `sweep_32_positive_control()` (#504's own function, unmodified)
+  re-finds PC (3,2) at `mu=0.10876473603280369` matching the committed `ross-rt-pc-cycler-32-2026`
+  row to 9 significant figures (C=3.579515019729634 vs catalogue 3.57951501972907; x0=
+  -0.693198287043394 vs -0.693198287043369; T=11.833462517014365 TU vs 11.8334625170346;
+  independent-Radau dJ=7.96e-13 vs catalogue's 8.0e-13) — the sweep machinery is trustworthy.
+  **Mass ratios sourced** (correcting this entry's own eyeballed guesses, per
+  `[[feedback_digest_not_adoption]]`): **Patroclus-Menoetius** mu=0.4381 (NOT ~0.19 as originally
+  guessed above — Buie et al. 2015, AJ 149, 113, occultation diameters D_Patroclus=113+/-3 km,
+  D_Menoetius=104+/-3 km, equal-density assumption; orbital scale from Buie et al. 2024, AJ 167,
+  104, a=692.5+/-4.0 km, P=4.282754+/-0.000023 d); **Didymos-Dimorphos** mu=0.0079 (Naidu et al.
+  2020, Icarus 348, 113777, pre-impact system mass (5.4+/-0.4)e11 kg + equal-density Dimorphos
+  mass ~4.3e9 kg; CAVEAT: Dimorphos's mass is not directly measured — post-DART papers give a
+  density range 1500-3300 kg/m^3 vs the assumed 2170, i.e. mu could plausibly be 0.0055-0.012;
+  ESA Hera 2026/2027 will pin it down); **Orcus-Vanth** mu=0.137+/-0.013 (Brown & Butler 2023,
+  PSJ 4, 178, arXiv:2307.04848, direct ALMA astrometric mass measurement: "Vanth contains
+  13.7+/-1.3% of the mass of the system"); **Eris-Dysnomia** mu=0.00498 (same Brown & Butler 2023
+  paper; CAVEAT: only a 1.5-sigma mass DETECTION, 1-sigma upper bound mu=0.00833, the weakest-
+  sourced of the four). Full citations + physical scales (a, P) in
+  `src/cyclerfinder/search/real_binary_kk_sweep.py::REAL_BINARY_SYSTEMS`.
+  **Sweep**: reused #504's machinery verbatim (fixed-Jacobi symmetric corrector, Barden stability,
+  winding-topology classifier, independent-Radau crosscheck) via a new thin driver module
+  (`search/real_binary_kk_sweep.py`) that fixes a latent bug in #504's `mu_step_to_orbit` (its
+  "final correction" step was hardcoded to `make_pluto_charon_system()` regardless of the
+  `target_mu` argument — harmless for `target_mu==PC_MU` but would have silently corrupted results
+  for any other system; `mu_step_to_system` takes the target system explicitly instead). Swept the
+  same six `(k1,k2)` topologies #504 swept — (1,1)/(2,1)/(2,2)/(3,1)/(3,2)/(3,3) — at each of the
+  four sourced mass ratios: anchor-seeded mu-continuation from the Ross-RT 2026 Table-I anchors for
+  (1,1)/(3,1)/(3,2)/(3,3) (with (1,1) tried from all three available anchors, mu=0.001/0.01215/0.5),
+  and a bounded (x0,C,hc) grid search with a per-call SIGALRM timeout for (2,1)/(2,2) (not in
+  Table-I, exactly #504's own fallback). **32/32 probes (24 anchor + 8 grid) returned clean
+  negatives** — no stable prograde `(k1,k2)` cycler at any topology, any sourced mass ratio.
+  Failure modes: mu-continuation branch folds before reaching the target mu (most common), wrong
+  topology at the stable point found, no `|nu|<1` window in the C-sweep range, or (Didymos-Dimorphos
+  (3,1)) the seed's Jacobi constant exceeding the target's `C_L1` outright (the family cannot exist
+  in that Hill region at that mu). **Robustness check**: since many failures were "mu-continuation
+  did not converge" (a branch-fold signature, not a C-sweep negative), reran those 10 cases at
+  2.5-10x finer mu-step resolution (each step <=0.001 in mu, up to 426 steps) to rule out a
+  step-size artifact. 6/10 reproduced the identical negative at finer resolution (confirms genuine
+  branch folds). The remaining 4 (Patroclus-Menoetius (1,1)/(3,1)/(3,2), Eris-Dysnomia (3,2)) did
+  not converge within a 240s per-job cap even at fine resolution — genuinely INCONCLUSIVE at the
+  compute budget spent, not flipped positive and not as firmly confirmed-negative as the other 28;
+  flagged rather than silently folded into the clean-negative count. **No literature-novelty check
+  was run** (`search.literature_check` gates candidates, not negatives — nothing to check).
+  **Two bugs found + fixed during test-driven verification (post-hoc, per
+  `[[feedback_bugfix_invalidates_past_searches]]`), both re-checked against the discovery-run
+  results before trusting them:** (1) `sweep_family`'s C-sweep call hardcoded `hc=None` instead of
+  threading the anchor's own `half_crossings` through (matters only for the `(3,2)` anchor, which
+  needs `hc=6`) — re-running all four systems' `(3,2)` topology after the fix reproduced the IDENTICAL
+  negative verdict in all four cases (3 never even reached the C-sweep stage; Orcus-Vanth did, and
+  got the same negative before and after). (2) the default symmetric C-sweep band walked `hc=6`
+  down 0.3 below the anchor's C, which is pathologically slow/non-convergent for that family (mirrors
+  why #504's own `sweep_32_positive_control` deliberately sweeps upward-only from the anchor); fixed
+  to match that convention. Neither fix changed any reported verdict — both are logged for the
+  record, not as a retraction. **Verdict**: Pluto-Charon's (3,2) family looks idiosyncratic to its own (mu, C) window rather
+  than reflecting generic structure accessible at other real binary mass ratios; PC (3,2) remains
+  this project's only confirmed real-binary novel-ish hit. New code: `src/cyclerfinder/search/
+  real_binary_kk_sweep.py`, `scripts/run_549_real_binary_kk_sweep.py`,
+  `tests/search/test_549_real_binary_kk_sweep.py`.
 
 - **#550** (P3, opportunistic, cheap) — PC (3,2)'s V2->V3 promotion is gated on a single
   missing NAIF kernel (`SAT441l`, per #506's writeup) — a fetch from naif.jpl.nasa.gov, no
