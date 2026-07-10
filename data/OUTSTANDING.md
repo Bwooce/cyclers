@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1400,6 +1400,25 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   write). Recommend an Opus/Fable second pass to confirm the shelve or authorize the one L2-near-
   bifurcation retry before permanent retirement.
 
+- **#553** (P1, cheap, read-only review) — Fable ratification pass on #548's shelve verdict.
+  #548's own pre-registered kill criterion was written for "zero sign changes at C=3.15"; the
+  actual test ran at C in [3.05, 3.07] after #548 found C=3.15 physically unreachable for
+  isoenergetic EM quasi-halo pairs (L1 halo bifurcates ~3.146, L2 halo tops out at a fold
+  ~3.087) — a reasonable, honestly-documented substitution, but a substitution nonetheless, not
+  the literal pre-registered condition. Per this project's "Fable second-opinion before treating
+  a significant judgment call as final" convention (same pattern as catalogue-writeback
+  adjudication), get an independent read on: (a) whether the C-range substitution was a faithful
+  stand-in for the original criterion or a goalpost-move that deserves more scrutiny; (b) whether
+  the recorded caveats (unreachable L2 frequency bracket, some L2 transit-sheet mixing) are
+  merely noted or actually undermine the "fair test" claim; (c) whether to ratify the shelve as
+  final, or authorize the one flagged remaining option (an L2-planar-to-halo bifurcation seed
+  generator, giving one genuinely frequency-matched final shot) before permanent retirement.
+  Read-only review of `docs/notes/2026-07-10-postmortem-548-linking-number-pipeline.md` +
+  `scripts/run_548_owen_baresi_positive_control.py` + `genome/qp_torus_transit.py` — no new
+  sweep, no code changes expected.
+  **Recommended model:** Fable (independent adversarial second opinion, matching the project's
+  existing pre-writeback pattern).
+
 - **#549** (P0, fire alongside #548, fully disjoint code path) — Real-binary `(k1, k2)`
   genome sweep. The Tier-1 forward-plan line "circumbinary Pluto-Charon deeper + other-binary
   (k1,k2) sweep" (identified 2026-07-01, never allocated a task number, never run). Reuse
@@ -1540,6 +1559,49 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   consolidation review, not something to auto-dispatch alongside #548/#549.
   **Recommended model:** Opus for the capability-scoping/design pass if greenlit; Sonnet for
   implementation behind whatever regression gate that design settles on.
+  **✗ SCOPED, NOT GREENLIT (2026-07-10, Fable scoping pass).** The capability gap is real —
+  verified in code, not just doc claims: `core/satellites.py` has no inclination/node/direction
+  field at all (Triton's retrograde nature exists only in comments), `search/discovery_
+  campaign.py::_moon_state()` hardcodes `z=0` + prograde motion, every moontour sweep flows
+  through it. But **the payoff claim does not survive a back-of-envelope flyby-bend check the
+  original proposal never ran.** Amalthea (GM=0.165) is MASS-limited, not geometry-limited — max
+  bend 0.80 deg at V_inf=0.5 km/s, collapsing further at higher V_inf; #433's own verdict already
+  recorded literature-fresh Amalthea closures failing the bend gate. Its actual inclination to
+  Jupiter's equator is ~0.37 deg anyway (JPL SSD) — 3D relegs add zero bending capacity there; the
+  registry's OTHER named re-sweep condition (low-thrust relegs) is the real lever, not this one.
+  Triton is worse: the coplanar-PROGRADE model the code actually uses is GENEROUS to Triton
+  (prograde encounter allows low V_inf where GM=1428 bends 23-59 deg); modeling it CORRECTLY as
+  retrograde forces V_inf up to ~6-9+ km/s where the bend collapses to ~1-2 deg — the registered
+  Neptune "structural empty" verdicts would get STRONGER, not reopen, under a correct model. And
+  #312 itself was found WITH the existing coplanar machinery on prograde, low-inclination regular
+  Uranian moons (`catalogue.yaml`: `orbit_fidelity: circular-coplanar`) — the "novel hit lives in
+  this capability gap" framing conflated system class with capability gap; the hit lives exactly
+  where the coplanar machinery already works. **Verdict: do not dispatch the multi-week build.**
+  **Cheap alternative surfaced (~1 day, not yet dispatched):** a "retrograde-correction stamp"
+  task — run the bend numbers above formally and append `reverification` entries to the 3 Neptune
+  rows + the Amalthea row in `data/empty_regions.jsonl`, converting them from "conditionally
+  empty pending a named capability" to near-unconditional negatives (Amalthea's live re-sweep
+  condition narrows to low-thrust only). **If 3D relegs are ever wanted for their own sake**,
+  re-scope around Iapetus/Saturn instead (GM=120, i~15 deg — a real, currently-ignored
+  plane-change cost with no registered re-open claim resting on it) — genuinely small (3-5 days,
+  not multi-week) since `core/lambert.py` already supports 3D/retrograde branch selection; the
+  #515-518 "3D Lift framework" is NOT reusable here (it's SE<->EM libration-point cross-system
+  machinery, a different problem domain from planet-centric patched-conic relegs).
+
+- **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
+  retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
+  analysis (Amalthea GM=0.165: max bend 0.80 deg at V_inf=0.5 km/s, collapsing at higher V_inf,
+  independent of geometry; Triton correctly modeled retrograde forces V_inf up to ~6-9+ km/s
+  where bend collapses to ~1-2 deg, versus the existing coplanar-prograde model's generous
+  23-59 deg) into a proper, code-verified note, then append `reverification` entries to the 3
+  Neptune rows + the Amalthea row in `data/empty_regions.jsonl` recording that these
+  "conditionally empty pending 3D/inclined capability" verdicts are actually robust — indeed
+  strengthened — under correct geometry, narrowing Amalthea's live re-sweep condition to
+  low-thrust relegs only (its other named condition) and removing the false "3D relegs might
+  reopen this" implication from all 4 rows. Pure registry-accuracy work, no new search, no new
+  genome capability, no catalogue.yaml edit.
+  **Recommended model:** Sonnet (mechanical formalization of an already-scoped analysis, behind
+  the existing empty-region-registry schema/tests).
 
 - **#539** (P1, do first once #538 lands) — Generalize #538's well-posed multi-segment
   torus-connection corrector out of the one-off `scripts/run_538_qbcp_cycler.py` into a
