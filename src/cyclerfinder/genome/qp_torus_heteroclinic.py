@@ -20,7 +20,7 @@ module does not implement; #522 Phase 1 is the screen only).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from numpy.typing import NDArray
@@ -79,10 +79,42 @@ def _reduced_closed_curve(
 
 @dataclass(frozen=True)
 class LinkingScanResult:
-    """Linking-number evolution over a scan of the ``D`` scanning variable."""
+    """Linking-number evolution over a scan of the ``D`` scanning variable.
+
+    ``stable_available`` / ``unstable_available`` (added #555) record, per
+    ``D`` value, whether a valid closed reduced curve was actually extracted
+    from each manifold's torus map. This distinguishes a genuine
+    ``linking_number == 0`` (both curves present, they do not link) from a
+    silent extraction failure (one/both curves ``None`` on a NaN-heavy grid,
+    which also yields ``0``). Without it, "identically 0" is ambiguous — the
+    exact ambiguity #553 flagged in #548's shelve. See ``availability_summary``.
+    """
 
     d_values: NDArray[np.float64]
     linking_numbers: NDArray[np.int64]
+    stable_available: NDArray[np.bool_] = field(default_factory=lambda: np.empty(0, dtype=bool))
+    unstable_available: NDArray[np.bool_] = field(default_factory=lambda: np.empty(0, dtype=bool))
+
+    def availability_summary(self) -> dict[str, int]:
+        """Per-``D`` curve-availability counts over the scan (#555 instrumentation).
+
+        ``both`` is the number of ``D`` values where BOTH a stable and an
+        unstable closed curve were extracted — the only ``D`` values at which a
+        genuine ``linking_number`` (possibly 0) was computed. A scan whose
+        ``both`` count is small relative to ``n`` cannot support a "the curves
+        never link" conclusion: mostly it had no curves to link.
+        """
+        s = np.asarray(self.stable_available, dtype=bool)
+        u = np.asarray(self.unstable_available, dtype=bool)
+        n = int(self.linking_numbers.shape[0])
+        both = int(np.sum(s & u)) if s.size == n and u.size == n else 0
+        return {
+            "n": n,
+            "stable_available": int(np.sum(s)),
+            "unstable_available": int(np.sum(u)),
+            "both_available": both,
+            "neither_or_one": n - both,
+        }
 
     def sign_change_locations(self) -> list[float]:
         """Midpoint ``D`` values where the linking number changed -- initial
@@ -122,6 +154,8 @@ def scan_linking_number(
     field_u = unstable_grid.endpoints[:, :, d_idx]
 
     linking_numbers = np.zeros(len(d_values), dtype=np.int64)
+    stable_available = np.zeros(len(d_values), dtype=bool)
+    unstable_available = np.zeros(len(d_values), dtype=bool)
     for k, d in enumerate(d_values):
         curve_s = _first_closed_curve(
             field_s, float(d), n_long_s, n_lat_s, stable_grid, curve_components
@@ -129,13 +163,18 @@ def scan_linking_number(
         curve_u = _first_closed_curve(
             field_u, float(d), n_long_u, n_lat_u, unstable_grid, curve_components
         )
+        stable_available[k] = curve_s is not None
+        unstable_available[k] = curve_u is not None
         if curve_s is None or curve_u is None:
             linking_numbers[k] = 0
             continue
         linking_numbers[k] = linking_number(curve_s, curve_u)
 
     return LinkingScanResult(
-        d_values=np.asarray(d_values, dtype=np.float64), linking_numbers=linking_numbers
+        d_values=np.asarray(d_values, dtype=np.float64),
+        linking_numbers=linking_numbers,
+        stable_available=stable_available,
+        unstable_available=unstable_available,
     )
 
 

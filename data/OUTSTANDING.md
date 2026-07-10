@@ -1436,6 +1436,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   [[feedback_never_give_up_reproducing_papers]] (O&B's 4 EM connections are a published result
   this codebase has never reproduced) — and the cost is ~one session of tool VALIDATION gating
   the interpretability of three already-run screens, not more corrector-depth discovery.
+  **⏹ FINAL RESOLUTION (2026-07-11, #555 — see the #555 entry below for the full record):**
+  the authorized shot ran. #553's bifurcation correction was INDEPENDENTLY CONFIRMED (L1
+  halo bifurcation C=3.1745 by two routes, L2 C=3.1521 with a_v=1.00007) and #548's ~3.146
+  REFUTED; both C=3.15 halos were built (breaking #548's structural wall); the pipeline
+  MACHINERY was validated (synthetic linked-curve positive control + per-D curve-
+  availability instrumentation), and the scan gave 0 sign changes with NON-TRIVIAL
+  availability (transit grids 320/320 crossings, 78/80 both-curves-available — resolving
+  #548's "identically 0" ambiguity: a genuine non-link, not missing curves). The clean kill
+  is NOT triggered because the L1 quasi-halo could not be built at O&B's freq 0.2739
+  (energy-pinned ~0.074 at C=3.15; larger tori intractable in `correct_qp_torus`) — so the
+  frequency-match precondition is only half-satisfiable. TERMINAL: linking-number screen is
+  sound and its lever exhausted; the one remaining blocker is a large-rotation quasi-halo
+  torus corrector (a new capability). The #534/#536/#546 method-invalid-do-not-certify
+  stamps STAND.
 
 - **#553** (P1, cheap, read-only review) — Fable ratification pass on #548's shelve verdict.
   #548's own pre-registered kill criterion was written for "zero sign changes at C=3.15"; the
@@ -1495,6 +1509,69 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   **Recommended model:** Opus (this is the third round of trust-bearing numerical-methods
   judgment on this specific question; per this project's model-tiering policy, do not
   downgrade tier just because it's a "final" pass).
+  **✓ RESOLVED (2026-07-11) — the final frequency-matched shot RAN; TERMINAL, no further
+  appeal.** Script `scripts/run_555_owen_baresi_c315_final.py`; bifurcation-verification
+  scripts + logs in the session scratchpad (`verify555_bif*.py`, `derisk3.py`); results
+  JSON in scratchpad. Six findings:
+  **(1) Bifurcation independently re-verified — #553 CONFIRMED, #548's ~3.146 REFUTED.**
+  EM L1 planar-Lyapunov→halo bifurcation at **C=3.1745** via the vertical stability index
+  a_v of the PLANAR Lyapunov family crossing +1, by TWO independent routes (bounded
+  fixed-Jacobi x0-continuation → 3.17455; independent-amplitude a_v(C) sampling → 3.17425)
+  — matches #553's 3.1744 to 3 decimals; #548's ~3.146 was the corrector/continuation
+  artifact #553 diagnosed. EM L2 bifurcation at **C=3.1521** (a_v=1.00007 at C=3.15210,
+  x0=1.12035, T=3.4157) — independently reproduces #553's located bifurcation orbit
+  (amp 0.0353, x0 1.1204, T 3.4156, C 3.1521) to 4 decimals. So C=3.15 IS inside the L1
+  quasi-halo regime (0.024 below its bifurcation) and 0.0021 below the L2 halo bifurcation
+  — genuinely reachable, contra #548.
+  **(2) Both halos built AT C=3.15 (#548's structural wall broken).** L1 via x0-natural
+  continuation of the halo family THROUGH the pitchfork region (z0=-0.0545 at C=3.1504) —
+  #548's failure was secant-on-x0-to-hit-C, ill-conditioned at the pitchfork; straight
+  x0-continuation is not. L2 via the #553-scoped planar→halo bifurcation SEED GENERATOR
+  (planar L2 Lyapunov at C=3.15 on the genuine near-libration family — ydot0>0, T~3.42, NOT
+  the large-amplitude NRHO branch #548 was stuck on — then step off in z0 → genuine small-z
+  3D halo z0=0.0171 at C=3.1497), reaching the near-planar small-z L2 halo #548's
+  NRHO-branch machinery structurally could not (that branch tops out ~C=3.087).
+  **(3) Frequency match is HALF-satisfiable — a genuine, unanticipated finding.** The L2
+  quasi-halo latitudinal frequency lands at **0.0214, MATCHING O&B's 0.02163** (validates
+  the rotation-number method AND convention). But the L1 quasi-halo latitudinal frequency
+  at C=3.15 is ENERGY-PINNED near **0.074** (C=3.15 sits only 0.024 below the L1
+  bifurcation → small latitudinal libration), FLAT across small torus amplitudes, and
+  larger-amplitude L1 tori that might carry O&B's 0.2739 are computationally INTRACTABLE /
+  non-convergent in `correct_qp_torus` (a single amp=0.02 build did not finish in 250 s;
+  invres degrades past amp~0.01). So O&B's specific L1 quasi-halo (freq 0.2739) is NOT
+  reproducible at C=3.15 with this codebase — a NEW, characterized blocker distinct from
+  #548's halo-continuation wall. Corollary: #548's "ratio set by energy not amplitude" was
+  CORRECT for L1, and #553's premise that C=3.15 automatically yields L1 freq 0.2739 does
+  NOT hold under the very convention that reproduces O&B's L2 value exactly.
+  **(4) Pipeline MACHINERY validated (fixes #553's ambiguity).** `LinkingScanResult` now
+  carries per-D stable/unstable curve-availability + `availability_summary()`; a synthetic
+  offset-Hopf-link positive control run through the SAME `scan_linking_number` /
+  `closest_curve_distance` code path correctly detects the known nonzero linking (unlinked
+  control → identically 0; both fully available). New tests in
+  `tests/genome/test_qp_torus_heteroclinic.py`.
+  **(5) Scan at genuine C=3.15 (L2 freq-matched, L1 near-bifurcation 0.074): 0 sign
+  changes, and — decisively — availability is NON-TRIVIAL.** Transit grids 320/320
+  crossings on BOTH manifolds (vs #548's NaN-heavy grids); all 4 scan specs show
+  both-curves-available 78/80 with linking number identically 0. So the zero is now
+  PROVABLY a property of actually-extracted curves that genuinely do not link — the exact
+  distinction #553 said #548 never established. Positive control PASS.
+  **(6) TERMINAL VERDICT — QUALIFIED NEGATIVE, no further appeal.** The #522 linking-number
+  SCREEN is now VALIDATED end-to-end (synthetic positive control + availability
+  instrumentation prove it detects real links and reports genuine non-links), and the
+  genuine C=3.15 regime is reachable (both bifurcations confirmed, both halos built) — the
+  two things #548/#553 left open. For the ACHIEVABLE frequency-matched-where-possible C=3.15
+  pair (L2 exact, L1 near-bifurcation), there are ZERO connections with full curve
+  availability. This is NOT the clean "the method finds nothing that exists" retirement #553
+  pre-registered, because the L1 side could not be built at O&B's 0.2739: the re-registered
+  kill criterion's frequency-match precondition is only half-satisfiable. The residual gap
+  to a FULL O&B L1↔L2 reproduction is therefore a single, precisely-localized NEW blocker —
+  `correct_qp_torus` cannot build the large-rotation-number (0.2739) L1 quasi-halo near its
+  bifurcation — NOT a defect in the linking-number screen. No further linking-number-screen
+  tinkering is licensed (that lever is exhausted); the one remaining lever is a
+  large-rotation quasi-halo torus corrector, a NEW capability out of scope for "one more
+  round of the same". The #534/#536/#546 method-invalid-do-not-certify stamps STAND
+  (their tori were never frequency-validated either). Did NOT write to `data/catalogue.yaml`
+  (no connection found; nothing to write).
   genome sweep. The Tier-1 forward-plan line "circumbinary Pluto-Charon deeper + other-binary
   (k1,k2) sweep" (identified 2026-07-01, never allocated a task number, never run). Reuse
   the #494/#504 binary-cycler genome harness verbatim. **Positive control:** re-find PC

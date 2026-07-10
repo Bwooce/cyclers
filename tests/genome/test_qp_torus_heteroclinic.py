@@ -28,6 +28,7 @@ from cyclerfinder.genome.qp_torus_heteroclinic import (
     closest_curve_distance,
     scan_linking_number,
 )
+from cyclerfinder.genome.qp_torus_manifold import ManifoldGrid
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 SUBFAMILIES_FILE = DATA_DIR / "family_296_3d_subfamilies_299.jsonl"
@@ -168,3 +169,119 @@ def test_closest_curve_distance_runs_end_to_end() -> None:
         d=1.0e6,
     )
     assert far_outside is None
+
+
+# ---------------------------------------------------------------------------
+# Synthetic extraction-machinery positive control (#555).
+#
+# The real-torus scans in #534/#536/#546/#548 produced "linking number
+# identically 0", which #553 flagged as ambiguous: `scan_linking_number` also
+# emits 0 when `_first_closed_curve` returns None (NaN-heavy grid). These tests
+# validate the extraction+linking code path against curves with a KNOWN link,
+# and validate the #555 availability instrumentation, WITHOUT depending on any
+# expensive CR3BP torus construction -- a genuine 0 must be provably a property
+# of curves that were actually extracted.
+# ---------------------------------------------------------------------------
+
+
+def _synthetic_ring_grid(ring_fn: Any, n: int = 40, m: int = 40) -> ManifoldGrid:
+    """A synthetic ManifoldGrid whose scanning field (index 3, ``xdot``) is a
+    pure function of ``theta_long`` (so a level set is a full ``theta_trans``
+    loop) and whose ``(x, y, z)`` trace ``ring_fn(theta_trans)`` along it."""
+    tl = np.linspace(0.0, 2.0 * math.pi, n, endpoint=False)
+    tt = np.linspace(0.0, 2.0 * math.pi, m, endpoint=False)
+    origins = np.zeros((n, m, 2))
+    endpoints = np.full((n, m, 6), np.nan)
+    for i, a in enumerate(tl):
+        for j, b in enumerate(tt):
+            x, y, z = ring_fn(b)
+            origins[i, j] = (a, b)
+            endpoints[i, j] = (x, y, z, math.cos(a), 0.0, 0.0)
+    return ManifoldGrid(origins=origins, endpoints=endpoints, hyperbolic=np.ones((n, m), bool))
+
+
+def test_synthetic_hopf_link_positive_control() -> None:
+    """Two interlocking rings (a Hopf link, known linking number +-1) pushed
+    through the REAL ``scan_linking_number`` code path must yield a NONZERO
+    linking number on a fully-available scan; the same rings pulled apart must
+    yield identically 0. This proves the extraction+linking machinery detects a
+    genuine link -- so a real-torus 0 is about geometry, not broken code."""
+    # Ring A: unit circle in z=0 plane, centroid at the origin.
+    grid_a = _synthetic_ring_grid(lambda t: (math.cos(t), math.sin(t), 0.0))
+    # Ring B: circle in the xz-plane centered (0.8, 0, 0), r=0.6 -> pierces A's
+    # disk at (0.2, 0, 0), which is NOT A's centroid (avoids the documented
+    # centroid over-count edge case), Hopf-linking A exactly once.
+    grid_b = _synthetic_ring_grid(lambda t: (0.8 + 0.6 * math.cos(t), 0.0, 0.6 * math.sin(t)))
+    # Unlinked control: same ring pushed far away.
+    grid_far = _synthetic_ring_grid(lambda t: (6.0 + 0.6 * math.cos(t), 0.0, 0.6 * math.sin(t)))
+    d_values = np.linspace(-0.85, 0.85, 40)
+
+    linked = scan_linking_number(
+        grid_a,
+        grid_b,
+        scanning_component="xdot",
+        curve_components=("x", "y", "z"),
+        d_values=d_values,
+    )
+    unlinked = scan_linking_number(
+        grid_a,
+        grid_far,
+        scanning_component="xdot",
+        curve_components=("x", "y", "z"),
+        d_values=d_values,
+    )
+
+    avail = linked.availability_summary()
+    # The whole scan had both curves available (this is what makes the result
+    # interpretable -- the exact instrumentation #553 asked for).
+    assert avail["both_available"] == avail["n"] == len(d_values)
+    # The link is detected: a nonzero linking number somewhere on the scan.
+    assert int(np.sum(linked.linking_numbers != 0)) > 0
+    assert any(lk != 0 for lk in linked.linking_numbers.tolist())
+    # Pulled apart: identically zero, but ALSO fully available -> a genuine
+    # "these curves do not link", not a missing-curve artifact.
+    assert unlinked.availability_summary()["both_available"] == len(d_values)
+    assert int(np.sum(unlinked.linking_numbers != 0)) == 0
+
+    # The metric residual is finite/non-negative and larger when pulled apart.
+    dmid = float(d_values[len(d_values) // 2])
+    dist_linked = closest_curve_distance(
+        grid_a,
+        grid_b,
+        scanning_component="xdot",
+        curve_components=("x", "y", "z"),
+        d=dmid,
+    )
+    dist_far = closest_curve_distance(
+        grid_a,
+        grid_far,
+        scanning_component="xdot",
+        curve_components=("x", "y", "z"),
+        d=dmid,
+    )
+    assert dist_linked is not None and dist_far is not None
+    assert 0.0 <= dist_linked < dist_far
+
+
+def test_availability_summary_flags_missing_curves() -> None:
+    """``availability_summary`` must distinguish a genuine ``linking == 0``
+    (both curves extracted) from a scan where the level lies outside the grid's
+    finite range so no curve exists (the ambiguity #553 flagged)."""
+    grid_a = _synthetic_ring_grid(lambda t: (math.cos(t), math.sin(t), 0.0))
+    grid_b = _synthetic_ring_grid(lambda t: (0.8 + 0.6 * math.cos(t), 0.0, 0.6 * math.sin(t)))
+    # The scanning field is cos(theta_long) in [-1, 1]; levels far outside that
+    # range extract NO curve on either grid -> both_available must be 0.
+    out_of_range = np.linspace(5.0, 9.0, 12)
+    res = scan_linking_number(
+        grid_a,
+        grid_b,
+        scanning_component="xdot",
+        curve_components=("x", "y", "z"),
+        d_values=out_of_range,
+    )
+    avail = res.availability_summary()
+    assert avail["n"] == len(out_of_range)
+    assert avail["both_available"] == 0
+    assert avail["neither_or_one"] == len(out_of_range)
+    # Every linking number is the "no data" 0 -- and now provably so.
+    assert int(np.sum(res.linking_numbers != 0)) == 0
