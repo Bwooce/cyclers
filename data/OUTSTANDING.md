@@ -1118,6 +1118,70 @@ the POL1/POL2 closure discrepancy first** (check period assumption, `theta_sun0`
 epoch convention, and the alpha_i table transcription against Gimeno/Jorba 2018 Table 4
 directly) **before further EM-L2 target-orbit or corrector-gauge work.**
 
+**FOLLOW-UP-2 (2026-07-10) — RESOLVED as a metric/method artifact: the QBCP model is
+structurally correct; POL1/POL2 "non-closure" is NOT a model bug.** Worked the POL1/POL2
+discrepancy to the bottom (all diagnostics in the session scratchpad). Findings, in order:
+- **The forward-propagation closure test was the wrong metric.** POL1/POL2 are dynamical
+  substitutes of the *violently unstable* EM collinear points. The frozen-time
+  linearization of `qbcp_eom` at the L1/L2 x-locations gives an unstable rate of
+  **2.979 (L1) / 2.199 (L2)**, matching the CR3BP collinear rate (2.932 / 2.159) to ~1.6%
+  — i.e. the Sun term is the expected small O(eps^2) perturbation and the model's L-point
+  *stiffness is correct*. That rate implies a one-period (`T_s ≈ 6.79`) monodromy
+  multiplier of `exp(rate·T_s) ~ 1e6–1e8`, so a single forward propagation of even a
+  perfect IC amplifies any roundoff / model-instance offset to O(1). The reported
+  residuals (1.9–4.0) are that amplification, not a defect. (The earlier "clean
+  saddle×center×center monodromy, mult 216" reading was a red herring: det=1 and
+  reciprocal-pair eigenvalues are automatic for *any* symplectic STM, and the 216 was the
+  STM of a trajectory that had already flown off L1 along the unstable manifold, not a
+  Floquet multiplier of a periodic orbit.)
+- **Constructed the genuine substitute properly** by continuation from the *exact* CR3BP
+  EM-L1 equilibrium (`s=0`, a fixed point of the stroboscopic map to machine precision) to
+  the full QBCP (`s=1`) with a **multiple-shooting** corrector (48 segments over `T_s`).
+  It converges cleanly at every step (periodicity residual **9.1e-12** at `s=1`) to a real
+  QBCP periodic orbit. That orbit's closest approach to Rosales/Jorba's published POL1
+  (over a full period, matching x and py to ~1.7e-3) is **2.1e-2** — i.e. our model's own
+  L1 substitute agrees with the published golden to ~2%, consistent with a
+  Gimeno-2018-alpha-table vs Rosales-2023-POL model-instance (Fourier refit) difference
+  rather than a code error. No `theta_sun0` epoch offset (swept 0→2π) and no x/py sign
+  combination reconciles the remaining gap; it is a genuine small difference between our
+  (Gimeno-2018) alphas and the alphas Rosales used to compute POL, not a phase convention.
+- **The parities and canonical structure were re-derived and are all correct** (alpha_1,2,4,6,7
+  even; alpha_3,5,8 odd — the alpha_3 odd-parity worry was unfounded), and the alpha_4/alpha_5
+  ~2.15 amplitude is *physically right* (it is the indirect Sun term ≈ `mu_S/a_S² ≈ 2.176`,
+  as the existing `test_qbcp_circular_limit_eom` already encodes). The x→−x reflection baked
+  into the alpha tables is internally consistent (raw and reflected models agree exactly).
+- **One genuine convention discrepancy found, deliberately NOT shipped.** `qbcp_eom`
+  multiplies the *entire* Newtonian potential (Earth+Moon+Sun) by `alpha_6`, but the
+  in-digest Rosales/Jorba (2023) Eq. 3 places `alpha_6` *only* on the Sun term (as
+  `−m_S/(alpha_6·R_PS)`), Earth/Moon unscaled — physically `alpha_6` is a Sun-distance
+  coefficient. Implementing the Eq. 3 form (Sun term `/alpha_6`, Earth/Moon unscaled)
+  moved our L1 substitute ~30% *closer* to POL1 (2.12e-2 → 1.47e-2) **but regressed the
+  Sun-Earth-L2 torus positive control 16×** (invariance residual 3e-5 → 4.2e-4, still under
+  the 1e-3 gate but clearly worse). Since (a) it does not explain the dominant 2% gap,
+  (b) it risks a validated result, and (c) which Hamiltonian form the *Gimeno-2018*
+  `alpha_6` values were fitted for cannot be verified without that PDF, the change was
+  **reverted** per "check, don't guess." This is the #1 item to settle when
+  Gimeno/Jorba 2018 Table 4 + its Hamiltonian form are accessible. (Also flagged, not
+  fixed for the same no-guess reason: `_COEFFS_ALPHA1[5] = -38.068581391005552e-08` has a
+  mantissa >10 and breaks the harmonic-decay pattern — very likely a decimal-point slip for
+  `-3.8069e-08`, but it is O(1e-7) and dynamically immaterial.)
+- **Root-cause implication for the ORIGINAL #544 blocker (EM-L2 torus never converges).**
+  It is the *same* instability artifact: `correct_qbcp_torus` runs single-period GMOS
+  (`propagate_qbcp_pv` over one full `T_s` per invariant-circle sample), which is fine for
+  the mildly-unstable SE-L2 torus but hopeless for the violently-unstable EM-L1/L2 region
+  (each sample point is blown up by ~1e6–1e8). **The real fix is a multiple-shooting GMOS
+  corrector** (sub-interval the period so no single leg spans the full unstable growth) —
+  NOT more Fourier modes, a different target orbit, or coefficient hunting. #539/#540's
+  reuse of the single-period corrector on Jupiter-Europa/Uranus will hit the identical wall
+  wherever the target libration point is strongly unstable.
+- **Shipped:** no change to `qbcp.py` (the model is validated structurally correct). Added
+  two non-circular regression tests to `tests/core/test_qbcp.py`:
+  `test_qbcp_collinear_instability_matches_cr3bp` (frozen L1/L2 rate vs the independent
+  CR3BP Szebehely reference — a sourced structural golden that would catch a gross alpha/
+  potential error) and `test_qbcp_pol_forward_prop_is_instability_dominated` (pins the
+  forward-prop artifact so it is not re-mistaken for a bug). All four suites pass (20/20),
+  ruff + mypy clean.
+
 ## Novel-orbit discovery proposals following #538 (allocated 2026-07-09, this session — read this before dispatching)
 
 Formulated after auditing the #521-538 arc's actual outcomes (not just its headline resolutions): the coherent-model whiskered-torus/heteroclinic-connection pipeline (#522→#533→#537→#538) is this project's newest capability and sits in the "cislunar BCR4BP — under-mined, MEDIUM-yield" slot the 2026-06-26 `docs/superpowers/specs/2026-06-26-next-frontier-prioritization.md` frontier-ranking identified before it existed. #536's Jupiter-Europa screen tested exactly **one** Jacobi constant (C=3.0015) and found 0 connections — per the project's own "no X found is conditional on the search formulation" discipline, a single-point probe does not certify that region empty; it is a starting point, not a completed sweep. The proposals below sequence the natural next moves, ranked by expected new-catalogue-row yield and gated on #538 actually landing (either a confirmed closure or a documented negative) first, since #539/#540 reuse #538's corrector methodology directly.
@@ -1152,6 +1216,31 @@ work later, rather than sitting idle behind #544.
   system setup + parameter sourcing (digest-and-reconcile against a published Uranian
   reference, per `[[feedback_digest_not_adoption]]`) → **Sonnet**. Running the sweep and
   adjudicating any hit against the #312 anchor → **Opus**, **Fable** second-opinion pass.
+  ✓ Attempted (2026-07-10, session C). Constants were already correctly sourced (no new work
+  needed — `src/cyclerfinder/core/satellites.py` lines 159-178, JPL SSD gm_de440 planetary
+  constants + satellite phys_par/sats-elem tables, ref URA111, accessed 2026-06-14; Miranda GM
+  4.3, Ariel 83.5, Umbriel 85.1, Oberon 205.3 km^3/s^2, mean radii + SMAs also cited there).
+  NO usable positive control exists anywhere in the
+  qp_tori/qp_torus_heteroclinic method family (re-ran #534's own Earth-Moon L1<->L2 search to
+  completion this session: 0/50 sign changes across all 3 crossing searches, matching #536's
+  own documented 0-connection Jupiter-Europa result — neither prior application of this method
+  has EVER found a genuine connection); #312 itself cannot serve as a positive control either
+  (structurally different object — Lambert/patched-conic multi-arc quasi-cycler, not a
+  libration-point torus-heteroclinic connection). Built a new literature-independent
+  planar-Lyapunov torus bootstrap (`scripts/run_546_uranian_torus_screen.py`, since unlike
+  Earth-Moon/Jupiter-Europa no published halo/NRHO seed table exists for any Uranian moon) and
+  ran it: 18 Jacobi-band points across Umbriel/Oberon/Ariel (Miranda not reached, deprioritized
+  — smallest GM, hardest numerically, time-boxed session), 1 completed torus-connection screen
+  (Uranus-Oberon, C=3.003901, 8x8 grid, 0/64 sign changes), 17 points rejected pre-torus-stage
+  (bootstrap non-convergence or wrong-branch topology guard). **Verdict: NOT a certified empty
+  region** — per this project's own "verify a gauntlet with a positive control before trusting
+  0/N" discipline, a 0/N from an unvalidated method is uninterpretable, so nothing is registered
+  in `data/empty_regions.jsonl`. **Higher-priority follow-up surfaced**: before #541 (Saturn) or
+  any further re-application of #545/#546-style screening, establish a genuine validated
+  positive control for the qp_tori/qp_torus_heteroclinic linking-number method itself (find or
+  construct ANY real transit/heteroclinic connection in a well-studied CR3BP system, e.g.
+  resolving #534's own flagged-but-never-closed transit-vs-non-transit branch-classification
+  problem) — right now the method is 0-for-3 with no validated positive anywhere in its history.
 
 #539/#540 keep their original scope (generalizing #538's corrector into a reusable module)
 and stay gated on #538/#544 landing; #545/#546 are the decoupled screen-only predecessors.

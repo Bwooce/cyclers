@@ -5,9 +5,61 @@ from __future__ import annotations
 import math
 
 import numpy as np
+from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.bcr4bp as bcr4bp
 import cyclerfinder.core.qbcp as qbcp
+
+# Rosales-Jorba (2023) Table 4 dynamical-substitute ICs for the Earth-Moon
+# collinear points under the QBCP (canonical PM coordinates, y=z=px=pz=0),
+# expressed in THIS module's reflected (x -> -x) frame -- i.e. the published
+# negative-x values mapped to the repository's Earth-at-(-mu) convention.
+# Published: POL1 x=-0.8369141677649317 py=-0.8391311559808445
+#            POL2 x=-1.1556836078332600 py=-1.1587306159501061
+_POL1_X = 0.8369141677649317
+_POL2_X = 1.1556836078332600
+_POL1_REFLECTED = np.array([_POL1_X, 0.0, 0.0, 0.0, 0.8391311559808445, 0.0])
+_POL2_REFLECTED = np.array([_POL2_X, 0.0, 0.0, 0.0, 1.1587306159501061, 0.0])
+
+
+def _qbcp_frozen_jacobian(x: float, t: float, system: qbcp.QBCPSystem) -> np.ndarray:
+    """Frozen-time state Jacobian A(t) of qbcp_eom at (x, 0, 0), same construction
+    as ``qbcp_stm_eom`` builds internally (uses only public helpers)."""
+    alphas = qbcp.evaluate_alphas(t, system)
+    a1, a2, a3 = alphas[1], alphas[2], alphas[3]
+    uxx, uyy, uzz, uxy, uxz, uyz = qbcp.qbcp_potential_second_derivatives(x, 0.0, 0.0, t, system)
+    jac_a = np.zeros((6, 6), dtype=np.float64)
+    jac_a[0, 0] = a2
+    jac_a[0, 1] = a3
+    jac_a[0, 3] = a1
+    jac_a[1, 0] = -a3
+    jac_a[1, 1] = a2
+    jac_a[1, 4] = a1
+    jac_a[2, 2] = a2
+    jac_a[2, 5] = a1
+    jac_a[3, 0] = uxx
+    jac_a[3, 1] = uxy
+    jac_a[3, 2] = uxz
+    jac_a[3, 3] = -a2
+    jac_a[3, 4] = a3
+    jac_a[4, 0] = uxy
+    jac_a[4, 1] = uyy
+    jac_a[4, 2] = uyz
+    jac_a[4, 3] = -a3
+    jac_a[4, 4] = -a2
+    jac_a[5, 0] = uxz
+    jac_a[5, 1] = uyz
+    jac_a[5, 2] = uzz
+    jac_a[5, 5] = -a2
+    return jac_a
+
+
+def _cr3bp_collinear_unstable_rate(x: float, mu: float) -> float:
+    """CR3BP collinear-point unstable eigenvalue (Szebehely), computed independently
+    of qbcp.py so it is a non-circular reference for the QBCP structural check."""
+    c2 = (1.0 - mu) / abs(x + mu) ** 3 + mu / abs(x - 1.0 + mu) ** 3
+    return math.sqrt((c2 - 2.0 + math.sqrt(9.0 * c2 * c2 - 8.0 * c2)) / 2.0)
+
 
 # ---------------------------------------------------------------------------
 # Sample states and time anchors
@@ -185,3 +237,78 @@ def test_qbcp_circular_limit_eom() -> None:
 
     finally:
         qbcp.evaluate_alphas = original_evaluate_alphas
+
+
+# ---------------------------------------------------------------------------
+# 5. Collinear-point instability matches CR3BP (structural, sourced golden)
+# ---------------------------------------------------------------------------
+def test_qbcp_collinear_instability_matches_cr3bp() -> None:
+    """The QBCP frozen-time linearization at the EM L1/L2 points reproduces the CR3BP
+    collinear unstable rate.
+
+    This is the structural check that would catch a gross error in the alpha_i scaling
+    or in the Newtonian potential (either would shift the L-point stiffness). The
+    EXPECTED rate is the CR3BP collinear eigenvalue (Szebehely), derived here directly
+    from the mass ratio -- it does NOT come from qbcp.py, so the comparison is not
+    circular. The QBCP (Sun-perturbed) rate must sit within a few percent of the CR3BP
+    rate because the Sun term is a small O(eps^2) perturbation. (Verified 2026-07-10:
+    QBCP L1 rate 2.979 vs CR3BP 2.932; QBCP L2 rate 2.199 vs CR3BP 2.159.)
+    """
+    system = qbcp.qbcp_default()
+    mu = system.mu
+    for x in (_POL1_X, _POL2_X):
+        jac_a = _qbcp_frozen_jacobian(x, 0.0, system)
+        eigs = np.linalg.eigvals(jac_a)
+        rate_qbcp = float(np.max(eigs.real))
+        rate_cr3bp = _cr3bp_collinear_unstable_rate(x, mu)
+        rel = abs(rate_qbcp - rate_cr3bp) / rate_cr3bp
+        assert rate_qbcp > 1.5, f"expected a real unstable eigenvalue at x={x}, got {rate_qbcp}"
+        assert rel < 0.05, (
+            f"QBCP frozen collinear rate {rate_qbcp:.4f} at x={x} deviates "
+            f"{rel:.1%} from the CR3BP reference {rate_cr3bp:.4f} (expected < 5%)"
+        )
+
+
+# ---------------------------------------------------------------------------
+# 6. POL substitutes are unstable: forward-prop non-closure is an artifact
+# ---------------------------------------------------------------------------
+def test_qbcp_pol_forward_prop_is_instability_dominated() -> None:
+    """Pin WHY the published POL1/POL2 substitutes do NOT close under naive forward
+    propagation, so the O(1) residual is not re-mistaken for a model bug.
+
+    POL1/POL2 are dynamical substitutes of the violently unstable EM collinear points.
+    The monodromy over one synodic period T_s carries a huge unstable multiplier
+    (exp(rate * T_s) with rate ~2-3 and T_s ~6.79, i.e. 1e6-1e8), so a single forward
+    propagation of even a perfect IC amplifies any roundoff / model-instance offset to
+    O(1). The residual is therefore a metric artifact of the instability, NOT a defect
+    in qbcp_eom -- proper validation uses continuation + multiple shooting (see
+    data/OUTSTANDING.md, task #544). This test asserts both facts jointly: the forward
+    residual is O(1) AND the frozen instability is large enough to fully explain it.
+    """
+    system = qbcp.qbcp_default()
+    ts = system.sun_period_tu
+    for pol, x in ((_POL1_REFLECTED, _POL1_X), (_POL2_REFLECTED, _POL2_X)):
+        sol = solve_ivp(
+            lambda t, y: qbcp.qbcp_eom(t, y, system),
+            (0.0, ts),
+            pol,
+            method="DOP853",
+            rtol=1e-12,
+            atol=1e-12,
+        )
+        assert sol.success
+        residual = float(np.linalg.norm(sol.y[:, -1] - pol))
+
+        jac_a = _qbcp_frozen_jacobian(x, 0.0, system)
+        rate = float(np.max(np.linalg.eigvals(jac_a).real))
+        amplification = math.exp(rate * ts)
+
+        # The orbit is genuinely, strongly unstable ...
+        assert amplification > 1e5, (
+            f"expected large unstable amplification at x={x}, got {amplification:.2e}"
+        )
+        # ... which is exactly why the naive one-shot residual is O(1) rather than tiny.
+        assert residual > 0.5, (
+            f"forward-prop residual at x={x} unexpectedly small ({residual:.3e}); if this "
+            "ever holds, the instability-artifact reasoning in #544 needs revisiting"
+        )
