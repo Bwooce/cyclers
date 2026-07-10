@@ -251,6 +251,11 @@ capabilities to RUNNING discovery on them. Landed this block:
 - **#506 DONE** (5004822): PC (3,2) V3-scope assessment — **stays V2-ballistic**; JPL Horizons not
   available for Charon, requires NAIF SPK kernel (SAT441l) not present on this host. V3 upgrade gated
   on acquiring the kernel; V2-ballistic is the correct current tier.
+  **Superseded (2026-07-01, same session): #510 fetched the kernel (`plu060.bsp`) and #511 built +
+  ran the actual differential-correction V3 attempt — CONFIRMED STAYS V2-ballistic for a structural
+  reason (period incommensurate with Charon's own orbit), not a missing-kernel gap. See #511's
+  verdict, `docs/notes/2026-07-01-511-pluto-charon-realeph-verdict.md`. #550 (allocated 2026-07-10)
+  re-proposed this as if unresolved — corrected there.
 Net Tier-1: discovery on the built substrate confirms #492 exhaustion — no novel cyclers; the deliverable
 is the honest empty-region maps + the confirmation that the admitted rows are the frontier.
 - Process note: subagents hit a monthly spend limit mid-session (the #494 admission agent died AFTER
@@ -265,7 +270,8 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
   only #312 Uranus across the whole arc) — expect mostly V0-known + occasional fresh instantiations.
 - **Tier 2 (deep fixes):** #496 (n_em,n_se) sweep → 3D z-slicing (Gómez 2004) for cross-system closure;
   #497 R52-U recovery to flip C32 gate (node-set, not proxy).
-- **Tier 3 (validation + consolidation):** PC (3,2) V3 upgrade gated on SAT441l kernel (#506 scope done);
+- **Tier 3 (validation + consolidation):** PC (3,2) V3 upgrade RESOLVED (#510/#511, 2026-07-01) —
+  confirmed stays V2-ballistic (structural, not kernel-gated);
   #487 V4_qp gauntlet (de-prioritised).
 - **Tier 5 (3D Dynamics & Multi-Rev Search):** #515 3D lift framework for cross-system cycles; #516 Multi-Revolution 3D Patched Search (n_em, n_se > 1); #517 Asymmetric/Mixed Libration Pairs in 3D; #518 3D BCR4BP Continuation; #520 Comprehensive 3D sweep (needs a positive control before its negative is trustworthy — see DELTA above).
 - **Tier 6 (Novel-Orbit Discovery Reboot, per the 2026-07-02 independent review — see DELTA above):** #521
@@ -1478,6 +1484,21 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   missing NAIF kernel (`SAT441l`, per #506's writeup) — a fetch from naif.jpl.nasa.gov, no
   new logic. Raises the tier of the project's newest confirmed novel row.
   **Recommended model:** Haiku (pure mechanical download + kernel-load verification).
+  **✗ STALE — ALREADY DONE (2026-07-10, discovered while about to dispatch this).** This task
+  was allocated from a Fable-advisor pass that read #506's entry but missed that the SAME
+  session (2026-07-01) already fully resolved it: task **#510** fetched `plu060.bsp` (129 MB,
+  `~/dev/references/kernels/plu060.bsp`, verified this session to still load cleanly via
+  `verify.spice_kernels.ensure_pluto_kernel()`), and task **#511** then built and RAN the actual
+  differential-correction V3 promotion attempt (`verify/pluto_charon_realeph.py` +
+  `scripts/pc_v3_realeph_correction.py`, `tests/verify/test_511_pc_realeph_correction.py`, 4/4
+  pass). **Verdict (already recorded, `docs/notes/2026-07-01-511-pluto-charon-realeph-verdict.md`):
+  PC (3,2) STAYS V2-ballistic** — no real-ephemeris analog of this exact orbit exists, for a
+  structural reason: its period `T/(2*pi)=1.8834` is not commensurate with Charon's own orbital
+  period (the `#441` "period_f trap"), confirmed on real SPICE data (independent-closure residual
+  1.726e-2 nd = 338 km, 9+ orders above the 1e-8 gate — not a marginal near-miss). This is a
+  genuine physics finding, not a missing-kernel gap; no further action needed on this task. The
+  corrector/e-continuation infrastructure remains reusable for any future `k:1`-resonant PC row.
+  No dispatch fired.
 
 - **#551** (P3, opportunistic, now time-relevant) — GTOC 13 methods-paper corpus mining.
   GTOC 13 ran Oct-Nov 2025 on ballistic Jovian gravity-assist tours — this project's exact
