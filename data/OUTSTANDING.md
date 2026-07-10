@@ -1509,6 +1509,22 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   **Recommended model:** Sonnet for the search/fetch/digest pass (standard per-paper digest
   discipline, `[[feedback_per_paper_digest_todo]]`); Opus only if a candidate admission
   needs a novelty/tier judgment call.
+  **✗ STALE PREMISE — mostly already checked, DO NOT dispatch as scoped (2026-07-10,
+  discovered while about to dispatch this).** This entry repeats the same "ballistic Jovian
+  gravity-assist tour" mischaracterization task **#526** already corrected on 2026-07-03: GTOC
+  13 is actually a ballistic-flyby + optional ideal-solar-sail tour of a FICTIONAL single-star,
+  10-planet exoplanetary system ("Altaira") — no Jovian moon system, no cycler-relevant
+  repeating structure even in principle (a one-shot 200-year tour maximizing a score). #526
+  also already searched WebSearch/arXiv/the GTOC13 site/the ESA GTOC-portal mirror for methods
+  papers and found an honest negative — none exist yet, workshop still listed "TBA", consistent
+  with the typical 6-18-month competition-close-to-journal-special-issue pipeline for a
+  competition that closed Nov 2025. Re-dispatching the identical search only 7 days later
+  (2026-07-10) would almost certainly reproduce the same negative at the cost of a wasted
+  agent run. **Recheck condition:** not worth revisiting before ~Q1 2027 (12+ months post-close,
+  giving the workshop→journal pipeline real time to produce something), and even then the
+  problem-statement digest (`docs/notes/2026-07-03-digest-gtoc13-problem-statement.md`) already
+  establishes there's no cycler-relevant structure to mine regardless of methods-paper
+  availability — so this is genuinely low-priority even at its recheck date. No dispatch fired.
 
 - **#552** (parking lot — flagged for user review before dispatch, NOT auto-fired) — 3D/
   inclined-releg extension to the moontour genome. The empty-region registry's own re-open
