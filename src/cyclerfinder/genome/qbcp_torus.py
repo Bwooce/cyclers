@@ -143,7 +143,15 @@ def se_lyapunov_to_qbcp_torus_seed(
         x0[i0 + 6 : i0 + 12] = np.imag(coeffs[n, :])
     x0[-1] = rho
 
-    phase_pin_idx = int(np.argmax(np.abs(np.imag(coeffs[1, :]))))
+    # Phase-pin gauge: pin ``Im(c_1[phase_pin_idx]) = 0`` to kill the rotation
+    # invariance of the invariant-circle parameterization. The gauge derivative
+    # with respect to a circle rotation phi is ``Re(c_1[phase_pin_idx])``, so the
+    # pin coordinate MUST be one with a large real part or the gauge is singular
+    # (the corrector then cannot fix the rotational phase and stalls). Pick the
+    # coordinate with the largest real part, matching qp_tori.correct_qp_torus.
+    # Selecting argmax|Im| instead would pin a near-purely-imaginary coordinate
+    # (Re ~ 0), a singular gauge -- the #544 Earth-Moon L2 non-convergence bug.
+    phase_pin_idx = int(np.argmax(np.abs(np.real(coeffs[1, :]))))
     amplitude_pin = float(np.linalg.norm(coeffs[1, :]))
 
     return x0, phase_pin_idx, amplitude_pin

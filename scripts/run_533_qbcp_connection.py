@@ -328,7 +328,11 @@ def main():
         x0_em[i0 + 6 : i0 + 12] = np.imag(coeffs_em[n, :])
     x0_em[-1] = rho_em
 
-    phase_pin_em = int(np.argmax(np.abs(np.imag(coeffs_em[1, :]))))
+    # Phase-pin gauge: pin Im(c_1[idx])=0; gauge derivative w.r.t. a circle
+    # rotation is Re(c_1[idx]), so idx must have a large real part or the gauge
+    # is singular and the corrector stalls (the #544 Earth-Moon L2 bug). Pick
+    # argmax|Re|, matching qp_tori.correct_qp_torus.
+    phase_pin_em = int(np.argmax(np.abs(np.real(coeffs_em[1, :]))))
     amplitude_pin_em = float(np.linalg.norm(coeffs_em[1, :]))
 
     # Correct EM L2 torus in BCR4BP first (which is physically consistent under mu_sun scaling)

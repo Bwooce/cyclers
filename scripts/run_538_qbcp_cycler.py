@@ -278,7 +278,11 @@ def build_tori() -> tuple[qbcp.QBCPSystem, QBCPTorus, QBCPTorus]:
         x0_em[i0 : i0 + 6] = np.real(coeffs_em[n, :])
         x0_em[i0 + 6 : i0 + 12] = np.imag(coeffs_em[n, :])
     x0_em[-1] = rho_em
-    phase_pin_em = int(np.argmax(np.abs(np.imag(coeffs_em[1, :]))))
+    # Phase-pin gauge: pin Im(c_1[idx])=0; the gauge derivative w.r.t. a circle
+    # rotation is Re(c_1[idx]), so idx must have a large real part or the gauge
+    # is singular and the corrector cannot fix the rotational phase (the #544
+    # Earth-Moon L2 stall). Pick argmax|Re|, matching qp_tori.correct_qp_torus.
+    phase_pin_em = int(np.argmax(np.abs(np.real(coeffs_em[1, :]))))
     amplitude_pin_em = float(np.linalg.norm(coeffs_em[1, :]))
 
     from cyclerfinder.genome.bcr4bp_torus import bcr4bp_torus_residual
