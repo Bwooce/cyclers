@@ -168,6 +168,42 @@ def _first_closed_curve(
     return None
 
 
+def closest_curve_distance(
+    stable_grid: ManifoldGrid,
+    unstable_grid: ManifoldGrid,
+    *,
+    scanning_component: str,
+    curve_components: tuple[str, str, str],
+    d: float,
+) -> float | None:
+    """Nearest-point distance between the stable/unstable reduced closed
+    curves at scanning value ``d`` (#545).
+
+    ``scan_linking_number`` reports where the linking number CHANGES SIGN
+    across a coarse ``d_values`` scan -- a topological indicator, not a
+    metric residual. This is the scalar residual a root-finder (e.g.
+    ``search.deflated_newton.enumerate_roots``) can actually drive to zero:
+    a genuine heteroclinic connection is a ``d`` where the two curves
+    (which live in the same 3-component reduced state space) touch, i.e.
+    their nearest-point distance is (near) zero. Returns ``None`` if either
+    curve is unavailable at ``d`` (outside the finite-crossing range, or the
+    manifold grid has no valid level curve there) -- the same "no connection
+    detectable there from this data" convention as ``scan_linking_number``.
+    """
+    d_idx = _component_index(scanning_component)
+    n_long_s, n_lat_s = stable_grid.hyperbolic.shape
+    n_long_u, n_lat_u = unstable_grid.hyperbolic.shape
+    field_s = stable_grid.endpoints[:, :, d_idx]
+    field_u = unstable_grid.endpoints[:, :, d_idx]
+    curve_s = _first_closed_curve(field_s, d, n_long_s, n_lat_s, stable_grid, curve_components)
+    curve_u = _first_closed_curve(field_u, d, n_long_u, n_lat_u, unstable_grid, curve_components)
+    if curve_s is None or curve_u is None:
+        return None
+    diffs = curve_s[:, None, :] - curve_u[None, :, :]
+    dists = np.linalg.norm(diffs, axis=-1)
+    return float(dists.min())
+
+
 def build_manifold_grids(
     stable_torus: QPTorus,
     unstable_torus: QPTorus,
@@ -209,5 +245,6 @@ def build_manifold_grids(
 __all__ = [
     "LinkingScanResult",
     "build_manifold_grids",
+    "closest_curve_distance",
     "scan_linking_number",
 ]

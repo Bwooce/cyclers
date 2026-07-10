@@ -14,6 +14,7 @@ data/OUTSTANDING.md's #522 entry, not asserted here.
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +23,11 @@ import pytest
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.genome.qp_tori import QPTorus, correct_qp_torus
-from cyclerfinder.genome.qp_torus_heteroclinic import build_manifold_grids, scan_linking_number
+from cyclerfinder.genome.qp_torus_heteroclinic import (
+    build_manifold_grids,
+    closest_curve_distance,
+    scan_linking_number,
+)
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 SUBFAMILIES_FILE = DATA_DIR / "family_296_3d_subfamilies_299.jsonl"
@@ -123,3 +128,43 @@ def test_scan_linking_number_runs_end_to_end() -> None:
     # sign_change_locations must not crash and returns floats within range.
     for loc in result.sign_change_locations():
         assert d_values.min() <= loc <= d_values.max()
+
+
+def test_closest_curve_distance_runs_end_to_end() -> None:
+    """Mechanical wiring test (#545) for the deflated-Newton residual: within
+    the grids' finite-crossing overlap it returns a finite, non-negative
+    distance; outside any valid level curve it returns ``None`` (the same
+    "no connection detectable there from this data" convention as
+    ``scan_linking_number``). Same self-consistency torus/grid setup as
+    ``test_scan_linking_number_runs_end_to_end`` -- a mechanical wiring
+    check, not a physical connection claim.
+    """
+    torus = _sourced_torus()
+    stable_grid, unstable_grid = build_manifold_grids(
+        torus,
+        torus,
+        n_long=4,
+        n_lat=4,
+        eps=1e-6,
+        surface_x=1.0 - EM_MU,
+        t_max=5.0,
+    )
+    dist = closest_curve_distance(
+        stable_grid,
+        unstable_grid,
+        scanning_component="z",
+        curve_components=("y", "ydot", "zdot"),
+        d=0.0,
+    )
+    if dist is not None:
+        assert dist >= 0.0
+        assert math.isfinite(dist)
+
+    far_outside = closest_curve_distance(
+        stable_grid,
+        unstable_grid,
+        scanning_component="z",
+        curve_components=("y", "ydot", "zdot"),
+        d=1.0e6,
+    )
+    assert far_outside is None

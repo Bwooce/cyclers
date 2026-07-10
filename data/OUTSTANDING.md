@@ -308,7 +308,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1241,6 +1241,63 @@ work later, rather than sitting idle behind #544.
   construct ANY real transit/heteroclinic connection in a well-studied CR3BP system, e.g.
   resolving #534's own flagged-but-never-closed transit-vs-non-transit branch-classification
   problem) — right now the method is 0-for-3 with no validated positive anywhere in its history.
+
+- **#547** (P0 follow-up to #546, 2026-07-10) — Transit-vs-non-transit manifold-branch positive
+  control for the qp_tori/qp_torus_heteroclinic method family. **RESOLVED (positive control built)
+  + the "no validated positive anywhere" framing corrected.**
+  - **A pre-existing validated positive control was already in the tree, in a DIFFERENT method
+    module.** `genome/heteroclinic_cycle.py` (task #314) certifies genuine planar-CR3BP transit
+    heteroclinic connections via the classical KLMR section-crossing + Floquet-manifold method,
+    golden-validated against Wilczak & Zgliczynski's computer-assisted proof of the closed L1<->L2
+    Lyapunov cycle in the Sun-Jupiter-Oterma PCR3BP (arXiv:math/0201278). `tests/genome/
+    test_heteroclinic_cycle.py` is green (8/8, re-run this session): `test_connection_l1_to_l2_
+    converges` (residual < 1e-6) and `test_assemble_l1_l2_two_cycle_closes` (closed cycle,
+    residual ~1.1e-9, independently Radau cross-checked). So the #546 follow-up's "0-for-3 with no
+    validated positive ANYWHERE in its history" was scoped to the qp_torus LINKING-NUMBER pipeline
+    specifically; genuine transit connections ARE findable and validated in this codebase — the
+    transit-vs-non-transit branch classification #534 called an "open sub-problem" is in fact
+    already solved in #314's `correct_connection` (neck-facing branch selection `branch_u=-1,
+    branch_s=+1` + crossing-index `(k_u=3, k_s=4)`, documented in that docstring: "only those
+    branches reach the L1-L2 neck where the connection lives").
+  - **Built a fresh, minimal, from-first-principles transit positive control** (`genome/
+    transit_manifold.py` + `tests/genome/test_transit_manifold.py`, 3 tests green) that resolves
+    #534's flagged classification numerically and directly. An Earth-Moon L1 planar Lyapunov orbit
+    at `C=3.1869` (deliberately between `C_L2=3.1722` and `C_L1=3.1883`, so the L1 neck is open and
+    the L2 neck is closed — the classic bounded-Moon-realm KLMR gateway) is a strong saddle
+    (`lam_u~2641`, x0=0.8321 near L1). Its `+` unstable branch is a genuine TRANSIT trajectory:
+    threads the neck, crosses `x=1-mu` seven times, approaches the Moon to 0.023 nondim (~8800 km),
+    reaching x up to 1.088 in the Moon realm. Its `-` branch is NON-TRANSIT: stays interior, swings
+    back toward Earth to x=-0.60, never crosses `x=1-mu`. The branch is classified EMPIRICALLY
+    (propagate both, see which reaches the section), not guessed from an eigenvector-component
+    sign — exactly the missing piece #534 named. This is the codebase's first from-scratch
+    transit-branch positive control keyed to the "propagate a signed manifold perturbation and check
+    surface crossing" mechanic the qp_torus screen itself uses.
+  - **Diagnosis of the linking-number method's 0-for-3 (honest, no forced positive).** #534's
+    energy was NOT the problem: `C=3.15` is below both collinear thresholds (both necks open),
+    matching Owen & Baresi's own EM demonstration exactly. The actual gap is that the
+    linking-number pipeline (#522) has NEVER been run on its own paper's validated positive control
+    — Owen & Baresi's EM quasi-halo<->quasi-halo case (`mu=0.012153643, C=3.15`, L1 latitudinal
+    freq 0.2739 / L2 0.02163 → 4 connections, Fig 15, per `docs/notes/2026-07-03-digest-owen-
+    baresi-2024-knot-theory-heteroclinic.md`). #534 built tori at the right ENERGY but abandoned
+    reproducing those exact frequencies as impractical (its tori landed at omega_trans -0.1699 /
+    -0.0356 — genuinely DIFFERENT tori whose manifolds are different objects), so its 0-connection
+    result never tested the Owen-Baresi case at all. I did NOT find a branch-selection bug in
+    `genome/qp_torus_manifold.py`: for the planar L1 saddle the unstable eigenvector's x-component
+    is a healthy 0.30 (not near-zero — an earlier in-session read of "3e-7" was the `eps*vec[0]`
+    scaled perturbation, not the eigenvector), so its default `vec[0]*sign` heuristic DOES pick the
+    Moon-ward transit branch there; whether that heuristic degrades for a genuine 3D quasi-halo
+    unstable eigenvector is untested (rebuilding #534's uncommitted tori was out of scope this
+    session) and is a plausible-but-unconfirmed weak point, not a demonstrated defect.
+  - **Bearing on prior negatives.** #534/#536/#546's 0-connection results remain method-artifact-
+    contaminated NON-negatives (as #546 already correctly declined to register any empty region):
+    the planar positive control now proves the underlying transit physics AND this codebase's
+    manifold-crossing mechanic are sound, which ISOLATES the remaining gap to the
+    linking-number-specific pipeline — faithfully reproducing an Owen-Baresi-grade isoenergetic
+    quasi-halo torus PAIR (frequency-matched) and then validating the closed-curve/level-set/scan
+    machinery against the published 4-connection count — before any qp_torus 0/N can be trusted as
+    a certified empty region. That torus-reproduction + linking-number-pipeline validation is the
+    real remaining #522-family blocker; it is NOT unblocked by this task, but this task removes the
+    "does a genuine transit branch even exist / can we identify it" uncertainty that #534 left open.
 
 #539/#540 keep their original scope (generalizing #538's corrector into a reusable module)
 and stay gated on #538/#544 landing; #545/#546 are the decoupled screen-only predecessors.
