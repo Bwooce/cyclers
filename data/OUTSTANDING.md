@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1900,6 +1900,57 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   a published Uranian-system reference, per the "digest ≠ adoption" discipline) →
   **Sonnet**. Running the sweep and adjudicating any hit against the #312 anchor →
   **Opus**, **Fable** second-opinion pass before writeback (same pattern as #539/#538).
+  **SUPERSEDED (2026-07-11) by #558** — this entry's island-vs-family question was never
+  answered as scoped (gated behind #538/#544, which parked; #545/#546's torus-heteroclinic
+  re-screen answered a related-but-distinct question and was itself shelved by #548/#553/#555
+  with 0-for-4 and no validated positive). A Fable review of #312 found the actual answer
+  doesn't need the torus machinery at all — see #558 below, which reuses the ORIGINAL
+  discovery genome that found #312 in the first place.
+
+- **#558** (P0, cheap — Fable review estimates minutes of compute, fully disjoint from the
+  shelved #522/#548 torus-heteroclinic pipeline) — #312 family census via the original
+  discovery genome. A Fable review of #312 (2026-07-11) found the island-vs-family question
+  #540 posed has never actually been answered, AND found a concrete, load-bearing reason to
+  suspect "family" over "island": the discovery genome that found #312
+  (`scripts/scan_312_uranus_umbriel_oberon_offset_sweep.py`) **holds moon-pair relative
+  offset FIXED by convention** and only sweeps global phase — the exact convention choice
+  that nearly HID #312 itself (0.636 km/s under a 3-moon-convention fixed offset vs the
+  catalogued 0.025 km/s under the 2-moon/180° convention actually used). Every adjacent
+  Uranian moon-pair "miss" on record (Oberon-Titania 0.0617 km/s — only 23% over the 0.05
+  km/s gate; Ariel-Titania 0.27; Titania-Umbriel 0.66) was measured at an **arbitrary fixed
+  offset**, never a true basin floor — the same blind spot that almost hid the one confirmed
+  novel row in this project's history. Even within Umbriel-Oberon itself, the existing
+  rel-offset sweep already found a SECOND distinct closure (rel_offset=45°, tof_scale=1.5,
+  residual 0.024, but V∞=2.27 km/s — physically unusable, 4.2x surface escape) with a
+  completely different V∞ signature than the catalogued point — multi-basin evidence at the
+  one known grid point.
+  **Scope:** generalize the existing 4.5-second script to sweep rel_offset (96) x phase0 (96)
+  x tof_scale (densified, 0.5-3.0 in ~0.1 steps) x n_rev (0..3) over **all 10 Uranian moon
+  pairs** (5 regular moons), plus a full-landscape dump for Umbriel-Oberon itself (the
+  current JSONL keeps only 13 best-records; the within-pair basin census needs a re-run
+  that keeps everything). Gate every sub-0.05 km/s basin through the EXISTING #324 physical
+  max-bend filter, DOP853 cross-check, and — for survivors — the already-built, frozen
+  V1->V4-strict gauntlet (#330/#331/#332/#335/#338 are all reusable as-is; positive control =
+  re-running #312's own IC through the same pipeline, which the frozen tests already do).
+  This is the SAME method that found #312, run where it was never run — not a new capability,
+  not a re-run of the shelved torus machinery.
+  **Recommended models (per the Fable review):** Sonnet for the sweep build/run (mechanical,
+  behind deterministic gates). Opus for adjudicating any hit against the #312 anchor and the
+  family/empty-region verdict. Fable second-opinion pass before any catalogue writeback
+  (matches #546's own prescribed split for this territory).
+
+- **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
+  #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
+  found 2000-01-15 launches FAIL V4-strict (91,000 km drift) while 2000-06-21 PASSES
+  (12,000 km) — same year, and the 84-year validity window / 100% interior pass rate holds
+  ONLY at June-21-ish launches. The daily-epoch scan across one Umbriel-Oberon synodic cycle
+  that would resolve whether June 21 sits in a wide PASS band or on a knife-edge was scoped,
+  declared non-blocking, and never run (#338's own 100-epoch annual sweep took 42s, so this
+  is well under a minute of compute). Directly affects #312's mission-utility claim and its
+  eventual V5 write-up (a knife-edge DOY dependency is a materially weaker result than a wide
+  tolerant band).
+  **Recommended model:** Sonnet (mechanical parameter sweep behind the existing frozen
+  V4-strict gate, no new judgment call).
 
 - **#541** (P3, opportunistic, lower priority than #539/#540) — First-pass Saturnian
   resonant-moon-pair screen (Mimas-Enceladus or Enceladus-Titan) using the same
