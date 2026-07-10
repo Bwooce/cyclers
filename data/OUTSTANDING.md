@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -1572,6 +1572,34 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   round of the same". The #534/#536/#546 method-invalid-do-not-certify stamps STAND
   (their tori were never frequency-validated either). Did NOT write to `data/catalogue.yaml`
   (no connection found; nothing to write).
+
+- **#556** (parking lot — flagged for user review before dispatch, NOT auto-fired) —
+  large-rotation-number quasi-halo torus corrector. The single, precisely-localized blocker
+  #555 found to a full Owen & Baresi L1<->L2 reproduction: `genome.qp_tori.correct_qp_torus`
+  cannot converge the EM L1 quasi-halo at the amplitude needed to carry the published
+  latitudinal frequency 0.2739 near C=3.15 (a single amp=0.02 build did not finish in 250s;
+  invariance residual degrades past amp~0.01) — a genuine numerical-methods capability gap,
+  not a conceptual one (the L2 side, near its own bifurcation, already converges cleanly and
+  matches 0.02163 exactly). Building this would let the linking-number screen finally run
+  the ACTUAL Owen & Baresi case rather than a half-frequency-matched substitute, either
+  closing the loop on the #522 family for good (a genuine connection = a publication-adjacent
+  result validating #539-541's future reuse) or reaching a truly unappealable clean negative.
+  **Not auto-fired** because: (a) this is the fourth dispatch in the #548->#553->#555 chain,
+  each of which found a real, non-trivial issue — a pattern that could keep finding "one more
+  thing" indefinitely without a clear stopping rule this time; (b) per this session's own
+  portfolio-parking logic (see the #538/#544/#539-541 PARKED note above), the whole SE<->EM
+  cislunar corridor has now absorbed five-plus tasks across multiple sessions with zero
+  catalogue rows, while breadth-on-unscreened-systems work (#549, #312) is what has actually
+  paid off; (c) a torus corrector convergence fix is genuinely open-ended numerical-methods
+  work (could be a quick fix — better initial guess, arclength continuation in amplitude — or
+  a deep one — the corrector's Newton scheme may just not handle this rotation-number regime
+  at all), unlike #555's own bounded, well-specified final round.
+  **Recommended model:** Opus for the initial diagnosis (is this a quick continuation-strategy
+  fix or a deeper corrector limitation?) before committing to a build; Sonnet for
+  implementation once scoped, behind the existing SE-L2/L2-near-bifurcation convergence tests
+  as a regression floor.
+
+- **#549** (P0, fire alongside #548, fully disjoint code path) — Real-binary `(k1, k2)`
   genome sweep. The Tier-1 forward-plan line "circumbinary Pluto-Charon deeper + other-binary
   (k1,k2) sweep" (identified 2026-07-01, never allocated a task number, never run). Reuse
   the #494/#504 binary-cycler genome harness verbatim. **Positive control:** re-find PC
