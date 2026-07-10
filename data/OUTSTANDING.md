@@ -1045,6 +1045,34 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   design work this project's model-tiering policy reserves for Opus, not a mechanical task).
   Implementation model to be decided after the plan is reviewed, per explicit user instruction —
   do not auto-proceed to a build dispatch on plan completion.
+  **PLAN WRITTEN 2026-07-11 (planning pass complete, awaiting user review — nothing built or run,
+  no catalogue/empty-region edits):** `docs/superpowers/plans/2026-07-11-557-jupiter-quasi-hilda-
+  transient-capture-plan.md`. Headline finding that gates everything else: the catalogue
+  `quasi_cycler` validity-window (10-15 yr) is Earth-timescale-calibrated and is STRUCTURALLY too
+  short for Jupiter's natural return spacing — the re-derived separation floor is Jupiter's own
+  orbital period (11.86 yr, the strict analogue of #535's Earth 1-yr noise floor; the Hilda
+  libration period ~250-300 yr was rejected as presupposing the resonance), and ≥3 distinct returns
+  each separated by ≥11.86 yr need ≥~24 yr, exceeding the entire un-rescaled window. So the literal
+  window makes the screen a near-certain STRUCTURAL empty (a units artifact, not a dynamical
+  negative — must NOT be registered as an empty region). The physically-consistent fix rescales the
+  window by T_J/T_E≈11.86 to ~120-180 yr (count 3-15 and the 3x geometry ratio are scale-invariant
+  and transfer as-is; `r_hill`=(μ/3)^(1/3)=0.0683 nondim/0.355 AU recomputes automatically) — but
+  that departs from the schema's fixed mission-relevance window and is a `quasi_cycler`-class-scope
+  decision for the user, parallel to the #320/#535 scoping discussions, to be made BEFORE any build.
+  Other recommendations: seed via option (c) (real-object anchor — P/Gehrels 3 elements sourced from
+  JPL SBDB, Oterma/Koon-2001 as the in-corpus fallback; NOT the #527/#530 C=3.14 periodic seed,
+  which sits above C_L1=3.039 with necks closed and produces zero Hill encounters by construction —
+  the temporary-capture regime needs the neck-OPEN band C∈~[3.00,3.038]), then a coarse-first
+  broad scan, mirroring #535's RH120-first structure; ~90% reuse (the detector is fully
+  system-agnostic already, the run_535 sweep + ER3BP-sensitivity scripts are re-parameterizable
+  clones); key risk-mitigation vs #535's own history — run the real-eccentricity ER3BP check
+  (Jupiter e=0.0489) EARLY on the anchor to gate the broad scan (Koon 2001 notes e "plays little
+  role during the fast resonance transition", so the fast tube-mediated capture may be less fragile
+  than Earth's slow horseshoe — a hypothesis to test, not assume), and `python3 -u`/flush +
+  incremental checkpoint runlog + coarse-first grid from the first launch (the #535 wide scan died
+  to an unbuffered-stdout instrumentation gap, not a computation failure). Confirmed by reading
+  `data/empty_regions.jsonl` directly that none of the three existing Sun-Jupiter Hilda entries use
+  the Hill-sphere-return method AND all sit at the closed-neck C=3.14 energy — genuinely unscreened.
 
 - **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
   Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).
