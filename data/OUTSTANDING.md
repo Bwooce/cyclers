@@ -1073,6 +1073,35 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   to an unbuffered-stdout instrumentation gap, not a computation failure). Confirmed by reading
   `data/empty_regions.jsonl` directly that none of the three existing Sun-Jupiter Hilda entries use
   the Hill-sphere-return method AND all sit at the closed-neck C=3.14 energy — genuinely unscreened.
+  **FABLE REVIEW 2026-07-11 (window-rescaling implications + CPU-cost question, answered):**
+  corrections applied directly to the plan doc and to `docs/notes/2026-06-16-catalogue-scope-
+  taxonomy.md`. Key findings: (1) the "10-15 yr" figure was ALREADY dead letter — not enforced
+  anywhere in code/schema, and the catalogue's own one `quasi_cycler` row (#312) already has an
+  83-year `validity_window`, 5.5x the stated ceiling, admitted through the full gauntlet — so
+  generalizing this is a DOCUMENTATION fix (system-period-relative floor/window, not a fixed-years
+  number), not a schema migration; done directly in the taxonomy doc rather than deferred. (2) The
+  right formulation is dimensionless — floor = 1 rotating-frame period of the CR3BP system under
+  study, window = 10-15 such periods — which correctly generalizes to MOON-SYSTEM quasi_cyclers too
+  (like #312 itself: the relevant period is the moon-pair's ~6-day synodic period, NOT Uranus's
+  84-year heliocentric period; the plan's literal "primary's orbital period" phrasing would have
+  been wrong by ~5000x for that case). (3) Catalogue-wide blast radius is small (other classes/M7-
+  novelty-matching unaffected) but real: V2/V4 validation budgets scale in real years and can exceed
+  kernel coverage at Uranus/Neptune-heliocentric scale (DE440 ~1100 yr span; add a
+  `min(validity_window, kernel_coverage)` truncation rule, now in the taxonomy doc). (4) **The
+  CPU-cost question is answered cleanly: positive, and NOT more expensive.** CR3BP integration cost
+  scales with nondimensional rotating-frame revolutions, not calendar years — a Jupiter screen under
+  the corrected window integrates the same ~10-60 revolutions as #535's Earth screen, i.e. the SAME
+  per-point cost, not "8-12x more" as this plan originally (wrongly) estimated in its own §5. That
+  wrong estimate was traced to a REAL latent bug the review caught: #535's own script hardcodes
+  `2*pi rad = 1 yr` (true only for Sun-Earth); a naive Jupiter clone that kept this constant would
+  actually integrate ~500 Jupiter-periods instead of ~50 — reproducing the original cost estimate as
+  a genuine ~10x overrun, not a pessimistic guess. **Both the plan doc (SS4, SS5) and the taxonomy
+  doc have been corrected accordingly** — the time-unit conversion must go through Jupiter's own
+  period explicitly, not #535's literal constant. Net recommendation (adopted): proceed under the
+  corrected dimensionless window, do the taxonomy-doc fix now (done), do not touch
+  `catalogue.schema.json`/`validate.py` (nothing is enforced there yet, one class member exists).
+  Implementation still awaits a separate go/no-go — this correction pass touched only the
+  plan/taxonomy docs, no sweep code, no catalogue/empty-region edits.
 
 - **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
   Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).

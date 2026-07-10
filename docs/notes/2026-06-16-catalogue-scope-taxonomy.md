@@ -13,7 +13,7 @@ insertion trajectory, and that insertion is epoch-locked.
 | Class | Period? | Epoch-locked? | Returns | Type case |
 |---|---|---|---|---|
 | `cycler` | strictly periodic | NO | ∞ | Aldrin Earth-Mars; Russell-Ocampo S1L1; Braik-Ross C11a/C11b/C32 |
-| `quasi_cycler` | closes-up-to-rotation | YES (10–15 yr window) | 3–15 | cyclers-of-opportunity inside a planetary-alignment window |
+| `quasi_cycler` | closes-up-to-rotation | YES (10–15 system-periods) | 3–15 | cyclers-of-opportunity inside a planetary-alignment window |
 | `precursor_mga` | non-repeating | YES (launch window) | 1 (insertion) | one-shot MGA chain inserting a spacecraft into a steady-state cycler |
 | `mga_tour` | non-repeating | YES (launch window) | 1 (terminal) | Galileo VEEGA; Cassini VVEJGA; Tito 2018 |
 | `resonant_po` (v4.9, #453) | strictly periodic | NO | ∞ | stable resonant/libration PO, NO transport utility (em-cycler-21-3d-spatial-2026) |
@@ -30,6 +30,64 @@ The
 other three classes are admitted because they are *mission-actionable*,
 structurally *searchable* (closure equations, not arbitrary flyby chains), and
 have **strong existence priors in literature already in the corpus**.
+
+### `quasi_cycler` window is system-relative, not a fixed 10-15 years (corrected 2026-07-11, #557)
+
+The "10-15 yr" figure was an Earth-calibrated example, never actually enforced
+anywhere (`catalogue.schema.json`'s `validity_window` is just an ISO-8601
+`{start, end}` pair with no duration constraint, and
+`data/validate.py`'s semantic gate only checks `epoch_locked=true` + a finite
+`n_returns >= 1` — no window-length check exists in code). It was also already
+silently wrong: the catalogue's one existing `quasi_cycler` row (task #312,
+Umbriel-Oberon-Umbriel Uranian cycler) has an 83-year `validity_window`
+(2000-06-21 to 2083-06-21), 5.5x the stated ceiling, admitted through the
+full V1-V4-strict gauntlet with every ratchet green.
+
+**Corrected reading:** the return-separation floor and the window length are
+both stated in units of **one rotating-frame period of the CR3BP system under
+study** — floor = 1 system-period, window = 10-15 system-periods. This is
+what #535's Earth calibration (1 yr floor, 10-15 yr window) already was,
+just written in absolute years because Earth's system-period happens to be
+1 year. For a Sun-planet quasi_cycler this is the planet's heliocentric
+period (e.g. Sun-Jupiter: ~11.86 yr floor, ~119-178 yr window); for a
+**moon-system** quasi_cycler like #312 itself, the relevant system-period is
+the MOON-PAIR's synodic period (~6 days for Umbriel-Oberon), NOT the
+primary's heliocentric period (~84 years for Uranus) — using the wrong
+period for a moon-pair case would be wrong by a factor of ~5000. `n_returns`
+(3-15) and the bounded-geometry ratio (3.0) are already dimensionless and
+unchanged.
+
+Two real consequences of this correction (not just a units relabeling):
+
+1. **`validity_window` has two coexisting semantics that any new criterion
+   note must name explicitly.** #312's row uses it as a LAUNCH-EPOCH span
+   (any June-21 within the 83-year range is a valid start; the 10 returns
+   themselves accumulate over ~150 days at 14.94 d/leg). #535's Earth
+   criterion used it as an ENCOUNTER-ACCUMULATION span (all 3-15 returns
+   must fall inside the window itself). Both are legitimate but distinct;
+   a criterion note must say which one it means.
+2. **V2 (long-span bounded drift) and V4 (real-ephemeris) validation budgets
+   scale in real calendar years and can exceed kernel coverage** at
+   giant-planet-heliocentric scale: DE440 spans ~1550-2650 (~1100 yr) —
+   Jupiter-scale windows (119-178 yr) fit easily, Saturn-scale (294-442 yr)
+   fits, but Uranus-heliocentric-scale (840-1260 yr) is marginal and
+   Neptune-heliocentric-scale (1650-2472 yr) EXCEEDS DE440 entirely; moon
+   satellite kernels are far shorter still (URA111: 1900-2099 only — #312's
+   own V4 failures already cluster in the last 15 years of that coverage,
+   `data/validate.py` line ~1152). Any long-window V2/V4 validation attempt
+   must evaluate over `min(validity_window, kernel_coverage)` with the
+   truncation explicitly recorded, not silently assume full-window coverage
+   is achievable.
+
+**Explicitly NOT changed by this correction:** no re-validation of past
+negatives is triggered. #535's Earth-system numbers already ARE the
+dimensionless criterion evaluated at a 1-year system-period; nothing about
+them was wrong. Any future giant-planet-scale quasi_cycler screen (e.g.
+Sun-Jupiter quasi-Hilda, task #557) that produces a negative under its own
+system-period-scaled criterion must be registered in the empty-region
+registry under a criterion-version tag distinct from any Earth-scale
+negative, so a future reader doesn't compare across incompatible window
+definitions.
 
 ## Schema additions (v4.6 → v4.7)
 

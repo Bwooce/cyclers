@@ -204,10 +204,15 @@ structurally a clone of `run_535_...py`):**
 - Constants block: `MIN_SEPARATION_YEARS = 11.86`; `WINDOW_LO/HI_YEARS = 119/178` (Option A);
   `N_RETURNS_LO/HI = 3/15` (unchanged); `GEOMETRY_FACTOR = 3.0` (unchanged).
 - Propagation horizon: #535 used 50 yr (≈ 3–4× its window). At Jupiter, ≈ 3–4× a ~150 yr window →
-  **~400–600 yr propagation per point** (this drives the cost in §5 and demands a coarse-first grid).
-  Time-unit conversions (`2*pi rad = 1 yr` heliocentric) carry over unchanged since 1 nondim time
-  unit = 1/(2π) of the Sun-Jupiter period in this normalization, and the "yr" constants are converted
-  the same way #535 did.
+  **~400–600 yr propagation per point** — but per §5 (corrected 2026-07-11), this is the SAME
+  ~10-60 nondimensional revolutions as #535's Earth horizon, NOT a cost multiplier, because 1 Jupiter
+  system-period = 11.86 yr, not 1 yr. **Time-unit conversions do NOT carry over unchanged** — #535's
+  literal `2*pi rad = 1 yr` constant is Sun-Earth-specific (1 nondim time unit = 1/(2*pi) of the
+  SUN-JUPITER period here, not the Sun-Earth period); every place #535 converts years to nondim time
+  or vice versa must go through Jupiter's own period (`T_JUPITER_YEARS ≈ 11.86`), not the literal
+  `2*pi = 1 yr` constant #535 hardcoded. Getting this wrong reproduces the ~10x cost overrun §5
+  originally (incorrectly) estimated as unavoidable. Sample density (`t_eval` spacing) must likewise
+  be set per REVOLUTION, not per calendar year, or the output arrays inflate ~12x for no benefit.
 - `X0_GRID` / `C_VALUES`: **target the neck-open energy band `C ∈ ~[3.00, 3.038]`** (below
   C_L1=3.0388 so the L1/L2 necks are open and Jupiter-region capture is energetically possible), NOT
   the C=3.14 family. `x0` spanning the 3:2 interior resonance semimajor-axis region down through the
@@ -233,13 +238,40 @@ question, not in engineering.
 
 ## 5. Cost / risk estimate and what must differ from #535
 
-**Compute cost.** Per-point propagation is ~8–12× longer than #535's (400–600 yr vs 50 yr horizon).
-A #535-sized 2-C × 40-x0 grid at ~1 s/point → ~10 s became, at Jupiter, order ~1–2 min for the same
-grid; a wider 2D `(x0,C)` grid (the #535 abandoned scan was 61×51≈3111 points) → order **1–3 CPU-hours**.
-Not prohibitive, but NOT interactive — it needs the instrumentation discipline #535's wide scan
-lacked. A `preflight_search` timing pilot (per the #521 discipline, mandatory — the AST ratchet
-`tests/scripts/test_scripts_call_preflight.py` enforces the call) must measure real s/point on this
-horizon before committing to grid size.
+**Compute cost — CORRECTED 2026-07-11 (a Fable review of this plan found the estimate below was
+wrong by ~10x, and traced it to a real latent bug, not just pessimism).** CR3BP integration cost
+scales with **nondimensional rotating-frame revolutions**, not calendar years. #535's Earth screen
+integrated ~50 revolutions (50 yr horizon, 1 rev = 1 yr for Sun-Earth). A Jupiter screen under the
+corrected dimensionless window (§1: 10-15 system-periods, ~119-178 yr at Jupiter's 11.86-yr period)
+integrates the SAME ~10-60 revolutions — i.e. **the same per-point cost as #535's Earth run**, not
+8-12x more. A #535-sized grid should cost about what #535's did (~1 s/point); the abandoned
+61x51=3111-point 2D scan analog is **~1-2 CPU-hours**, not the 1-3 hours this section originally
+estimated from a years-based (not revolutions-based) accounting.
+
+**The original 8-12x estimate is not just pessimistic — it is the exact symptom of a real bug to
+avoid when building this.** #535's own script (`scripts/run_535_earth_transient_quasi_cycler_search.py`)
+encodes `t_max = YEARS * 2*pi`, i.e. it hardcodes "1 revolution = 1 year" — true only because
+Sun-Earth's period happens to be 1 year. **A naive clone that keeps this constant and simply sets
+`YEARS=500` for Jupiter would actually integrate ~500 REVOLUTIONS (≈5,900 Jupiter-years), reproducing
+this section's original 8-12x-too-slow estimate as a real, not estimated, overrun.** The Jupiter
+build must convert horizon-in-years to horizon-in-revolutions via Jupiter's own orbital period
+(`t_max = (YEARS / T_JUPITER_YEARS) * 2*pi`) and set `t_eval` sample density per REVOLUTION, not per
+calendar year (arrays otherwise inflate ~12x too). This is a build-time correctness check, not a
+performance nicety — get it wrong and the screen silently costs 10x more AND samples the wrong
+physical horizon.
+
+**Grid-density compounding — also checked, not expected.** Corridor width in nondimensional phase
+space is set by mu, not by window length. Sun-Jupiter's mu is ~318x Earth's, its Hill radius ~0.068
+nondim vs Earth's ~0.010, and the capture mechanism itself is Koon 2001's FAST tube-mediated transit
+rather than Earth's slow knife-edge horseshoe — all of which argue Jupiter's admissible corridors
+should be WIDER, not narrower, permitting a COARSER grid, not a finer/compounding one. No
+multiplicative blowup from grid density is expected on top of the (corrected, revolution-based)
+per-point cost above.
+
+A `preflight_search` timing pilot (per the #521 discipline, mandatory — the AST ratchet
+`tests/scripts/test_scripts_call_preflight.py` enforces the call) must still measure real s/point on
+this horizon before committing to grid size — and, as a side benefit, running it will immediately
+catch the unit bug above if it's present (it would report ~10x the expected s/point).
 
 **Risk 1 — repeating #535's fragility (idealized-model knife-edge collapses under real dynamics).**
 This is the highest-value lesson. #535 found a real admissible Earth corridor that *totally collapsed*
