@@ -1602,6 +1602,17 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   genome capability, no catalogue.yaml edit.
   **Recommended model:** Sonnet (mechanical formalization of an already-scoped analysis, behind
   the existing empty-region-registry schema/tests).
+  **✓ Resolved (2026-07-10).** Recomputed both bodies' max-bend numbers from sourced GM/altitude via
+  `core/flyby.py::max_bend` (Amalthea 0.8011 deg at v_inf=0.5, collapsing to 0.0001-0.008 deg at the
+  v_inf=5.1-37.2 km/s actually realized in `data/scan_433_jupiter_galilean.jsonl`; confirmed in code
+  that `search/discovery_campaign.py::_moon_state` + `core/satellites.py` carry no retrograde flag at
+  all — Triton's real rotation exists only in comments — then derived the retrograde-corrected v_inf
+  (~8.5-8.7 km/s via the equal-magnitude chord identity) and bend (~1.46-1.52 deg) from Triton's
+  sourced GM/r_p). Both confirm #552's estimates. Wrote
+  `docs/notes/2026-07-10-554-retrograde-correction-stamp.md` and appended `reverification` entries to
+  the Amalthea row (re-sweep condition narrowed to low-thrust relegs only) and the 3 Neptune/Triton
+  rows (verdicts marked strengthened, no re-sweep condition added) in `data/empty_regions.jsonl`.
+  `uv run pytest tests/data -q`, `ruff check .`, `ruff format --check .`, `mypy src tests` all clean.
 
 - **#539** (P1, do first once #538 lands) — Generalize #538's well-posed multi-segment
   torus-connection corrector out of the one-off `scripts/run_538_qbcp_cycler.py` into a
