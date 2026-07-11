@@ -272,7 +272,7 @@ def main() -> int:
                 f"completed={v4s.n_cycles_propagated}/{nc} | "
                 f"agreement_vs_v3={v4s.drift_agreement_kms_vs_v3:.3e} km | "
                 f"agreement_vs_v4_scipy={v4s.drift_agreement_kms_vs_v4_scipy:.3e} km | "
-                f"e_umbriel={v4s.eccentricity_used_e_umbriel:.5f} | "
+                f"e_body1={v4s.eccentricity_used_e_body1:.5f} | "
                 f"elapsed={time.time() - t_run:.1f}s",
                 flush=True,
             )

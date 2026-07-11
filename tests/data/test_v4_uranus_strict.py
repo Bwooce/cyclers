@@ -33,21 +33,31 @@ import dataclasses
 import math
 
 import pytest
+import spiceypy as spice
 
+from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.data.validation.v2_moontour import run_v2_moontour
 from cyclerfinder.data.validation.v3_3d import V3Verdict3D, run_v3_3d
 from cyclerfinder.data.validation.v4_uranus import (
     URANIAN_PERTURBER_MOONS,
+    URANUS_J2,
+    URANUS_R_EQ_KM,
     V4_AGREEMENT_FLOOR_KMS,
     V4UranusVerdict,
+    _hill_radius_km,
     run_v4_uranus,
 )
 from cyclerfinder.data.validation.v4_uranus_strict import (
     DEFAULT_LSK_PATH,
     DEFAULT_PCK_PATH,
     DEFAULT_URA_PATH,
+    FAILURE_MODE_CONVERGED,
+    FAILURE_MODE_PLANET_CROSSING,
     V4UranusStrictCycleVerdict,
     V4UranusStrictVerdict,
+    _cycle_v4_strict,
+    _ephemeris_time_seconds,
+    _spice_furnsh_all,
     run_v4_uranus_strict,
 )
 
@@ -113,10 +123,12 @@ def test_verdict_is_frozen() -> None:
         integrator="x",
         launch_epoch_utc="2000-01-01T00:00:00",
         spice_kernels_used=(),
-        eccentricity_used_e_umbriel=0.004,
-        eccentricity_used_e_oberon=0.001,
-        inclination_used_deg_umbriel=75.0,
-        inclination_used_deg_oberon=75.0,
+        audit_body1_name="A",
+        audit_body2_name="B",
+        eccentricity_used_e_body1=0.004,
+        eccentricity_used_e_body2=0.001,
+        inclination_used_deg_body1=75.0,
+        inclination_used_deg_body2=75.0,
         per_cycle=(),
         per_cycle_drift_kms_v4_strict=(),
         per_cycle_drift_kms_v4_scipy=(),
@@ -287,12 +299,26 @@ def test_v4_strict_e2e_smoke() -> None:
 
     # SPICE-sampled element sanity (the ura111 numbers we cross-checked at
     # install time -- not golden, but should be in the realistic range).
-    assert 0.0 < verdict.eccentricity_used_e_umbriel < 0.02
-    assert 0.0 < verdict.eccentricity_used_e_oberon < 0.02
+    assert 0.0 < verdict.eccentricity_used_e_body1 < 0.02
+    assert 0.0 < verdict.eccentricity_used_e_body2 < 0.02
     # Inclinations: ura111 in J2000 frame puts the Uranus equatorial moons
     # at ~75 deg (= Uranus pole tilt). Generous bounds.
-    assert 60.0 < verdict.inclination_used_deg_umbriel < 90.0
-    assert 60.0 < verdict.inclination_used_deg_oberon < 90.0
+    assert 60.0 < verdict.inclination_used_deg_body1 < 90.0
+    assert 60.0 < verdict.inclination_used_deg_body2 < 90.0
+
+    # #567 bug 3 regression guard: the audit fields must track the
+    # candidate's ACTUAL sequence bodies, not be hardcoded to Umbriel/Oberon
+    # (a bare 0 < e < 0.02 range check alone would NOT catch a regression
+    # back to wrong-moon sampling -- both Umbriel and Oberon's real e sit in
+    # that range, so a hardcoded-wrong-moon bug silently passes a range-only
+    # check). Assert the recorded body names actually appear in `sequence`.
+    assert verdict.audit_body1_name in verdict.sequence
+    assert verdict.audit_body2_name in verdict.sequence
+    distinct_seq_bodies = list(dict.fromkeys(verdict.sequence))
+    assert verdict.audit_body1_name == distinct_seq_bodies[0]
+    assert verdict.audit_body2_name == (
+        distinct_seq_bodies[1] if len(distinct_seq_bodies) > 1 else distinct_seq_bodies[0]
+    )
 
     # Drift series finite where the cycle converged.
     for c in verdict.per_cycle:
@@ -314,3 +340,223 @@ def test_v4_strict_perturber_moons_default_is_all_classical() -> None:
         "Titania",
         "Oberon",
     }
+
+
+# --------------------------------------------------------------------------- #
+# #567 (1)+(2) regressions -- Lambert branch-continuity + planet-crossing tag.
+# --------------------------------------------------------------------------- #
+#
+# Both cases below were located by directly probing `_cycle_v4_strict` /
+# `_select_leg_transfer` on the #327 SILVER's own parameters (the exact
+# hour-level flip #559's ephemeral diagnostic pass reported was not
+# preserved in the repo, so these are freshly-located, reproducible
+# instances of the SAME diagnosed mechanisms, confirmed by direct
+# instrumentation before the fix landed):
+#
+# * Bug 1 (branch-selection discontinuity): at 2000-09-06T03:00:00 the old
+#   velocity-match tie-break picked branch 0 (leg-1 terminal offset
+#   ~24,986 km); one hour later at T04:00:00 it flipped to branch 1
+#   (~3,493 km) -- even though BOTH branches' actual propagated offsets
+#   vary smoothly and monotonically hour to hour (branch 1's offset alone:
+#   ...2,876 -> 3,493... km). The old code's selection criterion (departure
+#   velocity-residual vs the moon's own velocity) is unrelated to which
+#   branch actually flies well, so its argmin can flip discontinuously.
+# * Bug 2 (planet-crossing silent misclassification): at 2000-07-24T02:00:00
+#   leg 1 (Oberon->Umbriel), BOTH candidate rev-1 Lambert branches have an
+#   osculating periapsis (97 km and 852 km) far inside Uranus's R_eq
+#   (25,559 km) -- confirmed via direct periapsis computation on the exact
+#   Lambert solutions. Pre-fix this collapsed into a bare integrator FAIL
+#   indistinguishable from any other failure mode.
+
+
+def _silver_mu_and_perturber_dicts() -> tuple[float, dict[str, float], dict[str, float]]:
+    mu_primary = PRIMARIES["Uranus"]
+    perturber_mu = {m: SATELLITES[m].mu_km3_s2 for m in URANIAN_PERTURBER_MOONS}
+    perturber_hill_km = {
+        m: _hill_radius_km(
+            sma_moon_km=SATELLITES[m].sma_km,
+            mu_moon=perturber_mu[m],
+            mu_primary=mu_primary,
+        )
+        for m in URANIAN_PERTURBER_MOONS
+    }
+    return mu_primary, perturber_mu, perturber_hill_km
+
+
+@pytest.mark.skipif(not _KERNELS_PRESENT, reason=_SKIP_REASON)
+def test_567_lambert_branch_selection_is_continuous_across_adjacent_hours() -> None:
+    """#567 bug 1: outcome-based branch selection must not jump discontinuously.
+
+    Pins the located 2000-09-06T03:00:00 -> T04:00:00 flip on the #327
+    SILVER: post-fix, both epochs must select the SAME (lower-offset)
+    branch and the reported worst-cycle-offset must change smoothly
+    hour-to-hour, not jump by tens of thousands of km the way the old
+    velocity-match tie-break did (24,986 km -> 3,493 km observed pre-fix
+    on this exact epoch pair).
+    """
+    mu_primary, perturber_mu, perturber_hill_km = _silver_mu_and_perturber_dicts()
+
+    spice.kclear()
+    try:
+        _spice_furnsh_all((str(DEFAULT_LSK_PATH), str(DEFAULT_PCK_PATH), str(DEFAULT_URA_PATH)))
+        offsets = []
+        for epoch in ("2000-09-06T03:00:00", "2000-09-06T04:00:00"):
+            et_cycle_start = _ephemeris_time_seconds(epoch)
+            converged, _r, worst_offset_kms, failure_mode, _perijove = _cycle_v4_strict(
+                sequence=SILVER_SEQ,
+                leg_tofs_days=SILVER_TOF,
+                et_cycle_start=et_cycle_start,
+                perturber_moons=URANIAN_PERTURBER_MOONS,
+                perturber_mu=perturber_mu,
+                perturber_hill_km=perturber_hill_km,
+                mu_primary=mu_primary,
+                n_revs=SILVER_NREV,
+                j2=URANUS_J2,
+                r_eq_km=URANUS_R_EQ_KM,
+            )
+            assert converged, f"{epoch} unexpectedly failed to converge ({failure_mode})"
+            assert failure_mode == FAILURE_MODE_CONVERGED
+            offsets.append(worst_offset_kms)
+    finally:
+        spice.kclear()
+
+    # Pre-fix this pair jumped from ~24,986 km to ~3,493 km (a ~21,500 km
+    # discontinuity) purely from the discrete branch flip. Post-fix, both
+    # epochs pick the outcome-best branch, whose offset varies smoothly
+    # (observed hour-to-hour delta on the surviving branch is ~600 km) --
+    # allow generous headroom (5,000 km) while still being tight enough to
+    # catch a regression back to the old jump.
+    assert math.isfinite(offsets[0]) and math.isfinite(offsets[1])
+    assert abs(offsets[1] - offsets[0]) < 5_000.0, (
+        f"worst-cycle-offset jumped discontinuously between adjacent hours: {offsets}"
+    )
+
+
+@pytest.mark.skipif(not _KERNELS_PRESENT, reason=_SKIP_REASON)
+def test_567_planet_crossing_tagged_not_silently_misclassified() -> None:
+    """#567 bug 2: a genuinely planet-crossing Lambert leg is TAGGED, not
+    silently folded into a generic solver FAIL -- and it still counts as a
+    real FAIL (not excluded/skipped; see the #567 PIN in OUTSTANDING.md).
+
+    Pins 2000-07-24T02:00:00 on the #327 SILVER: leg 1 (Oberon->Umbriel)'s
+    both rev-1 Lambert branches have an osculating periapsis (~97 km /
+    ~852 km, confirmed by direct probe) far inside Uranus's R_eq
+    (25,559 km) -- a genuine dynamical infeasibility from real synodic
+    geometry (#559), not a numerical artifact.
+    """
+    mu_primary, perturber_mu, perturber_hill_km = _silver_mu_and_perturber_dicts()
+
+    spice.kclear()
+    try:
+        _spice_furnsh_all((str(DEFAULT_LSK_PATH), str(DEFAULT_PCK_PATH), str(DEFAULT_URA_PATH)))
+        et_cycle_start = _ephemeris_time_seconds("2000-07-24T02:00:00")
+        converged, r_final, worst_offset_kms, failure_mode, perijove_km = _cycle_v4_strict(
+            sequence=SILVER_SEQ,
+            leg_tofs_days=SILVER_TOF,
+            et_cycle_start=et_cycle_start,
+            perturber_moons=URANIAN_PERTURBER_MOONS,
+            perturber_mu=perturber_mu,
+            perturber_hill_km=perturber_hill_km,
+            mu_primary=mu_primary,
+            n_revs=SILVER_NREV,
+            j2=URANUS_J2,
+            r_eq_km=URANUS_R_EQ_KM,
+        )
+    finally:
+        spice.kclear()
+
+    # This is a genuine FAIL, correctly still counted as one -- NOT skipped
+    # or excluded from the denominator.
+    assert converged is False
+    assert r_final is None
+    assert not math.isfinite(worst_offset_kms)
+    # But it must now be DISTINGUISHABLE from a generic/unexplained FAIL.
+    assert failure_mode == FAILURE_MODE_PLANET_CROSSING
+    assert perijove_km is not None
+    assert 0.0 <= perijove_km < URANUS_R_EQ_KM
+
+
+@pytest.mark.skipif(not _KERNELS_PRESENT, reason=_SKIP_REASON)
+def test_567_audit_fields_track_non_umbriel_oberon_sequence() -> None:
+    """#567 bug 3: for a candidate that does NOT involve Umbriel/Oberon, the
+    audit e/i fields must sample the CANDIDATE'S OWN bodies (Ariel/Titania
+    here), not silently record Umbriel/Oberon's values.
+
+    Reuses the #566 Ariel-Titania-Ariel representative's exact source
+    parameters (``scripts/run_566_gauntlet_five_representatives.py``,
+    ``enum563-line12-ariel-titania-ariel``) at #566's own known-good
+    reference epoch (2000-06-21T00:00:00) so this test is not entangled
+    with #567's own branch-selection/planet-crossing fixes.
+    """
+    seq: tuple[str, ...] = ("Ariel", "Titania", "Ariel")
+    vinf: tuple[float, ...] = (
+        1.2306411593828481,
+        1.7185773183747601,
+        1.2306411593828457,
+    )
+    tof: tuple[float, ...] = (5.320895317317783, 5.320895317317783)
+    rel_off_deg = 0.0
+    n_revs: tuple[int, ...] = (0, 0)
+    phase0_deg = 29.999999999999996  # same #558 fixed rotation-redundant phase as #566
+    candidate_id = "enum563-line12-ariel-titania-ariel"
+    epoch = "2000-06-21T00:00:00"
+
+    v2 = run_v2_moontour(
+        candidate_id,
+        seq,
+        vinf,
+        tof,
+        rel_off_deg,
+        None,
+        n_cycles=3,
+        n_revs=n_revs,
+        phase0_deg=phase0_deg,
+    )
+    v3 = run_v3_3d(
+        candidate_id,
+        seq,
+        vinf,
+        tof,
+        rel_off_deg,
+        None,
+        v2_verdict=v2,
+        n_cycles=3,
+        n_revs=n_revs,
+        phase0_deg=phase0_deg,
+    )
+    v4_scipy = run_v4_uranus(
+        candidate_id,
+        seq,
+        vinf,
+        tof,
+        rel_off_deg,
+        None,
+        v3_verdict=v3,
+        n_cycles=3,
+        n_revs=n_revs,
+        phase0_deg=phase0_deg,
+    )
+    verdict = run_v4_uranus_strict(
+        candidate_id,
+        seq,
+        vinf,
+        tof,
+        rel_off_deg,
+        epoch,
+        None,
+        v3_verdict=v3,
+        v4_scipy_verdict=v4_scipy,
+        n_cycles=3,
+        n_revs=n_revs,
+    )
+
+    assert verdict.audit_body1_name == "Ariel"
+    assert verdict.audit_body2_name == "Titania"
+    assert verdict.audit_body1_name not in ("Umbriel", "Oberon")
+    assert verdict.audit_body2_name not in ("Umbriel", "Oberon")
+    # Sanity range (same generous band as the SILVER e2e test); the point of
+    # this test is the BODY IDENTITY assertions above, which a bare range
+    # check cannot catch on its own (Umbriel/Oberon's real e also sits in
+    # this range -- see the #567 OUTSTANDING.md PIN).
+    assert 0.0 < verdict.eccentricity_used_e_body1 < 0.02
+    assert 0.0 < verdict.eccentricity_used_e_body2 < 0.02

@@ -301,10 +301,10 @@ def main() -> int:
                 "per_cycle_drift_kms_v4_strict": list(v4s.per_cycle_drift_kms_v4_strict),
                 "per_cycle_drift_kms_v4_scipy": list(v4s.per_cycle_drift_kms_v4_scipy),
                 "per_cycle_drift_kms_v3": list(v4s.per_cycle_drift_kms_v3),
-                "eccentricity_used_e_umbriel": float(v4s.eccentricity_used_e_umbriel),
-                "eccentricity_used_e_oberon": float(v4s.eccentricity_used_e_oberon),
-                "inclination_used_deg_umbriel": float(v4s.inclination_used_deg_umbriel),
-                "inclination_used_deg_oberon": float(v4s.inclination_used_deg_oberon),
+                "eccentricity_used_e_umbriel": float(v4s.eccentricity_used_e_body1),
+                "eccentricity_used_e_oberon": float(v4s.eccentricity_used_e_body2),
+                "inclination_used_deg_umbriel": float(v4s.inclination_used_deg_body1),
+                "inclination_used_deg_oberon": float(v4s.inclination_used_deg_body2),
                 "wall_clock_s": float(time.time() - t_run),
             }
             if v4s.passes_v4_strict:

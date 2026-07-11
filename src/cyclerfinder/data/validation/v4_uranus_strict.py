@@ -11,9 +11,10 @@ both pulled from the freshly-installed Uranian satellite SPICE kernel
 (ura111.bsp, see ``scripts/install_uranian_spice.sh``), giving the V4-strict
 gauntlet:
 
-1. **Real moon eccentricity** (Umbriel e = 0.0041, Oberon e = 0.00056,
-   sampled from the SPICE state vector at the encounter epoch — NOT the
-   V4-scipy assumption e = 0).
+1. **Real moon eccentricity** (e.g. Umbriel e = 0.0041, Oberon e = 0.00056 for
+   the #327 Umbriel-Oberon SILVER; sampled from the SPICE state vector, for
+   the candidate's own first two distinct sequence bodies, at the encounter
+   epoch — NOT the V4-scipy assumption e = 0).
 2. **Real inclinations / non-coplanar geometry** — the Uranian satellites
    are all in Uranus's equatorial plane, but that plane is tilted ~98 deg
    from the ecliptic. We integrate in the J2000-inertial frame the SPICE
@@ -169,6 +170,17 @@ class V4UranusStrictCycleVerdict:
     moon target at the cycle's final encounter, km. Same definition as V3's
     ``ias15_vs_analytic_kepler_kms`` but under the V4-strict model."""
     notes: str = ""
+    failure_mode: str = "converged"
+    """One of ``"converged"``, ``"lambert_no_solution"``,
+    ``"planet_crossing_infeasible"``, ``"integrator_failure"``
+    (#559/#560/#567 bug 2). ``"planet_crossing_infeasible"`` means every
+    candidate Lambert branch for some leg had an osculating periapsis
+    inside the primary's equatorial radius — a genuine dynamical FAIL from
+    real synodic geometry, distinguished here from an unexplained solver
+    FAIL, NOT excluded from the pass-rate denominator."""
+    perijove_km: float | None = None
+    """Osculating periapsis (km) of the offending branch when
+    ``failure_mode == "planet_crossing_infeasible"``; ``None`` otherwise."""
 
 
 @dataclass(frozen=True)
@@ -185,18 +197,28 @@ class V4UranusStrictVerdict:
     (the Uranian satellite phase configuration varies)."""
     spice_kernels_used: tuple[str, ...]
     """Full paths of the SPICE kernels FURNSH'd for the run."""
-    eccentricity_used_e_umbriel: float
-    """The SPICE-sampled Umbriel eccentricity at ``launch_epoch_utc``. The
-    V4-scipy fallback uses e=0 here. Headline single-number for the
-    eccentricity-fidelity gate."""
-    eccentricity_used_e_oberon: float
-    """Same for Oberon."""
-    inclination_used_deg_umbriel: float
-    """SPICE-sampled Umbriel inclination at ``launch_epoch_utc`` (J2000 frame),
-    deg. Co-planar circular-coplanar assumes inc = const but V4-strict
-    samples the actual angle to test the planar idealisation."""
-    inclination_used_deg_oberon: float
-    """Same for Oberon."""
+    audit_body1_name: str
+    """The candidate's own first distinct ``sequence`` body (in order of
+    first appearance) that ``eccentricity_used_e_body1`` /
+    ``inclination_used_deg_body1`` were SPICE-sampled from. Prior to
+    #567 bug 3's fix these audit fields were hardcoded to always sample
+    Umbriel regardless of the candidate's actual sequence."""
+    audit_body2_name: str
+    """Same for ``eccentricity_used_e_body2`` / ``inclination_used_deg_body2``
+    — the candidate's second distinct ``sequence`` body."""
+    eccentricity_used_e_body1: float
+    """The SPICE-sampled eccentricity of ``audit_body1_name`` at
+    ``launch_epoch_utc``. The V4-scipy fallback uses e=0 here. Headline
+    single-number for the eccentricity-fidelity gate."""
+    eccentricity_used_e_body2: float
+    """Same for ``audit_body2_name``."""
+    inclination_used_deg_body1: float
+    """SPICE-sampled inclination of ``audit_body1_name`` at
+    ``launch_epoch_utc`` (J2000 frame), deg. Co-planar circular-coplanar
+    assumes inc = const but V4-strict samples the actual angle to test the
+    planar idealisation."""
+    inclination_used_deg_body2: float
+    """Same for ``audit_body2_name``."""
     per_cycle: tuple[V4UranusStrictCycleVerdict, ...]
     per_cycle_drift_kms_v4_strict: tuple[float, ...]
     per_cycle_drift_kms_v4_scipy: tuple[float, ...]
@@ -279,6 +301,19 @@ def _osculating_elements(
     sma = -mu / (2.0 * energy)
     inc = math.degrees(math.acos(h[2] / h_mag))
     return float(sma), ecc, inc
+
+
+def _leg_periapsis_km(r0_km: np.ndarray, v0_kms: np.ndarray, mu_primary: float) -> float:
+    """Osculating periapsis radius (km) of the two-body Kepler orbit ``(r0, v0)``.
+
+    Used to pre-screen a Lambert branch for physical infeasibility BEFORE
+    propagating it (#559/#560/#567 bug 2): a fixed-TOF rev>=1 Lambert
+    "solution" whose osculating conic dips inside the primary body's
+    equatorial radius is not a flyable transfer regardless of what the
+    numerical integrator does with it downstream.
+    """
+    sma_km, ecc, _inc_deg = _osculating_elements(r0_km, v0_kms, mu_primary)
+    return float(sma_km * (1.0 - ecc))
 
 
 # --------------------------------------------------------------------------- #
@@ -372,6 +407,145 @@ def _v4_strict_propagate_leg(
     return yf[:3].copy(), yf[3:].copy(), True
 
 
+#: Failure-mode tags a leg (and therefore its cycle) can be stamped with.
+#: ``"converged"`` is success; the rest are FAILs, distinguished so a
+#: genuine dynamical-infeasibility FAIL (``planet_crossing_infeasible``)
+#: is never silently conflated with a Lambert-geometry FAIL or an
+#: unexplained integrator FAIL (#559/#560/#567 bug 2).
+FAILURE_MODE_CONVERGED = "converged"
+FAILURE_MODE_LAMBERT_NO_SOLUTION = "lambert_no_solution"
+FAILURE_MODE_PLANET_CROSSING = "planet_crossing_infeasible"
+FAILURE_MODE_INTEGRATOR_FAILURE = "integrator_failure"
+
+
+@dataclass(frozen=True)
+class _LegOutcome:
+    """Result of selecting + propagating one V4-strict Lambert leg.
+
+    ``chosen_branch_index`` indexes into the ``max_revs``-filtered Lambert
+    solution list :func:`_select_leg_transfer` was given (for diagnostics /
+    regression pinning only; not part of the public API)."""
+
+    ok: bool
+    r_f_km: np.ndarray | None
+    offset_kms: float
+    failure_mode: str
+    perijove_km: float | None
+    chosen_branch_index: int | None
+
+
+def _select_leg_transfer(
+    r_a: np.ndarray,
+    r_b: np.ndarray,
+    tof_s: float,
+    n_rev: int,
+    *,
+    mu_primary: float,
+    j2: float,
+    r_eq_km: float,
+    perturber_moons: tuple[str, ...],
+    perturber_mu: dict[str, float],
+    perturber_hill_km: dict[str, float],
+    et_leg_start: float,
+) -> _LegOutcome:
+    """Solve + propagate every rev-``n_rev`` Lambert branch between ``r_a`` and
+    ``r_b`` and return the best-outcome branch.
+
+    Fixes #559/#560/#567 bug 1 (Lambert branch-selection continuity flip):
+    the old code picked a branch BEFORE propagating, via a bare ``min()`` on
+    the departure-velocity residual against the departing moon's own
+    velocity. That proxy criterion has no relationship to which branch
+    actually flies well under the V4-strict perturbed dynamics, so its
+    argmin can (and empirically does, see #567's regression test) flip
+    between two branches that are each varying smoothly with epoch —
+    producing a discontinuous jump in the reported terminal miss between
+    adjacent epochs even though nothing physical changed discontinuously.
+
+    Instead, every candidate branch is propagated and the branch with the
+    smallest ACTUAL terminal offset (the same quantity the pass/fail gate
+    cares about) is selected. Selecting on a continuous outcome makes the
+    selected value itself continuous (a "min of continuous functions" is
+    continuous, at worst kinked at a true crossing — never a jump).
+
+    Also fixes #559/#560/#567 bug 2 (planet-crossing silent misclassification):
+    each branch's osculating periapsis is checked against ``r_eq_km`` BEFORE
+    propagation. A branch whose periapsis is inside the primary is a
+    genuinely non-physical transfer (#559 confirmed this is REAL synodic
+    geometry, not a numerical artifact) — it is tagged
+    ``planet_crossing_infeasible`` with its periapsis recorded, and is
+    *not* propagated (DOP853 either dies stiffly on it or "succeeds" with a
+    physically meaningless through-the-planet trajectory; neither is a
+    transfer to select). If every candidate branch is planet-crossing, the
+    leg (and therefore the cycle) genuinely FAILs — this is NOT excluded
+    from the pass-rate denominator, only correctly labelled.
+    """
+    sols = _lambert(r_a, r_b, tof_s, mu=mu_primary, max_revs=n_rev)
+    wanted = [s for s in sols if s.n_revs == n_rev]
+    if not wanted:
+        return _LegOutcome(
+            ok=False,
+            r_f_km=None,
+            offset_kms=float("inf"),
+            failure_mode=FAILURE_MODE_LAMBERT_NO_SOLUTION,
+            perijove_km=None,
+            chosen_branch_index=None,
+        )
+
+    feasible: list[tuple[float, np.ndarray, int]] = []
+    crossing_perijove_km: list[float] = []
+    for idx, s in enumerate(wanted):
+        rp_km = _leg_periapsis_km(r_a, s.v1, mu_primary)
+        if rp_km < r_eq_km:
+            crossing_perijove_km.append(rp_km)
+            continue
+        r_f_leg, _, ok = _v4_strict_propagate_leg(
+            r_a.copy(),
+            s.v1.copy(),
+            tof_s,
+            mu_primary=mu_primary,
+            j2=j2,
+            r_eq_km=r_eq_km,
+            perturber_moons=perturber_moons,
+            perturber_mu=perturber_mu,
+            perturber_hill_km=perturber_hill_km,
+            et_leg_start=et_leg_start,
+        )
+        if not ok:
+            continue
+        offset_kms = float(np.linalg.norm(r_f_leg - r_b))
+        feasible.append((offset_kms, r_f_leg, idx))
+
+    if feasible:
+        best_offset, best_r_f, best_idx = min(feasible, key=lambda t: t[0])
+        return _LegOutcome(
+            ok=True,
+            r_f_km=best_r_f,
+            offset_kms=best_offset,
+            failure_mode=FAILURE_MODE_CONVERGED,
+            perijove_km=None,
+            chosen_branch_index=best_idx,
+        )
+
+    if crossing_perijove_km:
+        return _LegOutcome(
+            ok=False,
+            r_f_km=None,
+            offset_kms=float("inf"),
+            failure_mode=FAILURE_MODE_PLANET_CROSSING,
+            perijove_km=float(min(crossing_perijove_km)),
+            chosen_branch_index=None,
+        )
+
+    return _LegOutcome(
+        ok=False,
+        r_f_km=None,
+        offset_kms=float("inf"),
+        failure_mode=FAILURE_MODE_INTEGRATOR_FAILURE,
+        perijove_km=None,
+        chosen_branch_index=None,
+    )
+
+
 def _cycle_v4_strict(
     *,
     sequence: tuple[str, ...],
@@ -384,8 +558,17 @@ def _cycle_v4_strict(
     n_revs: tuple[int, ...] | None,
     j2: float,
     r_eq_km: float,
-) -> tuple[bool, np.ndarray | None, float]:
-    """One cycle: SPICE-sampled Lambert endpoints + V4-strict propagation."""
+) -> tuple[bool, np.ndarray | None, float, str, float | None]:
+    """One cycle: SPICE-sampled Lambert endpoints + V4-strict propagation.
+
+    Returns ``(converged, terminal_r_km, worst_offset_kms, failure_mode,
+    perijove_km)``. On success, ``failure_mode == "converged"`` and
+    ``perijove_km is None``. On failure, ``failure_mode`` distinguishes WHY
+    (see :data:`FAILURE_MODE_LAMBERT_NO_SOLUTION`,
+    :data:`FAILURE_MODE_PLANET_CROSSING`,
+    :data:`FAILURE_MODE_INTEGRATOR_FAILURE`) and ``perijove_km`` is the
+    offending branch's periapsis when the mode is
+    ``planet_crossing_infeasible`` (#559/#560/#567 bug 2)."""
     n_legs = len(sequence) - 1
     if n_revs is None:
         n_revs_used: tuple[int, ...] = tuple(0 for _ in range(n_legs))
@@ -407,22 +590,15 @@ def _cycle_v4_strict(
     sc_r_curr: np.ndarray | None = None
     worst_offset_kms = 0.0
     for k in range(n_legs):
-        r_a, v_a_moon = states[k]
+        r_a, _v_a_moon = states[k]
         r_b, _ = states[k + 1]
         nrev = max(0, n_revs_used[k])
-        sols = _lambert(r_a, r_b, leg_tofs_days[k] * DAY_S, mu=mu_primary, max_revs=nrev)
-        wanted = [s for s in sols if s.n_revs == n_revs_used[k]]
-        if not wanted:
-            return False, None, float("inf")
-        v_a_captured = v_a_moon
-        best = min(wanted, key=lambda s: float(np.linalg.norm(s.v1 - v_a_captured)))
-        r0_leg = r_a.copy()
-        v0_leg = best.v1.copy()
         et_leg_start = et_cycle_start + epochs_s[k]
-        r_f_leg, _, ok = _v4_strict_propagate_leg(
-            r0_leg,
-            v0_leg,
+        outcome = _select_leg_transfer(
+            r_a,
+            r_b,
             leg_tofs_days[k] * DAY_S,
+            nrev,
             mu_primary=mu_primary,
             j2=j2,
             r_eq_km=r_eq_km,
@@ -431,14 +607,13 @@ def _cycle_v4_strict(
             perturber_hill_km=perturber_hill_km,
             et_leg_start=et_leg_start,
         )
-        if not ok:
-            return False, None, float("inf")
-        leg_offset_kms = float(np.linalg.norm(r_f_leg - r_b))
-        worst_offset_kms = max(worst_offset_kms, leg_offset_kms)
-        sc_r_curr = r_f_leg
+        if not outcome.ok or outcome.r_f_km is None:
+            return False, None, float("inf"), outcome.failure_mode, outcome.perijove_km
+        worst_offset_kms = max(worst_offset_kms, outcome.offset_kms)
+        sc_r_curr = outcome.r_f_km
     if sc_r_curr is None:
-        return False, None, float("inf")
-    return True, sc_r_curr, worst_offset_kms
+        return False, None, float("inf"), FAILURE_MODE_INTEGRATOR_FAILURE, None
+    return True, sc_r_curr, worst_offset_kms, FAILURE_MODE_CONVERGED, None
 
 
 # --------------------------------------------------------------------------- #
@@ -571,11 +746,20 @@ def run_v4_uranus_strict(
         _spice_furnsh_all(spice_kernel_paths)
         et_launch = _ephemeris_time_seconds(launch_epoch_utc)
 
-        # Record V4-strict-vs-V4-scipy idealisation deltas at the launch epoch.
-        r_u, v_u = _moon_state_spice("Umbriel", et_launch)
-        _, e_u, i_u = _osculating_elements(r_u, v_u, mu_primary)
-        r_o, v_o = _moon_state_spice("Oberon", et_launch)
-        _, e_o, i_o = _osculating_elements(r_o, v_o, mu_primary)
+        # Record V4-strict-vs-V4-scipy idealisation deltas at the launch epoch,
+        # for the candidate's OWN first two distinct sequence bodies (#567 bug 3
+        # — this used to be hardcoded to Umbriel/Oberon regardless of `sequence`,
+        # freezing the wrong moon's e/i into every non-Umbriel-Oberon candidate).
+        distinct_bodies: list[str] = []
+        for m in sequence:
+            if m not in distinct_bodies:
+                distinct_bodies.append(m)
+        audit_body1 = distinct_bodies[0]
+        audit_body2 = distinct_bodies[1] if len(distinct_bodies) > 1 else distinct_bodies[0]
+        r_1, v_1 = _moon_state_spice(audit_body1, et_launch)
+        _, e_1, i_1 = _osculating_elements(r_1, v_1, mu_primary)
+        r_2, v_2 = _moon_state_spice(audit_body2, et_launch)
+        _, e_2, i_2 = _osculating_elements(r_2, v_2, mu_primary)
 
         cycle_period_s = float(sum(leg_tofs_days)) * DAY_S
 
@@ -585,7 +769,7 @@ def run_v4_uranus_strict(
 
         for k in range(n_cycles):
             et_cycle_start = et_launch + k * cycle_period_s
-            converged, r_v4s, v4_offset_vs_moon = _cycle_v4_strict(
+            converged, r_v4s, v4_offset_vs_moon, failure_mode, perijove_km = _cycle_v4_strict(
                 sequence=sequence,
                 leg_tofs_days=leg_tofs_days,
                 et_cycle_start=et_cycle_start,
@@ -598,6 +782,21 @@ def run_v4_uranus_strict(
                 r_eq_km=r_eq_km,
             )
             if not converged or r_v4s is None:
+                if failure_mode == FAILURE_MODE_PLANET_CROSSING:
+                    fail_notes = (
+                        "genuine dynamical FAIL: every candidate Lambert branch for "
+                        f"at least one leg has an osculating periapsis "
+                        f"({perijove_km:.1f} km) inside the primary's equatorial "
+                        f"radius ({r_eq_km:.1f} km) -- real synodic geometry, not a "
+                        "solver artifact (#559/#560/#567 bug 2)"
+                    )
+                elif failure_mode == FAILURE_MODE_LAMBERT_NO_SOLUTION:
+                    fail_notes = "no Lambert solution at the requested n_rev for at least one leg"
+                else:
+                    fail_notes = (
+                        "DOP853 integrator failed on at least one leg for a reason "
+                        "other than a planet-crossing Lambert branch"
+                    )
                 per_cycle.append(
                     V4UranusStrictCycleVerdict(
                         cycle_index=k,
@@ -613,7 +812,9 @@ def run_v4_uranus_strict(
                         agreement_kms_vs_v4_scipy=float("inf"),
                         agreement_kms_vs_v3=float("inf"),
                         v4_terminal_offset_vs_moon_kms=float("inf"),
-                        notes="Lambert / DOP853 failed at least one leg in this cycle",
+                        notes=fail_notes,
+                        failure_mode=failure_mode,
+                        perijove_km=perijove_km,
                     )
                 )
                 break
@@ -688,10 +889,12 @@ def run_v4_uranus_strict(
         ),
         launch_epoch_utc=launch_epoch_utc,
         spice_kernels_used=tuple(spice_kernel_paths),
-        eccentricity_used_e_umbriel=float(e_u),
-        eccentricity_used_e_oberon=float(e_o),
-        inclination_used_deg_umbriel=float(i_u),
-        inclination_used_deg_oberon=float(i_o),
+        audit_body1_name=audit_body1,
+        audit_body2_name=audit_body2,
+        eccentricity_used_e_body1=float(e_1),
+        eccentricity_used_e_body2=float(e_2),
+        inclination_used_deg_body1=float(i_1),
+        inclination_used_deg_body2=float(i_2),
         per_cycle=tuple(per_cycle),
         per_cycle_drift_kms_v4_strict=drift_v4s_series,
         per_cycle_drift_kms_v4_scipy=drift_v4scipy_series,
@@ -710,6 +913,10 @@ __all__ = [
     "DEFAULT_LSK_PATH",
     "DEFAULT_PCK_PATH",
     "DEFAULT_URA_PATH",
+    "FAILURE_MODE_CONVERGED",
+    "FAILURE_MODE_INTEGRATOR_FAILURE",
+    "FAILURE_MODE_LAMBERT_NO_SOLUTION",
+    "FAILURE_MODE_PLANET_CROSSING",
     "V4UranusStrictCycleVerdict",
     "V4UranusStrictVerdict",
     "run_v4_uranus_strict",
@@ -726,10 +933,12 @@ def _verdict_to_jsonable(verdict: V4UranusStrictVerdict) -> dict[str, Any]:
         "integrator": verdict.integrator,
         "launch_epoch_utc": verdict.launch_epoch_utc,
         "spice_kernels_used": list(verdict.spice_kernels_used),
-        "eccentricity_used_e_umbriel": verdict.eccentricity_used_e_umbriel,
-        "eccentricity_used_e_oberon": verdict.eccentricity_used_e_oberon,
-        "inclination_used_deg_umbriel": verdict.inclination_used_deg_umbriel,
-        "inclination_used_deg_oberon": verdict.inclination_used_deg_oberon,
+        "audit_body1_name": verdict.audit_body1_name,
+        "audit_body2_name": verdict.audit_body2_name,
+        "eccentricity_used_e_body1": verdict.eccentricity_used_e_body1,
+        "eccentricity_used_e_body2": verdict.eccentricity_used_e_body2,
+        "inclination_used_deg_body1": verdict.inclination_used_deg_body1,
+        "inclination_used_deg_body2": verdict.inclination_used_deg_body2,
         "drift_agreement_kms_vs_v4_scipy": verdict.drift_agreement_kms_vs_v4_scipy,
         "drift_agreement_kms_vs_v3": verdict.drift_agreement_kms_vs_v3,
         "v4_v3_agreement_floor_kms": verdict.v4_v3_agreement_floor_kms,
@@ -750,6 +959,8 @@ def _verdict_to_jsonable(verdict: V4UranusStrictVerdict) -> dict[str, Any]:
                 "agreement_kms_vs_v3": c.agreement_kms_vs_v3,
                 "v4_terminal_offset_vs_moon_kms": c.v4_terminal_offset_vs_moon_kms,
                 "notes": c.notes,
+                "failure_mode": c.failure_mode,
+                "perijove_km": c.perijove_km,
             }
             for c in verdict.per_cycle
         ],
