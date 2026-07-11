@@ -3208,6 +3208,56 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   every stage (grid-aliasing exclusion #562, semantic max_bend inversion #565, perijove-guard + audit-field
   pins #567, duty-cycle-denominator + boundary-period-halving corrections #568); do not write to
   `catalogue.yaml` until a Fable pass has reviewed this scope + the #568 verdict it rests on.
+  **FABLE PRE-EXECUTION REVIEW (2026-07-11): CONFIRMED WITH CORRECTIONS — #568's underlying data
+  is fully clean (independently recomputed every duty-cycle/boundary-period/drift-floor number
+  from the committed scan, zero transcription errors — a first for this chain), but the
+  EXECUTION PLAN needs 4 fixes before writing, all now folded into this scope:**
+  **(A) widen the test scope** — `tests/data tests/search` alone is NOT sufficient. Must also run
+  `tests/test_catalogue_rediscovery.py` (lives at the tests/ TOP LEVEL, outside both planned
+  dirs — pins `EXPECTED_COVERAGE[ExclusionReason.NOT_TWO_BODY]`) and `tests/verify/` (where the
+  new frozen per-tier gate tests from scope-item (4) live — the plan must not skip executing the
+  very gates it generates, and they must NOT be `@pytest.mark.slow` per
+  [[feedback_delegation_fresh_agent_not_fork]]'s CI-skip-is-unverified-claim rule). Run at minimum
+  `uv run pytest tests/data tests/search tests/verify tests/test_catalogue_rediscovery.py -q`
+  (or the full suite) before commit.
+  **(B) update 4 pinned counts in the SAME commit** (all independently verified by Fable):
+  `tests/data/test_validation_tier_census.py::EXPECTED_TIER_CENSUS["unvalidated"]` 77→82;
+  `tests/data/test_cycler_class_census.py`'s `MULTI_ARC_ALLOWLIST` id-set (add the 5 new ids,
+  assuming `cycler_class: multi-arc` matching #312's own 3-Lambert-leg precedent) 292→297 +
+  the `{"multi-arc": 292}` expected-dict entry → 297;
+  `tests/test_catalogue_rediscovery.py`'s `NOT_TWO_BODY` count 11→16 (3-body Uranus+2-moon rows
+  file here, same lane #312 itself uses); `README.md` line 41's "356-entry" → 361 (current count
+  verified as exactly 356 `- id:` rows) — per [[feedback_update_docs_proactively]], same commit.
+  **(C) novelty wording must NOT leak into the row as a walk-back.** #312's row currently carries
+  NO `our_status` field (novelty lives in `source: discovered` + `first_published` + the notes'
+  literature-novelty paragraph) — keep that paragraph fully INTACT, append the family context,
+  do not rewrite. The adjudication phrase "#312 is NOT a unique novel point" is fine as internal
+  reasoning but must not appear verbatim in row text — state instead that the 30-symmetric-closure
+  family is an internally-enumerated fact about THIS PROJECT's own search space (#563), that #312
+  is its first-documented member, and explicitly that the literature-novelty verdict is UNCHANGED
+  (genericity within our own search density is not prior art — see this session's own earlier
+  established PC(3,2) distinction, [[feedback_verify_novelty_against_our_status_field]]).
+  **(D) literature clearance: broaden to all 5 new pairs, not just Titania-Oberon, and anticipate
+  an adjacent/inconclusive result for Titania-Oberon, not a guaranteed clean not-found.**
+  `src/cyclerfinder/search/literature_check.py` exists, is runnable, offline `KNOWN_CORPUS`
+  mode, and its positive-control self-validation is already covered by the widened test scope
+  (A) — good, satisfies [[feedback_verify_gauntlet_with_positive_control]]. But `KNOWN_CORPUS`
+  now contains a Kumar-2025 Uranus-Oberon PCRTBP MMR anchor with `body_set={Oberon, Titania}` —
+  exactly the Titania-Oberon pair — so the re-run may legitimately return adjacent/inconclusive
+  rather than a mechanical clean not-found; treat that as an EXPECTED trust-bearing adjudication
+  outcome (different topology: MMR study vs symmetric-closure quasi-cycler, per the #562 finding)
+  to record explicitly in the row's notes, not a surprise blocker. Since all 5 new rows carry a
+  novelty-adjacent `first_published` = cyclerfinder-discovery claim, run the offline check against
+  all 5 pairs' signatures per [[feedback_literature_novelty_check_baseline]] (mandatory gate for
+  any row implicitly claiming novelty), not just the one pair #565 originally flagged as
+  literature-risky.
+  **Also folded in (from a parallel website-visualization review, same session):** if convenient
+  at no extra adjudication cost, have the row construction include `primary: Uranus` on all 6
+  rows (5 new + #312's own update) and, if cheaply available from the already-computed V4 chain
+  data, per-leg orbit/conic geometry — this unblocks a recommended (separate, NOT this task's
+  scope) future cyclers.space hero-visualization scene without needing a later export pass. Do
+  NOT let this expand #569's actual scope or delay it; skip it if it's not a trivial addition to
+  what's already being written.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
