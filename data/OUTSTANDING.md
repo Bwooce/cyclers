@@ -3258,6 +3258,30 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   scope) future cyclers.space hero-visualization scene without needing a later export pass. Do
   NOT let this expand #569's actual scope or delay it; skip it if it's not a trivial addition to
   what's already being written.
+  **RESULT (2026-07-11): DONE, commit `8efabd5`, catalogue now 361 rows (was 356).** All 5 new
+  `quasi_cycler` rows written (Titania-Oberon 74.4%/24.4d, Ariel-Oberon 71.0%/3.1d,
+  Umbriel-Titania 68.5%/7.9d, Ariel-Titania 66.5%/3.5d, Ariel-Umbriel 61.7%/3.2d), #312 updated
+  (family relation + 79.1%/6.0d duty cycle + its distinct drift-floor caveat, literature-novelty
+  paragraph kept fully intact per correction C), frozen V4 provenance registered
+  (`tests/verify/test_566_five_representatives_v4.py`, 10 tests, not slow), all 4 corrected pins
+  updated (unvalidated 77→82, MULTI_ARC_ALLOWLIST 292→297, NOT_TWO_BODY 11→16, README 356→361)
+  plus one MORE pin the executing agent found beyond Fable's list
+  (`test_schema_v45_fields.py`'s above-V0/V4 counts). Literature check ran for all 5 pairs
+  (correction D): 4 clean not-found, Titania-Oberon correctly surfaced the anticipated
+  Kumar-2025/Canales-Howell-2021 adjacency and recorded the trust-bearing discrimination
+  (MMR/halo-transfer vs symmetric-closure quasi-cycler) in that row's notes, as expected — not a
+  blocker. The optional `primary: Uranus` website fold-in was correctly SKIPPED by the executing
+  agent after testing showed it would silently break the Fable-verified NOT_TWO_BODY 11→16 pin
+  (a real catch — the fold-in was explicitly scoped as skippable for exactly this reason).
+  **Top-level session (not the subagent, per correction A) then ran the FULL
+  `tests/data tests/search tests/verify tests/test_catalogue_rediscovery.py` ratchet suite
+  directly: EXIT_CODE=0, zero FAILED/ERROR lines, 100% reached.** The #558→#569 chain is
+  complete: #312's family is now fully written into the catalogue with real, validated,
+  per-candidate `validity_window` data, closing out the thread that began with #558's family
+  census. Follow-ups intentionally NOT started here (separate, future asks): the cyclers.space
+  hero-visualization scene (assessed feasible, ~1-2 days, gated on this landing — now unblocked);
+  the 2 remaining asymmetric near-closures (#565 §3, explicit NO-GO/deferred); #556/#560 parking
+  lot items (unrelated to this thread).
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
