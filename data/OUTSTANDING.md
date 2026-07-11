@@ -2806,6 +2806,17 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   excluded from the primary-5 on same-pair redundancy (U-O carried by #312), robust not fragile (min
   15.43°); the nonexistent "row 47 / bend 42°" near-surface language dropped. Everything Fable
   confirmed in #564 (§1 data, 5-not-30 cutoff, §5 reframing, §6 asymmetric deferral) left standing.
+  **FABLE CONFIRM (2026-07-11): CONFIRMED — safe to proceed to Stage-3 gauntlet dispatch on the
+  corrected 5-representative list (rows 23, 1, 5, 7, 10).** Independently recomputed all 30
+  min-per-encounter bends from the raw jsonl (not a sample) — every #565 §1 value and the ranked
+  ordering matched to 2 decimals. Verified the row-23 T-O pick against rows 24/25/27 directly:
+  row 23 genuinely dominates the same-tof alternatives on margin and V∞; row 27 correctly
+  characterized as the margin-vs-tof trade alternative. Citation, row-22 resolution, and
+  supersession scoping (§1/§5/§6/5-not-30-cutoff left undisturbed) all verified clean. One
+  non-blocking prose nit noted (a loosely-ordered list in §1's prose vs. the correctly-sorted
+  table) — no action needed. **This closes the #564→#565 adjudication loop.** Stage-3
+  (V1-V4-strict gauntlet on rows 23/1/5/7/10) and any catalogue.yaml writeback (the #312
+  reframing per #564 §5) remain explicit separate asks — not auto-fired by this adjudication.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
