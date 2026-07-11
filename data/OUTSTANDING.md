@@ -3033,6 +3033,44 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   the memory file for the updated rule. **Steps (3)+(4) (the actual multi-candidate
   epoch-robustness scan + writeback-readiness verdict) remain open**, to be executed with the
   build+validate(subagent)/launch+own(me)/analyze(fresh agent) split from the start this time.
+  **RESULT — step (3) DONE (raw scan data committed; commit `a777c2d` for the script, scan
+  output at `data/scan_567_epoch_robustness.jsonl`).** `scripts/run_567_epoch_robustness_scan.py`
+  was built (subagent, smoke-tested only) then launched and owned directly by the top-level
+  session (this time correctly split: no subagent touched the long-running command) — 4,986
+  epoch-cells across 6 candidates × 3 sweep types (annual 2000-2099 100pt, daily-DOY 2000 366pt,
+  daily-DOY 2030 365pt), 651.6s parallel_sweep wall-time, 0 crashes.
+  **Strong positive confirmation the #567(1)+(2) fixes worked**: `lambert_no_solution=0` and
+  `integrator_failure=0` in ALL 18 groups — every single FAIL across the whole scan is now
+  cleanly tagged `planet_crossing_infeasible`, meaning the two known artifact generators are
+  genuinely gone, not just relabeled.
+  **Unexpected finding, NOT yet adjudicated**: `detect_isolated_singleton_anomalies()` still
+  flags isolated flips post-fix, at wildly candidate-dependent rates — 0% (Titania-Oberon, both
+  daily sweeps; 23% its own annual) up to 44% (Ariel-Umbriel annual; 32-33% its daily sweeps).
+  Full per-group table:
+  | candidate | annual flip% | daily-2000 flip% | daily-2030 flip% | annual PASS% |
+  |---|---|---|---|---|
+  | #312 (Umbriel-Oberon) | 2.0% | 10.9% | 9.6% | 88.0% |
+  | Titania-Oberon (row 23, mandatory) | 23.0% | 0% | 0% | 74.0% |
+  | Ariel-Umbriel (row 1) | 44.0% | 32.0% | 32.9% | 63.0% |
+  | Ariel-Titania (row 5) | 14.0% | 22.7% | 22.5% | 64.0% |
+  | Ariel-Oberon (row 7) | 19.0% | 28.7% | 29.0% | 71.0% |
+  | Umbriel-Titania (row 10) | 9.0% | 4.1% | 3.3% | 70.0% |
+  This is NOT simply "the artifact is back" (the two diagnosed bugs are confirmed gone) and NOT
+  simply "trust it, it's real physics" either — the guard's own docstring says "verify before
+  trusting," and this project's own discipline
+  ([[feedback_isolated_sweep_flips_suspect_artifact]]) requires diagnosing WHY before either
+  believing or discarding a flip population. Two live hypotheses, undiagnosed: (a) a THIRD,
+  not-yet-found artifact generator in the same code family (the per-candidate variability
+  tracking so closely with orbital/synodic period differences between moon pairs is suspicious
+  either way — could mean a genuine sampling-aliasing signature of a real fast dynamical
+  structure the daily/annual grid under-resolves, OR a numerical sensitivity that scales with
+  the same period differences); (b) genuine physical structure (the actual PASS/FAIL boundary
+  in real synodic geometry oscillates fast enough that even a DAILY grid aliases it — which
+  would still be legitimate for reporting a validity_window, just needs characterizing
+  correctly, not discarding). **Step (4) (writeback-readiness verdict) explicitly BLOCKED on
+  resolving this** — do not treat any candidate's raw PASS% above as a trustworthy
+  `validity_window` figure until this is diagnosed, per the same discipline that blocked #566's
+  premature single-epoch read.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
