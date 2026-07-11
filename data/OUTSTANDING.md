@@ -2254,6 +2254,92 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   **No `data/catalogue.yaml` edit, no gauntlet run, no new sweep code — adjudication only, per
   task scope. The literature-corpus inspection touched no repository code (read-only import).**
 
+  **SECOND OPINION (2026-07-11, Fable — independent adversarial recheck against the raw JSONL,
+  per this task's own two-model discipline). Headline: the adjudication's ARITHMETIC and its
+  four top-level verdicts all hold; but Stage 2 of the recommended funnel, AS LITERALLY
+  SPECIFIED, is defective — the commensurability statistic is grid-quantized below the
+  tolerance being applied to it, and the specified 0.02 cut + integer≥2 restriction silently
+  excludes the two LARGEST, highest-literature-risk directions (Titania-Oberon / Oberon-Titania)
+  by 0.002 in a quantity the tof grid cannot resolve better than ±0.022. Fix the Stage-2
+  formulation before running the funnel; everything else proceeds as adjudicated.**
+
+  - **Every load-bearing number reproduces.** Independently recomputed from
+    `scan_558_uranus_all_pairs_index.jsonl` (3672 candidates) using periods from
+    `cyclerfinder.core.satellites`: #312 residual percentile 50.8 (claimed 51.3, def-of-record
+    delta); frac median 0.2858 (claimed 0.285); 151 within 0.02 / 29 within 0.01 (exact); V∞
+    percentile 23.9 / 879 matched-or-beaten / range 0.325–2.40 (claimed 23.8 / 874 / 0.33–2.40);
+    sub-1e-3 and sub-0.7-V∞ frac medians 0.267/0.330 (claimed 0.266/0.329); residual-floor
+    counts 1866/672/57 at 0.025/0.01/1e-3 (exact); sibling record confirmed verbatim (rel=358,
+    tof=20.917 d, res 4.10e-3, ratio 6.9877, V∞max 0.907, min-bend 16.1°). The Titania-Oberon
+    tof=30.86 "dominating" candidate sits at frac **0.494 — maximally NON-commensurate** — which
+    actively STRENGTHENS the adjudication's residual-is-meaningless argument (the family's
+    tightest closures are one-cycle Lambert coincidences by its own Stage-2 logic).
+  - **Verdicts that HOLD:** (1) reject residual as primary filter — confirmed, and reinforced by
+    the frac-0.494 dominator; (2) KEEP #312, reframe as first-of-family — confirmed, see below;
+    (3) literature-first triage with Canales 2021/Kumar 2025 flagged on the T-O directions —
+    confirmed and now MORE urgent (see the Stage-2 flaw); (4) V2 bounded-drift as the real
+    selector, commensurability only a hypothesis to be verified — confirmed.
+  - **#312's own standing is SOLIDER than the #558 framing implies — it is NOT one of the
+    untested 3672.** Direct catalogue-row check: #312 is the ONE family member that already has
+    the full multi-cycle chain — #330 ran the actual 10-cycle bounded-drift V2 (86k–530k km
+    bounded oscillation), #331 cross-checked it with independent REBOUND IAS15 to 1.84e-6 km,
+    #332/#335 carried it to V4-scipy/V4-strict real ephemerides, #338 swept 100 annual epochs
+    (85/85 interior PASS). Its admission never rested on the single-cycle gate the 3672 passed;
+    no V2 re-run on #312 is needed to trust its standing. The reframe (unique-island →
+    first-documented-of-family) is the right and only change.
+  - **THE FLAW — Stage 2's commensurability statistic is below its own data's resolution.**
+    tof in the #558 sweep is `tof_scale × sqrt(P_a·P_b)` on a 0.05-step grid, so full-cycle/T_syn
+    is quantized per direction: step 0.1248 for Umbriel-Oberon, 0.0502 Ariel-Umbriel, 0.0440
+    Titania-Oberon. Three consequences, all verified in the data: (i) the "essentially
+    uniform-random" claim FAILS in the tail where the filter operates — within 0.01 there are 29
+    vs ~73 expected under uniform, within 0.005 just 2 vs ~37; the near-zero deficit is the grid
+    comb, so the 0.01/0.02 survivor counts measure grid aliasing, not basin physics. Umbriel-
+    Oberon only LOOKS enriched in commensurate candidates because its comb (2×base/T_syn =
+    2.4954 ≈ 5/2) happens to land 0.004–0.013 from an integer every 8th tof step. (ii) The
+    passing basins are tof-NARROW — sub-grid-step: at #312's own basin (rel=178) the ts=2.00
+    point closes at 6.8e-3 while ±1 step (±0.37 d) sits at 0.64/0.28, i.e. 40–100× above; the
+    grid frac (0.0088) is therefore NOT a measurement of the basin's true commensurability, and
+    the exactly-commensurate tof (5·T_syn/2 = 14.9668 d, 0.026 d off #312's catalogued 14.94)
+    has never been evaluated. Same for the sibling (exact 7:1 = 20.9535 vs grid 20.917).
+    (iii) **Titania-Oberon and Oberon-Titania — 707+777 records, the two biggest directions AND
+    the two with named adjacent literature — are STRUCTURALLY excluded by the ≤0.02 cut**: their
+    grid's minimum achievable frac at integer≥2 is 0.0219 (ts=2.25/2.30 straddle ratio 2 at
+    1.978/2.022 symmetrically — the true basin could sit at exactly 2.000), and their near-1:1
+    lines (frac 0.011, ts=1.15) are excluded by the integer≥2 restriction, which has no physical
+    justification (the re-closure condition 2·tof/T_syn ∈ ℤ is satisfied by 1 as much as by 5;
+    integer 1 should be admitted or its exclusion argued). Net: the funnel as specified would
+    do the OPPOSITE of the adjudication's own do-T-O-first instruction — it would never test
+    T-O at all. Umbriel-Titania/Titania-Umbriel (min grid frac 0.0253) are likewise shut out.
+  - **Required Stage-2 reformulation (fold into the funnel follow-up task, cheap and
+    deterministic):** replace "threshold on grid frac" with a per-basin CONTINUOUS refinement —
+    for each distinct basin (direction, rel-offset run, n_rev), refine tof to the exactly-
+    commensurate value (nearest integer ≥1 × T_syn/2, per-leg tof = half that) and re-evaluate
+    residual + bend + DOP853 THERE; a basin passes Stage 2 iff the commensurate point closes
+    sub-gate. This is grid-independent, costs ~one 1-D refinement per basin, retains #312's
+    basin on its physics rather than its grid luck, and re-admits the T-O near-2:1 (and near-1:1)
+    lines to face the Canales/Kumar literature screen they most need. Optional flag: also admit
+    half-integer 2·tof/T_syn (q=2 super-cycles — rel-offset advances 180°/cycle, so they need a
+    conjugate basin at rel+180°, which the data suggests exists: #312's family shows basins near
+    BOTH rel≈180 and rel≈0) — a one-line extension worth carrying as a secondary hypothesis.
+  - **Sibling verdict: real and worth pursuing, but INSIDE the fixed funnel, not ahead of it.**
+    Its numbers check out exactly as flagged, it inherits #328's Umbriel-Oberon literature
+    clearance (same pair-direction as #312), and it is the best non-#312 candidate on the joint
+    V∞/bend/frac axes. But its 0.0123 frac is grid-frac like everyone else's, its basin is
+    tof-narrow, and the exactly-7:1 point (20.9535 d) is unevaluated — so "promising" is
+    conditional on the same Stage-2 refinement + V2 propagation every other survivor needs. No
+    special pre-funnel dispatch; it simply enters Stage 3 first among survivors.
+  - **For `[[project_novel_findings_status]]`:** the island-vs-family resolution (FAMILY) stands
+    and should be recorded; but do NOT encode the "~29–151 commensurate subfamily" counts — those
+    are grid-aliasing artifacts, and the true commensurate-basin count is UNKNOWN until the
+    per-basin refinement runs (it may grow, since T-O/O-T/U-T/T-U were structurally excluded).
+  **Net recommendation: proceed with the adjudication's 3-stage funnel and #312 reframe as
+  adjudicated, with ONE amendment — reformulate Stage 2 as per-basin commensurate-tof refinement
+  (integer ≥1, optional half-integer flag) before any survivor list is drawn, and keep the
+  literature-first pass on Titania-Oberon/Oberon-Titania mandatory since those directions
+  re-enter the funnel once the grid artifact is fixed. No #312 V2 re-run needed; its multi-cycle
+  standing is already the best-evidenced in the family. Analysis-only pass: no code, no
+  catalogue edit, no gauntlet run.**
+
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
   found 2000-01-15 launches FAIL V4-strict (91,000 km drift) while 2000-06-21 PASSES
