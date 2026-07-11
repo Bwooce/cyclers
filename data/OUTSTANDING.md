@@ -2692,6 +2692,40 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   #561's own two-model discipline, and given the demonstrated value of that discipline THIS
   session (Fable caught a real, load-bearing flaw in #561's own first-pass criterion that
   changed the outcome materially).
+  **RESULT (2026-07-11, Opus adjudication pass) — full verdict in
+  `docs/notes/2026-07-11-564-opus-adjudication-563-family.md`; Fable second-opinion still
+  owed per the two-model discipline before any Stage-3 dispatch or writeback.** Read all 60
+  raw passes → 30 deduped physical loops directly; confirmed all 30 are the exact
+  "perpendicular-crossing" symmetric periodic-orbit signature (machine-precision by
+  construction), so residual is now a dead triage axis — the live axes are max-bend/geometric
+  quality, V∞, tof, and Titania-Oberon literature risk.
+  **(1) Gauntlet subset = 5, not 30.** The census claim ("family across the non-Miranda
+  pairs") is supported by ONE V4-strict-validated real-ephemeris member per pair, not by
+  re-validating exact-by-construction siblings within an already-represented pair. #312
+  (Umbriel-Oberon) is already validated; recommend gauntleting one shortest-tof / cleanest
+  representative in each of the other 5 pairs — Titania-Oberon n=1 (0,0) r180 (tof 12.316d,
+  bend 7.03°, MANDATORY: discharges the Canales/Kumar test), Ariel-Umbriel n=1 (0,0) (tof
+  3.216d, shortest of all 30), Ariel-Titania n=3 (0,0), Ariel-Oberon n=5 (0,0), Umbriel-Titania
+  n=1 (0,0). Tier-2 optional (Umbriel-Titania n=4 (0,0), bend 5.59° = cleanest of the family;
+  the #312 n=7 sibling). Explicitly do NOT gauntlet the extreme-bend low-V∞ Titania-Oberon rows
+  (bend 47°/88°, V∞ 0.62/0.34) — near-surface flybys, least robust, add nothing to the claim.
+  **(2) Reframe #312 — YES, with a guardrail.** Cast it as first-documented member of a
+  30-member SYMMETRIC-closure family, but keep two counts strictly distinct: 30 =
+  idealized-model-exact enumerated closures (symmetric class, within #558's searched tof range);
+  1 (→up to 6) = real-ephemeris gauntlet-validated. Writing "30 validated quasi-cyclers" would
+  overclaim (29 unproven under DE440/URA111; #312's own kernel-edge V4 failures show the
+  idealized→real gap is not automatic). Draft prose + qualifier in the note; apply in the
+  separate writeback step (NOT done here), ideally after ≥2-3 pairs are validated.
+  **(3) Asymmetric near-closures — DEFER (NO-GO).** The symmetric census answers the original
+  "isolated-or-family?" question definitively; the 2 residual asymmetric near-closures are both
+  in the highest-lit-risk Titania-Oberon basin, would need a fundamentally more expensive 2D
+  adaptive search with NO exhaustiveness guarantee (unlike the provably-finite symmetric class),
+  and one sits near the 0.05 gate floor. If ever greenlit: standalone P2/P3 task, T-O-only,
+  seeded at the 2 known near-closures, gated behind resolving Canales/Kumar novelty first.
+  Lit grounding verified against `docs/notes/2026-06-16-328-uranian-cycler-lit-deep-dive.md`
+  + the Canales-Howell-2023 and Kumar-2025 digests: both structurally adjacent, NEITHER a direct
+  topology match (Canales = halo/manifold MMAT transfer; Kumar = single-moon MMR heteroclinics),
+  so the mandatory-citation obligation holds without a novelty collision.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
