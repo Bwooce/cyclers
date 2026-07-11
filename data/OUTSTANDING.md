@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 for the #566-adjudication-mandated trustworthy epoch-robustness gate (apply #560 fixes + audit-field fix + per-representative epoch scan) as the catalogue-writeback prerequisite; #568 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -2905,6 +2905,77 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   something structural to ALL 30 exact closures rather than discriminating between them (in
   which case the gauntlet's real discriminating power over this candidate set is in question) —
   neither conclusion should be assumed without that follow-up pass.
+  **✓ ADJUDICATED (2026-07-11, Opus, judgment-only — no new computation; full note
+  `docs/notes/2026-07-11-566-opus-adjudication-gauntlet-results.md`).** Read all 63 jsonl records
+  per-stage and `v4_uranus_strict.py` in full. **Verdict: the 5/5 PASS is GENUINE (not a
+  malfunction) AND the gauntlet is non-discriminating for this class — for a benign reason, and
+  both are true at once.** The V2 closure ~1e-14 is tautological (exact closure is a #563
+  construction property), V2 drift overflow is the class definition, V3 agreement ~1e-8 km is a
+  numerical self-consistency check, and V4/V4-strict agreement (2–7e3 km vs a 50,000 km floor)
+  confirms only that J2 + real ephemeris don't materially bend the SHORT 3–25 d Lambert arcs — a
+  physically benign regime where every member passes. The negative baseline settles the read: a
+  REAL rejection in this stack looks like #535's Earth corridor (collapsed under ER3BP
+  eccentricity), whereas #559 showed #312's own ≈10–14% daily V4-strict FAILs are CONFIRMED
+  NUMERICAL ARTIFACTS (Lambert branch-flip + DOP853 planet-crossing), not real dynamics — so the
+  chain has essentially zero demonstrated power to physically reject a real member of this class.
+  A PASS is therefore trustworthy as *class-membership* confirmation, NOT as independent
+  per-candidate existence evidence. **Audit-field bug: confirmed cosmetic for the verdict**
+  (lines 575–578 hardcode Umbriel/Oberon; `_cycle_v4_strict` + `passes_v4_strict` never read those
+  4 scalars — every candidate records identical e_u=0.0041/e_o=0.0016 incl. Ariel-Titania-Ariel),
+  **but a provenance defect at writeback** (freezing them into a catalogue row bakes a wrong e/i
+  into 4 of 5 rows — [[feedback_digest_not_adoption]]) — must be fixed before any writeback.
+  **Single-epoch V4-strict (2000-06-21) is INSUFFICIENT confidence**: that epoch is #312's own
+  known-favorable #338 anchor, #312 is known to vary across epochs (#338 found 2000-01-15 FAILs),
+  the 5 have NO epoch-sensitivity data, and a scan run under today's code would reproduce #559's
+  confirmed artifacts (the #560 Lambert-continuity + perijove-guard fixes are the prerequisite for
+  a meaningful scan). **Recommendation: HOLD catalogue writeback** — do NOT admit any of the 5 (nor
+  upgrade #312) on #566 alone; gate on **#567** (apply #560 fixes + audit-field fix + per-
+  representative epoch-robustness scan). When #567 clears, admit #312 + the epoch-robust survivors
+  as the first-documented members of the 30-member symmetric-closure family per #564 §5's
+  reframing (validated-N kept distinct from enumerated-30), T-O representative citing
+  arXiv:2110.03683/2308.10029 + Kumar arXiv:2509.03655 §6.2 (the #565 §5-corrected ID).
+
+- **#567** (P0, catalogue-writeback prerequisite — the gate the #566 adjudication concluded must
+  clear before any of the 5 representatives or #312 are written/upgraded) — build a *trustworthy*
+  epoch-robustness evidence base for the #566 5-representative list (rows 23/1/5/7/10 =
+  Titania-Oberon / Ariel-Umbriel / Ariel-Titania / Ariel-Oberon / Umbriel-Titania) and #312.
+  **Why this is needed and not optional** (see `docs/notes/2026-07-11-566-opus-adjudication-
+  gauntlet-results.md`): #566 tested all 5 at a SINGLE epoch (2000-06-21), which is precisely
+  #312's own known-favorable #338 anchor; #312 is known to vary across epochs (#338 found
+  2000-01-15 FAILs, 91,000 km drift); and #559 proved that #312's ≈10–14% daily V4-strict FAILs
+  are CONFIRMED numerical artifacts (Lambert branch-selection flip + DOP853 planet-crossing stiff-
+  death), both living in `src/cyclerfinder/data/validation/v4_uranus_strict.py`. A naive per-
+  candidate daily scan run under today's code would therefore reproduce those same artifacts and
+  tell us nothing real ([[feedback_isolated_sweep_flips_suspect_artifact]]). **Scope, in order:**
+  (1) **apply the already-fully-diagnosed #560 robustness fixes** to `v4_uranus_strict.py` —
+  Lambert branch-selection continuity tracking (`_cycle_v4_strict` ~line 418; kill the
+  no-continuity `min()` tie-break that flips 23,448→1,340 km between adjacent hours) + a
+  perijove/collision guard in `_v4_strict_propagate_leg` (~lines 360-372) that distinguishes a
+  genuine dynamical FAIL from a DOP853 stiff-death on a non-physical near-parabolic planet-crossing
+  arc (perijove inside Uranus's R_eq 25,559 km); (2) **fix the hardcoded Umbriel/Oberon audit-field
+  sampling** (`v4_uranus_strict.py` lines 575-578) so recorded `eccentricity_used_* /
+  inclination_used_*` track the candidate's ACTUAL sequence — cheap, and prevents freezing a wrong
+  e/i into 4 of 5 catalogue rows at writeback ([[feedback_digest_not_adoption]]; the #566 jsonl
+  shows all 5 recording identical e_u=0.0041/e_o=0.0016, wrong for the 4 non-U-O candidates); (3)
+  under the fixed code, run the #338-style annual (100-epoch, ~42s) + #559-style daily
+  epoch-sensitivity scan on all 5 representatives AND re-confirm #312, reporting each candidate's
+  true PASS-band WIDTH (wide-tolerant vs narrow-knife-edge) rather than a single point — and, since
+  the #560 fixes will change #312's own committed #559 pass-rate/spike numbers, refresh
+  `tests/data/test_sweep_diagnostics.py::test_559_actual_pattern_reproduces_known_singleton_count`
+  against the post-fix data (it is a regression pin on the OLD artifact-contaminated counts); (4)
+  produce the writeback-readiness verdict per candidate (band width + whether it clears at #312's
+  V4 level or a capped level), feeding the actual `data/catalogue.yaml` admission decision — which
+  remains a SEPARATE writeback step, NOT part of #567. **A bug-fix invalidates prior negatives
+  discipline** ([[feedback_bugfix_invalidates_past_searches]]): once #560 lands, #559's 89.9%/85.8%
+  daily pass-rates and the 55/58 spike locations are superseded and must be recomputed, not reused.
+  **Explicitly out of scope:** the catalogue writeback itself (separate step post-#567); any change
+  to the V2/V3/V4 driver logic (only V4-strict's two artifact generators + the audit field);
+  extending to the other 25 same-pair-redundant closures (#565 §2/§4 — census-minimum is one
+  representative per pair). **Recommended model:** the #560 fixes + audit-field fix are TDD-shaped
+  numerical-methods work behind concrete diagnosed failure cases (Sonnet, behind a regression pin);
+  the epoch-band-width interpretation + per-candidate writeback-readiness verdict is trust-bearing
+  (Opus or self, once the scan data lands) — do not let a raw post-fix pass-rate table stand as the
+  writeback green-light without a judgment pass, matching this thread's #561–#566 discipline.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
