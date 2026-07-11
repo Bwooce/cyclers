@@ -3124,6 +3124,33 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   interpretation → Opus or self. Guard [[feedback_isolated_sweep_flips_suspect_artifact]]:
   the flip population here is DIAGNOSED (genuine aliasing), so this task must not re-litigate it as
   suspect — it consumes the diagnosis, it does not repeat it.
+  **CORRECTIONS (Fable adversarial check on the #567 diagnosis, 2026-07-11 — independently
+  re-derived moon periods from `src/cyclerfinder/core/satellites.py`, re-ran per-window
+  FFT/autocorrelation on all 6 candidates' daily series, and reproduced the diagnosis's
+  previously-uncommitted sub-daily zoom-in probe from scratch, matching every number — overall
+  verdict CONFIRMED, but two fixes are REQUIRED before #568 executes:**
+  (1) **Do NOT use a "symmetric zero-offset ⇒ boundary period halves" RULE.** Only Ariel-Umbriel
+  actually locks at synodic/2 (3.22d); Ariel-Titania, Ariel-Oberon, and Umbriel-Titania all have
+  the same rel_offset=0° symmetric structure but lock at their FULL synodic period, not half —
+  the diagnosis note's causal generalization for the halving does not actually predict this
+  correctly. Use the MEASURED boundary period per candidate directly from
+  `data/scan_567_epoch_robustness.jsonl` (already committed, already correct), never a derived
+  "zero-offset ⇒ P/2" shortcut.
+  (2) **Report the #312-only secondary drift-floor-exceeded population SEPARATELY, not folded
+  into the duty-cycle number.** 11 of #312's 831 daily rows (~1.3%) are a DISTINCT failure
+  mechanism from synodic planet-crossing aliasing — legs converge but V4-vs-V3 drift exceeds the
+  50,000 km floor (50,084-103,413 km, confirmed genuine, not knife-edge). If #568 computes #312's
+  duty cycle as raw daily PASS% (78%), it silently mixes this sporadic ~1.3% population into a
+  number that's conceptually meant to be pure synodic-phase-band feasibility. Compute the duty
+  cycle over `planet_crossing_infeasible`-mode FAILs only; report the drift-floor-exceeded rows
+  as their own separate, small, distinct data point.
+  (Fable also flagged, non-blocking: the diagnosis note's claim that spectral synodic-locking
+  alone rules out a hidden solver artifact is overstated — the real discriminator is structural
+  (`FAILURE_MODE_PLANET_CROSSING` requires EVERY Lambert branch's periapsis below r_eq, so a
+  branch-selection discontinuity cannot produce it) plus the reproduced zoom-in band's smooth,
+  deep (19 km at minimum vs 25,559 km threshold) periapsis excursion — not a jittery near-threshold
+  crossing. The underlying conclusion (genuine physics, no third bug) is unaffected; this is a
+  documentation-rigor nit in the diagnosis note, not something #568 needs to act on.)
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
