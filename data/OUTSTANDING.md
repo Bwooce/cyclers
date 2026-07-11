@@ -2869,6 +2869,42 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   project's tiering policy for spec-complete work behind a strong gate). Follow with an Opus (or
   self) pass/fail adjudication once results land — do not let a raw pass/fail table stand as the
   final word without a short judgment pass, matching #561-#565's own discipline for this thread.
+  **✓ RUN (2026-07-11, `scripts/run_566_gauntlet_five_representatives.py` →
+  `data/gauntlet_566_five_representatives.jsonl`, 11.9s total, well inside budget).** Numeric
+  transcription check first: the 5 candidate tuples quoted in this bullet were verified
+  field-for-field against `data/enumerate_563_symmetric_closures.jsonl` before running anything —
+  every sequence/tof_days/vinf/rel_offset_deg/n_rev/n_commensurate_int matches exactly, but at
+  jsonl lines **57, 2, 12, 18, 26** respectively (NOT the "Row N" labels this bullet uses — those
+  labels do not correspond to jsonl line numbers; the underlying numbers are correct regardless).
+  **Result: all 5 candidates ran the identical PASS pattern to #312's own SILVER (#327).** Every
+  candidate FAILs the strict V2 50,000 km drift floor (drift 2.9e5–8.7e5 km across n_cycles
+  3/5/10) but with a per-cycle closure residual ~1e-14 km/s — i.e. `FAIL_QUASI_BOUNDED` under
+  #330's own three-way test (the same test that admitted #312 as `quasi_cycler`, not the strict
+  V2 PASS path). Proceeding past that on the same basis #330 did: **V3 (REBOUND IAS15) PASSes for
+  all 5 at all 3 n_cycles (agreement ~1e-8–1e-7 km, far inside the 100 km floor); V4 (J2 +
+  Uranian-moon n-body) PASSes for all 5 at all 3 n_cycles (agreement ~2e3–7e3 km, inside the
+  50,000 km floor, bounded_drift_survives=True throughout); V4-strict (real URA111 SPICE, single
+  representative epoch 2000-06-21T00:00:00, reusing the #338/#559-established reference epoch)
+  PASSes for all 5 at all 3 n_cycles (agreement-vs-V3 ~2.3e3–6.0e3 km, agreement-vs-V4-scipy
+  ~1.5e3–1.9e4 km, both inside the 50,000 km floor).** Row 23 / jsonl-line-57
+  **Titania-Oberon-Titania — the MANDATORY literature-clearance representative — PASSes the full
+  chain** (`chain_verdict=PASS_AS_QUASI_CYCLER`), same as the other 4 (Ariel-Umbriel,
+  Ariel-Titania, Ariel-Oberon, Umbriel-Titania). **Caveat carried into the results (not a
+  capability blocker):** `run_v4_uranus_strict`'s 4 audit-only eccentricity/inclination fields are
+  hardcoded to always SPICE-sample Umbriel/Oberon regardless of the candidate's actual sequence;
+  the physics propagation itself (`_cycle_v4_strict`) is fully generic over `sequence` (uses
+  `_moon_state_spice(moon, ...)` per actual moon name), so `passes_v4_strict` is unaffected — only
+  those 4 descriptive fields are mislabeled for the 4 non-Umbriel-Oberon candidates; noted in the
+  jsonl's `_meta.known_caveat` field for anyone reading the raw eccentricity numbers later.
+  **This is a striking, uniform result** — 6 of the 30 exact #563 closures (all 6 non-Miranda
+  pair directions now have at least one member gauntleted) clear the identical computational
+  chain #312 cleared. No catalogue writeback performed (out of scope, per this bullet's own
+  scope note) — the natural next step is an Opus/self adjudication pass on whether this
+  uniformity argues for admitting the other 4 as their own `quasi_cycler` catalogue rows (a
+  family, not an isolated #312) or whether it argues the whole V2→V4-strict chain is measuring
+  something structural to ALL 30 exact closures rather than discriminating between them (in
+  which case the gauntlet's real discriminating power over this candidate set is in question) —
+  neither conclusion should be assumed without that follow-up pass.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
