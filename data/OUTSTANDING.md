@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -2083,6 +2083,46 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   candidate records, full detail, for Opus/Fable to consume programmatically). The frozen #312
   gates (`tests/verify/test_silver_327_v1_passes.py` through `_v4_strict_passes.py`) were
   re-verified unchanged and still pass.
+
+- **#561** (P0, judgment-only — the data already exists, this is ADJUDICATION not a new
+  sweep) — the #558-mandated family-vs-coincidence adjudication. #558 found the #254/#285/#312
+  repeated-moon periodicity-continuity closure condition is GENERIC across nearly the whole
+  non-Miranda Uranian moon-pair space (>1000 distinct basins across 12 directions passing the
+  residual + #324 bend + DOP853 gate stack, some 100-1000x tighter than #312's own residual),
+  not a rare individual hit — and flagged this as load-bearing, not a side note: **#312 is now
+  one of >1000 basins meeting the current gate stack, and that gate stack is evidently not
+  selective enough to distinguish "an interesting novel cycler" from "a generic closure
+  coincidence."** Two things need real judgment, not more compute:
+  (a) **Design a stronger selection criterion** before spending any further gauntlet compute on
+  this family — candidates per #558's own suggestion: a materially tighter residual floor,
+  resonance-structure robustness (does the closure survive a #338/#559-style DOY/launch-epoch
+  sweep, or is it also a knife-edge?), literature-novelty-first triage (screen candidates
+  against the corpus BEFORE any further numerical work, cheapest filter first), or some
+  combination. Read `data/scan_558_uranus_all_pairs_index.jsonl` (the full 3672-record raw
+  candidate set, built for exactly this programmatic consumption) and `data/scan_558_uranus_
+  umbriel_oberon.jsonl` (the full 18,360-row single-pair landscape) directly — don't re-derive
+  from the OUTSTANDING.md summary table alone.
+  (b) **Does #312's own catalogue admission still stand, and on what grounds?** Its `our_status`
+  field context matters here (see `[[project_novel_findings_status]]` — #312 is this project's
+  ONLY confirmed-novel row; PC(3,2) is explicitly `known-class-member`, not novel). If the
+  closure condition #312 satisfies is generic across >1000 basins in its own moon-pair family
+  class, is #312 still meaningfully "novel," or does its novelty claim need to be reframed
+  (e.g. as "first-discovered representative of a large family" rather than "a unique closure"),
+  or does the specific #338/#559 DOY-robustness profile / the V4-strict real-ephemeris survival
+  that #312 was independently promoted on (a criterion this adjudication should check whether
+  ANY of the other 1000+ basins would also pass, or whether #312 remains distinguished on that
+  axis specifically) still justify its standing? Do NOT unilaterally downgrade or edit #312's
+  catalogue row in this pass — surface the finding and a recommendation, this is adjudication
+  informing a later decision, not the decision itself.
+  **Explicitly out of scope for this pass:** running any candidate through the V1-V4-strict
+  gauntlet, writing to `data/catalogue.yaml`, building new sweep code. If the adjudication
+  concludes a stronger criterion is needed, SCOPE the follow-up (a new task number) rather than
+  building it inline.
+  **Recommended models:** Opus first (the criterion-design + #312-standing judgment is exactly
+  the trust-bearing numerical-methods/discovery-verdict work this project's model-tiering
+  policy reserves for Opus) — then a **Fable** second-opinion pass given the stakes (this
+  potentially touches the project's ONE confirmed novel finding's own standing, not a routine
+  candidate adjudication).
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
