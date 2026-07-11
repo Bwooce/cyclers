@@ -45,6 +45,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from cyclerfinder.data.method_capability import MethodCapability  # noqa: E402
+from cyclerfinder.data.preflight import preflight_search  # noqa: E402
 from cyclerfinder.data.validation.v2_moontour import run_v2_moontour  # noqa: E402
 from cyclerfinder.data.validation.v3_3d import V3Verdict3D, run_v3_3d  # noqa: E402
 from cyclerfinder.data.validation.v4_uranus import (  # noqa: E402
@@ -97,6 +99,20 @@ def _generate_daily_epochs() -> tuple[str, ...]:
 EPOCHS = _generate_daily_epochs()
 
 OUT_JSONL = ROOT / "data" / "silver_327_v4_strict_daily_sweep_559.jsonl"
+
+_REGION_ID = "silver-327-umbriel-oberon-daily-doy-sensitivity-2026-07-11"
+_METHOD = MethodCapability(
+    genome=(
+        "Daily-resolution launch-epoch sweep of catalogue row #312 "
+        "(silver-327 Umbriel-Oberon-Umbriel) under the existing, frozen V4-strict "
+        "validation pipeline -- read-only validation reporting, no genome/corrector change"
+    ),
+    corrector="existing V2->V3->V4-scipy->V4-strict chain (validation/v[1-4]_*.py), unmodified",
+    capability_tags=frozenset(
+        {"cr3bp", "real-ephemeris", "v4-strict", "doy-sensitivity", "validation-reporting"}
+    ),
+    git_sha="working-tree",
+)
 
 # V4-strict requires n_cycles >= V4_N_CYCLES_MIN (== 3). Stay at the floor
 # for the sweep -- runtime is then ~1 s/epoch x 100 epochs ~= 100 s, well
@@ -163,6 +179,19 @@ def _build_v3_v4scipy(n_cycles: int) -> tuple[V3Verdict3D, V4UranusVerdict]:
 
 
 def main() -> int:
+    preflight_search(
+        task_no=559,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=len(EPOCHS),
+        override_reason=(
+            "read-only validation-reporting sweep on an already-catalogued row (#312) "
+            "using the existing frozen V4-strict pipeline unmodified -- not a discovery "
+            "sweep; a timing pilot doesn't apply to a fixed, already-scoped 731-epoch "
+            "daily scan bounded by the calendar (two named year-long windows)."
+        ),
+    )
     sha = _git_sha()
     t0 = time.time()
     print(f"[#559] daily DOY-sensitivity epoch sweep on #327 SILVER -- sha={sha}", flush=True)

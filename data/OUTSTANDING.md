@@ -1102,6 +1102,38 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   `catalogue.schema.json`/`validate.py` (nothing is enforced there yet, one class member exists).
   Implementation still awaits a separate go/no-go — this correction pass touched only the
   plan/taxonomy docs, no sweep code, no catalogue/empty-region edits.
+  **✓ RUN (2026-07-11, commit `976eb75` + this commit) — CLEAN, WELL-CHARACTERIZED NEGATIVE.**
+  Criterion note first, per the #339-style discipline:
+  `docs/notes/2026-07-11-557-jupiter-quasi-hilda-admission-criterion.md` (floor = 1 Jupiter
+  period = 11.868 yr, window = 10-15 periods = 119-178 yr, both re-verified in-repo, not
+  recalled — matches the corrected taxonomy doc). **Positive control PASSED**: 82P/Gehrels 3's
+  real JPL SBDB osculating elements (orbit_id 19, DE431, retrieved 2026-07-11) converted to a
+  rotating-frame IC via the proven #535/#523 vis-viva-at-perihelion path give Jacobi C=3.02943,
+  matching the INDEPENDENTLY-sourced SBDB Tisserand parameter (3.027) to 0.002 — a genuine
+  cross-check, not circular — and the constructed anchor enters Jupiter's Hill sphere to 0.12
+  R_hill (reproducing Gehrels 3's documented temporary capture). **Coarse CR3BP scan** (264
+  points, x0 in [0.60,0.92] x 8 Jacobi values in [3.000,3.035], all below C_L1=3.0388 so the
+  L1/L2 necks are open): **16/264 (6%) idealized-CR3BP-admissible** — a materially richer band
+  than #535's single ~15,000-km-wide Earth corridor, consistent with Koon 2001's fast tube-
+  mediated capture mechanism producing wider structure than Earth's slow horseshoe. **The
+  ER3BP real-eccentricity gate (Jupiter e=0.04838624) is decisive: 15/16 collapse outright**
+  (lose the recurrent 3+ return structure entirely), and **the 1 apparent survivor (x0=0.86,
+  C=3.02) is an explicitly-tested KNIFE-EDGE COINCIDENCE** — admissible ONLY at exactly
+  e=0.04838624 (collapses at e=0.0489/0.040/0.025/0.061), ONLY at exactly x0=0.860 (collapses
+  at +/-0.005), ONLY at exactly C=3.020 (collapses at +/-0.005) — the identical signature to
+  #535's Earth corridor and this project's recurring idealized-closure-on-a-knife-edge pattern
+  (S1L1, #388, #480 EGGIE). **Koon 2001's eccentricity-insensitivity hypothesis does NOT hold
+  for the SUSTAINED multi-return quasi_cycler criterion**: individual fast captures still occur
+  under real e (the anchor itself still captures), but the recurrent structure a `quasi_cycler`
+  needs is destroyed by real eccentricity, same as at Earth. **Registered in
+  `data/empty_regions.jsonl`** (`sun-jupiter-quasi-hilda-transient-capture-quasi-cycler`) under
+  the explicit `criterion_version: "557-optionA-system-period-relative-2026-07-11"` tag, per
+  #557's own scoping — never to be confused with a fixed-years or Option-B structural-empty
+  result. **Scope/resweep note** (recorded in the registry entry): this is a coarse, planar,
+  single-Jupiter-phase screen; the fragility is intrinsic to the mechanism (not a grid-
+  resolution artifact) — a genuinely different method (full nonlinear manifold globalization,
+  a 3D/inclined model, or a real-ephemeris lane) would be needed to test for robust structure
+  this screen cannot, not merely a finer CR3BP grid. Total wall-clock: 169.5s.
 
 - **#536** — ✓ Resolved (2026-07-08) Apply the Linking-Number/QP-Torus Heteroclinic Screening Tool to a Genuinely Unmapped System
   Resolution: Implemented the Jupiter-Europa L1/L2 matched-Jacobi torus connection search in `scripts/run_536_jupiter_europa_connection.py`, finding 0 connections at C=3.001500 (commit 8b6c60f).
