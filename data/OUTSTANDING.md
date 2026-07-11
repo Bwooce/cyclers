@@ -2123,6 +2123,136 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   policy reserves for Opus) — then a **Fable** second-opinion pass given the stakes (this
   potentially touches the project's ONE confirmed novel finding's own standing, not a routine
   candidate adjudication).
+  **RESULT (2026-07-11, Opus adjudication — data read directly from the 3672-record
+  `scan_558_uranus_all_pairs_index.jsonl` candidate array + the 18,360-row Umbriel-Oberon
+  landscape, not the summary table). Verdict headlines: (a) the principled discriminant is NOT a
+  tighter residual — it is synodic-resonance commensurability + the multi-cycle bounded-drift
+  gauntlet the current gate stack never runs; (b) #312's LITERATURE novelty STANDS, but its
+  framing must change from "unique isolated closure" to "first-documented representative of a
+  large generic family," and its DOY-robustness leg is a genuine open gap (per #559).**
+
+  **(a) Selection criterion — each candidate assessed against the real data:**
+
+  1. **Tighter residual floor — REJECT as the primary knife.** It is not scale-free: tightening
+     DOES thin the field sharply and non-arbitrarily (all-gates-passed count 3672 at <0.05 →
+     1866 at <0.025 → 672 at <0.01 → 57 at <1e-3 → 4 at <1e-4 → 1 at <1e-6; min residual
+     7.2e-7). But residual is physically MEANINGLESS as a discovery-value axis — it measures
+     patched-conic Lambert match quality, not trajectory interest or mission utility.
+     Decisively: **#312's own catalogued residual (0.025 km/s) sits at the family MEDIAN — the
+     51.3rd percentile of the 3672.** A tighter-residual criterion would rank #312 in the bottom
+     half and eventually DE-SELECT the one catalogued row entirely. Any criterion that rejects
+     the reference candidate is the wrong criterion. Tighter residual is at most a tie-breaker,
+     never the selector.
+
+  2. **Physical quality (V∞ / bend) — a secondary ranking, not a family-vs-coincidence
+     discriminant.** #312's max-encounter V∞ (~0.96 km/s) is top-quartile (23.8th percentile of
+     the family's 0.33–2.40 km/s spread) — better than median but matched-or-beaten by 874 of
+     the 3672. And #312 is **strictly dominated on every physical axis at once** by other
+     candidates: e.g. Titania-Oberon at tof=30.86 d, n_rev=(2,2) has residual 6.8e-6 (3700×
+     tighter), max V∞ 0.583 km/s (lower), min-bend 50.5° (vastly more usable) than #312's
+     0.025 / 0.96 / 14.7°. Oberon-Titania at res 7.2e-7 / V∞ 0.872 / bend 28.9° likewise
+     dominates it. So #312 is unremarkable-to-mediocre within its own family on physics; physical
+     quality is worth carrying as a mission-utility RANK (prefer low V∞ + usable bend) but it
+     does not separate "interesting" from "coincidence."
+
+  3. **Synodic-resonance commensurability — THE principled discriminant, and it retains #312.**
+     The reason #312 is a *quasi_cycler* (bounded 86k–530k km drift over 10 cycles rather than
+     divergence — the #330/#331 V2/V3 result) is that its full Umbriel-Oberon-Umbriel cycle is
+     ≈5 synodic periods: 2×14.94 d / T_syn(5.987 d) = 4.991, only 0.009 from integer 5. The
+     single-cycle residual gate is BLIND to this: commensurability |ratio − round(ratio)| across
+     the 3672 is essentially uniform-random (median 0.285; a uniform draw on [0,0.5] gives 0.25),
+     and it is NOT enriched in the tight-residual or low-V∞ subsets (sub-1e-3 median 0.266,
+     sub-0.7-V∞ median 0.329). Only **151 of 3672 (4.1%) fall within 0.02 of an integer ≥2, and
+     29 (0.8%) within 0.01** — a physically-motivated ~25–125× thinning that, unlike a residual
+     floor, KEEPS #312 (and surfaces siblings — see below). This is principled because it is tied
+     to the *class definition*: geometry must re-close each cycle for multi-cycle drift to stay
+     bounded, and only near-integer-synodic cycles do that. The vast majority of the 3672 are
+     NON-commensurate one-cycle geometric closures that would DIVERGE on repetition — i.e. they
+     are not quasi-cyclers at all, just Lambert coincidences.
+
+  4. **Multi-cycle bounded-drift (V2 gauntlet) — the REAL selector the sweep never ran; the
+     commensurability filter is its cheap proxy.** Every one of the 3672 passed only a
+     SINGLE-cycle test (residual + #324 bend + DOP853). None were propagated for multi-cycle
+     bounded vs divergent drift. That #330-style bounded-drift check is exactly what distinguishes
+     a genuine quasi_cycler from a one-off closure, and it is what #312 actually earned its class
+     on. Recommend it be run (frozen #330 machinery) on the commensurability survivors — do NOT
+     trust commensurability alone as proof of boundedness; it is a well-motivated hypothesis with
+     one confirmed anchor (#312 itself), to be VERIFIED by propagation, not assumed.
+
+  5. **Literature-novelty-first triage — cheapest, run FIRST, but it discriminates at the
+     pair-DIRECTION level, not per-candidate — and it is NOT a rubber stamp here.** The 53-anchor
+     corpus contains 6 Uranus anchors, two of which are directly adjacent to the newly-surfaced
+     directions: **Canales-Howell-Fantino 2021 (Titania-Oberon moon-to-moon analytical transfer)**
+     and **Kumar 2025 (Uranus-Oberon PCRTBP mean-motion-resonance study)**. The two LARGEST basin
+     directions in #558 are exactly Oberon-Titania (215 basins) and Titania-Oberon (212) — these
+     carry real adjacent-publication risk and MUST get a live literature_check against those two
+     papers before any of them is ever called "novel." #312's own Umbriel-Oberon-Umbriel
+     direction is distinct from both (Kumar is single-moon+planet MMR, not a moon-pair cycler;
+     Canales is Titania-Oberon) and was already cleared by #328 — so #312 is unaffected, but the
+     family at large is NOT automatically novel per-direction.
+
+  **Concrete recommended follow-up criterion (scope as a NEW task, do not build inline): a
+  three-stage funnel, cheapest gate first —**
+  - *Stage 1 (free, offline+live):* literature-novelty triage per pair-direction. Flag
+    Titania-Oberon / Oberon-Titania / Oberon-MMR as adjacent-published-risk; live-check them
+    against Canales 2021 + Kumar 2025 before any novelty language.
+  - *Stage 2 (cheap, deterministic):* synodic-commensurability pre-filter — keep only candidates
+    whose full-cycle ToF is within ~0.02 (→151) or ~0.01 (→29) of an integer × T_syn. This is the
+    principled thinning tied to the quasi_cycler class definition; it retains #312. Explicitly do
+    NOT use a tighter residual floor as the primary filter (it de-selects #312 and selects for a
+    physically meaningless quantity).
+  - *Stage 3 (moderate):* run the frozen #330 V2 bounded-drift gauntlet on Stage-2 survivors; only
+    those with BOUNDED (not divergent) multi-cycle drift are genuine quasi-cyclers. V4-strict +
+    DOY only for the handful that survive Stage 3.
+  Residual and V∞/bend become RANKING keys within the survivor set, never the primary gate.
+
+  **(b) #312's standing — novel-but-reframed-as-first-of-a-family, with an open DOY gap:**
+  - **Literature novelty STANDS.** The genericity #558 found does NOT make the family published —
+    the entire family is absent from the literature (corpus + #328's direct read of Heaton-Longuski
+    2003 confirm zero Uranian moon-pair repeated-moon quasi-cyclers of this structural type). "One
+    of >1000 basins" is a statement about our own search density, not about prior art. #312 remains
+    literature-fresh.
+  - **But the FRAMING is now wrong and should be corrected.** #312 is demonstrably NOT "a unique
+    rare closure" or "an isolated island" (the exact open question in
+    `[[project_novel_findings_status]]`, now RESOLVED: family, not island). It is the
+    first-discovered / first-documented representative of a large generic family. Within that
+    family it is unremarkable: median residual (51st pct), top-quartile-but-unexceptional V∞, and
+    strictly dominated on all physical axes simultaneously by other members. Its distinction is
+    "found first," not "physically best" — which, per this project's own literature-novelty
+    discipline, is a LEGITIMATE and valuable claim ("first computed/documented example of a
+    previously-undocumented family") but a DIFFERENT claim than "a unique find."
+  - **Its independent-promotion axis (V4-strict + #338 DOY-robustness) does NOT currently
+    distinguish it, on two counts.** (i) The #338/#559 DOY-robustness profile is artifact-
+    contaminated — #559's own update showed the daily pass-rates measure a Lambert-branch flip +
+    a DOP853 degenerate-arc failure, not real epoch sensitivity, so #312's genuine launch-epoch
+    robustness is NOT cleanly established (a real gap, pending the #560 fixes; do not lean on it).
+    (ii) NO other family member has been run through V4-strict at all, so #312 being "the only
+    V4-validated one" reflects effort spent, not demonstrated superiority — it is not evidence
+    #312 is distinguished on that axis, only that it is the only one tested.
+  - **Recommendation (for a future writeback, NOT edited here): KEEP #312 catalogued — do not
+    downgrade.** First-documented-of-family is a real result. But reframe its prose/notes from
+    "unique closure / isolated island" to "first-computed representative of a large generic family
+    of Uranian regular-moon synodic-resonance quasi-cyclers (#558)," and, when the `our_status`
+    field is backfilled, mark it verified-novel-as-first-of-family rather than implying uniqueness.
+    Explicitly note the DOY-robustness gap (pending #560). Update `[[project_novel_findings_status]]`
+    to record the island-vs-family question as resolved (family).
+
+  **Additional flags not explicitly asked for:**
+  - **The ">1000 basins" headline overstates the quasi-cycler count.** Those are >1000
+    SINGLE-CYCLE geometric closures; the genuine-quasi-cycler subset (near-integer-commensurate,
+    likely bounded) is ~29–151 pre-V2, and smaller after V2. The correct claim is "#312's
+    single-cycle closure condition is generic; the bounded-drift quasi-cycler property is far
+    rarer and untested across the family." This sharpens rather than weakens #558's finding.
+  - **A concrete genuine SIBLING of #312 exists in its own pair:** Umbriel-Oberon (and its mirror
+    Oberon-Umbriel) at tof=20.92 d, n_rev=(2,2), full-cycle/T_syn = 6.987 (near-7:1), max V∞
+    0.907 km/s, min-bend 16.1°, residual 4.1e-3 — a distinct resonance in the SAME moon pair,
+    physically comparable to #312. Worth a dedicated look as a potential second catalogue row (a
+    near-7:1 companion to #312's near-5:1) once the Stage-3 funnel is built.
+  - Highest novelty-risk directions (largest basin counts + named adjacent literature) are
+    Titania-Oberon / Oberon-Titania — do these FIRST in any promotion campaign, and expect some
+    to be adjacent-published (Canales 2021 / Kumar 2025), not novel.
+  **No `data/catalogue.yaml` edit, no gauntlet run, no new sweep code — adjudication only, per
+  task scope. The literature-corpus inspection touched no repository code (read-only import).**
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
