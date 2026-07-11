@@ -1919,13 +1919,52 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
 
 - **#572** (P1, cheap ~1-day probe — the load-bearing gate before ANY #552 build; do NOT
   auto-fire the corrector build, this decides whether it's worth scoping) — Titan-Iapetus 3D
-  closure probe on the top 2-3 #571 candidates by real-corrected margin (coplanar Iapetus
-  V∞≈0.98, real bend≈8.9° — e.g. rel_offset 18° / phase0 0° / tof_scale 1.15 / n_rev (0,0) /
-  residual 5.6e-5 in `data/scan_571_saturn_titan_iapetus.jsonl`). Place Iapetus on its real
-  inclined orbit (i≈15.5°, real node) in a throwaway/one-off state generator, feed the real 3D
-  positions to `core/lambert.py` (already 3D-capable: full 3D r1/r2, cross_z transfer-plane
-  branch, prograde/retrograde selector), and attempt an actual 3D Lambert closure near each
-  coplanar seed. **Decision gate:** does a real 3D solution exist with residual near the coplanar
+  closure probe on the top #571 candidates by real-corrected margin.
+  **FABLE CORRECTION (2026-07-12) — the original exemplar candidate below is WRONG, do not use
+  it:** the previously-cited "rel_offset 18° / phase0 0° / tof_scale 1.15 / n_rev (0,0) /
+  residual 5.6e-5" record is the best-by-RESIDUAL, not best-by-corrected-margin — its actual
+  Iapetus V∞ is 1.680 km/s and its real-corrected bend is 4.44°, which FAILS the 5° gate under
+  the very correction this probe is meant to test. Using it would test an already-dead candidate
+  and produce a garbage verdict either way. **Use these instead** (independently verified by
+  Fable against the raw sweep data): **rel_offset 255° / tof_scale 1.80 / n_rev (1,1),
+  Titan-anchored** (Iapetus V∞ 0.9815, corrected bend 8.86°, residual 3.3e-3) and **rel_offset
+  89° / tof_scale 0.70 / n_rev (0,0), Titan-anchored** (V∞ 0.9858, corrected bend 8.83°,
+  residual 6.2e-3) — both from `data/scan_571_saturn_titan_iapetus.jsonl`. **Deliberately prefer
+  Titan-anchored candidates over Iapetus-anchored ones**: the 118 Iapetus-anchored survivors (two
+  Iapetus encounters ~2×tof apart at different longitudes) face a much harder double-node
+  phasing constraint the original assessment never accounted for — start with the Titan-anchored
+  pair above, not the best Iapetus-anchored candidate (rel_offset 215° / tof_scale 2.75, corrected
+  min bend 6.51°) even though it's also gate-passing.
+  **Implementation notes (also Fable corrections):**
+  (1) **Node alignment must be an explicit free variable in the probe**, not fixed at the
+  coplanar seed's arbitrary phase — the coplanar problem is rotationally symmetric, so a
+  Titan-anchored candidate can be rigidly rotated to place its Iapetus encounter at the real
+  Titan-Iapetus mutual node; a negative result without searching over node alignment is
+  formulation-conditional, not a real closure failure, per this project's own discipline.
+  (2) **Do not count a `LambertGeometryError` (near the 180°-transfer singularity, which
+  node-aligned inclined geometries can approach) as "no closure"** — that's a solver-domain
+  artifact, not evidence of dynamical infeasibility; retry at a nearby offset before concluding
+  no closure exists.
+  (3) **Frame the deliverable explicitly as quasi-cycler-class evidence, not ballistic-cycler
+  evidence** — Fable's own required-turn check (comparing the actual turn angle demanded by the
+  geometry against Titan's real bend capability) confirms this whole genome, including #312's
+  own verified anchor point, is quasi-cycler class (V2 fails on drift BY DESIGN, per
+  `FAIL_QUASI_BOUNDED`), not a ballistic-cycler-class member — do not let a successful 3D
+  closure here be read as "ballistic cycler," the standing it would earn is the same
+  quasi-cycler-class standing #312's own family has.
+  (4) **Do not read "80% of 187 survive the bend gate" as "149 robust candidates."** Post-
+  correction median bend across all 149 survivors is 5.50° — right at the floor; the genuinely
+  robust core is specifically the V∞≈0.98 Titan-anchored cluster named above (8.8-8.9° bend),
+  not the full 149-candidate population.
+  Place Iapetus on its real inclined orbit (i≈15.5° to Titan's plane — a conservative worst-case
+  proxy verified by Fable to stay safely inside the sensitivity band even accounting for
+  Iapetus's own e≈0.028 node-crossing-speed effect, true worst case ≈15.8-16.1°) in a
+  throwaway/one-off state generator, feed the real 3D positions to `core/lambert.py` (Fable
+  independently confirmed this is genuinely already 3D-capable: full 3D r1/r2, transfer angle
+  from the 3D dot product, `cross_z`-based short/long-way branch selection with an explicit
+  prograde flag, 3D-correct f,g velocity construction — the ~1-day cost estimate holds), and
+  attempt an actual 3D Lambert closure near each coplanar seed, searching over node alignment
+  per note (1). **Decision gate:** does a real 3D solution exist with residual near the coplanar
   value AND every encounter still clearing the #324 bend gate? This is the closure question the
   #571 assessment's bend check (necessary-not-sufficient) cannot answer. **If YES →** scope the
   narrow Titan-Iapetus 3D corrector (#552's own re-scoped ~3-5 day estimate reusing
