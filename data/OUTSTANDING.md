@@ -3481,6 +3481,44 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   caveat honored at adjudication), plus (c) four cheap analytic empty-region stamps. Smaller than
   the original "6 untested pairs" framing, but still worth dispatching — the compute is
   minutes-scale and the negative-registry stamps + Titan-Rhea census have standing value.
+  **RESULT (2026-07-12): DONE, both parts executed exactly as Fable-corrected.** (A) The 4
+  analytic stamps (Titan-Mimas/Enceladus/Tethys/Dione) were appended to `data/empty_regions.jsonl`
+  after an INDEPENDENT recomputation (`scripts/verify_571_gate_analytics.py`, using
+  `core/flyby.py::max_bend` + `core/satellites.py`'s sourced values, not copied from Fable's
+  summary): Mimas ceiling 0.4290 vs min-achievable 4.5425 km/s (0.0466° bend); Enceladus 0.6701 vs
+  3.7086 (0.1704°); Tethys 1.1947 vs 3.0566 (0.7930°); Dione 1.5569 vs 2.3672 (2.2170°) — all four
+  independently CONFIRM Fable's figures to displayed precision. Titan-Hyperion was also checked
+  (not stamped, per scope) and is likewise infeasible: ceiling 0.2367 vs min-achievable 0.2491
+  km/s, 4.53° bend, just under the 5° floor. (B) `scan_558_uranus_all_pairs_offset_sweep.py` was
+  genericized in place (added `primary: str = "Uranus"` default-preserving kwarg to
+  `residual_at_point`/`sweep_pair`/`build_legs_for_record`/`gate_candidate`; re-ran its own
+  positive control after the edit — byte-identical reproduction, 0.025232 km/s exact-point +
+  0.000152 km/s grid best) and a new `scripts/scan_571_saturn_titan_pairs_offset_sweep.py` imports
+  those functions with `primary="Saturn"`, sweeping all 4 directions (Titan-Rhea, Rhea-Titan,
+  Titan-Iapetus, Iapetus-Titan) at the same density #558 used (n_offset=360, tof_scales dense-51,
+  n_rev 0-3). **Internal #320 cross-lineage control**: EXACT match, not just "near" — evaluating
+  this method at #320's own Titan-Rhea-Titan point (rel_off=285°, phase0=90°, tof_scale=2.0,
+  n_rev=(1,1)) reproduces residual 0.031620 km/s to the full displayed precision (confirms this
+  circular-coplanar-Kepler construction is the same underlying geometry #320 sampled at that
+  point, not a coincidental nearby basin). **Titan-Rhea (V0-known, census only)**: 97 sub-0.05 km/s
+  survivors passing residual+physical-bend+DOP853 gates across both directions (62 Titan-anchor +
+  35 Rhea-anchor), residuals down to 0.0002-0.0006 km/s, V∞ 1.25-2.75 km/s, bends
+  5-70°-ish — consistent census density with the internal anchor's basin, no new-method surprise.
+  **Titan-Iapetus (novelty-eligible IF it survives adjudication)**: 187 sub-0.05 km/s survivors
+  (69 Titan-anchor + 118 Iapetus-anchor), residuals down to 5.6e-5 km/s, V∞ 0.98-4.46 km/s — inside
+  the analytically-predicted feasible window (0.93-1.78 km/s at Iapetus). **Every one of these 187
+  is programmatically flagged in the output** (`iapetus_inclination_caveat` field in
+  `data/scan_571_saturn_titan_iapetus.jsonl` / `scan_571_saturn_iapetus_titan.jsonl` and the
+  `candidates_needing_adjudication` block of `data/scan_571_saturn_titan_pairs_index.jsonl`)
+  restating the pre-registered caveat verbatim: Iapetus's real ~15.5° inclination to Titan's plane
+  gives an out-of-plane relative velocity (~0.85 km/s) comparable to the entire coplanar V∞ budget
+  at this pair, so a coplanar closure at the 0.05 km/s gate floor is **NOT on its own a physical
+  statement** for Titan-Iapetus — it needs 3D/inclined treatment (the #552-scoped genome extension,
+  not yet built) before ANY of these 187 can be treated as a genuine candidate, and must NOT be
+  adjudicated as if it were a #558-style planar hit. Per this task's explicit scope, NO adjudication
+  was performed here (Opus + Fable adjudication of any survivor, and the V1-V4-strict gauntlet, are
+  separate later steps). Full ratchet (`uv run pytest tests/data tests/search -q`) passed clean
+  (exit 0, no FAILED/ERROR; xfail/xpass/skip baseline unchanged) before commit.
 
 - **#542** (P4, defer until #539-541 have added corrector-run diversity) — The
   previously-proposed #525 learned-seed generative warm-start (diffusion/generative model

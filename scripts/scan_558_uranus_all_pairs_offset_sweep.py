@@ -167,6 +167,7 @@ def residual_at_point(
     tof_scale: float,
     n_rev: tuple[int, int],
     phase0_deg: float = 0.0,
+    primary: str = "Uranus",
 ) -> dict[str, Any] | None:
     """Residual + V_inf at ONE explicit (rel_offset, tof_scale, n_rev) point.
 
@@ -174,8 +175,15 @@ def residual_at_point(
     catalogued point directly (rel_offset=180 deg, tof_scale=2.0, n_rev=(1,1))
     rather than relying on a grid sample landing near it, so the positive
     control is a faithful reproduction check, not a coincidental nearby hit.
+
+    ``primary`` (#571 genericization): the central body whose ``PRIMARIES``
+    GM and whose moons' ``SATELLITES`` entries govern the two-body Kepler
+    states below. Defaults to ``"Uranus"`` so every #558-era caller (which
+    never passes this argument) is byte-for-byte unaffected -- the residual
+    formula and gate logic below are untouched, only the body lookup is
+    parameterized.
     """
-    mu = PRIMARIES["Uranus"]
+    mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     n_a = _mean_motion_rad_day(mu, sat_a.sma_km)
@@ -226,6 +234,7 @@ def sweep_pair(
     n_rev_max: int = N_REV_MAX,
     keep_top: int = 200,
     max_gate_passing_records: int = 20_000,
+    primary: str = "Uranus",
 ) -> dict[str, Any]:
     """Sweep relative phase offset (+ global phase, tof_scale, n_rev) for the
     closed length-3 cycle ``anchor - flyby - anchor``.
@@ -250,7 +259,7 @@ def sweep_pair(
     """
     import heapq
 
-    mu = PRIMARIES["Uranus"]
+    mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     sma_a, sma_b = sat_a.sma_km, sat_b.sma_km
@@ -361,7 +370,9 @@ def sweep_pair(
     }
 
 
-def build_legs_for_record(anchor: str, flyby: str, rec: dict[str, Any]) -> list[PatchedConicLeg]:
+def build_legs_for_record(
+    anchor: str, flyby: str, rec: dict[str, Any], *, primary: str = "Uranus"
+) -> list[PatchedConicLeg]:
     """Reconstruct SI-units PatchedConicLeg objects for a specific record.
 
     Used ONLY for candidates that already passed the residual + physical
@@ -370,8 +381,11 @@ def build_legs_for_record(anchor: str, flyby: str, rec: dict[str, Any]) -> list[
     sweep's own (rel_offset, phase0, tof_scale, n_rev) rather than through
     the production ``close()`` convention (which cannot express an arbitrary
     relative offset).
+
+    ``primary`` (#571 genericization, default ``"Uranus"`` for exact
+    backward compatibility with every #558/#562/#563 caller).
     """
-    mu = PRIMARIES["Uranus"]
+    mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     sma_a, sma_b = sat_a.sma_km, sat_b.sma_km
@@ -434,14 +448,24 @@ def encounter_vinfs_kms(rec: dict[str, Any]) -> tuple[float, float, float]:
     return tuple(max(abs(vin[k]), abs(vout[k])) for k in range(3))  # type: ignore[return-value]
 
 
-def gate_candidate(anchor: str, flyby: str, rec: dict[str, Any]) -> dict[str, Any]:
-    """Run the #324 physical-bend gate + DOP853 cross-check on one record."""
+def gate_candidate(
+    anchor: str, flyby: str, rec: dict[str, Any], *, primary: str = "Uranus"
+) -> dict[str, Any]:
+    """Run the #324 physical-bend gate + DOP853 cross-check on one record.
+
+    ``primary`` (#571 genericization, default ``"Uranus"``): forwarded only
+    to :func:`build_legs_for_record` for the Kepler-state reconstruction --
+    the gate logic itself (:func:`candidate_passes_physical_gate`) is
+    body-agnostic (it resolves each body's own GM/radius/safe_alt from the
+    ``PLANETS``/``SATELLITES`` registries via the body NAME in ``seq``, not
+    via ``primary``), so this is a pure pass-through, not a gate change.
+    """
     seq = (anchor, flyby, anchor)
     vinfs = encounter_vinfs_kms(rec)
     physical_pass, verdicts = candidate_passes_physical_gate(
         seq, vinfs, min_useful_bend_deg=DEFAULT_MIN_USEFUL_BEND_DEG
     )
-    legs = build_legs_for_record(anchor, flyby, rec)
+    legs = build_legs_for_record(anchor, flyby, rec, primary=primary)
     cross_checks = [dop853_cross_check_leg(leg, rtol=1e-12, atol=1e-12) for leg in legs]
     max_dr_km = max(float(cc["dr_arrival_km"]) for cc in cross_checks)
     independent_pass = max_dr_km < 1.0  # < 1 km, matches verify_327's threshold
