@@ -2554,6 +2554,103 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   strong deterministic gate, matching #558/#562's own successful precedent). Any NEW survivor
   this finds beyond #562's existing 20 needs the same Opus + Fable adjudication path #562's
   survivors already need before Stage 3 or any catalogue-adjacent writeback.
+  **RESULT (2026-07-11, Sonnet mechanical pass) — the direct construction confirms #562's
+  "20-count" was indeed a lower bound: 11 genuinely NEW symmetric closures recovered, none of
+  them findable by the original #558 grid at any resolution. Total known symmetric-class
+  family size is now 30 (19 physical families #562 already touched + 11 new); the symmetric
+  class is now provably exhaustive within #558's own tested tof range.**
+
+  Built `scripts/enumerate_563_symmetric_closures.py`, reusing `residual_at_point`,
+  `gate_candidate`, `GATE_RESIDUAL_KMS`, `N_REV_MAX` from `scan_558_uranus_all_pairs_offset_sweep.py`
+  and `synodic_period_days` from `refine_562_commensurability.py` verbatim — no new gate logic
+  written. For each of the 12 non-Miranda anchor-flyby directions (Ariel/Umbriel/Titania/Oberon,
+  C(4,2)=6 pairs x 2 directions), computed the pair's `T_syn` and bounded the commensurability
+  integer by `n_max = floor(2 * 3.0 * sqrt(P_a*P_b) / T_syn)` — a STRICT bound using the literal
+  maximum `tof_scale=3.0` #558's production sweep actually used (verified against every one of
+  the 20 `scan_558_uranus_*.jsonl` files' own `_meta` record, not assumed). This gives
+  direction-independent `n_max` per pair: Ariel-Umbriel 3, Ariel-Titania 7, Ariel-Oberon 11,
+  Umbriel-Titania 4, Umbriel-Oberon 7, Titania-Oberon 2. For every `n` in `[1, n_max]`, every
+  `n_rev=(n0,n1)` in `{0,1,2,3}^2` (16 combos), and `rel_offset` in `{0°, 180°}`, directly
+  constructed `tof = n*T_syn/2` and evaluated residual + #324 bend + DOP853 there — **2176 total
+  candidates evaluated, 8.1 s wall** (well inside the "few thousand cheap evaluations" the task
+  predicted). 60 raw points pass all gates; every single one closes to machine precision
+  (worst residual 1.6e-13 km/s, most 1e-14 to 1e-16) — the symmetric "perpendicular crossing"
+  signature holds with zero exceptions across the entire enumeration, confirming the task's
+  premise that this class is exact-by-construction, not luck.
+
+  **Deduping direction-mirrors** (anchor-flyby-anchor and flyby-anchor-flyby constructions of
+  the same physical loop; verified empirically — every one of the 60 raw passes has exactly one
+  mirror partner with matching `n`, `n_rev`, `tof`, and per-encounter V∞ to 3 decimal places)
+  gives **30 unique physical symmetric closures**. Cross-referencing against #562's own
+  `data/scan_562_commensurability_refinement.jsonl` (clustering ITS 39 raw stage-2 passes the
+  same way, by pair/`n`/`n_rev`/V∞-branch, actually yields **21** unique closures, not the 20
+  reported in #562's write-up — the prior hand-dedup missed one branch, Oberon-Titania n=2
+  n_rev=(2,2) at V∞=0.684 near rel≈180°, distinct from the already-listed V∞=1.227 branch near
+  rel≈0°; a minor correction noted here, it does not change #562's substantive conclusions) by
+  (pair, n, n_rev, V∞ within 0.03 km/s, tof within 0.02 d):
+
+  - **14 CONFIRM** — #562 already found these exactly (residual <1e-6 km/s), #563 reproduces
+    them independently via direct construction with no local search at all. Includes #312 itself
+    (Umbriel/Oberon n=5, n_rev=(1,1), V∞=0.965) and its n=7 sibling.
+  - **5 SUPERSEDE** — #562 found the SAME physical branch but only as a non-exact near-miss
+    (residual 0.020-0.047 km/s, because its grid representative + bounded ±3° local search
+    didn't happen to land close enough to the true 0°/180° zero); #563's direct construction
+    finds the TRUE machine-precision-exact zero for the identical branch (residual 1e-14 to
+    1e-15). All 5 are in the Titania-Oberon/Oberon-Titania or Titania-Umbriel/Ariel-Titania
+    directions — i.e. exactly the higher-`n`, wider-basin-search-window cases where #562's own
+    write-up flagged the refinement as "visibly nearer the 0.05 floor."
+  - **11 NEW** — physical closures with NO #562 basin at all, at any residual. These are the
+    literal coverage-gap recoveries the task set out to find: real, machine-precision-exact
+    symmetric closures whose (rel_offset, tof) point fell entirely between #558's original grid
+    samples and never tripped its initial residual gate.
+
+  **The 11 new closures** (sorted by pair; `res`/`dop853` in the gates' own units, `bend` =
+  min per-encounter deg, all pass residual+bend+DOP853 identically to #558/#562's criteria):
+
+  | pair | n | n_rev | tof (d) | res | Vinf | bend | dop853 | lit-risk |
+  |---|---|---|---|---|---|---|---|---|
+  | Ariel-Umbriel | 3 | (2,2) | 9.648 | 2.4e-14 | 1.547 | 6.03 | 3.2e-5 | |
+  | Ariel-Oberon | 5 | (0,0) | 7.752 | 2.0e-15 | 1.829 | 6.22 | 6.7e-6 | |
+  | Ariel-Oberon | 10 | (1,1) | 15.504 | 5.6e-15 | 1.670 | 5.21 | 2.0e-5 | |
+  | Titania-Umbriel | 3 | (1,1) | 11.863 | 1.8e-15 | 1.766 | 9.16 | 2.5e-5 | |
+  | Titania-Umbriel | 4 | (0,0) | 15.818 | 7.1e-15 | 2.342 | 5.39 | 4.1e-6 | |
+  | Titania-Umbriel | 4 | (1,1) | 15.818 | 1.4e-14 | 1.706 | 5.49 | 4.2e-5 | |
+  | Titania-Umbriel | 4 | (1,1) | 15.818 | 3.1e-15 | 2.139 | 6.40 | 1.4e-5 | |
+  | Umbriel-Oberon | 5 | (0,0) | 14.967 | 6.0e-15 | 2.124 | 6.09 | 1.4e-5 | |
+  | Umbriel-Oberon | 7 | (1,1) | 20.954 | 1.3e-14 | 1.660 | 7.41 | 4.6e-5 | |
+  | Oberon-Titania | 1 | (0,0) | 12.316 | 8.1e-14 | 1.799 | 8.85 | 1.7e-5 | **yes** |
+  | Oberon-Titania | 2 | (1,1) | 24.632 | 6.2e-15 | 0.959 | 24.94 | 7.4e-6 | **yes** |
+
+  2 of the 11 new closures are in the Titania-Oberon/Oberon-Titania direction and carry the
+  same adjacent-literature obligation #562's Stage-1 triage already established (Canales-
+  Howell-Fantino 2021 halo-manifold transfer, Kumar 2025 single-moon MMR study — both
+  structurally adjacent, not direct topology matches, per #562's `literature_check.py`
+  cross-check; not re-run here, same conclusion applies mechanically to any repeated-encounter
+  T-O/O-T candidate). The other 9 carry no special lit-risk flag beyond the general Uranian-
+  system baseline #328 already covers.
+
+  **Explicit, honest scope limit (per the task spec):** this enumeration is exhaustive for the
+  SYMMETRIC closure class only, within #558's own tested tof range. It correctly does NOT
+  reproduce #562/#561's 2 genuinely asymmetric near-closures (Oberon-Titania n=3 n_rev=(0,0)
+  tof=36.95d at rel_offset=114.15°, residual 7.9e-3; Oberon-Titania n=2 n_rev=(0,1) tof=24.63d
+  at rel_offset=268.19°, residual 3.5e-2) — neither sits at rel_offset in {0°,180°}, and the
+  first also sits just outside the strict tof_scale<=3.0 bound, so both are structurally outside
+  what a symmetric-only direct construction can find. These may be genuine asymmetric family
+  members; a basin-width-aware adaptive grid search would be needed to characterize them, which
+  is explicitly NOT built here (a possible future #564 if this result motivates it).
+
+  **Explicitly not done here (per task scope):** no V1-V4-strict gauntlet run on any survivor
+  (all 30 unique closures, old and new, remain V0/pre-Stage-3), no `data/catalogue.yaml`
+  writeback, no re-testing of the 8 Miranda directions (unchanged, confirmed real #324
+  bend-gate failures). Artifacts: `scripts/enumerate_563_symmetric_closures.py` (ruff-clean,
+  mypy not applicable — `scripts/*.py` is outside this project's mypy gate);
+  `data/enumerate_563_symmetric_closures.jsonl` (full per-direction + per-pass detail, 2176
+  candidates' worth of summary plus all 60 raw gate-passing rows, for Opus/Fable to consume
+  programmatically).
+  **Next: the 11 new closures (2 of them Titania-Oberon/Oberon-Titania lit-risk) join the SAME
+  Opus + Fable adjudication queue #562's 20 survivors are already waiting in — no separate
+  adjudication ask. That queue's total scope is now the 30-closure #563 table (superseding
+  #562's 20-row table as the reference list), not #562's list alone.**
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
