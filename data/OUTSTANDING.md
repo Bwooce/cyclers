@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -2381,6 +2381,179 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   successful precedent). Any survivor that clears Stage 2 needs Opus adjudication + a Fable
   second-opinion pass before Stage 3 (the V1-V4-strict gauntlet) or any catalogue-adjacent
   writeback — do not push a candidate through the gauntlet from this dispatch.
+  **RESULT (2026-07-11, Sonnet mechanical pass) — the grid-artifact 151/29 counts do NOT
+  survive contact with a continuous refinement. The TRUE commensurate-subfamily size is 20
+  unique physical closures, not 151 or 29; Titania-Oberon/Oberon-Titania are re-admitted and
+  carry real but non-blocking adjacent literature.**
+
+  **(1) Literature triage (Stage 1, run first, no numeric work spent before this).** Grepped
+  `docs/notes/` for both named risks: `docs/notes/2026-06-16-328-uranian-cycler-lit-deep-dive.md`
+  (the #328 deep-dive, 20 WebSearch queries + per-paper triage table) already assessed BOTH
+  papers directly against the Titania-Oberon moon pair specifically (queries 2, 12, 13; rows
+  10-11 of its triage table): **Canales-Howell-Fantino 2021** (Celest. Mech. Dyn. Astron.
+  133:36, arXiv:2110.03683) is a ONE-SHOT L2-halo(Titania)→L1-halo(Oberon) unstable/stable-
+  manifold transfer — no free-flight repeated encounter, no periodicity; **Kumar 2025**
+  (arXiv:2509.03655, §6.2) is a SINGLE-MOON Uranus-Oberon PCRTBP 3:4/4:5/5:6/4:3/5:4/6:5 MMR
+  study (companion arXiv:2309.06073 extends to Uranus-Titania-Oberon CCR4BP secondary
+  resonances, still single-moon-period MMR sub-harmonics, not a moon-pair cycler). The #328
+  verdict for both: **STRUCTURAL ADJACENT, not DIRECT MATCH** — same moons, different topology.
+  Re-confirmed formally against `literature_check.py`'s own structural matcher (not just the
+  digest prose): a `CandidateSignature(primary="Uranus", sequence=("Titania","Oberon","Titania"),
+  topology_label=frozenset({"repeated-moon"}))` returns **zero** overlapping `KNOWN_CORPUS`
+  anchors — `_candidate_anchors`'s topology-label filter excludes Kumar (`{"resonant"}`) and
+  Canales (`{"halo"}`) as disjoint from `{"repeated-moon"}`, exactly matching #328's human
+  read. **Verdict: LOW direct-rediscovery risk for the repeated-encounter topology specifically,
+  but MANDATORY citation of both papers as adjacent literature in any future write-up or
+  promotion** given they study the exact same moon pair — a citation obligation, not a
+  blocking match. This offline conclusion reconfirms/extends #328's existing clearance to the
+  T-O/O-T directions specifically (which #328 assessed but never a repeated-moon candidate at);
+  no fresh live WebSearch was run (out of scope per the task's own framing — digest-note
+  triage was the specified cheap-first filter), and Opus/Fable should still sanity-check this
+  before any T-O/O-T survivor is called novel, per #561's own instruction.
+
+  **(2) Stage-2 reformulation, run** (`scripts/refine_562_commensurability.py`). Loaded all
+  3672 raw single-cycle gate-passing candidates from `data/scan_558_uranus_all_pairs_index.jsonl`
+  (read directly, not the summary table) across all 20 anchor-flyby directions (the 8
+  Miranda-involving directions carry 0, confirmed unchanged — #324 bend-gate failure, real
+  physics per #558). Clustered into **360 distinct basins** across the 12 non-Miranda
+  directions by (anchor, flyby, n_rev) + rel_offset adjacency (gap ≤2°) — Titania-Oberon (66)
+  and Oberon-Titania (62) basins are now IN this set, not structurally excluded as they were
+  under #561's literal grid-frac filter. Per basin: computed the pair's synodic period
+  (generic `1/|1/T_a-1/T_b|`; self-check `T_syn(Umbriel,Oberon)=5.9867 d` reproduces the
+  5.987 d reference used throughout #561/#562), set `n = max(1, round(2·tof_grid/T_syn))`
+  (n=1 explicitly admitted, per Fable's instruction), fixed `tof` to the EXACT commensurate
+  value `n·T_syn/2` (a direct formula, not a search), then ran a bounded local 1-D search over
+  `rel_offset_deg` at that fixed tof (coarse 61-pt scan ±3°, refined 41-pt scan ±0.1°) to find
+  the true nearby residual minimum — necessary because the basin's (rel_offset, tof) zero is
+  generically an isolated point (per the #561 Opus adjudication's own finding), so the grid's
+  rel_offset and the exact commensurate tof do not automatically coincide. Re-gated every
+  refined point through #558's own `gate_candidate` (physical #324 bend + independent DOP853
+  cross-check) verbatim — no new gate logic. Full run: 10 s wall.
+
+  **Result: 39/360 basin-refinements pass Stage 2 sub-gate** (residual <0.05 km/s AT the exact
+  commensurate tof, plus bend + DOP853). Deduping direction-mirrors (anchor-flyby-anchor and
+  flyby-anchor-flyby are the same physical closed loop) and 0°/360° wraparound cluster-split
+  artifacts gives **20 unique physical commensurate closures — the TRUE commensurate-subfamily
+  size.** This supersedes the old grid-artifact "151/29" counts from #561's original write-up
+  entirely; those measured grid-frac against a 0.05-tof_scale grid, not continuous physics, and
+  must not be repeated as real. 7 of the 20 are in the Titania-Oberon/Oberon-Titania lit-risk
+  direction — previously ZERO were ever testable there under the broken filter, now correctly
+  re-admitted, confirming Fable's prediction. This includes a clean **n=1 (near-1:1) T-O
+  closure** (tof=12.32 d, V∞_max=2.162 km/s, min-bend=6.27°, residual 2.7e-15 — machine-
+  precision exact) that the old integer≥2 restriction would have permanently excluded.
+
+  **#312 itself** (Umbriel-Oberon, n=5, n_rev=(1,1)) refines to tof=14.9668 d (vs. its
+  catalogued 14.94 d), residual 8.9e-16 — essentially EXACT, tighter than its own catalogued
+  0.025 km/s. This is the expected signature of a genuine symmetric periodic closure (the
+  Miele-style "perpendicular crossing" condition: at rel_offset=0/180 with matched leg
+  revolution counts and exactly-commensurate tof, mid-continuity and periodicity are satisfied
+  identically, not by numerical luck) — a strong independent confirmation that the family's
+  anchor sits on a mathematically real closure, not a grid coincidence.
+
+  **#312's sibling** (near-7:1, no special pre-funnel treatment per Fable's instruction — it
+  ran through the identical funnel as every other basin): Umbriel-Oberon n=7, n_rev=(2,2),
+  refines to tof=20.9535 d (matches Fable's own hand-computed exact-7:1 value verbatim),
+  residual 5.3e-15 (machine-precision exact), V∞_max=0.93 km/s, min-bend=15.43°, DOP853
+  4.4e-5 km. Passes cleanly — the strongest non-#312 survivor by residual/exactness, a real
+  candidate for Stage 3 (not run here).
+
+  **Ranked survivor table** (20 unique, sorted by refined residual; `res` in km/s, `Vinf` =
+  max per-encounter km/s, `bend` = min per-encounter deg, `dop853` = max arrival residual km):
+
+  | pair | n | n_rev | tof (d) | res | Vinf | bend | dop853 | lit-risk |
+  |---|---|---|---|---|---|---|---|---|
+  | Oberon-Umbriel | 5 | (1,1) | 14.970 | 8.9e-16 | 0.965 | 15.55 | 3.1e-5 | |
+  | Oberon-Umbriel | 6 | (1,1) | 17.960 | 8.9e-16 | 1.995 | 6.85 | 9.3e-6 | |
+  | Oberon-Umbriel | 2 | (0,0) | 5.990 | 8.9e-16 | 1.691 | 5.13 | 7.3e-6 | |
+  | Ariel-Umbriel | 2 | (1,1) | 6.430 | 2.0e-15 | 1.305 | 8.37 | 3.8e-6 | |
+  | Ariel-Umbriel | 1 | (0,0) | 3.220 | 2.4e-15 | 1.300 | 8.43 | 4.4e-7 | |
+  | Oberon-Titania | 1 | (0,0) | 12.320 | 2.7e-15 | 2.162 | 6.27 | 2.0e-6 | **yes** |
+  | Oberon-Umbriel | 3 | (0,0) | 8.980 | 2.9e-15 | 1.520 | 11.33 | 6.8e-6 | |
+  | Titania-Umbriel | 1 | (0,0) | 3.950 | 3.1e-15 | 1.230 | 9.35 | 1.2e-6 | |
+  | Ariel-Umbriel | 3 | (2,2) | 9.650 | 5.2e-15 | 1.492 | 6.51 | 6.5e-6 | |
+  | Oberon-Umbriel | 7 | (2,2) | 20.950 | 5.3e-15 | 0.930 | 15.43 | 4.4e-5 | (#312 sibling) |
+  | Ariel-Oberon | 9 | (1,1) | 13.950 | 6.0e-15 | 1.430 | 6.99 | 2.2e-5 | |
+  | Oberon-Titania | 2 | (0,0) | 24.630 | 9.3e-15 | 1.524 | 11.28 | 2.2e-5 | **yes** |
+  | Oberon-Titania | 1 | (1,1) | 12.320 | 2.0e-14 | 2.169 | 6.23 | 1.9e-5 | **yes** |
+  | Ariel-Titania | 5 | (1,1) | 8.870 | 6.1e-14 | 1.106 | 11.24 | 1.5e-5 | |
+  | Oberon-Titania | 3 | (0,0) | 36.950 | 7.9e-3 | 2.321 | 5.14 | 3.3e-5 | **yes** |
+  | Oberon-Titania | 2 | (2,2) | 24.630 | 2.0e-2 | 1.227 | 17.52 | 4.3e-5 | **yes** |
+  | Oberon-Titania | 2 | (1,1) | 24.630 | 2.2e-2 | 1.512 | 11.43 | 1.7e-5 | **yes** |
+  | Oberon-Titania | 2 | (0,1) | 24.630 | 3.5e-2 | 2.001 | 6.82 | 6.4e-6 | **yes** |
+  | Titania-Umbriel | 4 | (2,2) | 15.820 | 3.9e-2 | 0.991 | 20.31 | 7.5e-6 | |
+  | Ariel-Titania | 3 | (0,0) | 5.320 | 4.4e-2 | 1.730 | 8.85 | 7.5e-6 | |
+
+  (`#312` proper, Umbriel-Oberon n=5, sits at the top of this table alongside its sibling —
+  both omitted from the "18 non-#312 unique" count language elsewhere in this write-up only
+  in the sense that they are the two already-known family members; they appear in the table
+  like every other survivor, no special formatting.) Note the qualitative split: the 14
+  best-residual survivors (all pairs except the three highest-`n` Titania-Oberon/Oberon-Titania
+  rows and two Ariel/Titania-Umbriel rows) close to machine precision (symmetric-orbit
+  signature); the remaining 6 (mostly higher-`n` T-O/O-T basins whose grid rel_offset sat well
+  off 0°/180°) close at 0.008-0.044 km/s — still comfortably sub-gate but visibly nearer the
+  0.05 floor, a genuine (not degenerate) near-closure.
+
+  **Optional half-integer/conjugate check (§7):** not run as a separate super-cycle search —
+  the primary per-basin clustering already naturally surfaces basins at both rel≈0 and rel≈180
+  independently for several pairs at matching (n, n_rev) (e.g. Oberon-Umbriel n=6 at rel=0/360;
+  Umbriel-Oberon n=6 likewise), consistent with the Fable-flagged rel≈180-conjugate pattern
+  without requiring extra compute.
+
+  **Explicitly not done here (per task scope):** no V1-V4-strict gauntlet run on any survivor,
+  no `data/catalogue.yaml` writeback, no #312 V2 re-run (unchanged, still solid per #330).
+  Artifacts: `scripts/refine_562_commensurability.py` (ruff-clean); `data/scan_562_commensurability_refinement.jsonl`
+  (360-basin full refinement detail, all fields, for Opus/Fable to consume programmatically).
+  **Next: Opus adjudication of the 20-survivor list (esp. the 7 Titania-Oberon/Oberon-Titania
+  members against Canales/Kumar) + a Fable second-opinion pass, per #561's own two-model
+  discipline for this territory, BEFORE any Stage 3 (V1-V4-strict gauntlet) dispatch.**
+
+- **#563** (P0, replaces grid-search-plus-refinement with a direct, exhaustive construction —
+  the #562 "20 unique closures" count is a LOWER BOUND, not a census) — direct symmetric-
+  closure enumeration for the #312 Uranian moon-pair family. **The gap this closes**: #562
+  only refines basins #558's ORIGINAL discrete grid (1° `rel_offset`, 0.05 km/s-step
+  `tof_scale`) happened to detect via its initial residual gate. #561's own diagnostic already
+  established that gate-passing basins tend to be TOF-NARROW — narrower than that grid's own
+  step size. A basin narrower than the grid resolution in either dimension can fall entirely
+  between sample points and never trigger the initial gate at ANY tested point — #558 would
+  never have found it, so #562 (which only refines what #558 already surfaced) could never
+  recover it either. This is the SAME class of bug (grid coarser than the feature being
+  searched for) that caused the original Stage-2 filter flaw, one level upstream now. Two
+  further, smaller known gaps: the half-integer/conjugate (q=2 super-cycle) case was only
+  found opportunistically where it happened to already exist as a separate visible cluster in
+  #558's data, not independently searched; and only 12/20 anchor-flyby directions are
+  physically viable (the 8 Miranda-involving ones correctly excluded by the real #324 bend-gate
+  physics — not a coverage gap, don't re-test these).
+  **The fix — stop searching a grid, construct directly.** #562's own result data shows the
+  dominant closure signature is a SYMMETRIC periodic orbit (`rel_offset` in {0 deg, 180 deg},
+  matched leg revolution counts, exactly-commensurate `tof`) closing to machine precision
+  (1e-14 to 1e-16 km/s) — the classical Miele-style "perpendicular crossing" condition, not a
+  numerical coincidence (#562's own write-up makes this argument explicitly for #312 itself).
+  This means the full symmetric-closure family is a FINITE, ENUMERABLE set — not a continuous
+  space that needs sampling at all: for each of the 12 viable anchor-flyby directions, each of
+  up to 16 `n_rev=(n0,n1)` combinations in `{0,1,2,3}x{0,1,2,3}` (the range #558 already scores
+  "for free" per grid point via cached multi-rev Lambert branches), each commensurability
+  integer `n>=1` up to a reasonable ceiling (bound by the same max-tof range #558's own sweep
+  covered), and `rel_offset` in `{0 deg, 180 deg}` (both symmetric candidates, which
+  automatically covers the "conjugate" case #562 could only find opportunistically) — directly
+  CONSTRUCT the candidate at the exact commensurate `tof = n*T_syn/2` and the symmetric
+  `rel_offset`, evaluate residual/bend/DOP853 there (reuse #558/#562's own gate functions
+  verbatim, no new gate logic), with NO grid-resolution risk of missing a basin, because
+  nothing is being searched for — every candidate in the finite enumeration is checked
+  directly. This is provably exhaustive FOR THE SYMMETRIC-CLOSURE CLASS specifically (not for
+  every possible asymmetric closure — #562's own data showed a handful of near-closures at
+  0.008-0.044 km/s that were NOT machine-precision-exact, suggesting some genuinely-asymmetric
+  family members may also exist; flag this as an explicit, honest scope limit of this task
+  rather than silently claiming total exhaustiveness — a genuinely different, more expensive
+  adaptive/basin-width-aware grid search would be needed for the asymmetric case, out of scope
+  here, note it as a possible future #564 if this task's result motivates it).
+  **Explicitly out of scope**: the V1-V4-strict gauntlet on any survivor, `data/catalogue.yaml`
+  writeback, re-testing the 8 Miranda directions, an adaptive/asymmetric-closure search (see
+  above — a different task if warranted).
+  **Recommended model:** Sonnet (mechanical: a finite, well-bounded enumeration behind the
+  exact gate functions #558/#562 already built and validated — spec-complete work behind a
+  strong deterministic gate, matching #558/#562's own successful precedent). Any NEW survivor
+  this finds beyond #562's existing 20 needs the same Opus + Fable adjudication path #562's
+  survivors already need before Stage 3 or any catalogue-adjacent writeback.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
