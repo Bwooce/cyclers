@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -2726,6 +2726,60 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   + the Canales-Howell-2023 and Kumar-2025 digests: both structurally adjacent, NEITHER a direct
   topology match (Canales = halo/manifold MMAT transfer; Kumar = single-moon MMR heteroclinics),
   so the mandatory-citation obligation holds without a novelty collision.
+  **FABLE SECOND OPINION (2026-07-11): REJECT** — one load-bearing flaw, one wrong citation
+  ID, one internal contradiction. See task **#565** below for the correction.
+
+- **#565** (P0, judgment-only, blocks Stage-3 dispatch — supersedes #564's triage §2/§3 pending
+  correction) — Fable-corrected re-adjudication of #564. Fable's adversarial review (full text
+  in the #564 result above; verified independently before filing this task — read
+  `src/cyclerfinder/search/physical_sanity.py:85-114` directly, do not take either adjudication's
+  word for it) found #564 inverted the semantics of `max_bend_deg_per_encounter`: the field is
+  the **maximum achievable ballistic deflection** at the safe-altitude periapsis (a pure
+  function of body + V∞, gated as a **floor** — pass iff ≥5°; see `flyby_is_useful()` and the
+  #324 gate). Higher = more capability margin; lower = closer to the reject floor. **#564 read
+  it backwards** ("high bend = demanded/fragile turn, low bend = clean/comfortable margin") and
+  every ranking built on that axis is inverted:
+  (a) row 12 was called "cleanest closure, best-geometry showcase" but is actually the most
+  MARGINAL member of all 30 (min per-encounter achievable bend 5.39°, barely above the 5.0°
+  floor);
+  (b) rows 29-30 were excluded as "demanding near-surface/impossible periapses" but in fact have
+  the LARGEST capability margins in the family (min per-encounter 17.77° and 45.29°) — nothing
+  in the pipeline computes a *required* turn angle anywhere (`residual_at_point` matches V∞
+  magnitude only), so "demands an impossible periapsis" is not a claim the data supports;
+  (c) the Titania-Oberon P1 pick (row 24, "cleanest bend of the 8 T-O closures" at 7.03°) is by
+  the correct margin statistic (min per-encounter achievable bend, matching the statistic #563's
+  own NEW-closures table already used) nearly the WORST of the 8 T-O closures (min 6.27°; only
+  row 25 at 6.23° is lower) — row 23 (min 8.85°) or row 27 (V∞ 0.827/0.959, min bend 24.94°,
+  essentially #312's own validated V∞/bend profile transplanted to Titania-Oberon) are better
+  candidates to "carry" the mandatory literature test, at the cost of a longer tof for row 27.
+  Also found: **Kumar 2025's arXiv ID is wrong in #564** — cited as arXiv:2509.12675 (which is
+  Kumar-Rawat-Rosengren-Ross, Earth-Moon cislunar resonant transport, zero Uranian content); the
+  actual Uranus-Oberon MMR paper is **arXiv:2509.03655** §6.2 per
+  `docs/notes/2026-06-16-328-uranian-cycler-lit-deep-dive.md:64,86-102` — exactly the
+  same-author/same-year citation-collision trap flagged in
+  [[feedback_ground_citations_against_content]]; the substantive adjacency verdict (single-moon
+  MMR, not two-moon cycler topology) is correct, only the ID is wrong, but a wrong ID must not
+  propagate into any writeback. Also: an internal contradiction (row 22 both recommended as
+  Tier-2 "cheap to confirm" and excluded "at any tier" under a nonexistent "row 47" label — one
+  statement must go). Fable's independent re-verification of everything else in #564 (all 30
+  table rows against the raw jsonl, the 14/5/11 #562 cross-reference, #312's own identity/status,
+  both asymmetric near-closure numbers, the "5 not 30" cutoff LOGIC itself, and the reframing
+  prose) came back clean — this is a correction, not a full teardown.
+  **Scope:** re-derive the geometric-quality ranking in #564 §2 using the CORRECT semantics (min
+  per-encounter achievable bend = capability margin above the 5° floor, not a "demand"); re-pick
+  the Titania-Oberon gauntlet representative among rows 23/24/27/28 under the corrected axis
+  (rows 1/5/7/10 for the other 4 pairs are unaffected — they were justified on tof/order, not
+  bend, and stand); withdraw or re-justify the row-12 "showcase" call and the rows-29/30
+  exclusion (their real, valid exclusion reason is same-pair redundancy with an already-selected
+  representative, not "impossible periapsis" — restate it that way if kept excluded); fix the
+  Kumar citation to arXiv:2509.03655; resolve the row-22 contradiction. Do NOT re-open #564's §1
+  (data verification), the "5 not 30" cutoff count, the #312 reframing recommendation (§5,
+  Fable confirmed this is well-guarded as written), or the asymmetric-closures deferral (§3,
+  Fable confirmed this stands) — those parts of #564 are not in question, only the bend-axis
+  ranking and the two citation/contradiction nits.
+  **Explicitly out of scope:** running the V1-V4-strict gauntlet, editing `data/catalogue.yaml`.
+  **Recommended model:** Opus (same trust-bearing territory as #564; this is correcting its own
+  prior output against Fable's findings, not a mechanical fix).
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
