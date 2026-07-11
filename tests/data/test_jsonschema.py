@@ -25,7 +25,12 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '5.0' (v5.0 adds the additive optional
+    """The schema carries version == '5.1' (v5.1 additively names three
+    synodic-feasibility sub-fields of validity_window — synodic_duty_cycle_pct,
+    synodic_boundary_period_days, synodic_period_days — formalizing the free-form
+    extras task #569's six Uranian moon-pair quasi_cycler rows already carried
+    under validity_window's additionalProperties:true; no existing row becomes
+    invalid and no census count changes. v5.0 added the additive optional
     nullable nested bcr4bp_provenance block {mu_sun, sun_commensurate_n,
     sun_phase_drift} for a future Andreu/Rosales-Jorba known-reproduction row
     admitted via the BCR4BP V0-V5 gauntlet, task #305 — absent on every existing
@@ -38,7 +43,7 @@ def test_schema_version_is_current() -> None:
     taxonomy, task #417; v4.7 added the four-class orbit_class taxonomy for the
     catalogue-scope expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "5.0"
+    assert schema["version"] == "5.1"
 
 
 def test_catalogue_matches_jsonschema() -> None:
