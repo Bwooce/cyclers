@@ -3431,6 +3431,56 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   twice: once now, reviewing this plan before dispatch (per the user's explicit request — same
   discipline that caught #552's bad payoff assumption before a multi-week build was wasted), and
   again before any writeback if a hit survives.
+  **FABLE PLAN REVIEW (2026-07-12): CONFIRMED WITH CORRECTIONS — a real, load-bearing catch,
+  now folded into scope. Verified: all cited constants (Titan GM=8978.14, safe_alt 1500 km
+  paper-anchored to Titan's atmosphere, other moons' GM/a) are correct, and #489's small-moon
+  mass-deficiency finding stands (Tethys 0.44°, Dione ~3.1-3.2° — #571's "3-5°" was a minor
+  overstatement, immaterial). But four corrections are MANDATORY before dispatch:**
+  **(1) Cut Titan-Mimas / Titan-Enceladus / Titan-Tethys / Titan-Dione from the active sweep —
+  they are ANALYTICALLY EMPTY under this project's own two-sided #324 gate, before spending any
+  compute.** The gate requires EVERY encounter (not just Titan's) to clear 5° bend
+  (`search/physical_sanity.py::candidate_passes_physical_gate`, applied to all 3 legs by
+  `scan_558...::gate_candidate`) — the small moon itself must bend ≥5°. Fable computed each
+  moon's minimum-achievable V∞ over ALL conics reaching Titan's radius (not just Hohmann-tangent)
+  against each moon's own 5°-gate ceiling: Mimas ceiling 0.43 km/s vs min-achievable 4.54 km/s
+  (0.05° bend); Enceladus 0.67 vs 3.71 (0.17°); Tethys 1.19 vs 3.06 (0.79°); Dione 1.56 vs 2.37
+  (2.22°) — every one impossible at EVERY grid point, no basin can ever exist. **Stamp these 4
+  pairs directly into `data/empty_regions.jsonl` as analytically-empty-by-gate-construction
+  (method-versioned per [[project_negative_results_registry]]) instead of sweeping them** — do
+  not spend compute re-deriving #489-with-Titan-attached. State explicitly in the stamp that this
+  is conditional on the two-sided gate policy: Russell-Strange's own published Titan-Enceladus
+  census (19 members) uses the small moon as a passive science target — an architecture this
+  genome structurally excludes, not a contradiction of it.
+  **(2) Only Titan-Rhea and Titan-Iapetus have a feasible window — sweep only these two.** Rhea
+  ceiling 1.98 vs min-achievable 1.54 km/s (7.97° bend, narrow but real window 1.54-1.98).
+  Iapetus ceiling 1.78 vs min-achievable 0.93 (16.4° bend, wider window).
+  **(3) The positive-control claim is mis-grounded — fix before dispatch.** Titan-Rhea is NOT
+  "Russell-Strange 2009's own published Titan→Rhea flyby architecture" as #571 originally stated
+  — per the project's own digest, R-S's published Saturnian tables are Titan-Enceladus ONLY;
+  Rhea is a named extension target with NO published invariants (this does not change Titan-Rhea's
+  correct V0-known/not-novel status, #489's adjudication on that stands). The only usable
+  positive control is INTERNAL: this project's own #320 scan already found a Titan-Rhea-Titan
+  basin (residual 0.0316, V∞ 1.68-1.75 km/s, bends ~50°/~7-8° — sits inside the feasible window
+  above) — use recovering THAT as the smoke test, and label it explicitly as an internal
+  cross-lineage check, NOT a literature golden (per [[feedback_golden_tests_sourced_only]]).
+  **(4) Honesty flags for the idealized→real gap, pre-register before adjudicating any hit:**
+  Titan's real eccentricity ≈0.0288 (7-25× the Uranian moons' e≤0.004) — velocity modulation
+  ±0.16 km/s is 3× the 0.05 km/s residual floor, so expect a materially worse idealized→real gap
+  and a worse #568-style duty cycle than the Uranian family; don't oversell a coplanar-circular
+  hit at adjudication. **Titan-Iapetus specifically has an inclination problem, not a tof/distance
+  problem** (the a-gap synodic/transfer timing is fine, ~20-22 days): Iapetus is inclined ~15.5°
+  to Titan's plane, giving an out-of-plane relative velocity (~0.85 km/s) comparable to the ENTIRE
+  coplanar V∞ (0.93) — a coplanar closure at the 0.05 km/s floor is not a physical statement for
+  this pair. Either drop Titan-Iapetus, or keep it under a PRE-COMMITTED rule: any "hit" there
+  cannot be called a candidate from the coplanar sweep alone and needs 3D/inclined treatment
+  (the #552-scoped genome extension, not yet built) before adjudication — do not let it be
+  adjudicated as if it were a #558-style planar hit.
+  **Net payoff, honestly restated**: this is now (a) a Titan-Rhea family census against our own
+  internal #320 anchor — known-class-member payoff, zero expected novelty per the `our_status`
+  discipline — plus (b) a flagged, artifact-prone Titan-Iapetus probe (needs the inclination
+  caveat honored at adjudication), plus (c) four cheap analytic empty-region stamps. Smaller than
+  the original "6 untested pairs" framing, but still worth dispatching — the compute is
+  minutes-scale and the negative-registry stamps + Titan-Rhea census have standing value.
 
 - **#542** (P4, defer until #539-541 have added corrector-run diversity) — The
   previously-proposed #525 learned-seed generative warm-start (diffusion/generative model
