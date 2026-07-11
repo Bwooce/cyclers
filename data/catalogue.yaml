@@ -50442,6 +50442,11 @@
   validity_window:
     start: "2000-06-21T00:00:00Z"
     end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 79.1
+    synodic_boundary_period_days: 6.0
+    synodic_period_days: 5.99
+    secondary_drift_floor_population_pct: 1.3
+    secondary_drift_floor_range_km: [50084, 103413]
   launch_epoch: "2041-06-21T00:00:00Z"
   validation_level: V4   # spec §14: V4-strict URA111 real-eph + #338 EFFECTIVELY_CYCLIC. The 10-gate provenance (closure 0.025 km/s / DOP853 2.7e-11 / physical 14.7°+39° / lit-fresh 41-anchor / Heaton-Longuski-2003 direct read / V1-V4-strict / #338 EFFECTIVELY_CYCLIC) lives in data/silver_327_v*_verdicts.jsonl AND #340 (commit pending) wraps each V-tier's JSONL verdict as a frozen-gate pytest (tests/verify/test_silver_327_v1_passes.py / test_silver_327_v2_quasi_cycler.py / test_silver_327_v3_nbody.py / test_silver_327_v4_strict_passes.py) and registers V1/V2/V3/V4 in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE per spec §16.7.12. Sub-year DOY sensitivity flagged in notes block (validity_window assumes June 21 DOY launch).
   source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
@@ -50479,6 +50484,39 @@
     Closes-up-to-rotation for 10 cycles with bounded drift oscillation between
     86,000 km and 530,000 km (peak ~530,000 km at cycle 1 then returns to
     86,000 km by cycle 5 — bounded oscillation, NOT monotonic divergence).
+
+    Family relation (established #558 -> #568, after this row was first
+    written): this Umbriel-Oberon-Umbriel (1,1) closure is the
+    FIRST-DOCUMENTED member of a 30-member Uranian symmetric-closure
+    quasi-cycler family — 30 exact 0-deg/180-deg symmetric periodic closures
+    spread across the six non-Miranda Uranian moon-pair directions, directly
+    enumerated by #563. Five sibling representatives (one per other pair:
+    Titania-Oberon / Ariel-Oberon / Umbriel-Titania / Ariel-Titania /
+    Ariel-Umbriel) were added to the catalogue alongside this update (#569),
+    each cleared through the same V2->V4-strict gauntlet. IMPORTANT: this
+    family is an INTERNALLY-ENUMERATED fact about this project's OWN search
+    space, not prior art — genericity within our own search density does NOT
+    change this row's literature-novelty verdict (see the literature-novelty
+    paragraph below, which stands unchanged). This row is the first-found
+    representative of a structured family, not a walk-back of its novelty.
+
+    Windowed-validity correction (the #567/#568 characterization supersedes
+    the sub-year DOY-sensitivity note below): the validity_window's calendar
+    span {2000-06-21 -> 2083-06-21} does NOT mean continuous 83-year validity.
+    It is a feasible synodic DUTY CYCLE of 79.1% (the fraction of synodic
+    phase for which the transfer is V4-strict-feasible), with the
+    planet_crossing_infeasible geometry boundary recurring every ~6.0 d (the
+    full Umbriel-Oberon synodic period; MEASURED per #568 Sec 4). The duty
+    cycle is computed over daily-2000 + daily-2030 epoch scans (#567, N=731)
+    excluding drift-floor fails from the denominator. DISTINCT from this
+    boundary, this row alone (none of the 5 siblings) shows a small
+    ~1.3% secondary population where all legs converge but the V4-vs-V3 drift
+    exceeds the 50,000 km floor (range 50,084-103,413 km; a different
+    continuous-metric threshold, genuine high-perturbation-epoch physics per
+    the #567 diagnosis, NOT a solver artifact). The 2000-01-15 epoch #338
+    originally flagged as a ~91,000 km FAIL is now correctly classified as
+    this drift-floor mechanism. See docs/notes/2026-07-11-568-writeback-
+    readiness-verdict.md.
 
     Discovery + verification chain (12 tasks across the 2026-06-15 -> 06-17
     frontier-capability sprint):
@@ -50590,6 +50628,552 @@
     "validity_window.start": "Per #338 boundary JSONL: longest_pass_run_start_year=2000, length 84 yr."
     "validity_window.end": "Per #338 boundary JSONL: longest_pass_run_end_year=2083."
     "n_returns": "Per #330 data/silver_327_moontour_v2_verdicts.jsonl: n_cycles=10 verdict with bounded drift; #331 V3 reproduces same 10 cycles; n_returns=10 reflects the convergent-with-bounded-drift count, NOT a strict periodic-cycler infinity (which would require strict-periodic n_returns='infinite' per v4.7 cycler-class definition)."
+
+- id: titania-oberon-1-1-uranian-quasi-cycler-2026
+  name: "Titania-Oberon-Titania (1,1) Uranian symmetric-closure quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 74.4
+    synodic_boundary_period_days: 24.4
+    synodic_period_days: 24.6321
+  launch_epoch: "2000-06-21T00:00:00Z"
+  validation_level: V4   # spec §14: #312-equivalent V4 (windowed). Evidence = the #566 V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl) + the #567 epoch-robustness scan (daily-2000+2030 feasible synodic duty cycle 74.4%, data/scan_567_epoch_robustness.jsonl) + the #568 writeback-readiness verdict. Frozen-gate pytest: tests/verify/test_566_five_representatives_v4.py; registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE (spec §16.7.12). Windowed like #312: a synodic feasibility DUTY CYCLE within the calendar span, not continuous validity.
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Titania", "Oberon"]
+  sequence_canonical: "Titania-Oberon-Titania"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Titania"
+    vinf_kms: 2.1618
+    note: "Per #566 gauntlet-passing IC (data/gauntlet_566_five_representatives.jsonl, candidate enum563-line57-titania-oberon-titania); #563 exact symmetric closure at rel_offset=180 deg."
+  - body: "Oberon"
+    vinf_kms: 1.9680
+    note: "Per #566 gauntlet-passing IC. Mid-cycle encounter of the Titania-Oberon-Titania symmetric closure."
+  - body: "Titania"
+    vinf_kms: 2.1618
+    note: "Per #566 gauntlet-passing IC. Returns to the first Titania encounter within the 2.66e-15 km/s symmetric-closure residual."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Titania-Oberon-Titania (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    doi:
+  corroborating_sources: []
+  priority_date: "2026-07-11"
+  notes: |
+    Representative Titania-Oberon-Titania member of the Uranian symmetric-closure
+    quasi-cycler family. This is an INTERNALLY-ENUMERATED family within this
+    project's own search space: the #563 direct symmetric-closure enumeration
+    found 30 exact 0-deg/180-deg symmetric periodic closures spread across the
+    six non-Miranda Uranian moon-pair directions (Ariel/Umbriel/Titania/Oberon
+    pairs). Task #312's Umbriel-Oberon-Umbriel (1,1) row was the
+    FIRST-DOCUMENTED member of this family; this row is the census-minimum single
+    representative for the Titania-Oberon pair direction (#565 Sec 2/4: one rep per pair,
+    the other same-pair-redundant closures are not separately catalogued).
+    Genericity WITHIN this project's own search density is not prior art -- the
+    family being internally enumerable does not change any literature-novelty
+    verdict.
+
+    Validation (V4, windowed -- #312-equivalent): the #566 gauntlet ran this
+    candidate through the same frozen V2->V3->V4-scipy->V4-strict chain #312
+    itself cleared (#330->#335), at the reference launch epoch 2000-06-21 and
+    n_cycles in {3, 5, 10}. Verdict PASS_AS_QUASI_CYCLER: strict V2 is
+    FAIL_QUASI_BOUNDED by design (the bounded-drift quasi_cycler signature
+    exceeds the 50,000 km strict-periodic floor -- the same admission path #312
+    used), with V3, V4-scipy and V4-strict all passing at all three n_cycles.
+
+    Windowed validity (the #567/#568 characterization, NOT continuous validity):
+    the feasible synodic DUTY CYCLE is 74.4% -- the fraction of synodic
+    phase for which the transfer is V4-strict-feasible (its osculating periapsis
+    stays outside Uranus's r_eq = 25,559 km). Measured over the combined
+    daily-2000 + daily-2030 epoch scans (#567; N=731). Every failure in the scan
+    is the genuine planet_crossing_infeasible geometry boundary recurring every
+    24.4 d (full synodic period; MEASURED per #568 Sec 4, not a derived
+    halving rule) -- zero lambert_no_solution, zero integrator_failure, zero
+    drift-floor failures (cleaner on the drift axis than #312, which has its own
+    ~1.3% secondary drift-floor population; this representative has none). The
+    calendar span {2000-06-21 -> 2083-06-21} is the shared URA111-kernel-coverage-
+    bounded interior span (same bounds convention as #312's own row, whose 2084+
+    failures are kernel-edge extrapolation artifacts); it is NOT an independently
+    swept per-representative annual pass run. A low duty cycle is a launch-epoch-
+    must-be-timed-to-synodic-phase constraint (like an interplanetary launch
+    window), a legitimate validity_window characteristic, not a validation defect
+    (#568 Sec 5).
+
+    Literature clearance (mandatory per the #565 obligation): the offline
+    literature_check.py KNOWN_CORPUS adjudication returns NOT-FOUND for this
+    symmetric-closure quasi-cycler under its repeated-moon topology fingerprint.
+    At the body-set level {Titania, Oberon} it is STRUCTURALLY ADJACENT to two
+    real Uranian anchors -- Kumar 2025 (arXiv:2509.03655 Sec 6.2, a single-moon
+    Uranus-Oberon PCRTBP 3:4/4:5/5:6 mean-motion-resonance study, topology_label
+    'resonant') and Canales-Howell-Fantino 2021 (Celest.Mech.Dyn.Astron. 133:36,
+    a one-shot Titania-L2 -> Oberon-L1 halo-to-halo manifold transfer, plus the
+    Canales-Howell 2023 FTLE-map extension, topology_label 'halo') -- but BOTH are
+    a DIFFERENT topology from a repeated-encounter moon-pair symmetric-closure
+    quasi-cycler (MMR periodic orbit / halo transfer, not a returning moon-to-moon
+    cycler), so both are correctly discriminated by the topology-label filter (per
+    the #562 finding: adjacent, not a direct topology match). The literature-
+    novelty verdict is therefore unchanged -- not-found is
+    necessary-not-sufficient; this row's novelty rests on the same offline-corpus
+    clearance #312 itself carries, plus this explicit adjacency adjudication.
+
+    Discovery + adjudication chain: #558 (family census via the #312 discovery
+    genome) -> #561/#562/#563 (Fable-corrected continuous-tof commensurability
+    refinement -> direct symmetric-closure enumeration; the 30-member family) ->
+    #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
+    -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
+    #568 (writeback-readiness verdict) -> #569 (this writeback).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line57-titania-oberon-titania: V_inf at first Titania = 2.161767816675378 km/s; reported 2.1618 (4 decimals) for display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Oberon = 1.9680495724521725 km/s; reported 1.9680."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #566: V_inf at second Titania = 2.1617678166753755 km/s; reported 2.1618. Symmetric-closure residual vs first Titania = 2.66e-15 km/s."
+    "validity_window.synodic_duty_cycle_pct": "Per #568 verdict Sec 2 (data/scan_567_epoch_robustness.jsonl): feasible synodic duty cycle = n_PASS / (n_PASS + n_planet_crossing_infeasible) over daily-2000+daily-2030 (N=731) = 74.4%."
+    "validity_window.synodic_boundary_period_days": "Per #568 verdict Sec 4: MEASURED FFT dominant period of the daily planet_crossing_infeasible boundary series = 24.4 d (full synodic period)."
+    "validity_window.start": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 longest interior PASS run start 2000)."
+    "validity_window.end": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 interior PASS run end 2083; 2084+ are kernel-edge artifacts)."
+    "n_returns": "Per #566: PASS_AS_QUASI_CYCLER at n_cycles in {3,5,10}; n_returns=10 mirrors #312's own convergent-with-bounded-drift count (NOT a strict-periodic infinity)."
+
+- id: ariel-oberon-1-1-uranian-quasi-cycler-2026
+  name: "Ariel-Oberon-Ariel (1,1) Uranian symmetric-closure quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 71.0
+    synodic_boundary_period_days: 3.1
+    synodic_period_days: 3.1007
+  launch_epoch: "2000-06-21T00:00:00Z"
+  validation_level: V4   # spec §14: #312-equivalent V4 (windowed). Evidence = the #566 V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl) + the #567 epoch-robustness scan (daily-2000+2030 feasible synodic duty cycle 71.0%, data/scan_567_epoch_robustness.jsonl) + the #568 writeback-readiness verdict. Frozen-gate pytest: tests/verify/test_566_five_representatives_v4.py; registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE (spec §16.7.12). Windowed like #312: a synodic feasibility DUTY CYCLE within the calendar span, not continuous validity.
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Ariel", "Oberon"]
+  sequence_canonical: "Ariel-Oberon-Ariel"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ariel"
+    vinf_kms: 1.5209
+    note: "Per #566 gauntlet-passing IC (data/gauntlet_566_five_representatives.jsonl, candidate enum563-line18-ariel-oberon-ariel); #563 exact symmetric closure at rel_offset=0 deg."
+  - body: "Oberon"
+    vinf_kms: 1.8286
+    note: "Per #566 gauntlet-passing IC. Mid-cycle encounter of the Ariel-Oberon-Ariel symmetric closure."
+  - body: "Ariel"
+    vinf_kms: 1.5209
+    note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 2.00e-15 km/s symmetric-closure residual."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Ariel-Oberon-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    doi:
+  corroborating_sources: []
+  priority_date: "2026-07-11"
+  notes: |
+    Representative Ariel-Oberon-Ariel member of the Uranian symmetric-closure
+    quasi-cycler family. This is an INTERNALLY-ENUMERATED family within this
+    project's own search space: the #563 direct symmetric-closure enumeration
+    found 30 exact 0-deg/180-deg symmetric periodic closures spread across the
+    six non-Miranda Uranian moon-pair directions (Ariel/Umbriel/Titania/Oberon
+    pairs). Task #312's Umbriel-Oberon-Umbriel (1,1) row was the
+    FIRST-DOCUMENTED member of this family; this row is the census-minimum single
+    representative for the Ariel-Oberon pair direction (#565 Sec 2/4: one rep per pair,
+    the other same-pair-redundant closures are not separately catalogued).
+    Genericity WITHIN this project's own search density is not prior art -- the
+    family being internally enumerable does not change any literature-novelty
+    verdict.
+
+    Validation (V4, windowed -- #312-equivalent): the #566 gauntlet ran this
+    candidate through the same frozen V2->V3->V4-scipy->V4-strict chain #312
+    itself cleared (#330->#335), at the reference launch epoch 2000-06-21 and
+    n_cycles in {3, 5, 10}. Verdict PASS_AS_QUASI_CYCLER: strict V2 is
+    FAIL_QUASI_BOUNDED by design (the bounded-drift quasi_cycler signature
+    exceeds the 50,000 km strict-periodic floor -- the same admission path #312
+    used), with V3, V4-scipy and V4-strict all passing at all three n_cycles.
+
+    Windowed validity (the #567/#568 characterization, NOT continuous validity):
+    the feasible synodic DUTY CYCLE is 71.0% -- the fraction of synodic
+    phase for which the transfer is V4-strict-feasible (its osculating periapsis
+    stays outside Uranus's r_eq = 25,559 km). Measured over the combined
+    daily-2000 + daily-2030 epoch scans (#567; N=731). Every failure in the scan
+    is the genuine planet_crossing_infeasible geometry boundary recurring every
+    3.1 d (full synodic period; MEASURED per #568 Sec 4, not a derived
+    halving rule) -- zero lambert_no_solution, zero integrator_failure, zero
+    drift-floor failures (cleaner on the drift axis than #312, which has its own
+    ~1.3% secondary drift-floor population; this representative has none). The
+    calendar span {2000-06-21 -> 2083-06-21} is the shared URA111-kernel-coverage-
+    bounded interior span (same bounds convention as #312's own row, whose 2084+
+    failures are kernel-edge extrapolation artifacts); it is NOT an independently
+    swept per-representative annual pass run. A low duty cycle is a launch-epoch-
+    must-be-timed-to-synodic-phase constraint (like an interplanetary launch
+    window), a legitimate validity_window characteristic, not a validation defect
+    (#568 Sec 5).
+
+    Literature clearance: the offline literature_check.py KNOWN_CORPUS
+    adjudication returns NOT-FOUND under the repeated-moon topology fingerprint;
+    the only body-set-overlapping anchors are the Uranus mga-tour / mission-concept
+    entries (Heaton-Longuski 2003, Sims 2014, Jarmak 2020, UOP Flagship), all a
+    different topology (non-repeating flyby tours), correctly discriminated. No
+    moon-pair symmetric-closure quasi-cycler anchor exists for this pair.
+
+    Discovery + adjudication chain: #558 (family census via the #312 discovery
+    genome) -> #561/#562/#563 (Fable-corrected continuous-tof commensurability
+    refinement -> direct symmetric-closure enumeration; the 30-member family) ->
+    #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
+    -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
+    #568 (writeback-readiness verdict) -> #569 (this writeback).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line18-ariel-oberon-ariel: V_inf at first Ariel = 1.520866047614147 km/s; reported 1.5209 (4 decimals) for display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Oberon = 1.8285940380726622 km/s; reported 1.8286."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #566: V_inf at second Ariel = 1.5208660476141462 km/s; reported 1.5209. Symmetric-closure residual vs first Ariel = 2.00e-15 km/s."
+    "validity_window.synodic_duty_cycle_pct": "Per #568 verdict Sec 2 (data/scan_567_epoch_robustness.jsonl): feasible synodic duty cycle = n_PASS / (n_PASS + n_planet_crossing_infeasible) over daily-2000+daily-2030 (N=731) = 71.0%."
+    "validity_window.synodic_boundary_period_days": "Per #568 verdict Sec 4: MEASURED FFT dominant period of the daily planet_crossing_infeasible boundary series = 3.1 d (full synodic period)."
+    "validity_window.start": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 longest interior PASS run start 2000)."
+    "validity_window.end": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 interior PASS run end 2083; 2084+ are kernel-edge artifacts)."
+    "n_returns": "Per #566: PASS_AS_QUASI_CYCLER at n_cycles in {3,5,10}; n_returns=10 mirrors #312's own convergent-with-bounded-drift count (NOT a strict-periodic infinity)."
+
+- id: umbriel-titania-1-1-uranian-quasi-cycler-2026
+  name: "Umbriel-Titania-Umbriel (1,1) Uranian symmetric-closure quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 68.5
+    synodic_boundary_period_days: 7.9
+    synodic_period_days: 7.9089
+  launch_epoch: "2000-06-21T00:00:00Z"
+  validation_level: V4   # spec §14: #312-equivalent V4 (windowed). Evidence = the #566 V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl) + the #567 epoch-robustness scan (daily-2000+2030 feasible synodic duty cycle 68.5%, data/scan_567_epoch_robustness.jsonl) + the #568 writeback-readiness verdict. Frozen-gate pytest: tests/verify/test_566_five_representatives_v4.py; registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE (spec §16.7.12). Windowed like #312: a synodic feasibility DUTY CYCLE within the calendar span, not continuous validity.
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Umbriel", "Titania"]
+  sequence_canonical: "Umbriel-Titania-Umbriel"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Umbriel"
+    vinf_kms: 1.2296
+    note: "Per #566 gauntlet-passing IC (data/gauntlet_566_five_representatives.jsonl, candidate enum563-line26-umbriel-titania-umbriel); #563 exact symmetric closure at rel_offset=0 deg."
+  - body: "Titania"
+    vinf_kms: 1.0058
+    note: "Per #566 gauntlet-passing IC. Mid-cycle encounter of the Umbriel-Titania-Umbriel symmetric closure."
+  - body: "Umbriel"
+    vinf_kms: 1.2296
+    note: "Per #566 gauntlet-passing IC. Returns to the first Umbriel encounter within the 4.44e-15 km/s symmetric-closure residual."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Umbriel-Titania-Umbriel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    doi:
+  corroborating_sources: []
+  priority_date: "2026-07-11"
+  notes: |
+    Representative Umbriel-Titania-Umbriel member of the Uranian symmetric-closure
+    quasi-cycler family. This is an INTERNALLY-ENUMERATED family within this
+    project's own search space: the #563 direct symmetric-closure enumeration
+    found 30 exact 0-deg/180-deg symmetric periodic closures spread across the
+    six non-Miranda Uranian moon-pair directions (Ariel/Umbriel/Titania/Oberon
+    pairs). Task #312's Umbriel-Oberon-Umbriel (1,1) row was the
+    FIRST-DOCUMENTED member of this family; this row is the census-minimum single
+    representative for the Umbriel-Titania pair direction (#565 Sec 2/4: one rep per pair,
+    the other same-pair-redundant closures are not separately catalogued).
+    Genericity WITHIN this project's own search density is not prior art -- the
+    family being internally enumerable does not change any literature-novelty
+    verdict.
+
+    Validation (V4, windowed -- #312-equivalent): the #566 gauntlet ran this
+    candidate through the same frozen V2->V3->V4-scipy->V4-strict chain #312
+    itself cleared (#330->#335), at the reference launch epoch 2000-06-21 and
+    n_cycles in {3, 5, 10}. Verdict PASS_AS_QUASI_CYCLER: strict V2 is
+    FAIL_QUASI_BOUNDED by design (the bounded-drift quasi_cycler signature
+    exceeds the 50,000 km strict-periodic floor -- the same admission path #312
+    used), with V3, V4-scipy and V4-strict all passing at all three n_cycles.
+
+    Windowed validity (the #567/#568 characterization, NOT continuous validity):
+    the feasible synodic DUTY CYCLE is 68.5% -- the fraction of synodic
+    phase for which the transfer is V4-strict-feasible (its osculating periapsis
+    stays outside Uranus's r_eq = 25,559 km). Measured over the combined
+    daily-2000 + daily-2030 epoch scans (#567; N=731). Every failure in the scan
+    is the genuine planet_crossing_infeasible geometry boundary recurring every
+    7.9 d (full synodic period; MEASURED per #568 Sec 4, not a derived
+    halving rule) -- zero lambert_no_solution, zero integrator_failure, zero
+    drift-floor failures (cleaner on the drift axis than #312, which has its own
+    ~1.3% secondary drift-floor population; this representative has none). The
+    calendar span {2000-06-21 -> 2083-06-21} is the shared URA111-kernel-coverage-
+    bounded interior span (same bounds convention as #312's own row, whose 2084+
+    failures are kernel-edge extrapolation artifacts); it is NOT an independently
+    swept per-representative annual pass run. A low duty cycle is a launch-epoch-
+    must-be-timed-to-synodic-phase constraint (like an interplanetary launch
+    window), a legitimate validity_window characteristic, not a validation defect
+    (#568 Sec 5).
+
+    Literature clearance: the offline literature_check.py KNOWN_CORPUS
+    adjudication returns NOT-FOUND under the repeated-moon topology fingerprint;
+    the only body-set-overlapping anchors are the Uranus mga-tour / mission-concept
+    entries (Heaton-Longuski 2003, Sims 2014, Jarmak 2020, UOP Flagship), all a
+    different topology (non-repeating flyby tours), correctly discriminated. No
+    moon-pair symmetric-closure quasi-cycler anchor exists for this pair.
+
+    Discovery + adjudication chain: #558 (family census via the #312 discovery
+    genome) -> #561/#562/#563 (Fable-corrected continuous-tof commensurability
+    refinement -> direct symmetric-closure enumeration; the 30-member family) ->
+    #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
+    -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
+    #568 (writeback-readiness verdict) -> #569 (this writeback).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line26-umbriel-titania-umbriel: V_inf at first Umbriel = 1.2295656768416439 km/s; reported 1.2296 (4 decimals) for display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Titania = 1.0058255988095806 km/s; reported 1.0058."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #566: V_inf at second Umbriel = 1.229565676841644 km/s; reported 1.2296. Symmetric-closure residual vs first Umbriel = 4.44e-15 km/s."
+    "validity_window.synodic_duty_cycle_pct": "Per #568 verdict Sec 2 (data/scan_567_epoch_robustness.jsonl): feasible synodic duty cycle = n_PASS / (n_PASS + n_planet_crossing_infeasible) over daily-2000+daily-2030 (N=731) = 68.5%."
+    "validity_window.synodic_boundary_period_days": "Per #568 verdict Sec 4: MEASURED FFT dominant period of the daily planet_crossing_infeasible boundary series = 7.9 d (full synodic period)."
+    "validity_window.start": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 longest interior PASS run start 2000)."
+    "validity_window.end": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 interior PASS run end 2083; 2084+ are kernel-edge artifacts)."
+    "n_returns": "Per #566: PASS_AS_QUASI_CYCLER at n_cycles in {3,5,10}; n_returns=10 mirrors #312's own convergent-with-bounded-drift count (NOT a strict-periodic infinity)."
+
+- id: ariel-titania-1-1-uranian-quasi-cycler-2026
+  name: "Ariel-Titania-Ariel (1,1) Uranian symmetric-closure quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 66.5
+    synodic_boundary_period_days: 3.5
+    synodic_period_days: 3.5473
+  launch_epoch: "2000-06-21T00:00:00Z"
+  validation_level: V4   # spec §14: #312-equivalent V4 (windowed). Evidence = the #566 V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl) + the #567 epoch-robustness scan (daily-2000+2030 feasible synodic duty cycle 66.5%, data/scan_567_epoch_robustness.jsonl) + the #568 writeback-readiness verdict. Frozen-gate pytest: tests/verify/test_566_five_representatives_v4.py; registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE (spec §16.7.12). Windowed like #312: a synodic feasibility DUTY CYCLE within the calendar span, not continuous validity.
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Ariel", "Titania"]
+  sequence_canonical: "Ariel-Titania-Ariel"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ariel"
+    vinf_kms: 1.2306
+    note: "Per #566 gauntlet-passing IC (data/gauntlet_566_five_representatives.jsonl, candidate enum563-line12-ariel-titania-ariel); #563 exact symmetric closure at rel_offset=0 deg."
+  - body: "Titania"
+    vinf_kms: 1.7186
+    note: "Per #566 gauntlet-passing IC. Mid-cycle encounter of the Ariel-Titania-Ariel symmetric closure."
+  - body: "Ariel"
+    vinf_kms: 1.2306
+    note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 2.44e-15 km/s symmetric-closure residual."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Ariel-Titania-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    doi:
+  corroborating_sources: []
+  priority_date: "2026-07-11"
+  notes: |
+    Representative Ariel-Titania-Ariel member of the Uranian symmetric-closure
+    quasi-cycler family. This is an INTERNALLY-ENUMERATED family within this
+    project's own search space: the #563 direct symmetric-closure enumeration
+    found 30 exact 0-deg/180-deg symmetric periodic closures spread across the
+    six non-Miranda Uranian moon-pair directions (Ariel/Umbriel/Titania/Oberon
+    pairs). Task #312's Umbriel-Oberon-Umbriel (1,1) row was the
+    FIRST-DOCUMENTED member of this family; this row is the census-minimum single
+    representative for the Ariel-Titania pair direction (#565 Sec 2/4: one rep per pair,
+    the other same-pair-redundant closures are not separately catalogued).
+    Genericity WITHIN this project's own search density is not prior art -- the
+    family being internally enumerable does not change any literature-novelty
+    verdict.
+
+    Validation (V4, windowed -- #312-equivalent): the #566 gauntlet ran this
+    candidate through the same frozen V2->V3->V4-scipy->V4-strict chain #312
+    itself cleared (#330->#335), at the reference launch epoch 2000-06-21 and
+    n_cycles in {3, 5, 10}. Verdict PASS_AS_QUASI_CYCLER: strict V2 is
+    FAIL_QUASI_BOUNDED by design (the bounded-drift quasi_cycler signature
+    exceeds the 50,000 km strict-periodic floor -- the same admission path #312
+    used), with V3, V4-scipy and V4-strict all passing at all three n_cycles.
+
+    Windowed validity (the #567/#568 characterization, NOT continuous validity):
+    the feasible synodic DUTY CYCLE is 66.5% -- the fraction of synodic
+    phase for which the transfer is V4-strict-feasible (its osculating periapsis
+    stays outside Uranus's r_eq = 25,559 km). Measured over the combined
+    daily-2000 + daily-2030 epoch scans (#567; N=731). Every failure in the scan
+    is the genuine planet_crossing_infeasible geometry boundary recurring every
+    3.5 d (full synodic period; MEASURED per #568 Sec 4, not a derived
+    halving rule) -- zero lambert_no_solution, zero integrator_failure, zero
+    drift-floor failures (cleaner on the drift axis than #312, which has its own
+    ~1.3% secondary drift-floor population; this representative has none). The
+    calendar span {2000-06-21 -> 2083-06-21} is the shared URA111-kernel-coverage-
+    bounded interior span (same bounds convention as #312's own row, whose 2084+
+    failures are kernel-edge extrapolation artifacts); it is NOT an independently
+    swept per-representative annual pass run. A low duty cycle is a launch-epoch-
+    must-be-timed-to-synodic-phase constraint (like an interplanetary launch
+    window), a legitimate validity_window characteristic, not a validation defect
+    (#568 Sec 5).
+
+    Literature clearance: the offline literature_check.py KNOWN_CORPUS
+    adjudication returns NOT-FOUND under the repeated-moon topology fingerprint;
+    the only body-set-overlapping anchors are the Uranus mga-tour / mission-concept
+    entries (Heaton-Longuski 2003, Sims 2014, Jarmak 2020, UOP Flagship), all a
+    different topology (non-repeating flyby tours), correctly discriminated. No
+    moon-pair symmetric-closure quasi-cycler anchor exists for this pair.
+
+    Discovery + adjudication chain: #558 (family census via the #312 discovery
+    genome) -> #561/#562/#563 (Fable-corrected continuous-tof commensurability
+    refinement -> direct symmetric-closure enumeration; the 30-member family) ->
+    #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
+    -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
+    #568 (writeback-readiness verdict) -> #569 (this writeback).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line12-ariel-titania-ariel: V_inf at first Ariel = 1.2306411593828481 km/s; reported 1.2306 (4 decimals) for display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Titania = 1.7185773183747601 km/s; reported 1.7186."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #566: V_inf at second Ariel = 1.2306411593828457 km/s; reported 1.2306. Symmetric-closure residual vs first Ariel = 2.44e-15 km/s."
+    "validity_window.synodic_duty_cycle_pct": "Per #568 verdict Sec 2 (data/scan_567_epoch_robustness.jsonl): feasible synodic duty cycle = n_PASS / (n_PASS + n_planet_crossing_infeasible) over daily-2000+daily-2030 (N=731) = 66.5%."
+    "validity_window.synodic_boundary_period_days": "Per #568 verdict Sec 4: MEASURED FFT dominant period of the daily planet_crossing_infeasible boundary series = 3.5 d (full synodic period)."
+    "validity_window.start": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 longest interior PASS run start 2000)."
+    "validity_window.end": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 interior PASS run end 2083; 2084+ are kernel-edge artifacts)."
+    "n_returns": "Per #566: PASS_AS_QUASI_CYCLER at n_cycles in {3,5,10}; n_returns=10 mirrors #312's own convergent-with-bounded-drift count (NOT a strict-periodic infinity)."
+
+- id: ariel-umbriel-1-1-uranian-quasi-cycler-2026
+  name: "Ariel-Umbriel-Ariel (1,1) Uranian symmetric-closure quasi-cycler"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: multi-arc
+  orbit_class: quasi_cycler
+  epoch_locked: true
+  n_returns: 10
+  validity_window:
+    start: "2000-06-21T00:00:00Z"
+    end: "2083-06-21T00:00:00Z"
+    synodic_duty_cycle_pct: 61.7
+    synodic_boundary_period_days: 3.2
+    synodic_period_days: 6.4322
+  launch_epoch: "2000-06-21T00:00:00Z"
+  validation_level: V4   # spec §14: #312-equivalent V4 (windowed). Evidence = the #566 V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl) + the #567 epoch-robustness scan (daily-2000+2030 feasible synodic duty cycle 61.7%, data/scan_567_epoch_robustness.jsonl) + the #568 writeback-readiness verdict. Frozen-gate pytest: tests/verify/test_566_five_representatives_v4.py; registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE (spec §16.7.12). Windowed like #312: a synodic feasibility DUTY CYCLE within the calendar span, not continuous validity.
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel, 1900-2099 coverage)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar
+  vinf_fidelity: circular-coplanar
+  bodies: ["Uranus", "Ariel", "Umbriel"]
+  sequence_canonical: "Ariel-Umbriel-Ariel"
+  sense: "n/a"
+  vinf_kms_at_encounters:
+  - body: "Ariel"
+    vinf_kms: 0.9790
+    note: "Per #566 gauntlet-passing IC (data/gauntlet_566_five_representatives.jsonl, candidate enum563-line2-ariel-umbriel-ariel); #563 exact symmetric closure at rel_offset=0 deg."
+  - body: "Umbriel"
+    vinf_kms: 1.3004
+    note: "Per #566 gauntlet-passing IC. Mid-cycle encounter of the Ariel-Umbriel-Ariel symmetric closure."
+  - body: "Ariel"
+    vinf_kms: 0.9790
+    note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 1.13e-14 km/s symmetric-closure residual."
+  legs: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Ariel-Umbriel-Ariel (1,1) Uranian symmetric-closure quasi-cycler -- representative of the 30-member #563 symmetric-closure family (first-documented member: #312 Umbriel-Oberon-Umbriel)"
+    venue: "cyclerfinder project; task chain #558 -> #561 -> #562 -> #563 -> #564 -> #565 -> #566 -> #567 -> #568 -> #569"
+    doi:
+  corroborating_sources: []
+  priority_date: "2026-07-11"
+  notes: |
+    Representative Ariel-Umbriel-Ariel member of the Uranian symmetric-closure
+    quasi-cycler family. This is an INTERNALLY-ENUMERATED family within this
+    project's own search space: the #563 direct symmetric-closure enumeration
+    found 30 exact 0-deg/180-deg symmetric periodic closures spread across the
+    six non-Miranda Uranian moon-pair directions (Ariel/Umbriel/Titania/Oberon
+    pairs). Task #312's Umbriel-Oberon-Umbriel (1,1) row was the
+    FIRST-DOCUMENTED member of this family; this row is the census-minimum single
+    representative for the Ariel-Umbriel pair direction (#565 Sec 2/4: one rep per pair,
+    the other same-pair-redundant closures are not separately catalogued).
+    Genericity WITHIN this project's own search density is not prior art -- the
+    family being internally enumerable does not change any literature-novelty
+    verdict.
+
+    Validation (V4, windowed -- #312-equivalent): the #566 gauntlet ran this
+    candidate through the same frozen V2->V3->V4-scipy->V4-strict chain #312
+    itself cleared (#330->#335), at the reference launch epoch 2000-06-21 and
+    n_cycles in {3, 5, 10}. Verdict PASS_AS_QUASI_CYCLER: strict V2 is
+    FAIL_QUASI_BOUNDED by design (the bounded-drift quasi_cycler signature
+    exceeds the 50,000 km strict-periodic floor -- the same admission path #312
+    used), with V3, V4-scipy and V4-strict all passing at all three n_cycles.
+
+    Windowed validity (the #567/#568 characterization, NOT continuous validity):
+    the feasible synodic DUTY CYCLE is 61.7% -- the fraction of synodic
+    phase for which the transfer is V4-strict-feasible (its osculating periapsis
+    stays outside Uranus's r_eq = 25,559 km). Measured over the combined
+    daily-2000 + daily-2030 epoch scans (#567; N=731). Every failure in the scan
+    is the genuine planet_crossing_infeasible geometry boundary recurring every
+    3.2 d (synodic period / 2 (the only representative that halves); MEASURED per #568 Sec 4, not a derived
+    halving rule) -- zero lambert_no_solution, zero integrator_failure, zero
+    drift-floor failures (cleaner on the drift axis than #312, which has its own
+    ~1.3% secondary drift-floor population; this representative has none). The
+    calendar span {2000-06-21 -> 2083-06-21} is the shared URA111-kernel-coverage-
+    bounded interior span (same bounds convention as #312's own row, whose 2084+
+    failures are kernel-edge extrapolation artifacts); it is NOT an independently
+    swept per-representative annual pass run. A low duty cycle is a launch-epoch-
+    must-be-timed-to-synodic-phase constraint (like an interplanetary launch
+    window), a legitimate validity_window characteristic, not a validation defect
+    (#568 Sec 5).
+
+    Literature clearance: the offline literature_check.py KNOWN_CORPUS
+    adjudication returns NOT-FOUND under the repeated-moon topology fingerprint;
+    the only body-set-overlapping anchors are the Uranus mga-tour / mission-concept
+    entries (Heaton-Longuski 2003, Sims 2014, Jarmak 2020, UOP Flagship), all a
+    different topology (non-repeating flyby tours), correctly discriminated. No
+    moon-pair symmetric-closure quasi-cycler anchor exists for this pair.
+
+    Discovery + adjudication chain: #558 (family census via the #312 discovery
+    genome) -> #561/#562/#563 (Fable-corrected continuous-tof commensurability
+    refinement -> direct symmetric-closure enumeration; the 30-member family) ->
+    #564/#565 (Opus+Fable survivor-list adjudication, 5-representative selection)
+    -> #566 (V1-V4-strict gauntlet) -> #567 (epoch-robustness duty-cycle scan) ->
+    #568 (writeback-readiness verdict) -> #569 (this writeback).
+  source_quotes:
+    "vinf_kms_at_encounters.0.vinf_kms": "Per #566 data/gauntlet_566_five_representatives.jsonl candidate enum563-line2-ariel-umbriel-ariel: V_inf at first Ariel = 0.979040480994661 km/s; reported 0.9790 (4 decimals) for display."
+    "vinf_kms_at_encounters.1.vinf_kms": "Per #566: V_inf at Umbriel = 1.3004234339628207 km/s; reported 1.3004."
+    "vinf_kms_at_encounters.2.vinf_kms": "Per #566: V_inf at second Ariel = 0.9790404809946573 km/s; reported 0.9790. Symmetric-closure residual vs first Ariel = 1.13e-14 km/s."
+    "validity_window.synodic_duty_cycle_pct": "Per #568 verdict Sec 2 (data/scan_567_epoch_robustness.jsonl): feasible synodic duty cycle = n_PASS / (n_PASS + n_planet_crossing_infeasible) over daily-2000+daily-2030 (N=731) = 61.7%."
+    "validity_window.synodic_boundary_period_days": "Per #568 verdict Sec 4: MEASURED FFT dominant period of the daily planet_crossing_infeasible boundary series = 3.2 d (synodic period / 2 (the only representative that halves))."
+    "validity_window.start": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 longest interior PASS run start 2000)."
+    "validity_window.end": "URA111-kernel-coverage-bounded interior span; same bounds convention as #312's row (#338 interior PASS run end 2083; 2084+ are kernel-edge artifacts)."
+    "n_returns": "Per #566: PASS_AS_QUASI_CYCLER at n_cycles in {3,5,10}; n_returns=10 mirrors #312's own convergent-with-bounded-drift count (NOT a strict-periodic infinity)."
+
 
 - id: damario-1992-galileo-veega
   flyby_altitudes_km: [{node_index: 0, body: V, altitude_km: 16123}, {node_index: 1, body: E, altitude_km: 960}, {node_index: 2, body: E, altitude_km: 300}]

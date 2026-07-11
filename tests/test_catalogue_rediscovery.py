@@ -395,7 +395,12 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # lane as the other SPK-derived mga_tour rows. Closes the #345 backlog.
     # 10 -> 11 (2026-06-20, #408): +1 cassini-titan-tour
     # (Saturn-Titan 50 flybys, no period). NOT_TWO_BODY.
-    ExclusionReason.NOT_TWO_BODY: 11,
+    # 11 -> 16 (2026-07-11, #569): +5 Uranian symmetric-closure quasi-cycler
+    # representatives (titania-oberon / ariel-oberon / umbriel-titania /
+    # ariel-titania / ariel-umbriel), each bodies=[Uranus, MoonA, MoonB]
+    # (3-body Uranus+2-moon, no period.years/period.k) -> NOT_TWO_BODY, the same
+    # lane the #312 umbriel-oberon first-documented family member itself files in.
+    ExclusionReason.NOT_TWO_BODY: 16,
 }
 """Frozen census of how the 268-row catalogue distributes across
 exclusion reasons (as of 2026-06-08). This is a *ratchet*: when the

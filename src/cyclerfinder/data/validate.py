@@ -1159,6 +1159,77 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "data/silver_327_v4_strict_boundary_338.jsonl; gated by "
         "tests/verify/test_silver_327_v4_strict_passes.py."
     ),
+    # #569 (2026-07-11): the 5 sibling representatives of the 30-member #563
+    # Uranian symmetric-closure quasi-cycler family (one per non-Umbriel-Oberon
+    # non-Miranda moon-pair direction; #312 is the first-documented member).
+    # Each is registered at #312-equivalent V4 (windowed). Evidence: the #566
+    # V2->V3->V4-scipy->V4-strict gauntlet (PASS_AS_QUASI_CYCLER at the anchor
+    # epoch 2000-06-21, n_cycles 3/5/10; data/gauntlet_566_five_representatives.jsonl)
+    # + the #567 epoch-robustness scan giving each candidate's feasible synodic
+    # duty cycle (daily-2000+2030, N=731; data/scan_567_epoch_robustness.jsonl)
+    # + the #568 writeback-readiness verdict. Frozen-gate pytest wrapping the
+    # gauntlet JSONL: tests/verify/test_566_five_representatives_v4.py. Like
+    # #312, strict V2 FAILS_QUASI_BOUNDED by design (bounded-drift quasi_cycler
+    # signature) and the promotion is on the structural V3/V4/V4-strict verdicts.
+    # See docs/notes/2026-07-11-568-writeback-readiness-verdict.md.
+    ("titania-oberon-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#569 registers #566+#567+#568 evidence): the #566 "
+        "V2->V3->V4-scipy->V4-strict gauntlet on the Titania-Oberon-Titania #563 "
+        "symmetric closure — PASS_AS_QUASI_CYCLER at the 2000-06-21 anchor epoch "
+        "across n_cycles {3,5,10}; feasible synodic duty cycle 74.4% with a 24.4 d "
+        "(full synodic) planet_crossing_infeasible boundary, zero drift-floor / "
+        "lambert_no_solution / integrator failures (#567/#568). Literature-cleared "
+        "(offline KNOWN_CORPUS not-found under repeated-moon topology; structurally "
+        "adjacent to Kumar-2025 MMR + Canales-2021 halo transfer, different "
+        "topology). Frozen in data/gauntlet_566_five_representatives.jsonl "
+        "(+ data/scan_567_epoch_robustness.jsonl); gated by "
+        "tests/verify/test_566_five_representatives_v4.py."
+    ),
+    ("ariel-oberon-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#569 registers #566+#567+#568 evidence): the #566 "
+        "V2->V3->V4-scipy->V4-strict gauntlet on the Ariel-Oberon-Ariel #563 "
+        "symmetric closure — PASS_AS_QUASI_CYCLER at the 2000-06-21 anchor epoch "
+        "across n_cycles {3,5,10}; feasible synodic duty cycle 71.0% with a 3.1 d "
+        "(full synodic) planet_crossing_infeasible boundary, zero drift-floor "
+        "failures (#567/#568). Frozen in "
+        "data/gauntlet_566_five_representatives.jsonl "
+        "(+ data/scan_567_epoch_robustness.jsonl); gated by "
+        "tests/verify/test_566_five_representatives_v4.py."
+    ),
+    ("umbriel-titania-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#569 registers #566+#567+#568 evidence): the #566 "
+        "V2->V3->V4-scipy->V4-strict gauntlet on the Umbriel-Titania-Umbriel #563 "
+        "symmetric closure — PASS_AS_QUASI_CYCLER at the 2000-06-21 anchor epoch "
+        "across n_cycles {3,5,10}; feasible synodic duty cycle 68.5% with a 7.9 d "
+        "(full synodic) planet_crossing_infeasible boundary, zero drift-floor "
+        "failures (#567/#568). Frozen in "
+        "data/gauntlet_566_five_representatives.jsonl "
+        "(+ data/scan_567_epoch_robustness.jsonl); gated by "
+        "tests/verify/test_566_five_representatives_v4.py."
+    ),
+    ("ariel-titania-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#569 registers #566+#567+#568 evidence): the #566 "
+        "V2->V3->V4-scipy->V4-strict gauntlet on the Ariel-Titania-Ariel #563 "
+        "symmetric closure — PASS_AS_QUASI_CYCLER at the 2000-06-21 anchor epoch "
+        "across n_cycles {3,5,10}; feasible synodic duty cycle 66.5% with a 3.5 d "
+        "(full synodic) planet_crossing_infeasible boundary, zero drift-floor "
+        "failures (#567/#568). Frozen in "
+        "data/gauntlet_566_five_representatives.jsonl "
+        "(+ data/scan_567_epoch_robustness.jsonl); gated by "
+        "tests/verify/test_566_five_representatives_v4.py."
+    ),
+    ("ariel-umbriel-1-1-uranian-quasi-cycler-2026", "V4"): (
+        "spec §14 V4 (#569 registers #566+#567+#568 evidence): the #566 "
+        "V2->V3->V4-scipy->V4-strict gauntlet on the Ariel-Umbriel-Ariel #563 "
+        "symmetric closure — PASS_AS_QUASI_CYCLER at the 2000-06-21 anchor epoch "
+        "across n_cycles {3,5,10}; feasible synodic duty cycle 61.7% (lowest of "
+        "the six, still majority-feasible on a smooth boundary) with a 3.2 d "
+        "(synodic/2 — the only representative that halves) "
+        "planet_crossing_infeasible boundary, zero drift-floor failures "
+        "(#567/#568). Frozen in data/gauntlet_566_five_representatives.jsonl "
+        "(+ data/scan_567_epoch_robustness.jsonl); gated by "
+        "tests/verify/test_566_five_representatives_v4.py."
+    ),
 }
 
 

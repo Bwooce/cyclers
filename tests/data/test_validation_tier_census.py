@@ -179,7 +179,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # all non-keplerian CR3BP (no orbit_source/vinf_source tags) -> 'unvalidated'
     # on the source-pair tier axis. Their V1 evidence lives on the orthogonal
     # validation_level axis (tests/search/test_ross_rt_2026_mu_family.py).
-    "unvalidated": 77,
+    # 77 -> 82 (2026-07-11, #569): +5 Uranian symmetric-closure quasi-cycler
+    # representatives (Titania-Oberon / Ariel-Oberon / Umbriel-Titania /
+    # Ariel-Titania / Ariel-Umbriel), each orbit_source=derived /
+    # vinf_source=derived (same as the #312 first-documented family member) ->
+    # 'unvalidated' on the source-pair tier axis. Their V4 (windowed) evidence
+    # lives on the orthogonal validation_level axis
+    # (tests/verify/test_566_five_representatives_v4.py).
+    "unvalidated": 82,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

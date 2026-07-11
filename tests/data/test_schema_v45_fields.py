@@ -159,7 +159,11 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     (#494 2026-06-30): Five Ross & Roberts-Tsoukkas 2026 mu-family Table-I
     representatives (4 abstract-mu rows + 1 Pluto-Charon instantiation) clear §14
     V1 like-for-like in the planar CR3BP. (#505 2026-07-01): ross-rt-pc-cycler-32-2026
-    promoted V1 -> V2-ballistic (100-period IAS15 bounded-band run). (V1=26, V2=8, V3=2, V4=1.)"""
+    promoted V1 -> V2-ballistic (100-period IAS15 bounded-band run).
+    (#569 2026-07-11): the 5 Uranian symmetric-closure quasi-cycler representatives
+    (Titania-Oberon / Ariel-Oberon / Umbriel-Titania / Ariel-Titania / Ariel-Umbriel)
+    each land at #312-equivalent V4 (windowed) via the #566 gauntlet + #567 duty-cycle
+    scan + #568 verdict. (V1=26, V2=8, V3=2, V4=6.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -280,6 +284,19 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # catalogue row claims. V5 is the GMAT independent-toolchain lane,
         # separately-tracked. docs/notes/2026-06-17-340-silver-v0-to-v4-promotion.md.
         "umbriel-oberon-1-1-uranian-quasi-cycler-2026": "V4",
+        # #569 (2026-07-11): the 5 sibling representatives of the 30-member #563
+        # Uranian symmetric-closure quasi-cycler family, each at #312-equivalent
+        # V4 (windowed). Evidence: the #566 V2->V3->V4-scipy->V4-strict gauntlet
+        # (PASS_AS_QUASI_CYCLER at anchor epoch 2000-06-21) + the #567
+        # epoch-robustness duty-cycle scan + the #568 writeback-readiness verdict;
+        # frozen-gate pytest tests/verify/test_566_five_representatives_v4.py,
+        # registered V4 in validate.py::_LEVEL_EVIDENCE.
+        # docs/notes/2026-07-11-568-writeback-readiness-verdict.md.
+        "titania-oberon-1-1-uranian-quasi-cycler-2026": "V4",
+        "ariel-oberon-1-1-uranian-quasi-cycler-2026": "V4",
+        "umbriel-titania-1-1-uranian-quasi-cycler-2026": "V4",
+        "ariel-titania-1-1-uranian-quasi-cycler-2026": "V4",
+        "ariel-umbriel-1-1-uranian-quasi-cycler-2026": "V4",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
@@ -291,9 +308,12 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     # 7 -> 8 (#505, 2026-07-01): + ross-rt-pc-cycler-32-2026 (Pluto-Charon (3,2)
     # stable CR3BP cycler, V2-ballistic; 100-period IAS15 bounded-band, 8.9 orders
     # margin, half-ratio 1.90, nu~0; docs/notes/2026-07-01-505-pluto-charon-v2-longspan.md).
+    # 1 -> 6 (#569, 2026-07-11): + the 5 Uranian symmetric-closure quasi-cycler
+    # representatives, each #312-equivalent V4 (windowed); #566 gauntlet + #567
+    # duty-cycle scan + #568 verdict; tests/verify/test_566_five_representatives_v4.py.
     assert sum(1 for lvl in byid.values() if lvl == "V2") == 8
     assert sum(1 for lvl in byid.values() if lvl == "V3") == 2
-    assert sum(1 for lvl in byid.values() if lvl == "V4") == 1
+    assert sum(1 for lvl in byid.values() if lvl == "V4") == 6
     assert not any(lvl == "V5" for lvl in byid.values())
 
 

@@ -2,8 +2,8 @@
 
 Verifies:
 1. Every row has a ``cycler_class`` key (no missing tags).
-2. The class distribution is exactly {single-ellipse: 46, multi-arc: 292, non-keplerian: 13}.
-3. The set of ids tagged multi-arc exactly equals the 292-id MULTI_ARC_ALLOWLIST from
+2. The class distribution is exactly {single-ellipse: 46, multi-arc: 297, non-keplerian: 13}.
+3. The set of ids tagged multi-arc exactly equals the 297-id MULTI_ARC_ALLOWLIST from
    docs/notes/multi-arc-classification.md §9 (frozen ratchet).
 4. The 9 non-keplerian ids match the §3 list.
 
@@ -439,11 +439,23 @@ MULTI_ARC_ALLOWLIST: frozenset[str] = frozenset(
         "russell-strange-2009-titenc-631",
         "lynam-longuski-2011-ieg-single-period",
         "lynam-longuski-2011-gipeipe",
+        # #569 (2026-07-11): the 5 sibling representatives of the 30-member #563
+        # Uranian symmetric-closure quasi-cycler family (one per non-Umbriel-Oberon
+        # non-Miranda moon-pair direction; #312 is the first-documented member).
+        # cycler_class=multi-arc is structural (3 distinct Lambert legs A->B->A),
+        # matching the #312 umbriel-oberon row's own precedent above; same
+        # invariants{}/transit_times_days exemption as #312 (quasi_cycler class).
+        # multi-arc 292 -> 297.
+        "titania-oberon-1-1-uranian-quasi-cycler-2026",
+        "ariel-oberon-1-1-uranian-quasi-cycler-2026",
+        "umbriel-titania-1-1-uranian-quasi-cycler-2026",
+        "ariel-titania-1-1-uranian-quasi-cycler-2026",
+        "ariel-umbriel-1-1-uranian-quasi-cycler-2026",
     ]
 )
 
-assert len(MULTI_ARC_ALLOWLIST) == 292, (
-    f"Allowlist must have 292 entries, got {len(MULTI_ARC_ALLOWLIST)}"
+assert len(MULTI_ARC_ALLOWLIST) == 297, (
+    f"Allowlist must have 297 entries, got {len(MULTI_ARC_ALLOWLIST)}"
 )
 
 # ---------------------------------------------------------------------------
@@ -562,7 +574,7 @@ def test_census_distribution() -> None:
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 292, "non-keplerian": 18}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 18}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
