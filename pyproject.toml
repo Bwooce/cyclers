@@ -147,6 +147,15 @@ ignore_missing_imports = true
 module = ["numba.*"]
 ignore_missing_imports = true
 
+# jsonschema ships no bundled type stubs (types-jsonschema is a separate,
+# unpinned package). Task #570's in-Python cycler-network schema validator
+# is the first module to import it directly (data/catalogue.yaml is instead
+# checked out-of-process by the check-jsonschema pre-commit hook); treat as
+# Any — same pragmatic choice as the other untyped third-party surfaces above.
+[[tool.mypy.overrides]]
+module = ["jsonschema.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Skip @pytest.mark.slow tests by default. M5's full optimiser tests

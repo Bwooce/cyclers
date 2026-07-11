@@ -3464,6 +3464,37 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   `catalogue.yaml` itself or its own schema; website/cyclers.space changes.
   **Recommended model:** Sonnet (spec-complete schema + validator + test infrastructure, design
   already settled by this scoping pass — no open judgment calls left for the implementer).
+  **✓ RESULT (2026-07-11):** Built exactly as scoped, infrastructure only. `data/cycler_network.schema.json`
+  (v1.0, JSON Schema mirroring `catalogue.schema.json`'s conventions) + `data/cycler_networks.yaml`
+  (ships genuinely EMPTY `[]` — the self-test network lives entirely in the test file's own
+  fixtures, not the committed registry, per the task's "your choice" guidance, to remove any risk
+  of it being mistaken for a real finding later). Validator
+  `src/cyclerfinder/data/validate_networks.py` runs four never-raising layers (mirroring
+  `validate.py`'s pattern): JSON-Schema structural (via the `jsonschema` package directly, not
+  just the out-of-process `check-jsonschema` hook), semantic (id uniqueness,
+  `source=literature`⇒`first_published` honesty gate), referential (every `member_cycler_ids` /
+  schedule / cost `cycler_id` must resolve to a real `catalogue.yaml` row — never silently
+  skipped), and a taxi-cost cross-check that reconstructs a MINIMAL `Cycler` from the referenced
+  row's published V∞ magnitudes (`_catalogue_entry_to_taxi_cycler` — no richer catalogue-row-to-
+  `Cycler` adapter exists anywhere in the codebase; documented as narrowly scoped to the one
+  function it needs, `taxi_cost_kms`, which only reads `.body` + `||vinf_in||`) and asserts the
+  stored `cost_kms` matches a fresh `taxi_cost_kms` call within 1e-9 tol. Self-test network
+  (`tests/data/test_cycler_networks.py`, 18 tests) references three REAL catalogue rows —
+  `aldrin-classic-em-k1-outbound` (V2, E=6.5 km/s), `aldrin-classic-em-k1-inbound` (V1, E=6.5
+  km/s), `russell-ocampo-2.5.1+0` (V1, E=7.8 km/s) — with every `cost_kms` computed by calling
+  `taxi_cost_kms` in the fixture itself (never hand-typed); `source: derived`, `notes` states
+  "SCHEMA SELF-TEST / INFRASTRUCTURE PROOF ONLY... NOT a real discovered or sourced cycler
+  network." Positive control (full gate passes clean) + 9 negative controls (unresolvable member,
+  taxi-cost drift ×2, literature-without-citation, duplicate id, non-member cost/schedule
+  references, 3 schema-shape rejections) all pass. Added a `check-jsonschema` pre-commit hook +
+  a `cycler-network-ratchets` local hook for the new files (mirrors the catalogue hooks).
+  Side-effect: added a `jsonschema.*` mypy override (first direct Python import of `jsonschema`
+  in this codebase) and removed 9 now-unused `# type: ignore[import-untyped]` comments on
+  pre-existing `import jsonschema` lines that the override made redundant
+  (`warn_unused_ignores = true` would otherwise fail CI). Full `tests/data tests/search -q`
+  ratchet suite: clean (exit 0, no FAILED/ERROR, only pre-existing documented XFAIL/XPASS/SKIPPED
+  entries). No real network populated — #543's external data gap (Sanchez Net's example cyclers
+  have no recoverable orbital elements) remains open and unaddressed by design.
 
 **Recommendation:** #538 first (unblocks all of the above — #539/#540 both reuse its
 corrector). #539 next (cheapest genuine new-territory attempt, directly closes the

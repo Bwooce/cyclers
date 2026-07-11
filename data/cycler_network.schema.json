@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyclers.space/schemas/cycler_network.schema.json",
+  "version": "1.0",
+  "title": "Cycler Finder Cycler-Network Registry",
+  "description": "Schema v1.0 (task #570, #543-scoped first slice). Registers a NEW top-level relation, separate from data/catalogue.yaml (matching the data/empty_regions.jsonl precedent of a dedicated registry rather than overloading the per-orbit-row schema): a SET of already-catalogued cyclers sharing phasing/downlink cadence, inspired by the Sanchez Net et al. 2022 Earth-Mars Cycler Orbit (EMCO) fleet concept (docs/notes/s1l1-target-topology-mining.md:156-263). Infrastructure only: data/cycler_networks.yaml ships genuinely empty ([]) in this pass -- no real, sourced network (Sanchez Net's or otherwise) is populated, because their named example-network cyclers have no recoverable orbital elements (only downlink date + cycler index + M-E transit duration are published) -- that is a genuine external data gap, not a schema limitation. DESIGN CORRECTION (found while scoping #543, verified against the implementation): cyclerfinder.model.score.taxi_cost_kms computes a per-cycler INSERTION-cost surrogate (Earth -> that single cycler's own Earth encounter, max(||enc.vinf_in||) over the cycler's Earth encounters) -- it is NOT a cost between two different cyclers. This schema therefore carries per_member_taxi_insertion_cost_kms (one INSERTION cost per member, keyed to that member's own row) and deliberately carries NO inter-cycler transfer-cost field -- a genuine transfer-cost computation would be new M5/M6-tier search work, a separate task.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["id", "name", "source", "member_cycler_ids"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable human-readable slug for this network entry, unique across the registry (referential-integrity / uniqueness enforced by the Python semantic gate, mirroring data/catalogue.yaml's id convention -- JSON Schema alone cannot express cross-item uniqueness on a non-key field)."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Human-readable display name for the network (e.g. a fleet or constellation name from the source literature, or a descriptive label for a derived/self-test network)."
+      },
+      "source": {
+        "type": "string",
+        "enum": ["literature", "derived"],
+        "description": "Provenance discriminator. 'literature' = a network described/tabulated in a published source (REQUIRES first_published). 'derived' = constructed in-house from already-catalogued rows (e.g. a schema self-test/infrastructure-proof network, or a future emergent-network discovery over our own catalogue) -- NEVER used for a network whose membership/cadence is itself a literature claim."
+      },
+      "member_cycler_ids": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": "Ids of the data/catalogue.yaml rows that are members of this network. Every entry MUST resolve to an existing catalogue row id -- enforced by the Python semantic gate (src/cyclerfinder/data/validate_networks.py), never silently skipped, since JSON Schema alone cannot express this cross-file referential-integrity check."
+      },
+      "downlink_cadence": {
+        "type": ["object", "null"],
+        "additionalProperties": true,
+        "description": "Sanchez Net et al. 2022 EMCO-fleet-inspired phasing/downlink characterization of the network. A null/absent structured schedule is an honest data_gap-style representation for an entry with only qualitative cadence information (e.g. a source stating 'roughly annual Earth downlink opportunities' without a tabulated per-date schedule) -- matching this project's data_gap convention (data/catalogue.schema.json's data_gaps field): absence records a genuine known-unknown, not a schema defect.",
+        "properties": {
+          "description": {
+            "type": ["string", "null"],
+            "description": "Free-text description of the network's shared phasing/downlink cadence (e.g. cadence period, qualitative regularity, or a citation-level summary when no structured schedule is available)."
+          },
+          "schedule": {
+            "type": ["array", "null"],
+            "description": "OPTIONAL structured per-encounter downlink schedule, populated only when real sourced schedule data exists (e.g. digitized from a published table). Null/absent is the honest default -- it is NOT an error for a network entry to carry only the qualitative 'description' field above.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["date", "cycler_id", "me_transit_days"],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "ISO-8601 timestamp (UTC) of the downlink/encounter opportunity."
+                },
+                "cycler_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Which network member (a data/catalogue.yaml row id, must also appear in member_cycler_ids) this schedule entry belongs to."
+                },
+                "me_transit_days": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Earth-Mars (or the network's relevant body-pair) transit duration, days, associated with this schedule entry -- per Sanchez Net et al. 2022's published per-cycler downlink-date + cycler-index + M-E transit-duration tuple convention."
+                }
+              }
+            }
+          }
+        }
+      },
+      "per_member_taxi_insertion_cost_kms": {
+        "type": ["array", "null"],
+        "description": "Per-member Earth-taxi INSERTION cost (NOT an inter-cycler transfer cost -- see the schema-level description). Each item's cost_kms MUST be computed by calling cyclerfinder.model.score.taxi_cost_kms(cycler, taxi_body) on the referenced member's OWN catalogue row, never hand-typed -- the Python semantic gate (src/cyclerfinder/data/validate_networks.py) re-derives every value fresh from the live catalogue and rejects any stored value that has drifted from a fresh recomputation.",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["cycler_id", "cost_kms", "taxi_body"],
+          "properties": {
+            "cycler_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The network member (a data/catalogue.yaml row id, must also appear in member_cycler_ids) this insertion cost is for."
+            },
+            "cost_kms": {
+              "type": "number",
+              "minimum": 0,
+              "description": "taxi_cost_kms(cycler, taxi_body) evaluated on cycler_id's own catalogue row: max(||enc.vinf_in||) km/s over that row's encounters at taxi_body (0.0 if the row has no encounter at taxi_body). Cross-checked against a fresh recomputation by the Python semantic gate -- a mismatch is a real validation failure (drift), not something to silently tolerate."
+            },
+            "taxi_body": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One-letter body code (matching the PLANETS registry) the taxi launches from -- 'E' (Earth) for every network in this pass, but not hard-coded to allow a future non-Earth-anchored network."
+            }
+          }
+        }
+      },
+      "data_gaps": {
+        "type": ["array", "null"],
+        "description": "Same convention as data/catalogue.schema.json's own data_gaps field: the machine-readable known-unknown register for this network entry (e.g. 'membership list is incomplete', 'cadence is qualitative only'). Permissive (additionalProperties: true) on all fields except kind.",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "kind": {
+              "type": ["string", "null"],
+              "enum": [
+                "unknown",
+                "derive",
+                "uncertain",
+                "not-applicable",
+                "unverified-provenance",
+                "resolved",
+                "conflict",
+                "anomaly",
+                null
+              ],
+              "description": "Controlled-vocabulary gap discriminator, identical enum to data/catalogue.schema.json's data_gaps[].kind (task #194 convention) -- reused rather than re-invented so the two registries' known-unknown queues are queryable the same way."
+            }
+          }
+        }
+      },
+      "first_published": {
+        "type": ["object", "null"],
+        "additionalProperties": true,
+        "description": "Same shape as the informal convention already used by data/catalogue.yaml rows' first_published field (data/catalogue.schema.json leaves it under additionalProperties: true rather than formalizing it; this schema documents the shape explicitly for the network registry). REQUIRED (non-null) when source == 'literature' -- enforced by the Python semantic gate, since JSON Schema's conditional (if/then) cannot cheaply express 'required unless a sibling enum equals a specific value' alongside the nullable-object typing used throughout this schema. Null/absent when source == 'derived'.",
+        "properties": {
+          "authors": {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+            "description": "Author name list, e.g. ['Sanchez Net, M.', ...]."
+          },
+          "year": {
+            "type": ["integer", "null"],
+            "description": "Publication year."
+          },
+          "title": {
+            "type": ["string", "null"],
+            "description": "Paper/report title."
+          },
+          "venue": {
+            "type": ["string", "null"],
+            "description": "Venue (conference, journal, or institution)."
+          },
+          "date": {
+            "type": ["string", "null"],
+            "description": "ISO-8601 publication date, when known more precisely than year."
+          },
+          "doi": {
+            "type": ["string", "null"],
+            "description": "DOI, when one exists."
+          },
+          "url": {
+            "type": ["string", "null"],
+            "description": "URL, when one exists (never a link into the private cyclers_pdf corpus repo)."
+          },
+          "note": {
+            "type": ["string", "null"],
+            "description": "Free-text citation note (e.g. what the source does/doesn't publish, digest pointer)."
+          }
+        }
+      },
+      "notes": {
+        "type": ["string", "null"],
+        "description": "Free-text notes. For a 'derived' schema self-test/infrastructure-proof entry, this field MUST explicitly state that the entry is a schema self-test, not a real discovered/sourced network -- so it can never be mistaken for a Sanchez-Net-style finding later."
+      }
+    }
+  }
+}

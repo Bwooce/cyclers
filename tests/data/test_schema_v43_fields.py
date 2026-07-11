@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-import jsonschema  # type: ignore[import-untyped]
+import jsonschema
 import pytest
 
 from cyclerfinder.data.validate import validate_schema_invariants

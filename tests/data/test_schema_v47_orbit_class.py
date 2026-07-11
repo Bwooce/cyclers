@@ -30,7 +30,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-import jsonschema  # type: ignore[import-untyped]
+import jsonschema
 import pytest
 import yaml  # type: ignore[import-untyped]
 

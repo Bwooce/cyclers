@@ -1,0 +1,20 @@
+# Cycler-network registry (task #570, #543-scoped first slice).
+#
+# Schema: data/cycler_network.schema.json. Validator:
+# src/cyclerfinder/data/validate_networks.py.
+#
+# A network entry represents a SET of already-catalogued data/catalogue.yaml
+# rows sharing phasing/downlink cadence (Sanchez Net et al. 2022 EMCO fleet
+# concept; docs/notes/s1l1-target-topology-mining.md:156-263).
+#
+# This registry ships GENUINELY EMPTY in this pass. No real, sourced network
+# is populated -- reproducing Sanchez Net's own example network is blocked by
+# a genuine external data gap (their named network cyclers have no
+# recoverable orbital elements; only downlink date + cycler index + M-E
+# transit duration are published), not a schema limitation. The schema +
+# validator + taxi-cost cross-check are proven end-to-end by a SYNTHETIC
+# self-test network built entirely in tests/data/test_cycler_networks.py's
+# own fixtures (source: derived, explicitly labelled as infrastructure proof)
+# -- deliberately NOT committed here, so this on-disk registry can never be
+# mistaken for containing a real finding.
+[]
