@@ -2952,11 +2952,26 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   no-continuity `min()` tie-break that flips 23,448→1,340 km between adjacent hours) + a
   perijove/collision guard in `_v4_strict_propagate_leg` (~lines 360-372) that distinguishes a
   genuine dynamical FAIL from a DOP853 stiff-death on a non-physical near-parabolic planet-crossing
-  arc (perijove inside Uranus's R_eq 25,559 km); (2) **fix the hardcoded Umbriel/Oberon audit-field
+  arc (perijove inside Uranus's R_eq 25,559 km). **PIN (Fable check on the #566 adjudication,
+  2026-07-11): the guard must NOT neutrally skip/exclude perijove-inside-Uranus epochs.** #559's
+  own entry documents the trigger as REAL geometry (synodic phase sweeps ~60°/day; transfer angle
+  collapses to 3-12°; the fixed-TOF rev-1 arc then genuinely planet-crosses) — only the *silent
+  stiff-death misclassification* is the artifact, not the underlying infeasibility. These epochs
+  are genuine dynamical infeasibility and MUST count as FAIL against each candidate's PASS-band
+  width (they define the real `validity_window` boundary per the quasi_cycler schema), not be
+  excluded as noise — a guard that neutrally skips them would inflate every candidate's apparent
+  band width and cause the writeback validation level in step (4) below to over-claim. Expect the
+  honest post-fix band to come out NARROWER than the raw #559 86-90% pass-rate, not wider; that
+  narrowing is a feature (real boundary), not a regression. (2) **fix the hardcoded Umbriel/Oberon
+  audit-field
   sampling** (`v4_uranus_strict.py` lines 575-578) so recorded `eccentricity_used_* /
   inclination_used_*` track the candidate's ACTUAL sequence — cheap, and prevents freezing a wrong
   e/i into 4 of 5 catalogue rows at writeback ([[feedback_digest_not_adoption]]; the #566 jsonl
-  shows all 5 recording identical e_u=0.0041/e_o=0.0016, wrong for the 4 non-U-O candidates); (3)
+  shows all 5 recording identical e_u=0.0041/e_o=0.0016, wrong for the 4 non-U-O candidates).
+  **PIN (Fable check): `tests/data/test_v4_uranus_strict.py:290-291`'s existing range-check
+  (`0 < e < 0.02`) passes even with wrong-moon values and would NOT catch a regression of this
+  fix — add a sequence-consistency assertion (recorded body matches the candidate's actual
+  sequence) alongside the fix, not a bare range check.** (3)
   under the fixed code, run the #338-style annual (100-epoch, ~42s) + #559-style daily
   epoch-sensitivity scan on all 5 representatives AND re-confirm #312, reporting each candidate's
   true PASS-band WIDTH (wide-tolerant vs narrow-knife-edge) rather than a single point — and, since
@@ -2976,6 +2991,19 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   the epoch-band-width interpretation + per-candidate writeback-readiness verdict is trust-bearing
   (Opus or self, once the scan data lands) — do not let a raw post-fix pass-rate table stand as the
   writeback green-light without a judgment pass, matching this thread's #561–#566 discipline.
+  **FABLE CHECK on the #566 adjudication (2026-07-11): CONFIRMED WITH CORRECTIONS — HOLD +
+  #567 gating is sound.** Independently spot-checked #566's numeric claims against the raw jsonl
+  (all matched), confirmed the audit-field hardcoding claim against `v4_uranus_strict.py` source
+  directly, and confirmed the #535/#559 negative-baseline characterizations against their own
+  OUTSTANDING.md entries. On the crux question — does "weak-to-zero per-candidate rejection
+  power" mean NO evidence from this chain could ever validate anything in this class — verdict is
+  NO: the chain's rejection power is real (demonstrated independently by #535's corridor
+  collapse), just saturated within this benign short-arc population; #567's epoch-band-width axis
+  is a genuinely different, discriminating test (not "more of the same"), so HOLD-pending-#567 is
+  coherent, not circular. The two corrections above (perijove-guard pin, audit-field test-guard
+  pin) are now folded into #567's scope directly; a third, cosmetic-only nit (#566's note said
+  "63 records", jsonl actually has 62 lines) does not affect any conclusion and is not corrected
+  here (informational only, no OUTSTANDING.md claim depends on the exact line count).
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
