@@ -2780,6 +2780,32 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   **Explicitly out of scope:** running the V1-V4-strict gauntlet, editing `data/catalogue.yaml`.
   **Recommended model:** Opus (same trust-bearing territory as #564; this is correcting its own
   prior output against Fable's findings, not a mechanical fix).
+  **RESULT (2026-07-11, Opus corrected re-adjudication) — full corrected verdict in
+  `docs/notes/2026-07-11-565-fable-corrected-adjudication.md`; supersedes #564 §2/§3's bend-axis
+  ranking and picks, leaves #564 §1/§5/§6 + the 5-not-30 cutoff standing.** Confirmed the semantic
+  inversion directly against `src/cyclerfinder/search/physical_sanity.py:80,100-103`
+  (`flyby_is_useful()` passes iff `max_bend_deg >= 5.0°`; higher = more margin) and recomputed the
+  correct **min-per-encounter achievable bend** for all 30 deduped loops from the raw jsonl.
+  **(1) Bend axis re-derived (corrects §2).** Marginal members (near the 5° floor) are rows 16/9/12/13
+  (min ~5.1–5.5°); robust members are rows 30/27/29/15/19/22 (~15–45°). Decisively, **#312 itself
+  (row 19, min 15.55°) sits at the ROBUST end**, and the two rows #564 excluded as "most
+  fragile/impossible" (29 at 17.77°, 30 at 45.29°) have LARGER margins than #312 — the inverted axis
+  had reversed the whole robustness ordering.
+  **(2) Gauntlet set — count/logic unchanged (5, not 30), one pick corrected.** New set: **rows 23, 1,
+  5, 7, 10** (was 24/1/5/7/10). **Titania-Oberon: row 24 → row 23** — row 24 was actually the
+  2nd-WORST T-O margin (min 6.27°), whereas row 23 has the best margin of the three shortest-tof T-O
+  rows (min 8.85°, moderate V∞ 1.61/1.80, NEW), keeping the tof/V4 advantage. **Row 27** (min 24.94°,
+  V∞ 0.827/0.959 ≈ #312's own profile transplanted to T-O) named as the high-margin alternative at 2×
+  tof. Rows 1/5/7/10 picks STAND (tof/order-dominated), but rows 5 and 7 had inverted bend sub-claims
+  in their stated reasoning, now restated on tof/order grounds.
+  **(3) Row 12 "best-geometry showcase" WITHDRAWN** — it is the 3rd-most-MARGINAL member (min 5.39°),
+  not the cleanest. **Rows 29/30 exclusion RESTATED** as same-pair redundancy with the T-O
+  representative (row 23), NOT "impossible periapsis" (no required turn angle is computed anywhere).
+  **(4) Kumar citation fixed** to **arXiv:2509.03655 §6.2** (was the wrong 2509.12675, an unrelated
+  Earth-Moon paper); substantive adjacency verdict unchanged. **(5) Row-22 contradiction RESOLVED** —
+  excluded from the primary-5 on same-pair redundancy (U-O carried by #312), robust not fragile (min
+  15.43°); the nonexistent "row 47 / bend 42°" near-surface language dropped. Everything Fable
+  confirmed in #564 (§1 data, 5-not-30 cutoff, §5 reframing, §6 asymmetric deferral) left standing.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
