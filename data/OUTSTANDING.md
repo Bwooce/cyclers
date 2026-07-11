@@ -3004,6 +3004,35 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   pin) are now folded into #567's scope directly; a third, cosmetic-only nit (#566's note said
   "63 records", jsonl actually has 62 lines) does not affect any conclusion and is not corrected
   here (informational only, no OUTSTANDING.md claim depends on the exact line count).
+  **RESULT — steps (1)+(2) DONE (commit `6c54bba`, 2026-07-11).** All three bugs in
+  `src/cyclerfinder/data/validation/v4_uranus_strict.py` fixed with TDD regression pins against
+  directly-instrumented real failure instances (not synthetic): (1) Lambert branch selection now
+  picks by actual propagated terminal offset — a continuous quantity — instead of a
+  departure-velocity-match proxy, eliminating the discontinuous branch-flip (pinned: a located
+  2000-09-06 T03→T04 hour pair that jumped ~25,000 km→~3,500 km pre-fix now varies smoothly,
+  <5,000 km hour-to-hour); (2) planet-crossing legs are now pre-screened and tagged
+  `FAILURE_MODE_PLANET_CROSSING` with periapsis recorded, per the Fable pin — still counted as a
+  real FAIL, never excluded (pinned: a located 2000-07-24T02:00 epoch where both Oberon→Umbriel
+  Lambert branches cross Uranus at 97/852 km periapsis, confirmed via direct probe); (3) the 4
+  audit-only e/i fields now track the candidate's own first two distinct `sequence` bodies
+  instead of hardcoded Umbriel/Oberon, with a sequence-consistency regression test (a bare range
+  check would not have caught this) pinned against the #566 Ariel-Titania-Ariel representative.
+  Downstream scripts `run_335`/`run_338`(×2)/`run_559` updated for the renamed
+  `V4UranusStrictVerdict` fields (JSONL output keys unchanged — all three are Umbriel-Oberon-only
+  scripts). Full `tests/data tests/search` ratchet suite passes clean (0 FAILED, 0 tracebacks).
+  **Note on how this stage itself ran**: the dispatched subagent implemented and tested
+  everything correctly, but then launched the full ratchet suite via backgrounding and ended its
+  turn "waiting" — the exact fatal pattern [[feedback_subagent_background_is_fatal]] warns
+  against, hit despite an explicit "don't background" instruction in the dispatch prompt (the
+  instruction itself was flawed: it hedged "blocking unless it looks like >8 min," but this
+  suite's runtime isn't reliably under the 10-minute hard cap, so there was no legal foreground
+  path once it ran long). The actual OS-level pytest process kept running independently of the
+  dead subagent turn; the top-level session (me) monitored it directly to completion and did the
+  code review + commit myself. Memory sharpened accordingly: the full ratchet suite (and any
+  other variable-duration command) must never be handed to a subagent, even conditionally — see
+  the memory file for the updated rule. **Steps (3)+(4) (the actual multi-candidate
+  epoch-robustness scan + writeback-readiness verdict) remain open**, to be executed with the
+  build+validate(subagent)/launch+own(me)/analyze(fresh agent) split from the start this time.
 
 - **#559** (P1, cheap — under a minute of compute per the #338 entry's own timing, fold into
   #558 or run standalone) — the never-dispatched #338 Phase 2 DOY-sensitivity scan. #338
