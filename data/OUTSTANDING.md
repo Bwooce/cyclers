@@ -2357,6 +2357,50 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   and for Stage B implementation behind the V-gauntlet; Opus + Fable for the pre-writeback
   adjudication. Full reasoning + staging rationale in
   `docs/notes/2026-07-12-573-corrector-gono-go.md`.
+  **STAGE A RESULT (2026-07-12, Sonnet) — VERDICT: PASS.** Ran
+  `scripts/run_574_titan_iapetus_eccentric_kill_gate.py` (continuation-in-eccentricity per the
+  spec's recommended methodology, NOT a fresh grid — all 22 #573 circular branches stepped e
+  0->real over 6 stages, refining the C1-mandated 4D free-parameter space (Omega, tof_scale,
+  M0_Titan, M0_Iapetus) at each stage; both moons' every later state Kepler-propagated by mean
+  motion from these epoch M0 values, never a free per-encounter phase). **C2 positive control:
+  PASS** — the new eccentric Kepler propagator (`kepler_state_3d`) reduces exactly to
+  `_moon_state`/`iapetus_state_3d` at e=0 (dr<1e-6 km, dv<1e-9 km/s, checked at a grid of
+  M0/Omega/u test points), AND all 22 branches' e=0 continuation stage independently reproduces
+  their #573 circular residual (0/22 smoke failures). **Main population (17 ecc-robust
+  branches): 15 deduped survivors** (residual <=0.05 km/s + #324 bend-gate pass at the REAL
+  eccentric V_inf; 0 merges among survivors under the C3-extended (M0_Titan, M0_Iapetus) dedup —
+  every surviving branch stayed its own distinct point), spanning **all 3 n_rev classes**
+  ((0,0)/(1,1)/(2,2)) — clears the pre-registered PASS bar (>=5, >=2 classes) with wide margin.
+  The 2 deaths (branches 0, 14) fail only the #324 bend gate (residual stays near machine
+  precision — genuine closures) after real, monotonic, smooth (not single-step-jumpy) V_inf
+  drift under continuation (+1.19 km/s and +0.27 km/s respectively) that tracks a "longer
+  TOF/higher n_rev drifts more" pattern (branch 0 is the longest-TOF branch in the whole
+  population). **Floor-hugger control (ids 11/15/17/18/21): 4/5 SURVIVED** (only 18 died) —
+  this is ABOVE the pre-registered ">=3 survive => proxy non-discriminating" flag threshold.
+  **FLAGGED EXPLICITLY AND PROMINENTLY per spec: the #573 ">=6.0 deg ecc-robust" bend-margin
+  proxy is NOT a reliable discriminator of real-eccentricity survival** — this does not overturn
+  the PASS verdict (which is independent of the control-check outcome by design) but materially
+  discounts confidence that the proxy specifically identified the survivors; read the 15/17
+  population result as "most nearby closures survive a real eccentricity perturbation," not as
+  the proxy having worked. **Mirror-pair check:** {branch 2, branch 19} both survive but
+  **DID NOT MERGE** under the C3-extended dedup (final Omega ~180 deg apart still, V_inf now
+  ~6% different); {branch 4, branch 14} **NOT_BOTH_SURVIVING** (4 survives, 14 died) — both
+  outcomes match the a priori physical prediction that the exact circular (Omega+180, u+180)
+  mirror degeneracy (which holds only because a circular orbit's r(nu) is constant) breaks under
+  eccentricity (r(nu) != r(nu+180) in general), so the two branches were free to and did diverge.
+  **Framing (mandatory, honored): quasi-cycler-class evidence only, same standing as #312's own
+  family (V2 fails on drift by design), NOT a ballistic-cycler finding, NOT a novelty claim.**
+  Did NOT build Stage B, fetch SAT441, touch `catalogue.yaml`, or write to
+  `data/empty_regions.jsonl` (no KILL, so the conditional-negative writeback clause does not
+  apply) — none of this run's mandate. Full per-branch survivor table + methodology writeup:
+  `docs/notes/2026-07-12-574-stageA-eccentric-kill-gate.md`. Artifacts:
+  `scripts/run_574_titan_iapetus_eccentric_kill_gate.py`,
+  `data/probe_574_titan_iapetus_eccentric_kill_gate.jsonl`. `uv run pytest
+  tests/data/test_outstanding_structure.py -q` clean; ruff clean; `catalogue.yaml`/
+  `empty_regions.jsonl` untouched so the full data/search ratchet suite is not required. **Next
+  step: the C6 A->B transition gate** (docs/notes write-up done here; still needs one Fable pass
+  specifically on whether Stage A was executed AS PRE-REGISTERED before any Stage B dispatch —
+  not performed by this run) — NOT run here, out of this task's scope.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
