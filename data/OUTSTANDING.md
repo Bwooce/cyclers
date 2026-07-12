@@ -2419,6 +2419,76 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   validity_window epoch range. **Next step: build the real V1-V4-strict-equivalent Saturn
   validation chain + productize the #573/#574 corrector, per Stage B's remaining scope
   (items 1 and 3 below) — not yet started.**
+  **STAGE B ITEMS 1+3 RESULT (2026-07-12, Sonnet) — VERDICT: 0/15 PASS, honest structural
+  negative.** Built `src/cyclerfinder/genome/titan_iapetus_corrector.py` (productized #572-574
+  closure engine: `TitanIapetusClosureParams` 4-DOF input contract, `kepler_state_3d` eccentric
+  propagator, `evaluate_closure`/`closure_passes_gate` wrapping the #324 gate verbatim; C2 e=0
+  reduction positive control ported as a real pytest regression, not a throwaway smoke test) and
+  the Saturn-specific V2→V3→V4→V4-strict chain (`src/cyclerfinder/data/validation/
+  {v2_saturn_3d,v3_saturn_3d,v4_saturn,v4_saturn_strict}.py`) — deliberately Saturn-specific
+  rather than reusing the generic Uranian `v2_moontour.py`/`v3_3d.py` drivers, because those
+  compose on circular-coplanar `_moon_state` and the whole point of #574 is that Titan/Iapetus's
+  real eccentricity+inclination is NOT circular-coplanar; feeding these candidates through the
+  generic driver would have silently dropped the exact fidelity axis under test. V4-strict was
+  written FRESH with BOTH #567 fixes inherited from the start (continuous Lambert branch
+  selection by actual propagated terminal offset; `FAILURE_MODE_PLANET_CROSSING` tagged-not-
+  excluded) — confirmed firing correctly on a real trigger (branch 2 at epoch 2000-09-15,
+  periapsis inside Saturn's R_eq), pinned as a regression test against a genuine case, not a
+  synthetic one. `ensure_sat441_kernel()` added to `verify/spice_kernels.py` mirroring
+  `ensure_jup365_kernel`/`ensure_pluto_kernel`. 14 new tests across
+  `tests/genome/test_titan_iapetus_corrector.py` + `tests/data/test_saturn_v2v3v4_gauntlet.py`,
+  all passing; `ruff check`/`ruff format --check`/`mypy` clean on every new module.
+  **Ran the full gauntlet on all 15 Stage-A survivors** (branch ids 1,2,3,4,5,6,7,8,9,10,12,13,
+  16,19,20 — verified programmatically against the jsonl's `eccentricity_robust AND survives`
+  fields inside the script itself, not hand-transcribed) via
+  `scripts/run_574_stageB_saturn_gauntlet.py`. **Load-bearing finding: every one of the 15
+  candidates FAILS the governing V2 multi-cycle gate** (run at n_cycles ∈ {3,5,10}, mirroring
+  #566's grid). 3 candidates (ids 1, 10, 16 — all `n_rev != (0,0)`) fail to even complete 3
+  cycles: the same-`n_rev` Lambert transfer physically ceases to exist past cycle 0 (confirmed at
+  e=0 too, so not an eccentricity effect — a genuine multi-rev feasibility-window violation as
+  the encounter geometry drifts). The other 12 complete all cycles but with per-cycle
+  V_inf-continuity residual growing to 0.3–6.4 km/s and drift of ~0.7–2.4 million km — past both
+  the strict 50,000 km floor AND (checked across the full {3,5,10} grid) the #566-style 0.5 km/s
+  quasi-bounded floor (only branch 6 is quasi-bounded at nc=3 and nc=5, not nc=10 — so it does not
+  clear the grid-wide bar either). **Root cause, confirmed by direct instrumentation (not
+  assumed): unlike the Uranian #558-#569 family, whose `tof_scale`/`rel_offset_deg` were found by
+  #563's DEDICATED symmetric/commensurate-closure enumeration specifically so a fixed-TOF
+  multi-cycle repeat reproduces the SAME encounter geometry, the Titan-Iapetus #571-#574 closures
+  were found by a free (Omega, tof_scale, rel_offset) search for a SINGLE V_inf-continuity
+  closure with NO periodicity/commensurability constraint at all** (branch 1's leg-0 transfer
+  angle measured 117.6°/78.0°/38.3° at cycles 0/1/2, checked at e=0). This means most of Stage
+  A's 15 "closures" are single V_inf-continuity transfers, not repeating cyclers, under a literal
+  multi-cycle test — a different (and more fundamental) finding than "the family dies on real
+  eccentricity", orthogonal to the eccentricity question Stage A itself answered. V3/V4/V4-strict
+  were still computed for the 12 candidates whose V2 completes 3 cycles (cheap, <1s/stage, and
+  informative on their own terms): V3 agrees with V2 to near machine precision for all 12 (as
+  expected, same analytic model / different integrator); V4 (J2 + 8-moon third-body scipy)
+  passes 9/12; V4-strict at one reference epoch (2000-06-21, reused from the #338/#566/#559
+  precedent) passes only 3/12 (branches 2, 8, 19), the rest failing mostly via
+  `planet_crossing_infeasible` (real synodic geometry, not a solver artifact) plus one
+  `lambert_no_solution` (branch 12) and one converged-but-past-the-agreement-floor case (branch
+  9). **None of this changes the governing verdict — since V2 never clears PASS or
+  FAIL_QUASI_BOUNDED for any candidate, the full-chain verdict for all 15 is `FAIL_AT_V2_*`: 0/15
+  reach PASS or PASS_AS_QUASI_CYCLER.** Full per-candidate table + methodology:
+  `docs/notes/2026-07-12-574-stageB-saturn-gauntlet.md`; raw per-cycle data:
+  `data/gauntlet_574_saturn_stageB.jsonl`. **Epoch-sensitivity spot check** (6 points across
+  2000+2015, NOT a full annual/daily sweep, per the #568 duty-cycle framing that a raw
+  single-epoch result isn't the final word): the 3 V4-strict-passing candidates (2, 8, 19) each
+  PASS at multiple non-adjacent sample epochs and FAIL at others (genuine synodic-boundary
+  structure matching the #567/#568-established pattern, not a knife-edge single point) — reported
+  for completeness only; does not change the headline result since all three already fail the
+  governing V2 gate regardless. **Framing (mandatory, honored): quasi-cycler-class evidence only,
+  same standing as #312's own family — NOT evidence the Stage-A eccentric closures are
+  computationally wrong (branch 6's cycle-0 residual is machine precision, independently
+  reproduced by this dispatch's own tests) and NOT a novelty claim; the negative is a
+  periodicity-formulation gap in how #571-574's discovery search was originally posed.**
+  Explicitly NOT done here: Opus+Fable adjudication of this result, `catalogue.yaml`/
+  `empty_regions.jsonl` writeback, a full annual/daily V4-strict epoch-robustness sweep, or
+  re-scoping the discovery search toward multi-cycle commensurability (a defensible follow-up
+  given this root cause, but a new task). `uv run pytest tests/genome/
+  test_titan_iapetus_corrector.py tests/data/test_saturn_v2v3v4_gauntlet.py -q` clean (14
+  passed); full `uv run pytest tests/data tests/search -q` ratchet run (touches shared
+  `verify/spice_kernels.py`) — see the commit for the result.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend

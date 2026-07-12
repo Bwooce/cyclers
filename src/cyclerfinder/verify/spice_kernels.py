@@ -131,6 +131,36 @@ def ensure_pluto_kernel() -> str:
     return str(path)
 
 
+NAIF_SAT441_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/sat441.bsp"
+NAIF_SAT441_LOCAL = Path("~/dev/references/kernels/sat441.bsp")
+
+
+def ensure_sat441_kernel() -> str:
+    """Return the local path of the sat441.bsp Saturnian-satellite kernel.
+
+    Resolves ``~/dev/references/kernels/sat441.bsp`` (expanduser). This kernel covers
+    Mimas (601), Enceladus (602), Tethys (603), Dione (604), Rhea (605), Titan (606),
+    Hyperion (607), Iapetus (608), and Phoebe (609) relative to the Saturn barycentre
+    (NAIF ID 6), coverage 1749-12-29 to 2250-01-05 (independently confirmed via
+    ``spkobj()``/``spkcov()`` at fetch time -- see ``data/OUTSTANDING.md`` #574 Stage-B
+    kernel-fetch note). Verified as the current kernel (no successor covers Titan/
+    Iapetus as of this writing; the newer-numbered sat455/456/457/459 kernels cover only
+    unrelated small/irregular moons discovered 2020-2023) and JPL SSD's own ephemerides
+    page cites SAT441 as current (Jacobson 2022, AJ 164:199-217).
+
+    Mirrors :func:`ensure_jup365_kernel` / :func:`ensure_pluto_kernel` exactly: does
+    **not** auto-download (631 MB). If the file is absent, a ``RuntimeError`` is raised
+    with the NAIF download URL. Used by the Titan-Iapetus V4-strict real-ephemeris
+    gauntlet (#574 Stage B).
+    """
+    path = NAIF_SAT441_LOCAL.expanduser()
+    if not path.exists():
+        raise RuntimeError(
+            f"sat441.bsp kernel not found at {path}. Download it from: {NAIF_SAT441_URL}"
+        )
+    return str(path)
+
+
 def _download_with_timeout(url: str, dest: Path, *, timeout: float = 20.0) -> None:
     """Download ``url`` to ``dest`` with an EXPLICIT per-attempt socket timeout.
 
