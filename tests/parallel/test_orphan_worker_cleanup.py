@@ -18,6 +18,7 @@ The test is skipped on non-Linux because:
 
 from __future__ import annotations
 
+import contextlib
 import os
 import pathlib
 import signal
@@ -168,8 +169,13 @@ def test_workers_exit_after_parent_sigkill(tmp_path: pathlib.Path) -> None:
         f"All worker PIDs {worker_pids} already dead before SIGKILL — test setup issue."
     )
 
-    # SIGKILL the parent (no Python handler can run).
-    os.kill(proc.pid, signal.SIGKILL)
+    # SIGKILL the parent (no Python handler can run). The parent may already
+    # have exited on its own by the time we get here (CI scheduling/resource
+    # pressure can widen this race well beyond what's seen locally) -- that's
+    # fine for the property under test (workers get cleaned up once the
+    # parent is dead), so a ProcessLookupError here is not a test failure.
+    with contextlib.suppress(ProcessLookupError):
+        os.kill(proc.pid, signal.SIGKILL)
     proc.wait()
 
     # Assert: all workers should exit within the polling window.
