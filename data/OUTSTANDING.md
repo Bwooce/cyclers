@@ -3234,6 +3234,30 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   Sonnet for stage 1 (mechanical layer + frame module) behind a sourced golden; Opus for judging
   stage 2's reproduction quality and whether stage 3 is warranted (a trust-bearing go/no-go call, not
   mechanical); Fable second-opinion on the stage-2 result before any stage-3 dispatch.
+  **Stages 1-2 DONE (2026-07-12), commits `194da55` + `c5de132`; STAGE 3 STILL NOT AUTHORIZED —
+  awaiting user decision.** Stage 1 built `core/er3bp_geocentric.py` (the paper's Earth-centered
+  pulsating frame as a geocentric offset over the existing Nechvile/true-anomaly machinery, RHS
+  parity to 6.7e-16 against an independently-transcribed Eq. 9-11) and `search/niching_ga.py`
+  (Deterministic Crowding exactly per the paper's own p. 5687 pseudocode — a genuine multi-optima
+  mechanism scipy's `differential_evolution` cannot provide). Stage 2's 12-set reproduction (one run
+  per Table 2 optimization set, paper's own GA constants, no post-hoc tuning): **11/14 families
+  recognizably reproduced** (A, B, C, D, E, G, H, J, K, L, M) against a pre-registered non-bit-exact
+  criterion. Of the 3 misses: F and N are diagnosed as the GA settling on a DIFFERENT, equal-or-
+  higher-fitness point in the same basin (published fitness vs. actual-converged-point fitness
+  compared directly — basin competition, not a search failure); I is genuine under-convergence in
+  the highest-dimensional (4 free variable) box at the paper's own stated generation budget. Along
+  the way, caught real load-bearing source-interpretation bugs in the paper's own tables (Table 2/3
+  vectors are INTERLEAVED `[x,x',y,y',z,z']` despite Eq. 13's stated `[x,y,z,x',y',z']` ordering;
+  Table 4's km distances are AU-normalized; Family F's Table 4 rmax looks like a typesetting
+  duplication of D/E's value — flagged, not asserted). Full details, results table, and honest
+  caveats: `docs/notes/2026-07-12-581-niching-ga-stage2-positive-control.md`. **Coordinator's read**
+  (not itself an authorization): this is a strong positive control by
+  [[feedback_verify_gauntlet_with_positive_control]]'s standard — the mechanism demonstrably recovers
+  multiple co-existing, topologically distinct families (including ERO/DEO cases a resonance-lattice
+  or grid search would not generate) from single runs, which was #581's whole motivating claim. Stage
+  3 (aiming the layer at asymmetric/spatial-isolated 3D resonant families or bounded-drift quasi-
+  cycler boxes, per the original scope) looks worth authorizing on this evidence, but that decision is
+  reserved for the user per the task's own gate.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
