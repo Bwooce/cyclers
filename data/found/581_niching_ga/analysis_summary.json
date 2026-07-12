@@ -1,0 +1,611 @@
+{
+  "sets": {
+    "1": {
+      "expected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "n_clusters": 20,
+      "n_nonzero_fitness": 200
+    },
+    "2": {
+      "expected": [
+        "D"
+      ],
+      "n_clusters": 2,
+      "n_nonzero_fitness": 195
+    },
+    "3": {
+      "expected": [
+        "E"
+      ],
+      "n_clusters": 3,
+      "n_nonzero_fitness": 195
+    },
+    "4": {
+      "expected": [
+        "F"
+      ],
+      "n_clusters": 19,
+      "n_nonzero_fitness": 200
+    },
+    "5": {
+      "expected": [
+        "G"
+      ],
+      "n_clusters": 8,
+      "n_nonzero_fitness": 200
+    },
+    "6": {
+      "expected": [
+        "H"
+      ],
+      "n_clusters": 10,
+      "n_nonzero_fitness": 179
+    },
+    "7": {
+      "expected": [
+        "I"
+      ],
+      "n_clusters": 95,
+      "n_nonzero_fitness": 200
+    },
+    "8": {
+      "expected": [
+        "J"
+      ],
+      "n_clusters": 74,
+      "n_nonzero_fitness": 200
+    },
+    "9": {
+      "expected": [
+        "K"
+      ],
+      "n_clusters": 49,
+      "n_nonzero_fitness": 200
+    },
+    "10": {
+      "expected": [
+        "L"
+      ],
+      "n_clusters": 31,
+      "n_nonzero_fitness": 194
+    },
+    "11": {
+      "expected": [
+        "M"
+      ],
+      "n_clusters": 30,
+      "n_nonzero_fitness": 200
+    },
+    "12": {
+      "expected": [
+        "N"
+      ],
+      "n_clusters": 7,
+      "n_nonzero_fitness": 200
+    }
+  },
+  "family_matches": {
+    "A": {
+      "family": "A",
+      "set": 1,
+      "matched": true,
+      "ic_rms_distance": 0.00481059407038184,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.9673864246681017,
+      "rmax_ratio": 0.9378111226799638,
+      "features_ok": true,
+      "member_fitness": 0.998684578739264,
+      "candidate": {
+        "rmin_km_1yr": 5581410.465877312,
+        "rmax_km_1yr": 11010739.107784206,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 5581410.465877312,
+        "rmax_km_5yr": 11265197.857920954,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.03855154116425082,
+          0.0,
+          0.0,
+          -0.07678222646396193,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.07678222646396193,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "B": {
+      "family": "B",
+      "set": 1,
+      "matched": true,
+      "ic_rms_distance": 0.0035593702606133287,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.9623253787522899,
+      "rmax_ratio": 0.9694579868459902,
+      "features_ok": true,
+      "member_fitness": 0.9999496359930463,
+      "candidate": {
+        "rmin_km_1yr": 2108580.007145505,
+        "rmax_km_1yr": 3170215.837663191,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 2090680.0901290663,
+        "rmax_km_5yr": 3222160.181200094,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.014531296861324063,
+          0.0,
+          0.0,
+          -0.03491210926671329,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.03491210926671329,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "C": {
+      "family": "C",
+      "set": 1,
+      "matched": true,
+      "ic_rms_distance": 0.0001558225488307882,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 1.0016762712271539,
+      "rmax_ratio": 1.002143108522883,
+      "features_ok": true,
+      "member_fitness": 0.9999991197036813,
+      "candidate": {
+        "rmin_km_1yr": 988650.4729961159,
+        "rmax_km_1yr": 1128977.3467668646,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 985065.3847906701,
+        "rmax_km_5yr": 1132449.4752761603,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0068152144520854845,
+          0.0,
+          0.0,
+          -0.029014377512273926,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.029014377512273926,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "D": {
+      "family": "D",
+      "set": 2,
+      "matched": true,
+      "ic_rms_distance": 0.00017286435024283056,
+      "ic_ok": true,
+      "type_expected": "DPO",
+      "type_got": "DPO",
+      "type_ok": true,
+      "rmin_ratio": 1.0012553148967411,
+      "rmax_ratio": 0.9978090135971244,
+      "features_ok": true,
+      "member_fitness": 0.9999791792113363,
+      "candidate": {
+        "rmin_km_1yr": 317549.12437481637,
+        "rmax_km_1yr": 1000001.1999999973,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 274371.8065047988,
+        "rmax_km_5yr": 1044665.8780489924,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          0.010742187386085789,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.010742187386085789,
+        "practically_stable": true,
+        "type": "DPO"
+      }
+    },
+    "E": {
+      "family": "E",
+      "set": 3,
+      "matched": true,
+      "ic_rms_distance": 0.0001513311882369143,
+      "ic_ok": true,
+      "type_expected": "DPO",
+      "type_got": "DPO",
+      "type_ok": true,
+      "rmin_ratio": 1.0003542505765812,
+      "rmax_ratio": 0.9980830700279156,
+      "features_ok": true,
+      "member_fitness": 0.9999788326370884,
+      "candidate": {
+        "rmin_km_1yr": 312003.4882750817,
+        "rmax_km_1yr": 1000275.8585327669,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 307375.61473029945,
+        "rmax_km_5yr": 1006863.2198151886,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.415926535897928,
+        "ic_interleaved": [
+          0.006686335952759217,
+          0.0,
+          0.0,
+          0.010742187386085789,
+          0.0,
+          0.0
+        ],
+        "theta0": 3.141592653589793,
+        "spatial": false,
+        "v0_norm": 0.010742187386085789,
+        "practically_stable": true,
+        "type": "DPO"
+      }
+    },
+    "F": {
+      "family": "F",
+      "set": 4,
+      "matched": false,
+      "ic_rms_distance": 0.013236193486176008,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 4.963653423940245,
+      "rmax_ratio": 1.1734113476122379,
+      "features_ok": false,
+      "member_fitness": 0.9999978522095692,
+      "candidate": {
+        "rmin_km_1yr": 1116325.655044161,
+        "rmax_km_1yr": 1335549.807391254,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 1106343.0802825063,
+        "rmax_km_5yr": 1345993.2246469157,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.415926535897928,
+        "ic_interleaved": [
+          0.007561935415715663,
+          0.0,
+          0.0,
+          -0.02929687489040589,
+          0.0,
+          0.0
+        ],
+        "theta0": 3.141592653589793,
+        "spatial": false,
+        "v0_norm": 0.02929687489040589,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "G": {
+      "family": "G",
+      "set": 5,
+      "matched": true,
+      "ic_rms_distance": 7.08209613127945e-05,
+      "ic_ok": true,
+      "type_expected": "ERO",
+      "type_got": "ERO",
+      "type_ok": true,
+      "rmin_ratio": 1.0115177779379632,
+      "rmax_ratio": 1.0008373512661486,
+      "features_ok": true,
+      "member_fitness": 0.9999496945241477,
+      "candidate": {
+        "rmin_km_1yr": 11664.823015180591,
+        "rmax_km_1yr": 1085356.0639058724,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 9319.398241128953,
+        "rmax_km_5yr": 1085356.0639058724,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.004728364405284162,
+          0.0,
+          0.004730549912874825,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.0,
+        "practically_stable": true,
+        "type": "ERO"
+      }
+    },
+    "H": {
+      "family": "H",
+      "set": 6,
+      "matched": true,
+      "ic_rms_distance": 0.004033358289914819,
+      "ic_ok": true,
+      "type_expected": "ERO",
+      "type_got": "ERO",
+      "type_ok": true,
+      "rmin_ratio": 0.7646562498408542,
+      "rmax_ratio": 0.9516766273112195,
+      "features_ok": true,
+      "member_fitness": 0.9999788529850814,
+      "candidate": {
+        "rmin_km_1yr": 12145.035216222288,
+        "rmax_km_1yr": 713757.4704834146,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 12145.035216222288,
+        "rmax_km_5yr": 714361.9796385273,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0047711060861190015,
+          -0.0010897489153514073,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.0010897489153514073,
+        "practically_stable": true,
+        "type": "ERO"
+      }
+    },
+    "I": {
+      "family": "I",
+      "set": 7,
+      "matched": false,
+      "ic_rms_distance": 0.018337169151236572,
+      "ic_ok": true,
+      "type_expected": "DEO",
+      "type_got": "DEO",
+      "type_ok": true,
+      "rmin_ratio": 0.2160090223708715,
+      "rmax_ratio": 1.1092244792846293,
+      "features_ok": false,
+      "member_fitness": 0.999323403903305,
+      "candidate": {
+        "rmin_km_1yr": 502915.0140011538,
+        "rmax_km_1yr": 4395431.77842942,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 418927.39319677773,
+        "rmax_km_5yr": 74800000.0,
+        "terminated_5yr": true,
+        "theta_end_5yr": 25.295030082004168,
+        "ic_interleaved": [
+          0.015321352626575229,
+          -0.027659159842160164,
+          0.013644381341864058,
+          -0.010703088049483223,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.029657801957818048,
+        "practically_stable": false,
+        "type": "DEO"
+      }
+    },
+    "J": {
+      "family": "J",
+      "set": 8,
+      "matched": true,
+      "ic_rms_distance": 0.0053301360401759885,
+      "ic_ok": true,
+      "type_expected": "3D DRO",
+      "type_got": "3D DRO",
+      "type_ok": true,
+      "rmin_ratio": 1.0073763156488416,
+      "rmax_ratio": 1.0084758667142135,
+      "features_ok": true,
+      "member_fitness": 0.9998798025075363,
+      "candidate": {
+        "rmin_km_1yr": 6942898.010030755,
+        "rmax_km_1yr": 8583112.889708003,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 5638797.397769254,
+        "rmax_km_5yr": 12819896.78930265,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.03386118805409984,
+          -0.0006632463547361911,
+          0.007826444808175372,
+          -0.06722144645753209,
+          0.036965318584701264,
+          -0.0095306572058233
+        ],
+        "theta0": 0.0,
+        "spatial": true,
+        "v0_norm": 0.06789695270293679,
+        "practically_stable": true,
+        "type": "3D DRO"
+      }
+    },
+    "K": {
+      "family": "K",
+      "set": 9,
+      "matched": true,
+      "ic_rms_distance": 0.07854110852166529,
+      "ic_ok": true,
+      "type_expected": "3D DRO",
+      "type_got": "3D DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.8536582926051985,
+      "rmax_ratio": 1.3074609603695062,
+      "features_ok": true,
+      "member_fitness": 0.9999888542560901,
+      "candidate": {
+        "rmin_km_1yr": 729477.4744382129,
+        "rmax_km_1yr": 1228868.174580735,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 674714.555147614,
+        "rmax_km_5yr": 1386423.2812097068,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.004410445897273252,
+          0.014311338401907372,
+          0.006144501969534652,
+          -0.01873830040561214,
+          -0.00010453585061223061,
+          0.007893460713414756
+        ],
+        "theta0": 0.0,
+        "spatial": true,
+        "v0_norm": 0.024864533596653186,
+        "practically_stable": true,
+        "type": "3D DRO"
+      }
+    },
+    "L": {
+      "family": "L",
+      "set": 10,
+      "matched": true,
+      "ic_rms_distance": 0.014619279693837545,
+      "ic_ok": true,
+      "type_expected": "3D DEO",
+      "type_got": "3D DEO",
+      "type_ok": true,
+      "rmin_ratio": 0.8629349072143109,
+      "rmax_ratio": 1.0316612212235519,
+      "features_ok": true,
+      "member_fitness": 0.9999494462382097,
+      "candidate": {
+        "rmin_km_1yr": 651708.2894311135,
+        "rmax_km_1yr": 1715406.0438628942,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 242557.05211417575,
+        "rmax_km_5yr": 74800000.0,
+        "terminated_5yr": true,
+        "theta_end_5yr": 20.852450036645635,
+        "ic_interleaved": [
+          0.0038812720805121315,
+          0.007286685828512102,
+          0.004179387500561016,
+          0.0007107671469432695,
+          0.008581369294706103,
+          0.006328093123306262
+        ],
+        "theta0": 0.0,
+        "spatial": true,
+        "v0_norm": 0.009677073053245437,
+        "practically_stable": false,
+        "type": "3D DEO"
+      }
+    },
+    "M": {
+      "family": "M",
+      "set": 11,
+      "matched": true,
+      "ic_rms_distance": 0.00018651842786215477,
+      "ic_ok": true,
+      "type_expected": "3D ERO",
+      "type_got": "3D ERO",
+      "type_ok": true,
+      "rmin_ratio": 1.0026648453586728,
+      "rmax_ratio": 1.001129514266623,
+      "features_ok": true,
+      "member_fitness": 0.9999549496659004,
+      "candidate": {
+        "rmin_km_1yr": 17328.053857488583,
+        "rmax_km_1yr": 1037024.0118711385,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 17328.053857488583,
+        "rmax_km_5yr": 1037024.0118711385,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0038593692670103033,
+          0.0,
+          0.003870593604127191,
+          0.0,
+          0.0038598278683079305,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": true,
+        "v0_norm": 0.0,
+        "practically_stable": true,
+        "type": "3D ERO"
+      }
+    },
+    "N": {
+      "family": "N",
+      "set": 12,
+      "matched": false,
+      "ic_rms_distance": 0.049080795137051166,
+      "ic_ok": true,
+      "type_expected": "3D DEO",
+      "type_got": "3D ERO",
+      "type_ok": false,
+      "rmin_ratio": 0.15048514241404487,
+      "rmax_ratio": 0.7754399559259482,
+      "features_ok": false,
+      "member_fitness": 0.9999444480859774,
+      "candidate": {
+        "rmin_km_1yr": 61662.49098529419,
+        "rmax_km_1yr": 1179480.6186412957,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 43610.568491069134,
+        "rmax_km_5yr": 1179480.6186412957,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0047329018572247585,
+          0.0,
+          0.0,
+          0.0,
+          0.006305608832110255,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": true,
+        "v0_norm": 0.0,
+        "practically_stable": true,
+        "type": "3D ERO"
+      }
+    }
+  },
+  "reproduction_rate": "11/14"
+}
