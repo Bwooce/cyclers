@@ -2734,6 +2734,78 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   machinery (spec-complete, matches #575's own precedent exactly). Opus + Fable for adjudicating
   any survivors, and mandatorily for the literature-risk assessment given how heavily-mined this
   specific system is in the published literature.
+  **FABLE PLAN REVIEW (2026-07-12): CONFIRMED WITH CORRECTIONS — the load-bearing #501 question
+  resolves IN FAVOR of running (confirmed by reading #501's actual verdict note, not its summary
+  line). Five corrections, two load-bearing:**
+  **(Q1 resolved) #501 does NOT preemptively cover this territory** — structurally different on
+  three independent axes: (1) different MODEL (#501 is real-ephemeris n-body-shot, #563/#576 is
+  idealized circular-coplanar Kepler-Lambert — #312's whole 30-member family exists in exactly
+  this idealized-but-real-eph-drift-failing gap, so a #501-style lane could never have surfaced
+  it); (2) different DEGREES OF FREEDOM (#501 sampled EPOCH along the real ephemeris flow, with
+  tof emerging from the Lambert solve — rel_offset was never an independent coordinate and tof
+  was never constructed commensurate; #563/#576 directly enumerates the exact discrete
+  rel_offset∈{0°,180°}/tof=n·T_syn/2 set — measure-zero points a 512-sample epoch scan hits with
+  probability ~0); (3) different FUNNEL (#501 shot only 26 top-5-prefilter survivors with an
+  n-body shooter from unconstructed seeds — 0/26 non-convergence from BAD SEEDS says nothing
+  about the symmetric class's existence). Per the negative-results registry's own
+  method-conditional rule, a structurally different method is licensed to re-open #501's stamped
+  region. **Honest-framing corollary, mandatory**: conversely, any #576 closures do NOT
+  contradict #501's real-eph empty stamp — ANNOTATE, don't unstamp; deliverable is idealized
+  quasi-cycler-class evidence only (same standing as #312/#575), and #501's own real-eph negative
+  keeps the prior on eventual real-eph survival LOW, not high.
+  **(C1-scope, load-bearing) Widen to ALL 6 pairs** (C(4,2), not just the 3 adjacent) — Fable
+  independently verified via the same two-sided-gate method `verify_571_gate_analytics.py`
+  embodies that ALL 6 pairs clear the #324 gate with 2-5× margin (even the widest, Io-Callisto:
+  min-achievable V∞ 4.82/3.24 km/s vs ceilings 8.25/7.77 km/s) — the exact opposite of Saturn's
+  small-moon exclusions. Marginal compute for the extra 3 pairs is seconds; independently
+  recompute these numbers via the dispatch's own run of `verify_571_gate_analytics.py`-style
+  logic before trusting them (Fable's numbers are Hohmann-tangent hand-computation, matching that
+  script's method but not run through it directly).
+  **(Q3) `core/satellites.py` has NO inclination field at all** (confirmed — the dataclass carries
+  mu/radius/a/safe_alt only, same gap #554 found for Triton's retrograde flag). Fable's own
+  knowledge (high confidence, standard JPL SSD values, but explicitly NOT repo-sourced) suggests
+  a favorable picture — mutual inclinations ≤~0.5-0.65° depending on node alignment (Uranian-class,
+  ~25-50× smaller than Titan-Iapetus's 15.5°) — but per the #571 lesson this MUST be independently
+  sourced (JPL SSD, cited, computed from BOTH i and Ω per pair, not just |i1-i2|) as the dispatch's
+  literal first step before any construction, not asserted from general knowledge. Fable's numbers
+  are a sanity envelope the sourced answer should fall in, not a substitute for sourcing it.
+  **(Q4) Laplace 1:2:4 resonance is NOT a blocker** — T_syn is finite and well-defined everywhere
+  (pairwise ratios near-but-not-exactly 2:1: Io/Europa≈2.007, Europa/Ganymede≈2.01; T_syn Io-Europa
+  ≈3.53d, Europa-Ganymede≈7.05d, Ganymede-Callisto≈12.5d; n_max stays small, ~4-5/pair, a few
+  hundred total candidates). Pairwise rel_offset reachability is NOT resonance-constrained (only a
+  future 3-moon I-E-G extension would be phase-locked — note this explicitly so nobody naively
+  extends the pair method to triples later without re-deriving). **But the resonance flags a real
+  physics point the original plan MISSED**: it FORCES permanent, non-negligible eccentricities
+  (Io e≈0.0041, Europa e≈0.0094) — Europa's velocity modulation e·v_orb≈0.13 km/s is ~2.6× the
+  0.05 km/s gate floor, same order as the Titan eccentricity effect #571-C4 flagged. Pre-register:
+  a genuine coplanar-circular closure degrading under this forced eccentricity is "real
+  perturbations degrade a genuine cycle" (legitimate quasi-cycler evidence), NOT "the method
+  failed." Minor watch-item: near-2:1 pairs put some Lambert legs near 2π-multiple transfer
+  angles — watch for solver-branch/near-degenerate artifacts per
+  [[feedback_isolated_sweep_flips_suspect_artifact]], don't hand-tune around them silently.
+  **(C2-lit, load-bearing) Russell-Strange 2009's Table 3 is a SOURCED LITERATURE GOLDEN covering
+  exactly this territory** — Jovian pairs Ganymede→Io, Ganymede→Europa, Ganymede→Callisto,
+  Europa→Ganymede, with specific published members ("Callisto #1" 0.41-yr period, "Ganymede-Europa
+  #316", "Europa-Ganymede #131" — digest at `docs/notes/2026-06-30-digest-russell-strange-2009-
+  planetary-moon-cyclers.md`, CORPUS_INDEX line 197). This is a stronger and more concrete
+  literature obligation than the plan's generic "expect a higher known-prior" framing: (i) any
+  survivor MUST be cross-checked against R-S Table 3 FIRST; expect near-certain overlap for
+  Europa/Ganymede/Callisto pairs (V0-known, not novel) — the likely genuinely-unpublished slice is
+  Io-anchored pairs where Io is the FLYBY (not just the Ganymede→Io direction R-S already lists);
+  (ii) REPRODUCE R-S Table 3's Jovian members as an ADDITIONAL positive control, strictly stronger
+  than the internal Uranian bit-for-bit golden alone (a real published-record reproduction, not
+  just an internal-consistency check) — per [[feedback_golden_tests_sourced_only]]; (iii)
+  **critical ordering point**: run the R-S comparison against the UNGATED enumeration output, not
+  the #324-gated survivors — R-S's free-return architecture can use one moon as a passive
+  (no-bend) target, which the two-sided #324 gate structurally excludes (exactly as the #571
+  empty-region stamps document for Titan-Enceladus) — comparing against gated-only output would
+  misread a real R-S member as a coverage failure.
+  **Minor fixes**: specify the negative control precisely rather than leaving it to implementer
+  improvisation — reuse #575's own C2 mechanism, take the negative case from the new Jupiter
+  enumeration's own non-symmetric rejects (or a #571-branch-1-style known-bad reference) rather
+  than #501's real-eph output (wrong model for an idealized repeat check). Build cost note: the
+  script is ALREADY genericized with the Uranian golden committed as a test (#575's own C1) — this
+  task's step 2 is a CLI invocation, not a genericization task, cheaper than the entry implies.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
