@@ -314,7 +314,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 for the #566-adjudication-mandated trustworthy epoch-robustness gate (apply #560 fixes + audit-field fix + per-representative epoch scan) as the catalogue-writeback prerequisite; #568 for the #567-diagnosis-corrected step-(4) writeback-readiness characterization (duty-cycle + synodic boundary period framing, not raw pass%/flip%); #569 for the #568-cleared actual catalogue writeback of the #312 Uranian symmetric-closure family (5 new rows + #312 row update + frozen-gate provenance; needs a Fable pass before execution); #570 for the #543-scoped cycler-network schema infrastructure (general relation only, no populated network rows); #571 for a Titan-centered Saturnian moon-pair sweep using the #558-corrected discovery genome (plan under Fable review before dispatch); #572 for the #571-motivated Titan-Iapetus 3D-closure probe (the load-bearing cheap gate deciding whether any #552 build is worth scoping); #573 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 for the #566-adjudication-mandated trustworthy epoch-robustness gate (apply #560 fixes + audit-field fix + per-representative epoch scan) as the catalogue-writeback prerequisite; #568 for the #567-diagnosis-corrected step-(4) writeback-readiness characterization (duty-cycle + synodic boundary period framing, not raw pass%/flip%); #569 for the #568-cleared actual catalogue writeback of the #312 Uranian symmetric-closure family (5 new rows + #312 row update + frozen-gate provenance; needs a Fable pass before execution); #570 for the #543-scoped cycler-network schema infrastructure (general relation only, no populated network rows); #571 for a Titan-centered Saturnian moon-pair sweep using the #558-corrected discovery genome (plan under Fable review before dispatch); #572 for the #571-motivated Titan-Iapetus 3D-closure probe (the load-bearing cheap gate deciding whether any #552 build is worth scoping); #573 for the #572-adjudication-mandated widened Titan-Iapetus 3D-closure population probe (measure the real gate-passing closure rate across all Titan-anchored candidates before committing to any #552 corrector build; plan under Fable review before dispatch); #574 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -2016,6 +2016,83 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   here.** Artifacts: `scripts/probe_572_titan_iapetus_3d_closure.py`,
   `data/probe_572_titan_iapetus_3d_closure.jsonl` (full basin-by-basin record for both
   candidates). Ratchet suite not required (empty_regions.jsonl untouched); ruff clean.
+  **ADJUDICATION (2026-07-12, Opus) — VERDICT: WIDEN THE PROBE FIRST (new task #573),
+  do NOT jump to the corrector build; do NOT stamp the pair empty (the closures are real).**
+  Read the full basin-by-basin JSONL for both candidates directly; the closures are genuine
+  (residual ~1.7e-9/2.0e-9 km/s, DOP853 cross-check 1e-5–1e-4 km, the low-V∞ gate-passing basin
+  is a genuinely distinct basin from the high-V∞ ~8.6 km/s branch that fails the bend gate). **But
+  2-for-2 is non-representative and cannot justify a 3–5 day corrector build:** (a) the two tested
+  candidates are the *best-by-corrected-margin* robust core (V∞≈0.98 cluster) — this task's own
+  note (4) says the 149-survivor **median** bend is 5.50°, right at the floor, so 2-for-2 on the
+  two most robust candidates says almost nothing about the median candidate; (b) machine-precision
+  closure is *generically* achievable here — the probe drives a scalar residual to ~0 with two free
+  knobs (Ω, tof_scale), so ~1e-9 residual is not evidence of rarity; the discriminating fact is
+  whether the closing basin lands in a bend-gate-PASSING branch, which for floor-hugging candidates
+  is unknown. **Factual correction to carry forward:** the binding *Iapetus* (flyby-body) bends are
+  **10.35° and 10.41°** (2.07× the 5° floor), NOT the 45.5°/34.0° cited in some summaries — those
+  are the *Titan* bends. **The widened probe is nearly free:** #572 cost 1.00 s + 0.25 s wall-clock
+  per candidate; the ~69 Titan-anchored coplanar-gate-passing candidates in
+  `data/scan_571_saturn_titan_iapetus.jsonl` (all `physical_gate_passed=True` records are
+  Titan-anchored; n_rev 26×(0,0)/40×(1,1)/3×(2,2)) run in minutes, well under the 10-min cap — a
+  single synchronous run converts the selection-biased 2-for-2 into a real population hit-rate and
+  a #312-scale-vs-isolated-pair family-size estimate before any 3–5 day investment. **Still
+  genuinely unknown (honest):** the probe is *circular* (Titan+Iapetus e≈0.028, 7–25× the Uranian
+  e≤0.004) — it says NOTHING about real-ephemeris survival; the idealized→real duty-cycle gap
+  should be materially worse than #568's 61.7–79.1%, and is unknowable until the corrector + a
+  real-ephemeris Saturn (SPICE SAT441 kernel, fetchable, not on host; `verify/mission_spk.py`
+  already maps Saturn) validation pipeline exist. Widening does not resolve eccentricity either,
+  but if the population hit-rate is low we stop before ever building that pipeline — correct
+  sequencing. Full reasoning + concrete corrector deliverable shape in
+  `docs/notes/2026-07-12-572-closure-adjudication.md`. **Framing (mandatory): quasi-cycler-class
+  evidence, same standing as #312's own family (V2 fails on drift by design), NOT a ballistic
+  cycler and NOT a novelty claim.** Next step: **#573** (widened 3D-closure probe), which must pass
+  a Fable second-opinion on its plan before dispatch.
+
+- **#573** (P1, cheap ~minutes-scale probe — the population-rate gate before ANY #552 corrector
+  build; plan under Fable review before dispatch, do NOT auto-fire) — widened Titan-Iapetus
+  3D-closure probe. **Motivation:** #572 found genuine 3D closures for BOTH tested candidates, but
+  those two were the *best-by-corrected-margin* robust core (V∞≈0.98 cluster, Iapetus bend
+  8.8–8.9° coplanar), and #572's own note (4) puts the 149-survivor **median** bend at 5.50° —
+  right at the 5° floor. 2-for-2 on the two most robust candidates does not estimate the closure
+  rate of the *population*, and machine-precision closure is generically achievable with the
+  probe's two free knobs (Ω, tof_scale), so the discriminating fact is not "residual→0" but
+  "does the closing basin PASS the bend gate." A 3–5 day corrector justified on 2 candidates risks
+  discovering the family is 2–3 members, not #312-scale. **Task:** generalize
+  `scripts/probe_572_titan_iapetus_3d_closure.py` (which is already a clean throwaway generator
+  with a validated inc=0 smoke test) to run the SAME 3D node-alignment closure probe over the full
+  Titan-anchored candidate population, and report the population-level gate-passing closure rate +
+  the distribution of realized Iapetus (flyby-body) bends across the closers. **Input population
+  (pin precisely — Fable flag):** the ~69 coplanar-gate-passing (`physical_gate_passed=True`)
+  Titan-anchored candidates in `data/scan_571_saturn_titan_iapetus.jsonl` (n_rev split
+  26×(0,0)/40×(1,1)/3×(2,2)); Fable should confirm whether the inclination-corrected-but-coplanar-
+  fail candidates from the #552 revival assessment's "187 flagged / 149 survive" set also belong,
+  or whether the coplanar-gate-pass set is the right input. **Keep it circular-inclined**
+  (apples-to-apples with #572; Titan coplanar-circular, Iapetus inclined-circular at i≈15.5°) —
+  eccentricity is deferred to the corrector/validation stage, NOT this probe (folding an eccentric
+  variant in is defensible but treated as scope creep for the population-rate question; Fable may
+  reargue). **Cost:** #572 cost 1.00 s + 0.25 s/candidate, so the full set runs in minutes — MUST
+  complete synchronously in a single sub-10-minute run (per this project's hard no-backgrounding
+  rule); if the Iapetus-anchored candidates (harder double-node phasing, deferred by #572) are
+  added as an optional second phase, they get their own synchronous run. **Decision gate:** a
+  *substantial* gate-passing closing population (a real family, not 2–3 isolated points) → scope
+  the narrow Titan-Iapetus 3D corrector (#552's re-scoped ~3–5 day estimate reusing
+  `core/lambert.py`'s confirmed 3D support, NOT the general n-body build) as a subsequent task
+  behind Opus adjudication + Fable second-opinion + V-gauntlet, eccentricity/duty-cycle caveat
+  front-and-center (concrete deliverable shape in
+  `docs/notes/2026-07-12-572-closure-adjudication.md` §6); only the robust-core cluster closes
+  (a handful) → re-adjudicate whether a 2–3 member idealized quasi-cycler set justifies the build;
+  broad closure but Iapetus bends hugging the 5° floor → flag that the eccentricity gap (§5) will
+  likely dominate before committing. **Explicitly out of scope:** the corrector build itself, the
+  full 3D genome capability, any `catalogue.yaml` / `empty_regions.jsonl` edit, the V-gauntlet, the
+  SPICE SAT441 kernel fetch. **Framing (mandatory, per #572 note 3): quasi-cycler-class evidence,
+  same standing as #312's own family (V2 fails on drift by design), NOT a ballistic cycler, NOT a
+  novelty claim** (internally-enumerated fact about our own search space, per `our_status`
+  discipline). **Recommended models:** Sonnet for the mechanical widened probe behind the existing
+  #324 gate; Opus + Fable for the go/no-go population adjudication. **REQUIRED: a Fable
+  second-opinion pass on the #573 plan before dispatch** — this thread's Fable discipline has
+  caught real load-bearing issues at essentially every stage (including the wrong-exemplar-candidate
+  bug in #572's own plan and the max_bend triage inversion in #565); do not dispatch #573 without
+  it.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
