@@ -2806,6 +2806,87 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   than #501's real-eph output (wrong model for an idealized repeat check). Build cost note: the
   script is ALREADY genericized with the Uranian golden committed as a test (#575's own C1) — this
   task's step 2 is a CLI invocation, not a genericization task, cheaper than the entry implies.
+  **RESULT (2026-07-12, Sonnet mechanical pass, all 5 steps run in order):**
+  **Step 1 (inclination sourcing, PASSED with one flag):** JPL SSD "Planetary Satellite Mean
+  Orbital Parameters" table (Laplace-plane mean elements, JUP365, epoch 2000-01-01.5 TDB, accessed
+  2026-07-12) gives Io i=0.0/Ω=0.0°, Europa i=0.5/Ω=184.0°, Ganymede i=0.2/Ω=58.5°, Callisto
+  i=0.3/Ω=309.1° (the table's own 1-decimal precision, not a truncation introduced here). Mutual
+  inclination computed via the full two-plane spherical relation (`cos(i_mut) = cos(i1)cos(i2) +
+  sin(i1)sin(i2)cos(Ω1-Ω2)`, mirroring #571/#572's node-aware `iapetus_state_3d` treatment, NOT
+  naive `|i1-i2|`) for all 6 pairs: Io-Europa 0.500°, Io-Ganymede 0.200°, Io-Callisto 0.300°,
+  Europa-Ganymede 0.637°, Europa-Callisto 0.716°, Ganymede-Callisto 0.412°.
+  **FLAG: Europa-Callisto's 0.716° mutual inclination EXCEEDS Fable's ~0.65° sanity envelope** —
+  the node-separation term (naive `|i1-i2|`=0.2° vs the real node-aware 0.716°, a 3.6x difference)
+  is exactly the effect the #571 lesson warned about. In absolute terms this is still tiny (>20x
+  smaller than the ~15.5° Titan-Iapetus mutual inclination that killed #571-#575), so it does NOT
+  change the qualitative risk picture, but it is reported prominently as instructed rather than
+  silently absorbed. Script: `scripts/probe_576_galilean_inclination_check.py`; data:
+  `data/probe_576_galilean_inclination_check.jsonl`.
+  **Step 2 (two-sided #324 gate-feasibility, PASSED 6/6):** Independent recomputation via
+  `core/flyby.py::max_bend` bisection + Hohmann-tangent minimum-V∞ (same method
+  `verify_571_gate_analytics.py` embodies), generalized to a genuine pairwise two-sided check.
+  All 6 pairs clear on BOTH sides with 1.7-6.7x margin (worst: Io-Callisto, 1.71x/2.40x — exactly
+  reproducing the Fable review's own hand-computed 4.82/3.24 km/s vs 8.25/7.77 km/s ceiling
+  numbers). Script: `scripts/verify_576_galilean_gate_analytics.py`; data:
+  `data/verify_576_galilean_gate_analytics.jsonl`.
+  **Step 3 (direct symmetric-closure construction, all 6 pairs):**
+  `scripts/enumerate_563_symmetric_closures.py --primary=Jupiter
+  --moons=Io,Europa,Ganymede,Callisto --tof-scale-max=2.0` (tof_scale_max=2.0 verified against
+  `data/scan_433_jupiter_galilean.jsonl`'s own `_meta` record — the actual prior idealized
+  Lambert-construction sweep range for this system, mirroring #575's own derivation method; NOT
+  the Uranian/Saturnian 3.0 bound, which was never tested for Jupiter). n_rev∈{0,1,2,3}²,
+  rel_offset∈{0°,180°}. 1856 candidates evaluated across 12 directions (n_max ranges 2-10 per
+  pair, driven by each pair's own T_syn) in 4.0s → **36 candidates pass ALL gates** (residual,
+  #324 physical bend, DOP853 cross-check) across all 6 pairs (both anchor directions each):
+  Io-Europa 1, Io-Ganymede 3, Io-Callisto 3, Europa-Ganymede 1, Europa-Callisto 3,
+  Ganymede-Callisto 7 (×2 directions each = 36 total). Data:
+  `data/enumerate_576_jupiter_galilean_symmetric_closures.jsonl`.
+  **Step 4 (repeat-instrumentation, C2-STYLE DISCIPLINE PASSED):** Reused the generic
+  `cyclerfinder.data.validation.v2_moontour.run_v2_moontour` driver (the SAME already-generic
+  tool #574/#575's own Saturn-specific 3D wrapper is built ON TOP OF, and the tool the Uranian
+  #330/#558 gauntlet already used for this exact circular-coplanar idealized model — no
+  genericization needed, `system` auto-resolves Jupiter from the moon names). **POSITIVE: 36/36
+  survivors repeat to machine precision** (closure residual 1.6e-14 to 5.1e-12 km/s over 3
+  cycles). **NEGATIVE: a non-symmetric reject constructed from this dispatch's own Jupiter
+  parameter sweep** (same Ganymede-Callisto pair/n_rev/commensurate-tof as a genuine survivor,
+  but rel_offset=90° — outside the {0°,180°} symmetric set the construction ever visits) —
+  cycle-0 residual 1.85 km/s (fails the gate immediately), correctly does NOT repeat. Scripts:
+  `scripts/probe_576_galilean_repeat_check.py`; tests:
+  `tests/scripts/test_probe_576_galilean_repeat_check.py` (2 tests, pin the 36-survivor count and
+  both control sides). Data: `data/probe_576_galilean_repeat_check.jsonl`.
+  **Step 5 (Russell-Strange 2009 Table 3 literature golden, run against the UNGATED enumeration
+  per the mandatory C2-lit ordering correction):** Table 3 transcribed directly from the paper's
+  text layer (`pdftotext -raw` on the acquired PDF, row order cross-validated against Table 2's
+  sourced synodic periods and the Fig. 6 caption's independently-legible identifiers — NOT
+  hand-copied from the digest, which only paraphrased 3/10 rows). Re-derived the full UNGATED
+  (residual-gate-only, #324 bend gate NOT applied) candidate set directly from step 3's own
+  `residual_at_point` machinery (144 total across all 6 pairs) since R-S's free-return
+  architecture treats the target body as massless/no-bend, which this project's two-sided gate
+  would wrongly exclude if only the gated 36 were checked. Of R-S's 10 Jovian rows, only the 2
+  with `legs=1` (Ganymede→Europa #5, #43) are architecturally comparable to this project's 2-leg
+  Anchor-Flyby-Anchor construction (the other 8 are multi-loop resonant tours with a single
+  passive target encounter — a different topology, reported but not treated as a reproduction
+  target). **Result: 1/2 comparable members has a period match (Ganymede-Europa #43, R-S
+  period=14.1d vs our n=2 period=14.108d) but the matching candidates' V∞ (6.7-19.1 km/s) does
+  NOT match R-S's stated V∞ (1.87/3.89 km/s) and none clear the physical bend gate — a
+  commensurability coincidence at the shared T_syn grid, not a genuine geometric reproduction; the
+  other comparable member (#5, period=35.3d ≈ n=5) falls outside this run's n_max=2 bound for
+  that pair (tof_scale_max=2.0) and was not reached.** The 8 non-comparable (legs>1) rows show
+  10 period matches each for both Ganymede-Callisto rows (period=37.6d ≈ our n=3, several with
+  physically-gated, reasonable V∞ 1.5-7.7 km/s) but these are NOT claimed as reproductions given
+  the topology mismatch — reported for completeness only. Script:
+  `scripts/compare_576_russell_strange_galilean.py`; data:
+  `data/compare_576_russell_strange_galilean.jsonl`.
+  **Honest framing (mandatory per dispatch scope):** none of the 36 gate-passing symmetric
+  closures found here is claimed novel — R-S 2009 already establishes this is heavily-published
+  territory and the one architecturally-comparable period coincidence found does NOT reproduce
+  R-S's V∞ signature, so it is neither a confirmed reproduction nor a novelty candidate as-is. Any
+  further characterization requires a full `literature_check.py` pass + Opus/Fable adjudication as
+  a separate follow-up (NOT concluded here, per explicit scope limit). These findings are
+  idealized quasi-cycler-class evidence only (same standing as #312/#575) and do NOT contradict
+  #501's own real-ephemeris "0/3072 closed, positive-controlled, clean empty-region map" stamp —
+  #501 and this task explore structurally different, non-overlapping parts of parameter space (see
+  the Fable plan review's Q1 resolution above); #501's stamp is unchanged, not unstamped.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
