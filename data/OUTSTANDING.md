@@ -3110,11 +3110,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   the paper it actually points to (Antoniadou-Libert 2019) covers MMRs 3/2, 2/1, 5/2, 3/1, 4/1, 5/1
   (NO 1:1) at μ=0.001 with no Earth-Moon ICs, and explicitly excludes asymmetric/isolated spatial
   families. A #287 (1,1) "likely rediscovery" verdict may therefore rest on coverage the cited paper
-  does not actually have — a potential false NOT-novel. **Scope:** (1) relabel the anchor to
-  Antoniadou & Libert 2019 with the correct DOI (or, if the anchor's ORIGINAL intent was genuinely a
-  distinct restricted-problem Antoniadou-Voyatzis paper — candidate: Antoniadou & Voyatzis 2017,
-  CeMDA 129, not yet acquired — decide whether to acquire and cite that instead; ask the user before
-  acquiring); (2) re-derive the anchor's scope comment (MMR list, period band, the "1:1" claim) from
+  does not actually have — a potential false NOT-novel. **CORRECTION (2026-07-12): the original
+  candidate cited here ("Antoniadou & Voyatzis 2017, CeMDA 129") was itself an unverified citation
+  inherited from an earlier digest and does NOT exist** — a CrossRef sweep of every real
+  Antoniadou-Voyatzis joint publication found no such paper. The genuinely verified, topically-
+  matching candidate is **Antoniadou, Voyatzis & Varvoglis (2014), "1/1 resonant periodic orbits in
+  three dimensional planetary systems," Proceedings of the IAU 9:82-83, DOI
+  10.1017/s1743921314007893** — a short (2-page) conference proceedings note, but specifically about
+  **1:1 resonance**, the exact gap the mislabeled anchor's "1:1" claim needs and Antoniadou-Libert
+  2019 does not cover. User is searching for this one. **Scope:** (1) relabel the anchor to
+  Antoniadou & Libert 2019 with the correct DOI (or, if the anchor's ORIGINAL intent was genuinely
+  the 1:1-specific IAU-proceedings paper above — acquire it if the user locates it, and cite that
+  instead for the 1:1 claim specifically, keeping Antoniadou-Libert 2019 for the 3/2-5/1 MMRs it
+  does cover — i.e. this may resolve into TWO anchors, not a single relabel); (2) re-derive the
+  anchor's scope comment (MMR list, period band, the "1:1" claim) from
   whichever paper actually ends up cited; (3) re-audit the #287 Braik-Ross (1,1) "likely rediscovery"
   call and the #301 scope-filter logic against the corrected scope — per
   [[feedback_bugfix_invalidates_past_searches]], a corrected anchor obliges re-checking past verdicts
