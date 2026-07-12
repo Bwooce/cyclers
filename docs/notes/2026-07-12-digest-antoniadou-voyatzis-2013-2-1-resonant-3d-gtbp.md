@@ -40,34 +40,50 @@ citing arXiv:1811.09442 — but 1811.09442 is actually **Antoniadou & Libert
 Voyatzis 2013/2014/2017 papers" were named as the real Antoniadou-Voyatzis
 work but never acquired. This paper is the 2013 member of that set.
 
-**Important scope caveat — this paper does NOT fix the mislabeled anchor.**
-Independently re-checked both live locations of the bug (2026-07-12, not
-just trusting the 2019 digest's note):
-- `src/cyclerfinder/genome/known_corpus_3d.py` (~line 156-162): an anchor
-  citing "2923-2940 (2019); DOI 10.1093/mnras/sty3195; arXiv:1811.09442" —
-  the Antoniadou-**Libert** 2019 DOI, still present, still uncorrected.
-- `src/cyclerfinder/search/literature_check.py` (~line 1523-1544): a
-  SEPARATE `CorpusAnchor` named `"Antoniadou-Voyatzis spatial resonant
-  periodic orbits in CR3BP (2018)"`, citation text "'Spatial Resonant
-  Periodic Orbits in the **Restricted** Three-Body Problem,' (2018);
-  arXiv:1811.09442", **`doi=None`** — same wrong arXiv ID, no DOI at all,
-  AND its claimed title ("...in the Restricted Three-Body Problem") does not
-  match this 2013 paper's actual title/scope either (this paper is the
-  GENERAL, non-restricted problem — see §2 above). The correct paper for
-  THIS specific anchor's claimed content is more likely a genuinely distinct
-  **Antoniadou & Voyatzis 2017** paper (Celestial Mechanics and Dynamical
-  Astronomy 129, per the 2019 digest's own candidate list) — NOT this 2013
-  paper, and NOT yet acquired. **Flagging per "if you find more references
-  you need just ask": the 2017 CeMDA 129 Antoniadou-Voyatzis paper is a
+**Important scope caveat — this paper does NOT fix the mislabeled anchor —
+and CORRECTION (2026-07-12, Fable review): my initial re-check below was
+itself only half right.** I re-grepped both locations before writing the
+first version of this section, but only actually READ the full anchor
+content at one of the two — I pattern-matched the other via a broad grep
+(`"sty3195"`) and wrongly assumed it carried the same mislabeling without
+reading its `name=`/`authors=` fields. Fable's independent review read both
+in full and caught this:
+
+- `src/cyclerfinder/genome/known_corpus_3d.py` (~line 121-163) is **ALREADY
+  CORRECT** — `name="Antoniadou & Libert spatial resonant periodic orbits in
+  the RTBP (2019)"`, `authors=("Antoniadou", "Libert")`, `doi=
+  "10.1093/mnras/sty3195"`. This was fixed in commit `0b1528f` (task #459,
+  2026-06-25, "adopt sourced Antoniadou-Libert 2019 3D resonant anchors") —
+  confirmed directly via `git show 0b1528f`. My original claim that this
+  file was "still present, still uncorrected" was **wrong**; retracted.
+- `src/cyclerfinder/search/literature_check.py` (~line 1522-1546) **IS
+  genuinely still wrong** — `name="Antoniadou-Voyatzis spatial resonant
+  periodic orbits in CR3BP (2018)"`, `authors=("Antoniadou", "Voyatzis")`,
+  citation text "'Spatial Resonant Periodic Orbits in the **Restricted**
+  Three-Body Problem,' (2018); arXiv:1811.09442", **`doi=None`**. Same wrong
+  arXiv ID (that's Antoniadou & Libert 2019, not a 2018 Antoniadou-Voyatzis
+  paper), no DOI at all. Its claimed title also does not match THIS 2013
+  paper (which is the GENERAL, non-restricted problem — see §2). The
+  correct paper for this anchor's claimed restricted-problem content is
+  more likely a genuinely distinct, not-yet-acquired **Antoniadou &
+  Voyatzis 2017** paper (Celestial Mechanics and Dynamical Astronomy 129,
+  per the 2019 digest's own candidate list). **Flagging per "if you find
+  more references you need just ask": that 2017 CeMDA 129 paper is a
   genuine candidate acquisition if this anchor is to be properly fixed
-  rather than just correctly re-labelled to Antoniadou-Libert 2019.**
-- Net effect: two independent `CorpusAnchor` definitions across two files
-  both cite the wrong paper for the same arXiv ID, one has no DOI at all —
-  this is a live, mechanically-findable corpus-integrity bug of the same
-  general class as this session's earlier Russell-Strange 2009
-  `KNOWN_CORPUS` gap, just not yet caught by a ratchet. Not fixed as part of
-  this digest (out of scope for a read-and-file pass); flagged for the
-  Fable review and any follow-up task.
+  rather than just re-pointed to Antoniadou-Libert 2019.**
+- Net effect (corrected): **one** live mislabeled `CorpusAnchor`, not two —
+  in `literature_check.py` only. Fable additionally found this is
+  load-bearing beyond citation hygiene: the bad anchor's own comment claims
+  coverage including "1:1" resonance and is cited as the anchor for "#287's
+  3D Braik-Ross (1,1) family extension (likely rediscovery target)," and
+  #301's scope filters (lines 107, 313) were built against this anchor's
+  claimed "low-integer scope" — but the paper it actually points to
+  (Antoniadou-Libert 2019) covers MMRs 3/2, 2/1, 5/2, 3/1, 4/1, 5/1 (NO 1:1)
+  at μ=0.001 with no Earth-Moon ICs and explicitly excludes asymmetric/
+  isolated families. A #287 (1,1) "likely rediscovery" verdict may rest on
+  coverage the cited paper doesn't have — a potential false NOT-novel,
+  triggering the project's bug-fix-invalidates-past-negatives rule once
+  fixed. See #579 in `data/OUTSTANDING.md`.
 
 ## 3. Model (p. 162-165, §2.1)
 
