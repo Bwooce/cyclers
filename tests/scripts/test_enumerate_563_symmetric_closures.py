@@ -72,10 +72,25 @@ def test_umbriel_oberon_reproduces_312_and_n7_sibling() -> None:
     assert sibling["residual_kms"] <= EXPECTED_312_RESIDUAL_CEILING_KMS
 
 
+# Some Uranian directions (e.g. Ariel-Umbriel n=(2,2)) have a residual near the
+# float64 noise floor (~1e-15 km): observed twice on CI (runs 29186825332,
+# 29187751027, both key ('Ariel', 'Umbriel', 3, (2, 2), 0.0)) diffing by 1.1e-16
+# against the committed golden despite the local venv reproducing bit-exact every
+# time -- BLAS/libm build or CPU-SIMD differences between the CI runner and the
+# machine that produced the committed file, not a real regression (per
+# feedback_isolated_sweep_flips_suspect_artifact: an isolated near-zero-residual
+# mismatch is a numerical artifact, not a real divergence). 1e-9 km is ~9
+# orders of magnitude looser than the observed noise and ~4 orders tighter than
+# the #312 residual ceiling (1e-13 km, itself far tighter than any physically
+# meaningful residual) -- ample margin to still catch a genuine regression.
+_RESIDUAL_ATOL_KMS = 1e-9
+
+
 def test_full_uranian_run_reproduces_committed_family(tmp_path: Path) -> None:
     """Runs the genericized script's full main() with NO non-default args (the C1
     "run it" requirement) and diffs every pass record's numeric fields against the
-    already-committed golden JSONL -- must be EXACT (0.0 diff), not approximate."""
+    already-committed golden JSONL -- must match to within float64 noise
+    (see ``_RESIDUAL_ATOL_KMS``), not necessarily bit-exact."""
     out_path = tmp_path / "c1_check.jsonl"
     rc = enum563.main(["--out", str(out_path)])
     assert rc == 0
@@ -105,9 +120,9 @@ def test_full_uranian_run_reproduces_committed_family(tmp_path: Path) -> None:
     assert len(committed) == 60  # 30-member family x 2 anchor directions each
     for key, c in committed.items():
         f = fresh[key]
-        assert abs(c["residual_kms"] - f["residual_kms"]) == 0.0, key
+        assert abs(c["residual_kms"] - f["residual_kms"]) < _RESIDUAL_ATOL_KMS, key
         for cv, fv in zip(c["vinf_per_encounter_kms"], f["vinf_per_encounter_kms"], strict=True):
-            assert abs(cv - fv) == 0.0, key
+            assert abs(cv - fv) < _RESIDUAL_ATOL_KMS, key
 
 
 def test_generic_out_required_for_non_default_args(tmp_path: Path) -> None:
