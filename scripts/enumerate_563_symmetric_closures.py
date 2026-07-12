@@ -52,6 +52,18 @@ Discipline: NO catalogue writeback, NO V1-V4-strict gauntlet run here. Reuses
 Run as::
 
     uv run python scripts/enumerate_563_symmetric_closures.py
+
+Genericization (#575 C1)
+-------------------------
+``--primary``/``--moons``/``--out`` let this same construction be pointed at
+ANY primary body + moon list (e.g. Saturn + Titan/Iapetus for #575) without
+touching the construction logic above -- ``enumerate_direction``/
+``pair_n_max`` simply forward ``primary`` to #558's already-genericized
+``residual_at_point``/``gate_candidate`` (which have taken a ``primary=``
+kwarg, defaulting to ``"Uranus"``, since #571). Running with NO arguments
+reproduces the original Uranian, 4-non-Miranda-moon, 12-direction behavior
+byte-for-byte -- this is the #575 C1 golden check: the genericization must
+not alter a single Uranian result.
 """
 
 from __future__ import annotations
@@ -96,9 +108,16 @@ REL_OFFSETS_DEG: tuple[float, ...] = (0.0, 180.0)
 N_REV_VALUES: tuple[int, ...] = tuple(range(N_REV_MAX + 1))  # 0..3
 
 
-def pair_n_max(anchor: str, flyby: str) -> tuple[float, float, float, int]:
-    """(T_syn, P_a, P_b, n_max) for one pair -- n_max is direction-independent."""
-    mu = PRIMARIES["Uranus"]
+def pair_n_max(
+    anchor: str, flyby: str, *, primary: str = "Uranus", tof_scale_max: float = TOF_SCALE_MAX
+) -> tuple[float, float, float, int]:
+    """(T_syn, P_a, P_b, n_max) for one pair -- n_max is direction-independent.
+
+    ``primary``/``tof_scale_max`` (#575 genericization): default to the
+    original Uranian values so every pre-#575 caller (which never passes
+    these) is byte-for-byte unaffected.
+    """
+    mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     t_syn = synodic_period_days(mu, sat_a.sma_km, sat_b.sma_km)
@@ -106,13 +125,18 @@ def pair_n_max(anchor: str, flyby: str) -> tuple[float, float, float, int]:
     n_b = _mean_motion_rad_day(mu, sat_b.sma_km)
     p_a = 2.0 * math.pi / n_a
     p_b = 2.0 * math.pi / n_b
-    tof_max = TOF_SCALE_MAX * math.sqrt(p_a * p_b)
+    tof_max = tof_scale_max * math.sqrt(p_a * p_b)
     n_max = math.floor(2.0 * tof_max / t_syn)
     return t_syn, p_a, p_b, n_max
 
 
-def enumerate_direction(anchor: str, flyby: str) -> dict[str, Any]:
-    t_syn, p_a, p_b, n_max = pair_n_max(anchor, flyby)
+def enumerate_direction(
+    anchor: str, flyby: str, *, primary: str = "Uranus", tof_scale_max: float = TOF_SCALE_MAX
+) -> dict[str, Any]:
+    """Construct + gate every symmetric candidate for one ``anchor->flyby->anchor``
+    direction. ``primary``/``tof_scale_max`` default to the original Uranian values
+    (#575 genericization, construction logic below is UNCHANGED)."""
+    t_syn, p_a, p_b, n_max = pair_n_max(anchor, flyby, primary=primary, tof_scale_max=tof_scale_max)
     sqrt_papb = math.sqrt(p_a * p_b)
 
     n_evaluated = 0
@@ -132,6 +156,7 @@ def enumerate_direction(anchor: str, flyby: str) -> dict[str, Any]:
                     rel_offset_deg=rel,
                     tof_scale=target_tof_scale,
                     n_rev=(n0, n1),
+                    primary=primary,
                 )
                 if pt is None:
                     n_infeasible += 1
@@ -139,7 +164,7 @@ def enumerate_direction(anchor: str, flyby: str) -> dict[str, Any]:
                 if pt["residual_kms"] >= GATE_RESIDUAL_KMS:
                     continue
                 n_subgate += 1
-                gated = gate_candidate(anchor, flyby, pt)
+                gated = gate_candidate(anchor, flyby, pt, primary=primary)
                 if gated["all_gates_passed"]:
                     passes.append(
                         {
@@ -170,21 +195,75 @@ def enumerate_direction(anchor: str, flyby: str) -> dict[str, Any]:
     }
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--primary",
+        type=str,
+        default="Uranus",
+        help="Central body (PRIMARIES key). Default 'Uranus' reproduces the original "
+        "#563 run byte-for-byte (the #575 C1 golden check).",
+    )
+    parser.add_argument(
+        "--moons",
+        type=str,
+        default=",".join(NON_MIRANDA_MOONS),
+        help="Comma-separated moon list; every ordered pair (both directions) among "
+        "them is enumerated. Default: the 4 non-Miranda Uranian moons (12 directions).",
+    )
+    parser.add_argument(
+        "--tof-scale-max",
+        type=float,
+        default=TOF_SCALE_MAX,
+        help="Max tof_scale bound (must match the source discovery sweep's own tested "
+        "max -- verify against that sweep's _meta record, do not assume). Default 3.0 "
+        "(#558's own Uranian production sweep bound).",
+    )
+    parser.add_argument(
+        "--out",
+        type=str,
+        default="",
+        help="Output JSONL path (default: data/enumerate_563_symmetric_closures.jsonl "
+        "for the default Uranian args; otherwise required).",
+    )
+    args = parser.parse_args(argv)
+
+    primary = args.primary
+    moons = tuple(m.strip() for m in args.moons.split(",") if m.strip())
+    tof_scale_max = args.tof_scale_max
+    is_default_uranian = (
+        primary == "Uranus" and moons == NON_MIRANDA_MOONS and tof_scale_max == TOF_SCALE_MAX
+    )
+    if args.out:
+        out_path = Path(args.out)
+    elif is_default_uranian:
+        out_path = OUT_PATH
+    else:
+        raise SystemExit("--out is required when --primary/--moons/--tof-scale-max are non-default")
+
     t0 = time.time()
     directions = []
-    for a, b in itertools.combinations(NON_MIRANDA_MOONS, 2):
+    for a, b in itertools.combinations(moons, 2):
         directions.append((a, b))
         directions.append((b, a))
-    assert len(directions) == 12, f"expected 12 non-Miranda directions, got {len(directions)}"
+    expected_directions = len(moons) * (len(moons) - 1)
+    assert len(directions) == expected_directions, (
+        f"expected {expected_directions} directions for {len(moons)} moons, got {len(directions)}"
+    )
 
-    print(f"[563] {len(directions)} directions x {len(N_REV_VALUES) ** 2} n_rev combos", flush=True)
+    print(
+        f"[563] primary={primary} moons={moons} {len(directions)} directions x "
+        f"{len(N_REV_VALUES) ** 2} n_rev combos, tof_scale_max={tof_scale_max}",
+        flush=True,
+    )
 
     all_results: list[dict[str, Any]] = []
     total_evaluated = 0
     total_passes = 0
     for anchor, flyby in directions:
-        res = enumerate_direction(anchor, flyby)
+        res = enumerate_direction(anchor, flyby, primary=primary, tof_scale_max=tof_scale_max)
         all_results.append(res)
         total_evaluated += res["n_evaluated"]
         total_passes += res["n_all_gates_passed"]
@@ -203,16 +282,18 @@ def main() -> int:
         flush=True,
     )
 
-    with OUT_PATH.open("w", encoding="utf-8") as fh:
+    with out_path.open("w", encoding="utf-8") as fh:
         fh.write(
             json.dumps(
                 {
                     "_meta": True,
                     "task": "#563 direct symmetric-closure enumeration",
+                    "primary": primary,
+                    "moons": list(moons),
                     "directions": len(directions),
                     "n_rev_combos": len(N_REV_VALUES) ** 2,
                     "rel_offsets_deg": list(REL_OFFSETS_DEG),
-                    "tof_scale_max_bound": TOF_SCALE_MAX,
+                    "tof_scale_max_bound": tof_scale_max,
                     "total_evaluated": total_evaluated,
                     "total_all_gates_passed": total_passes,
                     "elapsed_s": elapsed,
@@ -240,7 +321,7 @@ def main() -> int:
             )
             for p in res["passes"]:
                 fh.write(json.dumps({"kind": "pass", **p}) + "\n")
-    print(f"[563] written: {OUT_PATH}", flush=True)
+    print(f"[563] written: {out_path}", flush=True)
     return 0
 
 

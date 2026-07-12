@@ -2579,6 +2579,76 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   Fable for adjudicating any surviving family before it proceeds through the reused pipeline
   stages, and again before any catalogue writeback — same two-model discipline this whole chain
   has used throughout.
+  **RESULT (2026-07-12, Sonnet mechanical pass, steps 1-6 partial per dispatch scope):**
+  **C1 golden PASSED exactly** — genericized `scripts/enumerate_563_symmetric_closures.py`
+  (`--primary`/`--moons`/`--tof-scale-max`/`--out`, construction logic untouched; `residual_at_point`/
+  `gate_candidate` already took `primary=` since #571) reproduces the full pre-#575 Uranian table
+  **bit-for-bit** (0.0 diff on every one of 60 pass records' residual/V∞ fields) with zero CLI args,
+  including #312 itself (Umbriel-Oberon n=5, n_rev=(1,1), rel=180°, residual=4.22e-15, V∞=0.9646
+  km/s) and its n=7 sibling (n_rev=(2,2), rel=0°, residual=5.33e-15). Tests:
+  `tests/scripts/test_enumerate_563_symmetric_closures.py` (4 tests, incl. a full-run byte-diff
+  against the committed golden jsonl).
+  **Titan-Iapetus direct construction (pinned numbers verified: n_max=10 from #571's own
+  tof_scale_max=3.0, confirmed against `scan_571_saturn_titan_iapetus.jsonl`'s `_meta`)**: 640
+  candidates evaluated (2 directions × 10 × 16 × 2, 2.0s) →
+  `data/enumerate_575_titan_iapetus_symmetric_closures.jsonl` → **9 unique symmetric closures pass
+  ALL gates** (residual 3e-15 to 2e-12 km/s, #324 physical bend gate, DOP853 cross-check) at
+  n∈{2,3,4,6,8,9,10}, n_rev∈{(0,0),(1,1),(2,2)} — a genuine, non-empty positive result at the
+  coplanar-idealized construction stage (outcome (a)/(c), not the clean-negative (b)).
+  **C2 two-sided repeat control PASSED**: reused `run_v2_saturn_3d`
+  (`cyclerfinder.data.validation.v2_saturn_3d`, the mechanism `run_574_stageB_saturn_gauntlet.py`
+  itself imports and drives — not reimplemented) at e_titan=e_iapetus=inclination=0 via
+  `TitanIapetusClosureParams` overrides (pinned exact reduction to the coplanar model, per that
+  module's own C2 positive control). All 9/9 new candidates complete 3 cycles with
+  closure-residual repeat at machine precision (4e-14 to 3e-12 km/s); the #571 branch-1 negative
+  control (loaded directly from `probe_574_titan_iapetus_eccentric_kill_gate.jsonl`'s own e=0
+  stage, never hand-transcribed) correctly fails to complete even 1 cycle (Lambert infeasible),
+  matching #574 Stage B's own documented 117.6/78.0/38.3° drift finding. Cross-check against
+  #571's original 187 all-gates-passed candidates (69 Titan-anchored + 118 Iapetus-anchored, per
+  `scan_571_saturn_titan_pairs_index.jsonl`): **0/187 land within tolerance (2°, 0.5 d) of the
+  symmetric condition** — a clean empty intersection confirming #571's free-search population
+  never touched the symmetric manifold; the 9 #575 closures are a genuinely independent discovery,
+  not a re-validation of any #571 candidate. Scripts:
+  `scripts/probe_575_titan_iapetus_repeat_check.py`; tests:
+  `tests/scripts/test_probe_575_repeat_check.py` (3 tests). **Methodological note**:
+  `run_v2_saturn_3d`'s `max_drift_kms` is an INERTIAL-frame absolute-position metric (identical to
+  `v2_moontour`'s own convention) — it is large (90k-2.4M km) for every #575 candidate here, but
+  this is NOT a red flag: #312's own catalogued SILVER fails the identical strict 50,000 km floor
+  under the identical mechanism (`silver_327_moontour_v2_verdicts.jsonl`: max_drift_kms=515,499 km,
+  passes_v2=False, FAIL_QUASI_BOUNDED) because T_syn is generically incommensurate with the
+  anchor's own individual orbital period — a separate axis from the rel_offset/tof symmetric
+  condition. C2's discriminator is therefore Lambert-completion + closure-residual repeat (which
+  is exactly what killed #571 branch 1), not this drift metric.
+  **Step 6 (pipeline continuation, PARTIAL — stopped after stage 1 per dispatch scope, did NOT run
+  #573/#574/Stage B)**: pushed the 9 coplanar seeds through a #572-equivalent inclination closure
+  (`scripts/probe_575_stage1_inclination_closure.py`, reusing #572's `evaluate_point`/
+  `sweep_node_alignment`/`_smoke_test_reduction` verbatim, Iapetus at the real 15.5° inclination,
+  Omega + tof_scale free in #572's own bounded Nelder-Mead). **6/9 seeds find a gate-passing 3D
+  closure basin, but C3's drift diagnostic + re-run C2 check show 0/6 still repeat to machine
+  precision post-refinement**: tof drifted 0.23%-11.6% of T_syn/2 off the commensurate seed value,
+  and closure residual over 3 cycles grew to 0.11-1.65 km/s (not machine precision); the two
+  most-drifted (10.5%, 11.6%, both n=10) lost Lambert feasibility entirely past cycle 0 — the exact
+  #571-branch-1 failure signature, now reproduced by refinement-induced drift rather than a
+  free-search origin. A complementary Omega-ONLY sweep at the EXACT fixed commensurate tof (zero
+  C3 drift by construction, `scripts/probe_575_stage1b_omega_only_closure.py`) still finds 5/9
+  gate-passing single-cycle closures, and **0/5 of those repeat either** (residual ~1e-3 km/s at
+  cycle 0, not machine precision) — proving periodicity loss here is NOT solely the C3 tof-drift
+  mechanism; introducing Iapetus's real inclination breaks the multi-cycle repeat property in its
+  own right for this family, at least at the single best-residual basin checked per seed (a
+  basin-by-basin exhaustive check — #572 found 4-8 basins per candidate — was NOT run, a cheap
+  natural follow-up). Data: `data/probe_575_stage1_inclination_closure.jsonl`,
+  `data/probe_575_stage1b_omega_only_closure.jsonl`.
+  **Framing (C4-consistent)**: NOT a novelty claim, NOT a catalogue writeback. This is
+  quasi-cycler-CLASS evidence about the idealized search space (same standing as #312), and the
+  informative finding is that the genuine coplanar symmetric family found here does not
+  straightforwardly survive the SAME inclination-extension method (#572) that #574 Stage B later
+  found also broke down under real eccentricity for the #571 population — a materially different,
+  earlier-stage breakdown (inclination alone, before eccentricity is even introduced), diagnosed
+  cleanly via C2/C3 instrumentation exactly as this task's Fable corrections required.
+  `uv run ruff check`/`ruff format --check` clean on all new/modified files; targeted
+  `uv run pytest tests/scripts/test_enumerate_563_symmetric_closures.py
+  tests/scripts/test_probe_575_repeat_check.py tests/genome/test_titan_iapetus_corrector.py
+  tests/data/test_saturn_v2v3v4_gauntlet.py -q` — 21 passed.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend

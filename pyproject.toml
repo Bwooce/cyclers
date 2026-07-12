@@ -156,6 +156,20 @@ ignore_missing_imports = true
 module = ["jsonschema.*"]
 ignore_missing_imports = true
 
+# scripts/-to-scripts/ reuse in this project uses a same-directory
+# `sys.path.insert(0, .../"scripts")` + bare-name-import convention (predates
+# this override -- e.g. enumerate_563_symmetric_closures.py's
+# `from refine_562_commensurability import synodic_period_days`), which is
+# valid at runtime but not statically resolvable by mypy unless scripts/
+# itself is added as a checked root. This only surfaces when a tests/scripts/
+# test does `import scripts.foo` and `foo` has such a sibling import (#575's
+# enumerate_563 golden-reproduction test is the first case) -- ignore missing
+# imports for these specific bare sibling module names rather than promoting
+# scripts/ to a full mypy root.
+[[tool.mypy.overrides]]
+module = ["refine_562_commensurability", "scan_558_uranus_all_pairs_offset_sweep"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Skip @pytest.mark.slow tests by default. M5's full optimiser tests
