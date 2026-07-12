@@ -2264,21 +2264,74 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   eccentricity-robust) with margin; the only load-bearing unresolved risk is eccentricity
   (Titan/Iapetus e≈0.028, 7-25× the Uranian e≤0.004) which the entire circular #571→#573 stack
   cannot address. **STAGE IT — Stage A gates Stage B:**
+  **FABLE PLAN REVIEW (2026-07-12): CONFIRMED WITH CORRECTIONS — input set (22 branches, 17
+  ecc-robust, floor-hugger ids 11/15/17/18/21 at bends 5.28/5.37/5.02/5.32/5.02°) independently
+  verified against `data/probe_573_titan_iapetus_population_closure.jsonl`, matches exactly, no
+  #572-style wrong-input bug. But three load-bearing corrections (C1-C3) are MANDATORY before
+  dispatch, plus three strongly-recommended fixes (C4-C6). All folded into the corrected Stage A
+  text below (this is the SEVENTH real catch on this thread, streak intact).**
   **Stage A — eccentric-Keplerian closure kill-gate (cheap, ~part-day, NO SPICE, NO kernel fetch).**
   Extend the #573 circular state generators (`iapetus_state_3d` + the coplanar Titan state) to place
   BOTH moons on real *eccentric* Keplerian orbits: add e≈0.0288 (Titan) / 0.028 (Iapetus) — these
   are NEW data, `core/satellites.py` currently has no eccentricity field, add it sourced (JPL SSD)
-  or in a throwaway local constant with a sourced comment — solve Kepler's equation for true anomaly
-  and sweep each moon's periapsis phase at the encounter as the new free parameter alongside the
-  existing (Ω, tof_scale) knobs. Re-run the #573 3D closure + #324 gate on the **17
-  eccentricity-robust branches** (the 5 floor-huggers ids 11/15/17/18/21 are the expected-to-die
-  control — include them to validate the gate discriminates). **Kill gate:** if the eccentric
-  velocity modulation cannot be absorbed for a substantial subset — closures collapse or only 2-3
-  branches survive — STOP with a documented conditional negative in
-  `docs/notes/` (and optionally an `empty_regions.jsonl` `reverification` entry), do NOT fetch
-  SAT441 or build Stage B; a clean cheap negative on a novel search is a fine stop
-  ([[project_negative_results_registry]]). Must complete synchronously (minutes-to-part-day, per
-  the no-backgrounding rule); checkpoint per-branch (append+flush).
+  or in a throwaway local constant with a sourced comment.
+  **(C1 — MANDATORY, prevents a known project failure mode):** the free parameters are **two mean
+  anomalies at epoch, M0_Titan and M0_Iapetus** (a 4D per-branch space: Ω, tof_scale, M0_T, M0_I) —
+  NOT a free "periapsis phase at the encounter." Every encounter's true anomaly MUST be derived by
+  Kepler-propagating from these two epoch M0 values over the actual leg TOFs (mirroring exactly how
+  `scripts/run_573_titan_iapetus_population_closure.py::evaluate_point_tracked` derives Titan's
+  SECOND state at t=2·tof by mean-motion propagation from its state at t=0, not a free
+  re-specification). A free per-encounter phase is precisely the #480 EGGIE per-encounter
+  self-consistency bug ([[feedback_constructed_tour_per_encounter_self_consistency]]) — do not
+  reintroduce it here.
+  **(C2 — MANDATORY, positive control):** before crediting ANY eccentric kill verdict, the eccentric
+  machinery MUST be shown to recover the 22 circular branches (at their circular residual values)
+  when run at e=0 — mirror #573's own `smoke_test_reduction_pass` meta-record pattern. An unverified
+  eccentric generator producing an all-negative result is indistinguishable from a real family death
+  and a silent implementation bug; per this project's own [[feedback_verify_gauntlet_with_positive_control]]
+  rule, do not trust the kill without this check passing first.
+  **(C3 — MANDATORY, precise kill-gate + dedup discipline):** survivors are counted the SAME way
+  #573 counted branches — eccentric closure at residual ≤0.05 km/s + full #324 bend-gate pass,
+  THEN union-find proximity dedup EXTENDED to include the (M0_T, M0_I) coordinates (the near-mirror
+  branch pairs {2,19} and {4,14} are known merge candidates — an undeduped eccentric count would
+  silently regress to raw-count thinking, the exact #562/#573-planning failure mode). Pre-registered
+  thresholds: **PASS** = ≥5 deduped survivors from the 17 ecc-robust input, spanning ≥2 n_rev
+  classes (same ≥5 anchor as the Uranian/#573 precedent). **KILL** = ≤3 deduped survivors — stop,
+  document a conditional negative, do not proceed to Stage B. **4 survivors = MARGINAL, requires an
+  explicit Opus adjudication, not an automatic proceed either way.** Floor-hugger controls are
+  expected to die; if ≥3 of the 5 control branches instead SURVIVE, the eccentricity-robust ≥6.0°
+  proxy is non-discriminating at this stage — flag explicitly and adjudicate rather than silently
+  trusting the main-population result. **Recommended methodology (not mandatory, but preferred over
+  a fresh grid sweep):** continuation in eccentricity — step e from 0→0.0288/0.028 refining
+  (Ω, tof_scale, M0_T, M0_I) from each already-known circular branch's solution — rather than a new
+  higher-dimensional grid, since continuation avoids both aliasing directions at once (no false
+  kills from a real basin falling between grid points, no double-counting) and yields the e=0
+  control for free; if a grid is used anyway, require refinement seeded from each circular branch
+  plus the standing singleton-anomaly guard ([[feedback_isolated_sweep_flips_suspect_artifact]]).
+  Re-run the #573 3D closure + #324 gate on the **17 eccentricity-robust branches** (the 5
+  floor-huggers ids 11/15/17/18/21, verified bends 5.28/5.37/5.02/5.32/5.02°, are the
+  expected-to-die control per C3 above). **Kill gate: per C3's precise thresholds above** — STOP
+  with a documented conditional negative in `docs/notes/` (and optionally an `empty_regions.jsonl`
+  `reverification` entry) on KILL, do NOT fetch SAT441 or build Stage B; a clean cheap negative on a
+  novel search is a fine stop ([[project_negative_results_registry]]). Must complete synchronously
+  (minutes-to-part-day, per the no-backgrounding rule); checkpoint per-branch (append+flush).
+  **(C4 — recommended) SPICE verification method, named precisely for Stage B:** mirror
+  `src/cyclerfinder/verify/spice_kernels.py`'s existing `ensure_jup365_kernel()`/
+  `ensure_pluto_kernel()` pattern (the #510/#550 PC(3,2) precedent) — verify pre-fetch via the NAIF
+  `generic_kernels/spk/satellites/` directory listing + `aa_summaries.txt` (do not assume the kernel
+  is named `sat441.bsp`, a successor may exist), and post-fetch via `spkcov` for NAIF IDs 606
+  (Titan) and 608 (Iapetus) over the target epoch window.
+  **(C5 — recommended) duty-cycle prior framing:** the "~30-55%" figure in Stage B below is a rough
+  DIRECTIONAL extrapolation from the Uranian family's eccentricity ratio, NOT a computed prediction
+  for Titan-Iapetus specifically and NOT a validation target — carry this caveat explicitly into any
+  write-up, do not let it harden into an expected/target number.
+  **(C6 — recommended) A→B transition gate:** "Stage A passes" must not be a rubber-stamp straight
+  into the SAT441 fetch. Require Stage A's results to be written up in `docs/notes/` (per-branch
+  survivor table, dedup applied, e=0 control result, precise threshold verdict per C3) PLUS one
+  Fable pass specifically on whether Stage A was executed AS PRE-REGISTERED (not a full
+  re-adjudication of the go/no-go decision, which stays settled) before the kernel fetch — escalate
+  to Opus only in the C3 marginal (4-survivor) bucket. Cheap insurance immediately before the
+  expensive stage, on a thread that is now 7-for-7 on real Fable catches.
   **Stage B — productized corrector + real-ephemeris SPICE validation (only if Stage A passes).**
   (1) Productize the #573 engine as a repeatable corrector behind the #324 gate (clean interface,
   provenance, stable input contract — not a throwaway sweep). (2) Add a real-ephemeris SPICE leg:
