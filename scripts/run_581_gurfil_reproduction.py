@@ -41,12 +41,30 @@ from cyclerfinder.core.er3bp_geocentric import (
     gurfil_kasdin_fitness,
     table_interleaved_to_state,
 )
+from cyclerfinder.data.preflight import MethodCapability, preflight_search
 from cyclerfinder.search.niching_ga import (
     DeterministicCrowdingConfig,
     run_deterministic_crowding,
 )
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "found" / "581_niching_ga"
+
+_REGION_ID = "gurfil-kasdin-2002-geocentric-er3bp-581-stage2-positive-control-2026-07-12"
+_METHOD = MethodCapability(
+    genome=(
+        "Gurfil & Kasdin (2002) geocentric pulsating ER3BP objective (Eq. 15, "
+        "core/er3bp_geocentric.py) evaluated by deterministic-crowding niching GA "
+        "(search/niching_ga.py) at the paper's own Table 1/2 constants and bounds"
+    ),
+    corrector=(
+        "no corrector -- reproduces the paper's own published Table 3/4 families "
+        "as a positive control for the niching mechanism, not a novel-orbit search"
+    ),
+    capability_tags=frozenset(
+        {"er3bp", "geocentric", "niching-ga", "positive-control", "sun-earth"}
+    ),
+    git_sha="working-tree",
+)
 
 S2 = math.sqrt(2.0)
 S3 = math.sqrt(3.0)
@@ -443,6 +461,19 @@ def main() -> None:
     ap.add_argument("--workers", type=int, default=14)
     ap.add_argument("--analyze", action="store_true", help="analyze finished sets")
     args = ap.parse_args()
+    preflight_search(
+        task_no=581,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=len(TABLE2),
+        override_reason=(
+            "positive-control reproduction of Gurfil & Kasdin (2002)'s own published "
+            "Table 3/4 families -- validates the niching-GA mechanism against a known "
+            "answer, not an unbudgeted discovery sweep; #581 stage 2 explicitly gated "
+            "from stage 3 (novel-target search)"
+        ),
+    )
     if args.analyze:
         analyze()
     elif args.set is not None:
