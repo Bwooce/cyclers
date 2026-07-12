@@ -2146,6 +2146,74 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   hide a basin — and apply the standing sweep-singleton-artifact rule
   ([[feedback_isolated_sweep_flips_suspect_artifact]]) to any isolated closure flip inside an
   otherwise-contiguous branch: investigate, don't count at face value.
+  **✓ Resolved (2026-07-12).** Generalized `scripts/probe_572_titan_iapetus_3d_closure.py` into
+  `scripts/run_573_titan_iapetus_population_closure.py` (reuses the validated #572 core --
+  `iapetus_state_3d`, `_leg_best`, the rotation algebra, the inc=0 smoke test, unmodified -- only
+  the dedup/guard logic is new) and ran it as ONE synchronous foreground call over all 69
+  Titan-anchored `physical_gate_passed=True` candidates from `data/scan_571_saturn_titan_iapetus.jsonl`
+  (n_rev split 26x(0,0)/40x(1,1)/3x(2,2), matching the #572 adjudication's count). **Runtime: 42.2 s
+  total** (0.26-0.94 s/candidate), far under the 10-minute cap; results incrementally checkpointed
+  (append+flush) to `data/probe_573_titan_iapetus_population_closure.jsonl`.
+  **Branch dedup (item 1):** implemented as union-find proximity clustering of every genuine closing
+  basin found across all 69 runs, merging two closures iff same n_rev AND Omega* within 5 deg
+  (periodic) AND tof_scale* within 0.05 AND V_inf(mid) within 0.10 km/s. Verified this collapses the
+  known-adjacent grid runs the Fable review flagged directly: the 18 candidates at
+  (n_rev=(1,1), tof_scale=2.5, rel_offset=156-173) all found the SAME shallow non-gate-passing basin
+  and correctly produced zero duplicated closures; separately, 8 genuinely-adjacent contiguous runs
+  (rel338-340, rel88-90, rel319-320, rel183-185, rel57-58, rel121-122, rel37-38, rel228-229) each
+  correctly merged into ONE multi-member branch (2-3 members apiece) rather than being double-counted.
+  Two branches (ids 2/19 and 4/14) are exact z-mirror-reflection duplicates (Omega differing by
+  ~180.00 deg, IDENTICAL V_inf/bend magnitudes -- confirmed analytically: the 3D rotation algebra is
+  invariant under (u -> u+180, Omega -> Omega+180) up to a sign flip on z, so these are two genuinely
+  distinct out-of-plane (above/below-primary-plane) 3D geometries, not aliasing artifacts) --
+  reported as-is (22), consistent with the project's own #563 precedent of counting symmetric
+  partners as distinct family members, not collapsed further.
+  **Result: 22 DISTINCT BRANCHES** (33 raw closing-basin instances from 28/69 candidates, deduped to
+  22), spanning **all 3 n_rev classes** ((0,0): 12 branches, (1,1): 7 branches, (2,2): 3 branches),
+  of which **17/22 are eccentricity-robust** (Iapetus/flyby-body bend, the middle of the 3-element
+  `max_bend_deg_per_encounter` array, >= 6.0 deg -- the margin surviving a worst-case +0.16 km/s
+  eccentric perturbation); the 5 non-robust branches all hug the 5.0-5.4 deg floor.
+  **DECISION BUCKET: REAL_FAMILY_SIGNAL** (22 >= 5 distinct branches, 3 >= 2 n_rev classes,
+  17 >= 3 eccentricity-robust -- clears the threshold by a wide margin on all three axes).
+  **Phase 2 (118 Iapetus-anchored candidates) is NOT mandated** by this result (only required for
+  the marginal bucket); still a defensible, cheap follow-up but not executed here per scope.
+  **Load-bearing caveat, found during this run and worth carrying forward:** the #572-confirmed
+  robust-core "cand1" (rel_offset 254/255/256/257, tof_scale=1.8, n_rev=(1,1) -- #572's
+  *highest-margin* tested candidate, genuine closure at residual 1.7e-9 km/s under #572's own fixed
+  +-15 deg window) surfaces in THIS run as a **formulation-conditional non-closure** (boundary-pinned)
+  rather than a counted genuine closure, for all 4 grid points in that group (3 pinned basins each).
+  Root cause verified directly: the true 2D (Omega, tof_scale) joint minimum (Omega=30.91) sits in a
+  33.6 deg gap between two raw-grid-detected basins (16.5 deg and 50.1 deg), and the item-2 adaptive
+  window is correctly narrowed by a WEAK unrelated third basin 17.6 deg away, so neither seed's window
+  reaches the true minimum -- exactly the box-edge-pin scenario item 4 anticipates. This means the
+  22-branch count is a **conservative undercount** (a known-genuine closure is missing from it, not a
+  false positive padding it), which if anything strengthens the REAL_FAMILY_SIGNAL verdict. The
+  OTHER #572 candidate ("cand2", rel_offset=88-90, tof_scale=0.7, n_rev=(0,0)) IS correctly recovered
+  here as genuine closure branch id 6 (Omega*=37.36, V_inf=[2.34,1.21,2.34], bend=10.38 deg, 3
+  members merged), matching #572's own reported values closely.
+  **Guards triggered:** 0/69 candidates hit the 12-basin refinement cap (max seen: 9 basins, at
+  several n_rev=(1,1)/(2,2) candidates); 20 basins total flagged formulation-conditional
+  (boundary-pinned), concentrated at the #572 cand1 group (10 of the 20) plus scattered singles
+  elsewhere -- reported, not silently dropped, not counted as closures; 0 `LambertGeometryError` and
+  0 `LambertConvergenceError` raised across the full grid (69 x 3600 Omega samples x 2 legs each,
+  ~497k Lambert solves) -- the retry path exists but was never exercised, consistent with #572's own
+  finding at 2 candidates; 0 isolated singleton closure flips flagged by
+  `detect_isolated_singleton_anomalies` across all contiguous (n_rev, tof_scale) rel_offset runs of
+  length >=3 (the 18-point rel156-173 run and all others were closure-boolean-consistent throughout).
+  **Framing (mandatory): quasi-cycler-class evidence, same standing as #312's own family (V2 fails on
+  drift by design), NOT a ballistic cycler, NOT a novelty claim** -- this is an internal fact about
+  our own idealized circular-inclined search space, not a literature/novelty claim; the
+  eccentricity/duty-cycle gap to real ephemeris (Titan/Iapetus e~=0.028, vs the Uranian moons'
+  e<=0.004) remains completely unaddressed by this probe, per the #572 adjudication note's own
+  "still genuinely unknown" caveat. **Did NOT** run the 118 Iapetus-anchored candidates, scope/build
+  the 3D corrector, edit `catalogue.yaml`/`empty_regions.jsonl`, or run the V-gauntlet, per scope.
+  **This is a factual population-rate finding only** -- full Opus + Fable go/no-go adjudication on
+  whether to scope the #552-rescoped 3-5 day Titan-Iapetus 3D corrector is the next step, not
+  performed here. Artifacts: `scripts/run_573_titan_iapetus_population_closure.py`,
+  `data/probe_573_titan_iapetus_population_closure.jsonl` (full basin-by-basin record, all 69
+  candidates + population summary). `uv run pytest tests/data/test_outstanding_structure.py -q`
+  clean; ruff clean; `data/empty_regions.jsonl`/`catalogue.yaml` untouched so the full data/search
+  ratchet suite is not required.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
