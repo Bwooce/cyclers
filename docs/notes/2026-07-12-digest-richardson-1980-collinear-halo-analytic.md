@@ -111,18 +111,40 @@ one):
 of μ includes the mass of the Moon"), `a1 = 1.49598e8 km`, `A_z = 1.25e5 km`
 (the specific amplitude Table I's derived constants are evaluated at).
 
+**CORRECTION (2026-07-12, #580):** the table below was originally
+transcribed via a single Claude-vision pass and contained several errors,
+caught while building task #580's golden test by (a) re-extracting the
+page's embedded PDF text layer directly (`pdftotext -layout`, exact,
+non-OCR) and (b) cross-checking against an independent third-party
+implementation of the same paper's Appendix I
+(`jacobwilliams/Fortran-Astrodynamics-Toolkit`'s `halo_orbit_module.f90`).
+Confirmed errors in the original transcription: `λ_L3` was mistranscribed as
+`3.22729` (actually `1.00000`; that value is literally `k_L1`, apparently
+copy-pasted into the wrong cell), `k_L1` had a digit transposition
+(`3.22729` vs the correct `3.22927`), `c3_L2` was missing its minus sign
+(the table's L2 column carries `(-1)^n` through `c_n`, so odd-`n` `c3`, `s1`,
+`l1`, `a1`, `d31` are negative at L2), `s2`'s exponent was `e1` instead of
+`e-1` for L1/L2, `l1_L3` had a digit transposition (`-1.57177e-5` vs the
+correct `-1.57717e-5`), and the `a24`/`b21`/`b32`/`d21`/`d31` rows were
+missing a `e-1`/`e-2` scale factor for one or more columns. The table below
+is the corrected, doubly-verified transcription (max relative deviation
+between this table and this implementation's live output —
+`search/cr3bp_seed_generator.py::richardson_halo_coefficients`, see #580 —
+is ~4e-6 across all 84 cells, consistent with Table I's 6-significant-figure
+publication precision).
+
 | constant | L1 (period 177.704 d) | L2 (period 180.145 d) | L3 (period 365.255 d) |
 |---|---|---|---|
 | γ_L | 1.00109e-2 | 1.00782e-2 | 9.99998e-1 |
-| λ | 2.08645 | 2.05701 | 3.22729 |
-| k | 3.22729 | 3.18723 | 2.00000 |
+| λ | 2.08645 | 2.05701 | 1.00000 |
+| k | 3.22927 | 3.18723 | 2.00000 |
 | Δ | 2.92214e-1 | 2.90785e-1 | 2.66029e-6 |
 | c2 | 4.06107 | 3.94052 | 1.00000 |
-| c3 | 3.02001 | 2.97984 | 1.00000 |
+| c3 | 3.02001 | -2.97984 | 1.00000 |
 | c4 | 3.03054 | 2.97026 | 1.00000 |
 | s1 | -8.24661e-1 | -7.44452e-1 | -1.59141e-6 |
-| s2 | 1.21099e1 | 1.25047e1 | 6.29433e-6 |
-| l1 | -1.59656e1 | -1.48288e1 | -1.57177e-5 |
+| s2 | 1.21099e-1 | 1.25047e-1 | 6.29433e-6 |
+| l1 | -1.59656e1 | -1.48288e1 | -1.57717e-5 |
 | l2 | 1.74090 | 1.67369 | 1.40258e-5 |
 | a1 (coef) | -8.78563 | -8.52882 | -1.25889e-5 |
 | a2 (coef) | 6.86546e-1 | 6.15466e-1 | 1.43702e-6 |
@@ -131,16 +153,16 @@ of μ includes the mass of the Moon"), `a1 = 1.49598e8 km`, `A_z = 1.25e5 km`
 | a21 | 2.09270 | -2.05304 | 5.00000e-1 |
 | a22 | 2.48298e-1 | -2.51646e-1 | 2.50000e-1 |
 | a23 | -9.05965e-1 | 8.96284e-1 | -4.99999e-1 |
-| a24 | -1.04464 | 1.06600 | -2.49999e-1 |
+| a24 | -1.04464e-1 | 1.06600e-1 | -2.49999e-1 |
 | a31 | 7.93820e-1 | 7.80646e-1 | 3.75000e-1 |
 | a32 | 8.26854e-2 | 8.36960e-2 | 1.25000e-1 |
-| b21 | -4.92446 | 4.91357 | -2.50000e-1 |
+| b21 | -4.92446e-1 | 4.91357e-1 | -2.50000e-1 |
 | b22 | 6.07465e-2 | -6.27190e-2 | 2.49998e-1 |
 | b31 | 8.85701e-1 | 8.55305e-1 | 2.91666e-1 |
-| b32 | 2.30198e-1 | 2.04354e-1 | -1.24999e-1 |
-| d21 | -3.46865e-2 | 3.52118e-2 | -4.99999e-1 |
-| d31 | 1.90439e-1 | 1.88290e-1 | 2.53854e-7 |
-| d32 | 3.98095e-1 | 3.94052e-1 | 3.74999e-1 |
+| b32 | 2.30198e-2 | 2.04354e-2 | -1.24999e-1 |
+| d21 | -3.46865e-1 | 3.52118e-1 | -4.99999e-1 |
+| d31 | 1.90439e-2 | 1.88290e-2 | 2.53854e-7 |
+| d32 | 3.98095e-1 | 3.94028e-1 | 3.74999e-1 |
 
 Also quantitative in prose: `A_x minimum` for the bifurcation (`A_z=0`
 boundary, Eq. 22) is "about 14% of the normalized distance r1" for Sun-Earth
@@ -164,6 +186,14 @@ coefficients that generate these curves analytically — reading the plots
 would be redundant digitization of data already available in closed form).
 
 ## 6. Relevance to the cyclerfinder codebase (context for the Fable review)
+
+**UPDATE (2026-07-12, #580): this gap is now filled.**
+`search/cr3bp_seed_generator.py::richardson_halo_coefficients` /
+`richardson_halo_ic` / `richardson_halo_seed` implement exactly the
+construction described below, golden-tested against this digest's (now
+corrected, see §4) Table I. The framing below is left as historical context
+for why the task was scoped this way; see `data/OUTSTANDING.md`'s #580
+resolution note for the implementation summary.
 
 - The codebase already has an extensive CR3BP halo/vertical-Lyapunov capability:
   `search/cr3bp_seed_generator.py::lyapunov_seed_3d` (numeric seed generation)
