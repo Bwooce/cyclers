@@ -434,6 +434,138 @@ def test_new_corpus_anchors_registered() -> None:
     assert "Hiraiwa" in em_authors  # Hiraiwa lobe dynamics
 
 
+# ---------------------------------------------------------------------------
+# #578: Russell & Strange 2009 ("Cycler Trajectories in Planetary Moon
+# Systems," DOI 10.2514/1.36610) self-validation. Three new per-pair
+# CorpusAnchors (Ganymede-Io, Ganymede-Europa, Ganymede-Callisto) plus one
+# Saturnian anchor (Titan-Enceladus) close the #577-diagnosed gap: a
+# Ganymede-Io / Titan-Enceladus candidate must now be flagged "published",
+# and -- the explicit point of using THREE separate per-pair anchors rather
+# than one body_set union -- an Io-Callisto candidate must NOT collide with
+# any of them (Io-Callisto is genuinely absent from R-S's own Table 1).
+# ---------------------------------------------------------------------------
+
+_RS_2009_HITS: list[SearchResult] = [
+    SearchResult(
+        title="Cycler Trajectories in Planetary Moon Systems",
+        url="https://doi.org/10.2514/1.36610",
+        snippet="Russell and Strange present an enumerative ideal-model "
+        "search for planetary moon cycler trajectories, generalizing the "
+        "Aldrin repeated-encounter free-return cycler to intermoon "
+        "shuttles: Ganymede-flyby ballistic cyclers targeting Europa and "
+        "Callisto in the Jovian system, and a Titan-flyby ballistic moon "
+        "cycler targeting Enceladus in the Saturnian system.",
+    ),
+]
+
+
+def _rs_2009_search(query: str) -> Sequence[SearchResult]:
+    """Deterministic ranker over ONLY the #578 R-S 2009 hit.
+
+    Deliberately excludes ``_REAL_CORPUS`` (which contains the pre-existing
+    Hernandez/Jones/Jesick IEG hit -- a Ganymede-Io candidate's body-overlap
+    with "Io-Europa-Ganymede" would ambiguously out-score the R-S hit and
+    the test would no longer prove the NEW anchor is reachable). This test
+    isolates the R-S 2009 corpus expansion specifically.
+    """
+    q_terms = {t for t in _tokenise(query) if len(t) > 2}
+    out: list[tuple[int, SearchResult]] = []
+    for r in _RS_2009_HITS:
+        text_terms = set(_tokenise(r.title + " " + r.snippet))
+        overlap = len(q_terms & text_terms)
+        if overlap >= 2:
+            out.append((overlap, r))
+    out.sort(key=lambda t: t[0], reverse=True)
+    return [r for _, r in out]
+
+
+RS_GANYMEDE_IO_SIG = CandidateSignature(
+    primary="Jupiter",
+    sequence=("Ganymede", "Io", "Ganymede"),
+    topology_label=frozenset({"repeated-moon"}),
+    vinf_per_encounter_kms=(4.1, 2.4),
+)
+
+RS_TITAN_ENCELADUS_SIG = CandidateSignature(
+    primary="Saturn",
+    sequence=("Titan", "Enceladus", "Titan"),
+    topology_label=frozenset({"repeated-moon"}),
+    vinf_per_encounter_kms=(3.0, 1.5),
+)
+
+RS_IO_CALLISTO_SIG = CandidateSignature(
+    primary="Jupiter",
+    sequence=("Io", "Callisto", "Io"),
+    topology_label=frozenset({"repeated-moon"}),
+    vinf_per_encounter_kms=(4.8, 3.2),
+)
+
+
+@pytest.mark.parametrize(
+    "sig",
+    [RS_GANYMEDE_IO_SIG, RS_TITAN_ENCELADUS_SIG],
+    ids=["ganymede-io", "titan-enceladus"],
+)
+def test_russell_strange_2009_double_cyclers_flagged_published(
+    sig: CandidateSignature,
+) -> None:
+    """R-S 2009 Galilean (Ganymede-Io) and Saturnian (Titan-Enceladus)
+    double-cycler candidates must now be flagged ``published`` -- the #577
+    false-clear this task's new anchors exist to close."""
+    result = check_literature(sig, search=_rs_2009_search)
+    assert result.status == "published", (
+        f"R-S 2009 double-cycler candidate not flagged as published: {result}"
+    )
+    assert result.citation, "published verdict must carry a citation"
+    blob = (result.citation + " " + (result.matched_url or "") + " " + (result.doi or "")).lower()
+    assert "russell" in blob or "10.2514/1.36610" in blob, (
+        f"citation does not point at Russell-Strange 2009: {result.citation!r}"
+    )
+    assert result.confidence >= 0.70
+    assert not is_novelty_claimable(result.to_review_block())
+
+
+def test_russell_strange_2009_anchors_registered() -> None:
+    """Direct registration check: 3 Jovian + 1 Saturnian per-pair anchors."""
+    from cyclerfinder.search.literature_check import KNOWN_CORPUS
+
+    rs_anchors = {a.key: a for a in KNOWN_CORPUS if a.doi == "10.2514/1.36610"}
+    assert set(rs_anchors) == {
+        "russell-strange-2009-ganio",
+        "russell-strange-2009-ganeur",
+        "russell-strange-2009-gancal",
+        "russell-strange-2009-titenc",
+    }
+    assert rs_anchors["russell-strange-2009-ganio"].body_set == frozenset({"Ganymede", "Io"})
+    assert rs_anchors["russell-strange-2009-ganeur"].body_set == frozenset({"Ganymede", "Europa"})
+    assert rs_anchors["russell-strange-2009-gancal"].body_set == frozenset({"Ganymede", "Callisto"})
+    assert rs_anchors["russell-strange-2009-titenc"].body_set == frozenset({"Titan", "Enceladus"})
+    assert rs_anchors["russell-strange-2009-titenc"].primary == "Saturn"
+    for anchor in rs_anchors.values():
+        assert anchor.topology_label == frozenset({"repeated-moon"})
+        assert anchor.provenance == "verified-against-source"
+
+
+def test_io_callisto_does_not_collide_with_russell_strange_anchors() -> None:
+    """Io-Callisto is genuinely absent from R-S 2009 Table 1's enumerated pair
+    set (#576/#577) -- confirm it structurally collides with NONE of the 3
+    new Jovian per-pair anchors (the whole point of adding THREE separate
+    per-pair anchors instead of one body_set union: a union of all 4
+    Galilean moons would have made Io-Callisto ALSO collide, which is
+    exactly what this test guards against)."""
+    from cyclerfinder.search.literature_check import _candidate_anchors
+
+    rs_hits = [a for a in _candidate_anchors(RS_IO_CALLISTO_SIG) if a.doi == "10.2514/1.36610"]
+    assert rs_hits == [], f"Io-Callisto structurally collided with an R-S 2009 anchor: {rs_hits}"
+
+    # And end-to-end: the same corpus that flags Ganymede-Io/Titan-Enceladus
+    # as published must NOT flag Io-Callisto as published via R-S 2009.
+    result = check_literature(RS_IO_CALLISTO_SIG, search=_rs_2009_search)
+    assert result.status != "published", (
+        f"Io-Callisto incorrectly flagged published via the R-S 2009 corpus: {result}"
+    )
+
+
 def test_review_entry_signature_roundtrip() -> None:
     from cyclerfinder.search.literature_check import signature_from_review_entry
 

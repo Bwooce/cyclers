@@ -100,6 +100,25 @@ class CitationClaim:
     system: str
     bodies: frozenset[str]
     author_surnames: frozenset[str]
+    is_family_seed: bool = False
+    """True for a catalogue "family seed" placeholder row (id/name convention
+    ``"... (family seed)"`` / ``"... (family seed entry)"``): an intentionally
+    PAPER-LEVEL summary row (``legs: []``, all-null ``vinf_kms_at_encounters``)
+    documenting a whole work pending per-member ingestion, not a specific
+    cycler's claim. Per #578: Russell & Strange 2009's Saturnian family seed
+    (``russell-strange-2009-saturnian-multimoon-family``) honestly claims all
+    6 Saturnian moons the paper's multi-moon Titan-flyby cyclers pass through
+    as science targets (digest ``docs/notes/2026-06-30-digest-russell-
+    strange-2009-planetary-moon-cyclers.md``), but #578 registered only ONE
+    Saturnian anchor (Titan-Enceladus -- R-S's only Table-1-enumerated
+    repeated-moon PAIR; #578's own scope explicitly excludes adding a
+    per-pair anchor for every science-target moon). A family-seed row's
+    author+system correctness is still checked (the actual hallucination-
+    prevention core -- the Galilean-vs-VEM regression this ratchet exists
+    for is a SYSTEM mismatch, not a body-count mismatch); only the strict
+    body-superset check is relaxed, since by the row's own documented intent
+    it is a broader-than-any-single-anchor placeholder, not a point claim.
+    """
 
 
 @dataclass(frozen=True)
@@ -141,32 +160,58 @@ def _anchor_represents_claim(anchor: CorpusAnchor, claim: CitationClaim) -> bool
 
 
 def check_citation_integrity(claim: CitationClaim) -> list[IntegrityViolation]:
-    """Assert ``claim.bodies`` are a subset of every cited work's bodies.
+    """Assert ``claim.bodies`` are covered by the strong-linked cited work(s).
 
-    Returns one :class:`IntegrityViolation` per anchor the claim cites whose
-    sourced ``body_set`` does NOT contain all the claim's bodies. An empty list
-    means the claim is body/system-consistent with the published record it
-    cites (or cites nothing pinned in KNOWN_CORPUS, which is not a violation --
-    only a positive containment failure is).
+    Returns a non-empty list iff the claim names a body no strong-linked
+    anchor attests. Coverage is checked against the UNION of every anchor
+    that strong-links to the claim (same author-surname-subset + system),
+    not each anchor in isolation: #578 established the pattern of registering
+    SEVERAL narrow per-pair ``CorpusAnchor``s for a single paper (Russell &
+    Strange 2009's Jovian per-pair anchors -- deliberately NOT one body_set
+    union, so a candidate cycler search never falsely collides an
+    unenumerated pair like Io-Callisto against the whole family; see
+    ``search/literature_check.py``'s ``_candidate_anchors`` docstring). A
+    catalogue "family seed" row legitimately describing the WHOLE paper
+    (e.g. ``russell-strange-2009-jovian-multimoon-family``, claiming all 4
+    Galilean moons) is correctly covered by the union of its several
+    per-pair anchors even though no SINGLE one of them spans the full body
+    set -- that is not a mis-citation, it is the intended multi-anchor
+    pattern. Only a body genuinely absent from every strong-linked anchor's
+    body_set is a real violation. An empty list also covers "cites nothing
+    pinned in KNOWN_CORPUS", which is not a violation -- only a positive
+    containment failure is.
     """
+    primary = _claim_primary(claim)
+    matched = [anchor for anchor in KNOWN_CORPUS if _anchor_represents_claim(anchor, claim)]
+    if not matched:
+        return []
+    if claim.is_family_seed:
+        # A family-seed row's author+system correctness is exactly what
+        # ``matched`` (non-empty) already proves; its body list is an
+        # intentionally paper-level placeholder, not a specific claim to
+        # hold to strict per-anchor(-union) containment. See
+        # CitationClaim.is_family_seed.
+        return []
+    anchor_bodies_by_name = {
+        anchor.name: _norm_bodies(anchor.body_set, primary) for anchor in matched
+    }
+    union_bodies: frozenset[str] = frozenset().union(*anchor_bodies_by_name.values())
+    uncovered = claim.bodies - union_bodies
+    if not uncovered:
+        return []
     violations: list[IntegrityViolation] = []
-    for anchor in KNOWN_CORPUS:
-        if not _anchor_represents_claim(anchor, claim):
-            continue
-        anchor_bodies = _norm_bodies(anchor.body_set, _claim_primary(claim))
-        extra = claim.bodies - anchor_bodies
-        if extra:
-            violations.append(
-                IntegrityViolation(
-                    claim_id=claim.claim_id,
-                    anchor_name=anchor.name,
-                    claim_system=claim.system,
-                    claim_bodies=tuple(sorted(claim.bodies)),
-                    anchor_system=anchor.system_grounded,
-                    anchor_bodies=tuple(sorted(anchor_bodies)),
-                    extra_bodies=tuple(sorted(extra)),
-                )
+    for anchor in matched:
+        violations.append(
+            IntegrityViolation(
+                claim_id=claim.claim_id,
+                anchor_name=anchor.name,
+                claim_system=claim.system,
+                claim_bodies=tuple(sorted(claim.bodies)),
+                anchor_system=anchor.system_grounded,
+                anchor_bodies=tuple(sorted(anchor_bodies_by_name[anchor.name])),
+                extra_bodies=tuple(sorted(uncovered)),
             )
+        )
     return violations
 
 
@@ -194,6 +239,7 @@ def _claim_from_row(row: dict) -> CitationClaim:  # type: ignore[type-arg]
         system=system_for_primary(primary),
         bodies=_norm_bodies(row.get("bodies"), primary),
         author_surnames=surs,
+        is_family_seed="family seed" in str(row.get("name", "")).lower(),
     )
 
 

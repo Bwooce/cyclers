@@ -643,6 +643,142 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "(Jovian moon-system paper; NOT the heliocentric VEM AAS 17-577).",
         doi=None,
     ),
+    # -----------------------------------------------------------------------
+    # Russell & Strange 2009, "Cycler Trajectories in Planetary Moon Systems"
+    # (JGCD 32(1):143-157, DOI 10.2514/1.36610) -- #578. THREE separate
+    # per-pair anchors for the Jovian side + one Saturnian anchor, NOT one
+    # anchor unioning all four Galilean moons: `_candidate_anchors` requires
+    # ``seq_set <= anchor.body_set`` (~line 1856), so a single
+    # {Io,Europa,Ganymede,Callisto} anchor would ALSO collide an Io-Callisto
+    # candidate against it -- exactly the false clear this task exists to
+    # avoid (#577 found Io-Callisto structurally clears every existing
+    # anchor; R-S's own Table 1 never enumerates that pair). Each anchor's
+    # body_set is deliberately the single R-S-enumerated pair.
+    #
+    # Grounded from BOTH the on-disk digest
+    # (docs/notes/2026-06-30-digest-russell-strange-2009-planetary-moon-
+    # cyclers.md, itself read page-by-page from the acquired text-layer PDF)
+    # AND the 30 already-catalogued ``russell-strange-2009-*`` member rows
+    # (task #491 ingestion) carrying real sourced V_inf/period/sequence from
+    # R-S's own Tables 3/5 -- catalogue ids russell-strange-2009-ganio-{53,
+    # 185,403}, -ganeur-{5,43,316}, -gancal-{1,5} (Jovian, 10 rows across the
+    # 3 pairs below) and russell-strange-2009-titenc-{37,145,...,631} (20
+    # Saturnian rows, all Titan-Enceladus). provenance="verified-against-
+    # source" per #486: both the digest and the catalogue rows were read
+    # directly off the source PDF's Tables 1/3/5, not inherited from a prior
+    # note.
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Russell-Strange 2009 Ganymede-Io ideal-model moon cycler",
+        primary="Jupiter",
+        body_set=frozenset({"Ganymede", "Io"}),
+        # R-S's free-return architecture IS the (k1, k2) repeated-moon
+        # shuttle paradigm (Aldrin-class, generalised to intermoon).
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Ganymede Io cycler",
+            "planetary moon cycler",
+            "ideal model ballistic cycler",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in "
+        "Planetary Moon Systems,' Journal of Guidance, Control, and "
+        "Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 "
+        "Jovian ideal model: Ganymede-flyby -> Io target; Table 3 members "
+        "ganio-53/185/403 (russell-strange-2009-ganio-* catalogue rows).",
+        doi="10.2514/1.36610",
+        key="russell-strange-2009-ganio",
+        year=2009,
+        title="Cycler Trajectories in Planetary Moon Systems",
+        venue="Journal of Guidance, Control, and Dynamics 32(1):143-157",
+        provenance="verified-against-source",
+        system="jovian",
+    ),
+    CorpusAnchor(
+        name="Russell-Strange 2009 Ganymede-Europa ideal-model moon cycler",
+        primary="Jupiter",
+        body_set=frozenset({"Ganymede", "Europa"}),
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Ganymede Europa cycler",
+            "planetary moon cycler",
+            "ideal model ballistic cycler",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in "
+        "Planetary Moon Systems,' Journal of Guidance, Control, and "
+        "Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 "
+        "Jovian ideal model: Ganymede-flyby -> Europa target (and the "
+        "reverse Europa-flyby -> Ganymede direction); Table 3 members "
+        "ganeur-5/43/316 and eurgan-131/159 (russell-strange-2009-ganeur-*/"
+        "-eurgan-* catalogue rows).",
+        doi="10.2514/1.36610",
+        key="russell-strange-2009-ganeur",
+        year=2009,
+        title="Cycler Trajectories in Planetary Moon Systems",
+        venue="Journal of Guidance, Control, and Dynamics 32(1):143-157",
+        provenance="verified-against-source",
+        system="jovian",
+    ),
+    CorpusAnchor(
+        name="Russell-Strange 2009 Ganymede-Callisto ideal-model moon cycler",
+        primary="Jupiter",
+        body_set=frozenset({"Ganymede", "Callisto"}),
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Ganymede Callisto cycler",
+            "planetary moon cycler",
+            "ideal model ballistic cycler",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in "
+        "Planetary Moon Systems,' Journal of Guidance, Control, and "
+        "Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 "
+        "Jovian ideal model: Ganymede-flyby -> Callisto target; Table 3 "
+        "members gancal-1/5 (russell-strange-2009-gancal-* catalogue rows).",
+        doi="10.2514/1.36610",
+        key="russell-strange-2009-gancal",
+        year=2009,
+        title="Cycler Trajectories in Planetary Moon Systems",
+        venue="Journal of Guidance, Control, and Dynamics 32(1):143-157",
+        provenance="verified-against-source",
+        system="jovian",
+    ),
+    CorpusAnchor(
+        name="Russell-Strange 2009 Titan-Enceladus ideal-model moon cycler",
+        primary="Saturn",
+        body_set=frozenset({"Titan", "Enceladus"}),
+        # NOT the same object as the Davis-Phillips-McCarthy Saturnian Ocean
+        # Worlds anchor below (also {Titan, Enceladus}, primary="Saturn"):
+        # that paper's families are tulip-shaped Titan orbits + Enceladus
+        # NRHO halos (topology_label={"tulip","halo","nrho"}), NOT a
+        # repeated-moon free-return shuttle. The #349 topology_label
+        # intersection keeps the two anchors from cross-matching despite the
+        # shared body_set -- the same discrimination #349 built for the
+        # Cassini-Huygens Titan-pump tour vs an (k1,k2) repeated-moon
+        # candidate.
+        topology_label=frozenset({"repeated-moon"}),
+        authors=("Russell", "Strange"),
+        keywords=(
+            "Titan Enceladus cycler",
+            "Saturnian moon cycler",
+            "ideal model ballistic cycler",
+        ),
+        citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in "
+        "Planetary Moon Systems,' Journal of Guidance, Control, and "
+        "Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 "
+        "Saturnian ideal model: Titan-flyby -> Enceladus target (Titan is "
+        "the ONLY Saturnian flyby body R-S consider massive enough for the "
+        "assist); Table 4/5 carries 20 catalogued members "
+        "(russell-strange-2009-titenc-* catalogue rows, e.g. TitEnc#235).",
+        doi="10.2514/1.36610",
+        key="russell-strange-2009-titenc",
+        year=2009,
+        title="Cycler Trajectories in Planetary Moon Systems",
+        venue="Journal of Guidance, Control, and Dynamics 32(1):143-157",
+        provenance="verified-against-source",
+        system="saturnian",
+    ),
     CorpusAnchor(
         name="Strange/Campagnola/Russell moon-tour & V-infinity-leveraging",
         primary="Jupiter",
