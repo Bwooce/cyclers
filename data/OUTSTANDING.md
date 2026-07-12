@@ -3132,6 +3132,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   further digest edit needed. **Recommended model:** Sonnet (mechanical relabel + scope re-derivation
   behind existing ratchets; the #287/#301 re-audit needs a closer read but is not itself a
   discovery-judgment call). Run `uv run pytest tests/data tests/search -q` before commit.
+  **✓ Resolved (2026-07-12), commit `194da55`.** Anchor relabeled to "Antoniadou & Libert spatial
+  resonant periodic orbits in the RTBP (2019)", `authors=("Antoniadou","Libert")`,
+  `doi="10.1093/mnras/sty3195"`, matching the twin `known_corpus_3d.py` anchor; false "1:1" scope
+  claim removed, replaced with the real MMR list (3/2, 2/1, 5/2, 3/1, 4/1, 5/1). Investigated the
+  newly-acquired Antoniadou-Voyatzis-Varvoglis 2014 IAU paper (1:1 co-orbital) as a possible fix but
+  deliberately did NOT cite it — general (non-restricted) TBP model, a model-class mismatch with this
+  restricted-problem anchor. Re-audit (`docs/notes/2026-07-12-579-anchor-fix-and-287-reaudit.md`):
+  #299's "clean rediscovery, no novelty claims warranted" (1,1) verdict reopened as inconclusive — no
+  anchor currently covers restricted-problem Earth-Moon 1:1 spatial resonance; no catalogue row was
+  ever written back from that lineage, so nothing needs retracting. #301's separate 0/145 k=3-6
+  sub-family verdict is unaffected (rests on other, correctly-cited anchors). `ruff`/`mypy` clean,
+  full `pytest tests/data tests/search -q` green. Commit was co-swept with a concurrent #581 commit
+  by a git-index race (documented honestly in that commit's message); content independently verified
+  identical to the #579 agent's own work.
 
 - **#580** (P2) — Richardson-1980 analytic third-order halo-seed generator. **Origin:** user
   supplied `richardson-1980-analytic-construction-periodic-orbits-collinear-points-celest-mech-22-
@@ -3160,6 +3174,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   lane that needs a halo starting point. **Recommended model:** Sonnet (spec-complete TDD behind a
   sourced golden). Not gated on user pre-approval (pure capability addition, no search/discovery
   claim), but flag the result when done.
+  **✓ Resolved (2026-07-12), commit `af13056`.** Added `richardson_halo_coefficients` /
+  `richardson_halo_ic` / `richardson_halo_seed` to `search/cr3bp_seed_generator.py` — closed-form,
+  iteration-free `(mu, point, amplitude_z, branch) -> halo IC`. 18 golden tests validate λ, k,
+  c2-c4, s1/s2, l1/l2, and a sample of the Appendix I coefficients against Richardson's Table I at
+  Sun-Earth μ=3.04036e-6 for L1/L2/L3. **Along the way, caught and fixed 9 transcription errors in
+  the digest's own Table I** (wrong signs, wrong exponents, digit transpositions, a cell swap),
+  verified against the source PDF's text layer plus an independent third-party implementation
+  (`jacobwilliams/Fortran-Astrodynamics-Toolkit`) — digest and `CORPUS_INDEX.md` corrected in place.
+  **Seed-comparison result (Fable's mandated check, honest either way):** at amplitude_z=0.08
+  (Earth-Moon L1), the existing linear vertical-Lyapunov seed fails to reach a non-planar solution
+  while the Richardson seed converges cleanly in 5-9 iterations — a genuine, reproducible advantage
+  in the regime the existing seed's own code comments document as fragile. `ruff`/`mypy` clean
+  (one real mypy `no-any-return` finding fixed post-hoc — two `float()` casts on Legendre-coefficient
+  expressions), full `pytest tests/data tests/search -q` green.
 
 - **#581** (P2/P3, exploratory — flagged for user review before dispatch, NOT auto-fired) — a
   Gurfil-Kasdin-2002-style niching-GA search layer, staged and gated on a positive control.
