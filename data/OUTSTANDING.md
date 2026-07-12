@@ -2510,26 +2510,75 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   pipeline (inclination closure test, population widening, eccentricity kill-gate, Saturn
   V2-V4-strict gauntlet) that was already built and validated this session — all of that
   machinery is reusable as-is, only the discovery-search stage (the #571-equivalent step) needs
-  to be redone correctly. **Positive control**: verify the re-derived Titan-Rhea search (the
-  OTHER #571 pair, V0-known via Russell-Strange adjacency) still recovers a sensible result under
-  the corrected symmetric method, as a sanity check the new search isn't systematically
-  under- or over-constraining relative to what #571 originally found for that pair.
+  to be redone correctly.
+  **FABLE PLAN REVIEW (2026-07-12): CONFIRMED WITH CORRECTIONS — core proposal sound, T_syn
+  concept verified to transfer cleanly (generic two-body formula, no Uranus-specific assumption;
+  Titan-Iapetus T_syn≈19.96d from sourced periods), #571's omission confirmed as a plain
+  oversight not a justified exclusion. Four corrections, two load-bearing, MANDATORY before
+  dispatch:**
+  **(C1 — replaces the weak positive control) Titan-Rhea is NOT a usable positive control —
+  it's structurally unfalsifiable** (its only anchor, #320's internal basin, sits at
+  rel_offset=285°, which the symmetric {0°,180°} construction cannot recover by design, and it
+  has no symmetric-class golden of its own). **Use a proper method golden instead**: genericize
+  `scripts/enumerate_563_symmetric_closures.py` (currently hardcodes `PRIMARIES["Uranus"]`; the
+  gate functions it imports already take `primary=` since #571's own genericization) and require
+  EXACT reproduction of the known Uranian symmetric-closure table — at minimum #312 itself
+  (Umbriel-Oberon n=5, n_rev=(1,1), V∞=0.965, residual ≤1e-13) and its n=7 sibling; the full
+  30-closure run is only 8.1s, reproduce all of it. This validates the genericization end-to-end
+  against a real machine-precision golden, matching #571's own discipline for `scan_558`.
+  **(C2) Add a two-sided multi-cycle repeat-instrumentation control**, using the per-cycle
+  transfer-angle check already built in `run_574_stageB_saturn_gauntlet.py`, at e=0 (cheap,
+  seconds): (a) POSITIVE — every new symmetric candidate must repeat identical geometry to
+  machine precision BY CONSTRUCTION; (b) NEGATIVE — a known-bad #571 candidate (e.g. branch 1,
+  documented 117.6°/78.0°/38.3° drift) must NOT repeat. This directly tests the property whose
+  absence killed #574, at the discovery stage instead of after the whole pipeline is spent.
+  Also cheaply cross-check: scan #571's original 187 candidates for any within tolerance of
+  rel_offset∈{0°,180°} AND commensurate tof — any such point must also appear in the new
+  enumeration (an empty intersection is itself informative, supporting outcome (b) below).
+  **(C3 — LOAD-BEARING) The reused pipeline's refinement stages can silently walk a genuinely
+  symmetric candidate BACK OFF the commensurate manifold, reproducing 0/15 after all the compute
+  is spent, indistinguishable from a real negative.** #573's Nelder-Mead refines tof_scale in a
+  ±0.1 box (≈±3.6 days, vs T_syn/2≈10 days) and #574 Stage A's continuation refines tof_scale in
+  its 4D space — BOTH against a single-cycle closure residual, the exact criterion class that
+  produced the original #571 artifact. Do NOT hard-fix tof at exactly n·T_syn/2 (the true
+  inclined/eccentric periodic solution's tof isn't exactly that value — hard-fixing would
+  false-kill genuine candidates); INSTEAD: (i) report a commensurability-drift diagnostic
+  (|tof − n·T_syn/2| per branch) after every #572/#573 refinement step and every #574 Stage A
+  continuation step; (ii) re-run the C2 multi-cycle check after each refinement stage, not just
+  at the end, so periodicity loss is caught immediately rather than only surfacing at Stage B's
+  V2 gate.
+  **(C4) Framing addendum**: Titan/Iapetus's real eccentricity (≈0.028 each, non-resonant pair,
+  period ratio ≈4.975) causes apsidal-phase precession cycle-to-cycle that the T_syn
+  commensurability condition alone doesn't lock — 7-25× stronger than the negligible Uranian
+  effect. A C2-verified genuine symmetric candidate CAN still fail or quasi-bound Stage B's real
+  V2 multi-cycle check under real eccentricity — that outcome means "real perturbations degrade
+  a genuine cycle" (legitimate quasi-cycler-class evidence, same standing as #312) and must NOT
+  be misread as "the symmetric method also failed."
+  **Numbers, pinned (Fable-derived from #571's own verified data, not assumed) — do not leave to
+  implementer judgment**: n_rev ∈ {0,1,2,3}² (16 combos, matches #563's own `N_REV_MAX` and
+  spans the (0,0)/(1,1)/(2,2) classes that actually appeared in the Titan-Iapetus population);
+  n ceiling = 10, derived as `floor(2·tof_scale_max·√(P_Titan·P_Iapetus)/T_syn)` with
+  tof_scale_max=3.0 (VERIFIED against `scan_571_*.jsonl`'s own meta record — its actual tested
+  tof_scale grid tops out at 3.00, not assumed). Total search space: 2 directions × 10 × 16 × 2
+  rel_offset = 640 candidates, seconds of compute.
+  **Positive control**: per C1 above (Titan-Rhea demoted to an unlabeled tertiary smoke test
+  only, if included at all — it is NOT the primary validation).
   **Honest possible outcomes, pre-registered:** (a) a genuine symmetric Titan-Iapetus family
   exists and survives the full pipeline — worth the investment; (b) no symmetric closures exist
   at all for this pair (the earlier 69/22/15 population was ENTIRELY an artifact of the weaker
   closure criterion, not a hint of a real family) — a clean, valuable negative closing this
   specific pair for good; (c) symmetric closures exist but are few/marginal — re-adjudicate scope
   at that point, same as every prior stage in this chain. **Explicitly out of scope:** any new
-  V4-strict/gauntlet code changes (reuse #574's Saturn chain verbatim); `catalogue.yaml` edits;
-  re-running Titan-Rhea's OWN candidates through the full pipeline (it's V0-known, not
-  novelty-eligible — the positive-control check above is sufficient, don't gauntlet it).
+  V4-strict/gauntlet code changes (reuse #574's Saturn chain verbatim — `TitanIapetusClosureParams`
+  confirmed generic enough to accept symmetric-construction candidates without modification, only
+  a schema/loader pointer change since `run_573...` currently hardcodes `SCAN_571_PATH` and
+  #571's exact output field names); `catalogue.yaml` edits; re-running Titan-Rhea's OWN
+  candidates through the full pipeline (it's V0-known, not novelty-eligible).
   **Recommended models:** Sonnet for the direct-construction search + reuse of existing gate/
   pipeline machinery (mechanical, spec-complete, matches #563's own precedent exactly). Opus +
   Fable for adjudicating any surviving family before it proceeds through the reused pipeline
   stages, and again before any catalogue writeback — same two-model discipline this whole chain
-  has used throughout. **REQUIRED: a Fable second-opinion pass on this plan before dispatch**
-  (this thread is 7-for-7 on real Fable catches; do not skip the check just because the method
-  being proposed — #563's — is itself already validated).
+  has used throughout.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
