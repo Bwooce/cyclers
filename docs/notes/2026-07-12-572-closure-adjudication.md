@@ -86,9 +86,18 @@ The #572 probe cost **1.00 s (cand1) and 0.25 s (cand2)** wall-clock — the ful
 in the JSONL `elapsed_s` fields). The relevant population is modest:
 `data/scan_571_saturn_titan_iapetus.jsonl` carries **69 coplanar-gate-passing
 Titan-anchored candidates** (all `physical_gate_passed=True` records are Titan-
-anchored; n_rev split 26×(0,0), 40×(1,1), 3×(2,2)). Even the broader "187 flagged"
-inclination-corrected set (the assessment's §2 population, which includes candidates
-that fail the *coplanar* gate but pass after correction) runs in minutes at ~1 s each.
+anchored; n_rev split 26×(0,0), 40×(1,1), 3×(2,2)).
+
+**CORRECTION (Fable plan review, 2026-07-12): the sentence originally here was
+factually wrong.** It claimed the broader "187 flagged" inclination-corrected set
+"includes candidates that fail the *coplanar* gate but pass after correction" — this
+is impossible. The worst-case quadrature correction only INCREASES Iapetus V∞ (it
+adds an out-of-plane penalty in quadrature), so it can only ever REMOVE candidates
+from the coplanar-gate-passing set, never add one that failed it. The 149
+worst-case-survivors are therefore a strict SUBSET of the 187 flagged, both of which
+are themselves the union of the 69 Titan-anchored + 118 Iapetus-anchored
+coplanar-gate-passers — not a separate, broader population. See #573's own entry in
+`data/OUTSTANDING.md` for the corrected population framing.
 
 So the entire population-level closure rate can be measured **synchronously in a
 single sub-10-minute run** — this is not a multi-day sweep. It is the same cheap-

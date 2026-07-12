@@ -2093,6 +2093,59 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   caught real load-bearing issues at essentially every stage (including the wrong-exemplar-candidate
   bug in #572's own plan and the max_bend triage inversion in #565); do not dispatch #573 without
   it.
+  **FABLE PLAN REVIEW (2026-07-12): CONFIRMED WITH CORRECTIONS — one factual error, one
+  load-bearing grid-aliasing gap (same failure class as #562), several precision fixes. All
+  folded into scope below; dispatch only with these applied.**
+  **(1) Input population — RESOLVED, use all 69 Titan-anchored gate-passers, no pre-filtering.**
+  The "187/149 set" framing was based on a FACTUAL ERROR in
+  `docs/notes/2026-07-12-572-closure-adjudication.md` §4 (it claimed some candidates fail the
+  coplanar gate but pass after correction — impossible; the worst-case quadrature correction only
+  INCREASES Iapetus V∞, so 149 is a strict subset of the 187, never an alternative). Correct that
+  note. The only genuinely additional population beyond the 69 Titan-anchored is the **118
+  Iapetus-anchored** candidates (already scoped as an optional phase 2) — make phase 2 MANDATORY
+  if the Titan-anchored result lands in the "marginal" bucket (3), and note it requires a real
+  generator change (Iapetus becomes the ANCHOR with double-node phasing, not a parameter tweak).
+  **(2) Circular-inclined scoping is sound as a population-RATE estimate** (deferring eccentricity
+  doesn't systematically bias the rate — the modulation is phase-symmetric across a spread
+  population) but add one free, cheap analytic post-processing step: **report the count of closers
+  whose realized Iapetus bend is ≥6.0°** (the bend at V∞=1.62 km/s, i.e. the margin surviving a
+  worst-case +0.16 km/s eccentric shift, verified against sourced GM=120.515/r_p=834.3) as an
+  "eccentricity-robust" sub-count — makes bucket (3) below mechanical instead of vague.
+  **(3) LOAD-BEARING: the 69 records are grid samples along ~10 CONTINUOUS solution branches, not
+  69 independent candidates — dedup by branch before applying ANY count threshold, or the
+  decision gate is meaningless.** Verified directly: contiguous rel_offset runs (e.g. 18
+  consecutive 1°-spaced records at one (n_rev, tof_scale) combo) chain across tof_scale steps at a
+  consistent drift, wrapping at the 360° seam — exactly the #562 grid-aliasing failure mode.
+  WORSE: the probe's Nelder-Mead refinement window (±0.1 tof_scale) is WIDER than the input grid
+  spacing (0.05), so neighboring grid records will silently refine to the IDENTICAL closure and
+  get double-counted as if independent. **Required fix**: cluster closers by grid adjacency in
+  (n_rev, tof_scale, rel_offset) with 360° wraparound AND/OR dedup refined solutions by proximity
+  in (Ω*, tof_scale*, V∞); state the decision gate in DISTINCT BRANCHES, not raw record counts.
+  **Concrete branch-deduped thresholds** (calibrated against the #558/#563 Uranian precedent, ~5
+  closures/pair, and against the known robust core = exactly 2 branches):
+  - **≥5 distinct gate-passing branches, ≥2 n_rev classes, ≥3 eccentricity-robust (bend ≥6.0°)**
+    → real family; scope the corrector per the adjudication note's §6 deliverable shape.
+  - **≤2 closing branches** (i.e. only the already-#572-tested robust core) → adds nothing new;
+    re-adjudicate whether 2 members alone justify the build (likely no).
+  - **3-4 branches, OR ≥5 but <3 eccentricity-robust** → marginal: mandatory phase 2
+    (Iapetus-anchored) before adjudicating, and/or flag the eccentricity gap as likely dominant.
+  **(4) Cost estimate arithmetic was WRONG but the conclusion holds**: "1.00s + 0.25s/candidate"
+  misread #572's two candidates' INDIVIDUAL wall-clocks as a base+marginal formula. Correct:
+  69 × ≤1s ≈ ≤70s core, comfortably sub-10-minutes even with a 5-10x basin-count blowup on
+  pathological candidates. Keep incremental per-candidate JSONL checkpointing regardless (stall
+  visibility + partial-result survival).
+  **(5) Four at-scale methodology guards required in the generalized probe script** (the #572
+  machinery was hand-verified on 2 candidates only, not battle-tested at 69×3600 samples):
+  (a) cap basin refinement at ~12 deepest basins/candidate, log when the cap binds; (b) set the
+  Nelder-Mead window to min(15°, half-distance to the nearest adjacent grid-minima) and
+  post-verify the refined solution stayed within its seed basin's grid support, flagging (not
+  silently counting) any that didn't; (c) record NM runs that pin at a box edge as
+  formulation-conditional non-closures, distinct from genuine non-closures, per this project's
+  own formulation-conditional discipline; (d) track `LambertGeometryError` occurrences across the
+  full grid (untested at this scale in #572) so a solver-domain NaN band can't silently split or
+  hide a basin — and apply the standing sweep-singleton-artifact rule
+  ([[feedback_isolated_sweep_flips_suspect_artifact]]) to any isolated closure flip inside an
+  otherwise-contiguous branch: investigate, don't count at face value.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
