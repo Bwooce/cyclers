@@ -104,8 +104,9 @@ class CandidateSignature:
     candidate is treated as out-of-anchor-scope iff the two bands are disjoint.
     ``None`` (the historical default) preserves the old behaviour: no period
     filter, the anchor's structural-fingerprint footprint dominates. Used by
-    #301 to escape the Antoniadou-Voyatzis 2018 anchor's low-integer scope when
-    the candidate sits at a period-multiplied (k>1) sub-family.
+    #301 to escape the Antoniadou-Libert 2019 anchor's low-integer scope
+    (#579 relabel; was mislabeled "Antoniadou-Voyatzis 2018") when the
+    candidate sits at a period-multiplied (k>1) sub-family.
     """
 
     topology_label: frozenset[str] = frozenset()
@@ -310,8 +311,9 @@ class CorpusAnchor:
     When set, a candidate whose ``period_band_tu_min`` lies outside this band is
     treated as out-of-scope for the anchor (the anchor is NOT used to flag it
     a rediscovery). ``None`` (default) means the anchor has no period-scope
-    restriction. Used by #301 to filter the Antoniadou-Voyatzis 2018 anchor's
-    low-integer-resonance scope away from the period-multiplied Neimark-Sacker
+    restriction. Used by #301 to filter the Antoniadou-Libert 2019 anchor's
+    (#579 relabel; was mislabeled "Antoniadou-Voyatzis 2018") low-integer-
+    resonance scope away from the period-multiplied Neimark-Sacker
     sub-families at T_TU ~ 20-44.
     """
 
@@ -1518,30 +1520,64 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
     # -----------------------------------------------------------------------
     # #287 follow-up — spatial CR3BP corpus (rediscovered by the 3D-Aldrin
     # scoping spike at z0 = -0.241 nondim, ~93,000 km out-of-plane).
+    #
+    # #579 CORRECTION (2026-07-12): this anchor was mislabeled "Antoniadou-
+    # Voyatzis ... (2018)" with doi=None. arXiv:1811.09442 is actually
+    # Antoniadou & LIBERT 2019 (MNRAS 483(3):2923, DOI 10.1093/mnras/sty3195)
+    # -- Voyatzis is not an author of that paper. Relabeled to match the
+    # already-correct twin anchor in genome/known_corpus_3d.py (fixed by
+    # #459 / commit 0b1528f). The paper's real published catalogue covers
+    # MMRs 3/2, 2/1, 5/2, 3/1, 4/1, 5/1 at mu=0.001 (Jupiter-mass planetary,
+    # NOT Earth-Moon ICs) and explicitly excludes asymmetric/isolated spatial
+    # families -- it does NOT cover 1:1 resonance. The prior "1:1" scope claim
+    # and the "anchor for #287's (1,1) family (likely rediscovery)" framing
+    # were both wrong and have been removed; see
+    # docs/notes/2026-07-12-579-anchor-fix-and-287-reaudit.md for the re-audit
+    # of the #287/#299 "likely rediscovery" verdict this bug fed into.
     # -----------------------------------------------------------------------
     CorpusAnchor(
-        name="Antoniadou-Voyatzis spatial resonant periodic orbits in CR3BP (2018)",
+        name="Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
         primary="Earth",  # spike work; catalogue applies more generally
         body_set=frozenset({"Moon"}),
         # #350: 'Spatial Resonant Periodic Orbits' = resonant family.
         topology_label=frozenset({"resonant"}),
-        authors=("Antoniadou", "Voyatzis"),
+        authors=("Antoniadou", "Libert"),
         keywords=(
             "spatial resonant periodic orbit",
             "3D CR3BP family",
             "out-of-plane Lyapunov-vertical family",
             "spatial three-body resonant periodic orbit",
         ),
-        citation="Antoniadou & Voyatzis, 'Spatial Resonant Periodic Orbits "
-        "in the Restricted Three-Body Problem,' (2018); arXiv:1811.09442. "
-        "Anchor for #287's 3D Braik-Ross (1,1) family extension (likely "
-        "rediscovery target).",
-        doi=None,
+        citation="Antoniadou, K. I. & Libert, A.-S., 'Spatial resonant "
+        "periodic orbits in the restricted three-body problem,' MNRAS "
+        "483(3):2923-2940 (2019); DOI 10.1093/mnras/sty3195; "
+        "arXiv:1811.09442. Covers MMRs 3/2, 2/1, 5/2, 3/1, 4/1, 5/1 at "
+        "mu=0.001 (planetary, not Earth-Moon); explicitly does NOT cover "
+        "1:1 resonance or asymmetric/isolated spatial families. Does NOT "
+        "on its own establish #287's 3D Braik-Ross (1,1) family extension "
+        "as a rediscovery -- see #579 re-audit note.",
+        doi="10.1093/mnras/sty3195",
         # The paper's published catalogue covers low-integer p:q resonant
-        # orbits (typically 1:1, 2:1, 3:2) in the spatial CR3BP. Their families
-        # sit at T_TU under ~15. The #299 Neimark-Sacker sub-families at T_TU
-        # 20-44 are period-multiplied (k=3-6) derivatives that are outside the
-        # paper's scope -- treat them as not-anchored on AV-2018 alone.
+        # orbits at MMRs 3/2, 2/1, 5/2, 3/1, 4/1, 5/1 (NOT 1:1) in the
+        # spatial CR3BP. Their families sit at T_TU under ~15. The #299
+        # Neimark-Sacker sub-families at T_TU 20-44 are period-multiplied
+        # (k=3-6) derivatives that are outside the paper's scope -- treat
+        # them as not-anchored on this anchor alone. A 1:1-resonance
+        # candidate (e.g. #287's own family) is ALSO out of this anchor's
+        # scope, but the (primary, body_set, topology_label, period_band_tu)
+        # matcher fields below cannot express that MMR-level distinction --
+        # only this comment records it. No anchor in the corpus currently
+        # covers RESTRICTED-problem (CR3BP) Earth-Moon 1:1 spatial resonance
+        # (#579 audit, 2026-07-12). Antoniadou, Voyatzis & Varvoglis (2014,
+        # Proc. IAU 9:82-83, DOI 10.1017/S1743921314007893) IS now acquired
+        # into the corpus and is topically the closest 1:1-resonance paper,
+        # but it is deliberately NOT cited here: it studies the spatial
+        # GENERAL three-body problem (both bodies massive; its own text says
+        # "we utilize the spatial general TBP"), not the restricted problem
+        # this anchor and cyclerfinder's candidates live in. Citing a
+        # general-TBP paper to clear a restricted-problem candidate would be
+        # the same model-class mismatch #579 was opened to fix -- see
+        # docs/notes/2026-07-12-579-anchor-fix-and-287-reaudit.md.
         period_band_tu=(0.0, 15.0),
     ),
     # -----------------------------------------------------------------------
