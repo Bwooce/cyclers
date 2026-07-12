@@ -118,6 +118,7 @@ from scan_558_uranus_all_pairs_offset_sweep import GATE_RESIDUAL_KMS  # noqa: E4
 
 from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryError  # noqa: E402
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES  # noqa: E402
+from cyclerfinder.data.preflight import MethodCapability, preflight_search  # noqa: E402
 from cyclerfinder.search.discovery_campaign import (  # noqa: E402
     DAY_S,
     _mean_motion_rad_day,
@@ -131,6 +132,25 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
 DATA_DIR = ROOT / "data"
 PROBE_573_PATH = DATA_DIR / "probe_573_titan_iapetus_population_closure.jsonl"
 OUT_PATH = DATA_DIR / "probe_574_titan_iapetus_eccentric_kill_gate.jsonl"
+
+_REGION_ID = "saturn-titan-iapetus-574-stageA-eccentric-kill-gate-2026-07-12"
+_METHOD = MethodCapability(
+    genome=(
+        "eccentric-Keplerian re-check (Stage A kill-gate) of the #573 22-branch circular "
+        "closure family -- continuation in eccentricity (e: 0 -> real Titan/Iapetus values) "
+        "from each known circular branch, refining (Omega, tof_scale, M0_Titan, M0_Iapetus)"
+    ),
+    corrector=(
+        "reuses #572/#573's Lambert-closure + #324 physical-gate machinery unmodified; "
+        "adds a Kepler eccentric-anomaly state propagator (verified via an e=0 "
+        "positive-control reduction to the #573 circular results) and the 4D "
+        "continuation/refinement loop on top"
+    ),
+    capability_tags=frozenset(
+        {"lambert", "3d-closure", "saturn", "titan", "iapetus", "eccentric", "kill-gate"}
+    ),
+    git_sha="working-tree",
+)
 EMPTY_REGIONS_PATH = DATA_DIR / "empty_regions.jsonl"
 
 # --- Eccentricity sourcing (see module docstring) -- mandated by the #574
@@ -592,6 +612,19 @@ def main() -> int:
     t_start = time.time()
     sha = _git_sha()
     print(f"[574A] Titan-Iapetus ECCENTRIC-Keplerian kill gate -- sha={sha}", flush=True)
+
+    preflight_search(
+        task_no=574,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=22,
+        override_reason=(
+            "read-only eccentric re-check of the #573 22-branch closure set "
+            "(continuation from known solutions, 6.8s measured total) -- a kill-gate "
+            "check, not an unbudgeted discovery sweep"
+        ),
+    )
 
     print(
         "[574A] smoke test: kepler_state_3d reduces to _moon_state/iapetus_state_3d at e=0 ...",

@@ -79,6 +79,7 @@ from scan_558_uranus_all_pairs_offset_sweep import GATE_RESIDUAL_KMS  # noqa: E4
 
 from cyclerfinder.core.lambert import LambertConvergenceError, LambertGeometryError  # noqa: E402
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES  # noqa: E402
+from cyclerfinder.data.preflight import MethodCapability, preflight_search  # noqa: E402
 from cyclerfinder.data.sweep_diagnostics import detect_isolated_singleton_anomalies  # noqa: E402
 from cyclerfinder.search.discovery_campaign import DAY_S, _mean_motion_rad_day  # noqa: E402
 from cyclerfinder.search.physical_sanity import (  # noqa: E402
@@ -88,6 +89,25 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
 
 DATA_DIR = ROOT / "data"
 SCAN_571_PATH = DATA_DIR / "scan_571_saturn_titan_iapetus.jsonl"
+
+_REGION_ID = "saturn-titan-iapetus-573-population-3d-closure-2026-07-12"
+_METHOD = MethodCapability(
+    genome=(
+        "widened 3D node-alignment closure probe over the full 69 Titan-anchored, "
+        "coplanar-gate-passing #571 candidates -- generalizes #572's 2-candidate probe "
+        "with branch dedup, adaptive Nelder-Mead windows, basin-cap/boundary-hit/"
+        "geometry-error tracking, and the sweep-singleton-artifact guard"
+    ),
+    corrector=(
+        "reuses #572's core 3D Lambert-closure machinery unmodified "
+        "(iapetus_state_3d, _leg_best, node-alignment rotation algebra); "
+        "adds only at-scale guard/dedup logic on top"
+    ),
+    capability_tags=frozenset(
+        {"lambert", "3d-closure", "saturn", "titan", "iapetus", "moontour", "node-alignment"}
+    ),
+    git_sha="working-tree",
+)
 OUT_PATH = DATA_DIR / "probe_573_titan_iapetus_population_closure.jsonl"
 
 N_OMEGA = 3600
@@ -453,6 +473,18 @@ def main() -> int:
     t_start = time.time()
     sha = _git_sha()
     print(f"[573] Titan-Iapetus 3D-closure POPULATION probe -- sha={sha}", flush=True)
+
+    preflight_search(
+        task_no=573,
+        region_id=_REGION_ID,
+        method=_METHOD,
+        script_path=Path(__file__),
+        n_points=69,
+        override_reason=(
+            "read-only closure re-check of an already-enumerated #571 candidate set "
+            "(69 points, ~1s/candidate measured in #572) -- not an unbudgeted discovery sweep"
+        ),
+    )
 
     print("[573] smoke test: iapetus_state_3d reduces to _moon_state at inc=0 ...", flush=True)
     smoke_ok = _smoke_test_reduction()
