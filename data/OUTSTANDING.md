@@ -2649,6 +2649,35 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   `uv run pytest tests/scripts/test_enumerate_563_symmetric_closures.py
   tests/scripts/test_probe_575_repeat_check.py tests/genome/test_titan_iapetus_corrector.py
   tests/data/test_saturn_v2v3v4_gauntlet.py -q` — 21 passed.
+  **FINAL ADJUDICATION (2026-07-12, Opus — culminating trust-bearing call, advisor tool was
+  unavailable so decided on the full read of #571-#575 + raw probe data): STOP. Clean,
+  method-conditional negative; Titan-Iapetus symmetric-closure thread CLOSED.** Wrote
+  `docs/notes/2026-07-12-575-titan-iapetus-final-adjudication.md` and stamped
+  `data/empty_regions.jsonl` region `saturn-titan-iapetus-symmetric-closure-inclination-empty-575`.
+  Core reasoning: (1) The near-misses are robustly infeasible, not tantalizing — read directly
+  from the probe jsonl: Stage-1 (Omega+tof-free continuation) closes a single cycle to machine
+  precision but then DIVERGES by up to 2.44M km (~2× Titan's orbital radius) over 3 cycles, with
+  tof drifting 0.23%–11.6% off commensurate; the two n=10 seeds lose Lambert feasibility past
+  cycle 0. Stage-1b (zero-tof-drift, Omega-only, Omega landing on the 0/180° symmetric axis)
+  cannot null even a ~6–21 m/s per-cycle discontinuity. That is a ~12-order-of-magnitude gap from
+  the Uranian coplanar 4e-15 km/s — a different object, not "harder to close." (2) The negative is
+  TRUSTWORTHY not a broken filter: the same pipeline reproduces the Uranian golden bit-for-bit AND
+  the 9 coplanar Titan-Iapetus closures repeat to machine precision — it finds genuine repeating
+  cyclers when they exist. (3) Honest Uranian comparison = a genuinely DIFFERENT regime, not the
+  same correction harder: Umbriel-Oberon mutual inclination ~0.1–0.2° (coplanar model near-exact,
+  inclination a negligible correction) vs Titan-Iapetus mutual inclination ~15° (coplanar model
+  never a good starting point, inclination a leading-order effect). (4) The one method not tried —
+  a from-scratch node-locked inclined symmetric construction — is a structurally DISCONNECTED
+  family unreachable by continuation from coplanar seeds; it is essentially the #552 general
+  3D/inclined build KILLED 2026-07-10, has low expected yield (a marginal inclined family must
+  still survive the #574 eccentricity kill-gate + Saturn gauntlet that already killed 0/15 of the
+  #571 population, with 7-25× stronger eccentricity than Uranus), and is not novelty-eligible. The
+  entire #572→#575 probe sequence WAS the cheap gate deciding whether the #552 build is worth
+  scoping; the gate has now returned a robust negative twice (eccentricity via #574, inclination
+  alone via #575), so building the very thing the gate was designed to gate would invert the
+  thread's discipline. Recorded as the named, method-versioned re-open CONDITION in the registry
+  (per the "empty is method-conditional" rule), NOT dispatched — #576 stays next-unused. NOT a
+  novelty claim, NO `catalogue.yaml` edit; quasi_cycler-class evidence, same standing as #312.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
