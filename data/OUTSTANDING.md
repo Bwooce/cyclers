@@ -2401,6 +2401,24 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   step: the C6 A->B transition gate** (docs/notes write-up done here; still needs one Fable pass
   specifically on whether Stage A was executed AS PRE-REGISTERED before any Stage B dispatch —
   not performed by this run) — NOT run here, out of this task's scope.
+  **C6 TRANSITION GATE (2026-07-12): CONFIRMED — Fable independently re-verified C1
+  (parameterization), C2 (positive control), and C3 (counting discipline) against the actual
+  script and raw jsonl (not just the write-up); all three hold, PASS verdict correctly derived,
+  no material deviations. Clear to proceed to Stage B.**
+  **STAGE B KERNEL FETCH (2026-07-12): DONE, verified.** `sat441.bsp` (631 MB) fetched from NAIF's
+  public archive to `~/dev/references/kernels/sat441.bsp` with explicit user confirmation
+  (filename/source/size stated first, per this project's download-permission discipline).
+  Verified as the current, correct kernel — no successor covers Titan/Iapetus (checked the
+  newer-numbered sat455/456/457/459 kernels on NAIF's server; they cover only unrelated
+  small/irregular moons discovered 2020-2023) and JPL SSD's own ephemerides page names SAT441 as
+  current (Jacobson 2022, AJ 164:199-217). Download integrity verified (exact expected byte
+  count, 661592064 bytes, correctly typed as a NASA SPICE binary). **Post-fetch coverage
+  verification per C4 (not just trusting the filename)**: loaded via `spiceypy` in the project's
+  own venv, `spkobj()` + `spkcov()` independently confirm both Titan (NAIF 606) and Iapetus (NAIF
+  608) are present with coverage 1749-12-29 to 2250-01-05 — vastly exceeds any plausible
+  validity_window epoch range. **Next step: build the real V1-V4-strict-equivalent Saturn
+  validation chain + productize the #573/#574 corrector, per Stage B's remaining scope
+  (items 1 and 3 below) — not yet started.**
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
