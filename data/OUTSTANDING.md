@@ -2969,23 +2969,63 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   `{pump-tour,mga-tour}` labels the repeated-moon filter excludes) produced a FALSE structural
   clear for the Io-Callisto pair in #577; it is a live false-negative generator for any future
   Jovian double-cycler screen (per [[project_negative_results_registry]] /
-  [[feedback_bugfix_invalidates_past_searches]]). **Scope:** (1) add a `CorpusAnchor` for R-S 2009
-  (10.2514/1.36610) with `primary="Jupiter"`, `topology_label=frozenset({"repeated-moon"})`,
-  `body_set` = the Galilean moons (or at minimum R-S Table 1's enumerated pairs
-  Ganymede-Io/Ganymede-Europa/Ganymede-Callisto/Europa-Ganymede), grounded from the on-disk digest
-  `docs/notes/2026-06-30-digest-russell-strange-2009-planetary-moon-cyclers.md` (provenance
-  `verified-against-source`), and confirm all six #576 pairs then collide correctly (Io-Callisto no
-  longer false-clears); (2) extend the existing `tests/search/test_literature_check.py`
-  self-validation with an R-S-2009 Galilean double-cycler signature asserting `status="published"`;
-  (3) register the Galilean symmetric-closure region (all 6 pairs, #563 direct-construction method)
-  in `data/empty_regions.jsonl` as literature-covered known-adjacent (R-S 2009 double-cyclers +
-  Liang 2024/Hernandez 2017 triple-cyclers + Strange/Petropoulos/Niehoff pump-tours), NOT
-  novelty-bearing, mirroring the #575 Titan-Iapetus stamp. **Explicitly out of scope:** any
-  `catalogue.yaml` edit; running #576's pipeline stages; re-running the #576 search. **Run ALL
-  ratchets** on any corpus/registry change (`uv run pytest tests/data tests/search -q`) per
-  [[feedback_catalogue_edits_run_all_ratchets]]. **Recommended models:** Sonnet for the mechanical
-  anchor addition + test + registry stamp behind the existing ratchets; a **Fable** second-opinion
-  on the spec before dispatch (this chain is 9-for-9 on real Fable catches — do not skip).
+  [[feedback_bugfix_invalidates_past_searches]]).
+  **CORRECTION (2026-07-12, user-prompted re-check — "we've done this a few times... ensure the
+  reference IDs are correct"): the "missing from corpus" framing UNDERSTATED how well-known this
+  material already is, and the fix must be stronger than #577's original scope.** Independently
+  re-verified: DOI 10.2514/1.36610 is confirmed genuinely absent from `literature_check.py`'s
+  `KNOWN_CORPUS` (grepped the source directly, zero hits) — #577's core diagnosis stands. But
+  `data/catalogue.yaml` ALREADY carries **30 individual Russell-Strange 2009 rows** (task #491
+  ingestion; ids `russell-strange-2009-eurgan-131/159`, `-gancal-1/5`, `-ganeur-5/43/316`,
+  `-ganio-53/185/403` for the 10 Jovian members, plus 20 Saturnian Titan-Enceladus members), each
+  with real sourced V∞/sequence/period from R-S's own Tables 3/5, `validation_level: V0`,
+  `orbit_class: cycler`. This is a MORE authoritative "already known" signal than a missing
+  corpus anchor — the project has not merely read this paper, it has already catalogued dozens of
+  its specific members. Cross-checked #576's actual 36 closures' V∞ against these 10 Jovian rows
+  directly: no exact V∞ match (different specific family members at the same pair-directions, not
+  literal duplicate rows) — consistent with R-S's own "hundreds of geometries" claim, and with
+  #577's topology-class-match conclusion (known-CLASS-member, not exact duplicate). Confirmed
+  Io-Callisto genuinely has NO catalogue row among the 10 Jovian R-S entries — supports #577's
+  characterization that R-S itself never enumerated this pair (a real gap in the published Table
+  1, not just a `KNOWN_CORPUS` omission) — do not read the eventual anchor-fix as implying
+  Io-Callisto should suddenly collide falsely; it's a genuinely different, smaller-literature-risk
+  case than the other 5 pairs and should be labeled as such in the registry stamp, not folded in
+  as identically-covered.
+  **Scope (revised):** (1) add a `CorpusAnchor` for R-S 2009 (10.2514/1.36610) with
+  `primary="Jupiter"`, `topology_label=frozenset({"repeated-moon"})`, `body_set` = the Galilean
+  moons (or at minimum R-S Table 1's enumerated pairs Ganymede-Io/Ganymede-Europa/
+  Ganymede-Callisto/Europa-Ganymede), grounded from BOTH the on-disk digest
+  `docs/notes/2026-06-30-digest-russell-strange-2009-planetary-moon-cyclers.md` AND the 30
+  already-catalogued `russell-strange-2009-*` rows themselves (cite the specific catalogue ids as
+  additional provenance, not just the digest — the catalogue rows are the stronger source), and
+  confirm all six #576 pairs then collide correctly except Io-Callisto (which should remain a
+  distinct, lower-confidence case, not force-matched); (2) extend the existing
+  `tests/search/test_literature_check.py` self-validation with an R-S-2009 Galilean double-cycler
+  signature asserting `status="published"`; (3) **NEW, structural (the deeper fix this recurring
+  mistake pattern calls for)**: assess whether `literature_check.py` should cross-reference
+  `data/catalogue.yaml`'s own already-admitted `source: literature` rows directly (by DOI or id
+  prefix) as an additional, automatic novelty-check layer — NOT just the hand-maintained
+  `KNOWN_CORPUS` Python list — so that a paper whose members are ALREADY catalogued can never
+  again silently miss its `KNOWN_CORPUS` anchor and produce a false clear the way R-S/Io-Callisto
+  just did. Scope this as a design recommendation with a rough implementation sketch; a full
+  build is a judgment call for whoever reviews this task, not mandatory in this pass, but the
+  question must be answered, not skipped, given the user has flagged this as a recurring class of
+  mistake ("we've done this a few times"); (4) register the Galilean symmetric-closure region (5
+  of the 6 pairs — Io-Ganymede/Ganymede-Io, Europa-Ganymede/Ganymede-Europa, Ganymede-Callisto/
+  Callisto-Ganymede, Europa-Callisto/Callisto-Europa, Io-Europa/Europa-Io — all directly
+  R-S-covered) in `data/empty_regions.jsonl` as literature-covered known-class-member, NOT
+  novelty-bearing; **stamp Io-Callisto SEPARATELY** with weaker/different language (R-S-method
+  generated but not R-S-enumerated — a genuine, if narrow and low-value, literature gap, not a
+  confirmed-known result) rather than folding it into the same blanket stamp as the other 5.
+  **Explicitly out of scope:** any `catalogue.yaml` edit; running #576's pipeline stages;
+  re-running the #576 search. **Run ALL ratchets** on any corpus/registry change (`uv run pytest
+  tests/data tests/search -q`) per [[feedback_catalogue_edits_run_all_ratchets]]. **Recommended
+  models:** Sonnet for the mechanical anchor addition + test + registry stamp behind the existing
+  ratchets, and for the structural cross-reference design sketch; a **Fable** second-opinion on
+  the spec before dispatch (this chain is 9-for-9 on real Fable catches — do not skip), with
+  explicit instruction to re-verify the catalogue-row cross-check numbers above independently
+  before trusting them, matching [[feedback_corpus_check_index_not_filenames]] /
+  [[feedback_ground_citations_against_content]].
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
