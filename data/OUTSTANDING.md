@@ -1976,6 +1976,46 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   V-gauntlet itself. **Recommended models:** Sonnet for the throwaway 3D state-gen + Lambert
   closure probe (mechanical, behind the existing #324 gate). Opus + Fable for the go/no-go
   adjudication on whether a genuine 3D closure survived.
+  **RESULT (2026-07-12) — GENUINE 3D CLOSURE FOUND for BOTH candidates; hand off to Opus+Fable
+  adjudication next, not adjudicated here.** Built the throwaway 3D state generator
+  `scripts/probe_572_titan_iapetus_3d_closure.py` (Titan kept coplanar/equatorial per #571's
+  own convention; Iapetus placed on a real circular orbit inclined 15.5 deg via the standard
+  R3(Omega).R1(inc) orbital-plane rotation, ascending-node longitude `Omega` an explicit free
+  variable). Inline smoke test confirms the generator reduces EXACTLY to `_moon_state`'s
+  coplanar formula at inc=0 for any Omega (caught + fixed a rad/day-vs-rad/s velocity-unit bug
+  this way before the real search ran). **Node-alignment search:** fine 3600-point (0.1 deg)
+  grid over Omega at each candidate's own (rel_offset, tof_scale, n_rev), all local-minimum
+  basins in the residual-vs-Omega landscape enumerated (not just the single deepest one — a
+  first pass that seeded Nelder-Mead only from the global residual minimum landed on a
+  physically different high-V_inf branch, ~8.6 km/s, that fails the bend gate; the genuine
+  low-V_inf closure sits in a DIFFERENT, shallower-but-still-sub-gate basin the naive search
+  missed), each basin locally refined via a bounds-restricted Nelder-Mead (Omega +/-15 deg,
+  tof_scale +/-0.1, preventing branch-jumping) over (Omega, tof_scale) jointly. No
+  `LambertGeometryError` was raised at any of the 3600 Omega samples for either candidate (the
+  180-deg-singularity retry path was implemented but never exercised). **Cand 1** (rel_offset
+  255 deg, tof_scale 1.80, n_rev=(1,1)): closure at Omega=30.91 deg, tof_scale=1.793, residual
+  1.7e-9 km/s, V_inf [Titan-out 1.870, Iapetus 1.207, Titan-in 1.870] km/s, bends [45.47, 10.35,
+  45.47] deg (Iapetus encounter, the tight one, clears the 5 deg floor by >2x) — physical gate
+  PASS. **Cand 2** (rel_offset 89 deg, tof_scale 0.70, n_rev=(0,0)): closure at Omega=37.46 deg,
+  tof_scale=0.688, residual 2.0e-9 km/s, V_inf [2.307, 1.203, 2.307] km/s, bends [34.04, 10.41,
+  34.04] deg — physical gate PASS. Both realized V_inf sit ~20-35% above the coplanar seed
+  (consistent with the OUTSTANDING.md #552 revival-assessment's own analytic quadrature-sum
+  prediction, `sqrt(V_inf_coplanar^2 + 0.87^2)`, for the out-of-plane node penalty). Both
+  independently cross-checked with `saturn_uranus_campaign.dop853_cross_check_leg` (numerical
+  integration, NOT the analytic Lambert solve itself): arrival-position error 1.1e-5 to
+  1.2e-4 km, far under this project's standing <1 km cross-check floor — the closures are
+  genuine converged two-body conic arcs, not solver artifacts. **Decision-gate criterion used:**
+  residual < GATE_RESIDUAL_KMS (0.05 km/s, the same bar #558/#571 use everywhere) counts as
+  "near the coplanar residual"; both closing basins land at ~1e-9 km/s, far inside it. **Did NOT
+  touch `data/empty_regions.jsonl`** (only written on a NO-closure verdict per this task's own
+  scope) and did NOT edit `catalogue.yaml` or run the V-gauntlet, per scope. **Framing
+  (mandatory, per this entry's own note (3) above): this is quasi-cycler-class evidence, NOT a
+  "ballistic cycler" finding** — same standing as #312's own family, V2 fails on drift by
+  design. **This is a factual closure finding only — full Opus + Fable go/no-go adjudication on
+  whether to scope the #552 narrow Titan-Iapetus 3D corrector is the next step, not performed
+  here.** Artifacts: `scripts/probe_572_titan_iapetus_3d_closure.py`,
+  `data/probe_572_titan_iapetus_3d_closure.jsonl` (full basin-by-basin record for both
+  candidates). Ratchet suite not required (empty_regions.jsonl untouched); ruff clean.
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
