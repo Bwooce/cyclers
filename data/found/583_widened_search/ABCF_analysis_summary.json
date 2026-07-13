@@ -1,0 +1,196 @@
+{
+  "partition": "ABCF",
+  "band": "paper",
+  "families": {
+    "A": {
+      "family": "A",
+      "partition": "ABCF",
+      "matched": false,
+      "ic_rms_distance": 0.3146520450066041,
+      "ic_ok": false,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.16829386361830304,
+      "rmax_ratio": 0.0939017172817529,
+      "features_ok": false,
+      "member_fitness": 0.999999227150427,
+      "candidate": {
+        "rmin_km_1yr": 970984.404773298,
+        "rmax_km_1yr": 1102489.9212195943,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 969763.1896010169,
+        "rmax_km_5yr": 1106735.0535420117,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.029052735662332907,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.029052735662332907,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "B": {
+      "family": "B",
+      "partition": "ABCF",
+      "matched": false,
+      "ic_rms_distance": 0.07850089650618643,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.4431432205178597,
+      "rmax_ratio": 0.3371434988260554,
+      "features_ok": false,
+      "member_fitness": 0.999999227150427,
+      "candidate": {
+        "rmin_km_1yr": 970984.404773298,
+        "rmax_km_1yr": 1102489.9212195943,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 969763.1896010169,
+        "rmax_km_5yr": 1106735.0535420117,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.029052735662332907,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.029052735662332907,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "C": {
+      "family": "C",
+      "partition": "ABCF",
+      "matched": true,
+      "ic_rms_distance": 0.0011281107605860274,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.983777410998423,
+      "rmax_ratio": 0.9786313236333385,
+      "features_ok": true,
+      "member_fitness": 0.9999992271509492,
+      "candidate": {
+        "rmin_km_1yr": 970984.3695457994,
+        "rmax_km_1yr": 1102489.8398463447,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 969763.0908593433,
+        "rmax_km_5yr": 1106734.564711427,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.029052734381764367,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.029052734381764367,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "F": {
+      "family": "F",
+      "partition": "ABCF",
+      "matched": false,
+      "ic_rms_distance": 0.09046468707980614,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 4.391303969452628,
+      "rmax_ratio": 1.0028164376342663,
+      "features_ok": false,
+      "member_fitness": 0.9999989428911013,
+      "candidate": {
+        "rmin_km_1yr": 987604.2627298961,
+        "rmax_km_1yr": 1141382.6045372563,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179585,
+        "rmin_km_5yr": 986489.8372306944,
+        "rmax_km_5yr": 1141382.6045372563,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02929359640211182,
+          0.0,
+          0.0
+        ],
+        "theta0": 4.123340357333725,
+        "spatial": false,
+        "v0_norm": 0.02929359640211182,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    }
+  },
+  "reproduction_rate": "1/4",
+  "drift_classified": {
+    "checked": 200,
+    "bounded": 200
+  },
+  "theta0_spot_checks": {
+    "0": {
+      "per_phase_bounded": {
+        "6.237544883182104": true,
+        "8.3319399855753": true,
+        "10.426335087968495": true
+      }
+    },
+    "1": {
+      "per_phase_bounded": {
+        "5.448699876871868": true,
+        "7.543094979265064": true,
+        "9.637490081658258": true
+      }
+    },
+    "2": {
+      "per_phase_bounded": {
+        "5.448699758375503": true,
+        "7.543094860768699": true,
+        "9.637489963161894": true
+      }
+    },
+    "3": {
+      "per_phase_bounded": {
+        "4.71238898001896": true,
+        "6.806784082412156": true,
+        "8.90117918480535": true
+      }
+    },
+    "4": {
+      "per_phase_bounded": {
+        "5.446566567804772": true,
+        "7.540961670197968": true,
+        "9.635356772591162": true
+      }
+    }
+  }
+}

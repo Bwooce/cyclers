@@ -1,0 +1,85 @@
+{
+  "partition": "C",
+  "band": "paper",
+  "families": {
+    "C": {
+      "family": "C",
+      "partition": "C",
+      "matched": true,
+      "ic_rms_distance": 0.0011277065194848527,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.9833455942251816,
+      "rmax_ratio": 0.9779507499510687,
+      "features_ok": true,
+      "member_fitness": 0.9999992310062336,
+      "candidate": {
+        "rmin_km_1yr": 970558.1681178773,
+        "rmax_km_1yr": 1101723.1307171257,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 968735.8360086213,
+        "rmax_km_5yr": 1101867.2850078866,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.029037511215786793,
+          0.0,
+          0.0
+        ],
+        "theta0": 4.6813378547448695e-08,
+        "spatial": false,
+        "v0_norm": 0.029037511215786793,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    }
+  },
+  "reproduction_rate": "1/1",
+  "drift_classified": {
+    "checked": 200,
+    "bounded": 200
+  },
+  "theta0_spot_checks": {
+    "0": {
+      "per_phase_bounded": {
+        "1.3130875532729178": true,
+        "3.4074826556661133": true,
+        "5.501877758059308": true
+      }
+    },
+    "1": {
+      "per_phase_bounded": {
+        "4.835252767897495": true,
+        "6.92964787029069": true,
+        "9.024042972683885": true
+      }
+    },
+    "2": {
+      "per_phase_bounded": {
+        "6.239658605239033": true,
+        "8.334053707632227": true,
+        "10.428448810025422": true
+      }
+    },
+    "3": {
+      "per_phase_bounded": {
+        "4.663446919614301": true,
+        "6.757842022007496": true,
+        "8.852237124400691": true
+      }
+    },
+    "4": {
+      "per_phase_bounded": {
+        "4.645672805806979": true,
+        "6.740067908200174": true,
+        "8.83446301059337": true
+      }
+    }
+  }
+}
