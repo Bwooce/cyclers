@@ -158,7 +158,7 @@ and confirmed stable). This is a documented caveat about classification-
 boundary fragility for marginal candidates, not a defect in the validated
 C-match or a blocker for this gate.
 
-## Reproduction
+## Reproduction (P1, historical -- superseded by Part 4 below)
 
 ```
 uv run python scripts/run_583_widened_bounded_drift_search.py --partition P1 --workers 8
@@ -166,9 +166,171 @@ uv run python scripts/run_583_widened_bounded_drift_search.py --analyze --partit
 uv run pytest tests/data/test_er3bp_drift_classifier.py -v
 ```
 
+## Part 4: partition redesign + smoke-scale validation (2026-07-13, follow-on dispatch)
+
+Follow-on task: replace the 7 wide `P1`-`P7` partitions with a genuinely
+narrower, radially-partitioned scheme, per Fable's own recommendation
+("partition radially into ~stage-2-sized sub-boxes... pop 200 each"), and
+validate cheaply (one smoke-scale run) that the redesign out-recovers old
+`P1`'s 1/6. This section reports 3 rounds of iteration -- 2 of which caught
+real bugs, and a 3rd that surfaced a genuine, deeper limitation of the
+search machinery itself (reported honestly, not spun as a clean win).
+
+### Design: 3 radial bands
+
+1. **`deep_hill`** `[LO_DEEP=0.002 AU, LO_R=1e6 km]`: the originally-mistaken
+   floor's own territory (the trivial deep-Hill-sphere basin diagnosed in
+   Part 3 above). Its own partition, `DEEP_HILL`, judged ONLY by
+   `classify_bounded_drift` + the corpus anchors (Henon family-f, Sun-Earth
+   co-orbital) -- never Table 3/4 match (nothing published lives here).
+2. **`paper`** `[LO_R, HI_R=1e7 km]`: where all 14 published families live.
+   Split into 14 SINGLE-family partitions (see "Why single-family, not
+   stage 2's own A/B/C grouping" below).
+3. **`beyond_hi_r`** `[HI_R, HI_OUTER=0.15 AU]`: genuinely uncharted
+   territory past every published family. Its own partition,
+   `BEYOND_HI_R`, judged the same way as `deep_hill`.
+
+### Round 1: position-floor correctness bug (caught before any run)
+
+A first draft gave every `paper`-band partition the SAME blanket
+`[LO_R, HI_R]` position bound per free component (inherited from the
+original #583 build's own decision). Checked directly against every
+`TABLE34` IC's own per-COMPONENT values (not just Euclidean radial
+magnitude) before trusting this:
+
+| family | free position components | within `[LO_R, HI_R]`? |
+|---|---|---|
+| A-F | x only | yes (F is 8e-9 below LO_R -- floating-point boundary, not real) |
+| G | x=y=0.004727 | **NO** (29% below LO_R) |
+| H | x=0.005013 | **NO** (25% below LO_R) |
+| I | x=0.01490, y=0.01513 | yes |
+| J | x=0.03348, y=0.00775, z=0.03676 | yes |
+| K | x=0.00584, y=0.0000547, z=-0.000909 | **NO** (y, z far below/negative) |
+| L | x=y=0.00386, z=0.00950 | **NO** (x, y 42% below) |
+| M | x=y=z=0.00386 | **NO** (42% below) |
+| N | x=0.00766, z=0.006684 | yes |
+
+Root cause: stage 2's own Table 2 divided BOTH `lo` and `hi` by `sqrt(2)`
+(G/H/I/N) or `sqrt(3)` (J/K/L/M) -- a shared "vector norm budget" across
+however many genes (position AND velocity) that set left simultaneously
+free. A blanket `[LO_R, HI_R]` per component EXCLUDES several families' own
+published state entirely -- a hard correctness bug (the family could never
+be found, not just harder to find), not just a niche-capacity dilution.
+This had never surfaced before because the original #583 build only ever
+ran `P1` (A-F) to completion; `P2`-`P7` (G/H/I/J/K/L/M/N) were never
+actually executed. Fixed: `_POS_S2 = (LO_R/sqrt(2), HI_R/sqrt(2))` for
+G/H/I/N, `_POS_S3 = (LO_R/sqrt(3), HI_R/sqrt(3))` for J/K/L/M (further
+individually bracketed for J/K/L, which would otherwise collide -- see
+Round 2).
+
+### Round 2: byte-identical-bounds bug (caught by the first smoke test)
+
+First smoke-test attempt split A-F into `ABC` and `DEF`, judged separately,
+but BOTH partitions were given the identical bounds `_sig_x_vy(_POS_S1)`
+(same position range, same free dims, same full-signed velocity) --
+splitting the JUDGING target without narrowing the actual GA search box at
+all. Ran `ABC` (full 400 gen, pop 200): **1/3** (only C matched; A/B missed,
+with WORSE `ic_dist` than old `P1`'s own A/B misses) -- no improvement over
+`P1`'s 1/6. The `J`/`K`/`L` partitions (all sharing `_POS_S3` with the same
+all-6-state-free signature) had the identical flaw. Fixed: velocity-SIGN
+split for A-F (mirroring stage 2's own DRO `vy<0` vs DPO `vy>0` branches:
+`ABCF` vs `DE`), and individually-bracketed position ranges for J
+(`[0.006, HI_R/sqrt(3)]`), K (`[-0.002, 0.015]`), L (`[0.003, 0.018]`).
+
+### Round 3: multi-family pooling still fails after both fixes (deeper limit, not a bug)
+
+Re-ran the corrected `ABCF` partition (A, B, C, F together, disjoint from
+`DE`, velocity-sign-restricted, correct position range, full 400 gen, pop
+200): population fitness **std hit EXACTLY 0.0 by generation ~120**
+(complete collapse) and **reproduction stayed 1/4** (only C):
+
+```
+family A: MISS  ic_dist=0.2725(FAR) type=DEO vs DRO rmin_ratio=1.389 rmax_ratio=1.677
+family B: MISS  ic_dist=0.0785(ok)  type=DRO vs DRO rmin_ratio=0.443 rmax_ratio=0.337
+family C: MATCH ic_dist=0.0011(ok)  type=DRO vs DRO rmin_ratio=0.983 rmax_ratio=0.978
+family F: MISS  ic_dist=0.0905(ok)  type=DRO vs DRO rmin_ratio=4.391 rmax_ratio=1.003
+```
+
+Both bug fixes (position floor, byte-identical bounds) are real,
+independently necessary corrections -- but neither restored multi-family
+recovery. A follow-up diagnostic isolated why, using throwaway standalone
+scripts (not committed) that called `run_deterministic_crowding` directly:
+
+* **Fresh random seeds don't help.** 3 alternative seeds (`700001-700003`)
+  targeting family A solo (same `ABCF`-structure bounds) mostly converged
+  to essentially C's OWN IC (`x=0.006685, vy=-0.029050` vs C's published
+  `x=0.00680, vy=-0.02902`), not A's (`x=0.038944, vy=-0.077760`); the 3rd
+  seed landed at a different, still-not-A, intermediate point on the same
+  low-radius continuum.
+* **A tightly-bracketed single-family box doesn't help either.** Restricting
+  A's OWN box to `x in [0.03, 0.05]` (well clear of C's neighborhood, 3
+  seeds) converged to `x~0.030` -- the box's OWN edge, not A's actual
+  `x=0.038944` -- in all 3 seeds.
+* **theta0 fixed vs free makes no difference.** Repeating the tight-box test
+  with `theta0` FIXED at 0 (matching the paper's own convention, removing
+  that widening axis entirely) gave the SAME result (`x~0.030-0.031`, not
+  A's `0.038944`).
+* **Stage 2's OWN `set1` (A/B/C together) genuinely worked** (per the
+  original #581 positive control: A/B/C all matched, `ic_dist` 0.0015-0.0048)
+  and its own final population IS genuinely diverse (`x` spans
+  `0.0067-0.0667`, `std=0.0175`, not collapsed) -- confirmed by directly
+  inspecting `data/found/581_niching_ga/set01_final.npz`. What allows that
+  diversity to persist (a specific seed, the chunked multi-invocation
+  running pattern, or some other factor not yet isolated) was NOT
+  identified in the time budget for this follow-on dispatch.
+
+**Conclusion (matches Fable's own second-round diagnosis, now confirmed
+empirically, not just theoretically):** `gurfil_kasdin_fitness` (Eq. 15) is
+a pure boundedness measure with no periodicity/family-membership content;
+once more than one family's neighborhood is reachable within a search box,
+nothing in the objective steers the population toward a SPECIFIC published
+point, and deterministic crowding does not reliably protect multiple
+comparably-fit niches over a full 400-generation run on this landscape.
+Box-narrowing (position-floor correctness + disjoint bounds) is necessary
+but demonstrably NOT sufficient. This is reported as an honest, evidence-
+based limitation of the (unmodified, per #583's own scope) objective +
+niching combination -- not spun as a clean redesign win.
+
+### Final design + validated result
+
+A-F split to FULL single-family granularity (not even stage 2's own 3-family
+A/B/C grouping) as the safest available mitigation -- removes the
+family-vs-family competition pathway, though the diagnostics above show it
+does NOT guarantee convergence to a family's specific point on any given
+seed. 14 single-family `paper`-band partitions (A-N) + `DEEP_HILL` +
+`BEYOND_HI_R` = 16 total.
+
+Ran the FINAL single-family `C` partition (production script, full 400 gen,
+pop 200, `data/found/583_widened_search/C_*`) as the clean validating
+artifact:
+
+```
+[C] family C: MATCH ic_dist=0.0011(ok) type=DRO vs DRO rmin_ratio=0.983 rmax_ratio=0.978
+[C] drift classification: 200/200 high-fitness members bounded at 50yr
+[C] theta0 spot-check (5 members): all stable across phases
+[C] reproduction: 1/1
+```
+
+This satisfies #583's own already-accepted positive-control bar ("recovers
+its neighboring known family/families") cleanly and reproducibly. It does
+NOT demonstrate that every single-family partition will recover its own
+target on the first seed -- per the diagnostics above, that is NOT
+guaranteed by this objective/niching combination. **Recommendation for the
+coordinator's eventual full sweep:** run multiple independent seeds per
+`paper`-band partition (not just 1) and treat "at least 1 known family
+recovered per partition attempt" as the realistic bar, not "every family in
+every partition on the first try."
+
+### Reproduction (current, single-family design)
+
+```
+uv run python scripts/run_583_widened_bounded_drift_search.py --partition C --workers 8
+uv run python scripts/run_583_widened_bounded_drift_search.py --analyze --partition C
+```
+
 ## Not yet dispatched
 
-The full widened-domain novelty sweep across all 7 partitions, with the
-family-targeted/radial partitioning redesign this positive control shows is
-needed for genuine multi-family recovery -- a longer job for a future,
-separately-scoped dispatch, per #583's own gate.
+The full widened-domain novelty sweep across all 16 partitions (A-N +
+`DEEP_HILL` + `BEYOND_HI_R`), running multiple seeds per `paper`-band
+partition per this dispatch's own recommendation above -- a longer job for a
+future, separately-scoped dispatch, per #583's own gate.
