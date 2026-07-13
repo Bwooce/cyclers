@@ -26,6 +26,7 @@ import math
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 import numpy as np
 from scipy.integrate import solve_ivp
@@ -279,13 +280,13 @@ def characterize(interleaved: np.ndarray, theta0: float) -> dict[str, object]:
 
     def collision(f: float, s: np.ndarray, *_a: float) -> float:
         dx = s[0] - offset
-        return dx * dx + s[1] ** 2 + s[2] ** 2 - R_EARTH_NORM**2
+        return float(dx * dx + s[1] ** 2 + s[2] ** 2 - R_EARTH_NORM**2)
 
     collision.terminal = True  # type: ignore[attr-defined]
 
     def escape(f: float, s: np.ndarray, *_a: float) -> float:
         dx = s[0] - offset
-        return dx * dx + s[1] ** 2 + s[2] ** 2 - 0.25  # 0.5 AU
+        return float(dx * dx + s[1] ** 2 + s[2] ** 2 - 0.25)  # 0.5 AU
 
     escape.terminal = True  # type: ignore[attr-defined]
 
@@ -314,7 +315,9 @@ def characterize(interleaved: np.ndarray, theta0: float) -> dict[str, object]:
     spatial = abs(z0) > 1e-9 or abs(zp0) > 1e-9
     v0 = math.sqrt(xp0**2 + yp0**2 + zp0**2)
     # PS: never beyond 0.1 AU from Earth within 5 years (paper p. 5689).
-    ps = not out["terminated_5yr"] and float(out["rmax_km_5yr"]) <= 0.1 * A_AU_KM_GURFIL_KASDIN
+    ps = not out["terminated_5yr"] and cast(float, out["rmax_km_5yr"]) <= (
+        0.1 * A_AU_KM_GURFIL_KASDIN
+    )
     if v0 < 2e-3:  # < ~0.06 km/s: the paper's "zero initial velocity" class
         kind = "ERO"
     elif yp0 < 0:
@@ -393,8 +396,8 @@ def match_family_in_population(
     dist = np.sqrt(np.mean((norm - target) ** 2, axis=1))  # normalized RMS
     i = int(np.argmin(dist))
     cand = characterize(phen[i], theta0)
-    got_rmin = float(cand["rmin_km_1yr"])
-    got_rmax = float(cand["rmax_km_1yr"])
+    got_rmin = cast(float, cand["rmin_km_1yr"])
+    got_rmax = cast(float, cand["rmax_km_1yr"])
     ok_ic = float(dist[i]) < IC_PROXIMITY_TOL
     ok_type = cand["type"] == ftype
     ft = FEATURE_FACTOR_TOL

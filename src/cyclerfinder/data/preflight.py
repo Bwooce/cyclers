@@ -258,6 +258,7 @@ __all__ = [
     "DEFAULT_OUTSTANDING_PATH",
     "DEFAULT_PREFLIGHT_RUNLOG_PATH",
     "LARGE_GRID_THRESHOLD",
+    "MethodCapability",
     "PreflightBlockedError",
     "PreflightResult",
     "preflight_search",
