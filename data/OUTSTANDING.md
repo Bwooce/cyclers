@@ -3268,59 +3268,110 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   execution dispatch, per this session's established pattern for #571-#578.
 
 - **#582** (P2/P3, exploratory, stage 3a of #581) — asymmetric/spatial-isolated 3D CR3BP resonant-
-  family niching-GA search, Earth-Moon system. **Origin:** #581 stage-3 target (a), authorized
-  2026-07-13. **Motivation:** the corrected Antoniadou-Libert 2019 anchor (`known_corpus_3d.py`,
-  fixed by #579) explicitly states it does NOT cover asymmetric/spatial-isolated 3D resonant families
-  — literature-open per the anchor's own scope statement. The existing 3D isolated-family search
-  machinery (`search/er3bp_isolated_seeds.py`, #440) is PURE CR3BP circular-then-continued and
-  explicitly SYMMETRIC (uses `correct_symmetric_fixed_jacobi`, a fixed-Jacobi symmetric corrector) —
-  it structurally cannot reach asymmetric members. A niching GA searching directly in IC-space with a
-  periodicity-residual fitness has no such symmetry restriction. **Scope:** (1) new fitness function
-  (vector IC -> scalar periodicity-defect + target-Jacobi-band residual) operating in the existing
-  `core/cr3bp.py` Earth-Moon frame (mu=0.0121506683, already used throughout `search/cr3bp_periodic.py`
-  and `search/er3bp_isolated_seeds.py` — no new frame module needed, unlike #581 stage 1's ER3BP
-  build); (2) domain/bounds spanning the interior + exterior MMR bands already tabulated by Antoniadou
-  & Libert 2018 (`search/er3bp_isolated_seeds.py`'s `_INTERIOR_MMR_SEMI_MAJOR_AXES` or equivalent) but
-  WITHOUT the existing module's symmetry constraint, so the GA can find members the #440 recipe
-  structurally cannot; (3) one niching run per MMR band (mirrors #581 stage 2's one-run-per-Table-2-
-  set pattern); (4) any surviving periodic/quasi-periodic cluster must clear `literature_check.py`'s
-  existing 3D matcher (the same machinery #579 just fixed for #287/#299/#301) before any "novel" claim
-  — per [[feedback_literature_novelty_check_baseline]], not-found is necessary-not-sufficient.
+  family niching-GA search. **Origin:** #581 stage-3 target (a), authorized 2026-07-13.
+  **Fable-corrected 2026-07-13** (original draft wrongly scoped this at Earth-Moon mu — see below).
+  **System: mu=0.001** (a generic planetary system, NOT Earth-Moon — user decision 2026-07-13, choosing
+  coherence with the open-niche claim and a direct positive control over Earth-Moon relevance, which
+  would first need a #578-style corpus-anchoring prerequisite since Earth-Moon's relevant literature
+  — Broucke/Hénon/Markellos-class periodic-orbit families — has no anchors in `KNOWN_CORPUS_3D` today).
+  **Motivation:** the corrected Antoniadou-Libert 2019 anchor (`known_corpus_3d.py`, fixed by #579,
+  explicitly annotated `mu=0.001`) explicitly states it does NOT cover asymmetric/spatial-isolated 3D
+  resonant families — literature-open per the anchor's own scope statement, AT THIS mu. The existing
+  3D isolated-family seed machinery (`search/er3bp_isolated_seeds.py`, #440, defaults to
+  `mu=0.001, primary="Sun", secondary="planet"`) is circular-then-continued and explicitly SYMMETRIC
+  (uses `correct_symmetric_fixed_jacobi`) — it structurally cannot GENERATE asymmetric seeds. But the
+  codebase's asymmetric CORRECTOR already exists (`search/cr3bp_general_periodic_3d.py`, free vars
+  `(x0..zdot0, T)`, min-norm Newton + independent closure check) and was already used for a planar
+  asymmetric scan (#284/#343, `search/asymmetric_novel_scan_parallel.py`, full
+  corrector→closure→topology→known-family→lit-footprint pipeline) — so the GA's genuinely NEW
+  capability here is asymmetric/3D SEED GENERATION, not asymmetric correction; survivors must be
+  routed through the EXISTING corrector, not a new one, and deduped against #284/#343's converged rows.
+  **Scope:** (1) new fitness function, vector IC -> scalar, operating at mu=0.001 in `core/cr3bp.py`;
+  free variables `(x0, z0, xdot0, ydot0, zdot0)` with `y0=0` (standard x-z-plane crossing convention)
+  plus `T` as a genome variable bounded within roughly ±50% of the MMR's linearized resonant period
+  `T0 = 2*pi / (a1**-1.5 - 1)` (#440's own formula, per its docstring); fitness combines a periodicity-
+  defect term (`||state(T) - state(0)||^2` under propagation) with a soft target-Jacobi-band penalty
+  (soft, not hard — an asymmetric branch may sit at a shifted C from the circular seed, matching #440's
+  own note that converged members sit at a "nearby, finite-amplitude-shifted" period); death-penalty
+  guards required: a minimum-period floor (T > T0/2, excluding degenerate near-equilibrium loops) and
+  primary/secondary collision-exclusion radii throughout propagation (mirrors Gurfil-Kasdin's own
+  Eq. 17-style collision constraint). (2) domain: the 5 INTERIOR MMRs already tabulated in
+  `er3bp_isolated_seeds.py`'s `MMR_SEMI_MAJOR_AXES` ONLY for this pass — exterior bands are NOT
+  tabulated anywhere and the module's own docstring flags the exterior 1:2 as a known family-selection
+  trap; exterior MMRs are explicitly OUT OF SCOPE for #582 (a follow-up task, not this one, if wanted
+  later). (3) one niching run per MMR band (mirrors #581 stage 2's one-run-per-set pattern).
+  (4) MANDATORY pipeline before any claim, in order: GA cluster -> refine through
+  `correct_general_periodic_3d`'s asymmetric mode with independent closure verification (a GA fitness
+  peak is a basin indicator, not a converged orbit, per #581's own counterweight and
+  [[feedback_orbit_closure_discipline]]) -> explicit SYMMETRY CLASSIFICATION (mirror-image /
+  perpendicular-crossing test — a converged point ON a known symmetric orbit is trivially periodic too;
+  without this test a symmetric orbit could be misreported as a novel asymmetric one) -> populate the
+  survivor's `CandidateSignature` (`primary`, `body_set`, `topology_3d` k1/k2/k_z, `jacobi`) so
+  `literature_check.py`'s 3D matcher actually engages (it only fires on same-`primary` anchors) -> clear
+  the matcher (the machinery #579 fixed for #287/#299/#301) before any "novel" claim, per
+  [[feedback_literature_novelty_check_baseline]] (not-found is necessary-not-sufficient) -> dedup
+  against #284/#343's own converged/empty-region rows.
   **Positive control before novelty search:** first reproduce at least one already-known #440 circular
-  member (any of the 5 tabulated MMRs) via the niching GA's own fitness/bounds, proving the new
-  fitness function is not itself broken, before trusting any asymmetric "new" cluster it finds.
-  **Recommended model:** Sonnet for the fitness-function build behind the positive-control golden;
-  Opus/Fable for the literature-clearance adjudication on any survivor (matches #577/#579's pattern —
-  novelty verdicts are trust-bearing, not mechanical). **Not yet dispatched — plan under Fable review.**
+  member (any of the 5 tabulated MMRs) via the new fitness/bounds, converged through
+  `correct_general_periodic_3d` and matched to the known member's `(x0, ydot0, T, C)` to a stated
+  tolerance — not merely "the GA found a high-fitness point nearby."
+  **Recommended model:** Sonnet for the fitness-function + pipeline-wiring build behind the
+  positive-control golden; Opus/Fable for the literature-clearance adjudication on any survivor
+  (matches #577/#579's pattern — novelty verdicts are trust-bearing, not mechanical).
+  **Dispatchable now — Fable's blocking findings resolved above.**
 
 - **#583** (P2/P3, exploratory, stage 3b of #581) — Sun-Earth ER3BP bounded-drift quasi-cycler search,
   widening #581's already-validated niching layer beyond Gurfil-Kasdin's own 12 optimization sets.
-  **Origin:** #581 stage-3 target (b), authorized 2026-07-13. **Motivation:** Gurfil-Kasdin's own
-  fitness (`core/er3bp_geocentric.py::gurfil_kasdin_fitness`, Eq. 15 `1/[(rmax-rmin)²+1]`) is exactly a
-  bounded-oscillation criterion — the same notion the project's quasi-cycler gauntlet validates
-  against (per [[feedback_verify_gauntlet_with_positive_control]] — bounded
-  drift-oscillation, not a strict floor). Stage 2 already validated the mechanism (11/14) and the frame
-  (`core/er3bp_geocentric.py`, RHS parity 6.7e-16) on Gurfil-Kasdin's own 12 sets; this track reuses
-  BOTH unmodified and only widens the search DOMAIN past those 12 sets' specific IC boxes. **Scope:**
-  (1) no new fitness or frame module — reuse `gurfil_kasdin_fitness` and `run_deterministic_crowding`
-  exactly as stage 2 left them; (2) widen the free-variable bounds beyond the union of the 12 published
-  optimization sets' boxes (stage 2's positive control only searched inside boxes already known to
-  contain a published family — this track searches the space BETWEEN and AROUND them); (3) any
-  bounded-drift survivor must clear two gates before any claim: (i) `literature_check.py` novelty
-  (Sun-Earth ER3BP periodic/quasi-periodic families are a literature area with its own corpus — check
-  what anchors exist before claiming novel), (ii) a bounded-vs-divergent drift criterion analogous to
-  the project's existing quasi-cycler V2 check (`data/validation/v2_moontour.py` is Earth-Moon-specific
-  machinery — this track is heliocentric Sun-Earth, so the criterion needs adapting, not reused
-  verbatim; the underlying philosophy — bounded oscillation over many periods, not a one-shot fitness
-  value — carries over per [[feedback_verify_gauntlet_with_positive_control]]). **Positive control
-  before widening:** re-run stage 2's own 12-set reproduction is ALREADY the positive control (done);
-  this track only needs to confirm the widened-bounds run still recovers those same 12 families as a
-  sanity check before trusting anything found in the new territory. **Recommended model:** Sonnet for
-  the bounds-widening + drift-criterion build behind the reproduction regression; Opus/Fable for
-  adjudicating any survivor's novelty and bounded-vs-divergent classification (trust-bearing per
-  [[feedback_verify_gauntlet_with_positive_control]]'s own quasi-cycler precedent, where a wrong
-  criterion choice previously mis-classified real results). **Not yet dispatched — plan under Fable
-  review.**
+  **Origin:** #581 stage-3 target (b), authorized 2026-07-13. **Fable-corrected 2026-07-13** (original
+  draft had a false-novel-factory gap and an infeasible positive control — both fixed below).
+  **Motivation:** Gurfil-Kasdin's own fitness (`core/er3bp_geocentric.py::gurfil_kasdin_fitness`,
+  Eq. 15 `1/[(rmax-rmin)²+1]`) is exactly a bounded-oscillation criterion — the same notion the
+  project's quasi-cycler gauntlet validates against (per [[feedback_verify_gauntlet_with_positive_control]]
+  — bounded drift-oscillation, not a strict floor). Stage 2 already validated the mechanism (11/14) and
+  the frame (`core/er3bp_geocentric.py`, RHS parity 6.7e-16) on Gurfil-Kasdin's own 12 sets; this track
+  reuses BOTH unmodified and only widens the search DOMAIN past those 12 sets' specific IC boxes.
+  **Prerequisite (MANDATORY, do first, small #578-sized corpus task):** file corpus anchors BEFORE any
+  widened-domain survivor is adjudicated — confirmed via grep that `literature_check.py`'s ~57 anchors
+  currently contain ZERO for Gurfil-Kasdin 2002 itself and ZERO Sun-Earth co-orbital/DRO anchors (the
+  only tadpole/horseshoe anchor is Pluto-Charon — wrong primary, will never match). Without these, the
+  widened search will predictably rediscover the 14 G-K families, Earth quasi-satellites/horseshoes/
+  tadpoles (Namouni 1999, Mikkola-Innanen, 3753 Cruithne, Kamo'oalewa), and Sun-Earth DROs/Hénon
+  family-f distant satellites — ALL of which would wrongly "clear" `literature_check.py` as novel, the
+  exact false-novel-factory trap [[feedback_literature_novelty_check_baseline]] exists to prevent. File:
+  (a) a Gurfil-Kasdin-2002 anchor covering the 14 families' r-band footprints, (b) Sun-Earth co-orbital
+  QS/HS/tadpole anchors, (c) Sun-Earth DRO/distant-satellite anchors. **Scope:** (1) no new fitness or
+  frame module — reuse `gurfil_kasdin_fitness` and `run_deterministic_crowding` exactly as stage 2 left
+  them; state explicitly (write the actual numbers into the run config, do not leave to the builder):
+  which of the 6 state dims are free vs. fixed, whether `theta0` becomes a free/swept genome variable
+  (recommended — stage 2 fixed it per-set, so leaving it fixed here would NOT genuinely explore beyond
+  the 12 published sets) or stays a per-run constant, and that `n_rev` stays 1 for consistency with
+  stage 2 unless explicitly widened. Note `escape_radius=0.5` (0.5 AU, ~50x Earth's Hill radius)
+  already implicitly admits the full heliocentric co-orbital regime — a stated decision, not a builder
+  surprise. (2) widen the free-variable bounds beyond the union of the 12 published optimization sets'
+  boxes — the space BETWEEN and AROUND them, not a redo of stage 2's own boxes. (3) any bounded-drift
+  survivor must clear, in order: the corpus-anchor prerequisite above (`literature_check.py` novelty),
+  THEN a pre-registered bounded-vs-divergent drift criterion — closer template is
+  `data/validation/v2_3d.py` (propagate a 6D IC, gate per-cycle drift) rather than `v2_moontour.py`
+  (Earth-Moon Lambert-leg machinery, confirmed not a fit) — still needs adapting since quasi-orbits have
+  no period: propagate N revolutions well past the 1-rev fitness window (N≈50-100, builder to justify
+  the exact number), classify bounded (stationary geocentric r-band / recurrence) vs. divergent (secular
+  rmax growth or escape), with the numeric thresholds written into the run config before any survivor is
+  judged. The drift classifier itself needs its OWN positive control: G-K's 11 known-good stage-2
+  families must classify bounded, and a known-escaping IC must classify divergent, before it judges
+  anything new — per [[feedback_verify_gauntlet_with_positive_control]] (a wrong criterion choice has
+  mis-classified real results before). Add a cheap `theta0`-robustness spot-check (re-test a "bounded"
+  verdict at 2-3 other phases) per [[project_388_wall_energy_selective]]'s epoch-fragility lesson.
+  **Positive control before widening (replaces the original "recover all 12 in one widened run" gate,
+  which Fable flagged as likely infeasible — deterministic crowding's niche capacity has no reason to
+  hold 12+ families in one pop=200 run when stage 2 needed 12 SEPARATE runs to get 11/14):** partition
+  the widened domain into boxes each containing >=1 known family (reusing stage 2's per-set structure);
+  before trusting anything novel found in a partition, first verify that partition's baseline run still
+  recovers its neighboring known family/families under stage 2's own pre-registered non-bit-exact match
+  criterion. **Recommended model:** Sonnet for the corpus-anchor filing + bounds-widening +
+  drift-criterion build behind the reproduction regression; Opus/Fable for adjudicating any survivor's
+  novelty and bounded-vs-divergent classification (trust-bearing per
+  [[feedback_verify_gauntlet_with_positive_control]]'s own quasi-cycler precedent).
+  **Dispatchable now — Fable's blocking findings resolved above.**
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
