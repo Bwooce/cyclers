@@ -65,17 +65,43 @@ summary, following the same pattern as
    this explicitly (``literature_check_status`` field) rather than leaving
    it to be inferred.
 
+**#585 follow-up (2026-07-14): resonance-scaled symmetry-breaking bounds.**
+``mmr_bounds()``'s 3 flat absolute half-widths (``z0_abs=xdot0_abs=zdot0_abs=
+0.05`` for every MMR) were replaced by a single resonance-scaled fraction
+``s`` (Fable-reviewed GO design; see that function's docstring for the exact
+formula). Every mode now requires ``--symmetry-breaking-s`` explicitly --
+there is no default, so a caller can never silently inherit a changed box.
+The Fable-reviewed 2-rung ladder is ``s=0.15`` and ``s=0.30``. Output
+filenames are tagged with the ``s`` value used (e.g. ``s0p15``) so runs at
+different rungs never collide or silently overwrite each other, and so
+#582's own untagged ``ga_{p}_{q}_final.npz``/``{p}_{q}_analysis_summary.json``
+files (produced under the old flat-0.05 box) are left untouched.
+
+``--mode analyze`` also now runs a drift-detection check (#585 scope item
+2): for each converged cluster representative, the converged period is
+inverted back to an implied semi-major axis
+(``isolated_3d_asymmetric_fitness.mmr_a1_from_t0``, the exact inverse of the
+``mmr_t0`` formula ``mmr_bounds`` itself uses) and compared against every
+tabulated interior MMR's own ``a1`` (``MMR_SEMI_MAJOR_AXES``) -- if the
+NEAREST MMR by that implied ``a1`` is not this run's own target MMR, the
+representative is flagged ``drifted_to_neighboring_mmr=true``. The summary
+JSON reports a per-run ``n_drifted_to_neighboring_mmr`` count. This does not
+reject or filter drifted candidates (a drifted-but-converged orbit may still
+be a genuine member of ITS OWN resonance's family, just not this run's
+target) -- it makes over-widening detectable rather than silently folded
+into "this MMR's" cluster count.
+
 Usage:
     uv run python scripts/run_582_asymmetric_3d_niching_search.py \\
-        --mmr 3:2 --positive-control --workers 8
+        --mmr 3:2 --positive-control --symmetry-breaking-s 0.15 --workers 8
 
     # generic (checkpointed) GA run for one MMR, no downstream pipeline:
     uv run python scripts/run_582_asymmetric_3d_niching_search.py \\
-        --mmr 3:2 --mode ga --max-gens 50 --workers 8
+        --mmr 3:2 --mode ga --symmetry-breaking-s 0.15 --max-gens 50 --workers 8
 
-    # analyze one MMR's finished final population:
+    # analyze one MMR's finished final population (SAME s used to run it):
     uv run python scripts/run_582_asymmetric_3d_niching_search.py \\
-        --mmr 3:2 --mode analyze
+        --mmr 3:2 --mode analyze --symmetry-breaking-s 0.15
 
 Checkpoints/results: data/found/582_niching_ga/
 """
@@ -85,6 +111,7 @@ from __future__ import annotations
 import argparse
 import functools
 import json
+import math
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -98,6 +125,7 @@ from cyclerfinder.search.er3bp_isolated_seeds import MMR_SEMI_MAJOR_AXES, resona
 from cyclerfinder.search.isolated_3d_asymmetric_fitness import (
     IsolatedAsymmetricFitnessConfig,
     isolated_3d_asymmetric_fitness,
+    mmr_a1_from_t0,
     mmr_bounds,
 )
 from cyclerfinder.search.isolated_3d_asymmetric_pipeline import (
@@ -114,6 +142,12 @@ MU = 0.001
 MMR_BY_LABEL: dict[str, tuple[int, int, float]] = {
     f"{p}:{q}": (p, q, a1) for p, q, a1 in MMR_SEMI_MAJOR_AXES
 }
+
+
+def _s_tag(s: float) -> str:
+    """Filesystem-safe tag for the #585 symmetry-breaking fraction, e.g. 0.15 -> 's0p15'."""
+    return "s" + f"{s:g}".replace(".", "p").replace("-", "m")
+
 
 _METHOD = MethodCapability(
     genome=(
@@ -146,6 +180,7 @@ def run_ga(
     q: int,
     a1: float,
     *,
+    s: float,
     config: DeterministicCrowdingConfig,
     workers: int,
     max_gens: int | None,
@@ -154,9 +189,12 @@ def run_ga(
 ) -> tuple[np.ndarray, np.ndarray, float, float, float]:
     """Run (or resume) the niching GA for one MMR.
 
+    ``s`` is #585's resonance-scaled symmetry-breaking fraction, threaded
+    straight through to :func:`mmr_bounds` (see that function's docstring).
+
     Returns ``(phenotypes, fitness, x0_guess, ydot0_guess, t0)``.
     """
-    bounds, x0_guess, ydot0_guess, t0 = mmr_bounds(a1, mu=MU)
+    bounds, x0_guess, ydot0_guess, t0 = mmr_bounds(a1, mu=MU, s=s)
     seed_state = np.array([x0_guess, 0.0, 0.0, 0.0, ydot0_guess, 0.0])
     jacobi_target = float(cr3bp.jacobi_constant(seed_state, MU))
     fit_config = IsolatedAsymmetricFitnessConfig(mu=MU, t0=t0, jacobi_target=jacobi_target)
@@ -201,31 +239,37 @@ def run_ga(
     return result.phenotypes, result.fitness, x0_guess, ydot0_guess, t0
 
 
-def positive_control(p: int, q: int, a1: float, *, workers: int) -> dict[str, object]:
+def positive_control(p: int, q: int, a1: float, *, s: float, workers: int) -> dict[str, object]:
     """End-to-end: GA -> refine -> classify symmetry -> literature signature -> compare.
 
     Reproduces the known #440 circular member for MMR ``p:q`` USING the new
     fitness function and bounds (not ``correct_symmetric_fixed_jacobi``), then
     checks the result against the known member's ``(x0, ydot0, T, C)``.
+
+    ``s`` is #585's resonance-scaled symmetry-breaking fraction (see
+    ``mmr_bounds``'s docstring); the mandatory #585 gate is re-running this
+    positive control at EACH new rung (``s=0.15``, ``s=0.30``) and confirming
+    it still recovers the known member before any novelty sweep at that rung.
     """
     system = _system()
     label = f"{p}:{q}"
+    tag = _s_tag(s)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    ckpt = OUT_DIR / f"positive_control_{p}_{q}_checkpoint.npz"
-    runlog = OUT_DIR / f"positive_control_{p}_{q}_runlog.jsonl"
+    ckpt = OUT_DIR / f"positive_control_{p}_{q}_{tag}_checkpoint.npz"
+    runlog = OUT_DIR / f"positive_control_{p}_{q}_{tag}_runlog.jsonl"
     if ckpt.exists():
         ckpt.unlink()  # positive control is a fresh, self-contained run each time
 
     known = resonant_po_seed(system, p, q, a1)
     print(
-        f"[{label}] known #440 member: x0={known.state0[0]:.6f} ydot0={known.state0[4]:.6f} "
+        f"[{label}] s={s} known #440 member: x0={known.state0[0]:.6f} ydot0={known.state0[4]:.6f} "
         f"T={known.period:.6f} C={known.jacobi:.6f} (converged={known.converged})",
         flush=True,
     )
 
     config = _small_ga_config(seed=582000 + p * 100 + q)
     phen, fitness, _x0_guess, _ydot0_guess, _t0 = run_ga(
-        p, q, a1, config=config, workers=workers, max_gens=None, checkpoint=ckpt, runlog=runlog
+        p, q, a1, s=s, config=config, workers=workers, max_gens=None, checkpoint=ckpt, runlog=runlog
     )
 
     best_i = int(np.argmax(fitness))
@@ -286,6 +330,7 @@ def positive_control(p: int, q: int, a1: float, *, workers: int) -> dict[str, ob
 
     summary = {
         "mmr": label,
+        "symmetry_breaking_s": s,
         "known_member": {
             "x0": float(known.state0[0]),
             "ydot0": float(known.state0[4]),
@@ -325,11 +370,11 @@ def positive_control(p: int, q: int, a1: float, *, workers: int) -> dict[str, ob
         "matched": bool(matched),
     }
 
-    out = OUT_DIR / f"positive_control_{p}_{q}_summary.json"
+    out = OUT_DIR / f"positive_control_{p}_{q}_{tag}_summary.json"
     out.write_text(json.dumps(summary, indent=2))
     verdict = "PASS" if matched else "FAIL"
     print(
-        f"[{label}] POSITIVE CONTROL {verdict}: "
+        f"[{label}] s={s} POSITIVE CONTROL {verdict}: "
         f"x0_err={x0_err:.4%} ydot0_err={ydot0_err:.4%} T_err={t_err:.4%} "
         f"jacobi_err={jacobi_err:.2e}",
         flush=True,
@@ -389,35 +434,72 @@ def cluster_representatives(
     return reps
 
 
+def nearest_mmr_by_implied_a1(period: float) -> tuple[str, float, float]:
+    """#585 drift-detection: which tabulated MMR is closest to this period's implied a1?
+
+    Inverts the converged period back to an implied semi-major axis via
+    :func:`mmr_a1_from_t0` (the exact inverse of the ``mmr_t0`` formula
+    ``mmr_bounds`` itself is centered on), then returns
+    ``(nearest_label, a1_implied, dist_to_nearest)`` where ``nearest_label``
+    is the ``p:q`` MMR whose own tabulated ``a1`` (``MMR_SEMI_MAJOR_AXES``)
+    is closest to ``a1_implied``.
+    """
+    a1_implied = mmr_a1_from_t0(period)
+    best_label = ""
+    best_dist = math.inf
+    for pp, qq, aa in MMR_SEMI_MAJOR_AXES:
+        dist = abs(a1_implied - aa)
+        if dist < best_dist:
+            best_dist = dist
+            best_label = f"{pp}:{qq}"
+    return best_label, a1_implied, best_dist
+
+
 def analyze_ga_population(
     p: int,
     q: int,
     a1: float,
     *,
+    s: float,
     fitness_floor: float = DEFAULT_ANALYZE_FITNESS_FLOOR,
     distance_threshold: float = DEFAULT_ANALYZE_DISTANCE_THRESHOLD,
     max_clusters: int = DEFAULT_ANALYZE_MAX_CLUSTERS,
 ) -> dict[str, object]:
-    """Cluster ``ga_{p}_{q}_final.npz`` and run the mandatory pipeline on each niche.
+    """Cluster ``ga_{p}_{q}_{s-tag}_final.npz`` and run the mandatory pipeline on each niche.
 
     Per #582's own mandate (module docstring), a GA fitness peak is a basin
     INDICATOR, not a converged orbit: every cluster representative is routed
     through :func:`refine_ga_candidate` -> :func:`classify_symmetry` ->
     :func:`build_candidate_signature` -> :func:`literature_anchors_engaged`,
     the SAME sequence the positive control above already validated. Writes
-    ``data/found/582_niching_ga/{p}_{q}_analysis_summary.json`` and returns
-    the same summary dict. Does NOT run any live literature search -- see the
-    module docstring and the summary's own ``literature_check_status`` field.
+    ``data/found/582_niching_ga/{p}_{q}_{s-tag}_analysis_summary.json`` and
+    returns the same summary dict. Does NOT run any live literature search --
+    see the module docstring and the summary's own ``literature_check_status``
+    field.
+
+    ``s`` MUST match the ``--symmetry-breaking-s`` the GA population being
+    analyzed was actually run with (it re-derives ``mmr_bounds`` purely for
+    the clustering normalization scale, so a mismatched ``s`` would silently
+    use the wrong per-gene normalization). Every converged, symmetric-or-not
+    representative also gets #585's drift-detection check (see
+    :func:`nearest_mmr_by_implied_a1`): ``drifted_to_neighboring_mmr=true``
+    means the representative's OWN converged period implies a semi-major
+    axis nearer a DIFFERENT tabulated MMR than this run's target -- a sign
+    the widened box let the GA wander into a neighboring resonance's basin
+    rather than this one's (#440's own documented risk). Drifted candidates
+    are still reported, not discarded -- they may be genuine members of
+    THEIR OWN resonance, just not evidence about the one this run targeted.
     """
     label = f"{p}:{q}"
-    fpath = OUT_DIR / f"ga_{p}_{q}_final.npz"
+    tag = _s_tag(s)
+    fpath = OUT_DIR / f"ga_{p}_{q}_{tag}_final.npz"
     if not fpath.exists():
         print(f"[{label}] final population missing ({fpath}); run --mode ga to completion first")
         return {"mmr": label, "error": "final population missing", "path": str(fpath)}
 
     data = np.load(fpath)
     phen, fitness = data["phenotypes"], data["fitness"]
-    bounds, _x0_guess, _ydot0_guess, _t0 = mmr_bounds(a1, mu=MU)
+    bounds, _x0_guess, _ydot0_guess, _t0 = mmr_bounds(a1, mu=MU, s=s)
 
     rep_idx = cluster_representatives(
         phen,
@@ -438,6 +520,7 @@ def analyze_ga_population(
     clusters: list[dict[str, object]] = []
     n_converged = 0
     n_ready = 0
+    n_drifted = 0
     for rank, idx in enumerate(rep_idx):
         genome = phen[idx]
         fit = float(fitness[idx])
@@ -481,6 +564,25 @@ def analyze_ga_population(
             "best_crossing_residual": float(symmetry.best_crossing_residual),
             "n_crossings_checked": symmetry.n_crossings_checked,
         }
+
+        # #585 scope item 2: drift-detection -- does this representative's own
+        # converged period imply a semi-major axis nearer a NEIGHBORING MMR
+        # than this run's own target? Widening the symmetry-breaking bounds
+        # (via `s`) risks exactly #440's own documented neighboring-MMR /
+        # exterior-1:2 family-selection trap; this makes it detectable rather
+        # than silently folded into "this MMR's" cluster count.
+        nearest_label, a1_implied, nearest_dist = nearest_mmr_by_implied_a1(orbit.T_TU)
+        own_dist = abs(a1_implied - a1)
+        drifted = nearest_label != label
+        entry["drift_check"] = {
+            "a1_implied": a1_implied,
+            "own_mmr_a1_dist": own_dist,
+            "nearest_mmr": nearest_label,
+            "nearest_mmr_a1_dist": nearest_dist,
+            "drifted_to_neighboring_mmr": drifted,
+        }
+        n_drifted += int(drifted)
+
         sig = build_candidate_signature(system, orbit, p=p, q=q)
         anchors = literature_anchors_engaged(sig)
         entry["candidate_signature"] = {
@@ -496,8 +598,9 @@ def analyze_ga_population(
         n_converged += 1
         n_ready += int(ready)
         classification = "symmetric" if symmetry.is_symmetric else "asymmetric"
+        drift_note = f" DRIFTED->{nearest_label}" if drifted else ""
         print(
-            f"[{label}] cluster {rank}: CONVERGED fitness={fit:.6f} {classification} "
+            f"[{label}] cluster {rank}: CONVERGED fitness={fit:.6f} {classification}{drift_note} "
             f"independent_closure={orbit.independent_closure_residual:.2e} "
             f"anchors={anchors}",
             flush=True,
@@ -506,6 +609,7 @@ def analyze_ga_population(
 
     summary: dict[str, object] = {
         "mmr": label,
+        "symmetry_breaking_s": s,
         "population_size": int(phen.shape[0]),
         "fitness_floor": fitness_floor,
         "distance_threshold": distance_threshold,
@@ -513,6 +617,7 @@ def analyze_ga_population(
         "n_clusters": len(clusters),
         "n_converged": n_converged,
         "n_ready_for_literature_check": n_ready,
+        "n_drifted_to_neighboring_mmr": n_drifted,
         "clusters": clusters,
         "literature_check_status": (
             "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], "
@@ -527,11 +632,12 @@ def analyze_ga_population(
     }
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out = OUT_DIR / f"{p}_{q}_analysis_summary.json"
+    out = OUT_DIR / f"{p}_{q}_{tag}_analysis_summary.json"
     out.write_text(json.dumps(summary, indent=2, default=str))
     print(
         f"[{label}] analysis: {len(clusters)} cluster(s), {n_converged} converged, "
-        f"{n_ready} literature-matcher-ready; summary -> {out}",
+        f"{n_ready} literature-matcher-ready, {n_drifted} drifted-to-neighboring-mmr; "
+        f"summary -> {out}",
         flush=True,
     )
     return summary
@@ -552,6 +658,18 @@ def main() -> None:
     )
     ap.add_argument(
         "--positive-control", action="store_true", help="alias for --mode positive-control"
+    )
+    ap.add_argument(
+        "--symmetry-breaking-s",
+        type=float,
+        required=True,
+        dest="symmetry_breaking_s",
+        help="#585's resonance-scaled symmetry-breaking fraction, threaded into "
+        "mmr_bounds() as xdot0_abs=zdot0_abs=s*v_circ, z0_abs=max(0.05, s*a1). "
+        "No default -- every invocation must pick a value explicitly (the "
+        "Fable-reviewed ladder is 0.15 then 0.30). Required for all 3 modes, "
+        "including --mode analyze (it must match the s the population being "
+        "analyzed was actually run with).",
     )
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument(
@@ -586,40 +704,53 @@ def main() -> None:
 
     p, q, a1 = MMR_BY_LABEL[args.mmr]
     mode = "positive-control" if args.positive_control else args.mode
+    s = args.symmetry_breaking_s
+    tag = _s_tag(s)
 
-    region_id = f"582-asymmetric-3d-isolated-mmr-{args.mmr.replace(':', '-')}-{mode}-2026-07-13"
+    region_id = (
+        f"585-asymmetric-3d-isolated-mmr-{args.mmr.replace(':', '-')}-{mode}-{tag}-2026-07-14"
+    )
     preflight_search(
+        # task_no stays 582 (not 585): preflight's filename-consistency check
+        # requires task_no to match this script's own run_582_*.py filename;
+        # the #585 attribution for this specific invocation is carried in
+        # region_id and override_reason instead.
         task_no=582,
         region_id=region_id,
         method=_METHOD,
         script_path=Path(__file__),
         n_points=1,
         override_reason=(
+            "#585 follow-up to #582's 0/104 asymmetric result: re-runs the SAME "
             "positive-control reproduction of an already-known #440 circular "
-            "MMR member (or its small-budget GA precursor) -- validates the "
-            "new isolated_3d_asymmetric_fitness + pipeline against a known "
-            "answer; 'analyze' mode is pure post-processing of an already-"
-            "finished checkpoint (clustering + the same mandatory pipeline), "
-            "not a new search; the full 5-MMR novelty sweep itself (--mode ga "
-            "at paper scale) is a separate, coordinator-owned dispatch"
+            "MMR member (or its small-budget GA precursor) at a resonance-"
+            "scaled, wider symmetry-breaking bounds box (mmr_bounds(s=...)) -- "
+            "validates the widened box didn't break basin containment before "
+            "any novelty claim; 'analyze' mode is pure post-processing of an "
+            "already-finished checkpoint (clustering + the same mandatory "
+            "pipeline plus the new #585 drift-detection check), not a new "
+            "search; the full 5-MMR novelty sweep itself (--mode ga at paper "
+            "scale, at either s=0.15 or s=0.30) is a separate, coordinator-"
+            "owned dispatch, not run by this invocation"
         ),
     )
 
     if mode == "positive-control":
-        positive_control(p, q, a1, workers=args.workers)
+        positive_control(p, q, a1, s=s, workers=args.workers)
     elif mode == "analyze":
         analyze_ga_population(
             p,
             q,
             a1,
+            s=s,
             fitness_floor=args.fitness_floor,
             distance_threshold=args.distance_threshold,
             max_clusters=args.max_clusters,
         )
     else:
         OUT_DIR.mkdir(parents=True, exist_ok=True)
-        ckpt = OUT_DIR / f"ga_{p}_{q}_checkpoint.npz"
-        runlog = OUT_DIR / f"ga_{p}_{q}_runlog.jsonl"
+        ckpt = OUT_DIR / f"ga_{p}_{q}_{tag}_checkpoint.npz"
+        runlog = OUT_DIR / f"ga_{p}_{q}_{tag}_runlog.jsonl"
         config = DeterministicCrowdingConfig(
             population_size=args.population, generations=args.generations, seed=582000 + p * 100 + q
         )
@@ -627,6 +758,7 @@ def main() -> None:
             p,
             q,
             a1,
+            s=s,
             config=config,
             workers=args.workers,
             max_gens=args.max_gens,
@@ -634,7 +766,7 @@ def main() -> None:
             runlog=runlog,
         )
         if fitness.shape[0] and np.max(fitness) >= 0:
-            np.savez(OUT_DIR / f"ga_{p}_{q}_final.npz", phenotypes=phen, fitness=fitness)
+            np.savez(OUT_DIR / f"ga_{p}_{q}_{tag}_final.npz", phenotypes=phen, fitness=fitness)
 
 
 if __name__ == "__main__":

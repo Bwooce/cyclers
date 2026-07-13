@@ -104,15 +104,30 @@ def mmr_t0(a1: float) -> float:
     return float(2.0 * math.pi / (a1**-1.5 - 1.0))
 
 
+def mmr_a1_from_t0(t0: float) -> float:
+    """Invert :func:`mmr_t0`: ``a1 = (1 + 2*pi/T0)**(-2/3)``.
+
+    #585's drift-detection check (``scripts/run_582_asymmetric_3d_niching_search.py``
+    ``--mode analyze``) uses this to back out the semi-major axis a converged
+    candidate's period implies, then compares that implied ``a1`` against
+    every tabulated interior MMR's own ``a1``
+    (``er3bp_isolated_seeds.MMR_SEMI_MAJOR_AXES``) to flag drift to a
+    neighboring resonance -- widening ``mmr_bounds``'s symmetry-breaking
+    bounds (via ``s``) risks exactly this failure mode (#440's own documented
+    neighboring-MMR/exterior-1:2 family-selection trap).
+    """
+    if t0 <= 0.0 or not math.isfinite(t0):
+        raise ValueError(f"t0 must be > 0 and finite; got {t0}")
+    return float((1.0 + 2.0 * math.pi / t0) ** (-2.0 / 3.0))
+
+
 def mmr_bounds(
     a1: float,
     *,
     mu: float = 0.001,
+    s: float,
     x0_frac: float = 0.15,
     ydot0_frac: float = 0.35,
-    z0_abs: float = 0.05,
-    xdot0_abs: float = 0.05,
-    zdot0_abs: float = 0.05,
     t_frac: float = 0.5,
 ) -> tuple[list[tuple[float, float]], float, float, float]:
     """GA bounds box for one interior MMR, centered on the analytic e=0 guess.
@@ -123,25 +138,58 @@ def mmr_bounds(
     ``t_frac`` implements #582's own required period bound: +-50% of
     ``T0 = mmr_t0(a1)`` (default ``t_frac=0.5``).
 
-    The state-component half-widths (``x0_frac``, ``ydot0_frac``, the
-    ``*_abs`` z/xdot/zdot widths) are NOT sourced from any paper -- there is
-    no published search box for the asymmetric family this fitness function
-    targets (that is the literature-open gap #582 exists to probe). They are
-    a documented engineering choice, calibrated empirically against ALL FIVE
-    known #440 circular members (``all_mmr_seeds()``): 4/5 land within ~1% of
-    the analytic guess on every component, but the 3:2 member (#440's own
-    "most eccentric" case) lands ``ydot0`` ~20% off the linearized guess --
-    hence ``ydot0_frac`` defaults wide (0.35, ~1.75x headroom over the worst
-    observed case) while ``x0_frac`` (worst observed -4.1%) can stay tighter.
-    Widths are still narrow enough that a GA population explores THIS
-    resonance's basin rather than drifting into a neighboring MMR or the
-    exterior-1:2 family-selection trap #440 documents.
+    ``x0_frac``/``ydot0_frac``/``t_frac`` are NOT sourced from any paper --
+    there is no published search box for the asymmetric family this fitness
+    function targets (that is the literature-open gap #582 exists to probe).
+    They are a documented engineering choice, calibrated empirically against
+    ALL FIVE known #440 circular members (``all_mmr_seeds()``): 4/5 land
+    within ~1% of the analytic guess on every component, but the 3:2 member
+    (#440's own "most eccentric" case) lands ``ydot0`` ~20% off the
+    linearized guess -- hence ``ydot0_frac`` defaults wide (0.35, ~1.75x
+    headroom over the worst observed case) while ``x0_frac`` (worst observed
+    -4.1%) can stay tighter.
+
+    ``s`` (#585, Fable-reviewed GO 2026-07-14): a single resonance-scaled
+    "symmetry-breaking fraction" that replaces #582's original 3 flat
+    absolute half-widths (``z0_abs = xdot0_abs = zdot0_abs = 0.05`` for every
+    MMR). #582's flat box was found to be anisotropic ~5-8x in exactly the
+    directions that break mirror symmetry (``xdot0_abs=0.05`` is only an
+    eccentricity-proxy budget of e~0.03-0.044, far tighter than the
+    ``ydot0_frac=0.35`` SYMMETRIC-direction budget of e~0.2). Scaling by the
+    resonance's own circular speed (``v_circ = sqrt((1-mu)/a1)``, the same
+    quantity ``ydot0_guess`` is built from) makes the budget comparable
+    across MMRs instead of an arbitrary flat number:
+
+        xdot0_abs = zdot0_abs = s * v_circ
+        z0_abs = max(0.05, s * a1)
+
+    The ``max()`` guarantees no rung ever shrinks the z0 half-width below
+    #582's already-stamped 0.05 box (``empty_regions.jsonl``'s
+    ``er3bp-isolated-3d-asymmetric-mu0.001-5mmr-582-2026-07-14`` entry stays
+    valid for ITS bounds; this is a strictly-wider follow-up, not a
+    replacement). ``s`` is keyword-only with NO default: #582's positive
+    control and existing tests were built against the old flat-0.05 box, and
+    a flat box has no single ``s`` that reproduces it identically across all
+    5 MMRs (that anisotropy is exactly what #585 is correcting) -- so every
+    caller must pick ``s`` explicitly rather than silently inherit changed
+    behaviour. #585's Fable-reviewed ladder is ``s=0.15`` (rung 1) and
+    ``s=0.30`` (rung 2, ~the same eccentricity budget ``ydot0_frac`` already
+    grants -- the internally-principled stopping point).
+
+    Widths are still meant to be narrow enough that a GA population explores
+    THIS resonance's basin rather than drifting into a neighboring MMR or the
+    exterior-1:2 family-selection trap #440 documents -- see
+    ``scripts/run_582_asymmetric_3d_niching_search.py``'s ``--mode analyze``
+    drift-detection check for the a-posteriori guard against this.
     """
     if a1 <= 0.0:
         raise ValueError(f"a1 must be > 0; got {a1}")
+    v_circ = math.sqrt((1.0 - mu) / a1)
     x0_guess = -mu + a1
-    ydot0_guess = math.sqrt((1.0 - mu) / a1) - a1
+    ydot0_guess = v_circ - a1
     t0 = mmr_t0(a1)
+    xdot0_abs = zdot0_abs = s * v_circ
+    z0_abs = max(0.05, s * a1)
     bounds = [
         (x0_guess * (1.0 - x0_frac), x0_guess * (1.0 + x0_frac)),
         (-z0_abs, z0_abs),

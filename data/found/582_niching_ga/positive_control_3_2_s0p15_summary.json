@@ -1,0 +1,62 @@
+{
+  "mmr": "3:2",
+  "symmetry_breaking_s": 0.15,
+  "known_member": {
+    "x0": 0.7310973623139325,
+    "ydot0": 0.45699886482493635,
+    "T": 11.926512436489718,
+    "C": 3.062265986289145,
+    "converged": true
+  },
+  "ga_best_genome": [
+    0.7198308387405421,
+    -0.06336997623570632,
+    0.0029244050377582598,
+    0.4766607269070746,
+    -0.02341068573208588,
+    11.619334704274706
+  ],
+  "ga_best_fitness": 0.9870429170108126,
+  "refined_orbit": {
+    "state0": [
+      0.7333927856806812,
+      -0.06055987397052787,
+      1.692033716241548e-20,
+      0.028351243931639455,
+      0.4402828229761106,
+      8.035566870055556e-21
+    ],
+    "T": 11.624758377185259,
+    "C": 3.0656329145873977,
+    "converged": true,
+    "corrector_residual": 3.0552627231323425e-12,
+    "independent_closure_residual": 2.619176240865684e-12,
+    "degenerate_planar": true
+  },
+  "symmetry": {
+    "is_symmetric": true,
+    "best_crossing_residual": 7.762643609507653e-15,
+    "n_crossings_checked": 2
+  },
+  "literature_anchors_engaged": [
+    "Braik-Ross orbital networks in the three-body problem (2026)",
+    "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+    "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+    "Sanaga-Park-Howell fidelity-transition framework (2026)",
+    "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+    "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+  ],
+  "tolerances": {
+    "x0_rel": 0.03,
+    "ydot0_rel": 0.05,
+    "T_rel": 0.05,
+    "jacobi_abs": 0.02
+  },
+  "errors": {
+    "x0_rel": 0.0031396958668865405,
+    "ydot0_rel": 0.03657786295646314,
+    "T_rel": 0.02530111471491267,
+    "jacobi_abs": 0.0033669282982526916
+  },
+  "matched": true
+}
