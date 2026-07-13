@@ -1,0 +1,269 @@
+{
+  "partition": "P1",
+  "families": {
+    "A": {
+      "family": "A",
+      "partition": "P1",
+      "matched": false,
+      "ic_rms_distance": 0.1329641987010565,
+      "ic_ok": false,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.16829363047767154,
+      "rmax_ratio": 0.09390145265277901,
+      "features_ok": false,
+      "member_fitness": 0.9999992271703646,
+      "candidate": {
+        "rmin_km_1yr": 970983.0596504727,
+        "rmax_km_1yr": 1102486.8142393918,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 969759.4641235115,
+        "rmax_km_5yr": 1106716.3290277112,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02905268676789774,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.02905268676789774,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "B": {
+      "family": "B",
+      "partition": "P1",
+      "matched": false,
+      "ic_rms_distance": 0.03301251801943672,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.44314260662328236,
+      "rmax_ratio": 0.33714254870564514,
+      "features_ok": false,
+      "member_fitness": 0.9999992271703646,
+      "candidate": {
+        "rmin_km_1yr": 970983.0596504727,
+        "rmax_km_1yr": 1102486.8142393918,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 969759.4641235115,
+        "rmax_km_5yr": 1106716.3290277112,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02905268676789774,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.02905268676789774,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "C": {
+      "family": "C",
+      "partition": "P1",
+      "matched": true,
+      "ic_rms_distance": 0.0004733302180674792,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 0.9803157022731971,
+      "rmax_ratio": 0.9774328609447834,
+      "features_ok": true,
+      "member_fitness": 0.9999992022639912,
+      "candidate": {
+        "rmin_km_1yr": 967567.6768808365,
+        "rmax_km_1yr": 1101139.696124538,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 967567.6768808365,
+        "rmax_km_5yr": 1102531.2727826848,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02902213636064488,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.02902213636064488,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "D": {
+      "family": "D",
+      "partition": "P1",
+      "matched": false,
+      "ic_rms_distance": 0.022953709003172184,
+      "ic_ok": true,
+      "type_expected": "DPO",
+      "type_got": "DRO",
+      "type_ok": false,
+      "rmin_ratio": 3.0508107396187825,
+      "rmax_ratio": 1.098725795551711,
+      "features_ok": false,
+      "member_fitness": 0.9999992022639912,
+      "candidate": {
+        "rmin_km_1yr": 967567.6768808365,
+        "rmax_km_1yr": 1101139.696124538,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 967567.6768808365,
+        "rmax_km_5yr": 1102531.2727826848,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02902213636064488,
+          0.0,
+          0.0
+        ],
+        "theta0": 0.0,
+        "spatial": false,
+        "v0_norm": 0.02902213636064488,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "E": {
+      "family": "E",
+      "partition": "P1",
+      "matched": false,
+      "ic_rms_distance": 0.023151297535739298,
+      "ic_ok": true,
+      "type_expected": "DPO",
+      "type_got": "DRO",
+      "type_ok": false,
+      "rmin_ratio": 3.1839473944481873,
+      "rmax_ratio": 1.1352777640919733,
+      "features_ok": false,
+      "member_fitness": 0.9999990635969414,
+      "candidate": {
+        "rmin_km_1yr": 993050.9046966285,
+        "rmax_km_1yr": 1137771.9693396834,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 991041.536551391,
+        "rmax_km_5yr": 1149550.676686475,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02936437086420235,
+          0.0,
+          0.0
+        ],
+        "theta0": 3.141592654321252,
+        "spatial": false,
+        "v0_norm": 0.02936437086420235,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    },
+    "F": {
+      "family": "F",
+      "partition": "P1",
+      "matched": false,
+      "ic_rms_distance": 0.0034260789095531953,
+      "ic_ok": true,
+      "type_expected": "DRO",
+      "type_got": "DRO",
+      "type_ok": true,
+      "rmin_ratio": 4.415522030665311,
+      "rmax_ratio": 0.9996441408846632,
+      "features_ok": false,
+      "member_fitness": 0.9999990635969414,
+      "candidate": {
+        "rmin_km_1yr": 993050.9046966285,
+        "rmax_km_1yr": 1137771.9693396834,
+        "terminated_1yr": false,
+        "theta_end_1yr": 6.283185307179586,
+        "rmin_km_5yr": 991041.536551391,
+        "rmax_km_5yr": 1149550.676686475,
+        "terminated_5yr": false,
+        "theta_end_5yr": 31.41592653589793,
+        "ic_interleaved": [
+          0.0066845,
+          0.0,
+          0.0,
+          -0.02936437086420235,
+          0.0,
+          0.0
+        ],
+        "theta0": 3.141592654321252,
+        "spatial": false,
+        "v0_norm": 0.02936437086420235,
+        "practically_stable": true,
+        "type": "DRO"
+      }
+    }
+  },
+  "reproduction_rate": "1/6",
+  "drift_classified": {
+    "checked": 200,
+    "bounded": 200
+  },
+  "theta0_spot_checks": {
+    "0": {
+      "per_phase_bounded": {
+        "4.0956328308090075": true,
+        "6.190027933202202": true,
+        "8.284423035595399": true
+      }
+    },
+    "1": {
+      "per_phase_bounded": {
+        "3.7567189489436963": true,
+        "5.851114051336891": false,
+        "7.945509153730087": true
+      }
+    },
+    "2": {
+      "per_phase_bounded": {
+        "4.270602513005034": true,
+        "6.364997615398229": true,
+        "8.459392717791424": true
+      }
+    },
+    "3": {
+      "per_phase_bounded": {
+        "3.7797286607673386": true,
+        "5.874123763160534": true,
+        "7.96851886555373": true
+      }
+    },
+    "4": {
+      "per_phase_bounded": {
+        "4.117707773089815": true,
+        "6.21210287548301": true,
+        "8.306497977876205": true
+      }
+    }
+  }
+}
