@@ -3462,7 +3462,24 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   — consider a quick Fable/Opus sanity pass on the chosen widths before committing to a full sweep, since
   a wrong choice wastes the whole sweep's compute either way (too narrow: same null result for the same
   reason; too wide: drifts to an unrelated basin and the "match" becomes meaningless).
-  **Not yet dispatched.**
+  **Fable design review DONE (2026-07-14): GO, resonance-scaled bounds ladder.** Quantitative finding:
+  the current box is anisotropic by ~5-8x in exactly the symmetry-breaking directions — `xdot0_abs=0.05`
+  is an eccentricity-proxy budget of only e≈0.03-0.044, while `ydot0_frac=0.35` already grants the
+  SYMMETRIC direction e≈0.2 reach. **Concrete design:** replace the 3 flat absolutes with one
+  resonance-scaled symmetry-breaking fraction `s`: `xdot0_abs = zdot0_abs = s * sqrt((1-mu)/a1)`
+  (e/inclination-proxy scaling per-MMR, not a flat number), `z0_abs = max(0.05, s * a1)` (the `max()` so
+  no rung ever shrinks below #582's already-stamped box). Run as a **2-rung ladder**: rung 1 `s=0.15`,
+  rung 2 `s=0.30` (≈ the same eccentricity budget `ydot0_frac` already grants — the internally-principled
+  stopping point; at 3:2 rung 2 gives ~7x the current box). Mandatory positive control (3:2) BEFORE each
+  rung's sweep, per the original scope's own gate. **Add a drift-detection check to `--mode analyze`**:
+  assert each refined member's semi-major axis (from its converged period) is nearest the TARGET MMR's
+  `a1`, report drift-to-neighboring-MMR counts per rung — over-widening wastes GA capacity but is
+  post-hoc detectable, not silently misleading. **Flagged gap, not in scope now:** `t_frac=0.5` (T within
+  ±50% of T0) covers same-period pitchfork symmetry-breaking but structurally excludes period-doubled
+  asymmetric branches (T≈2·T0) — note this in the eventual empty-region stamp as an out-of-box caveat,
+  don't scope-creep it into this dispatch. Separate `empty_regions.jsonl` entry per rung actually run
+  (don't overwrite #582's own entry, which stays valid for its bounds). Est. cost ~10-12 runs, 2.5-5h wall.
+  **Dispatchable now.**
 
 - **#586** (P2/P3, exploratory) — #583 follow-up: address the fitness-landscape/niching limitation the
   partitioning redesign exposed. **Origin:** #583's redesign (commit `f106519`) proved narrower,
@@ -3489,7 +3506,33 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   situation from #582's clean 0/104). **Recommended approach:** get a Fable/Opus read on (a) vs (b) vs
   (c) before building anything — this is a real design-tradeoff decision (search fairness/cost vs.
   targeting vs. accepting the limitation), not a mechanical fix.
-  **Not yet dispatched.**
+  **Fable design review DONE (2026-07-14): (a) + reframed cluster-everything harvesting + (c)'s
+  documentation; REJECT (b).** Key reframe: per-partition family-match recovery is a POSITIVE-CONTROL
+  concern, not the novelty deliverable — given a saturating boundedness objective, each GA run just
+  samples the bounded continuum, and where it lands is basin-selection luck. Harvest the way #582's own
+  `--mode analyze` already does: cluster the WHOLE final population into distinct high-fitness basins,
+  refine/classify/drift-check/anchor-check EVERY representative, not just check against the partition's
+  named target family. Under that harvesting, N=3 independent seeds per partition = 3 independent
+  samples of basin space (a genuine novelty-sampling improvement, not just "playing the odds" on
+  recovery). **Reject (b)** on its own logic: a target-proximity fitness term can't find what it wasn't
+  aimed at, and targeted reproduction is already served by stage 2's narrow per-set boxes — building (b)
+  would duplicate stage 2 while destroying this track's one distinctive property (unaimed exploration).
+  Note: the `DEEP_HILL`/`BEYOND_HI_R` partitions' actual novelty payload is judged by the drift classifier
+  + corpus anchors, NOT family-match, so the discrimination limitation barely touches them — (a) is
+  sufficient to unblock the full sweep; the paper-band partitions become census/machinery-health checks.
+  Do (c)'s documentation regardless (the limitation is real and empirically established — state it as a
+  conditionality clause on any registry stamp: "recovery per partition is seed-conditional under Eq. 15 +
+  deterministic crowding"). **Named future escalation, NOT scoped now:** if the N=3 sweep keeps surfacing
+  recurring unmatched bounded basins that get lost to niche collapse, escalate to a MAP-Elites-style
+  behavior-space quality-diversity archive (binned on rmin/rmax/Jacobi/period, all already computed by
+  the pipeline) — this preserves novelty semantics the way (b) can't, but is deferred pending evidence
+  from the cheap N=3 pass first (moderate build cost against low expected yield in this already
+  heavily-charted Sun-Earth bounded domain).
+  **Scope for this dispatch:** N=3 independent-seed niching-GA runs per each of #583's 16 single-family/
+  band partitions, harvested via #582-style cluster-everything (not narrow family-match only), documented
+  per-partition recovery + any unmatched-bounded-basin candidates (which still need the live
+  `check_literature()` novelty gate before any claim, per [[feedback_literature_novelty_check_baseline]]).
+  **Dispatchable now.**
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
