@@ -23,19 +23,26 @@ from cyclerfinder.search.isolated_3d_asymmetric_fitness import (
     IsolatedAsymmetricFitnessConfig,
     genome_to_state0,
     isolated_3d_asymmetric_fitness,
+    mmr_a1_from_t0,
     mmr_bounds,
     mmr_t0,
 )
 
 MU = 0.001
 
+# #585's Fable-reviewed 2-rung ladder (OUTSTANDING.md #585). Tests below use
+# S_RUNG1 as the "default" representative width except where explicitly
+# comparing both rungs.
+S_RUNG1 = 0.15
+S_RUNG2 = 0.30
+
 
 def _system() -> cr3bp.CR3BPSystem:
     return cr3bp.CR3BPSystem(mu=MU, primary="Sun", secondary="planet", l_km=1.0, t_s=1.0)
 
 
-def _config_for(a1: float) -> IsolatedAsymmetricFitnessConfig:
-    _bounds, x0_guess, ydot0_guess, t0 = mmr_bounds(a1, mu=MU)
+def _config_for(a1: float, *, s: float = S_RUNG1) -> IsolatedAsymmetricFitnessConfig:
+    _bounds, x0_guess, ydot0_guess, t0 = mmr_bounds(a1, mu=MU, s=s)
     seed_state = np.array([x0_guess, 0.0, 0.0, 0.0, ydot0_guess, 0.0])
     jacobi_target = float(cr3bp.jacobi_constant(seed_state, MU))
     return IsolatedAsymmetricFitnessConfig(mu=MU, t0=t0, jacobi_target=jacobi_target)
@@ -82,7 +89,7 @@ def test_death_penalty_secondary_collision() -> None:
 @pytest.mark.parametrize(("p", "q", "a1"), MMR_SEMI_MAJOR_AXES, ids=lambda v: str(v))
 def test_fitness_bounded_zero_to_one(p: int, q: int, a1: float) -> None:
     config = _config_for(a1)
-    bounds, *_ = mmr_bounds(a1, mu=MU)
+    bounds, *_ = mmr_bounds(a1, mu=MU, s=S_RUNG1)
     rng = np.random.default_rng(42)
     for _ in range(25):
         genome = np.array([rng.uniform(lo, hi) for lo, hi in bounds])
@@ -103,7 +110,7 @@ def test_mmr_bounds_contains_known_440_seed(p: int, q: int, a1: float) -> None:
     system = _system()
     seed = all_mmr_seeds(mu=MU)[MMR_SEMI_MAJOR_AXES.index((p, q, a1))]
     assert seed.converged
-    bounds, *_ = mmr_bounds(a1, mu=MU)
+    bounds, *_ = mmr_bounds(a1, mu=MU, s=S_RUNG1)
     x0_lo, x0_hi = bounds[0]
     ydot0_lo, ydot0_hi = bounds[3]
     t_lo, t_hi = bounds[5]
@@ -166,9 +173,25 @@ def test_fitness_lower_for_far_off_periodicity() -> None:
     del system
 
 
+@pytest.mark.parametrize(("p", "q", "a1"), MMR_SEMI_MAJOR_AXES, ids=lambda v: str(v))
+def test_mmr_a1_from_t0_inverts_mmr_t0(p: int, q: int, a1: float) -> None:
+    """#585's drift-detection check needs an exact round-trip inverse."""
+    t0 = mmr_t0(a1)
+    assert mmr_a1_from_t0(t0) == pytest.approx(a1, rel=1e-12)
+
+
+def test_mmr_a1_from_t0_raises_on_nonpositive_or_nonfinite() -> None:
+    with pytest.raises(ValueError):
+        mmr_a1_from_t0(0.0)
+    with pytest.raises(ValueError):
+        mmr_a1_from_t0(-1.0)
+    with pytest.raises(ValueError):
+        mmr_a1_from_t0(float("nan"))
+
+
 def test_mmr_bounds_raises_on_nonpositive_a1() -> None:
     with pytest.raises(ValueError):
-        mmr_bounds(0.0)
+        mmr_bounds(0.0, s=S_RUNG1)
     with pytest.raises(ValueError):
         mmr_t0(-1.0)
 
@@ -177,3 +200,66 @@ def test_isolated_3d_asymmetric_fitness_rejects_wrong_shape() -> None:
     config = _config_for(0.763143)
     with pytest.raises(ValueError):
         isolated_3d_asymmetric_fitness(np.array([1.0, 2.0, 3.0]), config=config)
+
+
+def test_mmr_bounds_requires_s_explicitly() -> None:
+    """#585: ``s`` is keyword-only with NO default -- every caller must opt in.
+
+    A flat 0.05 box (#582's original) has no single ``s`` that reproduces it
+    identically across all 5 MMRs (that anisotropy is exactly what #585
+    fixes), so silently defaulting ``s`` would either quietly resurrect the
+    old flat box for one MMR only or silently change behaviour for callers
+    who forgot the new parameter exists. Forcing a ``TypeError`` makes that
+    an explicit, reviewed choice at every call site.
+    """
+    with pytest.raises(TypeError):
+        mmr_bounds(0.763143, mu=MU)  # type: ignore[call-arg]
+
+
+@pytest.mark.parametrize(("p", "q", "a1"), MMR_SEMI_MAJOR_AXES, ids=lambda v: str(v))
+@pytest.mark.parametrize("s", [S_RUNG1, S_RUNG2], ids=("s=0.15", "s=0.30"))
+def test_mmr_bounds_s_scaling_formula(p: int, q: int, a1: float, s: float) -> None:
+    """#585's exact resonance-scaled formula: xdot0_abs=zdot0_abs=s*v_circ,
+    z0_abs=max(0.05, s*a1)."""
+    bounds, _x0_guess, _ydot0_guess, _t0 = mmr_bounds(a1, mu=MU, s=s)
+    v_circ = math.sqrt((1.0 - MU) / a1)
+    expected_xdot0_abs = s * v_circ
+    expected_z0_abs = max(0.05, s * a1)
+    z0_lo, z0_hi = bounds[1]
+    xdot0_lo, xdot0_hi = bounds[2]
+    zdot0_lo, zdot0_hi = bounds[4]
+    assert z0_lo == pytest.approx(-expected_z0_abs)
+    assert z0_hi == pytest.approx(expected_z0_abs)
+    assert xdot0_lo == pytest.approx(-expected_xdot0_abs)
+    assert xdot0_hi == pytest.approx(expected_xdot0_abs)
+    assert zdot0_lo == pytest.approx(-expected_xdot0_abs)
+    assert zdot0_hi == pytest.approx(expected_xdot0_abs)
+
+
+@pytest.mark.parametrize(("p", "q", "a1"), MMR_SEMI_MAJOR_AXES, ids=lambda v: str(v))
+def test_mmr_bounds_z0_never_shrinks_below_582_floor(p: int, q: int, a1: float) -> None:
+    """The ``max(0.05, s*a1)`` floor keeps z0_abs >= #582's stamped 0.05 box."""
+    for s in (0.01, S_RUNG1, S_RUNG2):
+        bounds, *_ = mmr_bounds(a1, mu=MU, s=s)
+        z0_lo, z0_hi = bounds[1]
+        assert z0_hi >= 0.05
+        assert z0_lo <= -0.05
+
+
+@pytest.mark.parametrize(("p", "q", "a1"), MMR_SEMI_MAJOR_AXES, ids=lambda v: str(v))
+def test_mmr_bounds_rung2_wider_than_rung1(p: int, q: int, a1: float) -> None:
+    """Rung 2 (s=0.30) must be at least as wide as rung 1 (s=0.15) on every
+    symmetry-breaking component, and x0/ydot0/T (unchanged fractions) must be
+    IDENTICAL across rungs -- only the symmetry-breaking bounds move."""
+    bounds1, x0_guess1, ydot01, t01 = mmr_bounds(a1, mu=MU, s=S_RUNG1)
+    bounds2, x0_guess2, ydot02, t02 = mmr_bounds(a1, mu=MU, s=S_RUNG2)
+    assert x0_guess1 == x0_guess2
+    assert ydot01 == ydot02
+    assert t01 == t02
+    for idx in (0, 3, 5):  # x0, ydot0, T: unchanged across rungs
+        assert bounds1[idx] == bounds2[idx]
+    for idx in (1, 2, 4):  # z0, xdot0, zdot0: rung 2 >= rung 1
+        lo1, hi1 = bounds1[idx]
+        lo2, hi2 = bounds2[idx]
+        assert hi2 >= hi1
+        assert lo2 <= lo1
