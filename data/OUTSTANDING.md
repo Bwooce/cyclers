@@ -3335,6 +3335,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   control.md`. **NOT YET DISPATCHED: the full 5-MMR novelty sweep** (this was deliberately out of scope
   for the build dispatch — the coordinator launches and owns that run directly, per project convention
   for multi-hour compute).
+  **Full 5-MMR novelty sweep DONE (2026-07-14), commit `b0225f4`.** Paper-scale budget (pop=200,
+  gen=400) across all 5 MMRs, analyzed via the new `--mode analyze` (cluster + mandatory pipeline).
+  **Result: 0/104 asymmetric** — every converged cluster (104 of 124 analyzed representatives, across
+  all 5 MMRs) classifies SYMMETRIC; not one asymmetric member found. Diagnosed as very likely a
+  search-box artifact, not a physical negative: `mmr_bounds()` is deliberately narrow and centered on
+  the known symmetric seed, with tight absolute bounds (±0.05) on exactly the z0/xdot0/zdot0 components
+  whose departure from zero breaks mirror symmetry — a narrow box centered on a strongly-attracting
+  symmetric basin would produce this result whether or not a genuine asymmetric member exists nearby.
+  Stamped as a method-conditional empty region in `data/empty_regions.jsonl`
+  (`er3bp-isolated-3d-asymmetric-mu0.001-5mmr-582-2026-07-14`) per [[project_negative_results_registry]]
+  — empty is never unconditional. Full writeup: `docs/notes/2026-07-14-582-5mmr-asymmetric-novelty-
+  sweep-results.md`. **Natural next test (NOT run, a scope decision):** re-sweep with deliberately
+  widened z0/xdot0/zdot0 bounds (the actual symmetry-breaking degrees of freedom), keeping
+  x0/ydot0/T bounds as-is to anchor the resonance and limit MMR-drift risk.
 
 - **#583** (P2/P3, exploratory, stage 3b of #581) — Sun-Earth ER3BP bounded-drift quasi-cycler search,
   widening #581's already-validated niching layer beyond Gurfil-Kasdin's own 12 optimization sets.
