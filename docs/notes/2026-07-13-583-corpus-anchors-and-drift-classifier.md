@@ -334,3 +334,110 @@ The full widened-domain novelty sweep across all 16 partitions (A-N +
 `DEEP_HILL` + `BEYOND_HI_R`), running multiple seeds per `paper`-band
 partition per this dispatch's own recommendation above -- a longer job for a
 future, separately-scoped dispatch, per #583's own gate.
+
+## Addendum (2026-07-14, #586): multi-seed + cluster-everything harvesting
+
+**Fable design review outcome** (see `data/OUTSTANDING.md`'s `#586` entry for
+the full text): (a) run N independent seeds per partition and reframe
+per-partition family-match recovery as a POSITIVE-CONTROL/machinery-health
+signal, not the novelty deliverable; reject (b) (a target-proximity fitness
+augmentation -- would duplicate stage 2's targeted search while destroying
+this track's one distinctive property, unaimed exploration); do (c)'s
+documentation regardless (the seed-conditional limitation above is real,
+stated as a conditionality clause, not engineered away). The actual novelty
+deliverable is cluster-everything harvesting: cluster EVERY seed's final
+population into distinct high-fitness basins (mirroring
+`run_582_asymmetric_3d_niching_search.py`'s own `--mode analyze`/
+`cluster_representatives` pattern), then run every representative through
+the drift classifier + a family-match check against ALL 14 published
+families (not just the partition's own named target).
+
+### What was built
+
+`scripts/run_583_widened_bounded_drift_search.py` (extended, not a new
+script):
+
+* `_seed_for(name, seed_idx)` / `SEED_STRIDE = 1009` -- deterministic
+  per-`(partition, seed_idx)` GA seed; `seed_idx=0` reproduces the original
+  `583000 + partition_index` base seed byte-for-byte.
+* `run_partition_seed` / `run_partition_multiseed` -- run one or
+  `--n-seeds` (default 3) independent seeds per partition, always under
+  seed-suffixed filenames (`{name}_seed{i}_*`). The legacy unsuffixed
+  `run_partition`/`analyze_partition` path is untouched and still reachable
+  via `--legacy-run`/`--analyze` (backward-compat with the already-committed
+  `C`/`P1`/`ABCF` artifacts from the original 2026-07-13 dispatch).
+* `cluster_representatives` -- ported from #582's own function of the same
+  name (same greedy fitness-descending, bounds-normalized-distance-threshold
+  algorithm; #583's `bounds7` routinely has fixed/zero-span genes, unlike
+  #582's genome, so the `span==0 -> 1.0` guard is genuinely exercised here).
+* `match_family_in_widened_population` extended with an optional
+  `precomputed_characterization` kwarg -- `characterize()` is a 5-year
+  high-accuracy propagation independent of which family it's being compared
+  against; checking one candidate against all 14 families now costs ONE
+  propagation instead of 14.
+* `_build_er3bp_candidate_signature` / `_er3bp_literature_anchors_engaged` --
+  mirrors #582's own `build_candidate_signature`/`literature_anchors_engaged`
+  pattern (`isolated_3d_asymmetric_pipeline.py`). `primary="Sun"`,
+  `sequence=("E",)` reaches all 3 #583-filed corpus anchors (verified
+  directly: Gurfil-Kasdin, Sun-Earth co-orbital, Henon family-f all present
+  in the engaged-anchor list). `topology_label` is deliberately left empty --
+  setting it to anything would risk excluding the co-orbital anchor (the one
+  anchor of the 3 that DOES declare a non-empty `topology_label`,
+  `"binary-coorbital"`) via `_candidate_anchors`'s "both non-empty and
+  disjoint" filter.
+* `harvest_seed` / `harvest_partition` -- the actual harvesting: per-cluster
+  drift classification, then (bounded members only) an all-14-family match,
+  then (unmatched-bounded only) signature + anchor-engagement population.
+  Writes `{name}_seed{i}_harvest_summary.json` and
+  `{name}_aggregate_harvest_summary.json`. Every summary carries the
+  `literature_check_status`/`literature_novelty_status` field stating
+  explicitly that `check_literature()`'s live web search was NOT run --
+  necessary, not sufficient, for any novelty claim
+  ([[feedback_literature_novelty_check_baseline]]).
+* New CLI flags: `--n-seeds` (default 3), `--seed-index` (chunk to one
+  seed), `--harvest` (run the new harvest instead of the GA),
+  `--fitness-floor`/`--distance-threshold`/`--max-clusters` (harvest tuning,
+  same defaults as #582's own analyze step).
+
+### Small-scale validation (this dispatch's own deliverable; NOT the full sweep)
+
+Ran partition `C` (family C, `paper` band) with `--n-seeds 2`, full 400
+generations/seed (production config, ~330-420s/seed on this machine):
+
+```
+uv run python scripts/run_583_widened_bounded_drift_search.py --partition C --n-seeds 2 --workers 8
+uv run python scripts/run_583_widened_bounded_drift_search.py --harvest --partition C --n-seeds 2
+```
+
+Both seeds converged (population std collapsed to ~4-6e-4 by generation
+400, as expected for this landscape) and BOTH recovered family C (the
+partition's own target -- the positive-control bar):
+
+```
+[C_seed0] harvest: 9 cluster(s), 9 bounded, 5 unmatched-bounded; own target family recovered=True
+[C_seed1] harvest: 13 cluster(s), 13 bounded, 9 unmatched-bounded; own target family recovered=True
+[C] AGGREGATE across 2 seed(s): 2/2 recovered own target family; 14 unmatched-bounded literature-check candidate(s)
+```
+
+Cluster-everything harvesting worked exactly as designed: each seed's
+population clustered into several (9, 13) distinct high-fitness basins
+(not just the single best member), every cluster classified bounded (all
+were, at this fitness floor -- consistent with the population having fully
+collapsed onto the C-family bounded continuum by generation 400), 4/9 and
+4/13 clusters matched family C specifically via the all-14-family check,
+and the remaining 5+9=14 bounded-but-unmatched clusters were correctly
+populated into `CandidateSignature`s with the literature matcher engaging
+all 19 relevant corpus anchors (including all 3 #583-filed ones) each time.
+These 14 unmatched-bounded candidates are almost certainly OTHER points
+along the same saturated boundedness continuum near family C's own basin
+(consistent with Eq. 15's known lack of per-family structure, per the
+main body of this note) rather than distinct genuine families -- this is
+exactly the honest "necessary, not sufficient" territory the harvest
+summary's own `literature_novelty_status` field states: they are
+literature-matcher-engaged, NOT literature-checked, and NOT claimed novel
+here. No live `check_literature()` search was run.
+
+**Not done in this dispatch (explicitly deferred to the coordinator):** the
+full 16-partition x `--n-seeds` sweep, and any live literature-corpus search
+or novelty adjudication of the unmatched-bounded candidates surfaced above
+or by the full sweep.
