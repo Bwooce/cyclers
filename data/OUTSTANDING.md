@@ -3487,8 +3487,14 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   as genuine basin competition (2 of 3 probe seeds land on a different near-periodic basin with
   comparable small-budget fitness, not simply "box too wide"). **s=0.30 is NOT certified for the full
   sweep**; only s=0.15 is confirmed safe. Full numeric bounds table + diagnosis:
-  `docs/notes/2026-07-14-585-resonance-scaled-symmetry-breaking-bounds.md`. **NOT YET DISPATCHED: the
-  full 5-MMR sweep at s=0.15** (coordinator-owned multi-hour run, per project convention).
+  `docs/notes/2026-07-14-585-resonance-scaled-symmetry-breaking-bounds.md`.
+  **Full 5-MMR sweep at s=0.15 DONE (2026-07-14), commit `83607a1`.** 78/78 converged clusters across
+  all 5 MMRs and 125 analyzed representatives still classify SYMMETRIC — 0/78 asymmetric. The new
+  drift-detection check confirms 0/78 drifted to a neighboring MMR, ruling out silent over-widening as
+  a confound — a materially stronger negative than #582's original stamp. Stamped as a SEPARATE
+  method-conditional empty region (`er3bp-isolated-3d-asymmetric-mu0.001-5mmr-585-s0p15-2026-07-14`,
+  does not overwrite #582's own). s=0.30 remains uncertified (failed its own positive control). Full
+  writeup: `docs/notes/2026-07-14-585-5mmr-sweep-s015-results.md`.
 
 - **#586** (P2/P3, exploratory) — #583 follow-up: address the fitness-landscape/niching limitation the
   partitioning redesign exposed. **Origin:** #583's redesign (commit `f106519`) proved narrower,
