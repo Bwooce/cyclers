@@ -3480,6 +3480,15 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   don't scope-creep it into this dispatch. Separate `empty_regions.jsonl` entry per rung actually run
   (don't overwrite #582's own entry, which stays valid for its bounds). Est. cost ~10-12 runs, 2.5-5h wall.
   **Dispatchable now.**
+  **Build + per-rung positive control DONE (2026-07-14), commit `208db44` (merged `31970da`).** Built
+  the `s`-parametrized `mmr_bounds()`, `mmr_a1_from_t0()` (inverse for drift-detection), and the
+  drift-detection check in `--mode analyze`. **Rung s=0.15: PASSES** (0.3-3.7% error against tolerances,
+  same known basin as #582's original box). **Rung s=0.30: FAILS** its own positive control — diagnosed
+  as genuine basin competition (2 of 3 probe seeds land on a different near-periodic basin with
+  comparable small-budget fitness, not simply "box too wide"). **s=0.30 is NOT certified for the full
+  sweep**; only s=0.15 is confirmed safe. Full numeric bounds table + diagnosis:
+  `docs/notes/2026-07-14-585-resonance-scaled-symmetry-breaking-bounds.md`. **NOT YET DISPATCHED: the
+  full 5-MMR sweep at s=0.15** (coordinator-owned multi-hour run, per project convention).
 
 - **#586** (P2/P3, exploratory) — #583 follow-up: address the fitness-landscape/niching limitation the
   partitioning redesign exposed. **Origin:** #583's redesign (commit `f106519`) proved narrower,
@@ -3533,6 +3542,16 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   per-partition recovery + any unmatched-bounded-basin candidates (which still need the live
   `check_literature()` novelty gate before any claim, per [[feedback_literature_novelty_check_baseline]]).
   **Dispatchable now.**
+  **Build + small-scale validation DONE (2026-07-14), commit `d260811` (merged `a5f9ebc`).** Added
+  `--n-seeds` (independent RNG seed per run) and a harvest step clustering EVERY seed's final population
+  into distinct high-fitness basins (not just checking the partition's own target family), running each
+  representative through the drift classifier + a match check against all 14 published families.
+  Small-scale validation (partition `C`, 2 seeds): both seeds recovered family `C`; the harvest also
+  surfaced **14 unmatched-bounded candidates** — bounded, non-matching any of the 14 known families,
+  literature-matcher-engaged — flagged for the eventual full-sweep adjudication pass, explicitly NOT
+  adjudicated or claimed novel here (no live `check_literature()` run). Full design + validation:
+  `docs/notes/2026-07-13-583-corpus-anchors-and-drift-classifier.md` (Part 5 addendum). **NOT YET
+  DISPATCHED: the full 16-partition × N=3-seed sweep** (coordinator-owned multi-hour run).
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
@@ -5010,6 +5029,15 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   2000-04-09 13:00/14:00 branch-flip and the 2000-07-24/2000-08-17 planet-crossing cases the
   #559 diagnostic already located, so this fix is verifiably tested against the cases that
   motivated it.
+  **✓ Resolved (2026-07-14), commit `7d3b21b` (merged `b22e4a4`).** Discovery: both robustness fixes
+  were ALREADY landed under commit `6c54bba` (#567, 2026-07-11), before this task was even dispatched —
+  verified independently by re-reading that commit, not taken on trust. The dispatched agent correctly
+  found this instead of redoing the work, and added the one piece #560's own spec required that #567
+  didn't explicitly cover: a durable regression pin (`test_560_silver_312_canonical_epoch_unchanged`)
+  confirming #312's own canonical single-epoch result is unaffected. Also documented one deliberate
+  deviation from #560's original wording (tag-but-count-as-FAIL, not exclude-from-denominator) that was
+  itself corrected by a later Fable-validated #567 pin — flagged so it doesn't get "fixed back."
+  Full closeout: `docs/notes/2026-07-14-560-v4strict-robustness-fixes-closeout.md`.
 
 - **#541** (P3, opportunistic, lower priority than #539/#540) — First-pass Saturnian
   resonant-moon-pair screen (Mimas-Enceladus or Enceladus-Titan) using the same
