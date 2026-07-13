@@ -17,9 +17,18 @@ What's tested
 
 What's NOT tested (and why)
 ---------------------------
-* Numerical PASS/FAIL of the SILVER: that's the headline result of the
-  gauntlet runner (Part C), not a unit-test assertion. Testing it would
-  bake the verdict into the test suite — a category error.
+* Numerical PASS/FAIL of the SILVER *as a science claim*: the headline
+  gauntlet verdict is the runner's job (Part C), not a unit-test assertion
+  — baking the verdict in as ground truth would be a category error.
+
+  The ONE deliberate exception is
+  ``test_560_silver_312_canonical_epoch_unchanged`` below: it pins #312's
+  canonical single-epoch (2000-06-21, the #338/#566 reference epoch) PASS
+  as a REGRESSION GUARD that the #560/#567 robustness fixes did not perturb
+  an already-established prior result. That is a different thing from
+  deciding the science in the test — it guards a fixed input's fixed output
+  against code drift, with generous headroom (drift-agreement ≈12,160 km vs
+  the 50,000 km floor, i.e. not knife-edge), exactly as #560 requires.
 * Multi-epoch sensitivity: scope of the gauntlet runner.
 
 These tests need the URA111 SPICE kernel installed (Part A); they skip
@@ -560,3 +569,100 @@ def test_567_audit_fields_track_non_umbriel_oberon_sequence() -> None:
     # this range -- see the #567 OUTSTANDING.md PIN).
     assert 0.0 < verdict.eccentricity_used_e_body1 < 0.02
     assert 0.0 < verdict.eccentricity_used_e_body2 < 0.02
+
+
+# --------------------------------------------------------------------------- #
+# #560 close-out: #312's canonical single-epoch result must be UNCHANGED by
+# the branch-continuity + planet-crossing-guard robustness fixes.
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.skipif(not _KERNELS_PRESENT, reason=_SKIP_REASON)
+def test_560_silver_312_canonical_epoch_unchanged() -> None:
+    """#560 requirement: the robustness fixes must NOT change #312's own
+    already-valid canonical single-epoch V4-strict result.
+
+    #312's canonical reference epoch is 2000-06-21T00:00:00 (the #338/#566
+    anchor epoch; NOT ``SMOKE_EPOCH_UTC`` 2000-01-15, which is a known #338
+    high-drift FAIL epoch). At the canonical epoch the #327 SILVER
+    (Umbriel-Oberon-Umbriel, = #312's representative) is a clean PASS: all
+    three cycles converge (``failure_mode == "converged"`` — no spurious
+    planet-crossing tag or integrator failure introduced by the guard), and
+    the V4-strict-vs-V3 drift agreement is ~12,160 km, comfortably under the
+    50,000 km floor (not knife-edge, so this pin is not epoch-fragile).
+
+    This is a REGRESSION GUARD, not a science-verdict bake-in (see the module
+    docstring's "What's NOT tested"): #560 diagnosed the branch-continuity
+    and planet-crossing-guard fixes as needed only for future epoch-SWEEP
+    interpretation, and required explicit confirmation that #312's own
+    single-epoch result is unaffected rather than assumed so. A future edit
+    to ``_select_leg_transfer`` / ``_leg_periapsis_km`` / the guard threshold
+    that silently perturbed the canonical result would trip here.
+    """
+    canonical_epoch = "2000-06-21T00:00:00"
+
+    v2 = run_v2_moontour(
+        SILVER_ID,
+        SILVER_SEQ,
+        SILVER_VINF,
+        SILVER_TOF,
+        SILVER_REL_OFF_DEG,
+        None,
+        n_cycles=3,
+        n_revs=SILVER_NREV,
+        phase0_deg=SILVER_PHASE0_DEG,
+    )
+    v3 = run_v3_3d(
+        SILVER_ID,
+        SILVER_SEQ,
+        SILVER_VINF,
+        SILVER_TOF,
+        SILVER_REL_OFF_DEG,
+        None,
+        v2_verdict=v2,
+        n_cycles=3,
+        n_revs=SILVER_NREV,
+        phase0_deg=SILVER_PHASE0_DEG,
+    )
+    v4_scipy = run_v4_uranus(
+        SILVER_ID,
+        SILVER_SEQ,
+        SILVER_VINF,
+        SILVER_TOF,
+        SILVER_REL_OFF_DEG,
+        None,
+        v3_verdict=v3,
+        n_cycles=3,
+        n_revs=SILVER_NREV,
+        phase0_deg=SILVER_PHASE0_DEG,
+    )
+    verdict = run_v4_uranus_strict(
+        SILVER_ID,
+        SILVER_SEQ,
+        SILVER_VINF,
+        SILVER_TOF,
+        SILVER_REL_OFF_DEG,
+        canonical_epoch,
+        None,
+        v3_verdict=v3,
+        v4_scipy_verdict=v4_scipy,
+        n_cycles=3,
+        n_revs=SILVER_NREV,
+    )
+
+    # The headline: #312's canonical single-epoch result is a PASS, unchanged.
+    assert verdict.passes_v4_strict is True
+    assert verdict.n_cycles_propagated == 3
+    assert verdict.bounded_drift_survives is True
+    # Every cycle converged cleanly -- the planet-crossing guard did NOT
+    # mis-tag any leg at this epoch, and the branch-continuity selection did
+    # not drop to a failure mode.
+    assert len(verdict.per_cycle) == 3
+    for c in verdict.per_cycle:
+        assert c.failure_mode == FAILURE_MODE_CONVERGED
+        assert c.converged_legs == c.n_legs
+    # Drift agreement is well under the floor with headroom (pinned generously
+    # so genuine sub-km numerical churn across BLAS/platforms won't flake it,
+    # but tight enough to catch a regression that moved it toward the floor).
+    assert verdict.drift_agreement_kms_vs_v3 < 20_000.0
+    assert verdict.v4_v3_agreement_floor_kms == V4_AGREEMENT_FLOOR_KMS
