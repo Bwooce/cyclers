@@ -71,29 +71,34 @@ def test_refine_ga_candidate_blind_newton_can_diverge_documented_reason() -> Non
     (require_monotone_decrease=False) on this under-determined 6-residual/
     7-unknown mode can overshoot a good seed into an unrelated point, which is
     why ``refine_ga_candidate`` defaults True. Not asserting divergence is
-    guaranteed in general -- just documenting/pinning the specific case that
-    motivated the default, so a future change to the default is a conscious
-    decision, not silent regression.
+    guaranteed in general -- just documenting/pinning a case that demonstrates
+    the default, so a future change to the default is a conscious decision,
+    not silent regression.
+
+    CI FIX (2026-07-13): the original genome offset (found by hand) converged
+    on the monotone path but used 51 of the default 60 max_iter -- a narrow
+    margin that flipped to non-convergence on CI's Linux runner (this repo's
+    dev machine is a Mac/Accelerate-BLAS build; CI runs Linux) even though
+    ``tol=1e-10`` never changed. This genome was instead found by a small
+    local sweep over random offsets, selected for a LARGE convergence margin
+    (converges in 7 of 60 iterations, residual 8.1e-14 -- roughly 4 orders of
+    magnitude inside tol) while still reproducing a clean blind-Newton
+    divergence (hits the iteration cap with residual ~1.0, not a near-miss).
+    The offsets are arbitrary (this test pins a robustness PROPERTY, not a
+    sourced physical value), so picking a more robust arbitrary seed is not a
+    tolerance weakening -- see [[feedback_isolated_sweep_flips_suspect_artifact]].
     """
     seed = _known_32()
     system = _system()
-    # A GA-realistic near-but-not-exact seed (small deliberate offset).
-    genome = np.array(
-        [
-            seed.state0[0] + 0.011,
-            seed.state0[2] + 0.037,
-            seed.state0[3] + 0.008,
-            seed.state0[4] - 0.036,
-            seed.state0[5] + 0.028,
-            seed.period - 0.495,
-        ]
-    )
+    assert seed.state0[0] == pytest.approx(0.7310974, abs=1e-6)  # sanity: same known seed
+    genome = np.array([0.745697, -0.0288198, -0.02400734, 0.41758785, 0.02295395, 11.93970051])
     blind = refine_ga_candidate(system, genome, require_monotone_decrease=False)
     monotone = refine_ga_candidate(system, genome, require_monotone_decrease=True)
     assert monotone.converged
+    assert monotone.n_iter <= 30  # wide margin vs max_iter=60, not a borderline pass
     # The blind-Newton path is not required to fail forever (it is a
-    # documented empirical risk, not a proof), but on THIS #582 build seed it
-    # does -- pin that so a silent behavior change is visible.
+    # documented empirical risk, not a proof), but on THIS seed it does --
+    # pin that so a silent behavior change is visible.
     assert not blind.converged
 
 
