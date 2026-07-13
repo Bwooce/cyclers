@@ -163,10 +163,75 @@ empirically and is reported honestly rather than papered over. See the full
    dispatch's own already-accepted #583 gate) as the realistic per-partition
    bar, not "recovers every family in its group."
 
+## 2026-07-14 #586 follow-up: multi-seed + cluster-everything harvesting
+
+The redesign above (single-family partitions) proved NECESSARY but not
+SUFFICIENT: even a partition targeting exactly one family did not reliably
+converge to that family's own published point on every seed (module
+docstring point 4, above). A Fable design review (recorded in full in
+``data/OUTSTANDING.md``'s ``#586`` entry) settled the follow-up: (a) run
+multiple INDEPENDENT seeds per partition, and reframe per-partition
+family-match recovery as a POSITIVE-CONTROL / machinery-health signal, not
+the novelty deliverable -- (b) a target-proximity fitness augmentation was
+explicitly REJECTED (it would duplicate stage 2 while destroying this
+track's one distinctive property, unaimed exploration); (c) the
+seed-conditional limitation is documented, not engineered away.
+
+The actual novelty deliverable is **cluster-everything harvesting**
+(mirroring ``run_582_asymmetric_3d_niching_search.py``'s own
+``--mode analyze``/:func:`cluster_representatives` pattern): for EACH
+seed's finished population, cluster into distinct high-fitness basins (not
+just the single best member, not just a check against the partition's own
+named target family), then run every cluster representative through the
+drift classifier (bounded vs divergent) PLUS the family-match check against
+ALL 14 published families (not just the partition's own target -- a cluster
+found while searching for family A could plausibly land near family C's own
+footprint instead, and that is expected, not a bug, given the redesign's own
+finding that Eq. 15 has no per-family structure). Any BOUNDED cluster that
+matches NONE of the 14 families is populated into a
+``literature_check.CandidateSignature`` (:func:`_build_er3bp_candidate_signature`)
+and checked for matcher engagement
+(:func:`_er3bp_literature_anchors_engaged`) -- this gets a candidate to
+"bounded, unmatched, literature-matcher-engaged", which is necessary but NOT
+sufficient for any "novel" claim per
+[[feedback_literature_novelty_check_baseline]]; the live
+``search/literature_check.py::check_literature()`` web search is explicitly
+NOT run here (see :func:`harvest_seed`'s own ``literature_check_status``
+field).
+
+**Seeding convention** (:func:`_seed_for`): ``seed_idx=0`` reproduces the
+ORIGINAL single-seed base seed (``583000 + partition_index``) byte-for-byte
+(the historical positive-control run, e.g. the committed
+``C_final.npz``/``C_checkpoint.npz``/``C_analysis_summary.json`` from the
+2026-07-13 dispatch); ``seed_idx>=1`` offsets by ``SEED_STRIDE`` (a prime
+comfortably larger than the 16-partition index range) so no ``(partition,
+seed_idx)`` pair can ever collide. The multi-seed run/harvest paths ALWAYS
+use seed-suffixed filenames (``{name}_seed{i}_*``), including seed 0 --
+recomputed fresh under the new naming rather than aliased to the legacy
+unsuffixed files, keeping the two artifact generations unambiguous. The
+legacy unsuffixed ``run_partition``/``analyze_partition``/``--analyze`` path
+is left fully intact for backward compatibility with those already-committed
+single-seed artifacts.
+
+See ``docs/notes/2026-07-13-583-corpus-anchors-and-drift-classifier.md``
+(#586 addendum) for the small-scale validation result.
+
 Usage (chunked, same convention as #581's stage-2 script):
+    # legacy single-seed run/analyze (original #583 positive control):
     uv run python scripts/run_583_widened_bounded_drift_search.py \\
         --partition C [--max-gens 100] --workers 8
     uv run python scripts/run_583_widened_bounded_drift_search.py --analyze --partition C
+
+    # #586 multi-seed run (default --n-seeds 3; runs seed_idx 0..N-1 in one call):
+    uv run python scripts/run_583_widened_bounded_drift_search.py \\
+        --partition C --n-seeds 3 [--max-gens 100] --workers 8
+    # or one seed at a time (chunking across turns/coordinator dispatches):
+    uv run python scripts/run_583_widened_bounded_drift_search.py \\
+        --partition C --seed-index 1 [--max-gens 100] --workers 8
+
+    # #586 cluster-everything harvest + aggregate across all --n-seeds seeds:
+    uv run python scripts/run_583_widened_bounded_drift_search.py \\
+        --harvest --partition C --n-seeds 3
 
 Checkpoints/results: data/found/583_widened_search/
 """
@@ -195,6 +260,7 @@ from cyclerfinder.data.validation.er3bp_drift_classifier import (
     classify_bounded_drift,
     spot_check_theta0_robustness,
 )
+from cyclerfinder.search.literature_check import CandidateSignature
 from cyclerfinder.search.niching_ga import (
     DeterministicCrowdingConfig,
     run_deterministic_crowding,
@@ -471,6 +537,13 @@ def fitness_widened(vec7: np.ndarray) -> float:
 
 
 def run_partition(name: str, max_gens: int | None, workers: int) -> None:
+    """Legacy SINGLE-seed run (original #583 positive-control naming, unsuffixed).
+
+    Kept unmodified for backward compatibility with the already-committed
+    ``{name}_checkpoint.npz``/``{name}_final.npz`` artifacts (e.g. ``C``,
+    ``P1``, ``ABCF``). New work should use :func:`run_partition_multiseed`
+    (#586) instead -- see the module docstring's 2026-07-14 section.
+    """
     spec = PARTITIONS[name]
     bounds, families = spec.bounds7, spec.families
     config = DeterministicCrowdingConfig(seed=583000 + sorted(PARTITIONS).index(name))
@@ -522,6 +595,114 @@ def run_partition(name: str, max_gens: int | None, workers: int) -> None:
 
 
 # ---------------------------------------------------------------------------
+# #586: multi-seed run support.
+# ---------------------------------------------------------------------------
+
+SEED_STRIDE = 1009
+"""Per-seed-index offset (#586). A prime comfortably larger than the
+16-partition index range (0-15): ``seed_idx=0`` reproduces the legacy
+``583000 + partition_index`` base seed byte-for-byte, and every
+``(partition_index, seed_idx)`` pair across all 16 partitions and any
+realistic number of seeds maps to a distinct integer seed (no collision is
+possible below ``seed_idx = SEED_STRIDE / 16 ~= 63``, far past any planned
+``--n-seeds``)."""
+
+DEFAULT_N_SEEDS = 3
+"""Per #586's Fable design review: 3 independent seeds is the recommended
+default -- cheap enough to run per partition (~2-4 min/seed per #583's own
+timing note) while giving the cluster-everything harvest 3 independent
+samples of basin space rather than 1."""
+
+
+def _seed_for(name: str, seed_idx: int) -> int:
+    """The GA seed for one ``(partition, seed_idx)`` pair. See :data:`SEED_STRIDE`."""
+    return 583000 + sorted(PARTITIONS).index(name) + seed_idx * SEED_STRIDE
+
+
+def run_partition_seed(name: str, seed_idx: int, max_gens: int | None, workers: int) -> None:
+    """One independent-seed niching-GA run for ``name`` (#586).
+
+    Always uses seed-suffixed filenames (``{name}_seed{seed_idx}_*``), even
+    for ``seed_idx=0`` -- see the module docstring's 2026-07-14 section for
+    why this is kept distinct from the legacy unsuffixed :func:`run_partition`
+    artifacts rather than aliased to them.
+    """
+    spec = PARTITIONS[name]
+    bounds, families = spec.bounds7, spec.families
+    config = DeterministicCrowdingConfig(seed=_seed_for(name, seed_idx))
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    tag = f"{name}_seed{seed_idx}"
+    ckpt = OUT_DIR / f"{tag}_checkpoint.npz"
+    runlog = OUT_DIR / f"{tag}_runlog.jsonl"
+    t_start = time.monotonic()
+
+    def progress(stats: dict[str, float]) -> None:
+        rec = {
+            "ts": datetime.now(UTC).isoformat(timespec="seconds"),
+            "partition": name,
+            "seed_index": seed_idx,
+            "seed": config.seed,
+            **stats,
+            "elapsed_s": round(time.monotonic() - t_start, 1),
+        }
+        with runlog.open("a") as fh:
+            fh.write(json.dumps(rec) + "\n")
+            fh.flush()
+        gen = int(stats["generation"])
+        if gen % 20 == 0 or gen == config.generations:
+            print(
+                f"[{tag}] gen {gen}/{config.generations} "
+                f"mean={stats['fitness_mean']:.6f} max={stats['fitness_max']:.6f} "
+                f"std={stats['fitness_std']:.6f} elapsed={rec['elapsed_s']}s",
+                flush=True,
+            )
+
+    result = run_deterministic_crowding(
+        fitness_widened,
+        bounds,
+        config,
+        workers=workers,
+        checkpoint_path=ckpt,
+        max_generations_this_call=max_gens,
+        progress_fn=progress,
+    )
+    fam_desc = families if families else f"none -- band={spec.band} (known territory)"
+    print(
+        f"[{tag}] done through generation {result.generations_run} "
+        f"(seed={config.seed}, target families: {fam_desc})",
+        flush=True,
+    )
+    if result.generations_run >= config.generations:
+        np.savez(
+            OUT_DIR / f"{tag}_final.npz",
+            phenotypes=result.phenotypes,
+            fitness=result.fitness,
+        )
+        print(f"[{tag}] final population saved", flush=True)
+
+
+def run_partition_multiseed(
+    name: str,
+    *,
+    n_seeds: int,
+    seed_index: int | None,
+    max_gens: int | None,
+    workers: int,
+) -> None:
+    """Run one or all of ``name``'s ``--n-seeds`` independent seeds (#586).
+
+    ``seed_index`` (if given) restricts this call to that ONE seed (chunking
+    across turns/dispatches, same convention as ``--max-gens``); otherwise
+    every ``seed_idx`` in ``range(n_seeds)`` is run sequentially in this call
+    (each partition/seed pair is fast -- ~2-4 min -- so this stays well within
+    a single foreground turn for the default ``n_seeds=3``).
+    """
+    seed_indices = [seed_index] if seed_index is not None else list(range(n_seeds))
+    for si in seed_indices:
+        run_partition_seed(name, si, max_gens, workers)
+
+
+# ---------------------------------------------------------------------------
 # Analysis: stage 2's own match criterion, generalized to the 7-gene genome.
 # ---------------------------------------------------------------------------
 
@@ -531,6 +712,8 @@ def match_family_in_widened_population(
     partition: str,
     phen: np.ndarray,
     fitness: np.ndarray,
+    *,
+    precomputed_characterization: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Family-directed match against the 7-gene widened population.
 
@@ -540,6 +723,24 @@ def match_family_in_widened_population(
     include theta0 as a compared gene (stage 2 fixed theta0 per set so it
     never entered the distance; here it is free, so a genuine match must
     also land near the published theta0).
+
+    ``partition`` selects whose bounds normalize the IC-proximity distance --
+    NOT necessarily the partition the candidate was actually found in. #586's
+    cluster-everything harvest calls this with ``partition == fam`` (every
+    ``fam in TABLE34`` has a same-named single-family partition, see
+    :data:`PARTITIONS`) for EVERY one of the 14 families against a single
+    harvested cluster representative, checking whether that candidate --
+    found while searching for a possibly DIFFERENT family, or even in the
+    ``deep_hill``/``beyond_hi_r`` bands -- happens to sit near a different
+    family's own published point.
+
+    ``precomputed_characterization`` (#586): :func:`characterize` is a 5-year
+    high-accuracy propagation, independent of ``fam``/``partition`` -- when a
+    caller already has it for this exact candidate (e.g. checking one cluster
+    representative against all 14 families in a loop), passing it here avoids
+    14x redundant propagation of the SAME state. ``None`` (the default)
+    preserves the original behaviour exactly (compute it fresh from the
+    population's own nearest-IC member).
     """
     bounds = PARTITIONS[partition].bounds7
     icv, ic_theta0, ftype, rmin_km, rmax_km = TABLE34[fam]
@@ -561,7 +762,11 @@ def match_family_in_widened_population(
     dist = np.sqrt(np.mean(diff**2, axis=1))
     i = int(np.argmin(dist))
     cand_theta0 = float(phen[i, 6])
-    cand = characterize(phen[i, :6], cand_theta0)
+    cand = (
+        precomputed_characterization
+        if precomputed_characterization is not None
+        else characterize(phen[i, :6], cand_theta0)
+    )
     got_rmin = float(cand["rmin_km_1yr"])
     got_rmax = float(cand["rmax_km_1yr"])
     ok_ic = float(dist[i]) < IC_PROXIMITY_TOL
@@ -666,34 +871,475 @@ def analyze_partition(name: str) -> None:
     print(f"[{name}] reproduction: {summary['reproduction_rate']}; summary -> {out}")
 
 
+# ---------------------------------------------------------------------------
+# #586: cluster-everything harvesting (mirrors run_582's own --mode analyze /
+# cluster_representatives pattern -- see the module docstring's 2026-07-14
+# section). The novelty deliverable for this track: cluster EVERY seed's
+# final population into distinct high-fitness basins, drift-classify +
+# family-match (against ALL 14 families) each representative, and populate a
+# literature_check.CandidateSignature for any bounded-but-unmatched cluster.
+# ---------------------------------------------------------------------------
+
+DEFAULT_HARVEST_FITNESS_FLOOR = 0.9
+"""Same choice, same reason, as #582's own ``DEFAULT_ANALYZE_FITNESS_FLOOR``
+and this module's own legacy ``analyze_partition`` (0.9 skips low-fitness
+unbounded/collided genome noise while staying well below any corrector's own
+tighter closure tolerance -- there is no corrector step in this pipeline, the
+drift classifier plays that role)."""
+
+DEFAULT_HARVEST_DISTANCE_THRESHOLD = 0.1
+"""Same value as #582's own ``DEFAULT_ANALYZE_DISTANCE_THRESHOLD`` -- coarse
+enough to collapse near-duplicate members of one niche, tight enough to keep
+genuinely distinct basins separate. Not paper-sourced (no published
+clustering recipe for this landscape either); documented and adjustable via
+``--distance-threshold``, mirroring #582's own disclosure."""
+
+DEFAULT_HARVEST_MAX_CLUSTERS = 25
+"""Same cap as #582's own ``DEFAULT_ANALYZE_MAX_CLUSTERS``."""
+
+
+def cluster_representatives(
+    phen: np.ndarray,
+    fitness: np.ndarray,
+    bounds: list[tuple[float, float]],
+    *,
+    fitness_floor: float,
+    distance_threshold: float,
+    max_clusters: int,
+) -> list[int]:
+    """Greedy deterministic-crowding-style niche clustering (#586, #582 pattern).
+
+    Walks the population in DESCENDING fitness order (stopping once fitness
+    drops below ``fitness_floor``) and accepts a member as a NEW cluster
+    representative only if it is more than ``distance_threshold`` away, in
+    the bounds-normalized ``[0,1]^7`` Euclidean metric, from EVERY
+    representative already accepted. Ported from
+    ``run_582_asymmetric_3d_niching_search.py::cluster_representatives``
+    (same algorithm, same defaults, generalized to this module's 7-gene
+    ``bounds7`` instead of #582's 6-gene bounds).
+
+    Unlike #582's genome, #583's ``bounds7`` routinely has FIXED (``lo==hi``)
+    columns (most partitions fix 2-4 of the 6 state slots at 0) -- the
+    ``span[span == 0.0] = 1.0`` guard below is actually EXERCISED here (in
+    #582 it was defensive-only, that genome has no fixed genes): a fixed
+    column's normalized value is identical (``phen - lo == 0``) for every
+    population member, so it contributes zero offset to every pairwise
+    distance and cannot perturb clustering.
+    """
+    lo = np.array([b[0] for b in bounds], dtype=np.float64)
+    span = np.array([b[1] - b[0] for b in bounds], dtype=np.float64)
+    span[span == 0.0] = 1.0
+    norm = (phen - lo) / span
+
+    order = np.argsort(-fitness)
+    reps: list[int] = []
+    rep_vecs: list[np.ndarray] = []
+    for idx in order:
+        if float(fitness[idx]) < fitness_floor:
+            break  # order is descending, so nothing further qualifies either
+        v = norm[idx]
+        if all(float(np.linalg.norm(v - rv)) > distance_threshold for rv in rep_vecs):
+            reps.append(int(idx))
+            rep_vecs.append(v)
+            if len(reps) >= max_clusters:
+                break
+    return reps
+
+
+def _build_er3bp_candidate_signature() -> CandidateSignature:
+    """Populate the literature-matcher's structural fingerprint for a bounded,
+    Table-3/4-unmatched Sun-Earth ER3BP cluster (#586).
+
+    ``primary="Sun"``, ``sequence=("E",)`` reaches all 3 of the #583-filed
+    corpus anchors (Gurfil-Kasdin 2002, Sun-Earth co-orbital/horseshoe, Henon
+    1969 family-f -- all three declare ``body_set=frozenset({"E"})`` under
+    ``primary="Sun"``, verified directly against
+    ``literature_check.py``'s own anchor definitions). ``topology_label`` is
+    left at its empty default DELIBERATELY: the one anchor that DOES declare
+    a non-empty label (``"binary-coorbital"``, the co-orbital anchor) would
+    be silently EXCLUDED by ``_candidate_anchors``'s "both non-empty and
+    disjoint" filter if this signature declared any other label -- leaving it
+    empty guarantees all 3 target anchors stay reachable.
+
+    Note this also reaches every OTHER Sun-primary corpus anchor whose own
+    ``body_set`` merely contains ``"E"`` as one of several bodies (e.g. the
+    Earth-Mars interplanetary cycler anchors) -- ``_candidate_anchors``'s
+    match is a body-SUBSET test, so a single-body candidate is structurally a
+    subset of any multi-body anchor's set. This is a wide, not narrow, net;
+    documented rather than worked around, since narrowing it (e.g. via
+    ``topology_label``) risks excluding the anchors that actually matter (see
+    above) and the live ``check_literature()`` search -- not this structural
+    engagement check -- is what actually disambiguates relevance.
+    """
+    return CandidateSignature(primary="Sun", sequence=("E",), period_years=1.0, n_rev=(1,))
+
+
+def _er3bp_literature_anchors_engaged(sig: CandidateSignature) -> list[str]:
+    """Names of ``literature_check`` corpus anchors this signature would search.
+
+    Mirrors ``isolated_3d_asymmetric_pipeline.py::literature_anchors_engaged``
+    (#582's own pattern) exactly: proves the matcher actually engages
+    (non-empty return), NOT the live search itself.
+    """
+    from cyclerfinder.search.literature_check import _candidate_anchors
+
+    return [a.name for a in _candidate_anchors(sig)]
+
+
+_HARVEST_LITERATURE_CHECK_STATUS = (
+    "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], "
+    "search/literature_check.py::check_literature() requires a live injected "
+    "SearchFn and MUST be run against every cluster with "
+    "ready_for_literature_check=true before any 'novel' claim -- this harvest "
+    "pass only confirms the structural matcher engages (non-empty anchor pool "
+    "via _er3bp_literature_anchors_engaged()) and that the candidate matches "
+    "NONE of the 14 published Table 3/4 families; it does not itself search "
+    "or adjudicate novelty. Not-found is necessary, not sufficient."
+)
+
+
+def harvest_seed(
+    name: str,
+    seed_idx: int,
+    *,
+    fitness_floor: float = DEFAULT_HARVEST_FITNESS_FLOOR,
+    distance_threshold: float = DEFAULT_HARVEST_DISTANCE_THRESHOLD,
+    max_clusters: int = DEFAULT_HARVEST_MAX_CLUSTERS,
+) -> dict[str, object] | None:
+    """Cluster-everything harvest of ONE seed's finished population (#586).
+
+    For each cluster representative: classify bounded-vs-divergent
+    (:func:`~cyclerfinder.data.validation.er3bp_drift_classifier.classify_bounded_drift`),
+    then -- ONLY for bounded members (a divergent candidate cannot be any
+    published family or any genuine novel bounded orbit) -- check against
+    ALL 14 published families (not just this partition's own named target;
+    see :func:`match_family_in_widened_population`'s own docstring). A
+    bounded cluster matching NONE of the 14 is populated into a
+    :class:`CandidateSignature` and checked for literature-matcher
+    engagement. Writes ``{name}_seed{seed_idx}_harvest_summary.json``.
+    """
+    spec = PARTITIONS[name]
+    tag = f"{name}_seed{seed_idx}"
+    fpath = OUT_DIR / f"{tag}_final.npz"
+    if not fpath.exists():
+        print(f"[{tag}] final population missing ({fpath}); run to completion first")
+        return None
+
+    data = np.load(fpath)
+    phen, fitness = data["phenotypes"], data["fitness"]
+    rep_idx = cluster_representatives(
+        phen,
+        fitness,
+        spec.bounds7,
+        fitness_floor=fitness_floor,
+        distance_threshold=distance_threshold,
+        max_clusters=max_clusters,
+    )
+    n_above_floor = int(np.sum(fitness >= fitness_floor))
+    print(
+        f"[{tag}] population={phen.shape[0]} n_above_floor({fitness_floor})={n_above_floor} "
+        f"clusters_selected={len(rep_idx)}",
+        flush=True,
+    )
+
+    clusters: list[dict[str, object]] = []
+    own_family_matched = False
+    n_bounded = 0
+    n_unmatched_bounded = 0
+    for rank, idx in enumerate(rep_idx):
+        genome = phen[idx]
+        fit = float(fitness[idx])
+        state6 = genome[:6]
+        theta0 = float(genome[6])
+        state_geo = table_interleaved_to_state(state6)
+        verdict = classify_bounded_drift(state_geo, theta0, n_revs=N_REVS_DEFAULT)
+        entry: dict[str, object] = {
+            "cluster_rank": rank,
+            "population_index": int(idx),
+            "ga_genome": [float(v) for v in genome],
+            "ga_fitness": fit,
+            "drift": {
+                "bounded": bool(verdict.bounded),
+                "growth_ratio": float(verdict.growth_ratio),
+                "trend_fraction": float(verdict.trend_fraction),
+                "terminated_early": bool(verdict.terminated_early),
+                "termination_reason": verdict.termination_reason,
+                "n_windows_complete": verdict.n_windows_complete,
+            },
+        }
+        if not verdict.bounded:
+            entry["family_matches"] = []
+            entry["ready_for_literature_check"] = False
+            clusters.append(entry)
+            print(
+                f"[{tag}] cluster {rank}: DIVERGENT fitness={fit:.6f} "
+                f"({verdict.termination_reason or verdict.notes})",
+                flush=True,
+            )
+            continue
+
+        n_bounded += 1
+        cand = characterize(state6, theta0)  # computed ONCE, reused for all 14 family checks
+        hits: list[str] = []
+        for fam in sorted(TABLE34):
+            rec = match_family_in_widened_population(
+                fam,
+                fam,  # normalize against FAM's OWN home partition, not this cluster's partition
+                genome.reshape(1, -1),
+                np.array([fit]),
+                precomputed_characterization=cand,
+            )
+            if rec["matched"]:
+                hits.append(fam)
+                if fam in spec.families:
+                    own_family_matched = True
+        entry["family_matches"] = hits
+        entry["candidate_type"] = cand["type"]
+
+        if hits:
+            entry["ready_for_literature_check"] = False
+            print(
+                f"[{tag}] cluster {rank}: BOUNDED fitness={fit:.6f} type={cand['type']} "
+                f"matches known family(ies) {hits}",
+                flush=True,
+            )
+        else:
+            n_unmatched_bounded += 1
+            sig = _build_er3bp_candidate_signature()
+            anchors = _er3bp_literature_anchors_engaged(sig)
+            entry["candidate_signature"] = {
+                "primary": sig.primary,
+                "sequence": list(sig.sequence),
+            }
+            entry["literature_anchors_engaged"] = anchors
+            entry["ready_for_literature_check"] = bool(anchors)
+            print(
+                f"[{tag}] cluster {rank}: BOUNDED fitness={fit:.6f} type={cand['type']} "
+                f"UNMATCHED against all 14 families -- literature-check candidate "
+                f"(anchors={anchors})",
+                flush=True,
+            )
+        clusters.append(entry)
+
+    summary: dict[str, object] = {
+        "partition": name,
+        "seed_index": seed_idx,
+        "seed": _seed_for(name, seed_idx),
+        "band": spec.band,
+        "own_target_families": list(spec.families),
+        "own_family_recovered_this_seed": own_family_matched,
+        "population_size": int(phen.shape[0]),
+        "fitness_floor": fitness_floor,
+        "distance_threshold": distance_threshold,
+        "n_above_floor": n_above_floor,
+        "n_clusters": len(clusters),
+        "n_bounded": n_bounded,
+        "n_unmatched_bounded": n_unmatched_bounded,
+        "clusters": clusters,
+        "literature_check_status": _HARVEST_LITERATURE_CHECK_STATUS,
+    }
+    out = OUT_DIR / f"{tag}_harvest_summary.json"
+    out.write_text(json.dumps(summary, indent=2, default=str))
+    print(
+        f"[{tag}] harvest: {len(clusters)} cluster(s), {n_bounded} bounded, "
+        f"{n_unmatched_bounded} unmatched-bounded; own target family recovered="
+        f"{own_family_matched}; summary -> {out}",
+        flush=True,
+    )
+    return summary
+
+
+def harvest_partition(
+    name: str,
+    *,
+    n_seeds: int,
+    seed_index: int | None,
+    fitness_floor: float = DEFAULT_HARVEST_FITNESS_FLOOR,
+    distance_threshold: float = DEFAULT_HARVEST_DISTANCE_THRESHOLD,
+    max_clusters: int = DEFAULT_HARVEST_MAX_CLUSTERS,
+) -> None:
+    """Harvest one or all of ``name``'s seeds, then aggregate (#586).
+
+    If ``seed_index`` is given, harvests only that one seed and returns (no
+    aggregate -- a partial-seed-set call has nothing meaningful to
+    aggregate). Otherwise harvests every ``seed_idx`` in ``range(n_seeds)``
+    and writes ``{name}_aggregate_harvest_summary.json``: per-seed recovery
+    of THIS partition's own target family (the positive-control/machinery-
+    health signal, per #586's Fable design review -- NOT the novelty
+    deliverable), plus every unmatched-bounded candidate found across all
+    seeds (the actual novelty deliverable, still gated on the live
+    ``check_literature()`` call this dispatch does not run).
+    """
+    seed_indices = [seed_index] if seed_index is not None else list(range(n_seeds))
+    per_seed = [
+        s
+        for si in seed_indices
+        if (
+            s := harvest_seed(
+                name,
+                si,
+                fitness_floor=fitness_floor,
+                distance_threshold=distance_threshold,
+                max_clusters=max_clusters,
+            )
+        )
+        is not None
+    ]
+    if seed_index is not None:
+        return
+
+    spec = PARTITIONS[name]
+    n_recovered = sum(1 for s in per_seed if s["own_family_recovered_this_seed"])
+    unmatched: list[dict[str, object]] = []
+    for s in per_seed:
+        for c in s["clusters"]:  # type: ignore[union-attr]
+            if c.get("ready_for_literature_check"):
+                unmatched.append({"seed_index": s["seed_index"], **c})
+
+    if spec.band == "paper":
+        recovery_note = (
+            "Per #586's Fable design review: per-partition/per-seed recovery of "
+            "this partition's OWN target family is a POSITIVE-CONTROL/machinery-"
+            "health signal, not the novelty deliverable -- gurfil_kasdin_fitness "
+            "(Eq. 15) saturates near 1.0 across the whole bounded continuum once "
+            "the trivial deep-Hill basin is excluded, so recovery per partition is "
+            "SEED-CONDITIONAL under Eq. 15 + deterministic crowding, not a "
+            "guarantee on any given seed. A result below n_seeds_run recovering "
+            "is NOT, by itself, a pipeline failure -- see the module docstring's "
+            "2026-07-14 section."
+        )
+    else:
+        recovery_note = _KNOWN_TERRITORY_NOTE[spec.band]
+
+    aggregate = {
+        "partition": name,
+        "band": spec.band,
+        "own_target_families": list(spec.families),
+        "n_seeds_run": len(per_seed),
+        "n_seeds_recovered_own_family": n_recovered,
+        "recovery_note": recovery_note,
+        "unmatched_bounded_candidates": unmatched,
+        "n_unmatched_bounded_candidates": len(unmatched),
+        "literature_novelty_status": (
+            "NOT ADJUDICATED. Per [[feedback_literature_novelty_check_baseline]], "
+            "these unmatched-bounded candidates are literature-matcher-ENGAGED "
+            "(non-empty anchor pool) but the live check_literature() web search "
+            "has NOT been run against any of them -- necessary, not sufficient, "
+            "for any novelty claim. Live search + adjudication is a further step "
+            "for the coordinator/a future adjudication dispatch, not done here."
+        ),
+        "per_seed_summaries": per_seed,
+    }
+    out = OUT_DIR / f"{name}_aggregate_harvest_summary.json"
+    out.write_text(json.dumps(aggregate, indent=2, default=str))
+    print(
+        f"[{name}] AGGREGATE across {len(per_seed)} seed(s): "
+        f"{n_recovered}/{len(per_seed)} recovered own target family; "
+        f"{len(unmatched)} unmatched-bounded literature-check candidate(s); "
+        f"summary -> {out}",
+        flush=True,
+    )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--partition", choices=sorted(PARTITIONS), help="run/analyze one partition")
     ap.add_argument("--max-gens", type=int, default=None, help="generation cap this call")
     ap.add_argument("--workers", type=int, default=8, help="process-pool workers (M3: 8 cores)")
-    ap.add_argument("--analyze", action="store_true", help="analyze a finished partition")
+    ap.add_argument(
+        "--analyze",
+        action="store_true",
+        help="legacy: analyze a finished SINGLE-seed {name}_final.npz (original "
+        "#583 unsuffixed positive-control naming). Superseded by --harvest (#586) "
+        "for new work",
+    )
+    ap.add_argument(
+        "--legacy-run",
+        action="store_true",
+        help="legacy: run the SINGLE-seed unsuffixed positive-control path "
+        "(run_partition, original #583 naming) instead of the #586 multi-seed "
+        "path -- pairs with --analyze",
+    )
+    ap.add_argument(
+        "--harvest",
+        action="store_true",
+        help="#586: cluster-everything harvest of finished {name}_seed{i}_final.npz "
+        "populations across --n-seeds seeds, instead of running the GA",
+    )
+    ap.add_argument(
+        "--n-seeds",
+        type=int,
+        default=DEFAULT_N_SEEDS,
+        help="#586: number of independent seeds to run/harvest per partition "
+        f"(default {DEFAULT_N_SEEDS} per the Fable design review)",
+    )
+    ap.add_argument(
+        "--seed-index",
+        type=int,
+        default=None,
+        help="#586: run/harvest only this one 0-based seed index instead of all "
+        "--n-seeds (chunking across turns/dispatches, same convention as --max-gens)",
+    )
+    ap.add_argument(
+        "--fitness-floor",
+        type=float,
+        default=DEFAULT_HARVEST_FITNESS_FLOOR,
+        help="#586 --harvest only: minimum GA fitness to be considered for clustering",
+    )
+    ap.add_argument(
+        "--distance-threshold",
+        type=float,
+        default=DEFAULT_HARVEST_DISTANCE_THRESHOLD,
+        help="#586 --harvest only: bounds-normalized distance a candidate must "
+        "exceed from every existing representative to start a new cluster",
+    )
+    ap.add_argument(
+        "--max-clusters",
+        type=int,
+        default=DEFAULT_HARVEST_MAX_CLUSTERS,
+        help="#586 --harvest only: cap on cluster representatives analyzed per seed",
+    )
     args = ap.parse_args()
     preflight_search(
         task_no=583,
         region_id=_REGION_ID,
         method=_METHOD,
         script_path=Path(__file__),
-        n_points=len(PARTITIONS),
+        n_points=len(PARTITIONS) * args.n_seeds,
         override_reason=(
             "this dispatch validates the 2026-07-13 partition redesign at "
             "smoke scale (3 rounds: ABC/DEF, corrected ABCF, single-family "
-            "A) against the old pooled-6-family P1 (1/6); the full "
-            "novel-territory sweep across all 16 redesigned partitions is "
-            "explicitly deferred to a future dispatch, not an unbudgeted "
-            "discovery sweep run here"
+            "A) against the old pooled-6-family P1 (1/6), and #586's "
+            "follow-up multi-seed + cluster-everything harvest at small "
+            "scale (1 partition, 2-3 seeds); the full novel-territory sweep "
+            "across all 16 redesigned partitions x --n-seeds is explicitly "
+            "deferred to a future coordinator-run dispatch, not an "
+            "unbudgeted discovery sweep run here"
         ),
     )
     if args.partition is None:
-        ap.error("specify --partition NAME (with --analyze or --max-gens)")
+        ap.error("specify --partition NAME (with --analyze, --harvest, or --max-gens)")
     if args.analyze:
         analyze_partition(args.partition)
-    else:
+    elif args.harvest:
+        harvest_partition(
+            args.partition,
+            n_seeds=args.n_seeds,
+            seed_index=args.seed_index,
+            fitness_floor=args.fitness_floor,
+            distance_threshold=args.distance_threshold,
+            max_clusters=args.max_clusters,
+        )
+    elif args.legacy_run:
         run_partition(args.partition, args.max_gens, args.workers)
+    else:
+        run_partition_multiseed(
+            args.partition,
+            n_seeds=args.n_seeds,
+            seed_index=args.seed_index,
+            max_gens=args.max_gens,
+            workers=args.workers,
+        )
 
 
 if __name__ == "__main__":
