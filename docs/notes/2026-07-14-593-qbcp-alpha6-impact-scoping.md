@@ -94,5 +94,79 @@ specific quoted numbers as **stale/unverified under the fixed code**, not as an 
 — re-derive the SE-L2 (or whatever) reference case fresh under current `main` before building on it.
 No code changes made here; this is a scoping conclusion, not a fix.
 
-**#593 STATUS: CLOSED** (scoping complete; genuine, non-trivial impact confirmed for at least one
-past result; full re-verification of the #538/#544 chain deferred to whoever next picks that work up).
+## Update: reconciling with #544's OWN prior alpha_6 experiment (found after initial closure)
+
+After this note was first written, closer reading of `data/OUTSTANDING.md`'s #544 entry (its own
+"FOLLOW-UP-2" section) revealed something this scoping pass had missed: **#544 already tried this
+exact alpha_6 fix on 2026-07-10 and explicitly reverted it**, reporting two findings:
+1. It moved a QBCP "L1 substitute" periodic orbit ~30% closer to the published POL1 golden
+   (2.12e-2 → 1.47e-2, distance metric).
+2. It allegedly **regressed** the SE-L2 torus positive control 16× (3e-5 → 4.2e-4) — the opposite
+   of what this note's Step 2 found (2.5e-5 → 1.5e-5, a slight *improvement*, not a regression).
+3. It flagged an unresolved, still-open concern: whether the in-repo alpha_6 Fourier table (fitted
+   by Gimeno-Jorba 2018) assumed the OLD or the Rosales-Jorba Eq. 3 scaling convention — swapping
+   conventions without re-fitting could be "two wrongs," a question no numerical test alone settles.
+
+**This is a serious discrepancy the original close-out (below) missed — the fix was applied without
+searching for this prior history first, an error in the #592 verification process.** Resolving it
+required two more, independent checks:
+
+### Re-check A: is the SE-L2 test's "regression" reproducible with the actual code?
+
+Tested whether an INCONSISTENT partial fix (patch only `qbcp_eom`, leave
+`qbcp_potential_second_derivatives` buggy, or vice versa) could explain the discrepancy — e.g. a
+mismatched EOM/STM Jacobian degrading Newton convergence even though the underlying physics is more
+correct. Result: **`correct_qbcp_torus`/`correct_bcr4bp_torus` never call
+`qbcp_potential_second_derivatives` at all** (patching it alone reproduces the fully-fixed result
+exactly) — so this hypothesis is ruled out. No combination reproduces anything resembling 4.2e-4.
+**The reported SE-L2 regression does not reproduce with the current, faithfully-reconstructed code.**
+
+### Re-check B: independently rebuild the L1-substitute/POL1 test from scratch
+
+Rather than try to replicate the 2026-07-10 session's exact, never-committed, undocumented
+construction, built a genuinely independent multi-shooting periodic-orbit corrector (12 segments,
+analytic STM via `qbcp_stm_eom`/`bcr4bp_stm_eom`, Newton's method) implementing the same conceptual
+pipeline described in their note: (1) the exact CR3BP EM-L1 equilibrium via an independently-derived
+quintic solve (cross-checked: force residual 3.3e-16, genuine fixed point; x=0.836915145 vs POL1's
+published 0.836914168, delta ~1e-6 — sanity-confirms POL1 really is this L1 point's substitute);
+(2) continue mu_sun 0→full within BCR4BP (which reduces exactly to CR3BP at mu_sun=0, per
+`bcr4bp_stm_eom`'s own docstring) to a periodic BCR4BP orbit; (3) hand off to a QBCP multi-shooter
+with the real time-varying alphas, under both the fixed and reconstructed-buggy `qbcp_eom`.
+
+**Result — CONFIRMS the direction of #544's own finding, independently:**
+```
+FIXED (#592):  converged=True, resnorm=1.13e-14, distance-to-POL1 = 1.805e-02
+BUGGY:         converged=True, resnorm=9.69e-14, distance-to-POL1 = 4.139e-02
+#544's own numbers (different method): buggy=2.12e-2, fixed=1.47e-2
+```
+Both independent constructions (theirs and this one) agree on the DIRECTION and rough MAGNITUDE:
+the alpha_6 fix moves the L1 substitute roughly 2-2.3× closer to the published POL1 golden. This is
+a real, reproducible, doubly-confirmed improvement — not an artifact of either construction.
+
+### Net resolution
+
+- **POL1 agreement: genuinely improves under the fix, confirmed by two independent methods.** Solid
+  evidence the fix is a real physics improvement in this respect.
+- **SE-L2 "regression": NOT reproducible** with the current, exactly-verified code — the claim from
+  2026-07-10 does not hold up against a careful, byte-checked re-test. Most likely explanation
+  (not proven): the 2026-07-10 session's on-the-fly experiment applied the fix in some subtly
+  different or inconsistent way than what ended up in the stash/#592 (that session's exact code was
+  never committed, only described in prose).
+- **The Gimeno-2018-fitting-convention question remains genuinely open** — no numerical test settles
+  it, it needs the source paper. But with one of #544's two original objections refuted and the other
+  now independently confirmed as a genuine improvement, the balance of evidence now favors #592 as a
+  net-positive fix, not a reason for caution.
+
+**Recommendation updated: keep #592 applied.** No revert warranted. The Gimeno-2018 convention
+question is worth resolving if the source PDF ever becomes accessible, but is not an actionable
+blocker today.
+
+## #593 STATUS: CLOSED (fully reconciled)
+
+Scoping complete, including reconciliation with #544's own prior (reverted) attempt at this exact
+fix. Net finding: #592 is a genuine improvement (independently confirmed via the POL1 metric two
+ways), the previously-reported SE-L2 regression does not reproduce, and #592 should stay applied.
+Full re-verification of the #538/#544 chain's other specific numbers is still deferred to whoever
+next picks that work up (per the original recommendation above) — this reconciliation only settles
+whether #592 itself is trustworthy, not whether #533/#537/#544's OTHER quoted numbers need
+re-deriving (they still do, since they were computed pre-fix).
