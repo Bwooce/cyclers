@@ -3663,7 +3663,25 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   for 40 and 42 specifically, whose 5yr r-bands already show the largest growth trend. Cheap,
   bounded, no new search infrastructure.
   **Recommended model:** Sonnet (mechanical once the 3 steps are scoped; no new judgment calls).
-  **Not yet dispatched.**
+  ✓ **DONE (2026-07-14, this session):** `docs/notes/2026-07-14-590-followup-results.md`.
+  (1) 3 QSO papers CrossRef- and full-text-verified and added as `CorpusAnchor` entries
+  (Mikkola et al. 2006 MNRAS, Sidorenko et al. 2014 CMDA, Pousse-Robutel-Vienne 2017 CMDA);
+  Lidov & Vashkov'yak 1993/1994a/b honestly left un-anchored (CrossRef does not resolve
+  them, pre-DOI-era Russian-journal papers) — none of the 3 anchors tabulate a direct
+  comparison point, so the literature gap is characterized but NOT closed. (2) cheap
+  straight-line IC-interpolation connectivity heuristic (explicitly caveated as weak, not a
+  real continuation): cluster 43->J cleanest (no escape en route), 42->J roughest (genuine
+  escape region mid-path), 40->J intermediate; cluster 24's nominal anchor (Family I) turned
+  out to be one of the 3 Gurfil-Kasdin families that does NOT reproduce/stay bounded under
+  this repo's own #581 pipeline, so no connectivity verdict is possible for 24 at all — an
+  honest finding, not papered over. (3) longer-horizon (300yr) drift re-check: clusters 40
+  and 42 both DO eventually escape (~213yr, ~220yr) — but so does Family J's own literal
+  published IC, at a much shorter ~30yr (independently cross-checked against Table 4 to
+  confirm no IC-conversion bug); cluster 43 (bonus check) stays bounded to at least 1000yr.
+  "Eventually escapes" is the literature-predicted (Mikkola et al. 2006) generic behavior of
+  inclined QS/DRO motion, not a discriminator between real family members and GA artifacts —
+  reframes rather than resolves the 6-cluster question. Zero catalogue rows changed, no
+  novelty claimed; left for a future adjudication pass. **#590 STATUS: CLOSED.**
 
 - **#589** (P3, exploratory, new capability) — reproduce/extend the Gurfil-Kasdin 2002 out-of-ecliptic
   z²-maximization approach (CMAME 191:2141-2158, DOI 10.1016/S0045-7825(01)00380-2, digested during
