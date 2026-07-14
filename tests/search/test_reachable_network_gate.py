@@ -387,10 +387,14 @@ def test_stable_resonants_are_hard_access_on_subset() -> None:
         "pre-R52-U. This is a genuine, sourced-IC-driven improvement over the "
         "prior #497 'missing node' diagnosis -- the remaining discrepancy is "
         "specific to betweenness routing through R52-U-C21-C32 and is NOT yet "
-        "root-caused (candidate causes: residual proxy-fidelity on that specific "
-        "path, or a genuine second-order network-topology difference from "
-        "Braik's grid/horizon choices -- not investigated further this session). "
-        "See docs/notes/2026-07-01-513-r52u-recovery-verdict.md."
+        "root-caused. #497 (2026-07-15) TESTED AND REFUTED the cap-recalibration "
+        "candidate cause: sweeping dv_cap_ms from 51.16 (Braik's own reference cap) "
+        "to 409.3 m/s, C32 NEVER wins betweenness at any value -- at the tightest, "
+        "Braik-matching cap it gets WORSE (C32 betweenness drops to 0.1364, C11a "
+        "takes over). The residual cause is genuinely proxy-fidelity or a "
+        "grid/horizon topology difference from Braik's own DVmatrix, not a tunable "
+        "budget-cap parameter. See docs/notes/2026-07-01-513-r52u-recovery-verdict.md "
+        "and docs/notes/2026-07-15-497-dv-cap-recalibration-refuted.md."
     ),
     strict=True,
 )
