@@ -1,0 +1,670 @@
+{
+  "partition": "E",
+  "band": "paper",
+  "own_target_families": [
+    "E"
+  ],
+  "n_seeds_run": 3,
+  "n_seeds_recovered_own_family": 2,
+  "recovery_note": "Per #586's Fable design review: per-partition/per-seed recovery of this partition's OWN target family is a POSITIVE-CONTROL/machinery-health signal, not the novelty deliverable -- gurfil_kasdin_fitness (Eq. 15) saturates near 1.0 across the whole bounded continuum once the trivial deep-Hill basin is excluded, so recovery per partition is SEED-CONDITIONAL under Eq. 15 + deterministic crowding, not a guarantee on any given seed. A result below n_seeds_run recovering is NOT, by itself, a pipeline failure -- see the module docstring's 2026-07-14 section.",
+  "unmatched_bounded_candidates": [
+    {
+      "seed_index": 2,
+      "cluster_rank": 3,
+      "population_index": 89,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010909654086201837,
+        0.0,
+        0.0,
+        4.6717512326099175
+      ],
+      "ga_fitness": 0.9999794900637395,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0972349590586454,
+        "trend_fraction": 0.11066924189720011,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DPO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 4,
+      "population_index": 116,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011080590661401067,
+        0.0,
+        0.0,
+        1.570796327160626
+      ],
+      "ga_fitness": 0.9999792221648526,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0012267985396375,
+        "trend_fraction": 0.0008831174505924965,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DPO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    }
+  ],
+  "n_unmatched_bounded_candidates": 2,
+  "literature_novelty_status": "NOT ADJUDICATED. Per [[feedback_literature_novelty_check_baseline]], these unmatched-bounded candidates are literature-matcher-ENGAGED (non-empty anchor pool) but the live check_literature() web search has NOT been run against any of them -- necessary, not sufficient, for any novelty claim. Live search + adjudication is a further step for the coordinator/a future adjudication dispatch, not done here.",
+  "per_seed_summaries": [
+    {
+      "partition": "E",
+      "seed_index": 0,
+      "seed": 583006,
+      "band": "paper",
+      "own_target_families": [
+        "E"
+      ],
+      "own_family_recovered_this_seed": true,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 6,
+      "n_bounded": 5,
+      "n_unmatched_bounded": 0,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 27,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011043493289277772,
+            0.0,
+            0.0,
+            5.599413372283276
+          ],
+          "ga_fitness": 0.9999796852782776,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0039611557758512,
+            "trend_fraction": 0.01709667984284236,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "D"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 122,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011108390873090455,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "ga_fitness": 0.9999796263783812,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.005764128920564,
+            "trend_fraction": 0.013223686395899421,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "D"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 164,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.010925430574204174,
+            0.0,
+            0.0,
+            4.689429453600039
+          ],
+          "ga_fitness": 0.999979514754713,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 32
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 46,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011169366308294555,
+            0.0,
+            0.0,
+            0.785398163580313
+          ],
+          "ga_fitness": 0.9999794828625267,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.000021859771453,
+            "trend_fraction": 0.001285621267536823,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "D"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 93,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.010691094796799843,
+            0.0,
+            0.0,
+            3.8871073174072523
+          ],
+          "ga_fitness": 0.9999789814208697,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.06361734840536,
+            "trend_fraction": 0.06391398565998198,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "E"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 75,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.010812089082508369,
+            0.0,
+            0.0,
+            2.8470623625695253
+          ],
+          "ga_fitness": 0.9999788883228167,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9987129773498855,
+            "trend_fraction": 0.0010059499030791851,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "E"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "E",
+      "seed_index": 1,
+      "seed": 584015,
+      "band": "paper",
+      "own_target_families": [
+        "E"
+      ],
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 4,
+      "n_bounded": 1,
+      "n_unmatched_bounded": 0,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 128,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011045293535814921,
+            0.0,
+            0.0,
+            5.614490276231782
+          ],
+          "ga_fitness": 0.9999796857768707,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 27
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 146,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011108394831211399,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "ga_fitness": 0.9999796263834645,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 39
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 59,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.0109599781015329,
+            0.0,
+            0.0,
+            4.958557697260016
+          ],
+          "ga_fitness": 0.999979592837594,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 48
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 139,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.01116285904104888,
+            0.0,
+            0.0,
+            0.785398163580313
+          ],
+          "ga_fitness": 0.9999794749127742,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0064619924750424,
+            "trend_fraction": 0.007844462790948841,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "D"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "E",
+      "seed_index": 2,
+      "seed": 585024,
+      "band": "paper",
+      "own_target_families": [
+        "E"
+      ],
+      "own_family_recovered_this_seed": true,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 7,
+      "n_bounded": 4,
+      "n_unmatched_bounded": 2,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 108,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.01103210437834079,
+            0.0,
+            0.0,
+            5.497787145062191
+          ],
+          "ga_fitness": 0.9999796790618124,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 30
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 75,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011101948682009696,
+            0.0,
+            0.0,
+            6.191146461347937
+          ],
+          "ga_fitness": 0.9999796414339074,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9553709593078352,
+            "trend_fraction": 0.03435462660879605,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "D"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 112,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011108397392348479,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "ga_fitness": 0.9999796263867538,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 35
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 89,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.010909654086201837,
+            0.0,
+            0.0,
+            4.6717512326099175
+          ],
+          "ga_fitness": 0.9999794900637395,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0972349590586454,
+            "trend_fraction": 0.11066924189720011,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DPO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 116,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.011080590661401067,
+            0.0,
+            0.0,
+            1.570796327160626
+          ],
+          "ga_fitness": 0.9999792221648526,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0012267985396375,
+            "trend_fraction": 0.0008831174505924965,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DPO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 195,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.01065313606771015,
+            0.0,
+            0.0,
+            3.8165082484733595
+          ],
+          "ga_fitness": 0.999978901239966,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.1626473847213539,
+            "trend_fraction": 0.21125897621704046,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "E"
+          ],
+          "candidate_type": "DPO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 174,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            0.010721988862082825,
+            0.0,
+            0.0,
+            3.1415378651133343
+          ],
+          "ga_fitness": 0.9999788156638184,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 40
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    }
+  ]
+}

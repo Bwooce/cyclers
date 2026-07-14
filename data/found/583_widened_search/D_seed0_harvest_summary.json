@@ -1,0 +1,74 @@
+{
+  "partition": "D",
+  "seed_index": 0,
+  "seed": 583004,
+  "band": "paper",
+  "own_target_families": [
+    "D"
+  ],
+  "own_family_recovered_this_seed": true,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 200,
+  "n_clusters": 2,
+  "n_bounded": 2,
+  "n_unmatched_bounded": 0,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 42,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010742187386085789,
+        0.0,
+        0.0,
+        5.252937445963843
+      ],
+      "ga_fitness": 0.9999793141484308,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0530848385964715,
+        "trend_fraction": 0.07034444652762421,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "D"
+      ],
+      "candidate_type": "DPO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 57,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010742187386085789,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ga_fitness": 0.9999791792113363,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.997920771615421,
+        "trend_fraction": 0.005966230822793022,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "D"
+      ],
+      "candidate_type": "DPO",
+      "ready_for_literature_check": false
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}
