@@ -1022,6 +1022,105 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         "arXiv:2509.12675",
         doi=None,
     ),
+    # #597: four earlier conference precursors to the above 2026 ASR/arXiv
+    # paper, by the same author group, acquired from ross.aoe.vt.edu and
+    # deep-mined 2026-07-15. Each covers a distinct facet not fully subsumed by
+    # the single existing anchor's keywords (interior-resonance bifurcation
+    # structure, exterior-resonance structure + L1-L2 tubes, resonance-width
+    # quantification + TLE validation, and the broader xGEO/Laplace-radius
+    # survey) -- kept as separate anchors so a novelty search on any of those
+    # sub-topics still gets a keyword hit.
+    CorpusAnchor(
+        name="Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Kumar", "Rawat", "Rosengren", "Ross"),
+        keywords=(
+            "interior mean motion resonance Earth-Moon periodic orbit family",
+            "4:1 3:1 2:1 resonant orbit bifurcation",
+            "resonance overlap heteroclinic Earth-Moon",
+        ),
+        citation="Kumar, Rawat, Rosengren & Ross, 'Investigation of Interior "
+        "Mean Motion Resonances and Heteroclinic Connections in the "
+        "Earth-Moon System,' IAC-24-C1.9.5, 75th International Astronautical "
+        "Congress, Milan, Oct 2024",
+        doi=None,
+        key="kumar-2024-interior-mmr-iac",
+        year=2024,
+        title="Investigation of Interior Mean Motion Resonances and "
+        "Heteroclinic Connections in the Earth-Moon System",
+        venue="IAC-24-C1.9.5, 75th International Astronautical Congress, "
+        "Milan, Italy, 14-18 October 2024",
+        provenance="verified-against-source",
+        system="earth-moon",
+    ),
+    CorpusAnchor(
+        name="Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Rawat", "Kumar", "Rosengren", "Ross"),
+        keywords=(
+            "exterior mean motion resonance Earth-Moon",
+            "1:3 1:4 exterior resonance asymmetric periodic orbit",
+            "L1 L2 Lyapunov tube heteroclinic interior exterior transfer",
+        ),
+        citation="Rawat, Kumar, Rosengren & Ross, 'Regions of Influence of "
+        "Exterior Mean-Motion Resonances in the Earth-Moon System: "
+        "Bifurcations, Separatrices, and Heteroclinic Pathways,' AAS 25-569, "
+        "AAS/AIAA Astrodynamics Specialist Conference (2025)",
+        doi=None,
+        key="rawat-2025-exterior-mmr-aas",
+        year=2025,
+        title="Regions of Influence of Exterior Mean-Motion Resonances in the "
+        "Earth-Moon System: Bifurcations, Separatrices, and Heteroclinic "
+        "Pathways",
+        venue="AAS 25-569, AAS/AIAA Astrodynamics Specialist Conference, 2025",
+        provenance="verified-against-source",
+        system="earth-moon",
+    ),
+    CorpusAnchor(
+        name="Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Rawat", "Kumar", "Rosengren", "Ross"),
+        keywords=(
+            "resonance width chaotic zone cislunar transport",
+            "2:1 3:1 lunar MMR stable width TLE",
+            "Gallardo semi-analytical resonance width comparison",
+        ),
+        citation="Rawat, Kumar, Rosengren & Ross, 'Resonance Widths, Chaotic "
+        "Zones, and Transport in Cislunar Space,' AAS 24-368, AAS/AIAA "
+        "Astrodynamics Specialist Conference, Broomfield CO, Aug 2024",
+        doi=None,
+        key="rawat-2024-resonance-widths-aas",
+        year=2024,
+        title="Resonance Widths, Chaotic Zones, and Transport in Cislunar Space",
+        venue="AAS 24-368, AAS/AIAA Astrodynamics Specialist Conference, "
+        "Broomfield, CO, August 2024",
+        provenance="verified-against-source",
+        system="earth-moon",
+    ),
+    CorpusAnchor(
+        name="Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        primary="Earth",
+        body_set=frozenset({"Moon"}),
+        authors=("Rosengren", "Ross", "Kumar", "Rawat"),
+        keywords=(
+            "xGEO Laplace radius cislunar domain awareness",
+            "lunar mean motion resonance space domain awareness survey",
+            "Kozai-Lidov secular resonance xGEO TLE",
+        ),
+        citation="Rosengren, Ross, Kumar & Rawat, 'The Resonant Structure of "
+        "xGEO and Implications for Cislunar Domain Awareness,' Advanced Maui "
+        "Optical and Space Surveillance Technologies Conference (AMOS), 2024",
+        doi=None,
+        key="rosengren-2024-xgeo-resonant-structure-amos",
+        year=2024,
+        title="The Resonant Structure of xGEO and Implications for Cislunar Domain Awareness",
+        venue="Advanced Maui Optical and Space Surveillance Technologies Conference (AMOS), 2024",
+        provenance="verified-against-source",
+        system="earth-moon",
+    ),
     CorpusAnchor(
         name="Koblick novel tulip-shaped three-body orbits (cislunar SDA)",
         primary="Earth",
