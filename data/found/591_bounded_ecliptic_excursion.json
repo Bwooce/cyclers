@@ -1,0 +1,56 @@
+[
+  {
+    "source": "588-cluster",
+    "id": "43",
+    "type": "3D DRO",
+    "max_abs_z_au": 0.04414906727516465,
+    "max_abs_z_km": 6604700.464364631,
+    "terminated_early": false,
+    "theta_end": 31.415926535897935
+  },
+  {
+    "source": "known-family",
+    "id": "J",
+    "type": "3D DRO",
+    "max_abs_z_au": 0.038143139280816626,
+    "max_abs_z_km": 5706213.636410167,
+    "terminated_early": false,
+    "theta_end": 31.41592653589793
+  },
+  {
+    "source": "known-family",
+    "id": "M",
+    "type": "3D ERO",
+    "max_abs_z_au": 0.003956045957438724,
+    "max_abs_z_km": 591824.4752328331,
+    "terminated_early": false,
+    "theta_end": 31.41592653589793
+  },
+  {
+    "source": "known-family",
+    "id": "K",
+    "type": "3D DRO",
+    "max_abs_z_au": 0.000974843293133964,
+    "max_abs_z_km": 145836.556652841,
+    "terminated_early": false,
+    "theta_end": 31.41592653589793
+  },
+  {
+    "source": "known-family",
+    "id": "L",
+    "type": "3D DEO",
+    "max_abs_z_au": 0.011847207859555106,
+    "max_abs_z_km": 1772342.295789444,
+    "terminated_early": true,
+    "theta_end": 19.81751263983505
+  },
+  {
+    "source": "known-family",
+    "id": "N",
+    "type": "3D DEO",
+    "max_abs_z_au": 0.009665475759467527,
+    "max_abs_z_km": 1445955.173616342,
+    "terminated_early": true,
+    "theta_end": 28.699785384857766
+  }
+]
