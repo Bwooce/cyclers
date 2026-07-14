@@ -256,6 +256,11 @@ capabilities to RUNNING discovery on them. Landed this block:
   reason (period incommensurate with Charon's own orbit), not a missing-kernel gap. See #511's
   verdict, `docs/notes/2026-07-01-511-pluto-charon-realeph-verdict.md`. #550 (allocated 2026-07-10)
   re-proposed this as if unresolved — corrected there.
+  **⛔ CLOSED — DO NOT REOPEN (bolded 2026-07-15, full-file audit): this has already been
+  re-litigated once by mistake (#550) despite the resolution above being clear. PC(3,2) stays
+  V2-ballistic for a STRUCTURAL reason (period-incommensurability with Charon), independently
+  confirmed twice (#511's differential-correction attempt, then #550's own re-check) — this is
+  not a missing-kernel or missing-data gap that a future kernel fetch would fix.**
 Net Tier-1: discovery on the built substrate confirms #492 exhaustion — no novel cyclers; the deliverable
 is the honest empty-region maps + the confirmation that the admitted rows are the frontier.
 - Process note: subagents hit a monthly spend limit mid-session (the #494 admission agent died AFTER
@@ -273,7 +278,11 @@ is the honest empty-region maps + the confirmation that the admitted rows are th
 - **Tier 3 (validation + consolidation):** PC (3,2) V3 upgrade RESOLVED (#510/#511, 2026-07-01) —
   confirmed stays V2-ballistic (structural, not kernel-gated);
   #487 V4_qp gauntlet (de-prioritised).
-- **Tier 5 (3D Dynamics & Multi-Rev Search):** #515 3D lift framework for cross-system cycles; #516 Multi-Revolution 3D Patched Search (n_em, n_se > 1); #517 Asymmetric/Mixed Libration Pairs in 3D; #518 3D BCR4BP Continuation; #520 Comprehensive 3D sweep (needs a positive control before its negative is trustworthy — see DELTA above).
+- **Tier 5 (3D Dynamics & Multi-Rev Search):** #515 3D lift framework for cross-system cycles (uncommitted,
+  status unverified — check before reviving); #516 Multi-Revolution 3D Patched Search (n_em, n_se > 1,
+  uncommitted); #517 Asymmetric/Mixed Libration Pairs in 3D (uncommitted); #518 3D BCR4BP Continuation
+  (**superseded by #522 just below, per #522's own text — not independent forward work**); #520
+  Comprehensive 3D sweep (needs a positive control before its negative is trustworthy — see DELTA above).
 - **Tier 6 (Novel-Orbit Discovery Reboot, per the 2026-07-02 independent review — see DELTA above):** #521
   pre-flight search gate (precondition — DONE, both phases; new scripts now blocked without it); #522
   coherent-model whiskered-torus connection search (recommended first; re-scopes #518); #523 co-orbital-exchange
@@ -314,7 +323,7 @@ consistent with Guido & Efthymiopoulos's reported heteroclinic channel structure
 exact numeric match — the paper does not tabulate precise ICs, per this session's independent check) before any
 "no manifold-mediated encounter" negative is trusted. Not yet built.
 
-**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 for the #566-adjudication-mandated trustworthy epoch-robustness gate (apply #560 fixes + audit-field fix + per-representative epoch scan) as the catalogue-writeback prerequisite; #568 for the #567-diagnosis-corrected step-(4) writeback-readiness characterization (duty-cycle + synodic boundary period framing, not raw pass%/flip%); #569 for the #568-cleared actual catalogue writeback of the #312 Uranian symmetric-closure family (5 new rows + #312 row update + frozen-gate provenance; needs a Fable pass before execution); #570 for the #543-scoped cycler-network schema infrastructure (general relation only, no populated network rows); #571 for a Titan-centered Saturnian moon-pair sweep using the #558-corrected discovery genome (plan under Fable review before dispatch); #572 for the #571-motivated Titan-Iapetus 3D-closure probe (the load-bearing cheap gate deciding whether any #552 build is worth scoping); #573 for the #572-adjudication-mandated widened Titan-Iapetus 3D-closure population probe (measure the real gate-passing closure rate across all Titan-anchored candidates before committing to any #552 corrector build; plan under Fable review before dispatch); #574 for the #573-cleared narrow Titan-Iapetus 3D corrector build (staged: a cheap eccentric-Keplerian closure kill-gate first, then productization + real-ephemeris SPICE SAT441 validation only if it passes — NOT the general n-body/arbitrary-inclination build that was killed; needs a Fable second-opinion on the spec before dispatch; Stage B gauntlet result: 0/15 PASS, root cause a #571 search-methodology gap — free single-closure search with no periodicity constraint, not a genuine symmetric/repeating-cycle search — not a bug in the new validation code); #575 for a #563-method Titan-Iapetus direct symmetric-closure re-search (plan under Fable review before dispatch; FINAL: 9 genuine coplanar symmetric closures found, 0 survive inclination-extension as repeating cycles — clean method-conditional negative, thread closed, `empty_regions.jsonl` stamped, #552 general-capability revival NOT warranted); #576 for a #563-method Galilean-moon direct symmetric-closure search (Jupiter — genericized #563 machinery now proven twice, never applied to this system; plan under Fable review before dispatch; RESULT: 36 gate-passing symmetric closures across all 6 pairs, repeat-instrumentation confirmed genuine, Russell-Strange 2009 comparison found no reproduction among the 2 architecturally-comparable published members); #577 for the Opus+Fable adjudication of the #576 36-closure Galilean survivor list (literature-clearance + pipeline-readiness gate; RESULT: 0/36 novelty-clear, FULL STOP on the pipeline — every pair is published R-S 2009 double-cycler / Liang-Hernandez triple-cycler / pump-tour territory, and the lone Io-Callisto structural clear is a corpus gap not novelty; the 8-mismatched-R-S-members "different topology" framing is incorrect — same ideal model + method, known-class-members); #578 for closing the #577-diagnosed R-S-2009 literature-corpus gap + stamping the Galilean symmetric-closure territory (corpus-accuracy + registry, NOT a pipeline task; plan under Fable review before dispatch; RESOLVED 2026-07-12: 4 new per-pair KNOWN_CORPUS anchors, DOI-coverage ratchet, empty_regions.jsonl stamps, commit 575bd44); #579 for the Fable-diagnosed `literature_check.py` Antoniadou-Voyatzis/Libert anchor mislabeling fix + #287/#301 re-audit (corpus-accuracy, do first per Fable's priority order); #580 for a Richardson-1980 analytic third-order halo-seed generator (fills the halo-branch seed-generator gap Fable independently confirmed); #581 for a Gurfil-Kasdin-2002-style niching-GA search layer, gated on a positive-control reproduction (flagged for user review before dispatch, not auto-fired); #582 for #581 stage 3a, an asymmetric/spatial-isolated 3D CR3BP resonant-family niching-GA search (mu=0.001, Fable-corrected from an initial wrong Earth-Moon scoping; build + positive control DONE 2026-07-13, commit `ba60092`, full novelty sweep not yet dispatched); #583 for #581 stage 3b, a Sun-Earth ER3BP bounded-drift quasi-cycler search widening the validated niching layer beyond Gurfil-Kasdin's own 12 sets (build + positive control DONE 2026-07-13, commit `aafa244`/merge `378b1f1`; a real deep-Hill-sphere basin bug + a theta0-wraparound bug found and fixed via 2 independent Fable reviews; full novelty sweep not yet dispatched, needs radial/per-family partitioning first); #584 for 2 unexplained pre-existing test failures discovered on the new Mac (M3/Accelerate) environment during #582 verification (CLOSED 2026-07-14: CI run 29323181595 confirms 3310 passed/0 failed on the identical tree, mechanism checked and plausible for both — a tolerance-edge V∞ match and an integer winding-number topology flip, both exactly the kind of borderline check a different BLAS backend's rounding can tip; local-Mac-only, no code change); #585 for a #582 follow-up widening the symmetry-breaking z0/xdot0/zdot0 bounds and re-running the 5-MMR sweep (the 0/104 result is very likely a narrow-search-box artifact, not a physical negative); #586 for a #583 follow-up addressing the fitness-landscape/niching discrimination limitation the partitioning redesign exposed (3 candidate approaches scoped, needs a Fable/Opus design-tradeoff read before building); #587 for populating real CR3BP identity fields (Jacobi/period/stability) on the 6 #569 Uranian quasi-cycler rows, found via a cyclers.space website visualization bug (CLOSED 2026-07-14, scope corrected: cr3bp schema field doesn't apply to cycler_class=multi-arc rows — populated invariants/legs tof_days instead, fixed the website placeholder's false tabulation claim); #588 for dedup + live-literature-check + Opus/Fable adjudication of #586's 264-candidate unmatched-bounded pool from the full 16-partition sweep (CLOSED 2026-07-14: dedup 264->45->20 unmatched; live literature-check found 2 Gurfil-Kasdin companion papers, neither closes the gap; Opus+Fable adjudication found 14/20 confidently not novel, 6/20 warrant the #590 bounded follow-up; zero catalogue rows changed); #589 for reproducing/extending the Gurfil-Kasdin 2002 out-of-ecliptic z²-maximization approach as a new search regime distinct from the bounded-family census (flagged for user review before dispatch, not auto-fired); #590 for a bounded follow-up settling whether #588 clusters 40/42/43 (+24/25/39) are genuine Family-J-curve members or single-hit GA artifacts (CLOSED 2026-07-14: 3 new verified QSO CorpusAnchors added, connectivity heuristic ambiguous, long-horizon check found even the published Family J anchor itself escapes at ~30yr — reframes rather than resolves the question, left for a future differential-correction continuation); #591 for Fable's salvageable #589 reframe — ranking already-validated bounded 3D structures (5 known G-K 3D families + #588's cluster 43) by out-of-ecliptic excursion (max |z|), analysis-only, no new search (CLOSED 2026-07-14: cluster 43 beats published Family J by ~16% on excursion while being far more durably bounded per #590 — not novel, but a genuine citable figure-of-merit result); #592 for a QBCP alpha_6 EOM scaling bugfix recovered from an abandoned git stash during a repo-hygiene cleanup pass, verified + applied (CLOSED 2026-07-14); #593 for scoping whether #592's fix changes any past QBCP-based search conclusion (CLOSED 2026-07-14: empirical before/after re-run of the SE-L2 positive control found a genuine, non-trivial impact — same seed converges to a different mean-state solution under fixed vs buggy code — so #533/#537/#544's specific quoted numbers are stale, recommendation is re-derive fresh rather than blind full re-run); #594 next-unused):**
+**TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #512-#514 committed; #515-#518 for session C working-tree; #519 for low-thrust proposal; #520 for the comprehensive sweep; #521-#526 for the 2026-07-02 review's gate + novel-orbit proposals; #527-#529 for the same-day second-pass review; #530 for the #523/#527-motivated unstable-manifold follow-up; #531 for the #314-reuse heteroclinic-connection follow-up; #532 for the multi-orbit resonance-hopping follow-up; #533 for the genuine QBCP model build; #534 for the #522-split single-system torus connection search; #535 for the transient-drift-phase quasi_cycler search; #536 for the Fable-review-motivated Jovian-moon-tori heteroclinic screening follow-up; #537 for the QBCP cross-system connection search; #538 for the QBCP cross-system periodic orbit correction; #539 for generalizing the #538 corrector + a broadened Jovian-moon re-screen; #540 for a hardened-pipeline Uranian-system re-screen; #541 for a first-pass Saturnian resonant-moon-pair screen; #542 for the #525 learned-seed generative warm-start; #543 for #529's inter-cycler-network scoping discussion; #544 for fixing the EM-L2 QBCP torus mu_sun-continuation convergence blocker found while running #538; #545 for the decoupled Jupiter-Europa/Ganymede CR3BP-level band screen (un-gated from #538/#544); #546 for the decoupled Uranian-system CR3BP-level band screen (un-gated from #538/#544); #547 for resolving #534's transit-vs-non-transit manifold classification blocker (establishing the first genuine positive control for the qp_tori/qp_torus_heteroclinic linking-number method); #548 for a reframed, time-boxed Owen & Baresi positive-control gate on the qp_tori/qp_torus_heteroclinic linking-number pipeline; #549 for a real-binary (k1,k2) genome sweep (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia); #550 for the PC(3,2) V2->V3 NAIF SAT441l kernel fetch; #551 for a GTOC 13 methods-paper corpus mining pass; #552 for a 3D/inclined-releg moontour genome extension (flagged for user review before dispatch, not auto-fired); #553 for a Fable ratification pass on #548's linking-number-pipeline shelve verdict; #554 for the #552-scoping-motivated Neptune/Amalthea empty-region retrograde-correction stamp; #555 for the #553-authorized final, correctly-frequency-matched Owen & Baresi shot at the genuine C=3.15 (final, no-appeal kill criterion); #556 for a large-rotation-number quasi-halo torus corrector (the #555-localized blocker, parking lot -- not auto-fired); #557 for a #535-machinery Sun-Jupiter quasi-Hilda transient-capture quasi_cycler screen (planning phase first); #558 for a #312 family census via the original discovery genome (all Uranian moon pairs, densified rel-offset/phase/tof/n_rev sweep); #559 for the never-dispatched #338 Phase 2 DOY sensitivity scan; #560 for V4-strict Lambert-branch-continuity + degenerate-arc-exclusion robustness fixes (parking lot, not auto-fired); #561 for the #558-mandated Opus/Fable family-vs-coincidence adjudication (>1000 basins need a selection criterion, and #312's own novelty framing is now in question); #562 for the Fable-corrected per-basin continuous-tof commensurability refinement (fixes the grid-aliasing flaw that excluded the two largest/highest-literature-risk directions); #563 for a direct symmetric-closure enumeration replacing grid-search-plus-refinement (the #562 20-count is a lower bound -- narrow basins can fall entirely between #558's original grid points and never surface at all); #564 for the Opus+Fable adjudication of the full #563 30-closure survivor list (Stage-3/writeback gate); #565 for the Fable-corrected re-adjudication of #564 (fixes a semantic inversion of the max_bend_deg triage axis); #566 for the Stage-3 V1-V4-strict gauntlet run on the #565-recommended 5-representative list; #567 for the #566-adjudication-mandated trustworthy epoch-robustness gate (apply #560 fixes + audit-field fix + per-representative epoch scan) as the catalogue-writeback prerequisite; #568 for the #567-diagnosis-corrected step-(4) writeback-readiness characterization (duty-cycle + synodic boundary period framing, not raw pass%/flip%); #569 for the #568-cleared actual catalogue writeback of the #312 Uranian symmetric-closure family (5 new rows + #312 row update + frozen-gate provenance; needs a Fable pass before execution); #570 for the #543-scoped cycler-network schema infrastructure (general relation only, no populated network rows); #571 for a Titan-centered Saturnian moon-pair sweep using the #558-corrected discovery genome (plan under Fable review before dispatch); #572 for the #571-motivated Titan-Iapetus 3D-closure probe (the load-bearing cheap gate deciding whether any #552 build is worth scoping); #573 for the #572-adjudication-mandated widened Titan-Iapetus 3D-closure population probe (measure the real gate-passing closure rate across all Titan-anchored candidates before committing to any #552 corrector build; plan under Fable review before dispatch); #574 for the #573-cleared narrow Titan-Iapetus 3D corrector build (staged: a cheap eccentric-Keplerian closure kill-gate first, then productization + real-ephemeris SPICE SAT441 validation only if it passes — NOT the general n-body/arbitrary-inclination build that was killed; needs a Fable second-opinion on the spec before dispatch; Stage B gauntlet result: 0/15 PASS, root cause a #571 search-methodology gap — free single-closure search with no periodicity constraint, not a genuine symmetric/repeating-cycle search — not a bug in the new validation code); #575 for a #563-method Titan-Iapetus direct symmetric-closure re-search (plan under Fable review before dispatch; FINAL: 9 genuine coplanar symmetric closures found, 0 survive inclination-extension as repeating cycles — clean method-conditional negative, thread closed, `empty_regions.jsonl` stamped, #552 general-capability revival NOT warranted); #576 for a #563-method Galilean-moon direct symmetric-closure search (Jupiter — genericized #563 machinery now proven twice, never applied to this system; plan under Fable review before dispatch; RESULT: 36 gate-passing symmetric closures across all 6 pairs, repeat-instrumentation confirmed genuine, Russell-Strange 2009 comparison found no reproduction among the 2 architecturally-comparable published members); #577 for the Opus+Fable adjudication of the #576 36-closure Galilean survivor list (literature-clearance + pipeline-readiness gate; RESULT: 0/36 novelty-clear, FULL STOP on the pipeline — every pair is published R-S 2009 double-cycler / Liang-Hernandez triple-cycler / pump-tour territory, and the lone Io-Callisto structural clear is a corpus gap not novelty; the 8-mismatched-R-S-members "different topology" framing is incorrect — same ideal model + method, known-class-members); #578 for closing the #577-diagnosed R-S-2009 literature-corpus gap + stamping the Galilean symmetric-closure territory (corpus-accuracy + registry, NOT a pipeline task; plan under Fable review before dispatch; RESOLVED 2026-07-12: 4 new per-pair KNOWN_CORPUS anchors, DOI-coverage ratchet, empty_regions.jsonl stamps, commit 575bd44); #579 for the Fable-diagnosed `literature_check.py` Antoniadou-Voyatzis/Libert anchor mislabeling fix + #287/#301 re-audit (corpus-accuracy, do first per Fable's priority order); #580 for a Richardson-1980 analytic third-order halo-seed generator (fills the halo-branch seed-generator gap Fable independently confirmed); #581 for a Gurfil-Kasdin-2002-style niching-GA search layer, gated on a positive-control reproduction (flagged for user review before dispatch, not auto-fired); #582 for #581 stage 3a, an asymmetric/spatial-isolated 3D CR3BP resonant-family niching-GA search (mu=0.001, Fable-corrected from an initial wrong Earth-Moon scoping; build + positive control DONE 2026-07-13, commit `ba60092`, full novelty sweep not yet dispatched); #583 for #581 stage 3b, a Sun-Earth ER3BP bounded-drift quasi-cycler search widening the validated niching layer beyond Gurfil-Kasdin's own 12 sets (build + positive control DONE 2026-07-13, commit `aafa244`/merge `378b1f1`; a real deep-Hill-sphere basin bug + a theta0-wraparound bug found and fixed via 2 independent Fable reviews; full novelty sweep not yet dispatched, needs radial/per-family partitioning first); #584 for 2 unexplained pre-existing test failures discovered on the new Mac (M3/Accelerate) environment during #582 verification (CLOSED 2026-07-14: CI run 29323181595 confirms 3310 passed/0 failed on the identical tree, mechanism checked and plausible for both — a tolerance-edge V∞ match and an integer winding-number topology flip, both exactly the kind of borderline check a different BLAS backend's rounding can tip; local-Mac-only, no code change); #585 for a #582 follow-up widening the symmetry-breaking z0/xdot0/zdot0 bounds and re-running the 5-MMR sweep (the 0/104 result is very likely a narrow-search-box artifact, not a physical negative); #586 for a #583 follow-up addressing the fitness-landscape/niching discrimination limitation the partitioning redesign exposed (3 candidate approaches scoped, needs a Fable/Opus design-tradeoff read before building); #587 for populating real CR3BP identity fields (Jacobi/period/stability) on the 6 #569 Uranian quasi-cycler rows, found via a cyclers.space website visualization bug (CLOSED 2026-07-14, scope corrected: cr3bp schema field doesn't apply to cycler_class=multi-arc rows — populated invariants/legs tof_days instead, fixed the website placeholder's false tabulation claim); #588 for dedup + live-literature-check + Opus/Fable adjudication of #586's 264-candidate unmatched-bounded pool from the full 16-partition sweep (CLOSED 2026-07-14: dedup 264->45->20 unmatched; live literature-check found 2 Gurfil-Kasdin companion papers, neither closes the gap; Opus+Fable adjudication found 14/20 confidently not novel, 6/20 warrant the #590 bounded follow-up; zero catalogue rows changed); #589 for reproducing/extending the Gurfil-Kasdin 2002 out-of-ecliptic z²-maximization approach as a new search regime distinct from the bounded-family census (flagged for user review before dispatch, not auto-fired); #590 for a bounded follow-up settling whether #588 clusters 40/42/43 (+24/25/39) are genuine Family-J-curve members or single-hit GA artifacts (CLOSED 2026-07-14: 3 new verified QSO CorpusAnchors added, connectivity heuristic ambiguous, long-horizon check found even the published Family J anchor itself escapes at ~30yr — reframes rather than resolves the question, left for a future differential-correction continuation); #591 for Fable's salvageable #589 reframe — ranking already-validated bounded 3D structures (5 known G-K 3D families + #588's cluster 43) by out-of-ecliptic excursion (max |z|), analysis-only, no new search (CLOSED 2026-07-14: cluster 43 beats published Family J by ~16% on excursion while being far more durably bounded per #590 — not novel, but a genuine citable figure-of-merit result); #592 for a QBCP alpha_6 EOM scaling bugfix recovered from an abandoned git stash during a repo-hygiene cleanup pass, verified + applied (CLOSED 2026-07-14); #593 for scoping whether #592's fix changes any past QBCP-based search conclusion (CLOSED 2026-07-14: empirical before/after re-run of the SE-L2 positive control found a genuine, non-trivial impact — same seed converges to a different mean-state solution under fixed vs buggy code — so #533/#537/#544's specific quoted numbers are stale, recommendation is re-derive fresh rather than blind full re-run); #594 for a full-file comprehensive audit of every numbered task (~180 entries, 6 parallel verification passes + a Fable adversarial verification pass same day), correcting #545 (was DEAD+SUPERSEDED, not "ready" as first read), #521/#536/#537/#405/#318/#501/#248/#506/#518/#144/#167 status inconsistencies, the stale #307/#310/#320/#321/#322 duplicate queue, and one self-correction (#344's "genuine gap" claim was itself wrong per Fable's check against literature_check.py's own #349 code comments — resolved not-novel, not open) (CLOSED 2026-07-15, 15 total edits across 2 passes); #595 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -348,8 +357,13 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   real `should_sweep()` call against the migrated #405/#411 SE<->EM region (added as
   `tests/data/test_method_capability.py::test_real_registry_skips_equal_capability_rerun_of_cross_system_se_em_search`)
   — an equal-or-weaker re-run of that search, the exact pattern that produced #515-517 this week, is now
-  mechanically skipped. `uv run pytest tests/data tests/search -q` stays green. Building the actual
-  `preflight_search()` gate + AST ratchet (Phase 2) remains open.
+  mechanically skipped. `uv run pytest tests/data tests/search -q` stays green.
+  **STALE TEXT CORRECTED 2026-07-15 (full-file audit): Phase 2 is NOT open — it was built the
+  same day.** See the "#521 PHASE 2 DONE (2026-07-02)" note earlier in this file (the AST ratchet
+  `tests/scripts/test_scripts_call_preflight.py` is real, live, and independently re-confirmed
+  passing multiple times this session as recently as 2026-07-14/15). This line was simply never
+  updated after Phase 2 landed later the same day — left as a historical artifact, not a current
+  gap.
 - **#522** — Coherent-Model Torus-Connection Search: reformulate SE<->EM cross-system closure as BCR4BP/QBCP
   whiskered-torus connections instead of patched-CR3BP grids, dissolving the 1-DOF phase-closure obstruction by
   construction; re-scopes #518 (proposed 2026-07-02 independent review; not yet built).
@@ -1143,6 +1157,11 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   Owen & Baresi positive-control sweep found zero linking-number sign changes and never produced a
   nonzero torus-level linking number even where connections should exist. This Jupiter-Europa 0/N
   is uninterpretable output from an unvalidated screen; do not register it as an empty region.
+  **[Ordering note added 2026-07-15, full-file audit: everything below this line is the ORIGINAL
+  2026-07-03 proposal text that predates the "✓ Resolved"/STAMP block above — it describes what
+  was PROPOSED, not a second still-open item. Ends "Not yet built" because that was true when
+  written, before #536 executed and was later stamped invalid. Kept in place for history, not a
+  live TODO.]**
   (Jovian-Moon Tori) (allocated 2026-07-03, same session, from an independent second-opinion review of the
   #532/#534 discovery plan). **Motivation**: #534's Earth-Moon L1<->L2 target is not actually a novelty attempt
   as posed — quasi-halo/torus heteroclinic connections in that specific system are extensively published
@@ -1169,6 +1188,13 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   now more correct, but any specific past numeric result produced with it (see #537/#544 below)
   predates the fix and should not be trusted as-is. `docs/notes/2026-07-14-qbcp-alpha6-scaling-fix.md`.
 - ✓ Resolved (2026-07-09) **#537** — QBCP Cross-System Torus Connection Search: Completed the cross-system invariant torus connection search from Sun-Earth L2 Torus to Earth-Moon L2 Torus in the QBCP model, finding a highly accurate refined connection candidate with a 12,034 km position gap and a 911 m/s velocity gap at crossing time 3.66 TU (scripts/run_533_qbcp_connection.py). **Caveat found 2026-07-09 while scoping #538**: the refining `least_squares` solve is a **3-equation/4-unknown rank-deficient system that never includes velocity in its residual** — the 12,034 km / 911 m/s numbers are post-hoc diagnostics from a separate propagation, not quantities the optimizer drove toward zero. Treat as a basin seed for #538's properly-posed solve, not a near-converged boundary condition. Plan: `docs/superpowers/plans/2026-07-09-538-qbcp-cross-system-cycler-correction.md`.
+  **⚠ STAMP (2026-07-15, full-file audit — consistency fix): #537's headline "highly accurate...
+  connection" carries the SAME functional status as #534/#536's explicit STAMPs above (both
+  DO-NOT-CERTIFY), it was just never given the formal marker. Two independent, compounding
+  reasons, both already documented below in this same entry: (1) the rank-deficient-solve caveat
+  immediately above (numbers were never actually driven to zero); (2) the alpha_6 staleness note
+  further down (computed under pre-#592 buggy dynamics, doesn't reproduce as-is). DO NOT CITE
+  #537's 12,034 km / 911 m/s figures as a validated result.**
   **Second, independent staleness reason (2026-07-14, #593, reconciled):** this ran under the
   pre-#592 buggy `qbcp.py`. #593's full investigation (including reconciling with #544's own prior,
   reverted attempt at this exact fix) confirmed #592 is a genuine, net-positive correctness fix (the
@@ -1363,15 +1389,33 @@ binary-genome find came from cheap breadth (pointing existing machinery at unscr
 systems). Splitting the screen out lets it run now and feed #539/#540's eventual corrector
 work later, rather than sitting idle behind #544.
 
-- **#545** (P1, run now, independent of #538/#544) — Jupiter-Europa/Ganymede band screen:
-  a genuine Jacobi-constant band sweep (not #536's single point C=3.0015) crossed with a
-  synodic-phase-offset sweep between the moons, using #524's deflated Newton to enumerate
-  basins, CR3BP-level only. **Positive control: recover #534's own published Earth-Moon
-  L1<->L2 result** (not a not-yet-existing SE<->EM connection) as the pipeline sanity check
-  before pointing it at unmapped Jovian territory. Supersedes #536's single-point negative.
-  **Recommended models:** screen build + running the deterministic sweep behind
-  `preflight_search()` → **Sonnet**. Adjudicating any candidate hit → **Opus**, **Fable**
-  second-opinion before writeback.
+- **#545** — Jupiter-Europa/Ganymede band screen: a genuine Jacobi-constant band sweep (not
+  #536's single point C=3.0015) crossed with a synodic-phase-offset sweep between the moons,
+  using #524's deflated Newton to enumerate basins, CR3BP-level only. **Positive control:
+  recover #534's own published Earth-Moon L1<->L2 result** (not a not-yet-existing SE<->EM
+  connection) as the pipeline sanity check before pointing it at unmapped Jovian territory.
+  Supersedes #536's single-point negative.
+  **✓ ALREADY RUN (committed, `scripts/run_545_jovian_band_phase_screen.py`;
+  `data/runlogs/545_band_screen_report.json`) — DEAD + SUPERSEDED, not "ready to dispatch."
+  Corrected 2026-07-15 during a full-file audit** (the original 2026-07-13/14-era proposal text
+  above, describing #524's deflated Newton as an independent method, undersold this task's real
+  coupling — the ACTUAL committed script builds real QP tori via `genome.qp_tori.correct_qp_torus`
+  and refines candidates against `genome.qp_torus_heteroclinic.closest_curve_distance`, i.e. it
+  depends on the SAME whiskered-torus/linking-number machinery #534/#536 used, with #524's
+  deflated Newton only as the root-finder layered on top — NOT a substitute for it). Two
+  independent reasons this is closed, not just gated:
+  1. **Dead per #555's final verdict**, exactly like #536: #576's own text explicitly lists
+     "the now-retired torus/heteroclinic linking-number lane (#536/#545, dead per #555's final
+     verdict)". The pipeline #545 depends on was shelved after #548 found it could never produce
+     a confirmed nonzero linking number even at a correct positive-control energy.
+  2. **Superseded by #576/#577 regardless**: #576 already ran the far more validated, twice-proven
+     #563/#575 direct symmetric-closure method against ALL 6 Galilean moon pairs (including
+     Europa-Ganymede, #545's specific target), and #577 delivered a definitive adjudicated
+     verdict (0/36 novelty-clear, FULL STOP). #545's entire scientific question is already
+     comprehensively answered by a better method — reviving it with any positive control would
+     only duplicate #576/#577's completed work using an inferior, retired approach.
+  **No further action needed on #545.** If a NEW Jovian-system question ever comes up, it should
+  be scoped as a fresh task using #563's method, not a revival of this one.
 - **#546** (P1, run now, independent of #538/#544) — Uranian-system band screen
   (Miranda-Ariel-Umbriel-Oberon lanes), same CR3BP-level band+phase sweep as #545, pointed
   at the one system that has ever produced a confirmed novel row (#312). Per the empty-region
@@ -3870,6 +3914,80 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   reconciliation: `docs/notes/2026-07-14-593-qbcp-alpha6-impact-scoping.md` (updated in place).
   **#593 STATUS: CLOSED (fully reconciled).**
 
+- **#594** (P2, repo-hygiene / documentation-accuracy) — full-file comprehensive audit of every
+  numbered task in this document (~180 entries, 6 parallel independent verification passes each
+  reading its own line-range end-to-end, cross-checking header claims against actual entry
+  bodies), triggered by the #545 confusion found while answering the user's own question about
+  it. **Origin:** the user asked for every single audit finding to be checked and the file
+  corrected, not just spot-checked.
+  **DONE (2026-07-15).** Verified every task's TRUE status (not just its header) across the whole
+  file. Key corrections actually applied to this file (not just found and left as a report):
+  1. **#545** — was misclassified (by an earlier, less careful audit pass, and by me initially)
+     as "ready to dispatch, just needs a new positive control." Direct inspection of its actual
+     committed script (`scripts/run_545_jovian_band_phase_screen.py`) showed it genuinely depends
+     on the retired qp_torus/heteroclinic pipeline (not an independent method as its prose
+     suggested), AND its whole scientific question was already comprehensively answered by
+     #576/#577 using a proven, superior method. Corrected to DEAD + SUPERSEDED, not revivable.
+  2. **#521** — a stale "Phase 2 remains open" line contradicting an adjacent, more detailed,
+     already-DONE note for the same Phase 2 (the AST ratchet is real and live, independently
+     re-verified this session) — corrected in place.
+  3. **#536** — reordered/clarified an internally-scrambled entry (STAMP block appeared before
+     the pre-resolution proposal text it was retracting, reading as if un-resolved).
+  4. **#537** — added the same explicit `⚠ STAMP` marker #534/#536 already carry (same
+     functional DO-NOT-CERTIFY status, just missing the formal marker before this pass).
+  5. **#405** — added a header-level retraction flag (its own last line reverses the "clean
+     negative" the header claims, previously only visible after reading the whole paragraph).
+  6. **Stale duplicate queue (#307/#310/#320/#321/#322)** — an entire un-weeded 2026-06-16-era
+     pending list, each item already resolved elsewhere in the file under a DIFFERENT (correct,
+     better) result, cross-referenced in place rather than left contradicting the real answer.
+  7. **#318** — consolidated 3 non-adjacent, easy-to-misorder status statements into one clear
+     note (net: BOTH #318 through Phase 2b AND its #501 follow-up are resolved/closed — #501 was
+     actually dispatched and run to completion, corrected further below after item 12).
+  8. **#248** — added the missing cross-reference to its own resolution, which sat ~150 lines
+     away under a differently-named section.
+  9. **#344 Phase 2 Stage A** — corrected further below after item 12 (my first pass here claimed
+     a genuine still-open gap; a Fable adversarial check found this claim was itself wrong).
+  10. **#506** — bolded a "DO NOT REOPEN" marker after confirming it had already been
+      re-litigated once by mistake (#550).
+  11. **#518 vs Tier-5 plan** — clarified #518 is superseded by #522, not independent forward work.
+  Full per-chunk verification tables (all ~180 tasks, every classification with line-level
+  evidence) exist in this session's agent dispatch transcripts; the corrections above are the
+  subset that changed what a reader would conclude, applied directly rather than left as an
+  external report.
+
+  **12. Fable adversarial verification pass (2026-07-15), same day — checked every correction
+  above against primary text, re-examined the 4 items judged "already adequately clear," and did
+  a fresh independent scan.** Verdict: 9/12 corrections verified fully accurate as written
+  (#545, #521, #536, #537, #405, the stale-duplicate cluster, #506, #518-vs-Tier-5, and items 1-6/
+  8/10/11 of this list). 3 needed further correction, all now applied:
+  - **#318/#501 (item 7 above)** — my first version claimed #501 was "OPEN-GATED pending an
+    explicit decision." Fable found this cites a stale "[held]" marker on #501's own entry while
+    ignoring the Tier-1 results block (near the top of this file), which shows #501 actually ran
+    to completion: "0 closed; positive control (Liang Member D) PASSED → trustworthy. Clean
+    empty-region map registered" — and #576/#577 both treat that result as settled history.
+    Corrected: both #318 and #501 are resolved/closed; #501's own stale "[held]" marker fixed too.
+  - **#344 (item 9 above)** — my first version claimed a GENUINE still-open gap (that #349's
+    closure didn't address the literature-freshness blocker). **This claim was wrong.** Fable
+    found `src/cyclerfinder/search/literature_check.py` explicitly documents #349 fixing exactly
+    this blocker (a `topology_label` discrimination separating the Cassini-Huygens tour from a
+    genuine repeated-moon cycler candidate, despite the shared {Titan, Rhea} body subset) — plus
+    the candidate itself was independently adjudicated V0-known (Russell-Strange 2009,
+    2026-06-30, reconfirmed after #488/#489). Corrected: resolved not-novel, not open. **Lesson
+    for future audits: verify a "the fix doesn't address the blocker" claim against the actual
+    CODE the fix touched, not just the one-line closure summary in this tracker — the summary
+    undersold what #349 actually built.**
+  - **#144 and #167** — judged "already adequately clear," WRONG on both. #144's "PROVISIONAL
+    pending Guzman et al. 2002" gate was stale: Guzman 2002 was already acquired and mined
+    (`docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`), which already delivers the
+    exact re-label verdict — applied directly to #144's own entry. #167's "V3 writeback...HELD to
+    user decision" was also stale: `data/catalogue.yaml`'s `russell-ch4-4.991gG2` row already
+    carries `validation_level: V3` (mechanically backfilled from recorded gauntlet evidence) —
+    the writeback already happened. Both fixed. (#164/#165 ordering and #110's "OPEN RESEARCH"
+    header were re-checked and confirmed genuinely fine, no change needed.)
+  **Net: the file is now verified accurate on every specific claim checked** (12 original
+  corrections + 3 further corrections found by adversarial review = 15 total edits this pass),
+  not just "audited and mostly trusted."
+
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
   analysis (Amalthea GM=0.165: max bend 0.80 deg at V_inf=0.5 km/s, collapsing at higher V_inf,
@@ -5670,7 +5788,14 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   2009) as a moon-tour gravity-assist cycler genome — complements #465 multi-rev leveraging + #318 joint
   search. Gated on #498.
 - **#501** — #318 full-scale, REFRAMED: broaden sequences/systems (NOT densify CGCEC — smoke showed a mined
-  regime, 0/256) joint-search campaign with post-hoc lit-novelty. [held — the deferred #318 decision]
+  regime, 0/256) joint-search campaign with post-hoc lit-novelty.
+  **STALE "[held]" MARKER CORRECTED 2026-07-15 (Fable adversarial pass, full-file audit): this
+  "[held — the deferred #318 decision]" tag is stale — #501 was actually dispatched and run to
+  completion regardless. See the Tier-1 results block near the top of this file: "#501 broadened
+  real-eph Galilean joint search (e5b2339/d0c8def): 6 sequences × 512 Sobol = 3072, 213 feasible,
+  26 shot, 0 closed, positive-controlled against Liang Member D — PASSED, trustworthy. Clean
+  empty-region map registered." #576/#577 elsewhere in this file both treat this 0/3072 result as
+  settled history. RESOLVED/CLOSED, not held.**
 - **#502** — Watch/acquire the LONGER companion of Ross-RT 2026 (full μ-grid + all 9 EM family tables) for a
   tighter #494 Pluto-Charon continuation seed. [watch]
 - **#503** — Acquire+mine cislunar-resonance / transport companions: Rawat-Kumar-Rosengren-Ross 2026 JGCD
@@ -5999,6 +6124,18 @@ lives on the orthogonal gauntlet axis). See
   Cassini-Huygens Saturn-Titan satellite tour anchor (line 887 in
   literature_check.py, body_set ⊇ {Titan, Rhea}) still matches.
   HALT until #349 Cassini scope investigation resolves.
+  **CORRECTED 2026-07-15 (full-file audit, then CORRECTED AGAIN same day by a Fable adversarial
+  pass that caught the first version of this note claiming a genuine gap that isn't real):** this
+  Stage A halt WAS resolved, twice over, just never explicitly cross-referenced back to this
+  entry. (1) `src/cyclerfinder/search/literature_check.py` documents #349 fixing exactly this
+  blocker, not just sourcing V∞ data: it added a `topology_label` discrimination "to discriminate
+  the Cassini-Huygens Titan-pump tour from a (k1, k2) repeated-moon cycler candidate despite
+  sharing the {Titan, Rhea} body subset" (see the `#349`-attributed comments in that file) — i.e.
+  the Cassini anchor no longer false-matches a genuine repeated-moon candidate at all. (2) The
+  Titan-Rhea-Titan candidate this Stage A halt was about was independently adjudicated
+  **V0-known** via Russell-Strange 2009 on 2026-06-30 (see the #320 adjudication elsewhere in
+  this file) and re-confirmed after the #488/#489 grounding correction ("Titan-Rhea-Titan stays
+  V0-known — Rhea is an R-S Titan-flyby target"). **Net: resolved not-novel, not still-open.**
 - **#343 #284 asymmetric scan Phase 2:** clean negative on a 1,944-cell
   re-run (12.5× speedup via #321 parallel substrate, above the 5-8×
   target). The asymmetric corrector keeps collapsing to symmetric basins
@@ -6167,7 +6304,21 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
 - **#308** Asteroid-leveraging — Phase 1 substrate done; structurally weak (NEAs ~25 m–16 km
   → patched-conic bend well below the 5° floor at cycler V∞; the gate correctly rejects).
   Effectively a characterized near-dead-end. `…-308-asteroid-leveraging-phase1.md`.
-- **#318 OPEN — Phase-2 REFRAMED 2026-06-30** Multi-axis joint search (powered × multi-rev ×
+- **#318 OPEN — Phase-2 REFRAMED 2026-06-30 [consolidated status note added 2026-07-15, full-file
+  audit, CORRECTED 2026-07-15 after a Fable adversarial pass caught the first version of this
+  note citing a stale "[held]" marker: this task's true final status is scattered across 3
+  non-adjacent DELTA sections (newest-first ordering, so reading top-to-bottom in the file goes
+  NEWEST→OLDEST here, opposite of what the surrounding numeric-task order suggests). Reading
+  chronologically: this entry (2026-06-30, "Phase 2a LANDED, next: Phase 2b") → a later "#318
+  Phase 2b ... clean empty" entry elsewhere in this file reports Phase 2b done as a negative
+  result → #501 ("full-scale, REFRAMED") is the proposed larger follow-up. NET STATUS: BOTH #318
+  (through Phase 2b) AND #501 are RESOLVED/CLOSED — #501 was actually dispatched and run to
+  completion (see the Tier-1 results block near the top of this file: "#501 broadened real-eph
+  Galilean joint search... 0 closed; positive control (Liang Member D) PASSED → trustworthy.
+  Clean empty-region map registered"), and #576/#577 elsewhere in this file both treat #501's
+  0/3072 stamp as settled history. The "[held — the deferred #318 decision]" marker on #501's own
+  entry is itself stale — #501 ran regardless of whatever that marker's decision was.]**
+  Multi-axis joint search (powered × multi-rev ×
   3D × epoch-locked). Took it as the top open probe; the diagnosis corrected Phase 1's "just
   needs smarter sampling" framing: **the real blocker is a MODEL mismatch** — axes A/B/D are
   the heliocentric Lambert cycler (#309/#289) but axis C is a CR3BP periodic-orbit corrector
@@ -6247,7 +6398,9 @@ else V0-known / infeasible / published-class.**
   closes to ~1e-10, crossing matches the published value to ~4e-3 (linear-seed
   fidelity), L2→L1 return leg is the exact time-reversal mirror. Spec/plan in
   docs/superpowers/. Unblocks #405 (cross-system novel search).
-- **#405 ✓ Phase A DONE (2026-06-20)** Cross-system SE↔EM heteroclinic-cycle
+- **#405 ⚠ RETRACTED below, see #411 (flag added 2026-07-15, full-file audit — the "clean
+  negative" this header claims is reversed in this same entry's own last line)**
+  Cross-system SE↔EM heteroclinic-cycle
   search. Delivered `genome/cross_system_cycle.py`: SE↔EM frame bridge (Earth-
   centered inertial, round-trip 1e-9 + physical Moon-position anchor) + patched-
   CR3BP cross-system connection corrector + bounded closure search + Radau
@@ -6282,16 +6435,37 @@ else V0-known / infeasible / published-class.**
   checks: μ~3.0035e-6, 2π·t_s = 1 yr.
 - **#413 ✓ DONE (2026-06-20)** Cleaned ~25 untracked scratch files; gitignored
   `.playwright-mcp/`.
-- **#315** Circumbinary/binary-star μ-gap sweep
-- **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds)
-- **#320** First quasi_cycler discovery sweep (blocked by #319)
+**[Block-level note added 2026-07-15, full-file audit: this is an OLD (2026-06-16-era) pending
+queue. Most of these tasks were resolved/landed elsewhere in the file afterward and this list was
+never weeded — cross-references added inline below. Only #315-317 have no resolution found
+anywhere in the file and are genuinely still open.]**
+- **#315** Circumbinary/binary-star μ-gap sweep — OPEN. #494 (elsewhere in this file) says it is
+  actively "closing #315" — check #494's own current status before treating this as unstarted.
+- **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds) — OPEN, but possibly
+  redundant with the #405/#411 SE<->EM heteroclinic-cycle work just above, which covers similar
+  ground. No explicit link exists in the file either way — flagged for a human decision (merge/
+  supersede or keep distinct), not resolved here.
+- **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
+  elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
+  2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
+  line predates that resolution and was never removed.
 
 **Infrastructure + polish:**
-- **#307** #289 Phase 5 (DSM + multi-rev + eccentric Tisserand) — gap from #300/#302
-- **#310** Single-orbit prioritizer adapter (#284 architectural gap)
-- **#317** PINN-based pre-filter for sweep-impossible regions
-- **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core)
-- **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313
+- **#307** #289 Phase 5 (DSM + multi-rev + eccentric Tisserand) — gap from #300/#302 — **STALE,
+  already resolved.** "#289 CLOSED 2026-06-25: ... Phase 5 (#307) closed" (see #289's entry
+  elsewhere in this file).
+- **#310** Single-orbit prioritizer adapter (#284 architectural gap) — **STALE, already
+  resolved.** Landed elsewhere in this file ("closing the #284 architectural gap").
+- **#317** PINN-based pre-filter for sweep-impossible regions — genuinely OPEN, no resolution
+  found anywhere in the file.
+- **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core) —
+  **STALE, already resolved with a BETTER number.** Landed elsewhere in this file at a proven
+  5.06× speedup (this line's "4-8×" was only an estimate), already reused by #343's 12.5×
+  combined speedup.
+- **#322** Tulip petal_count z0-collapse bug fix (in flight) — surfaced by #313 — **STALE,
+  already resolved and now in active use.** Landed elsewhere in this file (folded into the
+  "background-stable" infrastructure bundle) and is now itself used as a live gate
+  ("the #322 z0-amplitude gate") by later tasks (e.g. #534's Phase 2 exploration).
 
 ## SESSION YIELD (HONEST RECKONING — POST #322 + #327 + #330 + #331)
 
@@ -6615,8 +6789,14 @@ not title-dismissed.
 - **#248** (NEW) — multi-arc seed/basin fix so the E-E-M-M rows converge on either
   optimizer lane; GATES the FBS default flip (#245). The decision-changing finding
   from #244.
+  **✓ RESOLVED — cross-reference added 2026-07-15, full-file audit:** see "Multi-arc convergence
+  SOLVED (#248)" elsewhere in this file (a later-dated note appearing earlier in the file per its
+  DELTA-newest-first convention) — the hard E-E-M-M closure blocker was fixed. This "(NEW)" header
+  predates that fix and was never updated; #245/#246 below are correspondingly unblocked, not
+  genuinely still HELD.
 - **#245/#246** — FBS optimizer default flip + documentation; HELD behind #248
-  (no convergence parity to flip toward yet).
+  (no convergence parity to flip toward yet). **Per #248's resolution above, this gate should be
+  re-checked — it may already be clear; verify before treating #245/#246 as blocked.**
 - **#239** — Zhou-Armellin reachable-set spike; merges into the still-gated scorer.
 - **#240** — KKT/surrogate amplifier; gated on the surrogate-target decision. Logger
   needs NO change — it already logs the DSM-chain lane via `optimize.py`; what's
@@ -6912,7 +7092,13 @@ Live validation census after the writeback: **V2: 1, V1: 11, V0: 256** (268 tota
   recipe) — VERIFIES his published cycler independently, NOT yet a single
   continuous-from-one-seed multi-cycle closure. LEVEL: solid V3 leaning V4; clean
   V3/V4 upgrade = one continuous propagation measuring the re-anchor Δv as the
-  maintenance budget. **V3 writeback recommended, HELD to user decision.** Commits
+  maintenance budget. **V3 writeback recommended, HELD to user decision.**
+  **STALE GATE CORRECTED 2026-07-15 (Fable adversarial pass, full-file audit): the writeback
+  happened — `data/catalogue.yaml`'s `russell-ch4-4.991gG2` row carries `validation_level: V3`
+  today (mechanically derived by `scripts/backfill_validation_level.py` from recorded gauntlet
+  evidence, per the row's own schema comment). The #170 entry below already presupposes this
+  ("S1L1 ... remains the only V3"). "HELD to user decision" no longer describes reality — the V3
+  level is live in the catalogue now, not still pending.** Commits
   `cec1353`/`3ae4715`; note `docs/notes/2026-06-08-s1l1-corrected-closure-results.md`.
 - **[SUPERSEDED] #164 — S1L1 CLOSES ON DE440 (#94 mechanism resolved).** Continuing the
   two-arc seed circular→real eccentric/inclined model
@@ -8090,8 +8276,17 @@ coast; per-coast max|p| → OPTIMAL / IMPROVABLE). Note
 - **Aldrin maintenance schedule verdict: IMPROVABLE_ADD_IMPULSE.** Coast 0
   (E→M, 131.9 d) grid-converged max|p| = 1.1223 at t/T ≈ 0.355 (≈47 d) — a
   genuine interior bulge; coast 1 (M→E) marginal at max|p| = 1.00008 (noise
-  floor). **PROVISIONAL pending Guzman et al. 2002** (where the linearised
-  theory fails on long multi-rev arcs).
+  floor).
+  **RE-LABELED 2026-07-15 (Fable adversarial pass, full-file audit — Guzman 2002 was already
+  acquired+mined, this PROVISIONAL gate was stale):**
+  - **Coast 0:** `CONFIRMED-with-scope per Guzman 2002 §"Isolated Singularities" (p.7-8): a
+    sub-one-rev (Δν<180°) singularity-free arc; the |p|=1.122 necessary-condition flag is valid
+    and the Φ_rv inversion is well-posed. Remains necessary-not-sufficient (Guzman p.3).`
+  - **Coast 1:** `CONFIRMED-with-scope: sub-one-rev, no Φ_rv singularity (Guzman p.7-8); marginal
+    endpoint touch, treat as necessary-conditions-met` (598.7 d is ~0.87 of Mars's period —
+    sub-one-rev, not the "multi-revolution-scale" this entry originally worried about).
+  Machinery validated for both arcs; only necessary-not-sufficient, never sufficient, per
+  Guzman's own p.3 disclaimer. See `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`.
 - **Methods correction recorded:** the brief's Hohmann-ratio-20 interior-bulge
   gate was physically incorrect — the ~11.94 threshold is Lawden's
   endpoint coast-extension (bi-elliptic) condition, not an interior |p|>1 on
@@ -8123,8 +8318,14 @@ path):**
    reference before implementing MBH (open PDF located).
 3. **Guzman, Mailhe, Schiff, Hughes & Folta (2002), "Primer Vector
    Optimization: Survey of Theory, New Analysis and Applications,"
-   IAC-02-A.6.09 (53rd IAC, Houston; NTRS 20030032208)** — needed to lift the
-   #144 primer diagnostic from PROVISIONAL.
+   IAC-02-A.6.09 (53rd IAC, Houston; NTRS 20030032208)** — ~~needed to lift the
+   #144 primer diagnostic from PROVISIONAL~~ **STALE (corrected 2026-07-15, Fable adversarial
+   pass, full-file audit): already acquired and mined.** See `docs/notes/CORPUS_INDEX.md` (row:
+   "mined") and `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`, which already
+   delivers the re-label verdict: "PROVISIONAL pending Guzman 2002 (multi-rev caveats)" →
+   "CONFIRMED-with-scope per Guzman 2002 §Isolated Singularities (p.7-8): necessary-not-sufficient
+   (Guzman p.3)." This "New wants" item is done; #144's own entry should be updated to the
+   confirmed-with-scope label rather than left saying PROVISIONAL.
 4. **Lion, P. M. & Handelsman, M. (1968), "Primer Vector on Fixed-Time
    Impulsive Trajectories," AIAA Journal 6(1):127–132, DOI 10.2514/3.4452** —
    the add-an-impulse diagnostic the maintenance work would implement.
