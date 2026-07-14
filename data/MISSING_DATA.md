@@ -1,21 +1,76 @@
 # Missing Data — Cycler Catalogue Sourcing Report
 
-*Updated 2026-06-03. Based on analysis of 233 catalogue entries; 788 data_gaps across 207 entries.*
+*Originally written 2026-06-03 (233 entries, 788 gaps). **STALENESS-CORRECTED 2026-07-15** (#595
+follow-up, same audit methodology as the `OUTSTANDING.md` #498/#499/#503 correction). Catalogue is
+now 361 entries, 985 data_gaps across 291 entries (grew because entries grew, not because gaps grew
+faster than sourcing — see below).*
 
 ---
 
-## 1. Summary
+## 1. Summary (CORRECTED 2026-07-15)
 
-The catalogue carries **788 data gaps** distributed across 207 entries. The bulk originate from Russell-2004-dissertation entries whose per-leg orbital elements (`a_au`, `e`) and per-leg time-of-flight (`tof_days`) were never fully extracted from the dissertation tables. This makes the **Russell 2004 PhD dissertation** (UT Austin, open-access PDF at `http://hdl.handle.net/2152/1253`; full text held offline, not stored in repo) the single highest-leverage sourcing target: a systematic extraction of Tables 3.4, 3.9–3.11, 4.9–4.13 would close the bulk of all gaps. The remaining gaps are:
+**The core "sources are inaccessible" framing below is STALE.** Every primary source this report
+originally flagged as paywalled/restricted/not-online has since been acquired and read (see
+`docs/notes/CORPUS_INDEX.md`):
 
-- **201 "derive" gaps** — fully computable by the project's own multi-rev Lambert solver; no sourcing needed.
-- **184 "uncertain/topology-provisional" gaps** — resolved once per-leg elements are confirmed from Russell.
-- **U0L1 and "Case 1" steady-state V∞** (McConaghy 2005 dissertation / AIAA 2002-4420 full text) and return-leg ToF for the establishment variants (Rogers 2012 Table 4). NB **S1L1, U0L1, and "Case 1" are three distinct orbits** (Rogers 2012 Table 1: S1L1 a=1.30/e=0.257, Case 1 a=1.22/e=0.238, U0L1 a=2.05/e=0.563).
-- **4 "unknown" V∞ gaps** for VISIT-1 and VISIT-2 (Friedlander/Niehoff 1986 AIAA 86-2009-CP; Niehoff 1985/1986 originals never digitised online).
+| Source | 2026-06-03 status claimed here | ACTUAL status (2026-07-15) |
+|---|---|---|
+| Russell 2004 dissertation | not yet downloaded | **Acquired + read 2026-06-07** (`russell-2004-dissertation.pdf`) — methodology mined, AND Tables 3.4/3.9–3.11 (201 rows) + App. C format verbatim-transcribed (`2026-06-07-russell-2004-member-tables-transcription.md`) |
+| McConaghy 2005 Purdue dissertation | Purdue-proxy restricted | **Acquired + deep-mined 2026-06-10** (`mcconaghy-2004-...-purdue-phd.pdf`, task #183) — confirms it does NOT contain per-member U0L1 return-leg data (only circular-coplanar summary members, same ceiling as Russell) |
+| Rogers 2012 AIAA preprint | (already known free) | Acquired + mined-by-catalogue; confirmed Aldrin establishment return-leg ToF is genuinely NOT tabulated even with full-paper access |
+| Friedlander/Niehoff 1986 AIAA 86-2009-CP | paywalled | **Acquired + digested 2026-06-22** — gives a qualitative VISIT V∞ range (4.2–4.5 km/s) but not exact per-body encounter values |
+| Jones/Hernandez/Jesick 2017 AAS 17-577 (VEM) | JPL handle broken | **Acquired + mined 2026-06-05** (task, `+KNOWN_CORPUS`) — plus its Jovian sibling AAS 17-608 (Io-Europa-Ganymede), never even listed here, also acquired+digested 2026-06-26 |
+| Russell & Strange 2009 (moon cyclers) | JPL handle broken | **Acquired + digested 2026-06-30** — "THE canonical moon-cycler census" |
+| Hollister & Menning 1970 | — | Already correctly marked RESOLVED below; still true |
 
-**Resolved this session:** the Hollister & Menning 1970 Earth-Venus periodic-orbit gap (period `k` / years / elements / V∞) is now closed — the single placeholder was individuated into the 15-orbit `hollister-menning-1970-ev-orbit-01..15` family from the PRIMARY paper (now in `docs/refs/`), with V∞ from Table 3 (Vr × 29.785 EMOS) and a shared period 16 yr / k=10 (corrected from a wrong secondary "3.2 yr").
+**But acquiring the source did NOT automatically close the catalogue gaps it was meant to fix.**
+Checking `data/catalogue.yaml` directly (not just corpus-acquisition status) shows the real picture:
 
-The Russell dissertation PDF (3.45 MB, `russellr74662.pdf`) is **freely downloadable from UT Austin repositories** but is binary-compressed and requires a PDF reader or extraction tool to read the tables — web-fetch cannot decode it. All other primary sources listed below are either paywalled (AIAA, JSR) or inaccessible conference-paper archives; the Rogers 2012 preprint on Purdue's server is the only other freely accessible key source.
+- **Russell-family gaps: STILL OPEN, ~216 entries.** The 2026-06-07 mining pass extracted
+  Russell's *methodology* and *verbatim summary tables* (AR/TR/V∞/turn-angle — already reflected in
+  the existing `russell-ocampo-*`/`russell-2004-t34` catalogue rows), but explicitly did **NOT**
+  perform the mechanical per-row backfill of `trajectory.segments[].a_au` / `.tof_days` this report's
+  Priority 1 checklist calls for (the transcription note says so explicitly: "the catalogue stores
+  interpreted fields... not the verbatim table row... that is a catalogue edit, out of scope here").
+  **This is now a ready-to-execute backfill task, not a blocked-on-access one** — the source has
+  been in hand and page-cited since 2026-06-07.
+- **A separate, previously untracked gap**: the transcription note also found **~38 additional
+  Table 3.4 circular-coplanar cyclers** (e.g. 3.1.1.+3, 3.3.1.+2, 3.5.x, 3.7.1.+1, 4.0–4.14.x) that
+  are catalogue-eligible (full AR/TR/V∞/turn-angle data) but were never added as rows at all — this
+  is a missing-members gap, distinct from the missing-fields gap on existing rows.
+- **Aldrin establishment / U0L1 gaps (Rogers 2012 + McConaghy dissertation): CONFIRMED genuine
+  dead ends on all currently-accessible sources**, not merely "go get the source" items anymore —
+  both sources are in hand and were read specifically for these values; neither has them. Still
+  blocked on the Rogers 2013 / McConaghy 2005 restricted dissertations (§3.2/§3.3 below, unchanged).
+- **VISIT V∞ (niehoff-visit1/2): STILL genuinely open.** The catalogue's own inline gap note (not
+  the formal `data_gaps` array — a schema quirk, see caveat below) explicitly still asks for the
+  *original* Niehoff 1985/1986 conference papers, which remain not-online even though the 1986
+  Friedlander companion paper (which only gives a qualitative range) is now in hand.
+
+**Caveat on gap accounting:** `niehoff-visit1`/`niehoff-visit2` show **zero** entries in the formal
+`data_gaps` array (misleadingly looks "resolved" on a naive scan) — the actual `vinf_kms_at_encounters`
+leaf values are still `null` with an inline `note` explaining the gap, just not registered in the
+tracked `data_gaps` list. Don't trust an empty `data_gaps` array alone as "no gap here" for this
+entry type; check the leaf fields directly.
+
+**Net effect: the sourcing story below (§3, §4, §6) is comprehensively stale — every "PAYWALLED" /
+"NOT FREELY ACCESSIBLE" status label is wrong, all these sources are now in the corpus — but the
+underlying backfill/gap-count numbers are mostly still accurate.** The real remaining work is (a) a
+genuine, large, ready-to-execute Russell Table 3.4/3.9–3.11/4.9–4.13 backfill pass (source in hand,
+~216 entries + ~38 new rows), and (b) accepting that the Aldrin/U0L1/VISIT precision gaps are
+confirmed dead ends pending sources this project cannot currently reach (Rogers 2013 / McConaghy 2005
+Purdue-restricted dissertations, and the un-digitised 1985/1986 Niehoff conference originals).
+
+**Resolved 2026-06-03 (pre-dates this correction, still true):** the Hollister & Menning 1970
+Earth-Venus periodic-orbit gap (period `k` / years / elements / V∞) is closed — the single placeholder
+was individuated into the 15-orbit `hollister-menning-1970-ev-orbit-01..15` family from the PRIMARY
+paper (now in `docs/refs/` and `cyclers_pdf/papers/`), with V∞ from Table 3 (Vr × 29.785 EMOS) and a
+shared period 16 yr / k=10 (corrected from a wrong secondary "3.2 yr").
+
+**The §3/§4/§6 sections below are left UNMODIFIED as a historical record of the original (now-stale)
+access-status research** — treat every "PAYWALLED"/"RESTRICTED"/"NOT ONLINE" claim in them as
+**source-acquisition-wise obsolete** (see the corrected table above); the *specific numeric gaps* and
+*prioritised checklist structure* remain a valid map of what's actually missing from the catalogue.
 
 ---
 
