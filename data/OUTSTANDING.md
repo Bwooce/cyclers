@@ -5886,10 +5886,29 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   `a_au`/`e` — derive via the AR+V∞_Earth inversion (`kind: derive`); V∞ at Mars serves as a third,
   free, non-imposed cross-check on every row. Full writeup:
   `docs/notes/2026-07-15-596-russell-backfill-method-validated.md` (supersedes the same-day
-  `...-pilot-inversion-fails.md` note, kept for the record). **Method validated, NOT yet executed at
-  scale** — the actual mechanical backfill (parse all rows, map to catalogue IDs, run the inversion
-  per row, write back with citations, add the ~38 missing rows, run the full ratchet) is still a
-  separate, real execution task.
+  `...-pilot-inversion-fails.md` note, kept for the record).
+  **EXECUTED 2026-07-15** (`scripts/backfill_russell_2004_tables.py`). Parsed all 201 Table 3.4/
+  3.9-3.11 rows; 197 matched an existing catalogue entry (only 3 genuinely new/uncatalogued rows
+  remain, not ~38 as the stale 2026-06-07 transcription-note estimate said — most had already been
+  added since then). Of the 197, the inversion cleanly converged (solver cost < 1e-4, V∞-Mars
+  cross-check < 5%) on **161**; the other **36 all have AR < 1.0** — a genuine model boundary (the
+  ellipse's aphelion doesn't reach Mars for near-ballistic AR<1 cyclers, so the crossing-based
+  inversion doesn't apply), confirmed by exact 1:1 correlation with `row.ar < 1.0`, correctly left as
+  open gaps rather than forced. **Second real bug caught before writeback**: `orbit_elements.a_au`/`e`
+  at the top level is schema-restricted to `cycler_class: single-ellipse`; every Russell-family entry
+  is `multi-arc` (out-em/ret-me/loop-ee-* can be different ellipses), so writing top-level
+  orbit_elements would have been a genuine schema violation — caught by
+  `test_validate_catalogue.py`'s combined gate on the first write attempt, fixed to only write
+  per-segment `trajectory.segments[out-em].a_au`/`e` (+ `ret-me` for the 4 `h=0` simple cyclers).
+  **Also caught before commit**: a plain PyYAML (and even a naive full-file ruamel.yaml) round-trip
+  reformats/strips comments across the ENTIRE 54k-line file, not just the touched rows — worked
+  around via a 3-way patch strategy (diff two ruamel round-trips against each other to isolate ONLY
+  the backfill's actual changes, then apply that as a patch onto the pristine original file). Final
+  writeback: 161 rows backfilled (~5400-line diff, confined to the touched rows), zero cross-check
+  flags, `uv run pytest tests/data tests/search tests/scripts` clean except the 2 already-documented
+  pre-existing local-Mac failures (task #584). The 36 AR<1 rows and the 3 genuinely-missing rows
+  remain open for a future pass (needs modeling the near-ballistic powered-assist geometry, which
+  this validated method doesn't cover).
 - **#597** (P3, corpus acquisition, light-digest only) — 4 more Ross-group papers found via a manual
   review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596 session): Kumar-Rawat-
   Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic connections — predecessor
