@@ -327,17 +327,22 @@ def qbcp_eom(t: float, state_pm: NDArray[np.float64], system: QBCPSystem) -> NDA
     rpm3 = rpm2 * math.sqrt(rpm2)
     rps3 = rps2 * math.sqrt(rps2)
 
-    # Potential term derivatives w.r.t (x, y, z)
-    pot_x = (
-        (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + system.mu_sun * (x - xs) / rps3
-    )
-    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + system.mu_sun * (y - ys) / rps3
-    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + system.mu_sun * z / rps3
+    # Potential term derivatives w.r.t (x, y, z).
+    # Per Rosales-Jorba (2023) Eq. 3, alpha_6 scales *only* the Sun distance
+    # (Hamiltonian Sun term -m_S / (alpha_6 * R_PS)); the Earth/Moon Newtonian
+    # terms carry no alpha_6. So the Sun gradient enters with a 1/alpha_6 factor
+    # and Earth/Moon enter unscaled. (Earlier code multiplied the *entire*
+    # Newtonian potential by alpha_6, which is physically wrong -- alpha_6 is a
+    # Sun-distance coefficient -- though the error is only O(alpha_6 - 1) ~ 1e-3.)
+    msun_a6 = system.mu_sun / a6
+    pot_x = (1.0 - mu) * (x + mu) / rpe3 + mu * (x - 1.0 + mu) / rpm3 + msun_a6 * (x - xs) / rps3
+    pot_y = (1.0 - mu) * y / rpe3 + mu * y / rpm3 + msun_a6 * (y - ys) / rps3
+    pot_z = (1.0 - mu) * z / rpe3 + mu * z / rpm3 + msun_a6 * z / rps3
 
     # Momenta derivatives
-    dpx = -a2 * px + a3 * py - a4 - a6 * pot_x
-    dpy = -a2 * py - a3 * px - a5 - a6 * pot_y
-    dpz = -a2 * pz - a6 * pot_z
+    dpx = -a2 * px + a3 * py - a4 - pot_x
+    dpy = -a2 * py - a3 * px - a5 - pot_y
+    dpz = -a2 * pz - pot_z
 
     return np.array([dx, dy, dz, dpx, dpy, dpz], dtype=np.float64)
 
@@ -363,51 +368,43 @@ def qbcp_potential_second_derivatives(
     rps5 = rps3 * rps2
 
     om1 = 1.0 - mu
-    # Newtonian potential term second derivatives
+    # Per Rosales-Jorba (2023) Eq. 3 the Sun term carries a 1/alpha_6 factor
+    # while the Earth/Moon Newtonian terms are unscaled (see qbcp_eom). The
+    # second derivatives must scale identically: Earth/Moon unscaled, Sun / a6.
+    msun_a6 = system.mu_sun / a6
     uxx = (
         -om1 * (1.0 / rpe3 - 3.0 * (x + mu) ** 2 / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * (x - 1.0 + mu) ** 2 / rpm5)
-        - system.mu_sun * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
+        - msun_a6 * (1.0 / rps3 - 3.0 * (x - xs) ** 2 / rps5)
     )
 
     uyy = (
         -om1 * (1.0 / rpe3 - 3.0 * y * y / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * y * y / rpm5)
-        - system.mu_sun * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
+        - msun_a6 * (1.0 / rps3 - 3.0 * (y - ys) ** 2 / rps5)
     )
 
     uzz = (
         -om1 * (1.0 / rpe3 - 3.0 * z * z / rpe5)
         - mu * (1.0 / rpm3 - 3.0 * z * z / rpm5)
-        - system.mu_sun * (1.0 / rps3 - 3.0 * z * z / rps5)
+        - msun_a6 * (1.0 / rps3 - 3.0 * z * z / rps5)
     )
 
     uxy = (
         3.0 * om1 * (x + mu) * y / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * y / rpm5
-        + 3.0 * system.mu_sun * (x - xs) * (y - ys) / rps5
+        + 3.0 * msun_a6 * (x - xs) * (y - ys) / rps5
     )
 
     uxz = (
         3.0 * om1 * (x + mu) * z / rpe5
         + 3.0 * mu * (x - 1.0 + mu) * z / rpm5
-        + 3.0 * system.mu_sun * (x - xs) * z / rps5
+        + 3.0 * msun_a6 * (x - xs) * z / rps5
     )
 
-    uyz = (
-        3.0 * om1 * y * z / rpe5
-        + 3.0 * mu * y * z / rpm5
-        + 3.0 * system.mu_sun * (y - ys) * z / rps5
-    )
+    uyz = 3.0 * om1 * y * z / rpe5 + 3.0 * mu * y * z / rpm5 + 3.0 * msun_a6 * (y - ys) * z / rps5
 
-    return (
-        a6 * uxx,
-        a6 * uyy,
-        a6 * uzz,
-        a6 * uxy,
-        a6 * uxz,
-        a6 * uyz,
-    )
+    return (uxx, uyy, uzz, uxy, uxz, uyz)
 
 
 def qbcp_stm_eom(
