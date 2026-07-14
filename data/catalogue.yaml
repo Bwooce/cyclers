@@ -9681,6 +9681,10 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler   # schema v4.7 (2026-06-15, task #294); scope expansion default — every pre-v4.7 row is a strict cycler (scripts/migrate_catalogue_scope_2026-06-15.py); see data/README.md
   epoch_locked: false   # schema v4.7 (task #294); strict cyclers are NOT epoch-locked
   n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
@@ -9848,6 +9852,10 @@
   trajectory_regime: ballistic   # added 2026-06-01; v1 catalogue is ballistic-only; field is explicit for future regime expansion
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
   cycler_class: multi-arc   # schema v4 (2026-06-03); single-ellipse | multi-arc | non-keplerian; see docs/notes/multi-arc-classification.md
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler   # schema v4.7 (2026-06-15, task #294); scope expansion default — every pre-v4.7 row is a strict cycler (scripts/migrate_catalogue_scope_2026-06-15.py); see data/README.md
   epoch_locked: false   # schema v4.7 (task #294); strict cyclers are NOT epoch-locked
   n_returns: infinite   # schema v4.7 (task #294); strict cyclers complete an unbounded number of returns
@@ -50226,6 +50234,10 @@
   trajectory_regime: ballistic   # Tito 2013 IEEE Aero: ballistic Earth-Mars-Earth free-return; single Mars gravity assist drops perihelion toward Venus's orbit
   model_assumption: analytic-ephemeris   # schema v2; source: DE421; reproduced on DE440
   cycler_class: multi-arc   # schema v4; two distinct heliocentric legs E->M then M->E (NB: not a cycler; see orbit_class)
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7 (2026-06-15, task #294); single-window E-M-E ballistic flyby, terminal Earth re-entry; admitted under the scope expansion (was withheld under cyclers-only scope per docs/notes/2026-06-13-tito-maccallum-2018-free-return-reproduction.md §4)
   epoch_locked: true   # schema v4.7 (task #294); viable only at the January 2018 launch window per Patel-Longuski "two times every 15 years" fast-opportunity geometry
   n_returns: 1   # schema v4.7 (task #294); single Mars gravity-assist returns the spacecraft to Earth at 14.18 km/s entry speed (terminal re-entry; no next lap)
@@ -50300,6 +50312,10 @@
   trajectory_regime: ballistic   # patched-conic with Jupiter and Uranian-satellite gravity assists; the tour itself is ballistic (insertion ΔV at Uranus arrival is outside the tour)
   model_assumption: analytic-ephemeris   # STOUR patched-conic per Heaton-Longuski 2003 (Tisserand-graph design + STOUR ballistic-conic search)
   cycler_class: multi-arc   # schema v4; one heliocentric arc (E -> J -> U) plus a 40-flyby Uranian-system tour with multiple distinct arcs between satellite encounters
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7 (2026-06-15, task #294); Galileo-style non-repeating tour terminating at Ariel orbit insertion (Wallace/Heaton archetype)
   epoch_locked: true   # schema v4.7 (task #294); viable only at the 2008 Jupiter-gravity-assist-to-Uranus window (paper §Initial Conditions: 'closes in 2008 ... next similar opportunity will not occur for several decades')
   n_returns: 1   # schema v4.7 (task #294); single Earth-launch / single Ariel-arrival mission, no cycler return
@@ -50436,6 +50452,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [14.940560615336594, 14.940560615336594]   # [Umbriel->Oberon, Oberon->Umbriel]; per data/silver_327_verified.jsonl tof_days (matches this row's own "T_leg = 14.94 d/leg" notes text)
+    turn_ratio: null   # achieved-turn-angle data not yet computed against the #324 max-bend gate (14.7/39 deg) — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -50467,7 +50487,25 @@
   - body: "Umbriel"
     vinf_kms: 0.8947
     note: "Per #327 verified gate-passing IC. Matches the first Umbriel encounter within 0.025 km/s (the closure residual)."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/silver_327_verified.jsonl (same source as vinf_kms_at_encounters above)
+  - tof_days: 14.940560615336594
+    n_revs: 0
+  - tof_days: 14.940560615336594
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour (Umbriel<->Oberon), not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The #324 physical-sanity gate records the MAXIMUM achievable ballistic bend at each encounter (14.7 deg at Umbriel, 39 deg at Oberon, both at 100 km altitude), but the ACTUALLY-ACHIEVED turn angle per encounter has not been separately computed against that ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    source_hint: "data/rerun_324_physical_gate.jsonl (max-bend values); achieved-turn computation not yet built"
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs (Uranus-Umbriel and Uranus-Oberon), each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours (see this catalogue's Russell-Strange 2009 rows: 'Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -50635,6 +50673,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [12.316046445872583, 12.316046445872583]   # [Titania->Oberon, Oberon->Titania]; per data/gauntlet_566_five_representatives.jsonl candidate enum563-line57-titania-oberon-titania
+    turn_ratio: null   # achieved-turn-angle data not yet computed — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -50664,7 +50706,24 @@
   - body: "Titania"
     vinf_kms: 2.1618
     note: "Per #566 gauntlet-passing IC. Returns to the first Titania encounter within the 2.66e-15 km/s symmetric-closure residual."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/gauntlet_566_five_representatives.jsonl candidate enum563-line57-titania-oberon-titania
+  - tof_days: 12.316046445872583
+    n_revs: 0
+  - tof_days: 12.316046445872583
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour, not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -50752,6 +50811,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [7.751820498940574, 7.751820498940574]   # [Ariel->Oberon, Oberon->Ariel]; per data/gauntlet_566_five_representatives.jsonl candidate enum563-line18-ariel-oberon-ariel
+    turn_ratio: null   # achieved-turn-angle data not yet computed — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -50781,7 +50844,24 @@
   - body: "Ariel"
     vinf_kms: 1.5209
     note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 2.00e-15 km/s symmetric-closure residual."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/gauntlet_566_five_representatives.jsonl candidate enum563-line18-ariel-oberon-ariel
+  - tof_days: 7.751820498940574
+    n_revs: 0
+  - tof_days: 7.751820498940574
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour, not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -50859,6 +50939,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [3.9544738760575804, 3.9544738760575804]   # [Umbriel->Titania, Titania->Umbriel]; per data/gauntlet_566_five_representatives.jsonl candidate enum563-line26-umbriel-titania-umbriel
+    turn_ratio: null   # achieved-turn-angle data not yet computed — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -50888,7 +50972,24 @@
   - body: "Umbriel"
     vinf_kms: 1.2296
     note: "Per #566 gauntlet-passing IC. Returns to the first Umbriel encounter within the 4.44e-15 km/s symmetric-closure residual."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/gauntlet_566_five_representatives.jsonl candidate enum563-line26-umbriel-titania-umbriel
+  - tof_days: 3.9544738760575804
+    n_revs: 0
+  - tof_days: 3.9544738760575804
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour, not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -50966,6 +51067,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [5.320895317317783, 5.320895317317783]   # [Ariel->Titania, Titania->Ariel]; per data/gauntlet_566_five_representatives.jsonl candidate enum563-line12-ariel-titania-ariel
+    turn_ratio: null   # achieved-turn-angle data not yet computed — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -50995,7 +51100,24 @@
   - body: "Ariel"
     vinf_kms: 1.2306
     note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 2.44e-15 km/s symmetric-closure residual."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/gauntlet_566_five_representatives.jsonl candidate enum563-line12-ariel-titania-ariel
+  - tof_days: 5.320895317317783
+    n_revs: 0
+  - tof_days: 5.320895317317783
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour, not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -51073,6 +51195,10 @@
   trajectory_regime: ballistic
   model_assumption: cr3bp
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4; #587 corrected 2026-07-14
+    aphelion_ratio: null   # heliocentric aphelion-ratio concept doesn't apply to this Uranus-centered multi-moon-pair tour — see data_gaps[]
+    transit_times_days: [3.216088179066208, 3.216088179066208]   # [Ariel->Umbriel, Umbriel->Ariel]; per data/gauntlet_566_five_representatives.jsonl candidate enum563-line2-ariel-umbriel-ariel
+    turn_ratio: null   # achieved-turn-angle data not yet computed — see data_gaps[]
   orbit_class: quasi_cycler
   epoch_locked: true
   n_returns: 10
@@ -51102,7 +51228,24 @@
   - body: "Ariel"
     vinf_kms: 0.9790
     note: "Per #566 gauntlet-passing IC. Returns to the first Ariel encounter within the 1.13e-14 km/s symmetric-closure residual."
-  legs: []
+  legs:   # #587 (2026-07-14): tof_days from data/gauntlet_566_five_representatives.jsonl candidate enum563-line2-ariel-umbriel-ariel
+  - tof_days: 3.216088179066208
+    n_revs: 0
+  - tof_days: 3.216088179066208
+    n_revs: 0
+  data_gaps:
+  - path: "invariants.aphelion_ratio"
+    kind: "not-applicable"
+    note: "This is a Uranus-centered multi-moon-pair patched-conic tour, not a single heliocentric ellipse — the heliocentric aphelion-ratio concept this field is designed for does not apply here. Left null rather than fabricated."
+    todo_ref: "#587"
+  - path: "invariants.turn_ratio"
+    kind: "unknown"
+    note: "The achieved turn angle per encounter has not been separately computed against the #324-style max-bend physical-sanity ceiling, so a turn_ratio (achieved/max) cannot be stated yet."
+    todo_ref: "#587"
+  - path: "orbit_elements.cr3bp"
+    kind: "not-applicable"
+    note: "model_assumption=cr3bp here means each leg's V_inf is matched via a restricted-three-body (Uranus-moon) approximation, NOT that this row is a single CR3BP rotating-frame periodic orbit — it is a multi-arc tour across two different Uranus-moon pairs, each with its own mass ratio. No single Jacobi constant/period/stability triple describes the whole tour, matching the precedent already recorded for the Jovian/Saturnian Tisserand-graph tours ('Jacobi constant is not conserved in this model'). The cr3bp identity schema field applies only to cycler_class=non-keplerian rows (a single periodic orbit); this row is cycler_class=multi-arc, so that field is correctly absent, not missing."
+    todo_ref: "#587"
   first_published:
     authors: ["cyclerfinder discovery campaign"]
     year: 2026
@@ -51183,6 +51326,10 @@
   trajectory_regime: ballistic   # patched-conic with Venus + Earth + Earth gravity assists (+Gaspra/Ida asteroid science flybys) + JOI dV at Jupiter (outside the heliocentric tour)
   model_assumption: analytic-ephemeris   # JPL flight design per D'Amario 1992; pre-launch DE-200 era + post-launch TCM-corrected
   cycler_class: multi-arc   # schema v4; three distinct heliocentric arcs (E->V, V->E1, E1->E2, E2->J); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7 (task #356, 2026-06-17); canonical Venus-Earth-Earth gravity-assist mga_tour archetype; terminal target is Jupiter capture (JOI 628 m/s), not a continuing tour at Earth
   epoch_locked: true   # 1989 VEEGA opportunity is a once-per-decade Earth-Venus phasing window; 41-day launch period per D'Amario 1992 §2.1 / §2.3.1
   n_returns: 1   # single Earth-launch / single Jupiter-arrival; not a cycler
@@ -51312,6 +51459,10 @@
   trajectory_regime: ballistic   # gravity-assist tour; the heliocentric arcs E->J and J->S are ballistic (TCMs are tiny corrections, McKinley-Van Allen 1976 total nav <=155 m/s)
   model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 (a real numerical ephemeris) at the flown flyby epochs; 'analytic-ephemeris' is the closest controlled-vocabulary token (model_assumption enum has no real-ephemeris value)
   cycler_class: multi-arc   # schema v4; two distinct heliocentric arcs (E->J, J->S); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; classic two-giant-planet gravity-assist tour terminating at Saturn (no continuing tour at Earth)
   epoch_locked: true   # the flown 1977 MJS77 launch window; once-per-176-yr outer-planet alignment
   n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
@@ -51405,6 +51556,10 @@
   trajectory_regime: ballistic   # the four giant-planet gravity-assist arcs are ballistic (TCMs are small corrections)
   model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 (a real numerical ephemeris) at the flown flyby epochs; 'analytic-ephemeris' is the closest controlled-vocabulary token (model_assumption enum has no real-ephemeris value)
   cycler_class: multi-arc   # schema v4; four distinct heliocentric arcs (E->J, J->S, S->U, U->N); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; the canonical outer-planet Grand Tour, terminating at Neptune (no continuing tour at Earth)
   epoch_locked: true   # the flown 1977 MJS77 launch window; the once-per-176-yr four-giant-planet alignment that made the Grand Tour possible
   n_returns: 1   # single Earth launch / single Neptune departure; not a cycler
@@ -51500,6 +51655,10 @@
   trajectory_regime: ballistic   # single Jupiter gravity assist onto solar-system-escape hyperbola; the E->J heliocentric arc is ballistic
   model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; 'analytic-ephemeris' is the closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; single heliocentric arc E->J then escape; structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; classic single-gravity-assist outer-planet mission (the first Jupiter flyby); terminal state is solar-system escape, no continuing tour at Earth
   epoch_locked: true   # the flown 1972 launch / 1973 Jupiter-encounter window
   n_returns: 1   # single Earth launch / single Jupiter encounter; not a cycler
@@ -51579,6 +51738,10 @@
   trajectory_regime: ballistic   # Jupiter gravity assist retargets to Saturn; the heliocentric arcs E->J and J->S are ballistic
   model_assumption: analytic-ephemeris   # V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; two distinct heliocentric arcs (E->J, J->S); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; two-giant-planet gravity-assist tour (first Saturn encounter); terminal state is solar-system escape, no continuing tour at Earth
   epoch_locked: true   # the flown 1973 launch / 1974 Jupiter / 1979 Saturn window
   n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
@@ -51659,6 +51822,10 @@
   trajectory_regime: ballistic   # Venus-Venus-Earth-Jupiter gravity-assist cruise; heliocentric arcs ballistic (with the deep-space maneuver between the two Venus flybys); terminal Saturn capture (SOI) is a retro burn, outside the heliocentric tour
   model_assumption: analytic-ephemeris   # cruise V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; multiple distinct heliocentric arcs (E->V, V->V, V->E, E->J, J->S); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; the canonical VVEJGA gravity-assist cruise (Venus-Venus-Earth-Jupiter); terminal target is Saturn capture (SOI), not a continuing tour at Earth
   epoch_locked: true   # the flown 1997 launch / 1998-2000 flyby / 2004 SOI window
   n_returns: 1   # single Earth launch / single Saturn arrival; not a cycler
@@ -51758,6 +51925,10 @@
   trajectory_regime: ballistic   # deep-space-maneuver + single Earth gravity assist to Jupiter; the heliocentric arcs are ballistic; terminal Jupiter capture (JOI) is a retro burn, outside the heliocentric tour
   model_assumption: analytic-ephemeris   # Earth-flyby V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; two heliocentric arcs (E->E via the 2-yr deep-space-maneuver loop, E->J); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; single-Earth-gravity-assist cruise to Jupiter; terminal target is Jupiter capture (JOI), not a continuing tour at Earth
   epoch_locked: true   # the flown 2011 launch / 2013 Earth flyby / 2016 JOI window
   n_returns: 1   # single Earth launch / single Jupiter arrival; not a cycler
@@ -51831,6 +52002,10 @@
   trajectory_regime: ballistic   # Venus gravity assist to Mercury + the 2:1 resonant repeated-Mercury encounters; heliocentric arcs ballistic
   model_assumption: analytic-ephemeris   # Mercury-I V_inf derived from the NAIF reconstructed spacecraft SPK + DE440 at the flown flyby epoch; closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; multiple distinct heliocentric arcs (E->V, V->Me, then 2:1 Mercury-resonant returns); structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; first dual-planet gravity-assist mission (Venus->Mercury) + first repeated-Mercury (2:1 resonance) tour
   epoch_locked: true   # the flown 1973 launch / 1974 Venus / 1974-1975 Mercury window
   n_returns: 1   # single Earth launch; not a cycler
@@ -51907,6 +52082,10 @@
   trajectory_regime: ballistic   # solar-electric-propulsion + 9 gravity-assist flybys (1 Earth, 2 Venus, 6 Mercury); the gravity-assist flybys are ballistic encounters; terminal Mercury Orbit Insertion is a capture
   model_assumption: analytic-ephemeris   # per-flyby V_inf derived from the ESA reconstructed spacecraft SPK + DE440 at the flown flyby epochs; closest controlled-vocabulary token (no real-ephemeris enum value)
   cycler_class: multi-arc   # schema v4; nine distinct heliocentric arcs between gravity-assist flybys; structural, not a cycler
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: mga_tour   # schema v4.7; the most flyby-rich gravity-assist tour flown (1 Earth + 2 Venus + 6 Mercury); terminal target is Mercury capture (MOI), not a continuing tour at Earth
   epoch_locked: true   # the flown 2018 launch / 2020-2025 flyby / 2026 MOI window
   n_returns: 1   # single Earth launch / single Mercury arrival; not a cycler
@@ -52339,6 +52518,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52370,6 +52553,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52401,6 +52588,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52432,6 +52623,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52463,6 +52658,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52494,6 +52693,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52525,6 +52728,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52556,6 +52763,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52587,6 +52798,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52618,6 +52833,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52649,6 +52868,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52680,6 +52903,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52711,6 +52938,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52742,6 +52973,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52773,6 +53008,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52804,6 +53043,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52835,6 +53078,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52866,6 +53113,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52897,6 +53148,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52928,6 +53183,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52959,6 +53218,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -52990,6 +53253,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53021,6 +53288,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53052,6 +53323,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53083,6 +53358,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53114,6 +53393,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53145,6 +53428,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53176,6 +53463,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53207,6 +53498,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53238,6 +53533,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53269,6 +53568,10 @@
   trajectory_regime: powered
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
@@ -53293,6 +53596,10 @@
   trajectory_regime: ballistic
   model_assumption: circular-coplanar
   cycler_class: multi-arc
+  invariants:   # schema v4 (2026-06-03); cycle-level identity for multi-arc cyclers; see docs/spec.md §16.7.4
+    aphelion_ratio: null   # not tabulated in this Russell source — see data_gaps[]
+    transit_times_days: null   # not tabulated — see data_gaps[]
+    turn_ratio: null   # not tabulated in this Russell source — see data_gaps[]
   orbit_class: cycler
   epoch_locked: false
   n_returns: infinite
