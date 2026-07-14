@@ -1,0 +1,250 @@
+{
+  "partition": "E",
+  "seed_index": 2,
+  "seed": 585024,
+  "band": "paper",
+  "own_target_families": [
+    "E"
+  ],
+  "own_family_recovered_this_seed": true,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 200,
+  "n_clusters": 7,
+  "n_bounded": 4,
+  "n_unmatched_bounded": 2,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 108,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.01103210437834079,
+        0.0,
+        0.0,
+        5.497787145062191
+      ],
+      "ga_fitness": 0.9999796790618124,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 30
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 75,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011101948682009696,
+        0.0,
+        0.0,
+        6.191146461347937
+      ],
+      "ga_fitness": 0.9999796414339074,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9553709593078352,
+        "trend_fraction": 0.03435462660879605,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "D"
+      ],
+      "candidate_type": "DPO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 2,
+      "population_index": 112,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011108397392348479,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ga_fitness": 0.9999796263867538,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 35
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 3,
+      "population_index": 89,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010909654086201837,
+        0.0,
+        0.0,
+        4.6717512326099175
+      ],
+      "ga_fitness": 0.9999794900637395,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0972349590586454,
+        "trend_fraction": 0.11066924189720011,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DPO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 4,
+      "population_index": 116,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011080590661401067,
+        0.0,
+        0.0,
+        1.570796327160626
+      ],
+      "ga_fitness": 0.9999792221648526,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0012267985396375,
+        "trend_fraction": 0.0008831174505924965,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DPO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 5,
+      "population_index": 195,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.01065313606771015,
+        0.0,
+        0.0,
+        3.8165082484733595
+      ],
+      "ga_fitness": 0.999978901239966,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.1626473847213539,
+        "trend_fraction": 0.21125897621704046,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "E"
+      ],
+      "candidate_type": "DPO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 6,
+      "population_index": 174,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010721988862082825,
+        0.0,
+        0.0,
+        3.1415378651133343
+      ],
+      "ga_fitness": 0.9999788156638184,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 40
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}

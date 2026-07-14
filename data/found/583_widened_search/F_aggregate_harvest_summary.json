@@ -1,31 +1,31 @@
 {
-  "partition": "C",
+  "partition": "F",
   "band": "paper",
   "own_target_families": [
-    "C"
+    "F"
   ],
   "n_seeds_run": 3,
-  "n_seeds_recovered_own_family": 3,
+  "n_seeds_recovered_own_family": 0,
   "recovery_note": "Per #586's Fable design review: per-partition/per-seed recovery of this partition's OWN target family is a POSITIVE-CONTROL/machinery-health signal, not the novelty deliverable -- gurfil_kasdin_fitness (Eq. 15) saturates near 1.0 across the whole bounded continuum once the trivial deep-Hill basin is excluded, so recovery per partition is SEED-CONDITIONAL under Eq. 15 + deterministic crowding, not a guarantee on any given seed. A result below n_seeds_run recovering is NOT, by itself, a pipeline failure -- see the module docstring's 2026-07-14 section.",
   "unmatched_bounded_candidates": [
     {
       "seed_index": 0,
       "cluster_rank": 4,
-      "population_index": 149,
+      "population_index": 116,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.0291830211712939,
+        -0.029241502408227316,
         0.0,
         0.0,
-        4.815459306341477
+        1.6504674543499864
       ],
-      "ga_fitness": 0.9999990630497982,
+      "ga_fitness": 0.9999990324897349,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0016974138165318,
-        "trend_fraction": 0.0006072098828778407,
+        "growth_ratio": 1.0005061416415795,
+        "trend_fraction": 0.00029473884239878724,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -64,21 +64,21 @@
     {
       "seed_index": 0,
       "cluster_rank": 5,
-      "population_index": 18,
+      "population_index": 119,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.02918516484303052,
+        -0.029411344562985775,
         0.0,
         0.0,
-        1.419315747728339
+        3.5342917346484906
       ],
-      "ga_fitness": 0.9999990545344564,
+      "ga_fitness": 0.9999990299346497,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0014267643121249,
-        "trend_fraction": 0.00010594634610764057,
+        "growth_ratio": 1.000383081972996,
+        "trend_fraction": 0.0008899460137326392,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -117,21 +117,21 @@
     {
       "seed_index": 0,
       "cluster_rank": 6,
-      "population_index": 82,
+      "population_index": 65,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029427114997391368,
+        -0.029237449990873576,
         0.0,
         0.0,
-        3.6784559681810434
+        4.614214212497258
       ],
-      "ga_fitness": 0.9999989920727742,
+      "ga_fitness": 0.9999990157234342,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.00010341911833,
-        "trend_fraction": 0.00020974848859506436,
+        "growth_ratio": 0.9997173363006319,
+        "trend_fraction": 0.00037146772129433594,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -170,27 +170,27 @@
     {
       "seed_index": 0,
       "cluster_rank": 7,
-      "population_index": 179,
+      "population_index": 13,
       "ga_genome": [
-        0.047783628045163846,
+        0.05379540997186465,
         0.0,
         0.0,
-        -0.09569346639227433,
+        -0.10760274788076124,
         0.0,
         0.0,
-        3.8161607044881047
+        3.288090814191748
       ],
-      "ga_fitness": 0.9977878804811589,
+      "ga_fitness": 0.9970579592834884,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.000368461824753,
-        "trend_fraction": 0.007570736300895546,
+        "growth_ratio": 0.9992451537774959,
+        "trend_fraction": 0.0019311429467717663,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -223,21 +223,127 @@
     {
       "seed_index": 0,
       "cluster_rank": 8,
-      "population_index": 181,
+      "population_index": 21,
       "ga_genome": [
-        0.056296622927980176,
+        0.06231897612252831,
         0.0,
         0.0,
-        -0.11170492545042765,
+        -0.12299152094009136,
         0.0,
         0.0,
-        4.45468020759417
+        4.8105637519294175
       ],
-      "ga_fitness": 0.9970052735516581,
+      "ga_fitness": 0.9963139444991126,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9982453056699434,
-        "trend_fraction": 0.008036821380215503,
+        "growth_ratio": 0.9992263978217796,
+        "trend_fraction": 0.004967507394898354,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 0,
+      "cluster_rank": 9,
+      "population_index": 37,
+      "ga_genome": [
+        0.06287336614496851,
+        0.0,
+        0.0,
+        -0.12517694270358815,
+        0.0,
+        0.0,
+        3.5342917346484906
+      ],
+      "ga_fitness": 0.9959683627294054,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0088529933943438,
+        "trend_fraction": 0.01573752635221766,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 0,
+      "cluster_rank": 10,
+      "population_index": 158,
+      "ga_genome": [
+        0.06669992098808473,
+        0.0,
+        0.0,
+        -0.13058085591312985,
+        0.0,
+        0.0,
+        5.974855168742784
+      ],
+      "ga_fitness": 0.9957153502747652,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0033922322635984,
+        "trend_fraction": 0.004945154964588592,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -276,21 +382,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 4,
-      "population_index": 91,
+      "population_index": 39,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029365070287456052,
+        -0.02936348273171191,
         0.0,
         0.0,
-        2.3224469133995975
+        2.3155200299397705
       ],
-      "ga_fitness": 0.9999991258890193,
+      "ga_fitness": 0.9999991247207755,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9996908530224178,
-        "trend_fraction": 5.0257402968646255e-05,
+        "growth_ratio": 0.9998062952228041,
+        "trend_fraction": 2.324915076576019e-05,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -329,21 +435,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 5,
-      "population_index": 75,
+      "population_index": 7,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.02939188597476855,
+        -0.029207166640369042,
         0.0,
         0.0,
-        3.78589454448258
+        4.717757902537383
       ],
-      "ga_fitness": 0.9999990976231499,
+      "ga_fitness": 0.9999990457094984,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0003117285934269,
-        "trend_fraction": 0.001300663604240073,
+        "growth_ratio": 1.0003376406020168,
+        "trend_fraction": 8.41071056129217e-05,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -382,21 +488,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 6,
-      "population_index": 79,
+      "population_index": 107,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.02935471898628278,
+        -0.02941208426594083,
         0.0,
         0.0,
-        2.9534388237723146
+        3.8165441996851657
       ],
-      "ga_fitness": 0.9999990902044322,
+      "ga_fitness": 0.9999990435374182,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0013086920933456,
-        "trend_fraction": 0.00157449199987794,
+        "growth_ratio": 1.000050575813955,
+        "trend_fraction": 9.65040409836401e-05,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -435,21 +541,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 7,
-      "population_index": 52,
+      "population_index": 144,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.02917190769900846,
+        -0.029207226827090427,
         0.0,
         0.0,
-        4.712387481990846
+        1.5218048157361217
       ],
-      "ga_fitness": 0.9999989686985957,
+      "ga_fitness": 0.9999990351797713,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0015054587591994,
-        "trend_fraction": 0.002402277886368116,
+        "growth_ratio": 1.000340113003704,
+        "trend_fraction": 8.153998697830703e-05,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -488,21 +594,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 8,
-      "population_index": 180,
+      "population_index": 159,
       "ga_genome": [
-        0.03664739439721776,
+        0.04441598222311248,
         0.0,
         0.0,
-        -0.07429145709012902,
+        -0.08927869752265483,
         0.0,
         0.0,
-        3.233631500152902
+        3.5342917346484906
       ],
-      "ga_fitness": 0.9987474031758009,
+      "ga_fitness": 0.9980823099500995,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.004037506351256,
-        "trend_fraction": 0.004494978973155064,
+        "growth_ratio": 1.0001755402726293,
+        "trend_fraction": 0.004337409677313499,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -541,27 +647,27 @@
     {
       "seed_index": 1,
       "cluster_rank": 9,
-      "population_index": 95,
+      "population_index": 77,
       "ga_genome": [
-        0.0440231124250378,
+        0.056443139303545505,
         0.0,
         0.0,
-        -0.08800150537584012,
+        -0.11111337857113995,
         0.0,
         0.0,
-        4.132352491538816
+        5.541889091261254
       ],
-      "ga_fitness": 0.9981570846568498,
+      "ga_fitness": 0.9969918237686136,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9971565803161245,
-        "trend_fraction": 0.007015262692582451,
+        "growth_ratio": 0.9927651302533496,
+        "trend_fraction": 0.013118074586046696,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -594,21 +700,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 10,
-      "population_index": 41,
+      "population_index": 113,
       "ga_genome": [
-        0.05378689513022951,
+        0.05644313927553109,
         0.0,
         0.0,
-        -0.10753033312678578,
+        -0.11191964943705118,
         0.0,
         0.0,
-        3.4361169642009513
+        4.516039439123882
       ],
-      "ga_fitness": 0.9970786118413466,
+      "ga_fitness": 0.9969907510419244,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.99591989011125,
-        "trend_fraction": 0.0040493702763825,
+        "growth_ratio": 0.9975563044229424,
+        "trend_fraction": 0.009279178402622362,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -647,21 +753,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 11,
-      "population_index": 105,
+      "population_index": 158,
       "ga_genome": [
-        0.05983810065183826,
+        0.05823137006559604,
         0.0,
         0.0,
-        -0.11768002065775918,
+        -0.1150506348617027,
         0.0,
         0.0,
-        5.362796834233907
+        1.1904649654756772
       ],
-      "ga_fitness": 0.9965772489220184,
+      "ga_fitness": 0.9966854114504617,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9946935687643467,
-        "trend_fraction": 0.006094939999954257,
+        "growth_ratio": 1.0055017061937825,
+        "trend_fraction": 0.0021323336103920894,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -700,21 +806,21 @@
     {
       "seed_index": 1,
       "cluster_rank": 12,
-      "population_index": 197,
+      "population_index": 81,
       "ga_genome": [
-        0.06328631131158649,
+        0.06386741142671926,
         0.0,
         0.0,
-        -0.12511069307222744,
+        -0.12523278189479203,
         0.0,
         0.0,
-        4.562063352466752
+        5.694136684494351
       ],
-      "ga_fitness": 0.9961898620571865,
+      "ga_fitness": 0.9960842375864375,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0008606553092454,
-        "trend_fraction": 0.007128461677743885,
+        "growth_ratio": 0.994407052700874,
+        "trend_fraction": 0.003079964669806668,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -752,22 +858,234 @@
     },
     {
       "seed_index": 2,
-      "cluster_rank": 4,
-      "population_index": 147,
+      "cluster_rank": 0,
+      "population_index": 116,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029365257366878283,
+        -0.029365551315565952,
         0.0,
         0.0,
-        2.3224469133995975
+        2.32263865953521
       ],
-      "ga_fitness": 0.999999125774689,
+      "ga_fitness": 0.9999991254499628,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.999670827971742,
-        "trend_fraction": 7.137686244401615e-05,
+        "growth_ratio": 0.9996474319370758,
+        "trend_fraction": 9.318283608280693e-05,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 1,
+      "population_index": 199,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        -0.029387859168785613,
+        0.0,
+        0.0,
+        3.755251630406505
+      ],
+      "ga_fitness": 0.9999990928986474,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9999232912448646,
+        "trend_fraction": 0.0007238342610391793,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 2,
+      "population_index": 110,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        -0.029351994169259432,
+        0.0,
+        0.0,
+        2.993563508255822
+      ],
+      "ga_fitness": 0.9999990870845911,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0010538703911993,
+        "trend_fraction": 0.0013800016623102928,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 3,
+      "population_index": 61,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        -0.02929689281836545,
+        0.0,
+        0.0,
+        4.417864670139261
+      ],
+      "ga_fitness": 0.9999989623445624,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9988776595705269,
+        "trend_fraction": 0.0006162492239259449,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 4,
+      "population_index": 193,
+      "ga_genome": [
+        0.045326480084365114,
+        0.0,
+        0.0,
+        -0.0908867700702713,
+        0.0,
+        0.0,
+        3.896305208561337
+      ],
+      "ga_fitness": 0.9980409501220768,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9984734211783588,
+        "trend_fraction": 0.004305778278167517,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -806,27 +1124,27 @@
     {
       "seed_index": 2,
       "cluster_rank": 5,
-      "population_index": 148,
+      "population_index": 191,
       "ga_genome": [
-        0.0066845,
+        0.0509295024643176,
         0.0,
         0.0,
-        -0.02938819572548107,
+        -0.10159566977564144,
         0.0,
         0.0,
-        3.7582529311948574
+        4.123340357333725
       ],
-      "ga_fitness": 0.9999990932489007,
+      "ga_fitness": 0.9975173918883359,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9999709657356883,
-        "trend_fraction": 0.0007859187039485568,
+        "growth_ratio": 0.9873567054915801,
+        "trend_fraction": 0.008532252016663794,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -859,27 +1177,27 @@
     {
       "seed_index": 2,
       "cluster_rank": 6,
-      "population_index": 30,
+      "population_index": 138,
       "ga_genome": [
-        0.0066845,
+        0.05542511310750459,
         0.0,
         0.0,
-        -0.029350160744355536,
+        -0.10946820865140022,
         0.0,
         0.0,
-        3.006602343492968
+        5.095884178542578
       ],
-      "ga_fitness": 0.9999990839169791,
+      "ga_fitness": 0.9971106181979945,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0007237251500236,
-        "trend_fraction": 0.0011288182712487643,
+        "growth_ratio": 0.9925999936890779,
+        "trend_fraction": 0.011476948050380839,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -912,180 +1230,21 @@
     {
       "seed_index": 2,
       "cluster_rank": 7,
-      "population_index": 101,
+      "population_index": 135,
       "ga_genome": [
-        0.0066845,
+        0.06436789758087692,
         0.0,
         0.0,
-        -0.029193900532367145,
+        -0.12730672935194026,
         0.0,
         0.0,
-        4.771363350791951
+        4.4608161307471415
       ],
-      "ga_fitness": 0.9999990552674546,
+      "ga_fitness": 0.9960427914371255,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0006337010519666,
-        "trend_fraction": 0.0005442286877355535,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 8,
-      "population_index": 173,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.029223945580707844,
-        0.0,
-        0.0,
-        1.5796167166930222
-      ],
-      "ga_fitness": 0.9999990347940745,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0002287122898865,
-        "trend_fraction": 0.0008910238222182657,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 9,
-      "population_index": 48,
-      "ga_genome": [
-        0.045629446579280884,
-        0.0,
-        0.0,
-        -0.09165607429846562,
-        0.0,
-        0.0,
-        3.490573283646489
-      ],
-      "ga_fitness": 0.997959389712062,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0005232202351901,
-        "trend_fraction": 0.005135653736095252,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 10,
-      "population_index": 115,
-      "ga_genome": [
-        0.062403381064296555,
-        0.0,
-        0.0,
-        -0.12287014178532879,
-        0.0,
-        0.0,
-        5.105855052203238
-      ],
-      "ga_fitness": 0.9963018408086692,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9960287931901157,
-        "trend_fraction": 0.0009089995266867872,
+        "growth_ratio": 0.9977432135842236,
+        "trend_fraction": 0.0035356696668161804,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -1122,43 +1281,43 @@
       "ready_for_literature_check": true
     }
   ],
-  "n_unmatched_bounded_candidates": 21,
+  "n_unmatched_bounded_candidates": 24,
   "literature_novelty_status": "NOT ADJUDICATED. Per [[feedback_literature_novelty_check_baseline]], these unmatched-bounded candidates are literature-matcher-ENGAGED (non-empty anchor pool) but the live check_literature() web search has NOT been run against any of them -- necessary, not sufficient, for any novelty claim. Live search + adjudication is a further step for the coordinator/a future adjudication dispatch, not done here.",
   "per_seed_summaries": [
     {
-      "partition": "C",
+      "partition": "F",
       "seed_index": 0,
-      "seed": 583003,
+      "seed": 583007,
       "band": "paper",
       "own_target_families": [
-        "C"
+        "F"
       ],
-      "own_family_recovered_this_seed": true,
+      "own_family_recovered_this_seed": false,
       "population_size": 200,
       "fitness_floor": 0.9,
       "distance_threshold": 0.1,
       "n_above_floor": 200,
-      "n_clusters": 9,
-      "n_bounded": 9,
-      "n_unmatched_bounded": 5,
+      "n_clusters": 11,
+      "n_bounded": 11,
+      "n_unmatched_bounded": 7,
       "clusters": [
         {
           "cluster_rank": 0,
-          "population_index": 44,
+          "population_index": 98,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02905242401851632,
+            -0.029052132980211642,
             0.0,
             0.0,
-            5.455064879829843
+            5.460875730882181
           ],
-          "ga_fitness": 0.9999992507076348,
+          "ga_fitness": 0.9999992502918672,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.005910945202447,
-            "trend_fraction": 0.007250852631761723,
+            "growth_ratio": 1.0058562923280994,
+            "trend_fraction": 0.007170339029055101,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1171,21 +1330,21 @@
         },
         {
           "cluster_rank": 1,
-          "population_index": 85,
+          "population_index": 113,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029052695266216233,
+            -0.029052732402703896,
             0.0,
             0.0,
-            0.7693153322906618
+            0.7669903926584813
           ],
-          "ga_fitness": 0.9999992498860535,
+          "ga_fitness": 0.9999992495860226,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.005201872266058,
-            "trend_fraction": 0.006421869420599018,
+            "growth_ratio": 1.0051573864233192,
+            "trend_fraction": 0.006381526581172878,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1198,21 +1357,21 @@
         },
         {
           "cluster_rank": 2,
-          "population_index": 14,
+          "population_index": 51,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029038941843677057,
+            -0.029038878164496018,
             0.0,
             0.0,
-            6.239646635643306
+            6.239634635326299
           ],
-          "ga_fitness": 0.9999992351227742,
+          "ga_fitness": 0.9999992351311225,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0035852273254124,
-            "trend_fraction": 0.004970949012731841,
+            "growth_ratio": 1.00356338015,
+            "trend_fraction": 0.004934795553449726,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1225,21 +1384,21 @@
         },
         {
           "cluster_rank": 3,
-          "population_index": 122,
+          "population_index": 127,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029037511215786793,
+            -0.029036872561331084,
             0.0,
             0.0,
-            4.6813378547448695e-08
+            0.0
           ],
-          "ga_fitness": 0.9999992310062336,
+          "ga_fitness": 0.9999992310733351,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.003111856345368,
-            "trend_fraction": 0.004218409332724497,
+            "growth_ratio": 1.0030343583175245,
+            "trend_fraction": 0.004144063451413879,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1252,21 +1411,21 @@
         },
         {
           "cluster_rank": 4,
-          "population_index": 149,
+          "population_index": 116,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.0291830211712939,
+            -0.029241502408227316,
             0.0,
             0.0,
-            4.815459306341477
+            1.6504674543499864
           ],
-          "ga_fitness": 0.9999990630497982,
+          "ga_fitness": 0.9999990324897349,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0016974138165318,
-            "trend_fraction": 0.0006072098828778407,
+            "growth_ratio": 1.0005061416415795,
+            "trend_fraction": 0.00029473884239878724,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1304,21 +1463,21 @@
         },
         {
           "cluster_rank": 5,
-          "population_index": 18,
+          "population_index": 119,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02918516484303052,
+            -0.029411344562985775,
             0.0,
             0.0,
-            1.419315747728339
+            3.5342917346484906
           ],
-          "ga_fitness": 0.9999990545344564,
+          "ga_fitness": 0.9999990299346497,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0014267643121249,
-            "trend_fraction": 0.00010594634610764057,
+            "growth_ratio": 1.000383081972996,
+            "trend_fraction": 0.0008899460137326392,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1356,21 +1515,21 @@
         },
         {
           "cluster_rank": 6,
-          "population_index": 82,
+          "population_index": 65,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029427114997391368,
+            -0.029237449990873576,
             0.0,
             0.0,
-            3.6784559681810434
+            4.614214212497258
           ],
-          "ga_fitness": 0.9999989920727742,
+          "ga_fitness": 0.9999990157234342,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.00010341911833,
-            "trend_fraction": 0.00020974848859506436,
+            "growth_ratio": 0.9997173363006319,
+            "trend_fraction": 0.00037146772129433594,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1408,27 +1567,27 @@
         },
         {
           "cluster_rank": 7,
-          "population_index": 179,
+          "population_index": 13,
           "ga_genome": [
-            0.047783628045163846,
+            0.05379540997186465,
             0.0,
             0.0,
-            -0.09569346639227433,
+            -0.10760274788076124,
             0.0,
             0.0,
-            3.8161607044881047
+            3.288090814191748
           ],
-          "ga_fitness": 0.9977878804811589,
+          "ga_fitness": 0.9970579592834884,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.000368461824753,
-            "trend_fraction": 0.007570736300895546,
+            "growth_ratio": 0.9992451537774959,
+            "trend_fraction": 0.0019311429467717663,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
-          "candidate_type": "DRO",
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -1460,21 +1619,125 @@
         },
         {
           "cluster_rank": 8,
-          "population_index": 181,
+          "population_index": 21,
           "ga_genome": [
-            0.056296622927980176,
+            0.06231897612252831,
             0.0,
             0.0,
-            -0.11170492545042765,
+            -0.12299152094009136,
             0.0,
             0.0,
-            4.45468020759417
+            4.8105637519294175
           ],
-          "ga_fitness": 0.9970052735516581,
+          "ga_fitness": 0.9963139444991126,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9982453056699434,
-            "trend_fraction": 0.008036821380215503,
+            "growth_ratio": 0.9992263978217796,
+            "trend_fraction": 0.004967507394898354,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 9,
+          "population_index": 37,
+          "ga_genome": [
+            0.06287336614496851,
+            0.0,
+            0.0,
+            -0.12517694270358815,
+            0.0,
+            0.0,
+            3.5342917346484906
+          ],
+          "ga_fitness": 0.9959683627294054,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0088529933943438,
+            "trend_fraction": 0.01573752635221766,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 10,
+          "population_index": 158,
+          "ga_genome": [
+            0.06669992098808473,
+            0.0,
+            0.0,
+            -0.13058085591312985,
+            0.0,
+            0.0,
+            5.974855168742784
+          ],
+          "ga_fitness": 0.9957153502747652,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0033922322635984,
+            "trend_fraction": 0.004945154964588592,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1514,14 +1777,14 @@
       "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
     },
     {
-      "partition": "C",
+      "partition": "F",
       "seed_index": 1,
-      "seed": 584012,
+      "seed": 584016,
       "band": "paper",
       "own_target_families": [
-        "C"
+        "F"
       ],
-      "own_family_recovered_this_seed": true,
+      "own_family_recovered_this_seed": false,
       "population_size": 200,
       "fitness_floor": 0.9,
       "distance_threshold": 0.1,
@@ -1532,21 +1795,21 @@
       "clusters": [
         {
           "cluster_rank": 0,
-          "population_index": 134,
+          "population_index": 6,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029052853591053973,
+            -0.02905273275194986,
             0.0,
             0.0,
-            5.460971606144364
+            5.448699758375503
           ],
-          "ga_fitness": 0.9999992492165629,
+          "ga_fitness": 0.9999992511124025,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0058392013116535,
-            "trend_fraction": 0.007116552457205255,
+            "growth_ratio": 1.0059823204071359,
+            "trend_fraction": 0.007349381488681806,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1559,21 +1822,21 @@
         },
         {
           "cluster_rank": 1,
-          "population_index": 120,
+          "population_index": 166,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029052879202424775,
+            -0.02905269945716782,
             0.0,
             0.0,
-            0.7799812939218307
+            0.7701542294971502
           ],
-          "ga_fitness": 0.9999992487189535,
+          "ga_fitness": 0.9999992499858724,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.00523274577361,
-            "trend_fraction": 0.0064198675465105435,
+            "growth_ratio": 1.0052075428483829,
+            "trend_fraction": 0.00642603989427488,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1586,21 +1849,21 @@
         },
         {
           "cluster_rank": 2,
-          "population_index": 103,
+          "population_index": 21,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029056669336058383,
+            -0.029038857442568733,
             0.0,
             0.0,
-            6.234144360827336
+            6.239634819653976
           ],
-          "ga_fitness": 0.9999992281575754,
+          "ga_fitness": 0.9999992351334143,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.001606535316425,
-            "trend_fraction": 0.0020156486347778424,
+            "growth_ratio": 1.003556550939215,
+            "trend_fraction": 0.004923651779487308,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1613,21 +1876,21 @@
         },
         {
           "cluster_rank": 3,
-          "population_index": 178,
+          "population_index": 182,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029052854988037835,
+            -0.029036886298339115,
             0.0,
             0.0,
             0.0
           ],
-          "ga_fitness": 0.9999992271017616,
+          "ga_fitness": 0.9999992310726069,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0023884788258504,
-            "trend_fraction": 0.0031561182015239137,
+            "growth_ratio": 1.0030374722714528,
+            "trend_fraction": 0.004147944784661464,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1640,21 +1903,21 @@
         },
         {
           "cluster_rank": 4,
-          "population_index": 91,
+          "population_index": 39,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029365070287456052,
+            -0.02936348273171191,
             0.0,
             0.0,
-            2.3224469133995975
+            2.3155200299397705
           ],
-          "ga_fitness": 0.9999991258890193,
+          "ga_fitness": 0.9999991247207755,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9996908530224178,
-            "trend_fraction": 5.0257402968646255e-05,
+            "growth_ratio": 0.9998062952228041,
+            "trend_fraction": 2.324915076576019e-05,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1692,21 +1955,21 @@
         },
         {
           "cluster_rank": 5,
-          "population_index": 75,
+          "population_index": 7,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02939188597476855,
+            -0.029207166640369042,
             0.0,
             0.0,
-            3.78589454448258
+            4.717757902537383
           ],
-          "ga_fitness": 0.9999990976231499,
+          "ga_fitness": 0.9999990457094984,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0003117285934269,
-            "trend_fraction": 0.001300663604240073,
+            "growth_ratio": 1.0003376406020168,
+            "trend_fraction": 8.41071056129217e-05,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1744,21 +2007,21 @@
         },
         {
           "cluster_rank": 6,
-          "population_index": 79,
+          "population_index": 107,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02935471898628278,
+            -0.02941208426594083,
             0.0,
             0.0,
-            2.9534388237723146
+            3.8165441996851657
           ],
-          "ga_fitness": 0.9999990902044322,
+          "ga_fitness": 0.9999990435374182,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0013086920933456,
-            "trend_fraction": 0.00157449199987794,
+            "growth_ratio": 1.000050575813955,
+            "trend_fraction": 9.65040409836401e-05,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1796,21 +2059,21 @@
         },
         {
           "cluster_rank": 7,
-          "population_index": 52,
+          "population_index": 144,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02917190769900846,
+            -0.029207226827090427,
             0.0,
             0.0,
-            4.712387481990846
+            1.5218048157361217
           ],
-          "ga_fitness": 0.9999989686985957,
+          "ga_fitness": 0.9999990351797713,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0015054587591994,
-            "trend_fraction": 0.002402277886368116,
+            "growth_ratio": 1.000340113003704,
+            "trend_fraction": 8.153998697830703e-05,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1848,21 +2111,21 @@
         },
         {
           "cluster_rank": 8,
-          "population_index": 180,
+          "population_index": 159,
           "ga_genome": [
-            0.03664739439721776,
+            0.04441598222311248,
             0.0,
             0.0,
-            -0.07429145709012902,
+            -0.08927869752265483,
             0.0,
             0.0,
-            3.233631500152902
+            3.5342917346484906
           ],
-          "ga_fitness": 0.9987474031758009,
+          "ga_fitness": 0.9980823099500995,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.004037506351256,
-            "trend_fraction": 0.004494978973155064,
+            "growth_ratio": 1.0001755402726293,
+            "trend_fraction": 0.004337409677313499,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1900,27 +2163,27 @@
         },
         {
           "cluster_rank": 9,
-          "population_index": 95,
+          "population_index": 77,
           "ga_genome": [
-            0.0440231124250378,
+            0.056443139303545505,
             0.0,
             0.0,
-            -0.08800150537584012,
+            -0.11111337857113995,
             0.0,
             0.0,
-            4.132352491538816
+            5.541889091261254
           ],
-          "ga_fitness": 0.9981570846568498,
+          "ga_fitness": 0.9969918237686136,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9971565803161245,
-            "trend_fraction": 0.007015262692582451,
+            "growth_ratio": 0.9927651302533496,
+            "trend_fraction": 0.013118074586046696,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
-          "candidate_type": "DRO",
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -1952,21 +2215,21 @@
         },
         {
           "cluster_rank": 10,
-          "population_index": 41,
+          "population_index": 113,
           "ga_genome": [
-            0.05378689513022951,
+            0.05644313927553109,
             0.0,
             0.0,
-            -0.10753033312678578,
+            -0.11191964943705118,
             0.0,
             0.0,
-            3.4361169642009513
+            4.516039439123882
           ],
-          "ga_fitness": 0.9970786118413466,
+          "ga_fitness": 0.9969907510419244,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.99591989011125,
-            "trend_fraction": 0.0040493702763825,
+            "growth_ratio": 0.9975563044229424,
+            "trend_fraction": 0.009279178402622362,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -2004,21 +2267,21 @@
         },
         {
           "cluster_rank": 11,
-          "population_index": 105,
+          "population_index": 158,
           "ga_genome": [
-            0.05983810065183826,
+            0.05823137006559604,
             0.0,
             0.0,
-            -0.11768002065775918,
+            -0.1150506348617027,
             0.0,
             0.0,
-            5.362796834233907
+            1.1904649654756772
           ],
-          "ga_fitness": 0.9965772489220184,
+          "ga_fitness": 0.9966854114504617,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9946935687643467,
-            "trend_fraction": 0.006094939999954257,
+            "growth_ratio": 1.0055017061937825,
+            "trend_fraction": 0.0021323336103920894,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -2056,21 +2319,21 @@
         },
         {
           "cluster_rank": 12,
-          "population_index": 197,
+          "population_index": 81,
           "ga_genome": [
-            0.06328631131158649,
+            0.06386741142671926,
             0.0,
             0.0,
-            -0.12511069307222744,
+            -0.12523278189479203,
             0.0,
             0.0,
-            4.562063352466752
+            5.694136684494351
           ],
-          "ga_fitness": 0.9961898620571865,
+          "ga_fitness": 0.9960842375864375,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0008606553092454,
-            "trend_fraction": 0.007128461677743885,
+            "growth_ratio": 0.994407052700874,
+            "trend_fraction": 0.003079964669806668,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -2110,147 +2373,247 @@
       "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
     },
     {
-      "partition": "C",
+      "partition": "F",
       "seed_index": 2,
-      "seed": 585021,
+      "seed": 585025,
       "band": "paper",
       "own_target_families": [
-        "C"
+        "F"
       ],
-      "own_family_recovered_this_seed": true,
+      "own_family_recovered_this_seed": false,
       "population_size": 200,
       "fitness_floor": 0.9,
       "distance_threshold": 0.1,
       "n_above_floor": 200,
-      "n_clusters": 11,
-      "n_bounded": 11,
-      "n_unmatched_bounded": 7,
+      "n_clusters": 8,
+      "n_bounded": 8,
+      "n_unmatched_bounded": 8,
       "clusters": [
         {
           "cluster_rank": 0,
-          "population_index": 125,
+          "population_index": 116,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02905308211433072,
+            -0.029365551315565952,
             0.0,
             0.0,
-            0.7715683680363116
+            2.32263865953521
           ],
-          "ga_fitness": 0.9999992501056606,
+          "ga_fitness": 0.9999991254499628,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0051144711443258,
-            "trend_fraction": 0.006316542974866413,
+            "growth_ratio": 0.9996474319370758,
+            "trend_fraction": 9.318283608280693e-05,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
-          "family_matches": [
-            "C"
-          ],
+          "family_matches": [],
           "candidate_type": "DRO",
-          "ready_for_literature_check": false
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
         },
         {
           "cluster_rank": 1,
-          "population_index": 180,
+          "population_index": 199,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.0290534574373284,
+            -0.029387859168785613,
             0.0,
             0.0,
-            5.436427913532479
+            3.755251630406505
           ],
-          "ga_fitness": 0.9999992498082187,
+          "ga_fitness": 0.9999990928986474,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0060958399827367,
-            "trend_fraction": 0.007517380281457692,
+            "growth_ratio": 0.9999232912448646,
+            "trend_fraction": 0.0007238342610391793,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
-          "family_matches": [
-            "C"
-          ],
+          "family_matches": [],
           "candidate_type": "DRO",
-          "ready_for_literature_check": false
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
         },
         {
           "cluster_rank": 2,
-          "population_index": 14,
+          "population_index": 110,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02903941146308542,
+            -0.029351994169259432,
             0.0,
             0.0,
-            6.239658417985519
+            2.993563508255822
           ],
-          "ga_fitness": 0.9999992350716778,
+          "ga_fitness": 0.9999990870845911,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0036545026488084,
-            "trend_fraction": 0.005088057172188847,
+            "growth_ratio": 1.0010538703911993,
+            "trend_fraction": 0.0013800016623102928,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
-          "family_matches": [
-            "C"
-          ],
+          "family_matches": [],
           "candidate_type": "DRO",
-          "ready_for_literature_check": false
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
         },
         {
           "cluster_rank": 3,
-          "population_index": 120,
+          "population_index": 61,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029036786413992932,
+            -0.02929689281836545,
             0.0,
             0.0,
-            0.0
+            4.417864670139261
           ],
-          "ga_fitness": 0.9999992310779781,
+          "ga_fitness": 0.9999989623445624,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0030060995111547,
-            "trend_fraction": 0.0041105597727846225,
+            "growth_ratio": 0.9988776595705269,
+            "trend_fraction": 0.0006162492239259449,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
-          "family_matches": [
-            "C"
-          ],
+          "family_matches": [],
           "candidate_type": "DRO",
-          "ready_for_literature_check": false
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
         },
         {
           "cluster_rank": 4,
-          "population_index": 147,
+          "population_index": 193,
           "ga_genome": [
-            0.0066845,
+            0.045326480084365114,
             0.0,
             0.0,
-            -0.029365257366878283,
+            -0.0908867700702713,
             0.0,
             0.0,
-            2.3224469133995975
+            3.896305208561337
           ],
-          "ga_fitness": 0.999999125774689,
+          "ga_fitness": 0.9980409501220768,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.999670827971742,
-            "trend_fraction": 7.137686244401615e-05,
+            "growth_ratio": 0.9984734211783588,
+            "trend_fraction": 0.004305778278167517,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -2288,27 +2651,27 @@
         },
         {
           "cluster_rank": 5,
-          "population_index": 148,
+          "population_index": 191,
           "ga_genome": [
-            0.0066845,
+            0.0509295024643176,
             0.0,
             0.0,
-            -0.02938819572548107,
+            -0.10159566977564144,
             0.0,
             0.0,
-            3.7582529311948574
+            4.123340357333725
           ],
-          "ga_fitness": 0.9999990932489007,
+          "ga_fitness": 0.9975173918883359,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9999709657356883,
-            "trend_fraction": 0.0007859187039485568,
+            "growth_ratio": 0.9873567054915801,
+            "trend_fraction": 0.008532252016663794,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
-          "candidate_type": "DRO",
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -2340,27 +2703,27 @@
         },
         {
           "cluster_rank": 6,
-          "population_index": 30,
+          "population_index": 138,
           "ga_genome": [
-            0.0066845,
+            0.05542511310750459,
             0.0,
             0.0,
-            -0.029350160744355536,
+            -0.10946820865140022,
             0.0,
             0.0,
-            3.006602343492968
+            5.095884178542578
           ],
-          "ga_fitness": 0.9999990839169791,
+          "ga_fitness": 0.9971106181979945,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0007237251500236,
-            "trend_fraction": 0.0011288182712487643,
+            "growth_ratio": 0.9925999936890779,
+            "trend_fraction": 0.011476948050380839,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
-          "candidate_type": "DRO",
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -2392,177 +2755,21 @@
         },
         {
           "cluster_rank": 7,
-          "population_index": 101,
+          "population_index": 135,
           "ga_genome": [
-            0.0066845,
+            0.06436789758087692,
             0.0,
             0.0,
-            -0.029193900532367145,
+            -0.12730672935194026,
             0.0,
             0.0,
-            4.771363350791951
+            4.4608161307471415
           ],
-          "ga_fitness": 0.9999990552674546,
+          "ga_fitness": 0.9960427914371255,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0006337010519666,
-            "trend_fraction": 0.0005442286877355535,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 8,
-          "population_index": 173,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029223945580707844,
-            0.0,
-            0.0,
-            1.5796167166930222
-          ],
-          "ga_fitness": 0.9999990347940745,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0002287122898865,
-            "trend_fraction": 0.0008910238222182657,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 9,
-          "population_index": 48,
-          "ga_genome": [
-            0.045629446579280884,
-            0.0,
-            0.0,
-            -0.09165607429846562,
-            0.0,
-            0.0,
-            3.490573283646489
-          ],
-          "ga_fitness": 0.997959389712062,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0005232202351901,
-            "trend_fraction": 0.005135653736095252,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 10,
-          "population_index": 115,
-          "ga_genome": [
-            0.062403381064296555,
-            0.0,
-            0.0,
-            -0.12287014178532879,
-            0.0,
-            0.0,
-            5.105855052203238
-          ],
-          "ga_fitness": 0.9963018408086692,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9960287931901157,
-            "trend_fraction": 0.0009089995266867872,
+            "growth_ratio": 0.9977432135842236,
+            "trend_fraction": 0.0035356696668161804,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50

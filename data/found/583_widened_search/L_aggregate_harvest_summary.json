@@ -1,0 +1,2137 @@
+{
+  "partition": "L",
+  "band": "paper",
+  "own_target_families": [
+    "L"
+  ],
+  "n_seeds_run": 3,
+  "n_seeds_recovered_own_family": 0,
+  "recovery_note": "Per #586's Fable design review: per-partition/per-seed recovery of this partition's OWN target family is a POSITIVE-CONTROL/machinery-health signal, not the novelty deliverable -- gurfil_kasdin_fitness (Eq. 15) saturates near 1.0 across the whole bounded continuum once the trivial deep-Hill basin is excluded, so recovery per partition is SEED-CONDITIONAL under Eq. 15 + deterministic crowding, not a guarantee on any given seed. A result below n_seeds_run recovering is NOT, by itself, a pipeline failure -- see the module docstring's 2026-07-14 section.",
+  "unmatched_bounded_candidates": [
+    {
+      "seed_index": 1,
+      "cluster_rank": 0,
+      "population_index": 25,
+      "ga_genome": [
+        0.003462992030769352,
+        0.01965828717678275,
+        0.0030270602130394106,
+        -0.014845743662408983,
+        0.003386945824228913,
+        -0.010260483601656878,
+        5.218173093743795
+      ],
+      "ga_fitness": 0.9999995167916024,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.1209705754327646,
+        "trend_fraction": 0.159430378049906,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "3D DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 1,
+      "cluster_rank": 1,
+      "population_index": 87,
+      "ga_genome": [
+        0.003462992030769352,
+        0.019658286245460177,
+        0.0030270602130394106,
+        -0.014845743662408983,
+        0.003386945824228913,
+        -0.010642222014871028,
+        3.213934459527512
+      ],
+      "ga_fitness": 0.9999993561934185,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9921864637810643,
+        "trend_fraction": 0.009261128643079068,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "3D DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 0,
+      "population_index": 113,
+      "ga_genome": [
+        0.003012048671490524,
+        0.021698497822903673,
+        0.005361362925116291,
+        -0.011417503122104655,
+        0.003024721567757596,
+        -0.006250331761839423,
+        5.313914974371142
+      ],
+      "ga_fitness": 0.9999994439250336,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0571920934405008,
+        "trend_fraction": 0.05155314063610579,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "3D DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 1,
+      "population_index": 119,
+      "ga_genome": [
+        0.0030633182027524613,
+        0.02169945335986545,
+        0.005361362925116291,
+        -0.011358434919118532,
+        0.0030147402472828376,
+        -0.006693135832132102,
+        4.628500267320681
+      ],
+      "ga_fitness": 0.9999993321634549,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.059581691464085,
+        "trend_fraction": 0.044299176230826354,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "3D DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 2,
+      "population_index": 151,
+      "ga_genome": [
+        0.003012048664505605,
+        0.02171661763491961,
+        0.005478550425143575,
+        -0.01135488890841485,
+        0.003034239358509481,
+        -0.006410558593089366,
+        0.8229164342156148
+      ],
+      "ga_fitness": 0.9999992221622902,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9865284353338711,
+        "trend_fraction": 0.004476064182116061,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "3D DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    }
+  ],
+  "n_unmatched_bounded_candidates": 5,
+  "literature_novelty_status": "NOT ADJUDICATED. Per [[feedback_literature_novelty_check_baseline]], these unmatched-bounded candidates are literature-matcher-ENGAGED (non-empty anchor pool) but the live check_literature() web search has NOT been run against any of them -- necessary, not sufficient, for any novelty claim. Live search + adjudication is a further step for the coordinator/a future adjudication dispatch, not done here.",
+  "per_seed_summaries": [
+    {
+      "partition": "L",
+      "seed_index": 0,
+      "seed": 583013,
+      "band": "paper",
+      "own_target_families": [
+        "L"
+      ],
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 25,
+      "n_bounded": 0,
+      "n_unmatched_bounded": 0,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 192,
+          "ga_genome": [
+            0.011045260003545616,
+            0.004547024496027063,
+            0.00428153097263573,
+            -0.029074609635648008,
+            0.0030496210868120243,
+            -0.0078810249706453,
+            0.41003021668838274
+          ],
+          "ga_fitness": 0.9999869388925747,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 149,
+          "ga_genome": [
+            0.011063570550424878,
+            0.005034828908982436,
+            0.004398260708991034,
+            -0.02906867897349147,
+            0.0030495638593681074,
+            -0.00788856402688859,
+            5.78604346100761
+          ],
+          "ga_fitness": 0.9999864648971633,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 120,
+          "ga_genome": [
+            0.011030615142320892,
+            0.005034828908982436,
+            0.00428153097263573,
+            -0.02906867897349147,
+            0.0030495638663530266,
+            -0.007919142839479976,
+            5.147906990816493
+          ],
+          "ga_fitness": 0.9999862924062032,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 119,
+          "ga_genome": [
+            0.011034280827975432,
+            0.005031014211715923,
+            0.004288855191387435,
+            -0.029068680836136618,
+            0.0030202668656176576,
+            -0.007884982160265785,
+            4.299613136734998
+          ],
+          "ga_fitness": 0.9999860005978395,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 178,
+          "ga_genome": [
+            0.011030150222599074,
+            0.005034828908982436,
+            0.004398260708991034,
+            -0.02906867897349147,
+            0.0030495638663530266,
+            -0.008746008274319095,
+            3.362099861782877
+          ],
+          "ga_fitness": 0.9999853229966015,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 44,
+          "ga_genome": [
+            0.011063577702982254,
+            0.0040587432459133765,
+            0.004281073208963748,
+            -0.02906867897349147,
+            0.0030495638349208897,
+            -0.008734715522437986,
+            1.1834523535534671
+          ],
+          "ga_fitness": 0.9999848146193384,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 73,
+          "ga_genome": [
+            0.011063577702982254,
+            0.0040587432459133765,
+            0.004281073208963748,
+            -0.02906867897349147,
+            0.003045901756977174,
+            -0.008610523191422803,
+            1.8280261402061526
+          ],
+          "ga_fitness": 0.9999838756289927,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 84,
+          "ga_genome": [
+            0.011063577702982254,
+            0.0040587432459133765,
+            0.004281073208963748,
+            -0.02906867897349147,
+            0.0030495638663530266,
+            -0.008548332729504504,
+            2.6135591643525524
+          ],
+          "ga_fitness": 0.9999821599076003,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 8,
+          "population_index": 145,
+          "ga_genome": [
+            0.0105656380568551,
+            0.011931000629423871,
+            0.01051946983568358,
+            -0.025900197104993306,
+            0.0034583753972450212,
+            -0.005927891821118025,
+            6.23534085665504
+          ],
+          "ga_fitness": 0.999980918031959,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 16
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 9,
+          "population_index": 175,
+          "ga_genome": [
+            0.014236339009189126,
+            0.0007677600953652775,
+            0.007423749632999243,
+            -0.030787821284213035,
+            0.0030512699363872573,
+            -0.013934920894432545,
+            1.5777955738632607
+          ],
+          "ga_fitness": 0.9999786449532203,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 10,
+          "population_index": 21,
+          "ga_genome": [
+            0.01438888921388166,
+            0.0006456897828368557,
+            0.007423749786667468,
+            -0.030787821284213035,
+            0.003051269880507903,
+            -0.013693725809849289,
+            6.26706581516286
+          ],
+          "ga_fitness": 0.999978588164344,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 11,
+          "population_index": 117,
+          "ga_genome": [
+            0.014236341244363303,
+            0.0007678793046548282,
+            0.0074237495631500495,
+            -0.030764933100613956,
+            0.0030512841856226523,
+            -0.013740374127808097,
+            3.102286342303576
+          ],
+          "ga_fitness": 0.999976912395371,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 12,
+          "population_index": 163,
+          "ga_genome": [
+            0.013297890694415636,
+            0.0006433672971658533,
+            0.004259458187562288,
+            -0.03081714653661871,
+            0.003033098679276439,
+            -0.01185862359401274,
+            6.093594905705655
+          ],
+          "ga_fitness": 0.9999761192305873,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 13,
+          "population_index": 127,
+          "ga_genome": [
+            0.010506929865923461,
+            0.012114106098216504,
+            0.01051946983917604,
+            -0.025907257228602487,
+            0.017287019198361554,
+            0.000190900289497975,
+            2.916459802296173
+          ],
+          "ga_fitness": 0.9999620778753153,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 14,
+          "population_index": 130,
+          "ga_genome": [
+            0.01705524857087416,
+            -0.019134933948315447,
+            0.01703312860267077,
+            -0.026006437960547968,
+            0.014704954818520917,
+            0.025891150935993368,
+            5.8025703625432445
+          ],
+          "ga_fitness": 0.9999559175743233,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 15,
+          "population_index": 156,
+          "ga_genome": [
+            0.010624621677125017,
+            0.01211410586538586,
+            0.010519469846160957,
+            -0.025937774806734593,
+            0.017287019198361554,
+            0.001873248839255659,
+            1.9698594566232517
+          ],
+          "ga_fitness": 0.999954220751591,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 16,
+          "population_index": 18,
+          "ga_genome": [
+            0.010565523615937104,
+            0.01186996547315966,
+            0.0105194698252062,
+            -0.02589451347614974,
+            0.015002688830719025,
+            -0.00592695933438997,
+            5.914695516872087
+          ],
+          "ga_fitness": 0.9999526017766546,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 17,
+          "population_index": 140,
+          "ga_genome": [
+            0.0105656380568551,
+            0.01186996547315966,
+            0.01051946983917604,
+            -0.025898328173416252,
+            0.015002692508279042,
+            0.0028464734793748336,
+            2.227747969014975
+          ],
+          "ga_fitness": 0.9999435890535131,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 18,
+          "population_index": 83,
+          "ga_genome": [
+            0.017803889212152896,
+            -0.020247872574312598,
+            0.015084017588543708,
+            -0.02605064248807043,
+            0.014516740412105978,
+            0.023125322424602968,
+            0.4110473894808063
+          ],
+          "ga_fitness": 0.9999415484214499,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 19,
+          "population_index": 65,
+          "ga_genome": [
+            0.01705524857087416,
+            -0.019134933948315447,
+            0.01703312860267077,
+            -0.026006437960547968,
+            0.016399069995712272,
+            0.024945139541510786,
+            5.805039104096815
+          ],
+          "ga_fitness": 0.9999382856157395,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 20,
+          "population_index": 50,
+          "ga_genome": [
+            0.016996623081387167,
+            -0.020341338245277618,
+            0.010519470048723618,
+            -0.02605064248807043,
+            0.014516740412105978,
+            0.023731228784595437,
+            4.298202136155118
+          ],
+          "ga_fitness": 0.9999357643798293,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 21,
+          "population_index": 59,
+          "ga_genome": [
+            0.011030153575360344,
+            0.012115154767435743,
+            0.011244796377430855,
+            -0.02590719622697385,
+            0.016399061149311965,
+            -0.005927725114377169,
+            5.895841335035345
+          ],
+          "ga_fitness": 0.9999302070748901,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 22,
+          "population_index": 16,
+          "ga_genome": [
+            0.01693413834016168,
+            -0.020326079456211565,
+            0.01051946983917604,
+            -0.025891997275383216,
+            0.014534827619682725,
+            0.025585161178741878,
+            1.5719711908186866
+          ],
+          "ga_fitness": 0.999929496659553,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 23,
+          "population_index": 25,
+          "ga_genome": [
+            0.017804003206036055,
+            -0.02026308107195962,
+            0.004181752797258495,
+            -0.028899160104081778,
+            0.012271109368249565,
+            0.022266385034254377,
+            4.299613136734998
+          ],
+          "ga_fitness": 0.9999119302851575,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 24,
+          "population_index": 78,
+          "ga_genome": [
+            0.016941462558913385,
+            -0.020326079456211565,
+            0.01051946983917604,
+            -0.02589196747306083,
+            0.01639174218671204,
+            0.02511250100217588,
+            0.8091537032251369
+          ],
+          "ga_fitness": 0.9999009102747066,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "L",
+      "seed_index": 1,
+      "seed": 584022,
+      "band": "paper",
+      "own_target_families": [
+        "L"
+      ],
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 23,
+      "n_bounded": 2,
+      "n_unmatched_bounded": 2,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 25,
+          "ga_genome": [
+            0.003462992030769352,
+            0.01965828717678275,
+            0.0030270602130394106,
+            -0.014845743662408983,
+            0.003386945824228913,
+            -0.010260483601656878,
+            5.218173093743795
+          ],
+          "ga_fitness": 0.9999995167916024,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.1209705754327646,
+            "trend_fraction": 0.159430378049906,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "3D DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 87,
+          "ga_genome": [
+            0.003462992030769352,
+            0.019658286245460177,
+            0.0030270602130394106,
+            -0.014845743662408983,
+            0.003386945824228913,
+            -0.010642222014871028,
+            3.213934459527512
+          ],
+          "ga_fitness": 0.9999993561934185,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9921864637810643,
+            "trend_fraction": 0.009261128643079068,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "3D DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 44,
+          "ga_genome": [
+            0.01398079512849934,
+            0.009085246713153361,
+            0.013328658988077346,
+            -0.030481953064557643,
+            0.0051005626167404845,
+            -0.010941619638107136,
+            6.181105939620425
+          ],
+          "ga_fitness": 0.9999680735527372,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 8
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 114,
+          "ga_genome": [
+            0.013973470937687315,
+            0.009083458573809655,
+            0.013328658988077346,
+            -0.030481953064557643,
+            0.0050859141792370735,
+            -0.010941407995052055,
+            0.08854133785987559
+          ],
+          "ga_fitness": 0.9999678212429362,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 16
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 173,
+          "ga_genome": [
+            0.014011926662412456,
+            0.009090969224714418,
+            0.01362162773814556,
+            -0.030413286651115257,
+            0.005100526909832965,
+            -0.011246580982405385,
+            5.560825585646662
+          ],
+          "ga_fitness": 0.9999677743755917,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 108,
+          "ga_genome": [
+            0.013973470909747637,
+            0.008106896073582281,
+            0.01362162773814556,
+            -0.030481953064557643,
+            0.004969034295056256,
+            -0.011251721650187785,
+            1.5993470270013788
+          ],
+          "ga_fitness": 0.9999666950005462,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 171,
+          "ga_genome": [
+            0.013989034874595012,
+            0.009083339364520104,
+            0.013563033988131915,
+            -0.03042090300713224,
+            0.005041933159819323,
+            -0.011260081667280764,
+            4.906011524580204
+          ],
+          "ga_fitness": 0.9999661730580884,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 128,
+          "ga_genome": [
+            0.013930441124581368,
+            0.009083339597350748,
+            0.01362162773814556,
+            -0.030481953064557643,
+            0.005086450676919532,
+            -0.011252313040022832,
+            3.824416261349964
+          ],
+          "ga_fitness": 0.9999636945321636,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 8,
+          "population_index": 151,
+          "ga_genome": [
+            0.014010095579784852,
+            0.008106777329954018,
+            0.013652741886594506,
+            -0.03048192000260619,
+            0.00689185445008144,
+            -0.011809502847448361,
+            2.161923165418079
+          ],
+          "ga_fitness": 0.9999629091315253,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 9,
+          "population_index": 192,
+          "ga_genome": [
+            0.007141803745679046,
+            0.011004799397430598,
+            0.009786516610716126,
+            -0.014744333577049962,
+            0.00842629442769715,
+            -0.00941959407865528,
+            3.1308581286455284
+          ],
+          "ga_fitness": 0.9999622529280102,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 10,
+          "population_index": 142,
+          "ga_genome": [
+            0.00714168930476105,
+            0.011004799397430598,
+            0.009727922860702481,
+            -0.014744571995629119,
+            0.008457606521774456,
+            -0.008974338301684315,
+            3.9179509365292593
+          ],
+          "ga_fitness": 0.9999618731086862,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 11,
+          "population_index": 72,
+          "ga_genome": [
+            0.00714168930476105,
+            0.011004799397430598,
+            0.009786516610716126,
+            -0.014744333577049962,
+            0.00842629442769715,
+            -0.009307102418808999,
+            1.7630786398040896
+          ],
+          "ga_fitness": 0.9999616933228974,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 12,
+          "population_index": 183,
+          "ga_genome": [
+            0.013788537864756895,
+            0.009869528587411525,
+            0.015322663761983314,
+            -0.029273616971744576,
+            0.006772149242873338,
+            -0.012268534282284915,
+            5.181404985555945
+          ],
+          "ga_fitness": 0.9999588381578423,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 13,
+          "population_index": 68,
+          "ga_genome": [
+            0.013788537864756895,
+            0.009869528587411525,
+            0.015322663754998394,
+            -0.029271230923307856,
+            0.006767228346263809,
+            -0.012574199240788397,
+            5.845429290656753
+          ],
+          "ga_fitness": 0.9999585287796301,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 14,
+          "population_index": 31,
+          "ga_genome": [
+            0.013980680687581345,
+            0.009083339364520104,
+            0.013328659099836056,
+            -0.030481952831727,
+            0.009642114684600876,
+            -0.009307102418808999,
+            1.6122145252730404
+          ],
+          "ga_fitness": 0.9999579621457753,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 15,
+          "population_index": 53,
+          "ga_genome": [
+            0.013980827315007528,
+            0.009083339830181392,
+            0.01362162773814556,
+            -0.030481952831727,
+            0.00964211472651039,
+            -0.009247302661940293,
+            3.1446649388206627
+          ],
+          "ga_fitness": 0.9999552025954488,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 16,
+          "population_index": 111,
+          "ga_genome": [
+            0.013782071952890156,
+            0.010006854196546344,
+            0.013640845619058432,
+            -0.030466701726072187,
+            0.009056177240343806,
+            -0.007903252846538866,
+            2.252082675001679
+          ],
+          "ga_fitness": 0.9999529576873998,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 7
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 17,
+          "population_index": 57,
+          "ga_genome": [
+            0.014486795647415982,
+            -0.027505566256005698,
+            0.003085653963053053,
+            -0.013662296001255125,
+            0.014498484937823027,
+            0.00680622074445858,
+            2.004698783394879
+          ],
+          "ga_fitness": 0.9999064132734182,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 18,
+          "population_index": 86,
+          "ga_genome": [
+            0.016149202779901495,
+            -0.010257412565466362,
+            0.005024882758740541,
+            -0.03072771488938658,
+            0.011892775848250086,
+            0.01568300428699776,
+            4.3165859313125425
+          ],
+          "ga_fitness": 0.9998780409175442,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 19,
+          "population_index": 63,
+          "ga_genome": [
+            0.014486795647415982,
+            -0.027505551354844504,
+            0.0030856539560681333,
+            -0.014881035898551609,
+            0.016250575420272206,
+            0.006162132952865718,
+            3.0359929075290593
+          ],
+          "ga_fitness": 0.9998705794571038,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 20,
+          "population_index": 98,
+          "ga_genome": [
+            0.014604040367902266,
+            -0.010501787418150776,
+            0.006609481176503347,
+            -0.030479386339541392,
+            0.011482505436633365,
+            0.006439427963094602,
+            3.2358628261942504
+          ],
+          "ga_fitness": 0.9998411097590783,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 21,
+          "population_index": 55,
+          "ga_genome": [
+            0.014545703855004557,
+            -0.010539093872192096,
+            0.005104976719036926,
+            -0.030505132752122632,
+            0.013145123307626957,
+            0.006646080991869363,
+            3.6901389197398755
+          ],
+          "ga_fitness": 0.9998221183132553,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 22,
+          "population_index": 39,
+          "ga_genome": [
+            0.014545675499724613,
+            -0.010509416812683803,
+            0.006609484752782035,
+            -0.03046412755047534,
+            0.013416099187083565,
+            0.005946859369507673,
+            3.6955043868457946
+          ],
+          "ga_fitness": 0.9997830082000155,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "L",
+      "seed_index": 2,
+      "seed": 585031,
+      "band": "paper",
+      "own_target_families": [
+        "L"
+      ],
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 21,
+      "n_bounded": 3,
+      "n_unmatched_bounded": 3,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 113,
+          "ga_genome": [
+            0.003012048671490524,
+            0.021698497822903673,
+            0.005361362925116291,
+            -0.011417503122104655,
+            0.003024721567757596,
+            -0.006250331761839423,
+            5.313914974371142
+          ],
+          "ga_fitness": 0.9999994439250336,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0571920934405008,
+            "trend_fraction": 0.05155314063610579,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "3D DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 119,
+          "ga_genome": [
+            0.0030633182027524613,
+            0.02169945335986545,
+            0.005361362925116291,
+            -0.011358434919118532,
+            0.0030147402472828376,
+            -0.006693135832132102,
+            4.628500267320681
+          ],
+          "ga_fitness": 0.9999993321634549,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.059581691464085,
+            "trend_fraction": 0.044299176230826354,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "3D DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 151,
+          "ga_genome": [
+            0.003012048664505605,
+            0.02171661763491961,
+            0.005478550425143575,
+            -0.01135488890841485,
+            0.003034239358509481,
+            -0.006410558593089366,
+            0.8229164342156148
+          ],
+          "ga_fitness": 0.9999992221622902,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9865284353338711,
+            "trend_fraction": 0.004476064182116061,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "3D DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 87,
+          "ga_genome": [
+            0.010324678359395982,
+            0.009195836845132477,
+            0.006998890117276202,
+            -0.026879544259719446,
+            0.0030292039581176836,
+            -0.006833952503938701,
+            5.056685582646022
+          ],
+          "ga_fitness": 0.9999887005538932,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 9
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 139,
+          "ga_genome": [
+            0.01033017152345976,
+            0.009196850589755168,
+            0.006998889785492534,
+            -0.027005650458625907,
+            0.0030179140898440766,
+            -0.006332975697315502,
+            5.689679995265747
+          ],
+          "ga_fitness": 0.9999885269061739,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 11
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 74,
+          "ga_genome": [
+            0.011936530475955581,
+            0.00999617821304044,
+            0.011865592023093625,
+            -0.027044651454092128,
+            0.0031524065633193607,
+            -0.010239223137087916,
+            5.079668561104677
+          ],
+          "ga_fitness": 0.9999805324113895,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 168,
+          "ga_genome": [
+            0.011935614948611617,
+            0.010240318838097284,
+            0.011865592917163294,
+            -0.026987857540833715,
+            0.003150575480691757,
+            -0.010514031516042077,
+            5.988591821755574
+          ],
+          "ga_fitness": 0.9999775944371782,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 13,
+          "ga_genome": [
+            0.011936530475955581,
+            0.010209801259965179,
+            0.011865591701787335,
+            -0.02703921043477936,
+            0.0072609368425935825,
+            -0.01000265719136284,
+            5.876885922193331
+          ],
+          "ga_fitness": 0.9999754733543617,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 8,
+          "population_index": 187,
+          "ga_genome": [
+            0.011622773149661435,
+            0.010030424341100797,
+            0.008349509394809024,
+            -0.02842956397878693,
+            0.007188389724397191,
+            -0.0045144067854887004,
+            5.988561257008137
+          ],
+          "ga_fitness": 0.9999751382538438,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 38
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 9,
+          "population_index": 149,
+          "ga_genome": [
+            0.01162094164793867,
+            0.010030394538778409,
+            0.008349509258603097,
+            -0.02844735480110333,
+            0.0030316773459854716,
+            -0.006776401891088191,
+            5.462610415253438
+          ],
+          "ga_fitness": 0.9999749749685074,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 12
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 10,
+          "population_index": 0,
+          "ga_genome": [
+            0.012590233948451986,
+            0.010011435139461344,
+            0.011865134259421643,
+            -0.028348927741951524,
+            0.0070038322026384605,
+            -0.008218713688715074,
+            4.725165945605266
+          ],
+          "ga_fitness": 0.9999737779616662,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 6
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 11,
+          "population_index": 2,
+          "ga_genome": [
+            0.00760330193969498,
+            0.009212019971854057,
+            0.006997974652796513,
+            -0.01755250839459538,
+            0.00986059015380698,
+            -0.010646763143745908,
+            5.462406595654914
+          ],
+          "ga_fitness": 0.9999731270191101,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 12,
+          "population_index": 35,
+          "ga_genome": [
+            0.010877002360270591,
+            0.009212019971854057,
+            0.006998889558482657,
+            -0.02703861694946852,
+            0.017384081294849533,
+            -0.004634569050891935,
+            4.724455950499526
+          ],
+          "ga_fitness": 0.9999726420896173,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 13,
+          "population_index": 23,
+          "ga_genome": [
+            0.007486114439667695,
+            0.009212019971854057,
+            0.006997974652796513,
+            -0.01755250839459538,
+            0.00986059015380698,
+            -0.010651196239202076,
+            2.985503363602282
+          ],
+          "ga_fitness": 0.9999721477544201,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 14,
+          "population_index": 111,
+          "ga_genome": [
+            0.010718612609365631,
+            0.009273323349019869,
+            0.006762594791772448,
+            -0.027039719868227785,
+            0.012404204204772645,
+            -0.006252152264642541,
+            5.84075355870409
+          ],
+          "ga_fitness": 0.9999716207702123,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 15,
+          "population_index": 175,
+          "ga_genome": [
+            0.01071495139405945,
+            0.009273323349019869,
+            0.006998572163749154,
+            -0.027039719868227785,
+            0.012767504282008742,
+            -0.006744127140088041,
+            1.6110284454220638
+          ],
+          "ga_fitness": 0.9999679331522613,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 3
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 16,
+          "population_index": 115,
+          "ga_genome": [
+            0.01071861272112434,
+            0.009273323349019869,
+            0.006996054376241764,
+            -0.027039719868227785,
+            0.012393600964544713,
+            -0.006693135832132102,
+            4.530325492484387
+          ],
+          "ga_fitness": 0.9999675622919294,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 17,
+          "population_index": 67,
+          "ga_genome": [
+            0.01071495049998978,
+            0.009273323349019869,
+            0.006762594910516076,
+            -0.02703971823841328,
+            0.015274706311820704,
+            -0.0044810286500679974,
+            4.50828262175664
+          ],
+          "ga_fitness": 0.9999659247618127,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 5
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 18,
+          "population_index": 178,
+          "ga_genome": [
+            0.01071861272112434,
+            0.009265693954486842,
+            0.006998889558482657,
+            -0.027044646331817968,
+            0.013573885350156082,
+            -0.006654332742712987,
+            4.122413562157342
+          ],
+          "ga_fitness": 0.999965394728811,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 19,
+          "population_index": 56,
+          "ga_genome": [
+            0.01044186675349294,
+            0.009212049774176445,
+            0.006986072622702008,
+            -0.027006679104409792,
+            0.010988269386810311,
+            -0.006044131355836091,
+            3.1913907266110133
+          ],
+          "ga_fitness": 0.999961123993068,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 4
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 20,
+          "population_index": 16,
+          "ga_genome": [
+            0.013480933843758175,
+            0.010498506834380916,
+            0.017208094618331664,
+            -0.028572622111200485,
+            0.007006233757596052,
+            -0.01227784913784774,
+            3.7441912470431395
+          ],
+          "ga_fitness": 0.999942030279579,
+          "drift": {
+            "bounded": false,
+            "growth_ratio": Infinity,
+            "trend_fraction": Infinity,
+            "terminated_early": true,
+            "termination_reason": "escape",
+            "n_windows_complete": 8
+          },
+          "family_matches": [],
+          "ready_for_literature_check": false
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    }
+  ]
+}

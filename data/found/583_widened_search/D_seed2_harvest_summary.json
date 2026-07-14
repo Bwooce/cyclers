@@ -1,0 +1,119 @@
+{
+  "partition": "D",
+  "seed_index": 2,
+  "seed": 585022,
+  "band": "paper",
+  "own_target_families": [
+    "D"
+  ],
+  "own_family_recovered_this_seed": true,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 200,
+  "n_clusters": 4,
+  "n_bounded": 1,
+  "n_unmatched_bounded": 0,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 8,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.01104590308644015,
+        0.0,
+        0.0,
+        5.620505608121615
+      ],
+      "ga_fitness": 0.9999796854408025,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 28
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 198,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011110049558596232,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ga_fitness": 0.999979628529947,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 41
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 2,
+      "population_index": 171,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.010916561007247437,
+        0.0,
+        0.0,
+        4.712293107682613
+      ],
+      "ga_fitness": 0.9999795057582,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 21
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 3,
+      "population_index": 118,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        0.011157730131213956,
+        0.0,
+        0.0,
+        0.785398163580313
+      ],
+      "ga_fitness": 0.999979469116992,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9991029423603954,
+        "trend_fraction": 0.0020133052385306375,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "D"
+      ],
+      "candidate_type": "DPO",
+      "ready_for_literature_check": false
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}

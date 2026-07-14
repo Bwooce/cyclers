@@ -1,0 +1,413 @@
+{
+  "partition": "M",
+  "seed_index": 2,
+  "seed": 585032,
+  "band": "paper",
+  "own_target_families": [
+    "M"
+  ],
+  "own_family_recovered_this_seed": true,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 200,
+  "n_clusters": 16,
+  "n_bounded": 3,
+  "n_unmatched_bounded": 0,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 72,
+      "ga_genome": [
+        0.0038604912907077827,
+        0.0,
+        0.0038615837723558117,
+        0.0,
+        0.003887579789250168,
+        0.0,
+        1.668875222345982
+      ],
+      "ga_fitness": 0.9999559290823246,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "collision",
+        "n_windows_complete": 13
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 140,
+      "ga_genome": [
+        0.0038925858120485712,
+        0.0,
+        0.003862130328575372,
+        0.0,
+        0.003868648309097629,
+        0.0,
+        0.9361117716364138
+      ],
+      "ga_fitness": 0.999955906979152,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "collision",
+        "n_windows_complete": 22
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 2,
+      "population_index": 74,
+      "ga_genome": [
+        0.0038604912907077827,
+        0.0,
+        0.0038615837723558117,
+        0.0,
+        0.003880145673625273,
+        0.0,
+        0.29452429525051854
+      ],
+      "ga_fitness": 0.999955587545776,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9914911034862839,
+        "trend_fraction": 0.010564238314412252,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "M"
+      ],
+      "candidate_type": "3D ERO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 3,
+      "population_index": 199,
+      "ga_genome": [
+        0.0038923042527839492,
+        0.0,
+        0.0038615837723558117,
+        0.0,
+        0.003884081518901676,
+        0.0,
+        2.3088328295151883
+      ],
+      "ga_fitness": 0.999955209677711,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "collision",
+        "n_windows_complete": 45
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 4,
+      "population_index": 146,
+      "ga_genome": [
+        0.0038604912907077827,
+        0.0,
+        0.0038620845396117836,
+        0.0,
+        0.0038790964254282055,
+        0.0,
+        6.282801809056689
+      ],
+      "ga_fitness": 0.999954924266476,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9930965052291937,
+        "trend_fraction": 0.013056785082769926,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "M"
+      ],
+      "candidate_type": "3D ERO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 5,
+      "population_index": 180,
+      "ga_genome": [
+        0.0038604912907077827,
+        0.0,
+        0.003861584807500167,
+        0.0,
+        0.003888631714265842,
+        0.0,
+        5.4079647781163
+      ],
+      "ga_fitness": 0.9999540294886566,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9863792618195169,
+        "trend_fraction": 0.010191352614474269,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [
+        "M"
+      ],
+      "candidate_type": "3D ERO",
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 6,
+      "population_index": 154,
+      "ga_genome": [
+        0.0038814095120994186,
+        0.0,
+        0.003880663682504412,
+        0.0,
+        0.003891256808002438,
+        0.0,
+        3.1761012548138683
+      ],
+      "ga_fitness": 0.9999538851588794,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "collision",
+        "n_windows_complete": 26
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 7,
+      "population_index": 8,
+      "ga_genome": [
+        0.003882431045923788,
+        0.0,
+        0.005218666246604627,
+        0.0,
+        0.012572015671282535,
+        0.0,
+        2.761069543574855
+      ],
+      "ga_fitness": 0.9998383630208874,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 3
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 8,
+      "population_index": 132,
+      "ga_genome": [
+        0.003922568857255458,
+        0.0,
+        0.02058860771226465,
+        0.0,
+        0.01798911390427977,
+        0.0,
+        2.1598449454571065
+      ],
+      "ga_fitness": 0.9997472218993525,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 3
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 9,
+      "population_index": 24,
+      "ga_genome": [
+        0.0038658211195998055,
+        0.0,
+        0.022585514966594247,
+        0.0,
+        0.017023102675699172,
+        0.0,
+        4.073869444728698
+      ],
+      "ga_fitness": 0.9996760137652277,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 3
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 10,
+      "population_index": 121,
+      "ga_genome": [
+        0.004087972139570633,
+        0.0,
+        0.02258551490998479,
+        0.0,
+        0.014184101283117949,
+        0.0,
+        3.5342917317226545
+      ],
+      "ga_fitness": 0.9996265830998491,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 4
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 11,
+      "population_index": 194,
+      "ga_genome": [
+        0.004087972139570633,
+        0.0,
+        0.022583386709799896,
+        0.0,
+        0.012574709189678424,
+        0.0,
+        2.8470803520731502
+      ],
+      "ga_fitness": 0.9996173301249895,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 4
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 12,
+      "population_index": 95,
+      "ga_genome": [
+        0.004713364985573223,
+        0.0,
+        0.023423095867370014,
+        0.0,
+        0.003862936819247008,
+        0.0,
+        3.1983499420233175
+      ],
+      "ga_fitness": 0.9995064637111162,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 2
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 13,
+      "population_index": 84,
+      "ga_genome": [
+        0.0038806630193650594,
+        0.0,
+        0.025074914217524526,
+        0.0,
+        0.010714689796889134,
+        0.0,
+        3.4391849287032734
+      ],
+      "ga_fitness": 0.9994948266828526,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 3
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 14,
+      "population_index": 163,
+      "ga_genome": [
+        0.003859602125967838,
+        0.0,
+        0.029911845465752332,
+        0.0,
+        0.0038605078934527927,
+        0.0,
+        4.05584538697872
+      ],
+      "ga_fitness": 0.9992056509680304,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 5
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 15,
+      "population_index": 139,
+      "ga_genome": [
+        0.0038605293969593596,
+        0.0,
+        0.027350470104638706,
+        0.0,
+        0.02993885611011731,
+        0.0,
+        3.2320975164388233
+      ],
+      "ga_fitness": 0.9981530440175206,
+      "drift": {
+        "bounded": false,
+        "growth_ratio": Infinity,
+        "trend_fraction": Infinity,
+        "terminated_early": true,
+        "termination_reason": "escape",
+        "n_windows_complete": 4
+      },
+      "family_matches": [],
+      "ready_for_literature_check": false
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}

@@ -1,31 +1,31 @@
 {
-  "partition": "C",
+  "partition": "B",
   "band": "paper",
   "own_target_families": [
-    "C"
+    "B"
   ],
   "n_seeds_run": 3,
-  "n_seeds_recovered_own_family": 3,
+  "n_seeds_recovered_own_family": 0,
   "recovery_note": "Per #586's Fable design review: per-partition/per-seed recovery of this partition's OWN target family is a POSITIVE-CONTROL/machinery-health signal, not the novelty deliverable -- gurfil_kasdin_fitness (Eq. 15) saturates near 1.0 across the whole bounded continuum once the trivial deep-Hill basin is excluded, so recovery per partition is SEED-CONDITIONAL under Eq. 15 + deterministic crowding, not a guarantee on any given seed. A result below n_seeds_run recovering is NOT, by itself, a pipeline failure -- see the module docstring's 2026-07-14 section.",
   "unmatched_bounded_candidates": [
     {
       "seed_index": 0,
       "cluster_rank": 4,
-      "population_index": 149,
+      "population_index": 86,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.0291830211712939,
+        -0.029363643501271408,
         0.0,
         0.0,
-        4.815459306341477
+        3.141592654321252
       ],
-      "ga_fitness": 0.9999990630497982,
+      "ga_fitness": 0.9999990641500364,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0016974138165318,
-        "trend_fraction": 0.0006072098828778407,
+        "growth_ratio": 1.0007792447382928,
+        "trend_fraction": 0.0008322044722993404,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -64,21 +64,21 @@
     {
       "seed_index": 0,
       "cluster_rank": 5,
-      "population_index": 18,
+      "population_index": 93,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.02918516484303052,
+        -0.02921332233334273,
         0.0,
         0.0,
-        1.419315747728339
+        4.691272777193723
       ],
-      "ga_fitness": 0.9999990545344564,
+      "ga_fitness": 0.9999990422795013,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0014267643121249,
-        "trend_fraction": 0.00010594634610764057,
+        "growth_ratio": 1.0003625073047189,
+        "trend_fraction": 0.00034667913231649334,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -117,21 +117,21 @@
     {
       "seed_index": 0,
       "cluster_rank": 6,
-      "population_index": 82,
+      "population_index": 135,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029427114997391368,
+        -0.029207599239705062,
         0.0,
         0.0,
-        3.6784559681810434
+        1.5125050572073997
       ],
-      "ga_fitness": 0.9999989920727742,
+      "ga_fitness": 0.9999990408337031,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.00010341911833,
-        "trend_fraction": 0.00020974848859506436,
+        "growth_ratio": 1.0003412849197781,
+        "trend_fraction": 6.17576240270827e-05,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -170,74 +170,21 @@
     {
       "seed_index": 0,
       "cluster_rank": 7,
-      "population_index": 179,
+      "population_index": 182,
       "ga_genome": [
-        0.047783628045163846,
+        0.06231044891252857,
         0.0,
         0.0,
-        -0.09569346639227433,
+        -0.12311400347927448,
         0.0,
         0.0,
-        3.8161607044881047
+        4.673272471381686
       ],
-      "ga_fitness": 0.9977878804811589,
+      "ga_fitness": 0.9963133167619368,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.000368461824753,
-        "trend_fraction": 0.007570736300895546,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 0,
-      "cluster_rank": 8,
-      "population_index": 181,
-      "ga_genome": [
-        0.056296622927980176,
-        0.0,
-        0.0,
-        -0.11170492545042765,
-        0.0,
-        0.0,
-        4.45468020759417
-      ],
-      "ga_fitness": 0.9970052735516581,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9982453056699434,
-        "trend_fraction": 0.008036821380215503,
+        "growth_ratio": 1.0007579893167073,
+        "trend_fraction": 0.0067776338774840055,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -274,241 +221,29 @@
       "ready_for_literature_check": true
     },
     {
-      "seed_index": 1,
-      "cluster_rank": 4,
-      "population_index": 91,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.029365070287456052,
-        0.0,
-        0.0,
-        2.3224469133995975
-      ],
-      "ga_fitness": 0.9999991258890193,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9996908530224178,
-        "trend_fraction": 5.0257402968646255e-05,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
-      "cluster_rank": 5,
-      "population_index": 75,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.02939188597476855,
-        0.0,
-        0.0,
-        3.78589454448258
-      ],
-      "ga_fitness": 0.9999990976231499,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0003117285934269,
-        "trend_fraction": 0.001300663604240073,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
-      "cluster_rank": 6,
-      "population_index": 79,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.02935471898628278,
-        0.0,
-        0.0,
-        2.9534388237723146
-      ],
-      "ga_fitness": 0.9999990902044322,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0013086920933456,
-        "trend_fraction": 0.00157449199987794,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
-      "cluster_rank": 7,
-      "population_index": 52,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.02917190769900846,
-        0.0,
-        0.0,
-        4.712387481990846
-      ],
-      "ga_fitness": 0.9999989686985957,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0015054587591994,
-        "trend_fraction": 0.002402277886368116,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
+      "seed_index": 0,
       "cluster_rank": 8,
-      "population_index": 180,
+      "population_index": 60,
       "ga_genome": [
-        0.03664739439721776,
+        0.0651009535466635,
         0.0,
         0.0,
-        -0.07429145709012902,
+        -0.1276836418844023,
         0.0,
         0.0,
-        3.233631500152902
+        5.579088125376142
       ],
-      "ga_fitness": 0.9987474031758009,
+      "ga_fitness": 0.9959470188721282,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.004037506351256,
-        "trend_fraction": 0.004494978973155064,
+        "growth_ratio": 0.9944370586157624,
+        "trend_fraction": 0.0037354032788971927,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -539,76 +274,23 @@
       "ready_for_literature_check": true
     },
     {
-      "seed_index": 1,
+      "seed_index": 0,
       "cluster_rank": 9,
-      "population_index": 95,
+      "population_index": 45,
       "ga_genome": [
-        0.0440231124250378,
+        0.0651009535466635,
         0.0,
         0.0,
-        -0.08800150537584012,
+        -0.12768390451736839,
         0.0,
         0.0,
-        4.132352491538816
+        0.7708253460920065
       ],
-      "ga_fitness": 0.9981570846568498,
+      "ga_fitness": 0.9957245703047919,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.9971565803161245,
-        "trend_fraction": 0.007015262692582451,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
-      "cluster_rank": 10,
-      "population_index": 41,
-      "ga_genome": [
-        0.05378689513022951,
-        0.0,
-        0.0,
-        -0.10753033312678578,
-        0.0,
-        0.0,
-        3.4361169642009513
-      ],
-      "ga_fitness": 0.9970786118413466,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.99591989011125,
-        "trend_fraction": 0.0040493702763825,
+        "growth_ratio": 0.9919427875624729,
+        "trend_fraction": 0.0005257244206166671,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -646,128 +328,22 @@
     },
     {
       "seed_index": 1,
-      "cluster_rank": 11,
-      "population_index": 105,
-      "ga_genome": [
-        0.05983810065183826,
-        0.0,
-        0.0,
-        -0.11768002065775918,
-        0.0,
-        0.0,
-        5.362796834233907
-      ],
-      "ga_fitness": 0.9965772489220184,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9946935687643467,
-        "trend_fraction": 0.006094939999954257,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DEO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 1,
-      "cluster_rank": 12,
-      "population_index": 197,
-      "ga_genome": [
-        0.06328631131158649,
-        0.0,
-        0.0,
-        -0.12511069307222744,
-        0.0,
-        0.0,
-        4.562063352466752
-      ],
-      "ga_fitness": 0.9961898620571865,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0008606553092454,
-        "trend_fraction": 0.007128461677743885,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DEO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
       "cluster_rank": 4,
-      "population_index": 147,
+      "population_index": 69,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029365257366878283,
+        -0.029199267977196575,
         0.0,
         0.0,
-        2.3224469133995975
+        4.7492045189367875
       ],
-      "ga_fitness": 0.999999125774689,
+      "ga_fitness": 0.9999990513815556,
       "drift": {
         "bounded": true,
-        "growth_ratio": 0.999670827971742,
-        "trend_fraction": 7.137686244401615e-05,
+        "growth_ratio": 1.0003561032104982,
+        "trend_fraction": 0.0005564910957985378,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -804,135 +380,400 @@
       "ready_for_literature_check": true
     },
     {
-      "seed_index": 2,
+      "seed_index": 1,
       "cluster_rank": 5,
-      "population_index": 148,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.02938819572548107,
-        0.0,
-        0.0,
-        3.7582529311948574
-      ],
-      "ga_fitness": 0.9999990932489007,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9999709657356883,
-        "trend_fraction": 0.0007859187039485568,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 6,
-      "population_index": 30,
-      "ga_genome": [
-        0.0066845,
-        0.0,
-        0.0,
-        -0.029350160744355536,
-        0.0,
-        0.0,
-        3.006602343492968
-      ],
-      "ga_fitness": 0.9999990839169791,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 1.0007237251500236,
-        "trend_fraction": 0.0011288182712487643,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 7,
       "population_index": 101,
       "ga_genome": [
         0.0066845,
         0.0,
         0.0,
-        -0.029193900532367145,
+        -0.029278955894820158,
         0.0,
         0.0,
-        4.771363350791951
+        3.9331267395916183
       ],
-      "ga_fitness": 0.9999990552674546,
+      "ga_fitness": 0.9999988319991724,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0006337010519666,
-        "trend_fraction": 0.0005442286877355535,
+        "growth_ratio": 0.9971206841033518,
+        "trend_fraction": 0.004183612751186866,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
       "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 1,
+      "cluster_rank": 6,
+      "population_index": 2,
+      "ga_genome": [
+        0.06233943317348078,
+        0.0,
+        0.0,
+        -0.12296466928044442,
+        0.0,
+        0.0,
+        4.871209920614176
+      ],
+      "ga_fitness": 0.9963091200751872,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9985696535524664,
+        "trend_fraction": 0.004039459052927967,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 1,
+      "cluster_rank": 7,
+      "population_index": 14,
+      "ga_genome": [
+        0.06234677362278774,
+        0.0,
+        0.0,
+        -0.12233515680356305,
+        0.0,
+        0.0,
+        5.723282320933882
+      ],
+      "ga_fitness": 0.9962875067513587,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9907541824678596,
+        "trend_fraction": 0.006206013373467645,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 1,
+      "cluster_rank": 8,
+      "population_index": 104,
+      "ga_genome": [
+        0.06532679366527329,
+        0.0,
+        0.0,
+        -0.12996219800085812,
+        0.0,
+        0.0,
+        3.534081823459084
+      ],
+      "ga_fitness": 0.9956369188240837,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0009496948765875,
+        "trend_fraction": 0.009507573848047393,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 4,
+      "population_index": 43,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        -0.029188281164781282,
+        0.0,
+        0.0,
+        4.786020057854614
+      ],
+      "ga_fitness": 0.9999990536412143,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0010957280693986,
+        "trend_fraction": 0.00013252096933644362,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 5,
+      "population_index": 97,
+      "ga_genome": [
+        0.0066845,
+        0.0,
+        0.0,
+        -0.029188281164781282,
+        0.0,
+        0.0,
+        1.4308205787705526
+      ],
+      "ga_fitness": 0.9999990516237246,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0011696464813016,
+        "trend_fraction": 0.0003349904413626681,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DRO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 6,
+      "population_index": 142,
+      "ga_genome": [
+        0.05191755708734739,
+        0.0,
+        0.0,
+        -0.10330897339231077,
+        0.0,
+        0.0,
+        4.319689898228804
+      ],
+      "ga_fitness": 0.997449099051539,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 0.9873432480364143,
+        "trend_fraction": 0.0049962844624636335,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
+      "candidate_signature": {
+        "primary": "Sun",
+        "sequence": [
+          "E"
+        ]
+      },
+      "literature_anchors_engaged": [
+        "Aldrin Earth-Mars cycler",
+        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+        "Vasile-Conway MGA-DSM optimisation (2006)",
+        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+        "McConaghy Earth-Mars cycler dissertation (2004)",
+        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+        "Ceriotti GTOC-style MGA chain optimisation (2010)",
+        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "seed_index": 2,
+      "cluster_rank": 7,
+      "population_index": 132,
+      "ga_genome": [
+        0.05889223861060378,
+        0.0,
+        0.0,
+        -0.11596687722857268,
+        0.0,
+        0.0,
+        5.098951015135061
+      ],
+      "ga_fitness": 0.9966435595643698,
+      "drift": {
+        "bounded": true,
+        "growth_ratio": 1.0013187675820288,
+        "trend_fraction": 0.005643293830061713,
+        "terminated_early": false,
+        "termination_reason": "",
+        "n_windows_complete": 50
+      },
+      "family_matches": [],
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -965,27 +806,27 @@
     {
       "seed_index": 2,
       "cluster_rank": 8,
-      "population_index": 173,
+      "population_index": 156,
       "ga_genome": [
-        0.0066845,
+        0.05889223505277297,
         0.0,
         0.0,
-        -0.029223945580707844,
+        -0.11597450254856945,
         0.0,
         0.0,
-        1.5796167166930222
+        0.7840559303906006
       ],
-      "ga_fitness": 0.9999990347940745,
+      "ga_fitness": 0.9966247387779922,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0002287122898865,
-        "trend_fraction": 0.0008910238222182657,
+        "growth_ratio": 1.0095995848690378,
+        "trend_fraction": 0.003450621897954279,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
       },
       "family_matches": [],
-      "candidate_type": "DRO",
+      "candidate_type": "DEO",
       "candidate_signature": {
         "primary": "Sun",
         "sequence": [
@@ -1018,74 +859,21 @@
     {
       "seed_index": 2,
       "cluster_rank": 9,
-      "population_index": 48,
+      "population_index": 33,
       "ga_genome": [
-        0.045629446579280884,
+        0.06512551746896258,
         0.0,
         0.0,
-        -0.09165607429846562,
+        -0.12925349702808386,
         0.0,
         0.0,
-        3.490573283646489
+        3.9268470057397495
       ],
-      "ga_fitness": 0.997959389712062,
+      "ga_fitness": 0.9957732182486847,
       "drift": {
         "bounded": true,
-        "growth_ratio": 1.0005232202351901,
-        "trend_fraction": 0.005135653736095252,
-        "terminated_early": false,
-        "termination_reason": "",
-        "n_windows_complete": 50
-      },
-      "family_matches": [],
-      "candidate_type": "DRO",
-      "candidate_signature": {
-        "primary": "Sun",
-        "sequence": [
-          "E"
-        ]
-      },
-      "literature_anchors_engaged": [
-        "Aldrin Earth-Mars cycler",
-        "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-        "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-        "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-        "Vasile-Conway MGA-DSM optimisation (2006)",
-        "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-        "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-        "McConaghy Earth-Mars cycler dissertation (2004)",
-        "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-        "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-        "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-        "Ceriotti GTOC-style MGA chain optimisation (2010)",
-        "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-        "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-        "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-        "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-        "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-        "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-        "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-      ],
-      "ready_for_literature_check": true
-    },
-    {
-      "seed_index": 2,
-      "cluster_rank": 10,
-      "population_index": 115,
-      "ga_genome": [
-        0.062403381064296555,
-        0.0,
-        0.0,
-        -0.12287014178532879,
-        0.0,
-        0.0,
-        5.105855052203238
-      ],
-      "ga_fitness": 0.9963018408086692,
-      "drift": {
-        "bounded": true,
-        "growth_ratio": 0.9960287931901157,
-        "trend_fraction": 0.0009089995266867872,
+        "growth_ratio": 0.9980831028388933,
+        "trend_fraction": 0.0038350716386897415,
         "terminated_early": false,
         "termination_reason": "",
         "n_windows_complete": 50
@@ -1122,18 +910,458 @@
       "ready_for_literature_check": true
     }
   ],
-  "n_unmatched_bounded_candidates": 21,
+  "n_unmatched_bounded_candidates": 17,
   "literature_novelty_status": "NOT ADJUDICATED. Per [[feedback_literature_novelty_check_baseline]], these unmatched-bounded candidates are literature-matcher-ENGAGED (non-empty anchor pool) but the live check_literature() web search has NOT been run against any of them -- necessary, not sufficient, for any novelty claim. Live search + adjudication is a further step for the coordinator/a future adjudication dispatch, not done here.",
   "per_seed_summaries": [
     {
-      "partition": "C",
+      "partition": "B",
       "seed_index": 0,
-      "seed": 583003,
+      "seed": 583001,
       "band": "paper",
       "own_target_families": [
-        "C"
+        "B"
       ],
-      "own_family_recovered_this_seed": true,
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 10,
+      "n_bounded": 10,
+      "n_unmatched_bounded": 6,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 12,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029052748351602986,
+            0.0,
+            0.0,
+            5.44889000794592
+          ],
+          "ga_fitness": 0.9999992511421346,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0059803362106223,
+            "trend_fraction": 0.007346039275800707,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 136,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029053103651165313,
+            0.0,
+            0.0,
+            0.7708253460920065
+          ],
+          "ga_fitness": 0.9999992501535275,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0050971900356638,
+            "trend_fraction": 0.006298994257109337,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 48,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029039384571146076,
+            0.0,
+            0.0,
+            6.239647367102346
+          ],
+          "ga_fitness": 0.9999992350753069,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.003652300351918,
+            "trend_fraction": 0.005084972044644111,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 109,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.0290374797836499,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "ga_fitness": 0.9999992310106631,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0031087225362447,
+            "trend_fraction": 0.004217606154146543,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 86,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029363643501271408,
+            0.0,
+            0.0,
+            3.141592654321252
+          ],
+          "ga_fitness": 0.9999990641500364,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0007792447382928,
+            "trend_fraction": 0.0008322044722993404,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 93,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.02921332233334273,
+            0.0,
+            0.0,
+            4.691272777193723
+          ],
+          "ga_fitness": 0.9999990422795013,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0003625073047189,
+            "trend_fraction": 0.00034667913231649334,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 135,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029207599239705062,
+            0.0,
+            0.0,
+            1.5125050572073997
+          ],
+          "ga_fitness": 0.9999990408337031,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0003412849197781,
+            "trend_fraction": 6.17576240270827e-05,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 182,
+          "ga_genome": [
+            0.06231044891252857,
+            0.0,
+            0.0,
+            -0.12311400347927448,
+            0.0,
+            0.0,
+            4.673272471381686
+          ],
+          "ga_fitness": 0.9963133167619368,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0007579893167073,
+            "trend_fraction": 0.0067776338774840055,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 8,
+          "population_index": 60,
+          "ga_genome": [
+            0.0651009535466635,
+            0.0,
+            0.0,
+            -0.1276836418844023,
+            0.0,
+            0.0,
+            5.579088125376142
+          ],
+          "ga_fitness": 0.9959470188721282,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9944370586157624,
+            "trend_fraction": 0.0037354032788971927,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 9,
+          "population_index": 45,
+          "ga_genome": [
+            0.0651009535466635,
+            0.0,
+            0.0,
+            -0.12768390451736839,
+            0.0,
+            0.0,
+            0.7708253460920065
+          ],
+          "ga_fitness": 0.9957245703047919,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9919427875624729,
+            "trend_fraction": 0.0005257244206166671,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "B",
+      "seed_index": 1,
+      "seed": 584010,
+      "band": "paper",
+      "own_target_families": [
+        "B"
+      ],
+      "own_family_recovered_this_seed": false,
       "population_size": 200,
       "fitness_floor": 0.9,
       "distance_threshold": 0.1,
@@ -1144,21 +1372,21 @@
       "clusters": [
         {
           "cluster_rank": 0,
-          "population_index": 44,
+          "population_index": 143,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.02905242401851632,
+            -0.029052870471275638,
             0.0,
             0.0,
-            5.455064879829843
+            5.447165783438933
           ],
-          "ga_fitness": 0.9999992507076348,
+          "ga_fitness": 0.9999992510805849,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.005910945202447,
-            "trend_fraction": 0.007250852631761723,
+            "growth_ratio": 1.005991565522687,
+            "trend_fraction": 0.007364265285787935,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1171,21 +1399,21 @@
         },
         {
           "cluster_rank": 1,
-          "population_index": 85,
+          "population_index": 83,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029052695266216233,
+            -0.029052901321335922,
             0.0,
             0.0,
-            0.7693153322906618
+            0.7705856601309254
           ],
-          "ga_fitness": 0.9999992498860535,
+          "ga_fitness": 0.999999250087812,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.005201872266058,
-            "trend_fraction": 0.006421869420599018,
+            "growth_ratio": 1.0051350908223975,
+            "trend_fraction": 0.006337719274880662,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1198,21 +1426,21 @@
         },
         {
           "cluster_rank": 2,
-          "population_index": 14,
+          "population_index": 187,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029038941843677057,
+            -0.029039383174162214,
             0.0,
             0.0,
-            6.239646635643306
+            6.239658415059683
           ],
-          "ga_fitness": 0.9999992351227742,
+          "ga_fitness": 0.9999992350745694,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0035852273254124,
-            "trend_fraction": 0.004970949012731841,
+            "growth_ratio": 1.0036522146764,
+            "trend_fraction": 0.005084790055293454,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1225,409 +1453,21 @@
         },
         {
           "cluster_rank": 3,
-          "population_index": 122,
+          "population_index": 131,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029037511215786793,
-            0.0,
-            0.0,
-            4.6813378547448695e-08
-          ],
-          "ga_fitness": 0.9999992310062336,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.003111856345368,
-            "trend_fraction": 0.004218409332724497,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 4,
-          "population_index": 149,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.0291830211712939,
-            0.0,
-            0.0,
-            4.815459306341477
-          ],
-          "ga_fitness": 0.9999990630497982,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0016974138165318,
-            "trend_fraction": 0.0006072098828778407,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 5,
-          "population_index": 18,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02918516484303052,
-            0.0,
-            0.0,
-            1.419315747728339
-          ],
-          "ga_fitness": 0.9999990545344564,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0014267643121249,
-            "trend_fraction": 0.00010594634610764057,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 6,
-          "population_index": 82,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029427114997391368,
-            0.0,
-            0.0,
-            3.6784559681810434
-          ],
-          "ga_fitness": 0.9999989920727742,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.00010341911833,
-            "trend_fraction": 0.00020974848859506436,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 7,
-          "population_index": 179,
-          "ga_genome": [
-            0.047783628045163846,
-            0.0,
-            0.0,
-            -0.09569346639227433,
-            0.0,
-            0.0,
-            3.8161607044881047
-          ],
-          "ga_fitness": 0.9977878804811589,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.000368461824753,
-            "trend_fraction": 0.007570736300895546,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 8,
-          "population_index": 181,
-          "ga_genome": [
-            0.056296622927980176,
-            0.0,
-            0.0,
-            -0.11170492545042765,
-            0.0,
-            0.0,
-            4.45468020759417
-          ],
-          "ga_fitness": 0.9970052735516581,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9982453056699434,
-            "trend_fraction": 0.008036821380215503,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DEO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        }
-      ],
-      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
-    },
-    {
-      "partition": "C",
-      "seed_index": 1,
-      "seed": 584012,
-      "band": "paper",
-      "own_target_families": [
-        "C"
-      ],
-      "own_family_recovered_this_seed": true,
-      "population_size": 200,
-      "fitness_floor": 0.9,
-      "distance_threshold": 0.1,
-      "n_above_floor": 200,
-      "n_clusters": 13,
-      "n_bounded": 13,
-      "n_unmatched_bounded": 9,
-      "clusters": [
-        {
-          "cluster_rank": 0,
-          "population_index": 134,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029052853591053973,
-            0.0,
-            0.0,
-            5.460971606144364
-          ],
-          "ga_fitness": 0.9999992492165629,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0058392013116535,
-            "trend_fraction": 0.007116552457205255,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 1,
-          "population_index": 120,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029052879202424775,
-            0.0,
-            0.0,
-            0.7799812939218307
-          ],
-          "ga_fitness": 0.9999992487189535,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.00523274577361,
-            "trend_fraction": 0.0064198675465105435,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 2,
-          "population_index": 103,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029056669336058383,
-            0.0,
-            0.0,
-            6.234144360827336
-          ],
-          "ga_fitness": 0.9999992281575754,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.001606535316425,
-            "trend_fraction": 0.0020156486347778424,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 3,
-          "population_index": 178,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029052854988037835,
+            -0.02903699875554,
             0.0,
             0.0,
             0.0
           ],
-          "ga_fitness": 0.9999992271017616,
+          "ga_fitness": 0.9999992310656101,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0023884788258504,
-            "trend_fraction": 0.0031561182015239137,
+            "growth_ratio": 1.0030566515910413,
+            "trend_fraction": 0.0041687700371097905,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1640,21 +1480,21 @@
         },
         {
           "cluster_rank": 4,
-          "population_index": 91,
+          "population_index": 69,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029365070287456052,
+            -0.029199267977196575,
             0.0,
             0.0,
-            2.3224469133995975
+            4.7492045189367875
           ],
-          "ga_fitness": 0.9999991258890193,
+          "ga_fitness": 0.9999990513815556,
           "drift": {
             "bounded": true,
-            "growth_ratio": 0.9996908530224178,
-            "trend_fraction": 5.0257402968646255e-05,
+            "growth_ratio": 1.0003561032104982,
+            "trend_fraction": 0.0005564910957985378,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
@@ -1692,727 +1532,131 @@
         },
         {
           "cluster_rank": 5,
-          "population_index": 75,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02939188597476855,
-            0.0,
-            0.0,
-            3.78589454448258
-          ],
-          "ga_fitness": 0.9999990976231499,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0003117285934269,
-            "trend_fraction": 0.001300663604240073,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 6,
-          "population_index": 79,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02935471898628278,
-            0.0,
-            0.0,
-            2.9534388237723146
-          ],
-          "ga_fitness": 0.9999990902044322,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0013086920933456,
-            "trend_fraction": 0.00157449199987794,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 7,
-          "population_index": 52,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02917190769900846,
-            0.0,
-            0.0,
-            4.712387481990846
-          ],
-          "ga_fitness": 0.9999989686985957,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0015054587591994,
-            "trend_fraction": 0.002402277886368116,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 8,
-          "population_index": 180,
-          "ga_genome": [
-            0.03664739439721776,
-            0.0,
-            0.0,
-            -0.07429145709012902,
-            0.0,
-            0.0,
-            3.233631500152902
-          ],
-          "ga_fitness": 0.9987474031758009,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.004037506351256,
-            "trend_fraction": 0.004494978973155064,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 9,
-          "population_index": 95,
-          "ga_genome": [
-            0.0440231124250378,
-            0.0,
-            0.0,
-            -0.08800150537584012,
-            0.0,
-            0.0,
-            4.132352491538816
-          ],
-          "ga_fitness": 0.9981570846568498,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9971565803161245,
-            "trend_fraction": 0.007015262692582451,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 10,
-          "population_index": 41,
-          "ga_genome": [
-            0.05378689513022951,
-            0.0,
-            0.0,
-            -0.10753033312678578,
-            0.0,
-            0.0,
-            3.4361169642009513
-          ],
-          "ga_fitness": 0.9970786118413466,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.99591989011125,
-            "trend_fraction": 0.0040493702763825,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DEO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 11,
-          "population_index": 105,
-          "ga_genome": [
-            0.05983810065183826,
-            0.0,
-            0.0,
-            -0.11768002065775918,
-            0.0,
-            0.0,
-            5.362796834233907
-          ],
-          "ga_fitness": 0.9965772489220184,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9946935687643467,
-            "trend_fraction": 0.006094939999954257,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DEO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 12,
-          "population_index": 197,
-          "ga_genome": [
-            0.06328631131158649,
-            0.0,
-            0.0,
-            -0.12511069307222744,
-            0.0,
-            0.0,
-            4.562063352466752
-          ],
-          "ga_fitness": 0.9961898620571865,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0008606553092454,
-            "trend_fraction": 0.007128461677743885,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DEO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        }
-      ],
-      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
-    },
-    {
-      "partition": "C",
-      "seed_index": 2,
-      "seed": 585021,
-      "band": "paper",
-      "own_target_families": [
-        "C"
-      ],
-      "own_family_recovered_this_seed": true,
-      "population_size": 200,
-      "fitness_floor": 0.9,
-      "distance_threshold": 0.1,
-      "n_above_floor": 200,
-      "n_clusters": 11,
-      "n_bounded": 11,
-      "n_unmatched_bounded": 7,
-      "clusters": [
-        {
-          "cluster_rank": 0,
-          "population_index": 125,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02905308211433072,
-            0.0,
-            0.0,
-            0.7715683680363116
-          ],
-          "ga_fitness": 0.9999992501056606,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0051144711443258,
-            "trend_fraction": 0.006316542974866413,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 1,
-          "population_index": 180,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.0290534574373284,
-            0.0,
-            0.0,
-            5.436427913532479
-          ],
-          "ga_fitness": 0.9999992498082187,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0060958399827367,
-            "trend_fraction": 0.007517380281457692,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 2,
-          "population_index": 14,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02903941146308542,
-            0.0,
-            0.0,
-            6.239658417985519
-          ],
-          "ga_fitness": 0.9999992350716778,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0036545026488084,
-            "trend_fraction": 0.005088057172188847,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 3,
-          "population_index": 120,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029036786413992932,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "ga_fitness": 0.9999992310779781,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0030060995111547,
-            "trend_fraction": 0.0041105597727846225,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [
-            "C"
-          ],
-          "candidate_type": "DRO",
-          "ready_for_literature_check": false
-        },
-        {
-          "cluster_rank": 4,
-          "population_index": 147,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029365257366878283,
-            0.0,
-            0.0,
-            2.3224469133995975
-          ],
-          "ga_fitness": 0.999999125774689,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.999670827971742,
-            "trend_fraction": 7.137686244401615e-05,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 5,
-          "population_index": 148,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.02938819572548107,
-            0.0,
-            0.0,
-            3.7582529311948574
-          ],
-          "ga_fitness": 0.9999990932489007,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9999709657356883,
-            "trend_fraction": 0.0007859187039485568,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 6,
-          "population_index": 30,
-          "ga_genome": [
-            0.0066845,
-            0.0,
-            0.0,
-            -0.029350160744355536,
-            0.0,
-            0.0,
-            3.006602343492968
-          ],
-          "ga_fitness": 0.9999990839169791,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 1.0007237251500236,
-            "trend_fraction": 0.0011288182712487643,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 7,
           "population_index": 101,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029193900532367145,
+            -0.029278955894820158,
             0.0,
             0.0,
-            4.771363350791951
+            3.9331267395916183
           ],
-          "ga_fitness": 0.9999990552674546,
+          "ga_fitness": 0.9999988319991724,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0006337010519666,
-            "trend_fraction": 0.0005442286877355535,
+            "growth_ratio": 0.9971206841033518,
+            "trend_fraction": 0.004183612751186866,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
           "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 2,
+          "ga_genome": [
+            0.06233943317348078,
+            0.0,
+            0.0,
+            -0.12296466928044442,
+            0.0,
+            0.0,
+            4.871209920614176
+          ],
+          "ga_fitness": 0.9963091200751872,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9985696535524664,
+            "trend_fraction": 0.004039459052927967,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 14,
+          "ga_genome": [
+            0.06234677362278774,
+            0.0,
+            0.0,
+            -0.12233515680356305,
+            0.0,
+            0.0,
+            5.723282320933882
+          ],
+          "ga_fitness": 0.9962875067513587,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9907541824678596,
+            "trend_fraction": 0.006206013373467645,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -2444,27 +1688,415 @@
         },
         {
           "cluster_rank": 8,
-          "population_index": 173,
+          "population_index": 104,
+          "ga_genome": [
+            0.06532679366527329,
+            0.0,
+            0.0,
+            -0.12996219800085812,
+            0.0,
+            0.0,
+            3.534081823459084
+          ],
+          "ga_fitness": 0.9956369188240837,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0009496948765875,
+            "trend_fraction": 0.009507573848047393,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        }
+      ],
+      "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this harvest pass only confirms the structural matcher engages (non-empty anchor pool via _er3bp_literature_anchors_engaged()) and that the candidate matches NONE of the 14 published Table 3/4 families; it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+    },
+    {
+      "partition": "B",
+      "seed_index": 2,
+      "seed": 585019,
+      "band": "paper",
+      "own_target_families": [
+        "B"
+      ],
+      "own_family_recovered_this_seed": false,
+      "population_size": 200,
+      "fitness_floor": 0.9,
+      "distance_threshold": 0.1,
+      "n_above_floor": 200,
+      "n_clusters": 10,
+      "n_bounded": 10,
+      "n_unmatched_bounded": 6,
+      "clusters": [
+        {
+          "cluster_rank": 0,
+          "population_index": 47,
           "ga_genome": [
             0.0066845,
             0.0,
             0.0,
-            -0.029223945580707844,
+            -0.02905275743199809,
             0.0,
             0.0,
-            1.5796167166930222
+            5.44869376626305
           ],
-          "ga_fitness": 0.9999990347940745,
+          "ga_fitness": 0.9999992511539407,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0002287122898865,
-            "trend_fraction": 0.0008910238222182657,
+            "growth_ratio": 1.005982065998282,
+            "trend_fraction": 0.007348874400869577,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 1,
+          "population_index": 89,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029053153476923055,
+            0.0,
+            0.0,
+            0.7712086525726348
+          ],
+          "ga_fitness": 0.9999992502128008,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.005074425421659,
+            "trend_fraction": 0.006270653301181758,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 2,
+          "population_index": 139,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.02905273577874823,
+            0.0,
+            0.0,
+            6.258641616030619
+          ],
+          "ga_fitness": 0.9999992290257373,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0025435583739462,
+            "trend_fraction": 0.003495905273651658,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 3,
+          "population_index": 26,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029052734963840976,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "ga_fitness": 0.9999992271507119,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0023884183206473,
+            "trend_fraction": 0.003191032342964949,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [
+            "C"
+          ],
+          "candidate_type": "DRO",
+          "ready_for_literature_check": false
+        },
+        {
+          "cluster_rank": 4,
+          "population_index": 43,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029188281164781282,
+            0.0,
+            0.0,
+            4.786020057854614
+          ],
+          "ga_fitness": 0.9999990536412143,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0010957280693986,
+            "trend_fraction": 0.00013252096933644362,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
           },
           "family_matches": [],
           "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 5,
+          "population_index": 97,
+          "ga_genome": [
+            0.0066845,
+            0.0,
+            0.0,
+            -0.029188281164781282,
+            0.0,
+            0.0,
+            1.4308205787705526
+          ],
+          "ga_fitness": 0.9999990516237246,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0011696464813016,
+            "trend_fraction": 0.0003349904413626681,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DRO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 6,
+          "population_index": 142,
+          "ga_genome": [
+            0.05191755708734739,
+            0.0,
+            0.0,
+            -0.10330897339231077,
+            0.0,
+            0.0,
+            4.319689898228804
+          ],
+          "ga_fitness": 0.997449099051539,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 0.9873432480364143,
+            "trend_fraction": 0.0049962844624636335,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 7,
+          "population_index": 132,
+          "ga_genome": [
+            0.05889223861060378,
+            0.0,
+            0.0,
+            -0.11596687722857268,
+            0.0,
+            0.0,
+            5.098951015135061
+          ],
+          "ga_fitness": 0.9966435595643698,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0013187675820288,
+            "trend_fraction": 0.005643293830061713,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
+          "candidate_signature": {
+            "primary": "Sun",
+            "sequence": [
+              "E"
+            ]
+          },
+          "literature_anchors_engaged": [
+            "Aldrin Earth-Mars cycler",
+            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
+            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
+            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
+            "Vasile-Conway MGA-DSM optimisation (2006)",
+            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
+            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
+            "McConaghy Earth-Mars cycler dissertation (2004)",
+            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
+            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
+            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
+            "Ceriotti GTOC-style MGA chain optimisation (2010)",
+            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
+            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
+            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
+            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
+            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
+            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
+            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
+          ],
+          "ready_for_literature_check": true
+        },
+        {
+          "cluster_rank": 8,
+          "population_index": 156,
+          "ga_genome": [
+            0.05889223505277297,
+            0.0,
+            0.0,
+            -0.11597450254856945,
+            0.0,
+            0.0,
+            0.7840559303906006
+          ],
+          "ga_fitness": 0.9966247387779922,
+          "drift": {
+            "bounded": true,
+            "growth_ratio": 1.0095995848690378,
+            "trend_fraction": 0.003450621897954279,
+            "terminated_early": false,
+            "termination_reason": "",
+            "n_windows_complete": 50
+          },
+          "family_matches": [],
+          "candidate_type": "DEO",
           "candidate_signature": {
             "primary": "Sun",
             "sequence": [
@@ -2496,73 +2128,21 @@
         },
         {
           "cluster_rank": 9,
-          "population_index": 48,
+          "population_index": 33,
           "ga_genome": [
-            0.045629446579280884,
+            0.06512551746896258,
             0.0,
             0.0,
-            -0.09165607429846562,
+            -0.12925349702808386,
             0.0,
             0.0,
-            3.490573283646489
+            3.9268470057397495
           ],
-          "ga_fitness": 0.997959389712062,
+          "ga_fitness": 0.9957732182486847,
           "drift": {
             "bounded": true,
-            "growth_ratio": 1.0005232202351901,
-            "trend_fraction": 0.005135653736095252,
-            "terminated_early": false,
-            "termination_reason": "",
-            "n_windows_complete": 50
-          },
-          "family_matches": [],
-          "candidate_type": "DRO",
-          "candidate_signature": {
-            "primary": "Sun",
-            "sequence": [
-              "E"
-            ]
-          },
-          "literature_anchors_engaged": [
-            "Aldrin Earth-Mars cycler",
-            "Russell-Ocampo / McConaghy Earth-Mars SnLm cyclers",
-            "Jones et al. VEM triple cyclers (Venus-Earth-Mars)",
-            "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277)",
-            "Vasile-Conway MGA-DSM optimisation (2006)",
-            "Hughes-Edelman-Longuski VEM cycler extensions (2014)",
-            "Genova-Aldrin purple Earth-Mars cycler precursors (2015)",
-            "McConaghy Earth-Mars cycler dissertation (2004)",
-            "McConaghy-Longuski-Byrnes Earth-Mars cycler trajectory class analysis (2004)",
-            "McConaghy-Russell-Longuski Earth-Mars cycler standard nomenclature (2005)",
-            "Rogers-Hughes-Longuski-Aldrin Earth-Mars cycler establishment trajectories (2015)",
-            "Ceriotti GTOC-style MGA chain optimisation (2010)",
-            "Vasile-Campagnola MGA-DSM tour optimisation (2009)",
-            "Diehl-Kaplan-Penzo / D'Amario-Byrnes Galileo design (1983, pre-Challenger)",
-            "D'Amario-Bright-Wolf Galileo VEEGA flown trajectory (1992)",
-            "Tito-MacCallum 2018 Mars free-return mission design (2013)",
-            "Gurfil-Kasdin 2002 geocentric ER3BP orbit-family catalogue",
-            "Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
-            "Henon Sun-Earth distant retrograde orbit family f (foundational)"
-          ],
-          "ready_for_literature_check": true
-        },
-        {
-          "cluster_rank": 10,
-          "population_index": 115,
-          "ga_genome": [
-            0.062403381064296555,
-            0.0,
-            0.0,
-            -0.12287014178532879,
-            0.0,
-            0.0,
-            5.105855052203238
-          ],
-          "ga_fitness": 0.9963018408086692,
-          "drift": {
-            "bounded": true,
-            "growth_ratio": 0.9960287931901157,
-            "trend_fraction": 0.0009089995266867872,
+            "growth_ratio": 0.9980831028388933,
+            "trend_fraction": 0.0038350716386897415,
             "terminated_early": false,
             "termination_reason": "",
             "n_windows_complete": 50
