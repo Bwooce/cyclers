@@ -2031,6 +2031,60 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # venue/DOI also independently cross-confirmed via CrossRef 2026-07-13.
         provenance="verified-against-source",
     ),
+    # -----------------------------------------------------------------------
+    # Task #588 -- surfaced during the live literature-check phase of the
+    # #583/#586 widened-domain sweep's candidate adjudication. A DIFFERENT
+    # Gurfil-Kasdin paper from the one above (same journal/year/authors, but
+    # a genuinely distinct problem formulation -- confirmed via CrossRef +
+    # full-text read, not just title similarity; see
+    # docs/notes/2026-07-14-588-gurfil-companion-papers-digest.md). Filed so
+    # any FUTURE search reaching this paper's much larger z-excursion/Earth-
+    # distance regime engages it structurally, per
+    # [[feedback_literature_novelty_check_baseline]]. (The 2003 SPIE paper
+    # also surfaced in the same search was independently verified to be the
+    # SAME 14-family census as the anchor above -- not a second anchor.)
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Gurfil-Kasdin 2002 out-of-ecliptic large-displacement trajectories (Type I/II/III)",
+        primary="Sun",
+        system="heliocentric",
+        body_set=frozenset({"E"}),
+        authors=("Gurfil", "Kasdin"),
+        keywords=(
+            "out-of-ecliptic trajectory Sun-Earth",
+            "deterministic crowding genetic algorithm large normal displacement",
+            "zodiacal dust reduction trajectory",
+            "spatial circular restricted three-body problem Earth-centered",
+        ),
+        citation=(
+            "Gurfil, P. & Kasdin, N. J., 'Characterization and design of "
+            "out-of-ecliptic trajectories using deterministic crowding "
+            "genetic algorithms,' Computer Methods in Applied Mechanics and "
+            "Engineering 191(20-21):2141-2158 (2002), DOI "
+            "10.1016/S0045-7825(01)00380-2. Circular (not elliptic) Sun-Earth "
+            "RTBP, objective = maximize out-of-ecliptic displacement z^2 "
+            "(not periodicity/boundedness); search box out to 1-5 AU from "
+            "Earth, v0 up to 15.4 km/s. Reports 3 qualitative trajectory "
+            "types (I/II/III, by in-plane vs. out-of-plane frequency ratio) "
+            "from isolated best-fitness GA runs, NOT a bounded-family "
+            "catalogue -- reported z-excursions 0.223-0.374 AU (33-56M km), "
+            "Earth distances up to several AU. Independently confirmed via "
+            "CrossRef + full-text read 2026-07-14; does not structurally "
+            "cover the #583/#586/#588 bounded-candidate pool (largest "
+            "unmatched cluster there: 40.8M km, still an order of magnitude "
+            "below this paper's regime) -- filed for future large-excursion "
+            "searches (#589), not a closure of that gap."
+        ),
+        doi="10.1016/S0045-7825(01)00380-2",
+        key="gurfil-kasdin-2002-out-of-ecliptic-trajectories",
+        year=2002,
+        title=(
+            "Characterization and design of out-of-ecliptic trajectories "
+            "using deterministic crowding genetic algorithms"
+        ),
+        venue="Computer Methods in Applied Mechanics and Engineering 191(20-21):2141-2158",
+        provenance="verified-against-source",
+    ),
     CorpusAnchor(
         name="Sun-Earth co-orbital quasi-satellite / horseshoe dynamics (Cruithne, Kamo'oalewa)",
         primary="Sun",
