@@ -3705,7 +3705,32 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   fitness-function/objective build, not a mechanical follow-up, and should get a Fable design read on
   the objective-function choice and search-box scoping before any code is written (matching #581's own
   gating precedent for introducing a new niching-GA capability).
-  **Not yet dispatched.**
+  **Fable design review (2026-07-14): NO-GO on the 3-stage plan as scoped / SCOPE-DOWN** — see
+  `docs/notes/2026-07-14-589-fable-design-review.md` (source paper read in full). Two premises above
+  are factually wrong against the paper's own text: (a) the paper's titular method IS a
+  deterministic-crowding niching GA (pop 150 x 300 gens per set) — the un-run part is only the
+  multi-seed/cluster-everything harvest; (b) "search box out to 1-5 AU" misreads Table 2 — the IC box
+  is r0 <= 150,000 km near-Earth departures (design cases: 200-km LEO / GEO), and 1-5 AU is `rmax`, a
+  PATH constraint, which is also the paper's real structure-carrying axis (rmax sweep -> Type
+  I/II/III), not a niche map. Further: z²-max optima sit on the IC-box boundary (the paper's own
+  Fig. 2 shows corner convergence, the only "niches" being the trivial +-z mirror pair), so a niching
+  harvest is a category error here; the paper prints NO optimal ICs, so the positive control reduces
+  to matching 2 scalars that two-body v_inf/plane-change arithmetic already reproduces to ~90-95%;
+  Type I/II/III is exhaustive by construction (the 3 orderings of one frequency ratio — no 4th type
+  exists to find); the class is non-returning by design so it fits NONE of the 4 catalogue classes;
+  and the proposed reuse is structurally broken — the 0.5 AU terminal escape event hard-wired into
+  `gurfil_kasdin_fitness`/`characterize()`/`classify_bounded_drift` kills every 1-5 AU target
+  trajectory on sight (per #590, boundedness gates are the wrong lens even for the bounded families,
+  a fortiori for an admittedly-drifting class). **Recommended instead:** a half-day analytic
+  characterization note (conic accounting of the published scalars + taxonomy-exhaustiveness +
+  Table 2 encoding derivation — the review note already contains the core numbers), then file the
+  regime as empty-of-catalogue-relevant-structure by construction; any future reproduction gated on
+  an unexplained analytic residual and spec'd as its own small circular-CR3BP (e=0, no theta0) build
+  with a new frequency-ratio characterization layer, never judged by the bounded-drift stack. A
+  salvageable reframing (separate task, not #589): max out-of-ecliptic excursion SUBJECT TO
+  boundedness across the validated #581-#586 families — defined success predicate, honest infra
+  reuse, catalogue-relevant output.
+  **Not dispatched; do not dispatch as scoped.**
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
