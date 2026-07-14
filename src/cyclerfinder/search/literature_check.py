@@ -2169,6 +2169,173 @@ KNOWN_CORPUS: tuple[CorpusAnchor, ...] = (
         # decision (the #486 can_anchor_decision gate already enforces this).
         provenance="inherited-unverified",
     ),
+    # -----------------------------------------------------------------------
+    # Task #590 -- targeted quasi-satellite-orbit (QSO) literature search for
+    # the 6 #588-flagged unmatched clusters (40/42/43 primary, 24/25/39
+    # secondary). Fable's #588 adversarial review found the 2025-2026
+    # ER3BP-bifurcation papers an earlier pass cited for this 4-13M km
+    # inclined 3D Sun-Earth regime were never grounded and are topic-adjacent
+    # (planar or cis-lunar), not on point -- the actually-relevant prior art
+    # is the classical quasi-satellite-orbit literature, since Gurfil-Kasdin's
+    # "3D DRO"/DEO families ARE, by established nomenclature (Henon 1969's
+    # family f; see the anchor above), the same retrograde-satellite/QS
+    # continuum studied there via a complementary (secular-averaged
+    # osculating-element) formalism instead of direct rotating-frame
+    # propagation. Both DOIs below were independently confirmed via direct
+    # CrossRef API resolution AND a full-text read 2026-07-14 (not merely a
+    # title match) -- see docs/notes/2026-07-14-590-followup-results.md for
+    # the verification trail and the one honest non-anchor (Lidov &
+    # Vashkov'yak 1993/1994a/b, below).
+    # -----------------------------------------------------------------------
+    CorpusAnchor(
+        name="Mikkola et al. 2006 quasi-satellite stability theory (inclination-dependent capture)",
+        primary="Sun",
+        system="heliocentric",
+        body_set=frozenset({"E"}),
+        topology_label=frozenset({"quasi-satellite", "retrograde-satellite"}),
+        authors=("Mikkola", "Innanen", "Wiegert", "Connors", "Brasser"),
+        keywords=(
+            "quasi-satellite orbit stability",
+            "inclined retrograde satellite Earth",
+            "temporary capture quasi-satellite",
+            "secular theta oscillation potential",
+        ),
+        citation=(
+            "Mikkola, S., Innanen, K., Wiegert, P., Connors, M. & Brasser, R., "
+            "'Stability limits for the quasi-satellite orbit,' Monthly Notices "
+            "of the Royal Astronomical Society 369(1):15-24 (2006), DOI "
+            "10.1111/j.1365-2966.2006.10306.x. Full-text-verified 2026-07-14: "
+            "a secular-averaged perturbation theory (osculating heliocentric "
+            "elements a, e, I, omega, Omega, M) for asteroid/Earth-mass-ratio "
+            "(mu=3e-6, i.e. the SAME Sun-Earth mass fraction as "
+            "MU_SUN_EARTH_GURFIL_KASDIN) quasi-satellite motion. Real Earth-QS "
+            "examples (2003 YN107, 2004 GU9) reach geocentric distances of "
+            "order sigma*a1 ~ 0.1-0.2 AU (1.5e7-3e7 km) -- the SAME order of "
+            "magnitude as the #588 4-13M km unmatched-cluster pool. Headline "
+            "result directly relevant to the #588/#590 bounded-vs-divergent "
+            "question: permanently stable QS motion requires SMALL inclination "
+            "(I < |e - e1|); for large inclination (the #588 3D-DRO regime), "
+            "only TEMPORARY capture occurs, with eventual escape to horseshoe/ "
+            "unbound motion on a case-dependent timescale (years to ~1000 yr "
+            "in their real examples). Does NOT provide a tabulated orbit-"
+            "family catalogue comparable to Gurfil-Kasdin's Table 4 (no "
+            "rmin/rmax entries to check specific cluster ICs against) -- so "
+            "it does not itself close the #588 gap, but it independently "
+            "predicts and explains the #590 step-3 long-horizon finding that "
+            "clusters 40/42 (and even Family J's own literal published IC) "
+            "eventually escape rather than staying bounded indefinitely."
+        ),
+        doi="10.1111/j.1365-2966.2006.10306.x",
+        key="mikkola-2006-qso-stability",
+        year=2006,
+        title="Stability limits for the quasi-satellite orbit",
+        venue="Monthly Notices of the Royal Astronomical Society 369(1):15-24",
+        provenance="verified-against-source",
+    ),
+    CorpusAnchor(
+        name="Sidorenko et al. 2014 spatial quasi-satellite dynamics (1:1 MMR perturbative)",
+        primary="Sun",
+        system="heliocentric",
+        body_set=frozenset({"E"}),
+        topology_label=frozenset({"quasi-satellite", "retrograde-satellite"}),
+        authors=("Sidorenko", "Neishtadt", "Artemyev", "Zelenyi"),
+        keywords=(
+            "spatial quasi-satellite orbit",
+            "1:1 mean motion resonance perturbative treatment",
+            "quasi-satellite transition horseshoe",
+        ),
+        citation=(
+            "Sidorenko, V. V., Neishtadt, A. I., Artemyev, A. V. & Zelenyi, "
+            "L. M., 'Quasi-satellite orbits in the general context of "
+            "dynamics in the 1:1 mean motion resonance: perturbative "
+            "treatment,' Celestial Mechanics and Dynamical Astronomy "
+            "120:131-162 (2014), DOI 10.1007/s10569-014-9565-4. Abstract-"
+            "verified 2026-07-14 (paywalled full text): a SPATIAL (3D, "
+            "inclination-inclusive) but CIRCULAR restricted three-body "
+            "problem 'Sun-planet-asteroid' double-averaged perturbative "
+            "treatment, generic to any planet (not Sun-Earth-specific), for "
+            "small-eccentricity/small-inclination asteroid motion. Covers "
+            "possible transitions between quasi-satellite and other 1:1-"
+            "resonance regimes. Generic-planet scope and no tabulated IC/"
+            "distance data means it does not itself provide a direct "
+            "comparison point for the #588 cluster pool, but corroborates "
+            "the Mikkola et al. 2006 anchor's inclination-dependent "
+            "instability picture from an independent (double-averaging, "
+            "vs. secular-theta-potential) analytical route."
+        ),
+        doi="10.1007/s10569-014-9565-4",
+        key="sidorenko-2014-spatial-qso",
+        year=2014,
+        title=(
+            "Quasi-satellite orbits in the general context of dynamics in "
+            "the 1:1 mean motion resonance: perturbative treatment"
+        ),
+        venue="Celestial Mechanics and Dynamical Astronomy 120:131-162",
+        provenance="verified-against-source",
+    ),
+    CorpusAnchor(
+        name="Pousse-Robutel-Vienne 2017 quasi-satellite/family-f terminology bridge (planar)",
+        primary="Sun",
+        system="heliocentric",
+        body_set=frozenset({"E"}),
+        topology_label=frozenset({"quasi-satellite", "retrograde-satellite"}),
+        authors=("Pousse", "Robutel", "Vienne"),
+        keywords=(
+            "quasi-satellite retrograde satellite terminology",
+            "family f reduced averaged problem",
+            "heliocentric quasi-satellite domain",
+        ),
+        citation=(
+            "Pousse, A., Robutel, P. & Vienne, A., 'On the co-orbital motion "
+            "in the planar restricted three-body problem: the quasi-"
+            "satellite motion revisited,' Celestial Mechanics and Dynamical "
+            "Astronomy 128:383-407 (2017), DOI 10.1007/s10569-016-9749-1 "
+            "(arXiv:1603.06543). Full-text-verified 2026-07-14 (arXiv "
+            "preprint): PLANAR ONLY (2D; no inclination/z -- 3D effects are "
+            "explicitly deferred to 'a forthcoming work' in the paper's own "
+            "conclusion) restricted three-body problem, circular in the main "
+            "analysis with a section extending to an eccentric planet orbit "
+            "(closer to Gurfil-Kasdin's own ER3BP, but still planar). "
+            "Directly confirms Henon's (1969) 'family f' -- the SAME "
+            "foundational retrograde-satellite/DRO family already anchored "
+            "above -- is ONE CONTINUOUS one-parameter curve from an "
+            "infinitesimal neighbourhood of Earth to Sun-collision (X in "
+            "[0,1] AU), and that for small-mass-ratio (terrestrial-planet-"
+            "like, i.e. Sun-Earth mu~3e-6) systems the heliocentric "
+            "quasi-satellite (QSh) domain DOMINATES nearly the entire family "
+            "f curve. This corroborates (does not itself newly establish) "
+            "the #588 finding that Gurfil-Kasdin's planar DRO families "
+            "A/B/C/F sit on Henon's curve and that curve EXTENSION beyond "
+            "the paper's own 12 sampled sets is expected, not novel -- but "
+            "being planar-only, this specific paper does NOT cover the "
+            "3D/inclined regime clusters 40/42/43 sit in (Mikkola 2006 and "
+            "Sidorenko 2014, above, are the on-point 3D sources)."
+        ),
+        doi="10.1007/s10569-016-9749-1",
+        key="pousse-robutel-vienne-2017-qs-revisited",
+        year=2017,
+        title=(
+            "On the co-orbital motion in the planar restricted three-body "
+            "problem: the quasi-satellite motion revisited"
+        ),
+        venue="Celestial Mechanics and Dynamical Astronomy 128:383-407",
+        provenance="verified-against-source",
+    ),
+    # Lidov & Vashkov'yak 1993 ("Theory of perturbations and analysis of the
+    # evolution of quasi-satellite orbits in the restricted three-body
+    # problem," Kosmicheskie Issledovaniia 31:75-99) and 1994a/b (Astronomy
+    # Letters 20:188-198 and 20:676-690) are NOT added as anchors here: a
+    # direct CrossRef lookup (by DOI-shaped query and by bibliographic
+    # title/author search, 2026-07-14) returned no match for any of the
+    # three -- pre-DOI-era Russian-journal papers CrossRef appears not to
+    # have indexed (the same honest gap pattern as the Henon 1969 anchor
+    # above). Their existence, authors, titles and journals are corroborated
+    # only by secondary citation (both Mikkola et al. 2006 and
+    # Pousse-Robutel-Vienne 2017's own reference lists, independently cross-
+    # checked against each other above) -- not source-grounded. Per
+    # [[feedback_ground_citations_against_content]], do not add these as a
+    # CorpusAnchor until someone opens the actual Kosmicheskie
+    # Issledovaniia/Astronomy Letters text or an ADS bibcode.
 )
 
 
