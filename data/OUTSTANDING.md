@@ -5768,7 +5768,22 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
 **TASK ALLOCATIONS (next-unused per [[project_task_numbering_convention]]; #487-#496 used earlier; #497-#503 here):**
 - **#497** — #249 gate recalibration: set `DV_CAP_MS` ≈ 51 m/s (from #495: C32 wins centrality in 80% of
   Braik's budget sweep there; our xfail gate uses 409.3 = near-full connectivity, no betweenness signal) →
-  flip the C32-dominance gate. [active follow-on]
+  flip the C32-dominance gate.
+  **TESTED AND REFUTED (2026-07-15).** Before dispatching this as "ready," checked the actual test
+  file (`tests/search/test_reachable_network_gate.py`) — found the premise was already stale:
+  #513's later R52-U node recovery already got the gate to 2/3 metrics matching Braik's Table 4
+  (strength, harmonic-closeness), leaving only betweenness (C21 narrowly beats C32, ~9%), still
+  computed at the ORIGINAL 409.3 cap. Ran the actual experiment #497 proposed (recalibrating
+  `dv_cap_ms`) on the R52-U-recovered 13-node network, sweeping 51.16-409.3 m/s: **C32 never wins
+  betweenness at any tested value** — at the tightest, Braik-matching cap it gets WORSE (betweenness
+  drops from 0.3485 to 0.1364, C11a takes over entirely). This is a clean, decisive negative, not
+  an unconfirmed follow-on: cap recalibration is not the fix. Updated the xfail test's own reason
+  to record this (so it isn't re-proposed) and confirmed the residual cause is genuinely
+  proxy-fidelity/topology-difference from Braik's own DVmatrix, not a tunable parameter — that
+  deeper investigation (edge-by-edge comparison against Braik's DVmatrix.csv) is NOT done here,
+  flagged as the real next step if anyone wants to pursue it further.
+  `docs/notes/2026-07-15-497-dv-cap-recalibration-refuted.md`.
+  **#497 STATUS: CLOSED (refuted, not resolved).**
 - **#498** — Acquire+mine MOON-TOUR / GRAVITY-ASSIST Ross papers (all MISSING): "Design of a multi-moon
   orbiter" (Ross-Koon-Lo-Marsden 2003, AAS 03-143); "Multiple gravity assists, capture, and escape in the
   RTBP" (Ross-Scheeres 2007, SIADS 6(3), +control-map software); "Constructing a low energy transfer between
