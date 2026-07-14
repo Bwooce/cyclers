@@ -5862,9 +5862,27 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   convention (best fits miss one or the other by 15-20%). Leading unverified hypothesis: Table 3.4's
   own header "Earth→Mars **(or aphelion)** Time" suggests the ToF column measures time-to-aphelion for
   some rows, not always time-to-Mars-crossing — needs Russell Ch.3.5-3.8 re-read for the exact
-  definition before any inversion is trustworthy. **Full backfill BLOCKED pending this domain
-  question, NOT ready-to-execute as first assessed.** Do not attempt the 216+38-row writeback without
-  first resolving this — see `docs/notes/2026-07-15-596-russell-backfill-pilot-inversion-fails.md`.
+  definition before any inversion is trustworthy.
+  **RESOLVED 2026-07-15 (same day, follow-up re-read).** Re-read Russell Ch.3 (printed pp.56-69):
+  confirmed AR = aphelion/1.52 AU (his own rounding). Dropped the ToF constraint from the fit; using
+  only **AR + V∞_Earth** to invert `(a_au, e)` via `free_return_geometry` + least_squares works and
+  is DOUBLY validated: (1) against Aldrin's known sourced `a=1.60/e=0.393` — fit recovers
+  `a=1.6038/e=0.3932` (0.24%/0.05% error); (2) against cycler `2.5.1.+0`, where Table 3.5 gives the
+  actual 3D v∞ VECTOR at departure, letting `(a,e)` be computed directly via two-body state-vector
+  orbit determination (no fitting at all) — ground truth `a=1.5651/e=0.4010`, the AR+V∞ inversion
+  independently recovers `a=1.5633/e=0.4001` (0.12%/0.22% error). The `2.5.1.+0` case ALSO confirms
+  `tof_em_days` correctly reproduces Table 3.4's ToF column (94.37 emerged vs. 94 tabulated) when fed
+  the true `(a,e)` — so the earlier "ToF mismatch" was an Aldrin-specific quirk (Aldrin is an
+  externally-sourced named cycler, footnoted as such, not one of Russell's own generic-return search
+  results), not a general modeling failure. **Practical backfill recipe validated:** `tof_days` —
+  cite Table 3.4/3.9-3.11's own column directly (matches existing Aldrin catalogue precedent exactly);
+  `a_au`/`e` — derive via the AR+V∞_Earth inversion (`kind: derive`); V∞ at Mars serves as a third,
+  free, non-imposed cross-check on every row. Full writeup:
+  `docs/notes/2026-07-15-596-russell-backfill-method-validated.md` (supersedes the same-day
+  `...-pilot-inversion-fails.md` note, kept for the record). **Method validated, NOT yet executed at
+  scale** — the actual mechanical backfill (parse all rows, map to catalogue IDs, run the inversion
+  per row, write back with citations, add the ~38 missing rows, run the full ratchet) is still a
+  separate, real execution task.
 - **#597** (P3, corpus acquisition, light-digest only) — 4 more Ross-group papers found via a manual
   review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596 session): Kumar-Rawat-
   Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic connections — predecessor
