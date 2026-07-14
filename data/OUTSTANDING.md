@@ -5784,6 +5784,13 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   flagged as the real next step if anyone wants to pursue it further.
   `docs/notes/2026-07-15-497-dv-cap-recalibration-refuted.md`.
   **#497 STATUS: CLOSED (refuted, not resolved).**
+- **#595** (P2, repo-hygiene / documentation-accuracy) — discovered the #498/#499/#503 acquisition
+  status in this file was stale (see the #498/#499/#503 entries below for the full detail): the user
+  re-uploaded 5 PDFs already byte-identical to files acquired 2026-06-30 (commit `6dfedab`, 16-paper
+  ross.aoe.vt.edu batch); all 12 #498/#499 papers and all 4 #503 papers were already acquired,
+  digested, and `CORPUS_INDEX.md`-registered that day but this tracker was never updated.
+  **#595 STATUS: CLOSED** — #498/#499 marked CLOSED, #503's acquisition sub-task closed (its
+  "expand #267 goldens" mining step remains open), #500's #498-gate cleared.
 - **#498** — Acquire+mine MOON-TOUR / GRAVITY-ASSIST Ross papers.
   **STATUS CORRECTED 2026-07-15: this "(all MISSING)" framing is STALE.** All 6 papers were already
   acquired directly from ross.aoe.vt.edu AND digested on 2026-06-30 (commit `6dfedab`, 16-paper batch),
