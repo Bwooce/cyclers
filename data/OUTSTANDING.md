@@ -5854,6 +5854,17 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   numeric-gap structure still valid). **Follow-on work identified but NOT done here:** the actual
   Russell Table 3.4/3.9–3.11/4.9–4.13 per-row backfill (mechanical, source in hand, ~216+38 rows) is
   a real, ready-to-execute task — no longer blocked on access.
+  **PILOT RUN 2026-07-15, CLEAN NEGATIVE — NOT actually mechanical.** Tried inverting Table 3.4's
+  (AR, ToF, V∞_E, V∞_M) columns to `(a_au, e)` via `free_return_geometry` + least_squares against the
+  Aldrin row (positive control: known sourced `a=1.60/e=0.393`). Neither a local fit near the known
+  answer nor a 29-point global multi-start search found any `(a,e)` that simultaneously satisfies all
+  three Table 3.4 columns — ToF and V∞ are mutually inconsistent under this project's radial-crossing
+  convention (best fits miss one or the other by 15-20%). Leading unverified hypothesis: Table 3.4's
+  own header "Earth→Mars **(or aphelion)** Time" suggests the ToF column measures time-to-aphelion for
+  some rows, not always time-to-Mars-crossing — needs Russell Ch.3.5-3.8 re-read for the exact
+  definition before any inversion is trustworthy. **Full backfill BLOCKED pending this domain
+  question, NOT ready-to-execute as first assessed.** Do not attempt the 216+38-row writeback without
+  first resolving this — see `docs/notes/2026-07-15-596-russell-backfill-pilot-inversion-fails.md`.
 - **#597** (P3, corpus acquisition, light-digest only) — 4 more Ross-group papers found via a manual
   review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596 session): Kumar-Rawat-
   Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic connections — predecessor
