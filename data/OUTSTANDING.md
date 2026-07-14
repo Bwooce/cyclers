@@ -1162,7 +1162,22 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   first** — do not fork effort into a second system while the first one's own manifold-branch selection is
   still unresolved. Not yet built.
 - **#533** — ✓ Resolved (2026-07-08). Genuine Coherent QBCP Model: Implemented the QBCP equations of motion and STM in canonical variables using Gimeno-Jorba 2018 Table 4 coefficients, verified against circular BCR4BP limits and finite differences (commit to follow).
+  **Correctness addendum (2026-07-14, #592/#593):** the implemented EOM had a real bug (alpha_6
+  incorrectly scaled the whole Newtonian potential, not just the Sun term per Rosales-Jorba 2023
+  Eq. 3) — fixed under #592. This build-time verification method (FD-against-the-same-formula)
+  could not have caught it by construction; the model itself is still the right deliverable and is
+  now more correct, but any specific past numeric result produced with it (see #537/#544 below)
+  predates the fix and should not be trusted as-is. `docs/notes/2026-07-14-qbcp-alpha6-scaling-fix.md`.
 - ✓ Resolved (2026-07-09) **#537** — QBCP Cross-System Torus Connection Search: Completed the cross-system invariant torus connection search from Sun-Earth L2 Torus to Earth-Moon L2 Torus in the QBCP model, finding a highly accurate refined connection candidate with a 12,034 km position gap and a 911 m/s velocity gap at crossing time 3.66 TU (scripts/run_533_qbcp_connection.py). **Caveat found 2026-07-09 while scoping #538**: the refining `least_squares` solve is a **3-equation/4-unknown rank-deficient system that never includes velocity in its residual** — the 12,034 km / 911 m/s numbers are post-hoc diagnostics from a separate propagation, not quantities the optimizer drove toward zero. Treat as a basin seed for #538's properly-posed solve, not a near-converged boundary condition. Plan: `docs/superpowers/plans/2026-07-09-538-qbcp-cross-system-cycler-correction.md`.
+  **Second, independent staleness reason (2026-07-14, #593, reconciled):** this ran under the
+  pre-#592 buggy `qbcp.py`. #593's full investigation (including reconciling with #544's own prior,
+  reverted attempt at this exact fix) confirmed #592 is a genuine, net-positive correctness fix (the
+  SE-L2 regression #544 originally reported does not reproduce; the POL1-agreement improvement is
+  independently confirmed) — so #592 stays applied. That still means #537's specific numbers were
+  computed under different (buggy) dynamics than current `main` and don't reproduce as-is; not a
+  reason to distrust the fix, just a reason to re-derive fresh rather than patch old numbers. No
+  re-run warranted now (not currently active work); whoever next resumes #538/#539/#540 should
+  re-derive fresh under current `main`. `docs/notes/2026-07-14-593-qbcp-alpha6-impact-scoping.md`.
 - **#538** — QBCP Cross-System Periodic Orbit (Cycler) Correction: Chain the forward and reverse QBCP torus connections refined in #537, set up a multi-segment boundary value problem, and run a differential corrector to converge on a mathematically exact periodic orbit in the time-periodic QBCP model. Verify its stability and transport utility (close approaches to Earth/Moon) to evaluate it as a potential cislunar cycler. Full task breakdown + recommended model per task in `docs/superpowers/plans/2026-07-09-538-qbcp-cross-system-cycler-correction.md`.
   **Task 0 done (2026-07-09):** the preflight-gate blocking finding (all four run_522/533/534/536 scripts now call `preflight_search()`) landed in commit `ede2d0c`.
   **Tasks 1-3 built and run (2026-07-09):** `scripts/run_538_qbcp_cycler.py` implements the well-posed 12-unknown/18-residual multi-segment corrector the plan called for (position+velocity+time+phase-return at both crossings, not #537's underdetermined 3-eq/4-unknown version). Multi-start ballistic (base seed x{lm,trf} + perturbed restarts) and the Task 3 powered fallback both ran to completion; neither reached the 1e-8 target (best ballistic norm 1.068, best powered norm 0.866 with an implied 509.6 m/s leg-1 impulsive dv).
@@ -3833,7 +3848,27 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   derivative, not against the source paper's physics). **Recommendation: do NOT blindly re-run
   #538/#544's multi-hour effort now — whoever next picks up #538/#539/#540 should re-derive a fresh
   baseline under current `main` rather than reuse the old quoted numbers.** No code changes; a
-  scoping conclusion only. **#593 STATUS: CLOSED.**
+  scoping conclusion only.
+  **CRITICAL FOLLOW-UP, found AFTER first closing this out (2026-07-14):** closer reading of #544's
+  own entry revealed **#544 already tried this exact fix on 2026-07-10 and explicitly reverted it**
+  — reporting it moved a QBCP L1-substitute periodic orbit ~30% closer to the published POL1 golden
+  (2.12e-2→1.47e-2) but allegedly **regressed** the SE-L2 positive control 16x (3e-5→4.2e-4), the
+  OPPOSITE of what this task's own SE-L2 re-test found. This was missed before applying #592 — a real
+  gap in the original verification (should have searched OUTSTANDING.md for prior `alpha_6`
+  discussion first). Reconciled with two further checks: (1) ruled out a mismatched-EOM/STM
+  explanation for the SE-L2 discrepancy (`qbcp_potential_second_derivatives` isn't even used by this
+  correction path); the reported SE-L2 regression does NOT reproduce with the actual, faithfully-
+  reconstructed code. (2) Built a genuinely independent multi-shooting L1-substitute construction
+  from scratch (12-segment analytic-STM corrector, CR3BP L1 -> BCR4BP mu_sun-continuation -> QBCP
+  handoff, cross-checked at every stage against known references) — **confirms #544's OWN finding,
+  independently: distance-to-POL1 goes 4.14e-2 (buggy) -> 1.81e-2 (fixed), same direction and
+  magnitude as their 2.12e-2->1.47e-2.** Net: one of #544's two original objections (SE-L2
+  regression) is refuted, the other (POL1 improvement) is independently confirmed as a genuine
+  improvement. The one remaining open question (whether Gimeno-2018's own alpha_6 table was fitted
+  assuming this scaling convention) isn't numerically testable without the source paper, but the
+  empirical balance now favors #592 as a net-positive fix. **#592 stays applied, no revert.** Full
+  reconciliation: `docs/notes/2026-07-14-593-qbcp-alpha6-impact-scoping.md` (updated in place).
+  **#593 STATUS: CLOSED (fully reconciled).**
 
 - **#554** (P2, cheap, ~1 day per the #552 scoping estimate) — Neptune/Amalthea empty-region
   retrograde-correction stamp. Formalize the #552 scoping pass's back-of-envelope flyby-bend
