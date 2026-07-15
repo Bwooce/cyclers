@@ -1,0 +1,1773 @@
+{
+  "mmr": "4:1",
+  "symmetry_breaking_s": 0.15,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 172,
+  "n_clusters": 25,
+  "n_converged": 24,
+  "n_ready_for_literature_check": 24,
+  "n_drifted_to_neighboring_mmr": 0,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 125,
+      "ga_genome": [
+        0.37507204753684337,
+        -0.012464984830986937,
+        -0.05338261540430583,
+        1.226324495983389,
+        0.031595812660393546,
+        2.0806128800741748
+      ],
+      "ga_fitness": 0.9982611083416321,
+      "refined_orbit": {
+        "state0": [
+          0.38002603015583464,
+          0.012920884013797703,
+          5.776800598620443e-19,
+          -0.038961770347803994,
+          1.1962178427242398,
+          -1.982935152026462e-19
+        ],
+        "T": 2.0690200522260014,
+        "C": 3.7871495051006385,
+        "converged": true,
+        "corrector_residual": 8.049498429249088e-13,
+        "independent_closure_residual": 2.501497096795556e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 5.2556917190135495e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39443522305857515,
+        "own_mmr_a1_dist": 0.00236477694142484,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.00236477694142484,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.7871495051006385
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 29,
+      "ga_genome": [
+        0.39074479095226344,
+        -0.009468262605040398,
+        0.06389353865088906,
+        1.1481631885459327,
+        0.02792161362087861,
+        2.119360543622059
+      ],
+      "ga_fitness": 0.9975772307121795,
+      "refined_orbit": {
+        "state0": [
+          0.3847401379518149,
+          -0.024480749714084257,
+          2.5834141081228447e-20,
+          0.07182920758874818,
+          1.179047246342699,
+          -7.453578198202939e-20
+        ],
+        "T": 2.125322129226307,
+        "C": 3.7620714425885957,
+        "converged": true,
+        "corrector_residual": 1.4919645199924375e-13,
+        "independent_closure_residual": 3.96247264692621e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 3.498162724128031e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39976420167541427,
+        "own_mmr_a1_dist": 0.0029642016754142797,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0029642016754142797,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.7620714425885957
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 2,
+      "population_index": 24,
+      "ga_genome": [
+        0.3862364596763134,
+        -0.023978652816782395,
+        0.03471658488608856,
+        1.1683916498405738,
+        0.027914390899431235,
+        2.105147330112594
+      ],
+      "ga_fitness": 0.9961198613595833,
+      "refined_orbit": {
+        "state0": [
+          0.3835579135782472,
+          -0.015635653046181735,
+          -3.2503777157820056e-24,
+          0.04626545247932624,
+          1.1851611486376568,
+          -5.6455355784234805e-22
+        ],
+        "T": 2.1077931345640324,
+        "C": 3.769735285762855,
+        "converged": false,
+        "corrector_residual": 1.941060626102396e-10,
+        "independent_closure_residual": 1.9349093169097868e-10,
+        "degenerate_planar": true
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 3,
+      "population_index": 16,
+      "ga_genome": [
+        0.3904777450633614,
+        -0.019221562895630845,
+        0.07128951669399972,
+        1.1457790890076627,
+        0.05431850414263115,
+        2.1090552727496066
+      ],
+      "ga_fitness": 0.9952226188602139,
+      "refined_orbit": {
+        "state0": [
+          0.3832325575522274,
+          -0.03132261923805668,
+          4.137652428086782e-21,
+          0.09239627436044838,
+          1.1806110006696413,
+          2.5414482124806053e-21
+        ],
+        "T": 2.1141912105875713,
+        "C": 3.766923214977541,
+        "converged": true,
+        "corrector_residual": 1.7205965652443431e-13,
+        "independent_closure_residual": 4.777520414219522e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 4.4699649797558256e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39871914660757124,
+        "own_mmr_a1_dist": 0.0019191466075712538,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0019191466075712538,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.766923214977541
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 4,
+      "population_index": 0,
+      "ga_genome": [
+        0.37670459727560734,
+        0.0366082362851799,
+        -0.00872996094503839,
+        1.2074281179152442,
+        -0.08734574935572129,
+        2.067278859957492
+      ],
+      "ga_fitness": 0.9928017483622739,
+      "refined_orbit": {
+        "state0": [
+          0.3785821037673272,
+          -0.016735020290365638,
+          -9.141011185531528e-18,
+          0.050806546720722566,
+          1.1996538651026074,
+          -2.2850543456312673e-17
+        ],
+        "T": 2.055258527760386,
+        "C": 3.793488331575767,
+        "converged": true,
+        "corrector_residual": 1.0933432565193465e-11,
+        "independent_closure_residual": 1.0367476740892114e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 6.404073569909796e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39311622375633926,
+        "own_mmr_a1_dist": 0.00368377624366073,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.00368377624366073,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.793488331575767
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 5,
+      "population_index": 158,
+      "ga_genome": [
+        0.39897856821364414,
+        -0.016311715503705602,
+        0.06679608111353033,
+        1.1077109406616277,
+        0.005710049038456788,
+        2.1235662862897735
+      ],
+      "ga_fitness": 0.9912308306006984,
+      "refined_orbit": {
+        "state0": [
+          0.3845569270078867,
+          -0.04040711215918816,
+          7.30608280257394e-24,
+          0.1178826832789534,
+          1.171961239602648,
+          4.9748754103572287e-23
+        ],
+        "T": 2.1372612007745144,
+        "C": 3.756923782265577,
+        "converged": true,
+        "corrector_residual": 1.1292469167243681e-11,
+        "independent_closure_residual": 1.061058350879458e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 6.186858751006108e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.4008805513042921,
+        "own_mmr_a1_dist": 0.004080551304292135,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.004080551304292135,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.756923782265577
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 6,
+      "population_index": 36,
+      "ga_genome": [
+        0.35831690102093916,
+        -0.03530450740071584,
+        -0.11598719964603098,
+        1.2977640835160427,
+        0.08089607158803222,
+        2.0323686208542577
+      ],
+      "ga_fitness": 0.9896487988949079,
+      "refined_orbit": {
+        "state0": [
+          0.3713826016720139,
+          0.007455659923991219,
+          4.744777735188783e-17,
+          -0.023540335569235533,
+          1.2231899127284802,
+          5.757027938214266e-17
+        ],
+        "T": 1.9774426469412587,
+        "C": 3.8309883577383443,
+        "converged": true,
+        "corrector_residual": 8.492746081546703e-11,
+        "independent_closure_residual": 8.427995843486262e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 4.8320930608068344e-12,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3855321104679327,
+        "own_mmr_a1_dist": 0.01126788953206731,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.01126788953206731,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8309883577383443
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 7,
+      "population_index": 146,
+      "ga_genome": [
+        0.36103319492215247,
+        -0.02068606989731222,
+        -0.10117104861118673,
+        1.2911674424783408,
+        0.04616131423294792,
+        2.0425744570193474
+      ],
+      "ga_fitness": 0.9891122686409537,
+      "refined_orbit": {
+        "state0": [
+          0.37382473370733643,
+          0.022666428300810244,
+          -9.768869274996168e-23,
+          -0.07043666743698422,
+          1.2120910836548784,
+          3.2396285847698266e-22
+        ],
+        "T": 2.00865916085282,
+        "C": 3.8155970333643205,
+        "converged": true,
+        "corrector_residual": 1.647588448815012e-11,
+        "independent_closure_residual": 1.57901754077641e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 8.724514166669195e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3886005416697328,
+        "own_mmr_a1_dist": 0.008199458330267195,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.008199458330267195,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8155970333643205
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 8,
+      "population_index": 159,
+      "ga_genome": [
+        0.3688980577350005,
+        -0.04432409575227743,
+        -0.008730459755421527,
+        1.2426167536700343,
+        0.09016030435589614,
+        2.0658498086527644
+      ],
+      "ga_fitness": 0.9888320408329172,
+      "refined_orbit": {
+        "state0": [
+          0.37687718086843985,
+          -0.015597725548036697,
+          -4.544406596709561e-24,
+          0.04778899554019855,
+          1.2050448289361373,
+          -8.539920344021404e-23
+        ],
+        "T": 2.0368483578633083,
+        "C": 3.802102251064281,
+        "converged": true,
+        "corrector_residual": 5.656195878714303e-11,
+        "independent_closure_residual": 5.598585646401064e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 1.8449304584056136e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39134135324581903,
+        "own_mmr_a1_dist": 0.005458646754180951,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.005458646754180951,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.802102251064281
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 9,
+      "population_index": 18,
+      "ga_genome": [
+        0.40228581036326533,
+        -0.02589134107074964,
+        0.10657332662867766,
+        1.0836136726625838,
+        0.05431850414263115,
+        2.1090567387097616
+      ],
+      "ga_fitness": 0.9887788597996577,
+      "refined_orbit": {
+        "state0": [
+          0.380693267184817,
+          -0.061187943710436975,
+          2.0105593155883264e-19,
+          0.17962974640870952,
+          1.167446139152236,
+          5.787545618231958e-19
+        ],
+        "T": 2.1240992282112527,
+        "C": 3.762601989128343,
+        "converged": true,
+        "corrector_residual": 5.515990712172527e-13,
+        "independent_closure_residual": 3.838386204784336e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 5.907774269923861e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39964958852861204,
+        "own_mmr_a1_dist": 0.002849588528612057,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.002849588528612057,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.762601989128343
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 10,
+      "population_index": 35,
+      "ga_genome": [
+        0.3862363309274867,
+        -0.03474618944634362,
+        0.013609779059949284,
+        1.1656622352006016,
+        0.034600935048513276,
+        2.102076214278636
+      ],
+      "ga_fitness": 0.9886261805200709,
+      "refined_orbit": {
+        "state0": [
+          0.3833319875438375,
+          -0.01478570470032306,
+          1.2663932573462844e-20,
+          0.043809259893249235,
+          1.186021499532033,
+          7.355979660579303e-20
+        ],
+        "T": 2.105015723883341,
+        "C": 3.770961342937147,
+        "converged": true,
+        "corrector_residual": 7.399505483433226e-14,
+        "independent_closure_residual": 4.874484748198688e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 2.382187329352265e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3978545624009797,
+        "own_mmr_a1_dist": 0.0010545624009797305,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0010545624009797305,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.770961342937147
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 11,
+      "population_index": 50,
+      "ga_genome": [
+        0.36801023723395687,
+        -0.017341799970581613,
+        -0.15017869353150975,
+        1.2524149751463436,
+        0.04616131423294792,
+        2.0425744570193474
+      ],
+      "ga_fitness": 0.9878865043239766,
+      "refined_orbit": {
+        "state0": [
+          0.373942089927216,
+          0.025885423063074616,
+          3.750468148829049e-23,
+          -0.08030603039837107,
+          1.210495837964806,
+          -2.5086712059517405e-22
+        ],
+        "T": 2.0119486696310114,
+        "C": 3.8140028413939095,
+        "converged": true,
+        "corrector_residual": 2.1195727126185013e-12,
+        "independent_closure_residual": 1.4929875110945877e-12,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 1.9773462381356136e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.388921836441805,
+        "own_mmr_a1_dist": 0.007878163558194984,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.007878163558194984,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8140028413939095
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 12,
+      "population_index": 109,
+      "ga_genome": [
+        0.36801034725617005,
+        -0.04438267130618511,
+        -0.0979378268254035,
+        1.2426167536700343,
+        0.08960379860578047,
+        2.0378715315520184
+      ],
+      "ga_fitness": 0.9851842831324035,
+      "refined_orbit": {
+        "state0": [
+          0.3752091372810763,
+          0.0034614347266902546,
+          7.546277340363123e-24,
+          -0.010714840057996439,
+          1.2118964407963217,
+          -3.543875062411664e-23
+        ],
+        "T": 2.016362015378682,
+        "C": 3.8118721489590355,
+        "converged": true,
+        "corrector_residual": 1.3276458426155778e-11,
+        "independent_closure_residual": 1.2718776955335007e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 7.568352411793655e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.38935229114533987,
+        "own_mmr_a1_dist": 0.007447708854660118,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.007447708854660118,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8118721489590355
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 13,
+      "population_index": 160,
+      "ga_genome": [
+        0.402292853558159,
+        -0.01028084486798403,
+        0.049058062515941664,
+        1.0905770066363019,
+        0.05431850414263115,
+        2.1088353728762357
+      ],
+      "ga_fitness": 0.9844608075025466,
+      "refined_orbit": {
+        "state0": [
+          0.3836422649007653,
+          -0.040373977483828635,
+          -3.648549725900255e-24,
+          0.11834576925483992,
+          1.174613543186971,
+          -9.440042112428697e-23
+        ],
+        "T": 2.1273367825208056,
+        "C": 3.761198735101165,
+        "converged": true,
+        "corrector_residual": 2.5380498899531985e-11,
+        "independent_closure_residual": 2.4657119363153126e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 2.068953732295431e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3999529112186153,
+        "own_mmr_a1_dist": 0.0031529112186153285,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0031529112186153285,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.761198735101165
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 14,
+      "population_index": 26,
+      "ga_genome": [
+        0.41012125866354093,
+        -0.01456168809797654,
+        0.14626081250483167,
+        1.0448232814351743,
+        0.02792161362087861,
+        2.12657177176526
+      ],
+      "ga_fitness": 0.9843515841039612,
+      "refined_orbit": {
+        "state0": [
+          0.38440340955945645,
+          -0.04925492067958409,
+          -1.8556491971340417e-19,
+          0.14307710088263778,
+          1.1666057122813158,
+          -1.3703022328765172e-19
+        ],
+        "T": 2.1462979827867916,
+        "C": 3.75306571316259,
+        "converged": true,
+        "corrector_residual": 9.334788123764158e-13,
+        "independent_closure_residual": 3.1398915056763495e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 4.6317225228800295e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.40172239406835397,
+        "own_mmr_a1_dist": 0.004922394068353986,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.004922394068353986,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.75306571316259
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 15,
+      "population_index": 123,
+      "ga_genome": [
+        0.4101230524957957,
+        0.005449564191626753,
+        0.09639538223653224,
+        1.0518910756048356,
+        -0.0048500178314463405,
+        2.119424493025887
+      ],
+      "ga_fitness": 0.9840764446893513,
+      "refined_orbit": {
+        "state0": [
+          0.38579841606856763,
+          -0.034220691987132186,
+          2.7348422218045166e-21,
+          0.09949142455468903,
+          1.1717652293019307,
+          4.27070886490749e-20
+        ],
+        "T": 2.144509830249065,
+        "C": 3.7538265360914638,
+        "converged": true,
+        "corrector_residual": 1.4540451513373352e-13,
+        "independent_closure_residual": 5.9839327270336e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 4.524809346652879e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.40155602777152516,
+        "own_mmr_a1_dist": 0.004756027771525173,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.004756027771525173,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.7538265360914638
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 16,
+      "population_index": 21,
+      "ga_genome": [
+        0.3726778738502225,
+        0.047024930954348516,
+        -0.021887976555322458,
+        1.2243348727508288,
+        -0.05049542453103986,
+        2.065237566750379
+      ],
+      "ga_fitness": 0.9839518402639409,
+      "refined_orbit": {
+        "state0": [
+          0.37804099232093485,
+          -0.016581969632817942,
+          -2.229564183136227e-23,
+          0.05048598930088181,
+          1.201310562055534,
+          7.686784827180021e-23
+        ],
+        "T": 2.04948954466185,
+        "C": 3.7961709470722056,
+        "converged": true,
+        "corrector_residual": 4.8981677051204645e-11,
+        "independent_closure_residual": 4.8436409039707155e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 1.6832260411880906e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39256132817451567,
+        "own_mmr_a1_dist": 0.004238671825484319,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.004238671825484319,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.7961709470722056
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 17,
+      "population_index": 76,
+      "ga_genome": [
+        0.3767043771774461,
+        0.0366082362851799,
+        -0.008685786910272941,
+        1.2015114416470305,
+        -0.15175955335290348,
+        2.059372770113651
+      ],
+      "ga_fitness": 0.9839185668863049,
+      "refined_orbit": {
+        "state0": [
+          0.3766197885071803,
+          -0.026537875072685797,
+          -2.7185125375868993e-23,
+          0.08116793871487248,
+          1.202213897224372,
+          1.7000173151907995e-22
+        ],
+        "T": 2.0402918863485433,
+        "C": 3.8004792584814444,
+        "converged": true,
+        "corrector_residual": 4.1846337067489416e-11,
+        "independent_closure_residual": 4.124874174060528e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 2.330655742184551e-13,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3916742366992505,
+        "own_mmr_a1_dist": 0.005125763300749486,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.005125763300749486,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8004792584814444
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 18,
+      "population_index": 55,
+      "ga_genome": [
+        0.3904777450633614,
+        -0.020178037260849498,
+        -0.04041259873831232,
+        1.1467882953698725,
+        0.06534036726268902,
+        2.0845187941577445
+      ],
+      "ga_fitness": 0.9838613155790413,
+      "refined_orbit": {
+        "state0": [
+          0.3790920019215872,
+          -0.004849964174775975,
+          -7.78560421841089e-18,
+          0.014710004633564915,
+          1.200113304544292,
+          9.37081615576193e-18
+        ],
+        "T": 2.0572167127089873,
+        "C": 3.792581180173741,
+        "converged": true,
+        "corrector_residual": 3.901774158367583e-12,
+        "independent_closure_residual": 3.393994024845155e-12,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 1.3456036797274606e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39330431037598496,
+        "own_mmr_a1_dist": 0.0034956896240150304,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0034956896240150304,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.792581180173741
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 19,
+      "population_index": 40,
+      "ga_genome": [
+        0.3851081510903112,
+        -0.040432544030275325,
+        -0.031328707965958436,
+        1.1670727624635258,
+        0.05740085628656441,
+        2.0815958685160627
+      ],
+      "ga_fitness": 0.9836264714761227,
+      "refined_orbit": {
+        "state0": [
+          0.380499864966042,
+          -0.01172687843448655,
+          2.073544961419776e-18,
+          0.03528093182099533,
+          1.1950318315059019,
+          1.0517605773148826e-17
+        ],
+        "T": 2.0736570996716615,
+        "C": 3.7850325409842065,
+        "converged": true,
+        "corrector_residual": 2.6972469894923408e-12,
+        "independent_closure_residual": 2.149492813081898e-12,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 3.532479027474138e-17,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.39487819583111194,
+        "own_mmr_a1_dist": 0.0019218041688880416,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.0019218041688880416,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.7850325409842065
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 20,
+      "population_index": 114,
+      "ga_genome": [
+        0.3752800758716946,
+        0.050901440007766106,
+        0.03040905932989149,
+        1.1961463719042515,
+        -0.17869591336559595,
+        2.044659169362903
+      ],
+      "ga_fitness": 0.9818671739389043,
+      "refined_orbit": {
+        "state0": [
+          0.36994627958327153,
+          -0.06374592073164914,
+          7.058422451578582e-18,
+          0.19736908082313895,
+          1.1954673746984577,
+          -1.928601080936211e-17
+        ],
+        "T": 2.0158188559488774,
+        "C": 3.8121338757373504,
+        "converged": true,
+        "corrector_residual": 6.148702817246174e-11,
+        "independent_closure_residual": 6.064600308598185e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 1.1169810738895397e-12,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3892993517543601,
+        "own_mmr_a1_dist": 0.007500648245639896,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.007500648245639896,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.8121338757373504
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 21,
+      "population_index": 138,
+      "ga_genome": [
+        0.3907436236421059,
+        -0.02018244171895609,
+        0.13898572412272917,
+        1.1354923854994123,
+        0.09448404951529468,
+        2.1150957735105167
+      ],
+      "ga_fitness": 0.9804235405328963,
+      "refined_orbit": {
+        "state0": [
+          0.38106068910422664,
+          -0.05349097105816143,
+          7.58935228229915e-21,
+          0.15763553705226283,
+          1.1729104562426516,
+          -3.9583558932536985e-21
+        ],
+        "T": 2.116160664986319,
+        "C": 3.766061036176594,
+        "converged": true,
+        "corrector_residual": 1.2277327178695152e-13,
+        "independent_closure_residual": 6.866380426276615e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 5.847947993908939e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.398904355344474,
+        "own_mmr_a1_dist": 0.002104355344474007,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.002104355344474007,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.766061036176594
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 22,
+      "population_index": 82,
+      "ga_genome": [
+        0.3626673120005566,
+        0.04403570412036862,
+        -0.05659400481287216,
+        1.2749159459246664,
+        -0.050458989771912294,
+        2.052837456855179
+      ],
+      "ga_fitness": 0.9803027872280677,
+      "refined_orbit": {
+        "state0": [
+          0.37503093556334305,
+          -0.002383277255489198,
+          -6.415320691793222e-25,
+          0.007384619525728472,
+          1.2124861954410036,
+          -3.37401704916876e-23
+        ],
+        "T": 2.0144255795908212,
+        "C": 3.8128058831950975,
+        "converged": true,
+        "corrector_residual": 8.420697538026366e-11,
+        "independent_closure_residual": 8.371285842524413e-11,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 7.432856413691624e-15,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3891635069978276,
+        "own_mmr_a1_dist": 0.007636493002172395,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.007636493002172395,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.8128058831950975
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 23,
+      "population_index": 147,
+      "ga_genome": [
+        0.37274125411415115,
+        -0.034883616892919786,
+        -0.12965170352815542,
+        1.2243349682236802,
+        0.04640831298955014,
+        2.0448775320988055
+      ],
+      "ga_fitness": 0.9800698351874304,
+      "refined_orbit": {
+        "state0": [
+          0.3717816842745555,
+          0.014237646732843246,
+          -4.544468628502853e-19,
+          -0.04481461904687341,
+          1.220778092918599,
+          -2.166458257177136e-18
+        ],
+        "T": 1.983480274006783,
+        "C": 3.8279738904942526,
+        "converged": true,
+        "corrector_residual": 9.545406835485514e-13,
+        "independent_closure_residual": 3.62048486069794e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 7.717437804162092e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.3861283398154893,
+        "own_mmr_a1_dist": 0.010671660184510712,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.010671660184510712,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 2,
+          "jacobi": 3.8279738904942526
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    },
+    {
+      "cluster_rank": 24,
+      "population_index": 157,
+      "ga_genome": [
+        0.3626673120005566,
+        0.04403570412036862,
+        -0.05657961579748866,
+        1.2633312813024942,
+        -0.18177057693048357,
+        2.0201164037666666
+      ],
+      "ga_fitness": 0.9789403707175645,
+      "refined_orbit": {
+        "state0": [
+          0.37031712922675003,
+          -0.02764455252403406,
+          2.378453620782546e-22,
+          0.08735217776834303,
+          1.220674805594963,
+          -3.131405198944663e-22
+        ],
+        "T": 1.9759126822594921,
+        "C": 3.831755148580865,
+        "converged": true,
+        "corrector_residual": 5.451342092465904e-13,
+        "independent_closure_residual": 2.410519861742486e-13,
+        "degenerate_planar": true
+      },
+      "symmetry": {
+        "is_symmetric": true,
+        "best_crossing_residual": 4.169342822379907e-14,
+        "n_crossings_checked": 2
+      },
+      "drift_check": {
+        "a1_implied": 0.38538081125482265,
+        "own_mmr_a1_dist": 0.011419188745177333,
+        "nearest_mmr": "4:1",
+        "nearest_mmr_a1_dist": 0.011419188745177333,
+        "drifted_to_neighboring_mmr": false
+      },
+      "candidate_signature": {
+        "primary": "Earth",
+        "sequence": [
+          "Moon"
+        ],
+        "resonances": [
+          "4:1"
+        ],
+        "topology_label": [
+          "resonant"
+        ],
+        "topology_3d": {
+          "k1": 1,
+          "k2": 0,
+          "k_z": 4,
+          "jacobi": 3.831755148580865
+        }
+      },
+      "literature_anchors_engaged": [
+        "Braik-Ross orbital networks in the three-body problem (2026)",
+        "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+        "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+        "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+        "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+        "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+        "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+        "Sanaga-Park-Howell fidelity-transition framework (2026)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+        "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+      ],
+      "ready_for_literature_check": true
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this analysis pass only confirms the structural matcher engages (non-empty anchor pool via literature_anchors_engaged()), it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}

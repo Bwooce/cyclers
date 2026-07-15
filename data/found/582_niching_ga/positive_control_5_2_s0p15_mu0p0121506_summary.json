@@ -1,0 +1,66 @@
+{
+  "mmr": "5:2",
+  "symmetry_breaking_s": 0.15,
+  "known_member": {
+    "x0": 0.5146751855059772,
+    "ydot0": 0.8613356183211605,
+    "T": 4.111336339411298,
+    "C": 3.3245432413122122,
+    "converged": true
+  },
+  "ga_best_genome": [
+    0.5192080295610433,
+    0.004056195783446584,
+    -0.1886113795660168,
+    0.8200880151371663,
+    0.0023535954995781427,
+    3.662838129293862
+  ],
+  "ga_best_fitness": 0.8922090102275297,
+  "refined_orbit": {
+    "state0": [
+      0.49402805174359904,
+      -0.025291585527629543,
+      -1.6900207653913247e-23,
+      0.04195246786914266,
+      0.9012860097371981,
+      -1.1072533132037287e-23
+    ],
+    "T": 3.677610329450656,
+    "C": 3.378074950404833,
+    "converged": true,
+    "corrector_residual": 6.275476134290527e-12,
+    "independent_closure_residual": 5.879147515427934e-12,
+    "degenerate_planar": true
+  },
+  "symmetry": {
+    "is_symmetric": true,
+    "best_crossing_residual": 2.1748119798103982e-14,
+    "n_crossings_checked": 2
+  },
+  "literature_anchors_engaged": [
+    "Braik-Ross orbital networks in the three-body problem (2026)",
+    "Kumar-Rawat-Rosengren-Ross cislunar resonant transport (2026)",
+    "Kumar-Rawat-Rosengren-Ross interior MMR bifurcations and manifolds (2024)",
+    "Rawat-Kumar-Rosengren-Ross exterior MMR bifurcations and L1-L2 heteroclinics (2025)",
+    "Rawat-Kumar-Rosengren-Ross resonance widths and chaotic zones (2024)",
+    "Rosengren-Ross-Kumar-Rawat resonant structure of xGEO (2024)",
+    "Hiraiwa et al. lobe-dynamics low-energy cislunar transfers (2026)",
+    "Sanaga-Park-Howell fidelity-transition framework (2026)",
+    "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)",
+    "Antoniadou & Libert spatial resonant periodic orbits in the RTBP (2019)"
+  ],
+  "tolerances": {
+    "x0_rel": 0.03,
+    "ydot0_rel": 0.05,
+    "T_rel": 0.05,
+    "jacobi_abs": 0.02
+  },
+  "errors": {
+    "x0_rel": 0.0401168238606258,
+    "ydot0_rel": 0.046381910333518316,
+    "T_rel": 0.10549514176277461,
+    "jacobi_abs": 0.053531709092620616
+  },
+  "matched": false
+}

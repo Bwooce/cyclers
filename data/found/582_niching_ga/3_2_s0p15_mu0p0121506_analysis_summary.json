@@ -1,0 +1,765 @@
+{
+  "mmr": "3:2",
+  "symmetry_breaking_s": 0.15,
+  "population_size": 200,
+  "fitness_floor": 0.9,
+  "distance_threshold": 0.1,
+  "n_above_floor": 186,
+  "n_clusters": 25,
+  "n_converged": 0,
+  "n_ready_for_literature_check": 0,
+  "n_drifted_to_neighboring_mmr": 0,
+  "clusters": [
+    {
+      "cluster_rank": 0,
+      "population_index": 116,
+      "ga_genome": [
+        0.677598982707243,
+        -0.04616926177020979,
+        0.09503504465330456,
+        0.49080432905078286,
+        0.17064244061071418,
+        6.577963637651924
+      ],
+      "ga_fitness": 0.9748260933395397,
+      "refined_orbit": {
+        "state0": [
+          0.676817732707243,
+          0.00078125,
+          -0.04595338208333367,
+          0.09565017754122297,
+          0.4915855790507829,
+          0.1714236906107142
+        ],
+        "T": 6.574465846093508,
+        "C": 3.116443027834279,
+        "converged": false,
+        "corrector_residual": 0.16001464959771686,
+        "independent_closure_residual": 0.16001464959768116,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 1,
+      "population_index": 9,
+      "ga_genome": [
+        0.6784790519446308,
+        -0.04616926177020979,
+        0.09503504465330456,
+        0.4904442325343533,
+        -0.16545792240210513,
+        6.57781364743526
+      ],
+      "ga_fitness": 0.973083511029264,
+      "refined_orbit": {
+        "state0": [
+          0.6776978019446308,
+          0.00078125,
+          -0.04664570196371665,
+          0.09544374454933743,
+          0.49122548253435333,
+          -0.1660753686796851
+        ],
+        "T": 6.574332284353063,
+        "C": 3.1161971567024294,
+        "converged": false,
+        "corrector_residual": 0.16567656671580389,
+        "independent_closure_residual": 0.16567656671578368,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 2,
+      "population_index": 158,
+      "ga_genome": [
+        0.6775692924375086,
+        -0.07004367186403343,
+        0.09507663358612986,
+        0.4905469111152801,
+        0.145310320021841,
+        6.587063980398049
+      ],
+      "ga_fitness": 0.9727395754906627,
+      "refined_orbit": {
+        "state0": [
+          0.6773739799375086,
+          0.0001953125,
+          -0.07002371875193177,
+          0.09519671690566674,
+          0.4907422236152801,
+          0.14550563252184098
+        ],
+        "T": 6.586112052421344,
+        "C": 3.1147702781200897,
+        "converged": false,
+        "corrector_residual": 0.16689824941395914,
+        "independent_closure_residual": 0.16689824941391285,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 3,
+      "population_index": 57,
+      "ga_genome": [
+        0.6775692924375086,
+        -0.07004367186403343,
+        0.09507670987743386,
+        0.49039945490986164,
+        -0.14491289771893906,
+        6.5486680999953
+      ],
+      "ga_fitness": 0.9717843698271441,
+      "refined_orbit": {
+        "state0": [
+          0.6760067924375086,
+          0.0015625,
+          -0.07111455569885616,
+          0.09566386359326644,
+          0.49196195490986167,
+          -0.1458752893814044
+        ],
+        "T": 6.541985625652128,
+        "C": 3.116288975798493,
+        "converged": false,
+        "corrector_residual": 0.17019437594326473,
+        "independent_closure_residual": 0.17019437594319853,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 4,
+      "population_index": 103,
+      "ga_genome": [
+        0.6991082729571133,
+        0.07436266085482024,
+        -0.1050691326038419,
+        0.4235164399065617,
+        -0.15909747904103605,
+        7.166848588173689
+      ],
+      "ga_fitness": 0.969288186595848,
+      "refined_orbit": {
+        "state0": [
+          0.6975457729571133,
+          0.0015625,
+          0.07356248365912547,
+          -0.10631866518805655,
+          0.4250789399065617,
+          -0.16065997904103604
+        ],
+        "T": 7.159592658186496,
+        "C": 3.1189316741512414,
+        "converged": false,
+        "corrector_residual": 0.17164871777464694,
+        "independent_closure_residual": 0.171648717774544,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 5,
+      "population_index": 91,
+      "ga_genome": [
+        0.7314456262067831,
+        -0.005578488926904615,
+        -0.09424677007976237,
+        0.40385554737484897,
+        0.005673614248292408,
+        8.357183727683186
+      ],
+      "ga_fitness": 0.9691813285371634,
+      "refined_orbit": {
+        "state0": [
+          0.7318362512067831,
+          -0.0003124662110755915,
+          -0.005551983644414938,
+          -0.09385614507976237,
+          0.403464922374849,
+          0.0057067106506681455
+        ],
+        "T": 8.350654677895934,
+        "C": 3.1143400820884417,
+        "converged": false,
+        "corrector_residual": 0.1779039994295393,
+        "independent_closure_residual": 0.17790399942932292,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 6,
+      "population_index": 38,
+      "ga_genome": [
+        0.70231925789081,
+        0.10522729936408823,
+        0.051065061821153584,
+        0.4092348931012846,
+        0.15164308314949546,
+        6.420766230741404
+      ],
+      "ga_fitness": 0.9685162276635128,
+      "refined_orbit": {
+        "state0": [
+          0.6991942578908099,
+          0.0030865320551269593,
+          0.10835229936408823,
+          0.053347166251583616,
+          0.41235989310128457,
+          0.15438238934606896
+        ],
+        "T": 6.41257502064667,
+        "C": 3.1166936437290063,
+        "converged": false,
+        "corrector_residual": 0.17921498028909594,
+        "independent_closure_residual": 0.17921498028898433,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 7,
+      "population_index": 109,
+      "ga_genome": [
+        0.7139663669746347,
+        -0.11373692847327553,
+        -0.06387319901358139,
+        0.3683721015185403,
+        0.1596429315066806,
+        6.655931202498862
+      ],
+      "ga_fitness": 0.9682849947352857,
+      "refined_orbit": {
+        "state0": [
+          0.7124038669746346,
+          -0.00017522567357241826,
+          -0.113441134525423,
+          -0.06231069901358139,
+          0.3699346015185403,
+          0.16102978267671988
+        ],
+        "T": 6.653518339214222,
+        "C": 3.116390506643123,
+        "converged": false,
+        "corrector_residual": 0.1790770732014212,
+        "independent_closure_residual": 0.17907707320124477,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 8,
+      "population_index": 175,
+      "ga_genome": [
+        0.6991085661873512,
+        -0.09735188359073269,
+        -0.15720029621893508,
+        0.3985259381075825,
+        0.15060725402310773,
+        6.872434318001926
+      ],
+      "ga_fitness": 0.9680174766963457,
+      "refined_orbit": {
+        "state0": [
+          0.6983273161873512,
+          0.00078125,
+          -0.09714381716509259,
+          -0.1579815462189351,
+          0.39930718810758253,
+          0.15138850402310775
+        ],
+        "T": 6.869875570713264,
+        "C": 3.1150801654891818,
+        "converged": false,
+        "corrector_residual": 0.18065650503431238,
+        "independent_closure_residual": 0.18065650503417016,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 9,
+      "population_index": 13,
+      "ga_genome": [
+        0.70231925789081,
+        -0.06576132030616148,
+        -0.10240262946478412,
+        0.4236134003478494,
+        0.15922705807244883,
+        7.363115236879623
+      ],
+      "ga_fitness": 0.9678048593266044,
+      "refined_orbit": {
+        "state0": [
+          0.7007567578908099,
+          0.000148686657554926,
+          -0.06483164535956926,
+          -0.10198605537629223,
+          0.4251759003478494,
+          0.16078955807244882
+        ],
+        "T": 7.345154409118011,
+        "C": 3.1165350016092637,
+        "converged": false,
+        "corrector_residual": 0.1805371236643244,
+        "independent_closure_residual": 0.18053712366427727,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 10,
+      "population_index": 149,
+      "ga_genome": [
+        0.677516474537639,
+        0.06910732713207177,
+        -0.15646127721850414,
+        0.4681295709938825,
+        -0.16543059310868868,
+        7.166820921438967
+      ],
+      "ga_fitness": 0.9677853410535621,
+      "refined_orbit": {
+        "state0": [
+          0.677125849537639,
+          -0.000390625,
+          0.06886939826082193,
+          -0.15607065221850414,
+          0.4685201959938825,
+          -0.1658212181086887
+        ],
+        "T": 7.164896652464318,
+        "C": 3.1156246600526534,
+        "converged": false,
+        "corrector_residual": 0.18216397566720366,
+        "independent_closure_residual": 0.18216397566728726,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 11,
+      "population_index": 35,
+      "ga_genome": [
+        0.7018930662572376,
+        -0.09746017653922824,
+        0.009321457118765586,
+        0.41331307273393736,
+        -0.16693719934195508,
+        6.622968976924107
+      ],
+      "ga_fitness": 0.9677826056361273,
+      "refined_orbit": {
+        "state0": [
+          0.6987680662572375,
+          0.00105894386650216,
+          -0.10058517653922824,
+          0.012446457118765585,
+          0.41643807273393735,
+          -0.17006219934195507
+        ],
+        "T": 6.60932725988973,
+        "C": 3.1168455073623695,
+        "converged": false,
+        "corrector_residual": 0.17814823127547533,
+        "independent_closure_residual": 0.17814823127540996,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 12,
+      "population_index": 163,
+      "ga_genome": [
+        0.7135121565885959,
+        -0.11373692394235708,
+        -0.06387319901358139,
+        0.3636806909713601,
+        -0.1694721266836595,
+        6.577979928724146
+      ],
+      "ga_fitness": 0.9671045613128434,
+      "refined_orbit": {
+        "state0": [
+          0.7134145003385959,
+          4.20829671603115e-05,
+          -0.11381954142637452,
+          -0.06381628749949855,
+          0.3637783472213601,
+          -0.16949656573372862
+        ],
+        "T": 6.577752717572934,
+        "C": 3.1156995877573834,
+        "converged": false,
+        "corrector_residual": 0.18417801456705118,
+        "independent_closure_residual": 0.18417801456694655,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 13,
+      "population_index": 161,
+      "ga_genome": [
+        0.7268862847622788,
+        -0.055577355107644645,
+        -0.09433991667579555,
+        0.3635829521158037,
+        0.16989038875093584,
+        7.265109641496373
+      ],
+      "ga_fitness": 0.9666494369125117,
+      "refined_orbit": {
+        "state0": [
+          0.7261050347622788,
+          0.000598301267583217,
+          -0.05512501966091436,
+          -0.09418660743078798,
+          0.3643642021158037,
+          0.16994715880170216
+        ],
+        "T": 7.264440204861277,
+        "C": 3.1163058194929754,
+        "converged": false,
+        "corrector_residual": 0.1851850909678765,
+        "independent_closure_residual": 0.18518509096771313,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 14,
+      "population_index": 77,
+      "ga_genome": [
+        0.7139526152108697,
+        0.05413076280835222,
+        -0.10241052648891391,
+        0.39847610756712804,
+        -0.15906850710048148,
+        7.337962684491527
+      ],
+      "ga_fitness": 0.9663444530121413,
+      "refined_orbit": {
+        "state0": [
+          0.7108276152108697,
+          0.0009215919540056508,
+          0.052398281708013215,
+          -0.10087786154639977,
+          0.401601107567128,
+          -0.16219350710048147
+        ],
+        "T": 7.319838897015679,
+        "C": 3.1192757553119757,
+        "converged": false,
+        "corrector_residual": 0.180156631071752,
+        "independent_closure_residual": 0.18015663107163418,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 15,
+      "population_index": 11,
+      "ga_genome": [
+        0.7271200535731097,
+        0.05374607152180835,
+        -0.08382318673121354,
+        0.36624369296906406,
+        -0.1659707349048774,
+        7.240156961956103
+      ],
+      "ga_fitness": 0.9662719590383402,
+      "refined_orbit": {
+        "state0": [
+          0.7263388035731098,
+          0.00029530638927775153,
+          0.0533075944186948,
+          -0.08344304589444686,
+          0.36702494296906407,
+          -0.16596169213329942
+        ],
+        "T": 7.239661135505692,
+        "C": 3.117789835725093,
+        "converged": false,
+        "corrector_residual": 0.18339840599866647,
+        "independent_closure_residual": 0.18339840599847762,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 16,
+      "population_index": 105,
+      "ga_genome": [
+        0.7244801950095083,
+        0.05419322562347495,
+        -0.0860546909213708,
+        0.4060801413702618,
+        -0.03703221158474174,
+        7.992887007271769
+      ],
+      "ga_fitness": 0.9661211368678971,
+      "refined_orbit": {
+        "state0": [
+          0.7244801950095083,
+          0.0,
+          0.05419322562347495,
+          -0.0860546909213708,
+          0.4060801413702618,
+          -0.03703221158474174
+        ],
+        "T": 7.992887007271769,
+        "C": 3.116416406483972,
+        "converged": false,
+        "corrector_residual": 0.1855778519091443,
+        "independent_closure_residual": 0.18557785190896084,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 17,
+      "population_index": 151,
+      "ga_genome": [
+        0.6784493885324782,
+        -0.07004368551009366,
+        0.09507663358612986,
+        0.502689846527369,
+        0.06118880230547344,
+        6.623675028717265
+      ],
+      "ga_fitness": 0.965889111770492,
+      "refined_orbit": {
+        "state0": [
+          0.6753243885324781,
+          0.003125,
+          -0.07088799957201,
+          0.09755215498090158,
+          0.5058148465273691,
+          0.06425981664622894
+        ],
+        "T": 6.603978540773577,
+        "C": 3.121067990810271,
+        "converged": false,
+        "corrector_residual": 0.17340837070547463,
+        "independent_closure_residual": 0.17340837070542786,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 18,
+      "population_index": 136,
+      "ga_genome": [
+        0.6991082729571133,
+        0.07436222572673559,
+        0.05298228382575815,
+        0.4424635369328174,
+        -0.13067548601985013,
+        6.700434956393132
+      ],
+      "ga_fitness": 0.9657221446725821,
+      "refined_orbit": {
+        "state0": [
+          0.6959832729571133,
+          0.0019473469236745645,
+          0.07421350392197142,
+          0.05610728382575815,
+          0.4455885369328174,
+          -0.13380048601985012
+        ],
+        "T": 6.680948204582634,
+        "C": 3.120289129817852,
+        "converged": false,
+        "corrector_residual": 0.1825779743265416,
+        "independent_closure_residual": 0.18257797432646827,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 19,
+      "population_index": 8,
+      "ga_genome": [
+        0.7045913936713034,
+        -0.04594402501730083,
+        -0.16715828478583628,
+        0.39840500006473767,
+        0.17064126810873662,
+        7.102393663129071
+      ],
+      "ga_fitness": 0.9656679438536003,
+      "refined_orbit": {
+        "state0": [
+          0.7013687374213033,
+          0.0030976635785013172,
+          -0.04459369798799142,
+          -0.1702105422705448,
+          0.4016276563147377,
+          0.1738639243587366
+        ],
+        "T": 7.086389021235824,
+        "C": 3.118766387702195,
+        "converged": false,
+        "corrector_residual": 0.18131481253477916,
+        "independent_closure_residual": 0.18131481253472054,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 20,
+      "population_index": 187,
+      "ga_genome": [
+        0.6857260976329675,
+        -0.043581378344987945,
+        -0.11775919843388628,
+        0.4681342876348814,
+        0.15910337747141276,
+        7.386318890755517
+      ],
+      "ga_fitness": 0.965517665510376,
+      "refined_orbit": {
+        "state0": [
+          0.6857260976329675,
+          0.0,
+          -0.043581378344987945,
+          -0.11775919843388628,
+          0.4681342876348814,
+          0.15910337747141276
+        ],
+        "T": 7.386318890755517,
+        "C": 3.117010168293111,
+        "converged": false,
+        "corrector_residual": 0.18533750923048123,
+        "independent_closure_residual": 0.18533750923053657,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 21,
+      "population_index": 169,
+      "ga_genome": [
+        0.7269962918432659,
+        -0.005576954864531955,
+        -0.07538839481579336,
+        0.4137782187895778,
+        -0.01987168220405508,
+        8.1976991162605
+      ],
+      "ga_fitness": 0.964826364934411,
+      "refined_orbit": {
+        "state0": [
+          0.7269962918432659,
+          0.0,
+          -0.005576954864531955,
+          -0.07538839481579336,
+          0.4137782187895778,
+          -0.01987168220405508
+        ],
+        "T": 8.1976991162605,
+        "C": 3.117240730309201,
+        "converged": false,
+        "corrector_residual": 0.18636049077031364,
+        "independent_closure_residual": 0.186360490769974,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 22,
+      "population_index": 131,
+      "ga_genome": [
+        0.7244799801488547,
+        0.03943714021517186,
+        -0.06401574041435552,
+        0.3810085180593243,
+        -0.16876325093370903,
+        7.284716508676559
+      ],
+      "ga_fitness": 0.9646923574055394,
+      "refined_orbit": {
+        "state0": [
+          0.7229174801488547,
+          -0.0003124965654586519,
+          0.038622608702998884,
+          -0.06261929310242949,
+          0.3825710180593243,
+          -0.16892929940644996
+        ],
+        "T": 7.28366376210995,
+        "C": 3.118631479727826,
+        "converged": false,
+        "corrector_residual": 0.18852998519765324,
+        "independent_closure_residual": 0.18852998519744368,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 23,
+      "population_index": 32,
+      "ga_genome": [
+        0.7139659228278684,
+        0.0495223852297505,
+        -0.052076143717412995,
+        0.41765168835157956,
+        -0.13945751367274253,
+        7.510474992511537
+      ],
+      "ga_fitness": 0.9643429671698404,
+      "refined_orbit": {
+        "state0": [
+          0.7131846728278685,
+          -3.269096062888521e-05,
+          0.049003467747152786,
+          -0.051480111897593016,
+          0.4184329383515796,
+          -0.14023876367274254
+        ],
+        "T": 7.50765465818906,
+        "C": 3.1159767308888866,
+        "converged": false,
+        "corrector_residual": 0.19170156487359924,
+        "independent_closure_residual": 0.19170156487341106,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    },
+    {
+      "cluster_rank": 24,
+      "population_index": 160,
+      "ga_genome": [
+        0.6776024204777015,
+        -0.045259321152002596,
+        -0.1655555698671908,
+        0.46812834976873624,
+        0.1698920770139161,
+        7.068879951990207
+      ],
+      "ga_fitness": 0.9640270794990338,
+      "refined_orbit": {
+        "state0": [
+          0.6744774204777014,
+          -0.0020859107183689514,
+          -0.04403526335134001,
+          -0.16433569761322578,
+          0.47125334976873623,
+          0.17301707701391608
+        ],
+        "T": 7.027441020107472,
+        "C": 3.124175462235498,
+        "converged": false,
+        "corrector_residual": 0.16868390243047146,
+        "independent_closure_residual": 0.16868390243040135,
+        "degenerate_planar": false
+      },
+      "ready_for_literature_check": false
+    }
+  ],
+  "literature_check_status": "NOT RUN. Per [[feedback_literature_novelty_check_baseline]], search/literature_check.py::check_literature() requires a live injected SearchFn and MUST be run against every cluster with ready_for_literature_check=true before any 'novel' claim -- this analysis pass only confirms the structural matcher engages (non-empty anchor pool via literature_anchors_engaged()), it does not itself search or adjudicate novelty. Not-found is necessary, not sufficient."
+}
