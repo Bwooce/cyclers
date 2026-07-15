@@ -43,14 +43,11 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
 - *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
   rows were successfully backfilled 2026-07-15; the remaining 36 (`AR < 1.0`, a genuine model-
   boundary case) and 3 genuinely-uncatalogued rows are open for a future pass.
-- `#557` — Sun-Jupiter quasi-Hilda transient-capture `quasi_cycler` screen (extends `#535`'s
-  validated Hill-sphere-return detector to a real, recurring-capture population). Plan written
-  2026-07-11 (`docs/superpowers/plans/2026-07-11-557-jupiter-quasi-hilda-transient-capture-plan.md`)
-  but **awaiting a user scoping decision**: the catalogue's `quasi_cycler` validity-window (10-15 yr,
-  Earth-timescale-calibrated) is structurally too short for Jupiter's natural return spacing
-  (re-derived floor ≈ Jupiter's own 11.86-yr orbital period, needing ≥~24 yr for 3 returns) — using
-  the literal window makes the screen a near-certain structural-empty artifact, not a real negative.
-  Nothing built or run yet; do not dispatch until the window-rescaling question is settled.
+- ~~`#557`~~ **REMOVED from this list 2026-07-15 — was ALREADY CLOSED, not open.** This dashboard
+  entry was wrong: `#557` was fully run and registered as a clean negative on 2026-07-11 (commit
+  `069d8d2`); this list's "awaiting a user scoping decision" text was itself a stale-header artifact
+  (see `#557`'s own bullet entry, corrected in this same pass) that this dashboard's own audit
+  reproduced instead of catching. See `[[feedback_outstanding_current_state_maintenance]]`.
 - `#516` — Multi-Revolution 3D Patched Search (n_em, n_se > 1, bypassing the single-revolution
   phase-closure wall) — never independently run; was meant to feed the `#520` comprehensive sweep,
   which aborted (below) before consuming it. Still uncommitted/unactioned.
@@ -1138,8 +1135,14 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
   search (the abandoned wide scan above, redone with proper `python3 -u`/flush=True instrumentation and likely a
   coarser first pass) turns up a structurally wider corridor.
 
-- **#557** (P0, planning phase first — do NOT build/run yet, review the plan before deciding on
-  implementation) — extend #535's validated Hill-sphere-return `quasi_cycler` screen
+- **#557 ✓ RUN (2026-07-11) — CLEAN, WELL-CHARACTERIZED NEGATIVE** (header corrected 2026-07-15: this
+  bullet's OPENING line said "planning phase first — do NOT build/run yet" for months after the
+  actual resolution was appended ~96 lines further down in this SAME bullet — see the "✓ RUN" text
+  below. This misled a same-day OUTSTANDING.md dashboard audit AND a manual review of it into
+  re-presenting an already-answered scope question to the user. Read a bullet to its END before
+  concluding a task's status; a stale HEADER on an otherwise-complete bullet is a real pattern, not
+  just contradicting duplicate bullets — see `[[feedback_outstanding_current_state_maintenance]]`.)
+  extend #535's validated Hill-sphere-return `quasi_cycler` screen
   (`search/hill_sphere_return_detector.py`, admission criterion already settled in writing for
   Earth) to the Sun-Jupiter quasi-Hilda population. Motivation: unlike Earth's RH120 (a
   documented ONE-SHOT transient, Jul 2006-Jul 2007, no known recurrence — and #535's own
