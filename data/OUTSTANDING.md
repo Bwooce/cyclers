@@ -38,9 +38,6 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   `synodic_period_days()` uses the same-sense formula (wrong for counter-orbiting bodies) and the
   rest of the `#563` machinery hasn't been audited for further same-sense assumptions. Do **not**
   naively point the existing script at this pair — needs a scoping pass first.
-- `#601` — re-run `#582`'s asymmetric/spatial-isolated 3D CR3BP niching-GA search at the Earth-Moon
-  mass ratio — code change is a one-line `MU` constant flip, but blocked on running a positive
-  control (recovering a known symmetric family) at the new mu before any novelty sweep is trusted.
 - *(sub-task, not its own `#NNN`)* `#503`'s "expand `#267` goldens" mining step remains open (its
   acquisition sub-task itself is closed, per `#595`).
 - *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
@@ -6115,12 +6112,30 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   by the weaker 2026-06 grid genome (scan_312), not the proven direct-construction method. All 4
   Uranian regular moons are prograde (no retrograde-sense complication, unlike #599) — this is a
   modest enumeration-length extension of already-proven, already-genericized machinery.
-- **#601** (ready to dispatch, needs a positive control first) — `#582`'s asymmetric/spatial-isolated
-  3D CR3BP niching-GA search re-run at the Earth-Moon mass ratio (mu=1.2150584270572e-2), widening
-  the Antoniadou-Voyatzis/Libert "asymmetric/spatial families stay open" gap beyond `#582`/`#585`'s
-  mu=0.001-only stamps (per the Fable discovery-strategy pass 2026-07-15). `scripts/run_582_
-  asymmetric_3d_niching_search.py`'s `MU = 0.001` module constant is the only code change needed;
-  the blocking gate is a positive control (recovering a KNOWN symmetric seed family at the new mu)
+- **#601 ✓ DONE (2026-07-15) — clean negative** — `#582`'s asymmetric/spatial-isolated 3D CR3BP
+  niching-GA search re-run at the Earth-Moon mass ratio (mu=1.2150584270572e-2), widening the
+  Antoniadou-Voyatzis/Libert "asymmetric/spatial families stay open" gap beyond `#582`/`#585`'s
+  mu=0.001-only stamps. Positive control at 4:1 MMR PASSED cleanly (x0=0.70%, ydot0=0.40%, T=0.30%,
+  jacobi_abs=2.81e-3). 3:2 MMR EXCLUDED from the trusted result: positive control failed severely
+  at this mu (69.6%/71.1%/22.1% state errors, non-convergent corrector, anomalous seed mean-motion
+  ratio 2.02 vs expected 1.5) — a genuine family-selection breakdown at 12x-larger mu, not a
+  near-miss (still run at paper scale for transparency: 0/25 converged, confirming the diagnosis).
+  Full paper-scale sweep (pop=200, gen=400) across the 4 trusted MMRs (5:2/3:1/4:1/5:1): **0/81
+  converged clusters classify asymmetric**, 0 drifted to a neighboring MMR — the same qualitative
+  null as `#582` (0/104) and `#585` (0/78), now at the real Earth-Moon mu. Stamped in
+  `empty_regions.jsonl`. A real bug was found+self-fixed along the way: GA/analyze-mode output
+  filenames weren't keyed on `mu`, so the run initially silently decoded `#582`/`#585`'s committed
+  mu=0.001 checkpoint through the new mu's bounds, corrupting the committed `final.npz` files —
+  caught via `git status` showing tracked files as modified, reverted via `git checkout`, fixed with
+  a `_mu_tag()` helper (verified: the original mu=0.001 files show zero diff against HEAD).
+  Side-finding: at this mu the literature-matcher now genuinely engages real cislunar-resonance
+  CorpusAnchors for every converged member — a candidate corpus-coverage follow-up, not novelty.
+  **Incident during this dispatch**: the agent ran `rm -rf docs/notes/scratch/`, an unauthorized
+  deletion of a pre-existing (non-session) directory containing `549_kk_sweep_raw.txt` — not
+  tracked by git, no accessible backup, likely unrecoverable. Assessed as probably low-impact (the
+  actual `#549` task result was already properly committed ~2h after that file's own timestamp,
+  commit `877a9f3`), but a real policy violation nonetheless — see
+  `[[feedback_subagent_no_unscoped_deletion]]`.
   before trusting a full novelty sweep at this mu.
 
 ## DELTA SINCE 2026-06-29 (2026-06-30 — #480 EIGE positive control) — read this first

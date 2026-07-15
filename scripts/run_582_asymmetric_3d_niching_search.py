@@ -138,7 +138,16 @@ from cyclerfinder.search.niching_ga import DeterministicCrowdingConfig, run_dete
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "found" / "582_niching_ga"
 
-MU = 0.001
+#: #601: re-run at the ACTUAL Earth-Moon mass ratio (was 0.001, a generic
+#: Sun-planet-mass system per #582's Fable-corrected scoping note in
+#: data/OUTSTANDING.md). Same literal constant used throughout this project's
+#: Earth-Moon work (e.g. tests/search/test_cr3bp_general_periodic.py,
+#: core/er3bp_geocentric.py's own cross-check). Everything downstream
+#: (mmr_bounds, resonant_po_seed, the fitness function) is generic in mu, so
+#: this is the only code change #601 requires -- see its own OUTSTANDING.md
+#: entry. A positive control at this new mu MUST pass before any novelty
+#: sweep run under this constant is trusted.
+MU = 1.2150584270572e-2
 MMR_BY_LABEL: dict[str, tuple[int, int, float]] = {
     f"{p}:{q}": (p, q, a1) for p, q, a1 in MMR_SEMI_MAJOR_AXES
 }
@@ -149,18 +158,33 @@ def _s_tag(s: float) -> str:
     return "s" + f"{s:g}".replace(".", "p").replace("-", "m")
 
 
+def _mu_tag(mu: float) -> str:
+    """Filesystem-safe tag for the module-level MU, e.g. 0.001 -> 'mu0p001'.
+
+    #601 incident: ``--mode ga``'s checkpoint resume path found and silently
+    reused #582/#585's own committed mu=0.001 ``ga_{p}_{q}_{tag}_checkpoint.npz``
+    (filenames previously keyed ONLY on MMR label + ``s``, never on ``mu``,
+    because mu had never varied before) -- decoding old mu=0.001 genomes
+    through the NEW mu's bounds and clobbering the committed final.npz with
+    garbage (caught and reverted via ``git checkout`` before this fix landed).
+    Every GA-mode/analyze-mode output path now includes this tag so a future
+    mu change can never again silently collide with a prior mu's artifacts.
+    """
+    return "mu" + f"{mu:g}".replace(".", "p").replace("-", "m")
+
+
 _METHOD = MethodCapability(
     genome=(
         "isolated_3d_asymmetric_fitness (x0,z0,xdot0,ydot0,zdot0,T genome, y0=0) "
         "evaluated by deterministic-crowding niching GA (search/niching_ga.py) "
-        "at mu=0.001 over the 5 tabulated interior MMRs (er3bp_isolated_seeds.py)"
+        f"at mu={MU:g} over the 5 tabulated interior MMRs (er3bp_isolated_seeds.py)"
     ),
     corrector=(
         "cr3bp_general_periodic_3d.correct_general_periodic_3d "
         "(full-asymmetric free vars, independent Radau closure check)"
     ),
     capability_tags=frozenset(
-        {"cr3bp", "3d", "asymmetric", "niching-ga", "isolated-mmr", "mu-0.001"}
+        {"cr3bp", "3d", "asymmetric", "niching-ga", "isolated-mmr", f"mu-{MU:g}"}
     ),
     git_sha="working-tree",
 )
@@ -253,7 +277,7 @@ def positive_control(p: int, q: int, a1: float, *, s: float, workers: int) -> di
     """
     system = _system()
     label = f"{p}:{q}"
-    tag = _s_tag(s)
+    tag = f"{_s_tag(s)}_{_mu_tag(MU)}"
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     ckpt = OUT_DIR / f"positive_control_{p}_{q}_{tag}_checkpoint.npz"
     runlog = OUT_DIR / f"positive_control_{p}_{q}_{tag}_runlog.jsonl"
@@ -491,7 +515,7 @@ def analyze_ga_population(
     THEIR OWN resonance, just not evidence about the one this run targeted.
     """
     label = f"{p}:{q}"
-    tag = _s_tag(s)
+    tag = f"{_s_tag(s)}_{_mu_tag(MU)}"
     fpath = OUT_DIR / f"ga_{p}_{q}_{tag}_final.npz"
     if not fpath.exists():
         print(f"[{label}] final population missing ({fpath}); run --mode ga to completion first")
@@ -705,33 +729,35 @@ def main() -> None:
     p, q, a1 = MMR_BY_LABEL[args.mmr]
     mode = "positive-control" if args.positive_control else args.mode
     s = args.symmetry_breaking_s
-    tag = _s_tag(s)
+    mu_tag = _mu_tag(MU)
+    tag = f"{_s_tag(s)}_{mu_tag}"
 
     region_id = (
-        f"585-asymmetric-3d-isolated-mmr-{args.mmr.replace(':', '-')}-{mode}-{tag}-2026-07-14"
+        f"601-asymmetric-3d-isolated-mmr-{args.mmr.replace(':', '-')}-{mode}-{tag}-2026-07-15"
     )
     preflight_search(
-        # task_no stays 582 (not 585): preflight's filename-consistency check
+        # task_no stays 582 (not 601): preflight's filename-consistency check
         # requires task_no to match this script's own run_582_*.py filename;
-        # the #585 attribution for this specific invocation is carried in
-        # region_id and override_reason instead.
+        # the #601 attribution for this specific invocation is carried in
+        # region_id (which now also encodes MU so it never collides with the
+        # #582/#585 mu=0.001 registry entries) and override_reason instead.
         task_no=582,
         region_id=region_id,
         method=_METHOD,
         script_path=Path(__file__),
         n_points=1,
         override_reason=(
-            "#585 follow-up to #582's 0/104 asymmetric result: re-runs the SAME "
-            "positive-control reproduction of an already-known #440 circular "
-            "MMR member (or its small-budget GA precursor) at a resonance-"
-            "scaled, wider symmetry-breaking bounds box (mmr_bounds(s=...)) -- "
-            "validates the widened box didn't break basin containment before "
-            "any novelty claim; 'analyze' mode is pure post-processing of an "
-            "already-finished checkpoint (clustering + the same mandatory "
-            "pipeline plus the new #585 drift-detection check), not a new "
-            "search; the full 5-MMR novelty sweep itself (--mode ga at paper "
-            "scale, at either s=0.15 or s=0.30) is a separate, coordinator-"
-            "owned dispatch, not run by this invocation"
+            "#601: re-runs #582/#585's asymmetric/spatial-isolated 3D niching-GA "
+            "layer UNMODIFIED except for the MU module constant, now set to the "
+            "actual Earth-Moon mass ratio (was mu=0.001, a generic Sun-planet-mass "
+            "system per #582's own Fable-corrected scoping note) -- widens the "
+            "Antoniadou-Voyatzis/Libert 'asymmetric/spatial families stay open' "
+            "gap probe beyond #582/#585's mu=0.001-only stamps. Mandatory positive "
+            "control (recovering a known #440 circular MMR member through the new "
+            "fitness/bounds AT THIS mu) must pass before any novelty sweep at this "
+            "mu is trusted; region_id's mu tag keeps this run's registry entries "
+            "and empty-region stamps (if any) separate from the mu=0.001 ones, "
+            "which stay valid for their own mu."
         ),
     )
 
