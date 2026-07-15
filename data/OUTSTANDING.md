@@ -4045,7 +4045,26 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   whether a real, literature-documented anchor object even exists (Jupiter had Gehrels 3/Oterma;
   does any known Centaur/scattered-disk object have a DOCUMENTED temporary Neptune capture episode
   the way Koon et al. 2001 documents Jupiter's?) before assuming the `#535`/`#557` recipe transfers.
-  **Not dispatched — plan first, user decision on scope after.**
+  **PLAN DONE (2026-07-15)** — `docs/superpowers/plans/2026-07-15-603-sun-neptune-transient-capture-
+  plan.md`. **Headline recommendation: DECLINE a full sweep.** Two independent, verified findings:
+  (1) Neptune's real orbital period is 164.8947 yr (computed in-repo, cross-checked via Kepler's
+  third law) — the SAME dimensionless logic `#557` used gives a floor of ~165yr and a window of
+  ~1649-2473 YEARS, ~13.9x further from the catalogue's 10-15yr figure than Jupiter's already-
+  flagged departure; no better-motivated Neptune-specific derivation was found (checked, not
+  assumed — the one real analog, 2007 RW10's ~7,500-12,500yr libration, argues for LONGER, not
+  shorter). (2) A live web search (not recalled) found **no documented real object ever entering
+  Neptune's actual Hill sphere** in a capture episode — the closest analogs (2007 RW10, four
+  "temporary Neptune co-orbitals") are quasi-satellite/1:1-resonance objects that by definition stay
+  OUTSIDE the Hill sphere, and Horner & Evans (2006) independently document Neptune has "great
+  difficulty" capturing Centaurs even into that weaker coupling. The plan also directly checked and
+  REFUTED this task's own "smaller e might survive" motivating hint against the project's own prior
+  evidence: Earth's e=0.0167 is itself smaller than Jupiter's e=0.0484 yet still fully collapsed
+  (`#535`), so there's no established pattern to extrapolate Neptune optimism from. A third,
+  previously-uncontemplated complication was also found: Neptune's neck-open Jacobi-constant band is
+  ~6.7x narrower than Jupiter's (tracks μ^(2/3) scaling), so even a reduced/fallback run would need a
+  much finer energy-axis grid, not just a rescaled time window. **User decision pending: decline
+  outright, or accept the plan's explicitly-weaker fallback (idealized-model-only, no positive
+  control, not registered in `empty_regions.jsonl` at the same confidence tier as `#557`).**
 
 - **#592** (P2, correctness fix) — recovered a real QBCP equations-of-motion bug from an abandoned
   `git stash` (found during a repo-hygiene cleanup pass across both repos, undated stash on `7f83277`)
