@@ -33,8 +33,6 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   a user greenlight. Would let the `#522` linking-number screen attempt the one remaining
   frequency-matched Owen & Baresi L1<->L2 reproduction shot (`#555`'s terminal qualified-negative
   left exactly this one blocker: the L1 quasi-halo can't be built at the needed amplitude).
-- `#589` — reproduce/extend Gurfil-Kasdin 2002's out-of-ecliptic z²-maximization as a new search
-  regime — flagged for user review before dispatch, **not auto-fired**.
 - `#599` — Neptune Triton-Proteus symmetric-closure sweep (natural next `#563`-method target) —
   **[watch]**, blocked on a real, unscoped physics gap: Triton is retrograde, Proteus prograde;
   `synodic_period_days()` uses the same-sense formula (wrong for counter-orbiting bodies) and the
@@ -48,6 +46,25 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
 - *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
   rows were successfully backfilled 2026-07-15; the remaining 36 (`AR < 1.0`, a genuine model-
   boundary case) and 3 genuinely-uncatalogued rows are open for a future pass.
+- `#557` — Sun-Jupiter quasi-Hilda transient-capture `quasi_cycler` screen (extends `#535`'s
+  validated Hill-sphere-return detector to a real, recurring-capture population). Plan written
+  2026-07-11 (`docs/superpowers/plans/2026-07-11-557-jupiter-quasi-hilda-transient-capture-plan.md`)
+  but **awaiting a user scoping decision**: the catalogue's `quasi_cycler` validity-window (10-15 yr,
+  Earth-timescale-calibrated) is structurally too short for Jupiter's natural return spacing
+  (re-derived floor ≈ Jupiter's own 11.86-yr orbital period, needing ≥~24 yr for 3 returns) — using
+  the literal window makes the screen a near-certain structural-empty artifact, not a real negative.
+  Nothing built or run yet; do not dispatch until the window-rescaling question is settled.
+- `#516` — Multi-Revolution 3D Patched Search (n_em, n_se > 1, bypassing the single-revolution
+  phase-closure wall) — never independently run; was meant to feed the `#520` comprehensive sweep,
+  which aborted (below) before consuming it. Still uncommitted/unactioned.
+- `#517` — Asymmetric/Mixed Libration Pairs in 3D (EM-L1<->SE-L2, EM-L2<->SE-L1 scans) — same
+  status as `#516`: never run, fed into the aborted `#520` sweep, still open. (`#518`, the fourth
+  task in this same "session C working-tree" batch, IS closed — superseded by `#522`.)
+- `#520` — Comprehensive 3D cross-system closure sweep (8,640-point grid,
+  `scripts/run_520_comprehensive_3d_search.py`) — **ABORTED** 2026-07-02 after 12+ hours with zero
+  output (a scoping failure: too coarse to find anything AND too expensive to finish), explicitly
+  **not a negative result**. No re-attempt has been made; would need a timed pilot + incremental
+  checkpointing first per the DELTA-2026-07-02 review's own diagnosis.
 
 ### In progress
 - None identified as actively running as of 2026-07-15. The most recent worked chain (`#594`-`#598`,
@@ -62,6 +79,30 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   (one entry implying a task is done, another implying it's still open), tie-break via
   `docs/notes/` for a dedicated verdict note before trusting either copy, per the process this
   section itself was created to enforce.
+- **Two more instances of the same pattern, found and corrected during this pass:** (1) `#589`'s
+  `TASK ALLOCATIONS` one-liner still reads "flagged for user review before dispatch, not auto-fired,"
+  but `#589`'s own bullet entry ends with a 2026-07-14 Fable design-review **NO-GO** and "**Not
+  dispatched; do not dispatch as scoped**" — the proposal is killed, not pending review (its
+  salvageable reframe shipped separately as `#591`, already closed). Removed from the blocked-list
+  above for this reason — do not re-add it as "awaiting review." (2) `#582`'s `TASK ALLOCATIONS`
+  one-liner still reads "full novelty sweep not yet dispatched," but `#582`'s own bullet entry records
+  the 5-MMR novelty sweep as completed 2026-07-14 (commit `b0225f4`, clean 0/104 negative, stamped to
+  `empty_regions.jsonl`) — `#582` is CLOSED, not open, and is correctly omitted from the dispatch-ready
+  list above. Neither the master ledger paragraph's inline text nor a prior audit (`#594`/`#599`) caught
+  either of these; both were only found by reading the task's own dedicated bullet entry directly. The
+  master ledger paragraph itself has NOT been hand-edited to fix these two lines (out of scope for a
+  pure-insertion dashboard edit) — a future editing pass through that paragraph should correct both.
+  (3) Same pattern again on `#583`: its `TASK ALLOCATIONS` one-liner says "full novelty sweep not yet
+  dispatched, needs radial/per-family partitioning first," but that partitioning redesign, the full
+  16-partition x 3-seed sweep, and its downstream adjudication all actually completed via the
+  `#583`->`#586`->`#588`->`#590`->`#591` chain (all CLOSED) — `#583` is correctly omitted above too.
+  A fourth ledger line (`#585`'s "the 0/104 result is very likely a narrow-search-box artifact, not a
+  physical negative") is likewise stale: `#585` itself ran the widened-bounds sweep to completion
+  2026-07-14 (commit `83607a1`, 0/78 asymmetric, a materially stronger negative) and is CLOSED, also
+  correctly omitted. The master ledger paragraph is accumulating this staleness faster than anyone is
+  fixing it — treat its inline one-liners as a rough index only, never as a status source, until
+  someone does a dedicated pass to hand-correct all of `#582`/`#583`/`#585`/`#589`'s (and possibly
+  more) one-liners in place.
 
 ### Pre-#512 items (NOT covered by the #512-#601 audit above — spot-checked only, not exhaustive)
 This dashboard's main audit only reconciled the `TASK ALLOCATIONS` paragraph's `#512`-`#601` range.
