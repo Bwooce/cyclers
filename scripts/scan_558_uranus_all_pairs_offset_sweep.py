@@ -114,6 +114,23 @@ def _git_sha() -> str:
         return "unknown"
 
 
+def _signed_mean_motion(sat: Any, n_mag_rad_day: float) -> float:
+    """Mean motion (rad/day) SIGNED for orbital sense (#599).
+
+    ``_moon_state(theta0, n_rad_day, t, ...)`` advances phase as
+    ``theta0 + n_rad_day * t`` -- i.e. it always assumes the body advances
+    in the POSITIVE (prograde/CCW) angular sense. That is correct for every
+    moon in this registry except a retrograde one (currently only Neptune's
+    Triton -- see ``SatelliteData.retrograde``), which must advance with a
+    NEGATIVE mean motion (it moves clockwise). ``_mean_motion_rad_day``
+    itself always returns a positive magnitude (Kepler III has no sign), so
+    the sign has to be applied here, once, at every call site that builds a
+    moon's time-evolving state. Default (non-retrograde) bodies are
+    unaffected -- this returns the same positive magnitude unchanged.
+    """
+    return -n_mag_rad_day if sat.retrograde else n_mag_rad_day
+
+
 @dataclass(frozen=True)
 class LegOption:
     n_revs: int
@@ -186,10 +203,15 @@ def residual_at_point(
     mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
-    n_a = _mean_motion_rad_day(mu, sat_a.sma_km)
-    n_b = _mean_motion_rad_day(mu, sat_b.sma_km)
-    p_a = 2.0 * math.pi / n_a
-    p_b = 2.0 * math.pi / n_b
+    n_a_mag = _mean_motion_rad_day(mu, sat_a.sma_km)
+    n_b_mag = _mean_motion_rad_day(mu, sat_b.sma_km)
+    p_a = 2.0 * math.pi / n_a_mag
+    p_b = 2.0 * math.pi / n_b_mag
+    # Signed for orbital sense (#599) -- see _signed_mean_motion. p_a/p_b
+    # above stay magnitude-only (periods are sense-independent); only the
+    # phase-propagation rate below needs the sign.
+    n_a = _signed_mean_motion(sat_a, n_a_mag)
+    n_b = _signed_mean_motion(sat_b, n_b_mag)
 
     phase0 = math.radians(phase0_deg)
     rel_off = math.radians(rel_offset_deg)
@@ -263,10 +285,13 @@ def sweep_pair(
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     sma_a, sma_b = sat_a.sma_km, sat_b.sma_km
-    n_a = _mean_motion_rad_day(mu, sma_a)
-    n_b = _mean_motion_rad_day(mu, sma_b)
-    p_a = 2.0 * math.pi / n_a
-    p_b = 2.0 * math.pi / n_b
+    n_a_mag = _mean_motion_rad_day(mu, sma_a)
+    n_b_mag = _mean_motion_rad_day(mu, sma_b)
+    p_a = 2.0 * math.pi / n_a_mag
+    p_b = 2.0 * math.pi / n_b_mag
+    # Signed for orbital sense (#599) -- see _signed_mean_motion.
+    n_a = _signed_mean_motion(sat_a, n_a_mag)
+    n_b = _signed_mean_motion(sat_b, n_b_mag)
 
     best_overall = math.inf
     best_rec: dict[str, Any] = {}
@@ -389,8 +414,9 @@ def build_legs_for_record(
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
     sma_a, sma_b = sat_a.sma_km, sat_b.sma_km
-    n_a = _mean_motion_rad_day(mu, sma_a)
-    n_b = _mean_motion_rad_day(mu, sma_b)
+    # Signed for orbital sense (#599) -- see _signed_mean_motion.
+    n_a = _signed_mean_motion(sat_a, _mean_motion_rad_day(mu, sma_a))
+    n_b = _signed_mean_motion(sat_b, _mean_motion_rad_day(mu, sma_b))
 
     rel_off = math.radians(rec["rel_offset_deg"])
     phase0 = math.radians(rec["phase0_deg"])

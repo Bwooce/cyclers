@@ -33,11 +33,6 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   a user greenlight. Would let the `#522` linking-number screen attempt the one remaining
   frequency-matched Owen & Baresi L1<->L2 reproduction shot (`#555`'s terminal qualified-negative
   left exactly this one blocker: the L1 quasi-halo can't be built at the needed amplitude).
-- `#599` — Neptune Triton-Proteus symmetric-closure sweep (natural next `#563`-method target) —
-  **[watch]**, blocked on a real, unscoped physics gap: Triton is retrograde, Proteus prograde;
-  `synodic_period_days()` uses the same-sense formula (wrong for counter-orbiting bodies) and the
-  rest of the `#563` machinery hasn't been audited for further same-sense assumptions. Do **not**
-  naively point the existing script at this pair — needs a scoping pass first.
 - *(sub-task, not its own `#NNN`)* `#503`'s "expand `#267` goldens" mining step remains open (its
   acquisition sub-task itself is closed, per `#595`).
 - *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
@@ -6102,18 +6097,28 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   mining pass's 2 conference precursors (IAC-24-C1.9.5, AAS 24-368) remain useful corroborating
   context but were not needed as a stand-in once the actual target paper's real bug was found and
   fixed directly.
-- **#599** (P3, parked — real capability gap, not auto-fired) — Neptune Triton-Proteus symmetric-
-  closure sweep (the natural next `#563`-method target after Uranus/Saturn/Jupiter, per a Fable
-  discovery-strategy pass 2026-07-15) is BLOCKED on a genuine, unscoped physics gap: Triton orbits
-  Neptune RETROGRADE while Proteus is prograde, but `scripts/refine_562_commensurability.py`'s
-  `synodic_period_days()` uses the same-sense formula `1/|1/T_a - 1/T_b|` — for counter-orbiting
-  bodies the correct form is `1/(1/T_a + 1/T_b)`. `SatelliteData`/`_sat()` in
-  `core/satellites.py` also has no `retrograde` flag at all currently. Beyond the synodic-period
-  formula, the rest of the `#563` direct symmetric-closure construction (`enumerate_563_symmetric_
-  closures.py`'s `enumerate_direction`/`gate_candidate`/`residual_at_point`) has NOT been audited for
-  further same-sense assumptions (rel_offset geometry, ToF construction) — this needs a real scoping
-  pass, not a one-line fix, before a Neptune sweep can be trusted. Do NOT naively point the existing
-  script at Triton-Proteus. [watch]
+- **#599 ✓ DONE (2026-07-15) — capability gap fixed, sweep run, clean negative** — Neptune
+  Triton-Proteus symmetric-closure sweep. Fixed the retrograde-orbit capability gap found while
+  scoping this task: added `SatelliteData.retrograde` (default False, only Triton set True, cited
+  to JPL SSD NEP097/NEP101 inclination ~156.885° + Jacobson 2009 AJ 137), gave
+  `synodic_period_days()` an `opposite_sense` param using `1/(1/T_a+1/T_b)` for counter-orbiting
+  pairs (verified against a synthetic case, not just eyeballed), and derived `opposite_sense` in
+  `enumerate_563_symmetric_closures.py`'s `pair_n_max()` from the pair's own registry flags (XOR),
+  so every pre-#599 Uranian/Jovian/Saturnian pair is unaffected. **Deeper audit finding (the actual
+  point of this task): the synodic-period fix alone was NOT sufficient** —
+  `scan_558_uranus_all_pairs_offset_sweep.py`'s phase-propagation (`_moon_state`) always assumed a
+  positive/prograde angular rate; fixed with a new `_signed_mean_motion()` applied at all 3 call
+  sites (periods stay magnitude-only; only the phase-propagation rate needs the sign). Verified:
+  synthetic counter-orbiting self-check, empirical sign-flip check (Triton's angle decreases with
+  time), full `tests/data tests/search`/`tests/scripts` ratchets, and the #575 Uranian golden
+  no-op check (byte-for-byte identical to ~10 significant figures; the tiny remaining float noise
+  is pre-existing BLAS/scipy-version drift, same pattern as #584, confirmed not caused by this
+  change). **Sweep result: 0/1024 candidates pass all gates** — 104 pass the residual sub-gate but
+  every one fails the physical-bend gate at the Proteus encounter specifically (bend ~0.005-0.3°,
+  far under the 5° usefulness floor) — the same failure mode that excluded Miranda at Uranus:
+  Proteus's GM (2.58 km³/s²) is too small for a useful gravity-assist bend at this family's V∞
+  regime. Stamped in `empty_regions.jsonl`. The retrograde fix itself is confirmed non-trivial and
+  correct (naive same-sense formula gives T_syn=1.386d vs the correct 0.9419d, ~47% error).
 - **#600** (ready to dispatch, zero blocker) — Uranian 3-moon-sequence extension of the `#563` direct
   symmetric-closure method (per the Fable discovery-strategy pass 2026-07-15): the productive #558-
   #563-#569 census only enumerated 2-moon (anchor-flyby-anchor) directions among {Ariel, Umbriel,
