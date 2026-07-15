@@ -5555,7 +5555,10 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   Output: `data/silver_327_v4_strict_daily_sweep_559.jsonl`. Script:
   `scripts/run_559_silver_v4strict_daily_doy_scan.py`.
 
-- **#560** (P2, parking lot — not auto-fired) — V4-strict Lambert-branch-continuity +
+- **#560 ✓ RESOLVED (2026-07-14)** (header corrected 2026-07-15: this bullet's opening line said
+  "P2, parking lot — not auto-fired" even though its own body carries a "✓ Resolved" resolution
+  ~29 lines down — the same stale-header pattern as `#557`, caught by the new header/body
+  consistency ratchet) — V4-strict Lambert-branch-continuity +
   degenerate-arc-exclusion robustness fixes. The #559 diagnostic (above) confirmed two real
   robustness deficiencies in `src/cyclerfinder/data/validation/v4_uranus_strict.py`, both
   needed before any epoch-SWEEP interpretation of V4-strict can be trusted (the canonical
@@ -5753,7 +5756,10 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   in the runlog corpus, whether it's enough) → **Opus**. If it proceeds to a build,
   implementation behind an explicit train/eval split → **Sonnet**.
 
-- **#543** (parking lot — needs a scoping conversation, not a sprint slot) — #529's
+- **#543 ✓ SCOPED (2026-07-11)** (header corrected 2026-07-15: this bullet's opening line said
+  "parking lot — needs a scoping conversation, not a sprint slot" even though its own body records
+  the scoping conversation actually happened and was resolved ~10 lines down — same stale-header
+  pattern as `#557`/`#560`, caught by the new header/body consistency ratchet) — #529's
   deferred inter-cycler-network / taxi-transfer catalogue extension. Still real (this
   project's own corpus documents published fleet-of-cyclers networks the current 5-class
   taxonomy cannot express), still ranked last deliberately: it changes what a catalogue
