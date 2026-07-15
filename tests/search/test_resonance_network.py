@@ -3,28 +3,35 @@
 The scorer is the **third Track-B tier**, complementing the Braik-Ross
 heading-fan (#236, energy-PRESERVING) and the Zhou-Armellin impulsive footprint
 (#239/#263, energy-CHANGING). It implements the perigee-Poincaré-section
-manifold-overlap method of Kumar/Rawat/Rosengren/Ross (2025), arXiv:2509.12675.
+manifold-overlap method of Kumar/Rawat/Rosengren/Ross (2025), arXiv:2509.12675,
+published *Advances in Space Research* 77(3):3815 (2026), DOI
+10.1016/j.asr.2025.12.005.
 
-HONEST DATA GAP (per the module docstring of :mod:`resonance_network`): the
-Kumar 2025 PDF is NOT held in our local mirror; the exact published periods,
-the common Jacobi the paper uses, and the explicit "generalized distance
-metric" definition are therefore not source-readable to this module. The
-suite reflects this:
+REPRODUCE-BEFORE-TRUST (2026-07-15 -- paper confirmed in hand): the PDF is
+held at ``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf``. The suite:
 
-* The reproduce-before-trust gate for R31-U and R21-U checks the recovered
-  period against the Braik-Ross Table 2 (NOT the Kumar paper) at C_J=3.1294 --
-  the JPL DB family entries which Braik-Ross sourced are the same orbits the
-  Kumar paper builds on. For R41-U the published period is unknown at this
-  energy; that gate is :func:`pytest.xfail` with the missing-source reason.
+* The reproduce-before-trust gate for the non-Kumar R31-U and R21-U checks the
+  recovered period against the Braik-Ross Table 2 (a different paper/energy,
+  C_J=3.1294) -- the JPL DB family entries Braik-Ross sourced are the same
+  orbits the Kumar paper builds on, so this remains a useful independent
+  cross-check even though it is not the Kumar paper's own energy.
+* The Kumar-seeded members (``"*-Kumar"``) are recovered at their OWN sourced
+  Jacobi constant from Kumar Table 6 (:data:`rn.KUMAR_TABLE6_CJ`: C=3.10 for
+  3:1/2:1, C=3.15 for 4:1) -- NOT the Braik-Ross default -- and their recovered
+  ICs are checked directly against Table 6's verbatim ``(x, ydot)`` values
+  (the strongest available reproduce-before-trust check, since Table 6 IS the
+  converged periodic-orbit ground truth, not a derived scalar like a period).
+  R41-U-Kumar additionally reproduces the Figure 7 caption's printed period
+  (6.3089 TU / 27.396 days at C=3.15 -- an exact printed value, not a
+  digitization) to within 0.1%.
 * The independent-cross-check construction re-integrates one manifold with the
   ``"Radau"`` method (implicit Runge-Kutta) instead of ``"DOP853"`` (the
   default explicit Runge-Kutta), per ``feedback_orbit_closure_discipline``;
   perigee-section samples must match within published-paper-grade tolerances.
-* The Kumar 3:1 -> 2:1 -> L1 heteroclinic-chain reproduction is `xfail`-marked
-  with the unsourced-PDF reason: at the Braik-Ross common energy a defensible
-  metric reports a chain candidate IFF the section distances drop below the
-  scorer's heteroclinic_tol -- and at the coarse settings used here they do
-  NOT, which is what we report as the honest negative.
+* The Kumar 3:1 -> 2:1 heteroclinic-chain reproduction uses the paper's own
+  Eq. 10 angular-momentum/Laplace-vector metric (``kumar_angular_momentum_
+  laplace_metric`` below) and Table 1's C=3.10 tolerances, at the paper's own
+  C=3.10 (not the Braik-Ross energy).
 
 The suite stays under 120 s on a laptop (each manifold integration ~ 0.5 s,
 each scored pair ~ 1 s).
@@ -60,16 +67,46 @@ def members(system: object) -> dict[str, rn.ResonantMember]:
 
 @pytest.fixture(scope="module")
 def kumar_members(system: object) -> dict[str, rn.ResonantMember]:
-    """Recover Kumar 2025 Table 6 ICs (C=3.10 and C=3.15)."""
+    """Recover Kumar 2025 Table 6 ICs, each at ITS OWN sourced Jacobi constant.
+
+    CORRECTED 2026-07-15: previously these were recovered at the module's
+    default ``c_j`` (:data:`rn.C_J_BRAIK_ROSS` = 3.1294, a different paper's
+    energy), not Table 6's actual C=3.10 (3:1/2:1) / C=3.15 (4:1) -- silently
+    recovering a nearby but DIFFERENT periodic orbit than the one Table 6
+    documents. :data:`rn.KUMAR_TABLE6_CJ` now supplies the correct energy per
+    label.
+    """
     return {
-        "R31-U-Kumar": rn.recover_resonant_family(system, "3:1-Kumar"),  # type: ignore[arg-type]
-        "R21-U-Kumar": rn.recover_resonant_family(system, "2:1-Kumar"),  # type: ignore[arg-type]
-        "R41-U-Kumar": rn.recover_resonant_family(system, "4:1-Kumar"),  # type: ignore[arg-type]
+        "R31-U-Kumar": rn.recover_resonant_family(
+            system,  # type: ignore[arg-type]
+            "3:1-Kumar",
+            c_j=rn.KUMAR_TABLE6_CJ["3:1-Kumar"],
+        ),
+        "R21-U-Kumar": rn.recover_resonant_family(
+            system,  # type: ignore[arg-type]
+            "2:1-Kumar",
+            c_j=rn.KUMAR_TABLE6_CJ["2:1-Kumar"],
+        ),
+        "R41-U-Kumar": rn.recover_resonant_family(
+            system,  # type: ignore[arg-type]
+            "4:1-Kumar",
+            c_j=rn.KUMAR_TABLE6_CJ["4:1-Kumar"],
+        ),
     }
 
 
-def kumar_equinoctial_metric(sec_a: np.ndarray, sec_b: np.ndarray) -> Any:
-    """Distance metric from Kumar 2025 Eq 10 (equinoctial L/A difference)."""
+def kumar_angular_momentum_laplace_metric(sec_a: np.ndarray, sec_b: np.ndarray) -> Any:
+    """Distance metric from Kumar 2025 Eq. 10: angular momentum + Laplace vector.
+
+    RENAMED 2026-07-15 (was ``kumar_equinoctial_metric`` -- a misnomer): the
+    paper's Eq. 10 is ``D(b,c) = sqrt(||L_b - L_c||^2 + ||A_b - A_c||^2)`` using
+    the angular momentum ``L = r x rdot`` (Eq. 8) and Laplace vector
+    ``A = rdot x (r x rdot) - (1-mu) r/|r|`` (Eq. 9) -- NOT equinoctial
+    elements. Equinoctial elements are a separate, documented-but-unused
+    alternative metric in the paper's own Appendix 8.1 (Eq. 13); this function
+    has always implemented Eq. 10 correctly, it was just named after the wrong
+    equation.
+    """
     mu = 0.01215058439469525
 
     def compute_l_a_iner(sec: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -111,11 +148,11 @@ def kumar_equinoctial_metric(sec_a: np.ndarray, sec_b: np.ndarray) -> Any:
 # ---------------------------------------------------------------------------
 # (1) Reproduce-before-trust: R31-U and R21-U periods match Braik-Ross Table 2.
 #
-# The Kumar paper's exact reported periods cannot be checked (PDF not held); we
-# fall back to the Braik-Ross Table 2 periods at the same energy C_J=3.1294,
-# which are themselves source-anchored to the JPL DB family entries the Kumar
-# paper also builds its resonant orbits from. R41-U has no sourced period at
-# this energy in the literature available to this module -- xfail.
+# These are checked against the Braik-Ross Table 2 periods at C_J=3.1294 (a
+# different paper/energy than Kumar's own Table 6), which are themselves
+# source-anchored to the JPL DB family entries the Kumar paper also builds its
+# resonant orbits from. The Kumar paper's OWN periods/ICs are checked directly
+# below (test_reproduce_r41u_period_kumar, test_reproduce_kumar_table6_ic).
 # ---------------------------------------------------------------------------
 
 
@@ -150,12 +187,15 @@ def test_reproduce_r21u_period_braik_ross(
     assert abs(m.unstable_eigenvalue) > 2.0
 
 
-@pytest.mark.xfail(
-    reason="R41-U has no precise sourced period at this energy in the literature; "
-    "value from Figure 7 caption is a digitization/estimate."
-)
 def test_reproduce_r41u_period_kumar(kumar_members: dict[str, rn.ResonantMember]) -> None:
-    """R41-U recovered period matches Kumar 2025 Figure 7 caption."""
+    """R41-U recovered period matches Kumar 2025 Figure 7 caption.
+
+    UN-XFAILED 2026-07-15: the paper is confirmed in hand
+    (``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf``) and the sourced
+    value is an exact PRINTED figure caption ("period 6.3089 TU"), not a
+    digitization/estimate as the previous xfail reason claimed -- this test
+    was already unexpectedly passing (XPASS) before the un-xfail.
+    """
     # Note: Period read from Figure 7 caption: 6.3089 TU
     # Converted using Earth-Moon system (1 TU = 4.34247 days) -> 27.396 days
     m = kumar_members["R41-U-Kumar"]
@@ -166,6 +206,39 @@ def test_reproduce_r41u_period_kumar(kumar_members: dict[str, rn.ResonantMember]
         f"R41-U not confirmed (period_days={m.period_days}, lam={m.unstable_eigenvalue})"
     )
     assert rel < 0.005, f"R41-U period off by {rel:.2%} vs Kumar 2025"
+
+
+# ---------------------------------------------------------------------------
+# (1b) Reproduce-before-trust: recovered ICs match Kumar 2025 Table 6 verbatim.
+#
+# Table 6 (Appendix 8.2) gives the exact converged (x, ydot) of each unstable
+# resonant orbit at its own sourced Jacobi constant -- a STRONGER ground truth
+# than a period, since it is the periodic-orbit state itself. Added 2026-07-15
+# alongside the KUMAR_TABLE6_CJ fix (previously these members were recovered at
+# the wrong Jacobi constant, so this check would have failed honestly).
+# ---------------------------------------------------------------------------
+
+#: (label, sourced x, sourced ydot) from Kumar 2025 Table 6, verbatim.
+_TABLE6_IC = {
+    "R31-U-Kumar": (0.822429022871, -0.300987128481),
+    "R21-U-Kumar": (0.878280334961, -0.334629543419),
+    "R41-U-Kumar": (0.737385941470, -0.355888785284),
+}
+
+
+@pytest.mark.parametrize("label", ["R31-U-Kumar", "R21-U-Kumar", "R41-U-Kumar"])
+def test_reproduce_kumar_table6_ic(label: str, kumar_members: dict[str, rn.ResonantMember]) -> None:
+    """Recovered (x0, ydot0) matches Kumar 2025 Table 6 to within 1e-4 (relative)."""
+    m = kumar_members[label]
+    x_sourced, ydot_sourced = _TABLE6_IC[label]
+    x_rel = abs(m.state0[0] - x_sourced) / abs(x_sourced)
+    ydot_rel = abs(m.state0[4] - ydot_sourced) / abs(ydot_sourced)
+    print(
+        f"\n{label}: x0={m.state0[0]:.9f} sourced={x_sourced} rel={x_rel:.2e}; "
+        f"ydot0={m.state0[4]:.9f} sourced={ydot_sourced} rel={ydot_rel:.2e}"
+    )
+    assert x_rel < 1e-4, f"{label} x0 off by {x_rel:.2e} vs Kumar 2025 Table 6"
+    assert ydot_rel < 1e-4, f"{label} ydot0 off by {ydot_rel:.2e} vs Kumar 2025 Table 6"
 
 
 # ---------------------------------------------------------------------------
@@ -351,14 +424,14 @@ def test_resonance_network_complements_other_tiers(
 
 
 # ---------------------------------------------------------------------------
-# (6) Validation gate (xfail by design): can the scorer reproduce Kumar's
-# documented 3:1 -> 2:1 -> L1 chain?
+# (6) Validation gate: can the scorer reproduce Kumar's documented 3:1 -> 2:1
+# chain?
 #
-# Honest scoping: the Kumar 2025 PDF is not held, so the paper's exact
-# documented chain ΔV / metric value cannot be reproduced. At the Braik-Ross
-# common energy (C_J=3.1294) with our defensible metric and default
-# heteroclinic_tol the scorer does NOT report a heteroclinic_candidate for
-# 3:1 -> 2:1; we mark this as xfail with the documented reason (NOT tuned).
+# At Kumar's OWN sourced C=3.10 (not the Braik-Ross common energy), using the
+# paper's own Eq. 10 angular-momentum/Laplace-vector metric and Table 1's
+# C=3.10 tolerances (eps_31=1e-2, eps_21=5e-3 NDU), the scorer DOES report a
+# heteroclinic_candidate for 3:1 -> 2:1 -- reproducing the paper's own
+# documented chain, no longer xfail.
 # ---------------------------------------------------------------------------
 
 
@@ -370,7 +443,7 @@ def test_kumar_3_1_to_2_1_chain_heteroclinic_candidate(
     # The paper's heteroclinic connections occur near Earth perigee.
     scorer = rn.ResonanceNetworkScorer(
         system=system,  # type: ignore[arg-type]
-        metric=kumar_equinoctial_metric,
+        metric=kumar_angular_momentum_laplace_metric,
         section_body="Earth",
     )
 

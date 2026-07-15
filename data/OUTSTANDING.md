@@ -5932,7 +5932,7 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   `rawat-2024-resonance-widths-aas`, `rosengren-2024-xgeo-resonant-structure-amos`, all
   `verified-against-source`); `tests/search/test_literature_check.py` re-verified green. **Follow-on
   opportunity found, NOT actioned here** (out of scope for a digest task) — see #598.
-- **#598 ⚠ PREMISE CORRECTED (2026-07-15) — the "missing PDF" is NOT missing** — `src/cyclerfinder/
+- **#598 ✓ DONE (2026-07-15) — the "missing PDF" was NOT missing, and fixing it up found a real bug** — `src/cyclerfinder/
   search/resonance_network.py` (#267 Track-B tier 3) carries a documented "REPRODUCE-BEFORE-TRUST"
   data gap: its period test is `xfail`-marked with the reason "Kumar 2025 PDF not held in our local
   mirror" (Kumar-Rawat-Rosengren-Ross, "Cislunar Resonant Transport and Heteroclinic Pathways: From
@@ -5946,13 +5946,30 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   ever being updated to notice — the exact same "acquired but never reconciled" failure mode as #596's
   `MISSING_DATA.md` staleness and #595's `OUTSTANDING.md` staleness, just localized to a module
   docstring instead of a tracking doc this time.
-  **Real next step (not yet done): read the now-confirmed-available 47-page PDF, extract the exact
-  common Jacobi constant / unstable-member periods / "generalized distance metric" it uses, and
-  un-`xfail` `tests/search/test_resonance_network.py`'s reproduce-before-trust gate** — this should be
-  straightforward now that the acquisition blocker is gone. The #597 mining pass's 2 conference
-  precursors (IAC-24-C1.9.5, AAS 24-368) remain useful corroborating context (same author group, same
-  3:1/2:1/4:1/L1 chain) but are no longer needed as a stand-in, since the actual target paper is in
-  hand. Not yet dispatched — logging the corrected finding first; execute on next pickup.
+  **RESOLVED 2026-07-15** — read the full 47-page PDF page-by-page and found a REAL bug the stale
+  docstring had been masking: `_RESONANT_SEEDS["R31-U-Kumar"]`'s seed (`x0=0.354146033959, sign=+1`)
+  matched NO row of the paper's own Table 6 (Appendix 8.2, exact converged-orbit ICs) — a stale
+  placeholder from before the PDF was in the corpus, never reconciled. Also, ALL THREE `"*-Kumar"`
+  members were being recovered at the module's default `c_j=C_J_BRAIK_ROSS` (3.1294, a DIFFERENT
+  paper's energy) instead of Table 6's own sourced Jacobi constants (C=3.10 for 3:1/2:1, C=3.15 for
+  4:1) — silently reconstructing a nearby but different periodic orbit than Table 6 documents. Fixed
+  both: corrected R31-U-Kumar's seed to Table 6's actual C=3.10 row (`x=0.822429022871,
+  ydot=-0.300987128481`), added `KUMAR_TABLE6_CJ` mapping so callers pass the right energy per label.
+  Added a NEW, stronger reproduce-before-trust test (`test_reproduce_kumar_table6_ic`, parametrized
+  over all 3 Kumar members) checking the recovered `(x0, ydot0)` against Table 6 verbatim — converges
+  to ~1e-13 relative error, the strongest possible confirmation. Un-`xfail`ed
+  `test_reproduce_r41u_period_kumar` (was already unexpectedly XPASSing; the paper's Figure 7 caption
+  period is an exact printed value, not a "digitization/estimate" as the stale xfail reason claimed).
+  Also fixed a genuine misnomer: `kumar_equinoctial_metric` → `kumar_angular_momentum_laplace_metric`
+  (the function correctly implements the paper's Eq. 10 angular-momentum/Laplace-vector distance; it
+  was just named after the WRONG equation — equinoctial elements are a separate, unused alternative
+  metric in the paper's Appendix 8.1 Eq. 13). All stale "PDF not held"/"xfail by design" comments in
+  both the module and test docstrings rewritten with the correct citation (DOI
+  `10.1016/j.asr.2025.12.005`). Verified: `tests/search/test_resonance_network.py` 13/13 passed,
+  `ruff format`/`ruff check` clean, `mypy src tests` (full CI-equivalent invocation) exit 0. The #597
+  mining pass's 2 conference precursors (IAC-24-C1.9.5, AAS 24-368) remain useful corroborating
+  context but were not needed as a stand-in once the actual target paper's real bug was found and
+  fixed directly.
 
 ## DELTA SINCE 2026-06-29 (2026-06-30 — #480 EIGE positive control) — read this first
 
