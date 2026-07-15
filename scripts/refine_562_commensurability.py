@@ -93,17 +93,32 @@ SEARCH_COARSE_N = 61  # 0.1 deg steps across the +/-3 deg window
 SEARCH_REFINE_N = 41  # second pass, 0.005 deg steps across +/-0.1 deg
 
 
-def synodic_period_days(mu: float, sma_a_km: float, sma_b_km: float) -> float:
-    """Generic two-body synodic period (days): ``1 / |1/T_a - 1/T_b|``.
+def synodic_period_days(
+    mu: float, sma_a_km: float, sma_b_km: float, *, opposite_sense: bool = False
+) -> float:
+    """Generic two-body synodic period (days).
 
-    Matches the reference value quoted in the #561/#562 OUTSTANDING.md
-    write-ups (T_syn(Umbriel,Oberon) = 5.987 d) -- verified below in
-    ``_self_check_synodic_reference``.
+    Same orbital sense (``opposite_sense=False``, the default -- every
+    Uranian/Jovian/Saturnian pair this was originally written for):
+    ``1 / |1/T_a - 1/T_b|``. Matches the reference value quoted in the
+    #561/#562 OUTSTANDING.md write-ups (T_syn(Umbriel,Oberon) = 5.987 d) --
+    verified below in ``_self_check_synodic_reference``.
+
+    Opposite orbital sense (``opposite_sense=True``, #599): one body prograde
+    and the other retrograde (e.g. Neptune's Triton vs Proteus). The two
+    bodies then move toward each other rather than one catching up to the
+    other, so their relative angular rate is the SUM of the two mean
+    motions, not the difference: ``1 / (1/T_a + 1/T_b)``. This is the
+    textbook synodic-period relation for counter-orbiting bodies (derivable
+    the same way as the same-sense case: relative angular rate magnitude is
+    ``|n_a - (-n_b)| = n_a + n_b`` instead of ``|n_a - n_b|``).
     """
     n_a = _mean_motion_rad_day(mu, sma_a_km)
     n_b = _mean_motion_rad_day(mu, sma_b_km)
     p_a = 2.0 * math.pi / n_a
     p_b = 2.0 * math.pi / n_b
+    if opposite_sense:
+        return 1.0 / (1.0 / p_a + 1.0 / p_b)
     return 1.0 / abs(1.0 / p_a - 1.0 / p_b)
 
 
@@ -113,6 +128,29 @@ def _self_check_synodic_reference() -> None:
     ref = 5.987
     assert abs(t_syn - ref) < 0.01, f"T_syn(Umbriel,Oberon)={t_syn:.4f}, expected ~{ref}"
     print(f"[562] self-check: T_syn(Umbriel,Oberon) = {t_syn:.4f} d (reference ~5.987 d)")
+
+    # Synthetic counter-orbiting check (#599): two arbitrary sma values about
+    # an arbitrary primary, checked directly against the textbook relation
+    # (not just eyeballed) -- same-sense uses the difference of mean
+    # motions, opposite-sense uses the sum. Also sanity-checks the direction
+    # of the effect: counter-orbiting bodies conjunct MORE often (shorter
+    # T_syn) than co-orbiting bodies at the same two periods.
+    mu_synth = PRIMARIES["Neptune"]
+    sma_x_km, sma_y_km = 100_000.0, 250_000.0
+    n_x = _mean_motion_rad_day(mu_synth, sma_x_km)
+    n_y = _mean_motion_rad_day(mu_synth, sma_y_km)
+    p_x, p_y = 2.0 * math.pi / n_x, 2.0 * math.pi / n_y
+    expect_same = 1.0 / abs(1.0 / p_x - 1.0 / p_y)
+    expect_opposite = 1.0 / (1.0 / p_x + 1.0 / p_y)
+    got_same = synodic_period_days(mu_synth, sma_x_km, sma_y_km, opposite_sense=False)
+    got_opposite = synodic_period_days(mu_synth, sma_x_km, sma_y_km, opposite_sense=True)
+    assert abs(got_same - expect_same) < 1e-9, (got_same, expect_same)
+    assert abs(got_opposite - expect_opposite) < 1e-9, (got_opposite, expect_opposite)
+    assert got_opposite < got_same, "counter-orbiting pair must conjunct more often"
+    print(
+        f"[562] self-check: synthetic counter-orbiting T_syn same-sense={got_same:.4f}d "
+        f"vs opposite-sense={got_opposite:.4f}d (opposite < same: {got_opposite < got_same})"
+    )
 
 
 @dataclass

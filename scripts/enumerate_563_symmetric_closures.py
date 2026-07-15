@@ -116,11 +116,20 @@ def pair_n_max(
     ``primary``/``tof_scale_max`` (#575 genericization): default to the
     original Uranian values so every pre-#575 caller (which never passes
     these) is byte-for-byte unaffected.
+
+    ``opposite_sense`` (#599) is derived from the pair's own registry
+    ``retrograde`` flags (XOR: exactly one of the two orbits retrograde
+    relative to the other), NOT a new parameter here -- every existing
+    Uranian/Jovian/Saturnian moon has ``retrograde=False``, so this XOR is
+    always False for every pre-#599 pair and ``synodic_period_days`` falls
+    back to its original same-sense formula byte-for-byte. Only a pair like
+    Neptune's Triton/Proteus (Triton retrograde, Proteus prograde) trips it.
     """
     mu = PRIMARIES[primary]
     sat_a = SATELLITES[anchor]
     sat_b = SATELLITES[flyby]
-    t_syn = synodic_period_days(mu, sat_a.sma_km, sat_b.sma_km)
+    opposite_sense = sat_a.retrograde != sat_b.retrograde
+    t_syn = synodic_period_days(mu, sat_a.sma_km, sat_b.sma_km, opposite_sense=opposite_sense)
     n_a = _mean_motion_rad_day(mu, sat_a.sma_km)
     n_b = _mean_motion_rad_day(mu, sat_b.sma_km)
     p_a = 2.0 * math.pi / n_a

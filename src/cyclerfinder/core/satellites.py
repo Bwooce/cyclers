@@ -27,6 +27,17 @@ class SatelliteData:
     sma_km: float  # SMA ABOUT THE PRIMARY (km, not AU, not Sun-relative)
     mean_motion_deg_day: float  # about the primary (use mean_motion_deg_day_about)
     safe_alt_km: float
+    # RETROGRADE (#599): True iff this moon orbits its primary in the sense
+    # OPPOSITE the primary's own rotation / the primary's other regular
+    # moons -- e.g. Neptune's Triton. Default False (every other satellite
+    # in this registry is prograde), so every pre-existing call site and
+    # every pre-existing consumer of SatelliteData is unaffected. This flag
+    # is load-bearing for two-body synodic-period + relative-phase-evolution
+    # math (``synodic_period_days`` / the #558-#563 symmetric-closure
+    # construction): a counter-orbiting pair conjuncts via ``1/(1/Ta+1/Tb)``,
+    # not the same-sense ``1/|1/Ta-1/Tb|``, and its phase must be advanced
+    # with a NEGATIVE mean motion, not a positive one.
+    retrograde: bool = False
 
 
 def mean_motion_deg_day_about(sma_km: float, *, mu_primary: float) -> float:
@@ -74,8 +85,14 @@ def _sat(
     radius_eq_km: float,
     sma_km: float,
     safe_alt_km: float,
+    *,
+    retrograde: bool = False,
 ) -> SatelliteData:
-    """Build a SatelliteData with mean motion DERIVED from sma + primary mu."""
+    """Build a SatelliteData with mean motion DERIVED from sma + primary mu.
+
+    ``retrograde`` (#599) defaults to False so every pre-existing call site
+    is byte-for-byte unaffected; only Triton passes ``retrograde=True``.
+    """
     return SatelliteData(
         name=name,
         code=name,  # full-name scheme
@@ -85,6 +102,7 @@ def _sat(
         sma_km=sma_km,
         mean_motion_deg_day=mean_motion_deg_day_about(sma_km, mu_primary=PRIMARIES[primary]),
         safe_alt_km=safe_alt_km,
+        retrograde=retrograde,
     )
 
 
@@ -184,7 +202,18 @@ SATELLITES: dict[str, SatelliteData] = {
     # Nereid OMITTED: JPL SSD lists its GM as 0.0 (mass not determined), so per
     # the sourcing discipline we omit it rather than guess from a size estimate.
     # Triton: GM 1428.495 km^3/s^2, mean R 1352.6 km, a 354800 km.
-    "Triton": _sat("Triton", "Neptune", 1428.49546, 1352.6, 354800.0, 100.0),
+    # retrograde=True (#599): the SAME JPL SSD satellite mean-elements source
+    # already cited above for Triton's sma/orbital fit (ref NEP097/NEP101)
+    # lists Triton's orbital inclination as ~156.885 deg to Neptune's Laplace
+    # plane -- i > 90 deg is the standard convention for retrograde orbital
+    # motion (it moves opposite the sense of Neptune's rotation and opposite
+    # every other regular Neptunian moon, incl. Proteus). This is also the
+    # modern-fit reference for the Neptune satellite system: Jacobson, R.A.
+    # (2009), "The Orbits of the Neptunian Satellites and the Orientation of
+    # the Pole of Neptune", AJ 137, 4322. Triton's retrograde sense itself was
+    # first identified by Lassell (1846) from the reversed motion of its
+    # apparent orbit; this is long-settled, not a recent-fit artifact.
+    "Triton": _sat("Triton", "Neptune", 1428.49546, 1352.6, 354800.0, 100.0, retrograde=True),
     # Proteus: GM 2.58342 km^3/s^2, mean R 208.0 km, a 117600 km.
     "Proteus": _sat("Proteus", "Neptune", 2.58342, 208.0, 117600.0, 100.0),
     # --- Pluto system (added 2026-06-14) ---
