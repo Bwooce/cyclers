@@ -1,5 +1,84 @@
 # Outstanding questions — cyclerfinder catalogue
 
+## CURRENT STATE
+
+**This section is authoritative.** It is a dashboard of every currently-OPEN or actively-relevant
+task, reconciled against the full `TASK ALLOCATIONS` ledger (below) and each task's own bullet
+entry as of 2026-07-15. Update it IN PLACE whenever a task's status changes — do not just append a
+newer note further down the file and leave this section stale; that exact failure mode (a correct
+resolution sitting under an old section header while a stale duplicate elsewhere looks more recent
+and misleads a reader/planner) is what happened to `#500` and is why this section exists. See the
+`#500`/`#594`/`#595`-`#599` history in the ledger below for the concrete incident. Scope: this audit
+covers the `TASK ALLOCATIONS` paragraph's `#512`-`#601` range (~90 tasks); of these, ~80 are
+CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger paragraph itself
+(search `TASK ALLOCATIONS`) or each task's own bullet entry for history.
+
+### Ready to dispatch — no blocker
+- `#600` — Uranian 3-moon-sequence extension of the `#563` direct symmetric-closure method (e.g.
+  Miranda-Ariel-Umbriel-style chains) — the productive #558-#563-#569 census only ever enumerated
+  2-moon directions. Machinery already proven 3x (Uranus, Titan-Iapetus, Galilean). Zero blocker.
+
+### Open but blocked / parked
+- `#538` — QBCP SE<->EM cislunar cycler correction — blocked on a not-yet-built **multiple-shooting
+  GMOS torus corrector**: single-period GMOS structurally cannot converge the violently-unstable
+  EM-L1/L2 region (root-caused by `#544`). Portfolio-**PARKED** 2026-07-10: near-zero novelty payoff
+  even on success (most-published corridor in the field, 4+ sessions already spent, zero catalogue
+  rows). Not cancelled, just deprioritized behind breadth-on-unscreened-systems work.
+- `#539` — generalize `#538`'s corrector for reuse (Jovian/Uranian re-screens) — blocked on `#538`
+  actually landing a working corrector first; parked alongside it. (`#540`/`#541`, the two other
+  tasks in this same sub-thread, are each independently superseded/dead — see the ledger.)
+- `#542` — learned-seed generative GA/diffusion warm-start for corrector basins — deferred,
+  speculative; explicitly waiting on more corrector-runlog diversity before it's worth building.
+- `#556` — large-rotation-number quasi-halo torus corrector — parking lot, **not auto-fired**, needs
+  a user greenlight. Would let the `#522` linking-number screen attempt the one remaining
+  frequency-matched Owen & Baresi L1<->L2 reproduction shot (`#555`'s terminal qualified-negative
+  left exactly this one blocker: the L1 quasi-halo can't be built at the needed amplitude).
+- `#589` — reproduce/extend Gurfil-Kasdin 2002's out-of-ecliptic z²-maximization as a new search
+  regime — flagged for user review before dispatch, **not auto-fired**.
+- `#599` — Neptune Triton-Proteus symmetric-closure sweep (natural next `#563`-method target) —
+  **[watch]**, blocked on a real, unscoped physics gap: Triton is retrograde, Proteus prograde;
+  `synodic_period_days()` uses the same-sense formula (wrong for counter-orbiting bodies) and the
+  rest of the `#563` machinery hasn't been audited for further same-sense assumptions. Do **not**
+  naively point the existing script at this pair — needs a scoping pass first.
+- `#601` — re-run `#582`'s asymmetric/spatial-isolated 3D CR3BP niching-GA search at the Earth-Moon
+  mass ratio — code change is a one-line `MU` constant flip, but blocked on running a positive
+  control (recovering a known symmetric family) at the new mu before any novelty sweep is trusted.
+- *(sub-task, not its own `#NNN`)* `#503`'s "expand `#267` goldens" mining step remains open (its
+  acquisition sub-task itself is closed, per `#595`).
+- *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
+  rows were successfully backfilled 2026-07-15; the remaining 36 (`AR < 1.0`, a genuine model-
+  boundary case) and 3 genuinely-uncatalogued rows are open for a future pass.
+
+### In progress
+- None identified as actively running as of 2026-07-15. The most recent worked chain (`#594`-`#598`,
+  same day) is fully closed out.
+
+### Ambiguous, not resolved here
+- None found unresolved in the `#512`-`#601` range as of this audit (2026-07-15). The known
+  "stale-duplicate" pattern instances in this range (`#521`'s "Phase 2 not built" line, `#545`'s
+  "ready to dispatch" mischaracterization, and the `#500` duplicate itself) were already caught and
+  corrected in place by `#594`/`#599` before this audit ran — verified directly against each task's
+  own bullet entry, not just the ledger paragraph's summary. If a similar contradiction resurfaces
+  (one entry implying a task is done, another implying it's still open), tie-break via
+  `docs/notes/` for a dedicated verdict note before trusting either copy, per the process this
+  section itself was created to enforce.
+
+### Pre-#512 items (NOT covered by the #512-#601 audit above — spot-checked only, not exhaustive)
+This dashboard's main audit only reconciled the `TASK ALLOCATIONS` paragraph's `#512`-`#601` range.
+Tasks below `#512` have their OWN, older ledger paragraph(s) further down this file and have NOT been
+comprehensively re-audited here. The three below are known, spot-checked opens from this same
+session — do not treat their absence from the sections above as "closed," and do not treat this
+short list as a complete pre-#512 audit either.
+- `#315` — Circumbinary/binary-star μ-gap sweep. Its own bullet entry (search `**#315**`) still says
+  "OPEN" — **that line is STALE**, same pattern as `#500`: `#494`'s entry states "**Closes #315/#252/
+  #255** positively" (search `Closes #315`). Treat `#315` as CLOSED; the "OPEN" bullet itself needs
+  correcting next time someone is in that part of the file.
+- `#316` — Cross-system cycler framework (Sun-Earth <-> Earth-Moon manifolds) — genuinely ambiguous,
+  not stale: possibly redundant with the `#405`/`#411` SE<->EM heteroclinic-cycle work, but no
+  explicit link exists either way. Needs a human merge/supersede-or-keep-distinct decision.
+- `#317` — PINN-based pre-filter for sweep-impossible regions — genuinely OPEN, no resolution found
+  anywhere in the file as of last check.
+
 Long-form log of research questions, source-access gaps, parameter
 contradictions, and out-of-paradigm flags encountered while compiling
 `catalogue.yaml`. The YAML's per-entry `notes:` field carries
@@ -6638,8 +6717,11 @@ else V0-known / infeasible / published-class.**
 queue. Most of these tasks were resolved/landed elsewhere in the file afterward and this list was
 never weeded — cross-references added inline below. Only #315-317 have no resolution found
 anywhere in the file and are genuinely still open.]**
-- **#315** Circumbinary/binary-star μ-gap sweep — OPEN. #494 (elsewhere in this file) says it is
-  actively "closing #315" — check #494's own current status before treating this as unstarted.
+- **#315 ✓ CLOSED (corrected 2026-07-15)** Circumbinary/binary-star μ-gap sweep. This "OPEN" line was
+  STALE — the exact same never-reconciled-duplicate pattern as `#500`. `#494`'s entry states
+  "**Closes #315/#252/#255** positively" (4 binary-(k1,k2)-cycler μ-family reps + the first-ever
+  Pluto-Charon (3,2) cycler). Caught while building the `## CURRENT STATE` dashboard at the top of
+  this file.
 - **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds) — OPEN, but possibly
   redundant with the #405/#411 SE<->EM heteroclinic-cycle work just above, which covers similar
   ground. No explicit link exists in the file either way — flagged for a human decision (merge/
