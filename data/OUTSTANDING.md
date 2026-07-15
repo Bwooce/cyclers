@@ -6118,6 +6118,20 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   mining pass's 2 conference precursors (IAC-24-C1.9.5, AAS 24-368) remain useful corroborating
   context but were not needed as a stand-in once the actual target paper's real bug was found and
   fixed directly.
+  **Bugfix-invalidation audit (2026-07-15, per [[feedback_bugfix_invalidates_past_searches]]):
+  ZERO blast radius beyond the test file — checked, not assumed.** A discovery-strategy planning
+  pass flagged this fix as "feeds `five_tier_prioritizer.py`/`single_orbit_prioritizer.py`/
+  `ftle_scorer.py`/`lobe_overlap_scorer.py`/`neural_reach_prefilter.py` — any past negative screened
+  through those tiers is a potential false negative." Verified directly rather than acting on the
+  claim: all five modules (+`genome/heteroclinic_cycle.py`) DO import `resonance_network.py`, but
+  NONE of them call `recover_resonant_family` with a `"*-Kumar"` resonance string or touch
+  `_RESONANT_SEEDS["R31-U-Kumar"]`/`KUMAR_TABLE6_CJ` — every one either builds its own
+  `ResonantMember` directly from its own candidate orbits, or uses the Braik-Ross (non-Kumar) seeds,
+  which the bug never touched. The `"*-Kumar"` path is exercised ONLY by
+  `tests/search/test_resonance_network.py`'s own fixture. **No past discovery search, sweep, or
+  catalogue decision ran through the buggy code path — nothing to re-run.** The planning pass's
+  "feeds X/Y/Z" framing conflated "imports this module" with "consumes this specific buggy data,"
+  the same category of overgeneralization (smaller stakes) as the `#516`/`#517` mixup nearby.
 - **#599 ✓ DONE (2026-07-15) — capability gap fixed, sweep run, clean negative** — Neptune
   Triton-Proteus symmetric-closure sweep. Fixed the retrograde-orbit capability gap found while
   scoping this task: added `SatelliteData.retrograde` (default False, only Triton set True, cited
