@@ -14,9 +14,9 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
 (search `TASK ALLOCATIONS`) or each task's own bullet entry for history.
 
 ### Ready to dispatch — no blocker
-- `#600` — Uranian 3-moon-sequence extension of the `#563` direct symmetric-closure method (e.g.
-  Miranda-Ariel-Umbriel-style chains) — the productive #558-#563-#569 census only ever enumerated
-  2-moon directions. Machinery already proven 3x (Uranus, Titan-Iapetus, Galilean). Zero blocker.
+- None currently. (`#600` — corrected 2026-07-15: this line was never updated after `#600` was
+  dispatched and closed the same day; see its own `✓ DONE` bullet entry — clean negative, 806,400
+  candidates, near-miss residual 0.0531 km/s just outside the gate. Removed from this list.)
 
 ### Open but blocked / parked
 - `#538` — QBCP SE<->EM cislunar cycler correction — blocked on a not-yet-built **multiple-shooting
@@ -43,12 +43,14 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   `069d8d2`); this list's "awaiting a user scoping decision" text was itself a stale-header artifact
   (see `#557`'s own bullet entry, corrected in this same pass) that this dashboard's own audit
   reproduced instead of catching. See `[[feedback_outstanding_current_state_maintenance]]`.
-- `#516` — Multi-Revolution 3D Patched Search (n_em, n_se > 1, bypassing the single-revolution
-  phase-closure wall) — never independently run; was meant to feed the `#520` comprehensive sweep,
-  which aborted (below) before consuming it. Still uncommitted/unactioned.
-- `#517` — Asymmetric/Mixed Libration Pairs in 3D (EM-L1<->SE-L2, EM-L2<->SE-L1 scans) — same
-  status as `#516`: never run, fed into the aborted `#520` sweep, still open. (`#518`, the fourth
-  task in this same "session C working-tree" batch, IS closed — superseded by `#522`.)
+- ~~`#516`/`#517`~~ **REMOVED from this list 2026-07-15 — both ALREADY RAN, both EMPTY, not open.**
+  This dashboard entry was wrong (and was propagated into a same-day discovery-strategy planning
+  pass's recommendation before being caught): both ran to completion on 2026-07-01, both closed
+  with a registered negative in `data/empty_regions.jsonl`, and both scripts were committed the next
+  day (`42ca41e`, whose own commit message says plainly "All three ran to completion; none closed").
+  The "never run"/"uncommitted working-tree" framing was true only briefly, before that commit —
+  see `#515`/`#516`/`#517`'s own corrected bullet entries. (`#518` remains closed, superseded by
+  `#522`, as this list previously noted.)
 - `#520` — Comprehensive 3D cross-system closure sweep (8,640-point grid,
   `scripts/run_520_comprehensive_3d_search.py`) — **ABORTED** 2026-07-02 after 12+ hours with zero
   output (a scoping failure: too coarse to find anything AND too expensive to finish), explicitly
@@ -436,9 +438,28 @@ exact numeric match — the paper does not tabulate precise ICs, per this sessio
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
-- **#515** — 3D Lift Framework: Shipped cross-system cycle corrector over fixed out-of-plane amplitudes, physically scaling system lengths and aligning Floquet signs (uncommitted working-tree).
-- **#516** — Multi-Revolution 3D Patched Search: Search with n_em, n_se > 1 to bypass the single-revolution phase-closure wall (uncommitted working-tree).
-- **#517** — Asymmetric/Mixed Libration Pairs in 3D: Scan for EM-L1 <-> SE-L2 and EM-L2 <-> SE-L1 crossings (uncommitted working-tree).
+- **#515 ✓ RAN, EMPTY (2026-07-01) — header corrected 2026-07-15**: 3D Lift Framework: cross-system
+  cycle corrector over fixed out-of-plane amplitudes, physically scaling system lengths and aligning
+  Floquet signs. "(uncommitted working-tree)" was stale — true only briefly on 2026-07-01/02; the
+  script (`scripts/run_515_cross_system_3d_search.py`) and its result are both committed (`42ca41e`);
+  see `data/empty_regions.jsonl` for the registered negative.
+- **#516 ✓ RAN, EMPTY (2026-07-01) — header corrected 2026-07-15**: Multi-Revolution 3D Patched
+  Search: n_em/n_se > 1 to bypass the single-revolution phase-closure wall. "(uncommitted
+  working-tree)" was stale, same as `#515` — `scripts/run_516_multirev_3d_search.py` is committed
+  (`42ca41e`), and `data/empty_regions.jsonl`'s `cross-system-se-em-3d-multirev-patched-cr3bp-
+  2026-07-01` entry records the actual result: 24 points evaluated, 0 closed (the added
+  revolution knobs shift the residual floor but don't close it, consistent with the planar `#411`
+  1-DOF-obstruction finding). This was propagated as "never run" by a same-day discovery-strategy
+  planning pass (2026-07-15) that trusted this bullet's stale caption instead of checking
+  `empty_regions.jsonl` directly — a reminder that even careful cross-referencing can still miss a
+  stale CAPTION on an otherwise-accurate-looking bullet; the commit message itself
+  (`42ca41e`) states plainly "All three ran to completion; none closed."
+- **#517 ✓ RAN, EMPTY (2026-07-01) — header corrected 2026-07-15**: Asymmetric/Mixed Libration Pairs
+  in 3D: EM-L1<->SE-L2 and EM-L2<->SE-L1 crossings. Same stale-caption pattern as `#515`/`#516` —
+  `scripts/run_517_asymmetric_3d_search.py` is committed (`42ca41e`); `data/empty_regions.jsonl`'s
+  `cross-system-se-em-3d-asymmetric-patched-cr3bp-2026-07-01` entry records the actual result: 48
+  points evaluated, 0 closed (legs solve spatially but the time-consistent phase residuals don't
+  close simultaneously in the grid scanned).
 - **#518** — 3D BCR4BP Continuation: Generate coherent 4-body seeds using 3D patched orbits (uncommitted working-tree).
 - ✓ Resolved (2026-07-07) **#519** — VEM Multi-Synodic Low-Thrust Signal Search (commit 5ff3105): Ran scan_309_low_thrust_vem.py. The sweep returned 2 converged candidates, both of which are Sims-Flanagan infeasible due to thrust limit constraints.
 - **#520** — Comprehensive 3D Sweep: 8,640-point grid search over `scripts/run_520_comprehensive_3d_search.py` (uncommitted working-tree; dispatched by a separate agent, was mis-numbered #516 on arrival — renumbered). ABORTED 2026-07-02 after 12+ hours with zero output — see DELTA above; not a negative result.
