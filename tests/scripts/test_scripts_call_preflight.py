@@ -69,6 +69,13 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         "run_436_direct_er3bp.py",
         "run_448_region_c_highE.py",
         "run_466_energy_walk.py",
+        # #606: a positive-control + pilot DEMONSTRATION of a new capability
+        # (variational_periodic_orbit.py), not a catalogue-region discovery
+        # sweep -- it has no region_id/n_points to preflight (it re-derives
+        # ONE already-known EM L1 halo family member and continues through a
+        # documented wall), so the gate does not apply. Visible, reviewed
+        # exemption per this file's own docstring.
+        "run_606_variational_pilot.py",
     }
 )
 

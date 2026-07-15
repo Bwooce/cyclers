@@ -4109,16 +4109,37 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   (delivered as a planning response); this bullet is the durable record. No code built, no catalogue
   changes — purely a research/strategy deliverable for the user to pick from.
 
-- **#606** (P1, new capability, IN PROGRESS 2026-07-16) — `#605` shortlist item 1: variational/
-  least-action seedless periodic-orbit discovery. Directly attacks the diagnosed family-selection/
-  basin-wall problem (`#388`/S1L1/`#538`/`#520`) by parameterizing a closed loop (e.g. truncated
-  Fourier series) and minimizing the action functional via gradient descent/autodiff, instead of
-  Newton-shooting from a seed already inside a family's basin — genuinely global/seedless where the
-  current toolset is basin-limited. NOTE the `#605` citation correction: this is NOT Shijun Liao's
-  SJTU technique (that's high-precision numerical simulation + ANN seeding, a different method) —
-  the real precedent is the classical action-minimization approach (Moore 1993 / Chenciner-Montgomery
-  2000's figure-eight discovery). Must be positive-controlled against a KNOWN periodic orbit before
-  trusting it on anything novel, per standing project discipline.
+- **#606 ✓ BUILT + POSITIVE-CONTROLLED + PILOT SUCCESS (2026-07-16)** — `#605` shortlist item 1:
+  seedless spectral (harmonic-balance) periodic-orbit discovery,
+  `src/cyclerfinder/search/variational_periodic_orbit.py`. Represents a candidate closed loop as a
+  truncated real Fourier series over one candidate period and drives the L2 residual of the CR3BP
+  EOM to zero at collocation points via `scipy.optimize.least_squares` — the mathematically-
+  equivalent, more tractable alternative to literal action-gradient-descent (same Euler-Lagrange
+  stationary point; no new autodiff dependency). Cited precedent verified: Moore 1993 (PRL 70, 3675)
+  + Chenciner & Montgomery 2000 (Annals of Math. 152, 881-901) — NOT Shijun Liao's SJTU technique, a
+  correction to `#605`'s own report.
+  **Positive control PASSED**: reproduces the Earth-Moon L1 planar Lyapunov orbit from a genuinely
+  cold start (location/period/Fourier coefficients all far from the known answer), matching
+  state/period/Jacobi to 1e-9 to 1e-13, cross-checked with a second (Radau) integrator; a broader
+  cold-multistart sweep confirms this isn't a lucky single point.
+  **Pilot: real wall-crossing, independently re-confirmed and directly re-run** (not just cited) —
+  targeted `#556`'s L1 quasi-halo wall: 15/16 tested amplitudes fail the existing
+  `richardson_halo_seed`+shooting-corrector combination (re-confirmed live, not assumed). A
+  warm-started continuation using ONLY the new method's own solves crossed the ENTIRE wall region in
+  20 steps, residuals falling monotonically to ~1e-11/1e-13, landing within 0.03% of the
+  independently-confirmed bifurcation Jacobi constant (3.1745) — this project's existing seeded
+  correctors cannot reach this region at all. **Honest caveat, reported not hidden**: a fully COLD
+  one-shot attempt directly inside the deep wall (no warm start) only partially converged and the
+  new method has its OWN family-selection bias (an unconstrained in-plane amplitude slides onto the
+  wrong, already-known vertical-Lyapunov family instead of the halo) — a genuine limitation, not
+  absent, just different from the shooting correctors' bias. Reviewed and independently re-verified
+  by the coordinating session (re-ran `scripts/run_606_variational_pilot.py` live, matched the
+  reported numbers exactly) before this entry was written. 7/7 new tests pass
+  (`tests/search/test_variational_periodic_orbit.py`), ruff clean, `tests/scripts` (preflight AST
+  ratchet) clean with a documented, reviewed exemption for the non-sweep demo script. No catalogue
+  writeback (this is a capability build + method demonstration, not a discovery result to adjudicate
+  — any future novel-orbit claim built on this tool would still need its own literature-novelty
+  check).
 - **#607** (P1, new discovery targets, not yet dispatched) — `#605` shortlist item 2: triple/
   quadruple small-body multi-moon systems — (87) Sylvia (Romulus+Remus), (130) Elektra (3 moons),
   (45) Eugenia, (216) Kleopatra, and the TNO triple Lempo-Paha-Hiisi. Zero published cycler-analogue
