@@ -4065,23 +4065,49 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   outright** (not the weaker idealized-only fallback either) — no build, no run, no registry entry.
   Thread closed; the plan document stands as the record of why.
 
-- **#604** (P2, cheap gate, zero blocker) — V∞/Tisserand compatibility check for the `#500`→`#318`
-  Keplerian-map-chaining idea, before committing to the multi-day build. `#500`'s own verdict note
-  (`docs/notes/2026-06-30-500-keplerian-map-genome-verdict.md`) explicitly recommends embedding the
-  Keplerian-map genome (RS07/GR09's low-energy Jovian moon-to-moon tour planner, 17/17 sourced
-  positive controls) as a sub-leg INSIDE `#318`'s existing outer-planet joint search (a cycler with
-  an embedded Jovian gravity-assist tour, matching GR09's own "P3BA" patching concept), rather than
-  as a standalone tool. Before building that chain: check whether `#318`'s ACTUAL joint-search
-  results show cyclers arriving at Jupiter with a V∞ regime compatible with the Keplerian map's
-  low-energy capture regime (RS07/GR09 context, C_J~3.0, V∞ of order a few km/s in Jovian units) —
-  if real cyclers arrive with a much higher V∞, this chaining idea is a non-starter and the
-  multi-day build should not proceed. No blocker; this check itself should take well under a day.
-- **#605** (P1, exploratory, broad) — a genuinely creative discovery-strategy pass, distinct from the
-  tactical "which unswept body/method-pairing is next" passes (`#600`/`#601`/`#557`/`#599`/`#603`,
-  all now closed): survey the wider astrodynamics/celestial-mechanics discovery literature for
-  METHODS this project has not adopted at all (not just new targets for existing methods), consider
-  genuinely new categories of objects/systems, and propose innovative combinations or search
-  strategies that could lead to actual novel cyclers — per the user's own framing (2026-07-15).
+- **#604 ✓ DONE (2026-07-15) — INCOMPATIBLE, do not build the chain.** V∞/Tisserand compatibility
+  check for the `#500`→`#318` Keplerian-map-chaining idea. `#500`'s own genome regime (RS07/GR09
+  worked examples, C_J=2.995-3.00618) gives moon-relative v∞ ≈ 0.6-0.8 km/s via the code's own
+  Tisserand relation (`v∞² = 3 - C_J`) — an intentionally near-zero, already-captured regime.
+  `#318` itself never computed an interplanetary Jupiter-ARRIVAL V∞ at all (its EM Phase-1 probe is
+  Earth-Mars, wrong system; its Phase-2/`#501` follow-up pivoted to a purely intra-Jovian CGCEC
+  moon-tour search that closed 0/3072, `data/empty_regions.jsonl` region
+  `jovian-cgcec-sobol-smoke-318-2026-06-30` — no Jupiter-arrival V∞ figure to compare against). Best
+  available real proxies (sourced, `data/catalogue.yaml`, #390): Voyager 1/2 and Pioneer 10/11
+  arrived at Jupiter at V∞ 7.6-10.8 km/s — roughly an order of magnitude above the map's valid
+  regime; even published, ALREADY-CAPTURED intra-Jovian ballistic moon-cyclers (Russell-Strange
+  2009) run 2.4-4.1 km/s, still 3-5x hotter. **A real interplanetary cycler would need a large,
+  unmodeled capture/energy-reduction phase before the map's dynamics apply — the multi-day chaining
+  build should NOT proceed as scoped.** No catalogue rows changed, no code built.
+- **#605 ✓ DONE (2026-07-15) — planning/research deliverable, ranked shortlist produced.** A
+  genuinely creative discovery-strategy pass, distinct from the tactical "which unswept body/
+  method-pairing is next" passes (`#600`/`#601`/`#557`/`#599`/`#603`, all now closed, mostly clean
+  negatives). Diagnosis: the program's recurring failure mode is the **family-selection/basin
+  wall** (shooters/continuation only converge to families whose basin contains the seed — `#388`,
+  S1L1, `#538`, `#520`'s scoping failure) — denser grids at new targets won't fix a structural basin
+  problem, hence looking at paradigms instead of targets. **Ranked shortlist**: (1) variational/
+  least-action seedless periodic-orbit discovery (attacks the basin wall directly — NOTE: the
+  report's framing of Shijun Liao's SJTU mass-produced-orbit work as "variational/least-action" is
+  WRONG, spot-checked directly against the source (`numericaltank.sjtu.edu.cn/three-body`) — Liao's
+  actual method is high-precision "clean numerical simulation" + ANN-assisted seeding, a DIFFERENT
+  technique than true action-minimization (the figure-eight's own discovery method); the underlying
+  idea (a seedless/global method) may still be worth exploring via a genuinely variational approach,
+  just not via Liao's specific technique as cited); (2) triple/quadruple small-body multi-moon
+  systems (Sylvia/Elektra/Eugenia/Kleopatra/Lempo-Paha-Hiisi) — zero published record, mostly
+  existing-tool reuse + a perturbation term for irregular primaries; (3) generative ML seed model
+  (VAE) trained on this project's own corrector runlogs + `empty_regions.jsonl` — **spot-checked and
+  CONFIRMED real**: Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho, "Generation of periodic
+  orbits in the restricted three-body problem with a variational autoencoder," *Celestial Mechanics
+  and Dynamical Astronomy* 138:25 (June 2026) — externally de-risks the parked `#542`/open `#317`
+  ideas; (4) hierarchical "cycler-of-cyclers" (phase-match a heliocentric cycler's planetary
+  encounters to a moon-system cycler at the target), pilotable cheaply via Mars Phobos-Deimos (a
+  genuine roster gap — never swept, Russell-Strange 2009 methodology applies directly); (5)
+  certified non-existence via interval arithmetic (upgrades `empty_regions.jsonl` from
+  method-conditional to theorem-grade — speculative but uniquely suited to a program whose main
+  output is clean negatives). A JAX/GPU differentiable-propagation port was recommended as
+  accelerating substrate for 1/2/4, not a standalone idea. Full report not committed as its own doc
+  (delivered as a planning response); this bullet is the durable record. No code built, no catalogue
+  changes — purely a research/strategy deliverable for the user to pick from.
 
 - **#592** (P2, correctness fix) — recovered a real QBCP equations-of-motion bug from an abandoned
   `git stash` (found during a repo-hygiene cleanup pass across both repos, undated stash on `7f83277`)
