@@ -4004,6 +4004,29 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   `search/deflated_newton.py` (all already exist) rather than the weak heuristic. Family J's IC:
   `TABLE34["J"]` in `scripts/run_581_gurfil_reproduction.py`. Cluster 43's IC: locate in the
   `#588`/`#590`/`#591` docs/notes or the `dedup_588_candidate_pool.py` output. No blocker.
+  **✓ DONE (2026-07-15) — genuinely INCONCLUSIVE, not a forced verdict.**
+  `docs/notes/2026-07-15-602-cluster43-familyj-continuation-results.md`. Cluster 43's IC traced to
+  `data/found/583_widened_search/deduped_candidates.json` (`cluster_id: 43`). Built a Sun-Earth-
+  specific positive control (the existing `cr3bp_continuation.py` test is Earth-Moon) and found the
+  actual reason a hard verdict is unreachable: **neither Family J nor cluster 43 is close to an
+  exact year-periodic orbit** (both stall at nonzero residual / pin to the trust-region boundary
+  under an independent robust solver, confirmed not a finite-difference artifact via the analytic
+  STM) — these are quasi-periodic/metastable structures (consistent with Mikkola et al. 2006's own
+  characterization of this regime), so "continuous curve of exact periodic orbits" is not the right
+  formalization of "family" here; a genuine model-mismatch finding, not a tooling gap. Ran anyway: a
+  damped deflated-Newton homotopy walk (21 steps) gave a patchy correction signal but a CLEAN
+  boundedness result (unbounded only near Family J's own end, matching its known ~30yr escape;
+  bounded continuously from t=0.25 to cluster 43 at a full 50yr horizon); a secondary check on the
+  already-validated planar/circular retrograde-satellite backbone (after catching+fixing a real
+  geocentric/barycentric coordinate-offset bug via a Jacobi-constant sanity check) walked cleanly
+  past cluster 43's radius with zero folds/bifurcations (`stop_reason="max_steps"`, not a topology
+  break). **Verdict: no evidence found FOR a distinct branch anywhere, and real (non-heuristic)
+  evidence — the fold-free backbone continuation + longer-horizon boundedness — continues to favor
+  "same family, unsampled point" over #588's "not novel" framing, but this is preponderance-of-
+  evidence, not proof.** Recommended next step if ever revisited: a proper quasi-periodic/rotation-
+  number continuation corrector (materially new capability, out of this task's bounded scope). No
+  catalogue rows changed, no novelty claimed. Thread (`#588`→`#590`→`#591`→`#602`) closed at this
+  evidence tier.
 
 - **#592** (P2, correctness fix) — recovered a real QBCP equations-of-motion bug from an abandoned
   `git stash` (found during a repo-hygiene cleanup pass across both repos, undated stash on `7f83277`)
