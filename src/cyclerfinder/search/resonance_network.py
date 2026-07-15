@@ -3,9 +3,10 @@
 Implements the manifold-overlap-via-perigee-Poincaré accessibility prioritizer
 based on
 
-    A. Kumar, A. Rawat, A. J. Rosengren, S. D. Ross (2025).
-    "Cislunar Resonant Transport and Heteroclinic Pathways: From 3:1 to 2:1 to
-    L1," arXiv:2509.12675, Advances in Space Research 2026.
+    B. Kumar, A. Rawat, A. J. Rosengren, S. D. Ross (2025). "Cislunar Resonant
+    Transport and Heteroclinic Pathways: From 3:1 to 2:1 to L1," arXiv:2509.12675
+    (v2, 4 Dec 2025); published *Advances in Space Research* 77(3):3815 (2026),
+    DOI 10.1016/j.asr.2025.12.005.
 
 COMPLEMENTARITY (mining note): three Track-B tiers, each filling the other's
 blind spot:
@@ -39,26 +40,29 @@ distinct from the U1/U2 axis-line sections Braik-Ross use, and is the key
 ingredient that makes resonant-orbit-to-resonant-orbit overlap measurable on a
 finite-dimensional section.
 
-REPRODUCE-BEFORE-TRUST gate (honest data gap):
-the paper PDF (arXiv:2509.12675) is NOT held in our local mirror at the time of
-this build. The exact common Jacobi constant the paper uses, the published
-period of the recovered 3:1 / 4:1 unstable members, and the explicit form of
-the "generalized distance metric" (paper claim 4) are therefore NOT sourceable
-verbatim from the arXiv text by this module. Two consequences:
-
-1. The reproduce-before-trust period gate against the paper's Table values is
-   `xfail`-marked in the test suite with the reason "Kumar 2025 PDF not in
-   local mirror; periods sourcable only against JPL DB family members."
-   What the suite DOES gate-confirm is that a recovered 3:1 / 4:1 unstable
-   member reproduces a JPL DB family entry to a published precision -- the JPL
-   oracle stands in as the independent reproduction anchor (the same role it
-   plays in :mod:`reachable_representatives`).
-2. The generalized-distance metric is implemented as a *defensible Euclidean
-   alternative* on the perigee-section phase variables ``(r_peri, vinf_peri,
-   longitude_peri)`` with weights documented in
-   :func:`perigee_overlap`. The docstring states the choice explicitly. If the
-   paper's metric is later sourced the function exposes a ``metric=`` hook so
-   the verbatim form can be dropped in without an API break.
+REPRODUCE-BEFORE-TRUST gate (2026-07-15: paper confirmed in hand, values
+sourced directly): the PDF is held at
+``cyclers_pdf/papers/kumar-2025-arxiv-2509.12675.pdf`` (content-verified
+against its own title page/abstract). The paper's own Table 6 (Appendix 8.2)
+gives exact Cartesian ICs ``(x, ydot)`` (with ``y=0, xdot=0``) for the unstable
+4:1 (C=2.85, 3.15), 3:1 (C=2.54-3.15), and 2:1 (C=2.54-3.15) resonant periodic
+orbits used throughout the paper -- this is a STRONGER ground truth than a
+published period, since it is the converged periodic-orbit state itself, not a
+derived scalar. ``_RESONANT_SEEDS``'s ``"*-Kumar"`` entries are seeded directly
+from Table 6 at each orbit's own sourced Jacobi constant (3.10 for the 3:1/2:1
+members used in the paper's worked C=3.10 heteroclinic-chain example, 3.15 for
+the 4:1 member shown in Figure 7) -- callers MUST pass the matching ``c_j`` to
+:func:`recover_resonant_family` (the function's ``c_j`` default,
+:data:`C_J_BRAIK_ROSS`, is the Braik-Ross energy used by the non-Kumar seeds and
+is NOT the right energy for the Kumar members). The generalized distance
+metric (paper Eq. 10) is the angular-momentum/Laplace-vector Euclidean distance
+``sqrt(||L_b - L_c||^2 + ||A_b - A_c||^2)`` -- implemented exactly in
+:func:`perigee_overlap`'s ``metric=`` hook (see the module-level
+``kumar_angular_momentum_laplace_metric`` helper in the test suite; NOT the
+paper's alternative equinoctial-element metric, Appendix 8.1 Eq. 13, which is a
+documented but unused alternative). Table 1/Table 2 (transfer times and
+distance-metric tolerances at C=3.00/3.05/3.10/3.15) are the source for the
+heteroclinic-chain reproduction test's tolerances.
 
 INDEPENDENT CROSS-CHECK: at least one perigee-section construction is
 re-integrated with a different ``solve_ivp`` method ("Radau" vs the default
@@ -242,13 +246,24 @@ _RESONANT_SEEDS: dict[str, tuple[float, float, float]] = {
     # sourced period is left NaN and the reproduce-gate test is xfail for this
     # family.
     "R41-U": (0.65, -1.0, float("nan")),
-    # Kumar 2025 (arXiv:2509.12675) sourced seeds for heteroclinic chain reproduction
-    # 4:1 unstable at C_J=3.15 (Table 6 ICs, period from Figure 7 caption: 6.3089 TU;
-    # Earth-Moon 1 TU = 4.34247 days -> 27.396 days)
+    # Kumar 2025 (arXiv:2509.12675, ASR 77:3815) sourced seeds for heteroclinic
+    # chain reproduction -- ICs are the paper's OWN Table 6 (Appendix 8.2)
+    # values verbatim (all rows have y=0, xdot=0 by construction). Each MUST be
+    # recovered at its own Table 6 Jacobi constant via
+    # :data:`KUMAR_TABLE6_CJ` -- NOT :data:`C_J_BRAIK_ROSS` -- or the corrector
+    # converges to a different periodic orbit than the one Table 6 documents.
+    #
+    # 4:1 unstable at C_J=3.15 (Table 6: x=0.737385941470, ydot=-0.355888785284;
+    # period from Figure 7 caption: 6.3089 TU; Earth-Moon 1 TU = 4.34247 days
+    # (paper's own conversion) -> 27.396 days)
     "R41-U-Kumar": (0.737385941470, -1.0, 27.396),
-    # 3:1 unstable at C_J=3.10 (Table 6 ICs)
-    "R31-U-Kumar": (0.354146033959, 1.0, float("nan")),
-    # 2:1 unstable at C_J=3.10 (Table 6 ICs)
+    # 3:1 unstable at C_J=3.10 (Table 6: x=0.822429022871, ydot=-0.300987128481).
+    # CORRECTED 2026-07-15: the previous seed (0.354146033959, sign +1) matched
+    # NO row of Table 6's 3:1 column (all of which lie in x in [0.80, 0.91]) --
+    # a stale placeholder from before this session confirmed the PDF was
+    # already in the corpus, never reconciled against the actual table.
+    "R31-U-Kumar": (0.822429022871, -1.0, float("nan")),
+    # 2:1 unstable at C_J=3.10 (Table 6: x=0.878280334961, ydot=-0.334629543419)
     "R21-U-Kumar": (0.878280334961, -1.0, float("nan")),
 }
 
@@ -257,6 +272,19 @@ _RESONANT_SEEDS: dict[str, tuple[float, float, float]] = {
 #: -- kept local so this module has no import from a *peer* search submodule
 #: beyond reusing the offline corrector).
 C_J_BRAIK_ROSS = 3.1294
+
+#: Sourced Jacobi constant for each ``"*-Kumar"`` resonance label (Kumar 2025
+#: Table 6 / the paper's own worked C=3.10 3:1<->2:1 heteroclinic-chain example
+#: of Section 5.2/Table 1, and the C=3.15 4:1 example of Figure 7). Callers of
+#: :func:`recover_resonant_family` for a ``"*-Kumar"`` resonance MUST pass
+#: ``c_j=KUMAR_TABLE6_CJ[...]`` explicitly -- the function's own default,
+#: :data:`C_J_BRAIK_ROSS` (3.1294), is a DIFFERENT energy (Braik-Ross's, not
+#: Kumar's) and recovers a different periodic orbit than Table 6 documents.
+KUMAR_TABLE6_CJ: dict[str, float] = {
+    "4:1-Kumar": 3.15,
+    "3:1-Kumar": 3.10,
+    "2:1-Kumar": 3.10,
+}
 
 TU_DAYS = 27.321661 / (2.0 * math.pi)
 
@@ -721,6 +749,7 @@ class ResonanceNetworkScorer:
 
 __all__ = [
     "C_J_BRAIK_ROSS",
+    "KUMAR_TABLE6_CJ",
     "TU_DAYS",
     "Manifold",
     "ResonanceNetworkScorer",
