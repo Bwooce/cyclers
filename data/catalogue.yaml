@@ -12701,8 +12701,8 @@
 
     trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.1.5.-1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.237 vs. tabulated 9.200 km/s, 0.4% error)."
     trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.1.5.-1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.237 vs. tabulated 9.200 km/s, 0.4% error)."
-- id: russell-ocampo-5.2.1+7
-  name: "Russell-Ocampo cycler 5.2.1.+7 (5-synodic, near-ballistic)"
+- id: russell-ocampo-5.2.1-7
+  name: "Russell-Ocampo cycler 5.2.1.-7 (5-synodic, near-ballistic)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
@@ -12721,7 +12721,7 @@
   delta_v_kms: 0.014   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
-  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.9, row "5.2.1.+7", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [92, 92]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=1.07) — a bound, not a sourced value.
+  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.9, row "5.2.1.-7", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [92, 92]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=1.07) — a bound, not a sourced value.
   - body: "E"
     turning_angle_deg: 92
     min_altitude_km:
@@ -12735,14 +12735,14 @@
     pair: "E-M"
     k: 5
     years: 10.675
-    note: "5 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.9 row 5.2.1.+7."
+    note: "5 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.9 row 5.2.1.-7."
   vinf_kms_at_encounters:
   - body: "E"
     vinf_kms: 4.5
-    note: "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth v_inf = 4.5 km/s."
+    note: "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Earth v_inf = 4.5 km/s."
   - body: "M"
     vinf_kms: 1.3
-    note: "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Mars v_inf = 1.3 km/s."
+    note: "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Mars v_inf = 1.3 km/s."
   orbit_elements:
     a_au:
     e:
@@ -12771,7 +12771,7 @@
       branch: "single"
       a_au:                     # per-segment elements not tabulated (orbit_elements.a_au null) — see data_gaps[]
       e:
-      note: "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth->Mars (or aphelion) time = 182 days."
+      note: "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Earth->Mars (or aphelion) time = 182 days."
     - id: "ret-me"
       from: "M"
       to: "E"
@@ -12857,20 +12857,20 @@
     venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
     doi:
     url: "http://hdl.handle.net/2152/1253"
-    note: "Table 3.9 row 5.2.1.+7: AR=0.9, TR=1.07, E->M days=182, V_inf,E=4.5, V_inf,M=1.3, turning angles [92, 92] deg. Near-ballistic."
+    note: "Table 3.9 row 5.2.1.-7: AR=0.9, TR=1.07, E->M days=182, V_inf,E=4.5, V_inf,M=1.3, turning angles [92, 92] deg. Near-ballistic."
   priority_date: "2003-02-09"
   notes: |
     Near-ballistic: AR=0.9, TR=1.07 falls inside Russell's wider net (ARMIN=0.9 / TRMIN=0.85) but does not meet the strict criterion (AR>=1.0 AND TR>=1.0); requires a small powered nudge for full ballistic closure. trajectory_regime kept as 'ballistic' per the cycler literature convention. Russell 2004 Tables 3.9-3.11 catalogue 5- and 6-synodic-period cyclers found at the wider ARMIN=0.9 / TRMIN=0.85 net (vs the strict AR>=1.0 / TR>=1.0 net of Table 3.4). 5-synodic period.
 
-    Required Earth-flyby turning angles per Russell Table 3.9 row 5.2.1.+7: [92, 92] deg.
+    Required Earth-flyby turning angles per Russell Table 3.9 row 5.2.1.-7: [92, 92] deg.
 
-    Note Russell's nomenclature: the trailing signed index (+7) denotes the Lambert-branch / phasing index of the generic-return solution.
+    Note Russell's nomenclature: the trailing signed index (-7) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
-    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.2.1.+7."
-    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth v_inf (km/s) = 4.5."
-    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Mars v_inf (km/s) = 1.3."
-    "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Earth->Mars (or aphelion) Time (days) = 182."
-    aphelion_au: "Russell 2004 dissertation Table 3.9 row 5.2.1.+7: Aphelion Ratio = 0.9 (Russell's ratio to Mars sma 1.524 AU); aphelion = 0.9 x 1.524 AU = 1.372 AU."
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.2.1.-7."
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Earth v_inf (km/s) = 4.5."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Mars v_inf (km/s) = 1.3."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Earth->Mars (or aphelion) Time (days) = 182."
+    aphelion_au: "Russell 2004 dissertation Table 3.9 row 5.2.1.-7: Aphelion Ratio = 0.9 (Russell's ratio to Mars sma 1.524 AU); aphelion = 0.9 x 1.524 AU = 1.372 AU."
     "period.years": "5 x Earth-Mars synodic 2.135 yr = 10.675 yr; spec.md §9 convention."
 
 - id: russell-ocampo-5.2.2+2
@@ -18179,8 +18179,8 @@
 
     trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.9.2.-2's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 4.918 vs. tabulated 4.900 km/s, 0.4% error)."
     trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.9.2.-2's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 4.918 vs. tabulated 4.900 km/s, 0.4% error)."
-- id: russell-ocampo-5.9.2-1
-  name: "Russell-Ocampo cycler 5.9.2.-1 (5-synodic, near-ballistic)"
+- id: russell-ocampo-5.9.2+1
+  name: "Russell-Ocampo cycler 5.9.2.+1 (5-synodic, near-ballistic)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
@@ -18199,7 +18199,7 @@
   delta_v_kms: 2.08   # derived from Russell 2004 AR/TR via M2 surrogate; see source_quotes
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
-  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.9, row "5.9.2.-1", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [65, 45, 45, 45, 45, 65, 65]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=0.90) — a bound, not a sourced value.
+  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.9, row "5.9.2.+1", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [65, 45, 45, 45, 45, 65, 65]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=0.90) — a bound, not a sourced value.
   - body: "E"
     turning_angle_deg: 65
     min_altitude_km:
@@ -18228,14 +18228,14 @@
     pair: "E-M"
     k: 5
     years: 10.675
-    note: "5 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.9 row 5.9.2.-1."
+    note: "5 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.9 row 5.9.2.+1."
   vinf_kms_at_encounters:
   - body: "E"
     vinf_kms: 7.9
-    note: "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth v_inf = 7.9 km/s."
+    note: "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Earth v_inf = 7.9 km/s."
   - body: "M"
     vinf_kms: 12.9
-    note: "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Mars v_inf = 12.9 km/s."
+    note: "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Mars v_inf = 12.9 km/s."
   orbit_elements:
     a_au:
     e:
@@ -18262,9 +18262,9 @@
       tof_days: 117
       n_revs: 0
       branch: "single"
-      a_au:                     # per-segment elements not tabulated (orbit_elements.a_au null) — see data_gaps[]
-      e:
-      note: "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth->Mars (or aphelion) time = 117 days."
+      a_au: 2.0867              # per-segment elements not tabulated (orbit_elements.a_au null) — see data_gaps[]
+      e: 0.5297
+      note: "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Earth->Mars (or aphelion) time = 117 days. DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.9.2.+1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 12.874 vs. tabulated 12.900 km/s, 0.2% error)."
     - id: "ret-me"
       from: "M"
       to: "E"
@@ -18323,11 +18323,6 @@
     note: "Segment topology is provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 7 Earth flyby(s) (Russell required-geocentric-turn column) implying 6 intermediate Earth-Earth loop(s) over the 10.675-yr period. Only a single representative loop-ee slot is materialised here; the full multi-loop decomposition must be verified against Russell 2004 / closed by the task #54 solver."
     source_hint: "Russell 2004 dissertation Table 3.4 / 4.x; task #54 multi-rev Lambert solver"
     todo_ref: "#54"
-  - path: "trajectory.segments[out-em].a_au"
-    kind: "unknown"
-    note: "Per-segment (a,e) of the outbound transit arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published)."
-    source_hint: "Russell 2004 dissertation Table 3.4 / 4.x leg descriptors"
-    todo_ref: "#54-backfill"
   first_published:
     authors: ["Russell, R. P.", "Ocampo, C. A."]
     year: 2005
@@ -18350,22 +18345,24 @@
     venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
     doi:
     url: "http://hdl.handle.net/2152/1253"
-    note: "Table 3.9 row 5.9.2.-1: AR=2.1, TR=0.9, E->M days=117, V_inf,E=7.9, V_inf,M=12.9, turning angles [65, 45, 45, 45, 45, 65, 65] deg. Near-ballistic."
+    note: "Table 3.9 row 5.9.2.+1: AR=2.1, TR=0.9, E->M days=117, V_inf,E=7.9, V_inf,M=12.9, turning angles [65, 45, 45, 45, 45, 65, 65] deg. Near-ballistic."
   priority_date: "2003-02-09"
   notes: |
     Near-ballistic: AR=2.1, TR=0.9 falls inside Russell's wider net (ARMIN=0.9 / TRMIN=0.85) but does not meet the strict criterion (AR>=1.0 AND TR>=1.0); requires a small powered nudge for full ballistic closure. trajectory_regime kept as 'ballistic' per the cycler literature convention. Russell 2004 Tables 3.9-3.11 catalogue 5- and 6-synodic-period cyclers found at the wider ARMIN=0.9 / TRMIN=0.85 net (vs the strict AR>=1.0 / TR>=1.0 net of Table 3.4). 5-synodic period.
 
-    Required Earth-flyby turning angles per Russell Table 3.9 row 5.9.2.-1: [65, 45, 45, 45, 45, 65, 65] deg.
+    Required Earth-flyby turning angles per Russell Table 3.9 row 5.9.2.+1: [65, 45, 45, 45, 45, 65, 65] deg.
 
-    Note Russell's nomenclature: the trailing signed index (-1) denotes the Lambert-branch / phasing index of the generic-return solution.
+    Note Russell's nomenclature: the trailing signed index (+1) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
-    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.9.2.-1."
-    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth v_inf (km/s) = 7.9."
-    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Mars v_inf (km/s) = 12.9."
-    "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Earth->Mars (or aphelion) Time (days) = 117."
-    aphelion_au: "Russell 2004 dissertation Table 3.9 row 5.9.2.-1: Aphelion Ratio = 2.1 (Russell's ratio to Mars sma 1.524 AU); aphelion = 2.1 x 1.524 AU = 3.2 AU."
+    delta_v_kms: "Derived from Russell 2004's tabulated AR / TR via the M2 powered-flyby surrogate (src/cyclerfinder/core/flyby.py): ΔV ≈ (V∞_E + V∞_M) × max(0, 1 − TR) + (1 − AR) × (V∞_E + V∞_M) × 0.025 [AR-correction term active only when AR < 1]. Upper bound; biases near-ballistic entries toward 'requires nudge'. Strict-ballistic rows (AR ≥ 1 AND TR ≥ 1) give ΔV = 0 exactly. AR/TR primary values: Russell 2004 Table 3.9, row 5.9.2.+1."
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Earth v_inf (km/s) = 7.9."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Mars v_inf (km/s) = 12.9."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Earth->Mars (or aphelion) Time (days) = 117."
+    aphelion_au: "Russell 2004 dissertation Table 3.9 row 5.9.2.+1: Aphelion Ratio = 2.1 (Russell's ratio to Mars sma 1.524 AU); aphelion = 2.1 x 1.524 AU = 3.2 AU."
     "period.years": "5 x Earth-Mars synodic 2.135 yr = 10.675 yr; spec.md §9 convention."
 
+    trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.9.2.+1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 12.874 vs. tabulated 12.900 km/s, 0.2% error)."
+    trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.9 row 5.9.2.+1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 12.874 vs. tabulated 12.900 km/s, 0.2% error)."
 - id: russell-ocampo-5.9.3-1
   name: "Russell-Ocampo cycler 5.9.3.-1 (5-synodic, ballistic)"
   source: literature
@@ -27345,8 +27342,8 @@
 
     trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.10 row 6.5.5.-1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.303 vs. tabulated 9.300 km/s, 0.0% error)."
     trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.10 row 6.5.5.-1's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 9.303 vs. tabulated 9.300 km/s, 0.0% error)."
-- id: russell-ocampo-6.6.1+6
-  name: "Russell-Ocampo cycler 6.6.1.+6 (6-synodic, ballistic)"
+- id: russell-ocampo-6.6.1-6
+  name: "Russell-Ocampo cycler 6.6.1.-6 (6-synodic, ballistic)"
   source: literature
   trajectory_regime: ballistic   # added 2026-06-01; ballistic per cycler-literature convention (incl. Russell's wider net)
   model_assumption: circular-coplanar   # schema v2 (2026-06-01); circular-coplanar | analytic-ephemeris | cr3bp; see data/README.md
@@ -27365,7 +27362,7 @@
   delta_v_kms: 0.0   # schema v2; strict ballistic — 0 ΔV per cycle by Russell AR>=1 & TR>=1 criterion
   v_infinity_leveraging_dv_kms:        # schema v2; non-null only for Rogers 2012 establishment variants once their values are extracted
   fleet_size:        # schema v2; integer count; null where not stated by source
-  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.10, row "6.6.1.+6", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [58, 58, 58, 58]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=1.82) — a bound, not a sourced value.
+  flyby_mechanics:   # SOURCED: Russell 2004 dissertation Table 3.10, row "6.6.1.-6", last column "Required Geocentric Turning Angle at each Flyby (deg)" = [58, 58, 58, 58]. All are EARTH (geocentric) gravity-assist flybys (Russell §3.8: "The last column shows the number of gravity-assisted Earth flybys and the geocentric turning angle associated with each one"). min_altitude_km left null: Russell publishes no per-flyby altitude, only the conditional footnote ">200 km if Turn Ratio >= 1" (this row TR=1.82) — a bound, not a sourced value.
   - body: "E"
     turning_angle_deg: 58
     min_altitude_km:
@@ -27385,14 +27382,14 @@
     pair: "E-M"
     k: 6
     years: 12.81
-    note: "6 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.10 row 6.6.1.+6."
+    note: "6 x Earth-Mars synodic period (2.135 yr) per Russell 2004 dissertation Table 3.10 row 6.6.1.-6."
   vinf_kms_at_encounters:
   - body: "E"
     vinf_kms: 3.9
-    note: "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Earth v_inf = 3.9 km/s."
+    note: "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Earth v_inf = 3.9 km/s."
   - body: "M"
     vinf_kms: 3.5
-    note: "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Mars v_inf = 3.5 km/s."
+    note: "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Mars v_inf = 3.5 km/s."
   orbit_elements:
     a_au:
     e:
@@ -27419,9 +27416,9 @@
       tof_days: 189
       n_revs: 0
       branch: "single"
-      a_au:                     # per-segment elements not tabulated (orbit_elements.a_au null) — see data_gaps[]
-      e:
-      note: "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Earth->Mars (or aphelion) time = 189 days."
+      a_au: 1.2662              # per-segment elements not tabulated (orbit_elements.a_au null) — see data_gaps[]
+      e: 0.2245
+      note: "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Earth->Mars (or aphelion) time = 189 days. DERIVED (kind: derive) from Russell 2004 Table 3.10 row 6.6.1.-6's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 3.409 vs. tabulated 3.500 km/s, 2.6% error)."
     - id: "ret-me"
       from: "M"
       to: "E"
@@ -27480,11 +27477,6 @@
     note: "Segment topology is provisional. sequence_canonical E-E-M-M is the lex-min canonical form; the actual cycle has 4 Earth flyby(s) (Russell required-geocentric-turn column) implying 3 intermediate Earth-Earth loop(s) over the 12.81-yr period. Only a single representative loop-ee slot is materialised here; the full multi-loop decomposition must be verified against Russell 2004 / closed by the task #54 solver."
     source_hint: "Russell 2004 dissertation Table 3.4 / 4.x; task #54 multi-rev Lambert solver"
     todo_ref: "#54"
-  - path: "trajectory.segments[out-em].a_au"
-    kind: "unknown"
-    note: "Per-segment (a,e) of the outbound transit arc not tabulated by Russell 2004 (orbit_elements.a_au/e are null for the same reason — only the aggregate aphelion ratio is published)."
-    source_hint: "Russell 2004 dissertation Table 3.4 / 4.x leg descriptors"
-    todo_ref: "#54-backfill"
   first_published:
     authors: ["Russell, R. P.", "Ocampo, C. A."]
     year: 2005
@@ -27507,21 +27499,23 @@
     venue: "Ph.D. dissertation, University of Texas at Austin, Department of Aerospace Engineering"
     doi:
     url: "http://hdl.handle.net/2152/1253"
-    note: "Table 3.10 row 6.6.1.+6: AR=1.02, TR=1.82, E->M days=189, V_inf,E=3.9, V_inf,M=3.5, turning angles [58, 58, 58, 58] deg. Strictly ballistic."
+    note: "Table 3.10 row 6.6.1.-6: AR=1.02, TR=1.82, E->M days=189, V_inf,E=3.9, V_inf,M=3.5, turning angles [58, 58, 58, 58] deg. Strictly ballistic."
   priority_date: "2003-02-09"
   notes: |
     Strictly ballistic per Russell's strict criterion (AR>=1.0 AND TR>=1.0). Russell 2004 Tables 3.9-3.11 catalogue 5- and 6-synodic-period cyclers found at the wider ARMIN=0.9 / TRMIN=0.85 net (vs the strict AR>=1.0 / TR>=1.0 net of Table 3.4). 6-synodic period.
 
-    Required Earth-flyby turning angles per Russell Table 3.10 row 6.6.1.+6: [58, 58, 58, 58] deg.
+    Required Earth-flyby turning angles per Russell Table 3.10 row 6.6.1.-6: [58, 58, 58, 58] deg.
 
-    Note Russell's nomenclature: the trailing signed index (+6) denotes the Lambert-branch / phasing index of the generic-return solution.
+    Note Russell's nomenclature: the trailing signed index (-6) denotes the Lambert-branch / phasing index of the generic-return solution.
   source_quotes:
-    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Earth v_inf (km/s) = 3.9."
-    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Mars v_inf (km/s) = 3.5."
-    "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Earth->Mars (or aphelion) Time (days) = 189."
-    aphelion_au: "Russell 2004 dissertation Table 3.10 row 6.6.1.+6: Aphelion Ratio = 1.02 (Russell's ratio to Mars sma 1.524 AU); aphelion = 1.02 x 1.524 AU = 1.554 AU."
+    "vinf_kms_at_encounters[0].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Earth v_inf (km/s) = 3.9."
+    "vinf_kms_at_encounters[1].vinf_kms": "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Mars v_inf (km/s) = 3.5."
+    "legs[0].tof_days": "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Earth->Mars (or aphelion) Time (days) = 189."
+    aphelion_au: "Russell 2004 dissertation Table 3.10 row 6.6.1.-6: Aphelion Ratio = 1.02 (Russell's ratio to Mars sma 1.524 AU); aphelion = 1.02 x 1.524 AU = 1.554 AU."
     "period.years": "6 x Earth-Mars synodic 2.135 yr = 12.81 yr; spec.md §9 convention."
 
+    trajectory.segments[out-em].a_au: "DERIVED (kind: derive) from Russell 2004 Table 3.10 row 6.6.1.-6's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 3.409 vs. tabulated 3.500 km/s, 2.6% error)."
+    trajectory.segments[out-em].e: "DERIVED (kind: derive) from Russell 2004 Table 3.10 row 6.6.1.-6's sourced Aphelion Ratio + V_inf_Earth, via the AR+V_inf_Earth -> (a_au, e) inversion validated in docs/notes/2026-07-15-596-russell-backfill-method-validated.md (V_inf_Mars free cross-check: emerged 3.409 vs. tabulated 3.500 km/s, 2.6% error)."
 - id: russell-ocampo-6.6.1+5
   name: "Russell-Ocampo cycler 6.6.1.+5 (6-synodic, ballistic)"
   source: literature

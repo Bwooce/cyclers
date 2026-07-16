@@ -6666,35 +6666,70 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   pre-existing local-Mac failures (task #584). The 36 AR<1 rows and the 3 genuinely-missing rows
   remain open for a future pass (needs modeling the near-ballistic powered-assist geometry, which
   this validated method doesn't cover).
-- **#616** (dispatched 2026-07-16, `#596` remainder) — finish the two items `#596` left open: the 36
-  `AR<1.0` rows (Table 3.4/3.9-3.11, near-ballistic — the AR+V∞_Earth crossing-based inversion
-  doesn't apply since the ellipse's aphelion never reaches Mars) and the genuinely-uncatalogued rows
-  (`#596`'s own count said 3; **independently re-counted here and found 4**: `1.0.1.-1`, `5.2.1.-7`,
-  `5.9.2.+1`, `6.6.1.-6` — re-running `scripts/backfill_russell_2004_tables.py`'s dry-run and cross-
-  checking `data/catalogue.yaml` directly confirms none of these 4 exact `p.q.r.h` designators exist
-  under any ID format; note 3 of the 4 have SIBLING entries at a DIFFERENT `h` for the same `p.q.r`
-  — e.g. `russell-ocampo-5.2.1+7` exists but the table also has `5.2.1.-7`; `5.9.2-2`/`5.9.2-1` exist
-  but not `5.9.2+1`; `6.6.1+6/+5/+4/+3` exist but not `6.6.1.-6` — confirm these are genuinely
-  DISTINCT family members (different loop/h count → different trajectory) before adding, not evidence
-  of a sign-convention bug in the existing sibling entries).
-  **Scope:** (1) For the 4 missing rows: verify each is a genuine, distinct, not-yet-catalogued
-  Russell (2004) census member (compare ToF/V∞ against its sibling h-value entries — if they're
-  materially different orbits, add as new rows using the SAME schema/citation/`kind: derive`
-  conventions `#596`'s executed backfill established; if investigation instead reveals an actual
-  sign/indexing bug in an EXISTING sibling entry, fix that instead of blindly adding a duplicate).
-  (2) For the 36 `AR<1.0` rows: investigate whether a different geometric model (near-ballistic,
-  likely needing a powered deep-space maneuver or different closure assumption than the aphelion-
-  crossing inversion) can validate an `(a_au, e)` inversion for this regime, with the SAME rigor
-  `#596` applied (a positive control against a known/sourced case before trusting any general
-  inversion). A clean negative — "this regime is not tractable with a simple closed-form inversion,
-  here's why, leave the gap open and documented" — is a completely acceptable, valuable outcome; do
-  not force a result. **Run ALL the catalogue ratchets** (`uv run pytest tests/data tests/search
-  tests/scripts -q`, per this project's own established discipline that ANY catalogue.yaml row
-  change ripples into multiple frozen-census tests) before any writeback, and use the SAME 3-way
-  ruamel-diff patch strategy `#596`'s `write_via_patch()` already validates to keep the diff minimal.
-  **Recommended model: Sonnet** for the 4-row verification+addition (spec-complete, existing schema/
-  precedent); **Opus** if the AR<1 geometric modeling proceeds past initial scoping (genuine
-  numerical-methods judgment, not mechanical).
+- **#616 ✓ DONE (2026-07-16)** (dispatched 2026-07-16, `#596` remainder) — finished both items `#596`
+  left open. Re-ran `scripts/backfill_russell_2004_tables.py`'s dry-run + cross-checked
+  `data/catalogue.yaml` directly first: reconfirmed 161 backfilled / 36 AR<1.0-excluded / exactly 4
+  of the 201 table rows never matched an existing entry (`1.0.1.-1`, `5.2.1.-7`, `5.9.2.+1`,
+  `6.6.1.-6`) — same 4 the dispatch note found, confirmed independently.
+  **Part 1 result: 0 new rows added — all 4 "missing" designators were already fully catalogued,**
+  just not reachable by the `#596` script's exact-designator lookup:
+  - `1.0.1.-1` is the **Aldrin cycler** (footnoted `c` in Russell's own Table 3.4) — already
+    catalogued as `aldrin-classic-em-k1-outbound`/`-inbound` with independently-sourced
+    `a=1.60/e=0.393` (Byrnes-Longuski-Aldrin 1993 lineage), and its AR/ToF/V∞_E/V∞_M
+    (1.47/146/6.5/9.7) match Table 3.4 row `1.0.1.-1` exactly. Not a `russell-ocampo-*` id, so
+    `#596`'s substring filter never considered it a candidate match — a counting-methodology gap,
+    not a data gap. No action needed.
+  - `5.2.1.-7`, `5.9.2.+1`, `6.6.1.-6` are each the **exact same table row** as an existing
+    `russell-ocampo-*` entry, mislabeled with the wrong sign on the trailing `i` field. Read
+    Russell's dissertation directly (`~/dev/cyclers_pdf/papers/russell-2004-dissertation.pdf`,
+    pp.56-69 + the actual Table 3.4 on p.83): his real naming convention is `p.h.s.i`, and `i` is
+    the **signed multi-rev-Lambert solution-BRANCH selector** ("the negative sign indicates the
+    solution ... is from the lower solution curve", p.58) — NOT a loop-direction/count as the
+    dispatch note assumed. Verified each pair (e.g. `russell-ocampo-5.2.1+7` vs. table row
+    `5.2.1.-7`) matches on ALL SIX sourced columns (AR, TR, ToF, V∞_E, V∞_M, AND the flyby turning
+    angles) — an implausible coincidence for two genuinely distinct branch solutions, so these are
+    transcription sign-flips in the existing entries, not new census members. **Fixed by renaming,
+    not duplicating** (extended `backfill_russell_2004_tables.py` with `apply_sibling_sign_fixes()` +
+    `write_sibling_fixes_via_patch()`, same validated 3-way ruamel-diff patch strategy, recursively
+    fixing both YAML data AND ruamel comment tokens so no stale designator text survives anywhere in
+    the 3 entries): `russell-ocampo-5.2.1+7`→`-5.2.1-7` (AR=0.90<1.0, stays an open a_au/e gap like
+    the other 36); `russell-ocampo-5.9.2-1`→`+5.9.2+1` (AR=2.10, now DERIVED `a=2.0867/e=0.5297`,
+    0.2% V∞_Mars cross-check); `russell-ocampo-6.6.1+6`→`-6.6.1-6` (AR=1.02, now DERIVED
+    `a=1.2662/e=0.2245`, 2.6% V∞_Mars cross-check). Updated the 3 cross-referencing frozen-census
+    files too (`scripts/classify_cycler_class.py`, `tests/data/test_cycler_class_census.py`,
+    `docs/notes/multi-arc-classification.md`). Catalogue row count unchanged at 361; `git diff
+    data/catalogue.yaml` touches ONLY these 3 entries (52 insertions / 58 deletions), verified by
+    full diff review.
+  **Part 2 result: CLEAN, DOCUMENTED NEGATIVE — no validated closed-form inversion exists for the 36
+  `AR<1.0` rows, and none is expected to.** Read Russell's dissertation Table 3.4 (p.83) directly:
+  his own footnote `a` states **"Cycler reaches Mars if Aphelion Ratio ≥ 1"** — AR<1.0 rows
+  structurally do NOT reach Mars in his circular-coplanar model at all (his own discussion of
+  `4.3.1.-5`, AR=0.992: "the cycler doesn't quite reach Mars in the simplified model"). This is a
+  hard geometric fact (aphelion < Mars's orbit radius means the ellipse never reaches r=1.52 AU),
+  not a numerical artifact of `#596`'s inversion — it formalizes the 1:1 empirical AR<1.0
+  correlation `#596` already found. Russell's ARMIN=0.9 threshold exists because in the TRUE
+  (eccentric, 1.38-1.67 AU) Mars orbit a near-miss circular-model AR could still intercept the real
+  Mars near perihelion — but that requires real-ephemeris epoch + DSM machinery Russell does NOT
+  tabulate in Tables 3.4/3.9-3.11 (only the circular-coplanar AR/TR/ToF/V∞ columns). Checked for a
+  positive control before concluding: task `#388` already ran the full real-ephemeris multi-arc DSM
+  closure lane on exactly one of these 36 rows (`russell-ocampo-4.3.1-5`, AR=0.99, Russell's own
+  "remarkably low energy" highlighted example —
+  `docs/notes/2026-06-23-388-russell-ocampo-4.3.1-5-anchor-recovery.md`). Result: mixed/fragile, not
+  a validated method — a 25-seed multi-start + Mars-perihelion epoch-targeted search recovers the
+  published V∞ anchor (within ~0.05-0.08 km/s) with a ~0.485 km/s (or ~96-164 m/s in a later
+  epoch-targeted trial) residual DSM, but the CANONICAL single-shot determination does NOT reproduce
+  it (converged=False, 12.64 km/s residual, anchor_match=False) — epoch/seed-fragile, stays V0, no
+  promotion. Conclusion: the AR<1.0 regime needs full real-ephemeris multi-arc DSM continuation with
+  epoch search, not a 2-parameter Keplerian-crossing inversion — and even that heavy machinery is
+  fragile/inconclusive on the best-case example already tried. This is a genuine, Russell-
+  acknowledged (his own footnote `a`) model boundary. The 36 `AR<1.0` rows' `data_gaps` stay open
+  exactly as `#596` left them; no writeback attempted, nothing forced.
+  **Ratchets:** `uv run pytest tests/data tests/search tests/scripts -q` — exit clean except the 2
+  already-documented pre-existing local-Mac failures (`#584`:
+  `test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), confirmed unrelated to this session's
+  changes. `ruff check`/`ruff format --check` clean on all touched files. All changes left
+  **uncommitted** for the coordinating session to review and commit.
 - **#597 ✓ DONE (2026-07-15)** (P3, corpus acquisition + full mining pass) — 4 more Ross-group papers
   found via a manual review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596
   session): Kumar-Rawat-Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic

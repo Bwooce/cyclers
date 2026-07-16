@@ -309,8 +309,155 @@ def invert_a_e(ar: float, vinf_e_target: float) -> tuple[float, float, float]:
 
 
 def h_value(designator: str) -> int:
+    """Russell's own designator convention is ``p.h.s.i`` (dissertation p.58):
+    p = synodic periods, h = half-years allotted to filler full/half-rev loiter
+    legs, s = number of (identical, by construction -- Ch.3.4.3, p.63) generic
+    returns, i = the SIGNED multi-rev-Lambert solution-branch selector (p.58:
+    "the negative sign indicates the solution ... is from the lower solution
+    curve"), NOT a loop-direction/count. ``group(2)`` below is genuinely ``h``
+    (verified #616, 2026-07-16: this is NOT the trailing signed ``i`` field --
+    confirmed against the dissertation text before trusting this any further).
+    """
     m = re.match(r"(\d+)\.(\d+)\.(\d+)\.?([+-]\d+)", designator)
     return int(m.group(2))
+
+
+# #616 (2026-07-16): of the 4 designators in the 201-row table that never matched
+# an existing catalogue entry by exact-string designator lookup, 3 turned out NOT
+# to be missing rows at all. Each is the exact same table row as an existing
+# russell-ocampo-* entry, mislabeled with the WRONG sign on the trailing i field
+# (Russell's own p.h.s.i naming, dissertation p.58: i is the signed multi-rev-
+# Lambert solution-BRANCH selector, "the negative sign indicates the solution ...
+# is from the lower solution curve") in its id/name/notes -- every OTHER sourced
+# field (AR, TR, ToF, vinf_e, vinf_m, AND the flyby turning angles) matches the
+# opposite-signed table row exactly, which would be an implausible coincidence for
+# two genuinely distinct branch solutions. Fixed by renaming, not duplicating.
+# (The 4th, table row "1.0.1.-1", is the Aldrin cycler -- footnoted as such in
+# Russell's own Table 3.4 -- already fully catalogued as
+# aldrin-classic-em-k1-outbound/-inbound with independently-sourced a=1.60/e=0.393;
+# no action needed there.)
+SIBLING_SIGN_FIXES = [
+    # (old_id, new_id, old_designator_text, new_designator_text)
+    ("russell-ocampo-5.2.1+7", "russell-ocampo-5.2.1-7", "5.2.1.+7", "5.2.1.-7"),
+    ("russell-ocampo-5.9.2-1", "russell-ocampo-5.9.2+1", "5.9.2.-1", "5.9.2.+1"),
+    ("russell-ocampo-6.6.1+6", "russell-ocampo-6.6.1-6", "6.6.1.+6", "6.6.1.-6"),
+]
+
+
+def _replace_in_comments(node, old: str, new: str) -> None:
+    """Replace a literal designator substring inside any ruamel eol/pre comment
+    tokens attached to ``node`` (e.g. the ``flyby_mechanics:  # SOURCED: ...
+    row "X.Y.Z.+N" ...`` inline comments, which live in ``.ca``, not the YAML
+    data model, so ``_replace_designator_text`` alone never sees them)."""
+    ca = getattr(node, "ca", None)
+    if ca is None:
+        return
+    token_lists = list(getattr(ca, "items", {}).values())
+    comment_attr = getattr(ca, "comment", None)
+    if comment_attr:
+        token_lists.append(comment_attr)
+    for entry in token_lists:
+        if entry is None:
+            continue
+        candidates = entry if isinstance(entry, list) else [entry]
+        for tok in candidates:
+            if tok is None:
+                continue
+            if isinstance(tok, list):
+                for sub in tok:
+                    if sub is not None and hasattr(sub, "value") and old in sub.value:
+                        sub.value = sub.value.replace(old, new)
+            elif hasattr(tok, "value") and old in tok.value:
+                tok.value = tok.value.replace(old, new)
+
+
+def _replace_designator_text(node, old: str, new: str) -> None:
+    """Recursively replace a literal designator substring in every string value
+    AND every ruamel comment token under ``node`` (a ruamel CommentedMap/
+    CommentedSeq subtree), in place."""
+    _replace_in_comments(node, old, new)
+    if isinstance(node, dict):
+        for k, v in list(node.items()):
+            if isinstance(v, str):
+                if old in v:
+                    node[k] = v.replace(old, new)
+            else:
+                _replace_designator_text(v, old, new)
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            if isinstance(v, str):
+                if old in v:
+                    node[i] = v.replace(old, new)
+            else:
+                _replace_designator_text(v, old, new)
+
+
+def apply_sibling_sign_fixes(catalogue: list[dict]) -> list[dict]:
+    """Rename the 3 mislabeled #616 sibling entries and derive a_au/e for any
+    whose (now-corrected) designator has AR >= 1.0 (the validated inversion
+    applies); the one with AR < 1.0 (5.2.1.-7) is renamed only, staying an open
+    gap exactly like the other 36 AR<1 rows (see module docstring / #616).
+
+    Returns the ``results`` records (same shape as ``analyze()`` produces) for
+    reporting -- only for rows where a_au/e were actually derived and written.
+    """
+    by_id = {e.get("id"): e for e in catalogue}
+    for old_id, new_id, old_designator, new_designator in SIBLING_SIGN_FIXES:
+        entry = by_id.get(old_id)
+        if entry is None:
+            raise SystemExit(f"#616 sibling fix: expected entry {old_id!r} not found")
+        entry["id"] = new_id
+        _replace_designator_text(entry, old_designator, new_designator)
+
+    # Re-resolve cat_by_designator now that the 3 ids are corrected, and re-run
+    # the SAME validated matching + inversion + writeback used for the other 197
+    # rows, restricted to just these 3 designators.
+    cat_by_designator: dict[str, dict] = {}
+    for entry in catalogue:
+        eid = entry.get("id", "")
+        if "russell" not in eid.lower() and "ocampo" not in eid.lower():
+            continue
+        norm = normalize_designator(eid)
+        if norm:
+            cat_by_designator.setdefault(norm, entry)
+
+    target_designators = {fix[3] for fix in SIBLING_SIGN_FIXES}  # new_designator strings
+    all_rows = build_rows()
+    cost_gate = 1e-4
+    results = []
+    for row in all_rows:
+        norm = normalize_designator(row.designator)
+        if norm not in target_designators:
+            continue
+        entry = cat_by_designator.get(norm)
+        if entry is None:
+            raise SystemExit(f"#616 sibling fix: renamed entry for {norm!r} not found")
+        a_au, e, cost = invert_a_e(row.ar, row.vinf_e)
+        if cost >= cost_gate:
+            continue  # AR<1.0 row (5.2.1.-7) -- stays an open gap, rename only
+        g = free_return_geometry(a_au, e)
+        vinf_m_err_pct = 100.0 * abs(g.vinf["M"] - row.vinf_m) / row.vinf_m if row.vinf_m else None
+        tof_err_pct = 100.0 * abs(g.tof_em_days - row.tof_days) / row.tof_days
+        h = h_value(row.designator)
+        results.append(
+            {
+                "designator": row.designator,
+                "entry_id": entry.get("id"),
+                "table": row.table,
+                "a_au": a_au,
+                "e": e,
+                "cost": cost,
+                "vinf_m_emerged": g.vinf["M"],
+                "vinf_m_target": row.vinf_m,
+                "vinf_m_err_pct": vinf_m_err_pct,
+                "tof_em_emerged": g.tof_em_days,
+                "tof_target": row.tof_days,
+                "tof_err_pct": tof_err_pct,
+                "h": h,
+            }
+        )
+    apply_writeback(catalogue, cat_by_designator, results)
+    return results
 
 
 def analyze(write: bool = False) -> None:
@@ -588,7 +735,75 @@ def write_via_patch(results: list[dict]) -> None:
     print(f"Original file: {n_before} lines -> new file: {n_after} lines")
 
 
+def write_sibling_fixes_via_patch() -> None:
+    """Same minimal-diff 3-way patch strategy as ``write_via_patch``, applied to
+    ``apply_sibling_sign_fixes`` (#616) instead of the main ``apply_writeback``.
+    Kept as a separate function (rather than a generic callback threaded through
+    ``write_via_patch``) to leave the already-executed, already-validated #596
+    write path completely untouched.
+    """
+    yaml_rt = _make_ruamel()
+    path = Path(CATALOGUE_PATH)
+    original_text = path.read_text(encoding="utf-8")
+
+    with open(CATALOGUE_PATH) as f:
+        baseline = yaml_rt.load(f)
+    modified = copy.deepcopy(baseline)
+
+    results = apply_sibling_sign_fixes(modified)
+    print(f"#616 sibling fixes: {len(results)} entries got a_au/e derived (AR >= 1.0).")
+    for rec in results:
+        print(
+            f"  {rec['designator']} ({rec['entry_id']}): a={rec['a_au']:.4f} e={rec['e']:.4f} "
+            f"vinf_M emerged={rec['vinf_m_emerged']:.3f} target={rec['vinf_m_target']:.3f} "
+            f"err={rec['vinf_m_err_pct']:.1f}%"
+        )
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        baseline_path = Path(tmpdir) / "baseline.yaml"
+        modified_path = Path(tmpdir) / "modified.yaml"
+        with open(baseline_path, "w") as f:
+            yaml_rt.dump(baseline, f)
+        with open(modified_path, "w") as f:
+            yaml_rt.dump(modified, f)
+
+        diff = subprocess.run(
+            ["diff", "-u", str(baseline_path), str(modified_path)],
+            capture_output=True,
+            text=True,
+        )
+        patch_text = diff.stdout
+        n_diff_lines = len(patch_text.splitlines())
+        print(f"Isolated sibling-fix diff: {n_diff_lines} lines (vs. round-trip baseline)")
+        if not patch_text.strip():
+            print("Nothing to write (empty diff).")
+            return
+
+        patch_lines = patch_text.splitlines(keepends=True)
+        patch_lines[0] = f"--- a/{CATALOGUE_PATH}\n"
+        patch_lines[1] = f"+++ b/{CATALOGUE_PATH}\n"
+        patch_path = Path(tmpdir) / "sibling_fixes.patch"
+        patch_path.write_text("".join(patch_lines), encoding="utf-8")
+
+        result = subprocess.run(
+            ["patch", "--fuzz=3", str(path), str(patch_path)],
+            capture_output=True,
+            text=True,
+        )
+        print(result.stdout)
+        if result.returncode != 0:
+            print(result.stderr)
+            raise SystemExit(f"patch failed (exit {result.returncode}) -- original untouched")
+
+    new_text = path.read_text(encoding="utf-8")
+    n_before, n_after = len(original_text.splitlines()), len(new_text.splitlines())
+    print(f"Original file: {n_before} lines -> new file: {n_after} lines")
+
+
 if __name__ == "__main__":
     import sys
 
-    analyze(write="--write" in sys.argv)
+    if "--sibling-fixes" in sys.argv:
+        write_sibling_fixes_via_patch()
+    else:
+        analyze(write="--write" in sys.argv)
