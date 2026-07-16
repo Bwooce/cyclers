@@ -4195,12 +4195,30 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   2026-07-16`); raw sweep data at `data/enumerate_609_mars_phobos_deimos_symmetric_closures.jsonl`;
   one-shot writer `scripts/_apply_609_mars_phobos_deimos_empty_region.py`. No catalogue.yaml edit,
   no commit (left for the coordinating session to review).
-- **#610** (P2, speculative, not yet dispatched) — `#605` shortlist item 5: certified non-existence
-  via interval arithmetic (interval Newton / Conley-index-style exclusion tests) over a compact
-  phase-space region, upgrading an `empty_regions.jsonl` entry from "conditional on method" (the
-  registry's own stated epistemic status) to a theorem-grade non-existence certificate. Speculative
-  and lower-priority than `#606`-`#609`, but uniquely suited to a program whose main output has been
-  clean negatives — would make the anti-catalogue citable scholarship in its own right.
+- **#610** (P2, speculative) — `#605` shortlist item 5: certified non-existence via interval
+  arithmetic over a compact phase-space region, upgrading an `empty_regions.jsonl` entry from
+  "conditional on method" (the registry's own stated epistemic status) to a theorem-grade
+  non-existence certificate.
+  **✓ Proof-of-concept CERTIFIED (2026-07-16)**, `scripts/certify_610_proteus_bend_interval.py` +
+  `tests/scripts/test_certify_610_proteus_bend_interval.py` (13/13 pass; independently re-run and
+  the exact numbers reproduced by the coordinating session). Targeted the
+  `neptune-triton-proteus-symmetric-closure-599-2026-07-15` entry (`#599`): its own recorded verdict
+  isolates a single, non-transcendental sub-condition — Proteus's GM too small to deliver ≥5° of
+  ballistic bend — as the entire reason for the negative, tractable via the closed-form
+  Bate-Mueller-White patched-conic formula (`cyclerfinder.core.flyby.max_bend`). Built a rigorous
+  interval arcsin from `mpmath.iv`'s `atan2`/`sqrt` primitives (`iv` exposes no `asin`/`acos`
+  directly) and certified `sup(bend_deg) < 5°` over two boxes: Box A (data-grounded, r_p pinned at
+  the 308 km safety floor, V∞ = the exact [1.824, 13.117] km/s range spanning all 104 real
+  residual-gate survivors) → sup=0.288°; Box B (widened/conservative, r_p ∈ [308, 3080] km, V∞ ∈
+  [0.45, 20] km/s) → sup=4.559°. This upgrades the entry's "Proteus GM too small" interpretation
+  from a 104-point grid finding to a continuum-strength claim: no point in either uncountable box
+  can pass the gate. Explicitly does NOT certify the residual/Lambert-closure half of the #599
+  search (bounding a multi-revolution, branch-selecting universal-variable Lambert solve rigorously
+  is a genuine unresolved technical obstacle, reported honestly rather than forced), nor any other
+  empty_regions.jsonl entry — a scoped, single-entry, single-failure-mode proof of concept, not a
+  general framework. Added an optional `interval = ["mpmath>=1.3"]` extra to `pyproject.toml`
+  (tests skip cleanly without it). No catalogue.yaml/empty_regions.jsonl writes — registering the
+  upgraded claim in the actual registry is a follow-up decision, not yet made.
 
 - **#592** (P2, correctness fix) — recovered a real QBCP equations-of-motion bug from an abandoned
   `git stash` (found during a repo-hygiene cleanup pass across both repos, undated stash on `7f83277`)

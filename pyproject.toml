@@ -54,6 +54,16 @@ validation = [
 ocr = [
     "ocrmypdf>=17.7.0",
 ]
+# Rigorous interval arithmetic (task #610 proof-of-concept: certified
+# non-existence via interval-arithmetic exclusion tests, upgrading an
+# empty_regions.jsonl entry from "conditional on method" to a bounded
+# theorem-grade claim). mpmath's ``iv`` context provides directed-rounding
+# interval elementary functions (sqrt, atan2, ...); never a hard dependency —
+# scripts/certify_610_proteus_bend_interval.py and its test skip cleanly with
+# a reason when mpmath is absent.
+interval = [
+    "mpmath>=1.3",
+]
 
 [project.scripts]
 cyclerfinder = "cyclerfinder.cli:main"
