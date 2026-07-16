@@ -3649,7 +3649,7 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   CI is the authoritative gate and stays green; this is filed as a known, explained, Mac/Accelerate-
   local artifact for future sessions to skip re-investigating. **#584 STATUS: CLOSED.**
 
-- **#585** (P2/P3, exploratory) — #582 follow-up: widen the symmetry-breaking bounds
+- **#585 ✓ CLOSED (2026-07-14)** — #582 follow-up: widen the symmetry-breaking bounds
   (`z0_abs`/`xdot0_abs`/`zdot0_abs`) and re-run the 5-MMR asymmetric novelty sweep. **Origin:** #582's
   5-MMR sweep (commit `b0225f4`) found 0/104 asymmetric members, diagnosed as very likely a search-box
   artifact — `mmr_bounds()` is deliberately narrow (±0.05 absolute) around exactly the state components
@@ -3705,7 +3705,7 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   does not overwrite #582's own). s=0.30 remains uncertified (failed its own positive control). Full
   writeup: `docs/notes/2026-07-14-585-5mmr-sweep-s015-results.md`.
 
-- **#586** (P2/P3, exploratory) — #583 follow-up: address the fitness-landscape/niching limitation the
+- **#586 ✓ DONE (2026-07-14), follow-on adjudication completed under #588** — #583 follow-up: address the fitness-landscape/niching limitation the
   partitioning redesign exposed. **Origin:** #583's redesign (commit `f106519`) proved narrower,
   single-family partitioning does NOT by itself restore multi-family recovery — `gurfil_kasdin_fitness`
   (Eq. 15, boundedness-only) saturates near 1.0 across the whole bounded continuum once the trivial
@@ -3910,7 +3910,7 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   reframes rather than resolves the 6-cluster question. Zero catalogue rows changed, no
   novelty claimed; left for a future adjudication pass. **#590 STATUS: CLOSED.**
 
-- **#589** (P3, exploratory, new capability) — reproduce/extend the Gurfil-Kasdin 2002 out-of-ecliptic
+- **#589 ✓ NO-GO / DECLINED (2026-07-14)** — reproduce/extend the Gurfil-Kasdin 2002 out-of-ecliptic
   z²-maximization approach (CMAME 191:2141-2158, DOI 10.1016/S0045-7825(01)00380-2, digested during
   #588's literature check) as a genuinely new search regime, distinct from the bounded-DRO/DEO family
   census #581-#586 have been mining. **Why this is a different niche, not a #583 rerun:** that paper's
