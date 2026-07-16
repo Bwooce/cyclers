@@ -1,0 +1,60 @@
+{
+  "task": "#608",
+  "corpus": {
+    "primary": "Earth",
+    "secondary": "Moon",
+    "mu": 0.01215058439469525,
+    "n_scanned_raw_lines": 540312,
+    "n_converged_prefilter": 205113,
+    "n_unique_physically_sane": 54165,
+    "n_train": 43332,
+    "n_heldout": 10833,
+    "feature_names": [
+      "x0",
+      "y0",
+      "z0",
+      "vx0",
+      "vy0",
+      "vz0",
+      "period",
+      "jacobi"
+    ]
+  },
+  "model": {
+    "kind": "PCA(5) + kmeans(8) per-cluster Gaussian (linear-Gaussian VAE analog)",
+    "explained_variance_ratio_top5": [
+      0.2718834859962269,
+      0.12913386777940308,
+      0.12648090227297978,
+      0.12345499630881766,
+      0.12032943744589798
+    ]
+  },
+  "reconstruction_check": {
+    "n": 100,
+    "raw_convergence_rate": 0.6,
+    "converged_and_physically_sane_rate": 0.51,
+    "n_converged_and_physically_sane": 51,
+    "median_state0_error": 0.054974562388794786
+  },
+  "generated": {
+    "n": 100,
+    "raw_convergence_rate": 0.55,
+    "n_converged": 55,
+    "converged_and_physically_sane_rate": 0.49,
+    "n_converged_and_physically_sane": 49,
+    "median_nn_distance_to_corpus": 40.5508148439687
+  },
+  "baseline_uniform": {
+    "n": 100,
+    "raw_convergence_rate": 0.51,
+    "n_converged": 51,
+    "converged_and_physically_sane_rate": 0.04,
+    "n_converged_and_physically_sane": 4
+  },
+  "reference_real_orbit_nn_spacing": {
+    "median_heldout_vs_train": 0.2722558546373374
+  },
+  "elapsed_s": 178.87002325057983,
+  "seed": 608
+}

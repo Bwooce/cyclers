@@ -4155,14 +4155,61 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   a J2/polyhedron perturbation term for irregular primaries (Kleopatra's "dogbone" shape breaks
   point-mass fidelity) — real but bounded new infra. Moon masses are poorly constrained for several
   of these; source every mass/GM used, don't assume.
-- **#608** (P1, new capability, not yet dispatched) — `#605` shortlist item 3: generative ML (VAE)
-  seed model trained on this project's own corrector runlogs + `data/empty_regions.jsonl`, externally
+- **#608 ✓ BOUNDED POC BUILT (2026-07-16)** — `#605` shortlist item 3: generative ML seed model
+  trained on this project's own corrector-outcome logs, testing the `#542`/`#317` idea externally
   de-risked by Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho, "Generation of periodic orbits in
   the restricted three-body problem with a variational autoencoder," *Celestial Mechanics and
-  Dynamical Astronomy* 138:25 (June 2026) — spot-checked and CONFIRMED real by direct fetch of the
-  published abstract. De-risks/unblocks the parked `#542` learned-seed idea and the open `#317` PINN
-  pre-filter idea; consider whether this should supersede either rather than being a third parallel
-  approach.
+  Dynamical Astronomy* 138:25 (June 2026) (paywalled; worked from the abstract + the group's earlier
+  open conference version, arXiv:2408.03691, which gives the real architecture: CNN-VAE, 2D latent,
+  44,112 ICs across 40 Earth-Moon families each as a 100-node time-series, refined by multiple-
+  shooting, 46% of 100 latent samples converged to a genuinely new orbit).
+  **Design decision, justified not assumed**: this project has NO torch/jax dependency (checked
+  `pyproject.toml`); a literal CNN-VAE was judged not worth a new heavy dependency for a bounded POC.
+  Built instead `src/cyclerfinder/ml/orbit_generative.py`: standardize -> linear PCA -> k-means(8)
+  partition -> per-cluster empirical Gaussian in a 5D latent space — the numpy/scipy-only
+  linear-Gaussian analog of their CNN-VAE, operating directly on the (state0, period, Jacobi) genome
+  rather than a 100-node time series (that representation is already the CR3BP periodic orbit's
+  minimal sufficient statistic; Litteri's time series was a consequence of their CNN architecture,
+  not a physical necessity).
+  **Training data, assembled from this project's OWN history, not synthetic**: scanned all
+  `out/outcome_log/*.jsonl` (#210's passive corrector-outcome capture; 540,312 raw lines from a dozen
+  past Earth-Moon CR3BP campaigns). Only ~38% were solver-`converged`, and of THOSE only ~26% were
+  physically plausible (Jacobi ranged as wild as [-164, 105] before filtering — the raw log is
+  contaminated with numerically-converged but degenerate/collision-adjacent junk, the same failure
+  mode this task's own generate-then-refine step below rediscovered). After a documented
+  Jacobi/period/out-of-plane-amplitude filter + dedup: **54,165 unique, physically-sane converged
+  orbits** (43,332 train / 10,833 held-out) — comparable in raw count to Litteri's 44,112, though
+  almost certainly far less FAMILY-diverse (the log has no family label, only primary/secondary; a
+  real family tag would be a natural follow-up).
+  **Results (`scripts/run_608_generative_seed_poc.py`, `data/found/608_generative_seed_poc/`)**:
+  (a) reconstruction sanity check — 100 held-out real orbits round-tripped through the model's own
+  PCA encoder/decoder and refined by the EXISTING `cr3bp_periodic.correct_periodic`: 60% raw
+  convergence, 51% converged-AND-physically-sane. (b) generate-then-refine — the RAW convergence
+  rate looked like a null result (55% generated vs. 51% uniform-random-in-bounding-box baseline,
+  ~1.08x) — **but that raw metric is misleading for the identical reason the training corpus itself
+  needed filtering**: a solver can converge to a numerically-valid, physically-degenerate solution.
+  Once both are filtered by the SAME physical-sanity bounds used to build the corpus, the real
+  comparison is **49% (generated) vs. 4% (uniform baseline) — a genuine ~12x improvement**, i.e. the
+  learned density steers the existing corrector into a real family's basin far more often than blind
+  seeding. (c) novelty — the converged generated candidates sit far from any single training example
+  (median nearest-neighbor distance ~40.5 standardized units, vs. ~0.27 for two independent real
+  orbits) — genuinely new, not near-duplicates, though also evidence the linear PCA model doesn't
+  tightly track the true (thin, curved, nonlinear) family manifolds, landing in physically-plausible
+  "gaps" between them rather than tightly on a family curve.
+  **Honest verdict**: partially and meaningfully viable NOW with this project's own data (54k
+  physically-sane examples is enough for a bounded statistical model to give a real ~12x seeding lift
+  over blind search), but the raw corpus's ~74% junk rate and lack of family labeling mean a future,
+  larger build should (1) tag provenance/family per record so the model can be conditioned/stratified,
+  and (2) consider a nonlinear model (kernel PCA / shallow autoencoder / eventually a real VAE) given
+  the linear model's demonstrated difficulty tracking curved manifolds — do not jump straight to a
+  production VAE pipeline on this evidence alone. Does NOT supersede `#317` (a sweep-infeasibility
+  PRE-FILTER, a different question from seed generation) though both could share the same corpus;
+  `#542`'s learned-seed warm-start idea is now empirically de-risked rather than purely speculative.
+  8 new tests (`tests/ml/test_orbit_generative.py`), ruff clean, `tests/scripts` AST ratchet clean
+  with a documented exemption (same category as `#606`'s). No catalogue writeback, no
+  literature-novelty check — capability POC only, per this task's explicit scope. Independently
+  re-run by the coordinating session (fixed `seed=608`): numbers reproduce bit-for-bit, including
+  the 12.25x generated-vs-baseline physically-sane convergence ratio.
 - **#609** (P1, new capability) — `#605` shortlist item 4: hierarchical "cycler-of-cyclers" —
   phase-match a heliocentric cycler's planetary encounters to a moon-system cycler at the target
   (commensurability between the synodic super-period and the moon-cycler period). All lower-level
