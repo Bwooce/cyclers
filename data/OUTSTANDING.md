@@ -4257,22 +4257,64 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   done; any productionization (default mode counts, pseudo-arclength continuation across ρ, wiring
   into the `#522` linking-number screen for a full O&B run at an energy where ρ actually reaches
   0.2739) is now spec-complete work behind these regression tests.
-- **#613** (dispatched 2026-07-16, `#612` follow-up) — find whether ANY Jacobi constant `C` gives
-  the EM L1 quasi-halo family a rotation number matching Owen & Baresi's target latitudinal
-  frequency 0.2739 (`#555` proved it is NOT 0.2739 at C=3.15 specifically — energy-pinned near
-  0.074 there, flat in amplitude), and if so, build that torus with `#612`'s integration-free
-  pseudospectral corrector and wire it into the `#522` linking-number screen for the actual final
-  Owen & Baresi L1<->L2 reproduction attempt (paired with a genuine L2-side torus at the SAME
-  energy). Map rotation number vs. parent-halo `C` near the L1 bifurcation (C=3.1745, per `#555`)
-  using small-amplitude GMOS-bootstrapped tori (cheap, since GMOS converges fine below amp~0.01) at
-  several `C` values without forcing a rho pin, to locate (if it exists) the `C` where the natural
-  rotation number crosses 0.2739; only then use `#612`'s corrector (pinned to that `C`'s natural
-  rho) to build the large-amplitude torus needed for the actual scan. A well-characterized negative
-  ("0.2739 is unreachable at the L1 quasi-halo across the full physically-relevant `C` range") is an
-  entirely acceptable, valuable, FINAL answer to the question the `#548`->`#553`->`#555`->`#556`->
-  `#612` chain has been chasing — do not force a positive result. **Recommended model: Sonnet**
-  (per `#612`'s own note — this is spec-complete productization work, not open-ended numerical
-  design).
+- **#613 ✓ DONE (2026-07-16) — DECISIVE MIXED RESULT: L1 alone DOES reach Owen & Baresi's 0.2739,
+  but at a DIFFERENT `C` (~3.076, not 3.15) from where L2 matches — the isoenergetic PAIR is not
+  reproducible at any single `C`.** `#612` follow-up.
+  **(1) Independently re-verified the L1 bifurcation** (z0->0 continuation, not trusting `#555`'s
+  quoted number blindly): C=3.17453, matching `#555`'s 3.17455 to 4 decimals.
+  **(2) Mapped the L1 natural (linear Floquet-phase) rotation number vs. `C`** via `x0`-continuation
+  from the bifurcation downward: it is NOT flat vs. `C` (`#555`'s "flat" finding was specifically
+  flat in AMPLITUDE at FIXED C=3.15) — it rises monotonically from 0 at the bifurcation to a local
+  max ~0.49 near C~3.02, then turns over (non-monotonic beyond that, with an eigenvalue-selection
+  artifact further down — not explored past C~2.9, outside the physically-sensible range anyway).
+  **(3) Crosses O&B's L1 target 0.2739 at C≈3.0763** (interpolated x0=0.831232) — CONFIRMED with an
+  actual small-amplitude GMOS torus (`correct_qp_torus`, amp 5e-4 to 1e-2): ratio 0.27390-0.27393,
+  essentially flat in amplitude there too (same energy-pinned pattern as C=3.15's 0.074 finding,
+  just shifted to a different `C`). **This resolves 0.2739 as individually ACHIEVABLE for L1** —
+  correcting the "unreachable" framing, which `#555`/`#612` only ever tested at C=3.15.
+  **(4) But the L2 side does NOT match at that same `C`.** Continued the L2 halo family
+  (independently, from its own `#553`-scoped bifurcation-seed generator at C=3.15) down to the same
+  C≈3.077 and found its natural rotation number is ≈0.232 — not 0.02163 (off by >10x). `#555`'s
+  convenient L2 match is confined to a narrow window near the L2 family's OWN bifurcation
+  (C≈3.1497-3.1521), a completely different energy from L1's crossing.
+  **(5) Due-diligence check (per this task's explicit instruction to verify, not assume):** forced
+  `#612`'s pseudospectral rho-pin to 0.02163 at C≈3.077 anyway. It DID converge (residual 4.3e-7,
+  closure 8.9e-8) but diagnostically the solved-for torus's OWN Jacobi constant silently drifted to
+  C≈3.159 (near where 0.02163 actually IS the natural rotation number) and its z-amplitude collapsed
+  to ~0.0004 (vs. the natural 0.084 span at C=3.077) — the solver escaped to the genuine nearby
+  family member at a DIFFERENT energy rather than finding a real forced torus at the target `C`.
+  Confirms no genuine L2 quasi-halo has frequency 0.02163 at C=3.077.
+  **(6) CONCLUSION (final, decisive): no single Jacobi constant reproduces BOTH O&B target
+  frequencies simultaneously** as the natural rotation number of each family, anywhere in the
+  explored physically-sensible range (C~3.0 to the 3.1745 bifurcation). Did NOT proceed to wiring
+  into the `#522` linking-number screen: with no genuine frequency-matched-at-both-ends pair to
+  test, a screen attempt would not be a genuine O&B reproduction (would need an artificial/mismatched
+  L2 torus) — a well-characterized negative on the PAIR is the honest stopping point per this task's
+  own scoping. **This is the FINAL resolution of the `#548`->`#553`->`#555`->`#556`->`#612`->`#613`
+  Owen & Baresi chain**: L1's 0.2739 is individually reachable (a genuinely new finding), but the
+  isoenergetic L1<->L2 pair Owen & Baresi describe cannot be built with this codebase at any `C`.
+  **(7) Also built the large-amplitude L1 quasi-halo torus at C=3.076** with `#612`'s pseudospectral
+  corrector (continuation from the small-amp bootstrap), confirming the wall-crossing capability
+  generalizes beyond C=3.15: converged cleanly through transverse amp 0.0196 (GMOS-equivalent well
+  past its documented amp~0.015 wall), rotation number held flat at 0.27389-0.27390 throughout,
+  residual/closure both tiny (<1.1e-5/1.7e-6 respectively; the 4th continuation step at amp 0.0257
+  missed the tight tol=1e-5 marginally but is still qualitatively converged).
+  **New module** `src/cyclerfinder/search/halo_family_at_jacobi.py` — generalizes `#555`'s/`#612`'s
+  hardcoded-C=3.15 halo-family builders (`_l1_halo_at_315`/`_l2_halo_at_315`/`l1_halo_at_c`) to an
+  arbitrary target Jacobi constant, in EITHER continuation direction. Direction is PROBED (measures
+  the local `dC/dx0` sign with a trial step) rather than assumed — found the hard way that the L1
+  and L2 families have OPPOSITE `x0`-vs-`C` conventions, so a single hardcoded sign is wrong for one
+  of the two. **Tests:** `tests/search/test_halo_family_at_jacobi.py`, 6 tests, all live-pinned
+  (not docstring-copied), all pass; ruff clean. Sibling suites re-run clean:
+  `test_variational_qp_torus.py` and `test_qp_torus_heteroclinic.py` fully green;
+  `test_qp_tori.py` green except the pre-existing, already-documented macOS-libm-only
+  `test_structural_qp_continuation` failure (unrelated to this task, confirmed still isolated to
+  that one test). No catalogue writeback (a method/mapping result, not a discovery — and even the
+  L1-alone positive does not constitute a full O&B reproduction). No `scripts/run_*.py` created (all
+  exploration was scratch-only), so the preflight AST ratchet does not apply. Left uncommitted for
+  coordinating-session review. **Recommended model (if any further O&B work is ever authorized):**
+  Opus — any attempt to force a genuine (non-degenerate) off-natural-frequency torus, if ever
+  revisited, is trust-bearing numerical-methods judgment, not spec-complete productization.
 - **#607 ✓ CLEAN NEGATIVE (2026-07-16)** — `#605` shortlist item 2: triple/quadruple small-body
   multi-moon systems — (87) Sylvia (Romulus+Remus), (130) Elektra (3 moons), (45) Eugenia, (216)
   Kleopatra, and the TNO triple Lempo-Paha-Hiisi. `#549`'s real-binary `(k1,k2)` genome does NOT
