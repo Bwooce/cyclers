@@ -4140,14 +4140,59 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   writeback (this is a capability build + method demonstration, not a discovery result to adjudicate
   — any future novel-orbit claim built on this tool would still need its own literature-novelty
   check).
-- **#611** (P1, new capability, IN PROGRESS 2026-07-16) — `#606` follow-up: point the new seedless
-  spectral corrector (`variational_periodic_orbit.py`) at `#538`/`#544`'s QBCP EM-L1/L2 torus wall —
-  the "violently-unstable" region the existing multiple-shooting/GMOS corrector structurally cannot
-  converge (root-caused by `#544`, and the reason the whole SE<->EM cislunar corridor was
-  portfolio-PARKED at `#538`). `#606`'s method is CR3BP-specific as built; check whether the
-  harmonic-balance/collocation approach generalizes to the QBCP equations of motion
-  (`core/qbcp.py`) by simply swapping the EOM residual function, or needs real adaptation. Positive
-  control first (reproduce a KNOWN QBCP/BCR4BP periodic structure cold), per standing discipline.
+- **#611 ✓ BUILT + POSITIVE-CONTROLLED (2026-07-16)** — `#605` shortlist item 4 / `#606` follow-up:
+  point the new seedless spectral corrector at `#538`/`#544`'s QBCP EM-L1/L2 wall — the
+  "violently-unstable" region (frozen-time linearization rate ~2-3 over `T_s~6.79`, implying
+  ~1e6-1e8 per-period amplification) the existing multiple-shooting/GMOS corrector structurally
+  cannot converge without an expensive multi-stage CR3BP-L1 → BCR4BP mu_sun-ramp → QBCP bootstrap.
+  Picked up from a PRIOR agent that stalled/was killed after ~3.5h of silence; its
+  `src/cyclerfinder/search/variational_periodic_orbit_qbcp.py` was substantially complete and its
+  module docstring's technical claims were independently verified true: the QBCP genuinely does NOT
+  let `#606`'s CR3BP approach generalize by a simple EOM swap — it is non-autonomous with a FIXED,
+  known period (`period_multiple * T_s`, no continuous time-shift symmetry to gauge away, so no
+  phase-gauge/free-period unknown carries over) and a first-order 6-canonical-state (PM) system
+  (x,y,z,px,py,pz) rather than CR3BP's second-order 3-position system, so all six components are
+  independently Fourier-expanded and matched against `qbcp_eom`'s first-derivative RHS.
+  **Positive control PASSED, independently reproduced live this session (not just re-quoted from the
+  docstring)**: cold-started with NO continuation bootstrap (`discover_qbcp_periodic_orbit(system,
+  rng=np.random.default_rng(0))`, just the module's own rough default center guess ~0.041 from POL1
+  and the known period `T_s`) converges in 8.9s to `residual_rms=4.86e-13`,
+  `closure_residual=3.3e-6` (confirmed with a second, independent Radau integrator: 2.45e-6) — and
+  matches this project's OWN independently-built 12-segment multiple-shooting corrector
+  (`scripts/analyze_593_qbcp_l1_substitute_reconciliation.py`, resnorm 1.13e-14) to
+  **machine-precision agreement (full 6-state diff ~5e-15)**, landing at `dist-to-POL1 = 1.805e-2`
+  (xy-only) / `2.310e-2` (full-state) from the published golden — the SAME known
+  Gimeno-2018-vs-Rosales-2023 model-instance gap `#544` already attributed to a Fourier-refit
+  difference, not a corrector defect. This is a genuine wall-crossing: the region that forces every
+  shooting corrector in this codebase through an expensive multi-stage bootstrap (or fails outright)
+  is reached directly from a plain cold start in single-digit seconds.
+  **Two real bugs found and fixed while producing the test file** (both independently reproduced
+  live, not assumed from the docstring): (1) the shipped defaults (`n_harmonics=8`, tol=1e-6,
+  8 random restarts) never actually converged — 8/8 restarts landed on the identical
+  `residual_rms=9.4e-5` floor after 236s, because 8 harmonics is too coarse a truncation for this
+  violently-unstable region: it can satisfy the collocation residual while `closure_residual` (an
+  independent real-propagation check) is still O(1) (`0.63`) — i.e. NOT a periodic orbit despite
+  "converging". Default raised to `n_harmonics=32`, which drives `closure_residual` down to
+  `~1e-6`. (2) `scipy.optimize.least_squares(method="lm")` does NOT respect `max_nfev` as a real
+  wall-clock bound on this problem — measured directly, requesting `max_nfev=100` cost 38,710 actual
+  residual calls (~390x over), which is almost certainly what caused the prior agent's 3.5h silent
+  stall. Switched to `method="trf"` (bounded to tens of seconds per attempt even for an unlucky
+  random restart, vs. `"lm"`'s effectively-open-ended cost) and reduced default `max_nfev` from
+  30000 to 1500 accordingly. Remains a stochastic method post-fix: most cold starts converge in ~9s,
+  but an occasional unlucky seed can take several minutes (observed once, still bounded, not
+  indefinite) before landing on the same answer.
+  **Explicit scope boundary (verified, not overclaimed): this does NOT solve `#538`/`#544`'s actual
+  named target**, the QBCP EM-L1/L2 invariant 2-TORUS (`genome.qbcp_torus.correct_qbcp_torus`) — a
+  genuinely quasi-periodic 2-angle family with a free rotation number and stroboscopic-map
+  invariance. This module crosses the wall for the PERIODIC ORBIT anchoring that torus family as its
+  zero-amplitude center, not the torus corrector itself; generalizing to a genuine 2D quasi-periodic
+  build is a materially larger, out-of-scope follow-up, not attempted here.
+  8 new tests (`tests/search/test_variational_periodic_orbit_qbcp.py`, includes the
+  low-harmonics-fails-closure regression + the machine-precision multi-shooting cross-check), ruff
+  clean, sibling `tests/search/test_variational_periodic_orbit.py` (untouched) still 7/7 green — all
+  independently re-run and reproduced by the coordinating session (numbers reproduce exactly). No
+  `scripts/run_*.py` created (library module + test file only), so the preflight AST ratchet does
+  not apply. No catalogue.yaml writeback — capability build + method demonstration only.
 - **#607 ✓ CLEAN NEGATIVE (2026-07-16)** — `#605` shortlist item 2: triple/quadruple small-body
   multi-moon systems — (87) Sylvia (Romulus+Remus), (130) Elektra (3 moons), (45) Eugenia, (216)
   Kleopatra, and the TNO triple Lempo-Paha-Hiisi. `#549`'s real-binary `(k1,k2)` genome does NOT
