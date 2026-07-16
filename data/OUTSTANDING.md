@@ -108,8 +108,8 @@ short list as a complete pre-#512 audit either.
 - `#316` — Cross-system cycler framework (Sun-Earth <-> Earth-Moon manifolds) — genuinely ambiguous,
   not stale: possibly redundant with the `#405`/`#411` SE<->EM heteroclinic-cycle work, but no
   explicit link exists either way. Needs a human merge/supersede-or-keep-distinct decision.
-- `#317` — PINN-based pre-filter for sweep-impossible regions — genuinely OPEN, no resolution found
-  anywhere in the file as of last check.
+- `#317` — PINN-based pre-filter for sweep-impossible regions — dispatched 2026-07-16 (scoping +
+  bounded-feasibility pass; see the task's own bullet, search `**#317**`).
 
 Long-form log of research questions, source-access gaps, parameter
 contradictions, and out-of-paradigm flags encountered while compiling
@@ -7388,8 +7388,23 @@ anywhere in the file and are genuinely still open.]**
   elsewhere in this file).
 - **#310** Single-orbit prioritizer adapter (#284 architectural gap) — **STALE, already
   resolved.** Landed elsewhere in this file ("closing the #284 architectural gap").
-- **#317** PINN-based pre-filter for sweep-impossible regions — genuinely OPEN, no resolution
-  found anywhere in the file.
+- **#317** (dispatched 2026-07-16) — PINN-based pre-filter for sweep-impossible regions. Original
+  proposal has almost no scoping detail (this bullet was previously a one-liner) — dispatched as a
+  scoping + bounded-feasibility pass, not an assumed full build: (1) work out precisely what "sweep-
+  impossible region" means in this project's actual context (are there existing sweep runs/logs that
+  distinguish "converged," "ran but found nothing," and "infeasible/degenerate region the corrector
+  never should have tried" — the `#210` outcome-log corpus already used by `#608`/`#614` may have
+  this signal); (2) scope whether a literal PINN (physics-informed neural network — normally needs
+  autodiff through both the network AND the physics residual) is even the right tool given this
+  project's established discipline of NOT adding a new heavy ML framework (torch/jax) for a bounded
+  proof of concept (see `#608`/`#614`'s own precedent: a from-scratch numpy/scipy autoencoder was
+  preferred over a new dependency) — a lighter classical pre-filter (e.g. a simple
+  classifier/regressor over cheap-to-compute problem features, not a literal PINN) may serve the same
+  practical goal without the framework cost; (3) if a bounded POC is feasible without a new heavy
+  dependency, build and test it against a real past sweep's known-infeasible vs. known-fruitful
+  regions; if not, report an honest scoping negative with a clear recommendation. A negative or a
+  "PINN isn't the right tool, here's what would work instead" verdict is a completely acceptable,
+  valuable outcome — do not force a PINN build just because the task's name says PINN.
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core) —
   **STALE, already resolved with a BETTER number.** Landed elsewhere in this file at a proven
   5.06× speedup (this line's "4-8×" was only an estimate), already reused by #343's 12.5×
