@@ -75,6 +75,69 @@ PRIMARIES: dict[str, float] = {
     # 9.755e2 km^3/s^2. The Pluto-Charon pair is a near-binary; this is the
     # Pluto+Charon SYSTEM GM. Accessed 2026-06-14.
     "Pluto": 9.755e2,
+    # --- Small-body multi-moon systems (#607, added 2026-07-16) ---
+    # GM = G*mass, G = 6.67430e-20 km^3 kg^-1 s^-2 (matches core/constants.py's
+    # _G_KM3_KG_S2, so every conversion below uses the SAME constant this
+    # project already uses elsewhere -- not a separately-chosen G).
+    #
+    # (87) Sylvia system GM: mass (1.44+/-0.01)e19 kg, DYNAMICALLY measured
+    # from the Romulus/Remus mutual orbits (Kepler III), NOT a density
+    # assumption -- Vernazza, Carry et al. (2021), A&A 654, A56, "VLT/SPHERE
+    # imaging survey of the largest main-belt asteroids: Final results and
+    # synthesis." GM = 6.67430e-20 * 1.44e19 = 0.9611 km^3/s^2.
+    # CAVEAT: Sylvia's own shape is markedly non-spherical (triaxial
+    # 374x248x194 km, Carry et al. 2021 ADAM model; shape-derived J2~0.024,
+    # Berthier et al. 2014, Icarus 239, 118, arXiv:1407.1292) vs a near-zero
+    # J2 implied by the moons' simple Keplerian orbit fits -- a documented
+    # tension (non-homogeneous internal mass distribution). Both moons orbit
+    # only ~5-10 Sylvia mean-radii out (mean radius ~136 km from the
+    # volume-equivalent diameter ~271-274 km); point-mass is used here as a
+    # first-pass approximation, NOT validated against a full multipole model.
+    "Sylvia": 0.9611,
+    # (130) Elektra system GM: mass (6.606 +0.007/-0.013)e18 kg, DYNAMICALLY
+    # fit from all 3 moons' mutual orbits -- Fuksa, Broz, Hanus, Ferrais,
+    # Fatka & Vernazza (2023), A&A 677, A189, doi:10.1051/0004-6361/202346386
+    # (ADAM shape model: 60 lightcurves + 46 AO images + 2 occultations).
+    # GM = 6.67430e-20 * 6.606e18 = 0.4409 km^3/s^2.
+    # CAVEAT: Elektra's own shape is SEVERELY non-spherical (ellipsoid
+    # 262x205x164 km, volume-equivalent diameter 201 km; shape-derived
+    # J2~0.16-0.18, same source) -- an order of magnitude larger than
+    # Sylvia's or any planet's J2. Point-mass is used here as a first-pass
+    # approximation only (same discipline as every other system in this
+    # registry); the moons orbit 5-13x Elektra's ~100 km mean radius out
+    # (comparable to or better than the Uranus-Miranda ratio, ~5.1x, which
+    # this registry already treats as point-mass), so this is not an
+    # unprecedented approximation, but it is NOT validated against Fuksa et
+    # al.'s own multipole+mutual-perturbation fit (which was required to
+    # match the moons' real orbits precisely).
+    "Elektra": 0.4409,
+    # (45) Eugenia system GM: mass (5.69+/-0.12)e18 kg, DYNAMICALLY fit from
+    # the 2-moon mutual orbit -- Beauvalet & Marchis (2014), Icarus 241, 13,
+    # "A Dynamical Solution of the Triple Asteroid System (45) Eugenia"
+    # follow-up (refines Marchis et al. 2010, Icarus 210, 635,
+    # arXiv:1008.2164). GM = 6.67430e-20 * 5.69e18 = 0.3800 km^3/s^2.
+    # CAVEAT: this is the SYSTEM mass (Eugenia + both moons); the moons'
+    # individual masses are explicitly stated by Beauvalet & Marchis (2014)
+    # to be too small to be constrained by the astrometry, so they are a
+    # negligible fraction of this GM (consistent with every other primary in
+    # this registry, where PRIMARIES values are system GMs).
+    "Eugenia": 0.3800,
+    # (216) Kleopatra GM: mass (2.97+/-0.32)e18 kg, from the 2-moon mutual
+    # orbit multipole fit -- Marchis & Yang et al. (2021), A&A 653, A57,
+    # "(216) Kleopatra, a low density critically rotating M-type asteroid"
+    # (arXiv:2108.07207); supersedes the older Descamps et al. (2011,
+    # arXiv:1011.5263) mass (4.64e18 kg), ~36% higher, now revised down.
+    # GM = 6.67430e-20 * 2.97e18 = 0.19825 km^3/s^2.
+    # CAVEAT (the #607 dogbone check): Kleopatra's shape is famously
+    # bilobate/"dog-bone" (~270x94x78 km, Shepard et al. 2018, Icarus 311,
+    # 197; Broz et al. 2021 companion multipole paper). The moons orbit at
+    # only 1.8-2.4x Kleopatra's own half-length (~135 km) -- Broz et al.
+    # (2021) needed a multipole expansion to l=10 to match their orbits
+    # precisely. Point-mass is used here as a coarse first-pass screening
+    # approximation ONLY, per this task's explicit scope; a real J2/C22
+    # correction is NOT implemented (flagged as a known limitation, not
+    # silently assumed valid).
+    "Kleopatra": 0.19825,
 }
 
 
@@ -240,4 +303,103 @@ SATELLITES: dict[str, SatelliteData] = {
     # 2026-06-14. GM 0.37049 km^3/s^2, mean R 135.0 km, a 1481500 km (small
     # chaotic-rotation moon; screen self-prunes).
     "Hyperion": _sat("Hyperion", "Saturn", 0.37049, 135.0, 1481500.0, 10.0),
+    # --- Small-body multi-moon systems (#607, added 2026-07-16) ---
+    # safe_alt_km = 10 km for every moon below: the SAME engineering-default
+    # convention already used for Phobos/Deimos/Amalthea/Hyperion/Nix/Hydra
+    # (mean radius < ~140 km) -- NOT a sourced design floor, a stated
+    # convention (see the module-level CAVEAT note above SATELLITES). Every
+    # GM below is DERIVED (mass * G), not copied from a paper's own "GM"
+    # figure -- no source publishes these small-body moons' GM directly.
+    #
+    # (87) Sylvia's moons -- Fang, Margot & Rojo (2012), AJ 144, 70,
+    # "Orbits, masses, and evolution of main belt triple (87) Sylvia"
+    # (arXiv:1206.5755): individual moon masses from mutual-perturbation
+    # dynamics (a REAL measurement, not a density assumption), though with
+    # large (order-100%) asymmetric uncertainties -- the weakest-sourced
+    # numbers in this addition. sma from the more recent Vernazza, Carry et
+    # al. (2021) VLT/SPHERE fit (A&A 654, A56).
+    # Romulus (outer): mass 9.32e14 kg -> GM=6.220e-5 km^3/s^2; mean radius
+    # 11.55 km (diameter 23.1+/-0.7 km, Berthier et al. 2014, Icarus 239,
+    # 118, itself notably elongated 38.0x14.0 km -- a single mean radius is
+    # a simplification); a=1340.6+/-0.4 km, e~0 (near-circular).
+    "Romulus": _sat("Romulus", "Sylvia", 6.220e-5, 11.55, 1340.6, 10.0),
+    # Remus (inner): mass 7.33e14 kg -> GM=4.893e-5 km^3/s^2; mean radius
+    # 3.5 km (diameter ~7+/-2 km, Marchis et al. 2005, Nature 436, 822 --
+    # NO updated size measurement found post-2005, the weakest-sourced size
+    # in this addition); a=694.2+/-0.1 km, e~0.005 (near-circular).
+    "Remus": _sat("Remus", "Sylvia", 4.893e-5, 3.5, 694.2, 10.0),
+    #
+    # (130) Elektra's moons -- NONE has a published individual GM (Fuksa et
+    # al. 2023 give only rough system-mass-fraction estimates, not measured
+    # GMs); masses below are ASSUMED-DENSITY estimates (Elektra's own fitted
+    # bulk density, 1.536 g/cm^3, same source) from each moon's photometric
+    # (albedo-assumed) diameter -- flagged explicitly, matching the
+    # #549 Didymos-Dimorphos precedent for an assumed-density-derived mass.
+    # No official IAU names exist for any of the 3 -- "Beta"/"Gamma"/"Delta"
+    # are the informal press/paper labels (Fuksa et al. 2023), NOT adopted
+    # designations; prefixed here to avoid any future registry collision.
+    # ElektraBeta (S/2003 (130) 1, outermost, largest, discovered Merline et
+    # al. 2003, IAUC 8183): diameter 6.0+/-0.6 km -> mean radius 3.0 km,
+    # assumed-density mass ~1.737e14 kg -> GM=1.160e-5 km^3/s^2; a=1297.58+/-
+    # 0.54 km, P=5.287d (Kepler-III self-check at this a/mu gives 5.12 d,
+    # ~3.3% off -- larger than every other moon in this addition, plausibly
+    # real given Elektra's severe J2 and this moon's own e=0.0835,
+    # Fuksa et al. 2023).
+    "ElektraBeta": _sat("ElektraBeta", "Elektra", 1.160e-5, 3.0, 1297.58, 10.0),
+    # ElektraGamma (S/2014 (130) 1, discovered Yang et al., reported Hanus et
+    # al. 2017, arXiv:1611.03632): diameter 2.0+/-0.4 km -> mean radius
+    # 1.0 km, assumed-density mass ~6.434e12 kg -> GM=4.295e-7 km^3/s^2;
+    # a=501+/-7 km (discovery value; Kepler-III self-check against the
+    # Fuksa et al. 2023 revised P~1.212 d gives 1.228 d, ~1.3% agreement).
+    "ElektraGamma": _sat("ElektraGamma", "Elektra", 4.295e-7, 1.0, 501.0, 10.0),
+    # ElektraDelta (S/2014 (130) 2, discovered Berdeu, Langlois & Vachier
+    # 2022, A&A 658, L4; discovery orbit found DYNAMICALLY UNSTABLE against
+    # Elektra's real gravity field by Valvano et al. 2023, MNRAS 522, 6196,
+    # arXiv:2304.14967): diameter 1.6+/-0.4 km -> mean radius 0.8 km,
+    # assumed-density mass ~3.294e12 kg -> GM=2.199e-7 km^3/s^2. sma is
+    # BACK-DERIVED via Kepler III (a=(GM_Elektra*P^2/(4*pi^2))^(1/3)) from
+    # Fuksa et al. (2023)'s own revised period P=1.642112 d -- their revised
+    # semi-major axis could not be extracted from the paper (table not
+    # machine-readable via the fetch tool used); this is NOT an independent
+    # cross-check, it is definitionally self-consistent by construction.
+    # Sanity check: 608.1 km falls between ElektraGamma (501 km) and
+    # ElektraBeta (1297.58 km), consistent with Fuksa et al.'s own statement
+    # that the revised period reorders Delta as the middle moon by period.
+    "ElektraDelta": _sat("ElektraDelta", "Elektra", 2.199e-7, 0.8, 608.1, 10.0),
+    #
+    # (45) Eugenia's moons -- Beauvalet & Marchis (2014) state both moons'
+    # individual masses are too small to be constrained by the astrometry;
+    # masses below are ASSUMED-DENSITY estimates (Eugenia's own fitted bulk
+    # density, 1.69 g/cm^3, same source) from each moon's diameter.
+    # PetitPrince (Merline et al. 1999, Nature 401, 565 -- the original
+    # discovery, S/1998 (45) 1): diameter ~7+/-2 km -> mean radius 3.5 km,
+    # assumed-density mass ~3.035e14 kg -> GM=2.026e-5 km^3/s^2;
+    # a=1164.4 km (Beauvalet & Marchis 2014 refined fit), e~0.002-0.01
+    # (near-circular).
+    "PetitPrince": _sat("PetitPrince", "Eugenia", 2.026e-5, 3.5, 1164.4, 10.0),
+    # EugeniaS2 (S/2004 (45) 1, Marchis et al. 2007, IAUC 8817 -- CONFIRMED
+    # per JPL SBDB's satellite list, not a retracted candidate; re-fit by
+    # Marchis et al. 2010, Icarus 210, 635, arXiv:1008.2164): diameter
+    # ~5+/-1 km -> mean radius 2.5 km, assumed-density mass ~1.106e14 kg ->
+    # GM=7.383e-6 km^3/s^2; a=610.7 km (midpoint of the 610.6-610.8 km
+    # range across cited fits), e~0.07-0.11 (the least circular orbit in
+    # this addition besides ElektraBeta/Delta).
+    "EugeniaS2": _sat("EugeniaS2", "Eugenia", 7.383e-6, 2.5, 610.7, 10.0),
+    #
+    # (216) Kleopatra's moons -- Marchis & Brox et al. (2021) companion
+    # multipole paper, A&A, "An advanced multipole model for (216)
+    # Kleopatra triple system": neither moon's GM is independently measured
+    # (both too small to perturb each other or Kleopatra detectably); masses
+    # below are ASSUMED-DENSITY estimates from that paper's own diameter +
+    # density-model figures, flagged explicitly there as model-dependent.
+    # AlexHelios (inner): diameter ~6.9 km -> mean radius 3.45 km, assumed
+    # mass ~4e14 kg (assumed density ~2300 kg/m^3) -> GM=2.670e-5 km^3/s^2;
+    # a=499 km, P=1.822359+/-0.004156 d, e~0 (circular, equatorial,
+    # prograde) -- Kepler-III self-check gives 1.820 d, matches to <0.2%.
+    "AlexHelios": _sat("AlexHelios", "Kleopatra", 2.670e-5, 3.45, 499.0, 10.0),
+    # CleoSelene (outer): diameter ~8.9 km -> mean radius 4.45 km, assumed
+    # mass ~6e14 kg (assumed density ~1600 kg/m^3) -> GM=4.005e-5 km^3/s^2;
+    # a=655 km, P=2.745820+/-0.004820 d, e~0 (circular, equatorial,
+    # prograde) -- Kepler-III self-check gives 2.738 d, matches to <0.3%.
+    "CleoSelene": _sat("CleoSelene", "Kleopatra", 4.005e-5, 4.45, 655.0, 10.0),
 }
