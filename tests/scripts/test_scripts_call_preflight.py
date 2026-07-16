@@ -84,6 +84,20 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # discovery sweep. Visible, reviewed exemption per this file's own
         # docstring.
         "run_608_generative_seed_poc.py",
+        # #614: a bounded family-tagging + nonlinear-encoder COMPARISON against
+        # #608's existing baseline (same corpus/split/evaluation pipeline) --
+        # same category as #608 above: a fixed-N capability comparison with no
+        # region_id/n_points to preflight, not a catalogue-region discovery
+        # sweep. Visible, reviewed exemption per this file's own docstring.
+        "run_614_family_and_nonlinear_poc.py",
+        # #317: a scoping/capability-negative INVESTIGATION (does #317's own
+        # real corpus + real sweep-summary records show a learned pre-filter
+        # is warranted?), not a catalogue-region discovery sweep -- same
+        # category as #606/#608 above: it re-reads existing outcome logs and
+        # existing sweep-summary files, with no region_id/n_points to
+        # preflight. Visible, reviewed exemption per this file's own
+        # docstring.
+        "run_317_prefilter_scoping.py",
     }
 )
 
