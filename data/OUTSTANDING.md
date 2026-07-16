@@ -4163,13 +4163,38 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   published abstract. De-risks/unblocks the parked `#542` learned-seed idea and the open `#317` PINN
   pre-filter idea; consider whether this should supersede either rather than being a third parallel
   approach.
-- **#609** (P1, new capability, not yet dispatched) — `#605` shortlist item 4: hierarchical
-  "cycler-of-cyclers" — phase-match a heliocentric cycler's planetary encounters to a moon-system
-  cycler at the target (commensurability between the synodic super-period and the moon-cycler
-  period). All lower-level ingredients already exist (`cross_system_cycle`, phase-match/endgame
-  machinery); the new piece is the composition constraint itself. Cheapest pilot: Mars Phobos-Deimos
-  (never swept — a genuine roster gap, Russell-Strange 2009 methodology applies directly) as the
-  target moon-cycler for an existing Earth-Mars heliocentric cycler.
+- **#609** (P1, new capability) — `#605` shortlist item 4: hierarchical "cycler-of-cyclers" —
+  phase-match a heliocentric cycler's planetary encounters to a moon-system cycler at the target
+  (commensurability between the synodic super-period and the moon-cycler period). All lower-level
+  ingredients already exist (`cross_system_cycle`, phase-match/endgame machinery); the new piece is
+  the composition constraint itself. Cheapest pilot: Mars Phobos-Deimos (never swept — a genuine
+  roster gap, Russell-Strange 2009 methodology applies directly) as the target moon-cycler for an
+  existing Earth-Mars heliocentric cycler.
+  **STEP 1 CLOSED (2026-07-16): CLEAN NEGATIVE, pilot cannot proceed to the phase-matching step.**
+  Ran the already-genericized `#563`/`#575`/`#599` direct symmetric-closure enumeration
+  (`scripts/enumerate_563_symmetric_closures.py --primary Mars --moons Phobos,Deimos`) at Mars for
+  the first time — Mars GM (4.282837521e4 km^3/s^2) and Phobos/Deimos GM/radius/sma
+  (`core/satellites.py`, JPL SSD MAR097-sourced, already present pre-task) were verified, not
+  assumed. Result: 0/512 candidates (both directions, Phobos-anchor and Deimos-anchor) pass ALL
+  gates. 52/512 clear the residual-closure gate alone (both moons orbit so close together, T_syn =
+  0.427 d, that the kinematic Lambert closure is essentially exact, residual ~1e-13-1e-15 km/s) but
+  EVERY one fails the two-sided `#324` physical max-bend gate: the flyby moon's own achievable bend
+  tops out at 0.0159 deg across all 52 sub-gate survivors, ~300x under the
+  `DEFAULT_MIN_USEFUL_BEND_DEG=5.0` deg floor. Same failure mode as `#571`
+  (Saturn-Titan-small-moons) and `#599` (Neptune-Triton-Proteus), but here BOTH bodies in the pair
+  are individually undersized (Phobos GM 7.087e-4, Deimos GM 9.62e-5 km^3/s^2) — `core/satellites.py`
+  itself already flagged both as making "poor gravity-assist / cycler bodies" (pre-existing sourcing
+  note), now confirmed quantitatively. Checked `data/catalogue.yaml` (no Phobos/Deimos rows exist)
+  and `literature_check.py`'s own Wallace Mars-Phobos CR3BP-rendezvous `CorpusAnchor` (which already
+  notes no published Sun-Mars-Phobos BCR4BP or repeated-flyby cycler study exists) — no prior
+  published or catalogued Phobos-Deimos moon-cycler either. **Consequence: with no gate-passing
+  moon-cycler to compose with, step 2 (phase-matching a catalogued Earth-Mars heliocentric cycler's
+  Mars-arrival epoch against the moon-cycler's own period) cannot be attempted — there is nothing to
+  phase-match against.** This is the `#609` deliverable itself, a legitimate bounded negative, not a
+  partial result. `data/empty_regions.jsonl` stamped (`mars-phobos-deimos-symmetric-closure-609-
+  2026-07-16`); raw sweep data at `data/enumerate_609_mars_phobos_deimos_symmetric_closures.jsonl`;
+  one-shot writer `scripts/_apply_609_mars_phobos_deimos_empty_region.py`. No catalogue.yaml edit,
+  no commit (left for the coordinating session to review).
 - **#610** (P2, speculative, not yet dispatched) — `#605` shortlist item 5: certified non-existence
   via interval arithmetic (interval Newton / Conley-index-style exclusion tests) over a compact
   phase-space region, upgrading an `empty_regions.jsonl` entry from "conditional on method" (the
