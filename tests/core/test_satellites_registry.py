@@ -21,8 +21,24 @@ _MARTIAN = ("Phobos", "Deimos")
 _URANIAN = ("Miranda", "Ariel", "Umbriel", "Titania", "Oberon")
 _NEPTUNIAN = ("Triton", "Proteus")
 _PLUTONIAN = ("Charon", "Nix", "Hydra")
+# Small-body multi-moon systems (#607).
+_SYLVIAN = ("Romulus", "Remus")
+_ELEKTRAN = ("ElektraBeta", "ElektraGamma", "ElektraDelta")
+_EUGENIAN = ("PetitPrince", "EugeniaS2")
+_KLEOPATRAN = ("AlexHelios", "CleoSelene")
 
-_ALL_MOONS = _GALILEAN + _SATURNIAN + _MARTIAN + _URANIAN + _NEPTUNIAN + _PLUTONIAN
+_ALL_MOONS = (
+    _GALILEAN
+    + _SATURNIAN
+    + _MARTIAN
+    + _URANIAN
+    + _NEPTUNIAN
+    + _PLUTONIAN
+    + _SYLVIAN
+    + _ELEKTRAN
+    + _EUGENIAN
+    + _KLEOPATRAN
+)
 
 # Each system's full expected moon set (what _registry_moons_for(primary) returns).
 # Drives the "system enumerates ONLY its own moons" invariant below.
@@ -34,6 +50,10 @@ _SYSTEM_MOONS: dict[str, frozenset[str]] = {
     "Uranus": frozenset(_URANIAN),
     "Neptune": frozenset(_NEPTUNIAN),
     "Pluto": frozenset(_PLUTONIAN),
+    "Sylvia": frozenset(_SYLVIAN),
+    "Elektra": frozenset(_ELEKTRAN),
+    "Eugenia": frozenset(_EUGENIAN),
+    "Kleopatra": frozenset(_KLEOPATRAN),
 }
 
 

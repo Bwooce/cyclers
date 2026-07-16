@@ -4148,13 +4148,33 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   harmonic-balance/collocation approach generalizes to the QBCP equations of motion
   (`core/qbcp.py`) by simply swapping the EOM residual function, or needs real adaptation. Positive
   control first (reproduce a KNOWN QBCP/BCR4BP periodic structure cold), per standing discipline.
-- **#607** (P1, new discovery targets, not yet dispatched) — `#605` shortlist item 2: triple/
-  quadruple small-body multi-moon systems — (87) Sylvia (Romulus+Remus), (130) Elektra (3 moons),
-  (45) Eugenia, (216) Kleopatra, and the TNO triple Lempo-Paha-Hiisi. Zero published cycler-analogue
-  record per `#605`'s search. Mostly existing-tool reuse (`#549`'s real-binary genome pattern); needs
-  a J2/polyhedron perturbation term for irregular primaries (Kleopatra's "dogbone" shape breaks
-  point-mass fidelity) — real but bounded new infra. Moon masses are poorly constrained for several
-  of these; source every mass/GM used, don't assume.
+- **#607 ✓ CLEAN NEGATIVE (2026-07-16)** — `#605` shortlist item 2: triple/quadruple small-body
+  multi-moon systems — (87) Sylvia (Romulus+Remus), (130) Elektra (3 moons), (45) Eugenia, (216)
+  Kleopatra, and the TNO triple Lempo-Paha-Hiisi. `#549`'s real-binary `(k1,k2)` genome does NOT
+  generalize (fixed two-primary construction, no room for a 3rd gravitating body); reused `#563`'s
+  2-moon and `#600`'s 3-moon-chain symmetric-closure construction verbatim instead (both already
+  genericized). **Lempo-Paha-Hiisi excluded structurally**: Lempo:Hiisi mass ratio ~1.27:1, a genuine
+  near-equal-mass binary, not primary+test-particle-moon — violates this method's core assumption.
+  New satellite registry entries added to `src/cyclerfinder/core/satellites.py` (Sylvia/Elektra/
+  Eugenia/Kleopatra + their moons), every GM/mass sourced to a specific paper (Vernazza/Carry 2021,
+  Fuksa et al. 2023, Beauvalet & Marchis 2014, Marchis & Yang 2021, Fang/Margot/Rojo 2012, etc.),
+  with explicit caveats where a moon's mass is assumed-density rather than dynamically measured, and
+  Kepler-III self-consistency checks run against each sourced period (all matched to <3.5%).
+  Independently spot-checked by the coordinating session: every GM = mass × G arithmetic conversion
+  and the ElektraBeta Kepler-III self-check (predicted 5.12 d vs. sourced 5.287 d) reproduce exactly.
+  **Result**: 0/97,664 candidates pass all gates across the 4 included systems (Sylvia, Eugenia,
+  Kleopatra: 2-moon, 384/384/128 evaluated; Elektra: all 6 ordered 3-moon-chain permutations, 96,768
+  evaluated) — confirmed via the run's own `_meta` summary record. Diagnosed directly (not assumed):
+  spot-checked every sub-residual-gate candidate for Sylvia (70/70) and Kleopatra (30/30) — 100% fail
+  the physical `#324` bend gate (0.1-8° achievable vs. the required ≥5°), 0% fail an independent
+  DOP853 cross-check (construction is numerically sound). Same mass-limited failure mode already on
+  record for Jupiter's Amalthea and Neptune's Triton — these moons' GMs (1e-7 to 6e-5 km³/s²) are too
+  small to bend a spacecraft at the system's natural ~10-50 m/s velocity scale. Registered as
+  `empty_regions.jsonl` region `smallbody-multimoon-symmetric-closure-mass-limited-607-2026-07-16`,
+  validated via `validate_empty_region()`. New tests: `tests/core/test_satellites_registry.py`
+  (registry coverage/consistency extended to the 4 new systems) + `tests/scripts/
+  test_enumerate_607_smallbody_multimoon_symmetric_closures.py` (7 tests) — all pass, ruff clean. No
+  catalogue.yaml edit.
 - **#608 ✓ BOUNDED POC BUILT (2026-07-16)** — `#605` shortlist item 3: generative ML seed model
   trained on this project's own corrector-outcome logs, testing the `#542`/`#317` idea externally
   de-risked by Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho, "Generation of periodic orbits in
