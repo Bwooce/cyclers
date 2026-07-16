@@ -76,6 +76,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # documented wall), so the gate does not apply. Visible, reviewed
         # exemption per this file's own docstring.
         "run_606_variational_pilot.py",
+        # #608: a bounded generative-seed-model PROOF OF CONCEPT (train on the
+        # existing #210 outcome-log corpus, generate N=100 candidates, refine
+        # with the existing corrector, compare vs. a uniform-random baseline)
+        # -- same category as #606 above: a fixed-N capability demonstration
+        # with no region_id/n_points to preflight, not a catalogue-region
+        # discovery sweep. Visible, reviewed exemption per this file's own
+        # docstring.
+        "run_608_generative_seed_poc.py",
     }
 )
 
