@@ -4404,6 +4404,32 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   frequency normalisation convention; the paper publishes no ICs to disambiguate. Did NOT wire into
   the `#522` linking-number screen (no genuine frequency-matched-at-both-ends pair exists to screen)
   and NO catalogue writeback (characterisation, not discovery), per this task's scoping.
+  **ADDENDUM (2026-07-16, coordinating-session literature follow-up) — found a real mechanism for the
+  "differing convention" hypothesis, but it does not close the gap.** Read Olikara's 2010 Purdue MS
+  thesis directly (`engineering.purdue.edu/.../2010_Olikara.pdf`) — the exact foundational GMOS
+  reference both this codebase's `qp_tori.py` and Owen & Baresi cite as reused "unmodified." §3.3.2/
+  §4.3 state explicitly: a torus's frequency vector ω=(ω1,ω2) is unique only up to ANY unimodular
+  (determinant ±1) integer-matrix transformation — different choices correspond to different but
+  EQUALLY VALID parameterizations of the identical physical quasi-periodic flow (worked example:
+  ω2 = α/T1 where cos α + i sin α is a monodromy eigenvalue, and any α₀+2πk, k∈Z, is an equally
+  valid choice). This is a genuine, sourced structural reason two independent implementations could
+  legitimately report different-looking "rotation numbers" for the SAME physical torus — not
+  previously considered in this chain. **However**: an exhaustive search over small-integer
+  unimodular Möbius transforms rho' = (r+s·rho)/(p+q·rho), |p|,|q|,|r|,|s| ≤ 6, finds NO match
+  reconciling our computed L1 value (~0.075/~0.066) with O&B's 0.2739 — matches only appear at
+  |coefficients| up to 11, which reads as numerical coincidence in a large search space rather than a
+  genuine simple convention difference. Also noted: Olikara's own thesis never demonstrates an L1
+  quasi-halo worked example at all (only L2, at C=3.132 and C=3.038) — a small but consistent data
+  point that L1 is the more idiosyncratic case throughout this whole saga. Separately checked for a
+  companion/follow-up paper with more detail: Baresi & Owen have a real, active follow-up (`"Detection
+  and Continuation of Heteroclinic Connections in the CRTBP"`, Geometry Space Surrey Workshop, June
+  2026 — confirmed genuine via the workshop's own report PDF) extending exactly this kind of
+  cross-family/energy mapping, but it is a forward-looking talk abstract with zero technical numbers
+  — confirms this is still an open problem for the ORIGINAL authors too, not something already
+  published. **Net effect: refines but does not resolve** the "differing convention" verdict above —
+  the mechanism is now concrete and sourced, not just a guess, but the exact reconciling transform (if
+  one exists) remains unfound. The only remaining lever is asking the authors directly for their
+  orbit ICs/exact frequency convention (not yet done, requires explicit user sign-off to send).
   **New module** `src/cyclerfinder/search/qp_torus_fixed_jacobi_continuation.py`
   (`torus_jacobi_and_gradient`, `continue_qp_torus_fixed_jacobi`, `halo_family_rotation_profile`);
   `variational_qp_torus.py`, `halo_family_at_jacobi.py`, `nrho_continuation.py` all reused UNCHANGED
