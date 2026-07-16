@@ -4315,23 +4315,41 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   coordinating-session review. **Recommended model (if any further O&B work is ever authorized):**
   Opus — any attempt to force a genuine (non-degenerate) off-natural-frequency torus, if ever
   revisited, is trust-bearing numerical-methods judgment, not spec-complete productization.
-- **#614** (dispatched 2026-07-16, `#608` follow-up) — `#608`'s own honest verdict flagged two
-  concrete next steps that were not yet scoped as their own task numbers (see `#542`'s reconciled
-  bullet): (1) tag provenance/family per training record in the `#210` outcome-log corpus (the
-  current 54,165-orbit corpus has only primary/secondary, no family label, so the model cannot be
-  conditioned/stratified by family); (2) test whether a nonlinear model (kernel PCA / shallow
-  autoencoder, still no new heavy dependency) tracks the true curved family manifolds more tightly
-  than the linear PCA model, which `#608` found lands in physically-plausible "gaps" BETWEEN
-  families rather than on them (evidenced by generated candidates' large median nearest-neighbor
-  distance, ~40x a real orbit pair's typical spacing). Do both: label the corpus first (even a
-  cheap heuristic family tag — e.g. cluster by Jacobi/period/z-amplitude bands, or reuse an
-  existing family-classification helper if one exists in this codebase — is more informative than
-  none), then re-fit and compare a nonlinear model against `#608`'s existing linear baseline on the
-  SAME held-out reconstruction + generate-then-refine metrics `#608` already established, so the
-  comparison is apples-to-apples. A negative (nonlinear model doesn't help, or family-tagging
-  doesn't change the picture) is an acceptable, informative result — report honestly either way.
-  **Recommended model: Sonnet** (spec-complete extension of `#608`'s already-validated
-  methodology, not open-ended research).
+- **#614 ✓ FAMILY-TAG + NONLINEAR-ENCODER COMPARISON DONE (2026-07-16)** — `#608` follow-up: tested
+  both of `#608`'s own flagged limitations against the EXACT SAME corpus/split/evaluation pipeline
+  `#608` built (`assemble_corpus`, `correct_periodic` refinement, `is_physically_sane`,
+  `nearest_neighbor_distances`; reproduced `#608`'s 49%-vs-4%/12.25x headline bit-for-bit first, as
+  the regression floor). **(1) Family-tagging**: confirmed no existing halo/Lyapunov/DRO/NRHO
+  classifier for an arbitrary `(state0, period, jacobi)` genome exists anywhere in
+  `src/cyclerfinder/search/` or `genome/` (only sourced literature *anchors* for specific known
+  families, or family-switching/continuation machinery — neither classifies an arbitrary
+  already-converged orbit). Added `heuristic_family_tag` (Jacobi-band x log-period-band x
+  z0-sign/deadband; 21 distinct tags over the 54,165-orbit corpus), explicitly documented as a cheap
+  heuristic PROXY, not a validated classification. **(2) Nonlinear encoder**: built a from-scratch
+  numpy/scipy shallow autoencoder (`fit_autoencoder`: L-BFGS-B + hand-derived analytic backprop, no
+  new dependency — kernel PCA was rejected because this project has no sklearn dependency AND kernel
+  PCA has no natural decoder for generation, the "pre-image problem") as `#608`'s flagged linear-PCA
+  alternative. **Results** (`scripts/run_614_family_and_nonlinear_poc.py`,
+  `data/found/614_family_and_nonlinear_poc/`): reconstruction MSE (standardized, train set) — the
+  autoencoder is genuinely tighter, 0.49 vs. linear PCA's 1.83 (~3.7x lower), confirming `#608`'s
+  suspicion that the linear encoder doesn't tightly track the curved manifold. **But neither
+  downstream hypothesis was confirmed**: generate-then-refine physically-sane rate was
+  linear+k-means (baseline) 48%, linear+family-tag 54%, nonlinear-autoencoder+k-means 45% (all
+  ~11-13x over the 4% uniform baseline, matching `#608`'s order of magnitude) — but a two-proportion
+  z-test shows NEITHER new variant differs from the linear+k-means baseline at conventional
+  significance (family-tag p=0.40, autoencoder p=0.67, n=100 each). Novelty (median NN distance) is
+  essentially UNCHANGED across all three (40.55/40.55/40.55 standardized units): the autoencoder's
+  much better RECONSTRUCTION of real points does not transfer to reduced "landing in gaps between
+  families" for freely SAMPLED latent points, since generation still draws from a per-cluster
+  Gaussian in latent space regardless of encoder linearity. **Honest verdict**: both `#608`-flagged
+  next steps were built and tested exactly per spec; NEITHER measurably improves the existing
+  linear/k-means baseline at this corpus size — a clean, informative negative, matching `#608`'s own
+  "don't jump to a production pipeline" caution. `src/cyclerfinder/ml/orbit_generative.py` gained
+  `heuristic_family_tag`, `OrbitCorpus.family_tags`, `fit_family_conditioned_gaussian`,
+  `AutoencoderModel`/`fit_autoencoder`, `AutoencoderClusteredGaussianModel`/
+  `fit_autoencoder_clustered_gaussian` (all additive; `#608`'s existing API/tests untouched and still
+  pass). `tests/ml/test_orbit_generative.py`: 15/15 pass (8 original + 7 new). Left uncommitted for
+  review per this session's convention.
 - **#615** (dispatched 2026-07-16, `#613` follow-up, motivated by a direct re-read of the source
   paper) — two new, untested hypotheses for the `#548`-`#613` Owen & Baresi non-reproduction, found
   by reading `owen-baresi-2024-knot-theory-heteroclinic-connections-quasiperiodic-orbits-astrodynamics-
