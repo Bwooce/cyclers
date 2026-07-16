@@ -108,8 +108,10 @@ short list as a complete pre-#512 audit either.
 - `#316` — Cross-system cycler framework (Sun-Earth <-> Earth-Moon manifolds) — genuinely ambiguous,
   not stale: possibly redundant with the `#405`/`#411` SE<->EM heteroclinic-cycle work, but no
   explicit link exists either way. Needs a human merge/supersede-or-keep-distinct decision.
-- `#317` — PINN-based pre-filter for sweep-impossible regions — dispatched 2026-07-16 (scoping +
-  bounded-feasibility pass; see the task's own bullet, search `**#317**`).
+- `#317` — PINN-based pre-filter for sweep-impossible regions — **CLOSED, scoped negative
+  (2026-07-16)**: both investigated regimes (existing closed-form Lambert/bend gates; blind CR3BP
+  correction) show no room/no learnable signal for a pre-filter; no PINN or learned pre-filter
+  built for production use (see the task's own bullet, search `**#317**`).
 
 Long-form log of research questions, source-access gaps, parameter
 contradictions, and out-of-paradigm flags encountered while compiling
@@ -7388,23 +7390,47 @@ anywhere in the file and are genuinely still open.]**
   elsewhere in this file).
 - **#310** Single-orbit prioritizer adapter (#284 architectural gap) — **STALE, already
   resolved.** Landed elsewhere in this file ("closing the #284 architectural gap").
-- **#317** (dispatched 2026-07-16) — PINN-based pre-filter for sweep-impossible regions. Original
-  proposal has almost no scoping detail (this bullet was previously a one-liner) — dispatched as a
-  scoping + bounded-feasibility pass, not an assumed full build: (1) work out precisely what "sweep-
-  impossible region" means in this project's actual context (are there existing sweep runs/logs that
-  distinguish "converged," "ran but found nothing," and "infeasible/degenerate region the corrector
-  never should have tried" — the `#210` outcome-log corpus already used by `#608`/`#614` may have
-  this signal); (2) scope whether a literal PINN (physics-informed neural network — normally needs
-  autodiff through both the network AND the physics residual) is even the right tool given this
-  project's established discipline of NOT adding a new heavy ML framework (torch/jax) for a bounded
-  proof of concept (see `#608`/`#614`'s own precedent: a from-scratch numpy/scipy autoencoder was
-  preferred over a new dependency) — a lighter classical pre-filter (e.g. a simple
-  classifier/regressor over cheap-to-compute problem features, not a literal PINN) may serve the same
-  practical goal without the framework cost; (3) if a bounded POC is feasible without a new heavy
-  dependency, build and test it against a real past sweep's known-infeasible vs. known-fruitful
-  regions; if not, report an honest scoping negative with a clear recommendation. A negative or a
-  "PINN isn't the right tool, here's what would work instead" verdict is a completely acceptable,
-  valuable outcome — do not force a PINN build just because the task's name says PINN.
+- **#317 ✓ SCOPED, CLOSED NEGATIVE (2026-07-16)** — PINN-based pre-filter for sweep-impossible
+  regions. Two concrete "sweep-impossible region" regimes exist in this codebase, investigated on
+  REAL data (not synthetic), and both gave clean, evidence-backed negatives — no PINN, no learned
+  pre-filter built for production use. (1) **Lambert/resonance-construction sweeps**
+  (`scripts/enumerate_563/575/576/599/600/607/609_*_symmetric_closures.py` and their `scan_558`
+  ancestor) already have a fast, EXACT, closed-form two-layer physical gate (Lambert-solution
+  existence, then the `#324` bend gate) — aggregating each sweep's own `direction_summary`/
+  `sequence_summary` records shows the cheap gate alone rejects 70-87% of every evaluated candidate
+  for free, and of the ~8-11% that reaches the expensive bend+DOP853 step, the sweeps that found
+  ANY real closure (#563/#575/#576) show a healthy ~25% hit rate in that remaining pool — exactly
+  where the real discoveries live, not further junk to prune (the confirmed-zero-hit sweeps, #600/
+  #607, are diagnosed per-SYSTEM physical limits, e.g. #607's mass-limited moons, already caught by
+  the SAME closed-form bend gate, not a pattern needing a classifier). A learned pre-filter here
+  cannot beat gates that are already exact and effectively free, and pruning the fruitful pool
+  further risks discarding real hits. (2) **Blind CR3BP periodic-orbit correction**
+  (`scripts/search_campaign_daemon.py` Phase B, the dominant contributor to the `#210` outcome log)
+  has NO existing pre-gate at all — a JPL seed is perturbed and fed straight to
+  `cr3bp_periodic.correct_periodic` (~150-250 ms/call, measured ~1.9e5x the cost of the cheapest
+  candidate feature) with ~63% non-convergence. This IS the regime `#317` was written for, and it
+  was tested directly: a from-scratch numpy/scipy logistic regression (`fit_logistic_prefilter` in
+  new module `src/cyclerfinder/ml/sweep_prefilter_scoping.py`) trained on cheap pre-corrector
+  features (guess Jacobi constant, period, primary/secondary proximities, out-of-plane amplitude)
+  extracted from the real `out/outcome_log/search_campaign_w*.jsonl` corpus (531,811 rows) achieves
+  only AUC 0.669 and 65.9% held-out accuracy vs. a 63.1% majority baseline — and at any recall level
+  safe enough for a program that treats real hits as precious (this project's own "Novel hits are
+  RARE"), the achievable compute savings is negligible: skip only 0.07% of doomed calls at 99.9%
+  recall, 1.4% at 99% recall, 11.7% even at a risky 95% recall. A PINN specifically means a network
+  trained with a differential-equation-residual loss term via autodiff — nothing here needs that;
+  a plain classifier over physically-meaningful features is the right-tool test, and it already
+  shows the available signal is too weak to justify building (let alone maintaining) any learned
+  pre-filter, literal-PINN or otherwise. **Verdict: close #317** — do not revisit unless a genuinely
+  NEW sweep type emerges that (a) has no existing closed-form gate, (b) has an expensive solver, AND
+  (c) shows a much stronger cheap-feature/outcome correlation than measured here. Built (bounded, all
+  new files, nothing else touched): `src/cyclerfinder/ml/sweep_prefilter_scoping.py` (feature
+  extraction, logistic-regression fit, recall/skip-table, gate-efficiency aggregation — all reusable
+  for a future re-scoping), `tests/ml/test_sweep_prefilter_scoping.py` (11 tests, small constructed
+  fixtures per house style, code-correctness only), `scripts/run_317_prefilter_scoping.py`
+  (reproduces the real-corpus numbers above; exempted in `tests/scripts/test_scripts_call_preflight.py`
+  same category as `#606`/`#608`, no region_id/n_points to preflight), report at
+  `data/found/317_prefilter_scoping/summary.json`. Ruff clean, `tests/ml` scope green. No catalogue
+  writeback (infrastructure/scoping only).
 - **#321** Multi-threaded inner-loop compute (joblib wrappers — 4-8× sweeps on multi-core) —
   **STALE, already resolved with a BETTER number.** Landed elsewhere in this file at a proven
   5.06× speedup (this line's "4-8×" was only an estimate), already reused by #343's 12.5×

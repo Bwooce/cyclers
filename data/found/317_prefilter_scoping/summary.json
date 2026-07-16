@@ -1,0 +1,157 @@
+{
+  "task": "#317 sweep-impossible-region pre-filter scoping",
+  "seed": 317,
+  "cr3bp_corrector_regime": {
+    "description": "blind search_campaign_daemon Phase B (no existing pre-gate)",
+    "feature_names": [
+      "jacobi_guess",
+      "period_guess",
+      "r1_guess",
+      "r2_guess",
+      "speed_guess",
+      "posn_guess",
+      "abs_z0_guess",
+      "abs_vz0_guess"
+    ],
+    "n_scanned": 531811,
+    "n_rows": 531811,
+    "raw_converged_rate": 0.3701051689415977,
+    "n_train": 372267,
+    "n_test": 159544,
+    "held_out_accuracy": 0.6589780875495161,
+    "held_out_majority_baseline_accuracy": 0.6310296846011132,
+    "held_out_auc": 0.669341890546329,
+    "recall_skip_table": [
+      {
+        "target_recall": 0.999,
+        "threshold": -2.1739367211157226,
+        "actual_recall": 0.9990147281159223,
+        "skip_fraction_of_negatives": 0.000715158377782413
+      },
+      {
+        "target_recall": 0.99,
+        "threshold": -1.3887313222050395,
+        "actual_recall": 0.9900113815890057,
+        "skip_fraction_of_negatives": 0.014491889905340843
+      },
+      {
+        "target_recall": 0.95,
+        "threshold": -1.2856329948511984,
+        "actual_recall": 0.950005945606197,
+        "skip_fraction_of_negatives": 0.11731577222205668
+      },
+      {
+        "target_recall": 0.9,
+        "threshold": -1.1788009095390835,
+        "actual_recall": 0.900011891212394,
+        "skip_fraction_of_negatives": 0.26270151077207304
+      }
+    ]
+  },
+  "cost_benchmark": {
+    "jacobi_constant_us_per_call": 0.7686145501793362,
+    "correct_periodic_ms_per_call": 144.99169208997046,
+    "cost_ratio_corrector_over_jacobi": 188640.31660100687
+  },
+  "lambert_resonance_regime": {
+    "description": "enumerate_*_symmetric_closures.jsonl sweeps -- existing closed-form Lambert-existence + #324 bend gate already run before the expensive bend+DOP853 gate_candidate step",
+    "per_sweep": {
+      "enumerate_563_symmetric_closures.jsonl": {
+        "n_evaluated": 2176,
+        "n_infeasible": 1528,
+        "n_subgate_reaches_expensive_gate": 246,
+        "n_all_gates_passed": 60,
+        "frac_rejected_by_cheap_gate": 0.7022058823529411,
+        "frac_reaching_expensive_gate": 0.1130514705882353,
+        "hit_rate_of_expensive_gate_pool": 0.24390243902439024
+      },
+      "enumerate_575_titan_iapetus_symmetric_closures.jsonl": {
+        "n_evaluated": 640,
+        "n_infeasible": 488,
+        "n_subgate_reaches_expensive_gate": 66,
+        "n_all_gates_passed": 18,
+        "frac_rejected_by_cheap_gate": 0.7625,
+        "frac_reaching_expensive_gate": 0.103125,
+        "hit_rate_of_expensive_gate_pool": 0.2727272727272727
+      },
+      "enumerate_576_jupiter_galilean_symmetric_closures.jsonl": {
+        "n_evaluated": 1856,
+        "n_infeasible": 1610,
+        "n_subgate_reaches_expensive_gate": 144,
+        "n_all_gates_passed": 36,
+        "frac_rejected_by_cheap_gate": 0.8674568965517241,
+        "frac_reaching_expensive_gate": 0.07758620689655173,
+        "hit_rate_of_expensive_gate_pool": 0.25
+      },
+      "enumerate_599_neptune_triton_proteus_symmetric_closures.jsonl": {
+        "n_evaluated": 1024,
+        "n_infeasible": 782,
+        "n_subgate_reaches_expensive_gate": 104,
+        "n_all_gates_passed": 0,
+        "frac_rejected_by_cheap_gate": 0.763671875,
+        "frac_reaching_expensive_gate": 0.1015625,
+        "hit_rate_of_expensive_gate_pool": 0.0
+      },
+      "enumerate_600_3moon_symmetric_closures.jsonl": {
+        "n_evaluated": 806400,
+        "n_infeasible": 698961,
+        "n_subgate_reaches_expensive_gate": 0,
+        "n_all_gates_passed": 0,
+        "frac_rejected_by_cheap_gate": 0.8667671130952381,
+        "frac_reaching_expensive_gate": 0.0,
+        "hit_rate_of_expensive_gate_pool": 0.0
+      },
+      "enumerate_607_smallbody_multimoon_symmetric_closures.jsonl": {
+        "n_evaluated": 97664,
+        "n_infeasible": 80541,
+        "n_subgate_reaches_expensive_gate": 17123,
+        "n_all_gates_passed": 0,
+        "frac_rejected_by_cheap_gate": 0.8246743938401049,
+        "frac_reaching_expensive_gate": 0.17532560615989515,
+        "hit_rate_of_expensive_gate_pool": 0.0
+      },
+      "enumerate_609_mars_phobos_deimos_symmetric_closures.jsonl": {
+        "n_evaluated": 512,
+        "n_infeasible": 390,
+        "n_subgate_reaches_expensive_gate": 52,
+        "n_all_gates_passed": 0,
+        "frac_rejected_by_cheap_gate": 0.76171875,
+        "frac_reaching_expensive_gate": 0.1015625,
+        "hit_rate_of_expensive_gate_pool": 0.0
+      }
+    },
+    "overall": {
+      "n_evaluated": 910272,
+      "n_infeasible": 784300,
+      "n_subgate_reaches_expensive_gate": 17735,
+      "n_all_gates_passed": 114,
+      "frac_rejected_by_cheap_gate": 0.8616105955143079,
+      "frac_reaching_expensive_gate": 0.01948318744287422,
+      "hit_rate_of_expensive_gate_pool": 0.006427967296306738
+    },
+    "fruitful_sweeps_only": {
+      "sweeps": [
+        "enumerate_563_symmetric_closures.jsonl",
+        "enumerate_575_titan_iapetus_symmetric_closures.jsonl",
+        "enumerate_576_jupiter_galilean_symmetric_closures.jsonl"
+      ],
+      "n_evaluated": 4672,
+      "frac_rejected_by_cheap_gate": 0.7761130136986302,
+      "frac_reaching_expensive_gate": 0.0976027397260274,
+      "hit_rate_of_expensive_gate_pool": 0.25
+    },
+    "confirmed_empty_sweeps_only": {
+      "sweeps": [
+        "enumerate_599_neptune_triton_proteus_symmetric_closures.jsonl",
+        "enumerate_600_3moon_symmetric_closures.jsonl",
+        "enumerate_607_smallbody_multimoon_symmetric_closures.jsonl",
+        "enumerate_609_mars_phobos_deimos_symmetric_closures.jsonl"
+      ],
+      "n_evaluated": 905600,
+      "frac_rejected_by_cheap_gate": 0.8620516784452297,
+      "frac_reaching_expensive_gate": 0.019080167844522967,
+      "hit_rate_of_expensive_gate_pool": 0.0
+    }
+  },
+  "elapsed_s": 19.73027491569519
+}
