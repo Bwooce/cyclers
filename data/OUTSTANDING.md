@@ -6121,18 +6121,39 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   separate later steps). Full ratchet (`uv run pytest tests/data tests/search -q`) passed clean
   (exit 0, no FAILED/ERROR; xfail/xpass/skip baseline unchanged) before commit.
 
-- **#542** (P4, defer until #539-541 have added corrector-run diversity) — The
-  previously-proposed #525 learned-seed generative warm-start (diffusion/generative model
-  trained on the accumulated corrector runlogs/checkpoints, cf. Graebner & Beeson,
-  arXiv:2501.07005) to propose seeds in unknown basins automatically. Still speculative;
-  now has meaningfully more training diversity to draw on once #539-541's runlogs exist,
-  but not yet worth building on #530-538's data alone.
+- **#542 ✓ RESEARCH QUESTION ANSWERED, by `#608` (2026-07-16)** (P4, defer until #539-541 have added
+  corrector-run diversity) — The previously-proposed #525 learned-seed generative warm-start
+  (diffusion/generative model trained on the accumulated corrector runlogs/checkpoints, cf.
+  Graebner & Beeson, arXiv:2501.07005) to propose seeds in unknown basins automatically. Still
+  speculative; now has meaningfully more training diversity to draw on once #539-541's runlogs
+  exist, but not yet worth building on #530-538's data alone.
   **Feasibility: LOW-MEDIUM, genuinely speculative** — the 2026-06-11 Ozaki
   "below-breakeven" triage already flagged this class of approach as marginal; revisit
   the triage, don't just proceed.
   **Recommended models:** research/design (surveying what training signal actually exists
   in the runlog corpus, whether it's enough) → **Opus**. If it proceeds to a build,
   implementation behind an explicit train/eval split → **Sonnet**.
+  **This is exactly the research/design survey step called for above, now actually run (`#608`,
+  `#605` shortlist item 3)** — not on `#539-541`'s not-yet-existing runlogs, but on the project's
+  own existing `#210` outcome-log corpus (540,312 raw lines, 54,165 unique physically-sane
+  converged Earth-Moon CR3BP orbits after filtering). Result: the 2026-06-11 Ozaki "below-breakeven"
+  triage is **STALE, superseded by direct evidence** — a bounded numpy/scipy-only linear-Gaussian
+  model (PCA + k-means + per-cluster Gaussian, not the literal diffusion/CNN-VAE this proposal
+  envisioned) gave a real, measured **~12.25x** physically-sane convergence lift over blind
+  uniform seeding (49% vs. 4%), independently reproduced bit-for-bit by the coordinating session.
+  `#525`'s "propose seeds in unknown basins automatically" framing is not yet demonstrated (the
+  #608 corpus/test is single-family Earth-Moon CR3BP, not a genuinely unknown/novel basin), but the
+  core mechanism — a statistical density over converged genomes steering a corrector far more
+  often than blind search — is no longer speculative. **Not closing this task** (the broader
+  "propose seeds in an unfamiliar basin" claim remains untested), but the feasibility triage above
+  should be read as ANSWERED, not open, and any future revisit of this idea should start from
+  `#608`'s code/corpus (`src/cyclerfinder/ml/orbit_generative.py`,
+  `data/found/608_generative_seed_poc/`) rather than re-litigating feasibility from scratch. #608's
+  own honest verdict flags two concrete next steps if this is to go further: (1) tag
+  provenance/family per training record (the current corpus has none, only primary/secondary),
+  and (2) a nonlinear model (kernel PCA / shallow autoencoder), since the linear PCA model
+  demonstrably lands in physically-plausible "gaps" between the true curved family manifolds
+  rather than tracking them tightly — neither has been scoped as its own task number yet.
 
 - **#543 ✓ SCOPED (2026-07-11)** (header corrected 2026-07-15: this bullet's opening line said
   "parking lot — needs a scoping conversation, not a sprint slot" even though its own body records
