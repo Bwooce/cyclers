@@ -1,0 +1,94 @@
+{
+  "task": "#614",
+  "corpus": {
+    "primary": "Earth",
+    "secondary": "Moon",
+    "mu": 0.01215058439469525,
+    "n_scanned_raw_lines": 540312,
+    "n_converged_prefilter": 205113,
+    "n_unique_physically_sane": 54165,
+    "n_train": 43332,
+    "n_heldout": 10833,
+    "n_distinct_heuristic_family_tags": 21,
+    "feature_names": [
+      "x0",
+      "y0",
+      "z0",
+      "vx0",
+      "vy0",
+      "vz0",
+      "period",
+      "jacobi"
+    ]
+  },
+  "encoder_reconstruction_mse_standardized_train": {
+    "linear_pca": 1.829738481573411,
+    "autoencoder": 0.4946021818952162
+  },
+  "baseline_uniform": {
+    "n": 100,
+    "raw_convergence_rate": 0.58,
+    "n_converged": 58,
+    "converged_and_physically_sane_rate": 0.04,
+    "n_converged_and_physically_sane": 4
+  },
+  "models": {
+    "A_linear_kmeans": {
+      "model": "A_linear_kmeans",
+      "reconstruction_check": {
+        "n": 100,
+        "raw_convergence_rate": 0.6,
+        "converged_and_physically_sane_rate": 0.51,
+        "n_converged_and_physically_sane": 51,
+        "median_state0_error": 0.054974562388794786
+      },
+      "generated": {
+        "n": 100,
+        "raw_convergence_rate": 0.61,
+        "n_converged": 61,
+        "converged_and_physically_sane_rate": 0.48,
+        "n_converged_and_physically_sane": 48,
+        "median_nn_distance_to_corpus": 40.552072928147304
+      }
+    },
+    "B_linear_family_tag": {
+      "model": "B_linear_family_tag",
+      "reconstruction_check": {
+        "n": 100,
+        "raw_convergence_rate": 0.6,
+        "converged_and_physically_sane_rate": 0.51,
+        "n_converged_and_physically_sane": 51,
+        "median_state0_error": 0.054974562388794786
+      },
+      "generated": {
+        "n": 100,
+        "raw_convergence_rate": 0.61,
+        "n_converged": 61,
+        "converged_and_physically_sane_rate": 0.54,
+        "n_converged_and_physically_sane": 54,
+        "median_nn_distance_to_corpus": 40.54957951713722
+      }
+    },
+    "C_autoencoder_kmeans": {
+      "model": "C_autoencoder_kmeans",
+      "reconstruction_check": {
+        "n": 100,
+        "raw_convergence_rate": 0.67,
+        "converged_and_physically_sane_rate": 0.58,
+        "n_converged_and_physically_sane": 58,
+        "median_state0_error": 0.05808196077581425
+      },
+      "generated": {
+        "n": 100,
+        "raw_convergence_rate": 0.56,
+        "n_converged": 56,
+        "converged_and_physically_sane_rate": 0.45,
+        "n_converged_and_physically_sane": 45,
+        "median_nn_distance_to_corpus": 40.54887142237773
+      }
+    }
+  },
+  "reference_real_orbit_nn_spacing_linear_pca_units": 0.2722558546373374,
+  "elapsed_s": 160.74304294586182,
+  "seed": 608
+}
