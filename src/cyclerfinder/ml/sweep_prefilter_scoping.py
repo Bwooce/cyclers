@@ -218,7 +218,8 @@ class LogisticPrefilterModel:
     def decision_scores(self, features: NDArray[np.float64]) -> NDArray[np.float64]:
         """Raw logit scores (higher -> more likely to converge)."""
         standardized = (np.asarray(features, dtype=float) - self.mean) / self.scale
-        return standardized @ self.weights[1:] + self.weights[0]
+        scores: NDArray[np.float64] = standardized @ self.weights[1:] + self.weights[0]
+        return scores
 
     def predict_proba(self, features: NDArray[np.float64]) -> NDArray[np.float64]:
         z = np.clip(self.decision_scores(features), -30.0, 30.0)

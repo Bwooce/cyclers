@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
@@ -185,7 +186,9 @@ def test_pilot_warm_started_continuation_crosses_the_wall() -> None:
     mu = sysm.mu
     n_harm = 16
 
-    def fourier_fit_all(state0, period, n=n_harm, n_samples=512):
+    def fourier_fit_all(
+        state0: NDArray[np.float64], period: float, n: int = n_harm, n_samples: int = 512
+    ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
         sol = solve_ivp(
             cr3bp.cr3bp_eom,
             (0.0, period),
@@ -196,6 +199,11 @@ def test_pilot_warm_started_continuation_crosses_the_wall() -> None:
             atol=1e-13,
             dense_output=True,
         )
+        assert sol.success
+        # dense_output=True above (+ the success check just above) guarantees
+        # a dense interpolant -- see the same pattern's comment in
+        # src/cyclerfinder/search/perimoon_passage.py.
+        assert sol.sol is not None
         tgrid = np.linspace(0.0, period, n_samples, endpoint=False)
         traj = sol.sol(tgrid)
         theta = 2.0 * np.pi * tgrid / period
@@ -211,7 +219,12 @@ def test_pilot_warm_started_continuation_crosses_the_wall() -> None:
             sinc[c] = 2.0 / n_samples * (sinm.T @ f)
         return dc, cosc, sinc
 
-    def pack_z1_anchor(dc, cosc, sinc, period):
+    def pack_z1_anchor(
+        dc: NDArray[np.float64],
+        cosc: NDArray[np.float64],
+        sinc: NDArray[np.float64],
+        period: float,
+    ) -> NDArray[np.float64]:
         parts = [dc[0], dc[1], dc[2], cosc[0, 0]]
         parts.extend(cosc[0, 1:])
         parts.extend(sinc[0, 1:])

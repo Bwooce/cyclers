@@ -161,7 +161,7 @@ def _first_tangent(
     tangent = tangent / np.linalg.norm(tangent)
     if float(np.dot(tangent, amp_grad)) < 0.0:
         tangent = -tangent
-    return tangent
+    return np.asarray(tangent, dtype=np.float64)
 
 
 def continue_qp_torus_fixed_jacobi(

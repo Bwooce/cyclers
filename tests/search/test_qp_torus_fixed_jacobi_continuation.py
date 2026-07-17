@@ -33,11 +33,13 @@ import math
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 
 import cyclerfinder.core.cr3bp as cr3bp
-from cyclerfinder.genome.qp_tori import correct_qp_torus
+from cyclerfinder.genome.qp_tori import QPTorus, correct_qp_torus
 from cyclerfinder.search.bifurcation_detector import floquet_multipliers, monodromy
 from cyclerfinder.search.halo_family_at_jacobi import l1_halo_at_jacobi, l2_halo_at_jacobi
+from cyclerfinder.search.nrho_continuation import SymmetricNRHO
 from cyclerfinder.search.qp_torus_fixed_jacobi_continuation import (
     continue_qp_torus_fixed_jacobi,
     halo_family_rotation_profile,
@@ -60,14 +62,14 @@ def _best_k(phi: float) -> int:
     return bk
 
 
-def _center_pair(r):
+def _center_pair(r: SymmetricNRHO) -> tuple[NDArray[np.float64], list[complex]]:
     s0 = np.array([r.x0, 0.0, r.z0, 0.0, r.ydot0, 0.0])
     eigs = floquet_multipliers(monodromy(SYS, s0, r.T_TU))
     cands = [complex(e) for e in eigs if abs(e - 1.0) > 1e-3 and abs(e.imag) > 1e-4]
     return s0, cands
 
 
-def _l1_gmos_seed_at_315():
+def _l1_gmos_seed_at_315() -> QPTorus:
     """Small-amplitude GMOS L1 quasi-halo torus at C=3.15 (the H1 bootstrap)."""
     l1 = l1_halo_at_jacobi(SYS, 3.15)
     assert l1 is not None and l1.converged

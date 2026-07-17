@@ -79,9 +79,18 @@ def find_perimoon_passage(
     )
     if not sol.success:
         raise RuntimeError(f"perimoon propagation failed: {sol.message}")
+    # scipy's stubs type ``OdeResult.sol`` as ``Optional[OdeSolution]`` because
+    # it depends on the runtime ``dense_output`` flag; we always pass
+    # ``dense_output=True`` above (and just confirmed the solve succeeded),
+    # so a dense interpolant is guaranteed to exist here. Bind it to a
+    # concretely-typed local so mypy can follow the non-None narrowing into
+    # the ``_r2_at`` closure below (narrowing of a captured outer variable
+    # does not propagate into nested functions).
+    assert sol.sol is not None
+    dense_sol = sol.sol
 
     ts = np.linspace(0.0, float(period), n_coarse)
-    ys = sol.sol(ts)
+    ys = dense_sol(ts)
     dx = ys[0] - sec[0]
     dy = ys[1] - sec[1]
     r2 = np.sqrt(dx * dx + dy * dy)
@@ -92,7 +101,7 @@ def find_perimoon_passage(
     hi = ts[min(i0 + 2, n_coarse - 1)]
 
     def _r2_at(t: float) -> float:
-        y = sol.sol(t)
+        y = dense_sol(t)
         ddx = y[0] - sec[0]
         ddy = y[1] - sec[1]
         return float(math.sqrt(ddx * ddx + ddy * ddy))
@@ -103,7 +112,7 @@ def find_perimoon_passage(
     else:
         t_star = float(ts[i0])
 
-    y_star = sol.sol(t_star)
+    y_star = dense_sol(t_star)
     ddx = float(y_star[0] - sec[0])
     ddy = float(y_star[1] - sec[1])
     r2_star = math.sqrt(ddx * ddx + ddy * ddy)

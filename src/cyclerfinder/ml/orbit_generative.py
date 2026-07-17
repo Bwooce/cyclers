@@ -51,6 +51,7 @@ import json
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -99,7 +100,7 @@ def is_physically_sane(
         return False
     if not (period_bounds[0] <= period <= period_bounds[1]):
         return False
-    return abs(state0[2]) <= max_abs_z0 and abs(state0[5]) <= max_abs_vz0
+    return bool(abs(state0[2]) <= max_abs_z0 and abs(state0[5]) <= max_abs_vz0)
 
 
 def heuristic_family_tag(
@@ -184,7 +185,7 @@ class OrbitCorpus:
         return int(self.features.shape[0])
 
 
-def iter_outcome_records(paths: Iterable[Path]) -> Iterator[dict]:
+def iter_outcome_records(paths: Iterable[Path]) -> Iterator[dict[str, Any]]:
     """Yield parsed JSON objects from #210 outcome-log JSONL files.
 
     Silently skips lines that fail to parse (the log is append-only,

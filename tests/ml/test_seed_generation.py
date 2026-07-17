@@ -15,12 +15,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
 
 from cyclerfinder.core.cr3bp import CR3BPSystem
 from cyclerfinder.ml.orbit_generative import (
+    ClusteredGaussianLatentModel,
     fit_clustered_gaussian,
     is_physically_sane,
     uniform_bounding_box_sample,
@@ -65,7 +67,7 @@ def _outcome_record(
     jacobi: float = 3.0,
     period: float = 2.5,
     state0: list[float] | None = None,
-) -> dict:
+) -> dict[str, Any]:
     return {
         "solver": solver,
         "meta": {"primary": primary, "secondary": secondary},
@@ -85,7 +87,7 @@ def _synthetic_corpus_file(tmp_path: Path, *, n_per_cluster: int = 30, n_cluster
     hyperparameters -- without depending on the real project corpus.
     """
     rng = np.random.default_rng(42)
-    lines: list[dict] = []
+    lines: list[dict[str, Any]] = []
     for c in range(n_clusters):
         jacobi_center = 2.6 + 0.1 * c
         period_center = 1.0 + c
@@ -187,10 +189,12 @@ def test_stability_index_returns_finite_value_and_note() -> None:
     assert isinstance(note, str) and note
 
 
-def test_stability_index_handles_propagation_failure_gracefully(monkeypatch) -> None:
+def test_stability_index_handles_propagation_failure_gracefully(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import cyclerfinder.ml.seed_generation as seed_generation_module
 
-    def _boom(*_args, **_kwargs):
+    def _boom(*_args: object, **_kwargs: object) -> None:
         raise RuntimeError("boom")
 
     monkeypatch.setattr(seed_generation_module.cr3bp, "propagate", _boom)
@@ -234,7 +238,7 @@ def test_get_default_model_missing_corpus_raises_filenotfound(tmp_path: Path) ->
 # --- generate_and_refine_seeds: contract -------------------------------------
 
 
-def _small_synthetic_model(tmp_path: Path):
+def _small_synthetic_model(tmp_path: Path) -> ClusteredGaussianLatentModel:
     path = _synthetic_corpus_file(tmp_path)
     clear_model_cache()
     model, _corpus, _train = get_default_model(corpus_paths=[path], seed=608, cache=False)
@@ -338,11 +342,16 @@ def test_generate_and_refine_seeds_target_jacobi_bounds_filters_and_ranks() -> N
     assert len(report.seeds) <= 5
     for seed in report.seeds:
         assert seed.converged and seed.physically_sane
+        # ``jacobi`` is only ``None`` for a non-converged seed (see
+        # ``_refine_one``'s construction: ``jacobi`` is set in the SAME
+        # ``if converged:`` block as ``state0``/``period``/``residual``) --
+        # already excluded by the ``converged`` assert just above.
+        assert seed.jacobi is not None
         assert bounds[0] <= seed.jacobi <= bounds[1]
     # Ranked by closeness to the bounds' midpoint -- monotonically
     # non-decreasing distance from center along the returned list.
     center = 0.5 * (bounds[0] + bounds[1])
-    gaps = [abs(s.jacobi - center) for s in report.seeds]
+    gaps = [abs(s.jacobi - center) for s in report.seeds if s.jacobi is not None]
     assert gaps == sorted(gaps)
 
 

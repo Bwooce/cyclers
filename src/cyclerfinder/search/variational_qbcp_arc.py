@@ -187,6 +187,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -200,6 +201,14 @@ from cyclerfinder.search.variational_qbcp_torus import (
     QBCPTorusVariationalResult,
     evaluate_torus_state,
 )
+
+# `QBCPTorusVariationalResult` is a #617/#618 pseudospectral-torus result type
+# used throughout this module's own TorusLike union below; the test suite
+# constructs instances of it directly off this module (the one it's testing)
+# rather than its original home in `variational_qbcp_torus`. `__all__` makes
+# that re-export explicit for mypy's strict-mode implicit-reexport check
+# (same pattern as `scripts/certify_610_proteus_bend_interval.py`).
+__all__ = ["QBCPTorusVariationalResult"]
 
 _N_STATE = 6  # canonical PM state: x, y, z, px, py, pz
 
@@ -574,7 +583,7 @@ def build_connection_jacobian(
     *,
     match_weight: float = 1.0,
     fd_eps: float = 1e-7,
-) -> Callable[[NDArray[np.float64]], NDArray[np.float64]]:
+) -> Callable[..., NDArray[np.float64]]:
     """Analytic node-block Jacobian + finite-differenced phase/duration columns.
 
     The node-value columns (the large, well-conditioned bulk) are exact:
@@ -662,7 +671,7 @@ def correct_qbcp_arc_connection(
     tol: float = 1e-6,
     closure_tol: float = 1e-3,
     max_nfev: int = 400,
-    tr_solver: str = "lsmr",
+    tr_solver: Literal["exact", "lsmr"] = "lsmr",
     use_analytic_jac: bool = True,
     run_closure_check: bool = True,
     notes: str = "",
@@ -694,7 +703,14 @@ def correct_qbcp_arc_connection(
         time_weight=time_weight,
         close_weight=close_weight,
     )
-    jac: Callable[[NDArray[np.float64]], NDArray[np.float64]] | str
+    # scipy's stub for `least_squares`'s `jac=` wants either a callable matching
+    # its own internal calling convention (positional-only state vector, then
+    # `*args, **kwargs`) or one of a fixed set of finite-difference-scheme
+    # literals -- only "3-point" is ever used here (the codebase's only other
+    # `jac=` string value, "exact"/"lsmr", is `tr_solver`, a different
+    # parameter), so the declared type is narrowed to exactly that, not the
+    # full literal set scipy accepts.
+    jac: Callable[..., NDArray[np.float64]] | Literal["3-point"]
     if use_analytic_jac:
         jac = build_connection_jacobian(
             torus_se, torus_em, order, omega1, residual, match_weight=match_weight

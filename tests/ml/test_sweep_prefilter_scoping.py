@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
@@ -37,7 +38,7 @@ def _corrector_record(
     state0: list[float] | None = None,
     period_guess: float = 3.0,
     converged: bool = True,
-) -> dict:
+) -> dict[str, Any]:
     return {
         "solver": solver,
         "inputs": {
@@ -170,7 +171,7 @@ def test_recall_skip_table_monotonic_in_target_recall() -> None:
 
 
 def test_gate_efficiency_from_summary_records_aggregates_correctly() -> None:
-    records: list[dict] = [
+    records: list[dict[str, Any]] = [
         {"_meta": True, "unrelated": "record"},  # skipped: missing required keys
         {
             "kind": "direction_summary",

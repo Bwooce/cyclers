@@ -249,7 +249,7 @@ def evaluate_torus_state(
         full = p1 @ result.coeffs[c] @ p2.T  # (len t1, len t2)
         out[:, c] = np.diagonal(full) if t1.size == t2.size else full[:, 0]
     if np.isscalar(theta1) and np.isscalar(theta2):
-        return out[0]
+        return np.asarray(out[0], dtype=np.float64)
     return out
 
 
