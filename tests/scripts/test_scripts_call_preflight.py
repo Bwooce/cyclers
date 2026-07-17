@@ -98,6 +98,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # preflight. Visible, reviewed exemption per this file's own
         # docstring.
         "run_317_prefilter_scoping.py",
+        # #624: a cross-mu TRANSFER EVALUATION of #608's already-trained
+        # generative seed model (no retraining, no new model) -- same
+        # category as #608/#614/#317 above: a fixed-N capability comparison
+        # (generate-then-refine vs. uniform baseline, at two new mu values)
+        # with no region_id/n_points to preflight, not a catalogue-region
+        # discovery sweep. Visible, reviewed exemption per this file's own
+        # docstring.
+        "run_624_cross_mu_transfer_pilot.py",
     }
 )
 
