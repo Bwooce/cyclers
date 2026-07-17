@@ -463,6 +463,7 @@ def test_se_l2_positive_control_reproduces_gmos_torus() -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_em_l2_c313_crosses_gmos_plateau() -> None:
     """On the violently-unstable Earth-Moon L2 torus at Jacobi 3.13 -- where the
     single-period GMOS ``correct_qbcp_torus`` plateaus at invariance residual
@@ -511,6 +512,7 @@ def test_em_l2_c313_crosses_gmos_plateau() -> None:
     assert res.closure_residual < 1e-2
 
 
+@pytest.mark.slow
 def test_em_l2_exact_and_lsmr_agree() -> None:
     """The ``exact`` (dense SVD) and ``lsmr`` (iterative) trust-region solvers
     converge the EM-L2 torus to the SAME minimum -- proof that ~3.4e-3 is a
