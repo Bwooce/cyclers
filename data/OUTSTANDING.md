@@ -515,7 +515,14 @@ recalibration pilot that found reweighting the trained density HURTS at the hard
 design read, not decided unilaterally); #629 for a new-method 2D grid/homotopy attack
 on real-planet-moon-mu RRT (k1,k2) cyclers at Saturn-Titan, replacing the mu-continuation approach
 #627 found structurally fails -- flagged for a design read before dispatch, not auto-fired
-(registered 2026-07-18); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
+(registered 2026-07-18; DESIGN READ COMPLETE 2026-07-18, Fable: GO-with-caveats, phased --
+#627's negative is quantitatively suspect as an un-scaled-c_margin artifact (the corridor
+shrinks as mu^(2/3), the walk's absolute margin forced the (1,1) branch to C below 3 entirely);
+Phase A = ~1 h scaled-margin rerun of #627's own walks, Phase B = overnight fixed-Titan-mu
+(x0, C) corridor grid reusing existing _grid_seed_search machinery, Phase C = Opus adjudication
++ mandatory co-orbital/QS-aware literature gate; NO-GO on multi-system sweep until the Titan
+corridor answer exists -- see #629's own bullet + docs/notes/2026-07-18-629-design-read-titan-
+kk-grid.md); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
 module more broadly against existing #607/#609/#571/#494/#549 results (CLOSED 2026-07-18: clean
 "nothing changes" on both targets -- #607/#609/#571's bend-gate negatives are architecturally out
 of the module's scope AND the bend gate's own closest-safe-periapsis construction already
@@ -8547,8 +8554,10 @@ anywhere in the file and are genuinely still open.]**
   task, per this task's own explicit scope). No real end-to-end unswept-target pilot run this task
   (the explicitly-optional stretch goal) — left for whichever task resolves the integration-pattern
   question above.
-- **#629** (registered 2026-07-18, user-directed follow-up to `#627` — **flagged for a design read
-  before dispatch, not auto-fired**) — a genuinely new-method attack on real-planet-moon-μ
+- **#629** ✓ DESIGN-READ GATE SATISFIED (Fable, 2026-07-18): GO-with-caveats, phased — the build
+  itself is NOT yet dispatched; see the design-read block at the end of this bullet. (Registered
+  2026-07-18, user-directed follow-up to `#627` — was **flagged for a design read before
+  dispatch, not auto-fired**) — a genuinely new-method attack on real-planet-moon-μ
   Ross-Roberts-Tsoukkas (k1,k2) ballistic cyclers, replacing the 1D mu-continuation approach `#627`
   found structurally fails (fold instability near the paper's own low-μ anchors; loss of the
   secondary-reaching topology as C_L1(μ) shrinks below the anchor's own C). Scope: a 2D grid or
@@ -8569,6 +8578,45 @@ anywhere in the file and are genuinely still open.]**
   (per `#627`'s own explicit recommendation), and should not be auto-fired the way `#624`-`#628`
   were. Recommended model for the design read: Opus/Fable; for the build if it proceeds: Sonnet
   behind the design's chosen approach.
+  **✓ DESIGN READ COMPLETE (Fable, 2026-07-18) — GO-with-caveats, phased; full analysis at
+  `docs/notes/2026-07-18-629-design-read-titan-kk-grid.md`.** Headline: `#627`'s two failure modes
+  are each quantitatively consistent with a single cause — the C-tracking walk's ABSOLUTE
+  `c_margin` (0.02 / 0.005) does not scale with the corridor it tracks, which shrinks as μ^(2/3).
+  The two sourced (1,1) Table-I anchors sit at a nearly invariant scaled energy
+  ρ=(C−3)/(C_L1(μ)−3): 0.803 (μ=0.0121) and 0.791 (μ=0.001) — but the (1,1) walk's margin forced
+  ρ=−0.27 at Titan (C=2.9958, below C=3 entirely, outside the band where every known member
+  lives; landing on a Saturn-only (1,0) branch there is the EXPECTED outcome), and the (3,3)
+  margin (0.005) equals that anchor's entire distance-to-C_L1 (0.00496, ρ=0.974), explaining its
+  outright convergence loss. The follow-up 81-point C-sweep DID span the predicted corridor
+  (C∈[2.956,3.036]⊃[3.009,3.016]) but only along the wrong (1,0) branch from x0=−0.34/hc=1 —
+  fresh-x0 corridor space was never searched. So `#627`'s negative is under specific quantified
+  suspicion of being a parameter-scaling artifact (NOT invalidated — a real bifurcation could
+  still kill the family; but "admissible region vanishingly small" is NOT established).
+  **Recommended plan**: Phase A (~1 h, Sonnet) — rerun `#627`'s own
+  `mu_step_to_system_tracking_c_l1` walks with c_margin = α(C_L1(μ)−3), α≈0.1–0.2 (track constant
+  ρ, not an absolute margin); decisive about the artifact either way, near-obligatory for registry
+  integrity regardless of novelty ([[feedback_bugfix_invalidates_past_searches]] in spirit).
+  Phase B (half-day build + overnight run, Sonnet) — fixed-Titan-μ 2D corridor grid reusing the
+  EXISTING `_grid_seed_search`/`sweep_family_grid` machinery (this is not a new-method build, the
+  new content is coordinate scaling): x0∈[−0.95,−0.30] Δ0.005, C=3+ρ(C_L1−3) with ρ∈[0.6,0.99]
+  (~25 values incl. a fine ρ∈[0.95,0.995] sub-band, else (3,3)-like thin-corridor families are
+  missed by construction), hc∈{1,3,5,7,9}; ≈16k SIGALRM-bounded corrector calls ≈2–8 h
+  single-core; then per-branch `c_sweep_find_nu_zero` + winding/Barden/perimoon/bend gates as
+  specced. Phase C (Opus/Fable) — adjudication + the mandatory literature gate, which MUST cover
+  the co-orbital/quasi-satellite/ballistic-capture classes explicitly (Hénon family f, Benest,
+  Sidorenko/Pousse QS theory, Titan ballistic-capture + Russell-Strange 2009) — corpus has NO
+  small-μ asymptotics asset (no Hénon Generating Families, no QS paper; nearest is Belbruno 2004),
+  so the live-web side of the gate is load-bearing. 2D-grid-vs-homotopy verdict: grid at target μ
+  in scaled coordinates > any μ-homotopy (a walk must thread the μ^(2/3)-pinching corridor over
+  the whole final stretch; a fixed-μ search needs it nonempty only AT Titan), with the Phase-A
+  scaled-margin walk kept because it is nearly free and directly tests the artifact hypothesis;
+  pure fixed-μ C-continuation is not standalone-viable (no on-topology Titan member exists to
+  seed it). Honest value read: even full success is likely "known classical object, relabeled"
+  (bullet's own framing stands, not re-inflated) — but `#627`'s live check found the RRT paper's
+  own range stops at Sun-Jupiter μ, so a confirmed stable encounter-relevant Titan member would
+  still be a catalogue-grade census row. NO-GO on the multi-system sweep, analytic-seed
+  machinery, Hill-problem solver, or corpus acquisition as a precondition, until the Titan
+  corridor answer exists.
 - **#630** ✓ CLOSED, CLEAN "NOTHING CHANGES" RESULT ON BOTH TARGETS (2026-07-18) — (registered
   2026-07-18, user-directed follow-up to `#627`) — leverage `src/cyclerfinder/search/
   perimoon_passage.py` (`#627`'s new encounter-geometry module, currently tested only against the
