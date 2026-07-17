@@ -39,12 +39,13 @@ import math
 
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.genome.qp_tori import correct_qp_torus
 from cyclerfinder.search.bifurcation_detector import floquet_multipliers, monodromy
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
-from cyclerfinder.search.nrho_continuation import correct_symmetric_nrho
+from cyclerfinder.search.nrho_continuation import SymmetricNRHO, correct_symmetric_nrho
 from cyclerfinder.search.variational_qp_torus import (
     _basis_matrices,
     _cr3bp_jacobian_grid,
@@ -230,14 +231,16 @@ def _best_k(phi: float) -> int:
     return bk
 
 
-def _center_pair(r):
+def _center_pair(
+    r: SymmetricNRHO,
+) -> tuple[NDArray[np.float64], list[np.complex128]]:
     s0 = np.array([r.x0, 0.0, r.z0, 0.0, r.ydot0, 0.0])
     eigs = floquet_multipliers(monodromy(SYS, s0, r.T_TU))
     cands = [e for e in eigs if abs(e - 1.0) > 1e-3 and abs(e.imag) > 1e-4]
     return s0, cands
 
 
-def _l1_halo_at_315():
+def _l1_halo_at_315() -> SymmetricNRHO | None:
     x0, z0, ydot0, t = 0.82431, -0.06058, 0.17154, 2.7647
     prev = None
     for _ in range(500):
@@ -252,7 +255,7 @@ def _l1_halo_at_315():
     return None
 
 
-def _l2_halo_at_315():
+def _l2_halo_at_315() -> SymmetricNRHO | None:
     lyap = None
     for xg, tg in ((1.1225, 3.43), (1.1204, 3.42), (1.1180, 3.40), (1.1250, 3.45)):
         cand = correct_symmetric_fixed_jacobi(

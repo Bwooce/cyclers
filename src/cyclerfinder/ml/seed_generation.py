@@ -80,6 +80,14 @@ from cyclerfinder.ml.orbit_generative import (
 )
 from cyclerfinder.search.cr3bp_periodic import correct_periodic
 
+# `cr3bp` is re-exported (not just used internally, e.g. line ~377's
+# ``cr3bp.propagate``) because the test suite monkeypatches
+# ``seed_generation.cr3bp.propagate`` directly to exercise the propagation-
+# failure path without a real corpus. `__all__` makes that re-export explicit
+# for mypy's strict-mode implicit-reexport check (same pattern as
+# `scripts/certify_610_proteus_bend_interval.py`).
+__all__ = ["cr3bp"]
+
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 _DEFAULT_OUTCOME_LOG_DIR = _REPO_ROOT / "out" / "outcome_log"
 
@@ -126,9 +134,8 @@ def default_corpus_paths(outcome_log_dir: Path | None = None) -> list[Path]:
 # every call within one process/sweep script, and every past task
 # (#608/#614/#624) already established the deterministic-given-inputs
 # contract this relies on.
-_MODEL_CACHE: dict[
-    tuple[tuple[str, ...], int], tuple[ClusteredGaussianLatentModel, OrbitCorpus, NDArray]
-] = {}
+_ModelCacheValue = tuple[ClusteredGaussianLatentModel, OrbitCorpus, NDArray[np.float64]]
+_MODEL_CACHE: dict[tuple[tuple[str, ...], int], _ModelCacheValue] = {}
 
 
 def get_default_model(
@@ -136,7 +143,7 @@ def get_default_model(
     corpus_paths: Iterable[Path] | None = None,
     seed: int = DEFAULT_MODEL_SEED,
     cache: bool = True,
-) -> tuple[ClusteredGaussianLatentModel, OrbitCorpus, NDArray]:
+) -> tuple[ClusteredGaussianLatentModel, OrbitCorpus, NDArray[np.float64]]:
     """Re-derive `#608`'s trained model, EXACTLY (not a fresh fit).
 
     Deterministic given ``(corpus_paths, seed)``: assembles the corpus via

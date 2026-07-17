@@ -34,6 +34,8 @@ generous bounds (see ``test_variational_qbcp_torus.py``'s identical note).
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 import pytest
 from scipy.integrate import solve_ivp
@@ -45,7 +47,7 @@ from cyclerfinder.genome.bcr4bp_torus import (
     correct_bcr4bp_torus,
     se_lyapunov_to_bcr4bp_torus_seed,
 )
-from cyclerfinder.genome.qbcp_torus import correct_qbcp_torus, evaluate_qbcp_torus
+from cyclerfinder.genome.qbcp_torus import QBCPTorus, correct_qbcp_torus, evaluate_qbcp_torus
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.variational_periodic_orbit_qbcp import discover_qbcp_periodic_orbit
 from cyclerfinder.search.variational_qbcp_arc import (
@@ -120,6 +122,11 @@ def test_arc_ode_defects_spectral_convergence() -> None:
         atol=1e-13,
         dense_output=True,
     )
+    assert sol.success
+    # dense_output=True above (+ the success check just above) guarantees a
+    # dense interpolant -- see the same pattern's comment in
+    # src/cyclerfinder/search/perimoon_passage.py.
+    assert sol.sol is not None
     prev = np.inf
     for order in (12, 20, 28):
         nodes, diff = cheb_diff_matrix(order)
@@ -260,7 +267,9 @@ def test_torus_point_pv_constant_and_pseudospectral() -> None:
 
 
 @pytest.fixture(scope="module")
-def periodic_split() -> tuple[qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorusPoint, dict]:
+def periodic_split() -> tuple[
+    qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorusPoint, dict[str, Any]
+]:
     """A genuine #611 QBCP periodic orbit split into two arcs, with the true
     split-trajectory node states available for a truth seed."""
     system = qbcp.qbcp_default()
@@ -278,6 +287,11 @@ def periodic_split() -> tuple[qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorus
         atol=1e-13,
         dense_output=True,
     )
+    assert sol.success
+    # dense_output=True above (+ the success check just above) guarantees a
+    # dense interpolant -- see the same pattern's comment in
+    # src/cyclerfinder/search/perimoon_passage.py.
+    assert sol.sol is not None
     tau_f = 0.42 * orb.period
     tau_r = orb.period - tau_f
     p0 = qbcp.state_pm_to_pv(sol.sol(0.0), 0.0, system)
@@ -288,7 +302,9 @@ def periodic_split() -> tuple[qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorus
     return system, tor0, tor1, info
 
 
-def test_full_corrector_periodic_split_positive_control(periodic_split) -> None:
+def test_full_corrector_periodic_split_positive_control(
+    periodic_split: tuple[qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorusPoint, dict[str, Any]],
+) -> None:
     """POSITIVE CONTROL: the full two-arc corrector, truth-seeded from a real
     #611 periodic orbit split, drives the combined residual to MACHINE precision
     and the INDEPENDENT Radau loop defect below 1e-3 (limited by the input orbit's
@@ -312,7 +328,9 @@ def test_full_corrector_periodic_split_positive_control(periodic_split) -> None:
     assert res.closure_loop_defect < 1e-3  # independent Radau, not the optimizer
 
 
-def test_ghost_solution_rejected_by_independent_closure(periodic_split) -> None:
+def test_ghost_solution_rejected_by_independent_closure(
+    periodic_split: tuple[qbcp.QBCPSystem, ConstantTorusPoint, ConstantTorusPoint, dict[str, Any]],
+) -> None:
     """MANDATORY-CHECK DEMONSTRATION: from a poor (linear-interpolation) seed the
     SAME split converges to a GHOST -- a machine-zero nodal residual that is NOT a
     real trajectory. The algebraic residual is tiny yet the INDEPENDENT Radau loop
@@ -342,7 +360,7 @@ def test_ghost_solution_rejected_by_independent_closure(periodic_split) -> None:
 # ---------------------------------------------------------------------------
 
 
-def _build_se_l2_gmos_torus() -> qbcp.QBCPTorus:
+def _build_se_l2_gmos_torus() -> QBCPTorus:
     """Full-mu Sun-Earth L2 QBCP GMOS torus (built exactly as #533/#538 do)."""
     system = qbcp.qbcp_default()
     mu_se = 1.0 / (system.mu_sun + 1.0)
@@ -380,11 +398,11 @@ def _build_se_l2_gmos_torus() -> qbcp.QBCPTorus:
 
 
 @pytest.fixture(scope="module")
-def se_gmos() -> qbcp.QBCPTorus:
+def se_gmos() -> QBCPTorus:
     return _build_se_l2_gmos_torus()
 
 
-def test_torus_point_pv_gmos_matches_evaluate(se_gmos) -> None:
+def test_torus_point_pv_gmos_matches_evaluate(se_gmos: QBCPTorus) -> None:
     """``torus_point_pv`` on a real GMOS QBCPTorus dispatches to the trusted
     ``evaluate_qbcp_torus`` (byte-identical PV)."""
     omega1 = se_gmos.omega_long
@@ -394,7 +412,7 @@ def test_torus_point_pv_gmos_matches_evaluate(se_gmos) -> None:
         assert np.allclose(got, expect, atol=1e-14)
 
 
-def test_on_torus_arc_reproduced_between_gmos_points(se_gmos) -> None:
+def test_on_torus_arc_reproduced_between_gmos_points(se_gmos: QBCPTorus) -> None:
     """A single collocation arc between two real SE-L2 GMOS torus points
     reproduces the genuine on-torus QBCP segment (residual to machine precision;
     the reconstructed nodes match a direct integration; an independent Radau
@@ -420,6 +438,11 @@ def test_on_torus_arc_reproduced_between_gmos_points(se_gmos) -> None:
         atol=1e-13,
         dense_output=True,
     )
+    assert seg.success
+    # dense_output=True above (+ the success check just above) guarantees a
+    # dense interpolant -- see the same pattern's comment in
+    # src/cyclerfinder/search/perimoon_passage.py.
+    assert seg.sol is not None
     pm_b = seg.sol(t_a + tau)
     p_b = qbcp.state_pm_to_pv(pm_b, t_a + tau, system)
     order = 20

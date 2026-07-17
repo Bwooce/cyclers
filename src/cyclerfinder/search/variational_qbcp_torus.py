@@ -167,6 +167,7 @@ References
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -311,7 +312,7 @@ def evaluate_torus_state(
         full = p1 @ result.coeffs[c] @ p2.T
         out[:, c] = np.diagonal(full) if t1.size == t2.size else full[:, 0]
     if np.isscalar(theta1) and np.isscalar(theta2):
-        return out[0]
+        return np.asarray(out[0], dtype=np.float64)
     return out
 
 
@@ -633,7 +634,7 @@ def correct_qbcp_torus_pseudospectral(
     closure_tol: float = 1e-4,
     max_nfev: int = 200,
     gauge_weight: float = 1.0,
-    tr_solver: str = "exact",
+    tr_solver: Literal["exact", "lsmr"] = "exact",
     closure_dt_frac: float = 0.02,
     n_closure_samples: int = 12,
     notes: str = "",
@@ -823,7 +824,7 @@ def discover_qbcp_torus_from_gmos(
     rho_target: float | None = None,
     rho_weight: float = 1.0,
     gauge_weight: float = 1.0,
-    tr_solver: str = "exact",
+    tr_solver: Literal["exact", "lsmr"] = "exact",
     tol: float = 1e-6,
     closure_tol: float = 1e-4,
     max_nfev: int = 200,
@@ -870,7 +871,7 @@ def continue_qbcp_torus_amplitude(
     n_steps: int = 8,
     rho_weight: float = 1.0,
     gauge_weight: float = 1.0,
-    tr_solver: str = "exact",
+    tr_solver: Literal["exact", "lsmr"] = "exact",
     tol: float = 1e-6,
     closure_tol: float = 1e-4,
     max_nfev: int = 400,

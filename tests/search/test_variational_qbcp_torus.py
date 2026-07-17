@@ -38,8 +38,11 @@ pinned with generous bounds.
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 import pytest
+from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.bcr4bp as bcr4bp
@@ -49,9 +52,10 @@ from cyclerfinder.genome.bcr4bp_torus import (
     correct_bcr4bp_torus,
     se_lyapunov_to_bcr4bp_torus_seed,
 )
-from cyclerfinder.genome.qbcp_torus import correct_qbcp_torus
+from cyclerfinder.genome.qbcp_torus import QBCPTorus, correct_qbcp_torus
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.variational_qbcp_torus import (
+    QBCPTorusVariationalResult,
     _alphas_on_theta1,
     _basis_matrices,
     _jacobian,
@@ -332,7 +336,7 @@ def test_coeffs_shape_validation() -> None:
 # ---------------------------------------------------------------------------
 
 
-def _build_se_l2_gmos_torus() -> qbcp.QBCPTorus:
+def _build_se_l2_gmos_torus() -> QBCPTorus:
     """Full-mu Sun-Earth L2 QBCP GMOS torus, built exactly as #533/#537/#538's
     ``build_tori`` do (BCR4BP mu_sun bootstrap then ``correct_qbcp_torus``).
     This is the ~1.5e-5-residual SE-L2 torus #544 quotes at ~3e-5.
@@ -516,7 +520,7 @@ def test_em_l2_exact_and_lsmr_agree() -> None:
     qbcp_sys = qbcp.qbcp_default()
     n1, n2 = 12, 5
     coeffs0, omega2_0, amp, _period = _em_l2_c313_seed(n1, n2)
-    common = dict(n1=n1, n2=n2, amplitude_anchor=amp, tol=1e-3, closure_tol=1e-2)
+    common: dict[str, Any] = dict(n1=n1, n2=n2, amplitude_anchor=amp, tol=1e-3, closure_tol=1e-2)
     r_exact = correct_qbcp_torus_pseudospectral(
         qbcp_sys, coeffs0, omega2_0, tr_solver="exact", max_nfev=600, **common
     )
@@ -547,7 +551,13 @@ def test_planar_seed_z_components_start_zero() -> None:
 # figures) and pinned with generous bounds.
 
 
-def _gmos_manifold_forward(torus, theta_long, theta_trans, branch, ref_vec):
+def _gmos_manifold_forward(
+    torus: QBCPTorus,
+    theta_long: float,
+    theta_trans: float,
+    branch: str,
+    ref_vec: NDArray[np.float64] | None,
+) -> tuple[NDArray[np.float64], NDArray[np.float64]] | None:
     """Reference GMOS forward one-period manifold extraction -- mirrors
     ``scripts/run_538_qbcp_cycler.manifold_state_vec`` for a GMOS ``QBCPTorus``
     (evaluate -> one-period augmented STM -> ``local_stability``), replicated
@@ -574,8 +584,11 @@ def _gmos_manifold_forward(torus, theta_long, theta_trans, branch, ref_vec):
     return state, np.asarray(vec, dtype=np.float64)
 
 
+SETori = tuple[QBCPTorus, QBCPTorusVariationalResult]
+
+
 @pytest.fixture(scope="module")
-def se_tori() -> tuple[qbcp.QBCPTorus, object]:
+def se_tori() -> SETori:
     """Build the SE-L2 GMOS torus and its pseudospectral counterpart ONCE."""
     qbcp_sys = qbcp.qbcp_default()
     gmos = _build_se_l2_gmos_torus()
@@ -585,7 +598,7 @@ def se_tori() -> tuple[qbcp.QBCPTorus, object]:
     return gmos, pseudo
 
 
-def test_variational_result_gmos_alias_properties(se_tori) -> None:
+def test_variational_result_gmos_alias_properties(se_tori: SETori) -> None:
     """The #619 read-only aliases are exact synonyms so the #538 search can
     duck-type either torus: ``omega_long == omega1`` (fixed Sun frequency),
     ``t_strob == period``, ``invariance_residual == residual_rms``."""
@@ -597,7 +610,7 @@ def test_variational_result_gmos_alias_properties(se_tori) -> None:
     assert pseudo.omega_long == pytest.approx(qbcp.qbcp_default().omega_sun_nondim, rel=1e-12)
 
 
-def test_manifold_adapter_state_and_unit_eigenvector(se_tori) -> None:
+def test_manifold_adapter_state_and_unit_eigenvector(se_tori: SETori) -> None:
     """The adapter returns ``(state_pv, eigenvector)`` where ``state_pv`` is
     exactly ``state_pm_to_pv(evaluate_torus_state(...))`` at the Sun epoch
     ``t0 = theta_long/omega1`` and the eigenvector is unit-norm, for both
@@ -615,7 +628,7 @@ def test_manifold_adapter_state_and_unit_eigenvector(se_tori) -> None:
         assert float(np.linalg.norm(vec)) == pytest.approx(1.0, abs=1e-10)
 
 
-def test_manifold_adapter_ref_vec_sign_convention(se_tori) -> None:
+def test_manifold_adapter_ref_vec_sign_convention(se_tori: SETori) -> None:
     """``ref_vec`` fixes the eigenvector sign by dot-product continuity, exactly
     as ``manifold_state_vec`` does (a negative reference flips the returned
     vector)."""
@@ -633,7 +646,7 @@ def test_manifold_adapter_ref_vec_sign_convention(se_tori) -> None:
     assert float(np.dot(mv_neg[1], vec)) < 0.0
 
 
-def test_manifold_directions_match_gmos_on_se_l2(se_tori) -> None:
+def test_manifold_directions_match_gmos_on_se_l2(se_tori: SETori) -> None:
     """POSITIVE CONTROL (#619 Step 2): the adapter's forward-STM manifold
     directions on the pseudospectral SE-L2 torus reproduce the trusted GMOS
     ``manifold_state_vec`` directions at matched PHYSICAL points (theta1 is
@@ -667,9 +680,12 @@ def test_manifold_directions_match_gmos_on_se_l2(se_tori) -> None:
                     d = float(np.linalg.norm(sg - sj))
                     if d < best_d:
                         best_d, best_j = d, j
-                if best_j < 0 or p_vecs[best_j] is None:
+                if best_j < 0:
                     continue
-                rows.append((best_d, abs(float(np.dot(vg, p_vecs[best_j])))))
+                vec_best = p_vecs[best_j]
+                if vec_best is None:
+                    continue
+                rows.append((best_d, abs(float(np.dot(vg, vec_best)))))
         assert rows, f"no matched hyperbolic points for branch={branch}"
         rows.sort()
         dots = np.array([r[1] for r in rows])
@@ -681,7 +697,7 @@ def test_manifold_directions_match_gmos_on_se_l2(se_tori) -> None:
         )
 
 
-def test_unstable_forward_vs_backward_differ_on_torus(se_tori) -> None:
+def test_unstable_forward_vs_backward_differ_on_torus(se_tori: SETori) -> None:
     """Documents the #619 finding that for a TORUS point (unlike a periodic
     orbit) the one-period-STM eigenvector is an approximation: the forward-STM
     unstable direction and the ``unstable_via_backward`` extraction are genuinely

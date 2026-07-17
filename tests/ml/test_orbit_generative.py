@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
@@ -42,7 +43,7 @@ def _outcome_record(
     jacobi: float = 3.0,
     period: float = 2.5,
     state0: list[float] | None = None,
-) -> dict:
+) -> dict[str, Any]:
     return {
         "solver": solver,
         "meta": {"primary": primary, "secondary": secondary},
