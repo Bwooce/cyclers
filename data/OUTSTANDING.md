@@ -534,7 +534,11 @@ independently re-verified at the exact catalogue IC (altitude 480.76 km, not ass
 abstract-mu rows never claimed a physical encounter to begin with);
 #631 for fixing the 94-error accumulated mypy --strict debt blocking CI (nothing pushed since
 2026-07-14 until this session's first push on 2026-07-18, so #600-#630's range was never checked --
-a coordinating-session verification-loop gap, dispatched 2026-07-18); #632 next-unused):**
+a coordinating-session verification-loop gap, dispatched 2026-07-18); #632 for the CI pytest
+failures #631 uncovered (first-ever cross-platform run of #611-#630's work: 3 genuine cross-
+platform BLAS/eigenvector-sign mismatches + 3 timeouts on CI's 2-core runners, confirmed NOT a
+#631 regression via local reproduction, urgent since main is currently red, dispatched
+2026-07-18); #633 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8742,6 +8746,68 @@ anywhere in the file and are genuinely still open.]**
   gate — exactly the class of work this project's model-tiering policy reserves for Sonnet — EXCEPT
   the two `least_squares` argument-type findings, which need a moment of real judgment on whether
   they're hiding a bug; flag those specifically rather than rushing past them).
+- **#632** (dispatched 2026-07-18, coordinating-session-directed, URGENT — main is currently red on
+  CI) — fix the pytest-stage CI failures `#631` uncovered once its mypy fix let the CI job run past
+  the mypy stage for the first time. CI run `29599446252` (`c4d6385..b24e4f0`) ran for 1h14m (past
+  the mypy stage this time — `#631`'s fix worked) and then FAILED at pytest with 6 failures: 3
+  assertion mismatches and 3 timeouts, ALL in code from the `#611`-`#630` range that has NEVER
+  before run on CI's actual environment — nothing was pushed between 2026-07-14 and 2026-07-18, so
+  this is the FIRST cross-platform run this body of work has ever had. **The coordinating session
+  independently reproduced the 3 assertion-failure tests locally and all 3 PASS** (90s, all green)
+  — this is NOT a regression from `#631`'s typing changes (confirmed: its actual diff to the
+  implicated files is a single benign `np.asarray` wrap). **Root causes, both confirmed by direct
+  investigation, not guessed:**
+  1. **Cross-platform BLAS/eigenvector-sign sensitivity** (the 3 assertion failures:
+     `test_qp_torus_fixed_jacobi_continuation.py::test_h1_free_rho_continuation_stays_far_from_owen_baresi_l1_target`,
+     `test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus`,
+     `test_variational_qp_torus.py::test_l1_crosses_gmos_amplitude_wall`) — two of the three show a
+     near-exact SIGN FLIP between the local (Mac/Accelerate BLAS) and CI (Linux) result
+     (`obtained 0.074029` vs `expected -0.074024`), the classic signature of an eigenvector/Floquet
+     sign ambiguity picking a different (but possibly equally valid) branch under a different BLAS
+     backend — this project has hit exactly this class of issue before (`#584`'s documented
+     tolerance-edge/winding-number BLAS sensitivity; `#515`'s own "aligned 3D Floquet eigenvector
+     signs... to enforce consistent manifold directions" fix). All 3 failing tests touch GMOS-torus/
+     rotation-number quantities that plausibly derive from an eigen-decomposition somewhere in the
+     `#611`-`#618` seedless-corrector chain.
+  2. **CI compute-budget mismatch** (the 3 timeouts: `test_627_titan_pilot.py::
+     test_627_c_tracking_short_hop_is_self_consistent`, `test_variational_qbcp_torus.py::
+     test_em_l2_c313_crosses_gmos_plateau`, `test_variational_qbcp_torus.py::
+     test_em_l2_exact_and_lsmr_agree`) — `pyproject.toml`'s own `[tool.pytest.ini_options]` comment
+     documents CI runners have only 2 cores (vs 8 locally) and that the existing `slow` marker
+     (skipped by default, run via `-m slow`) exists specifically for tests needing "5-10 min each on
+     CI's 2-core runners." These 3 tests were never classified when written (e.g. `#618`'s own
+     n1=28,n2=9 EM-L2 solve was independently timed at ~13.5 min even on the fast local 8-core Mac —
+     already past the 600s timeout before even accounting for CI's weaker hardware).
+  **Scope**:
+  1. Investigate and PROPERLY FIX the sign-ambiguity root cause for the 3 assertion failures — do
+     NOT just wrap the comparison in `abs()` or widen the tolerance to paper over it without
+     understanding WHY the sign differs; determine whether this is a genuine, benign eigenvector-
+     sign-convention ambiguity (fixable by canonicalizing the sign — e.g. picking a consistent sign
+     convention based on a physically-meaningful criterion, the way `#515` did for the 3D Floquet
+     case) or whether it reveals something more concerning about the corrector's own determinism.
+     This needs real numerical-methods judgment, not a mechanical patch.
+  2. Mark the 3 genuinely-expensive tests `@pytest.mark.slow`, following this project's own
+     established, already-documented convention (see the `pyproject.toml` comment above) — this is
+     NOT weakening the tests (per `[[feedback_delegation_fresh_agent_not_fork]]`'s "never mark a
+     V-gauntlet evidence test @pytest.mark.slow" caution: these are NOT V-gauntlet validation-tier
+     evidence tests, they are corrector positive-control/reproduction tests, and the project's own
+     `slow` marker exists precisely for this class of expensive-but-legitimate test) — they remain
+     fully runnable via `-m slow` or `-m "slow or not slow"`, just excluded from the default
+     CI-gating run, exactly like the existing M5-optimiser precedent.
+  3. Do a genuine root-cause read on WHY each specific test times out (confirm it really is a
+     compute-budget issue on 2 cores, not a genuine performance regression or infinite loop) before
+     just marking it slow — a quick local timing check with `-n0` (serial, single-core-equivalent)
+     or an artificially constrained core count would be a reasonable sanity check.
+  4. Once fixed, run the FULL local ratchet (`ruff`, `mypy`, `pytest tests/data tests/search tests/ml
+     tests/scripts -q`), commit, push, and — same discipline as `#631` — actually watch CI via
+     `gh run list`/`gh run view` until it is CONFIRMED green. Do not report success from local checks
+     alone.
+  5. Do NOT touch `data/catalogue.yaml`. Do NOT change any behavior beyond the specific sign-fix and
+     the `slow` marker additions.
+  Recommended model: Opus for the sign-ambiguity root-cause investigation and fix (genuine
+  numerical-methods judgment, exactly the class of work this project's model-tiering policy reserves
+  for Opus, not Sonnet); Sonnet is fine for the mechanical `slow`-marker additions and final
+  verification/push once the sign fix is in hand.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
