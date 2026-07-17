@@ -507,7 +507,12 @@ topology (lands on a stable-but-non-encountering (1,0) branch, 0/81 on-target me
 follow-up C-sweep); (3,3) fails to converge outright before reaching Titan mu; full multi-system
 sweep NOT recommended, see #627's own bullet); #628 for a user-directed productionization of
 #608/#624's generative ML seed model into a reusable API/tool, accounting for the demonstrated
-mu-dependent lift magnitude (dispatched 2026-07-18); #629 next-unused):**
+mu-dependent lift magnitude (dispatched 2026-07-18); #629 for a new-method 2D grid/homotopy attack
+on real-planet-moon-mu RRT (k1,k2) cyclers at Saturn-Titan, replacing the mu-continuation approach
+#627 found structurally fails -- flagged for a design read before dispatch, not auto-fired
+(registered 2026-07-18); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
+module more broadly against existing #607/#609/#571/#494/#549 results (registered 2026-07-18);
+#631 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8468,6 +8473,46 @@ anywhere in the file and are genuinely still open.]**
   step), that specific decision merits a quick design read before committing to an approach —
   follow this project's own precedent (`#586`) of getting a Fable/Opus read on integration-pattern
   choices before building, rather than the Sonnet agent picking one unilaterally.
+- **#629** (registered 2026-07-18, user-directed follow-up to `#627` — **flagged for a design read
+  before dispatch, not auto-fired**) — a genuinely new-method attack on real-planet-moon-μ
+  Ross-Roberts-Tsoukkas (k1,k2) ballistic cyclers, replacing the 1D mu-continuation approach `#627`
+  found structurally fails (fold instability near the paper's own low-μ anchors; loss of the
+  secondary-reaching topology as C_L1(μ) shrinks below the anchor's own C). Scope: a 2D grid or
+  homotopy search directly IN `(x0, C)` at the target μ (Saturn-Titan μ≈2.367e-4 first, matching
+  `#627`'s own target), searching near the L1 neck rather than continuing from a distant
+  Earth-Moon-scale anchor — i.e. treat the target μ as a fresh discovery problem using `#627`'s own
+  gates (Barden stability |ν|<1, `winding_topology`'s `reaches_secondary` check, and
+  `perimoon_passage.py`'s encounter-relevance geometry) rather than trying to rescue continuation.
+  **Honest framing carried over from `#623`/`#627`**: as μ→0 these families shade into classical
+  Poincaré first-kind/resonant territory, so existence is close to theorem-guaranteed — the
+  `search/literature_check.py` novelty gate (mandatory per
+  `[[feedback_literature_novelty_check_baseline]]`) is load-bearing here, and the likely honest
+  outcome is still "known classical object, relabeled," not a novel species. `#623`'s original
+  "HIGH feasibility" confidence for this whole direction was already revised DOWN once by `#627`;
+  do not re-inflate it without new evidence. **Gate before dispatch**: get a Fable/Opus design read
+  on whether a 2D grid or a homotopy/continuation-in-a-different-parameter approach is the better
+  fit, and a rough cost estimate, before committing — this is a new-method build, not a cheap pilot
+  (per `#627`'s own explicit recommendation), and should not be auto-fired the way `#624`-`#628`
+  were. Recommended model for the design read: Opus/Fable; for the build if it proceeds: Sonnet
+  behind the design's chosen approach.
+- **#630** (registered 2026-07-18, user-directed follow-up to `#627`) — leverage
+  `src/cyclerfinder/search/perimoon_passage.py` (`#627`'s new encounter-geometry module, currently
+  tested only against the admitted PC(3,2) cycler and used once inside `#627`'s own pilot) more
+  broadly across this project's existing results, rather than letting it sit as single-use
+  infrastructure. Scope: audit whether this module's encounter-relevance/duty-cycle check changes
+  or refines the characterization of any ALREADY-established negative or positive result that
+  relied on a cruder or ad-hoc encounter-quality check — start with the `#607`/`#609`/`#571`
+  bend-gate-limited negatives `#625` just certified (their failure mode is "bend too small," a
+  different axis than `perimoon_passage.py`'s encounter-relevance geometry, so check whether this
+  module surfaces anything ADDITIONAL, not just re-confirms the bend finding) and the `#494`/`#549`
+  admitted (k1,k2) binary-cycler family members going UP in μ (do their perimoon/pericenter passages
+  actually look like useful encounters at every admitted μ, or was that ever assumed rather than
+  checked?). This is an audit/characterization task, not a new search — **do NOT touch
+  `data/catalogue.yaml`** even if something looks different under this lens; report findings and
+  let the coordinating session decide whether any existing entry's characterization needs a
+  follow-up correction. A "nothing changes, existing characterizations hold" result is a fully
+  legitimate, low-drama outcome — do not force a finding. Recommended model: Sonnet (mechanical
+  reuse of existing, tested infrastructure against existing data, not a new numerical method).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
