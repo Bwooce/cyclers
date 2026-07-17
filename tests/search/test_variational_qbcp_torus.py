@@ -66,6 +66,7 @@ from cyclerfinder.search.variational_qbcp_torus import (
     correct_qbcp_torus_pseudospectral,
     discover_qbcp_torus_from_gmos,
     evaluate_torus_state,
+    manifold_state_vec_pseudospectral,
 )
 
 # ---------------------------------------------------------------------------
@@ -534,3 +535,164 @@ def test_planar_seed_z_components_start_zero() -> None:
     coeffs0, _omega2_0, _amp, _period = _em_l2_c313_seed(8, 4)
     assert np.max(np.abs(coeffs0[2])) < 1e-10  # z
     assert np.max(np.abs(coeffs0[5])) < 1e-10  # pz
+
+
+# ---------------------------------------------------------------------------
+# Manifold-eigenvector extraction adapter (#619).
+# ---------------------------------------------------------------------------
+#
+# All numbers pinned below were reproduced live in this session (2026-07-17) by
+# running the adapter directly, NOT copied from a docstring. Direction |dot|
+# statistics are robust (spectral, not integrator-bit-sensitive to leading
+# figures) and pinned with generous bounds.
+
+
+def _gmos_manifold_forward(torus, theta_long, theta_trans, branch, ref_vec):
+    """Reference GMOS forward one-period manifold extraction -- mirrors
+    ``scripts/run_538_qbcp_cycler.manifold_state_vec`` for a GMOS ``QBCPTorus``
+    (evaluate -> one-period augmented STM -> ``local_stability``), replicated
+    here so this search-suite test has no ``scripts`` import dependency."""
+    import math
+
+    from cyclerfinder.genome.qbcp_torus import evaluate_qbcp_torus
+    from cyclerfinder.genome.qp_torus_manifold import local_stability
+
+    state = evaluate_qbcp_torus(torus, theta_long, theta_trans)
+    t0 = (float(theta_long) % (2.0 * math.pi)) / torus.omega_long
+    try:
+        _, spv = qbcp.propagate_qbcp_pv(
+            state, (t0, t0 + torus.t_strob), torus.system, with_stm=True, rtol=1e-8, atol=1e-8
+        )
+    except RuntimeError:
+        return None
+    stab = local_stability(state, spv[-1, 6:].reshape((6, 6)), hyperbolicity_tol=1e-4)
+    vec = stab.vec_u if branch == "unstable" else stab.vec_s
+    if vec is None:
+        return None
+    if ref_vec is not None and float(np.dot(vec, ref_vec)) < 0.0:
+        vec = -vec
+    return state, np.asarray(vec, dtype=np.float64)
+
+
+@pytest.fixture(scope="module")
+def se_tori() -> tuple[qbcp.QBCPTorus, object]:
+    """Build the SE-L2 GMOS torus and its pseudospectral counterpart ONCE."""
+    qbcp_sys = qbcp.qbcp_default()
+    gmos = _build_se_l2_gmos_torus()
+    pseudo = discover_qbcp_torus_from_gmos(
+        qbcp_sys, gmos, n1=6, n2=5, max_nfev=1500, tr_solver="lsmr"
+    )
+    return gmos, pseudo
+
+
+def test_variational_result_gmos_alias_properties(se_tori) -> None:
+    """The #619 read-only aliases are exact synonyms so the #538 search can
+    duck-type either torus: ``omega_long == omega1`` (fixed Sun frequency),
+    ``t_strob == period``, ``invariance_residual == residual_rms``."""
+    _gmos, pseudo = se_tori
+    assert pseudo.omega_long == pseudo.omega1
+    assert pseudo.t_strob == pseudo.period
+    assert pseudo.invariance_residual == pseudo.residual_rms
+    # omega_long is the fixed Sun synodic frequency, matching a GMOS torus.
+    assert pseudo.omega_long == pytest.approx(qbcp.qbcp_default().omega_sun_nondim, rel=1e-12)
+
+
+def test_manifold_adapter_state_and_unit_eigenvector(se_tori) -> None:
+    """The adapter returns ``(state_pv, eigenvector)`` where ``state_pv`` is
+    exactly ``state_pm_to_pv(evaluate_torus_state(...))`` at the Sun epoch
+    ``t0 = theta_long/omega1`` and the eigenvector is unit-norm, for both
+    branches -- the mechanical contract the #538 search relies on."""
+    _gmos, pseudo = se_tori
+    theta_long, theta_trans = 1.3, 2.1
+    for branch in ("unstable", "stable"):
+        mv = manifold_state_vec_pseudospectral(pseudo, theta_long, theta_trans, branch, None)
+        assert mv is not None
+        state_pv, vec = mv
+        pm = evaluate_torus_state(pseudo, theta_long, theta_trans)
+        t0 = (theta_long % (2.0 * np.pi)) / pseudo.omega1
+        expected_pv = qbcp.state_pm_to_pv(pm, t0, pseudo.system)
+        assert np.allclose(state_pv, expected_pv, atol=1e-12)
+        assert float(np.linalg.norm(vec)) == pytest.approx(1.0, abs=1e-10)
+
+
+def test_manifold_adapter_ref_vec_sign_convention(se_tori) -> None:
+    """``ref_vec`` fixes the eigenvector sign by dot-product continuity, exactly
+    as ``manifold_state_vec`` does (a negative reference flips the returned
+    vector)."""
+    _gmos, pseudo = se_tori
+    # (1.3, 2.1) is a hyperbolic point (the SE torus is non-hyperbolic at some
+    # phases where the one-period map has a complex pair and no real unstable
+    # eigenvalue -- the adapter correctly returns None there).
+    mv = manifold_state_vec_pseudospectral(pseudo, 1.3, 2.1, "unstable", None)
+    assert mv is not None
+    _state, vec = mv
+    mv_pos = manifold_state_vec_pseudospectral(pseudo, 1.3, 2.1, "unstable", vec)
+    mv_neg = manifold_state_vec_pseudospectral(pseudo, 1.3, 2.1, "unstable", -vec)
+    assert mv_pos is not None and mv_neg is not None
+    assert float(np.dot(mv_pos[1], vec)) > 0.0
+    assert float(np.dot(mv_neg[1], vec)) < 0.0
+
+
+def test_manifold_directions_match_gmos_on_se_l2(se_tori) -> None:
+    """POSITIVE CONTROL (#619 Step 2): the adapter's forward-STM manifold
+    directions on the pseudospectral SE-L2 torus reproduce the trusted GMOS
+    ``manifold_state_vec`` directions at matched PHYSICAL points (theta1 is
+    Sun-locked in both; match by nearest PV state along the invariant circle,
+    since the two constructions can differ in their theta2 phase origin). The
+    residual disagreement scales with the physical match distance (a smooth
+    bundle sampled at slightly different points), so agreement is asserted on the
+    well-matched subset. Live-observed median |dot| ~0.9998."""
+    gmos, pseudo = se_tori
+    for branch in ("unstable", "stable"):
+        rows: list[tuple[float, float]] = []
+        for theta1 in np.linspace(0.0, 2 * np.pi, 3, endpoint=False):
+            # dense pseudo circle at this theta1
+            t2p = np.linspace(0.0, 2 * np.pi, 60, endpoint=False)
+            p_states, p_vecs = [], []
+            for t2 in t2p:
+                mvp = manifold_state_vec_pseudospectral(
+                    pseudo, float(theta1), float(t2), branch, None
+                )
+                p_states.append(None if mvp is None else mvp[0])
+                p_vecs.append(None if mvp is None else mvp[1])
+            for t2g in np.linspace(0.0, 2 * np.pi, 6, endpoint=False):
+                mvg = _gmos_manifold_forward(gmos, float(theta1), float(t2g), branch, None)
+                if mvg is None:
+                    continue
+                sg, vg = mvg
+                best_d, best_j = np.inf, -1
+                for j, sj in enumerate(p_states):
+                    if sj is None:
+                        continue
+                    d = float(np.linalg.norm(sg - sj))
+                    if d < best_d:
+                        best_d, best_j = d, j
+                if best_j < 0 or p_vecs[best_j] is None:
+                    continue
+                rows.append((best_d, abs(float(np.dot(vg, p_vecs[best_j])))))
+        assert rows, f"no matched hyperbolic points for branch={branch}"
+        rows.sort()
+        dots = np.array([r[1] for r in rows])
+        # Well-matched half agrees to high precision; median excellent overall.
+        k = max(1, len(rows) // 2)
+        assert np.median(dots) > 0.99, f"{branch}: median |dot| {np.median(dots):.4f} too low"
+        assert dots[:k].min() > 0.95, (
+            f"{branch}: well-matched min |dot| {dots[:k].min():.4f} too low"
+        )
+
+
+def test_unstable_forward_vs_backward_differ_on_torus(se_tori) -> None:
+    """Documents the #619 finding that for a TORUS point (unlike a periodic
+    orbit) the one-period-STM eigenvector is an approximation: the forward-STM
+    unstable direction and the ``unstable_via_backward`` extraction are genuinely
+    DIFFERENT (rotation mismatch E^u(t0) -> E^u(t0+T)), even on the
+    cleanly-converged SE-L2 torus. This is why the GMOS-faithful forward
+    extraction is the default and ``unstable_via_backward`` is opt-in."""
+    _gmos, pseudo = se_tori
+    mvf = manifold_state_vec_pseudospectral(pseudo, 0.0, 0.0, "unstable", None)
+    mvb = manifold_state_vec_pseudospectral(
+        pseudo, 0.0, 0.0, "unstable", None, unstable_via_backward=True
+    )
+    assert mvf is not None and mvb is not None
+    # The two approximations are materially different directions (not ~parallel).
+    assert abs(float(np.dot(mvf[1], mvb[1]))) < 0.9
