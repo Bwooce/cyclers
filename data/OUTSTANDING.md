@@ -529,7 +529,9 @@ of the module's scope AND the bend gate's own closest-safe-periapsis constructio
 forecloses a degenerate-passage finding; #494/#549's Pluto-Charon row's "useful encounter" was
 independently re-verified at the exact catalogue IC (altitude 480.76 km, not assumed), the 4
 abstract-mu rows never claimed a physical encounter to begin with);
-#631 next-unused):**
+#631 for fixing the 94-error accumulated mypy --strict debt blocking CI (nothing pushed since
+2026-07-14 until this session's first push on 2026-07-18, so #600-#630's range was never checked --
+a coordinating-session verification-loop gap, dispatched 2026-07-18); #632 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8655,6 +8657,46 @@ anywhere in the file and are genuinely still open.]**
   `catalogue.yaml`/`empty_regions.jsonl` edits. No new reusable code (read-only analysis + ad hoc
   verification snippets only, run and discarded — not committed as a module), so no new tests and
   no ruff/pytest re-run was needed (confirmed via `git status`: nothing in `src/`/`tests/` touched).
+- **#631** (dispatched 2026-07-18, coordinating-session-directed) — **fix accumulated `mypy --strict`
+  debt blocking CI, and add `mypy` to this project's own local pre-commit/verification loop going
+  forward.** Root cause: CI (`.github/workflows/ci.yml`) has run `uv run mypy src tests` under
+  `strict = true` (`pyproject.toml`) since the workflow's own creation — this is not new — but
+  nothing had been pushed to `origin/main` since 2026-07-14, so none of the `#600`-`#630` range's
+  work was ever checked against it until the first push of this range on 2026-07-18 (CI run
+  `29594861410`, FAILED in 54s, `git@0ba6436..9145d58`). The coordinating session's own dispatch
+  prompts across that entire range only ever instructed `ruff check`/`ruff format --check` + pytest,
+  never `mypy` — a real process gap on the coordinating session's part, not a mistake by any
+  individual dispatched agent. **Scope**: run `uv run mypy src tests` locally, fix every one of the
+  94 reported errors across 24 files (see the CI log, run `29594861410`, for the full list) —
+  missing type annotations (strict-mode requirement, mechanical), `Any`-return violations, missing
+  generic type arguments (bare `dict`/`NDArray` → `dict[str, Any]`/`NDArray[np.float64]` etc.),
+  genuine `Optional`/`None`-handling gaps (a few real `"None" not callable` hits worth reading
+  carefully, not just silencing), the `mpmath` untyped-third-party-library warnings (add a
+  `[[tool.mypy.overrides]]` block for `mpmath.*` with `ignore_missing_imports = true`, following the
+  EXACT existing pattern + comment style already used for `astropy`/`spiceypy`/`rebound`/`jplephem`/
+  `joblib` in `pyproject.toml` — do not invent a new pattern), and two `scipy.optimize.least_squares`
+  argument-typing mismatches (`jac`/`tr_solver` in `variational_qbcp_torus.py`/
+  `variational_qbcp_arc.py` — likely just need an explicit `Literal[...]` cast or narrower typing,
+  investigate whether these hint at an ACTUAL latent bug before just silencing them, per this
+  project's `[[feedback_bugfix_invalidates_past_searches]]` spirit — a real bug hiding behind a type
+  error would be a genuine, valuable find, not just cleanup). Do NOT weaken `strict = true` or add
+  broad blanket `# type: ignore` comments to make errors disappear cheaply — fix them properly, using
+  narrow/targeted ignores only where a genuine third-party-library gap justifies it (matching the
+  existing override pattern), and NEVER on this project's own code without a specific, commented
+  reason. Do NOT change any runtime behavior — this is a typing-only pass; if a genuine bug is found
+  via a type error, fix it minimally and flag it clearly in the commit message and this bullet rather
+  than quietly folding it into a larger change. Verify: `uv run mypy src tests` exits 0 locally, all
+  existing `ruff`/pytest ratchets still pass, then push and confirm the SAME CI run (or a fresh push)
+  goes green — do not just claim success from the local run, watch the actual CI result via
+  `gh run list`/`gh run view`. **Second deliverable**: update every existing dispatch-prompt habit
+  and this file's own conventions so `uv run mypy src tests` is included alongside `ruff`/pytest in
+  future verification steps — at minimum, note this prominently in this bullet's own resolution text
+  as a standing reminder, since there is no automated ratchet enforcing it locally (CI is the only
+  current enforcement, and it is only checked on push, which this session's whole recent range
+  neglected). Recommended model: Sonnet (mechanical fixes behind mypy's own deterministic pass/fail
+  gate — exactly the class of work this project's model-tiering policy reserves for Sonnet — EXCEPT
+  the two `least_squares` argument-type findings, which need a moment of real judgment on whether
+  they're hiding a bug; flag those specifically rather than rushing past them).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
