@@ -26,7 +26,7 @@ import scripts.certify_625_bend_gate_registry as driver  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
-def _iv_precision():
+def _iv_precision() -> None:
     mp.mp.dps = 50
     mp.iv.dps = 50
 

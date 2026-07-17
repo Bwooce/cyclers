@@ -28,7 +28,7 @@ from cyclerfinder.search.physical_sanity import DEFAULT_MIN_USEFUL_BEND_DEG  # n
 
 
 @pytest.fixture(autouse=True)
-def _iv_precision():
+def _iv_precision() -> None:
     mp.mp.dps = 50
     mp.iv.dps = 50
 

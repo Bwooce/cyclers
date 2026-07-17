@@ -121,6 +121,15 @@ strict = true
 warn_unused_ignores = true
 disallow_any_unimported = true
 plugins = []
+# scripts/*.py files import sibling scripts/*.py modules by bare top-level
+# name (e.g. ``from enumerate_563_symmetric_closures import ...``), mirroring
+# each script's own ``sys.path.insert(0, str(ROOT / "scripts"))`` at runtime
+# (there is no ``scripts/__init__.py`` -- these are standalone driver scripts,
+# not a package). Add the same directory to mypy's own module search path so
+# it can resolve those bare imports the same way the interpreter does,
+# instead of reporting a spurious "Cannot find implementation" error whenever
+# a test transitively imports one of these scripts.
+mypy_path = "scripts"
 
 # astropy ships partial type stubs; treat its sub-modules as Any rather than
 # fail strict mode on third-party untyped surfaces. This is a pragmatic choice;
@@ -164,6 +173,15 @@ ignore_missing_imports = true
 # Any — same pragmatic choice as the other untyped third-party surfaces above.
 [[tool.mypy.overrides]]
 module = ["jsonschema.*"]
+ignore_missing_imports = true
+
+# mpmath ships no py.typed marker. Task #610's interval-arithmetic proof
+# (scripts/certify_610_proteus_bend_interval.py and its `_bend_gate_interval_cert`
+# helper) uses mpmath's `iv` context for directed-rounding interval elementary
+# functions; treat as Any — same pragmatic choice as the other untyped
+# third-party surfaces above.
+[[tool.mypy.overrides]]
+module = ["mpmath.*"]
 ignore_missing_imports = true
 
 # scripts/-to-scripts/ reuse in this project uses a same-directory

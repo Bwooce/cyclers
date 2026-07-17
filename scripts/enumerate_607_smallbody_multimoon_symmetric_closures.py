@@ -106,9 +106,15 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
+# Also on sys.path so `scripts.X` (dotted) resolves standalone, matching how
+# tests/scripts/*.py already address these modules -- needed because a couple
+# of sibling scripts (this one included) are reachable BOTH ways depending on
+# caller, and mypy needs a single, consistent module identity to avoid a
+# "Source file found twice under different module names" error.
+sys.path.insert(0, str(ROOT))
 
-from enumerate_563_symmetric_closures import enumerate_direction  # noqa: E402
-from enumerate_600_3moon_symmetric_closures import enumerate_sequence  # noqa: E402
+from scripts.enumerate_563_symmetric_closures import enumerate_direction  # noqa: E402
+from scripts.enumerate_600_3moon_symmetric_closures import enumerate_sequence  # noqa: E402
 
 DATA_DIR = ROOT / "data"
 OUT_PATH = DATA_DIR / "enumerate_607_smallbody_multimoon_symmetric_closures.jsonl"

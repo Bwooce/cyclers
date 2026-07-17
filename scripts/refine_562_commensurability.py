@@ -170,7 +170,7 @@ def load_raw_candidates() -> list[dict[str, Any]]:
         lines = fh.readlines()
     last = json.loads(lines[-1])
     assert last.get("kind") == "candidates_needing_adjudication"
-    cands = last["candidates"]
+    cands: list[dict[str, Any]] = last["candidates"]
     assert len(cands) == 3672, f"expected 3672 raw candidates, got {len(cands)}"
     return cands
 

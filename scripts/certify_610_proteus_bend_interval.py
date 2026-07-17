@@ -127,6 +127,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
+# Also on sys.path so `scripts.X` (dotted) resolves standalone, matching how
+# tests/scripts/*.py already address these modules -- needed because a couple
+# of sibling scripts (this one included) are reachable BOTH ways depending on
+# caller, and mypy needs a single, consistent module identity to avoid a
+# "Source file found twice under different module names" error.
+sys.path.insert(0, str(ROOT))
 
 from cyclerfinder.core.satellites import SATELLITES  # noqa: E402
 from cyclerfinder.search.physical_sanity import DEFAULT_MIN_USEFUL_BEND_DEG  # noqa: E402
@@ -142,8 +148,11 @@ except ImportError:  # pragma: no cover - exercised by the skip-clean test
 # (not redefined) so this script and #625's driver share one implementation.
 # Re-exported under their original names so `certify610.rigorous_arcsin` /
 # `certify610.bend_deg_interval` keep resolving exactly as before (existing
-# test file imports them off this module, unchanged).
-from _bend_gate_interval_cert import bend_deg_interval, rigorous_arcsin  # noqa: E402,F401
+# test file imports them off this module, unchanged). `__all__` makes the
+# re-export explicit for mypy's strict-mode implicit-reexport check.
+from scripts._bend_gate_interval_cert import bend_deg_interval, rigorous_arcsin  # noqa: E402
+
+__all__ = ["bend_deg_interval", "rigorous_arcsin"]
 
 
 def _proteus_subgate_vinf_range() -> tuple[float, float, int, int]:
@@ -157,12 +166,13 @@ def _proteus_subgate_vinf_range() -> tuple[float, float, int, int]:
     """
     import itertools
 
-    from enumerate_563_symmetric_closures import N_REV_VALUES, REL_OFFSETS_DEG, pair_n_max
     from scan_558_uranus_all_pairs_offset_sweep import (
         GATE_RESIDUAL_KMS,
         gate_candidate,
         residual_at_point,
     )
+
+    from scripts.enumerate_563_symmetric_closures import N_REV_VALUES, REL_OFFSETS_DEG, pair_n_max
 
     primary = "Neptune"
     directions = [("Triton", "Proteus"), ("Proteus", "Triton")]
