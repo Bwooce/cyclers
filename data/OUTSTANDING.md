@@ -501,7 +501,11 @@ seeding #620's collocation arc corrector from #619's ~166,000 km ballistic near-
 last untried refinement (dispatched 2026-07-17; CLOSED clean negative same day — near-miss
 reproduced bit-for-bit then collocation seeded from it ghosts at orders 40/60, Radau loop defect
 ~1e6 km, no closure, #538-#620 arc's last named alternative exhausted); #627 for #623 shortlist B4, a pilot μ-continuation
-of the Ross-RT (k1,k2) ballistic-cycler families down to Titan mu (dispatched 2026-07-17); #628
+of the Ross-RT (k1,k2) ballistic-cycler families down to Titan mu (dispatched 2026-07-17; CLOSED
+same day, clean negative on both gates -- (1,1) reaches Titan mu but loses the secondary-reaching
+topology (lands on a stable-but-non-encountering (1,0) branch, 0/81 on-target members in a
+follow-up C-sweep); (3,3) fails to converge outright before reaching Titan mu; full multi-system
+sweep NOT recommended, see #627's own bullet); #628
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -8361,28 +8365,69 @@ anywhere in the file and are genuinely still open.]**
   non-existence, but the last named alternative for the whole `#538`-`#620` arc is now exhausted —
   the negative loses its "untried refinement" asterisk. Reproduce via the scratch scripts
   (`probe_626_inspect.py`, `probe_626_collocate.py`) + the cached tori/solution pkls; numbers above.
-- **#627** (dispatched 2026-07-17, `#623` shortlist B4 — user-directed) — pilot μ-continuing the
+- **#627** ✓ PILOT CLOSED, CLEAN NEGATIVE ON BOTH GATES (2026-07-17) — (dispatched 2026-07-17,
+  `#623` shortlist B4 — user-directed) — pilot μ-continuing the
   Ross-Roberts-Tsoukkas (k1,k2) stable ballistic prograde cycler families DOWN below their
   published μ=0.001 floor toward real planet-moon mass ratios (Saturn-Titan μ≈2.4e-4 first; Neptune-
   Triton ≈2.1e-4, Jupiter-Ganymede ≈7.8e-5, Jupiter-Europa ≈2.5e-5, Uranus-Titania ≈4e-5 as later
   candidates if the pilot clears). `#494` already extended these families UP in μ (binaries,
-  0.1085-0.5, closing `#315`) with a solver `#494` itself characterizes as μ-agnostic; nobody has
-  gone the other direction toward real solar-system moon systems. **Pilot scope only** (do NOT run
-  a full multi-system sweep until the pilot clears both gates below): continue the two EM
-  representatives (k=(1,1) and k=(3,3)) down to Titan μ via pseudo-arclength continuation, reusing
-  `#494`'s existing machinery and Table-I golden/Phase-0 positive control, and check (a) the family
-  survives with stability index |s|<1 at Titan μ, and (b) the perimoon-passage geometry is actually
-  encounter-relevant (not a degenerate near-collision or a useless-altitude pass). **Honest novelty
-  caveat (why this is scoped as a pilot, not a full sweep)**: as μ→0, symmetric stable prograde
-  periodic orbits shade into classical Poincaré first-kind/resonant families — existence at small μ
-  is close to theorem-guaranteed, so the finding risks being "a known classical object, relabeled."
-  A mandatory `search/literature_check.py` novelty gate per
-  `[[feedback_literature_novelty_check_baseline]]` is NOT optional here; expect census, not a novel
-  species, consistent with this program's post-pivot job (per
-  `[[project_capability_frontier_complete]]`). Only dispatch a full multi-system sweep (a follow-up
-  task, not this one) if the pilot's two representatives clear both gates. Recommended model:
-  Sonnet for the continuation pilot itself; any eventual novelty verdict on a full sweep's output
-  needs Opus/Fable adjudication, not Sonnet, per this project's standard gate.
+  0.1085-0.5, closing `#315`) with a solver `#494` itself characterizes as μ-agnostic; nobody had
+  gone the other direction toward real solar-system moon systems.
+  **RESULT: neither representative reaches a genuine, encounter-relevant Titan cycler — BOTH gates
+  fail for BOTH (k1,k2)** (script `scripts/run_627_rrt_mu_continuation_titan_pilot.py`, raw log
+  `docs/notes/scratch/627_titan_pilot_raw.txt`, tests `tests/search/test_627_titan_pilot.py`):
+  - **(1,1)**: continued from the Table-I mu=0.001 Rep-1 anchor (the paper's own floor, used as a
+    fold-free waypoint — see method note below) down to Saturn-Titan μ=2.367e-4 in 449s. Lands on a
+    genuine, linearly-STABLE periodic orbit (Barden ν=0.9961, independent-Radau crosscheck PASS,
+    dJ=1.5e-13) — but its winding topology is **(1,0), not (1,1)**: `reaches_secondary=False`, i.e.
+    it never enters Titan's realm at all (the branch bifurcated onto a Saturn-only interior orbit
+    before arrival). A follow-up 81-point C-sweep at Titan μ around the landed C (mirroring `#494`
+    Phase-3's own stable-window-finding method) found **zero** on-target-topology-and-stable
+    members. Gate (a) is moot (the "stable" member found is not the sought family) and gate (b)
+    fails by construction (no Titan encounter exists to characterize).
+  - **(3,3)**: continued from the Table-I mu=0.01215 Rep-3 anchor (the task's literal starting
+    point) — continuation **fails to converge outright** before reaching Titan μ (165.8s), a clean
+    negative at the continuation-machinery level itself. Neither gate is reachable.
+  **Method finding (the actual engineering deliverable)**: `#494`/`#549`'s ADMITTED upward
+  extension used a fixed-Jacobi natural-parameter mu-step (`mu_step_to_system`, C held fixed the
+  whole walk) — valid going UP because C_L1(μ) never falls below the anchor's own C along that
+  path. Going DOWN toward Titan μ this is NOT valid: C_L1(Saturn-Titan μ=2.37e-4)=3.0158 is BELOW
+  both the (1,1)/(3,3) mu=0.01215 anchors' own C (3.151/3.183), so a fixed-C walk silently drifts
+  onto a topologically wrong, non-secondary-reaching branch while still numerically "converging" at
+  every step — a false-positive success mode, verified directly. Built a generalization,
+  `mu_step_to_system_tracking_c_l1` (`src/cyclerfinder/search/real_binary_kk_sweep.py`), that
+  interleaves small C-walks (tracking below C_L1(μ)) with each mu step — the direct analog of
+  `#494`'s own `sweep_31` "Strategy B" fix for the identical problem going up. This fix is
+  NECESSARY (confirmed the naive approach fails/mis-lands) but NOT SUFFICIENT: (1,1) still loses
+  secondary-reach in the final stretch of the walk (reproduced at two independent step-size
+  resolutions, 120-step and 200-step), and (3,3) loses convergence outright partway down. Also
+  found and worked around a real fragility: the C-margin parameter needs per-representative tuning
+  (0.02 fine once the mu=0.001 (1,1) waypoint is reached; 0.02 breaks (3,3)'s hc=7 branch
+  immediately at its own mu=0.01215 anchor, whose C sits only 0.0049 below C_L1 there — 0.005
+  needed). Separately, the (1,1) mu=0.01215 Table-I Rep-2 anchor itself sits at/immediately
+  adjacent to a fold in μ: even a dμ=1e-7 step off it jumps the corrector to a discontinuously
+  different branch (x0 -0.768→-0.512) — worked around by starting from the mu=0.001 Rep-1 anchor
+  instead (itself a sourced Table-I row, not a fresh guess).
+  **Literature check**: no candidate orbit resulted (both gates fail), so no novelty claim was ever
+  in play. For the record: the offline `search/literature_check.py` corpus backend returned
+  "published" against the Russell-Strange 2009 Titan-flyby corpus entry, but this is a coarse
+  Saturn+Titan body-set match, NOT a genuine structural match (our orbit doesn't reach Titan at
+  all — a different topology class, flyby-driven vs this family's ballistic-capture class). A live
+  WebSearch additionally confirmed the Ross-RT 2026 paper's OWN claimed mass-ratio range is
+  "Sun-Jupiter regime" (μ≈9.5e-4) to the equal-mass limit — i.e. even the paper's own family only
+  claims down to roughly Sun-Jupiter scale, not real-moon μ (Titan's 2.37e-4 is ~4x below even
+  that); no prior work found addressing continuation of this family to real planet-moon mass
+  ratios.
+  **Recommendation: do NOT dispatch a full multi-system sweep.** `#623`'s B4 shortlist entry rated
+  "HIGH confidence on feasibility" — this pilot REVISES that down: naive 1D mu-continuation from an
+  Earth-Moon-scale anchor does not reliably survive to real-moon mass ratios, for two independent
+  reasons found here (fold instability at/near the paper's own low-μ anchors; loss of the
+  secondary-reaching topology as C_L1(μ) shrinks below the anchor's own C). Pursuing this line
+  further would need a fundamentally different search strategy AT the target μ directly (e.g. a 2D
+  grid/homotopy search in (x0,C) focused near the L1 neck at the real moon's μ, rather than
+  continuation from a distant Earth-Moon-scale anchor) — itself a nontrivial new-method task, not a
+  "cheap pilot." Recommended model used: Sonnet (continuation pilot + engineering characterization;
+  no novelty verdict was needed since no candidate resulted).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
