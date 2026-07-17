@@ -61,9 +61,11 @@ history.
   constant reproduces BOTH target frequencies simultaneously — so the `#522` linking-number screen's
   "one remaining frequency-matched shot" this entry describes is now known to have no genuine
   frequency-matched pair to attempt, a final answer, not a remaining blocker.
-- *(sub-task, not its own `#NNN`)* `#503`'s "expand `#267` goldens" mining step remains open (its
-  acquisition sub-task itself is closed, per `#595`) — untouched by the `#605`-`#620` session, still
-  genuinely open.
+- ~~`#503`'s "expand `#267` goldens" mining step~~ **REMOVED from this list 2026-07-17 — CLOSED via
+  `#621`, clean negative.** All 4 already-digested papers were checked directly against their source
+  PDFs; none contained a converged-orbit IC table this module's autonomous-CR3BP corrector could use
+  as a golden (each for a distinct, source-verified reason — see `#621`'s own bullet). No
+  `resonance_network.py`/test changes; this closes the `#503` follow-up thread.
 - ~~`#596`'s Russell Table 3.4/3.9-3.11 backfill remainder~~ **REMOVED from this list 2026-07-17 —
   CLOSED via `#616` (2026-07-16).** The 3 "genuinely-uncatalogued" rows this line flagged turned out
   to be sign-transcription duplicates of existing entries (fixed by renaming, not adding); the 4th
