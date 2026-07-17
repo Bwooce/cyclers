@@ -86,11 +86,14 @@ history.
   The "never run"/"uncommitted working-tree" framing was true only briefly, before that commit —
   see `#515`/`#516`/`#517`'s own corrected bullet entries. (`#518` remains closed, superseded by
   `#522`, as this list previously noted.)
-- `#520` — Comprehensive 3D cross-system closure sweep (8,640-point grid,
-  `scripts/run_520_comprehensive_3d_search.py`) — **ABORTED** 2026-07-02 after 12+ hours with zero
-  output (a scoping failure: too coarse to find anything AND too expensive to finish), explicitly
-  **not a negative result**. No re-attempt has been made; would need a timed pilot + incremental
-  checkpointing first per the DELTA-2026-07-02 review's own diagnosis.
+- ~~`#520`~~ **REMOVED from this list 2026-07-17 — CLOSED/SUPERSEDED, not open.** Comprehensive 3D
+  cross-system closure sweep (8,640-point grid, `scripts/run_520_comprehensive_3d_search.py`) —
+  ABORTED 2026-07-02 after 12+ hours with zero output, not a negative result at the time. Per
+  `#623`'s recommendation: its only unique content (the 4-libration-pair matrix) is now fully
+  covered by narrower, checkpointed sweeps — `#411` (EM-L2/SE-L2), `#516`/`#517` (multi-rev +
+  asymmetric pairs), `#622` (EM-L1/SE-L1, the last cell, closed 2026-07-17) — so a revival would
+  only be "the same 4 pairs at a denser grid," the exact anti-pattern `#411`'s own entry warns
+  against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
 - None identified as actively running as of 2026-07-15. The most recent worked chain (`#594`-`#598`,
@@ -481,7 +484,16 @@ this family, a re-grounded grid still finds the two manifolds never co-reach the
 at all, a more fundamental failure than #411's phase-closure wall; registered in
 `empty_regions.jsonl`, completing the 4-pair matrix); #623 for a user-requested Fable strategic-review pass over the reconciled CURRENT
 STATE dashboard's open items plus the full `#605`-`#622` capability set, looking for novel
-combinations and new literature (dispatched 2026-07-17); #624 next-unused):**
+combinations and new literature (CLOSED 2026-07-17: priority reads on #542/#520/ledger-staleness,
+4-item ranked shortlist B1-B4 produced, full report docs/notes/2026-07-17-623-strategic-review.md);
+#624 for #623 shortlist B1, a cross-μ transfer pilot for #608's generative model at μ=0.001/Sun-
+Earth μ, the decisive test of #542's open claim (dispatched 2026-07-17); #625 for #623 shortlist
+B2, generalizing #610's interval-arithmetic bend-gate certificate to ~6 more bend-gate-limited
+empty_regions.jsonl negatives (#607/#609/#571) (dispatched 2026-07-17); #626 for #623 shortlist B3,
+seeding #620's collocation arc corrector from #619's ~166,000 km ballistic near-miss, the arc's own
+last untried refinement (dispatched 2026-07-17); #627 for #623 shortlist B4, a pilot μ-continuation
+of the Ross-RT (k1,k2) ballistic-cycler families down to Titan mu (dispatched 2026-07-17); #628
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -509,7 +521,21 @@ combinations and new literature (dispatched 2026-07-17); #624 next-unused):**
   close simultaneously in the grid scanned).
 - **#518** — 3D BCR4BP Continuation: Generate coherent 4-body seeds using 3D patched orbits (uncommitted working-tree).
 - ✓ Resolved (2026-07-07) **#519** — VEM Multi-Synodic Low-Thrust Signal Search (commit 5ff3105): Ran scan_309_low_thrust_vem.py. The sweep returned 2 converged candidates, both of which are Sims-Flanagan infeasible due to thrust limit constraints.
-- **#520** — Comprehensive 3D Sweep: 8,640-point grid search over `scripts/run_520_comprehensive_3d_search.py` (uncommitted working-tree; dispatched by a separate agent, was mis-numbered #516 on arrival — renumbered). ABORTED 2026-07-02 after 12+ hours with zero output — see DELTA above; not a negative result.
+- **#520 ✓ CLOSED/SUPERSEDED (2026-07-17, per `#623`'s recommendation)** — Comprehensive 3D Sweep:
+  8,640-point grid search over `scripts/run_520_comprehensive_3d_search.py` (uncommitted
+  working-tree; dispatched by a separate agent, was mis-numbered #516 on arrival — renumbered).
+  ABORTED 2026-07-02 after 12+ hours with zero output — see DELTA above; not a negative result at
+  the time. **Superseded, not revived**: `#520`'s only unique content was coverage of the
+  4-libration-pair cross-system matrix (EM-L1/SE-L1, EM-L1/SE-L2, EM-L2/SE-L1, EM-L2/SE-L2, each
+  at multiple revolution counts). All 4 cells are now independently, narrowly covered: `#411`
+  (EM-L2/SE-L2, characterized 1-DOF phase-closure negative), `#516` (multi-rev extension, 0/24),
+  `#517` (the two asymmetric pairs, 0/48), `#622` (EM-L1/SE-L1, 0/36, a more fundamental
+  no-spatial-closure negative). What would remain of `#520` is only "the same 4 pairs at a denser
+  grid" — precisely the anti-pattern `#411`'s own entry warns against — and the higher-fidelity
+  QBCP version of the same physical question independently ended in a two-method negative
+  (`#619` manifold conditioning, `#620` ghost minima). Do not rebuild `#520`; the incremental-
+  checkpointing lesson from its abort is memorialized in
+  `[[feedback_incremental_progress_reports]]` and doesn't need this vehicle to justify it.
 - **#521** — Pre-flight Search Gate: mandatory `preflight_search()` checked against both negative registries
   (`data/negative_results.yaml` + `data/empty_regions.jsonl`) plus task-number collision plus a required
   timing-pilot/checkpoint declaration for any grid above N points, enforced by an AST-based ratchet requiring
@@ -8118,6 +8144,81 @@ anywhere in the file and are genuinely still open.]**
   computer-assisted-proof machinery (in corpus, digested, Oterma golden reproduced) as the only
   route to theorem-grade dynamical negatives — parked, multi-week, no current forcing function;
   minor: the Litteri CMDA 138:25 journal version remains unacquired.
+- **#624** (dispatched 2026-07-17, `#623` shortlist B1 — user-directed) — cross-μ transfer pilot for
+  `#608`'s generative ML seed model, the direct test of `#542`'s one remaining open claim ("can a
+  model trained on this corpus propose useful seeds in a genuinely unfamiliar basin"). Scope: take
+  `#608`'s already-built model (`src/cyclerfinder/ml/orbit_generative.py`, trained on the Earth-Moon
+  μ=0.01215 corpus) and evaluate its generate-then-refine lift at μ it has never seen —
+  μ=0.001 (the Ross-RT golden anchor, so a positive control exists) and Sun-Earth μ≈3.0e-6 —
+  refining with the same `cr3bp_periodic.correct_periodic` at the new μ, comparing
+  converged-AND-physically-sane rate against a uniform-bounding-box baseline at that μ, using
+  `#608`'s own evaluation protocol exactly (reuse `run_608`'s harness with a μ parameter — no new
+  model training). ~100 samples per μ. **Decisive either way**: if the lift collapses off-
+  distribution, close `#542` as answered-negative; if it survives (even partially), `#542` becomes
+  a real discovery lever worth productionizing — either outcome ends `#542`'s limbo. Recommended
+  model: Sonnet (mechanical evaluation-harness reuse, not a new numerical-methods judgment call).
+- **#625** (dispatched 2026-07-17, `#623` shortlist B2 — user-directed) — generalize `#610`'s
+  interval-arithmetic bend-gate certificate from the single Proteus sub-gate to every other
+  `empty_regions.jsonl` negative sharing the identical closed-form failure mode (the `#324`
+  physical max-bend gate, undersized-moon-GM branch): `#607` (Sylvia/Eugenia/Kleopatra/Elektra, all
+  four "mass-limited, same failure mode"), `#609` (Phobos+Deimos, bend tops out 0.0159° vs the 5°
+  floor), and `#571`'s two "analytically-empty" Saturn entries — at least 6 more entries total.
+  Scope: generalize `scripts/certify_610_proteus_bend_interval.py` (mpmath.iv rigorous interval
+  arithmetic, same Bate-Mueller-White formula) into a small parameterized helper taking GM/r_p-floor/
+  V∞-box per entry (each `empty_regions.jsonl` entry already records the survivor V∞ ranges needed
+  to define the box), run one certification pass per entry, and record a new registry field on each
+  (e.g. `bend_gate_certified_interval: {box: ..., sup_bend_deg: ...}`) rather than a prose claim.
+  Pure parameter substitution into an existing, tested, reviewed script — mechanical, not research.
+  Honest scope limit inherited from `#610`: only the bend/closed-form half becomes certified: the
+  Lambert/residual half of these searches stays uncertified (rigorously bounding a multi-rev
+  branch-selecting Lambert solve is still unsolved) — do not overclaim full certification of the
+  underlying negative, only of the specific bend sub-gate. Recommended model: Sonnet (mechanical,
+  per this project's own model-tiering policy).
+- **#626** (dispatched 2026-07-17, `#623` shortlist B3 — user-directed) — seed `#620`'s Chebyshev
+  collocation arc corrector (`src/cyclerfinder/search/variational_qbcp_arc.py`,
+  `correct_qbcp_arc_connection`) from `#619`'s own best ballistic near-miss (the ~166,000 km /
+  ~400 m/s norm-0.855 local minimum, Radau-confirmed real — see `#619`'s own bullet for the exact
+  recorded inputs), testing whether global collocation can refine a real shooting near-miss into an
+  actual closed SE↔EM connection. This is `#620`'s own explicitly-flagged last untried refinement:
+  its verdict was that the collocation residual can VERIFY a near-real seed but cannot SEARCH
+  without one, and `#619`'s near-miss is the only seed in existence anywhere near the real basin.
+  Scope: reconstruct `#619`'s best solution from its recorded inputs via the manifold machinery,
+  convert to collocation node values, run `correct_qbcp_arc_connection` at orders 40/60 seeded from
+  it, with `independent_closure_check` (Radau cross-check) as the SOLE arbiter of any claimed
+  closure — per this project's `[[feedback_orbit_closure_discipline]]`, "it closed!" is the danger
+  signal, not the finish line. Optionally also try `#620`'s other flagged variant (over-collocation,
+  m ≫ order, to suppress ghost minima) if time permits. **LOW confidence this closes (~10-15% per
+  `#623`'s own estimate)** — two independent methods already floored at O(1e5 km), and 166,000 km
+  is a generous "near-miss." Payoff is asymmetric: a genuine closure would be the first real
+  cross-system SE↔EM cislunar cycler in this project's history (catalogue-grade only after a
+  mandatory Fable adjudication pass — do NOT write to `data/catalogue.yaml` directly under any
+  circumstances, however convincing the residual looks); a clean failure completes the
+  `#538`-`#620` arc's negative with its last named alternative exhausted, making it maximally
+  citable either way. Recommended model: Opus (closure adjudication on a program whose main
+  failure mode is "it closed!" false positives is exactly the trust-bearing judgment call this
+  project's model-tiering policy reserves for Opus, not Sonnet).
+- **#627** (dispatched 2026-07-17, `#623` shortlist B4 — user-directed) — pilot μ-continuing the
+  Ross-Roberts-Tsoukkas (k1,k2) stable ballistic prograde cycler families DOWN below their
+  published μ=0.001 floor toward real planet-moon mass ratios (Saturn-Titan μ≈2.4e-4 first; Neptune-
+  Triton ≈2.1e-4, Jupiter-Ganymede ≈7.8e-5, Jupiter-Europa ≈2.5e-5, Uranus-Titania ≈4e-5 as later
+  candidates if the pilot clears). `#494` already extended these families UP in μ (binaries,
+  0.1085-0.5, closing `#315`) with a solver `#494` itself characterizes as μ-agnostic; nobody has
+  gone the other direction toward real solar-system moon systems. **Pilot scope only** (do NOT run
+  a full multi-system sweep until the pilot clears both gates below): continue the two EM
+  representatives (k=(1,1) and k=(3,3)) down to Titan μ via pseudo-arclength continuation, reusing
+  `#494`'s existing machinery and Table-I golden/Phase-0 positive control, and check (a) the family
+  survives with stability index |s|<1 at Titan μ, and (b) the perimoon-passage geometry is actually
+  encounter-relevant (not a degenerate near-collision or a useless-altitude pass). **Honest novelty
+  caveat (why this is scoped as a pilot, not a full sweep)**: as μ→0, symmetric stable prograde
+  periodic orbits shade into classical Poincaré first-kind/resonant families — existence at small μ
+  is close to theorem-guaranteed, so the finding risks being "a known classical object, relabeled."
+  A mandatory `search/literature_check.py` novelty gate per
+  `[[feedback_literature_novelty_check_baseline]]` is NOT optional here; expect census, not a novel
+  species, consistent with this program's post-pivot job (per
+  `[[project_capability_frontier_complete]]`). Only dispatch a full multi-system sweep (a follow-up
+  task, not this one) if the pilot's two representatives clear both gates. Recommended model:
+  Sonnet for the continuation pilot itself; any eventual novelty verdict on a full sweep's output
+  needs Opus/Fable adjudication, not Sonnet, per this project's standard gate.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
