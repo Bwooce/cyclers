@@ -105,13 +105,24 @@ What this does NOT certify
 No catalogue.yaml / empty_regions.jsonl writes. This is a proof-of-concept
 script only (task #610); registering any upgraded claim in the actual
 registry is a follow-up decision for the coordinating session.
+
+Update (2026-07-17, task #625): the two reusable primitives this script
+built (:func:`rigorous_arcsin`, :func:`bend_deg_interval`) have been
+factored out into ``scripts/_bend_gate_interval_cert.py`` and are now
+IMPORTED from there rather than defined locally -- byte-for-byte the same
+math, de-duplicated so #625's other target entries (and any future one)
+reuse the exact same, already-tested implementation instead of a second
+hand-copy. This script (and its own test file) is unchanged in behavior;
+``certify610.rigorous_arcsin`` / ``certify610.bend_deg_interval`` still
+resolve as module attributes (imported names), so existing tests need no
+changes. See ``scripts/certify_625_bend_gate_registry.py`` for the
+generalized driver that certifies the other entries.
 """
 
 from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
@@ -127,42 +138,12 @@ try:
 except ImportError:  # pragma: no cover - exercised by the skip-clean test
     HAVE_MPMATH = False
 
-
-def rigorous_arcsin(iv: Any, t: Any) -> Any:
-    """Rigorous interval arcsin via ``atan2(t, sqrt(1 - t**2))``.
-
-    Valid for ``t`` (an ``mpmath.iv`` interval) contained in ``[-1, 1]``.
-    ``mpmath.iv`` does not expose ``asin``/``acos`` directly, but does expose
-    ``sqrt`` and ``atan2`` as directed-rounding interval primitives -- this
-    is the standard identity connecting them (both sides equal, for
-    ``t in [0, 1]``, the unique angle in ``[0, pi/2]`` with that sine).
-    """
-    return iv.atan2(t, iv.sqrt(1 - t**2))
-
-
-def bend_deg_interval(
-    iv: Any,
-    mu_km3_s2: float,
-    rp_lo_km: float,
-    rp_hi_km: float,
-    vinf_lo_kms: float,
-    vinf_hi_kms: float,
-) -> Any:
-    """Rigorous interval enclosure of ``max_bend`` (degrees) over a box.
-
-    Box: ``r_p in [rp_lo_km, rp_hi_km]`` km, ``V_inf in [vinf_lo_kms,
-    vinf_hi_kms]`` km/s. ``mu_km3_s2`` is treated as an exact point (the
-    registry's stored double). Mirrors
-    :func:`cyclerfinder.core.flyby.max_bend`'s formula exactly:
-    ``sin(delta/2) = mu / (mu + rp * vinf**2)``, ``delta = 2*arcsin(...)``.
-    """
-    mu = iv.mpf(mu_km3_s2)
-    rp = iv.mpf([rp_lo_km, rp_hi_km])
-    vinf = iv.mpf([vinf_lo_kms, vinf_hi_kms])
-    ratio = mu / (mu + rp * vinf**2)
-    half_delta = rigorous_arcsin(iv, ratio)
-    delta_rad = 2 * half_delta
-    return delta_rad * (180 / iv.pi)
+# #625: the two reusable primitives now live in a shared module -- imported
+# (not redefined) so this script and #625's driver share one implementation.
+# Re-exported under their original names so `certify610.rigorous_arcsin` /
+# `certify610.bend_deg_interval` keep resolving exactly as before (existing
+# test file imports them off this module, unchanged).
+from _bend_gate_interval_cert import bend_deg_interval, rigorous_arcsin  # noqa: E402,F401
 
 
 def _proteus_subgate_vinf_range() -> tuple[float, float, int, int]:
