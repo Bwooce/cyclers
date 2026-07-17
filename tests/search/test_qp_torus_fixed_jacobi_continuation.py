@@ -163,8 +163,11 @@ def test_h1_free_rho_continuation_stays_far_from_owen_baresi_l1_target() -> None
     # Amplitude genuinely grows (this is a large-amplitude branch, not the pin).
     assert amps[0] < 0.02 and amps[-1] > 0.07
     assert all(b > a for a, b in itertools.pairwise(amps)), "amplitude must increase"
-    # rho is NEGATIVE (sign convention) and its MAGNITUDE decreases monotonically.
-    assert all(r < 0 for r in rots)
+    # rho is reported with the canonical POSITIVE sign (#632: the Neimark-Sacker
+    # eigenvalue is pinned to its positive-imaginary representative so the
+    # rotation-number sign is reproducible cross-platform); its MAGNITUDE
+    # decreases monotonically.
+    assert all(r > 0 for r in rots)
     mags = [abs(r) for r in rots]
     assert all(b < a for a, b in itertools.pairwise(mags)), "|rho| must decrease with amp"
     # Live-pinned endpoints (energy-pinned, stable): 0.0748 -> ~0.0658.

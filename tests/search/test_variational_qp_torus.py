@@ -341,7 +341,7 @@ def test_l1_crosses_gmos_amplitude_wall() -> None:
     ~1540; longitudinal direction resolved by stroboscopic flow integration) --
     the integration-free pseudospectral corrector continues the transverse
     amplitude cleanly PAST the wall, holding an independent closure residual
-    ~1e-8 at every step. The rotation number stays energy-pinned at ~-0.074
+    ~1e-8 at every step. The rotation number stays energy-pinned at ~0.074
     (confirming #555: at C=3.15 the L1 latitudinal frequency is NOT Owen &
     Baresi's 0.2739; that is an energy fact, not a corrector limitation)."""
     l1 = _l1_halo_at_315()
@@ -368,7 +368,9 @@ def test_l1_crosses_gmos_amplitude_wall() -> None:
     )
     seed = discover_qp_torus(SYS, gmos, n1=12, n2=6, max_nfev=300)
     assert seed.converged
-    assert seed.rotation_number == pytest.approx(-0.074024, abs=1e-4)
+    # Canonical positive-rho sign (#632: NS eigenvalue pinned to its
+    # positive-imaginary representative for cross-platform reproducibility).
+    assert seed.rotation_number == pytest.approx(0.074024, abs=1e-4)
     # Bootstrap amplitude scale: transverse_amplitude per GMOS initial amplitude.
     amp_scale = seed.transverse_amplitude / 5e-4
     assert amp_scale == pytest.approx(3.04, rel=0.1)
@@ -389,8 +391,9 @@ def test_l1_crosses_gmos_amplitude_wall() -> None:
     # stays tiny at the large amplitude where GMOS diverges.
     assert last.closure_residual < 1e-6
     assert last.residual_rms < 1e-5
-    # Rotation number held energy-pinned across the whole continuation.
-    assert last.rotation_number == pytest.approx(-0.074024, abs=1e-4)
+    # Rotation number held energy-pinned across the whole continuation
+    # (canonical positive-rho sign, #632).
+    assert last.rotation_number == pytest.approx(0.074024, abs=1e-4)
     # The large-amplitude torus is a genuinely big quasi-halo: it librates in z
     # across a range wider than the parent halo's own |z0|.
     t1 = np.linspace(0, 2 * np.pi, 25, endpoint=False)
