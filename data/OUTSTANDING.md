@@ -534,7 +534,9 @@ independently re-verified at the exact catalogue IC (altitude 480.76 km, not ass
 abstract-mu rows never claimed a physical encounter to begin with);
 #631 for fixing the 94-error accumulated mypy --strict debt blocking CI (nothing pushed since
 2026-07-14 until this session's first push on 2026-07-18, so #600-#630's range was never checked --
-a coordinating-session verification-loop gap, dispatched 2026-07-18); #632 for the CI pytest
+a coordinating-session verification-loop gap, dispatched 2026-07-18; DONE: 0 mypy errors, CI's own
+Mypy step confirmed green on run 29599446252, commits c4d6385/b24e4f0 -- CI overall still red only
+for the separate #632 pytest issue below, not a #631 regression); #632 for the CI pytest
 failures #631 uncovered (first-ever cross-platform run of #611-#630's work: 3 genuine cross-
 platform BLAS/eigenvector-sign mismatches + 3 timeouts on CI's 2-core runners, confirmed NOT a
 #631 regression via local reproduction, urgent since main is currently red, dispatched
@@ -8746,6 +8748,53 @@ anywhere in the file and are genuinely still open.]**
   gate — exactly the class of work this project's model-tiering policy reserves for Sonnet — EXCEPT
   the two `least_squares` argument-type findings, which need a moment of real judgment on whether
   they're hiding a bug; flag those specifically rather than rushing past them).
+  **RESOLUTION (2026-07-18) — MYPY DEBT FIXED AND CONFIRMED GREEN VIA CI; CI OVERALL STILL RED FOR A
+  SEPARATE, OUT-OF-SCOPE REASON.** `uv run mypy src tests` fixed from 94 errors/24 files to 0 errors
+  (two commits: `c4d6385` for the `scripts/*.py` cross-import-resolution category + the `mpmath`
+  override, `b24e4f0` for the rest). Import-resolution root cause: `scripts/*.py` driver scripts
+  import sibling `scripts/*.py` modules by bare top-level name via each script's own
+  `sys.path.insert(0, str(ROOT / "scripts"))`, which mypy can't follow statically; fixed by adding
+  `mypy_path = "scripts"` to `[tool.mypy]` for scripts only ever bare-imported, and by switching
+  scripts that are ALSO dotted-imported (`scripts.X`) by their own test file to the dotted form
+  internally too (mixing both for one module causes mypy's "Source file found twice under different
+  module names"). `mpmath.*` override added following the exact existing astropy/spiceypy/jplephem/
+  joblib/jsonschema pattern. Two investigated categories per the bullet's own instruction, NEITHER
+  a genuine bug: (1) `"None" not callable` on `sol.sol(...)` (`perimoon_passage.py` + 2 test files)
+  is a scipy stub gap — `OdeResult.sol` is typed `Optional` because it depends on the runtime
+  `dense_output` flag, but every call site here always passes `dense_output=True` and checks
+  `sol.success` first, so a dense interpolant is genuinely guaranteed; fixed with a documented
+  `assert sol.sol is not None`. (2) `float | None` in `test_seed_generation.py`'s jacobi-bounds
+  checks: confirmed by reading `_refine_one`'s implementation that `converged=True` implies
+  `jacobi` is populated (set in the same `if converged:` block as `state0`/`period`/`residual`, and
+  the `matched` list is filtered on `seed.jacobi is not None` in production code before being
+  returned) — fixed with a documented assert/filter, no behavior change. `least_squares`
+  `jac`/`tr_solver` mismatches: also NOT a bug — `tr_solver` narrowed from `str` to the actual
+  `Literal["exact", "lsmr"]` used everywhere (grepped exhaustively, no other value ever passed);
+  `jac`'s closure return type widened to `Callable[..., NDArray[np.float64]]` (a legitimate
+  supertype matching scipy's own `*args, **kwargs` calling convention, which this call site never
+  actually exercises) and its `str` branch narrowed to the one literal (`"3-point"`) ever assigned.
+  Local verification full green (`ruff check`/`ruff format --check`/`mypy` all clean; `pytest
+  tests/data tests/search tests/ml tests/scripts -q` has exactly 2 failures,
+  `test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface` and
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, CONFIRMED pre-existing and unrelated via
+  `git stash` — both reproduce byte-identical on unmodified `main`). Pushed (`b24e4f0`), triggering
+  CI run `29599446252`: **the `Mypy` step passed cleanly** (`Success: no issues found in 722 source
+  files`, confirmed by reading the actual CI log, not inferred) — this task's own scope is done and
+  verified. However the run's overall `conclusion` is still `failure`: the `Pytest` step (which runs
+  on CI's Linux/2-core runner, `pyproject.toml`'s own documented constraint, vs. 8 cores locally)
+  hit 6 failures — 3 numeric sign/value mismatches (`test_qp_torus_fixed_jacobi_continuation.py`,
+  `test_variational_qp_torus.py` x2) and 3 `pytest-timeout` (>600s) failures
+  (`test_627_titan_pilot.py`, `test_variational_qbcp_torus.py` x2) — none in files this task touched
+  for anything but type annotations (no logic changes), and none reproduce locally (3493 passed on
+  CI). This is because nothing was pushed between 2026-07-14 and this session's first 2026-07-18
+  push, so this is the FIRST time any of the `#611`-`#630` range's new correctors have ever run on
+  CI's actual environment — a genuinely separate finding (cross-platform BLAS/LAPACK eigenvector-
+  sign sensitivity + a CI compute-budget mismatch on the newer expensive QBCP/QP-torus correctors),
+  out of scope for a typing-only task, independently confirmed by the coordinating session and
+  tracked as its own follow-up, registered as `#632` (see below). **Second deliverable**:
+  this bullet itself is the standing reminder — every future dispatch prompt's verification step
+  must include `uv run mypy src tests` alongside `ruff`/pytest, since CI is still the only enforcement
+  and this session's 2026-07-14-to-07-18 push gap is exactly how 94 errors accumulated unnoticed.
 - **#632** (dispatched 2026-07-18, coordinating-session-directed, URGENT — main is currently red on
   CI) — fix the pytest-stage CI failures `#631` uncovered once its mypy fix let the CI job run past
   the mypy stage for the first time. CI run `29599446252` (`c4d6385..b24e4f0`) ran for 1h14m (past
