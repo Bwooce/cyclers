@@ -489,9 +489,16 @@ combinations and new literature (CLOSED 2026-07-17: priority reads on #542/#520/
 #624 for #623 shortlist B1, a cross-μ transfer pilot for #608's generative model at μ=0.001/Sun-
 Earth μ, the decisive test of #542's open claim (dispatched 2026-07-17); #625 for #623 shortlist
 B2, generalizing #610's interval-arithmetic bend-gate certificate to ~6 more bend-gate-limited
-empty_regions.jsonl negatives (#607/#609/#571) (dispatched 2026-07-17); #626 for #623 shortlist B3,
+empty_regions.jsonl negatives (#607/#609/#571) (dispatched 2026-07-17; CLOSED 2026-07-17: 12/15
+per-body certifications succeeded across all 6 targeted entries -- all four #571 Saturn entries +
+#609 Phobos/Deimos + #607 Eugenia/Kleopatra/Elektra(Gamma+Delta) CERTIFIED clean, but #607's Sylvia
+(Romulus/Remus) and ElektraBeta genuinely do NOT certify -- their real survivor-V∞ bend exceeds 5°,
+reported honestly per the task's own no-forcing rule, not a contradiction of #607's own empirical
+negative); #626 for #623 shortlist B3,
 seeding #620's collocation arc corrector from #619's ~166,000 km ballistic near-miss, the arc's own
-last untried refinement (dispatched 2026-07-17); #627 for #623 shortlist B4, a pilot μ-continuation
+last untried refinement (dispatched 2026-07-17; CLOSED clean negative same day — near-miss
+reproduced bit-for-bit then collocation seeded from it ghosts at orders 40/60, Radau loop defect
+~1e6 km, no closure, #538-#620 arc's last named alternative exhausted); #627 for #623 shortlist B4, a pilot μ-continuation
 of the Ross-RT (k1,k2) ballistic-cycler families down to Titan mu (dispatched 2026-07-17); #628
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
@@ -8157,7 +8164,7 @@ anywhere in the file and are genuinely still open.]**
   distribution, close `#542` as answered-negative; if it survives (even partially), `#542` becomes
   a real discovery lever worth productionizing — either outcome ends `#542`'s limbo. Recommended
   model: Sonnet (mechanical evaluation-harness reuse, not a new numerical-methods judgment call).
-- **#625** (dispatched 2026-07-17, `#623` shortlist B2 — user-directed) — generalize `#610`'s
+- **#625** — ✓ CLOSED (2026-07-17). (dispatched 2026-07-17, `#623` shortlist B2 — user-directed) — generalize `#610`'s
   interval-arithmetic bend-gate certificate from the single Proteus sub-gate to every other
   `empty_regions.jsonl` negative sharing the identical closed-form failure mode (the `#324`
   physical max-bend gate, undersized-moon-GM branch): `#607` (Sylvia/Eugenia/Kleopatra/Elektra, all
@@ -8174,7 +8181,60 @@ anywhere in the file and are genuinely still open.]**
   branch-selecting Lambert solve is still unsolved) — do not overclaim full certification of the
   underlying negative, only of the specific bend sub-gate. Recommended model: Sonnet (mechanical,
   per this project's own model-tiering policy).
-- **#626** (dispatched 2026-07-17, `#623` shortlist B3 — user-directed) — seed `#620`'s Chebyshev
+  **RESULT (2026-07-17): 12/15 per-body certifications succeeded across all 6 targeted
+  `empty_regions.jsonl` entries (9 individual bodies certified, not 6 entries as a blanket claim
+  — `#571` turned out to have 4 "analytically-empty" Saturn entries, not 2, checked directly in
+  the data per this task's own instruction, not assumed from the dispatch note).** Built
+  `scripts/_bend_gate_interval_cert.py` (the generalized `certify_bend_gate_over_box(gm_moon,
+  rp_floor, vinf_box, gate_deg)` helper; `rigorous_arcsin`/`bend_deg_interval` factored out of
+  `#610`'s script, which now imports them from the shared module instead of a second copy — its
+  own 13 tests still pass unchanged) and a driver, `scripts/certify_625_bend_gate_registry.py`.
+  Two certification methods, matched to each entry's own original methodology: (1) Hohmann-
+  transfer-floor analytic bound (reusing `#571`'s own
+  `verify_571_gate_analytics.py::hohmann_vinf_at_r1` verbatim, the strongest available certificate
+  since it bounds the FULL achievable continuum, not a grid) for `#571`'s 4 Saturn entries —
+  CERTIFIED, reproducing `#571`'s own published numbers exactly (Mimas sup=0.047°, Enceladus
+  0.170°, Tethys 0.793°, Dione 2.217°, all < 5°); (2) data-grounded real-survivor-V∞-range
+  certification (`#610`-Box-A style, reproduced from each entry's own production enumeration code,
+  never copied from prose) for `#607`/`#609` — CERTIFIED for `#609` Phobos (sup=0.0159°, matches
+  the entry's own recorded `max_flyby_own_bend_deg_across_subgate_survivors` exactly) + Deimos
+  (0.0033°), and for `#607`'s Eugenia (PetitPrince 4.782°, EugeniaS2 2.943°), Kleopatra
+  (AlexHelios 2.974°, CleoSelene 4.294°), and Elektra via ElektraGamma (1.611°)/ElektraDelta
+  (0.445°) — since the gate is an AND over every encounter, either of Elektra's two clean bodies
+  alone suffices to certify every Elektra sequence (each 3-moon permutation always includes both).
+  **Genuine finding, NOT forced through (per this task's own step-8 allowance): `#607`'s Sylvia
+  system (Romulus/Remus) and Elektra's ElektraBeta do NOT admit this certification.** Reproducing
+  the REAL residual-sub-gate-survivor V∞ range (not the Hohmann floor, which is even less
+  favorable here) shows Romulus's own bend reaches 5.15° and Remus's reaches 7.12° — both above
+  the 5° gate — at their real survivor minima, and ElektraBeta reaches 6.11°; the Hohmann-floor
+  analytic bound independently confirms several `#607` small-body moons (Romulus, Remus,
+  PetitPrince, AlexHelios, CleoSelene, ElektraBeta) CAN in principle clear 5° bend at a
+  low-enough V∞ — so the dispatch note's blanket "same failure mode as Proteus" framing does not
+  hold uniformly across `#607`. This does NOT contradict `#607`'s own 0/97,664-all-gates-pass
+  empirical finding (the joint residual+DOP853+other-body-bend constraint still rules every actual
+  point out for Sylvia too, confirmed by reproduction) — only the single-body-bend-only
+  certification approach doesn't reduce cleanly for Sylvia/ElektraBeta the way it does for
+  Proteus/`#609`/`#571`/Eugenia/Kleopatra/ElektraGamma/ElektraDelta; the #607 system-level negative
+  itself is unaffected, just not reducible to this specific stronger certificate for those two
+  bodies. Wrote `bend_gate_certified_interval: {task: 625, generalizes: 610, per_body: [...],
+  scope_note: ...}` to all 6 targeted `data/empty_regions.jsonl` lines via direct JSON-line editing
+  (Sylvia's/ElektraBeta's per-body results included with `certified: false` and an explanatory
+  note, not silently omitted); verified `load_empty_regions_list` tolerates unknown top-level keys
+  (no `EmptyRegionReport` dataclass/schema change needed — going through
+  `_to_payload`/`_from_payload` would have silently DROPPED other entries' pre-existing extra keys
+  like `reverification`, so this edits raw JSON lines directly instead). 17 new tests
+  (`tests/scripts/test_bend_gate_interval_cert.py`, `tests/scripts/test_certify_625_bend_gate_registry.py`),
+  including hand-verified-corner checks against independent `math.asin` computations, a positive
+  control (Umbriel), and a regression test pinning the genuine Sylvia non-certification so it can't
+  silently regress into "certified" later. `_bend_gate_interval_cert.py`/
+  `certify_625_bend_gate_registry.py` are certification scripts (not `run_*.py`), so the
+  `preflight_search` AST ratchet doesn't apply, matching `#610`'s own precedent (checked
+  `tests/scripts/test_scripts_call_preflight.py`'s own glob, not assumed). `uv run ruff check .`
+  and `ruff format --check .` clean; `tests/scripts` (109/109, incl. the 30 #610/#625 interval
+  tests) and the full `tests/data`/`tests/search` suite all green.
+- **#626 ✓ CLOSED, CLEAN NEGATIVE (2026-07-17) — the `#538`-`#620` arc's LAST named alternative
+  exhausted; global collocation seeded from `#619`'s genuine near-miss ghosts, it does not close.**
+  (dispatched 2026-07-17, `#623` shortlist B3 — user-directed) — seed `#620`'s Chebyshev
   collocation arc corrector (`src/cyclerfinder/search/variational_qbcp_arc.py`,
   `correct_qbcp_arc_connection`) from `#619`'s own best ballistic near-miss (the ~166,000 km /
   ~400 m/s norm-0.855 local minimum, Radau-confirmed real — see `#619`'s own bullet for the exact
@@ -8197,6 +8257,55 @@ anywhere in the file and are genuinely still open.]**
   citable either way. Recommended model: Opus (closure adjudication on a program whose main
   failure mode is "it closed!" false positives is exactly the trust-bearing judgment call this
   project's model-tiering policy reserves for Opus, not Sonnet).
+  **✓ DONE (2026-07-17) — CLEAN NEGATIVE, no adjudication needed, NO catalogue writeback (there is
+  no closure to write).** Everything is scratch-only (matching `#619`/`#620`'s own heavy-connection-
+  run precedent: the durable record is this bullet's numbers, not a committed many-minutes driver);
+  no `src`/test changes, so no code commit.
+  **(1) Near-miss reconstructed and independently re-verified — trustworthy.** The exact `#619`
+  norm-0.855 solution was recovered (its full 12-vector + eigenvector sign-refs were saved to
+  scratch by the coordinating session's own `#619` run, `sol619_n28n9_g8.pkl`; the cached SE-L2 GMOS
+  torus and the `#618` EM-L2 n1=28,n2=9 torus, `residual_rms=9.4744e-4` confirmed, were reused).
+  Recomputing `#538`'s 12-unknown/18-residual at the saved `best_x` reproduces the headline
+  **bit-for-bit**: norm 0.8549, leg-1 gap 166,166 km / 434 m/s, leg-2 gap 166,008 km / 391 m/s,
+  SE closure 0.0111 rad, EM closure 0.0684 rad — and DOP853 and Radau agree to <1e-6, so the
+  near-miss is a genuinely real pair of trajectory segments, not a numerical artifact.
+  **(2) Structural finding (why this near-miss is a hostile collocation seed).** Inspecting the
+  saved 12-vector's arc geometry: **leg 1 is a degenerate "backward-backward" section match**
+  (`tau_f=-17.49`, `tau_bf=+15.73` — BOTH manifold half-arcs integrate BACKWARD from the SE and EM
+  torus points to a common section at |pos|~4 nd / ~1.6e6 km), while **leg 2 is a clean forward
+  transit** (`tau_r=+11.11`, `tau_br=+11.23`). A single forward monotonic-epoch collocation arc
+  provably cannot zero-defect-represent leg 1 (its two halves demand opposite-sign arc durations),
+  which is itself a fingerprint of `#619`'s manifold-conditioning wall — the SE-unstable/EM-stable
+  pairing (leg 1) got scrambled, the EM-unstable/SE-stable pairing (leg 2) stayed clean.
+  **(3) Collocation runs — orders 40 and 60, three arc-F duration seeds each — all GHOSTS.** Each
+  collocation arc's nodes were sampled from the two REAL near-miss half-arc trajectories
+  (concatenated, genuine near-miss endpoints + phases); arc R (leg 2) seeded as the clean forward
+  transit `tau_R=22.34`; arc F (leg 1) seeded at three durations (`net -1.75`, `-|Σ|=-33.21`,
+  `+|Σ|=+33.21`). **Order 60, `-33.21` seed: the algebraic residual reaches res_rms 2.3e-12 with
+  endpoints matched to 2.5e-11 and phases closed to 1.4e-13 — algebraically a PERFECT closed
+  connection — yet `independent_closure_check` (Radau) loop_defect = 3.79 nondim, arrival gaps
+  ~1.27e6 / 1.35e6 km.** The `+33.21` seed: res_rms 2.4e-13, loop_defect 5.18, arrivals 1.77e6 /
+  1.93e6 km. Order 40 the same story at higher residual floor (res_rms 4.6e-4–1.0e-2, loop_defect
+  3.4–5.0, arrivals 4e5–1.9e6 km). Every one of the six attempts is `CONVERGED=False`. This is the
+  exact `#620` ghost obstruction made vivid: MORE polynomial freedom (order 60) makes the ghost
+  EASIER to hit (residual → machine zero) while the physical loop defect stays ~4–5 nondim — the
+  definitive ghost signature, and precisely the "it closed! is the danger signal" case the arbiter
+  exists to catch. Seeding from the genuine 166,000 km near-miss does NOT escape the ghost trap.
+  **(4) Over-collocation (m ≫ order) not separately implemented — and subsumed.** The module uses a
+  square formulation (ODE imposed at the order-1 interior CGL nodes, tied to the polynomial degree);
+  m ≫ order would need a rectangular-collocation extension. Its sole purpose — penalizing
+  between-node divergence to suppress ghosts — is already discharged rigorously by the Radau
+  `independent_closure_check` used here, which measures exactly that divergence and reports ~1e6 km.
+  A ~1e6-km ghost is not a marginal near-miss over-collocation would rescue; it would only raise the
+  residual floor. Not built (no forcing function on a settled negative).
+  **Verdict.** Consistent with `#623`'s ~10–15% prior. Three methodologically-independent attacks
+  now agree there is no closed SE-L2↔EM-L2 QBCP cislunar cycler at achievable precision: `#619`
+  linearized-manifold shooting (blocked by manifold conditioning, best 166,000 km), `#620`
+  manifold-free collocation from arbitrary seeds (ghost minima, best 351,467 km), and `#626`
+  collocation seeded from `#619`'s OWN real near-miss (ghosts, loop defect ~1e6 km). Not a proof of
+  non-existence, but the last named alternative for the whole `#538`-`#620` arc is now exhausted —
+  the negative loses its "untried refinement" asterisk. Reproduce via the scratch scripts
+  (`probe_626_inspect.py`, `probe_626_collocate.py`) + the cached tori/solution pkls; numbers above.
 - **#627** (dispatched 2026-07-17, `#623` shortlist B4 — user-directed) — pilot μ-continuing the
   Ross-Roberts-Tsoukkas (k1,k2) stable ballistic prograde cycler families DOWN below their
   published μ=0.001 floor toward real planet-moon mass ratios (Saturn-Titan μ≈2.4e-4 first; Neptune-
