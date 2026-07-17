@@ -1,0 +1,81 @@
+{
+  "task": "#624",
+  "corpus": {
+    "primary": "Earth",
+    "secondary": "Moon",
+    "mu": 0.01215058439469525,
+    "n_scanned_raw_lines": 540312,
+    "n_converged_prefilter": 205113,
+    "n_unique_physically_sane": 54165,
+    "n_train": 43332,
+    "feature_names": [
+      "x0",
+      "y0",
+      "z0",
+      "vx0",
+      "vy0",
+      "vz0",
+      "period",
+      "jacobi"
+    ]
+  },
+  "model": "PCA(5) + kmeans(8) per-cluster Gaussian, re-derived from #608's own seed/split (bit-for-bit identical to #608's trained model, NOT retrained)",
+  "ross_rt_mu001_positive_control": {
+    "anchor_source": "Ross & Roberts-Tsoukkas 2026 arXiv:2606.29189v1 Table I Rep 1",
+    "anchor": {
+      "mu": 0.001,
+      "x0": -0.647047499999966,
+      "C": 3.031605708907296,
+      "T": 14.774502790974823
+    },
+    "corrector_infra_check": {
+      "converged": true,
+      "residual": 4.327208742575126e-12,
+      "x0_err": 0.0,
+      "period_err": 0.0,
+      "jacobi_err": 0.0
+    },
+    "closest_converged_candidate": {
+      "tag": "mu=0.001_generated",
+      "jacobi_gap": 0.032604708907295166,
+      "period_gap": 13.862354737549282,
+      "x0_gap": 1.146047500000216
+    }
+  },
+  "mu_0_001": {
+    "label": "mu=0.001",
+    "mu": 0.001,
+    "generated": {
+      "n": 100,
+      "raw_convergence_rate": 0.68,
+      "converged_and_physically_sane_rate": 0.6,
+      "n_converged_and_physically_sane": 60
+    },
+    "baseline_uniform": {
+      "n": 100,
+      "raw_convergence_rate": 0.55,
+      "converged_and_physically_sane_rate": 0.02,
+      "n_converged_and_physically_sane": 2
+    },
+    "ratio_generated_over_baseline": 30.0
+  },
+  "sun_earth": {
+    "label": "Sun-Earth",
+    "mu": 3.0034805950690393e-06,
+    "generated": {
+      "n": 100,
+      "raw_convergence_rate": 0.1,
+      "converged_and_physically_sane_rate": 0.07,
+      "n_converged_and_physically_sane": 7
+    },
+    "baseline_uniform": {
+      "n": 100,
+      "raw_convergence_rate": 0.45,
+      "converged_and_physically_sane_rate": 0.02,
+      "n_converged_and_physically_sane": 2
+    },
+    "ratio_generated_over_baseline": 3.5000000000000004
+  },
+  "elapsed_s": 424.90596294403076,
+  "seed": 608
+}
