@@ -20,7 +20,7 @@ import pytest
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
 
-from _resonance_lock_moontour_473 import (  # type: ignore[import-not-found]  # noqa: E402
+from _resonance_lock_moontour_473 import (  # noqa: E402
     PRUNE_BUDGET_KMS,
     SKELETONS,
     _prefilter_cell,

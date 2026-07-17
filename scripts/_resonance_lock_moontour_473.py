@@ -43,6 +43,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 from cyclerfinder.data.validation.v2_moontour import (
@@ -224,7 +225,7 @@ class CandidateResult:
     powered_dv_kms: float | None
     is_bounded_quasi: bool
     is_strict_cycler: bool
-    extra: dict = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=dict)
 
 
 def _leg_tofs_resonance_locked(
@@ -311,7 +312,7 @@ def _eval_cell(cell: Cell) -> CandidateResult:
     )
 
 
-def _ser(r: CandidateResult) -> dict:
+def _ser(r: CandidateResult) -> dict[str, Any]:
     return {
         "label": r.label,
         "system": r.system,

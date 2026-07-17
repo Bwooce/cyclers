@@ -471,7 +471,7 @@ def encounter_vinfs_kms(rec: dict[str, Any]) -> tuple[float, float, float]:
     """
     vin = rec["vinf_in"]
     vout = rec["vinf_out"]
-    return tuple(max(abs(vin[k]), abs(vout[k])) for k in range(3))  # type: ignore[return-value]
+    return tuple(max(abs(vin[k]), abs(vout[k])) for k in range(3))
 
 
 def gate_candidate(

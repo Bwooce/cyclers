@@ -16,9 +16,10 @@ positive control: drift 0 -> 326k -> 515k -> 487k -> 254k -> 86k -> 390k -> 530k
 from __future__ import annotations
 
 import itertools
+from typing import Any
 
 
-def classify_drift_shape(drifts_after_seed: list[float]) -> dict:
+def classify_drift_shape(drifts_after_seed: list[float]) -> dict[str, Any]:
     """Classify a per-cycle drift series (cycle >= 1) by SHAPE.
 
     Returns a dict with ``shape`` in:

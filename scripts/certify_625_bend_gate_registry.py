@@ -92,16 +92,13 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
+# Also on sys.path so `scripts.X` (dotted) resolves standalone, matching how
+# tests/scripts/*.py already address these modules -- needed because a couple
+# of sibling scripts (this one included) are reachable BOTH ways depending on
+# caller, and mypy needs a single, consistent module identity to avoid a
+# "Source file found twice under different module names" error.
+sys.path.insert(0, str(ROOT))
 
-from _bend_gate_interval_cert import HAVE_MPMATH, certify_bend_gate_over_box  # noqa: E402
-from enumerate_563_symmetric_closures import N_REV_VALUES as N_REV_563  # noqa: E402
-from enumerate_563_symmetric_closures import REL_OFFSETS_DEG as REL_OFFSETS_563  # noqa: E402
-from enumerate_563_symmetric_closures import pair_n_max  # noqa: E402
-from enumerate_600_3moon_symmetric_closures import REL_OFFSETS_DEG as REL_OFFSETS_600  # noqa: E402
-from enumerate_600_3moon_symmetric_closures import (  # noqa: E402
-    residual_from_options,
-    three_leg_options,
-)
 from scan_558_uranus_all_pairs_offset_sweep import (  # noqa: E402
     GATE_RESIDUAL_KMS,
     N_REV_MAX,
@@ -111,6 +108,19 @@ from verify_571_gate_analytics import hohmann_vinf_at_r1  # noqa: E402
 
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES  # noqa: E402
 from cyclerfinder.search.physical_sanity import DEFAULT_MIN_USEFUL_BEND_DEG  # noqa: E402
+from scripts._bend_gate_interval_cert import HAVE_MPMATH, certify_bend_gate_over_box  # noqa: E402
+from scripts.enumerate_563_symmetric_closures import N_REV_VALUES as N_REV_563  # noqa: E402
+from scripts.enumerate_563_symmetric_closures import (  # noqa: E402
+    REL_OFFSETS_DEG as REL_OFFSETS_563,
+)
+from scripts.enumerate_563_symmetric_closures import pair_n_max  # noqa: E402
+from scripts.enumerate_600_3moon_symmetric_closures import (  # noqa: E402
+    REL_OFFSETS_DEG as REL_OFFSETS_600,
+)
+from scripts.enumerate_600_3moon_symmetric_closures import (  # noqa: E402
+    residual_from_options,
+    three_leg_options,
+)
 
 if HAVE_MPMATH:
     import mpmath as mp

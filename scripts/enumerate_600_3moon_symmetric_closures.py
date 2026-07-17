@@ -98,14 +98,15 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
+# Also on sys.path so `scripts.X` (dotted) resolves standalone, matching how
+# tests/scripts/*.py already address these modules -- needed because a couple
+# of sibling scripts (this one included) are reachable BOTH ways depending on
+# caller, and mypy needs a single, consistent module identity to avoid a
+# "Source file found twice under different module names" error.
+sys.path.insert(0, str(ROOT))
 
 # Reuse #558's own gate machinery + leg-construction helpers verbatim.
 # Reuse #563's own per-pair n_max helper verbatim.
-from enumerate_563_symmetric_closures import (  # noqa: E402
-    NON_MIRANDA_MOONS,
-    TOF_SCALE_MAX,
-    pair_n_max,
-)
 from scan_558_uranus_all_pairs_offset_sweep import (  # noqa: E402
     GATE_RESIDUAL_KMS,
     N_REV_MAX,
@@ -125,6 +126,11 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
 )
 from cyclerfinder.search.saturn_uranus_campaign import dop853_cross_check_leg  # noqa: E402
+from scripts.enumerate_563_symmetric_closures import (  # noqa: E402
+    NON_MIRANDA_MOONS,
+    TOF_SCALE_MAX,
+    pair_n_max,
+)
 
 DATA_DIR = ROOT / "data"
 OUT_PATH = DATA_DIR / "enumerate_600_3moon_symmetric_closures.jsonl"
@@ -328,7 +334,7 @@ def encounter_vinfs_kms_3moon(rec: dict[str, Any]) -> tuple[float, float, float,
     each node), extended from 3 nodes to 4."""
     vin = rec["vinf_in"]
     vout = rec["vinf_out"]
-    return tuple(max(abs(vin[k]), abs(vout[k])) for k in range(4))  # type: ignore[return-value]
+    return tuple(max(abs(vin[k]), abs(vout[k])) for k in range(4))
 
 
 def gate_candidate_3moon(
