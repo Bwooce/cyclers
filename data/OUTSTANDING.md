@@ -505,8 +505,9 @@ of the Ross-RT (k1,k2) ballistic-cycler families down to Titan mu (dispatched 20
 same day, clean negative on both gates -- (1,1) reaches Titan mu but loses the secondary-reaching
 topology (lands on a stable-but-non-encountering (1,0) branch, 0/81 on-target members in a
 follow-up C-sweep); (3,3) fails to converge outright before reaching Titan mu; full multi-system
-sweep NOT recommended, see #627's own bullet); #628
-next-unused):**
+sweep NOT recommended, see #627's own bullet); #628 for a user-directed productionization of
+#608/#624's generative ML seed model into a reusable API/tool, accounting for the demonstrated
+mu-dependent lift magnitude (dispatched 2026-07-18); #629 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8433,6 +8434,40 @@ anywhere in the file and are genuinely still open.]**
   continuation from a distant Earth-Moon-scale anchor) — itself a nontrivial new-method task, not a
   "cheap pilot." Recommended model used: Sonnet (continuation pilot + engineering characterization;
   no novelty verdict was needed since no candidate resulted).
+- **#628** (dispatched 2026-07-18, user-directed follow-up to `#624`/`#542`) — productionize `#608`'s
+  generative ML seed model (`src/cyclerfinder/ml/orbit_generative.py`) into something an actual
+  discovery task can call, rather than leaving it as `#608`/`#624`'s evaluation-only POC scripts.
+  This is NEW scope, not a `#542` reopening — `#542`'s own research question ("does the lift
+  transfer to an unfamiliar basin") is fully answered and CLOSED; this task is about turning that
+  validated finding into a usable tool. Concrete deliverables:
+  1. **A clean, reusable seed-generation API** (not another one-off `scripts/run_*.py` evaluation
+     harness): a function/CLI that, given a target μ (and optionally a Jacobi-constant range or
+     other constraint), returns N candidate `(state0, period)` seeds ranked/sampled from the
+     trained density, suitable for a real sweep/discovery script to call directly rather than
+     re-deriving the model bit-for-bit each time as `#624`'s own script did.
+  2. **Handle the demonstrated μ-dependence of lift magnitude head-on** — `#624` found 30x lift at
+     μ=0.001 but only 3.5x at Sun-Earth μ≈3.0e-6 (~4000x mass-ratio jump from the Earth-Moon
+     training point, vs ~12x for μ=0.001). Do not assume uniform transfer. At minimum, document the
+     expected lift as a function of |Δlog μ| from the training point so a caller can gauge how much
+     to trust the model at a NEW target before relying on it; if practical, investigate whether a
+     cheap per-target-μ recalibration (not a full retrain — `#614` already showed bigger models
+     don't help at this corpus size) meaningfully narrows the gap at large μ-jumps.
+  3. **Preserve the honest caveat from `#624`**: the model proposes a seed that converges to SOME
+     real, physically-sane family at similar energy — not necessarily the SPECIFIC family a caller
+     is searching for (`#624`'s Ross-RT positive control landed near the right Jacobi constant but a
+     different period/x0, a different real family). Any integration must make this caveat visible
+     to the caller (e.g. return the converged family's own invariants alongside the seed so a
+     caller can check what it actually got), not hide it behind a black-box "generate seeds" call.
+  4. **Do NOT touch `data/catalogue.yaml`** — this is tooling/infrastructure, not a discovery run.
+     A first real end-to-end use (pointing this at an actual unswept target as a genuine pilot,
+     not just another synthetic evaluation) is a reasonable stretch goal if time permits, but is
+     NOT required to close this task — the core deliverable is the reusable API/tool itself.
+  **Recommended models:** the API/CLI wrapper and lift-vs-Δμ documentation is mechanical (Sonnet);
+  if a design decision arises on HOW this should integrate with existing sweep infrastructure
+  (e.g. as a `--seed-source=generative` option on existing scripts vs. a standalone pre-filter
+  step), that specific decision merits a quick design read before committing to an approach —
+  follow this project's own precedent (`#586`) of getting a Fable/Opus read on integration-pattern
+  choices before building, rather than the Sonnet agent picking one unilaterally.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
