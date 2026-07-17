@@ -44,6 +44,7 @@ from cyclerfinder.search.real_binary_kk_sweep import mu_step_to_system_tracking_
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.slow
 def test_627_c_tracking_short_hop_is_self_consistent() -> None:
     """A short, well-behaved mu decrease yields a genuine, continuous periodic orbit.
 
