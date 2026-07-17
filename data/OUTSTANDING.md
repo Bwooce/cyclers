@@ -522,7 +522,10 @@ Phase A = ~1 h scaled-margin rerun of #627's own walks, Phase B = overnight fixe
 (x0, C) corridor grid reusing existing _grid_seed_search machinery, Phase C = Opus adjudication
 + mandatory co-orbital/QS-aware literature gate; NO-GO on multi-system sweep until the Titan
 corridor answer exists -- see #629's own bullet + docs/notes/2026-07-18-629-design-read-titan-
-kk-grid.md); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
+kk-grid.md; Phase A RAN 2026-07-18 (commit 93efd80): CORRIDOR FAILURE, not rescue, on both
+representatives across a 6-point alpha sweep -- #627's negative upgraded from "suspect artifact"
+to well-characterized; Phase B (fixed-Titan-mu 2D grid) now recommended, not yet dispatched);
+#630 for leveraging #627's new perimoon_passage.py encounter-geometry
 module more broadly against existing #607/#609/#571/#494/#549 results (CLOSED 2026-07-18: clean
 "nothing changes" on both targets -- #607/#609/#571's bend-gate negatives are architecturally out
 of the module's scope AND the bend gate's own closest-safe-periapsis construction already
@@ -8619,6 +8622,48 @@ anywhere in the file and are genuinely still open.]**
   still be a catalogue-grade census row. NO-GO on the multi-system sweep, analytic-seed
   machinery, Hill-problem solver, or corpus acquisition as a precondition, until the Titan
   corridor answer exists.
+  **Phase A RESULT (Sonnet, 2026-07-18) — CORRIDOR FAILURE, both representatives; #627's
+  negative UPGRADED from "suspect artifact" to well-characterized. NOT closed — Phase B/C status
+  still open, see recommendation below.** Commit `93efd80`. Added `c_margin_alpha` to
+  `mu_step_to_system_tracking_c_l1` (`src/cyclerfinder/search/real_binary_kk_sweep.py`):
+  per-step margin scaled to `α(C_L1(μ_next)−3)` instead of `#627`'s absolute constant, tracking
+  ρ≈1−α once the walk clamps. Reran both anchors down to Saturn-Titan μ=2.36695e-4 across several
+  α (regression tests confirm the scaling itself is correct — landed ρ matches the predicted
+  1−α ceiling to <1e-6). **(1,1)** (from the μ=0.001 anchor, ρ_anchor=0.7912): α=0.15/0.2 FAIL
+  INSTANTLY at the very first (infinitesimal) μ-step — a genuine, newly-found hard fold at this
+  exact anchor: holding C fixed at the anchor's own C (ρ=0.79 is below the α≤0.2 clamp ceiling,
+  so no C-descent is triggered) is itself unconvergeable for ANY μ decrease, however small,
+  independent of the corridor-tracking question. α=0.22/0.3 fail partway (247s/332s) after
+  making initial progress. α=0.25 (ceiling ρ=0.75) is the one value that converges end-to-end
+  (355s): lands EXACTLY at ρ=0.750 the whole way (well inside the (0,1) corridor, close to the
+  anchors' own ρ≈0.79) but on topology (1,0), not (1,1) — `reaches_secondary=False`, same failure
+  mode as `#627`'s original run, just now reached via a walk that never left the physically
+  meaningful corridor. **(3,3)** (from the μ=0.01215 anchor, ρ_anchor=0.9737): α=0.05 (ceiling
+  ρ=0.95, closest tried to its own natural ρ) fails partway (482s). α=0.15 (ceiling ρ=0.85)
+  converges (1994s — the family's corrector is much slower here) at ρ=0.850 exactly, but lands on
+  topology (7,0), not (3,3). Neither representative found ANY on-topology stable Titan member
+  across α∈{0.05,0.15,0.2,0.22,0.25,0.3} — gate (a) (Barden `|ν|<1`) and gate (b)
+  (`reaches_secondary`) never both pass simultaneously with the target `(k1,k2)`, so `#630`'s
+  `perimoon_passage.py` encounter check was never reached (script logic correctly skips it when
+  the stability/topology gate fails) and `data/catalogue.yaml` was NOT touched, per this task's
+  own constraint. **Interpretation**: this is decisive evidence AGAINST the parameter-scaling-
+  artifact hypothesis as the SOLE explanation — properly-scaled walks (verified in-corridor
+  throughout, not just at the end) still lose the target topology or fail to converge, across a
+  6-point α sweep straddling and exceeding the design read's recommended 0.1–0.2 range. The
+  design read's ρ-invariance prediction (existence plausibility) is NOT contradicted by this —
+  only the specific claim that a homotopy/continuation walk could actually FIND the surviving
+  member is. A genuine bifurcation/branch-jump between the Earth-Moon-scale anchors and Titan μ
+  (or a corridor that is real but too geometrically thin/curved for 1D natural-parameter
+  continuation to track, vs. a 2D grid which does not inherit any walk-path dependence) remains
+  the leading explanation. **Recommendation**: Phase B (the fixed-Titan-μ 2D corridor grid, as
+  originally specced above) is now WARRANTED, not optional — it is the only remaining method in
+  this task's plan that does not depend on a continuation PATH surviving intact, and Phase A's
+  own new finding (the (1,1) anchor's hard fold at fixed C) is itself independent evidence that
+  path-dependent walks are ill-suited to this problem even before considering the corridor-width
+  question. Phase B should also independently confirm the "(3,3) is a much slower/more fragile
+  corrector than (1,1)" empirical finding from this run (1994s vs 355s for comparable α) when
+  sizing its per-branch SIGALRM timeout. NOT yet dispatched — this bullet stays open pending a
+  decision on Phase B.
 - **#630** ✓ CLOSED, CLEAN "NOTHING CHANGES" RESULT ON BOTH TARGETS (2026-07-18) — (registered
   2026-07-18, user-directed follow-up to `#627`) — leverage `src/cyclerfinder/search/
   perimoon_passage.py` (`#627`'s new encounter-geometry module, currently tested only against the
