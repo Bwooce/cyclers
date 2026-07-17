@@ -6482,11 +6482,16 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   should be read as ANSWERED, not open, and any future revisit of this idea should start from
   `#608`'s code/corpus (`src/cyclerfinder/ml/orbit_generative.py`,
   `data/found/608_generative_seed_poc/`) rather than re-litigating feasibility from scratch. #608's
-  own honest verdict flags two concrete next steps if this is to go further: (1) tag
+  own honest verdict flagged two concrete next steps if this is to go further: (1) tag
   provenance/family per training record (the current corpus has none, only primary/secondary),
   and (2) a nonlinear model (kernel PCA / shallow autoencoder), since the linear PCA model
   demonstrably lands in physically-plausible "gaps" between the true curved family manifolds
-  rather than tracking them tightly — neither has been scoped as its own task number yet.
+  rather than tracking them tightly.
+  **STALE as of 2026-07-16 — both already tested by `#614`, see `#614`'s own bullet: family-tagging
+  found no existing classifier for an arbitrary genome anywhere in this codebase (would need one
+  built from scratch), and the nonlinear autoencoder comparison found NEITHER measurably improves
+  on `#608`'s linear-Gaussian baseline at this corpus size (n=54k) — a clean negative on both
+  flagged improvement paths. Model sophistication is not the binding constraint here.**
   **`#624` UPDATE (2026-07-17): the broader "propose seeds in an unfamiliar basin" claim flagged
   above as untested IS NOW TESTED, and POSITIVE.** `#624` evaluated the SAME already-trained #608
   model (no retraining) at two mass ratios it never saw during training: μ=0.001
