@@ -507,7 +507,12 @@ topology (lands on a stable-but-non-encountering (1,0) branch, 0/81 on-target me
 follow-up C-sweep); (3,3) fails to converge outright before reaching Titan mu; full multi-system
 sweep NOT recommended, see #627's own bullet); #628 for a user-directed productionization of
 #608/#624's generative ML seed model into a reusable API/tool, accounting for the demonstrated
-mu-dependent lift magnitude (dispatched 2026-07-18); #629 for a new-method 2D grid/homotopy attack
+mu-dependent lift magnitude (dispatched 2026-07-18; CLOSED same day: built
+cyclerfinder.ml.seed_generation with generate_and_refine_seeds()/get_default_model()/
+expected_lift_for_mu(), a real bug fixed in the Sun-Earth lift anchor's mu value, and a real
+recalibration pilot that found reweighting the trained density HURTS at the hardest-hit target
+[8%->4%], not helps -- integration-pattern question (CLI flag vs standalone library) flagged for a
+design read, not decided unilaterally); #629 for a new-method 2D grid/homotopy attack
 on real-planet-moon-mu RRT (k1,k2) cyclers at Saturn-Titan, replacing the mu-continuation approach
 #627 found structurally fails -- flagged for a design read before dispatch, not auto-fired
 (registered 2026-07-18); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
@@ -8444,7 +8449,9 @@ anywhere in the file and are genuinely still open.]**
   continuation from a distant Earth-Moon-scale anchor) — itself a nontrivial new-method task, not a
   "cheap pilot." Recommended model used: Sonnet (continuation pilot + engineering characterization;
   no novelty verdict was needed since no candidate resulted).
-- **#628** (dispatched 2026-07-18, user-directed follow-up to `#624`/`#542`) — productionize `#608`'s
+- **#628 ✓ DONE (2026-07-18) — reusable API BUILT, lift-vs-Δμ documented, recalibration explored
+  and found NOT to help, integration-pattern question flagged for a design read (not decided
+  unilaterally).** (dispatched 2026-07-18, user-directed follow-up to `#624`/`#542`) — productionize `#608`'s
   generative ML seed model (`src/cyclerfinder/ml/orbit_generative.py`) into something an actual
   discovery task can call, rather than leaving it as `#608`/`#624`'s evaluation-only POC scripts.
   This is NEW scope, not a `#542` reopening — `#542`'s own research question ("does the lift
@@ -8478,6 +8485,68 @@ anywhere in the file and are genuinely still open.]**
   step), that specific decision merits a quick design read before committing to an approach —
   follow this project's own precedent (`#586`) of getting a Fable/Opus read on integration-pattern
   choices before building, rather than the Sonnet agent picking one unilaterally.
+  **RESULT (commit `70f5be7`)**: new module `src/cyclerfinder/ml/seed_generation.py` (NOT another
+  edit to `orbit_generative.py` itself, which stays #608/#614's model-building primitives; this is
+  the productionized layer built ON TOP of it, importing `ClusteredGaussianLatentModel`/
+  `fit_clustered_gaussian`/`assemble_corpus`/`is_physically_sane` unchanged, no retrain).
+  **API**: `get_default_model(corpus_paths=None, seed=608, cache=True)` re-derives `#608`'s exact
+  trained artifact (same corpus assembly, 80/20 split, `fit_clustered_gaussian(n_latent=5,
+  n_clusters=8)`), in-process cached. `resolve_system(mu=..., primary=..., secondary=...)` targets
+  either a bare μ or a named pair. `generate_and_refine_seeds(n, mu=..., primary=..., secondary=...,
+  model=None, target_jacobi_bounds=None, ...)` is the main call: draws `n` seeds from the trained
+  density, refines each with the SAME existing `correct_periodic` corrector, and returns a
+  `SeedGenerationReport` of `GeneratedSeed` records each carrying its REFINED jacobi/period/residual/
+  a cheap general stability index (`stability_index()`, monodromy spectral radius, not Barden's
+  symmetric-orbit-specific ν which this model's general decoded state doesn't guarantee) — the
+  caller sees exactly what family it actually landed in, per `#624`'s honest caveat, never a
+  black-box seed list. Optional `target_jacobi_bounds` oversamples (up to `max_oversample_factor`x)
+  and ranks by closeness to the window's midpoint rather than silently padding a shortfall.
+  **Lift-vs-Δμ documentation**: `expected_lift_for_mu(target_mu)` returns a `LiftEstimate`
+  interpolating/extrapolating the exactly-3 empirical anchors (`#608` 12.25x at Δ=0, `#624`'s 30x at
+  Δ≈1.08 [μ=0.001], 3.5x at Δ≈3.61 [Sun-Earth]) in log-lift space, honestly labelled as a 3-point
+  interpolation, not a fit, and flags `beyond_validated_range=True` with an explicit "run a fresh
+  `#624`-style pilot before trusting this" caveat for any target past the furthest tested anchor.
+  **Bug found and fixed while building this**: the Sun-Earth anchor's μ was initially a rounded
+  literal (`3.0035e-6`); the REAL registered `cr3bp_system("Sun","Earth").mu` (3.00348...e-6) is a
+  hair smaller, which made the real Sun-Earth system evaluate as *marginally beyond its own
+  calibration anchor* (spuriously flagged unvalidated). Fixed by sourcing the anchor's μ directly
+  from `cr3bp_system("Sun","Earth").mu` rather than a copied-in-prose value — caught by a
+  self-consistency test (`test_expected_lift_for_mu_matches_anchors_at_anchor_points`), not by
+  inspection.
+  **Recalibration explored, found to NOT help (documented negative, not forced)**:
+  `calibrate_cluster_weights_for_mu()` reweights (never retrains) the model's 8 cluster mixture
+  weights by each cluster's own observed generate-then-refine success rate at the target μ. Real
+  pilot at the hardest-hit target (Sun-Earth, `#624`'s weakest-lift point; N=100, 15 probe draws per
+  cluster): uncalibrated generative 8/100=8% physically-sane vs. uniform baseline 2/100=2% (own-run
+  sanity check, consistent with `#624`'s 3.5x-ish headline there) — but POST-recalibration dropped to
+  4/100=4%, HALF the uncalibrated rate. Root cause: the 15-draws-per-cluster probe found sane rates
+  of `[0.067, 0.0, 0.0, 0.133, 0.2, 0.2, 0.0, 0.0]` across the 8 clusters — most scored literally
+  zero successes in 15 draws, far too few observations to separate genuine per-cluster unsuitability
+  from sampling noise (one lucky/unlucky draw swings an estimate by ~6.7 points), so the reweighting
+  overfit noise rather than found real structure. Left in the module as a working, honestly-negative
+  tool (not deleted) in case a future task wants a larger probe budget.
+  **Integration-pattern design question, FLAGGED not decided** (per this task's own step-7 gate,
+  `#586` precedent): should this be wired in as a `--seed-source=generative` CLI option on existing
+  `scripts/run_*.py` discovery scripts, or kept as a standalone library callable that future scripts
+  opt into individually? Not resolved here — needs a design read before either path is built. No
+  `scripts/run_*.py` CLI wrapper was added this task (deliberately, so as not to prejudge that
+  question by picking one integration shape unilaterally); the reusable function/API itself (the
+  part this task's step 7 says does NOT need the gate) is complete and importable regardless of
+  which integration pattern a future task picks.
+  **Tests**: 26 new (`tests/ml/test_seed_generation.py`), including 2 real-corpus regression checks
+  reusing `#608`'s/`#624`'s own evaluation protocol (uniform baseline + `is_physically_sane` +
+  `correct_periodic`) that confirm the new API reproduces both tasks' positive-lift headline
+  (in-distribution Earth-Moon and both `#624` cross-μ targets) — auto-skipped in any environment
+  without the local `out/outcome_log/` corpus, ran green here. `uv run ruff check .`/`ruff format
+  --check .` clean. `uv run pytest tests/ml tests/search -q`: 2 pre-existing failures only
+  (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep::test_504_sweep_33`), matching the exact documented `#584`
+  local-Mac/M3-Accelerate BLAS-sensitivity signature (tolerance-edge V∞ match, integer
+  winding-number topology flip) — this task touches no CR3BP solver code, confirmed not a
+  regression. No `data/catalogue.yaml` change, no retrain, no literature-novelty check (tooling
+  task, per this task's own explicit scope). No real end-to-end unswept-target pilot run this task
+  (the explicitly-optional stretch goal) — left for whichever task resolves the integration-pattern
+  question above.
 - **#629** (registered 2026-07-18, user-directed follow-up to `#627` — **flagged for a design read
   before dispatch, not auto-fired**) — a genuinely new-method attack on real-planet-moon-μ
   Ross-Roberts-Tsoukkas (k1,k2) ballistic cyclers, replacing the 1D mu-continuation approach `#627`
