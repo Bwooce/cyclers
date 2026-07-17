@@ -22,6 +22,8 @@ caller's ``target_system`` (real l_km/t_s included) as it should.
 Public API
 ----------
 mu_step_to_system(...)  -> SymmetricOrbit | None  (mu-continuation to ANY target system)
+mu_step_to_system_tracking_c_l1(...) -> SymmetricOrbit | None  (mu-continuation
+                                        DOWN, tracking C below C_L1(mu); #627)
 sweep_family(...)       -> SweepResult  (anchor-seeded C-sweep for one (k1,k2))
 sweep_family_grid(...)  -> SweepResult  (grid-seeded C-sweep, topologies with no anchor)
 REAL_BINARY_SYSTEMS     -> dict[str, RealBinarySystem]  (sourced mu/l_km/t_s + citations)
@@ -51,6 +53,7 @@ __all__ = [
     "REAL_BINARY_SYSTEMS",
     "RealBinarySystem",
     "mu_step_to_system",
+    "mu_step_to_system_tracking_c_l1",
     "sweep_family",
     "sweep_family_grid",
 ]
@@ -380,6 +383,90 @@ def mu_step_to_system(
     if not o_final.converged:
         return None
     return o_final
+
+
+def mu_step_to_system_tracking_c_l1(
+    anchor_mu: float,
+    target_system: cr3bp.CR3BPSystem,
+    anchor_x0: float,
+    anchor_jacobi: float,
+    anchor_period: float,
+    *,
+    hc: int | None,
+    sign: float = -1.0,
+    n_steps: int = 200,
+    c_margin: float = 0.005,
+    n_walk: int = 20,
+    tol: float = 1e-10,
+    rtol: float = 1e-12,
+    atol: float = 1e-12,
+) -> cp.SymmetricOrbit | None:
+    """Step mu DOWNWARD from ``anchor_mu`` to ``target_system.mu``, tracking C
+    below ``C_L1(mu)`` throughout (task #627).
+
+    :func:`mu_step_to_system` holds the anchor's Jacobi constant FIXED across
+    the whole mu range -- correct for #494/#549's upward extension (Earth-Moon
+    to binary-star mu, where C_L1 does not fall below the anchor C along the
+    walk), but WRONG going down toward a real moon's much smaller mu: C_L1(mu)
+    is not monotonic-safe in this direction either, and #627 found it can drop
+    BELOW the anchor's own C well before the target mu is reached (e.g.
+    C_L1(Saturn-Titan mu=2.37e-4)=3.016 versus the Ross-RT 2026 Table-I (1,1)/
+    (3,3) mu=0.01215 anchors at C=3.151/3.183). Once that happens, a
+    fixed-Jacobi walk still numerically "converges" at every step (the
+    corrector always finds SOME nearby periodic orbit) but silently drifts
+    onto a topologically different, non-secondary-reaching branch -- a
+    false-positive "success" that only shows up as ``reaches_secondary=False``
+    downstream. This generalizes #494's own fix for the analogous problem
+    going UP (``pluto_charon_kk_sweep.sweep_31``'s "Strategy B": C-walk to
+    below C_L1 BEFORE mu-stepping) into a per-step interleaving that applies
+    at every mu decrement, not just once: before each mu step, if the current
+    C is not at least ``c_margin`` below ``C_L1(mu_next)``, walk C DOWN (at
+    the current, not-yet-stepped mu) in ``n_walk`` small increments first,
+    then take the mu step at the (possibly lowered) C. ``hc`` should be an
+    explicit crossing index (not ``None``) so the branch identity is held
+    fixed through every sub-step -- an auto-redetected crossing index can snap
+    onto a different, unrelated branch the moment the orbit's shape changes
+    (also found empirically in #627).
+
+    Returns the final orbit in ``target_system`` (its real l_km/t_s), or
+    ``None`` if any C-walk or mu-step sub-correction fails to converge.
+    """
+
+    def _try(sys_: cr3bp.CR3BPSystem, x0: float, c: float, t: float) -> cp.SymmetricOrbit | None:
+        try:
+            o = cp.correct_symmetric_fixed_jacobi(
+                sys_, x0, c, t, ydot0_sign=sign, half_crossings=hc, tol=tol, rtol=rtol, atol=atol
+            )
+        except ValueError:
+            return None
+        return o if o.converged else None
+
+    mus = np.linspace(anchor_mu, target_system.mu, n_steps + 1)
+    x0_cur, t_cur, c_cur = anchor_x0, anchor_period, anchor_jacobi
+    mu_cur = float(mus[0])
+    o = _try(_nd_system(mu_cur), x0_cur, c_cur, t_cur)
+    if o is None:
+        return None
+    x0_cur, t_cur = o.x0, o.period
+
+    for mu_next in mus[1:]:
+        mu_next = float(mu_next)
+        c_l1_next = _c_l1(mu_next)
+        c_target = min(c_cur, c_l1_next - c_margin)
+        if c_target < c_cur - 1e-15:
+            sys_here = _nd_system(mu_cur)
+            for c_walk in np.linspace(c_cur, c_target, n_walk)[1:]:
+                o = _try(sys_here, x0_cur, float(c_walk), t_cur)
+                if o is None:
+                    return None
+                x0_cur, t_cur, c_cur = o.x0, o.period, float(c_walk)
+        o = _try(_nd_system(mu_next), x0_cur, c_cur, t_cur)
+        if o is None:
+            return None
+        x0_cur, t_cur = o.x0, o.period
+        mu_cur = mu_next
+
+    return _try(target_system, x0_cur, c_cur, t_cur)
 
 
 # ---------------------------------------------------------------------------
