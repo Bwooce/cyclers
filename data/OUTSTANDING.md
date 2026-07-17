@@ -511,7 +511,12 @@ mu-dependent lift magnitude (dispatched 2026-07-18); #629 for a new-method 2D gr
 on real-planet-moon-mu RRT (k1,k2) cyclers at Saturn-Titan, replacing the mu-continuation approach
 #627 found structurally fails -- flagged for a design read before dispatch, not auto-fired
 (registered 2026-07-18); #630 for leveraging #627's new perimoon_passage.py encounter-geometry
-module more broadly against existing #607/#609/#571/#494/#549 results (registered 2026-07-18);
+module more broadly against existing #607/#609/#571/#494/#549 results (CLOSED 2026-07-18: clean
+"nothing changes" on both targets -- #607/#609/#571's bend-gate negatives are architecturally out
+of the module's scope AND the bend gate's own closest-safe-periapsis construction already
+forecloses a degenerate-passage finding; #494/#549's Pluto-Charon row's "useful encounter" was
+independently re-verified at the exact catalogue IC (altitude 480.76 km, not assumed), the 4
+abstract-mu rows never claimed a physical encounter to begin with);
 #631 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -8495,24 +8500,44 @@ anywhere in the file and are genuinely still open.]**
   (per `#627`'s own explicit recommendation), and should not be auto-fired the way `#624`-`#628`
   were. Recommended model for the design read: Opus/Fable; for the build if it proceeds: Sonnet
   behind the design's chosen approach.
-- **#630** (registered 2026-07-18, user-directed follow-up to `#627`) — leverage
-  `src/cyclerfinder/search/perimoon_passage.py` (`#627`'s new encounter-geometry module, currently
-  tested only against the admitted PC(3,2) cycler and used once inside `#627`'s own pilot) more
-  broadly across this project's existing results, rather than letting it sit as single-use
-  infrastructure. Scope: audit whether this module's encounter-relevance/duty-cycle check changes
-  or refines the characterization of any ALREADY-established negative or positive result that
-  relied on a cruder or ad-hoc encounter-quality check — start with the `#607`/`#609`/`#571`
-  bend-gate-limited negatives `#625` just certified (their failure mode is "bend too small," a
-  different axis than `perimoon_passage.py`'s encounter-relevance geometry, so check whether this
-  module surfaces anything ADDITIONAL, not just re-confirms the bend finding) and the `#494`/`#549`
-  admitted (k1,k2) binary-cycler family members going UP in μ (do their perimoon/pericenter passages
-  actually look like useful encounters at every admitted μ, or was that ever assumed rather than
-  checked?). This is an audit/characterization task, not a new search — **do NOT touch
-  `data/catalogue.yaml`** even if something looks different under this lens; report findings and
-  let the coordinating session decide whether any existing entry's characterization needs a
-  follow-up correction. A "nothing changes, existing characterizations hold" result is a fully
-  legitimate, low-drama outcome — do not force a finding. Recommended model: Sonnet (mechanical
-  reuse of existing, tested infrastructure against existing data, not a new numerical method).
+- **#630** ✓ CLOSED, CLEAN "NOTHING CHANGES" RESULT ON BOTH TARGETS (2026-07-18) — (registered
+  2026-07-18, user-directed follow-up to `#627`) — leverage `src/cyclerfinder/search/
+  perimoon_passage.py` (`#627`'s new encounter-geometry module, currently tested only against the
+  admitted PC(3,2) cycler and used once inside `#627`'s own pilot) more broadly across this
+  project's existing results, rather than letting it sit as single-use infrastructure. Scope: audit
+  whether this module's encounter-relevance/duty-cycle check changes or refines the characterization
+  of any ALREADY-established negative or positive result that relied on a cruder or ad-hoc
+  encounter-quality check — the `#607`/`#609`/`#571` bend-gate-limited negatives `#625` just
+  certified, and the `#494`/`#549` admitted (k1,k2) binary-cycler family members going UP in μ.
+  Full writeup: `docs/notes/2026-07-18-630-perimoon-passage-audit.md`.
+  **Target 1 (`#607`/`#609`/`#571` via `#625`) — architecturally out of scope, and the concern is
+  moot anyway.** These candidates come from the `#563`/`#600` circular-coplanar point-mass-primary +
+  patched-conic Lambert construction (`search/physical_sanity.py`, `core/flyby.py::max_bend`) — a
+  genuinely different genome from the restricted-three-body CR3BP periodic orbits
+  `perimoon_passage.py` needs (`CR3BPSystem`+periodic `state0`+`period`); there is no mechanical
+  adapter, only a whole new tool, which was not built. More decisively: `max_bend` evaluates the
+  achievable bend AT `rp_min = radius_eq_km + safe_alt_km` — the closest safety-permitted periapsis,
+  a sourced non-collisional floor — so the gate already assumes the single closest, non-collisional
+  pass by construction (confirmed against `#571`'s own numbers, e.g. Titan-Mimas: real achievable
+  V∞=4.5425 km/s vs. the 5°-bend ceiling V∞=0.429 km/s, bend at the assumed closest periapsis only
+  0.0466°). There is no alternate "actually it was a degenerate/distant pass" finding hiding behind
+  these negatives — bend is confirmed the sole issue, exactly as characterized.
+  **Target 2 (`#494`/`#549` admitted rows) — module runs natively (no adaptation needed); the one
+  real-body row's "useful encounter" was independently verified, not assumed.** `#494` admitted 5
+  rows: 4 abstract-mu Table-I reps (mu=0.001/0.1/0.3/0.5, no real bodies — their own catalogue text
+  already says "Keplerian elements inapplicable," no `vinf_kms_at_encounters` claim, so there is
+  nothing for a real-encounter-geometry check to add; verified their topological `reaches_secondary`
+  admission is backed by a genuine close nd-scale approach anyway, r2_nd 0.0018-0.121 across all 4,
+  not just a crossing-count artifact) + the one real physical system, Pluto-Charon
+  (`ross-rt-pc-cycler-32-2026`, mu=0.10876473603280369, V2). Ran `find_perimoon_passage` at the
+  EXACT catalogue-admitted IC (not the `#627` test's slightly different C) against the real Charon
+  radius (606.0 km): closest approach 1086.76 km (altitude 480.76 km, NOT below surface), relative
+  speed 0.382 km/s — a genuine real-scale close passage, confirming "useful encounter" holds up
+  under direct quantitative check rather than having been assumed from stability+periodicity alone.
+  **Verdict: nothing changes for either target; both existing characterizations hold.** No
+  `catalogue.yaml`/`empty_regions.jsonl` edits. No new reusable code (read-only analysis + ad hoc
+  verification snippets only, run and discarded — not committed as a module), so no new tests and
+  no ruff/pytest re-run was needed (confirmed via `git status`: nothing in `src/`/`tests/` touched).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
