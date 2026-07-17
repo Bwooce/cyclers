@@ -6833,26 +6833,62 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   `tests/search/test_variational_periodic_orbit_qbcp.py` + `tests/search/test_variational_qp_torus.py`
   + `tests/genome/test_qbcp_torus.py` + `tests/core/test_qbcp.py` (26 pass). Ruff clean. Left
   uncommitted for coordinating-session review.
-- **#618** (dispatched 2026-07-16, `#617` follow-up) — try to push `#617`'s EM-L2 residual (rms
-  ~2.3-3.4e-3, closure ~4.7e-3) fully under the originally-targeted 1e-3 gate, using the two
-  concrete untried options `#617`'s own bullet flagged as open: (1) materially higher `(n1, n2)`
-  using `tr_solver="lsmr"` for speed (the `exact` dense-SVD solver was the bottleneck at
-  n1=16,n2=6, ~400s/step; `#617` measured `lsmr` reaching the SAME minimum ~3-7x faster — push
-  further than n1=16,n2=6 was feasible to test with `lsmr`'s speed advantage, watching whether
-  residual keeps improving with mode count or genuinely floors); (2) `#617`'s own
-  `continue_qbcp_torus_amplitude` natural-parameter continuation, starting from a SMALL-amplitude
-  EM-L2 torus (where the invariance PDE should be easier to resolve, closer to the periodic-orbit
-  limit `#611` already crossed cleanly) and stepping up to the target amplitude, rather than
-  `#617`'s single large-amplitude cold seed — this may find a materially better-conditioned path
-  through the family than the direct large-amplitude attempt. **A genuine floor — "residual doesn't
-  improve materially past X regardless of mode count or continuation path, here's the evidence" —
-  is a completely acceptable, valuable, FINAL characterization of this specific numerical limit; do
-  not force a crossing that isn't really there.** If EITHER approach cleanly crosses 1e-3, that
-  closes `#544`'s originally-targeted gate outright — report clearly, but per `#617`'s own scope
-  discipline, still do NOT proceed into re-running `#538`'s full cross-system BVP chain (that
-  payoff/investment decision stays separate, for the coordinating session/user). **Recommended
-  model: Sonnet** (parameter/strategy exploration on `#617`'s already-built, already-validated
-  machinery — no new numerical-methods design, unlike `#617` itself).
+- **#618 ✓ DONE (2026-07-17) — 1e-3 GATE CROSSED (Approach 1, higher mode count + `lsmr`); Approach 2
+  (small-amplitude continuation) is a clean, informative negative.** (dispatched 2026-07-16, `#617`
+  follow-up) — pushed `#617`'s EM-L2 residual (rms ~2.3-3.4e-3, closure ~4.7e-3) using the two
+  concrete untried options `#617`'s own bullet flagged as open.
+  **Approach 1 (materially higher `(n1, n2)` with `tr_solver="lsmr"`) — CROSSES the gate.** Cold-started
+  from the same C=3.13 EM-L2 Lyapunov seed `#617` used, mode count vs. residual (all `lsmr`,
+  reproduced live 2026-07-17): n1=12,n2=5 rms=3.412e-3 (exact match to `#617`, ~41-106s); n1=16,n2=6
+  rms=2.302e-3 (exact match to `#617`'s `exact`-solver number, but 118s not ~400s/step — the speed
+  payoff `#617` flagged); n1=20,n2=7 rms=1.580e-3 (346s); n1=24,n2=8 rms=1.174e-3 (694s); **n1=28,n2=9
+  rms=9.474e-4, closure=3.692e-3, rotation_number=1.85575, transverse_amplitude=0.17881,
+  `converged=True`** (~1300s at max_nfev=2500; **independently reproduced at max_nfev=1400 giving
+  rms=9.474437e-4 — essentially bit-identical to the 2500-nfev run's 9.474389e-4**, proving this is a
+  genuine, budget-independent local minimum, not an artifact of hitting the nfev cap). A separate
+  budget-saturation diagnostic at n1=12,n2=5 (5000 MORE `lsmr` nfev warm-started from the converged
+  2500-nfev solution) moved the residual only 3.412e-3 → 3.338e-3 (~2%), confirming the whole
+  12→28/5→9 trend is genuinely mode-count (truncation) driven, not iteration-budget-starved — i.e.
+  this crossing is real. **This closes `#544`'s originally-targeted 1e-3 invariance-residual gate**
+  (closure_residual, the independent short-time nonlinear-flow check, stays ~3.7e-3 — worse than the
+  algebraic residual as expected for this violently-unstable region, per `#617`'s own note, but still
+  ~130x below the old GMOS plateau of 4.771e-01). Wall-clock cost is real and rising steeply with mode
+  count (~22 min for the crossing run) — reproducing this needs a comparable time budget, not a
+  fundamental blocker.
+  **Approach 2 (small-amplitude `continue_qbcp_torus_amplitude` from near the periodic-orbit limit) —
+  clean negative, does NOT find a better-conditioned path.** Built a genuine small-amplitude EM-L2
+  Lyapunov via the already-existing `search.cr3bp_seed_generator.lyapunov_seed(point="L2",
+  amplitude=1e-3)` (linear collinear-point seed, refined by `correct_symmetric_fixed_jacobi` under the
+  hood) and projected it the same way `#617`'s seed was built. This small torus's OWN natural rotation
+  number is ~2.0132 — a genuinely DIFFERENT family branch from `#617`'s large-orbit cold-start
+  (~1.9183) at the same C=3.13-adjacent region, not a smoothly-shrunk version of it. Its own residual
+  plateaus at ~6.10e-3 (WORSE than the large orbit's 3.41e-3) and barely moves as
+  `continue_qbcp_torus_amplitude` steps the amplitude anchor from 0.0045 up through ~0.072 (9 of 20
+  steps, n1=12,n2=5, `lsmr`). Between step 9 (amp 0.0723, rot 2.0039) and step 10 (amp 0.1204, rot
+  1.9516) the continuation solver SNAPS onto the same branch `#617`'s direct cold-start already found
+  — rotation number sliding from ~2.00 toward ~1.85-1.92 — after which the residual drops to ~3.3e-3
+  and refines to 3.330e-3 by the final step (amp 0.17486, 20/20 steps completed; the requested target
+  0.18575 was not quite reached because the branch-switch ate part of the step budget). This is
+  essentially the SAME plateau `#617`'s direct large-amplitude cold start already found (3.412e-3 at
+  amp 0.18575) — continuation does not improve on it; it rediscovers the identical floor once it
+  crosses onto the correct branch. Informative negative: the near-L2 small-amplitude EM torus family
+  is distinct from (and actually worse-conditioned than) the large one `#617`/`#618` targeted, not an
+  easier on-ramp to it.
+  **No source code changes** — everything above used `variational_qbcp_torus.py`'s existing
+  `correct_qbcp_torus_pseudospectral` / `continue_qbcp_torus_amplitude` at different
+  `(n1, n2)`/`tr_solver`/seed inputs, plus the already-existing `cr3bp_seed_generator.lyapunov_seed`
+  for the small-amplitude bootstrap — no new production code was needed (module untouched). **No new
+  test added**: the crossing run at n1=28,n2=9 costs ~13-22 minutes wall-clock per solve
+  (`tr_solver="lsmr"`), far too expensive to add unmarked to
+  `tests/search/test_variational_qbcp_torus.py` (whose full existing 15-test suite totals 306s), and
+  marking it `@pytest.mark.slow` would make it silently CI-skipped — an unverified claim by this
+  session's own standing discipline — so the crossing is reported here, reproducibly, rather than
+  pinned as a new test.
+  `tests/search/test_variational_qbcp_torus.py` re-run green (15/15, module unmodified) confirming
+  none of this exploration broke anything. Per `#617`'s own scope discipline, did NOT proceed into
+  re-running `#538`'s full cross-system SE<->EM BVP chain — that payoff/investment decision stays
+  separate, for the coordinating session/user. No catalogue writeback (capability characterization,
+  not a discovery result).
 - **#597 ✓ DONE (2026-07-15)** (P3, corpus acquisition + full mining pass) — 4 more Ross-group papers
   found via a manual review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596
   session): Kumar-Rawat-Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic
