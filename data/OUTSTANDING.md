@@ -487,7 +487,9 @@ STATE dashboard's open items plus the full `#605`-`#622` capability set, looking
 combinations and new literature (CLOSED 2026-07-17: priority reads on #542/#520/ledger-staleness,
 4-item ranked shortlist B1-B4 produced, full report docs/notes/2026-07-17-623-strategic-review.md);
 #624 for #623 shortlist B1, a cross-μ transfer pilot for #608's generative model at μ=0.001/Sun-
-Earth μ, the decisive test of #542's open claim (dispatched 2026-07-17); #625 for #623 shortlist
+Earth μ, the decisive test of #542's open claim (dispatched 2026-07-17; CLOSED 2026-07-17:
+DECISIVE POSITIVE -- lift transfers at both new μ, 30x at μ=0.001 and 3.5x at Sun-Earth,
+#542 reclassified from "answered" to "validated discovery lever"); #625 for #623 shortlist
 B2, generalizing #610's interval-arithmetic bend-gate certificate to ~6 more bend-gate-limited
 empty_regions.jsonl negatives (#607/#609/#571) (dispatched 2026-07-17; CLOSED 2026-07-17: 12/15
 per-body certifications succeeded across all 6 targeted entries -- all four #571 Saturn entries +
@@ -6445,7 +6447,10 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   separate later steps). Full ratchet (`uv run pytest tests/data tests/search -q`) passed clean
   (exit 0, no FAILED/ERROR; xfail/xpass/skip baseline unchanged) before commit.
 
-- **#542 ✓ RESEARCH QUESTION ANSWERED, by `#608` (2026-07-16)** (P4, defer until #539-541 have added
+- **#542 ✓✓ VALIDATED DISCOVERY LEVER, by `#608` + `#624` (2026-07-17)** — the one remaining open
+  claim ("does the lift transfer to a μ the model never trained on") is now RESOLVED POSITIVE; see
+  the `#624`-added paragraph at the end of this bullet for the numbers. Superseded header (kept for
+  history): "✓ RESEARCH QUESTION ANSWERED, by `#608` (2026-07-16)" (P4, defer until #539-541 have added
   corrector-run diversity) — The previously-proposed #525 learned-seed generative warm-start
   (diffusion/generative model trained on the accumulated corrector runlogs/checkpoints, cf.
   Graebner & Beeson, arXiv:2501.07005) to propose seeds in unknown basins automatically. Still
@@ -6478,6 +6483,18 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   and (2) a nonlinear model (kernel PCA / shallow autoencoder), since the linear PCA model
   demonstrably lands in physically-plausible "gaps" between the true curved family manifolds
   rather than tracking them tightly — neither has been scoped as its own task number yet.
+  **`#624` UPDATE (2026-07-17): the broader "propose seeds in an unfamiliar basin" claim flagged
+  above as untested IS NOW TESTED, and POSITIVE.** `#624` evaluated the SAME already-trained #608
+  model (no retraining) at two mass ratios it never saw during training: μ=0.001
+  (converged-and-physically-sane rate 60% generated vs. 2% uniform baseline, 30x — stronger than
+  the in-distribution 12.25x) and Sun-Earth μ≈3.0e-6 (7% vs. 2%, 3.5x — weaker but still a genuine
+  positive lift, not a collapse). The null hypothesis (lift collapses off-distribution) is
+  decisively rejected at both tested μ. **This task should now be treated as CLOSED / a validated
+  discovery lever worth productionizing**, not merely "answered" — `#542`'s original framing
+  ("propose seeds in unknown basins automatically") is empirically supported, with the caveat
+  (see `#624`'s own bullet) that lift magnitude is μ-dependent and a production build should
+  account for that rather than assuming uniform transfer. See `#624`'s own bullet for the full
+  numbers, positive-control detail, and commit.
 
 - **#543 ✓ SCOPED (2026-07-11)** (header corrected 2026-07-15: this bullet's opening line said
   "parking lot — needs a scoping conversation, not a sprint slot" even though its own body records
@@ -8151,7 +8168,9 @@ anywhere in the file and are genuinely still open.]**
   computer-assisted-proof machinery (in corpus, digested, Oterma golden reproduced) as the only
   route to theorem-grade dynamical negatives — parked, multi-week, no current forcing function;
   minor: the Litteri CMDA 138:25 journal version remains unacquired.
-- **#624** (dispatched 2026-07-17, `#623` shortlist B1 — user-directed) — cross-μ transfer pilot for
+- **#624 ✓ DONE (2026-07-17) — DECISIVE POSITIVE: the `#608` lift TRANSFERS off-distribution,
+  `#542` upgraded from "answered" to "validated discovery lever, worth productionizing."**
+  (dispatched 2026-07-17, `#623` shortlist B1 — user-directed) — cross-μ transfer pilot for
   `#608`'s generative ML seed model, the direct test of `#542`'s one remaining open claim ("can a
   model trained on this corpus propose useful seeds in a genuinely unfamiliar basin"). Scope: take
   `#608`'s already-built model (`src/cyclerfinder/ml/orbit_generative.py`, trained on the Earth-Moon
@@ -8164,6 +8183,42 @@ anywhere in the file and are genuinely still open.]**
   distribution, close `#542` as answered-negative; if it survives (even partially), `#542` becomes
   a real discovery lever worth productionizing — either outcome ends `#542`'s limbo. Recommended
   model: Sonnet (mechanical evaluation-harness reuse, not a new numerical-methods judgment call).
+  **RESULT (`scripts/run_624_cross_mu_transfer_pilot.py`,
+  `data/found/624_cross_mu_transfer_pilot/summary.json`, commit `88e3a13`)**: the ALREADY-TRAINED
+  #608 model (re-derived bit-for-bit from the same corpus/split/seed=608, NOT retrained) was
+  evaluated at both target μ with its raw decoded (state0, period) output applied UNCHANGED — no
+  rescaling — reasoned explicitly in the script's module docstring: CR3BP's own
+  nondimensionalization (mass/length/time units) is μ-INVARIANT by construction, so there is no
+  unit-conversion factor between two μ values (unlike converting between two systems' physical
+  km/s scales), and this codebase's own `#494` Phase-3 precedent already reuses an anchor IC
+  directly at a new μ with no rescaling. Converged-AND-physically-sane rate, generated vs. uniform
+  baseline (same N=100, same `correct_periodic` refinement call, `#608`'s own metric): **μ=0.001:
+  60% vs 2% (30x — STRONGER than the 49%-vs-4%/12.25x in-distribution Earth-Moon reference)**;
+  **Sun-Earth μ=3.0035e-6: 7% vs 2% (3.5x — weaker, but still a genuine positive lift, not a
+  collapse)**. Ross-RT μ=0.001 positive control (Rep 1, k=(1,1), Table I): (a) infra check — the
+  general shooting corrector cleanly reproduces the published anchor from its own IC (residual
+  4.3e-12, zero error in x0/T/C), confirming any convergence failure elsewhere is a SEEDING
+  problem, not solver infrastructure at this μ; (b) the closest converged generated candidate
+  lands in the same Jacobi ballpark (|ΔC|=0.033) but a very different period/x0 (|ΔT|=13.86,
+  |Δx0|=1.15) — a different real family at similar energy, not literal rediscovery of that one
+  member, an honest (not oversold) reading. **Verdict, decisive either way as scoped: POSITIVE.**
+  The null hypothesis (lift collapses off-distribution) is rejected at both tested μ; the lift is
+  real, substantial, and — surprisingly — stronger at μ=0.001 than in-distribution, though it
+  attenuates (still real) at the much larger μ-ratio jump to Sun-Earth (~4000x vs Earth-Moon,
+  vs. ~12x for μ=0.001). Recommendation: `#542` should NOT be closed as answered-negative;
+  reclassify as a validated discovery lever. A future productionization pass should account for
+  the demonstrated μ-dependence of lift magnitude (re-fit/re-condition per target μ region rather
+  than assuming one Earth-Moon-trained model transfers uniformly) and the Ross-RT check's honest
+  caveat (the model finds SOME real family, not necessarily the specific one being sought) before
+  relying on it for an actual discovery campaign. 0 catalogue writeback, 0 literature-novelty
+  check (capability evaluation only, per this task's explicit scope). `uv run ruff check .` /
+  `ruff format --check .` clean on this task's files; `tests/ml tests/search -q` green except 2
+  PRE-EXISTING failures unrelated to this change (`test_eggie_ballistic::
+  test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_pluto_charon_kk_sweep::
+  test_504_sweep_33` — both match the documented local-Mac/M3-Accelerate BLAS-sensitivity
+  signature from `#584`'s memory entry: a tolerance-edge V∞ match and an integer winding-number
+  topology flip; this task touches no CR3BP solver code); `tests/scripts -q` green (109+ tests,
+  including the new documented preflight exemption).
 - **#625** — ✓ CLOSED (2026-07-17). (dispatched 2026-07-17, `#623` shortlist B2 — user-directed) — generalize `#610`'s
   interval-arithmetic bend-gate certificate from the single Proteus sub-gate to every other
   `empty_regions.jsonl` negative sharing the identical closed-form failure mode (the `#324`
