@@ -4761,6 +4761,26 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   repeatedly found itself needing to settle in writing *before* sweeping). Final
   novelty/empty-region verdict → **Opus**, with a **Fable** independent adversarial pass
   before any "novel" claim or catalogue writeback (matching #538 Task 5's pattern).
+  **✓ EFFECTIVELY BLOCKED/SUPERSEDED (2026-07-17), per `#619`.** This entry's own premise —
+  "do first once `#538` lands," with a mandatory positive control built on "`#538`'s own
+  confirmed SE<->EM connection" — is now moot: `#538` did NOT land a confirmed connection.
+  `#619` (the `#538`-`#544`-`#611`-`#612`-`#617`-`#618`-`#619` arc's FINAL result) found a
+  clean, well-understood negative — not because the EM-L2 torus fails to converge (`#617`/
+  `#618` fixed that), but because the region's UNSTABLE MANIFOLD DIRECTION is unknowable to
+  useful precision at any achievable torus resolution (a strong-saddle conditioning problem,
+  one-period amplification ~2e4-7e4x vs. the torus's own ~1e-3-level residual). `#619`'s own
+  verdict states this explicitly predicts "`#539`/`#540`'s reuse of this methodology on any
+  strongly-unstable libration point will hit the same wall" — and Jupiter-Europa/Ganymede
+  (this entry's own target) is exactly such a point. Generalizing `#538`'s corrector into a
+  reusable module (this entry's first half) remains a well-defined, low-risk engineering
+  task on its own, but the SECOND half — actually finding a genuine torus connection at a
+  new system — is now understood to be blocked by the same fundamental conditioning
+  obstruction, not a missing generalization. Not re-scoping or re-dispatching without a new,
+  different idea for extracting a usable manifold direction under this conditioning
+  regime (untried so far: a genuinely different manifold-extraction convention, e.g. `#619`'s
+  own flagged-but-unvalidated `unstable_via_backward` alternative, or accepting a
+  lower-precision/wider-tolerance connection search that doesn't require a precise tangent
+  direction) — none of which is scoped here.
 
 - **#540** (P2, sequence after #539) — Point the now-generalized, cross-checked pipeline at
   the **Uranian system** (Miranda-Ariel-Umbriel-Oberon lanes) — the *one* system that has
