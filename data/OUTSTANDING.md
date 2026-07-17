@@ -6765,6 +6765,74 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   how much diagnosis has already gone into this specific blocker. **Recommended model: Opus**
   (adapting two existing, non-trivial pseudospectral correctors into a new combined formulation is
   genuine numerical-methods design judgment, same tier as `#611`/`#612`).
+  **✓ BUILT + SE-L2 POSITIVE-CONTROLLED + EM-L2 WALL LARGELY CROSSED (partial, honest) (2026-07-17).**
+  New module `src/cyclerfinder/search/variational_qbcp_torus.py` + tests
+  `tests/search/test_variational_qbcp_torus.py` (15 tests, all green — independently re-run and
+  re-timed by the coordinating session, 306s). NO existing module modified
+  (`genome/qbcp_torus.py`, `core/qbcp.py` both untouched — no bug found in either; the new
+  vectorized RHS/Jacobian are checked to machine precision against `qbcp_eom`/`qbcp_stm_eom`
+  pointwise, RHS maxerr 0.0, grid-Jacobian maxerr 0.0).
+  **Design decision (the crux, `theta1`/`omega1` fixed-vs-free): `omega1` is FIXED = `omega_s =
+  2*pi/T_s`, NOT a free unknown.** The QBCP is non-autonomous and `T_s`-periodic; its `qbcp_eom`
+  time-dependence enters ONLY through the Sun phase `theta_sun = omega_s*t`, so the first torus
+  angle `theta1` is LOCKED to the model clock (`theta1 = theta_sun`) and the RHS becomes an explicit
+  function `F(theta1, u)` — `#611`'s "period is a fixed input, not an unknown" reasoning lifted to
+  the first angle. Only `theta2` (the internal libration angle) has a free frequency `omega2`. This
+  differs from `#612`'s CR3BP torus (both frequencies free, autonomous system) and matches what the
+  existing GMOS `correct_qbcp_torus` already assumes (`omega_long = 2*pi/T_s` fixed, `rho` free) —
+  it only replaces GMOS's stroboscopic-shooting residual with an integration-free pseudospectral
+  one. Consequently the longitudinal phase gauge `#612` needed is DROPPED (theta1 has no phase
+  freedom); THREE gauge rows remain (transverse phase, transverse amplitude anchor, rotation-number
+  pin), one fewer than `#612`'s four. Residual is the quasi-periodic invariance PDE
+  `omega1*du/dtheta1 + omega2*du/dtheta2 - F(theta1,u) = 0` on a 2D collocation grid, in the
+  first-order 6-canonical-state (PM) representation, with an EXACT analytic Jacobian (the local
+  operator `omega1 d/dtheta1 + omega2 d/dtheta2 - D_uF`, verified vs central FD to rel 2e-10 — the
+  ~1e6-1e8 per-period amplification `#544` root-caused never enters the residual or Jacobian, which
+  is exactly why it beats GMOS's single-period shooting).
+  **SE-L2 positive control (regression floor) PASSED.** Bootstrapped from the full-mu Sun-Earth L2
+  GMOS torus that `correct_qbcp_torus` already converges cleanly (independently rebuilt live:
+  invariance residual 1.538e-05, the `#544`-quoted ~3e-5 SE-L2 case). The pseudospectral corrector
+  reproduces it: rotation number 0.23137 vs GMOS 0.23096 (agree to ~1.8e-3 relative), `omega1`
+  recovered EXACTLY at `omega_s`, invariance residual converging cleanly and monotonically in the
+  transverse mode count (n2=2→6: rms 2.0e-3 → 6.5e-4 → 4.8e-4 → 9.4e-5 → 5.5e-5; closure 3.1e-5 at
+  n2=6) — comparable to the GMOS seed's own residual on a MUCH more stringent pointwise-PDE metric
+  than GMOS's coarse 5-sample stroboscopic check. (Test config n1=6,n2=5,`tr_solver="lsmr"`: rms
+  9.405e-05, closure 5.9e-05, ~9s.)
+  **EM-L2 headline (the `#544`/`#538` blocker) — LARGE PARTIAL CROSSING, reported honestly.** On the
+  violently-unstable Earth-Moon L2 torus at Jacobi 3.13 (`#544`'s better-converging candidate; CR3BP
+  L2 Lyapunov x0=1.1893, T=3.475, `ydot0_sign=-1.0` — `+1.0` collapses to a spurious near-Moon
+  orbit at this energy), seeded from the bare CR3BP Lyapunov (theta1-flat, NO Sun forcing — the
+  corrector builds the theta1 structure itself), the integration-free corrector **converges to a
+  genuine local minimum at invariance residual rms ≈ 3.412e-03 (n1=12,n2=5) / 2.302e-03 (n1=16,n2=6,
+  self-terminated nfev=121), independent short-time-flow closure ≈ 4.7e-03** — i.e. **~140-207x
+  below the old single-period-GMOS plateau of 4.771e-01** (`#544`'s best prior result, which each
+  stroboscopic sample amplified ~1e6-1e8). The `exact` (dense-SVD) and `lsmr` (iterative)
+  trust-region solvers reach the SAME residual/rotation-number/amplitude, proving this is a genuine
+  least-squares local minimum, not a starved budget or solver artifact. The converged object is a
+  genuinely large finite-amplitude EM-L2 torus (transverse amplitude ~0.19, not collapsed to the
+  periodic-orbit center) at rotation number ~1.92 (near `T_s/T_lyap`).
+  **Honest scope boundary — NOT a full 1e-3 crossing.** rms ~2.3-3.4e-3 / closure ~4.7e-3
+  *approaches but does not fully cross* the originally-targeted 1e-3 gate at the resolutions
+  computationally feasible here (the residual improves only slowly with transverse mode count:
+  n2=5→6→7 gave 2.45e-3→2.30e-3→2.15e-3, and the exact-SVD trust-region step costs ~400s at n1=16,
+  n2=6). This is reported as a large PARTIAL improvement, per the task's explicit allowance — it
+  crosses the MECHANISM that blocked the old method (the single-period stroboscopic amplification is
+  structurally removed) and beats `#544`'s plateau by >2 orders of magnitude, without any of the
+  expensive multi-stage BCR4BP mu_sun-continuation bootstrap the old method needed, but it is a
+  ~2-3x-from-gate result, not a clean 1e-3 crossing. Whether pushing to <1e-3 needs materially
+  higher (n1,n2) with a sparse/iterative trust-region solve, an amplitude/energy continuation from
+  the small-amplitude end, or is a genuine model-instance floor is left open and characterized.
+  **Performance note:** `tr_solver="exact"` (scipy default) self-terminates at the true minimum in
+  few iterations but each dense-SVD step is O(n^2)-expensive; `tr_solver="lsmr"` reaches the same
+  minimum ~3-7x faster in wall-clock on the large problems (verified identical result on both SE-L2
+  and EM-L2) — `"exact"` kept as the robust default, `"lsmr"` the fast option.
+  **Explicit scope boundary honored:** did NOT proceed into re-running `#538`'s cross-system SE<->EM
+  BVP chain (portfolio-parked 2026-07-10) — build + validate only. No catalogue writeback (capability
+  build + method demonstration). No `scripts/run_*.py` created (library module + test file only), so
+  the preflight AST ratchet does not apply. Adjacent suites re-run green:
+  `tests/search/test_variational_periodic_orbit_qbcp.py` + `tests/search/test_variational_qp_torus.py`
+  + `tests/genome/test_qbcp_torus.py` + `tests/core/test_qbcp.py` (26 pass). Ruff clean. Left
+  uncommitted for coordinating-session review.
 - **#597 ✓ DONE (2026-07-15)** (P3, corpus acquisition + full mining pass) — 4 more Ross-group papers
   found via a manual review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596
   session): Kumar-Rawat-Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic
