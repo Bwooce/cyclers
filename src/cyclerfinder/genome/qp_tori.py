@@ -334,6 +334,22 @@ def _seed_invariant_circle(
         )
     idx, lam = best
     v_complex = eigvecs[:, idx].astype(np.complex128)
+    # Canonicalize the Neimark-Sacker representative to the POSITIVE-imaginary
+    # member of the conjugate pair (lam, conj(lam)). The two members describe
+    # the SAME invariant circle traversed in opposite angular senses
+    # (theta -> -theta), so the sign of the rotation number rho = arg(lam) is a
+    # pure parametrization convention. But WHICH member ``np.linalg.eig``
+    # returns first is BLAS-backend dependent (Mac/Accelerate vs Linux/OpenBLAS
+    # order the conjugate pair differently), so without pinning it the reported
+    # rotation-number SIGN -- and, because the seed direction biases which of
+    # two nearby real tori the nonlinear corrector lands on, occasionally the
+    # branch itself -- flips between platforms. Pin arg(lam) into (0, pi) so
+    # rho >= 0 everywhere and the corrector is reproducible cross-platform.
+    # (#632; cf. #515's 3D-Floquet eigenvector-sign alignment for the same
+    # class of platform-dependent eigen-sign ambiguity.)
+    if np.imag(lam) < 0.0:
+        lam = complex(np.conj(lam))
+        v_complex = np.conj(v_complex)
     # Normalize so |v| = 1
     v_complex /= np.linalg.norm(v_complex)
 
