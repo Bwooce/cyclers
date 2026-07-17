@@ -1,0 +1,61 @@
+Task #629 Phase A scaled-margin rerun -- rep=11 alpha=0.15 -- run 2026-07-18T01:36:01Z
+=== (1,1) :: alpha=0.15 :: anchor mu=0.001 (Table I Rep 1 (mu=0.001) -- the paper's own floor, same waypoint #627 used) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(1,1): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.7912; predicted clamp ceiling rho=1-alpha=0.8500
+(1,1) (alpha=0.15): continuation to Titan mu FAILED after 1.4s -- clean negative (convergence failure).
+
+=== SUMMARY ===
+(1,1) alpha=0.15: {'label': '(1,1)', 'alpha': 0.15, 'continued': False, 'elapsed_s': 1.3724009990692139, 'rho_anchor': 0.7911558972058609}
+Task #629 Phase A scaled-margin rerun -- rep=11 alpha=0.2 -- run 2026-07-18T01:37:43Z
+=== (1,1) :: alpha=0.2 :: anchor mu=0.001 (Table I Rep 1 (mu=0.001) -- the paper's own floor, same waypoint #627 used) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(1,1): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.7912; predicted clamp ceiling rho=1-alpha=0.8000
+(1,1) (alpha=0.2): continuation to Titan mu FAILED after 1.4s -- clean negative (convergence failure).
+
+=== SUMMARY ===
+(1,1) alpha=0.2: {'label': '(1,1)', 'alpha': 0.2, 'continued': False, 'elapsed_s': 1.3844630718231201, 'rho_anchor': 0.7911558972058609}
+Task #629 Phase A scaled-margin rerun -- rep=11 alpha=0.25 -- run 2026-07-18T01:37:51Z
+=== (1,1) :: alpha=0.25 :: anchor mu=0.001 (Table I Rep 1 (mu=0.001) -- the paper's own floor, same waypoint #627 used) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(1,1): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.7912; predicted clamp ceiling rho=1-alpha=0.7500
+(1,1) (alpha=0.25): landed at Titan mu in 354.7s. x0=-0.713562595 C=3.0118272 rho=0.7500 T=18.815384 TU (47.757 d)
+(1,1) (alpha=0.25): topology=(1,0) prograde=True reaches_secondary=False (target (1,1))
+(1,1) (alpha=0.25): Barden nu=0.842677 stable=True crosscheck_ok=True crosscheck_dj=7.55e-14
+(1,1) (alpha=0.25): landed member off-target/unstable -- C-sweep at Titan mu.
+(1,1) (alpha=0.25): C-sweep found 78 members, 0 on-target-topology AND stable.
+(1,1) (alpha=0.25): stability gate FAILED -- skipping perimoon-geometry gate.
+(1,1) (alpha=0.25): offline literature-check status='published' citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Saturnian ideal model: Titan-flyby -> Enceladus target (Titan is the ONLY Saturnian flyby body R-S consider massive enough for the assist); Table 4/5 carries 20 catalogued members (russell-strange-2009-titenc-* catalogue rows, e.g. TitEnc#235)." confidence=0.95
+
+=== SUMMARY ===
+(1,1) alpha=0.25: {'label': '(1,1)', 'alpha': 0.25, 'continued': True, 'elapsed_s': 354.72136306762695, 'rho_anchor': 0.7911558972058609, 'rho_predicted_ceiling': 0.75, 'x0': -0.7135625952334318, 'jacobi': 3.011827185653397, 'rho_landed': 0.750000000000007, 'period': 18.81538391083395, 'topology': (1, 0), 'prograde': True, 'reaches_secondary': False, 'nu_direct': 0.8426768157794211, 'stable_direct': True, 'crosscheck_ok': True, 'gate_stability_pass': False, 'gate_encounter_pass': False, 'lit_check_offline': {'status': 'published', 'citation': "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Saturnian ideal model: Titan-flyby -> Enceladus target (Titan is the ONLY Saturnian flyby body R-S consider massive enough for the assist); Table 4/5 carries 20 catalogued members (russell-strange-2009-titenc-* catalogue rows, e.g. TitEnc#235).", 'confidence': 0.95}}
+Task #629 Phase A scaled-margin rerun -- rep=11 alpha=0.22 -- run 2026-07-18T01:44:59Z
+=== (1,1) :: alpha=0.22 :: anchor mu=0.001 (Table I Rep 1 (mu=0.001) -- the paper's own floor, same waypoint #627 used) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(1,1): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.7912; predicted clamp ceiling rho=1-alpha=0.7800
+(1,1) (alpha=0.22): continuation to Titan mu FAILED after 247.5s -- clean negative (convergence failure).
+
+=== SUMMARY ===
+(1,1) alpha=0.22: {'label': '(1,1)', 'alpha': 0.22, 'continued': False, 'elapsed_s': 247.5102698802948, 'rho_anchor': 0.7911558972058609}
+Task #629 Phase A scaled-margin rerun -- rep=11 alpha=0.3 -- run 2026-07-18T01:49:23Z
+=== (1,1) :: alpha=0.3 :: anchor mu=0.001 (Table I Rep 1 (mu=0.001) -- the paper's own floor, same waypoint #627 used) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(1,1): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.7912; predicted clamp ceiling rho=1-alpha=0.7000
+(1,1) (alpha=0.3): continuation to Titan mu FAILED after 331.8s -- clean negative (convergence failure).
+
+=== SUMMARY ===
+(1,1) alpha=0.3: {'label': '(1,1)', 'alpha': 0.3, 'continued': False, 'elapsed_s': 331.7996299266815, 'rho_anchor': 0.7911558972058609}
+Task #629 Phase A scaled-margin rerun -- rep=33 alpha=0.05 -- run 2026-07-18T01:55:10Z
+=== (3,3) :: alpha=0.05 :: anchor mu=0.0121506 (Table I Rep 3 (mu=0.01215) -- the task's literal starting point) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(3,3): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.9737; predicted clamp ceiling rho=1-alpha=0.9500
+(3,3) (alpha=0.05): continuation to Titan mu FAILED after 481.8s -- clean negative (convergence failure).
+
+=== SUMMARY ===
+(3,3) alpha=0.05: {'label': '(3,3)', 'alpha': 0.05, 'continued': False, 'elapsed_s': 481.8143539428711, 'rho_anchor': 0.973654065159304}
+Task #629 Phase A scaled-margin rerun -- rep=33 alpha=0.15 -- run 2026-07-18T02:03:16Z
+=== (3,3) :: alpha=0.15 :: anchor mu=0.0121506 (Table I Rep 3 (mu=0.01215) -- the task's literal starting point) -> Titan mu=0.000236695 (C_L1(Titan)=3.015770) ===
+(3,3): anchor rho=(C-3)/(C_L1(anchor_mu)-3)=0.9737; predicted clamp ceiling rho=1-alpha=0.8500
+(3,3) (alpha=0.15): landed at Titan mu in 1993.9s. x0=-0.084336859 C=3.0134041 rho=0.8500 T=18.850802 TU (47.847 d)
+(3,3) (alpha=0.15): topology=(7,0) prograde=True reaches_secondary=False (target (3,3))
+(3,3) (alpha=0.15): Barden nu=0.924426 stable=True crosscheck_ok=True crosscheck_dj=2.35e-12
+(3,3) (alpha=0.15): landed member off-target/unstable -- C-sweep at Titan mu.
+(3,3) (alpha=0.15): C-sweep found 81 members, 0 on-target-topology AND stable.
+(3,3) (alpha=0.15): stability gate FAILED -- skipping perimoon-geometry gate.
+(3,3) (alpha=0.15): offline literature-check status='published' citation="Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Saturnian ideal model: Titan-flyby -> Enceladus target (Titan is the ONLY Saturnian flyby body R-S consider massive enough for the assist); Table 4/5 carries 20 catalogued members (russell-strange-2009-titenc-* catalogue rows, e.g. TitEnc#235)." confidence=0.95
+
+=== SUMMARY ===
+(3,3) alpha=0.15: {'label': '(3,3)', 'alpha': 0.15, 'continued': True, 'elapsed_s': 1993.850879907608, 'rho_anchor': 0.973654065159304, 'rho_predicted_ceiling': 0.85, 'x0': -0.08433685854451882, 'jacobi': 3.0134041437405195, 'rho_landed': 0.8500000000001957, 'period': 18.850802477205967, 'topology': (7, 0), 'prograde': True, 'reaches_secondary': False, 'nu_direct': 0.9244255955578214, 'stable_direct': True, 'crosscheck_ok': True, 'gate_stability_pass': False, 'gate_encounter_pass': False, 'lit_check_offline': {'status': 'published', 'citation': "Russell, R. P. & Strange, N. J., 'Cycler Trajectories in Planetary Moon Systems,' Journal of Guidance, Control, and Dynamics 32(1):143-157 (2009), DOI 10.2514/1.36610. Table 1 Saturnian ideal model: Titan-flyby -> Enceladus target (Titan is the ONLY Saturnian flyby body R-S consider massive enough for the assist); Table 4/5 carries 20 catalogued members (russell-strange-2009-titenc-* catalogue rows, e.g. TitEnc#235).", 'confidence': 0.95}}

@@ -396,6 +396,7 @@ def mu_step_to_system_tracking_c_l1(
     sign: float = -1.0,
     n_steps: int = 200,
     c_margin: float = 0.005,
+    c_margin_alpha: float | None = None,
     n_walk: int = 20,
     tol: float = 1e-10,
     rtol: float = 1e-12,
@@ -403,6 +404,23 @@ def mu_step_to_system_tracking_c_l1(
 ) -> cp.SymmetricOrbit | None:
     """Step mu DOWNWARD from ``anchor_mu`` to ``target_system.mu``, tracking C
     below ``C_L1(mu)`` throughout (task #627).
+
+    ``c_margin_alpha`` (task #629 Phase A): if given (not ``None``), overrides
+    ``c_margin`` at EVERY step with a margin SCALED to that step's corridor
+    width, ``c_margin_step = c_margin_alpha * (C_L1(mu_next) - 3)``, instead of
+    the absolute constant ``c_margin``. #629's design read
+    (docs/notes/2026-07-18-629-design-read-titan-kk-grid.md) found #627's
+    fixed absolute ``c_margin`` (0.02 / 0.005) does not scale with the
+    Hill-shrinking corridor (``C_L1(mu) - 3 ~ mu^(2/3)``), so a walk that
+    starts inside the corridor can be forced OUT of it (even below C=3
+    entirely) purely by the margin's own fixed size as mu shrinks -- an
+    artifact of the parameterization, not a physical result. Tracking
+    ``c_margin_alpha`` instead holds the *scaled* energy
+    ``rho = (C - 3) / (C_L1(mu) - 3)`` approximately constant at
+    ``1 - c_margin_alpha`` once the walk starts clamping, matching how the
+    two sourced Ross-RT 2026 Table-I (1,1) anchors sit at a near-invariant
+    rho (~0.79-0.80) across a 12x mu range. ``c_margin`` is ignored when
+    ``c_margin_alpha`` is not ``None``.
 
     :func:`mu_step_to_system` holds the anchor's Jacobi constant FIXED across
     the whole mu range -- correct for #494/#549's upward extension (Earth-Moon
@@ -452,7 +470,8 @@ def mu_step_to_system_tracking_c_l1(
     for mu_next in mus[1:]:
         mu_next = float(mu_next)
         c_l1_next = _c_l1(mu_next)
-        c_target = min(c_cur, c_l1_next - c_margin)
+        margin_here = c_margin_alpha * (c_l1_next - 3.0) if c_margin_alpha is not None else c_margin
+        c_target = min(c_cur, c_l1_next - margin_here)
         if c_target < c_cur - 1e-15:
             sys_here = _nd_system(mu_cur)
             for c_walk in np.linspace(c_cur, c_target, n_walk)[1:]:
