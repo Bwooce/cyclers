@@ -219,6 +219,32 @@ class QBCPTorusVariationalResult:
     notes: str = ""
     extras: dict[str, float] = field(default_factory=dict)
 
+    # ------------------------------------------------------------------
+    # Read-only aliases for duck-type compatibility with the GMOS
+    # ``genome.qbcp_torus.QBCPTorus`` interface, so the existing #538
+    # cross-system connection search (``scripts/run_538_qbcp_cycler.py``)
+    # can consume either torus type unchanged (#619). These are exact
+    # synonyms, not new quantities: ``omega1`` IS the longitudinal
+    # (Sun-locked) frequency ``omega_long``; ``period`` IS the
+    # stroboscopic period ``t_strob``; ``residual_rms`` IS the
+    # invariance residual. No new physics -- naming only.
+    # ------------------------------------------------------------------
+
+    @property
+    def omega_long(self) -> float:
+        """Alias for :attr:`omega1` (the ``QBCPTorus.omega_long`` name)."""
+        return self.omega1
+
+    @property
+    def t_strob(self) -> float:
+        """Alias for :attr:`period` (the ``QBCPTorus.t_strob`` name)."""
+        return self.period
+
+    @property
+    def invariance_residual(self) -> float:
+        """Alias for :attr:`residual_rms` (the ``QBCPTorus`` name)."""
+        return self.residual_rms
+
 
 # ---------------------------------------------------------------------------
 # Real tensor-product Fourier basis (identical convention to #612).
@@ -888,3 +914,124 @@ def continue_qbcp_torus_amplitude(
         if not nxt.converged:
             break
     return steps
+
+
+# ---------------------------------------------------------------------------
+# Manifold-eigenvector extraction adapter (#619).
+# ---------------------------------------------------------------------------
+#
+# `#619` needs stable/unstable manifold DIRECTIONS off this pseudospectral
+# torus so the existing #538 cross-system SE<->EM connection search
+# (``scripts/run_538_qbcp_cycler.py``) can consume it exactly the way it already
+# consumes a GMOS ``QBCPTorus`` via ``run_538.manifold_state_vec``. This
+# corrector solves ONLY for the invariant torus, not its Floquet bundle, so the
+# bundle is read off separately -- by a ONE-SHOT augmented-STM propagation of an
+# already-converged torus point over one stroboscopic period, then a spectral
+# decomposition (``genome.qp_torus_manifold.local_stability``).
+#
+# This is NOT the shooting-based Newton-iteration fragility `#544` root-caused.
+# `#544`'s wall was REPEATED single-period shooting evaluations from an
+# IMPERFECT guess DURING the search itself, each Newton step compounding the
+# ~1e6-1e8 per-period amplification into a finite-difference Jacobian estimate so
+# the iteration never converges. Here the torus is ALREADY converged (the whole
+# point of `#617`/`#618`); we propagate it ONCE per manifold point purely to READ
+# its linearized dynamics' eigenstructure -- nothing is being driven to zero via
+# this propagation. That is standard practice for any validated periodic /
+# quasi-periodic solution (the same "propagation is fine for a one-shot
+# diagnostic, not as the search mechanism" distinction `#611`/`#612`/`#617`/`#618`
+# already rely on for their own independent closure checks). The extracted
+# DIRECTION (dominant unstable subspace of the one-period STM) is moreover far
+# better-conditioned than the raw endpoint state: strong hyperbolicity makes the
+# dominant eigenvector of the STM robust to the base-point offset, but this is a
+# claim to be CHECKED empirically (`#619` Step 3), not assumed.
+
+
+def manifold_state_vec_pseudospectral(
+    torus: QBCPTorusVariationalResult,
+    theta_long: float,
+    theta_trans: float,
+    branch: str,
+    ref_vec: NDArray[np.float64] | None,
+    *,
+    hyperbolicity_tol: float = 1e-4,
+    rtol: float = 1e-8,
+    atol: float = 1e-8,
+    unstable_via_backward: bool = False,
+) -> tuple[NDArray[np.float64], NDArray[np.float64]] | None:
+    """Return ``(state_pv, eigenvector)`` at a pseudospectral-torus phase.
+
+    Faithful analogue of ``scripts/run_538_qbcp_cycler.manifold_state_vec`` (same
+    three steps for a GMOS :class:`QBCPTorus`): (1) evaluate the torus PM state at
+    ``(theta_long, theta_trans)`` via :func:`evaluate_torus_state`; (2) convert
+    PM->PV at the Sun epoch ``t0 = (theta_long mod 2*pi) / omega1`` via
+    :func:`cyclerfinder.core.qbcp.state_pm_to_pv`; (3) propagate the augmented
+    state+STM equations FORWARD for ONE stroboscopic period ``torus.period`` and
+    call the SAME :func:`~cyclerfinder.genome.qp_torus_manifold.local_stability`
+    to read off the real ``vec_u`` (unstable) / ``vec_s`` (stable) eigenvector.
+
+    The DEFAULT extraction is byte-for-byte the GMOS method's (forward one-period
+    STM, ``vec_u``/``vec_s``), so `#619`'s positive control -- "does the adapter
+    reproduce the trusted ``manifold_state_vec`` on the SE-L2 torus where GMOS
+    works" -- is a meaningful test of the ADAPTER, not of a changed convention.
+    `#619` confirmed it: matched-physical-point direction agreement |dot| ~0.9999
+    (median), <=~5deg, on SE-L2.
+
+    ``branch`` is ``"unstable"`` or ``"stable"``. ``ref_vec`` (if given) fixes the
+    eigenvector sign by dot-product continuity, matching ``manifold_state_vec``
+    verbatim. Returns ``None`` if the propagation fails or no real hyperbolic
+    eigenpair of the requested branch is extractable (same contract, so the #538
+    search's ``None``-guards apply unchanged).
+
+    Known conditioning caveat (`#619` Step 3), and ``unstable_via_backward``
+    ----------------------------------------------------------------------------
+    For a TORUS point (unlike a periodic-orbit point) the one-period STM maps
+    ``E^u(t0) -> E^u(t0 + T)`` (a DIFFERENT torus point, rotated by ``rho``), so
+    its eigenvectors only APPROXIMATE the manifold tangent at ``t0`` -- an
+    approximation inherent to this whole ``manifold_state_vec`` approach, GMOS
+    included. `#619`'s Step-3 measurements on the violently-unstable EM-L2 torus
+    (one-period spectrum ``|lambda| ~ {2e4, 1,1,1,1, 5e-5}`` at C=3.13):
+
+    * the FORWARD ``vec_s`` (STABLE) direction is well-conditioned: robust to a
+      base-point offset of the torus's own residual size (~1e-3), |dot| >= 0.999;
+    * the FORWARD ``vec_u`` (UNSTABLE) direction is NOT: a ~1e-4 offset (below the
+      torus's ~9.5e-4 invariance residual) is amplified ~2e4x over the period, so
+      the STM linearizes along a diverged trajectory and ``vec_u`` can swing ~90
+      deg. On the mild SE-L2 torus (amplification only ~2.8) both are robust.
+
+    ``unstable_via_backward=True`` instead reads the unstable direction as the
+    BACKWARD one-period map's contracting (``vec_s``) eigenvector, which IS robust
+    on EM-L2. NOTE it is a DIFFERENT approximation from the forward ``vec_u``:
+    even on the cleanly-converged SE-L2 torus the two disagree (|dot| ~0.46, the
+    rotation-mismatch above), so it is NOT a validated drop-in for the GMOS
+    convention -- it is offered for `#619`'s conditioning study, not as a silent
+    default. Production/`#538`-search use keeps the GMOS-faithful forward default.
+    """
+    from cyclerfinder.genome.qp_torus_manifold import local_stability
+
+    pm_state = evaluate_torus_state(torus, float(theta_long), float(theta_trans))
+    t0 = (float(theta_long) % (2.0 * np.pi)) / torus.omega1
+    state_pv = qbcp.state_pm_to_pv(pm_state, t0, torus.system)
+
+    if branch == "unstable" and unstable_via_backward:
+        # Forward-unstable == backward map's contracting (small-|lambda|)
+        # direction; robust on EM-L2 but a different approximation (see above).
+        tf, pick_stable = t0 - torus.period, True
+    elif branch == "unstable":
+        tf, pick_stable = t0 + torus.period, False
+    else:  # stable
+        tf, pick_stable = t0 + torus.period, True
+
+    try:
+        _, states_pv = qbcp.propagate_qbcp_pv(
+            state_pv, (t0, tf), torus.system, with_stm=True, rtol=rtol, atol=atol
+        )
+    except RuntimeError:
+        return None
+    stm_pv = states_pv[-1, 6:].reshape((6, 6))
+    stab = local_stability(state_pv, stm_pv, hyperbolicity_tol=hyperbolicity_tol)
+    vec = stab.vec_s if pick_stable else stab.vec_u
+    if vec is None:
+        return None
+    if ref_vec is not None and float(np.dot(vec, ref_vec)) < 0.0:
+        vec = -vec
+    return state_pv, np.asarray(vec, dtype=np.float64)

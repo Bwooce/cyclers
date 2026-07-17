@@ -103,6 +103,10 @@ from cyclerfinder.genome.qbcp_torus import (
 )
 from cyclerfinder.genome.qp_torus_manifold import local_stability
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
+from cyclerfinder.search.variational_qbcp_torus import (
+    QBCPTorusVariationalResult,
+    manifold_state_vec_pseudospectral,
+)
 
 # --------------------------------------------------------------------------
 # Residual / unknown structure (Task 1). These constants define the shape and
@@ -317,7 +321,7 @@ def build_tori() -> tuple[qbcp.QBCPSystem, QBCPTorus, QBCPTorus]:
 # Manifold-eigenvector evaluation at a torus phase.
 # --------------------------------------------------------------------------
 def manifold_state_vec(
-    torus: QBCPTorus,
+    torus: QBCPTorus | QBCPTorusVariationalResult,
     theta_long: float,
     theta_trans: float,
     branch: str,
@@ -328,7 +332,17 @@ def manifold_state_vec(
     ``ref_vec`` (if given) fixes the eigenvector sign by continuity
     (dot-product alignment), matching run_533's manifold-branch discipline.
     Returns None if the eigenvector is not extractable there.
+
+    Dispatches on torus type (#619): a GMOS :class:`QBCPTorus` uses the
+    original ``evaluate_qbcp_torus`` + one-period augmented-STM path below; a
+    pseudospectral :class:`QBCPTorusVariationalResult` (the #617/#618 EM-L2
+    corrector's output) is delegated to
+    ``search.variational_qbcp_torus.manifold_state_vec_pseudospectral``, which
+    performs the identical three steps (evaluate -> PM->PV -> one-period STM ->
+    ``local_stability``) for that type and returns the same contract.
     """
+    if isinstance(torus, QBCPTorusVariationalResult):
+        return manifold_state_vec_pseudospectral(torus, theta_long, theta_trans, branch, ref_vec)
     state = evaluate_qbcp_torus(torus, theta_long, theta_trans)
     t0 = (float(theta_long) % (2.0 * math.pi)) / torus.omega_long
     try:

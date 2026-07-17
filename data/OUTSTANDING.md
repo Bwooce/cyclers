@@ -6889,7 +6889,9 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   re-running `#538`'s full cross-system SE<->EM BVP chain — that payoff/investment decision stays
   separate, for the coordinating session/user. No catalogue writeback (capability characterization,
   not a discovery result).
-- **#619** (dispatched 2026-07-17, user-approved `#538` full-chain revival) — now that `#618` gives a
+- **#619 ✓ CLOSED, CLEAN NEGATIVE (2026-07-17) — the `#538`-`#619` arc's FINAL outcome: no closed
+  cislunar cycler, blocked by EM-L2 manifold conditioning, not torus invariance.** (dispatched
+  2026-07-17, user-approved `#538` full-chain revival) — now that `#618` gives a
   genuinely invariant EM-L2 QBCP torus (residual 9.474e-4, crossing `#544`'s originally-targeted
   gate), attempt `#538`'s actual cross-system SE<->EM connection with the corrected endpoint.
   **This is NOT a simple torus swap** — `scripts/run_538_qbcp_cycler.py`'s existing connection-search
@@ -6935,6 +6937,77 @@ ideal-model moon-cycler frontier is exhausted (novel ground is now capability-ga
   acceptable. **Recommended model: Opus** (multiple genuine trust-bearing numerical-methods judgment
   calls: manifold-extraction validity, ballistic-vs-powered verdict, and the closure cross-check
   verdict itself — exactly the tier the original `#538` plan document reserves for each of these).
+  **✓ DONE (2026-07-17) — CLEAN, WELL-CHARACTERIZED NEGATIVE. No genuine closed cislunar cycler; the
+  `#538`-`#619` arc is a documented negative, blocked at the EM-L2 unstable-manifold CONDITIONING wall
+  (not the corrector, not torus invariance). Root cause is new and specific — see below.** Everything
+  left uncommitted for coordinating-session review; NO catalogue writeback (and there is no closure to
+  write). Left `#538`'s own script's documented behaviour intact — the search reuse is via a
+  type-dispatch, not a rewrite.
+  **(1) Manifold-extraction adapter — BUILT + VALIDATED.** `search.variational_qbcp_torus.
+  manifold_state_vec_pseudospectral` gives `#618`'s `QBCPTorusVariationalResult` the exact interface
+  `scripts/run_538_qbcp_cycler.manifold_state_vec` expects (evaluate PM torus state -> PM->PV at the
+  Sun epoch `t0=(theta_long mod 2pi)/omega1` via the existing `qbcp.state_pm_to_pv` -> one-period
+  augmented-STM propagation -> the SAME `genome.qp_torus_manifold.local_stability`). Three read-only
+  alias properties (`omega_long`/`t_strob`/`invariance_residual`) added to the frozen result dataclass
+  so the whole `#538` search (`build_seed`/`_scan_crossings`/`make_full_residual`/`_multistart_
+  ballistic`) duck-types either torus type UNCHANGED; `run_538.manifold_state_vec` now dispatches on
+  torus type (one `isinstance` branch, GMOS path byte-identical). Default extraction is the
+  GMOS-faithful FORWARD one-period STM `vec_u`/`vec_s`.
+  **(2) Positive control (Step 2) — PASSED.** Built the SE-L2 torus BOTH ways (existing GMOS
+  `build_tori` path, and `#617`'s `discover_qbcp_torus_from_gmos`) and compared stable/unstable
+  manifold DIRECTIONS at matched PHYSICAL points (theta1 is Sun-locked in both; matched by nearest PV
+  state along the invariant circle, since the two constructions differ in theta2 phase origin). Median
+  |dot| 0.9997 (unstable) / 0.998 (stable), well-matched-subset min > 0.997, angle <= ~5 deg; the
+  residual disagreement scales cleanly with the physical match distance (a smooth bundle sampled at
+  slightly different points), confirming the adapter reproduces the trusted GMOS extraction.
+  **(3) Precision/conditioning check (Step 3) — THE DECISIVE FINDING, and it is a genuine obstruction,
+  not a numerical nuisance.** The EM-L2 one-period stroboscopic map is a strong saddle (measured
+  spectrum |lambda| ~ {2-3e4, 1,1,1,1, ~4e-5} at C=3.13). Perturbing the base torus point by its OWN
+  invariance-residual size and re-extracting: the STABLE forward eigenvector is ROBUST (|dot| >= 0.999
+  at a 1e-3 offset, on BOTH the n1=12,n2=5 rms~3.4e-3 torus and the headline n1=28,n2=9 rms~9.5e-4
+  torus), but the UNSTABLE forward eigenvector is NOT — a 1e-4 offset (BELOW the headline torus's own
+  9.5e-4 residual) swings it up to ~90 deg at several phases. Reason: the forward flow amplifies the
+  offset ~2e4x over one period, so the STM is effectively linearized along a wildly-diverged
+  trajectory. (Extracting the unstable direction from the BACKWARD map is robust, but it is a
+  genuinely DIFFERENT approximation — for a TORUS point, unlike a periodic-orbit point, the one-period
+  STM maps E^u(t0)->E^u(t0+T) which is not parallel, so forward and backward one-period extractions
+  disagree by |dot|~0.46 even on the cleanly-converged SE-L2 torus; not a validated drop-in, offered
+  as `unstable_via_backward=True` for study only.) **Consequence: the EM-L2 UNSTABLE manifold
+  direction — needed for the reverse leg's departure — is unknowable to better than tens of degrees at
+  the best achievable torus precision. That is what blocks closure, and no amount of corrector effort
+  or torus-mode-count fixes it (it is set by the region's ~2e4 one-period amplification vs. the
+  torus's residual).**
+  **(4) Multi-segment corrector (Step 4) run on BOTH tori — floors far from closure, every variant.**
+  Fed the corrected EM-L2 torus (SE-L2 stays the existing GMOS torus) into `#538`'s existing
+  12-unknown/18-residual ballistic-first architecture. The EM-manifold-globalized arcs are STIFF
+  (near-Moon), which made the naive corrector pathologically slow (single residual evals -> minutes as
+  the integrator crawls); required a collision-guarded arc propagator (a property of the region, not a
+  bug). Results (`method="trf"`, which unlike `"lm"` respects `max_nfev` as a real wall-clock bound on
+  these ill-conditioned problems, per `#611`): headline n1=28,n2=9 torus — ballistic floor
+  **norm 0.855** (a genuine local min, ftol-terminated), at which the torus-phase CLOSURES are nearly
+  met (SE 0.011 rad, EM 0.068 rad) but the two heteroclinic legs still stand off by **~166,000 km /
+  ~400 m/s** and cannot be driven to zero; powered fallback (free dv at the leg-1 crossing) reaches
+  norm 0.676 with an implied 434 m/s impulse. Cheaper n1=12,n2=5 torus — ballistic floor **norm 4.03**
+  (leg gaps ~36,000-50,000 km / ~700-950 m/s, closures ~1.5-1.85 rad). Both floors are O(1),
+  ~8 orders of magnitude above the 1e-8 closure target; no start, ballistic or powered, on either
+  torus, approached closure.
+  **(5) Independent cross-check (Step 5) — confirms the floor is REAL, not a false "it closed."**
+  Re-propagated the best solutions end-to-end with Radau (vs the corrector's DOP853): DOP853-vs-Radau
+  leg-state drift 2.6e-6/1.3e-8 (n28n9) and 5.0e-8/9.8e-9 (n12n5) — i.e. the ~166,000 km / ~400 m/s
+  (resp. ~50,000 km) leg gaps are integrator-independent physics, not numerical noise. There is no
+  spurious closure to guard against; the corrector simply, honestly, does not close.
+  **Verdict: this is a real, well-understood NEGATIVE and a fitting FINAL outcome for the
+  `#538`-`#544`-`#611`-`#612`-`#617`-`#618`-`#619` arc.** `#617`/`#618` genuinely crossed `#544`'s
+  torus-invariance wall (EM-L2 to rms 9.5e-4); `#619` shows the cross-system CONNECTION is blocked one
+  layer deeper, by the conditioning of that torus's unstable manifold at the achievable precision — a
+  finding that also predicts `#539`/`#540`'s reuse of this methodology on any strongly-unstable
+  libration point will hit the same wall. Shipped: new adapter + 3 alias props + dispatch in
+  `run_538` (no change to `#538`'s documented search semantics); 5 new tests in
+  `tests/search/test_variational_qbcp_torus.py` (adapter mechanics, PM->PV consistency, ref_vec sign,
+  the SE-L2 positive control, and the forward-vs-backward torus-approximation finding) pinning
+  live-reproduced numbers; ruff clean; `run_538` ratchets (`test_run_538_residual_shape`,
+  `test_scripts_call_preflight`) stay green. The multi-segment corrector run itself is NOT added as a
+  test (many minutes per solve, per `#618`'s own precedent) — reproduce via the numbers above.
 - **#597 ✓ DONE (2026-07-15)** (P3, corpus acquisition + full mining pass) — 4 more Ross-group papers
   found via a manual review of `https://ross.aoe.vt.edu/papers/` (user-suggested, same #595/#596
   session): Kumar-Rawat-Rosengren-Ross 2024 IAC-24-C1.9.5 (interior 4:1/3:1/2:1 MMR heteroclinic
