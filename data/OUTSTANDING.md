@@ -4,14 +4,18 @@
 
 **This section is authoritative.** It is a dashboard of every currently-OPEN or actively-relevant
 task, reconciled against the full `TASK ALLOCATIONS` ledger (below) and each task's own bullet
-entry as of 2026-07-15. Update it IN PLACE whenever a task's status changes — do not just append a
-newer note further down the file and leave this section stale; that exact failure mode (a correct
-resolution sitting under an old section header while a stale duplicate elsewhere looks more recent
-and misleads a reader/planner) is what happened to `#500` and is why this section exists. See the
-`#500`/`#594`/`#595`-`#599` history in the ledger below for the concrete incident. Scope: this audit
-covers the `TASK ALLOCATIONS` paragraph's `#512`-`#601` range (~90 tasks); of these, ~80 are
-CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger paragraph itself
-(search `TASK ALLOCATIONS`) or each task's own bullet entry for history.
+entry as of 2026-07-15, **with a targeted 2026-07-17 update below extending coverage to close out
+several items that were resolved by the `#605`-`#620` session (see each entry for specifics) —
+this is a targeted reconciliation of THIS section's own prior entries, not a full re-audit of the
+newly-added `#602`-`#620` range itself.** Update it IN PLACE whenever a task's status changes — do
+not just append a newer note further down the file and leave this section stale; that exact
+failure mode (a correct resolution sitting under an old section header while a stale duplicate
+elsewhere looks more recent and misleads a reader/planner) is what happened to `#500` and is why
+this section exists. See the `#500`/`#594`/`#595`-`#599` history in the ledger below for the
+concrete incident. Scope: the base audit covers the `TASK ALLOCATIONS` paragraph's `#512`-`#601`
+range (~90 tasks); of these, ~80 are CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here —
+see the ledger paragraph itself (search `TASK ALLOCATIONS`) or each task's own bullet entry for
+history.
 
 ### Ready to dispatch — no blocker
 - None currently. (`#600` — corrected 2026-07-15: this line was never updated after `#600` was
@@ -19,25 +23,54 @@ CLOSED/DONE/RESOLVED/SUPERSEDED and are not repeated here — see the ledger par
   candidates, near-miss residual 0.0531 km/s just outside the gate. Removed from this list.)
 
 ### Open but blocked / parked
-- `#538` — QBCP SE<->EM cislunar cycler correction — blocked on a not-yet-built **multiple-shooting
-  GMOS torus corrector**: single-period GMOS structurally cannot converge the violently-unstable
-  EM-L1/L2 region (root-caused by `#544`). Portfolio-**PARKED** 2026-07-10: near-zero novelty payoff
-  even on success (most-published corridor in the field, 4+ sessions already spent, zero catalogue
-  rows). Not cancelled, just deprioritized behind breadth-on-unscreened-systems work.
-- `#539` — generalize `#538`'s corrector for reuse (Jovian/Uranian re-screens) — blocked on `#538`
-  actually landing a working corrector first; parked alongside it. (`#540`/`#541`, the two other
-  tasks in this same sub-thread, are each independently superseded/dead — see the ledger.)
-- `#542` — learned-seed generative GA/diffusion warm-start for corrector basins — deferred,
-  speculative; explicitly waiting on more corrector-runlog diversity before it's worth building.
-- `#556` — large-rotation-number quasi-halo torus corrector — parking lot, **not auto-fired**, needs
-  a user greenlight. Would let the `#522` linking-number screen attempt the one remaining
-  frequency-matched Owen & Baresi L1<->L2 reproduction shot (`#555`'s terminal qualified-negative
-  left exactly this one blocker: the L1 quasi-halo can't be built at the needed amplitude).
+- ~~`#538`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The "not-yet-built
+  multiple-shooting GMOS torus corrector" blocker this line named WAS built (`#611`/`#612`/`#617`/
+  `#618`, a seedless integration-free pseudospectral approach, not multiple-shooting — crossed the
+  violently-unstable EM-L2 wall to invariance residual 9.474e-4). The actual cross-system SE<->EM
+  connection was then genuinely attempted TWICE with the fixed torus, by two methodologically
+  independent methods (`#619`: linearized-manifold shooting, blocked by manifold-conditioning;
+  `#620`: manifold-free global collocation, blocked by spurious "ghost" minima) — both
+  independently confirm no closed connection exists at achievable precision (best gaps ~166,000 km
+  / ~351,000 km respectively, both Radau-cross-checked). `#538`-`#544`-`#611`-`#612`-`#617`-`#618`-
+  `#619`-`#620` is now a complete, closed arc with a well-characterized final negative — not a
+  proof of non-existence, but no longer "blocked," and the original 2026-07-10 portfolio-parking
+  concern (low novelty payoff) is moot since the arc reached its natural conclusion rather than
+  being deprioritized mid-stream.
+- ~~`#539`~~ **REMOVED from this list 2026-07-17 — blocked/superseded, not simply "open."** Its own
+  premise (positive control built on "`#538`'s own confirmed connection") is moot per the above;
+  `#619`'s finding explicitly predicts `#539`'s own target (Jupiter-Europa/Ganymede, a
+  strongly-unstable libration point) would hit the identical manifold-conditioning wall. See
+  `#539`'s own bullet entry (corrected 2026-07-17) for the full reasoning. (`#540`/`#541`, the two
+  other tasks in this same sub-thread, are each independently superseded/dead — see the ledger.)
+- `#542` — learned-seed generative GA/diffusion warm-start for corrector basins — **feasibility
+  question ANSWERED 2026-07-16 by `#608`** (a bounded POC on this project's own `#210` outcome-log
+  corpus found a genuine ~12.25x convergence lift over blind seeding, superseding the 2026-06-11
+  Ozaki "below breakeven" triage this entry cited — see `#542`'s own corrected bullet). NOT closed
+  (the broader "propose seeds in a genuinely unfamiliar basin" claim remains untested, and a
+  `#614` follow-up found neither corpus family-tagging nor a nonlinear encoder measurably improves
+  on `#608`'s baseline at this corpus size), but no longer purely speculative/deferred — any future
+  revisit should start from `#608`'s code/corpus, not re-litigate feasibility from scratch.
+- ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
+  quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
+  overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
+  torus corrector crossed the EM L1 quasi-halo amplitude wall this entry named cleanly (independent
+  closure ~1e-8 at GMOS-equivalent amplitude ~0.02, where GMOS times out). Follow-on tasks `#613`/
+  `#615` then used the same machinery to conclusively resolve the underlying Owen & Baresi
+  frequency-matching question this entry's own motivation was about: L1's target frequency 0.2739
+  is individually reachable (at a DIFFERENT energy than L2's 0.02163 target), but no single Jacobi
+  constant reproduces BOTH target frequencies simultaneously — so the `#522` linking-number screen's
+  "one remaining frequency-matched shot" this entry describes is now known to have no genuine
+  frequency-matched pair to attempt, a final answer, not a remaining blocker.
 - *(sub-task, not its own `#NNN`)* `#503`'s "expand `#267` goldens" mining step remains open (its
-  acquisition sub-task itself is closed, per `#595`).
-- *(sub-task, not its own `#NNN`)* `#596`'s Russell Table 3.4/3.9-3.11 backfill: 161/197 candidate
-  rows were successfully backfilled 2026-07-15; the remaining 36 (`AR < 1.0`, a genuine model-
-  boundary case) and 3 genuinely-uncatalogued rows are open for a future pass.
+  acquisition sub-task itself is closed, per `#595`) — untouched by the `#605`-`#620` session, still
+  genuinely open.
+- ~~`#596`'s Russell Table 3.4/3.9-3.11 backfill remainder~~ **REMOVED from this list 2026-07-17 —
+  CLOSED via `#616` (2026-07-16).** The 3 "genuinely-uncatalogued" rows this line flagged turned out
+  to be sign-transcription duplicates of existing entries (fixed by renaming, not adding); the 4th
+  (`1.0.1.-1`) is the already-catalogued Aldrin cycler under a non-`russell-ocampo-*` id. The 36
+  `AR<1.0` rows are a clean, Russell-acknowledged (his own Table 3.4 footnote) geometric model
+  boundary, not a corrector gap — no validated inversion exists or is expected for this regime; see
+  `#616`'s own bullet for the full positive-control-checked reasoning.
 - ~~`#557`~~ **REMOVED from this list 2026-07-15 — was ALREADY CLOSED, not open.** This dashboard
   entry was wrong: `#557` was fully run and registered as a clean negative on 2026-07-11 (commit
   `069d8d2`); this list's "awaiting a user scoping decision" text was itself a stale-header artifact
