@@ -22,11 +22,14 @@ rho instead -- exactly #627's bug).
 
 from __future__ import annotations
 
+import pytest
+
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.search.pluto_charon_kk_sweep import _c_l1
 from cyclerfinder.search.real_binary_kk_sweep import mu_step_to_system_tracking_c_l1
 
 
+@pytest.mark.slow
 def test_c_margin_alpha_lands_at_predicted_ceiling_rho() -> None:
     """A short hop with a large c_margin_alpha lands at rho=1-alpha, not the anchor's own rho."""
     target = cr3bp.CR3BPSystem(mu=0.0115, primary="P1", secondary="P2", l_km=1.0, t_s=1.0)
@@ -65,6 +68,7 @@ def test_c_margin_alpha_lands_at_predicted_ceiling_rho() -> None:
     )
 
 
+@pytest.mark.slow
 def test_c_margin_alpha_none_preserves_legacy_absolute_c_margin_behavior() -> None:
     """c_margin_alpha=None (the default) must reproduce #627's original absolute-margin result.
 
