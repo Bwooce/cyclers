@@ -544,7 +544,9 @@ platform BLAS/eigenvector-sign mismatches + 3 timeouts on CI's 2-core runners, c
 Neimark-Sacker eigenvalue-sign ambiguity fixed at source in _seed_invariant_circle, +2 more
 compute-budget timeouts surfaced+slow-marked over 3 cross-platform CI rounds, test_l2 magnitude
 divergence traced to a separate eigenvector-PHASE corrector-basin fragility flagged for follow-up);
-#633 next-unused):**
+#633 for #629 Phase B, the fixed-Titan-mu 2D corridor grid search Phase A's own result recommended
+as warranted (dispatched 2026-07-18); #634 for the #628-flagged seed-generation integration-pattern
+design read (dispatched 2026-07-18); #635 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8898,6 +8900,77 @@ anywhere in the file and are genuinely still open.]**
   numerical-methods judgment, exactly the class of work this project's model-tiering policy reserves
   for Opus, not Sonnet); Sonnet is fine for the mechanical `slow`-marker additions and final
   verification/push once the sign fix is in hand.
+- **#633** (dispatched 2026-07-18, user-directed) — `#629` Phase B: the fixed-Saturn-Titan-μ 2D
+  corridor grid search in `(x0, C)`, the plan `#629`'s own design read specced and Phase A's own
+  result recommended as now WARRANTED (not optional) — see `#629`'s full bullet (search `**#629**`)
+  for the complete background; read it in full before starting, especially the Phase A result
+  section, which found a genuine hard fold at the (1,1) anchor AND that properly-scaled continuation
+  walks (verified in-corridor throughout, across a 6-point α sweep) still lose the target topology
+  or fail to converge — decisive evidence that a 1D continuation PATH is unsuited to this problem
+  independent of the corridor-scaling question. This grid does not inherit any walk-path dependence,
+  which is exactly why it's the next warranted step. **Scope** (reuse existing machinery, this is
+  NOT a new-method build — the new content is coordinate scaling, per the design read's own framing):
+  - Reuse `src/cyclerfinder/search/real_binary_kk_sweep.py`'s existing `_grid_seed_search`/
+    `sweep_family_grid` pattern (the same machinery already used at Pluto-Charon for `sweep_21`/
+    `sweep_22`) — do not build new grid-search infrastructure from scratch.
+  - Grid: `x0 ∈ [−0.95, −0.30]` at `Δx0 ≈ 0.005` (~130 points); `C = 3 + ρ(C_L1(Titan)−3)` with
+    `ρ ∈ [0.6, 0.99]` (~25 values, INCLUDING a fine `ρ ∈ [0.95, 0.995]` sub-band — without it,
+    (3,3)-like thin-corridor families are missed by construction per the design read's own
+    analysis); `hc ∈ {1, 3, 5, 7, 9}`. `μ = 2.36695e-4` (Saturn-Titan, `cr3bp_system("Saturn",
+    "Titan").mu` — look this up in-repo, do not hardcode from this prompt).
+  - ~16k corrector calls total. SIGALRM-bound each corrector call per-branch — Phase A's own timing
+    found (3,3)-family corrector calls are dramatically slower/more fragile than (1,1) (1994s vs
+    355s for a comparable single continuation step), so size your per-call timeout generously for
+    that family and confirm empirically with a small timing pilot BEFORE committing to the full
+    16k-point run, exactly per this project's own `[[feedback_incremental_progress_reports]]`
+    discipline (instrument with per-point progress + incremental checkpointing — do NOT reproduce
+    `#520`'s silent-hours-then-nothing failure mode). Expect ~2-8 h single-core; run overnight with
+    margin if needed, but time-box a pilot first.
+  - For every grid point that passes the residual/spatial-closure gate, chain the SAME gates `#627`/
+    `#629` already used: `c_sweep_find_nu_zero` (Barden stability refinement), `winding_topology`'s
+    `reaches_secondary` check (must match the target `(1,1)` or `(3,3)` topology, not just any
+    stable member), and — only for branches that pass BOTH — `perimoon_passage.py`'s
+    encounter-relevance/duty-cycle geometry check (per `#630`'s confirmation this module runs
+    natively against this genome, no adaptation needed).
+  - **Mandatory literature gate before any novelty claim**: run `search/literature_check.py`
+    against ANY on-topology, stable, encounter-relevant member found. Per the design read's own
+    finding, this codebase's corpus has NO small-μ asymptotics asset (no Hénon *Generating
+    Families*, no quasi-satellite theory paper) — the live-web side of the check is load-bearing,
+    and it MUST explicitly cover the co-orbital/quasi-satellite/ballistic-capture classes (Hénon
+    family f, Benest, Sidorenko/Pousse-Robutel-Vienne QS theory, Titan ballistic-capture/QS mission
+    literature, Russell-Strange 2009) per `[[feedback_literature_novelty_check_baseline]]` — expect
+    "known classical object, relabeled" as the honest likely outcome even on a genuine find (the
+    design read's own framing; do not re-inflate it).
+  - **Do NOT touch `data/catalogue.yaml`** regardless of outcome. A genuine on-topology, stable,
+    encounter-relevant, literature-clear find would need a Phase C Opus/Fable adjudication pass
+    (per the design read's own plan) before any writeback — stop and report in detail, do not
+    proceed to writeback yourself under any circumstances.
+  - A clean "0/~16k on-topology-and-stable" result is a fully legitimate, valuable outcome — it
+    would settle (at grid resolution) whether a Titan-encountering member of either family exists at
+    all, independent of any continuation-path artifact. Report honestly either way.
+  Recommended model: Sonnet (reuses existing, already-validated machinery — mechanical scoping and
+  execution behind deterministic gates, not a new numerical method, per the design read's own
+  classification).
+- **#634** (dispatched 2026-07-18, user-directed) — the `#628`-flagged integration-pattern design
+  question: should `src/cyclerfinder/ml/seed_generation.py`'s new `generate_and_refine_seeds` API
+  be wired into existing `scripts/run_*.py` discovery scripts as a `--seed-source=generative` CLI
+  option, or kept as a standalone library callable that future scripts opt into individually? This
+  was explicitly NOT decided unilaterally by `#628`'s own dispatch, per this project's `#586`
+  precedent of getting a design read on integration-pattern choices before building. Analysis only
+  — no code changes required to close this task (though a small illustrative wiring example is a
+  reasonable stretch goal if the recommendation clearly favors the CLI-flag approach and the read
+  wants to demonstrate it cheaply). Read `#628`'s own full bullet (search `**#628**`) and
+  `src/cyclerfinder/ml/seed_generation.py` itself before making a recommendation. Consider: how many
+  existing `scripts/run_*.py` discovery scripts would plausibly benefit from an alternate seed
+  source at all (vs. how many are one-off/already-closed negatives that would never be re-run); the
+  μ-dependent lift caveat (`#624`'s finding — lift varies by target μ, so a caller needs to know
+  when to trust the generative source vs. fall back to blind/analytic seeding) and how naturally
+  each integration pattern surfaces that caveat to a future user; and maintenance cost (a CLI flag
+  touches every script's argument parser; a library callable only touches scripts that explicitly
+  opt in). Give a clear recommendation with reasoning, not just a survey of options. Update this
+  bullet with the outcome; if a small wiring example is built, note which script and commit it.
+  Recommended model: Fable/Opus (design-pattern judgment, per `#586`'s own precedent — not a Sonnet
+  unilateral pick).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
