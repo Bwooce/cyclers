@@ -19,6 +19,20 @@ Three families:
 * :func:`dro_seed` -- distant retrograde orbit about the secondary, from a
   retrograde circular two-body guess clamped to stay bound.
 
+A further, NON-analytic seed source lives elsewhere (`#608`/`#628`/`#634`):
+:func:`cyclerfinder.ml.seed_generation.generate_and_refine_seeds` samples
+``(state0, period)`` seeds from a generative density trained on this project's
+own `#210` corrector-outcome logs and refines them with the same
+``correct_periodic`` corrector. Use it where a script would otherwise seed
+BLINDLY (uniform/random states at an arbitrary mu), NOT as a substitute for
+this module's targeted analytic seeds when a specific family/libration point
+is the goal -- two `#624`-measured caveats: (a) the convergence lift is
+mu-DEPENDENT (12.25x at the Earth-Moon training mu, 30x at mu=0.001, 3.5x at
+Sun-Earth, genuinely unvalidated beyond -- see ``expected_lift_for_mu``), and
+(b) each returned seed converges to SOME real family at similar energy, not
+necessarily the one being searched for (check each ``GeneratedSeed``'s
+refined jacobi/period/stability against the target before trusting it).
+
 Frame convention (matches :mod:`cyclerfinder.core.cr3bp`): nondimensional
 rotating frame, primary at ``(-mu, 0, 0)``, secondary at ``(1-mu, 0, 0)``.
 

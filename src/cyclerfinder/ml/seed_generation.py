@@ -43,6 +43,29 @@ Three things this module does NOT do, deliberately:
   tested anchor (Sun-Earth, |delta log10 mu|~3.6) flagged as genuinely
   unvalidated.
 
+**Integration pattern (`#634` design read, 2026-07-18)**: this module is
+consumed as a STANDALONE LIBRARY CALLABLE -- a discovery script imports
+:func:`generate_and_refine_seeds` explicitly where its author judges blind
+seeding would otherwise be used. There is deliberately NO
+``--seed-source=generative`` CLI convention wired into ``scripts/run_*.py``
+(see `#634`'s bullet in ``data/OUTSTANDING.md`` for the full survey; short
+version: the ``run_*.py`` population is write-once-per-task with no shared
+argument parser to hook a flag into, and flag-style interchangeability would
+undermine caveat (b) above by inviting scripts to treat a generative seed as a
+drop-in for a targeted analytic/anchored one). Discoverability is handled by a
+cross-reference in ``search/cr3bp_seed_generator.py``'s module docstring --
+the module a future seed-hunting author finds first.
+
+**Corpus-circularity warning**: the default model is trained on the `#210`
+outcome logs under ``out/outcome_log/`` (grown by
+``scripts/search_campaign_daemon.py``), and ``correct_periodic`` -- which this
+module calls per seed -- auto-logs every solve whenever
+``CYCLERFINDER_OUTCOME_LOG`` is set. A caller running generative seeds with
+that env var pointed at the training corpus would feed the model's own outputs
+back into future retrains (a distribution feedback loop that silently narrows
+the learned density). Unset the env var for generative-seeded runs, or log to
+a separate shard excluded from :func:`default_corpus_paths`' glob.
+
 See also :func:`calibrate_cluster_weights_for_mu` -- a cheap, optional,
 per-target-mu RECALIBRATION (reweighting the existing trained density's
 8 cluster mixture weights by their own observed success rate at the target

@@ -546,7 +546,15 @@ compute-budget timeouts surfaced+slow-marked over 3 cross-platform CI rounds, te
 divergence traced to a separate eigenvector-PHASE corrector-basin fragility flagged for follow-up);
 #633 for #629 Phase B, the fixed-Titan-mu 2D corridor grid search Phase A's own result recommended
 as warranted (dispatched 2026-07-18); #634 for the #628-flagged seed-generation integration-pattern
-design read (dispatched 2026-07-18); #635 next-unused):**
+design read (dispatched 2026-07-18; DESIGN READ COMPLETE same day, Fable: standalone library
+callable [option b] WINS -- no --seed-source CLI convention; the run_*.py population is
+write-once-per-task with no shared arg parser [20/84 hand-rolled argparse, 0 shared helpers], the
+codebase's native seed-source idiom is already per-script library imports [cr3bp_seed_generator/
+er3bp_isolated_seeds/er3bp_direct_seeding], only the 4 closed ML-eval scripts consume this seed
+shape today, and a flag would imply drop-in interchangeability that undermines #624's wrong-family
+caveat; also found+documented a corpus-circularity hazard [generative-seeded correct_periodic
+solves auto-log into the #210 training corpus if CYCLERFINDER_OUTCOME_LOG is set]; two docstring
+cross-references committed as the wiring example -- see #634's own bullet); #635 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -8951,7 +8959,10 @@ anywhere in the file and are genuinely still open.]**
   Recommended model: Sonnet (reuses existing, already-validated machinery — mechanical scoping and
   execution behind deterministic gates, not a new numerical method, per the design read's own
   classification).
-- **#634** (dispatched 2026-07-18, user-directed) — the `#628`-flagged integration-pattern design
+- **#634 ✓ DESIGN READ COMPLETE (Fable, 2026-07-18) — RECOMMENDATION: option (b), standalone
+  library callable (the status quo of `#628`'s build), plus two cheap doc-wiring guard rails; NO
+  `--seed-source=generative` CLI convention. See the RESULT block at the end of this bullet.**
+  (dispatched 2026-07-18, user-directed) — the `#628`-flagged integration-pattern design
   question: should `src/cyclerfinder/ml/seed_generation.py`'s new `generate_and_refine_seeds` API
   be wired into existing `scripts/run_*.py` discovery scripts as a `--seed-source=generative` CLI
   option, or kept as a standalone library callable that future scripts opt into individually? This
@@ -8971,6 +8982,49 @@ anywhere in the file and are genuinely still open.]**
   bullet with the outcome; if a small wiring example is built, note which script and commit it.
   Recommended model: Fable/Opus (design-pattern judgment, per `#586`'s own precedent — not a Sonnet
   unilateral pick).
+  **RESULT (Fable design read, 2026-07-18): option (b) — standalone library callable — with two
+  small doc-wiring additions; do NOT build a `--seed-source=generative` CLI convention.**
+  Evidence from the actual script population: (1) **there is no substrate for a CLI convention.**
+  Of 260 files in `scripts/`, 84 are `run_*.py`; mapping every `run_NNN` number back to this
+  ledger shows essentially ALL belong to closed, one-off, never-to-be-rerun investigations
+  (positive or clean-negative) — the `run_*.py` population is write-once-per-task, authored fresh
+  by a dispatched agent each time. Only 20/84 use argparse at all, each hand-rolled; no shared
+  arg-parsing helper exists anywhere in `scripts/`, and `--seed-source`/`seed_source` appears
+  nowhere in the codebase. A flag convention would therefore live only in FUTURE scripts, where
+  `from cyclerfinder.ml.seed_generation import generate_and_refine_seeds` costs the author exactly
+  as much as implementing the flag — the convention buys nothing and must still be re-implemented
+  per script. Retrofitting a shared parser just to carry it inverts cost/benefit for a seed source
+  whose validated domain is currently 3 μ points. (2) **The codebase's existing pattern for seed
+  sources IS the library callable.** `search/cr3bp_seed_generator.py` (analytic Lyapunov/halo/DRO,
+  `#435`/`#580`; imported by 4 scripts + `variational_periodic_orbit.py`), `er3bp_isolated_seeds`,
+  `er3bp_direct_seeding` (`standard_family_seeds`/`catalogue_cr3bp_seeds`), and the JPL oracle
+  (`reachable_representatives`) are ALL per-script explicit imports; none has a CLI flag. Option
+  (b) is this project's native idiom. (3) **The exact seed shape this API emits has almost no
+  existing consumers**: only 4 `run_*.py` scripts call `correct_periodic` directly — `#317`/
+  `#608`/`#614`/`#624`, i.e. the ML-evaluation scripts themselves, all closed. The one LIVE
+  blind-seeding consumer is `scripts/search_campaign_daemon.py` Phase B — and that is precisely
+  the one place NOT to wire it in casually, because the daemon WRITES the `#210` training corpus:
+  `correct_periodic` auto-logs when `CYCLERFINDER_OUTCOME_LOG` is set, so generative-seeded solves
+  would feed the model's own outputs back into future retrains (distribution feedback loop). This
+  circularity hazard is a new finding of this read, now documented in `seed_generation.py`'s
+  module docstring. (4) **Caveat surfacing favors (b), not (a)**: both `#624` caveats already
+  travel structurally IN the return value (`SeedGenerationReport.lift_estimate` with
+  `beyond_validated_range`+`caveat` text; per-seed refined jacobi/period/stability) — a library
+  caller must handle the report object and thus sees them, whereas a `--seed-source` flag implies
+  drop-in interchangeability with targeted analytic/anchored seeds, actively inviting the
+  wrong-family failure mode ("converged, ship it") the caveat warns against. (5) **The third-option
+  middle ground adopted** (the doc-wiring, committed this task as the allowed small wiring
+  example): a cross-reference paragraph in `cr3bp_seed_generator.py`'s module docstring — the
+  module a future seed-hunting author greps first — pointing at `generate_and_refine_seeds` with
+  both caveats stated inline ("use where you would otherwise seed blindly; not a substitute for
+  targeted seeds"); and an integration-pattern + corpus-circularity section in
+  `seed_generation.py`'s own docstring. Usage guidance going forward: import it explicitly in
+  scripts that would otherwise do uniform/random CR3BP seeding at an arbitrary μ; gate trust on
+  `expected_lift_for_mu(...).beyond_validated_range` (run a fresh `#624`-protocol pilot first if
+  True); always check each returned seed's refined invariants against the target family; and for
+  any long-running corpus-logging run, unset `CYCLERFINDER_OUTCOME_LOG` or log to a shard excluded
+  from `default_corpus_paths()`' glob. No code changes beyond the two docstrings; no catalogue
+  change; structure ratchets green.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
