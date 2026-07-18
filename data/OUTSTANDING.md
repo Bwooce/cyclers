@@ -571,7 +571,12 @@ context not a gate, triggered only if #633/#638 finds something (registered 2026
 a real #628-seed-model discovery run at Sun-Jupiter mu~9.5e-4 (near the strongest validated
 cross-mu lift point, a system never targeted anywhere in the #600-#640 arc, explicitly NOT the
 search_campaign_daemon.py corpus-generation script to avoid #634's feedback-loop hazard,
-dispatched 2026-07-18); #642 next-unused):**
+dispatched 2026-07-18; CLOSED 2026-07-18: clean census, N=1000 seeds -> 614 physically-sane but
+609 were a newly-discovered L4/L5/L1/L2/L3 Lagrange-equilibrium convergence artifact, only 5
+genuine distinct orbit clusters, all known-classical Sun-Jupiter CR3BP territory per JPL SSD's
+public Three-Body Periodic Orbits catalog, nothing novel, no catalogue writeback; also found
+search/literature_check.py's KNOWN_CORPUS is cycler-scoped and unusable for raw periodic-orbit
+candidates); #642 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9189,7 +9194,15 @@ anywhere in the file and are genuinely still open.]**
   `[[feedback_literature_novelty_check_baseline]]`) — so this becomes worth acquiring proactively
   only if `#633` (or a future `#638`) actually finds something, not before. Recommended model:
   Sonnet (mechanical acquisition + digest once triggered).
-- **#641** (dispatched 2026-07-18, user-directed) — a genuine discovery run using `#628`'s
+- **#641 ✓ CLOSED, CLEAN CENSUS RESULT (2026-07-18)** — 1000 seeds generated at Sun-Jupiter
+  μ=9.5388e-4 (within `#624`'s validated cross-μ range, estimated lift 29.5x), 708 converged / 614
+  physically-sane, but 609 of those 614 were a convergence-target ARTIFACT this task's own pilot
+  discovered (trivial L4/L5/L1/L2/L3 Lagrange-equilibrium fixed points, not periodic orbits) —
+  only 5 genuine, distinct periodic-orbit family clusters found. All 5 sit squarely in classical,
+  extensively-catalogued Sun-Jupiter CR3BP territory (JPL SSD's public Three-Body Periodic Orbits
+  catalog indexes exactly these family types at this μ). Nothing genuinely novel; no catalogue
+  writeback. See the RESULT block at the end of this bullet for full detail.
+  (dispatched 2026-07-18, user-directed) — a genuine discovery run using `#628`'s
   productionized generative seed model (`src/cyclerfinder/ml/seed_generation.py`,
   `generate_and_refine_seeds`) at a real, previously-unswept target: a **Sun-Jupiter CR3BP
   periodic-orbit family census near μ≈9.5464e-4** (Jupiter/(Sun+Jupiter) — look up the exact value
@@ -9237,6 +9250,85 @@ anywhere in the file and are genuinely still open.]**
   (mechanical, reuses fully-validated `#628` infrastructure); if a genuine novel-looking survivor
   emerges from the literature check, escalate that specific adjudication to Opus/Fable rather than
   letting Sonnet make the final novelty call.
+  **RESULT (Sonnet, 2026-07-18): clean census, nothing genuinely novel, `#628`'s API validated for
+  real survey work — but a real convergence-target artifact discovered along the way.**
+  `scripts/run_641_sun_jupiter_seed_census.py` (exempted from `preflight_search()` per the same
+  fixed-N-capability-run category as `#608`/`#614`/`#317`/`#624`, see
+  `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT`). **μ and lift**:
+  `cr3bp_system("Sun","Jupiter").mu` = 9.538811521016751e-4 (NOT the prompt's rounded 9.5464e-4);
+  `expected_lift_for_mu` reports `delta_log10_mu=1.105` (just past `#624`'s own mu=0.001 anchor at
+  1.085), `estimated_lift=29.48x`, `beyond_validated_range=False` — squarely IN `#624`'s validated
+  range, as designed. **Pilot (N=100, 15.0s, 0.150s/seed)**: 67 converged, 57 physically-sane —
+  but inspecting the actual converged states showed 56/57 were NOT periodic orbits at all: exact
+  L4/L5 equilateral-point fixed states (`state0` pinned at `(0.5-mu, ±sqrt(3)/2, 0, ~0, ~0, ~0)`,
+  velocity at Newton-iteration noise floor 1e-12..1e-17). A fixed point trivially satisfies
+  `correct_periodic`'s periodicity residual for ANY period guess (nothing moves), and
+  `is_physically_sane` has no velocity-magnitude check, so nothing in the existing `#628` pipeline
+  rejects this — a genuine gap this task found, not a documented `#608`/`#624`/`#628` caveat.
+  Wrote `is_degenerate_equilibrium` (a wide, well-separated 1e-6 velocity-norm threshold: smallest
+  genuine orbit seen had |v0|~0.13, largest equilibrium noise was ~1e-12) plus
+  `lagrange_point_label` to classify and filter these before clustering. **Full batch (N=1000,
+  121.4s, 0.121s/seed)**: 708 converged, 614 physically-sane; 609/614 degenerate equilibria
+  (breakdown: L4=376, L5=222, L2=7, L1=4 — the model draws L4/L5 far more than the collinear
+  points, plausibly reflecting the training corpus's own Earth-Moon L4/L5-adjacent density), only
+  **5 genuine, physically-real periodic orbits** (0.5% of the full batch, ~1% of the
+  physically-sane pool). **Clustering** (`cluster_genuine_orbits`: rounded Jacobi (3dp) + rounded
+  period (1dp) + qualitative y0/z0-sign geometry, per task step 4's literal instruction — light,
+  inspectable, not a rigorous classifier, same honest limitation `heuristic_family_tag` documents
+  for its own coarser binning): all 5 genuine orbits landed in 5 DISTINCT singleton clusters (no
+  repeats within tolerance) — (1) jacobi=3.0088, period=1.884, x0≈1.028 with real out-of-plane
+  z0=0.084 (tagged `halo`), stability=3.27 (unstable) — an L2-region halo-type orbit; (2)
+  jacobi=2.9896, period=3.594, x0≈0.946 (close to Jupiter at 0.99905), planar, stability≈1.0
+  (near-neutral) — plausibly a DRO/DPO-type orbit near Jupiter; (3) jacobi=3.0372, period=2.069,
+  x0≈1.046, planar, stability≈1.0 — an L2-region planar-Lyapunov-type orbit; (4) jacobi=3.0379,
+  period=1.615, x0≈1.028, planar, stability≈1.0 — likely a DIFFERENT point along the same L2
+  planar family as (3), not a genuinely distinct family (the clustering's rounding tolerance
+  legitimately splits two points along one continuous family, an honestly-documented limitation);
+  (5) jacobi=3.4548, period=8.876, x0≈-1.925, y0≈-1.206 (far from both primaries, ~11.8 AU
+  barycentric), planar, stability≈1.0 — a wide/distant orbit, plausibly an exterior
+  mean-motion-resonance or Hénon-type "far family" member. **Literature check**: ran
+  `search/literature_check.py`'s `check_literature` against all 5 cluster representatives
+  (`CandidateSignature(primary="Sun", sequence=("Sun","Jupiter"), topology_label=...)`, offline
+  search over this project's own `KNOWN_CORPUS` per the `#436` precedent for a raw non-cycler
+  periodic-orbit candidate) — **it returned `status="published"` for all 5, citing the SAME single
+  anchor** (Strange-Russell 2007 AAS 07-277 Tisserand pump-tour graph) **for every physically
+  distinct family, which is a spurious/uninformative match, not a genuine confirmation**: 5
+  qualitatively different orbit types (a halo, two planar orbits near different libration-region
+  points, a near-Jupiter orbit, and a distant wide orbit) cannot all genuinely be the same named
+  2007 cycler paper. Root cause: `KNOWN_CORPUS`/`build_queries` is scoped entirely to published
+  CYCLER trajectories (every generated query is suffixed "cycler trajectory"/"cycler
+  resonance"/etc.) — raw CR3BP periodic-orbit families (Lyapunov/halo/DRO) are not cyclers and
+  essentially never described with that vocabulary in their own literature, so the offline
+  token-overlap matcher over-matches on bare "Sun"+"Jupiter" tokens. **This module, as built, is
+  not fit for adjudicating raw (non-cycler) periodic-orbit candidates** — a real, reportable
+  process-tooling gap, documented in the script's own `literature_check_clusters` docstring so a
+  future caller does not trust a `check_literature` "published" OR "not-found" verdict here at
+  face value. **Supplementary manual grounding** (live WebSearch, since the mechanical check was
+  unusable): JPL SSD's public Three-Body Periodic Orbits API/catalog
+  (`ssd-api.jpl.nasa.gov/doc/periodic_orbits.html`) explicitly indexes Sun-Jupiter planar Lyapunov,
+  Axial, Halo, Vertical (at L1/L2/L3), plus system-wide Butterfly/Dragonfly/DRO/DPO/Long-period
+  families — i.e. exactly the family types found here, at exactly this μ, in a citable, public,
+  authoritative database; this μ is also literally the classical value used since the 1960s-70s
+  numerical CR3BP literature (Hénon, Broucke, and the modern Doedel et al. 2007 extended-catalog
+  tradition this JPL database continues). **Verdict: nothing genuinely novel — the clean
+  "known-classical-territory" outcome this task's own dispatch flagged as fully legitimate.** No
+  `data/catalogue.yaml` writeback (none warranted — raw CR3BP periodic orbits, not cyclers).
+  **`#628`/`#624` API assessment**: this is the first genuine, previously-unswept application, and
+  it worked mechanically end-to-end (model load, sample, refine, cluster) with real infrastructure
+  cost (~0.12-0.15s/seed) matching prior tasks' figures — but the census's actual YIELD of genuine,
+  non-degenerate orbits was very low (0.5%) because the vast majority of "physically-sane"
+  convergence at this μ is the L4/L5-equilibrium artifact `is_physically_sane` does not screen;
+  future callers at ANY μ should apply an equivalent velocity-norm equilibrium filter before
+  trusting a raw physically-sane count as a real-orbit yield estimate — a genuinely new, general
+  finding this task adds to `#628`'s own documented caveats, not previously known. Tests: +12 new
+  (`tests/scripts/test_run_641_sun_jupiter_seed_census.py`, covering
+  `is_degenerate_equilibrium`/`lagrange_point_label`/`cluster_genuine_orbits`/
+  `cluster_topology_label`); `tests/scripts` full suite green (exit 0, no FAILED/ERROR);
+  `tests/ml tests/search` green modulo 2 PRE-EXISTING failures unrelated to this task
+  (`test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, independently confirmed present on `main`
+  via `git stash` before this task's changes were applied). `ruff check`/`ruff format --check`/
+  `mypy src tests` all clean (0 errors).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
