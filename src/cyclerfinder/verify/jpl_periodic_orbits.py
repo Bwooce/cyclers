@@ -26,14 +26,37 @@ both mu values explicitly and report which was used (:func:`reconcile_mu`).
 NETWORK: the live :func:`query` uses the Python standard library (urllib), no
 new dependency. Tests never hit the network — they parse a saved fixture via
 :func:`parse_payload`.
+
+CACHING (#647): :func:`query` accepts an optional ``cache_dir`` — when given,
+the raw JSON payload for a given parameter set is read from / written to a
+per-query file under that directory instead of re-fetching. ``cache_dir=None``
+(the default) preserves the exact prior behaviour (always live network) for
+every existing call site (``search/reachable_representatives.py``,
+``scripts/search_campaign_daemon.py``, ``scripts/jpl_oracle_crosscheck.py``).
+New callers (:mod:`cyclerfinder.search.jpl_family_check`) pass a gitignored
+``out/`` cache dir per this project's existing data-caching convention (see
+``.github/workflows/kernel-freshness.yml`` for the sibling NAIF-kernel
+pattern) so repeated queries/tests never hammer the live API.
+
+SUPPORTED SYSTEMS / FAMILIES (confirmed live 2026-07-18, see
+:data:`SUPPORTED_SYSTEMS` / :data:`SUPPORTED_FAMILIES`): the API currently
+indexes exactly 7 systems (``sun-earth, earth-moon, sun-mars, jupiter-europa,
+saturn-enceladus, saturn-titan, mars-phobos`` — Sun-Jupiter is NOT covered,
+correcting an earlier #641-adjacent hallucinated claim) and 12 families
+(``halo, vertical, axial, lyapunov, longp, short, butterfly, dragonfly,
+resonant, dro, dpo, lpo``). ``halo/lyapunov/longp/short/axial/vertical``
+additionally require a ``libr`` (libration point); ``halo`` also requires a
+``branch`` (``N``/``S``) per the API's own 400-error text.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -45,6 +68,47 @@ API_BASE = "https://ssd-api.jpl.nasa.gov/periodic_orbits.api"
 #: cross-check can compare against JPL's reported value without importing the
 #: whole CR3BP stack.
 OUR_EM_MU = 0.01215058439469525
+
+#: Systems the live API indexes (confirmed via a live 400-error parameter
+#: listing, 2026-07-18) — Sun-Jupiter is deliberately NOT in this set (#647).
+SUPPORTED_SYSTEMS: frozenset[str] = frozenset(
+    {
+        "sun-earth",
+        "earth-moon",
+        "sun-mars",
+        "jupiter-europa",
+        "saturn-enceladus",
+        "saturn-titan",
+        "mars-phobos",
+    }
+)
+
+#: Orbit families the live API indexes (per its documentation page, confirmed
+#: 2026-07-18), independent of which systems carry which families.
+SUPPORTED_FAMILIES: frozenset[str] = frozenset(
+    {
+        "halo",
+        "vertical",
+        "axial",
+        "lyapunov",
+        "longp",
+        "short",
+        "butterfly",
+        "dragonfly",
+        "resonant",
+        "dro",
+        "dpo",
+        "lpo",
+    }
+)
+
+#: Families that require a ``libr`` (libration-point) query parameter.
+FAMILIES_REQUIRING_LIBR: frozenset[str] = frozenset(
+    {"halo", "lyapunov", "longp", "short", "axial", "vertical"}
+)
+
+#: Families that require a ``branch`` (e.g. "N"/"S") query parameter.
+FAMILIES_REQUIRING_BRANCH: frozenset[str] = frozenset({"halo"})
 
 
 @dataclass(frozen=True)
@@ -118,29 +182,88 @@ def parse_payload(payload: dict[str, Any]) -> tuple[JplSystemConstants, list[Jpl
     return constants, orbits
 
 
+def _cache_path(cache_dir: Path, params: dict[str, str]) -> Path:
+    """Deterministic per-query-parameter-set cache filename.
+
+    Keyed on ALL params (sorted) so two different filter windows for the same
+    system/family never collide; the ``sys``/``family`` prefix keeps the
+    directory human-browsable.
+    """
+    key = "&".join(f"{k}={params[k]}" for k in sorted(params))
+    digest = hashlib.sha1(key.encode("utf-8")).hexdigest()[:16]
+    sys_slug = params.get("sys", "unknown").replace("/", "_")
+    fam_slug = params.get("family", "unknown").replace("/", "_")
+    return cache_dir / f"{sys_slug}__{fam_slug}__{digest}.json"
+
+
 def query(
     system: str,
     family: str,
     *,
     libr: int | None = None,
     branch: str | None = None,
+    jacobimin: float | None = None,
+    jacobimax: float | None = None,
+    periodmin: float | None = None,
+    periodmax: float | None = None,
+    periodunits: str | None = None,
+    stabmin: float | None = None,
+    stabmax: float | None = None,
     timeout: float = 60.0,
+    cache_dir: Path | str | None = None,
 ) -> tuple[JplSystemConstants, list[JplOrbit]]:
-    """Fetch a family live from the JPL API. Network call (urllib).
+    """Fetch a family live from the JPL API (or a local cache). Network call (urllib).
 
     ``system`` e.g. "earth-moon"; ``family`` e.g. "halo", "dro", "lyapunov";
     ``libr`` the libration-point index (1..5) where the family requires it;
-    ``branch`` e.g. "N"/"S" where applicable.
+    ``branch`` e.g. "N"/"S" where applicable. ``jacobimin``/``jacobimax``/
+    ``periodmin``/``periodmax``/``stabmin``/``stabmax`` are the API's own
+    server-side range filters (inclusive) — use these to fetch a narrow window
+    around a candidate's invariants instead of an entire family.
+    ``periodunits`` is one of ``"s"``, ``"h"``, ``"d"``, ``"TU"`` (nondim, the
+    API default) and only matters when a period filter is given.
+
+    ``cache_dir``, when given, reads/writes the raw JSON payload for this
+    EXACT parameter set under that directory instead of always hitting the
+    network (#647) — ``None`` (the default) preserves the historical
+    always-live behaviour for every pre-existing call site.
     """
     params: dict[str, str] = {"sys": system, "family": family}
     if libr is not None:
         params["libr"] = str(libr)
     if branch is not None:
         params["branch"] = branch
+    if jacobimin is not None:
+        params["jacobimin"] = repr(float(jacobimin))
+    if jacobimax is not None:
+        params["jacobimax"] = repr(float(jacobimax))
+    if periodmin is not None:
+        params["periodmin"] = repr(float(periodmin))
+    if periodmax is not None:
+        params["periodmax"] = repr(float(periodmax))
+    if periodunits is not None:
+        params["periodunits"] = periodunits
+    if stabmin is not None:
+        params["stabmin"] = repr(float(stabmin))
+    if stabmax is not None:
+        params["stabmax"] = repr(float(stabmax))
+
+    cache_path: Path | None = None
+    if cache_dir is not None:
+        cache_path = _cache_path(Path(cache_dir), params)
+        if cache_path.exists():
+            payload = json.loads(cache_path.read_text())
+            return parse_payload(payload)
+
     url = f"{API_BASE}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(url, headers={"Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         payload = json.loads(resp.read().decode("utf-8"))
+
+    if cache_path is not None:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        cache_path.write_text(json.dumps(payload))
+
     return parse_payload(payload)
 
 

@@ -30,6 +30,22 @@ a Russell/McConaghy SnLm row and asserts each returns ``status="published"``
 with a plausible citation; a fabricated nonsense signature must return
 "not-found". If those reproductions fail, the check is too weak to trust and
 ``not-found`` must not be believed.
+
+NOT FOR RAW (non-cycler) CR3BP PERIODIC ORBITS (#647): ``KNOWN_CORPUS`` /
+``build_queries`` are scoped ENTIRELY to cycler-trajectory vocabulary --
+every generated query is suffixed "cycler trajectory"/"cycler resonance"/
+etc., and a hit only counts when the literal word "cycler"/"cyclic" appears.
+A raw halo/DRO/Lyapunov/resonant CR3BP periodic orbit is not a cycler and is
+essentially never described that way in ITS OWN literature, so this matcher
+over-matches on bare body-name tokens for that class of candidate (#641 hit
+this: 5 physically distinct Sun-Jupiter periodic-orbit families all got the
+SAME spurious "published" verdict citing one cycler paper). For a raw
+periodic-orbit candidate (family type + Jacobi constant + period + mu + the
+actual dynamical system), use the sibling NUMERIC-catalog gate
+:mod:`cyclerfinder.search.jpl_family_check` instead (or in addition, when the
+candidate is/extends into an actual cycler) -- it queries JPL SSD's own
+Three-Body Periodic Orbits API/catalog with ITS OWN family vocabulary and
+server-side Jacobi/period range filters, not a keyword search.
 """
 
 from __future__ import annotations
