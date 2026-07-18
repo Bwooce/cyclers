@@ -9360,10 +9360,14 @@ anywhere in the file and are genuinely still open.]**
   μ=9.5388e-4 (within `#624`'s validated cross-μ range, estimated lift 29.5x), 708 converged / 614
   physically-sane, but 609 of those 614 were a convergence-target ARTIFACT this task's own pilot
   discovered (trivial L4/L5/L1/L2/L3 Lagrange-equilibrium fixed points, not periodic orbits) —
-  only 5 genuine, distinct periodic-orbit family clusters found. All 5 sit squarely in classical,
-  extensively-catalogued Sun-Jupiter CR3BP territory (JPL SSD's public Three-Body Periodic Orbits
-  catalog indexes exactly these family types at this μ). Nothing genuinely novel; no catalogue
-  writeback. See the RESULT block at the end of this bullet for full detail.
+  only 5 genuine, distinct periodic-orbit family clusters found. All 5 sit in generally classical
+  Sun-Jupiter CR3BP territory per the broad numerical-CR3BP literature — **CORRECTION (`#647`,
+  2026-07-18): the original claim that "JPL SSD's public Three-Body Periodic Orbits catalog
+  indexes exactly these family types at this μ" was FACTUALLY WRONG — the live API does not
+  support the Sun-Jupiter system at all (confirmed by direct query); see the RESULT block's own
+  correction for detail.** Nothing genuinely novel is still the working conclusion, on weaker
+  grounds than originally claimed. No catalogue writeback. See the RESULT block at the end of this
+  bullet for full detail.
   (dispatched 2026-07-18, user-directed) — a genuine discovery run using `#628`'s
   productionized generative seed model (`src/cyclerfinder/ml/seed_generation.py`,
   `generate_and_refine_seeds`) at a real, previously-unswept target: a **Sun-Jupiter CR3BP
@@ -9465,16 +9469,29 @@ anywhere in the file and are genuinely still open.]**
   not fit for adjudicating raw (non-cycler) periodic-orbit candidates** — a real, reportable
   process-tooling gap, documented in the script's own `literature_check_clusters` docstring so a
   future caller does not trust a `check_literature` "published" OR "not-found" verdict here at
-  face value. **Supplementary manual grounding** (live WebSearch, since the mechanical check was
-  unusable): JPL SSD's public Three-Body Periodic Orbits API/catalog
-  (`ssd-api.jpl.nasa.gov/doc/periodic_orbits.html`) explicitly indexes Sun-Jupiter planar Lyapunov,
-  Axial, Halo, Vertical (at L1/L2/L3), plus system-wide Butterfly/Dragonfly/DRO/DPO/Long-period
-  families — i.e. exactly the family types found here, at exactly this μ, in a citable, public,
-  authoritative database; this μ is also literally the classical value used since the 1960s-70s
-  numerical CR3BP literature (Hénon, Broucke, and the modern Doedel et al. 2007 extended-catalog
-  tradition this JPL database continues). **Verdict: nothing genuinely novel — the clean
-  "known-classical-territory" outcome this task's own dispatch flagged as fully legitimate.** No
-  `data/catalogue.yaml` writeback (none warranted — raw CR3BP periodic orbits, not cyclers).
+  face value. **Supplementary manual grounding — CORRECTED 2026-07-18 by `#647`, this task's own
+  original claim below was FACTUALLY WRONG, caught via a direct live query of the actual API**
+  (`curl https://ssd-api.jpl.nasa.gov/periodic_orbits.api`): this task's original claim was that
+  "JPL SSD's public Three-Body Periodic Orbits API/catalog... explicitly indexes Sun-Jupiter
+  planar Lyapunov, Axial, Halo, Vertical (at L1/L2/L3), plus system-wide Butterfly/Dragonfly/
+  DRO/DPO/Long-period families... in a citable, public, authoritative database" — **this is false**.
+  `#647` queried the live API directly and found it supports exactly 7 systems:
+  `earth-moon, sun-earth, sun-mars, jupiter-europa, mars-phobos, saturn-titan, saturn-enceladus`
+  — **Sun-Jupiter is NOT one of them**. The original WebSearch-based "grounding" above was
+  evidently a hallucinated or misattributed citation, not an actual verification against the named
+  database — a real lapse in this task's own diligence that should have been caught before the
+  bullet was written. **What still stands, on weaker grounds**: Sun-Jupiter CR3BP planar
+  Lyapunov/halo/DRO-type families ARE genuinely classical, extensively-studied territory in the
+  GENERAL numerical CR3BP literature (Hénon, Broucke, Doedel et al.'s own AUTO-based continuation
+  work, none of which requires or implies JPL SSD's structured API coverage) — the qualitative
+  "nothing novel" READ is still plausible on these general grounds, but it was never actually
+  verified against a specific, queryable, authoritative database the way this bullet originally
+  and wrongly claimed. **Verdict, corrected**: nothing genuinely novel remains the WORKING
+  conclusion, but on weaker evidentiary footing than originally stated — a rigorous re-check
+  against real literature (not JPL SSD, which does not cover this system) would need `#647`'s own
+  infrastructure once built, or a dedicated manual literature dig, neither done here. No
+  `data/catalogue.yaml` writeback (none warranted either way — raw CR3BP periodic orbits, not
+  cyclers).
   **`#628`/`#624` API assessment**: this is the first genuine, previously-unswept application, and
   it worked mechanically end-to-end (model load, sample, refine, cluster) with real infrastructure
   cost (~0.12-0.15s/seed) matching prior tasks' figures — but the census's actual YIELD of genuine,
