@@ -56,6 +56,7 @@ from cyclerfinder.genome.qbcp_torus import QBCPTorus, correct_qbcp_torus
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.variational_qbcp_torus import (
     QBCPTorusVariationalResult,
+    SegmentedCLVDiagnostics,
     _alphas_on_theta1,
     _basis_matrices,
     _jacobian,
@@ -70,6 +71,7 @@ from cyclerfinder.search.variational_qbcp_torus import (
     correct_qbcp_torus_pseudospectral,
     discover_qbcp_torus_from_gmos,
     evaluate_torus_state,
+    manifold_direction_segmented_clv,
     manifold_state_vec_pseudospectral,
 )
 
@@ -714,3 +716,142 @@ def test_unstable_forward_vs_backward_differ_on_torus(se_tori: SETori) -> None:
     assert mvf is not None and mvb is not None
     # The two approximations are materially different directions (not ~parallel).
     assert abs(float(np.dot(mvf[1], mvb[1]))) < 0.9
+
+
+# ---------------------------------------------------------------------------
+# Segment-anchored discrete-QR / CLV extraction (#646).
+# ---------------------------------------------------------------------------
+#
+# These validate the segmented extractor on the mildly-unstable SE-L2 torus (the
+# `se_tori` fixture), where it MUST agree with the one-shot / GMOS convention (the
+# fix only *matters* at the violently-unstable EM-L2 torus, but must not *break*
+# the benign case). The headline EM-L2 fragility->robustness demonstration
+# (one-shot vec_u swings ~88 deg under a 1e-4 perturbation; segmented vec_u
+# <0.01 deg and converges as O(1/n_segments)) costs a 13-22 min EM-L2 torus build
+# and is reported in the `#646` bullet with a scratch-reproducible driver, per the
+# `#618`/`#619` precedent for expensive EM-L2 runs -- not pinned here.
+
+
+def test_segmented_clv_contract(se_tori: SETori) -> None:
+    """`(state_pv, unit-vec)` contract: ``state_pv`` is the re-projected torus PV
+    state and the eigenvector is unit-norm, for both branches -- same contract as
+    the one-shot ``manifold_state_vec_pseudospectral``."""
+    _gmos, pseudo = se_tori
+    theta_long, theta_trans = 1.3, 2.1
+    for branch in ("unstable", "stable"):
+        mv = manifold_direction_segmented_clv(
+            pseudo, theta_long, theta_trans, branch, None, n_segments=12
+        )
+        assert mv is not None
+        state_pv, vec = mv[0], mv[1]
+        pm = evaluate_torus_state(pseudo, theta_long, theta_trans)
+        t0 = (theta_long % (2.0 * np.pi)) / pseudo.omega1
+        expected_pv = qbcp.state_pm_to_pv(pm, t0, pseudo.system)
+        assert np.allclose(state_pv, expected_pv, atol=1e-12)
+        assert float(np.linalg.norm(vec)) == pytest.approx(1.0, abs=1e-10)
+
+
+def test_segmented_clv_ref_vec_sign(se_tori: SETori) -> None:
+    """``ref_vec`` fixes the eigenvector sign by dot-product continuity, exactly as
+    the one-shot extractor and ``manifold_state_vec`` do."""
+    _gmos, pseudo = se_tori
+    mv = manifold_direction_segmented_clv(pseudo, 1.3, 2.1, "unstable", None, n_segments=12)
+    assert mv is not None
+    vec = mv[1]
+    mv_pos = manifold_direction_segmented_clv(pseudo, 1.3, 2.1, "unstable", vec, n_segments=12)
+    mv_neg = manifold_direction_segmented_clv(pseudo, 1.3, 2.1, "unstable", -vec, n_segments=12)
+    assert mv_pos is not None and mv_neg is not None
+    assert float(np.dot(mv_pos[1], vec)) > 0.0
+    assert float(np.dot(mv_neg[1], vec)) < 0.0
+
+
+def test_segmented_qr_matches_direct_composition(se_tori: SETori) -> None:
+    """The QR-reconstructed one-period STM ``P = Q @ R_prod`` equals the directly
+    composed segment product to machine precision -- the QR re-orthonormalization
+    bookkeeping is faithful (not an approximation of the composed STM)."""
+    _gmos, pseudo = se_tori
+    mv = manifold_direction_segmented_clv(
+        pseudo, 1.3, 2.1, "unstable", None, n_segments=12, return_diagnostics=True
+    )
+    assert mv is not None and len(mv) == 3
+    diag = mv[2]
+    assert isinstance(diag, SegmentedCLVDiagnostics)
+    assert diag.qr_vs_direct_stm_relerr < 1e-10
+
+
+def test_segmented_matches_oneshot_on_se_l2(se_tori: SETori) -> None:
+    """POSITIVE CONTROL (#646 step 1): on the mildly-unstable SE-L2 torus the
+    segment-anchored CLV direction reproduces the one-shot / GMOS-convention
+    direction (both methods are fine at SE-L2; the segmented method must not
+    introduce its own bug). Live-observed agreement <0.03 deg at hyperbolic
+    phases; asserted <1 deg with margin."""
+    _gmos, pseudo = se_tori
+    checked = 0
+    for theta1 in (0.3, 1.3, 2.0, 2.7):
+        for theta2 in (0.5, 2.1, 3.0):
+            for branch in ("unstable", "stable"):
+                seg = manifold_direction_segmented_clv(
+                    pseudo, theta1, theta2, branch, None, n_segments=12
+                )
+                one = manifold_state_vec_pseudospectral(pseudo, theta1, theta2, branch, None)
+                if seg is None or one is None:
+                    continue  # non-hyperbolic phase (SE torus has some)
+                dot = abs(float(np.dot(seg[1], one[1])))
+                assert dot > 0.9998, (
+                    f"{branch}@({theta1},{theta2}): seg-vs-oneshot |dot| {dot:.5f} too low"
+                )
+                checked += 1
+    assert checked >= 6, f"too few hyperbolic phases checked ({checked})"
+
+
+def test_segmented_clv_converges_in_n_segments(se_tori: SETori) -> None:
+    """The extracted direction CONVERGES as ``n_segments`` grows (it approaches a
+    definite limit -- the true torus one-period linearization -- rather than
+    wandering). The coarse-to-reference angle must strictly shrink as the segment
+    count increases toward the reference. Demonstrates the mechanism even at
+    SE-L2's mild instability (the effect is dramatic at EM-L2)."""
+    _gmos, pseudo = se_tori
+    theta1, theta2, branch = 1.3, 2.1, "unstable"
+    ref = manifold_direction_segmented_clv(pseudo, theta1, theta2, branch, None, n_segments=32)
+    assert ref is not None
+    vref = ref[1]
+
+    def angle_at(k: int) -> float:
+        mv = manifold_direction_segmented_clv(pseudo, theta1, theta2, branch, None, n_segments=k)
+        assert mv is not None
+        return float(np.degrees(np.arccos(min(1.0, abs(float(np.dot(vref, mv[1])))))))
+
+    a2, a8, a16 = angle_at(2), angle_at(8), angle_at(16)
+    # Monotone-ish convergence toward the fine-segment reference.
+    assert a16 <= a8 <= a2 + 1e-9
+    assert a16 < 0.5  # close to the limit by 16 segments even at mild SE-L2
+
+
+def test_segmented_clv_diagnostics_bounded_growth(se_tori: SETori) -> None:
+    """The per-segment leading growth factors are MODEST (the whole point: the
+    one-period ~amplification is split into ``n_segments`` well-conditioned pieces,
+    each O(1-ish) at SE-L2), and the Lyapunov exponents / eigenvalues are finite
+    and consistent (leading exponent > 0 for a hyperbolic point)."""
+    _gmos, pseudo = se_tori
+    mv = manifold_direction_segmented_clv(
+        pseudo, 1.3, 2.1, "unstable", None, n_segments=12, return_diagnostics=True
+    )
+    assert mv is not None and len(mv) == 3
+    diag = mv[2]
+    assert diag.n_segments == 12
+    assert diag.per_segment_leading_growth.shape == (12,)
+    assert np.all(np.isfinite(diag.per_segment_leading_growth))
+    assert float(diag.per_segment_leading_growth.max()) < 1e3  # not the 2e4 one-shot blow-up
+    assert diag.lam_u is not None and abs(diag.lam_u) > 1.0
+    assert diag.lyapunov_exponents.shape == (6,)
+    assert diag.lyapunov_exponents[0] > 0.0
+    assert float(np.isfinite(diag.nonnormality_ratio))
+
+
+def test_segmented_clv_rejects_bad_args(se_tori: SETori) -> None:
+    """Guard rails: unknown branch and non-positive segment counts raise."""
+    _gmos, pseudo = se_tori
+    with pytest.raises(ValueError, match="branch"):
+        manifold_direction_segmented_clv(pseudo, 0.0, 0.0, "sideways", None)
+    with pytest.raises(ValueError, match="n_segments"):
+        manifold_direction_segmented_clv(pseudo, 0.0, 0.0, "unstable", None, n_segments=0)
