@@ -592,7 +592,10 @@ in-distribution use kept, cross-mu transfer claim retracted, collapse mechanism 
 now-falsified cross-mu LIFT_ANCHORS (30x mu=0.001, 3.5x Sun-Earth) + fixing expected_lift_for_mu in
 src/cyclerfinder/ml/seed_generation.py so it no longer returns interpolations built from the
 equilibrium-inflated #624 anchors (bounded #642-adjudication follow-up, code fix not a re-pilot;
-registered 2026-07-18); #644
+registered 2026-07-18; CLOSED 2026-07-18: both falsified anchors DELETED from LIFT_ANCHORS,
+surviving in-distribution anchor updated 12.25->13.5, expected_lift_for_mu now returns
+estimated_lift=None+beyond_validated_range=True off-distribution instead of a fabricated
+number, tests/docstrings updated, commit `bee830a`); #644
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -9607,7 +9610,8 @@ anywhere in the file and are genuinely still open.]**
   `LIFT_ANCHORS`/`expected_lift_for_mu` cross-μ anchors in `seed_generation.py` are handed to
   follow-up **`#643`**. #642 itself is CLOSED. See `#542`'s `#642`-ADJUDICATION paragraph for the
   full four-question reasoning.
-- **#643** (P3, bounded code fix — `#642`-adjudication follow-up, registered 2026-07-18) — purge
+- **#643 ✓ DONE (2026-07-18)** (P3, bounded code fix — `#642`-adjudication follow-up,
+  registered 2026-07-18) — purge
   the now-FALSIFIED cross-μ anchors from `src/cyclerfinder/ml/seed_generation.py`. `#642` proved
   `#624`'s `LIFT_ANCHORS` entries — `LiftAnchor("mu_0.001_cross_mu", 0.001, 30.0, "#624")` and
   `LiftAnchor("sun_earth_cross_mu", ..., 3.5, "#624")` — were built from L4/L5-equilibrium false
@@ -9626,6 +9630,34 @@ anywhere in the file and are genuinely still open.]**
   model: Sonnet (mechanical, spec-complete, deterministic-gate-caught). Run
   `uv run pytest tests/ml tests/data tests/search -q` + `tests/scripts` per this project's
   ratchet discipline.
+  **RESULT (commit `bee830a`)**: `LIFT_ANCHORS` now contains ONLY the surviving
+  `earth_moon_in_distribution` anchor, value updated 12.25 -> 13.5 (`#642`'s live-re-run point
+  estimate; the true validated range is ~13-27x); both falsified `mu_0.001_cross_mu` (30.0) and
+  `sun_earth_cross_mu` (3.5) entries are DELETED, not merely flagged. `LiftEstimate.estimated_lift`
+  changed type from `float` to `float | None` — a new `VALIDATED_DELTA_LOG10_MU = 1e-3` constant
+  gates the branch: at/effectively-at the training μ (covers the real Earth-Moon system's own μ,
+  which differs from the literal `TRAINING_MU` by only ~2e-5 in delta_log10_mu) returns the
+  validated numeric anchor with `beyond_validated_range=False`; anything meaningfully different
+  (including `#624`'s own former mu=0.001/Sun-Earth points) returns `estimated_lift=None`,
+  `beyond_validated_range=True`, and a `caveat` explicitly naming `#642`'s falsification and
+  pointing callers to the uniform baseline instead — no interpolation/extrapolation through the
+  removed anchors remains anywhere in the function. Updated `tests/ml/test_seed_generation.py`:
+  replaced the anchor-interpolation test (meaningless with 1 anchor) with a new test asserting
+  `LIFT_ANCHORS` no longer contains the falsified labels, added a test asserting the former
+  mu=0.001/Sun-Earth cross-μ points now return the unvalidated signal, and updated the
+  in-distribution regression assertion from 12.25x to 13.5x; no test re-asserts 30x/3.5x. Also
+  fixed the one caller that would have broken on the new `None`-able field —
+  `scripts/run_641_sun_jupiter_seed_census.py`'s `estimated_lift:.2f` format string (now guards
+  for `None`) — and corrected its module docstring's stale "genuinely TRANSFERS" claim, plus
+  `src/cyclerfinder/search/cr3bp_seed_generator.py`'s cross-reference docstring (both were the
+  only other non-test/non-seed_generation.py references to the falsified numbers or the old
+  API shape). No re-pilot, no new μ-conditioning capability, no `data/catalogue.yaml` change, per
+  this task's explicit scope boundary. `uv run ruff check .` / `ruff format --check .` clean;
+  `uv run mypy src tests` clean (724 files); `tests/ml tests/data tests/search -q` — 2 PRE-EXISTING
+  failures unrelated to this change (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep::test_504_sweep_33`, both matching the documented local-Mac/M3
+  Accelerate-BLAS-sensitivity signature from `#584`'s memory entry), all `tests/ml/
+  test_seed_generation.py` (27) and `tests/scripts` (129) green.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
