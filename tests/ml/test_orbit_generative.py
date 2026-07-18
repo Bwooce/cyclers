@@ -18,6 +18,7 @@ import numpy as np
 import pytest
 
 from cyclerfinder.ml.orbit_generative import (
+    DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD,
     FEATURE_NAMES,
     AutoencoderModel,
     assemble_corpus,
@@ -26,8 +27,10 @@ from cyclerfinder.ml.orbit_generative import (
     fit_clustered_gaussian,
     fit_family_conditioned_gaussian,
     heuristic_family_tag,
+    is_degenerate_equilibrium,
     is_physically_sane,
     iter_outcome_records,
+    lagrange_point_label,
     nearest_neighbor_distances,
     uniform_bounding_box_sample,
 )
@@ -171,6 +174,57 @@ def test_is_physically_sane_matches_assemble_corpus_bounds() -> None:
     # Out-of-plane amplitude too large.
     assert not is_physically_sane([0.85, 0.0, 5.0, 0.0, 0.2, 0.0], period=2.5, jacobi=3.0)
     assert not is_physically_sane([0.85, 0.0, 0.05, 0.0, 0.2, 5.0], period=2.5, jacobi=3.0)
+
+
+# --- #642: degenerate-equilibrium contamination fix -------------------------
+
+
+def test_is_degenerate_equilibrium_flags_zero_velocity() -> None:
+    # A classic L4 equilateral point (x=0.5-mu, y=+-sqrt(3)/2) with a
+    # Newton-iteration-noise-scale residual velocity, well below threshold.
+    state0 = [0.5 - 0.01215, 0.8660254, 0.0, 1e-14, -3e-15, 2e-16]
+    assert is_degenerate_equilibrium(state0) is True
+
+
+def test_is_degenerate_equilibrium_does_not_flag_genuine_orbit() -> None:
+    state0 = [0.85, 0.0, 0.05, 0.0, 0.2, 0.0]
+    assert is_degenerate_equilibrium(state0) is False
+
+
+def test_is_degenerate_equilibrium_threshold_is_configurable() -> None:
+    below = [0.5, 0.5, 0.0, 5e-7, 0.0, 0.0]
+    above = [0.5, 0.5, 0.0, 5e-5, 0.0, 0.0]
+    assert is_degenerate_equilibrium(below, vnorm_threshold=1e-6) is True
+    assert is_degenerate_equilibrium(above, vnorm_threshold=1e-6) is False
+    assert pytest.approx(1e-6) == DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD
+
+
+def test_lagrange_point_label_classifies_all_five_points() -> None:
+    mu = 0.01215
+    assert lagrange_point_label([0.5 - mu, 0.866, 0.0, 0.0, 0.0, 0.0], mu) == "L4"
+    assert lagrange_point_label([0.5 - mu, -0.866, 0.0, 0.0, 0.0, 0.0], mu) == "L5"
+    assert lagrange_point_label([1.1, 0.0, 0.0, 0.0, 0.0, 0.0], mu) == "L2"
+    assert lagrange_point_label([0.9, 0.0, 0.0, 0.0, 0.0, 0.0], mu) == "L1"
+    assert lagrange_point_label([-1.05, 0.0, 0.0, 0.0, 0.0, 0.0], mu) == "L3"
+
+
+def test_is_physically_sane_rejects_degenerate_equilibrium_by_default() -> None:
+    """`#642`: an in-bounds Jacobi/period/z0/vz0 state that is ALSO a trivial
+    L4/L5-style fixed point must be rejected, not just window-checked -- this
+    is the exact contamination `#641` found (609/614 = 99% of Sun-Jupiter
+    "physically-sane converged" results) and `#642` confirmed also affected
+    `#608`'s/`#624`'s original Earth-Moon/cross-mu evaluations.
+    """
+    equilibrium_state0 = [0.487, 0.866, 0.0, 1e-15, -2e-16, 0.0]
+    assert is_physically_sane(equilibrium_state0, period=2.5, jacobi=3.0) is False
+    # Opt-out reproduces the pre-#642 (known-contaminated) behavior, for
+    # historical-comparison callers only.
+    assert (
+        is_physically_sane(
+            equilibrium_state0, period=2.5, jacobi=3.0, reject_degenerate_equilibria=False
+        )
+        is True
+    )
 
 
 def test_uniform_bounding_box_sample_respects_bounds() -> None:

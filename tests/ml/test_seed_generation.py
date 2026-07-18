@@ -413,12 +413,19 @@ def test_calibrate_cluster_weights_for_mu_sample_shape_still_valid(tmp_path: Pat
 
 @_skip_no_real_corpus
 def test_generate_and_refine_seeds_reproduces_608_lift_floor_in_distribution() -> None:
-    """Fast-path regression check (task step 8): the new API, called on
-    #608's real Earth-Moon in-distribution corpus, must reproduce a lift
-    solidly consistent with #608's own measured 12.25x -- not necessarily
-    bit-for-bit (this module's own rng-threading differs from #608's
-    original script), but comfortably above a conservative floor well below
-    12.25x, ruling out a silent regression in the ported logic.
+    """Fast-path regression check (task step 8), floors updated by `#642`.
+
+    `#642` found #608's/#624's original headline lift numbers were measured
+    BEFORE ``is_physically_sane`` rejected degenerate Lagrange-point
+    equilibria, and re-derived the true numbers from #608's own saved raw
+    converged states: the Earth-Moon in-distribution GENERATED arm's real
+    (non-equilibrium) physically-sane rate is ~22-27% (not #608's original
+    49%, which counted 27/49 equilibria as real orbits), and the BASELINE
+    arm's true rate is much lower and noisier than #608's original 4%
+    (0-2 real hits per 100 draws in two independent #642 re-derivations, not
+    4) -- both floors below widened accordingly to avoid flakiness against
+    this now-understood noise, while still catching a silent regression in
+    the ported generate-then-refine logic.
     """
     model, _corpus, train = get_default_model()
     n = 100
@@ -446,27 +453,47 @@ def test_generate_and_refine_seeds_reproduces_608_lift_floor_in_distribution() -
             pass
     base_rate = n_sane_base / n
 
-    assert gen_rate > 0.2  # #608 measured 49%; a wide floor avoids flakiness
+    assert gen_rate > 0.15  # #642-corrected real rate is ~22-27%; a wide floor avoids flakiness
     if base_rate > 0:
-        assert gen_rate / base_rate > 5.0  # #608 measured ~12.25x
+        assert gen_rate / base_rate > 3.0  # #642-corrected real ratio is ~11-27x
     else:
         assert gen_rate > 0.0
 
 
 @_skip_no_real_corpus
-def test_generate_and_refine_seeds_reproduces_624_cross_mu_positive_lift() -> None:
-    """Regression check against #624's headline cross-mu finding: the lift
-    must remain POSITIVE (not collapse) at both #624's tested out-of-
-    distribution mu values, using the new reusable API instead of #624's own
-    one-off script.
+def test_generate_and_refine_seeds_cross_mu_lift_no_longer_assumed_positive() -> None:
+    """`#642` FALSIFIED #624's headline cross-mu claim -- this is no longer a
+    "must stay positive" regression test.
+
+    #624's original claim (60%/30x at mu=0.001, 7%/3.5x at Sun-Earth,
+    "lift TRANSFERS off-distribution") was measured before
+    ``is_physically_sane`` rejected degenerate Lagrange-point equilibria.
+    `#642` re-derived the true numbers from #624's own saved raw converged
+    states and found the GENERATED arm's real (non-equilibrium) hits were
+    ZERO at BOTH tested mu (every one of the original 60%/7% "physically
+    sane" generated hits was actually an L4/L5 fixed point), while the
+    uniform BASELINE retained a handful of genuine real orbits at both --
+    i.e. the corrected lift is undefined-or-negative, not merely weaker.
+    `#642`'s own live re-run of THIS module's API (different rng draws,
+    N=60) independently reproduced the same collapse: 0/60 real generated
+    hits at both mu, vs 2/60 real baseline hits at both. This is therefore
+    NOT currently a "positive lift holds" regression test -- asserting that
+    would re-encode the falsified claim. It stays as a CONTRACT/smoke test
+    (the API runs cleanly end-to-end at both cross-mu targets and returns
+    well-formed rates) until a proper re-pilot (flagged as follow-on work by
+    `#642`) either confirms this collapse is durable or finds it was itself
+    an N-too-small artifact. See `#642`'s ``data/OUTSTANDING.md`` bullet
+    (AWAITING OPUS ADJUDICATION as of this test's writing) before re-adding
+    any directional assertion here.
     """
     model, _corpus, train = get_default_model()
     n = 60
-    for mu, floor_ratio in ((0.001, 3.0), (3.0034805950690393e-06, 1.2)):
+    for mu in (0.001, 3.0034805950690393e-06):
         report = generate_and_refine_seeds(
             n, mu=mu, model=model, rng=np.random.default_rng(624), compute_stability=False
         )
         gen_rate = report.converged_and_physically_sane_rate
+        assert 0.0 <= gen_rate <= 1.0
 
         system = resolve_system(mu=mu)
         baseline = uniform_bounding_box_sample(train, n, rng=np.random.default_rng(625))
@@ -481,11 +508,7 @@ def test_generate_and_refine_seeds_reproduces_624_cross_mu_positive_lift() -> No
             except Exception:
                 pass
         base_rate = n_sane_base / n
-
-        if base_rate > 0:
-            assert gen_rate / base_rate >= floor_ratio
-        else:
-            assert gen_rate > 0.0
+        assert 0.0 <= base_rate <= 1.0
 
 
 # --- sanity: fit_clustered_gaussian import still works as expected ----------

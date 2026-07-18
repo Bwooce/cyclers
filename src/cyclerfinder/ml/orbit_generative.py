@@ -74,6 +74,70 @@ DEFAULT_PERIOD_BOUNDS: tuple[float, float] = (0.5, 15.0)
 DEFAULT_MAX_ABS_Z0: float = 0.3
 DEFAULT_MAX_ABS_VZ0: float = 1.0
 
+# `#642` (auditing a contamination gap `#641` found at Sun-Jupiter mu, then
+# confirmed present in `#608`'s/`#624`'s own original Earth-Moon/cross-mu
+# results too -- see that task's OUTSTANDING.md bullet): a fixed point of the
+# CR3BP rotating-frame equations (velocity identically zero) trivially
+# satisfies ``correct_periodic``'s periodicity residual for *any* period
+# guess, because nothing ever moves. `#641`'s own pilot run found converged
+# genuine orbits have |v0| ~ 0.1 (nondimensional) while trivial
+# Lagrange-equilibrium "convergences" have |v0| in the 1e-12..1e-17 range
+# (Newton-iteration numerical noise around an exact zero) -- `#642`'s
+# reconfirmation against `#608`'s/`#624`'s own saved raw converged states
+# found the identical wide, well-separated gap (largest below-threshold
+# value ~3e-11, smallest genuine value ~0.095). 1e-6 sits comfortably in that
+# gap; not a knife-edge threshold.
+DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD: float = 1e-6
+
+# "Near zero" deadband for classifying a degenerate equilibrium's qualitative
+# y0 sign in :func:`lagrange_point_label` -- matches `#641`'s own
+# ``GEOMETRY_DEADBAND``.
+_LAGRANGE_GEOMETRY_DEADBAND: float = 1e-3
+
+
+def is_degenerate_equilibrium(
+    state0: NDArray[np.float64] | list[float],
+    *,
+    vnorm_threshold: float = DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD,
+) -> bool:
+    """Is this converged ``state0`` a trivial Lagrange-point equilibrium rather
+    than a genuine periodic orbit?
+
+    A fixed point of the CR3BP rotating-frame equations (velocity identically
+    zero) trivially satisfies any periodicity residual for an arbitrary
+    period guess -- the corrector reports ``converged=True`` and the guess's
+    OWN period survives unchanged, because nothing ever moves. Originally
+    found and implemented by `#641` (Sun-Jupiter seed census pilot run);
+    factored here by `#642` into a shared, importable location after
+    confirming the SAME contamination affects `#608`'s/`#624`'s original
+    Earth-Moon/cross-mu evaluation results, not just Sun-Jupiter -- see this
+    module's ``DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD`` comment and `#642`'s own
+    ``data/OUTSTANDING.md`` bullet for the numbers.
+    """
+    v = np.asarray(state0, dtype=np.float64)[3:6]
+    return bool(np.linalg.norm(v) < vnorm_threshold)
+
+
+def lagrange_point_label(state0: NDArray[np.float64] | list[float], mu: float) -> str:
+    """Best-effort classical label (L1-L5) for a degenerate-equilibrium seed.
+
+    Only meaningful when :func:`is_degenerate_equilibrium` is True for this
+    seed -- a genuine orbit passing near a Lagrange point in position is NOT
+    relabelled by this function (callers must gate on the equilibrium check
+    first). Primary sits at ``x = -mu``, secondary at ``x = 1 - mu``.
+    Originally implemented by `#641`; factored here by `#642` (see
+    :func:`is_degenerate_equilibrium`'s docstring).
+    """
+    x0, y0 = float(state0[0]), float(state0[1])
+    if abs(y0) > _LAGRANGE_GEOMETRY_DEADBAND:
+        return "L4" if y0 > 0 else "L5"
+    # Collinear ordering along the x-axis: L3 < primary(-mu) < L1 < secondary(1-mu) < L2.
+    if x0 > 1.0 - mu:
+        return "L2"
+    if x0 > -mu:
+        return "L1"
+    return "L3"
+
 
 def is_physically_sane(
     state0: NDArray[np.float64] | list[float],
@@ -84,6 +148,8 @@ def is_physically_sane(
     period_bounds: tuple[float, float] = DEFAULT_PERIOD_BOUNDS,
     max_abs_z0: float = DEFAULT_MAX_ABS_Z0,
     max_abs_vz0: float = DEFAULT_MAX_ABS_VZ0,
+    reject_degenerate_equilibria: bool = True,
+    equilibrium_vnorm_threshold: float = DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD,
 ) -> bool:
     """Classify a (possibly corrector-refined) orbit as physically plausible.
 
@@ -95,12 +161,30 @@ def is_physically_sane(
     ``assemble_corpus``), applied post-hoc to a corrector's output so
     "did refinement succeed" can be reported honestly as "succeeded AND
     landed somewhere physically sane," not just "the residual was small."
+
+    **`#642` fix**: also rejects trivial Lagrange-point equilibria (fixed
+    points with |v0| ~ 0) by default, via :func:`is_degenerate_equilibrium`.
+    A fixed point trivially satisfies any periodicity residual for an
+    arbitrary period guess, so without this check a "physically sane"
+    classification could not distinguish a genuine periodic orbit from a
+    corrector that landed on L1-L5 and never moved -- `#641` found this
+    contaminated 99% of its Sun-Jupiter results, and `#642` confirmed it
+    also contaminated `#608`'s/`#624`'s original Earth-Moon/cross-mu
+    evaluations (see `#642`'s ``data/OUTSTANDING.md`` bullet). Pass
+    ``reject_degenerate_equilibria=False`` only to reproduce the PRE-#642
+    (known-contaminated) behavior for historical comparison -- never for a
+    live evaluation.
     """
     if not (jacobi_bounds[0] <= jacobi <= jacobi_bounds[1]):
         return False
     if not (period_bounds[0] <= period <= period_bounds[1]):
         return False
-    return bool(abs(state0[2]) <= max_abs_z0 and abs(state0[5]) <= max_abs_vz0)
+    if not (abs(state0[2]) <= max_abs_z0 and abs(state0[5]) <= max_abs_vz0):
+        return False
+    return not (
+        reject_degenerate_equilibria
+        and is_degenerate_equilibrium(state0, vnorm_threshold=equilibrium_vnorm_threshold)
+    )
 
 
 def heuristic_family_tag(
