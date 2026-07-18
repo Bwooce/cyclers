@@ -42,14 +42,17 @@ history.
   strongly-unstable libration point) would hit the identical manifold-conditioning wall. See
   `#539`'s own bullet entry (corrected 2026-07-17) for the full reasoning. (`#540`/`#541`, the two
   other tasks in this same sub-thread, are each independently superseded/dead — see the ledger.)
-- `#542` — learned-seed generative GA/diffusion warm-start for corrector basins — **feasibility
-  question ANSWERED 2026-07-16 by `#608`** (a bounded POC on this project's own `#210` outcome-log
-  corpus found a genuine ~12.25x convergence lift over blind seeding, superseding the 2026-06-11
-  Ozaki "below breakeven" triage this entry cited — see `#542`'s own corrected bullet). NOT closed
-  (the broader "propose seeds in a genuinely unfamiliar basin" claim remains untested, and a
-  `#614` follow-up found neither corpus family-tagging nor a nonlinear encoder measurably improves
-  on `#608`'s baseline at this corpus size), but no longer purely speculative/deferred — any future
-  revisit should start from `#608`'s code/corpus, not re-litigate feasibility from scratch.
+- `#542` — learned-seed generative GA/diffusion warm-start for corrector basins — **ADJUDICATED
+  NARROWED 2026-07-18 (Opus, on `#642`'s audit): in-distribution / near-training-μ seed
+  acceleration CONFIRMED (a real ~13-27x convergence lift over blind seeding on `#608`'s own
+  Earth-Moon corpus, superseding the 2026-06-11 Ozaki "below breakeven" triage); the cross-μ
+  "lift transfers to an unfamiliar basin" claim `#624` briefly upgraded this to a "validated
+  discovery lever" on is RETRACTED as FALSIFIED** (`#642` found `#624`'s cross-μ hits were 100%
+  degenerate L4/L5 equilibria — 0 real orbits at both tested μ; root cause is the model's lack of
+  μ conditioning, structural not small-N — see `#542`'s own adjudicated bullet). NOT closed: a
+  bounded follow-up `#643` corrects the now-falsified cross-μ `LIFT_ANCHORS` in
+  `seed_generation.py`; any revisit should start from `#608`'s code/corpus, not re-litigate from
+  scratch.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -579,12 +582,17 @@ search/literature_check.py's KNOWN_CORPUS is cycler-scoped and unusable for raw 
 candidates); #642 for auditing whether the L4/L5-equilibrium contamination #641 found also
 affects #608's/#624's original lift numbers that #542's "validated discovery lever" upgrade was
 based on, per the bugfix-invalidates-past-searches discipline (dispatched 2026-07-18; CLOSED
-(audit)/AWAITING OPUS ADJUDICATION (#542 verdict) 2026-07-18: severe contamination CONFIRMED --
-#624's cross-mu "lift transfers" claim falsified (0 real generated orbits at both tested mu vs. a
-nonzero baseline, reproduced twice independently), #608's in-distribution 12.25x figure unreliable
-as stated though a real ~13-27x lift persists; production fix shipped (is_physically_sane rejects
-degenerate equilibria by default), #608/#624/#542 bullets corrected, #542's own framing
-deliberately left for Opus adjudication); #643
+2026-07-18: severe contamination CONFIRMED -- #624's cross-mu "lift transfers" claim falsified (0
+real generated orbits at both tested mu vs. a nonzero baseline, reproduced twice independently),
+#608's in-distribution 12.25x figure unreliable as stated though a real ~13-27x lift persists;
+production fix shipped (is_physically_sane rejects degenerate equilibria by default),
+#608/#624/#542 bullets corrected; Opus adjudication LANDED 2026-07-18 -- #542 NARROWED (option ii):
+in-distribution use kept, cross-mu transfer claim retracted, collapse mechanism verified structural
+[no-mu-conditioning corrector-collapse, training corpus has zero equilibria]); #643 for purging the
+now-falsified cross-mu LIFT_ANCHORS (30x mu=0.001, 3.5x Sun-Earth) + fixing expected_lift_for_mu in
+src/cyclerfinder/ml/seed_generation.py so it no longer returns interpolations built from the
+equilibrium-inflated #624 anchors (bounded #642-adjudication follow-up, code fix not a re-pilot;
+registered 2026-07-18); #644
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -6543,16 +6551,20 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   separate later steps). Full ratchet (`uv run pytest tests/data tests/search -q`) passed clean
   (exit 0, no FAILED/ERROR; xfail/xpass/skip baseline unchanged) before commit.
 
-- **#542 ⚠ #642 AUDIT FLAG (2026-07-18) — DO NOT TRUST THE VERDICT BELOW WITHOUT READING THE
-  `#642`-ADDED PARAGRAPH AT THE END OF THIS BULLET FIRST.** The `#624` cross-μ evidence this
-  "✓✓ VALIDATED DISCOVERY LEVER" upgrade was based on has been found severely contaminated by
-  `#642` (degenerate-equilibrium false positives) — the framing below is DELIBERATELY LEFT
-  UNCHANGED pending Opus adjudication (see `#642`'s own bullet), not because it has been
-  re-confirmed. Original header (kept for history, status below is STALE pending that
-  adjudication): "✓✓ VALIDATED DISCOVERY LEVER, by #608 + #624 (2026-07-17) — the one
-  remaining open claim ('does the lift transfer to a μ the model never trained on') is now
-  RESOLVED POSITIVE; see the #624-added paragraph at the end of this bullet for the numbers.
-  Superseded header (kept for history): 'RESEARCH QUESTION ANSWERED, by #608 (2026-07-16)'" (P4, defer until #539-541 have added
+- **#542 ✓ ADJUDICATED — NARROWED (2026-07-18, Opus, on `#642`'s audit): in-distribution /
+  near-training-μ seed-acceleration use CONFIRMED and worth productionizing; the cross-μ /
+  "propose seeds in a genuinely unfamiliar basin" transfer claim is RETRACTED as FALSIFIED.**
+  The full verdict and reasoning are in the `#642`-ADJUDICATION paragraph at the END of this
+  bullet — read it before quoting any lift number. In short: `#642` found `#624`'s cross-μ
+  "60% at μ=0.001 / 7% at Sun-Earth" hits were 100% degenerate L4/L5 Lagrange-point equilibria
+  (0 real generated orbits at either tested μ, reproduced twice; generative UNDER-performs blind
+  seeding there), so the "lift transfers off-distribution / RESOLVED POSITIVE" claim is false as
+  stated; `#608`'s in-distribution lift genuinely survives re-derivation (~13-27x) and is the part
+  that is kept. Superseded headers (kept for history, both now corrected): "✓✓ VALIDATED
+  DISCOVERY LEVER, by #608 + #624 (2026-07-17) — the one remaining open claim ('does the lift
+  transfer to a μ the model never trained on') is now RESOLVED POSITIVE" [the cross-μ half is
+  FALSIFIED by #642]; "RESEARCH QUESTION ANSWERED, by #608 (2026-07-16)" [stands, for the
+  in-distribution result only]. (P4, defer until #539-541 have added
   corrector-run diversity) — The previously-proposed #525 learned-seed generative warm-start
   (diffusion/generative model trained on the accumulated corrector runlogs/checkpoints, cf.
   Graebner & Beeson, arXiv:2501.07005) to propose seeds in unknown basins automatically. Still
@@ -6622,6 +6634,57 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   policy: trust-bearing verdicts are not Sonnet's call), not decided here. Treat `#542`'s status as
   **AWAITING ADJUDICATION**, not confirmed, until that review lands. See `#642`'s own bullet for
   the full numbers, the outcome classification, and exactly what Opus needs to decide.
+
+  **`#642`-ADJUDICATION (2026-07-18, Opus — trust-bearing verdict per
+  `[[feedback_subagent_model_tiering]]`).** VERDICT: **option (ii) — NARROW.** Productionize
+  `#608`'s model for in-distribution / near-training-μ (Earth-Moon-adjacent) seed acceleration
+  ONLY; the cross-μ transfer claim (`#542`'s original "propose seeds in a genuinely unfamiliar
+  basin" aspiration) is **retracted as empirically FALSIFIED**, not merely weakened. Option (i)
+  (full downgrade to "answered, not a lever") is rejected because `#608`'s in-distribution lift
+  survives re-derivation (22-27% generated vs. 0-2% baseline, ~13-27x) and is worth keeping the
+  tool for. Option (iii) (hold for a larger-N cross-μ re-pilot) is **rejected** — see Q2 below:
+  the cross-μ collapse is structural, not a small-N sampling artifact, so a re-pilot of the SAME
+  model at the SAME foreign μ would only reconfirm ~0/N at higher confidence, not rescue the claim.
+  Reasoning, against `#642`'s four flagged questions:
+  **(Q1 — is 0/60×2 a sampling artifact?)** No. Pooling the archival re-filter (N=100) and the
+  fresh live re-run (N=60) at μ=0.001 gives **0 real generated hits in 160 draws**; by the rule of
+  three the 95% upper bound on the true generated success rate is ~3/160 ≈ **1.9%**. The claimed
+  30x lift required a ~60% real rate; the real rate is bounded above ~2%. A true rate "near 0%" is
+  already damning independent of whether it is exactly 0% or 1-2% — either way it is at or below
+  the blind-baseline rate (which itself produced some real hits), i.e. **no lift, arguably
+  negative lift**. The CI excludes any meaningful cross-μ lift.
+  **(Q2 — mechanism; did equilibria leak into TRAINING, and would a re-pilot help?)** Checked
+  directly, not assumed: re-assembled `#608`'s 54,165-row training corpus and screened it with the
+  same `is_degenerate_equilibrium`. It contains **ZERO equilibria** (min |v0| = 3e-4, none below
+  the 1e-6 threshold) and **zero mass within 0.1 (rotating-frame units) of the L4/L5 positions**.
+  So the output equilibria are NOT reproduced training examples — the root cause is deeper and
+  architectural: **the model has no μ conditioning.** It is a fixed density over Earth-Moon-shaped
+  genomes, and `#624` (correctly) fed its raw decoded `(state0, period)` outputs UNCHANGED at every
+  target μ (CR3BP nondimensionalization is μ-invariant, so there is no unit rescale — but that does
+  NOT make an Earth-Moon-family seed a good seed for μ=0.001 dynamics). At a foreign μ those
+  μ-mismatched seeds get pulled by `correct_periodic` into the nearest stable attractor — the L4/L5
+  equilateral points, which trivially satisfy the periodicity residual for any period. This is a
+  corrector-collapse-of-out-of-distribution-seeds phenomenon, not a data leak and not a filter
+  permissiveness bug alone. **Decisive implication for option (iii): more samples cannot help,
+  because the model architecturally cannot emit μ-appropriate seeds — it will always propose the
+  same Earth-Moon distribution.** The only real path to cross-μ capability is μ-conditioned
+  training / a μ-aware model, and `#614` already showed model sophistication is not the binding
+  constraint at this corpus size — so this is not a cheap re-pilot, it is a different (unbuilt)
+  capability.
+  **(Q3 — does ANY reading still support "lift transfers... RESOLVED POSITIVE"?)** No —
+  unambiguously false as literally stated. The corrected off-distribution real lift is 0x (μ=0.001)
+  and <1x / underperforms-baseline (Sun-Earth), reproduced twice each. The only surviving
+  positive at μ=0.001 is the corrector-INFRASTRUCTURE control (Ross-RT reproduction, residual
+  4e-12), which tests the solver, not the model's seeding, and was never the claim.
+  **(Q4 — what does a caller of `generate_and_refine_seeds` get TODAY?)** After the production fix
+  the tool is **SAFE** (won't silently return equilibria as real hits) but of **genuinely unknown
+  value outside the training distribution** — at the only two off-training-μ points ever measured
+  it delivered no lift. Honest current characterization: a real in-distribution seed accelerator,
+  unproven-to-negative anywhere else. One live loose end this verdict flags: `LIFT_ANCHORS` /
+  `expected_lift_for_mu` in `src/cyclerfinder/ml/seed_generation.py` still contain the FALSIFIED
+  30x (μ=0.001) and 3.5x (Sun-Earth) cross-μ anchors — docstring-flagged stale, but the function
+  still RETURNS interpolations built from them, so a caller today gets wrong numbers. Correcting
+  that is registered as **`#643`** (below) — a bounded code fix, NOT a re-pilot.
 
 - **#543 ✓ SCOPED (2026-07-11)** (header corrected 2026-07-15: this bullet's opening line said
   "parking lot — needs a scoping conversation, not a sprint slot" even though its own body records
@@ -9401,13 +9464,15 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, independently confirmed present on `main`
   via `git stash` before this task's changes were applied). `ruff check`/`ruff format --check`/
   `mypy src tests` all clean (0 errors).
-- **#642 ⚠ AWAITING OPUS ADJUDICATION (2026-07-18) — SEVERE CONTAMINATION CONFIRMED, outcome
-  (c), not the mild/negligible case: `#624`'s cross-μ "lift transfers" claim is FALSIFIED, and
-  `#608`'s in-distribution 12.25x headline is unreliable-as-stated. Production code fixed
-  (`is_physically_sane` now rejects equilibria by default); `#542`'s "validated discovery
-  lever" framing is deliberately NOT rewritten here per this task's own step 9 — see the
-  RESULT paragraph at the end of this bullet for the full numbers and the explicit Opus
-  hand-off.** (dispatched 2026-07-18, coordinating-session-directed) — audit whether the SAME
+- **#642 ✓ CLOSED — AUDIT DONE + `#542` VERDICT ADJUDICATED (2026-07-18): SEVERE CONTAMINATION
+  CONFIRMED, outcome (c): `#624`'s cross-μ "lift transfers" claim is FALSIFIED, and `#608`'s
+  in-distribution 12.25x headline is unreliable-as-stated (a real ~13-27x lift persists).
+  Production code fixed (`is_physically_sane` now rejects equilibria by default). Opus
+  adjudication has LANDED — `#542` is NARROWED (option (ii)): in-distribution use kept, cross-μ
+  transfer claim retracted; follow-up `#643` registered to purge the falsified cross-μ
+  `LIFT_ANCHORS`. See `#542`'s `#642`-ADJUDICATION paragraph for the full verdict/reasoning and
+  the RESULT paragraph at the end of THIS bullet for the audit numbers.** (dispatched 2026-07-18,
+  coordinating-session-directed) — audit whether the SAME
   degenerate-equilibrium contamination `#641` found at Sun-Jupiter μ (609/614 = 99% of
   "physically-sane converged" results were actually trivial L4/L5/L1/L2 fixed points, not genuine
   periodic orbits — `is_physically_sane` has no velocity-norm check) also affects the ORIGINAL
@@ -9531,6 +9596,36 @@ anywhere in the file and are genuinely still open.]**
   hold" test no longer asserts a directional claim the evidence contradicts); new exemption for
   `scripts/run_642_equilibrium_contamination_audit.py` in
   `tests/scripts/test_scripts_call_preflight.py`. No `data/catalogue.yaml` changes.
+  **ADJUDICATION LANDED (2026-07-18, Opus).** The step-9 hand-off is resolved: `#542` is
+  **NARROWED (option (ii))** — in-distribution / near-training-μ seed acceleration kept and worth
+  productionizing, cross-μ transfer claim RETRACTED as falsified. Opus additionally verified the
+  mechanism directly (not left as `#642`'s working hypothesis): the `#608` training corpus contains
+  ZERO equilibria and zero mass near L4/L5, so the equilibrium output is NOT a training leak — it is
+  a corrector-collapse of μ-mismatched Earth-Moon-shaped seeds fed to `correct_periodic` at a
+  foreign μ, driven by the model having no μ conditioning. That makes the cross-μ collapse
+  STRUCTURAL, so a larger-N re-pilot (option (iii)) was rejected as unable to help; the falsified
+  `LIFT_ANCHORS`/`expected_lift_for_mu` cross-μ anchors in `seed_generation.py` are handed to
+  follow-up **`#643`**. #642 itself is CLOSED. See `#542`'s `#642`-ADJUDICATION paragraph for the
+  full four-question reasoning.
+- **#643** (P3, bounded code fix — `#642`-adjudication follow-up, registered 2026-07-18) — purge
+  the now-FALSIFIED cross-μ anchors from `src/cyclerfinder/ml/seed_generation.py`. `#642` proved
+  `#624`'s `LIFT_ANCHORS` entries — `LiftAnchor("mu_0.001_cross_mu", 0.001, 30.0, "#624")` and
+  `LiftAnchor("sun_earth_cross_mu", ..., 3.5, "#624")` — were built from L4/L5-equilibrium false
+  positives (true cross-μ lift is ~0x, not 30x/3.5x). The docstrings are flagged STALE but
+  `expected_lift_for_mu` still RETURNS interpolations/extrapolations computed from those two
+  anchors, so any caller asking for a lift estimate at a non-Earth-Moon μ today gets a wrong,
+  equilibrium-inflated number. Scope: remove (or hard-gate as unvalidated/≈baseline) the two
+  cross-μ anchors so only the surviving in-distribution anchor
+  (`LiftAnchor("earth_moon_in_distribution", TRAINING_MU, ~13-27x, "#608")`) drives any returned
+  estimate, and make `expected_lift_for_mu` return an explicit "cross-μ transfer unvalidated —
+  prefer the uniform baseline's own measured rate, `#642`" signal off-distribution rather than a
+  numeric lift. Update the regression tests in `tests/ml/test_seed_generation.py` accordingly
+  (they must not re-assert the retracted 30x/3.5x). This is a documentation-and-constants fix, NOT
+  a cross-μ re-pilot — the collapse is structural (no μ conditioning; see `#542`'s adjudication),
+  so re-measuring the same model at the same foreign μ is explicitly OUT of scope. Recommended
+  model: Sonnet (mechanical, spec-complete, deterministic-gate-caught). Run
+  `uv run pytest tests/ml tests/data tests/search -q` + `tests/scripts` per this project's
+  ratchet discipline.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
