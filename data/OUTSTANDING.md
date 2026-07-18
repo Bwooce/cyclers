@@ -27,15 +27,21 @@ history.
   multiple-shooting GMOS torus corrector" blocker this line named WAS built (`#611`/`#612`/`#617`/
   `#618`, a seedless integration-free pseudospectral approach, not multiple-shooting — crossed the
   violently-unstable EM-L2 wall to invariance residual 9.474e-4). The actual cross-system SE<->EM
-  connection was then genuinely attempted TWICE with the fixed torus, by two methodologically
-  independent methods (`#619`: linearized-manifold shooting, blocked by manifold-conditioning;
-  `#620`: manifold-free global collocation, blocked by spurious "ghost" minima) — both
-  independently confirm no closed connection exists at achievable precision (best gaps ~166,000 km
-  / ~351,000 km respectively, both Radau-cross-checked). `#538`-`#544`-`#611`-`#612`-`#617`-`#618`-
-  `#619`-`#620` is now a complete, closed arc with a well-characterized final negative — not a
-  proof of non-existence, but no longer "blocked," and the original 2026-07-10 portfolio-parking
-  concern (low novelty payoff) is moot since the arc reached its natural conclusion rather than
-  being deprioritized mid-stream.
+  connection was then genuinely attempted with the fixed torus by THREE methodologically
+  independent methods (`#619`: linearized-manifold shooting, floored ~166,000 km with a one-shot
+  manifold direction; `#620`/`#626`: manifold-free global collocation, blocked by spurious "ghost"
+  minima ~351,000 km; **`#646`: `#619`'s shooting RE-RUN with a segment-anchored discrete-QR/CLV
+  extraction that recovers the EM-L2 unstable direction correctly** — validated (SE-L2 agrees with
+  GMOS <0.03°; the EM-L2 direction is now perturbation-STABLE, <0.01° swing vs the one-shot method's
+  88°, and differs from the one-shot direction by 37-85°) — **and closure STILL fails at the SAME
+  ~166,016 km floor, Radau-cross-checked**). All independently confirm no closed connection exists at
+  achievable precision. `#646` UPGRADES the negative from "the direction was unrecoverable" to
+  "fails even with a verified-correct, perturbation-stable direction" — the 166,000 km wall is a
+  genuine physical non-connection, not a manifold-conditioning artifact.
+  `#538`-`#544`-`#611`-`#612`-`#617`-`#618`-`#619`-`#620`-`#626`-`#646` is now a complete, closed arc
+  with a well-characterized final negative — not a proof of non-existence, but no longer "blocked,"
+  and the original 2026-07-10 portfolio-parking concern (low novelty payoff) is moot since the arc
+  reached its natural conclusion rather than being deprioritized mid-stream.
 - ~~`#539`~~ **REMOVED from this list 2026-07-17 — blocked/superseded, not simply "open."** Its own
   premise (positive control built on "`#538`'s own confirmed connection") is moot per the above;
   `#619`'s finding explicitly predicts `#539`'s own target (Jupiter-Europa/Ganymede, a
@@ -605,7 +611,11 @@ orbit and is already served by the validated #314/#547 manifold infrastructure -
 no new script); #645 for a fresh Fable creative-strategy pass, the #605 sequel now that the entire
 #606-#644 arc has landed (dispatched 2026-07-18); #646 for #645 shortlist item 1, segment-anchored
 CLV manifold-direction recovery for a real #619 retry with correct directions (registered
-2026-07-18); #647 for #645 shortlist item 3, ingesting the JPL SSD periodic-orbits catalog as a
+2026-07-18; DONE 2026-07-18: extractor built+validated (SE-L2 agrees with GMOS <0.03°; EM-L2
+direction now perturbation-STABLE <0.01° vs one-shot 88°, differs 37-85° from the one-shot
+direction), but the corrector STILL floors at the identical ~166,016 km / norm-0.855 wall,
+Radau-cross-checked -- upgrades the #538-#626 negative to "fails even with a verified-correct
+direction," commit `538ca48`, no catalogue write); #647 for #645 shortlist item 3, ingesting the JPL SSD periodic-orbits catalog as a
 proper literature_check.py gate (registered 2026-07-18); #648 for #645 shortlist item 2, deflation
 x seedless-corrector distinct-family enumeration (registered 2026-07-18); #649 for #645 shortlist
 item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18);
@@ -9838,7 +9848,11 @@ anywhere in the file and are genuinely still open.]**
   objects), p:q E-M resonant-cycler census (known-class mission-design territory), QBCP refits/
   denser grids (`#623`'s rejections stand). Recommended dispatch order: 1, 3, 2, 4, 5. No task
   numbers allocated (next-unused stays `#646`).
-- **#646** (registered 2026-07-18, user-directed) — `#645` shortlist item 1: segment-anchored
+- **#646 ✓ DONE, STRONGER NEGATIVE (2026-07-18) — direction FIXED and verified, but closure STILL
+  fails at the same ~166,016 km floor: the `#538`-`#626` negative upgrades from "direction
+  unrecoverable" to "fails even with a verified-correct direction." No catalogue writeback (no
+  closure to write; nothing needs Fable adjudication — the result is a clean negative, not a
+  closure).** (registered 2026-07-18, user-directed) — `#645` shortlist item 1: segment-anchored
   discrete-QR / covariant-Lyapunov-vector (CLV) extraction of the EM-L2 UNSTABLE manifold
   direction (Benettin/Ginelli/Dieci-Van Vleck method — split the period into 10-20 segments,
   RE-PROJECT the base trajectory onto `#618`'s explicit torus representation at each segment
@@ -9859,6 +9873,58 @@ anywhere in the file and are genuinely still open.]**
   (parked W-Z computer-assisted-proof machinery). Recommended model: Opus (genuine numerical-
   methods judgment on manifold extraction — the exact class of trust-bearing work this project's
   model-tiering policy reserves for Opus).
+  **✓ DONE (2026-07-18) — the direction fix is a genuine, validated success; the closure it enables
+  is a clean, STRONGER negative. Everything below reproduced live; no `data/catalogue.yaml` write
+  (no closure), no Fable/Opus adjudication needed (nothing closed).**
+  **(1) Extractor built + tested.** New `search.variational_qbcp_torus.manifold_direction_segmented_clv`
+  (+ `SegmentedCLVDiagnostics`): splits the stroboscopic period into `n_segments`, RE-PROJECTS the
+  base state onto `#618`'s explicit torus (`evaluate_torus_state`) at every segment boundary,
+  composes the per-segment PV STMs with QR re-orthonormalization (Dieci-Van Vleck), and
+  eigendecomposes the reconstructed one-period STM (`local_stability`, the GMOS/eigenvector
+  convention — NOT the leading singular vector, since the correctly-computed `P` is strongly
+  NON-NORMAL, sigma_max/|lam_u| up to ~21, at several EM-L2 phases). `run_538` gains a
+  `set_clv_unstable_segments` toggle routing ONLY the pseudospectral-EM-L2 UNSTABLE branch through
+  it (default `None` = `#619`'s one-shot, so existing ratchets/behaviour are byte-unchanged; the
+  stable branch was already robust one-shot per `#619`). Ruff/mypy clean; 7 new tests (SE-L2
+  positive control + contract + ref-sign + QR-vs-direct-STM machine-consistency + n_segments
+  convergence + bounded-per-segment-growth diagnostics), 25/25 `test_variational_qbcp_torus.py`
+  green, `tests/data` + `run_538` shape/preflight ratchets green. Commit `538ca48`.
+  **(2) SE-L2 positive control (step 1) — PASSED.** On the mild SE-L2 torus the segmented direction
+  reproduces the one-shot / GMOS-convention direction to <0.03° at hyperbolic phases (both methods
+  are fine there — this only proves the new method introduces no bug).
+  **(3) EM-L2 perturbation-robustness (step 2, the go/no-go gate) — PASSED DECISIVELY.** On the
+  C=3.13 EM-L2 n1=28,n2=9 torus (`#618`'s headline, rms 9.474e-4): reproduced `#619`'s one-shot
+  fragility (`vec_u` swings up to **88°** under a 1e-4 base perturbation at phase (0,0), where
+  lam_u≈3e4); the segmented method (n_segments≥12) swings **<0.01°** under the same perturbation and
+  converges as O(1/n_segments) to a DEFINITE limit (angle-to-a-K40-reference: K=12 ~0.2-1.6°, K=30
+  <0.2°). Per-segment leading growth is ~1-12× (not 2e4×), top Lyapunov exponent ~1.9-2.1/period
+  (independently matching `#544`'s measured "frozen-time rate ~2-3"). **The corrected direction
+  differs from `#619`'s one-shot by 37-85°** — the one-shot direction was genuinely WRONG, not
+  merely fragile. QR-reconstructed vs directly-composed STM agree to ~1e-15 (bookkeeping faithful).
+  **(4) Connection corrector re-run (step 3) — closure STILL FAILS, same floor.** Re-ran `#619`'s
+  exact 12-unknown/18-residual corrector with the segmented EM-unstable direction (cached `#619`
+  tori: GMOS SE-L2 invres 1.54e-5, `#618` EM-L2 rms 9.474e-4). Driver first reproduced `#619`
+  bit-for-bit (one-shot residual at `#619`'s saved best_x = 0.854895, legs 166,166/166,008 km).
+  With the corrected direction, three sampled basins: `#619`-basin re-optimized → **norm 0.85492,
+  legs 166,166 / 166,016 km** (bit-for-bit `#619`'s floor); a fresh coarse seed → 3.03 (legs
+  109k/92k km); a perturbed restart → ~1.02. Best segmented floor = **0.855, identical to `#619`'s
+  one-shot best** — no basin approaches the 1e-8 closure target. Notably the EM-unstable direction
+  at `#619`'s leg-2 phase differs 59° between methods, yet the corrector routes around it to the
+  SAME 166,016 km physical floor.
+  **(5) Independent Radau cross-check (step 4) — the floor is REAL.** The segmented leg-2 gap is
+  166,016 km / 390.9 m/s, DOP853-vs-Radau agree to <0.001 km — integrator-independent physics, no
+  spurious "it closed" to guard against.
+  **Verdict.** The `#645`/`#619` hypothesis that the floor was "reached WITH directions wrong by
+  tens of degrees" is FALSIFIED as the cause: correcting the direction (a real, validated fix — the
+  extractor is a genuine new capability) does NOT change the ~166,000 km floor. This is the stronger,
+  more citable negative the task pre-registered as an acceptable FINAL outcome: no closed SE↔EM
+  cislunar cycler, now failing even with a verified-correct, perturbation-stable manifold direction.
+  Per `#645`'s own note this is "the natural trigger for reconsidering `#636`" (parked W-Z
+  computer-assisted-proof machinery) — noted, NOT dispatched (a separate user/coordinating-session
+  decision, per that bullet's user-gate). Reproduce via scratch `proto_clv.py` / `drive_646.py` /
+  `multistart_646.py` + the cached tori (expensive connection runs stay scratch-only per the
+  `#618`/`#619`/`#626` precedent; the durable record is the committed extractor + tests + these
+  numbers).
 - **#647** (registered 2026-07-18, user-directed) — `#645` shortlist item 3: ingest JPL SSD's
   Three-Body Periodic Orbits catalog (`ssd-api.jpl.nasa.gov`) as a proper known-family GATE +
   multi-μ sourced goldens for `search/literature_check.py`. Fixes the documented gap `#641` found
