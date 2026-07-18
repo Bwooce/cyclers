@@ -616,7 +616,10 @@ direction now perturbation-STABLE <0.01° vs one-shot 88°, differs 37-85° from
 direction), but the corrector STILL floors at the identical ~166,016 km / norm-0.855 wall,
 Radau-cross-checked -- upgrades the #538-#626 negative to "fails even with a verified-correct
 direction," commit `538ca48`, no catalogue write); #647 for #645 shortlist item 3, ingesting the JPL SSD periodic-orbits catalog as a
-proper literature_check.py gate (registered 2026-07-18); #648 for #645 shortlist item 2, deflation
+proper literature_check.py gate (DONE 2026-07-18: new `search/jpl_family_check.py` numeric-catalog
+gate, keyed on JPL's own family vocabulary + server-side jacobi/period filters, honest
+"not-covered" for the #641 Sun-Jupiter clusters + 3 real sourced golden matches at Earth-Moon/
+Saturn-Titan/Mars-Phobos, opt-in disk cache, commit `2a0074e`); #648 for #645 shortlist item 2, deflation
 x seedless-corrector distinct-family enumeration (registered 2026-07-18); #649 for #645 shortlist
 item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18);
 #650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
@@ -9942,7 +9945,7 @@ anywhere in the file and are genuinely still open.]**
   `multistart_646.py` + the cached tori (expensive connection runs stay scratch-only per the
   `#618`/`#619`/`#626` precedent; the durable record is the committed extractor + tests + these
   numbers).
-- **#647** (registered 2026-07-18, user-directed) — `#645` shortlist item 3: ingest JPL SSD's
+- **#647 ✓ DONE (2026-07-18)** (registered 2026-07-18, user-directed) — `#645` shortlist item 3: ingest JPL SSD's
   Three-Body Periodic Orbits catalog (`ssd-api.jpl.nasa.gov`) as a proper known-family GATE +
   multi-μ sourced goldens for `search/literature_check.py`. Fixes the documented gap `#641` found
   by hand: `literature_check.py`'s `KNOWN_CORPUS` is scoped entirely to cycler-trajectory
@@ -9959,6 +9962,54 @@ anywhere in the file and are genuinely still open.]**
   infrastructure that makes every future raw-periodic-orbit novelty check trustworthy. Recommended
   model: Sonnet (mechanical API integration + sourced golden tests, HIGH confidence per `#645`'s
   own assessment).
+  **RESULT (Sonnet, 2026-07-18, RETRY — a prior dispatch stalled on an unrelated host disk-full
+  error before committing anything; this dispatch redid the build from the prior investigation's
+  notes):** built `src/cyclerfinder/search/jpl_family_check.py`, a NUMERIC-catalog gate distinct
+  in kind from `check_literature`'s WebSearch/keyword matcher — given `(system, family, jacobi,
+  period, mu)`, it normalizes to JPL's own vocabulary and queries `verify/jpl_periodic_orbits.query`
+  with the server-side `jacobimin/jacobimax/periodmin/periodmax` range filters (never fetches a
+  whole family), returning a `JplFamilyMatch` dataclass (`status`, `confidence`, `jacobi_diff`,
+  `period_diff`, `matched_jacobi/period/stability`, `jpl_mu` + `mu_reconciliation`, `citation`,
+  `notes`) — detail, not a bare boolean, mirroring `LiteratureCheckResult`'s `to_review_block()`
+  convention. **Confirmed live (2026-07-18, 6 total live requests — 1 param-error probe, 1
+  invalid-sys probe, 3 narrow-window family fetches, re-verifying the prior dispatch's finding):
+  JPL SSD indexes exactly 7 systems** (`sun-earth, earth-moon, sun-mars, jupiter-europa,
+  saturn-enceladus, saturn-titan, mars-phobos` — Sun-Jupiter is NOT one of them, per the `18aa6ca`
+  correction already committed ahead of this dispatch) **and 12 families** (`halo, vertical, axial,
+  lyapunov, longp, short, butterfly, dragonfly, resonant, dro, dpo, lpo`); systems/families outside
+  that set return an honest `status="not-covered"` with ZERO network calls, never a crash or a false
+  "no-match". **Caching**: `jpl_periodic_orbits.query()` gained an opt-in `cache_dir` (raw JSON
+  payload keyed by the full sorted param set, sha1-suffixed filename) — `cache_dir=None` (default)
+  preserves the exact historical always-live behaviour for every pre-existing call site
+  (`reachable_representatives.py`, `search_campaign_daemon.py`, `jpl_oracle_crosscheck.py`);
+  `jpl_family_check.check_jpl_family` defaults to a gitignored `out/jpl_periodic_orbits_cache/`
+  per this project's existing external-data-caching convention. **#641 reproduction**: fed all 5
+  real Sun-Jupiter clusters `#641` found (jacobi/period pairs `(3.0088,1.884)`, `(2.9896,3.594)`,
+  `(3.0372,2.069)`, `(3.0379,1.615)`, `(3.4548,8.876)`) through `check_jpl_family` — all 5 now
+  return `status="not-covered"`, `citation=""`, `matched_jacobi=None` — an HONEST rejection, unlike
+  the old path's spurious single shared "published" citation (Strange-Russell 2007 AAS 07-277) for
+  every physically distinct family; test `test_641_sun_jupiter_clusters_all_honestly_not_covered`.
+  **Real-match demonstration** (3 golden tests, sourced values copied verbatim from live JPL
+  responses captured 2026-07-18, fixtures in `tests/search/fixtures/`): (1) **Earth-Moon L1 halo,
+  N branch** — jacobi=3.00000362096528, period=1.8077229598885376 TU, stability=2.59397548287644
+  (`sys=earth-moon&family=halo&libr=1&branch=N&jacobimin=3.0&jacobimax=3.02`); (2)
+  **Saturn-Titan DRO** — jacobi=2.99991417019945, period=2.2365274428311821 TU,
+  stability=1.00000000079466 (`sys=saturn-titan&family=dro&jacobimin=2.9999&jacobimax=3.0006`);
+  (3) **Mars-Phobos DRO** — jacobi=2.99999004459787, period=4.7406333626886079 TU, stability=1.0
+  (`sys=mars-phobos&family=dro&jacobimin=2.99999&jacobimax=3.00001`) — all 3 return
+  `status="matched"`, `confidence≈1.0`, exact jacobi/period/stability recovery. Also demonstrated
+  the matcher picks the CLOSEST of multiple server-returned candidates, not just the first row.
+  Added a cross-reference in `literature_check.py`'s own module docstring pointing raw-periodic-
+  orbit callers at this sibling gate. **Tests**: +36 new (15 `tests/search/test_jpl_family_check.py`
+  golden/scope/error tests, +8 caching/filter/supported-systems tests in
+  `tests/verify/test_jpl_periodic_orbits.py`, on top of its pre-existing 5); `tests/search
+  tests/data` full ratchet green modulo the 2 PRE-EXISTING, already-documented-unrelated failures
+  (`test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, same ones `#641`'s own RESULT block
+  independently confirmed present on `main` before any of this task's changes). `ruff check`/
+  `ruff format --check`/`mypy src tests` all clean (0 errors). No `scripts/` files touched, so
+  `tests/scripts` was not re-run. No `data/catalogue.yaml` writeback (none warranted — pure
+  infrastructure, discovers nothing). Commit `2a0074e`.
 - **#648** (registered 2026-07-18, user-directed) — `#645` shortlist item 2: combine deflation
   (`deflated_newton.py`, `#524` — previously only ever aimed at basin-restricted shooting
   residuals) with the `#606` seedless spectral periodic-orbit corrector's Fourier-coefficient
