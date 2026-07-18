@@ -114,6 +114,15 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # catalogue-region discovery sweep. Visible, reviewed exemption per
         # this file's own docstring.
         "run_641_sun_jupiter_seed_census.py",
+        # #642: audits whether #641's degenerate-equilibrium contamination
+        # finding also affects #608's/#624's original lift measurements, by
+        # RE-FILTERING their already-persisted raw converged-state artifacts
+        # (data/found/608_generative_seed_poc/refine_results.jsonl,
+        # data/found/624_cross_mu_transfer_pilot/refine_results.jsonl) -- no
+        # corrector calls, no new search, no region_id/n_points sweep-region
+        # concept to preflight. Same category as #608/#614/#317/#624/#641
+        # above. Visible, reviewed exemption per this file's own docstring.
+        "run_642_equilibrium_contamination_audit.py",
     }
 )
 

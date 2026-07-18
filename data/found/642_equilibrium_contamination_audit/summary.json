@@ -1,0 +1,110 @@
+{
+  "task": "#642",
+  "results": [
+    {
+      "label": "608 Earth-Moon in-distribution",
+      "generated": {
+        "tag": "608_generated",
+        "mu": 0.01215058439469525,
+        "n": 100,
+        "n_converged": 55,
+        "n_sane_before": 49,
+        "n_sane_after": 22,
+        "n_equilibria_removed": 27,
+        "equilibrium_labels": {
+          "L5": 16,
+          "L4": 10,
+          "L2": 1
+        },
+        "rate_before": 0.49,
+        "rate_after": 0.22
+      },
+      "baseline": {
+        "tag": "608_baseline",
+        "mu": 0.01215058439469525,
+        "n": 100,
+        "n_converged": 51,
+        "n_sane_before": 4,
+        "n_sane_after": 0,
+        "n_equilibria_removed": 4,
+        "equilibrium_labels": {
+          "L3": 1,
+          "L4": 2,
+          "L5": 1
+        },
+        "rate_before": 0.04,
+        "rate_after": 0.0
+      },
+      "lift_before": 12.25,
+      "lift_after": null
+    },
+    {
+      "label": "624 mu=0.001 cross-mu",
+      "generated": {
+        "tag": "624_mu0.001_generated",
+        "mu": 0.001,
+        "n": 100,
+        "n_converged": 68,
+        "n_sane_before": 60,
+        "n_sane_after": 0,
+        "n_equilibria_removed": 60,
+        "equilibrium_labels": {
+          "L4": 42,
+          "L5": 18
+        },
+        "rate_before": 0.6,
+        "rate_after": 0.0
+      },
+      "baseline": {
+        "tag": "624_mu0.001_baseline",
+        "mu": 0.001,
+        "n": 100,
+        "n_converged": 55,
+        "n_sane_before": 2,
+        "n_sane_after": 0,
+        "n_equilibria_removed": 2,
+        "equilibrium_labels": {
+          "L5": 1,
+          "L4": 1
+        },
+        "rate_before": 0.02,
+        "rate_after": 0.0
+      },
+      "lift_before": 30.0,
+      "lift_after": null
+    },
+    {
+      "label": "624 Sun-Earth cross-mu",
+      "generated": {
+        "tag": "624_sun_earth_generated",
+        "mu": 3.0034805950690393e-06,
+        "n": 100,
+        "n_converged": 10,
+        "n_sane_before": 7,
+        "n_sane_after": 0,
+        "n_equilibria_removed": 7,
+        "equilibrium_labels": {
+          "L4": 7
+        },
+        "rate_before": 0.07,
+        "rate_after": 0.0
+      },
+      "baseline": {
+        "tag": "624_sun_earth_baseline",
+        "mu": 3.0034805950690393e-06,
+        "n": 100,
+        "n_converged": 45,
+        "n_sane_before": 2,
+        "n_sane_after": 1,
+        "n_equilibria_removed": 1,
+        "equilibrium_labels": {
+          "L5": 1
+        },
+        "rate_before": 0.02,
+        "rate_after": 0.01
+      },
+      "lift_before": 3.5000000000000004,
+      "lift_after": 0.0
+    }
+  ]
+}

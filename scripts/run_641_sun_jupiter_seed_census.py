@@ -63,6 +63,9 @@ from numpy.typing import NDArray
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from cyclerfinder.core.cr3bp import cr3bp_system
+from cyclerfinder.ml.orbit_generative import DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD
+from cyclerfinder.ml.orbit_generative import is_degenerate_equilibrium as is_degenerate_equilibrium
+from cyclerfinder.ml.orbit_generative import lagrange_point_label as lagrange_point_label
 from cyclerfinder.ml.seed_generation import (
     GeneratedSeed,
     SeedGenerationReport,
@@ -80,9 +83,16 @@ from cyclerfinder.search.literature_check import (
 # `tests/scripts/test_run_641_sun_jupiter_seed_census.py` constructs instances
 # of it directly to exercise the clustering logic without a real corrector
 # run -- same pattern `seed_generation.py` uses for its own `cr3bp` re-export
-# (see that module's comment). `__all__` makes this explicit for mypy's
-# strict-mode implicit-reexport check.
-__all__ = ["GeneratedSeed"]
+# (see that module's comment). `is_degenerate_equilibrium`/`lagrange_point_label`
+# are re-exported too (`# ... as ...` above, mypy's implicit-reexport idiom)
+# because that same test file calls them as `run.is_degenerate_equilibrium`/
+# `run.lagrange_point_label` -- `#642` factored their actual implementation
+# into `cyclerfinder.ml.orbit_generative` (a shared, importable location; see
+# that module for the real docstrings) after finding the SAME contamination
+# they were built to catch also affected `#608`'s/`#624`'s original
+# evaluations, not just this script's own Sun-Jupiter pilot. `__all__` makes
+# every re-export explicit for mypy's strict-mode implicit-reexport check.
+__all__ = ["GeneratedSeed", "is_degenerate_equilibrium", "lagrange_point_label"]
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _OUT_DIR = _REPO_ROOT / "data" / "found" / "641_sun_jupiter_seed_census"
@@ -91,13 +101,12 @@ PILOT_N = 100
 FULL_N = 1000
 SEED = 641
 
-# Observed in this task's own pilot run: genuine converged periodic orbits had
-# |v0| ~ 0.13 (nondimensional); trivial Lagrange-equilibrium "convergences"
-# had |v0| in the 1e-12 .. 1e-17 range (Newton-iteration numerical noise
-# around an exact zero). 1e-6 sits ~6 orders of magnitude below the smallest
-# genuine orbit seen and ~6 orders above the largest equilibrium noise floor
-# -- a wide, well-separated margin, not a knife-edge threshold.
-EQUILIBRIUM_VNORM_THRESHOLD = 1e-6
+# `#642` factored this threshold into `cyclerfinder.ml.orbit_generative`
+# (`DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD`) as the shared default; kept as a
+# local alias so this script's own references below need no further edits.
+# See that module's constant for the full "wide, well-separated margin"
+# justification (re-confirmed against `#608`'s/`#624`'s own saved raw states).
+EQUILIBRIUM_VNORM_THRESHOLD = DEFAULT_EQUILIBRIUM_VNORM_THRESHOLD
 
 # Clustering tolerances for "distinct family" grouping (task step 4: "Jacobi
 # constant + period + qualitative geometry"). Jacobi is rounded to 3 decimals
@@ -114,44 +123,6 @@ PERIOD_ROUND = 1
 # rather than "+"/"-", matching the deadband `heuristic_family_tag`
 # (`cyclerfinder.ml.orbit_generative`) uses for its own z0 tag.
 GEOMETRY_DEADBAND = 1e-3
-
-
-def is_degenerate_equilibrium(
-    state0: NDArray[np.float64] | list[float],
-    *,
-    vnorm_threshold: float = EQUILIBRIUM_VNORM_THRESHOLD,
-) -> bool:
-    """Is this converged ``state0`` a trivial Lagrange-point equilibrium rather
-    than a genuine periodic orbit?
-
-    A fixed point of the CR3BP rotating-frame equations (velocity identically
-    zero) trivially satisfies any periodicity residual for an arbitrary
-    period guess -- the corrector reports ``converged=True`` and the guess's
-    OWN period survives unchanged, because nothing ever moves. See this
-    module's docstring for how this was discovered (this task's own pilot
-    run, not a documented #608/#624/#628 caveat).
-    """
-    v = np.asarray(state0, dtype=np.float64)[3:6]
-    return bool(np.linalg.norm(v) < vnorm_threshold)
-
-
-def lagrange_point_label(state0: NDArray[np.float64] | list[float], mu: float) -> str:
-    """Best-effort classical label (L1-L5) for a degenerate-equilibrium seed.
-
-    Only meaningful when :func:`is_degenerate_equilibrium` is True for this
-    seed -- a genuine orbit passing near a Lagrange point in position is NOT
-    relabelled by this function (callers must gate on the equilibrium check
-    first). Primary sits at ``x = -mu``, secondary at ``x = 1 - mu``.
-    """
-    x0, y0 = float(state0[0]), float(state0[1])
-    if abs(y0) > GEOMETRY_DEADBAND:
-        return "L4" if y0 > 0 else "L5"
-    # Collinear ordering along the x-axis: L3 < primary(-mu) < L1 < secondary(1-mu) < L2.
-    if x0 > 1.0 - mu:
-        return "L2"
-    if x0 > -mu:
-        return "L1"
-    return "L3"
 
 
 def _geometry_tag(state0: NDArray[np.float64]) -> tuple[str, str]:

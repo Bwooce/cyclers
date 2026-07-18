@@ -13,6 +13,20 @@ tasks were evaluation-only: one-off ``scripts/run_608_*.py`` /
 model from scratch and print results, not something a real discovery task
 can ``import`` and call.
 
+**`#642` KNOWN-CONTAMINATED WARNING (read before trusting any number above)**:
+those 12.25x/30x/3.5x headline numbers were measured before
+``is_physically_sane`` rejected trivial Lagrange-point-equilibrium "orbits"
+(fixed points with zero velocity that trivially satisfy any periodicity
+residual). `#642` re-derived all three from #608's/#624's own saved raw
+converged states through the now-fixed filter and found SEVERE contamination
+-- not a minor correction. This module's ``is_physically_sane`` import (via
+``cyclerfinder.ml.orbit_generative``) now rejects equilibria by default, so
+:func:`generate_and_refine_seeds` is CORRECT going forward; the headline
+numbers ABOVE and in ``LIFT_ANCHORS``/:func:`expected_lift_for_mu` are the
+STALE pre-fix ones. See `#642`'s ``data/OUTSTANDING.md`` bullet and
+``data/found/642_equilibrium_contamination_audit/summary.json`` for the full
+corrected numbers.
+
 This module is the productionized version: a clean function
 (:func:`generate_and_refine_seeds`) that, given a target mu (directly, or via
 a named ``(primary, secondary)`` pair), returns N candidate
@@ -270,6 +284,27 @@ class LiftAnchor:
 # the real registered Sun-Earth mu evaluate as *marginally beyond* this very
 # anchor (a hair over its own delta_log10_mu due to the rounding gap),
 # spuriously flagging the validated point itself as extrapolated/unvalidated.
+#
+# **`#642` KNOWN-CONTAMINATED WARNING**: all three of these lift numbers were
+# measured BEFORE `is_physically_sane` rejected degenerate Lagrange-point
+# equilibria (fixed points that trivially satisfy any periodicity residual --
+# see that function's own `#642` docstring paragraph). `#642` re-derived all
+# three from #608's/#624's own saved raw converged states and found SEVERE
+# contamination, not a minor correction: the Earth-Moon in-distribution
+# baseline's "4% physically-sane" was 100% equilibria (real lift is
+# unmeasurable/undefined at this N, not 12.25x); the mu=0.001 GENERATED arm's
+# "60% physically-sane" was 100% equilibria (0 real orbits found, not 30x);
+# the Sun-Earth generated arm's "7%" was 100% equilibria while the baseline
+# retained 1 genuine orbit (a NEGATIVE corrected lift, not 3.5x). See `#642`'s
+# `data/OUTSTANDING.md` bullet and `data/found/642_equilibrium_contamination_
+# audit/summary.json` for the full numbers. These 3 anchors are LEFT
+# UNCHANGED here deliberately -- `#642` is scoped to detect and report this,
+# not to unilaterally pick new production recalibration constants from a
+# single N=100/60 audit (a proper fix needs a larger-N, equilibrium-filtered
+# re-pilot, flagged as follow-on work) -- but `expected_lift_for_mu`'s output
+# should NOT be trusted quantitatively until that re-pilot lands. Any caller
+# relying on a specific numeric lift estimate from this function should
+# treat it as pre-#642 and unverified.
 LIFT_ANCHORS: tuple[LiftAnchor, ...] = (
     LiftAnchor("earth_moon_in_distribution", TRAINING_MU, 12.25, "#608"),
     LiftAnchor("mu_0.001_cross_mu", 0.001, 30.0, "#624"),
@@ -677,6 +712,14 @@ def calibrate_cluster_weights_for_mu(
     refines with the same corrector, and Laplace-smooths the observed
     per-cluster sane-rate into a new set of mixture weights (a single
     unlucky small probe batch must not permanently zero out a cluster).
+
+    **`#642` note**: the pilot numbers below predate `is_physically_sane`'s
+    `#642` degenerate-equilibrium fix and were NOT re-derived by that audit
+    (out of its explicit #608/#624 scope) -- they plausibly carry the same
+    contamination pattern (`#642` found Sun-Earth generated-arm hits were
+    100% equilibria in the closely-related #624 evaluation). Treat this
+    result as unverified pending a fresh re-run under the fixed filter, not
+    as independently confirmed.
 
     **`#628`'s own exploratory pilot result (real Earth-Moon-trained model,
     real Sun-Earth target, n_probe_per_cluster=15, N=100 generate-then-refine
