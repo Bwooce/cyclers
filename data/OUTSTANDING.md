@@ -9142,18 +9142,23 @@ anywhere in the file and are genuinely still open.]**
   numbers. Follow this project's standard corpus-acquisition + OCR/digest + `CORPUS_INDEX.md`
   registration discipline once acquired (`[[feedback_corpus_document_policy]]`). Recommended model:
   Sonnet (mechanical acquisition + digest, no numerical-methods judgment).
-- **#638** (registered 2026-07-18, user-directed — **parking lot, not auto-fired, BLOCKED on `#633`'s
-  outcome**) — a multi-system extension of the real-planet-moon-μ Ross-Roberts-Tsoukkas (k1,k2)
-  search to Neptune-Triton (μ≈2.1e-4), Jupiter-Ganymede (μ≈7.8e-5), Jupiter-Europa (μ≈2.5e-5), and
-  Uranus-Titania (μ≈4e-5) — the natural follow-up to `#627`/`#629`/`#633`'s Saturn-Titan pilot, but
-  `#629`'s own design read explicitly listed this as "NOT recommended now... defer until the Titan
-  corridor answer exists." `#633` (the Titan corridor grid search) is the load-bearing prerequisite:
-  if it finds a genuine on-topology stable Titan member, this multi-system extension becomes a
-  real, well-motivated next step (reusing `#633`'s own grid machinery, just re-targeted per system);
-  if `#633` comes back clean (0/~16k), this task should most likely be closed as not-warranted
-  rather than dispatched, since the same structural obstruction (a 1D-continuation-path-independent
-  absence of on-topology stable members) would plausibly generalize. Do not dispatch until `#633`'s
-  result is in and a coordinating-session decision has been made on which way this cuts.
+- **#638 ✓ CLOSED, NOT WARRANTED (2026-07-18)** (registered 2026-07-18, user-directed — was
+  **parking lot, not auto-fired, BLOCKED on `#633`'s outcome**) — a multi-system extension of the
+  real-planet-moon-μ Ross-Roberts-Tsoukkas (k1,k2) search to Neptune-Triton (μ≈2.1e-4),
+  Jupiter-Ganymede (μ≈7.8e-5), Jupiter-Europa (μ≈2.5e-5), and Uranus-Titania (μ≈4e-5) — the natural
+  follow-up to `#627`/`#629`/`#633`'s Saturn-Titan pilot, but `#629`'s own design read explicitly
+  listed this as "NOT recommended now... defer until the Titan corridor answer exists." **`#633`'s
+  result is in: 0/16,375 on-topology-and-stable members at Saturn-Titan**, per this bullet's own
+  pre-registered contingency, closing as not-warranted rather than dispatching. `#633`'s own
+  investigation of the single closest near-miss (a cluster of 12 (3,3) hits at ν≈1.042, hc=9) found
+  it snaps to different topologies immediately under continuation in either direction — an isolated
+  corrector-basin artifact in a fragmented near-C_L1 bifurcation structure, not a hidden stable
+  window — reinforcing rather than undercutting the case that this obstruction is structural
+  (fragmented, fragile near-C_L1 bifurcation geometry at small μ) and would plausibly generalize to
+  the other comparably-small-μ systems this task would have targeted. Not a proof of non-existence
+  at those other systems (a genuinely different μ/geometry could behave differently), but the
+  expected-value case for dispatching this extension right now is weak — revisit only if new
+  evidence specifically suggests one of the other 4 systems differs structurally from Titan.
 - **#639** (registered 2026-07-18, user-directed — **parking lot, not auto-fired, no current forcing
   function**) — building dedicated analytic-seed machinery (a small-μ Hill-problem solver) to
   PREDICT, rather than numerically search for, whether a stable Titan/real-moon-μ-encountering
