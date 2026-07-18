@@ -545,7 +545,11 @@ Neimark-Sacker eigenvalue-sign ambiguity fixed at source in _seed_invariant_circ
 compute-budget timeouts surfaced+slow-marked over 3 cross-platform CI rounds, test_l2 magnitude
 divergence traced to a separate eigenvector-PHASE corrector-basin fragility flagged for follow-up);
 #633 for #629 Phase B, the fixed-Titan-mu 2D corridor grid search Phase A's own result recommended
-as warranted (dispatched 2026-07-18); #634 for the #628-flagged seed-generation integration-pattern
+as warranted (dispatched 2026-07-18; CLOSED 2026-07-18 clean negative: full 16,375-point census, 0
+on-topology-and-stable across both (1,1)/(3,3) targets, closest near-miss [nu=1.042] independently
+confirmed to be an isolated non-continuable branch-fragmentation artifact near C_L1(Titan), not a
+hidden stable window -- #638 multi-system extension recommended for closure as not-warranted);
+#634 for the #628-flagged seed-generation integration-pattern
 design read (dispatched 2026-07-18; DESIGN READ COMPLETE same day, Fable: standalone library
 callable [option b] WINS -- no --seed-source CLI convention; the run_*.py population is
 write-once-per-task with no shared arg parser [20/84 hand-rolled argparse, 0 shared helpers], the
@@ -8918,7 +8922,8 @@ anywhere in the file and are genuinely still open.]**
   numerical-methods judgment, exactly the class of work this project's model-tiering policy reserves
   for Opus, not Sonnet); Sonnet is fine for the mechanical `slow`-marker additions and final
   verification/push once the sign fix is in hand.
-- **#633** (dispatched 2026-07-18, user-directed) — `#629` Phase B: the fixed-Saturn-Titan-μ 2D
+- **#633 ✓ CLOSED 2026-07-18 — CLEAN NEGATIVE, DECISIVE: 0/16,375 on-topology-and-stable, full
+  census run.** (dispatched 2026-07-18, user-directed) — `#629` Phase B: the fixed-Saturn-Titan-μ 2D
   corridor grid search in `(x0, C)`, the plan `#629`'s own design read specced and Phase A's own
   result recommended as now WARRANTED (not optional) — see `#629`'s full bullet (search `**#629**`)
   for the complete background; read it in full before starting, especially the Phase A result
@@ -8969,6 +8974,63 @@ anywhere in the file and are genuinely still open.]**
   Recommended model: Sonnet (reuses existing, already-validated machinery — mechanical scoping and
   execution behind deterministic gates, not a new numerical method, per the design read's own
   classification).
+  **RESULT (Sonnet, 2026-07-18) — full 16,375-point grid run, CLEAN NEGATIVE.** Script:
+  `scripts/run_633_titan_corridor_grid.py`; raw per-point census committed at
+  `docs/notes/scratch/633_titan_corridor_grid.jsonl` (16,375 records). Grid built exactly per spec:
+  x0∈[-0.95,-0.30] Δ0.005 (131 pts) × ρ∈{18 coarse pts [0.6,0.95] + 7 fine pts [0.955,0.995]} (25
+  pts) × hc∈{1,3,5,7,9} (5) = 16,375 points, μ=2.36695e-4 confirmed via `cr3bp_system("Saturn",
+  "Titan").mu`, C_L1(Titan)=3.015770. **Timing pilot** (144 points spanning both corridor regions +
+  edge cases near x0=±0.95 and the L1 neck): mean ~0.4s/point, worst observed 4.4s — confirmed a
+  single grid-point correction is vastly cheaper than Phase A's per-continuation-STEP cost (0.4s vs
+  355-1994s), so a 20s SIGALRM timeout and 875-1200-point foreground chunks (checkpointing to JSONL
+  incrementally, per `[[feedback_incremental_progress_reports]]`) were used — no `#520`-style
+  silent/lost-output risk. **Full run**: ~3.06h actual compute across 15 sequential chunks (some
+  auto-backgrounded past a single tool call's timeout and rejoined via an active poll-until-done
+  watch, never left unmonitored). **Census**: 16,375/16,375 points evaluated (100%); 14,709
+  converged (89.8%); topology histogram dominated by (k,0) non-secondary-reaching branches
+  ((1,0):8786, (3,0):2677, (5,0):1328, ...); 331 converged points reach the secondary at all (any
+  topology); of those, 171 match one of the two TARGET topologies with `reaches_secondary=True`
+  (159×(1,1), 12×(3,3)) — independently re-verified by direct JSONL aggregation, not just the
+  script's own summary. **Stability gate: 0/171 pass** (`gate_stability_pass` true for ZERO
+  records) — every (1,1) candidate's direct Barden `|ν|` is wildly unstable (up to 5.66×10⁶), and
+  the `c_sweep_find_nu_zero` escalation (corridor-scaled ±0.5(C_L1-3) band) found no nearby stable
+  window for any of the 171 either. **Closest near-miss investigated in depth** (not just noted):
+  a cluster of 12 (3,3)-topology hits at hc=9, ρ∈[0.62,0.99], all landing on nearly the SAME orbit
+  (period≈25.13 TU) with `ν≈1.042` — tantalizingly close to the `|ν|<1` boundary. A dedicated
+  warm-started continuation in ρ from this exact point (both directions, fine step, same fixed
+  hc=9) found the branch is NOT part of a continuous (3,3) family approaching stability: one step
+  either direction snaps discontinuously to a DIFFERENT topology ((5,5) then (8,8) going up; (8,8)
+  going down), each essentially flat and non-crossing (ν≈1.15-(-0.97) plateaus) across the entire
+  remaining ρ range down to 0.6. This is an isolated corrector-basin artifact in a densely
+  fragmented near-C_L1 bifurcation structure, NOT a hidden stable window just outside grid
+  resolution — independently confirming (not merely failing to contradict) Phase A's own finding
+  that this exact region is genuinely fragile/fragmented for this genome, at this μ. No candidate
+  ever reached the `perimoon_passage.py` encounter-relevance gate or `literature_check.py` (both
+  correctly never triggered — script logic requires the stability gate first, matching #627/#629's
+  own chaining). `data/catalogue.yaml` untouched, confirmed via `git status` before every commit.
+  **Verdict**: this settles, at this grid resolution, that NEITHER the (1,1) nor (3,3)
+  Ross-Roberts-Tsoukkas family has an on-topology, stable, Titan-encountering member — independent
+  of any continuation-path artifact, closing the question Phase A's result could not (path-fragility
+  vs. genuine absence). Combined with the near-miss branch-fragmentation finding, the honest read is
+  that the near-C_L1(Titan) region is structurally hostile to this genome at small μ, not merely
+  hard to reach via a 1D walk. Tests: `tests/scripts/test_633_titan_corridor_grid.py` (7 new tests:
+  grid-spec match, deterministic/resumable flattening, a self-consistency regression reproducing an
+  actual pilot point, `_direct_gate` grounded against the catalogue-admitted V2 Pluto-Charon (3,2)
+  cycler, JSONL checkpoint round-trip). `ruff check`/`ruff format --check`/`mypy src tests` all
+  clean (0 errors); `pytest tests/data tests/search tests/scripts -q` green except 2 pre-existing
+  Mac-only failures (`test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), confirmed identical to the ones #631/#632
+  already characterized as unrelated cross-platform BLAS sensitivity, not caused by this task's
+  diff (touches only new files). Commits: `1905805` (infrastructure + tests), plus the raw JSONL
+  census and this bullet's own update. **Recommendation for `#638`** (the multi-system extension to
+  Neptune-Triton/Jupiter-Ganymede/Jupiter-Europa/Uranus-Titania, registered explicitly conditional
+  on this result): per `#638`'s own pre-registered logic, this clean 0/16,375 result — reinforced,
+  not just permitted, by the near-miss branch-fragmentation finding above — supports CLOSING `#638`
+  as not-warranted rather than dispatching it; the same structural obstruction (a near-C_L1
+  fragmented/fragile bifurcation structure at small μ, now shown to persist even when a
+  continuation-path artifact is fully excluded) would plausibly generalize to the other real
+  moon-μ systems, all of comparably small μ. Final call left to the coordinating session per
+  `#638`'s own text, but this task's own evidence points the same way `#638` already anticipated.
 - **#634 ✓ DESIGN READ COMPLETE (Fable, 2026-07-18) — RECOMMENDATION: option (b), standalone
   library callable (the status quo of `#628`'s build), plus two cheap doc-wiring guard rails; NO
   `--seed-source=generative` CLI convention. See the RESULT block at the end of this bullet.**
