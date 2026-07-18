@@ -106,6 +106,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # discovery sweep. Visible, reviewed exemption per this file's own
         # docstring.
         "run_624_cross_mu_transfer_pilot.py",
+        # #641: a fixed-N generative-seed CENSUS at Sun-Jupiter mu using #628's
+        # already-productionized generate_and_refine_seeds API (no retraining,
+        # no new model) -- same category as #608/#614/#317/#624 above: a
+        # fixed-N capability run (generate, refine, cluster, literature-check)
+        # with no region_id/n_points sweep-region concept to preflight, not a
+        # catalogue-region discovery sweep. Visible, reviewed exemption per
+        # this file's own docstring.
+        "run_641_sun_jupiter_seed_census.py",
     }
 )
 

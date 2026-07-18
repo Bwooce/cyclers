@@ -1,0 +1,240 @@
+{
+  "task": "#641",
+  "system": {
+    "primary": "Sun",
+    "secondary": "Jupiter",
+    "mu": 0.0009538811521016751
+  },
+  "lift_estimate": {
+    "estimated_lift": 29.480576212022715,
+    "delta_log10_mu": 1.1050820103599572,
+    "beyond_validated_range": false,
+    "method": "interpolated (log-lift-linear) between #608/#624 empirical anchors bracketing delta_log10_mu=1.105 (mu_0.001_cross_mu@1.085 .. sun_earth_cross_mu@3.607)",
+    "caveat": "Lift appears to hold or even improve moderately close to the training mu (12.25x in-distribution -> 30x at |delta log10 mu|~1.08 [#624 mu=0.001]), then degrades -- while remaining positive -- further out (3.5x at |delta log10 mu|~3.6 [#624 Sun-Earth]). This estimate interpolates between exactly 3 measured points; it has NOT been independently measured at this exact target mu."
+  },
+  "pilot": {
+    "label": "pilot",
+    "n_requested": 100,
+    "n_attempted": 100,
+    "n_converged": 67,
+    "n_physically_sane": 57,
+    "converged_and_physically_sane_rate": 0.57,
+    "n_degenerate_equilibrium": 56,
+    "n_genuine_orbit": 1,
+    "elapsed_s": 15.049797058105469
+  },
+  "full": {
+    "label": "full",
+    "n_requested": 1000,
+    "n_attempted": 1000,
+    "n_converged": 708,
+    "n_physically_sane": 614,
+    "converged_and_physically_sane_rate": 0.614,
+    "n_degenerate_equilibrium": 609,
+    "n_genuine_orbit": 5,
+    "elapsed_s": 121.35415887832642
+  },
+  "n_clusters": 5,
+  "clusters": [
+    {
+      "key": [
+        3.009,
+        1.9,
+        "y0",
+        "z+"
+      ],
+      "n_members": 1,
+      "representative": {
+        "converged": true,
+        "physically_sane": true,
+        "state0": [
+          1.0281590397239428,
+          0.0009685475124081721,
+          0.08378330346842393,
+          0.0011901641999835949,
+          -0.07048983022765261,
+          0.0026174536481010447
+        ],
+        "period": 1.8840445773076928,
+        "jacobi": 3.008806322878475,
+        "residual": 1.4971121974101983e-13,
+        "stability_index": 3.2707419947478766,
+        "is_equilibrium": false
+      }
+    },
+    {
+      "key": [
+        2.99,
+        3.6,
+        "y-",
+        "z0"
+      ],
+      "n_members": 1,
+      "representative": {
+        "converged": true,
+        "physically_sane": true,
+        "state0": [
+          0.9455744782287843,
+          -0.10048167609933394,
+          4.832635481454472e-23,
+          -0.1186207090609029,
+          0.12846854697533724,
+          7.022388711366748e-22
+        ],
+        "period": 3.5944705583737355,
+        "jacobi": 2.9895673248168113,
+        "residual": 1.8494931192147697e-12,
+        "stability_index": 1.0000000000001705,
+        "is_equilibrium": false
+      }
+    },
+    {
+      "key": [
+        3.037,
+        2.1,
+        "y+",
+        "z0"
+      ],
+      "n_members": 1,
+      "representative": {
+        "converged": true,
+        "physically_sane": true,
+        "state0": [
+          1.0456124636667887,
+          0.021227566935197076,
+          -3.014137928000101e-19,
+          -0.041537389414603075,
+          0.029328262790555507,
+          -3.4927370679608835e-19
+        ],
+        "period": 2.0688967011662323,
+        "jacobi": 3.0372443401872298,
+        "residual": 1.0512738616926534e-11,
+        "stability_index": 1.0000141186543468,
+        "is_equilibrium": false
+      }
+    },
+    {
+      "key": [
+        3.455,
+        8.9,
+        "y-",
+        "z0"
+      ],
+      "n_members": 1,
+      "representative": {
+        "converged": true,
+        "physically_sane": true,
+        "state0": [
+          -1.9249800644641912,
+          -1.2058914968356775,
+          1.5620402602344656e-16,
+          -0.8536465547499295,
+          1.362635792357288,
+          4.843362071931337e-17
+        ],
+        "period": 8.87600354967723,
+        "jacobi": 3.4547848082754395,
+        "residual": 5.404382018931882e-13,
+        "stability_index": 1.0000014722775208,
+        "is_equilibrium": false
+      }
+    },
+    {
+      "key": [
+        3.038,
+        1.6,
+        "y-",
+        "z0"
+      ],
+      "n_members": 1,
+      "representative": {
+        "converged": true,
+        "physically_sane": true,
+        "state0": [
+          1.0283719194524024,
+          -0.027087075762364417,
+          4.172611223738822e-25,
+          0.08840175882274057,
+          0.028604531200164818,
+          3.888397544371562e-25
+        ],
+        "period": 1.6154481798169062,
+        "jacobi": 3.0379316869812176,
+        "residual": 6.047062201544477e-14,
+        "stability_index": 1.0000222474661777,
+        "is_equilibrium": false
+      }
+    }
+  ],
+  "equilibrium_breakdown": {
+    "L5": 222,
+    "L4": 376,
+    "L2": 7,
+    "L1": 4
+  },
+  "literature_check": [
+    {
+      "cluster_key": [
+        3.009,
+        1.9,
+        "y0",
+        "z+"
+      ],
+      "status": "published",
+      "citation": "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) (cycler trajectory)",
+      "confidence": 0.75,
+      "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+    },
+    {
+      "cluster_key": [
+        2.99,
+        3.6,
+        "y-",
+        "z0"
+      ],
+      "status": "published",
+      "citation": "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) (cycler trajectory)",
+      "confidence": 0.75,
+      "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+    },
+    {
+      "cluster_key": [
+        3.037,
+        2.1,
+        "y+",
+        "z0"
+      ],
+      "status": "published",
+      "citation": "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) (cycler trajectory)",
+      "confidence": 0.75,
+      "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+    },
+    {
+      "cluster_key": [
+        3.455,
+        8.9,
+        "y-",
+        "z0"
+      ],
+      "status": "published",
+      "citation": "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) (cycler trajectory)",
+      "confidence": 0.75,
+      "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+    },
+    {
+      "cluster_key": [
+        3.038,
+        1.6,
+        "y-",
+        "z0"
+      ],
+      "status": "published",
+      "citation": "Strange-Russell Tisserand pump-tour graph (2007 AAS 07-277) (cycler trajectory)",
+      "confidence": 0.75,
+      "notes": "Structural fingerprint matched a published cycler -- treat as a rediscovery; NOT novelty-claimable."
+    }
+  ],
+  "seed": 641,
+  "elapsed_s": 136.41870594024658
+}
