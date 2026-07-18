@@ -598,7 +598,14 @@ estimated_lift=None+beyond_validated_range=True off-distribution instead of a fa
 number, tests/docstrings updated, commit `bee830a`); #644 for an in-distribution Earth-Moon
 unswept-region census using #628's fixed generative model, investigation-first (dispatched
 2026-07-18); #645 for a fresh Fable creative-strategy pass, the #605 sequel now that the entire
-#606-#644 arc has landed (dispatched 2026-07-18); #646 next-unused):**
+#606-#644 arc has landed (dispatched 2026-07-18); #646 for #645 shortlist item 1, segment-anchored
+CLV manifold-direction recovery for a real #619 retry with correct directions (registered
+2026-07-18); #647 for #645 shortlist item 3, ingesting the JPL SSD periodic-orbits catalog as a
+proper literature_check.py gate (registered 2026-07-18); #648 for #645 shortlist item 2, deflation
+x seedless-corrector distinct-family enumeration (registered 2026-07-18); #649 for #645 shortlist
+item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18);
+#650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
+(registered 2026-07-18); #651 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9759,6 +9766,105 @@ anywhere in the file and are genuinely still open.]**
   objects), p:q E-M resonant-cycler census (known-class mission-design territory), QBCP refits/
   denser grids (`#623`'s rejections stand). Recommended dispatch order: 1, 3, 2, 4, 5. No task
   numbers allocated (next-unused stays `#646`).
+- **#646** (registered 2026-07-18, user-directed) — `#645` shortlist item 1: segment-anchored
+  discrete-QR / covariant-Lyapunov-vector (CLV) extraction of the EM-L2 UNSTABLE manifold
+  direction (Benettin/Ginelli/Dieci-Van Vleck method — split the period into 10-20 segments,
+  RE-PROJECT the base trajectory onto `#618`'s explicit torus representation at each segment
+  boundary so the linearization never rides the ~2e4× one-period divergence that doomed `#619`'s
+  one-shot STM eigendecomposition, compose segment STMs via QR), then re-run `#619`'s existing
+  12-unknown/18-residual connection corrector with the corrected direction. `#619`'s own
+  impossibility argument covers ONLY the one-shot extraction it actually tried — this is a
+  genuinely different, untried technique, not a retry. Validate first: reproduce the CLV direction
+  against trusted GMOS manifold data at SE-L2 (where the manifold is well-behaved), repeat `#619`'s
+  own perturbation-robustness test (a small perturbation should no longer swing the extracted
+  direction by up to 90°), THEN attempt the actual EM-L2 connection. **If a genuine closure
+  results**: do NOT touch `data/catalogue.yaml` — this would be the first real SE↔EM cislunar
+  cycler in this project's history and needs a mandatory Fable/Opus adjudication pass + independent
+  Radau re-verification before any writeback, per `[[feedback_orbit_closure_discipline]]`. **If
+  closure still fails with a verified-correct direction**: this upgrades the `#538`-`#626` negative
+  from "direction extraction failed" to "fails even with the correct direction" — a stronger,
+  more citable negative, and per `#645`'s own report, the natural trigger for reconsidering `#636`
+  (parked W-Z computer-assisted-proof machinery). Recommended model: Opus (genuine numerical-
+  methods judgment on manifold extraction — the exact class of trust-bearing work this project's
+  model-tiering policy reserves for Opus).
+- **#647** (registered 2026-07-18, user-directed) — `#645` shortlist item 3: ingest JPL SSD's
+  Three-Body Periodic Orbits catalog (`ssd-api.jpl.nasa.gov`) as a proper known-family GATE +
+  multi-μ sourced goldens for `search/literature_check.py`. Fixes the documented gap `#641` found
+  by hand: `literature_check.py`'s `KNOWN_CORPUS` is scoped entirely to cycler-trajectory
+  vocabulary, so it returned a spurious "published" match citing the SAME single anchor for 5
+  physically distinct Sun-Jupiter periodic-orbit families — unfit for adjudicating raw CR3BP
+  periodic-orbit candidates, a gap `#644` and every future census-style task will re-hit. Scope:
+  build a proper query/match path against the JPL SSD API (or a cached local mirror — check API
+  rate limits and this project's existing kernel/data-caching conventions, e.g.
+  `.github/workflows/kernel-freshness.yml`'s pattern, before hammering a live API repeatedly) keyed
+  on family type + Jacobi constant + period, not the cycler-specific vocabulary the existing
+  `KNOWN_CORPUS` uses. Add sourced golden tests reproducing a few JPL-catalogued family members at
+   2-3 different μ (not just Earth-Moon) to `tests/search/` or wherever this project's golden tests
+  live, per `[[feedback_golden_tests_sourced_only]]`. This task discovers nothing itself — it is
+  infrastructure that makes every future raw-periodic-orbit novelty check trustworthy. Recommended
+  model: Sonnet (mechanical API integration + sourced golden tests, HIGH confidence per `#645`'s
+  own assessment).
+- **#648** (registered 2026-07-18, user-directed) — `#645` shortlist item 2: combine deflation
+  (`deflated_newton.py`, `#524` — previously only ever aimed at basin-restricted shooting
+  residuals) with the `#606` seedless spectral periodic-orbit corrector's Fourier-coefficient
+  residual, using a gauge-invariant (phase-minimized via FFT cross-correlation) distance metric
+  between found solutions plus a mandatory Radau cross-check on every deflated find. This turns
+  the seedless corrector — which `#645`'s report notes has its own documented selection bias
+  (tends to slide onto the vertical-Lyapunov family instead of halo) — into a systematic DISTINCT-
+  FAMILY ENUMERATOR at a fixed Jacobi constant, a genuinely new capability with no prior
+  astrodynamics-literature precedent found by `#645`'s own web check. **Positive control
+  (mandatory before any novel application)**: re-enumerate the already-known Earth-Moon periodic-
+  orbit families at a fixed C and confirm the deflated search actually recovers the documented
+  set, not a subset or spurious duplicates. **First real target**: `#633`'s ν≈1.042 (3,3) Titan
+  near-miss cluster (the one that snapped to different topologies under 1D continuation) — a
+  path-FREE, method-independent re-check of that specific fresh headline negative. `#645`'s own
+  assessment: LOW odds this flips `#633`'s result, but the durable value is the reusable
+  enumeration capability regardless of that specific outcome. Do NOT touch `data/catalogue.yaml`
+  — if the positive control passes and a genuinely novel family is enumerated anywhere, stop and
+  report for adjudication rather than writing back. Recommended model: Sonnet for the mechanical
+  deflation-plus-corrector integration and positive control; escalate to Opus only if a specific
+  enumerated family looks like a genuine, literature-clear novel find.
+- **#649** (registered 2026-07-18, user-directed) — `#645` shortlist item 4: a cheap, decisive
+  test of whether a COORDINATE fix (not a machine-learning fix) can rescue `#628`'s generative
+  seed model's cross-μ value, closing out the μ-conditioning question `#642`/`#643` left open.
+  `#645`'s own analysis: architectural μ-conditioning is DATA-gated (the `#210` training corpus
+  has exactly one μ, Earth-Moon — there is nothing to condition a model on) and is probably
+  permanently moot once `#647` exists (a catalog nearest-neighbor lookup beats a generative
+  cross-μ seeder in its own niche anyway) — so do NOT attempt to rebuild the model itself. Instead,
+  test a Hill-radius/scaled-energy-normalized genome: decode the model's Earth-Moon-trained output
+  in ρ=(C−3)/(C_L1(μ)−3) coordinates (grounded in `#629`'s own ρ-invariance finding, already
+  proven useful for the RRT continuation work) rather than raw (state0, period), then invert the
+  scaling to the target μ before refinement — directly targeting `#642`'s verified mechanism for
+  why the raw-coordinate approach collapses onto L4/L5 (the model has no way to know its
+  Earth-Moon-shaped output needs rescaling for a different μ's own L4/L5 basin size/location).
+  Reuse `#624`'s exact evaluation protocol (μ=0.001 and Sun-Earth μ, same N, same
+  `is_physically_sane` with `#642`'s equilibrium filter already applied) so the corrected-vs-
+  original comparison is apples-to-apples. `#645`'s own estimate: hours of work, ~25-40% odds of a
+  real rescue — but decisive either way, closing this question for good rather than leaving it as
+  a permanently open asterisk on `#542`. If it works, this becomes a genuine follow-up to `#643`'s
+  narrowed framing; if it doesn't, `#542`'s in-distribution-only scope is further confirmed as
+  final. Recommended model: Sonnet (mechanical coordinate-transform test behind `#624`'s own
+  already-validated evaluation protocol).
+- **#650** (registered 2026-07-18, user-directed) — `#645` shortlist item 5: an inter-cycler
+  transfer-compatibility network over this project's own 361-row `data/catalogue.yaml` — the
+  M5/M6-tier cycler-network idea `#570`'s own scoping explicitly deferred, and a genuinely NEW
+  object class built entirely from this project's own unique asset (its catalogue) rather than a
+  new search target. Scope: for every pair of catalogue rows that share a common encounter body
+  (e.g. both cyclers pass through Earth, or both through the same moon), compute a V∞/Tisserand
+  compatibility check (reuse `#604`'s own V∞/Tisserand gate-check machinery and precedent) plus a
+  phase-window check (do the two cyclers' own periodic schedules ever actually align at the shared
+  body, not just share it in the abstract), and assemble the surviving compatible pairs into a
+  derived graph structure (reuse/extend `#570`'s own cycler-network schema infrastructure if it's
+  already built for this). **Get a Fable design read on the exact between-cycler transfer-cost
+  definition FIRST** (per `#645`'s own recommendation) before building the full pairwise sweep —
+  this is a genuine design question (what counts as "compatible," what cost metric orders the
+  edges), not a mechanical one. `#645`'s own honest risk assessment: independent-cycler phasing is
+  likely measure-zero for an unpowered/ballistic connection, so "no cheap edges exist anywhere in
+  the catalogue" is the probable outcome — this would itself be a legitimate, citable, registry-
+  worthy negative (per `[[project_negative_results_registry]]`), not a failure of the task. Do NOT
+  touch `data/catalogue.yaml` itself (this task reads it and builds a DERIVED graph structure
+  elsewhere, it does not modify catalogue rows). Recommended model: Fable for the design read on
+  cost-definition; Sonnet for the mechanical pairwise sweep once that's settled.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
