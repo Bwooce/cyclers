@@ -576,7 +576,10 @@ dispatched 2026-07-18; CLOSED 2026-07-18: clean census, N=1000 seeds -> 614 phys
 genuine distinct orbit clusters, all known-classical Sun-Jupiter CR3BP territory per JPL SSD's
 public Three-Body Periodic Orbits catalog, nothing novel, no catalogue writeback; also found
 search/literature_check.py's KNOWN_CORPUS is cycler-scoped and unusable for raw periodic-orbit
-candidates); #642 next-unused):**
+candidates); #642 for auditing whether the L4/L5-equilibrium contamination #641 found also
+affects #608's/#624's original lift numbers that #542's "validated discovery lever" upgrade was
+based on, per the bugfix-invalidates-past-searches discipline (dispatched 2026-07-18); #643
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9329,6 +9332,53 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, independently confirmed present on `main`
   via `git stash` before this task's changes were applied). `ruff check`/`ruff format --check`/
   `mypy src tests` all clean (0 errors).
+- **#642** (dispatched 2026-07-18, coordinating-session-directed) — audit whether the SAME
+  degenerate-equilibrium contamination `#641` found at Sun-Jupiter μ (609/614 = 99% of
+  "physically-sane converged" results were actually trivial L4/L5/L1/L2 fixed points, not genuine
+  periodic orbits — `is_physically_sane` has no velocity-norm check) also affects the ORIGINAL
+  `#608`/`#624` lift measurements this project has already acted on. This matters: `#624`'s
+  cross-μ transfer result (30x lift at μ=0.001, 3.5x at Sun-Earth μ) is the specific evidence
+  `#542` was upgraded from "answered" to "validated discovery lever" on — if those headline
+  numbers are inflated by silently counting fixed-point seeds as converged real orbits, the
+  ACTUAL lift (and possibly the "the lift genuinely transfers" conclusion itself) could be
+  weaker than currently believed. This follows this project's own
+  `[[feedback_bugfix_invalidates_past_searches]]` discipline: a genuine measurement-integrity gap
+  found in reused, decision-informing code demands checking whether it changed a past
+  conclusion, not just fixing it going forward. **Scope**:
+  1. Read `#641`'s own `is_degenerate_equilibrium` implementation (`scripts/
+     run_641_sun_jupiter_seed_census.py`) — a velocity-norm threshold check on the converged
+     `state0`. Confirm this is the right general test (not Sun-Jupiter-specific) and factor it
+     into a shared, importable location (`src/cyclerfinder/ml/` or `src/cyclerfinder/search/`,
+     wherever `is_physically_sane` itself lives) rather than leaving it duplicated in a one-off
+     census script.
+  2. Re-derive `#608`'s original Earth-Moon in-distribution lift number (49% vs 4%, 12.25x) and
+     `#624`'s two cross-μ numbers (μ=0.001: 60% vs 2%; Sun-Earth μ: 7% vs 2%) applying the SAME
+     equilibrium filter to both the generated-seed results AND the uniform-baseline results —
+     reuse `#608`'s/`#624`'s own saved evaluation artifacts/scripts if the raw converged states
+     were persisted (check `data/found/608_generative_seed_poc/` and `data/found/
+     624_cross_mu_transfer_pilot/` before re-running anything from scratch), otherwise re-run
+     using the exact original protocol plus the new filter.
+  3. Report the corrected numbers plainly, whichever way they move. Three possible outcomes, all
+     legitimate: (a) contamination was negligible at Earth-Moon/μ=0.001/Sun-Earth μ (the
+     phenomenon may be μ-regime-specific — Sun-Jupiter's Trojan-adjacent L4/L5 points are famously
+     large, stable attractors that could be disproportionately easy for a corrector to fall into
+     compared to Earth-Moon's own L4/L5, which are also stable but in a very different dynamical
+     neighborhood) — original conclusions stand, `#642` becomes a clean confirmatory audit; (b)
+     contamination measurably weakens the lift numbers but the core conclusion (generative seeding
+     beats blind seeding, lift transfers cross-μ) still holds at a lower magnitude — update `#624`'s
+     and `#542`'s bullets with corrected numbers; (c) contamination is severe enough to
+     materially undermine the "lift transfers" conclusion — this would need immediate escalation
+     and a correction to `#542`'s "validated discovery lever" framing.
+  4. Update `src/cyclerfinder/ml/seed_generation.py`'s `generate_and_refine_seeds` (or wherever
+     the right integration point is) to apply this filter going forward for ALL future callers,
+     not just `#641`'s own script — this is the actual production fix, `#641`'s script-local
+     version was necessarily scoped to get that one task done.
+  5. Do NOT touch `data/catalogue.yaml`. Update `#608`'s, `#624`'s, and `#542`'s own OUTSTANDING.md
+     bullets with the corrected numbers/framing if they change materially — do not silently leave
+     a now-known-incomplete number standing without a cross-reference to this audit.
+  Recommended model: Sonnet for the mechanical re-derivation and shared-filter refactor; if the
+  corrected numbers move enough to threaten `#542`'s "validated discovery lever" framing (outcome
+  (c) above), escalate that specific verdict to Opus rather than have Sonnet make the final call.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
