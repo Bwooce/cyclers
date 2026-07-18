@@ -620,7 +620,10 @@ proper literature_check.py gate (DONE 2026-07-18: new `search/jpl_family_check.p
 gate, keyed on JPL's own family vocabulary + server-side jacobi/period filters, honest
 "not-covered" for the #641 Sun-Jupiter clusters + 3 real sourced golden matches at Earth-Moon/
 Saturn-Titan/Mars-Phobos, opt-in disk cache, commit `2a0074e`); #648 for #645 shortlist item 2, deflation
-x seedless-corrector distinct-family enumeration (registered 2026-07-18); #649 for #645 shortlist
+x seedless-corrector distinct-family enumeration (registered 2026-07-18; BUILT + POSITIVE CONTROL
+FAILED clean 2026-07-19: 0/132 restarts recover a genuine Radau-passing family at Earth-Moon
+C=3.0 despite one confirmed reproducible hit proving the pipeline itself is correct -- Titan
+re-check not attempted per the task's own gate, see #648's own bullet); #649 for #645 shortlist
 item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18);
 #650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
 (registered 2026-07-18); #651 next-unused):**
@@ -10010,7 +10013,8 @@ anywhere in the file and are genuinely still open.]**
   `ruff format --check`/`mypy src tests` all clean (0 errors). No `scripts/` files touched, so
   `tests/scripts` was not re-run. No `data/catalogue.yaml` writeback (none warranted — pure
   infrastructure, discovers nothing). Commit `2a0074e`.
-- **#648** (registered 2026-07-18, user-directed) — `#645` shortlist item 2: combine deflation
+- **#648 ✓ BUILT + POSITIVE CONTROL FAILED, CLEAN — Titan re-check NOT ATTEMPTED per the task's
+  own gate (2026-07-19).** (registered 2026-07-18, user-directed) — `#645` shortlist item 2: combine deflation
   (`deflated_newton.py`, `#524` — previously only ever aimed at basin-restricted shooting
   residuals) with the `#606` seedless spectral periodic-orbit corrector's Fourier-coefficient
   residual, using a gauge-invariant (phase-minimized via FFT cross-correlation) distance metric
@@ -10030,6 +10034,44 @@ anywhere in the file and are genuinely still open.]**
   report for adjudication rather than writing back. Recommended model: Sonnet for the mechanical
   deflation-plus-corrector integration and positive control; escalate to Opus only if a specific
   enumerated family looks like a genuine, literature-clear novel find.
+  **RESULT (Sonnet, 2026-07-19) — capability BUILT and unit-tested correctly; positive control
+  FAILS, honest and decisive.** Built `discover_periodic_orbit_fixed_jacobi`
+  (`variational_periodic_orbit.py` — all 3 amplitude anchors free, one extra Jacobi-fixing
+  residual row, reached via natural-parameter continuation in the target C itself, since a
+  single cold-start jump to the target stalls at a compromise point) + new module
+  `deflated_variational_periodic_orbit.py`: a cheap EXACT phase-shift-invariant magnitude
+  fingerprint (per-harmonic complex magnitude, provably invariant under any time-origin shift)
+  feeds `deflated_newton.deflation_factor` (reused verbatim, not reimplemented) for smooth in-loop
+  repulsion, while `gauge_distance`/`same_family` (FFT cross-correlation coarse alignment + an
+  exact analytic sub-grid refinement via `phase_shift_coeffs`) do the final gauge-invariant
+  dedup/classification decision — both independently unit-tested, including a direct self-
+  consistency check (phase-shift a converged orbit's own coefficients by an arbitrary delta,
+  confirm near-zero distance to ~1e-8-1e-13, not just at one lucky value) and a discriminating-
+  power check against genuinely different shapes/periods. Every candidate is mandatorily
+  Radau-cross-checked (`topology_audit.check_periodic_orbit_closure`) before being counted — the
+  `#620` ghost-minima discipline. **Positive control (Earth-Moon, C=3.000, documented ground truth
+  from `#647`'s JPL SSD query: ≥5 distinct L1-vicinity families/branches within 0.01 of C=3.0 —
+  halo N/S, planar Lyapunov, vertical, axial): FAILED, 0 genuine families recovered across 132
+  total restart attempts in 4 independently-tuned batches** (35/25/12/60 restarts; wall times
+  84s-836s; full numbers in `docs/notes/2026-07-19-648-positive-control.md`). 13/132 candidates
+  cleared the internal harmonic-balance-residual+Jacobi gate but ALL 13 failed the mandatory Radau
+  check — the exact `#620` ghost-minima pattern, not a bug (confirmed: a single TARGETED
+  `n_restarts=1` call reproducing an earlier lucky seed DOES converge to a genuine, machine-
+  precision, Radau-confirmed orbit — `residual_rms=1.95e-16`, Radau closure `3.24e-14` — proving
+  the pipeline is mechanically correct end-to-end; the failure is a convergence-RELIABILITY
+  problem at roughly a 1-in-130-150 empirical hit rate, not a logic error). Per this task's own
+  explicit instruction ("if the positive control doesn't clearly pass, stop and report honestly
+  rather than proceeding — do not force a positive result"), **the `#633` Titan `ν≈1.042` (3,3)
+  re-check (Part 3, gated on the positive control passing) was NOT attempted.** Root-cause
+  hypothesis for a future follow-up (not built here): releasing ALL THREE amplitude anchors and
+  pinning energy via a soft penalty row removes the strong "this really is an orbit" prior the
+  ORIGINAL `#606` corrector's fixed nonzero anchor VALUE provides, making the optimization
+  landscape far more ghost-minima-prone; anchoring ONE coefficient to a cheaply-estimated nonzero
+  value and deflating only the remaining free coefficients would likely fix this while preserving
+  genuine shape diversity. 13 new tests (`tests/search/test_deflated_variational_periodic_orbit.py`
+  — 11 fast/always-on, 2 marked `slow` per this project's convention), `ruff`/`mypy` clean.
+  `data/catalogue.yaml` untouched (nothing novel found — the opposite outcome, a capability-
+  reliability gap). Commits: `a517173` (build + tests).
 - **#649** (registered 2026-07-18, user-directed) — `#645` shortlist item 4: a cheap, decisive
   test of whether a COORDINATE fix (not a machine-learning fix) can rescue `#628`'s generative
   seed model's cross-μ value, closing out the μ-conditioning question `#642`/`#643` left open.
