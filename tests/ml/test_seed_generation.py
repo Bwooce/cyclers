@@ -20,7 +20,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from cyclerfinder.core.cr3bp import CR3BPSystem
+from cyclerfinder.core.cr3bp import CR3BPSystem, cr3bp_system
 from cyclerfinder.ml.orbit_generative import (
     ClusteredGaussianLatentModel,
     fit_clustered_gaussian,
@@ -154,28 +154,54 @@ def test_expected_lift_for_mu_matches_anchors_at_anchor_points() -> None:
         assert estimate.beyond_validated_range is False
 
 
-def test_expected_lift_for_mu_interpolates_between_anchors() -> None:
-    # Halfway (in delta-space) between the mu=0.001 anchor and the Sun-Earth
-    # anchor should land strictly between their lift values (30x and 3.5x) --
-    # not equal to either endpoint, and not outside the [3.5, 30] envelope.
-    mid_delta = 0.5 * (delta_log10_mu(0.001) + delta_log10_mu(LIFT_ANCHORS[-1].mu))
-    mid_mu = 10 ** (np.log10(TRAINING_MU) - mid_delta)  # arbitrary side, magnitude only matters
-    estimate = expected_lift_for_mu(mid_mu)
-    assert 3.5 < estimate.estimated_lift < 30.0
-    assert estimate.beyond_validated_range is False
+def test_lift_anchors_no_longer_contains_falsified_cross_mu_entries() -> None:
+    # `#642` found `#624`'s two cross-mu anchors ("mu_0.001_cross_mu" 30x,
+    # "sun_earth_cross_mu" 3.5x) were built entirely from L4/L5-equilibrium
+    # false positives (true cross-mu lift ~0x, not 30x/3.5x); `#643` purged
+    # them. Only the surviving, `#642`-corrected in-distribution anchor
+    # should remain.
+    labels = {anchor.label for anchor in LIFT_ANCHORS}
+    assert labels == {"earth_moon_in_distribution"}
+    assert "mu_0.001_cross_mu" not in labels
+    assert "sun_earth_cross_mu" not in labels
+
+
+def test_expected_lift_for_mu_flags_former_cross_mu_anchors_as_unvalidated() -> None:
+    # These were #624's original cross-mu anchor points (30x at mu=0.001,
+    # 3.5x at Sun-Earth). #642 found both were built entirely from
+    # degenerate L4/L5 Lagrange-point-equilibrium false positives, and #643
+    # purged them from LIFT_ANCHORS -- both must now return the explicit
+    # unvalidated signal (no fabricated numeric lift), never re-asserting
+    # the retracted 30x/3.5x figures.
+    for mu in (0.001, cr3bp_system("Sun", "Earth").mu):
+        estimate = expected_lift_for_mu(mu)
+        assert estimate.estimated_lift is None
+        assert estimate.beyond_validated_range is True
+        assert "unvalidated" in estimate.caveat.lower()
 
 
 def test_expected_lift_for_mu_flags_beyond_validated_range() -> None:
-    # Far beyond the furthest tested anchor (Sun-Earth, delta~3.6).
+    # Far beyond the training mu -- no validated evidence exists anywhere
+    # off-distribution (per #642's adjudication), so this must return the
+    # explicit unvalidated signal, not a fabricated number.
     tiny_mu = 1e-12
     estimate = expected_lift_for_mu(tiny_mu)
     assert estimate.beyond_validated_range is True
+    assert estimate.estimated_lift is None
     assert "unvalidated" in estimate.caveat.lower() or "UNVALIDATED" in estimate.method
 
 
-def test_expected_lift_for_mu_never_returns_negative_lift() -> None:
-    estimate = expected_lift_for_mu(1e-20)
-    assert estimate.estimated_lift >= 0.0
+def test_expected_lift_for_mu_never_returns_a_negative_or_fabricated_cross_mu_lift() -> None:
+    # In-distribution: the single validated anchor, never negative.
+    in_distribution = expected_lift_for_mu(TRAINING_MU)
+    assert in_distribution.estimated_lift is not None
+    assert in_distribution.estimated_lift >= 0.0
+    assert in_distribution.beyond_validated_range is False
+    # Far off-distribution: #643 -- explicit unvalidated signal, not a
+    # fabricated extrapolated number.
+    off_distribution = expected_lift_for_mu(1e-20)
+    assert off_distribution.estimated_lift is None
+    assert off_distribution.beyond_validated_range is True
 
 
 # --- stability_index ---------------------------------------------------------
@@ -305,7 +331,9 @@ def test_generate_and_refine_seeds_populates_lift_estimate(tmp_path: Path) -> No
         3, mu=TRAINING_MU, model=model, rng=np.random.default_rng(3), compute_stability=False
     )
     assert report.lift_estimate.target_mu == pytest.approx(TRAINING_MU)
-    assert report.lift_estimate.estimated_lift == pytest.approx(12.25, rel=1e-6)
+    # `#643`: LIFT_ANCHORS' surviving in-distribution value, #642-corrected
+    # from the original (contaminated) 12.25x to 13.5x.
+    assert report.lift_estimate.estimated_lift == pytest.approx(13.5, rel=1e-6)
 
 
 def test_generate_and_refine_seeds_stability_computed_when_requested(tmp_path: Path) -> None:

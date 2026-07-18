@@ -26,10 +26,17 @@ own `#210` corrector-outcome logs and refines them with the same
 ``correct_periodic`` corrector. Use it where a script would otherwise seed
 BLINDLY (uniform/random states at an arbitrary mu), NOT as a substitute for
 this module's targeted analytic seeds when a specific family/libration point
-is the goal -- two `#624`-measured caveats: (a) the convergence lift is
-mu-DEPENDENT (12.25x at the Earth-Moon training mu, 30x at mu=0.001, 3.5x at
-Sun-Earth, genuinely unvalidated beyond -- see ``expected_lift_for_mu``), and
-(b) each returned seed converges to SOME real family at similar energy, not
+is the goal -- two caveats, corrected by `#642`/`#643` (2026-07-18): (a) the
+convergence lift is VALIDATED ONLY at/near the Earth-Moon training mu
+(~13-27x, `#642`-corrected); `#624`'s original cross-mu claim (30x at
+mu=0.001, 3.5x at Sun-Earth) was FALSIFIED -- both were 100% degenerate
+L4/L5 Lagrange-point-equilibrium false positives, and the true cross-mu lift
+is ~0x (a structural collapse, not a sampling artifact -- the model has no
+mu-conditioning). ``expected_lift_for_mu`` now returns an explicit
+``beyond_validated_range=True``/``estimated_lift=None`` signal, not a
+fabricated number, for any mu meaningfully different from the training
+point -- prefer a uniform baseline's own measured rate there instead. (b)
+each returned seed converges to SOME real family at similar energy, not
 necessarily the one being searched for (check each ``GeneratedSeed``'s
 refined jacobi/period/stability against the target before trusting it).
 

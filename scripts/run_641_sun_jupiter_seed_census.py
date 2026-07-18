@@ -5,18 +5,28 @@ generative seed model.
 `#628` built a reusable API (``cyclerfinder.ml.seed_generation.
 generate_and_refine_seeds``) on top of `#608`'s statistical generative seed
 model (trained on this project's own Earth-Moon CR3BP corrector-outcome
-corpus). `#624` independently verified the model's convergence-lift advantage
-genuinely TRANSFERS to mass ratios it never trained on -- most strongly at
-mu=0.001 (30x over blind seeding), more weakly at Sun-Earth mu~3e-6 (3.5x).
+corpus). `#624` originally claimed the model's convergence-lift advantage
+TRANSFERS to mass ratios it never trained on -- most strongly at mu=0.001
+(30x over blind seeding), more weakly at Sun-Earth mu~3e-6 (3.5x).
 Neither task pointed this capability at a genuine, previously-unswept
 discovery target; both were evaluation-only. This script is that first real
 application: a CENSUS (not a targeted search for one specific family) of
 whatever real, physically-sane periodic-orbit families the model's seeds
 converge to at Sun-Jupiter, mu ~ 9.5388e-4 -- chosen deliberately because it
-sits close to `#624`'s STRONGEST validated cross-mu anchor (mu=0.001,
+sits close to `#624`'s STRONGEST claimed cross-mu anchor (mu=0.001,
 delta_log10_mu~1.085), not the weakest, and because Sun-Jupiter CR3BP itself
 was never the direct target of any prior task in this project's #600-#640
 arc.
+
+**`#642`/`#643` correction (2026-07-18)**: this script's OWN pilot run below
+is what first surfaced the degenerate-L4/L5-equilibrium contamination that
+`#642` then traced back into `#608`'s and `#624`'s original headline
+numbers -- `#624`'s "genuinely TRANSFERS" claim quoted above did NOT survive
+re-derivation (both its cross-mu anchors were 100% equilibria, true cross-mu
+lift ~0x) and is retracted; `#643` purged the falsified anchors from
+``expected_lift_for_mu``, which now returns an explicit unvalidated signal
+(not a number) for any mu this far from the training point, Sun-Jupiter
+included. See `#642`'s/`#643`'s ``data/OUTSTANDING.md`` bullets.
 
 **This is explicitly NOT ``scripts/search_campaign_daemon.py`` Phase B** --
 that script is Earth-Moon-only (in-distribution, not a transfer test) and its
@@ -327,8 +337,13 @@ def main() -> None:
     _print(f"  Sun-Jupiter mu = {system.mu!r} (l_km={system.l_km:.3e}, t_s={system.t_s:.3e})")
 
     lift = expected_lift_for_mu(system.mu)
+    # `#643`: estimated_lift is None whenever beyond_validated_range is True
+    # (Sun-Jupiter's mu is far off-distribution, so it always is here) --
+    # #642 falsified the cross-mu anchor this estimate would otherwise have
+    # been drawn from.
+    lift_str = f"{lift.estimated_lift:.2f}x" if lift.estimated_lift is not None else "UNVALIDATED"
     _print(
-        f"  expected_lift_for_mu: estimated_lift={lift.estimated_lift:.2f}x, "
+        f"  expected_lift_for_mu: estimated_lift={lift_str}, "
         f"delta_log10_mu={lift.delta_log10_mu:.3f}, "
         f"beyond_validated_range={lift.beyond_validated_range}"
     )

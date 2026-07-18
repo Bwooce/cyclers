@@ -3,27 +3,35 @@
 `#608` built a statistical generative seed model
 (``cyclerfinder.ml.orbit_generative.ClusteredGaussianLatentModel``) trained on
 this project's own accumulated `#210` corrector-outcome-log corpus at
-Earth-Moon CR3BP (mu=0.01215), and measured a ~12.25x lift in
-converged-AND-physically-sane rate over blind uniform seeding. `#624` then
-showed this lift genuinely TRANSFERS to mass ratios the model never trained
-on -- 30x at mu=0.001 (stronger than in-distribution), 3.5x at Sun-Earth
-mu~3.0e-6 (weaker, but still a real positive lift, not a collapse). Both
-tasks were evaluation-only: one-off ``scripts/run_608_*.py`` /
-``scripts/run_624_cross_mu_transfer_pilot.py`` scripts that re-derive the
-model from scratch and print results, not something a real discovery task
-can ``import`` and call.
+Earth-Moon CR3BP (mu=0.01215), and measured a real in-distribution lift in
+converged-AND-physically-sane rate over blind uniform seeding
+(`#642`-corrected: ~13-27x, not the original stale 12.25x headline -- see
+below). `#624` initially reported this lift TRANSFERRING to mass ratios the
+model never trained on -- 30x at mu=0.001, 3.5x at Sun-Earth mu~3.0e-6 -- but
+`#642` found BOTH cross-mu results were 100% degenerate L4/L5
+Lagrange-point-equilibrium false positives (fixed points with zero velocity
+that trivially satisfy any periodicity residual): 0 real generated orbits at
+either mu, reproduced independently twice each. `#642`'s Opus adjudication
+additionally found the collapse STRUCTURAL (the model has no
+mu-conditioning), not a small-N sampling artifact a larger re-pilot could
+fix, so `#643` purged both falsified anchors from ``LIFT_ANCHORS`` --
+:func:`expected_lift_for_mu` now returns the honest, current contract (see
+its own docstring). Both `#608` and `#624` were evaluation-only: one-off
+``scripts/run_608_*.py`` / ``scripts/run_624_cross_mu_transfer_pilot.py``
+scripts that re-derive the model from scratch and print results, not
+something a real discovery task can ``import`` and call.
 
-**`#642` KNOWN-CONTAMINATED WARNING (read before trusting any number above)**:
-those 12.25x/30x/3.5x headline numbers were measured before
-``is_physically_sane`` rejected trivial Lagrange-point-equilibrium "orbits"
-(fixed points with zero velocity that trivially satisfy any periodicity
-residual). `#642` re-derived all three from #608's/#624's own saved raw
-converged states through the now-fixed filter and found SEVERE contamination
--- not a minor correction. This module's ``is_physically_sane`` import (via
-``cyclerfinder.ml.orbit_generative``) now rejects equilibria by default, so
-:func:`generate_and_refine_seeds` is CORRECT going forward; the headline
-numbers ABOVE and in ``LIFT_ANCHORS``/:func:`expected_lift_for_mu` are the
-STALE pre-fix ones. See `#642`'s ``data/OUTSTANDING.md`` bullet and
+**`#642`/`#643` correction (read before trusting any lift number)**: the
+original 12.25x/30x/3.5x headline numbers were measured before
+``is_physically_sane`` rejected trivial Lagrange-point-equilibrium "orbits".
+`#642` re-derived all three from #608's/#624's own saved raw converged states
+through the now-fixed filter and found SEVERE contamination -- not a minor
+correction (see the numbers above). This module's ``is_physically_sane``
+import (via ``cyclerfinder.ml.orbit_generative``) now rejects equilibria by
+default, so :func:`generate_and_refine_seeds` is CORRECT going forward, and
+`#643` purged the two falsified cross-mu anchors from ``LIFT_ANCHORS`` so
+:func:`expected_lift_for_mu` no longer returns a number derived from them.
+See `#642`'s/`#643`'s ``data/OUTSTANDING.md`` bullets and
 ``data/found/642_equilibrium_contamination_audit/summary.json`` for the full
 corrected numbers.
 
@@ -49,13 +57,16 @@ Three things this module does NOT do, deliberately:
   (Jacobi constant, period, a cheap general stability index) so a caller can
   check what it actually got against what it was hoping for, rather than
   trusting a black-box "generate seeds" call.
-* It does NOT assume uniform transfer across mu. :func:`expected_lift_for_mu`
-  documents the observed lift as a function of distance from the training mu
-  using the exactly-3 empirical anchors that exist (`#608` in-distribution,
-  `#624`'s two cross-mu points) -- honestly labelled as an interpolation
-  through 3 points, not a rigorous fit, with extrapolation past the furthest
-  tested anchor (Sun-Earth, |delta log10 mu|~3.6) flagged as genuinely
-  unvalidated.
+* It does NOT assume uniform transfer across mu. `#642` found `#624`'s two
+  cross-mu anchors were both L4/L5-equilibrium false positives (true
+  cross-mu lift ~0x), and its Opus adjudication found the collapse
+  STRUCTURAL (the model has no mu-conditioning) rather than a sampling
+  artifact -- so `#643` purged them. :func:`expected_lift_for_mu` now
+  returns the single validated `#608` in-distribution anchor (~13-27x) only
+  for mu at/effectively-at the training point, and an explicit
+  ``beyond_validated_range=True``/``estimated_lift=None`` "cross-mu transfer
+  unvalidated" signal for anything else -- never a numeric lift interpolated
+  or extrapolated past validated data.
 
 **Integration pattern (`#634` design read, 2026-07-18)**: this module is
 consumed as a STANDALONE LIBRARY CALLABLE -- a discovery script imports
@@ -271,45 +282,52 @@ class LiftAnchor:
     source_task: str
 
 
-# The ONLY empirical evidence this project has for how #608's lift behaves
-# away from its training mu: #608's own in-distribution measurement plus
-# #624's two cross-mu pilot points. Exactly 3 points -- not remotely enough
-# for a rigorous fit (see `expected_lift_for_mu`'s docstring), but enough to
-# state a documented, honest expectation rather than silently assuming
-# uniform transfer.
+# The ONLY empirical evidence this project has for how #608's lift behaves:
+# #608's own in-distribution measurement at the training mu itself. #624
+# originally added two cross-mu pilot points (30x at mu=0.001, 3.5x at
+# Sun-Earth) claiming the lift TRANSFERS off-distribution, but `#642` found
+# BOTH were built entirely from degenerate L4/L5 Lagrange-point-equilibrium
+# false positives (fixed points that trivially satisfy any periodicity
+# residual, not real orbits) -- 0 real generated orbits at either mu,
+# independently reproduced twice each (an archival re-filter of the saved
+# raw converged states, and a fresh live re-run). The true cross-mu lift is
+# therefore ~0x, not 30x/3.5x. `#642`'s Opus adjudication additionally
+# verified this collapse is STRUCTURAL, not a small-N sampling artifact a
+# larger re-pilot could fix: the `#608` training corpus contains ZERO
+# equilibria and zero mass near L4/L5 (so this is not a training-data leak),
+# meaning the model -- which has no mu-conditioning -- proposes
+# Earth-Moon-shaped seeds that a corrector at a foreign mu collapses onto the
+# nearest large stable attractor instead. `#643` purged both falsified
+# anchors accordingly. See `#642`'s/`#643`'s bullets in
+# `data/OUTSTANDING.md` and `data/found/642_equilibrium_contamination_audit/
+# summary.json` for the full numbers and reasoning.
 #
-# The Sun-Earth anchor's mu is pulled from ``cr3bp_system("Sun", "Earth")``
-# itself (the EXACT value #624's pilot ran against) rather than a rounded
-# literal -- a rounded literal here previously made a real caller targeting
-# the real registered Sun-Earth mu evaluate as *marginally beyond* this very
-# anchor (a hair over its own delta_log10_mu due to the rounding gap),
-# spuriously flagging the validated point itself as extrapolated/unvalidated.
-#
-# **`#642` KNOWN-CONTAMINATED WARNING**: all three of these lift numbers were
-# measured BEFORE `is_physically_sane` rejected degenerate Lagrange-point
-# equilibria (fixed points that trivially satisfy any periodicity residual --
-# see that function's own `#642` docstring paragraph). `#642` re-derived all
-# three from #608's/#624's own saved raw converged states and found SEVERE
-# contamination, not a minor correction: the Earth-Moon in-distribution
-# baseline's "4% physically-sane" was 100% equilibria (real lift is
-# unmeasurable/undefined at this N, not 12.25x); the mu=0.001 GENERATED arm's
-# "60% physically-sane" was 100% equilibria (0 real orbits found, not 30x);
-# the Sun-Earth generated arm's "7%" was 100% equilibria while the baseline
-# retained 1 genuine orbit (a NEGATIVE corrected lift, not 3.5x). See `#642`'s
-# `data/OUTSTANDING.md` bullet and `data/found/642_equilibrium_contamination_
-# audit/summary.json` for the full numbers. These 3 anchors are LEFT
-# UNCHANGED here deliberately -- `#642` is scoped to detect and report this,
-# not to unilaterally pick new production recalibration constants from a
-# single N=100/60 audit (a proper fix needs a larger-N, equilibrium-filtered
-# re-pilot, flagged as follow-on work) -- but `expected_lift_for_mu`'s output
-# should NOT be trusted quantitatively until that re-pilot lands. Any caller
-# relying on a specific numeric lift estimate from this function should
-# treat it as pre-#642 and unverified.
+# The surviving anchor's value (13.5, not #608's original stale 12.25) is
+# `#642`'s fresh LIVE re-derivation of the productionized API (27% generated
+# vs. 2% baseline physically-sane rate, N=100, independent rng draws from
+# #608's original run) -- the single most defensible point estimate `#642`
+# produced. The true in-distribution range across ALL of `#642`'s
+# re-derivations (an archival re-filter of #608's own saved states, plus this
+# fresh live re-run) is ~13-27x -- noisier than #608 originally reported,
+# because genuine (non-equilibrium) baseline hits are rare at this N (the
+# archival re-filter found 0/100 real baseline hits, making that specific
+# ratio undefined; the live re-run found 2/100).
 LIFT_ANCHORS: tuple[LiftAnchor, ...] = (
-    LiftAnchor("earth_moon_in_distribution", TRAINING_MU, 12.25, "#608"),
-    LiftAnchor("mu_0.001_cross_mu", 0.001, 30.0, "#624"),
-    LiftAnchor("sun_earth_cross_mu", cr3bp_system("Sun", "Earth").mu, 3.5, "#624"),
+    LiftAnchor("earth_moon_in_distribution", TRAINING_MU, 13.5, "#608"),
 )
+
+# How close a target mu must be (in |delta log10 mu|) to TRAINING_MU to be
+# treated as "in-distribution" and get the validated numeric lift above,
+# rather than :func:`expected_lift_for_mu`'s explicit cross-mu-unvalidated
+# signal. Deliberately tiny -- effectively "the training mu itself, plus the
+# real Earth-Moon system's own mu (``cr3bp_system("Earth", "Moon").mu``,
+# ~0.0121506) differing negligibly (~2e-5 in delta_log10_mu) from the literal
+# ``TRAINING_MU`` constant #608 fit its model against" -- not a judgment call
+# about how far transfer might plausibly extend: `#642` found ZERO validated
+# evidence at ANY nonzero distance from the training mu (the CLOSEST ever
+# tested point, mu=0.001 at delta~1.08, is the one that collapsed to 0 real
+# orbits), so there is no data-supported basis for a wider window.
+VALIDATED_DELTA_LOG10_MU: float = 1e-3
 
 
 def delta_log10_mu(target_mu: float, training_mu: float = TRAINING_MU) -> float:
@@ -321,7 +339,9 @@ def delta_log10_mu(target_mu: float, training_mu: float = TRAINING_MU) -> float:
 class LiftEstimate:
     target_mu: float
     delta_log10_mu: float
-    estimated_lift: float
+    # `#643`: no longer always a number. ``None`` exactly when
+    # ``beyond_validated_range`` is ``True`` -- see :func:`expected_lift_for_mu`.
+    estimated_lift: float | None
     method: str
     beyond_validated_range: bool
     caveat: str
@@ -329,88 +349,78 @@ class LiftEstimate:
 
 def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) -> LiftEstimate:
     """Honest, DOCUMENTED expectation for the generate-then-refine physically-sane
-    convergence lift at ``target_mu``, based on exactly 3 empirical anchors
-    (`#608` in-distribution 12.25x at delta=0, `#624`'s 30x at delta~1.08
-    [mu=0.001] and 3.5x at delta~3.6 [Sun-Earth]).
+    convergence lift at ``target_mu``.
 
-    This is an INTERPOLATION/EXTRAPOLATION through 3 points, not a rigorous
-    fit -- there are not enough data points for one, and the observed
-    behavior is explicitly NON-monotonic (lift first improves, then decays)
-    so no single simple functional form (e.g. exponential decay in delta) is
-    honestly justified. What the 3 points DO support:
+    **`#643` correction**: this function previously interpolated/extrapolated
+    a numeric lift through 3 empirical anchors (`#608` in-distribution
+    12.25x, `#624`'s 30x at mu=0.001 and 3.5x at Sun-Earth). `#642` found
+    `#624`'s two cross-mu anchors were both built from degenerate L4/L5
+    Lagrange-point-equilibrium false positives -- 0 real generated orbits at
+    either mu, reproduced independently twice each -- and its Opus
+    adjudication found the collapse STRUCTURAL (the model has no
+    mu-conditioning), not a sampling artifact a larger re-pilot could fix.
+    Those two anchors are REMOVED from ``LIFT_ANCHORS``; this function no
+    longer fabricates a numeric lift for mu it has no validated evidence
+    about. Current behavior:
 
-    * lift holds or even improves moderately close to the training mu
-      (delta up to ~1.08, i.e. up to ~12x mu-ratio change either direction);
-    * lift then degrades -- while remaining clearly positive -- as the
-      target mu gets orders of magnitude further away (down to 3.5x by
-      delta~3.6, a ~4000x mu-ratio jump);
-    * beyond delta~3.6 (the furthest anchor `#624` actually tested) is
-      GENUINELY UNVALIDATED: no measurement exists there. This function will
-      still return a number (a linear extrapolation of the last observed
-      segment's log-lift slope) so a caller gets SOME signal, but flags
-      ``beyond_validated_range=True`` and the ``caveat`` field says, in
-      effect, don't trust this quantitatively -- re-run `#624`'s own
-      cross-mu pilot protocol at the new mu before relying on the model
-      there, and prefer the uniform baseline's own measured rate over a
-      blind extrapolated claim.
+    * For ``target_mu`` at or effectively at ``training_mu``
+      (``delta_log10_mu <= VALIDATED_DELTA_LOG10_MU``): returns the single
+      validated `#608` in-distribution anchor (~13.5x, `#642`-corrected
+      live-re-run point estimate; the true range across all of `#642`'s
+      re-derivations is ~13-27x) and ``beyond_validated_range=False``.
+    * For anything meaningfully different from the training mu (including
+      `#624`'s own former mu=0.001 and Sun-Earth anchor points): returns
+      ``estimated_lift=None`` and ``beyond_validated_range=True``, with a
+      ``caveat`` explicitly stating cross-mu transfer is UNVALIDATED --
+      in fact, the only two points ever tested there both collapsed to
+      ~0x -- and that a caller should prefer the uniform baseline's own
+      measured rate at the target mu over any generative-model lift claim.
+
+    See `#642`/`#643` in ``data/OUTSTANDING.md`` for the full numbers and
+    reasoning behind this narrowing.
     """
-    anchors = sorted(LIFT_ANCHORS, key=lambda a: delta_log10_mu(a.mu, training_mu))
-    anchor_deltas = [delta_log10_mu(a.mu, training_mu) for a in anchors]
-    anchor_log_lifts = [math.log10(a.lift) for a in anchors]
+    anchor = LIFT_ANCHORS[0]
     delta = delta_log10_mu(target_mu, training_mu)
-    max_tested_delta = anchor_deltas[-1]
 
-    if delta <= max_tested_delta:
-        i = 0
-        while i < len(anchor_deltas) - 2 and delta > anchor_deltas[i + 1]:
-            i += 1
-        d0, d1 = anchor_deltas[i], anchor_deltas[i + 1]
-        l0, l1 = anchor_log_lifts[i], anchor_log_lifts[i + 1]
-        frac = (delta - d0) / (d1 - d0) if d1 > d0 else 0.0
-        log_lift = l0 + frac * (l1 - l0)
-        beyond = False
-        method = (
-            "interpolated (log-lift-linear) between #608/#624 empirical anchors "
-            f"bracketing delta_log10_mu={delta:.3f} "
-            f"({anchors[i].label}@{d0:.3f} .. {anchors[i + 1].label}@{d1:.3f})"
-        )
-        caveat = (
-            "Lift appears to hold or even improve moderately close to the training "
-            "mu (12.25x in-distribution -> 30x at |delta log10 mu|~1.08 [#624 "
-            "mu=0.001]), then degrades -- while remaining positive -- further out "
-            "(3.5x at |delta log10 mu|~3.6 [#624 Sun-Earth]). This estimate "
-            "interpolates between exactly 3 measured points; it has NOT been "
-            "independently measured at this exact target mu."
-        )
-    else:
-        d0, d1 = anchor_deltas[-2], anchor_deltas[-1]
-        l0, l1 = anchor_log_lifts[-2], anchor_log_lifts[-1]
-        slope = (l1 - l0) / (d1 - d0) if d1 > d0 else 0.0
-        log_lift = l1 + slope * (delta - d1)
-        beyond = True
-        method = (
-            "EXTRAPOLATED past the furthest tested anchor (Sun-Earth, "
-            f"|delta log10 mu|~{max_tested_delta:.3f}) -- UNVALIDATED"
-        )
-        caveat = (
-            "No test exists beyond |delta log10 mu|~3.6 (#624's furthest point, "
-            "Sun-Earth mu~3.0e-6). This number is a naive linear extrapolation of "
-            "a 2-segment log-lift fit through only 3 points and should NOT be "
-            "trusted quantitatively. Treat any target this far from the "
-            "mu=0.01215 training point as genuinely unvalidated territory: run a "
-            "fresh cross-mu pilot (#624's own protocol) at the new mu before "
-            "relying on this model there, and prefer the uniform baseline's own "
-            "measured rate at the new mu over trusting this extrapolated estimate."
+    if delta <= VALIDATED_DELTA_LOG10_MU:
+        return LiftEstimate(
+            target_mu=target_mu,
+            delta_log10_mu=delta,
+            estimated_lift=anchor.lift,
+            method=(
+                f"validated in-distribution anchor ({anchor.label}, "
+                f"{anchor.source_task}, #642-corrected)"
+            ),
+            beyond_validated_range=False,
+            caveat=(
+                f"At/near the training mu ({training_mu!r}): a real, substantial "
+                "in-distribution lift is validated (~13-27x across #642's "
+                f"re-derivations, {anchor.lift:.1f}x point estimate here). This "
+                "does NOT extend to other mu -- #624's own cross-mu claim at "
+                "this same lift level was falsified by #642; see the "
+                "unvalidated branch this function returns for any other mu."
+            ),
         )
 
-    lift = max(10.0**log_lift, 0.0)
     return LiftEstimate(
         target_mu=target_mu,
         delta_log10_mu=delta,
-        estimated_lift=float(lift),
-        method=method,
-        beyond_validated_range=beyond,
-        caveat=caveat,
+        estimated_lift=None,
+        method="cross-mu transfer UNVALIDATED -- no numeric estimate returned",
+        beyond_validated_range=True,
+        caveat=(
+            "Cross-mu transfer unvalidated -- prefer the uniform baseline's own "
+            "measured rate at this mu, see #642. #624 originally claimed 30x at "
+            "mu=0.001 and 3.5x at Sun-Earth, but #642 found BOTH were 100% "
+            "degenerate L4/L5 Lagrange-point-equilibrium false positives (0 real "
+            "generated orbits at either mu, in two independent trials each) -- "
+            "the true cross-mu lift is ~0x, and #642's Opus adjudication found "
+            "this collapse STRUCTURAL (the model has no mu-conditioning), not an "
+            "N-too-small sampling artifact. Do not treat this model as validated "
+            "for seed generation this far from its training mu without a "
+            "genuinely new mu-conditioned model. See #642/#643 in "
+            "data/OUTSTANDING.md for the full reasoning."
+        ),
     )
 
 
