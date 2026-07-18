@@ -596,8 +596,13 @@ registered 2026-07-18; CLOSED 2026-07-18: both falsified anchors DELETED from LI
 surviving in-distribution anchor updated 12.25->13.5, expected_lift_for_mu now returns
 estimated_lift=None+beyond_validated_range=True off-distribution instead of a fabricated
 number, tests/docstrings updated, commit `bee830a`); #644 for an in-distribution Earth-Moon
-unswept-region census using #628's fixed generative model, investigation-first (dispatched
-2026-07-18); #645 for a fresh Fable creative-strategy pass, the #605 sequel now that the entire
+unswept-region census using #628's fixed generative model, investigation-first (CLOSED
+2026-07-18: no genuine gap found -- the analytic seed catalog already reaches through/below C_L1
+with ordinary amplitude choices, the #210 corpus's near-C_L1 band is thinned but not empty/
+anomalous, and a confirmatory diagnostic pilot explicitly targeted there converged onto the SAME
+already-known halo/NRHO family; the actually-novel object, transit trajectories, isn't a periodic
+orbit and is already served by the validated #314/#547 manifold infrastructure -- no census run,
+no new script); #645 for a fresh Fable creative-strategy pass, the #605 sequel now that the entire
 #606-#644 arc has landed (dispatched 2026-07-18); #646 for #645 shortlist item 1, segment-anchored
 CLV manifold-direction recovery for a real #619 retry with correct directions (registered
 2026-07-18); #647 for #645 shortlist item 3, ingesting the JPL SSD periodic-orbits catalog as a
@@ -9667,7 +9672,8 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep::test_504_sweep_33`, both matching the documented local-Mac/M3
   Accelerate-BLAS-sensitivity signature from `#584`'s memory entry), all `tests/ml/
   test_seed_generation.py` (27) and `tests/scripts` (129) green.
-- **#644** (dispatched 2026-07-18, user-directed) — a genuine in-distribution discovery run:
+- **#644 ✓ CLOSED — NO GENUINE GAP FOUND (2026-07-18): investigation alone closes this task, no
+  census run.** (dispatched 2026-07-18, user-directed) — a genuine in-distribution discovery run:
   point `#628`'s now-`#642`/`#643`-fixed generative seed model at a genuinely UNSWEPT region
   WITHIN Earth-Moon CR3BP itself (not a cross-μ transfer — `#643` correctly retracted that claim;
   this stays at/near the training μ=0.01215, where the model's lift is confirmed real, ~13-27x).
@@ -9704,6 +9710,72 @@ anywhere in the file and are genuinely still open.]**
   Recommended model: Sonnet (reuses fully-validated `#628`/`#641` infrastructure; the "is this gap
   real" investigation is careful but not judgment-heavy in the Opus sense — it's a data-driven
   density check, not a numerical-methods call).
+  **RESULT (Sonnet, 2026-07-18): NO genuine gap found — investigation alone closes this task, no
+  census run, no new script.** Both of this task's own required conditions (step 2: analytic
+  catalog does NOT already cover the range, AND the corpus is genuinely under-represented there)
+  fail, plus a structural reason the ML pipeline could never reach the actually-interesting object
+  even if they hadn't.
+  **Step 1 (analytic catalog)**: `src/cyclerfinder/search/cr3bp_seed_generator.py` provides
+  `lyapunov_seed` (planar, L1/L2), `lyapunov_seed_3d` (vertical/tulip, L1/L2),
+  `richardson_halo_seed` (genuine halo branch I/II, L1/L2/L3, `#580`), and `dro_seed` — i.e. a
+  SUBSET of `search_campaign_daemon.py`'s full `FAMILIES` list (no axial/LPO/resonant/DPO analytic
+  generator; those are covered only via that daemon's own JPL-catalogue Phase-A import, not this
+  module). Directly verified (not assumed) that the covered families ALREADY reach comfortably
+  through and below `C_L1`: at Earth-Moon mu, `C_L1=3.188341` (`collinear_lpoints`+
+  `jacobi_constant`, matches `genome/transit_manifold.py`'s independently-sourced `3.1883`).
+  `lyapunov_seed(L1, amplitude=5e-2)` -> jacobi=3.037; `richardson_halo_seed(L1, amplitude_z=0.05/
+  0.10/0.15)` -> jacobi=3.135/3.056/3.002; `dro_seed(amplitude=0.1/0.2)` -> jacobi=3.101/3.118 — all
+  with ordinary, non-extreme parameter choices already inside or adjacent to the module's own
+  amplitude ladders. Condition (a) of this task's own gate (step 2: "not already covered by the
+  analytic catalog") FAILS.
+  **Step 2 (corpus density)**: loaded the real `#210` corpus (`default_corpus_paths` +
+  `assemble_corpus`, 14 files, N=54165 rows, jacobi range [2.5003, 3.4988]). Full histogram is
+  dominated by ONE spike at jacobi∈[2.90,3.05) — 47528 rows (87.7% of the corpus, 84% of the spike
+  itself just 2 heuristic family-tags: `J1_P1_z+`=34020, `J1_P0_z+`=11752). The near/below-`C_L1`
+  band is thinner than that spike but NOT empty or anomalously sparse relative to the rest of the
+  upper-jacobi tail: jacobi∈[3.0,`C_L1`) has 15104 rows (27.9%); the immediate neighborhood
+  jacobi∈[3.10,`C_L1`) has 1230 rows spanning many distinct heuristic tags (`J2_P0_z+`=448,
+  `J2_P1_z+`=173, `J1_P1_z+`=161, `J1_P1_z0`=143, `J1_P1_z-`=80, `J2_P1_z0`=79, plus others) — a
+  diverse, populated region, not a single-family artifact; even jacobi>=`C_L1` still has 280 rows.
+  Condition (b) ("genuinely under-represented," not just thinner than the dominant spike) is weak
+  at best — this is general upper-tail thinness across the whole jacobi>3.05 range, not a distinct
+  localized hole AT `C_L1` specifically.
+  **Confirmatory diagnostic pilot** (not a census — investigation only, per step 3's gate not being
+  met): `generate_and_refine_seeds(30, primary="Earth", secondary="Moon",
+  target_jacobi_bounds=(3.05, C_L1+0.01), max_oversample_factor=30)` at the real Earth-Moon mu
+  (`expected_lift_for_mu`: 13.5x, `beyond_validated_range=False`, in-distribution as designed).
+  900 attempts (oversample budget exhausted before reaching 30 matches, 863s), 532 converged (59%),
+  243 physically-sane (27%, consistent with the validated in-distribution lift), but only **5**
+  landed inside the narrow target window (0.56% of attempts). All 5 are genuine non-equilibrium
+  orbits (`is_degenerate_equilibrium`=False for every one) at x0≈0.989-1.037 (at/beyond the Moon,
+  secondary sits at 1-mu≈0.98785), three with real out-of-plane z0≈0.099-0.152, jacobi spanning
+  3.051-3.185 — this is the SAME classical L1/L2 halo/NRHO-and-large-Lyapunov family the analytic
+  `richardson_halo_seed` sweep above already produces at matching amplitude/jacobi (3.002-3.135 for
+  az=0.05-0.15, directly overlapping). Even when EXPLICITLY steered into this exact Jacobi window,
+  the ML pipeline converges to an already-covered family, not anything new.
+  **Why the physically-interesting object here was never reachable anyway**: this task's own
+  motivating hypothesis was interior/exterior TRANSIT trajectories through the open L1 neck
+  (Koon-Lo-Marsden-Ross tube dynamics) — but transit trajectories are NOT periodic orbits (they are
+  one-pass manifold-following trajectories), so `generate_and_refine_seeds`' `correct_periodic`-based
+  pipeline is structurally incapable of producing one regardless of Jacobi-window targeting; a
+  seed-density gap there (even a real one) would only ever surface MORE bound periodic-orbit family
+  members, never a transit orbit. This project already has dedicated, VALIDATED infrastructure for
+  the actual object: `genome/heteroclinic_cycle.py` (`#314`, closed-heteroclinic-cycle framework,
+  validated against Wilczak & Zgliczynski's computer-assisted proof of the Sun-Jupiter-Oterma
+  L1<->L2 Lyapunov cycle, arXiv:math/0201278) and `genome/transit_manifold.py` (`#547`,
+  transit-vs-non-transit unstable-manifold-branch classifier, its own positive control pinned
+  exactly at the Earth-Moon L1 gateway energy `C∈(C_L2,C_L1)=(3.1722,3.1883)` — the identical energy
+  band this task was investigating).
+  **Honest verdict**: no real, well-motivated gap — a fully legitimate, expected outcome per this
+  task's own dispatch framing (Earth-Moon is the most heavily-searched system in this project's
+  history). No census run (step 3's own gate was not met), no new `scripts/run_644_*.py` (nothing
+  to run), no `data/catalogue.yaml` change, no new reusable production code (only ad hoc read-only
+  diagnostic snippets, not committed). Baseline verified unaffected: `uv run ruff check .`/`ruff
+  format --check .` clean, `uv run mypy src tests` clean (724 files, 0 errors), `uv run pytest
+  tests/ml tests/search -q` — exactly the 2 PRE-EXISTING failures
+  (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep::test_504_sweep_33`, the documented local-Mac/M3
+  Accelerate-BLAS-sensitivity signature from `#584`), nothing new broken.
 - **#645** (dispatched 2026-07-18, user-directed) — a fresh Fable creative-strategy pass, the
   natural sequel to `#605`'s original mandate (2026-07-15) now that the entire `#606`-`#644` arc
   has landed since — a huge amount of new CAPABILITY (seedless spectral correctors for periodic
