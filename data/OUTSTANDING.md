@@ -554,7 +554,17 @@ er3bp_isolated_seeds/er3bp_direct_seeding], only the 4 closed ML-eval scripts co
 shape today, and a flag would imply drop-in interchangeability that undermines #624's wrong-family
 caveat; also found+documented a corpus-circularity hazard [generative-seeded correct_periodic
 solves auto-log into the #210 training corpus if CYCLERFINDER_OUTCOME_LOG is set]; two docstring
-cross-references committed as the wiring example -- see #634's own bullet); #635 next-unused):**
+cross-references committed as the wiring example -- see #634's own bullet); #635 for the
+eigenvector-PHASE canonicalization #632 flagged and deliberately deferred, parking lot not
+auto-fired (registered 2026-07-18); #636 for Wilczak-Zgliczynski computer-assisted-proof machinery
+as a theorem-grade-negative route, #623's own standing reserve, no current forcing function
+(registered 2026-07-18); #637 for acquiring the Litteri et al. CMDA 138:25 journal version, minor
+(registered 2026-07-18); #638 for a multi-system real-moon-mu RRT extension (Triton/Ganymede/
+Europa/Titania), BLOCKED on #633's outcome (registered 2026-07-18); #639 for a small-mu
+Hill-problem analytic-seed solver, no current forcing function (registered 2026-07-18); #640 for
+acquiring classical small-mu asymptotic literature (Henon/Benest/quasi-satellite), optional
+context not a gate, triggered only if #633/#638 finds something (registered 2026-07-18); #641
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9025,6 +9035,90 @@ anywhere in the file and are genuinely still open.]**
   any long-running corpus-logging run, unset `CYCLERFINDER_OUTCOME_LOG` or log to a shard excluded
   from `default_corpus_paths()`' glob. No code changes beyond the two docstrings; no catalogue
   change; structure ratchets green.
+- **#635** (registered 2026-07-18, user-directed — **parking lot, not auto-fired**) — eigenvector-
+  PHASE canonicalization for the GMOS torus corrector's basin fragility, the follow-up robustness
+  item `#632` explicitly flagged and deliberately did NOT attempt. Background: `#632` fixed a
+  BLAS-backend-dependent eigenvalue-SIGN ambiguity in `genome/qp_tori.py::_seed_invariant_circle`
+  at its source, but found a SECOND, deeper issue in the same function: `np.linalg.eig` also
+  returns the Neimark-Sacker eigenvector with a platform-dependent PHASE (not just the already-fixed
+  sign), and the fragile `n_trans=4` GMOS corrector consequently lands in one of two adjacent,
+  both-physically-valid basins depending on platform (Mac Accelerate stalls unconverged at one
+  branch; Linux OpenBLAS converges cleanly to the other, matching the linear-seed estimate). `#632`
+  worked around this for its one affected test by widening the assertion to a regime check rather
+  than pinning the value, and explicitly declined to fix the root cause — a principled eigenvector-
+  PHASE canonicalization in `_seed_invariant_circle` itself — citing "too-broad a blast radius
+  across V1/V2 + many genome tests, and unverifiable cross-platform since the internal least-squares
+  is itself BLAS-sensitive." **Scope if picked up**: design and verify a phase-canonicalization
+  scheme (e.g. pinning the eigenvector's phase via a physically-meaningful normalization, analogous
+  to `#632`'s own sign fix and `#515`'s original 3D-Floquet sign alignment) that is provably
+  branch-independent, then audit which of V1/V2's/the wider genome test suite's tests are actually
+  sensitive to this ambiguity (most likely are not — only fragile near-bifurcation correctors like
+  the one `#632` hit). Verifying cross-platform without CI access to force the alternate BLAS branch
+  locally is the hard part `#632` itself flagged — may need CI-only verification via a scratch push,
+  or a local backend-forcing technique if one exists. Recommended model: Opus (genuine numerical-
+  methods judgment on eigen-decomposition conventions, same tier as `#632`'s own sign-fix work).
+- **#636** (registered 2026-07-18, user-directed — **parking lot, not auto-fired, no current forcing
+  function**) — Wilczak-Zgliczyński computer-assisted-proof machinery as a route to theorem-grade
+  (not just method-conditional) dynamical negatives, the one genuine standing reserve `#623`'s
+  strategic review identified. Both papers are already in the corpus and digested, and this codebase
+  already reproduces their Oterma heteroclinic golden to ~1e-10 (`data/golden/
+  wz_oterma_heteroclinic.yaml`, task `#403`) — unusually good preconditions if a high-stakes claim
+  ever needs theorem-grade backing. This would be the natural growth path for `#610`-style interval
+  certification to cover propagation-DEPENDENT negatives (e.g. the `#538`-`#620` SE↔EM
+  non-connection) rather than just closed-form sub-gates, but non-existence over a region is a
+  strictly harder shape to prove than W-Z's own existence proofs, and this is a multi-week,
+  research-grade build (rigorous integration/covering relations) with genuinely no current forcing
+  function — nothing in this project's backlog currently needs a theorem-grade (as opposed to
+  method-conditional) negative badly enough to justify the build. Do not dispatch without an
+  explicit user decision that a specific claim needs this level of rigor.
+- **#637** (registered 2026-07-18, user-directed — **minor, parking lot**) — acquire the Litteri,
+  Gil, Vasile, Rodriguez-Fernandez & Camacho *Celestial Mechanics and Dynamical Astronomy* 138:25
+  (June 2026) journal version — the external anchor `#608`'s own generative-seed-model POC cited
+  (a variational-autoencoder approach to CR3BP periodic-orbit generation) — currently
+  paywalled/unacquired, only a preprint/abstract-level reference was used. A small acquisition item,
+  not a method gap (per `#623`'s own framing) — `#608`'s POC did not depend on the paper's exact
+  numbers. Follow this project's standard corpus-acquisition + OCR/digest + `CORPUS_INDEX.md`
+  registration discipline once acquired (`[[feedback_corpus_document_policy]]`). Recommended model:
+  Sonnet (mechanical acquisition + digest, no numerical-methods judgment).
+- **#638** (registered 2026-07-18, user-directed — **parking lot, not auto-fired, BLOCKED on `#633`'s
+  outcome**) — a multi-system extension of the real-planet-moon-μ Ross-Roberts-Tsoukkas (k1,k2)
+  search to Neptune-Triton (μ≈2.1e-4), Jupiter-Ganymede (μ≈7.8e-5), Jupiter-Europa (μ≈2.5e-5), and
+  Uranus-Titania (μ≈4e-5) — the natural follow-up to `#627`/`#629`/`#633`'s Saturn-Titan pilot, but
+  `#629`'s own design read explicitly listed this as "NOT recommended now... defer until the Titan
+  corridor answer exists." `#633` (the Titan corridor grid search) is the load-bearing prerequisite:
+  if it finds a genuine on-topology stable Titan member, this multi-system extension becomes a
+  real, well-motivated next step (reusing `#633`'s own grid machinery, just re-targeted per system);
+  if `#633` comes back clean (0/~16k), this task should most likely be closed as not-warranted
+  rather than dispatched, since the same structural obstruction (a 1D-continuation-path-independent
+  absence of on-topology stable members) would plausibly generalize. Do not dispatch until `#633`'s
+  result is in and a coordinating-session decision has been made on which way this cuts.
+- **#639** (registered 2026-07-18, user-directed — **parking lot, not auto-fired, no current forcing
+  function**) — building dedicated analytic-seed machinery (a small-μ Hill-problem solver) to
+  PREDICT, rather than numerically search for, whether a stable Titan/real-moon-μ-encountering
+  Ross-Roberts-Tsoukkas member should exist at a given μ before running any search. `#629`'s own
+  design read explicitly listed this as "NOT recommended now" and found the corpus has no small-μ
+  asymptotics asset to build from (no Hénon *Generating Families*, no quasi-satellite theory paper
+  — see `#640` below). The design read's own cheap analytic step (Hill-limit/ρ-invariance scaling,
+  `C_L1(μ)−3 ≈ 3^(4/3)μ^(2/3)`) already extracts what's practically available from the two sourced
+  anchors without a dedicated solver — a full Hill-problem solver would be a genuine multi-week
+  research build with no current forcing function, since `#633`'s grid search directly answers the
+  existence question numerically. Only worth revisiting if this project commits to the multi-system
+  extension (`#638`) at real-moon scale AND finds the per-system numerical search cost prohibitive
+  enough to want a cheap analytic pre-filter first.
+- **#640** (registered 2026-07-18, user-directed — **minor, parking lot, optional context not a
+  gate**) — acquire classical small-μ asymptotic periodic-orbit literature (Hénon *Generating
+  Families in the Restricted Three-Body Problem*, vols. 1-2; Benest's quasi-satellite-orbit papers;
+  Sidorenko/Pousse-Robutel-Vienne quasi-satellite theory) that `#629`'s design read confirmed is
+  currently entirely absent from this project's corpus (`CORPUS_INDEX.md` grep returned nothing).
+  Explicitly NOT a gate on any current or near-term work — `#629`'s design read found the cheap
+  Hill-limit scaling already extractable from this project's own sourced anchors without this
+  literature, and `#633`'s numerical grid search does not depend on it either. Its real value is
+  as the MANDATORY live-literature-check reference set for adjudicating any genuine hit from `#633`
+  or `#638` (a confirmed real-moon-μ member would need to be checked against exactly this class of
+  known-classical-family literature before any novelty claim, per
+  `[[feedback_literature_novelty_check_baseline]]`) — so this becomes worth acquiring proactively
+  only if `#633` (or a future `#638`) actually finds something, not before. Recommended model:
+  Sonnet (mechanical acquisition + digest once triggered).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
