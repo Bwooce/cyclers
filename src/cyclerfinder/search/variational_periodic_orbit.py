@@ -302,6 +302,201 @@ def _reconstruct_state0(
     return state0, period
 
 
+def _residual_fixed_jacobi(
+    z: NDArray[np.float64],
+    theta: NDArray[np.float64],
+    mu: float,
+    n_harmonics: int,
+    jacobi_target: float,
+    jacobi_weight: float,
+) -> NDArray[np.float64]:
+    """Harmonic-balance EOM residual PLUS one extra row pinning the Jacobi
+    constant, with ALL THREE amplitude anchors free (see
+    :func:`discover_periodic_orbit_fixed_jacobi`).
+    """
+    base = _harmonic_balance_residual(z, theta, mu, n_harmonics, None, None, None)
+    state0, _period = _reconstruct_state0(z, n_harmonics, None, None, None)
+    c = cr3bp.jacobi_constant(state0, mu)
+    jac_row = np.array([jacobi_weight * (c - jacobi_target)])
+    return np.concatenate([base, jac_row])
+
+
+def _fixed_jacobi_continuation_solve(
+    z_start: NDArray[np.float64],
+    theta: NDArray[np.float64],
+    mu: float,
+    n_harmonics: int,
+    jacobi_target: float,
+    jacobi_weight: float,
+    n_continuation_steps: int,
+    max_nfev: int,
+) -> tuple[NDArray[np.float64], float]:
+    """Natural-parameter continuation IN THE TARGET JACOBI CONSTANT, from
+    whatever Jacobi constant the cold-start ``z_start`` happens to reconstruct
+    to, in ``n_continuation_steps`` steps up to ``jacobi_target``.
+
+    A single ``least_squares`` solve jumping straight from a random cold
+    start to the final ``jacobi_target`` empirically stalls at a
+    compromise point (small-but-nonzero EOM residual AND small-but-nonzero
+    Jacobi error simultaneously, neither actually zero) far more often than
+    a solve that only has to move a SMALL step in target Jacobi each time,
+    warm-started from the previous step's converged coefficients -- the
+    same warm-started-natural-parameter-continuation idea this module's own
+    ``warm_start`` docstring already uses for amplitude, applied here to the
+    Jacobi constant instead (mirrors this project's existing corridor/
+    continuation conventions, e.g. #629's rho-corridor). Returns the final
+    ``(raw_coeffs, cost)``.
+    """
+    state0_0, _period0 = _reconstruct_state0(z_start, n_harmonics, None, None, None)
+    c0 = cr3bp.jacobi_constant(state0_0, mu)
+    schedule = np.linspace(c0, jacobi_target, max(2, n_continuation_steps))[1:]
+    z = z_start.copy()
+    sol = None
+    for c_step in schedule:
+        sol = least_squares(
+            _residual_fixed_jacobi,
+            z,
+            args=(theta, mu, n_harmonics, float(c_step), jacobi_weight),
+            method="lm",
+            xtol=1e-15,
+            ftol=1e-15,
+            gtol=1e-15,
+            max_nfev=max_nfev,
+        )
+        z = sol.x
+    assert sol is not None
+    return z, float(sol.cost)
+
+
+def discover_periodic_orbit_fixed_jacobi(
+    system: cr3bp.CR3BPSystem,
+    jacobi_target: float,
+    *,
+    n_harmonics: int = 16,
+    n_collocation: int | None = None,
+    z0: NDArray[np.float64] | None = None,
+    center_guess: tuple[float, float, float] = (0.8, 0.0, 0.0),
+    period_guess: float = 3.0,
+    coefficient_noise: float = 0.05,
+    jacobi_weight: float = 50.0,
+    n_continuation_steps: int = 8,
+    rng: np.random.Generator | None = None,
+    tol: float = 1e-8,
+    jacobi_tol: float = 1e-6,
+    max_nfev: int = 15000,
+) -> VariationalOrbitResult:
+    """Single-attempt fixed-Jacobi variant of :func:`discover_periodic_orbit` (#648).
+
+    Unlike :func:`discover_periodic_orbit`, no amplitude anchor is fixed by
+    the caller -- ALL THREE (``anchor_x1``/``anchor_y1``/``anchor_z1``) are
+    free variables. In their place, one extra residual row pins the Jacobi
+    constant of the reconstructed ``state0`` to ``jacobi_target`` (weighted
+    by ``jacobi_weight``), reached via ``n_continuation_steps`` of natural-
+    parameter continuation in the target Jacobi constant itself (see
+    :func:`_fixed_jacobi_continuation_solve` -- empirically much more
+    reliable than a single solve jumping straight to ``jacobi_target`` from a
+    cold start). This is the natural fixed-energy analogue of
+    ``cr3bp_periodic.correct_symmetric_fixed_jacobi`` (which fixes ``C`` by
+    releasing ``x0`` instead of an amplitude anchor), needed so a caller can
+    ask "what periodic orbits exist at THIS Jacobi constant" without already
+    knowing which family's amplitude to anchor.
+
+    The trivial zero-amplitude libration-point equilibrium remains excluded:
+    its OWN Jacobi constant is pinned at ``C_L(mu)`` for whichever L-point it
+    sits at, so as long as ``jacobi_target`` is not exactly one of those five
+    values (never true for a generic target), the Jacobi-fixing row is
+    already unsatisfied at zero amplitude and the trivial branch is not a
+    root of the augmented system.
+
+    Single attempt only (no internal multistart, unlike
+    :func:`discover_periodic_orbit`) -- callers wanting multistart/deflated
+    enumeration should drive repeated calls themselves (see
+    :mod:`cyclerfinder.search.deflated_variational_periodic_orbit`).
+    ``converged`` requires BOTH the harmonic-balance EOM residual RMS below
+    ``tol`` AND the Jacobi-constant error below ``jacobi_tol`` -- a candidate
+    passing this is STILL only a Fourier-residual claim, not yet a certified
+    trajectory (see the Radau cross-check discipline in
+    :mod:`cyclerfinder.search.deflated_variational_periodic_orbit`).
+    """
+    if n_harmonics < 1:
+        raise ValueError(
+            f"discover_periodic_orbit_fixed_jacobi: n_harmonics must be >= 1, got {n_harmonics}"
+        )
+    mu = system.mu
+    n_coll = n_collocation if n_collocation is not None else 6 * n_harmonics
+    theta = np.linspace(0.0, 2.0 * np.pi, n_coll, endpoint=False)
+    n_free = _n_free_actual(n_harmonics, None, None, None)
+    gen = rng if rng is not None else np.random.default_rng()
+
+    if z0 is not None:
+        if z0.shape != (n_free,):
+            raise ValueError(
+                f"discover_periodic_orbit_fixed_jacobi: z0 shape {z0.shape} does not match "
+                f"the expected free-variable count {(n_free,)} for n_harmonics={n_harmonics}."
+            )
+        z_start = z0.copy()
+    else:
+        z_start = np.zeros(n_free)
+        z_start[0] = center_guess[0] + gen.normal(scale=0.05)
+        z_start[1] = center_guess[1] + gen.normal(scale=0.02)
+        z_start[2] = center_guess[2] + gen.normal(scale=0.02)
+        z_start[3:-1] = gen.normal(scale=coefficient_noise, size=n_free - 4)
+        z_start[-1] = np.log(period_guess * float(gen.uniform(0.5, 1.8)))
+
+    z_final, cost = _fixed_jacobi_continuation_solve(
+        z_start,
+        theta,
+        mu,
+        n_harmonics,
+        jacobi_target,
+        jacobi_weight,
+        n_continuation_steps,
+        max_nfev,
+    )
+    state0, period = _reconstruct_state0(z_final, n_harmonics, None, None, None)
+    base_res = _harmonic_balance_residual(z_final, theta, mu, n_harmonics, None, None, None)
+    residual_rms = float(np.sqrt(np.mean(base_res**2)))
+    jacobi = cr3bp.jacobi_constant(state0, mu)
+    jacobi_err = abs(jacobi - jacobi_target)
+    arc = cr3bp.propagate(system, state0, period, rtol=1e-13, atol=1e-13)
+    closure_residual = float(np.linalg.norm(arc.state_f - state0))
+    converged = residual_rms < tol and jacobi_err < jacobi_tol
+    log_outcome(
+        solver="variational_periodic_orbit.discover_periodic_orbit_fixed_jacobi",
+        inputs={
+            "mu": float(mu),
+            "n_harmonics": int(n_harmonics),
+            "n_collocation": int(n_coll),
+            "jacobi_target": float(jacobi_target),
+            "jacobi_weight": float(jacobi_weight),
+            "center_guess": list(center_guess),
+            "period_guess": float(period_guess),
+        },
+        outcome={
+            "converged": bool(converged),
+            "residual_rms": residual_rms,
+            "jacobi_error": float(jacobi_err),
+            "closure_residual": closure_residual,
+            "period": float(period),
+            "jacobi": float(jacobi),
+        },
+        meta={"primary": system.primary, "secondary": system.secondary},
+    )
+    return VariationalOrbitResult(
+        state0=state0,
+        period=period,
+        jacobi=jacobi,
+        converged=converged,
+        residual_rms=residual_rms,
+        closure_residual=closure_residual,
+        n_harmonics=n_harmonics,
+        n_collocation=n_coll,
+        n_restarts_tried=1,
+        cost=cost,
+        raw_coeffs=z_final.copy(),
+    )
+
+
 def discover_periodic_orbit(
     system: cr3bp.CR3BPSystem,
     *,
