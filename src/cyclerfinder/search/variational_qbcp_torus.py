@@ -1036,3 +1036,240 @@ def manifold_state_vec_pseudospectral(
     if ref_vec is not None and float(np.dot(vec, ref_vec)) < 0.0:
         vec = -vec
     return state_pv, np.asarray(vec, dtype=np.float64)
+
+
+# ---------------------------------------------------------------------------
+# Segment-anchored discrete-QR / covariant-Lyapunov-vector (CLV) extraction (#646).
+# ---------------------------------------------------------------------------
+#
+# WHY this exists (the `#619` wall).  ``manifold_state_vec_pseudospectral``
+# above extracts the manifold direction from a SINGLE one-period STM: it
+# propagates a torus point through the true nonlinear flow for a WHOLE
+# stroboscopic period and eigendecomposes the resulting 6x6 STM. `#619` proved
+# this is fatal for the UNSTABLE direction at the violently-unstable EM-L2 torus:
+# the one-period map amplifies ~2e4x, so a base-point offset the size of the
+# torus's own ~9.5e-4 invariance residual is blown up to O(1) by the end of the
+# integration -- the STM is then effectively linearized along a wildly-diverged
+# trajectory, and the extracted ``vec_u`` swings up to ~90 deg under a
+# sub-residual (1e-4) perturbation. The STABLE direction is fine (the forward
+# flow contracts it); only the unstable one is unrecoverable this way.
+#
+# THE FIX (Benettin 1980 / Ginelli et al. 2007 / Dieci-Van Vleck discrete-QR,
+# specialized to the single dominant direction). Split the one-period
+# integration into ``n_segments`` short segments. Propagate each segment's own
+# local STM (a short, well-conditioned integration whose per-segment
+# amplification is only ~2-12x, measured, not 2e4x). Crucially, because `#618`'s
+# torus is an EXPLICIT functional object (:func:`evaluate_torus_state`), RE-
+# PROJECT the base state onto the torus at every segment boundary -- evaluate the
+# torus's own state at that boundary's (theta1, theta2) and integrate the next
+# segment from THAT, instead of letting the actual trajectory (which drifts off
+# the imperfect torus at the ~2e4x/period rate) carry the linearization. The
+# base-point error is thus reset to O(torus residual) each segment instead of
+# compounding across the whole period. The segment STMs are composed with QR
+# re-orthonormalization (the numerically-safe way to accumulate a product
+# spanning ~6 orders of magnitude of growth without overflow/precision loss);
+# the diagonal of the accumulated R gives the per-segment Lyapunov growth (a
+# conditioning diagnostic), and the reconstructed one-period STM ``P = Q R`` is
+# eigendecomposed for the manifold-tangent direction.
+#
+# WHY the EIGENVECTOR, not the leading singular vector.  At several EM-L2 phases
+# the correctly-computed ``P`` is strongly NON-NORMAL (leading singular value
+# ~20x the leading |eigenvalue|). The stable/unstable MANIFOLD tangents are the
+# EIGENvectors of ``P`` (directions mapped to themselves, scaled by lambda), NOT
+# its singular vectors (transiently max-stretched directions, which the shear
+# mixes). ``local_stability`` extracts the eigenpair -- the same quantity the
+# GMOS/one-shot convention uses -- so the SE-L2 positive control is
+# apples-to-apples and only the CONDITIONING of the computation changes.
+#
+# VALIDATION (all reproduced live, 2026-07-18, C=3.13 EM-L2 n1=28,n2=9 torus):
+#   * one-shot vec_u swings up to 88 deg under a 1e-4 base perturbation;
+#   * segmented (n_segments>=12) vec_u swings <0.01 deg under the same
+#     perturbation and converges as O(1/n_segments) to a definite limit
+#     (K=12 within ~1.6 deg, K=30 within ~0.2 deg of a K=40 reference);
+#   * the corrected direction differs from the one-shot direction by 37-85 deg
+#     (the one-shot direction was genuinely WRONG, not merely fragile);
+#   * on the mild SE-L2 torus the segmented and one-shot directions agree to
+#     <0.03 deg (both methods are fine there -- the fix only matters at EM-L2).
+
+
+@dataclass(frozen=True)
+class SegmentedCLVDiagnostics:
+    """Conditioning diagnostics for a segment-anchored CLV extraction (#646).
+
+    ``n_segments`` segments were used; ``lyapunov_exponents`` are the discrete-QR
+    Lyapunov exponents (log growth / period, descending); ``per_segment_leading_growth``
+    is the leading orthonormal-frame growth factor per segment (should be ~O(1-15),
+    NOT ~2e4 -- that is the whole point); ``lam_u`` / ``lam_s`` are the
+    reconstructed one-period STM's unstable/stable real eigenvalues;
+    ``nonnormality_ratio`` is ``sigma_max(P) / |lam_u|`` (>>1 means the manifold
+    tangent is an eigenvector far from the max-stretch singular vector);
+    ``qr_vs_direct_stm_relerr`` is the relative Frobenius error between the
+    QR-reconstructed and directly-composed one-period STM (a self-consistency
+    check on the QR accumulation).
+    """
+
+    n_segments: int
+    lyapunov_exponents: NDArray[np.float64]
+    per_segment_leading_growth: NDArray[np.float64]
+    lam_u: float | None
+    lam_s: float | None
+    nonnormality_ratio: float
+    qr_vs_direct_stm_relerr: float
+
+
+def _reproject_pv(
+    torus: QBCPTorusVariationalResult, theta_long: float, theta_trans: float, t: float
+) -> NDArray[np.float64]:
+    """Evaluate the torus PM state at ``(theta_long, theta_trans)`` and map it to
+    PV at absolute (Sun-epoch) time ``t`` -- the base point the next segment's
+    local STM is linearized about (the #646 re-projection)."""
+    pm = evaluate_torus_state(torus, float(theta_long), float(theta_trans))
+    return qbcp.state_pm_to_pv(pm, float(t), torus.system)
+
+
+def _segment_period_stm(
+    torus: QBCPTorusVariationalResult,
+    theta_long: float,
+    theta_trans: float,
+    n_segments: int,
+    rtol: float,
+    atol: float,
+) -> (
+    tuple[
+        NDArray[np.float64],
+        NDArray[np.float64],
+        NDArray[np.float64],
+        NDArray[np.float64],
+        NDArray[np.float64],
+    ]
+    | None
+):
+    """Segment-anchored, torus-re-projected composition of the one-period PV STM.
+
+    Returns ``(base_pv_t0, p_qr, p_direct, per_segment_leading_growth, log_growth)``
+    where ``base_pv_t0`` is the PV torus state at ``t0``; ``p_qr = Q @ R_prod`` is the
+    QR-reconstructed one-period STM (the composition of ``n_segments`` re-projected
+    segment STMs); ``p_direct`` is the same product accumulated directly (a
+    self-consistency check on the QR bookkeeping); ``per_segment_leading_growth[k]``
+    is the leading R-diagonal of segment ``k``; ``log_growth`` is the accumulated
+    ``log|diag(R_prod)|`` (Lyapunov exponents times the period). ``None`` if any
+    segment propagation fails.
+
+    The PV frame-transformation matrices telescope cleanly at interior boundaries
+    (``M_inv(s_k) @ M(s_k) = I``, they depend only on time), so ``p_qr`` is a
+    consistent PV one-period STM regardless of the re-projection -- the re-projection
+    changes only the STATE each segment linearizes about (via the flow Jacobian),
+    which is exactly the diverged-trajectory error `#619` could not avoid.
+    """
+    omega1, omega2 = torus.omega1, torus.omega2
+    period = torus.period
+    t0 = (float(theta_long) % (2.0 * np.pi)) / omega1
+    dt = period / n_segments
+
+    q_acc = np.eye(_N_STATE)
+    r_prod = np.eye(_N_STATE)
+    p_direct = np.eye(_N_STATE)
+    log_growth = np.zeros(_N_STATE)
+    seg_lead = np.empty(n_segments, dtype=np.float64)
+    base_pv_t0 = np.empty(_N_STATE)
+
+    for k in range(n_segments):
+        sk = t0 + k * dt
+        tl_k = theta_long + omega1 * (sk - t0)
+        tt_k = theta_trans + omega2 * (sk - t0)
+        pv_k = _reproject_pv(torus, tl_k, tt_k, sk)
+        if k == 0:
+            base_pv_t0 = pv_k
+        try:
+            _, states_pv = qbcp.propagate_qbcp_pv(
+                pv_k, (sk, sk + dt), torus.system, with_stm=True, rtol=rtol, atol=atol
+            )
+        except RuntimeError:
+            return None
+        m_k = states_pv[-1, 6:].reshape((_N_STATE, _N_STATE))
+        p_direct = m_k @ p_direct
+        # QR re-orthonormalization of the running product (Dieci-Van Vleck):
+        # Y = M_k Q_{k-1} = Q_k R_k; R_prod <- R_k R_prod so P = Q_K R_prod.
+        y = m_k @ q_acc
+        q_acc, r_k = np.linalg.qr(y)
+        sign = np.sign(np.diag(r_k))
+        sign[sign == 0.0] = 1.0
+        q_acc = q_acc * sign
+        r_k = (r_k.T * sign).T
+        r_prod = r_k @ r_prod
+        seg_lead[k] = abs(r_k[0, 0])
+        log_growth += np.log(np.abs(np.diag(r_k)))
+
+    p_qr = q_acc @ r_prod
+    return base_pv_t0, p_qr, p_direct, seg_lead, log_growth
+
+
+def manifold_direction_segmented_clv(
+    torus: QBCPTorusVariationalResult,
+    theta_long: float,
+    theta_trans: float,
+    branch: str,
+    ref_vec: NDArray[np.float64] | None,
+    *,
+    n_segments: int = 16,
+    hyperbolicity_tol: float = 1e-4,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+    return_diagnostics: bool = False,
+) -> (
+    tuple[NDArray[np.float64], NDArray[np.float64]]
+    | tuple[NDArray[np.float64], NDArray[np.float64], SegmentedCLVDiagnostics]
+    | None
+):
+    """Segment-anchored discrete-QR / CLV manifold direction at a torus phase (#646).
+
+    Drop-in replacement for :func:`manifold_state_vec_pseudospectral` with the same
+    ``(state_pv, eigenvector)`` contract (add ``return_diagnostics=True`` for a
+    trailing :class:`SegmentedCLVDiagnostics`). Splits the one stroboscopic period
+    into ``n_segments`` segments, RE-PROJECTS the base state onto the explicit
+    torus at every segment boundary, composes the per-segment STMs with QR
+    re-orthonormalization, and eigendecomposes the reconstructed one-period STM
+    (``local_stability``, the GMOS/one-shot convention) for the real
+    stable/unstable eigenvector. See the module-level comment for the full
+    rationale and validation. ``branch`` is ``"unstable"`` or ``"stable"``;
+    ``ref_vec`` fixes the sign by dot-product continuity. Returns ``None`` if a
+    segment propagation fails or no real hyperbolic eigenpair of the requested
+    branch exists.
+    """
+    from cyclerfinder.genome.qp_torus_manifold import local_stability
+
+    if branch not in ("unstable", "stable"):
+        raise ValueError(f"branch must be 'unstable' or 'stable', got {branch!r}")
+    if n_segments < 1:
+        raise ValueError(f"n_segments must be >= 1, got {n_segments}")
+
+    composed = _segment_period_stm(torus, theta_long, theta_trans, n_segments, rtol, atol)
+    if composed is None:
+        return None
+    base_pv_t0, p_qr, p_direct, seg_lead, log_growth = composed
+
+    stab = local_stability(base_pv_t0, p_qr, hyperbolicity_tol=hyperbolicity_tol)
+    vec = stab.vec_u if branch == "unstable" else stab.vec_s
+    if vec is None:
+        return None
+    vec = np.asarray(vec, dtype=np.float64)
+    vec = vec / np.linalg.norm(vec)
+    if ref_vec is not None and float(np.dot(vec, ref_vec)) < 0.0:
+        vec = -vec
+
+    if not return_diagnostics:
+        return base_pv_t0, vec
+
+    sigma_max = float(np.linalg.svd(p_qr, compute_uv=False)[0])
+    nonnormality = sigma_max / abs(stab.lam_u) if stab.lam_u else float("inf")
+    relerr = float(np.linalg.norm(p_qr - p_direct) / (np.linalg.norm(p_direct) + 1e-300))
+    diag = SegmentedCLVDiagnostics(
+        n_segments=n_segments,
+        lyapunov_exponents=np.sort(log_growth / torus.period)[::-1],
+        per_segment_leading_growth=seg_lead,
+        lam_u=stab.lam_u,
+        lam_s=stab.lam_s,
+        nonnormality_ratio=nonnormality,
+        qr_vs_direct_stm_relerr=relerr,
+    )
+    return base_pv_t0, vec, diag

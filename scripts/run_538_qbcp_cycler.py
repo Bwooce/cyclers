@@ -105,8 +105,27 @@ from cyclerfinder.genome.qp_torus_manifold import local_stability
 from cyclerfinder.search.cr3bp_periodic import correct_symmetric_fixed_jacobi
 from cyclerfinder.search.variational_qbcp_torus import (
     QBCPTorusVariationalResult,
+    manifold_direction_segmented_clv,
     manifold_state_vec_pseudospectral,
 )
+
+# #646: number of segments for the segment-anchored discrete-QR / CLV extraction
+# of the pseudospectral EM-L2 UNSTABLE-manifold direction. ``None`` keeps `#619`'s
+# original one-shot one-period-STM extraction (the documented default so the
+# existing shape/behaviour ratchets are unchanged); a positive int routes the
+# pseudospectral-torus UNSTABLE branch through
+# ``manifold_direction_segmented_clv`` instead (`#619`'s wall was specifically the
+# unstable direction; the stable one is robust one-shot, so only "unstable" is
+# rerouted). Set via :func:`set_clv_unstable_segments`.
+_CLV_UNSTABLE_SEGMENTS: int | None = None
+
+
+def set_clv_unstable_segments(n_segments: int | None) -> None:
+    """Enable (int) or disable (``None``) the #646 segmented-CLV extraction of the
+    pseudospectral EM-L2 unstable-manifold direction for the whole connection search."""
+    global _CLV_UNSTABLE_SEGMENTS
+    _CLV_UNSTABLE_SEGMENTS = n_segments
+
 
 # --------------------------------------------------------------------------
 # Residual / unknown structure (Task 1). These constants define the shape and
@@ -342,6 +361,22 @@ def manifold_state_vec(
     ``local_stability``) for that type and returns the same contract.
     """
     if isinstance(torus, QBCPTorusVariationalResult):
+        if branch == "unstable" and _CLV_UNSTABLE_SEGMENTS is not None:
+            # #646: segment-anchored discrete-QR extraction of the violently-
+            # unstable EM-L2 unstable direction (the one `#619` showed the
+            # one-shot method cannot recover). Returns the same (state_pv, vec)
+            # contract; None on failure, same as the one-shot path.
+            res = manifold_direction_segmented_clv(
+                torus,
+                theta_long,
+                theta_trans,
+                branch,
+                ref_vec,
+                n_segments=_CLV_UNSTABLE_SEGMENTS,
+            )
+            if res is None:
+                return None
+            return res[0], res[1]
         return manifold_state_vec_pseudospectral(torus, theta_long, theta_trans, branch, ref_vec)
     state = evaluate_qbcp_torus(torus, theta_long, theta_trans)
     t0 = (float(theta_long) % (2.0 * math.pi)) / torus.omega_long
