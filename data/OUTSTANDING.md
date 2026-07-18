@@ -567,8 +567,11 @@ as a theorem-grade-negative route, #623's own standing reserve, no current forci
 Europa/Titania), BLOCKED on #633's outcome (registered 2026-07-18); #639 for a small-mu
 Hill-problem analytic-seed solver, no current forcing function (registered 2026-07-18); #640 for
 acquiring classical small-mu asymptotic literature (Henon/Benest/quasi-satellite), optional
-context not a gate, triggered only if #633/#638 finds something (registered 2026-07-18); #641
-next-unused):**
+context not a gate, triggered only if #633/#638 finds something (registered 2026-07-18); #641 for
+a real #628-seed-model discovery run at Sun-Jupiter mu~9.5e-4 (near the strongest validated
+cross-mu lift point, a system never targeted anywhere in the #600-#640 arc, explicitly NOT the
+search_campaign_daemon.py corpus-generation script to avoid #634's feedback-loop hazard,
+dispatched 2026-07-18); #642 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9186,6 +9189,54 @@ anywhere in the file and are genuinely still open.]**
   `[[feedback_literature_novelty_check_baseline]]`) — so this becomes worth acquiring proactively
   only if `#633` (or a future `#638`) actually finds something, not before. Recommended model:
   Sonnet (mechanical acquisition + digest once triggered).
+- **#641** (dispatched 2026-07-18, user-directed) — a genuine discovery run using `#628`'s
+  productionized generative seed model (`src/cyclerfinder/ml/seed_generation.py`,
+  `generate_and_refine_seeds`) at a real, previously-unswept target: a **Sun-Jupiter CR3BP
+  periodic-orbit family census near μ≈9.5464e-4** (Jupiter/(Sun+Jupiter) — look up the exact value
+  in-repo, e.g. via `cr3bp_system("Sun","Jupiter").mu`, do not hardcode from this prompt). This is
+  a deliberate choice, not an arbitrary one: μ≈9.5e-4 sits close to `#624`'s STRONGEST validated
+  cross-μ lift point (30x at μ=0.001, vs. 3.5x at Sun-Earth μ≈3e-6 — the further μ is from the
+  training point, the weaker the measured lift, so this target is chosen to sit near the best-
+  evidenced regime, not the weakest), and Sun-Jupiter CR3BP itself has NEVER been the direct
+  target of any task in this project's entire `#600`-`#640` arc (which covered Earth-Moon, Sun-
+  Earth, and numerous planet-*moon* systems — Uranian, Saturnian, Galilean, Neptune, Mars,
+  asteroid-moon — but never the Sun-Jupiter system itself). **This is explicitly NOT the
+  `search_campaign_daemon.py` Phase B daemon** — that script is Earth-Moon-only (in-distribution,
+  not a transfer test) AND is dedicated `#210`-corpus-generation infrastructure whose
+  `correct_periodic` calls auto-log into the model's OWN training corpus by default
+  (`CYCLERFINDER_OUTCOME_LOG`) — pointing generative seeds at it would trigger exactly the
+  distribution-feedback-loop hazard `#634` already identified and documented; do not use it.
+  **Scope**:
+  1. Use `generate_and_refine_seeds` (NOT the daemon) to generate and refine a substantial batch of
+     candidate seeds at Sun-Jupiter μ (N≈500-1000, informed by `expected_lift_for_mu`'s own
+     documented confidence at this Δlog-μ distance), harvesting whatever real, physically-sane
+     periodic-orbit families converge — this is a CENSUS, not a targeted search for one specific
+     family, consistent with `#624`'s own honest characterization of what this model is actually
+     good at ("finds SOME real family, not necessarily the target one").
+  2. Deduplicate/cluster the converged results into distinct families (by Jacobi constant + period +
+     qualitative geometry — reuse this project's existing family-classification tooling if any
+     applies, e.g. `heuristic_family_tag` from `#608`'s own module, or build a light clustering pass
+     if not).
+  3. **Mandatory literature novelty check** on every distinct family found, per
+     `[[feedback_literature_novelty_check_baseline]]` — run `search/literature_check.py` against
+     each cluster's representative member. Sun-Jupiter CR3BP families are extensively studied in
+     the literature (Jupiter Trojans, classical halo/Lyapunov/DRO families, resonant families) —
+     expect most or all hits to be well-known, already-published families; a "this is all known
+     classical territory" result is a fully legitimate, expected outcome, not a failure. Anything
+     that survives the novelty check as a genuine gap is the actual target of interest.
+  4. **Do NOT touch `data/catalogue.yaml`** regardless of outcome — this is a census/survey run, not
+     a cycler discovery in this project's own `cycler`/`quasi_cycler`/`precursor_mga` sense (raw
+     CR3BP periodic orbits are not cyclers by themselves). If anything genuinely novel and
+     citable surfaces (a new family, or a citable figure-of-merit result in the style of `#591`),
+     stop and report it in detail for adjudication rather than writing it back yourself.
+  5. A clean "everything found is already-published classical territory" result is a fully
+     legitimate, valuable outcome — it would be the first real, live validation of `#628`'s
+     productionized API doing actual survey work (not synthetic evaluation), even without a novel
+     find. Report honestly either way; do not manufacture a discrepancy.
+  Recommended model: Sonnet for the generation/refinement/clustering/literature-check pipeline
+  (mechanical, reuses fully-validated `#628` infrastructure); if a genuine novel-looking survivor
+  emerges from the literature check, escalate that specific adjudication to Opus/Fable rather than
+  letting Sonnet make the final novelty call.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
