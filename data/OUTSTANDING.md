@@ -9718,6 +9718,47 @@ anywhere in the file and are genuinely still open.]**
   conditioning, ghost-minima — before recommending it), a rough cost estimate, and an honest
   confidence level. This program's own culture strongly prefers a well-characterized "this doesn't
   look promising, here's why" over a padded list. Recommended model: Fable.
+  **✓ DONE (2026-07-18) — full report at `docs/notes/2026-07-18-645-creative-strategy-review.md`.**
+  Ranked 5-item shortlist, each checked explicitly against the four named walls before ranking:
+  **(1)** segment-anchored discrete-QR / covariant-Lyapunov-vector extraction of the EM-L2
+  UNSTABLE manifold direction (Benettin/Ginelli/Dieci-Van Vleck — split the period into 10-20
+  segments, RE-PROJECT the base trajectory onto `#618`'s explicit torus each segment so
+  linearization never rides the ~2e4× one-period divergence, compose segment STMs with QR),
+  then re-run `#619`'s existing connection corrector with correct directions — `#619` only ever
+  tried one-SHOT one-period extraction, and its impossibility argument covers exactly that, not
+  this; ~2-4 days, Opus; MEDIUM the direction becomes recoverable, LOW-MEDIUM (~15-25%) closure
+  follows — either the first genuine SE↔EM cislunar cycler (Fable-adjudicated) or the
+  `#538`-`#626` negative upgraded to "fails even with correct directions". **(2)** deflation
+  (`deflated_newton.py`, `#524` — only ever aimed at basin-restricted shooting residuals) applied
+  in the `#606` seedless spectral corrector's Fourier-coefficient space with a gauge-invariant
+  (phase-minimized) distance + mandatory Radau cross-check — turns the seedless corrector into a
+  systematic distinct-family ENUMERATOR, closing W1's residue (`#606`'s own selection bias); no
+  prior astrodynamics application found; positive control = re-enumerating known Earth-Moon
+  families at fixed C; first real target = `#633`'s ν≈1.042 Titan near-miss (path-free check of a
+  fresh headline negative; LOW odds it flips, the durable value is the reusable capability);
+  ~2-3 days. **(3)** ingest JPL SSD's Three-Body Periodic Orbits catalog (the authority `#641`
+  cited manually) as a known-family GATE + multi-μ sourced goldens — fixes `#641`'s documented
+  "literature_check.py unfit for raw periodic orbits" gap that `#644` and every future census
+  will re-hit; ~1-2 days, HIGH confidence, discovers nothing itself. **(4)** the explicitly-posed
+  μ-conditioning question, answered: architectural conditioning is DATA-gated (single-μ corpus —
+  nothing to condition on) and probably permanently moot once (3) exists (catalog
+  nearest-neighbor + existing continuation beats a generative cross-μ seeder); the one cheap
+  live test is a COORDINATE fix — Hill-radius/ρ=(C−3)/(C_L1−3)-normalized genome (grounded in
+  `#629`'s own ρ-invariance finding), decoded at target μ by inverting the scales, directly
+  targeting `#642`'s verified L4/L5-collapse mechanism; hours, ~25-40% odds, decisive close-out
+  either way. **(5)** inter-cycler transfer-compatibility network over the 361-row catalogue
+  (the M5/M6-tier work `#570`'s scoping explicitly deferred): V∞/Tisserand + phase-window gates
+  on every row pair sharing an encounter body → a derived cycler-network graph, a genuinely new
+  object class from this project's unique asset; honest risk named — independent-cycler phasing
+  is measure-zero unpowered, so "no cheap edges" (itself citable) is the likely outcome; ~1 week.
+  **Checked and NOT recommended** (each with reasons in the report): over-collocation ghost
+  suppression (`#626` already subsumed it), any new-body sweep (W7), bigger generative models
+  (`#614`), W-Z CAP build (`#636` stays parked — but noted: if (1) restores correct directions
+  and closure STILL fails, that strengthened negative is the natural `#636` trigger), low-thrust/
+  solar-sail cycler classes (`#519` closed; design-dependent controls, not discoverable invariant
+  objects), p:q E-M resonant-cycler census (known-class mission-design territory), QBCP refits/
+  denser grids (`#623`'s rejections stand). Recommended dispatch order: 1, 3, 2, 4, 5. No task
+  numbers allocated (next-unused stays `#646`).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
