@@ -595,8 +595,10 @@ equilibrium-inflated #624 anchors (bounded #642-adjudication follow-up, code fix
 registered 2026-07-18; CLOSED 2026-07-18: both falsified anchors DELETED from LIFT_ANCHORS,
 surviving in-distribution anchor updated 12.25->13.5, expected_lift_for_mu now returns
 estimated_lift=None+beyond_validated_range=True off-distribution instead of a fabricated
-number, tests/docstrings updated, commit `bee830a`); #644
-next-unused):**
+number, tests/docstrings updated, commit `bee830a`); #644 for an in-distribution Earth-Moon
+unswept-region census using #628's fixed generative model, investigation-first (dispatched
+2026-07-18); #645 for a fresh Fable creative-strategy pass, the #605 sequel now that the entire
+#606-#644 arc has landed (dispatched 2026-07-18); #646 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9658,6 +9660,64 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep::test_504_sweep_33`, both matching the documented local-Mac/M3
   Accelerate-BLAS-sensitivity signature from `#584`'s memory entry), all `tests/ml/
   test_seed_generation.py` (27) and `tests/scripts` (129) green.
+- **#644** (dispatched 2026-07-18, user-directed) — a genuine in-distribution discovery run:
+  point `#628`'s now-`#642`/`#643`-fixed generative seed model at a genuinely UNSWEPT region
+  WITHIN Earth-Moon CR3BP itself (not a cross-μ transfer — `#643` correctly retracted that claim;
+  this stays at/near the training μ=0.01215, where the model's lift is confirmed real, ~13-27x).
+  **This is the one remaining discovery lever that doesn't require new external data**, per the
+  coordinating session's own honest assessment that further novel-species discovery elsewhere in
+  this project looks increasingly gated on new literature/systems, not more search iteration —
+  Earth-Moon is nonetheless the single most heavily-searched system in this entire project's
+  history, so treat this as a low-confidence, cheap-to-try lead, not a strong bet.
+  **Scope — the FIRST step is investigation, not a blind census**:
+  1. Read `src/cyclerfinder/search/cr3bp_seed_generator.py` in full to enumerate exactly which
+     classical families + Jacobi-constant/energy ranges the EXISTING analytic seed catalog already
+     covers (halo L1/L2/L3 families 1-3 N/S, DRO, DPO, Lyapunov, vertical, axial, LPO, resonant —
+     per `scripts/search_campaign_daemon.py`'s own `FAMILIES` list, cross-check against the actual
+     generator code for the real Jacobi/energy bounds each family spans).
+  2. Load the actual `#210` training corpus (`cyclerfinder.ml.seed_generation.default_corpus_paths`
+     + `assemble_corpus`) and compute its empirical Jacobi-constant distribution — find genuinely
+     UNDER-REPRESENTED energy ranges (not just "any gap," a real, non-trivial gap in corpus density)
+     that are ALSO not already covered by the analytic catalog from step 1. The physically
+     interesting candidate is near/below the L1 critical Jacobi constant (where the Hill regions
+     around Earth/Moon merge and interior/exterior transit — low-energy-transfer-adjacent — orbits
+     become topologically possible, a genuinely different character than the bound classical
+     families) — check whether this range is actually under-represented before committing to it;
+     if the investigation finds no genuine gap anywhere, report that honestly and stop rather than
+     forcing a census into already-covered territory.
+  3. Only if step 2 finds a real, well-motivated gap: run `generate_and_refine_seeds` with
+     `target_jacobi_bounds` constrained to that range (N≈500-1000, same incremental-progress
+     discipline as `#641` — pilot batch first, checkpoint to disk), cluster the converged results
+     into distinct families (reuse `#641`'s clustering approach), and run the mandatory
+     `search/literature_check.py` novelty gate on each distinct cluster.
+  4. Do NOT touch `data/catalogue.yaml`. A clean "nothing novel, or no genuine gap to search"
+     result is a fully legitimate, expected outcome given how heavily this system has already been
+     searched — do not manufacture a discrepancy. If something genuinely novel and literature-clear
+     survives, stop and report in full detail for adjudication rather than writing it back.
+  Recommended model: Sonnet (reuses fully-validated `#628`/`#641` infrastructure; the "is this gap
+  real" investigation is careful but not judgment-heavy in the Opus sense — it's a data-driven
+  density check, not a numerical-methods call).
+- **#645** (dispatched 2026-07-18, user-directed) — a fresh Fable creative-strategy pass, the
+  natural sequel to `#605`'s original mandate (2026-07-15) now that the entire `#606`-`#644` arc
+  has landed since — a huge amount of new CAPABILITY (seedless spectral correctors for periodic
+  orbits/tori in both CR3BP and QBCP, Chebyshev collocation arcs, a bug-fixed generative seed
+  model, interval-arithmetic certification, niching-GA) and new NEGATIVE-RESULT KNOWLEDGE (the
+  family-selection/basin-wall diagnosis; SE↔EM closed twice independently; Titan-μ RRT closed;
+  Sun-Jupiter census clean; the generative model's cross-μ collapse and its root cause — no
+  μ-conditioning) has accumulated that `#605` never had access to. Analysis/planning only — no
+  code, no catalogue writeback, no new search dispatch; mirrors `#605`'s/`#623`'s own format
+  (read both those tasks' full reports, `docs/notes/2026-07-17-623-strategic-review.md` too, as
+  the required context baseline before generating new ideas — do NOT re-propose anything already
+  tried/rejected there without engaging with why it failed). Explicitly look for ideas that are
+  GENUINELY NEW relative to this project's entire history, not incremental variations on
+  "sweep another unswept body" (that pattern's marginal value is now well-established as low, per
+  `#633`'s and `#641`'s clean results) — new METHODS, new OBJECT CLASSES, or new ways of combining
+  the capability set that hasn't been tried. Produce a ranked shortlist with, for each idea: what
+  it is, why it's plausible GIVEN what's already been tried and found not to work (explicitly
+  check each proposal against the known walls — manifold-conditioning, basin-selection, no-μ-
+  conditioning, ghost-minima — before recommending it), a rough cost estimate, and an honest
+  confidence level. This program's own culture strongly prefers a well-characterized "this doesn't
+  look promising, here's why" over a padded list. Recommended model: Fable.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
