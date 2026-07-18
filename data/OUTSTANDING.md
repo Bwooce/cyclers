@@ -578,7 +578,13 @@ public Three-Body Periodic Orbits catalog, nothing novel, no catalogue writeback
 search/literature_check.py's KNOWN_CORPUS is cycler-scoped and unusable for raw periodic-orbit
 candidates); #642 for auditing whether the L4/L5-equilibrium contamination #641 found also
 affects #608's/#624's original lift numbers that #542's "validated discovery lever" upgrade was
-based on, per the bugfix-invalidates-past-searches discipline (dispatched 2026-07-18); #643
+based on, per the bugfix-invalidates-past-searches discipline (dispatched 2026-07-18; CLOSED
+(audit)/AWAITING OPUS ADJUDICATION (#542 verdict) 2026-07-18: severe contamination CONFIRMED --
+#624's cross-mu "lift transfers" claim falsified (0 real generated orbits at both tested mu vs. a
+nonzero baseline, reproduced twice independently), #608's in-distribution 12.25x figure unreliable
+as stated though a real ~13-27x lift persists; production fix shipped (is_physically_sane rejects
+degenerate equilibria by default), #608/#624/#542 bullets corrected, #542's own framing
+deliberately left for Opus adjudication); #643
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -4680,6 +4686,19 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   literature-novelty check — capability POC only, per this task's explicit scope. Independently
   re-run by the coordinating session (fixed `seed=608`): numbers reproduce bit-for-bit, including
   the 12.25x generated-vs-baseline physically-sane convergence ratio.
+  **`#642` CORRECTION (2026-07-18)**: the 12.25x figure above (49% generated vs. 4% baseline) was
+  measured before `is_physically_sane` rejected degenerate Lagrange-point equilibria (fixed points
+  that trivially satisfy any periodicity residual). `#642` re-derived the true numbers from this
+  task's own saved raw converged states (`data/found/608_generative_seed_poc/refine_results.jsonl`)
+  and found ALL 4 of the original baseline's "physically-sane" hits were actually equilibria (0
+  real baseline orbits at this N, making the corrected ratio UNDEFINED, not simply smaller), while
+  the generated arm retained 22/49 genuine hits (22%). A fresh independent re-run of the
+  productionized API found 27%/2% (13.5x) — the qualitative "generative clearly beats blind
+  seeding" conclusion holds up, but the specific "12.25x" figure is not a reliable point estimate
+  (true baseline hit rate is much lower/noisier than 4%). This does NOT reopen the POC-viability
+  verdict above (a real, substantial in-distribution lift genuinely exists), but the exact
+  multiplier should not be quoted without this caveat. See `#642`'s own bullet for the full
+  numbers and its severer finding at `#624`'s cross-μ measurements.
 - **#609** (P1, new capability) — `#605` shortlist item 4: hierarchical "cycler-of-cyclers" —
   phase-match a heliocentric cycler's planetary encounters to a moon-system cycler at the target
   (commensurability between the synodic super-period and the moon-cycler period). All lower-level
@@ -6524,10 +6543,16 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   separate later steps). Full ratchet (`uv run pytest tests/data tests/search -q`) passed clean
   (exit 0, no FAILED/ERROR; xfail/xpass/skip baseline unchanged) before commit.
 
-- **#542 ✓✓ VALIDATED DISCOVERY LEVER, by `#608` + `#624` (2026-07-17)** — the one remaining open
-  claim ("does the lift transfer to a μ the model never trained on") is now RESOLVED POSITIVE; see
-  the `#624`-added paragraph at the end of this bullet for the numbers. Superseded header (kept for
-  history): "✓ RESEARCH QUESTION ANSWERED, by `#608` (2026-07-16)" (P4, defer until #539-541 have added
+- **#542 ⚠ #642 AUDIT FLAG (2026-07-18) — DO NOT TRUST THE VERDICT BELOW WITHOUT READING THE
+  `#642`-ADDED PARAGRAPH AT THE END OF THIS BULLET FIRST.** The `#624` cross-μ evidence this
+  "✓✓ VALIDATED DISCOVERY LEVER" upgrade was based on has been found severely contaminated by
+  `#642` (degenerate-equilibrium false positives) — the framing below is DELIBERATELY LEFT
+  UNCHANGED pending Opus adjudication (see `#642`'s own bullet), not because it has been
+  re-confirmed. Original header (kept for history, status below is STALE pending that
+  adjudication): "✓✓ VALIDATED DISCOVERY LEVER, by #608 + #624 (2026-07-17) — the one
+  remaining open claim ('does the lift transfer to a μ the model never trained on') is now
+  RESOLVED POSITIVE; see the #624-added paragraph at the end of this bullet for the numbers.
+  Superseded header (kept for history): 'RESEARCH QUESTION ANSWERED, by #608 (2026-07-16)'" (P4, defer until #539-541 have added
   corrector-run diversity) — The previously-proposed #525 learned-seed generative warm-start
   (diffusion/generative model trained on the accumulated corrector runlogs/checkpoints, cf.
   Graebner & Beeson, arXiv:2501.07005) to propose seeds in unknown basins automatically. Still
@@ -6577,6 +6602,26 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   (see `#624`'s own bullet) that lift magnitude is μ-dependent and a production build should
   account for that rather than assuming uniform transfer. See `#624`'s own bullet for the full
   numbers, positive-control detail, and commit.
+
+  **`#642` UPDATE (2026-07-18) — READ THIS BEFORE TRUSTING ANY VERDICT ABOVE.** `#642` audited
+  whether the same degenerate-Lagrange-point-equilibrium contamination `#641` found at Sun-Jupiter
+  also affected `#608`'s/`#624`'s original evaluations, and found it did, severely: re-filtering
+  `#624`'s own saved raw converged states through a corrected `is_physically_sane` found EVERY ONE
+  of the μ=0.001 generated arm's "60% physically-sane" hits (and the Sun-Earth arm's "7%") was
+  actually an L4/L5 equilibrium, not a real orbit — 0 genuine generated orbits at either tested μ,
+  independently reproduced by a fresh live re-run of the productionized API. The "null hypothesis
+  decisively rejected" / "lift TRANSFERS" verdict directly above is therefore **RETRACTED as
+  originally stated** — see `#624`'s own bullet (now flagged) and `#642`'s own bullet for the full
+  corrected numbers. `#608`'s in-distribution 12.25x figure is also affected (its 4% baseline was
+  100% equilibria too), though a real, substantial in-distribution lift does still appear to hold
+  up under re-derivation (~13-27x, noisier than originally reported) — closer to a genuine partial
+  confirmation than a full collapse.
+  **Per `#642`'s own explicit step 9 (an outcome-(c) severity call): this task's "✓✓ VALIDATED
+  DISCOVERY LEVER" framing is intentionally NOT rewritten by `#642` itself** — that verdict change
+  is reserved for Opus-tier adjudication (this project's own `[[feedback_subagent_model_tiering]]`
+  policy: trust-bearing verdicts are not Sonnet's call), not decided here. Treat `#542`'s status as
+  **AWAITING ADJUDICATION**, not confirmed, until that review lands. See `#642`'s own bullet for
+  the full numbers, the outcome classification, and exactly what Opus needs to decide.
 
 - **#543 ✓ SCOPED (2026-07-11)** (header corrected 2026-07-15: this bullet's opening line said
   "parking lot — needs a scoping conversation, not a sprint slot" even though its own body records
@@ -8250,8 +8295,13 @@ anywhere in the file and are genuinely still open.]**
   computer-assisted-proof machinery (in corpus, digested, Oterma golden reproduced) as the only
   route to theorem-grade dynamical negatives — parked, multi-week, no current forcing function;
   minor: the Litteri CMDA 138:25 journal version remains unacquired.
-- **#624 ✓ DONE (2026-07-17) — DECISIVE POSITIVE: the `#608` lift TRANSFERS off-distribution,
-  `#542` upgraded from "answered" to "validated discovery lever, worth productionizing."**
+- **#624 ⚠ HEADLINE FALSIFIED BY `#642` (2026-07-18) — the "DECISIVE POSITIVE"/"lift TRANSFERS"
+  claim below does NOT hold once degenerate Lagrange-point equilibria are correctly excluded; see
+  the `#642`-added paragraph at the end of this bullet for the corrected numbers and the explicit
+  Opus-adjudication hand-off on what this means for `#542`.** Original header (kept for history,
+  NOT current): "✓ DONE (2026-07-17) — DECISIVE POSITIVE: the `#608` lift TRANSFERS
+  off-distribution, `#542` upgraded from 'answered' to 'validated discovery lever, worth
+  productionizing.'"
   (dispatched 2026-07-17, `#623` shortlist B1 — user-directed) — cross-μ transfer pilot for
   `#608`'s generative ML seed model, the direct test of `#542`'s one remaining open claim ("can a
   model trained on this corpus propose useful seeds in a genuinely unfamiliar basin"). Scope: take
@@ -8301,6 +8351,25 @@ anywhere in the file and are genuinely still open.]**
   signature from `#584`'s memory entry: a tolerance-edge V∞ match and an integer winding-number
   topology flip; this task touches no CR3BP solver code); `tests/scripts -q` green (109+ tests,
   including the new documented preflight exemption).
+  **`#642` CORRECTION (2026-07-18) — the "null hypothesis rejected" verdict above does NOT
+  survive re-derivation.** `#642` re-filtered this task's own saved raw converged states
+  (`data/found/624_cross_mu_transfer_pilot/refine_results.jsonl`) through the fixed
+  `is_physically_sane` (now rejects degenerate Lagrange-point equilibria by default) and found:
+  at **μ=0.001**, ALL 60 of the original "60% physically-sane" generated hits were actually L4/L5
+  equilibria (42 L4 + 18 L5) — 0 real generated orbits, vs. the baseline's already-tiny 2 hits
+  which were ALSO both equilibria (0 real baseline orbits either); at **Sun-Earth**, all 7
+  generated hits were L4 equilibria (0 real), while the baseline retained 1 genuine orbit (a
+  corrected ratio of 0.0x — generative UNDERPERFORMED blind seeding, not merely "weaker"). A
+  fresh, independent LIVE re-run of the productionized `generate_and_refine_seeds` API (different
+  rng draws, N=60) reproduced the identical collapse: 0/60 real generated hits at BOTH mu, vs.
+  2/60 real baseline hits at both — two independent trials, same result. The "stronger at
+  μ=0.001 than in-distribution" headline was ENTIRELY an artifact of counting L4/L5 equilateral-
+  point fixed points as genuine periodic orbits; the Ross-RT positive-control infra check (the
+  corrector genuinely works at μ=0.001) is unaffected and still stands on its own. **This task's
+  own "DECISIVE POSITIVE"/"lift TRANSFERS" verdict and its recommendation to reclassify `#542` are
+  RETRACTED as originally stated** — see `#642`'s own bullet for the full numbers, the outcome-(c)
+  classification, and the explicit Opus-adjudication hand-off on what this means for `#542`
+  (deliberately not decided by this correction itself, per this project's model-tiering policy).
 - **#625** — ✓ CLOSED (2026-07-17). (dispatched 2026-07-17, `#623` shortlist B2 — user-directed) — generalize `#610`'s
   interval-arithmetic bend-gate certificate from the single Proteus sub-gate to every other
   `empty_regions.jsonl` negative sharing the identical closed-form failure mode (the `#324`
@@ -9332,7 +9401,13 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`, independently confirmed present on `main`
   via `git stash` before this task's changes were applied). `ruff check`/`ruff format --check`/
   `mypy src tests` all clean (0 errors).
-- **#642** (dispatched 2026-07-18, coordinating-session-directed) — audit whether the SAME
+- **#642 ⚠ AWAITING OPUS ADJUDICATION (2026-07-18) — SEVERE CONTAMINATION CONFIRMED, outcome
+  (c), not the mild/negligible case: `#624`'s cross-μ "lift transfers" claim is FALSIFIED, and
+  `#608`'s in-distribution 12.25x headline is unreliable-as-stated. Production code fixed
+  (`is_physically_sane` now rejects equilibria by default); `#542`'s "validated discovery
+  lever" framing is deliberately NOT rewritten here per this task's own step 9 — see the
+  RESULT paragraph at the end of this bullet for the full numbers and the explicit Opus
+  hand-off.** (dispatched 2026-07-18, coordinating-session-directed) — audit whether the SAME
   degenerate-equilibrium contamination `#641` found at Sun-Jupiter μ (609/614 = 99% of
   "physically-sane converged" results were actually trivial L4/L5/L1/L2 fixed points, not genuine
   periodic orbits — `is_physically_sane` has no velocity-norm check) also affects the ORIGINAL
@@ -9379,6 +9454,83 @@ anywhere in the file and are genuinely still open.]**
   Recommended model: Sonnet for the mechanical re-derivation and shared-filter refactor; if the
   corrected numbers move enough to threaten `#542`'s "validated discovery lever" framing (outcome
   (c) above), escalate that specific verdict to Opus rather than have Sonnet make the final call.
+
+  **RESULT (2026-07-18, `scripts/run_642_equilibrium_contamination_audit.py`,
+  `data/found/642_equilibrium_contamination_audit/summary.json`)**: raw converged `state0` arrays
+  WERE persisted by both `#608` (`data/found/608_generative_seed_poc/refine_results.jsonl`) and
+  `#624` (`data/found/624_cross_mu_transfer_pilot/refine_results.jsonl`) — no re-run of either
+  original (expensive) search was needed; the corrected numbers below are re-derived EXACTLY from
+  those tasks' own saved states, re-filtered through the now-fixed `is_physically_sane`.
+  `is_degenerate_equilibrium`/`lagrange_point_label` were factored out of `#641`'s script into
+  `cyclerfinder.ml.orbit_generative` (a shared, importable location; `#641`'s own script now
+  re-exports them for its existing tests) and `is_physically_sane` was extended to reject
+  degenerate equilibria BY DEFAULT (`reject_degenerate_equilibria=True`), so
+  `generate_and_refine_seeds` picks up the fix automatically for all future callers — no separate
+  change needed there. Threshold robustness double-checked against the real data (not assumed):
+  across all 4 arms' converged-and-in-bounds states, the largest below-threshold |v0| was ~3e-11
+  and the smallest genuine |v0| was ~0.095 — a clean, well-separated gap, not a knife-edge
+  artifact.
+  **Corrected numbers (generated vs. baseline, physically-sane rate; BEFORE = original headline
+  counting equilibria as real orbits, AFTER = `#642`-corrected)**:
+  * **`#608` Earth-Moon in-distribution**: BEFORE 49%/4% (12.25x). AFTER (same saved N=100 draws):
+    22%/0% — ALL 4 of the original baseline's "physically-sane" hits were L3/L4/L5 equilibria, so
+    the corrected ratio is UNDEFINED at this N, not a smaller finite number. A fresh LIVE re-run of
+    the productionized `generate_and_refine_seeds` API (different rng draws, same N=100) got
+    27%/2% (13.5x) — i.e. a real, substantial in-distribution lift clearly persists, but the true
+    baseline rate is much lower and noisier (0-2 real hits per 100, not 4) than `#608` reported, so
+    the precise "12.25x" multiplier is not a stable, trustworthy number even though the qualitative
+    "generative clearly beats blind" conclusion holds up.
+  * **`#624` μ=0.001 cross-μ**: BEFORE 60%/2% (30x, the "STRONGER than in-distribution" headline).
+    AFTER (same saved N=100 draws): 0%/0% — EVERY SINGLE ONE of the original 60 "physically-sane"
+    generated hits was an L4/L5 equilibrium (42 L4 + 18 L5), and both of the 2 baseline hits were
+    equilibria too. A fresh LIVE re-run (different rng, N=60) independently reproduced the same
+    collapse: 0/60 real generated hits vs. 2/60 real baseline hits — the generated arm found ZERO
+    genuine orbits in TWO independent trials while blind uniform seeding found some. This is not a
+    weaker lift; it is a complete collapse to worse-than-baseline.
+  * **`#624` Sun-Earth cross-μ**: BEFORE 7%/2% (3.5x). AFTER (same saved N=100 draws): 0%/1% — all
+    7 original generated hits were L4 equilibria; the baseline retained 1 genuine orbit, so the
+    corrected ratio is 0.0x (generative UNDERPERFORMS blind seeding). A fresh LIVE re-run (N=60)
+    again reproduced 0 real generated hits vs. 2 real baseline hits, matching the same pattern.
+  **Every removed "equilibrium" across all 3 measurements was overwhelmingly L4/L5** (Earth-Moon:
+  27 removed, 26 were L4/L5; μ=0.001: 62 removed, 60 were L4/L5; Sun-Earth: 8 removed, all 8 were
+  L4) — this happens at ALL THREE tested μ, not just Sun-Jupiter, which directly CONTRADICTS this
+  bullet's own outcome-(a) hypothesis that L4/L5 capture might be a Sun-Jupiter/Trojan-specific
+  phenomenon; it is a general property of this generative model's decoded seeds landing near the
+  equilateral points across every μ tested so far.
+  **Outcome classification**: **(c) for `#624`'s cross-μ "lift transfers" claim** — not merely
+  weakened, empirically FALSIFIED at both tested μ, reproduced independently twice per μ (archival
+  saved-state re-filter + a fresh live re-run). **Closer to (b) for `#608`'s in-distribution
+  result** — a real, substantial lift persists (order-of-magnitude, ~13-27x depending on draw), but
+  the specific "12.25x" figure is not a reliable point estimate given how rare real baseline hits
+  are. Because `#542`'s "validated discovery lever" upgrade was justified SPECIFICALLY by `#624`'s
+  cross-μ evidence (not `#608`'s in-distribution result alone), this audit's overall verdict for
+  the purpose of step 9's outcome gate is **(c)**.
+  **Per this task's own step 9 (outcome (c)): `#542`'s "validated discovery lever" framing is
+  DELIBERATELY NOT rewritten by this task.** `#608`'s and `#624`'s own bullets have been updated
+  with the corrected numbers above (factual corrections to what those tasks actually measured, not
+  a policy verdict). `#542`'s bullet has been flagged with a pointer to this audit; its header and
+  verdict are left untouched pending Opus adjudication, per this project's own
+  `[[feedback_subagent_model_tiering]]` policy (trust-bearing verdicts reserved for Opus, not
+  Sonnet).
+  **What Opus needs to decide**: whether `#542` should be (i) downgraded back toward "answered,
+  not a validated cross-μ lever" given `#624`'s specific falsification, (ii) narrowed to
+  "productionize for in-distribution/near-training-μ discovery use only, cross-μ transfer claim
+  retracted" (the #608-result-only framing this audit's evidence would actually support), or (iii)
+  held pending a larger-N equilibrium-filtered re-pilot of `#624`'s own protocol before any verdict
+  change (this audit's working hypothesis, given 2-for-2 independent zero-real-hit trials at both
+  cross-μ targets, is that the collapse is a robust structural finding of this model/μ combination
+  rather than an N=60-100 sampling artifact, but that hypothesis itself is untested at larger N).
+  **Production/test changes made regardless of the #542 outcome** (all committed, not blocked on
+  adjudication): `is_physically_sane`/`is_degenerate_equilibrium`/`lagrange_point_label` in
+  `src/cyclerfinder/ml/orbit_generative.py`; `LIFT_ANCHORS`/`expected_lift_for_mu`'s docstrings in
+  `src/cyclerfinder/ml/seed_generation.py` flagged STALE/pre-#642 (numeric anchors left UNCHANGED
+  — recalibrating them is a policy-adjacent judgment call this task deliberately did not make
+  unilaterally); `scripts/run_641_sun_jupiter_seed_census.py` now imports the shared functions
+  instead of duplicating them; new tests in `tests/ml/test_orbit_generative.py` and rewritten
+  regression tests in `tests/ml/test_seed_generation.py` (the former "#624 positive lift must
+  hold" test no longer asserts a directional claim the evidence contradicts); new exemption for
+  `scripts/run_642_equilibrium_contamination_audit.py` in
+  `tests/scripts/test_scripts_call_preflight.py`. No `data/catalogue.yaml` changes.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
