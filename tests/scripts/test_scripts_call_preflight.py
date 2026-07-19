@@ -147,6 +147,15 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # (no integrators, no new search, no catalogue writeback). Visible,
         # reviewed exemption per this file's own docstring.
         "run_658_epoch_carrying_transfer_check.py",
+        # #666: a positive-control VALIDATION of a new capability
+        # (search/coorbital_hamiltonian.py, the averaged 1-DOF co-orbital
+        # Hamiltonian) against two real, already-published, named objects
+        # (469219 Kamo'oalewa, (419624) 2010 SO16) -- same category as
+        # #606/#608/#614/#317/#624/#641/#642/#649/#650/#658 above: a fixed-N
+        # capability demonstration with no region_id/n_points sweep-region
+        # concept to preflight (no discovery sweep, no catalogue writeback).
+        # Visible, reviewed exemption per this file's own docstring.
+        "run_666_kamooalewa_coorbital_positive_control.py",
     }
 )
 

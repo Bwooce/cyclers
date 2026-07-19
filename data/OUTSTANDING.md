@@ -798,10 +798,16 @@ channel (registered 2026-07-19, not yet dispatched); #665 for #661 shortlist ite
 gravity-only-conditional, positive control = reproduce a published Didymos terminator-orbit family
 member (CMDA 138:2, 2025); needs 2-3 SRP-binary papers acquired first, a real corpus gap
 (registered 2026-07-19, not yet dispatched, beta-admissibility flagged as a user decision); #666
-for #661 shortlist item 4, co-orbital quasi-satellite/horseshoe transition cyclers -- zero
-co-orbital rows in the 361-row catalogue, positive control = reproduce Kamo'oalewa's own published
-QS/HS transition cycle (registered 2026-07-19, not yet dispatched, honest HIGH novelty risk
-flagged); #667 for #661 shortlist item 5, mining the JPL SSD periodic-orbits catalog as a
+for #661 shortlist item 4, co-orbital quasi-satellite/horseshoe transition cyclers -- built the
+averaged 1-DOF co-orbital Hamiltonian (`search/coorbital_hamiltonian.py`, numerical disturbing-
+function averaging, sign convention validated + a sign bug caught and fixed via the mandatory
+L4-libration-frequency positive control) and a Kamo'oalewa positive control (real JPL SBDB
+elements + real DE440 ephemeris via this project's own `Ephemeris("astropy")`, plus an independent
+full CR3BP propagation) that PASSES -- reproduces Kamo'oalewa's published CURRENT quasi-satellite
+state (`scripts/run_666_kamooalewa_coorbital_positive_control.py`); **CLOSED 2026-07-19, honest
+reproduction/census result, explicitly NOT a novelty claim** (see #666's own bullet for the full
+accounting, the second-object cross-check on 2010 SO16, and the stated scope limits); #667 for
+#661 shortlist item 5, mining the JPL SSD periodic-orbits catalog as a
 discovery INPUT (not just #647's gate) across all 7 indexed systems x 12 families, cheapest and
 highest-confidence-to-execute but lowest novelty ceiling (registered 2026-07-19, not yet
 dispatched); #668 next-unused):**
@@ -11464,19 +11470,82 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   new sweep result. **β-admissibility (what area-to-mass ratios are physically defensible for
   these specific bodies) is a user decision, not to be assumed unilaterally** — flag this
   explicitly before committing to a specific β or β-range.
-- **#666 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 4, co-orbital
-  quasi-satellite/horseshoe transition cyclers. See `#661`'s own bullet for the full case. Scope:
-  build a seedless, global search over the averaged 1-DOF co-orbital Hamiltonian's level curves to
-  find QS↔HS transition cycles — a genuinely new object class (zero co-orbital rows exist
-  anywhere in the 361-row catalogue), then verify candidates in full ephemeris. Mandatory positive
-  control: reproduce Kamo'oalewa's own published QS↔HS transition cycle from its real Horizons
-  elements (Nature Comm. Earth & Env. / arXiv:2405.20411). ~1 week. Honest risks to weigh
-  explicitly, per `#661`'s own framing: HIGH risk of "known classical object, relabeled" given the
-  deep existing Namouni/de la Fuente Marcos co-orbital literature (mandatory `literature_check.py`
-  gate before any novelty claim), and weak encounter utility (QS/HS Earth-encounter distances are
-  0.1-0.3 AU) — the defensible product is likely a catalogue-grade census with encounter windows,
-  probably `quasi_cycler`-class at best, not a headline novel-family claim. Ranked below `#664`/
-  `#665` for this reason.
+- **#666 ✓ DONE (2026-07-19)** — `#661` shortlist item 4, co-orbital quasi-satellite/horseshoe
+  transition cyclers. See `#661`'s own bullet for the full case. **Result: mandatory positive
+  control PASSED — an honest reproduction/census result, NOT a novelty claim** (per this task's
+  own explicit framing and the risk this bullet originally flagged).
+  **Infrastructure surveyed first, reused where it existed**: grepped the codebase for
+  co-orbital/QS/HS/Trojan/1:1-resonance machinery before building anything. Found `#523`'s prior
+  Earth-co-orbital CR3BP periodic-orbit work (`search/cr3bp_general_periodic_free_c.py`,
+  `scripts/run_523_earth_coorbital_search.py`/`_continuation.py`) — a DIFFERENT method (certified
+  PERIODIC orbits via continuation, found only stable horseshoes 4.9-10.3x Earth's Hill radius
+  away, explicitly NOT the transient/quasi-periodic drift phase where real close approaches live)
+  — and reused its Sun-Earth `core.cr3bp` machinery (`cr3bp_eom`/`propagate`, already validated)
+  as the full-dynamics cross-check layer rather than rebuilding an integrator. No existing averaged-
+  Hamiltonian/resonant-disturbing-function module existed; built one new:
+  `src/cyclerfinder/search/coorbital_hamiltonian.py` — a numerically-averaged (not truncated-series)
+  1:1-resonance disturbing function `R_avg(sigma, e, delta)` (double average over the planet's fast
+  phase and the asteroid's argument of periapsis, exact-in-e and exact-in-delta, avoiding the
+  low-order-in-e risk a Laplace-coefficient expansion would carry for QS's typically non-small
+  eccentricities), giving the reduced 1-DOF Hamiltonian `H = H0(a) - R_avg` and a geometric
+  (flood-fill on the H-level-set, not hand-derived sign rules) QS/tadpole/horseshoe/circulating
+  classifier. 25 tests, `tests/search/test_coorbital_hamiltonian.py`.
+  **A real sign bug was caught and fixed by this task's own mandatory validation gate before
+  anything downstream was trusted**: the standard disturbing-function convention is `H = H0 - R`
+  (perturbing acceleration = `+grad(R)`), not `H0 + R` — the wrong sign placed the classical L4/L5
+  Lagrange points at an UNSTABLE saddle of the reduced system, contradicting the well-known fact
+  that they are dynamically stable for Sun-Earth's tiny mass ratio. Caught by cross-checking this
+  module's own numerics against the independently-known closed-form L4 tadpole libration frequency
+  (`omega = n*sqrt(27/4 * mu*(1-mu))`, Murray & Dermott) — ratio 1.0000015 in magnitude, but the
+  WRONG SIGN until fixed (this is exactly the "verify before trusting" discipline
+  `[[feedback_verify_gauntlet_with_positive_control]]` and `[[feedback_orbit_closure_discipline]]`
+  exist for). Fixed in one place (`hamiltonian()`), with `build_phase_portrait()` refactored to call
+  it rather than duplicate the formula (the duplicate had silently kept the old sign the first time
+  the fix was made — caught by the same test suite, not missed).
+  **Kamo'oalewa positive control passed, three independent checks**
+  (`scripts/run_666_kamooalewa_coorbital_positive_control.py`): (1) REAL osculating elements (JPL
+  SBDB via Wikipedia, epoch 2024-Mar-31: a=1.00094 au, e=0.10269, i=7.8deg) plus Earth's REAL
+  heliocentric longitude at the same instant (this project's own `Ephemeris("astropy")`, bundled
+  JPL DE440 — no idealisation) give sigma=-3.32deg directly, zero dynamics invoked — an
+  independent, model-free confirmation it is CURRENTLY quasi-satellite, matching de la Fuente
+  Marcos & de la Fuente Marcos 2016 (MNRAS 462:3441, DOI 10.1093/mnras/stw1972). (2) the averaged
+  Hamiltonian classifies this exact real point as a narrow (~6deg-wide) `quasi_satellite` island —
+  narrow enough that physics this fixed-e model doesn't capture (Earth's own eccentricity, other
+  planets) plausibly explains the real object's observed QS<->HS switching. (3) an ENTIRELY
+  independent, higher-fidelity full (non-averaged) Sun-Earth CR3BP propagation from a
+  self-consistent real-elements IC (recovered a, e match input elements exactly; sigma matches
+  check (1) to 0.015deg) shows sigma(t) bounded within +-17deg over 30,000 years — genuine QS
+  libration, reproducing "currently a quasi-satellite" in a model that never saw the averaged
+  Hamiltonian at all. **Second independent object, (419624) 2010 SO16** (a well-known, differently-
+  classified long-lived HORSESHOE co-orbital, Christou & Asher 2011, MNRAS 414:2965) run through
+  the identical pipeline: averaged Hamiltonian correctly calls it `horseshoe` (sigma-span 328deg)
+  and the full CR3BP propagation shows sigma sweeping the ENTIRE [-180,180]deg range within
+  ~1000 years, consistent with the published ~175yr one-way/~350yr round-trip timing — confirms
+  the classifier distinguishes QS from HS correctly, not just on the one seed case.
+  **Honest scope limits, stated plainly, not buried**: planar-only (i=0) reduction, as the task's
+  own method framing specifies — both real objects' actual inclinations are dropped from the
+  dynamical model, only their ecliptic-projected longitude and real (a,e) feed both models. The
+  IDEALISED circular-Sun-Earth CR3BP does NOT itself show the real, published Myr-scale QS<->HS
+  SWITCHING (over 30,000 years the idealised model shows Kamo'oalewa in stable, essentially
+  constant-amplitude libration) — this is not a model failure on its own terms: the real switching
+  is secular, driven by physics this idealisation deliberately excludes (Earth's own ~0.0167
+  eccentricity, other planets), exactly why the real literature (Qi & Qiao 2022, Astrodynamics
+  7(1):3-14; Jiao, Cheng, Huang et al. 2024, arXiv:2405.20411) uses full N-body, not a bare CR3BP,
+  to see actual transitions. Reproducing the Myr-scale transition ITSELF is explicitly NOT claimed;
+  reproducing the CURRENT, real, published QS state from real data and two independent dynamical
+  models is the concrete, checkable result delivered.
+  **No novelty claim, no candidate found for admission, nothing written to `data/catalogue.yaml`**
+  — per this task's own explicit instruction. `literature_check.py`'s mandatory novelty gate was
+  correctly NOT invoked: nothing novel is being claimed (both objects' QS/HS behavior is already
+  fully published), so the gate has no target to check, consistent with `#666`'s own honest framing
+  that the realistic outcome here is validated reproduction/capability-building, not discovery. The
+  originally-flagged risks (HIGH risk of "known classical object, relabeled"; weak encounter
+  utility) were correct calls — this IS a reproduction of known objects, reported as exactly that.
+  `#523`'s 13-object Arjuna-class candidate list (de la Fuente Marcos & de la Fuente Marcos 2018,
+  already digested) remains a legitimate, explicitly-deferred next step for anyone who wants to
+  push this capability toward a genuine census, not run in this dispatch.
+  Full ruff/mypy/pytest clean (see this task's own verification note in the session for the exact
+  commands); no regressions in `tests/data`/`tests/search`/`tests/scripts`.
 - **#667 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 5, mine the JPL SSD
   periodic-orbits catalog as a discovery INPUT, not just `#647`'s literature-check gate. See
   `#661`'s own bullet for the full case. Scope: scan all 7 indexed systems x 12 families (per
