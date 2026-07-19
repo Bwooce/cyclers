@@ -741,11 +741,17 @@ higher-(k1,k2) topology extension (CLOSED 2026-07-19: clean negative, 0/9 new ga
 members across (4,1)-(5,5), one documented non-cycler near-miss at (5,1) — see #656's own bullet;
 `data/empty_regions.jsonl` stamped, no catalogue write); #657 for #654 shortlist item 3, real-binary genome
 round 2 (RUN 2026-07-19: #549's 4 uncapped probes + Sila-Nunam + Lempo-Hiisi all clean negatives,
-stamped; 2 GATE-PASSING CANDIDATES at Antiope, literature-checked not-found, AWAITING OPUS/FABLE
-ADJUDICATION -- see #657's own bullet, NOT yet in catalogue.yaml); #658 for #654 shortlist item 4, the epoch-locking pilot
-(registered, not yet dispatched); #659 for the Opus+Fable adjudication of #657's 2 Antiope
-gate-passing candidates ((1,1) and (2,2), both independently reproduced bit-for-bit by the
-coordinating session before dispatch; registered+dispatched 2026-07-19); #660 next-unused):**
+stamped; 2 gate-passing candidates at Antiope -- RESOLVED NO-GO by #659, see below); #658 for
+#654 shortlist item 4, the epoch-locking pilot (registered, not yet dispatched); #659 for the
+Opus+Fable adjudication of #657's 2 Antiope gate-passing candidates ((1,1) and (2,2), both
+independently reproduced bit-for-bit by the coordinating session before dispatch;
+registered+dispatched 2026-07-19; CLOSED 2026-07-19: both adjudications independently found the
+candidates are real point-mass-CR3BP orbits but genuine collision trajectories -- 3-14 km from
+each body's centre vs ~44 km real radii, ~30-38 km below each surface; NOT admitted, stamped
+model-invalidity in empty_regions.jsonl, PC(3,2) confirmed safe under the same check; #660
+registered for the recommended min-clearance-gate follow-up); #660 for adding a sourced
+min-clearance-vs-body-radius gate to real_binary_kk_sweep.py, per #659's dual-adjudicated
+recommendation (registered 2026-07-19, not yet dispatched); #661 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10916,7 +10922,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   with justification per the dispatch's own reuse-verbatim rationale; looks like a false positive
   in the preflight checker's own matching logic, flagged for the coordinator to look at
   separately, not chased down here (out of this task's scope).
-- **#657 ✓ RUN (2026-07-19, Sonnet)** — `#654` shortlist item 3, real-binary genome round 2. See
+- **#657 ✓ DONE (2026-07-19, Sonnet; Antiope disposition resolved by `#659`'s dual-adjudication
+  NO-GO — see that bullet)** — `#654` shortlist item 3, real-binary genome round 2. See
   `#654`'s own bullet for the case. **Mandatory positive control PASSED first** (7.6s):
   `sweep_32_positive_control()` (#504's own function, UNMODIFIED) re-found PC (3,2) at
   C=3.5795150, x0=-0.693198287, T=11.83346 TU (12.033 d), nu=-1.20e-07, topo_ok=True,
@@ -11018,7 +11025,15 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
     novelty per `[[feedback_literature_novelty_check_baseline]]`. NOT adjudicated here per this
     task's own scope ("run it, check literature, report — do not adjudicate yourself"). Reported
     for Opus/Fable second-opinion adjudication before any catalogue.yaml writeback.
-    `data/catalogue.yaml` NOT touched.**
+    `data/catalogue.yaml` NOT touched.** **RESOLVED by `#659` (2026-07-19): dual Opus+Fable
+    adjudication independently found BOTH candidates pass 3-14 km from each body's CENTRE against
+    ~44 km real body radii — genuine collision trajectories through solid rock, not viable
+    cyclers, a physical-admissibility gap the point-mass model + purely-dynamical gate profile
+    cannot express. NOT novel either (0.8% off the exhaustively-studied equal-mass Copenhagen
+    problem; two directly on-topic ellipsoidal-binary-model papers found independently by both
+    adjudicators that the narrow keyword literature check above missed). NO-GO, not admitted. See
+    `#659`'s own bullet for the full convergent finding and `#660` for the recommended
+    min-clearance-gate follow-up.**
 
   **New code**: `src/cyclerfinder/search/real_binary_kk_sweep.py` (+3 sourced
   `REAL_BINARY_SYSTEMS` entries, `SweepResult` added to `__all__` — a pre-existing export gap
@@ -11051,12 +11066,81 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   at call time; confirmed empirically by reproducing 2 of the logged lempo-hiisi results exactly
   with the current code. Net: a stale informational header in a scratch log, not a correctness bug
   in the actual results — flagged here for anyone reading the raw log directly.
-- **#659 (registered+dispatched 2026-07-19)** — Opus+Fable adjudication of `#657`'s 2 Antiope
-  gate-passing candidates before any `data/catalogue.yaml` consideration, per this project's
-  established `#564`/`#577`/`#588` precedent (a `literature_check.py` "not-found" result is
-  necessary-not-sufficient for novelty, never sufficient on its own). See `#657`'s own bullet for
-  the full candidate detail (both independently reproduced bit-for-bit by the coordinating session
-  before this dispatch).
+- **#659 ✓ DONE, NO-GO (2026-07-19, dual Opus+Fable adjudication, independently CONVERGENT)** —
+  adjudication of `#657`'s 2 Antiope gate-passing candidates before any `data/catalogue.yaml`
+  consideration, per this project's established `#564`/`#577`/`#588` precedent. **Verdict: both
+  candidates are real, numerically-correct stable periodic orbits of the point-mass CR3BP —
+  and both are physically unrealizable collision trajectories, not viable cyclers.**
+  Antiope's two components have radius ~42-44 km each (diameter 84-88 km) against a 176 km
+  separation — a near-contact binary (R/separation≈0.25, vs Pluto-Charon's ≈0.03-0.06). Both
+  candidates pass DEEP INSIDE both bodies: **(1,1)** comes within 11.81 km of the primary's centre
+  and 4.17 km of the secondary's (≈30-38 km BELOW each surface); **(2,2)** within 13.75 km and
+  3.16 km. **Independently confirmed three times** — Opus (full monodromy eigenvalue check + Radau
+  re-propagation + 50-period perturbation-boundedness, closure 1.8e-10, no ghost-minimum artifact),
+  Fable (direct Jacobi-relation reconstruction + reintegration), and the coordinating session
+  itself (a third, from-scratch reintegration) — all three land on the identical closest-approach
+  distances. **Root cause, both adjudicators agree**: `real_binary_kk_sweep.py`'s
+  `RealBinarySystem` dataclass carries NO body-radius field anywhere, and the existing gate profile
+  (topology/prograde/`reaches_secondary`/Barden `|nu|<1`/Radau crosscheck) is purely dynamical —
+  `reaches_secondary` is just `x.max()>L1`, which at mu≈0.5 is nearly trivially satisfied and
+  checks nothing about physical clearance (the exact class of gap
+  `[[feedback_constructed_tour_per_encounter_self_consistency]]` warns about, here even weaker
+  than that memory's original case). **Fairness check, both adjudicators independently ran**: the
+  already-catalogued `ross-rt-pc-cycler-32-2026` (PC(3,2)) clears Pluto by ~2647 km and Charon by
+  ~481 km under the identical check — genuinely external flybys, PC's own R/separation ≈0.03-0.06 —
+  so the existing catalogue row is SAFE, no retroactive action needed there.
+  **Distinctness**: (1,1)/(2,2) are technically distinct members (period ratio 2.04 not exactly 2,
+  different C/x0/winding) but of the SAME abstract Ross-RT μ=0.5 family continued to Antiope's real
+  μ, not two independent finds — moot given both are inadmissible anyway.
+  **Novelty independently re-examined and found further undermined** (Opus): Antiope's μ=0.4961 is
+  0.8% off the equal-mass Copenhagen problem — the most exhaustively studied mass ratio in
+  celestial mechanics (Strömgren 1913-39, Hénon 1965, Papadakis 1996, 22 classically-named
+  families) — and #657's narrow "cycler"-keyword literature check missed two directly on-topic
+  papers: Bakker & Freeman (arXiv:2306.00273, explicit equal-mass binary-asteroid periodic-orbit
+  families) and a 2025 Nonlinear Dynamics paper on non-spherical close tidally-locked binaries
+  (10.1007/s11071-025-11014-5) whose entire premise independently confirms the subsurface
+  objection: point-mass CR3BP is the wrong model for this geometry, ellipsoidal extended-body
+  models are required. Fable independently found the same conclusion via a different literature
+  angle (Shang, Wu & Cui 2015, Ap&SS 355:69 — systematic periodic-orbit searches in doubly-
+  synchronous binaries using Roche-ellipsoid gravity, 30/28 families found; the Bellerose-Scheeres
+  RF3BP line; KW4 polyhedral periodic orbits).
+  **Disposition**: NOT admitted to `data/catalogue.yaml`. Stamped to `empty_regions.jsonl` as a
+  MODEL-INVALIDITY negative (the point-mass orbits genuinely exist mathematically; they are
+  disqualified by a physical-admissibility precondition the idealized model cannot express, not by
+  a dynamical gate failure) — see region `antiope-real-binary-model-invalidity-2026-07-19`,
+  distinct framing from a plain "clean negative."
+  **Recommended follow-up** (both adjudicators, independently): add a sourced min-clearance-vs-
+  body-radius gate to `real_binary_kk_sweep.py` so future near-contact real-binary targets
+  self-flag rather than silently producing collision "candidates" — registered as `#660`. Full
+  adjudication records: `docs/notes/2026-07-19-659-antiope-adjudication.md` (Opus),
+  `docs/notes/2026-07-19-659-antiope-adjudication-fable.md` (Fable). `data/catalogue.yaml` and all
+  source code left untouched by both adjudications; the empty-regions stamp and `#660` registration
+  are the coordinating session's own follow-through.
+- **#660 (registered 2026-07-19, not yet dispatched)** — add a sourced min-clearance-vs-body-radius
+  physical gate to `src/cyclerfinder/search/real_binary_kk_sweep.py`, the capability gap `#659`'s
+  dual adjudication found: `RealBinarySystem` carries no body-radius field, and the existing gate
+  profile is purely dynamical (topology/prograde/`reaches_secondary`/Barden `|nu|<1`/Radau
+  crosscheck) — `reaches_secondary` in particular is just `x.max()>L1`, which checks nothing about
+  physical clearance and is nearly trivially satisfied at mu≈0.5. This silently let 2 collision
+  trajectories (Antiope (1,1)/(2,2), passing 30-38 km inside each body) through every existing
+  gate undetected. Scope: (1) add a sourced `radius_km_primary`/`radius_km_secondary` field (or
+  equivalent) to `RealBinarySystem`, populated for every existing entry (Pluto-Charon, Patroclus-
+  Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia, Sila-Nunam, Antiope, Lempo-Hiisi) from
+  each system's own already-cited sourced literature — do not leave any entry with an unsourced
+  placeholder; (2) add a `min_clearance_km` (or ratio) gate to the sweep/gate-candidate path,
+  checked alongside the existing dynamical gates; (3) add a regression test pinning that the
+  already-catalogued PC(3,2) row clears BOTH bodies with wide margin under the new gate (per
+  `#659`'s own fairness check: ~2647 km Pluto, ~481 km Charon) — this must stay green, the new gate
+  must not retroactively invalidate the one real catalogued hit; (4) re-run the Antiope cell
+  through the new gate and confirm it now fails explicitly on clearance (converting the informal
+  #659 finding into an automated, permanent regression rather than a one-off manual check); (5)
+  do NOT re-run the other already-negative systems purely for this — the gate only matters for
+  candidates that pass the existing dynamical gates, and none of the other systems produced any.
+  Recommended model: Sonnet (mechanical schema addition + sourced-value backfill + test), though
+  the physical-clearance-threshold DEFINITION (e.g. hard body-surface contact vs. some safety
+  margin for tidal/perturbation effects) is a small judgment call worth a quick sanity check
+  against how `#620`'s or `#627`'s own encounter-geometry modules define "close approach" for
+  consistency, rather than inventing a new convention.
 - **#658 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 4, epoch-locking
   pilot. See `#654`'s own bullet for the case. Scope: epoch-lock the 2-3 catalogue rows with
   already-sourced published epochs (Jones 2017 VEM-triple, Aldrin/Byrnes), re-run `#650`'s
