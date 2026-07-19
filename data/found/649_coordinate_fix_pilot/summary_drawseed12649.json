@@ -1,0 +1,73 @@
+{
+  "task": "#649",
+  "corpus": {
+    "primary": "Earth",
+    "secondary": "Moon",
+    "mu": 0.01215058439469525,
+    "n_scanned_raw_lines": 540312,
+    "n_converged_prefilter": 205113,
+    "n_unique_physically_sane": 54165,
+    "n_train": 43332,
+    "feature_names": [
+      "x0",
+      "y0",
+      "z0",
+      "vx0",
+      "vy0",
+      "vz0",
+      "period",
+      "jacobi"
+    ]
+  },
+  "model": "PCA(5) + kmeans(8) per-cluster Gaussian, re-derived from #608's own seed/split (bit-for-bit identical to #608's trained model, NOT retrained)",
+  "transform": "cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu (rho=(C-3)/(C_L1(mu)-3) energy-matching + exact Hill-radius position/velocity-direction scaling + velocity-magnitude solve to hit target rho exactly; period left unchanged)",
+  "mu_0_001": {
+    "label": "mu=0.001",
+    "mu": 0.001,
+    "transformed_generated": {
+      "n": 100,
+      "n_construction_failed": 2,
+      "raw_convergence_rate": 0.63,
+      "converged_and_physically_sane_rate": 0.12,
+      "n_converged_and_physically_sane": 12
+    },
+    "baseline_uniform_fresh_in_run": {
+      "n": 100,
+      "raw_convergence_rate": 0.49,
+      "converged_and_physically_sane_rate": 0.0,
+      "n_converged_and_physically_sane": 0
+    },
+    "ratio_transformed_generated_over_baseline": Infinity,
+    "context_642": {
+      "archival_baseline_sane_rate": 0.0,
+      "live_rerun_baseline_sane_rate": 0.03333333333333333,
+      "raw_generated_sane_rate": 0.0
+    }
+  },
+  "sun_earth": {
+    "label": "Sun-Earth",
+    "mu": 3.0034805950690393e-06,
+    "transformed_generated": {
+      "n": 100,
+      "n_construction_failed": 2,
+      "raw_convergence_rate": 0.09,
+      "converged_and_physically_sane_rate": 0.03,
+      "n_converged_and_physically_sane": 3
+    },
+    "baseline_uniform_fresh_in_run": {
+      "n": 100,
+      "raw_convergence_rate": 0.55,
+      "converged_and_physically_sane_rate": 0.01,
+      "n_converged_and_physically_sane": 1
+    },
+    "ratio_transformed_generated_over_baseline": 3.0,
+    "context_642": {
+      "archival_baseline_sane_rate": 0.01,
+      "live_rerun_baseline_sane_rate": 0.03333333333333333,
+      "raw_generated_sane_rate": 0.0
+    }
+  },
+  "elapsed_s": 242.63986897468567,
+  "seed": 608,
+  "draw_seed": 12649
+}
