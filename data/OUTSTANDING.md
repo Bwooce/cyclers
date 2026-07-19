@@ -656,7 +656,10 @@ unchanged via a live git-stash before/after comparison, all #649 caveats restate
 production docstring, commit c58ad03; also discovered and documented (not fixed, out of scope) a
 real pre-existing cr3bp.propagate() hang risk on rare close-encounter cross-mu draws -- 2
 real-corpus tests marked @pytest.mark.slow+timeout(90), a propagate()-hardening follow-up
-recommended, no catalogue changes); #652 next-unused):**
+recommended, no catalogue changes); #652 for the #651-discovered cr3bp.propagate() legacy
+variable-step STM integrator hang risk (no wall-clock/step-count budget on
+_propagate_with_stm_variable, can hang a caller for minutes+ on rare close-secondary-encounter
+draws; registered 2026-07-19, user-directed, not yet dispatched); #653 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10456,6 +10459,27 @@ anywhere in the file and are genuinely still open.]**
   AFTER every edit including the final marking change. No `data/catalogue.yaml` changes.
   `src/cyclerfinder/genome/qp_tori.py` and its tests (concurrent `#635` work) were left untouched
   — verified via explicit `git add` pathspecs before every commit.
+- **#652 registered 2026-07-19 (user-directed), not yet dispatched** — add a wall-clock or
+  step-count budget to `cr3bp.propagate`'s legacy variable-step STM integration path
+  (`cyclerfinder.core.cr3bp._propagate_with_stm_variable`), which `correct_periodic` and every
+  other caller currently inherit with no cap. `#651` found (twice, independently, via bounded
+  SIGALRM diagnostics) that a rare (~1%) cross-mu seed produced by `#649`'s coordinate-transform
+  rescue can dynamically evolve into a genuine close approach to the secondary body partway
+  through propagation — undetectable from the initial condition alone — and hang a single
+  refinement call for minutes+ (one instance ran past pytest's own 600s global cap before being
+  killed). No single "safe" rng seed choice reliably avoids it (a seed verified safe at n=60 still
+  hit it at n=100), so this is a structural gap in shared infrastructure, not a #649/#651-specific
+  bug. Candidate fixes to weigh (real numerical-methods design decision, not mechanical): a
+  wall-clock timeout, a step-count cap, or a `solve_ivp` close-approach termination event
+  (distance-to-secondary crosses a threshold) — the last is likely preferable since it fails fast
+  AND is diagnostic (the caller learns *why* it stopped, not just that it did). Must not change
+  behavior for the overwhelming majority of calls that never hit this regime — needs a regression
+  test built on the same bounded-SIGALRM/known-bad-draw technique `#651` used to confirm the
+  fix actually terminates instead of just moving the hang somewhere else. `#651`'s two
+  `@pytest.mark.slow`+`timeout(90)`-marked tests in `tests/ml/test_seed_generation.py`
+  (`test_generate_and_refine_seeds_cross_mu_lift_no_longer_assumed_positive`,
+  `test_generate_and_refine_seeds_cross_mu_production_rescue_matches_649`) are a ready-made
+  reproduction case for verifying any fix.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
