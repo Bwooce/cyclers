@@ -1,0 +1,167 @@
+{
+  "task": "650",
+  "generated_at": "2026-07-19T01:58:05Z",
+  "elapsed_s": 11.53138518333435,
+  "conventions": {
+    "b0_delta_vinf_kms": 0.1,
+    "b1_dv_hop_kms": 0.5,
+    "b2_dv_hop_kms": 2.0,
+    "dv_phase_gate_kms": 1.0,
+    "statistical_horizon_years": 100.0,
+    "n_delta0_samples": 720,
+    "sensitivity_windows_days": [
+      1.0,
+      10.0,
+      30.0
+    ],
+    "phase_lock_p_align_threshold": 0.99,
+    "cheap_edge_wait_years": 20.0,
+    "cheap_edge_duty_adjusted_p_align": 0.5,
+    "direction_data": "absent",
+    "r_p_floor_convention": "radius_eq_km + safe_alt_km (#426/#427 floor convention)",
+    "dv_hop_formula": "|sqrt(v_a^2 + 2*mu/r_p) - sqrt(v_b^2 + 2*mu/r_p)| (Oberth-optimal same-body powered-flyby handoff, lower bound -- no V_inf direction data in the catalogue)"
+  },
+  "counts": {
+    "n_catalogue_rows": 361,
+    "n_nodes": 291,
+    "n_candidate_pairs": 31906,
+    "n_edges": 60239
+  },
+  "band_histogram_overall": {
+    "B0_ballistic_compatible": 2319,
+    "B1_cheap": 12191,
+    "B2_moderate": 20495,
+    "B3_expensive": 25234
+  },
+  "band_histogram_by_body": {
+    "Earth": {
+      "B0_ballistic_compatible": 1242,
+      "B1_cheap": 8776,
+      "B2_moderate": 13260,
+      "B3_expensive": 8348
+    },
+    "Mars": {
+      "B0_ballistic_compatible": 1041,
+      "B3_expensive": 16736,
+      "B1_cheap": 3256,
+      "B2_moderate": 6933
+    },
+    "Ariel": {
+      "B1_cheap": 3
+    },
+    "Oberon": {
+      "B1_cheap": 1,
+      "B2_moderate": 2
+    },
+    "Titania": {
+      "B1_cheap": 1,
+      "B2_moderate": 2
+    },
+    "Umbriel": {
+      "B1_cheap": 2,
+      "B0_ballistic_compatible": 1
+    },
+    "Venus": {
+      "B2_moderate": 75,
+      "B1_cheap": 52,
+      "B0_ballistic_compatible": 8,
+      "B3_expensive": 1
+    },
+    "Callisto": {
+      "B0_ballistic_compatible": 2,
+      "B2_moderate": 2,
+      "B3_expensive": 6
+    },
+    "Europa": {
+      "B1_cheap": 3,
+      "B3_expensive": 7,
+      "B2_moderate": 16,
+      "B0_ballistic_compatible": 2
+    },
+    "Ganymede": {
+      "B0_ballistic_compatible": 6,
+      "B3_expensive": 32,
+      "B2_moderate": 31,
+      "B1_cheap": 9
+    },
+    "Io": {
+      "B3_expensive": 2,
+      "B1_cheap": 1
+    },
+    "Enceladus": {
+      "B3_expensive": 51,
+      "B2_moderate": 101,
+      "B1_cheap": 29,
+      "B0_ballistic_compatible": 9
+    },
+    "Titan": {
+      "B1_cheap": 58,
+      "B2_moderate": 73,
+      "B3_expensive": 51,
+      "B0_ballistic_compatible": 8
+    }
+  },
+  "phase_status_counts": {
+    "phase_locked": 23284,
+    "not_computed_dv_gated": 36444,
+    "epoch_window_overlap": 12,
+    "no_period_data": 499
+  },
+  "cheap_edge_count": 2,
+  "cheap_edges": [
+    {
+      "id_a": "ariel-oberon-1-1-uranian-quasi-cycler-2026",
+      "id_b": "titania-oberon-1-1-uranian-quasi-cycler-2026",
+      "body": "Oberon",
+      "dv_hop_kms": 0.1305260410171467
+    },
+    {
+      "id_a": "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
+      "id_b": "umbriel-titania-1-1-uranian-quasi-cycler-2026",
+      "body": "Umbriel",
+      "dv_hop_kms": 0.2785550328410835
+    }
+  ],
+  "cheap_dv_phase_indeterminate_count": 14375,
+  "data_gaps": {
+    "no_period_data_node_count": 33,
+    "null_vinf_row_count_eligible_nodes": 0,
+    "null_vinf_row_count_full_catalogue": 48,
+    "null_vinf_entries_total_full_catalogue": 81
+  },
+  "cheap_edge_subgraph": {
+    "n_components": 2,
+    "component_sizes": [
+      2,
+      2
+    ],
+    "components": [
+      [
+        "ariel-oberon-1-1-uranian-quasi-cycler-2026",
+        "titania-oberon-1-1-uranian-quasi-cycler-2026"
+      ],
+      [
+        "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
+        "umbriel-titania-1-1-uranian-quasi-cycler-2026"
+      ]
+    ],
+    "top_degree_hubs": [
+      {
+        "id": "ariel-oberon-1-1-uranian-quasi-cycler-2026",
+        "degree": 1
+      },
+      {
+        "id": "titania-oberon-1-1-uranian-quasi-cycler-2026",
+        "degree": 1
+      },
+      {
+        "id": "umbriel-oberon-1-1-uranian-quasi-cycler-2026",
+        "degree": 1
+      },
+      {
+        "id": "umbriel-titania-1-1-uranian-quasi-cycler-2026",
+        "degree": 1
+      }
+    ]
+  }
+}
