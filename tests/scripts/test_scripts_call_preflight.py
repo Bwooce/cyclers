@@ -123,6 +123,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # concept to preflight. Same category as #608/#614/#317/#624/#641
         # above. Visible, reviewed exemption per this file's own docstring.
         "run_642_equilibrium_contamination_audit.py",
+        # #649: a coordinate-TRANSFORM rescue pilot reusing #624's own
+        # fixed-N (generate-then-refine vs. uniform baseline, N=100 at two
+        # mu targets) evaluation protocol verbatim -- same category as
+        # #608/#614/#317/#624/#641/#642 above: a fixed-N capability
+        # comparison with no region_id/n_points sweep-region concept to
+        # preflight, not a catalogue-region discovery sweep. Visible,
+        # reviewed exemption per this file's own docstring.
+        "run_649_coordinate_fix_pilot.py",
     }
 )
 
