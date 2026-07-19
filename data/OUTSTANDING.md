@@ -18,7 +18,11 @@ see the ledger paragraph itself (search `TASK ALLOCATIONS`) or each task's own b
 history.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#600` — corrected 2026-07-15: this line was never updated after `#600` was
+- `#650` implementation sweep (added 2026-07-19): the Fable design read is DONE — the mechanical
+  pairwise transfer-compatibility sweep (Sonnet) is dispatchable directly from
+  `docs/notes/2026-07-19-650-transfer-network-design.md` + `#650`'s own bullet, no design
+  judgment calls left.
+- Otherwise none currently. (`#600` — corrected 2026-07-15: this line was never updated after `#600` was
   dispatched and closed the same day; see its own `✓ DONE` bullet entry — clean negative, 806,400
   candidates, near-miss residual 0.0531 km/s just outside the gate. Removed from this list.)
 
@@ -629,7 +633,10 @@ DONE 2026-07-19: REAL RESCUE CONFIRMED, reproduced on two independent draws -- c
 (13.5%) physically-sane at mu=0.001 and 8/200 (4.0%, 4x baseline) at Sun-Earth, vs. #642's 0% raw
 collapse at both -- see #649's own bullet for full numbers/caveats, not wired into production);
 #650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
-(registered 2026-07-18); #651 next-unused):**
+(registered 2026-07-18; Fable design read DONE 2026-07-19 -- full implementation spec at
+`docs/notes/2026-07-19-650-transfer-network-design.md`, cost = magnitude-only powered-flyby
+handoff lower bound + statistical phase model over an explicitly-unknown relative phase, the
+Sonnet pairwise sweep is now dispatchable directly from the note/bullet); #651 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10190,6 +10197,53 @@ anywhere in the file and are genuinely still open.]**
   touch `data/catalogue.yaml` itself (this task reads it and builds a DERIVED graph structure
   elsewhere, it does not modify catalogue rows). Recommended model: Fable for the design read on
   cost-definition; Sonnet for the mechanical pairwise sweep once that's settled.
+  **✓ DESIGN READ DONE (2026-07-19, Fable) — full implementation spec at
+  `docs/notes/2026-07-19-650-transfer-network-design.md`; the Sonnet sweep is now dispatchable
+  directly from that note (every threshold/formula/gate/output field fixed, no judgment calls
+  left).** Key decisions + findings: **(1) corrections to this bullet's own framing** — `#604`
+  built NO code (its own bullet: "no code built"); the reusable machinery is
+  `search/tisserand.py`, and at a FIXED body v∞↔Tisserand is a monotone bijection, so the
+  #604-class gate reduces to comparing catalogued `vinf_kms` magnitudes at the shared body.
+  `#570`'s schema is for curated fleet networks and its own scoping excluded between-cycler cost
+  fields — #650's output is a DERIVED artifact under `data/found/650_transfer_network/`
+  (`edges.jsonl` + `summary.json`, the #317 precedent), NOT `cycler_networks.yaml`. **(2)
+  Eligibility**: `cycler`+`quasi_cycler` rows with ≥1 non-null `vinf_kms` at a non-P1/P2 body =
+  291 nodes; 31,906 candidate pairs share ≥1 body (E 31,626 / M 27,966 / Titan+Enceladus 380 /
+  Uranian moons 12); edge key = (id_a, id_b, body), multigraph, no sense/direction gate (the
+  catalogue stores magnitudes only). **(3) Cost = same-body powered-flyby handoff**,
+  Oberth-optimal periapsis burn at the body's existing safe-altitude floor: `dv_hop_kms =
+  |sqrt(v∞_A²+2μ/r_p) − sqrt(v∞_B²+2μ/r_p)|`, minimized over encounter pairs — an explicit
+  LOWER BOUND (no V∞ vectors in the catalogue → expensive edges are trustworthy negatives, cheap
+  edges are candidates needing vector-level follow-up; the right polarity). Bands (labelled
+  conventions): B0 |Δv∞|≤0.1 (Tisserand-equal at catalogue precision), B1 ≤0.5, B2 ≤2.0, B3
+  above; all edges recorded, bands classify not filter; no ΔV+wait scalar (rejected as an
+  unlabelled convention). **(4) Phase check is STATISTICAL, not deterministic — the decisive
+  data finding**: the catalogue records NO absolute encounter epochs/phases for any of the 322
+  cyclers (epoch_locked=false is the class invariant) and only validity windows (no encounter
+  times) for the 6 quasi_cyclers; 70 eligible rows lack even a usable period; only 2 rows carry
+  the full conic geometry an intrinsic-phase derivation would need. So relative phase δ0 is an
+  explicit uniform unknown: 720-point δ0 grid, coincidence window w_handoff = 2·r_SOI/min(v∞)
+  (+1/10/30-day sensitivity columns), horizon 100 yr, outputs p_align + median/p90 wait +
+  phase_status ∈ {recurrent, phase_locked(=indeterminate, offset unrecorded), epoch_disjoint /
+  epoch_window_overlap (QC×QC only — the sole deterministic case, ≤15 pairs), no_period_data,
+  not_computed_dv_gated (phase model runs only where dv_hop ≤ 1.0 or body is a moon)}.
+  cheap_edge = B0/B1 AND (recurrent with median wait ≤20 yr at w_handoff, OR duty-adjusted
+  epoch-overlap p_align ≥ 0.5); phase_locked pairs are never counted cheap (reported separately
+  as cheap_dv_phase_indeterminate). **(5) Honest pre-run assessment of `#645`'s risk framing**:
+  partially right, with structure — heliocentric E-M pairs will yield THOUSANDS of ΔV-cheap
+  edges (families cluster in v∞) but are phase-starved (same-basis pairs: intrinsic-but-
+  unrecorded offset → indeterminate, a DATA gap not measure-zero physics; cross-system pairs:
+  E[wait] ≈ T_A·T_B/2w ≈ centuries at Earth's ~3.3-d SOI window), while the MOON-TOUR subset
+  plausibly hosts genuinely cheap phase-feasible edges (short periods: Uranian pairs sharing
+  Umbriel → w≈1.9 h, E[wait]≈1-3 yr at Δv∞≈0.03-0.07 km/s) — so "no cheap edges anywhere" is
+  likely for the heliocentric majority and plausibly WRONG for the moon systems; either outcome
+  citable. Mandatory positive controls: aldrin outbound×inbound must give a dv_hop=0 B0 E-edge;
+  Uranian QC pairs must give overlapping epoch windows — a zero-B0 sweep is broken, not a
+  finding. Implementation: `src/cyclerfinder/data/transfer_network.py` +
+  `scripts/run_650_transfer_network.py` (needs the #317-category preflight-ratchet exemption;
+  run `tests/scripts` too) + `tests/data/test_transfer_network.py`; closed-form only, minutes of
+  compute; no catalogue/`empty_regions` writes (negative-registry entry is a post-sweep
+  adjudication call, not the sweep's).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
