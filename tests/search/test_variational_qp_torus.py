@@ -318,16 +318,19 @@ def test_l2_positive_control_reproduces_gmos_torus() -> None:
     # L2 near-bifurcation rotation number sits in Owen & Baresi's ~0.02163
     # latitudinal-frequency regime (#555 reports the family bottoms at ~0.0214;
     # the linear Neimark-Sacker seed arg(lam)/2pi is 0.02140 here). The sign is
-    # now canonically POSITIVE (#632). The exact converged magnitude is
-    # BLAS-seed-dependent at the n_trans=4 truncation: np.linalg.eig returns the
-    # NS eigenvector with a platform-dependent phase, and the fragile corrector
-    # lands in one of two adjacent basins -- ~0.02140 (well-converged, matching
-    # the seed and O&B) on Linux/OpenBLAS, ~0.02327 (a higher-residual stall,
-    # converged=False) on Mac/Accelerate. Both are near-bifurcation members in
-    # O&B's regime, so assert regime membership rather than a platform-frozen
-    # value. (#632; corrector-phase robustness flagged for follow-up -- this is
-    # NOT the sign ambiguity, which #632 fixed at source in _seed_invariant_circle.)
-    assert 0.020 < gmos_rot < 0.025
+    # canonically POSITIVE (#632). #635 pinned the eigenVECTOR PHASE at source
+    # (+45-degree convention in _canonicalize_ns_eigenpair), which moved
+    # this fragile n_trans=4 corrector OFF its former platform-dependent basin
+    # split -- it previously landed at ~0.02140 (well-converged) on Linux vs
+    # ~0.02327 (a higher-residual STALL, converged=False) on Mac, purely from the
+    # BLAS-dependent seed phase. Both platforms now use the identical phase-
+    # canonical seed and land in the PHYSICAL basin ~0.0214 (matching
+    # the linear seed and O&B). The bound below is therefore TIGHTENED to EXCLUDE
+    # the (now-fixed) 0.02327 stall; it stays a bounded range rather than a
+    # frozen value because the exact converged magnitude at n_trans=4 is
+    # truncation/integrator-dependent (DOP853 is not bit-reproducible across
+    # libm versions -- see tests/genome/test_qp_tori.py's note). (#635.)
+    assert 0.0210 < gmos_rot < 0.0220
 
     res = discover_qp_torus(SYS, gmos, n1=10, n2=4, max_nfev=300)
     # Independent method reproduces the SAME torus.
