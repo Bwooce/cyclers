@@ -156,6 +156,17 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # concept to preflight (no discovery sweep, no catalogue writeback).
         # Visible, reviewed exemption per this file's own docstring.
         "run_666_kamooalewa_coorbital_positive_control.py",
+        # #664: a positive-control VALIDATION of a new capability
+        # (search/set_oriented_transfer_operator.py, the GAIO-style box/
+        # transfer-operator/almost-invariant-set machinery) against a single
+        # published result (Dellnitz et al. 2005's Sun-Jupiter quasi-Hilda
+        # Mars-crossing transport channel) -- same category as
+        # #606/#608/#614/#317/#624/#641/#642/#649/#650/#658/#666 above: a
+        # fixed box-grid/energy-level capability demonstration with no
+        # region_id/n_points sweep-region concept to preflight (no discovery
+        # sweep over catalogue regions, no catalogue writeback). Visible,
+        # reviewed exemption per this file's own docstring.
+        "run_664_dellnitz_positive_control.py",
     }
 )
 

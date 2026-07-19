@@ -789,11 +789,16 @@ achieved (driver validated correct on a synthetic system, but the astrodynamics 
 interval looseness prevents a clean certificate -- reported honestly, not forced); #656 does NOT
 fit this task's mold (a converged CR3BP orbit with a topology misclassification, not a continuous
 residual near-miss -- would need interval ODE integration, out of scope); see #663's own bullet
-for the full accounting; #664 for
+for the full accounting; #664 ✓ DONE (2026-07-20) for
 #661 shortlist item 2, set-oriented transfer-operator search (GAIO-style almost-invariant sets) --
-a genuinely new object class (a metastable SET with residence-time statistics, not a periodic
-orbit or torus), positive control = reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport
-channel (registered 2026-07-19, not yet dispatched); #665 for #661 shortlist item 3, SRP-augmented
+built `search/set_oriented_transfer_operator.py` (generic box/Ulam-transition-matrix/spectral
+almost-invariant-set machinery) + `search/quasi_hilda_positive_control.py` (Sun-Jupiter PCR3BP
+glue), reusing `core.cr3bp` unmodified; mandatory positive control (reproduce Dellnitz 2005's
+Mars-crossing quasi-Hilda transport channel) PASSED -- a spectrally-discovered almost-invariant
+cluster overlapped the independently-constructed quasi-Hilda region 94-98% across two seeds, and
+the R-to-Q transport probability after 200 iterates (5.8-8.6% across seeds) matched the paper's
+sourced ~6% order of magnitude; a real bug (spurious t=0 self-detection in the Poincare-section
+event) was found and fixed en route, confirmed via before/after diagnostics. #665 for #661 shortlist item 3, SRP-augmented
 (photogravitational) binary-asteroid re-sweep -- every #549/#657/#659/#660 negative is
 gravity-only-conditional, positive control = reproduce a published Didymos terminator-orbit family
 member (CMDA 138:2, 2025); needs 2-3 SRP-binary papers acquired first, a real corpus gap
@@ -11439,21 +11444,82 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   write** (mandatory per the dispatch's own scope — the (4b) closure fails the physical gate
   anyway, so it was never a writeback candidate). `uv run ruff check .`/`ruff format --check .`
   clean; `uv run mypy src tests` clean (module lives in `scripts/`, no `src`/`tests` changes).
-- **#664 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 2, set-oriented
-  transfer-operator search (GAIO-style almost-invariant sets). See `#661`'s own bullet for the
-  full case. Scope: box-subdivide a phase-space region, build the sparse Perron-Frobenius
-  transition matrix by short propagations, extract almost-invariant/metastable sets from its
-  leading eigenvectors. A genuinely NEW object class — a "chaotic quasi-cycler" is a SET with
-  residence-time statistics, not a periodic orbit or torus; the catalogue's own `quasi_cycler`
-  scope (schema v4.7) can hold this but has never contained one. Structurally immune to the
-  basin/manifold-conditioning/ghost-minima walls that killed prior shooting-based attempts
-  (measure/operator-based, seedless, manifold-free, boxes verified by direct propagation).
-  Mandatory positive control: reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport
-  channel — already in-corpus, digested but never adopted into a search capability (the exact
-  `[[feedback_digest_not_adoption]]` gap this pass found). 1-2 weeks. Honest open question to
-  resolve before any catalogue writeback: sets need their own validation story distinct from the
-  trajectory-based V0-V5 gauntlet — flag this explicitly and get a user/Fable read on the schema
-  question before writing anything, don't invent a convention unilaterally.
+- **#664 ✓ DONE (2026-07-20)** — `#661` shortlist item 2, set-oriented transfer-operator search
+  (GAIO-style almost-invariant sets). See `#661`'s own bullet for the full case/motivation. A
+  genuinely NEW method + object class for this project: measure/operator-based, seedless,
+  manifold-free — structurally distinct from every prior method (symmetric-closure enumeration,
+  shooting/collocation correctors, generative-ML seeding, interval certification) and immune to
+  the basin/manifold-conditioning/ghost-minima walls that killed prior shooting-based attempts
+  (`#619`/`#620`). **Survey first (as instructed): confirmed via direct grep, zero prior
+  set-oriented/box/Ulam/transfer-operator/Perron-Frobenius machinery existed anywhere in this
+  codebase** — genuinely new capability, not a rebuild.
+  **Built**: `src/cyclerfinder/search/set_oriented_transfer_operator.py` — fully generic,
+  model-agnostic GAIO primitives: `BoxGrid` (regular box covering, arbitrary dimension),
+  `build_transition_matrix` (Monte-Carlo box-to-box transition estimation via a caller-supplied
+  one-step map, sub-stochastic/"leaky" convention — escaped mass is tracked, never silently
+  renormalized away), `almost_invariant_sets_spectral` (leading-eigenvector sign-pattern
+  clustering — the ORIGINAL Dellnitz & Junge 1999 eigenvector method, per this task's own
+  dispatch instructions, NOT the 2005 paper's own PARTY graph-partitioning refinement; this
+  substitution is documented explicitly in the module docstring, not silently presented as
+  identical), `almost_invariance_ratio`, and `transport_probability` (the paper's own
+  `p_R,Q(n) = (1/m(R)) e_Q^T P^n u_R` transport formula). **Reused, not rebuilt**: propagation is
+  this project's own validated `core.cr3bp` DOP853 propagator (`cr3bp_eom`, `cr3bp_system`,
+  `jacobi_constant`) end to end — no new integrator.
+  `src/cyclerfinder/search/quasi_hilda_positive_control.py` is the Sun-Jupiter PCR3BP-specific
+  glue (Poincaré-section map, energy<->Jacobi-constant conversion, Mars-crossing/quasi-Hilda
+  region indicators via general-conic osculating elements) built on top of the generic module.
+  **Mandatory positive control: Dellnitz, Junge, Lo, Marsden, Padberg, Preis, Ross & Thiere,
+  "Transport of Mars-Crossing Asteroids from the Quasi-Hilda Region," PRL 94 (2005) 231102 —
+  PASSED, honest partial/qualitative-plus-order-of-magnitude reproduction** (full pixel-exact
+  reproduction was never possible: the in-corpus digest,
+  `docs/notes/2026-06-30-digest-dellnitz2005-mars-transport-gaio.md`, is a text-only PRL-letter
+  extraction with no machine-readable Fig. 1 box-covering/box-shape data — flagged honestly per
+  this task's own instructions rather than inventing pixel coordinates). What WAS independently
+  reconstructed from the paper's own stated model/section/energy (Sun-Jupiter PCR3BP, section
+  y=0/ẏ<0/x<0, E=-1.52) and verified self-consistent against this project's own `jacobi_constant`:
+  the accessible box-covering domain (a numerically-confirmed forbidden gap straddling L3 splits
+  the x<0 axis into the paper's own "interior realm" band used here, `x∈[-0.885,-0.03]`,
+  `ẋ∈[-1.0,1.0]`), and geometrically-disjoint R (quasi-Hilda, `a∈[0.70,0.85]` x Jupiter-SMA,
+  `e≤0.35`) / Q (Mars-crossing, periapsis ≤ Mars's SMA) regions via the paper's own Mars-crossing-
+  line definition applied to both. Pilot: 36×36 box grid (1056 masked-in boxes on the energy
+  manifold), 25 Monte-Carlo samples/box (~26k CR3BP propagations, ~105s wall time after a bugfix
+  — see below). **Result, two independent seeds**: the top-3-eigenvector spectral decomposition
+  — with ZERO knowledge of the hand-built R region — found a 167-180 box almost-invariant cluster
+  (eigenvalue ≈0.96-0.98, almost-invariance ratio ≈0.89-0.90) overlapping R at 94.1%/98.0% across
+  the two seeds; the R→Q transport probability at n=200 iterates came out 5.78%/8.56% across the
+  two seeds — same order of magnitude, and close to, the paper's own sourced "~6% after 200
+  iterates" (Fig. 4). Honest framing: the qualitative claim (an almost-invariant set spatially
+  coincident with the quasi-Hilda region genuinely exists and is discoverable blind by this
+  method) is robust across both seeds; the quantitative transport number matches to within the
+  Monte-Carlo noise floor of this coarse a 36×36/25-samples pilot, not a precision numerical
+  reproduction of the paper's own finer PARTY-graph-partitioned computation.
+  **A real bug was found and fixed en route**: the first pilot run showed a suspiciously
+  near-identity transition matrix (escape fraction 0, nnz≈n_boxes) — traced to `solve_ivp`
+  spuriously self-detecting the Poincaré-section event AT t=0 (the initial state sits exactly ON
+  the section by construction, and the event's sign-changing bracket `[g(0)=0, g(h)<0]` reads as
+  a valid crossing at t=0 itself). Fixed with a tiny (`1e-6` nondim time, four orders of magnitude
+  below the shortest physically-reachable osculating period in this domain) event-free "kick-off"
+  step before each section-crossing search; confirmed directly via before/after diagnostics (see
+  `poincare_first_return`'s own docstring) — this is a documented, reusable gotcha for anyone
+  building a section-return map that starts exactly on its own section.
+  **Exploratory extension** (task's own scope: optional, secondary to the positive control):
+  NOT pursued this dispatch — deliberately, per the task's own "don't rush past validation to
+  chase a finding" instruction. Applying this pipeline to one of this project's own systems at
+  equal rigor (new section/energy/region-indicator glue, its own calibration) is comparable-sized
+  follow-on work, not a quick bolt-on; left as a natural next task rather than done superficially.
+  **Open schema question flagged, not resolved** (per this task's own instructions): no set was
+  found in any of this project's own systems this dispatch, so the "how does a SET get written to
+  `data/catalogue.yaml`" question never became concretely relevant — still open, still a
+  user/Fable design decision if/when it does, not resolved or assumed here. **No catalogue write.**
+  Tests: `tests/search/test_set_oriented_transfer_operator.py` (generic library, synthetic maps,
+  no CR3BP dependency) + `tests/search/test_quasi_hilda_positive_control.py` (CR3BP-glue physics
+  correctness: energy<->Jacobi conversion, region disjointness, Poincaré-map energy conservation).
+  Driver: `scripts/run_664_dellnitz_positive_control.py` (exempted from the `#521` preflight-search
+  AST ratchet — a fixed box-grid/energy-level capability demonstration with no
+  region_id/n_points sweep-region concept to preflight, same category as `#666`). Full
+  `ruff check .` / `ruff format --check .` / `mypy src tests` clean; `tests/search tests/data
+  tests/scripts` run clean except the two documented pre-existing baseline failures
+  (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`) — unrelated to this task.
 - **#665 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 3, SRP-augmented
   (photogravitational) binary-asteroid re-sweep. See `#661`'s own bullet for the full case. Scope:
   add cannonball SRP at a fixed area-to-mass ratio β to the real-binary genome/corrector
