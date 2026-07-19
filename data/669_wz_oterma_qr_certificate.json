@@ -1,0 +1,97 @@
+{
+  "task": "#669",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "model": "planar CR3BP (Sun-Jupiter, Oterma)"
+  },
+  "method": "Lohner C1 algorithm with QR-coordinate reframing on mpmath.iv: enclosure carried as yhat + A@[r] with A a point orthogonal frame re-chosen each step via QR of the rigorously-enclosed variational (STM) flow; frame inverse enclosed by a Neumann bound. See scripts/_validated_taylor_integrator.py:integrate_c1_qr.",
+  "start": {
+    "x": 0.95229284234862,
+    "vx": 1.23e-05,
+    "C0_lower": 3.03,
+    "C0_upper": 3.03
+  },
+  "qr_defeats_wrapping_control": {
+    "problem": "rigid rotation (harmonic oscillator), wide box, ~3 turns (t=20)",
+    "initial_halfwidth": 0.001,
+    "naive_c0_final_halfwidth": 485165.19540979026,
+    "qr_final_halfwidth": 0.0013210273125411013,
+    "qr_over_naive_ratio": 2.722840230584364e-09,
+    "qr_defeats_wrapping": true
+  },
+  "oterma_qr_vs_naive_matched_grid": {
+    "t": 0.25,
+    "grid": "1/64",
+    "naive_c0_halfwidth": 5.792250951000442e-14,
+    "qr_halfwidth": 1.077268612307426e-13,
+    "qr_over_naive_ratio": 1.8598445085003772,
+    "comparable_not_wrapping_limited": true
+  },
+  "oterma_true_stretching": {
+    "note": "float DOP853 diagnostic (NOT the rigorous enclosure)",
+    "stm_2norm": {
+      "t=0.250": 8.429870346840938,
+      "t=0.375": 28.055534816351667,
+      "t=0.420": 70.78413159735126,
+      "t=0.450": 297.8547378336519
+    }
+  },
+  "oterma_stepsize_refinement_runs": [
+    {
+      "step_h": "1/64",
+      "steps_validated": 26,
+      "t_reached": 0.4085714285714286,
+      "final_max_halfwidth": 0.0005473718845510183,
+      "jacobi_end_contains_C0": true
+    },
+    {
+      "step_h": "1/128",
+      "steps_validated": 56,
+      "t_reached": 0.44000000000000006,
+      "final_max_halfwidth": 0.32120188367616187,
+      "jacobi_end_contains_C0": true
+    },
+    {
+      "step_h": "1/256",
+      "steps_validated": 116,
+      "t_reached": 0.45248226950354614,
+      "final_max_halfwidth": 0.04726431250847375,
+      "jacobi_end_contains_C0": true
+    }
+  ],
+  "oterma_precision_runs": [
+    {
+      "dps": 40,
+      "step_h": "1/256",
+      "steps_validated": 116,
+      "t_reached": 0.45248226950354614,
+      "final_max_halfwidth": 0.04726431250847375,
+      "jacobi_end_contains_C0": true
+    },
+    {
+      "dps": 80,
+      "step_h": "1/256",
+      "steps_validated": 116,
+      "t_reached": 0.45248226950354614,
+      "final_max_halfwidth": 0.033846022177823246,
+      "jacobi_end_contains_C0": true
+    }
+  ],
+  "jupiter_flyby_geometry": {
+    "note": "float DOP853 diagnostic (NOT the rigorous enclosure); explains the wall",
+    "perijove_r2_min": 0.0040762324567125445,
+    "perijove_t": 0.466,
+    "speed_at_perijove": 0.65890039097071
+  },
+  "findings": {
+    "qr_removes_wrapping_on_rotation_control": true,
+    "oterma_arc_not_wrapping_limited_qr_comparable_to_c0": true,
+    "reach_is_stepsize_dependent_converging_to_perijove": true,
+    "reach_is_precision_insensitive": true,
+    "jacobi_conserved_on_every_oterma_run": true,
+    "best_reached_t": 0.45248226950354614,
+    "prior_668_c0_wall_t": 0.42
+  },
+  "scope_note": "Rigorous, but a fraction of the full W-Z proof. The QR reframing is correct and genuinely defeats the wrapping effect (rotation control: naive C0 blows up ~5e8x, QR stays flat) -- the ingredient the future wide-h-set covering-relations stage needs. On #668's Oterma POINT arc, however, QR does NOT extend the reach: that arc is not wrapping-limited (true ||STM|| only ~3e2, non-rotating), so QR ~= naive C0 there. The real horizon is a PHYSICAL close flyby of the secondary (Jupiter perijove ~0.0045 at t~0.465); the reach converges to the perijove time as h->0 and is precision-insensitive -- the signature of a dynamical wall, not wrapping. Crossing it needs close-approach regularisation, not more QR. Rigorous Poincare-map derivatives and the covering-relations / h-set topology remain future stages."
+}

@@ -89,7 +89,14 @@ unchanged. See `git log` around this date for the corrected commit.
   ~5 orders of magnitude beyond current capability. `#636` stays parked, re-scoped: the machinery's
   natural fit is certifying a future found connection (existence, the shape W-Z solved), not a
   non-existence claim. See `#653`'s own bullet and
-  `docs/notes/2026-07-19-653-wz-proof-scoping.md`.
+  `docs/notes/2026-07-19-653-wz-proof-scoping.md`. **UPDATE 2026-07-20 — no longer parked: the
+  user UNCONDITIONALLY greenlit the build**, overriding the "wait for a found connection" trigger,
+  and it is being executed as a staged build: `#668` (Stages 1-2, done — Stage 1 tooling verdict
+  + a from-scratch validated interval Taylor integrator rigorously enclosing a real fraction of
+  the W-Z Oterma proof) and `#669` (Stage 3, done — Lohner-C1/QR reframing; correct and defeats
+  wrapping on controls, but found the specific Oterma arc is flyby-limited not wrapping-limited).
+  Remaining W-Z stages (rigorous Poincaré-map derivatives, covering-relations / h-set topology,
+  close-approach regularisation) are future work; see `#668`/`#669` own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -828,9 +835,11 @@ section points at C=3.03 and Jacobi-constant conservation along a rigorously-enc
 heteroclinic arc (t up to ~0.42, wrapping-limited near the L1 neck -- honestly NOT the full
 covering-relations existence theorem; QR-Lohner reframing / STM / h-set topology remain future
 stages) (registered+dispatched+Stage-1-2-partial 2026-07-20); #669 for #668's Stage 3 --
-QR-coordinate (Lohner-QR) reframing of the validated Taylor integrator to defeat the wrapping
-effect that stopped Stage 2 at t~0.42, extending the rigorous Oterma-arc enclosure toward the
-full L1-to-L2 heteroclinic connection time (registered+dispatched 2026-07-20); #670
+built the Lohner-C1/QR-coordinate reframing of the validated Taylor integrator; it genuinely
+defeats wrapping (rotation control: naive C0 blows up ~5e8x, QR stays flat) but the specific
+#668 Oterma arc turned out NOT wrapping-limited -- its real horizon is a physical close Jupiter
+flyby (perijove r2~0.004 at t~0.466), so QR does not extend the reach past ~0.45; honest
+partial/negative, revises #668's "wrapping wall" story (DONE 2026-07-20, Opus); #670
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -11790,6 +11799,43 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (validated against closed-form goldens, contains-true-value AND excludes-nearby-wrong-values
   positive/negative control -- no vacuous bounds). Honest reporting expected if this stage also
   hits a wall (matching `#662`'s and `#668`'s own good precedent) rather than a forced result.
+  **DONE (2026-07-20, Opus) -- QR machinery built and validated; honest partial that REVISES
+  `#668`'s wrapping-wall diagnosis.** Built the Lohner C1 algorithm with QR-coordinate reframing
+  from scratch on `mpmath.iv`, extending Stage 2's integrator: `scripts/_validated_taylor_
+  integrator.py` gains `cr3bp_planar_variational_jet` (augmented state+STM jet -- the state-
+  transition matrix `V'=Df(y)V` carried alongside the state via the same interval-Taylor
+  primitives, with the pseudo-potential second derivatives Uxx/Uxy/Uyy matching
+  `core.cr3bp.cr3bp_stm_eom`), `rigorous_inverse` (rigorous interval enclosure of a point-matrix
+  inverse via a verified Neumann bound), and `integrate_c1_qr` (enclosure carried as
+  `yhat + A@[r]` with `A` a point orthogonal frame re-chosen each step from a QR of the rigorously-
+  enclosed Jacobian flow, `[r]` a box in that rotating frame; the flow-Jacobian is enclosed over
+  the whole IC box via the augmented validated step so the mean-value propagation is rigorous).
+  New driver `scripts/certify_669_wz_oterma_qr.py` -> `data/669_wz_oterma_qr_certificate.json`;
+  `tests/scripts/test_669_lohner_qr_integrator.py` -- 8 tests. **What is genuinely, interval-
+  rigorously established:** (1) **the QR reframing is correct and dramatically defeats the
+  wrapping effect** -- on the textbook wrapping problem (rigid rotation of a WIDE box, ~3 turns)
+  the naive C0 box balloons ~5e8x (final half-width 4.85e5 from 1e-3, the classic e^t wrapping
+  rate) while the QR enclosure stays essentially flat (1.3e-3); the variational/STM block is
+  enclosed tightly against the closed-form exp (`e^t`) and harmonic (rotation-matrix) goldens,
+  contains-true-value AND excludes-nearby-wrong-values, non-vacuous; `rigorous_inverse` genuinely
+  encloses the true inverse (A·A⁻¹ contains I to <1e-30). (2) **BUT `#668`'s Oterma point arc is
+  NOT wrapping-limited, so QR does NOT extend the reach** -- at a matched grid QR and naive C0 are
+  comparable (ratio ~1.9 at t=0.25), and QR hits the same horizon (~0.41-0.45). **The residual
+  wall is PHYSICAL, not wrapping:** the trajectory makes a genuine close flyby of Jupiter
+  (perijove r2~0.0041 at t~0.466, speed ~0.66); the true flow stretching is modest (‖STM‖₂ only
+  ~3e2 by t~0.45, non-rotating -> little wrapping to remove), and the enclosure stops when its
+  width surpasses the shrinking Jupiter miss distance (a-priori Picard box reaches the collision
+  manifold). Distinguished from wrapping by its SIGNATURE, the exact opposite of a wrapping wall:
+  the reach is step-size-DEPENDENT, converging to the perijove time as h->0 (t_reach = 0.409,
+  0.440, 0.452, 0.465 at h = 1/64, 1/128, 1/256, 1/512), yet precision-INsensitive (dps 40 vs 80
+  reach the identical t at fixed h). Jacobi constant stays rigorously enclosed around C₀ on every
+  run. **Net:** this REVISES `#668`'s characterization -- its t~0.42 stop was attributed to
+  wrapping, but is really a Jupiter-flyby bottleneck; the QR machinery is nonetheless correct,
+  validated, and is the ingredient the FUTURE wide-h-set covering-relations stage will require.
+  Crossing this arc needs close-approach regularisation (not more QR); rigorous Poincaré-map
+  derivatives and the covering-relations / h-set topology also remain future stages. No
+  `catalogue.yaml` write. Lint/format/mypy all clean (full `mypy src tests`, 750 files);
+  `tests/scripts` green (148 tests, no regression).
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
