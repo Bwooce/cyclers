@@ -18,11 +18,11 @@ see the ledger paragraph itself (search `TASK ALLOCATIONS`) or each task's own b
 history.
 
 ### Ready to dispatch — no blocker
-- `#650` implementation sweep (added 2026-07-19): the Fable design read is DONE — the mechanical
-  pairwise transfer-compatibility sweep (Sonnet) is dispatchable directly from
-  `docs/notes/2026-07-19-650-transfer-network-design.md` + `#650`'s own bullet, no design
-  judgment calls left.
-- Otherwise none currently. (`#600` — corrected 2026-07-15: this line was never updated after `#600` was
+- Otherwise none currently. (`#650` — corrected 2026-07-19: this line was never updated after
+  `#650`'s implementation sweep was dispatched and closed the same day; see its own `✓ DONE`
+  bullet entry — built + BOTH mandatory positive controls PASS + a real sweep run (291 nodes,
+  31,906 pairs, 60,239 edges, cheap_edge_count=2, both Uranian moon-system). Removed from this
+  list. `#600` — corrected 2026-07-15: this line was never updated after `#600` was
   dispatched and closed the same day; see its own `✓ DONE` bullet entry — clean negative, 806,400
   candidates, near-miss residual 0.0531 km/s just outside the gate. Removed from this list.)
 
@@ -635,8 +635,16 @@ collapse at both -- see #649's own bullet for full numbers/caveats, not wired in
 #650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
 (registered 2026-07-18; Fable design read DONE 2026-07-19 -- full implementation spec at
 `docs/notes/2026-07-19-650-transfer-network-design.md`, cost = magnitude-only powered-flyby
-handoff lower bound + statistical phase model over an explicitly-unknown relative phase, the
-Sonnet pairwise sweep is now dispatchable directly from the note/bullet); #651 next-unused):**
+handoff lower bound + statistical phase model over an explicitly-unknown relative phase; CLOSED
+2026-07-19, Sonnet implementation: both mandatory positive controls PASS (aldrin outbound x
+inbound Earth edge dv_hop=0/B0; all 12 Uranian QC x QC moon-sharing pairs epoch_window_overlap,
+0 epoch_disjoint); real sweep 291 nodes/31,906 pairs/60,239 edges, bands B0=2319/B1=12191/
+B2=20495/B3=25234, cheap_edge_count=2 (both Uranian moon-system), cheap_dv_phase_indeterminate=
+14,375; confirms + sharpens the design's own §7 prediction (heliocentric graph cheap-but-phase-
+indeterminate, moon-system hosts the only phase-feasible cheap edges; 0 "recurrent" anywhere
+because the catalogue's own periods cluster as near-integer multiples of a few synodic bases);
+no catalogue/registry writes, commit `ea99eeb`, see #650's own bullet for the full census);
+#651 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10177,7 +10185,7 @@ anywhere in the file and are genuinely still open.]**
   `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), independently confirmed present on a
   clean `git stash` of this task's changes — unrelated to this task, not touched here. `ruff check`/
   `ruff format --check`/`mypy src tests` all clean. No `data/catalogue.yaml` changes.
-- **#650** (registered 2026-07-18, user-directed) — `#645` shortlist item 5: an inter-cycler
+- **#650 ✓ DONE (2026-07-19, Sonnet implementation)** (registered 2026-07-18, user-directed) — `#645` shortlist item 5: an inter-cycler
   transfer-compatibility network over this project's own 361-row `data/catalogue.yaml` — the
   M5/M6-tier cycler-network idea `#570`'s own scoping explicitly deferred, and a genuinely NEW
   object class built entirely from this project's own unique asset (its catalogue) rather than a
@@ -10244,6 +10252,48 @@ anywhere in the file and are genuinely still open.]**
   run `tests/scripts` too) + `tests/data/test_transfer_network.py`; closed-form only, minutes of
   compute; no catalogue/`empty_regions` writes (negative-registry entry is a post-sweep
   adjudication call, not the sweep's).
+  **✓ IMPLEMENTATION + REAL SWEEP DONE (2026-07-19, Sonnet).** Built
+  `src/cyclerfinder/data/transfer_network.py` (pure closed-form: eligibility, body resolution,
+  `dv_hop_kms` + B0-B3 bands, bend/`r_SOI` metadata, the statistical phase-alignment model) +
+  `scripts/run_650_transfer_network.py` (the driver, AST-preflight-exempted same category as
+  `#317`/`#606`/`#608`/etc.) + `tests/data/test_transfer_network.py` (26 new tests: hand-computed
+  `dv_hop`, B0-B3 boundary tests, `r_SOI` vs Earth's known ~924,000 km SOI, the phase model vs an
+  independent brute-force reference in BOTH a commensurate-period and an incommensurate-flavoured
+  case, epoch-window intersection incl. the disjoint case). **Both mandatory positive controls
+  PASS**: (1) `aldrin-classic-em-k1-outbound` × `-inbound` → Earth edge `dv_hop_kms=0.0`, band
+  `B0_ballistic_compatible`; (2) all 12 Uranian `#569` quasi_cycler pairs sharing a moon →
+  `phase_status="epoch_window_overlap"`, 0 `epoch_disjoint` (all 6 rows share the identical
+  2000-06-21→2083-06-21 validity window, so this is the expected deterministic result, not a
+  finding). **Real full sweep** (12 s wall-clock, well under the design's "minutes" estimate): 291
+  eligible nodes, 31,906 candidate pairs (exact match to the design doc's own §1 survey), 60,239
+  `(id_a,id_b,body)` edges. Bands: B0=2,319, B1=12,191, B2=20,495, B3=25,234. `phase_status`:
+  `phase_locked`=23,284, `not_computed_dv_gated`=36,444, `epoch_window_overlap`=12,
+  `no_period_data`=499 (moon-tour rows — Titan/Enceladus/Ganymede/Europa/Callisto/Io — lacking a
+  sourced period; 33 eligible nodes total lack any usable period, a real citable data gap).
+  `cheap_edge_count=2` (`cheap_dv_phase_indeterminate=14,375`) — **both** cheap edges are in the
+  Uranian moon subsystem: `ariel-oberon`×`titania-oberon` at Oberon (`dv_hop=0.131` km/s) and
+  `umbriel-oberon`×`umbriel-titania` at Umbriel (`dv_hop=0.279` km/s), each its own isolated 2-node
+  component. **The design's §7 prediction pattern HELD, and sharpened**: the heliocentric (E/M/V)
+  graph is ΔV-cheap-but-phase-indeterminate on missing data (14,375 B0/B1 edges `phase_locked`),
+  while the moon-system subset hosts the only genuinely phase-feasible cheap edges — exactly the
+  plausible-but-uncertain pattern `#645`/§7 flagged. One genuinely unanticipated refinement: the
+  `recurrent` `phase_status` NEVER occurs (0 of 60,239 edges) for heliocentric pairs — not a
+  broken pipeline (the two Uranian-QC cheap edges prove real alignment is found when it exists),
+  but because this catalogue's own period vocabulary clusters as near-integer multiples of a
+  handful of E-M (~779.8 d) / E-V (~583.9 d) synodic bases, so almost every heliocentric pair's
+  beat period vastly exceeds the 100-yr statistical horizon — the "recurrent, fast-waiting-time"
+  regime the design sketched as plausible for cross-system pairs doesn't materialize given the
+  catalogue's *actual* recorded periods; a sharper version of the same missing-phase-data
+  bottleneck, not a contradiction of it. `ruff check`/`ruff format --check`/`mypy src tests` all
+  clean; `tests/data tests/search tests/scripts -q` exits with only the same 2 PRE-EXISTING
+  failures already documented in prior tasks (`test_eggie_ballistic.py::
+  test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_pluto_charon_kk_sweep.py::
+  test_504_sweep_33`), independently reconfirmed present on a clean `git stash` of this task's
+  changes. No `data/catalogue.yaml`/`cycler_networks.yaml`/`negative_results.yaml` writes —
+  whether any of this belongs in the negative-results registry is left to the coordinating
+  session's adjudication, per the design's own scope note. Artifact:
+  `data/found/650_transfer_network/{edges.jsonl,summary.json}` (60,239 / 1 records). Commit
+  `ea99eeb`.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
