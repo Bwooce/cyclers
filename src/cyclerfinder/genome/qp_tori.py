@@ -277,6 +277,92 @@ def _enforce_reality(coeffs: NDArray[np.complex128]) -> NDArray[np.complex128]:
     return out
 
 
+def _canonicalize_ns_eigenpair(
+    lam: complex, v: NDArray[np.complex128]
+) -> tuple[complex, NDArray[np.complex128]]:
+    """Canonicalize a Neimark-Sacker eigenpair to a platform-independent
+    representative, removing BOTH the conjugate-pair sign ambiguity (#632) and
+    the overall eigenvector-phase ambiguity (#635).
+
+    ``np.linalg.eig`` returns the NS pair ``(lam, conj(lam))`` and each complex
+    eigenvector only up to (a) which member of the conjugate pair comes first
+    and (b) an arbitrary overall phase ``e^(i*theta0)`` -- both are LAPACK/BLAS-
+    backend dependent (Mac/Accelerate vs Linux/OpenBLAS), so without pinning
+    them the downstream GMOS torus corrector is not reproducible across
+    platforms. This helper pins both at the SOURCE (cf. #515's 3D-Floquet
+    eigenvector-sign alignment):
+
+    1. **Eigenvalue sign (#632).** Pin the representative to the POSITIVE-
+       imaginary member ``arg(lam) in (0, pi)``. The two members describe the
+       SAME invariant circle traversed in opposite angular senses
+       (``theta -> -theta``), so ``sign(rho) = sign(arg lam)`` is a pure
+       parametrization convention; pinning it makes ``rho >= 0`` everywhere.
+
+    2. **Eigenvector phase (#635).** A complex eigenvector is defined only up to
+       ``e^(i*theta0)`` (``v`` and ``e^(i*theta0) v`` are both valid). Physically
+       this phase is the STARTING ANGLE of the invariant-circle parametrization:
+       the seed ``u(theta) = s_parent + amplitude * Re(v * e^(i theta))`` sends
+       ``v -> e^(i*theta0) v`` to a mere relabel ``theta -> theta + theta0`` of
+       the SAME geometric circle. The torus is phase-invariant, but the fragile
+       near-bifurcation corrector's BASIN OF ATTRACTION is not. Pin the phase by
+       rotating ``v`` so its LARGEST-MAGNITUDE component lies at ``+45 degrees``,
+       i.e. ``v[i_ref] = |v[i_ref]| * e^(i*pi/4)`` (equal, positive real and
+       imaginary parts). This divides the arbitrary phase out EXACTLY
+       (``v[i_ref] / (|v[i_ref]| * e^(i*pi/4))`` carries the same
+       ``e^(i*theta0)`` factor, so the quotient is phase-invariant BY
+       CONSTRUCTION -- see the synthetic-phase-injection regression test), and
+       the largest-magnitude component keeps the divisor bounded away from zero
+       (non-degenerate: no tie, no zero-crossing for a genuine NS eigenvector).
+
+       WHY 45 degrees and not the two "obvious" conventions (dominant component
+       real-positive, or imaginary-positive): the downstream corrector fixes the
+       leftover rotation gauge with a phase-lock ``Im(c_1[phase_pin_idx]) = 0``
+       where ``phase_pin_idx = argmax|Re(c_1)|``. Each obvious convention COLLIDES
+       with that pin at a fragile bifurcation:
+
+       * **real-positive** forces ``Im(c_1[i_ref]) = 0`` exactly, and since
+         ``i_ref`` is then also ``argmax|Re(c_1)| = phase_pin_idx``, the seed
+         lands EXACTLY on the pin surface. That measure-zero coincidence zeroes
+         the phase-condition residual at iterate 0 and the fragile corrector
+         STALLS (EM-L2 C=3.15, n_trans=4: rot 0.02327, residual 5.8e-6,
+         ``converged=False``) -- a knife-edge where any ``>= 1e-15`` phase kick
+         flips the basin, so it merely trades the O(1) platform phase-spread for
+         an O(1e-16) roundoff sensitivity sitting on the basin boundary: WORSE
+         than no fix.
+       * **imaginary-positive** sets ``Re(c_1[i_ref]) = 0``, so
+         ``argmax|Re(c_1)|`` is forced onto a SUBDOMINANT coordinate with small
+         ``|Re|``; that phase pin is poorly conditioned and the (ill-conditioned,
+         cond ~5e8) low-truncation continuation correctors fail to converge
+         (``genome.qp_tori_arclength`` forward step returns ``None`` on the
+         n_trans=2 smoke torus).
+
+       ``+45 degrees`` is the phase MAXIMALLY FAR FROM BOTH failure modes: the
+       dominant component keeps a large real part (``|v[i_ref]|/sqrt(2)``, so the
+       pin still tends to lock the well-conditioned dominant coordinate) AND a
+       large imaginary part (so the seed sits OFF the pin surface with a healthy
+       nonzero phase-condition residual -- no stall). It maximizes
+       ``min(|Re|, |Im|) = |v[i_ref]|/sqrt(2)`` at the pinned component,
+       maximizing the conditioning margin against both degeneracies. Verified:
+       L2 lands in the physical basin (rot 0.02140 = ``arg(lam)/2pi`` = Owen &
+       Baresi's regime = #555) AND the arclength / free-rho / structural
+       continuation correctors keep converging.
+
+    The returned ``v`` is unit-norm. ``lam`` is returned with its sign pinned.
+    """
+    v_out = v.astype(np.complex128).copy()
+    lam_out = complex(lam)
+    if lam_out.imag < 0.0:
+        lam_out = complex(np.conj(lam_out))
+        v_out = np.conj(v_out)
+    v_out /= np.linalg.norm(v_out)
+    i_ref = int(np.argmax(np.abs(v_out)))
+    # e^(i*pi/4): pin the dominant component to +45 degrees.
+    e_45 = complex(math.cos(math.pi / 4), math.sin(math.pi / 4))
+    ref_phase = v_out[i_ref] / (abs(v_out[i_ref]) * e_45)
+    v_out = v_out / ref_phase
+    return lam_out, v_out
+
+
 def _seed_invariant_circle(
     parent_state: NDArray[np.float64],
     monodromy_matrix: NDArray[np.float64],
@@ -334,24 +420,11 @@ def _seed_invariant_circle(
         )
     idx, lam = best
     v_complex = eigvecs[:, idx].astype(np.complex128)
-    # Canonicalize the Neimark-Sacker representative to the POSITIVE-imaginary
-    # member of the conjugate pair (lam, conj(lam)). The two members describe
-    # the SAME invariant circle traversed in opposite angular senses
-    # (theta -> -theta), so the sign of the rotation number rho = arg(lam) is a
-    # pure parametrization convention. But WHICH member ``np.linalg.eig``
-    # returns first is BLAS-backend dependent (Mac/Accelerate vs Linux/OpenBLAS
-    # order the conjugate pair differently), so without pinning it the reported
-    # rotation-number SIGN -- and, because the seed direction biases which of
-    # two nearby real tori the nonlinear corrector lands on, occasionally the
-    # branch itself -- flips between platforms. Pin arg(lam) into (0, pi) so
-    # rho >= 0 everywhere and the corrector is reproducible cross-platform.
-    # (#632; cf. #515's 3D-Floquet eigenvector-sign alignment for the same
-    # class of platform-dependent eigen-sign ambiguity.)
-    if np.imag(lam) < 0.0:
-        lam = complex(np.conj(lam))
-        v_complex = np.conj(v_complex)
-    # Normalize so |v| = 1
-    v_complex /= np.linalg.norm(v_complex)
+    # Pin the conjugate-pair sign (#632) AND the overall eigenvector phase
+    # (#635) so the seed -- and hence the fragile GMOS corrector's basin -- is
+    # platform-independent. See ``_canonicalize_ns_eigenpair`` for the full
+    # rationale (both ambiguities are LAPACK/BLAS-backend dependent).
+    lam, v_complex = _canonicalize_ns_eigenpair(lam, v_complex)
 
     n_total = 2 * n_modes + 1
     coeffs = np.zeros((n_total, 6), dtype=np.complex128)

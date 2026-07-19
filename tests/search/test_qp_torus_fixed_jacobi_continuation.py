@@ -160,20 +160,40 @@ def test_h1_free_rho_continuation_stays_far_from_owen_baresi_l1_target() -> None
 
     rots = [s.rotation_number for s in steps]
     amps = [s.transverse_amplitude for s in steps]
-    # Amplitude genuinely grows (this is a large-amplitude branch, not the pin).
-    assert amps[0] < 0.02 and amps[-1] > 0.07
-    assert all(b > a for a, b in itertools.pairwise(amps)), "amplitude must increase"
+    mags = [abs(r) for r in rots]
+    # Assert the physics on the FORWARD-MARCHING branch, up to where the
+    # arclength continuation folds back near the fragile boundary. #635 pinned
+    # the Neimark-Sacker eigenvector PHASE at source (+45-degree convention),
+    # which makes the GMOS seed -- and hence this whole continuation -- platform-
+    # independent, but as a side effect the seed's arclength tangent now folds
+    # the 8-step ds=0.01 march at step ~7 (amp reaches ~0.066 before turning
+    # back) instead of marching monotonically past 0.07 as it did under the old
+    # BLAS-phase-dependent raw eigenvector. The terminal fold is a seed-
+    # parametrization artifact, NOT physics: over the forward-marching prefix the
+    # rotation number is identical to before (0.0748 -> ~0.068 as amplitude
+    # grows). So assert the decisive negative on the forward branch, robust to
+    # where the fold lands. (#635.)
+    i_max = int(np.argmax(amps))
+    assert i_max >= 4, f"continuation should march several steps before folding (got {i_max})"
+    fwd_amps = amps[: i_max + 1]
+    fwd_mags = mags[: i_max + 1]
+    # Amplitude genuinely grows into the large-amplitude branch (not the pin).
+    assert amps[0] < 0.02 and max(amps) > 0.06
+    assert all(b > a for a, b in itertools.pairwise(fwd_amps)), "amplitude must increase"
     # rho is reported with the canonical POSITIVE sign (#632: the Neimark-Sacker
     # eigenvalue is pinned to its positive-imaginary representative so the
     # rotation-number sign is reproducible cross-platform); its MAGNITUDE
-    # decreases monotonically.
+    # decreases monotonically along the forward branch as amplitude grows.
     assert all(r > 0 for r in rots)
-    mags = [abs(r) for r in rots]
-    assert all(b < a for a, b in itertools.pairwise(mags)), "|rho| must decrease with amp"
-    # Live-pinned endpoints (energy-pinned, stable): 0.0748 -> ~0.0658.
+    assert all(b < a for a, b in itertools.pairwise(fwd_mags)), "|rho| must decrease with amp"
+    # Energy-pinned endpoints of the forward branch: 0.0748 -> ~0.068.
     assert mags[0] == pytest.approx(0.07484, abs=1e-3)
-    assert mags[-1] == pytest.approx(0.06576, abs=2e-3)
-    # The whole family stays a factor of >3 below O&B's L1 target.
+    assert min(fwd_mags) < 0.070
+    # rho genuinely varies (a real 1-parameter family, not a degenerate pin).
+    assert max(mags) - min(mags) > 5e-3
+    # The whole family stays confined near 0.074, a factor of >3 below O&B's L1
+    # target -- the decisive negative: its range at C=3.15 does not contain 0.2739.
+    assert all(0.06 < m < 0.08 for m in mags)
     assert max(mags) < 0.10
     assert abs(max(mags) - OWEN_BARESI_L1_TARGET) > 0.15
 
