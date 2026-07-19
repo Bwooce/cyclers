@@ -61,12 +61,16 @@ Three things this module does NOT do, deliberately:
   cross-mu anchors were both L4/L5-equilibrium false positives (true
   cross-mu lift ~0x), and its Opus adjudication found the collapse
   STRUCTURAL (the model has no mu-conditioning) rather than a sampling
-  artifact -- so `#643` purged them. :func:`expected_lift_for_mu` now
-  returns the single validated `#608` in-distribution anchor (~13-27x) only
-  for mu at/effectively-at the training point, and an explicit
-  ``beyond_validated_range=True``/``estimated_lift=None`` "cross-mu transfer
-  unvalidated" signal for anything else -- never a numeric lift interpolated
-  or extrapolated past validated data.
+  artifact -- so `#643` purged them. `#649`/`#651` found a CHEAP coordinate
+  transform (:func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`)
+  rescues real lift at two specific re-tested mu, and this module now
+  applies it automatically at any off-training mu -- but :func:`expected_lift_for_mu`
+  still returns a numeric estimate ONLY for mu at/effectively-at the
+  training point (the single validated `#608` in-distribution anchor,
+  ~13-27x) or one of those two `#649`-validated coordinate-fix points; an
+  explicit ``beyond_validated_range=True``/``estimated_lift=None``
+  "cross-mu transfer unvalidated" signal covers everything else -- never a
+  numeric lift interpolated or extrapolated past validated data.
 
 **Integration pattern (`#634` design read, 2026-07-18)**: this module is
 consumed as a STANDALONE LIBRARY CALLABLE -- a discovery script imports
@@ -100,6 +104,39 @@ docstring for the honest result: a real pilot at the hardest-hit target
 most likely because a 15-draws-per-cluster probe budget is too noisy to
 distinguish genuine per-cluster unsuitability from sampling luck -- a
 documented negative result, not forced into a claimed improvement.
+
+**`#649`/`#651` correction (2026-07-19): cross-mu is no longer purely
+"unvalidated"; a coordinate fix now rescues real value.** `#649` found that
+feeding `#628`'s raw Earth-Moon-shaped model output directly to a foreign-mu
+corrector (the behavior described in bullet 3 above) is not the only option:
+reinterpreting the raw ``(state0, period)`` guess through a mu-INVARIANT
+coordinate (`#629`'s rho=(C-3)/(C_L1(mu)-3) scaled-energy quantity, plus an
+exact Hill-radius length/velocity-direction scale, then solving for the
+velocity MAGNITUDE that hits the target-mu Jacobi constant exactly --
+:func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`)
+BEFORE handing the guess to the corrector rescues real, reproduced lift at
+the two mu targets `#642` found totally collapsed: ~13.5% vs 0% baseline at
+mu=0.001, ~4.0% vs 1.0% baseline at Sun-Earth mu (both combined over two
+independent rng draws -- see `#649`'s own ``data/OUTSTANDING.md`` RESULT
+paragraph for the full numbers/construction/caveats). `#651` wires this
+transform into :func:`generate_and_refine_seeds` itself: whenever a caller
+requests a mu meaningfully different from ``TRAINING_MU`` (the SAME
+``VALIDATED_DELTA_LOG10_MU`` gate `#643` already established), every raw
+generated seed is coordinate-transformed before refinement, automatically --
+a caller does not need to call the transform module directly. This is
+NOT a claim that cross-mu transfer now works everywhere: `#649` tested
+EXACTLY two mu points (mu=0.001, Sun-Earth mu~3.003e-6) and its own bullet
+explicitly cautions broader mu coverage is untested -- :func:`expected_lift_for_mu`
+therefore returns a validated numeric lift ONLY at those two exact points
+(the transform is still applied at any other off-training mu, since it costs
+nothing and cannot be worse than the raw approach's proven-0% collapse, but
+no numeric lift is claimed there). `#649`'s own honest caveats apply
+in production exactly as they did in its pilot: hits cluster on ~1 dominant
+real family per mu (not a diverse set -- inspect each :class:`GeneratedSeed`'s
+own ``jacobi``/``period`` to see this), no literature-novelty check is run
+here at all (never was, cross-mu or not), and period is left UNCHANGED by
+the transform as a leading-order Hill-scaling approximation, not an exact
+rescale.
 """
 
 from __future__ import annotations
@@ -115,6 +152,7 @@ from numpy.typing import NDArray
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.cr3bp import CR3BPSystem, cr3bp_system
+from cyclerfinder.ml.cross_mu_coordinate_transform import transform_seed_to_target_mu
 from cyclerfinder.ml.orbit_generative import (
     DEFAULT_JACOBI_BOUNDS,
     DEFAULT_MAX_ABS_VZ0,
@@ -335,16 +373,65 @@ def delta_log10_mu(target_mu: float, training_mu: float = TRAINING_MU) -> float:
     return abs(math.log10(target_mu) - math.log10(training_mu))
 
 
+# `#649`/`#651`: TWO SPECIFIC cross-mu points where a coordinate transform
+# (:func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`,
+# `#649`'s rho=(C-3)/(C_L1(mu)-3) energy match + exact Hill-radius
+# position/velocity-direction scale + velocity-magnitude solve) was
+# INDEPENDENTLY VALIDATED -- twice, on two separate rng draws, at each point
+# -- to rescue real, substantial physically-sane lift from `#642`'s confirmed
+# 0% collapse of the raw (untransformed) approach. This is deliberately NOT a
+# general "coordinate-fixed cross-mu lift" formula: `#649`'s own bullet in
+# `data/OUTSTANDING.md` explicitly cautions that broader mu coverage beyond
+# these two exact points is untested. `mu_0.001`'s ``lift`` is ``math.inf``
+# (not merely large) because the fresh in-run baseline scored literally 0/200
+# real hits at that mu both times -- an undefined/infinite ratio is the
+# honest number, not a fabricated finite one.
+CROSS_MU_COORDINATE_FIX_ANCHORS: tuple[LiftAnchor, ...] = (
+    # 27/200 (13.5%) transformed-generated vs 0/200 (0.0%) fresh baseline,
+    # combined over two independent rng draws (run 1: 15/100 vs 0/100; run 2,
+    # --draw-seed=12649: 12/100 vs 0/100).
+    LiftAnchor("mu_0.001_coordinate_fixed", 0.001, math.inf, "#649"),
+    # 8/200 (4.0%) transformed-generated vs 2/200 (1.0%) fresh baseline,
+    # combined over two independent rng draws (run 1: 5/100 vs 1/100; run 2:
+    # 3/100 vs 1/100).
+    LiftAnchor("sun_earth_coordinate_fixed", cr3bp_system("Sun", "Earth").mu, 4.0, "#649"),
+)
+
+# How close target_mu must be (in |delta log10 mu|, evaluated against that
+# SPECIFIC anchor's own mu, not TRAINING_MU) to one of the two points above
+# to be treated as "the #649-validated coordinate-fix point" and get a
+# numeric lift estimate, rather than the honest cross-mu-unvalidated signal.
+# Deliberately tiny for the same reason `VALIDATED_DELTA_LOG10_MU` is tiny:
+# `#649` tested exactly these two mu values and nothing else -- this is a
+# point lookup (allowing for the Sun-Earth mu's own floating-point
+# derivation via `cr3bp_system` varying in the last few digits across
+# equivalent call sites), not a window to interpolate or extrapolate within.
+CROSS_MU_COORDINATE_FIX_TOLERANCE: float = 1e-6
+
+
 @dataclass(frozen=True)
 class LiftEstimate:
     target_mu: float
     delta_log10_mu: float
-    # `#643`: no longer always a number. ``None`` exactly when
-    # ``beyond_validated_range`` is ``True`` -- see :func:`expected_lift_for_mu`.
+    # `#643`: no longer ALWAYS a number when ``beyond_validated_range`` is
+    # ``True``. `#649`/`#651` narrow this further: ``estimated_lift`` is
+    # non-``None`` in exactly two cases -- (1) at/near ``training_mu``
+    # (``beyond_validated_range=False``), or (2) at one of the two SPECIFIC
+    # `#649`-validated coordinate-fix mu points (``beyond_validated_range``
+    # stays ``True`` there -- it is still not in-distribution parity -- but
+    # ``coordinate_fix_anchor_label`` is set to say which one). Anywhere
+    # else, both ``estimated_lift`` and ``coordinate_fix_anchor_label`` are
+    # ``None`` -- see :func:`expected_lift_for_mu`.
     estimated_lift: float | None
     method: str
     beyond_validated_range: bool
     caveat: str
+    # `#649`/`#651`: set to the matching ``CROSS_MU_COORDINATE_FIX_ANCHORS``
+    # label (e.g. ``"mu_0.001_coordinate_fixed"``) when ``target_mu`` is one
+    # of the two `#649`-validated points, else ``None``. Lets a caller
+    # distinguish "validated coordinate-fix point" from "in-distribution" or
+    # "genuinely unvalidated" without string-matching ``method``/``caveat``.
+    coordinate_fix_anchor_label: str | None = None
 
 
 def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) -> LiftEstimate:
@@ -367,7 +454,9 @@ def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) 
       (``delta_log10_mu <= VALIDATED_DELTA_LOG10_MU``): returns the single
       validated `#608` in-distribution anchor (~13.5x, `#642`-corrected
       live-re-run point estimate; the true range across all of `#642`'s
-      re-derivations is ~13-27x) and ``beyond_validated_range=False``.
+      re-derivations is ~13-27x) and ``beyond_validated_range=False``. This
+      branch is UNCHANGED by `#649`/`#651` (see below) -- verified by an
+      explicit regression test.
     * For anything meaningfully different from the training mu (including
       `#624`'s own former mu=0.001 and Sun-Earth anchor points): returns
       ``estimated_lift=None`` and ``beyond_validated_range=True``, with a
@@ -376,8 +465,30 @@ def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) 
       ~0x -- and that a caller should prefer the uniform baseline's own
       measured rate at the target mu over any generative-model lift claim.
 
-    See `#642`/`#643` in ``data/OUTSTANDING.md`` for the full numbers and
-    reasoning behind this narrowing.
+    **`#649`/`#651` addition**: the statement above ("only two points ever
+    tested there both collapsed to ~0x") described the RAW, untransformed
+    approach `#642` tested. `#649` re-tested those SAME two exact points
+    (mu=0.001, Sun-Earth mu~3.003e-6) with a coordinate transform applied
+    first (`#649`'s rho-matched Hill-radius scaling --
+    :func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`,
+    now wired into :func:`generate_and_refine_seeds` itself for any
+    off-training mu) and found REAL, reproduced lift -- ~13.5x-equivalent at
+    mu=0.001 (baseline was 0%, so the ratio is technically infinite, not
+    merely large) and ~4.0x at Sun-Earth, both combined over two independent
+    rng draws. So there is now a THIRD case, inserted between the two above:
+    for ``target_mu`` within ``CROSS_MU_COORDINATE_FIX_TOLERANCE`` of one of
+    ``CROSS_MU_COORDINATE_FIX_ANCHORS``' two specific points, this function
+    returns that anchor's validated numeric ``estimated_lift`` (with
+    ``coordinate_fix_anchor_label`` set and ``beyond_validated_range`` still
+    ``True`` -- this is NOT full in-distribution parity, just a real,
+    validated rescue at that one exact point). Deliberately still NOT a
+    general cross-mu formula: `#649`'s own bullet in ``data/OUTSTANDING.md``
+    explicitly cautions broader mu coverage beyond these two points is
+    untested, so anything else still falls through to the honest
+    unvalidated final branch below, unchanged.
+
+    See `#642`/`#643`/`#649`/`#651` in ``data/OUTSTANDING.md`` for the full
+    numbers and reasoning behind this narrowing.
     """
     anchor = LIFT_ANCHORS[0]
     delta = delta_log10_mu(target_mu, training_mu)
@@ -402,6 +513,44 @@ def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) 
             ),
         )
 
+    for cf_anchor in CROSS_MU_COORDINATE_FIX_ANCHORS:
+        cf_delta = delta_log10_mu(target_mu, cf_anchor.mu)
+        if cf_delta <= CROSS_MU_COORDINATE_FIX_TOLERANCE:
+            lift_str = (
+                "infinite (baseline scored 0%)"
+                if math.isinf(cf_anchor.lift)
+                else (f"{cf_anchor.lift:.1f}x")
+            )
+            return LiftEstimate(
+                target_mu=target_mu,
+                delta_log10_mu=delta,
+                estimated_lift=cf_anchor.lift,
+                method=(
+                    f"#649-validated coordinate-transform-rescued cross-mu anchor "
+                    f"({cf_anchor.label}, {cf_anchor.source_task}) -- only valid "
+                    "because generate_and_refine_seeds applies "
+                    "cross_mu_coordinate_transform.transform_seed_to_target_mu to "
+                    "every raw seed automatically at this mu (see its own docstring)"
+                ),
+                beyond_validated_range=True,
+                caveat=(
+                    f"This exact mu is one of the TWO SPECIFIC cross-mu points #649 "
+                    "independently re-tested (twice each, different rng draws) with "
+                    "a Hill-radius/scaled-energy coordinate transform applied before "
+                    f"refinement, rescuing real lift from #642's confirmed 0% "
+                    f"collapse of the raw approach: {lift_str} transformed-generated "
+                    "vs. baseline. This does NOT generalize to nearby or other mu -- "
+                    "#649's own honest caveats: (1) hits cluster on ~1 dominant "
+                    "family per mu, not a diverse set; (2) no literature-novelty "
+                    "check is run; (3) period is left unchanged by the transform as "
+                    "a leading-order Hill-scaling approximation, not exact; (4) only "
+                    "these two exact mu points were re-tested -- broader coverage "
+                    "is UNVALIDATED, see the fallback branch for any other mu. See "
+                    "#649/#651 in data/OUTSTANDING.md for the full numbers."
+                ),
+                coordinate_fix_anchor_label=cf_anchor.label,
+            )
+
     return LiftEstimate(
         target_mu=target_mu,
         delta_log10_mu=delta,
@@ -418,8 +567,12 @@ def expected_lift_for_mu(target_mu: float, *, training_mu: float = TRAINING_MU) 
             "this collapse STRUCTURAL (the model has no mu-conditioning), not an "
             "N-too-small sampling artifact. Do not treat this model as validated "
             "for seed generation this far from its training mu without a "
-            "genuinely new mu-conditioned model. See #642/#643 in "
-            "data/OUTSTANDING.md for the full reasoning."
+            "genuinely new mu-conditioned model. #649 found a coordinate transform "
+            "(see cyclerfinder.ml.cross_mu_coordinate_transform, now applied "
+            "automatically by generate_and_refine_seeds at this mu) rescues real "
+            "lift, but ONLY validated it at two specific mu (mu=0.001, Sun-Earth) "
+            "-- this mu is not one of those, so no numeric lift is claimed here. "
+            "See #642/#643/#649/#651 in data/OUTSTANDING.md for the full reasoning."
         ),
     )
 
@@ -472,7 +625,24 @@ class GeneratedSeed:
     alongside the raw seed so a caller can check what it actually got against
     what it was hoping for -- per `#624`'s honest caveat: the model proposes
     a seed that converges to SOME real, physically-sane family at similar
-    energy, not necessarily the SPECIFIC family being searched for.
+    energy, not necessarily the SPECIFIC family being searched for. `#649`
+    found this caveat applies EVEN MORE sharply cross-mu: hits there tend to
+    cluster on ~1 dominant real family per mu, not a diverse set -- inspect
+    ``jacobi``/``period`` across a batch of seeds from one
+    :func:`generate_and_refine_seeds` call to see this clustering directly
+    (it is never hidden behind this report's aggregate rate alone).
+
+    `#651`: ``state0_guess``/``period_guess`` are whatever was actually
+    handed to ``correct_periodic`` -- the raw model draw when
+    ``coordinate_transform_applied`` is ``False``, or `#649`'s
+    coordinate-transformed guess (see
+    :func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`)
+    when it is ``True``. When the transform itself could not construct a
+    valid guess for a draw (an honest ``None``, not a crash), this seed
+    carries the RAW (untransformed) draw in ``state0_guess``/``period_guess``
+    instead, with ``converged=False`` and ``stability_note`` explaining the
+    construction failure -- counted like any other non-converged attempt,
+    never silently dropped.
     """
 
     state0_guess: NDArray[np.float64]
@@ -485,6 +655,15 @@ class GeneratedSeed:
     residual: float | None
     stability_index: float | None
     stability_note: str
+    # `#649`/`#651`: True iff this seed's target mu was far enough from
+    # TRAINING_MU (per VALIDATED_DELTA_LOG10_MU) that
+    # generate_and_refine_seeds applied the coordinate transform before
+    # refinement -- regardless of whether the transform's own construction
+    # succeeded (see the class docstring's construction-failure case).
+    # Defaults to False so existing external constructors (e.g.
+    # scripts/run_641_sun_jupiter_seed_census.py's own test fixtures) that
+    # predate this field keep working unchanged.
+    coordinate_transform_applied: bool = False
 
 
 @dataclass(frozen=True)
@@ -500,6 +679,13 @@ class SeedGenerationReport:
     target_jacobi_bounds: tuple[float, float] | None
     n_matched_target_jacobi: int | None
     lift_estimate: LiftEstimate
+    # `#649`/`#651`: True iff `target_mu` was far enough from TRAINING_MU
+    # (per VALIDATED_DELTA_LOG10_MU) that every seed in this report went
+    # through #649's coordinate transform before refinement -- a
+    # report-level convenience mirroring each GeneratedSeed's own
+    # `coordinate_transform_applied` flag. Defaults to False for the same
+    # external-constructor-compatibility reason as that field.
+    cross_mu_coordinate_transform_used: bool = False
 
 
 def generate_and_refine_seeds(
@@ -525,6 +711,62 @@ def generate_and_refine_seeds(
     """Generate N seeds from `#608`'s trained density and refine each with the
     EXISTING ``cr3bp_periodic.correct_periodic`` corrector at the target mu --
     the reusable, importable form of `#608`'s/`#624`'s one-off scripts.
+
+    **No literature-novelty check is run by this function, cross-mu or not --
+    never was, still isn't.** Every returned seed is an unclassified,
+    physically-sane periodic orbit at best, not a vetted discovery candidate;
+    a caller must run this project's own ``search/literature_check.py`` (or
+    equivalent) before calling anything this function returns "novel".
+
+    **`#649`/`#651` cross-mu behavior**: when the target mu is meaningfully
+    different from ``TRAINING_MU`` (``delta_log10_mu(target_mu) >
+    VALIDATED_DELTA_LOG10_MU`` -- the SAME `#643` gate
+    :func:`expected_lift_for_mu` uses), every raw generated seed is passed
+    through
+    :func:`cyclerfinder.ml.cross_mu_coordinate_transform.transform_seed_to_target_mu`
+    BEFORE refinement, instead of handed to the corrector raw. `#649`
+    independently validated (twice, at two separate mu) that this rescues
+    real, substantial physically-sane lift from a confirmed 0% collapse of
+    the raw approach -- but ONLY measured it AT those two exact points
+    (mu=0.001, Sun-Earth mu~3.003e-6; see ``report.lift_estimate`` for the
+    validated number when ``target_mu`` is one of them, or the honest
+    unvalidated signal otherwise -- :func:`expected_lift_for_mu` never
+    extrapolates this to other mu). The transform is applied at ANY
+    off-training mu regardless (it costs one cheap analytic solve per seed
+    and cannot be worse than the raw approach's proven-0% collapse), but no
+    numeric lift is CLAIMED beyond those two points. `#649`'s own honest
+    caveats apply to every cross-mu call of this function: (1) hits tend to
+    cluster on ~1 dominant real family per mu, not a diverse set -- inspect
+    the returned seeds' own ``jacobi``/``period`` fields to see this
+    directly, never hidden behind the aggregate rate alone; (2) period is
+    left UNCHANGED by the transform, a leading-order Hill-scaling
+    approximation, not an exact rescale. At/near ``TRAINING_MU`` this
+    function's behavior is completely UNCHANGED from before `#649`/`#651`
+    (verified by an explicit regression test) -- the transform is never
+    applied in-distribution.
+
+    **`#651`'s own additional honest caveat (discovered during this task's
+    own regression testing, not by `#649`)**: because the coordinate
+    transform succeeds at constructing genuine non-equilibrium orbits (the
+    entire point of `#649`'s fix), a RARE cross-mu draw (~1 in 120 observed
+    during this task's own testing) can dynamically evolve into a genuine
+    close approach to the secondary body partway through propagation -- a
+    case the transform's own construction check cannot catch (the initial
+    condition looks unremarkable; the close approach develops later in the
+    integration). ``correct_periodic``'s underlying legacy variable-step STM
+    propagator (``cyclerfinder.core.cr3bp._propagate_with_stm_variable``)
+    has no wall-clock or step-count budget, so such a draw can make a single
+    seed's refinement take a very long time (minutes or more) instead of
+    failing fast. This is a PRE-EXISTING gap in that shared propagator, not
+    something `#649`'s transform or this wiring introduces -- the raw
+    (untransformed) cross-mu path never triggered it only because it always
+    collapsed instantly onto benign L4/L5 equilibria (per `#642`). Out of
+    both `#649`'s and this task's explicit scope to fix (it would need its
+    own design work: a wall-clock budget, a step-count cap, or a collision
+    event on ``solve_ivp`` -- a real numerical-methods/engineering decision,
+    not a mechanical one). A caller running this function at scale on
+    off-training mu should apply their own external timeout/resource budget
+    per call until a dedicated follow-up task hardens the propagator itself.
 
     Parameters
     ----------
@@ -568,14 +810,50 @@ def generate_and_refine_seeds(
     if model is None:
         model, _corpus, _train = get_default_model(corpus_paths=corpus_paths, seed=model_seed)
 
+    # `#649`/`#651`: the SAME `#643` gate `expected_lift_for_mu` uses to
+    # decide "meaningfully different from the training point" -- reused, not
+    # re-invented, per this task's own scope. False (and therefore every
+    # downstream branch below a no-op) at/near TRAINING_MU, which is exactly
+    # how the in-distribution path stays byte-for-bit unchanged.
+    apply_cross_mu_transform = delta_log10_mu(system.mu) > VALIDATED_DELTA_LOG10_MU
+
     def _refine_one(row: NDArray[np.float64]) -> GeneratedSeed:
-        state0_guess = np.asarray(row[:6], dtype=np.float64)
-        period_guess = float(row[6])
+        raw_state0_guess = np.asarray(row[:6], dtype=np.float64)
+        raw_period_guess = float(row[6])
+        state0_guess = raw_state0_guess
+        period_guess = raw_period_guess
         converged = False
         sane = False
         state0 = period = jacobi = residual = idx = None
         note = "not computed (solver did not converge)"
         try:
+            if apply_cross_mu_transform:
+                transformed = transform_seed_to_target_mu(
+                    raw_state0_guess, raw_period_guess, TRAINING_MU, system.mu
+                )
+                if transformed is None:
+                    return GeneratedSeed(
+                        state0_guess=raw_state0_guess,
+                        period_guess=raw_period_guess,
+                        converged=False,
+                        physically_sane=False,
+                        state0=None,
+                        period=None,
+                        jacobi=None,
+                        residual=None,
+                        stability_index=None,
+                        stability_note=(
+                            "#649 coordinate transform could not construct a valid "
+                            "cross-mu seed for this draw (unrealizable velocity at "
+                            "the rho-matched target Jacobi constant, or a "
+                            "zero-velocity guess) -- see "
+                            "cyclerfinder.ml.cross_mu_coordinate_transform."
+                            "transform_seed_to_target_mu's own docstring"
+                        ),
+                        coordinate_transform_applied=True,
+                    )
+                state0_guess = transformed.state0
+                period_guess = transformed.period
             if period_guess <= 1e-6:
                 raise ValueError("non-positive period guess")
             orbit = correct_periodic(system, state0_guess, period_guess, tol=tol, max_iter=max_iter)
@@ -611,6 +889,7 @@ def generate_and_refine_seeds(
             residual=residual,
             stability_index=idx,
             stability_note=note,
+            coordinate_transform_applied=apply_cross_mu_transform,
         )
 
     all_seeds: list[GeneratedSeed] = []
@@ -663,6 +942,7 @@ def generate_and_refine_seeds(
         target_jacobi_bounds=target_jacobi_bounds,
         n_matched_target_jacobi=n_matched,
         lift_estimate=expected_lift_for_mu(system.mu),
+        cross_mu_coordinate_transform_used=apply_cross_mu_transform,
     )
 
 
