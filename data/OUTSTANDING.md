@@ -743,7 +743,9 @@ members across (4,1)-(5,5), one documented non-cycler near-miss at (5,1) — see
 round 2 (RUN 2026-07-19: #549's 4 uncapped probes + Sila-Nunam + Lempo-Hiisi all clean negatives,
 stamped; 2 GATE-PASSING CANDIDATES at Antiope, literature-checked not-found, AWAITING OPUS/FABLE
 ADJUDICATION -- see #657's own bullet, NOT yet in catalogue.yaml); #658 for #654 shortlist item 4, the epoch-locking pilot
-(registered, not yet dispatched); #659 next-unused):**
+(registered, not yet dispatched); #659 for the Opus+Fable adjudication of #657's 2 Antiope
+gate-passing candidates ((1,1) and (2,2), both independently reproduced bit-for-bit by the
+coordinating session before dispatch; registered+dispatched 2026-07-19); #660 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11034,7 +11036,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   pre-registered-baseline Mac-only flakes (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_
   but_subsurface`, `test_504_pluto_charon_kk_sweep::test_504_sweep_33`), unrelated to this task;
   `tests/scripts -q` green (new script's `preflight_search()` call verified by the AST ratchet).
-  Commit: see git log.
+  Commit: `1eb584b`. **Coordinator independent verification (2026-07-19)**: re-ran `mypy src tests`
+  full (found and fixed 10 pre-existing errors from `#655`'s own probe scripts that this task's
+  own dispatch agent caught but my `#655` verification pass had missed — see commit `e5e565c` and
+  `[[feedback_verify_must_include_full_mypy]]`); directly re-ran BOTH Antiope candidates
+  ((1,1) via `sweep_family(target, "mu05_11")`, (2,2) via `sweep_family_grid` with the exact
+  logged grid parameters) and both reproduced bit-for-bit against the logged Jacobi
+  constant/x0/period/nu/crosscheck values; also independently re-ran 2 of the Lempo-Hiisi negative
+  probes after noticing the raw log's own `SYSTEM lempo-hiisi: mu=` header (0.5607958732) does NOT
+  match the currently-committed `mu=0.4392041267501842` — traced this to the header print living
+  inside `phase_positive_control()` (a one-time announcement, printed once during an earlier dev
+  iteration before the primary/secondary swap fix) while the actual sweep phases
+  (`phase_new_systems_anchors`/`phase_new_systems_grid`) each re-fetch `REAL_BINARY_SYSTEMS` fresh
+  at call time; confirmed empirically by reproducing 2 of the logged lempo-hiisi results exactly
+  with the current code. Net: a stale informational header in a scratch log, not a correctness bug
+  in the actual results — flagged here for anyone reading the raw log directly.
+- **#659 (registered+dispatched 2026-07-19)** — Opus+Fable adjudication of `#657`'s 2 Antiope
+  gate-passing candidates before any `data/catalogue.yaml` consideration, per this project's
+  established `#564`/`#577`/`#588` precedent (a `literature_check.py` "not-found" result is
+  necessary-not-sufficient for novelty, never sufficient on its own). See `#657`'s own bullet for
+  the full candidate detail (both independently reproduced bit-for-bit by the coordinating session
+  before this dispatch).
 - **#658 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 4, epoch-locking
   pilot. See `#654`'s own bullet for the case. Scope: epoch-lock the 2-3 catalogue rows with
   already-sourced published epochs (Jones 2017 VEM-triple, Aldrin/Byrnes), re-run `#650`'s
