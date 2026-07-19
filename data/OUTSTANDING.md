@@ -771,7 +771,10 @@ symmetric-closure equations, upgrading the #563-lineage method -- the ONLY one t
 this project's confirmed-novel #312 family -- to an all-roots completeness guarantee, directly
 attacking the method's one documented residual failure mode (grid gaps, per #600's/#656's
 unresolved near-misses)); #662 for #661 shortlist item 1, the homotopy-continuation closure
-enumeration (registered+dispatched 2026-07-19); #663 next-unused):**
+enumeration (STAGE-1 BLOCKED 2026-07-19 -- mathematical, not tooling: the closure residual sits
+on a Lambert/Kepler transcendental TOF equation with no exact polynomial form, so no all-roots
+homotopy exists to solve; interval certification flagged as the real non-polynomial route to the
+same completeness goal -- coordinator decision pending); #663 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11253,12 +11256,56 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   trajectories); ring-moon/comet-family/exoplanet-toy problems (no validated positive control
   exists for any of them). **#1 recommended for immediate dispatch** -- registered+dispatched as
   `#662`.
-- **#662 (registered+dispatched 2026-07-19, Opus/Sonnet)** -- `#661` shortlist item 1, polynomial
+- **#662 ✗ STAGE-1 BLOCKED (2026-07-19, Opus) -- clean, decisive infeasibility at the FORMULATION
+  layer, not a tooling gap; Stage 2 correctly NOT attempted.** `#661` shortlist item 1, polynomial
   homotopy continuation on the `#563`-lineage symmetric-closure equations. See `#661`'s own bullet
-  for the full case. Scope: formulate the closure residual as a polynomial system, solve via
-  homotopy continuation for ALL isolated roots, positive-control against the committed 30-closure
-  Uranian golden + PC(3,2), then re-check `#600`'s and `#656`'s specific unresolved near-misses as
-  the first live test of whether the grid-gap failure mode is real.
+  for the full case. **The blocker is mathematical and tooling-independent** -- no PHCpack/
+  Bertini/HomotopyContinuation.jl install would change it. Read the actual closure math in full
+  (`scripts/enumerate_563_symmetric_closures.py` -> `scan_558_uranus_all_pairs_offset_sweep.py`'s
+  `residual_at_point`/`gate_candidate` -> `core/lambert.py`), reproduced the committed positive-
+  control point exactly (Umbriel-Oberon rel=180/tof_scale=2.0/n_rev=(1,1) -> residual
+  0.0252322725646 km/s vs catalogued 0.0252322725646, machine-identical) to ground the analysis.
+  **What the closure system actually is**: for a fixed direction + fixed discrete `n_rev`, the two
+  closure equations (V-inf continuity at the flyby + V-inf periodicity at the anchor) are a square
+  2x2 system in the two continuous unknowns (rel_offset beta, tof T). The moon-state trig
+  polynomializes cleanly (reparametrize the unknowns as the two moon phase-angles phi=beta+n_b*T,
+  chi=2*n_a*T; then cos/sin of each live on a `c^2+s^2=1` circle, and T=chi/(2*n_a) is linear) --
+  that part is genuinely low-degree and tractable. **The wall**: each of the two Lambert legs binds
+  "spacecraft transfer takes exactly time T" via the universal-variable time-of-flight equation
+  `sqrt(mu)*T = (y/C)^1.5 * S + A*sqrt(y)` with `C(z),S(z)` the Stumpff functions -- i.e. Kepler's
+  time equation, whose defining structure is a BARE anomaly term against `sin(anomaly)`
+  (`E - e*sin E = M`; multi-rev universal form carries `cos(sqrt z)`/`(sqrt z - sin sqrt z)` terms,
+  trig-in-`sqrt z`). Kepler's equation has no exact finite-degree polynomial form in the anomaly --
+  that is *why* it is solved iteratively -- so there is NO polynomial system whose roots are these
+  closures, and therefore no Bezout/BKK bound and no all-roots homotopy to run. This holds at the
+  very simplest case (single moon-pair, `n_rev=(0,0)`, single-rev direct transfer): two independent
+  Kepler bindings, one per leg. Degree is not the obstruction; polynomiality itself is absent. The
+  only way to force a polynomial is to truncate Kepler/Stumpff to a finite Taylor/Pade series -- but
+  that certifies completeness of the APPROXIMATED system, not the real one, and truncation error can
+  create or destroy exactly the narrow real basins the method exists to certify, reintroducing the
+  grid-gap failure mode in a subtler, harder-to-audit form. Disqualifying for the stated goal, so
+  NOT pursued (and NOT silently swapped for a denser grid, per `#520`'s anti-pattern). **Tooling
+  probe (secondary, done anyway)**: no Julia (`which julia` empty); `phcpy` returns HTTP 404 on
+  PyPI (not `uv add`-able -- it ships as a source/conda build over the PHCpack Ada binary); no
+  `sympy` in the venv; only `numpy`/`scipy`/`mpmath` present -- so even a from-scratch route starts
+  from bare. Moot given the formulation blocker. **Two findings that reshape the original premise**:
+  (1) the multi-revolution *branch* completeness that homotopy was meant to add is ALREADY delivered
+  by the existing `lambert(max_revs=n)`, which returns every `n_rev` x {low,high} branch by
+  construction -- the only genuinely-continuous search dimension left is the 2-D (beta,T) box per
+  (direction, n_rev). (2) The real mathematical goal -- "provably NO closure exists in region X",
+  the strongest negative this project can produce -- is deliverable over that 2-D box by CERTIFIED
+  INTERVAL methods (interval-Newton/Krawczyk, or a Smale-alpha / Kantorovich certificate) operating
+  directly on the transcendental residual with NO polynomialization required; and this codebase
+  already ships interval-arithmetic certification (`#610`/`#625` bend-gate `certify_*_interval` /
+  `bend_gate_interval_cert`), and `#661` itself lists interval certification as an existing method
+  family. **Recommendation for the coordinator (this task made no method substitution -- decision
+  is yours)**: if the completeness *certificate* is the actual want, re-scope as a 2-D interval-
+  certification pass over the (beta,T) domain per (direction,n_rev) for `#600`'s and `#656`'s
+  specific near-miss boxes (reuses existing interval machinery, no research-grade polynomialization,
+  and directly answers "is the near-miss a real basin the symmetric grid missed, or provably empty")
+  -- OR shelve item 1 and advance to `#661` shortlist items 2-3 (set-oriented transfer operator /
+  SRP-augmented sweep), which have no analogous formulation wall. No code added, no
+  `data/catalogue.yaml` write, no new script (Stage 1 concluded before any build).
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
