@@ -624,7 +624,10 @@ x seedless-corrector distinct-family enumeration (registered 2026-07-18; BUILT +
 FAILED clean 2026-07-19: 0/132 restarts recover a genuine Radau-passing family at Earth-Moon
 C=3.0 despite one confirmed reproducible hit proving the pipeline itself is correct -- Titan
 re-check not attempted per the task's own gate, see #648's own bullet); #649 for #645 shortlist
-item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18);
+item 4, a coordinate-fix test of the generative model's cross-mu collapse (registered 2026-07-18;
+DONE 2026-07-19: REAL RESCUE CONFIRMED, reproduced on two independent draws -- combined 27/200
+(13.5%) physically-sane at mu=0.001 and 8/200 (4.0%, 4x baseline) at Sun-Earth, vs. #642's 0% raw
+collapse at both -- see #649's own bullet for full numbers/caveats, not wired into production);
 #650 for #645 shortlist item 5, an inter-cycler transfer-compatibility network over the catalogue
 (registered 2026-07-18); #651 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
@@ -10072,7 +10075,10 @@ anywhere in the file and are genuinely still open.]**
   — 11 fast/always-on, 2 marked `slow` per this project's convention), `ruff`/`mypy` clean.
   `data/catalogue.yaml` untouched (nothing novel found — the opposite outcome, a capability-
   reliability gap). Commits: `a517173` (build + tests).
-- **#649** (registered 2026-07-18, user-directed) — `#645` shortlist item 4: a cheap, decisive
+- **#649 ✓ DONE (2026-07-19) — REAL RESCUE CONFIRMED, reproduced on two independent draws: the
+  coordinate transform substantially recovers cross-μ value that `#642` found completely
+  collapsed to 0%. See the RESULT paragraph at the end of this bullet for the full numbers,
+  construction, and honest caveats.** `#645` shortlist item 4: a cheap, decisive
   test of whether a COORDINATE fix (not a machine-learning fix) can rescue `#628`'s generative
   seed model's cross-μ value, closing out the μ-conditioning question `#642`/`#643` left open.
   `#645`'s own analysis: architectural μ-conditioning is DATA-gated (the `#210` training corpus
@@ -10093,6 +10099,77 @@ anywhere in the file and are genuinely still open.]**
   narrowed framing; if it doesn't, `#542`'s in-distribution-only scope is further confirmed as
   final. Recommended model: Sonnet (mechanical coordinate-transform test behind `#624`'s own
   already-validated evaluation protocol).
+
+  **RESULT (2026-07-19, Sonnet, `scripts/run_649_coordinate_fix_pilot.py`,
+  `src/cyclerfinder/ml/cross_mu_coordinate_transform.py`,
+  `data/found/649_coordinate_fix_pilot/summary*.json`)**: implemented the transform exactly as
+  scoped — for each raw Earth-Moon seed, compute its own C via `jacobi_constant` (NOT the model's
+  separate `jacobi` feature column) and ρ=(C−3)/(C_L1(μ_train)−3); at the target μ, solve for
+  C_target=3+ρ·(C_L1(μ_target)−3); scale (x0,y0,z0) as an offset from the secondary by the EXACT
+  numeric Hill-radius ratio hill_radius(μ_target)/hill_radius(μ_train) (distance from secondary to
+  L1, not the μ^(1/3) asymptotic form); scale velocity by the same ratio to get a DIRECTION, then
+  solve v_needed²=2·Ω(pos_target;μ_target)−C_target for the MAGNITUDE along that direction so the
+  constructed state hits C_target exactly (position/energy scaling alone does not, since Ω is
+  nonlinear — this magnitude solve is what actually delivers "same ρ" at the target μ); period left
+  UNCHANGED (documented leading-order-Hill-scaling approximation, not claimed exact). Returns
+  `None` (an honest construction failure, not a crash) when the Hill-scaled position sits outside
+  the target system's zero-velocity surface at C_target (~1-2/100 draws per arm) or the guess has
+  ~zero velocity to preserve a direction from.
+  Ran `#624`'s EXACT protocol (N=100, same two μ targets, same bit-for-bit-identical #608 model,
+  same fresh in-run uniform baseline, same `is_physically_sane` with `#642`'s equilibrium filter),
+  TWICE with independent rng draws (original run + `--draw-seed=12649` rerun) to rule out a lucky
+  single sample:
+  * **μ=0.001**: run 1: transformed-generated 15/100 (15.0%) vs fresh baseline 0/100 (0.0%) —
+    infinite ratio. Run 2 (independent draw): 12/100 (12.0%) vs 0/100 (0.0%) — infinite ratio
+    again. Combined: 27/200 (13.5%) generated vs 0/200 (0.0%) baseline. `#642`'s RAW
+    (untransformed) generated arm was 0% in two independent trials — this is a complete reversal
+    from total collapse to a genuine, reproducible double-digit-percent physically-sane rate, and
+    is now in the same ballpark as the validated Earth-Moon IN-distribution rate itself (~13-27%,
+    `#642`'s live re-run).
+  * **Sun-Earth**: run 1: transformed-generated 5/100 (5.0%) vs fresh baseline 1/100 (1.0%) — 5.0x.
+    Run 2: 3/100 (3.0%) vs 1/100 (1.0%) — 3.0x. Combined: 8/200 (4.0%) generated vs 2/200 (1.0%)
+    baseline — 4.0x. `#642`'s RAW (untransformed) generated arm was 0% in two independent trials —
+    again a reversal from total collapse to a real, reproduced lift over blind uniform seeding.
+  **Verified NOT a repeat of `#642`'s equilibrium-contamination artifact**: manually re-checked
+  every "physically-sane" hit from both runs against `is_physically_sane`'s own bounds/threshold —
+  all μ=0.001 hits have |v0|≈0.07–0.12 (nondimensional, comfortably above both the 1e-6 equilibrium
+  threshold AND `#642`'s own established genuine-vs-equilibrium separation, ~0.095 smallest genuine
+  value in that audit) and all Sun-Earth hits have |v0|≈0.009–0.02 (correctly scaled down for that
+  system, still >>1e-6) — real, moving, non-degenerate periodic orbits.
+  **Honest caveats**: (1) the hits at each μ cluster tightly in period (e.g. T≈1.75–2.14 at
+  μ=0.001 across both runs) — almost certainly landing repeatedly on ONE dominant real family near
+  L1 at each μ, not a diverse set; this matches `#624`'s own already-documented caveat that
+  generative seeding finds SOME real family at similar energy, not necessarily a diverse catalogue
+  or the SPECIFIC family a caller wants. (2) No literature-novelty check was run (out of scope,
+  same as `#624`) — these are unclassified real orbits, not discovery candidates. (3) Only the same
+  two μ targets `#624` originally tested were re-tested; broader μ coverage is untested. (4) Period
+  left unchanged is a leading-order approximation, not proven exact — it happened to work well
+  enough here, but a future refinement could test whether an explicit period-rescale improves the
+  rate further. (5) **This transform is NOT wired into `generate_and_refine_seeds`'s default
+  production behavior** — per this task's explicit scope, `seed_generation.py` is untouched; this
+  lives entirely in the new, separate `cross_mu_coordinate_transform.py` module and the
+  `run_649_coordinate_fix_pilot.py` evaluation script.
+  **Verdict: YES — this rescues real, substantial cross-μ value**, reproduced on two independent
+  draws at both tested μ, not a marginal or ambiguous result. This directly contradicts `#645`'s
+  own 25-40% modal odds-of-rescue estimate and the working assumption (from `#642`'s STRUCTURAL
+  diagnosis) that the μ-conditioning gap was likely permanent — a CHEAP coordinate reinterpretation
+  of the SAME frozen model's output, with no retraining, recovers most of the value that was
+  thought lost. **Natural follow-up (not built here, per this task's explicit scope)**: wire this
+  transform into a production cross-μ seeding entry point (either a new `generate_and_refine_seeds`
+  parameter/variant, or a standalone wrapper analogous to it) so real discovery scripts can use it,
+  and consider whether this result should prompt revisiting `#542`'s "in-distribution-only, cross-μ
+  transfer retracted" narrowed framing — that verdict call is deliberately left to whoever picks up
+  the follow-up (per this project's own trust-bearing-verdict discipline), not made unilaterally by
+  this task.
+  Tests: `tests/ml/test_cross_mu_coordinate_transform.py` (8 new tests: identity transform at
+  μ_target=μ_train, ρ-of-L1==1 self-consistency, Hill-radius monotonicity, exact ρ-reproduction on
+  50 random draws at both target μ, honest-`None` on a concrete unrealizable draw and on a
+  zero-velocity guess, input validation) — all pass, plus the full `tests/ml` (90 passed) and
+  `tests/scripts` (129 passed) suites. `tests/search` has 2 PRE-EXISTING failures
+  (`test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), independently confirmed present on a
+  clean `git stash` of this task's changes — unrelated to this task, not touched here. `ruff check`/
+  `ruff format --check`/`mypy src tests` all clean. No `data/catalogue.yaml` changes.
 - **#650** (registered 2026-07-18, user-directed) — `#645` shortlist item 5: an inter-cycler
   transfer-compatibility network over this project's own 361-row `data/catalogue.yaml` — the
   M5/M6-tier cycler-network idea `#570`'s own scoping explicitly deferred, and a genuinely NEW
