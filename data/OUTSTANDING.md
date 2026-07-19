@@ -820,12 +820,14 @@ published research area (saturn-enceladus), or well-known generic halo-family co
 topology (sun-mars) -- nothing novel, nothing written back**; #668 for the actual
 Wilczak-Zgliczynski computer-assisted-proof machinery build, explicitly UNCONDITIONALLY GREENLIT
 by the user 2026-07-20 overriding #653's own re-scoped "wait for a found connection" trigger --
-staged: Stage 1 assesses what rigorous/validated numerics tooling this Python/uv environment can
-actually support (no PHCpack/Julia available, confirmed by #662's own tooling probe), Stage 2
-reproduces the W-Z Oterma heteroclinic EXISTENCE proof itself with genuine interval-arithmetic
-covering relations (not the existing #403 floating-point golden) as the foundational capability
-validation, before any new theorem-grade target is attempted (registered+dispatched 2026-07-20);
-#669 next-unused):**
+staged: Stage 1 (DONE) confirmed no CAPD/Julia/off-the-shelf validated integrator exists (PyPI
+`capd` is an empty placeholder; only mpmath.iv, already in-repo), so Stage 2 built a from-scratch
+rigorous interval Taylor (Lohner C0) integrator on mpmath.iv and used it to genuinely
+interval-verify a real fraction of the W-Z Oterma proof: energy-admissibility of all 31 published
+section points at C=3.03 and Jacobi-constant conservation along a rigorously-enclosed real Oterma
+heteroclinic arc (t up to ~0.42, wrapping-limited near the L1 neck -- honestly NOT the full
+covering-relations existence theorem; QR-Lohner reframing / STM / h-set topology remain future
+stages) (registered+dispatched+Stage-1-2-partial 2026-07-20); #669 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11735,6 +11737,40 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   any NEW theorem-grade target is ever attempted; do not skip straight to inventing a novel
   non-existence or existence claim in this dispatch. Multi-week, research-grade effort explicitly
   expected and accepted by the user's own decision.
+  **STAGE 1 DONE + STAGE 2 PARTIAL (2026-07-20, Opus).** *Stage 1 verdict — no off-the-shelf
+  validated integrator exists in this environment* (confirming `#653`/`#662`): the PyPI `capd`
+  name is an empty placeholder (version "0", zero files), not the real CAPD C++ library, which
+  has no maintained Python binding; `ariadne` on PyPI is a GraphQL server, not the reachability
+  tool; `pyinterval` is interval arithmetic only (like the already-present `mpmath.iv`), no ODE
+  integration; `daepy` is a non-rigorous collocation DAE solver. So `mpmath.iv` (directed-rounding
+  intervals, already vetted in-repo by `#610`/`#625`) remains the only rigorous substrate. *Stage
+  2 — built the missing primitive `#653` identified (a rigorous ODE-flow enclosure, which the
+  codebase entirely lacked) and used it to genuinely interval-verify a real fraction of the W-Z
+  Oterma proof.* New: `scripts/_validated_taylor_integrator.py` — a from-scratch validated
+  interval Taylor integrator (Lohner C0 algorithm: a-priori Picard/Banach box enclosure with the
+  inclusion rigorously verified on interval endpoints + order-p Taylor step with a rigorous
+  Lagrange remainder bounded over the a-priori box), on `mpmath.iv`; `scripts/certify_668_wz_
+  oterma_interval.py` — driver writing `data/668_wz_oterma_interval_certificate.json`;
+  `tests/scripts/test_668_validated_taylor_integrator.py` — 6 tests. **What is now genuinely,
+  interval-rigorously certified** (not floating point with an error estimate — actual guaranteed
+  enclosures, validated against closed-form goldens exp/harmonic-oscillator with a positive
+  control proving the enclosure both *contains* the true value and *excludes* nearby wrong values,
+  i.e. not a vacuous bound): (1) **energy-admissibility** — all 31 published W-Z section points
+  (`data/golden/wz_oterma_heteroclinic.yaml`) genuinely lie on the C=3.03 Oterma energy manifold
+  (rigorous vy²≥0 with strictly-positive enclosed lower bound), closed-form; (2) **Jacobi-constant
+  conservation along a rigorously-enclosed real Oterma heteroclinic arc** — starting from the
+  L1→L2 heteroclinic section point, the validated flow's end-of-arc Jacobi enclosure provably
+  contains C₀ to within ~1e-17 interval width, a genuine interval-verified first integral along an
+  actual Oterma trajectory. **Honest scope limit (this is a *fraction* of the full W-Z proof, not
+  the whole thing, and does NOT claim to be):** the naive C0 enclosure is wrapping-limited — it
+  validates the arc only to t≈0.42 model-time before the enclosure blows up near the L1 neck's
+  hyperbolic stretching; demonstrated to be the *wrapping effect* (not truncation) because the
+  blow-up time is essentially step-size independent (t≈0.422 at h=1/64 vs 0.438 at h=1/128 —
+  halving the step barely helps). Extending it needs **Lohner QR-coordinate reframing**; the full
+  covering-relations existence *theorem* additionally needs a **C1/STM variational enclosure**,
+  **rigorous Poincaré-section-map derivatives**, and the **h-set / covering-relations topology** —
+  all explicitly remaining future stages, not built here. No `catalogue.yaml` write. Lint/mypy/
+  tests all clean (full `mypy src tests`, 749 files; `tests/scripts` green).
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`

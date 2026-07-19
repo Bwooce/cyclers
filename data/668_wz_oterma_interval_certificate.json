@@ -1,0 +1,262 @@
+{
+  "task": "#668",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "model": "planar CR3BP (Sun-Jupiter, Oterma)"
+  },
+  "method": "mpmath.iv validated interval Taylor integration (Lohner C0: a-priori Picard enclosure + rigorous order-p Taylor remainder). See scripts/_validated_taylor_integrator.py.",
+  "dps": 40,
+  "tier1_energy_admissibility": {
+    "all_points_admissible_at_C303": true,
+    "n_points": 31,
+    "points": [
+      {
+        "label": "fixed_point/L1_star",
+        "x": 0.92080349132074,
+        "vx": 0.0,
+        "vy2_lower": 0.009956525877579992,
+        "admissible_C303": true
+      },
+      {
+        "label": "fixed_point/L2_star",
+        "x": 1.0819294868418,
+        "vx": 0.0,
+        "vy2_lower": 0.00874439551481315,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[0]",
+        "x": 0.95229284234862,
+        "vx": 1.23e-05,
+        "vy2_lower": 0.013750795915157068,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[1]",
+        "x": 0.9210057378904252,
+        "vx": 0.0005205932817646884,
+        "vy2_lower": 0.009916411726563417,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[2]",
+        "x": 0.9579163385940664,
+        "vx": 0.021914973664764945,
+        "vy2_lower": 0.017297577860772524,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[3]",
+        "x": 1.0300698659528227,
+        "vx": 0.003306586762516647,
+        "vy2_lower": 0.030485153242825296,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[4]",
+        "x": 0.9673066820183056,
+        "vx": 0.0037032301650365505,
+        "vy2_lower": 0.029353907879107546,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[5]",
+        "x": 1.0406288504448429,
+        "vx": 0.023170634552988064,
+        "vy2_lower": 0.01656553201177348,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[6]",
+        "x": 1.0816703574505095,
+        "vx": 0.0005918226490172379,
+        "vy2_lower": 0.00869721241284706,
+        "admissible_C303": true
+      },
+      {
+        "label": "heteroclinic_L1_to_L2[7]",
+        "x": 1.046819673646057,
+        "vx": 2.133650650439025e-05,
+        "vy2_lower": 0.012746722813881072,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[0]",
+        "x": -2.085097049648655,
+        "vx": 0.0,
+        "vy2_lower": 2.276959853582601,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[1]",
+        "x": 1.1602613273163869,
+        "vx": -0.18120350594279228,
+        "vy2_lower": 0.015894344725466122,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[2]",
+        "x": 1.0595278088096953,
+        "vx": -0.03871458787165546,
+        "vy2_lower": 0.006774412779594354,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[3]",
+        "x": 1.0822844996867689,
+        "vx": -0.0008090412116073312,
+        "vy2_lower": 0.008809193602848646,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[4]",
+        "x": 1.046834433386131,
+        "vx": -2.957990840481727e-05,
+        "vy2_lower": 0.012738429787657424,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_exterior_4_symbol[5]",
+        "x": 1.0819297981588887,
+        "vx": -7.068412578518833e-07,
+        "vy2_lower": 0.008744452258432003,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_interior_4_symbol[0]",
+        "x": -0.6160415155975,
+        "vx": 0.0,
+        "vy2_lower": 0.599155346966448,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_interior_4_symbol[1]",
+        "x": 0.8466850372287604,
+        "vx": 0.17563753764246767,
+        "vy2_lower": 0.02579143897635985,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_interior_4_symbol[2]",
+        "x": 0.9479369578487499,
+        "vx": 0.015221419907297465,
+        "vy2_lower": 0.011387042888977916,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_interior_4_symbol[3]",
+        "x": 0.9206761120035877,
+        "vx": 0.0003276493337586078,
+        "vy2_lower": 0.009981829061929667,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_interior_4_symbol[4]",
+        "x": 0.9522842589493516,
+        "vx": 1.0481398192083e-05,
+        "vy2_lower": 0.013745833918602152,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_2_3_resonance_6_symbol[0]",
+        "x": -1.1232723115583398,
+        "vx": 0.0,
+        "vy2_lower": 0.012965059600863504,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_2_3_resonance_6_symbol[1]",
+        "x": 1.0933378375712555,
+        "vx": -0.025100941706790437,
+        "vy2_lower": 0.010909789073155715,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_2_3_resonance_6_symbol[2]",
+        "x": 1.047131544421841,
+        "vx": -0.0010561879435139498,
+        "vy2_lower": 0.012572249918129864,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_2_3_resonance_6_symbol[3]",
+        "x": 1.081940537210898,
+        "vx": -2.521361165903334e-05,
+        "vy2_lower": 0.008746409745269728,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L2_2_3_resonance_6_symbol[4]",
+        "x": 1.0468261672045145,
+        "vx": -9.169345277545603e-07,
+        "vy2_lower": 0.012743073844472447,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_5_3_resonance_6_symbol[0]",
+        "x": 0.52170562030084,
+        "vx": 0.0,
+        "vy2_lower": 1.069107625917523,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_5_3_resonance_6_symbol[1]",
+        "x": -0.5822638014577353,
+        "vx": -0.2793408708392046,
+        "vy2_lower": 0.669429283943051,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_5_3_resonance_6_symbol[2]",
+        "x": 0.9192044468470469,
+        "vx": 0.00409382936352448,
+        "vy2_lower": 0.010276291962083581,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_5_3_resonance_6_symbol[3]",
+        "x": 0.9522506335647477,
+        "vx": 0.00013331829925471308,
+        "vy2_lower": 0.013726408672263725,
+        "admissible_C303": true
+      },
+      {
+        "label": "homoclinic_L1_5_3_resonance_6_symbol[4]",
+        "x": 0.9208022956271231,
+        "vx": 2.918364277340028e-06,
+        "vy2_lower": 0.009956763258905679,
+        "admissible_C303": true
+      }
+    ]
+  },
+  "tier2_validated_flow": {
+    "jacobi_conserved_within_enclosure": true,
+    "wrapping_effect_limited": true,
+    "start_x": 0.95229284234862,
+    "start_vx": 1.23e-05,
+    "C0_lower": 3.03,
+    "C0_upper": 3.03,
+    "runs": [
+      {
+        "n_steps": 64,
+        "step_h": 0.015625,
+        "steps_validated": 27,
+        "t_reached": 0.421875,
+        "final_max_halfwidth": 0.960034721315971,
+        "jacobi_end_contains_C0": true,
+        "jacobi_end_width": 1.8816504198081683
+      },
+      {
+        "n_steps": 128,
+        "step_h": 0.0078125,
+        "steps_validated": 56,
+        "t_reached": 0.4375,
+        "final_max_halfwidth": 0.00499416531470389,
+        "jacobi_end_contains_C0": true,
+        "jacobi_end_width": 0.007374432070038656
+      }
+    ]
+  },
+  "scope_note": "Genuinely interval-rigorous, but a FRACTION of the full W-Z proof: supplies a rigorous CR3BP flow enclosure (Tier 2) and closed-form energy-admissibility (Tier 1). Does NOT yet include QR-Lohner wrapping control, C1/STM enclosure, rigorous Poincare-map derivatives, or covering-relations/h-set topology. The validated arc is wrapping-limited near the L1 neck (blow-up time step-size independent, i.e. wrapping not truncation)."
+}
