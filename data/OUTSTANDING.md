@@ -732,7 +732,11 @@ topology extension at the one mu that ever produced a real hit, #3 real-binary g
 Antiope, Lempo-Hiisi-as-binary-core), #4 epoch-locking pilot on the 2-3 catalogue rows that
 already carry sourced published epochs to de-vacuate #650's phase-indeterminate heliocentric
 half; #1 recommended for immediate dispatch); #655 for #654 shortlist item 1, the Saturn mid-moon
-sweep (dispatched 2026-07-19); #656 for #654 shortlist item 2, Pluto-Charon higher-(k1,k2)
+sweep (RUN COMPLETE 2026-07-19: Dione-Rhea/Tethys-Dione/Enceladus-Tethys clean 0/N negatives
+stamped to empty_regions.jsonl; Rhea-Titan found 3 gate-passing coplanar symmetric closures that
+then fail 0/3 a #575-style multi-cycle repeat check at real ~0.7deg inclination -- HELD for
+coordinator decision, no catalogue write); #656 for #654 shortlist item 2, Pluto-Charon
+higher-(k1,k2)
 topologies (registered, not yet dispatched); #657 for #654 shortlist item 3, real-binary genome
 round 2 (registered, not yet dispatched); #658 for #654 shortlist item 4, the epoch-locking pilot
 (registered, not yet dispatched); #659 next-unused):**
@@ -10738,16 +10742,84 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   control, `#641`/`#644`'s clean censuses) says marginal return on new methods is currently below
   the return on pointing proven tools at these four genuinely unswept regions. No code, no
   catalogue changes; a design/scoping read only.
-- **#655 (dispatched 2026-07-19, Sonnet)** — `#654` shortlist item 1, the Saturn mid-moon-pair
-  direct symmetric-closure sweep. See `#654`'s own bullet for the full feasibility case. Scope:
-  run `scripts/enumerate_563_symmetric_closures.py --primary Saturn --moons <pair>` for
-  Dione-Rhea, Tethys-Dione, Rhea-Titan (+ Enceladus-Tethys if time permits, razor-thin window),
-  reusing `#575`'s C2 repeat-instrumentation + inclination-extension probe, positive control =
-  the existing committed Uranian golden byte-diff test (must pass unmodified before trusting any
-  Saturn result). Stamp any analytically-dead pairs to `empty_regions.jsonl` per `#571` precedent.
-  If any pair yields gate-passing closures, extend to `#600`-style 3-moon chains
-  (Tethys-Dione-Rhea, Dione-Rhea-Titan) and escalate to Opus+Fable adjudication +
-  `literature_check.py` before any catalogue write — do NOT write `data/catalogue.yaml` directly.
+- **#655 (dispatched 2026-07-19, Sonnet) — RUN COMPLETE, 3/4 clean negatives stamped,
+  Rhea-Titan HELD for coordinator decision** — `#654` shortlist item 1, the Saturn mid-moon-pair
+  direct symmetric-closure sweep. See `#654`'s own bullet for the full feasibility case.
+  **Positive control PASSED**: `tests/scripts/test_enumerate_563_symmetric_closures.py` (4 tests,
+  incl. the full byte-diff against the committed 30-closure Uranian golden) ran unmodified and
+  green before trusting any Saturn output, per the dispatch's mandatory gate.
+  **Base `#563`-method run** (`scripts/enumerate_563_symmetric_closures.py --primary Saturn
+  --moons <pair>`, `--tof-scale-max 3.0` default, unmodified):
+  - **Dione-Rhea: 0/192 gate-passing** (T_syn=6.948d, n_max=3; 15/192 pass the residual gate but
+    every one has at least one of its two encounters below the 5deg `#324` bend floor — the small
+    tof_scale_max-bounded `n_max` leaves too few commensurate points to land a V∞ combination that
+    bends ≥5deg at BOTH encounters). Stamped `data/empty_regions.jsonl` region
+    `saturn-dione-rhea-symmetric-closure-empty-655`.
+  - **Tethys-Dione: 0/128 gate-passing** (T_syn=6.090d, n_max=2; 10/128 sub-gate, same
+    one-encounter-under-the-bend-floor failure mode). Stamped
+    `saturn-tethys-dione-symmetric-closure-empty-655`.
+  - **Enceladus-Tethys (optional 4th pair): 0/64 gate-passing** (T_syn=5.006d, n_max=1, quick pass
+    per dispatch scope; confirms `#654`'s own "razor-thin, likely empty" prediction). Stamped
+    `saturn-enceladus-tethys-symmetric-closure-empty-655`.
+  - **Rhea-Titan: 3 unique gate-passing symmetric closures found (6 raw pass records, one per
+    anchor direction)** — T_syn=6.304d, n_max=8: `n=3, n_rev=(0,0), rel=0deg` (residual 7.1e-15 to
+    9.8e-15 km/s, V∞=[1.958, 2.620, 1.958] km/s, bends=[5.09, 28.12, 5.09]deg); `n=5, n_rev=(1,1),
+    rel=180deg` (residual 1.3e-13 to 1.5e-13 km/s, V∞=[1.911, 1.577, 1.911] km/s,
+    bends=[5.33, 56.03, 5.33]deg); `n=8, n_rev=(2,2), rel=0deg` (residual 7.5e-15 to 1.4e-14 km/s,
+    V∞=[1.759, 1.391, 1.759] km/s, bends=[6.25, 64.33, 6.25]deg) — all 3 pass the DOP853 independent
+    cross-check (max Δr ≤1.5e-4 km). GM/sma provenance: `core/satellites.py` Rhea (GM=153.94
+    km³/s², a=527070 km) and Titan (GM=8978.14 km³/s², a=1221870 km), both JPL SSD `gm_de440`/
+    `phys_par`+mean-elements sourced. This is a genuinely NEW search direction (Rhea-Titan was
+    never previously swept by any method in this project).
+  **Extension per dispatch instruction ("run the `#575` repeat-instrumentation +
+  inclination-extension check before calling anything a genuine repeating cycle")**: built
+  `scripts/probe_655_rhea_titan_3d_closure.py`, a thin parameterization of `#572`'s own
+  `evaluate_point`/`sweep_node_alignment` node-alignment-search machinery (module-level
+  `ANCHOR`/`FLYBY`/`INCLINATION_DEG` constants overridden to Rhea/Titan/0.7deg — no function-body
+  changes; smoke-tested that `iapetus_state_3d` still reduces exactly to the coplanar
+  `_moon_state` at inc=0). **Inclination provenance**: `core/satellites.py` carries no inclination
+  field (same gap `#572` had for Iapetus); JPL SSD "Planetary Satellite Mean Elements"
+  (`ssd.jpl.nasa.gov/sats/elem/`, SAT441 ephemeris, mean elements to each moon's own local Laplace
+  plane, accessed 2026-07-19) lists Rhea ≈0.345deg and Titan ≈0.348-0.35deg; both moons orbit close
+  enough to Saturn that their local Laplace planes are ~coincident with Saturn's equator, so a
+  conservative (worst-case) upper bound on the Rhea-Titan MUTUAL inclination is the
+  spherical-triangle sum ≈0.69deg, rounded up to **0.7deg** — ~22x SMALLER than the 15.5deg used
+  for Titan-Iapetus, the single largest qualitative difference between the two pairs and exactly
+  why `#654` flagged this pair as plausibly Uranus-class. **Result: all 3 candidates DO find at
+  least one gate-passing closing basin at this real inclination** (unlike the mixed single-cycle
+  picture `#572` found for Titan-Iapetus) — data in `data/probe_655_rhea_titan_3d_closure.jsonl`.
+  **Multi-cycle repeat check** (`scripts/probe_655_rhea_titan_repeat_check.py`, built on `#572`'s
+  `iapetus_state_3d`/`_leg_best` primitives directly — `v2_saturn_3d`/`titan_iapetus_corrector` are
+  hardcoded to `ANCHOR="Titan"`/`FLYBY="Iapetus"` internals and not a drop-in fit for a different
+  pair, so the lower-level primitives were reused instead of those modules, keeping this reuse not
+  a new corrector build): **0/3 basins survive as genuine repeating 3-cycle cyclers.** Lambert
+  converges every cycle (no infeasibility, unlike `#571` branch 1 or two of `#575`'s n=10 seeds),
+  but the V∞-continuity residual blows past the `GATE_RESIDUAL_KMS=0.05` km/s bar to 0.58-1.16 km/s
+  and inter-cycle drift reaches 3.2e4-1.0e6 km — the SAME qualitative failure signature `#575`
+  found for Titan-Iapetus (single-cycle closure exists, multi-cycle periodicity does not), now
+  reproduced at a mutual inclination ~22x smaller. This is informative in its own right: it rules
+  out "inclination magnitude alone" as the driver of `#575`'s breakdown — something about the
+  symmetric family's node-alignment/period-ratio structure breaks periodicity even at a
+  near-negligible inclination. Data: `data/probe_655_rhea_titan_repeat_check.jsonl`.
+  **Disposition (per the dispatch's explicit scope-bounding instruction)**: because Rhea-Titan
+  DOES produce gate-passing closures at the base-enumeration stage, this dispatch does NOT
+  unilaterally stamp `empty_regions.jsonl` or close the thread for this pair — that decision
+  (whether the 0/3 repeat-check result is sufficient on its own, following `#575`'s exact
+  precedent, to treat this as a closed clean method-conditional negative, or whether a
+  literature-check/Opus-Fable-adjudication follow-up is still warranted first) is HELD for the
+  coordinating session, exactly as instructed. **`data/catalogue.yaml` NOT touched.**
+  **New files**: `scripts/probe_655_rhea_titan_3d_closure.py`,
+  `scripts/probe_655_rhea_titan_repeat_check.py`,
+  `scripts/stamp_655_saturn_midmoon_empty_regions.py` (stamps only the 3 unambiguous negatives);
+  tests `tests/scripts/test_probe_655_rhea_titan_3d_closure.py` (3),
+  `tests/scripts/test_probe_655_rhea_titan_repeat_check.py` (2),
+  `tests/scripts/test_stamp_655_saturn_midmoon_empty_regions.py` (2), all green. Data:
+  `data/enumerate_655_saturn_{dione_rhea,tethys_dione,rhea_titan,enceladus_tethys}_symmetric_closures.jsonl`,
+  `data/probe_655_rhea_titan_3d_closure.jsonl`, `data/probe_655_rhea_titan_repeat_check.jsonl`.
+  `uv run ruff check .`/`ruff format --check .` clean repo-wide; `uv run mypy src tests` clean
+  (733 files, unchanged); `tests/scripts` full suite green (all tests, including the 7 new);
+  `tests/data tests/search -q` re-run clean (no regressions from the 3 new `empty_regions.jsonl`
+  entries). Commit: see git log.
 - **#656 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 2, Pluto-Charon
   higher-(k1,k2) topology extension. See `#654`'s own bullet for the case. Scope: extend the
   topology list in a thin driver on `src/cyclerfinder/search/real_binary_kk_sweep.py` +

@@ -1,0 +1,3 @@
+{"_meta": true, "task": "#563 direct symmetric-closure enumeration", "primary": "Saturn", "moons": ["Enceladus", "Tethys"], "directions": 2, "n_rev_combos": 16, "rel_offsets_deg": [0.0, 180.0], "tof_scale_max_bound": 3.0, "total_evaluated": 64, "total_all_gates_passed": 0, "elapsed_s": 0.15738296508789062, "gate_residual_kms": 0.05}
+{"kind": "direction_summary", "anchor": "Enceladus", "flyby": "Tethys", "t_syn_days": 5.0059132989688315, "n_max": 1, "n_evaluated": 32, "n_infeasible": 24, "n_subgate_residual_only": 4, "n_all_gates_passed": 0}
+{"kind": "direction_summary", "anchor": "Tethys", "flyby": "Enceladus", "t_syn_days": 5.0059132989688315, "n_max": 1, "n_evaluated": 32, "n_infeasible": 24, "n_subgate_residual_only": 4, "n_all_gates_passed": 0}
