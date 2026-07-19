@@ -131,6 +131,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # preflight, not a catalogue-region discovery sweep. Visible,
         # reviewed exemption per this file's own docstring.
         "run_649_coordinate_fix_pilot.py",
+        # #650: a closed-form pairwise TRANSFER-COMPATIBILITY SWEEP over the
+        # already-catalogued node set (eligibility filter + dv_hop cost/band +
+        # phase-alignment statistics for every candidate pair sharing a body) --
+        # same category as #608/#614/#317/#624/#641/#642/#649 above: a fixed-N
+        # analysis over existing data with no region_id/n_points sweep-region
+        # concept to preflight (no integrators, no new search, no catalogue
+        # writeback). Visible, reviewed exemption per this file's own docstring.
+        "run_650_transfer_network.py",
     }
 )
 
