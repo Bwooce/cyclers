@@ -779,8 +779,22 @@ same completeness goal); #663 for the #662-recommended re-scope -- a certified-i
 closure residual (no polynomialization), reusing #610/#625's existing interval-arithmetic
 certification machinery verbatim, applied to the two live unresolved near-misses (#600's Uranian
 3-moon-sequence 0.0531 km/s residual, #656's Pluto-Charon (5,1) topology) to settle whether each
-is a genuine missed basin or a provably-empty region (registered+dispatched 2026-07-19); #664
-next-unused):**
+is a genuine missed basin or a provably-empty region (registered+dispatched 2026-07-19); #664 for
+#661 shortlist item 2, set-oriented transfer-operator search (GAIO-style almost-invariant sets) --
+a genuinely new object class (a metastable SET with residence-time statistics, not a periodic
+orbit or torus), positive control = reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport
+channel (registered 2026-07-19, not yet dispatched); #665 for #661 shortlist item 3, SRP-augmented
+(photogravitational) binary-asteroid re-sweep -- every #549/#657/#659/#660 negative is
+gravity-only-conditional, positive control = reproduce a published Didymos terminator-orbit family
+member (CMDA 138:2, 2025); needs 2-3 SRP-binary papers acquired first, a real corpus gap
+(registered 2026-07-19, not yet dispatched, beta-admissibility flagged as a user decision); #666
+for #661 shortlist item 4, co-orbital quasi-satellite/horseshoe transition cyclers -- zero
+co-orbital rows in the 361-row catalogue, positive control = reproduce Kamo'oalewa's own published
+QS/HS transition cycle (registered 2026-07-19, not yet dispatched, honest HIGH novelty risk
+flagged); #667 for #661 shortlist item 5, mining the JPL SSD periodic-orbits catalog as a
+discovery INPUT (not just #647's gate) across all 7 indexed systems x 12 families, cheapest and
+highest-confidence-to-execute but lowest novelty ceiling (registered 2026-07-19, not yet
+dispatched); #668 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11323,6 +11337,61 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   missed or a provably-empty region — the strongest form of negative (or positive) this project's
   interval-certification capability can produce. See `#662`'s own bullet for the full math case
   against polynomial homotopy that motivated this re-scope.
+- **#664 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 2, set-oriented
+  transfer-operator search (GAIO-style almost-invariant sets). See `#661`'s own bullet for the
+  full case. Scope: box-subdivide a phase-space region, build the sparse Perron-Frobenius
+  transition matrix by short propagations, extract almost-invariant/metastable sets from its
+  leading eigenvectors. A genuinely NEW object class — a "chaotic quasi-cycler" is a SET with
+  residence-time statistics, not a periodic orbit or torus; the catalogue's own `quasi_cycler`
+  scope (schema v4.7) can hold this but has never contained one. Structurally immune to the
+  basin/manifold-conditioning/ghost-minima walls that killed prior shooting-based attempts
+  (measure/operator-based, seedless, manifold-free, boxes verified by direct propagation).
+  Mandatory positive control: reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport
+  channel — already in-corpus, digested but never adopted into a search capability (the exact
+  `[[feedback_digest_not_adoption]]` gap this pass found). 1-2 weeks. Honest open question to
+  resolve before any catalogue writeback: sets need their own validation story distinct from the
+  trajectory-based V0-V5 gauntlet — flag this explicitly and get a user/Fable read on the schema
+  question before writing anything, don't invent a convention unilaterally.
+- **#665 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 3, SRP-augmented
+  (photogravitational) binary-asteroid re-sweep. See `#661`'s own bullet for the full case. Scope:
+  add cannonball SRP at a fixed area-to-mass ratio β to the real-binary genome/corrector
+  (`src/cyclerfinder/search/real_binary_kk_sweep.py`) and re-sweep the systems `#549`/`#657`/
+  `#659`/`#660` found gravity-only-negative (Patroclus-Menoetius, Didymos-Dimorphos, Orcus-Vanth,
+  Eris-Dysnomia, Sila-Nunam, Lempo-Hiisi — NOT Antiope, already closed as physically inadmissible
+  regardless of force model per `#659`). At Didymos-scale GMs, SRP is a DOMINANT term, so every
+  past negative there is gravity-only-conditional per `[[project_negative_results_registry]]`'s
+  own "empty is always conditional on the method" logic — a genuinely new MODEL AXIS, not a new
+  target. First step: acquire + digest 2-3 SRP-binary-asteroid papers (a real corpus gap this
+  pass found — zero currently in `docs/notes/CORPUS_INDEX.md`; CMDA 138:2 2025's Didymos
+  terminator-orbit paper is the named positive-control source). Mandatory positive control:
+  reproduce a published Didymos terminator-orbit family member from that paper before trusting any
+  new sweep result. **β-admissibility (what area-to-mass ratios are physically defensible for
+  these specific bodies) is a user decision, not to be assumed unilaterally** — flag this
+  explicitly before committing to a specific β or β-range.
+- **#666 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 4, co-orbital
+  quasi-satellite/horseshoe transition cyclers. See `#661`'s own bullet for the full case. Scope:
+  build a seedless, global search over the averaged 1-DOF co-orbital Hamiltonian's level curves to
+  find QS↔HS transition cycles — a genuinely new object class (zero co-orbital rows exist
+  anywhere in the 361-row catalogue), then verify candidates in full ephemeris. Mandatory positive
+  control: reproduce Kamo'oalewa's own published QS↔HS transition cycle from its real Horizons
+  elements (Nature Comm. Earth & Env. / arXiv:2405.20411). ~1 week. Honest risks to weigh
+  explicitly, per `#661`'s own framing: HIGH risk of "known classical object, relabeled" given the
+  deep existing Namouni/de la Fuente Marcos co-orbital literature (mandatory `literature_check.py`
+  gate before any novelty claim), and weak encounter utility (QS/HS Earth-encounter distances are
+  0.1-0.3 AU) — the defensible product is likely a catalogue-grade census with encounter windows,
+  probably `quasi_cycler`-class at best, not a headline novel-family claim. Ranked below `#664`/
+  `#665` for this reason.
+- **#667 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 5, mine the JPL SSD
+  periodic-orbits catalog as a discovery INPUT, not just `#647`'s literature-check gate. See
+  `#661`'s own bullet for the full case. Scope: scan all 7 indexed systems x 12 families (per
+  `#647`'s own bullet for the exact system/family list — notably saturn-enceladus, mars-phobos,
+  sun-mars are never the direct target of any sweep in this project's history) for members whose
+  geometry qualifies as RRT-style ballistic cyclers (recurrent close secondary approaches, bounded
+  stability index), then attempt to continue any qualifying member to neighboring unindexed
+  systems. Cheapest and highest-confidence-to-execute of the five shortlist items (days, Sonnet)
+  but the lowest novelty ceiling — being numerically catalogued at JPL is not the same as being
+  characterized as a cycler, but it is also the item closest to "just re-running an existing
+  method on existing data," ranked last deliberately per `#661`'s own honest framing.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
