@@ -721,7 +721,21 @@ strengthened SE<->EM non-connection negative (decision-support only, not the pro
 CLOSED 2026-07-19: firm NO-GO, shape mismatch -- non-existence needs validated global
 reachability, a fundamentally different technique from W-Z's published existence proofs, plus a
 torus-validation prerequisite ~5 orders beyond #618's achievable residual; #636 re-scoped to
-trigger on a future POSITIVE needing certification instead); #654 next-unused):**
+trigger on a future POSITIVE needing certification instead); #654 for a fresh Fable
+discovery-strategy pass (user-directed, "we need to find more cycler orbits" after the #652 close
+left the maintenance backlog empty; registered+CLOSED 2026-07-19, ranked 4-item shortlist: #1
+Saturn mid-moon-pair #563-method direct symmetric-closure enumeration (Dione-Rhea/Tethys-Dione/
+Rhea-Titan, the only Saturnian pairs never run through the method that found #312, verified
+feasible against the repo's own gate code live, not assumed), #2 Pluto-Charon higher-(k1,k2)
+topology extension at the one mu that ever produced a real hit, #3 real-binary genome round 2
+(uncap #549's 4 compute-capped INCONCLUSIVE probes + 3 new near-equal-mu systems: Sila-Nunam,
+Antiope, Lempo-Hiisi-as-binary-core), #4 epoch-locking pilot on the 2-3 catalogue rows that
+already carry sourced published epochs to de-vacuate #650's phase-indeterminate heliocentric
+half; #1 recommended for immediate dispatch); #655 for #654 shortlist item 1, the Saturn mid-moon
+sweep (dispatched 2026-07-19); #656 for #654 shortlist item 2, Pluto-Charon higher-(k1,k2)
+topologies (registered, not yet dispatched); #657 for #654 shortlist item 3, real-binary genome
+round 2 (registered, not yet dispatched); #658 for #654 shortlist item 4, the epoch-locking pilot
+(registered, not yet dispatched); #659 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10685,6 +10699,71 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   Cost was explicitly NOT the basis for the NO-GO, per `[[feedback_speculative_high_effort_required]]`.
   `#636`'s own bullet corrected in place (below) with a re-scoped trigger recommendation. No code,
   no catalogue changes.
+- **#654 ✓ DONE (2026-07-19, Fable)** — user-directed fresh discovery-strategy pass ("we need to
+  find more cycler orbits!" after the maintenance backlog emptied post-#652). Grounded against
+  every prior sweep's own bullet before proposing anything (`#312`/`#558`-`#569` Uranian family,
+  `#576`/`#577` Galilean 0/36, `#571`-`#575` Titan-Iapetus clean negative, `#599` Neptune
+  Triton-Proteus, `#549` real-binary 4-system sweep, `#607` multi-moon negative, `#641` Sun-Jupiter
+  census, `#644` Earth-Moon near-C_L1, `#650` transfer network) — no proposal in the shortlist
+  re-covers already-dead ground. **Coverage fact driving the list**: the direct symmetric-closure
+  enumeration (`scripts/enumerate_563_symmetric_closures.py`, genericized since `#575`) — the ONLY
+  method that ever produced this project's one confirmed novel family — has never been run on
+  Saturn's mid-moon pairs (only Titan-Iapetus via `#571`-`#575`; the rest were either never tried
+  or only hit by the old grid genome / a free scan `#489` correctly killed on the bend gate).
+  **Ranked shortlist** (full reasoning + sources in the dispatch — see `#655`-`#658`'s own bullets
+  for the executed/queued detail):
+  1. **Saturn mid-moon-pair direct symmetric-closure enumeration** (Dione-Rhea, Tethys-Dione,
+     Rhea-Titan, marginal Enceladus-Tethys) — feasibility VERIFIED LIVE against this repo's own
+     `core/flyby.py::max_bend` + sourced GMs + `#571`'s own `hohmann_vinf_at_r1` (reproduces
+     `#571`'s published numbers exactly), not assumed: Dione-Rhea and Tethys-Dione both have WIDE
+     two-sided bend windows (17.0°/28.8° and 14.3°/24.7° at their Hohmann-floor V∞ vs. the 5°
+     gate), and both pairs are Uranus-class geometry (mutual inclination ≤1.2°, e≤0.03) — the
+     15° mutual inclination that killed `#575` and the eccentricity that degraded `#571` do not
+     apply here. Literature gap: Russell-Strange 2009's Saturn census is Titan-flyby-only.
+     RECOMMENDED FOR IMMEDIATE DISPATCH — dispatched same day as `#655`.
+  2. **Pluto-Charon higher-(k1,k2) topology extension** ((4,1)-(5,5) at PC's own μ=0.10876, the
+     one μ that ever produced this project's real-hit-adjacent PC(3,2) member) — `#549`/`#504`
+     only swept (1,1)-(3,3); Ross-RT 2026's own table stops there too.
+  3. **Real-binary genome round 2** — uncap `#549`'s 4 compute-capped INCONCLUSIVE probes
+     (Patroclus-Menoetius (1,1)/(3,1)/(3,2), Eris-Dysnomia (3,2), killed by an unprincipled 240s
+     job cap per `[[feedback_long_runs_acceptable]]`) plus 3 new near-equal-μ systems never tried:
+     Sila-Nunam (μ≈0.5, doubly-synchronous), Antiope (μ≈0.47, near-equal circular pair), and
+     Lempo-Hiisi as a binary core (the near-equal central pair `#607`'s multi-moon-chain exclusion
+     of the Lempo TRIPLE never actually tested via the binary genome — fell between two methods).
+     Honest odds LOW (`#549` went 28/32 negative already) but closes 4 asterisked probes properly.
+  4. **Epoch-locking pilot** on the 2-3 catalogue rows that already carry sourced published epochs
+     (Jones 2017 VEM-triple Table-2 flyby dates, Aldrin/Byrnes epoch tables) to de-vacuate `#650`'s
+     phase-indeterminate heliocentric half — derived-object not new-orbit discovery, ranked last.
+  **No new capability build recommended** — the recent capability record (`#648`'s failed positive
+  control, `#641`/`#644`'s clean censuses) says marginal return on new methods is currently below
+  the return on pointing proven tools at these four genuinely unswept regions. No code, no
+  catalogue changes; a design/scoping read only.
+- **#655 (dispatched 2026-07-19, Sonnet)** — `#654` shortlist item 1, the Saturn mid-moon-pair
+  direct symmetric-closure sweep. See `#654`'s own bullet for the full feasibility case. Scope:
+  run `scripts/enumerate_563_symmetric_closures.py --primary Saturn --moons <pair>` for
+  Dione-Rhea, Tethys-Dione, Rhea-Titan (+ Enceladus-Tethys if time permits, razor-thin window),
+  reusing `#575`'s C2 repeat-instrumentation + inclination-extension probe, positive control =
+  the existing committed Uranian golden byte-diff test (must pass unmodified before trusting any
+  Saturn result). Stamp any analytically-dead pairs to `empty_regions.jsonl` per `#571` precedent.
+  If any pair yields gate-passing closures, extend to `#600`-style 3-moon chains
+  (Tethys-Dione-Rhea, Dione-Rhea-Titan) and escalate to Opus+Fable adjudication +
+  `literature_check.py` before any catalogue write — do NOT write `data/catalogue.yaml` directly.
+- **#656 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 2, Pluto-Charon
+  higher-(k1,k2) topology extension. See `#654`'s own bullet for the case. Scope: extend the
+  topology list in a thin driver on `src/cyclerfinder/search/real_binary_kk_sweep.py` +
+  `#504`'s `sweep_family_grid` to (4,1)-(5,5) at PC μ=0.10876, positive control = the unmodified
+  `sweep_32_positive_control`. Overnight single-core, checkpointed.
+- **#657 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 3, real-binary
+  genome round 2. See `#654`'s own bullet for the case. Scope: (a) re-run `#549`'s 4
+  compute-capped INCONCLUSIVE probes uncapped, detached, checkpointed, per
+  `[[feedback_long_runs_acceptable]]`; (b) source real mass ratios/semi-major axes for Sila-Nunam,
+  Antiope, and Lempo-Hiisi per `[[feedback_digest_not_adoption]]` (do not trust the prose figures
+  in `#654`'s own bullet without re-sourcing) and run the same `real_binary_kk_sweep.py` genome;
+  (c) note Lempo's Paha perturbation is unmodeled — any hit needs an explicit robustness check.
+- **#658 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 4, epoch-locking
+  pilot. See `#654`'s own bullet for the case. Scope: epoch-lock the 2-3 catalogue rows with
+  already-sourced published epochs (Jones 2017 VEM-triple, Aldrin/Byrnes), re-run `#650`'s
+  already-positive-controlled `transfer_network.py` machinery on the heliocentric subgraph only.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
