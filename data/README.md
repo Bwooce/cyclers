@@ -661,6 +661,36 @@ gauntlet extension is documented in
 `docs/notes/2026-06-16-catalogue-scope-taxonomy.md`. Full rationale is in
 **spec.md** (scope section, scheduled update under task #294).
 
+Schema v4.8–v5.1 (added 2026-07-19, stub — full text lives in
+`data/catalogue.schema.json`'s own top-level `description`)
+---------------------------------------------------------------
+
+Four further additive, backward-compatible sub-revs since v4.7, none of which
+change any existing row's validity or the census count:
+
+- **v4.8** (task #417): two optional row fields for the Axis-B real-ephemeris
+  deterministic-maintenance-ΔV taxonomy — `dv_band` (enum
+  `strictly_ballistic`/`essentially_ballistic`/`low_maintenance`/`powered_dsm`/
+  `low_thrust_sep`, or null) and its mandatory companion `dv_band_source`.
+  Assigned only when a row already carries a sourced ΔV with a known basis.
+- **v4.9** (task #453): adds a fifth `orbit_class` enum value, `resonant_po` —
+  a stable resonant/libration periodic orbit, not epoch_locked, n_returns
+  `"infinite"` (shares the `cycler` reachability invariants) but with NO
+  demonstrated transport utility (never encounters the secondary). Carried
+  for known-class corroboration, not as a usable cycler — distinct from
+  `cycler`, whose defining property IS transport. First (and currently only)
+  member: `em-cycler-21-3d-spatial-2026`. Also v4.9 (tasks #427/#428):
+  `flyby_altitudes_km` provenance enum `sourced`/`computed-m7`/`derived`.
+- **v5.0** (task #305): one additive, optional, nullable nested row property
+  `bcr4bp_provenance` (`{mu_sun, sun_commensurate_n, sun_phase_drift}`)
+  carrying BCR4BP (Sun-Earth-Moon bicircular) periodic-orbit provenance for a
+  future known-reproduction row admitted via the BCR4BP V0–V5 gauntlet.
+- **v5.1** (task #569): names three synodic-feasibility sub-fields of
+  `validity_window` — `synodic_duty_cycle_pct`, `synodic_boundary_period_days`,
+  `synodic_period_days` — introduced ad hoc by task #569's six Uranian
+  moon-pair `quasi_cycler` rows as free-form `validity_window` extras; this
+  bump only formalizes their name/type/description. All three optional.
+
 Out-of-paradigm work
 --------------------
 

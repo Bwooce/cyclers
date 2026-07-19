@@ -1,9 +1,21 @@
 # Missing Data — Cycler Catalogue Sourcing Report
 
-*Originally written 2026-06-03 (233 entries, 788 gaps). **STALENESS-CORRECTED 2026-07-15** (#595
-follow-up, same audit methodology as the `OUTSTANDING.md` #498/#499/#503 correction). Catalogue is
-now 361 entries, 985 data_gaps across 291 entries (grew because entries grew, not because gaps grew
-faster than sourcing — see below).*
+*Originally written 2026-06-03 (233 entries, 788 gaps). STALENESS-CORRECTED 2026-07-15 (#595
+follow-up, same audit methodology as the `OUTSTANDING.md` #498/#499/#503 correction) to 361
+entries, 985 data_gaps across 291 entries. **SECOND STALENESS CORRECTION 2026-07-19**: the "genuine,
+large, ready-to-execute Russell Table 3.4/3.9–3.11/4.9–4.13 backfill pass" this report called for
+in its 2026-07-15 pass was actually EXECUTED that same day and finished 2026-07-16
+(`scripts/backfill_russell_2004_tables.py`, tasks `#596`/`#616`): 161 of 197 matched rows were
+backfilled (`trajectory.segments[].a_au`/`.e` derived via the validated AR+V∞_Earth inversion); the
+remaining 36 are a confirmed genuine model-boundary gap (Russell's own footnote: AR < 1.0 never
+reaches Mars), not a sourcing gap; and the "~38 additional Table 3.4 cyclers never added as rows"
+concern resolved to **0 new rows needed** (of 4 apparently-unmatched designators, 1 was already
+catalogued under a different id — Aldrin — and 3 were sign-transcription errors in existing rows,
+fixed by rename not duplication, per `#616`). Catalogue is now 361 entries, **834** data_gaps
+across 291 entries (independently recomputed 2026-07-19 directly from `data/catalogue.yaml`), with
+only **85** `a_au`-path gaps remaining — down from the 216-row gap this report's Priority 1
+checklist below still describes as open. The Priority 1 checklist (§Priority 1, further down) is
+now DONE, not pending; see `#616`'s own `OUTSTANDING.md` entry for the full backfill result.*
 
 ---
 
@@ -293,7 +305,11 @@ The following items are ordered by number of catalogue gaps they would close. It
 
 ### Priority 1 — Russell 2004 dissertation, Tables 3.4, 3.9–3.11, 4.9–4.13
 **Gaps closed: ~772 (all Russell-family `a_au` and `tof_days` gaps)**
-**Status: FREELY DOWNLOADABLE**
+**Status: DONE (executed 2026-07-15, finished 2026-07-16 — `#596`/`#616`, see the
+2026-07-19-dated correction at the top of this file).** 161/197 matched rows backfilled
+mechanically (`scripts/backfill_russell_2004_tables.py`); the remaining 36 are a confirmed
+Russell-acknowledged AR<1.0 model-boundary, not a to-do. The steps below are left as a historical
+record of the original manual-checklist plan (superseded by the mechanical backfill script).
 
 1. Download `russellr74662.pdf` (3.45 MB) from:
    `https://repositories.lib.utexas.edu/bitstreams/6920bcd8-7ec8-47b1-9f35-eb9e7eef60c8/download`
