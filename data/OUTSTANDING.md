@@ -774,7 +774,13 @@ unresolved near-misses)); #662 for #661 shortlist item 1, the homotopy-continuat
 enumeration (STAGE-1 BLOCKED 2026-07-19 -- mathematical, not tooling: the closure residual sits
 on a Lambert/Kepler transcendental TOF equation with no exact polynomial form, so no all-roots
 homotopy exists to solve; interval certification flagged as the real non-polynomial route to the
-same completeness goal -- coordinator decision pending); #663 next-unused):**
+same completeness goal); #663 for the #662-recommended re-scope -- a certified-interval
+(interval-Newton/Krawczyk or Smale-alpha) completeness pass directly on the transcendental
+closure residual (no polynomialization), reusing #610/#625's existing interval-arithmetic
+certification machinery verbatim, applied to the two live unresolved near-misses (#600's Uranian
+3-moon-sequence 0.0531 km/s residual, #656's Pluto-Charon (5,1) topology) to settle whether each
+is a genuine missed basin or a provably-empty region (registered+dispatched 2026-07-19); #664
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11306,6 +11312,17 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   -- OR shelve item 1 and advance to `#661` shortlist items 2-3 (set-oriented transfer operator /
   SRP-augmented sweep), which have no analogous formulation wall. No code added, no
   `data/catalogue.yaml` write, no new script (Stage 1 concluded before any build).
+- **#663 (registered+dispatched 2026-07-19)** — the `#662`-recommended re-scope: a certified-
+  interval (interval-Newton/Krawczyk or Smale-alpha) completeness pass directly on the
+  transcendental symmetric-closure residual, no polynomialization, reusing `#610`/`#625`'s
+  existing interval-arithmetic certification machinery (`certify_*_interval`/
+  `bend_gate_interval_cert`) verbatim. Scope: apply it over the 2-D `(rel_offset, tof)` box per
+  `(direction, n_rev)` to `#600`'s Uranian 3-moon-sequence near-miss (residual 0.0531 km/s, just
+  outside the 0.05 km/s gate) and `#656`'s Pluto-Charon (5,1) topology near-miss (a STABLE orbit
+  found nearby with `topo_ok=False`), settling whether each is a genuine basin the symmetric grid
+  missed or a provably-empty region — the strongest form of negative (or positive) this project's
+  interval-certification capability can produce. See `#662`'s own bullet for the full math case
+  against polynomial homotopy that motivated this re-scope.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
