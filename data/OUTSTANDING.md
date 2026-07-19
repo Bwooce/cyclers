@@ -644,7 +644,8 @@ B2=20495/B3=25234, cheap_edge_count=2 (both Uranian moon-system), cheap_dv_phase
 indeterminate, moon-system hosts the only phase-feasible cheap edges; 0 "recurrent" anywhere
 because the catalogue's own periods cluster as near-integer multiples of a few synodic bases);
 no catalogue/registry writes, commit `ea99eeb`, see #650's own bullet for the full census);
-#651 next-unused):**
+#651 for wiring #649's confirmed coordinate-transform rescue into generate_and_refine_seeds's
+actual production default behavior (dispatched 2026-07-19); #652 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10294,6 +10295,37 @@ anywhere in the file and are genuinely still open.]**
   session's adjudication, per the design's own scope note. Artifact:
   `data/found/650_transfer_network/{edges.jsonl,summary.json}` (60,239 / 1 records). Commit
   `ea99eeb`.
+- **#651** (dispatched 2026-07-19, user-directed) — wire `#649`'s confirmed coordinate-transform
+  cross-μ rescue (`src/cyclerfinder/ml/cross_mu_coordinate_transform.py`,
+  `transform_seed_to_target_mu`) into `generate_and_refine_seeds`'s actual default production
+  behavior (`src/cyclerfinder/ml/seed_generation.py`), rather than leaving it as a standalone
+  pilot-only module + one-off evaluation script. `#649` deliberately left `seed_generation.py`
+  untouched per its own scope boundary — this task is the natural, explicitly-flagged follow-up.
+  **Scope**: when `generate_and_refine_seeds` is called at a μ meaningfully different from the
+  training point (reuse `#643`'s own `VALIDATED_DELTA_LOG10_MU` gate to decide "meaningfully
+  different"), apply `#649`'s coordinate transform to each raw generated seed BEFORE refinement,
+  instead of either (a) feeding the raw untransformed seed (the original, now-known-broken
+  behavior) or (b) returning the `#643`-added "unvalidated, no numeric estimate" signal
+  unconditionally (which is now only half-true — #649 proved a real, substantial rescue exists,
+  just not full parity with in-distribution). Update `expected_lift_for_mu`/`LiftEstimate` to
+  reflect the `#649`-validated lift at the TWO SPECIFIC μ actually re-tested (μ=0.001, Sun-Earth
+  μ) — do NOT extrapolate this to a general "coordinate-fixed cross-μ lift" formula for arbitrary
+  μ, since `#649`'s own honest caveats (see `#649`'s own bullet RESULT paragraph) explicitly flag
+  that only these two μ points were tested and broader coverage is unverified. **Preserve every
+  one of `#649`'s own honestly-documented caveats in the production surface, not just internally**:
+  (1) hits cluster on ~1 dominant family per μ, not a diverse set — the returned
+  `GeneratedSeed`/`SeedGenerationReport` must still surface this (e.g. via the existing per-seed
+  refined-invariants fields so a caller can see they're all landing near the same family); (2) no
+  literature-novelty check is run by this function at all, cross-μ or not — this was already true
+  before, just re-confirm the production docstring is explicit about it; (3) period is left
+  unchanged as a leading-order approximation in the transform — do not silently present this as
+  exact. Add regression tests confirming production behavior at the two validated μ matches
+  `#649`'s own pilot numbers (or is at least consistent with them, allowing for RNG variation),
+  and confirm in-distribution (near-training-μ) behavior is completely unchanged (a pure
+  additive change, not a modification of the existing, working path). Do NOT touch
+  `data/catalogue.yaml`. Recommended model: Sonnet (mechanical integration of an already-validated,
+  already-tested transform into an existing API's call path — not a new numerical-methods
+  judgment call).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
