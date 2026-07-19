@@ -760,8 +760,18 @@ radius_km_secondary/radius_source to RealBinarySystem for all 7 entries + PLUTO_
 CHARON_RADIUS_KM constants, wired a min-clearance gate into sweep_family/sweep_family_grid
 (opt-in via radius_km_* kwargs, no-op/backward-compatible when omitted), regression-pinned
 PC(3,2) clears both bodies (~3836/~1087 km) and Antiope (1,1)/(2,2) now fail explicitly
-(~11.8/~4.2 km and ~13.75/~3.16 km vs ~44/~42 km radii) -- see #660's own bullet); #661
-next-unused):**
+(~11.8/~4.2 km and ~13.75/~3.16 km vs ~44/~42 km radii) -- see #660's own bullet); #661 for a
+fresh Fable discovery-strategy pass explicitly requested to find NEW METHODS/paradigms, not
+another target-list extension of the #654 shortlist's six existing method families
+(user-directed, "find some new ways"; registered+CLOSED 2026-07-19: ranked 5-item shortlist,
+verified via direct grep that this codebase has zero set-oriented/transfer-operator machinery,
+zero polynomial-homotopy/all-roots capability, zero SRP-augmented dynamics model, and zero
+co-orbital QS/HS catalogue rows; #1 recommended: polynomial homotopy continuation on the
+symmetric-closure equations, upgrading the #563-lineage method -- the ONLY one that ever found
+this project's confirmed-novel #312 family -- to an all-roots completeness guarantee, directly
+attacking the method's one documented residual failure mode (grid gaps, per #600's/#656's
+unresolved near-misses)); #662 for #661 shortlist item 1, the homotopy-continuation closure
+enumeration (registered+dispatched 2026-07-19); #663 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11188,6 +11198,67 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   run clean (see commit for exit status). Full sourcing/citation detail in each
   `RealBinarySystem.radius_source` string and the module-comment `DEFAULT_CLEARANCE_MARGIN_KM`
   rationale in `real_binary_kk_sweep.py` itself.
+- **#661 ✓ DONE (2026-07-19, Fable)** — user-directed fresh discovery-strategy pass ("find some new
+  ways" — explicit emphasis on NEW METHODS, not another target-list extension of the just-closed
+  `#654` shortlist's six existing method families: symmetric-closure enumeration, real-binary RRT
+  genome, seedless/variational correctors, generative-ML seeding, the transfer network, interval
+  certification). Grounded against the FULL method inventory (`#605`/`#623`/`#645`'s own prior
+  strategy passes, `#312`-`#569`, `#549`-`#660`, `#606`-`#651`, `#650`, `#610`/`#625`, `#607`,
+  `#644`) plus a live web survey and a direct grep of the codebase confirming genuine capability
+  gaps (zero set-oriented/transfer-operator machinery, zero polynomial-homotopy/all-roots
+  capability, zero SRP-augmented dynamics model anywhere, zero co-orbital QS/HS catalogue rows --
+  `nbody/forces.py` explicitly EXCLUDES SRP as a force today). **Ranked 5-item shortlist**:
+  1. **Polynomial homotopy continuation on the symmetric-closure equations** -- reformulate the
+     `#563`-lineage direct-construction residual (trig via s^2+c^2=1 substitution, Kepler/ToF via
+     universal-variable polynomialization) and solve with homotopy continuation (PHCpack/
+     HomotopyContinuation.jl), which finds ALL isolated roots with Bezout/polyhedral completeness
+     guarantees -- upgrading the ONE method that ever found this project's confirmed-novel `#312`
+     family from grid-conditional to a completeness CERTIFICATE, and directly attacking that
+     method's one documented residual failure mode (narrow basins falling between grid points --
+     `#600`'s 0.0531 km/s near-miss and `#656`'s (5,1) near-miss are immediate first re-checks).
+     1-2 weeks, research-grade formulation risk; positive control = re-derive the committed
+     30-closure Uranian golden + PC(3,2) as roots before trusting anything new.
+  2. **Set-oriented transfer-operator search (GAIO-style almost-invariant sets)** -- a genuinely new
+     OBJECT CLASS (a "chaotic quasi-cycler" is a metastable SET with residence-time statistics, not
+     a periodic orbit or torus -- the catalogue's own `quasi_cycler` scope can hold this but has
+     never contained one); measure/operator-based, seedless, manifold-free, structurally immune to
+     the basin/manifold-conditioning/ghost-minima walls that killed prior shooting-based attempts.
+     Positive control: reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport channel
+     (already in-corpus, digested-but-never-adopted -- the exact `[[feedback_digest_not_adoption]]`
+     gap). 1-2 weeks; open question flagged honestly: sets need their own validation story before
+     any catalogue writeback, a schema decision for the user.
+  3. **SRP-augmented (photogravitational) binary-asteroid re-sweep** -- every `#549`/`#657`/`#659`/
+     `#660` negative is gravity-only-conditional, and at Didymos-scale GMs SRP is a DOMINANT term
+     (per `[[project_negative_results_registry]]`'s own "empty is always conditional on the
+     method" logic) -- a genuinely new model axis, not a new target. Positive control: reproduce a
+     published Didymos terminator-orbit family member (CMDA 138:2, 2025, Hera-era literature).
+     1-2 weeks incl. acquiring 2-3 SRP-binary papers (a real corpus gap this pass found -- zero
+     currently in `docs/notes/CORPUS_INDEX.md`). Beta-admissibility flagged as a user decision, not
+     assumed.
+  4. **Co-orbital quasi-satellite/horseshoe transition cyclers** -- zero co-orbital rows exist in
+     the 361-row catalogue; a new object class via the averaged 1-DOF co-orbital Hamiltonian
+     (seedless, global level-curve map). Positive control: reproduce Kamo'oalewa's own published
+     QS/HS transition cycle from Horizons elements. ~1 week; honest HIGH risk of "known classical
+     object, relabeled" (deep existing Namouni/de la Fuente Marcos literature) and weak encounter
+     utility (0.1-0.3 AU Earth distances) -- ranked below 1-3 for that reason.
+  5. **Mine the JPL SSD periodic-orbits catalog as a discovery INPUT**, not just `#647`'s gate --
+     scan all 7 indexed systems x 12 families (saturn-enceladus, mars-phobos, sun-mars never
+     directly targeted) for RRT-style ballistic-cycler-qualifying members. Cheapest and
+     highest-confidence-to-execute (days, Sonnet) but lowest novelty ceiling -- closest of the five
+     to target-sweeping, ranked last deliberately.
+  **Considered and explicitly rejected** (with reasons, not just omitted): Koopman spectral
+  methods (propagation/approximation tools, not discovery tools -- item 2 captures the
+  operator-theoretic discovery value better); Arnold diffusion (no tractable build, `#653`'s W-Z
+  NO-GO logic applies identically); Yarkovsky (Myr timescale, irrelevant to spacecraft
+  trajectories); ring-moon/comet-family/exoplanet-toy problems (no validated positive control
+  exists for any of them). **#1 recommended for immediate dispatch** -- registered+dispatched as
+  `#662`.
+- **#662 (registered+dispatched 2026-07-19, Opus/Sonnet)** -- `#661` shortlist item 1, polynomial
+  homotopy continuation on the `#563`-lineage symmetric-closure equations. See `#661`'s own bullet
+  for the full case. Scope: formulate the closure residual as a polynomial system, solve via
+  homotopy continuation for ALL isolated roots, positive-control against the committed 30-closure
+  Uranian golden + PC(3,2), then re-check `#600`'s and `#656`'s specific unresolved near-misses as
+  the first live test of whether the grid-gap failure mode is real.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
