@@ -77,10 +77,13 @@ ledger one-liners (`#614`, `#638`) were also hand-corrected in place — see
   No standalone action remains on `#542` itself.
 - `#636` — Wilczak-Zgliczyński computer-assisted-proof machinery for theorem-grade dynamical
   negatives — still parked, needs an explicit user GO decision before the actual (multi-week) proof
-  build is dispatched. **Not stale as of 2026-07-19**: `#653` (dispatched, Fable) is actively
-  scoping whether `#646`'s strengthened SE↔EM non-connection negative warrants pointing this
-  machinery at it — the trigger `#636`'s own bullet was missing until this task surfaced it. Check
-  `#653`'s result before treating `#636` as still-unforced.
+  build is dispatched. **`#653` (Fable, closed 2026-07-19) scoped the `#646` trigger and returned
+  a firm NO-GO** — non-existence over a region is a fundamentally different technique from W-Z's
+  own published existence proofs, and a hard prerequisite (validated quasi-periodic tori) sits
+  ~5 orders of magnitude beyond current capability. `#636` stays parked, re-scoped: the machinery's
+  natural fit is certifying a future found connection (existence, the shape W-Z solved), not a
+  non-existence claim. See `#653`'s own bullet and
+  `docs/notes/2026-07-19-653-wz-proof-scoping.md`.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -131,9 +134,8 @@ ledger one-liners (`#614`, `#638`) were also hand-corrected in place — see
   corrector's basin fragility (`genome/qp_tori.py::_seed_invariant_circle`). As of 2026-07-19
   ~13:12 AET: mypy clean, running the genome/data/search test suites, uncommitted diff touching
   `qp_tori.py` + `tests/genome/test_qp_tori.py` + `tests/search/test_variational_qp_torus.py`.
-- `#653` (Fable, dispatched 2026-07-19) — scoping write-up on whether `#636`'s W-Z proof machinery
-  should target `#646`'s strengthened SE↔EM negative. Decision-support only, no code changes
-  expected.
+- (`#653` — REMOVED from this list 2026-07-19, CLOSED same day: NO-GO on pointing W-Z proof
+  machinery at `#646`'s negative; see `#653`'s own bullet and the `#636` parked-list entry above.)
 - (Historical note, superseded by the above: this section previously said "None identified as
   actively running as of 2026-07-15"; the most recent worked chain at that time, `#594`-`#598`,
   was fully closed out same-day.)
@@ -695,7 +697,10 @@ _propagate_with_stm_variable, can hang a caller for minutes+ on rare close-secon
 draws; registered 2026-07-19, user-directed, not yet dispatched); #653 for a Fable scoping
 write-up on whether #636's Wilczak-Zgliczyński proof machinery should be pointed at #646's
 strengthened SE<->EM non-connection negative (decision-support only, not the proof build itself;
-registered 2026-07-19, user-directed, dispatched); #654 next-unused):**
+CLOSED 2026-07-19: firm NO-GO, shape mismatch -- non-existence needs validated global
+reachability, a fundamentally different technique from W-Z's published existence proofs, plus a
+torus-validation prerequisite ~5 orders beyond #618's achievable residual; #636 re-scoped to
+trigger on a future POSITIVE needing certification instead); #654 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9377,25 +9382,31 @@ anywhere in the file and are genuinely still open.]**
   locally is the hard part `#632` itself flagged — may need CI-only verification via a scratch push,
   or a local backend-forcing technique if one exists. Recommended model: Opus (genuine numerical-
   methods judgment on eigen-decomposition conventions, same tier as `#632`'s own sign-fix work).
-- **#636** (registered 2026-07-18, user-directed — **parking lot, not auto-fired; "no current
-  forcing function" claim CORRECTED 2026-07-19, see below**) — Wilczak-Zgliczyński
+- **#636** (registered 2026-07-18, user-directed — **parking lot, not auto-fired; scoped and
+  RE-CONFIRMED parked 2026-07-19 via `#653`, see below**) — Wilczak-Zgliczyński
   computer-assisted-proof machinery as a route to theorem-grade (not just method-conditional)
   dynamical negatives, the one genuine standing reserve `#623`'s strategic review identified. Both
   papers are already in the corpus and digested, and this codebase already reproduces their Oterma
   heteroclinic golden to ~1e-10 (`data/golden/wz_oterma_heteroclinic.yaml`, task `#403`) —
-  unusually good preconditions if a high-stakes claim ever needs theorem-grade backing. This would
-  be the natural growth path for `#610`-style interval certification to cover
-  propagation-DEPENDENT negatives (e.g. the `#538`-`#620` SE↔EM non-connection) rather than just
-  closed-form sub-gates, but non-existence over a region is a strictly harder shape to prove than
-  W-Z's own existence proofs, and this is a multi-week, research-grade build (rigorous
-  integration/covering relations). **Correction (2026-07-19)**: this bullet's own "no current
-  forcing function" claim is now stale — `#646` (closed 2026-07-18, the same day this task was
-  registered) is a materially STRONGER version of the exact `#538`-`#620` non-connection this entry
-  already names as its natural target (direction FIXED and independently verified via
-  segmented-CLV extraction; closure still fails at the same ~166,016 km floor). That upgrade sat
-  unsurfaced until `#653` was registered to scope it. Still do not dispatch the actual proof build
-  without an explicit user GO decision — `#653`'s scoping write-up is the mechanism for reaching
-  that decision, not a pre-approval.
+  unusually good preconditions if a high-stakes claim ever needs theorem-grade backing, though
+  `#653` found this only establishes model familiarity, not proof infrastructure (the Oterma
+  golden is floating-point, no interval arithmetic). **`#653` (Fable, 2026-07-19) scoped the
+  natural candidate trigger — `#646`'s closed, strengthened SE↔EM non-connection negative — and
+  returned a firm NO-GO**: proving non-existence over a propagation-dependent region is a
+  fundamentally different technique from W-Z's own published existence proofs (validated global
+  reachability through a ~2-3e4x/period saddle with no conserved first integral, vs. one finite
+  covering chain along one known orbit), the prerequisite (rigorously validated quasi-periodic
+  tori) sits ~5 orders of magnitude beyond what `#618` can currently achieve, and the marginal
+  value is low given the negative's already-166,016-km floor across 3 independent methods. See
+  `#653`'s own bullet and `docs/notes/2026-07-19-653-wz-proof-scoping.md` for the full reasoning.
+  **Re-scoped trigger going forward** (per `#653`'s recommendation): do NOT dispatch on a
+  non-existence claim. The machinery's natural fit in this project is certifying a future
+  **positive** — an existence certificate along an actually-found connection, which is exactly
+  the shape W-Z solved and a realistic weeks-scale build (CAPD-based) rather than months. Also
+  reconsider if some future negative floors at kilometers (not hundreds of thousands) where rigor
+  could plausibly flip the verdict, or if a computer-assisted-proof paper becomes a deliverable in
+  its own right — both re-costed fresh, not assumed from this scoping. Still no dispatch without
+  an explicit user decision.
 - **#637 ✓ DONE (2026-07-19) — ACQUIRED (journal version, genuinely Open Access, not paywalled).**
   acquire the Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho *Celestial Mechanics and
   Dynamical Astronomy* 138:25 (June 2026) journal version — the external anchor `#608`'s own
@@ -10521,22 +10532,32 @@ anywhere in the file and are genuinely still open.]**
   (`test_generate_and_refine_seeds_cross_mu_lift_no_longer_assumed_positive`,
   `test_generate_and_refine_seeds_cross_mu_production_rescue_matches_649`) are a ready-made
   reproduction case for verifying any fix.
-- **#653 registered 2026-07-19 (user-directed), dispatched (Fable, in progress)** — decision-support
-  scoping write-up only, NOT the `#636` proof build itself: does `#646`'s strengthened SE<->EM
-  non-connection negative (direction FIXED and independently verified via segmented-CLV extraction,
-  closure still fails at the same ~166,016 km floor) rise to the level that warrants `#636`'s
-  multi-week Wilczak-Zgliczyński theorem-grade proof machinery? `#636`'s own bullet was registered
-  2026-07-18 citing only the older `#538`-`#620` framing of this same non-connection and says
-  "no current forcing function, do not dispatch without an explicit user decision" — that framing
-  is now stale, since `#646` (closed 2026-07-18, same day) is a materially stronger version of the
-  exact claim `#636` names as its natural target, and nobody had surfaced this to the user until
-  this task. Scope for the write-up: (1) restate `#646`'s claim precisely as a formal
-  non-existence proposition, (2) assess whether W-Z covering-relations/interval-arithmetic
-  machinery can actually be applied to a propagation-DEPENDENT non-connection claim at all (per
-  `#636`'s own honest caveat, this is a strictly harder shape than W-Z's own existence proofs —
-  don't assume feasibility), (3) if feasible, give a genuine effort/risk estimate for the build,
-  (4) recommend GO/NO-GO. No code changes, no catalogue changes — a design read, same class of
-  work as the `#645`/`#650` Fable design docs already in `docs/notes/`.
+- **#653 ✓ DONE, NO-GO (2026-07-19, Fable)** — decision-support scoping write-up
+  (`docs/notes/2026-07-19-653-wz-proof-scoping.md`) on whether `#646`'s strengthened SE<->EM
+  non-connection negative warrants dispatching `#636`'s multi-week Wilczak-Zgliczyński (W-Z)
+  theorem-grade proof machinery. **Formal proposition first**: the honest translation of #646's
+  numerical negative is a bounded reachability-avoidance claim over explicit compact departure/
+  target sets and a finite TOF horizon — narrower than "no connection exists," and conditional on
+  the (already once-buggy, `#592`) QBCP model. **Feasibility verdict: NOT a tractable extension of
+  the existing W-Z machinery, grounded directly against Part I (arXiv:math/0201278) Sections 1/10**
+  — W-Z proves EXISTENCE via a finite covering-relation chain along one known orbit in the planar,
+  autonomous, first-integral-bearing PCR3BP, and the authors themselves avoided rigorous manifold
+  computation as "very difficult" even for existence in that easier setting. Non-existence over a
+  region needs validated GLOBAL reachability in a 6D time-periodic model with NO conserved Jacobi
+  integral and ~2-3e4x/period hyperbolicity (which inflates interval boxes instead of helping,
+  the opposite of existence proofs) — a different, frontier-grade technique, not "the Oterma
+  machinery, extended." A hard prerequisite (rigorously validated quasi-periodic tori) sits ~5
+  orders of magnitude beyond `#618`'s achievable 9.5e-4 residual — open research, not engineering.
+  `#403`'s Oterma golden is floating-point only (no interval arithmetic); the codebase's entire
+  rigorous stack (`#610`/`#625`) is closed-form-only and `#610` itself found even a Lambert solve
+  unboundable. **Effort if attempted anyway**: 3-6+ months research-grade, >50% risk of no theorem
+  (recorded for completeness, not endorsed). **Recommendation: NO-GO** — shape mismatch is
+  decisive, the prerequisite is likely infeasible, and marginal value is low (the 166,016 km floor
+  is 8+ orders above closure tolerance across 3 independent methods; rigor upgrades marginal
+  calls, not floors this large; program is in census mode, nothing downstream is gated on this).
+  Cost was explicitly NOT the basis for the NO-GO, per `[[feedback_speculative_high_effort_required]]`.
+  `#636`'s own bullet corrected in place (below) with a re-scoped trigger recommendation. No code,
+  no catalogue changes.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
