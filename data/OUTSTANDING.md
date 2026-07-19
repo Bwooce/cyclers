@@ -34,19 +34,17 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#652` (added 2026-07-19) — add a wall-clock/step-count budget to
-  `cyclerfinder.core.cr3bp._propagate_with_stm_variable` (legacy variable-step STM integrator),
-  found hanging minutes+ on rare close-secondary-encounter draws during `#651`. No blocker,
-  no design-review gate — a real numerical-methods decision (timeout vs. step cap vs. a
-  `solve_ivp` close-approach termination event) but self-contained infra work. See `#652`'s own
-  bullet.
-- Otherwise none currently. (`#650` — corrected 2026-07-19: this line was never updated after
-  `#650`'s implementation sweep was dispatched and closed the same day; see its own `✓ DONE`
-  bullet entry — built + BOTH mandatory positive controls PASS + a real sweep run (291 nodes,
-  31,906 pairs, 60,239 edges, cheap_edge_count=2, both Uranian moon-system). Removed from this
-  list. `#600` — corrected 2026-07-15: this line was never updated after `#600` was
-  dispatched and closed the same day; see its own `✓ DONE` bullet entry — clean negative, 806,400
-  candidates, near-miss residual 0.0531 km/s just outside the gate. Removed from this list.)
+- None currently. (`#652` — corrected 2026-07-19: this line was never updated after `#652`
+  was dispatched and closed the same day; see its own `✓ DONE` bullet entry — fixed via a
+  `solve_ivp` close-approach termination event on BOTH STM-integration paths, 9 new regression
+  tests, hang confirmed via git-stash before/after, full suite green. Removed from this list.
+  `#650` — corrected 2026-07-19: this line was never updated after `#650`'s implementation sweep
+  was dispatched and closed the same day; see its own `✓ DONE` bullet entry — built + BOTH
+  mandatory positive controls PASS + a real sweep run (291 nodes, 31,906 pairs, 60,239 edges,
+  cheap_edge_count=2, both Uranian moon-system). Removed from this list. `#600` — corrected
+  2026-07-15: this line was never updated after `#600` was dispatched and closed the same day;
+  see its own `✓ DONE` bullet entry — clean negative, 806,400 candidates, near-miss residual
+  0.0531 km/s just outside the gate. Removed from this list.)
 
 ### Open but blocked / parked
 - ~~`#538`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The "not-yet-built
@@ -713,7 +711,11 @@ real-corpus tests marked @pytest.mark.slow+timeout(90), a propagate()-hardening 
 recommended, no catalogue changes); #652 for the #651-discovered cr3bp.propagate() legacy
 variable-step STM integrator hang risk (no wall-clock/step-count budget on
 _propagate_with_stm_variable, can hang a caller for minutes+ on rare close-secondary-encounter
-draws; registered 2026-07-19, user-directed, not yet dispatched); #653 for a Fable scoping
+draws; CLOSED 2026-07-19, Sonnet: fixed via a solve_ivp close-approach termination event (new
+CR3BPCloseEncounterError/CR3BPPropagationTimeoutError, both RuntimeError subclasses) applied to
+BOTH _propagate_with_stm_variable AND _propagate_with_stm_fixed_path (confirmed the latter shares
+the risk despite its state-only pre-pass), 9 new regression tests, hang confirmed via git-stash
+before/after, full suite green, no catalogue changes); #653 for a Fable scoping
 write-up on whether #636's Wilczak-Zgliczyński proof machinery should be pointed at #646's
 strengthened SE<->EM non-connection negative (decision-support only, not the proof build itself;
 CLOSED 2026-07-19: firm NO-GO, shape mismatch -- non-existence needs validated global
@@ -10579,8 +10581,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   AFTER every edit including the final marking change. No `data/catalogue.yaml` changes.
   `src/cyclerfinder/genome/qp_tori.py` and its tests (concurrent `#635` work) were left untouched
   — verified via explicit `git add` pathspecs before every commit.
-- **#652 registered 2026-07-19 (user-directed), not yet dispatched** — add a wall-clock or
-  step-count budget to `cr3bp.propagate`'s legacy variable-step STM integration path
+- **#652 ✓ DONE (2026-07-19, Sonnet)** — add a wall-clock or step-count budget to
+  `cr3bp.propagate`'s legacy variable-step STM integration path
   (`cyclerfinder.core.cr3bp._propagate_with_stm_variable`), which `correct_periodic` and every
   other caller currently inherit with no cap. `#651` found (twice, independently, via bounded
   SIGALRM diagnostics) that a rare (~1%) cross-mu seed produced by `#649`'s coordinate-transform
@@ -10600,6 +10602,63 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (`test_generate_and_refine_seeds_cross_mu_lift_no_longer_assumed_positive`,
   `test_generate_and_refine_seeds_cross_mu_production_rescue_matches_649`) are a ready-made
   reproduction case for verifying any fix.
+
+  **RESULT (2026-07-19, Sonnet, `src/cyclerfinder/core/cr3bp.py`,
+  `tests/core/test_cr3bp_close_encounter.py`)**: built the recommended `solve_ivp`
+  close-approach termination EVENT (not a bare timeout/step-cap), applied to BOTH STM-augmented
+  paths. **New public exceptions** `CR3BPCloseEncounterError` and `CR3BPPropagationTimeoutError`,
+  both subclassing `RuntimeError` (verified safe: grepped every `except RuntimeError`/
+  `except Exception` site touching `propagate(with_stm=True)`/`correct_periodic` across
+  `search/`+`genome/`+`ml/seed_generation.py` — all either catch `RuntimeError` generically, so
+  keep working unchanged, or already catch broad `Exception`, e.g. `stability_index`'s and
+  `generate_and_refine_seeds._refine_one`'s own try/excepts, which now degrade a hang into a fast,
+  honest "refinement failed" note instead). **Primary mechanism**: a distance-to-secondary
+  terminal event (`_make_close_encounter_event`, threshold `1e-5` nondimensional) attached to
+  `_propagate_with_stm_variable`'s single `solve_ivp` call and to BOTH `solve_ivp` calls inside
+  `_propagate_with_stm_fixed_path` (state-only pre-pass + every per-sub-interval augmented
+  replay, sharing one event pair per `propagate()` call). Threshold calibration was empirical, not
+  guessed: a direct sweep on #651's confirmed pathological draw (Sun-Earth mu, model rng seed 651,
+  n=100 draw 77) showed the grind ramps from ~17ms at r2=9e-6 to ~7s and climbing at r2=4e-6 (true
+  closest approach on that draw: r2≈2.18e-7) — `1e-5` sits ~2 orders of magnitude above the grind
+  onset (fires fast/reliably) and ~4x below the smallest physically-realistic close approach this
+  project's own systems registry supports (Sun-Earth LEO/surface, r2≈4.3e-5), so it does not clip
+  any legitimate close-flyby trajectory (Earth-Moon LLO sits at r2≈0.0048, 2+ orders of magnitude
+  clear). **Defense-in-depth backstop**: a second, independent wall-clock event
+  (`_make_wallclock_budget_event`, 30s budget, `CR3BPPropagationTimeoutError` if it fires without
+  the close-encounter event firing first) for any OTHER pathological case the primary event
+  doesn't anticipate — confirmed NOT the primary mechanism in practice (never fired in any test
+  run). **`_propagate_with_stm_fixed_path` scope decision**: the task instructions said leave it
+  alone UNLESS proven vulnerable — checked directly rather than assumed, and it IS: confirmed via
+  a bounded-SIGALRM diagnostic that it hangs on the identical #651 pathological state (20s+,
+  alarm-bounded) despite its state-only pre-pass, because that pre-pass's own free-adaptive
+  integration reaches the SAME close approach fine and fast (empirically 0.03s even down to
+  r2≈2.18e-7, since the state equations' singularity is only `~1/r2^2`) but the per-sub-interval
+  AUGMENTED replay in step 2 (`~1/r2^5` terms) does not — so it got the identical guard, and in
+  practice fails even faster/cheaper than variable-step mode (caught during the cheap state-only
+  pre-pass, before the expensive replay is ever reached). **Regression test**
+  (`tests/core/test_cr3bp_close_encounter.py`, 9 tests, all fast/no `@pytest.mark.slow` needed):
+  pins the EXACT full-precision reproduction case (extracted via `np.save`, not a re-typed
+  `repr()` — confirmed during this task that precision loss from re-parsing a truncated `repr()`
+  of this chaotic near-singular state was enough to miss the close encounter and converge
+  cleanly instead), covering both `stm_mode` values, the true end-to-end `correct_periodic` path,
+  the exception hierarchy, and a `solve_ivp`-vs-`propagate()` byte-identical-results check
+  proving the new events add no observable perturbation to a typical (non-close-encounter)
+  trajectory. Confirmed BEFORE the fix (via `git stash` back to pre-#652 code): the exact
+  reproduction case still hangs past a 15s SIGALRM bound (was previously observed hanging past
+  pytest's 600s global cap under #651). Confirmed AFTER: `correct_periodic` on the raw seed now
+  raises `CR3BPCloseEncounterError` in ~0.29s; a direct `propagate(..., stm_mode="variable")` on
+  the failing Newton-iterate state raises in ~0.016s; `stm_mode="fixed_path"` raises in ~0.007s
+  (during its state-only pre-pass, as predicted above). **Verification**: `ruff check`/
+  `ruff format --check`/`mypy src tests` (733 files) all clean; full
+  `tests/data tests/search tests/core tests/genome tests/ml tests/scripts` run confirmed green
+  (see this task's own commit for the exact pass/fail counts) with the three known pre-existing
+  Mac-only failures (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`,
+  `test_da_section_map`) unaffected and no others. `mu`-only-used-for-typing quirk: had to import
+  `scipy.integrate._ivp.ivp.OdeResult` under a `TYPE_CHECKING` guard (not exposed at
+  `scipy.integrate.OdeResult`) and add `# type: ignore[call-overload]` on the `args=` lines that
+  combine with `events=`, matching this project's OWN existing precedent for the identical mypy/
+  scipy-stubs TypeVarTuple limitation already worked around in
+  `search/cr3bp_periodic.py`'s `_y_event`. No `data/catalogue.yaml` changes.
 - **#653 ✓ DONE, NO-GO (2026-07-19, Fable)** — decision-support scoping write-up
   (`docs/notes/2026-07-19-653-wz-proof-scoping.md`) on whether `#646`'s strengthened SE<->EM
   non-connection negative warrants dispatching `#636`'s multi-week Wilczak-Zgliczyński (W-Z)

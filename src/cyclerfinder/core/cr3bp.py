@@ -8,8 +8,10 @@ core.satellites only.
 from __future__ import annotations
 
 import math
+import time
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -18,12 +20,180 @@ from scipy.integrate import solve_ivp
 from cyclerfinder.core.constants import AU_KM, MU_SUN_KM3_S2, PLANETS, PlanetData
 from cyclerfinder.core.satellites import PRIMARIES, SATELLITES
 
+if TYPE_CHECKING:
+    # Only exposed under scipy's private `_ivp` submodule at runtime (not
+    # `scipy.integrate.OdeResult`) -- imported solely for the type annotation
+    # below, never executed, so this stays robust to scipy internals moving.
+    from scipy.integrate._ivp.ivp import OdeResult
+
 # STM integration modes. See ``propagate(with_stm=True, stm_mode=...)`` for the
 # semantics; ``"variable"`` is the legacy variable-step variational path,
 # ``"fixed_path"`` is the Pellegrini-Russell 2016 mitigation (record the state
 # only path's accepted step grid, replay state+STM along that pre-scheduled
 # grid so the step size has no IC dependence).
 StmMode = Literal["variable", "fixed_path"]
+
+
+class CR3BPCloseEncounterError(RuntimeError):
+    """A #652 ``solve_ivp`` termination event fired: the trajectory dynamically
+    evolved into a genuine close encounter with the SECONDARY body partway
+    through STM-augmented propagation.
+
+    Subclasses ``RuntimeError`` deliberately (not a bare new exception type) so
+    every existing ``except RuntimeError`` caller of ``propagate(with_stm=True)``
+    (``correct_periodic`` and its many downstream callers across ``search/`` and
+    ``genome/``) keeps working unchanged -- this is a MORE SPECIFIC failure than
+    the pre-existing generic ``RuntimeError`` raised when ``sol.success`` is
+    False (e.g. a collision trajectory near the PRIMARY), distinguishable by
+    type and by its own honestly-worded message, never silently conflated with
+    it.
+
+    Background (#651, #652): the augmented state+STM variational equations
+    (:func:`cr3bp_stm_eom`) contain second-derivative terms that scale as
+    ``~1/r2^5`` near the secondary body -- far more singular than the state
+    equations' own ``~1/r2^2`` -- so a close approach to the secondary that only
+    develops DURING integration (not visible from the initial condition alone)
+    can collapse the adaptive DOP853 step size and grind for minutes+ without
+    ever tripping ``sol.success=False``. This event-based guard fires FAST,
+    before that grind, by monitoring distance-to-secondary directly (the exact
+    quantity driving the singularity) rather than relying on a coarse
+    wall-clock/step-count budget.
+    """
+
+
+class CR3BPPropagationTimeoutError(RuntimeError):
+    """#652 defense-in-depth wall-clock backstop fired during STM-augmented
+    CR3BP propagation, WITHOUT the close-secondary-encounter event
+    (:class:`CR3BPCloseEncounterError`) having fired first.
+
+    Subclasses ``RuntimeError`` for the same existing-caller-compatibility
+    reason as :class:`CR3BPCloseEncounterError`. This is the coarser,
+    secondary guard -- it exists in case some OTHER pathological case (not the
+    near-secondary-encounter #651 diagnosed) also stalls the integrator; it is
+    NOT the primary mechanism (that is the close-encounter event, which is
+    diagnostic) and should be rare in practice. Its budget is generous (see
+    :data:`_PROPAGATION_WALLCLOCK_BUDGET_S`) so it never fires for real work.
+    """
+
+
+# #652: distance from the SECONDARY body (nondimensional CR3BP length units --
+# 1.0 is the secondary's own SMA about the primary) below which #651's bounded
+# SIGALRM diagnostics confirmed the augmented state+STM DOP853 integration's
+# adaptive step size collapses into a minutes+ grind. Empirically calibrated
+# against #651's own confirmed pathological draw (Sun-Earth mu, model rng seed
+# 651, n=100 draw index 77 -- see tests/core/test_cr3bp_close_encounter.py):
+# that trajectory's true closest approach bottoms out at r2 ~= 2.18e-7, and a
+# direct sweep of candidate thresholds on that exact case showed the grind
+# ramps up steeply between r2 ~= 9e-6 (terminates in ~17ms) and r2 ~= 4e-6
+# (already ~7s and climbing) -- i.e. the pathological regime lives BELOW
+# ~1e-5. This threshold sits about two orders of magnitude above the observed
+# grind onset (comfortable margin to fire fast and reliably) while staying
+# roughly 4x below the smallest physically-realistic close approach this
+# project's own systems registry supports (Sun-Earth LEO/surface grazing,
+# r2 ~= 4.3e-5) and two-plus orders of magnitude below the tightest
+# legitimate lunar flyby this project models (Earth-Moon LLO, r2 ~= 0.0048) --
+# so it does not clip any known intentional close-approach trajectory.
+_CLOSE_ENCOUNTER_R2_THRESHOLD = 1e-5
+
+# #652 defense-in-depth backstop only (see CR3BPPropagationTimeoutError) --
+# generous relative to a normal propagate() call (milliseconds), so it should
+# never fire for real work; it exists purely to bound worst-case wall time for
+# a pathological case the close-encounter event above does not anticipate.
+_PROPAGATION_WALLCLOCK_BUDGET_S = 30.0
+
+
+def _make_close_encounter_event(
+    threshold: float = _CLOSE_ENCOUNTER_R2_THRESHOLD,
+) -> Callable[[float, NDArray[np.float64], float], float]:
+    """Build a ``solve_ivp`` terminal event: distance from the current state's
+    position (``y[:3]`` -- valid whether ``y`` is a bare 6-state or a 6+36
+    augmented state+STM vector) to the secondary body crossing below
+    ``threshold``. See #652 / :class:`CR3BPCloseEncounterError`. Follows this
+    project's existing ``events=``+``.terminal``/``.direction`` convention
+    (see ``search/cr3bp_periodic.py``'s own ``_y_event``).
+    """
+
+    def event(t: float, y: NDArray[np.float64], mu: float) -> float:
+        r2 = math.sqrt((float(y[0]) - 1.0 + mu) ** 2 + float(y[1]) ** 2 + float(y[2]) ** 2)
+        return r2 - threshold
+
+    event.terminal = True  # type: ignore[attr-defined]
+    event.direction = -1.0  # type: ignore[attr-defined] # only fire approaching, not departing
+    return event
+
+
+def _make_wallclock_budget_event(
+    budget_s: float = _PROPAGATION_WALLCLOCK_BUDGET_S,
+) -> Callable[[float, NDArray[np.float64], float], float]:
+    """Build a ``solve_ivp`` terminal event: #652 defense-in-depth wall-clock
+    backstop. See :class:`CR3BPPropagationTimeoutError`. Stateful (captures
+    its own start time at construction) -- build ONE instance per
+    :func:`propagate` call and reuse it across every ``solve_ivp`` invocation
+    within that call (the fixed-path mode makes several) so the budget covers
+    the WHOLE call, not just one sub-interval.
+    """
+    start = time.monotonic()
+
+    def event(t: float, y: NDArray[np.float64], mu: float) -> float:
+        return budget_s - (time.monotonic() - start)
+
+    event.terminal = True  # type: ignore[attr-defined]
+    event.direction = -1.0  # type: ignore[attr-defined]
+    return event
+
+
+def _stm_termination_events() -> list[Callable[[float, NDArray[np.float64], float], float]]:
+    """Build a fresh #652 event pair for one :func:`propagate` call (the
+    events read ``mu`` from ``solve_ivp``'s own ``args`` at call time, not from
+    here)."""
+    return [_make_close_encounter_event(), _make_wallclock_budget_event()]
+
+
+def _raise_for_stm_event_termination(
+    sol: OdeResult[np.float64], *, mu: float, t_requested: float, context: str
+) -> None:
+    """If a #652 termination event fired, raise the specific, honestly-worded
+    exception for it. A no-op if ``sol`` ran to completion or failed for the
+    existing, unrelated ``sol.success=False`` reason (that case is still
+    handled by each caller's own existing generic ``RuntimeError``, unchanged).
+    Uses ``getattr`` (not direct attribute access) so a caller's own
+    monkeypatched/stubbed ``solve_ivp`` replacement (e.g.
+    ``test_propagate_raises_on_integrator_failure``'s ``_FailedSol``, which has
+    no ``t_events`` attribute at all) degrades to a no-op here instead of an
+    unrelated ``AttributeError`` -- a real ``scipy.integrate.OdeResult``
+    always carries ``t_events`` (``None`` when no ``events=`` were passed).
+    """
+    t_events = getattr(sol, "t_events", None)
+    if t_events is None:
+        return
+    if len(t_events) > 0 and len(t_events[0]) > 0:
+        t_evt = float(t_events[0][0])
+        y_events = sol.y_events
+        assert y_events is not None
+        y_evt = y_events[0][0]
+        r2 = math.sqrt(
+            (float(y_evt[0]) - 1.0 + mu) ** 2 + float(y_evt[1]) ** 2 + float(y_evt[2]) ** 2
+        )
+        raise CR3BPCloseEncounterError(
+            f"{context}: terminated at t={t_evt:.6g} (of requested t={t_requested:.6g}) -- "
+            f"distance to secondary crossed below {_CLOSE_ENCOUNTER_R2_THRESHOLD:.3g} "
+            f"(nondimensional; reached {r2:.3g}). This is a genuine close encounter with "
+            "the secondary body that develops DURING propagation, not visible from the "
+            "initial condition alone -- the augmented state+STM variational equations "
+            "become increasingly singular near the secondary and would otherwise collapse "
+            "the adaptive step size into a minutes+ grind rather than a clean "
+            "sol.success=False (#651, #652). Treat this as a precision-floor "
+            "non-convergence for this initial condition, not a generic solver failure."
+        )
+    if len(t_events) > 1 and len(t_events[1]) > 0:
+        t_evt = float(t_events[1][0])
+        raise CR3BPPropagationTimeoutError(
+            f"{context}: exceeded the {_PROPAGATION_WALLCLOCK_BUDGET_S:.0f}s #652 "
+            f"defense-in-depth wall-clock budget at t={t_evt:.6g} (of requested "
+            f"t={t_requested:.6g}) WITHOUT the close-secondary-encounter event firing "
+            "first -- an unanticipated pathological case, not the near-secondary-encounter "
+            "#651 diagnosed (that case is caught fast by CR3BPCloseEncounterError instead)."
+        )
 
 
 def _r1_r2(x: float, y: float, z: float, mu: float) -> tuple[float, float]:
@@ -223,6 +393,19 @@ def propagate(
         trajectory driving the step size below floating-point resolution near a
         primary. Returning ``sol.y[:, -1]`` in that case would silently hand back
         the state where the integrator gave up, not the state at time ``t``.
+    CR3BPCloseEncounterError (with_stm=True only; subclasses RuntimeError)
+        #652: a close-secondary-encounter ``solve_ivp`` termination event
+        fired -- the trajectory dynamically evolved into a genuine close
+        approach to the SECONDARY body partway through STM-augmented
+        propagation (undetectable from the initial condition alone), which
+        would otherwise collapse the adaptive step size into a minutes+ grind
+        without ever reaching ``sol.success=False`` (the failure mode above is
+        near the PRIMARY and unrelated). Fires fast, before the grind, by
+        design; see the class docstring for detail.
+    CR3BPPropagationTimeoutError (with_stm=True only; subclasses RuntimeError)
+        #652 defense-in-depth wall-clock backstop -- fired WITHOUT the
+        close-encounter event above also firing, i.e. an unanticipated
+        pathological case. Should be rare; see the class docstring.
     ValueError
         If ``stm_mode`` is not one of the supported literals.
 
@@ -266,17 +449,27 @@ def _propagate_with_stm_variable(
     rtol: float,
     atol: float,
 ) -> CR3BPArc:
-    """Legacy variable-step augmented (state+STM) DOP853 propagation."""
+    """Legacy variable-step augmented (state+STM) DOP853 propagation.
+
+    #652: guarded by the close-secondary-encounter + wall-clock-budget
+    termination events (see :func:`_stm_termination_events`) -- see
+    :class:`CR3BPCloseEncounterError` / :class:`CR3BPPropagationTimeoutError`
+    for what each raises and why.
+    """
     y0 = np.concatenate([np.asarray(state6, float), np.eye(6).reshape(36)])
     sol = solve_ivp(
         cr3bp_stm_eom,
         (0.0, t),
         y0,
-        args=(system.mu,),
+        args=(system.mu,),  # type: ignore[call-overload]
         rtol=rtol,
         atol=atol,
         method="DOP853",
         dense_output=False,
+        events=_stm_termination_events(),
+    )
+    _raise_for_stm_event_termination(
+        sol, mu=system.mu, t_requested=t, context="CR3BP STM propagation (variable-step)"
     )
     if not sol.success:
         raise RuntimeError(f"CR3BP STM propagation failed at t={sol.t[-1]}: {sol.message}")
@@ -311,6 +504,22 @@ def _propagate_with_stm_fixed_path(
     8th-order scheme that produced the recorded grid replays each step
     exactly once at the same h_i, so the LOCAL truncation error per step is
     consistent with the original state-only pass.
+
+    #652: this path is guarded by the SAME close-secondary-encounter +
+    wall-clock-budget termination events as
+    :func:`_propagate_with_stm_variable` (see :func:`_stm_termination_events`),
+    applied to BOTH the state-only pre-pass and every per-sub-interval
+    augmented replay call, sharing one event pair (and therefore one combined
+    wall-clock budget) across the whole call. This mode is EXPOSED TO THE SAME
+    #651-diagnosed risk despite its state-only pre-pass: empirically, the
+    state-only pass alone does not hang on #651's confirmed pathological draw
+    (it reaches the same close approach in well under a second, since the
+    state equations' own singularity is only ``~1/r2^2``), but the
+    per-sub-interval AUGMENTED replay in step 2 does, on that exact draw --
+    confirmed directly (not inferred) before adding this guard. Sharing the
+    close-encounter event with the cheap state-only pass actually catches
+    most pathological cases EARLIER (and more cheaply) than variable-step
+    mode would, before step 2's expensive replay is ever reached.
     """
     state_arr = np.asarray(state6, dtype=np.float64)
     if state_arr.shape != (6,):
@@ -318,15 +527,20 @@ def _propagate_with_stm_fixed_path(
             "propagate(stm_mode='fixed_path'): state6 must be a 6-vector, "
             f"got shape {state_arr.shape}"
         )
+    events = _stm_termination_events()
     # Step 1: record state-only step grid.
     sol_state = solve_ivp(
         cr3bp_eom,
         (0.0, t),
         state_arr,
-        args=(system.mu,),
+        args=(system.mu,),  # type: ignore[call-overload]
         rtol=rtol,
         atol=atol,
         method="DOP853",
+        events=events,
+    )
+    _raise_for_stm_event_termination(
+        sol_state, mu=system.mu, t_requested=t, context="CR3BP fixed-path state-only pre-pass"
     )
     if not sol_state.success:
         raise RuntimeError(
@@ -349,12 +563,19 @@ def _propagate_with_stm_fixed_path(
             cr3bp_stm_eom,
             (grid[i], grid[i + 1]),
             y,
-            args=(system.mu,),
+            args=(system.mu,),  # type: ignore[call-overload]
             rtol=rtol,
             atol=atol,
             method="DOP853",
             first_step=h,
             max_step=h,
+            events=events,
+        )
+        _raise_for_stm_event_termination(
+            sol_step,
+            mu=system.mu,
+            t_requested=t,
+            context=f"CR3BP fixed-path STM replay at sub-interval [{grid[i]}, {grid[i + 1]}]",
         )
         if not sol_step.success:
             raise RuntimeError(
