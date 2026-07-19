@@ -49,7 +49,9 @@ carried in `constraints_satisfied`; a non-converged cell is honest data, not a
 CLI failure (exit stays 0).
 
 `--fidelity ephemeris --mode maintenance` runs the real-DE440 maintenance path
-(slow). `--mode ballistic` is **exposed but M-ED-gated** (see below).
+(slow). `--mode ballistic` is implemented and runs (M-ED landed 2026-06-06) but
+its convergence to the sourced Jones VEM multisets is an **open research
+problem**, not a pending gate (see below).
 
 ### discover — ledger-backed campaign with V-level gates
 
@@ -59,7 +61,9 @@ cyclerfinder discover --bodies E,M --k 2 --ledger out/em.jsonl --max-cells 50
 ```
 
 Tallies cells searched / solved and per-V-level counts; the ledger is always
-written. `--enable-v3` wires the ballistic V3 closure gate (**M-ED-gated**).
+written. `--enable-v3` wires the ballistic V3 closure gate — implemented and
+runs, blocked on the same open VEM-convergence research problem as
+`solve --mode ballistic` (see below), not on a pending milestone.
 
 ### report — campaign summary (markdown + JSON)
 
@@ -115,11 +119,16 @@ cyclerfinder report --ledger out/vem.jsonl --out out/vem --with-verdicts
 cyclerfinder viz beat --bodies V,E,M --out out/beat.png
 ```
 
-## M-ED-gated paths
+## Ballistic-mode open-research status (was "M-ED-gated")
 
-The ballistic corrector and the V3 ballistic-closure gate are deliverables of
-the concurrent **M-ED** milestone (`docs/superpowers/plans/2026-06-05-m-ed-
-ballistic-corrector.md`). `solve --mode ballistic` and `discover --enable-v3`
-are wired and accept their flags, but their convergence is **exposed-but-inert**
-until M-ED lands; the corresponding convergence smoke tests are skipped with a
-recorded reason.
+The ballistic corrector and the V3 ballistic-closure gate were deliverables of
+the **M-ED** milestone (`docs/superpowers/plans/2026-06-05-m-ed-
+ballistic-corrector.md`), which **landed 2026-06-06** (`docs/overview.md`).
+`solve --mode ballistic` and `discover --enable-v3` are wired, accept their
+flags, and run — but VEM convergence to the sourced Jones multisets does not
+occur: a dense 16-core scan (task #110) floors at ~17.9-18.5 km/s vs. the
+sourced 2.4-7.0 km/s, zero bend-feasible, and a follow-up inclined-rung hunt
+(task #120) refuted 3D-inclination-only as the explanation (the floor moves
+only ~0.1-0.4 km/s on the inclined-circular backend). This is an open research
+problem, not a pending milestone — the corresponding convergence tests are
+skipped with that recorded reason (`tests/cli/test_cli_solve.py`).

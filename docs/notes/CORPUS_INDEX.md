@@ -46,12 +46,16 @@ measured 2026-06-19):
 
 ## Genuine gap list — see §"Gaps" at the bottom
 
-**ZERO genuine `undigested-unmined` files remain** (2026-06-19). The last
+**ZERO genuine `undigested-unmined` files remained as of 2026-06-19.** The last
 three — shepperd-1985 (#402), bond-allman-2021 (#396), willis-2008 — were
 digested 2026-06-19; Szebehely was digested earlier (#394/#400). All other
 prior gaps (Fan 2025, Li-Topputo 2019, Silvestrini 2022, Singh-Junkins 2022)
-were closed by the 2026-06-13 background-papers triage. Every `papers/` file
-is now digested, mined, or triaged.
+were closed by the 2026-06-13 background-papers triage. **STALE as a present-tense
+claim, corrected 2026-07-19**: `peralta-flanagan-1995-cassini-interplanetary-
+trajectory-design-cep.pdf`, added to the "Recent Acquisitions (Cassini)" table
+below the day after this note was written (2026-06-20), is genuinely
+undigested — no digest/mining note references it anywhere in `docs/notes/`
+(only citation-level mentions of its 61.4° figure). See its row below.
 
 ---
 
@@ -334,10 +338,10 @@ still be vision-read from the page images. No image-only black box remains.
 
 ### Recent Acquisitions (Cassini)
 
-- **peralta-flanagan-1995-cassini-interplanetary-trajectory-design-cep.pdf** | undigested | Cassini interplanetary leg | - | text-layer |
+- **peralta-flanagan-1995-cassini-interplanetary-trajectory-design-cep.pdf** | undigested | Cassini interplanetary leg | - | text-layer | (confirmed genuinely undigested 2026-07-19 — no digest/mining note exists; only citation-level mentions elsewhere of its 61.4° figure)
 - **wolf-smith-1995-design-cassini-tour-trajectory-saturnian-system-control-eng-practice-doi-10.1016-0967-0661(95)00172-7.pdf** | digested | Cassini tour trajectory | KNOWN_CORPUS | text-layer |
 - **wolf-1996-touring-saturnian-system-spie.pdf** | 2026-06-20-digest-wolf-1996.md | Cassini touring | - | text-layer |
-- **canales-howell-2023-arxiv-2308.10029.pdf** | undigested | Transport corridor reproduction | - | text-layer |
+- **canales-howell-2023-arxiv-2308.10029.pdf** | 2026-06-20-digest-canales-howell-2023.md | Transport corridor reproduction | - | text-layer | (row corrected 2026-07-19: was mislabeled "undigested"; digest exists and is cited by `2026-07-11-564-opus-adjudication-563-family.md`)
 - **kumar-2025-arxiv-2509.12675.pdf** | 2026-06-20-digest-kumar-2025.md | Cislunar resonant transport + heteroclinic pathways (EM 4:1/3:1/2:1; = ASR 77, 3815; DOI 10.1016/j.asr.2025.12.005) | digested (stale "undigested" corrected 2026-06-30) | text-layer |
 - **kumar-anderson-delallave-2025-gpu-connections-tori-perturbed-crtbp-siam-ads-24-219-arxiv-2109.14814.pdf** | 2026-07-03-digest-kumar-anderson-delallave-2025-whiskered-tori-connections.md | Whiskered-torus GPU mesh-collision connection search in periodically-perturbed planar CR3BP (Jupiter-Europa PERTBP demo); grounds #522 | digested | text-layer |
 - **owen-baresi-2024-knot-theory-heteroclinic-connections-quasiperiodic-orbits-astrodynamics-doi-10.1007-s42064-024-0201-0.pdf** | 2026-07-03-digest-owen-baresi-2024-knot-theory-heteroclinic.md | Linking-number topological screening for heteroclinic connections between quasi-periodic tori (EM/SE/Jupiter-Ganymede single-system demos); grounds #522, recommended lighter-weight first-build path | digested | text-layer |

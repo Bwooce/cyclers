@@ -20,10 +20,18 @@ range (not a full re-audit of that range either — a targeted pass reconciling 
 sections against each flagged task's own bullet, prompted by a user request for a full open-task
 table). Removed `#542` (fully subsumed by closed `#643`/`#649`/`#651`) and `#316` (closed via
 `#622`) from the parked/pre-#512 lists; added `#652` (ready to dispatch), `#653` (in progress),
-and corrected `#636`'s stale "no current forcing function" framing now that `#653` is scoping it;
-logged `#635` (in progress, Opus, uncommitted) as actively running. Two stale `TASK ALLOCATIONS`
-ledger one-liners (`#614`, `#638`) were also hand-corrected in place — see
-`[[feedback_outstanding_current_state_maintenance]]`.
+and corrected `#636`'s stale "no current forcing function" framing now that `#653` is scoping it.
+`#653` and `#635` both subsequently CLOSED same-day and were moved out of "In progress" again
+(see each task's own bullet). Two stale `TASK ALLOCATIONS` ledger one-liners (`#614`, `#638`) were
+also hand-corrected in place — see `[[feedback_outstanding_current_state_maintenance]]`.
+**Second targeted pass, later 2026-07-19** (user-requested full task+documentation audit, 3
+parallel read-only agents + a Fable adversarial verification of their combined findings, 15/16
+confirmed): corrected 6 more `TASK ALLOCATIONS` one-liners (`#624`, `#629`, `#635`, `#636`, plus
+`#628`/`#629`'s own bullets) that were never updated after later falsification/closure events, a
+stale "#315-317 still open" block-note, a stale "#293 un-started" pair of lines contradicted by
+its own DONE entry, and a leftover already-executed `#144` TODO. One flagged item (a commit SHA
+cited as evidence) was checked and found to be a real commit in a different repository — left
+unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
 - `#652` (added 2026-07-19) — add a wall-clock/step-count budget to
@@ -130,11 +138,13 @@ ledger one-liners (`#614`, `#638`) were also hand-corrected in place — see
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#635` (Opus, dispatched 2026-07-19) — ✓ RESOLVED 2026-07-19 (commit `f94d107`): +45°
+- Otherwise none currently.
+- (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
   basin 0.02140, robust ±1e-16→±1e-3, no knife-edge). No net test regressions (only the 3 known
-  pre-existing #584-class Mac-only failures); ruff+mypy clean; 3 regression tests added.
+  pre-existing #584-class Mac-only failures); ruff+mypy clean; 3 regression tests added; see
+  `#635`'s own bullet.)
 - (`#653` — REMOVED from this list 2026-07-19, CLOSED same day: NO-GO on pointing W-Z proof
   machinery at `#646`'s negative; see `#653`'s own bullet and the `#636` parked-list entry above.)
 - (Historical note, superseded by the above: this section previously said "None identified as
@@ -535,7 +545,11 @@ combinations and new literature (CLOSED 2026-07-17: priority reads on #542/#520/
 #624 for #623 shortlist B1, a cross-μ transfer pilot for #608's generative model at μ=0.001/Sun-
 Earth μ, the decisive test of #542's open claim (dispatched 2026-07-17; CLOSED 2026-07-17:
 DECISIVE POSITIVE -- lift transfers at both new μ, 30x at μ=0.001 and 3.5x at Sun-Earth,
-#542 reclassified from "answered" to "validated discovery lever"); #625 for #623 shortlist
+#542 reclassified from "answered" to "validated discovery lever"; one-liner corrected 2026-07-19:
+HEADLINE LATER FALSIFIED by #642 (2026-07-18) -- the cross-mu hits were 100% degenerate L4/L5
+equilibria, 0 real generated orbits at either mu; #643 purged the falsified anchors; #649/#651
+subsequently found and wired a genuine, narrower two-point coordinate-transform rescue -- see
+#624's own corrected bullet for the full chain); #625 for #623 shortlist
 B2, generalizing #610's interval-arithmetic bend-gate certificate to ~6 more bend-gate-limited
 empty_regions.jsonl negatives (#607/#609/#571) (dispatched 2026-07-17; CLOSED 2026-07-17: 12/15
 per-body certifications succeeded across all 6 targeted entries -- all four #571 Saturn entries +
@@ -570,7 +584,8 @@ Phase A = ~1 h scaled-margin rerun of #627's own walks, Phase B = overnight fixe
 corridor answer exists -- see #629's own bullet + docs/notes/2026-07-18-629-design-read-titan-
 kk-grid.md; Phase A RAN 2026-07-18 (commit 93efd80): CORRIDOR FAILURE, not rescue, on both
 representatives across a 6-point alpha sweep -- #627's negative upgraded from "suspect artifact"
-to well-characterized; Phase B (fixed-Titan-mu 2D grid) now recommended, not yet dispatched);
+to well-characterized; one-liner corrected 2026-07-19: Phase B (fixed-Titan-mu 2D grid) WAS
+dispatched and CLOSED as #633 (2026-07-18), clean negative 0/16,375 -- #629 fully resolved);
 #630 for leveraging #627's new perimoon_passage.py encounter-geometry
 module more broadly against existing #607/#609/#571/#494/#549 results (CLOSED 2026-07-18: clean
 "nothing changes" on both targets -- #607/#609/#571's bend-gate negatives are architecturally out
@@ -605,12 +620,15 @@ shape today, and a flag would imply drop-in interchangeability that undermines #
 caveat; also found+documented a corpus-circularity hazard [generative-seeded correct_periodic
 solves auto-log into the #210 training corpus if CYCLERFINDER_OUTCOME_LOG is set]; two docstring
 cross-references committed as the wiring example -- see #634's own bullet); #635 for the
-eigenvector-PHASE canonicalization #632 flagged and deliberately deferred, parking lot not
-auto-fired (registered 2026-07-18); #636 for Wilczak-Zgliczynski computer-assisted-proof machinery
+eigenvector-PHASE canonicalization #632 flagged and deliberately deferred (registered 2026-07-18;
+one-liner corrected 2026-07-19: RESOLVED 2026-07-19, commit `f94d107` -- +45 degree
+eigenvector-phase canonicalization fixes the L2 GMOS-corrector platform-dependence at source, no
+net regressions, see #635's own bullet); #636 for Wilczak-Zgliczynski computer-assisted-proof machinery
 as a theorem-grade-negative route, #623's own standing reserve (registered 2026-07-18; one-liner
-corrected 2026-07-19: "no current forcing function" is stale -- #646 (closed 2026-07-18) is a
-materially stronger version of the exact non-connection this task names as its target; #653
-dispatched to scope whether it warrants the build); #637 for acquiring the Litteri et al. CMDA 138:25 journal version, minor
+corrected 2026-07-19 twice: "no current forcing function" was stale -- #646 (closed 2026-07-18) is
+a materially stronger version of the exact non-connection this task names as its target; #653
+CLOSED 2026-07-19 with a firm NO-GO on pointing this machinery at it -- shape mismatch, see #653's
+own bullet; #636 stays parked, re-scoped to trigger on a future found connection instead); #637 for acquiring the Litteri et al. CMDA 138:25 journal version, minor
 (registered 2026-07-18; CLOSED 2026-07-19: acquired -- genuinely Open Access CC BY 4.0, NOT
 paywalled as assumed at registration; journal PDF + the #608-sourced 2024 conference precursor
 arXiv:2408.03691 both filed + digested + CORPUS_INDEX-registered; #608's "46%... genuinely new
@@ -8212,7 +8230,11 @@ a verdict — these are NOT rejected, just queued for funding):
   reached Phase 1 (first computed QP-torus from a Neimark-Sacker bracket).
 - **#293** ER3BP — Track A Axis 1, weakest of the 5 axes (well-documented
   e>0 continuation refines CR3BP families without yielding species that
-  don't continue back to e→0). **Remains un-started.**
+  don't continue back to e→0). ~~**Remains un-started.**~~ **STALE (corrected
+  2026-07-19): #293 shipped 2026-07-01** (`b9a7d27`/`e3a8896`) — ER3BP corrector +
+  e-continuation, positive control PASS, NO new species; this formally completed the #286
+  capability frontier (all 5 Track-A axes built). See the `#293 DONE` entry earlier in this
+  file for the full result.
 
 ## DISCOVERY-SIDE QUEUE (2026-06-16) — what's PENDING
 
@@ -8294,7 +8316,9 @@ the V4 Uranian gauntlet shipped and the candidate is admitted.]
   Saturn/Pluto/Earth-Moon-QP all resolve to published classes.** (Acquiring Russell-Strange 2009's Saturnian
   tables — paywalled JGCD, #116-style — would pin exact Saturn membership but not the
   not-novel conclusion.)
-- **#293** ER3BP (Track-A Axis 1) — **genuinely UN-STARTED** (no note); weakest axis.
+- **#293** ER3BP (Track-A Axis 1) — ~~**genuinely UN-STARTED**~~ **STALE (corrected 2026-07-19):
+  shipped 2026-07-01, `b9a7d27`/`e3a8896`, clean negative, completes the #286 Track-A frontier.**
+  See the `#293 DONE` entry earlier in this file.
 
 **Tracked-task allocations (2026-06-30)** — see [[project_task_numbering_convention]] (sequential
 `#NNN`, next-unused; max was #486 → #487 next): **#487** = build the V4_qp gauntlet (DE-PRIORITISED).
@@ -8383,15 +8407,18 @@ else V0-known / infeasible / published-class.**
   `.playwright-mcp/`.
 **[Block-level note added 2026-07-15, full-file audit: this is an OLD (2026-06-16-era) pending
 queue. Most of these tasks were resolved/landed elsewhere in the file afterward and this list was
-never weeded — cross-references added inline below. Only #315-317 have no resolution found
-anywhere in the file and are genuinely still open.]**
+never weeded — cross-references added inline below. This note originally said "#315-317 have no
+resolution found anywhere in the file and are genuinely still open" — STALE as of 2026-07-19: all
+three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped-closed-negative
+2026-07-16) — see each one's own line immediately below for the resolution.]**
 - **#315 ✓ CLOSED (corrected 2026-07-15)** Circumbinary/binary-star μ-gap sweep. This "OPEN" line was
   STALE — the exact same never-reconciled-duplicate pattern as `#500`. `#494`'s entry states
   "**Closes #315/#252/#255** positively" (4 binary-(k1,k2)-cycler μ-family reps + the first-ever
   Pluto-Charon (3,2) cycler). Caught while building the `## CURRENT STATE` dashboard at the top of
   this file.
-- **#316** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon manifolds) — **user decision
-  2026-07-17: KEEP DISTINCT from `#405`/`#411`, do not merge/close as superseded.** Even though
+- **#316 ✓ CLOSED (via #622, 2026-07-17)** Cross-system cycler framework (Sun-Earth ↔ Earth-Moon
+  manifolds) — **user decision 2026-07-17: KEEP DISTINCT from `#405`/`#411`, do not merge/close as
+  superseded.** Even though
   `#538`→`#619`→`#620` conclusively closed the higher-fidelity QBCP version of the same physical
   SE↔EM connection question (two independent negatives, manifold-conditioning + ghost-minima), the
   user judged the older patched-CR3BP `#411` thread (EM-L2/SE-L2 pair, 1-DOF phase-closure
@@ -8811,11 +8838,18 @@ anywhere in the file and are genuinely still open.]**
   caller sees exactly what family it actually landed in, per `#624`'s honest caveat, never a
   black-box seed list. Optional `target_jacobi_bounds` oversamples (up to `max_oversample_factor`x)
   and ranks by closeness to the window's midpoint rather than silently padding a shortfall.
-  **Lift-vs-Δμ documentation**: `expected_lift_for_mu(target_mu)` returns a `LiftEstimate`
-  interpolating/extrapolating the exactly-3 empirical anchors (`#608` 12.25x at Δ=0, `#624`'s 30x at
-  Δ≈1.08 [μ=0.001], 3.5x at Δ≈3.61 [Sun-Earth]) in log-lift space, honestly labelled as a 3-point
-  interpolation, not a fit, and flags `beyond_validated_range=True` with an explicit "run a fresh
-  `#624`-style pilot before trusting this" caveat for any target past the furthest tested anchor.
+  **Lift-vs-Δμ documentation (STALE as originally written — corrected 2026-07-19, see below)**:
+  `expected_lift_for_mu(target_mu)` originally returned a `LiftEstimate` interpolating/
+  extrapolating 3 empirical anchors (`#608` 12.25x at Δ=0, `#624`'s 30x at Δ≈1.08 [μ=0.001], 3.5x
+  at Δ≈3.61 [Sun-Earth]) in log-lift space. **`#642` (2026-07-18) found the two `#624` cross-μ
+  anchors were 100% degenerate L4/L5 equilibria — 0 real generated orbits at either μ — and `#643`
+  (commit `bee830a`, same day) purged both falsified anchors from `LIFT_ANCHORS`, leaving exactly
+  ONE anchor (in-distribution, 13.5x).** Off-distribution `expected_lift_for_mu` calls now
+  honestly return `estimated_lift=None`/`beyond_validated_range=True` instead of an interpolated
+  number. `#649`/`#651` (2026-07-19) subsequently found and wired a genuine, narrower cross-μ
+  coordinate-transform rescue with its own two validated anchor points (`CROSS_MU_COORDINATE_FIX_
+  ANCHORS`) — see `#651`'s own bullet. This bullet's test claims below ("confirm... both `#624`
+  cross-μ targets") describe the pre-`#643` behavior and are superseded.
   **Bug found and fixed while building this**: the Sun-Earth anchor's μ was initially a rounded
   literal (`3.0035e-6`); the REAL registered `cr3bp_system("Sun","Earth").mu` (3.00348...e-6) is a
   hair smaller, which made the real Sun-Earth system evaluate as *marginally beyond its own
@@ -8845,9 +8879,11 @@ anywhere in the file and are genuinely still open.]**
   which integration pattern a future task picks.
   **Tests**: 26 new (`tests/ml/test_seed_generation.py`), including 2 real-corpus regression checks
   reusing `#608`'s/`#624`'s own evaluation protocol (uniform baseline + `is_physically_sane` +
-  `correct_periodic`) that confirm the new API reproduces both tasks' positive-lift headline
-  (in-distribution Earth-Moon and both `#624` cross-μ targets) — auto-skipped in any environment
-  without the local `out/outcome_log/` corpus, ran green here. `uv run ruff check .`/`ruff format
+  `correct_periodic`) that AT THE TIME confirmed the new API reproduced both tasks' positive-lift
+  headline (in-distribution Earth-Moon and both `#624` cross-μ targets) — **the `#624` cross-μ half
+  of this claim is superseded by `#642`'s falsification and `#643`'s anchor purge (see the
+  corrected note above); the in-distribution half is unaffected and still holds** — auto-skipped in
+  any environment without the local `out/outcome_log/` corpus, ran green here. `uv run ruff check .`/`ruff format
   --check .` clean. `uv run pytest tests/ml tests/search -q`: 2 pre-existing failures only
   (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_but_subsurface`,
   `test_504_pluto_charon_kk_sweep::test_504_sweep_33`), matching the exact documented `#584`
@@ -8857,8 +8893,9 @@ anywhere in the file and are genuinely still open.]**
   task, per this task's own explicit scope). No real end-to-end unswept-target pilot run this task
   (the explicitly-optional stretch goal) — left for whichever task resolves the integration-pattern
   question above.
-- **#629** ✓ DESIGN-READ GATE SATISFIED (Fable, 2026-07-18): GO-with-caveats, phased — the build
-  itself is NOT yet dispatched; see the design-read block at the end of this bullet. (Registered
+- **#629 ✓ FULLY RESOLVED (Phase B closed as `#633`, 2026-07-18)** — DESIGN-READ GATE SATISFIED
+  (Fable, 2026-07-18): GO-with-caveats, phased; Phase A ran under this task, Phase B ran and
+  closed as `#633` (clean negative, 0/16,375) — see `#633`'s own bullet. (Registered
   2026-07-18, user-directed follow-up to `#627` — was **flagged for a design read before
   dispatch, not auto-fired**) — a genuinely new-method attack on real-planet-moon-μ
   Ross-Roberts-Tsoukkas (k1,k2) ballistic cyclers, replacing the 1D mu-continuation approach `#627`
@@ -8960,8 +8997,10 @@ anywhere in the file and are genuinely still open.]**
   path-dependent walks are ill-suited to this problem even before considering the corridor-width
   question. Phase B should also independently confirm the "(3,3) is a much slower/more fragile
   corrector than (1,1)" empirical finding from this run (1994s vs 355s for comparable α) when
-  sizing its per-branch SIGALRM timeout. NOT yet dispatched — this bullet stays open pending a
-  decision on Phase B.
+  sizing its per-branch SIGALRM timeout. **STALE (corrected 2026-07-19): Phase B WAS dispatched
+  and CLOSED as `#633` (2026-07-18)** — `#633`'s own bullet self-identifies as "`#629` Phase B, the
+  fixed-Saturn-Titan-μ 2D corridor grid search," clean negative, 0/16,375. `#629` is fully
+  resolved; see `#633`'s own bullet for the result.
 - **#630** ✓ CLOSED, CLEAN "NOTHING CHANGES" RESULT ON BOTH TARGETS (2026-07-18) — (registered
   2026-07-18, user-directed follow-up to `#627`) — leverage `src/cyclerfinder/search/
   perimoon_passage.py` (`#627`'s new encounter-geometry module, currently tested only against the
@@ -12505,8 +12544,9 @@ path):**
    "mined") and `docs/notes/2026-06-07-guzman-2002-primer-survey-mining.md`, which already
    delivers the re-label verdict: "PROVISIONAL pending Guzman 2002 (multi-rev caveats)" →
    "CONFIRMED-with-scope per Guzman 2002 §Isolated Singularities (p.7-8): necessary-not-sufficient
-   (Guzman p.3)." This "New wants" item is done; #144's own entry should be updated to the
-   confirmed-with-scope label rather than left saying PROVISIONAL.
+   (Guzman p.3)." This "New wants" item is done — **already actioned (confirmed 2026-07-19)**:
+   #144's own entry was re-labeled "CONFIRMED-with-scope" 2026-07-15 (see that section earlier in
+   this file).
 4. **Lion, P. M. & Handelsman, M. (1968), "Primer Vector on Fixed-Time
    Impulsive Trajectories," AIAA Journal 6(1):127–132, DOI 10.2514/3.4452** —
    the add-an-impulse diagnostic the maintenance work would implement.
