@@ -142,8 +142,15 @@ def test_supported_families_is_the_documented_twelve() -> None:
 
 def test_families_requiring_libr_and_branch() -> None:
     assert FAMILIES_REQUIRING_LIBR <= SUPPORTED_FAMILIES
-    assert FAMILIES_REQUIRING_BRANCH <= FAMILIES_REQUIRING_LIBR
+    assert FAMILIES_REQUIRING_BRANCH <= SUPPORTED_FAMILIES
     assert "halo" in FAMILIES_REQUIRING_BRANCH
+    # #667 correction: "resonant" requires a branch (resonance-ratio "integer
+    # sequence", e.g. "12" for 1:2 -- confirmed via a live HTTP 400 without
+    # one, plus the API's own doc page) but NOT a libr -- so, unlike "halo",
+    # it is NOT a member of FAMILIES_REQUIRING_LIBR. The #647-era invariant
+    # ``FAMILIES_REQUIRING_BRANCH <= FAMILIES_REQUIRING_LIBR`` was wrong.
+    assert "resonant" in FAMILIES_REQUIRING_BRANCH
+    assert "resonant" not in FAMILIES_REQUIRING_LIBR
 
 
 # ---------------------------------------------------------------------------

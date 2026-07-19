@@ -812,10 +812,12 @@ full CR3BP propagation) that PASSES -- reproduces Kamo'oalewa's published CURREN
 state (`scripts/run_666_kamooalewa_coorbital_positive_control.py`); **CLOSED 2026-07-19, honest
 reproduction/census result, explicitly NOT a novelty claim** (see #666's own bullet for the full
 accounting, the second-object cross-check on 2010 SO16, and the stated scope limits); #667 for
-#661 shortlist item 5, mining the JPL SSD periodic-orbits catalog as a
-discovery INPUT (not just #647's gate) across all 7 indexed systems x 12 families, cheapest and
-highest-confidence-to-execute but lowest novelty ceiling (registered 2026-07-19, not yet
-dispatched); #668 next-unused):**
+#661 shortlist item 5, mining the JPL SSD periodic-orbits catalog as a discovery INPUT (not just
+#647's gate) across mars-phobos/saturn-enceladus/sun-mars (dro/dpo/halo/lyapunov; resonant/other
+L1-L2 families skipped, documented) -- **DONE 2026-07-20, 1820 orbits classified, clean census:
+every geometrically-qualifying hit traces to a threshold artifact (mars-phobos), an already-
+published research area (saturn-enceladus), or well-known generic halo-family collision-terminus
+topology (sun-mars) -- nothing novel, nothing written back**; #668 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11612,17 +11614,92 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   push this capability toward a genuine census, not run in this dispatch.
   Full ruff/mypy/pytest clean (see this task's own verification note in the session for the exact
   commands); no regressions in `tests/data`/`tests/search`/`tests/scripts`.
-- **#667 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 5, mine the JPL SSD
-  periodic-orbits catalog as a discovery INPUT, not just `#647`'s literature-check gate. See
-  `#661`'s own bullet for the full case. Scope: scan all 7 indexed systems x 12 families (per
-  `#647`'s own bullet for the exact system/family list — notably saturn-enceladus, mars-phobos,
-  sun-mars are never the direct target of any sweep in this project's history) for members whose
-  geometry qualifies as RRT-style ballistic cyclers (recurrent close secondary approaches, bounded
-  stability index), then attempt to continue any qualifying member to neighboring unindexed
-  systems. Cheapest and highest-confidence-to-execute of the five shortlist items (days, Sonnet)
-  but the lowest novelty ceiling — being numerically catalogued at JPL is not the same as being
-  characterized as a cycler, but it is also the item closest to "just re-running an existing
-  method on existing data," ranked last deliberately per `#661`'s own honest framing.
+- **#667 ✓ DONE (2026-07-20, Sonnet) — clean, well-characterized census; every geometrically-
+  qualifying hit traces to either a threshold/scale artifact, an already-published research area,
+  or well-known generic CR3BP halo-family topology; NOTHING rises to adjudication, per `#661`'s own
+  honest low-novelty-ceiling framing.** `#661` shortlist item 5, mine the JPL SSD periodic-orbits
+  catalog as a discovery INPUT, not just `#647`'s literature-check gate. See `#661`'s own bullet
+  for the full case.
+  **Scope actually run** (documented judgment, not "query all 12 blindly" — see
+  `scripts/run_667_jpl_family_census.py`'s own module docstring for the full reasoning): the 3
+  genuine roster gaps confirmed against this project's own history (`mars-phobos`, `saturn-
+  enceladus`, `sun-mars` — `earth-moon`/`sun-earth` extensively covered elsewhere,
+  `jupiter-europa`/`saturn-titan` have some existing coverage; `#609` swept Mars Phobos-Deimos with
+  a DIFFERENT method (patched-conic symmetric-closure + #324 bend gate, empty) but never touched
+  JPL's own catalog). Per system: `dro`/`dpo` (secondary-centered by construction, strongest a
+  priori candidates) + `halo` (libr 1/2 x branch N/S) + `lyapunov` (libr 1/2) for mars-phobos/
+  saturn-enceladus (tiny mu means L1/L2 sit at the secondary's own Hill-radius scale, worth
+  checking) — 8 combos each; sun-mars got dro/dpo fully + a single 20-sample halo sanity probe
+  (L1/L2 sit ~990,000 km from Mars, 3 orders of magnitude beyond its 3389.5 km radius, so a full
+  sweep wasn't a priori warranted — the probe then justified digging in further, see below).
+  `resonant` and `vertical`/`axial`/`longp`/`short` EXPLICITLY SKIPPED: a live probe discovered
+  `resonant` requires a `branch` encoding a resonance ratio (e.g. `"12"` for 1:2) with a large,
+  undocumented valid-code space (5/6 naive guesses valid, 1300-3200 members each) — a separate,
+  disproportionately expensive discovery task of its own; this ALSO uncovered a real `#647`-era bug
+  (`FAMILIES_REQUIRING_BRANCH` only listed `"halo"`) fixed in `verify/jpl_periodic_orbits.py` +
+  its test (`resonant` requires branch but no libr, so the old `FAMILIES_REQUIRING_BRANCH <=
+  FAMILIES_REQUIRING_LIBR` invariant was wrong).
+  **New capability** (additive, reusing existing project criteria per the task's own instruction):
+  `src/cyclerfinder/search/jpl_family_census.py` — `fetch_family_window` (bulk range-filtered
+  retrieval, the discovery-input sibling of `jpl_family_check.check_jpl_family`'s single-candidate
+  gate), `propagate_min_distances_km` (generalizes `real_binary_kk_sweep.min_body_clearance_km` to
+  a full 6-D state), `classify_secondary_approach` (a zero-margin physical non-crash floor, `#660`'s
+  convention, PLUS a "genuinely close" ceiling borrowed BY ANALOGY from `genome.hill_screen`'s
+  existing 0.3 Hill-fraction PASS band — see the module's own docstring for the honest caveat that
+  the two ratios are related, not identical, physics). +16 new tests
+  (`tests/search/test_jpl_family_census.py`, synthetic hand-computable states, no network).
+  **Census run** (`data/found/667_jpl_family_census/{verdicts.jsonl,summary.json}`, 19 combos, 1820
+  orbits classified — up to 100 members per combo, evenly subsampled by sorted Jacobi across each
+  family's full cataloged extent, not exhaustive): timing pilot 0.20 s/orbit (measured, `#520`
+  discipline).
+  **Result 1 — mars-phobos: 0/100 qualifying on ALL 8 combos, and this is a STRUCTURAL CERTAINTY,
+  not evidence of remoteness.** Phobos's Hill radius (16.58 km) is only 1.47x its own physical
+  radius (11.267 km) — so the borrowed 0.3-Hill-fraction "close" ceiling (4.97 km) sits INSIDE the
+  body's own physical radius, making "close" and "physically valid" mutually exclusive by
+  construction at this scale. A real, useful methodological finding (the 0.3 threshold only makes
+  sense where Hill radius >> body radius, true at Enceladus/Mars but not Phobos), not a claim about
+  Phobos itself.
+  **Result 2 — saturn-enceladus: dro 0/100 (within the catalog's actual extent, the tightest
+  cataloged member only reaches ~1880 km, ~2x the Hill radius); dpo/halo(x2 libr)/lyapunov(x2 libr)
+  each show 4-6/100 qualifying, but EVERY hit sits in a razor-thin 253-285 km "grazing" shell**
+  (Enceladus radius 252.1 km, 0.3xHill-radius ceiling 285.3 km — only 13% margin between the two
+  thresholds at this scale, so "qualifying" here means 1-33 km of altitude, not a robust separated
+  regime). Characterized: halo near-marginally stable (stability~1.0), lyapunov moderately unstable
+  (~140-160), dpo severely unstable (~620-780). **Independently confirmed NOT novel**: WebSearch
+  found "Bifurcated Periodic Orbit Families Around Enceladus and Their Potential as Science Orbits"
+  (ScienceDirect, 2025) — this exact class of close/bifurcated Enceladus periodic-orbit family is
+  an ACTIVE, already-published research area.
+  **Result 3 — sun-mars, the interesting one: dro 3/100 (stable, min_dist 15,336-206,547 km); dpo
+  63/100 qualifying but SEVERELY linearly unstable (stability 618-5790 — geometrically close,
+  dynamically unusable without heavy stationkeeping); halo (libr=1, N) 12/20 in the initial probe,
+  expanded to 96/183 in a denser follow-up — ONE coherent, smoothly continuous family branch**
+  (verified point-by-point, not scattered) spanning min-Mars-distance from ~830,000 km (near L1,
+  remote) continuously down to ~9,480 km (~6,090 km altitude above Mars) at essentially fixed
+  Jacobi (3.0000-3.0002), with MILD linear instability (~1.0-2.0) at the close end — genuinely
+  close, genuinely near-bounded, and genuinely a single coherent structure, not noise.
+  **Independently confirmed NOT novel**: WebSearch confirms this is the textbook "H1 halo family
+  branches from L1 and ends in a very close approach or collision with the secondary" behavior —
+  well-established generic CR3BP halo-family continuation topology (families commonly terminate at
+  a near-collision orbit), documented for this exact system by Eapen & Sharma 2014 (*Astrophys.
+  Space Sci.* 352(2):437-441, photogravitational Sun-Mars L1 case). Low novelty ceiling, exactly as
+  `#661`'s own framing predicted.
+  **No candidate written to `data/catalogue.yaml`; nothing flagged for Opus/Fable adjudication** —
+  every qualifying hit traces to (a) a threshold/scale artifact (mars-phobos), (b) an already-
+  active published research area (saturn-enceladus), or (c) well-known generic halo-family
+  collision-terminus topology already in the literature (sun-mars halo), or (d) severe dynamical
+  instability making it operationally unattractive regardless of novelty (sun-mars dpo). Continuing
+  any candidate to neighboring unindexed systems (the task's stretch goal) was not pursued given
+  none cleared the novelty bar to begin with.
+  Full `ruff check`/`ruff format --check`/`mypy src tests` clean (0 errors); `tests/data
+  tests/search` and `tests/scripts` (new script calls `preflight_search` — AST ratchet confirms)
+  green modulo the pre-existing documented baseline failures unrelated to this task. `preflight_
+  search` required an audited `override_reason` for the task-hygiene check specifically: `#667` IS
+  registered in this file's own bullet, but `preflight.py`'s `_TASK_ALLOCATION_RE` regex requires a
+  literal contiguous `**#NNN**` with nothing in between, which every post-#645 bullet header style
+  (date/status/model annotations inside the bold) breaks — confirmed the regex's recognized task
+  numbers currently top out at #645 file-wide; a checker false-negative, not a real registration
+  gap (worth fixing in `preflight.py` itself in a future task, not done here — out of this task's
+  scope).
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`

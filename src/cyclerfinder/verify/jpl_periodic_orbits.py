@@ -47,6 +47,22 @@ correcting an earlier #641-adjacent hallucinated claim) and 12 families
 resonant, dro, dpo, lpo``). ``halo/lyapunov/longp/short/axial/vertical``
 additionally require a ``libr`` (libration point); ``halo`` also requires a
 ``branch`` (``N``/``S``) per the API's own 400-error text.
+
+CORRECTION (#667, 2026-07-20): ``resonant`` ALSO requires a ``branch`` --
+discovered via a live HTTP 400 on ``sys=mars-phobos&family=resonant`` with no
+``branch``, confirmed against the API's own doc page
+(https://ssd-api.jpl.nasa.gov/doc/periodic_orbits.html), which documents that
+``resonant``'s ``branch`` encodes the resonance ratio as an "integer
+sequence" (e.g. ``"12"`` for a 1:2 resonance) -- NOT a libration point, so
+``resonant`` is the one family in :data:`FAMILIES_REQUIRING_BRANCH` that is
+NOT also in :data:`FAMILIES_REQUIRING_LIBR` (the #647-era invariant
+``FAMILIES_REQUIRING_BRANCH <= FAMILIES_REQUIRING_LIBR`` was wrong; fixed in
+``tests/verify/test_jpl_periodic_orbits.py``). Valid branch codes are not
+otherwise enumerated by the API's docs; a live probe against mars-phobos
+found ``"12"``/``"21"``/``"13"``/``"31"``/``"23"`` all valid (hundreds to
+low-thousands of members each) but ``"32"`` invalid -- the full valid set is
+apparently sparse/non-obvious and would need its own discovery pass before
+any bulk ``resonant`` mining is attempted.
 """
 
 from __future__ import annotations
@@ -107,8 +123,13 @@ FAMILIES_REQUIRING_LIBR: frozenset[str] = frozenset(
     {"halo", "lyapunov", "longp", "short", "axial", "vertical"}
 )
 
-#: Families that require a ``branch`` (e.g. "N"/"S") query parameter.
-FAMILIES_REQUIRING_BRANCH: frozenset[str] = frozenset({"halo"})
+#: Families that require a ``branch`` query parameter. ``halo``'s branch is
+#: ``"N"``/``"S"`` (north/south); ``resonant``'s branch is a resonance-ratio
+#: "integer sequence" (e.g. ``"12"`` for 1:2) -- see the CORRECTION note in
+#: this module's docstring (#667). NOT a subset of
+#: :data:`FAMILIES_REQUIRING_LIBR` -- ``resonant`` requires a branch but no
+#: libration point.
+FAMILIES_REQUIRING_BRANCH: frozenset[str] = frozenset({"halo", "resonant"})
 
 
 @dataclass(frozen=True)
