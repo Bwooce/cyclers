@@ -1,0 +1,92 @@
+{
+  "task": "658",
+  "generated_at": "2026-07-19T11:34:23Z",
+  "elapsed_s": 1.726797103881836,
+  "finding": "#654's named candidates (Jones 2017 VEM-triple, Aldrin/Byrnes) are NOT both epoch-carrying as framed. Jones-lineage rows: 0 qualify (all epoch_locked=false, launch_epoch=null, same as every other cycler-class row). Aldrin-lineage rows: 9 qualify, but they are the Rogers/Hughes/Longuski/Aldrin 2012/2015 one-shot precursor_mga 'establishment' trajectories (n_returns=1), NOT the steady-state aldrin-classic-em-k1-* cycler rows (also epoch_locked=false). #650's design deliberately excludes precursor_mga from its node set for exactly this reason (one-shot, not a repeating schedule).",
+  "candidate_selection_rule": "epoch_locked is True AND validity_window.start/end both non-null AND \"<surname>\" in first_published.authors",
+  "counts": {
+    "n_catalogue_rows": 361,
+    "n_jones_lineage_candidates": 0,
+    "n_aldrin_lineage_candidates": 9,
+    "n_candidate_pairs": 36,
+    "n_edges": 36,
+    "n_raw_epoch_window_overlap_pairs": 5,
+    "n_epoch_window_overlap_pairs_dv_gated_computed": 3,
+    "n_b0_ballistic_compatible_edges_any_window": 2,
+    "n_cheap_edges": 0
+  },
+  "aldrin_lineage_candidate_ids": [
+    "aldrin-4-3-2-establishment",
+    "aldrin-3-2-1-establishment",
+    "visit-1-4-3-2-establishment",
+    "visit-2-4-3-2-establishment",
+    "case-1-4-3-2-establishment",
+    "case-2-4-3-2-establishment",
+    "case-3-4-3-2-establishment",
+    "s1l1-4-3-2-establishment",
+    "u0l1-3-2-1-establishment"
+  ],
+  "raw_epoch_window_overlap_edges": [
+    {
+      "id_a": "aldrin-3-2-1-establishment",
+      "id_b": "visit-2-4-3-2-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 1.1361037128093106,
+      "delta_vinf_kms": 2.668,
+      "band": "B2_moderate",
+      "cheap_edge": false,
+      "phase_status": "not_computed_dv_gated"
+    },
+    {
+      "id_a": "aldrin-4-3-2-establishment",
+      "id_b": "case-3-4-3-2-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 0.7001549606570361,
+      "delta_vinf_kms": 1.8210000000000002,
+      "band": "B2_moderate",
+      "cheap_edge": false,
+      "phase_status": "epoch_window_overlap"
+    },
+    {
+      "id_a": "aldrin-4-3-2-establishment",
+      "id_b": "s1l1-4-3-2-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 0.7099651387217687,
+      "delta_vinf_kms": 1.8520000000000003,
+      "band": "B2_moderate",
+      "cheap_edge": false,
+      "phase_status": "epoch_window_overlap"
+    },
+    {
+      "id_a": "case-1-4-3-2-establishment",
+      "id_b": "u0l1-3-2-1-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 1.7346022045855118,
+      "delta_vinf_kms": 3.5229999999999997,
+      "band": "B2_moderate",
+      "cheap_edge": false,
+      "phase_status": "not_computed_dv_gated"
+    },
+    {
+      "id_a": "case-3-4-3-2-establishment",
+      "id_b": "s1l1-4-3-2-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 0.009810178064732611,
+      "delta_vinf_kms": 0.03100000000000014,
+      "band": "B0_ballistic_compatible",
+      "cheap_edge": false,
+      "phase_status": "epoch_window_overlap"
+    }
+  ],
+  "b0_edges_without_calendar_overlap": [
+    {
+      "id_a": "case-2-4-3-2-establishment",
+      "id_b": "visit-1-4-3-2-establishment",
+      "body": "Earth",
+      "dv_hop_kms": 0.01918514670397542,
+      "delta_vinf_kms": 0.07600000000000007,
+      "note": "ballistically cheap (B0) but no real calendar-window overlap -- the same 'DeltaV-cheap, not real-date-realizable' pattern #650 found for the general heliocentric graph"
+    }
+  ],
+  "case3_s1l1_b0_pair_caveat": "case-3-4-3-2-establishment <-> s1l1-4-3-2-establishment is the ONLY B0_ballistic_compatible pair found (dv_hop=0.010 km/s). This is NOT a new finding: the catalogue's own notes on s1l1-4-3-2-establishment already state 'Same LD (12/20/2022) as the Case 3 establishment -- reflects the similar (a, e, peri, apo) parameter space of these two cyclers in Rogers Table 1' -- i.e. Rogers 2015's own Table 4 already documents these as a near-identical near-twin pair (same source launch date, near-equal Earth v_inf, near-equal orbital elements), not two independently-scheduled missions. Reported for completeness, not as a citable transfer-opportunity discovery."
+}

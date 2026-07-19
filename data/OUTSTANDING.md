@@ -742,7 +742,11 @@ members across (4,1)-(5,5), one documented non-cycler near-miss at (5,1) — see
 `data/empty_regions.jsonl` stamped, no catalogue write); #657 for #654 shortlist item 3, real-binary genome
 round 2 (RUN 2026-07-19: #549's 4 uncapped probes + Sila-Nunam + Lempo-Hiisi all clean negatives,
 stamped; 2 gate-passing candidates at Antiope -- RESOLVED NO-GO by #659, see below); #658 for
-#654 shortlist item 4, the epoch-locking pilot (registered, not yet dispatched); #659 for the
+#654 shortlist item 4, the epoch-locking pilot (CLOSED 2026-07-19: clean small negative -- #654's
+own framing was half-wrong on direct catalogue verification (Jones-lineage: 0 epoch-carrying rows;
+Aldrin-lineage: 9 rows, but the one-shot precursor_mga establishment trajectories, not the
+steady-state cycler rows); 0/36 pairs cheap_edge=True, the 1 B0 pair found is a pre-documented
+near-twin coincidence, not a new finding); #659 for the
 Opus+Fable adjudication of #657's 2 Antiope gate-passing candidates ((1,1) and (2,2), both
 independently reproduced bit-for-bit by the coordinating session before dispatch;
 registered+dispatched 2026-07-19; CLOSED 2026-07-19: both adjudications independently found the
@@ -11141,10 +11145,60 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   margin for tidal/perturbation effects) is a small judgment call worth a quick sanity check
   against how `#620`'s or `#627`'s own encounter-geometry modules define "close approach" for
   consistency, rather than inventing a new convention.
-- **#658 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 4, epoch-locking
-  pilot. See `#654`'s own bullet for the case. Scope: epoch-lock the 2-3 catalogue rows with
-  already-sourced published epochs (Jones 2017 VEM-triple, Aldrin/Byrnes), re-run `#650`'s
-  already-positive-controlled `transfer_network.py` machinery on the heliocentric subgraph only.
+- **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
+  rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
+  that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
+  shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
+  artifact detail here. **Premise check (step 3 of the dispatch, done first, before touching
+  `#650`'s machinery):** grepped `data/catalogue.yaml` directly for both named candidates. (1)
+  **Jones 2017 VEM-triple: 0 rows qualify.** Every Jones-authored row (`jones-2017-vem-triple-
+  family`, `-emevve-outbound`, `-meevem-inbound`, `vem-emeeve-3syn`, `hernandez-2017-jovian-ieg-
+  triple-family`) is `epoch_locked: false`, `launch_epoch: null` — identical to every other
+  `cycler`-class row `#650` already covered; `#654`'s framing of these as epoch-carrying was
+  simply wrong. (2) **"Aldrin/Byrnes lineage": 9 rows qualify, but NOT the steady-state
+  `aldrin-classic-em-k1-{outbound,inbound}` rows** (those are ALSO `epoch_locked: false` — same
+  as Jones). The rows that actually carry `epoch_locked: true` + a real `validity_window` are the
+  Rogers/Hughes/Longuski/Aldrin 2012/2015 Table-4 one-shot **`precursor_mga` "establishment"
+  trajectories** (`n_returns: 1`, V-infinity-leveraging insertion legs, each `inserts_into` a
+  different steady-state E-M cycler: Aldrin x2, VISIT-1, VISIT-2, Case-1, Case-2, Case-3, S1L1,
+  U0L1) — programmatically selected via `epoch_locked is True AND validity_window real AND
+  "Aldrin" in first_published.authors`, not a hand-picked id list (survives a catalogue edit).
+  `#650`'s own design doc §2 deliberately EXCLUDES `precursor_mga` from its 291-node graph for
+  exactly this reason (one-shot, not a repeating schedule) — these 9 rows were never in #650's
+  original sweep at all. **Did NOT modify `transfer_network.py`'s `is_node`/`ELIGIBLE_ORBIT_
+  CLASSES`** (per the dispatch's own instruction to stay additive) — instead called `#650`'s
+  existing `compute_edge`/`epoch_window_intersection` functions directly on this hand-identified
+  9-row/36-pair subset (new script `scripts/run_658_epoch_carrying_transfer_check.py`); these
+  functions already handle the epoch-locked deterministic branch generically for ANY two rows
+  with `epoch_locked=true`+`validity_window`, regardless of `orbit_class` — no new phase-check
+  math was written. **Result**: of 36 pairs (all sharing Earth), 5 have real overlapping calendar
+  windows (deterministic, via `epoch_window_intersection` unmodified): 4 are `B2_moderate`
+  (dv_hop 0.7-1.7 km/s, genuinely distinct missions but too expensive to count as cheap under
+  `#650`'s own B0/B1 bands) and 1 (`case-3-4-3-2-establishment` × `s1l1-4-3-2-establishment`,
+  dv_hop=0.010 km/s, `B0_ballistic_compatible`) — but this pair is NOT a new finding: the
+  catalogue's own pre-existing note on the `s1l1-4-3-2-establishment` row already states "Same LD
+  (12/20/2022) as the Case 3 establishment — reflects the similar (a, e, peri, apo) parameter
+  space of these two cyclers in Rogers Table 1", i.e. Rogers 2015's own Table 4 already documents
+  these as a near-identical near-twin pair (same source launch date), not two independently-
+  scheduled missions. A 2nd `B0` pair exists with NO calendar overlap at all (`case-2-4-3-2-
+  establishment` × `visit-1-4-3-2-establishment`, dv_hop=0.019, but windows 17 years apart,
+  2029 vs 2046) — reproducing `#650`'s own general finding that ΔV-cheap does not imply
+  real-date-realizable. **Headline: 0 of 36 pairs are `cheap_edge=True`** — no genuine, citable
+  "Aldrin↔VEM-triple"-style transfer opportunity exists among the catalogue's actual
+  epoch-carrying rows; this closes `#654`'s hoped-for gap as a clean small negative, on data this
+  task actually verified rather than the strategy doc's prose. **Mandatory positive control
+  PASSED**: `tests/data/test_transfer_network.py` (26 tests, `#650`'s own suite) ran UNMODIFIED
+  and green. New test file `tests/data/test_658_epoch_carrying_transfer_check.py` (8 tests)
+  pins the candidate-selection result (9 Aldrin-lineage / 0 Jones-lineage) and the pairwise
+  finding against the live catalogue, not a fixture only. `ruff check`/`ruff format --check`/
+  `mypy src tests` all clean; `tests/data tests/search tests/scripts -q` exits with only the same
+  2 PRE-EXISTING failures already documented in prior tasks
+  (`test_eggie_ballistic.py::test_gate_b_table4_vinf_reached_but_subsurface`,
+  `test_504_pluto_charon_kk_sweep.py::test_504_sweep_33`), no new regressions. No
+  `data/catalogue.yaml` write (analysis-only, per the dispatch). Artifact:
+  `data/found/658_epoch_carrying_transfer_check/{edges.jsonl,summary.json}`
+  (36 / 1 records). Preflight-exempt (`run_658_epoch_carrying_transfer_check.py` added to
+  `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT`, same category as `#650`).
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate

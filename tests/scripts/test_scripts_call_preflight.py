@@ -139,6 +139,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # concept to preflight (no integrators, no new search, no catalogue
         # writeback). Visible, reviewed exemption per this file's own docstring.
         "run_650_transfer_network.py",
+        # #658: a hand-identified, <=9-row/36-pair epoch-carrying-subset
+        # analysis reusing #650's own compute_edge/epoch_window_intersection
+        # machinery UNMODIFIED -- same category as #650/#608/#614/#317/#624/
+        # #641/#642/#649 above: a fixed-N analysis over existing catalogue
+        # data with no region_id/n_points sweep-region concept to preflight
+        # (no integrators, no new search, no catalogue writeback). Visible,
+        # reviewed exemption per this file's own docstring.
+        "run_658_epoch_carrying_transfer_check.py",
     }
 )
 
