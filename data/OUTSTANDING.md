@@ -130,10 +130,11 @@ ledger one-liners (`#614`, `#638`) were also hand-corrected in place — see
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#635` (Opus, dispatched 2026-07-19) — eigenvector-phase canonicalization for the GMOS torus
-  corrector's basin fragility (`genome/qp_tori.py::_seed_invariant_circle`). As of 2026-07-19
-  ~13:12 AET: mypy clean, running the genome/data/search test suites, uncommitted diff touching
-  `qp_tori.py` + `tests/genome/test_qp_tori.py` + `tests/search/test_variational_qp_torus.py`.
+- `#635` (Opus, dispatched 2026-07-19) — ✓ RESOLVED 2026-07-19 (commit `f94d107`): +45°
+  eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
+  platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
+  basin 0.02140, robust ±1e-16→±1e-3, no knife-edge). No net test regressions (only the 3 known
+  pre-existing #584-class Mac-only failures); ruff+mypy clean; 3 regression tests added.
 - (`#653` — REMOVED from this list 2026-07-19, CLOSED same day: NO-GO on pointing W-Z proof
   machinery at `#646`'s negative; see `#653`'s own bullet and the `#636` parked-list entry above.)
 - (Historical note, superseded by the above: this section previously said "None identified as
@@ -9360,6 +9361,34 @@ anywhere in the file and are genuinely still open.]**
   any long-running corpus-logging run, unset `CYCLERFINDER_OUTCOME_LOG` or log to a shard excluded
   from `default_corpus_paths()`' glob. No code changes beyond the two docstrings; no catalogue
   change; structure ratchets green.
+- **#635 ✓ RESOLVED 2026-07-19 (commit `f94d107`) — +45° eigenvector-phase canonicalization; L2
+  platform-dependence fixed at source, no net test regressions.** Root cause was a COLLISION
+  between the seed-phase convention and the corrector's own phase-lock `Im(c_1[argmax|Re c_1|])=0`,
+  NOT a free phase choice: dominant-REAL-positive puts the seed EXACTLY on the pin surface → a
+  knife-edge stall (any ≥1e-15 phase kick flips the basin — WORSE than no fix, it merely trades the
+  O(1) platform phase-spread for an O(1e-16) roundoff sensitivity sitting on the boundary);
+  dominant-IMAGINARY-positive forces the pin onto a poorly-conditioned subdominant coordinate → the
+  ill-conditioned (cond ~5e8) low-truncation continuation correctors fail to converge (arclength
+  forward step returns None). **Fix**: new `_canonicalize_ns_eigenpair(lam, v)` helper pins the
+  dominant component to **+45°** (`v[i_ref]=|v[i_ref]|·e^{iπ/4}`), the phase MAXIMALLY FAR from both
+  degeneracies (maximizes `min(|Re|,|Im|)=|v|/√2` at the pinned coord). It divides the arbitrary
+  phase out EXACTLY → phase-invariant by construction. **Verification** (Mac/Accelerate; alternate
+  BLAS not locally forceable, so synthetic-injection is the primary evidence, not a scratch CI push):
+  (a) synthetic phase-injection — canonical representative identical to 2.8e-16 across injected
+  phases, complex scales, AND conjugate-pair swap (3 permanent regression tests added to
+  `tests/genome/test_qp_tori.py`); (b) L2 lands in the PHYSICAL basin 0.02140 (=arg(λ)/2π=Owen&Baresi
+  =#555), robust across phase perturbations from ±1e-16 (cross-platform roundoff size) through ±1e-3
+  — NO knife-edge, unlike dominant-real-positive; (c) full genome+data+search audit: no net
+  regressions (only the 3 known pre-existing #584-class Mac-only failures — `test_da_section_map`,
+  `test_eggie_ballistic::test_gate_b_table4`, `test_504_sweep_33` — all green on Linux CI). ruff +
+  `mypy src tests` (732 files) clean. **Audit of sensitive tests** (as #632 predicted, only fragile
+  near-bifurcation correctors): L2 positive control tightened to EXCLUDE the fixed 0.02327 stall
+  (`0.0210<rot<0.0220`); h1 free-rho negative re-asserted on the forward-marching branch (the
+  canonical seed's arclength tangent now folds the 8-step march at ~amp 0.066 instead of past 0.07 —
+  a parametrization artifact; the rho-vs-amp PHYSICS is byte-identical, the ≤0.075≪0.2739 negative is
+  intact and stronger); `test_structural_qp_continuation`'s sub-noise-floor rho monotonicity relaxed
+  to a consistency band (it was testing truncation-floor noise held monotonic only by luck under the
+  raw phase); arclength forward step converges again under +45°. Original scope preserved below.
 - **#635** (registered 2026-07-18, user-directed — **parking lot, not auto-fired**) — eigenvector-
   PHASE canonicalization for the GMOS torus corrector's basin fragility, the follow-up robustness
   item `#632` explicitly flagged and deliberately did NOT attempt. Background: `#632` fixed a
