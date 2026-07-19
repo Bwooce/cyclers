@@ -740,7 +740,9 @@ a repeat-check negative; all 4 pairs stamped, no catalogue write); #656 for #654
 higher-(k1,k2) topology extension (CLOSED 2026-07-19: clean negative, 0/9 new gate-passing
 members across (4,1)-(5,5), one documented non-cycler near-miss at (5,1) — see #656's own bullet;
 `data/empty_regions.jsonl` stamped, no catalogue write); #657 for #654 shortlist item 3, real-binary genome
-round 2 (registered, not yet dispatched); #658 for #654 shortlist item 4, the epoch-locking pilot
+round 2 (RUN 2026-07-19: #549's 4 uncapped probes + Sila-Nunam + Lempo-Hiisi all clean negatives,
+stamped; 2 GATE-PASSING CANDIDATES at Antiope, literature-checked not-found, AWAITING OPUS/FABLE
+ADJUDICATION -- see #657's own bullet, NOT yet in catalogue.yaml); #658 for #654 shortlist item 4, the epoch-locking pilot
 (registered, not yet dispatched); #659 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -10912,13 +10914,127 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   with justification per the dispatch's own reuse-verbatim rationale; looks like a false positive
   in the preflight checker's own matching logic, flagged for the coordinator to look at
   separately, not chased down here (out of this task's scope).
-- **#657 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 3, real-binary
-  genome round 2. See `#654`'s own bullet for the case. Scope: (a) re-run `#549`'s 4
-  compute-capped INCONCLUSIVE probes uncapped, detached, checkpointed, per
-  `[[feedback_long_runs_acceptable]]`; (b) source real mass ratios/semi-major axes for Sila-Nunam,
-  Antiope, and Lempo-Hiisi per `[[feedback_digest_not_adoption]]` (do not trust the prose figures
-  in `#654`'s own bullet without re-sourcing) and run the same `real_binary_kk_sweep.py` genome;
-  (c) note Lempo's Paha perturbation is unmodeled — any hit needs an explicit robustness check.
+- **#657 ✓ RUN (2026-07-19, Sonnet)** — `#654` shortlist item 3, real-binary genome round 2. See
+  `#654`'s own bullet for the case. **Mandatory positive control PASSED first** (7.6s):
+  `sweep_32_positive_control()` (#504's own function, UNMODIFIED) re-found PC (3,2) at
+  C=3.5795150, x0=-0.693198287, T=11.83346 TU (12.033 d), nu=-1.20e-07, topo_ok=True,
+  xcheck=True — matches the committed `ross-rt-pc-cycler-32-2026` row, machinery trustworthy
+  before running anything below. Two independent pieces, both reusing `real_binary_kk_sweep.py`'s
+  corrector/sweep machinery VERBATIM (only new sourced `REAL_BINARY_SYSTEMS` entries + a new thin
+  driver, `scripts/run_657_real_binary_kk_sweep_round2.py`):
+
+  **(a) Uncapped recheck of #549's 4 compute-capped INCONCLUSIVE probes — now DEFINITIVELY
+  NEGATIVE, no more timeouts.** Re-ran the exact 6 anchor-continuation attempts covering
+  Patroclus-Menoetius (1,1) [all 3 Table-I anchors]/(3,1)/(3,2) and Eris-Dysnomia (3,2) at the
+  SAME fine mu-step resolution (`n_steps = ceil(|target_mu-anchor_mu|/0.001)`, i.e. 438/426/62/
+  139/339/96 steps — 426 matches #549's own quoted figure exactly) but with the artificial 240s
+  job cap REMOVED (per `[[feedback_long_runs_acceptable]]`, a compute cap is never a
+  methodological answer). **Total wall time: 185.2s for all 6, run in parallel** — none came
+  anywhere near 240s once run without competing for CPU against the rest of #549's original
+  batch; the earlier inconclusiveness looks attributable to CPU contention in that batch run, not
+  to any individual job genuinely needing more than 240s. All 6 now resolve cleanly: 4
+  mu-continuation branch folds (PM (1,1)×3 anchors, Eris-Dysnomia (3,2)), 1 "no stable (|nu|<1)
+  window in C-sweep range" (PM (3,1)), 1 stable-but-wrong-topology (PM (3,2): prograde=True,
+  reaches_secondary=False). Combined with #549's own 28/32, **Patroclus-Menoetius and
+  Eris-Dysnomia are now FULLY, DEFINITIVELY swept (32/32 clean negatives, zero remaining
+  ambiguity)** across all 6 `(k1,k2)` topologies #504/#549 ever used. Stamped
+  `data/empty_regions.jsonl` region `real-binary-kk-cycler-round2-uncapped-recheck-2026-07-19`
+  (checked first: neither #549 nor this task's own predecessor ever wrote an empty-regions stamp
+  for this system pair before — verified by grep — so this is the FIRST stamp for this line of
+  work, not a correction of a prior one).
+
+  **(b) Three new near-equal-mu systems, independently re-sourced (per
+  `[[feedback_digest_not_adoption]]` — none of `#654`'s own prose mu figures were trusted without
+  re-deriving from primary literature):**
+  - **Sila-Nunam**: mu=0.45864813809877336 — NOT a directly measured mass ratio (the two bodies
+    are too near-equal-brightness to detect any barycentric wobble; Grundy et al. 2012, Icarus
+    220, 74, arXiv:1204.3923, fits only the SYSTEM mass). Derived here from the paper's own
+    reported mean V-band magnitude difference (Sila brighter by 0.12 mag over 8 visits) under
+    equal-albedo + equal-density assumptions — the identical indirect-inference convention #549
+    already used for Patroclus-Menoetius, not a new assumption. l_km=2777±19, P=12.50995±0.00036 d
+    (same source, Table 2).
+  - **Antiope**: mu=0.4961346482217408 — a genuine INDIVIDUAL-mass measurement (not
+    equal-density-assumed): Aljbaae, Prado, Sanchez & Hussmann (2020), MNRAS 496, 1645, Table 1
+    (masses from the Bartczak et al. 2014 SAGE non-convex shape model), M_alpha=4.595642e17 kg,
+    M_beta=4.525132e17 kg. l_km=176±4, P=16.505046±0.000005 h — both cross-checked against
+    Descamps et al. (2007)'s independent a=171±1 km, P=16.5051±0.0001 h (5-sig-fig period
+    agreement) and self-consistent via Kepler's third law (GM_needed=9.134e17 kg vs the paper's
+    own 9.14e17-9.121e17 kg, <0.2% agreement).
+  - **Lempo-Hiisi** (isolated binary core, Paha's perturbation explicitly UNMODELED): Ragozzine,
+    Pincock, Proudfoot, Spencer, Porter & Grundy (2024), 'Beyond Point Masses I' (arXiv:2403.12785),
+    Table 2 best-fit three-point-mass Bayesian fit — the first genuine MASS MEASUREMENT for this
+    system (supersedes Benecchi et al. 2010's system-mass-only double-Keplerian fit). Mass
+    Lempo=5.960e18 kg, Mass Hiisi=7.610e18 kg — **Hiisi (despite being the fainter, MPC-circular
+    "secondary"-named body) is actually the MORE massive one**, so it is CR3BP-primary here
+    (mu=M_Lempo/(M_Hiisi+M_Lempo)=0.4392041267501842, keeping the mu<=0.5 convention correct — a
+    real subtlety caught by this task's own test suite, not by inspection). a_2=850 km (Table 2
+    best fit; posterior median 838(+13/-21) km, Benecchi et al. 2010's earlier fit 867±11 km).
+    Period is NOT tabulated directly — DERIVED via Kepler's third law from the paper's own
+    best-fit masses + a_2 (t_s=26039.68 s, period=1.8937 d), matching the paper's own prose
+    "1.9-day binary orbital period" (Sec.5.2). **Caveat recorded prominently on the
+    `RealBinarySystem` entry itself**: Lempo is a hierarchical TRIPLE (inner Lempo-Hiisi pair +
+    Paha outer satellite, a_3~7600 km, ~9x the inner separation); this model treats Lempo-Hiisi as
+    an ISOLATED CR3BP core. Ragozzine et al. (2024) themselves find M_Paha consistent with zero
+    (upper limit ~0.5e18 kg) but flag the system as dynamically puzzling (Correia 2018 found the
+    fitted e2~0.12 chaotic/disruptive on <1 Myr, orders of magnitude shorter than the age of the
+    solar system — unresolved in Ragozzine et al. 2024 too).
+
+  Swept the identical 6-topology set #549 used ((1,1) from all 3 Table-I anchors, (3,1)/(3,2)/
+  (3,3) anchor-seeded, (2,1)/(2,2) grid-seeded — 8 jobs/system, 24 total) at each new system's own
+  sourced mu:
+  - **Sila-Nunam: 0/8 gate-passing — clean negative** (same failure-mode mix #549 itself found:
+    branch folds, no stable C-sweep window, stable-but-wrong-topology, no grid seed).
+  - **Lempo-Hiisi: 0/8 gate-passing — clean negative** (Paha-unmodeled caveat is moot here: no
+    candidate exists to be an artifact of the omission, but recorded anyway per this task's own
+    mandate that it be flagged for ANY result, positive or negative). Both stamped together in
+    `data/empty_regions.jsonl` region
+    `real-binary-kk-cycler-sila-nunam-lempo-hiisi-empty-2026-07-19`.
+  - **Antiope: 2/8 gate-passing — NOT a clean negative, NOT stamped as empty.** Two genuinely
+    stable, correctly-classified, independent-Radau-crosschecked candidates:
+    - **(1,1)** via the mu=0.5 Table-I anchor (mu-continued down to Antiope's real mu=0.4961, a
+      0.8% mu shift): C=3.4859956, x0=-0.563251781, T=2.94698 TU (0.323 d), nu=5.09e-10,
+      topo_ok=True, prograde=True, reaches_secondary=True, crosscheck_ok=True [34.3s]. This is the
+      SAME admission pattern as PC (3,2): the abstract mu=0.5 (1,1) family (catalogue row
+      `ross-rt-mu05-cycler-11-2026`, whose own `data_gaps` note explicitly says "no known real
+      planetary system matching this mass ratio") persists when mu-continued to a REAL system's
+      own sourced mass ratio.
+    - **(2,2)** via the bounded grid search (a genuinely different seed, not an anchor
+      continuation): C=3.4661023, x0=-0.574274446, T=6.01150 TU (0.658 d), nu=-7.19e-10,
+      topo_ok=True, prograde=True, reaches_secondary=True, crosscheck_ok=True [75.4s].
+    **Literature check run on both** (same structural signature covers both topologies):
+    OFFLINE (`search/literature_check.py::check_literature`, `offline_corpus_search` backend,
+    mirroring `#627`'s own convention) returned `status=not-found`, confidence=0.4 (no corpus
+    anchor exists for Antiope). LIVE (WebSearch, this session): fetched the one directly on-topic
+    paper — Aljbaae et al. (2020), the same MNRAS paper sourcing this system's masses — and
+    confirmed its own scope is TEST-PARTICLE/debris stability zones around the WHOLE binary
+    (bounded-vs-escape classification, collision mapping, r0=420-700 km equatorial prograde
+    orbits), explicitly excluding retrograde orbits and NOT computing any CR3BP periodic-orbit
+    family, symmetric-corrector solution, or repeated-close-encounter trajectory passing near
+    BOTH components — a materially different question from what this genome found. A broader
+    WebSearch for "90 Antiope" + CR3BP/periodic-orbit/cycler/restricted-three-body surfaced no
+    other connecting paper. **Verdict: not-found on both backends — necessary-not-sufficient for
+    novelty per `[[feedback_literature_novelty_check_baseline]]`. NOT adjudicated here per this
+    task's own scope ("run it, check literature, report — do not adjudicate yourself"). Reported
+    for Opus/Fable second-opinion adjudication before any catalogue.yaml writeback.
+    `data/catalogue.yaml` NOT touched.**
+
+  **New code**: `src/cyclerfinder/search/real_binary_kk_sweep.py` (+3 sourced
+  `REAL_BINARY_SYSTEMS` entries, `SweepResult` added to `__all__` — a pre-existing export gap
+  caught by `mypy src tests` once a test file finally imported the driver script transitively, no
+  behavioral change); `scripts/run_657_real_binary_kk_sweep_round2.py`;
+  `tests/search/test_657_real_binary_kk_sweep_round2.py` (9 tests: sourced-constant arithmetic
+  reproduction for all 3 new systems including the Lempo-Hiisi primary/secondary mu<=0.5 subtlety,
+  the fine-`n_steps` helper reproducing #549's own "426 steps" figure exactly, the uncapped-probe
+  list matching #549's flagged 4 exactly, topology-list-reuse, one clean-negative-aware
+  regression). Data: `docs/notes/scratch/657_kk_sweep_round2_raw.txt` (full raw run log, all 4
+  phases + the literature-check record). Wall times: positive control 7.6s, uncapped recheck
+  185.2s, new-systems anchor phase 156.8s, new-systems grid phase 213.0s (~9.4 min total).
+  `uv run ruff check .`/`ruff format --check .` clean repo-wide; `uv run mypy src tests` clean
+  (738 files); `tests/data` full suite green; `tests/search -q` green except the 2
+  pre-registered-baseline Mac-only flakes (`test_eggie_ballistic::test_gate_b_table4_vinf_reached_
+  but_subsurface`, `test_504_pluto_charon_kk_sweep::test_504_sweep_33`), unrelated to this task;
+  `tests/scripts -q` green (new script's `preflight_search()` call verified by the AST ratchet).
+  Commit: see git log.
 - **#658 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 4, epoch-locking
   pilot. See `#654`'s own bullet for the case. Scope: epoch-lock the 2-3 catalogue rows with
   already-sourced published epochs (Jones 2017 VEM-triple, Aldrin/Byrnes), re-run `#650`'s

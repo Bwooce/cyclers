@@ -52,6 +52,7 @@ __all__ = [
     "ANCHORS",
     "REAL_BINARY_SYSTEMS",
     "RealBinarySystem",
+    "SweepResult",
     "mu_step_to_system",
     "mu_step_to_system_tracking_c_l1",
     "sweep_family",
@@ -223,6 +224,183 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "mu is only a 1.5-sigma ALMA mass DETECTION (Brown & Butler 2023); "
             "treat as weakly constrained -- the 1-sigma upper bound mu=0.00833 "
             "is nearly 70% larger than the central value used for the sweep."
+        ),
+    ),
+    # ------------------------------------------------------------------
+    # Task #657 round-2 systems (2026-07-19): three near-equal-mu real
+    # binaries #549 never tried. Independently re-sourced per
+    # [[feedback_digest_not_adoption]] -- do NOT trust #654's own prose
+    # mu figures without re-deriving from the primary literature (done
+    # below for all three).
+    # ------------------------------------------------------------------
+    "sila-nunam": RealBinarySystem(
+        name="Sila-Nunam",
+        primary="Sila",
+        secondary="Nunam",
+        # No individually-measured masses exist (the two bodies are too
+        # near-equal in brightness for any barycentric wobble to be
+        # detected -- Grundy et al. 2012 fit a single Keplerian orbit for
+        # Nunam relative to Sila, giving only the SYSTEM mass). mu is
+        # instead derived from the reported mean V-band magnitude
+        # difference (Sila brighter by 0.12 mag over 8 visits) assuming
+        # EQUAL ALBEDO (-> radius ratio from flux ratio) and EQUAL DENSITY
+        # (-> mass ratio from radius ratio) -- the identical convention
+        # #549 already used for Patroclus-Menoetius, not a new assumption:
+        # flux_Sila/flux_Nunam = 10**(0.12/2.5) = 1.116863;
+        # r_Nunam/r_Sila = (flux_Nunam/flux_Sila)**0.5 = 0.946237;
+        # mu = r_ratio**3 / (1 + r_ratio**3) = 0.8472/(1.8472) = 0.458648.
+        mu=0.45864813809877336,
+        mu_source=(
+            "Grundy, W. M. et al. (2012), Icarus 220, 74 (arXiv:1204.3923), "
+            "'Mutual Events in the Cold Classical Transneptunian Binary "
+            "System Sila and Nunam' -- Table 1/Sec.3: 'Sila, the primary, "
+            "was not always brighter, but averaged over the eight visits "
+            "where separate photometry was obtained ... it was brighter by "
+            "a mean of 0.12 mags.' No individual masses are resolved (near-"
+            "equal brightnesses prevent detecting the photocenter-barycenter "
+            "offset); mu DERIVED here from that magnitude difference under "
+            "equal-albedo + equal-density assumptions (see module comment "
+            "above for the arithmetic), NOT a directly measured mass ratio."
+        ),
+        l_km=2777.0,
+        l_source=(
+            "Grundy, W. M. et al. (2012), Icarus 220, 74 (arXiv:1204.3923), "
+            "Table 2: mutual-orbit fit a=2777+/-19 km."
+        ),
+        t_s=_t_s_from_period_days(12.50995),
+        t_source=(
+            "Grundy, W. M. et al. (2012), Icarus 220, 74 (arXiv:1204.3923), "
+            "Table 2: mutual-orbit fit P=12.50995+/-0.00036 d, e=0.020+/-0.015 "
+            "(nearly circular; the CR3BP model here assumes exactly circular, "
+            "as for all other REAL_BINARY_SYSTEMS entries)."
+        ),
+        caveat=(
+            "mu is NOT a directly measured mass ratio (see mu_source) -- it "
+            "is derived from a photometric magnitude difference under "
+            "equal-albedo/equal-density assumptions, the same indirect-"
+            "inference category as Patroclus-Menoetius's own #549 sourcing. "
+            "System is doubly-synchronous (tidally locked and synchronized "
+            "like Pluto-Charon, per the source paper's own Sec.4)."
+        ),
+    ),
+    "antiope": RealBinarySystem(
+        name="Antiope",
+        primary="Antiope-A",
+        secondary="Antiope-B",
+        # Aljbaae et al. (2020) Table 1 gives INDIVIDUAL masses (from the
+        # Bartczak et al. 2014 SAGE non-convex shape+dynamics model), not
+        # an equal-density-assumed size ratio -- the most directly-measured
+        # mu of the three new #657 systems.
+        # mu = M_beta/(M_alpha+M_beta) = 4.525132e17/9.120774e17 = 0.496135.
+        mu=0.4961346482217408,
+        mu_source=(
+            "Aljbaae, S., Prado, A. F. B. A., Sanchez, D. M. & Hussmann, H. "
+            "(2020), MNRAS 496, 1645, 'Analysis of the orbital stability "
+            "close to the binary asteroid (90) Antiope', Table 1 (masses "
+            "from the Bartczak et al. 2014 SAGE non-convex shape model): "
+            "M_alpha=4.595642e17 kg, M_beta=4.525132e17 kg -- INDIVIDUAL "
+            "masses, not an assumed size/density ratio. Cross-check: "
+            "Descamps et al. (2007), Icarus 187, 482, independently report "
+            "component size ratio B/A=0.95+/-0.01 (near-equal, consistent)."
+        ),
+        l_km=176.0,
+        l_source=(
+            "Aljbaae et al. (2020), MNRAS 496, 1645 -- mutual-orbit "
+            "separation 176+/-4 km (self-consistent with their own masses "
+            "and period via Kepler's third law: GM_needed=9.134e17 kg vs "
+            "their stated/tabulated total 9.14e17-9.121e17 kg, <0.2% "
+            "agreement). Descamps et al. (2007) independently report "
+            "a=171+/-1 km for the same system -- both cited, this system "
+            "uses Aljbaae et al.'s own internally-consistent (a, P, masses) "
+            "triple rather than mixing sources."
+        ),
+        t_s=_t_s_from_period_days(16.505046 / 24.0),
+        t_source=(
+            "Aljbaae et al. (2020), MNRAS 496, 1645 -- mutual-orbit period "
+            "16.505046+/-0.000005 h (= 0.68771025 d); matches Descamps et "
+            "al. (2007)'s independently-measured 16.5051+/-0.0001 h to "
+            "5 significant figures. Orbit is circular (90 Antiope is the "
+            "first doubly-synchronous main-belt asteroid discovered by "
+            "direct imaging, Merline et al. 2000)."
+        ),
+    ),
+    "lempo-hiisi": RealBinarySystem(
+        name="Lempo-Hiisi",
+        # CR3BP convention requires mu=m2/(m1+m2)<=0.5, i.e. the PRIMARY
+        # must be the heavier body. Ragozzine et al. (2024)'s own fit finds
+        # Hiisi (despite being the FAINTER body, hence its name in the MPC
+        # circular convention) is actually the MORE MASSIVE of the pair --
+        # so Hiisi is primary here and Lempo is secondary, the reverse of
+        # the visual-brightness-based naming.
+        primary="Hiisi",
+        secondary="Lempo",
+        # Ragozzine et al. (2024) Table 2, "Best fit" column (the single
+        # self-consistent point estimate, not the marginal-posterior
+        # column, which mixes non-simultaneous draws):
+        # M_Lempo=5.960e18 kg, M_Hiisi=7.610e18 kg (Hiisi is ~28% MORE
+        # massive despite being fainter -- their own Sec.8 conclusion:
+        # "the fainter Hiisi is about 33+/-5% more massive than Lempo",
+        # matching the POSTERIOR-median masses 7.657/5.725=1.3375; the
+        # best-fit column used here gives 7.610/5.960=1.2769, same sign
+        # and same order of magnitude, within the paper's own quoted
+        # uncertainty).
+        # mu = M_Lempo/(M_Hiisi+M_Lempo) = 5.960/13.570 = 0.439204.
+        mu=0.4392041267501842,
+        mu_source=(
+            "Ragozzine, D., Pincock, S., Proudfoot, B. C. N., Spencer, D., "
+            "Porter, S. & Grundy, W. (2024), 'Beyond Point Masses I: New "
+            "Non-Keplerian Modeling Tools Applied to Trans-Neptunian Triple "
+            "(47171) Lempo', arXiv:2403.12785, Table 2 (MultiMoon three-"
+            "point-mass Bayesian fit, 'Best fit' column): Mass Lempo="
+            "5.960e18 kg, Mass Hiisi=7.610e18 kg -- a genuine mass "
+            "MEASUREMENT (the first for this system, superseding Benecchi "
+            "et al. 2010's system-mass-only double-Keplerian fit). Hiisi is "
+            "the MORE massive body, so it is CR3BP-primary here (mu<=0.5 "
+            "convention) even though 'Hiisi' is the fainter-and-thus-"
+            "secondary name under the MPC circular's brightness convention."
+        ),
+        l_km=850.0,
+        l_source=(
+            "Ragozzine et al. (2024), arXiv:2403.12785, Table 2, 'Best fit' "
+            "column: semi-major axis of the Lempo-Hiisi mutual orbit "
+            "a_2=850 km (posterior median 838(+13/-21) km; Benecchi et al. "
+            "2010's earlier double-Keplerian fit gave 867+/-11 km -- the "
+            "paper's own three-point-mass Bayesian fit supersedes B10)."
+        ),
+        # Period is NOT tabulated directly in the source (only masses and
+        # semimajor axis are) -- derived here via Kepler's third law from
+        # the paper's own best-fit M_Lempo+M_Hiisi and a_2, using this
+        # module's G=6.67430e-20 km^3 kg^-1 s^-2 (CODATA 2018, matching
+        # core/constants.py's own _G_KM3_KG_S2). Cross-check: the derived
+        # 1.894 d agrees with the paper's own prose statement (Sec.5.2)
+        # that Lempo's rotation gives "roughly 7.4 rotations within "
+        # "Lempo-Hiisi's 1.9-day binary orbital period."
+        t_s=26039.677601746138,
+        t_source=(
+            "DERIVED (not tabulated) via Kepler's third law from Ragozzine "
+            "et al. (2024) Table 2 best-fit masses (13.570e18 kg total) and "
+            "a_2=850 km: t_s=sqrt(a_2^3/(G*(M1+M2)))=26039.68 s, i.e. "
+            "period=1.8937 d -- matches the paper's own prose '1.9-day "
+            "binary orbital period' (Sec.5.2) to the figure they quote."
+        ),
+        caveat=(
+            "UNMODELED PERTURBATION: Lempo is a hierarchical TRIPLE "
+            "(Lempo-Hiisi inner pair + Paha outer satellite, a_3~7600 km, "
+            "~9x the inner separation). This entry treats Lempo-Hiisi as "
+            "an ISOLATED CR3BP binary core -- Paha's gravitational "
+            "perturbation on the inner pair is NOT modeled. Ragozzine et "
+            "al. (2024) themselves find M_Paha consistent with zero (upper "
+            "limit ~0.5e18 kg, ~3.5% of the inner pair's mass) but flag the "
+            "system as dynamically puzzling (Correia 2018's point-mass "
+            "analysis found the inner binary's own fitted eccentricity "
+            "e2~0.12 chaotic and disruptive on <1 Myr, orders of magnitude "
+            "shorter than the age of the solar system -- unresolved in "
+            "Ragozzine et al. 2024 too, Sec.7.1). ANY stable member found "
+            "here for Lempo-Hiisi must be flagged with this caveat "
+            "prominently: a 'stable' result in the idealized 2-body-core "
+            "model could be an artifact of ignoring Paha and/or the "
+            "system's own known non-Keplerian complexity, not evidence the "
+            "REAL 3-body system hosts a cycler."
         ),
     ),
 }
