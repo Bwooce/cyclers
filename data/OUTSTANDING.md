@@ -827,7 +827,11 @@ interval-verify a real fraction of the W-Z Oterma proof: energy-admissibility of
 section points at C=3.03 and Jacobi-constant conservation along a rigorously-enclosed real Oterma
 heteroclinic arc (t up to ~0.42, wrapping-limited near the L1 neck -- honestly NOT the full
 covering-relations existence theorem; QR-Lohner reframing / STM / h-set topology remain future
-stages) (registered+dispatched+Stage-1-2-partial 2026-07-20); #669 next-unused):**
+stages) (registered+dispatched+Stage-1-2-partial 2026-07-20); #669 for #668's Stage 3 --
+QR-coordinate (Lohner-QR) reframing of the validated Taylor integrator to defeat the wrapping
+effect that stopped Stage 2 at t~0.42, extending the rigorous Oterma-arc enclosure toward the
+full L1-to-L2 heteroclinic connection time (registered+dispatched 2026-07-20); #670
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11771,6 +11775,21 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   **rigorous Poincaré-section-map derivatives**, and the **h-set / covering-relations topology** —
   all explicitly remaining future stages, not built here. No `catalogue.yaml` write. Lint/mypy/
   tests all clean (full `mypy src tests`, 749 files; `tests/scripts` green).
+- **#669 (registered+dispatched 2026-07-20)** -- `#668`'s Stage 3, continuing the W-Z proof
+  machinery build. See `#668`'s own bullet for the full Stage 1-2 result and honest scope limit
+  this continues from. Scope: the naive C0 (Picard/Banach box) enclosure Stage 2 built is
+  wrapping-limited -- it validates the real Oterma L1-to-L2 heteroclinic arc only to t~0.42
+  model-time before the enclosure blows up near the L1 neck's hyperbolic stretching, PROVEN to be
+  the wrapping effect (not truncation error) since halving the step barely extends the reachable
+  time. Build the Lohner QR-coordinate reframing (re-align the enclosure's box axes each step to
+  the locally dominant expansion/contraction directions via a QR decomposition of the variational
+  flow, rather than keeping axis-aligned boxes that accumulate spurious volume under rotation/
+  shear) that `#668`'s own bullet identifies as the standard fix for exactly this failure mode.
+  Success criterion: the rigorously-enclosed arc should extend meaningfully past t~0.42 toward the
+  full heteroclinic connection time, with the SAME containment discipline `#668` established
+  (validated against closed-form goldens, contains-true-value AND excludes-nearby-wrong-values
+  positive/negative control -- no vacuous bounds). Honest reporting expected if this stage also
+  hits a wall (matching `#662`'s and `#668`'s own good precedent) rather than a forced result.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
