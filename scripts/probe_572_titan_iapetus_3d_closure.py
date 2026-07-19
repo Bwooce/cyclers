@@ -367,7 +367,7 @@ def sweep_node_alignment(cand: dict[str, Any], *, n_omega: int = 3600) -> dict[s
             pt = evaluate_point(rel_offset_deg, tof_scale_x, _n_rev, omega_deg_x, INCLINATION_DEG)
             if pt is None:
                 return 1.0e3
-            return pt["residual_kms"]
+            return float(pt["residual_kms"])
 
         x0 = np.array([seed["omega_deg"], tof_scale])
         res = minimize(

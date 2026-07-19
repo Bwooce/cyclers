@@ -63,6 +63,14 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
 )
 
+__all__ = [
+    "DEFAULT_MIN_USEFUL_BEND_DEG",
+    "GATE_RESIDUAL_KMS",
+    "candidate_passes_physical_gate",
+    "main",
+    "p572",
+]
+
 p572.PRIMARY = "Saturn"
 p572.ANCHOR = "Rhea"
 p572.FLYBY = "Titan"

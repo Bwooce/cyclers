@@ -70,6 +70,14 @@ from cyclerfinder.search.physical_sanity import (  # noqa: E402
     candidate_passes_physical_gate,
 )
 
+__all__ = [
+    "DEFAULT_MIN_USEFUL_BEND_DEG",
+    "GATE_RESIDUAL_KMS",
+    "candidate_passes_physical_gate",
+    "main",
+    "p572",
+]
+
 DATA_DIR = ROOT / "data"
 ENUM_655_PATH = DATA_DIR / "enumerate_655_saturn_rhea_titan_symmetric_closures.jsonl"
 OUT_PATH = DATA_DIR / "probe_655_rhea_titan_3d_closure.jsonl"
