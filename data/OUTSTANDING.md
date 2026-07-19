@@ -650,7 +650,13 @@ indeterminate, moon-system hosts the only phase-feasible cheap edges; 0 "recurre
 because the catalogue's own periods cluster as near-integer multiples of a few synodic bases);
 no catalogue/registry writes, commit `ea99eeb`, see #650's own bullet for the full census);
 #651 for wiring #649's confirmed coordinate-transform rescue into generate_and_refine_seeds's
-actual production default behavior (dispatched 2026-07-19); #652 next-unused):**
+actual production default behavior (dispatched 2026-07-19; CLOSED 2026-07-19, Sonnet: wired via
+the existing #643 VALIDATED_DELTA_LOG10_MU gate, in-distribution path proven byte-for-bit
+unchanged via a live git-stash before/after comparison, all #649 caveats restated in the
+production docstring, commit c58ad03; also discovered and documented (not fixed, out of scope) a
+real pre-existing cr3bp.propagate() hang risk on rare close-encounter cross-mu draws -- 2
+real-corpus tests marked @pytest.mark.slow+timeout(90), a propagate()-hardening follow-up
+recommended, no catalogue changes); #652 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -10335,7 +10341,10 @@ anywhere in the file and are genuinely still open.]**
   session's adjudication, per the design's own scope note. Artifact:
   `data/found/650_transfer_network/{edges.jsonl,summary.json}` (60,239 / 1 records). Commit
   `ea99eeb`.
-- **#651** (dispatched 2026-07-19, user-directed) — wire `#649`'s confirmed coordinate-transform
+- **#651 ✓ DONE (2026-07-19, Sonnet) — wired, in-distribution path verified byte-for-bit unchanged,
+  all `#649` caveats survive into production; a genuine, pre-existing `cr3bp.propagate()` hang risk
+  was discovered along the way (documented, not fixed — out of scope). See the RESULT paragraph at
+  the end of this bullet.** (dispatched 2026-07-19, user-directed) — wire `#649`'s confirmed coordinate-transform
   cross-μ rescue (`src/cyclerfinder/ml/cross_mu_coordinate_transform.py`,
   `transform_seed_to_target_mu`) into `generate_and_refine_seeds`'s actual default production
   behavior (`src/cyclerfinder/ml/seed_generation.py`), rather than leaving it as a standalone
@@ -10366,6 +10375,87 @@ anywhere in the file and are genuinely still open.]**
   `data/catalogue.yaml`. Recommended model: Sonnet (mechanical integration of an already-validated,
   already-tested transform into an existing API's call path — not a new numerical-methods
   judgment call).
+
+  **RESULT (2026-07-19, Sonnet, `src/cyclerfinder/ml/seed_generation.py`,
+  `tests/ml/test_seed_generation.py`, commit `c58ad03`)**: wired exactly as scoped.
+  `generate_and_refine_seeds` now computes `apply_cross_mu_transform =
+  delta_log10_mu(system.mu) > VALIDATED_DELTA_LOG10_MU` once per call (the SAME `#643` gate
+  `expected_lift_for_mu` already used, not a new threshold) and, when true, passes every raw
+  generated seed through `transform_seed_to_target_mu` before handing it to `correct_periodic` —
+  a construction failure (`None`) is treated as an honest non-converged attempt, never dropped or
+  crashed. `GeneratedSeed` gained `coordinate_transform_applied: bool` (default `False`, so the
+  one pre-existing external constructor — `scripts/run_641_sun_jupiter_seed_census.py`'s own test
+  fixtures — is unaffected) and `SeedGenerationReport` gained
+  `cross_mu_coordinate_transform_used: bool`. `expected_lift_for_mu`/`LiftEstimate` gained a new
+  `CROSS_MU_COORDINATE_FIX_ANCHORS` table (μ=0.001 → `math.inf`-ratio lift since the fresh
+  baseline scored literally 0/200 both times in `#649`; Sun-Earth μ → 4.0x) checked via a new
+  `coordinate_fix_anchor_label` field (`None` except at those two exact points, within a
+  `CROSS_MU_COORDINATE_FIX_TOLERANCE=1e-6` point-lookup, never a window) — any OTHER off-training
+  μ still falls through unchanged to `#643`'s honest "unvalidated" branch. All 5 of `#649`'s
+  caveats are restated explicitly in `generate_and_refine_seeds`'s own docstring (family
+  clustering — visible via each seed's own `jacobi`/`period` fields, unchanged; no
+  literature-novelty check, ever; period left unchanged as a leading-order approximation; only
+  these two μ points validated; the transform is applied at ANY off-training μ regardless, since
+  it cannot be worse than the raw approach's proven 0% collapse, but no numeric lift is claimed
+  beyond the two validated points).
+  **In-distribution byte-for-bit-unchanged verification**: a live before/after comparison (this
+  task's own uncommitted change `git stash`'d, identical synthetic-corpus/rng scenario re-run,
+  `git stash pop`, re-run again) produced IDENTICAL JSON output (every report field and every
+  seed's state0_guess/period_guess/converged/physically_sane/state0/period/jacobi/residual/
+  stability_index/stability_note) — confirmed, not just "still works". That exact scenario is now
+  pinned as `test_generate_and_refine_seeds_in_distribution_byte_identical_before_and_after_651`,
+  plus a dedicated `expected_lift_for_mu`-only in-distribution-branch-unchanged test.
+  **A genuine discovery made while writing the regression tests, reported rather than
+  silently patched around**: because the transform succeeds at constructing genuine
+  non-equilibrium orbits (`#649`'s whole point), a RARE (~1%, confirmed twice independently —
+  once at μ=0.001 draw 47/60 via an isolated SIGALRM-bounded diagnostic, once at Sun-Earth in a
+  SEPARATE n=100 draw of the SAME rng seed that had been verified safe at n=60) cross-mu draw can
+  dynamically evolve into a genuine close approach to the secondary body partway through
+  propagation — undetectable from the constructed initial condition alone. `correct_periodic`'s
+  underlying legacy variable-step STM integrator
+  (`cyclerfinder.core.cr3bp._propagate_with_stm_variable`) has no wall-clock or step-count budget,
+  so this can hang a single seed's refinement for minutes+ (one instance ran past pytest's global
+  600s cap before being killed). This is a REAL, PRE-EXISTING gap in that shared propagator, not a
+  defect in `#649`'s transform or this task's wiring — the raw untransformed cross-mu path never
+  triggered it only because it always collapsed instantly onto benign L4/L5 equilibria (`#642`).
+  Fixing it is out of this task's explicit scope on two counts (touching the shared propagator is
+  a real numerical-methods/engineering design decision — wall-clock budget vs. step cap vs. a
+  `solve_ivp` collision event — and touching `cross_mu_coordinate_transform.py` was explicitly
+  forbidden), so it is documented (in `generate_and_refine_seeds`'s own production docstring, and
+  in both affected test docstrings) rather than silently engineered around. Proved that no single
+  "safe" rng seed choice reliably avoids it (a seed verified safe at n=60 still hit it at n=100),
+  so the two cross-mu real-corpus regression tests
+  (`test_generate_and_refine_seeds_cross_mu_lift_no_longer_assumed_positive`,
+  `test_generate_and_refine_seeds_cross_mu_production_rescue_matches_649`) are marked
+  `@pytest.mark.slow` + `@pytest.mark.timeout(90)`, matching this project's own existing M5
+  convention for tests with real, unavoidable runtime variance — excluded from the default `-n
+  auto -m 'not slow'` run (both were already gated behind `@_skip_no_real_corpus` besides), runnable
+  on demand via `-m slow`, and capped at 90s (not 600s) if a bad draw recurs. **Recommended
+  follow-up task**: add a wall-clock or step-count budget to `cr3bp.propagate`'s legacy
+  variable-step STM path so no caller of `correct_periodic` (not just this one) can hang
+  indefinitely on a close-encounter draw — next-unused task number, not filed here.
+  `test_generate_and_refine_seeds_cross_mu_production_rescue_matches_649` (new, real-corpus,
+  N=100 both μ) independently confirms the production-wired rate clears a floor well above
+  `#642`'s ~0% raw collapse and lands in the same ballpark as `#649`'s own ~13.5%/~4.0% pilot
+  numbers (observed during this task's own implementation: 19%/11%/12% at μ=0.001,
+  5%/7%/6% at Sun-Earth across 3 independent seeds) — not an exact reproduction, per this task's
+  own RNG-variation allowance.
+  Tests: `tests/ml/test_seed_generation.py` — 2 pre-existing tests updated (one docstring
+  reframe, one rewritten to the new 3-state `expected_lift_for_mu` contract), 9 new tests
+  (transform-wiring contract at off-/in-distribution μ, construction-failure honesty, the
+  byte-identical in-distribution pin, the two `#649`-validated-anchor lift tests, the
+  arbitrary-other-μ-still-unvalidated test, the in-distribution-branch-unchanged pin, and the
+  production cross-mu rescue regression). All fast (non-`@_skip_no_real_corpus`,
+  non-`@pytest.mark.slow`) tests in the file were confirmed green under `-k` targeted runs during
+  implementation; the two `@pytest.mark.slow`-marked real-corpus cross-mu tests were confirmed to
+  reach genuine convergence rates in the same ballpark as `#649` on the runs that ran to
+  completion (documented above) BEFORE the `@pytest.mark.slow` mark was added, but were NOT
+  re-run after that final marking change (time-boxed per the coordinating session's explicit
+  instruction to stop verifying and commit) — an honest gap, not a claimed-but-undone check;
+  `ruff check`/`ruff format --check`/`mypy src tests` were all confirmed clean on both files
+  AFTER every edit including the final marking change. No `data/catalogue.yaml` changes.
+  `src/cyclerfinder/genome/qp_tori.py` and its tests (concurrent `#635` work) were left untouched
+  — verified via explicit `git add` pathspecs before every commit.
 - **#320** First quasi_cycler discovery sweep (blocked by #319) — **STALE, already resolved
   elsewhere.** #319 shipped (V1_qp/V2_qp/V3_qp) and #320's candidates were adjudicated
   2026-06-30 (net V0-known/not-novel) — see the #320 entry earlier in this file. This duplicate
