@@ -576,7 +576,12 @@ eigenvector-PHASE canonicalization #632 flagged and deliberately deferred, parki
 auto-fired (registered 2026-07-18); #636 for Wilczak-Zgliczynski computer-assisted-proof machinery
 as a theorem-grade-negative route, #623's own standing reserve, no current forcing function
 (registered 2026-07-18); #637 for acquiring the Litteri et al. CMDA 138:25 journal version, minor
-(registered 2026-07-18); #638 for a multi-system real-moon-mu RRT extension (Triton/Ganymede/
+(registered 2026-07-18; CLOSED 2026-07-19: acquired -- genuinely Open Access CC BY 4.0, NOT
+paywalled as assumed at registration; journal PDF + the #608-sourced 2024 conference precursor
+arXiv:2408.03691 both filed + digested + CORPUS_INDEX-registered; #608's "46%... genuinely new
+orbit" citation cross-checked and VERIFIED GENUINE, correctly sourced to the conference paper,
+with one nuance -- the journal paper's own novelty metric is materially stricter and explicitly
+supersedes that looser definition, annotated on #608's own bullet); #638 for a multi-system real-moon-mu RRT extension (Triton/Ganymede/
 Europa/Titania), BLOCKED on #633's outcome (registered 2026-07-18); #639 for a small-mu
 Hill-problem analytic-seed solver, no current forcing function (registered 2026-07-18); #640 for
 acquiring classical small-mu asymptotic literature (Henon/Benest/quasi-satellite), optional
@@ -4759,6 +4764,19 @@ machinery pointed at unscreened real systems, not corrector depth on a known tar
   verdict above (a real, substantial in-distribution lift genuinely exists), but the exact
   multiplier should not be quoted without this caveat. See `#642`'s own bullet for the full
   numbers and its severer finding at `#624`'s cross-μ measurements.
+  **`#637` CORRECTION (2026-07-19)**: acquired the actual Litteri et al. CMDA 138:25 journal
+  version (was paywalled/unacquired at the time this bullet was written — it is genuinely Open
+  Access, CC BY 4.0, and now filed to the corpus with a full digest,
+  `docs/notes/2026-07-19-digest-litteri-2026-vae-periodic-orbits.md`). The specific "46% of 100
+  latent samples converged to a genuinely new orbit" figure quoted above is VERIFIED GENUINE,
+  correctly sourced to the 2024 conference paper (arXiv:2408.03691, now also filed) rather than
+  the journal paper — confirmed verbatim in the actual source, not just an inherited paraphrase.
+  One nuance: the journal paper's own novelty metric is materially stricter (Mahalanobis-distance/
+  classification-confusion based) than the conference paper's "not identical to a training
+  sample" bar used for that 46% figure, and the journal version explicitly frames the looser
+  definition as insufficient — so quote that 46% number as the (weaker, still real) conference-
+  paper definition of novelty, not the journal paper's. Does not change this bullet's own
+  engineering verdict.
 - **#609** (P1, new capability) — `#605` shortlist item 4: hierarchical "cycler-of-cyclers" —
   phase-match a heliocentric cycler's planetary encounters to a moon-system cycler at the target
   (commensurability between the synodic super-period and the moon-cycler period). All lower-level
@@ -9328,15 +9346,37 @@ anywhere in the file and are genuinely still open.]**
   function — nothing in this project's backlog currently needs a theorem-grade (as opposed to
   method-conditional) negative badly enough to justify the build. Do not dispatch without an
   explicit user decision that a specific claim needs this level of rigor.
-- **#637** (registered 2026-07-18, user-directed — **minor, parking lot**) — acquire the Litteri,
-  Gil, Vasile, Rodriguez-Fernandez & Camacho *Celestial Mechanics and Dynamical Astronomy* 138:25
-  (June 2026) journal version — the external anchor `#608`'s own generative-seed-model POC cited
-  (a variational-autoencoder approach to CR3BP periodic-orbit generation) — currently
-  paywalled/unacquired, only a preprint/abstract-level reference was used. A small acquisition item,
-  not a method gap (per `#623`'s own framing) — `#608`'s POC did not depend on the paper's exact
-  numbers. Follow this project's standard corpus-acquisition + OCR/digest + `CORPUS_INDEX.md`
-  registration discipline once acquired (`[[feedback_corpus_document_policy]]`). Recommended model:
-  Sonnet (mechanical acquisition + digest, no numerical-methods judgment).
+- **#637 ✓ DONE (2026-07-19) — ACQUIRED (journal version, genuinely Open Access, not paywalled).**
+  acquire the Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho *Celestial Mechanics and
+  Dynamical Astronomy* 138:25 (June 2026) journal version — the external anchor `#608`'s own
+  generative-seed-model POC cited (a variational-autoencoder approach to CR3BP periodic-orbit
+  generation). **Correction to this bullet's own premise**: the journal version turned out to be
+  freely downloadable directly from Springer (CC BY 4.0, confirmed on the article page) — not
+  paywalled as assumed when this task was registered; fetched directly, no institutional-access
+  workaround needed. Filed to the private corpus as
+  `litteri-2026-generation-periodic-orbits-variational-autoencoder-cmda-138-25-doi-10.1007-s10569-026-10299-x.pdf`
+  (45 pp., native text layer, no OCR needed). **Also filed** the 2024 conference precursor
+  (arXiv:2408.03691) that `#608` actually worked from — it was not previously in the corpus
+  despite being `#608`'s real source — as
+  `gil-2024-generative-design-periodic-orbits-restricted-threebody-arxiv-2408.03691.pdf`. Full
+  digest: `docs/notes/2026-07-19-digest-litteri-2026-vae-periodic-orbits.md`; both files
+  registered in `CORPUS_INDEX.md`'s ML/surrogate/GNC background section.
+  **Cross-check against `#608`'s citation (mandated step, per
+  `[[feedback_ground_citations_against_content]]`)**: `#608`'s specific "46% of 100 latent
+  samples converged to a genuinely new orbit" figure is VERIFIED GENUINE and correctly
+  attributed to the 2024 conference paper (confirmed verbatim there: "46 out of the 100
+  generated orbits... successfully converge... all of the final refined orbits were new").
+  One nuance-level correction found, not a retraction: the JOURNAL paper's own novelty
+  definition is materially stricter (a multi-component Mahalanobis-distance/classification-
+  confusion metric, Eq. 19) than the conference paper's "not bit-identical to training data"
+  bar, and the journal paper explicitly frames the looser definition as insufficient (Sect.
+  2.5.2) — so `#608`'s "46%... genuinely new" framing, while sourced correctly, carries an
+  older/weaker novelty definition than the same authors' own peer-reviewed follow-up adopted.
+  `#608`'s underlying engineering decision (bounded numpy/scipy PCA+k-means POC as a
+  linear-Gaussian analog) is unaffected — see full nuance in the digest. Author order in
+  `#608`'s citation matches the journal paper exactly (Litteri first; conference paper has Gil
+  first — the two papers order authors differently). No catalogue changes. Acquisition +
+  digest + registration complete; no follow-on task needed.
 - **#638 ✓ CLOSED, NOT WARRANTED (2026-07-18)** (registered 2026-07-18, user-directed — was
   **parking lot, not auto-fired, BLOCKED on `#633`'s outcome**) — a multi-system extension of the
   real-planet-moon-μ Ross-Roberts-Tsoukkas (k1,k2) search to Neptune-Triton (μ≈2.1e-4),
