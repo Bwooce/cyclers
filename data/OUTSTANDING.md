@@ -737,8 +737,9 @@ empty_regions.jsonl; Rhea-Titan found 3 gate-passing coplanar symmetric closures
 0/3 a #575-style multi-cycle repeat check at real ~0.7deg inclination -- coordinator decided
 2026-07-19 to stamp it too, same disposition as #575, no literature-check/adjudication needed for
 a repeat-check negative; all 4 pairs stamped, no catalogue write); #656 for #654 shortlist item 2, Pluto-Charon
-higher-(k1,k2)
-topologies (registered, not yet dispatched); #657 for #654 shortlist item 3, real-binary genome
+higher-(k1,k2) topology extension (CLOSED 2026-07-19: clean negative, 0/9 new gate-passing
+members across (4,1)-(5,5), one documented non-cycler near-miss at (5,1) — see #656's own bullet;
+`data/empty_regions.jsonl` stamped, no catalogue write); #657 for #654 shortlist item 3, real-binary genome
 round 2 (registered, not yet dispatched); #658 for #654 shortlist item 4, the epoch-locking pilot
 (registered, not yet dispatched); #659 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
@@ -10831,11 +10832,86 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (733 files, unchanged); `tests/scripts` full suite green (all tests, including the 7 new);
   `tests/data tests/search -q` re-run clean (no regressions from the 3 new `empty_regions.jsonl`
   entries). Commit: see git log.
-- **#656 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 2, Pluto-Charon
-  higher-(k1,k2) topology extension. See `#654`'s own bullet for the case. Scope: extend the
-  topology list in a thin driver on `src/cyclerfinder/search/real_binary_kk_sweep.py` +
-  `#504`'s `sweep_family_grid` to (4,1)-(5,5) at PC μ=0.10876, positive control = the unmodified
-  `sweep_32_positive_control`. Overnight single-core, checkpointed.
+- **#656 ✓ DONE (2026-07-19, Sonnet) — clean negative, 0/9 new gate-passing members, one
+  documented near-miss** — `#654` shortlist item 2, Pluto-Charon higher-(k1,k2) topology
+  extension. See `#654`'s own bullet for the case. **Topology convention confirmed against
+  `#549`'s own bullet**: k1 = winding number about Pluto (primary), k2 = winding number about
+  Charon (secondary), k2<=k1 always (every #504/#549 anchor/grid target follows this — (3,1),
+  (3,2),(3,3) but never a k2>k1 pair) — so "(4,1)-(5,5)" is exactly the 9-pair set {(4,1),(4,2),
+  (4,3),(4,4),(5,1),(5,2),(5,3),(5,4),(5,5)}, matched exactly, not invented. **μ confirmed**:
+  `cyclerfinder.search.pluto_charon_kk_sweep.PC_MU` = `core.cr3bp.cr3bp_system("Pluto",
+  "Charon").mu` = 0.10876473603280369 (DE440 GM_Charon/GM_PlutoSystem via `core/satellites.py`,
+  the same sourced value #504/#549 already cite — the task bullet's "0.10876" is a rounding, not
+  a separate hardcoded guess). **Mandatory positive control PASSED** (7.8s): `sweep_32_positive_
+  control()` (#504's own function, UNMODIFIED) re-found PC (3,2) at C=3.5795150, x0=-0.693198287,
+  T=11.83346 TU (12.033 d), nu=-1.20e-07, topo_ok=True, xcheck=True — matches the committed
+  `ross-rt-pc-cycler-32-2026` row, machinery trustworthy before running anything new. **New code**
+  (thin driver, NO changes to `real_binary_kk_sweep.py`/`pluto_charon_kk_sweep.py` — both reused
+  verbatim per the dispatch's own scope): `scripts/run_656_pc_higher_kk_sweep.py`
+  (`_grid_for_topology` scales hc_list and period_guess with k1+k2, since none of the 9
+  topologies has a Ross-RT 2026 Table-I anchor — the table stops at (3,3) — so all 9 run via
+  `sweep_family_grid`'s bounded (x0,C,hc) grid search, the same grid-search path #504 used for
+  its own (2,1)/(2,2)); `tests/search/test_656_pc_higher_kk_sweep.py` (topology-convention check,
+  grid-scaling check, and a FAST positive-control regression of `_grid_seed_search` — the exact
+  seed-finding step behind every one of the 9 topologies' negatives — via a tight grid seeded
+  around the known (3,2) solution, proving that step, not just the anchor path, is trustworthy,
+  since #504/#549 had only ever exercised the grid path on two clean negatives before). **Sweep
+  result (513.5s wall, 8 parallel joblib/loky workers; actual runtime was ~8.7 min total, NOT the
+  "overnight" estimate in this bullet's original scoping — the grid was smaller and the machinery
+  faster than the conservative estimate assumed)**:
+  - **8/9 topologies are unambiguous clean negatives**: (4,1) 263.7s, (4,2) 332.4s, (4,3) 382.8s,
+    (4,4) 421.6s, (5,2) 384.3s, (5,3) 421.3s, (5,4) 444.7s, (5,5) 454.0s — for every one,
+    `_grid_seed_search` itself (the seed-finding step, positive-controlled in isolation, see
+    above) found NO converged orbit anywhere in the 8×8×4-point grid (x0∈[-0.85,-0.30],
+    C∈[3.0500,3.6110], hc scaled per topology) with the requested winding topology — nothing to
+    lose track of downstream.
+  - **(5,1) — a materially different, UNSETTLED case, not a clean negative and not a candidate**:
+    the grid search's FINAL result was a genuinely stable orbit (Barden nu=-2.73e-10,
+    independent-Radau crosscheck PASS) at C=3.2243893, x0=-0.587245699, T=18.69835 TU (19.013 d),
+    `topology_ok=False`. Re-verifying by re-correcting the identical (x0,C) across hc=3..11 found
+    hc=4 exactly reproduces it: `winding_topology` classifies it (k1=4, k2=0), prograde=False,
+    reaches_secondary=False — a real, stable, RETROGRADE, Pluto-realm-only periodic orbit (winds
+    4× around Pluto, 0× around Charon, never approaches Charon at all), the same general class as
+    #504's own (3,1) Strategy-B near-miss. **Refinement found while writing the test suite**:
+    directly re-running `_grid_seed_search` alone (bypassing the downstream C-sweep) on the
+    identical (5,1) grid shows the SEED step genuinely DID find a correctly-classified (5,1)
+    orbit first — x0=-0.6685146994, C=3.05 (grid floor), T=28.1427 TU, prograde=True,
+    reaches_secondary=True, a real (5,1)-topology seed, not a false match. The wrong-topology
+    (4,0) result comes from the subsequent `c_sweep_find_nu_zero` C-sweep stage, which is called
+    with `hc=None` (auto-redetecting the crossing count every step rather than holding the seed's
+    own hc=4 fixed) and walked OFF the genuine (5,1) branch onto the unrelated (4,0) family before
+    finding a nu=0 crossing there — a pre-existing, already-documented fragility of the shared
+    `sweep_family_grid`/`c_sweep_find_nu_zero` machinery (`mu_step_to_system_tracking_c_l1`'s own
+    docstring, #627: "an auto-redetected crossing index can snap onto a different, unrelated
+    branch"), inherited verbatim by this dispatch's thin driver (per its own scope: reuse
+    `sweep_family_grid` unmodified), not introduced by it. Per this dispatch's own scope ("do NOT
+    run a literature-check on a stable-but-wrong-topology hit — that gate is for gate-passing
+    candidates, and this one fails the topology gate itself") this stays a documented sub-finding,
+    not a literature-check candidate — but it is honestly UNSETTLED, not certified-empty like the
+    other 8: a genuine (5,1)-topology orbit exists nearby in (x0,C) space, and whether it has a
+    stable member is unknown because this search path loses that branch's identity before it can
+    check. A future (5,1)-specific attempt should hold hc=4 fixed through the C-sweep (mirroring
+    #504's own "sweep upward only, hc fixed" convention for its (3,2) positive control) instead of
+    the auto-redetecting default.
+  - **Combined verdict**: 0 of 15 total (k1,k2) topologies now checked at Pluto-Charon's mass
+    ratio across #504/#549/#656 (every (k1,k2) with k2<=k1<=5) produce a second CONFIRMED
+    gate-passing binary-cycler member — PC (3,2) remains structurally idiosyncratic to its own
+    narrow (mu,C) window on the evidence available, with (5,1) flagged as the one topology where
+    that conclusion rests on a known search-method gap rather than an exhaustive-within-budget
+    seed search.
+  **Stamped** `data/empty_regions.jsonl` region `pluto-charon-kk-45-cycler-sweep-2026-07-19`
+  (region_id matches the script's own preflight region_id, so a future weaker-or-equal re-sweep
+  is correctly subsumed) — full real numbers per topology, the (5,1) seed-vs-C-sweep diagnosis
+  captured verbatim in `interpretation`/`result.per_topology`, `result.wall_time_s`, all 5 gates
+  in `prune_gates` (topology_ok, prograde, reaches_secondary, Barden |nu|<1, independent-Radau
+  crosscheck). **No catalogue writeback** — clean negative, no literature-check warranted (the
+  mandatory gate is for gate-passing candidates; nothing here passed all gates). Data:
+  `docs/notes/scratch/656_pc_kk45_sweep_raw.txt` (full raw run log, both phases). **Note for the
+  record**: the script's own `preflight_search` call flagged "#656 is not recorded in TASK
+  ALLOCATIONS" as a WARNING even though #656 IS registered there (commit `1c176d5`) — overridden
+  with justification per the dispatch's own reuse-verbatim rationale; looks like a false positive
+  in the preflight checker's own matching logic, flagged for the coordinator to look at
+  separately, not chased down here (out of this task's scope).
 - **#657 (registered 2026-07-19, not yet dispatched)** — `#654` shortlist item 3, real-binary
   genome round 2. See `#654`'s own bullet for the case. Scope: (a) re-run `#549`'s 4
   compute-capped INCONCLUSIVE probes uncapped, detached, checkpointed, per

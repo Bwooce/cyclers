@@ -1,0 +1,13 @@
+Task #656 Pluto-Charon higher-(k1,k2) sweep — run 2026-07-19T18:42:03Z
+POSITIVE CONTROL (PC 3,2 @ mu=0.10876473603280369)  STABLE  C=3.5795150  x0=-0.693198287  T=11.83346 TU (12.033 d)  nu=-1.20e-07  topo_ok=True  xcheck=True  method='c_sweep_from_mu01_anchor'  [7.8s]  PASS=True
+
+Results (elapsed 513.5s)
+(4,1)  negative  method='grid_search_8x8x4'  note='no (4,1) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (4, 5, 6, 7))'  [263.7s]
+(4,2)  negative  method='grid_search_8x8x4'  note='no (4,2) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (5, 6, 7, 8))'  [332.4s]
+(4,3)  negative  method='grid_search_8x8x4'  note='no (4,3) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (6, 7, 8, 9))'  [382.8s]
+(4,4)  negative  method='grid_search_8x8x4'  note='no (4,4) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (7, 8, 9, 10))'  [421.6s]
+(5,1)  STABLE  C=3.2243893  x0=-0.587245699  T=18.69835 TU (19.013 d)  nu=-2.73e-10  topo_ok=False  xcheck=True  method='grid_seed_then_c_sweep'  [59.1s]
+(5,2)  negative  method='grid_search_8x8x4'  note='no (5,2) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (6, 7, 8, 9))'  [384.3s]
+(5,3)  negative  method='grid_search_8x8x4'  note='no (5,3) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (7, 8, 9, 10))'  [421.3s]
+(5,4)  negative  method='grid_search_8x8x4'  note='no (5,4) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (8, 9, 10, 11))'  [444.7s]
+(5,5)  negative  method='grid_search_8x8x4'  note='no (5,5) orbit found in grid (x0 in [-0.85,-0.30], C in [3.0500,3.6110], hc in (9, 10, 11, 12))'  [454.0s]
