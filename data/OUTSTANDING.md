@@ -839,8 +839,11 @@ built the Lohner-C1/QR-coordinate reframing of the validated Taylor integrator; 
 defeats wrapping (rotation control: naive C0 blows up ~5e8x, QR stays flat) but the specific
 #668 Oterma arc turned out NOT wrapping-limited -- its real horizon is a physical close Jupiter
 flyby (perijove r2~0.004 at t~0.466), so QR does not extend the reach past ~0.45; honest
-partial/negative, revises #668's "wrapping wall" story (DONE 2026-07-20, Opus); #670
-next-unused):**
+partial/negative, revises #668's "wrapping wall" story (DONE 2026-07-20, Opus); #670 for the W-Z
+proof machinery's Stage 4 -- close-approach regularization (Levi-Civita/KS-style coordinate
+transform removing the near-secondary singularity) to push the rigorous Oterma arc enclosure
+through the physical Jupiter perijove #669 found blocks it at t~0.45-0.466 (registered+dispatched
+2026-07-20); #671 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11836,7 +11839,26 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   derivatives and the covering-relations / h-set topology also remain future stages. No
   `catalogue.yaml` write. Lint/format/mypy all clean (full `mypy src tests`, 750 files);
   `tests/scripts` green (148 tests, no regression).
-- **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
+- **#670 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 4, continuing
+  from `#669`'s own honest revision. See `#669`'s own bullet for the full result: the rigorous
+  Oterma-arc enclosure's real horizon is NOT wrapping (QR-fixed in `#669`) but a genuine close
+  physical flyby of Jupiter (perijove r2~0.0041 at t~0.466) -- the a-priori Picard box's width
+  overtakes the shrinking miss distance as the trajectory approaches the secondary, a real
+  near-singularity in the equations of motion themselves (the `1/r2` term in the CR3BP
+  pseudo-potential blows up as r2->0), not a coordinate-frame artifact. Scope: implement a
+  close-approach regularizing coordinate transform (Levi-Civita in the planar case is the
+  standard, well-established choice -- removes the `1/r` singularity via `z = w^2`-style complex/
+  2D quadratic mapping and a fictitious-time reparametrization `dt = r*ds`, turning the near-
+  collision into a REGULAR, smoothly-integrable arc in the new coordinates; Kustaanheimo-Stiefel
+  is the 3D generalization if this needs to extend beyond the planar case later) and re-run
+  `#669`'s own QR-reframed integrator in the regularized coordinates through the Jupiter perijove,
+  checking whether the rigorous enclosure can now be carried THROUGH the close approach and
+  continued toward the full L1-to-L2 heteroclinic connection time. Mandatory: re-validate the
+  Stage 2/3 positive controls (closed-form exp/harmonic goldens, contains-true-value AND
+  excludes-nearby-wrong-values, non-vacuous) still hold under the regularized formulation before
+  trusting any new Oterma-arc result; honest partial/negative reporting expected and fully
+  acceptable if this stage also hits a wall, matching `#662`/`#668`/`#669`'s own established
+  precedent.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
