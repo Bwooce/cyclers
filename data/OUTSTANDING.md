@@ -775,11 +775,21 @@ enumeration (STAGE-1 BLOCKED 2026-07-19 -- mathematical, not tooling: the closur
 on a Lambert/Kepler transcendental TOF equation with no exact polynomial form, so no all-roots
 homotopy exists to solve; interval certification flagged as the real non-polynomial route to the
 same completeness goal); #663 for the #662-recommended re-scope -- a certified-interval
-(interval-Newton/Krawczyk or Smale-alpha) completeness pass directly on the transcendental
-closure residual (no polynomialization), reusing #610/#625's existing interval-arithmetic
-certification machinery verbatim, applied to the two live unresolved near-misses (#600's Uranian
-3-moon-sequence 0.0531 km/s residual, #656's Pluto-Charon (5,1) topology) to settle whether each
-is a genuine missed basin or a provably-empty region (registered+dispatched 2026-07-19); #664 for
+(interval-Newton/Krawczyk) completeness pass directly on the transcendental closure residual (no
+polynomialization); CLOSED 2026-07-19, partial success reported honestly: #610/#625's machinery
+doesn't cover the Lambert/residual half (only the closed-form bend gate), so new interval-safe
+Lambert/Stumpff dual-number machinery was built + bit-for-bit validated; found the free-rel_offset
+augmented system is analytically SINGULAR at genuine symmetric closures (a real math finding, not
+a bug) so #663 uses the well-posed rel_offset-FIXED reduction instead; independently verified (via
+scipy LM + DOP853 cross-check on the real #600 code, not this task's own interval reimplementation)
+that a genuine near-exact closure DOES exist near #600's 0.0531 km/s near-miss -- confirming the
+grid-gap risk was real -- but it fails the physical bend gate (~0.83deg), so #600's gate-passing
+census is unchanged; the RIGOROUS interval existence certificate for that closure was NOT cleanly
+achieved (driver validated correct on a synthetic system, but the astrodynamics residual's own
+interval looseness prevents a clean certificate -- reported honestly, not forced); #656 does NOT
+fit this task's mold (a converged CR3BP orbit with a topology misclassification, not a continuous
+residual near-miss -- would need interval ODE integration, out of scope); see #663's own bullet
+for the full accounting; #664 for
 #661 shortlist item 2, set-oriented transfer-operator search (GAIO-style almost-invariant sets) --
 a genuinely new object class (a metastable SET with residence-time statistics, not a periodic
 orbit or torus), positive control = reproduce Dellnitz 2005's Mars-crossing quasi-Hilda transport
@@ -11326,17 +11336,103 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   -- OR shelve item 1 and advance to `#661` shortlist items 2-3 (set-oriented transfer operator /
   SRP-augmented sweep), which have no analogous formulation wall. No code added, no
   `data/catalogue.yaml` write, no new script (Stage 1 concluded before any build).
-- **#663 (registered+dispatched 2026-07-19)** — the `#662`-recommended re-scope: a certified-
-  interval (interval-Newton/Krawczyk or Smale-alpha) completeness pass directly on the
-  transcendental symmetric-closure residual, no polynomialization, reusing `#610`/`#625`'s
-  existing interval-arithmetic certification machinery (`certify_*_interval`/
-  `bend_gate_interval_cert`) verbatim. Scope: apply it over the 2-D `(rel_offset, tof)` box per
-  `(direction, n_rev)` to `#600`'s Uranian 3-moon-sequence near-miss (residual 0.0531 km/s, just
-  outside the 0.05 km/s gate) and `#656`'s Pluto-Charon (5,1) topology near-miss (a STABLE orbit
-  found nearby with `topo_ok=False`), settling whether each is a genuine basin the symmetric grid
-  missed or a provably-empty region — the strongest form of negative (or positive) this project's
-  interval-certification capability can produce. See `#662`'s own bullet for the full math case
-  against polynomial homotopy that motivated this re-scope.
+- **#663 ✓ DONE (2026-07-19, Sonnet) — partial success, reported honestly: real interval-safe
+  Lambert/Kepler machinery built from scratch (NOT reused from `#610`/`#625`, which only cover the
+  closed-form bend gate), a genuine mathematical degeneracy discovered in the "obvious" 2-unknown
+  framing, and a genuine NEW near-exact closure found near `#600`'s near-miss (independently
+  verified, fails the physical bend gate) — but the rigorous interval-Newton EXISTENCE certificate
+  for that closure was NOT cleanly achieved; `#656` does not fit this task's mold at all.**
+  `#662`-recommended re-scope. New module `scripts/certify_663_symmetric_closure_interval.py`.
+  **(1) Reuse check (done first, per this task's own instruction)**: read `#610`/`#625` in full —
+  both certify ONLY the closed-form `#324` physical-bend gate (a plain arcsin/algebraic formula,
+  no root-finding), and BOTH bullets say explicitly "bounding a multi-revolution, branch-selecting
+  universal-variable Lambert solve rigorously remains a genuinely unresolved technical obstacle."
+  The `#558`/`#563`/`#600` CLOSURE RESIDUAL (built from Lambert solves) is exactly that unresolved
+  half, so `#610`/`#625`'s machinery does not cover it — only their `mpmath.iv` convention/style
+  was reused. New interval-safe machinery had to be built: a small forward-mode "interval dual
+  number" (`IDual`, value+gradient both carried through `mpmath.iv`) covering circular-orbit trig,
+  the Stumpff functions `C(z)/S(z)`, and the Lagrange f/g/g_dot velocity coefficients — validated
+  BIT-FOR-BIT against the real project's own `residual_at_point`/`three_leg_options`/
+  `residual_from_options` at multiple points (the committed `#563` Ariel-Umbriel closure AND the
+  `#600` near-miss itself) before trusting anything built on top. **(2) Genuine mathematical
+  finding (not anticipated at dispatch)**: the "obvious" reading of `#662`'s framing — augment the
+  2-moon `(rel_offset, tof)` system with the Lambert `z` unknowns per leg to get a square
+  4-unknown system — is analytically SINGULAR at every genuine symmetric closure. Checked directly
+  via 50-dps `mpmath` high-precision Newton refinement at TWO independent exact roots (the
+  committed `rel_offset=0` Ariel-Umbriel closure AND a second, non-symmetric root found by Newton
+  from a generic start, `beta~74.3deg`): `det(J)` shrinks in lock-step with the residual itself
+  (`~1e-15` at residual `~1e-14`, `~1e-29` at residual `~1e-29`) rather than settling on a fixed
+  nonzero value — the textbook signature of an exact algebraic degeneracy, not float roundoff (a
+  generic, non-root point gives a perfectly healthy `det~-0.26`). This matches classical
+  Miele-style symmetric-periodic-orbit theory: symmetric solutions are found by imposing the
+  symmetry a priori (reducing the unknowns), not by searching the unreduced space and hoping the
+  Jacobian stays nonsingular there. `system_2moon`/`system_3moon_fixed_offsets` therefore FIX the
+  discrete `rel_offset`(s) at the value that produced the near-miss and treat only the continuous
+  `tof`(s) as free unknowns — confirmed well-conditioned (`cond(J)~3e3-5e3`) both for a 2-moon
+  reduced case and for `#600`'s actual 3-moon near-miss (vs. `cond~1e16`/analytically-zero
+  determinant for the unreduced free-`rel_offset` system at its own roots). **(3) Mandatory
+  positive/negative control**: since no exact 2-moon closure is well-posed for the unreduced
+  framework (per finding 2), the Krawczyk driver's MECHANICS (containment/disjointness tests,
+  bisection) were validated on a synthetic system with a known analytic root
+  (`x0^2+x1^2-4=0, x0-x1=0`, roots at `(+-sqrt2,+-sqrt2)`): a box around the root correctly
+  certifies `exists` (1 node), a box far away correctly certifies `empty` (1 node), and the
+  near-root box REMAINS correctly `exists` even under deep bisection (depth 60, no contradiction)
+  — proving the driver's core logic is sound, decoupled from the astrodynamics residual's own
+  interval-arithmetic looseness. **(4) `#600` near-miss, exact parameters recovered by direct
+  re-scan** (not assumed from the commit's rounded prose): Ariel-Oberon-Umbriel, `n1=11/n2=1/n3=1`
+  (`tof1=17.054d/tof2=2.993d/tof3=3.216d`), `rel_offset1=rel_offset2=180deg`, `n_rev=(2,0,1)`,
+  residual `0.05305565383902122` km/s (matches "0.0531" exactly). **(4a)** Interval-Newton on the
+  near-miss's OWN tight neighborhood (`+-0.002d` tof, envelope-safe z-widths) CERTIFIES EMPTY — no
+  root in this small local neighborhood, consistent with expectation. **(4b) — the key finding**:
+  independent verification (`scipy.optimize.least_squares`, Levenberg-Marquardt, run DIRECTLY on
+  the real, already-tested `enumerate_600_3moon_symmetric_closures.py` functions — NOT this task's
+  own interval reimplementation) starting from the near-miss point converged to a GENUINE,
+  essentially-exact closure at `tof1=17.689d/tof2=2.792d/tof3=3.002d` (shifted
+  `+0.64/-0.20/-0.21` days from the near-miss), residual `~5e-8` km/s on all three legs,
+  INDEPENDENTLY confirmed by the same project's own DOP853 numerical-integration cross-check (all
+  3 legs `passed=True`, `max_dr_arrival_km~2e-5`). **This confirms `#662`'s original "grid gap"
+  concern was genuinely realized here** — a real zero of the closure residual DOES exist between
+  the discrete symmetric grid's sampled points. **(4c) — but it changes nothing about the
+  gate-passing census**: running the full `gate_candidate_3moon` gate on this newly-found exact
+  closure gives `physical_gate_passed=False` — the anchor (Ariel) encounters bend only `~0.83deg`
+  both times (well below `DEFAULT_MIN_USEFUL_BEND_DEG`), the same "too-small-bend"
+  physical-uselessness failure mode that independently killed `#599`'s Proteus near-misses. So
+  `#600`'s overall clean-negative verdict for USEFUL/gate-passing 3-moon cyclers STANDS, but its
+  stated reasoning needs correcting: not "0.0531 km/s is the true local minimum" but "an exact
+  zero exists nearby (the grid-gap risk was real), but it independently fails the physical bend
+  gate, so the gate-passing census is unaffected." **(4d) — the honest limitation**: a RIGOROUS
+  interval-Newton/Krawczyk existence certificate for the (4b) closure was attempted and NOT
+  achieved. A depth sweep on the committed script's own validated box
+  (`+-0.0008d` tof, `+-0.015` z, 3000-node budget per depth) shows: shallow depth (6) leaves most
+  sub-boxes genuinely `inconclusive` (as expected, not yet contracted); by depth 24 the SAME driver
+  already reports `empty` (0 inconclusive, 0 exists) and stays `empty` through depth 60 — a verdict
+  that directly CONTRADICTS the strong independent evidence in (4b) (a genuine root confirmed
+  there by both `scipy` LM and an independent DOP853 integration). A separate, narrower exploratory
+  box (half the widths) got further before failing — 2999/3000 sub-boxes correctly excluded at
+  depth 48, one machine-scale sliver enclosing the true root left `inconclusive` rather than
+  wrongly `empty` — showing the failure mode is graded by box width/bisection depth, not immediate,
+  but never resolves to a clean `exists` certificate either way. This is an unresolved
+  soundness/looseness defect specific to the astrodynamics residual's own interval-arithmetic
+  dependency effects (the Stumpff/Lambert/Lagrange chain), isolated (via the synthetic check in
+  (3), which stays correct under equally-deep bisection on a much wider relative box) as NOT a bug
+  in the Krawczyk driver's core logic. Reported honestly
+  per this task's own discipline (`#662`'s "do not force a result") rather than claiming either
+  verdict past this depth. **(5) `#656` does NOT fit this task's mold, explicitly addressed rather
+  than silently dropped**: `#656`'s (5,1) case is a CONVERGED, machine-precision-closed CR3BP
+  periodic orbit (Barden stability + independent Radau cross-check both PASS) with a discrete
+  WINDING-TOPOLOGY misclassification (`c_sweep_find_nu_zero`'s known auto-redetection fragility
+  walks onto the unrelated `(4,0)` family) — there is no continuous "2-D box near a transcendental
+  residual" structure here at all; the shooting defect is already ~machine-zero at the point in
+  question. An analogous certification ("does a genuine (5,1)-topology STABLE member exist,
+  certifiably") would require INTERVAL-SAFE CR3BP TRAJECTORY INTEGRATION (a rigorous enclosure of
+  a nonlinear ODE flow over ~19-28 time units, e.g. Taylor models / validated integrators) — a
+  fundamentally different, substantially larger undertaking than interval-Lambert-closure
+  certification (which only ever needed to interval-solve a single scalar transcendental equation
+  per leg, never integrate an ODE). Out of scope for this task's budget; this task's effort
+  therefore focused on `#600` per the dispatch's own explicit allowance. **No `data/catalogue.yaml`
+  write** (mandatory per the dispatch's own scope — the (4b) closure fails the physical gate
+  anyway, so it was never a writeback candidate). `uv run ruff check .`/`ruff format --check .`
+  clean; `uv run mypy src tests` clean (module lives in `scripts/`, no `src`/`tests` changes).
 - **#664 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 2, set-oriented
   transfer-operator search (GAIO-style almost-invariant sets). See `#661`'s own bullet for the
   full case. Scope: box-subdivide a phase-space region, build the sparse Perron-Frobenius
