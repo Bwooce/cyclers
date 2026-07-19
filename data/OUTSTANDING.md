@@ -755,7 +755,13 @@ each body's centre vs ~44 km real radii, ~30-38 km below each surface; NOT admit
 model-invalidity in empty_regions.jsonl, PC(3,2) confirmed safe under the same check; #660
 registered for the recommended min-clearance-gate follow-up); #660 for adding a sourced
 min-clearance-vs-body-radius gate to real_binary_kk_sweep.py, per #659's dual-adjudicated
-recommendation (registered 2026-07-19, not yet dispatched); #661 next-unused):**
+recommendation (registered 2026-07-19; **CLOSED 2026-07-19**: added sourced radius_km_primary/
+radius_km_secondary/radius_source to RealBinarySystem for all 7 entries + PLUTO_RADIUS_KM/
+CHARON_RADIUS_KM constants, wired a min-clearance gate into sweep_family/sweep_family_grid
+(opt-in via radius_km_* kwargs, no-op/backward-compatible when omitted), regression-pinned
+PC(3,2) clears both bodies (~3836/~1087 km) and Antiope (1,1)/(2,2) now fail explicitly
+(~11.8/~4.2 km and ~13.75/~3.16 km vs ~44/~42 km radii) -- see #660's own bullet); #661
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11120,31 +11126,68 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `docs/notes/2026-07-19-659-antiope-adjudication-fable.md` (Fable). `data/catalogue.yaml` and all
   source code left untouched by both adjudications; the empty-regions stamp and `#660` registration
   are the coordinating session's own follow-through.
-- **#660 (registered 2026-07-19, not yet dispatched)** — add a sourced min-clearance-vs-body-radius
-  physical gate to `src/cyclerfinder/search/real_binary_kk_sweep.py`, the capability gap `#659`'s
-  dual adjudication found: `RealBinarySystem` carries no body-radius field, and the existing gate
-  profile is purely dynamical (topology/prograde/`reaches_secondary`/Barden `|nu|<1`/Radau
-  crosscheck) — `reaches_secondary` in particular is just `x.max()>L1`, which checks nothing about
-  physical clearance and is nearly trivially satisfied at mu≈0.5. This silently let 2 collision
-  trajectories (Antiope (1,1)/(2,2), passing 30-38 km inside each body) through every existing
-  gate undetected. Scope: (1) add a sourced `radius_km_primary`/`radius_km_secondary` field (or
-  equivalent) to `RealBinarySystem`, populated for every existing entry (Pluto-Charon, Patroclus-
-  Menoetius, Didymos-Dimorphos, Orcus-Vanth, Eris-Dysnomia, Sila-Nunam, Antiope, Lempo-Hiisi) from
-  each system's own already-cited sourced literature — do not leave any entry with an unsourced
-  placeholder; (2) add a `min_clearance_km` (or ratio) gate to the sweep/gate-candidate path,
-  checked alongside the existing dynamical gates; (3) add a regression test pinning that the
-  already-catalogued PC(3,2) row clears BOTH bodies with wide margin under the new gate (per
-  `#659`'s own fairness check: ~2647 km Pluto, ~481 km Charon) — this must stay green, the new gate
-  must not retroactively invalidate the one real catalogued hit; (4) re-run the Antiope cell
-  through the new gate and confirm it now fails explicitly on clearance (converting the informal
-  #659 finding into an automated, permanent regression rather than a one-off manual check); (5)
-  do NOT re-run the other already-negative systems purely for this — the gate only matters for
-  candidates that pass the existing dynamical gates, and none of the other systems produced any.
-  Recommended model: Sonnet (mechanical schema addition + sourced-value backfill + test), though
-  the physical-clearance-threshold DEFINITION (e.g. hard body-surface contact vs. some safety
-  margin for tidal/perturbation effects) is a small judgment call worth a quick sanity check
-  against how `#620`'s or `#627`'s own encounter-geometry modules define "close approach" for
-  consistency, rather than inventing a new convention.
+- **#660 ✓ DONE (2026-07-19, Sonnet)** — added a sourced min-clearance-vs-body-radius physical gate
+  to `src/cyclerfinder/search/real_binary_kk_sweep.py`, the capability gap `#659`'s dual
+  adjudication found. **Field added**: `RealBinarySystem` (in `real_binary_kk_sweep.py`) gained
+  `radius_km_primary: float | None`, `radius_km_secondary: float | None`, `radius_source: str` —
+  populated for ALL 7 `REAL_BINARY_SYSTEMS` entries, no unsourced placeholders. Pluto-Charon itself
+  is not a `RealBinarySystem` entry (handled by `pluto_charon_kk_sweep.py`'s own
+  `make_pluto_charon_system()`), so its radii were added there instead as module constants
+  `PLUTO_RADIUS_KM=1188.3`/`CHARON_RADIUS_KM=606.0` (Nimmo et al. 2017, Icarus 287, 12,
+  arXiv:1603.00821, New Horizons LORRI limb fits). **Per-system sourcing**: Patroclus-Menoetius
+  56.5/52.0 km (Buie et al. 2015 occultation diameters, already cited for mu); Didymos-Dimorphos
+  0.39/0.0755 km (Naidu et al. 2020 780 m diameter; Daly et al. 2023 DART/DRACO 151 m
+  volume-equivalent-sphere diameter — note these two are genuinely km-scale-small, not a units
+  bug); Orcus-Vanth 455.0/221.5 km (Brown & Butler 2023, ALMA-thermal + the same paper's own
+  cited 443±10 km stellar-occultation Vanth diameter); Eris-Dysnomia 1163.0/307.5 km (Sicardy et
+  al. 2011 occultation radius; Brown & Butler 2023's own REVISED 615(+60/-50) km ALMA estimate,
+  not their earlier weaker 700±115 km detection); Sila-Nunam 121.5/115.0 km (Vilenius et al. 2012
+  Herschel/Spitzer thermal diameters 243/230 km — radius ratio 1.0565 independently matches the
+  mu_source's own magnitude-ratio-derived 1.0568 to <0.1%, a nice cross-check); Antiope
+  43.93/41.97 km (Descamps et al. 2007 Roche-ellipsoid semi-axes, MEAN of each body's own 3
+  semi-axes — documented convention, matches `#659`'s own adjudication figures exactly for
+  continuity; NOT the most conservative choice, the max semi-axis is ~2.6-2.8 km larger); Lempo-
+  Hiisi 125.5/136.0 km (Hiisi/Lempo diameters 251/272 km, Mommert et al. 2012 Herschel/Spitzer
+  equal-albedo thermal sizes, individually resolved via Benecchi et al. 2010's HST imaging — the
+  size/mass "inversion" (Hiisi smaller but denser/heavier) is real, matches the module's own
+  existing mu_source discussion). **Gate**: `min_body_clearance_km()` (new, public) propagates one
+  full period at the same DOP853 fidelity `winding_topology` already uses and returns min distance
+  to each body's CENTRE in km; `_gate_clearance()` compares against `radius_km_* + margin_km`
+  (`DEFAULT_CLEARANCE_MARGIN_KM=0.0` — documented judgment call, hard-surface-contact is the
+  strictest honest floor for airless small bodies, no patched-conic-flyby-style atmosphere/
+  targeting margin applies here; callers wanting extra shape-irregularity conservatism pass a
+  positive margin explicitly). Wired into `sweep_family`/`sweep_family_grid` via new keyword-only
+  `radius_km_primary`/`radius_km_secondary`/`clearance_margin_km` args, default `None` (gate
+  skipped — BYTE-IDENTICAL to pre-#660 behavior for every existing caller). A clearance failure on
+  an otherwise-gate-passing candidate now returns an explicit `stable_found=False` result with
+  `note="fails body-clearance gate: ..."` and the diagnostic `min_distance_primary_km`/
+  `min_distance_secondary_km`/`min_clearance_ok` fields (added to `SweepResult` in
+  `pluto_charon_kk_sweep.py`, all `None`-default so no other caller's result shape changes).
+  Deliberately did NOT add a new topology_ok gate to `sweep_family_grid` (it never had one
+  pre-#660, unlike `sweep_family`) — out of this task's scope, so `sweep_family_grid` without
+  `radius_km_*` is unchanged. **Regression tests** (`tests/search/test_660_real_binary_body_
+  clearance_gate.py`, 8 tests): sourced-radius presence/values for all 7 systems;
+  **PC(3,2) — the most important test** — still `stable_found=True`, `min_clearance_ok=True`,
+  min distance 3835.79 km (Pluto, radius 1188.3 km) / 1087.09 km (Charon, radius 606.0 km),
+  matching `#659`'s own ~3836/~1087 km recomputation to <1 km — the new gate does NOT retroactively
+  invalidate `ross-rt-pc-cycler-32-2026`; **Antiope (1,1)** via `sweep_family(..., "mu05_11")` now
+  returns `stable_found=False`, `min_clearance_ok=False`, min distance 11.81/4.18 km vs radii
+  43.93/41.97 km (matches `#659`'s 11.81/4.17 km); **Antiope (2,2)** reconverged directly from
+  `#659`'s own recorded IC (C=3.4661023165370235, x0=-0.5742744462570041, T=6.011499192614617 —
+  avoids re-paying the ~75s discovery grid-search cost for an already-known point) likewise now
+  explicit-fails, 13.75/3.16 km vs the same radii (matches `#659`'s 13.75/3.16 km exactly); plus a
+  backward-compatibility unit test proving `_gate_clearance` is a structural no-op whenever a
+  radius is `None` (the case for every pre-#660 caller) — this is the "quick sanity check" in lieu
+  of re-running the other 6 already-negative systems' grid sweeps, since the gate cannot possibly
+  change their recorded verdicts without a radius argument no pre-#660 caller supplies. **Verify**:
+  `ruff check .` / `ruff format --check .` clean; `mypy src tests` clean (740 files); the 2 new +
+  16 pre-existing real-binary tests (`test_549`, `test_657`, `test_660`) all pass; `test_504_
+  pluto_charon_kk_sweep.py`/`test_656_pc_higher_kk_sweep.py` pass except the pre-existing
+  documented Mac-BLAS-flake `test_504_sweep_33` (unrelated to this change, confirmed by its own
+  `topology_ok` failure mode, nothing to do with clearance); full `tests/data tests/search` ratchet
+  run clean (see commit for exit status). Full sourcing/citation detail in each
+  `RealBinarySystem.radius_source` string and the module-comment `DEFAULT_CLEARANCE_MARGIN_KM`
+  rationale in `real_binary_kk_sweep.py` itself.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`

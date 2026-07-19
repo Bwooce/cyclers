@@ -28,14 +28,35 @@ sweep_family(...)       -> SweepResult  (anchor-seeded C-sweep for one (k1,k2))
 sweep_family_grid(...)  -> SweepResult  (grid-seeded C-sweep, topologies with no anchor)
 REAL_BINARY_SYSTEMS     -> dict[str, RealBinarySystem]  (sourced mu/l_km/t_s + citations)
 ANCHORS                 -> dict[str, dict]  (Ross-RT 2026 Table-I anchors, from #504)
+
+Task #660 addendum (min-clearance-vs-body-radius physical gate)
+-----------------------------------------------------------------
+``RealBinarySystem`` now also carries sourced ``radius_km_primary``/
+``radius_km_secondary``/``radius_source`` for every entry. ``sweep_family``/
+``sweep_family_grid`` accept optional ``radius_km_primary``/
+``radius_km_secondary``/``clearance_margin_km`` keyword args (default
+``None``/:data:`DEFAULT_CLEARANCE_MARGIN_KM` -- omitting them is
+byte-identical to pre-#660 behavior): when both radii are supplied, a
+gate-passing candidate is additionally checked against
+:func:`min_body_clearance_km` and rejected (with an explicit
+``note="fails body-clearance gate: ..."``) if its trajectory passes inside
+either body's own (radius + margin). Motivated by ``#659``'s Antiope
+adjudication -- see ``docs/notes/2026-07-19-659-antiope-adjudication.md`` --
+which found 2 candidates passing every prior dynamical gate while passing
+30-38 km BELOW each body's real surface.
+
+min_body_clearance_km(...)      -> tuple[float, float]  (min dist to each body's centre, km)
+DEFAULT_CLEARANCE_MARGIN_KM     -> float  (documented default safety margin, 0.0 km)
 """
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Final
 
 import numpy as np
+from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_periodic as cp
@@ -50,9 +71,11 @@ from cyclerfinder.search.pluto_charon_kk_sweep import (
 
 __all__ = [
     "ANCHORS",
+    "DEFAULT_CLEARANCE_MARGIN_KM",
     "REAL_BINARY_SYSTEMS",
     "RealBinarySystem",
     "SweepResult",
+    "min_body_clearance_km",
     "mu_step_to_system",
     "mu_step_to_system_tracking_c_l1",
     "sweep_family",
@@ -78,6 +101,15 @@ class RealBinarySystem:
     l_source: str
     t_s: float  # sqrt(l_km^3 / G(m1+m2)) == P_orbital_seconds / (2*pi)
     t_source: str
+    # Task #660: sourced body radii (km), for the min-clearance-vs-body-radius
+    # physical gate (see module docstring addendum below and #659's Antiope
+    # adjudication that motivated this). `None` means "no sourced radius
+    # found" -- an honest gap, NOT a silent guess; a `None` radius makes the
+    # clearance gate a documented no-op for that system rather than a
+    # (falsely reassuring) pass. See `radius_source` for the citation.
+    radius_km_primary: float | None = None
+    radius_km_secondary: float | None = None
+    radius_source: str = ""
     caveat: str = ""
 
     def to_cr3bp_system(self) -> cr3bp.CR3BPSystem:
@@ -125,6 +157,16 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "Buie, M. W. et al. (2024), AJ 167, 104, Table (mutual-orbit fit): "
             "P=4.282754+/-0.000023 d."
         ),
+        # D_Patroclus=113+/-3 km, D_Menoetius=104+/-3 km (Buie et al. 2015,
+        # the same occultation already cited above for mu) -> radii 56.5 km
+        # / 52.0 km.
+        radius_km_primary=56.5,
+        radius_km_secondary=52.0,
+        radius_source=(
+            "Buie, M. W. et al. (2015), AJ 149, 113 -- occultation diameters "
+            "D_Patroclus=113+/-3 km, D_Menoetius=104+/-3 km (same source as "
+            "mu_source above) -> radii 56.5 km / 52.0 km."
+        ),
         caveat=(
             "mu is a DERIVED equal-density estimate, not a directly measured "
             "mass ratio -- no Lucy-flyby (2033) mass measurement exists yet."
@@ -152,6 +194,23 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
         t_source=(
             "Naidu, S. P. et al. (2020), Icarus 348, 113777 -- pre-impact "
             "mutual-orbit P=11.921473+/-0.000044 hr."
+        ),
+        # Didymos: volume-equivalent diameter 780+/-30 m (Naidu et al. 2020,
+        # same paper as mu/l/t above) -> radius 0.39 km. Dimorphos: DART/DRACO
+        # post-impact shape model gives a volume-equivalent-sphere diameter of
+        # 151 m (Daly et al. 2023, already cited in the caveat below for the
+        # mass estimate) -> radius 0.0755 km. NOTE both bodies are km-scale
+        # SMALL relative to every other REAL_BINARY_SYSTEMS entry -- radii
+        # are correctly < 1 km, not a units bug.
+        radius_km_primary=0.39,
+        radius_km_secondary=0.0755,
+        radius_source=(
+            "Didymos: Naidu, S. P. et al. (2020), Icarus 348, 113777 -- "
+            "volume-equivalent diameter 780+/-30 m -> radius 0.39 km. "
+            "Dimorphos: Daly, R. T. et al. (2023), Nature 616, 443, 'Successful "
+            "kinetic impact into an asteroid for planetary defence' -- DRACO "
+            "shape-model volume-equivalent-sphere diameter 151 m -> radius "
+            "0.0755 km (post-impact shape; pre-impact size was not resolved)."
         ),
         caveat=(
             "Dimorphos's mass is NOT directly measured (DART/LICIACube could "
@@ -192,6 +251,21 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "Brown, M. E. et al. (2010), AJ 139, 2700 (HST astrometry, "
             "refined) -- mutual-orbit P=9.5393+/-0.0001 d."
         ),
+        # Orcus: Brown & Butler (2023) (same paper as mu_source above) give a
+        # 910(+50/-40) km ALMA-thermal diameter -> radius 455.0 km. Vanth:
+        # same paper reports BOTH a 475+/-75 km ALMA-thermal diameter and a
+        # more precise 443+/-10 km stellar-occultation diameter -- the
+        # occultation value is used here (direct geometric measurement,
+        # tighter uncertainty) -> radius 221.5 km.
+        radius_km_primary=455.0,
+        radius_km_secondary=221.5,
+        radius_source=(
+            "Brown, M. E. & Butler, B. J. (2023), PSJ 4, 178 (arXiv:2307.04848) "
+            "-- Orcus: ALMA-thermal diameter 910(+50/-40) km -> radius 455.0 "
+            "km. Vanth: stellar-occultation diameter 443+/-10 km (reported "
+            "within this same paper, preferred over its own coarser 475+/-75 "
+            "km ALMA-thermal estimate) -> radius 221.5 km."
+        ),
     ),
     "eris-dysnomia": RealBinarySystem(
         name="Eris-Dysnomia",
@@ -219,6 +293,22 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
         t_source=(
             "'The Eris/Dysnomia system I: the orbit of Dysnomia' (2020), "
             "Icarus, arXiv:2009.13733 -- P=15.785899+/-0.000050 d."
+        ),
+        # Eris: multi-chord stellar occultation radius 1163+/-6 km (Sicardy
+        # et al. 2011). Dysnomia: Brown & Butler (2023) (same paper as
+        # mu_source above) revised their own earlier weak ALMA detection
+        # (700+/-115 km) with a tighter follow-up estimate of 615(+60/-50) km
+        # -> radius 307.5 km (the revised, not the original, value is used).
+        radius_km_primary=1163.0,
+        radius_km_secondary=307.5,
+        radius_source=(
+            "Eris: Sicardy, B. et al. (2011), Nature 478, 493, 'A Pluto-like "
+            "radius and a high albedo for the dwarf planet Eris from an "
+            "occultation' -- radius 1163+/-6 km. Dysnomia: Brown, M. E. & "
+            "Butler, B. J. (2023), PSJ 4, 178 (arXiv:2307.04848) -- revised "
+            "ALMA diameter estimate 615(+60/-50) km (superseding their own "
+            "earlier weaker-significance 700+/-115 km stacked detection) -> "
+            "radius 307.5 km."
         ),
         caveat=(
             "mu is only a 1.5-sigma ALMA mass DETECTION (Brown & Butler 2023); "
@@ -274,6 +364,21 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "(nearly circular; the CR3BP model here assumes exactly circular, "
             "as for all other REAL_BINARY_SYSTEMS entries)."
         ),
+        # Vilenius et al. (2012) Herschel/Spitzer thermal photometry gives
+        # individual diameters Sila~243 km, Nunam~230 km (radius ratio
+        # 1.0565 -- matches the mu_source magnitude-ratio-derived radius
+        # ratio 1.0568 above to <0.1%, an independent cross-check of that
+        # same equal-albedo assumption) -> radii 121.5 km / 115.0 km.
+        radius_km_primary=121.5,
+        radius_km_secondary=115.0,
+        radius_source=(
+            'Vilenius, E. et al. (2012), A&A 541, A94, \'"TNOs are Cool": A '
+            "survey of the trans-Neptunian region VI -- Herschel/PACS "
+            "observations and thermal modeling of 19 classical Kuiper belt "
+            "objects' -- individual diameters Sila~243 km, Nunam~230 km "
+            "(radius ratio consistent with the mu_source magnitude-ratio "
+            "split above) -> radii 121.5 km / 115.0 km."
+        ),
         caveat=(
             "mu is NOT a directly measured mass ratio (see mu_source) -- it "
             "is derived from a photometric magnitude difference under "
@@ -322,6 +427,28 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "5 significant figures. Orbit is circular (90 Antiope is the "
             "first doubly-synchronous main-belt asteroid discovered by "
             "direct imaging, Merline et al. 2000)."
+        ),
+        # Descamps et al. (2007) Roche-ellipsoid shape solution gives THREE
+        # semi-axes per component (not a single radius, since both bodies are
+        # significantly non-spherical, near-contact): Antiope-A (primary)
+        # 46.5x43.5x41.8 km, Antiope-B (secondary) 44.7x41.4x39.8 km.
+        # CONVENTION: radius = MEAN of the three semi-axes (not the max) --
+        # matches task #659's own adjudication numbers exactly (D_A~87.8 km,
+        # D_B~83.8 km, i.e. radii ~43.9/41.9 km) for continuity with that
+        # already-published finding. This is NOT the most conservative choice
+        # (the max semi-axis, 46.5/44.7 km, is ~2.6-2.8 km larger); a caller
+        # wanting that extra margin against the body's own true extremum can
+        # pass a positive clearance_margin_km covering that gap.
+        radius_km_primary=(46.5 + 43.5 + 41.8) / 3.0,  # = 43.9333... km
+        radius_km_secondary=(44.7 + 41.4 + 39.8) / 3.0,  # = 41.9667... km
+        radius_source=(
+            "Descamps, P. et al. (2007), Icarus 187, 482 -- Roche-ellipsoid "
+            "semi-axes Antiope-A 46.5x43.5x41.8 km, Antiope-B "
+            "44.7x41.4x39.8 km. radius_km_* here is the MEAN of each body's "
+            "own three semi-axes (see comment above for why, and #659's "
+            "adjudication note docs/notes/2026-07-19-659-antiope-"
+            "adjudication.md which independently used the identical "
+            "mean-semi-axis convention)."
         ),
     ),
     "lempo-hiisi": RealBinarySystem(
@@ -383,6 +510,27 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
             "period=1.8937 d -- matches the paper's own prose '1.9-day "
             "binary orbital period' (Sec.5.2) to the figure they quote."
         ),
+        # Ragozzine et al. (2024) itself does not re-measure sizes; it defers
+        # (Sec.2) to Mommert et al. (2012)'s equal-albedo (0.079) thermal
+        # (Herschel+Spitzer) diameters, individually resolved via Benecchi
+        # et al. (2010)'s HST imaging of the triple: Hiisi (primary here,
+        # the MORE massive but SMALLER/fainter body) 251(+16/-17) km,
+        # Lempo (secondary, less massive but LARGER) 272(+17/-19) km --
+        # radii 125.5 km / 136.0 km. The size-mass "inversion" (smaller body
+        # is more massive) is real and expected: this module's own mu_source
+        # comment above already establishes Hiisi is the denser body.
+        radius_km_primary=125.5,
+        radius_km_secondary=136.0,
+        radius_source=(
+            'Mommert, M. et al. (2012), A&A 541, A93, \'"TNOs are Cool": A '
+            "survey of the trans-Neptunian region V -- Physical "
+            "characterization of 18 Plutinos using Herschel-PACS "
+            "observations' (equal-albedo=0.079 thermal diameters), "
+            "individually resolved per-component via Benecchi, S. D., Noll, "
+            "K. S., Grundy, W. M. & Levison, H. F. (2010), Icarus 207, 978, "
+            "'(47171) 1999 TC36, A Transneptunian Triple' (HST-resolved "
+            "photometry): Hiisi 251(+16/-17) km, Lempo 272(+17/-19) km."
+        ),
         caveat=(
             "UNMODELED PERTURBATION: Lempo is a hierarchical TRIPLE "
             "(Lempo-Hiisi inner pair + Paha outer satellite, a_3~7600 km, "
@@ -404,6 +552,211 @@ REAL_BINARY_SYSTEMS: dict[str, RealBinarySystem] = {
         ),
     ),
 }
+
+
+# ---------------------------------------------------------------------------
+# Task #660: min-clearance-vs-body-radius physical gate.
+#
+# Motivation: #657's real-binary sweep found 2 candidates at Antiope's mass
+# ratio that passed EVERY existing dynamical gate (topology / prograde /
+# reaches_secondary / Barden |nu|<1 / independent Radau crosscheck) -- #659's
+# dual adjudication then found, independently three times, that both
+# candidates pass 3-14 km from each body's CENTRE while Antiope's components
+# have real radii of ~42-44 km: the orbits pass 30-41 km BELOW each body's
+# actual surface. Root cause: no gate here ever checked physical clearance --
+# `reaches_secondary` is purely `x.max() > L1`, which carries almost no
+# information at mu~0.5 (see docs/notes/2026-07-19-659-antiope-adjudication.md
+# Sec.4). This section adds that missing physical precondition.
+# ---------------------------------------------------------------------------
+
+#: Default safety margin (km) ADDED ON TOP of each body's own sourced radius
+#: before a candidate is accepted. Zero by default -- a deliberate judgment
+#: call (mirrors physical_sanity.py's own DEFAULT_MIN_USEFUL_BEND_DEG
+#: documented-threshold convention), NOT an oversight:
+#:
+#:   * Unlike patched-conic PLANETARY flybys (physical_sanity.py's own
+#:     min_safe_altitude_km, needed for atmosphere / instrument / targeting
+#:     margins that are body-specific and often comparable to the radius
+#:     itself), these are bare airless asteroid/TNO surfaces with no
+#:     equivalent forcing function -- the physically meaningful floor is
+#:     simply hard-surface contact.
+#:   * Zero margin is the STRICTEST honest choice available (it never lets a
+#:     trajectory that is already sub-surface at nominal radius through).
+#:   * Some sourced radii are themselves already a conservative choice for a
+#:     non-spherical body (e.g. Antiope's own radius_km_* above is the MEAN
+#:     of three Roche-ellipsoid semi-axes, not the true max extent) -- a
+#:     caller wanting extra margin against shape irregularity or the body's
+#:     own measurement uncertainty can pass a positive `clearance_margin_km`
+#:     explicitly; the default stays 0.0 so no candidate is silently over- or
+#:     under-cleared by an unstated convention.
+DEFAULT_CLEARANCE_MARGIN_KM: Final[float] = 0.0
+
+
+def min_body_clearance_km(
+    target_system: cr3bp.CR3BPSystem,
+    x0: float,
+    ydot0: float,
+    period: float,
+    *,
+    n_samples: int = 4000,
+    rtol: float = 1e-11,
+    atol: float = 1e-11,
+) -> tuple[float, float]:
+    """Propagate one full period of a planar symmetric orbit and return the
+    minimum distance (km) to each body's CENTRE: ``(min_dist_primary_km,
+    min_dist_secondary_km)``.
+
+    Uses the identical dense DOP853 propagation convention
+    :func:`cyclerfinder.search.binary_star_search.winding_topology` already
+    uses for its own full-period sampling (same ``n_samples``/``rtol``/
+    ``atol`` defaults), so this clearance check samples the trajectory at the
+    same fidelity the topology classifier already relies on -- not a coarser,
+    less-trustworthy pass. The primary sits at ``(-mu, 0)``, the secondary at
+    ``(1-mu, 0)`` in the rotating ND frame (:mod:`cyclerfinder.core.cr3bp`'s
+    own convention); distances are scaled to km via ``target_system.l_km``.
+
+    This is a DISTANCE-TO-CENTRE, not distance-to-surface: callers compare
+    against ``radius_km_primary``/``radius_km_secondary`` (plus any margin)
+    themselves -- see :data:`DEFAULT_CLEARANCE_MARGIN_KM` and
+    :func:`sweep_family`/:func:`sweep_family_grid`'s own ``radius_km_*``
+    keyword arguments for the wired-in gate.
+    """
+    state0 = np.array([x0, 0.0, 0.0, 0.0, ydot0, 0.0])
+    sol = solve_ivp(
+        cr3bp.cr3bp_eom,
+        (0.0, period),
+        state0,
+        args=(target_system.mu,),
+        method="DOP853",
+        rtol=rtol,
+        atol=atol,
+        max_step=period / n_samples,
+    )
+    x, y = sol.y[0], sol.y[1]
+    d_primary_nd = float(np.hypot(x - (-target_system.mu), y).min())
+    d_secondary_nd = float(np.hypot(x - (1.0 - target_system.mu), y).min())
+    return d_primary_nd * target_system.l_km, d_secondary_nd * target_system.l_km
+
+
+def _gate_clearance(
+    res: SweepResult,
+    target_system: cr3bp.CR3BPSystem,
+    radius_km_primary: float | None,
+    radius_km_secondary: float | None,
+    margin_km: float,
+) -> SweepResult:
+    """Task #660 physical gate: reject a candidate that passes inside either
+    body's own (radius + margin).
+
+    Applied AFTER every existing dynamical gate already passed (only called
+    on a ``res`` with ``stable_found`` and ``topology_ok`` both ``True``) --
+    this is a NEW, purely physical precondition none of the dynamical gates
+    can express (see module comment above / #659's Antiope adjudication).
+    If either radius is unsourced (``None``), this is a documented NO-OP
+    (``min_clearance_ok`` stays ``None``, meaning "not evaluated") -- an
+    unsourced radius must never be silently treated as "clears", and this
+    also keeps every EXISTING caller of :func:`sweep_family`/
+    :func:`sweep_family_grid` (which never pass ``radius_km_*``) byte-
+    identical to its pre-#660 behavior.
+    """
+    if (
+        not res.stable_found
+        or res.x0_mid is None
+        or res.ydot0_mid is None
+        or res.period_mid is None
+    ):
+        return res
+    if radius_km_primary is None or radius_km_secondary is None:
+        return res
+
+    d_p_km, d_s_km = min_body_clearance_km(target_system, res.x0_mid, res.ydot0_mid, res.period_mid)
+    ok = d_p_km >= (radius_km_primary + margin_km) and d_s_km >= (radius_km_secondary + margin_km)
+    if ok:
+        return dataclasses.replace(
+            res,
+            min_distance_primary_km=d_p_km,
+            min_distance_secondary_km=d_s_km,
+            min_clearance_ok=True,
+        )
+    note = (
+        f"fails body-clearance gate: min distance to primary centre "
+        f"{d_p_km:.2f} km (radius {radius_km_primary:.2f} km + margin "
+        f"{margin_km:.2f} km required), to secondary centre {d_s_km:.2f} km "
+        f"(radius {radius_km_secondary:.2f} km + margin {margin_km:.2f} km "
+        "required) -- trajectory passes inside a body, physically impossible "
+        "(see #659's Antiope adjudication, the case this gate generalizes)"
+    )
+    return SweepResult(
+        k1=res.k1,
+        k2=res.k2,
+        stable_found=False,
+        method=res.method,
+        note=note,
+        min_distance_primary_km=d_p_km,
+        min_distance_secondary_km=d_s_km,
+        min_clearance_ok=False,
+    )
+
+
+def _finalize_candidate(
+    k1: int,
+    k2: int,
+    target_system: cr3bp.CR3BPSystem,
+    orbit: cp.SymmetricOrbit,
+    method: str,
+    *,
+    radius_km_primary: float | None,
+    radius_km_secondary: float | None,
+    clearance_margin_km: float,
+) -> SweepResult:
+    """Finalization for :func:`sweep_family`: build the result, apply the
+    (pre-existing) topology gate, then (task #660) the new physical
+    body-clearance gate -- unchanged pre-#660 behavior when the topology gate
+    rejects, or when no radius is supplied (see :func:`_gate_clearance`)."""
+    res = _build_result(k1, k2, target_system, orbit, method)
+    if not res.topology_ok:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note=(
+                f"stable orbit found but wrong topology (got prograde="
+                f"{res.prograde}, reaches_secondary={res.reaches_secondary}); "
+                "clean negative"
+            ),
+        )
+    return _gate_clearance(
+        res, target_system, radius_km_primary, radius_km_secondary, clearance_margin_km
+    )
+
+
+def _finalize_grid_candidate(
+    k1: int,
+    k2: int,
+    target_system: cr3bp.CR3BPSystem,
+    orbit: cp.SymmetricOrbit,
+    method: str,
+    *,
+    radius_km_primary: float | None,
+    radius_km_secondary: float | None,
+    clearance_margin_km: float,
+) -> SweepResult:
+    """Finalization for :func:`sweep_family_grid`.
+
+    Deliberately does NOT add a topology_ok gate here (unlike
+    :func:`_finalize_candidate`/:func:`sweep_family`) -- ``sweep_family_grid``
+    never had one pre-#660 (its own ``_grid_seed_search`` already filters the
+    SEED for correct topology; whether that survives the subsequent C-sweep
+    is an existing, separate question this task does not change). Adding one
+    here would be an unrelated behavior change outside #660's scope. When no
+    radius is supplied this is BYTE-IDENTICAL to the pre-#660
+    ``_build_result(...)`` return.
+    """
+    res = _build_result(k1, k2, target_system, orbit, method)
+    return _gate_clearance(
+        res, target_system, radius_km_primary, radius_km_secondary, clearance_margin_km
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -677,8 +1030,21 @@ def sweep_family(
     *,
     c_band: float = 0.3,
     n_steps: int = 40,
+    radius_km_primary: float | None = None,
+    radius_km_secondary: float | None = None,
+    clearance_margin_km: float = DEFAULT_CLEARANCE_MARGIN_KM,
 ) -> SweepResult:
-    """Anchor-seeded mu-continuation + C-sweep for one (k1,k2) family."""
+    """Anchor-seeded mu-continuation + C-sweep for one (k1,k2) family.
+
+    ``radius_km_primary``/``radius_km_secondary`` (task #660): if BOTH are
+    supplied, a stable topology-matching candidate is additionally checked
+    against the min-clearance-vs-body-radius physical gate (see
+    :func:`_gate_clearance`) -- a candidate passing inside either body's own
+    (radius + ``clearance_margin_km``) is converted to a clean negative with
+    ``note`` explaining why, rather than silently admitted. Defaults to
+    ``None`` (gate skipped, byte-identical to pre-#660 behavior) so every
+    existing caller is unaffected.
+    """
     a = ANCHORS[anchor_key]
     k1, k2 = a["k1"], a["k2"]
     c_l1 = _c_l1(target_system.mu)
@@ -742,20 +1108,16 @@ def sweep_family(
             method=method,
             note="no stable (|nu|<1) window found in C-sweep range",
         )
-    res = _build_result(k1, k2, target_system, orbit_stable, method)
-    if not res.topology_ok:
-        return SweepResult(
-            k1=k1,
-            k2=k2,
-            stable_found=False,
-            method=method,
-            note=(
-                f"stable orbit found but wrong topology (got prograde="
-                f"{res.prograde}, reaches_secondary={res.reaches_secondary}); "
-                "clean negative"
-            ),
-        )
-    return res
+    return _finalize_candidate(
+        k1,
+        k2,
+        target_system,
+        orbit_stable,
+        method,
+        radius_km_primary=radius_km_primary,
+        radius_km_secondary=radius_km_secondary,
+        clearance_margin_km=clearance_margin_km,
+    )
 
 
 def sweep_family_grid(
@@ -768,8 +1130,16 @@ def sweep_family_grid(
     hc_list: tuple[int, ...],
     period_guess: float,
     per_call_timeout: int = 4,
+    radius_km_primary: float | None = None,
+    radius_km_secondary: float | None = None,
+    clearance_margin_km: float = DEFAULT_CLEARANCE_MARGIN_KM,
 ) -> SweepResult:
-    """Grid-seeded (no Table-I anchor) C-sweep for one (k1,k2) family."""
+    """Grid-seeded (no Table-I anchor) C-sweep for one (k1,k2) family.
+
+    ``radius_km_primary``/``radius_km_secondary``/``clearance_margin_km``:
+    see :func:`sweep_family`'s docstring -- identical task #660 gate, same
+    backward-compatible default (``None`` -> gate skipped).
+    """
     c_l1 = _c_l1(target_system.mu)
     seed_orbit = _grid_seed_search(
         target_system,
@@ -814,4 +1184,13 @@ def sweep_family_grid(
             method="grid_then_c_sweep",
             note="no stable window",
         )
-    return _build_result(k1, k2, target_system, orbit_stable, "grid_seed_then_c_sweep")
+    return _finalize_grid_candidate(
+        k1,
+        k2,
+        target_system,
+        orbit_stable,
+        "grid_seed_then_c_sweep",
+        radius_km_primary=radius_km_primary,
+        radius_km_secondary=radius_km_secondary,
+        clearance_margin_km=clearance_margin_km,
+    )

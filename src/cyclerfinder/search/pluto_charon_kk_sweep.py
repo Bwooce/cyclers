@@ -73,6 +73,17 @@ def _run_with_timeout(fn: Callable[[], _T], seconds: int = 3) -> _T | None:
 #: Mass-parameter from cr3bp_system("Pluto","Charon")  (GM_Charon / GM_system)
 PC_MU: float = cr3bp_system("Pluto", "Charon").mu  # 0.10876473603280369
 
+#: Mean body radii (km), task #660 -- New Horizons LORRI limb fits: Nimmo, F.
+#: et al. (2017), Icarus 287, 12 (arXiv:1603.00821), "Mean radius and shape of
+#: Pluto and Charon from New Horizons images": Pluto 1188.3+/-1.6 km, Charon
+#: 606.0+/-1.0 km (both 2-sigma). Kept here (not in real_binary_kk_sweep.py's
+#: REAL_BINARY_SYSTEMS dict) because Pluto-Charon is THIS module's own
+#: hardcoded system (make_pluto_charon_system()), not a RealBinarySystem
+#: entry -- used by real_binary_kk_sweep.py's #660 body-clearance-gate
+#: regression test (the PC(3,2) fairness check per #659's own adjudication).
+PLUTO_RADIUS_KM: float = 1188.3
+CHARON_RADIUS_KM: float = 606.0
+
 _PC_SYS_CACHED: cr3bp.CR3BPSystem | None = None
 
 
@@ -356,6 +367,16 @@ class SweepResult:
     reaches_secondary: bool = False
     crosscheck_ok: bool = False
     crosscheck_dj: float | None = None
+    #
+    # Task #660: min-clearance-vs-body-radius physical gate diagnostics.
+    # `None` means "not evaluated" (no sourced radius was supplied to the
+    # caller, e.g. every pre-#660 caller and every PC-specific sweep_* in
+    # THIS module) -- NOT "passed". Populated by
+    # cyclerfinder.search.real_binary_kk_sweep's sweep_family/
+    # sweep_family_grid when radius_km_primary/radius_km_secondary are given.
+    min_distance_primary_km: float | None = None  # min dist to primary CENTRE, 1 period
+    min_distance_secondary_km: float | None = None  # min dist to secondary CENTRE
+    min_clearance_ok: bool | None = None  # None=not evaluated; else both bodies cleared radius
     #
     method: str = ""  # how the seed was obtained
     note: str = ""  # clean-negative reason or other note
