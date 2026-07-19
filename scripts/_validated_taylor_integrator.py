@@ -233,6 +233,145 @@ def cr3bp_planar_jacobi(iv: Any, state6: list[Any], mu: float) -> Any:
 
 
 # --------------------------------------------------------------------------- #
+# #670 -- Levi-Civita close-approach REGULARIZATION around the secondary.       #
+#                                                                             #
+# The plain CR3BP jet's  mu/r2  pseudo-potential term is genuinely singular as  #
+# the trajectory approaches the secondary (Jupiter): #669 proved the rigorous   #
+# Oterma-arc enclosure's real horizon is a physical close flyby (perijove r2 ~  #
+# 0.004 at t ~ 0.466), where the a-priori Picard box's width overtakes the      #
+# shrinking miss distance -- a mathematical singularity in the equations of     #
+# motion themselves, which no coordinate REFRAMING (QR/Lohner-C1) can remove.   #
+#                                                                             #
+# Levi-Civita regularization (Levi-Civita 1920; Szebehely, *Theory of Orbits*   #
+# 1967, Ch.3; in-corpus digest 2026-06-19-digest-szebehely-1967.md) removes the #
+# 1/r singularity by construction.  Put the secondary at the origin via         #
+# xi = x-(1-mu), eta = y, so r2 = sqrt(xi^2 + eta^2).  Introduce the complex    #
+# square map  z = w^2  (z = xi + i*eta, w = u + i*v):                           #
+#                                                                             #
+#     xi = u^2 - v^2,   eta = 2 u v,   r2 = u^2 + v^2 = |w|^2                    #
+#                                                                             #
+# together with the fictitious-time reparametrization  dt = r2 * dtau  (so      #
+# d/dt = (1/r2) d/dtau).  Working canonically (Poincare time transformation on  #
+# the extended-phase-space Hamiltonian  Gamma = r2 * (H - h)  with  h = -C/2    #
+# the fixed Jacobi energy), the singular  -r2 * mu/r2 = -mu  term becomes a     #
+# CONSTANT -- the quadratic map's Jacobian (|dz/dw|^2 = 4 r2) vanishes at        #
+# exactly the rate that cancels the 1/r2 blow-up -- so the regularized field is  #
+# analytic straight through r2 = 0.  A genuine close approach becomes an         #
+# ordinary, smoothly-traversable arc.  The regularized Hamiltonian is           #
+#                                                                             #
+#   Gamma = (Pu^2 + Pv^2)/8 + r2 (v Pu - u Pv)/2 - (1-mu)(v Pu + u Pv)/2         #
+#             - (1-mu) r2 / r1 - mu - r2 h                                       #
+#                                                                             #
+# with  Pu, Pv  the momenta conjugate to  u, v  and  r1 = sqrt((u^2-v^2+1)^2 +   #
+# (2uv)^2)  (distance to the PRIMARY, which stays ~1 near Jupiter, hence still   #
+# analytic).  Hamilton's equations d/dtau = J grad Gamma give the state jet      #
+# below.  A 5th quadrature coordinate  T' = r2  carries the elapsed PHYSICAL     #
+# time t = integral r2 dtau, so the rigorous enclosure yields rigorous bounds    #
+# on the physical time reached.  The same interval-Taylor primitives are reused. #
+# --------------------------------------------------------------------------- #
+def lc_secondary_from_physical(iv: Any, x: Any, y: Any, vx: Any, vy: Any, mu: float) -> list[Any]:
+    """Physical planar state ``[x,y,vx,vy]`` -> regularized ``[u,v,Pu,Pv,T=0]``.
+
+    Secondary-centred ``xi = x-(1-mu)``, ``eta = y``; ``w = sqrt(z)`` with
+    ``z = xi + i eta`` (principal branch, real-axis sign carried by ``eta``);
+    canonical momenta ``Pu = 2u pxi + 2v peta``, ``Pv = -2v pxi + 2u peta`` from
+    the secondary-frame momenta ``pxi = vx - eta``, ``peta = vy + xi + (1-mu)``.
+    ``T`` (elapsed physical time) starts at 0.
+    """
+    om1 = iv.mpf(1.0 - mu)
+    xi = x - om1
+    eta = y
+    r2 = iv.sqrt(xi**2 + eta**2)
+    u = iv.sqrt((r2 + xi) / 2)
+    v_mag = iv.sqrt((r2 - xi) / 2)
+    v = v_mag if bool(eta.b >= 0) or bool(eta.a >= 0) else -v_mag
+    pxi = vx - eta
+    peta = vy + xi + om1
+    pu = 2 * u * pxi + 2 * v * peta
+    pv = -2 * v * pxi + 2 * u * peta
+    return [u, v, pu, pv, iv.mpf(0.0)]
+
+
+def lc_secondary_to_physical(iv: Any, state5: list[Any], mu: float) -> list[Any]:
+    """Regularized ``[u,v,Pu,Pv,(T)]`` -> physical planar state ``[x,y,vx,vy]``.
+
+    Inverse of :func:`lc_secondary_from_physical` (``T`` ignored):
+    ``xi = u^2-v^2``, ``eta = 2uv``, ``r2 = u^2+v^2``; secondary-frame momenta
+    ``pxi = (u Pu - v Pv)/(2 r2)``, ``peta = (v Pu + u Pv)/(2 r2)``; then
+    ``vx = pxi + eta``, ``vy = peta - xi - (1-mu)``, ``x = xi + (1-mu)``.
+    """
+    om1 = iv.mpf(1.0 - mu)
+    u, v, pu, pv = state5[0], state5[1], state5[2], state5[3]
+    xi = u * u - v * v
+    eta = 2 * u * v
+    r2 = u * u + v * v
+    pxi = (u * pu - v * pv) / (2 * r2)
+    peta = (v * pu + u * pv) / (2 * r2)
+    vx = pxi + eta
+    vy = peta - xi - om1
+    return [xi + om1, eta, vx, vy]
+
+
+def make_cr3bp_lc_secondary_jet(h: float) -> Callable[..., list[Series]]:
+    """Build the Levi-Civita regularized planar-CR3BP jet for fixed energy ``h``.
+
+    Returns a ``jet(iv, state, mu)`` compatible with the ``ts_*`` machinery, whose
+    5-component state is ``[u, v, Pu, Pv, T]`` in fictitious time ``tau``.  ``h``
+    is the fixed Jacobi energy ``-C/2`` (constant along the arc).  The field is
+    ANALYTIC through the secondary close approach (no ``1/r2``); the only residual
+    denominators are powers of ``r1 = dist-to-primary``, which stays ``~1``.
+    """
+
+    def jet(iv: Any, state: list[Series], mu: float) -> list[Series]:
+        u, v, pu, pv, _t = state
+        om1 = iv.mpf(1.0 - mu)
+        two_h = iv.mpf(2.0 * h)
+        half = iv.mpf(0.5)
+        quarter = iv.mpf(0.25)
+
+        r2 = ts_add(iv, ts_mul(iv, u, u), ts_mul(iv, v, v))  # u^2 + v^2
+        amom = ts_sub(iv, ts_mul(iv, v, pu), ts_mul(iv, u, pv))  # v Pu - u Pv
+        # P = u^2 - v^2 + 1,  Q = 2 u v  ->  r1^2 = P^2 + Q^2
+        pp = ts_add_scalar(iv, ts_sub(iv, ts_mul(iv, u, u), ts_mul(iv, v, v)), iv.mpf(1.0))
+        qq = ts_scale(iv, ts_mul(iv, u, v), iv.mpf(2.0))
+        r1sq = ts_add(iv, ts_mul(iv, pp, pp), ts_mul(iv, qq, qq))
+        r1i = ts_pow(iv, r1sq, -0.5)  # 1 / r1
+        r1i3 = ts_pow(iv, r1sq, -1.5)  # 1 / r1^3
+
+        # u' = Pu/4 + (r2 - om1) v / 2
+        up = ts_add(
+            iv,
+            ts_scale(iv, pu, quarter),
+            ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, -om1), v), half),
+        )
+        # v' = Pv/4 - (r2 + om1) u / 2
+        vp = ts_sub(
+            iv,
+            ts_scale(iv, pv, quarter),
+            ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, om1), u), half),
+        )
+        # Pu' = -u A + (r2 + om1) Pv/2 + 2 om1 u / r1 - om1 r2 (2 u P + 2 v Q)/r1^3 + 2 h u
+        inner1 = ts_scale(iv, ts_add(iv, ts_mul(iv, u, pp), ts_mul(iv, v, qq)), iv.mpf(2.0))
+        pup = ts_scale(iv, ts_mul(iv, u, amom), iv.mpf(-1.0))
+        pup = ts_add(iv, pup, ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, om1), pv), half))
+        pup = ts_add(iv, pup, ts_scale(iv, ts_mul(iv, u, r1i), 2 * om1))
+        pup = ts_sub(iv, pup, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, inner1), r1i3), om1))
+        pup = ts_add(iv, pup, ts_scale(iv, u, two_h))
+        # Pv' = -v A + (om1 - r2) Pu/2 + 2 om1 v / r1 - om1 r2 (-2 v P + 2 u Q)/r1^3 + 2 h v
+        inner2 = ts_scale(iv, ts_sub(iv, ts_mul(iv, u, qq), ts_mul(iv, v, pp)), iv.mpf(2.0))
+        om1_m_r2 = ts_add_scalar(iv, ts_scale(iv, r2, iv.mpf(-1.0)), om1)
+        pvp = ts_scale(iv, ts_mul(iv, v, amom), iv.mpf(-1.0))
+        pvp = ts_add(iv, pvp, ts_scale(iv, ts_mul(iv, om1_m_r2, pu), half))
+        pvp = ts_add(iv, pvp, ts_scale(iv, ts_mul(iv, v, r1i), 2 * om1))
+        pvp = ts_sub(iv, pvp, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, inner2), r1i3), om1))
+        pvp = ts_add(iv, pvp, ts_scale(iv, v, two_h))
+        # T' = r2  (dt = r2 dtau) -- elapsed physical time as a quadrature
+        return [up, vp, pup, pvp, r2]
+
+    return jet
+
+
+# --------------------------------------------------------------------------- #
 # The validated integrator.                                                    #
 # --------------------------------------------------------------------------- #
 def _f_over_box(iv: Any, jet: Any, box: list[Any], mu: float) -> list[Any]:
@@ -692,6 +831,9 @@ __all__ = [
     "enclosure_box",
     "integrate",
     "integrate_c1_qr",
+    "lc_secondary_from_physical",
+    "lc_secondary_to_physical",
+    "make_cr3bp_lc_secondary_jet",
     "rigorous_inverse",
     "solution_series",
     "ts_add",

@@ -1,0 +1,96 @@
+{
+  "task": "#670",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515,
+    "model": "planar CR3BP (Sun-Jupiter, Oterma)"
+  },
+  "method": "Levi-Civita regularization of the planar CR3BP around the secondary: z = w^2 complex-square map (xi = u^2-v^2, eta = 2uv, r2 = u^2+v^2) + fictitious time dt = r2 dtau, on the extended-phase-space Hamiltonian Gamma = r2 (H - h). The singular mu/r2 term becomes a constant; the field is analytic through r2 = 0. Integrated with the UNCHANGED #668 naive-C0 validated interval Taylor integrator. See make_cr3bp_lc_secondary_jet.",
+  "start": {
+    "x": 0.95229284234862,
+    "C0_lower": 3.03,
+    "C0_upper": 3.03
+  },
+  "radial_fall_closed_form_anchor": {
+    "problem": "radial fall to a point mass (collision orbit) -> harmonic oscillator in L-C",
+    "collision_tau": 3.141592653589793,
+    "validated_through_collision": true,
+    "u_encloses_closed_form": true,
+    "u_excludes_wrong": true,
+    "u_halfwidth": 2.1694551805016698e-35,
+    "phys_time_encloses_kepler_freefall": true
+  },
+  "stage_2_3_positive_controls": {
+    "exp_encloses_e": true,
+    "exp_excludes_wrong": true,
+    "harmonic_encloses_cos1": true,
+    "harmonic_encloses_neg_sin1": true
+  },
+  "oterma_cross_perijove": {
+    "tau_f": 19.0,
+    "n_steps": 152,
+    "step_h": 0.125,
+    "order": 10,
+    "validated": true,
+    "tau_reached": 19.0,
+    "t_phys_reached_lo": 0.4721197576608422,
+    "t_phys_reached_hi": 0.4721822891949168,
+    "final_max_halfwidth": 0.0012437508401380803,
+    "jacobi_end_contains_C0": true,
+    "halfwidth_growth_quantiles": [
+      7.804333364933243e-14,
+      2.53253662846714e-10,
+      6.62896211216328e-07,
+      5.861222999390602e-05,
+      0.0010141774905526647
+    ]
+  },
+  "oterma_reach_horizon": {
+    "tau_f": 32.0,
+    "n_steps": 640,
+    "step_h": 0.05,
+    "order": 12,
+    "validated": true,
+    "tau_reached": 32.0,
+    "t_phys_reached_lo": 0.7947346806607472,
+    "t_phys_reached_hi": 0.7960466263455497,
+    "final_max_halfwidth": 0.010093275157227598,
+    "jacobi_end_contains_C0": true,
+    "halfwidth_growth_quantiles": [
+      4.383938195521417e-20,
+      2.5072179259677415e-14,
+      1.27012036756705e-08,
+      4.267897021416424e-05,
+      0.005977873153596722
+    ]
+  },
+  "oterma_new_wall": {
+    "tau_f": 40.0,
+    "n_steps": 800,
+    "step_h": 0.05,
+    "order": 12,
+    "validated": false,
+    "tau_reached": 34.800000000000004,
+    "t_phys_reached_lo": 0.8458883648304452,
+    "t_phys_reached_hi": 1.0763902971741541,
+    "final_max_halfwidth": 2967.0877970926017,
+    "jacobi_end_contains_C0": true,
+    "halfwidth_growth_quantiles": [
+      1.4324421120664959e-19,
+      2.4423715094406016e-13,
+      4.280451211688181e-07,
+      0.003246660553415672,
+      0.853511089515743
+    ]
+  },
+  "findings": {
+    "regularization_removes_singularity_closed_form": true,
+    "stage_2_3_controls_intact": true,
+    "rigorous_arc_crosses_perijove": true,
+    "prior_669_wall_t": 0.466,
+    "regularized_reach_t": 0.7960466263455497,
+    "new_wall_is_wrapping_not_singularity": true
+  },
+  "scope_note": "Rigorous, and it clears the Stage-4 goal: Levi-Civita regularization removes the physical Jupiter-perijove singularity #669 identified, and the naive-C0 validated enclosure now carries the real Oterma arc THROUGH the perijove (t~0.466) to t~0.79, Jacobi rigorously conserved, non-vacuous. QR is NOT needed to cross the perijove (the obstruction was the singularity, not wrapping). The NEW horizon (t~0.85) is the wrapping effect -- the naive C0 half-width grows exponentially and blows up while Jacobi stays enclosed and no collision guard trips -- exactly the failure mode #669's QR reframing was built to defeat but could not previously reach. The Stage-5 lever is the regularized C1/QR integrator (needs the regularized variational jet); rigorous Poincare-map derivatives and the covering-relations / h-set topology also remain future stages."
+}

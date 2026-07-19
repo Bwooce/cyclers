@@ -93,10 +93,13 @@ unchanged. See `git log` around this date for the corrected commit.
   user UNCONDITIONALLY greenlit the build**, overriding the "wait for a found connection" trigger,
   and it is being executed as a staged build: `#668` (Stages 1-2, done — Stage 1 tooling verdict
   + a from-scratch validated interval Taylor integrator rigorously enclosing a real fraction of
-  the W-Z Oterma proof) and `#669` (Stage 3, done — Lohner-C1/QR reframing; correct and defeats
-  wrapping on controls, but found the specific Oterma arc is flyby-limited not wrapping-limited).
-  Remaining W-Z stages (rigorous Poincaré-map derivatives, covering-relations / h-set topology,
-  close-approach regularisation) are future work; see `#668`/`#669` own bullets.
+  the W-Z Oterma proof), `#669` (Stage 3, done — Lohner-C1/QR reframing; correct and defeats
+  wrapping on controls, but found the specific Oterma arc is flyby-limited not wrapping-limited),
+  and `#670` (Stage 4, done — Levi-Civita close-approach regularisation; the rigorous enclosure
+  now carries THROUGH the Jupiter perijove that stopped Stages 2/3, to t~0.8; the new horizon is
+  the wrapping effect, the Stage-5 fit for QR). Remaining W-Z stages (a regularized C1/QR
+  variational jet, rigorous Poincaré-map derivatives, covering-relations / h-set topology) are
+  future work; see `#668`/`#669`/`#670` own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -842,8 +845,10 @@ flyby (perijove r2~0.004 at t~0.466), so QR does not extend the reach past ~0.45
 partial/negative, revises #668's "wrapping wall" story (DONE 2026-07-20, Opus); #670 for the W-Z
 proof machinery's Stage 4 -- close-approach regularization (Levi-Civita/KS-style coordinate
 transform removing the near-secondary singularity) to push the rigorous Oterma arc enclosure
-through the physical Jupiter perijove #669 found blocks it at t~0.45-0.466 (registered+dispatched
-2026-07-20); #671 next-unused):**
+through the physical Jupiter perijove #669 found blocks it at t~0.45-0.466 -- DONE (2026-07-20,
+Opus): Levi-Civita regularization built+validated, rigorous enclosure now crosses the perijove
+to t~0.8 (Jacobi conserved); new wall is the WRAPPING effect (QR/Stage-5), not the singularity
+(registered+dispatched 2026-07-20); #671 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11859,6 +11864,46 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   trusting any new Oterma-arc result; honest partial/negative reporting expected and fully
   acceptable if this stage also hits a wall, matching `#662`/`#668`/`#669`'s own established
   precedent.
+  **DONE (2026-07-20, Opus) -- regularization built + independently validated; the rigorous
+  enclosure now carries THROUGH the Jupiter perijove that stopped Stages 2/3.** Derived and
+  implemented **Levi-Civita regularization** of the planar CR3BP around the secondary (Levi-Civita
+  1920; Szebehely *Theory of Orbits* 1967 Ch.3, in-corpus digest
+  `docs/notes/2026-06-19-digest-szebehely-1967.md`): secondary-centred `xi=x-(1-mu)`, `eta=y`, the
+  complex-square map `z=w^2` (`xi=u^2-v^2`, `eta=2uv`, `r2=u^2+v^2=|w|^2`) plus fictitious-time
+  reparametrization `dt=r2 dtau`, worked canonically on the extended-phase-space Hamiltonian
+  `Gamma=r2(H-h)` with `h=-C/2` the fixed Jacobi energy. The singular `mu/r2` term becomes a
+  CONSTANT `-mu` (the map's Jacobian `|dz/dw|^2=4 r2` cancels the `1/r2` blow-up exactly), so the
+  regularized field is analytic straight through `r2=0`; the only residual denominators are powers
+  of the distance-to-PRIMARY `r1~1`. `scripts/_validated_taylor_integrator.py` gains
+  `make_cr3bp_lc_secondary_jet` (factory closing over `h`, returns the 5-state `[u,v,Pu,Pv,T]` jet
+  in fictitious time, `T'=r2` carrying elapsed PHYSICAL time as a rigorous quadrature) and the
+  `lc_secondary_from_physical` / `lc_secondary_to_physical` coordinate maps; the core `#668`/`#669`
+  integrator is UNCHANGED. New driver `scripts/certify_670_wz_oterma_regularized.py` ->
+  `data/670_wz_oterma_regularized_certificate.json`; `tests/scripts/test_670_levi_civita_
+  regularization.py` (4 tests). **What is rigorously established (all `mpmath.iv`):** (1)
+  **closed-form anchor** -- a rectilinear (radial) fall to a point mass, a genuine two-body
+  *collision* orbit, is a harmonic oscillator in L-C coordinates; the rigorous enclosure traverses
+  `r2=0` SMOOTHLY (validated, no singularity-guard trip) and matches `sqrt(a) cos(omega tau)` and
+  the Kepler free-fall time to <1e-25, containing the true value AND excluding nearby-wrong ones,
+  non-vacuous -- proving the regularization *removes* the singularity, not hides it. (2) **the
+  regularized rigorous Oterma arc crosses the Jupiter perijove**: the naive-C0 validated integrator
+  (QR is NOT needed -- the obstruction was the singularity, not wrapping) carries the enclosure from
+  t=0 THROUGH the perijove (rigorously PAST it: enclosed physical time's LOWER bound 0.4721 > the
+  perijove 0.466) to t~0.80 model-time (tau=32), Jacobi rigorously enclosed around C0 the whole way,
+  enclosure non-vacuous (hw~1e-2). `#668`/`#669` stopped at t~0.42-0.466. (3) **the NEW horizon is
+  the WRAPPING effect, not the singularity**: past the perijove the naive-C0 half-width grows
+  exponentially (the classic `e^t` wrapping curve, ~4e-20 -> ~0.85 across the run) and blows up
+  (~3e3) near t~0.85, while the Jacobi constant stays rigorously enclosed and no collision guard
+  trips -- the signature of wrapping (a coordinate-frame artifact), exactly the failure mode
+  `#669`'s QR reframing was built to defeat but could not previously reach (the singularity
+  dominated first). Stage 2/3 positive controls (closed-form exp/harmonic goldens) re-verified
+  intact under the addition. **Net:** the Stage-4 goal is met -- regularization removes the physical
+  wall `#669` found and the rigorous arc now crosses it. The indicated Stage-5 lever for the new
+  wrapping wall is the regularized C1/QR integrator (needs the regularized variational jet, a
+  substantial further derivation -- deferred, as `#669` deferred to `#670`); rigorous Poincare-map
+  derivatives and the covering-relations / h-set topology also remain future stages. No
+  `catalogue.yaml` write. Lint/format/mypy all clean (full `mypy src tests`, 751 files);
+  `tests/scripts` green (154 tests incl. 4 new, no regression).
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
