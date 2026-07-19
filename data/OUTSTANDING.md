@@ -817,7 +817,15 @@ accounting, the second-object cross-check on 2010 SO16, and the stated scope lim
 L1-L2 families skipped, documented) -- **DONE 2026-07-20, 1820 orbits classified, clean census:
 every geometrically-qualifying hit traces to a threshold artifact (mars-phobos), an already-
 published research area (saturn-enceladus), or well-known generic halo-family collision-terminus
-topology (sun-mars) -- nothing novel, nothing written back**; #668 next-unused):**
+topology (sun-mars) -- nothing novel, nothing written back**; #668 for the actual
+Wilczak-Zgliczynski computer-assisted-proof machinery build, explicitly UNCONDITIONALLY GREENLIT
+by the user 2026-07-20 overriding #653's own re-scoped "wait for a found connection" trigger --
+staged: Stage 1 assesses what rigorous/validated numerics tooling this Python/uv environment can
+actually support (no PHCpack/Julia available, confirmed by #662's own tooling probe), Stage 2
+reproduces the W-Z Oterma heteroclinic EXISTENCE proof itself with genuine interval-arithmetic
+covering relations (not the existing #403 floating-point golden) as the foundational capability
+validation, before any new theorem-grade target is attempted (registered+dispatched 2026-07-20);
+#669 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -9573,6 +9581,14 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   could plausibly flip the verdict, or if a computer-assisted-proof paper becomes a deliverable in
   its own right — both re-costed fresh, not assumed from this scoping. Still no dispatch without
   an explicit user decision.
+  **DECISION (user, 2026-07-20): UNCONDITIONAL GREENLIGHT — build the machinery now, overriding
+  `#653`'s "wait for a found connection" re-scoped trigger.** No specific target claim was chosen;
+  the user was presented the trigger context (no live found-connection candidate exists right now)
+  and explicitly chose to greenlight the build speculatively rather than wait or target `#663`'s
+  small already-gate-failing closure. Dispatched as `#668`, scoped as a staged capability build
+  (tooling feasibility first, then reproduce the W-Z existence proof itself as the foundational
+  validation) rather than jumping straight at a new theorem-grade target with no candidate in
+  hand.
 - **#637 ✓ DONE (2026-07-19) — ACQUIRED (journal version, genuinely Open Access, not paywalled).**
   acquire the Litteri, Gil, Vasile, Rodriguez-Fernandez & Camacho *Celestial Mechanics and
   Dynamical Astronomy* 138:25 (June 2026) journal version — the external anchor `#608`'s own
@@ -11700,6 +11716,25 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   numbers currently top out at #645 file-wide; a checker false-negative, not a real registration
   gap (worth fixing in `preflight.py` itself in a future task, not done here — out of this task's
   scope).
+- **#668 (registered+dispatched 2026-07-20)** — the actual Wilczak-Zgliczyński computer-assisted-
+  proof machinery build. See `#636`'s own bullet for the full decision record: **explicitly,
+  UNCONDITIONALLY greenlit by the user 2026-07-20**, overriding `#653`'s own re-scoped "wait for a
+  found connection" trigger — no specific target claim was chosen; the user was shown the current
+  absence of a live candidate and chose to proceed anyway. Scope: staged, NOT a single monolithic
+  build. **Stage 1**: assess what rigorous/validated numerics tooling this Python/uv environment
+  can actually support — `#662`'s own tooling probe already found no Julia and no installable
+  `phcpy`/PHCpack in this environment; check whether a genuine validated-integration route (Taylor
+  models with rigorous remainder bounds, interval Lohner-style methods, or any Python-native
+  equivalent) is realistically buildable here, or whether this is a hard environment blocker (in
+  which case report that honestly, per `#662`'s own good precedent, rather than forcing a weaker
+  substitute). **Stage 2** (only if Stage 1 clears): reproduce the Wilczak-Zgliczyński Oterma
+  heteroclinic connection EXISTENCE proof itself, with genuine interval-arithmetic covering
+  relations — NOT the existing floating-point-only `#403` golden
+  (`data/golden/wz_oterma_heteroclinic.yaml`) — as the foundational capability validation. This is
+  the natural, bounded, checkable first deliverable (a real published result to reproduce) before
+  any NEW theorem-grade target is ever attempted; do not skip straight to inventing a novel
+  non-existence or existence claim in this dispatch. Multi-week, research-grade effort explicitly
+  expected and accepted by the user's own decision.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
