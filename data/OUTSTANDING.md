@@ -732,10 +732,11 @@ topology extension at the one mu that ever produced a real hit, #3 real-binary g
 Antiope, Lempo-Hiisi-as-binary-core), #4 epoch-locking pilot on the 2-3 catalogue rows that
 already carry sourced published epochs to de-vacuate #650's phase-indeterminate heliocentric
 half; #1 recommended for immediate dispatch); #655 for #654 shortlist item 1, the Saturn mid-moon
-sweep (RUN COMPLETE 2026-07-19: Dione-Rhea/Tethys-Dione/Enceladus-Tethys clean 0/N negatives
-stamped to empty_regions.jsonl; Rhea-Titan found 3 gate-passing coplanar symmetric closures that
-then fail 0/3 a #575-style multi-cycle repeat check at real ~0.7deg inclination -- HELD for
-coordinator decision, no catalogue write); #656 for #654 shortlist item 2, Pluto-Charon
+sweep (CLOSED 2026-07-19: Dione-Rhea/Tethys-Dione/Enceladus-Tethys clean 0/N negatives stamped to
+empty_regions.jsonl; Rhea-Titan found 3 gate-passing coplanar symmetric closures that then fail
+0/3 a #575-style multi-cycle repeat check at real ~0.7deg inclination -- coordinator decided
+2026-07-19 to stamp it too, same disposition as #575, no literature-check/adjudication needed for
+a repeat-check negative; all 4 pairs stamped, no catalogue write); #656 for #654 shortlist item 2, Pluto-Charon
 higher-(k1,k2)
 topologies (registered, not yet dispatched); #657 for #654 shortlist item 3, real-binary genome
 round 2 (registered, not yet dispatched); #658 for #654 shortlist item 4, the epoch-locking pilot
@@ -10742,8 +10743,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   control, `#641`/`#644`'s clean censuses) says marginal return on new methods is currently below
   the return on pointing proven tools at these four genuinely unswept regions. No code, no
   catalogue changes; a design/scoping read only.
-- **#655 (dispatched 2026-07-19, Sonnet) — RUN COMPLETE, 3/4 clean negatives stamped,
-  Rhea-Titan HELD for coordinator decision** — `#654` shortlist item 1, the Saturn mid-moon-pair
+- **#655 ✓ DONE (dispatched 2026-07-19, Sonnet) — 4/4 clean negatives stamped, including Rhea-Titan
+  (coordinator disposition below)** — `#654` shortlist item 1, the Saturn mid-moon-pair
   direct symmetric-closure sweep. See `#654`'s own bullet for the full feasibility case.
   **Positive control PASSED**: `tests/scripts/test_enumerate_563_symmetric_closures.py` (4 tests,
   incl. the full byte-diff against the committed 30-closure Uranian golden) ran unmodified and
@@ -10801,19 +10802,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   out "inclination magnitude alone" as the driver of `#575`'s breakdown — something about the
   symmetric family's node-alignment/period-ratio structure breaks periodicity even at a
   near-negligible inclination. Data: `data/probe_655_rhea_titan_repeat_check.jsonl`.
-  **Disposition (per the dispatch's explicit scope-bounding instruction)**: because Rhea-Titan
-  DOES produce gate-passing closures at the base-enumeration stage, this dispatch does NOT
-  unilaterally stamp `empty_regions.jsonl` or close the thread for this pair — that decision
-  (whether the 0/3 repeat-check result is sufficient on its own, following `#575`'s exact
-  precedent, to treat this as a closed clean method-conditional negative, or whether a
-  literature-check/Opus-Fable-adjudication follow-up is still warranted first) is HELD for the
-  coordinating session, exactly as instructed. **`data/catalogue.yaml` NOT touched.**
+  **Disposition — DECIDED by the coordinating session (2026-07-19), following the dispatch's own
+  explicit scope-bounding instruction to hold this decision**: STAMPED as a clean, closed,
+  method-conditional negative (`saturn-rhea-titan-symmetric-closure-empty-655`), same disposition
+  as `#575`'s own Titan-Iapetus closure and for the identical reason — a 0/N repeat-check result is
+  not a novelty claim (no candidate orbit is being proposed as real; quite the opposite, it
+  demonstrates these specific near-closures do NOT form genuine repeating cycles), so
+  `[[feedback_literature_novelty_check_baseline]]`'s mandatory-for-novelty-claims gate does not
+  apply, and no Opus/Fable adjudication was warranted. Independently re-verified the repeat-check
+  arithmetic directly from `data/probe_655_rhea_titan_repeat_check.jsonl` before deciding (residual
+  growth 0.001→0.28-0.58→0.58-1.16 km/s against the 0.05 km/s gate, `physical_gate_pass: false`
+  from cycle 1 onward on all 3 basins) — the negative is real, not an artifact of the dispatch's
+  own reporting. `data/catalogue.yaml` NOT touched.
   **New files**: `scripts/probe_655_rhea_titan_3d_closure.py`,
   `scripts/probe_655_rhea_titan_repeat_check.py`,
-  `scripts/stamp_655_saturn_midmoon_empty_regions.py` (stamps only the 3 unambiguous negatives);
+  `scripts/stamp_655_saturn_midmoon_empty_regions.py` (dispatch-built, stamps the 3 unambiguous
+  base-gate negatives; the coordinator appended the 4th Rhea-Titan stamp directly to
+  `data/empty_regions.jsonl` rather than re-running/extending this script, since the decision it
+  was scoped to defer was made after the dispatch's own turn ended);
   tests `tests/scripts/test_probe_655_rhea_titan_3d_closure.py` (3),
   `tests/scripts/test_probe_655_rhea_titan_repeat_check.py` (2),
-  `tests/scripts/test_stamp_655_saturn_midmoon_empty_regions.py` (2), all green. Data:
+  `tests/scripts/test_stamp_655_saturn_midmoon_empty_regions.py` (2, coordinator updated the
+  second test from `test_rhea_titan_not_stamped` to `test_rhea_titan_stamped_by_coordinator_decision`
+  to match the now-decided disposition), all green. Data:
   `data/enumerate_655_saturn_{dione_rhea,tethys_dione,rhea_titan,enceladus_tethys}_symmetric_closures.jsonl`,
   `data/probe_655_rhea_titan_3d_closure.jsonl`, `data/probe_655_rhea_titan_repeat_check.jsonl`.
   `uv run ruff check .`/`ruff format --check .` clean repo-wide; `uv run mypy src tests` clean
