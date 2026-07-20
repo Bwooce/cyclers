@@ -115,6 +115,9 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
 # (V, dV) and CR3BP-state notation as the integrator module above.
 "scripts/certify_671_wz_oterma_regularized_qr.py" = ["N806"]
 "tests/scripts/test_671_regularized_qr_integrator.py" = ["N806"]
+# #672 section-map driver/tests: same STM matrix (V, dV) notation as above.
+"scripts/certify_672_wz_oterma_section_map.py" = ["N806"]
+"tests/scripts/test_672_section_map.py" = ["N806"]
 # Kernel-freshness checker test (#514) embeds a verbatim excerpt of NAIF's
 # real Apache directory-listing HTML as a fixture; reflowing it would make
 # it stop matching the byte-for-byte format the parser is regression-tested

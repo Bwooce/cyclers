@@ -100,9 +100,13 @@ unchanged. See `git log` around this date for the corrected commit.
   the wrapping effect, the Stage-5 fit for QR), and `#671` (Stage 5, done — the regularized
   variational/STM jet + QR reframing COMPOSE: matched-grid naive C0 wraps and fails at tau~23 while
   the QR-regularized enclosure reaches tau=80 / t_phys~2.05, Jacobi conserved, no wall — a >2x
-  physical-time extension past `#670`'s wall, through the repeated Jupiter perijoves). Remaining W-Z
-  stages (rigorous Poincaré-map derivatives, covering-relations / h-set topology) are future work;
-  see `#668`/`#669`/`#670`/`#671` own bullets.
+  physical-time extension past `#670`'s wall, through the repeated Jupiter perijoves), and `#672`
+  (Stage 6, done — the rigorous Poincaré section-crossing MAP + its rigorous Jacobian: interval-Newton
+  crossing isolation on the crossing step's Taylor model with a transversality certificate, plus
+  `DP = Dphi - f(Dsigma.Dphi)/(Dsigma.f)` via the QR-accumulated STM; validated end-to-end against
+  closed-form controls and tight+transversal on a real W-Z Oterma section point at tau*~16.571).
+  Remaining W-Z stage (covering-relations / h-set topology built ON this map) is future work;
+  see `#668`/`#669`/`#670`/`#671`/`#672` own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -859,14 +863,16 @@ variational jet derived (analytic Dg validated vs finite-diff to ~1e-9, incl. ne
 QR composed; both fixes compose, defeating the wrapping wall decisively (matched-grid naive C0
 fails at tau~23, QR-regularized reaches tau=80 / t_phys~2.05, hw~1e-11, Jacobi conserved, no
 wall) -- >2x physical-time extension past #670's wall, sailing through the repeated Jupiter
-perijoves that stopped Stages 2/3 (registered+dispatched 2026-07-20); #672 for the W-Z proof
-machinery's Stage 6 -- rigorous Poincare-section-map construction: given the now-validated
-regularized+QR flow enclosure (#671), build a rigorous section-crossing detector (interval
-root-isolation on the crossing condition, not a floating-point event trigger) plus the section
-map's own rigorous Jacobian (via the already-built variational/STM machinery, chain-ruled through
-the crossing-time dependence) at the actual W-Z Oterma section points -- the necessary dependency
-before h-set construction / covering relations can even be attempted (registered+dispatched
-2026-07-20); #673 next-unused):**
+perijoves that stopped Stages 2/3 (registered+dispatched 2026-07-20); #672 DONE (2026-07-20, Opus) -- W-Z Stage 6
+rigorous Poincare-section-map machinery BUILT and validated: interval-Newton crossing isolation on
+the crossing step's rigorous Taylor model (with a transversality certificate), enclosed crossing
+state, and the section-map Jacobian DP = Dphi - f(Dsigma.Dphi)/(Dsigma.f) via the QR-accumulated
+STM (Phi=A@B); validated END-TO-END against closed-form controls (2D harmonic {y1=0}: crossing
+3pi/4, state (0,-sqrt2), full DP=[[0,0],[-1/sqrt2,-1/sqrt2]] all enclosed tight + exclude-wrong;
+5D Kepler-LC {u=0}: tau*=pi, pu*=-2, Dsigma.f=-1/2), and demonstrated tight+transversal on a real
+W-Z Oterma section point (first {y=0} re-crossing rigorously isolated at tau*~16.571, x*~1.00351,
+DP half-width ~6e-11, through the first Jupiter perijove) -- h-sets/covering-relations remain the
+next stage (registered+dispatched 2026-07-20); #673 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12002,6 +12008,46 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   W-Z chain remains explicitly future work, not this dispatch's scope. Honest partial/negative
   reporting expected and fully acceptable if this stage hits a wall, matching the now well-
   established `#662`/`#668`-`#671` precedent.
+  **DONE (2026-07-20, Opus) -- the rigorous section-map machinery is BUILT and validated
+  END-TO-END against independent closed-form controls; it works tightly and transversally on a real
+  W-Z Oterma section point.** Section: W-Z use `Theta = {y=0}` parameterized by `(x, xdot)`; in the
+  `#670`/`#671` Levi-Civita coords the physical ordinate is `y = eta = 2uv`, so the crossing
+  condition is `sigma(w) = 2uv = 0`, isolated in the regularized fictitious time `tau` (the flow is
+  carried regularized to survive the perijoves BETWEEN crossings) with physical `(x, xdot)` recovered
+  by the inverse L-C map at the enclosed crossing. **Crossing isolation (genuinely interval, not a
+  float event):** an interval-Newton root of `sigma(state(s))=0` on the crossing step's rigorous
+  Taylor MODEL -- poly coeffs from the tight step-start enclosure box + an order-(p+1) Lagrange
+  remainder bounded over the whole-step a-priori enclosure; the same step certifies transversality
+  (`0 not in dsigma/ds` over the step, formed rigorously as `grad sigma . state'`). **Section-map
+  Jacobian, derived from the implicit function theorem, not approximated:** differentiating
+  `sigma(phi_{tau*(w)}(w))=0` gives `Dtau* = -(Dsigma.Dphi)/(Dsigma.f)` and hence `DP = Dphi -
+  f (Dsigma.Dphi)/(Dsigma.f)`; `Dphi_{0->tau*}` is the QR-accumulated flow STM (`Phi = A@B`, kept
+  tight by the Lohner-C1 reframing -- the same trick that beat `#671`'s wrapping wall, added to the
+  QR stepper via the already-formed `A^{-1}M` factor) composed with the crossing step's partial-step
+  STM Taylor model. New machinery in `scripts/_validated_taylor_integrator.py`
+  (`rigorous_section_map`, `isolate_section_crossing`, `section_map_jacobian`, `flow_taylor_model`,
+  `eval_series_horner`, `deriv_series`; `integrate_c1_qr` now also returns the accumulated
+  `final_stm`), driver `scripts/certify_672_wz_oterma_section_map.py` ->
+  `data/672_wz_oterma_section_map_certificate.json`, `tests/scripts/test_672_section_map.py` (6
+  tests). **Positive controls (INDEPENDENT closed form, the load-bearing correctness proof):**
+  (1) 2D harmonic oscillator, section `{y1=0}`, start `(1,1)` -- rigorously recovered crossing time
+  `3pi/4` (width ~3e-35), post-map state `(0, -sqrt2)`, AND the FULL section-map Jacobian
+  `DP=[[0,0],[-1/sqrt2,-1/sqrt2]]` with `Dsigma.f=-sqrt2`, every entry enclosed tight and
+  excluding-nearby-wrong (this validates the implicit-function derivative correction itself, not just
+  that it runs); (2) 5D pure-Kepler-in-Levi-Civita, section `{u=0}` -- `tau*=pi`, `pu*=-2`,
+  `Dsigma.f=-1/2`, on-section `DP` row vanishes (exercises the regularized 5D state + accumulated-STM
+  path). **Real W-Z Oterma:** from the first published golden crossing the machinery rigorously
+  isolates the first forward `{y=0}` re-crossing at `tau*~16.5710` (width ~9e-13), physical
+  `x*~1.003507`, `y*~0` (~2e-15), transversal (`Dsigma.f=-2.7e-3 != 0`), with the QR-accumulated STM
+  and DP staying tight (half-width ~6e-11, non-vacuous) straight through the first Jupiter perijove
+  the crossing sits just past (`T~0.462`). Honest scope note: a forward shot from the ROUNDED
+  published IC does not track the true unstable heteroclinic connection, so this crossing is NOT
+  expected to reproduce golden point 2 -- matching the published sequence is the job of the future
+  h-set / covering-relations stage (which brackets the true orbit with h-sets); this dispatch
+  deliberately builds only the section-map DEPENDENCY those need. No `catalogue.yaml` write.
+  Lint/format/mypy all clean (full `mypy src tests`, 753 files); `tests/scripts` green (164 tests
+  incl. 6 new), `tests/data tests/search` only the same 2 pre-existing documented failures
+  (`test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`).
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +

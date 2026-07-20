@@ -1,0 +1,92 @@
+{
+  "task": "#672",
+  "stage": "Stage 6 -- rigorous Poincare section-crossing map + Jacobian",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "section_definition": "W-Z use Theta = {y = 0} parameterized by (x, xdot); in Levi-Civita regularized coords y = eta = 2uv, so sigma(w) = 2uv = 0. Crossing isolated in the regularized fictitious time tau (the flow is carried regularized to survive the Jupiter perijoves between crossings); physical (x, xdot) recovered by the inverse Levi-Civita map at the enclosed crossing.",
+  "method": "Interval-Newton root of sigma(state(s))=0 on the crossing step's rigorous Taylor MODEL (poly coeffs from the tight step-start enclosure box + an order-(p+1) Lagrange remainder bounded over the whole-step a-priori enclosure); the same step certifies transversality (0 not in dsigma/ds over the step). Section-map Jacobian DP = Dphi_tau* - f (Dsigma Dphi_tau*)/(Dsigma f) with Dphi_tau* the QR-accumulated flow STM (Phi=A@B, kept tight by the Lohner-C1 reframing) composed with the crossing step's partial STM Taylor model.",
+  "harmonic_closed_form_control": {
+    "start": [
+      1.0,
+      1.0
+    ],
+    "section": "{y1 = 0}",
+    "tau_star_lo": 2.356194490192345,
+    "tau_star_hi": 2.356194490192345,
+    "tau_star_width": 3.2171076330098217e-35,
+    "tau_star_encloses_3pi_over_4": true,
+    "crossing_y1_halfwidth": 4.551120848046249e-35,
+    "crossing_y2_encloses_neg_sqrt2": true,
+    "DP_encloses_closed_form": true,
+    "DP_excludes_wrong": true,
+    "DP_max_halfwidth": 1.761998693344339e-30,
+    "dsigma_dot_f_encloses_neg_sqrt2": true,
+    "transversal": true,
+    "closed_form": {
+      "tau_star": 2.356194490192345,
+      "crossing_state": [
+        0.0,
+        -1.4142135623730951
+      ],
+      "DP": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -0.7071067811865476,
+          -0.7071067811865476
+        ]
+      ],
+      "dsigma_dot_f": -1.4142135623730951
+    }
+  },
+  "kepler_lc_closed_form_control": {
+    "start_u": 1.0,
+    "section": "{u = 0}",
+    "tau_star_encloses_pi": true,
+    "tau_star_width": 5.6417860551265305e-34,
+    "crossing_u_halfwidth": 2.820925135010511e-34,
+    "crossing_pu_encloses_neg2": true,
+    "dsigma_dot_f_encloses_neg_half": true,
+    "DP_row_u_is_zero": true,
+    "DP_row_u_max_halfwidth": 1.6141083976091765e-29,
+    "transversal": true
+  },
+  "oterma_real_section_map": {
+    "start_x": 0.95229284234862,
+    "start_vx": 1.23e-05,
+    "section": "{y = 0}  (physical),  sigma = 2uv in Levi-Civita coords",
+    "found": true,
+    "reason": "rigorously isolated a unique transversal section crossing",
+    "validated_to_tau": 16.625,
+    "crossing_step": 132,
+    "tau_star_lo": 16.570955135378682,
+    "tau_star_hi": 16.570955135379545,
+    "tau_star_width": 8.641288226907362e-13,
+    "physical_x_lo": 1.0035073191783503,
+    "physical_x_hi": 1.003507319178353,
+    "physical_y_halfwidth": 2.323895570653021e-15,
+    "physical_vx_lo": -0.17452281277442414,
+    "physical_vx_hi": -0.17452281277349355,
+    "physical_time_T_lo": 0.4617279108771066,
+    "physical_time_T_hi": 0.46172791087714377,
+    "dsigma_dot_f_lo": -0.0026890653576749214,
+    "dsigma_dot_f_hi": -0.0026890653576709888,
+    "transversal": true,
+    "stm_max_halfwidth": 1.9040681046792863e-11,
+    "DP_max_halfwidth": 6.356569533996567e-11,
+    "note": "first forward re-crossing of {y=0}; lands just past the first Jupiter perijove (T~0.462). Not expected to equal golden point 2 (rounded IC does not track the unstable connection)."
+  },
+  "findings": {
+    "harmonic_DP_matches_closed_form": true,
+    "kepler_lc_control_matches_closed_form": true,
+    "oterma_crossing_rigorously_isolated": true,
+    "oterma_transversal": true,
+    "oterma_DP_nonvacuous_tight": true
+  },
+  "scope_note": "This is the section-map machinery only (crossing isolation, crossing state, and rigorous section-map Jacobian), validated end-to-end against closed-form controls and demonstrated tight and transversal on a real W-Z Oterma section point. Constructing the actual h-sets and proving covering relations along the W-Z chain is the next stage, explicitly not this dispatch's scope."
+}

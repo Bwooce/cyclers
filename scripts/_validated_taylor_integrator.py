@@ -892,12 +892,23 @@ def _qr_step(
     h: float,
     mu: float,
     order: int,
-) -> tuple[list[Any], IMat, list[Any]] | None:
+    bmat: IMat,
+) -> tuple[list[Any], IMat, list[Any], IMat] | None:
     """One Lohner-C1/QR step of the enclosure ``yhat + a_frame @ [rbox]``.
 
-    Returns the updated ``(yhat, a_frame, rbox)`` (``yhat`` a point vector,
+    Returns the updated ``(yhat, a_frame, rbox, bmat)`` (``yhat`` a point vector,
     ``a_frame`` a point orthogonal matrix, ``rbox`` a box in the rotating frame),
     or ``None`` if any sub-step cannot be validated (caller shrinks ``h``).
+
+    ``bmat`` is the accumulated frame-relative state-transition matrix: if the running
+    frame product satisfies ``Phi_{0->k} = a_frame @ bmat`` on entry, then it does
+    again on exit with the returned ``bmat``.  This is the standard Lohner-C1 route to
+    a rigorous *and* tight accumulated flow Jacobian: the per-step factor
+    ``a_new^{-1} M`` (already formed for the deviation update) is the well-conditioned
+    R-like factor of the QR, so the interval product of these factors stays tight even
+    as the true STM magnitude grows exponentially -- the same reframing that keeps the
+    enclosure box from wrapping keeps ``bmat`` from wrapping.  (Pass an identity
+    ``bmat`` at step 0; ignore the returned value if the accumulated STM is not needed.)
     """
     n = len(yhat)
     # (1) full interval-box hull of the current set  yhat (+) A[rbox]
@@ -942,7 +953,10 @@ def _qr_step(
     t1 = _imatvec(iv, ainv_m, rbox)
     t2 = _imatvec(iv, a_new_inv, e_c)
     rbox_new = [t1[i] + t2[i] for i in range(n)]
-    return yhat_new, a_new, rbox_new
+    # (8) accumulated frame-relative STM:  Phi = a_new @ bmat_new,  bmat_new =
+    #     (a_new^{-1} M) @ bmat  (same well-conditioned factor as the deviation map)
+    bmat_new = _imatmul(iv, ainv_m, bmat)
+    return yhat_new, a_new, rbox_new, bmat_new
 
 
 def enclosure_box(iv: Any, yhat: list[Any], a_frame: IMat, rbox: list[Any]) -> list[Any]:
@@ -974,15 +988,16 @@ def integrate_c1_qr(
     yhat = [_mid(y0[i]) for i in range(n)]
     a_frame: IMat = [[iv.mpf(1) if i == j else iv.mpf(0) for j in range(n)] for i in range(n)]
     rbox = [y0[i] - yhat[i] for i in range(n)]  # thin (0 if y0 is a point)
+    bmat: IMat = [[iv.mpf(1) if i == j else iv.mpf(0) for j in range(n)] for i in range(n)]
     h = t_final / n_steps
     widths: list[float] = []
     ok = True
     for _ in range(n_steps):
-        nxt = _qr_step(iv, jet, var_jet, yhat, a_frame, rbox, h, mu, order)
+        nxt = _qr_step(iv, jet, var_jet, yhat, a_frame, rbox, h, mu, order, bmat)
         if nxt is None:
             ok = False
             break
-        yhat, a_frame, rbox = nxt
+        yhat, a_frame, rbox, bmat = nxt
         box = enclosure_box(iv, yhat, a_frame, rbox)
         widths.append(max(float(c.delta.b) for c in box) / 2.0)
     return {
@@ -990,6 +1005,7 @@ def integrate_c1_qr(
         "final_yhat": yhat,
         "final_frame": a_frame,
         "final_rbox": rbox,
+        "final_stm": _imatmul(iv, a_frame, bmat),
         "validated": ok,
         "n_completed": len(widths),
         "max_halfwidths": widths,
@@ -999,20 +1015,330 @@ def integrate_c1_qr(
     }
 
 
+# --------------------------------------------------------------------------- #
+# #672 -- Rigorous Poincare SECTION-CROSSING MAP with its own rigorous Jacobian.#
+#                                                                             #
+# The W-Z existence proof is built on covering relations between h-sets placed  #
+# along the Oterma orbit, verified through the Poincare SECTION MAP P (not the   #
+# raw flow).  Their section is Theta = {y = 0}, parameterized by (x, xdot); in   #
+# the Levi-Civita regularized coordinates carried by #670/#671 the physical      #
+# ordinate is  y = eta = 2 u v, so the section condition is  sigma(w) = 2 u v = 0#
+# (a coordinate section in physical space; the same code handles ANY smooth      #
+# scalar section via the (sigma_val, sigma_grad) descriptor below).             #
+#                                                                             #
+# This builds the necessary PRECURSOR to h-sets: given a rigorously-enclosed     #
+# initial condition, (1) rigorously ISOLATE the fictitious-time interval [tau*]  #
+# of the first section crossing -- an interval-Newton root of sigma(state(s))=0  #
+# on the crossing step's rigorous Taylor MODEL (poly coeffs from the IC box +    #
+# an order-(p+1) Lagrange-remainder coefficient bounded over the whole-step      #
+# a-priori enclosure), NOT a floating-point event trigger; the same step         #
+# certifies transversality (0 not in dsigma/ds over the step); (2) evaluate the  #
+# enclosed state AT [tau*]; and (3) form the rigorous section-map Jacobian        #
+#                                                                             #
+#   DP = Dphi_tau*  -  f(P) . (Dsigma(P) . Dphi_tau*) / (Dsigma(P) . f(P))       #
+#                                                                             #
+# (the flow's variational matrix Dphi_tau* PLUS the implicit-function correction #
+# for the crossing time's dependence on the IC -- derived by differentiating the #
+# crossing condition sigma(phi_{tau*(w)}(w)) = 0, chain rule + implicit function #
+# theorem; standard Poincare-map-derivative material, e.g. Simo's / Guckenheimer #
+# & Holmes; get it exactly, do not approximate).  Dphi_tau* is the accumulated   #
+# STM Phi_{0->tau*} obtained tightly from the QR stepper's ``bmat`` (Phi=A@B)     #
+# composed with the crossing step's partial-step STM Taylor model.              #
+#                                                                             #
+# Validated to full interval rigor against a closed-form positive control (the   #
+# 2D harmonic oscillator, section {y1=0}: crossing time, post-map state, AND the #
+# full DP are hand-computable and independently verified).  Building the actual  #
+# h-sets and proving covering relations remains the NEXT stage, not this one.    #
+# --------------------------------------------------------------------------- #
+def eval_series_horner(iv: Any, series: Series, s: Any) -> Any:
+    """Rigorously enclose ``sum_k series[k] s^k`` (Horner), ``s`` an iv interval."""
+    acc = series[-1]
+    for k in range(len(series) - 2, -1, -1):
+        acc = acc * s + series[k]
+    return acc
+
+
+def deriv_series(iv: Any, series: Series) -> Series:
+    """Termwise derivative series:  d/ds sum_k c_k s^k = sum_k k c_k s^{k-1}."""
+    return [series[k] * iv.mpf(k) for k in range(1, len(series))]
+
+
+def flow_taylor_model(
+    iv: Any,
+    jet: Any,
+    ybox: list[Any],
+    h: float,
+    mu: float,
+    order: int,
+) -> list[Series] | None:
+    """Rigorous Taylor MODEL of the flow over ``[0, h]`` from the IC box ``ybox``.
+
+    Returns one :data:`Series` per state component, length ``order + 2``:
+    coefficients ``0..order`` are the interval Taylor coefficients of the solution
+    started anywhere in ``ybox`` (``solution_series(ybox)``); coefficient
+    ``order + 1`` is the Lagrange-remainder coefficient bounded over the whole-step
+    a-priori enclosure ``W`` (``solution_series(W)[order+1]``).  Then for every
+    ``ic in ybox`` and every ``s in [0, h]``,
+
+        y_i(t0 + s; ic)  in  sum_{k=0}^{order} c[i][k] s^k  +  c[i][order+1] s^{order+1}
+
+    i.e. :func:`eval_series_horner` of the returned model at any ``s in [0, h]``
+    rigorously encloses the true state -- the object the crossing isolation and the
+    partial-step STM both evaluate.  ``None`` if the a-priori step cannot validate.
+    """
+    W = apriori_enclosure(iv, jet, ybox, h, mu)
+    if W is None:
+        return None
+    poly = solution_series(iv, jet, ybox, order, mu)
+    rem = solution_series(iv, jet, W, order + 1, mu)
+    return [[*poly[i], rem[i][order + 1]] for i in range(len(ybox))]
+
+
+def isolate_section_crossing(
+    iv: Any,
+    state_tm: list[Series],
+    sigma_val: Callable[..., Any],
+    sigma_grad: Callable[..., Any],
+    h: float,
+    *,
+    iters: int = 60,
+) -> Any | None:
+    """Interval-Newton isolation of the section crossing on a step's Taylor model.
+
+    ``state_tm`` is a :func:`flow_taylor_model` (list of state Series over ``[0,h]``).
+    ``sigma_val(iv, statevec) -> interval`` evaluates the scalar section function on
+    a state VECTOR; ``sigma_grad(iv, statevec) -> list`` its gradient row.  Returns a
+    TIGHT interval ``[s*]`` (subset of ``[0, h]``) proven to contain a unique,
+    transversal crossing ``sigma(state(s*)) = 0``, or ``None`` if the step does not
+    rigorously bracket exactly one transversal crossing (no strict sign change over
+    ``[0, h]``, or ``0`` in ``dsigma/ds`` over the step -- i.e. not certified
+    monotone / not transversal).
+
+    ``dsigma/ds`` is formed rigorously as ``grad sigma(state(s)) . state'(s)`` with
+    ``state'`` the termwise derivative of the Taylor model -- so ``0 not in`` it over
+    ``[0, h]`` is a genuine transversality certificate (``Dsigma . f != 0``), exactly
+    the non-degeneracy the section-map Jacobian formula requires.
+    """
+    dstate = [deriv_series(iv, comp) for comp in state_tm]
+
+    def sig_at(s: Any) -> Any:
+        st = [eval_series_horner(iv, c, s) for c in state_tm]
+        return sigma_val(iv, st)
+
+    def dsig_at(s: Any) -> Any:
+        st = [eval_series_horner(iv, c, s) for c in state_tm]
+        dst = [eval_series_horner(iv, c, s) for c in dstate]
+        g = sigma_grad(iv, st)
+        acc = iv.mpf(0)
+        for k in range(len(st)):
+            acc = acc + g[k] * dst[k]
+        return acc
+
+    s0 = sig_at(iv.mpf([0.0, 0.0]))
+    sh = sig_at(iv.mpf([h, h]))
+    up = bool(s0.b < 0) and bool(sh.a > 0)
+    down = bool(s0.a > 0) and bool(sh.b < 0)
+    if not (up or down):
+        return None  # no rigorous strict sign change across the step
+    dfull = dsig_at(iv.mpf([0.0, h]))
+    if not (bool(dfull.a > 0) or bool(dfull.b < 0)):
+        return None  # 0 in dsigma/ds over the step: not certified monotone/transversal
+
+    bracket = iv.mpf([0.0, h])
+    for _ in range(iters):
+        sc = (bracket.a + bracket.b) / 2
+        sc_iv = iv.mpf([sc, sc])
+        num = sig_at(sc_iv)
+        den = dsig_at(bracket)  # 0 not in den (certified above)
+        nn = sc_iv - num / den
+        lo = nn.a if bool(nn.a > bracket.a) else bracket.a
+        hi = nn.b if bool(nn.b < bracket.b) else bracket.b
+        if bool(lo > hi):
+            return None  # Newton image disjoint -> no root (contradiction-safe)
+        width_old = bracket.b - bracket.a
+        bracket = iv.mpf([lo, hi])
+        if not bool(bracket.b - bracket.a < width_old):
+            break  # converged: interval no longer shrinking
+    return bracket
+
+
+def section_map_jacobian(
+    iv: Any,
+    stm: IMat,
+    fvec: list[Any],
+    dsig: list[Any],
+) -> tuple[IMat, Any, list[Any]]:
+    """Rigorous Poincare section-map Jacobian from the flow Jacobian at the crossing.
+
+    ``stm`` is ``Dphi_tau* = Phi_{0->tau*}`` (the accumulated flow STM to the
+    crossing), ``fvec = f(P)`` the vector field at the crossing state, ``dsig =
+    Dsigma(P)`` the section gradient there.  Returns ``(DP, Dsigma.f, Dsigma.Phi)``
+    with
+
+        DP = Phi  -  f (Dsigma . Phi) / (Dsigma . f)
+
+    the standard implicit-function correction for the crossing time's dependence on
+    the initial condition (differentiate ``sigma(phi_{tau*(w)}(w)) = 0``:
+    ``Dsigma (f Dtau* + Phi) = 0`` gives ``Dtau* = -(Dsigma Phi)/(Dsigma f)``, and
+    ``DP = f Dtau* + Phi``).  The caller must have certified ``Dsigma . f != 0``
+    (transversality); it is returned so the caller can assert non-vacuous division.
+    """
+    n = len(fvec)
+    dsf = iv.mpf(0)
+    for k in range(n):
+        dsf = dsf + dsig[k] * fvec[k]
+    dsphi: list[Any] = []
+    for j in range(n):
+        acc = iv.mpf(0)
+        for k in range(n):
+            acc = acc + dsig[k] * stm[k][j]
+        dsphi.append(acc)
+    dp: IMat = [[stm[i][j] - fvec[i] * dsphi[j] / dsf for j in range(n)] for i in range(n)]
+    return dp, dsf, dsphi
+
+
+def rigorous_section_map(
+    iv: Any,
+    jet: Callable[..., Any],
+    var_jet: Callable[..., Any],
+    y0: list[Any],
+    mu: float,
+    *,
+    sigma_val: Callable[..., Any],
+    sigma_grad: Callable[..., Any],
+    tau_max: float,
+    n_steps: int,
+    order: int = 10,
+    tau_min: float = 0.0,
+) -> dict[str, Any]:
+    """Rigorously isolate the first section crossing of the flow from ``y0`` and
+    return the enclosed crossing state, crossing time, and section-map Jacobian.
+
+    Integrates the enclosure with the Lohner-C1/QR stepper (so both the enclosure
+    box and the accumulated flow Jacobian ``Phi = A @ bmat`` stay tight through
+    close approaches / stretching), monitoring the section value ``sigma`` on each
+    step endpoint.  On the first step whose endpoints straddle ``sigma = 0`` (with
+    ``tau >= tau_min``, so the trivial start-on-section crossing at ``tau = 0`` is
+    skipped), it rebuilds the step's rigorous Taylor model from the (tight) step-start
+    enclosure box, isolates ``[s*]`` by interval-Newton, evaluates the crossing state
+    and the partial-step STM at ``[s*]``, composes the full ``Phi_{0->tau*}``, and
+    forms ``DP``.  Returns a dict; ``found`` is ``True`` only if a crossing was
+    rigorously isolated (with a transversality certificate).
+    """
+    n = len(y0)
+    yhat = [_mid(y0[i]) for i in range(n)]
+    a_frame: IMat = [[iv.mpf(1) if i == j else iv.mpf(0) for j in range(n)] for i in range(n)]
+    rbox = [y0[i] - yhat[i] for i in range(n)]
+    bmat: IMat = [[iv.mpf(1) if i == j else iv.mpf(0) for j in range(n)] for i in range(n)]
+    h = tau_max / n_steps
+
+    def sigma_box() -> Any:
+        return sigma_val(iv, enclosure_box(iv, yhat, a_frame, rbox))
+
+    prev_sign = 0  # -1 / +1 once sigma is rigorously nonzero
+    result: dict[str, Any] = {
+        "found": False,
+        "validated_to": 0.0,
+        "n_steps_taken": 0,
+        "reason": "no crossing isolated in [tau_min, tau_max]",
+    }
+    for step in range(n_steps):
+        tau0 = step * h
+        # snapshot the step-START enclosure (needed if THIS step brackets the crossing)
+        start = (list(yhat), [row[:] for row in a_frame], [row[:] for row in bmat], list(rbox))
+        nxt = _qr_step(iv, jet, var_jet, yhat, a_frame, rbox, h, mu, order, bmat)
+        if nxt is None:
+            result["reason"] = f"enclosure wall at tau~{tau0:.4f} (step {step}) before any crossing"
+            result["validated_to"] = tau0
+            result["n_steps_taken"] = step
+            return result
+        yhat, a_frame, rbox, bmat = nxt
+        result["validated_to"] = tau0 + h
+        result["n_steps_taken"] = step + 1
+
+        sig = sigma_box()
+        cur_sign = 1 if bool(sig.a > 0) else (-1 if bool(sig.b < 0) else 0)
+        if tau0 + h < tau_min or cur_sign == 0:
+            if cur_sign != 0:
+                prev_sign = cur_sign
+            continue
+        if prev_sign != 0 and cur_sign != prev_sign:
+            # crossing is inside THIS step: [tau0, tau0+h]
+            yhat_s, a_s, b_s, rbox_s = start
+            ybox_start = enclosure_box(iv, yhat_s, a_s, rbox_s)
+            phi_start = _imatmul(iv, a_s, b_s)  # Phi_{0->tau0}
+            # augmented Taylor model over the step: state (n) + STM (n*n), V(0)=I
+            aug_ic = list(ybox_start)
+            for r in range(n):
+                for c in range(n):
+                    aug_ic.append(iv.mpf(1) if r == c else iv.mpf(0))
+            aug_tm = flow_taylor_model(iv, var_jet, aug_ic, h, mu, order)
+            if aug_tm is None:
+                result["reason"] = f"crossing-step Taylor model failed at tau~{tau0:.4f}"
+                return result
+            state_tm = aug_tm[:n]
+            s_star = isolate_section_crossing(
+                iv, state_tm, sigma_val, sigma_grad, h, iters=order + 40
+            )
+            if s_star is None:
+                # endpoints flipped but this step's model did not certify a single
+                # transversal crossing (grazing / multiple / boundary): report honestly
+                result["reason"] = (
+                    f"endpoints straddle sigma=0 near tau~{tau0:.4f} but interval-Newton "
+                    "could not certify a unique transversal crossing on the step model"
+                )
+                return result
+            # crossing state (regularized) and partial-step STM at [s*]
+            cross_state = [eval_series_horner(iv, c, s_star) for c in state_tm]
+            phi_step = [
+                [eval_series_horner(iv, aug_tm[n + r * n + c], s_star) for c in range(n)]
+                for r in range(n)
+            ]
+            phi_full = _imatmul(iv, phi_step, phi_start)  # Phi_{0->tau*}
+            fvec = _f_over_box(iv, jet, cross_state, mu)
+            dsig = sigma_grad(iv, cross_state)
+            dp, dsf, _dsphi = section_map_jacobian(iv, phi_full, fvec, dsig)
+            tau_star = iv.mpf([tau0, tau0]) + s_star
+            result.update(
+                {
+                    "found": True,
+                    "reason": "rigorously isolated a unique transversal section crossing",
+                    "crossing_step": step,
+                    "tau_star": tau_star,
+                    "s_star_local": s_star,
+                    "crossing_state": cross_state,
+                    "stm_full": phi_full,
+                    "section_jacobian": dp,
+                    "dsigma_dot_f": dsf,
+                    "vector_field_at_crossing": fvec,
+                    "transversal": bool(dsf.a > 0) or bool(dsf.b < 0),
+                }
+            )
+            return result
+        prev_sign = cur_sign
+    return result
+
+
 __all__ = [
     "HAVE_MPMATH",
     "apriori_enclosure",
     "cr3bp_planar_jacobi",
     "cr3bp_planar_jet",
     "cr3bp_planar_variational_jet",
+    "deriv_series",
     "enclosure_box",
+    "eval_series_horner",
+    "flow_taylor_model",
     "integrate",
     "integrate_c1_qr",
+    "isolate_section_crossing",
     "lc_secondary_from_physical",
     "lc_secondary_to_physical",
     "make_cr3bp_lc_secondary_jet",
     "make_cr3bp_lc_secondary_variational_jet",
     "rigorous_inverse",
+    "rigorous_section_map",
+    "section_map_jacobian",
     "solution_series",
     "ts_add",
     "ts_add_scalar",
