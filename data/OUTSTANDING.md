@@ -118,10 +118,17 @@ unchanged. See `git log` around this date for the corrected commit.
   width ~5.2e-5→~2.1e-5 at ru=1e-6 (ratio 0.28, still uncertified — genuine flyby nonlinearity
   `[DP]` varies ~0.9/box, not artifact), and at a proof-appropriate ru=1e-8 h-set CERTIFIES a
   genuine orientation-reversing covering relation `N ==P==> M` on the real regularized CR3BP section
-  map through the first Jupiter perijove — the first certified covering on the actual problem). The
-  validated covering-relation checker + mean-value image primitive are the durable deliverables;
-  the full ~30-section W-Z Oterma chain / composed multi-return covering remain future work; see
-  `#668`-`#674` own bullets.
+  map through the first Jupiter perijove — the first certified covering on the actual problem), and
+  `#675` (Stage 9, done — composed 2-3 section returns at the FIXED, non-shrunk ru=1e-6 h-set via a
+  new `vti.compose_section_jacobians` chain-rule primitive; DECISIVE NEGATIVE — the ratio COLLAPSES
+  0.284 (N=1) → 0.027 (N=2, over-approximation grows ~12x vs the signal's ~1.17x), N=3 hit a
+  separate tau-window wall; root cause pinned to the mean-value image's per-component construction
+  re-introducing #669's wrapping effect at the DISCRETE return-to-return boundary, with no
+  inter-return QR/reframing yet to counter it — an inter-return reframing step, not more returns, is
+  the indicated next fix if this line of work continues). The validated covering-relation checker +
+  mean-value image primitive + composed-Jacobian primitive are the durable deliverables; the full
+  ~30-section W-Z Oterma chain / an inter-return reframing fix remain future work; see `#668`-`#675`
+  own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -912,20 +919,16 @@ propagation); it tightens #673's ~5.2e-5 box-hull edge width to ~2.1e-5 at ru=1e
 ru=1e-8 h-set, CERTIFIES a genuine orientation-reversing covering relation `N ==P==> M` on the real
 regularized CR3BP section map through the first Jupiter perijove (edges strictly opposite sides,
 image pinched in the stable strip); full ~30-section chain / composed returns remain future work
-(registered+dispatched 2026-07-20); #675 for the W-Z proof machinery's Stage 9 -- composed
-multi-return covering at a MODERATE (proof-meaningful, not shrunk-to-1e-8) h-set size. Coordinator
-adversarial re-read of #674's own result found a real nuance not fully surfaced in that task's own
-report: the ru=1e-8 covering that certified is only meaningful as LOCAL hyperbolicity at an
-essentially infinitesimal scale (M's size was derived post-hoc from the observed image gap, not
-fixed as part of a genuine chain), NOT yet a link toward the real published orbit -- at the
-original, more meaningful ru=1e-6 size the covering still fails (ratio 0.28). #674's own bullet
-flags composing multiple section returns as the real fix (stretch compounds multiplicatively over
-returns while the over-approximation, if the enclosure stays tight, should grow more slowly --
-exactly why the real W-Z chain uses ~30 sections, not one). Scope: apply #672's rigorous section
-map + #674's mean-value image machinery across 2-3 CONSECUTIVE returns (not just one) at
-#674's original, more meaningful ru=1e-6 h-set size, and check whether the compounded stretch now
-dominates the compounded over-approximation enough to certify a covering WITHOUT shrinking the
-h-set to near-vacuous size (registered+dispatched 2026-07-20); #676 next-unused):**
+(registered+dispatched 2026-07-20); #675 DONE (2026-07-21) -- W-Z Stage 9: built
+`vti.compose_section_jacobians` (chain-rule composed section-map Jacobian) and composed 2-3
+returns at the FIXED, non-shrunk ru=1e-6 h-set; DECISIVE NEGATIVE -- ratio COLLAPSES 0.284
+(N=1, matches #674 exactly) -> 0.027 (N=2, over-approximation grows ~12x vs signal's ~1.17x),
+N=3 hit a separate tau-window wall; root cause pinned: the mean-value image's per-component
+construction re-introduces #669's wrapping effect at the DISCRETE return-to-return boundary
+(no inter-return QR/reframing exists yet); composition machinery itself validated FIRST via 9
+closed-form controls (`tests/scripts/test_675_composed_meanvalue.py`); indicated next fix if
+continued is inter-return QR/reframing, not more returns (registered+dispatched 2026-07-20);
+#676 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12254,6 +12257,52 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   valuable, precisely-characterized finding about why the real W-Z proof needed as many sections
   as it did, matching the now firmly-established `#662`/`#668`-`#674` precedent across eight
   prior stages.
+  **DONE (2026-07-21, Opus) -- honest DECISIVE NEGATIVE at the fixed ru=1e-6 size: the
+  over-approximation compounds roughly 10x FASTER than the genuine hyperbolic signal per
+  return, falsifying this stage's own compounding-stretch-beats-compounding-overapproximation
+  hypothesis.** New reusable primitive `vti.compose_section_jacobians` (chain-rule interval
+  matrix product `DP_N @ ... @ DP_1`, each `DP_k` a rigorous enclosure of the section
+  Jacobian over an enclosure of `P^{k-1}(W0)`) composed with `#674`'s
+  `section_map_meanvalue_image` to build `P^N(face) subset P^N(w_hat) + (DP_N...DP_1).
+  (w0_face-w_hat)` at every return, driven by new `scripts/certify_675_wz_oterma_composed_
+  covering.py` -> `data/675_wz_oterma_composed_covering_certificate.json` (checkpointed
+  per leg). **Composition-mechanism positive control built FIRST and validated**
+  (`tests/scripts/test_675_composed_meanvalue.py`, 9 tests): closed-form affine maps
+  confirm `compose_section_jacobians` reproduces `diag(lambda^N)` exactly (dyadic,
+  zero-width), a hand-computed non-commuting 2-leg case confirms flow-order composition
+  (`DP_2 @ DP_1`, not the reverse), the composed mean-value image reproduces the exact
+  `2*ru*lambda^N` geometric edge separation for an affine map, soundness holds under
+  interval-width legs, and -- the load-bearing mechanism test -- TIGHT per-leg Jacobian
+  enclosures keep the composed covering certifying out to N=3 while LOOSE per-leg
+  enclosures lose it by N=3 with the over-approximation visibly compounding, exactly
+  mirroring `#674`'s own tight-vs-inflated mechanism test. **Real result at fixed
+  ru=1e-6, rs=1e-8 (NOT shrunk):** N=1 reproduces `#674` exactly (sep=5.937e-6,
+  width=2.092e-5, ratio=0.284, covers=False) -- confirms the composed driver correctly
+  reduces to the single-return case. N=2: sep=6.967e-6 (signal grew only ~1.17x) but
+  width=2.535e-4 (over-approximation grew ~12x), ratio COLLAPSES to 0.027 (covers=False)
+  -- an order of magnitude WORSE, not better. N=3: the centre chain hit
+  `"no crossing isolated in [tau_min, tau_max]"` inside the fixed tau_max=20/n_steps=160
+  window used for this stage (a separate stopping point from the ratio-collapse finding,
+  not investigated further per the task's explicit 2-3-return bound). **Root cause,
+  pinned in the code, not just observed in the numbers:** the composed chain's IC box for
+  leg k+1 is built by `section_map_meanvalue_image`, which computes each of the 5
+  regularized state components INDEPENDENTLY (`center_image[i] + sum_k jac_box[i][k]*
+  offset[k]`) -- this is itself a box-hull across components that discards the
+  shear/correlation between them, and `rigorous_section_map` then consumes that box as a
+  plain per-component interval vector, so any parallelepiped structure is lost before the
+  next leg's own Jacobian run even starts (`leg_jacobian_enclosure_width` jumped 0.88 ->
+  3.69, composed width 0.88 -> 25.7, in exactly one extra return). This is the SAME
+  wrapping effect `#669`'s QR reframing was built to prevent within a single continuous
+  flow integration, reappearing at the DISCRETE return-to-return boundary because no
+  analogous re-tightening/reframing step exists there. **If this line of work continues,
+  the indicated next fix is an inter-return QR/reframing step on the composed image
+  before it becomes the next leg's IC box (i.e. extend `#669`'s discipline across the
+  section-map composition, not just within-flow) -- simply adding more returns without it
+  will make the gap worse, not better.** No `catalogue.yaml` write. `#673`'s and `#674`'s
+  own controls (`test_673_covering_relation.py`, `test_674_meanvalue_image.py`)
+  re-verified green, unchanged. Lint/format clean; `mypy src tests` clean (756 files);
+  `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
+  tests/scripts` green, no regressions.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +

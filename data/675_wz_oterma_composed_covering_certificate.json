@@ -1,0 +1,138 @@
+{
+  "task": "#675",
+  "stage": "Stage 9 -- composed (multi-return) covering at fixed ru=1e-6",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "hset_N": {
+    "at": "first published W-Z Oterma section point",
+    "center_x_xdot": [
+      0.95229284234862,
+      1.23e-05
+    ],
+    "ru": 1e-06,
+    "rs": 1e-08,
+    "unstable_dir_x_xdot": [
+      -0.36221713223217955,
+      0.9320937448119131
+    ],
+    "stable_dir_x_xdot": [
+      0.36221713223217955,
+      0.9320937448119131
+    ],
+    "note": "FIXED size, NOT shrunk to force a result (the whole point of Stage 9)."
+  },
+  "method": "Composed mean-value image: P^N(face) subset P^N(w_hat) + (DP_N...DP_1).(w0_face - w_hat), DP_N...DP_1 = vti.compose_section_jacobians([DP_1..DP_N]) (chain rule, each DP_k over an enclosure of P^{k-1}(W0)); centre chain gives the tight P^N(w_hat).",
+  "composition_control": "tests/scripts/test_675_composed_meanvalue.py",
+  "returns": [
+    {
+      "n": 1,
+      "tau_star_this_leg": 16.570955135379112,
+      "center_image_x_xdot": [
+        1.0035073191783517,
+        -0.17452281277395884
+      ],
+      "center_image_widths_x_xdot": [
+        2.58781529113303e-15,
+        9.305779269857283e-13
+      ],
+      "composed_jacobian_enclosure_width": 0.8797224458716622,
+      "leg_jacobian_enclosure_width": 0.8797224458716622,
+      "image_left_xdot": [
+        -0.17453030352897617,
+        -0.17450938538850272
+      ],
+      "image_right_xdot": [
+        -0.17453624082711736,
+        -0.17451532205162112
+      ],
+      "image_whole_box_xdot_width": 0.00031875920607733174,
+      "edge_center_separation": 5.936980629811517e-06,
+      "per_edge_enclosure_width": 2.0918775496224615e-05,
+      "separation_over_width_ratio": 0.2838110973982685,
+      "M_unstable_halfwidth": 1.4842451574528792e-06,
+      "M_stable_halfwidth": 7.065627758010475e-06,
+      "covers": false,
+      "stable_containment": true,
+      "unstable_exit": false,
+      "orientation": null,
+      "unstable_coord_left": [
+        -5.046844842131501,
+        9.046608903306735
+      ],
+      "unstable_coord_right": [
+        -9.047058763236995,
+        5.046822824440497
+      ],
+      "stable_coord_image": [
+        -0.3318786870097362,
+        0.33195737483525345
+      ]
+    },
+    {
+      "n": 2,
+      "tau_star_this_leg": 7.968366488818215,
+      "center_image_x_xdot": [
+        0.9784635478235453,
+        -0.19355531262301745
+      ],
+      "center_image_widths_x_xdot": [
+        5.308298548404633e-13,
+        2.9194182287701245e-11
+      ],
+      "composed_jacobian_enclosure_width": 25.723782598619454,
+      "leg_jacobian_enclosure_width": 3.693350245071984,
+      "image_left_xdot": [
+        -0.19367857624797097,
+        -0.19342512106588625
+      ],
+      "image_right_xdot": [
+        -0.19368554500660037,
+        -0.1934320855350085
+      ],
+      "image_whole_box_xdot_width": 0.0007309255773402697,
+      "edge_center_separation": 6.966613875808436e-06,
+      "per_edge_enclosure_width": 0.00025345947159185095,
+      "separation_over_width_ratio": 0.027486105893201197,
+      "M_unstable_halfwidth": 1.741653468952109e-06,
+      "M_stable_halfwidth": 3.402556810940203e-05,
+      "covers": false,
+      "stable_containment": true,
+      "unstable_exit": false,
+      "orientation": null,
+      "unstable_coord_left": [
+        -70.77390947793097,
+        74.75169972217749
+      ],
+      "unstable_coord_right": [
+        -74.77514092472413,
+        70.7529311689447
+      ],
+      "stable_coord_image": [
+        -0.33308129516089496,
+        0.33299757823408566
+      ]
+    },
+    {
+      "n": 3,
+      "result": "CENTRE WALL",
+      "reason": "no crossing isolated in [tau_min, tau_max]"
+    }
+  ],
+  "certified_returns": [],
+  "certified": false,
+  "ratio_scaling": [
+    [
+      1,
+      0.2838110973982685
+    ],
+    [
+      2,
+      0.027486105893201197
+    ]
+  ],
+  "result": "ru=1e-06 (fixed). ratio/return: N=1:0.284, N=2:0.027 | chain stopped: CENTRE WALL at N=3 | NO composed covering certified at ru=1e-6 within the attempted returns: the over-approximation compounds at least as fast as the hyperbolic signal (see ratio scaling).",
+  "scope_note": "Composed 2-3 returns at FIXED ru=1e-6 (NOT shrunk). M is a constructed h-set at the actual k-th-return image, not a published W-Z point. Bounded proof-of-concept for the compounding mechanism, NOT the full ~30-section W-Z chain. Composition machinery validated on closed-form controls (test_675_composed_meanvalue.py)."
+}

@@ -1535,9 +1535,57 @@ def section_map_meanvalue_image(
     return out
 
 
+# --------------------------------------------------------------------------- #
+# #675 -- COMPOSED (multi-return) mean-value section-map image.                 #
+#                                                                             #
+# #674 certified a SINGLE-return covering only at a near-vacuous h-set size    #
+# (ru=1e-8); at the more meaningful ru=1e-6 the single-return covering fails    #
+# (ratio 0.28) because [DP] genuinely varies ~0.9 across the box.  A genuine    #
+# W-Z proof instead COMPOSES many section returns: the map's hyperbolic stretch #
+# compounds multiplicatively (P^N stretch ~ lambda^N), and the composed         #
+# mean-value image is built by the CHAIN RULE with the SAME one-linearization   #
+# discipline as #674.                                                           #
+#                                                                             #
+# Rigor.  For the N-fold composed section map P^N = P o ... o P and any IC w0    #
+# in the (convex) h-set W0, the interval mean-value theorem gives                #
+#                                                                             #
+#     P^N(w0)  in  P^N(w_hat)  +  [D(P^N) over W0] . (w0 - w_hat),               #
+#                                                                             #
+# and by the chain rule  D(P^N)(w) = DP(P^{N-1}(w)) ... DP(P(w)) DP(w).  If      #
+# ``jac_boxes = [DP_1, ..., DP_N]`` are rigorous section-Jacobian enclosures     #
+# with DP_1 taken over W0, DP_2 over an enclosure of P(W0), ..., DP_N over an     #
+# enclosure of P^{N-1}(W0) (each leg's whole-box run), then for every w in W0     #
+# the k-th factor DP(P^{k-1}(w)) lies in DP_k, so the interval matrix product     #
+# ``DP_N ... DP_1`` (inclusion-monotone) rigorously encloses D(P^N) over W0.      #
+# ``compose_section_jacobians`` forms that product; feeding it (with the tight    #
+# centre image P^N(w_hat) from the centre chain) to ``section_map_meanvalue_image #
+# `` yields a sound enclosure of P^N(face) at the ORIGINAL h-set's face offset.   #
+# --------------------------------------------------------------------------- #
+def compose_section_jacobians(iv: Any, jac_boxes: list[IMat]) -> IMat:
+    """Chain-rule composition ``DP_N @ DP_{N-1} @ ... @ DP_1`` of per-leg section
+    Jacobian enclosures.
+
+    ``jac_boxes[k]`` is a rigorous interval enclosure of the section-map Jacobian over
+    the (k+1)-th leg's IC box (leg 1 over the h-set ``W0``, leg 2 over an enclosure of
+    ``P(W0)``, ...).  Returns a rigorous enclosure of the composed map ``P^N``'s
+    Jacobian over ``W0`` by the chain rule -- the matrix product is inclusion-monotone,
+    so composing the leg enclosures is sound.  ``len(jac_boxes) == 1`` reproduces the
+    single-return Jacobian unchanged.  Pair with :func:`section_map_meanvalue_image`
+    (centre image = the composed centre chain's final crossing state) for the composed
+    correlation-preserving image of a sub-box.
+    """
+    if not jac_boxes:
+        raise ValueError("compose_section_jacobians needs at least one leg Jacobian")
+    composed = [row[:] for row in jac_boxes[0]]
+    for k in range(1, len(jac_boxes)):
+        composed = _imatmul(iv, jac_boxes[k], composed)
+    return composed
+
+
 __all__ = [
     "HAVE_MPMATH",
     "apriori_enclosure",
+    "compose_section_jacobians",
     "covering_relation_2d",
     "covering_relation_2d_local",
     "cr3bp_planar_jacobi",
