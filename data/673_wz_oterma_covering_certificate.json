@@ -1,0 +1,107 @@
+{
+  "task": "#673",
+  "stage": "Stage 7 -- h-set construction + first rigorous covering relation",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "hset_N": {
+    "at": "first published W-Z Oterma section point",
+    "center_x_xdot": [
+      0.95229284234862,
+      1.23e-05
+    ],
+    "unstable_dir_x_xdot": [
+      -0.36221713223217955,
+      0.9320937448119131
+    ],
+    "stable_dir_x_xdot": [
+      0.36221713223217955,
+      0.9320937448119131
+    ],
+    "unstable_halfwidth_ru": 1e-06,
+    "stable_halfwidth_rs": 1e-08,
+    "note": "box on {y=0}; axes = L1* unstable/stable eigen-directions (heuristic frame); regularized IC built directly on the Levi-Civita branch u=0 (xi<0, eta=0)."
+  },
+  "images_ambient": {
+    "whole_box_x": [
+      1.0035011436852956,
+      1.003513461207157
+    ],
+    "whole_box_xdot": [
+      -0.17720087108021482,
+      -0.17186061411189119
+    ],
+    "left_edge_xdot": [
+      -0.17454592984191503,
+      -0.17449380768924905
+    ],
+    "right_edge_xdot": [
+      -0.174551820812061,
+      -0.17449969595865492
+    ],
+    "left_edge_x": [
+      1.0035074054226703,
+      1.0035075251823562
+    ],
+    "right_edge_x": [
+      1.0035071131736013,
+      1.0035072329327768
+    ],
+    "tau_star": [
+      16.568375016628966,
+      16.573535269839304
+    ],
+    "image_center_x_xdot": [
+      1.0035073024462262,
+      -0.174530742596053
+    ],
+    "x_width": 1.2317521861417474e-05,
+    "xdot_width": 0.005340256968323644
+  },
+  "covering_vs_published_point2": {
+    "M_center_x_xdot": [
+      0.9210057378904252,
+      0.0005205932817646884
+    ],
+    "M_unstable_halfwidth": 0.05,
+    "M_stable_halfwidth": 0.05,
+    "covers": false,
+    "stable_containment": true,
+    "unstable_exit": false,
+    "image_dist_to_point2_x": 0.08250156455580104,
+    "interpretation": "NON-covering as expected: the first {y=0} return of N lands near x'~1.0035, ~0.083 away from published point 2 (x=0.9210). The rounded IC does not track the true unstable heteroclinic manifold and the first-return map does not pair published points 1->2; the correct W-Z pairing uses a different oriented/iterate return map."
+  },
+  "covering_vs_constructed_image_hset": {
+    "M_center_x_xdot": [
+      1.0035073024462262,
+      -0.174530742596053
+    ],
+    "M_unstable_axis": "xdot' (measured section-map expanding direction)",
+    "M_stable_axis": "x' (contracting direction)",
+    "M_unstable_halfwidth": -1.5523318699042776e-05,
+    "M_stable_halfwidth": 1.847628279212621e-05,
+    "covers": false,
+    "stable_containment": true,
+    "unstable_exit": false,
+    "orientation": null,
+    "stable_coord_image": [
+      -0.3333333333250018,
+      0.3333333333416648
+    ],
+    "unstable_coord_left": [
+      -2.3793176910175555,
+      0.9783504517608796
+    ],
+    "unstable_coord_right": [
+      -1.9999999999984712,
+      1.357842122335698
+    ],
+    "interpretation": "HONEST WALL (not certified): stable containment HOLDS (S=True) but the unstable-exit condition FAILS (U=False) -- the two unstable edges of N map to OVERLAPPING xdot' intervals, not opposite sides of M_img. Root cause: the genuine single-return hyperbolic stretch (edge-center separation ~5.9e-06) is DOMINATED by the section map's enclosure over-approximation through the Jupiter perijove (per-edge width ~5.2e-05). One return does not accumulate enough stretch to beat the perijove-flyby enclosure width; certifying a covering needs a tighter (correlation-preserving parallelepiped) section-map image and/or COMPOSING several returns so the stretch dominates -- exactly why the real W-Z chain uses many sections. A genuine, informative negative.",
+    "edge_center_separation": 5.889619775906185e-06,
+    "edge_enclosure_overapprox_width": 5.212485340608253e-05
+  },
+  "scope_note": "One covering relation as the bounded proof-of-concept, per dispatch scope -- NOT the full ~30-point W-Z chain. The covering-relation CHECKER itself is validated on synthetic true+false controls in tests/scripts/test_673_covering_relation.py.",
+  "result": "Covering-relation CHECKER built + validated on synthetic true+false controls. On the real W-Z Oterma section map: (A) N at published point 1 does NOT cover an h-set at published point 2 (image lands x'~1.0035, ~0.083 away; first-return map does not pair pts 1->2, rounded IC does not track the true manifold); (B) vs a constructed M at the actual image, stable containment holds but unstable exit is NOT certified -- single-return stretch < perijove-enclosure over-approximation. Both are honest, informative negatives; the checker is the reusable result."
+}

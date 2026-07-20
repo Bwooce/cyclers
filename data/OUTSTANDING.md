@@ -104,9 +104,16 @@ unchanged. See `git log` around this date for the corrected commit.
   (Stage 6, done — the rigorous Poincaré section-crossing MAP + its rigorous Jacobian: interval-Newton
   crossing isolation on the crossing step's Taylor model with a transversality certificate, plus
   `DP = Dphi - f(Dsigma.Dphi)/(Dsigma.f)` via the QR-accumulated STM; validated end-to-end against
-  closed-form controls and tight+transversal on a real W-Z Oterma section point at tau*~16.571).
-  Remaining W-Z stage (covering-relations / h-set topology built ON this map) is future work;
-  see `#668`/`#669`/`#670`/`#671`/`#672` own bullets.
+  closed-form controls and tight+transversal on a real W-Z Oterma section point at tau*~16.571),
+  and `#673` (Stage 7, done — the rigorous 2D covering-relation CHECKER (Zgliczynski-Gidea
+  correctly-aligned condition: stable-pinch + unstable-exit-opposite-sides, NOT overlap), BUILT and
+  validated on synthetic true+false controls, then applied to a real h-set at published Oterma
+  point 1: the whole box + its unstable edges propagate through the perijove, but the real covering
+  is an HONEST WALL — one return's hyperbolic stretch (~6e-6) is ~9× below the section map's
+  perijove-enclosure over-approximation (~5e-5), so unstable-exit is uncertified; needs tighter
+  parallelepiped section-map images and/or composed multi-return sections, as the real ~30-section
+  W-Z chain uses). The validated covering-relation checker is the durable deliverable; assembling
+  the actual W-Z Oterma chain is future work; see `#668`-`#673` own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -880,7 +887,16 @@ an h-set (a box/segment transverse to the manifold, not one point) around the fi
 section point, propagate it via #672's validated rigorous section map, and check whether the
 IMAGE genuinely covers (crosses through, in the correct topological sense) the h-set placed at
 the second published section point -- ONE genuine covering relation as the bounded first proof-of-
-concept, not the full ~30-point W-Z chain (registered+dispatched 2026-07-20); #674 next-unused):**
+concept, not the full ~30-point W-Z chain (DONE 2026-07-20: rigorous 2D covering-relation checker
+BUILT + validated on synthetic true+false controls -- Zgliczynski-Gidea correctly-aligned
+condition, S=stable-pinch + U=unstable-exit-opposite-sides, NOT overlap; h-set at published pt 1
+constructed + its whole box AND unstable edges propagated through #672's section map past the
+Jupiter perijove; real covering an HONEST WALL, both negatives reported not forced -- (A) pt1 does
+not cover pt2 (image lands x'~1.0035, ~0.083 away; rounded IC doesn't track the true manifold),
+(B) vs a constructed M at the image, stable-pinch holds but unstable-exit uncertified because the
+single-return stretch ~5.9e-6 is ~9x below the perijove-enclosure over-approximation ~5.2e-5 -- one
+return can't beat the flyby enclosure width, needs tighter parallelepiped images and/or composed
+returns as the real ~30-section chain does); #674 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12079,6 +12095,48 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   too wide/narrow to genuinely cover, or if the topological check itself proves harder to
   rigorously establish than expected), matching the now firmly-established `#662`/`#668`-`#672`
   precedent across six prior stages of exactly this discipline.
+  **DONE (2026-07-20, Opus) -- the rigorous 2D COVERING-RELATION CHECKER is BUILT and VALIDATED;
+  the first real covering attempt is an HONEST, well-characterized WALL (reported, not forced).**
+  New machinery in `scripts/_validated_taylor_integrator.py`: `covering_relation_2d_local`
+  (pure topological core) + `covering_relation_2d` (ambient-box wrapper) + `hset_chart_inverse`,
+  implementing the Zgliczynski-Gidea "correctly aligned" 2D covering condition -- verify, in `M`'s
+  OWN coordinates, that (S) the whole image `P(N)` is pinched strictly inside `M` in the STABLE
+  coord AND (U) `N`'s two unstable edges map strictly beyond OPPOSITE unstable ends of `M`; a
+  topological/degree statement, explicitly NOT interval overlap. **Load-bearing validation
+  (`tests/scripts/test_673_covering_relation.py`, 8 tests):** the checker returns the CORRECT
+  verdict on synthetic maps where covering is obvious by hand -- a hyperbolic diagonal map COVERS
+  (+ orientation-reversing + a rotated-frame case via the correlation-preserving local core), and
+  four NEGATIVES fail for the right reason (stable direction expands -> (S) fails; unstable too
+  weak / image shifted off / image sits inside with huge overlap -> (U) fails). So the checker is
+  neither trivially "always yes" nor "always no", and the "overlap => covers" fallacy is guarded.
+  Documented+tested caveat: the ambient box-hull wrapper decorrelates a sheared image under a
+  ROTATED `M` and can spuriously report False (a True is always sound; use the local core with a
+  parallelepiped image for rotated `M`). **h-set construction + real propagation
+  (`scripts/certify_673_wz_oterma_covering.py` -> `data/673_wz_oterma_covering_certificate.json`):**
+  h-set `N` at the first published Oterma point on `{y=0}` (box in the section's `(x,xdot)` coords;
+  on-section with `xi<0` the whole set lies exactly on the Levi-Civita branch `u=0`, so its
+  regularized IC is built directly, dodging the branch-cut straddle the generic map hits on a
+  widened box). `#672`'s `rigorous_section_map` generalizes cleanly to a genuine BOX IC (the
+  framework is enclosure-based throughout -- verified): the WHOLE h-set and its two unstable edges
+  all propagate through the first Jupiter perijove to a rigorously-isolated re-crossing,
+  non-vacuous. **Real covering outcome -- two honest negatives:** (A) `N` does NOT cover an h-set
+  at the SECOND published point -- its first `{y=0}` return lands at `x'~1.0035`, ~0.083 away from
+  point 2 (`x=0.921`); an independent float diagnostic confirms the rounded-IC trajectory is
+  quasi-recurrent around `x~1.0` and NEVER visits the published points 2/3/4/7/8, i.e. the rounded
+  IC does not track the true (measure-zero) unstable heteroclinic manifold and the first-return map
+  does not pair published points 1->2. (B) vs a constructed h-set at the ACTUAL first-return image
+  (axis-aligned frame, no decorrelation): stable containment HOLDS but the unstable-exit condition
+  is NOT certified -- the genuine single-return hyperbolic stretch (edge-center separation ~5.9e-6)
+  is ~9x SMALLER than the section map's enclosure over-approximation through the perijove (per-edge
+  width ~5.2e-5), so the unstable edges cannot be shown to exit opposite sides. Root cause is
+  intrinsic: ONE return through the close flyby does not accumulate enough stretch to beat the
+  perijove-flyby enclosure width. Concrete next-infra need: a tighter, correlation-preserving
+  (parallelepiped) section-map image AND/OR COMPOSING several returns so the stretch dominates --
+  which is exactly why the real W-Z chain uses ~30 sections, not one. The reusable, validated
+  covering-relation checker is the durable deliverable; the real chain remains future work. No
+  `catalogue.yaml` write. Lint/format/mypy clean (`mypy src tests`, 754 files); `tests/scripts`
+  green (172 tests incl. 8 new); `tests/data tests/search` unchanged (same 2 pre-existing
+  documented failures `test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`).
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +

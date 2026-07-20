@@ -1319,9 +1319,165 @@ def rigorous_section_map(
     return result
 
 
+# --------------------------------------------------------------------------- #
+# #673 -- h-sets and the RIGOROUS 2D COVERING RELATION (the existence-proof step).#
+#                                                                             #
+# W-Z prove existence of a connecting orbit with a chain of *covering relations* #
+# between *h-sets* placed along the orbit, verified through the Poincare section  #
+# map P.  This is the first stage that attempts that actual proof step.  We work  #
+# in the section's own 2D coordinates (physical (x, xdot) on {y=0}), where every  #
+# h-set has one unstable and one stable direction (u=s=1) -- the setting of every #
+# W-Z Oterma h-set.                                                              #
+#                                                                             #
+# h-set (Zgliczynski-Gidea 2004, "Covering relations for multidimensional        #
+# dynamical systems", J. Diff. Eq. 202; and W-Z Part I): an h-set N is a box with #
+# a distinguished product structure.  Here N = { c + a*uvec + b*svec : a,b in     #
+# [-1,1] }, with ``uvec`` the UNSTABLE (exit) direction and ``svec`` the STABLE    #
+# (entry) direction.  Its coordinate chart c_N maps N onto the unit square        #
+# [-1,1]^2 = B_u x B_s (a = unstable coord, b = stable coord).  The distinguished  #
+# faces are                                                                       #
+#     N^-  (exit set / unstable boundary)  = { a = +-1 }   (left/right edges),     #
+#     N^+  (entry set / stable  boundary)  = { b = +-1 }   (top/bottom edges).     #
+#                                                                             #
+# Covering relation  N ==f==> M  (both h-sets with u=s=1, f = section map): the    #
+# image of N must "stretch all the way across" M in the unstable direction while   #
+# staying "pinched" inside M in the stable direction, in a topological (degree)    #
+# sense -- NOT merely "the boxes overlap".  For 2D box h-sets the ZG topological    #
+# definition is implied by these two rigorously-checkable conditions, expressed    #
+# in M's OWN coordinates f_c = c_M o f o c_N^{-1} (Zgliczynski-Gidea Thm 4/16; the  #
+# planar "correctly aligned" case used throughout the W-Z CAP verifications):      #
+#                                                                             #
+#   (S) STABLE containment: pi_s f_c(N) subset (-1, 1) -- the WHOLE image of N is  #
+#       strictly inside M in the stable coordinate (pinched, no exit top/bottom);  #
+#   (U) UNSTABLE exit, opposite sides: the two unstable edges map strictly beyond  #
+#       opposite unstable ends of M --                                             #
+#         (U+)  pi_u f_c(N^-_left) < -1  AND  pi_u f_c(N^-_right) > +1,   OR       #
+#         (U-)  pi_u f_c(N^-_left) > +1  AND  pi_u f_c(N^-_right) < -1.            #
+#                                                                             #
+#   (S)+(U) => N f-covers M: the image is connected, its stable part lies in M's   #
+#   stable strip, and its unstable extent runs strictly past both unstable ends    #
+#   of M on opposite sides, so by the intermediate-value / degree argument the      #
+#   image crosses M with nonzero degree.  This is a TOPOLOGICAL statement, not a    #
+#   size comparison -- interval OVERLAP alone proves nothing and is deliberately    #
+#   NOT what is checked here.                                                       #
+#                                                                             #
+# The checker takes the map images as already-computed rigorous ENCLOSURES (boxes  #
+# in the ambient (x, xdot) section coords) of  f(N^-_left), f(N^-_right), f(N):     #
+# an interval OVER-approximation is on the SOUND side of every condition -- for     #
+# (S) a superset still inside (-1,1) proves the true image is; for (U) a superset   #
+# still strictly beyond an end proves the true edge is.  So a verdict of "covers"   #
+# from over-approximated images is a genuine rigorous certificate.                  #
+# --------------------------------------------------------------------------- #
+def hset_chart_inverse(iv: Any, uvec: list[Any], svec: list[Any]) -> IMat | None:
+    """Rigorous inverse of an h-set's 2x2 frame ``B = [uvec | svec]`` (columns).
+
+    ``c_N^{-1}(a,b) = center + B (a,b)``, so ``c_N(p) = B^{-1}(p - center)``; this
+    returns the rigorous interval enclosure of ``B^{-1}`` (via :func:`rigorous_inverse`).
+    ``uvec``/``svec`` are the unstable/stable direction column vectors (thin
+    intervals or reals).  ``None`` if the frame is degenerate (collinear directions).
+    """
+    b_mat: IMat = [[uvec[0], svec[0]], [uvec[1], svec[1]]]
+    return rigorous_inverse(iv, b_mat)
+
+
+def _to_local_box(iv: Any, binv: IMat, center: list[Any], image_box: list[Any]) -> tuple[Any, Any]:
+    """Map an ambient interval box into an h-set's local (unstable, stable) coords.
+
+    ``image_box`` is ``[x-interval, xdot-interval]`` (an enclosure in ambient
+    section coordinates); returns ``(a_interval, b_interval)`` enclosing
+    ``B^{-1}(image_box - center)`` -- a (possibly inflated, always sound) box in the
+    target h-set's local coordinates.
+    """
+    d = [image_box[0] - center[0], image_box[1] - center[1]]
+    a = binv[0][0] * d[0] + binv[0][1] * d[1]
+    b = binv[1][0] * d[0] + binv[1][1] * d[1]
+    return a, b
+
+
+def covering_relation_2d_local(
+    iv: Any,
+    *,
+    au_left: Any,
+    au_right: Any,
+    as_box: Any,
+) -> dict[str, Any]:
+    """Pure topological core of the 2D covering check, in M's OWN local coordinates.
+
+    Inputs are rigorous interval enclosures, expressed in the target h-set ``M``'s
+    unstable/stable coordinates:
+
+      * ``au_left``  -- M-UNSTABLE coordinate of ``f(N^-_left)``  (image of N's left edge)
+      * ``au_right`` -- M-UNSTABLE coordinate of ``f(N^-_right)`` (image of N's right edge)
+      * ``as_box``   -- M-STABLE   coordinate of ``f(N)``         (image of the whole set)
+
+    Verdict ``covers = (S) and (U)`` with
+
+      (S) STABLE containment:  ``as_box subset (-1, 1)``  (image pinched inside M), and
+      (U) UNSTABLE exit:  the two edges map strictly beyond OPPOSITE unstable ends of M
+          -- ``(au_left < -1 and au_right > +1)`` or the mirror.
+
+    This is the ZG "correctly aligned" sufficient condition for ``N ==f==> M`` -- a
+    topological (degree) statement.  Over-approximated inputs stay on the sound side of
+    every strict inequality, so ``covers=True`` is a genuine covering CERTIFICATE.  Keeping
+    the check in M's coordinates (rather than transforming an ambient box hull) is what
+    makes it valid when M's stable/unstable directions are NOT axis-aligned: the caller
+    must supply ``as_box`` computed WITHOUT decorrelating the (generically sheared) image.
+    """
+    cond_s = bool(as_box.a > -1) and bool(as_box.b < 1)
+    orient_pos = bool(au_left.b < -1) and bool(au_right.a > 1)
+    orient_neg = bool(au_left.a > 1) and bool(au_right.b < -1)
+    cond_u = orient_pos or orient_neg
+    return {
+        "covers": bool(cond_s and cond_u),
+        "stable_containment": cond_s,
+        "unstable_exit": cond_u,
+        "orientation": ("preserving" if orient_pos else ("reversing" if orient_neg else None)),
+        "stable_coord_image": [float(as_box.a), float(as_box.b)],
+        "unstable_coord_left": [float(au_left.a), float(au_left.b)],
+        "unstable_coord_right": [float(au_right.a), float(au_right.b)],
+    }
+
+
+def covering_relation_2d(
+    iv: Any,
+    *,
+    m_center: list[Any],
+    m_uvec: list[Any],
+    m_svec: list[Any],
+    image_left: list[Any],
+    image_right: list[Any],
+    image_box: list[Any],
+) -> dict[str, Any]:
+    """2D covering check from AMBIENT-coordinate image box enclosures.
+
+    Convenience wrapper over :func:`covering_relation_2d_local`: transforms the ambient
+    ``[x-iv, xdot-iv]`` image enclosures of ``f(N^-_left)``, ``f(N^-_right)``, ``f(N)``
+    into ``M``'s local coordinates (via the rigorous frame inverse ``B_M^{-1}``) and
+    applies the covering conditions.
+
+    IMPORTANT rigor caveat: transforming an ambient interval BOX into M's coordinates is
+    EXACT only when M's frame is axis-aligned with the ambient section coordinates; for a
+    rotated M the box hull DECORRELATES the (generically thin, sheared) image and inflates
+    its stable coordinate, so a genuine covering can fail to verify through this wrapper.
+    When M's directions are rotated, supply M-local enclosures that preserve the image's
+    shear (a parallelepiped, not a box hull) and call :func:`covering_relation_2d_local`
+    directly.  A ``covers=True`` verdict from this wrapper is always sound; a ``False`` may
+    be an artifact of the box-hull decorrelation, not a true non-covering.
+    """
+    binv = hset_chart_inverse(iv, m_uvec, m_svec)
+    if binv is None:
+        return {"covers": False, "reason": "degenerate target h-set frame M"}
+    au_left, _ = _to_local_box(iv, binv, m_center, image_left)
+    au_right, _ = _to_local_box(iv, binv, m_center, image_right)
+    _, as_box = _to_local_box(iv, binv, m_center, image_box)
+    return covering_relation_2d_local(iv, au_left=au_left, au_right=au_right, as_box=as_box)
+
+
 __all__ = [
     "HAVE_MPMATH",
     "apriori_enclosure",
+    "covering_relation_2d",
+    "covering_relation_2d_local",
     "cr3bp_planar_jacobi",
     "cr3bp_planar_jet",
     "cr3bp_planar_variational_jet",
@@ -1329,6 +1485,7 @@ __all__ = [
     "enclosure_box",
     "eval_series_horner",
     "flow_taylor_model",
+    "hset_chart_inverse",
     "integrate",
     "integrate_c1_qr",
     "isolate_section_crossing",
