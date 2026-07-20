@@ -896,7 +896,12 @@ not cover pt2 (image lands x'~1.0035, ~0.083 away; rounded IC doesn't track the 
 (B) vs a constructed M at the image, stable-pinch holds but unstable-exit uncertified because the
 single-return stretch ~5.9e-6 is ~9x below the perijove-enclosure over-approximation ~5.2e-5 -- one
 return can't beat the flyby enclosure width, needs tighter parallelepiped images and/or composed
-returns as the real ~30-section chain does); #674 next-unused):**
+returns as the real ~30-section chain does); #674 for the W-Z proof machinery's Stage 8 --
+correlation-preserving (parallelepiped, QR-frame-aligned) enclosure of the section-map IMAGE
+itself, replacing the axis-aligned box-hull #673 found over-approximates the true single-return
+stretch by ~9x through the Jupiter-perijove flyby; re-attempt #673's exact covering-relation check
+with the tightened image to see whether the genuine ~5.9e-6 stretch can now be certified as
+exiting the target h-set (registered+dispatched 2026-07-20); #675 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12137,6 +12142,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `catalogue.yaml` write. Lint/format/mypy clean (`mypy src tests`, 754 files); `tests/scripts`
   green (172 tests incl. 8 new); `tests/data tests/search` unchanged (same 2 pre-existing
   documented failures `test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`).
+- **#674 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 8,
+  correlation-preserving section-map image enclosure. See `#673`'s own bullet for the full result
+  this continues from: the covering-relation checker is built and validated, and the real
+  single-return covering attempt hit a precisely-characterized wall -- the genuine unstable
+  stretch (~5.9e-6) IS large enough in principle, but the section map's own AXIS-ALIGNED box-hull
+  representation of the image over-approximates it by ~9x (~5.2e-5) through the Jupiter-perijove
+  flyby, so the true stretch is masked by representation slop, not by genuine insufficient
+  hyperbolicity. Scope: replace the axis-aligned box-hull image with a correlation-preserving
+  (parallelepiped, QR-frame-aligned) representation of the section-map image -- `#673`'s own
+  `covering_relation_2d_local` core already supports a non-axis-aligned local frame (used for the
+  rotated-M positive control), so the missing piece is producing a genuinely TIGHT parallelepiped
+  enclosure of the propagated image itself (reusing `#669`'s QR-reframing machinery's own
+  discipline -- track the enclosure in its own locally-stretched frame rather than re-boxing into
+  fixed axes at the end) rather than the current axis-aligned hull. Re-run `#673`'s exact
+  covering-relation check (h-set at published point 1, image at the actual first-return location)
+  with the tightened enclosure and see whether the ~9x over-approximation gap closes enough to
+  certify the unstable-exit condition. Mandatory: re-validate `#673`'s own true/false synthetic
+  positive controls still pass under the new enclosure representation before trusting any change
+  to the real result. Honest partial/negative reporting expected and fully acceptable if the gap
+  doesn't close enough, or if a genuinely different obstruction appears, matching the
+  now-established `#662`/`#668`-`#673` precedent across seven prior stages.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
