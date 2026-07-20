@@ -859,8 +859,14 @@ variational jet derived (analytic Dg validated vs finite-diff to ~1e-9, incl. ne
 QR composed; both fixes compose, defeating the wrapping wall decisively (matched-grid naive C0
 fails at tau~23, QR-regularized reaches tau=80 / t_phys~2.05, hw~1e-11, Jacobi conserved, no
 wall) -- >2x physical-time extension past #670's wall, sailing through the repeated Jupiter
-perijoves that stopped Stages 2/3 (registered+dispatched 2026-07-20);
-#672 next-unused):**
+perijoves that stopped Stages 2/3 (registered+dispatched 2026-07-20); #672 for the W-Z proof
+machinery's Stage 6 -- rigorous Poincare-section-map construction: given the now-validated
+regularized+QR flow enclosure (#671), build a rigorous section-crossing detector (interval
+root-isolation on the crossing condition, not a floating-point event trigger) plus the section
+map's own rigorous Jacobian (via the already-built variational/STM machinery, chain-ruled through
+the crossing-time dependence) at the actual W-Z Oterma section points -- the necessary dependency
+before h-set construction / covering relations can even be attempted (registered+dispatched
+2026-07-20); #673 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11974,6 +11980,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   future stages. No `catalogue.yaml` write. Lint/format/mypy all clean (full `mypy src tests`, 752
   files); `tests/scripts` green (158 tests incl. 6 new), `tests/data tests/search` only the same 2
   pre-existing documented failures (`test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`).
+- **#672 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 6, rigorous
+  Poincare-section-map construction. See `#671`'s own bullet for the full flow-enclosure result
+  this builds on (the regularized+QR integrator now rigorously survives 3 Jupiter perijoves out to
+  t~2.05, no wall hit). The full covering-relations existence proof needs, at each of the ~31
+  published W-Z Oterma section points (`data/golden/wz_oterma_heteroclinic.yaml`), a RIGOROUS
+  section-crossing map: given an enclosed initial condition, rigorously isolate the (interval of)
+  crossing time(s) with the section surface (NOT a floating-point event trigger -- an interval
+  root-isolation on the crossing condition itself, consistent with every other piece of this build
+  being genuinely interval-verified, not float-with-error-bars), interpolate the state AT that
+  rigorously-isolated crossing time, and derive the section map's own rigorous Jacobian (chain-rule
+  the already-built variational/STM flow through the implicit crossing-time dependence -- this is
+  the standard "Poincare map derivative via the flow's variational equation plus an implicit-
+  function correction for the section condition" construction, get it exactly right, do not
+  approximate). This is the necessary DEPENDENCY before h-set construction / covering relations can
+  even be attempted -- h-sets are defined ON this map, not on the raw flow. Scope this dispatch to
+  building and validating the section-map machinery itself (with a genuine positive control -- a
+  case where the section-crossing time and post-map state are independently computable in closed
+  form or by an independent method, to prove the rigorous map is actually correct, not merely
+  "runs without erroring"); constructing the actual h-sets and proving covering relations along the
+  W-Z chain remains explicitly future work, not this dispatch's scope. Honest partial/negative
+  reporting expected and fully acceptable if this stage hits a wall, matching the now well-
+  established `#662`/`#668`-`#671` precedent.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
