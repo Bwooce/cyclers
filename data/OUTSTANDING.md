@@ -912,7 +912,20 @@ propagation); it tightens #673's ~5.2e-5 box-hull edge width to ~2.1e-5 at ru=1e
 ru=1e-8 h-set, CERTIFIES a genuine orientation-reversing covering relation `N ==P==> M` on the real
 regularized CR3BP section map through the first Jupiter perijove (edges strictly opposite sides,
 image pinched in the stable strip); full ~30-section chain / composed returns remain future work
-(registered+dispatched 2026-07-20); #675 next-unused):**
+(registered+dispatched 2026-07-20); #675 for the W-Z proof machinery's Stage 9 -- composed
+multi-return covering at a MODERATE (proof-meaningful, not shrunk-to-1e-8) h-set size. Coordinator
+adversarial re-read of #674's own result found a real nuance not fully surfaced in that task's own
+report: the ru=1e-8 covering that certified is only meaningful as LOCAL hyperbolicity at an
+essentially infinitesimal scale (M's size was derived post-hoc from the observed image gap, not
+fixed as part of a genuine chain), NOT yet a link toward the real published orbit -- at the
+original, more meaningful ru=1e-6 size the covering still fails (ratio 0.28). #674's own bullet
+flags composing multiple section returns as the real fix (stretch compounds multiplicatively over
+returns while the over-approximation, if the enclosure stays tight, should grow more slowly --
+exactly why the real W-Z chain uses ~30 sections, not one). Scope: apply #672's rigorous section
+map + #674's mean-value image machinery across 2-3 CONSECUTIVE returns (not just one) at
+#674's original, more meaningful ru=1e-6 h-set size, and check whether the compounded stretch now
+dominates the compounded over-approximation enough to certify a covering WITHOUT shrinking the
+h-set to near-vacuous size (registered+dispatched 2026-07-20); #676 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12210,6 +12223,37 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   future work; the reusable mean-value image primitive is the durable deliverable. No
   `catalogue.yaml` write. Lint/format clean; `mypy src tests` clean (755 files); `tests/scripts`
   green (176 tests incl. 4 new).
+  **Coordinator adversarial re-read (2026-07-21)**: independently re-verified the mean-value
+  arithmetic (whole-box `section_jacobian` propagation, not a point-Jacobian-with-error-bar
+  trick) and the numerical scaling claims -- both hold. But the ru=1e-8 certified covering is
+  only meaningful as LOCAL hyperbolicity at an essentially infinitesimal scale: M's size was
+  derived post-hoc from the observed image gap (`0.4 * gap`), not fixed independently as part
+  of a genuine chain, and at the original, more meaningful ru=1e-6 size the covering still
+  fails (ratio 0.28). This is a genuine capability-infrastructure milestone (the covering-
+  relation primitive now works correctly on the real problem), NOT yet a proof-significant link
+  toward the actual W-Z existence theorem, which needs FIXED, moderately-sized h-sets in a real
+  chain, not a box shrunk to fit wherever the single-return image happens to land. See `#675`.
+- **#675 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 9, composed
+  multi-return covering at a moderate (proof-meaningful) h-set size. See `#674`'s own bullet and
+  its coordinator adversarial re-read immediately above for the full motivation: `#674`'s
+  ru=1e-8 covering only demonstrates local hyperbolicity at a near-vacuous scale; at the more
+  meaningful ru=1e-6 size the single-return covering still fails (ratio 0.28), and `#674`'s own
+  bullet already names the real fix -- composing multiple section returns, since the genuine
+  hyperbolic stretch compounds MULTIPLICATIVELY over returns while the mean-value
+  over-approximation, if the enclosure stays tight throughout, should grow more slowly (exactly
+  why the real W-Z Oterma chain uses ~30 sections, not one). Scope: apply `#672`'s rigorous
+  section map + `#674`'s validated mean-value image machinery across 2-3 CONSECUTIVE returns
+  (not just one) at `#674`'s original, more meaningful `ru=1e-6` h-set size (do not shrink the
+  h-set to force a result -- that is precisely the pattern this task exists to avoid repeating),
+  and check whether the compounded stretch now dominates the compounded over-approximation
+  enough to certify a covering at a size that isn't near-vacuous. Mandatory: re-validate
+  `#673`'s and `#674`'s own positive/negative controls still hold under whatever composition
+  machinery is added. Honest partial/negative reporting expected and fully acceptable if this
+  also hits a wall (e.g. if the over-approximation compounds just as fast as the signal, or
+  faster, over multiple returns through repeated close approaches) -- this would itself be a
+  valuable, precisely-characterized finding about why the real W-Z proof needed as many sections
+  as it did, matching the now firmly-established `#662`/`#668`-`#674` precedent across eight
+  prior stages.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
