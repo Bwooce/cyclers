@@ -848,7 +848,12 @@ transform removing the near-secondary singularity) to push the rigorous Oterma a
 through the physical Jupiter perijove #669 found blocks it at t~0.45-0.466 -- DONE (2026-07-20,
 Opus): Levi-Civita regularization built+validated, rigorous enclosure now crosses the perijove
 to t~0.8 (Jacobi conserved); new wall is the WRAPPING effect (QR/Stage-5), not the singularity
-(registered+dispatched 2026-07-20); #671 next-unused):**
+(registered+dispatched 2026-07-20); #671 for the W-Z proof machinery's Stage 5 -- combine #669's
+QR-coordinate reframing with #670's Levi-Civita regularized coordinates (a regularized C1/
+variational jet + QR reframing of the enclosure IN the regularized frame) to defeat the new
+post-perijove wrapping wall #670 found at t~0.85, extending the rigorous Oterma arc enclosure
+further toward the full L1-to-L2 heteroclinic connection time (registered+dispatched 2026-07-20);
+#672 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -11904,6 +11909,25 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   derivatives and the covering-relations / h-set topology also remain future stages. No
   `catalogue.yaml` write. Lint/format/mypy all clean (full `mypy src tests`, 751 files);
   `tests/scripts` green (154 tests incl. 4 new, no regression).
+- **#671 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 5, combining
+  `#669`'s QR-coordinate reframing with `#670`'s Levi-Civita regularized coordinates. See both
+  bullets for the full prior results. `#670`'s regularized enclosure crosses the Jupiter perijove
+  that stopped Stages 2/3 (now rigorously validated to t~0.80 model-time), but hits a NEW wall at
+  t~0.85 that `#670` characterized precisely as classic exponential (`e^t`) WRAPPING, not another
+  singularity (Jacobi stays enclosed, no collision-guard trip, half-width grows ~4e-20 -> ~0.85
+  across the run then blows up). Scope: derive the REGULARIZED variational/STM jet (the Jacobian
+  of the Levi-Civita-transformed flow, `V'=Df_reg(y)*V` in the `[u,v,Pu,Pv,T]` regularized state,
+  analogous to how `#669` built `cr3bp_planar_variational_jet` for the physical-coordinate flow),
+  then apply `#669`'s own `integrate_c1_qr` QR-reframing machinery to THAT regularized variational
+  flow rather than the physical one -- both fixes must compose, not merely coexist, since the
+  wrapping now occurring is happening in the REGULARIZED frame, so the QR reframing needs to
+  operate on the regularized coordinates' own local stretching directions, not the physical ones.
+  Mandatory: re-validate ALL prior positive controls (Stage 2/3's closed-form exp/harmonic goldens,
+  Stage 4's radial-collision Levi-Civita anchor) still hold under the combined formulation before
+  trusting any new Oterma-arc result. Success criterion: does the combined regularized+QR rigorous
+  enclosure extend meaningfully past t~0.85 toward the full heteroclinic connection time? Honest
+  partial/negative reporting expected and fully acceptable if this stage also hits a wall, matching
+  `#662`/`#668`/`#669`/`#670`'s own established precedent.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
