@@ -1473,6 +1473,68 @@ def covering_relation_2d(
     return covering_relation_2d_local(iv, au_left=au_left, au_right=au_right, as_box=as_box)
 
 
+# --------------------------------------------------------------------------- #
+# #674 -- CORRELATION-PRESERVING (mean-value) section-map image of a sub-box.   #
+#                                                                             #
+# #673's covering attempt hit a representation wall: propagating each face of   #
+# an h-set (whole box / left edge / right edge) INDEPENDENTLY through the        #
+# section map and box-hulling each image re-introduces the wrapping effect --    #
+# the axis-aligned hull of the thin, sheared true image is ~9x too wide, and     #
+# that slop masks the genuine hyperbolic edge separation.  The fix is the same   #
+# discipline #669's QR reframing applied to the FLOW enclosure, now applied to   #
+# how a single section-map IMAGE is described: carry the image in a correlation- #
+# preserving (parallelepiped) form built from ONE rigorous linearization of the  #
+# map rather than re-boxing per face.                                            #
+#                                                                             #
+# Rigorous mean-value enclosure.  Run the section map ONCE on the whole h-set    #
+# box (giving [DP], a rigorous enclosure of the section-map Jacobian over the     #
+# whole IC box W0) and ONCE on the box CENTER (giving a TIGHT image P(w_hat)).    #
+# Then, by the interval mean-value theorem, for every IC ``w0`` in ``W0`` (in     #
+# particular every point of any face / sub-box):                                 #
+#                                                                             #
+#     P(w0)  in  P(w_hat)  +  [DP] . (w0 - w_hat).                                #
+#                                                                             #
+# The face's parameter structure enters only through the small, tight offset     #
+# ``w0 - w_hat`` -- so the large per-step stretching that wraps a direct box      #
+# propagation is applied ONCE (as the tight [DP]) instead of accumulating, and    #
+# the image width collapses toward the true linear stretch.  The result is a      #
+# genuine over-enclosure of P(face) (mean value is exact to first order; [DP]'s   #
+# range over W0 rigorously bounds the second-order variation), so feeding it to   #
+# the covering checker keeps every verdict sound.                                 #
+# --------------------------------------------------------------------------- #
+def section_map_meanvalue_image(
+    iv: Any,
+    center_image: list[Any],
+    jac_box: IMat,
+    offset: list[Any],
+) -> list[Any]:
+    """Correlation-preserving (mean-value) enclosure of a sub-box's section-map image.
+
+    ``center_image`` is a TIGHT enclosure of ``P(w_hat)`` (the section-map image of the
+    IC-box CENTER, from a center-point run); ``jac_box`` is a rigorous enclosure of the
+    section-map Jacobian ``DP`` over the WHOLE IC box (from a whole-box run's
+    ``section_jacobian``); ``offset`` is the regularized IC offset ``w0_face - w_hat`` of
+    the face/sub-box whose image is wanted (a thin interval vector).  Returns the rigorous
+    interval enclosure
+
+        P(face)  subset  center_image + jac_box @ offset
+
+    valid for every IC in the (convex) sub-box, by the interval mean-value theorem
+    (``jac_box`` bounds ``DP`` over the convex hull of ``{w_hat} U face subset W0``).
+    Unlike an independent box propagation of the face, the map's stretching is applied
+    once through the tight ``jac_box`` rather than accumulated with per-step wrapping, so
+    the enclosure preserves the image's true (thin, sheared) shape.
+    """
+    n = len(center_image)
+    out: list[Any] = []
+    for i in range(n):
+        acc = center_image[i]
+        for k in range(n):
+            acc = acc + jac_box[i][k] * offset[k]
+        out.append(acc)
+    return out
+
+
 __all__ = [
     "HAVE_MPMATH",
     "apriori_enclosure",
@@ -1496,6 +1558,7 @@ __all__ = [
     "rigorous_inverse",
     "rigorous_section_map",
     "section_map_jacobian",
+    "section_map_meanvalue_image",
     "solution_series",
     "ts_add",
     "ts_add_scalar",

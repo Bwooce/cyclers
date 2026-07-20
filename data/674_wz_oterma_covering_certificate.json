@@ -1,0 +1,123 @@
+{
+  "task": "#674",
+  "stage": "Stage 8 -- correlation-preserving (mean-value) section-map image",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "hset_N": {
+    "at": "first published W-Z Oterma section point",
+    "center_x_xdot": [
+      0.95229284234862,
+      1.23e-05
+    ],
+    "unstable_dir_x_xdot": [
+      -0.36221713223217955,
+      0.9320937448119131
+    ],
+    "stable_dir_x_xdot": [
+      0.36221713223217955,
+      0.9320937448119131
+    ],
+    "note": "box on {y=0}; axes = L1* stable(expander)/unstable eigen-directions (heuristic frame); regularized IC built directly on Levi-Civita branch u=0."
+  },
+  "center_image_x_xdot": [
+    1.0035073191783517,
+    -0.17452281277395884
+  ],
+  "center_image_widths_x_xdot": [
+    2.58781529113303e-15,
+    9.305779269857283e-13
+  ],
+  "method": "P(face) subset P(w_hat) + [DP over box] . (w0_face - w_hat)  (interval mean-value; vti.section_map_meanvalue_image). ONE tight linearization instead of independent per-face box propagation -> no re-accumulated wrapping.",
+  "stage7_reference_numbers": {
+    "genuine_edge_center_separation": 5.9e-06,
+    "boxhull_per_edge_width": 5.2e-05,
+    "note": "#673 (Stage 7) box-hull figures this stage improves upon."
+  },
+  "sizes": [
+    {
+      "ru": 1e-06,
+      "rs": 1e-08,
+      "dp_box_enclosure_width": 0.8797224458716622,
+      "image_left_xdot": [
+        -0.17453030352897617,
+        -0.17450938538850272
+      ],
+      "image_right_xdot": [
+        -0.17453624082711736,
+        -0.17451532205162112
+      ],
+      "image_whole_box_xdot_width": 0.00031875920607733174,
+      "edge_center_separation": 5.936980629811517e-06,
+      "per_edge_enclosure_width": 2.0918775496224615e-05,
+      "separation_over_width_ratio": 0.2838110973982685,
+      "M_unstable_halfwidth": 1.4842451574528792e-06,
+      "M_stable_halfwidth": 7.065627758010475e-06,
+      "covers": false,
+      "stable_containment": true,
+      "unstable_exit": false,
+      "orientation": null,
+      "unstable_coord_left": [
+        -5.046844842131501,
+        9.046608903306735
+      ],
+      "unstable_coord_right": [
+        -9.047058763236995,
+        5.046822824440497
+      ],
+      "stable_coord_image": [
+        -0.3318786870097362,
+        0.33195737483525345
+      ]
+    },
+    {
+      "ru": 1e-08,
+      "rs": 1e-10,
+      "dp_box_enclosure_width": 0.008694944090353894,
+      "image_left_xdot": [
+        -0.17452279808553822,
+        -0.17452276854772322
+      ],
+      "image_right_xdot": [
+        -0.17452285700021208,
+        -0.17452282746237716
+      ],
+      "image_whole_box_xdot_width": 2.807262624030408e-06,
+      "edge_center_separation": 5.8914663925158095e-08,
+      "per_edge_enclosure_width": 2.953783491722931e-08,
+      "separation_over_width_ratio": 1.994549163479595,
+      "M_unstable_halfwidth": 1.1750731603171514e-08,
+      "M_stable_halfwidth": 6.88897200778375e-08,
+      "covers": true,
+      "stable_containment": true,
+      "unstable_exit": true,
+      "orientation": "reversing",
+      "unstable_coord_left": [
+        1.2500005200785251,
+        3.7637006027181705
+      ],
+      "unstable_coord_right": [
+        -3.7637021040798553,
+        -1.2500003266299242
+      ],
+      "stable_coord_image": [
+        -0.33188135484353787,
+        0.3318821210455495
+      ]
+    }
+  ],
+  "covering_vs_published_point2": {
+    "M_center_x_xdot": [
+      0.9210057378904252,
+      0.0005205932817646884
+    ],
+    "covers": false,
+    "image_dist_to_point2_x": 0.0825015812879265,
+    "interpretation": "NON-covering as expected: the first {y=0} return of N lands at x'~1.0035, ~0.083 away from published point 2 (x=0.9210); the rounded IC does not track the true unstable heteroclinic manifold and the first-return map does not pair points 1->2."
+  },
+  "certified": true,
+  "result": "GENUINE rigorous covering relation N ==P==> M CERTIFIED on the real regularized CR3BP section map (through the first Jupiter perijove) via the correlation-preserving mean-value image -- at a proof-appropriate h-set size. At #673's original ru=1e-6 the covering still does NOT certify: [DP] genuinely varies by ~0.9 over that box (strong flyby nonlinearity), so the mean-value edge width (~2.1e-5, already ~2.5x tighter than #673's 5.2e-5 box-hull) still exceeds the ~6e-6 signal. Shrinking to ru=1e-8 (the [DP]-variation term ~box^2 falls faster than the ~box signal) gives ratio ~2.0 and a clean covering certificate.",
+  "scope_note": "One covering relation as the bounded proof-of-concept -- NOT the full ~30-point W-Z chain. M is a constructed h-set at the actual first-return image, not a published W-Z point. The covering-relation checker and the mean-value image primitive are both validated on synthetic controls (tests/scripts/test_673_covering_relation.py, test_674_meanvalue_image.py)."
+}

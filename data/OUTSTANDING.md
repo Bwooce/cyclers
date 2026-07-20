@@ -112,8 +112,16 @@ unchanged. See `git log` around this date for the corrected commit.
   is an HONEST WALL — one return's hyperbolic stretch (~6e-6) is ~9× below the section map's
   perijove-enclosure over-approximation (~5e-5), so unstable-exit is uncertified; needs tighter
   parallelepiped section-map images and/or composed multi-return sections, as the real ~30-section
-  W-Z chain uses). The validated covering-relation checker is the durable deliverable; assembling
-  the actual W-Z Oterma chain is future work; see `#668`-`#673` own bullets.
+  W-Z chain uses), and `#674` (Stage 8, done — the correlation-preserving (mean-value) section-map
+  image primitive `vti.section_map_meanvalue_image`: `P(face) ⊆ P(w_hat) + [DP]·(w0_face−w_hat)`,
+  one tight linearization replacing #673's per-face box-hull propagation. It tightens the edge
+  width ~5.2e-5→~2.1e-5 at ru=1e-6 (ratio 0.28, still uncertified — genuine flyby nonlinearity
+  `[DP]` varies ~0.9/box, not artifact), and at a proof-appropriate ru=1e-8 h-set CERTIFIES a
+  genuine orientation-reversing covering relation `N ==P==> M` on the real regularized CR3BP section
+  map through the first Jupiter perijove — the first certified covering on the actual problem). The
+  validated covering-relation checker + mean-value image primitive are the durable deliverables;
+  the full ~30-section W-Z Oterma chain / composed multi-return covering remain future work; see
+  `#668`-`#674` own bullets.
 - ~~`#556`~~ **REMOVED from this list 2026-07-17 — CLOSED, not open.** The large-rotation-number
   quasi-halo torus corrector this entry asked for was built `#612` (2026-07-16, user-approved,
   overriding this entry's own standing "not auto-fired" flag): a seedless 2D pseudospectral CR3BP
@@ -896,12 +904,15 @@ not cover pt2 (image lands x'~1.0035, ~0.083 away; rounded IC doesn't track the 
 (B) vs a constructed M at the image, stable-pinch holds but unstable-exit uncertified because the
 single-return stretch ~5.9e-6 is ~9x below the perijove-enclosure over-approximation ~5.2e-5 -- one
 return can't beat the flyby enclosure width, needs tighter parallelepiped images and/or composed
-returns as the real ~30-section chain does); #674 for the W-Z proof machinery's Stage 8 --
-correlation-preserving (parallelepiped, QR-frame-aligned) enclosure of the section-map IMAGE
-itself, replacing the axis-aligned box-hull #673 found over-approximates the true single-return
-stretch by ~9x through the Jupiter-perijove flyby; re-attempt #673's exact covering-relation check
-with the tightened image to see whether the genuine ~5.9e-6 stretch can now be certified as
-exiting the target h-set (registered+dispatched 2026-07-20); #675 next-unused):**
+returns as the real ~30-section chain does); #674 DONE (2026-07-21) -- W-Z Stage 8: built the
+correlation-preserving (mean-value) section-map image primitive `vti.section_map_meanvalue_image`
+(`P(face) ⊆ P(w_hat) + [DP]·(w0_face−w_hat)`, one tight linearization instead of per-face box-hull
+propagation); it tightens #673's ~5.2e-5 box-hull edge width to ~2.1e-5 at ru=1e-6 (ratio still
+0.28, genuine flyby nonlinearity `[DP]` varies ~0.9/box, not artifact) and, at a proof-appropriate
+ru=1e-8 h-set, CERTIFIES a genuine orientation-reversing covering relation `N ==P==> M` on the real
+regularized CR3BP section map through the first Jupiter perijove (edges strictly opposite sides,
+image pinched in the stable strip); full ~30-section chain / composed returns remain future work
+(registered+dispatched 2026-07-20); #675 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12163,6 +12174,42 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   to the real result. Honest partial/negative reporting expected and fully acceptable if the gap
   doesn't close enough, or if a genuinely different obstruction appears, matching the
   now-established `#662`/`#668`-`#673` precedent across seven prior stages.
+  **DONE (2026-07-21, Opus) -- the covering relation is now CERTIFIED at a proof-appropriate
+  h-set size via a correlation-preserving image; the gap-closing mechanism is fully
+  characterized.** New reusable primitive `vti.section_map_meanvalue_image` (+
+  `tests/scripts/test_674_meanvalue_image.py`, 4 tests: exactness on affine, offset
+  inclusion-monotonicity, and the load-bearing mechanism test -- a tight mean-value image
+  CERTIFIES a synthetic covering while an artificially width-inflated Jacobian (mimicking
+  #673's box-hull wrapping) makes the SAME #673 checker correctly report non-covering).
+  **Pipeline change (in the new driver `scripts/certify_674_wz_oterma_covering_meanvalue.py`
+  -> `data/674_wz_oterma_covering_certificate.json`; #673's checker core and its 8 controls
+  are UNTOUCHED and still green):** instead of propagating each h-set face (whole/left/right)
+  INDEPENDENTLY through the perijove and box-hulling each image (the wrapping-reintroduction
+  point), run the section map ONCE on the box CENTER (giving a TIGHT `P(w_hat)`, physical
+  image widths ~3e-15/9e-13) and ONCE on the whole box (giving `section_jacobian` = a rigorous
+  enclosure `[DP]` of the section-map Jacobian over the IC box), then enclose each face by the
+  interval mean-value theorem `P(face) ⊆ P(w_hat) + [DP]·(w0_face − w_hat)` -- the map's
+  stretch applied ONCE (tight `[DP]`, magnitude ~15 through the REGULARIZED perijove, not the
+  ~1e4 a raw physical STM would carry) rather than re-accumulated with per-step wrapping.
+  **Honest two-size result (both rigorous):** at #673's ORIGINAL half-widths (ru=1e-6, rs=1e-8)
+  the mean-value image already tightens the per-edge xdot' width from #673's box-hull ~5.2e-5
+  to ~2.1e-5 (~2.5x), but the separation/width ratio is still 0.28 < 1, so the covering does
+  NOT certify at that size -- NOT a residual representation artifact but a genuine geometric
+  fact: `[DP]` truly VARIES by ~0.9 across a 1e-6 box (strong second-order flyby nonlinearity),
+  and that variation × the ~1e-6 offset dominates the ~5.9e-6 linear signal. The `[DP]`-variation
+  term scales like box^2 while the signal scales like box, so at a smaller proof-appropriate
+  h-set (ru=1e-8, rs=1e-10) it falls away: edge separation ~5.89e-8 now EXCEEDS per-edge width
+  ~2.95e-8 (ratio ~2.0), the two unstable edges land strictly on OPPOSITE sides of M (M-local
+  coords `[1.25,3.76]` / `[-3.76,-1.25]`), the whole image stays pinched inside M's stable strip
+  (`[-0.33,0.33]`), and #673's checker CERTIFIES a genuine orientation-reversing covering
+  relation `N ==P==> M` on the real regularized CR3BP section map through the first Jupiter
+  perijove. M is a constructed h-set at the actual first-return image (x'~1.0035), NOT a
+  published W-Z point; the published-point-2 negative is preserved (image ~0.083 away from
+  x=0.921). Still the bounded SINGLE-return proof-of-concept -- the full ~30-section chain and
+  composing multiple returns (so the stretch dominates without shrinking the h-set) remain
+  future work; the reusable mean-value image primitive is the durable deliverable. No
+  `catalogue.yaml` write. Lint/format clean; `mypy src tests` clean (755 files); `tests/scripts`
+  green (176 tests incl. 4 new).
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
