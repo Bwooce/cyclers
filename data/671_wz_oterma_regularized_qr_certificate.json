@@ -1,0 +1,199 @@
+{
+  "task": "#671",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515,
+    "model": "planar CR3BP (Sun-Jupiter, Oterma)"
+  },
+  "method": "Regularized C1/Lohner-QR: the Levi-Civita secondary-regularized field (#670, make_cr3bp_lc_secondary_jet) integrated with #669's integrate_c1_qr, driven by the NEW analytic regularized variational jet make_cr3bp_lc_secondary_variational_jet (V'=Dg(w)V, w=[u,v,Pu,Pv,T]; Dg re-derived from the exact regularized EOM and validated against finite differences). QR now reframes the enclosure in the regularized coordinates' own local stretching directions.",
+  "start": {
+    "x": 0.95229284234862,
+    "C0_lower": 3.03,
+    "C0_upper": 3.03
+  },
+  "prior_stage_walls": {
+    "stage_2_3_perijove_t": 0.466,
+    "stage_4_reach_t": 0.8,
+    "stage_4_wrapping_wall_t": 0.85
+  },
+  "radial_fall_qr_closed_form_anchor": {
+    "problem": "radial fall (collision orbit) -> harmonic in L-C, via integrate_c1_qr",
+    "validated_through_collision": true,
+    "u_encloses_closed_form": true,
+    "u_excludes_wrong": true,
+    "u_halfwidth": 6.273813004351917e-31,
+    "final_max_halfwidth": 1.784295547435868e-30
+  },
+  "qr_positive_controls": {
+    "exp_encloses_e": true,
+    "exp_excludes_wrong": true,
+    "harmonic_encloses_cos1": true,
+    "harmonic_encloses_neg_sin1": true
+  },
+  "regularized_variational_jacobian_check": {
+    "n_points": 5,
+    "includes_near_collision": true,
+    "max_relative_error": 1.9862920197510903e-09,
+    "matches": true
+  },
+  "naive_c0_wrapping_wall_matched_grid": {
+    "grid_h": 0.125,
+    "order": 10,
+    "validated": false,
+    "tau_reached": 23.125,
+    "t_phys_reached": 0.5874190040714604,
+    "final_max_halfwidth": 3.6886757684109615,
+    "signature": "exponential e^t wrapping growth then blow-up (a-priori box fails)",
+    "halfwidth_growth_sample": [
+      [
+        0.0,
+        4.7330674936276235e-18
+      ],
+      [
+        2.25,
+        1.0340015101784523e-15
+      ],
+      [
+        4.5,
+        5.0767273853264734e-14
+      ],
+      [
+        6.75,
+        2.403109534227403e-12
+      ],
+      [
+        9.0,
+        1.0920783157488295e-10
+      ],
+      [
+        11.25,
+        4.708786476339486e-09
+      ],
+      [
+        13.5,
+        1.9359416874496204e-07
+      ],
+      [
+        15.75,
+        7.677003628640877e-06
+      ],
+      [
+        18.0,
+        0.0002985077765535626
+      ],
+      [
+        20.25,
+        0.011824183118008971
+      ],
+      [
+        22.5,
+        0.4985149426752145
+      ]
+    ]
+  },
+  "qr_regularized_reach": {
+    "grid_h": 0.125,
+    "order": 10,
+    "validated": true,
+    "tau_reached": 80.0,
+    "t_phys_reached_lo": 2.0487397695610303,
+    "t_phys_reached_hi": 2.048739769585784,
+    "final_max_halfwidth": 1.2376909900251555e-11,
+    "jacobi_end_contains_C0": true,
+    "hit_wall": false,
+    "halfwidth_growth_sample": [
+      [
+        0.0,
+        5.2550950612216406e-18
+      ],
+      [
+        4.0,
+        1.1188972724391814e-15
+      ],
+      [
+        8.0,
+        4.4660995189932335e-15
+      ],
+      [
+        12.0,
+        9.82925501508361e-15
+      ],
+      [
+        16.0,
+        1.5927924066219865e-14
+      ],
+      [
+        20.0,
+        2.2475431468652086e-14
+      ],
+      [
+        24.0,
+        2.992842827400235e-14
+      ],
+      [
+        28.0,
+        4.3255073563141775e-14
+      ],
+      [
+        32.0,
+        6.591896641009726e-14
+      ],
+      [
+        36.0,
+        2.9806059694394446e-13
+      ],
+      [
+        40.0,
+        5.7659755614423e-13
+      ],
+      [
+        44.0,
+        9.16931099417789e-13
+      ],
+      [
+        48.0,
+        1.1982298917475157e-12
+      ],
+      [
+        52.0,
+        1.2204602020871541e-12
+      ],
+      [
+        56.0,
+        1.0718605642415962e-12
+      ],
+      [
+        60.0,
+        9.044827250051811e-13
+      ],
+      [
+        64.0,
+        8.977706367568864e-13
+      ],
+      [
+        68.0,
+        3.270903798049145e-12
+      ],
+      [
+        72.0,
+        6.5573311887279534e-12
+      ],
+      [
+        76.0,
+        9.641138608177546e-12
+      ]
+    ]
+  },
+  "findings": {
+    "regularized_variational_jet_correct": true,
+    "qr_composes_with_regularization_closed_form": true,
+    "stage_2_3_controls_intact": true,
+    "naive_wraps_and_fails_at_matched_grid": true,
+    "qr_defeats_wrapping": true,
+    "qr_reach_t_phys": 2.048739769585784,
+    "reach_extension_factor_over_stage4_wall": 2.41,
+    "wall_found_in_probed_range": false
+  },
+  "scope_note": "Rigorous, and it meets the Stage-5 goal: the regularized variational jet + QR reframing COMPOSE. At a matched grid the naive C0 box wraps (e^t) and fails at tau~23.125, while the QR-regularized enclosure stays tight (hw~1.2e-11) to tau=80.0 (t_phys~2.05), Jacobi rigorously conserved, no wall in range -- more than doubling the physical-time reach past #670's t~0.85 wrapping wall and sailing through the repeated Jupiter close approaches that stopped the pre-regularization stages. The W-Z heteroclinic connection is an infinite-time asymptotic object (proven via covering relations on a finite Poincare-section-crossing sequence, not a finite flight time), so 'fraction of the full connection time' is not the right metric; rigorous Poincare-map derivatives and the covering-relations / h-set topology remain future stages."
+}

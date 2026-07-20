@@ -371,6 +371,183 @@ def make_cr3bp_lc_secondary_jet(h: float) -> Callable[..., list[Series]]:
     return jet
 
 
+def make_cr3bp_lc_secondary_variational_jet(h: float) -> Callable[..., list[Series]]:
+    """Build the C1 (state + STM) Levi-Civita regularized jet for fixed energy ``h``.
+
+    This is ``#671``'s Stage-5 addition: the REGULARIZED-coordinate analogue of
+    :func:`cr3bp_planar_variational_jet` (which carries the STM for the *physical*
+    CR3BP).  ``#670`` regularized the secondary close approach but integrated it
+    with the plain (non-variational) jet, so ``#669``'s QR/Lohner-C1 wrapping fix
+    could not be applied in the regularized frame.  This jet supplies the missing
+    piece: the variational flow ``V' = Dg(w) V`` of the Levi-Civita field
+    ``g(w)``, ``w = [u, v, Pu, Pv, T]``, so :func:`integrate_c1_qr` can reframe the
+    enclosure in the regularized coordinates' own local stretching directions.
+
+    The augmented state is ``[u, v, Pu, Pv, T, V00, V01, ..., V44]`` -- the 5-state
+    plus a row-major 5x5 STM (25 series).  ``Dg`` is the analytic Jacobian of the
+    exact same field :func:`make_cr3bp_lc_secondary_jet` produces (re-derived and
+    validated against finite differences of that field, and against the closed-form
+    harmonic STM of the radial-collision anchor).  The Jacobian is worked out from
+
+        u'  = Pu/4 + (r2 - w1) v/2,                w1 := 1-mu
+        v'  = Pv/4 - (r2 + w1) u/2,
+        Pu' = -u A + (r2 + w1) Pv/2 + 2 w1 u/r1 - w1 r2 I1/r1^3 + 2h u,
+        Pv' = -v A + (w1 - r2) Pu/2 + 2 w1 v/r1 - w1 r2 I2/r1^3 + 2h v,
+        T'  = r2,
+
+    with ``A = v Pu - u Pv``, ``P = u^2-v^2+1``, ``Q = 2uv``, ``r1^2 = P^2+Q^2``,
+    ``I1 = 2(uP+vQ)``, ``I2 = 2(uQ-vP)``, and the key identities ``d(r1^2)/du =
+    2 I1``, ``d(r1^2)/dv = 2 I2``.  The resulting 4x4 Jacobian block is (Hamiltonian
+    symmetry: the (Pu',Pv') cross terms coincide, and ``du'/dv = -dPv'/dPu`` etc.,
+    all verified below by construction)::
+
+        Df[u']  = [ uv,              (r2-w1)/2 + v^2,  1/4,               0            ]
+        Df[v']  = [ -(r2+w1)/2 - u^2, -uv,             0,                 1/4          ]
+        Df[Pu'] = [ J20,             J21,              -uv,               u^2+(r2+w1)/2 ]
+        Df[Pv'] = [ J21,             J31,              (w1-r2)/2 - v^2,   uv           ]
+        Df[T']  = [ 2u,              2v,               0,                 0            ]
+
+    (the 5th, T, column of ``Df`` is identically zero -- nothing depends on ``T``),
+    with
+        J20 = -A + 2u Pv + 2 w1/r1 - 4 w1 u I1/r1^3 - w1 r2 (2P+4r2)/r1^3
+                 + 3 w1 r2 I1^2/r1^5 + 2h,
+        J21 = -u Pu + v Pv - 2 w1 u I2/r1^3 - 2 w1 v I1/r1^3 - 2 w1 r2 Q/r1^3
+                 + 3 w1 r2 I1 I2/r1^5,
+        J31 = -A - 2v Pu + 2 w1/r1 - 4 w1 v I2/r1^3 - w1 r2 (4r2-2P)/r1^3
+                 + 3 w1 r2 I2^2/r1^5 + 2h.
+    """
+
+    def jet(iv: Any, aug: list[Series], mu: float) -> list[Series]:
+        u, v, pu, pv, _t = aug[0], aug[1], aug[2], aug[3], aug[4]
+        V = aug[5:30]  # 25 series, row-major 5x5
+        om1 = iv.mpf(1.0 - mu)
+        two_h = iv.mpf(2.0 * h)
+        half = iv.mpf(0.5)
+        quarter = iv.mpf(0.25)
+
+        # --- shared field quantities (identical to make_cr3bp_lc_secondary_jet) ---
+        r2 = ts_add(iv, ts_mul(iv, u, u), ts_mul(iv, v, v))  # u^2 + v^2
+        amom = ts_sub(iv, ts_mul(iv, v, pu), ts_mul(iv, u, pv))  # A = v Pu - u Pv
+        pp = ts_add_scalar(iv, ts_sub(iv, ts_mul(iv, u, u), ts_mul(iv, v, v)), iv.mpf(1.0))  # P
+        qq = ts_scale(iv, ts_mul(iv, u, v), iv.mpf(2.0))  # Q = 2uv
+        r1sq = ts_add(iv, ts_mul(iv, pp, pp), ts_mul(iv, qq, qq))
+        r1i = ts_pow(iv, r1sq, -0.5)  # 1/r1
+        r1i3 = ts_pow(iv, r1sq, -1.5)  # 1/r1^3
+        r1i5 = ts_pow(iv, r1sq, -2.5)  # 1/r1^5 (STM only)
+        inner1 = ts_scale(iv, ts_add(iv, ts_mul(iv, u, pp), ts_mul(iv, v, qq)), iv.mpf(2.0))  # I1
+        inner2 = ts_scale(iv, ts_sub(iv, ts_mul(iv, u, qq), ts_mul(iv, v, pp)), iv.mpf(2.0))  # I2
+
+        # --- state derivatives (identical to make_cr3bp_lc_secondary_jet) ---------
+        up = ts_add(
+            iv,
+            ts_scale(iv, pu, quarter),
+            ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, -om1), v), half),
+        )
+        vp = ts_sub(
+            iv,
+            ts_scale(iv, pv, quarter),
+            ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, om1), u), half),
+        )
+        i1_pot = ts_scale(iv, ts_add(iv, ts_mul(iv, u, pp), ts_mul(iv, v, qq)), iv.mpf(2.0))
+        pup = ts_scale(iv, ts_mul(iv, u, amom), iv.mpf(-1.0))
+        pup = ts_add(iv, pup, ts_scale(iv, ts_mul(iv, ts_add_scalar(iv, r2, om1), pv), half))
+        pup = ts_add(iv, pup, ts_scale(iv, ts_mul(iv, u, r1i), 2 * om1))
+        pup = ts_sub(iv, pup, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, i1_pot), r1i3), om1))
+        pup = ts_add(iv, pup, ts_scale(iv, u, two_h))
+        i2_pot = ts_scale(iv, ts_sub(iv, ts_mul(iv, u, qq), ts_mul(iv, v, pp)), iv.mpf(2.0))
+        om1_m_r2 = ts_add_scalar(iv, ts_scale(iv, r2, iv.mpf(-1.0)), om1)
+        pvp = ts_scale(iv, ts_mul(iv, v, amom), iv.mpf(-1.0))
+        pvp = ts_add(iv, pvp, ts_scale(iv, ts_mul(iv, om1_m_r2, pu), half))
+        pvp = ts_add(iv, pvp, ts_scale(iv, ts_mul(iv, v, r1i), 2 * om1))
+        pvp = ts_sub(iv, pvp, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, i2_pot), r1i3), om1))
+        pvp = ts_add(iv, pvp, ts_scale(iv, v, two_h))
+        tp = r2
+
+        # --- Jacobian Df (4x4 on [u,v,Pu,Pv]; row T and column T handled apart) ---
+        uv = ts_mul(iv, u, v)
+        u2 = ts_mul(iv, u, u)
+        v2 = ts_mul(iv, v, v)
+        neg_uv = ts_scale(iv, uv, iv.mpf(-1.0))
+        # row u'
+        d_uu = uv
+        d_uv = ts_add(iv, ts_scale(iv, ts_add_scalar(iv, r2, -om1), half), v2)  # (r2-w1)/2 + v^2
+        # row v'
+        d_vu = ts_sub(iv, ts_scale(iv, ts_add_scalar(iv, r2, om1), -half), u2)  # -(r2+w1)/2 - u^2
+        d_vv = neg_uv
+        # row Pu'  (J20, J21, -uv, u^2 + (r2+w1)/2)
+        j20 = ts_scale(iv, amom, iv.mpf(-1.0))
+        j20 = ts_add(iv, j20, ts_scale(iv, ts_mul(iv, u, pv), iv.mpf(2.0)))
+        j20 = ts_add(iv, j20, ts_scale(iv, r1i, 2 * om1))
+        j20 = ts_sub(iv, j20, ts_scale(iv, ts_mul(iv, ts_mul(iv, u, inner1), r1i3), 4 * om1))
+        twoP_4r2 = ts_add(iv, ts_scale(iv, pp, iv.mpf(2.0)), ts_scale(iv, r2, iv.mpf(4.0)))
+        j20 = ts_sub(iv, j20, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, twoP_4r2), r1i3), om1))
+        j20 = ts_add(
+            iv,
+            j20,
+            ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, ts_mul(iv, inner1, inner1)), r1i5), 3 * om1),
+        )
+        j20 = ts_add_scalar(iv, j20, two_h)
+        # J21 = dPu'/dv = dPv'/du  (Hamiltonian cross term)
+        j21 = ts_scale(iv, ts_mul(iv, u, pu), iv.mpf(-1.0))
+        j21 = ts_add(iv, j21, ts_mul(iv, v, pv))
+        j21 = ts_sub(iv, j21, ts_scale(iv, ts_mul(iv, ts_mul(iv, u, inner2), r1i3), 2 * om1))
+        j21 = ts_sub(iv, j21, ts_scale(iv, ts_mul(iv, ts_mul(iv, v, inner1), r1i3), 2 * om1))
+        j21 = ts_sub(iv, j21, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, qq), r1i3), 2 * om1))
+        j21 = ts_add(
+            iv,
+            j21,
+            ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, ts_mul(iv, inner1, inner2)), r1i5), 3 * om1),
+        )
+        d_2Pu = neg_uv
+        d_2Pv = ts_add(iv, u2, ts_scale(iv, ts_add_scalar(iv, r2, om1), half))  # u^2+(r2+w1)/2
+        # row Pv'  (J21, J31, (w1-r2)/2 - v^2, uv)
+        j31 = ts_scale(iv, amom, iv.mpf(-1.0))
+        j31 = ts_sub(iv, j31, ts_scale(iv, ts_mul(iv, v, pu), iv.mpf(2.0)))
+        j31 = ts_add(iv, j31, ts_scale(iv, r1i, 2 * om1))
+        j31 = ts_sub(iv, j31, ts_scale(iv, ts_mul(iv, ts_mul(iv, v, inner2), r1i3), 4 * om1))
+        fourr2_2P = ts_sub(iv, ts_scale(iv, r2, iv.mpf(4.0)), ts_scale(iv, pp, iv.mpf(2.0)))
+        j31 = ts_sub(iv, j31, ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, fourr2_2P), r1i3), om1))
+        j31 = ts_add(
+            iv,
+            j31,
+            ts_scale(iv, ts_mul(iv, ts_mul(iv, r2, ts_mul(iv, inner2, inner2)), r1i5), 3 * om1),
+        )
+        j31 = ts_add_scalar(iv, j31, two_h)  # + 2h  (from the +2h v term of Pv')
+        d_3Pu = ts_sub(iv, ts_scale(iv, om1_m_r2, half), v2)  # (w1-r2)/2 - v^2
+        d_3Pv = uv
+
+        # Df rows as [c_u, c_v, c_Pu, c_Pv] series lists; column T is zero.
+        zero = ts_const(iv, iv.mpf(0), len(u) - 1)
+        quarter_s = ts_const(iv, quarter, len(u) - 1)
+        two_u = ts_scale(iv, u, iv.mpf(2.0))
+        two_v = ts_scale(iv, v, iv.mpf(2.0))
+        df = [
+            [d_uu, d_uv, quarter_s, zero, zero],
+            [d_vu, d_vv, zero, quarter_s, zero],
+            [j20, j21, d_2Pu, d_2Pv, zero],
+            [j21, j31, d_3Pu, d_3Pv, zero],
+            [two_u, two_v, zero, zero, zero],
+        ]
+
+        # --- STM block  dV = Df . V  (5x5, row-major) ---
+        # Precompute the non-zero (row, col) index pattern of Df (``zero`` entries
+        # -- the T column, and the structural zeros of rows u'/v'/T' -- are skipped;
+        # identity test is valid since every zero slot reuses the same object).
+        nz = [[kk for kk in range(5) if df[rrow][kk] is not zero] for rrow in range(5)]
+        dV: list[Series] = [zero for _ in range(25)]
+        for c in range(5):  # column of V
+            col = [V[0 * 5 + c], V[1 * 5 + c], V[2 * 5 + c], V[3 * 5 + c], V[4 * 5 + c]]
+            for rrow in range(5):
+                ks = nz[rrow]
+                acc = ts_mul(iv, df[rrow][ks[0]], col[ks[0]])
+                for kk in ks[1:]:
+                    acc = ts_add(iv, acc, ts_mul(iv, df[rrow][kk], col[kk]))
+                dV[rrow * 5 + c] = acc
+        return [up, vp, pup, pvp, tp, *dV]
+
+    return jet
+
+
 # --------------------------------------------------------------------------- #
 # The validated integrator.                                                    #
 # --------------------------------------------------------------------------- #
@@ -834,6 +1011,7 @@ __all__ = [
     "lc_secondary_from_physical",
     "lc_secondary_to_physical",
     "make_cr3bp_lc_secondary_jet",
+    "make_cr3bp_lc_secondary_variational_jet",
     "rigorous_inverse",
     "solution_series",
     "ts_add",
