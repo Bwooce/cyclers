@@ -872,7 +872,15 @@ STM (Phi=A@B); validated END-TO-END against closed-form controls (2D harmonic {y
 5D Kepler-LC {u=0}: tau*=pi, pu*=-2, Dsigma.f=-1/2), and demonstrated tight+transversal on a real
 W-Z Oterma section point (first {y=0} re-crossing rigorously isolated at tau*~16.571, x*~1.00351,
 DP half-width ~6e-11, through the first Jupiter perijove) -- h-sets/covering-relations remain the
-next stage (registered+dispatched 2026-07-20); #673 next-unused):**
+next stage (registered+dispatched 2026-07-20); #673 for the W-Z proof machinery's Stage 7 --
+h-set construction + a first genuine covering relation. See #672's own honest scope note: a
+single forward trajectory from the rounded published IC does not track the true unstable manifold
+precisely enough to land back on the published SECOND golden point, so this stage must work with
+an h-set (a box/segment transverse to the manifold, not one point) around the first published
+section point, propagate it via #672's validated rigorous section map, and check whether the
+IMAGE genuinely covers (crosses through, in the correct topological sense) the h-set placed at
+the second published section point -- ONE genuine covering relation as the bounded first proof-of-
+concept, not the full ~30-point W-Z chain (registered+dispatched 2026-07-20); #674 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12048,6 +12056,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   Lint/format/mypy all clean (full `mypy src tests`, 753 files); `tests/scripts` green (164 tests
   incl. 6 new), `tests/data tests/search` only the same 2 pre-existing documented failures
   (`test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`).
+- **#673 (registered+dispatched 2026-07-20)** -- the W-Z proof machinery's Stage 7, h-set
+  construction + a first genuine covering relation. See `#672`'s own bullet for the full section-
+  map result and its own honest scope note this continues from: a single forward trajectory from
+  the rounded published IC does NOT track the true unstable heteroclinic manifold precisely enough
+  to land back on the published SECOND golden section point -- a single trajectory can never prove
+  a covering relation anyway, by construction; covering relations are a statement about a SET
+  (a box/segment transverse to the manifold) mapping across another set. Scope: (1) construct an
+  h-set at the FIRST published W-Z Oterma section point -- a box in the section's own local
+  coordinates (the `(x, xdot)` parameterization `#672` already established) wide enough to
+  robustly contain the true manifold direction despite the rounded-IC tracking imprecision `#672`
+  found, with explicit, documented "entry"/"exit" faces per the h-set/covering-relations
+  definition (read the W-Z paper's own digest in `docs/notes/CORPUS_INDEX.md` for their exact
+  h-set convention -- match it, do not invent a new one); (2) propagate that WHOLE h-set (not a
+  point) through `#672`'s validated rigorous section map to the second published section point;
+  (3) check whether the IMAGE genuinely covers the h-set placed there, in the correct topological
+  sense (the image's boundary must map exit-faces to exit-faces / entry-faces to entry-faces
+  consistently -- this is the actual mathematical content of a covering relation, not just
+  "the boxes overlap"). This is ONE genuine covering relation as the bounded first proof-of-
+  concept -- NOT the full ~30-point W-Z chain, which remains explicit future work. Honest partial/
+  negative reporting expected and fully acceptable if this stage hits a wall (e.g. if the h-set is
+  too wide/narrow to genuinely cover, or if the topological check itself proves harder to
+  rigorously establish than expected), matching the now firmly-established `#662`/`#668`-`#672`
+  precedent across six prior stages of exactly this discipline.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
