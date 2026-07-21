@@ -378,6 +378,13 @@ class SweepResult:
     min_distance_secondary_km: float | None = None  # min dist to secondary CENTRE
     min_clearance_ok: bool | None = None  # None=not evaluated; else both bodies cleared radius
     #
+    # Task #665: cannonball-SRP diagnostics. `None` means "gravity-only run"
+    # (every pre-#665 caller) -- populated by
+    # cyclerfinder.search.real_binary_kk_sweep's sweep_family_srp/
+    # sweep_family_grid_srp when a nonzero SRP perturbation was applied.
+    beta_nd: float | None = None  # nondimensional SRP perturbing-accel parameter used
+    phi0: float | None = None  # fixed Sun-direction angle (rad, rotating frame) used
+    #
     method: str = ""  # how the seed was obtained
     note: str = ""  # clean-negative reason or other note
 

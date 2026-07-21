@@ -837,12 +837,17 @@ Mars-crossing quasi-Hilda transport channel) PASSED -- a spectrally-discovered a
 cluster overlapped the independently-constructed quasi-Hilda region 94-98% across two seeds, and
 the R-to-Q transport probability after 200 iterates (5.8-8.6% across seeds) matched the paper's
 sourced ~6% order of magnitude; a real bug (spurious t=0 self-detection in the Poincare-section
-event) was found and fixed en route, confirmed via before/after diagnostics. #665 for #661 shortlist item 3, SRP-augmented
-(photogravitational) binary-asteroid re-sweep -- every #549/#657/#659/#660 negative is
-gravity-only-conditional, positive control = reproduce a published Didymos terminator-orbit family
-member (CMDA 138:2, 2025); needs 2-3 SRP-binary papers acquired first, a real corpus gap
-(registered 2026-07-19; beta-admissibility DECIDED by user 2026-07-21 -- bare-rock cyclers only,
-~1e-4 to 1e-3 m^2/kg; registered+dispatched 2026-07-21); #666
+event) was found and fixed en route, confirmed via before/after diagnostics. #665 ✓ DONE
+(2026-07-21) -- #661 shortlist item 3, SRP-augmented binary-asteroid re-sweep at the user's
+bare-rock beta (~1e-4 to 1e-3 m^2/kg): clean negative, 0/96 gate-passing across all 6 systems
+(patroclus-menoetius, didymos-dimorphos, orcus-vanth, eris-dysnomia, sila-nunam, lempo-hiisi),
+all 6 (k1,k2) topologies, both phi0 in {0,pi} -- built `real_binary_srp.py` (constant-direction
+cannonball SRP, autonomous Jacobi-like C_srp conserved, phi0 in {0,pi} required for genuine
+periodicity), 9-test regression suite; TWO calibration corrections to this bullet's own original
+framing folded into the result (SRP is NOT dominant at bare-rock beta even at Didymos -- ratio
+only 8.5e-05 -- and the originally-named CMDA 138:2 2025 paper describes POLAR terminator orbits,
+a geometry mismatch with this task's planar sweep, not a valid positive-control source for it);
+see #665's own bullet for full detail. #666
 for #661 shortlist item 4, co-orbital quasi-satellite/horseshoe transition cyclers -- built the
 averaged 1-DOF co-orbital Hamiltonian (`search/coorbital_hamiltonian.py`, numerical disturbing-
 function averaging, sign convention validated + a sign bug caught and fixed via the mandatory
@@ -11649,7 +11654,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff check .` / `ruff format --check .` / `mypy src tests` clean; `tests/search tests/data
   tests/scripts` run clean except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`) — unrelated to this task.
-- **#665 (registered 2026-07-19, not yet dispatched)** — `#661` shortlist item 3, SRP-augmented
+- **#665 ✓ DONE (2026-07-21)** — `#661` shortlist item 3, SRP-augmented
   (photogravitational) binary-asteroid re-sweep. See `#661`'s own bullet for the full case. Scope:
   add cannonball SRP at a fixed area-to-mass ratio β to the real-binary genome/corrector
   (`src/cyclerfinder/search/real_binary_kk_sweep.py`) and re-sweep the systems `#549`/`#657`/
@@ -11666,8 +11671,60 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   restrict β to the range physically defensible for an uncoated rocky/metallic cycler spacecraft
   body itself (~1e-4 to 1e-3 m²/kg, no sail/balloon assumption), the most conservative choice,
   directly comparable to the existing gravity-only sweeps since it changes nothing about mission
-  concept, just adds the real physical SRP force term at a defensible β. (registered+dispatched
-  2026-07-21)
+  concept, just adds the real physical SRP force term at a defensible β.
+  **✓ DONE (2026-07-21) — clean negative, 0/96 gate-passing, WITH TWO IMPORTANT CALIBRATION
+  CORRECTIONS to this bullet's own original framing.**
+  **Correction 1 — the ratio, computed, is NOT "dominant."** This bullet's original text asserted
+  "At Didymos-scale GMs, SRP is a DOMINANT term" — that framing was calibrated against a much
+  higher (sail/balloon-class) β, not the user's actual bare-rock decision. The computed
+  SRP/gravity acceleration ratio at β=1e-3 m²/kg (the TOP of the bare-rock range), C_R=1.3, is
+  TINY for every system: patroclus-menoetius 1.1e-06, **didymos-dimorphos 8.5e-05** (the system
+  this bullet singled out as the dominant-SRP case), orcus-vanth 7.4e-09, eris-dysnomia 1.6e-09,
+  sila-nunam 3.3e-08, lempo-hiisi 3.0e-09. At the user's chosen conservative β, SRP is a small
+  perturbation everywhere in scope, not a dominant term anywhere — so this re-sweep is a
+  genuinely weaker test of the "SRP matters" hypothesis than the original framing implied; it
+  rules out SRP mattering AT THIS β, not at any admissible β.
+  **Correction 2 — the named positive-control source doesn't map onto this task's geometry.**
+  CMDA 138:2 2025 (Voyatzis, Gkolias, Gaitanas & Tsiganis, "Terminator periodic orbits around
+  binary asteroids: an application to the ESA Hera mission" — confirmed real via
+  ui.adsabs.harvard.edu/abs/2025CeMDA.138....2V and link.springer.com/article/10.1007/s10569-025-10274-y)
+  describes POLAR terminator orbits (out-of-plane, stabilized by gravity vs. SRP at the
+  day/night boundary) — a fundamentally different orbit class from this task's PLANAR (k1,k2)
+  cycler sweep. "Reproduce a published Didymos terminator-orbit family member" was never a
+  well-posed positive control for a planar in-plane-SRP model; that mismatch is in how this
+  bullet was originally scoped, not a shortfall in execution. The paper's OWN abstract does
+  independently support the module's simplified-model choice ("the small body as a point mass
+  with constant SRP magnitude and direction, is integrable"), which is the actual physics
+  ground truth this module implements.
+  **What WAS built and validated**: `src/cyclerfinder/search/real_binary_srp.py` — constant-
+  direction cannonball SRP added to the rotating-frame CR3BP pseudo-potential, keeping the
+  augmented system autonomous (a Jacobi-like `C_srp` conserved quantity exists, derived and
+  tested), reusing `#660`'s min-clearance-vs-body-radius gate unchanged (SRP does not relax the
+  physical-collision problem). A real, load-bearing constraint was found and enforced: the
+  half-period symmetric-orbit corrector this whole architecture depends on requires
+  `phi0 in {0, pi}` (SRP exactly along the primary-secondary axis) — any other angle still
+  numerically "converges" but is NOT a genuinely periodic orbit (full-period closure ~1e-3-1e-4
+  off-axis vs ~1e-8 on-axis). **Regression-tested** in `tests/search/test_665_real_binary_srp.py`
+  (9 tests): beta=0 exact reduction to gravity-only EOM/Jacobi/STM, Jacobi_srp conservation along
+  the augmented flow, the corrector's off-axis-phi0 guard, beta=0 corrector match to the
+  gravity-only anchor, and the on-axis-vs-off-axis full-period-closure degradation itself
+  (closure ~1e3x+ worse off-axis, confirmed directly, not just asserted from the docstring).
+  **Re-sweep result**: all 6 systems, all 6 `(k1,k2)` topologies from `#549`/`#657` (anchor-seeded
+  (1,1)/(3,1)/(3,2)/(3,3), grid-seeded (2,1)/(2,2)), both `phi0 in {0,pi}`, at β=1e-3 m²/kg
+  (top of bare-rock range) — **0/96 gate-passing**. Anchor phase 0/72 (mostly the SAME
+  gravity-only-seed-step failures `#549`/`#657` already found, now confirmed unaffected by adding
+  SRP; Didymos-Dimorphos (1,1)/phi0=0 uniquely fails on `#660`'s body-clearance gate, not a
+  stability/topology gate). Grid phase 0/24 (no gravity-only (2,1)/(2,2) seed found in any of the
+  6 systems' grids, a seed-search result independent of SRP). Stamped as an SRP-inclusive
+  negative in `data/empty_regions.jsonl` (see `srp-binary-asteroid-resweep-2026-07-21`), with
+  both calibration corrections above carried into the stamp's own text so a future, more
+  aggressive β choice isn't blocked by an overstated "SRP doesn't matter" reading of this result.
+  Full `ruff`/`mypy src tests`/`tests/data tests/search tests/scripts` clean, no regressions.
+  (registered+dispatched 2026-07-21; positive control + ratio table + anchor phase run by the
+  dispatched agent; agent stalled twice on an unsupported shell-`&` backgrounding pattern — not a
+  durable background process in this harness — and was completed by the coordinating session:
+  grid phase, the missing regression test file the module's own docstring had aspirationally
+  cited but never created, the OUTSTANDING/empty_regions writeup, and final verification.)
 - **#666 ✓ DONE (2026-07-19)** — `#661` shortlist item 4, co-orbital quasi-satellite/horseshoe
   transition cyclers. See `#661`'s own bullet for the full case. **Result: mandatory positive
   control PASSED — an honest reproduction/census result, NOT a novelty claim** (per this task's

@@ -60,6 +60,7 @@ from scipy.integrate import solve_ivp
 
 import cyclerfinder.core.cr3bp as cr3bp
 import cyclerfinder.search.cr3bp_periodic as cp
+import cyclerfinder.search.real_binary_srp as srp
 from cyclerfinder.search.pluto_charon_kk_sweep import (
     SweepResult,
     _build_result,
@@ -80,6 +81,8 @@ __all__ = [
     "mu_step_to_system_tracking_c_l1",
     "sweep_family",
     "sweep_family_grid",
+    "sweep_family_grid_srp",
+    "sweep_family_srp",
 ]
 
 
@@ -1193,4 +1196,364 @@ def sweep_family_grid(
         radius_km_primary=radius_km_primary,
         radius_km_secondary=radius_km_secondary,
         clearance_margin_km=clearance_margin_km,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Task #665: cannonball-SRP-augmented re-sweep.
+#
+# Reuses the GRAVITY-ONLY seed machinery above verbatim (mu_step_to_system /
+# _grid_seed_search) -- a converged gravity-only (k1,k2) periodic orbit at the
+# target system's mu is a perfectly good starting point for SRP
+# beta-continuation, since the seed-finding step's own physics assumption
+# (gravity-only) does not need to change; only what happens AFTER the seed
+# exists (beta-continuation, a C_srp-sweep for a stable window, and the
+# topology/clearance gates) needs the SRP-augmented dynamics from
+# :mod:`cyclerfinder.search.real_binary_srp`. See that module's docstring for
+# the full physics derivation (constant-direction SRP in the rotating frame,
+# the augmented Jacobi-like conserved quantity, and why beta=0 reduces
+# exactly to the pre-#665 gravity-only path -- checked directly in
+# ``tests/search/test_665_real_binary_srp.py``).
+# ---------------------------------------------------------------------------
+
+
+def _build_result_srp(
+    k1: int,
+    k2: int,
+    system: cr3bp.CR3BPSystem,
+    orbit: cp.SymmetricOrbit,
+    beta_nd: float,
+    phi0: float,
+    method: str,
+) -> SweepResult:
+    """SRP-augmented analog of `pluto_charon_kk_sweep._build_result`."""
+    nu, _ = srp.barden_stability_srp(system, orbit, beta_nd, phi0, rtol=1e-13, atol=1e-13)
+    stable = abs(nu) < 1.0
+
+    state0 = np.array([orbit.x0, 0.0, 0.0, 0.0, orbit.ydot0, 0.0])
+    topo = srp.winding_topology_srp(system.mu, state0, orbit.period, beta_nd, phi0)
+    topology_ok = topo.k1 == k1 and topo.k2 == k2
+
+    ok_cc, dj = srp.crosscheck_periodic_srp(
+        system, state0, orbit.period, beta_nd, phi0, closure_tol=1e-6, jacobi_tol=1e-8
+    )
+
+    return SweepResult(
+        k1=k1,
+        k2=k2,
+        stable_found=stable,
+        jacobi_mid=orbit.jacobi,
+        x0_mid=orbit.x0,
+        ydot0_mid=orbit.ydot0,
+        period_mid=orbit.period,
+        period_days=orbit.period * system.t_s / 86400.0,
+        nu_mid=nu,
+        topology_ok=topology_ok,
+        prograde=topo.prograde,
+        reaches_secondary=topo.reaches_secondary,
+        crosscheck_ok=ok_cc,
+        crosscheck_dj=dj,
+        beta_nd=beta_nd,
+        phi0=phi0,
+        method=method,
+    )
+
+
+def _gate_clearance_srp(
+    res: SweepResult,
+    target_system: cr3bp.CR3BPSystem,
+    beta_nd: float,
+    phi0: float,
+    radius_km_primary: float | None,
+    radius_km_secondary: float | None,
+    margin_km: float,
+) -> SweepResult:
+    """SRP-augmented analog of `_gate_clearance` -- #660's physical
+    body-clearance gate still applies unchanged under SRP (SRP does not
+    relax the physical-collision problem; see module docstring)."""
+    if (
+        not res.stable_found
+        or res.x0_mid is None
+        or res.ydot0_mid is None
+        or res.period_mid is None
+    ):
+        return res
+    if radius_km_primary is None or radius_km_secondary is None:
+        return res
+
+    d_p_km, d_s_km = srp.min_body_clearance_km_srp(
+        target_system, res.x0_mid, res.ydot0_mid, res.period_mid, beta_nd, phi0
+    )
+    ok = d_p_km >= (radius_km_primary + margin_km) and d_s_km >= (radius_km_secondary + margin_km)
+    if ok:
+        return dataclasses.replace(
+            res,
+            min_distance_primary_km=d_p_km,
+            min_distance_secondary_km=d_s_km,
+            min_clearance_ok=True,
+        )
+    note = (
+        f"fails body-clearance gate (SRP beta_nd={beta_nd:.3e}, phi0={phi0:.4f}): min distance "
+        f"to primary centre {d_p_km:.2f} km (radius {radius_km_primary:.2f} km + margin "
+        f"{margin_km:.2f} km required), to secondary centre {d_s_km:.2f} km (radius "
+        f"{radius_km_secondary:.2f} km + margin {margin_km:.2f} km required) -- trajectory "
+        "passes inside a body, physically impossible (SRP does not relax this gate; see #660)"
+    )
+    return SweepResult(
+        k1=res.k1,
+        k2=res.k2,
+        stable_found=False,
+        method=res.method,
+        note=note,
+        min_distance_primary_km=d_p_km,
+        min_distance_secondary_km=d_s_km,
+        min_clearance_ok=False,
+        beta_nd=beta_nd,
+        phi0=phi0,
+    )
+
+
+def sweep_family_srp(
+    target_system: cr3bp.CR3BPSystem,
+    anchor_key: str,
+    beta_nd: float,
+    phi0: float,
+    *,
+    c_band: float = 0.3,
+    n_mu_steps: int = 40,
+    n_beta_steps: int = 40,
+    radius_km_primary: float | None = None,
+    radius_km_secondary: float | None = None,
+    clearance_margin_km: float = DEFAULT_CLEARANCE_MARGIN_KM,
+) -> SweepResult:
+    """SRP-augmented analog of :func:`sweep_family`.
+
+    1. Gravity-only anchor-seeded mu-continuation to ``target_system.mu``
+       (:func:`mu_step_to_system`, UNCHANGED -- the seed step does not need
+       SRP physics).
+    2. Beta-continuation from that gravity-only seed (beta=0) up to
+       ``beta_nd`` at the fixed Sun-direction angle ``phi0``
+       (:func:`real_binary_srp.beta_step_to_target`).
+    3. A C_srp-sweep around the beta-continued point for a Barden
+       ``|nu|<1`` stable window (:func:`real_binary_srp.c_sweep_find_nu_zero_srp`),
+       mirroring :func:`sweep_family`'s own C-sweep band logic.
+    4. The same topology / clearance gates as :func:`sweep_family`, evaluated
+       under the SRP-augmented dynamics.
+    """
+    a = ANCHORS[anchor_key]
+    k1, k2 = a["k1"], a["k2"]
+    c_l1 = _c_l1(target_system.mu)
+
+    orbit_seed = mu_step_to_system(
+        a["anchor_mu"],
+        target_system,
+        a["x0"],
+        a["jacobi"],
+        a["period"],
+        hc=a["hc"],
+        sign=-1.0,
+        n_steps=n_mu_steps,
+    )
+    if orbit_seed is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=f"mu_step_from_mu{a['anchor_mu']:.6g}_[{anchor_key}]_srp",
+            note="gravity-only mu-continuation failed to converge to target mu (seed step)",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+
+    orbit_beta = srp.beta_step_to_target(
+        target_system,
+        orbit_seed.x0,
+        orbit_seed.jacobi,
+        orbit_seed.period,
+        beta_nd,
+        phi0,
+        hc=a["hc"],
+        sign=-1.0,
+        n_steps=n_beta_steps,
+    )
+    method = f"mu_step_from_mu{a['anchor_mu']:.6g}_[{anchor_key}]_then_beta_step_srp"
+    if orbit_beta is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note="beta-continuation failed to converge to target beta (branch fold)",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+
+    if a["hc"] is not None:
+        c_lo = orbit_beta.jacobi
+        c_hi = min(c_l1 - 0.002, orbit_beta.jacobi + 2.0 * c_band)
+    else:
+        c_lo = max(2.5, orbit_beta.jacobi - c_band)
+        c_hi = min(c_l1 - 0.002, orbit_beta.jacobi + c_band)
+    if c_lo >= c_hi:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note=f"seed jacobi_srp={orbit_beta.jacobi:.4f} incompatible with C_L1={c_l1:.4f}",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    orbit_stable = srp.c_sweep_find_nu_zero_srp(
+        target_system,
+        orbit_beta.x0,
+        orbit_beta.jacobi,
+        orbit_beta.period,
+        beta_nd,
+        phi0,
+        hc=a["hc"],
+        sign=-1.0,
+        c_lo=c_lo,
+        c_hi=c_hi,
+        n_coarse=60,
+    )
+    method = method + "_then_c_sweep"
+    if orbit_stable is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note="no stable (|nu|<1) window found in C_srp-sweep range",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    res = _build_result_srp(k1, k2, target_system, orbit_stable, beta_nd, phi0, method)
+    if not res.topology_ok:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note=(
+                f"stable orbit found but wrong topology (got prograde={res.prograde}, "
+                f"reaches_secondary={res.reaches_secondary}); clean negative"
+            ),
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    return _gate_clearance_srp(
+        res,
+        target_system,
+        beta_nd,
+        phi0,
+        radius_km_primary,
+        radius_km_secondary,
+        clearance_margin_km,
+    )
+
+
+def sweep_family_grid_srp(
+    target_system: cr3bp.CR3BPSystem,
+    k1: int,
+    k2: int,
+    beta_nd: float,
+    phi0: float,
+    *,
+    x0_grid: np.ndarray,
+    c_grid: np.ndarray,
+    hc_list: tuple[int, ...],
+    period_guess: float,
+    per_call_timeout: int = 4,
+    n_beta_steps: int = 40,
+    radius_km_primary: float | None = None,
+    radius_km_secondary: float | None = None,
+    clearance_margin_km: float = DEFAULT_CLEARANCE_MARGIN_KM,
+) -> SweepResult:
+    """SRP-augmented analog of :func:`sweep_family_grid` -- gravity-only grid
+    seed search (:func:`_grid_seed_search`, UNCHANGED), then the same
+    beta-continuation + C_srp-sweep + gates as :func:`sweep_family_srp`."""
+    c_l1 = _c_l1(target_system.mu)
+    seed_orbit = _grid_seed_search(
+        target_system,
+        k1,
+        k2,
+        x0_grid,
+        c_grid,
+        hc_list,
+        period_guess,
+        per_call_timeout=per_call_timeout,
+    )
+    if seed_orbit is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=f"grid_search_{len(x0_grid)}x{len(c_grid)}x{len(hc_list)}_srp",
+            note=(
+                f"no ({k1},{k2}) gravity-only seed found in grid "
+                f"(x0 in [{x0_grid.min():.2f},{x0_grid.max():.2f}], "
+                f"C in [{c_grid.min():.4f},{c_grid.max():.4f}], hc in {hc_list})"
+            ),
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    orbit_beta = srp.beta_step_to_target(
+        target_system,
+        seed_orbit.x0,
+        seed_orbit.jacobi,
+        seed_orbit.period,
+        beta_nd,
+        phi0,
+        hc=None,
+        sign=-1.0,
+        n_steps=n_beta_steps,
+    )
+    method = "grid_seed_then_beta_step_srp"
+    if orbit_beta is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method,
+            note="beta-continuation failed to converge to target beta (branch fold)",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    c_lo = max(2.5, orbit_beta.jacobi - 0.3)
+    c_hi = min(c_l1 - 0.002, orbit_beta.jacobi + 0.3)
+    orbit_stable = srp.c_sweep_find_nu_zero_srp(
+        target_system,
+        orbit_beta.x0,
+        orbit_beta.jacobi,
+        orbit_beta.period,
+        beta_nd,
+        phi0,
+        hc=None,
+        sign=-1.0,
+        c_lo=c_lo,
+        c_hi=c_hi,
+        n_coarse=60,
+    )
+    if orbit_stable is None:
+        return SweepResult(
+            k1=k1,
+            k2=k2,
+            stable_found=False,
+            method=method + "_then_c_sweep",
+            note="no stable window",
+            beta_nd=beta_nd,
+            phi0=phi0,
+        )
+    res = _build_result_srp(
+        k1, k2, target_system, orbit_stable, beta_nd, phi0, method + "_then_c_sweep"
+    )
+    return _gate_clearance_srp(
+        res,
+        target_system,
+        beta_nd,
+        phi0,
+        radius_km_primary,
+        radius_km_secondary,
+        clearance_margin_km,
     )
