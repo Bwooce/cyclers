@@ -982,7 +982,16 @@ Fable-scoped strategy vs. Opus-built stages) is pure CAPABILITY-BUILDING against
 already-published benchmark orbit (Oterma) -- it produces zero new catalogue rows even at full
 success, and this pass exists specifically to run in parallel on that basis, so the coordinating
 session has an independent, genuinely new lead to dispatch once the W-Z arc's current stage
-lands (registered+dispatched 2026-07-22, Fable); #680 next-unused):**
+lands (registered+dispatched 2026-07-22, Fable; ✓ DONE 2026-07-22 -- ranked 4-item shortlist,
+each with a named positive control: (1) asymmetric-closure census at Uranus, an explicit
+reopening of #564-s3's dual-adjudicated deferral on #663's post-deferral evidence, USER GO
+required; (2) Sun-Mars WSB repeating-capture quasi-cycler, Topputo-Belbruno 2015 control,
+acquisition needed; (3) QP-torus "cycler corridor" census around the stable prograde EM
+cyclers, Olikara-Scheeres 2012 control; (4) periapse-map cartography at Saturn-Titan,
+Davis-Howell 2012 control, ranked last for #664 overlap; 12+ candidates considered-and-rejected
+with reasons incl. all four obvious external leads found already absorbed; 5 user decision
+points flagged; dispatch order 1->3->2->4; see the #679 bullet +
+docs/notes/2026-07-22-679-discovery-strategy-pass.md); #680 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12594,7 +12603,9 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   genuinely fixed, independently-motivated h-set) or near-vacuous (sized or shrunk post-hoc to
   fit the observed image) before calling it a milestone -- do not repeat the pattern this
   project has twice now had to self-correct.
-- **#679 (registered+dispatched 2026-07-22)** -- second fresh discovery-strategy pass, explicitly
+- **#679 ✓ DONE (2026-07-22, Fable) -- second fresh discovery-strategy pass; ranked 4-item
+  shortlist produced (all internal frontiers -- every obvious external lead surveyed was already
+  absorbed); full report in `docs/notes/2026-07-22-679-discovery-strategy-pass.md`.** Explicitly
   downstream of `#661` (2026-07-19's "find some new ways" pass). Context for whoever executes
   this: `#661`'s entire ranked 5-item shortlist is now exhausted -- item 1 (`#662`, polynomial
   homotopy) mathematically BLOCKED at the formulation layer; item 2 (`#664`, GAIO set-oriented
@@ -12618,6 +12629,55 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   positive-control availability, name what was considered and rejected (not just omitted), and
   flag any user-decision points (schema questions, admissibility ranges) explicitly rather than
   assuming them.
+  **RESULT (2026-07-22, Fable).** Grounded against the full method inventory (a read-only survey
+  agent's module-level capability map of `src/cyclerfinder/{core,search,nbody,verify,data}`,
+  every load-bearing claim spot-verified directly; all 92 `empty_regions.jsonl` entries; the
+  `#563`/`#564`/`#565`/`#566`/`#569` and `#663` arcs read in full) plus a live web survey.
+  **Survey headline recorded so the next pass doesn't retread it: the four most promising
+  external leads are already in the building** -- Ross/Roberts-Tsoukkas 2025/2026 prograde EM
+  cyclers (mined, goldens committed, mu-continuation/Floquet/3D-lift arcs executed and `#444`
+  formally closed the 3D-lift axis); Braik-Ross 2026 orbital networks (mined + KNOWN_CORPUS,
+  `#650` built the network); Hiraiwa-Bando lobe dynamics (KNOWN_CORPUS and ALREADY IMPLEMENTED,
+  `lobe_overlap_scorer.py` #278); BCR4BP/HR4BP continuation (`core/bcr4bp.py`/`qbcp.py` exist,
+  `#412` spike ran, and the V4 DE440 gauntlet answers solar-perturbation survivability per-row
+  more strongly -- `#389`/`#392`/`#393`). **Ranked 4-item shortlist** (each with a named
+  positive control): (1) **asymmetric-closure census at Uranus** -- an explicit, evidence-based
+  REOPENING of `#564` s3's dual-adjudicated DEFER (user GO required, flagged not assumed), on
+  `#663`'s post-deferral evidence: an exact non-symmetric root EXISTS in Ariel-Umbriel
+  (beta~74.3 deg, outside the high-lit-risk T-O basin), the grid-gap risk was realized, the
+  well-conditioned reduced formulations + interval machinery now exist, and the Canales/Kumar
+  gating precondition was discharged by `#566`/`#569`; in-repo positive controls (`#663`'s own
+  root + the symmetric goldens as beta in {0,180} degenerate cases); HIGH ceiling conditional on
+  gates (both `#663` exact finds are gate-hostile -- honest risk stated); 1-2 wk. (2) **Sun-Mars
+  WSB repeating-capture quasi-cycler** -- extend `#378`'s cislunar BCT-chain search (its object
+  class was only ever searched cislunar, clean negative) to Sun-Earth-Mars; positive control =
+  Topputo-Belbruno 2015 CeMDA 121:329 (NOT in corpus, acquire+digest first); HIGH ceiling if
+  anything closes, high risk (Thm 3.58 chaos argument, epoch-locking); 2-3 wk. (3)
+  **quasi-periodic "cycler corridor" census around the stable prograde EM cyclers** -- `#444`'s
+  own redirect (b) (usability characterization), reuses `#612`/`#617` torus machinery; positive
+  control = Olikara-Scheeres 2012 GMOS EM tori; LOW-MODERATE ceiling, cheapest (~1 wk), most
+  likely to touch the catalogue soon. (4) **periapse Poincare-map cartography at Saturn-Titan**
+  (Davis-Howell 2012 / Villac-Scheeres 2003 controls) -- the one classical seedless map genuinely
+  absent from the codebase; ranked last for honest overlap with `#664`'s set-oriented pipeline.
+  **Considered and explicitly rejected with reasons** (12 items, see the note): BCR4BP
+  continuation, lobe dynamics (built), network mining (mined), small-body J2/C22 re-sweep of
+  `#607` (verified bend-gate-bound -- moon-GM wall, invariant to primary-field fidelity),
+  planetary J2 (V4 lane already carries Uranus J2, degree-2, Jacobson 2014), Koopman,
+  diffusion/transformer seeding (`#614`), FLI/LCS superhighway, aerograv/tether/sail-beta
+  (control-dependent per `#519`; sail-beta is `#665`'s own documented extension), new-body-pair
+  sweeps, Phobos/MMX QSO census (reproduction-only), retrograde 1:-1 co-orbitals, ER3BP
+  isolated-family push (executed `#440`-`#442`). **5 user decision points flagged**: the `#564`
+  s3 reopening GO/NO-GO; capture-chain quasi-cycler admissibility (schema); torus-corridor
+  schema (rows vs fields); `#667`'s 0.3-Hill "close" ceiling (excludes beyond-Hill QSO regime
+  by construction); dispatch priority of the un-claimed `#664` own-system application (the
+  standing follow-on this pass deliberately does NOT claim, since it belongs to `#661` item 2's
+  lineage). Recommended dispatch order 1 -> 3 -> 2 -> 4 (1 contingent on its GO; if declined,
+  promote 3). Analysis-only: no code, no catalogue write, no dispatches. **Housekeeping fix
+  bundled with this edit**: `#658`'s bullet HEADER line had been clobbered at some point between
+  commits 872085a and eb27726 (its body sat orphaned directly below this bullet, opening
+  mid-sentence at "rows was half-wrong") -- restored verbatim from 872085a's version of the
+  file; no other text of `#658`'s bullet was touched.
+- **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
