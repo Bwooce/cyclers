@@ -1,0 +1,144 @@
+{
+  "task": "#676",
+  "stage": "Stage 10 -- inter-return QR-reframed composed covering at fixed ru=1e-6",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "hset_N": {
+    "at": "first published W-Z Oterma section point",
+    "center_x_xdot": [
+      0.95229284234862,
+      1.23e-05
+    ],
+    "ru": 1e-06,
+    "rs": 1e-08,
+    "unstable_dir_x_xdot": [
+      -0.36221713223217955,
+      0.9320937448119131
+    ],
+    "stable_dir_x_xdot": [
+      0.36221713223217955,
+      0.9320937448119131
+    ],
+    "note": "FIXED size, NOT shrunk (identical to #674/#675)."
+  },
+  "search_window": {
+    "tau_max": 40.0,
+    "n_steps": 320,
+    "step_h": 0.125,
+    "note": "Wider than #675 (20/160) at the SAME h=0.125, so N=1/N=2 crossings are identical and N=3 (at tau~24, past #675's window) is reachable."
+  },
+  "method": "Un-reframed BOX chain (reproduces #675: leg IC box = axis-aligned mean-value hull) vs REFRAMED chain (vti.reframe_image_qr: leg IC set carried as a parallelepiped center+A@[r], A a point orthogonal frame from QR of the single-leg [DP_k], box hull fed to the next leg). Composed Jacobian is the raw chain-rule product in both. Both run in one pass for a controlled comparison.",
+  "reframing_control": "tests/scripts/test_676_qr_reframed_covering.py",
+  "returns": [
+    {
+      "n": 1,
+      "tau_star_this_leg": 16.570955135379112,
+      "baseline": {
+        "center_image_x_xdot": [
+          1.0035073191783517,
+          -0.17452281277395884
+        ],
+        "composed_jacobian_enclosure_width": 0.8797224458716622,
+        "edge_center_separation": 5.936980629811517e-06,
+        "per_edge_enclosure_width": 2.0918775496224615e-05,
+        "separation_over_width_ratio": 0.2838110973982685,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "orientation": null,
+        "leg_jacobian_enclosure_width": 0.8797224458716622
+      },
+      "reframed": {
+        "center_image_x_xdot": [
+          1.0035073191783517,
+          -0.17452281277395884
+        ],
+        "composed_jacobian_enclosure_width": 0.8797224458716622,
+        "edge_center_separation": 5.936980629811517e-06,
+        "per_edge_enclosure_width": 2.0918775496224615e-05,
+        "separation_over_width_ratio": 0.2838110973982685,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "orientation": null,
+        "leg_jacobian_enclosure_width": 0.8797224458716622,
+        "reframed_box_ic_max_halfwidth": 5.32463413362181e-06
+      }
+    },
+    {
+      "n": 2,
+      "tau_star_this_leg": 7.968366488818215,
+      "baseline": {
+        "center_image_x_xdot": [
+          0.9784635478235453,
+          -0.19355531262301745
+        ],
+        "composed_jacobian_enclosure_width": 25.723782598619454,
+        "edge_center_separation": 6.966613875808436e-06,
+        "per_edge_enclosure_width": 0.00025345947159185095,
+        "separation_over_width_ratio": 0.027486105893201197,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "orientation": null,
+        "leg_jacobian_enclosure_width": 3.693350245071984
+      },
+      "reframed": {
+        "center_image_x_xdot": [
+          0.9784635478235453,
+          -0.19355531262301745
+        ],
+        "composed_jacobian_enclosure_width": 26.946166300902686,
+        "edge_center_separation": 7.149892552016368e-06,
+        "per_edge_enclosure_width": 0.0002702487532972156,
+        "separation_over_width_ratio": 0.026456708735129744,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "orientation": null,
+        "leg_jacobian_enclosure_width": 4.0071679521068395,
+        "reframed_box_ic_max_halfwidth": 3.484919405722063e-05
+      }
+    },
+    {
+      "n": 3,
+      "tau_star_this_leg": 23.952272815537235,
+      "baseline": {
+        "result": "BOX WALL",
+        "reason": "enclosure wall at tau~13.1250 (step 105) before any crossing"
+      },
+      "reframed": {
+        "result": "BOX WALL",
+        "reason": "enclosure wall at tau~15.6250 (step 125) before any crossing"
+      }
+    }
+  ],
+  "baseline_ratio_scaling": [
+    [
+      1,
+      0.2838110973982685
+    ],
+    [
+      2,
+      0.027486105893201197
+    ]
+  ],
+  "reframed_ratio_scaling": [
+    [
+      1,
+      0.2838110973982685
+    ],
+    [
+      2,
+      0.026456708735129744
+    ]
+  ],
+  "baseline_certified": [],
+  "reframed_certified": [],
+  "verdict": "N=2 baseline=0.0275 reframed=0.0265 (-3.7%); no material change",
+  "result": "ru=1e-06 (fixed, NOT shrunk). baseline ratio/return: N=1:0.284, N=2:0.027. reframed ratio/return: N=1:0.284, N=2:0.026. N=2 baseline=0.0275 reframed=0.0265 (-3.7%); no material change.",
+  "scope_note": "Composed 2-3 returns at FIXED ru=1e-6 (NOT shrunk). Inter-return QR reframing of the image (vti.reframe_image_qr); composed Jacobian kept as the raw chain-rule product. Wider tau window (40/320) at the SAME h=0.125 as #675 so N=1/N=2 are identical and N=3 is reachable. M is a constructed h-set at the k-th-return image, not a published W-Z point. Bounded proof-of-concept, NOT the full ~30-section W-Z chain. Reframing mechanism validated on closed-form controls (test_676_qr_reframed_covering.py)."
+}

@@ -1582,6 +1582,118 @@ def compose_section_jacobians(iv: Any, jac_boxes: list[IMat]) -> IMat:
     return composed
 
 
+# --------------------------------------------------------------------------- #
+# #676 -- INTER-RETURN QR REFRAMING (the discrete analogue of #669's Lohner QR).#
+#                                                                             #
+# #675's composed covering COLLAPSED (ratio 0.284 -> 0.027 at N=2) because the  #
+# composition carries the reachable set from return to return as an axis-aligned #
+# interval BOX.  Two box-hull operations compound the wrapping effect:           #
+#   (a) the box chain: the leg-(k+1) IC box is  P^k(w_hat) + [DP_k].(box_ic-w),  #
+#       evaluated COMPONENT-WISE -- the axis-aligned hull of a thin, sheared true #
+#       image -- and rigorous_section_map then re-inflates from that hull;        #
+#   (b) the composed Jacobian:  raw interval product  DP_N @ ... @ DP_1  wraps    #
+#       (each factor's stretch spread multiplies).                                #
+# #669's within-flow fix was to carry the enclosure as  yhat + A@[r]  with A a    #
+# POINT orthogonal frame re-chosen each step from a QR of the (interval) local    #
+# Jacobian, so the box [r] stays tight in coordinates aligned to the current      #
+# stretch and the accumulated STM  bmat  is updated by the SAME well-conditioned  #
+# rebasing factor (A^{-1} M) rather than by a raw interval product.  This applies #
+# exactly that discipline at the DISCRETE return-to-return boundary: the leg's    #
+# single-return Jacobian [DP_k] is the local Jacobian, and BOTH the image         #
+# parallelepiped AND the accumulated composed Jacobian are rebased by it, so the  #
+# correlation between components survives the boundary instead of being flattened.#
+# The single-leg [DP_k] (not the composed [DP_k..DP_1]) is the correct object to  #
+# take the QR of -- exactly as #669 reframes on the per-STEP Jacobian, never on   #
+# the accumulated flow -- because it is the map linearisation ACTING at return k;  #
+# the accumulated object is what gets REBASED by it, not what the QR is taken of.  #
+# --------------------------------------------------------------------------- #
+def qr_rebasing_factor(iv: Any, m_interval: IMat) -> tuple[IMat, IMat] | None:
+    """Rigorous QR rebasing of an interval matrix ``M`` (the #669 per-step move).
+
+    Returns ``(A, K)`` where ``A`` is a POINT orthogonal frame -- the ``Q`` factor of
+    the float QR of ``mid(M)`` -- and ``K = A^{-1} M`` (rigorous, via
+    :func:`rigorous_inverse`) is the well-conditioned upper-triangular-like rebasing
+    factor, so ``A @ K`` rigorously encloses ``M``.  For any carried box or matrix
+    ``X``, ``A @ (K @ X)`` then encloses ``M @ X`` with the stretch/rotation absorbed
+    into the POINT frame ``A`` and only the tight, well-conditioned ``K`` multiplying
+    ``X`` -- the same reframing that keeps #669's ``[r]`` box and ``bmat`` tight, now
+    applicable at a discrete map step.  ``None`` if the frame is too ill-conditioned to
+    invert rigorously (caller falls back / fails, exactly like ``_qr_step``).
+    """
+    n = len(m_interval)
+    mid_m = np.array([[_midf(m_interval[i][j]) for j in range(n)] for i in range(n)])
+    q_float, _r_float = np.linalg.qr(mid_m)
+    a: IMat = [[iv.mpf(float(q_float[i][j])) for j in range(n)] for i in range(n)]
+    a_inv = rigorous_inverse(iv, a)
+    if a_inv is None:
+        return None
+    kfac = _imatmul(iv, a_inv, m_interval)
+    return a, kfac
+
+
+def reframe_image_qr(
+    iv: Any,
+    dp_leg: IMat,
+    prev_frame: IMat,
+    prev_rbox: list[Any],
+    center_image: list[Any],
+) -> tuple[list[Any], IMat, list[Any]] | None:
+    """Inter-return QR reframing of a composed section-map image (the #676 fix).
+
+    The previous leg's reachable set is the parallelepiped ``R_{k-1} = c_{k-1} +
+    prev_frame @ [prev_rbox]``.  By the interval mean-value theorem its image under the
+    section map is enclosed by ``P(R_{k-1}) subset P(c_{k-1}) + [DP_k] @ prev_frame @
+    [prev_rbox]`` with ``[DP_k]`` (``dp_leg``) a rigorous enclosure of the section
+    Jacobian over ``R_{k-1}`` and ``P(c_{k-1}) = center_image`` the tight centre image.
+    Rather than box-hull that image component-wise (which discards the shear between
+    components -- the root cause #675 pinned), this re-expresses it as a FRESH
+    parallelepiped ``center_image + A_k @ [r_k]``: with ``M = [DP_k] @ prev_frame``,
+    ``(A_k, K) = qr_rebasing_factor(M)`` and ``r_k = K @ [prev_rbox]``.  Since ``A_k @ K
+    superset M``, ``center_image + A_k @ r_k`` soundly encloses the true image, but the
+    box ``[r_k]`` stays tight in the rotated frame ``A_k`` so its box hull
+    (:func:`enclosure_box`) -- what the NEXT leg's ``rigorous_section_map`` consumes --
+    does not accumulate the per-return wrapping.  Returns ``(center_image, A_k, r_k)``
+    (centre carried unchanged as a thin interval vector; its width folds soundly into
+    the box hull), or ``None`` if the frame cannot be rigorously inverted.
+    """
+    m = _imatmul(iv, dp_leg, prev_frame)
+    reb = qr_rebasing_factor(iv, m)
+    if reb is None:
+        return None
+    a_k, kfac = reb
+    r_k = _imatvec(iv, kfac, prev_rbox)
+    return list(center_image), a_k, r_k
+
+
+def reframe_jacobian_qr(
+    iv: Any,
+    dp_leg: IMat,
+    comp_frame: IMat,
+    comp_rest: IMat,
+) -> tuple[IMat, IMat] | None:
+    """Inter-return QR reframing of the ACCUMULATED composed section Jacobian.
+
+    The composed Jacobian ``D(P^{k-1}) = DP_{k-1} @ ... @ DP_1`` is carried factored as
+    ``comp_frame @ comp_rest`` with ``comp_frame`` a POINT orthogonal frame and
+    ``comp_rest`` a well-conditioned interval remainder (the discrete analogue of
+    #669's ``Phi = A @ bmat``).  Given the new leg's single-return Jacobian ``dp_leg =
+    [DP_k]``, forms ``M = [DP_k] @ comp_frame``, takes ``(A_new, K) =
+    qr_rebasing_factor(M)`` and returns ``(A_new, K @ comp_rest)`` so that ``A_new @ (K
+    @ comp_rest) superset [DP_k] @ comp_frame @ comp_rest superset D(P^k)`` -- the
+    accumulated stretch is rebased by the well-conditioned ``K`` at each return instead
+    of by a raw interval matrix product, which keeps the composed enclosure tighter than
+    :func:`compose_section_jacobians` once several returns compound.  Reconstruct the
+    composed Jacobian enclosure as ``A_new @ (K @ comp_rest)`` when needed.  ``None`` if
+    the frame cannot be rigorously inverted.
+    """
+    m = _imatmul(iv, dp_leg, comp_frame)
+    reb = qr_rebasing_factor(iv, m)
+    if reb is None:
+        return None
+    a_new, kfac = reb
+    return a_new, _imatmul(iv, kfac, comp_rest)
+
+
 __all__ = [
     "HAVE_MPMATH",
     "apriori_enclosure",
@@ -1603,6 +1715,9 @@ __all__ = [
     "lc_secondary_to_physical",
     "make_cr3bp_lc_secondary_jet",
     "make_cr3bp_lc_secondary_variational_jet",
+    "qr_rebasing_factor",
+    "reframe_image_qr",
+    "reframe_jacobian_qr",
     "rigorous_inverse",
     "rigorous_section_map",
     "section_map_jacobian",

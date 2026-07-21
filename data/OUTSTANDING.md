@@ -929,12 +929,14 @@ construction re-introduces #669's wrapping effect at the DISCRETE return-to-retu
 (no inter-return QR/reframing exists yet); composition machinery itself validated FIRST via 9
 closed-form controls (`tests/scripts/test_675_composed_meanvalue.py`); indicated next fix if
 continued is inter-return QR/reframing, not more returns (registered+dispatched 2026-07-20);
-#676 -- W-Z Stage 10: inter-return QR/reframing fix for the composed-covering wrapping
-identified by #675 -- build a discrete re-orthogonalization step applied to the composed image
-BETWEEN section returns (analogous to #669's Stage-3 QR reframing within a continuous flow, but
-applied at the discrete return-to-return boundary instead), re-run #675's exact N=1/N=2/N=3
-composed-covering check at the same fixed, non-shrunk ru=1e-6 h-set, and report honestly whether
-the ratio collapse is arrested (registered+dispatched 2026-07-21); #677 next-unused):**
+#676 -- W-Z Stage 10: inter-return QR/reframing fix -- DONE, honest NEGATIVE on the real problem
+(reframing mechanism itself PROVEN in closed-form controls, but does NOT arrest #675's collapse
+at fixed ru=1e-6: N=1 reproduces #675 exactly 0.2838, N=2 marginally WORSE 0.02646 vs 0.02749
+(-3.7%, a single QR rebasing pays the A^{-1}A cost before the anti-decorrelation benefit
+compounds), N=3 both chains wall on leg-3 box blow-up before the tau~24 crossing; deepens #675 --
+the dominant loss is intra-leg Jacobian variation over an already ~35x-inflated IC box, NOT the
+inter-return box-hull decorrelation reframing removes) (registered+dispatched 2026-07-21, done
+2026-07-21); #677 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12332,6 +12334,71 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   problem (e.g. a synthetic composed map where reframing is known by construction to preserve a
   tight enclosure through several returns, vs. an un-reframed control that wraps), and re-validate
   `#673`'s, `#674`'s, and `#675`'s own controls still hold.
+  **DONE (2026-07-21, Opus) -- the reframing MECHANISM is built and PROVEN correct in
+  closed-form ground truth, but on the real Oterma problem at fixed ru=1e-6 it does NOT
+  arrest `#675`'s collapse: an honest, precisely-characterized NEGATIVE that DEEPENS
+  `#675`'s diagnosis (the collapse is intra-leg-nonlinearity-dominated, not
+  inter-return-wrapping-dominated).** New reusable primitives in `vti`:
+  `qr_rebasing_factor` (the #669 per-step move at a discrete map step: `A` = point
+  orthogonal `Q` of the float QR of `mid(M)`, `K = A^{-1} M` the well-conditioned rebasing
+  factor, `A@K superset M`), `reframe_image_qr` (carries a leg's reachable set as a
+  parallelepiped `center + A@[r]`, re-choosing `A` from the QR of the SINGLE-leg `[DP_k]`
+  each return so the box `[r]` stays tight in stretch-aligned coordinates and the box hull
+  fed to the next `rigorous_section_map` does not accumulate the per-return wrapping), and
+  `reframe_jacobian_qr` (analogous rebasing of the ACCUMULATED composed Jacobian, `#669`'s
+  `Phi=A@bmat` discipline). **Design decision, made by the numbers (not by construction):**
+  reframe on the SINGLE-leg image `[DP_k]` (not the composed `[DP_k..DP_1]`) -- exactly as
+  `#669` reframes on the per-STEP Jacobian, never the accumulated flow; and reframe the IMAGE
+  only, keeping the composed Jacobian as the raw chain-rule product, because
+  `test_676`'s control showed separately QR-reframing the accumulated Jacobian adds its own
+  rebasing wrapping without net benefit at these low return counts. **Mechanism positive
+  control built FIRST and validated** (`tests/scripts/test_676_qr_reframed_covering.py`, 6
+  tests): primitive soundness (`A@K`/reframed image/reframed composed Jacobian rigorously
+  enclose their targets); the LOAD-BEARING closed-form control -- a linear stretch+rotation
+  map (the textbook wrapping example, `#669`'s own positive control) whose N-fold image is an
+  EXACTLY-known parallelepiped: the reframed hull tracks the true extent to <=1.02x through 3
+  returns while the un-reframed box-hull composition wraps to >1.3x by N=3; and the
+  covering-relevant control -- a nonlinear map with a genuine box->Jacobian coupling (DP
+  widens with the IC box, mirroring the real flyby map) where image reframing keeps the N=3
+  covering ratio >1.2x the un-reframed chain's. So the mechanism DOES work where wrapping is
+  the dominant loss -- the task's go/no-go gate passed, correctly, before touching Oterma.
+  **Real result at fixed ru=1e-6, rs=1e-8 (NOT shrunk), driver
+  `scripts/certify_676_wz_oterma_qr_reframed_covering.py` ->
+  `data/676_wz_oterma_qr_reframed_covering_certificate.json`, running BOTH the un-reframed
+  (#675) and reframed chains in one pass for a controlled comparison:** the section-search
+  window was widened tau_max 20->40 / n_steps 160->320 at the SAME step size h=0.125, so the
+  N=1/N=2 crossings are found at the IDENTICAL fictitious times (16.57, 7.97) as `#675` and
+  N=3 (whose 3rd centre return is at tau~23.95, PAST `#675`'s tau_max=20 window -- the real
+  reason `#675` walled at N=3) becomes reachable for the centre chain; ru is untouched. **N=1:
+  reframed == baseline == `#675` exactly (sep=5.937e-6, width=2.092e-5, ratio=0.2838,
+  covers=False) -- reframing is a no-op at one return (nothing composed yet), confirming exact
+  reduction.** **N=2: baseline reproduces `#675` to all digits (ratio=0.027486, jacW=25.7,
+  legW=3.69); reframed is marginally WORSE (ratio=0.026457, jacW=26.9, legW=4.01), -3.7%.**
+  Cause, visible in the numbers: a SINGLE QR rebasing of the first image propagation pays the
+  `A^{-1}A` rebasing-wrapping cost (the reframed leg-2 IC box is slightly WIDER, legW 4.01 vs
+  3.69) before any anti-decorrelation benefit -- which only compounds over >=3 legs (proven in
+  the synthetic control) -- can appear. **N=3: BOTH chains WALL** -- the leg-3 box integration
+  blows up before reaching the crossing (centre finds it at tau~23.95): baseline enclosure
+  wall at tau~13.1 (step 105), reframed at tau~15.6 (step 125). Reframing extends the leg-3
+  enclosure reach ~2.5 model-time units further (a real directional sign it reduces
+  box-propagation wrapping) but nowhere near enough. **Root cause of the negative, pinned:**
+  by the 2nd return the leg IC box has already inflated to ~35x the original h-set (reframed
+  box_ic half-width 3.5e-5 vs the original 1e-6) and `[DP_2]` genuinely varies ~3.7-4.0 over
+  it; the collapse is driven by this intra-leg Jacobian variation over an inflated box, NOT by
+  the inter-return box-hull *decorrelation* that reframing removes -- so correlation-preserving
+  reframing at the boundary, though correct and mechanism-proven, changes neither N=2 (a hair
+  worse) nor N=3 (both wall). **This deepens `#675`:** the indicated next fix is not reframing
+  but keeping the per-leg IC box genuinely SMALL (finer sub-boxing / smaller cells, or the full
+  multi-h-set W-Z chain where every h-set stays small by construction) -- adding
+  correlation-preservation alone is insufficient because the dominant inflation is real
+  nonlinearity over a box that is already too big by the 2nd return. No `catalogue.yaml` write.
+  `#673`/`#674`/`#675`/`#669`'s own controls re-verified green, unchanged (29 tests).
+  Lint/format clean; full `mypy src tests` clean (757 files); `ruff check .` / `ruff format
+  --check .` clean repo-wide; `tests/data tests/search tests/scripts` green with only the two
+  known pre-existing failures (`test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`) --
+  two further search-suite tests (`test_joint_cell`, `test_joint_sobol`) flickered under 8-way
+  xdist CPU contention and PASS cleanly on isolated re-run (the documented non-reproducing
+  flake), no new regression.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
