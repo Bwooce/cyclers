@@ -1002,8 +1002,9 @@ as first seeded targets); see #679's own bullet + docs/notes/2026-07-22-679-disc
 pass.md item 1 for the full case (registered+dispatched 2026-07-22, Opus); #681 -- #679
 shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control = Topputo &
 Belbruno, "Earth-Mars transfers with ballistic capture", CeMDA 121:329 (2015),
-doi:10.1007/s10569-015-9605-8 -- NOT yet in corpus, acquire+digest first; registered, NOT
-dispatched (queued behind #680; see #679's own bullet for the full case); #682 -- #679
+doi:10.1007/s10569-015-9605-8 -- ACQUIRED+digested 2026-07-22 (user-supplied PDF), search
+itself still registered NOT dispatched (queued behind #680; see #679's own bullet + #681's own
+bullet for the full case); #682 -- #679
 shortlist item 3, QP-torus "cycler corridor" census around the stable prograde EM cyclers
 (#444's own named usability-frontier redirect); positive control = Olikara-Scheeres 2012 GMOS
 EM torus families; registered, NOT dispatched (queued; see #679's own bullet); #683 -- #679
@@ -12732,9 +12733,18 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   weak-stability-boundary set each cycle. Mandatory positive control (ACQUISITION NEEDED first):
   Topputo & Belbruno, "Earth-Mars transfers with ballistic capture", Celestial Mechanics and
   Dynamical Astronomy 121:329-346 (2015), doi:10.1007/s10569-015-9605-8 -- confirmed real via
-  live web search 2026-07-22 (Springer Nature Link + arXiv:1410.8856); NOT currently in
-  `docs/notes/CORPUS_INDEX.md` (only the Belbruno 2004 textbook is) -- acquire, OCR-if-needed,
-  digest, and register per the standard corpus policy before building anything. Honest risk
+  live web search 2026-07-22 (Springer Nature Link + arXiv:1410.8856). **ACQUIRED 2026-07-22**
+  (user-supplied PDF): digested (`docs/notes/2026-07-22-digest-topputo-belbruno-2015.md`) and
+  registered in `docs/notes/CORPUS_INDEX.md` (text-layer, no OCR needed). Digit-grade
+  reproduction targets extracted for the positive control: Table 3's flat ΔV_c ~2.03-2.04 km/s
+  across r_p in [49896,113897] km at e=0.99; Table 5's four Hohmann baselines (H1-H4, ΔVinf =
+  3.388/2.090/3.163/1.881 km/s); N=597 for the sample capture set C^6_-1(0.99, pi/4). **Digest
+  also flags a genuine risk sharpener**: the paper's OWN Sect. 4.2 backward-integrates one
+  capture orbit 50 Mars revolutions (~94 years) and finds NO second ballistic capture within
+  that span -- direct evidence from this paper's own worked example that ballistic-capture
+  orbits do not obviously self-repeat, sharpening (not just gesturing at) this task's stated
+  Thm-3.58-chaos risk once dispatched. Acquisition step of this task is now DONE; the search
+  itself remains queued behind `#680`. Honest risk
   named by `#679`: the cislunar analog of this exact object class was already searched and found
   clean-negative (`cislunar-bct-wsb-quasicycler-2026-06-26`); Belbruno 2004 Thm 3.58 (capture on
   the weak-stability-boundary set W is chaotic) cuts against clean periodicity; real
