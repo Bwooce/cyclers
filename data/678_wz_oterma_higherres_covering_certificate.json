@@ -1,0 +1,296 @@
+{
+  "task": "#678",
+  "stage": "Stage 12 -- higher-resolution (nu=8,10) subdivision composed covering",
+  "system": {
+    "mu": 0.0009537,
+    "C": 3.03,
+    "h_energy": -1.515
+  },
+  "hset_N": {
+    "center_x_xdot": [
+      0.95229284234862,
+      1.23e-05
+    ],
+    "ru": 1e-06,
+    "rs": 1e-08,
+    "note": "FIXED size, NOT shrunk (identical to #674-#677)."
+  },
+  "search_window": {
+    "tau_max": 40.0,
+    "n_steps": 320,
+    "step_h": 0.125
+  },
+  "method": "Identical #675/#676/#677 sub-box mean-value chain, resolutions nu=8,10 (nu<=5 reused verbatim from #677). Covering ratio = #676's sep/edgew with edges from extreme cells' outer faces, whole-set from the sub-box union. M and ground-truth extent identical to #677.",
+  "resolutions": {
+    "nu1": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.936980629783761e-06,
+        "per_edge_enclosure_width": 2.0918775496231445e-05,
+        "separation_over_width_ratio": 0.283811097396849,
+        "stable_box_width": 4.690418505370886e-06,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 0.00015937960303866183,
+        "max_cell_box_ic_halfwidth": 3.349834896638811e-05,
+        "max_composed_jac_width": 0.8797224458716622,
+        "union_over_true_extent": 54.122205211404044
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 6.966613875836192e-06,
+        "per_edge_enclosure_width": 0.00025345947159186033,
+        "separation_over_width_ratio": 0.027486105893309687,
+        "stable_box_width": 2.2663712072934494e-05,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 0.00036546278867014004,
+        "max_cell_box_ic_halfwidth": 0.0002891427472073888,
+        "max_composed_jac_width": 25.723782598619454,
+        "union_over_true_extent": 126.31443829780405
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "enclosure wall at tau~13.1250 (step 105) before any crossing"
+      }
+    ],
+    "nu2": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.9364320935395565e-06,
+        "per_edge_enclosure_width": 7.362962906487525e-06,
+        "separation_over_width_ratio": 0.8062558740189973,
+        "stable_box_width": 2.484568523808406e-06,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 7.712059164001472e-05,
+        "max_cell_box_ic_halfwidth": 1.6612906786367978e-05,
+        "max_composed_jac_width": 0.4416197784543557,
+        "union_over_true_extent": 26.18864903154055
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 5.8089518141513086e-06,
+        "per_edge_enclosure_width": 6.134412151045932e-05,
+        "separation_over_width_ratio": 0.09469451466773175,
+        "stable_box_width": 8.29836838500686e-06,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 0.00011223617370220706,
+        "max_cell_box_ic_halfwidth": 0.00013392708758693892,
+        "max_composed_jac_width": 12.30019632813458,
+        "union_over_true_extent": 38.79204580438145
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "enclosure wall at tau~19.0000 (step 152) before any crossing"
+      }
+    ],
+    "nu3": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.931726819896621e-06,
+        "per_edge_enclosure_width": 4.8397949886369585e-06,
+        "separation_over_width_ratio": 1.2256153068101725,
+        "stable_box_width": 1.762425402285217e-06,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 5.181447090391034e-05,
+        "max_cell_box_ic_halfwidth": 1.1117053327495118e-05,
+        "max_composed_jac_width": 0.2967221181992971,
+        "union_over_true_extent": 17.595183911340886
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 5.651843647092036e-06,
+        "per_edge_enclosure_width": 2.7978043787346696e-05,
+        "separation_over_width_ratio": 0.20200996503008298,
+        "stable_box_width": 5.024310483436878e-06,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 6.142369300589368e-05,
+        "max_cell_box_ic_halfwidth": 8.767573430610197e-05,
+        "max_composed_jac_width": 8.145799702241453,
+        "union_over_true_extent": 21.229792801748342
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "enclosure wall at tau~27.0000 (step 216) before any crossing"
+      }
+    ],
+    "nu5": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.928007030892024e-06,
+        "per_edge_enclosure_width": 3.531384450999875e-06,
+        "separation_over_width_ratio": 1.6786637402828146,
+        "stable_box_width": 1.1893784463978818e-06,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 3.232312954880301e-05,
+        "max_cell_box_ic_halfwidth": 6.767279804141227e-06,
+        "max_composed_jac_width": 0.1812087885685132,
+        "union_over_true_extent": 10.97630447787444
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 5.595896295285119e-06,
+        "per_edge_enclosure_width": 1.1280724764695105e-05,
+        "separation_over_width_ratio": 0.49605822427282353,
+        "stable_box_width": 2.902300437757077e-06,
+        "covers": false,
+        "stable_containment": true,
+        "unstable_exit": false,
+        "union_image_max_halfwidth": 3.168726486080242e-05,
+        "max_cell_box_ic_halfwidth": 5.246297168521996e-05,
+        "max_composed_jac_width": 4.919678846805966,
+        "union_over_true_extent": 10.952029005882286
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "endpoints straddle sigma=0 near tau~24.1250 but interval-Newton could not certify a unique transversal crossing on the step model"
+      }
+    ],
+    "nu8": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.9143427112717806e-06,
+        "per_edge_enclosure_width": 3.083198671594012e-06,
+        "separation_over_width_ratio": 1.918248981410617,
+        "stable_box_width": 8.688514645527334e-07,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 2.1652283730619337e-05,
+        "max_cell_box_ic_halfwidth": 4.338705820802606e-06,
+        "max_composed_jac_width": 0.11638987132338639,
+        "union_over_true_extent": 7.352693324752831
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 5.655058050474393e-06,
+        "per_edge_enclosure_width": 5.64949671452708e-06,
+        "separation_over_width_ratio": 1.0009843949343333,
+        "stable_box_width": 1.8939364303527384e-06,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 1.8975957879849292e-05,
+        "max_cell_box_ic_halfwidth": 3.331758480061389e-05,
+        "max_composed_jac_width": 3.1407295106821813,
+        "union_over_true_extent": 6.558636159588285
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "endpoints straddle sigma=0 near tau~24.0000 but interval-Newton could not certify a unique transversal crossing on the step model"
+      }
+    ],
+    "nu10": [
+      {
+        "n": 1,
+        "edge_center_separation": 5.9097572427113665e-06,
+        "per_edge_enclosure_width": 2.9779121920037177e-06,
+        "separation_over_width_ratio": 1.9845303896401754,
+        "stable_box_width": 7.622979265597962e-07,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 1.8142089476202994e-05,
+        "max_cell_box_ic_halfwidth": 3.532074113067721e-06,
+        "max_composed_jac_width": 0.09480866083342468,
+        "union_over_true_extent": 6.160699806464748
+      },
+      {
+        "n": 2,
+        "edge_center_separation": 5.6778615403763055e-06,
+        "per_edge_enclosure_width": 4.335951235834301e-06,
+        "separation_over_width_ratio": 1.3094846393685977,
+        "stable_box_width": 1.5862788270704087e-06,
+        "covers": true,
+        "stable_containment": true,
+        "unstable_exit": true,
+        "union_image_max_halfwidth": 1.534971020100695e-05,
+        "max_cell_box_ic_halfwidth": 2.703822758553897e-05,
+        "max_composed_jac_width": 2.5532518621692915,
+        "union_over_true_extent": 5.305300791715547
+      },
+      {
+        "n": 3,
+        "result": "WALL",
+        "reason": "endpoints straddle sigma=0 near tau~24.0000 but interval-Newton could not certify a unique transversal crossing on the step model"
+      }
+    ]
+  },
+  "ground_truth_true_extent": {
+    "1": {
+      "x_extent": [
+        1.003507173054785,
+        1.0035074653041092
+      ],
+      "vx_extent": [
+        -0.17452575763404288,
+        -0.17451986801434183
+      ],
+      "x_halfwidth": 1.4612466203711705e-07,
+      "vx_halfwidth": 2.944809850524699e-06,
+      "n_points": 13
+    },
+    "2": {
+      "x_extent": [
+        0.9784633506618485,
+        0.9784637449948017
+      ],
+      "vx_extent": [
+        -0.19355820594489062,
+        -0.193552419388839
+      ],
+      "x_halfwidth": 1.9716647658984954e-07,
+      "vx_halfwidth": 2.8932780258145163e-06,
+      "n_points": 13
+    },
+    "3": {
+      "x_extent": [
+        1.0009248493505094,
+        1.000925229204305
+      ],
+      "vx_extent": [
+        -0.6272262886607134,
+        -0.6271560339261021
+      ],
+      "x_halfwidth": 1.899268977645363e-07,
+      "vx_halfwidth": 3.512736730565402e-05,
+      "n_points": 13
+    }
+  },
+  "verdict": "N=1 ratio {nu1:0.2838, nu2:0.8063, nu3:1.2256, nu5:1.6787, nu8:1.9182, nu10:1.9845} || N=2 ratio {nu1:0.0275, nu2:0.0947, nu3:0.2020, nu5:0.4961, nu8:1.0010, nu10:1.3095} || N=3 ratio {nu1:WALL, nu2:WALL, nu3:WALL, nu5:WALL, nu8:WALL, nu10:WALL}",
+  "certified_returns": {
+    "nu1": [],
+    "nu2": [],
+    "nu3": [
+      1
+    ],
+    "nu5": [
+      1
+    ],
+    "nu8": [
+      1,
+      2
+    ],
+    "nu10": [
+      1,
+      2
+    ]
+  }
+}

@@ -1102,6 +1102,7 @@ def isolate_section_crossing(
     h: float,
     *,
     iters: int = 60,
+    max_refine: int = 60,
 ) -> Any | None:
     """Interval-Newton isolation of the section crossing on a step's Taylor model.
 
@@ -1111,13 +1112,25 @@ def isolate_section_crossing(
     TIGHT interval ``[s*]`` (subset of ``[0, h]``) proven to contain a unique,
     transversal crossing ``sigma(state(s*)) = 0``, or ``None`` if the step does not
     rigorously bracket exactly one transversal crossing (no strict sign change over
-    ``[0, h]``, or ``0`` in ``dsigma/ds`` over the step -- i.e. not certified
-    monotone / not transversal).
+    ``[0, h]``, or ``0`` in ``dsigma/ds`` over every localizable sub-bracket -- i.e.
+    not certified monotone / not transversal).
 
     ``dsigma/ds`` is formed rigorously as ``grad sigma(state(s)) . state'(s)`` with
     ``state'`` the termwise derivative of the Taylor model -- so ``0 not in`` it over
-    ``[0, h]`` is a genuine transversality certificate (``Dsigma . f != 0``), exactly
-    the non-degeneracy the section-map Jacobian formula requires.
+    a sub-bracket is a genuine transversality certificate (``Dsigma . f != 0``),
+    exactly the non-degeneracy the section-map Jacobian formula requires.
+
+    Two-sided bracket refinement (``max_refine``): the coarse whole-step ``dsigma/ds``
+    interval can WRAP through 0 (interval dependency over the step) even when every IC
+    crosses transversally within the step.  When that happens the bracket ``[lo, hi]``
+    is bisected -- always keeping the half whose endpoints still show a *certified
+    strict* sign change (so soundness of the enclosed crossing is preserved) -- until
+    ``dsigma/ds`` is certified single-signed over the (narrower) bracket.  This is a
+    strict generalisation: when the whole step is already transversal the loop breaks
+    immediately with ``[0, h]``, reproducing the pre-refinement bracket exactly.  If a
+    midpoint's ``sigma`` straddles 0 (the crossing is genuinely smeared across the box,
+    not localizable within this step) or transversality is never recovered, ``None`` is
+    returned -- no false crossing can slip through.
     """
     dstate = [deriv_series(iv, comp) for comp in state_tm]
 
@@ -1140,11 +1153,39 @@ def isolate_section_crossing(
     down = bool(s0.a > 0) and bool(sh.b < 0)
     if not (up or down):
         return None  # no rigorous strict sign change across the step
-    dfull = dsig_at(iv.mpf([0.0, h]))
-    if not (bool(dfull.a > 0) or bool(dfull.b < 0)):
-        return None  # 0 in dsigma/ds over the step: not certified monotone/transversal
 
-    bracket = iv.mpf([0.0, h])
+    # Refine [lo, hi] within [0, h] until dsigma/ds is certified single-signed over it,
+    # keeping a certified strict endpoint sign change (two-sided bisection).  The
+    # invariant preserved is: sig_at([lo,lo]) and sig_at([hi,hi]) are STRICTLY opposite
+    # (for `up`: lo strictly <0, hi strictly >0; mirrored for `down`), so the enclosed
+    # crossing stays sound at every refinement.
+    lo, hi = 0.0, h
+    transversal = False
+    for _ in range(max_refine):
+        dloc = dsig_at(iv.mpf([lo, hi]))
+        if bool(dloc.a > 0) or bool(dloc.b < 0):
+            transversal = True
+            break
+        mid = 0.5 * (lo + hi)
+        smid = sig_at(iv.mpf([mid, mid]))
+        if up:
+            if bool(smid.a > 0):
+                hi = mid  # crossing in [lo, mid]; new hi endpoint still strictly >0
+            elif bool(smid.b < 0):
+                lo = mid  # crossing in [mid, hi]; new lo endpoint still strictly <0
+            else:
+                return None  # sigma(mid) straddles 0: crossing smeared, not localizable
+        else:
+            if bool(smid.b < 0):
+                hi = mid
+            elif bool(smid.a > 0):
+                lo = mid
+            else:
+                return None
+    if not transversal:
+        return None  # 0 in dsigma/ds at every localizable scale: not transversal
+
+    bracket = iv.mpf([lo, hi])
     for _ in range(iters):
         sc = (bracket.a + bracket.b) / 2
         sc_iv = iv.mpf([sc, sc])
