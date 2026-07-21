@@ -941,7 +941,16 @@ at fixed ru=1e-6: N=1 reproduces #675 exactly 0.2838, N=2 marginally WORSE 0.026
 compounds), N=3 both chains wall on leg-3 box blow-up before the tau~24 crossing; deepens #675 --
 the dominant loss is intra-leg Jacobian variation over an already ~35x-inflated IC box, NOT the
 inter-return box-hull decorrelation reframing removes) (registered+dispatched 2026-07-21, done
-2026-07-21); #677 next-unused):**
+2026-07-21); #677 -- W-Z Stage 11: finer sub-boxing feasibility check -- #676's own diagnosis
+named the cause precisely (Jacobian variation over an already-inflated box, not inter-return
+decorrelation); this stage subdivides each h-set into a modest number of sub-boxes BEFORE
+propagating so no single box ever grows to #676's observed ~35x, propagates each sub-box
+independently through the section map, and takes the union of sub-images as the return's
+enclosure -- a bounded FEASIBILITY check only (does the enclosure stay within ~2x of the true
+image size at return 2/3, not 35x), explicitly NOT a commitment to the full ~30-section chain;
+mandatory synthetic positive control for the subdivision mechanism itself before applying it to
+Oterma; fixed, non-shrunk ru=1e-6 h-set as in #675/#676 (registered+dispatched 2026-07-21);
+#678 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12456,6 +12465,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   two further search-suite tests (`test_joint_cell`, `test_joint_sobol`) flickered under 8-way
   xdist CPU contention and PASS cleanly on isolated re-run (the documented non-reproducing
   flake), no new regression.
+- **#677 (registered+dispatched 2026-07-21)** -- the W-Z proof machinery's Stage 11, finer
+  sub-boxing feasibility check. See `#676`'s own bullet for the precise diagnosis this stage
+  targets: the composed-covering collapse is NOT inter-return box-hull decorrelation (reframing
+  fixed that mechanism cleanly on synthetic controls but didn't help on Oterma) -- it is intra-leg
+  Jacobian variation over a leg IC box that has ALREADY inflated to ~35x the original h-set size
+  by the 2nd return, over which the section-map Jacobian genuinely varies ~3.7-4.0x. Scope:
+  subdivide each h-set/leg-IC-box into a modest number of sub-boxes (e.g. a NxN grid per
+  dimension, N small enough to stay tractable across 2-3 returns) BEFORE propagating each one
+  through `#672`'s rigorous section map, so no single propagated box ever grows anywhere near
+  35x -- take the union of the sub-box images as the enclosure of that return, and re-subdivide
+  before the NEXT return so growth never compounds unchecked. This is the standard technique real
+  CAPD-style W-Z proofs use (many small h-sets, not one big one). Framed EXPLICITLY as a bounded
+  FEASIBILITY check, not a commitment to the full ~30-section chain: does subdivision keep the
+  return-2/3 enclosure within roughly 2x of the image's true physical extent, instead of #676's
+  observed 35x? Fixed, non-shrunk `ru=1e-6` h-set as in `#675`/`#676` -- do not shrink to force a
+  result. Mandatory: build a genuine synthetic positive control for the SUBDIVISION mechanism
+  itself (a case with a known true image where naive single-box propagation measurably loses
+  tightness over 2-3 steps and subdivision measurably recovers it) before applying it to Oterma,
+  and re-validate `#673`/`#674`/`#675`/`#676`'s own controls still hold. Honest partial/negative
+  reporting fully expected: if even well-controlled sub-boxes still can't keep pace with the
+  compounding stretch within 2-3 returns, that's a valuable finding that 2-3 returns is simply
+  too few regardless of enclosure technique, and the real ~30-section chain is what's actually
+  needed -- report the sub-box-count-vs-enclosure-tightness tradeoff numerically either way.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
