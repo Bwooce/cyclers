@@ -841,7 +841,8 @@ event) was found and fixed en route, confirmed via before/after diagnostics. #66
 (photogravitational) binary-asteroid re-sweep -- every #549/#657/#659/#660 negative is
 gravity-only-conditional, positive control = reproduce a published Didymos terminator-orbit family
 member (CMDA 138:2, 2025); needs 2-3 SRP-binary papers acquired first, a real corpus gap
-(registered 2026-07-19, not yet dispatched, beta-admissibility flagged as a user decision); #666
+(registered 2026-07-19; beta-admissibility DECIDED by user 2026-07-21 -- bare-rock cyclers only,
+~1e-4 to 1e-3 m^2/kg; registered+dispatched 2026-07-21); #666
 for #661 shortlist item 4, co-orbital quasi-satellite/horseshoe transition cyclers -- built the
 averaged 1-DOF co-orbital Hamiltonian (`search/coorbital_hamiltonian.py`, numerical disturbing-
 function averaging, sign convention validated + a sign bug caught and fixed via the mandatory
@@ -11659,9 +11660,12 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   pass found — zero currently in `docs/notes/CORPUS_INDEX.md`; CMDA 138:2 2025's Didymos
   terminator-orbit paper is the named positive-control source). Mandatory positive control:
   reproduce a published Didymos terminator-orbit family member from that paper before trusting any
-  new sweep result. **β-admissibility (what area-to-mass ratios are physically defensible for
-  these specific bodies) is a user decision, not to be assumed unilaterally** — flag this
-  explicitly before committing to a specific β or β-range.
+  new sweep result. **β-admissibility DECIDED by the user 2026-07-21: bare-rock cyclers only** —
+  restrict β to the range physically defensible for an uncoated rocky/metallic cycler spacecraft
+  body itself (~1e-4 to 1e-3 m²/kg, no sail/balloon assumption), the most conservative choice,
+  directly comparable to the existing gravity-only sweeps since it changes nothing about mission
+  concept, just adds the real physical SRP force term at a defensible β. (registered+dispatched
+  2026-07-21)
 - **#666 ✓ DONE (2026-07-19)** — `#661` shortlist item 4, co-orbital quasi-satellite/horseshoe
   transition cyclers. See `#661`'s own bullet for the full case. **Result: mandatory positive
   control PASSED — an honest reproduction/census result, NOT a novelty claim** (per this task's
