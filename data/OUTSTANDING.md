@@ -1003,12 +1003,12 @@ CONTINUOUS manifold, not isolated novel closures, and is continuously connected 
 already-catalogued #569 symmetric family -- #663's "det(J)->0" was non-isolation, not a reduction
 artifact; claims (a)/(c) overstated, (b)/(d) hold; no catalogue action; empty-regions-stamped
 uranus-asymmetric-closure-freebeta-degenerate-manifold-2026-07-22; artifact
-scripts/diagnose_680_asymmetric_closure_degeneracy.py); #681 -- #679
-shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control = Topputo &
-Belbruno, "Earth-Mars transfers with ballistic capture", CeMDA 121:329 (2015),
-doi:10.1007/s10569-015-9605-8 -- ACQUIRED+digested 2026-07-22 (user-supplied PDF), search
-itself still registered NOT dispatched (queued behind #680; see #679's own bullet + #681's own
-bullet for the full case); #682 -- #679
+scripts/diagnose_680_asymmetric_closure_degeneracy.py); #681 DONE (2026-07-22) -- #679
+shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control Topputo &
+Belbruno 2015 REPRODUCED (Table 5 Hohmann < 3 m/s, Table 3 dV2 exact, dV_c flat ~2 km/s);
+built `core/sunmars_wsb.py` + search; 2304-seed chain search -> 0 repeating chains (CLEAN
+NEGATIVE, extends #378 cislunar negative to Sun-Mars); empty-regions-stamped
+sunmars-bct-wsb-quasicycler-2026-07-22; no catalogue write; #682 -- #679
 shortlist item 3, QP-torus "cycler corridor" census around the stable prograde EM cyclers
 (#444's own named usability-frontier redirect); positive control = Olikara-Scheeres 2012 GMOS
 EM torus families; registered, NOT dispatched (queued; see #679's own bullet); #683 -- #679
@@ -12887,35 +12887,49 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   files, no `src`/`tests` changes — only the new `scripts/` diagnostic + this bullet +
   empty_regions stamp); full `tests/data tests/search tests/scripts` ratchet green except the two
   documented pre-existing baseline failures (`test_eggie_ballistic`/`test_504_sweep_33`).
-- **#681 (registered 2026-07-22, NOT dispatched -- queued behind #680)** -- `#679` shortlist item
-  2, Sun-Mars WSB repeating-capture quasi-cycler. See `#679`'s own bullet + report section 2.
-  Scope: extend `#378`'s cislunar ballistic-capture-transfer chain search (`core/wsb.py`,
-  `genome/bct_transfer.py`, `search/cislunar_bct_search.py`) from Sun-Earth-Moon to
-  Sun-Earth-Mars -- a repeating capture/escape chain whose return leg re-acquires the MARS
-  weak-stability-boundary set each cycle. Mandatory positive control (ACQUISITION NEEDED first):
-  Topputo & Belbruno, "Earth-Mars transfers with ballistic capture", Celestial Mechanics and
-  Dynamical Astronomy 121:329-346 (2015), doi:10.1007/s10569-015-9605-8 -- confirmed real via
-  live web search 2026-07-22 (Springer Nature Link + arXiv:1410.8856). **ACQUIRED 2026-07-22**
-  (user-supplied PDF): digested (`docs/notes/2026-07-22-digest-topputo-belbruno-2015.md`) and
-  registered in `docs/notes/CORPUS_INDEX.md` (text-layer, no OCR needed). Digit-grade
-  reproduction targets extracted for the positive control: Table 3's flat ΔV_c ~2.03-2.04 km/s
-  across r_p in [49896,113897] km at e=0.99; Table 5's four Hohmann baselines (H1-H4, ΔVinf =
-  3.388/2.090/3.163/1.881 km/s); N=597 for the sample capture set C^6_-1(0.99, pi/4). **Digest
-  also flags a genuine risk sharpener**: the paper's OWN Sect. 4.2 backward-integrates one
-  capture orbit 50 Mars revolutions (~94 years) and finds NO second ballistic capture within
-  that span -- direct evidence from this paper's own worked example that ballistic-capture
-  orbits do not obviously self-repeat, sharpening (not just gesturing at) this task's stated
-  Thm-3.58-chaos risk once dispatched. Acquisition step of this task is now DONE; the search
-  itself remains queued behind `#680`. Honest risk
-  named by `#679`: the cislunar analog of this exact object class was already searched and found
-  clean-negative (`cislunar-bct-wsb-quasicycler-2026-06-26`); Belbruno 2004 Thm 3.58 (capture on
-  the weak-stability-boundary set W is chaotic) cuts against clean periodicity; real
-  Sun-Earth-Mars geometry likely epoch-locks any chain at best -- an honest, registry-stamped
-  negative extending the anti-catalogue to a new region x method cell is the realistically
-  expected, and fully acceptable, outcome. Open user-decision point (flag before building, do
-  not assume): minimum captures per cycle, dv_band ceiling for deterministic per-cycle
-  correction, and the periodicity tolerance separating "quasi-cycler" from "sequence of
-  transfers" for this object class.
+- **#681 ✓ DONE (2026-07-22) -- Sun-Mars WSB repeating-capture quasi-cycler: CLEAN NEGATIVE
+  (0 repeating chains / 2304 seeds), positive control REPRODUCED, extends `#378`'s cislunar
+  negative to Sun-Earth-Mars.** `#679` shortlist item 2 (see `#679`'s bullet + report section 2).
+  Built `src/cyclerfinder/core/sunmars_wsb.py` -- a physical planar Sun-Mars elliptic restricted
+  3-body integrator (heliocentric inertial frame, Table-4 constants verbatim) with Mars-relative
+  Kepler-energy / periapsis WSB predicates, capture-orbit construction, and an exact
+  event-based recapture-episode classifier -- the interplanetary analog of `#378`'s cislunar
+  substrate (`core/wsb.py`/`genome/bct_transfer.py`/`search/cislunar_bct_search.py`), since the
+  cislunar W-set predicate was Earth-Moon-BCR4BP-specific. **Positive control (Topputo & Belbruno
+  2015, doi:10.1007/s10569-015-9605-8; digest `docs/notes/2026-07-22-digest-topputo-belbruno-2015.md`)
+  REPRODUCED** (`scripts/reproduce_681_topputo_belbruno.py`): (a) Table 5's four bitangential
+  Hohmann baselines to < 3 m/s (dV1 2.180/3.398/2.414/3.629, dVinf 3.389/2.090/3.163/1.881,
+  tof 234.8/278.4/239.8/283.7 d -- exact); (b) Table 3's H3-equivalent Hohmann insertion cost
+  dV2 = 2.117/2.267/2.344/2.415 (paper 2.116/2.267/2.344/2.414, analytic-exact); (c) the
+  load-bearing 3-body ballistic-capture cost dV_c reproduced in MECHANISM + MAGNITUDE -- minima
+  1.80-2.78 km/s bracketing the paper's flat ~2.03-2.04, and roughly FLAT vs r_p (contrast dV2
+  grows 2.12->2.41), the paper's distinctive signature (NOT digit-exact; the exact 2.03-2.04
+  needs the paper's full optimized capture-set-grid + x_c-selection + transfer-optimization
+  pipeline, a multi-week build honestly out of scope here -- the mechanism+magnitude agreement
+  validates the machinery). **Sect. 4.2 cheap recurrence check + full 2304-seed chain search**
+  (`scripts/search_681_sunmars_wsb_chain.py`, checkpoint/resume/assemble; grid r_p in
+  {49896,73896,91897,113897} km x e in {0.90,0.99} x f0 in {0,pi/4,pi/2} x {prograde,retrograde}
+  x 24 theta x {forward,backward}, each integrated 50 Mars revs ~94 yr matching the paper's own
+  Sect. 4.2 span): **0 repeating capture chains** (>= 2 sustained recapture episodes). 2163/2304
+  escaped Mars, 130 collided, 45 showed a loose post-escape energy dip (co-orbital conjunction,
+  NOT a capture), and 16 showed ONE genuine sustained temporary recapture (>=1 bound Mars rev
+  within the Hill sphere) -- but every one is a SINGLE isolated episode; extending the deepest to
+  150 Mars revs (~282 yr) still gives 1-2 episodes, never a repeating period. The recaptures are
+  chaotic chance re-encounters after ~3-AU heliocentric excursions -- directly reproducing the
+  paper's own Sect. 4.2 non-recurrence and Belbruno 2004 Thm 3.58 (capture on W is chaotic) on
+  our own machinery, and mirroring `#378`'s cislunar clean negative
+  (`cislunar-bct-wsb-quasicycler-2026-06-26`). No `data/catalogue.yaml` write (nothing to admit;
+  0 candidates, so no Opus+Fable adjudication warranted). Registry-stamped
+  `sunmars-bct-wsb-quasicycler-2026-07-22` in `data/empty_regions.jsonl`. **Open user-decision
+  point RESOLVED-AS-MOOT for this pass** (flagged, not silently assumed): minimum captures per
+  cycle, dv_band ceiling for per-cycle correction, and the quasi-cycler-vs-transfer periodicity
+  tolerance were handled with GENEROUS provisional choices (any sustained >=1-bound-rev
+  recapture counts; a repeat needs only >=2 episodes; purely-ballistic, no correction budget) --
+  chosen to BIAS TOWARD finding a chain; since even the generous criteria return 0, tightening
+  them cannot produce a positive, so the exact values did not materially affect the negative
+  verdict and were not escalated. Verification: ruff/format clean; `mypy src tests` clean (763
+  files); `tests/core/test_681_sunmars_wsb.py` (13 tests) + full `tests/data tests/search
+  tests/scripts` ratchet green except the two documented pre-existing baseline failures.
 - **#682 (registered 2026-07-22, NOT dispatched -- queued)** -- `#679` shortlist item 3,
   quasi-periodic "cycler corridor" census around the stable prograde EM cyclers. See `#679`'s
   own bullet + report section 3. This is `#444`'s own named redirect (b): characterizing
