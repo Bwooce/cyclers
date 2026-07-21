@@ -928,7 +928,12 @@ construction re-introduces #669's wrapping effect at the DISCRETE return-to-retu
 (no inter-return QR/reframing exists yet); composition machinery itself validated FIRST via 9
 closed-form controls (`tests/scripts/test_675_composed_meanvalue.py`); indicated next fix if
 continued is inter-return QR/reframing, not more returns (registered+dispatched 2026-07-20);
-#676 next-unused):**
+#676 -- W-Z Stage 10: inter-return QR/reframing fix for the composed-covering wrapping
+identified by #675 -- build a discrete re-orthogonalization step applied to the composed image
+BETWEEN section returns (analogous to #669's Stage-3 QR reframing within a continuous flow, but
+applied at the discrete return-to-return boundary instead), re-run #675's exact N=1/N=2/N=3
+composed-covering check at the same fixed, non-shrunk ru=1e-6 h-set, and report honestly whether
+the ratio collapse is arrested (registered+dispatched 2026-07-21); #677 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12303,6 +12308,26 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   re-verified green, unchanged. Lint/format clean; `mypy src tests` clean (756 files);
   `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
   tests/scripts` green, no regressions.
+- **#676 (registered+dispatched 2026-07-21)** -- the W-Z proof machinery's Stage 10, inter-return
+  QR/reframing fix. See `#675`'s own bullet for the full motivation and the exact root cause it
+  pinned in code: `section_map_meanvalue_image` builds each composed leg's next-IC box by
+  computing the 5 regularized state components INDEPENDENTLY, discarding the shear/correlation
+  between them (a box-hull, not a parallelepiped), and `rigorous_section_map` then consumes that
+  box as a plain per-component interval vector -- reintroducing `#669`'s within-flow wrapping
+  effect at the DISCRETE return-to-return boundary, where no analogous re-tightening step exists.
+  Scope: build a discrete re-orthogonalization/reframing step -- analogous in spirit to `#669`'s
+  Stage-3 QR reframing of the STM within a continuous flow integration, but applied here to the
+  composed image BETWEEN section returns, before it becomes the next leg's IC box -- so the
+  parallelepiped structure (correlation between components) survives the return-to-return
+  boundary instead of being collapsed to an axis-aligned box each time. Re-run `#675`'s exact
+  N=1/N=2/N=3 composed-covering check at the SAME fixed, non-shrunk ru=1e-6 h-set (do not shrink
+  to force a result) and report honestly whether the ratio collapse (0.284 -> 0.027 at N=2) is
+  arrested or whether it persists even with reframing -- either outcome is valuable and expected,
+  matching the now-established `#662`/`#668`-`#675` precedent across nine prior stages. Mandatory:
+  build a genuine positive control for the reframing step itself before trusting it on the real
+  problem (e.g. a synthetic composed map where reframing is known by construction to preserve a
+  tight enclosure through several returns, vs. an un-reframed control that wraps), and re-validate
+  `#673`'s, `#674`'s, and `#675`'s own controls still hold.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
