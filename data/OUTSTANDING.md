@@ -991,7 +991,27 @@ cyclers, Olikara-Scheeres 2012 control; (4) periapse-map cartography at Saturn-T
 Davis-Howell 2012 control, ranked last for #664 overlap; 12+ candidates considered-and-rejected
 with reasons incl. all four obvious external leads found already absorbed; 5 user decision
 points flagged; dispatch order 1->3->2->4; see the #679 bullet +
-docs/notes/2026-07-22-679-discovery-strategy-pass.md); #680 next-unused):**
+docs/notes/2026-07-22-679-discovery-strategy-pass.md); #680 -- #679 shortlist item 1,
+asymmetric-closure census at Uranus (Ariel-Umbriel/Titania-Oberon), reopening the #564-s3
+dual-adjudicated deferral -- USER GO GIVEN 2026-07-22, overriding the standing NO-GO on
+#663's post-deferral evidence (exact non-symmetric Ariel-Umbriel root at beta~74.3 deg, grid-gap
+risk realized, well-conditioned reduced formulations built, Canales/Kumar novelty-gating
+precondition discharged by #566/#569); positive controls in-repo (re-find #663's root blind,
+recover symmetric goldens as beta in {0,180} degenerate cases, hit #562's two T-O near-closures
+as first seeded targets); see #679's own bullet + docs/notes/2026-07-22-679-discovery-strategy-
+pass.md item 1 for the full case (registered+dispatched 2026-07-22, Opus); #681 -- #679
+shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control = Topputo &
+Belbruno, "Earth-Mars transfers with ballistic capture", CeMDA 121:329 (2015),
+doi:10.1007/s10569-015-9605-8 -- NOT yet in corpus, acquire+digest first; registered, NOT
+dispatched (queued behind #680; see #679's own bullet for the full case); #682 -- #679
+shortlist item 3, QP-torus "cycler corridor" census around the stable prograde EM cyclers
+(#444's own named usability-frontier redirect); positive control = Olikara-Scheeres 2012 GMOS
+EM torus families; registered, NOT dispatched (queued; see #679's own bullet); #683 -- #679
+shortlist item 4, periapse Poincare-map cartography at Saturn-Titan (the one classical
+seedless discovery map absent from the codebase); positive control = Davis & Howell 2012
+(JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
+dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12677,6 +12697,85 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   commits 872085a and eb27726 (its body sat orphaned directly below this bullet, opening
   mid-sentence at "rows was half-wrong") -- restored verbatim from 872085a's version of the
   file; no other text of `#658`'s bullet was touched.
+- **#680 (registered+dispatched 2026-07-22)** -- `#679` shortlist item 1, asymmetric-closure
+  census at Uranus (Ariel-Umbriel and Titania-Oberon first). See `#679`'s own bullet + its full
+  report (`docs/notes/2026-07-22-679-discovery-strategy-pass.md`, section 1) for the complete
+  case. **USER GO GIVEN 2026-07-22** to reopen the standing dual-adjudicated `#564` s3 deferral
+  (Fable-confirmed at `#565`) -- an explicit, deliberate reversal of that NO-GO, on `#663`'s
+  post-deferral evidence: an EXACT non-symmetric root exists in Ariel-Umbriel at beta~74.3 deg
+  (outside the high-lit-risk Titania-Oberon basin), the deferral's own named grid-gap risk was
+  realized (a genuine exact closure between symmetric grid points near `#600`'s near-miss,
+  independently DOP853-confirmed), the well-conditioned reduced formulations + interval-safe
+  Lambert/Kepler machinery + LM+DOP853 verification chain all now exist (`#663`), and the
+  deferral's own stated novelty-gating precondition (Canales/Kumar) was discharged by
+  `#566`/`#569`. Scope: enumerate genuinely-asymmetric (free `rel_offset`) exact closures of the
+  `#558`/`#563`-lineage direct-construction system via multi-start reduced-formulation Newton/LM
+  + deflation (`search/deflated_newton.py`) over the (beta, tof) box per (pair, direction,
+  n_rev), with `#663`'s interval machinery certifying empty sub-boxes for a
+  bounded-exhaustiveness statement (NOT a proven-complete one -- `#663` s4d documents the
+  interval certificate's own near-root width/depth failure mode; state this honestly). Mandatory
+  positive controls (all in-repo, no acquisition needed): re-find `#663`'s beta~74.3 deg
+  Ariel-Umbriel root blind from multi-start before trusting anything new; recover the committed
+  symmetric goldens as the beta in {0,180} degenerate cases; hit `#562`'s two recorded
+  Titania-Oberon near-closures (n=3 rel=114.15 deg residual 7.9e-3; n=2 rel=268.19 deg residual
+  3.5e-2) as first seeded targets. Any gate-passing survivor needs the full standard gate stack
+  (topology, physical gates including `#324`'s bend gate, literature-novelty check per
+  `[[feedback_literature_novelty_check_baseline]]`) before any catalogue-admission claim, plus
+  standard Opus+Fable dual adjudication given this project's own stated honest risk that both of
+  `#663`'s exact finds are gate-hostile (the `#600`-adjacent closure fails the bend gate at
+  ~0.83 deg; the beta~74.3 deg root's gate status is unchecked going in).
+- **#681 (registered 2026-07-22, NOT dispatched -- queued behind #680)** -- `#679` shortlist item
+  2, Sun-Mars WSB repeating-capture quasi-cycler. See `#679`'s own bullet + report section 2.
+  Scope: extend `#378`'s cislunar ballistic-capture-transfer chain search (`core/wsb.py`,
+  `genome/bct_transfer.py`, `search/cislunar_bct_search.py`) from Sun-Earth-Moon to
+  Sun-Earth-Mars -- a repeating capture/escape chain whose return leg re-acquires the MARS
+  weak-stability-boundary set each cycle. Mandatory positive control (ACQUISITION NEEDED first):
+  Topputo & Belbruno, "Earth-Mars transfers with ballistic capture", Celestial Mechanics and
+  Dynamical Astronomy 121:329-346 (2015), doi:10.1007/s10569-015-9605-8 -- confirmed real via
+  live web search 2026-07-22 (Springer Nature Link + arXiv:1410.8856); NOT currently in
+  `docs/notes/CORPUS_INDEX.md` (only the Belbruno 2004 textbook is) -- acquire, OCR-if-needed,
+  digest, and register per the standard corpus policy before building anything. Honest risk
+  named by `#679`: the cislunar analog of this exact object class was already searched and found
+  clean-negative (`cislunar-bct-wsb-quasicycler-2026-06-26`); Belbruno 2004 Thm 3.58 (capture on
+  the weak-stability-boundary set W is chaotic) cuts against clean periodicity; real
+  Sun-Earth-Mars geometry likely epoch-locks any chain at best -- an honest, registry-stamped
+  negative extending the anti-catalogue to a new region x method cell is the realistically
+  expected, and fully acceptable, outcome. Open user-decision point (flag before building, do
+  not assume): minimum captures per cycle, dv_band ceiling for deterministic per-cycle
+  correction, and the periodicity tolerance separating "quasi-cycler" from "sequence of
+  transfers" for this object class.
+- **#682 (registered 2026-07-22, NOT dispatched -- queued)** -- `#679` shortlist item 3,
+  quasi-periodic "cycler corridor" census around the stable prograde EM cyclers. See `#679`'s
+  own bullet + report section 3. This is `#444`'s own named redirect (b): characterizing
+  cycler-USABILITY where the family is known but its transport utility (surrounding
+  station-keeping-free torus corridor volume) is not. Scope: for each linearly-STABLE member of
+  the Braik-Ross/Ross-RT EM cycler families (C21: 107/201 stable; C32: 164/201 stable at
+  z0=0.24, per the `#438` registry) plus the stable planar goldens, compute the surrounding
+  KAM/quasi-periodic torus corridor with the existing torus machinery
+  (`search/variational_qp_torus.py`, `qp_torus_fixed_jacobi_continuation.py`) and measure its
+  extent. Mandatory positive control: reproduce a published EM CR3BP quasi-periodic torus family
+  result (Olikara-Scheeres 2012, the standard GMOS benchmark), cross-checked against the in-repo
+  `#612` torus validation controls. Honestly LOW-MODERATE novelty ceiling (characterizes known
+  objects, does not discover a new species) but cheapest of the four (~1 week, heaviest reuse)
+  and most likely to produce catalogue-adjacent output soon. Open user-decision point: schema
+  for any output -- new `quasi_cycler` rows per corridor, or corridor-width fields added to the
+  parent cycler rows?
+- **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
+  item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
+  Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical
+  seedless discovery map this codebase genuinely lacks (survey-verified: no periapsis/apsis
+  Poincare-map machinery anywhere in `search/`) -- periapse maps in the planet-moon CR3BP
+  (Davis-Howell lineage), used to find capture-lobe -> escape-lobe -> re-capture repeating
+  itineraries geometrically. Mandatory positive control (ACQUISITION NEEDED): reproduce a
+  published periapse-map structure -- Davis & Howell 2012 (JGCD 35(1)) periapse-map
+  transit/capture regions, or Villac & Scheeres 2003 (Hill problem escape lobes); neither
+  currently in corpus. Honest overlap note named by `#679`: this method's discovery content
+  overlaps `#664`'s set-oriented pipeline (periapse maps give exact per-trajectory structure with
+  no Monte-Carlo noise; `#664` gives measure/residence statistics on the same underlying
+  transport question) -- ranked last for exactly that overlap, and competes with the un-claimed
+  `#664` own-system follow-on (see `#679`'s "standing follow-on deliberately not claimed" note)
+  for the same transport-discovery niche; do not dispatch both without an explicit decision on
+  which is preferred.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
