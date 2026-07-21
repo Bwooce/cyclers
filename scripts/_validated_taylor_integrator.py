@@ -1535,6 +1535,36 @@ def section_map_meanvalue_image(
     return out
 
 
+def union_interval_boxes(iv: Any, boxes: list[list[Any]]) -> list[Any]:
+    """Componentwise interval hull of a list of interval boxes (the #677 sub-box union).
+
+    Each ``boxes[j]`` is a list of intervals of the same length ``n`` (an axis-aligned
+    box in ``R^n``).  Returns the tightest axis-aligned box ``[min_j lo_i, max_j hi_i]``
+    that encloses every input box -- a SOUND over-enclosure of the set-theoretic UNION of
+    the sub-boxes.  #677 subdivides an h-set into small sub-boxes, propagates each through
+    the section map independently (each sub-box's own local Jacobian stays near-constant
+    over its own small extent, so its mean-value image stays tight relative to ITS size),
+    and takes this union as the enclosure of the return.  The union hull is exact only up
+    to the axis-aligned-hull slop between disjoint/gapped sub-images; when the sub-images
+    tile a connected stretched image with no gaps (the covering-relevant case) the hull is
+    a tight enclosure of their union.
+    """
+    if not boxes:
+        raise ValueError("union_interval_boxes needs at least one box")
+    n = len(boxes[0])
+    out: list[Any] = []
+    for i in range(n):
+        lo = boxes[0][i].a
+        hi = boxes[0][i].b
+        for b in boxes[1:]:
+            if bool(b[i].a < lo):
+                lo = b[i].a
+            if bool(b[i].b > hi):
+                hi = b[i].b
+        out.append(iv.mpf([lo, hi]))
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # #675 -- COMPOSED (multi-return) mean-value section-map image.                 #
 #                                                                             #
@@ -1730,5 +1760,6 @@ __all__ = [
     "ts_pow",
     "ts_scale",
     "ts_sub",
+    "union_interval_boxes",
     "validated_step",
 ]

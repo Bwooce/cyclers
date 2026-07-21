@@ -949,8 +949,17 @@ independently through the section map, and takes the union of sub-images as the 
 enclosure -- a bounded FEASIBILITY check only (does the enclosure stay within ~2x of the true
 image size at return 2/3, not 35x), explicitly NOT a commitment to the full ~30-section chain;
 mandatory synthetic positive control for the subdivision mechanism itself before applying it to
-Oterma; fixed, non-shrunk ru=1e-6 h-set as in #675/#676 (registered+dispatched 2026-07-21);
-#678 next-unused):**
+Oterma; fixed, non-shrunk ru=1e-6 h-set as in #675/#676 (registered+dispatched 2026-07-21, done
+2026-07-21: mechanism synthetic control PROVEN against dense-sampled ground truth, nu=5
+sub-boxing holds 1.07-1.10x of true image vs single-box's 2.94-5.34x; on real Oterma, N=1
+single-return covering CERTIFIES at nu>=3 (nu3 ratio=1.226, nu5 ratio=1.679) at the SAME
+meaningful ru=1e-6 #674 could only reach at a near-vacuous ru=1e-8 -- a genuine milestone; N=2
+composed improves monotonically nu1 0.0275 -> nu2 0.0947 -> nu3 0.2020 -> nu5 0.4961 but does
+NOT certify at any tested resolution; N=3 walls at every resolution but the wall tau moves
+13.1 -> 19.0 -> 27.0 with nu, and nu5 for the first time reaches the true crossing (tau~24.1)
+without blowing up, failing instead on crossing-isolation precision; honest caveat -- even nu5's
+enclosure is still 10.95-10.98x the true image extent, an order of magnitude from the ~2x bar
+named in the dispatch); #678 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12465,7 +12474,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   two further search-suite tests (`test_joint_cell`, `test_joint_sobol`) flickered under 8-way
   xdist CPU contention and PASS cleanly on isolated re-run (the documented non-reproducing
   flake), no new regression.
-- **#677 (registered+dispatched 2026-07-21)** -- the W-Z proof machinery's Stage 11, finer
+- **#677 (registered+dispatched 2026-07-21, done 2026-07-21)** -- the W-Z proof machinery's Stage 11, finer
   sub-boxing feasibility check. See `#676`'s own bullet for the precise diagnosis this stage
   targets: the composed-covering collapse is NOT inter-return box-hull decorrelation (reframing
   fixed that mechanism cleanly on synthetic controls but didn't help on Oterma) -- it is intra-leg
@@ -12488,6 +12497,59 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   compounding stretch within 2-3 returns, that's a valuable finding that 2-3 returns is simply
   too few regardless of enclosure technique, and the real ~30-section chain is what's actually
   needed -- report the sub-box-count-vs-enclosure-tightness tradeoff numerically either way.
+  **DONE (2026-07-21, Opus) -- subdivision genuinely, substantially helps and even ACHIEVES a
+  real single-return covering at fixed ru=1e-6 (a milestone `#674` could only reach at a
+  near-vacuous ru=1e-8), but composed N=2/N=3 covering still does NOT certify at any tested
+  resolution -- a real, honest partial-positive result, not a clean win.** New reusable
+  primitive `vti.union_interval_boxes` (componentwise interval hull of a list of sub-box
+  images -- the union-of-sub-images enclosure this stage's diagnosis calls for). **Mechanism
+  synthetic positive control built FIRST and validated**
+  (`tests/scripts/test_677_subdivision_covering.py`, 3 tests): a nonlinear map with a strong,
+  genuine box-to-Jacobian coupling (rotation+stretch M with lambda=3, quadratic coupling
+  c=300, tuned to mirror Oterma's own DP variation magnitude) checked NUMERICALLY against a
+  dense-sampled (81x5 grid) ground-truth true image: naive single-box mean-value propagation
+  inflates to 2.94x/5.34x the true image extent at N=2/N=3 (a clean synthetic mirror of
+  `#676`'s Oterma collapse), while subdividing into nu=5 sub-boxes and unioning keeps the
+  enclosure at 1.07x/1.10x of true AND rigorously encloses the entire dense-sampled true
+  image (soundness, not just tightness); the improvement is monotone in nu (N=3: nu=2 2.30x,
+  nu=3 1.50x, nu=5 1.10x, all beating single-box's 5.34x). `#673`/`#674`/`#675`/`#676`'s own
+  controls re-verified green, unchanged (27 tests; 30 total in this family). **Real result on
+  Oterma at fixed ru=1e-6, rs=1e-8 (NOT shrunk), driver
+  `scripts/certify_677_wz_oterma_subdivided_covering.py` ->
+  `data/677_wz_oterma_subdivided_covering_certificate.json`, resolutions nu in {1,2,3,5}, nu=1
+  exactly reproduces `#676`'s baseline (N=1 ratio=0.2838, N=2 ratio=0.0275, N=3 box-wall at
+  tau~13.1/step 105 -- internal-consistency check):** **N=1 (single return) CERTIFIES at
+  nu>=3** -- nu1 ratio=0.2838 covers=False; nu2 ratio=0.8063 covers=False (close: stable
+  containment holds, unstable exit does not); nu3 ratio=1.2256 **covers=True** (stable
+  containment + unstable exit both hold); nu5 ratio=1.6787 covers=True. M (the target h-set)
+  is built identically to `#676`'s own recipe, not loosened to help -- a genuine single-return
+  covering at the SAME meaningful ru=1e-6 scale `#674` could only reach by shrinking to a
+  near-vacuous ru=1e-8; a real milestone in its own right, separate from the composed-return
+  question. **N=2 (composed) improves monotonically but does NOT certify at any resolution
+  tested** -- nu1 ratio=0.0275 (matches `#675`/`#676`'s collapsed baseline); nu2 ratio=0.0947
+  (3.4x better); nu3 ratio=0.2020 (2.1x better again); nu5 ratio=0.4961 (2.5x better again,
+  still <1, not certified). The ~2-3x-per-subdivision-step improvement is fairly consistent
+  nu1->nu2->nu3->nu5 -- a SPECULATIVE, NOT-CONFIRMED extrapolation is that nu~8-10 might
+  eventually cross ratio=1, but this is untested and unproven, not claimed as fact. **N=3
+  WALLS at every resolution, but the wall point moves later and changes CHARACTER with finer
+  subdivision** -- nu1 walls at tau~13.1 (step 105, well before the true crossing at
+  tau~23.95); nu2 walls at tau~19.0 (step 152, still before); nu3 walls at tau~27.0 (step
+  216, PAST the true crossing -- the enclosure survives the crossing time itself but still
+  cannot rigorously isolate it before eventually blowing up); nu5 reaches tau~24.125 (right at
+  the crossing) and for the first time does NOT blow up -- instead interval-Newton could not
+  certify a UNIQUE transversal crossing on that step's model, a crossing-ISOLATION precision
+  obstacle, arguably more tractable in character than the earlier "box blows up entirely"
+  walls at nu1-nu3, though not solved here. **Honest tightness caveat (the ground-truth
+  check the dispatch asked for): even at nu5 the enclosure is still an order of magnitude from
+  truly tight in an absolute sense** -- union-image-extent / dense-sampled-true-extent is
+  54.12x (nu1) -> 26.19x (nu2) -> 17.60x (nu3) -> 10.98x (nu5) at N=1, and 126.31x -> 38.79x ->
+  21.23x -> 10.95x at N=2: a genuine, substantial 5-12x tightening from subdivision, but nowhere
+  near the ~2x rough bar named in the dispatch -- the N=1 `covers=True` verdicts are real and
+  rigorous, but should NOT be read as proof-grade tightness; the enclosure is sound, not tight.
+  No `catalogue.yaml` write. Lint/format clean; full `mypy src tests` clean (760 source files);
+  `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
+  tests/scripts` green with only the two known pre-existing failures (`test_eggie_ballistic`,
+  `test_504_pluto_charon_kk_sweep`) -- no new regressions.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
