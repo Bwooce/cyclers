@@ -960,19 +960,17 @@ NOT certify at any tested resolution; N=3 walls at every resolution but the wall
 without blowing up, failing instead on crossing-isolation precision; honest caveat -- even nu5's
 enclosure is still 10.95-10.98x the true image extent, an order of magnitude from the ~2x bar
 named in the dispatch); #678 -- W-Z Stage 12: push N=2 certification + fix the N=3
-crossing-isolation wall -- #677's own trend (N=2 ratio roughly doubling-to-tripling per
-subdivision step, nu1 0.0275 -> nu5 0.4961) suggests but does NOT prove finer resolution
-(nu~8-10+) might cross the N=2 certification threshold; test this directly by extending
-`#677`'s subdivision driver to higher nu and reporting whether the trend holds, saturates, or
-reverses. Separately, N=3 at nu5 no longer blows up (unlike nu1-nu3) -- it reaches the true
-crossing (tau~24.1) but `#677`'s interval-Newton crossing isolation cannot certify a UNIQUE
-transversal crossing there; diagnose and fix this precision issue (narrower step near the
-crossing, tighter interval-Newton tolerance, or two-sided bisection) so N=3 can be evaluated at
-all resolutions instead of walling. Fixed, non-shrunk ru=1e-6 h-set as in #675-#677 throughout;
-report the compute-cost-vs-tightness tradeoff honestly at whatever resolution is reached, and if
-N=2 certifies, immediately check whether the resulting composed covering is proof-meaningful or
-near-vacuous (per the `#674` adversarial-re-read precedent) before calling it a milestone
-(registered+dispatched 2026-07-21); #679 -- second fresh discovery-strategy pass (user-directed,
+crossing-isolation wall -- DONE 2026-07-22: N=2 CERTIFIES for the first time in the arc at
+nu8 (ratio=1.0010, razor-thin 0.1% margin) AND nu10 (ratio=1.3095, comfortable 31% margin,
+confirming the ~2x-per-step trend genuinely crossed 1.0 rather than nu8 being a fluke);
+adversarial re-read confirmed M's center genuinely fixed since #676/#677 but flagged TWO honest
+caveats (enclosure sound-not-tight at 5-7x true extent; the covering check's own local margin is
+an artifact of a fixed 0.4 coefficient, not a robustness signal -- use raw ratio distance from
+1.0 instead). N=3 crossing-isolation: diagnosed the nu5 wall as a genuine multi-step
+crossing-time smear (not precision); built + validated (4 new synthetic controls) a sound
+two-sided bracket refinement in `isolate_section_crossing` for the narrower case it can fix, but
+the real N=3 wall persists identically at nu8/nu10 -- confirming the smear diagnosis, a fix that
+doesn't fix this specific wall but closes a real soundness gap; #679 -- second fresh discovery-strategy pass (user-directed,
 2026-07-22), explicitly SEPARATE from and DOWNSTREAM of `#661`: `#661`'s entire 5-item shortlist
 is now exhausted (`#662` mathematically blocked, `#664`/`#665`/`#666`/`#667` all done, mostly
 clean negatives except `#664`'s own reproduction win) -- this pass must look BEYOND that list,
@@ -999,7 +997,13 @@ risk realized, well-conditioned reduced formulations built, Canales/Kumar novelt
 precondition discharged by #566/#569); positive controls in-repo (re-find #663's root blind,
 recover symmetric goldens as beta in {0,180} degenerate cases, hit #562's two T-O near-closures
 as first seeded targets); see #679's own bullet + docs/notes/2026-07-22-679-discovery-strategy-
-pass.md item 1 for the full case (registered+dispatched 2026-07-22, Opus); #681 -- #679
+pass.md item 1 for the full case (registered+dispatched 2026-07-22, Opus; ✓ DONE 2026-07-22 --
+NO-GO, reopening premise does NOT hold: the free-rel_offset asymmetric closure set is a degenerate
+CONTINUOUS manifold, not isolated novel closures, and is continuously connected to the
+already-catalogued #569 symmetric family -- #663's "det(J)->0" was non-isolation, not a reduction
+artifact; claims (a)/(c) overstated, (b)/(d) hold; no catalogue action; empty-regions-stamped
+uranus-asymmetric-closure-freebeta-degenerate-manifold-2026-07-22; artifact
+scripts/diagnose_680_asymmetric_closure_degeneracy.py); #681 -- #679
 shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control = Topputo &
 Belbruno, "Earth-Mars transfers with ballistic capture", CeMDA 121:329 (2015),
 doi:10.1007/s10569-015-9605-8 -- ACQUIRED+digested 2026-07-22 (user-supplied PDF), search
@@ -12603,27 +12607,107 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
   tests/scripts` green with only the two known pre-existing failures (`test_eggie_ballistic`,
   `test_504_pluto_charon_kk_sweep`) -- no new regressions.
-- **#678 (registered+dispatched 2026-07-21)** -- the W-Z proof machinery's Stage 12, push N=2
-  certification + fix the N=3 crossing-isolation wall. See `#677`'s own bullet for the full
-  numbers this stage builds on. Two independent threads: (1) `#677`'s N=2 ratio improved
-  fairly consistently ~2-3x per subdivision step (nu1 0.0275 -> nu2 0.0947 -> nu3 0.2020 -> nu5
-  0.4961) but never crossed the certification threshold -- extend the subdivision driver to
-  higher resolution (nu~8-10+) and report DIRECTLY whether the trend holds, saturates short of
-  1.0, or reverses; this was explicitly named as untested/unproven speculation in `#677`'s own
-  bullet, not claimed as fact, and this stage is what actually tests it. (2) `#677`'s N=3 at
-  nu5 for the first time reached the true crossing (tau~24.1) without the enclosure blowing up,
-  but interval-Newton could not certify a UNIQUE transversal crossing there -- diagnose and fix
-  this crossing-isolation precision issue (candidates: a narrower step near the crossing,
-  tighter interval-Newton tolerance/iteration count, or two-sided bisection of the bracketing
-  interval) so N=3 can be evaluated (not just walled) at all resolutions. Fixed, non-shrunk
-  `ru=1e-6` h-set throughout, as in `#675`-`#677` -- do not shrink to force a result. Report the
-  compute-cost-vs-tightness tradeoff honestly at whatever resolution is reached (cost already
-  scales noticeably with nu per `#677`'s own timings, ~500-1100s per nu5 cell). **If N=2 DOES
-  certify at some resolution, immediately apply the same adversarial re-read discipline `#674`
-  received**: check whether the certifying M/enclosure combination is proof-meaningful (a
-  genuinely fixed, independently-motivated h-set) or near-vacuous (sized or shrunk post-hoc to
-  fit the observed image) before calling it a milestone -- do not repeat the pattern this
-  project has twice now had to self-correct.
+- **#678 (registered+dispatched 2026-07-21, done 2026-07-22)** -- the W-Z proof machinery's
+  Stage 12, push N=2 certification + fix the N=3 crossing-isolation wall. See `#677`'s own
+  bullet for the full numbers this stage builds on. Two independent threads: (1) `#677`'s N=2
+  ratio improved fairly consistently ~2-3x per subdivision step (nu1 0.0275 -> nu2 0.0947 ->
+  nu3 0.2020 -> nu5 0.4961) but never crossed the certification threshold -- extend the
+  subdivision driver to higher resolution (nu~8-10+) and report DIRECTLY whether the trend
+  holds, saturates short of 1.0, or reverses; this was explicitly named as untested/unproven
+  speculation in `#677`'s own bullet, not claimed as fact, and this stage is what actually
+  tests it. (2) `#677`'s N=3 at nu5 for the first time reached the true crossing (tau~24.1)
+  without the enclosure blowing up, but interval-Newton could not certify a UNIQUE transversal
+  crossing there -- diagnose and fix this crossing-isolation precision issue (candidates: a
+  narrower step near the crossing, tighter interval-Newton tolerance/iteration count, or
+  two-sided bisection of the bracketing interval) so N=3 can be evaluated (not just walled) at
+  all resolutions. Fixed, non-shrunk `ru=1e-6` h-set throughout, as in `#675`-`#677` -- do not
+  shrink to force a result. Report the compute-cost-vs-tightness tradeoff honestly at whatever
+  resolution is reached (cost already scales noticeably with nu per `#677`'s own timings,
+  ~500-1100s per nu5 cell). **If N=2 DOES certify at some resolution, immediately apply the
+  same adversarial re-read discipline `#674` received**: check whether the certifying
+  M/enclosure combination is proof-meaningful (a genuinely fixed, independently-motivated
+  h-set) or near-vacuous (sized or shrunk post-hoc to fit the observed image) before calling it
+  a milestone -- do not repeat the pattern this project has twice now had to self-correct.
+  **DONE (2026-07-22, Opus) -- Thread 1 delivers the FIRST N=2 (composed, 2-return) covering
+  certification in this entire twelve-stage arc, adversarially re-read and confirmed genuine
+  (with two precise honesty caveats below, not just the tightness one); Thread 2 builds and
+  validates a real fix to a genuine soundness gap in crossing-isolation, but the fix does NOT
+  resolve the real N=3 wall, which is confirmed at nu8/nu10 to be a genuine multi-step
+  crossing-time smear, not a precision artifact.** Driver
+  `scripts/certify_678_wz_oterma_higherres_covering.py` -> resolutions nu in {8,10} (extending
+  `#677`'s {1,2,3,5}), same fixed ru=1e-6/rs=1e-8, M built by reusing `#677`'s own already-
+  computed nu=1 whole-h-set center chain VERBATIM (never recomputed) ->
+  `data/678_wz_oterma_higherres_covering_certificate.json`. **Thread 1 -- N=2 full trend across
+  all six tested resolutions: nu1 0.0275 -> nu2 0.0947 -> nu3 0.2020 -> nu5 0.4961 -> nu8
+  1.0010 (covers=True) -> nu10 1.3095 (covers=True).** N=1 also improves further (already
+  certified from nu3 on): nu8 1.9182, nu10 1.9845. N=3 WALLS identically at nu8 AND nu10 (see
+  Thread 2). **Mandatory adversarial re-read (per the `#674` precedent):** M's CENTER is
+  genuinely fixed (verified by reading the driver's own `assemble()`: it imports
+  `#677`'s stored nu=1 center chain unchanged, never recomputes or re-sizes it for nu8/10) --
+  not a post-hoc-loosened target. Tightness (union-image-extent / dense-sampled-true-extent,
+  the same check `#677` ran): nu8 N=1 7.35x, N=2 6.56x; nu10 N=1 6.16x, N=2 5.31x -- continues
+  tightening from nu5's 10.95-10.98x but still an order of magnitude from the ~2x rough bar --
+  sound, not tight, exactly as `#677` already cautioned. **A second, more precise caveat beyond
+  tightness, found by directly re-executing `covering_relation_2d` on the raw stored images and
+  inspecting its LOCAL-coordinate margins (not just the `covers` boolean):** M's own
+  unstable-direction half-width (`hu_img = 0.4 * gap`, `gap = edge_separation -
+  edge_enclosure_width`, unchanged since `#676`) is *self-referentially sized from the very
+  gap being tested*, which makes the resulting local-coordinate pass margin an almost-constant
+  ARTIFACT of the fixed 0.4 coefficient rather than a robustness signal: nu3 N=1 and nu5 N=1
+  (`#677`'s own already-accepted milestones) both show a local margin of exactly 0.2501 despite
+  ratios of 1.2256 and 1.6787 respectively (a 37% difference in ratio, ZERO difference in local
+  margin); nu10 N=2 shows the same 0.2499, and nu8 N=2 shows 0.2237 (the only mild deviation,
+  from left/right edge-width asymmetry) DESPITE its ratio being a razor-thin 1.0010 versus
+  nu10's comfortable 1.3095. **The `covers=True` boolean is therefore essentially a restatement
+  of "ratio > 1" with a ~25%-margin buffer baked into the 0.4 coefficient, not independent
+  confirmatory evidence of geometric robustness** -- this is a pre-existing characteristic of
+  the whole `_cover_from_union` construction (present, unnoticed, in every `#677` N=1
+  certification too), not something `#678` introduced. The metric that DOES carry real
+  robustness information is the RAW ratio's distance above 1.0: nu8's is 0.1% (indistinguishable
+  from noise/artifact on its own) while nu10's is 31% (comfortably real, consistent with the
+  established ~2x-per-step trend continuing cleanly from nu5). **Verdict: nu10 is what actually
+  earns this a genuine milestone** -- a razor-thin nu8 alone would not have been trustworthy,
+  but nu10's independent, much-more-comfortable crossing, landing exactly where the established
+  monotonic trend predicted, makes this a real first N=2 certification -- reported with both
+  the tightness caveat (sound, not tight, 5-7x not ~1x) and the local-margin-is-an-artifact
+  caveat (use raw ratio, not the covering check's own internal margin, to judge robustness)
+  stated explicitly, matching the scrutiny level `#674`'s own bullet received. **Thread 2 --
+  N=3 crossing-isolation:** instrumented replay of `#677`'s nu5 N=3 wall (scratch diagnostic,
+  not committed -- the checkpointed real driver files are what's committed) pinned the exact
+  mechanism: NOT a within-step precision problem (`dsigma/ds` over the crossing step cleanly
+  excludes 0 -- transversal) -- the N=2 box has inflated ~157x over the tau~24 arc, smearing
+  the true crossing across ~5 integration steps, so by the time the enclosure is unambiguously
+  signed, the step-START box already straddles sigma=0 at the COARSE step-boundary check,
+  before `isolate_section_crossing`'s own internal logic is even reached. Built a sound,
+  backward-compatible TWO-SIDED bracket refinement in `isolate_section_crossing`
+  (`scripts/_validated_taylor_integrator.py`) for the different, narrower failure mode it CAN
+  fix (whole-step endpoints cleanly signed but the coarse whole-step `dsigma/ds` interval
+  wraps through 0): bisects the bracket, always keeping the half with a certified strict sign
+  change, until `dsigma/ds` is single-signed -- a step already transversal over the whole
+  `[0,h]` is unchanged (reproduces the pre-fix bracket exactly). **4 new synthetic controls**
+  (`tests/scripts/test_678_crossing_isolation_refine.py`): (A) positive -- a genuine transversal
+  crossing whose whole-step derivative wraps through 0 is recovered and rigorously bracketed;
+  (B) negative -- a true tangency (`p'(root)=0`) is correctly refused; (C) negative -- a
+  box-width-SMEARED crossing (synthetic mirror of the real nu5/nu8/nu10 failure) is correctly
+  refused, proving the fix cannot admit a false crossing; (D) backward-compatibility -- an
+  already-clean transversal step isolates exactly as before. All 4 pass. Re-verified
+  `#672`-`#677`'s existing 36 crossing-isolation/covering controls unchanged, no regressions.
+  **Applied to the real Oterma N=3 case: the wall persists identically at BOTH nu8 and nu10**
+  (all cells hit the same "endpoints straddle sigma=0 near tau~24.0... could not certify a
+  unique transversal crossing" reason) -- confirming the diagnosis: box inflation over the
+  ~24-tau arc through the crossing is a genuine multi-step smear that finer subdivision alone
+  (up to nu10) does not resolve, and the crossing-isolation machinery was never the actual
+  bottleneck. Honest verdict: the fix is real, validated infrastructure closing a genuine
+  soundness gap in `isolate_section_crossing` -- but N=3's actual obstacle needs a different
+  remedy entirely (finer subdivision specifically spanning the crossing return, or the real
+  ~30-section W-Z chain), not crossing-isolation tuning. **Cost**: nu8/nu10 cells run
+  ~150-750s per return per 4-cell wave on the M3's 4 performance cores (pure-Python mpmath,
+  no gmpy2 backend) -- consistent with `#677`'s own ~500-1100s/cell estimate, confirming cost
+  keeps scaling with nu roughly as expected; no infeasibility wall reached through nu10. No
+  `catalogue.yaml` write. Lint/format clean; full `mypy src tests` clean (761 source files);
+  `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
+  tests/scripts` green with only the two known pre-existing failures (`test_eggie_ballistic`,
+  `test_504_pluto_charon_kk_sweep`) -- no new regressions.
 - **#679 ✓ DONE (2026-07-22, Fable) -- second fresh discovery-strategy pass; ranked 4-item
   shortlist produced (all internal frontiers -- every obvious external lead surveyed was already
   absorbed); full report in `docs/notes/2026-07-22-679-discovery-strategy-pass.md`.** Explicitly
@@ -12698,7 +12782,14 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   commits 872085a and eb27726 (its body sat orphaned directly below this bullet, opening
   mid-sentence at "rows was half-wrong") -- restored verbatim from 872085a's version of the
   file; no other text of `#658`'s bullet was touched.
-- **#680 (registered+dispatched 2026-07-22)** -- `#679` shortlist item 1, asymmetric-closure
+- **#680 ✓ DONE (2026-07-22, Opus) — NO-GO, reopening premise does NOT hold: the free-`rel_offset`
+  asymmetric closure set is a DEGENERATE CONTINUOUS MANIFOLD (a curve of solutions), not a discrete
+  set of isolated novel closures; it is continuously connected to the already-catalogued (`#569`)
+  symmetric family, so there is nothing distinct/novel to enumerate. Clean, honest negative that
+  re-closes the `#564` s3 deferral with new understanding — the deferral's instinct ("no
+  exhaustiveness guarantee, more expensive 2D search") was right, and the deeper reason is now
+  known: the solution set is a continuum, not a discrete search problem. No catalogue action;
+  empty-regions-stamped.** `#679` shortlist item 1, asymmetric-closure
   census at Uranus (Ariel-Umbriel and Titania-Oberon first). See `#679`'s own bullet + its full
   report (`docs/notes/2026-07-22-679-discovery-strategy-pass.md`, section 1) for the complete
   case. **USER GO GIVEN 2026-07-22** to reopen the standing dual-adjudicated `#564` s3 deferral
@@ -12725,6 +12816,77 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   standard Opus+Fable dual adjudication given this project's own stated honest risk that both of
   `#663`'s exact finds are gate-hostile (the `#600`-adjacent closure fails the bend gate at
   ~0.83 deg; the beta~74.3 deg root's gate status is unchecked going in).
+  **RESULT (2026-07-22, Opus) — reproducible artifact:
+  `scripts/diagnose_680_asymmetric_closure_degeneracy.py` (ruff/format clean; `scripts/` outside the
+  mypy gate; runs in ~5 s). Verdict reached by independent inspection of the four "deferral no
+  longer applies" claims BEFORE any census, per the dispatch's own instruction to verify them:**
+  **(1) The census as specified is ILL-POSED — the asymmetric closure set is a degenerate
+  continuum, not isolated roots.** Built the signed 2-vector residual `F(beta, tof) = [r_mid,
+  r_periodic]` ON TOP of `#558`'s own `residual_at_point` verbatim (wrapper reproduces the `#312`
+  catalogued point to 1e-14 — faithful). Ran `search/deflated_newton.py` (the tool the dispatch
+  named) over the `(beta, tof)` box per `(pair, direction, n_rev)`: for a single pair/direction/
+  n_rev it returns ~70+ "distinct" machine-precision roots with adjacent-beta gaps as small as
+  ~0.07 deg — i.e. it is SAMPLING A CONTINUOUS CURVE, not enumerating isolated closures (deflation
+  is an isolated-root tool; there is no discrete set to return). **(2) Confirmed independently on a
+  branch-continuous augmented formulation** (universal-variable Lambert, `z` explicit — a separate
+  from-scratch reimplementation, so no single formulation is trusted alone): 400 generic
+  Levenberg-Marquardt starts converge to a dense continuum of machine-precision solutions spanning
+  all `beta` (spacing ~2 deg across `beta∈[250,360]`), with `cond(J) ~1e8–1e12` everywhere
+  (rank-deficient) and `z0==z1` forced. **This IS `#663`'s own "det(J)→0 in lock-step with the
+  residual" observation — correctly re-read: it reflects NON-ISOLATION (the solutions form a
+  1-manifold), not merely a symmetric-orbit reduction artifact.** **(3) The committed symmetric
+  `#563` goldens sit ON this same manifold**: they reproduce to ~1e-14, but the free-`beta` 2×2
+  Jacobian at each is ALSO rank-deficient (`cond ~1e6–1e9`). `#663`'s "well-conditioned reduced
+  formulation (`cond~3e3–5e3`)" is well-conditioned ONLY because it FIXES `beta`, killing the
+  along-manifold null direction — so it structurally CANNOT perform the free-`beta` asymmetric
+  search this task needs (it can only find symmetric closures). **(4) Connectivity ⇒ non-novelty**:
+  the closure `tof` varies SMOOTHLY with `beta` from the symmetric Ariel-Umbriel `n_rev=(0,0)`
+  closure (`beta→0/360`, `tof≈3.216 d` — an already-catalogued `#569` row) continuously down through
+  asymmetric `beta` (`tof≈2.50 d` at `beta=320`), all at residual `~1e-4` — the asymmetric arc is a
+  NON-SYMMETRIC CONTINUATION of the catalogued symmetric family, not a distinct family.
+  **Positive controls:** PC2 (recover symmetric goldens at `beta∈{0,180}`) — PASSES (wrapper
+  reproduces the committed closures to 1e-14, and they are correctly ISOLATED within the
+  `beta=0/180` slice while the free-`beta` Jacobian is rank-deficient — a self-consistent picture).
+  PC3 (`#562`'s two Titania-Oberon seeds: `n=3` rel=114.15° res 7.9e-3; `n=2` rel=268.19° res
+  3.5e-2) — these are NEAR-MISSES (residual `1.2e-2`/`4.9e-2`, per `#562`'s own table), NOT exact
+  closures; deflated-Newton does not converge them to isolated roots because the nearby exact-closure
+  set is the degenerate manifold, not an isolated point. **PC1 (reproduce `#663`'s exact `beta≈74.3°`
+  Ariel-Umbriel root) — NOT reproducible as an ISOLATED root, because it is not one**: it is one
+  arbitrary, seed-dependent point on the degenerate continuum (its mirror at `beta≈285.7°`, `cond(J)
+  ≈5e10`, appears among the 400-start solutions). The exact `(beta, tof, n_rev)` was never committed
+  to the repo (only "`beta~74.3deg`, residual→1e-29" in prose), and the dispatch's PC1 as literally
+  posed — "reproduce the exact isolated root" — is unachievable because the target is not isolated.
+  Per the dispatch's own instruction ("if you cannot reproduce it, STOP; if the deferral's objections
+  still apply, report that honestly — a premature reopening is a legitimate outcome"), I stopped the
+  census here rather than run a deflated-Newton enumeration on a solution set it cannot meaningfully
+  enumerate. **Four-claims verdict:** claim (b) grid-gap-realized — HOLDS (`#663`, consistent with
+  the continuum passing between symmetric grid points); claim (d) Canales/Kumar novelty precondition
+  discharged — HOLDS (independently verified against `#569`: the offline `literature_check.py` ran
+  for all 5 pairs, Titania-Oberon's MMR/halo-transfer adjacency was adjudicated and recorded in that
+  catalogue row). But claim (a) "an EXACT non-symmetric root exists" OVERSTATES — a residual-zero
+  exists at `beta≈74.3°`, but it is NOT isolated (it is a point on a degenerate manifold); and claim
+  (c) "well-conditioned reduced formulations exist for the search" does NOT hold for the asymmetric
+  case — the reduction fixes `beta` (symmetric-only), and the free-`beta` formulation the search
+  actually requires is degenerate (`cond~1e8`+). So 2 of the 4 premise-claims fail in the form the
+  reopening rests on; the reopening was PREMATURE. **Physical-gate note (for completeness, not a
+  candidate):** part of the manifold does pass the `#324` bend FLOOR (min per-encounter bend rises
+  with `beta`; e.g. Ariel-Umbriel `n_rev=(0,0)` `beta≈344°` gives min-bend `10.2°`, passing bend +
+  DOP853-per-leg), BUT (i) those points are the connected continuation of already-catalogued rows
+  (not novel), and (ii) V∞-MAGNITUDE matching at an asymmetric config is necessary-not-sufficient for
+  true periodicity — nothing computes a REQUIRED turn/direction to verify the loop actually repeats
+  (the `#565` / `[[feedback_constructed_tour_per_encounter_self_consistency]]` "it matched!" gap);
+  the symmetric closures are periodic BY symmetry, asymmetric magnitude-closures are not guaranteed
+  to be. **No `data/catalogue.yaml` write; no novelty claim; nothing handed for admission** — there
+  is no isolated, distinct, novelty-clear survivor, so no Opus+Fable admission-adjudication is
+  warranted (the distinctness bar fails structurally: continuum connected to existing rows). Stamped
+  to `data/empty_regions.jsonl` as a FORMULATION-DEGENERACY negative
+  (`uranus-asymmetric-closure-freebeta-degenerate-manifold-2026-07-22`), distinct from a plain
+  clean-negative: the closures genuinely exist mathematically but as a non-isolated continuum, so the
+  discrete-census discovery framing does not apply — analogous framing to `#659`'s model-invalidity
+  stamp. Verification: `ruff check .`/`ruff format --check .` clean; `mypy src tests` clean (761
+  files, no `src`/`tests` changes — only the new `scripts/` diagnostic + this bullet +
+  empty_regions stamp); full `tests/data tests/search tests/scripts` ratchet green except the two
+  documented pre-existing baseline failures (`test_eggie_ballistic`/`test_504_sweep_33`).
 - **#681 (registered 2026-07-22, NOT dispatched -- queued behind #680)** -- `#679` shortlist item
   2, Sun-Mars WSB repeating-capture quasi-cycler. See `#679`'s own bullet + report section 2.
   Scope: extend `#378`'s cislunar ballistic-capture-transfer chain search (`core/wsb.py`,
