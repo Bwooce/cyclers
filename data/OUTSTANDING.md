@@ -972,7 +972,17 @@ all resolutions instead of walling. Fixed, non-shrunk ru=1e-6 h-set as in #675-#
 report the compute-cost-vs-tightness tradeoff honestly at whatever resolution is reached, and if
 N=2 certifies, immediately check whether the resulting composed covering is proof-meaningful or
 near-vacuous (per the `#674` adversarial-re-read precedent) before calling it a milestone
-(registered+dispatched 2026-07-21); #679 next-unused):**
+(registered+dispatched 2026-07-21); #679 -- second fresh discovery-strategy pass (user-directed,
+2026-07-22), explicitly SEPARATE from and DOWNSTREAM of `#661`: `#661`'s entire 5-item shortlist
+is now exhausted (`#662` mathematically blocked, `#664`/`#665`/`#666`/`#667` all done, mostly
+clean negatives except `#664`'s own reproduction win) -- this pass must look BEYOND that list,
+not re-propose it, since #661's own ranked candidates are no longer available options. Explicit
+context for the dispatched agent: the entire W-Z proof-machinery arc (`#636`, `#668`-`#678`,
+Fable-scoped strategy vs. Opus-built stages) is pure CAPABILITY-BUILDING against a known,
+already-published benchmark orbit (Oterma) -- it produces zero new catalogue rows even at full
+success, and this pass exists specifically to run in parallel on that basis, so the coordinating
+session has an independent, genuinely new lead to dispatch once the W-Z arc's current stage
+lands (registered+dispatched 2026-07-22, Fable); #680 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12584,6 +12594,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   genuinely fixed, independently-motivated h-set) or near-vacuous (sized or shrunk post-hoc to
   fit the observed image) before calling it a milestone -- do not repeat the pattern this
   project has twice now had to self-correct.
+- **#679 (registered+dispatched 2026-07-22)** -- second fresh discovery-strategy pass, explicitly
+  downstream of `#661` (2026-07-19's "find some new ways" pass). Context for whoever executes
+  this: `#661`'s entire ranked 5-item shortlist is now exhausted -- item 1 (`#662`, polynomial
+  homotopy) mathematically BLOCKED at the formulation layer; item 2 (`#664`, GAIO set-oriented
+  transfer operators) DONE, positive control passed, capability built; item 3 (`#665`, SRP-
+  augmented binary re-sweep) DONE, clean negative (0/96) at the user's bare-rock beta; item 4
+  (`#666`, co-orbital QS/HS transition cyclers) DONE, honest reproduction/census, not a novelty
+  claim; item 5 (`#667`, JPL SSD catalog mining) DONE. None of `#661`'s own candidates remain
+  available to re-propose -- this pass must find something GENUINELY NEW, not rediscover the
+  same list. Separately and explicitly: the entire concurrent W-Z proof-machinery arc (`#636`,
+  `#668`-`#678`) is PURE CAPABILITY-BUILDING against a KNOWN, already-published benchmark orbit
+  (comet Oterma's heteroclinic transition, the exact example the original Wilczak-Zgliczynski
+  paper used) -- even a full, decisive success on that arc produces ZERO new catalogue rows; it
+  builds rigorous-proof tooling that could someday CERTIFY a genuinely novel connection found by
+  OTHER methods, but is not itself a search. This pass exists to run independently in parallel and
+  surface that "other method" lead. Ground against the full method inventory before proposing
+  anything (`#605`/`#623`/`#645`/`#661`'s own prior strategy passes, the full `#312`-`#678` task
+  history, `[[project_capability_frontier_complete]]`, `[[project_novel_findings_status]]` --
+  novel hits are RARE, only `#312` confirmed novel across the whole catalogue) -- a live web
+  survey plus a direct codebase grep for genuine capability gaps, exactly as `#661` did, rather
+  than assuming continuity from memory. Rank candidates by novelty ceiling vs. build cost vs.
+  positive-control availability, name what was considered and rejected (not just omitted), and
+  flag any user-decision points (schema questions, admissibility ranges) explicitly rather than
+  assuming them.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
