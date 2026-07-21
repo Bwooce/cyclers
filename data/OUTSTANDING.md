@@ -959,7 +959,20 @@ NOT certify at any tested resolution; N=3 walls at every resolution but the wall
 13.1 -> 19.0 -> 27.0 with nu, and nu5 for the first time reaches the true crossing (tau~24.1)
 without blowing up, failing instead on crossing-isolation precision; honest caveat -- even nu5's
 enclosure is still 10.95-10.98x the true image extent, an order of magnitude from the ~2x bar
-named in the dispatch); #678 next-unused):**
+named in the dispatch); #678 -- W-Z Stage 12: push N=2 certification + fix the N=3
+crossing-isolation wall -- #677's own trend (N=2 ratio roughly doubling-to-tripling per
+subdivision step, nu1 0.0275 -> nu5 0.4961) suggests but does NOT prove finer resolution
+(nu~8-10+) might cross the N=2 certification threshold; test this directly by extending
+`#677`'s subdivision driver to higher nu and reporting whether the trend holds, saturates, or
+reverses. Separately, N=3 at nu5 no longer blows up (unlike nu1-nu3) -- it reaches the true
+crossing (tau~24.1) but `#677`'s interval-Newton crossing isolation cannot certify a UNIQUE
+transversal crossing there; diagnose and fix this precision issue (narrower step near the
+crossing, tighter interval-Newton tolerance, or two-sided bisection) so N=3 can be evaluated at
+all resolutions instead of walling. Fixed, non-shrunk ru=1e-6 h-set as in #675-#677 throughout;
+report the compute-cost-vs-tightness tradeoff honestly at whatever resolution is reached, and if
+N=2 certifies, immediately check whether the resulting composed covering is proof-meaningful or
+near-vacuous (per the `#674` adversarial-re-read precedent) before calling it a milestone
+(registered+dispatched 2026-07-21); #679 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -12550,6 +12563,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff check .` / `ruff format --check .` clean repo-wide; `tests/data tests/search
   tests/scripts` green with only the two known pre-existing failures (`test_eggie_ballistic`,
   `test_504_pluto_charon_kk_sweep`) -- no new regressions.
+- **#678 (registered+dispatched 2026-07-21)** -- the W-Z proof machinery's Stage 12, push N=2
+  certification + fix the N=3 crossing-isolation wall. See `#677`'s own bullet for the full
+  numbers this stage builds on. Two independent threads: (1) `#677`'s N=2 ratio improved
+  fairly consistently ~2-3x per subdivision step (nu1 0.0275 -> nu2 0.0947 -> nu3 0.2020 -> nu5
+  0.4961) but never crossed the certification threshold -- extend the subdivision driver to
+  higher resolution (nu~8-10+) and report DIRECTLY whether the trend holds, saturates short of
+  1.0, or reverses; this was explicitly named as untested/unproven speculation in `#677`'s own
+  bullet, not claimed as fact, and this stage is what actually tests it. (2) `#677`'s N=3 at
+  nu5 for the first time reached the true crossing (tau~24.1) without the enclosure blowing up,
+  but interval-Newton could not certify a UNIQUE transversal crossing there -- diagnose and fix
+  this crossing-isolation precision issue (candidates: a narrower step near the crossing,
+  tighter interval-Newton tolerance/iteration count, or two-sided bisection of the bracketing
+  interval) so N=3 can be evaluated (not just walled) at all resolutions. Fixed, non-shrunk
+  `ru=1e-6` h-set throughout, as in `#675`-`#677` -- do not shrink to force a result. Report the
+  compute-cost-vs-tightness tradeoff honestly at whatever resolution is reached (cost already
+  scales noticeably with nu per `#677`'s own timings, ~500-1100s per nu5 cell). **If N=2 DOES
+  certify at some resolution, immediately apply the same adversarial re-read discipline `#674`
+  received**: check whether the certifying M/enclosure combination is proof-meaningful (a
+  genuinely fixed, independently-motivated h-set) or near-vacuous (sized or shrunk post-hoc to
+  fit the observed image) before calling it a milestone -- do not repeat the pattern this
+  project has twice now had to self-correct.
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
   shortlist item 4, epoch-locking pilot. See `#654`'s own bullet for the case; full result +
