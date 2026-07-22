@@ -1026,18 +1026,15 @@ decided); full result + numbers in #682's own bullet; #683 -- #679
 shortlist item 4, periapse Poincare-map cartography at Saturn-Titan (the one classical
 seedless discovery map absent from the codebase); positive control = Davis & Howell 2012
 (JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
-dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684 --
-#682's own schema-decision follow-on: SCHEMA DECIDED by user 2026-07-22 -- new `quasi_cycler`
-rows per measured corridor, not fields on parent rows (catalogue's per-family-representative
-granularity would lose #682's own member-level variation); registered+dispatched 2026-07-22;
-#685 -- the standing #664
+dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684 ✓ DONE
+-- schema v5.2 epoch-free CR3BP quasi_cycler carve-out + 20 new #682 corridor rows written
+(commit 6e42304); #685 -- USER PICKED over #683: the standing #664
 own-system follow-on `#679` explicitly declined to claim (it belongs to `#661` item 2's own
 lineage, not a new `#679` shortlist item): apply `#664`'s validated GAIO/set-oriented transfer-
 operator pipeline to one of this project's own systems at equal rigor (new section/energy/
 region-indicator glue + calibration against a real target, not just the Dellnitz reproduction
-control); registered, NOT dispatched -- competes with `#683` for the same transport-discovery
-niche per `#679`'s own note, do not dispatch both without a priority decision; #686
-next-unused):**
+control); suggested target Sun-Earth-Mars (not mandated); registered+dispatched 2026-07-22;
+#686 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13146,16 +13143,26 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   ids + a stale pre-existing docstring count fixed in passing --, `test_catalog_v4_fields.py`,
   `test_catalogue_loader*.py`) all pass; jsonschema + the Python `validate_catalogue()`
   semantic gate both clean on the full 381-row file.
-- **#685 (registered 2026-07-22, NOT dispatched -- competes with #683 for priority)** -- the
-  standing `#664` own-system application follow-on, explicitly named but deliberately NOT
-  claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on deliberately not
-  claimed" note, and `#683`'s own bullet's cross-reference) since it belongs to `#661` item
-  2's own lineage, not a new `#679` item. Scope: apply `#664`'s validated GAIO/set-oriented
-  transfer-operator pipeline (currently validated only against the Dellnitz 2005 reproduction
-  control) to one of this project's OWN systems at equal rigor -- new section/energy/region-
-  indicator glue for the target system plus a calibration pass, not just re-running the
-  positive control. Open schema question inherited from `#664`'s own bullet: how does a
-  metastable SET (not a periodic orbit or torus) get a catalogue row, if at all? Competes with
+- **#685 (registered 2026-07-22, registered+dispatched 2026-07-22)** -- **USER PICKED over
+  #683 2026-07-22** (offered a choice between the two competing tasks; #685 was selected as
+  the higher-expected-value dispatch per this project's own original `#661` ranking, which
+  rated the GAIO/set-oriented method's novelty ceiling highest of the five shortlist
+  candidates). The standing `#664` own-system application follow-on, explicitly named but
+  deliberately NOT claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on
+  deliberately not claimed" note, and `#683`'s own bullet's cross-reference) since it belongs
+  to `#661` item 2's own lineage, not a new `#679` item. Scope: apply `#664`'s validated
+  GAIO/set-oriented transfer-operator pipeline (currently validated only against the Dellnitz
+  2005 reproduction control) to one of this project's OWN systems at equal rigor -- new
+  section/energy/region-indicator glue for the target system plus a calibration pass, not
+  just re-running the positive control. Suggested target (not mandated, dispatched agent to
+  confirm or override with justification): Sun-Earth-Mars -- the flagship mission domain for
+  this catalogue, never before tried with ANY set-oriented method, and a natural, genuinely
+  DIFFERENT-strength continuation of `#681`'s very recent clean negative (strict repeating
+  ballistic capture failed; a GAIO almost-invariant TRANSPORT set is a fundamentally weaker,
+  probabilistic-transport claim, not a repeating-cycle claim, so this is not redundant with
+  that result). Open schema question inherited from `#664`'s own bullet: how does a metastable
+  SET (not a periodic orbit or torus) get a catalogue row, if at all -- flag, do not assume.
+  Competes with
   `#683` (periapse-map cartography) for the same transport-discovery niche -- do not dispatch
   both without a priority decision between them.
 - **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
