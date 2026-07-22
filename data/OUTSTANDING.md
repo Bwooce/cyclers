@@ -1059,7 +1059,23 @@ capture<->escape<->recapture near-recurrence: single shooting diverges off-energ
 multiple shooting stalls at the ~1e-2 map-residual floor from every node density (N=4/12/24), undamped
 Newton diverges -- a transient shadowing coincidence in a chaotic transit region, not an exact orbit;
 no novelty check needed (nothing converged), no catalogue write, no empty_regions stamp (single-seed
-point-check, not a region); #688 next-unused):**
+point-check, not a region); #688 -- #686's Stage A, composed Keplerian-map screen (the
+cheap, no-GO-needed first step of the #686 CCR4BP plan) -- USER GAVE STAGE-B GO 2026-07-23,
+authorizing the full staged plan; Stage A dispatched first per the plan's own recommendation
+("Stage A + PC1 can run first without commitment and would sharpen the [Stage B] estimate").
+Scope: compose the existing positive-controlled `genome/keplerian_map.py` into an alternating
+two-map system (Europa map (x) Ganymede map -- the "P3BA patching" the #500 verdict itself
+named as the map's future use) and search for periodic itineraries of the composed map: cheap
+existence evidence + seed geometry (which resonance pairs, which phasings) before committing
+to Stage B's real build. Honest caveat carried from #686's own note: each map ignores the
+other moon, so this is screen-grade heuristics only -- a negative here is NOT registry-grade,
+a positive is a seed, not a result. Also acquire PC1 (Kumar-Anderson-de la Llave positive
+control source, per #686's own bullet) if not already in corpus. Stage B's actual ~3-5-week
+build (registered as follow-on task numbers once Stage A's result is in, per this project's
+own established staged-arc discipline -- see the W-Z #668-#687 arc and the #533-#620 arc for
+precedent) requires no further user decision beyond today's GO, but each Stage-B sub-step will
+still be registered and independently verified before proceeding, exactly like every other
+multi-week arc this project has run (registered+dispatched 2026-07-23); #689 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13346,6 +13362,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff format --check .` / `mypy src tests` clean; `tests/data tests/search tests/scripts` green
   except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
+- **#688 (registered+dispatched 2026-07-23)** -- `#686`'s Stage A, composed Keplerian-map
+  screen. See `#686`'s own bullet + `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md`
+  section 3 for the full staged plan. **USER GAVE STAGE-B GO 2026-07-23**, authorizing the
+  full CCR4BP plan (Laplace-locked repeating resonant tour, Jupiter-Europa-Ganymede); this
+  task is Stage A, the cheap first step the plan's own note explicitly recommends running
+  before committing further ("Stage A + PC1 can run first without commitment and would
+  sharpen the [Stage B] estimate"). Scope: compose the existing positive-controlled
+  `genome/keplerian_map.py` into an alternating two-map system (Europa map composed with
+  Ganymede map -- the "P3BA patching" `#500`'s own verdict named as the map's future use) and
+  search for periodic itineraries of the composed map: cheap existence evidence + seed
+  geometry (which resonance pairs, which phasings) before Stage B's real build. Honest caveat
+  (carried verbatim from `#686`'s own note, do not lose it): each map ignores the other moon,
+  so this is SCREEN-GRADE heuristics only -- a negative here is NOT registry-grade (do not
+  stamp `empty_regions.jsonl` from this task alone), a positive is a SEED for Stage B, not a
+  result in itself. Also acquire PC1 (the Kumar-Anderson-de la Llave positive-control source
+  `#686`'s own bullet names) if not already in corpus -- follow the standard corpus policy
+  (OCR if needed, digest, register in `CORPUS_INDEX.md`). Note `#604`'s prior Keplerian-map
+  negative was about INTERPLANETARY arrival V-infinity compatibility and does NOT touch this
+  intra-Jovian use, which is the map's own native, already-validated regime -- do not confuse
+  the two. Stage B's actual ~3-5-week build will be registered as its own follow-on task
+  number(s) once this Stage A screen's result is in, per this project's own established
+  staged-arc discipline (see the W-Z `#668`-`#687` arc and the `#533`-`#620` arc for
+  precedent) -- each Stage-B sub-step gets independently registered, dispatched, and verified,
+  not bundled into one unsupervised multi-week task.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
