@@ -1,0 +1,64 @@
+{
+  "seed_217_state": [
+    1.0196572560444028,
+    -0.0074517536134353244,
+    0.0,
+    0.029765939253854182,
+    0.07946614705680487,
+    0.0
+  ],
+  "seed_217_jacobi": 3.01531101794515,
+  "j2_target": 3.01531101794515,
+  "mu": 0.00023669534164836884,
+  "r_hill": 0.04289001044585961,
+  "n_periapses": 15,
+  "impacted_titan": true,
+  "cycle_period_guess_nondim": 68.12447134155329,
+  "map_return_residual_rH_peri10_to_14": 0.011662642802625136,
+  "single_shooting": {
+    "reported_converged": true,
+    "closure_residual": 2.3748945548715184e-11,
+    "period": 75.01638844606914,
+    "jacobi": -11.597117625690998,
+    "jacobi_drifted_off_target": true,
+    "state0": [
+      -32.47470005478934,
+      9.354204811680548,
+      -4.177785008821664e-21,
+      9.401817941608336,
+      32.6399970672824,
+      1.0424806642247558e-22
+    ],
+    "note": "SPURIOUS: full-arc STM ill-conditioning drove the free-state/free-period Newton off-energy to a far-field orbit; NOT seed #217's orbit"
+  },
+  "multiple_shooting": [
+    {
+      "subdiv": 1,
+      "n_nodes": 4,
+      "max_segment_stm_2norm": 42734.778793793455,
+      "converged": false,
+      "closure_residual": 0.010282891531806063,
+      "period": 68.13725514015741,
+      "n_iter": 80
+    },
+    {
+      "subdiv": 3,
+      "n_nodes": 12,
+      "max_segment_stm_2norm": 34212.438463928986,
+      "converged": false,
+      "closure_residual": 0.008541770531156428,
+      "period": 68.1262002116624,
+      "n_iter": 80
+    },
+    {
+      "subdiv": 6,
+      "n_nodes": 24,
+      "max_segment_stm_2norm": 94524.48342852852,
+      "converged": false,
+      "closure_residual": 0.009889483840698304,
+      "period": 68.12878483608354,
+      "n_iter": 80
+    }
+  ],
+  "verdict": "NO_EXACT_ORBIT -- near-recurrence is a transient coincidence; corrector stalls at the ~map-residual floor from every node density; single-shooting diverges off-energy"
+}

@@ -1051,14 +1051,15 @@ resonant tori (Ganymede 4:3 <-> Europa 3:4; secondary-resonance objects have NO 
 analog; published one-way transfers = named positive controls, closed cycle unclaimed);
 staged Stage-A cheap composed-Keplerian-map screen + Stage-B ~3-5wk build (USER GO required);
 11 alternatives explicitly rejected with reasons; 4 user decision points flagged; see
-docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md; #687 -- #683's own follow-on:
-build a dedicated multiple-shooting corrector to confirm or refute whether seed #217's
-candidate ~2-cycle near-recurrent Saturn-Titan capture<->escape<->recapture transit
-(period ~68 nondim, per-cycle periapse-map return residual ~0.012 r_H / ~500 km, tolerance-
-robust rtol 1e-10..1e-13, but NOT an exact periodic orbit as found -- it impacts Titan after 2
-cycles) shadows a genuine exact periodic transit orbit; #683's own read-it-off-the-map method
-deliberately excluded correction, so this is real, un-done follow-on work, not a re-run
-(registered+dispatched 2026-07-22); #688 next-unused):**
+docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md; #687 (CLOSED 2026-07-22) -- #683's
+own follow-on: built the missing CR3BP multiple-shooting corrector
+(src/cyclerfinder/search/cr3bp_multiple_shooting.py, Arenstorf-positive-controlled) and used it to
+REFUTE seed #217 -- decisive negative, NO exact periodic orbit near the Saturn-Titan
+capture<->escape<->recapture near-recurrence: single shooting diverges off-energy (Jacobi 3.015->-11.6),
+multiple shooting stalls at the ~1e-2 map-residual floor from every node density (N=4/12/24), undamped
+Newton diverges -- a transient shadowing coincidence in a chaotic transit region, not an exact orbit;
+no novelty check needed (nothing converged), no catalogue write, no empty_regions stamp (single-seed
+point-check, not a region); #688 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13294,30 +13295,57 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff check .` / `ruff format --check .` / `mypy src tests` (768 files) clean; `tests/data tests/search
   tests/scripts` green except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
-- **#687 (registered+dispatched 2026-07-22)** -- `#683`'s own follow-on: build a dedicated
-  multiple-shooting corrector to confirm or refute whether seed #217's candidate Saturn-Titan
-  capture-escape-recapture transit shadows a genuine, exact periodic orbit. See `#683`'s own
-  bullet for the full candidate description: captured near Titan, a large Saturn-realm
-  excursion out to ~41 Hill radii, re-capture at `x_p~+0.152`, a nearly-identical second
-  excursion, re-capture at `x_p~+0.164`, then a Titan impact -- a ~2-cycle near-recurrent
-  transit shadowing a period-~68 (nondim) capture<->escape<->recapture cycle, with a per-cycle
-  periapse-map return residual of ~0.012 Hill radii (~500 km), robust across `rtol` 1e-10 to
-  1e-13. `#683`'s own read-it-off-the-map method deliberately excludes differential correction
-  by design (a periapse map finds candidates geometrically; confirming an exact periodic orbit
-  needs a shooting/collocation corrector, a genuinely separate step). Scope: build a
-  multiple-shooting corrector targeting the seed #217 itinerary as an initial guess, using this
-  project's own established shooting/correction conventions (check `search/cr3bp_periodic.py`
-  and similar existing correctors for the pattern to follow, rather than inventing a new one),
-  and determine whether a genuinely periodic (or quasi-periodic, if a torus rather than a
-  strict periodic orbit is what actually exists nearby) transit orbit exists near this
-  candidate, or whether the near-recurrence seen on the map is a transient coincidence that
-  does not converge to anything exact. Either outcome (confirmed periodic orbit found, or a
-  clean "does not converge / diverges away from the candidate" negative) is a fully legitimate
-  result -- report honestly. If a genuine periodic orbit IS found, do NOT write it to
-  `data/catalogue.yaml` -- report back for the standard novelty-check + adjudication process,
-  since `#683`'s own bullet already established the broader phenomenology (transit through
-  L1/L2 Lyapunov manifold tubes) is within Davis-Howell 2011's own described structure, so any
-  specific confirmed orbit still needs a literature-novelty check before any admission claim.
+- **#687 ✓ DONE (2026-07-22, Opus) -- built the missing CR3BP multiple-shooting corrector and used
+  it to REFUTE seed #217: NO exact periodic orbit exists near `#683`'s Saturn-Titan
+  capture->escape->recapture near-recurrence -- it is a transient shadowing coincidence in a chaotic
+  L1/L2-transit region (decisive negative; nothing novel; no catalogue write).** `#683`'s own
+  follow-on: confirm or refute whether periapse-map seed #217 (captured near Titan, ~41-Hill-radius
+  Saturn-realm excursion, re-capture `x_p~+0.152`, near-identical second excursion, re-capture
+  `x_p~+0.164`, then a Titan impact after 2 cycles; period ~68 nondim; per-cycle periapse-map return
+  residual ~0.012 r_H) shadows a genuine exact periodic transit orbit -- `#683`'s read-it-off-the-map
+  method deliberately excludes correction, so this was real un-done work. **Reconstruction:** seed
+  #217's exact IC was recovered directly from the local `data/found/683_periapse_map/phase_d.json`
+  `best_record` (the file survived; no re-run of the 734-seed campaign needed) and its itinerary
+  reproduced verbatim via `periapse_map.collect_titan_periapses` -- 15 Titan periapses over 66pi
+  nondim at Jacobi exactly J2=3.0153110, the two re-captures at periapses 10 (`x_p=+0.152`, t=75.95)
+  and 14 (`x_p=+0.164`, t=144.08) bracketing one excursion loop of period 68.12, map return residual
+  1.17e-2 r_H (matches `#683`'s ~0.012). **Corrector built (extends, does NOT replace, this project's
+  own convention):** `src/cyclerfinder/search/cr3bp_multiple_shooting.py` -- multiple shooting is the
+  STM-based Newton of `cr3bp_periodic.correct_periodic` SEGMENTED at N patch points (reuses
+  `core.cr3bp.propagate(with_stm=True)` verbatim; free vars = 6N node states + N segment times,
+  constraint = full-state periapse-to-periapse continuity phi(X_i,tau_i)-X_{i+1}=0 -- position AND
+  velocity at every node, not just the 2 map coords `#683` read off; min-norm Levenberg-Marquardt
+  step with backtracking line search + `monodromy`/`floquet_multipliers` helpers). Multiple shooting
+  is REQUIRED, not a preference: per-segment STM 2-norms are ~4e4/3e4/9e4, so the single-arc
+  monodromy norm is ~1e18 and single shooting is numerically hopeless (justified in the module
+  docstring). **Positive control FIRST (mandatory before trusting a 0/N per standing discipline):**
+  `tests/search/test_cr3bp_multiple_shooting.py` (5 tests) -- the corrector converges on the sourced
+  Arenstorf orbit (the same golden `cr3bp_periodic`'s own tests use) to residual <1e-9, re-converges
+  after a node perturbation (independent Radau cross-check <1e-6), its monodromy carries the trivial
+  unit-eigenvalue pair, and a non-orbit patch set is NOT reported converged. **Result -- DECISIVE
+  NEGATIVE, two-sided:** (1) SINGLE shooting (`correct_periodic`, the existing convention) reported
+  "converged" (residual 2.4e-11) but to a SPURIOUS off-energy far-field orbit -- Jacobi wandered from
+  3.015 to -11.6, state ~32 length units out -- the classic "it matched!" trap, NOT seed #217's orbit
+  (Jacobi is unconstrained, so the ill-conditioned free-state/free-period Newton drifted off-energy).
+  (2) MULTIPLE shooting at three node densities (N=4/12/24) each STALLS: the full-6-state continuity
+  residual will not drop below the ~1e-2 floor (final 1.03e-2 / 8.54e-3 / 9.89e-3), the line search
+  forced to vanishing steps -- no descent path toward zero exists near the seed. That floor ~= the
+  map near-recurrence residual itself: demanding full 6-state continuity (not the 2 map coords)
+  cannot even match the geometric near-recurrence, let alone close it. Undamped exact Newton instead
+  DIVERGES (||F||->40+). Exact-Newton-diverges + damped-Newton-stalls-at-the-map-floor, from every
+  node density, with a working positive control, is the robust signature of NON-EXISTENCE.
+  **Conclusion:** the near-recurrence is a transient shadowing coincidence in a chaotic transit
+  region (consistent with the 2-cycle Titan impact), NOT an exact periodic or quasi-periodic
+  fixed-point orbit. **No literature-novelty check run** -- nothing converged, so there is no object
+  to clear (novelty gate is moot). **No `data/catalogue.yaml` write.** **No `empty_regions.jsonl`
+  stamp:** that registry is region-scoped (family + topology-sequence bucket + swept result counts);
+  this is a single-seed point-check negative, MORE targeted than `#683`'s own (non-empty) search, and
+  would be mis-recorded under the region schema -- deliberately omitted, matching `#683`'s own
+  judgment. Outputs `data/found/687_periapse_correction/result.json`; driver
+  `scripts/census_687_periapse_candidate_correction.py`. Verification: full `ruff check .` /
+  `ruff format --check .` / `mypy src tests` clean; `tests/data tests/search tests/scripts` green
+  except the two documented pre-existing baseline failures
+  (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
