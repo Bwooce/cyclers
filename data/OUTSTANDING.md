@@ -1026,7 +1026,17 @@ decided); full result + numbers in #682's own bullet; #683 -- #679
 shortlist item 4, periapse Poincare-map cartography at Saturn-Titan (the one classical
 seedless discovery map absent from the codebase); positive control = Davis & Howell 2012
 (JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
-dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684
+dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684 --
+#682's own schema-decision follow-on: implement whichever choice the user makes on new
+`quasi_cycler` rows per corridor vs. corridor-width fields on the parent cycler/golden rows
+(#682's own bullet has the full measured per-member data to inform this); registered, NOT
+dispatched -- blocked on the user's schema decision, not yet made; #685 -- the standing #664
+own-system follow-on `#679` explicitly declined to claim (it belongs to `#661` item 2's own
+lineage, not a new `#679` shortlist item): apply `#664`'s validated GAIO/set-oriented transfer-
+operator pipeline to one of this project's own systems at equal rigor (new section/energy/
+region-indicator glue + calibration against a real target, not just the Dellnitz reproduction
+control); registered, NOT dispatched -- competes with `#683` for the same transport-discovery
+niche per `#679`'s own note, do not dispatch both without a priority decision; #686
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -13067,6 +13077,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   remainder was completed via short synchronous chunks per this project's own standing lesson
   against backgrounding long computations ([[feedback_subagent_background_is_fatal]]); no
   checkpoint corruption occurred (verified directly against the state file after completion).
+- **#684 (registered 2026-07-22, NOT dispatched -- blocked on user schema decision)** --
+  `#682`'s own follow-on: implement the corridor-measurement schema once the user decides
+  between (a) new `quasi_cycler` rows, one per measured corridor, or (b) corridor-width
+  fields added directly to the parent cycler/golden rows in `data/catalogue.yaml`. `#682`'s
+  own bullet has the full per-member measured data (position/velocity corridor extent per
+  family, lower-bound vs genuinely-walled status) already in hand to inform this -- no new
+  measurement needed, just the schema choice + the actual catalogue write. Note per `#682`'s
+  own bullet: the corridor is FAMILY- and MEMBER-dependent, not a single per-family constant,
+  so a scalar field would lose real structure a per-corridor row would preserve -- factor this
+  into the decision.
+- **#685 (registered 2026-07-22, NOT dispatched -- competes with #683 for priority)** -- the
+  standing `#664` own-system application follow-on, explicitly named but deliberately NOT
+  claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on deliberately not
+  claimed" note, and `#683`'s own bullet's cross-reference) since it belongs to `#661` item
+  2's own lineage, not a new `#679` item. Scope: apply `#664`'s validated GAIO/set-oriented
+  transfer-operator pipeline (currently validated only against the Dellnitz 2005 reproduction
+  control) to one of this project's OWN systems at equal rigor -- new section/energy/region-
+  indicator glue for the target system plus a calibration pass, not just re-running the
+  positive control. Open schema question inherited from `#664`'s own bullet: how does a
+  metastable SET (not a periodic orbit or torus) get a catalogue row, if at all? Competes with
+  `#683` (periapse-map cartography) for the same transport-discovery niche -- do not dispatch
+  both without a priority decision between them.
 - **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
   item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
   Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical
