@@ -1028,12 +1028,14 @@ seedless discovery map absent from the codebase); positive control = Davis & How
 (JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
 dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684 ✓ DONE
 -- schema v5.2 epoch-free CR3BP quasi_cycler carve-out + 20 new #682 corridor rows written
-(commit 6e42304); #685 -- USER PICKED over #683: the standing #664
-own-system follow-on `#679` explicitly declined to claim (it belongs to `#661` item 2's own
-lineage, not a new `#679` shortlist item): apply `#664`'s validated GAIO/set-oriented transfer-
-operator pipeline to one of this project's own systems at equal rigor (new section/energy/
-region-indicator glue + calibration against a real target, not just the Dellnitz reproduction
-control); suggested target Sun-Earth-Mars (not mandated); registered+dispatched 2026-07-22;
+(commit 6e42304); #685 ✓ DONE (2026-07-22, Opus) --
+CLEAN NEGATIVE: applied `#664`'s GAIO set-oriented transfer-operator pipeline to its first
+OWN-system target (Sun-Earth PCR3BP Earth-Mars transport, energy = Earth-Mars Hohmann
+Tisserand); full 4-check calibration + two-seed robustness pass, but no novel sustained
+almost-invariant transport set -- R (Earth-neighbourhood) is almost-invariant only to the
+near-integrable degree expected at mu=3e-6, R->Q transport weak+transient (peak ~7% at n~10,
+decays <0.15% by n=200 in the leaky 0.50/iterate open-neck domain); no catalogue write,
+registry-stamped, schema question stays flagged+moot;
 #686 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -13143,28 +13145,76 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   ids + a stale pre-existing docstring count fixed in passing --, `test_catalog_v4_fields.py`,
   `test_catalogue_loader*.py`) all pass; jsonschema + the Python `validate_catalogue()`
   semantic gate both clean on the full 381-row file.
-- **#685 (registered 2026-07-22, registered+dispatched 2026-07-22)** -- **USER PICKED over
-  #683 2026-07-22** (offered a choice between the two competing tasks; #685 was selected as
-  the higher-expected-value dispatch per this project's own original `#661` ranking, which
-  rated the GAIO/set-oriented method's novelty ceiling highest of the five shortlist
-  candidates). The standing `#664` own-system application follow-on, explicitly named but
-  deliberately NOT claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on
-  deliberately not claimed" note, and `#683`'s own bullet's cross-reference) since it belongs
-  to `#661` item 2's own lineage, not a new `#679` item. Scope: apply `#664`'s validated
-  GAIO/set-oriented transfer-operator pipeline (currently validated only against the Dellnitz
-  2005 reproduction control) to one of this project's OWN systems at equal rigor -- new
-  section/energy/region-indicator glue for the target system plus a calibration pass, not
-  just re-running the positive control. Suggested target (not mandated, dispatched agent to
-  confirm or override with justification): Sun-Earth-Mars -- the flagship mission domain for
-  this catalogue, never before tried with ANY set-oriented method, and a natural, genuinely
-  DIFFERENT-strength continuation of `#681`'s very recent clean negative (strict repeating
-  ballistic capture failed; a GAIO almost-invariant TRANSPORT set is a fundamentally weaker,
-  probabilistic-transport claim, not a repeating-cycle claim, so this is not redundant with
-  that result). Open schema question inherited from `#664`'s own bullet: how does a metastable
-  SET (not a periodic orbit or torus) get a catalogue row, if at all -- flag, do not assume.
-  Competes with
-  `#683` (periapse-map cartography) for the same transport-discovery niche -- do not dispatch
-  both without a priority decision between them.
+- **#685 ✓ DONE (2026-07-22, Opus) -- CLEAN NEGATIVE for the discovery question:** the `#664`
+  GAIO set-oriented transfer-operator pipeline, applied for the FIRST time to one of this
+  project's OWN systems (Sun-Earth PCR3BP, Earth-Mars transport regime), finds the
+  near-integrable metastable structure one expects at Sun-Earth `mu` but NO novel, sustained
+  almost-invariant TRANSPORT set (no "chaotic quasi-cycler" Earth->Mars channel). Machinery
+  validated by a full 4-check calibration pass + two-seed robustness. No catalogue write; no
+  candidate for adjudication. **USER PICKED over `#683` 2026-07-22** per `#661`'s own ranking
+  (GAIO novelty ceiling rated highest of the five shortlist candidates); the standing `#664`
+  own-system follow-on `#679` deliberately did not claim (belongs to `#661` item 2's lineage).
+  **Target decision (dispatch left this to the agent):** kept the flagship Earth-Mars domain
+  but realized it as the **Sun-Earth PCR3BP** (mu=3.003e-6), NOT a literal 3-body
+  "Sun-Earth-Mars" (the CR3BP admits one secondary) -- mirroring the Dellnitz-2005 control's
+  own approach, where the third body (Mars) enters ONLY as an osculating-element reference
+  line, never a model body. Sun-Earth (over Sun-Mars) chosen because Earth is the dominant
+  perturber for Earth-Mars cyclers and its SMA is the length unit (so nondim x ~= heliocentric
+  AU, Mars at 1.5237). Genuinely DIFFERENT-strength from `#681`'s recent Sun-Mars WSB clean
+  negative (that searched a STRICT repeating ballistic-capture chain; this is the weaker
+  PROBABILISTIC transport-set question in a different model), so not redundant.
+  **Built** (all reusing `#664`'s generic primitives in
+  `search/set_oriented_transfer_operator.py` VERBATIM -- BoxGrid/build_transition_matrix/
+  almost_invariant_sets_spectral/almost_invariance_ratio/transport_probability -- and
+  `core.cr3bp`'s DOP853 propagator end to end):
+  `src/cyclerfinder/search/sun_earth_mars_transport.py` (Sun-Earth glue: exterior-branch
+  Poincare section y=0/ydot<0/**x>0** carrying the `#664` t=0 self-detection kick-off fix
+  verbatim; energy = the Earth-Mars Hohmann-transfer Tisserand Jacobi constant C=2.99022,
+  which sits just BELOW C_L2=3.00089 -- the OPEN-neck transport regime, deliberately the
+  opposite of Dellnitz's closed-neck isolation choice; region R = Earth-neighbourhood sub-Mars
+  transfer ellipses [r_p>=0.95, r_a<=1.45], region Q = Mars-reaching annulus
+  [a_Mars<=r_a<=1.70], banded away from the near-parabolic-escape tail and constructed
+  DISJOINT). Driver `scripts/run_685_sun_earth_mars_transport.py` (added to the `#521`
+  preflight-search AST-ratchet `_LEGACY_EXEMPT` with reason -- a fixed box-grid/energy
+  capability run, same category as `#664`/`#666`). Tests
+  `tests/search/test_sun_earth_mars_transport.py` (17 physics-correctness checks: energy
+  self-consistency vs `jacobi_constant`, exterior-map Jacobi conservation, osculating-apsis
+  hand-check, R/Q disjointness + Q-banding, and a t=0-self-detection regression).
+  **Calibration (all passed, run BEFORE trusting any spectral result):** C1 section-state
+  Jacobi self-consistency max err = 0.0; C2 exterior-map Jacobi conservation worst |dC| =
+  1.1e-10; C3 apsis hand-check correct (xdot=0 crossing at x=1.20 => osculating r_a=1.200);
+  C4 mean per-box escape fraction = 0.50 (SANE -- a genuinely leaky open-neck domain, neither
+  ~0 sealed nor ~1 emptying-in-one-step; the escape wrapper is escape-CORRECT: off-manifold
+  sample ICs are redrawn, genuine dynamical escapes counted as escape via a far-field
+  sentinel, biasing conservatively AGAINST finding structure). **Result (36x36 grid, 774
+  masked-in boxes on the energy manifold, 25 MC samples/box, ~19.4k propagations/seed, two
+  seeds 685/686, ~64s each):** leading eigenvalues 0.978/0.933/0.854 (seed1), 0.976/0.923/0.851
+  (seed2). R's own almost-invariance ratio = 0.866/0.860 -- R IS an almost-invariant set, and
+  the smallest, HIGHEST-ratio blind spectral clusters (ratio 0.77-0.82) sit ENTIRELY inside R
+  (0% in Q), so the seedless decomposition independently flags R-substructure as the most
+  coherent. BUT the R->Q (Earth->Mars) transport probability is weak and TRANSIENT: it peaks
+  at only ~6.6%/8.3% (two seeds) at n~10 iterates then DECAYS to 0.11%/0.10% by n=200, as the
+  mass that could transport instead bleeds out of the leaky (0.50/iterate) open-neck domain
+  rather than accumulating a sustained Mars-reaching population. **Skeptical read (per this
+  project's "`it matched!` is the danger signal" discipline):** R's 0.86 almost-invariance is
+  largely the GENERIC near-integrability of the weakly-perturbed (mu=3e-6) exterior region,
+  NOT a special resonance trap like Dellnitz's 3:2 Hilda island; the transport is diffusive
+  transient leakage, not a coherent metastable channel. No novel sustained almost-invariant
+  transport SET qualifying as a chaotic quasi-cycler exists at this energy shell. **Open
+  schema question (inherited from `#664`): still FLAGGED, MOOT this pass** -- no set worth a
+  catalogue row was found, so "how does a metastable SET earn a row" never became concrete;
+  unresolved user/Fable decision if a future positive ever lands. Registry-stamped
+  `sunearth-gaio-earthmars-transport-2026-07-22` in `data/empty_regions.jsonl`. Run log
+  `docs/notes/scratch/685_sun_earth_transport_run.log`. **Re-open keys** (energy-shell- and
+  region-conditional, per `[[project_negative_results_registry]]`): (1) a single energy shell
+  was probed (the Hohmann Tisserand); a resonance island lives at a specific energy, so an
+  energy sweep (C in a band around 2.99, or near a low-order exterior Earth resonance
+  2:3/3:5/1:2) could surface a stronger trap -- a larger campaign, not attempted here; (2) a
+  finer grid / more samples would sharpen the transport curve but cannot manufacture a
+  sustained channel the 0.50/iterate leakage forbids. Verification: full `ruff check .` /
+  `ruff format --check .` / `mypy src tests` (766 files) clean; `tests/data tests/search
+  tests/scripts` green except the two documented pre-existing baseline failures
+  (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
 - **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
   item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
   Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical

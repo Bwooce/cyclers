@@ -167,6 +167,15 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # sweep over catalogue regions, no catalogue writeback). Visible,
         # reviewed exemption per this file's own docstring.
         "run_664_dellnitz_positive_control.py",
+        # #685: the own-system application of #664's GAIO set-oriented
+        # transfer-operator pipeline to the Sun-Earth PCR3BP Earth-Mars
+        # transport domain -- a fixed box-grid/energy-level capability run
+        # (calibration + two-seed almost-invariant-set extraction + R->Q
+        # transport probability), structurally identical to #664 above: no
+        # region_id/n_points sweep-region concept to preflight, no discovery
+        # sweep over catalogue regions, no catalogue writeback. Visible,
+        # reviewed exemption per this file's own docstring.
+        "run_685_sun_earth_mars_transport.py",
     }
 )
 

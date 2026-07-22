@@ -1,0 +1,45 @@
+#685 Sun-Earth PCR3BP GAIO Earth-Mars transport search -- run log (2026-07-22)
+Command: uv run python scripts/run_685_sun_earth_mars_transport.py
+
+[21:27:47] #685 Sun-Earth GAIO Earth-Mars transport search starting
+  Sun-Earth mu = 3.0034805951e-06, C_target = 2.9902247681 (Earth-Mars Hohmann Tisserand)
+  a_Mars (nondim, Earth-SMA units) = 1.523706
+  Box grid: 36x36 = 1296 boxes, 774 masked-in
+  R (Earth-neighbourhood): 124 boxes; Q (Mars-reaching): 96 boxes; overlap: 0 (must be 0)
+[21:27:47] --- CALIBRATION ---
+  C1 section-state Jacobi self-consistency: max |C-C_target| = 0.00e+00
+  C2 exterior map Jacobi conservation: worst |dC| = 1.13e-10
+  C3 osculating hand-check @ (1.20, 0): a=1.0762 e=0.1151 r_p=0.9523 r_a=1.2000
+[21:27:47] seed 685: building transition matrix (774 boxes x 25 samples = 19350 evals)...
+[21:28:51] seed 685: built in 63.4s, nnz=5203, mean per-box escape fraction = 0.5032 (C4 sane)
+  seed 685: leading eigenvalues (real): 0.977920, 0.932835, 0.854245
+  seed 685: cluster sizes (largest 5 of 5):
+    cluster 0: 362 boxes, ratio=0.1482, overlap R=0 (0.0% of R), overlap Q=2 (2.1% of Q)
+    cluster 1: 279 boxes, ratio=0.6222, overlap R=28 (22.6% of R), overlap Q=94 (97.9% of Q)
+    cluster 2: 53 boxes,  ratio=0.8091, overlap R=17 (13.7% of R), overlap Q=0 (0.0% of Q)
+    cluster 3: 44 boxes,  ratio=0.7718, overlap R=44 (35.5% of R), overlap Q=0 (0.0% of Q)
+    cluster 4: 36 boxes,  ratio=0.6244, overlap R=35 (28.2% of R), overlap Q=0 (0.0% of Q)
+  seed 685: R self almost-invariance ratio = 0.8665; Q = 0.6908
+    p_R,Q(1)=0.9032%  (5)=4.5624%  (10)=6.6371%  (25)=5.8276%  (50)=3.3092%
+    p_R,Q(100)=1.0724%  (150)=0.3508%  (200)=0.1149%
+[21:28:51] seed 686: building transition matrix (774 boxes x 25 samples = 19350 evals)...
+[21:29:55] seed 686: built in 64.3s, nnz=5288, mean per-box escape fraction = 0.5012 (C4 sane)
+  seed 686: leading eigenvalues (real): 0.976080, 0.922986, 0.850512
+  seed 686: cluster sizes (largest 5 of 5):
+    cluster 0: 363 boxes, ratio=0.1466, overlap R=0 (0.0% of R), overlap Q=2 (2.1% of Q)
+    cluster 1: 275 boxes, ratio=0.6172, overlap R=26 (21.0% of R), overlap Q=94 (97.9% of Q)
+    cluster 2: 52 boxes,  ratio=0.7946, overlap R=16 (12.9% of R), overlap Q=0 (0.0% of Q)
+    cluster 3: 48 boxes,  ratio=0.8150, overlap R=48 (38.7% of R), overlap Q=0 (0.0% of Q)
+    cluster 4: 36 boxes,  ratio=0.6300, overlap R=34 (27.4% of R), overlap Q=0 (0.0% of Q)
+  seed 686: R self almost-invariance ratio = 0.8603; Q = 0.6879
+    p_R,Q(1)=1.0645%  (5)=5.8061%  (10)=8.3405%  (25)=7.0052%  (50)=3.7808%
+    p_R,Q(100)=1.1177%  (150)=0.3329%  (200)=0.0992%
+[21:29:56] total runtime: 128.5s
+
+VERDICT: clean negative for the discovery question. R (Earth-neighbourhood transfer
+region) is almost-invariant at ratio ~0.86 -- consistent with the generic near-
+integrability of the weakly-perturbed (mu=3e-6) exterior region, NOT a special
+resonance trap. R->Q (Earth->Mars) transport is weak and TRANSIENT: peaks 6-8% at
+~10 iterates then decays to <0.15% by 200 iterates as mass escapes the leaky
+(escape ~50%/iterate) open-neck domain. No sustained metastable transport SET
+qualifying as a novel chaotic quasi-cycler. No catalogue candidate.
