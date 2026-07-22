@@ -13092,6 +13092,34 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   novel-findings audits (`[[project_novel_findings_status]]`) are not misled. Flagged by the
   user as likely computationally expensive -- explicitly acceptable
   ([[feedback_long_runs_acceptable]]).
+  **SCHEMA CONFLICT found, verified, and RESOLVED (2026-07-22).** The dispatched agent
+  correctly halted before writing a single row: `quasi_cycler` carries a HARD, ratchet-
+  enforced invariant (`data/catalogue.schema.json` v4.7 + `tests/data/
+  test_schema_v47_orbit_class.py`) requiring `epoch_locked: true` and a FINITE `n_returns`
+  (3-15) -- designed for real-ephemeris "cyclers of opportunity" (the existing 6 `quasi_cycler`
+  rows are all Uranian moon-pair tours with genuine SPICE-validated calendar
+  `validity_window`s). `#682`'s census (`scripts/census_682_cycler_corridors.py`, confirmed
+  via direct grep: zero SPICE/ephemeris/epoch/kernel references) is pure, epoch-free CR3BP --
+  a KAM torus around a linearly-stable orbit winds quasi-periodically FOREVER, so the honest
+  values are `epoch_locked: false` / `n_returns: "infinite"`, exactly what `quasi_cycler`
+  FORBIDS. Writing these rows as-specified would have required fabricating a calendar
+  `validity_window` and a finite return count -- correctly refused per `data/README.md`'s
+  no-fabrication rule. Two options were presented: (1) reuse the existing `resonant_po` class
+  (zero schema change, but its "no demonstrated transport utility" semantics awkwardly
+  conflate with the fact that some measured members' PARENT orbits, e.g. the C21/C32 members
+  themselves, ARE published transport cyclers); (2) a small, additive amendment to
+  `quasi_cycler`'s own invariant permitting an epoch-free CR3BP KAM-corridor subclass
+  (`epoch_locked: false` / `n_returns: "infinite"` when `model_assumption: cr3bp` and no
+  real-ephemeris window) -- preserves the user's original intent without fabrication. **USER
+  DECIDED 2026-07-22: option 2** -- amend the schema. Scope for the next dispatch: bump
+  `data/catalogue.schema.json` (additive, backward-compatible, following this file's own
+  established version-bump convention), update `tests/data/test_schema_v47_orbit_class.py`'s
+  invariant to admit the new epoch-free `quasi_cycler` subclass without weakening the
+  existing epoch-locked requirement for every other `quasi_cycler` row, THEN write the 20
+  already-measured corridor rows, THEN consider bounded coverage expansion as originally
+  scoped. A separate, genuine schema gap (no existing field captures
+  `corridor_is_lower_bound` -- a genuine KAM wall vs. an amplitude-ladder ceiling) also needs
+  a small additive nested block; resolve together with the above.
 - **#685 (registered 2026-07-22, NOT dispatched -- competes with #683 for priority)** -- the
   standing `#664` own-system application follow-on, explicitly named but deliberately NOT
   claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on deliberately not
