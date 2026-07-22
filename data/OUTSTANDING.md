@@ -1027,10 +1027,10 @@ shortlist item 4, periapse Poincare-map cartography at Saturn-Titan (the one cla
 seedless discovery map absent from the codebase); positive control = Davis & Howell 2012
 (JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
 dispatched (queued, ranked last for #664-pipeline overlap; see #679's own bullet); #684 --
-#682's own schema-decision follow-on: implement whichever choice the user makes on new
-`quasi_cycler` rows per corridor vs. corridor-width fields on the parent cycler/golden rows
-(#682's own bullet has the full measured per-member data to inform this); registered, NOT
-dispatched -- blocked on the user's schema decision, not yet made; #685 -- the standing #664
+#682's own schema-decision follow-on: SCHEMA DECIDED by user 2026-07-22 -- new `quasi_cycler`
+rows per measured corridor, not fields on parent rows (catalogue's per-family-representative
+granularity would lose #682's own member-level variation); registered+dispatched 2026-07-22;
+#685 -- the standing #664
 own-system follow-on `#679` explicitly declined to claim (it belongs to `#661` item 2's own
 lineage, not a new `#679` shortlist item): apply `#664`'s validated GAIO/set-oriented transfer-
 operator pipeline to one of this project's own systems at equal rigor (new section/energy/
@@ -13077,16 +13077,21 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   remainder was completed via short synchronous chunks per this project's own standing lesson
   against backgrounding long computations ([[feedback_subagent_background_is_fatal]]); no
   checkpoint corruption occurred (verified directly against the state file after completion).
-- **#684 (registered 2026-07-22, NOT dispatched -- blocked on user schema decision)** --
-  `#682`'s own follow-on: implement the corridor-measurement schema once the user decides
-  between (a) new `quasi_cycler` rows, one per measured corridor, or (b) corridor-width
-  fields added directly to the parent cycler/golden rows in `data/catalogue.yaml`. `#682`'s
-  own bullet has the full per-member measured data (position/velocity corridor extent per
-  family, lower-bound vs genuinely-walled status) already in hand to inform this -- no new
-  measurement needed, just the schema choice + the actual catalogue write. Note per `#682`'s
-  own bullet: the corridor is FAMILY- and MEMBER-dependent, not a single per-family constant,
-  so a scalar field would lose real structure a per-corridor row would preserve -- factor this
-  into the decision.
+- **#684 (registered 2026-07-22, registered+dispatched 2026-07-22)** -- `#682`'s own
+  follow-on: implement the corridor-measurement schema. **SCHEMA DECIDED by the user
+  2026-07-22: new `quasi_cycler` rows, one per measured corridor** (not corridor-width
+  fields on the parent rows) -- the catalogue's existing per-family-representative
+  granularity (one row per named Braik-Ross branch, e.g. `braik-ross-c32-cycler-2026`, NOT
+  one row per individually-stability-classified member) would force a lossy single-number
+  collapse of `#682`'s own finding that corridor size varies 2-3 orders of magnitude within a
+  family; per-corridor rows match the data's actual per-member granularity with no
+  information loss. Explicitly NOT a discovery -- these rows characterize already-known,
+  already-cataloged orbits' surrounding KAM neighborhoods (per KAM theory, guaranteed to
+  exist for any linearly-stable orbit); they must be clearly annotated/tagged as
+  characterization, not conflated with a genuine novel find in the `#312` sense, so future
+  novel-findings audits (`[[project_novel_findings_status]]`) are not misled. Flagged by the
+  user as likely computationally expensive -- explicitly acceptable
+  ([[feedback_long_runs_acceptable]]).
 - **#685 (registered 2026-07-22, NOT dispatched -- competes with #683 for priority)** -- the
   standing `#664` own-system application follow-on, explicitly named but deliberately NOT
   claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on deliberately not
