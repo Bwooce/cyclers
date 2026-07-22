@@ -1083,8 +1083,14 @@ self-consistent-encounter fraction 0/1728 steps after a Europa patch), but POSIT
 the paper's own target pair Europa-3:4 <-> Ganymede-3:2 (and Europa-2:3 <-> Ganymede-4:3) have
 radially-overlapping orbits with ~30 m/s coplanar speed-match -> confirms Stage B needs the full
 CCR4BP+manifold build, cannot be shortcut. PC support acquired+digested: arXiv 2109.14815 (AAS
-21-651 CCR4BP model) + 2309.06073 (AAS 23-397 secondary resonances), both in CORPUS_INDEX. #689
-next-unused):**
+21-651 CCR4BP model) + 2309.06073 (AAS 23-397 secondary resonances), both in CORPUS_INDEX. #689 --
+Stage B sub-task 1 (planar CCR4BP EOM+STM module), per #688's own recommendation: the
+composed-Keplerian-map shortcut cannot represent the Europa-Ganymede link (interior
+resonances, manifold-heteroclinic object, not a periapsis-pinned kick), so the full CCR4BP
+build starts with the EOM+STM module itself, patterned on core/bcr4bp.py, with the mu->0
+structural reduction tests the model's own physics requires (reduces exactly to Jupiter-
+Europa PCRTBP at mu_Gan->0 and Jupiter-Ganymede PCRTBP at mu_Eur->0); registered+dispatched
+2026-07-23; #690 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13432,6 +13438,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   staged-arc discipline (see the W-Z `#668`-`#687` arc and the `#533`-`#620` arc for
   precedent) -- each Stage-B sub-step gets independently registered, dispatched, and verified,
   not bundled into one unsupervised multi-week task.
+- **#689 (registered+dispatched 2026-07-23)** -- Stage B sub-task 1 of `#686`'s CCR4BP plan:
+  the planar CCR4BP EOM+STM module. See `#688`'s own bullet for why the cheap Keplerian-map
+  shortcut cannot substitute for this build (the Europa-Ganymede link is a torus-manifold
+  heteroclinic object over INTERIOR resonances, not a periapsis-pinned kick) and `#686`'s own
+  bullet + `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md` section 3 for the full
+  staged plan this is step 1 of. Scope (per `#686`'s own Stage B item 1): build the planar
+  concentric circular restricted 4-body problem (CCR4BP) equations of motion + state-transition
+  matrix, patterned structurally on `core/bcr4bp.py` (the exact 2:1 Europa-Ganymede
+  commensurability makes the model TIME-PERIODIC, exactly as BCR4BP's own solar forcing does --
+  reuse that module's own architecture, not a new formulation). Mandatory structural tests
+  (the model's own physics, not an arbitrary check): the CCR4BP EOM must reduce EXACTLY to the
+  Jupiter-Europa PCRTBP as `mu_Ganymede -> 0`, and to the Jupiter-Ganymede PCRTBP as
+  `mu_Europa -> 0` -- mirroring `bcr4bp.py`'s own `mu_sun -> 0 -> CR3BP` structural test
+  exactly, the same discipline this project already trusts. This task builds ONLY the EOM+STM
+  module and its structural reduction tests -- explicitly NOT the pseudospectral torus
+  corrector, NOT the whisker/manifold machinery, NOT the mesh-intersection search (per `#686`'s
+  own Stage B item 2 onward, later sub-tasks once this module exists and is validated).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
