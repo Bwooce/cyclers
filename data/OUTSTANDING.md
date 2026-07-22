@@ -1051,7 +1051,14 @@ resonant tori (Ganymede 4:3 <-> Europa 3:4; secondary-resonance objects have NO 
 analog; published one-way transfers = named positive controls, closed cycle unclaimed);
 staged Stage-A cheap composed-Keplerian-map screen + Stage-B ~3-5wk build (USER GO required);
 11 alternatives explicitly rejected with reasons; 4 user decision points flagged; see
-docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md; #687 next-unused):**
+docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md; #687 -- #683's own follow-on:
+build a dedicated multiple-shooting corrector to confirm or refute whether seed #217's
+candidate ~2-cycle near-recurrent Saturn-Titan capture<->escape<->recapture transit
+(period ~68 nondim, per-cycle periapse-map return residual ~0.012 r_H / ~500 km, tolerance-
+robust rtol 1e-10..1e-13, but NOT an exact periodic orbit as found -- it impacts Titan after 2
+cycles) shadows a genuine exact periodic transit orbit; #683's own read-it-off-the-map method
+deliberately excluded correction, so this is real, un-done follow-on work, not a re-run
+(registered+dispatched 2026-07-22); #688 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13287,6 +13294,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff check .` / `ruff format --check .` / `mypy src tests` (768 files) clean; `tests/data tests/search
   tests/scripts` green except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
+- **#687 (registered+dispatched 2026-07-22)** -- `#683`'s own follow-on: build a dedicated
+  multiple-shooting corrector to confirm or refute whether seed #217's candidate Saturn-Titan
+  capture-escape-recapture transit shadows a genuine, exact periodic orbit. See `#683`'s own
+  bullet for the full candidate description: captured near Titan, a large Saturn-realm
+  excursion out to ~41 Hill radii, re-capture at `x_p~+0.152`, a nearly-identical second
+  excursion, re-capture at `x_p~+0.164`, then a Titan impact -- a ~2-cycle near-recurrent
+  transit shadowing a period-~68 (nondim) capture<->escape<->recapture cycle, with a per-cycle
+  periapse-map return residual of ~0.012 Hill radii (~500 km), robust across `rtol` 1e-10 to
+  1e-13. `#683`'s own read-it-off-the-map method deliberately excludes differential correction
+  by design (a periapse map finds candidates geometrically; confirming an exact periodic orbit
+  needs a shooting/collocation corrector, a genuinely separate step). Scope: build a
+  multiple-shooting corrector targeting the seed #217 itinerary as an initial guess, using this
+  project's own established shooting/correction conventions (check `search/cr3bp_periodic.py`
+  and similar existing correctors for the pattern to follow, rather than inventing a new one),
+  and determine whether a genuinely periodic (or quasi-periodic, if a torus rather than a
+  strict periodic orbit is what actually exists nearby) transit orbit exists near this
+  candidate, or whether the near-recurrence seen on the map is a transient coincidence that
+  does not converge to anything exact. Either outcome (confirmed periodic orbit found, or a
+  clean "does not converge / diverges away from the candidate" negative) is a fully legitimate
+  result -- report honestly. If a genuine periodic orbit IS found, do NOT write it to
+  `data/catalogue.yaml` -- report back for the standard novelty-check + adjudication process,
+  since `#683`'s own bullet already established the broader phenomenology (transit through
+  L1/L2 Lyapunov manifold tubes) is within Davis-Howell 2011's own described structure, so any
+  specific confirmed orbit still needs a literature-novelty check before any admission claim.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
