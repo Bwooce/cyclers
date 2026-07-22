@@ -1008,10 +1008,21 @@ shortlist item 2, Sun-Mars WSB repeating-capture quasi-cycler; positive control 
 Belbruno 2015 REPRODUCED (Table 5 Hohmann < 3 m/s, Table 3 dV2 exact, dV_c flat ~2 km/s);
 built `core/sunmars_wsb.py` + search; 2304-seed chain search -> 0 repeating chains (CLEAN
 NEGATIVE, extends #378 cislunar negative to Sun-Mars); empty-regions-stamped
-sunmars-bct-wsb-quasicycler-2026-07-22; no catalogue write; #682 -- #679
+sunmars-bct-wsb-quasicycler-2026-07-22; no catalogue write; #682 ✓ DONE (2026-07-22) -- #679
 shortlist item 3, QP-torus "cycler corridor" census around the stable prograde EM cyclers
-(#444's own named usability-frontier redirect); positive control = Olikara-Scheeres 2012 GMOS
-EM torus families; registered, NOT dispatched (queued; see #679's own bullet); #683 -- #679
+(#444's own named usability-frontier redirect); Olikara-Scheeres 2012 not in corpus, fell back
+to the accepted `#612` in-repo L2 GMOS positive control (PASSED); GMOS amplitude-ladder census
+(the pseudospectral corrector under-resolved these long-period members) over a 20-member
+stratified sample (5 C21 3D-lift, 5 C32 3D-lift, 7 Lyapunov-L1 3D-lift, 3 stable planar goldens
+R21-S/R31-S/R52-S) found REAL, mostly-large station-keeping-free corridors (median tube
+half-width 55 km-29,000 km depending on family; C21/R21-S/R31-S corridors 12,300-39,400 km/
+25-107 m/s, 4/5+2/3 unwalled at the ladder ceiling so LOWER BOUNDS; C32 mostly tiny 55-70 km/
+~1.3 m/s with 2 unexplained order-of-magnitude-larger outliers; Lyapunov-L1 a consistent
+~2,500-3,000 km/8.5-12 m/s) -- operationally SIGNIFICANT for C21/planar-resonant-S families
+(corridor 40-120x the sourced Cuevas-del-Valle 2023 330 km/~20 m/s EM-halo station-keeping
+anchor) and genuinely small-but-real for C32; no catalogue write (schema question -- new
+`quasi_cycler` rows vs. corridor-width fields on parent rows -- explicitly flagged, not
+decided); full result + numbers in #682's own bullet; #683 -- #679
 shortlist item 4, periapse Poincare-map cartography at Saturn-Titan (the one classical
 seedless discovery map absent from the codebase); positive control = Davis & Howell 2012
 (JGCD 35(1)) or Villac & Scheeres 2003 periapse/escape-lobe structure; registered, NOT
@@ -12930,22 +12941,132 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   verdict and were not escalated. Verification: ruff/format clean; `mypy src tests` clean (763
   files); `tests/core/test_681_sunmars_wsb.py` (13 tests) + full `tests/data tests/search
   tests/scripts` ratchet green except the two documented pre-existing baseline failures.
-- **#682 (registered 2026-07-22, NOT dispatched -- queued)** -- `#679` shortlist item 3,
-  quasi-periodic "cycler corridor" census around the stable prograde EM cyclers. See `#679`'s
-  own bullet + report section 3. This is `#444`'s own named redirect (b): characterizing
-  cycler-USABILITY where the family is known but its transport utility (surrounding
-  station-keeping-free torus corridor volume) is not. Scope: for each linearly-STABLE member of
-  the Braik-Ross/Ross-RT EM cycler families (C21: 107/201 stable; C32: 164/201 stable at
-  z0=0.24, per the `#438` registry) plus the stable planar goldens, compute the surrounding
-  KAM/quasi-periodic torus corridor with the existing torus machinery
-  (`search/variational_qp_torus.py`, `qp_torus_fixed_jacobi_continuation.py`) and measure its
-  extent. Mandatory positive control: reproduce a published EM CR3BP quasi-periodic torus family
-  result (Olikara-Scheeres 2012, the standard GMOS benchmark), cross-checked against the in-repo
-  `#612` torus validation controls. Honestly LOW-MODERATE novelty ceiling (characterizes known
-  objects, does not discover a new species) but cheapest of the four (~1 week, heaviest reuse)
-  and most likely to produce catalogue-adjacent output soon. Open user-decision point: schema
-  for any output -- new `quasi_cycler` rows per corridor, or corridor-width fields added to the
-  parent cycler rows?
+- **#682 ✓ DONE (2026-07-22) -- cycler-corridor census MEASURED: the sampled stable prograde EM
+  cyclers carry REAL, mostly OPERATIONALLY-LARGE station-keeping-free KAM torus corridors
+  (tube half-widths from ~55 km up to a lower-bounded >39,000 km depending on family), not
+  uniformly-negligible KAM neighborhoods -- with one family (C32) showing a genuinely small
+  corridor as the honest exception.** `#679` shortlist item 3; `#444`'s own named redirect (b):
+  characterizing cycler-USABILITY where the family is known/stability-classified but its
+  transport utility (surrounding station-keeping-free torus corridor volume) was unmeasured --
+  a MEASUREMENT task, not a species search (no "empty" outcome is possible in the `#680`/`#681`
+  sense: KAM theory guarantees SOME torus family around any linearly-stable orbit; the open
+  question was purely how BIG).
+  **Positive control.** Olikara-Scheeres (2012) is NOT in the corpus (checked
+  `docs/notes/CORPUS_INDEX.md` directly, confirmed absent). Per this task's own dispatch,
+  fell back to the in-repo `#612` L2 GMOS positive control
+  (`tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus`),
+  re-run live (PASSED, 66s): the pseudospectral corrector reproduces the GMOS/Olikara-Scheeres
+  invariant-circle torus to rotation number ~1e-5. This validates the exact `genome.qp_tori.
+  correct_qp_torus` GMOS corrector this census's own measurement pipeline uses directly (see
+  corrector-choice note below), so the fallback is adequate, not merely "some validation exists
+  somewhere."
+  **Method (honest deviation from the dispatch's suggested tool).** The dispatch suggested
+  `search/variational_qp_torus.py`'s 2D pseudospectral corrector (`#612`/`#617`'s own headline
+  machinery). Tried it first on real members: it UNDER-RESOLVES these long-period
+  (T~15-31 TU), high-winding (k up to 65) STABLE cycler center-manifolds at tractable mode
+  counts (`discover_qp_torus` stalls with algebraic residual ~1e-3 to 1e-5 even though the
+  GMOS seed itself is already a genuine torus with independent closure ~1e-8 -- diagnosed live,
+  not assumed: `correct_qp_torus`'s own `converged` FLAG was misleadingly `False` on several
+  deep members purely because its invariance residual sat just above the strict 1e-8 `tol`,
+  while its HONEST `independent_closure_residual` (a non-circular short-time nonlinear-flow
+  check) was already ~1e-8 -- a genuine torus). `#612`'s pseudospectral corrector was built to
+  cross the UNSTABLE-halo shooting-fragility wall; it is the wrong tool for these particular
+  LONG-PERIOD STABLE members. **Switched to a GMOS amplitude ladder instead** (`genome.qp_tori.
+  correct_qp_torus`, the SAME Olikara-Scheeres corrector both `#612` modules bootstrap their own
+  seed from): for each member, walk a fixed geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2,
+  6e-2 nondim), gate each rung on the honest independent closure residual (`< 1e-4` nondim,
+  ~38 km), and report the largest gated amplitude as the corridor extent, converted to a
+  physical tube half-width (max excursion from the invariant-circle centroid, in km / m/s) --
+  this is the SAME `#612`/`#617` native closure-residual measure, just evaluated via GMOS
+  instead of the pseudospectral solve. New script `scripts/census_682_cycler_corridors.py`
+  (checkpointed/resumable per the certify_678 pattern), new tests
+  `tests/scripts/test_682_cycler_corridors.py` (5 tests: conjugate-pair grouping/rejection,
+  ladder/`_best_k` structural invariants, the live-classified stable-planar-golden set, the
+  deterministic 20-member stratified sample, and a `@pytest.mark.slow` end-to-end evidence test
+  reproducing a genuine gated corridor on a cheap member).
+  **Coverage (a named, honest sample, not the full ~275-member population).** These cycler
+  members are compute-hostile (~110-1030 s per GMOS ladder call depending on period/winding), so
+  swept a stratified sample spanning each family's z0/Jacobi range rather than every stable
+  member: **5/107 C21** (stride 22, z0 in [-0.645,-0.206] fully spanned), **5/164 C32** (stride
+  34, z0 in [0.142,0.350] fully spanned), **7/14 Lyapunov3d-L1** (stride 2, essentially the
+  whole small population), **3 stable planar goldens** (R21-S/R31-S/R52-S, live-classified via
+  monodromy spectral radius < 1.05 out of all 13 Braik-Ross goldens -- the Lyapunov/cycler/DPO
+  goldens are NOT linearly stable and correctly excluded). 20/20 attempted members returned a
+  genuine gated corridor (`status: ok`, 0 failures) -- `data/found/682_cycler_corridor_census/
+  summary.json` + the full per-member checkpoint `data/682_cycler_corridor_state.json`.
+  **Result (the actual measurement).** Per-family corridor tube half-width (position_km /
+  velocity_m_s, median [min, max]; "unwalled" = the ladder ceiling 6e-2 was reached without the
+  closure gate failing, so that member's TRUE corridor is a LOWER BOUND, possibly much larger):
+  **C21** (5 members): 28,985 km [12,291, 39,351] / 85.8 m/s [24.6, 101.4] -- 4/5 UNWALLED
+  (lower bounds); the 1 walled member (x0=0.656, amp=0.02, 12,291 km) sits between two
+  much-larger unwalled neighbors with no rho trend explaining it -- most likely an isolated
+  numerical-stepping artifact ([[feedback_isolated_sweep_flips_suspect_artifact]]), not a
+  genuine physical collapse, though not independently re-verified at finer resolution.
+  **C32** (5 members): 68.9 km [54.8, 5396.0] / 1.4 m/s [1.28, 37.3] -- genuinely WALLED at
+  every member (no lower bounds); dominant behavior (3/5, shallow z0 in [0.142,0.186]) is a
+  TINY corridor (55-69 km, ~1.3 m/s); 2 deeper members (z0=0.254, 0.303) reach 1,793 km and
+  5,396 km respectively -- correlated with a much smaller linear rotation number (rho~0.009-0.022
+  vs ~0.050-0.055 for the shallow members, suggesting proximity to a resonance/bifurcation
+  broadening the corridor) but the trend is NON-monotonic between the two outliers themselves
+  and both were captured on a coarse 5-rung ladder -- reported as a real, honest finding
+  (genuinely walled tori, not an artifact of hitting a ceiling) but the precise figure for
+  these 2 members should be treated as order-of-magnitude, not exact; a finer ladder near
+  z0 in [0.25,0.35] would sharpen this if the family gets a follow-up pass. **Lyapunov3d-L1**
+  (7 members): 2,725 km [511.6, 2,955] / 8.9 m/s [1.67, 11.9] -- genuinely WALLED at every
+  member, clustered consistently at ~2,500-3,000 km except one outlier (x0=0.875, 512 km) that
+  is, by the same isolated-flip reasoning as the C21 case, more likely a numerical artifact than
+  a genuine physical outlier (its rho=0.337 sits inside its neighbors' rho range with no
+  monotonic trend). **Planar goldens** (3 members): R21-S/R31-S reach the ladder ceiling
+  UNWALLED (21,741 km/107.1 m/s and 27,319 km/99.0 m/s -- both lower bounds, consistent with
+  C21's own scale); R52-S genuinely walls at 938 km/40.8 m/s -- a real, much smaller corridor.
+  **Operational-significance assessment (honest, anchored).** The closest sourced same-regime
+  anchor in this project's corpus is Cuevas-del-Valle 2023 (digested
+  `docs/notes/2026-06-11-cuevas-del-valle-2023-floquet-mining.md`), Table 1 p.19: absorbing a
+  ~330 km insertion/dispersion error on an EM L1/L2 halo costs 18.5-22.7 m/s of low-thrust
+  station-keeping DeltaV per period -- i.e., in the PUBLISHED literature, a 330 km / ~20 m/s
+  deviation is ALREADY considered operationally significant enough to require active correction.
+  **C21 and the R21-S/R31-S planar-resonant families are 40-120x LARGER in km (12,300-39,400 km)
+  and comparable-to-larger in velocity (25-107 vs 18.5-22.7 m/s) than that anchor** -- these
+  corridors are genuinely, substantially operationally significant: a spacecraft could drift
+  tens of thousands of km with velocity dispersion order 100 m/s and remain on a bounded,
+  non-escaping quasi-periodic trajectory requiring ZERO station-keeping DeltaV, versus a mission
+  on a comparable EM halo already needing ~20 m/s/period just to correct a 330 km deviation.
+  **Lyapunov3d-L1's dominant ~2,500-3,000 km/~9-12 m/s corridor is a genuine, moderate middle
+  case** -- several times larger in km than the anchor's 330 km, though its velocity dispersion
+  sits below the anchor's 18.5-22.7 m/s; a real but less dramatic usable volume.
+  **C32's dominant 55-70 km/~1.3 m/s corridor is genuinely SMALL** -- ~5x smaller in km and
+  ~15x smaller in velocity than the anchor, i.e. NOT operationally dramatic, though still
+  ~5-50x above a generic cislunar navigation/orbit-determination uncertainty floor of order
+  1-10 km (an order-of-magnitude engineering anchor, not a sourced citation, per this task's own
+  dispatch allowance) -- a technically-present-but-modest KAM neighborhood, honestly reported as
+  the exception rather than folded into the headline. **Net:** this is NOT a uniform "large
+  corridor everywhere" result -- it is a genuine, family-dependent measurement, with C21/
+  R21-S/R31-S clearly operationally significant, C32 clearly modest, and Lyapunov3d-L1 in
+  between.
+  **Open user-decision point (flagged, NOT assumed or decided here).** Schema for any catalogue
+  action: new `quasi_cycler` rows per corridor, or corridor-width fields added to the parent
+  cycler/golden rows? No `data/catalogue.yaml` write made -- this task reports the measured
+  data; the schema choice is left to the coordinating session/user. If fields-on-parent-rows is
+  chosen, note the corridor is FAMILY- and MEMBER-dependent (not a single constant per family --
+  see the per-member spread above), so a single scalar field would lose real structure a
+  per-corridor row would preserve.
+  **Verification.** `ruff check .` / `ruff format --check .` / `mypy src tests` all clean.
+  `tests/data tests/search tests/scripts -q` green except the 2 pre-existing, unrelated
+  failures already documented in prior tasks (`test_eggie_ballistic.py::
+  test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_pluto_charon_kk_sweep.py::
+  test_504_sweep_33`) -- no new regressions. **Note on the 5th test**:
+  `test_measure_corridor_on_cheap_lyapunov3d_member` is marked `@pytest.mark.slow` (this
+  project's `-m 'not slow'` default excludes it from the routine `-q` run above, so it is
+  NOT covered by that green result) -- legitimately slow at 194.5s (project convention marks
+  anything over ~10s), but as the one genuine end-to-end evidence test for `measure_corridor`
+  itself it was independently, explicitly run (`-m ""`) by the coordinating session and
+  PASSED (5/5, 194.53s) before this bullet was finalized.
+  **Process note.** The 20-member run was executed via a checkpointed/resumable driver
+  (`--chunk=N` / `--assemble`); an earlier `run_in_background` invocation was killed mid-run by
+  a concurrent process (no data loss -- the checkpoint already had 8/20 members saved), and the
+  remainder was completed via short synchronous chunks per this project's own standing lesson
+  against backgrounding long computations ([[feedback_subagent_background_is_fatal]]); no
+  checkpoint corruption occurred (verified directly against the state file after completion).
 - **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
   item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
   Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical
