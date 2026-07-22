@@ -1089,8 +1089,11 @@ composed-Keplerian-map shortcut cannot represent the Europa-Ganymede link (inter
 resonances, manifold-heteroclinic object, not a periapsis-pinned kick), so the full CCR4BP
 build starts with the EOM+STM module itself, patterned on core/bcr4bp.py, with the mu->0
 structural reduction tests the model's own physics requires (reduces exactly to Jupiter-
-Europa PCRTBP at mu_Gan->0 and Jupiter-Ganymede PCRTBP at mu_Eur->0); registered+dispatched
-2026-07-23; #690 next-unused):**
+Europa PCRTBP at mu_Gan->0 and Jupiter-Ganymede PCRTBP at mu_Eur->0). DONE 2026-07-23:
+src/cyclerfinder/core/ccr4bp.py + tests/core/test_ccr4bp.py (11 tests), both reductions
+verified -- mu_Gan->0 exact pointwise to 1e-14, mu_Eur->0 exact to 1e-11 via the documented
+frame/units transform (rotate to Ganymede-fixed, shift to J-G barycentre, rescale length+time);
+STM validated by finite-difference. #690 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13438,8 +13441,51 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   staged-arc discipline (see the W-Z `#668`-`#687` arc and the `#533`-`#620` arc for
   precedent) -- each Stage-B sub-step gets independently registered, dispatched, and verified,
   not bundled into one unsupervised multi-week task.
-- **#689 (registered+dispatched 2026-07-23)** -- Stage B sub-task 1 of `#686`'s CCR4BP plan:
-  the planar CCR4BP EOM+STM module. See `#688`'s own bullet for why the cheap Keplerian-map
+- **#689 ✓ DONE (2026-07-23)** -- Stage B sub-task 1 of `#686`'s CCR4BP plan: the planar CCR4BP
+  EOM+STM module, BUILT and structurally validated. **Deliverables:**
+  `src/cyclerfinder/core/ccr4bp.py` (the Jupiter-Europa-Ganymede CCR4BP EOM + 6x6 variational
+  STM + DOP853 propagator, structured as the exact analogue of `core/bcr4bp.py`) and
+  `tests/core/test_ccr4bp.py` (11 tests, all green). **Structure:** Jupiter-Europa synodic
+  rotating frame as the base CR3BP (reuses `cr3bp.cr3bp_eom` at the Europa mass ratio); Ganymede
+  enters exactly as bcr4bp's Sun does -- a periodic perturber on a circle of radius
+  `a_gan = r13/r12 ~ 1.595`, synodic angle `theta_gan(t) = theta_gan0 + omega_gan*t` advancing
+  linearly at `omega_gan = sqrt((1-mu+mu_gan)/a_gan^3) - 1 ~ -0.5035` (two-body synodic rate;
+  time-periodic at Ganymede's synodic period ~12.5 Europa-TU regardless of exact commensurability),
+  contributing a direct + indirect gravitational acceleration (indirect term compensates the
+  J-E-barycentre origin's Ganymede-ward acceleration). The STM adds Ganymede's direct-term Hessian
+  (at Ganymede's time-varying position) to the CR3BP pseudo-potential block; indirect term is
+  state-independent so drops from the Jacobian. **RESULT (numerically specific):** BOTH mandatory
+  structural reductions verified. (1) `mu_Ganymede -> 0`: CCR4BP EOM / STM / propagator match the
+  Jupiter-Europa PCRTBP pointwise to 1e-14 (EOM), 1e-13 (STM), 1e-11 (finite-arc propagation) --
+  trivial, Ganymede's terms vanish, exactly like bcr4bp's `mu_S -> 0`. (2) `mu_Europa -> 0` (the
+  SUBTLE one): NOT a pointwise limit -- the base frame is Europa-synchronised, so the reduction to
+  the Jupiter-Ganymede PCRTBP requires a documented frame/units transform (rotate to the
+  Ganymede-fixed frame, shift origin to the J-G barycentre, rescale length by 1/a_gan, rescale time
+  by `k = 1+omega_gan` so the reduced frame rate is 1). With `omega_gan` set to the two-body rate
+  for the reduced pair, the transformed CCR4BP EOM matches `cr3bp_eom(mu3)` to 1e-11; the transform
+  is independently validated by two kinematic sub-checks (Jupiter and Ganymede map to the CR3BP
+  fixed points `(-mu3,0)`/`(1-mu3,0)` at rest), so the pass is not coincidental. The indirect term
+  is precisely what makes this reduction land on the *barycentric* J-G CR3BP (not a Jupiter-centred
+  variant). (3) STM validated independently by central finite-difference (rel < 1e-6 over t=0.3).
+  (4) Indirect-term cancellation at the J-E barycentre confirmed (<1e-12). (5) Constants cross-check
+  vs `#688`'s `composed_moon_map` (SAME JPL SSD registry): Europa `mu` and radius ratio `a_gan`
+  match EXACTLY; Ganymede mass ratio agrees to ~2.5e-5 (a documented mass-unit-denominator
+  convention difference, GM_Europa in the denominator); period ratio 2.014 reproduces the ~2:1
+  Laplace commensurability. **Design note (honest):** the model is time-periodic in the
+  Europa-synodic frame regardless of exact commensurability; the default uses the PHYSICAL
+  Europa:Ganymede ratio 2.014 from sourced constants (the exact-2:1 idealisation is a one-value
+  change of `omega_gan`, not imposed). CCR4BP uses the physically-correct two-body mean motion,
+  which differs from `#688`'s screen-grade geometric `sqrt(GM_J/r^3)` by ~1.3e-5 -- this is what
+  makes the `mu_Europa -> 0` reduction exact rather than leaving an O(m/M)~3e-5 residual. Verify:
+  full `ruff check .` / `ruff format --check .` / `mypy src tests` clean; new suite 11/11 green.
+  ONLY the EOM+STM module + structural tests (NOT the torus corrector / manifolds / mesh search --
+  later `#686` Stage-B sub-tasks). **Stage-B NEXT (recommendation):** sub-task 2 -- adapt `#617`'s
+  pseudospectral torus corrector to the CCR4BP (the "EOM swap" case `#686` section 3 item 2 flags
+  as legitimate; problem shape identical: non-autonomous, theta1 locked to Ganymede's synodic
+  clock, theta2 free, 4D planar state). Nothing learned here changes that ordering -- the EOM+STM
+  is the corrector's required substrate and it is now in place and trusted. Original dispatch scope
+  follows.
+  See `#688`'s own bullet for why the cheap Keplerian-map
   shortcut cannot substitute for this build (the Europa-Ganymede link is a torus-manifold
   heteroclinic object over INTERIOR resonances, not a periapsis-pinned kick) and `#686`'s own
   bullet + `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md` section 3 for the full
