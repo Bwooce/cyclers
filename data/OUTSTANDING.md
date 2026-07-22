@@ -1035,8 +1035,20 @@ Tisserand); full 4-check calibration + two-seed robustness pass, but no novel su
 almost-invariant transport set -- R (Earth-neighbourhood) is almost-invariant only to the
 near-integrable degree expected at mu=3e-6, R->Q transport weak+transient (peak ~7% at n~10,
 decays <0.15% by n=200 in the leaky 0.50/iterate open-neck domain); no catalogue write,
-registry-stamped, schema question stays flagged+moot;
-#686 next-unused):**
+registry-stamped, schema question stays flagged+moot; #683 -- registered+dispatched
+2026-07-22 (Saturn-Titan periapse Poincare-map cartography, see own bullet); #686 -- third
+fresh discovery-strategy pass (user-directed, 2026-07-22), explicitly scoped to N>=4-body
+(4+ body / restricted-N-body) discovery methods -- explicitly SEPARATE from #679's own
+"considered and rejected" BCR4BP/HR4BP item (that was a robustness/perturbation-continuation
+idea on EXISTING 3-body cyclers, already superseded by the V4 DE440 gauntlet; this pass must
+find something that is genuinely 4-body-NATIVE, not another 3-body-cycler perturbation check);
+grounded against the substantial existing BCR4BP/QBCP infrastructure (core/bcr4bp.py,
+core/qbcp.py, the #533-#620 SE-L2<->EM-L2 torus-connection arc, all ending in manifold-
+conditioning-wall clean negatives) so the new pass doesn't re-propose already-exhausted
+ground; explicitly asked to assess TRACTABILITY honestly (the user's own framing: is a
+genuine N>=4-body discovery search an "impossible problem," and if so why, and what would
+make a bounded piece of it tractable) rather than assuming a search is straightforwardly
+possible (registered+dispatched 2026-07-22, Fable); #687 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13215,7 +13227,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff format --check .` / `mypy src tests` (766 files) clean; `tests/data tests/search
   tests/scripts` green except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
-- **#683 (registered 2026-07-22, NOT dispatched -- queued, ranked last)** -- `#679` shortlist
+- **#683 (registered+dispatched 2026-07-22)** -- `#679` shortlist
   item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
   Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical
   seedless discovery map this codebase genuinely lacks (survey-verified: no periapsis/apsis
@@ -13230,7 +13242,33 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   transport question) -- ranked last for exactly that overlap, and competes with the un-claimed
   `#664` own-system follow-on (see `#679`'s "standing follow-on deliberately not claimed" note)
   for the same transport-discovery niche; do not dispatch both without an explicit decision on
-  which is preferred.
+  which is preferred. **UPDATE 2026-07-22: dispatched anyway alongside `#686`** -- `#685` (the
+  competing `#664` own-system application) already closed as a clean negative, so there is no
+  remaining exclusivity concern; both methods are complementary lenses on the same transport
+  question and a second data point at Saturn-Titan is worth having regardless of `#685`'s
+  own-system result at Sun-Earth.
+- **#686 (registered+dispatched 2026-07-22, Fable)** -- third fresh discovery-strategy pass,
+  explicitly scoped to N>=4-body (four-or-more-body / restricted-N-body) discovery methods.
+  Explicitly SEPARATE from and NOT a re-proposal of `#679`'s own "considered and rejected"
+  BCR4BP/HR4BP item (that was a robustness/perturbation-continuation check applied to
+  ALREADY-EXISTING 3-body cyclers, already superseded per `#679`'s own reasoning by the V4
+  DE440 real-ephemeris gauntlet answering solar-perturbation survivability more strongly
+  per-row) -- this pass must find something GENUINELY 4-body-NATIVE: an object class or
+  resonance structure that has no 3-body analog and could not be found by perturbing an
+  existing 3-body cycler. Ground first against the substantial existing BCR4BP/QBCP
+  infrastructure this project already has (`core/bcr4bp.py`, `core/qbcp.py`, and the full
+  `#533`-`#620` SE-L2<->EM-L2 torus-connection arc -- read the history: every attempt in that
+  arc ended in a manifold-conditioning-wall clean negative, a real, hard-won capability
+  ceiling, not an unexplored gap) so this pass doesn't re-propose already-exhausted ground.
+  **Explicit mandate from the user's own framing**: honestly assess TRACTABILITY before
+  proposing a build -- is a genuine N>=4-body discovery search actually an "impossible
+  problem" in this project's available time/compute budget, and if so, why (dimensionality,
+  chaos, lack of a validated positive-control target, or something else); if there IS a
+  tractable bounded piece of it, name exactly what makes that piece different from the
+  already-exhausted `#533`-`#620` ground. Analysis-only: no code, no catalogue writes, no
+  dispatches -- matching `#661`/`#679`'s own format (live web survey + direct codebase grep +
+  a ranked shortlist with named positive controls, or an honest "not currently tractable"
+  verdict if that is the genuine finding).
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
