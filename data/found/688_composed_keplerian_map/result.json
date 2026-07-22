@@ -1,0 +1,378 @@
+{
+  "task": "#688 composed two-map Keplerian screen (Stage A of #686 CCR4BP)",
+  "screen_grade_only": true,
+  "c_j_ref": 3.0,
+  "single_moon_sanity": {
+    "Europa": {
+      "mu": 2.528017724591319e-05,
+      "sma_km": 671100.0,
+      "period_days": 3.552071971935301,
+      "f_at_0": 0.0,
+      "odd_residual": 0.0,
+      "fixed_point_dK": 0.0,
+      "fixed_point_omega": 0.0,
+      "sign_ok": true
+    },
+    "Ganymede": {
+      "mu": 7.804351422769637e-05,
+      "sma_km": 1070400.0,
+      "period_days": 7.155171526009373,
+      "f_at_0": 0.0,
+      "odd_residual": 0.0,
+      "fixed_point_dK": 0.0,
+      "fixed_point_omega": 0.0,
+      "sign_ok": true
+    }
+  },
+  "regime_analysis": {
+    "europa_encounter_shell_km": [
+      671100.0,
+      872430.0
+    ],
+    "ganymede_encounter_shell_km": [
+      1070400.0,
+      1391520.0
+    ],
+    "shells_overlap": false,
+    "europa_peri_in_ganymede_units": 0.6269618834080718,
+    "sma_ratio_gan_over_eur": 1.59499329459097,
+    "period_ratio_gan_over_eur": 2.014365582269148,
+    "paper_resonance_regime": {
+      "Europa_3:4": {
+        "a_norm": 1.2114137285547597,
+        "regime": "exterior"
+      },
+      "Europa_5:4": {
+        "a_norm": 0.8617738760127536,
+        "regime": "interior"
+      },
+      "Ganymede_3:2": {
+        "a_norm": 0.7631428283688879,
+        "regime": "interior"
+      },
+      "Ganymede_4:3": {
+        "a_norm": 0.8254818122236567,
+        "regime": "interior"
+      }
+    }
+  },
+  "itinerary_search": {
+    "n_itineraries_tried": 576,
+    "ganymede_selfconsistent_fraction": 0.0,
+    "europa_selfconsistent_fraction": 1.0,
+    "ganymede_steps_total": 2304,
+    "europa_steps_total": 4320,
+    "best_closure": {
+      "score": 0.0,
+      "europa_resonance": "1:2",
+      "varpi_rad": 3.141592653589793,
+      "n_e": 2,
+      "n_g": 1,
+      "residual": {
+        "da_rel": 0.0,
+        "de": 0.0,
+        "dvarpi_rad": 0.0
+      },
+      "gan_encounters_valid_in_itin": 0,
+      "gan_steps_in_itin": 2
+    }
+  },
+  "seed_geometry": {
+    "n_pairs": 12,
+    "n_overlapping": 12,
+    "pairs": [
+      {
+        "europa_res": "3:4",
+        "ganymede_res": "3:2",
+        "europa_a_km": 812979.7532330992,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          686584.9149447047,
+          939374.5915214937
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.029674997283176907,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:4",
+        "ganymede_res": "4:3",
+        "europa_a_km": 812979.7532330992,
+        "ganymede_a_km": 883595.7318042021,
+        "europa_apsides_km": [
+          686584.9149447047,
+          939374.5915214937
+        ],
+        "ganymede_apsides_km": [
+          727622.9414357629,
+          1039568.5221726414
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.5012528519973785,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:4",
+        "ganymede_res": "5:4",
+        "europa_a_km": 812979.7532330992,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          686584.9149447047,
+          939374.5915214937
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.76788497635415,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "2:3",
+        "ganymede_res": "3:2",
+        "europa_a_km": 879389.7748267952,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          692019.9188489098,
+          1066759.6308046805
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.45698316690180363,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "2:3",
+        "ganymede_res": "4:3",
+        "europa_a_km": 879389.7748267952,
+        "ganymede_a_km": 883595.7318042021,
+        "europa_apsides_km": [
+          692019.9188489098,
+          1066759.6308046805
+        ],
+        "ganymede_apsides_km": [
+          727622.9414357629,
+          1039568.5221726414
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.02866896817767639,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "2:3",
+        "ganymede_res": "5:4",
+        "europa_a_km": 879389.7748267952,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          692019.9188489098,
+          1066759.6308046805
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.2904712821980464,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:5",
+        "ganymede_res": "3:2",
+        "europa_a_km": 943379.4361400065,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          696496.0972966065,
+          1190262.7749834063
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.8503968252500389,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:5",
+        "ganymede_res": "4:3",
+        "europa_a_km": 943379.4361400065,
+        "ganymede_a_km": 883595.7318042021,
+        "europa_apsides_km": [
+          696496.0972966065,
+          1190262.7749834063
+        ],
+        "ganymede_apsides_km": [
+          727622.9414357629,
+          1039568.5221726414
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.37357887960193814,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:5",
+        "ganymede_res": "5:4",
+        "europa_a_km": 943379.4361400065,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          696496.0972966065,
+          1190262.7749834063
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.12932935736973228,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "5:7",
+        "ganymede_res": "3:2",
+        "europa_a_km": 839858.1273646291,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          688894.1848329878,
+          990822.0698962703
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.1740638614282819,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "5:7",
+        "ganymede_res": "4:3",
+        "europa_a_km": 839858.1273646291,
+        "ganymede_a_km": 883595.7318042021,
+        "europa_apsides_km": [
+          688894.1848329878,
+          990822.0698962703
+        ],
+        "ganymede_apsides_km": [
+          727622.9414357629,
+          1039568.5221726414
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.30713348055150114,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "5:7",
+        "ganymede_res": "5:4",
+        "europa_a_km": 839858.1273646291,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          688894.1848329878,
+          990822.0698962703
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.5724229613172973,
+        "ganymede_regime": "interior"
+      }
+    ],
+    "best_overlapping_by_dv": [
+      {
+        "europa_res": "2:3",
+        "ganymede_res": "4:3",
+        "europa_a_km": 879389.7748267952,
+        "ganymede_a_km": 883595.7318042021,
+        "europa_apsides_km": [
+          692019.9188489098,
+          1066759.6308046805
+        ],
+        "ganymede_apsides_km": [
+          727622.9414357629,
+          1039568.5221726414
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.02866896817767639,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:4",
+        "ganymede_res": "3:2",
+        "europa_a_km": 812979.7532330992,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          686584.9149447047,
+          939374.5915214937
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.029674997283176907,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "3:5",
+        "ganymede_res": "5:4",
+        "europa_a_km": 943379.4361400065,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          696496.0972966065,
+          1190262.7749834063
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.12932935736973228,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "5:7",
+        "ganymede_res": "3:2",
+        "europa_a_km": 839858.1273646291,
+        "ganymede_a_km": 816868.0834860576,
+        "europa_apsides_km": [
+          688894.1848329878,
+          990822.0698962703
+        ],
+        "ganymede_apsides_km": [
+          608970.7794447722,
+          1024765.3875273431
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.1740638614282819,
+        "ganymede_regime": "interior"
+      },
+      {
+        "europa_res": "2:3",
+        "ganymede_res": "5:4",
+        "europa_a_km": 879389.7748267952,
+        "ganymede_a_km": 922442.7568840514,
+        "europa_apsides_km": [
+          692019.9188489098,
+          1066759.6308046805
+        ],
+        "ganymede_apsides_km": [
+          797780.4865108198,
+          1047105.0272572831
+        ],
+        "radial_overlap": true,
+        "patch_dv_km_s": 0.2904712821980464,
+        "ganymede_regime": "interior"
+      }
+    ]
+  },
+  "elapsed_s": 0.03747987747192383
+}

@@ -1075,7 +1075,16 @@ build (registered as follow-on task numbers once Stage A's result is in, per thi
 own established staged-arc discipline -- see the W-Z #668-#687 arc and the #533-#620 arc for
 precedent) requires no further user decision beyond today's GO, but each Stage-B sub-step will
 still be registered and independently verified before proceeding, exactly like every other
-multi-week arc this project has run (registered+dispatched 2026-07-23); #689 next-unused):**
+multi-week arc this project has run. DONE 2026-07-23: built `genome/composed_moon_map.py` +
+`scripts/screen_688_composed_keplerian_map.py`; screen-grade NEGATIVE (composed exterior-map
+cannot represent the tour: Europa/Ganymede encounter shells are km-disjoint [671k-872k vs
+1070k-1392k], the paper's Ganymede 3:2/4:3 resonances are INTERIOR/out-of-map-validity, Ganymede
+self-consistent-encounter fraction 0/1728 steps after a Europa patch), but POSITIVE seed geometry:
+the paper's own target pair Europa-3:4 <-> Ganymede-3:2 (and Europa-2:3 <-> Ganymede-4:3) have
+radially-overlapping orbits with ~30 m/s coplanar speed-match -> confirms Stage B needs the full
+CCR4BP+manifold build, cannot be shortcut. PC support acquired+digested: arXiv 2109.14815 (AAS
+21-651 CCR4BP model) + 2309.06073 (AAS 23-397 secondary resonances), both in CORPUS_INDEX. #689
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13362,8 +13371,45 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff format --check .` / `mypy src tests` clean; `tests/data tests/search tests/scripts` green
   except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
-- **#688 (registered+dispatched 2026-07-23)** -- `#686`'s Stage A, composed Keplerian-map
-  screen. See `#686`'s own bullet + `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md`
+- **#688 ✓ DONE (2026-07-23)** -- `#686`'s Stage A, composed Keplerian-map screen: SCREEN-GRADE
+  NEGATIVE on the tour, POSITIVE seed geometry corroborating the literature's target pair; PC
+  support acquired. Deliverables: `src/cyclerfinder/genome/composed_moon_map.py` (the alternating
+  Europa/Ganymede exterior-map composer, physical-orbit-preserving patch + per-encounter
+  self-consistency gate), `scripts/screen_688_composed_keplerian_map.py` (driver ->
+  `data/found/688_composed_keplerian_map/result.json`), `tests/genome/test_composed_moon_map.py`
+  (7 structural tests). **RESULT (numerically specific):** (1) PC0 re-confirmed -- both the Europa
+  and Ganymede single-moon maps reproduce RS07 structure (f(0)=0, kick odd to <1e-12, 1:2 fixed
+  point exact, sign convention correct); measured physical Ganymede:Europa period ratio 2.0144
+  (the real ~2:1 Laplace commensurability). (2) The composed exterior-map screen CANNOT represent
+  the Europa-Ganymede tour, for three independently-quantified structural reasons: (a) the two
+  maps' exterior-encounter periapsis shells are km-DISJOINT -- Europa [671100, 872430] km vs
+  Ganymede [1070400, 1391520] km -- and the RS07 exterior map conserves periapsis, so no single
+  orbit alternates as a self-consistent encounter of both; (b) the CCR4BP literature's transport-
+  relevant Jupiter-Ganymede resonances are INTERIOR (3:2 -> a=0.763, 4:3 -> a=0.825 in Ganymede
+  units), entirely outside the exterior-periapsis map's validity domain; (c) over 576 alternating
+  itineraries (1728 Ganymede passages) the Ganymede self-consistent-encounter fraction was
+  0.0000 (Europa: 1.0000) -- after a Europa patch the Ganymede map is dynamically inert; the only
+  "closures" found are degenerate (Europa at a fixed point + inert Ganymede, 0 valid Ganymede
+  encounters). (3) POSITIVE seed geometry for Stage B: all 12 enumerated Europa/Ganymede
+  resonance pairs have radially-OVERLAPPING orbits, and the two cheapest by coplanar speed-match
+  are Europa-2:3 <-> Ganymede-4:3 (~29 m/s) and Europa-3:4 <-> Ganymede-3:2 (~30 m/s) -- the
+  LATTER is exactly arXiv 2109.14815's own continuation target, independently corroborated at
+  screen resolution as energetically compatible. **Honest read (informs Stage-B scoping):** this
+  screen INCREASES confidence in Stage B's premise modestly (the literature's target resonance
+  pairs are energetically compatible at the pairs named) while confirming NO cheap screen can
+  substitute for the full CCR4BP build (the Europa<->Ganymede link is a torus-manifold heteroclinic
+  object over interior resonances, not a periapsis-pinned kick). Stage B's first sub-task should
+  be the planar CCR4BP EOM+STM module (capable of interior resonances + manifolds), not any further
+  extension of the Keplerian map. NOT registry-grade (no `empty_regions.jsonl` stamp), no catalogue
+  write -- per the task's own screen-grade scoping. **PC support acquired + digested + registered**
+  (`CORPUS_INDEX.md`): arXiv 2109.14815 (Kumar-Anderson-de la Llave-Gunter, AAS 21-651, the CCR4BP
+  model definition + Europa 3:4/Ganymede 3:2 tori) and arXiv 2309.06073 (AAS 23-397, Europa-induced
+  secondary resonances 11/34,12/37,23/71,25/77 inside the Ganymede 4:3 family -- the 4-body-native
+  evidence); PC1 proper (SIADS arXiv 2109.14814) was already in corpus. Verification: full
+  `ruff check .` / `ruff format --check .` / `mypy src tests` clean; `tests/data tests/search
+  tests/scripts` green modulo the two documented pre-existing baseline failures. Original dispatch
+  scope follows.
+  See `#686`'s own bullet + `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md`
   section 3 for the full staged plan. **USER GAVE STAGE-B GO 2026-07-23**, authorizing the
   full CCR4BP plan (Laplace-locked repeating resonant tour, Jupiter-Europa-Ganymede); this
   task is Stage A, the cheap first step the plan's own note explicitly recommends running
