@@ -53630,3 +53630,2238 @@
   source_quotes:
     "orbit_elements.cr3bp.mass_ratio": "satellites.py (repo): Charon GM=106.1 km^3/s^2 / Pluto-system GM=975.5 km^3/s^2 = 0.10876473603280369."
     "orbit_elements.cr3bp.lunit_km": "satellites.py (repo): Charon a=19600.0 km (semi-major axis, CR3BP unit length = P1-P2 distance)."
+
+- id: braik-ross-c21-3d-corridor-01-2026
+  name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 1/5 (x0=0.307513, z0=-0.644916)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C21 family, per #438's broken-plane continuation of ross-rt-em-cycler-21-2025) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c21-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C21 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.6449163295108228}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 18.821996614085197 TU = 81.84514473026434 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar ross-rt-em-cycler-21-2025 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler
+      at winding (k1=2, k2=0, k_z=10); z0=-0.644916 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.644916); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.146605137800207   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 18.821996614085197   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [0.3075128554582373, 0.0, -0.6449163295108228, 0.0, 0.8477605543863065, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [81.84514473026434, 81.84514473026434]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 25896.170394861387
+    vel_ms: 101.39502876525594
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 1.017263502331965e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=5.233980626243559e-14, independent_closure_residual=4.4010794339135895e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (ross-rt-em-cycler-21-2025, C21-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 1 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C21 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar ross-rt-em-cycler-21-2025 (Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 25896.2 km /
+    101.40 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 1.017e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c21-3d-corridor-02-2026
+  name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 2/5 (x0=0.447516, z0=-0.557059)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C21 family, per #438's broken-plane continuation of ross-rt-em-cycler-21-2025) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c21-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C21 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.5570592403116884}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 18.794003681913004 TU = 81.72342089660138 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar ross-rt-em-cycler-21-2025 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler
+      at winding (k1=2, k2=0, k_z=10); z0=-0.557059 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.557059); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.4689950182924507   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 18.794003681913004   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [0.4475158628611522, 0.0, -0.5570592403116884, 0.0, 0.7058067192968843, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [81.72342089660138, 81.72342089660138]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 28984.703614709873
+    vel_ms: 95.20406599093387
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 3.7064994124354207e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=8.632619729018344e-12, independent_closure_residual=8.171253844565691e-12). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (ross-rt-em-cycler-21-2025, C21-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 2 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C21 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar ross-rt-em-cycler-21-2025 (Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 28984.7 km /
+    95.20 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 3.706e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c21-3d-corridor-03-2026
+  name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 3/5 (x0=0.569053, z0=-0.438078)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C21 family, per #438's broken-plane continuation of ross-rt-em-cycler-21-2025) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c21-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C21 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.4380780046554032}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 18.736191704721254 TU = 81.47203260143716 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar ross-rt-em-cycler-21-2025 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler
+      at winding (k1=2, k2=0, k_z=10); z0=-0.438078 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.438078); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.7419806649535277   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 18.736191704721254   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [0.5690531219955208, 0.0, -0.4380780046554032, 0.0, 0.5800962788489663, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [81.47203260143716, 81.47203260143716]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 32780.67165728739
+    vel_ms: 85.81932265054685
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 4.6279642014269805e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.407362444275163e-14, independent_closure_residual=4.396548518123386e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (ross-rt-em-cycler-21-2025, C21-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 3 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C21 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar ross-rt-em-cycler-21-2025 (Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 32780.7 km /
+    85.82 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 4.628e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c21-3d-corridor-04-2026
+  name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 4/5 (x0=0.656263, z0=-0.314901)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C21 family, per #438's broken-plane continuation of ross-rt-em-cycler-21-2025) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c21-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C21 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.31490065180211235}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 18.611268269228876 TU = 80.928818357608 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar ross-rt-em-cycler-21-2025 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler
+      at winding (k1=2, k2=0, k_z=10); z0=-0.314901 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.314901); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.923022213334797   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 18.611268269228876   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [0.6562628932221191, 0.0, -0.31490065180211235, 0.0, 0.48448160913362276, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [80.928818357608, 80.928818357608]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 12291.270877148112
+    vel_ms: 24.5805985058153
+    amp_nondim: 0.02
+    is_lower_bound: false
+    closure_residual: 8.00297654424663e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.516539934777615e-14, independent_closure_residual=2.9005695852338504e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (ross-rt-em-cycler-21-2025, C21-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 4 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C21 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar ross-rt-em-cycler-21-2025 (Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 12291.3 km /
+    24.58 m/s at amplitude rung 0.02 (nondim),
+    independent closure residual 8.003e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c21-3d-corridor-05-2026
+  name: "KAM torus corridor around Braik-Ross C21 (2,1)-family 3D-lifted Earth-Moon cycler member 5/5 (x0=0.705318, z0=-0.236560)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C21 family, per #438's broken-plane continuation of ross-rt-em-cycler-21-2025) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c21-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C21 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.2365597944865001}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 18.423252140352428 TU = 80.11125327165949 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar ross-rt-em-cycler-21-2025 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler
+      at winding (k1=2, k2=0, k_z=10); z0=-0.236560 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.236560); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 3.001381314571766   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 18.423252140352428   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [0.7053179623948165, 0.0, -0.2365597944865001, 0.0, 0.42102518892826085, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [80.11125327165949, 80.11125327165949]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 39350.887008277175
+    vel_ms: 64.42900380420268
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 9.69294483394471e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=4.41614684815405e-14, independent_closure_residual=8.558275024554725e-13). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (ross-rt-em-cycler-21-2025, C21-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 5 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C21 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar ross-rt-em-cycler-21-2025 (Ross-Roberts-Tsoukkas 2025 stable (2,1) prograde Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 39350.9 km /
+    64.43 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 9.693e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c32-3d-corridor-01-2026
+  name: "KAM torus corridor around Braik-Ross C32 (2,1)-family 3D-lifted Earth-Moon cycler member 1/5 (x0=-0.149150, z0=0.141999)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C32 family, per #438's broken-plane continuation of braik-ross-c32-cycler-2026) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c32-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C32 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.14199914046059706}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 31.23721595063116 TU = 135.83120392959373 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar braik-ross-c32-cycler-2026 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler
+      at winding (k1=8, k2=0, k_z=26); z0=0.141999 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.141999); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.6804734895124325   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 31.23721595063116   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [-0.14915036618878655, 0.0, 0.14199914046059706, 0.0, -2.7158726413255523, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [135.83120392959373, 135.83120392959373]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 54.754113158582356
+    vel_ms: 1.4457402622723277
+    amp_nondim: 0.001
+    is_lower_bound: false
+    closure_residual: 1.744965999888115e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.404070414719334e-11, independent_closure_residual=5.319467664705131e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (braik-ross-c32-cycler-2026, C32-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 1 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C32 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar braik-ross-c32-cycler-2026 (Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 54.8 km /
+    1.45 m/s at amplitude rung 0.001 (nondim),
+    independent closure residual 1.745e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c32-3d-corridor-02-2026
+  name: "KAM torus corridor around Braik-Ross C32 (2,1)-family 3D-lifted Earth-Moon cycler member 2/5 (x0=-0.183246, z0=0.162404)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C32 family, per #438's broken-plane continuation of braik-ross-c32-cycler-2026) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c32-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C32 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.1624039796975507}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 31.23922868624955 TU = 135.8399560636722 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar braik-ross-c32-cycler-2026 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler
+      at winding (k1=8, k2=0, k_z=26); z0=0.162404 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.162404); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.7733507239075204   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 31.23922868624955   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [-0.18324633612410285, 0.0, 0.1624039796975507, 0.0, -2.3782213279501465, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [135.8399560636722, 135.8399560636722]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 66.48845609060564
+    vel_ms: 1.291116645560726
+    amp_nondim: 0.001
+    is_lower_bound: false
+    closure_residual: 1.9152618101644204e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=7.974285644975021e-12, independent_closure_residual=2.1382264123201846e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (braik-ross-c32-cycler-2026, C32-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 2 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C32 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar braik-ross-c32-cycler-2026 (Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 66.5 km /
+    1.29 m/s at amplitude rung 0.001 (nondim),
+    independent closure residual 1.915e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c32-3d-corridor-03-2026
+  name: "KAM torus corridor around Braik-Ross C32 (2,1)-family 3D-lifted Earth-Moon cycler member 3/5 (x0=-0.226021, z0=0.186161)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C32 family, per #438's broken-plane continuation of braik-ross-c32-cycler-2026) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c32-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C32 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.18616130804949962}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 31.248680556241414 TU = 135.88105636154796 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar braik-ross-c32-cycler-2026 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler
+      at winding (k1=8, k2=0, k_z=26); z0=0.186161 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.186161); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 2.8693486749129837   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 31.248680556241414   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [-0.22602100673566233, 0.0, 0.18616130804949962, 0.0, -2.041917074907228, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [135.88105636154796, 135.88105636154796]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 68.92604402323752
+    vel_ms: 1.2827799543568075
+    amp_nondim: 0.001
+    is_lower_bound: false
+    closure_residual: 2.1494165546015662e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.1396204087114543e-11, independent_closure_residual=2.1453896140173066e-10). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (braik-ross-c32-cycler-2026, C32-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 3 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C32 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar braik-ross-c32-cycler-2026 (Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 68.9 km /
+    1.28 m/s at amplitude rung 0.001 (nondim),
+    independent closure residual 2.149e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c32-3d-corridor-04-2026
+  name: "KAM torus corridor around Braik-Ross C32 (2,1)-family 3D-lifted Earth-Moon cycler member 4/5 (x0=-0.346050, z0=0.253517)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C32 family, per #438's broken-plane continuation of braik-ross-c32-cycler-2026) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c32-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C32 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.2535172153966088}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 31.30022463094027 TU = 136.10518945115646 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar braik-ross-c32-cycler-2026 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler
+      at winding (k1=8, k2=0, k_z=26); z0=0.253517 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.253517); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 3.0343588395943266   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 31.30022463094027   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [-0.34605000132123853, 0.0, 0.2535172153966088, 0.0, -1.3475510223283227, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [136.10518945115646, 136.10518945115646]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 5395.950100776209
+    vel_ms: 37.296847973260114
+    amp_nondim: 0.02
+    is_lower_bound: false
+    closure_residual: 2.0118026739600723e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=3.848099538567463e-14, independent_closure_residual=5.424156673743186e-11). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (braik-ross-c32-cycler-2026, C32-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 4 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C32 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar braik-ross-c32-cycler-2026 (Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 5396.0 km /
+    37.30 m/s at amplitude rung 0.02 (nondim),
+    independent closure residual 2.012e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: braik-ross-c32-3d-corridor-05-2026
+  name: "KAM torus corridor around Braik-Ross C32 (2,1)-family 3D-lifted Earth-Moon cycler member 5/5 (x0=-0.416792, z0=0.302950)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the surrounding KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit (a 3D-lifted member of the published Braik-Ross C32 family, per #438's broken-plane continuation of braik-ross-c32-cycler-2026) -- explicitly NOT a novel dynamical species. KAM theory guarantees some quasi-periodic torus family exists around any linearly-stable periodic orbit; #682/#684 measure how BIG it is, not whether it exists. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- model_assumption=cr3bp AND validity_window null/absent (no real-ephemeris window: this is a pure rotating-frame CR3BP torus that winds quasi-periodically FOREVER, not a real-ephemeris "cycler of opportunity" like the #569 Uranian quasi_cycler rows). See data/catalogue.schema.json v5.2 description + tests/data/test_schema_v47_orbit_class.py::_is_epoch_free_cr3bp_corridor_subclass.
+  epoch_locked: false   # schema v5.2 carve-out: epoch-free CR3BP subclass shares the cycler/resonant_po invariant (any epoch, infinite returns), NOT the real-ephemeris quasi_cycler invariant
+  n_returns: infinite   # schema v5.2 carve-out: a KAM torus has no finite return count -- it winds forever, unlike the #569 Uranian rows' windowed n_returns=10
+  validation_level: V0   # AMBIGUOUS, flagged not guessed (per #684 dispatch): the §14 V0-V5 gauntlet ladder is defined for discrete periodic-orbit closure + encounter continuity, not continuous KAM-torus corridor extent, so no V1+ tag is claimed here without a registered _LEVEL_EVIDENCE entry (over-claim guard, src/cyclerfinder/data/validate.py::validate_validation_level). Real internal evidence exists beyond bare V0 in spirit -- the GMOS corrector's independent_closure_residual is a genuine non-circular short-time nonlinear-CR3BP-flow check (not the algebraic invariance residual), and #682's own positive control (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus) reproduces the published Olikara-Scheeres GMOS L2 torus rotation number to ~1e-5) -- but promoting the tag would require a new _LEVEL_EVIDENCE registration, out of this task's scope; golden discipline: when in doubt, V0.
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-c32-3d-z0-0.24"
+    name: "#682 cycler-corridor census -- Braik-Ross C32 3D-lifted family (z0_0.24 branch, 5 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 broken-plane lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.3029502748607806}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 31.317958757874642 TU = 136.18230412795552 d (this specific 3D-lifted member's
+      OWN reproduced period, distinct from the planar braik-ross-c32-cycler-2026 anchor's own
+      T^stable). #438 broken-plane continuation lift of the planar Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler
+      at winding (k1=8, k2=0, k_z=26); z0=0.302950 is the out-of-plane
+      amplitude signature. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.302950); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
+      libration_point:
+      jacobi_constant: 3.0602516947803338   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 31.317958757874642   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu for this specific 3D member -- see data_gaps below.
+      state_nd: [-0.4167917988975548, 0.0, 0.3029502748607806, 0.0, -1.0192691873238011, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [136.18230412795552, 136.18230412795552]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 1792.4705272779772
+    vel_ms: 9.445901333289095
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 1.6608578333586933e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists for this specific 3D-lifted member (Braik-Ross 2026 publishes only the planar family at the common Jacobi C=3.1294; the 3D out-of-plane lift is our own #438 broken-plane continuation). state_nd is DERIVED by #438's continuation corrector, self-consistency-checked (corrector_residual=1.0721120602624904e-13, independent_closure_residual=3.149725975042153e-12). Never a golden. Matches the precedent already recorded for the sibling row em-cycler-21-3d-spatial-2026."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan (data/scan_434_3d_broken_plane_em.jsonl) records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index. #682's own census recomputes the monodromy/Floquet eigenpairs internally (to select the widest-rotation center pair for the GMOS torus) but does not persist a scalar stability index either."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor (floquet_multipliers/monodromy calls); scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "The published CLASS + PLANAR-parent source (braik-ross-c32-cycler-2026, C32-cycler Table 2 row). Supplies NO 3D out-of-plane IC (planar-only paper) -- this row's specific 3D-lifted member and its corridor measurement are both entirely this-project computation; see data_gaps above and notes below."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor -- the volume of natural, station-keeping-free
+    drift -- surrounding an ALREADY-KNOWN, already-stability-classified periodic orbit:
+    3D-lifted member 5 of 5 (stratified sample, stride-selected across the family's
+    z0/Jacobi range) of the Braik-Ross C32 (2,1)-family broken-plane continuation
+    (#438), itself bifurcated from the planar braik-ross-c32-cycler-2026 (Braik-Ross 2026 common-energy (3,2) Earth-Moon cycler). KAM theory
+    GUARANTEES some quasi-periodic torus family exists around any linearly-stable
+    periodic orbit -- the open question this measurement answers is purely how BIG that
+    corridor is, not whether it exists. This is explicitly NOT conflated with this
+    project's one confirmed novel finding (#312, the Uranian symmetric-closure family);
+    see data/OUTSTANDING.md's [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 1792.5 km /
+    9.45 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 1.661e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method (#682, reused GMOS torus machinery the #612/#617 bootstrap from): per member,
+    monodromy -> Floquet center eigenpairs -> GMOS invariant-circle torus
+    (genome.qp_tori.correct_qp_torus, the Olikara-Scheeres benchmark corrector) built at
+    each rung of a geometric amplitude ladder (3e-4, 1e-3, 5e-3, 2e-2, 6e-2 nondim),
+    recording the INDEPENDENT closure residual (a non-circular short-time nonlinear-flow
+    check, not the algebraic invariance residual) at each rung. Corrector-choice honesty:
+    #612's 2D pseudospectral corrector under-resolves these long-period, high-winding
+    STABLE cycler center-manifolds at tractable mode counts; GMOS resolves the
+    longitudinal angle EXACTLY by stroboscopic integration, so it is the correct tool
+    here. Positive control: #682's own fallback (Olikara-Scheeres 2012 is not in the
+    corpus) is the in-repo #612 L2 GMOS positive control
+    (tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus),
+    which validates this EXACT corrector directly.
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2 description;
+    tests/data/test_schema_v47_orbit_class.py) -- NOT the real-ephemeris "cycler of
+    opportunity" semantics the class was originally built for (contrast the #569 Uranian
+    moon-pair quasi_cycler rows, which carry a genuine SPICE-validated calendar
+    validity_window). This row is instead epoch_locked=false / n_returns=infinite, like
+    cycler/resonant_po, because a KAM torus around a linearly-stable CR3BP orbit winds
+    quasi-periodically forever with no calendar launch window to speak of.
+
+- id: lyapunov3d-l1-corridor-01-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 1/7 (x0=0.873800, z0=-0.190926)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.1909255824728982}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.205720044789085 TU = 9.591303197085498 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=-0.190926); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.997880257746657   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.205720044789085   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.8738000112132556, 0.0, -0.1909255824728982, 0.0, 0.23431199721051096, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.591303197085498, 9.591303197085498]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2954.9145439525787
+    vel_ms: 10.033267444639169
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 9.263505153531718e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=3.194035871285821e-15, independent_closure_residual=3.318526990850063e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 1 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2954.9 km /
+    10.03 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 9.264e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-02-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 2/7 (x0=0.872300, z0=-0.190314)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: -0.19031417076887022}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.225507479346857 TU = 9.677346430352769 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=-0.190314); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.997844536842309   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.225507479346857   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.8722996137828095, 0.0, -0.19031417076887022, 0.0, 0.2367270363675417, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.677346430352769, 9.677346430352769]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2779.8198370782825
+    vel_ms: 8.920099219474004
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 2.7305860795733674e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.5725749195636552e-15, independent_closure_residual=3.3099798067711603e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 2 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2779.8 km /
+    8.92 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 2.731e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-03-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 3/7 (x0=0.873418, z0=0.190772)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.19077196270413063}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.2107230101428095 TU = 9.613057978570778 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=0.190772); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.9978667065670472   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.2107230101428095   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.8734182771705113, 0.0, 0.19077196270413063, 0.0, 0.23493194974852327, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.613057978570778, 9.613057978570778]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2907.5128544991644
+    vel_ms: 9.858945236207166
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 6.481831358206856e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=1.0635686291173762e-14, independent_closure_residual=3.2028663139999335e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 3 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2907.5 km /
+    9.86 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 6.482e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-04-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 4/7 (x0=0.874937, z0=0.191376)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.19137602966693582}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.1909458430122166 TU = 9.527059391951827 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=0.191376); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.99793759047823   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.1909458430122166   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.8749370732850867, 0.0, 0.19137602966693582, 0.0, 0.23244357310487412, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.527059391951827, 9.527059391951827]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 511.64564491584326
+    vel_ms: 1.6701832808322525
+    amp_nondim: 0.001
+    is_lower_bound: false
+    closure_residual: 1.5604951695446853e-06
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.542432151426415e-15, independent_closure_residual=3.015601948277832e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 4 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 511.6 km /
+    1.67 m/s at amplitude rung 0.001 (nondim),
+    independent closure residual 1.560e-06 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-05-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 5/7 (x0=0.876482, z0=0.191973)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.19197272047649233}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.1711834495519042 TU = 9.441125046826864 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=0.191973); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.99805334816899   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.1711834495519042   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.876481907346328, 0.0, 0.19197272047649233, 0.0, 0.22985412372985958, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.441125046826864, 9.441125046826864]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2598.7575191284513
+    vel_ms: 8.756830372167604
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 1.3044351509539448e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=8.718885342929877e-15, independent_closure_residual=2.9252350287672864e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 5 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2598.8 km /
+    8.76 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 1.304e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-06-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 6/7 (x0=0.878055, z0=0.192565)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.19256487759430296}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.151437165405162 TU = 9.355260751076985 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=0.192565); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.998211594777295   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.151437165405162   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.878054568677307, 0.0, 0.19256487759430296, 0.0, 0.22715962136410817, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.355260751076985, 9.355260751076985]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2543.582660961504
+    vel_ms: 8.528242605275992
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 3.095572680926106e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=2.3962139459858942e-14, independent_closure_residual=2.777226819324092e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 6 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2543.6 km /
+    8.53 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 3.096e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: lyapunov3d-l1-corridor-07-2026
+  name: "KAM torus corridor around 3D-lifted Earth-Moon L1 Lyapunov family member 7/7 (x0=0.879657, z0=0.193155)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: characterizes the KAM neighborhood of an ALREADY-KNOWN, already-stability-classified periodic orbit -- a computed member of the generic L1 spatial-Lyapunov CLASS (a standard CR3BP structure), NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors; real internal evidence exists via the GMOS independent_closure_residual + #682's own positive control, but no V1+ tag is claimed without a registered _LEVEL_EVIDENCE entry).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  family:
+    id: "682-corridor-lyapunov3d-l1"
+    name: "#682 cycler-corridor census -- 3D-lifted Earth-Moon L1 Lyapunov family (7 stratified members)"
+    nomenclature: "cyclerfinder internal (#438 lyapunov3d 3D-lift + #682/#684 corridor census)"
+    continuation_param: {name: "z0", value: 0.19315543115591807}
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 2.1317085330479375 TU = 9.269473211969741 d. #438 3D-lift (seed_route
+      'lyapunov3d', winding k1=0/k2=1/k_z=2) of the generic Earth-Moon L1 spatial
+      Lyapunov family, NOT a Braik-Ross common-energy resonant cycler lineage (a
+      DIFFERENT Jacobi regime, C~2.998, vs the Braik-Ross common C=3.1294). No
+      literature parent orbit -- see corroborating_sources / data_gaps. years:
+      null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "3D CR3BP rotating-frame periodic orbit (out-of-plane, z0=0.193155); Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Earth-Moon L1 spatial Lyapunov family, 3D lift (winding k1=0, k2=1, k_z=2; #438 seed_route='lyapunov3d')"
+      mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (project-wide EM mass ratio convention; this family itself has no literature source).
+      libration_point: "L1"
+      jacobi_constant: 2.9984100446794395   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
+      period_nd: 2.1317085330479375   # Per #438 scan, this specific member (TU).
+      stability_index:   # #438's scan records only the qualitative Floquet tag ('stable'), not a numeric Barden nu -- see data_gaps below.
+      state_nd: [0.8796570729975475, 0.0, 0.19315543115591807, 0.0, 0.22435528819795938, 0.0]   # Per #438 scan: (x0, 0, z0, 0, ydot0, 0) perpendicular-crossing 3D IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [9.269473211969741, 9.269473211969741]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 2725.395442670272
+    vel_ms: 11.878663105862769
+    amp_nondim: 0.005
+    is_lower_bound: false
+    closure_residual: 7.679407623533538e-05
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.state_nd"
+    kind: "not-applicable"
+    note: "No published IC exists (this is a generic CR3BP L1 spatial-Lyapunov family member, not tied to any specific paper's tabulated orbit). state_nd is DERIVED by #438's 3D-lift corrector, self-consistency-checked (corrector_residual=5.394395849595582e-15, independent_closure_residual=2.4965277736000625e-13). Never a golden."
+    source_hint: "data/scan_434_3d_broken_plane_em.jsonl; scripts/census_682_cycler_corridors.py"
+    todo_ref: "#438"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "#438's scan records only the qualitative Floquet stability tag ('stable') for this member, not a numeric Barden-nu-style stability index."
+    source_hint: "scripts/census_682_cycler_corridors.py::measure_corridor; scripts/scan_434_3d_broken_plane_em.py"
+    todo_ref: "#438"
+  corroborating_sources: []
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, already-stability-
+    classified periodic orbit: 3D-lifted member 7 of 7 (stratified sample) of the
+    generic Earth-Moon L1 spatial Lyapunov family (#438, seed_route='lyapunov3d'). This
+    is a DIFFERENT lineage from the Braik-Ross common-energy resonant cyclers (C21/C32
+    sibling rows in this same writeback) -- no Braik-Ross Table 2 entry corresponds to
+    this family, and it has NO literature parent at all (a generic, well-known CR3BP
+    structural class -- spatial Lyapunov orbits bifurcating from the planar L1 Lyapunov
+    family -- computed in-repo, not itself individually published). KAM theory GUARANTEES
+    some quasi-periodic torus family exists around any linearly-stable periodic orbit --
+    the open question this measurement answers is purely how BIG that corridor is, not
+    whether it exists. Explicitly NOT conflated with this project's one confirmed novel
+    finding (#312, the Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 2725.4 km /
+    11.88 m/s at amplitude rung 0.005 (nondim),
+    independent closure residual 7.679e-05 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32 sibling rows in this
+    same writeback -- see those rows' notes for the full method + positive-control
+    paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: braik-ross-planar-r31-s-corridor-2026
+  name: "KAM torus corridor around Braik-Ross planar Resonant 3to1 Stable (R31-S) Earth-Moon resonant cycler (CR3BP, C=3.1294)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the KAM neighborhood of an ALREADY-KNOWN, sourced periodic orbit (R31-S, Braik-Ross 2026 Table 2 -- the ORBIT ITSELF is a literature-sourced IC, but the corridor measurement around it is entirely this-project computation, hence known-class-member not known-reproduction). Explicitly NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 6.267093371035164 TU = 27.251687188521107 d (Braik & Ross 2026 Table 2
+      "Resonant 3to1 Stable" row, abbrev R31-S; period_days sourced
+      27.252 d, matching this reproduction to the table's printed
+      precision). Planar (z0=0) resonant Braik-Ross golden IC -- this is the
+      ORBIT ITSELF sourced directly to the paper; only the corridor
+      measurement below is this-project computation. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross planar Resonant 3to1 Stable (R31-S) resonant Earth-Moon cycler"
+      mass_ratio: 0.0121505842705716   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (extracted verbatim from Braik-Ross src/cr3bp_family_ic.m); resonant-family goldens use this mu (differs from the common EM mu=1.2150584270572e-2 in the last digit only -- both round identically at the paper's printed precision, see that file's header note).
+      libration_point:
+      jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
+      period_nd: 6.267093371035164   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
+      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      state_nd: [-0.8081272737956029, 0.0, 0.0, 0.0, 0.1389495551262821, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [27.251687188521107, 27.251687188521107]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 27318.83676258797
+    vel_ms: 98.96072131557679
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 8.541131524379666e-07
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "Braik-Ross 2026 Table 2 labels this member stable ('R31-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
+    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "Table 2 row 'Resonant 3to1 Stable' (R31-S): sourced x0, ydot0, period. Supplies the ORBIT ITSELF (planar, resonant, stable); the corridor measurement is this-project computation (#682), not from this source."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, LITERATURE-SOURCED
+    periodic orbit: Braik & Ross 2026 Table 2's "Resonant 3to1 Stable" (R31-S) planar
+    resonant Earth-Moon cycler. The orbit itself is sourced directly to the paper (via
+    data/golden/braik_ross_2026_em_family_ics.yaml, independently computed from the
+    authors' own MATLAB repo and verified against Table 2); ONLY the corridor measurement
+    is this-project computation. KAM theory GUARANTEES some quasi-periodic torus family
+    exists around any linearly-stable periodic orbit -- the open question this
+    measurement answers is purely how BIG that corridor is, not whether it exists.
+    Explicitly NOT conflated with this project's one confirmed novel finding (#312, the
+    Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 27318.8 km /
+    98.96 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 8.541e-07 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32/lyapunov3d-L1 sibling
+    rows in this same writeback -- see those rows' notes for the full method +
+    positive-control paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: braik-ross-planar-r52-s-corridor-2026
+  name: "KAM torus corridor around Braik-Ross planar Resonant 5to2 Stable (R52-S) Earth-Moon resonant cycler (CR3BP, C=3.1294)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the KAM neighborhood of an ALREADY-KNOWN, sourced periodic orbit (R52-S, Braik-Ross 2026 Table 2 -- the ORBIT ITSELF is a literature-sourced IC, but the corridor measurement around it is entirely this-project computation, hence known-class-member not known-reproduction). Explicitly NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 12.60275494862142 TU = 54.801534816879354 d (Braik & Ross 2026 Table 2
+      "Resonant 5to2 Stable" row, abbrev R52-S; period_days sourced
+      54.802 d, matching this reproduction to the table's printed
+      precision). Planar (z0=0) resonant Braik-Ross golden IC -- this is the
+      ORBIT ITSELF sourced directly to the paper; only the corridor
+      measurement below is this-project computation. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross planar Resonant 5to2 Stable (R52-S) resonant Earth-Moon cycler"
+      mass_ratio: 0.0121505842705716   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (extracted verbatim from Braik-Ross src/cr3bp_family_ic.m); resonant-family goldens use this mu (differs from the common EM mu=1.2150584270572e-2 in the last digit only -- both round identically at the paper's printed precision, see that file's header note).
+      libration_point:
+      jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
+      period_nd: 12.60275494862142   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
+      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      state_nd: [0.2278881086717652, 0.0, 0.0, 0.0, 2.277116891512287, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [54.801534816879354, 54.801534816879354]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 937.928901091109
+    vel_ms: 40.84426824592317
+    amp_nondim: 0.02
+    is_lower_bound: false
+    closure_residual: 1.5657121186335708e-07
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "Braik-Ross 2026 Table 2 labels this member stable ('R52-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
+    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "Table 2 row 'Resonant 5to2 Stable' (R52-S): sourced x0, ydot0, period. Supplies the ORBIT ITSELF (planar, resonant, stable); the corridor measurement is this-project computation (#682), not from this source."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, LITERATURE-SOURCED
+    periodic orbit: Braik & Ross 2026 Table 2's "Resonant 5to2 Stable" (R52-S) planar
+    resonant Earth-Moon cycler. The orbit itself is sourced directly to the paper (via
+    data/golden/braik_ross_2026_em_family_ics.yaml, independently computed from the
+    authors' own MATLAB repo and verified against Table 2); ONLY the corridor measurement
+    is this-project computation. KAM theory GUARANTEES some quasi-periodic torus family
+    exists around any linearly-stable periodic orbit -- the open question this
+    measurement answers is purely how BIG that corridor is, not whether it exists.
+    Explicitly NOT conflated with this project's one confirmed novel finding (#312, the
+    Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 937.9 km /
+    40.84 m/s at amplitude rung 0.02 (nondim),
+    independent closure residual 1.566e-07 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a genuine WALL -- the independent closure residual crossed the closure gate (or the Newton corrector failed to converge) at the next amplitude rung up, so this value IS the measured corridor edge.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32/lyapunov3d-L1 sibling
+    rows in this same writeback -- see those rows' notes for the full method +
+    positive-control paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+
+- id: braik-ross-planar-r21-s-corridor-2026
+  name: "KAM torus corridor around Braik-Ross planar Resonant 2to1 Stable (R21-S) Earth-Moon resonant cycler (CR3BP, C=3.1294)"
+  source: this-project
+  our_status: known-class-member   # spec §16.4: this row characterizes the KAM neighborhood of an ALREADY-KNOWN, sourced periodic orbit (R21-S, Braik-Ross 2026 Table 2 -- the ORBIT ITSELF is a literature-sourced IC, but the corridor measurement around it is entirely this-project computation, hence known-class-member not known-reproduction). Explicitly NOT a novel dynamical species. See notes: block.
+  trajectory_regime: ballistic
+  model_assumption: cr3bp
+  cycler_class: non-keplerian
+  orbit_class: quasi_cycler   # schema v5.2 (task #684): epoch-free CR3BP KAM-corridor subclass -- see data/catalogue.schema.json v5.2 description
+  epoch_locked: false
+  n_returns: infinite
+  validation_level: V0   # AMBIGUOUS, flagged not guessed -- see the C21/C32 sibling rows' identical note (§14 V0-V5 not designed for continuous KAM-torus corridors).
+  primary: "Earth"
+  bodies: ["E", "Moon"]
+  sequence_canonical: "E-Moon"
+  sense: "n/a"
+  period:
+    pair: "E-Moon"
+    k: 1
+    years:
+    note: |
+      T_PO = 6.09412703751587 TU = 26.499564292602827 d (Braik & Ross 2026 Table 2
+      "Resonant 2to1 Stable" row, abbrev R21-S; period_days sourced
+      26.5 d, matching this reproduction to the table's printed
+      precision). Planar (z0=0) resonant Braik-Ross golden IC -- this is the
+      ORBIT ITSELF sourced directly to the paper; only the corridor
+      measurement below is this-project computation. years: null (CR3BP).
+  vinf_kms_at_encounters:
+  - body: "E"
+    vinf_kms:
+    note: "CR3BP periodic orbit: conserved quantity is the Jacobi constant, not V_inf."
+  - body: "Moon"
+    vinf_kms:
+    note: "Same -- Jacobi-constant model."
+  orbit_elements:
+    a_au:
+    e:
+    note: "Planar CR3BP rotating-frame periodic orbit; Keplerian elements inapplicable. CR3BP identity tuple below."
+    cr3bp:
+      family: "Braik-Ross planar Resonant 2to1 Stable (R21-S) resonant Earth-Moon cycler"
+      mass_ratio: 0.0121505842705716   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (extracted verbatim from Braik-Ross src/cr3bp_family_ic.m); resonant-family goldens use this mu (differs from the common EM mu=1.2150584270572e-2 in the last digit only -- both round identically at the paper's printed precision, see that file's header note).
+      libration_point:
+      jacobi_constant: 3.1294   # SOURCED: Braik & Ross 2026 Table 2 header common Jacobi C_J=3.1294.
+      period_nd: 6.09412703751587   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (independently computed from Braik-Ross's own MATLAB repo, verified against Table 2).
+      stability_index:   # Braik-Ross Table 2 states this member is stable (label suffix "-S"); no numeric Barden-nu-style index is separately reproduced by this task -- see data_gaps below.
+      state_nd: [0.4485378415692721, 0.0, 0.0, 0.0, 1.185506250841159, 0.0]   # SOURCED: data/golden/braik_ross_2026_em_family_ics.yaml (x0, 0, 0, 0, ydot0, 0) perpendicular-crossing planar IC.
+      lunit_km: 384400.0
+      tunit_s: 375699.8
+      tof_days_bounds: [26.499564292602827, 26.499564292602827]
+  corridor_measurement:   # schema v5.2 (task #684): #682's own GMOS amplitude-ladder KAM-corridor measurement for THIS specific member
+    pos_km: 21741.326720367455
+    vel_ms: 107.09299250124995
+    amp_nondim: 0.06
+    is_lower_bound: true
+    closure_residual: 5.597906049103198e-07
+    method: "gmos-amplitude-ladder"   # genome.qp_tori.correct_qp_torus, the Olikara-Scheeres GMOS benchmark invariant-circle corrector
+  source_ephemeris:
+  data_gaps:
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "Braik-Ross 2026 Table 2 labels this member stable ('R21-S' suffix -S = stable, per the paper's R{21,31,52}-S/-U convention) but does not print a numeric Barden-nu-style stability index (only period + qualitative stability designation for the resonant-family rows); this task does not separately re-derive one."
+    source_hint: "data/golden/braik_ross_2026_em_family_ics.yaml; Braik & Ross 2026 Table 2."
+    todo_ref: "#438"
+  corroborating_sources:
+  - authors: ["Braik, A.", "Ross, S. D."]
+    year: 2026
+    title: "Orbital Networks in the Three-Body Problem"
+    venue: "arXiv preprint arXiv:2605.31543 (29 May 2026)"
+    doi:
+    url: "https://arxiv.org/abs/2605.31543"
+    note: "Table 2 row 'Resonant 2to1 Stable' (R21-S): sourced x0, ydot0, period. Supplies the ORBIT ITSELF (planar, resonant, stable); the corridor measurement is this-project computation (#682), not from this source."
+  priority_date: "2026-07-22"
+  notes: |
+    #682/#684 cycler-corridor CHARACTERIZATION, NOT a discovery. This row measures the
+    quasi-periodic (KAM) torus corridor surrounding an ALREADY-KNOWN, LITERATURE-SOURCED
+    periodic orbit: Braik & Ross 2026 Table 2's "Resonant 2to1 Stable" (R21-S) planar
+    resonant Earth-Moon cycler. The orbit itself is sourced directly to the paper (via
+    data/golden/braik_ross_2026_em_family_ics.yaml, independently computed from the
+    authors' own MATLAB repo and verified against Table 2); ONLY the corridor measurement
+    is this-project computation. KAM theory GUARANTEES some quasi-periodic torus family
+    exists around any linearly-stable periodic orbit -- the open question this
+    measurement answers is purely how BIG that corridor is, not whether it exists.
+    Explicitly NOT conflated with this project's one confirmed novel finding (#312, the
+    Uranian symmetric-closure family); see data/OUTSTANDING.md's
+    [[project_novel_findings_status]] note.
+
+    Measurement result: corridor tube half-width 21741.3 km /
+    107.09 m/s at amplitude rung 0.06 (nondim),
+    independent closure residual 5.598e-07 (nondim; gate 1.0e-4 = ~38.44 km
+    equivalent). This is a LOWER BOUND -- the geometric amplitude ladder reached its top rung (6e-2 nondim) with the independent closure residual still passing; the true corridor edge (wall) was not found within the ladder's reach.
+
+    Method: identical GMOS amplitude-ladder census as the C21/C32/lyapunov3d-L1 sibling
+    rows in this same writeback -- see those rows' notes for the full method +
+    positive-control paragraph (genome.qp_tori.correct_qp_torus; positive control
+    tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus).
+
+    Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
+    epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
+    C21/C32 sibling rows' identical schema-note paragraph for the full rationale).

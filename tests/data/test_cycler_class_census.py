@@ -503,10 +503,37 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "ross-rt-mu03-cycler-31-2026",
         "ross-rt-mu05-cycler-11-2026",
         "ross-rt-pc-cycler-32-2026",
+        # #684 (2026-07-22): 20 new quasi_cycler rows writing back #682's
+        # cycler-corridor census -- KAM torus corridor measurements around
+        # already-known, already-stability-classified CR3BP periodic orbits
+        # (schema v5.2 epoch-free CR3BP KAM-corridor subclass; genuine
+        # rotating-frame periodic orbits, cycler_class=non-keplerian). NOT
+        # novel discoveries -- characterizations of existing orbits' KAM
+        # neighborhoods (see each row's our_status=known-class-member + notes).
+        "braik-ross-c21-3d-corridor-01-2026",
+        "braik-ross-c21-3d-corridor-02-2026",
+        "braik-ross-c21-3d-corridor-03-2026",
+        "braik-ross-c21-3d-corridor-04-2026",
+        "braik-ross-c21-3d-corridor-05-2026",
+        "braik-ross-c32-3d-corridor-01-2026",
+        "braik-ross-c32-3d-corridor-02-2026",
+        "braik-ross-c32-3d-corridor-03-2026",
+        "braik-ross-c32-3d-corridor-04-2026",
+        "braik-ross-c32-3d-corridor-05-2026",
+        "lyapunov3d-l1-corridor-01-2026",
+        "lyapunov3d-l1-corridor-02-2026",
+        "lyapunov3d-l1-corridor-03-2026",
+        "lyapunov3d-l1-corridor-04-2026",
+        "lyapunov3d-l1-corridor-05-2026",
+        "lyapunov3d-l1-corridor-06-2026",
+        "lyapunov3d-l1-corridor-07-2026",
+        "braik-ross-planar-r21-s-corridor-2026",
+        "braik-ross-planar-r31-s-corridor-2026",
+        "braik-ross-planar-r52-s-corridor-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 18
+assert len(NON_KEPLERIAN_IDS) == 38
 
 
 # ---------------------------------------------------------------------------
@@ -526,7 +553,8 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=46, multi-arc=246, non-keplerian=12.
+    """Exact class distribution: single-ellipse=46, multi-arc=297, non-keplerian=38
+    (final, post-#684; see the incremental history below for how it got here).
 
     #390 (2026-06-19) admitted the catalogue's first two SPK-derived mga_tour
     rows -- voyager-1-jupiter-saturn-grand-tour (E-J-S) and voyager-2-grand-tour
@@ -571,10 +599,20 @@ def test_census_distribution() -> None:
     #494 (2026-06-30) admitted 5 Ross & Roberts-Tsoukkas 2026 mu-family
     representatives (4 Table-I abstract-mu rows + 1 Pluto-Charon instantiation),
     all non-keplerian CR3BP periodic orbits: non-keplerian 13->18.
+
+    #684 (2026-07-22) admitted 20 quasi_cycler rows writing back #682's
+    cycler-corridor census (KAM torus corridor measurements around 20 already-
+    known, already-stability-classified stable CR3BP periodic orbits -- 5
+    Braik-Ross C21 3D-lifted members, 5 Braik-Ross C32 3D-lifted members, 7
+    Earth-Moon L1 spatial-Lyapunov 3D-lifted members, 3 planar Braik-Ross
+    resonant goldens R21-S/R31-S/R52-S), all cycler_class=non-keplerian
+    (genuine rotating-frame CR3BP periodic orbits; admitted under the schema
+    v5.2 epoch-free CR3BP KAM-corridor quasi_cycler subclass, NOT novel
+    discoveries): non-keplerian 18->38.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 18}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 38}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )
@@ -595,7 +633,7 @@ def test_multi_arc_ids_match_allowlist() -> None:
 
 
 def test_non_keplerian_ids_match_ratchet() -> None:
-    """The exact set of non-keplerian ids matches the 9-id NON_KEPLERIAN_IDS ratchet."""
+    """The exact set of non-keplerian ids matches the 38-id NON_KEPLERIAN_IDS ratchet."""
     rows = _load_rows()
     actual = frozenset(r["id"] for r in rows if r.get("cycler_class") == "non-keplerian")
     extra = actual - NON_KEPLERIAN_IDS

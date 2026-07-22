@@ -25,25 +25,38 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '5.1' (v5.1 additively names three
-    synodic-feasibility sub-fields of validity_window — synodic_duty_cycle_pct,
-    synodic_boundary_period_days, synodic_period_days — formalizing the free-form
-    extras task #569's six Uranian moon-pair quasi_cycler rows already carried
-    under validity_window's additionalProperties:true; no existing row becomes
-    invalid and no census count changes. v5.0 added the additive optional
-    nullable nested bcr4bp_provenance block {mu_sun, sun_commensurate_n,
-    sun_phase_drift} for a future Andreu/Rosales-Jorba known-reproduction row
-    admitted via the BCR4BP V0-V5 gauntlet, task #305 — absent on every existing
-    row so no census count changes. Bumped 4.9 -> 5.0 (not 4.10) because the
-    version ratchets compare float(version) and float('4.10')==4.1 < 4.9 would
-    regress the >= 4.x gates; the change itself is purely additive. v4.9 added
-    the resonant_po orbit_class enum value for stable resonant/libration POs with
-    no transport utility, task #453; v4.8 added the Axis-B dv_band enum + its
-    mandatory dv_band_source companion for the real-ephemeris maintenance-ΔV band
-    taxonomy, task #417; v4.7 added the four-class orbit_class taxonomy for the
-    catalogue-scope expansion, task #294)."""
+    """The schema carries version == '5.2' (v5.2, task #684: resolves the
+    quasi_cycler epoch-locked invariant conflict surfaced while writing back #682's
+    epoch-free CR3BP KAM-corridor census — adds a narrow, conditional carve-out
+    permitting orbit_class=quasi_cycler rows to be epoch_locked=false /
+    n_returns='infinite' specifically when model_assumption='cr3bp' AND
+    validity_window is null/absent (a KAM torus around a linearly-stable CR3BP
+    orbit winds quasi-periodically forever, unlike the real-ephemeris "cyclers of
+    opportunity" the class was built for — every existing quasi_cycler row, e.g.
+    the 6 #569 Uranian moon-pair rows, is unaffected and still hard-required
+    epoch_locked=true with a finite n_returns). Also adds ONE additive, optional,
+    nullable nested corridor_measurement block ({pos_km, vel_ms, amp_nondim,
+    is_lower_bound, closure_residual, method}) recording the #682 GMOS-ladder
+    KAM-corridor measurement itself, styled after the v5.0 bcr4bp_provenance
+    block. v5.1 additively names three synodic-feasibility sub-fields of
+    validity_window — synodic_duty_cycle_pct, synodic_boundary_period_days,
+    synodic_period_days — formalizing the free-form extras task #569's six
+    Uranian moon-pair quasi_cycler rows already carried under validity_window's
+    additionalProperties:true; no existing row becomes invalid and no census
+    count changes. v5.0 added the additive optional nullable nested
+    bcr4bp_provenance block {mu_sun, sun_commensurate_n, sun_phase_drift} for a
+    future Andreu/Rosales-Jorba known-reproduction row admitted via the BCR4BP
+    V0-V5 gauntlet, task #305 — absent on every existing row so no census count
+    changes. Bumped 4.9 -> 5.0 (not 4.10) because the version ratchets compare
+    float(version) and float('4.10')==4.1 < 4.9 would regress the >= 4.x gates;
+    the change itself is purely additive. v4.9 added the resonant_po orbit_class
+    enum value for stable resonant/libration POs with no transport utility, task
+    #453; v4.8 added the Axis-B dv_band enum + its mandatory dv_band_source
+    companion for the real-ephemeris maintenance-ΔV band taxonomy, task #417;
+    v4.7 added the four-class orbit_class taxonomy for the catalogue-scope
+    expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "5.1"
+    assert schema["version"] == "5.2"
 
 
 def test_catalogue_matches_jsonschema() -> None:

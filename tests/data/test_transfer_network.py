@@ -324,7 +324,18 @@ def test_positive_control_aldrin_outbound_inbound_earth_edge_is_b0_zero_cost() -
 
 def test_positive_control_uranian_quasi_cyclers_share_epoch_window_overlap() -> None:
     rows = _load_catalogue_rows()
-    qc_rows = {r["id"]: r for r in rows if r.get("orbit_class") == "quasi_cycler"}
+    # Schema v5.2 (#684) added 20 epoch-free CR3BP KAM-corridor quasi_cycler rows
+    # (epoch_locked=false, no validity_window -- #682's cycler-corridor census).
+    # This positive control is specifically about the real-ephemeris, epoch-LOCKED
+    # "cyclers of opportunity" (the 6 #569 Uranian moon-pair rows sharing a real
+    # calendar validity_window), so it must filter to epoch_locked=true rather than
+    # all orbit_class=quasi_cycler rows -- otherwise the epoch-free subclass (which
+    # has no validity_window to overlap at all) silently pollutes this count.
+    qc_rows = {
+        r["id"]: r
+        for r in rows
+        if r.get("orbit_class") == "quasi_cycler" and r.get("epoch_locked") is True
+    }
     assert len(qc_rows) == 6, "expected the 6 #569 Uranian quasi_cycler rows"
 
     n_pairs_with_shared_body = 0

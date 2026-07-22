@@ -186,7 +186,15 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 'unvalidated' on the source-pair tier axis. Their V4 (windowed) evidence
     # lives on the orthogonal validation_level axis
     # (tests/verify/test_566_five_representatives_v4.py).
-    "unvalidated": 82,
+    # 82 -> 102 (2026-07-22, #684): +20 quasi_cycler rows writing back #682's
+    # cycler-corridor census (5 Braik-Ross C21 3D-lift, 5 Braik-Ross C32
+    # 3D-lift, 7 Earth-Moon L1 spatial-Lyapunov 3D-lift, 3 planar Braik-Ross
+    # resonant goldens). None carry orbit_source/vinf_source tags (matching
+    # every other CR3BP non-keplerian row in this catalogue, e.g.
+    # ross-rt-em-cycler-21-2025) -> 'unvalidated' on the source-pair tier axis.
+    # Their explicitly-flagged-ambiguous validation_level=V0 lives on the
+    # orthogonal axis; see each row's own notes for the honest ambiguity flag.
+    "unvalidated": 102,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

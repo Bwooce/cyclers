@@ -13077,49 +13077,75 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   remainder was completed via short synchronous chunks per this project's own standing lesson
   against backgrounding long computations ([[feedback_subagent_background_is_fatal]]); no
   checkpoint corruption occurred (verified directly against the state file after completion).
-- **#684 (registered 2026-07-22, registered+dispatched 2026-07-22)** -- `#682`'s own
-  follow-on: implement the corridor-measurement schema. **SCHEMA DECIDED by the user
-  2026-07-22: new `quasi_cycler` rows, one per measured corridor** (not corridor-width
-  fields on the parent rows) -- the catalogue's existing per-family-representative
-  granularity (one row per named Braik-Ross branch, e.g. `braik-ross-c32-cycler-2026`, NOT
-  one row per individually-stability-classified member) would force a lossy single-number
-  collapse of `#682`'s own finding that corridor size varies 2-3 orders of magnitude within a
-  family; per-corridor rows match the data's actual per-member granularity with no
-  information loss. Explicitly NOT a discovery -- these rows characterize already-known,
-  already-cataloged orbits' surrounding KAM neighborhoods (per KAM theory, guaranteed to
-  exist for any linearly-stable orbit); they must be clearly annotated/tagged as
-  characterization, not conflated with a genuine novel find in the `#312` sense, so future
-  novel-findings audits (`[[project_novel_findings_status]]`) are not misled. Flagged by the
-  user as likely computationally expensive -- explicitly acceptable
-  ([[feedback_long_runs_acceptable]]).
+- **#684 ✓ DONE (2026-07-22) -- schema v5.2 amendment (epoch-free CR3BP `quasi_cycler`
+  subclass + `corridor_measurement` block) shipped, 20 `#682` corridor rows written back,
+  catalogue at 381 rows; bounded-expansion compute NOT run this pass (checking in first).**
+  `#682`'s own follow-on: implement the corridor-measurement schema. **SCHEMA DECIDED by the
+  user 2026-07-22: new `quasi_cycler` rows, one per measured corridor** (not corridor-width
+  fields on the parent rows) -- per-corridor rows match `#682`'s own member-level granularity
+  with no information loss.
   **SCHEMA CONFLICT found, verified, and RESOLVED (2026-07-22).** The dispatched agent
-  correctly halted before writing a single row: `quasi_cycler` carries a HARD, ratchet-
-  enforced invariant (`data/catalogue.schema.json` v4.7 + `tests/data/
-  test_schema_v47_orbit_class.py`) requiring `epoch_locked: true` and a FINITE `n_returns`
-  (3-15) -- designed for real-ephemeris "cyclers of opportunity" (the existing 6 `quasi_cycler`
-  rows are all Uranian moon-pair tours with genuine SPICE-validated calendar
-  `validity_window`s). `#682`'s census (`scripts/census_682_cycler_corridors.py`, confirmed
-  via direct grep: zero SPICE/ephemeris/epoch/kernel references) is pure, epoch-free CR3BP --
-  a KAM torus around a linearly-stable orbit winds quasi-periodically FOREVER, so the honest
-  values are `epoch_locked: false` / `n_returns: "infinite"`, exactly what `quasi_cycler`
-  FORBIDS. Writing these rows as-specified would have required fabricating a calendar
-  `validity_window` and a finite return count -- correctly refused per `data/README.md`'s
-  no-fabrication rule. Two options were presented: (1) reuse the existing `resonant_po` class
-  (zero schema change, but its "no demonstrated transport utility" semantics awkwardly
-  conflate with the fact that some measured members' PARENT orbits, e.g. the C21/C32 members
-  themselves, ARE published transport cyclers); (2) a small, additive amendment to
-  `quasi_cycler`'s own invariant permitting an epoch-free CR3BP KAM-corridor subclass
-  (`epoch_locked: false` / `n_returns: "infinite"` when `model_assumption: cr3bp` and no
-  real-ephemeris window) -- preserves the user's original intent without fabrication. **USER
-  DECIDED 2026-07-22: option 2** -- amend the schema. Scope for the next dispatch: bump
-  `data/catalogue.schema.json` (additive, backward-compatible, following this file's own
-  established version-bump convention), update `tests/data/test_schema_v47_orbit_class.py`'s
-  invariant to admit the new epoch-free `quasi_cycler` subclass without weakening the
-  existing epoch-locked requirement for every other `quasi_cycler` row, THEN write the 20
-  already-measured corridor rows, THEN consider bounded coverage expansion as originally
-  scoped. A separate, genuine schema gap (no existing field captures
-  `corridor_is_lower_bound` -- a genuine KAM wall vs. an amplitude-ladder ceiling) also needs
-  a small additive nested block; resolve together with the above.
+  correctly halted before writing a single row: `quasi_cycler`'s pre-existing invariant
+  (`epoch_locked: true` + finite `n_returns`, built for real-ephemeris "cyclers of
+  opportunity") would have forced fabricating a calendar window for `#682`'s pure, epoch-free
+  CR3BP KAM census. **USER DECIDED 2026-07-22: amend the schema** (option 2 of the two
+  presented; see the prior revision of this bullet -- preserved in git history -- for the
+  full two-option tradeoff). **Schema v5.2 shipped**: `data/catalogue.schema.json` version
+  bumped 5.1->5.2 (top-level `description` + the `orbit_class`/`epoch_locked`/`n_returns`/
+  `validity_window` field descriptions all updated in the file's own established per-rev
+  documentation style); the narrow carve-out is `orbit_class=quasi_cycler` AND
+  `model_assumption=cr3bp` AND `validity_window` null/absent => permitted (in fact required)
+  `epoch_locked=false` / `n_returns='infinite'` -- every other `quasi_cycler` row (all 6
+  existing Uranian moon-pair rows) is completely unaffected, still hard-required
+  `epoch_locked=true` + finite `n_returns`. Enforced in
+  `tests/data/test_schema_v47_orbit_class.py` via a new
+  `_is_epoch_free_cr3bp_corridor_subclass()` helper (used by the amended
+  `test_non_cycler_rows_are_epoch_locked_with_finite_returns`) plus 5 new regression tests:
+  the carve-out is permitted when both conditions hold; a `quasi_cycler` row with a REAL
+  `validity_window` still gets forced epoch-locked even if `model_assumption=cr3bp` (guards
+  against a future epoch-robustness scan silently exempting itself); a non-cr3bp windowless
+  `quasi_cycler` row does NOT get the carve-out; `precursor_mga`/`mga_tour` are NEVER eligible
+  even under identical cr3bp+windowless conditions; and a live-catalogue sanity check that
+  every `epoch_locked=false` `quasi_cycler` row in the real file actually satisfies the
+  carve-out condition. 21/21 tests pass. **The separate `corridor_is_lower_bound` schema gap
+  is also resolved**: a new additive, optional, nullable `corridor_measurement` block
+  (`{pos_km, vel_ms, amp_nondim, is_lower_bound, closure_residual, method}`, styled after the
+  v5.0 `bcr4bp_provenance` block) carries the #682 GMOS-ladder measurement per row, with
+  `is_lower_bound` naming exactly the wall-vs-ceiling distinction no prior field captured.
+  **20 catalogue rows written** (pure append to `data/catalogue.yaml`, 361->381 rows, 2235
+  lines inserted, 0 modified/deleted -- verified via `git diff --stat`): 5
+  `braik-ross-c21-3d-corridor-{01..05}-2026` (z0 in [-0.645,-0.237], parent
+  `ross-rt-em-cycler-21-2025`), 5 `braik-ross-c32-3d-corridor-{01..05}-2026` (z0 in
+  [0.142,0.303], parent `braik-ross-c32-cycler-2026`), 7 `lyapunov3d-l1-corridor-{01..07}-2026`
+  (NO literature parent -- a generic, in-repo-only 3D-lifted L1 spatial-Lyapunov family,
+  honestly flagged as such in each row's `corroborating_sources: []` + notes), 3
+  `braik-ross-planar-{r21-s,r31-s,r52-s}-corridor-2026` (the orbit itself IS literature-sourced
+  via `data/golden/braik_ross_2026_em_family_ics.yaml`/Braik-Ross 2026 Table 2; only the
+  corridor measurement is this-project computation). Every row: `orbit_class: quasi_cycler`,
+  `our_status: known-class-member` (NOT novel -- explicit KAM-guarantee framing + `#312`
+  disambiguation in every row's `notes:`), `validation_level: V0` with an explicit AMBIGUITY
+  FLAG in a comment + in `notes:` (the V0-V5 gauntlet ladder is built for discrete
+  periodic-orbit closure/encounter continuity, not continuous KAM-torus corridor extent; real
+  internal evidence exists via the GMOS `independent_closure_residual` + `#682`'s own L2 GMOS
+  positive control, but no V1+ tag is claimed without a registered `_LEVEL_EVIDENCE` entry --
+  golden discipline, when in doubt V0), `mass_ratio`/`state_nd`/`jacobi_constant`/`period_nd`
+  all cross-referenced to `data/scan_434_3d_broken_plane_em.jsonl` (3D-lift members, unique
+  x0/z0 match confirmed programmatically) or the golden ICs file (planar members, exact
+  x0/ydot0/period_nd match confirmed). **Cross-check**: 3 spot values (C21 member 1, C32's
+  16,979s-tail outlier member, planar R21-S) verified byte-for-byte against
+  `data/682_cycler_corridor_state.json` before AND after the schema change -- no drift, no
+  transcription error. **Coverage NOT expanded this pass**: the 20 already-measured members
+  only: 5/107 C21, 5/164 C32, 7/14 lyapunov3d-L1, 3/3 planar goldens (full population). Given
+  the schema-amendment work consumed the bulk of this dispatch and the C32 tail latency
+  (one member took 16,979s = 4.7h in `#682`'s own run), the bounded 2-3x expansion originally
+  scoped is deliberately NOT run this pass -- checking in per the dispatch's own instruction
+  rather than silently committing to more multi-hour compute. Verification: `ruff check .` +
+  `ruff format --check .` clean; full `mypy src tests` clean (764 files); catalogue-specific
+  tests (`test_schema_v47_orbit_class.py`, `test_validate_catalogue.py`,
+  `test_cycler_class_census.py` -- census ratchet updated 18->38 non-keplerian with the 20 new
+  ids + a stale pre-existing docstring count fixed in passing --, `test_catalog_v4_fields.py`,
+  `test_catalogue_loader*.py`) all pass; jsonschema + the Python `validate_catalogue()`
+  semantic gate both clean on the full 381-row file.
 - **#685 (registered 2026-07-22, NOT dispatched -- competes with #683 for priority)** -- the
   standing `#664` own-system application follow-on, explicitly named but deliberately NOT
   claimed by `#679`'s own shortlist (see `#679`'s "standing follow-on deliberately not

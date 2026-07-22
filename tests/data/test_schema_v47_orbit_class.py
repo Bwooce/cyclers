@@ -46,6 +46,27 @@ def _load_catalogue() -> list[dict[str, Any]]:
     return yaml.safe_load(CATALOGUE_PATH.read_text())  # type: ignore[no-any-return]
 
 
+def _is_epoch_free_cr3bp_corridor_subclass(row: dict[str, Any]) -> bool:
+    """Schema v5.2 (task #684): the epoch-free CR3BP KAM-corridor ``quasi_cycler``
+    subclass -- ``orbit_class='quasi_cycler'`` AND ``model_assumption='cr3bp'`` AND
+    ``validity_window`` null/absent. A KAM torus around a linearly-stable CR3BP periodic
+    orbit (#682's cycler-corridor census) winds quasi-periodically FOREVER with no real-
+    ephemeris calendar window, so this narrow, conditional carve-out is required instead
+    to be ``epoch_locked=False`` / ``n_returns='infinite'`` -- like ``cycler``/
+    ``resonant_po`` -- rather than fabricating a window and a finite return count.
+    ``precursor_mga``/``mga_tour`` are NEVER eligible for this exception (only
+    ``quasi_cycler``), and a ``quasi_cycler`` row that DOES carry a real
+    ``validity_window`` (e.g. every #569 Uranian moon-pair row) is NEVER eligible either,
+    even if it happens to also be ``model_assumption='cr3bp'`` -- both conditions must
+    hold simultaneously.
+    """
+    return (
+        row.get("orbit_class") == "quasi_cycler"
+        and row.get("model_assumption") == "cr3bp"
+        and row.get("validity_window") is None
+    )
+
+
 def test_schema_version_is_at_least_4_7() -> None:
     assert float(_load_schema()["version"]) >= 4.7
 
@@ -124,18 +145,127 @@ def test_cycler_rows_are_not_epoch_locked() -> None:
 
 
 def test_non_cycler_rows_are_epoch_locked_with_finite_returns() -> None:
-    """quasi_cycler / precursor_mga / mga_tour rows MUST be epoch_locked with a finite n_returns."""
+    """quasi_cycler / precursor_mga / mga_tour rows MUST be epoch_locked with a finite n_returns.
+
+    Exception (schema v5.2, task #684): a row matching
+    :func:`_is_epoch_free_cr3bp_corridor_subclass` (the epoch-free CR3BP KAM-corridor
+    ``quasi_cycler`` subclass) is instead required to be ``epoch_locked=False`` /
+    ``n_returns='infinite'`` -- see that helper's docstring. Every other quasi_cycler row,
+    and every precursor_mga/mga_tour row regardless of model_assumption, is unaffected by
+    this carve-out and still hits the original hard requirement below.
+    """
     rows = _load_catalogue()
     bad = []
     for r in rows:
         cls = r.get("orbit_class")
-        if cls in ("quasi_cycler", "precursor_mga", "mga_tour"):
-            if r.get("epoch_locked") is not True:
-                bad.append((r["id"], cls, "epoch_locked must be true"))
-            n = r.get("n_returns")
-            if not isinstance(n, int) or n < 1:
-                bad.append((r["id"], cls, f"n_returns must be a positive integer, got {n!r}"))
+        if cls not in ("quasi_cycler", "precursor_mga", "mga_tour"):
+            continue
+        if _is_epoch_free_cr3bp_corridor_subclass(r):
+            if r.get("epoch_locked") is not False or r.get("n_returns") != "infinite":
+                bad.append(
+                    (
+                        r["id"],
+                        cls,
+                        "epoch-free CR3BP quasi_cycler subclass must be "
+                        "epoch_locked=false / n_returns='infinite'",
+                    )
+                )
+            continue
+        if r.get("epoch_locked") is not True:
+            bad.append((r["id"], cls, "epoch_locked must be true"))
+        n = r.get("n_returns")
+        if not isinstance(n, int) or n < 1:
+            bad.append((r["id"], cls, f"n_returns must be a positive integer, got {n!r}"))
     assert not bad, f"epoch-locked classes failed invariants: {bad}"
+
+
+# --- Schema v5.2 (#684): the epoch-free CR3BP KAM-corridor quasi_cycler carve-out ---
+
+
+def _base_quasi_cycler_row(**overrides: Any) -> dict[str, Any]:
+    row: dict[str, Any] = {
+        "id": "synthetic-quasi-cycler",
+        "bodies": ["E", "Moon"],
+        "sequence_canonical": "E-Moon-E",
+        "orbit_class": "quasi_cycler",
+        "model_assumption": "cr3bp",
+        "epoch_locked": False,
+        "n_returns": "infinite",
+        "validity_window": None,
+    }
+    row.update(overrides)
+    return row
+
+
+def test_epoch_free_cr3bp_quasi_cycler_subclass_permitted() -> None:
+    """The new subclass (cr3bp + no validity_window) IS recognised, and its natural,
+    honest field values (epoch_locked=false / n_returns='infinite') are what the
+    subclass predicate is designed to admit -- confirms the amendment actually accepts
+    #682's corridor rows rather than merely failing to reject them."""
+    row = _base_quasi_cycler_row(epoch_locked=False, n_returns="infinite", validity_window=None)
+    assert _is_epoch_free_cr3bp_corridor_subclass(row)
+    # A row satisfying the predicate with these exact field values is precisely what
+    # test_non_cycler_rows_are_epoch_locked_with_finite_returns treats as compliant
+    # (it only flags a predicate-match row when epoch_locked/n_returns deviate).
+    assert row["epoch_locked"] is False
+    assert row["n_returns"] == "infinite"
+
+
+def test_real_ephemeris_cr3bp_quasi_cycler_still_epoch_locked() -> None:
+    """REGRESSION GUARD: a quasi_cycler row that carries a real validity_window must still
+    be forced epoch_locked=true even if model_assumption='cr3bp' -- the carve-out requires
+    BOTH conditions (cr3bp AND no validity_window), not cr3bp alone. Mirrors what would
+    happen if a future epoch-robustness scan (like #567/#568) were run on a corridor row."""
+    row = _base_quasi_cycler_row(
+        epoch_locked=False,
+        n_returns="infinite",
+        validity_window={"start": "2000-01-01T00:00:00Z", "end": "2050-01-01T00:00:00Z"},
+    )
+    assert not _is_epoch_free_cr3bp_corridor_subclass(row), (
+        "a quasi_cycler row with a real validity_window must NOT be treated as the "
+        "epoch-free subclass, even when model_assumption='cr3bp'"
+    )
+
+
+def test_non_cr3bp_quasi_cycler_still_epoch_locked() -> None:
+    """REGRESSION GUARD: a quasi_cycler row with NO validity_window but a non-cr3bp
+    model_assumption (e.g. a future analytic-ephemeris family-seed row) must NOT slip
+    through the carve-out -- both conditions are required, not either."""
+    row = _base_quasi_cycler_row(model_assumption="analytic-ephemeris", validity_window=None)
+    assert not _is_epoch_free_cr3bp_corridor_subclass(row), (
+        "a non-cr3bp quasi_cycler row must NOT be treated as the epoch-free subclass"
+    )
+
+
+def test_precursor_mga_and_mga_tour_never_eligible_for_epoch_free_carveout() -> None:
+    """REGRESSION GUARD: precursor_mga/mga_tour rows are NEVER exempt from
+    epoch_locked=true + finite n_returns, even when model_assumption='cr3bp' and no
+    validity_window is present -- the carve-out is scoped to quasi_cycler ONLY."""
+    for cls in ("precursor_mga", "mga_tour"):
+        row = _base_quasi_cycler_row(
+            orbit_class=cls, model_assumption="cr3bp", validity_window=None
+        )
+        assert not _is_epoch_free_cr3bp_corridor_subclass(row), (
+            f"{cls} must never be treated as the epoch-free CR3BP quasi_cycler subclass"
+        )
+
+
+def test_live_epoch_free_quasi_cycler_rows_are_cr3bp_and_windowless() -> None:
+    """Sanity check on the live catalogue: any row currently using the v5.2 carve-out
+    (epoch_locked=false under orbit_class=quasi_cycler) really is cr3bp + windowless, not
+    an accidental mistagging of a real-ephemeris row."""
+    rows = _load_catalogue()
+    bad = [
+        r["id"]
+        for r in rows
+        if r.get("orbit_class") == "quasi_cycler"
+        and r.get("epoch_locked") is False
+        and not _is_epoch_free_cr3bp_corridor_subclass(r)
+    ]
+    assert not bad, (
+        f"quasi_cycler rows with epoch_locked=false must satisfy the v5.2 carve-out "
+        f"condition (model_assumption='cr3bp' AND validity_window null): {bad}"
+    )
 
 
 def test_catalogue_validates_against_v47_schema() -> None:
