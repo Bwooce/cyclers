@@ -1036,19 +1036,18 @@ almost-invariant transport set -- R (Earth-neighbourhood) is almost-invariant on
 near-integrable degree expected at mu=3e-6, R->Q transport weak+transient (peak ~7% at n~10,
 decays <0.15% by n=200 in the leaky 0.50/iterate open-neck domain); no catalogue write,
 registry-stamped, schema question stays flagged+moot; #683 -- registered+dispatched
-2026-07-22 (Saturn-Titan periapse Poincare-map cartography, see own bullet); #686 -- third
-fresh discovery-strategy pass (user-directed, 2026-07-22), explicitly scoped to N>=4-body
-(4+ body / restricted-N-body) discovery methods -- explicitly SEPARATE from #679's own
-"considered and rejected" BCR4BP/HR4BP item (that was a robustness/perturbation-continuation
-idea on EXISTING 3-body cyclers, already superseded by the V4 DE440 gauntlet; this pass must
-find something that is genuinely 4-body-NATIVE, not another 3-body-cycler perturbation check);
-grounded against the substantial existing BCR4BP/QBCP infrastructure (core/bcr4bp.py,
-core/qbcp.py, the #533-#620 SE-L2<->EM-L2 torus-connection arc, all ending in manifold-
-conditioning-wall clean negatives) so the new pass doesn't re-propose already-exhausted
-ground; explicitly asked to assess TRACTABILITY honestly (the user's own framing: is a
-genuine N>=4-body discovery search an "impossible problem," and if so why, and what would
-make a bounded piece of it tractable) rather than assuming a search is straightforwardly
-possible (registered+dispatched 2026-07-22, Fable); #687 next-unused):**
+2026-07-22 (Saturn-Titan periapse Poincare-map cartography, see own bullet); #686 ✓ DONE (2026-07-22, Fable) -- third
+fresh discovery-strategy pass, N>=4-body scope: honest tractability verdict delivered first
+(general N>=4-body discovery stays intractable -- tractability hinges on reduction to a
+PERIODICALLY-forced PCRTBP, and the #533-#620 wall's four drivers do not generalize to
+weak-forcing/mild-instability settings; incommensurate forcing is where "impossible" truly
+starts); 1-item shortlist: a Laplace-locked repeating resonant tour (ballistic quasi-cycler)
+in the Jupiter-Europa-Ganymede CCR4BP via a closed heteroclinic cycle among whiskered
+resonant tori (Ganymede 4:3 <-> Europa 3:4; secondary-resonance objects have NO 3-body
+analog; published one-way transfers = named positive controls, closed cycle unclaimed);
+staged Stage-A cheap composed-Keplerian-map screen + Stage-B ~3-5wk build (USER GO required);
+11 alternatives explicitly rejected with reasons; 4 user decision points flagged; see
+docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md; #687 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13247,7 +13246,11 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   remaining exclusivity concern; both methods are complementary lenses on the same transport
   question and a second data point at Saturn-Titan is worth having regardless of `#685`'s
   own-system result at Sun-Earth.
-- **#686 (registered+dispatched 2026-07-22, Fable)** -- third fresh discovery-strategy pass,
+- **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
+  honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
+  with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
+  `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md`.**
+  Originally dispatched as: third fresh discovery-strategy pass,
   explicitly scoped to N>=4-body (four-or-more-body / restricted-N-body) discovery methods.
   Explicitly SEPARATE from and NOT a re-proposal of `#679`'s own "considered and rejected"
   BCR4BP/HR4BP item (that was a robustness/perturbation-continuation check applied to
@@ -13269,6 +13272,58 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   dispatches -- matching `#661`/`#679`'s own format (live web survey + direct codebase grep +
   a ranked shortlist with named positive controls, or an honest "not currently tractable"
   verdict if that is the genuine finding).
+  **RESULT (2026-07-22, Fable).** Grounded against the full `#533`-`#620` arc (all terminal
+  diagnoses re-read in full, not from memory), `core/bcr4bp.py`/`core/qbcp.py` read directly,
+  the `#500` Keplerian-map verdict note, the in-corpus Kumar-Anderson-de la Llave SIADS digest,
+  `literature_check.py`'s Jovian anchors, the catalogue primary-body census, and all Jovian
+  `empty_regions.jsonl` entries; plus eight live web searches + four abstract-level fetches.
+  **Tractability verdict (delivered first, per the mandate): the general N>=4-body discovery
+  problem remains intractable here -- but for a sharper reason than "chaos": tractability is
+  not about N, it is about whether the model reduces to a PERIODICALLY-forced PCRTBP** (the
+  stroboscopic map makes tori 1D circles with 2D whiskers in a 4D map space, where heteroclinic
+  intersections are GENERIC points -- findable objects). The `#533`-`#620` wall was driven by
+  four specific factors (O(1) solar forcing mu_S=3.289e5, EM-L2's ~1540-2e4 per-period
+  amplification, the 388:1 SE/EM scale gap, and a never-published end target = no positive
+  control) and does NOT generalize to weak-forcing/mild-instability 4-body settings.
+  Incommensurate forcing (real ephemeris, non-resonant moons -- e.g. any Uranian CCR4BP) is
+  where "impossible" genuinely starts: no stroboscopic reduction, no published discovery-scale
+  success anywhere. **The single tractable lane (1-item shortlist): a Laplace-locked repeating
+  resonant tour (ballistic quasi-cycler) in the Jupiter-Europa-Ganymede concentric circular
+  R4BP (CCR4BP, moons at exact 2:1 -> time-periodic)** -- search for a closed heteroclinic
+  CYCLE among whiskered resonant tori (Ganymede 4:3 <-> Europa 3:4). Genuinely 4-body-native on
+  three grounds: PCRTBP resonant orbits become 2D whiskered tori in a 5D extended space (no
+  Jacobi constant); the 4th body births SECONDARY-resonance objects (11/34, 12/37, 23/71,
+  25/77 lockings, AAS 23-397) with NO 3-body analog whose overlap restructures the 4:3 family;
+  and the cycle's phasing condition is a two-moon commensurability meaningless in any CR3BP.
+  Published one-way transfers exist (Kumar-Anderson-de la Llave, Acta Astronautica 211:76-87,
+  2023); the closed CYCLE is unclaimed (checked live against Kumar's own pub list through
+  2025) -- real scoop risk, stated. Dodges the `#533`-`#620` wall on all four axes (forcing
+  mu~2.5e-5-7.8e-5; mild MMR instability -- measured day-one as Stage B's first gate, not
+  assumed; no scale gap; positive controls at EVERY stage: in-repo `#500` goldens, in-corpus
+  SIADS 24(1):219 digest, acquirable Acta 2023/arXiv 2109.14815/2309.06073), and the
+  parameterization method's simultaneous torus+bundle solve structurally fixes `#619`'s
+  post-hoc STM-extraction mechanism. Prior Jovian sweeps (jovian-IEG-vilm, `#433`, `#318`/
+  `#501` Sobol real-eph) are all OTHER-regime (patched-conic flyby / Lambert-seeded shooting)
+  method-conditional empties -- this is the registry doctrine's legitimate new-method re-entry,
+  not a re-sweep. Staged: Stage A cheap composed-Keplerian-map screen (~2-4 d, screen-grade
+  only, no GO needed); Stage B real build (~3-5 wk, planar CCR4BP EOM+STM patterned on
+  bcr4bp.py + `#617`-corrector adaptation + whisker-robustness gate + CPU mesh intersection +
+  symmetry-mirrored cycle closure; USER GO REQUIRED -- largest single build since Track-A).
+  Novelty ceiling MODERATE-HIGH (new species on a published body pair -- Russell-Strange 2009
+  has a patched-conic Ganymede-Europa cycler anchor; a small-dv outcome lands as quasi_cycler;
+  a clean no-cycle negative is registry-grade). **Considered and explicitly rejected (11
+  items, see note §4)**: BCR4BP/HR4BP continuation (barred), any SE-L2<->EM-L2 revisit
+  (`#619`/`#620` obstructions unaddressed), choreographies (unphysical), Trojan/equilateral
+  R4BP (bend-gate mass wall), `#609` revival (both partners still missing), EM L4/L5
+  substitutes (parking not transport), Saturn CCR4BP editions (mass-starved; named second
+  target ONLY if JEG validates), Uranian CCR4BP (no present-day MMRs -> over the
+  quasi-periodic boundary), full-ephemeris seedless discovery, low-thrust tours
+  (control-dependent), lunar-assisted cycler establishment (design not discovery). **Four
+  user decision points flagged (note §5)**: Stage-B GO/NO-GO; model_assumption schema value
+  for CCR4BP + idealized-commensurability validity_window semantics; corpus acquisition of
+  the Acta 2023 + arXiv 2309.06073 papers before PC2; row-vs-registry policy for model-native
+  objects that fail V4 real-eph continuation. No papers acquired this pass (abstract-level
+  fetches only), so no CORPUS_INDEX edit -- acquisition is PC2's named prerequisite.
 - **#658 ✓ DONE (2026-07-19, Sonnet) — clean small negative: #654's own framing of the candidate
   rows was half-wrong, verified against the live catalogue rather than assumed; among the rows
   that ARE genuinely epoch-carrying, no cheap+independent transfer opportunity exists.** `#654`
