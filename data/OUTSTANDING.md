@@ -1035,8 +1035,12 @@ Tisserand); full 4-check calibration + two-seed robustness pass, but no novel su
 almost-invariant transport set -- R (Earth-neighbourhood) is almost-invariant only to the
 near-integrable degree expected at mu=3e-6, R->Q transport weak+transient (peak ~7% at n~10,
 decays <0.15% by n=200 in the leaky 0.50/iterate open-neck domain); no catalogue write,
-registry-stamped, schema question stays flagged+moot; #683 -- registered+dispatched
-2026-07-22 (Saturn-Titan periapse Poincare-map cartography, see own bullet); #686 ✓ DONE (2026-07-22, Fable) -- third
+registry-stamped, schema question stays flagged+moot; #683 ✓ DONE (2026-07-22, Opus) -- built the
+missing periapse Poincare-map capability (search/periapse_map.py), reproduced the Davis-Howell 2011
+Saturn-Titan/Sun-Saturn escape/impact/capture lobe positive control, and surfaced a robust ~2-cycle
+near-recurrent capture->escape->recapture TRANSIT candidate at Titan (seed #217, per-cycle residual
+~0.012 r_H, then impacts) -- NOT an exact periodic orbit; reported for adjudication, no catalogue write,
+see own bullet; #686 ✓ DONE (2026-07-22, Fable) -- third
 fresh discovery-strategy pass, N>=4-body scope: honest tractability verdict delivered first
 (general N>=4-body discovery stays intractable -- tractability hinges on reduction to a
 PERIODICALLY-forced PCRTBP, and the #533-#620 wall's four drivers do not generalize to
@@ -13226,26 +13230,63 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `ruff format --check .` / `mypy src tests` (766 files) clean; `tests/data tests/search
   tests/scripts` green except the two documented pre-existing baseline failures
   (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
-- **#683 (registered+dispatched 2026-07-22)** -- `#679` shortlist
-  item 4, periapse Poincare-map cartography for repeating temporary-capture itineraries,
-  Saturn-Titan first. See `#679`'s own bullet + report section 4. Scope: build the one classical
-  seedless discovery map this codebase genuinely lacks (survey-verified: no periapsis/apsis
-  Poincare-map machinery anywhere in `search/`) -- periapse maps in the planet-moon CR3BP
-  (Davis-Howell lineage), used to find capture-lobe -> escape-lobe -> re-capture repeating
-  itineraries geometrically. Mandatory positive control (ACQUISITION NEEDED): reproduce a
-  published periapse-map structure -- Davis & Howell 2012 (JGCD 35(1)) periapse-map
-  transit/capture regions, or Villac & Scheeres 2003 (Hill problem escape lobes); neither
-  currently in corpus. Honest overlap note named by `#679`: this method's discovery content
-  overlaps `#664`'s set-oriented pipeline (periapse maps give exact per-trajectory structure with
-  no Monte-Carlo noise; `#664` gives measure/residence statistics on the same underlying
-  transport question) -- ranked last for exactly that overlap, and competes with the un-claimed
-  `#664` own-system follow-on (see `#679`'s "standing follow-on deliberately not claimed" note)
-  for the same transport-discovery niche; do not dispatch both without an explicit decision on
-  which is preferred. **UPDATE 2026-07-22: dispatched anyway alongside `#686`** -- `#685` (the
-  competing `#664` own-system application) already closed as a clean negative, so there is no
-  remaining exclusivity concern; both methods are complementary lenses on the same transport
-  question and a second data point at Saturn-Titan is worth having regardless of `#685`'s
-  own-system result at Sun-Earth.
+- **#683 ✓ DONE (2026-07-22, Opus) -- built the missing periapse Poincare-map capability, PASSED the
+  Davis-Howell 2011 Saturn-Titan positive control, and surfaced a robust near-recurrent
+  capture->escape->recapture TRANSIT candidate at Titan (reported for adjudication, NOT called novel,
+  no catalogue write).** `#679` shortlist item 4, periapse Poincare-map cartography for repeating
+  temporary-capture itineraries, Saturn-Titan first. See `#679`'s own bullet + report section 4.
+  **Positive control ACQUIRED (not blocked):** the named Davis & Howell 2012 / Villac & Scheeres 2003
+  were not in corpus, but a web search found the same-lineage **Davis & Howell 2011, "Trajectory
+  evolution in the multi-body problem with applications in the Saturnian system," Acta Astronautica 69
+  (2011) 1038-1049** freely available from the authors' Purdue site -- the STRONGER control because it
+  applies the periapse map DIRECTLY to Saturn-Titan with explicit published Jacobi values. Filed to the
+  private corpus (md5 9c3569d), digested to `docs/notes/2026-07-22-683-digest-davis-howell-2011-periapse-maps.md`,
+  registered in CORPUS_INDEX. So the first-principles Hill-problem fallback the dispatch allowed was NOT
+  needed. **Built:** `src/cyclerfinder/search/periapse_map.py` -- generic planet-moon periapse-map
+  machinery reusing `core.cr3bp`'s DOP853 propagator + `jacobi_constant` verbatim (no new integrator):
+  exact periapsis section (`rdot=0` w.r.t. the secondary, `rddot>0`) via a `rdot*r` zero-crossing
+  `solve_ivp` event with the sibling `quasi_hilda_positive_control` t=0-self-detection kickoff guard;
+  Jacobi-fixed prograde periapse-state construction (velocity magnitude from J, direction perpendicular
+  to the P2-relative radius); position-space map coords in Hill-radius units; four-way fate classifier
+  (IMPACT / ESCAPE_L1 / ESCAPE_L2 / CAPTURED, the paper's own >0.01-beyond-L1/L2 escape rule); and a
+  fixed-time-horizon `collect_titan_periapses` for long-term itineraries. Driver
+  `scripts/census_683_periapse_map_saturn_titan.py` (named `census_*`, so outside the `run_*` preflight
+  gate -- a fixed-energy capability run, same category as `#664`/`#685`). Tests
+  `tests/search/test_periapse_map.py` (11 physics-correctness checks). **Calibration (Phase B, all
+  passed before trusting any structure):** periapsis detection EXACT not sampling-based (max |rdot| at
+  detected periapses 5.3e-14, min rddot 0.070>0); Jacobi conserved across the map (worst |dJ| 1.9e-11);
+  construction exact (J err 8.9e-16, rdot 2e-17); grazing periapse -> IMPACT; escape-L1 lobes on the
+  interior side (centroid x_p=-0.985), escape-L2 on the exterior (x_p=+0.987). **Positive control
+  (Phase C) PASSED** with two paper-specific quantitative predictions reproduced: (1) capture fraction
+  collapses 60%->13% from 1->6 revs (paper: "more trajectories escape or impact" over longer
+  propagations); (2) Titan impact fraction 6.4% >> Sun-Saturn's 0.1% at 1 rev (paper: Titan's radius is
+  much larger in Hill units); plus the correct directional/asymmetric L1>L2 escape lobes. Independent
+  cross-check: my computed C_L1/C_L2 put both published search energies J1=3.0173047 (Sun-Saturn) and
+  J2=3.0153110 (Saturn-Titan) ~1.4e-4 below C_L2 (both necks open), exactly the paper's stated regime.
+  **Discovery (Phase D) -- Saturn-Titan at J2, 734 captured-region seeds each propagated ~33 Titan
+  periods:** 622/734 undergo a gateway excursion (leave Titan's Hill sphere), and **45/734 show a
+  genuine capture->escape->re-capture itinerary** (leave through a gateway, orbit Saturn, return to a
+  near-Titan periapse). Best candidate = seed #217: captured near Titan, a large Saturn-realm excursion
+  out to ~41 Hill radii, re-capture at x_p~+0.152, a NEARLY IDENTICAL second excursion, second
+  re-capture at x_p~+0.164, then a Titan impact -- a ~2-cycle near-recurrent transit shadowing a
+  period-~68 (nondim) capture<->escape<->recapture cycle, per-cycle periapse-map return residual
+  ~0.012 r_H (~500 km), tolerance-robust in topology (identical across rtol 1e-10..1e-13). **This is a
+  CANDIDATE, not a confirmed object:** the residual is nonzero and it impacts after 2 cycles, so it is
+  NOT an exact periodic orbit; confirming an exact underlying periodic transit orbit needs a dedicated
+  multiple-shooting corrector, which is deliberately OUT of the read-it-off-the-map method's scope. The
+  phenomenology (transit through the L1/L2 Lyapunov manifold tubes) is WITHIN Davis-Howell 2011's own
+  described escape/capture structure, so nothing here is claimed novel -- reported for adjudication per
+  the standing discipline (do NOT call it novel yourself). **No `empty_regions.jsonl` stamp:** the
+  search did NOT come back empty (it found capture-escape-recapture itineraries and a specific
+  candidate), so the empty-region registry would mis-record it; deliberately omitted. Honest overlap
+  with `#664`/`#685`: complementary lens (exact per-trajectory lobe geometry vs statistical
+  measure/residence) on the same transport question; `#685` already closed its own-system application
+  as a clean negative, so no exclusivity concern remained. Novelty ceiling was rated moderate-low and
+  that held -- the value delivered is the reusable CAPABILITY + a genuine (if not catalogue-worthy)
+  candidate, not a new species. Outputs `data/found/683_periapse_map/`. Verification: full
+  `ruff check .` / `ruff format --check .` / `mypy src tests` (768 files) clean; `tests/data tests/search
+  tests/scripts` green except the two documented pre-existing baseline failures
+  (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in

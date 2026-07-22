@@ -1,0 +1,23 @@
+{
+  "n_captured_seeds_probed": 734,
+  "t_total_nondim": 207.34511513692635,
+  "t_total_titan_periods": 33.0,
+  "near_titan_rp_over_rH": 0.6,
+  "excursion_rp_over_rH": 1.0,
+  "n_excursion_trajectories": 622,
+  "n_escape_recapture_trajectories": 45,
+  "min_excursion_return_residual_rH": 0.008089732839858761,
+  "median_excursion_return_residual_rH": 0.09147470442461915,
+  "best_record": {
+    "seed_index": 217,
+    "seed_state": [
+      1.0196572560444028,
+      -0.0074517536134353244,
+      0.0,
+      0.029765939253854182,
+      0.07946614705680487,
+      0.0
+    ],
+    "min_excursion_return_residual_rH": 0.008089732839858761
+  }
+}

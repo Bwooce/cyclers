@@ -1,0 +1,13 @@
+{
+  "c1_max_abs_rdot_at_detected_periapsis": 5.260438576536717e-14,
+  "c1_min_rddot_at_detected_periapsis": 0.06976574466118471,
+  "c1_n_checked": 40,
+  "c2_worst_abs_dj_across_map": 1.9100276915651193e-11,
+  "c3_worst_construct_j_err": 8.881784197001252e-16,
+  "c3_worst_construct_rdot": 2.040097628432022e-17,
+  "c4a_grazing_periapsis_fate": "IMPACT",
+  "c4b_escape_l1_centroid_xp": -0.9854425144747725,
+  "c4b_escape_l2_centroid_xp": 0.9865567765567764,
+  "c4b_n_escape_l1": 62,
+  "c4b_n_escape_l2": 35
+}
