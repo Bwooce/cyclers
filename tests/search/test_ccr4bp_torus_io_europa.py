@@ -131,6 +131,7 @@ def test_base_orbit_stays_clear_of_io_and_near_europa_sma(
         atol=1e-13,
         dense_output=True,
     )
+    assert sol.sol is not None
     ts = np.linspace(0.0, period, 2000)
     xs = np.array([sol.sol(t) for t in ts])
     r_io = np.sqrt((xs[:, 0] - 1.0 + mu) ** 2 + xs[:, 1] ** 2)
