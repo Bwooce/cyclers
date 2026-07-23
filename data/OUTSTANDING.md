@@ -38,26 +38,11 @@ unchanged. See `git log` around this date for the corrected commit.
   see its own bullet entry (search `#699 --`) for full scope.
 - `#700` — deeper literature check on Jupiter Europa-Callisto before any CCR4BP build commitment;
   see its own bullet entry (search `#700 --`) for full scope.
-- `#692` — fix `_AstropyBackend.states()` batch/scalar exact-equality mismatch in
-  `src/cyclerfinder/core/ephemeris.py`. Found 2026-07-23 incidentally during `#691`'s independent
-  full-suite verification: `tests/core/test_ephemeris_cache.py::test_states_batch_matches_scalar_state[astropy]`
-  fails DETERMINISTICALLY (confirmed via 3x isolated single-worker re-run, not a parallel-xdist
-  flake) at `(model=astropy, body=E, t=0.0)` — `np.array_equal` mismatch on values that print
-  identically at displayed precision, i.e. a sub-ULP divergence. Root cause (not yet fixed):
-  `states()`'s own docstring claims "Per-element output is byte-identical to looping `state()`:
-  same DE440 states, same ICRS→ecliptic rotation, same subtraction order" — that claim is false;
-  the batch path evaluates an array-valued astropy `Time`/Chebyshev call while the scalar path
-  evaluates a single-element `Time` call, and these are not guaranteed bit-identical inside
-  astropy/ERFA. Pre-existing since `65f3c2d` (2026-06-07), unrelated to `#691`'s CCR4BP changes
-  (which never touch this module) — just never previously surfaced by a full-suite run. Likely
-  low physical impact (sub-ULP), but violates this project's "batch API is byte-identical to
-  scalar" documented contract and the standing "fully green modulo the 2 documented failures"
-  suite discipline. Fix options to evaluate: loosen the test to `np.allclose` if bit-identity was
-  never actually achievable (and correct the docstring's claim), or find and fix the actual
-  divergent step. Given `[[feedback_bugfix_invalidates_past_searches]]`, once fixed check whether
-  the divergence is large enough anywhere to have affected any past batch-ephemeris search result
-  (unlikely at sub-ULP scale, but confirm before closing).
-  (`#652` — corrected 2026-07-19: this line was never updated after `#652`
+- None currently. (`#692` — REMOVED from this list 2026-07-23, CLOSED same day: see its own
+  `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
+  not astropy's own Time/Chebyshev evaluation as originally suspected; fixed with a deterministic
+  elementwise rotation, test kept at exact `np.array_equal` (not loosened).
+  `#652` — corrected 2026-07-19: this line was never updated after `#652`
   was dispatched and closed the same day; see its own `✓ DONE` bullet entry — fixed via a
   `solve_ivp` close-approach termination event on BOTH STM-integration paths, 9 new regression
   tests, hang confirmed via git-stash before/after, full suite green. Removed from this list.
@@ -14018,6 +14003,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   far-from-secondary batch work only), Apple shipping GPU fp64, or a published MCPI variant
   demonstrating certified convergence through close approaches without per-trajectory
   adaptivity (none found).
+- **#692 ✓ DONE (2026-07-23, commit `7c9a509`) -- fixed the `_AstropyBackend` batch/scalar
+  exact-equality mismatch; root cause was BLAS dispatch, not astropy's own internals.**
+  `tests/core/test_ephemeris_cache.py::test_states_batch_matches_scalar_state[astropy]` failed
+  deterministically at `(E, t=0.0)` — a sub-ULP `np.array_equal` mismatch, values agreeing to
+  display precision. The dispatched agent investigated rather than just loosening the test, and
+  found the ACTUAL, avoidable root cause: the ICRS→ecliptic rotation was applied as
+  `self._r_icrs_to_ecl @ vec`, a 3×3 matrix product — for a single `(3,)` vector this dispatches
+  to BLAS `dgemv`, for a batched `(3, k)` array it dispatches to `dgemm`; different
+  accumulation/blocking strategies plus IEEE-754 non-associativity mean the two don't reliably
+  agree bit-for-bit despite being mathematically identical (astropy's own scalar-vs-array
+  `Time`/Chebyshev evaluation, the ORIGINALLY suspected culprit, was independently confirmed
+  bit-identical between the two call shapes — it was not the cause). Fixed by replacing the
+  matrix product with `_rotate_icrs_to_ecl`, an explicit elementwise rotation (multiply-then-
+  2-term-add per output component) with a fixed operation order regardless of batch size. **The
+  test itself is UNCHANGED** — exact `np.array_equal` now holds genuinely, not via a loosened
+  tolerance; the docstring's "byte-identical" claim is now actually true. **Independently
+  re-verified 2026-07-23**: I reviewed the diff directly (agent stalled mid-verification without
+  committing; took over to finish), re-ran the previously-failing test 3× isolated (all pass),
+  the full `test_ephemeris_cache.py` module (15/15 pass), ruff/full-mypy clean (791 files), and a
+  full `tests/core tests/search tests/scripts` re-run shows only the 2 long-documented
+  pre-existing failures — `test_ephemeris_cache` no longer appears at all, confirming the fix is
+  complete, not merely avoided.
 - **#699 -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
   commitment.** `#693`'s third-ranked candidate: `mu_pert=3.92e-5` (only 2x below the
   already-marginal JEG reference — the best non-Jovian mass conditioning found), both
