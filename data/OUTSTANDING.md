@@ -180,13 +180,13 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#699` and `#700` — deeper literature checks on Uranus Umbriel-Titania and Jupiter
-  Europa-Callisto respectively (`#693`'s two remaining CCR4BP candidates), dispatched IN
-  PARALLEL 2026-07-24. See each's own bullet entry for full scope. (`#695`/`#696` — REMOVED from
-  this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
-  honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
-  genuine ghost-guard-verified JEG homoclinic connection found, full Stage-B CCR4BP pipeline
-  proven end-to-end.)
+- `#700` — deeper literature check on Jupiter Europa-Callisto (`#693`'s remaining CCR4BP
+  candidate), dispatched in parallel with `#699` 2026-07-24. See its own bullet entry for full
+  scope. (`#699` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT CLEAR — see its
+  own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from this list 2026-07-23, both CLOSED same
+  day; see each's own `✓ DONE` bullet entry — `#695` an honest near-miss, `#696` a clean negative.
+  `#694` — REMOVED 2026-07-23, CLOSED same day; genuine ghost-guard-verified JEG homoclinic
+  connection found, full Stage-B CCR4BP pipeline proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -14025,8 +14025,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   full `tests/core tests/search tests/scripts` re-run shows only the 2 long-documented
   pre-existing failures — `test_ephemeris_cache` no longer appears at all, confirming the fix is
   complete, not merely avoided.
-- **#699 (dispatched 2026-07-24, in parallel with `#700`) -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
-  commitment.** `#693`'s third-ranked candidate: `mu_pert=3.92e-5` (only 2x below the
+- **#699 ✓ DONE (2026-07-24, commit `6d3b8a2`) -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
+  commitment. VERDICT: CLEAR.** `#693`'s third-ranked candidate: `mu_pert=3.92e-5` (only 2x below the
   already-marginal JEG reference — the best non-Jovian mass conditioning found), both
   eccentricities under the tractability bar, `Δi≈0`, a 2.10 near-2:1 period ratio not much
   looser than JEG's own 2.03. `#693`'s own report explicitly did NOT clear this for a build —
@@ -14038,6 +14038,25 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   checking `search/literature_check.py`'s `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the
   private `cyclers_pdf` corpus, and live search — before this candidate could be promoted to a
   build task analogous to `#695`/`#696`.
+  **RESULT.** `docs/notes/2026-07-24-699-umbriel-titania-deep-litcheck.md`. Ten distinct targeted
+  live-search queries (direct-pair, author-driven via Kumar's full publication list, general
+  Uranian-4-body survey, conference-paper angles), a full re-read (not grep snippets) of every
+  existing Uranian `KNOWN_CORPUS` anchor, a `cyclers_pdf` corpus directory scan (218 files, zero
+  Umbriel/Titania/Oberon filename matches), and a full-text (not abstract-only) check of the
+  single closest-adjacent paper (Kumar arXiv:2509.03655) confirming "Umbriel" does not appear in
+  it anywhere and Titania there is only Oberon's perturber, never paired with Umbriel — all
+  converge on **no disqualifying prior work found**. The Uranian neighborhood's "active adjacent
+  work" `#693` flagged resolves cleanly: it's either Ariel-Umbriel resonance-CAPTURE/migration (a
+  different subfield, planetary formation not astrodynamics) or Titania-Oberon CCR4BP (a
+  different, already-anchored pair) — neither touches Umbriel-Titania. No new `KNOWN_CORPUS`
+  anchor added, `CORPUS_INDEX.md` left unchanged (nothing new/substantive acquired, correctly not
+  padded). **Independently spot-verified 2026-07-24**: I grepped `search/literature_check.py`
+  myself and confirmed both CCR4BP-relevant Uranian anchors' `body_set` fields are exactly
+  `frozenset({"Oberon", "Titania"})` — never Umbriel — matching the report's central claim
+  precisely; the anchors that DO include Umbriel in their `body_set` (STOUR/Sims/Jarmak tour
+  concepts) are one-shot mission-tour papers, not CCR4BP torus work, correctly distinguished.
+  **Ready to be promoted to a build task analogous to `#695`/`#696`, pending explicit user GO**
+  (not yet dispatched — this task's own scope was the literature check only).
 - **#700 (dispatched 2026-07-24, in parallel with `#699`) -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
   commitment.** `#693`'s fourth-ranked candidate: `mu_pert=5.67e-5` (comparable to JEG), good
   tractability, but no clean low-integer commensurability (4.73 period ratio — the loosest of
