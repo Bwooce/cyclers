@@ -194,7 +194,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#694` — REMOVED from this list 2026-07-23, CLOSED same day; see its
+- `#695` and `#696` — the now-proven CCR4BP pipeline applied to Jupiter Io-Europa and Io-Ganymede
+  respectively, dispatched IN PARALLEL 2026-07-23 (not serially — see each's own bullet entry and
+  `#694`'s closing note). (`#694` — REMOVED from this list 2026-07-23, CLOSED same day; see its
   own `✓ DONE` bullet entry — genuine ghost-guard-verified JEG homoclinic connection found, full
   Stage-B CCR4BP pipeline proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
@@ -1180,7 +1182,19 @@ fully-proven JEG one. Positive-controlled against JEG (reusing #690's torus + #6
 segmented-CLV whisker direction, both already validated) before being trusted on anything novel.
 Explicit purpose: once this lands, the SAME machinery gets applied in parallel across the
 novelty-cleared candidates (Io-Europa, Io-Ganymede) as genuine discovery attempts, rather than
-another serial capability-validation chain. #695 next-unused):**
+another serial capability-validation chain. DONE 2026-07-23: genuine, ghost-guard-verified
+homoclinic connection found on the JEG Europa 3:4 torus (all 4 lobe-sign combos converge
+independently, residual ~1e-14, survives an independent Radau cross-check and mesh refinement
+without degrading) -- full Stage-B pipeline (EOM/STM -> torus -> whisker -> globalize ->
+intersection search -> ghost-guard) proven end-to-end for the first time; see #694's own bullet.
+#695 -- apply the now-proven pipeline to Jupiter Io-Europa (#693's top-ranked novelty-cleared
+candidate: exact 2.0000 period ratio, cleanest geometry surveyed) as a genuine discovery attempt,
+dispatched IN PARALLEL with #696 rather than serially. #696 -- same pipeline applied to Jupiter
+Io-Ganymede (#693's second-ranked candidate, mu_pert byte-identical forcing regime to the proven
+JEG system), dispatched in parallel with #695. Both explicitly framed to their own dispatched
+agents as genuine attempts to find something ACTUALLY NOVEL (not another capability-proof/
+positive-control-only exercise), per the user's own stated urgency about not wasting time on
+further serial validation. #697 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13820,6 +13834,31 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   from the raw result.json fields and confirmed it's self-consistent). **Next: the actual parallel
   fan-out** — apply this now-proven pipeline to `#693`'s novelty-cleared candidates (Io-Europa,
   Io-Ganymede) as genuine discovery attempts, dispatched together, not another serial chain.
+- **#695 (dispatched 2026-07-23, in parallel with `#696`) -- apply the full, now-proven CCR4BP
+  pipeline (`#689`-`#694`) to Jupiter Io-Europa, a genuine discovery attempt.** `#693`'s
+  top-ranked novelty-cleared candidate: exact 2.0000 period ratio (the tightest resonance in the
+  solar system), `mu_pert=2.53e-5` (comparable order to the JEG system's own base leg), e/Δi both
+  under the reference bar, no hit in 3 targeted literature checks. Scope: build a new
+  `..._default()` `CCR4BPSystem` constructor for Io-Europa (Io plays Europa's structural role as
+  the base/forced body, Europa plays Ganymede's role as the outer perturber — reuse `#689`'s exact
+  parameterization pattern, no new EOM/STM code expected), find/converge the Io-Europa 2:1 (or
+  whatever the actual base resonant orbit turns out to be) resonant periodic orbit, build its
+  CCR4BP torus (`#690`'s corrector, reused unmodified), extract + validate the whisker direction
+  (`#691`, reused unmodified, including its own positive-control discipline on this NEW system
+  before trusting it here), globalize and run the heteroclinic search (`#694`'s modules, reused
+  unmodified) — same ghost-guard discipline throughout (independent-integrator check, mesh
+  refinement stability, off-torus sanity). This is a genuine discovery attempt, not another
+  capability-proof exercise — a real result (with or without an actual connection found) is
+  expected. No catalogue writeback without a separate, later vetting task even if a connection is
+  found. Dispatched together with `#696`, not serially, per the user's explicit concern about
+  wasted serial validation.
+- **#696 (dispatched 2026-07-23, in parallel with `#695`) -- apply the full, now-proven CCR4BP
+  pipeline (`#689`-`#694`) to Jupiter Io-Ganymede, a genuine discovery attempt.** `#693`'s
+  second-ranked novelty-cleared candidate: `mu_pert=7.80e-5`, essentially IDENTICAL forcing
+  strength to the already-validated JEG perturber term (since both involve Ganymede/Jupiter), 4.06
+  period ratio (a real Laplace-chain consequence), e/Δi both under the reference bar, no hit in 2
+  targeted literature checks. Same scope/pipeline/discipline as `#695`, applied to this pair
+  instead (Io base, Ganymede perturber). Dispatched together with `#695`, not serially.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
