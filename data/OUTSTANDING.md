@@ -13868,7 +13868,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   period ratio (a real Laplace-chain consequence), e/Δi both under the reference bar, no hit in 2
   targeted literature checks. Same scope/pipeline/discipline as `#695`, applied to this pair
   instead (Io base, Ganymede perturber). Dispatched together with `#695`, not serially.
-- **#697 (dispatched 2026-07-23, Fable) -- strategy pass: is any part of this project's
+- **#697 ✓ DONE (2026-07-23, Fable) -- strategy pass: is any part of this project's
   orbit-search pipeline a good candidate for Apple GPU (Metal/MPS) acceleration instead of CPU?**
   User-requested directly, while `#695`/`#696` were still being independently verified. Scope:
   survey what's actually compute-bound in this codebase (scipy `solve_ivp`-based adaptive ODE
@@ -13881,6 +13881,34 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   not a hype pass — this project's standing discipline for strategy passes (`#679`/`#686`/`#693`)
   is a real cost/benefit assessment, including "no, this isn't worth it" as a fully acceptable
   answer if that's what the analysis shows.
+  **RESULT (2026-07-23, commit `63a8b8c`): honest NEGATIVE, delivered first.**
+  `docs/notes/2026-07-23-697-gpu-feasibility-strategy-pass.md`. No part of this pipeline should
+  move to the Apple GPU — structural, not effort-based: Apple GPUs have no hardware fp64 (Metal
+  ALUs are fp32-only; software-emulated fp64 runs at ~1/32-1/64 of fp32 throughput), confirmed
+  across every current framework (PyTorch MPS rejects fp64 outright; jax-metal is
+  experimental/effectively unmaintained; the new jax-mps alpha and Apple's own MLX both
+  explicitly document no fp64), and this project's correctors/gates are fp64-mandatory at
+  `rtol=atol=1e-12` (five orders of magnitude below fp32 epsilon — a fp32 result could never
+  satisfy a gate, only serve as a triage layer ahead of an fp64 CPU re-run). **Quantitatively
+  worse, not just harder**: a grounding benchmark on this machine (confirmed venv numpy/scipy
+  both build on Apple's Accelerate BLAS, `show_config()` — independently re-verified by me
+  directly) measures 271-353 GFLOPS fp64 GEMM via AMX on the CPU already, vs. the base-M3 GPU's
+  emulated-fp64 ceiling of only ~35-90 GFLOPS — the CPU is 3-8x FASTER at the only precision this
+  project can accept. Workload-by-workload verdict: all six computational patterns surveyed
+  (adaptive `solve_ivp` propagation, differential correction/shooting, grid sweeps, pseudospectral
+  torus correctors, validated Taylor/interval integration, the GAIO set-oriented transfer
+  operator — the dispatch's own flagged best-hope candidate) are "No," the GAIO one because its
+  actual cost is dominated by box-mapping (many short adaptive integrations — the same anti-GPU
+  pattern as everything else), not its one small sparse-eig linear-algebra step. **Real,
+  CPU-side headroom identified instead, ranked**: (1) ephemeris epoch-grid memoisation + batched
+  posvel evaluation — already scoped in `docs/notes/2026-06-06-performance-profile.md`, estimated
+  ~-70% solve wall-clock, never executed; (2) numba-`@njit` the force-model RHS kernels (numba
+  already a dependency for Lambert/Kepler but not the force fields) — plausible ~3-10x per
+  propagation, zero tolerance/correctness-model change. Revisit triggers recorded: native-fp64 GPU
+  hardware (NVIDIA/AMD), Apple shipping fp64 GPU support, or a measure-level workload growing
+  ~100x past current scale. **Independently spot-verified 2026-07-23**: I re-ran the load-bearing
+  `numpy.show_config()` check myself on this machine and confirmed both BLAS and LAPACK report
+  `accelerate` — the central empirical claim behind the whole verdict checks out.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
