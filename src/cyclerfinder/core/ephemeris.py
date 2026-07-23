@@ -430,16 +430,42 @@ class _AstropyBackend:
         # second arithmetic — never a POSIX/unix timestamp relabeled "tdb"
         # (that relabeling is the ~64.184 s trap; see module-level comment).
         self._j2000_tdb = Time(_J2000_TDB_JD, format="jd", scale="tdb")
-        # Pre-compute the ICRS->ecliptic rotation about +x by -obliquity.
+        # ICRS->ecliptic rotation about +x by -obliquity, as explicit scalars
+        # (NOT a 3x3 matrix — see _rotate_icrs_to_ecl()'s docstring for why a
+        # `rot @ vec` matrix product was the actual #692 root cause).
         eps = _J2000_OBLIQUITY_RAD
-        self._r_icrs_to_ecl: NDArray[np.float64] = np.array(
-            [
-                [1.0, 0.0, 0.0],
-                [0.0, cos(eps), sin(eps)],
-                [0.0, -sin(eps), cos(eps)],
-            ],
-            dtype=np.float64,
-        )
+        self._cos_eps = cos(eps)
+        self._sin_eps = sin(eps)
+
+    def _rotate_icrs_to_ecl(self, vec: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Rotate ICRS (equatorial) cartesian components to J2000 ecliptic.
+
+        ``vec`` is shape ``(3,)`` for a single state (as used by :meth:`state`)
+        or ``(3, k)`` for a batch of ``k`` states (as used by :meth:`states`).
+        Implemented as explicit elementwise trig combinations about +x by
+        ``-obliquity`` — deliberately NOT ``self._r_icrs_to_ecl @ vec`` — so the
+        result is bit-identical whether ``vec`` is a lone column or part of a
+        batch.
+
+        This distinction is not academic: `#692` found that a 3x3 matrix
+        multiplied against a single ``(3,)`` vector (numpy dispatches this to
+        BLAS ``dgemv``) and the same matrix multiplied against a batched
+        ``(3, k)`` array (dispatches to ``dgemm``) do not reliably agree
+        bit-for-bit, even though they compute the same mathematical dot
+        products — matrix-matrix and matrix-vector BLAS kernels can use
+        different accumulation/blocking strategies, and IEEE-754 addition is
+        not associative. That was the actual, avoidable root cause of
+        `state()`/`states()` sub-ULP disagreement (previously misattributed to
+        astropy's own scalar-vs-array `Time`/Chebyshev evaluation, which was
+        independently confirmed bit-identical between the two call shapes).
+        Elementwise multiply-then-2-term-add has no such ambiguity: each
+        output component is an independent, fixed-order computation
+        regardless of how many columns ``vec`` carries.
+        """
+        x = vec[0]
+        y = self._cos_eps * vec[1] + self._sin_eps * vec[2]
+        z = -self._sin_eps * vec[1] + self._cos_eps * vec[2]
+        return np.stack([x, y, z], axis=0)
 
     def state(self, body: str, t_sec: float) -> tuple[Vec3, Vec3]:
         from astropy.coordinates import get_body_barycentric_posvel
@@ -464,8 +490,8 @@ class _AstropyBackend:
         # Rotate ICRS (equatorial) to J2000 ecliptic so the rest of
         # cyclerfinder gets z-along-ecliptic-pole positions matching
         # the circular backend's convention.
-        r_helio = self._r_icrs_to_ecl @ np.asarray(r_helio_icrs, dtype=np.float64)
-        v_helio = self._r_icrs_to_ecl @ np.asarray(v_helio_icrs, dtype=np.float64)
+        r_helio = self._rotate_icrs_to_ecl(np.asarray(r_helio_icrs, dtype=np.float64))
+        v_helio = self._rotate_icrs_to_ecl(np.asarray(v_helio_icrs, dtype=np.float64))
         return (
             np.asarray(r_helio, dtype=np.float64),
             np.asarray(v_helio, dtype=np.float64),
@@ -478,9 +504,14 @@ class _AstropyBackend:
         overhead into array-``Time`` calls: one ``Time`` over all DISTINCT
         epochs, the Sun posvel computed once per distinct epoch (shared across
         every body at that epoch), and each body's posvel grouped so astropy's
-        Chebyshev evaluator runs once per (body, epoch-array). Per-element output
-        is byte-identical to looping :meth:`state` — same DE440 states, same
-        ICRS→ecliptic rotation, same subtraction order.
+        Chebyshev evaluator runs once per (body, epoch-array). Per-element
+        output is byte-identical to looping :meth:`state` — same DE440 states,
+        same subtraction order, and (as of `#692`) the same elementwise
+        ICRS→ecliptic rotation formula rather than a batched matrix product
+        (see :meth:`_rotate_icrs_to_ecl`'s docstring for why that distinction
+        matters: a ``rot @ (3,)`` and a ``rot @ (3, k)`` product are not
+        guaranteed bit-identical per column even though mathematically
+        equivalent).
         """
         from astropy.coordinates import get_body_barycentric_posvel
         from astropy.time import TimeDelta
@@ -513,7 +544,6 @@ class _AstropyBackend:
             by_body.setdefault(b, []).append(i)
 
         results: list[tuple[Vec3, Vec3] | None] = [None] * n
-        rot = self._r_icrs_to_ecl
         for body, idxs in by_body.items():
             astropy_name = _ASTROPY_BODY_NAMES[body]
             uniq = list(dict.fromkeys(epochs[i] for i in idxs))
@@ -524,9 +554,11 @@ class _AstropyBackend:
             sun_vel_sub = sun_vel[cols]
             r_icrs = (body_pos - sun_pos_sub).xyz.to("km").value
             v_icrs = (body_vel - sun_vel_sub).xyz.to("km/s").value
-            # xyz is shape (3, k); rotate all columns at once.
-            r_ecl = rot @ np.asarray(r_icrs, dtype=np.float64)
-            v_ecl = rot @ np.asarray(v_icrs, dtype=np.float64)
+            # xyz is shape (3, k); _rotate_icrs_to_ecl broadcasts over all
+            # columns at once WITHOUT going through a batched matrix product
+            # (see its docstring — that product is the actual #692 root cause).
+            r_ecl = self._rotate_icrs_to_ecl(np.asarray(r_icrs, dtype=np.float64))
+            v_ecl = self._rotate_icrs_to_ecl(np.asarray(v_icrs, dtype=np.float64))
             col_for_epoch = {t: c for c, t in enumerate(uniq)}
             for i in idxs:
                 c = col_for_epoch[epochs[i]]
