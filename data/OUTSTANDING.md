@@ -1194,7 +1194,16 @@ Io-Ganymede (#693's second-ranked candidate, mu_pert byte-identical forcing regi
 JEG system), dispatched in parallel with #695. Both explicitly framed to their own dispatched
 agents as genuine attempts to find something ACTUALLY NOVEL (not another capability-proof/
 positive-control-only exercise), per the user's own stated urgency about not wasting time on
-further serial validation. #697 next-unused):**
+further serial validation. #697 -- Fable strategy pass: is any part of this project's orbit-search
+pipeline a good candidate for Apple GPU (Metal/MPS) acceleration instead of CPU? User-requested
+while `#695`/`#696` were still being independently verified. Scope: survey what's actually
+compute-bound in this codebase (scipy `solve_ivp`-based adaptive ODE integration -- DOP853/Radau,
+inherently sequential/adaptive-step, not natively vectorizable; STM/variational propagation;
+pseudospectral torus correctors' linear-algebra solves; large parameter sweeps currently
+parallelized across CPU cores via joblib/multiprocessing), against what Apple GPU acceleration
+options actually exist for this stack (PyTorch MPS backend, JAX's Metal plugin, Apple's own MLX
+array framework, vs. plain CPU vectorization headroom not yet exploited) and give an honest
+tractability verdict -- not a hype pass. #698 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13859,6 +13868,19 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   period ratio (a real Laplace-chain consequence), e/Δi both under the reference bar, no hit in 2
   targeted literature checks. Same scope/pipeline/discipline as `#695`, applied to this pair
   instead (Io base, Ganymede perturber). Dispatched together with `#695`, not serially.
+- **#697 (dispatched 2026-07-23, Fable) -- strategy pass: is any part of this project's
+  orbit-search pipeline a good candidate for Apple GPU (Metal/MPS) acceleration instead of CPU?**
+  User-requested directly, while `#695`/`#696` were still being independently verified. Scope:
+  survey what's actually compute-bound in this codebase (scipy `solve_ivp`-based adaptive ODE
+  integration — DOP853/Radau, inherently sequential/adaptive-step, not natively vectorizable;
+  STM/variational propagation; pseudospectral torus correctors' linear-algebra solves; large
+  parameter sweeps currently parallelized across CPU cores via joblib/multiprocessing) against
+  what Apple GPU acceleration options actually exist for this stack (PyTorch MPS backend, JAX's
+  Metal plugin, Apple's own MLX array framework, vs. plain CPU vectorization headroom not yet
+  exploited). Explicit instruction to the dispatched agent: give an honest tractability verdict,
+  not a hype pass — this project's standing discipline for strategy passes (`#679`/`#686`/`#693`)
+  is a real cost/benefit assessment, including "no, this isn't worth it" as a fully acceptable
+  answer if that's what the analysis shows.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
