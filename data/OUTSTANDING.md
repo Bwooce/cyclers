@@ -1203,7 +1203,23 @@ pseudospectral torus correctors' linear-algebra solves; large parameter sweeps c
 parallelized across CPU cores via joblib/multiprocessing), against what Apple GPU acceleration
 options actually exist for this stack (PyTorch MPS backend, JAX's Metal plugin, Apple's own MLX
 array framework, vs. plain CPU vectorization headroom not yet exploited) and give an honest
-tractability verdict -- not a hype pass. #698 next-unused):**
+tractability verdict -- not a hype pass. DONE 2026-07-23: honest NEGATIVE -- no hardware fp64 on
+Metal across every current framework checked, and the CPU's own Accelerate/AMX fp64 throughput
+(271-353 GFLOPS measured) already beats the GPU's emulated-fp64 ceiling (~35-90 GFLOPS); real
+headroom is CPU-side (ephemeris memoisation, numba-jit'ing force-model RHS kernels). User
+follow-up ("what about new Apple GPU libraries, or a new GPU-friendly algorithm") led directly to
+#698. #698 -- Fable follow-up pass, narrower and deeper than #697: (1) quick re-check whether
+Apple has shipped fp64 GPU hardware/software since #697's mid-2026 snapshot (fast, likely
+negative given it's a silicon gap not a library-maturity one); (2) the substantive question --
+are there GPU-NATIVE N-body propagation ALGORITHMS (not just porting the existing adaptive-step
+DOP853/Radau approach) that sidestep the adaptive-step-control problem #697 identified as the
+actual blocker? Specifically assess Modified Chebyshev-Picard Iteration (MCPI, fixed polynomial
+basis, proven GPU-accelerated in the satellite-catalog/SSA literature) and fixed-step high-order
+symplectic integrators (Wisdom-Holman-style) against THIS project's actual force models (CR3BP/
+BCR4BP/CCR4BP near unstable manifolds, resonances, close approaches -- much more strongly
+nonlinear than typical smooth satellite propagation), not just literature-general claims.
+Parallel-in-time methods (Parareal) explicitly flagged as lower-priority given their reliance on
+a cheap correction step that tends to break down for chaotic dynamics. #699 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13909,6 +13925,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   ~100x past current scale. **Independently spot-verified 2026-07-23**: I re-ran the load-bearing
   `numpy.show_config()` check myself on this machine and confirmed both BLAS and LAPACK report
   `accelerate` — the central empirical claim behind the whole verdict checks out.
+- **#698 (dispatched 2026-07-23, Fable) -- narrower/deeper follow-up to `#697`: any GPU-native
+  N-body algorithm (not a port), plus a fresh check on Apple fp64 GPU hardware/software.** User
+  question after `#697`'s negative: "what about using the new apple gpu libraries? and finding a
+  new algorithm which does fit gpus well to solve n-body problems?" Two parts: (1) fast re-check
+  whether Apple has shipped fp64 GPU hardware or a software fp64 GPU path since `#697`'s
+  snapshot — expected negative (it's a silicon gap, not a library-maturity gap), but verify rather
+  than assume; (2) the substantive question — assess Modified Chebyshev-Picard Iteration (MCPI:
+  fixed polynomial-basis Picard iteration, no adaptive step control, proven GPU-accelerated in
+  the satellite-catalog/space-situational-awareness literature) and fixed-step high-order
+  symplectic integrators (Wisdom-Holman-style) as GPU-native alternatives to the adaptive-step
+  DOP853/Radau approach `#697` identified as the actual structural blocker — evaluated against
+  THIS project's own force models (CR3BP/BCR4BP/CCR4BP near unstable manifolds, resonances, close
+  approaches — much more strongly nonlinear than the smooth, weakly-perturbed orbits MCPI is
+  usually proven on), not just literature-general claims about MCPI's speed. Parallel-in-time
+  methods (Parareal/PFASST) explicitly flagged as lower priority — their speedup relies on a
+  cheap correction step staying valid across the whole interval, which tends to break down for
+  chaotic dynamics. Honest verdict expected either way, matching `#697`'s own discipline.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
