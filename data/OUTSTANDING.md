@@ -1101,7 +1101,20 @@ EOM+STM substrate. Physical-vs-exact-2:1 ratio decided: use the PHYSICAL 2.014 r
 own default, matching the actual published positive-control literature), not the artificial
 exact-2:1 idealization -- #686's own note already established the model is time-periodic
 regardless of the exact ratio, so imposing an artificial exact-2:1 buys nothing and would
-diverge from the literature's own model (registered+dispatched 2026-07-23); #691
+diverge from the literature's own model. DONE 2026-07-23: src/cyclerfinder/search/
+variational_ccr4bp_torus.py + tests/search/test_variational_ccr4bp_torus.py (8 tests). Clean
+EOM swap -- the pseudospectral machinery (Fourier discretization, invariance-PDE residual,
+analytic Jacobian, gauges, Newton solve) reused verbatim; only the RHS/STM backend (#617's 6D
+PM-canonical -> 4D planar rotating-frame CCR4BP) and the forcing clock (Ganymede's synodic
+angle vs the QBCP's Sun phase) swapped. Grid RHS/Jacobian match core.ccr4bp pointwise to
+9e-16/1e-14. Positive control (Jupiter-Europa 3:4 family, physical Galilean masses): mu_gan=0
+regression holds the base resonant orbit machine-precision-FLAT (theta1-content 1.7e-13,
+invariance rms 1.5e-5); physical-mass thin 2D torus at invariance rms 1.6e-4, independent
+closure 2.2e-3, rho_strob 3.1194 matching theory (2*pi*omega2/omega1) to 5 digits -- reproduces
+the OBJECT CLASS of Kumar 2021 (honest-partial per #664: the paper publishes no ICs/energy to
+pixel-match, and the reachable symmetric 3:4 member is eccentric so the residual floor is
+Fourier-truncation-limited). Corrector VALIDATED; ready for Stage-B sub-task 3
+(whiskers/manifolds), NOT built here (registered+dispatched 2026-07-23, DONE same day); #691
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -13510,7 +13523,9 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   module and its structural reduction tests -- explicitly NOT the pseudospectral torus
   corrector, NOT the whisker/manifold machinery, NOT the mesh-intersection search (per `#686`'s
   own Stage B item 2 onward, later sub-tasks once this module exists and is validated).
-- **#690 (registered+dispatched 2026-07-23)** -- Stage B sub-task 2 of `#686`'s CCR4BP plan:
+- **#690 ✓ DONE (2026-07-23) -- CCR4BP torus corrector BUILT + POSITIVE-CONTROLLED (clean EOM
+  swap; Jupiter-Europa 3:4 torus reproduced, physical masses).** Stage B sub-task 2 of `#686`'s
+  CCR4BP plan:
   adapt `#617`'s pseudospectral torus corrector to CCR4BP. See `#689`'s own bullet for the
   now-trusted EOM+STM substrate this builds on, and `#686`'s own bullet +
   `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md` section 3 item 2 for the full
@@ -13531,6 +13546,58 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   citations) before trusting the corrector on anything new. This task builds ONLY the torus
   corrector -- explicitly NOT the whisker/manifold machinery or the mesh-intersection
   heteroclinic search (later Stage-B sub-tasks, per `#686`'s own item 3 onward).
+  **RESULT (2026-07-23).** New module `src/cyclerfinder/search/variational_ccr4bp_torus.py` +
+  `tests/search/test_variational_ccr4bp_torus.py` (8 tests, all green, ~15s). NO existing module
+  modified (`#617`'s `variational_qbcp_torus.py` untouched; its state-dimension-agnostic
+  Fourier-basis helpers `_basis_matrices`/`_k2_first_harmonic_cols` are IMPORTED and reused, not
+  copied). **The EOM swap, precisely (what transferred vs what was adapted).** Transferred
+  VERBATIM from `#617`: the real tensor-product Fourier discretization, the quasi-periodic
+  invariance-PDE residual on the 2D collocation grid, the exact analytic residual-Jacobian, the
+  three gauge rows (transverse phase, transverse amplitude anchor, rotation-number pin -- NO
+  longitudinal gauge, theta1 locked to the forcing epoch), the `least_squares`/`trf` Newton
+  solve, and the independent short-time-flow closure check. GENUINELY ADAPTED (documented in the
+  module docstring): (1) state dimension 6 -> 4 -- `#617`'s 6-canonical PM state (x,y,z,px,py,pz)
+  -> the CCR4BP's ordinary planar rotating-frame state (x,y,vx,vy); NO PV<->PM conversion needed
+  anywhere (strictly SIMPLER than the QBCP's canonical bookkeeping); (2) RHS+state-Jacobian
+  backend -- `_ccr4bp_rhs_grid`/`_ccr4bp_jacobian_grid` (vectorized `#689` `ccr4bp_eom` /
+  `ccr4bp_stm_eom` planar 4x4 block) replace `#617`'s `_qbcp_rhs_grid`/`_qbcp_jacobian_grid`;
+  (3) forcing clock -- `_ganymede_on_theta1` evaluates Ganymede's synodic-frame position at each
+  theta1 (the CCR4BP's only time-dependent input) in place of the QBCP's 8 alpha functions;
+  omega1 = |omega_gan| with theta_gan = theta_gan0 - theta1 (Ganymede regresses, omega_gan < 0 --
+  the one sign-convention delta, handled once). **Backend verified to MACHINE PRECISION**
+  (mirroring `#617`'s discipline): grid RHS vs scalar `ccr4bp_eom` max err 8.9e-16, grid 4x4
+  Jacobian vs `ccr4bp_stm_eom`'s A-block 1.1e-14, full analytic residual-Jacobian vs central FD
+  agrees (largest entries 6-digit, gauge rows 1e-8/1e-10). **Positive control -- Jupiter-Europa
+  3:4 resonant torus (Kumar-Anderson-de la Llave-Gunter 2021, arXiv:2109.14815), physical
+  Galilean masses, PHYSICAL 2.014 ratio.** Seed = the symmetric (perpendicular-x-axis) 3:4
+  resonant periodic orbit of the base Jupiter-Europa CR3BP (period exactly 2*pi*4 = 25.133,
+  full-period return 1.8e-11); it is intrinsically eccentric (e~0.33, r in [0.81,1.61], every
+  seed converges to the same member -- the near-circular curve is a KAM torus, not a periodic
+  orbit). (a) **mu_gan=0 regression (corrector-level analogue of `#689`'s mu_gan->0 structural
+  reduction): PASSED, machine-precision-flat.** The corrector holds the base orbit as a
+  theta1-FLAT 2D torus -- theta1-content 1.7e-13 (machine zero), invariance rms 1.5e-5. (b)
+  **Physical-mass torus: the 3:4 orbit persists as a genuine thin 2D invariant torus under
+  Ganymede's forcing, invariance rms 1.6e-4 (< the 1e-3 gate), independent closure 2.2e-3,
+  stroboscopic rotation number rho_strob = 3.11943 matching theory (2*pi*omega2/omega1) to 5
+  digits, theta1-forcing content 3.2e-2 -- appearing ONLY when mu_gan>0 (5e-3 flat-seed residue ->
+  3.2e-2 forced), i.e. genuinely 2D, not the 1D orbit.** This reproduces the OBJECT CLASS Kumar
+  2021 computed (their Europa 3:4 CCR4BP torus at physical masses); **honest-partial per `#664`**:
+  the paper publishes no ICs/energy/rotation-number to pixel-reproduce, and the reachable
+  symmetric 3:4 member is eccentric so the residual floor is Fourier-truncation-limited (raw flat
+  seed only reaches ~7e-3 at n2=16 due to the periapsis acceleration spike; the collocation solve
+  drives it to 1.6e-4) -- NOT a claim of the specific unstable member Kumar highlights.
+  **Numerical notes / caveats (honest):** the forcing is very weak (mu_gan = 7.8e-5), so the
+  torus is thin and the theta1-shear direction is near-degenerate at mu_gan->0 -- with many
+  theta1 modes the trust-region can wander into spurious O(1) theta1 structure; the fix is
+  minimal n1 (=1, single forcing harmonic, physically sufficient since the forcing is
+  single-frequency) plus strong gauge/rho weights (30/100). Direct solve at physical mass beats
+  mass-continuation here (1.6e-4 vs 1.2e-3) because the perturbation from the flat orbit is
+  small. Ruff/format/mypy(full `src tests`) clean; `tests/data tests/search tests/scripts` green
+  (pre-existing unrelated failures excepted). No catalogue writeback (capability build). Physical
+  ratio decision honored, NOT revisited. **Stage-B NEXT (recommendation):** sub-task 3 --
+  whisker/manifold construction off these tori (measure the one-period amplification + run
+  `#619`'s post-hoc-STM robustness diagnostic first, per `#686` section 3 item 3), then the
+  mesh-intersection heteroclinic search. This task did NOT touch any of that (explicit scope).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
