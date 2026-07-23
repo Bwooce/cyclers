@@ -34,11 +34,8 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#699` — deeper literature check on Uranus Umbriel-Titania before any CCR4BP build commitment;
-  see its own bullet entry (search `#699 --`) for full scope.
-- `#700` — deeper literature check on Jupiter Europa-Callisto before any CCR4BP build commitment;
-  see its own bullet entry (search `#700 --`) for full scope.
-- None currently. (`#692` — REMOVED from this list 2026-07-23, CLOSED same day: see its own
+- None currently. (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
+  section below and each's own bullet entry.) (`#692` — REMOVED from this list 2026-07-23, CLOSED same
   `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
   not astropy's own Time/Chebyshev evaluation as originally suspected; fixed with a deterministic
   elementwise rotation, test kept at exact `np.array_equal` (not loosened).
@@ -183,10 +180,13 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#695`/`#696` — REMOVED from this list 2026-07-23, both CLOSED same
-  day; see each's own `✓ DONE` bullet entry — `#695` an honest near-miss, `#696` a clean negative.
-  `#694` — REMOVED 2026-07-23, CLOSED same day; genuine ghost-guard-verified JEG homoclinic
-  connection found, full Stage-B CCR4BP pipeline proven end-to-end.)
+- `#699` and `#700` — deeper literature checks on Uranus Umbriel-Titania and Jupiter
+  Europa-Callisto respectively (`#693`'s two remaining CCR4BP candidates), dispatched IN
+  PARALLEL 2026-07-24. See each's own bullet entry for full scope. (`#695`/`#696` — REMOVED from
+  this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
+  honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
+  genuine ghost-guard-verified JEG homoclinic connection found, full Stage-B CCR4BP pipeline
+  proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -14025,7 +14025,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   full `tests/core tests/search tests/scripts` re-run shows only the 2 long-documented
   pre-existing failures — `test_ephemeris_cache` no longer appears at all, confirming the fix is
   complete, not merely avoided.
-- **#699 -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
+- **#699 (dispatched 2026-07-24, in parallel with `#700`) -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
   commitment.** `#693`'s third-ranked candidate: `mu_pert=3.92e-5` (only 2x below the
   already-marginal JEG reference — the best non-Jovian mass conditioning found), both
   eccentricities under the tractability bar, `Δi≈0`, a 2.10 near-2:1 period ratio not much
@@ -14038,7 +14038,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   checking `search/literature_check.py`'s `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the
   private `cyclers_pdf` corpus, and live search — before this candidate could be promoted to a
   build task analogous to `#695`/`#696`.
-- **#700 -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
+- **#700 (dispatched 2026-07-24, in parallel with `#699`) -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
   commitment.** `#693`'s fourth-ranked candidate: `mu_pert=5.67e-5` (comparable to JEG), good
   tractability, but no clean low-integer commensurability (4.73 period ratio — the loosest of
   the tractable Jovian candidates). `#693`'s own report only lightly checked this pair's
