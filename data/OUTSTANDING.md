@@ -175,7 +175,8 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently.
+- `#691` — Stage B sub-task 3 of `#686`'s CCR4BP plan (whisker/manifold construction off `#690`'s
+  converged tori); dispatched 2026-07-23. See its own bullet entry for full scope.
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -1114,8 +1115,19 @@ closure 2.2e-3, rho_strob 3.1194 matching theory (2*pi*omega2/omega1) to 5 digit
 the OBJECT CLASS of Kumar 2021 (honest-partial per #664: the paper publishes no ICs/energy to
 pixel-match, and the reachable symmetric 3:4 member is eccentric so the residual floor is
 Fourier-truncation-limited). Corrector VALIDATED; ready for Stage-B sub-task 3
-(whiskers/manifolds), NOT built here (registered+dispatched 2026-07-23, DONE same day); #691
-next-unused):**
+(whiskers/manifolds), NOT built here. Independently re-verified 2026-07-23 (ruff/full-mypy clean,
+isolated 8/8 test re-run, full `tests/data tests/search tests/scripts` re-run showing only the 2
+long-documented pre-existing failures plus one confirmed CPU-contention flake
+[`test_joint_cell.py::test_joint_cell_reproduces_liang_member_d`, passes clean in isolation,
+no import relationship to `#690`'s changed files, absent from an earlier same-session full-suite
+run] — no regression). #691 -- Stage B sub-task 3 of #686's CCR4BP plan: whisker/manifold
+construction off #690's converged CCR4BP tori. Scope per #686 section 3 item 3: first measure
+one-period amplification off the converged tori (cheap post-hoc STM extraction, no new solver),
+then run #619's perturbation-robustness diagnostic (segment-anchored discrete-QR/CLV direction
+extraction, the method #646 already validated as perturbation-stable on the EM-L2 case) against
+the CCR4BP unstable direction, before deciding whether the full Kumar bundle-solve is needed.
+Explicitly NOT the mesh-intersection heteroclinic search itself (later Stage-B sub-task).
+#692 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13598,6 +13610,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   whisker/manifold construction off these tori (measure the one-period amplification + run
   `#619`'s post-hoc-STM robustness diagnostic first, per `#686` section 3 item 3), then the
   mesh-intersection heteroclinic search. This task did NOT touch any of that (explicit scope).
+  Independently re-verified 2026-07-23 (see `#691`'s own bullet's opening note for the full
+  re-verification record — ruff/full-mypy clean, isolated + full-suite re-run, one flake
+  confirmed and ruled out).
+- **#691 (dispatched 2026-07-23) -- Stage B sub-task 3 of `#686`'s CCR4BP plan: whisker/manifold
+  construction off `#690`'s converged CCR4BP tori.** Scope per `#686` section 3 item 3, in order:
+  (1) measure one-period amplification off the `#690` corrector's converged Jupiter-Europa 3:4
+  torus (cheap post-hoc STM extraction — reuse `#689`'s `ccr4bp_stm_eom`, no new solver needed);
+  (2) run `#619`'s perturbation-robustness diagnostic — the segment-anchored discrete-QR/CLV
+  unstable-direction extraction that `#646` already validated as perturbation-stable on the EM-L2
+  case (<0.01° swing vs the naive one-shot method's 88°) — against the CCR4BP torus's unstable
+  direction, to determine whether a naive one-shot manifold direction would be trustworthy here
+  or whether the full Kumar bundle-solve (their actual whisker construction, more expensive) is
+  required. Explicitly NOT the mesh-intersection heteroclinic search itself (later Stage-B
+  sub-task, not in scope here). Positive control: the diagnostic must first reproduce a known
+  stable/unstable amplification on the base (mu_gan=0) Jupiter-Europa CR3BP periodic orbit before
+  being trusted on the forced CCR4BP torus, per this project's standing "verify against a
+  known-good case before trusting a novel one" discipline.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
