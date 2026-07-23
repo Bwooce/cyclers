@@ -194,9 +194,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#693` — cheap cross-solar-system screening pass for CCR4BP-compatible moon pairs; dispatched
-  2026-07-23. See its own bullet entry for full scope. (`#691` — REMOVED from this list
-  2026-07-23, CLOSED same day; see its own `✓ DONE` bullet entry.)
+- `#694` — Stage B's final CCR4BP sub-task: manifold globalization + mesh-intersection
+  heteroclinic search, positive-controlled against JEG; dispatched 2026-07-23. See its own bullet
+  entry for full scope. (`#693` — REMOVED from this list 2026-07-23, CLOSED same day; see its own
+  `✓ DONE` bullet entry.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -1161,7 +1162,26 @@ before committing to any further multi-day per-system CCR4BP builds (the #689-#6
 build chain is NOT novel per se -- it reproduces Kumar et al. 2021's own object class -- so this
 screen is what identifies which pair, if any, would yield an actually-novel discovery). User
 explicitly asked "so which bodies do we try" and approved this screening-first approach over
-mass-registering every candidate pair's build directly. #694 next-unused):**
+mass-registering every candidate pair's build directly. DONE 2026-07-23: full ranked shortlist,
+docs/notes/2026-07-23-693-ccr4bp-moonpair-screening.md; top candidates Io-Europa (exact 2.000
+period ratio, cleanest geometry surveyed) and Io-Ganymede (mu_pert byte-identical forcing regime
+to the already-validated JEG system), both novelty-cleared; Uranus Umbriel-Titania close third but
+flagged needing a deeper lit pass first; Saturn/Neptune all quantitatively rejected on mass-forcing
+(40-8000x below the already-marginal JEG reference) or geometry (Triton 157 deg retrograde).
+Independently spot-verified 2026-07-23 (I re-checked the load-bearing new-find citation, Aryan &
+Fitzgerald AAS 24-103 2024, via live WebSearch -- confirmed real, matches the report's description
+exactly: PCCFBP tori for both Jupiter-Europa-Ganymede AND Jupiter-Callisto-Ganymede). User's own
+follow-up concern ("we have to start actively looking... this will be wasteful and difficult" if
+done one pair at a time): the fix is #694, below -- prove the one still-missing generic capability
+(heteroclinic search) ONCE against the already-validated JEG system, then fan out in PARALLEL to
+Io-Europa/Io-Ganymede rather than another serial per-pair chain. #694 -- Stage B's final
+sub-task: manifold globalization + mesh-intersection heteroclinic search, the actual discovery
+step per #686's own plan, not yet built or run against ANY CCR4BP system including the already
+fully-proven JEG one. Positive-controlled against JEG (reusing #690's torus + #691's now-trusted
+segmented-CLV whisker direction, both already validated) before being trusted on anything novel.
+Explicit purpose: once this lands, the SAME machinery gets applied in parallel across the
+novelty-cleared candidates (Io-Europa, Io-Ganymede) as genuine discovery attempts, rather than
+another serial capability-validation chain. #695 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13694,7 +13714,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
 - **#692 (registered 2026-07-23, not yet dispatched)** — see its own entry in the "Ready to
   dispatch" list above (top of this file) for full scope: fix `_AstropyBackend.states()`'s
   batch/scalar exact-equality mismatch in `src/cyclerfinder/core/ephemeris.py`.
-- **#693 (dispatched 2026-07-23) -- cheap cross-solar-system screening pass for CCR4BP-compatible
+- **#693 ✓ DONE (2026-07-23) -- cheap cross-solar-system screening pass for CCR4BP-compatible
   moon pairs.** User question after `#691` closed: "so which bodies do we try, ones that can form
   a torus?" — followed by "we should add tasks for all compatible pairs across the solar system?".
   Recommendation given (approved via "Go"): do NOT mass-register per-pair builds yet — the
@@ -13718,6 +13738,55 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   discovery-strategy-pass reports. Does NOT commit to building anything — screening only, per this
   project's own staged-arc discipline (cheap screen before expensive multi-day build, same pattern
   as `#688` before `#689`-`#691`).
+  **RESULT (2026-07-23, commit `46f51c8`).** `docs/notes/2026-07-23-693-ccr4bp-moonpair-screening.md`.
+  Sourced e/i/period from live-fetched JPL SSD (`sats/elem/`, `sats/phys_par/`) cross-checked
+  against `core/satellites.py`'s in-repo GM registry (exact match on every overlapping body).
+  Used the built JEG system's own documented near-degeneracy edge (`mu_gan=7.8e-5`, flagged
+  "very weak" in `#690`'s own bullet) as the quantitative tractability bar rather than an arbitrary
+  threshold. **Ranked shortlist:** (1) Jupiter Io-Europa — EXCELLENT tractability (exact 2.0000
+  period ratio, the tightest resonance in the solar system, cleaner geometry than the built JEG
+  reference itself), novelty-cleared (3 targeted checks, no hit). (2) Jupiter Io-Ganymede —
+  EXCELLENT (`mu_pert=7.80e-5`, byte-for-byte the same forcing regime `#690` already proved
+  converges), novelty-cleared (2 checks, no hit). (3) Uranus Umbriel-Titania — best NON-Jovian
+  candidate (`mu_pert=3.92e-5`, only 2x below JEG; confirms the task's own "is Uranus's axial tilt
+  irrelevant" hypothesis — yes, all 5 classical moons' inclinations are measured relative to
+  Uranus's own equator, unrelated to the ~98° ecliptic tilt), novelty-cleared but flagged as
+  needing a deeper lit pass (Uranian neighborhood has active adjacent literature). (4) Europa-
+  Callisto — good tractability, only lightly novelty-checked. **Quantitatively rejected:** every
+  Saturn pair's `mu_pert` is 40-8,000x below the JEG reference (sharpens `#686`'s qualitative
+  rejection into a numeric one); Neptune has no tractable lane (Triton geometrically disqualified
+  at ~157° inclination vs a 5° filter — checked and documented, not silently skipped; remaining
+  small moons 200-2,800x mass-too-weak). **Disqualified on novelty despite strong numbers:**
+  Ganymede-Callisto (Aryan & Fitzgerald AAS 24-103 2024, PCCFBP tori for exactly this pair — a
+  genuine new corpus find, not previously known to this project) and Uranus Titania-Oberon (this
+  project's own pre-existing `literature_check.py` anchor, `#328`'s Kumar arXiv:2509.03655
+  citation — honestly flagged as `inherited-unverified` provenance, sufficient to disqualify a
+  build target here but not decision-grade for anything stronger). **Independently re-verified
+  2026-07-23**: I spot-checked the load-bearing new-find citation (Aryan & Fitzgerald AAS 24-103)
+  via live WebSearch — confirmed real, matches the report's description exactly (PCCFBP tori for
+  both Jupiter-Europa-Ganymede AND Jupiter-Callisto-Ganymede). Io mu/Triton-inclination figures
+  independently sanity-checked against known astronomy — consistent. No code/EOM/corrector built,
+  no catalogue writes (pure screen, as scoped).
+- **#694 (dispatched 2026-07-23) -- Stage B's final sub-task: manifold globalization +
+  mesh-intersection heteroclinic search, positive-controlled against the already-proven JEG
+  system.** Registered directly in response to the user's concern, after `#693` landed, that
+  building/validating each novel candidate pair serially "will be wasteful and difficult" if we
+  never get to actually searching for novel combinations. The generic torus corrector (`#690`) and
+  whisker/manifold-direction diagnostic (`#691`) are both already system-agnostic
+  (parameterized by `mu`/`mu_gan`/`a_gan`/`omega_gan`, not hardcoded to Jupiter-Europa-Ganymede),
+  so the only capability still missing for ANY CCR4BP system — including the fully-proven JEG one
+  — is the actual heteroclinic connection search itself: globalizing the manifold direction
+  `#691` validated into a genuine manifold (propagating along it, not just extracting the tangent
+  direction at a point) and searching for a mesh/surface-of-section intersection between two
+  tori's manifolds (the actual transport-orbit discovery step, analogous in spirit to `#620`/`#626`'s
+  manifold-free collocation and `#646`'s shooting approach for the EM-L2/SE-L2 arc, but built
+  fresh for the CCR4BP's own 4-state planar structure). Mandatory positive control: run it against
+  JEG first (all pieces already validated there) before trusting it on a novel candidate — this
+  would either reproduce Kumar et al. 2021's own class of result (non-novel, but PROVES the whole
+  pipeline end-to-end for the first time) or return a well-characterized negative. Explicit
+  purpose stated in the dispatch: once this lands, apply the SAME now-proven machinery in
+  PARALLEL to the `#693` novelty-cleared candidates (Io-Europa, Io-Ganymede) as genuine discovery
+  attempts — not another serial per-pair validation chain.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
