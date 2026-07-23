@@ -13925,7 +13925,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   ~100x past current scale. **Independently spot-verified 2026-07-23**: I re-ran the load-bearing
   `numpy.show_config()` check myself on this machine and confirmed both BLAS and LAPACK report
   `accelerate` — the central empirical claim behind the whole verdict checks out.
-- **#698 (dispatched 2026-07-23, Fable) -- narrower/deeper follow-up to `#697`: any GPU-native
+- **#698 ✓ DONE (2026-07-23, Fable) -- narrower/deeper follow-up to `#697`: any GPU-native
   N-body algorithm (not a port), plus a fresh check on Apple fp64 GPU hardware/software.** User
   question after `#697`'s negative: "what about using the new apple gpu libraries? and finding a
   new algorithm which does fit gpus well to solve n-body problems?" Two parts: (1) fast re-check
@@ -13942,6 +13942,38 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   methods (Parareal/PFASST) explicitly flagged as lower priority — their speedup relies on a
   cheap correction step staying valid across the whole interval, which tends to break down for
   chaotic dynamics. Honest verdict expected either way, matching `#697`'s own discipline.
+  **RESULT (2026-07-23, commit `32c9b5a`): honest NEGATIVE, and a genuinely sharper argument than
+  `#697`'s own.** `docs/notes/2026-07-23-698-gpu-native-algorithm-followup.md`. **Part 1**: Apple
+  fp64 GPU status unchanged, checked through the M5 generation — still no hardware fp64 anywhere,
+  and the M5 datapoint (GPU fp32 ~3.85 TFLOPS vs. CPU/AMX `dgemm` 471 GFLOPS fp64) WIDENS the
+  CPU's fp64 advantage rather than narrowing it. **Part 2, the decisive finding**: the
+  algorithm question and the hardware question fully DECOUPLE — MCPI's batched inner loop is
+  exactly the GEMM kernel `#697` already measured at 271-353 GFLOPS fp64 on this CPU's
+  Accelerate/AMX path, while Apple's emulated-fp64 GPU ceiling is only ~35-120 GFLOPS across M3
+  and M5 alike, so a perfectly GPU-shaped, fixed-iteration, batch-uniform fp64 algorithm is STILL
+  a guaranteed 3-8x slowdown on this hardware, regardless of batch size (both devices are
+  FLOP-bound on the identical kernel). No algorithm choice can fix a raw throughput deficit at
+  the only precision this project's gates accept. On the algorithms' own merits (for future
+  native-fp64 hardware): real CR3BP prior art for MCPI exists (Swenson/Woollands/Junkins 2017,
+  45,000+ halo orbits, ~10x over RK7/8) but a disposable PoC run on this project's own
+  planar Earth-Moon CR3BP dynamics (not committed, results reproduced in the note) confirms the
+  literature's caveats bite exactly where this project's science lives: benign/L1-region arcs
+  converge cleanly to 1e-12-class DOP853 agreement, but close lunar approaches force a >=40x
+  segment-length shrink, AND the discrete Picard operator shows spurious fixed points — runs
+  satisfying the 1e-12 convergence criterion while being wrong by 1e-3 to 2.0 in state, a
+  structural "it closed!" hazard for a codebase whose entire discipline is distrusting
+  convergence flags. Fixed-step symplectic (Wisdom-Holman) is a category mismatch (needs
+  near-Keplerian splitting, breaks at close encounters by construction, wrong accuracy currency
+  for pointwise-1e-12 corrector work). Parareal/PFASST: dispatch's own skepticism confirmed
+  (diverges for chaotic systems in the literature, wrong parallelism axis for this project's
+  trajectory-parallel sweeps). **Independently spot-verified 2026-07-23**: confirmed the cited
+  M5 GPU roofline source is real via live WebSearch, and its own reported FP32:FP64 AMX ratio
+  (3.8:1) arithmetically reproduces the agent's quoted 471 GFLOPS fp64 figure (1790/3.8≈471) —
+  the citation is accurate, not fabricated. Revisit triggers: native-fp64 GPU hardware access
+  (the Masat 2023 two-level Picard-Chebyshev design would be the starting point, for
+  far-from-secondary batch work only), Apple shipping GPU fp64, or a published MCPI variant
+  demonstrating certified convergence through close approaches without per-trajectory
+  adaptivity (none found).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
