@@ -1,0 +1,538 @@
+{
+  "task": "#694",
+  "system": "Jupiter-Europa-Ganymede CCR4BP, Europa 3:4 resonant torus (physical mass)",
+  "torus_residual_rms": 0.00016250058833698302,
+  "torus_closure_residual": 0.002193959981397452,
+  "torus_rho_strob": 3.1194271687628645,
+  "torus_period_tu": 12.47771183806834,
+  "globalization_params": {
+    "n_theta2": 60,
+    "n_time": 150,
+    "t_max_periods": 2.0,
+    "n_segments_dir": 24,
+    "eps": 1e-06
+  },
+  "combo_results": [
+    {
+      "u_lobe": 1.0,
+      "s_lobe": 1.0,
+      "n_coarse_candidates": 5,
+      "refined": [
+        {
+          "seed": {
+            "theta2_u": 5.026548245743669,
+            "t_u": 20.93575811756433,
+            "theta2_s": 4.607669225265029,
+            "t_s": 2.5122909741077195,
+            "gap_planar": 0.0005027460472058181
+          },
+          "refined_pos_gap_km": 6.480401812391494e-09,
+          "refined_vel_gap_km_s": 1.173080963838761e-13,
+          "residual_norm": 1.2889588907739903e-14,
+          "converged": true,
+          "theta2_u": 5.023476039236553,
+          "t_u": 21.78861764077749,
+          "theta2_s": 4.60628390342674,
+          "t_s": 1.6679324086653797,
+          "guard_radau_pos_gap_km": 6.803934626572439e-07,
+          "guard_integrator_delta_km": 6.739130608448523e-07,
+          "guard_quasi_jacobi_gap": 4.440892098500626e-16,
+          "guard_off_torus_km": 5167.169964348377,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.979350694547071,
+            "t_u": 8.70927537690676,
+            "theta2_s": 1.2566370614359172,
+            "t_s": 5.527040143036983,
+            "gap_planar": 0.0005484236810883918
+          },
+          "refined_pos_gap_km": 51.98139867647759,
+          "refined_vel_gap_km_s": 0.001521494780082655,
+          "residual_norm": 0.0001351381003172671,
+          "converged": false,
+          "theta2_u": 3.9484949803863767,
+          "t_u": 9.682849063644488,
+          "theta2_s": 1.2505607809620247,
+          "t_s": 4.650277689601916,
+          "guard_radau_pos_gap_km": 51.981398877957794,
+          "guard_integrator_delta_km": 2.0148020496435493e-07,
+          "guard_quasi_jacobi_gap": -2.8140201537851794e-06,
+          "guard_off_torus_km": 8350.091021808159,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.5604716740684323,
+            "t_u": 13.39888519524117,
+            "theta2_s": 2.3038346126325147,
+            "t_s": 6.699442597620585,
+            "gap_planar": 0.0007559827202872855
+          },
+          "refined_pos_gap_km": 85.37702353092031,
+          "refined_vel_gap_km_s": 0.0008767339609888322,
+          "residual_norm": 0.00014232554593327981,
+          "converged": true,
+          "theta2_u": 3.5733486693134715,
+          "t_u": 14.92258940646954,
+          "theta2_s": 2.284290903447772,
+          "t_s": 5.042176098437086,
+          "guard_radau_pos_gap_km": 85.3770235236928,
+          "guard_integrator_delta_km": 7.227512810459302e-09,
+          "guard_quasi_jacobi_gap": -0.00023241269085927385,
+          "guard_off_torus_km": 6536.720948287365,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.3613568165555772,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 4.29350995990605,
+            "t_s": 9.714191766549849,
+            "gap_planar": 0.0008779868734521046
+          },
+          "refined_pos_gap_km": 79.4125252705326,
+          "refined_vel_gap_km_s": 0.001657652474976286,
+          "residual_norm": 0.00016899148906584385,
+          "converged": true,
+          "theta2_u": 1.3708421219166547,
+          "t_u": 4.00076772892491,
+          "theta2_s": 4.296860181169,
+          "t_s": 7.7009504359995375,
+          "guard_radau_pos_gap_km": 79.41252533145521,
+          "guard_integrator_delta_km": 6.092261628509732e-08,
+          "guard_quasi_jacobi_gap": 0.0004173710295614086,
+          "guard_off_torus_km": 2357.944904474325,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.9896753472735356,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 1.5707963267948963,
+            "t_s": 21.438216312385872,
+            "gap_planar": 0.0009527919918990294
+          },
+          "refined_pos_gap_km": 40.47235378149982,
+          "refined_vel_gap_km_s": 0.0004128105747268987,
+          "residual_norm": 6.737730440304149e-05,
+          "converged": true,
+          "theta2_u": 1.9656775407031248,
+          "t_u": 4.3045899835159,
+          "theta2_s": 1.5721078250495493,
+          "t_s": 19.247169003056477,
+          "guard_radau_pos_gap_km": 43.63688233200982,
+          "guard_integrator_delta_km": 3.164528550509999,
+          "guard_quasi_jacobi_gap": 0.00010731999273483339,
+          "guard_off_torus_km": 3582.2055829375868,
+          "guard_genuine": false,
+          "guard_notes": "Radau/DOP853 disagree by 3.165 km >= 1.0 km threshold"
+        }
+      ]
+    },
+    {
+      "u_lobe": 1.0,
+      "s_lobe": -1.0,
+      "n_coarse_candidates": 5,
+      "refined": [
+        {
+          "seed": {
+            "theta2_u": 5.026548245743669,
+            "t_u": 20.93575811756433,
+            "theta2_s": 4.607669225265029,
+            "t_s": 2.5122909741077195,
+            "gap_planar": 0.0005029289697106074
+          },
+          "refined_pos_gap_km": 2.3888783028517507e-09,
+          "refined_vel_gap_km_s": 8.035971408857574e-14,
+          "residual_norm": 6.846800390718341e-15,
+          "converged": true,
+          "theta2_u": 5.023477566803122,
+          "t_u": 21.788327294071625,
+          "theta2_s": 4.60627685604774,
+          "t_s": 1.6681895568128748,
+          "guard_radau_pos_gap_km": 6.475845726154758e-07,
+          "guard_integrator_delta_km": 6.451956943126241e-07,
+          "guard_quasi_jacobi_gap": 3.9968028886505635e-15,
+          "guard_off_torus_km": 5167.963904663595,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.979350694547071,
+            "t_u": 8.70927537690676,
+            "theta2_s": 1.2566370614359172,
+            "t_s": 5.527040143036983,
+            "gap_planar": 0.0005480064416180464
+          },
+          "refined_pos_gap_km": 51.94168204673132,
+          "refined_vel_gap_km_s": 0.0015172210246119898,
+          "residual_norm": 0.00013484935456114887,
+          "converged": false,
+          "theta2_u": 3.9489032493332554,
+          "t_u": 9.681044144576546,
+          "theta2_s": 1.250556908348544,
+          "t_s": 4.650448757616146,
+          "guard_radau_pos_gap_km": 52.89304848605378,
+          "guard_integrator_delta_km": 0.9513664393224559,
+          "guard_quasi_jacobi_gap": -1.935574225342407e-06,
+          "guard_off_torus_km": 8346.870806717217,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.5604716740684323,
+            "t_u": 13.39888519524117,
+            "theta2_s": 2.3038346126325147,
+            "t_s": 6.699442597620585,
+            "gap_planar": 0.0007535963109838124
+          },
+          "refined_pos_gap_km": 85.38388472441241,
+          "refined_vel_gap_km_s": 0.0008767981260630847,
+          "residual_norm": 0.00014233677838358227,
+          "converged": true,
+          "theta2_u": 3.5733445141776055,
+          "t_u": 14.92253696214022,
+          "theta2_s": 2.2842828458004782,
+          "t_s": 5.042213644479201,
+          "guard_radau_pos_gap_km": 85.38388471043228,
+          "guard_integrator_delta_km": 1.3980127278045984e-08,
+          "guard_quasi_jacobi_gap": -0.00023243700828645686,
+          "guard_off_torus_km": 6535.06091865203,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.3613568165555772,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 4.29350995990605,
+            "t_s": 9.714191766549849,
+            "gap_planar": 0.0008750913008761261
+          },
+          "refined_pos_gap_km": 79.25175743945745,
+          "refined_vel_gap_km_s": 0.001655996660551438,
+          "residual_norm": 0.00016873772942226813,
+          "converged": true,
+          "theta2_u": 1.3708517304235481,
+          "t_u": 4.002578326344012,
+          "theta2_s": 4.2968315702558675,
+          "t_s": 7.6989883468530635,
+          "guard_radau_pos_gap_km": 79.25175750525221,
+          "guard_integrator_delta_km": 6.579476519164018e-08,
+          "guard_quasi_jacobi_gap": 0.00041638620588635433,
+          "guard_off_torus_km": 2353.378587572174,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.9896753472735356,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 1.5707963267948963,
+            "t_s": 21.438216312385872,
+            "gap_planar": 0.0009493312248155952
+          },
+          "refined_pos_gap_km": 40.48263389938879,
+          "refined_vel_gap_km_s": 0.00041289016748406965,
+          "residual_norm": 6.739359859268666e-05,
+          "converged": true,
+          "theta2_u": 1.9656762858236234,
+          "t_u": 4.305381650329755,
+          "theta2_s": 1.5721241146216114,
+          "t_s": 19.246447488448844,
+          "guard_radau_pos_gap_km": 42.984024359201,
+          "guard_integrator_delta_km": 2.501390459812214,
+          "guard_quasi_jacobi_gap": 0.00010738992035719264,
+          "guard_off_torus_km": 3584.1544418171666,
+          "guard_genuine": false,
+          "guard_notes": "Radau/DOP853 disagree by 2.501 km >= 1.0 km threshold"
+        }
+      ]
+    },
+    {
+      "u_lobe": -1.0,
+      "s_lobe": 1.0,
+      "n_coarse_candidates": 5,
+      "refined": [
+        {
+          "seed": {
+            "theta2_u": 5.026548245743669,
+            "t_u": 20.93575811756433,
+            "theta2_s": 4.607669225265029,
+            "t_s": 2.5122909741077195,
+            "gap_planar": 0.0005076225992531158
+          },
+          "refined_pos_gap_km": 8.905075194194926e-09,
+          "refined_vel_gap_km_s": 1.3893820985878193e-13,
+          "residual_norm": 1.6683294461074897e-14,
+          "converged": true,
+          "theta2_u": 5.023324057905442,
+          "t_u": 21.802305841413908,
+          "theta2_s": 4.606358634585966,
+          "t_s": 1.6551339316287268,
+          "guard_radau_pos_gap_km": 2.960410687809329e-07,
+          "guard_integrator_delta_km": 2.8713599358673796e-07,
+          "guard_quasi_jacobi_gap": 1.6431300764452317e-14,
+          "guard_off_torus_km": 5171.419436674602,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.979350694547071,
+            "t_u": 8.70927537690676,
+            "theta2_s": 1.2566370614359172,
+            "t_s": 5.527040143036983,
+            "gap_planar": 0.0005443541504298603
+          },
+          "refined_pos_gap_km": 50.54878584505809,
+          "refined_vel_gap_km_s": 0.001465904237143395,
+          "residual_norm": 0.00013060035899438552,
+          "converged": false,
+          "theta2_u": 3.9484076402837878,
+          "t_u": 9.674645366864135,
+          "theta2_s": 1.250751366197127,
+          "t_s": 4.6595943571675775,
+          "guard_radau_pos_gap_km": 50.54878602736318,
+          "guard_integrator_delta_km": 1.8230508658234612e-07,
+          "guard_quasi_jacobi_gap": 3.266335387497321e-06,
+          "guard_off_torus_km": 8325.28978806013,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.5604716740684323,
+            "t_u": 13.39888519524117,
+            "theta2_s": 2.3038346126325147,
+            "t_s": 6.699442597620585,
+            "gap_planar": 0.0007234187813760009
+          },
+          "refined_pos_gap_km": 85.15743160047872,
+          "refined_vel_gap_km_s": 0.0008745089085446874,
+          "residual_norm": 0.00014196045758381264,
+          "converged": true,
+          "theta2_u": 3.5732196354085892,
+          "t_u": 14.923578695567192,
+          "theta2_s": 2.2841857096798175,
+          "t_s": 5.04128023280496,
+          "guard_radau_pos_gap_km": 85.15743161007437,
+          "guard_integrator_delta_km": 9.59565227276471e-09,
+          "guard_quasi_jacobi_gap": -0.00023176801962598859,
+          "guard_off_torus_km": 6555.566308168537,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.3613568165555772,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 4.29350995990605,
+            "t_s": 9.714191766549849,
+            "gap_planar": 0.0008824642393402247
+          },
+          "refined_pos_gap_km": 78.80366512365671,
+          "refined_vel_gap_km_s": 0.0016503565176949355,
+          "residual_norm": 0.0001679773300238451,
+          "converged": true,
+          "theta2_u": 1.3707089135543846,
+          "t_u": 4.0070249221418965,
+          "theta2_s": 4.296850836490867,
+          "t_s": 7.695179292246524,
+          "guard_radau_pos_gap_km": 78.80366522001928,
+          "guard_integrator_delta_km": 9.636256947942456e-08,
+          "guard_quasi_jacobi_gap": 0.00041374769139546075,
+          "guard_off_torus_km": 2351.0919653964356,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.9896753472735356,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 1.5707963267948963,
+            "t_s": 21.438216312385872,
+            "gap_planar": 0.0009565894593117208
+          },
+          "refined_pos_gap_km": 40.44625906002585,
+          "refined_vel_gap_km_s": 0.00041253320813857303,
+          "residual_norm": 6.733349893804688e-05,
+          "converged": true,
+          "theta2_u": 1.965617519884242,
+          "t_u": 4.305161764390844,
+          "theta2_s": 1.5720909254043882,
+          "t_s": 19.246775266535362,
+          "guard_radau_pos_gap_km": 38.23591471840049,
+          "guard_integrator_delta_km": 2.2103443416253654,
+          "guard_quasi_jacobi_gap": 0.00010726825727891409,
+          "guard_off_torus_km": 3589.3978769563,
+          "guard_genuine": false,
+          "guard_notes": "Radau/DOP853 disagree by 2.210 km >= 1.0 km threshold"
+        }
+      ]
+    },
+    {
+      "u_lobe": -1.0,
+      "s_lobe": -1.0,
+      "n_coarse_candidates": 5,
+      "refined": [
+        {
+          "seed": {
+            "theta2_u": 5.026548245743669,
+            "t_u": 20.93575811756433,
+            "theta2_s": 4.607669225265029,
+            "t_s": 2.5122909741077195,
+            "gap_planar": 0.0005073351245786753
+          },
+          "refined_pos_gap_km": 5.874729876765619e-09,
+          "refined_vel_gap_km_s": 1.468283908014378e-13,
+          "residual_norm": 1.3814137083206478e-14,
+          "converged": true,
+          "theta2_u": 5.023325588066755,
+          "t_u": 21.802016504229666,
+          "theta2_s": 4.606351586113829,
+          "t_s": 1.655390053315878,
+          "guard_radau_pos_gap_km": 7.654684207965937e-07,
+          "guard_integrator_delta_km": 7.595936909198281e-07,
+          "guard_quasi_jacobi_gap": -2.220446049250313e-15,
+          "guard_off_torus_km": 5172.206855213204,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.979350694547071,
+            "t_u": 8.70927537690676,
+            "theta2_s": 1.2566370614359172,
+            "t_s": 5.527040143036983,
+            "gap_planar": 0.0005439884147037877
+          },
+          "refined_pos_gap_km": 50.46606152684612,
+          "refined_vel_gap_km_s": 0.0014627299578554719,
+          "residual_norm": 0.00013034053546574632,
+          "converged": false,
+          "theta2_u": 3.948402348740245,
+          "t_u": 9.67291586089946,
+          "theta2_s": 1.2507696109543052,
+          "t_s": 4.661418433900628,
+          "guard_radau_pos_gap_km": 50.46606172338657,
+          "guard_integrator_delta_km": 1.965404479165045e-07,
+          "guard_quasi_jacobi_gap": 3.5161039599884703e-06,
+          "guard_off_torus_km": 8322.725930881052,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 3.5604716740684323,
+            "t_u": 13.39888519524117,
+            "theta2_s": 2.3038346126325147,
+            "t_s": 6.699442597620585,
+            "gap_planar": 0.0007213362920736869
+          },
+          "refined_pos_gap_km": 85.16424017073659,
+          "refined_vel_gap_km_s": 0.0008745757210300802,
+          "residual_norm": 0.0001419717063278189,
+          "converged": true,
+          "theta2_u": 3.573215487764117,
+          "t_u": 14.923564031856738,
+          "theta2_s": 2.2841777945886466,
+          "t_s": 5.041280442687207,
+          "guard_radau_pos_gap_km": 85.16424015838611,
+          "guard_integrator_delta_km": 1.2350483302725479e-08,
+          "guard_quasi_jacobi_gap": -0.00023178903901976966,
+          "guard_off_torus_km": 6553.945198687138,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.3613568165555772,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 4.29350995990605,
+            "t_s": 9.714191766549849,
+            "gap_planar": 0.0008795741823747131
+          },
+          "refined_pos_gap_km": 78.64131075415501,
+          "refined_vel_gap_km_s": 0.0016487076120089998,
+          "residual_norm": 0.00016772242138687519,
+          "converged": true,
+          "theta2_u": 1.3707186131529667,
+          "t_u": 4.0088720271562295,
+          "theta2_s": 4.29682214630603,
+          "t_s": 7.693180022899678,
+          "guard_radau_pos_gap_km": 78.64131085451088,
+          "guard_integrator_delta_km": 1.0035586228696047e-07,
+          "guard_quasi_jacobi_gap": 0.0004127531145408092,
+          "guard_off_torus_km": 2346.365412347666,
+          "guard_genuine": true,
+          "guard_notes": "all checks passed"
+        },
+        {
+          "seed": {
+            "theta2_u": 1.9896753472735356,
+            "t_u": 2.0098327792861754,
+            "theta2_s": 1.5707963267948963,
+            "t_s": 21.438216312385872,
+            "gap_planar": 0.0009531141103786472
+          },
+          "refined_pos_gap_km": 40.45652082694488,
+          "refined_vel_gap_km_s": 0.0004126138483290757,
+          "residual_norm": 6.734980266193222e-05,
+          "converged": true,
+          "theta2_u": 1.9656163087217133,
+          "t_u": 4.305919695973698,
+          "theta2_s": 1.5721071833816682,
+          "t_s": 19.2460871405878,
+          "guard_radau_pos_gap_km": 38.32286576157358,
+          "guard_integrator_delta_km": 2.1336550653713005,
+          "guard_quasi_jacobi_gap": 0.00010733623294800765,
+          "guard_off_torus_km": 3591.265349288166,
+          "guard_genuine": false,
+          "guard_notes": "Radau/DOP853 disagree by 2.134 km >= 1.0 km threshold"
+        }
+      ]
+    }
+  ],
+  "best_genuine_connection": {
+    "seed": {
+      "theta2_u": 5.026548245743669,
+      "t_u": 20.93575811756433,
+      "theta2_s": 4.607669225265029,
+      "t_s": 2.5122909741077195,
+      "gap_planar": 0.0005029289697106074
+    },
+    "refined_pos_gap_km": 2.3888783028517507e-09,
+    "refined_vel_gap_km_s": 8.035971408857574e-14,
+    "residual_norm": 6.846800390718341e-15,
+    "converged": true,
+    "theta2_u": 5.023477566803122,
+    "t_u": 21.788327294071625,
+    "theta2_s": 4.60627685604774,
+    "t_s": 1.6681895568128748,
+    "guard_radau_pos_gap_km": 6.475845726154758e-07,
+    "guard_integrator_delta_km": 6.451956943126241e-07,
+    "guard_quasi_jacobi_gap": 3.9968028886505635e-15,
+    "guard_off_torus_km": 5167.963904663595,
+    "guard_genuine": true,
+    "guard_notes": "all checks passed",
+    "u_lobe": 1.0,
+    "s_lobe": -1.0
+  },
+  "mesh_refinement_check": {
+    "n_theta2_dense": 120,
+    "n_time_dense": 300,
+    "dense_grid_coarse_best_gap_planar": 0.00036928960948437364,
+    "rerefine_at_n_segments_dir_48_pos_gap_km": 9.505711962293399e-09,
+    "reref_matches_original": true
+  },
+  "two_torus_extension_note": "This positive control is the SINGLE-TORUS homoclinic case (Europa 3:4 unstable manifold meeting its OWN stable manifold), per #694's own dispatch (acceptable simpler first control). A genuine two-torus heteroclinic cycle (#686's own shortlist item: Ganymede-4:3 <-> Europa-3:4) would additionally require: (1) building a second CCR4BP torus for the Jupiter-Ganymede 4:3 resonant orbit under EUROPA's forcing (a different base system, mu/mu_gan roles swapped -- #689's CCR4BPSystem is already system-agnostic so this is a parameter change, not new code); (2) globalizing that torus's manifolds with this SAME module; (3) running coarse_candidates/refine_candidate/ghost_guard with torus_u != torus_s (already supported by this module's own signature -- refine_candidate and ghost_guard both take independent torus_u/torus_s arguments); (4) closing the CYCLE itself (Ganymede torus -> Europa torus -> back to Ganymede torus) requires phasing commensurability across BOTH legs, an additional constraint beyond a single connection. No code changes needed beyond calling this module twice with different torus objects; not run here per #694's explicit JEG-only scope."
+}
