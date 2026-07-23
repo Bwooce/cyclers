@@ -194,8 +194,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#691` — REMOVED from this list 2026-07-23, CLOSED same day; see its
-  own `✓ DONE` bullet entry.)
+- `#693` — cheap cross-solar-system screening pass for CCR4BP-compatible moon pairs; dispatched
+  2026-07-23. See its own bullet entry for full scope. (`#691` — REMOVED from this list
+  2026-07-23, CLOSED same day; see its own `✓ DONE` bullet entry.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -1145,8 +1146,22 @@ one-period amplification off the converged tori (cheap post-hoc STM extraction, 
 then run #619's perturbation-robustness diagnostic (segment-anchored discrete-QR/CLV direction
 extraction, the method #646 already validated as perturbation-stable on the EM-L2 case) against
 the CCR4BP unstable direction, before deciding whether the full Kumar bundle-solve is needed.
-Explicitly NOT the mesh-intersection heteroclinic search itself (later Stage-B sub-task).
-#692 next-unused):**
+Explicitly NOT the mesh-intersection heteroclinic search itself (later Stage-B sub-task). DONE
+2026-07-23: verdict is the cheap segmented QR/CLV direction IS trustworthy (worst-case swing
+0.0083 deg vs one-shot's 3.44 deg); Kumar bundle-solve not indicated; see #691's own bullet.
+#692 -- incidentally found during #691's own independent verification, NOT part of #691's scope:
+a genuine, deterministic (confirmed via 3x isolated re-run, not xdist-contention flake) bug in
+core/ephemeris.py's _AstropyBackend.states() batch path -- fails its own documented "byte-identical
+to looping state()" contract at (body=E, t=0.0), pre-existing since 65f3c2d (2026-06-07), unrelated
+to #691/CCR4BP. Registered, NOT yet dispatched -- see its own Ready-to-dispatch entry. #693 --
+cheap cross-solar-system screening pass for CCR4BP-compatible moon pairs (near-circular, coplanar,
+period-commensurate, around a shared primary) across Jupiter/Saturn/Uranus/Neptune, each candidate
+cross-checked against search/literature_check.py's novelty gate, producing a ranked shortlist
+before committing to any further multi-day per-system CCR4BP builds (the #689-#691 Europa-Ganymede
+build chain is NOT novel per se -- it reproduces Kumar et al. 2021's own object class -- so this
+screen is what identifies which pair, if any, would yield an actually-novel discovery). User
+explicitly asked "so which bodies do we try" and approved this screening-first approach over
+mass-registering every candidate pair's build directly. #694 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13676,6 +13691,33 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (capability build). Did NOT touch `#689`'s or `#690`'s modules (pure additive diagnostic). Next:
   Stage-B's remaining sub-tasks (manifold globalization + mesh-intersection heteroclinic search)
   are the actual discovery step — not yet registered.
+- **#692 (registered 2026-07-23, not yet dispatched)** — see its own entry in the "Ready to
+  dispatch" list above (top of this file) for full scope: fix `_AstropyBackend.states()`'s
+  batch/scalar exact-equality mismatch in `src/cyclerfinder/core/ephemeris.py`.
+- **#693 (dispatched 2026-07-23) -- cheap cross-solar-system screening pass for CCR4BP-compatible
+  moon pairs.** User question after `#691` closed: "so which bodies do we try, ones that can form
+  a torus?" — followed by "we should add tasks for all compatible pairs across the solar system?".
+  Recommendation given (approved via "Go"): do NOT mass-register per-pair builds yet — the
+  `#689`-`#691` Europa-Ganymede chain reproduces Kumar et al. 2021's own published object class,
+  so it is NOT itself a novelty target; screen cheaply first, then commit real builds only to
+  pairs that clear BOTH tractability and novelty. Scope: survey candidate moon pairs sharing a
+  primary across Jupiter (beyond Europa-Ganymede: Io-Europa, Io-Ganymede, Europa-Callisto, etc.),
+  Saturn (Mimas-Tethys 2:4/1:2, Enceladus-Dione 1:2, Titan-Hyperion 3:4, and others), Uranus, and
+  Neptune (honest caveat: Triton is retrograde, likely disqualifying any Triton pairing from this
+  model's "circular coplanar corotating" assumption — check and document rather than skip
+  silently) for CCR4BP orbital-geometry compatibility (near-circular, coplanar, period-commensurate
+  — reuse `#689`'s own compatibility criteria/reduction tests as the template for what
+  "compatible" means quantitatively, not just a qualitative resonance-ratio check). For every
+  geometry-compatible pair found, cross-check literature-novelty via
+  `search/literature_check.py` (mandatory gate per
+  `[[feedback_literature_novelty_check_baseline]]`) and the `docs/notes/CORPUS_INDEX.md` /
+  `cyclers_pdf` corpus (grep for existing CCR4BP/whiskered-torus/heteroclinic work on that specific
+  pair before calling it novel — per `[[feedback_ground_citations_against_content]]`, do not just
+  trust an abstract-level topical match). Output: a ranked shortlist (tractability x novelty),
+  written to `docs/notes/`, explicitly analogous in structure to `#679`'s and `#686`'s own
+  discovery-strategy-pass reports. Does NOT commit to building anything — screening only, per this
+  project's own staged-arc discipline (cheap screen before expensive multi-day build, same pattern
+  as `#688` before `#689`-`#691`).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
