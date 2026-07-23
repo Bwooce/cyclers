@@ -180,7 +180,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
+- `#701` — the now-proven CCR4BP pipeline applied to Uranus Umbriel-Titania, dispatched ALONE
+  2026-07-24 ("one at a time" per explicit user instruction). See its own bullet entry for full
+  scope. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
   day: both VERDICT CLEAR — see each's own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from
   this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
   honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
@@ -1216,7 +1218,18 @@ this pair before ranking it for a build. #700 -- deeper literature check for #69
 candidate, Jupiter Europa-Callisto (mu_pert=5.67e-5, good tractability, no clean low-integer
 commensurability -- 4.73 ratio), only lightly novelty-checked in #693's own pass (piggybacked on
 the Ganymede-Callisto query, not independently searched) -- needs its own dedicated search before
-it could be ranked above Umbriel-Titania or committed to a build. #701 next-unused):**
+it could be ranked above Umbriel-Titania or committed to a build. Both #699/#700 DONE 2026-07-24:
+both cleared novelty (VERDICT CLEAR each), but Europa-Callisto has no clean low-integer MMR
+(4.7 ratio -- generic parameter-scan territory) vs Umbriel-Titania's real 2.10 near-2:1 resonance
+and better mass conditioning -- Umbriel-Titania recommended as the stronger remaining candidate.
+User: "One at a time" (after the #695/#696 parallel dispatch and this session's own "wasteful and
+difficult" lesson about serial-vs-parallel dispatch) -- take the stronger candidate first rather
+than both remaining ones at once. #701 -- apply the full, now-proven CCR4BP pipeline
+(#689-#694) to Uranus Umbriel-Titania, a genuine discovery attempt, analogous to #695/#696 but
+for the strongest remaining #693 candidate (novelty-cleared per #699, best non-Jovian mass
+conditioning, real 2.10 near-2:1 resonance to anchor the base orbit). Europa-Callisto (#700,
+also CLEAR) intentionally NOT dispatched alongside this one, per explicit user instruction.
+#702 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14093,6 +14106,22 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   **Independently spot-verified 2026-07-24**: re-ran the `pdftotext`+grep check on both Kumar PDFs
   myself, confirmed zero "Callisto" matches in each; grepped `literature_check.py` and confirmed
   no Jovian anchor is CCR4BP-tagged, matching the report precisely.
+- **#701 (dispatched 2026-07-24) -- apply the full, now-proven CCR4BP pipeline (`#689`-`#694`) to
+  Uranus Umbriel-Titania, a genuine discovery attempt.** The strongest remaining `#693` candidate
+  after `#699`/`#700` both cleared novelty: `mu_pert=3.92e-5` (best non-Jovian mass conditioning,
+  only 2x below the JEG reference), both eccentricities under the tractability bar, `Δi≈0`, a real
+  2.10 near-2:1 period ratio to anchor the base resonant orbit (unlike Europa-Callisto's 4.7 ratio
+  with no clean MMR — `#700`'s own flagged caveat). Novelty-cleared by `#699` (ten independent
+  search queries, full-text check of the closest adjacent paper, no disqualifying prior work
+  found). Same scope/pipeline/discipline as `#695`/`#696`: build a `CCR4BPSystem` for
+  Umbriel-Titania (Umbriel base, Titania perturber), find the base resonant orbit, build the
+  CCR4BP torus (`#690`'s corrector, reused unmodified), extract + validate the whisker direction
+  (`#691`, reused unmodified, own positive-control discipline on this new system), globalize and
+  run the heteroclinic search (`#694`'s modules, reused unmodified) — same ghost-guard discipline
+  throughout. Dispatched ALONE, not in parallel with `#700`'s Europa-Callisto candidate, per
+  explicit user instruction ("One at a time") — a deliberate change from `#695`/`#696`'s parallel
+  dispatch, now that the two remaining candidates are of uneven quality (this one is clearly
+  stronger) rather than comparably-ranked.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
