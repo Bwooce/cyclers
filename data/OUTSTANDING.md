@@ -34,7 +34,26 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#652` — corrected 2026-07-19: this line was never updated after `#652`
+- `#692` — fix `_AstropyBackend.states()` batch/scalar exact-equality mismatch in
+  `src/cyclerfinder/core/ephemeris.py`. Found 2026-07-23 incidentally during `#691`'s independent
+  full-suite verification: `tests/core/test_ephemeris_cache.py::test_states_batch_matches_scalar_state[astropy]`
+  fails DETERMINISTICALLY (confirmed via 3x isolated single-worker re-run, not a parallel-xdist
+  flake) at `(model=astropy, body=E, t=0.0)` — `np.array_equal` mismatch on values that print
+  identically at displayed precision, i.e. a sub-ULP divergence. Root cause (not yet fixed):
+  `states()`'s own docstring claims "Per-element output is byte-identical to looping `state()`:
+  same DE440 states, same ICRS→ecliptic rotation, same subtraction order" — that claim is false;
+  the batch path evaluates an array-valued astropy `Time`/Chebyshev call while the scalar path
+  evaluates a single-element `Time` call, and these are not guaranteed bit-identical inside
+  astropy/ERFA. Pre-existing since `65f3c2d` (2026-06-07), unrelated to `#691`'s CCR4BP changes
+  (which never touch this module) — just never previously surfaced by a full-suite run. Likely
+  low physical impact (sub-ULP), but violates this project's "batch API is byte-identical to
+  scalar" documented contract and the standing "fully green modulo the 2 documented failures"
+  suite discipline. Fix options to evaluate: loosen the test to `np.allclose` if bit-identity was
+  never actually achievable (and correct the docstring's claim), or find and fix the actual
+  divergent step. Given `[[feedback_bugfix_invalidates_past_searches]]`, once fixed check whether
+  the divergence is large enough anywhere to have affected any past batch-ephemeris search result
+  (unlikely at sub-ULP scale, but confirm before closing).
+  (`#652` — corrected 2026-07-19: this line was never updated after `#652`
   was dispatched and closed the same day; see its own `✓ DONE` bullet entry — fixed via a
   `solve_ivp` close-approach termination event on BOTH STM-integration paths, 9 new regression
   tests, hang confirmed via git-stash before/after, full suite green. Removed from this list.
@@ -175,8 +194,8 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#691` — Stage B sub-task 3 of `#686`'s CCR4BP plan (whisker/manifold construction off `#690`'s
-  converged tori); dispatched 2026-07-23. See its own bullet entry for full scope.
+- Otherwise none currently. (`#691` — REMOVED from this list 2026-07-23, CLOSED same day; see its
+  own `✓ DONE` bullet entry.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -13613,7 +13632,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   Independently re-verified 2026-07-23 (see `#691`'s own bullet's opening note for the full
   re-verification record — ruff/full-mypy clean, isolated + full-suite re-run, one flake
   confirmed and ruled out).
-- **#691 (dispatched 2026-07-23) -- Stage B sub-task 3 of `#686`'s CCR4BP plan: whisker/manifold
+- **#691 ✓ DONE (2026-07-23) -- Stage B sub-task 3 of `#686`'s CCR4BP plan: whisker/manifold
   construction off `#690`'s converged CCR4BP tori.** Scope per `#686` section 3 item 3, in order:
   (1) measure one-period amplification off the `#690` corrector's converged Jupiter-Europa 3:4
   torus (cheap post-hoc STM extraction — reuse `#689`'s `ccr4bp_stm_eom`, no new solver needed);
@@ -13627,6 +13646,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   stable/unstable amplification on the base (mu_gan=0) Jupiter-Europa CR3BP periodic orbit before
   being trusted on the forced CCR4BP torus, per this project's standing "verify against a
   known-good case before trusting a novel one" discipline.
+  **RESULT (2026-07-23, commit `fa09bb8`).** New module `src/cyclerfinder/search/ccr4bp_whisker.py`
+  + `tests/search/test_ccr4bp_whisker.py` (11 tests). Step 1 (`one_period_stm` +
+  `amplification_diagnostics`): the physical-mass torus has a clear, well-separated unstable
+  direction at every phase checked, `|lam_u|` ranging ~9-1700 across phase, always reciprocal-paired
+  (`lam_u*lam_s~1`, symplectic check) and well-separated from the rest of the spectrum. Step 2
+  (`manifold_direction_segmented_clv`, `#646`'s segment-anchored discrete-QR/CLV logic adapted to
+  the CCR4BP's simpler 6-state Cartesian backend, no PM/PV conversion needed): worst-case
+  perturbation swing (5 seeds, 3 phases incl. the most extreme-dynamic-range point) is 3.44° for
+  the naive one-shot extractor and 0.0083° for the segmented extractor at `n_segments=32` — both
+  orders of magnitude below the QBCP EM-L2 torus's 88° one-shot failure mode. **VERDICT: the cheap
+  QR/CLV direction is trustworthy for this torus; the expensive Kumar bundle-solve whisker
+  construction is NOT indicated.** Honest caveat found and documented (not swept under the rug):
+  `n_segments=16` (the module's own default, matching `#646`'s) is NOT always sufficient — one
+  extreme-dynamic-range phase needed `n_segments>=32` to converge (an isolated resolution artifact,
+  confirmed clean by a sweep to 128, not a fragility). Two-layer positive control passed before
+  trusting the physical torus: (A) a period-matched high-n2 pure Fourier projection confirms the
+  base 3:4 orbit is genuinely LINEARLY STABLE at `mu_gan=0` (all monodromy eigenvalues on the unit
+  circle to ~1e-13), matching an independent direct `cr3bp_stm_eom` computation; (B) the
+  Ganymede-synodic-period stroboscopic map is genuinely hyperbolic even at `mu_gan=0` (a real
+  frozen-time-rate effect, not orbital instability), independently cross-checked against a raw
+  `cr3bp_stm_eom` propagation. **Independently re-verified 2026-07-23** (I re-ran, did not just
+  trust the agent's report): isolated re-run of `tests/search/test_ccr4bp_whisker.py` 11/11 passed
+  in 29.29s; `ruff check`/`ruff format --check` on both new files clean; full `mypy src tests`
+  clean (778 files); full `tests/core tests/search tests/scripts` re-run shows only the 2
+  long-documented pre-existing failures — **incidentally surfaced a genuine, unrelated,
+  pre-existing bug, registered separately as `#692`** (astropy ephemeris batch/scalar exact-equality
+  mismatch, dated to a 2026-06-07 commit, nothing to do with this task). No catalogue writeback
+  (capability build). Did NOT touch `#689`'s or `#690`'s modules (pure additive diagnostic). Next:
+  Stage-B's remaining sub-tasks (manifold globalization + mesh-intersection heteroclinic search)
+  are the actual discovery step — not yet registered.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
