@@ -180,9 +180,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#701` — the now-proven CCR4BP pipeline applied to Uranus Umbriel-Titania, dispatched ALONE
-  2026-07-24 ("one at a time" per explicit user instruction). See its own bullet entry for full
-  scope. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
+- `#701` (pipeline built, awaiting `#702`'s verdict) and `#702` (Opus, fixing a real `ghost_guard`
+  Radau-anchoring bug + re-verifying `#701`'s flagged near-machine-precision candidate) — see each
+  own bullet entry for full scope. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
   day: both VERDICT CLEAR — see each's own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from
   this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
   honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
@@ -1229,7 +1229,33 @@ than both remaining ones at once. #701 -- apply the full, now-proven CCR4BP pipe
 for the strongest remaining #693 candidate (novelty-cleared per #699, best non-Jovian mass
 conditioning, real 2.10 near-2:1 resonance to anchor the base orbit). Europa-Callisto (#700,
 also CLEAR) intentionally NOT dispatched alongside this one, per explicit user instruction.
-#702 next-unused):**
+Pipeline steps (system constructor, base orbit, torus, whisker) built + committed cleanly by the
+dispatched agent; the final heteroclinic search produced a candidate with a near-machine-precision
+DOP853-side gap (~2e-9 km) that the automated ghost-guard flagged as NOT genuine on an independent
+Radau-integrator cross-check (reported ~0.98 km disagreement, just under the 1.0 km rejection
+threshold's own complement, i.e. right at the edge). Coordinating session independently
+re-investigated (see #702) rather than trusting either the driver's own boolean verdict or
+dismissing the candidate outright -- found the ghost-guard's OWN Radau re-check has a real,
+separate anchor-point bug (see #702) that produces a FALSE disagreement signal here; the
+underlying candidate looks likely genuine pending #702's fix-and-reverify. #702 -- fix a newly
+found `#694` ghost_guard bug: its independent Radau-integrator cross-check anchors the CLV
+`ref_vec` sign-continuity reference at the FINAL, optimizer-converged `refined.theta2_u`/
+`refined.theta2_s`, while `refine_candidate`'s own DOP853-side states are anchored at the SEED
+candidate's theta2 (before optimization moves it) -- a real inconsistency, confirmed present in
+BOTH `ghost_guard()` and the `#695`/`#696`/`#701` driver scripts' own parallel
+`_corrected_radau_check` helpers (which copied the same pattern). When the CLV eigenvector's sign
+isn't continuous between the seed and converged theta2 (plausible for `#701`'s own base orbit,
+whose radial extent literally brackets Titania's own orbital radius -- a much more dynamically
+active configuration than JEG/Io-Europa/Io-Ganymede), the Radau re-check can silently compare
+against the WRONG manifold lobe, producing a spurious large "integrators disagree" false alarm
+that looks like a chaos-amplification red flag but is not. Coordinating session's own manual
+re-probe (seed-anchored ref_vec, matching `refine_candidate`'s own convention) found the
+INDEPENDENT Radau cross-check actually agrees with DOP853 to ~1e-8 km at #701's own "best"
+candidate once anchored correctly -- i.e. the automated "not genuine" verdict for that candidate
+was very likely a false negative caused by this bug, not a real finding. High-stakes task
+(potential first genuine novel CCR4BP discovery in this arc, and a bug that could have produced
+false negatives anywhere in #694/#695/#696's own already-reported verdicts too) -- dispatched to
+Opus per this project's own trust-bearing-judgment tiering policy, not Sonnet. #703 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14122,6 +14148,37 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   explicit user instruction ("One at a time") — a deliberate change from `#695`/`#696`'s parallel
   dispatch, now that the two remaining candidates are of uneven quality (this one is clearly
   stronger) rather than comparably-ranked.
+  **RESULT SO FAR (2026-07-24, commit `2aa13e6` + uncommitted `data/found/701_.../result.json`).**
+  New `src/cyclerfinder/core/ccr4bp_umbriel_titania.py` (`uranus_umbriel_titania_default()`),
+  4 new test files (all reusing `#689`-`#691` unmodified). Base orbit: spacecraft:Umbriel=1:2
+  exterior (the interior 2:1 reading doesn't converge, same pattern `#695` hit for Io-Europa) —
+  its radial extent (1.477-1.698 Umbriel-SMA units) BRACKETS Titania's own orbital radius
+  (`a_gan=1.640`), a materially more dynamically active configuration than JEG/Io-Europa/
+  Io-Ganymede's own carefully-clearance-checked orbits, though the collision-risk check (per
+  `#696`'s own discipline) confirms comfortable clearance over a full torus period. Torus
+  converges cleanly (residual_rms 1.84e-4). Whisker go/no-go: cleanly trustworthy (worst one-shot
+  0.20°, worst segmented 0.0035°). **Heteroclinic search found a candidate at near-machine
+  precision on the DOP853 side (`corrected_pos_gap_km≈2.0e-9`, `residual_norm≈1.0e-14`,
+  `guard_quasi_jacobi_gap≈-9.8e-15`, `corrected_off_torus_km≈1984` km, comfortably clearing the
+  1000 km threshold) — but the automated `corrected_genuine` flag came back `True` on a
+  razor-thin margin (`corrected_integrator_delta_km≈0.98` km, just under the 1.0 km rejection
+  threshold) driven by the module-native (uncorrected) Radau check disagreeing by 2.47 km.**
+  Coordinating session independently re-investigated rather than trusting the automated boolean
+  either way (per this project's own "it closed! is a danger signal" discipline) — found and
+  confirmed a genuine, separate bug in `#694`'s own `ghost_guard` Radau-anchoring (registered as
+  `#702`); a manually corrected re-probe (seed-anchored `ref_vec`, matching `refine_candidate`'s
+  own internal convention) shows the independent Radau integrator actually AGREES with DOP853 to
+  ~1e-8 km at this exact candidate — strongly suggesting the "not genuine" ambiguity was a false
+  alarm from the bug, not a real finding, though this is NOT yet fully certified. **This task is
+  NOT closed** — pending `#702`'s fix-and-reverify before a final verdict on this specific
+  candidate can be trusted.
+- **#702 (dispatched 2026-07-24, Opus) -- fix `#694`'s `ghost_guard` Radau-anchoring bug and
+  re-verify `#701`'s flagged candidate.** See the `TASK ALLOCATIONS` ledger paragraph's own `#702`
+  entry (search `#702 -- fix a newly found`) for the full mechanism and discovery context. High
+  stakes: a potential first genuine novel CCR4BP discovery in this arc (`#701`'s Umbriel-Titania
+  candidate), plus a bug that could have silently produced false-negative "not genuine" verdicts
+  anywhere `ghost_guard` was already trusted (`#694`'s own JEG positive control, `#695`, `#696`).
+  Dispatched to Opus, not Sonnet, per this project's own trust-bearing-judgment model tier.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
