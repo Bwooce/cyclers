@@ -194,11 +194,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#695` and `#696` — the now-proven CCR4BP pipeline applied to Jupiter Io-Europa and Io-Ganymede
-  respectively, dispatched IN PARALLEL 2026-07-23 (not serially — see each's own bullet entry and
-  `#694`'s closing note). (`#694` — REMOVED from this list 2026-07-23, CLOSED same day; see its
-  own `✓ DONE` bullet entry — genuine ghost-guard-verified JEG homoclinic connection found, full
-  Stage-B CCR4BP pipeline proven end-to-end.)
+- Otherwise none currently. (`#695`/`#696` — REMOVED from this list 2026-07-23, both CLOSED same
+  day; see each's own `✓ DONE` bullet entry — `#695` an honest near-miss, `#696` a clean negative.
+  `#694` — REMOVED 2026-07-23, CLOSED same day; genuine ghost-guard-verified JEG homoclinic
+  connection found, full Stage-B CCR4BP pipeline proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -13877,13 +13876,44 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   expected. No catalogue writeback without a separate, later vetting task even if a connection is
   found. Dispatched together with `#696`, not serially, per the user's explicit concern about
   wasted serial validation.
-- **#696 (dispatched 2026-07-23, in parallel with `#695`) -- apply the full, now-proven CCR4BP
+- **#696 ✓ DONE (2026-07-23) -- apply the full, now-proven CCR4BP
   pipeline (`#689`-`#694`) to Jupiter Io-Ganymede, a genuine discovery attempt.** `#693`'s
   second-ranked novelty-cleared candidate: `mu_pert=7.80e-5`, essentially IDENTICAL forcing
   strength to the already-validated JEG perturber term (since both involve Ganymede/Jupiter), 4.06
   period ratio (a real Laplace-chain consequence), e/Δi both under the reference bar, no hit in 2
   targeted literature checks. Same scope/pipeline/discipline as `#695`, applied to this pair
   instead (Io base, Ganymede perturber). Dispatched together with `#695`, not serially.
+  **RESULT (2026-07-23, commits `f02e4b3`/`20e952b`/`64fe16c`): CLEAN NEGATIVE.** New module
+  `src/cyclerfinder/core/ccr4bp_io_ganymede.py` (`jupiter_io_ganymede_default()`), plus
+  `tests/core/test_ccr4bp_io_ganymede.py`, `tests/search/test_ccr4bp_torus_io_ganymede.py`,
+  `tests/search/test_ccr4bp_whisker_io_ganymede.py` (12 tests total). **Base-orbit finding en
+  route**: the naive "moon-ratio-matching" spacecraft:Io=1:4 exterior orbit (a~2.5198) sits within
+  0.018 Io-SMA units of Ganymede's own orbital radius and throws a genuine near-collision
+  `RuntimeError` under physical Ganymede forcing (confirmed via a family scan, not solver noise —
+  regression-tested as `test_1to4_resonant_orbit_collides_with_ganymede`); used the other natural
+  "4:1"-labeled interior orbit instead (a~0.3968, clears Ganymede by ~2.14 Io-SMA units), whose
+  CCR4BP torus converges CLEANER than JEG's own Europa 3:4 torus (physical-mass residual ~1.5e-6
+  vs JEG's ~1.6e-4). Whisker go/no-go (`#691`'s diagnostic, reused unmodified): both one-shot
+  (worst ~1.3°) and segmented (worst ~0.03°) trustworthy — same verdict as JEG. **Heteroclinic
+  search** (`scripts/screen_696_ccr4bp_io_ganymede_search.py`,
+  `data/found/696_ccr4bp_io_ganymede_search/result.json`): all 4 lobe-sign combinations searched;
+  every refined candidate's off-torus excursion falls well under the 1000 km ghost-guard threshold
+  (~0.6-59 km range, computed with Io's own correctly-scaled physical units — see below) — every
+  candidate is a trivial near-departure match, not a genuine far-excursion connection.
+  `best_genuine_connection_corrected` and `mesh_refinement_check` are both `None`: no candidate
+  cleared the guard across any combo. **Same `#694` unit-conversion bug independently rediscovered
+  and correctly worked around** (`_L_KM`/`_v_unit_km_s` hardcoded to Europa's SMA/GM, ~1.59x wrong
+  for an Io-based system) — the driver script recomputes every km-denominated quantity using Io's
+  own SMA/GM directly from the raw nondimensional states, reports both `module_native_*` and
+  `corrected_*` fields side by side, and the "genuine" verdict used throughout is the corrected
+  one. **Process note**: the dispatched agent stalled repeatedly (three separate turns ending on
+  "waiting for a background process," even after two explicit resumes) without ever committing
+  its own final script/result; the coordinating session took over, independently read the driver
+  script in full, and finished verification directly rather than resuming a fourth time — ruff/
+  full-mypy clean (791 files), 12/12 own tests independently re-run and passed, full
+  `tests/core tests/search tests/scripts` re-run shows only the 3 documented/registered failures
+  (`test_ephemeris_cache` = `#692`, `test_eggie_ballistic`, `test_504_pluto_charon_kk_sweep`) with
+  nothing else running in parallel this time (see `[[feedback_serialize_verification_runs]]`).
 - **#697 ✓ DONE (2026-07-23, Fable) -- strategy pass: is any part of this project's
   orbit-search pipeline a good candidate for Apple GPU (Metal/MPS) acceleration instead of CPU?**
   User-requested directly, while `#695`/`#696` were still being independently verified. Scope:
