@@ -34,6 +34,10 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#699` — deeper literature check on Uranus Umbriel-Titania before any CCR4BP build commitment;
+  see its own bullet entry (search `#699 --`) for full scope.
+- `#700` — deeper literature check on Jupiter Europa-Callisto before any CCR4BP build commitment;
+  see its own bullet entry (search `#700 --`) for full scope.
 - `#692` — fix `_AstropyBackend.states()` batch/scalar exact-equality mismatch in
   `src/cyclerfinder/core/ephemeris.py`. Found 2026-07-23 incidentally during `#691`'s independent
   full-suite verification: `tests/core/test_ephemeris_cache.py::test_states_batch_matches_scalar_state[astropy]`
@@ -1218,7 +1222,17 @@ symplectic integrators (Wisdom-Holman-style) against THIS project's actual force
 BCR4BP/CCR4BP near unstable manifolds, resonances, close approaches -- much more strongly
 nonlinear than typical smooth satellite propagation), not just literature-general claims.
 Parallel-in-time methods (Parareal) explicitly flagged as lower-priority given their reliance on
-a cheap correction step that tends to break down for chaotic dynamics. #699 next-unused):**
+a cheap correction step that tends to break down for chaotic dynamics. #699 -- deeper literature
+check for #693's third-ranked CCR4BP candidate, Uranus Umbriel-Titania (mu_pert=3.92e-5, best
+non-Jovian mass conditioning, e/Delta-i excellent, 2.10 near-2:1 ratio), before any build
+commitment -- #693's own report flagged this pair as sitting in a Uranian neighborhood with
+genuinely active adjacent literature (Titania-Oberon, Ariel-Umbriel), i.e. higher scoop-context
+risk than the Jovian candidates, and recommended a second, more targeted lit pass specifically on
+this pair before ranking it for a build. #700 -- deeper literature check for #693's fourth-ranked
+candidate, Jupiter Europa-Callisto (mu_pert=5.67e-5, good tractability, no clean low-integer
+commensurability -- 4.73 ratio), only lightly novelty-checked in #693's own pass (piggybacked on
+the Ganymede-Callisto query, not independently searched) -- needs its own dedicated search before
+it could be ranked above Umbriel-Titania or committed to a build. #701 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14004,6 +14018,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   far-from-secondary batch work only), Apple shipping GPU fp64, or a published MCPI variant
   demonstrating certified convergence through close approaches without per-trajectory
   adaptivity (none found).
+- **#699 -- deeper literature check on Uranus Umbriel-Titania before any CCR4BP build
+  commitment.** `#693`'s third-ranked candidate: `mu_pert=3.92e-5` (only 2x below the
+  already-marginal JEG reference — the best non-Jovian mass conditioning found), both
+  eccentricities under the tractability bar, `Δi≈0`, a 2.10 near-2:1 period ratio not much
+  looser than JEG's own 2.03. `#693`'s own report explicitly did NOT clear this for a build —
+  its one targeted query surfaced only Ariel-Umbriel resonance-capture/migration papers (a
+  different subfield) and the Titania-Oberon anchor (a different pair), no direct
+  Umbriel-Titania hit, but flagged real scoop-context risk given how much active adjacent
+  literature exists in this specific Uranian neighborhood. Scope: a second, MORE TARGETED
+  literature pass specifically on Umbriel-Titania (not piggybacked on an adjacent-pair query),
+  checking `search/literature_check.py`'s `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the
+  private `cyclers_pdf` corpus, and live search — before this candidate could be promoted to a
+  build task analogous to `#695`/`#696`.
+- **#700 -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
+  commitment.** `#693`'s fourth-ranked candidate: `mu_pert=5.67e-5` (comparable to JEG), good
+  tractability, but no clean low-integer commensurability (4.73 period ratio — the loosest of
+  the tractable Jovian candidates). `#693`'s own report only lightly checked this pair's
+  novelty (its search piggybacked on the Ganymede-Callisto query rather than searching
+  Europa-Callisto directly), and explicitly said it "needs its own dedicated search before
+  ranking above" Umbriel-Titania. Scope: a dedicated, independent literature pass on
+  Europa-Callisto specifically, same sources as `#699`, before any build commitment. Note the
+  looser period ratio may also warrant re-checking whether a clean base resonant orbit is even
+  findable before committing engineering time, independent of the novelty question.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
