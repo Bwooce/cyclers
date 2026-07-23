@@ -1093,7 +1093,16 @@ Europa PCRTBP at mu_Gan->0 and Jupiter-Ganymede PCRTBP at mu_Eur->0). DONE 2026-
 src/cyclerfinder/core/ccr4bp.py + tests/core/test_ccr4bp.py (11 tests), both reductions
 verified -- mu_Gan->0 exact pointwise to 1e-14, mu_Eur->0 exact to 1e-11 via the documented
 frame/units transform (rotate to Ganymede-fixed, shift to J-G barycentre, rescale length+time);
-STM validated by finite-difference. #690 next-unused):**
+STM validated by finite-difference. #690 -- Stage B sub-task 2 of #686's CCR4BP plan: adapt
+#617's pseudospectral torus corrector to CCR4BP (the "EOM swap" case #686 section 3 item 2
+names as legitimate -- problem shape identical: non-autonomous, theta1 locked to Ganymede's
+synodic clock, theta2 free, 4D planar state instead of 6D), built on #689's now-trusted
+EOM+STM substrate. Physical-vs-exact-2:1 ratio decided: use the PHYSICAL 2.014 ratio (#689's
+own default, matching the actual published positive-control literature), not the artificial
+exact-2:1 idealization -- #686's own note already established the model is time-periodic
+regardless of the exact ratio, so imposing an artificial exact-2:1 buys nothing and would
+diverge from the literature's own model (registered+dispatched 2026-07-23); #691
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -13501,6 +13510,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   module and its structural reduction tests -- explicitly NOT the pseudospectral torus
   corrector, NOT the whisker/manifold machinery, NOT the mesh-intersection search (per `#686`'s
   own Stage B item 2 onward, later sub-tasks once this module exists and is validated).
+- **#690 (registered+dispatched 2026-07-23)** -- Stage B sub-task 2 of `#686`'s CCR4BP plan:
+  adapt `#617`'s pseudospectral torus corrector to CCR4BP. See `#689`'s own bullet for the
+  now-trusted EOM+STM substrate this builds on, and `#686`'s own bullet +
+  `docs/notes/2026-07-22-686-nbody-discovery-strategy-pass.md` section 3 item 2 for the full
+  plan ("the legitimate EOM-swap case" -- the problem SHAPE is identical to what `#617`'s
+  corrector already handles: non-autonomous, periodically forced, one angle (theta1) locked to
+  the forcing clock (here, Ganymede's synodic angle rather than BCR4BP's solar angle), one
+  angle (theta2) free, just a 4D planar state instead of `#617`'s own 6D). Scope: build a
+  quasi-periodic torus corrector for CCR4BP resonant orbits (the Europa 3:4 / Ganymede 3:2
+  tori `#688`'s own seed geometry named as the literature's target pair), reusing `#617`'s own
+  pseudospectral architecture and adapting it to `#689`'s CCR4BP EOM/STM rather than QBCP's.
+  **Physical-vs-exact-2:1 ratio DECIDED, not left open:** use the PHYSICAL Europa:Ganymede
+  period ratio (2.014, `#689`'s own default), matching the actual published positive-control
+  literature (arXiv 2109.14815) -- do NOT impose the artificial exact-2:1 idealization; `#686`'s
+  own strategy note already established the model is genuinely time-periodic regardless of the
+  exact ratio, so the idealization buys nothing and would diverge from the literature this
+  task's own positive control needs to match. Mandatory positive control: reproduce a torus
+  from the acquired literature (the Europa 3:4 or Ganymede 3:2 family, per `#688`'s own
+  citations) before trusting the corrector on anything new. This task builds ONLY the torus
+  corrector -- explicitly NOT the whisker/manifold machinery or the mesh-intersection
+  heteroclinic search (later Stage-B sub-tasks, per `#686`'s own item 3 onward).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
