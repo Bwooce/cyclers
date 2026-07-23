@@ -194,10 +194,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#694` — Stage B's final CCR4BP sub-task: manifold globalization + mesh-intersection
-  heteroclinic search, positive-controlled against JEG; dispatched 2026-07-23. See its own bullet
-  entry for full scope. (`#693` — REMOVED from this list 2026-07-23, CLOSED same day; see its own
-  `✓ DONE` bullet entry.)
+- Otherwise none currently. (`#694` — REMOVED from this list 2026-07-23, CLOSED same day; see its
+  own `✓ DONE` bullet entry — genuine ghost-guard-verified JEG homoclinic connection found, full
+  Stage-B CCR4BP pipeline proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -13767,7 +13766,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   both Jupiter-Europa-Ganymede AND Jupiter-Callisto-Ganymede). Io mu/Triton-inclination figures
   independently sanity-checked against known astronomy — consistent. No code/EOM/corrector built,
   no catalogue writes (pure screen, as scoped).
-- **#694 (dispatched 2026-07-23) -- Stage B's final sub-task: manifold globalization +
+- **#694 ✓ DONE (2026-07-23) -- Stage B's final sub-task: manifold globalization +
   mesh-intersection heteroclinic search, positive-controlled against the already-proven JEG
   system.** Registered directly in response to the user's concern, after `#693` landed, that
   building/validating each novel candidate pair serially "will be wasteful and difficult" if we
@@ -13787,6 +13786,40 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   purpose stated in the dispatch: once this lands, apply the SAME now-proven machinery in
   PARALLEL to the `#693` novelty-cleared candidates (Io-Europa, Io-Ganymede) as genuine discovery
   attempts — not another serial per-pair validation chain.
+  **RESULT (2026-07-23, commits `f6727c4`/`bcaf5e4`/`d14ebea`).** Two new modules:
+  `src/cyclerfinder/search/ccr4bp_manifold_globalize.py` (globalizes a `#691` CLV direction into a
+  discretized manifold "tube" — one departure per `theta2` grid point, propagated continuously via
+  `#689`'s true nonlinear flow, `eps=1e-6` matching the project's existing
+  `genome/qp_torus_manifold.torus_manifold_grid` default, confirmed still in the linear regime by
+  its own test) and `src/cyclerfinder/search/ccr4bp_heteroclinic_search.py` (coarse KD-tree
+  nearest-neighbour candidate search over two tubes → continuous 4-unknown `least_squares`
+  refinement → mandatory ghost-minima guard: independent Radau re-integration consistency <1 km,
+  quasi-Jacobi-constant gap reported, off-torus excursion sanity >1000 km). 20 new tests (11 +
+  9 across the two modules), all independently re-run and passed. **JEG positive-control result
+  (`scripts/screen_694_ccr4bp_heteroclinic_search.py`,
+  `data/found/694_ccr4bp_heteroclinic_search/result.json`): GENUINE, GHOST-GUARD-VERIFIED
+  homoclinic connection found** on the Europa 3:4 torus's unstable manifold meeting its own stable
+  manifold. All 4 lobe-sign combinations converged to their own genuine connection (residual_norm
+  ~1e-14, `guard_genuine=true`: Radau/DOP853 agree to <1 km — actual delta ~6.5e-7 km — off-torus
+  excursion ~5168 km, quasi-Jacobi gap ~4e-15). The ghost-guard also correctly REJECTED a spurious
+  ~6.7e-5-residual candidate in every combo, demonstrating real discriminative power, not
+  rubber-stamping. Mesh refinement (120×300 grid, `n_segments_dir=48`) TIGHTENED the gap further
+  (to 9.5e-9 km) rather than degrading it — the signature of a real connection surviving
+  refinement, not a `#620`/`#626`-style ghost-minima mesh artifact. Two-torus heteroclinic
+  extension explicitly scoped but NOT run here (JEG-only per this task's own dispatch) — the note
+  documents it needs no new code, only calling the same module twice with `torus_u != torus_s`
+  (already supported by both functions' signatures). **Proves the full Stage-B CCR4BP pipeline
+  (EOM/STM → torus corrector → whisker direction → manifold globalization → intersection search →
+  ghost-guard) end-to-end for the first time.** No catalogue writeback (capability proof, not a
+  novelty claim — this reproduces the spirit of Kumar et al. 2021's own published JEG
+  connections). **Independently re-verified 2026-07-23** (I read both new modules in full, not
+  just the agent's summary; independently re-ran both test modules, 20/20 pass; ruff/full-mypy
+  clean, 782 files; full `tests/core tests/search tests/scripts` re-run shows only the 2
+  documented pre-existing failures plus `#692`'s already-registered, unrelated ephemeris-batch
+  issue — no new failures; independently recomputed the ghost-guard's own internal arithmetic
+  from the raw result.json fields and confirmed it's self-consistent). **Next: the actual parallel
+  fan-out** — apply this now-proven pipeline to `#693`'s novelty-cleared candidates (Io-Europa,
+  Io-Ganymede) as genuine discovery attempts, dispatched together, not another serial chain.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
