@@ -180,13 +180,12 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#700` — deeper literature check on Jupiter Europa-Callisto (`#693`'s remaining CCR4BP
-  candidate), dispatched in parallel with `#699` 2026-07-24. See its own bullet entry for full
-  scope. (`#699` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT CLEAR — see its
-  own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from this list 2026-07-23, both CLOSED same
-  day; see each's own `✓ DONE` bullet entry — `#695` an honest near-miss, `#696` a clean negative.
-  `#694` — REMOVED 2026-07-23, CLOSED same day; genuine ghost-guard-verified JEG homoclinic
-  connection found, full Stage-B CCR4BP pipeline proven end-to-end.)
+- Otherwise none currently. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
+  day: both VERDICT CLEAR — see each's own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from
+  this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
+  honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
+  genuine ghost-guard-verified JEG homoclinic connection found, full Stage-B CCR4BP pipeline
+  proven end-to-end.)
 - (`#635` — REMOVED from this list 2026-07-19, RESOLVED same day (commit `f94d107`): +45°
   eigenvector-phase canonicalization (`_canonicalize_ns_eigenpair`) fixes the L2 GMOS-corrector
   platform-dependence at source (phase-invariant to 2.8e-16 by synthetic injection; L2 → physical
@@ -14057,16 +14056,43 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   concepts) are one-shot mission-tour papers, not CCR4BP torus work, correctly distinguished.
   **Ready to be promoted to a build task analogous to `#695`/`#696`, pending explicit user GO**
   (not yet dispatched — this task's own scope was the literature check only).
-- **#700 (dispatched 2026-07-24, in parallel with `#699`) -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
-  commitment.** `#693`'s fourth-ranked candidate: `mu_pert=5.67e-5` (comparable to JEG), good
-  tractability, but no clean low-integer commensurability (4.73 period ratio — the loosest of
-  the tractable Jovian candidates). `#693`'s own report only lightly checked this pair's
-  novelty (its search piggybacked on the Ganymede-Callisto query rather than searching
-  Europa-Callisto directly), and explicitly said it "needs its own dedicated search before
-  ranking above" Umbriel-Titania. Scope: a dedicated, independent literature pass on
-  Europa-Callisto specifically, same sources as `#699`, before any build commitment. Note the
-  looser period ratio may also warrant re-checking whether a clean base resonant orbit is even
-  findable before committing engineering time, independent of the novelty question.
+- **#700 ✓ DONE (2026-07-24, commit `19942af`) -- deeper literature check on Jupiter Europa-Callisto before any CCR4BP build
+  commitment. VERDICT: CLEAR, with a scientific-motivation caveat.** `#693`'s fourth-ranked
+  candidate: `mu_pert=5.67e-5` (comparable to JEG), good tractability, but no clean low-integer
+  commensurability (4.73 period ratio — the loosest of the tractable Jovian candidates). `#693`'s
+  own report only lightly checked this pair's novelty (its search piggybacked on the
+  Ganymede-Callisto query rather than searching Europa-Callisto directly), and explicitly said it
+  "needs its own dedicated search before ranking above" Umbriel-Titania. Scope: a dedicated,
+  independent literature pass on Europa-Callisto specifically, same sources as `#699`, before any
+  build commitment. Note the looser period ratio may also warrant re-checking whether a clean
+  base resonant orbit is even findable before committing engineering time, independent of the
+  novelty question.
+  **RESULT.** `docs/notes/2026-07-24-700-europa-callisto-deep-litcheck.md`. **Novelty**: no
+  Jovian pair (Europa-Ganymede, Ganymede-Callisto, or Europa-Callisto) has a CCR4BP-tagged anchor
+  in `KNOWN_CORPUS` at all; independently `pdftotext`-extracted BOTH Kumar-group source PDFs
+  (arXiv:2109.14815, 2309.06073) and confirmed zero mentions of "Callisto" in either full text —
+  I re-verified this myself directly and got the identical zero/zero count. Aryan & Fitzgerald AAS
+  24-103 remains unacquired (paywalled) but five independently-phrased live queries converge
+  consistently: its "Europa-Callisto transfer feasibility" result is a Ganymede-MEDIATED two-hop
+  manifold chain (Callisto→Ganymede ~60 days, Ganymede→Europa ~74 days), not a directly-modeled
+  Europa-Callisto pair skipping Ganymede — a real, substantive distinction, not thin-checking
+  papering over a gap. Broader finding: no evidence anywhere of a studied "skip-intermediate-moon"
+  CCR4BP class for any planet, checked twice now (`#693`, `#700`). **Tractability**: a quick
+  disposable numeric check (reusing this repo's own CR3BP + `_resonant_symmetric_orbit`
+  scaffolding, not committed) finds a clean base periodic orbit converges easily (residual
+  1e-13/1e-14) with WIDER Callisto-clearance margins (2.32-2.46 Europa-SMA units) than
+  Io-Ganymede's own build needed (2.14) — not harder than precedent. Genuine caveat: 4.7 has no
+  clean low-integer MMR, so every seed converges to the same near-degenerate near-circular
+  family rather than a physically-motivated resonant orbit (unlike JEG's literature-sourced 3:4 or
+  Io-Europa's exact 2:1) — a real scientific-motivation difference from the other candidates, not
+  a build blocker. **Overall CLEAR**, ready to promote to a build task, but may reasonably rank
+  below Io-Europa/Io-Ganymede/Umbriel-Titania on scientific-interest grounds given the missing MMR
+  anchor. Also flagged, still unresolved from `#693`: Aryan & Fitzgerald AAS 24-103 remains
+  unacquired in this project's corpus — should be acquired/digested before any further Jovian
+  CCR4BP work regardless of this pair's own verdict (not yet its own task number).
+  **Independently spot-verified 2026-07-24**: re-ran the `pdftotext`+grep check on both Kumar PDFs
+  myself, confirmed zero "Callisto" matches in each; grepped `literature_check.py` and confirmed
+  no Jovian anchor is CCR4BP-tagged, matching the report precisely.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
