@@ -176,6 +176,28 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # sweep over catalogue regions, no catalogue writeback. Visible,
         # reviewed exemption per this file's own docstring.
         "run_685_sun_earth_mars_transport.py",
+        # #704: a real-ephemeris CONSISTENCY CHECK of #701's already-found
+        # CCR4BP homoclinic connection (does the idealized circular-coplanar
+        # connection survive real Umbriel/Titania SPICE ephemeris?) -- same
+        # category as #666/#664/#685 above: a fixed epoch + two fixed
+        # epoch-scan grids (one dense synodic-period scan, one long-baseline
+        # scan across the #312-precedented 2000-2083 window) applied to ONE
+        # already-converged connection, not an open-ended catalogue-region
+        # discovery sweep with a region_id/n_points concept to preflight (no
+        # discovery sweep over catalogue regions, no catalogue writeback).
+        # Missed when #704 first landed (2026-07-24) -- caught here by #705's
+        # own full `tests/scripts` run; visible, reviewed exemption per this
+        # file's own docstring, added retroactively rather than silently
+        # left broken.
+        "run_704_ccr4bp_real_ephemeris_consistency.py",
+        # #705: an epoch-robustness EXTENSION of #704's own consistency
+        # check above -- reruns the SAME fixed dense-synodic-scan
+        # methodology at a fixed, small, enumerated list of 10 well-separated
+        # multi-year epochs (not an open-ended catalogue-region discovery
+        # sweep; no region_id/n_points concept to preflight; no catalogue
+        # writeback). Same category as #704 immediately above. Visible,
+        # reviewed exemption per this file's own docstring.
+        "run_705_epoch_robustness_scan.py",
     }
 )
 
