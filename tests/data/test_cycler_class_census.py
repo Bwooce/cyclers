@@ -530,10 +530,17 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         "braik-ross-planar-r21-s-corridor-2026",
         "braik-ross-planar-r31-s-corridor-2026",
         "braik-ross-planar-r52-s-corridor-2026",
+        # #708 (2026-07-24): umbriel-1-2-torus-homoclinic-uranus-2026 -- #701's Uranus
+        # Umbriel-Titania CCR4BP torus-homoclinic connection, writing back #707's
+        # user-approved schema v5.3 design (orbit_class=torus_homoclinic,
+        # model_assumption=ccr4bp). cycler_class=non-keplerian: one torus + its own
+        # homoclinic manifold connection (rotating-frame, base-CR3BP identity tuple),
+        # not a chain of Kepler/Lambert arcs. non-keplerian 38->39.
+        "umbriel-1-2-torus-homoclinic-uranus-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 38
+assert len(NON_KEPLERIAN_IDS) == 39
 
 
 # ---------------------------------------------------------------------------
@@ -553,8 +560,8 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=46, multi-arc=297, non-keplerian=38
-    (final, post-#684; see the incremental history below for how it got here).
+    """Exact class distribution: single-ellipse=46, multi-arc=297, non-keplerian=39
+    (final, post-#708; see the incremental history below for how it got here).
 
     #390 (2026-06-19) admitted the catalogue's first two SPK-derived mga_tour
     rows -- voyager-1-jupiter-saturn-grand-tour (E-J-S) and voyager-2-grand-tour
@@ -609,10 +616,17 @@ def test_census_distribution() -> None:
     (genuine rotating-frame CR3BP periodic orbits; admitted under the schema
     v5.2 epoch-free CR3BP KAM-corridor quasi_cycler subclass, NOT novel
     discoveries): non-keplerian 18->38.
+
+    #708 (2026-07-24) admitted umbriel-1-2-torus-homoclinic-uranus-2026 -- #701's
+    Uranus Umbriel-Titania CCR4BP torus-homoclinic connection, writing back #707's
+    user-approved schema v5.3 design (new orbit_class=torus_homoclinic,
+    model_assumption=ccr4bp). cycler_class=non-keplerian (one torus + its own
+    homoclinic manifold connection, rotating-frame with a base-CR3BP identity
+    tuple, not a chain of Kepler/Lambert arcs): non-keplerian 38->39.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 38}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 39}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

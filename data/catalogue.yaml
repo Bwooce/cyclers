@@ -55865,3 +55865,284 @@
     Schema note (#684): admitted as orbit_class=quasi_cycler under the schema v5.2
     epoch-free CR3BP KAM-corridor carve-out (data/catalogue.schema.json v5.2; see the
     C21/C32 sibling rows' identical schema-note paragraph for the full rationale).
+- id: umbriel-1-2-torus-homoclinic-uranus-2026
+  name: "Umbriel 1:2-exterior resonant torus homoclinic connection (Titania-forced CCR4BP)"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: ccr4bp   # schema v5.3 (task #707/#708): CCR4BP -- Uranus-Umbriel base restricted system forced by Titania on its own circular orbit; cr3bp would misstate the model (no Titania-forcing term)
+  cycler_class: non-keplerian   # one torus + its own homoclinic manifold connection, not a chain of Kepler/Lambert arcs (see #707 Sec 3)
+  orbit_class: torus_homoclinic   # schema v5.3 (task #707/#708): new enum value -- see schema top-level description + #707 Sec 2 for why quasi_cycler/resonant_po do not fit
+  epoch_locked: true   # real-epoch-anchored (the #704/#705 recurrence check IS the row's evidence) -- NOT the v5.2 epoch-free CR3BP KAM-corridor carve-out (that is quasi_cycler-scoped only and has no real-ephemeris window at all)
+  n_returns: 1   # ONE departure-and-return opportunity per recurring ~7.9-day synodic window (#707 Sec 5 Q4) -- NOT #312's convention of counting consecutive repeat-flown cycles; #705's "10" is epoch-SAMPLING density, a different concept, carried in ccr4bp_provenance.real_ephemeris_evidence.n_epochs_tested instead
+  delta_v_kms:        # ballistic idealized connection; no maintenance-DV campaign run
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:        # no flyby of either moon -- see data_gaps below
+  primary: "Uranus"
+  bodies: ["Uranus", "Umbriel", "Titania"]   # Titania is a gravitational PERTURBER, never closely encountered -- see ccr4bp_provenance.real_ephemeris_evidence closest_approach_km (always >181,000 km / >534,000 km respectively)
+  sequence_canonical:   # not-applicable -- see data_gaps below
+  sense: "n/a"
+  period:
+    pair:
+    k:
+    years:
+    note: >
+      No beat-period / encounter-pair concept applies to a torus-homoclinic connection
+      (there is no repeating multi-body flyby cycle to state a pair/k/years for). The
+      connection's own timing (unstable-departure to stable-arrival elapsed flow time) is
+      carried in ccr4bp_provenance.connection.t_u_tu/t_s_tu (nondimensional TU) and their
+      _days conversions. Left null rather than fabricated, matching the sequence_canonical
+      null convention below.
+  validity_window:
+    start: "2000-01-01T00:00:00Z"
+    end: "2083-01-01T00:00:00Z"
+    # synodic_duty_cycle_pct / synodic_boundary_period_days deliberately NOT populated --
+    # see data_gaps below and #707 Sec 4. Only synodic_period_days is populated (the
+    # well-defined Umbriel-Titania synodic period itself, per #704/#705's own
+    # real_umbriel_titania_synodic_period_days).
+    synodic_period_days: 7.908977583921671
+  validation_level: V1   # schema v5.3 semantic gate (validate_validation_level): registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE. #707's own honest calibration: this is the closest available V1-equivalent (spec §14's literal V1 gate is Lambert/Kepler-specific and has no literal analogue for a torus-homoclinic connection) -- the #701 ghost guard's independent Radau-vs-DOP853 integrator cross-check (integrator_delta_km ~1e-7 km on the idealized connection) is the same-CLASS "independent solver cross-check" spirit V1 requires. NOT V2 (no multi-lap periodic structure exists to test "3+ continuous laps" against -- this is a one-shot transfer). NOT V3 (no budget-bounded correction burn has been run at any of the 10 real-ephemeris near-miss epochs; #704/#705 found a near-miss requiring correction but never closed it under a stated DV budget -- the natural next gate, per #707 Sec 4).
+  source_ephemeris: "URA111 (JPL/NAIF Uranian satellite SPK kernel) + DE440 (Uranus barycentric state)"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar   # the idealized-CCR4BP connection numbers (ccr4bp_provenance.connection)
+  vinf_fidelity: real-de440   # the #704/#705 real-ephemeris recurrence check is this row's headline evidence -- see data_gaps (no literal vinf_kms_at_encounters array exists to pair this with; no body is encountered)
+  orbit_elements:
+    reference_frame: rotating-synodic
+    center: Uranus
+    a_au:
+    e:
+    note: "Uranus-centered torus-homoclinic connection; heliocentric/planetcentric Keplerian elements inapplicable. The CR3BP identity tuple below carries the BASE resonant periodic orbit the torus is built around (per #707 Sec 3); the torus + connection's own identity is in ccr4bp_provenance."
+    cr3bp:
+      jacobi_constant:   # the CCR4BP (time-periodic Titania forcing) has NO exact conserved quantity -- see data_gaps below
+      period_nd: 11.991104994404195   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:torus_period_tu -- base torus's own stroboscopic-map period, nondimensional TU
+      stability_index:   # not computed for this task -- see data_gaps below
+      mass_ratio: 1.4685981867903303e-05   # mu (Uranus-Umbriel two-body reduction); SOURCED: core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default() (JPL SSD GM_Umbriel / (GM_Uranus_sys + GM_Umbriel))
+      libration_point:   # not a libration-point orbit
+      family: "umbriel-spacecraft-1:2-exterior-resonant-torus"   # per core.ccr4bp_umbriel_titania module docstring / data/found/701_ccr4bp_umbriel_titania_search/result.json:base_orbit_note
+      lunit_km: 265986.0   # SOURCED: SATELLITES["Umbriel"].sma_km (core.ccr4bp_umbriel_titania.L_KM)
+      tunit_s: 56986.88015572542   # DERIVED: L_KM / v_unit_km_s (core.ccr4bp_umbriel_titania.v_unit_km_s() = 4.66749538267672 km/s); not itself printed by any driver script, a one-line unit-conversion, not a golden
+  ccr4bp_provenance:   # schema v5.3 (task #707/#708)
+    mu: 1.4685981867903303e-05   # SOURCED: core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default().mu
+    mu_gan: 3.915686587341081e-05   # SOURCED: core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default().mu_gan (Titania's mass ratio in the Uranus-Umbriel mass unit)
+    a_gan: 1.6403043769220937   # SOURCED: core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default().a_gan (Titania SMA / Umbriel SMA)
+    omega_gan: -0.5239871813408119   # SOURCED: core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default().omega_gan (Titania's synodic rate in the Uranus-Umbriel rotating frame; negative -- Titania is the slower-moving outer body)
+    base_resonance: "spacecraft:Umbriel=1:2-exterior"
+    torus_period_tu: 11.991104994404195   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:torus_period_tu
+    torus_rho_strob: 5.995568015306847   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:torus_rho_strob
+    torus_closure_residual: 0.00014270615699557066   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:torus_closure_residual
+    connection:
+      theta2_u: 3.045143535866834   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.theta2_u
+      t_u_tu: 19.002858810413148   # SOURCED: same, .t_u
+      t_u_days: 12.533722657930381   # SOURCED: data/found/704_ccr4bp_real_ephemeris_consistency/result.json:t_u_days
+      theta2_s: 3.2367817357763884   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.theta2_s
+      t_s_tu: 19.092874545266827   # SOURCED: same, .t_s
+      t_s_days: 12.593094369669227   # DERIVED: t_s_tu * (lunit_km / v_unit_km_s / 86400); no driver script prints this directly (only t_u_days is printed), a one-line unit conversion of a sourced TU value, not a golden
+      idealized_pos_gap_km: 5.661540346264633e-10   # SOURCED: data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.corrected_pos_gap_km
+      idealized_vel_gap_km_s: 5.1129191191902014e-14   # SOURCED: same, .corrected_vel_gap_km_s
+      off_torus_km: 1927.9247765134512   # SOURCED: same, .corrected_off_torus_km (ghost-guard sanity distance)
+      quasi_jacobi_gap: -1.2434497875801753e-14   # SOURCED: same, .guard_quasi_jacobi_gap
+      integrator_delta_km: 1.0512238869207226e-07   # SOURCED: same, .corrected_integrator_delta_km (independent Radau-vs-DOP853 cross-check; the row's V1-equivalent evidence)
+      residual_norm: 1.1159187446079244e-14   # SOURCED: same, .residual_norm
+    real_ephemeris_evidence:
+      force_model: "Uranus point-mass central term + Umbriel + Titania REAL SPICE (URA111) third-body perturbations, Uranus-centred J2000 inertial frame. No J2, no Sun, no other Uranian moons -- see src/cyclerfinder/search/ccr4bp_real_ephemeris_consistency.py module docstring for the full, quantified justification of each omission. Verbatim per data/found/704_ccr4bp_real_ephemeris_consistency/result.json:force_model_notes."
+      comparable_pos_gap_threshold_km: 844.6019822482435   # SOURCED: data/found/705_ccr4bp_epoch_robustness_scan/result.json:summary.comparable_pos_gap_threshold_km (10x #704's own 2030 local-minimum best point)
+      comparable_vel_gap_threshold_km_s: 0.05904706092575937   # SOURCED: same, .comparable_vel_gap_threshold_km_s
+      tested_epochs:   # SOURCED verbatim: data/found/705_ccr4bp_epoch_robustness_scan/result.json:epoch_scans[] -- ALL 10 tested anchors (not just the headline 2030 point), per #708's own scope (the 10/10 recurrence IS the evidentiary strength, not to be compressed away)
+        - base_epoch_utc: "2000-01-01T00:00:00"
+          local_minimum_epoch_utc: "2000-01-01T11:52:25"
+          local_minimum_pos_gap_km: 43.32017412945477
+          local_minimum_vel_gap_km_s: 0.013072019096617437
+          closest_approach_km: {Umbriel: 181621.49263441944, Titania: 810695.1962968499}
+          comparable_to_reference: true
+        - base_epoch_utc: "2009-03-23T03:59:59"
+          local_minimum_epoch_utc: "2009-03-24T00:02:35"
+          local_minimum_pos_gap_km: 60.98124123293917
+          local_minimum_vel_gap_km_s: 0.008812134375914481
+          closest_approach_km: {Umbriel: 181623.477766905, Titania: 825874.4675705692}
+          comparable_to_reference: true
+        - base_epoch_utc: "2018-06-12T07:59:59"
+          local_minimum_epoch_utc: "2018-06-12T11:49:55"
+          local_minimum_pos_gap_km: 142.82472877020834
+          local_minimum_vel_gap_km_s: 0.007534743241026587
+          closest_approach_km: {Umbriel: 181243.94350891575, Titania: 568201.1481524269}
+          comparable_to_reference: true
+        - base_epoch_utc: "2027-09-01T12:00:00"
+          local_minimum_epoch_utc: "2027-09-05T02:36:26"
+          local_minimum_pos_gap_km: 46.650764310428585
+          local_minimum_vel_gap_km_s: 0.003944137151930731
+          closest_approach_km: {Umbriel: 181680.4527572601, Titania: 796396.3653516072}
+          comparable_to_reference: true
+        - base_epoch_utc: "2036-11-20T16:00:00"
+          local_minimum_epoch_utc: "2036-11-23T14:15:34"
+          local_minimum_pos_gap_km: 80.33942874912044
+          local_minimum_vel_gap_km_s: 0.0009756501266792647
+          closest_approach_km: {Umbriel: 181262.89610948873, Titania: 692040.6713422654}
+          comparable_to_reference: true
+        - base_epoch_utc: "2046-02-10T13:59:59"
+          local_minimum_epoch_utc: "2046-02-16T06:38:16"
+          local_minimum_pos_gap_km: 5.446181734249239
+          local_minimum_vel_gap_km_s: 0.0016863083226142063
+          closest_approach_km: {Umbriel: 181716.6893920264, Titania: 696100.6100373885}
+          comparable_to_reference: true
+        - base_epoch_utc: "2055-05-02T18:00:00"
+          local_minimum_epoch_utc: "2055-05-09T20:12:40"
+          local_minimum_pos_gap_km: 36.68587661428145
+          local_minimum_vel_gap_km_s: 0.005081603103589731
+          closest_approach_km: {Umbriel: 181783.9941693037, Titania: 630647.4932195753}
+          comparable_to_reference: true
+        - base_epoch_utc: "2064-07-21T22:00:00"
+          local_minimum_epoch_utc: "2064-07-22T01:41:54"
+          local_minimum_pos_gap_km: 11.457094390244162
+          local_minimum_vel_gap_km_s: 0.0036547578431592076
+          closest_approach_km: {Umbriel: 181757.88355800603, Titania: 655704.6655866599}
+          comparable_to_reference: true
+        - base_epoch_utc: "2073-10-12T02:00:00"
+          local_minimum_epoch_utc: "2073-10-18T19:59:39"
+          local_minimum_pos_gap_km: 46.099159522166445
+          local_minimum_vel_gap_km_s: 0.007472263728533283
+          closest_approach_km: {Umbriel: 181281.03892169215, Titania: 828573.1974983012}
+          comparable_to_reference: true
+        - base_epoch_utc: "2083-01-01T00:00:00"
+          local_minimum_epoch_utc: "2083-01-03T02:07:17"
+          local_minimum_pos_gap_km: 58.81193163308325
+          local_minimum_vel_gap_km_s: 0.00679929119463762
+          closest_approach_km: {Umbriel: 181822.04227785402, Titania: 534638.5789700877}
+          comparable_to_reference: true
+      n_epochs_tested: 10   # SOURCED: data/found/705_ccr4bp_epoch_robustness_scan/result.json:summary.n_epochs_tested
+      n_epochs_comparable: 10   # SOURCED: same, .n_epochs_comparable_to_704
+      fraction_epochs_comparable: 1.0   # SOURCED: same, .fraction_epochs_comparable
+      synodic_duty_cycle_bands_pct:   # SOURCED: data/found/704_ccr4bp_real_ephemeris_consistency/result.json:duty_cycle_dense_synodic_scan -- ONE representative anchor epoch (the 2030-01-01 headline), NOT a claim about all 10 anchors' duty cycle (see resolution_caveat)
+        below_500km: {fraction_of_period: 0.0033333333333333335, n_distinct_windows: 1}
+        below_1000km: {fraction_of_period: 0.0033333333333333335, n_distinct_windows: 1}
+        below_2000km: {fraction_of_period: 0.01, n_distinct_windows: 3}
+        below_5000km: {fraction_of_period: 0.01, n_distinct_windows: 3}
+        below_10000km: {fraction_of_period: 0.03333333333333333, n_distinct_windows: 4}
+        below_20000km: {fraction_of_period: 0.06333333333333334, n_distinct_windows: 5}
+        below_50000km: {fraction_of_period: 0.17333333333333334, n_distinct_windows: 6}
+      resolution_caveat: >
+        Only 10 discrete real-ephemeris anchor epochs tested (~9-year spacing, 2000-2083;
+        #705), each with a 300-point dense synodic-phase scan centered on that anchor (#704
+        methodology) -- NOT a continuous multi-year daily scan the way #312's own
+        synodic_duty_cycle_pct was measured (see validity_window data_gaps below). A slow
+        secular effect with a period shorter than ~9 years and out of phase with all 10
+        samples could in principle still exist undetected, though 10/10 comparable hits
+        with no near-misses among the 10 makes this unlikely. The synodic_duty_cycle_bands_pct
+        ladder above is measured at ONE representative anchor (2030-01-01) only, not averaged
+        or re-measured across all 10 anchors.
+    method: "variational-ccr4bp-torus+ccr4bp-manifold-globalize+ccr4bp-heteroclinic-search+ghost-guard (src/cyclerfinder/search/{variational_ccr4bp_torus,ccr4bp_manifold_globalize,ccr4bp_heteroclinic_search}.py)"
+  data_gaps:
+  - path: "sequence_canonical"
+    kind: "not-applicable"
+    note: >
+      This is a torus-homoclinic connection (departs the SAME quasi-periodic torus's
+      unstable manifold, returns via its stable manifold) -- there is no alternating
+      named-body flyby sequence for this field's convention to describe. Neither Umbriel
+      nor Titania is closely encountered (see ccr4bp_provenance.real_ephemeris_evidence
+      closest_approach_km, always >181,000 km / >534,000 km respectively, far outside
+      either moon's physical radius). Left null rather than fabricated, per the #312
+      (umbriel-oberon-1-1-uranian-quasi-cycler-2026) row's own precedent for
+      invariants.aphelion_ratio / orbit_elements.cr3bp.
+    todo_ref: "#707"
+  - path: "orbit_elements.cr3bp.jacobi_constant"
+    kind: "not-applicable"
+    note: >
+      The CCR4BP (time-periodic Titania forcing) has NO exact conserved quantity -- see
+      search.ccr4bp_heteroclinic_search.quasi_jacobi_gap's own docstring. The approximate
+      substitute (ccr4bp_provenance.connection.quasi_jacobi_gap) is reported there instead.
+    todo_ref: "#707"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "No Floquet/monodromy stability index has been separately computed for the base torus's underlying periodic orbit by this task chain."
+    todo_ref: "#707"
+  - path: "validity_window.synodic_duty_cycle_pct"
+    kind: "unknown"
+    note: >
+      Only 10 discrete real-ephemeris anchor epochs have been tested (#705), each densely
+      scanned across its own single ~7.9-day synodic cycle (300 points, #704's methodology)
+      -- NOT a continuous multi-year daily scan across the whole calendar span the way
+      #312's own synodic_duty_cycle_pct was measured. A denser continuous scan (daily
+      sampling across the full 2000-2083 span, matching #312's own evidence density) is a
+      natural next step, not yet run. The within-cycle duty structure at the one
+      representative anchor that has been densely scanned is instead recorded as a
+      threshold ladder in ccr4bp_provenance.real_ephemeris_evidence.synodic_duty_cycle_bands_pct,
+      since "feasible" for this connection is a continuous correction-budget threshold, not
+      #312's binary hard-physical-wall criterion.
+    todo_ref: "#707"
+  - path: "vinf_kms_at_encounters"
+    kind: "not-applicable"
+    note: >
+      No named-body encounter exists for a torus-homoclinic connection (neither moon is
+      closely approached -- see ccr4bp_provenance.real_ephemeris_evidence closest_approach_km).
+      vinf_fidelity is still recorded (real-de440) to reflect which fidelity tier the row's
+      own headline real-ephemeris connection-gap evidence
+      (ccr4bp_provenance.real_ephemeris_evidence) is stated at, per #707's own recommendation,
+      even though no vinf_kms_at_encounters array exists to pair it with.
+    todo_ref: "#707"
+  legs: []
+  corroborating_sources: []
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Umbriel 1:2-exterior resonant torus homoclinic connection -- CCR4BP (Uranus-Umbriel-Titania)"
+    venue: "cyclerfinder project; task chain #689 -> #693 -> #694 -> #699 -> #701 -> #702 -> #704 -> #705 -> #706 -> #707 -> #708"
+    doi:
+  priority_date: "2026-07-24"
+  notes: |
+    NEW dynamical species for this catalogue: a homoclinic connection to a quasi-periodic
+    invariant TORUS in the CCR4BP (Concentric Circular Restricted 4-Body Problem), not a
+    discrete multi-encounter Lambert-arc tour and not a single strictly-periodic orbit.
+    A spacecraft riding the 2-D invariant torus around the spacecraft:Umbriel 1:2-exterior
+    resonant periodic orbit (Titania-forced) can depart along the torus's unstable
+    manifold, flow for t_u ~19.0 TU (~12.53 d), and return along the stable manifold of
+    the SAME torus after t_s ~19.09 TU (~12.59 d) -- closing the idealized
+    position/velocity gap to machine precision (corrected_pos_gap_km = 5.66e-10 km,
+    corrected_vel_gap_km_s = 5.11e-14 km/s). Ghost-guard verified: independent Radau vs.
+    DOP853 integrator agreement to ~1.05e-7 km; off-torus sanity distance ~1928 km (rules
+    out a trivial near-departure pseudo-match).
+
+    Real-ephemeris consistency (#704): the idealized connection does NOT survive verbatim
+    under real DE440/URA111 ephemeris (headline 2030-01-01 gap: 174,709 km / 1.458 km/s)
+    -- but a narrow synodic-phase window exists near each synodic cycle where the mismatch
+    collapses to a comparable near-miss (best 2030 point: 84.5 km / 5.9 m/s, a ~2069x/247x
+    reduction from the headline naive-epoch gap). Epoch-robustness scan (#705): this
+    narrow-window structure RECURS at all 10 independently-tested anchor epochs spanning
+    2000-2083 (~9-year spacing; per-epoch local-minimum gaps 5.4-142.8 km / 1.0-13.1 m/s),
+    all 10/10 passing the pre-declared "comparable to the 2030 reference" gate
+    (844.6 km / 0.059 km/s, 10x the reference). Closest approach to either moon across
+    all 10 epochs stays far outside its physical radius (Umbriel ~181,200-181,800 km vs.
+    ~584 km; Titania ~534,600-828,600 km vs. ~788 km) -- no collision-course degeneracy.
+    This is evidence of a real, recurring, correctable near-connection, not a one-off
+    numerical coincidence, though the evidence is 10 sparse discrete epochs with their own
+    dense within-cycle scans, NOT a continuous multi-year daily scan (see data_gaps).
+
+    Literature clearance: #699's deep novelty check (10 live queries + full corpus scan +
+    full-text check of the closest adjacent paper, Kumar arXiv:2509.03655, whose Uranus
+    CCR4BP work covers Oberon/Titania secondary resonances, NOT Umbriel-Titania) found no
+    disqualifying prior CCR4BP/torus/heteroclinic work on this pair. #706 independently
+    re-verified this same-day for the SHARPER claim (a real-ephemeris-survivable,
+    epoch-recurring homoclinic connection across 10 epochs, not merely "does some
+    CCR4BP structure exist on this pair") -- verdict STILL CLEAR
+    (docs/notes/2026-07-24-706-umbriel-titania-writeback-litcheck-refresh.md). our_status
+    is left absent (matching the #312 row's own precedent) rather than asserted, since no
+    independent verification gauntlet analogous to spec §16.4's candidate-novel/
+    verified-novel ladder has been run for this object class.
+
+    Schema: admitted under schema v5.3 (task #707/#708), which added orbit_class=
+    torus_homoclinic, model_assumption=ccr4bp, and the additive ccr4bp_provenance block
+    -- see data/catalogue.schema.json's own v5.3 changelog entry and
+    docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md for the full design
+    reasoning (approved by the user as proposed).
+
+    Discovery + verification chain: #689 (CCR4BP infra, JEG positive control) -> #693
+    (cross-solar-system moon-pair screening) -> #694 (reuse-only pipeline extension) ->
+    #699 (deep novelty check) -> #701 (Umbriel-Titania torus + homoclinic connection
+    search, ghost-guard verified) -> #702 (n/a / intermediate) -> #704 (real-ephemeris
+    consistency check) -> #705 (epoch-robustness recurrence scan) -> #706 (fresh
+    literature-clearance re-check) -> #707 (catalogue schema design proposal, user-
+    approved) -> #708 (this writeback: schema implementation + row).
+  source_quotes:
+    "ccr4bp_provenance.connection.idealized_pos_gap_km": "data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.corrected_pos_gap_km = 5.661540346264633e-10."
+    "ccr4bp_provenance.connection.integrator_delta_km": "data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.corrected_integrator_delta_km = 1.0512238869207226e-07 -- the ghost-guard independent Radau-vs-DOP853 cross-check this row's V1 validation_level rests on."
+    "ccr4bp_provenance.real_ephemeris_evidence.n_epochs_comparable": "data/found/705_ccr4bp_epoch_robustness_scan/result.json:summary.n_epochs_comparable_to_704 = 10 (of 10 tested)."
+    "validity_window.synodic_period_days": "data/found/705_ccr4bp_epoch_robustness_scan/result.json:real_umbriel_titania_synodic_period_days = 7.908977583921671."

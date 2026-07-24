@@ -194,7 +194,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # ross-rt-em-cycler-21-2025) -> 'unvalidated' on the source-pair tier axis.
     # Their explicitly-flagged-ambiguous validation_level=V0 lives on the
     # orthogonal axis; see each row's own notes for the honest ambiguity flag.
-    "unvalidated": 102,
+    # 102 -> 103 (2026-07-24, #708): umbriel-1-2-torus-homoclinic-uranus-2026 (#701's
+    # Uranus Umbriel-Titania CCR4BP torus-homoclinic connection) admitted with
+    # orbit_source=derived / vinf_source=derived (a pseudo-source pair, per the same
+    # convention as every other computed CR3BP/CCR4BP row in this catalogue) ->
+    # 'unvalidated' on the source-pair tier axis. Its V1-equivalent evidence (the #701
+    # ghost-guard independent Radau-vs-DOP853 integrator cross-check) lives on the
+    # orthogonal validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
+    "unvalidated": 103,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

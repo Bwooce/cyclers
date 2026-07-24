@@ -1230,6 +1230,34 @@ _LEVEL_EVIDENCE: dict[tuple[str, str], str] = {
         "(+ data/scan_567_epoch_robustness.jsonl); gated by "
         "tests/verify/test_566_five_representatives_v4.py."
     ),
+    ("umbriel-1-2-torus-homoclinic-uranus-2026", "V1"): (
+        "spec §14 V1-EQUIVALENT (task #707/#708's own honest calibration): the literal "
+        "V1 gate (lamberthub izzo+gooding leg agreement + Kepler forward re-propagation) "
+        "has no analogue for a CCR4BP torus-homoclinic connection (no Lambert legs, no "
+        "Kepler propagator applicable to a rotating-frame manifold flow) — the accepted "
+        "same-CLASS substitute is #701's own ghost guard: a Radau-vs-DOP853 integrator "
+        "cross-check of the idealized connection's position gap, agreeing to "
+        "integrator_delta_km=1.0512238869207226e-07 km (data/found/"
+        "701_ccr4bp_umbriel_titania_search/result.json:"
+        "best_robust_genuine_connection_corrected.corrected_integrator_delta_km). "
+        "CONSISTENCY gate (same inputs -- the same connection endpoint states and CCR4BP "
+        "equations of motion -- different algorithm; only the integrator differs), per "
+        "this module's own #197 gate-classification convention (validate.py module "
+        "docstring) -- the SAME class as the literal V1 gate's own lamberthub cross-check, "
+        "so this is a like-for-like class match, not an upgrade to an independence gate. "
+        "shared with primary path: same connection endpoint states and CCR4BP equations of "
+        "motion; only the integrator differs. The #704/#705 real-DE440/URA111 ephemeris "
+        "reconstruction (independently re-derived inputs, not just a different algorithm) "
+        "is the genuinely independence-flavored companion evidence, reported in "
+        "ccr4bp_provenance.real_ephemeris_evidence but not itself gating this V1 claim. "
+        "NOT V2 (no multi-lap periodic structure exists for a one-shot torus "
+        "departure-and-return transfer). NOT V3 (no budget-bounded correction burn has "
+        "been run at any of the #705 real-ephemeris near-miss epochs). "
+        "tests/search/test_ccr4bp_torus_umbriel_titania.py + "
+        "tests/search/test_ccr4bp_umbriel_titania_heteroclinic_search.py (ghost-guard "
+        "machinery) + tests/search/test_ccr4bp_real_ephemeris_consistency.py (#704/#705 "
+        "recurrence evidence); docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md."
+    ),
 }
 
 

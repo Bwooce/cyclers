@@ -163,7 +163,16 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     (#569 2026-07-11): the 5 Uranian symmetric-closure quasi-cycler representatives
     (Titania-Oberon / Ariel-Oberon / Umbriel-Titania / Ariel-Titania / Ariel-Umbriel)
     each land at #312-equivalent V4 (windowed) via the #566 gauntlet + #567 duty-cycle
-    scan + #568 verdict. (V1=26, V2=8, V3=2, V4=6.)"""
+    scan + #568 verdict. (V1=26, V2=8, V3=2, V4=6.)
+
+    (#708 2026-07-24): umbriel-1-2-torus-homoclinic-uranus-2026 (#701's Uranus
+    Umbriel-Titania CCR4BP torus-homoclinic connection, writing back #707's
+    user-approved schema v5.3 design) lands at V1-EQUIVALENT -- the literal V1 gate
+    (lamberthub+Kepler) has no analogue for a torus-homoclinic connection; the accepted
+    substitute is #701's own ghost guard (independent Radau-vs-DOP853 integrator
+    cross-check of the idealized connection, integrator_delta_km~1.05e-7 km). NOT V2/V3
+    (no multi-lap periodic structure and no budget-bounded correction burn exist for this
+    one-shot transfer). (V1=27, V2=8, V3=2, V4=6.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -297,6 +306,12 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         "umbriel-titania-1-1-uranian-quasi-cycler-2026": "V4",
         "ariel-titania-1-1-uranian-quasi-cycler-2026": "V4",
         "ariel-umbriel-1-1-uranian-quasi-cycler-2026": "V4",
+        # #708 (2026-07-24): umbriel-1-2-torus-homoclinic-uranus-2026 lands at
+        # V1-equivalent -- see src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE
+        # for the full evidence citation (the #701 ghost-guard independent-integrator
+        # cross-check, the accepted substitute for the literal Lambert/Kepler V1 gate,
+        # which has no analogue for a CCR4BP torus-homoclinic connection).
+        "umbriel-1-2-torus-homoclinic-uranus-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows
