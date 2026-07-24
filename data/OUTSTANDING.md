@@ -180,10 +180,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#706` and `#707` — the last two steps of `#701`'s vetting chain before any writeback decision:
-  a fresh literature re-check and the schema-representation design, dispatched in parallel
-  2026-07-24. See each's own bullet entry for full scope. (`#705` — REMOVED from this list
-  2026-07-24,
+- `#707` — the last remaining step of `#701`'s vetting chain: the schema-representation design,
+  dispatched 2026-07-24. See its own bullet entry for full scope. (`#706` — REMOVED from this list
+  2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own `✓ DONE` bullet entry. `#705` —
+  REMOVED from this list 2026-07-24,
   CLOSED same day: epoch-robustness scan confirms `#704`'s near-miss window recurs at ALL 10
   tested multi-year epochs across 2000-2083, not just near 2030 — see its own `✓ DONE` bullet
   entry. `#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
@@ -14466,17 +14466,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `48b3e9a`. No catalogue writeback (as scoped). **Next step, not yet dispatched**: the
   schema/provenance and writeback steps this whole `#704`/`#705` vetting chain was building
   toward, now on considerably stronger footing given this result.
-- **#706 (dispatched 2026-07-24, in parallel with `#707`) -- fresh literature re-check on Uranus
-  Umbriel-Titania CCR4BP work, immediately pre-writeback.** `#699` (2026-07-24, still same-day)
-  already cleared this pair with ten independent search queries and a full-text check of the
-  closest adjacent paper — but that check was scoped to "is there prior CCR4BP torus/heteroclinic
-  work on this pair at all," BEFORE `#701`/`#704`/`#705` established the much stronger, more
-  specific claim this would actually become if promoted: a real-ephemeris-survivable,
-  epoch-recurring homoclinic connection (not just an idealized-model curiosity). Re-run `#699`'s
-  own methodology (same sources: `search/literature_check.py`'s `KNOWN_CORPUS`,
-  `docs/notes/CORPUS_INDEX.md`, the private `cyclers_pdf` corpus, live search) to confirm nothing
-  new has surfaced and that the SPECIFIC claim about to be made is still unaddressed. Cheap,
-  mechanical, no design judgment needed — a final gate check, not a fresh investigation.
+- **#706 ✓ DONE (2026-07-24, commit `fb786a9`) -- fresh literature re-check on Uranus
+  Umbriel-Titania CCR4BP work, immediately pre-writeback. VERDICT: STILL CLEAR.** `#699`
+  (2026-07-24, still same-day) already cleared this pair with ten independent search queries and
+  a full-text check of the closest adjacent paper — but that check was scoped to "is there prior
+  CCR4BP torus/heteroclinic work on this pair at all," BEFORE `#701`/`#704`/`#705` established
+  the much stronger, more specific claim this would actually become if promoted: a
+  real-ephemeris-survivable, epoch-recurring homoclinic connection (not just an idealized-model
+  curiosity). Re-run `#699`'s own methodology (same sources: `search/literature_check.py`'s
+  `KNOWN_CORPUS`, `docs/notes/CORPUS_INDEX.md`, the private `cyclers_pdf` corpus, live search) to
+  confirm nothing new has surfaced and that the SPECIFIC claim about to be made is still
+  unaddressed. Cheap, mechanical, no design judgment needed — a final gate check, not a fresh
+  investigation.
+  **RESULT.** `docs/notes/2026-07-24-706-umbriel-titania-writeback-litcheck-refresh.md`. All six
+  Uranian `KNOWN_CORPUS` anchors unchanged since `#699` (Kumar's own anchor `body_set` still
+  `{"Oberon", "Titania"}`, Umbriel absent everywhere); two new corpus additions since `#699` exist
+  but are both Jovian (`#688`'s own Europa-Ganymede CCR4BP acquisitions), not Uranian. Eight fresh
+  live queries (a repeat subset of `#699`'s own plus new ones specifically targeting the sharper
+  real-ephemeris/epoch-recurrence claim) surfaced one genuinely new item, arXiv:2412.20326
+  ("Orbital maneuvers for a space probe around Titania") — WebFetched and read directly, confirmed
+  a Titania-only single-moon station-keeping study, no Umbriel, no multi-moon/homoclinic content,
+  not relevant. No disqualifying prior work found. **Safe to proceed to the schema/writeback
+  decision from a novelty standpoint** — makes no recommendation on that decision itself
+  (`#707`'s and the coordinating session's call).
 - **#707 (dispatched 2026-07-24, in parallel with `#706`) -- schema design + additive
   `ccr4bp_provenance` block for `#701`'s connection.** This is a GENUINE judgment call, not
   mechanical schema plumbing, per `#684`'s own precedent for how a real schema conflict gets
