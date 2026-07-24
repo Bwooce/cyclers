@@ -25,7 +25,17 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '5.2' (v5.2, task #684: resolves the
+    """The schema carries version == '5.3' (v5.3, task #707/#708: admits `#701`'s
+    Uranus Umbriel-Titania CCR4BP torus-homoclinic connection. Three additive changes:
+    a new model_assumption enum value ccr4bp; a new orbit_class enum value
+    torus_homoclinic (epoch_locked=true, n_returns=1 -- a real-epoch-anchored
+    one-shot torus departure-and-return opportunity, distinct from the v5.2
+    epoch-free CR3BP KAM-corridor quasi_cycler carve-out); and one additive,
+    optional, nullable nested ccr4bp_provenance block, mirroring bcr4bp_provenance's
+    own style. No existing row's validity or census count changes. See
+    docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md.
+
+    v5.2 (task #684: resolves the
     quasi_cycler epoch-locked invariant conflict surfaced while writing back #682's
     epoch-free CR3BP KAM-corridor census — adds a narrow, conditional carve-out
     permitting orbit_class=quasi_cycler rows to be epoch_locked=false /
@@ -56,7 +66,7 @@ def test_schema_version_is_current() -> None:
     v4.7 added the four-class orbit_class taxonomy for the catalogue-scope
     expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "5.2"
+    assert schema["version"] == "5.3"
 
 
 def test_catalogue_matches_jsonschema() -> None:
