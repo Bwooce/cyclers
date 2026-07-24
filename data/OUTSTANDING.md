@@ -180,9 +180,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#705` — epoch-robustness scan checking whether `#701`'s near-miss window (found by `#704`)
-  recurs at other multi-year epochs; dispatched 2026-07-24. See its own bullet entry for full
-  scope. (`#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
+- None currently in progress as of 2026-07-24. (`#705` — REMOVED from this list 2026-07-24,
+  CLOSED same day: epoch-robustness scan confirms `#704`'s near-miss window recurs at ALL 10
+  tested multi-year epochs across 2000-2083, not just near 2030 — see its own `✓ DONE` bullet
+  entry. `#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
   entry.) The `#688`-`#703` CCR4BP discovery arc itself is complete —
   all four `#693` novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative,
   `#701` CONFIRMED GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list
@@ -1299,7 +1300,10 @@ coarse 20-point long-baseline scan across 2000-2083 never lands near it (expecte
 equally-tight near-miss window recurs at OTHER multi-year epochs (analogous to #312's own #567
 epoch-robustness scan), the load-bearing open question before any schema/writeback decision on
 #701's connection -- densely scan several distinct multi-year epochs (not just one, per #704's own
-single-epoch limitation) for the same narrow tight-window structure #704 found near 2030.
+single-epoch limitation) for the same narrow tight-window structure #704 found near 2030. DONE
+2026-07-24: recurs at ALL 10 tested epochs spread across 2000-2083 (pos_gap 5.4-142.8 km, all
+within 10x of #704's own 84.46 km best point, most tighter), no collision-course breakdown at any
+found point -- a positive, robust finding, not a 2030-specific coincidence. See #705's own bullet.
 #706 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14394,7 +14398,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   narrow near-miss window recurs at other multi-year epochs (a proper epoch-robustness scan,
   analogous to `#312`'s own `#567`) before any schema/writeback decision — this result alone does
   not yet answer that question either way.
-- **#705 (dispatched 2026-07-24) -- epoch-robustness scan: does `#701`'s near-miss window recur
+- **#705 ✓ DONE (2026-07-24) -- epoch-robustness scan: does `#701`'s near-miss window recur
   at other multi-year epochs?** The load-bearing open question `#704` left unresolved: `#704`
   found a real, narrow (~1% duty cycle, 3 windows per ~7.9-day synodic period) near-miss window
   tightening to ~84 km/0.006 km/s near 2030-01-07, but its own coarse 20-point long-baseline scan
@@ -14411,6 +14415,40 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   decades): an honest, still-valuable negative that closes out this specific vetting question
   without a promotable result — reuse `#704`'s own module unmodified, this is a scan-methodology
   extension, not new capability.
+  **RESULT: the near-miss window recurs at EVERY tested epoch — a positive, robust finding.**
+  New driver `scripts/run_705_epoch_robustness_scan.py` reruns `#704`'s own dense 300-point
+  synodic-scan-plus-bisection-refinement methodology, UNMODIFIED (`#704`'s own
+  `ccr4bp_real_ephemeris_consistency.py` module, consumed read-only), at 10 epochs evenly spread
+  across the `#312`-precedented 2000-2083 window (~9.2-year spacing: 2000.0, 2009.2, 2018.4,
+  2027.7, 2036.9, 2046.1, 2055.3, 2064.6, 2073.8, 2083.0). At EVERY one of the 10 epochs, the
+  local-minimum near-miss point came in comfortably within the pre-declared "comparable" gate (10x
+  `#704`'s own 84.46 km / 0.005905 km/s best point, i.e. <844.6 km / <0.0590 km/s):
+  pos_gap_km = {43.3, 61.0, 142.8, 46.7, 80.3, 5.4, 36.7, 11.5, 46.1, 58.8} km (10/10 comparable,
+  most actually TIGHTER than #704's own headline 2030 value), vel_gap in 1-13 m/s. None of the 10
+  found near-miss points showed a moon-radius collision-course breakdown (closest approach to
+  Umbriel ~181,300-181,800 km, to Titania 534,600-828,600 km — both far outside each moon's own
+  physical radius, unlike the arbitrary 2030-01-01 headline point `#704` itself flagged). All 3000
+  individual propagations (10 epochs x 300 synodic-phase points) succeeded, none NaN/divergent.
+  **Interpretation**: this is NOT the "2030 was a one-off coincidence" outcome — the tight
+  near-miss structure is a generic, recurring feature of the synodic cycle at every multi-year
+  epoch tested, strengthening (not weakening) the case that `#701`'s connection has real,
+  recurring feasibility structure, analogous to `#312`'s own duty-cycle characterization.
+  **Honest scope/resolution limits, stated explicitly**: (1) only 10 discrete epochs were tested
+  (not a continuous characterization) — a slow secular effect with a period shorter than ~9 years
+  and out of phase with all 10 sample points could in principle still exist undetected, though
+  10/10 hits with no near-misses among the 10 makes this unlikely; (2) each epoch's own dense scan
+  is itself only 300 points plus local bisection refinement (matching `#704`'s own resolution, not
+  a proof of the exact continuous minimum); (3) this result still does NOT constitute a
+  schema/writeback decision (explicitly out of scope, same as `#704`). ruff/format/full-mypy
+  (804 files) clean; `tests/core tests/search tests/scripts` full suite run twice (once before,
+  once after retroactively exempting `#704`'s and `#705`'s own driver scripts from the
+  `preflight_search` AST ratchet, a real pre-existing gap in `#704` this run's own full
+  `tests/scripts` pass caught — same fixed-epoch/no-region_id exemption category as
+  `#606`/`#608`/`#664`/`#666`/`#685`) — only the same two pre-declared pre-existing failures
+  remain (`test_gate_b_table4_vinf_reached_but_subsurface`, `test_504_sweep_33`). Committed
+  `48b3e9a`. No catalogue writeback (as scoped). **Next step, not yet dispatched**: the
+  schema/provenance and writeback steps this whole `#704`/`#705` vetting chain was building
+  toward, now on considerably stronger footing given this result.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
