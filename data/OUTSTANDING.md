@@ -180,10 +180,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#704` — REMOVED from this list 2026-07-24, CLOSED same day: nuanced
-  result — does not survive generically, but a real narrow near-miss window exists at ~84 km /
-  0.006 km/s; whether it recurs at other epochs is the open next step, not yet dispatched. See its
-  own `✓ DONE` bullet entry.) The `#688`-`#703` CCR4BP discovery arc itself is complete —
+- `#705` — epoch-robustness scan checking whether `#701`'s near-miss window (found by `#704`)
+  recurs at other multi-year epochs; dispatched 2026-07-24. See its own bullet entry for full
+  scope. (`#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
+  entry.) The `#688`-`#703` CCR4BP discovery arc itself is complete —
   all four `#693` novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative,
   `#701` CONFIRMED GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list
   2026-07-24, both CLOSED same
@@ -1289,7 +1289,18 @@ attempted -- a collapse there would still be a valid, informative outcome, just 
 one. #704 -- build the CCR4BP-to-real-ephemeris consistency check: re-propagate #701's idealized
 (circular-coplanar) torus/homoclinic connection under Umbriel's and Titania's REAL (eccentric,
 mutually inclined, real-epoch, URA111-SPICE-sourced) ephemeris and characterize whether/how well
-it survives -- the load-bearing step this whole vetting chain depends on. #705 next-unused):**
+it survives -- the load-bearing step this whole vetting chain depends on. DONE 2026-07-24:
+nuanced -- does NOT survive generically (median mismatch ~125,000 km across a synodic period,
+comparable to Titania's own orbital radius), but a real, non-trivial narrow near-miss window
+exists within that same period (~1% duty cycle, 3 windows, tightening to ~84 km/0.006 km/s at its
+best point, 2030-01-07). Whether this recurs at other multi-year epochs is unresolved -- the
+coarse 20-point long-baseline scan across 2000-2083 never lands near it (expected, sample spacing
+~4.4 years vs the ~8-day synodic period). #705 -- epoch-robustness scan: check whether an
+equally-tight near-miss window recurs at OTHER multi-year epochs (analogous to #312's own #567
+epoch-robustness scan), the load-bearing open question before any schema/writeback decision on
+#701's connection -- densely scan several distinct multi-year epochs (not just one, per #704's own
+single-epoch limitation) for the same narrow tight-window structure #704 found near 2030.
+#706 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14383,6 +14394,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   narrow near-miss window recurs at other multi-year epochs (a proper epoch-robustness scan,
   analogous to `#312`'s own `#567`) before any schema/writeback decision — this result alone does
   not yet answer that question either way.
+- **#705 (dispatched 2026-07-24) -- epoch-robustness scan: does `#701`'s near-miss window recur
+  at other multi-year epochs?** The load-bearing open question `#704` left unresolved: `#704`
+  found a real, narrow (~1% duty cycle, 3 windows per ~7.9-day synodic period) near-miss window
+  tightening to ~84 km/0.006 km/s near 2030-01-07, but its own coarse 20-point long-baseline scan
+  (2000-2083, ~4.4 years between samples) never lands near enough to a synodic-period-scale
+  window to confirm or rule out recurrence elsewhere — by construction, a scan spaced far coarser
+  than the phenomenon's own periodicity can't detect it. Scope: run `#704`'s own DENSE
+  (synodic-period-resolution) scan methodology at SEVERAL distinct multi-year epochs spread across
+  the 2000-2083 window (not just the one near 2030 `#704` happened to check), and determine
+  whether an equally-tight (or comparably tight) near-miss window recurs at each, analogous to how
+  `#312`'s own `#567` epoch-robustness scan established that family's real feasible synodic duty
+  cycle. If it recurs reliably: a genuine, real-ephemeris-survivable discovery candidate,
+  strengthening the case for the schema/writeback steps. If it does NOT recur (the 2030 window was
+  a one-off, e.g. due to slow secular drift in the real moons' relative nodal/apsidal phasing over
+  decades): an honest, still-valuable negative that closes out this specific vetting question
+  without a promotable result — reuse `#704`'s own module unmodified, this is a scan-methodology
+  extension, not new capability.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
