@@ -180,9 +180,11 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#701` (pipeline built, awaiting `#702`'s verdict) and `#702` (Opus, fixing a real `ghost_guard`
-  Radau-anchoring bug + re-verifying `#701`'s flagged near-machine-precision candidate) — see each
-  own bullet entry for full scope. (`#699`/`#700` — REMOVED from this list 2026-07-24, both CLOSED same
+- Otherwise none currently. (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
+  day — `#701` CONFIRMED GENUINE (first apparently-novel CCR4BP discovery-grade result in this
+  arc, plus a robust near-miss family), `#702` fixed the real `ghost_guard` Radau-anchoring bug
+  that had produced the ambiguity; see each's own `✓ DONE` bullet entry. `#699`/`#700` — REMOVED
+  from this list 2026-07-24, both CLOSED same
   day: both VERDICT CLEAR — see each's own `✓ DONE` bullet entry. `#695`/`#696` — REMOVED from
   this list 2026-07-23, both CLOSED same day; see each's own `✓ DONE` bullet entry — `#695` an
   honest near-miss, `#696` a clean negative. `#694` — REMOVED 2026-07-23, CLOSED same day;
@@ -14132,7 +14134,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   **Independently spot-verified 2026-07-24**: re-ran the `pdftotext`+grep check on both Kumar PDFs
   myself, confirmed zero "Callisto" matches in each; grepped `literature_check.py` and confirmed
   no Jovian anchor is CCR4BP-tagged, matching the report precisely.
-- **#701 (dispatched 2026-07-24) -- apply the full, now-proven CCR4BP pipeline (`#689`-`#694`) to
+- **#701 ✓ DONE (2026-07-24) -- apply the full, now-proven CCR4BP pipeline (`#689`-`#694`) to
   Uranus Umbriel-Titania, a genuine discovery attempt.** The strongest remaining `#693` candidate
   after `#699`/`#700` both cleared novelty: `mu_pert=3.92e-5` (best non-Jovian mass conditioning,
   only 2x below the JEG reference), both eccentricities under the tractability bar, `Δi≈0`, a real
@@ -14169,16 +14171,74 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#702`); a manually corrected re-probe (seed-anchored `ref_vec`, matching `refine_candidate`'s
   own internal convention) shows the independent Radau integrator actually AGREES with DOP853 to
   ~1e-8 km at this exact candidate — strongly suggesting the "not genuine" ambiguity was a false
-  alarm from the bug, not a real finding, though this is NOT yet fully certified. **This task is
-  NOT closed** — pending `#702`'s fix-and-reverify before a final verdict on this specific
-  candidate can be trusted.
-- **#702 (dispatched 2026-07-24, Opus) -- fix `#694`'s `ghost_guard` Radau-anchoring bug and
-  re-verify `#701`'s flagged candidate.** See the `TASK ALLOCATIONS` ledger paragraph's own `#702`
-  entry (search `#702 -- fix a newly found`) for the full mechanism and discovery context. High
-  stakes: a potential first genuine novel CCR4BP discovery in this arc (`#701`'s Umbriel-Titania
-  candidate), plus a bug that could have silently produced false-negative "not genuine" verdicts
-  anywhere `ghost_guard` was already trusted (`#694`'s own JEG positive control, `#695`, `#696`).
-  Dispatched to Opus, not Sonnet, per this project's own trust-bearing-judgment model tier.
+  alarm from the bug, not a real finding.
+  **FINAL RESULT, after `#702`'s fix (2026-07-24, commit `2d8d563`): CONFIRMED GENUINE. This is
+  the first apparently-novel discovery-grade CCR4BP homoclinic connection in this project's
+  arc.** With `#702`'s fix applied, the coordinating session independently ran a completely fresh
+  process (not reusing any stale in-memory pre-fix state) of the full search: across all 4
+  lobe-sign combinations, the connections that were previously flagged ambiguous now show
+  `genuine(module/corrected/robust)=True/True/True` almost universally (up from mostly
+  False/mixed). The best robustly-genuine connection: `residual_norm≈1.12e-14` (machine
+  precision), `corrected_pos_gap_km≈5.66e-10`, `corrected_vel_gap_km_s≈5.11e-14`,
+  `guard_quasi_jacobi_gap≈-1.24e-14` (energy-consistent), `corrected_off_torus_km≈1928` km
+  (comfortably clears the 1000 km threshold — a genuine far excursion, not a trivial
+  near-departure match), `corrected_integrator_delta_km≈1.05e-7` km (six orders of magnitude
+  below the 1.0 km gate — the SAME comfortable margin JEG's own positive control achieved,
+  ~6.5e-7 km). Mesh-refinement re-check (120×300 dense grid): `2.16e-9` km, consistent, not
+  degrading. A SEPARATE, distinct family also exists — a robust, comfortably-verified NEAR-MISS
+  (`corrected_pos_gap_km≈43.1` km / `corrected_vel_gap_km_s≈2.58` m/s, `residual_norm` NOT
+  machine precision, a genuine local-minimum floor, `integrator_delta_km≈1.2e-7` km — same
+  comfortable margin), reproducing near-identically across all 4 lobe combos — roughly 2.6× the
+  magnitude of `#695`'s own Io-Europa near-miss (16.7 km / 0.54 m/s). Two independent, well-
+  characterized discovery-grade findings on the same system. Independently re-verified by the
+  coordinating session throughout (not just trusting the dispatched agent's own report): read the
+  `ghost_guard` fix diff directly, confirmed the regression test's construction is sound, ran the
+  clean fresh re-verification myself, cross-checked `#695`/`#696`'s own saved candidate data
+  against the fix and confirmed BOTH of their headline verdicts are UNCHANGED (every one of
+  `#695`'s near-machine-precision "not genuine" candidates independently fails the off-torus
+  threshold at 562-823 km regardless of the integrator-delta bug, so its 16.7 km near-miss
+  finding stands correctly; `#696`'s own candidates likewise all fail off-torus independently of
+  the bug, so its clean-negative verdict stands), and confirmed JEG's own positive control test
+  still passes unaffected. Full suite (`tests/core tests/search tests/scripts`, run alone, nothing
+  else in parallel) shows only the 2 long-documented pre-existing failures. **No catalogue
+  writeback** — this is a capability/discovery-verification result, explicitly pending a separate,
+  future vetting/promotion task before any catalogue entry (this project's standing discipline:
+  a converged numerical result is not automatically a vetted, publication-grade discovery claim).
+- **#702 ✓ DONE (2026-07-24, Opus, commit `2d8d563`) -- fix `#694`'s `ghost_guard` Radau-anchoring
+  bug and re-verify `#701`'s flagged candidate.** See the `TASK ALLOCATIONS` ledger paragraph's
+  own `#702` entry (search `#702 -- fix a newly found`) for the full mechanism and discovery
+  context. High stakes: a potential first genuine novel CCR4BP discovery in this arc (`#701`'s
+  Umbriel-Titania candidate), plus a bug that could have silently produced false-negative "not
+  genuine" verdicts anywhere `ghost_guard` was already trusted (`#694`'s own JEG positive control,
+  `#695`, `#696`). Dispatched to Opus, not Sonnet, per this project's own trust-bearing-judgment
+  model tier.
+  **RESULT.** Root cause confirmed exactly as the coordinating session's own manual probe
+  suspected: `ghost_guard()` re-derived its independent Radau-integrator cross-check's CLV
+  `ref_vec` (sign-continuity anchor) at the FINAL, `least_squares`-converged `theta2`, while
+  `refine_candidate()`'s own DOP853-side states are anchored at the SEED candidate's `theta2`
+  (before optimization moves it), held fixed through the whole optimization. The raw CLV sign has
+  no continuity guarantee across phases (`#691`'s own module docstring already documented this);
+  when it flips between seed and converged `theta2` — confirmed happening on `#701`'s Umbriel-
+  Titania stable branch, between `theta2=2.618` and `3.238` — the old final-anchored Radau
+  re-check silently stepped the OPPOSITE manifold lobe, comparing two DIFFERENT trajectories and
+  reporting a large, physically-meaningless disagreement that had nothing to do with genuine
+  chaos-amplified integrator sensitivity. **Fix**: `RefinedConnection` now carries the seed-
+  anchored `ref_vec_u`/`ref_vec_s` `refine_candidate` already computed; `ghost_guard` reuses them
+  instead of re-deriving a fresh anchor. Same fix applied to `#696`'s and `#701`'s own driver
+  scripts' parallel `_corrected_radau_check` helpers (`#695` fixed automatically since it calls
+  `ghost_guard` directly, never its own copy). New regression test
+  (`test_ghost_guard_uses_seed_anchored_ref_vec_not_final_phase`) deliberately constructs a
+  connection whose `ref_vec` is opposite the raw converged-phase CLV sign and confirms
+  `ghost_guard` now reproduces the correct lobe — provably broken by the same construction before
+  the fix. JEG's own positive control (`#694`) re-confirmed still passing, unaffected by the fix.
+  Ruff/full-mypy clean (796 files); full suite clean modulo the 2 documented pre-existing
+  failures. **Process note**: the dispatched agent repeatedly stalled across multiple resume
+  cycles waiting for its own background re-runs/rechecks without committing; the coordinating
+  session independently reviewed the fix diff and regression test directly, ran its own clean
+  fresh re-verification (confirming the agent's own numbers exactly), independently cross-checked
+  `#695`/`#696`'s own saved data against the fix, and committed everything on the agent's behalf
+  rather than continuing to resume a repeatedly-stalling agent — see
+  `[[feedback_subagent_background_is_fatal]]`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
