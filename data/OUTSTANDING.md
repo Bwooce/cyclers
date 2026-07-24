@@ -180,9 +180,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#704` — build the CCR4BP-to-real-ephemeris consistency check for `#701`'s Umbriel-Titania
-  connection, the first step of its catalogue vetting/promotion chain; dispatched 2026-07-24. See
-  its own bullet entry for full scope. The `#688`-`#703` CCR4BP discovery arc itself is complete —
+- Otherwise none currently. (`#704` — REMOVED from this list 2026-07-24, CLOSED same day: nuanced
+  result — does not survive generically, but a real narrow near-miss window exists at ~84 km /
+  0.006 km/s; whether it recurs at other epochs is the open next step, not yet dispatched. See its
+  own `✓ DONE` bullet entry.) The `#688`-`#703` CCR4BP discovery arc itself is complete —
   all four `#693` novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative,
   `#701` CONFIRMED GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list
   2026-07-24, both CLOSED same
@@ -14329,7 +14330,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   only the 2 long-documented pre-existing failures. This closes out ALL FOUR of `#693`'s
   novelty-cleared CCR4BP candidates (`#695` near-miss, `#696` clean negative, `#701` CONFIRMED
   GENUINE, `#703` clean negative) — the full `#688`-`#703` CCR4BP discovery arc is now complete.
-- **#704 (dispatched 2026-07-24) -- build the CCR4BP-to-real-ephemeris consistency check for
+- **#704 ✓ DONE (2026-07-24, commit `c0be3ee`) -- build the CCR4BP-to-real-ephemeris consistency check for
   `#701`'s Umbriel-Titania homoclinic connection.** First, load-bearing step of the vetting/
   promotion chain toward a possible catalogue writeback (see the `TASK ALLOCATIONS` ledger
   paragraph's own note on this decision for the full V0-V5 ladder context and why `#312`'s own
@@ -14346,6 +14347,42 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   under real ephemeris (analogous to past idealized-model results that didn't survive real
   eccentricity) is an honest, acceptable, reportable outcome here — not a task failure — per
   this project's standing "a clean negative is real progress" discipline.
+  **RESULT: NUANCED — does NOT survive generically, but a real, narrow near-miss window exists.**
+  New `src/cyclerfinder/search/ccr4bp_real_ephemeris_consistency.py`: converts `#701`'s idealized
+  connection to a real physical state via an osculating rotating frame built from Umbriel's real
+  SPICE state, propagates under real Uranus+Umbriel+Titania N-body dynamics (reusing `#312`'s own
+  V4 gauntlet SPICE-loading mechanism and third-body-acceleration formula UNMODIFIED), and
+  compares to the idealized connection's own target state converted to the same real frame at the
+  corresponding epoch. **Mandatory positive control caught two real bugs during development**
+  (a barycentre-vs-Uranus-centred origin mismatch amplified ~25× by this system's own
+  hyperbolicity, and an inconsistent moon-position convention) before passing at ~5e-4 km / 4e-9
+  km/s agreement — exactly the kind of scrutiny this project's TDD discipline is supposed to
+  catch. **Headline finding**: the connection does NOT generically survive — a dense 300-point
+  scan across one real ~7.9-day Umbriel-Titania synodic period finds a MEDIAN mismatch of
+  ~125,000-136,000 km (comparable to Titania's own orbital radius, a genuine collapse in the
+  generic case). **But a real, narrow near-miss window exists**: 3 distinct sub-5000km windows
+  per synodic period (~1% duty cycle), tightening at its best point (2030-01-07 22:25 UTC) to
+  `pos_gap_km≈84.5` / `vel_gap_km_s≈0.0059` — comfortably within typical mission
+  correction-maneuver budgets, not a trivial or vacuous near-miss. A coarse 20-point long-baseline
+  scan across 2000-2083 never lands near this narrow window (expected — each sample is ~4.4 years
+  apart vs. the ~7.9-day synodic period) — so **whether an equally-tight window recurs reliably
+  at OTHER multi-year epochs is still an open, unresolved question**, honestly flagged by the
+  task's own docstring as a limitation of this single-epoch-plus-discrete-scan methodology, not
+  yet a proven duty cycle (unlike `#312`'s own already-characterized epoch-robustness result).
+  **Also flagged**: at the arbitrary headline epoch (2030-01-01, not the tight-window one), the
+  propagated path's closest approach to Titania (569 km) is INSIDE Titania's own ~789 km physical
+  radius — a literal collision-course segment at that specific epoch, a real point-mass-model
+  breakdown warning the module's own design anticipated and reports explicitly; NOT present at
+  the actually-promising near-miss epoch (closest approach there: 443,051 km, safe). No catalogue
+  writeback (as scoped). **Independently re-verified 2026-07-24**: read the module's full
+  docstring and function list, confirmed the mandatory reduction-test positive control exists and
+  is well-designed; ruff/full-mypy clean (803 files); independently re-ran the new test file
+  (7/7 pass); independently recomputed the long-baseline-scan numbers directly from the raw
+  `result.json` and confirmed none approach the narrow window's own tightness, matching the
+  report's own characterization. **Next step, not yet dispatched**: characterize whether the
+  narrow near-miss window recurs at other multi-year epochs (a proper epoch-robustness scan,
+  analogous to `#312`'s own `#567`) before any schema/writeback decision — this result alone does
+  not yet answer that question either way.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
