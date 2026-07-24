@@ -180,9 +180,11 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#708` — implement `#707`'s user-approved schema proposal and write back `#701`'s
-  torus-homoclinic connection row, dispatched 2026-07-24. See its own bullet entry for full
-  scope. (`#707` — REMOVED from this list 2026-07-24, CLOSED same
+- Otherwise none currently. The entire `#689`-`#708` CCR4BP arc is complete — capability built,
+  applied to four moon pairs, a real bug found and fixed, and `#701`'s Umbriel-Titania connection
+  vetted all the way to a catalogue writeback (`umbriel-1-2-torus-homoclinic-uranus-2026`).
+  (`#708` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet entry.
+  `#707` — REMOVED from this list 2026-07-24, CLOSED same
   day: proposal delivered, no schema/catalogue change made — see its own `✓ DONE` bullet entry.
   `#706` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own
   `✓ DONE` bullet entry. `#705` — REMOVED from this list 2026-07-24,
@@ -14543,7 +14545,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   "bicircular", null]`) — using `"cr3bp"` for a CCR4BP-sourced row would misstate the model. No
   schema or catalogue file was modified — this is a proposal only, exactly as `#684`'s own schema
   question was handled, pending coordinating-session/user review and decision.
-- **#708 (dispatched 2026-07-24) -- implement `#707`'s approved schema proposal and write back
+- **#708 ✓ DONE (2026-07-24, commits `c9e08ae`/`81aebda`) -- implement `#707`'s approved schema proposal and write back
   `#701`'s Umbriel-Titania torus-homoclinic connection.** User explicitly approved `#707`'s full
   proposal ("Approve as proposed"): a new `orbit_class` value `torus_homoclinic` (neither
   `quasi_cycler` — built around repeated named-body encounters, absent here — nor `resonant_po` —
@@ -14567,6 +14569,42 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   own writeback used before touching `data/catalogue.yaml`. Full `tests/data tests/search`
   ratchet suite required per `[[feedback_catalogue_edits_run_all_ratchets]]`, never a hand-picked
   subset, since any catalogue-schema change ripples into multiple frozen-census ratchets.
+  **RESULT — the culmination of the entire `#689`-`#708` arc: `#701`'s Umbriel-Titania CCR4BP
+  torus-homoclinic connection is now a catalogue entry
+  (`umbriel-1-2-torus-homoclinic-uranus-2026`).** Schema bumped 5.2→5.3 (`c9e08ae`): `ccr4bp`
+  added to `model_assumption`, `torus_homoclinic` added to `orbit_class` (`epoch_locked=true`,
+  `n_returns=1`, enforced by the same Python semantic gate as `quasi_cycler`/`precursor_mga`/
+  `mga_tour`), the additive `ccr4bp_provenance` block built exactly per `#707`'s own snippet. The
+  row itself (`81aebda`) carries every number RE-DERIVED from source (not copied from `#707`'s
+  illustrative draft) — `mu`/`mu_gan`/`a_gan`/`omega_gan` from a live call to
+  `core.ccr4bp_umbriel_titania.uranus_umbriel_titania_default()`, the connection geometry from
+  `#701`'s own result, and ALL 10 of `#705`'s tested epochs (not just the 2030 headline point —
+  the 10/10 recurrence IS the evidentiary strength, not compressed away). `validation_level: V1`
+  (honestly calibrated — NOT V2/V3, no multi-lap structure and no budget-bounded correction burn
+  exists for this object), registered in `src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE`.
+  **Mandatory Fable pre-execution review caught and the agent fixed three real prose/documentation
+  defects before commit** (verbatim verdict: "3 FLAGGED ISSUES... no data-field transcription
+  errors, no schema inconsistencies" across ~70 checked numeric values): a "2073x" reduction claim
+  corrected to the true ~2069x; a `validate.py` evidence entry mislabeled as an "independence gate"
+  relabeled to the correct CONSISTENCY-gate class (same-inputs-different-algorithm, per this
+  project's own #197 convention) with the required "shared with primary path" declaration added;
+  and a `force_model` field claiming to be "verbatim" corrected to an exact quote. Ratchet counts
+  updated: non-keplerian census 38→39, unvalidated tier census 102→103, V1 validation-level census
+  26→27 (all three, per this project's own "catalogue-scope-expansion" discipline, updated to the
+  new correct count, not weakened). **Independently re-verified 2026-07-24 by the coordinating
+  session, not just trusted from the report**: read the full schema diff and the full new row;
+  spot-checked EVERY numeric field against its cited source (`core.ccr4bp_umbriel_titania`'s live
+  constructor output, `#701`'s own `result.json`, `#705`'s epoch-0 entry including the exact
+  `epoch0_utc` timestamp) — all matched exactly; independently ran `ruff check`/`ruff format
+  --check`/full `mypy src tests` (804 files) clean; independently ran the full
+  `tests/data tests/search` ratchet suite myself (not trusting the agent's own run) — clean,
+  only the 2 long-documented pre-existing failures. **This closes the entire `#689`→`#708` CCR4BP
+  arc**: capability built and proven (`#689`-`#694`), applied to four moon pairs (`#695`/`#696`/
+  `#701`/`#703`), a real methodological bug found and fixed along the way (`#702`), and — for the
+  first time in this project's CCR4BP lane — a genuine result vetted through real-ephemeris
+  consistency (`#704`), epoch-robustness (`#705`), fresh literature clearance (`#706`), schema
+  design (`#707`), and writeback (`#708`) all the way to the catalogue. This is the catalogue's
+  SECOND genuinely novel (non-`known-class-member`) finding, after `#312`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
