@@ -180,7 +180,10 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- None currently in progress as of 2026-07-24. (`#705` — REMOVED from this list 2026-07-24,
+- `#706` and `#707` — the last two steps of `#701`'s vetting chain before any writeback decision:
+  a fresh literature re-check and the schema-representation design, dispatched in parallel
+  2026-07-24. See each's own bullet entry for full scope. (`#705` — REMOVED from this list
+  2026-07-24,
   CLOSED same day: epoch-robustness scan confirms `#704`'s near-miss window recurs at ALL 10
   tested multi-year epochs across 2000-2083, not just near 2030 — see its own `✓ DONE` bullet
   entry. `#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
@@ -1304,6 +1307,20 @@ single-epoch limitation) for the same narrow tight-window structure #704 found n
 2026-07-24: recurs at ALL 10 tested epochs spread across 2000-2083 (pos_gap 5.4-142.8 km, all
 within 10x of #704's own 84.46 km best point, most tighter), no collision-course breakdown at any
 found point -- a positive, robust finding, not a 2030-specific coincidence. See #705's own bullet.
+User: "keep going" -- dispatching the remaining two steps of #701's vetting chain (per this
+paragraph's own #704 note): a fresh literature re-check immediately pre-writeback, and the
+schema/representation design step. #706 -- fresh literature re-check on Uranus Umbriel-Titania
+CCR4BP work, re-running #699's own clearance methodology (ten distinct queries, full anchor
+re-read, corpus scan) since time has passed and #701/#704/#705 have meaningfully changed what
+the actual claim would be (a real-ephemeris-survivable homoclinic connection, not just an
+idealized-model curiosity) -- cheap, mechanical, no design judgment needed. #707 -- schema design
++ additive `ccr4bp_provenance` block: this is a GENUINE judgment call, not mechanical plumbing --
+#701's object (a torus + a homoclinic manifold connection, i.e. a departure-and-return transfer
+from one quasi-periodic torus back to itself) is NOT the same shape as #312's own repeating
+Lambert-arc multi-encounter tour, so how it should be represented in `orbit_class`/`cycler_class`/
+`sequence_canonical`/`invariants` needs to be worked out, not assumed; come back with a concrete
+proposal (not yet a writeback) for the coordinating session/user to review, mirroring how #684's
+own schema conflict was presented before being decided. #708 next-unused):**
 #706 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14449,6 +14466,35 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `48b3e9a`. No catalogue writeback (as scoped). **Next step, not yet dispatched**: the
   schema/provenance and writeback steps this whole `#704`/`#705` vetting chain was building
   toward, now on considerably stronger footing given this result.
+- **#706 (dispatched 2026-07-24, in parallel with `#707`) -- fresh literature re-check on Uranus
+  Umbriel-Titania CCR4BP work, immediately pre-writeback.** `#699` (2026-07-24, still same-day)
+  already cleared this pair with ten independent search queries and a full-text check of the
+  closest adjacent paper — but that check was scoped to "is there prior CCR4BP torus/heteroclinic
+  work on this pair at all," BEFORE `#701`/`#704`/`#705` established the much stronger, more
+  specific claim this would actually become if promoted: a real-ephemeris-survivable,
+  epoch-recurring homoclinic connection (not just an idealized-model curiosity). Re-run `#699`'s
+  own methodology (same sources: `search/literature_check.py`'s `KNOWN_CORPUS`,
+  `docs/notes/CORPUS_INDEX.md`, the private `cyclers_pdf` corpus, live search) to confirm nothing
+  new has surfaced and that the SPECIFIC claim about to be made is still unaddressed. Cheap,
+  mechanical, no design judgment needed — a final gate check, not a fresh investigation.
+- **#707 (dispatched 2026-07-24, in parallel with `#706`) -- schema design + additive
+  `ccr4bp_provenance` block for `#701`'s connection.** This is a GENUINE judgment call, not
+  mechanical schema plumbing, per `#684`'s own precedent for how a real schema conflict gets
+  surfaced and decided (present options, don't just build). `#701`'s object — a quasi-periodic
+  torus plus a homoclinic manifold connection (a departure-and-return transfer from the torus back
+  to itself, not a discrete multi-leg Lambert-arc tour like `#312`'s own catalogued
+  Umbriel-Titania row) — does not obviously map onto this schema's existing `orbit_class`/
+  `cycler_class`/`sequence_canonical`/`invariants` conventions, all of which were built around
+  either classical ballistic multi-encounter cyclers or `#312`'s own CR3BP symmetric-closure
+  family. Scope: research how the schema's existing fields COULD represent this object (does
+  `cycler_class: multi-arc` still fit a single departure-return transfer? does `sequence_canonical`
+  make sense for a torus rather than a discrete body sequence? what would `n_returns`/
+  `validity_window` mean for a connection characterized only at 10 discrete epochs, not a
+  continuous window?), design the additive `ccr4bp_provenance` block (same pattern as the
+  already-defined-but-unused `bcr4bp_provenance` — `mu_gan`/`a_gan`/`omega_gan` plus
+  connection-specific fields: off-torus distance, integrator-delta, residual, epoch-recurrence
+  summary), and return a CONCRETE PROPOSAL — not a writeback — for the coordinating session and
+  user to review and decide, exactly as `#684`'s own schema question was handled.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
