@@ -180,10 +180,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- None currently — `#701`'s full vetting-research chain (`#704`-`#707`) is done; the actual
-  schema-change + writeback decision awaits explicit user sign-off on `#707`'s proposal (a new
-  `orbit_class: torus_homoclinic` value, a new `model_assumption: ccr4bp` enum value, and the
-  additive `ccr4bp_provenance` block). (`#707` — REMOVED from this list 2026-07-24, CLOSED same
+- `#708` — implement `#707`'s user-approved schema proposal and write back `#701`'s
+  torus-homoclinic connection row, dispatched 2026-07-24. See its own bullet entry for full
+  scope. (`#707` — REMOVED from this list 2026-07-24, CLOSED same
   day: proposal delivered, no schema/catalogue change made — see its own `✓ DONE` bullet entry.
   `#706` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own
   `✓ DONE` bullet entry. `#705` — REMOVED from this list 2026-07-24,
@@ -1323,7 +1322,18 @@ from one quasi-periodic torus back to itself) is NOT the same shape as #312's ow
 Lambert-arc multi-encounter tour, so how it should be represented in `orbit_class`/`cycler_class`/
 `sequence_canonical`/`invariants` needs to be worked out, not assumed; come back with a concrete
 proposal (not yet a writeback) for the coordinating session/user to review, mirroring how #684's
-own schema conflict was presented before being decided. #708 next-unused):**
+own schema conflict was presented before being decided. #707 DONE 2026-07-24: delivered a
+concrete proposal (new orbit_class='torus_homoclinic', new model_assumption='ccr4bp' enum value,
+sequence_canonical=null+data_gaps, n_returns=1, additive ccr4bp_provenance block) -- no schema or
+catalogue change made. User approved as proposed ("Approve as proposed"). #708 -- implement
+#707's approved schema proposal (schema version bump, new orbit_class + model_assumption enum
+values, additive ccr4bp_provenance block per #707's own JSON-Schema snippet) and write back
+#701's Umbriel-Titania torus-homoclinic connection row using the draft YAML from #707's note as
+the base, incorporating #704/#705's real-ephemeris evidence and #706's fresh literature
+clearance. Mandatory Fable pre-execution review before the actual catalogue commit, mirroring
+#569's own writeback precedent exactly. Full `tests/data tests/search` ratchet suite required,
+per `[[feedback_catalogue_edits_run_all_ratchets]]` -- never a hand-picked subset. #709
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14533,6 +14543,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   "bicircular", null]`) — using `"cr3bp"` for a CCR4BP-sourced row would misstate the model. No
   schema or catalogue file was modified — this is a proposal only, exactly as `#684`'s own schema
   question was handled, pending coordinating-session/user review and decision.
+- **#708 (dispatched 2026-07-24) -- implement `#707`'s approved schema proposal and write back
+  `#701`'s Umbriel-Titania torus-homoclinic connection.** User explicitly approved `#707`'s full
+  proposal ("Approve as proposed"): a new `orbit_class` value `torus_homoclinic` (neither
+  `quasi_cycler` — built around repeated named-body encounters, absent here — nor `resonant_po` —
+  whose defining "no transport utility" semantics are the OPPOSITE of this result — fit), the
+  existing `cycler_class: non-keplerian` (no new value needed), `sequence_canonical: null` +
+  `data_gaps` `not-applicable` (no body sequence exists — `#701`'s object never comes within
+  534,000+ km of either moon), `n_returns: 1` (one transfer opportunity characterized at 10
+  discrete real-ephemeris epochs, not `#312`'s "N consecutive cycles" concept), a new additive
+  `ccr4bp_provenance` schema block (mirroring the already-defined-but-unused `bcr4bp_provenance`
+  pattern exactly — `mu`/`mu_gan`/`a_gan`/`omega_gan`, a `connection` sub-block for the idealized
+  ghost-guard evidence, a `real_ephemeris_evidence` sub-block for `#704`/`#705`'s epoch-recurrence
+  data), and a companion `model_assumption` enum addition (`"ccr4bp"` — the enum currently has NO
+  value for this model at all). Scope: implement the schema change (version bump following this
+  schema's own monotone-float-ordering discipline, e.g. `5.2 -> 5.3`), add the two new enum
+  values with whatever class-invariant enforcement (`epoch_locked`/`n_returns` semantics) makes
+  sense for `torus_homoclinic` given `#707`'s own analysis, build the `ccr4bp_provenance` block
+  per `#707`'s JSON-Schema snippet, and write `#701`'s actual row to `data/catalogue.yaml` using
+  `#707`'s own worked draft YAML as the base (verify every number against the actual source
+  `result.json` files, don't just copy the illustrative draft blindly). **Mandatory Fable
+  pre-execution review before the actual catalogue commit** — the exact same discipline `#569`'s
+  own writeback used before touching `data/catalogue.yaml`. Full `tests/data tests/search`
+  ratchet suite required per `[[feedback_catalogue_edits_run_all_ratchets]]`, never a hand-picked
+  subset, since any catalogue-schema change ripples into multiple frozen-census ratchets.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
