@@ -1324,7 +1324,6 @@ Lambert-arc multi-encounter tour, so how it should be represented in `orbit_clas
 `sequence_canonical`/`invariants` needs to be worked out, not assumed; come back with a concrete
 proposal (not yet a writeback) for the coordinating session/user to review, mirroring how #684's
 own schema conflict was presented before being decided. #708 next-unused):**
-#706 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
