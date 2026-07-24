@@ -180,10 +180,13 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#707` — the last remaining step of `#701`'s vetting chain: the schema-representation design,
-  dispatched 2026-07-24. See its own bullet entry for full scope. (`#706` — REMOVED from this list
-  2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own `✓ DONE` bullet entry. `#705` —
-  REMOVED from this list 2026-07-24,
+- None currently — `#701`'s full vetting-research chain (`#704`-`#707`) is done; the actual
+  schema-change + writeback decision awaits explicit user sign-off on `#707`'s proposal (a new
+  `orbit_class: torus_homoclinic` value, a new `model_assumption: ccr4bp` enum value, and the
+  additive `ccr4bp_provenance` block). (`#707` — REMOVED from this list 2026-07-24, CLOSED same
+  day: proposal delivered, no schema/catalogue change made — see its own `✓ DONE` bullet entry.
+  `#706` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own
+  `✓ DONE` bullet entry. `#705` — REMOVED from this list 2026-07-24,
   CLOSED same day: epoch-robustness scan confirms `#704`'s near-miss window recurs at ALL 10
   tested multi-year epochs across 2000-2083, not just near 2030 — see its own `✓ DONE` bullet
   entry. `#704` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet
@@ -14489,7 +14492,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   not relevant. No disqualifying prior work found. **Safe to proceed to the schema/writeback
   decision from a novelty standpoint** — makes no recommendation on that decision itself
   (`#707`'s and the coordinating session's call).
-- **#707 (dispatched 2026-07-24, in parallel with `#706`) -- schema design + additive
+- **#707 ✓ DONE (2026-07-24, commit `5682b25`, proposal only, no schema/catalogue change) -- schema design + additive
   `ccr4bp_provenance` block for `#701`'s connection.** This is a GENUINE judgment call, not
   mechanical schema plumbing, per `#684`'s own precedent for how a real schema conflict gets
   surfaced and decided (present options, don't just build). `#701`'s object — a quasi-periodic
@@ -14507,6 +14510,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   connection-specific fields: off-torus distance, integrator-delta, residual, epoch-recurrence
   summary), and return a CONCRETE PROPOSAL — not a writeback — for the coordinating session and
   user to review and decide, exactly as `#684`'s own schema question was handled.
+  **RESULT.** `docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md`. **Key finding driving
+  the whole analysis**: `#701`'s object has ZERO named-body encounters — closest approach to
+  Umbriel/Titania stays `>181,000`/`>534,000` km respectively across all 10 real-ephemeris test
+  epochs (moon radii ~585/789 km, independently spot-checked against `core/satellites.py`) —
+  Titania is purely a dynamical PERTURBER here, not a flyby target, which is the structural reason
+  this doesn't fit any existing catalogue row shape. **Recommendations** (full reasoning + a
+  complete worked draft YAML row, illustrative only, in the note): (1) `orbit_class` needs a NEW
+  value, proposed `torus_homoclinic` — neither `quasi_cycler` (built around repeated named-body
+  encounters; there is no encounter here) nor `resonant_po` (its defining "no transport utility"
+  semantics are the OPPOSITE of this result) fit; (2) `cycler_class: non-keplerian` (existing
+  value) fits fine, no new enum needed — `multi-arc` implies a discrete flyby handoff node this
+  object doesn't have; (3) `sequence_canonical: null` + `data_gaps` `not-applicable`, following
+  `#312`'s own row's exact precedent for inapplicable fields; (4) `n_returns: 1` (one opportunity
+  characterized at many epochs, not `#312`'s "N consecutive cycles" concept — a genuine judgment
+  call, flagged as such) with calendar `validity_window` bounds populated but deliberately NOT the
+  `synodic_duty_cycle_pct` trio (evidence-shape mismatch: 10 sparse discrete epochs, not `#312`'s
+  own dense continuous scan); (5) a new additive `ccr4bp_provenance` block (full JSON-Schema
+  snippet provided, mirroring the already-defined-but-unused `bcr4bp_provenance` pattern exactly),
+  PLUS a necessary companion finding: `model_assumption`'s enum currently has NO `ccr4bp` value at
+  all — independently confirmed by the coordinating session (`grep` of `data/catalogue.schema.json`
+  shows the exact enum `["circular-coplanar", "circular-inclined", "analytic-ephemeris", "cr3bp",
+  "bicircular", null]`) — using `"cr3bp"` for a CCR4BP-sourced row would misstate the model. No
+  schema or catalogue file was modified — this is a proposal only, exactly as `#684`'s own schema
+  question was handled, pending coordinating-session/user review and decision.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
