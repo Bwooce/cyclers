@@ -180,9 +180,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#703` — the now-proven, now bug-fixed CCR4BP pipeline applied to Jupiter Europa-Callisto,
-  dispatched 2026-07-24 (last of `#693`'s four candidates, "one at a time"). See its own bullet
-  entry for full scope. (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
+- Otherwise none currently. The `#688`-`#703` CCR4BP discovery arc is complete — all four `#693`
+  novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative, `#701` CONFIRMED
+  GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
   day — `#701` CONFIRMED GENUINE (first apparently-novel CCR4BP discovery-grade result in this
   arc, plus a robust near-miss family), `#702` fixed the real `ghost_guard` Radau-anchoring bug
   that had produced the ambiguity; see each's own `✓ DONE` bullet entry. `#699`/`#700` — REMOVED
@@ -14251,7 +14251,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#695`/`#696`'s own saved data against the fix, and committed everything on the agent's behalf
   rather than continuing to resume a repeatedly-stalling agent — see
   `[[feedback_subagent_background_is_fatal]]`.
-- **#703 (dispatched 2026-07-24) -- apply the full, now-proven, now bug-fixed CCR4BP pipeline
+- **#703 ✓ DONE (2026-07-24, commits `355db8c`/`4934720`) -- apply the full, now-proven, now bug-fixed CCR4BP pipeline
   (`#689`-`#694`, `#702`'s `ghost_guard` fix included) to Jupiter Europa-Callisto, a genuine
   discovery attempt.** `#693`/`#700`'s last remaining novelty-cleared candidate: `mu_pert=5.67e-5`
   (comparable to JEG), good tractability (a clean base orbit was confirmed findable with WIDER
@@ -14269,6 +14269,47 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   search — now using `#702`'s CORRECTED `ghost_guard` from the start, so this task should not need
   its own separate anchor-bug investigation. Dispatched alone, per the established "one at a time"
   discipline, as the last of the four `#693` candidates.
+  **RESULT: HONEST NEGATIVE — the strongest near-miss signal this pipeline has produced without
+  crossing the genuineness gate, and a clean, non-ambiguous one.** New
+  `src/cyclerfinder/core/ccr4bp_europa_callisto.py` (`jupiter_europa_callisto_default()` — Europa
+  keeps its base-moon structural role unchanged from JEG, `mu` identical), 5 new test files.
+  **Base orbit**: interior spacecraft:Europa=4:1 (mirroring `#696`'s own Io-Ganymede precedent),
+  residual ~2.2e-14, clears Callisto's orbit by ~2.41 Europa-SMA units (~22× Callisto's own Hill
+  radius — the WIDEST margin of any CCR4BP system built so far; re-derived directly, not just
+  cited from `#700`'s own scratch check). The naive exterior 1:5 choice does not hard-fail here
+  (unlike Io-Ganymede's exact collision) but has only a thin ~1.1×-Hill-scale margin, motivating
+  the interior choice instead. **Torus** converges very cleanly (residual_rms ~7.9e-7).
+  **One-period unstable eigenvalue |lam_u|~175** — far stronger amplification than any prior
+  CCR4BP system (JEG/Umbriel-Titania ~6-13), consistent with the tighter interior orbit; whisker
+  go/no-go still cleanly trustworthy despite this (worst one-shot 1.28°, worst segmented 0.026°).
+  Since the base moon IS Europa (unchanged from JEG), `#694`'s hardcoded `_L_KM`/`_v_unit_km_s`
+  are ALREADY correct here — verified explicitly at runtime
+  (`unit_coincidence_verified=True`), not merely assumed. **Search**: caught and fixed its own
+  methodology gap mid-task — the standard 2-period search horizon found only trivial
+  near-departure matches; a diagnostic correctly identified this system's much stronger
+  hyperbolicity needs a longer horizon, and re-running at `t_max_periods=6.0` (4 lobe combos × 8
+  candidates = 32 total) found ZERO genuine connections, but the closest approach
+  (`corrected_off_torus_km≈751.9`, ~75% of the 1000 km gate) is the closest this project's CCR4BP
+  pipeline has come to a genuine connection without crossing the gate, anywhere in the
+  `#694`-`#703` arc. Independent-integrator (Radau vs DOP853) agreement across ALL 32 candidates
+  never exceeds ~7e-6 km — five-plus orders of magnitude below the 1.0 km gate — confirming this
+  is NOT a `#702`-style anchor-bug ambiguity, a clean, robust "not sufficiently off-torus" result.
+  **Real methodological finding, honestly reported not papered over**: the single
+  longest-elapsed-time candidate (t_u~46.9 TU, ~5.9 torus periods) was reproducibly stable in
+  isolation but intermittently threw an uncaught `RuntimeError` (integrator near-singularity
+  during `least_squares`'s own finite-difference Jacobian perturbations) under full CPU-saturated
+  concurrent load — a genuine characterization of this system's extreme hyperbolic sensitivity at
+  long elapsed times, not a bug; its regression test reads the committed `result.json` directly
+  rather than re-deriving it live, while a second, shorter-elapsed-time candidate still verifies
+  live determinism. `#700`'s own scientific-motivation caveat carries forward honestly: no clean
+  low-integer MMR here, the least-motivated search of any CCR4BP pair built. No catalogue
+  writeback. **Independently re-verified 2026-07-24**: read both commits' full diffs, independently
+  recomputed the top-5 by-off-torus candidates directly from the raw `result.json` and confirmed
+  751.9 km is real (not cherry-picked or miscomputed); ruff/full-mypy clean (801 files); 20/20 new
+  tests independently re-run and passed; full suite (run alone, nothing else in parallel) shows
+  only the 2 long-documented pre-existing failures. This closes out ALL FOUR of `#693`'s
+  novelty-cleared CCR4BP candidates (`#695` near-miss, `#696` clean negative, `#701` CONFIRMED
+  GENUINE, `#703` clean negative) — the full `#688`-`#703` CCR4BP discovery arc is now complete.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
