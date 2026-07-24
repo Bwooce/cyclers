@@ -165,13 +165,17 @@ def _corrected_radau_check(
     hardcoded Europa constant. Calls hs._radau_manifold_state directly --
     the same private-helper access pattern this project's OWN test module
     (tests/search/test_ccr4bp_heteroclinic_search.py) already uses for
-    hs._L_KM -- not a modification of #694's module."""
-    ref_vec_u = hs._direction_only(
-        torus_u, "unstable", theta1_section, refined.theta2_u, n_segments_dir, rtol, atol
-    )
-    ref_vec_s = hs._direction_only(
-        torus_s, "stable", theta1_section, refined.theta2_s, n_segments_dir, rtol, atol
-    )
+    hs._L_KM -- not a modification of #694's module.
+
+    `#702`: anchor the Radau re-check with the SEED-anchored ref_vec
+    refine_candidate actually threaded through the optimization (carried on
+    ``refined.ref_vec_u``/``ref_vec_s``), NOT a fresh anchor re-derived at the
+    FINAL converged theta2 -- the latter can silently pick the OPPOSITE
+    manifold lobe when the raw CLV sign is discontinuous between seed and
+    converged phase, manufacturing a spurious integrator disagreement. This
+    mirrors the fix made to ghost_guard itself."""
+    ref_vec_u = refined.ref_vec_u
+    ref_vec_s = refined.ref_vec_s
     su_radau = hs._radau_manifold_state(
         torus_u,
         "unstable",

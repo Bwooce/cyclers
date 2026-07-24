@@ -188,6 +188,20 @@ class RefinedConnection:
     ``pos_gap_km``/``vel_gap_km_s`` are the refined candidate's position and
     velocity mismatch in PHYSICAL units. ``state_u``/``state_s`` are the two
     refined 6-states (should differ only by the reported gaps).
+
+    ``ref_vec_u``/``ref_vec_s`` are the FIXED eigenvector-sign anchors
+    :func:`refine_candidate` captured at the SEED phase and threaded through
+    every residual evaluation (see that function's docstring on why a fixed
+    seed anchor, not a per-trial re-extraction). They are carried on the result
+    so :func:`ghost_guard`'s independent Radau re-check reproduces the SAME lobe
+    convention the DOP853 refinement actually converged on -- re-deriving a
+    fresh anchor at the FINAL converged ``theta2`` instead (as this module did
+    before `#702`) could pick the OTHER manifold lobe whenever the raw CLV sign
+    is discontinuous between seed and converged phase, turning a genuine
+    same-trajectory cross-check into a meaningless different-lobe comparison
+    (`#702`: this manufactured a spurious ~1 km Radau/DOP853 disagreement on
+    `#701`'s Umbriel-Titania candidate that was really a machine-precision
+    agreement once the anchor was made consistent).
     """
 
     theta2_u: float
@@ -201,6 +215,8 @@ class RefinedConnection:
     residual_norm: float
     converged: bool
     n_iter: int
+    ref_vec_u: NDArray[np.float64]
+    ref_vec_s: NDArray[np.float64]
 
 
 def _v_unit_km_s(torus_system: ccr4bp.CCR4BPSystem) -> float:
@@ -394,6 +410,8 @@ def refine_candidate(
         residual_norm=float(np.linalg.norm(sol.fun)),
         converged=bool(sol.status > 0),
         n_iter=int(sol.nfev),
+        ref_vec_u=ref_vec_u,
+        ref_vec_s=ref_vec_s,
     )
 
 
@@ -522,13 +540,19 @@ def ghost_guard(
     assert isinstance(torus_s, CCR4BPTorusVariationalResult)
 
     # Anchor the Radau re-check to the SAME lobe the DOP853 refinement
-    # converged on (see _radau_manifold_state's own docstring).
-    ref_vec_u = _direction_only(
-        torus_u, "unstable", theta1_section, refined.theta2_u, n_segments_dir, rtol, atol
-    )
-    ref_vec_s = _direction_only(
-        torus_s, "stable", theta1_section, refined.theta2_s, n_segments_dir, rtol, atol
-    )
+    # converged on. CRITICAL (`#702`): use the SEED-anchored ``ref_vec`` that
+    # :func:`refine_candidate` actually threaded through the whole optimization
+    # (carried on ``refined.ref_vec_u``/``ref_vec_s``), NOT a fresh anchor
+    # re-derived at the FINAL converged ``theta2``. The CLV sign has no
+    # continuity guarantee across phases (see
+    # :func:`~cyclerfinder.search.ccr4bp_whisker.manifold_direction_segmented_clv`'s
+    # docstring), so a fresh anchor at the converged phase can land on the
+    # OPPOSITE manifold lobe from the one DOP853 stepped along -- making this
+    # "independent-integrator" check compare two DIFFERENT trajectories and
+    # report a large, physically-meaningless disagreement that has nothing to
+    # do with genuine chaos-amplified integrator sensitivity.
+    ref_vec_u = refined.ref_vec_u
+    ref_vec_s = refined.ref_vec_s
 
     su_radau = _radau_manifold_state(
         torus_u,

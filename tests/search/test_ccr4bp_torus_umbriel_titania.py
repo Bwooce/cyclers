@@ -209,6 +209,7 @@ def test_base_orbit_clears_titania_over_full_torus_period(
         atol=1e-12,
         dense_output=True,
     )
+    assert jeg_sol.sol is not None
     jeg_ts = np.linspace(0.0, jeg_torus_period, 4000)
     jeg_ys = jeg_sol.sol(jeg_ts)
     jeg_gan_pos = np.array([ccr4bp._ganymede_position(float(t), jeg) for t in jeg_ts])

@@ -46,6 +46,28 @@ RefinedConnection/GhostGuardReport already carries, and reports BOTH the
 module-native (Europa-scaled) and corrected (Umbriel-scaled) verdicts side by
 side -- flagging any case where they disagree on "genuine".
 
+Two-tier genuineness: raw gate vs ROBUST pass (mandatory self-skepticism)
+---------------------------------------------------------------------------
+Live-observed finding this task's own investigation surfaced (see the
+`ghost_sensitivity_check` field and `_ROBUST_INTEGRATOR_MARGIN_KM`'s own
+comment for the full derivation): several near-machine-precision candidates
+(``residual_norm ~1e-14``, ``pos_gap_corrected ~1e-9`` km) nominally clear
+`#694`'s raw ``integrator_delta_km < 1.0`` ghost-guard gate, but only by a
+razor-thin, NON-robust margin (~0.98 km, i.e. ~98% of the gate) that does NOT
+shrink under tighter integrator tolerance (tested to rtol=atol=1e-14) or
+denser direction-extraction segmentation (tested to n_segments_dir=64) --
+unlike JEG's own positive control, which cleared the identical gate by SIX
+orders of magnitude (~6.5e-7 km). Per this project's own mandatory
+skepticism discipline ("apply the same scrutiny to your own results the
+ghost-guard applies everywhere else"), a candidate that merely crosses the
+numeric cutoff without a comfortable margin is NOT trusted as genuine here --
+this script computes a stricter `robust_genuine` flag
+(`corrected_integrator_delta_km < _ROBUST_INTEGRATOR_MARGIN_KM = 0.1` km,
+still ~5 orders of magnitude looser than JEG's own actual margin) and reports
+`best_robust_genuine_connection_corrected` as the trustworthy headline
+result, separately from the raw-gate-only `best_genuine_connection_corrected`
+(flagged suspect via `ghost_sensitivity_check` when the two differ).
+
 No catalogue writeback -- a discovery-attempt script, not a vetted result.
 
 Run:  uv run python scripts/screen_701_ccr4bp_umbriel_titania_search.py
@@ -188,13 +210,17 @@ def _corrected_radau_check(
     module's hardcoded Europa constant. Calls hs._radau_manifold_state
     directly -- the same private-helper access pattern this project's OWN
     test module (tests/search/test_ccr4bp_heteroclinic_search.py) already
-    uses for hs._L_KM -- not a modification of #694's module."""
-    ref_vec_u = hs._direction_only(
-        torus_u, "unstable", theta1_section, refined.theta2_u, n_segments_dir, rtol, atol
-    )
-    ref_vec_s = hs._direction_only(
-        torus_s, "stable", theta1_section, refined.theta2_s, n_segments_dir, rtol, atol
-    )
+    uses for hs._L_KM -- not a modification of #694's module.
+
+    `#702`: anchor the Radau re-check with the SEED-anchored ref_vec
+    refine_candidate actually threaded through the optimization (carried on
+    ``refined.ref_vec_u``/``ref_vec_s``), NOT a fresh anchor re-derived at the
+    FINAL converged theta2 -- the latter can silently pick the OPPOSITE
+    manifold lobe when the raw CLV sign is discontinuous between seed and
+    converged phase, manufacturing a spurious integrator disagreement. This
+    mirrors the fix made to ghost_guard itself."""
+    ref_vec_u = refined.ref_vec_u
+    ref_vec_s = refined.ref_vec_s
     su_radau = hs._radau_manifold_state(
         torus_u,
         "unstable",
@@ -385,19 +411,122 @@ def main() -> dict[str, Any]:
 
     if best is not None:
         _log(
-            f"best genuine (corrected) connection: pos_gap={best['corrected_pos_gap_km']:.3f} km",
+            f"best genuine-by-raw-gate (corrected) connection: "
+            f"pos_gap={best['corrected_pos_gap_km']:.3g} km, "
+            f"integ_delta={best['corrected_integrator_delta_km']:.4g} km",
             t0,
         )
     else:
-        _log("NO genuine connection found across any lobe combo (corrected verdict)", t0)
+        _log("NO connection clears the raw ghost-guard gate in any lobe combo", t0)
+    if best_robust is not None:
+        _log(
+            f"best ROBUSTLY-genuine (corrected, integ_delta < {_ROBUST_INTEGRATOR_MARGIN_KM} km) "
+            f"connection: pos_gap={best_robust['corrected_pos_gap_km']:.3f} km, "
+            f"vel_gap={best_robust['corrected_vel_gap_km_s'] * 1000:.3f} m/s",
+            t0,
+        )
+    else:
+        _log(
+            "NO robustly-genuine connection found -- every raw-gate pass is marginal/suspect",
+            t0,
+        )
 
     # ------------------------------------------------------------------
-    # Stage 3: mesh-refinement stability check on the best candidate (or,
-    # absent a genuine one, on the smallest-gap candidate overall, so the
-    # honest "clean negative"/"near-miss" verdict is itself mesh-checked).
+    # Seed-perturbation stability re-check on the raw-gate "best" IF it is
+    # not also the robust best. This task's own investigation found that
+    # tightening integrator tolerance/segmentation ALONE is not the
+    # discriminating test here (both the original and a re-seeded refine
+    # already land on residual_norm~1e-14 regardless): the REAL finding is
+    # that re-running #694's own `refine_candidate` least-squares from a
+    # SLIGHTLY different starting seed (the original coarse KD-tree seed vs.
+    # the already-converged point re-fed as its own seed -- both physically
+    # "the same candidate" to within the least-squares solver's own xtol)
+    # lands on TWO DIFFERENT nearby local minima that are indistinguishable
+    # by the DOP853-only residual (~1e-14 either way, ~2-5e-9 km pos_gap
+    # either way) but give WILDLY different independent-integrator (Radau)
+    # agreement -- from ~0 km up to ~0.98 km for what the DOP853 metric
+    # alone reports as an equally "exact" closure. This is a MUCH stronger
+    # ghost-artifact signature than a slow-vs-tight-tolerance comparison:
+    # it shows the apparent exactness is a numerically fragile coincidence
+    # of which nearby quasi-solution the optimizer happens to land on, not a
+    # property of a genuine, robust dynamical intersection (contrast the
+    # ROBUST near-miss family below, whose ~37.6-43.8 km floor reproduces
+    # near-identically across all 4 independent lobe combos).
+    # ------------------------------------------------------------------
+    ghost_sensitivity_check: dict[str, Any] | None = None
+    if best is not None and (best_robust is None or best is not best_robust):
+        seed_cand = hs.ManifoldCandidate(**best["seed"])
+        reseed_cand = hs.ManifoldCandidate(
+            theta2_u=best["theta2_u"],
+            t_u=best["t_u"],
+            theta2_s=best["theta2_s"],
+            t_s=best["t_s"],
+            gap_planar=0.0,
+        )
+        seed_deltas: dict[str, float] = {}
+        for label, cand in [
+            ("original_coarse_seed", seed_cand),
+            ("converged_point_as_seed", reseed_cand),
+        ]:
+            refined_variant = hs.refine_candidate(
+                torus,
+                torus,
+                cand,
+                lobe_sign_u=best["u_lobe"],
+                lobe_sign_s=best["s_lobe"],
+                n_segments_dir=32,
+                rtol=1e-13,
+                atol=1e-13,
+            )
+            if refined_variant is None:
+                continue
+            corrected_radau_variant = _corrected_radau_check(
+                torus,
+                torus,
+                refined_variant,
+                lobe_sign_u=best["u_lobe"],
+                lobe_sign_s=best["s_lobe"],
+                theta1_section=0.0,
+                n_segments_dir=32,
+                rtol=1e-13,
+                atol=1e-13,
+            )
+            seed_deltas[label] = corrected_radau_variant["integrator_delta_km"]
+        fragile = len(seed_deltas) >= 2 and max(seed_deltas.values()) > 10.0 * max(
+            min(seed_deltas.values()), 1e-6
+        )
+        ghost_sensitivity_check = {
+            "target": "raw-gate best (not robust)",
+            "integrator_delta_km_by_seed_variant": seed_deltas,
+            "fragile_under_seed_perturbation": fragile,
+            "interpretation": (
+                "Two DIFFERENT starting seeds for the SAME nominal candidate (both converging to "
+                "residual_norm~1e-14, i.e. equally 'exact' by the DOP853-only metric) give "
+                "WILDLY different independent-integrator (Radau) agreement -- a numerically "
+                "fragile coincidence, not a robust dynamical intersection. Treated as an "
+                "UNCONFIRMED suspected ghost artifact, not a genuine connection, despite "
+                "nominally clearing the raw 1.0 km gate on one of the two seedings."
+                if fragile
+                else "Both seed variants agree closely on integrator consistency -- no fragility "
+                "detected under this check."
+            ),
+        }
+        _log(
+            f"seed-perturbation stability re-check on raw-gate best: "
+            f"deltas={seed_deltas}, fragile={fragile}",
+            t0,
+        )
+
+    # ------------------------------------------------------------------
+    # Stage 3: mesh-refinement stability check. Target the ROBUST best if
+    # one exists (the trustworthy headline finding); else the raw-gate best
+    # (flagged as suspect via ghost_sensitivity_check above); else the
+    # smallest-gap candidate overall, so the honest "clean negative"/
+    # "near-miss" verdict is itself mesh-checked.
     # ------------------------------------------------------------------
     mesh_check: dict[str, Any] | None = None
-    mesh_target = best
+    mesh_target = best_robust if best_robust is not None else best
+    mesh_target_kind = "robust_genuine" if best_robust is not None else "raw_gate_only"
     if mesh_target is None:
         # Find the smallest corrected_pos_gap_km across ALL refined candidates
         # (even ghost-guard-failing ones) so the reported "closest approach"
@@ -406,6 +535,7 @@ def main() -> dict[str, Any]:
         if all_entries:
             u_lobe, s_lobe, entry = min(all_entries, key=lambda t: t[2]["corrected_pos_gap_km"])
             mesh_target = {**entry, "u_lobe": u_lobe, "s_lobe": s_lobe}
+            mesh_target_kind = "closest_overall_not_genuine"
 
     if mesh_target is not None:
         n_theta2_dense, n_time_dense = 120, 300
@@ -451,7 +581,9 @@ def main() -> dict[str, Any]:
             else None
         )
         mesh_check = {
+            "target_kind": mesh_target_kind,
             "target_was_genuine": best is not None,
+            "target_was_robust_genuine": best_robust is not None,
             "n_theta2_dense": n_theta2_dense,
             "n_time_dense": n_time_dense,
             "dense_grid_coarse_best_gap_planar": dense_best_gap,
@@ -496,6 +628,9 @@ def main() -> dict[str, Any]:
         },
         "combo_results": combo_results,
         "best_genuine_connection_corrected": best,
+        "best_robust_genuine_connection_corrected": best_robust,
+        "ghost_sensitivity_check": ghost_sensitivity_check,
+        "robust_integrator_margin_km": _ROBUST_INTEGRATOR_MARGIN_KM,
         "closest_candidate_overall": mesh_target,
         "mesh_refinement_check": mesh_check,
         "base_orbit_note": (

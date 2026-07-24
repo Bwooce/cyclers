@@ -184,6 +184,9 @@ def test_ghost_guard_rejects_trivial_near_departure_pseudo_connection(
     su = mg.manifold_state_at(phys_torus, "unstable", 0.0, 1.0, 1e-6, n_segments_dir=16)
     ss = mg.manifold_state_at(phys_torus, "stable", 0.0, 1.0, 1e-6, n_segments_dir=16)
     assert su is not None and ss is not None
+    ref_u = hs._direction_only(phys_torus, "unstable", 0.0, 1.0, 16, 1e-13, 1e-13)
+    ref_s = hs._direction_only(phys_torus, "stable", 0.0, 1.0, 16, 1e-13, 1e-13)
+    assert ref_u is not None and ref_s is not None
     fake = hs.RefinedConnection(
         theta2_u=1.0,
         t_u=1e-6,
@@ -196,6 +199,8 @@ def test_ghost_guard_rejects_trivial_near_departure_pseudo_connection(
         residual_norm=0.0,
         converged=True,
         n_iter=0,
+        ref_vec_u=ref_u,
+        ref_vec_s=ref_s,
     )
     guard = hs.ghost_guard(phys_torus, phys_torus, fake)
     assert not guard.genuine
@@ -255,6 +260,126 @@ def test_ghost_guard_passes_the_positive_control_connection(
     assert guard.off_torus_km > 1_000.0, guard.off_torus_km
     assert abs(guard.quasi_jacobi_gap) < 1e-2, guard.quasi_jacobi_gap
     assert guard.genuine, guard.notes
+
+
+def test_ghost_guard_uses_seed_anchored_ref_vec_not_final_phase(
+    phys_torus: vt.CCR4BPTorusVariationalResult,
+) -> None:
+    """Regression for `#702`: ``ghost_guard``'s independent Radau re-check must
+    anchor its CLV eigenvector sign with the SAME seed-anchored ``ref_vec``
+    :func:`refine_candidate` threaded through the optimization (now carried on
+    :attr:`RefinedConnection.ref_vec_u`/``ref_vec_s``), NOT a fresh anchor
+    re-derived at the FINAL converged ``theta2``.
+
+    The CLV sign has no continuity guarantee across phases, so when the raw
+    ``numpy.linalg.eig`` sign at the converged phase is OPPOSITE the seed-phase
+    sign the refinement actually used, a final-phase re-derivation steps the
+    OTHER manifold lobe -- making the "independent-integrator" check compare
+    two DIFFERENT trajectories and report a large, physically-meaningless
+    disagreement (this manufactured a spurious ~1 km Radau/DOP853 gap on
+    `#701`'s Umbriel-Titania candidate that was really machine-precision
+    agreement once the anchor was made consistent).
+
+    Construction: build a connection whose states were propagated with a
+    ``ref_vec`` deliberately OPPOSITE the raw eig sign at the converged phase
+    (exactly the seed/converged sign-flip the bug is sensitive to). With the
+    fix, ``ghost_guard`` reproduces the same lobe (integrator delta ~1e-7 km);
+    the old final-phase-anchored derivation (reproduced inline) diverges by
+    tens of km, confirming the construction genuinely triggers the flip and
+    that a revert would break this test."""
+    theta2_u, t_u = 3.613, 5.243
+    theta2_s, t_s = 0.157, 6.082
+    raw_u = hs._direction_only(phys_torus, "unstable", 0.0, theta2_u, 32, 1e-13, 1e-13)
+    raw_s = hs._direction_only(phys_torus, "stable", 0.0, theta2_s, 32, 1e-13, 1e-13)
+    assert raw_u is not None and raw_s is not None
+    # Anchor OPPOSITE the raw converged-phase sign: emulates a seed whose raw
+    # CLV sign flipped relative to the converged phase (the bug's trigger).
+    ref_u = -raw_u
+    ref_s = -raw_s
+    su = mg.manifold_state_at(
+        phys_torus,
+        "unstable",
+        0.0,
+        theta2_u,
+        t_u,
+        lobe_sign=1.0,
+        n_segments_dir=32,
+        ref_vec=ref_u,
+        rtol=1e-13,
+        atol=1e-13,
+    )
+    ss = mg.manifold_state_at(
+        phys_torus,
+        "stable",
+        0.0,
+        theta2_s,
+        t_s,
+        lobe_sign=1.0,
+        n_segments_dir=32,
+        ref_vec=ref_s,
+        rtol=1e-13,
+        atol=1e-13,
+    )
+    assert su is not None and ss is not None
+    pos_gap_km = float(np.linalg.norm(su[:3] - ss[:3])) * hs._L_KM
+    refined = hs.RefinedConnection(
+        theta2_u=theta2_u,
+        t_u=t_u,
+        theta2_s=theta2_s,
+        t_s=t_s,
+        state_u=su,
+        state_s=ss,
+        pos_gap_km=pos_gap_km,
+        vel_gap_km_s=0.0,
+        residual_norm=0.0,
+        converged=True,
+        n_iter=0,
+        ref_vec_u=ref_u,
+        ref_vec_s=ref_s,
+    )
+
+    guard = hs.ghost_guard(phys_torus, phys_torus, refined)
+    # The fix: Radau re-check reproduces the SAME lobe -> tiny integrator delta.
+    assert guard.radau_consistent, guard
+    assert guard.integrator_delta_km < 1e-3, guard.integrator_delta_km
+
+    # Sanity: the construction really does flip the raw converged-phase sign
+    # (so a revert to final-phase anchoring would step the other lobe and
+    # report a large delta -- reproduced here to pin the bug that was fixed).
+    old_ref_u = hs._direction_only(phys_torus, "unstable", 0.0, refined.theta2_u, 32, 1e-13, 1e-13)
+    old_ref_s = hs._direction_only(phys_torus, "stable", 0.0, refined.theta2_s, 32, 1e-13, 1e-13)
+    assert old_ref_u is not None and old_ref_s is not None
+    assert float(np.dot(old_ref_u, ref_u)) < 0.0
+    assert float(np.dot(old_ref_s, ref_s)) < 0.0
+    su_old = hs._radau_manifold_state(
+        phys_torus,
+        "unstable",
+        0.0,
+        refined.theta2_u,
+        refined.t_u,
+        eps=1e-6,
+        lobe_sign=1.0,
+        n_segments_dir=32,
+        rtol=1e-13,
+        atol=1e-13,
+        ref_vec=old_ref_u,
+    )
+    ss_old = hs._radau_manifold_state(
+        phys_torus,
+        "stable",
+        0.0,
+        refined.theta2_s,
+        refined.t_s,
+        eps=1e-6,
+        lobe_sign=1.0,
+        n_segments_dir=32,
+        rtol=1e-13,
+        atol=1e-13,
+        ref_vec=old_ref_s,
+    )
+    assert su_old is not None and ss_old is not None
+    old_delta_km = abs(float(np.linalg.norm(su_old[:3] - ss_old[:3])) * hs._L_KM - pos_gap_km)
+    assert old_delta_km > 1.0, old_delta_km
 
 
 def test_refine_candidate_seed_failure_returns_none(
