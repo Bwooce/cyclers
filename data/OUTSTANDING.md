@@ -180,9 +180,12 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. The `#688`-`#703` CCR4BP discovery arc is complete — all four `#693`
-  novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative, `#701` CONFIRMED
-  GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
+- `#704` — build the CCR4BP-to-real-ephemeris consistency check for `#701`'s Umbriel-Titania
+  connection, the first step of its catalogue vetting/promotion chain; dispatched 2026-07-24. See
+  its own bullet entry for full scope. The `#688`-`#703` CCR4BP discovery arc itself is complete —
+  all four `#693` novelty-cleared candidates resolved (`#695` near-miss, `#696` clean negative,
+  `#701` CONFIRMED GENUINE, `#703` clean negative). (`#701`/`#702` — REMOVED from this list
+  2026-07-24, both CLOSED same
   day — `#701` CONFIRMED GENUINE (first apparently-novel CCR4BP discovery-grade result in this
   arc, plus a robust near-miss family), `#702` fixed the real `ghost_guard` Radau-anchoring bug
   that had produced the ambiguity; see each's own `✓ DONE` bullet entry. `#699`/`#700` — REMOVED
@@ -1268,8 +1271,24 @@ candidate, Europa-Callisto (#700, novelty-CLEAR per its own literature check but
 scientific-motivation caveat: no clean low-integer MMR to anchor the base orbit, unlike every
 other candidate tried). #703 -- apply the full, now-proven, now bug-fixed CCR4BP pipeline
 (#689-#694, #702's ghost_guard fix included) to Jupiter Europa-Callisto, a genuine discovery
-attempt, analogous to #695/#696/#701 but for #693/#700's last remaining candidate. #704
-next-unused):**
+attempt, analogous to #695/#696/#701 but for #693/#700's last remaining candidate. User: "is
+#701 brand new? did we put it in the catalogue?" followed by "what's the vetting/promotion task
+then? do we have a plan?" -- researched (fork) this project's own V0-V5 validation ladder
+(spec.md sec 14/16.7.12) and #312's actual 4-task promotion chain (#566-#569). Key finding: #312
+could reuse an already-built, shape-compatible Lambert-arc real-ephemeris gauntlet
+(v4_uranus_strict.py); #701's object (a quasi-periodic torus + continuous-flow homoclinic
+connection) has NO existing real-ephemeris validation capability in this codebase at all -- the
+genuinely new, hard piece. Proposed chain (user approved, "let's get validating"): (1) build a
+CCR4BP-to-real-ephemeris consistency check [no existing analogue to reuse -- registered as #704],
+(2) fresh literature re-check immediately pre-writeback, (3) additive `ccr4bp_provenance` schema
+block [same pattern as the already-defined-but-never-used `bcr4bp_provenance`], (4) writeback +
+full ratchet suite + Fable pre-execution review. Honest open question stated up front: whether
+the idealized CCR4BP connection survives real Umbriel/Titania ephemeris at all is unknown until
+attempted -- a collapse there would still be a valid, informative outcome, just not a promotable
+one. #704 -- build the CCR4BP-to-real-ephemeris consistency check: re-propagate #701's idealized
+(circular-coplanar) torus/homoclinic connection under Umbriel's and Titania's REAL (eccentric,
+mutually inclined, real-epoch, URA111-SPICE-sourced) ephemeris and characterize whether/how well
+it survives -- the load-bearing step this whole vetting chain depends on. #705 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14310,6 +14329,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   only the 2 long-documented pre-existing failures. This closes out ALL FOUR of `#693`'s
   novelty-cleared CCR4BP candidates (`#695` near-miss, `#696` clean negative, `#701` CONFIRMED
   GENUINE, `#703` clean negative) — the full `#688`-`#703` CCR4BP discovery arc is now complete.
+- **#704 (dispatched 2026-07-24) -- build the CCR4BP-to-real-ephemeris consistency check for
+  `#701`'s Umbriel-Titania homoclinic connection.** First, load-bearing step of the vetting/
+  promotion chain toward a possible catalogue writeback (see the `TASK ALLOCATIONS` ledger
+  paragraph's own note on this decision for the full V0-V5 ladder context and why `#312`'s own
+  4-task promotion chain, `#566`-`#569`, can't be directly reused here — its
+  `v4_uranus_strict.py` gauntlet is built around Lambert-arc point-to-point tour closures, a
+  structurally different object from `#701`'s quasi-periodic torus + continuous-flow homoclinic
+  connection). Scope: take `#701`'s idealized (circular-coplanar CCR4BP) converged torus and
+  homoclinic connection and re-propagate/re-check it under Umbriel's and Titania's REAL
+  ephemeris — genuinely eccentric, mutually inclined, real-epoch, sourced from the same URA111
+  SPICE kernel `#312`'s own V4 gauntlet used — to determine whether/how well the idealized
+  connection survives. No existing real-ephemeris validation capability for a torus/manifold
+  object exists in this codebase (Uranian or otherwise) to reuse — this is new capability
+  build, not a mechanical gauntlet run like `#566` was. Explicit scope note: a genuine collapse
+  under real ephemeris (analogous to past idealized-model results that didn't survive real
+  eccentricity) is an honest, acceptable, reportable outcome here — not a task failure — per
+  this project's standing "a clean negative is real progress" discipline.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
