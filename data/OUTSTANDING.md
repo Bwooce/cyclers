@@ -180,7 +180,9 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
+- `#703` — the now-proven, now bug-fixed CCR4BP pipeline applied to Jupiter Europa-Callisto,
+  dispatched 2026-07-24 (last of `#693`'s four candidates, "one at a time"). See its own bullet
+  entry for full scope. (`#701`/`#702` — REMOVED from this list 2026-07-24, both CLOSED same
   day — `#701` CONFIRMED GENUINE (first apparently-novel CCR4BP discovery-grade result in this
   arc, plus a robust near-miss family), `#702` fixed the real `ghost_guard` Radau-anchoring bug
   that had produced the ambiguity; see each's own `✓ DONE` bullet entry. `#699`/`#700` — REMOVED
@@ -1257,7 +1259,17 @@ candidate once anchored correctly -- i.e. the automated "not genuine" verdict fo
 was very likely a false negative caused by this bug, not a real finding. High-stakes task
 (potential first genuine novel CCR4BP discovery in this arc, and a bug that could have produced
 false negatives anywhere in #694/#695/#696's own already-reported verdicts too) -- dispatched to
-Opus per this project's own trust-bearing-judgment tiering policy, not Sonnet. #703 next-unused):**
+Opus per this project's own trust-bearing-judgment tiering policy, not Sonnet. #701/#702 DONE
+2026-07-24: CONFIRMED GENUINE -- first apparently-novel discovery-grade CCR4BP homoclinic
+connection in this project's arc (Umbriel-Titania), plus a robust near-miss family; #702's fix
+independently re-verified, #695/#696's own prior verdicts confirmed unaffected. Not yet written
+to the catalogue (separate future vetting task). User: "Proceed" -- dispatching the last #693
+candidate, Europa-Callisto (#700, novelty-CLEAR per its own literature check but flagged with a
+scientific-motivation caveat: no clean low-integer MMR to anchor the base orbit, unlike every
+other candidate tried). #703 -- apply the full, now-proven, now bug-fixed CCR4BP pipeline
+(#689-#694, #702's ghost_guard fix included) to Jupiter Europa-Callisto, a genuine discovery
+attempt, analogous to #695/#696/#701 but for #693/#700's last remaining candidate. #704
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14239,6 +14251,24 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#695`/`#696`'s own saved data against the fix, and committed everything on the agent's behalf
   rather than continuing to resume a repeatedly-stalling agent — see
   `[[feedback_subagent_background_is_fatal]]`.
+- **#703 (dispatched 2026-07-24) -- apply the full, now-proven, now bug-fixed CCR4BP pipeline
+  (`#689`-`#694`, `#702`'s `ghost_guard` fix included) to Jupiter Europa-Callisto, a genuine
+  discovery attempt.** `#693`/`#700`'s last remaining novelty-cleared candidate: `mu_pert=5.67e-5`
+  (comparable to JEG), good tractability (a clean base orbit was confirmed findable with WIDER
+  collision margins than Io-Ganymede's own build needed — `#700`'s own numeric check), but no
+  clean low-integer commensurability (4.73 period ratio — the loosest of any candidate tried,
+  meaning every seed converges to the same near-degenerate near-circular family rather than a
+  physically-motivated resonant orbit, a real scientific-motivation caveat `#700` itself flagged,
+  independent of tractability or novelty). Novelty-cleared by `#700` (zero "Callisto" mentions in
+  either Kumar-group source PDF, independently re-verified by the coordinating session via direct
+  `pdftotext` extraction; five further live-search queries found no direct Europa-Callisto
+  CCR4BP/PCCFBP work). Same scope/pipeline/discipline as `#695`/`#696`/`#701`: build a
+  `CCR4BPSystem` for Europa-Callisto (Europa base, Callisto perturber), find the base resonant
+  orbit (checking for the same near-collision risk pattern `#696` found for Io-Ganymede), build
+  the CCR4BP torus, extract + validate the whisker direction, globalize and run the heteroclinic
+  search — now using `#702`'s CORRECTED `ghost_guard` from the start, so this task should not need
+  its own separate anchor-bug investigation. Dispatched alone, per the established "one at a time"
+  discipline, as the last of the four `#693` candidates.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
