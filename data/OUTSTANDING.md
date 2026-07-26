@@ -35,7 +35,7 @@ unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
 - None currently. (`#710`/`#711`/`#712`/`#713` — dispatched 2026-07-26 for literature acquisition;
-  `#711`/`#712` DONE, `#710` in progress, `#713` in progress; see the "In progress" section below
+  `#710`/`#711`/`#712` DONE, `#713` in progress; see the "In progress" section below
   and each's own bullet entry.) (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
   section below and each's own bullet entry.) (`#692` — REMOVED from this list 2026-07-23, CLOSED same
   `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
@@ -1366,11 +1366,10 @@ system N-body generalization (Jupiter-Europa CR3BP vs. the same ICs under Io+Gan
 too), the natural next-frontier grounding paper analogous to how Kumar 2021 grounded CCR4BP. Also
 found a related general framework paper, "Circular Restricted n-Body Problem," JGCD, DOI
 10.2514/1.G006430. User: "These papers are hard to find. yes register tasks for all these." #710
--- acquire + OCR-if-needed + digest Aryan & Fitzgerald AAS 24-103 (no DOI; ResearchGate PDF or
-Univelt proceedings route) into docs/notes/ + CORPUS_INDEX.md, per
-[[feedback_corpus_document_policy]] -- flagged open since #693/#700, still never actually
-acquired; user directly uploaded the genuine manuscript PDF mid-run, handed off to the running
-agent to skip the search. #711 ✓ DONE -- acquire + digest Gilliam & Bettinger 2024 CRNBP-Jovian-
+✓ DONE -- acquire + OCR-if-needed + digest Aryan & Fitzgerald AAS 24-103; ResearchGate hit a
+Cloudflare gate, user directly uploaded the genuine manuscript PDF mid-run; digest confirms the
+Europa-Callisto "transfer" is a real two-hop Ganymede-mediated chain, no prior-art conflict with
+this project's own CCR4BP code, doesn't touch #706/#708's literature-clearance verdict. #711 ✓ DONE -- acquire + digest Gilliam & Bettinger 2024 CRNBP-Jovian-
 system paper (DOI 10.1007/s10569-024-10216-0) -- paywalled journal paper, full text obtained via
 Gilliam's own free AFIT MS thesis; also independently generalizes CRNBP to Uranus-Titania/Oberon.
 #712 ✓ DONE -- acquire + digest the JGCD "Circular Restricted n-Body Problem" paper (DOI
@@ -14710,16 +14709,26 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   one); this adjudicates INDEPENDENCE only, not either row's own absolute literature novelty
   (that ground is `#349`/`#699`/`#706`'s, unchanged). **The catalogue's two novel-status findings
   are confirmed genuinely distinct — no double-counting.**
-- **#710 (dispatched 2026-07-26) -- acquire + digest Aryan & Fitzgerald AAS 24-103.** "Four Body
-  Invariant Structures And Chaos Analysis For Jovian Multi-Moon Ballistic Transfers" (2024) —
-  computes PCCFBP tori for Jupiter-Europa-Ganymede AND Jupiter-Callisto-Ganymede, disqualified
-  `#693`'s Ganymede-Callisto CCR4BP candidate on novelty grounds but was never itself acquired
-  into this project's corpus. No DOI exists (AAS Space Flight Mechanics Meeting conference
-  paper, not later journal-published, per the coordinating session's own live-search check) —
-  access via the ResearchGate PDF (`researchgate.net/publication/383155359`) or the Univelt
-  AAS/AIAA Spaceflight Mechanics Proceedings volume for the January 2024 Orlando meeting. Full
-  OCR-if-needed + digest + `CORPUS_INDEX.md` registration per
-  `[[feedback_corpus_document_policy]]` — flagged open by both `#693` and `#700`, never done.
+- **#710 ✓ DONE (2026-07-26) -- acquire + digest Aryan & Fitzgerald AAS 24-103.** "Four Body
+  Invariant Structures And Chaos Analysis For Jovian Multi-Moon Ballistic Transfers" — ResearchGate
+  hit a Cloudflare download gate, so the user directly supplied the genuine manuscript PDF
+  mid-run (verified page 1 = "(Preprint) AAS 24-103", title/authors/affiliation match). Native
+  pdfTeX PDF, no OCR needed. Digest confirms `#700`'s prior web-search-only finding exactly: the
+  Europa-Callisto "transfer" is a genuine two-hop, Ganymede-mediated chain (Callisto L1 unstable
+  manifold -> ~60-day flyby rendezvous with Ganymede -> ~74-day L2 stable manifold to Europa), not
+  a direct pair. Compared directly against `core/ccr4bp.py` /
+  `search/ccr4bp_manifold_globalize.py` / `search/ccr4bp_heteroclinic_search.py`: structurally
+  identical model (independently arrived at the same EOM/mass-parameter convention), no prior-art
+  conflict with anything already built; the paper's own Callisto->Ganymede->Europa transit is a
+  candidate second positive control for `#694`'s pipeline (real scope expansion, not a drop-in
+  rerun -- not yet done). Does NOT touch `#706`/`#708`'s Uranus Umbriel-Titania literature-
+  clearance verdict -- paper is exclusively Jovian, confirmed by full-text read. One open,
+  unresolved-from-primary-evidence discrepancy: the `#710` dispatch bullet's own venue citation
+  ("34th AAS/AIAA Space Flight Mechanics Meeting, Orlando FL, Jan 2024") conflicts with
+  ResearchGate's own metadata ("AAS Astrodynamics Specialist Conference 2024, Broomfield CO, Aug
+  2024") -- the in-paper preprint header itself gives no venue/date, low-stakes, not pursued
+  further. PDF + digest + `CORPUS_INDEX.md` registration committed (`72d5e21` private / `4b6a6e8`
+  public).
 - **#711 ✓ DONE (2026-07-26) -- acquire + digest Gilliam & Bettinger 2024, "Formulation of the
   Circular Restricted N-Body Problem (CRNBP) in the Jovian system."** *Celestial Mechanics and
   Dynamical Astronomy* 136, 54, DOI `10.1007/s10569-024-10216-0`. Journal paper itself is
