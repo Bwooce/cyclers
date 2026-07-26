@@ -34,7 +34,9 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
+- None currently. (`#710`/`#711`/`#712`/`#713` — dispatched 2026-07-26 for literature acquisition;
+  `#711`/`#712` DONE, `#710` in progress, `#713` in progress; see the "In progress" section below
+  and each's own bullet entry.) (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
   section below and each's own bullet entry.) (`#692` — REMOVED from this list 2026-07-23, CLOSED same
   `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
   not astropy's own Time/Chebyshev evaluation as originally suspected; fixed with a deterministic
@@ -1367,13 +1369,23 @@ found a related general framework paper, "Circular Restricted n-Body Problem," J
 -- acquire + OCR-if-needed + digest Aryan & Fitzgerald AAS 24-103 (no DOI; ResearchGate PDF or
 Univelt proceedings route) into docs/notes/ + CORPUS_INDEX.md, per
 [[feedback_corpus_document_policy]] -- flagged open since #693/#700, still never actually
-acquired. #711 -- acquire + digest Gilliam & Bettinger 2024 CRNBP-Jovian-system paper (DOI
-10.1007/s10569-024-10216-0) -- the grounding paper for any future CCR5BP/CRNBP discovery-strategy
-scoping pass, extract the actual EOM formulation + any worked Jupiter-Io-Europa-Ganymede periodic-
-orbit/manifold results usable as a positive control, same discipline #688's own Kumar-2021 digest
-used for CCR4BP. #712 -- acquire + digest the JGCD "Circular Restricted n-Body Problem" paper
-(DOI 10.2514/1.G006430) -- check whether it's a more general N-body framework treatment
-complementing #711's own Jovian-specific paper. #713 next-unused):**
+acquired; user directly uploaded the genuine manuscript PDF mid-run, handed off to the running
+agent to skip the search. #711 ✓ DONE -- acquire + digest Gilliam & Bettinger 2024 CRNBP-Jovian-
+system paper (DOI 10.1007/s10569-024-10216-0) -- paywalled journal paper, full text obtained via
+Gilliam's own free AFIT MS thesis; also independently generalizes CRNBP to Uranus-Titania/Oberon.
+#712 ✓ DONE -- acquire + digest the JGCD "Circular Restricted n-Body Problem" paper (DOI
+10.2514/1.G006430) -- confirmed identity Negri & Prado 2022 (free via arXiv:2307.10881), a
+genuinely general N-body EOM framework, confirmed #711's paper is a downstream N=5 application of
+it. User then relayed a second agent's own suggested reading list ("Russell & Strange 2009",
+"Jones/Hernandez/Jesick 2017" x2, "Shi/Xu 2023 Jovian review", "McConaghy/Longuski/Byrnes JSR
+2008", "Casoliva/Howell/Marchand JGCD 2013", "Ross/Roberts-Tsoukkas 2025") -- cross-checked all 7
+against CORPUS_INDEX.md/catalogue.yaml/docs-notes directly: 6 already in corpus (2 of those under
+apparent author-mix-up citations by the other agent), 1 genuinely new and dormant since
+2026-06-11 -- registered as #713. #713 -- acquire + digest Casoliva/Mease/Mondelo/Villac/
+Barrabes/Olle 2008 AAS / 2010 JGCD 33(5) 1623-1640 "two classes of cycler trajectories in the
+Earth-Moon system" (the real paper behind the "Howell/Marchand" mis-citation; already flagged as
+an acquisition candidate 2026-06-11, never actioned) into docs/notes/ + CORPUS_INDEX.md. #714
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14708,23 +14720,57 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   AAS/AIAA Spaceflight Mechanics Proceedings volume for the January 2024 Orlando meeting. Full
   OCR-if-needed + digest + `CORPUS_INDEX.md` registration per
   `[[feedback_corpus_document_policy]]` — flagged open by both `#693` and `#700`, never done.
-- **#711 (dispatched 2026-07-26, in parallel with `#710`/`#712`) -- acquire + digest Gilliam &
-  Bettinger 2024, "Formulation of the Circular Restricted N-Body Problem (CRNBP) in the Jovian
-  system."** *Celestial Mechanics and Dynamical Astronomy* 136, 54, DOI
-  `10.1007/s10569-024-10216-0`. A genuine real-moon-system N-body generalization — compares
-  Jupiter-Europa CR3BP trajectories against the same initial conditions under simultaneous Io AND
-  Ganymede forcing (a real CRNBP, not a symmetric/theoretical toy configuration like the
-  classical R5BP literature). The natural grounding paper for a future CCR5BP/CRNBP discovery-
-  strategy scoping pass, playing the same role Kumar et al. 2021 played for this project's own
-  CCR4BP arc (`#686`→`#708`). Full OCR-if-needed + digest (extract the actual EOM formulation +
-  any worked periodic-orbit/manifold results usable as a future positive control) +
-  `CORPUS_INDEX.md` registration.
-- **#712 (dispatched 2026-07-26, in parallel with `#710`/`#711`) -- acquire + digest "Circular
-  Restricted n-Body Problem."** *Journal of Guidance, Control, and Dynamics*, DOI
-  `10.2514/1.G006430`. Found alongside `#711`'s own Gilliam & Bettinger paper — check whether
-  this is a more general N-body framework treatment (not Jovian-system-specific) that
-  complements or generalizes `#711`'s own formulation. Full OCR-if-needed + digest +
-  `CORPUS_INDEX.md` registration.
+- **#711 ✓ DONE (2026-07-26) -- acquire + digest Gilliam & Bettinger 2024, "Formulation of the
+  Circular Restricted N-Body Problem (CRNBP) in the Jovian system."** *Celestial Mechanics and
+  Dynamical Astronomy* 136, 54, DOI `10.1007/s10569-024-10216-0`. Journal paper itself is
+  paywalled (Springer, no OA/arXiv route); full text obtained instead via Gilliam's own free AFIT
+  MS thesis (`scholar.afit.edu/etd/8309`, March 2025, Ch. III/IV verbatim = the published paper).
+  CRNBP EOM confirmed structurally identical to `#712`'s Negri & Prado 2022 general framework
+  (`ccr4bp.py` is exactly the N=4 case; N=5 needs one more `(mu_j,R_j,psi_j)` term plus a pairwise
+  inner-sum coupling term between the extra bodies, not pure superposition). Trajectory
+  comparisons in the paper are qualitative/figure-only, no digit-grade positive control there —
+  but the thesis independently generalizes CRNBP to Uranus-Titania and Uranus-Oberon with
+  digit-grade equilibrium-point tables (a genuine reproducible positive-control candidate,
+  directly overlapping this project's own Uranian CCR4BP work). Important caveat for any future
+  5-body discovery pass: the authors state it is "not currently known if any periodic
+  trajectories exist in the CRNBP" outside special resonance-locked cases — unlike Kumar 2021 for
+  CCR4BP, this pairing hands no known-good periodic/connection structure to validate against
+  first. PDF + digest + `CORPUS_INDEX.md` registration committed (`8f773c3` private / `76999bd`
+  public).
+- **#712 ✓ DONE (2026-07-26) -- acquire + digest "Circular Restricted n-Body Problem."** Identity
+  confirmed: **Negri, R. B. & Prado, A. F. B. A., "Circular Restricted n-Body Problem,"** *JGCD*
+  45(7), 1357–1364 (2022), DOI `10.2514/1.G006430`; free full text via arXiv:2307.10881 (JGCD page
+  itself paywalled). A genuinely general, system-agnostic N-body EOM framework (arbitrary N,
+  arbitrary masses) — generalizes the authors' own 2020 BCR4BP paper (N=4 case) to arbitrary N via
+  an extra mutual "indirect" cross-term among the perturbing bodies; its own worked examples
+  (Jupiter-Ganymede-Europa-Io etc.) are illustrative only, not system-specific. Read directly
+  against `src/cyclerfinder/core/ccr4bp.py`: the codebase's Jupiter-Europa-Ganymede model is
+  exactly this paper's N=4 case (Eq. 11 reduction matches exactly); codebase has never been
+  exercised at N>=5, where this paper's new mutual cross-term first activates. Confirms `#711`'s
+  Gilliam & Bettinger paper is a downstream N=5 Jovian-specific application citing this paper, not
+  an independent line. All three worked examples are figure-only, not usable as a sourced golden
+  positive control; the more reusable piece is §2.2's fully-specified ephemerides-correspondence
+  algorithm. PDF + digest + `CORPUS_INDEX.md` registration committed (`8833b60` private /
+  `8659065` public).
+- **#713 (dispatched 2026-07-26) -- acquire + digest Casoliva, Mease, Mondelo, Villac, Barrabes &
+  Olle, "families/two classes of cycler trajectories in the Earth-Moon system"** (2008 AAS / 2010
+  *JGCD* 33(5) 1623–1640). Surfaced when the user relayed a second agent's suggested reading list
+  that included "Casoliva, Howell, Marchand, JGCD 2013" — cross-checked against this project's own
+  corpus and found that citation does not match anything on file; the real co-author list is
+  Mease/Mondelo/Villac/Barrabes/Olle, not Howell/Marchand (Howell & Marchand are real BCR4BP
+  researchers, but for a different 2001 paper, "Temporary...", already noted in
+  `docs/notes/2026-06-16-frontier-scoping-er3bp-bcr4bp-3d-qp-epoch.md` — the suggested citation
+  appears to be an author-merge hallucination). The REAL underlying paper was already identified
+  as an acquisition candidate in `docs/notes/2026-06-11-ross-roberts-tsoukkas-2025-mining.md`
+  ("nearest prior family-level work; not in our catalogue; acquisition candidate") on 2026-06-11
+  and never actioned since — the unstable-cycler-family complement to the stable families that
+  paper's own host analysis covers. Full OCR-if-needed + digest + `CORPUS_INDEX.md` registration
+  per `[[feedback_corpus_document_policy]]`. (Also checked and ruled out as NOT new: Russell &
+  Strange 2009, both Jones/Hernandez/Jesick 2017 AAS papers, and the Ross/Roberts-Tsoukkas
+  2025/2026 lineage — all already in corpus; "Shi/Xu 2023" Jovian review and "McConaghy/Longuski/
+  Byrnes JSR 2008" both turned out to be citation-detail mismatches for papers already digested
+  under different author/year attribution — Yang/Hu/Bai/Li 2023 and the existing
+  DOI-`10.2514/1.11939` 2004 JSR paper respectively.)
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
