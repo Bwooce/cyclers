@@ -180,9 +180,13 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. (`#709` — REMOVED from this list 2026-07-26, CLOSED same day: VERDICT
-  GENUINELY INDEPENDENT — the catalogue's two novel-status findings are confirmed distinct, no
-  double-counting; see its own `✓ DONE` bullet entry.) The `#689`-`#708` CCR4BP arc itself is
+- `#710`/`#711`/`#712` — acquire+digest three papers found while scoping a possible next
+  N-body-discovery frontier (Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024 CRNBP-Jovian;
+  a general JGCD "Circular Restricted n-Body Problem" paper), dispatched in parallel 2026-07-26.
+  See each's own bullet entry for full scope. (`#709` — REMOVED from this list 2026-07-26, CLOSED
+  same day: VERDICT GENUINELY INDEPENDENT — the catalogue's two novel-status findings are
+  confirmed distinct, no double-counting; see its own `✓ DONE` bullet entry.) The `#689`-`#708`
+  CCR4BP arc itself is
   complete — capability built, applied to four moon pairs, a real bug found and fixed, and
   `#701`'s Umbriel-Titania connection vetted all the way to a catalogue writeback
   (`umbriel-1-2-torus-homoclinic-uranus-2026`). (`#708` — REMOVED
@@ -1347,7 +1351,29 @@ a real sanity check given both this catalogue's ONLY two novel-status rows invol
 CR3BP symmetric-closure quasi_cycler and #708's Umbriel 1:2-exterior CCR4BP torus-homoclinic
 connection) genuinely distinct, independent discoveries, or is #708 actually a higher-fidelity
 description of the SAME underlying dynamical structure #312 already found (which would mean
-double-counting a single discovery as two)? #710 next-unused):**
+double-counting a single discovery as two)? DONE 2026-07-26: VERDICT GENUINELY INDEPENDENT, no
+double-counting -- see #709's own bullet. User asked for the Aryan & Fitzgerald AAS 24-103 DOI
+(none found -- AAS Space Flight Mechanics Meeting papers don't get individual DOIs unless later
+journal-published; ResearchGate/Univelt proceedings are the access routes) then "What research is
+there into 5 body problem solving?" -- researched (live web search) and found the classical R5BP
+literature (Sitnikov/rhomboidal/concentric five-body -- symmetric, theoretical, doesn't map onto
+this project's real-moon-system approach) is distinct from the actually relevant lead: Gilliam &
+Bettinger 2024, "Formulation of the Circular Restricted N-Body Problem (CRNBP) in the Jovian
+system," Celest Mech Dyn Astron 136, 54, DOI 10.1007/s10569-024-10216-0 -- a genuine real-moon-
+system N-body generalization (Jupiter-Europa CR3BP vs. the same ICs under Io+Ganymede forcing
+too), the natural next-frontier grounding paper analogous to how Kumar 2021 grounded CCR4BP. Also
+found a related general framework paper, "Circular Restricted n-Body Problem," JGCD, DOI
+10.2514/1.G006430. User: "These papers are hard to find. yes register tasks for all these." #710
+-- acquire + OCR-if-needed + digest Aryan & Fitzgerald AAS 24-103 (no DOI; ResearchGate PDF or
+Univelt proceedings route) into docs/notes/ + CORPUS_INDEX.md, per
+[[feedback_corpus_document_policy]] -- flagged open since #693/#700, still never actually
+acquired. #711 -- acquire + digest Gilliam & Bettinger 2024 CRNBP-Jovian-system paper (DOI
+10.1007/s10569-024-10216-0) -- the grounding paper for any future CCR5BP/CRNBP discovery-strategy
+scoping pass, extract the actual EOM formulation + any worked Jupiter-Io-Europa-Ganymede periodic-
+orbit/manifold results usable as a positive control, same discipline #688's own Kumar-2021 digest
+used for CCR4BP. #712 -- acquire + digest the JGCD "Circular Restricted n-Body Problem" paper
+(DOI 10.2514/1.G006430) -- check whether it's a more general N-body framework treatment
+complementing #711's own Jovian-specific paper. #713 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14672,6 +14698,33 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   one); this adjudicates INDEPENDENCE only, not either row's own absolute literature novelty
   (that ground is `#349`/`#699`/`#706`'s, unchanged). **The catalogue's two novel-status findings
   are confirmed genuinely distinct — no double-counting.**
+- **#710 (dispatched 2026-07-26) -- acquire + digest Aryan & Fitzgerald AAS 24-103.** "Four Body
+  Invariant Structures And Chaos Analysis For Jovian Multi-Moon Ballistic Transfers" (2024) —
+  computes PCCFBP tori for Jupiter-Europa-Ganymede AND Jupiter-Callisto-Ganymede, disqualified
+  `#693`'s Ganymede-Callisto CCR4BP candidate on novelty grounds but was never itself acquired
+  into this project's corpus. No DOI exists (AAS Space Flight Mechanics Meeting conference
+  paper, not later journal-published, per the coordinating session's own live-search check) —
+  access via the ResearchGate PDF (`researchgate.net/publication/383155359`) or the Univelt
+  AAS/AIAA Spaceflight Mechanics Proceedings volume for the January 2024 Orlando meeting. Full
+  OCR-if-needed + digest + `CORPUS_INDEX.md` registration per
+  `[[feedback_corpus_document_policy]]` — flagged open by both `#693` and `#700`, never done.
+- **#711 (dispatched 2026-07-26, in parallel with `#710`/`#712`) -- acquire + digest Gilliam &
+  Bettinger 2024, "Formulation of the Circular Restricted N-Body Problem (CRNBP) in the Jovian
+  system."** *Celestial Mechanics and Dynamical Astronomy* 136, 54, DOI
+  `10.1007/s10569-024-10216-0`. A genuine real-moon-system N-body generalization — compares
+  Jupiter-Europa CR3BP trajectories against the same initial conditions under simultaneous Io AND
+  Ganymede forcing (a real CRNBP, not a symmetric/theoretical toy configuration like the
+  classical R5BP literature). The natural grounding paper for a future CCR5BP/CRNBP discovery-
+  strategy scoping pass, playing the same role Kumar et al. 2021 played for this project's own
+  CCR4BP arc (`#686`→`#708`). Full OCR-if-needed + digest (extract the actual EOM formulation +
+  any worked periodic-orbit/manifold results usable as a future positive control) +
+  `CORPUS_INDEX.md` registration.
+- **#712 (dispatched 2026-07-26, in parallel with `#710`/`#711`) -- acquire + digest "Circular
+  Restricted n-Body Problem."** *Journal of Guidance, Control, and Dynamics*, DOI
+  `10.2514/1.G006430`. Found alongside `#711`'s own Gilliam & Bettinger paper — check whether
+  this is a more general N-body framework treatment (not Jovian-system-specific) that
+  complements or generalizes `#711`'s own formulation. Full OCR-if-needed + digest +
+  `CORPUS_INDEX.md` registration.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
