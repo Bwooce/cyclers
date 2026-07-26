@@ -34,9 +34,10 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#710`/`#711`/`#712`/`#713` — dispatched 2026-07-26 for literature acquisition;
-  `#710`/`#711`/`#712` DONE, `#713` in progress; see the "In progress" section below
-  and each's own bullet entry.) (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
+- None currently. (`#710`/`#711`/`#712` — dispatched 2026-07-26 for literature acquisition, all
+  DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision on paywall
+  purchase/author-request — see the "Open but blocked / parked" section and its own bullet entry.)
+  (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
   section below and each's own bullet entry.) (`#692` — REMOVED from this list 2026-07-23, CLOSED same
   `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
   not astropy's own Time/Chebyshev evaluation as originally suspected; fixed with a deterministic
@@ -180,12 +181,21 @@ unchanged. See `git log` around this date for the corrected commit.
   asymmetric pairs), `#622` (EM-L1/SE-L1, the last cell, closed 2026-07-17) — so a revival would
   only be "the same 4 pairs at a denser grid," the exact anti-pattern `#411`'s own entry warns
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
+- `#713` — Casoliva/Mondelo/Villac/Mease/Barrabés/Ollé "Two Classes of Cycler Trajectories in the
+  Earth-Moon System" (JGCD 2010, DOI `10.2514/1.46856`). Identity fully confirmed (resolves a
+  hallucinated "Howell/Marchand" author mis-citation the user relayed from a second agent), but no
+  PDF exists via any free/legitimate channel checked (AIAA paywall, no green-OA deposit anywhere
+  — see the paper's own bullet entry for the full negative-acquisition trail). BLOCKED on a user
+  decision: pay for AIAA ARC single-article access, request the PDF from the authors via
+  ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#710`/`#711`/`#712` — acquire+digest three papers found while scoping a possible next
-  N-body-discovery frontier (Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024 CRNBP-Jovian;
-  a general JGCD "Circular Restricted n-Body Problem" paper), dispatched in parallel 2026-07-26.
-  See each's own bullet entry for full scope. (`#709` — REMOVED from this list 2026-07-26, CLOSED
+- None currently in this specific N-body-literature thread. `#710`/`#711`/`#712` — REMOVED from
+  this list 2026-07-26, all CLOSED (acquire+digest three papers found while scoping a possible
+  next N-body-discovery frontier: Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024
+  CRNBP-Jovian; Negri & Prado 2022 general JGCD "Circular Restricted n-Body Problem" paper). See
+  each's own bullet entry for full scope. `#713` — dispatched in the same batch, identity-confirmed
+  but ACQUISITION BLOCKED, moved to "Open but blocked / parked" (see below). (`#709` — REMOVED from this list 2026-07-26, CLOSED
   same day: VERDICT GENUINELY INDEPENDENT — the catalogue's two novel-status findings are
   confirmed distinct, no double-counting; see its own `✓ DONE` bullet entry.) The `#689`-`#708`
   CCR4BP arc itself is
@@ -14761,25 +14771,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   positive control; the more reusable piece is §2.2's fully-specified ephemerides-correspondence
   algorithm. PDF + digest + `CORPUS_INDEX.md` registration committed (`8833b60` private /
   `8659065` public).
-- **#713 (dispatched 2026-07-26) -- acquire + digest Casoliva, Mease, Mondelo, Villac, Barrabes &
-  Olle, "families/two classes of cycler trajectories in the Earth-Moon system"** (2008 AAS / 2010
-  *JGCD* 33(5) 1623–1640). Surfaced when the user relayed a second agent's suggested reading list
-  that included "Casoliva, Howell, Marchand, JGCD 2013" — cross-checked against this project's own
-  corpus and found that citation does not match anything on file; the real co-author list is
-  Mease/Mondelo/Villac/Barrabes/Olle, not Howell/Marchand (Howell & Marchand are real BCR4BP
-  researchers, but for a different 2001 paper, "Temporary...", already noted in
-  `docs/notes/2026-06-16-frontier-scoping-er3bp-bcr4bp-3d-qp-epoch.md` — the suggested citation
-  appears to be an author-merge hallucination). The REAL underlying paper was already identified
-  as an acquisition candidate in `docs/notes/2026-06-11-ross-roberts-tsoukkas-2025-mining.md`
-  ("nearest prior family-level work; not in our catalogue; acquisition candidate") on 2026-06-11
-  and never actioned since — the unstable-cycler-family complement to the stable families that
-  paper's own host analysis covers. Full OCR-if-needed + digest + `CORPUS_INDEX.md` registration
-  per `[[feedback_corpus_document_policy]]`. (Also checked and ruled out as NOT new: Russell &
-  Strange 2009, both Jones/Hernandez/Jesick 2017 AAS papers, and the Ross/Roberts-Tsoukkas
-  2025/2026 lineage — all already in corpus; "Shi/Xu 2023" Jovian review and "McConaghy/Longuski/
-  Byrnes JSR 2008" both turned out to be citation-detail mismatches for papers already digested
-  under different author/year attribution — Yang/Hu/Bai/Li 2023 and the existing
-  DOI-`10.2514/1.11939` 2004 JSR paper respectively.)
+- **#713 IDENTITY CONFIRMED, ACQUISITION BLOCKED (2026-07-26) -- Casoliva et al., "Two Classes of
+  Cycler Trajectories in the Earth-Moon System."** Surfaced when the user relayed a second agent's
+  suggested reading list that included "Casoliva, Howell, Marchand, JGCD 2013" — cross-checked
+  against this project's own corpus, found no match, dispatched to resolve. **Disambiguation fully
+  RESOLVED**: real authors are **Casoliva, Mondelo, Villac, Mease, Barrabés, Ollé** — cross-
+  confirmed via Unpaywall metadata + the UCI Flight Dynamics & Control Lab's own project page
+  (live + 2019 Wayback snapshot), identical 6-author list on every independent source (ResearchGate,
+  Semantic Scholar, Google Scholar). No "Howell, Marchand" co-authorship appears anywhere —
+  confirms the "Casoliva/Howell/Marchand JGCD 2013" citation from the other agent's list was a
+  hallucinated author substitution, not a real distinct paper (Howell & Marchand are real BCR4BP
+  researchers, but for an unrelated 2001 paper already on file). Journal version: *JGCD* 33(5)
+  1623–1640 (Sept–Oct 2010), DOI `10.2514/1.46856`. Conference precursor: "Families of Cycler
+  Trajectories in the Earth-Moon System," AIAA/AAS Astrodynamics Specialist Conf., Honolulu, Aug
+  2008, DOI `10.2514/6.2008-6434`. **Acquisition BLOCKED — genuine negative, not an effort
+  shortfall**: exhaustive check (AIAA ARC paywalled, ResearchGate/Semantic Scholar/Google Scholar
+  all citation-only, Unpaywall `oa_status: closed` + `has_repository_copy: false` both DOIs, UCI
+  eScholarship has no deposit of Casoliva's own 2013 PhD dissertation either, Mondelo's own GSD-UAB
+  publication page — which hosts PDFs for most of his other papers — omits this one, Ollé's UPC
+  page explicitly "no PDF link provided", core.ac.uk mirrors broken) — no green-OA deposit exists
+  anywhere. Did NOT write a digest (would violate `[[feedback_ground_citations_against_content]]`
+  / `[[feedback_digest_not_adoption]]` to digest from secondary abstracts with no source text).
+  **Needs a user decision to proceed** — options: (1) purchase single-article AIAA ARC access
+  (~$25-35), (2) ResearchGate "Request full-text PDF" to the authors (free, async, uncertain), (3)
+  check any existing institutional/library access. Parked pending that decision — not auto-fired
+  further. (Also checked and ruled out as NOT new, no action needed: Russell & Strange 2009, both
+  Jones/Hernandez/Jesick 2017 AAS papers, and the Ross/Roberts-Tsoukkas 2025/2026 lineage — all
+  already in corpus; "Shi/Xu 2023" Jovian review and "McConaghy/Longuski/Byrnes JSR 2008" both
+  turned out to be citation-detail mismatches for papers already digested under different
+  author/year attribution — Yang/Hu/Bai/Li 2023 and the existing DOI-`10.2514/1.11939` 2004 JSR
+  paper respectively.)
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
