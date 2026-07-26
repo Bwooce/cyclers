@@ -34,9 +34,11 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#710`/`#711`/`#712` — dispatched 2026-07-26 for literature acquisition, all
-  DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision on paywall
-  purchase/author-request — see the "Open but blocked / parked" section and its own bullet entry.)
+- None currently. (`#714`/`#715` — dispatched 2026-07-26; see the "In progress" section below and
+  each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched 2026-07-26 for literature
+  acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
+  on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
+  bullet entry.)
   (`#699`/`#700` — dispatched 2026-07-24 in parallel; see the "In progress"
   section below and each's own bullet entry.) (`#692` — REMOVED from this list 2026-07-23, CLOSED same
   `✓ DONE` bullet entry — root cause was `rot @ vec` BLAS dgemv-vs-dgemm dispatch non-associativity,
@@ -190,7 +192,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- None currently in this specific N-body-literature thread. `#710`/`#711`/`#712` — REMOVED from
+- `#714`/`#715` — dispatched 2026-07-26. `#714` is a Fable CCR5BP/CRNBP discovery-strategy
+  scoping pass; `#715` is a second CCR4BP pipeline positive control via `#710`'s own
+  Callisto-Ganymede-Europa two-hop chain. See each's own bullet entry for full scope.
+- None currently in the earlier N-body-literature thread. `#710`/`#711`/`#712` — REMOVED from
   this list 2026-07-26, all CLOSED (acquire+digest three papers found while scoping a possible
   next N-body-discovery frontier: Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024
   CRNBP-Jovian; Negri & Prado 2022 general JGCD "Circular Restricted n-Body Problem" paper). See
@@ -1393,7 +1398,16 @@ apparent author-mix-up citations by the other agent), 1 genuinely new and dorman
 2026-06-11 -- registered as #713. #713 -- acquire + digest Casoliva/Mease/Mondelo/Villac/
 Barrabes/Olle 2008 AAS / 2010 JGCD 33(5) 1623-1640 "two classes of cycler trajectories in the
 Earth-Moon system" (the real paper behind the "Howell/Marchand" mis-citation; already flagged as
-an acquisition candidate 2026-06-11, never actioned) into docs/notes/ + CORPUS_INDEX.md. #714
+an acquisition candidate 2026-06-11, never actioned) into docs/notes/ + CORPUS_INDEX.md; identity
+confirmed (real DOI 10.2514/1.46856) but acquisition BLOCKED on a paywall with no OA route,
+parked pending a user decision. #714 for a CCR5BP/CRNBP discovery-strategy scoping pass (Fable) --
+now that #710/#711/#712 give three grounding papers, assess tractability of a genuine N>=5-body
+discovery build before committing, mirroring #686's own scoping-before-building discipline; #711
+flagged a real risk unlike CCR4BP's own Kumar-2021 precedent -- periodic-orbit existence in the
+general CRNBP is an open question, no known-good structure to validate against yet. #715 for a
+second CCR4BP pipeline positive control using #710's own Callisto-Ganymede-Europa two-hop
+manifold-chain result (chaining two CCR4BPSystem instances) -- lower-risk, direct value-add to
+the already-built #694 pipeline, distinct from #714's exploratory scope. #716
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14801,6 +14815,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   turned out to be citation-detail mismatches for papers already digested under different
   author/year attribution — Yang/Hu/Bai/Li 2023 and the existing DOI-`10.2514/1.11939` 2004 JSR
   paper respectively.)
+- **#714 (dispatched 2026-07-26) -- CCR5BP/CRNBP discovery-strategy scoping pass (Fable).** Now
+  that `#710`/`#711`/`#712` have delivered three grounding papers for a genuine N>=5-body
+  generalization (Negri & Prado 2022's general CRNBP framework; Gilliam & Bettinger 2024's Jovian
+  N=5 application + thesis-level Uranus-Titania/Oberon equilibrium tables; Aryan & Fitzgerald
+  2024's PCCFBP/CCR4BP precedent), assess whether a real discovery build is tractable — mirroring
+  `#686`'s own "honest tractability verdict FIRST, shortlist SECOND" discipline rather than
+  jumping straight to a multi-day build. Explicitly weigh `#711`'s own flagged risk: the CRNBP's
+  general periodic-orbit existence is an open theoretical question per the source paper itself
+  ("not currently known if any periodic trajectories exist... outside special resonance-locked
+  cases") — unlike CCR4BP, where Kumar et al. 2021 handed this project a known-good periodic/
+  connection structure to validate against before ever building `#689`-`#694`'s pipeline. If N=5
+  is judged intractable without a positive control, consider whether Gilliam's own Uranus-Titania/
+  Oberon equilibrium-point tables (digit-grade, per `#711`'s digest) could serve as one.
+- **#715 (dispatched 2026-07-26) -- second CCR4BP pipeline positive control via `#710`'s own
+  Callisto-Ganymede-Europa two-hop manifold chain.** `#710`'s digest flagged this directly: the
+  Aryan & Fitzgerald paper's own transit result (Callisto L1 unstable manifold -> ~60-day flyby
+  rendezvous with Ganymede -> ~74-day L2 stable manifold to Europa) is a candidate second positive
+  control for `#694`'s `ccr4bp_manifold_globalize.py`/`ccr4bp_heteroclinic_search.py` pipeline,
+  "not yet exploited — would require chaining two `CCR4BPSystem` instances, a real scope
+  expansion, not a drop-in rerun." Lower-risk than `#714` — strengthens confidence in already-built
+  infrastructure rather than exploring new territory; does not require the N=5 EOM extension.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
