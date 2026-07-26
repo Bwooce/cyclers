@@ -180,11 +180,13 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- Otherwise none currently. The entire `#689`-`#708` CCR4BP arc is complete — capability built,
-  applied to four moon pairs, a real bug found and fixed, and `#701`'s Umbriel-Titania connection
-  vetted all the way to a catalogue writeback (`umbriel-1-2-torus-homoclinic-uranus-2026`).
-  (`#708` — REMOVED from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet entry.
-  `#707` — REMOVED from this list 2026-07-24, CLOSED same
+- `#709` — Fable adjudication of whether the catalogue's two novel-status findings (`#312`,
+  `#708`) are genuinely distinct/independent, dispatched 2026-07-24. See its own bullet entry for
+  full scope. The `#689`-`#708` CCR4BP arc itself is complete — capability built, applied to four
+  moon pairs, a real bug found and fixed, and `#701`'s Umbriel-Titania connection vetted all the
+  way to a catalogue writeback (`umbriel-1-2-torus-homoclinic-uranus-2026`). (`#708` — REMOVED
+  from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet entry. `#707` — REMOVED
+  from this list 2026-07-24, CLOSED same
   day: proposal delivered, no schema/catalogue change made — see its own `✓ DONE` bullet entry.
   `#706` — REMOVED from this list 2026-07-24, CLOSED same day: VERDICT STILL CLEAR — see its own
   `✓ DONE` bullet entry. `#705` — REMOVED from this list 2026-07-24,
@@ -1334,8 +1336,17 @@ values, additive ccr4bp_provenance block per #707's own JSON-Schema snippet) and
 the base, incorporating #704/#705's real-ephemeris evidence and #706's fresh literature
 clearance. Mandatory Fable pre-execution review before the actual catalogue commit, mirroring
 #569's own writeback precedent exactly. Full `tests/data tests/search` ratchet suite required,
-per `[[feedback_catalogue_edits_run_all_ratchets]]` -- never a hand-picked subset. #709
-next-unused):**
+per `[[feedback_catalogue_edits_run_all_ratchets]]` -- never a hand-picked subset. DONE
+2026-07-24: schema v5.3 + row `umbriel-1-2-torus-homoclinic-uranus-2026` written back, culminating
+the whole #689-#708 arc -- catalogue's second genuinely novel finding after #312. User:
+"Get a Fable review comparing our two novel orbits to ensure they are different and independent" --
+a real sanity check given both this catalogue's ONLY two novel-status rows involve Umbriel (the
+#312 family's Umbriel-Oberon symmetric closure and #708's Umbriel-Titania CCR4BP connection). #709
+-- Fable adjudication: are the catalogue's two novel-status findings (#312's Umbriel-Oberon-Umbriel
+CR3BP symmetric-closure quasi_cycler and #708's Umbriel 1:2-exterior CCR4BP torus-homoclinic
+connection) genuinely distinct, independent discoveries, or is #708 actually a higher-fidelity
+description of the SAME underlying dynamical structure #312 already found (which would mean
+double-counting a single discovery as two)? #710 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -14605,6 +14616,24 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   consistency (`#704`), epoch-robustness (`#705`), fresh literature clearance (`#706`), schema
   design (`#707`), and writeback (`#708`) all the way to the catalogue. This is the catalogue's
   SECOND genuinely novel (non-`known-class-member`) finding, after `#312`.
+- **#709 (dispatched 2026-07-24, Fable) -- adjudicate: are the catalogue's two novel-status
+  findings genuinely distinct/independent, or does `#708` double-count `#312`?** A real sanity
+  check, not a formality: both of this catalogue's ONLY two `our_status`-novel rows involve
+  Umbriel specifically —
+  `umbriel-titania-1-1-uranian-quasi-cycler-2026` (`#312`'s own family member, part of the
+  30-member `#563` symmetric-closure census, CR3BP model, a discrete Umbriel→Titania→Umbriel
+  Lambert-arc-style repeating tour) and `umbriel-1-2-torus-homoclinic-uranus-2026` (`#708`, CCR4BP
+  model, a quasi-periodic torus around a DIFFERENT base periodic orbit — spacecraft:Umbriel=1:2,
+  not the `#312` family's own resonance — plus a homoclinic manifold connection back to itself,
+  never actually encountering Titania at all). Scope: independently verify these are genuinely
+  different mathematical objects (different base periodic orbits, different force models,
+  different physical mechanisms — an encounter-based tour vs. an encounter-free manifold
+  connection) and not, e.g., the SAME underlying dynamical structure merely re-derived under a
+  higher-fidelity model and re-cataloged as if it were a second discovery. Read both rows' full
+  `data/catalogue.yaml` entries, `#312`'s own family documentation, and `#701`'s/`#708`'s own
+  source data directly — do not just trust the two tasks' own prose framing (which asserted
+  independence throughout, but was never adversarially checked by a party not invested in the
+  distinction being real).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
