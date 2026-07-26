@@ -180,11 +180,12 @@ unchanged. See `git log` around this date for the corrected commit.
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
 
 ### In progress
-- `#709` — Fable adjudication of whether the catalogue's two novel-status findings (`#312`,
-  `#708`) are genuinely distinct/independent, dispatched 2026-07-24. See its own bullet entry for
-  full scope. The `#689`-`#708` CCR4BP arc itself is complete — capability built, applied to four
-  moon pairs, a real bug found and fixed, and `#701`'s Umbriel-Titania connection vetted all the
-  way to a catalogue writeback (`umbriel-1-2-torus-homoclinic-uranus-2026`). (`#708` — REMOVED
+- Otherwise none currently. (`#709` — REMOVED from this list 2026-07-26, CLOSED same day: VERDICT
+  GENUINELY INDEPENDENT — the catalogue's two novel-status findings are confirmed distinct, no
+  double-counting; see its own `✓ DONE` bullet entry.) The `#689`-`#708` CCR4BP arc itself is
+  complete — capability built, applied to four moon pairs, a real bug found and fixed, and
+  `#701`'s Umbriel-Titania connection vetted all the way to a catalogue writeback
+  (`umbriel-1-2-torus-homoclinic-uranus-2026`). (`#708` — REMOVED
   from this list 2026-07-24, CLOSED same day; see its own `✓ DONE` bullet entry. `#707` — REMOVED
   from this list 2026-07-24, CLOSED same
   day: proposal delivered, no schema/catalogue change made — see its own `✓ DONE` bullet entry.
@@ -14616,7 +14617,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   consistency (`#704`), epoch-robustness (`#705`), fresh literature clearance (`#706`), schema
   design (`#707`), and writeback (`#708`) all the way to the catalogue. This is the catalogue's
   SECOND genuinely novel (non-`known-class-member`) finding, after `#312`.
-- **#709 (dispatched 2026-07-24, Fable) -- adjudicate: are the catalogue's two novel-status
+- **#709 ✓ DONE (2026-07-26, Fable, commit `db4822b`) -- adjudicate: are the catalogue's two novel-status
   findings genuinely distinct/independent, or does `#708` double-count `#312`?** A real sanity
   check, not a formality: both of this catalogue's ONLY two `our_status`-novel rows involve
   Umbriel specifically —
@@ -14634,6 +14635,43 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   source data directly — do not just trust the two tasks' own prose framing (which asserted
   independence throughout, but was never adversarially checked by a party not invested in the
   distinction being real).
+  **RESULT: VERDICT GENUINELY INDEPENDENT.** `docs/notes/2026-07-26-709-novelty-independence-adjudication.md`.
+  Grounded in primary artifacts, not either task chain's own prose: (1) **different base
+  orbit/resonance** — `#312`'s representative (`data/gauntlet_566_five_representatives.jsonl`,
+  candidate `enum563-line26`) is two 3.9545-day Lambert legs at the Umbriel-Titania SYNODIC
+  period, NOT on any spacecraft:Umbriel resonance (2×T_Umbriel=8.288d ≠ 7.909d); `#708`'s base is
+  a spacecraft:Umbriel=1:2-EXTERIOR resonant orbit, seeded cold from a Keplerian guess with ZERO
+  references to `#563`/`#312`/`enum563`/`gauntlet_566` anywhere in the `#701` pipeline (grepped
+  directly, confirmed empty); (2) **opposite physical mechanism** — `#312`'s rep REQUIRES close
+  flybys of both moons (V∞ 1.2296/1.0058 km/s, ~6° gravity-assist turns, periapses at Umbriel's
+  ~3,102 km SOI scale) while `#708`'s object encounters NOTHING (min Umbriel distance 181,244 km
+  = 58× Umbriel's own SOI; min Titania distance 534,639-828,573 km across all 10 tested epochs,
+  beyond Titania's own orbital radius — pure distant perturbation, never a flyby); (3) **different
+  force model in code, not just naming** — `core/ccr4bp.py::ccr4bp_eom` is CR3BP plus a genuine
+  time-periodic Titania forcing term, reducing to `cr3bp_eom` only at `mu_gan=0` (an already
+  independently-verified structural fact from `#689`'s own closure), vs. `#312`'s patched-conic/
+  Lambert per-leg V∞-matching; (4) **decisive double-count test**: a smooth CR3BP→CCR4BP
+  continuation of `#312`'s rep cannot produce `#708`'s object — it would require deleting two
+  SOI-scale flybys per period, a topology change, not a fidelity refinement; the `#566` V4-strict
+  gauntlet already propagated `#312`'s own rep in a full n-body model INCLUDING Titania forcing,
+  and it stays an encounter tour (bounded drift 289,483 km), not a torus-homoclinic — both
+  structures genuinely coexist as distinct objects in the same superset model; (5) no
+  family-containment: `#563`'s own enumeration space requires two real flybys per member by
+  construction, so an encounter-free torus-homoclinic isn't representable in that model at all.
+  The one numeric coincidence (both rows carry 7.909 days) is explained as system-level — the
+  shared Umbriel-Titania synodic period both objects' own periodicities derive from — not
+  evidence of shared identity. **Independently spot-verified 2026-07-26**: I re-checked the three
+  most load-bearing numeric claims myself directly from primary sources — `#705`'s own raw
+  `result.json` (min Umbriel 181,243.9 km, Titania range 534,638.6-828,573.2 km — exact match),
+  `#312`'s own catalogue row (`transit_times_days: [3.9544738760575804, ...]`,
+  `vinf_kms: 1.2296`/`1.0058` — exact match), and the "zero IC lineage" grep claim (confirmed
+  empty, no `#563`/`#312`/`enum563`/`gauntlet_566` references anywhere in `#701`'s pipeline files)
+  — all three checked out precisely. Honest caveats the adjudication itself flagged: no numerical
+  homotopy experiment was run between the two objects (the impossibility argument is geometric —
+  58× SOI gap, 126,875 km radial separation, opposite closure mechanisms — judged decisive without
+  one); this adjudicates INDEPENDENCE only, not either row's own absolute literature novelty
+  (that ground is `#349`/`#699`/`#706`'s, unchanged). **The catalogue's two novel-status findings
+  are confirmed genuinely distinct — no double-counting.**
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
