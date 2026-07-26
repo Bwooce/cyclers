@@ -186,6 +186,7 @@ undigested — no digest/mining note references it anywhere in `docs/notes/`
 | Wilczak-Zgliczynski-2005-Heteroclinic-Part-II.pdf | (duplicate of wilczak-zgliczynski-2006) | Same paper, different date/version | digested + KNOWN_CORPUS | text-layer |
 | wilczak-zgliczynski-2006-heteroclinic-connections-part-II-math-0401146.pdf | 2026-06-19-digest-wilczak-zgliczynski-oterma-heteroclinic.md; KNOWN_CORPUS | W-Z Part II: rigorous numerics for the proof | digested + KNOWN_CORPUS | text-layer |
 | canalias-2007-thesis-mission-design.pdf | 2026-06-20-digest-canalias-2007-se-em-manifolds.md | SE-EM manifold connections and heteroclinic bifurcations (PhD thesis) | digested | text-layer |
+| negri-prado-2022-circular-restricted-n-body-problem-jgcd-doi-10.2514-1.G006430-arxiv-2307.10881.pdf | 2026-07-26-digest-negri-prado-2022-crnbp.md | General N-body EOM framework (CRNBP): generalizes Negri-Prado 2020's BCR4BP correction to arbitrary N concentric-circular extra bodies about M1; confirmed general (not Jovian-specific), reduces exactly to this project's own `ccr4bp.py` structure at N=4; `#711`'s Gilliam & Bettinger 2024 Jovian CRNBP is a downstream N=5 application citing this paper, not an independent line | digested | text-layer |
 
 ## Outer-planet / moon tours & endgame (Galilean, Saturnian, Uranian)
 
