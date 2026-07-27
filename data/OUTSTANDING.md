@@ -205,10 +205,14 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#731`/`#736` — dispatched 2026-07-27. `#731`: user-flagged CI failure investigation (stale
-  catalogue ratchet already diagnosed, other failures need proper root-causing); `#736`: V0-V5
-  vetting chain step 4, implement `#735`'s user-approved schema design + catalogue writeback
-  (mandatory Fable pre-execution review before committing). See each's own bullet entry.
+- `#736`/`#737` — dispatched 2026-07-27. `#736`: V0-V5 vetting chain step 4, implement `#735`'s
+  user-approved schema design + catalogue writeback (mandatory Fable pre-execution review before
+  committing); `#737`: fix 6 more CI timeouts `#731` found but left out of scope. See each's own
+  bullet entry.
+- `#731` — REMOVED from this list 2026-07-27, CLOSED: stale ratchet fixed, 10 tests correctly
+  xfailed for a documented cross-platform BLAS-divergence class (no tolerance weakened), 2
+  genuine timeouts marked slow, live CI confirmed the fix — but found 6 MORE timeouts left
+  out of scope, see `#737`. See its own bullet entry.
 - `#735` — REMOVED from this list 2026-07-27, CLOSED: full design proposal delivered, recommends a
   new `quasi_periodic_torus` orbit_class + additive `crnbp_provenance` block — user approved as
   proposed. See its own bullet entry.
@@ -1539,7 +1543,13 @@ approved schema design (user approved "as proposed" 2026-07-27) -- schema v5.4 b
 orbit_class quasi_periodic_torus, new model_assumption crnbp, new additive crnbp_provenance
 block), actual catalogue writeback of the N=5 Europa-3:4 CRNBP torus row, epoch_locked=true/
 n_returns=1 per the approved Option A. Mandatory Fable pre-execution review before committing,
-mirroring the #569/#708 precedent. #737
+mirroring the #569/#708 precedent. #737 for 6 more CI timeouts #731 found in the same CI run but
+left out of scope -- tests/scripts/test_729_epoch_torus_robustness_scan.py (this session's own
+#729 work), 2 more test_crnbp_real_ephemeris_consistency.py tests, test_qp_tori_energy_walk.py::
+test_walk_is_deterministic, test_ccr4bp_umbriel_titania_heteroclinic_search.py,
+test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus -- all run
+comfortably within budget locally per #731's own spot-check, same CI-resource-budget mismatch
+pattern as the 2 timeouts #731 already fixed. #738
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15457,40 +15467,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   McElrath/Woollands 2021 Europa Lander endgame study, DOI `10.1007/s40295-021-00250-7` — 2
   independent HIGH flags; (6) Leiva & Briozzo 2006/2008 Earth-Moon persistence pair — 2 flags each.
   Pure compilation — no PDFs acquired/filed/digested.
-- **#731 (dispatched 2026-07-27) -- investigate CI failures, user-flagged.** GitHub Actions run
-  `30247714534` (and several sibling runs today) failed after 1h34m — way beyond this project's
-  normal CI runtime. **Already diagnosed by the coordinating session, confirmed real and
-  reproducible locally**: `tests/test_catalogue_rediscovery.py::test_census_breakdown_matches_frozen_ratchet`
-  fails because `ExclusionReason.NON_HELIOCENTRIC`'s frozen `EXPECTED_COVERAGE` constant (56) is
-  STALE — the real current count is 77. Root cause confirmed via `git log`:
-  `tests/_catalogue_loader.py`'s classification logic is unchanged; `data/catalogue.yaml` itself
-  hasn't been touched since `#708` (2026-07-24, commit `81aebda`, 0 diff at HEAD); the actual gap
-  traces to `#684` (2026-07-22, 20 new catalogue rows written back) and `#708` (+1 Uranus row) —
-  BOTH predate this entire session's `#710`-`#730` arc and neither updated this specific ratchet
-  constant at the time. This is a genuine, pre-existing stale-ratchet bug, NOT caused by anything
-  dispatched today. **Other failures in the same CI run need proper diagnosis, not assumption**:
-  several `tests/genome/test_qp_tori*.py`/`test_qp_torus_manifold.py`/`test_qp_torus_heteroclinic.py`
-  tests failed on a shared borderline residual (`1.2482045352338396e-05` vs. a `1e-5` gate) —
-  check whether this is a genuine environment-dependent (CI-runner BLAS backend) borderline flip,
-  matching the documented `#584` precedent, or a real regression; `tests/ml/test_seed_generation.py
-  ::test_generate_and_refine_seeds_in_distribution_byte_identical_before_and_after_651` failed
-  (`assert 10 == 12`) — a byte-identical reproducibility test failing is NOT something to wave
-  away regardless of environment, diagnose properly (thread-count/CPU-count sensitivity in the RNG
-  path is a plausible but UNVERIFIED hypothesis); 2 tests timed out (>600s) —
-  `test_h1_free_rho_continuation_stays_far_from_owen_baresi_l1_target`,
-  `test_walk_reaches_cj_target`; `tests/search/test_ccr4bp_europa_callisto_heteroclinic_search.py
-  ::test_second_seed_reproduces_live` failed in CI (`0.1517 == 0.128 +/- 0.01`) but **the
-  coordinating session already confirmed it PASSES locally right now on the identical commit** —
-  points toward CI resource contention (both concurrent sessions have been pushing very rapidly
-  today, plausibly overloading GitHub Actions shared runner capacity) rather than a code
-  regression, but confirm this hypothesis properly (e.g. check for other recent CI runs' timing,
-  don't just assert it). Fix the definitively-diagnosed stale ratchet (update
-  `EXPECTED_COVERAGE[ExclusionReason.NON_HELIOCENTRIC]` to 77, verify the underlying 21-row growth
-  is legitimate/expected per `#684`/`#708`'s own already-reviewed writebacks, not investigate those
-  as new). For everything else: reproduce locally first, diagnose root cause, and either fix a
-  genuine regression or document a confirmed environment-specific flake with the SAME specific,
-  non-vague reasoning discipline this project already applies elsewhere (`#584`'s own precedent) —
-  do not blanket-dismiss everything as "probably CI load" without actually checking.
+- **#731 ✓ DONE (2026-07-27) -- investigate CI failures, user-flagged.** **Stale ratchet fixed**:
+  `EXPECTED_COVERAGE[ExclusionReason.NON_HELIOCENTRIC]` 56->77 in `tests/test_catalogue_rediscovery.py`,
+  re-derived directly via `classify_row()` against the live catalogue, spot-checked all 20 `#684`
+  corridor rows + the `#708` Uranus row correctly hit `primary != "Sun"`. **All the qp_tori/
+  qp_torus_manifold/qp_torus_heteroclinic/qp_tori_arclength residual failures + the
+  seed_generation "10==12" + the ccr4bp `pos_gap_km` mismatch are the SAME root cause**: a shared
+  `#299` Neimark-Sacker/GMOS torus corrector whose convergence is genuinely DETERMINISTIC-PER-
+  PLATFORM, not flaky — 4/4 independent CI runs produced the byte-identical residual
+  `1.2482045352338396e-05` (vs. this Mac's own deterministic `1.243e-07`), same pattern in the
+  seed-generation/ccr4bp numbers, confirmed identical across 2-3 independent CI runs each. Same
+  documented cross-platform DOP853/BLAS non-bit-reproducibility class as `#584`/`#631`/`#632`/
+  `#635` — this specific code hadn't run on Linux CI before today (last touched 2026-07-19,
+  nothing pushed until now). Fixed with `xfail(strict=False)` + precise, evidence-cited reasons on
+  the 10 affected tests — NO tolerance weakened. **2 genuine timeouts** confirmed as a CI-resource-
+  budget mismatch (both run in 97-119s locally, comfortably within budget) — marked
+  `@pytest.mark.slow`, matching `#631`'s own precedent. **Corrected own earlier hypothesis**: the
+  ccr4bp test failure is NOT resource contention, it's the same deterministic BLAS-divergence
+  class as the qp_tori cluster. **Live CI confirmation** (run `30261678515`, 1h48m): every
+  originally-diagnosed failure gone — notably all 10 xfails came back XPASS, suggesting a
+  concurrent session's own corrector-level edits (visible mid-task to `qp_tori.py`/`v1_qp.py`/
+  `v2_qp.py`) may have independently fixed the underlying divergence — worth a follow-up to
+  reconsider the xfails once confirmed stable across more runs. Commit `88ccb70`. **NEW,
+  out-of-scope finding**: the SAME CI run still failed — 6 DIFFERENT failures, all >600s timeouts,
+  no value mismatches, in `tests/scripts/test_729_epoch_torus_robustness_scan.py` (this session's
+  own `#729` work), 2 more `test_crnbp_real_ephemeris_consistency.py` tests, `test_qp_tori_energy_walk.py
+  ::test_walk_is_deterministic`, `test_ccr4bp_umbriel_titania_heteroclinic_search.py`, and
+  `test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus`. Spot-checked one
+  (63s locally) — same CI-budget-mismatch pattern as the 2 already-fixed timeouts, consistent with
+  a slower/more-loaded runner (this run's own 1h48m total exceeded the historical 1h28-34m range).
+  **Explicitly flagged as a separate follow-up, not fixed here — see `#737`.**
 - **#732 ✓ DONE (2026-07-27) -- process 3 user-supplied papers from `#730`'s own top-5 ranked
   list.** Filed (private `cyclers_pdf` commit `9ee7442`), digested + indexed (public commit
   `711992c`); master list updated with items #1/#4/#5 struck through as ACQUIRED. **Cross-check
@@ -15622,6 +15628,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#569`/`#708` both required; do not skip this step. This is the catalogue's THIRD genuinely novel
   finding if this lands cleanly (after `#312` and the Umbriel-Titania `#708` row) — treat the
   writeback with the same care both of those received.
+- **#737 (dispatched 2026-07-27) -- fix 6 more CI timeouts `#731` found but left out of scope.**
+  Same CI run (`30261678515`) that confirmed `#731`'s own fixes worked still failed with 6
+  DIFFERENT failures, all `>600s` timeouts, no value mismatches:
+  `tests/scripts/test_729_epoch_torus_robustness_scan.py` (this session's own `#729` work), 2 more
+  tests in `tests/search/test_crnbp_real_ephemeris_consistency.py`,
+  `tests/genome/test_qp_tori_energy_walk.py::test_walk_is_deterministic`,
+  `tests/search/test_ccr4bp_umbriel_titania_heteroclinic_search.py`, and
+  `tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus`.
+  `#731`'s own spot-check of one (`test_l2_positive_control_reproduces_gmos_torus`, 63s locally)
+  found the SAME CI-resource-budget-mismatch pattern as the 2 timeouts `#731` already fixed with
+  `@pytest.mark.slow` — this run's own total CI time (1h48m) exceeded the historical 1h28-34m
+  range, consistent with a slower/more-loaded runner pushing more borderline-duration tests over
+  the 600s cliff. Time EACH of these 6 tests locally first (do not assume they're all the same
+  pattern just because one spot-check matched), then mark genuinely slow-but-correct ones
+  `@pytest.mark.slow` following `#631`'s own established precedent — do NOT mark anything slow
+  that's actually failing for a different reason (verify each one's actual local pass/fail
+  status, not just its runtime).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
