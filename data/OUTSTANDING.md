@@ -205,10 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#730` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness scan
-  on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#730`: user-requested
-  consolidation of the citation-mining acquisition backlog into one DOI-verified master list. See
-  each's own bullet entry.
+- `#729`/`#730`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness
+  scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#730`:
+  user-requested consolidation of the citation-mining acquisition backlog into one DOI-verified
+  master list; `#731`: user-flagged CI failure investigation (stale catalogue ratchet already
+  diagnosed, other failures need proper root-causing). See each's own bullet entry.
 - `#726` — REMOVED from this list 2026-07-27, CLOSED: real-ephemeris consistency check found a
   real, verified generic collapse in a single-epoch sample — mirrors the Umbriel-Titania case's
   own first-pass result exactly; `#729` will settle whether a recurring window exists. See its own
@@ -1497,7 +1498,12 @@ near-miss window exist across many epochs the way it did for the Umbriel-Titania
 #726's own single-epoch generic collapse actually representative. #730 for consolidating every
 flagged-but-unacquired citation-mining candidate from this session's ~10 digest notes (#710-#728
 range) into one deduplicated, DOI-verified, priority-ranked master acquisition-backlog document --
-user-requested 2026-07-27, no acquisition yet, compilation only. #731
+user-requested 2026-07-27, no acquisition yet, compilation only. #731 for investigating CI failures
+found on the most recent runs (GitHub Actions, run 30247714534 and siblings) -- a confirmed
+pre-existing stale catalogue ratchet (non_heliocentric 56->77, from #684/#708, unrelated to this
+session), plus several other failures (qp_torus/qp_tori tolerance flips, a byte-identical
+seed-generation test, 2 timeouts, a ccr4bp_europa_callisto test that passes locally) needing proper
+diagnosis before assuming they're all resource-contention flakes. #732
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15399,6 +15405,40 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   list by priority (recurring-HIGH first); (5) write the result to a single new document,
   `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`. This is a COMPILATION task only —
   no acquisition, no PDF filing, no digesting. Do not touch `data/OUTSTANDING.md`.
+- **#731 (dispatched 2026-07-27) -- investigate CI failures, user-flagged.** GitHub Actions run
+  `30247714534` (and several sibling runs today) failed after 1h34m — way beyond this project's
+  normal CI runtime. **Already diagnosed by the coordinating session, confirmed real and
+  reproducible locally**: `tests/test_catalogue_rediscovery.py::test_census_breakdown_matches_frozen_ratchet`
+  fails because `ExclusionReason.NON_HELIOCENTRIC`'s frozen `EXPECTED_COVERAGE` constant (56) is
+  STALE — the real current count is 77. Root cause confirmed via `git log`:
+  `tests/_catalogue_loader.py`'s classification logic is unchanged; `data/catalogue.yaml` itself
+  hasn't been touched since `#708` (2026-07-24, commit `81aebda`, 0 diff at HEAD); the actual gap
+  traces to `#684` (2026-07-22, 20 new catalogue rows written back) and `#708` (+1 Uranus row) —
+  BOTH predate this entire session's `#710`-`#730` arc and neither updated this specific ratchet
+  constant at the time. This is a genuine, pre-existing stale-ratchet bug, NOT caused by anything
+  dispatched today. **Other failures in the same CI run need proper diagnosis, not assumption**:
+  several `tests/genome/test_qp_tori*.py`/`test_qp_torus_manifold.py`/`test_qp_torus_heteroclinic.py`
+  tests failed on a shared borderline residual (`1.2482045352338396e-05` vs. a `1e-5` gate) —
+  check whether this is a genuine environment-dependent (CI-runner BLAS backend) borderline flip,
+  matching the documented `#584` precedent, or a real regression; `tests/ml/test_seed_generation.py
+  ::test_generate_and_refine_seeds_in_distribution_byte_identical_before_and_after_651` failed
+  (`assert 10 == 12`) — a byte-identical reproducibility test failing is NOT something to wave
+  away regardless of environment, diagnose properly (thread-count/CPU-count sensitivity in the RNG
+  path is a plausible but UNVERIFIED hypothesis); 2 tests timed out (>600s) —
+  `test_h1_free_rho_continuation_stays_far_from_owen_baresi_l1_target`,
+  `test_walk_reaches_cj_target`; `tests/search/test_ccr4bp_europa_callisto_heteroclinic_search.py
+  ::test_second_seed_reproduces_live` failed in CI (`0.1517 == 0.128 +/- 0.01`) but **the
+  coordinating session already confirmed it PASSES locally right now on the identical commit** —
+  points toward CI resource contention (both concurrent sessions have been pushing very rapidly
+  today, plausibly overloading GitHub Actions shared runner capacity) rather than a code
+  regression, but confirm this hypothesis properly (e.g. check for other recent CI runs' timing,
+  don't just assert it). Fix the definitively-diagnosed stale ratchet (update
+  `EXPECTED_COVERAGE[ExclusionReason.NON_HELIOCENTRIC]` to 77, verify the underlying 21-row growth
+  is legitimate/expected per `#684`/`#708`'s own already-reviewed writebacks, not investigate those
+  as new). For everything else: reproduce locally first, diagnose root cause, and either fix a
+  genuine regression or document a confirmed environment-specific flake with the SAME specific,
+  non-vague reasoning discipline this project already applies elsewhere (`#584`'s own precedent) —
+  do not blanket-dismiss everything as "probably CI load" without actually checking.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
