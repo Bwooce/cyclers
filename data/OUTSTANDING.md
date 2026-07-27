@@ -205,12 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731`/`#732` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
+- `#729`/`#731`/`#732`/`#733` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
   epoch-robustness scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent);
   `#731`: user-flagged CI failure investigation (stale catalogue ratchet already diagnosed, other
-  failures need proper root-causing); `#732`: process 3 user-supplied top-priority papers from
-  `#730`'s own master list (Blazevski & Ocampo 2012, Negri & Prado 2020, Baresi/Olikara/Scheeres
-  2018). See each's own bullet entry.
+  failures need proper root-causing); `#732`/`#733`: process the top-5 `#730` master-list papers,
+  user-supplied (Blazevski & Ocampo 2012, Negri & Prado 2020, Baresi/Olikara/Scheeres 2018 in
+  `#732`; Olikara 2016 thesis + Haro et al. 2016 book in `#733`). See each's own bullet entry.
 - `#730` — REMOVED from this list 2026-07-27, CLOSED: 68 unique acquisition candidates
   consolidated, DOI-resolved, priority-ranked; found 6 false gaps (papers already in corpus
   re-flagged as missing). See its own bullet entry.
@@ -1510,7 +1510,12 @@ seed-generation test, 2 timeouts, a ccr4bp_europa_callisto test that passes loca
 diagnosis before assuming they're all resource-contention flakes. #732 for processing 3 of the
 `#730` master-list's own top-5 papers, user-supplied PDFs: Blazevski & Ocampo 2012 (the foundational
 CCR4BP model-definition paper, previously confirmed genuinely paywalled), Negri & Prado 2020 (BCR4BP
-generalization), Baresi/Olikara/Scheeres 2018 (torus-continuation method). #733
+generalization), Baresi/Olikara/Scheeres 2018 (torus-continuation method). #733 for processing
+2 more `#730` master-list papers, user-supplied PDFs (found in ~/Downloads, likely from a
+subagent's own browser download): Olikara 2016 PhD thesis (the foundational GMOS/collocation
+torus method genome/qp_tori.py already implements without holding the thesis itself) and Haro
+et al. 2016 (the standard parameterization-method textbook underlying the whole Kumar lineage).
+#734
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15477,6 +15482,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   for all three. Update `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`'s own §1 or
   a new note marking these 3 items ACQUIRED (not a live backlog gap anymore) — do not leave the
   master list stale.
+- **#733 (dispatched 2026-07-27) -- process 2 more user-supplied papers from `#730`'s own top-5
+  ranked list (found in `~/Downloads`).** Both verified page-1-exact by the coordinating session:
+  **Olikara, Z.P., "Computation of Quasi-Periodic Tori and Heteroclinic Connections in
+  Astrodynamics Using Collocation Techniques,"** PhD thesis, University of Colorado Boulder (2016)
+  — the foundational GMOS-lineage collocation method for quasi-periodic tori and their manifolds
+  that this project's own `genome/qp_tori.py` ALREADY IMPLEMENTS (via the Olikara-Scheeres 2010
+  paper) WITHOUT holding the thesis itself; also the direct method-lineage source for the already-
+  acquired Baresi/Owen/Scheeres TCP papers. Digest MUST verify `genome/qp_tori.py`'s own
+  implementation actually matches this thesis's described method correctly — a real, checkable
+  correctness question, not just background reading. **Haro, À., Canadell, M., Figueras, J.-L.,
+  Luque, A. & Mondelo, J.M., *The Parameterization Method for Invariant Manifolds: From Rigorous
+  Results to Effective Computations*,** Applied Mathematical Sciences vol. 195, Springer (2016),
+  DOI `10.1007/978-3-319-29662-3` — the standard textbook reference for the entire parameterization-
+  method/Fourier-Taylor manifold-expansion lineage underlying essentially every Kumar/Anderson/de
+  la Llave paper already in this project's corpus; cited repeatedly by name across at least 5
+  already-acquired papers, never itself held. Full OCR-if-needed (likely unnecessary for the
+  thesis; check the book carefully, Springer scans can be image-only) + digest + the mandatory
+  citation-mining pass per `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration
+  for both. Update `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` to mark these 2
+  items ACQUIRED too (same as `#732`'s own instruction) — if `#732` already updated the master list,
+  extend that same update rather than creating a conflicting second edit; check `git log` for
+  `#732`'s own commit first.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
