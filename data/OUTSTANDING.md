@@ -205,11 +205,14 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731`/`#733` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
+- `#729`/`#731`/`#734` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
   epoch-robustness scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent);
   `#731`: user-flagged CI failure investigation (stale catalogue ratchet already diagnosed, other
-  failures need proper root-causing); `#733`: process 2 more `#730` master-list papers, user-supplied
-  (Olikara 2016 thesis, Haro et al. 2016 book). See each's own bullet entry.
+  failures need proper root-causing); `#734`: fix `genome/qp_tori.py`'s docstring citation
+  imprecision found by `#733`. See each's own bullet entry.
+- `#733` — REMOVED from this list 2026-07-27, CLOSED: 2 more papers processed, found `qp_tori.py`'s
+  own docstring cites the wrong Olikara method (real finding, doc-only fix registered as `#734`).
+  See its own bullet entry.
 - `#732` — REMOVED from this list 2026-07-27, CLOSED: 3 papers processed, `#724`'s novelty claim
   reinforced (not threatened), `bcr4bp.py`'s indirect term confirmed correct, a cheap GMOS-vs-PDE
   follow-up opportunity found. See its own bullet entry.
@@ -1517,7 +1520,10 @@ generalization), Baresi/Olikara/Scheeres 2018 (torus-continuation method). #733 
 subagent's own browser download): Olikara 2016 PhD thesis (the foundational GMOS/collocation
 torus method genome/qp_tori.py already implements without holding the thesis itself) and Haro
 et al. 2016 (the standard parameterization-method textbook underlying the whole Kumar lineage).
-#734
+#734 for fixing genome/qp_tori.py's own docstring citation imprecision found by #733 -- it cites
+"Olikara 2016" (the thesis) as if its collocation method were used, when the actual code
+implements the earlier Olikara & Scheeres shooting scheme; correct the citation, not the code.
+#735
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15489,28 +15495,42 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (see `#612`'s own precedent). Partially validates preferring GMOS where it already converges
   cleanly (an untested, cheap future follow-up) WITHOUT invalidating the PDE choice for the
   unstable-parent-orbit regime it exists to handle.
-- **#733 (dispatched 2026-07-27) -- process 2 more user-supplied papers from `#730`'s own top-5
-  ranked list (found in `~/Downloads`).** Both verified page-1-exact by the coordinating session:
-  **Olikara, Z.P., "Computation of Quasi-Periodic Tori and Heteroclinic Connections in
-  Astrodynamics Using Collocation Techniques,"** PhD thesis, University of Colorado Boulder (2016)
-  — the foundational GMOS-lineage collocation method for quasi-periodic tori and their manifolds
-  that this project's own `genome/qp_tori.py` ALREADY IMPLEMENTS (via the Olikara-Scheeres 2010
-  paper) WITHOUT holding the thesis itself; also the direct method-lineage source for the already-
-  acquired Baresi/Owen/Scheeres TCP papers. Digest MUST verify `genome/qp_tori.py`'s own
-  implementation actually matches this thesis's described method correctly — a real, checkable
-  correctness question, not just background reading. **Haro, À., Canadell, M., Figueras, J.-L.,
-  Luque, A. & Mondelo, J.M., *The Parameterization Method for Invariant Manifolds: From Rigorous
-  Results to Effective Computations*,** Applied Mathematical Sciences vol. 195, Springer (2016),
-  DOI `10.1007/978-3-319-29662-3` — the standard textbook reference for the entire parameterization-
-  method/Fourier-Taylor manifold-expansion lineage underlying essentially every Kumar/Anderson/de
-  la Llave paper already in this project's corpus; cited repeatedly by name across at least 5
-  already-acquired papers, never itself held. Full OCR-if-needed (likely unnecessary for the
-  thesis; check the book carefully, Springer scans can be image-only) + digest + the mandatory
-  citation-mining pass per `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration
-  for both. Update `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` to mark these 2
-  items ACQUIRED too (same as `#732`'s own instruction) — if `#732` already updated the master list,
-  extend that same update rather than creating a conflicting second edit; check `git log` for
-  `#732`'s own commit first.
+- **#733 ✓ DONE (2026-07-27) -- process 2 more user-supplied papers from `#730`'s own top-5 ranked
+  list (found in `~/Downloads`).** Filed (private `cyclers_pdf` commit `1d796f3`), digested +
+  indexed (public commit `24704c9`), master list extended so all 5 top items are now ACQUIRED.
+  **Real finding: `genome/qp_tori.py`'s own docstring citation is IMPRECISE — it does NOT match
+  Olikara's 2016 thesis method.** `qp_tori.py` implements the EARLIER Olikara & Scheeres 2010/2012
+  GMOS SHOOTING scheme (full-period nonlinear propagation of each Fourier-mode sample, FFT-matched
+  against a rotation-shifted residual) — the thesis's own text is explicit this is its predecessor
+  ("A general purpose shooting-based scheme... is presented in Olikara & Scheeres [2012]") and
+  states its own actual contribution as collocation INSTEAD of shooting (§1.3). `qp_tori.py`'s
+  seed formula/invariance condition match the thesis's Eq. 2.3/1.4/2.29 exactly in FORM, but the
+  thesis's genuinely novel content — the piecewise-polynomial collocation mesh (Eq. 2.31-2.34),
+  its sparse Jacobian, and the free Floquet-stability byproduct (§2.4) — has NO counterpart
+  anywhere in this project's code. Not a functional bug — the shooting method this project actually
+  uses is real and validated — but a real, previously-undocumented citation imprecision in the
+  module's own docstring (citing "Olikara 2016" as if the thesis's method were used, when only the
+  earlier Olikara & Scheeres paper's shooting method actually is). See `#734` for the fix.
+  **Haro et al. 2016 cross-check: confirmed consistent, no discrepancy** — the book's own Ch. 3/5
+  are built on exactly the citation lineage already traced as the theoretical ancestry of the
+  already-acquired Kumar-lineage whiskered-tori papers, now confirmed directly from the book's own
+  text. Citation-mining surfaced 5 new candidates NOT acquired: Calleja/Doedel/Humphries/
+  Lemus-Rodríguez/Oldeman 2012 and Arona & Masdemont 2007 (medium-high, directly relevant to this
+  project's own torus-heteroclinic work), Canalias/Delshams/Masdemont/Roldán 2006 + its 2008
+  spatial companion (medium, scattering-map technique), Jorba & Olmedo 2009 (medium, combined
+  torus+stability method for non-autonomous systems).
+- **#734 (dispatched 2026-07-27) -- fix `genome/qp_tori.py`'s own docstring citation imprecision,
+  found by `#733`.** The module docstring cites "Olikara 2016" (the PhD thesis) as its method
+  source, but the actual implemented algorithm is the EARLIER Olikara & Scheeres 2010/2012 GMOS
+  shooting scheme — the thesis's own genuinely novel contribution (Gauss-Legendre collocation
+  instead of shooting, per `#733`'s own finding) has no counterpart in this code at all. This is a
+  documentation-only fix — the shooting method the code actually implements is real, validated,
+  and NOT being changed. Update the docstring/comments to cite the correct paper(s) (the Olikara &
+  Scheeres shooting-scheme paper(s) — check `docs/notes/CORPUS_INDEX.md`/`#733`'s own digest for
+  the exact already-in-corpus citation) and, if useful, add a brief note that the thesis's own
+  collocation method exists as a documented-but-unimplemented alternative (per `#733`'s digest,
+  `docs/notes/2026-07-27-733-olikara-thesis-haro-parameterization-book-digest.md`) — a real,
+  scoped future upgrade candidate, not something to build now. Do not touch the actual numerics.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
