@@ -34,10 +34,9 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#714`'s gated shortlist items 2 (`mu_Io` continuation of `#690`'s JEG torus) and 3 (does
-  `#694`'s homoclinic connection survive Io's forcing) — unlocked now that `#717` is DONE, and
-  their scoping should be revised lighter given `#717`'s own net-zero-coupling finding (see
-  `#717`'s own bullet). Not yet registered/dispatched.
+- `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) —
+  gated on `#720` (item 2, dispatched) resolving first, per `#714`'s own explicit ordering. Not
+  yet registered.
 - (`#714`/`#715`/`#717` all DONE 2026-07-27 (redispatched after a weekly-limit failure) — `#714`:
   tractable-with-caveats verdict + gated 3-item shortlist; `#715`: honest partial result, new
   interior-perturber + libration-seeded CCR4BP infrastructure validated, specific paper transit
@@ -200,7 +199,9 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- None currently in this N=5 CRNBP thread. `#717` — REMOVED from this list 2026-07-27, CLOSED:
+- `#720` — dispatched 2026-07-27, `#714` shortlist item 2 (`mu_Io` continuation of `#690`'s
+  Europa 3:4 torus). See its own bullet entry for full scope.
+- `#717` — REMOVED from this list 2026-07-27, CLOSED:
   core N=5 EOM+STM built, `#711`/`#712` digest sign discrepancy resolved from source (Negri &
   Prado digest had the error), and a bonus net-zero mutual-coupling-term finding that lightens
   items 2/3's scoping. See its own bullet entry. (`#714`/`#715` — REMOVED from this list
@@ -1427,7 +1428,11 @@ flagged a real risk unlike CCR4BP's own Kumar-2021 precedent -- periodic-orbit e
 general CRNBP is an open question, no known-good structure to validate against yet. #715 for a
 second CCR4BP pipeline positive control using #710's own Callisto-Ganymede-Europa two-hop
 manifold-chain result (chaining two CCR4BPSystem instances) -- lower-risk, direct value-add to
-the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718 for Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep across Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel for asymmetric phase offsets beta in (0, pi) using deflated_newton.py. #719 ✓ DONE -- Sun-Earth-Mars WSB repeating-capture quasi-cycler search (search.mars_wsb_cycler_search / scripts/screen_719_sun_earth_mars_wsb_search.py / tests/test_mars_wsb_cycler_search.py); 144 seeds evaluated across 50-year integration windows, 0 repeating quasi-cyclers found (chaotic Belbruno WSB set non-recurrence confirmed), certified negative in data/found/719_sun_earth_mars_wsb_search/result.json. #720
+the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718 for Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep across Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel for asymmetric phase offsets beta in (0, pi) using deflated_newton.py. #719 ✓ DONE -- Sun-Earth-Mars WSB repeating-capture quasi-cycler search (search.mars_wsb_cycler_search / scripts/screen_719_sun_earth_mars_wsb_search.py / tests/test_mars_wsb_cycler_search.py); 144 seeds evaluated across 50-year integration windows, 0 repeating quasi-cyclers found (chaotic Belbruno WSB set non-recurrence confirmed), certified negative in data/found/719_sun_earth_mars_wsb_search/result.json. #720 for #714
+shortlist item 2 (revised lighter per #717's net-zero-coupling finding): mu_Io continuation of
+#690's Europa 3:4 torus using the new src/cyclerfinder/core/crnbp.py N=5 machinery -- either the
+first known N=5 CRNBP invariant torus (lit-check gate required before any "first" claim) or a
+registry-grade characterized breakdown. #721
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14946,6 +14951,21 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   torus) and 3 (connection survival) were NOT attempted here — but their scoping should be revised
   given the net-zero coupling finding above (likely simpler than `#714` originally estimated, since
   no genuine 3-body-coupled Jacobian term is involved).
+- **#720 (dispatched 2026-07-27) -- `#714` shortlist item 2 (revised lighter per `#717`'s
+  net-zero-coupling finding): `mu_Io` continuation of `#690`'s Europa 3:4 torus using the new
+  `src/cyclerfinder/core/crnbp.py` N=5 machinery.** Continue the already-validated `#690` Europa
+  3:4 CCR4BP torus from `mu_Io=0` to Io's real mass parameter (~4.7e-5), each step controlled by
+  its own converged neighbor (per `#714`'s own recommended self-generated-control approach, since
+  no dynamical positive control exists in the literature for N=5). Since `#717` proved the mutual
+  coupling term is exactly zero, this reduces to adding one independent single-perturber (Io)
+  forcing term on top of the existing validated Europa-Ganymede torus corrector — lighter than
+  `#714`'s original estimate assumed. If the continuation succeeds cleanly: this would be the first
+  known N=5 CRNBP invariant torus — run a fresh literature-clearance check
+  (`search/literature_check.py`) before making any "first" claim, per this project's own mandatory
+  novelty-gate discipline. If it breaks down: characterize the breakdown properly (where in
+  `mu_Io` space, what fails) and register it to `data/empty_regions.jsonl` as a method-versioned
+  negative rather than leaving it uncharacterized. Do NOT proceed to `#714` shortlist item 3
+  (connection survival) until this is resolved either way.
 - **#718 (REGISTERED 2026-07-27) -- Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep.** Multi-start deflated Newton root-finder across asymmetric phase offsets beta in (0, pi) for Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel using `src/cyclerfinder/search/deflated_newton.py`. Targets novel asymmetric `quasi_cycler` rows in the Uranian moon system building on `#663`'s beta ~ 74.3 deg proof-of-concept root.
 - **#719 ✓ DONE (2026-07-27) -- Strategy 3: Sun-Earth-Mars WSB Capture Quasi-Cycler Search.** Interplanetary weak-stability-boundary (WSB) capture quasi-cycler search combining Sun-Mars L1/L2 capture sets (`core/sunmars_wsb.py`) with Earth gravity-assist return legs (`search/mars_wsb_cycler_search.py`). Evaluated 144 grid seeds across 50-year integration windows; 0 repeating quasi-cyclers found, confirming non-recurrence of chaotic Belbruno WSB capture sets across multi-synodic beats. Certified negative saved to `data/found/719_sun_earth_mars_wsb_search/result.json`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
