@@ -34,11 +34,6 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- Acquisition of Kumar/Anderson/de la Llave, "Transfers between Jupiter-Ganymede and
-  Jupiter-Europa Resonant Tori in a Concentric Circular Restricted Four-Body Model," *Acta
-  Astronautica* 211 (2023) pp.76-87, DOI `10.1016/j.actaastro.2023.05.040` (free author-manuscript
-  version on ScienceDirect) — the CCR4BP resonant-tori-transfers paper `#724` flagged, not yet in
-  corpus. Not yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
@@ -210,9 +205,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#726` — dispatched 2026-07-27, user-authorized start of the V0-V5 vetting chain on `#724`'s
-  CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first, `#701`/`#704`
-  precedent). See its own bullet entry.
+- `#726`/`#727` — dispatched 2026-07-27. `#726`: user-authorized start of the V0-V5 vetting chain
+  on `#724`'s CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first,
+  `#701`/`#704` precedent); `#727`: process the user-supplied Kumar/Anderson/de la Llave 2023
+  paper, directly relevant to both `#715` and `#720`/`#724`. See each's own bullet entry.
 - `#725` — REMOVED from this list 2026-07-27, CLOSED: both `#713` papers filed+digested+indexed,
   confirms the RRT 2026 stable Earth-Moon result is genuinely novel (not anticipated by Casoliva's
   own unstable-complement family). See its own bullet entry.
@@ -1476,7 +1472,12 @@ authorized. #725 for actually processing #713's two papers -- user directly supp
 full digest, citation-mine per the new [[feedback_corpus_document_policy]] requirement,
 CORPUS_INDEX.md registration. #726 for starting the V0-V5 vetting chain (#701-style) on #724's
 CONFIRMED narrow N=5 CRNBP torus novelty claim -- real-ephemeris consistency check first (the
-#704 precedent), user-authorized 2026-07-27. #727
+#704 precedent), user-authorized 2026-07-27. #727 for processing Kumar/Anderson/de la Llave 2023
+(Acta Astronautica 211, DOI 10.1016/j.actaastro.2023.05.040), user-supplied PDF -- a CCR4BP
+Jupiter-Ganymede/Jupiter-Europa resonant-tori-transfer paper directly on-point for both #715's own
+unresolved Callisto-Ganymede-Europa transfer search (GPU-assisted manifold near-intersection
+method) and #720/#724's own Europa 3:4 resonant-family N=5 work (paper identifies Ganymede 4:3 as
+the best route to Europa 3:4). #728
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15238,6 +15239,25 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   do not loosen or reinterpret it. Subsequent V0-V5 steps (epoch-robustness scan, schema design,
   catalogue writeback, independence adjudication against the other two novel-status rows) are
   SEPARATE future tasks, gated on this one's own result, not auto-fired.
+- **#727 (dispatched 2026-07-27) -- process Kumar/Anderson/de la Llave 2023, user-supplied PDF.**
+  **Kumar, B., Anderson, R. L. & de la Llave, R., "Transfers between Jupiter-Ganymede and
+  Jupiter-Europa Resonant Tori In a Concentric Circular Restricted 4-Body Model,"** *Acta
+  Astronautica* 211 (2023) pp.76-87, DOI `10.1016/j.actaastro.2023.05.040` — open-access author
+  manuscript (ScienceDirect PII S0094576523002813, Elsevier user license), verified page 1. This is
+  Kumar et al. 2021's own executed N=4 follow-up (the original CCR4BP grounding paper `#690`'s own
+  positive control and `#720`'s own seed orbit both trace back to). Directly relevant to TWO open
+  threads in this project, not just a routine acquisition: (1) it uses a GPU-assisted manifold
+  near-intersection detection method to find transfers between DIFFERENT-moon resonant tori
+  (Jupiter-Ganymede <-> Jupiter-Europa) — potentially the exact "finer/adaptive phase search"
+  `#715`'s own honest-negative Callisto-Ganymede-Europa chained-transfer result flagged as needed;
+  (2) it identifies the Jupiter-Ganymede 4:3 resonance as "the most promising candidate for
+  trajectories to the key 3:4 Jupiter-Europa resonance" — the EXACT resonant family `#720`/`#724`'s
+  own N=5 CRNBP torus is built around, worth checking directly against `#724`'s own claim scope
+  before the `#726` vetting chain concludes. Full OCR-if-needed (likely unnecessary, native PDF) +
+  digest + citation-mining pass (mandatory per `[[feedback_corpus_document_policy]]`) +
+  `CORPUS_INDEX.md` registration. The digest MUST explicitly cross-check its own results against
+  both `#715`'s and `#720`/`#724`'s claims — flag, do not silently note, any overlap or
+  contradiction found.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
