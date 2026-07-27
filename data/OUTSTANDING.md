@@ -34,12 +34,11 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- The `#701`->`#708`-style V0-V5 vetting/writeback chain for `#720`'s CONFIRMED (per `#724`) narrow
-  N=5 CRNBP torus novelty claim — real-ephemeris consistency check, epoch-robustness scan, schema
-  design, catalogue writeback. Not yet registered; a genuine user-facing decision point (proceed to
-  writeback now, or hold) rather than an auto-fire.
-- Acquisition of Kumar/Anderson/de la Llave, *Acta Astronautica* 211 (2023) — the CCR4BP
-  resonant-tori-transfers paper `#724` flagged, not yet in corpus. Not yet registered.
+- Acquisition of Kumar/Anderson/de la Llave, "Transfers between Jupiter-Ganymede and
+  Jupiter-Europa Resonant Tori in a Concentric Circular Restricted Four-Body Model," *Acta
+  Astronautica* 211 (2023) pp.76-87, DOI `10.1016/j.actaastro.2023.05.040` (free author-manuscript
+  version on ScienceDirect) — the CCR4BP resonant-tori-transfers paper `#724` flagged, not yet in
+  corpus. Not yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
@@ -211,11 +210,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- None currently in the N=5 CRNBP thread. `#724` — REMOVED from this list 2026-07-27, CLOSED:
+- `#725`/`#726` — dispatched 2026-07-27. `#725`: process `#713`'s two user-supplied papers;
+  `#726`: user-authorized start of the V0-V5 vetting chain on `#724`'s CONFIRMED narrow N=5 CRNBP
+  torus claim (real-ephemeris consistency check first, `#701`/`#704` precedent). See each's own
+  bullet entry.
+- `#724` — REMOVED from this list 2026-07-27, CLOSED:
   CONFIRMED the narrow novelty claim independently, corrected "interior"->"exterior" terminology,
-  proposed precise defensible claim language. See its own bullet entry. The `#714`->`#724` arc is
-  now at a genuine decision point (writeback chain vs. hold) rather than having more auto-fireable
-  work.
+  proposed precise defensible claim language. See its own bullet entry.
 - `#722` — REMOVED from this list 2026-07-27, CLOSED: acquired+digested the two Surrey TCP papers,
   corrected `#721`'s own citation error, REFINED (not restated) `#721`'s "novelty refuted" verdict
   — a narrow residual novelty claim for `#720`'s specific object plausibly survives, pending one
@@ -1468,7 +1469,12 @@ theta_io0=pi per the real Laplace libration center). #724 for the final confirma
 #720's (now phase-corrected, per #723) N=5 CRNBP torus's narrow residual-novelty claim -- is the
 Europa 3:4 interior-resonant family + physical Ganymede rate combination genuinely absent from
 BOTH Surrey TCP papers (#722), checked one more time skeptically before any V0-V5 writeback is
-authorized. #725
+authorized. #725 for actually processing #713's two papers -- user directly supplied both PDFs
+(JGCD 2010 + AIAA 2008-6434 conference precursor), file into cyclers_pdf/papers/, OCR-if-needed,
+full digest, citation-mine per the new [[feedback_corpus_document_policy]] requirement,
+CORPUS_INDEX.md registration. #726 for starting the V0-V5 vetting chain (#701-style) on #724's
+CONFIRMED narrow N=5 CRNBP torus novelty claim -- real-ephemeris consistency check first (the
+#704 precedent), user-authorized 2026-07-27. #727
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15195,6 +15201,34 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   epoch-robustness, schema design, catalogue writeback) remains a separate future task, not yet
   registered/dispatched. Full report + independent re-verification script
   (`scripts/verify_724_rerun_continuation.py`): commit `409f7b5`.
+- **#725 (dispatched 2026-07-27) -- process `#713`'s two papers, user-supplied.** User directly
+  uploaded both PDFs: **Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, "Two Classes of Cycler
+  Trajectories in the Earth-Moon System,"** *JGCD* 33(5), Sept-Oct 2010, DOI `10.2514/1.46856`
+  (verified page 1: matches `#713`'s confirmed identity exactly), and its conference precursor
+  **"Families of Cycler Trajectories in the Earth-Moon System," AIAA 2008-6434**, AIAA/AAS
+  Astrodynamics Specialist Conf., Honolulu, 18-21 Aug 2008 (verified page 1). File both into the
+  private `cyclers_pdf/papers/` repo (never the public repo), OCR-if-needed, full digest per
+  `[[feedback_corpus_document_policy]]` INCLUDING the citation-mining pass (mandatory per the
+  policy's 2026-07-27 update — read their own background/related-work sections for any other
+  missed topically-adjacent prior art, cross-check against `CORPUS_INDEX.md`, flag not acquire),
+  `CORPUS_INDEX.md` registration. Digest should cover: their EOM/dynamical model, the "unstable
+  cycler" vs. Ross-Roberts-Tsoukkas "stable cycler" family distinction already noted in
+  `docs/notes/2026-06-11-ross-roberts-tsoukkas-2025-mining.md`, any orbit-family tables usable as a
+  future golden/positive-control test, and explicit comparison against this project's own existing
+  Earth-Moon `quasi_cycler`/`cycler` catalogue rows.
+- **#726 (dispatched 2026-07-27) -- start the V0-V5 vetting chain on `#724`'s CONFIRMED narrow N=5
+  CRNBP torus novelty claim, user-authorized 2026-07-27.** Mirrors the `#701`->`#708` Uranus
+  Umbriel-Titania precedent exactly. First step (the `#704` precedent): real-ephemeris consistency
+  check — does `#720`'s (phase-corrected per `#723`) idealized N=5 CRNBP torus survive real
+  Jupiter/Io/Europa/Ganymede SPICE ephemeris, or does it collapse like the Umbriel-Titania case did
+  generically (with a narrow recurring near-miss window)? Reuse this project's own established
+  SPICE-loading + real-N-body-propagation machinery from `#704`
+  (`src/cyclerfinder/search/ccr4bp_real_ephemeris_consistency.py`) — extend it to N=5 rather than
+  rebuilding. Use the EXACT proposed claim language from `#724`'s own report
+  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`) as the object under test —
+  do not loosen or reinterpret it. Subsequent V0-V5 steps (epoch-robustness scan, schema design,
+  catalogue writeback, independence adjudication against the other two novel-status rows) are
+  SEPARATE future tasks, gated on this one's own result, not auto-fired.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
