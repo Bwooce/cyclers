@@ -205,10 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#731`/`#735` — dispatched 2026-07-27. `#731`: user-flagged CI failure investigation (stale
-  catalogue ratchet already diagnosed, other failures need proper root-causing); `#735`: V0-V5
-  vetting chain step 3, catalogue schema design for `#724`'s N=5 torus (design only, user-approval
-  required before implementation). See each's own bullet entry.
+- `#731` — dispatched 2026-07-27, user-flagged CI failure investigation (stale catalogue ratchet
+  already diagnosed, other failures need proper root-causing). See its own bullet entry.
+- `#735` — REMOVED from this list 2026-07-27, CLOSED: full design proposal delivered, recommends a
+  new `quasi_periodic_torus` orbit_class + additive `crnbp_provenance` block — awaiting user
+  approval before any implementation. See its own bullet entry.
 - `#729` — REMOVED from this list 2026-07-27, CLOSED: recurring narrow near-miss window CONFIRMED
   across all 10 tested epochs at the headline torus point — substantially strengthens `#724`'s N=5
   torus claim. See its own bullet entry.
@@ -15550,27 +15551,44 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   left unedited per this project's frozen-snapshot convention, flagged for awareness only.
   Verified: all 5 affected test files pass (4 pre-existing XPASS entries are documented `#731`
   cross-platform BLAS-divergence markers, unrelated), ruff + full mypy clean. Commit `3aa4c61`.
-- **#735 (dispatched 2026-07-27) -- V0-V5 vetting chain step 3: catalogue schema design for
-  `#724`'s (now `#729`-strengthened) N=5 CRNBP torus, user-authorized continuation 2026-07-27.**
-  Mirrors `#707`'s own precedent exactly: DESIGN ONLY, present options to the user for approval
-  BEFORE any implementation — do not write to the catalogue or schema in this task. Core question:
-  what `orbit_class` (or new class) correctly represents this object? It is fundamentally DIFFERENT
-  from `#708`'s own Umbriel-Titania object — that was a torus-HOMOCLINIC-CONNECTION (a manifold
-  intersection linking a torus's own stable/unstable manifolds), matching the existing
-  `torus_homoclinic` class exactly. `#724`'s N=5 object is just a TORUS that persists under real
-  ephemeris in a narrow recurring window (per `#729`) — no homoclinic connection, no manifold
-  intersection has been computed for it at all. Assess: does `torus_homoclinic` as currently
-  defined (schema v5.3, `n_returns=1` semantics) genuinely NOT fit this object (most likely), does
-  `resonant_po` (stable resonant/libration orbit, no demonstrated transport utility,
-  corroboration-only) fit better, or does this need a genuinely NEW `orbit_class` value (e.g. a
-  bare "quasi_periodic_torus" class, mirroring how `torus_homoclinic` itself was created new when
-  nothing else fit)? Also design the `ccr4bp_provenance`-equivalent block for N=5 (the existing
-  block's own `mu`/`mu_gan`/`a_gan`/`omega_gan` fields are N=4-shaped; this object needs a 3rd
-  perturber's parameters too — `mu_io`/`a_io`/`omega_io` or a more general N-body-list structure).
-  Read `docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md` (the `#707` precedent) for the
-  exact process/format to follow, and `#724`'s own report
-  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`) for the EXACT, mandatory
-  claim language this design must be able to represent without loosening it.
+- **#735 ✓ DONE (2026-07-27, Fable) -- V0-V5 vetting chain step 3: catalogue schema design for
+  `#724`'s (now `#729`-strengthened) N=5 CRNBP torus.** Full design proposal (712 lines, mirroring
+  `#707`'s own options-with-tradeoffs format):
+  `docs/notes/2026-07-27-735-n5-crnbp-torus-catalogue-schema-design.md` (commit `9f8cd32`). **NOT
+  YET IMPLEMENTED — needs user approval, same as `#707` required, before any schema/catalogue
+  write.** **Recommended `orbit_class`: a NEW value, `quasi_periodic_torus`** (schema v5.4).
+  Rejected `torus_homoclinic` (highest confidence — that class's defining payload is a computed
+  homoclinic CONNECTION; none exists for this object, using it would leave the class's own defining
+  field permanently null and violate `#724`'s own "no connection/manifold computation exists yet"
+  qualifier). Rejected `resonant_po` (the strongest existing candidate, argued honestly first) on
+  two grounds: encodability (the class presupposes a strictly periodic orbit; a torus's own fields
+  would be null/vacuous under it) AND the hard `epoch_locked=false`/`n_returns='infinite'` ratchet
+  invariant would ACTIVELY ERASE `#726`/`#729`'s own real-ephemeris finding (this object is
+  emphatically NOT epoch-free). Also rejected the `quasi_cycler` KAM-corridor carve-out (CR3BP-
+  scoped, wrong model). **Key judgment call flagged for the user**: the new class's own
+  `epoch_locked`/`n_returns` invariant — recommended Option A (`epoch_locked=true`, `n_returns=1`,
+  "one forcing period of demonstrated real-ephemeris shadowing per recurring narrow window," with
+  a real referent in `#726`/`#729`'s own one-forcing-period check) vs. Option B (`false`/
+  `'infinite'`, the idealized-object-only reading). New `model_assumption: "crnbp"` enum value
+  (parallel to `#707`'s own `ccr4bp` addition; N carried by the perturber-list length, so future
+  N>=6 needs no further schema bump). **Provenance: a new additive `crnbp_provenance` block**
+  (not an extension of `ccr4bp_provenance`) — an ordered `perturbers[]` list
+  (`{body,mu,a,omega,theta0,rate_provenance}`) mirroring `core.crnbp.CRNBPSystem`/
+  `CRNBPPerturber` 1:1, a `resonance_lock` block (the Laplace constraint + Phi_L=pi), a `torus{}`
+  block (seed lineage + `residual_rms=1.234e-4` with the mandatory ~2.1e-3 off-grid closure quoted
+  alongside, per `#724`), and a torus-point-RESOLVED `real_ephemeris_evidence{}` shaped for
+  `#729`'s own actual data (per-torus-point per-epoch `pos_gap`/`vel_gap`/`closest_approach`
+  arrays, an absolute `narrow_near_miss_threshold_km: 5000` gate since no reference connection
+  exists for a relative one, `positive_control` + `generic_collapse_reference` 3.68e5 km for
+  contrast, and an epoch-stability note for the torus-point-dependent-but-epoch-stable dichotomy).
+  `validation_level`: V0 recommended honestly (no independent second-integrator cross-check exists
+  for the torus itself yet, unlike the Umbriel row's own Radau ghost-guard V1) — V1 defensible if a
+  cheap Radau re-closure runs at writeback time. Worked draft row
+  `europa-3-4-crnbp-torus-jupiter-2026` included (illustrative only, not committed), every sourced
+  value traced to `jupiter_europa_io_ganymede_default()`/`#724` §2/`#729`'s own `result.json`;
+  `#724`'s claim language quoted verbatim including the never-"interior" correction. Self-caught
+  and fixed its own mistake before committing: a first-draft citation list had wrong titles,
+  corrected against `CORPUS_INDEX.md`/the actual digests before finalizing.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
