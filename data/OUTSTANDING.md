@@ -1481,9 +1481,13 @@ Jupiter-Ganymede/Jupiter-Europa resonant-tori-transfer paper directly on-point f
 unresolved Callisto-Ganymede-Europa transfer search (GPU-assisted manifold near-intersection
 method) and #720/#724's own Europa 3:4 resonant-family N=5 work (paper identifies Ganymede 4:3 as
 the best route to Europa 3:4). #728 for a user-directed mining pass over
-`https://bhanukumar314.github.io` (Bhanu Kumar's academic site) -- 6 genuinely new papers +1 code
-repo identified, none previously in corpus under any filename/arxiv-id (live cross-check against
-CORPUS_INDEX.md), dispatched 2026-07-27. #729 next-unused):**
+`https://bhanukumar314.github.io` (Bhanu Kumar's academic site) -- CLOSED 2026-07-27: 7 papers
+filed+digested+indexed (6 from the site + 1 found indirectly via a cited code repo's methodology
+source), 1 code repo (`cz-index-matlab`) directly inspected and assessed (background grounding,
+one flagged future-work port candidate, nothing built), 3 concrete Earth-Moon/Uranian cross-checks
+against `#570`/`#312`/`#569`/`#701`-`#708` all came back clean (no overlap or contradiction), one
+paywalled gap (Blazevski & Ocampo 2012) confirmed genuinely inaccessible after a real search, zero
+catalogue/code changes. #729 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -15264,31 +15268,74 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   lineage AND this project's own `ccr4bp.py` ultimately trace to — worth checking whether we
   actually have this foundational paper in corpus) and Anderson/Campagnola/Koh/McElrath/Woollands
   2021 (Europa Lander endgame study, DeltaV~150 m/s / TOF~40 days benchmark).
-- **#728 (dispatched 2026-07-27, user-directed) -- mine `https://bhanukumar314.github.io` (Bhanu
-  Kumar's academic site) for corpus gaps + code, following on from `#727`'s user-supplied single
-  paper.** Full publication list cross-checked live against `CORPUS_INDEX.md`: 6 of 13 listed
-  works already digested (the `#597`/`#688`/`#727` Kumar/Rawat/Rosengren/Ross cislunar-MMR +
-  Kumar/Anderson/de la Llave CCR4BP cluster). 6 genuinely new, none previously acquired under any
-  filename/arxiv-id (checked directly, not from memory): (1) Kumar/Anderson/de la Llave, "Rapid and
-  Accurate Methods for Computing Whiskered Tori..." CMDA, DOI `10.1007/s10569-021-10057-1`, arXiv
-  `2105.11100`; (2) same authors, "High-order resonant orbit manifold expansions for mission
-  design..." CNSNS, DOI `10.1016/j.cnsns.2021.105691`, arXiv `2109.14800`; (3) same authors,
-  "Multi-shooting parameterization methods for invariant manifolds..." (submitted), arXiv
-  `2509.03655`; (4) Kumar/Anderson, "A new fast multiple-shooting method for computing periodic
-  orbits..." (preprint), arXiv `2601.00149`; (5) Kumar/Moreno, "Networks of Periodic Orbits in the
-  Earth-Moon System..." 2025 AAS/AIAA (S3 PDF link on the site) -- directly relevant to `#570`'s
-  cycler-network schema; (6) Kumar/Anderson, "A Survey of Oberon Mean Motion Resonant Unstable
-  Orbit Properties..." 2024 AAS/AIAA (S3 PDF link on the site) -- directly relevant to the
-  project's Uranian-system work (`#312`/`#569` family). Also a code repo,
-  `github.com/bhanukumar314/cz-index-matlab` (MATLAB, Conley-Zehnder indices of CR3BP periodic
-  orbits) -- potential bifurcation/stability-classification reuse for `#299`/`#347`'s own
-  saddle-center branch-tracking work, needs its own read for genuine applicability before any
-  porting. Scope: full OCR-if-needed + digest + citation-mining pass per
-  `[[feedback_corpus_document_policy]]` for all 6 papers, `CORPUS_INDEX.md` registration, and a
-  standalone code-reuse assessment (not a port) of `cz-index-matlab`. Also note `#727`'s own
-  citation-mining pass separately flagged Blazevski & Ocampo 2012 (the CCR4BP model-definition
-  paper `ccr4bp.py` traces to) as a high-priority gap -- worth folding into this same pass if not
-  already in corpus.
+- **#728 ✓ DONE (2026-07-27) -- mine `https://bhanukumar314.github.io` (Bhanu Kumar's academic
+  site) for corpus gaps + code, following on from `#727`'s user-supplied single paper.** Full
+  publication list cross-checked live against `CORPUS_INDEX.md`: 6 of 13 listed works already
+  digested (the `#597`/`#688`/`#727` Kumar/Rawat/Rosengren/Ross cislunar-MMR + Kumar/Anderson/de la
+  Llave CCR4BP cluster). **7 papers filed, OCR-probed (all native text-layer, no OCR needed),
+  digested, and CORPUS_INDEX-registered** (the 6 originally identified + 1 found indirectly, see
+  below), all in the private `cyclers_pdf` repo + public `docs/notes/` digests, single consolidated
+  `CORPUS_INDEX.md` commit (`54d28d0`) to avoid a 3-agent concurrent-edit collision on that shared
+  file: (1)/(2) Kumar/Anderson/de la Llave, CMDA (`10.1007/s10569-021-10057-1`, arXiv `2105.11100`)
+  + CNSNS (`10.1016/j.cnsns.2021.105691`, arXiv `2109.14800`) whiskered-tori/manifold-expansion
+  method papers -- pure background grounding, no active dependency, but a concrete flagged idea:
+  `genome/qp_torus_manifold.py` currently returns only LINEAR manifold directions, a future
+  candidate for the Fourier-Taylor expansion these papers develop; (3) Kumar (solo-authored, NOT
+  co-authored as the dispatch assumed -- caught by the agent, confirmed against the arXiv listing),
+  "Multi-shooting parameterization methods..." arXiv `2509.03655` -- concrete, SCOPED upgrade
+  opportunity: `resonance_network.py` (`#267`)'s own linear-eigenvector EM MMR manifolds are ~1190x
+  worse (fundamental-domain-of-validity, the paper's own Table 1) than this paper's degree-20
+  nonlinear parameterization, same orbit class/Poincaré-section technique -- a real, bounded future
+  task, not built here; (4) Kumar (solo), "A new fast multiple-shooting method..." arXiv
+  `2601.00149` (confirmed genuinely real, a 1-Jan-2026 submission, not a placeholder) -- identifies
+  a genuine capability gap: this project has NO CCR4BP subharmonic-periodic-orbit/secondary-
+  resonance machinery at all, demonstrated on the already-corpused JGE 4:3 + Uranus-Titania-Oberon
+  6:5 systems; (5) Kumar/Moreno, "Networks of Periodic Orbits in the Earth-Moon System..." AAS
+  25-677 -- cross-checked directly against `#570`'s cycler-network schema: **NO overlap**, different
+  mathematical objects (a bifurcation graph of CR3BP periodic-orbit FAMILIES sharing only the word
+  "network" with `#570`'s fleet-of-catalogued-cyclers registry); no schema correction warranted;
+  flags a genuine capability-gap idea (KS regularization through a primary's coordinate singularity,
+  which this project's continuation code has no equivalent of); (6) Kumar/Anderson, "A Survey of
+  Oberon Mean Motion Resonant Unstable Orbit Properties..." AAS 24-288 -- cross-checked directly
+  against BOTH `#312`/`#569` (no overlap, different object class) AND `#701`-`#708` (this project's
+  first confirmed novel CCR4BP finding): **complementary, not overlapping/contradicting** -- same
+  CCR4BP model + same perturbing moon (Titania), different target moon (Oberon here vs. Umbriel in
+  `#701`) and different resonance (near-1:1 here vs. `#701`'s 1:2-exterior); notably the paper
+  explicitly flags computing the CCR4BP-native heteroclinic connection for ITS OWN target moon as
+  future work -- exactly what `#701` already achieved for Umbriel. Also flags an unproven,
+  citation-grounded robustness-check idea: `#701`'s torus_rho_strob=5.9956 sits within 0.074% of an
+  exact 6:1 secondary resonance, which this paper's own overlapping-secondary-resonance framework
+  (used to explain the destruction of Oberon's 6:5 family) suggests is worth a targeted check --
+  NOT treated as a problem given `#701`'s own clean closure residual + independent integrator
+  cross-check, just flagged for a future task. (7) Found INDIRECTLY (not on the original site list;
+  cited by the `cz-index-matlab` code repo as its methodology source): Moreno, Aydin, van Koert,
+  Frauenfelder & Koh 2024, "Bifurcation Graphs for the CR3BP via Symplectic Methods," JAS 71:51
+  (open access, DOI `10.1007/s40295-024-00462-7`) -- the coordinating session's own direct
+  acquisition+read (not delegated); B-signs/GIT-sequence/local-CZ-index toolkit applied to
+  Jupiter-Europa + Saturn-Enceladus bifurcation graphs, Appendix A gives a sourced 29km/14km-
+  altitude Enceladus Halo-to-polar family (Enceladus Orbilander mission relevance); no CZ-index/
+  B-sign/GIT-sequence machinery exists anywhere in `cyclerfinder` (confirmed by direct grep);
+  directly on-point to the SAME day's `#632` Floquet-eigenvector-sign fix (same underlying problem
+  class one level up -- this project has now hit sign/orientation ambiguities in Floquet
+  eigenvectors three separate times: `#515`, `#632`, and this paper's own B-sign formalization of
+  the general case). **Code repo `cz-index-matlab`** (MATLAB, MIT license) directly inspected
+  (cloned + read the actual `.m` source, not just the README): implements this paper's CZ-index
+  algorithm, is the companion code for paper (5) above; same CR3BP rotating-frame/mass-ratio
+  convention as this project's own `core/cr3bp.py`, genuinely portable IN PRINCIPLE but not a quick
+  port (~25KB of core algorithm) -- flagged as a future-work candidate only, nothing built.
+  **Citation-mining**: `#727`'s own flagged gap, Blazevski & Ocampo 2012 (the CCR4BP
+  model-definition paper `ccr4bp.py` traces to), independently searched -- confirmed genuinely
+  PAYWALLED (Physica D/Elsevier, DOI `10.1016/j.physd.2012.03.008`), no arXiv preprint, no free
+  copy found anywhere; now corroborated as a gap by 3 independent digests (this task's papers (4)
+  and (6), plus `#727`). Several other foundational parameterization-method / bifurcation-theory
+  papers (Moreno & Frauenfelder's GIT-sequence original, Haro et al.'s reference book, Broucke
+  1968, and a dozen others) flagged across the individual digests as NOT in corpus -- none acquired
+  here, deliberately left as visible flags for a future prioritization pass rather than an unbounded
+  acquisition spiral. All agent work independently verified against the actual git diffs before
+  being trusted (one agent's report carried an automated security-classifier flag that, on direct
+  diff inspection, proved to be a transient false positive -- both its commits contained exactly
+  the authorized files, nothing else). Zero catalogue writes, zero code changes -- pure corpus
+  acquisition/digest/registry task.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
