@@ -205,10 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness
-  scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#731`: user-flagged
-  CI failure investigation (stale catalogue ratchet already diagnosed, other failures need proper
-  root-causing). See each's own bullet entry.
+- `#729`/`#731`/`#732` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
+  epoch-robustness scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent);
+  `#731`: user-flagged CI failure investigation (stale catalogue ratchet already diagnosed, other
+  failures need proper root-causing); `#732`: process 3 user-supplied top-priority papers from
+  `#730`'s own master list (Blazevski & Ocampo 2012, Negri & Prado 2020, Baresi/Olikara/Scheeres
+  2018). See each's own bullet entry.
 - `#730` — REMOVED from this list 2026-07-27, CLOSED: 68 unique acquisition candidates
   consolidated, DOI-resolved, priority-ranked; found 6 false gaps (papers already in corpus
   re-flagged as missing). See its own bullet entry.
@@ -1505,7 +1507,10 @@ found on the most recent runs (GitHub Actions, run 30247714534 and siblings) -- 
 pre-existing stale catalogue ratchet (non_heliocentric 56->77, from #684/#708, unrelated to this
 session), plus several other failures (qp_torus/qp_tori tolerance flips, a byte-identical
 seed-generation test, 2 timeouts, a ccr4bp_europa_callisto test that passes locally) needing proper
-diagnosis before assuming they're all resource-contention flakes. #732
+diagnosis before assuming they're all resource-contention flakes. #732 for processing 3 of the
+`#730` master-list's own top-5 papers, user-supplied PDFs: Blazevski & Ocampo 2012 (the foundational
+CCR4BP model-definition paper, previously confirmed genuinely paywalled), Negri & Prado 2020 (BCR4BP
+generalization), Baresi/Olikara/Scheeres 2018 (torus-continuation method). #733
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15449,6 +15454,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   genuine regression or document a confirmed environment-specific flake with the SAME specific,
   non-vague reasoning discipline this project already applies elsewhere (`#584`'s own precedent) —
   do not blanket-dismiss everything as "probably CI load" without actually checking.
+- **#732 (dispatched 2026-07-27) -- process 3 user-supplied papers from `#730`'s own top-5
+  ranked list.** All three verified page-1-exact by the coordinating session:
+  **Blazevski, D. & Ocampo, C., "Periodic orbits in the concentric circular restricted four-body
+  problem and their invariant manifolds,"** *Physica D* 241:1158–1167 (2012), DOI
+  `10.1016/j.physd.2012.03.008` — THE foundational CCR4BP model-definition paper this project's own
+  `core/ccr4bp.py`/`core/crnbp.py` lineage traces through the Kumar/Gilliam/Negri-Prado papers but
+  never itself held; previously CONFIRMED genuinely paywalled with no free copy anywhere (per
+  `#728`); the paper's own abstract explicitly discusses "the Jupiter-Europa-Ganymede-spacecraft
+  system" and constructs unstable periodic orbits "based on the well-known Laplace resonance" —
+  directly on-point for the `#714`->`#729` N=5 CRNBP thread, digest MUST cross-check against it.
+  **Negri, R.B. & Prado, A.F.B.A., "Generalizing the Bicircular Restricted Four-Body Problem,"**
+  *JGCD* 43(6):1173–1179 (2020), DOI `10.2514/1.G004848` — the N=4 special case the already-acquired
+  Negri & Prado 2022 CRNBP paper explicitly generalizes; corrects Huang 1960's BCR4BP indirect term,
+  check against this project's own dormant `core/bcr4bp.py`. **Baresi, N., Olikara, Z.P. &
+  Scheeres, D.J., "Fully Numerical Methods for Continuing Families of Quasi-Periodic Invariant
+  Tori in Astrodynamics,"** *J. Astronaut. Sci.* 65:157–182 (2018), DOI `10.1007/s40295-017-0124-6`
+  — the specific torus-continuation method both already-acquired Baresi/Owen/Scheeres TCP papers
+  cite for their own algorithm; also directly comparable to this project's own `#690`/`#720`
+  pseudospectral torus corrector methodology. Full OCR-if-needed + digest + the mandatory
+  citation-mining pass per `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration
+  for all three. Update `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`'s own §1 or
+  a new note marking these 3 items ACQUIRED (not a live backlog gap anymore) — do not leave the
+  master list stale.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
