@@ -198,6 +198,14 @@ _LEGACY_EXEMPT: frozenset[str] = frozenset(
         # writeback). Same category as #704 immediately above. Visible,
         # reviewed exemption per this file's own docstring.
         "run_705_epoch_robustness_scan.py",
+        # #729: the N=5 CRNBP-torus analogue of #705 immediately above --
+        # reruns #726's own fixed dense-synodic-scan-plus-bisection
+        # methodology at a fixed, small, enumerated list of 10 well-separated
+        # multi-year epochs AND 5 fixed torus points (no region_id/n_points
+        # concept to preflight; no open-ended catalogue-region discovery
+        # sweep; no catalogue writeback). Same category as #704/#705 above.
+        # Visible, reviewed exemption per this file's own docstring.
+        "run_729_epoch_torus_robustness_scan.py",
     }
 )
 
