@@ -205,11 +205,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#731` — dispatched 2026-07-27, user-flagged CI failure investigation (stale catalogue ratchet
-  already diagnosed, other failures need proper root-causing). See its own bullet entry.
+- `#731`/`#736` — dispatched 2026-07-27. `#731`: user-flagged CI failure investigation (stale
+  catalogue ratchet already diagnosed, other failures need proper root-causing); `#736`: V0-V5
+  vetting chain step 4, implement `#735`'s user-approved schema design + catalogue writeback
+  (mandatory Fable pre-execution review before committing). See each's own bullet entry.
 - `#735` — REMOVED from this list 2026-07-27, CLOSED: full design proposal delivered, recommends a
-  new `quasi_periodic_torus` orbit_class + additive `crnbp_provenance` block — awaiting user
-  approval before any implementation. See its own bullet entry.
+  new `quasi_periodic_torus` orbit_class + additive `crnbp_provenance` block — user approved as
+  proposed. See its own bullet entry.
 - `#729` — REMOVED from this list 2026-07-27, CLOSED: recurring narrow near-miss window CONFIRMED
   across all 10 tested epochs at the headline torus point — substantially strengthens `#724`'s N=5
   torus claim. See its own bullet entry.
@@ -1532,7 +1534,12 @@ implements the earlier Olikara & Scheeres shooting scheme; correct the citation,
 now #729-strengthened N=5 CRNBP torus -- user-authorized continuation 2026-07-27, mirroring #707's
 own precedent (present design options to user for approval before implementation); this object is
 a torus, NOT a homoclinic connection like the Umbriel-Titania #708 case, so may not fit the
-existing torus_homoclinic class as-is. #736
+existing torus_homoclinic class as-is. #736 for the V0-V5 vetting chain step 4: implement #735's
+approved schema design (user approved "as proposed" 2026-07-27) -- schema v5.4 bump (new
+orbit_class quasi_periodic_torus, new model_assumption crnbp, new additive crnbp_provenance
+block), actual catalogue writeback of the N=5 Europa-3:4 CRNBP torus row, epoch_locked=true/
+n_returns=1 per the approved Option A. Mandatory Fable pre-execution review before committing,
+mirroring the #569/#708 precedent. #737
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15589,6 +15596,32 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#724`'s claim language quoted verbatim including the never-"interior" correction. Self-caught
   and fixed its own mistake before committing: a first-draft citation list had wrong titles,
   corrected against `CORPUS_INDEX.md`/the actual digests before finalizing.
+- **#736 (dispatched 2026-07-27) -- V0-V5 vetting chain step 4: implement `#735`'s approved
+  schema design + actual catalogue writeback for `#724`'s N=5 CRNBP torus.** User approved `#735`
+  "as proposed" (2026-07-27) — implement EXACTLY that design, do not deviate: (1) bump
+  `data/catalogue.schema.json` to v5.4 — add `quasi_periodic_torus` to the `orbit_class` enum, add
+  `crnbp` to the `model_assumption` enum, add a new additive `crnbp_provenance` block (an ordered
+  `perturbers[]` list mirroring `core.crnbp.CRNBPSystem`/`CRNBPPerturber` 1:1, a `resonance_lock`
+  block, a `torus{}` block, a torus-point-resolved `real_ephemeris_evidence{}` — full field
+  structure in `docs/notes/2026-07-27-735-n5-crnbp-torus-catalogue-schema-design.md`, follow it
+  exactly, do not improvise new fields); (2) write the actual catalogue row (working title
+  `europa-3-4-crnbp-torus-jupiter-2026`, per `#735`'s own worked draft) to `data/catalogue.yaml`
+  with EVERY sourced value traced to `jupiter_europa_io_ganymede_default()`/`#724`'s own report
+  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`, §2's EXACT claim language,
+  quoted verbatim, including the mandatory never-"interior" correction and all qualifiers)/`#729`'s
+  own actual per-epoch/per-torus-point `pos_gap`/`vel_gap` numbers (do not summarize away the real
+  data into a single number); `epoch_locked=true`, `n_returns=1` (approved Option A);
+  `validation_level: V0` unless a cheap Radau re-closure is run first to honestly justify V1 (per
+  `#735`'s own recommendation — do not claim V1 without actually running that check); (3) update
+  `src/cyclerfinder/data/validate.py`'s `_LEVEL_EVIDENCE` and any other code that enumerates
+  `orbit_class`/`model_assumption` values, following the exact pattern `#708` used for
+  `torus_homoclinic`/`ccr4bp`; (4) update all affected ratchet tests (`tests/data/test_jsonschema.py`,
+  the schema-version ratchet, catalogue census counts) — run the FULL `tests/data tests/search`
+  ratchet suite, not a hand-picked subset, per `[[feedback_catalogue_edits_run_all_ratchets]]`; (5)
+  **MANDATORY Fable pre-execution review before committing the catalogue write** — same discipline
+  `#569`/`#708` both required; do not skip this step. This is the catalogue's THIRD genuinely novel
+  finding if this lands cleanly (after `#312` and the Umbriel-Titania `#708` row) — treat the
+  writeback with the same care both of those received.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
