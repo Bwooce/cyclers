@@ -192,9 +192,23 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#714`/`#715` — dispatched 2026-07-26. `#714` is a Fable CCR5BP/CRNBP discovery-strategy
-  scoping pass; `#715` is a second CCR4BP pipeline positive control via `#710`'s own
-  Callisto-Ganymede-Europa two-hop chain. See each's own bullet entry for full scope.
+- `#714`/`#715` — BOTH DISPATCH FAILED 2026-07-26 (weekly API usage limit, resets 12pm AEST
+  2026-07-27, not a methodology issue) — need straight redispatch after reset. `#714` is a Fable
+  CCR5BP/CRNBP discovery-strategy scoping pass; `#715` is a second CCR4BP pipeline positive control
+  via `#710`'s own Callisto-Ganymede-Europa two-hop chain. See each's own bullet entry for full
+  scope.
+- **TASK-NUMBER COLLISION NOTED 2026-07-26**: untracked files appeared in the working tree
+  (`data/found/711_ccr4bp_saturn_titan_hyperion_search/`,
+  `scripts/screen_711_ccr4bp_saturn_titan_hyperion_search.py`,
+  `src/cyclerfinder/core/ccr4bp_titan_hyperion.py`, `tests/test_ccr4bp_titan_hyperion.py`) — a
+  Saturn Titan-Hyperion CCR4BP search reusing number `#711`, already assigned in this file to the
+  Gilliam & Bettinger digest task. This does NOT match anything either coordinating-session agent
+  was doing — most likely a separate, concurrent session working this same repo with its own
+  independent numbering. Per `[[feedback_concurrent_agent_git_rules]]` these files were left
+  untouched (not created this session, not this session's to delete/commit). If you are that
+  other session: this repo's task numbers are sequential-next-unused with no shared registry (see
+  `[[project_task_numbering_convention]]`) — the next-unused number as of this file's own
+  `TASK ALLOCATIONS` paragraph tail is `#716`; please renumber your own work to avoid a collision.
 - None currently in the earlier N-body-literature thread. `#710`/`#711`/`#712` — REMOVED from
   this list 2026-07-26, all CLOSED (acquire+digest three papers found while scoping a possible
   next N-body-discovery frontier: Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024
@@ -14815,7 +14829,10 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   turned out to be citation-detail mismatches for papers already digested under different
   author/year attribution — Yang/Hu/Bai/Li 2023 and the existing DOI-`10.2514/1.11939` 2004 JSR
   paper respectively.)
-- **#714 (dispatched 2026-07-26) -- CCR5BP/CRNBP discovery-strategy scoping pass (Fable).** Now
+- **#714 DISPATCH FAILED (2026-07-26) -- weekly API usage limit hit, NOT a methodology failure.**
+  Agent got as far as skimming the search modules before terminating; resets 12pm
+  (Australia/Sydney) 2026-07-27. Needs a straight redispatch after reset, same scope as below --
+  CCR5BP/CRNBP discovery-strategy scoping pass (Fable).** Now
   that `#710`/`#711`/`#712` have delivered three grounding papers for a genuine N>=5-body
   generalization (Negri & Prado 2022's general CRNBP framework; Gilliam & Bettinger 2024's Jovian
   N=5 application + thesis-level Uranus-Titania/Oberon equilibrium tables; Aryan & Fitzgerald
@@ -14828,7 +14845,11 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   connection structure to validate against before ever building `#689`-`#694`'s pipeline. If N=5
   is judged intractable without a positive control, consider whether Gilliam's own Uranus-Titania/
   Oberon equilibrium-point tables (digit-grade, per `#711`'s digest) could serve as one.
-- **#715 (dispatched 2026-07-26) -- second CCR4BP pipeline positive control via `#710`'s own
+- **#715 DISPATCH FAILED (2026-07-26) -- weekly API usage limit hit, NOT a methodology failure.**
+  Agent terminated before writing any code or committing anything (confirmed via `git status` --
+  no stray uncommitted work from this task specifically); resets 12pm (Australia/Sydney)
+  2026-07-27. Needs a straight redispatch after reset, same scope as below -- second CCR4BP
+  pipeline positive control via `#710`'s own
   Callisto-Ganymede-Europa two-hop manifold chain.** `#710`'s digest flagged this directly: the
   Aryan & Fitzgerald paper's own transit result (Callisto L1 unstable manifold -> ~60-day flyby
   rendezvous with Ganymede -> ~74-day L2 stable manifold to Europa) is a candidate second positive
