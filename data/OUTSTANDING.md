@@ -205,10 +205,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#726`/`#727` — dispatched 2026-07-27. `#726`: user-authorized start of the V0-V5 vetting chain
-  on `#724`'s CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first,
-  `#701`/`#704` precedent); `#727`: process the user-supplied Kumar/Anderson/de la Llave 2023
-  paper, directly relevant to both `#715` and `#720`/`#724`. See each's own bullet entry.
+- `#726` — dispatched 2026-07-27, user-authorized start of the V0-V5 vetting chain on `#724`'s
+  CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first, `#701`/`#704`
+  precedent); stalled on a backgrounded ratchet run, coordinating session polling directly. See its
+  own bullet entry.
+- `#727` — REMOVED from this list 2026-07-27, CLOSED: processed the Kumar/Anderson/de la Llave
+  2023 paper, confirmed `#724`'s N=5 novelty claim is unaffected (paper is entirely N=4). See its
+  own bullet entry.
 - `#725` — REMOVED from this list 2026-07-27, CLOSED: both `#713` papers filed+digested+indexed,
   confirms the RRT 2026 stable Earth-Moon result is genuinely novel (not anticipated by Casoliva's
   own unstable-complement family). See its own bullet entry.
@@ -1477,8 +1480,10 @@ CONFIRMED narrow N=5 CRNBP torus novelty claim -- real-ephemeris consistency che
 Jupiter-Ganymede/Jupiter-Europa resonant-tori-transfer paper directly on-point for both #715's own
 unresolved Callisto-Ganymede-Europa transfer search (GPU-assisted manifold near-intersection
 method) and #720/#724's own Europa 3:4 resonant-family N=5 work (paper identifies Ganymede 4:3 as
-the best route to Europa 3:4). #728
-next-unused):**
+the best route to Europa 3:4). #728 for a user-directed mining pass over
+`https://bhanukumar314.github.io` (Bhanu Kumar's academic site) -- 6 genuinely new papers +1 code
+repo identified, none previously in corpus under any filename/arxiv-id (live cross-check against
+CORPUS_INDEX.md), dispatched 2026-07-27. #729 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -15239,25 +15244,51 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   do not loosen or reinterpret it. Subsequent V0-V5 steps (epoch-robustness scan, schema design,
   catalogue writeback, independence adjudication against the other two novel-status rows) are
   SEPARATE future tasks, gated on this one's own result, not auto-fired.
-- **#727 (dispatched 2026-07-27) -- process Kumar/Anderson/de la Llave 2023, user-supplied PDF.**
-  **Kumar, B., Anderson, R. L. & de la Llave, R., "Transfers between Jupiter-Ganymede and
-  Jupiter-Europa Resonant Tori In a Concentric Circular Restricted 4-Body Model,"** *Acta
-  Astronautica* 211 (2023) pp.76-87, DOI `10.1016/j.actaastro.2023.05.040` — open-access author
-  manuscript (ScienceDirect PII S0094576523002813, Elsevier user license), verified page 1. This is
-  Kumar et al. 2021's own executed N=4 follow-up (the original CCR4BP grounding paper `#690`'s own
-  positive control and `#720`'s own seed orbit both trace back to). Directly relevant to TWO open
-  threads in this project, not just a routine acquisition: (1) it uses a GPU-assisted manifold
-  near-intersection detection method to find transfers between DIFFERENT-moon resonant tori
-  (Jupiter-Ganymede <-> Jupiter-Europa) — potentially the exact "finer/adaptive phase search"
-  `#715`'s own honest-negative Callisto-Ganymede-Europa chained-transfer result flagged as needed;
-  (2) it identifies the Jupiter-Ganymede 4:3 resonance as "the most promising candidate for
-  trajectories to the key 3:4 Jupiter-Europa resonance" — the EXACT resonant family `#720`/`#724`'s
-  own N=5 CRNBP torus is built around, worth checking directly against `#724`'s own claim scope
-  before the `#726` vetting chain concludes. Full OCR-if-needed (likely unnecessary, native PDF) +
-  digest + citation-mining pass (mandatory per `[[feedback_corpus_document_policy]]`) +
-  `CORPUS_INDEX.md` registration. The digest MUST explicitly cross-check its own results against
-  both `#715`'s and `#720`/`#724`'s claims — flag, do not silently note, any overlap or
-  contradiction found.
+- **#727 ✓ DONE (2026-07-27) -- process Kumar/Anderson/de la Llave 2023, user-supplied PDF.**
+  Filed (private `cyclers_pdf` commit `231a9d1`), digested + indexed (public commit `dceb9b7`).
+  **Cross-check #1 (`#715`)**: their GPU method (spatially-partitioned mesh-intersection search
+  over full discretized manifold surfaces, bounding-box + Moller triangle tests) IS the class of
+  upgrade `#715`'s own report flagged as needed — but NOT a drop-in fix: it intersects two
+  manifolds WITHIN the same CCR4BP system's phase space (e.g. Jupiter-Ganymede-Europa), whereas
+  `#715` chains two DIFFERENT CCR4BP systems via a Ganymede-position rendezvous — structurally
+  closer to the "patched CRTBP" approach this paper explicitly contrasts itself against.
+  Reformulating `#715` to use mesh-intersection is a plausible future follow-on, not something this
+  paper already delivers. Sobering context: even the paper's own best-case same-system pair (JG
+  4:3<->JE 3:4) found only near-intersections (nonzero DeltaV ~150-220 m/s), never an exact
+  heteroclinic connection. **Cross-check #2 (`#720`/`#724`)**: confirmed by FULL-TEXT read (not
+  just the abstract) that this paper is ENTIRELY N=4 (Jupiter+Ganymede+Europa+spacecraft only) — no
+  mention of Io anywhere; its own only generalization direction (Sec 4.4) is a SPATIAL (3D,
+  out-of-plane) N=4 extension, not additional perturbing bodies. **`#724`'s N=5 torus novelty claim
+  is UNAFFECTED — no correction needed.** Citation-mining pass flagged 15 candidates NOT acquired,
+  2 high priority: Blazevski & Ocampo 2012 (the original CCR4BP model-definition paper the Kumar
+  lineage AND this project's own `ccr4bp.py` ultimately trace to — worth checking whether we
+  actually have this foundational paper in corpus) and Anderson/Campagnola/Koh/McElrath/Woollands
+  2021 (Europa Lander endgame study, DeltaV~150 m/s / TOF~40 days benchmark).
+- **#728 (dispatched 2026-07-27, user-directed) -- mine `https://bhanukumar314.github.io` (Bhanu
+  Kumar's academic site) for corpus gaps + code, following on from `#727`'s user-supplied single
+  paper.** Full publication list cross-checked live against `CORPUS_INDEX.md`: 6 of 13 listed
+  works already digested (the `#597`/`#688`/`#727` Kumar/Rawat/Rosengren/Ross cislunar-MMR +
+  Kumar/Anderson/de la Llave CCR4BP cluster). 6 genuinely new, none previously acquired under any
+  filename/arxiv-id (checked directly, not from memory): (1) Kumar/Anderson/de la Llave, "Rapid and
+  Accurate Methods for Computing Whiskered Tori..." CMDA, DOI `10.1007/s10569-021-10057-1`, arXiv
+  `2105.11100`; (2) same authors, "High-order resonant orbit manifold expansions for mission
+  design..." CNSNS, DOI `10.1016/j.cnsns.2021.105691`, arXiv `2109.14800`; (3) same authors,
+  "Multi-shooting parameterization methods for invariant manifolds..." (submitted), arXiv
+  `2509.03655`; (4) Kumar/Anderson, "A new fast multiple-shooting method for computing periodic
+  orbits..." (preprint), arXiv `2601.00149`; (5) Kumar/Moreno, "Networks of Periodic Orbits in the
+  Earth-Moon System..." 2025 AAS/AIAA (S3 PDF link on the site) -- directly relevant to `#570`'s
+  cycler-network schema; (6) Kumar/Anderson, "A Survey of Oberon Mean Motion Resonant Unstable
+  Orbit Properties..." 2024 AAS/AIAA (S3 PDF link on the site) -- directly relevant to the
+  project's Uranian-system work (`#312`/`#569` family). Also a code repo,
+  `github.com/bhanukumar314/cz-index-matlab` (MATLAB, Conley-Zehnder indices of CR3BP periodic
+  orbits) -- potential bifurcation/stability-classification reuse for `#299`/`#347`'s own
+  saddle-center branch-tracking work, needs its own read for genuine applicability before any
+  porting. Scope: full OCR-if-needed + digest + citation-mining pass per
+  `[[feedback_corpus_document_policy]]` for all 6 papers, `CORPUS_INDEX.md` registration, and a
+  standalone code-reuse assessment (not a port) of `cz-index-matlab`. Also note `#727`'s own
+  citation-mining pass separately flagged Blazevski & Ocampo 2012 (the CCR4BP model-definition
+  paper `ccr4bp.py` traces to) as a high-priority gap -- worth folding into this same pass if not
+  already in corpus.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
