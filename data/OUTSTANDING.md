@@ -35,13 +35,14 @@ unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) —
-  gated on `#720` (item 2, dispatched) resolving first, per `#714`'s own explicit ordering. Not
-  yet registered.
-- (`#714`/`#715`/`#717` all DONE 2026-07-27 (redispatched after a weekly-limit failure) — `#714`:
-  tractable-with-caveats verdict + gated 3-item shortlist; `#715`: honest partial result, new
-  interior-perturber + libration-seeded CCR4BP infrastructure validated, specific paper transit
-  chain not reproduced; `#717`: core N=5 EOM+STM built, sign discrepancy resolved from source, a
-  bonus net-zero-coupling finding. See each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
+  gated on `#721`'s adversarial-verification verdict on `#720`, per `#714`'s own explicit
+  ordering. Not yet registered.
+- (`#714`/`#715`/`#717`/`#720` all DONE 2026-07-27 — `#714`: tractable-with-caveats verdict +
+  gated 3-item shortlist; `#715`: honest partial result, new interior-perturber + libration-seeded
+  CCR4BP infrastructure validated, specific paper transit chain not reproduced; `#717`: core N=5
+  EOM+STM built, sign discrepancy resolved from source, a bonus net-zero-coupling finding; `#720`:
+  a promising but NOT YET independently adjudicated N=5 CRNBP torus continuation — see `#721`.
+  See each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
   2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
   on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
@@ -199,8 +200,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#720` — dispatched 2026-07-27, `#714` shortlist item 2 (`mu_Io` continuation of `#690`'s
-  Europa 3:4 torus). See its own bullet entry for full scope.
+- `#721` — dispatched 2026-07-27, adversarial verification of `#720`'s N=5 CRNBP torus. See its
+  own bullet entry for full scope.
+- `#720` — REMOVED from this list 2026-07-27, CLOSED (promising result, gated pending `#721`'s
+  verdict before any novelty claim or writeback). See its own bullet entry.
 - `#717` — REMOVED from this list 2026-07-27, CLOSED:
   core N=5 EOM+STM built, `#711`/`#712` digest sign discrepancy resolved from source (Negri &
   Prado digest had the error), and a bonus net-zero mutual-coupling-term finding that lightens
@@ -14951,21 +14954,59 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   torus) and 3 (connection survival) were NOT attempted here — but their scoping should be revised
   given the net-zero coupling finding above (likely simpler than `#714` originally estimated, since
   no genuine 3-body-coupled Jacobian term is involved).
-- **#720 (dispatched 2026-07-27) -- `#714` shortlist item 2 (revised lighter per `#717`'s
-  net-zero-coupling finding): `mu_Io` continuation of `#690`'s Europa 3:4 torus using the new
-  `src/cyclerfinder/core/crnbp.py` N=5 machinery.** Continue the already-validated `#690` Europa
-  3:4 CCR4BP torus from `mu_Io=0` to Io's real mass parameter (~4.7e-5), each step controlled by
-  its own converged neighbor (per `#714`'s own recommended self-generated-control approach, since
-  no dynamical positive control exists in the literature for N=5). Since `#717` proved the mutual
-  coupling term is exactly zero, this reduces to adding one independent single-perturber (Io)
-  forcing term on top of the existing validated Europa-Ganymede torus corrector — lighter than
-  `#714`'s original estimate assumed. If the continuation succeeds cleanly: this would be the first
-  known N=5 CRNBP invariant torus — run a fresh literature-clearance check
-  (`search/literature_check.py`) before making any "first" claim, per this project's own mandatory
-  novelty-gate discipline. If it breaks down: characterize the breakdown properly (where in
-  `mu_Io` space, what fails) and register it to `data/empty_regions.jsonl` as a method-versioned
-  negative rather than leaving it uncharacterized. Do NOT proceed to `#714` shortlist item 3
-  (connection survival) until this is resolved either way.
+- **#720 ✓ DONE (2026-07-27) -- `#714` shortlist item 2: `mu_Io` continuation of `#690`'s Europa
+  3:4 torus.** **PROMISING RESULT, NOT YET INDEPENDENTLY ADJUDICATED — do not cite as a confirmed
+  discovery until `#721` (adversarial verification) closes.** Built
+  `src/cyclerfinder/search/variational_crnbp_torus.py` (an EOM swap of `#690`'s own pseudospectral
+  torus corrector onto `#717`'s N=5 `crnbp.py`, `#689`/`#690` themselves untouched; the coupling
+  term is deliberately omitted from the residual/Jacobian per `#717`'s proof, re-verified
+  pointwise to <1e-12 against the full coupling-included EOM). Continuation from `#690`'s validated
+  `mu_Io=0` seed to the real physical `mu_Io=4.70434e-5` (`#717`'s own registry value): smooth,
+  monotonic, ~1.5% total residual drift, well inside `#690`'s own gates (residual <1e-3, closure
+  <5e-3) — table of steps in the agent's own report. A one-shot cold jump straight to the physical
+  value reproduces the same result to 4 significant figures (rules out a fragile-continuation
+  artifact). **Real physical finding along the way**: `#690`'s own default `n1=1` CANNOT represent
+  Io's forcing at all — the exact Laplace lock (`omega_Io = -2*omega_Gan`) makes Io's synodic
+  position a pure SECOND-HARMONIC function of `theta1`, so `n1=1` throws the corrector onto a bad
+  branch (flat residual ~0.035, a representation-capacity wall, not a magnitude effect); `n1=2` is
+  the minimal fix, locked into its own regression test. **Literature-check gate**: offline
+  `literature_check.py::check_literature` returned a `published` hit (Russell-Strange 2009
+  Ganymede-Europa flyby cycler) — manually confirmed this is a known tool-scope false positive
+  (trivial `{Jupiter,Europa}` subset match against a structurally unrelated repeated-flyby-cycler
+  object, not a torus). Manual digest-reads of the two plausible Jovian triple-cycler corpus
+  anchors (Hernandez/Jones/Jesick AAS 17-608, Lynam-Longuski 2011) confirmed both are patched-conic
+  flyby tours, a different object class (repeated close approaches vs. a bounded resonant orbit
+  with no Io/Ganymede approach). Fresh live `WebSearch` (mirroring `#699`/`#706`'s methodology)
+  surfaced only already-known N=4/N=5 EOM papers plus a 1976 Heppenheimer averaged-equilibrium
+  paper (different method/era) and a qualitative Gilliam-thesis raw-propagation figure (different
+  orbit family, no corrected torus) — no paper found computing a converged N=5 CRNBP torus for
+  this system. 8 new tests in `tests/search/test_variational_crnbp_torus.py` (grid RHS/Jacobian vs
+  full EOM at machine precision, residual-Jacobian vs. central FD, `mu_io=0` Tier-0 structural gate
+  bit-identical to `#690`, the `n1=1` branch-jump regression, the `n1=2` continuation headline
+  result, the one-shot robustness check). ruff+mypy clean, full ratchet clean apart from the same 2
+  confirmed pre-existing unrelated failures noted in `#717`. Commit `52c011f`. **Explicitly NOT
+  claimed as novel/first by the dispatched agent itself, per instruction** — that framing (and any
+  catalogue writeback) is deliberately deferred to a proper adversarial verification pass, mirroring
+  the `#701`→`#702` precedent where a first-pass "looks clean" result concealed a real bug found
+  only via skeptical re-investigation. See `#721`.
+- **#721 (dispatched 2026-07-27) -- adversarial verification of `#720`'s N=5 CRNBP torus.**
+  Explicitly modeled on the `#701`→`#702` precedent: before trusting `#720`'s "smooth clean
+  continuation, no disqualifying literature" result as a real discovery, get an independently
+  skeptical re-derivation/re-check — do not just re-run the same code and re-read the same
+  residual numbers. Scope: (1) independently re-derive or cross-check the coupling-term-omission
+  claim from `#717` directly against the raw N=5 EOM, not by trusting `#717`'s own tests; (2)
+  independently re-verify the `n1=2` torus's own convergence using a DIFFERENT integrator/method
+  than `variational_crnbp_torus.py`'s own pseudospectral approach (this project's own
+  `ghost_guard`-style independent-integrator cross-check discipline — grep `#694`'s
+  `ccr4bp_heteroclinic_search.py` for the pattern); (3) independently re-run the literature
+  clearance with fresh eyes, specifically hunting for anything the first pass might have
+  structurally missed (the `#699`/`#706` methodology, but genuinely adversarial — try to find a
+  reason this ISN'T novel, not confirm that it is); (4) sanity-check the "first N=5 CRNBP torus"
+  framing itself against what `#711`/`#712`'s own source papers actually claim was previously
+  unknown. Deliver a clear CONFIRMED/NOT-CONFIRMED verdict, not a restatement of `#720`'s own
+  claims. Only on a CONFIRMED verdict does this become eligible for the same V0-V5
+  vetting/writeback chain `#701`→`#708` used (real-ephemeris consistency check, epoch-robustness,
+  schema design, catalogue writeback) — none of that is authorized yet.
 - **#718 (REGISTERED 2026-07-27) -- Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep.** Multi-start deflated Newton root-finder across asymmetric phase offsets beta in (0, pi) for Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel using `src/cyclerfinder/search/deflated_newton.py`. Targets novel asymmetric `quasi_cycler` rows in the Uranian moon system building on `#663`'s beta ~ 74.3 deg proof-of-concept root.
 - **#719 ✓ DONE (2026-07-27) -- Strategy 3: Sun-Earth-Mars WSB Capture Quasi-Cycler Search.** Interplanetary weak-stability-boundary (WSB) capture quasi-cycler search combining Sun-Mars L1/L2 capture sets (`core/sunmars_wsb.py`) with Earth gravity-assist return legs (`search/mars_wsb_cycler_search.py`). Evaluated 144 grid seeds across 50-year integration windows; 0 repeating quasi-cyclers found, confirming non-recurrence of chaotic Belbruno WSB capture sets across multi-synodic beats. Certified negative saved to `data/found/719_sun_earth_mars_wsb_search/result.json`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
