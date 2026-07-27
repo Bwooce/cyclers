@@ -205,9 +205,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#736` — dispatched 2026-07-27, V0-V5 vetting chain step 4, implement `#735`'s user-approved
-  schema design + catalogue writeback (mandatory Fable pre-execution review before committing).
-  See its own bullet entry.
+- None currently. `#736` — REMOVED from this list 2026-07-28, CLOSED: schema v5.4 + catalogue
+  writeback landed — the catalogue's THIRD genuinely novel finding. Original implementing agent
+  stalled silently; coordinating session independently verified and completed the commit itself
+  after a mandatory Fable review caught and fixed 5 real defects. See its own bullet entry.
 - `#737` — REMOVED from this list 2026-07-27, CLOSED: 6 CI timeouts fixed; triggered and then
   cleared a security-classifier flag on independent investigation (false positive — see its own
   bullet entry for the full verification).
@@ -15604,32 +15605,39 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#724`'s claim language quoted verbatim including the never-"interior" correction. Self-caught
   and fixed its own mistake before committing: a first-draft citation list had wrong titles,
   corrected against `CORPUS_INDEX.md`/the actual digests before finalizing.
-- **#736 (dispatched 2026-07-27) -- V0-V5 vetting chain step 4: implement `#735`'s approved
-  schema design + actual catalogue writeback for `#724`'s N=5 CRNBP torus.** User approved `#735`
-  "as proposed" (2026-07-27) — implement EXACTLY that design, do not deviate: (1) bump
-  `data/catalogue.schema.json` to v5.4 — add `quasi_periodic_torus` to the `orbit_class` enum, add
-  `crnbp` to the `model_assumption` enum, add a new additive `crnbp_provenance` block (an ordered
-  `perturbers[]` list mirroring `core.crnbp.CRNBPSystem`/`CRNBPPerturber` 1:1, a `resonance_lock`
-  block, a `torus{}` block, a torus-point-resolved `real_ephemeris_evidence{}` — full field
-  structure in `docs/notes/2026-07-27-735-n5-crnbp-torus-catalogue-schema-design.md`, follow it
-  exactly, do not improvise new fields); (2) write the actual catalogue row (working title
-  `europa-3-4-crnbp-torus-jupiter-2026`, per `#735`'s own worked draft) to `data/catalogue.yaml`
-  with EVERY sourced value traced to `jupiter_europa_io_ganymede_default()`/`#724`'s own report
-  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`, §2's EXACT claim language,
-  quoted verbatim, including the mandatory never-"interior" correction and all qualifiers)/`#729`'s
-  own actual per-epoch/per-torus-point `pos_gap`/`vel_gap` numbers (do not summarize away the real
-  data into a single number); `epoch_locked=true`, `n_returns=1` (approved Option A);
-  `validation_level: V0` unless a cheap Radau re-closure is run first to honestly justify V1 (per
-  `#735`'s own recommendation — do not claim V1 without actually running that check); (3) update
-  `src/cyclerfinder/data/validate.py`'s `_LEVEL_EVIDENCE` and any other code that enumerates
-  `orbit_class`/`model_assumption` values, following the exact pattern `#708` used for
-  `torus_homoclinic`/`ccr4bp`; (4) update all affected ratchet tests (`tests/data/test_jsonschema.py`,
-  the schema-version ratchet, catalogue census counts) — run the FULL `tests/data tests/search`
-  ratchet suite, not a hand-picked subset, per `[[feedback_catalogue_edits_run_all_ratchets]]`; (5)
-  **MANDATORY Fable pre-execution review before committing the catalogue write** — same discipline
-  `#569`/`#708` both required; do not skip this step. This is the catalogue's THIRD genuinely novel
-  finding if this lands cleanly (after `#312` and the Umbriel-Titania `#708` row) — treat the
-  writeback with the same care both of those received.
+- **#736 ✓ DONE (2026-07-27) -- V0-V5 vetting chain step 4: catalogue schema v5.4 + writeback of
+  the N=5 CRNBP torus.** **CATALOGUE'S THIRD GENUINELY NOVEL FINDING**, row
+  `europa-3-4-crnbp-torus-jupiter-2026` (after `#312` and the Umbriel-Titania `#708` row). The
+  originally-dispatched implementing agent stalled silently (no response to a coordinating-session
+  check-in after ~1h45m idle, no running process) — the coordinating session independently
+  verified its already-substantially-complete uncommitted work directly rather than wait
+  indefinitely: valid JSON schema, valid YAML, `ruff`/`mypy` clean, full `tests/data tests/search`
+  ratchet clean apart from the 2 already-documented pre-existing failures + one already-documented
+  XPASS. **Mandatory Fable pre-execution review** (mirroring `#569`/`#708`) then found and fixed 5
+  real defects before commit: (1) a SELF-CONTRADICTING SOI safety claim — the closest-approach
+  numbers mixed the collapsing (non-shadowing) trajectories' own close passes (3.2e3 km from
+  Ganymede, near-surface) with the narrow shadowing points' own genuinely-distant numbers, fixed to
+  correctly scope to only the 3 narrow model-shadowing torus points with the collapse-trajectory
+  caveat stated explicitly; (2) a mischaracterized `literature_check.py` gate status — falsely
+  claimed cleared, when it has never actually been run for this object (corrected to state this
+  honestly, citing the module's own scoping caveat and identifying the manual `#721`/`#722`/`#724`/
+  `#727` sweeps as the operative clearance); (3) a miscounted "two additive changes" list that
+  actually listed three; (4) a wrong reproduction-agreement figure (6e-10 relative, actual 5.7e-13);
+  (5) a citation-convention typo. Every numeric value independently spot-checked against its cited
+  source (all 5 system constants live-verified against `jupiter_europa_io_ganymede_default()`; all
+  30 tabulated per-epoch entries verified field-for-field against the committed `#729`
+  `result.json`; the reviewer independently re-ran `#724`'s own pipeline in the foreground and
+  reproduced its full-precision numbers bit-for-bit). Schema matches `#735`'s approved design
+  field-for-field; `epoch_locked=true`/`n_returns=1` (Option A) exactly; `validation_level: V0`
+  honestly (no Radau re-closure run — the future-V1 upgrade path is documented, not claimed here).
+  The reviewer also caught and the coordinating session separately handled a stray uncommitted
+  side effect: `data/floquet_phase1_reproduction.jsonl` had been overwritten by a test's own
+  nondeterministic run (a genuinely different bifurcation branch, `k=(4,3)` vs the committed
+  `k=(3,3)` — itself a real `#347`-lineage nondeterminism worth a future follow-up, not fixed
+  here) — restored to its committed state via `git checkout`, not included in this commit.
+  Committed with explicit pathspec (schema + catalogue.yaml + 4 ratchet test files only, the other
+  concurrent session's `#716` files and the floquet artifact both correctly excluded): commit
+  `692ae20`.
 - **#737 ✓ DONE (2026-07-27) -- fix 6 more CI timeouts `#731` found but left out of scope.**
   All 6 individually timed and confirmed passing, 8-77s locally (worst case ~8x margin under the
   600s CI budget) — `@pytest.mark.slow` applied to each following `#631`'s own precedent, with a
