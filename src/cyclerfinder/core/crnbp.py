@@ -191,6 +191,7 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
+from scipy.optimize import brentq
 
 import cyclerfinder.core.cr3bp as cr3bp
 from cyclerfinder.core.ccr4bp import _cr3bp_uxx_block, two_body_synodic_rate
@@ -553,8 +554,6 @@ def cr3bp_collinear_point(mu: float, which: str) -> float:
         lo, hi = -2.0, -mu - 1e-9
     else:
         raise ValueError(f"cr3bp_collinear_point: unknown point {which!r}")
-    from scipy.optimize import brentq
-
     return float(brentq(omega_x, lo, hi, xtol=1e-14, rtol=1e-14))
 
 

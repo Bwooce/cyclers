@@ -530,6 +530,13 @@ def test_equilibrium_average_is_phase_choice_invariant_over_one_period() -> None
         avgs.append(result.avg_vs_cr3bp_km)
         boxes.append(result.box_area_km2)
     avgs_arr = np.array(avgs)
+    boxes_arr = np.array(boxes)
     assert (np.max(avgs_arr) - np.min(avgs_arr)) / np.mean(avgs_arr) < 0.10, (
         f"avg_vs_cr3bp varied more than expected across phase shifts: {avgs}"
+    )
+    # Contrast: the Lagrange-Box area is NOT similarly stable (the asymmetry
+    # this test's docstring and the module docstring both describe).
+    assert (np.max(boxes_arr) - np.min(boxes_arr)) / np.mean(boxes_arr) > 0.20, (
+        f"expected the Lagrange-Box area to vary noticeably across phase shifts "
+        f"(unlike avg_vs_cr3bp); got: {boxes}"
     )
