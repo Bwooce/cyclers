@@ -297,7 +297,16 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # (4 abstract-mu CR3BP rows with primary=P1 + 1 Pluto-Charon (3,2) CR3BP row
     # with primary=Pluto). None is v1-gauntlet-reachable (non-heliocentric primary).
     # Pure census shift.
-    ExclusionReason.NON_HELIOCENTRIC: 56,
+    # 56 -> 77 (2026-07-22/24, #684/#708, ratchet corrected 2026-07-27 #731):
+    # +20 Braik-Ross/Lyapunov3D/planar-resonant KAM-torus corridor rows written
+    # back by #684 (all primary="Earth") + 1 umbriel-1-2-torus-homoclinic-
+    # uranus-2026 row written back by #708 (primary="Uranus", CCR4BP). Neither
+    # commit updated this constant at the time; the catalogue itself has been
+    # unchanged since #708 (0 diff at HEAD when this was caught). Pure census
+    # shift -- none of the 21 new rows is v1-gauntlet-reachable (non-heliocentric
+    # primary), confirmed by re-deriving the count directly from classify_row()
+    # and spot-checking both commits' diffs.
+    ExclusionReason.NON_HELIOCENTRIC: 77,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
