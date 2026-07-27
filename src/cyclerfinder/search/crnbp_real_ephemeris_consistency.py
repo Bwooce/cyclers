@@ -174,6 +174,26 @@ L_KM: float = SATELLITES["Europa"].sma_km
 #: perturber than `#704`'s own two (Umbriel, Titania).
 PERTURBER_MOONS_DEFAULT: tuple[str, ...] = ("Europa", "Io", "Ganymede")
 
+# Module-level guard so the vendored LSK is furnished at most once per
+# interpreter session -- mirrors core.ephemeris.Ephemeris's own
+# `_JUP365_FURNISHED` guard exactly (see that module's comment: "a
+# module-level guard avoids even the stat+SPICE lookup on every
+# construction"). Found NECESSARY (not just an optimization) during #729's
+# own build: repeatedly calling ``spice.furnsh`` on the SAME already-loaded
+# file does NOT dedupe in CSPICE_N0067 -- each call grows the KEEPER kernel
+# pool by one file, and after ~5300 total calls (the `MAXFIL` limit)
+# `spiceypy.utils.exceptions.SpiceNOMOREROOM` is raised. #726's own module
+# docstring's claim that "spice.furnsh is idempotent for the same file" is
+# FALSE at scale -- true only in the sense that it doesn't change the loaded
+# CONTENT, not that repeat calls are free/safe. This did not surface during
+# #726's own development (a handful of calls, far under the limit) but blocks
+# any multi-epoch scan outright. Fixing here (this module's own top-level
+# driver is the only caller of ``spice.furnsh`` in this file) does not change
+# any computed result -- the LSK's content is identical on every load, so
+# every previously reported number (including #726's own headline gap) is
+# unaffected.
+_LSK_FURNISHED: bool = False
+
 
 def v_unit_km_s() -> float:
     """Physical velocity unit (km/s) for the Jupiter-Europa base pair:
@@ -308,10 +328,16 @@ def check_torus_survives_real_ephemeris(
     target_state6 = arc.state_f
 
     # Leapseconds kernel for str2et only (jup365.bsp itself needs none --
-    # see module docstring). Idempotent furnsh; not kclear'd (see docstring).
-    import spiceypy as spice
+    # see module docstring). Furnished at most once per interpreter session
+    # (see the module-level `_LSK_FURNISHED` guard's own comment above for
+    # why a real guard, not just a redundant-looking idempotent call, is
+    # required here). Not kclear'd (see docstring).
+    global _LSK_FURNISHED
+    if not _LSK_FURNISHED:
+        import spiceypy as spice
 
-    spice.furnsh(ensure_leapseconds_kernel())
+        spice.furnsh(ensure_leapseconds_kernel())
+        _LSK_FURNISHED = True
     et0 = _ephemeris_time_seconds(epoch0_utc)
 
     r_europa0, v_europa0 = moon_state_fn("Europa", et0)
