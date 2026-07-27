@@ -205,11 +205,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#730`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness
-  scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#730`:
-  user-requested consolidation of the citation-mining acquisition backlog into one DOI-verified
-  master list; `#731`: user-flagged CI failure investigation (stale catalogue ratchet already
-  diagnosed, other failures need proper root-causing). See each's own bullet entry.
+- `#729`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness
+  scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#731`: user-flagged
+  CI failure investigation (stale catalogue ratchet already diagnosed, other failures need proper
+  root-causing). See each's own bullet entry.
+- `#730` — REMOVED from this list 2026-07-27, CLOSED: 68 unique acquisition candidates
+  consolidated, DOI-resolved, priority-ranked; found 6 false gaps (papers already in corpus
+  re-flagged as missing). See its own bullet entry.
 - `#726` — REMOVED from this list 2026-07-27, CLOSED: real-ephemeris consistency check found a
   real, verified generic collapse in a single-epoch sample — mirrors the Umbriel-Titania case's
   own first-pass result exactly; `#729` will settle whether a recurring window exists. See its own
@@ -15387,24 +15389,32 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   way). Remember: `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT` frozenset needs
   this new script added, same as `#704`/`#705` themselves required (see
   `[[feedback_verify_scope_must_include_tests_scripts]]`).
-- **#730 (dispatched 2026-07-27) -- consolidate the citation-mining acquisition backlog,
-  user-requested.** This session's mandatory citation-mining pass (per `[[feedback_corpus_document_policy]]`'s
-  2026-07-27 update) has been running independently across roughly 10 digest notes since (at
-  least) `#710`'s dispatch — each flagging its own "not acquired, flagged only" candidates with no
-  central registry, meaning real duplication and inconsistent priority labeling has built up (e.g.
-  Blazevski & Ocampo 2012 independently re-flagged HIGH priority by both `#727` and `#728`; Haro et
-  al. 2016 and the Physica D 241(13) manifold paper each independently re-flagged across 3+ notes).
-  Scope: (1) read every digest note in `docs/notes/2026-07-2[4-8]-*.md` (and any earlier ones if
-  relevant — check `docs/notes/CORPUS_INDEX.md`'s own acquisition-log entries too) and extract
-  EVERY flagged-but-unacquired citation; (2) deduplicate — merge entries that are clearly the same
-  underlying paper flagged more than once, keeping the highest priority level assigned and noting
-  ALL digests that independently flagged it (multiple independent flags is itself a signal of
-  importance); (3) for EVERY unique candidate, find and record its DOI if one exists (WebSearch —
-  many are PhD theses, JPL tech reports, or older AAS conference papers that genuinely have no
-  DOI; record that explicitly rather than leaving it blank or guessing); (4) rank the deduplicated
-  list by priority (recurring-HIGH first); (5) write the result to a single new document,
-  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`. This is a COMPILATION task only —
-  no acquisition, no PDF filing, no digesting. Do not touch `data/OUTSTANDING.md`.
+- **#730 ✓ DONE (2026-07-27) -- consolidate the citation-mining acquisition backlog, user-requested.**
+  Read all 23 relevant digest notes spanning 2026-06-11 through 2026-07-27 (the `#699`-`#728`
+  CCR4BP/CRNBP arc, the Casoliva Earth-Moon digest, the Kumar-lineage `#728` site-mining wave, the
+  earlier Ross-Roberts-Tsoukkas mining note) into
+  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` (commit `f2c6b45`). **68 unique
+  candidates** after dedup: 48 fully tabulated + individually priority-ranked across 6 topical
+  clusters (CCR4BP/CRNBP foundational; Anderson/Lo/Campagnola resonant-flyby lineage;
+  Casoliva/Barrabés Earth-Moon methods; N=5/symplectic-parameterization theory; Frauenfelder/Moreno
+  bifurcation-graph methods; Uranian mission-design), plus 20 lower-priority background/textbook
+  items in a tail section. DOI status: 13 confirmed via WebSearch, 10 strong-circumstantial (not
+  independently re-verified), 9 theses with no DOI (institutional repo URLs given instead), 14
+  conference/tech-report papers genuinely have no DOI, 2 books. **Bonus finding: 6 FALSE GAPS** —
+  papers a LATER digest called "not in corpus" that were actually already acquired the same day
+  under a sibling task (a same-day task-ordering race) — most notably the Kumar/Anderson/de la
+  Llave 2022 CMDA whiskered-tori paper (already filed, but re-flagged as a HIGH-priority gap by
+  two later `#728` digests). **Top recurring-HIGH items** (independently flagged by 3+ digests):
+  (1) Blazevski & Ocampo 2012, *Physica D* 241(13), DOI `10.1016/j.physd.2012.03.008` — 5
+  independent flags, the CCR4BP model-definition paper, CONFIRMED genuinely paywalled (per `#728`);
+  (2) Olikara 2016 PhD thesis (CU Boulder), no DOI, free at
+  `scholar.colorado.edu/downloads/z316q180v` — 4 flags, foundational torus/heteroclinic
+  collocation method; (3) Haro et al. 2016 parameterization-method textbook, DOI
+  `10.1007/978-3-319-29662-3` — 4 flags; (4) Broucke 1968 JPL TR 32-1168 (classical Earth-Moon
+  periodic-orbit census, NTRS `19680013800`, no DOI) — 3 flags; (5) Anderson/Campagnola/Koh/
+  McElrath/Woollands 2021 Europa Lander endgame study, DOI `10.1007/s40295-021-00250-7` — 2
+  independent HIGH flags; (6) Leiva & Briozzo 2006/2008 Earth-Moon persistence pair — 2 flags each.
+  Pure compilation — no PDFs acquired/filed/digested.
 - **#731 (dispatched 2026-07-27) -- investigate CI failures, user-flagged.** GitHub Actions run
   `30247714534` (and several sibling runs today) failed after 1h34m — way beyond this project's
   normal CI runtime. **Already diagnosed by the coordinating session, confirmed real and
