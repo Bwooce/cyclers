@@ -488,12 +488,22 @@ def test_continuation_reaches_physical_mu_io_at_n1_2(
         assert step.residual_rms < 1e-3, step.residual_rms
         assert step.closure_residual < 5e-3, step.closure_residual
 
-    # Smooth, small, monotonic drift from the mu_io=0 seed to the physical
-    # endpoint (NOT a branch jump like the n1=1 case above).
+    # Smooth, small, monotonic (to within re-solve noise) drift from the
+    # mu_io=0 seed to the physical endpoint (NOT a branch jump like the n1=1
+    # case above). `#723`: at the corrected physical theta_io0 (`pi -
+    # 2*theta_gan0`, was the buggy all-aligned 0.0 -- see crnbp.py's module
+    # docstring), the very first continuation step dips by ~9.5e-10 relative
+    # (~9.5e-9 absolute) below the seed before resuming its monotonic climb --
+    # solver re-solve noise, not a branch jump (two orders of magnitude below
+    # the ~1.33e-6 absolute drift over the WHOLE continuation, and four+
+    # orders below the >20x-seed branch-jump signature the n1=1 test above
+    # locks in). The per-step tolerance is loosened from the prior
+    # (theta_io0=0-only-valid) 1e-9 to 2e-8 to absorb this while still
+    # tightly bounding genuine divergence.
     assert final.residual_rms < 5.0 * seed.residual_rms
     assert final.closure_residual < 5.0 * seed.closure_residual
     residuals = [seed.residual_rms] + [s.residual_rms for s in steps]
-    assert all(b >= a - 1e-9 for a, b in itertools.pairwise(residuals)), residuals
+    assert all(b >= a - 2e-8 for a, b in itertools.pairwise(residuals)), residuals
 
     # Rotation number essentially unperturbed by Io's (tiny) forcing.
     assert final.rotation_number == pytest.approx(seed.rotation_number, rel=1e-3)

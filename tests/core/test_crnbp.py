@@ -38,9 +38,14 @@ different mass-vs-GM rounding conventions (her Table 2 uses rounded body
 masses in kg; this project's registry uses GM_de440 gravitational
 parameters). Additionally, her Ch. V equilibrium tables do not state the
 initial synodic phase angles used for Io/Ganymede at the propagation epoch --
-this module defaults to ``theta_io0 = theta_gan0 = 0.0`` (an "all perturbers
+the tests below explicitly request ``theta_io0=0.0`` (an "all perturbers
 aligned at t=0" convention, the simplest choice and the one her Ch. IV
-prose describes as "test case 1"). Because the N=5 configuration here is
+prose describes as "test case 1"). NOTE (`#723`): the module DEFAULT is no
+longer this all-aligned phase -- :func:`crnbp.jupiter_europa_io_ganymede_default`
+now defaults to the physically-real Laplace-libration phase ``theta_io0 =
+pi - 2*theta_gan0`` (see ``crnbp.py``'s module docstring); the all-aligned
+"test case 1" configuration used below is obtained by passing
+``theta_io0=0.0`` explicitly. Because the N=5 configuration here is
 EXACTLY periodic (the Laplace-projected omega_io = -2*omega_gan lock),
 propagating over exactly one Ganymede synodic period vs. her stated 100 TU
 window gives the SAME box/average to < 1% (checked directly -- 100 TU is not
@@ -411,6 +416,48 @@ def test_laplace_lock_projection_exact_and_close_to_observed() -> None:
     assert rel_change < 1e-3
 
 
+def test_default_phase_sits_at_physical_laplace_libration_center() -> None:
+    """`#723` regression: :func:`jupiter_europa_io_ganymede_default`'s DEFAULT
+    phase must be the physically-real Laplace-libration center, not the
+    all-aligned antipode `#721` found shipped as the default.
+
+    In this module's Europa-synodic phase convention (``theta_j(t) ==
+    lambda_j(t) - lambda_Europa(t)`` exactly, since Europa itself is fixed at
+    synodic angle 0 by construction), the classical Laplace resonance argument
+    ``phi_L = lambda_Io - 3*lambda_Europa + 2*lambda_Ganymede`` becomes
+    ``phi_L = theta_io + 2*theta_gan``. The real Galilean trio librates about
+    ``phi_L = 180 deg`` (Sinclair 1975; Murray & Dermott; corroborated by
+    Gilliam's thesis prose and by Baresi/Owen/Scheeres AAS 23-257 Table 1's
+    Jupiter-Europa-frame ``(phi_Io, phi_Gan) = (pi, 0)``) -- NOT 0 deg, the
+    old buggy default's value.
+    """
+    sys5 = crnbp.jupiter_europa_io_ganymede_default()
+    io, gan = sys5.perturbers
+    assert gan.theta0 == pytest.approx(0.0, abs=1e-15)
+    phi_l = (io.theta0 + 2.0 * gan.theta0) % (2.0 * math.pi)
+    assert phi_l == pytest.approx(math.pi, abs=1e-12), (
+        f"default Laplace argument phi_L={math.degrees(phi_l):.4f} deg, expected 180 deg"
+    )
+
+    # The relation generalizes correctly for nonzero theta_gan0 -- not a
+    # hardcoded special case that only happens to work at theta_gan0=0.
+    for theta_gan0 in (0.4, -1.1, 2.7):
+        sys_shifted = crnbp.jupiter_europa_io_ganymede_default(theta_gan0=theta_gan0)
+        io_s, gan_s = sys_shifted.perturbers
+        assert gan_s.theta0 == pytest.approx(theta_gan0, abs=1e-15)
+        phi_l_s = (io_s.theta0 + 2.0 * gan_s.theta0) % (2.0 * math.pi)
+        assert phi_l_s == pytest.approx(math.pi, abs=1e-12), (
+            f"theta_gan0={theta_gan0}: phi_L={math.degrees(phi_l_s):.4f} deg, expected 180 deg"
+        )
+
+    # theta_io0 remains an explicit override for the Gilliam all-aligned
+    # ("test case 1") equilibrium-point positive control.
+    sys_aligned = crnbp.jupiter_europa_io_ganymede_default(theta_io0=0.0)
+    io_a, gan_a = sys_aligned.perturbers
+    assert io_a.theta0 == 0.0
+    assert gan_a.theta0 == 0.0
+
+
 # ---------------------------------------------------------------------------
 # Gate 5: equilibrium-point ("dynamical substitute") solver correctness.
 # ---------------------------------------------------------------------------
@@ -475,15 +522,19 @@ def test_equilibrium_dynamical_substitute_matches_gilliam_thesis_table(
     differ from Gilliam's own stated values by ~3-5e-4 relative (different
     mass-rounding convention, same underlying JPL data), and her epoch phase
     angles are not stated (we use the "all perturbers aligned at t=0"
-    default). The average-vs-CR3BP distance is empirically found (see
+    convention, requested here via ``theta_io0=0.0`` -- `#723` corrected
+    ``jupiter_europa_io_ganymede_default``'s own DEFAULT to the physically-real
+    Laplace-libration phase, so this control test must now request the
+    all-aligned idealisation explicitly rather than relying on the default).
+    The average-vs-CR3BP distance is empirically found (see
     ``test_equilibrium_average_is_phase_choice_invariant_over_one_period``
     below) to change little (~3%) across different Io/Ganymede relative-phase
     choices, and the Lagrange-Box area agrees closely at this specific
-    (all-aligned) default phase -- both are asserted tightly here; dx/dy
+    (all-aligned) phase -- both are asserted tightly here; dx/dy
     individually (phase-split-sensitive, varying up to ~40% across phase
     choices) are only sanity-bounded.
     """
-    sys5 = crnbp.jupiter_europa_io_ganymede_default()
+    sys5 = crnbp.jupiter_europa_io_ganymede_default(theta_io0=0.0)
     _io, gan = sys5.perturbers
     result = crnbp.equilibrium_dynamical_substitute(
         sys5, which, l_km=_L_KM_EUROPA, t_window=gan.synodic_period, n_samples=800

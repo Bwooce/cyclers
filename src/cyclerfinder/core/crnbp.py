@@ -152,12 +152,36 @@ Io's synodic rate onto the exact ``omega_io = -2 * omega_gan`` Laplace lock
 (mirroring ``ccr4bp.py``'s own documented optional exact-2:1 Ganymede
 idealisation -- same class of one-value change, milder because it is backed by
 the tighter observed-period justification rather than an arbitrary choice).
-Io's initial synodic phase ``theta_io0`` is NOT pinned by the Laplace-libration
-argument here (that requires ephemeris mean-longitude epoch data and is
-in-scope for `#714` shortlist item 2's continuation task, not this one); it
-defaults to 0.0, documented as a free choice for THIS task's equilibrium-point
-validation (which does not depend on the exact epoch phase in any way that
-matters to the Newton-Raphson equilibrium solve below).
+Io's initial synodic phase ``theta_io0`` (`#723` correction of a bug found by
+`#721`'s adversarial verification, ``docs/notes/2026-07-27-721-n5-crnbp-torus-
+adversarial-verification.md``): the classical Laplace resonance argument
+``phi_L = lambda_Io - 3*lambda_Europa + 2*lambda_Ganymede`` librates about
+**180 deg**, not 0 deg (Sinclair 1975; Murray & Dermott, *Solar System
+Dynamics*; Paita et al. 2018; corroborated independently by Gilliam's own
+thesis prose -- "Europa and Ganymede at the 0 deg position only when Io is at
+the 180 deg position" -- and by Baresi/Owen/Scheeres AAS 23-257 Table 1, whose
+Jupiter-Europa-frame phases are exactly ``(phi_Io, phi_Gan) = (pi, 0)``). In
+this module's own Europa-synodic phase convention (``theta_j(t) = theta_j0 +
+omega_j*t``, with Europa itself fixed at synodic angle 0 by construction --
+see ``ccr4bp.py``'s frame docstring -- so ``theta_j(t) == lambda_j(t) -
+lambda_Europa(t)`` exactly), the Laplace argument is
+``phi_L = theta_io + 2*theta_gan`` (since ``lambda_Io - 3*lambda_Europa +
+2*lambda_Gan = (lambda_Io - lambda_Europa) + 2*(lambda_Gan - lambda_Europa)``).
+The physical libration center is therefore the CONSTRAINT
+``theta_io0 + 2*theta_gan0 = pi (mod 2*pi)``, i.e. ``theta_io0 = pi -
+2*theta_gan0`` -- which :func:`jupiter_europa_io_ganymede_default` now uses as
+its default (generalizing correctly for any ``theta_gan0``, not just the
+``theta_gan0 = 0`` special case). This constraint is preserved exactly for all
+``t`` under the exact ``omega_io = -2*omega_gan`` Laplace-lock projection above
+(``d/dt(theta_io + 2*theta_gan) = omega_io + 2*omega_gan = 0``). The OLD
+``theta_io0 = theta_gan0 = 0.0`` all-aligned default put the system at
+``phi_L = 0``, the ANTIPODE of the physical libration center -- a Laplace
+configuration the real Jovian trio can never occupy. It remains available as
+an explicit override (``theta_io0=0.0``) for Gilliam's own Ch. IV "test case
+1" all-aligned equilibrium-point control (see
+:func:`equilibrium_dynamical_substitute` positive-control tests), which
+deliberately uses that idealised configuration and is unaffected by this
+correction.
 
 Positive control (`#717` Step 2)
 ---------------------------------
@@ -258,7 +282,9 @@ class CRNBPSystem:
     perturbers: tuple[CRNBPPerturber, ...]
 
 
-def jupiter_europa_io_ganymede_default() -> CRNBPSystem:
+def jupiter_europa_io_ganymede_default(
+    *, theta_gan0: float = 0.0, theta_io0: float | None = None
+) -> CRNBPSystem:
     """CRNBP parameters for Jupiter-Europa-Io-Ganymede (N=5) from the JPL SSD
     registry, mirroring :func:`cyclerfinder.core.ccr4bp.jupiter_europa_ganymede_default`.
 
@@ -271,8 +297,15 @@ def jupiter_europa_io_ganymede_default() -> CRNBPSystem:
     SMA_Io / SMA_Europa`` (~0.6285), ``omega_io`` LAPLACE-PROJECTED onto the
     exact ``-2 * omega_gan`` ratio (see the module docstring's "Laplace-
     projected default" section for the ~2.04e-4-vs-1.1e-9 justification).
-    ``theta_io0 = 0.0`` (a documented free choice, NOT epoch-pinned to the
-    Laplace libration argument -- see module docstring).
+
+    ``theta_io0`` (`#723`, correcting a bug `#721` found): defaults to the
+    PHYSICAL Laplace-libration-center phase ``pi - 2*theta_gan0`` -- see the
+    module docstring's "Laplace-projected default" section for the derivation
+    (``phi_L = theta_io0 + 2*theta_gan0`` must equal ``pi mod 2*pi``, the real
+    Galilean trio's libration center, not 0). Pass ``theta_io0=0.0`` explicitly
+    to get the all-perturbers-aligned idealisation instead (needed by the
+    Gilliam Ch. IV "test case 1" equilibrium-point positive-control tests,
+    which use that configuration deliberately).
     """
     gm_j = PRIMARIES["Jupiter"]
     gm_e = SATELLITES["Europa"].mu_km3_s2
@@ -291,8 +324,12 @@ def jupiter_europa_io_ganymede_default() -> CRNBPSystem:
     omega_gan = two_body_synodic_rate(mu, mu_gan, a_gan)
     omega_io = -2.0 * omega_gan  # exact Laplace-lock projection
 
-    io = CRNBPPerturber(mu=mu_io, a=a_io, omega=omega_io, theta0=0.0)
-    ganymede = CRNBPPerturber(mu=mu_gan, a=a_gan, omega=omega_gan, theta0=0.0)
+    if theta_io0 is None:
+        # Physical Laplace-libration-center phase: theta_io0 + 2*theta_gan0 = pi.
+        theta_io0 = math.pi - 2.0 * theta_gan0
+
+    io = CRNBPPerturber(mu=mu_io, a=a_io, omega=omega_io, theta0=theta_io0)
+    ganymede = CRNBPPerturber(mu=mu_gan, a=a_gan, omega=omega_gan, theta0=theta_gan0)
     return CRNBPSystem(mu=mu, perturbers=(io, ganymede))
 
 
