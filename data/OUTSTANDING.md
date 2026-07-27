@@ -34,10 +34,11 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#714` DONE 2026-07-27 (redispatched after a weekly-limit failure) — tractable-
-  with-caveats verdict + gated 3-item shortlist, item 1 registered as `#717` and dispatched;
-  `#715` redispatched 2026-07-27 after the same weekly-limit failure, in progress — see the
-  "In progress" section below and each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
+- None currently. (`#714`/`#715` both DONE 2026-07-27 (redispatched after a weekly-limit failure)
+  — `#714`: tractable-with-caveats verdict + gated 3-item shortlist, item 1 registered/dispatched
+  as `#717`; `#715`: honest partial result, new interior-perturber + libration-seeded CCR4BP
+  infrastructure validated, specific paper transit chain not reproduced. `#717` in progress — see
+  the "In progress" section below and each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
   2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
   on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
@@ -195,13 +196,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#715` — redispatched 2026-07-27 after a weekly-API-limit dispatch failure on 2026-07-26 (not a
-  methodology issue). Second CCR4BP pipeline positive control via `#710`'s own
-  Callisto-Ganymede-Europa two-hop chain. See its own bullet entry for full scope. (`#714` — REMOVED
-  from this list 2026-07-27, CLOSED after the same redispatch: tractable-with-caveats verdict + a
-  gated 3-item shortlist, item 1 registered/dispatched as `#717`; see its own bullet entry.)
 - `#717` — dispatched 2026-07-27, `#714` shortlist item 1 (core N=5 Jovian CRNBP EOM+STM build).
-  See its own bullet entry for full scope.
+  See its own bullet entry for full scope. (`#714`/`#715` — REMOVED from this list 2026-07-27, BOTH
+  CLOSED after their weekly-limit redispatch: `#714` delivered a tractable-with-caveats verdict +
+  gated 3-item shortlist, item 1 registered/dispatched as `#717`; `#715` delivered an honest
+  partial result — new interior-perturber + libration-seeded CCR4BP infrastructure validated
+  against the paper's own torus numbers, specific transit chain not reproduced. See each's own
+  bullet entry.)
 - **TASK-NUMBER COLLISION RESOLVED 2026-07-27** (this session's own note, corrected/superseded by
   the other session's own edit landing first): a separate concurrent session's Saturn
   Titan-Hyperion CCR4BP search originally reused `#711` (already assigned here to Gilliam &
@@ -1420,7 +1421,7 @@ flagged a real risk unlike CCR4BP's own Kumar-2021 precedent -- periodic-orbit e
 general CRNBP is an open question, no known-good structure to validate against yet. #715 for a
 second CCR4BP pipeline positive control using #710's own Callisto-Ganymede-Europa two-hop
 manifold-chain result (chaining two CCR4BPSystem instances) -- lower-risk, direct value-add to
-the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718
+the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718 for Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep across Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel for asymmetric phase offsets beta in (0, pi) using deflated_newton.py. #719 for Strategy 3: Sun-Earth-Mars WSB Repeating-Capture Quasi-Cycler Search combining Sun-Mars L1/L2 weak stability boundary sets with Earth gravity-assist return legs. #720
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14872,18 +14873,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   connection structure to validate against before ever building `#689`-`#694`'s pipeline. If N=5
   is judged intractable without a positive control, consider whether Gilliam's own Uranus-Titania/
   Oberon equilibrium-point tables (digit-grade, per `#711`'s digest) could serve as one.
-- **#715 DISPATCH FAILED (2026-07-26) -- weekly API usage limit hit, NOT a methodology failure.**
-  Agent terminated before writing any code or committing anything (confirmed via `git status` --
-  no stray uncommitted work from this task specifically); resets 12pm (Australia/Sydney)
-  2026-07-27. Needs a straight redispatch after reset, same scope as below -- second CCR4BP
-  pipeline positive control via `#710`'s own
-  Callisto-Ganymede-Europa two-hop manifold chain.** `#710`'s digest flagged this directly: the
-  Aryan & Fitzgerald paper's own transit result (Callisto L1 unstable manifold -> ~60-day flyby
-  rendezvous with Ganymede -> ~74-day L2 stable manifold to Europa) is a candidate second positive
-  control for `#694`'s `ccr4bp_manifold_globalize.py`/`ccr4bp_heteroclinic_search.py` pipeline,
-  "not yet exploited — would require chaining two `CCR4BPSystem` instances, a real scope
-  expansion, not a drop-in rerun." Lower-risk than `#714` — strengthens confidence in already-built
-  infrastructure rather than exploring new territory; does not require the N=5 EOM extension.
+- **#715 ✓ DONE (2026-07-27, redispatched after a weekly-limit failure) -- second CCR4BP pipeline
+  positive control via `#710`'s own Callisto-Ganymede-Europa two-hop manifold chain.** Built
+  `src/cyclerfinder/core/ccr4bp_callisto_ganymede.py` (`jupiter_callisto_ganymede_default()` — the
+  first `CCR4BPSystem` in this project with an INTERIOR perturber, Ganymede at `a_gan≈0.569 < 1`
+  inside Callisto's orbit; `mu1`/`mu2` cross-checked against Aryan & Fitzgerald's own Table 2 to
+  within 0.008%/0.2%) and `src/cyclerfinder/search/ccr4bp_chained_transfer.py` (new
+  `lyapunov_seed_at_jacobi()` — a generic any-`mu` planar L1/L2 Lyapunov seed builder reusing
+  `search.periapse_map.collinear_l1_l2` + `search.cr3bp_periodic.correct_symmetric_fixed_jacobi`
+  unmodified, the first CCR4BP torus in this project seeded from a genuine libration-point orbit
+  rather than a distant resonant orbit; plus `ganymede_synodic_position()`/
+  `scan_ganymede_approach()`/`to_physical_km_days()`). **Reproduced** the paper's own tori at its
+  exact quoted Jacobi constants: Callisto L1 at `C=3.0044` (residual_rms ~5.5e-5, cleaner than the
+  existing JEG 3:4 torus's ~1.6e-4); Europa L2 at `C=3.0034` (residual_rms ~3.5e-5, reusing the
+  existing `jupiter_europa_ganymede_default()`). **Honest negative** on the actual chained
+  connection: `scan_ganymede_approach` (12-phase, ~90-day search) did NOT find a genuine Ganymede
+  flyby on either leg — Callisto side dmin~381,000 km at t~44.5 days, Europa side dmin~232,000 km
+  at t~71.8 days (a striking TIME-scale coincidence with the paper's own ~74-day figure, explicitly
+  NOT overclaimed as a distance-close match). Pinned as a regression floor, not a non-existence
+  claim — the paper's exact route is a carefully-located trajectory in a large search space; a
+  finer/adaptive phase search or the paper's own Poincaré-map methodology would be needed to chase
+  it further, not attempted here (out of this task's scope). 17 new tests (7 in
+  `tests/core/test_ccr4bp_callisto_ganymede.py`, 10 in
+  `tests/search/test_ccr4bp_chained_transfer.py`), full `tests/search -k ccr4bp` (96 tests) green,
+  ruff+mypy clean. Commits `0a3b226` (system constructor) / `3a2054d` (chained-transfer module +
+  tests) — confirmed no interference with the concurrent `#717` session's own separate commit
+  (`24dd814`) on the same working tree. **Assessment**: genuinely strengthens confidence in the
+  CCR4BP pipeline's generalizability — passed two new stress tests cleanly (interior-perturber
+  geometry, libration-point-seeded torus family) it had never been exercised against — even though
+  the specific paper transit chain itself remains unreproduced (an honest scope limitation, not a
+  pipeline defect).
 - **#716 ✓ DONE (2026-07-27) -- Saturn Titan-Hyperion CCR4BP search.** System constructor defined in `core/ccr4bp_titan_hyperion.py` (`#716`), unit tests in `tests/test_ccr4bp_titan_hyperion.py`, search script in `scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py`. Base 1:2 Titan-resonant orbit converged to 7.4e-15 perp residual, torus residual RMS 2.25e-8, 60/60 valid phases globalized across all 4 lobe combos (`unstable_+`, `unstable_-`, `stable_+`, `stable_-`). Refined 20 candidates across all 4 lobe combos; all departure distances stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in `data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json`.
 - **#717 (dispatched 2026-07-27) -- `#714` shortlist item 1: core N=5 Jovian CRNBP EOM+STM
   build.** First step of the `#714`-gated 3-item shortlist (~2-4 days, no research risk,
@@ -14897,6 +14916,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   values as an EOM/Jacobian implementation positive control (explicitly NOT a dynamical positive
   control — `#714` confirmed none exists in the literature for N=5, and self-generating one is
   items 2/3's job, gated on this one). Do not proceed to items 2/3 until this is verified clean.
+- **#718 (REGISTERED 2026-07-27) -- Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep.** Multi-start deflated Newton root-finder across asymmetric phase offsets beta in (0, pi) for Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel using `src/cyclerfinder/search/deflated_newton.py`. Targets novel asymmetric `quasi_cycler` rows in the Uranian moon system building on `#663`'s beta ~ 74.3 deg proof-of-concept root.
+- **#719 (REGISTERED 2026-07-27) -- Strategy 3: Sun-Earth-Mars WSB Capture Quasi-Cycler Search.** Interplanetary weak stability boundary (WSB) capture quasi-cycler search combining Sun-Mars L1/L2 capture sets with Earth gravity-assist return legs.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
