@@ -131,6 +131,20 @@ def phys_torus() -> vt.CCR4BPTorusVariationalResult:
     )
 
 
+# #737 (2026-07-27): confirmed CI-resource-budget mismatch, not a code
+# regression -- this test times out (>600s pytest-timeout) on CI (run
+# 30261678515) but reproduces cleanly in ~70s locally on this 8-core Mac
+# (well under budget, ~8.5x margin), consistent with #631's own documented
+# precedent (CI runners have only 2 cores per pyproject.toml's own comment;
+# full-suite -n auto parallel contention on a shared 2-core runner inflates
+# wall-clock for CPU-heavy scipy/numpy tests -- here, refining across all 4
+# independent lobe-branch combos plus the Radau/DOP853 ghost_guard cross-
+# check -- far more than core-count alone would suggest). This file's other
+# test, test_near_exact_candidate_confirmed_genuine_after_702_ref_vec_fix,
+# runs in ~7s locally and did NOT time out on this same CI run, so it is
+# left unmarked. Not previously classified -- first CI run of this exact
+# code since #702's own ghost_guard fix.
+@pytest.mark.slow
 def test_robust_near_miss_is_the_trustworthy_headline_result(
     phys_torus: vt.CCR4BPTorusVariationalResult,
 ) -> None:

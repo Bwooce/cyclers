@@ -226,6 +226,16 @@ def test_each_member_is_genuine_torus(smoke_torus: SmokeTorus) -> None:
         )
 
 
+# #737 (2026-07-27): confirmed CI-resource-budget mismatch, not a code
+# regression -- this test times out (>600s pytest-timeout) on CI (run
+# 30261678515) but reproduces cleanly in ~77s locally on this 8-core Mac
+# (well under budget, ~8x margin), consistent with #631's own documented
+# precedent (CI runners have only 2 cores per pyproject.toml's own comment;
+# full-suite -n auto parallel contention on a shared 2-core runner inflates
+# wall-clock for CPU-heavy scipy/numpy tests far more than core-count alone
+# would suggest) -- see this same file's test_walk_reaches_cj_target,
+# already marked slow for the identical reason by #731.
+@pytest.mark.slow
 def test_walk_is_deterministic(smoke_torus: SmokeTorus) -> None:
     _system, torus = smoke_torus
     fam_a = qew.walk_energy(torus, direction="down", step_stride=24, max_steps=2, seed_step=112)

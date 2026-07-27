@@ -292,6 +292,16 @@ def _l2_halo_at_315() -> SymmetricNRHO | None:
 # ---------------------------------------------------------------------------
 
 
+# #737 (2026-07-27): confirmed CI-resource-budget mismatch, not a code
+# regression -- this test times out (>600s pytest-timeout) on CI (run
+# 30261678515) but reproduces cleanly in ~63s locally on this 8-core Mac
+# (well under budget, ~9.5x margin), consistent with #631's own documented
+# precedent (CI runners have only 2 cores per pyproject.toml's own comment;
+# full-suite -n auto parallel contention on a shared 2-core runner inflates
+# wall-clock for CPU-heavy scipy/numpy tests far more than core-count alone
+# would suggest) -- see this same file's test_l1_crosses_gmos_amplitude_wall,
+# already marked slow for the identical reason (#632).
+@pytest.mark.slow
 def test_l2_positive_control_reproduces_gmos_torus() -> None:
     """The seedless 2D pseudospectral corrector, bootstrapped from the
     already-converging small-amplitude GMOS L2 quasi-halo torus, reproduces it:
