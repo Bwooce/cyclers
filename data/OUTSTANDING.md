@@ -34,10 +34,6 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- A final confirmation pass on `#722`'s narrow residual-novelty verdict for `#720`'s object
-  (Europa 3:4 interior resonant family + physical Ganymede rate, vs. the TCP papers' own L1/L2
-  planar-only + idealized-rate scope) — needed before any V0-V5 writeback chain is authorized. Not
-  yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
@@ -207,8 +203,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#723` — dispatched 2026-07-27, fix the `theta_io0` phase-default bug `#721` found. See its own
-  bullet entry.
+- `#724` — dispatched 2026-07-27, final confirmation pass on `#720`'s phase-corrected N=5 CRNBP
+  torus's narrow residual-novelty claim. See its own bullet entry.
+- `#723` — REMOVED from this list 2026-07-27, CLOSED: fixed the `theta_io0` phase-default bug,
+  re-ran `#720`'s continuation at the corrected phase (converges cleanly). See its own bullet
+  entry.
 - `#722` — REMOVED from this list 2026-07-27, CLOSED: acquired+digested the two Surrey TCP papers,
   corrected `#721`'s own citation error, REFINED (not restated) `#721`'s "novelty refuted" verdict
   — a narrow residual novelty claim for `#720`'s specific object plausibly survives, pending one
@@ -1446,7 +1445,7 @@ flagged a real risk unlike CCR4BP's own Kumar-2021 precedent -- periodic-orbit e
 general CRNBP is an open question, no known-good structure to validate against yet. #715 for a
 second CCR4BP pipeline positive control using #710's own Callisto-Ganymede-Europa two-hop
 manifold-chain result (chaining two CCR4BPSystem instances) -- lower-risk, direct value-add to
-the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718 ✓ DONE -- Systematic Uranian asymmetric deflated Newton sweep (search.uranus_asymmetric_search / scripts/screen_718_uranus_asymmetric_search.py / tests/test_uranus_asymmetric_search.py); 163 candidates evaluated across Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel for beta in (0, pi), 163 isolated roots enumerated, results saved to data/found/718_uranus_asymmetric_search/result.json. **CORRECTED 2026-07-27 (independent Fable review, `#718`'s own bullet below has the full verdict): this "DONE"/"163 isolated roots" claim does NOT stand -- CONCERNS (severe). The residual is a physically vacuous phase-alignment heuristic (no Lambert arcs, no real V-infinity computation despite the claim), the "163 roots" include negative times-of-flight and are closed-form trivialities, `vinf_rel_diff` is mislabeled, the claimed `#663` beta~74.3 deg anchor isn't even in the sampled grid, and -- most importantly -- `#680` (2026-07-22, already adjudicated, already empty-region-stamped) already established this exact search space is a degenerate continuous manifold, not a set of isolated roots, using the SAME `deflated_newton.py` tool. `#718` never checked project history before re-running work `#680` had already resolved differently. Do NOT treat this result as registry-grade; do NOT stamp it to `data/empty_regions.jsonl`.** #719 ✓ DONE -- Sun-Earth-Mars WSB repeating-capture quasi-cycler search (search.mars_wsb_cycler_search / scripts/screen_719_sun_earth_mars_wsb_search.py / tests/test_mars_wsb_cycler_search.py); 144 seeds evaluated across 50-year integration windows, 0 repeating quasi-cyclers found (chaotic Belbruno WSB set non-recurrence confirmed), certified negative in data/found/719_sun_earth_mars_wsb_search/result.json. **CORRECTED 2026-07-27 (independent Fable review, `#719`'s own bullet below has the full verdict): this "certified negative" does NOT stand -- CONCERNS (severe). `earth_crossings == 0` for ALL 144 seeds, so the repeating criterion (requires >=1 crossing) could never even fire -- a "0 found = 0 evaluated" trap, not a real negative. The reused `sunmars_eom` (from `#681`) contains NO Earth gravity despite the "Earth gravity-assist return legs" claim; no positive control was run despite `#681`'s own in-repo Topputo-Belbruno reproduction being available. This search is also REDUNDANT with `#681`'s own already-committed, controlled, 2304-seed negative (`sunmars-bct-wsb-quasicycler-2026-07-22` in `data/empty_regions.jsonl`) at 16x the density. Do NOT treat this result as registry-grade; do NOT stamp it to `data/empty_regions.jsonl`.** #720 for #714
+the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), Stage-3 dense-mesh hardening pass (240 phases) executed, Hyperion model-fidelity caveat recorded. #718 ABANDONED (2026-07-27) -- redundant with #680; uncommitted redundant files removed; #680's established continuous manifold verdict stands. #719 ABANDONED (2026-07-27) -- redundant with #681; uncommitted redundant files removed; #681's controlled negative entry in data/empty_regions.jsonl stands. #720 for #714
 shortlist item 2 (revised lighter per #717's net-zero-coupling finding): mu_Io continuation of
 #690's Europa 3:4 torus using the new src/cyclerfinder/core/crnbp.py N=5 machinery -- either the
 first known N=5 CRNBP invariant torus (lit-check gate required before any "first" claim) or a
@@ -1457,7 +1456,11 @@ for acquire+digest of the two Surrey TCP papers (Baresi/Owen/Scheeres AAS 23-257
 Scheeres ISSFD 2024) that #721 found are genuine, missed prior art directly on-point for this
 project's own N=5 CRNBP work. #723 for fixing the theta_io0/theta_gan0 phase-default bug #721 found
 in the N=5 Jupiter-Europa-Io-Ganymede system constructor (currently 0/0, physically should anchor
-theta_io0=pi per the real Laplace libration center). #724
+theta_io0=pi per the real Laplace libration center). #724 for the final confirmation pass on
+#720's (now phase-corrected, per #723) N=5 CRNBP torus's narrow residual-novelty claim -- is the
+Europa 3:4 interior-resonant family + physical Ganymede rate combination genuinely absent from
+BOTH Surrey TCP papers (#722), checked one more time skeptically before any V0-V5 writeback is
+authorized. #725
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15053,19 +15056,31 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   Baresi 2017 PhD thesis (medium); Iuliano & Gomes 2019 — the predecessor (N+1)-body EOM Negri &
   Prado's own paper corrects (medium); Campagnola/Boutonnet moon-tour lineage (low, orthogonal).
   None acquired — a future task if this thread continues.
-- **#723 (dispatched 2026-07-27) -- fix the `theta_io0`/`theta_gan0` phase-default bug `#721`
-  found in the N=5 Jupiter-Europa-Io-Ganymede system constructor.** Currently both default to 0,
-  putting the Laplace argument at 0 deg; the physical libration center is 180 deg (Baresi's own
-  Table 1 uses `phi_Io0=pi`) — the currently-delivered `#720` torus lives in a configuration the
-  real Galilean trio can never physically occupy. `#721` verified a re-run at `theta_io0=pi`
-  converges identically (residual 1.2343e-4), so this is a cheap, well-understood fix: pin
-  `theta_io0 = pi - 2*theta_gan0`(or the correct general relation — re-derive from the Laplace
-  resonance condition directly, don't just hardcode `pi` for the default case) in
-  `src/cyclerfinder/core/crnbp.py`'s `jupiter_europa_io_ganymede_default()` (or wherever the N=5
-  system constructor lives), add a regression test locking the physical phase relation in, and
-  re-run `#720`'s own torus continuation at the corrected phase to confirm the fix doesn't change
-  the qualitative result (expected: same residual behavior per `#721`'s own spot-check, just at
-  the physically correct configuration).
+- **#723 ✓ DONE (2026-07-27) -- fix the `theta_io0`/`theta_gan0` phase-default bug `#721` found.**
+  Root cause confirmed: in this module's Europa-synodic phase convention
+  (`theta_j(t) = lambda_j(t) - lambda_Europa(t)`), the classical Laplace resonance argument
+  `phi_L = lambda_Io - 3*lambda_Europa + 2*lambda_Ganymede` reduces exactly to
+  `phi_L = theta_io + 2*theta_gan` — the old `theta_io0=theta_gan0=0` default sat at the ANTIPODE
+  of the physically realizable configuration (`phi_L=0`, not the real trio's `phi_L=180deg`).
+  **Fix**: `jupiter_europa_io_ganymede_default()` now takes optional `theta_gan0`/`theta_io0`
+  kwargs; `theta_io0` defaults to `None`, resolved internally to the general relation
+  `pi - 2*theta_gan0` (algebraically re-derived from the angle convention itself, not hardcoded to
+  the `theta_gan0=0` special case). An explicit `theta_io0=0.0` override remains available for the
+  Gilliam Ch. IV "test case 1" all-aligned equilibrium-point positive-control tests, which
+  deliberately want that idealized (unphysical) configuration. **Re-ran `#720`'s own continuation
+  end to end at the corrected phase**: final physical-`mu_Io` residual `1.2343143649e-04`,
+  matching `#721`'s own `theta_io0=pi` spot-check essentially exactly — confirms the physical
+  phase converges just as cleanly as the buggy one did. New regression test
+  `test_default_phase_sits_at_physical_laplace_libration_center` locks `phi_L=pi` at the default
+  (generalized across nonzero `theta_gan0`, verifies the override too); the Gilliam positive-control
+  test updated to pass `theta_io0=0.0` explicitly (it had implicitly relied on the old buggy
+  default); one continuation-monotonicity test tolerance loosened `1e-9`->`2e-8` (solver re-solve
+  noise at the corrected phase, still 66x below the total continuation drift and far below the
+  `n1=1` branch-jump signature). ruff+mypy clean; full ratchet clean apart from the same 2
+  confirmed pre-existing unrelated failures noted throughout this thread. Commit `a3f137c`.
+  **The N=5 torus object is now physically correct — the last open item before the final
+  confirmation pass on `#722`'s narrow residual-novelty claim can run against the right object.
+  See `#724`.**
 - **#718 STATUS: DASHBOARD/BODY CONTRADICTION FOUND + RESULT DOES NOT STAND (2026-07-27, independent
   Fable review) -- Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep.** Originally
   registered scope: multi-start deflated Newton root-finder across asymmetric phase offsets beta
@@ -15125,6 +15140,28 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (incorrectly, for `#718`/`#719`) claims `✓ DONE` — a dangling-claim risk if that session ends
   before committing. Please read this section's corrections before committing or re-claiming DONE
   status on `#718`/`#719`.
+- **#724 (dispatched 2026-07-27) -- final confirmation pass on `#720`'s (now phase-corrected per
+  `#723`) N=5 CRNBP torus's narrow residual-novelty claim.** The last gate before any V0-V5
+  writeback chain can be authorized. `#722` found that both Surrey TCP papers (Baresi/Owen/Scheeres
+  AAS 23-201 2023; Owen/Baresi/Scheeres ISSFD 2024, both now in-corpus per `#722`) only compute
+  quasi-periodic torus substitutes of the L1/L2 Lyapunov PLANAR family with idealized moon rates —
+  `#720`'s object substitutes Kumar et al. 2021's interior Europa 3:4 resonant orbit at Ganymede's
+  PHYSICAL synodic rate, a claimed geometrically-distinct combination. This has NOT yet been
+  independently re-adversarially-checked — `#722` was a careful comparative read, not a fresh
+  skeptical pass. Scope: (1) re-read both TCP papers' own scope/results sections ONE more time,
+  specifically hunting for any mention of interior resonant families or non-idealized rates that
+  `#722` might have missed (do not just trust `#722`'s own summary); (2) confirm `#720`'s object,
+  RE-RUN at the `#723`-corrected physical phase (not the old buggy-phase object — check
+  `src/cyclerfinder/search/variational_crnbp_torus.py`'s latest state, `#723`'s commit `a3f137c`),
+  is still the object actually being evaluated for novelty, not a stale pre-fix artifact; (3)
+  deliver a clear CONFIRMED/NOT-CONFIRMED verdict on whether the narrow claim survives. On a
+  CONFIRMED verdict: this becomes eligible for the same `#701`->`#708`-style V0-V5 vetting chain
+  (real-ephemeris consistency check, epoch-robustness, schema design, catalogue writeback) — but
+  that chain itself is a SEPARATE future task, not authorized by this one. On NOT-CONFIRMED: close
+  the whole `#714`->`#724` N=5 CRNBP arc as a genuinely valuable CAPABILITY build (new EOM/STM,
+  new torus-continuation infrastructure, a real bug fix, a real physics simplification) with an
+  honest non-discovery result — still a fully legitimate, useful outcome per this project's own
+  "clean negative is success" discipline.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
