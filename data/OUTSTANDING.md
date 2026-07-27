@@ -210,10 +210,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#725`/`#726` — dispatched 2026-07-27. `#725`: process `#713`'s two user-supplied papers;
-  `#726`: user-authorized start of the V0-V5 vetting chain on `#724`'s CONFIRMED narrow N=5 CRNBP
-  torus claim (real-ephemeris consistency check first, `#701`/`#704` precedent). See each's own
-  bullet entry.
+- `#726` — dispatched 2026-07-27, user-authorized start of the V0-V5 vetting chain on `#724`'s
+  CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first, `#701`/`#704`
+  precedent). See its own bullet entry.
+- `#725` — REMOVED from this list 2026-07-27, CLOSED: both `#713` papers filed+digested+indexed,
+  confirms the RRT 2026 stable Earth-Moon result is genuinely novel (not anticipated by Casoliva's
+  own unstable-complement family). See its own bullet entry.
 - `#724` — REMOVED from this list 2026-07-27, CLOSED:
   CONFIRMED the narrow novelty claim independently, corrected "interior"->"exterior" terminology,
   proposed precise defensible claim language. See its own bullet entry.
@@ -14873,10 +14875,8 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   page explicitly "no PDF link provided", core.ac.uk mirrors broken) — no green-OA deposit exists
   anywhere. Did NOT write a digest (would violate `[[feedback_ground_citations_against_content]]`
   / `[[feedback_digest_not_adoption]]` to digest from secondary abstracts with no source text).
-  **Needs a user decision to proceed** — options: (1) purchase single-article AIAA ARC access
-  (~$25-35), (2) ResearchGate "Request full-text PDF" to the authors (free, async, uncertain), (3)
-  check any existing institutional/library access. Parked pending that decision — not auto-fired
-  further. (Also checked and ruled out as NOT new, no action needed: Russell & Strange 2009, both
+  **RESOLVED 2026-07-27: user directly supplied both PDFs — see `#725` for full processing.**
+  (Also checked and ruled out as NOT new, no action needed: Russell & Strange 2009, both
   Jones/Hernandez/Jesick 2017 AAS papers, and the Ross/Roberts-Tsoukkas 2025/2026 lineage — all
   already in corpus; "Shi/Xu 2023" Jovian review and "McConaghy/Longuski/Byrnes JSR 2008" both
   turned out to be citation-detail mismatches for papers already digested under different
@@ -15201,21 +15201,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   epoch-robustness, schema design, catalogue writeback) remains a separate future task, not yet
   registered/dispatched. Full report + independent re-verification script
   (`scripts/verify_724_rerun_continuation.py`): commit `409f7b5`.
-- **#725 (dispatched 2026-07-27) -- process `#713`'s two papers, user-supplied.** User directly
-  uploaded both PDFs: **Casoliva, Mondelo, Villac, Mease, Barrabes & Olle, "Two Classes of Cycler
-  Trajectories in the Earth-Moon System,"** *JGCD* 33(5), Sept-Oct 2010, DOI `10.2514/1.46856`
-  (verified page 1: matches `#713`'s confirmed identity exactly), and its conference precursor
-  **"Families of Cycler Trajectories in the Earth-Moon System," AIAA 2008-6434**, AIAA/AAS
-  Astrodynamics Specialist Conf., Honolulu, 18-21 Aug 2008 (verified page 1). File both into the
-  private `cyclers_pdf/papers/` repo (never the public repo), OCR-if-needed, full digest per
-  `[[feedback_corpus_document_policy]]` INCLUDING the citation-mining pass (mandatory per the
-  policy's 2026-07-27 update — read their own background/related-work sections for any other
-  missed topically-adjacent prior art, cross-check against `CORPUS_INDEX.md`, flag not acquire),
-  `CORPUS_INDEX.md` registration. Digest should cover: their EOM/dynamical model, the "unstable
-  cycler" vs. Ross-Roberts-Tsoukkas "stable cycler" family distinction already noted in
-  `docs/notes/2026-06-11-ross-roberts-tsoukkas-2025-mining.md`, any orbit-family tables usable as a
-  future golden/positive-control test, and explicit comparison against this project's own existing
-  Earth-Moon `quasi_cycler`/`cycler` catalogue rows.
+- **#725 ✓ DONE (2026-07-27) -- process `#713`'s two user-supplied papers.** Both filed as native
+  text-layer PDFs (no OCR needed) to the private corpus (`cyclers_pdf` commit `3a0dfe5`), digested
+  (`docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`) and indexed (public
+  commit `bd60ab2`). **Findings**: planar CR3BP model (`mu_EM=0.0121529529`; the 2010 paper upgrades
+  to a 6-state spatial EOM specifically for out-of-plane stability, though every orbit stayed
+  planar). **Class 1** (high-energy p-q resonant, elliptical-orbit/second-species differential
+  correction): sourced Table 3 gives Jacobi constants/periods/stability indices for designations
+  like 1-2c/d/e, 2-1a/b, 3-2c, 7-3a/b/c — contains BOTH stable and unstable members per resonance.
+  **Class 2** (low-energy L1-Lyapunov homoclinic-connection cyclers, He1-4/Hm1-2 families via the
+  Barrabés-Mondelo-Ollé continuation method): sourced golden numbers — period 29.164 days,
+  connection flight time 113.632 days, DeltaV~703-718 m/s, C_J~2.89-3.18. **Verdict on the
+  "unstable complement" hypothesis: CONFIRMED for Class 2** — structurally built on the provably-
+  unstable L1 Lyapunov orbit, energy-adjacent to (C_J~2.89-3.18) and in the same manifold-tube
+  neighborhood as the catalogued Ross-Roberts-Tsoukkas STABLE rows (C~3.03-3.70) — but neither
+  Casoliva paper ever checks stability for any homoclinic-shadowing periodic orbit, so **this
+  confirms the RRT 2026 stable result already in our catalogue is genuinely novel, not anticipated
+  by this earlier work**. Class 1 is only a partial match (mixes stable/unstable via a completely
+  different non-manifold method). **Citation-mining pass**: both full reference lists read (2010:
+  30 refs, 2008: 27 refs), cross-checked against `CORPUS_INDEX.md`; confirmed already-covered
+  (Koon-Lo-Marsden-Ross 2000, Gomez et al. 2004, Doedel et al. 2003, Russell & Strange 2009);
+  flagged 13 new candidates NOT acquired, highest priority **Barrabés & Gómez 2002/2003** (the
+  exact p-q resonant seed method Casoliva uses) and **Barrabés, Mondelo & Ollé 2009** (the exact
+  homoclinic-continuation algorithm), plus Leiva & Briozzo, Broucke 1968, McGehee 1969,
+  Llibre-Martínez-Simó 1985, Hénon 1997.
 - **#726 (dispatched 2026-07-27) -- start the V0-V5 vetting chain on `#724`'s CONFIRMED narrow N=5
   CRNBP torus novelty claim, user-authorized 2026-07-27.** Mirrors the `#701`->`#708` Uranus
   Umbriel-Titania precedent exactly. First step (the `#704` precedent): real-ephemeris consistency
