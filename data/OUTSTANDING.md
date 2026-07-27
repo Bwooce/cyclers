@@ -205,12 +205,14 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731`/`#732`/`#733` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
+- `#729`/`#731`/`#733` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
   epoch-robustness scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent);
   `#731`: user-flagged CI failure investigation (stale catalogue ratchet already diagnosed, other
-  failures need proper root-causing); `#732`/`#733`: process the top-5 `#730` master-list papers,
-  user-supplied (Blazevski & Ocampo 2012, Negri & Prado 2020, Baresi/Olikara/Scheeres 2018 in
-  `#732`; Olikara 2016 thesis + Haro et al. 2016 book in `#733`). See each's own bullet entry.
+  failures need proper root-causing); `#733`: process 2 more `#730` master-list papers, user-supplied
+  (Olikara 2016 thesis, Haro et al. 2016 book). See each's own bullet entry.
+- `#732` — REMOVED from this list 2026-07-27, CLOSED: 3 papers processed, `#724`'s novelty claim
+  reinforced (not threatened), `bcr4bp.py`'s indirect term confirmed correct, a cheap GMOS-vs-PDE
+  follow-up opportunity found. See its own bullet entry.
 - `#730` — REMOVED from this list 2026-07-27, CLOSED: 68 unique acquisition candidates
   consolidated, DOI-resolved, priority-ranked; found 6 false gaps (papers already in corpus
   re-flagged as missing). See its own bullet entry.
@@ -15459,29 +15461,34 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   genuine regression or document a confirmed environment-specific flake with the SAME specific,
   non-vague reasoning discipline this project already applies elsewhere (`#584`'s own precedent) —
   do not blanket-dismiss everything as "probably CI load" without actually checking.
-- **#732 (dispatched 2026-07-27) -- process 3 user-supplied papers from `#730`'s own top-5
-  ranked list.** All three verified page-1-exact by the coordinating session:
-  **Blazevski, D. & Ocampo, C., "Periodic orbits in the concentric circular restricted four-body
-  problem and their invariant manifolds,"** *Physica D* 241:1158–1167 (2012), DOI
-  `10.1016/j.physd.2012.03.008` — THE foundational CCR4BP model-definition paper this project's own
-  `core/ccr4bp.py`/`core/crnbp.py` lineage traces through the Kumar/Gilliam/Negri-Prado papers but
-  never itself held; previously CONFIRMED genuinely paywalled with no free copy anywhere (per
-  `#728`); the paper's own abstract explicitly discusses "the Jupiter-Europa-Ganymede-spacecraft
-  system" and constructs unstable periodic orbits "based on the well-known Laplace resonance" —
-  directly on-point for the `#714`->`#729` N=5 CRNBP thread, digest MUST cross-check against it.
-  **Negri, R.B. & Prado, A.F.B.A., "Generalizing the Bicircular Restricted Four-Body Problem,"**
-  *JGCD* 43(6):1173–1179 (2020), DOI `10.2514/1.G004848` — the N=4 special case the already-acquired
-  Negri & Prado 2022 CRNBP paper explicitly generalizes; corrects Huang 1960's BCR4BP indirect term,
-  check against this project's own dormant `core/bcr4bp.py`. **Baresi, N., Olikara, Z.P. &
-  Scheeres, D.J., "Fully Numerical Methods for Continuing Families of Quasi-Periodic Invariant
-  Tori in Astrodynamics,"** *J. Astronaut. Sci.* 65:157–182 (2018), DOI `10.1007/s40295-017-0124-6`
-  — the specific torus-continuation method both already-acquired Baresi/Owen/Scheeres TCP papers
-  cite for their own algorithm; also directly comparable to this project's own `#690`/`#720`
-  pseudospectral torus corrector methodology. Full OCR-if-needed + digest + the mandatory
-  citation-mining pass per `[[feedback_corpus_document_policy]]` + `CORPUS_INDEX.md` registration
-  for all three. Update `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`'s own §1 or
-  a new note marking these 3 items ACQUIRED (not a live backlog gap anymore) — do not leave the
-  master list stale.
+- **#732 ✓ DONE (2026-07-27) -- process 3 user-supplied papers from `#730`'s own top-5 ranked
+  list.** Filed (private `cyclers_pdf` commit `9ee7442`), digested + indexed (public commit
+  `711992c`); master list updated with items #1/#4/#5 struck through as ACQUIRED. **Cross-check
+  1 (Blazevski & Ocampo 2012 EOM fidelity + `#724` relevance)**: `core/ccr4bp.py` is faithful to
+  this paper's founding CONCEPT (concentric/coplanar/circular/non-mutually-coupled extra
+  perturbers) but NOT its literal equations — the paper fixes Jupiter at the origin with raw-mass
+  normalization, `ccr4bp.py` uses the standard barycentric CR3BP convention; the actual equations
+  trace to the later Simo/Gomez/Jorba-style barycentric lineage instead. On `#724`: this 2012
+  paper's own Laplace-resonance method only builds unstable PERIODIC orbits near libration points
+  — no torus, no interior/exterior resonant orbit — extending the same distinction already found
+  for the TCP papers all the way back to this 2012 origin. Its own closing paragraph is actually
+  the EARLIEST known articulation of the "N=5 Laplace-locked" idea — but purely speculative, never
+  executed. **`#724`'s novelty claim is unaffected, and if anything reinforced.** **Cross-check 2
+  (`bcr4bp.py`'s indirect term)**: CORRECT, not outdated — matches Negri & Prado's own "binary
+  case" term (the classical Simo/Gomez/Jorba term) exactly, and the paper's own analysis confirms
+  binary is the right choice for `bcr4bp.py`'s actual system (Sun-Earth-Moon, R3=388.8>>1); their
+  "general case" correction targets a different regime (small-R3 nonbinary systems) that doesn't
+  apply here. Also flagged: the master list's own "corrects Huang 1960" framing isn't directly
+  supported by this paper's text (Huang is cited only as a prior derivation, never shown erroneous)
+  — a small correction needed there. **Cross-check 3 (Baresi/Olikara/Scheeres 2018 method
+  comparison)**: this project's own torus corrector (`variational_qp_torus.py`/
+  `variational_crnbp_torus.py`) is a PDE(DFT)-class method — the paper's own SECOND-CHOICE vs.
+  their preferred GMOS (stroboscopic-map shooting: faster + more accurate + free Floquet stability
+  in their own tests). But their comparison ONLY tests STABLE parent orbits; it never probes the
+  ~1540x monodromy-amplification wall this project specifically built the PDE corrector to escape
+  (see `#612`'s own precedent). Partially validates preferring GMOS where it already converges
+  cleanly (an untested, cheap future follow-up) WITHOUT invalidating the PDE choice for the
+  unstable-parent-orbit regime it exists to handle.
 - **#733 (dispatched 2026-07-27) -- process 2 more user-supplied papers from `#730`'s own top-5
   ranked list (found in `~/Downloads`).** Both verified page-1-exact by the coordinating session:
   **Olikara, Z.P., "Computation of Quasi-Periodic Tori and Heteroclinic Connections in
