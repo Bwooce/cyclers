@@ -25,9 +25,11 @@ even at dC=1e-4). See ``docs/notes/2026-06-26-466-energy-moving-qp-walk-design.m
 
 Report-only: NO catalogue writeback, NO novelty claims. Any candidate quasi-cycler
 surfacing here is flagged for human gauntlet review after ``search/literature_check``,
-NEVER self-admitted. The GMOS method is Olikara-Scheeres 2010 / Olikara 2016; the tori
-returned are OUR computation (no published Earth-Moon QP-torus family table is digested
-as a sourced golden -- standing acquisition gap, see the design note).
+NEVER self-admitted. The GMOS method is Olikara & Scheeres 2010/2012 (shooting; see
+``genome/qp_tori.py`` for the citation detail and the distinction from Olikara's 2016
+thesis's different, unimplemented collocation method); the tori returned are OUR
+computation (no published Earth-Moon QP-torus family table is digested as a sourced
+golden -- standing acquisition gap, see the design note).
 """
 
 from __future__ import annotations

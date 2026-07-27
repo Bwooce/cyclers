@@ -84,8 +84,13 @@ Discipline
 References
 ----------
 * Olikara, Z. (2016). "Computation of Quasi-Periodic Tori and Heteroclinic
-  Connections in Astrodynamics." PhD dissertation, Purdue University,
-  §4 "Numerical verification of invariance".
+  Connections in Astrodynamics Using Collocation Techniques." PhD
+  dissertation, University of Colorado Boulder (advisor D. J. Scheeres),
+  §4 "Numerical verification of invariance". Cited here for its
+  Fourier-truncation/invariance-residual data only; note the actual GMOS
+  corrector this module wraps (:mod:`cyclerfinder.genome.qp_tori`)
+  implements the earlier Olikara & Scheeres 2010/2012 SHOOTING scheme, not
+  this thesis's own (different, collocation-based) method.
 """
 
 from __future__ import annotations

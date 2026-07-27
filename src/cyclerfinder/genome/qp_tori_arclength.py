@@ -7,8 +7,10 @@ plus an energy-tie row plus the arclength constraint. Replaces the fold-blind
 amplitude stub (genome/qp_tori_continuation.py), which is superseded not deleted.
 
 Report-only: NO catalogue writeback, NO novelty claims. The method is
-Olikara-Scheeres 2010 / Olikara 2016 GMOS continuation; the tori returned are
-OUR computation.
+Olikara & Scheeres 2010/2012 GMOS-shooting continuation (see
+``genome/qp_tori.py`` for the citation detail and the distinction from
+Olikara's 2016 thesis's different, unimplemented collocation method); the
+tori returned are OUR computation.
 """
 
 from __future__ import annotations

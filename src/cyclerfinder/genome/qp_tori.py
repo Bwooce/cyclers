@@ -16,9 +16,14 @@ eventually breaks up (Arnol'd tongues / KAM cantori).
 GMOS (Gomez-Mondelo-Olikara-Scheeres) parameterization
 ------------------------------------------------------
 
-Following Olikara-Scheeres 2010 and Olikara 2016 (Purdue PhD), we work with
+Following the Olikara & Scheeres 2010/2012 GMOS **shooting** scheme (full-
+period nonlinear propagation of each Fourier-mode sample, FFT-matched against
+a rotation-shifted residual -- see ``_gmos_residual`` below), we work with
 the **invariant circle** representation rather than the full 2D Fourier
-expansion. Pick a longitudinal stroboscopic time::
+expansion. (Olikara's 2016 PhD thesis, University of Colorado Boulder,
+describes a *different*, later method -- Gauss-Legendre collocation instead
+of shooting -- that is NOT what is implemented here; see "References"
+below.) Pick a longitudinal stroboscopic time::
 
     t_strob = 2 pi / omega_long      (one longitudinal period)
 
@@ -74,7 +79,9 @@ Discipline
 ----------
 
 * Returned torus is OUR computation; no novelty claim is made. The method is
-  Olikara-Scheeres 2010 / Olikara 2016.
+  the Olikara & Scheeres 2010/2012 GMOS shooting scheme -- NOT Olikara's 2016
+  thesis, whose own novel contribution (Gauss-Legendre collocation) is a
+  different, unimplemented approach (see "References").
 * No catalogue writeback. Catalogue admission of a QP-torus as a quasi-cycler
   requires V0-V5 gauntlet adaptation -- a future Phase, not Phase 1.
 * The seed (Neimark-Sacker bracket from #299) is sourced via the parent
@@ -86,9 +93,21 @@ References
 
 * Olikara, Z., & Scheeres, D. (2010). "Numerical Method for Computing
   Quasi-Periodic Orbits and Their Stability in the Restricted Three-Body
-  Problem." AAS Astrodynamics Specialist Conference.
+  Problem." AAS Astrodynamics Specialist Conference. (Also appeared as
+  Olikara & Scheeres, Advances in the Astronautical Sciences, Vol. 145,
+  2012.) This SHOOTING scheme -- full-period nonlinear propagation of each
+  Fourier-mode sample, FFT-matched against a rotation-shifted residual -- is
+  what is actually implemented below.
 * Olikara, Z. (2016). "Computation of Quasi-Periodic Tori and Heteroclinic
-  Connections in Astrodynamics." PhD dissertation, Purdue University.
+  Connections in Astrodynamics Using Collocation Techniques." PhD
+  dissertation, University of Colorado Boulder (advisor D. J. Scheeres). The
+  thesis's own novel contribution is a Gauss-Legendre COLLOCATION scheme
+  that its own text (Sec. 1.2.2/1.3) explicitly identifies the shooting
+  scheme above (Olikara & Scheeres 2010/2012) as its predecessor and
+  replaces -- collocation is NOT implemented in this module (nor is the
+  thesis's free Floquet-stability byproduct). Cited here only for
+  background (e.g. the truncation-error discussion above) and as a
+  documented, unimplemented future alternative.
 * Howell, K. C., & Howell, A. R. (2014). "Survey of Quasi-Periodic Motion in
   Cislunar Space for Transfer Design."
 """

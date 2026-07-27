@@ -75,7 +75,12 @@ Discipline
 References
 ----------
 * Olikara, Z. (2016). "Computation of Quasi-Periodic Tori and Heteroclinic
-  Connections in Astrodynamics." PhD dissertation, Purdue University.
+  Connections in Astrodynamics Using Collocation Techniques." PhD
+  dissertation, University of Colorado Boulder (advisor D. J. Scheeres).
+  Cited here for its Fourier-truncation-error analysis only; note the
+  actual GMOS corrector this module wraps (:mod:`cyclerfinder.genome.qp_tori`)
+  implements the earlier Olikara & Scheeres 2010/2012 SHOOTING scheme, not
+  this thesis's own (different, collocation-based) method.
 * Howell, K. C., & Howell, A. R. (2014). "Survey of Quasi-Periodic Motion
   in Cislunar Space for Transfer Design." AAS Astrodynamics Specialist.
 """
