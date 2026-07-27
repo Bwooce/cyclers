@@ -34,15 +34,17 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) —
-  gated on `#721`'s adversarial-verification verdict on `#720`, per `#714`'s own explicit
-  ordering. Not yet registered.
-- (`#714`/`#715`/`#717`/`#720` all DONE 2026-07-27 — `#714`: tractable-with-caveats verdict +
-  gated 3-item shortlist; `#715`: honest partial result, new interior-perturber + libration-seeded
-  CCR4BP infrastructure validated, specific paper transit chain not reproduced; `#717`: core N=5
-  EOM+STM built, sign discrepancy resolved from source, a bonus net-zero-coupling finding; `#720`:
-  a promising but NOT YET independently adjudicated N=5 CRNBP torus continuation — see `#721`.
-  See each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
+- `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
+  substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#721` found; do not dispatch
+  without first reading `#722`'s own digest of that paper. Not yet registered.
+- (`#714`/`#715`/`#717`/`#720`/`#721` all DONE 2026-07-27 — `#714`: tractable-with-caveats
+  verdict + gated 3-item shortlist; `#715`: honest partial result, new interior-perturber +
+  libration-seeded CCR4BP infrastructure validated, specific paper transit chain not reproduced;
+  `#717`: core N=5 EOM+STM built, sign discrepancy resolved from source, a bonus net-zero-coupling
+  finding; `#720`: torus continuation genuinely converged, BUT its novelty framing was refuted by
+  `#721`'s adversarial pass (real prior art found: the Surrey Tri-Circular Problem papers, plus a
+  real phase-default bug) — see `#722`/`#723` for the registered follow-ups. See each's own bullet
+  entry.) (`#710`/`#711`/`#712` — dispatched
   2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
   on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
@@ -200,10 +202,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#721` — dispatched 2026-07-27, adversarial verification of `#720`'s N=5 CRNBP torus. See its
-  own bullet entry for full scope.
-- `#720` — REMOVED from this list 2026-07-27, CLOSED (promising result, gated pending `#721`'s
-  verdict before any novelty claim or writeback). See its own bullet entry.
+- `#722`/`#723` — dispatched 2026-07-27. `#722`: acquire+digest the two Surrey TCP papers `#721`
+  found; `#723`: fix the `theta_io0` phase-default bug `#721` found. See each's own bullet entry.
+- `#721` — REMOVED from this list 2026-07-27, CLOSED: real prior art found (Surrey Tri-Circular
+  Problem papers, missed twice by earlier literature sweeps), refuting `#720`'s novelty framing;
+  plus a real phase-default bug. See its own bullet entry for the full verdict.
+- `#720` — REMOVED from this list 2026-07-27, CLOSED (torus genuinely converged; novelty framing
+  refuted, phase bug found — see `#721`). See its own bullet entry.
 - `#717` — REMOVED from this list 2026-07-27, CLOSED:
   core N=5 EOM+STM built, `#711`/`#712` digest sign discrepancy resolved from source (Negri &
   Prado digest had the error), and a bonus net-zero mutual-coupling-term finding that lightens
@@ -1435,7 +1440,14 @@ the already-built #694 pipeline, distinct from #714's exploratory scope. #716 �
 shortlist item 2 (revised lighter per #717's net-zero-coupling finding): mu_Io continuation of
 #690's Europa 3:4 torus using the new src/cyclerfinder/core/crnbp.py N=5 machinery -- either the
 first known N=5 CRNBP invariant torus (lit-check gate required before any "first" claim) or a
-registry-grade characterized breakdown. #721
+registry-grade characterized breakdown. #721 for an adversarial verification of #720's torus (Fable)
+-- found real prior art (Baresi/Owen/Scheeres Tri-Circular Problem papers, missed by two earlier
+literature sweeps) that refutes the novelty framing, plus a real theta_io0 phase-default bug. #722
+for acquire+digest of the two Surrey TCP papers (Baresi/Owen/Scheeres AAS 23-257 2023; Owen/Baresi/
+Scheeres ISSFD 2024) that #721 found are genuine, missed prior art directly on-point for this
+project's own N=5 CRNBP work. #723 for fixing the theta_io0/theta_gan0 phase-default bug #721 found
+in the N=5 Jupiter-Europa-Io-Ganymede system constructor (currently 0/0, physically should anchor
+theta_io0=pi per the real Laplace libration center). #724
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14955,58 +14967,76 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   given the net-zero coupling finding above (likely simpler than `#714` originally estimated, since
   no genuine 3-body-coupled Jacobian term is involved).
 - **#720 ✓ DONE (2026-07-27) -- `#714` shortlist item 2: `mu_Io` continuation of `#690`'s Europa
-  3:4 torus.** **PROMISING RESULT, NOT YET INDEPENDENTLY ADJUDICATED — do not cite as a confirmed
-  discovery until `#721` (adversarial verification) closes.** Built
-  `src/cyclerfinder/search/variational_crnbp_torus.py` (an EOM swap of `#690`'s own pseudospectral
-  torus corrector onto `#717`'s N=5 `crnbp.py`, `#689`/`#690` themselves untouched; the coupling
-  term is deliberately omitted from the residual/Jacobian per `#717`'s proof, re-verified
-  pointwise to <1e-12 against the full coupling-included EOM). Continuation from `#690`'s validated
-  `mu_Io=0` seed to the real physical `mu_Io=4.70434e-5` (`#717`'s own registry value): smooth,
-  monotonic, ~1.5% total residual drift, well inside `#690`'s own gates (residual <1e-3, closure
-  <5e-3) — table of steps in the agent's own report. A one-shot cold jump straight to the physical
-  value reproduces the same result to 4 significant figures (rules out a fragile-continuation
-  artifact). **Real physical finding along the way**: `#690`'s own default `n1=1` CANNOT represent
-  Io's forcing at all — the exact Laplace lock (`omega_Io = -2*omega_Gan`) makes Io's synodic
-  position a pure SECOND-HARMONIC function of `theta1`, so `n1=1` throws the corrector onto a bad
-  branch (flat residual ~0.035, a representation-capacity wall, not a magnitude effect); `n1=2` is
-  the minimal fix, locked into its own regression test. **Literature-check gate**: offline
-  `literature_check.py::check_literature` returned a `published` hit (Russell-Strange 2009
-  Ganymede-Europa flyby cycler) — manually confirmed this is a known tool-scope false positive
-  (trivial `{Jupiter,Europa}` subset match against a structurally unrelated repeated-flyby-cycler
-  object, not a torus). Manual digest-reads of the two plausible Jovian triple-cycler corpus
-  anchors (Hernandez/Jones/Jesick AAS 17-608, Lynam-Longuski 2011) confirmed both are patched-conic
-  flyby tours, a different object class (repeated close approaches vs. a bounded resonant orbit
-  with no Io/Ganymede approach). Fresh live `WebSearch` (mirroring `#699`/`#706`'s methodology)
-  surfaced only already-known N=4/N=5 EOM papers plus a 1976 Heppenheimer averaged-equilibrium
-  paper (different method/era) and a qualitative Gilliam-thesis raw-propagation figure (different
-  orbit family, no corrected torus) — no paper found computing a converged N=5 CRNBP torus for
-  this system. 8 new tests in `tests/search/test_variational_crnbp_torus.py` (grid RHS/Jacobian vs
-  full EOM at machine precision, residual-Jacobian vs. central FD, `mu_io=0` Tier-0 structural gate
-  bit-identical to `#690`, the `n1=1` branch-jump regression, the `n1=2` continuation headline
-  result, the one-shot robustness check). ruff+mypy clean, full ratchet clean apart from the same 2
-  confirmed pre-existing unrelated failures noted in `#717`. Commit `52c011f`. **Explicitly NOT
-  claimed as novel/first by the dispatched agent itself, per instruction** — that framing (and any
-  catalogue writeback) is deliberately deferred to a proper adversarial verification pass, mirroring
-  the `#701`→`#702` precedent where a first-pass "looks clean" result concealed a real bug found
-  only via skeptical re-investigation. See `#721`.
-- **#721 (dispatched 2026-07-27) -- adversarial verification of `#720`'s N=5 CRNBP torus.**
-  Explicitly modeled on the `#701`→`#702` precedent: before trusting `#720`'s "smooth clean
-  continuation, no disqualifying literature" result as a real discovery, get an independently
-  skeptical re-derivation/re-check — do not just re-run the same code and re-read the same
-  residual numbers. Scope: (1) independently re-derive or cross-check the coupling-term-omission
-  claim from `#717` directly against the raw N=5 EOM, not by trusting `#717`'s own tests; (2)
-  independently re-verify the `n1=2` torus's own convergence using a DIFFERENT integrator/method
-  than `variational_crnbp_torus.py`'s own pseudospectral approach (this project's own
-  `ghost_guard`-style independent-integrator cross-check discipline — grep `#694`'s
-  `ccr4bp_heteroclinic_search.py` for the pattern); (3) independently re-run the literature
-  clearance with fresh eyes, specifically hunting for anything the first pass might have
-  structurally missed (the `#699`/`#706` methodology, but genuinely adversarial — try to find a
-  reason this ISN'T novel, not confirm that it is); (4) sanity-check the "first N=5 CRNBP torus"
-  framing itself against what `#711`/`#712`'s own source papers actually claim was previously
-  unknown. Deliver a clear CONFIRMED/NOT-CONFIRMED verdict, not a restatement of `#720`'s own
-  claims. Only on a CONFIRMED verdict does this become eligible for the same V0-V5
-  vetting/writeback chain `#701`→`#708` used (real-ephemeris consistency check, epoch-robustness,
-  schema design, catalogue writeback) — none of that is authorized yet.
+  3:4 torus.** Built `src/cyclerfinder/search/variational_crnbp_torus.py`, ran a smooth clean
+  `mu_Io` continuation to the physical value, found a real structural finding (default `n1=1`
+  cannot represent Io's exact-second-harmonic Laplace forcing, `n1=2` is the minimal fix). Its own
+  literature-clearance pass found nothing disqualifying — **but `#721`'s adversarial pass (below)
+  found real prior art it missed, and a real phase bug; see `#721` for the full, corrected
+  picture.** Commit `52c011f`. 8 tests in `tests/search/test_variational_crnbp_torus.py`, ruff+mypy
+  clean, ratchet clean apart from the same 2 pre-existing unrelated failures noted in `#717`.
+- **#721 ✓ DONE (2026-07-27, Fable) -- adversarial verification of `#720`'s N=5 CRNBP torus.**
+  **VERDICT: computation CONFIRMED, novelty framing NOT CONFIRMED — genuine prior art found, plus a
+  real bug.** (1) Zero-coupling claim independently re-derived from raw Newtonian gravitation (not
+  `#717`'s own code) to ~2e-16 at N=5 AND N=6 — confirmed a provable bookkeeping cancellation, not
+  an artifact; `crnbp_eom`'s own inherited idealizations measure <=3.0e-8, negligible. (2) The
+  torus itself IS genuinely converged: independently rebuilt the pipeline (exactly reproduced the
+  1.2210e-4->1.2392e-4 residual table), cross-checked with a `ghost_guard`-style Radau-vs-DOP853
+  propagation under the FULL coupling-included EOM over a full forcing period — statistically
+  identical to the validated `#690` `mu_io=0` baseline, integrator delta ~4e-12 (honest caveat:
+  off-collocation-grid invariance residual is ~2.15e-3, 17x the on-grid figure — a PRE-EXISTING
+  `#690` truncation floor, not something `#720` introduced). **(3) NOVELTY REFUTED**: Baresi, Owen &
+  Scheeres, AAS 23-257 (2023), and Owen, Baresi & Scheeres, ISSFD 2024, already computed 2D
+  quasi-periodic invariant tori, Floquet stability, manifolds, AND Europa<->Ganymede transfers in
+  exactly this Laplace-locked Jupiter-Io-Europa-Ganymede 5-body model (their own name: "Tri-Circular
+  Problem," TCP) — including the Jupiter-Europa frame. Cited inside Gilliam's OWN thesis §2.2.5.1,
+  whose famous "not currently known if periodic trajectories exist" quote explicitly carves out
+  "cases leveraging resonance" — both the `#711` digest and `#720`'s own literature sweep missed
+  this. **(4) A real `#702`-class phase bug found**: the repo default
+  `theta_io0=theta_gan0=0` puts the Laplace argument at 0 deg when the physical libration center is
+  180 deg (Baresi's own Table 1 uses phi_Io0=pi) — `#720`'s torus lives in a configuration the real
+  Galilean trio can never physically occupy. Verified a re-run at `theta_io0=pi` converges
+  identically (residual 1.2343e-4), so the fix is cheap, but THE DELIVERED OBJECT IS NOT THE
+  PHYSICAL ONE as currently configured. Full findings:
+  `docs/notes/2026-07-27-721-n5-crnbp-torus-adversarial-verification.md`; independent verification
+  code: `scripts/verify_721_crnbp_adversarial_checks.py` (commit `18c40f5`).
+  **CONSEQUENCES / STANDING GUIDANCE**: (a) do NOT authorize any V0-V5 writeback chain on the
+  current framing; (b) `#714`'s own premise that "no N=5 dynamical positive control can exist" is
+  now WRONG — the TCP Lyapunov-substitute tori ARE a literature-anchored positive control, a
+  genuinely good thing for future N=5 work, not a bad one; (c) only a narrow residual claim
+  ("first 3:4-resonant-family torus substitute in this specific model, at physical rates and
+  phase") remains POTENTIALLY novel, pending a fresh gate against the two TCP papers directly —
+  NOT assumed, must be re-checked once those papers are in-corpus; (d) `#714` shortlist item 3
+  (connection survival) is now substantially pre-empted by the ISSFD 2024 transfer work — do not
+  dispatch it without first reading that paper. Follow-ups registered: `#722` (acquire+digest the
+  two Surrey TCP papers), `#723` (fix the `theta_io0` phase default).
+- **#722 (dispatched 2026-07-27) -- acquire + digest the two Surrey "Tri-Circular Problem" (TCP)
+  papers `#721` found.** Baresi, N., Owen, E. & Scheeres, D. J., AAS 23-257 (2023) — check
+  whether it has a DOI or is conference-only (Space Flight Mechanics Meeting proceedings, per
+  `#721`'s own citation); Owen, E., Baresi, N. & Scheeres, D. J., ISSFD 2024 (International
+  Symposium on Space Flight Dynamics — check for an open-access proceedings PDF, `#721`'s own
+  digest noted the AAS PDF for the first paper is open-access). These already compute 2D
+  quasi-periodic invariant tori, Floquet stability, manifolds, and Europa<->Ganymede transfers in
+  exactly this project's own N=5 Laplace-locked Jupiter-Io-Europa-Ganymede model — the real
+  grounding papers this project's own literature sweeps twice missed. Full OCR-if-needed + digest
+  + `CORPUS_INDEX.md` registration per `[[feedback_corpus_document_policy]]`; the digest MUST
+  explicitly re-run a fresh novelty gate for `#720`'s own torus against these two papers directly
+  (not the earlier indirect literature sweep) — is ANY residual claim novel (e.g. a specific
+  resonant-family/phase/rate combination they didn't cover), or is `#720`'s object fully
+  subsumed? Also amend the existing Gilliam digest note to record that her own thesis §2.2.5.1
+  cites this TCP work (missed on the first digest pass).
+- **#723 (dispatched 2026-07-27) -- fix the `theta_io0`/`theta_gan0` phase-default bug `#721`
+  found in the N=5 Jupiter-Europa-Io-Ganymede system constructor.** Currently both default to 0,
+  putting the Laplace argument at 0 deg; the physical libration center is 180 deg (Baresi's own
+  Table 1 uses `phi_Io0=pi`) — the currently-delivered `#720` torus lives in a configuration the
+  real Galilean trio can never physically occupy. `#721` verified a re-run at `theta_io0=pi`
+  converges identically (residual 1.2343e-4), so this is a cheap, well-understood fix: pin
+  `theta_io0 = pi - 2*theta_gan0`(or the correct general relation — re-derive from the Laplace
+  resonance condition directly, don't just hardcode `pi` for the default case) in
+  `src/cyclerfinder/core/crnbp.py`'s `jupiter_europa_io_ganymede_default()` (or wherever the N=5
+  system constructor lives), add a regression test locking the physical phase relation in, and
+  re-run `#720`'s own torus continuation at the corrected phase to confirm the fix doesn't change
+  the qualitative result (expected: same residual behavior per `#721`'s own spot-check, just at
+  the physically correct configuration).
 - **#718 (REGISTERED 2026-07-27) -- Strategy 2: Systematic Uranian Asymmetric Deflated Newton Sweep.** Multi-start deflated Newton root-finder across asymmetric phase offsets beta in (0, pi) for Ariel-Umbriel, Titania-Oberon, and Miranda-Ariel using `src/cyclerfinder/search/deflated_newton.py`. Targets novel asymmetric `quasi_cycler` rows in the Uranian moon system building on `#663`'s beta ~ 74.3 deg proof-of-concept root.
 - **#719 ✓ DONE (2026-07-27) -- Strategy 3: Sun-Earth-Mars WSB Capture Quasi-Cycler Search.** Interplanetary weak-stability-boundary (WSB) capture quasi-cycler search combining Sun-Mars L1/L2 capture sets (`core/sunmars_wsb.py`) with Earth gravity-assist return legs (`search/mars_wsb_cycler_search.py`). Evaluated 144 grid seeds across 50-year integration windows; 0 repeating quasi-cyclers found, confirming non-recurrence of chaotic Belbruno WSB capture sets across multi-synodic beats. Certified negative saved to `data/found/719_sun_earth_mars_wsb_search/result.json`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
