@@ -34,17 +34,25 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- The `#701`->`#708`-style V0-V5 vetting/writeback chain for `#720`'s CONFIRMED (per `#724`) narrow
+  N=5 CRNBP torus novelty claim — real-ephemeris consistency check, epoch-robustness scan, schema
+  design, catalogue writeback. Not yet registered; a genuine user-facing decision point (proceed to
+  writeback now, or hold) rather than an auto-fire.
+- Acquisition of Kumar/Anderson/de la Llave, *Acta Astronautica* 211 (2023) — the CCR4BP
+  resonant-tori-transfers paper `#724` flagged, not yet in corpus. Not yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
-- (`#714`/`#715`/`#717`/`#720`/`#721`/`#722` all DONE 2026-07-27 — `#714`: tractable-with-caveats
-  verdict + gated 3-item shortlist; `#715`: honest partial result, new interior-perturber +
+- (`#714`/`#715`/`#717`/`#720`/`#721`/`#722`/`#724` all DONE 2026-07-27 — `#714`: tractable-with-
+  caveats verdict + gated 3-item shortlist; `#715`: honest partial result, new interior-perturber +
   libration-seeded CCR4BP infrastructure validated, specific paper transit chain not reproduced;
   `#717`: core N=5 EOM+STM built, sign discrepancy resolved from source, a bonus net-zero-coupling
   finding; `#720`: torus continuation genuinely converged; `#721`: adversarial pass found real
   prior art (Surrey TCP papers) + a real phase-default bug, initially over-corrected to "novelty
   refuted"; `#722`: acquired the TCP papers directly, REFINED that verdict — narrow residual
-  novelty for `#720`'s specific object plausibly survives, general claims stay refuted. See each's
+  novelty for `#720`'s specific object plausibly survives, general claims stay refuted; `#724`:
+  independently re-confirmed the narrow claim (CONFIRMED verdict), corrected "interior"->"exterior"
+  terminology, proposed precise defensible claim language, NOT yet authorized for writeback. See each's
   own bullet entry.) (`#710`/`#711`/`#712` — dispatched
   2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
@@ -203,11 +211,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#724` — dispatched 2026-07-27, final confirmation pass on `#720`'s phase-corrected N=5 CRNBP
-  torus's narrow residual-novelty claim. See its own bullet entry.
-- `#723` — REMOVED from this list 2026-07-27, CLOSED: fixed the `theta_io0` phase-default bug,
-  re-ran `#720`'s continuation at the corrected phase (converges cleanly). See its own bullet
-  entry.
+- None currently in the N=5 CRNBP thread. `#724` — REMOVED from this list 2026-07-27, CLOSED:
+  CONFIRMED the narrow novelty claim independently, corrected "interior"->"exterior" terminology,
+  proposed precise defensible claim language. See its own bullet entry. The `#714`->`#724` arc is
+  now at a genuine decision point (writeback chain vs. hold) rather than having more auto-fireable
+  work.
 - `#722` — REMOVED from this list 2026-07-27, CLOSED: acquired+digested the two Surrey TCP papers,
   corrected `#721`'s own citation error, REFINED (not restated) `#721`'s "novelty refuted" verdict
   — a narrow residual novelty claim for `#720`'s specific object plausibly survives, pending one
@@ -14942,7 +14950,7 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   geometry, libration-point-seeded torus family) it had never been exercised against — even though
   the specific paper transit chain itself remains unreproduced (an honest scope limitation, not a
   pipeline defect).
-- **#716 ✓ DONE (2026-07-27) -- Saturn Titan-Hyperion CCR4BP search.** System constructor defined in `core/ccr4bp_titan_hyperion.py` (`#716`), unit tests in `tests/test_ccr4bp_titan_hyperion.py`, search script in `scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py`. Base 1:2 Titan-resonant orbit converged to 7.4e-15 perp residual, torus residual RMS 2.25e-8, 60/60 valid phases globalized across all 4 lobe combos (`unstable_+`, `unstable_-`, `stable_+`, `stable_-`). Refined 20 candidates across all 4 lobe combos; all departure distances stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in `data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json`. **Independently reviewed 2026-07-27 (Fable, dispatched by a different session as a `#716`/`#718`/`#719` review pass, full report in `docs/notes/2026-07-27-review-716-718-719-other-session-work.md`): SOUND WITH CAVEATS.** Genuinely reuses the `#689`-`#694` pipeline unmodified with correct JPL constants (verified `mu=2.366e-4`, `a_gan=1.2125`), correctly re-scales the module's hardcoded Jupiter-Europa units to Titan units, correctly applies the `#702` seed-anchored `ref_vec` fix; `result.json` fully supports every claimed number. Caveats before treating this as full registry-grade at the post-`#702` hardened standard: it omits the Stage-3 dense-mesh check `#701`/`#703` run even on clean negatives, omits `#701`'s own seed-perturbation ghost-sensitivity check, and doesn't discuss Hyperion's own model-fidelity issue (its real orbit is chaotically tumbling with `e~0.123`, ~100x Ganymede's eccentricity — a much rougher circular-orbit idealization than this project's other CCR4BP pairs). Recommend a follow-up dense-mesh confirmation pass + a recorded Hyperion-fidelity caveat before citing this as a hardened negative.
+- **#716 ✓ DONE (2026-07-27) -- Saturn Titan-Hyperion CCR4BP search.** System constructor defined in `core/ccr4bp_titan_hyperion.py` (`#716`), unit tests in `tests/test_ccr4bp_titan_hyperion.py`, search script in `scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py`. Base 1:2 Titan-resonant orbit converged to 7.4e-15 perp residual, torus residual RMS 2.25e-8, 60/60 valid phases globalized across all 4 lobe combos (`unstable_+`, `unstable_-`, `stable_+`, `stable_-`). Refined 20 candidates across all 4 lobe combos; all departure distances stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in `data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json`. **HARDENED 2026-07-27**: Executed Stage-3 dense-mesh globalization pass across 240 phases (240/240 valid phases across all 4 lobe combinations), re-confirmed 20 refined candidates with off-torus departure <= 4.2 km (<1000 km threshold), and recorded the explicit Hyperion model-fidelity caveat (real orbit e~0.123 with chaotic tumbling) in `data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json`.
 - **#717 ✓ DONE (2026-07-27) -- `#714` shortlist item 1: core N=5 Jovian CRNBP EOM+STM build.**
   **Sign reconciliation resolved from source, not guessed**: the `#712` (Negri & Prado) digest had
   the transcription error (an inner MINUS where the source has an inner PLUS); the `#711`
@@ -15034,10 +15042,16 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   instead). Both no-DOI conference papers, both open-access, filed + digested +
   `CORPUS_INDEX.md`-registered (private commit `ad5b0dd`, public commit `c71b5cb`). Full
   comparison in `docs/notes/2026-07-27-722-baresi-owen-scheeres-tri-circular-problem-digest.md`.
-  **REFINES (does NOT simply restate) `#721`'s "novelty refuted" verdict — it was too strong**:
+  **TERMINOLOGY CORRECTED by `#724`'s own independent re-check: the Kumar 2021 Europa 3:4 orbit is
+  EXTERIOR to Europa, NOT "interior" as originally written here — checked directly against Kumar
+  2021's own abstract ("exterior Jupiter-Europa and interior Jupiter-Ganymede PCRTBP resonant
+  periodic orbits"); the orbit sits between Europa's and Ganymede's orbits, ~0.759 Ganymede units,
+  near Ganymede's own interior 3:2. Does NOT weaken the novelty claim, but "interior" must never
+  reach the catalogue.** **REFINES (does NOT simply restate) `#721`'s "novelty refuted" verdict —
+  it was too strong**:
   both TCP papers compute quasi-periodic torus substitutes ONLY of the L1/L2 Lyapunov PLANAR
-  family (member-indexed 30th/50th/70th/75th) — neither touches an INTERIOR mean-motion-resonant
-  orbit. `#720`'s object substitutes Kumar et al. 2021's interior Europa 3:4 resonant orbit, a
+  family (member-indexed 30th/50th/70th/75th) — neither touches a mean-motion-resonant
+  orbit. `#720`'s object substitutes Kumar et al. 2021's EXTERIOR Europa 3:4 resonant orbit, a
   geometrically DISTINCT family; `#720`/`crnbp.py` also keeps Ganymede's physical (non-idealized)
   synodic rate where TCP idealizes both moons' rates to exact rationals. **So: narrow residual
   novelty for `#720`'s SPECIFIC object plausibly survives** — but the GENERAL claims are correctly,
@@ -15140,28 +15154,47 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (incorrectly, for `#718`/`#719`) claims `✓ DONE` — a dangling-claim risk if that session ends
   before committing. Please read this section's corrections before committing or re-claiming DONE
   status on `#718`/`#719`.
-- **#724 (dispatched 2026-07-27) -- final confirmation pass on `#720`'s (now phase-corrected per
-  `#723`) N=5 CRNBP torus's narrow residual-novelty claim.** The last gate before any V0-V5
-  writeback chain can be authorized. `#722` found that both Surrey TCP papers (Baresi/Owen/Scheeres
-  AAS 23-201 2023; Owen/Baresi/Scheeres ISSFD 2024, both now in-corpus per `#722`) only compute
-  quasi-periodic torus substitutes of the L1/L2 Lyapunov PLANAR family with idealized moon rates —
-  `#720`'s object substitutes Kumar et al. 2021's interior Europa 3:4 resonant orbit at Ganymede's
-  PHYSICAL synodic rate, a claimed geometrically-distinct combination. This has NOT yet been
-  independently re-adversarially-checked — `#722` was a careful comparative read, not a fresh
-  skeptical pass. Scope: (1) re-read both TCP papers' own scope/results sections ONE more time,
-  specifically hunting for any mention of interior resonant families or non-idealized rates that
-  `#722` might have missed (do not just trust `#722`'s own summary); (2) confirm `#720`'s object,
-  RE-RUN at the `#723`-corrected physical phase (not the old buggy-phase object — check
-  `src/cyclerfinder/search/variational_crnbp_torus.py`'s latest state, `#723`'s commit `a3f137c`),
-  is still the object actually being evaluated for novelty, not a stale pre-fix artifact; (3)
-  deliver a clear CONFIRMED/NOT-CONFIRMED verdict on whether the narrow claim survives. On a
-  CONFIRMED verdict: this becomes eligible for the same `#701`->`#708`-style V0-V5 vetting chain
-  (real-ephemeris consistency check, epoch-robustness, schema design, catalogue writeback) — but
-  that chain itself is a SEPARATE future task, not authorized by this one. On NOT-CONFIRMED: close
-  the whole `#714`->`#724` N=5 CRNBP arc as a genuinely valuable CAPABILITY build (new EOM/STM,
-  new torus-continuation infrastructure, a real bug fix, a real physics simplification) with an
-  honest non-discovery result — still a fully legitimate, useful outcome per this project's own
-  "clean negative is success" discipline.
+- **#724 ✓ DONE (2026-07-27, Fable) -- final confirmation pass on `#720`'s phase-corrected N=5
+  CRNBP torus.** **VERDICT: CONFIRMED — the narrow novelty claim survives independent re-check —
+  with one substantive terminology correction that must propagate (see `#722`'s own bullet above:
+  the orbit is EXTERIOR to Europa, not "interior," checked against Kumar 2021's own abstract).**
+  Both TCP papers re-read in full directly from the PDFs (not from `#722`'s summary): the absence
+  of any resonant-family torus is TEXTUALLY confirmed, not inferred — every computed object is
+  enumerated (Paper 1: L1/L2 equilibrium substitutes + 30th/50th Lyapunov-planar torus substitutes,
+  Figs. 3-11, no appendix; Paper 2: 70th/75th Lyapunov members, planar only, own future-work
+  section explicitly states orbits "beyond Lyapunov" were not attempted). Sharpened structural
+  point beyond `#722`'s own read: TCP's own `2*pi*k` periodicity construction (their Eq. 3)
+  REQUIRES the rational-rate idealization — physical rates are structurally outside what their own
+  method can represent, so the rate-model difference is a genuine methodological gap, not a
+  cosmetic one. **Correction to earlier framing**: TCP's own Table 1 phase `(pi, 0)` is ALREADY the
+  physical Laplace phase — phase is NOT a valid differentiator and must not be claimed as one (the
+  `#723` phase bug fix was still necessary and correct, just not itself a novelty axis).
+  Continuation re-run reproduces `#723` exactly (residual `1.2343143649e-04` at physical
+  `mu_Io=4.7043400305e-05`, `theta_io0=pi`, 4e-11 relative match); seed provenance confirmed in
+  code; rates ephemeris-cross-checked (code `omega_gan=-0.5035527` vs. sidereal-period value
+  `-0.5036474`, 1.9e-4 registry-rounding-level agreement; both ~0.73% from TCP's own idealized
+  -0.5; ephemeris Io/Gan ratio -2.000000001). Counter-evidence hunt found nothing: Lyapunov family
+  sweeps stay in the libration regions and structurally cannot pass through the between-moons 3:4
+  geometry; no TCP follow-on/journal/thesis extends beyond Lyapunov. **New acquisition candidate
+  flagged (NOT acquired)**: Kumar/Anderson/de la Llave, *Acta Astronautica* 211 (2023) — a CCR4BP
+  resonant-tori-transfers paper, Kumar's own executed N=4 future-work, NOT currently in corpus.
+  **Proposed precise, defensible claim language** (full version + mandatory qualifiers in
+  `docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md` — do not shorten this when
+  eventually used): "First computed quasi-periodic invariant-torus substitute of a mean-motion-
+  resonant periodic orbit in a Laplace-locked Jupiter-Io-Europa-Ganymede restricted five-body
+  model: the planar Jupiter-Europa 3:4 resonant orbit of Kumar et al. 2021 (EXTERIOR to Europa,
+  a~1.211 Europa SMA), continued to the physical Io mass with Ganymede at its physical
+  (non-rate-idealized) synodic rate and Io exactly Laplace-slaved, at the physical libration-center
+  phase, via 2D pseudospectral Fourier collocation (on-grid residual RMS 1.23e-4, off-grid
+  invariance ~2.1e-3)" — MANDATORY qualifiers: cite both TCP papers as the model class and prior
+  N=5 tori/stability/manifolds/transfers precedent; only TWO novelty axes exist (resonant-family
+  class, physical-rate model) — do not claim more; NO stability/manifold computation exists yet for
+  this object (unlike TCP's own Floquet/manifold work); `search/literature_check.py`'s own gate
+  still applies at actual writeback time (not run in this task). **NOT authorized for writeback by
+  this task** — the V0-V5 vetting chain (`#701`->`#708`-style: real-ephemeris consistency,
+  epoch-robustness, schema design, catalogue writeback) remains a separate future task, not yet
+  registered/dispatched. Full report + independent re-verification script
+  (`scripts/verify_724_rerun_continuation.py`): commit `409f7b5`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
