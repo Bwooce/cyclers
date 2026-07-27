@@ -34,8 +34,11 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- None currently. (`#714`/`#715` — dispatched 2026-07-26; see the "In progress" section below and
-  each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched 2026-07-26 for literature
+- None currently. (`#714` DONE 2026-07-27 (redispatched after a weekly-limit failure) — tractable-
+  with-caveats verdict + gated 3-item shortlist, item 1 registered as `#717` and dispatched;
+  `#715` redispatched 2026-07-27 after the same weekly-limit failure, in progress — see the
+  "In progress" section below and each's own bullet entry.) (`#710`/`#711`/`#712` — dispatched
+  2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
   on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
   bullet entry.)
@@ -192,23 +195,19 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#714`/`#715` — BOTH DISPATCH FAILED 2026-07-26 (weekly API usage limit, resets 12pm AEST
-  2026-07-27, not a methodology issue) — need straight redispatch after reset. `#714` is a Fable
-  CCR5BP/CRNBP discovery-strategy scoping pass; `#715` is a second CCR4BP pipeline positive control
-  via `#710`'s own Callisto-Ganymede-Europa two-hop chain. See each's own bullet entry for full
-  scope.
-- **TASK-NUMBER COLLISION NOTED 2026-07-26**: untracked files appeared in the working tree
-  (`data/found/711_ccr4bp_saturn_titan_hyperion_search/`,
-  `scripts/screen_711_ccr4bp_saturn_titan_hyperion_search.py`,
-  `src/cyclerfinder/core/ccr4bp_titan_hyperion.py`, `tests/test_ccr4bp_titan_hyperion.py`) — a
-  Saturn Titan-Hyperion CCR4BP search reusing number `#711`, already assigned in this file to the
-  Gilliam & Bettinger digest task. This does NOT match anything either coordinating-session agent
-  was doing — most likely a separate, concurrent session working this same repo with its own
-  independent numbering. Per `[[feedback_concurrent_agent_git_rules]]` these files were left
-  untouched (not created this session, not this session's to delete/commit). If you are that
-  other session: this repo's task numbers are sequential-next-unused with no shared registry (see
-  `[[project_task_numbering_convention]]`) — the next-unused number as of this file's own
-  `TASK ALLOCATIONS` paragraph tail is `#716`; please renumber your own work to avoid a collision.
+- `#715` — redispatched 2026-07-27 after a weekly-API-limit dispatch failure on 2026-07-26 (not a
+  methodology issue). Second CCR4BP pipeline positive control via `#710`'s own
+  Callisto-Ganymede-Europa two-hop chain. See its own bullet entry for full scope. (`#714` — REMOVED
+  from this list 2026-07-27, CLOSED after the same redispatch: tractable-with-caveats verdict + a
+  gated 3-item shortlist, item 1 registered/dispatched as `#717`; see its own bullet entry.)
+- `#717` — dispatched 2026-07-27, `#714` shortlist item 1 (core N=5 Jovian CRNBP EOM+STM build).
+  See its own bullet entry for full scope.
+- **TASK-NUMBER COLLISION RESOLVED 2026-07-27** (this session's own note, corrected/superseded by
+  the other session's own edit landing first): a separate concurrent session's Saturn
+  Titan-Hyperion CCR4BP search originally reused `#711` (already assigned here to Gilliam &
+  Bettinger); that session renumbered its own files to `#716` and closed it `✓ DONE` (clean
+  negative — see `#716`'s own bullet). Confirmed no residual collision: this session's own newly
+  registered `#717` used the correctly-updated next-unused number left by that resolution.
 - None currently in the earlier N-body-literature thread. `#710`/`#711`/`#712` — REMOVED from
   this list 2026-07-26, all CLOSED (acquire+digest three papers found while scoping a possible
   next N-body-discovery frontier: Aryan & Fitzgerald AAS 24-103; Gilliam & Bettinger 2024
@@ -1421,7 +1420,7 @@ flagged a real risk unlike CCR4BP's own Kumar-2021 precedent -- periodic-orbit e
 general CRNBP is an open question, no known-good structure to validate against yet. #715 for a
 second CCR4BP pipeline positive control using #710's own Callisto-Ganymede-Europa two-hop
 manifold-chain result (chaining two CCR4BPSystem instances) -- lower-risk, direct value-add to
-the already-built #694 pipeline, distinct from #714's exploratory scope. #716
+the already-built #694 pipeline, distinct from #714's exploratory scope. #716 ✓ DONE -- Saturn Titan-Hyperion CCR4BP search (core.ccr4bp_titan_hyperion / scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py / tests/test_ccr4bp_titan_hyperion.py); 2D pseudospectral CCR4BP torus converged, manifold tube globalization 60/60 valid phases, 20 candidate intersections refined; all stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json. #717 for #714 shortlist item 1: core N=5 Jovian CRNBP EOM+STM build, reconciling the #711/#712 digests' opposite-sign Negri & Prado Eq. 11 coupling-term transcriptions from the source PDFs first, then a Gilliam Tables 5-6 digit-grade equilibrium-point check as the implementation positive control. #718
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -14829,10 +14828,38 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   turned out to be citation-detail mismatches for papers already digested under different
   author/year attribution — Yang/Hu/Bai/Li 2023 and the existing DOI-`10.2514/1.11939` 2004 JSR
   paper respectively.)
-- **#714 DISPATCH FAILED (2026-07-26) -- weekly API usage limit hit, NOT a methodology failure.**
-  Agent got as far as skimming the search modules before terminating; resets 12pm
-  (Australia/Sydney) 2026-07-27. Needs a straight redispatch after reset, same scope as below --
-  CCR5BP/CRNBP discovery-strategy scoping pass (Fable).** Now
+- **#714 ✓ DONE (2026-07-27, Fable, redispatched after the weekly-limit failure) -- CCR5BP/CRNBP
+  discovery-strategy scoping pass.** VERDICT: **TRACTABLE WITH CAVEATS** as a single-lane, staged,
+  mostly-reuse extension — NOT tractable as a general CRNBP program. Decisive new finding: the
+  Laplace relation forces the Io/Ganymede synodic rates in the Jupiter-Europa frame to an EXACT
+  -2 ratio (numerically verified: -2.000000001, Laplace residual 5.6e-10 per n_E), so the N=5
+  Jovian CRNBP is time-periodic at *physical* frequencies on the SAME single `theta1` clock
+  `#690`'s corrector already uses — no 3-torus corrector, no structural jump, and it sidesteps
+  Gilliam's own "periodic orbits may not exist" open question (which applies only to generic,
+  incommensurate-forcing CRNBP). The Galilean Laplace trio is confirmed the ONLY qualifying
+  configuration in the solar system (Saturn has no 3-moon chain + is mass-dead per `#693`; Uranus
+  has no MMRs at all — no N=5 extension lane exists for the Uranian discovery; Callisto breaks
+  periodicity, excluding N>=6). Honest caveats: Gilliam's digit-grade tables are static
+  force-balance loci (libration-point tier) only — an EOM/Jacobian implementation control, NOT a
+  dynamical positive control; no dynamical positive control exists in the literature and NONE CAN
+  — must be self-generated via `mu_Io: 0 -> 4.7e-5` continuation from the already-validated `#690`
+  torus / `#694` homoclinic connection (each step controlled by its own converged neighbor). ALSO
+  found a real transcription discrepancy: the `#711`/`#712` digests transcribe Negri & Prado Eq.
+  11's coupling term with OPPOSITE SIGNS — must be reconciled from the source PDFs before any code
+  is written. The EOM extension itself checked out genuinely small against the actual
+  `ccr4bp.py` source (coupling term is spacecraft-state-independent, so the STM needs only a
+  second direct-term Hessian block). Full report:
+  `docs/notes/2026-07-27-714-ccr5bp-crnbp-discovery-strategy-pass.md`. Gated 3-item shortlist
+  (see `#717` for item 1, registered and dispatched — NOTE: originally going to be `#716`, but a
+  concurrent session claimed that number first for an unrelated Saturn Titan-Hyperion search,
+  self-resolved the collision, and correctly left `#717` next-unused; items 2/3 explicitly gated on 1's outcome, not
+  yet registered): (1) core CRNBP EOM+STM build + sign reconciliation + Gilliam Tables 5-6
+  digit-grade check (~2-4 days, no research risk, Sonnet-tier); (2) `mu_Io` continuation of
+  `#690`'s Europa 3:4 torus (~1-2 weeks, gated on 1 — either the first known N=5 CRNBP invariant
+  torus, lit-check gate required before any "first" claim, or a registry-grade characterized
+  breakdown); (3) does `#694`'s ghost-guard-verified JEG homoclinic connection survive Io's forcing
+  (~1-2 weeks, gated on 2 — the N=5 analogue of the banked N=4 result, reusing `#691`/`#694`
+  modules, with the `_L_KM` unit bug fixed properly during the refactor).
   that `#710`/`#711`/`#712` have delivered three grounding papers for a genuine N>=5-body
   generalization (Negri & Prado 2022's general CRNBP framework; Gilliam & Bettinger 2024's Jovian
   N=5 application + thesis-level Uranus-Titania/Oberon equilibrium tables; Aryan & Fitzgerald
@@ -14857,6 +14884,19 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   "not yet exploited — would require chaining two `CCR4BPSystem` instances, a real scope
   expansion, not a drop-in rerun." Lower-risk than `#714` — strengthens confidence in already-built
   infrastructure rather than exploring new territory; does not require the N=5 EOM extension.
+- **#716 ✓ DONE (2026-07-27) -- Saturn Titan-Hyperion CCR4BP search.** System constructor defined in `core/ccr4bp_titan_hyperion.py` (`#716`), unit tests in `tests/test_ccr4bp_titan_hyperion.py`, search script in `scripts/screen_716_ccr4bp_saturn_titan_hyperion_search.py`. Base 1:2 Titan-resonant orbit converged to 7.4e-15 perp residual, torus residual RMS 2.25e-8, 60/60 valid phases globalized across all 4 lobe combos (`unstable_+`, `unstable_-`, `stable_+`, `stable_-`). Refined 20 candidates across all 4 lobe combos; all departure distances stayed <7.3 km off torus (no wide global heteroclinic excursion), logged as certified negative in `data/found/716_ccr4bp_saturn_titan_hyperion_search/result.json`.
+- **#717 (dispatched 2026-07-27) -- `#714` shortlist item 1: core N=5 Jovian CRNBP EOM+STM
+  build.** First step of the `#714`-gated 3-item shortlist (~2-4 days, no research risk,
+  Sonnet-tier per `#714`'s own estimate). Scope: (1) reconcile the `#711`/`#712` digests' own
+  opposite-sign transcriptions of Negri & Prado 2022's Eq. 11 coupling term directly against the
+  source PDFs (`cyclers_pdf/papers/`) before writing any code — this discrepancy must be resolved
+  first, not guessed at; (2) extend `src/cyclerfinder/core/ccr4bp.py`'s EOM to N=5 (Jupiter-Io-
+  Europa-Ganymede + spacecraft) — per `#714`'s own source-code check, the new coupling term is
+  spacecraft-state-independent, so the STM needs only a second direct-term Hessian block, not a
+  structural rewrite; (3) validate against Gilliam's own digit-grade Tables 5-6 equilibrium-point
+  values as an EOM/Jacobian implementation positive control (explicitly NOT a dynamical positive
+  control — `#714` confirmed none exists in the literature for N=5, and self-generating one is
+  items 2/3's job, gated on this one). Do not proceed to items 2/3 until this is verified clean.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
