@@ -222,3 +222,25 @@ discovery-strategy pass built on this pairing should treat "does anything period
 in the CRNBP at all" as the FIRST open question to resolve (via the homotopy-continuation
 method), not assume it the way the CCR4BP arc could assume torus existence from Kumar
 2021.
+
+## Addendum (2026-07-27, `#722`): §2.2.5.1 was missed on this digest's first read
+
+`#721`'s adversarial verification of `#720`'s N=5 CRNBP torus found that the
+thesis's own §2.2.5.1 (related-work section, NOT Ch. III/IV/V covered above)
+describes Baresi, Owen & Scheeres's **Tri-Circular Problem (TCP)** — the SAME
+Laplace-locked Jupiter-Io-Europa-Ganymede N=5 model this digest's §5 assessed
+as lacking "a KNOWN, published, PERIODIC/quasi-periodic structure... to
+validate a torus corrector against" — and states explicitly that the CRNBP
+"is essentially equal to this dynamical model," so "literature results
+produced for this model can be replicated in the more general case of the
+CRNBP with ease." This directly contradicts §5's "weaker discovery-strategy
+grounding than Kumar 2021... no known positive control for periodicity/
+connections" conclusion: a positive control DOES exist (Baresi/Owen/Scheeres's
+own quasi-periodic tori, Floquet stability, and manifolds), it just isn't in
+Ch. III/IV/V, the chapters this digest focused on. Both TCP papers (AAS 23-201
+2023; ISSFD 2024) are now acquired, digested, and indexed — see
+`docs/notes/2026-07-27-722-baresi-owen-scheeres-tri-circular-problem-digest.md`
+and the corresponding `CORPUS_INDEX.md` rows. Process lesson (also logged in
+`#721`'s own report): a related-work section is a separate search surface
+from a paper's main content and must be checked explicitly, not assumed
+covered by having read the chapters relevant to the immediate task.
