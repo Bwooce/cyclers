@@ -205,8 +205,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729` — dispatched 2026-07-27, V0-V5 vetting chain step 2: epoch-robustness scan on `#726`'s
-  N=5 real-ephemeris consistency check (the `#705` precedent). See its own bullet entry.
+- `#729`/`#730` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness scan
+  on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#730`: user-requested
+  consolidation of the citation-mining acquisition backlog into one DOI-verified master list. See
+  each's own bullet entry.
 - `#726` — REMOVED from this list 2026-07-27, CLOSED: real-ephemeris consistency check found a
   real, verified generic collapse in a single-epoch sample — mirrors the Umbriel-Titania case's
   own first-pass result exactly; `#729` will settle whether a recurring window exists. See its own
@@ -1492,7 +1494,10 @@ paywalled gap (Blazevski & Ocampo 2012) confirmed genuinely inaccessible after a
 catalogue/code changes. #729 for the V0-V5 vetting chain step 2 (the #705 analogue): a dense
 epoch-robustness scan on #726's N=5 real-ephemeris consistency check -- does a narrow recurring
 near-miss window exist across many epochs the way it did for the Umbriel-Titania case, or was
-#726's own single-epoch generic collapse actually representative. #730
+#726's own single-epoch generic collapse actually representative. #730 for consolidating every
+flagged-but-unacquired citation-mining candidate from this session's ~10 digest notes (#710-#728
+range) into one deduplicated, DOI-verified, priority-ranked master acquisition-backlog document --
+user-requested 2026-07-27, no acquisition yet, compilation only. #731
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15376,6 +15381,24 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   way). Remember: `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT` frozenset needs
   this new script added, same as `#704`/`#705` themselves required (see
   `[[feedback_verify_scope_must_include_tests_scripts]]`).
+- **#730 (dispatched 2026-07-27) -- consolidate the citation-mining acquisition backlog,
+  user-requested.** This session's mandatory citation-mining pass (per `[[feedback_corpus_document_policy]]`'s
+  2026-07-27 update) has been running independently across roughly 10 digest notes since (at
+  least) `#710`'s dispatch — each flagging its own "not acquired, flagged only" candidates with no
+  central registry, meaning real duplication and inconsistent priority labeling has built up (e.g.
+  Blazevski & Ocampo 2012 independently re-flagged HIGH priority by both `#727` and `#728`; Haro et
+  al. 2016 and the Physica D 241(13) manifold paper each independently re-flagged across 3+ notes).
+  Scope: (1) read every digest note in `docs/notes/2026-07-2[4-8]-*.md` (and any earlier ones if
+  relevant — check `docs/notes/CORPUS_INDEX.md`'s own acquisition-log entries too) and extract
+  EVERY flagged-but-unacquired citation; (2) deduplicate — merge entries that are clearly the same
+  underlying paper flagged more than once, keeping the highest priority level assigned and noting
+  ALL digests that independently flagged it (multiple independent flags is itself a signal of
+  importance); (3) for EVERY unique candidate, find and record its DOI if one exists (WebSearch —
+  many are PhD theses, JPL tech reports, or older AAS conference papers that genuinely have no
+  DOI; record that explicitly rather than leaving it blank or guessing); (4) rank the deduplicated
+  list by priority (recurring-HIGH first); (5) write the result to a single new document,
+  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`. This is a COMPILATION task only —
+  no acquisition, no PDF filing, no digesting. Do not touch `data/OUTSTANDING.md`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
