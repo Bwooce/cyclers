@@ -205,10 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#736`/`#737` — dispatched 2026-07-27. `#736`: V0-V5 vetting chain step 4, implement `#735`'s
-  user-approved schema design + catalogue writeback (mandatory Fable pre-execution review before
-  committing); `#737`: fix 6 more CI timeouts `#731` found but left out of scope. See each's own
-  bullet entry.
+- `#736` — dispatched 2026-07-27, V0-V5 vetting chain step 4, implement `#735`'s user-approved
+  schema design + catalogue writeback (mandatory Fable pre-execution review before committing).
+  See its own bullet entry.
+- `#737` — REMOVED from this list 2026-07-27, CLOSED: 6 CI timeouts fixed; triggered and then
+  cleared a security-classifier flag on independent investigation (false positive — see its own
+  bullet entry for the full verification).
 - `#731` — REMOVED from this list 2026-07-27, CLOSED: stale ratchet fixed, 10 tests correctly
   xfailed for a documented cross-platform BLAS-divergence class (no tolerance weakened), 2
   genuine timeouts marked slow, live CI confirmed the fix — but found 6 MORE timeouts left
@@ -15628,23 +15630,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   `#569`/`#708` both required; do not skip this step. This is the catalogue's THIRD genuinely novel
   finding if this lands cleanly (after `#312` and the Umbriel-Titania `#708` row) — treat the
   writeback with the same care both of those received.
-- **#737 (dispatched 2026-07-27) -- fix 6 more CI timeouts `#731` found but left out of scope.**
-  Same CI run (`30261678515`) that confirmed `#731`'s own fixes worked still failed with 6
-  DIFFERENT failures, all `>600s` timeouts, no value mismatches:
-  `tests/scripts/test_729_epoch_torus_robustness_scan.py` (this session's own `#729` work), 2 more
-  tests in `tests/search/test_crnbp_real_ephemeris_consistency.py`,
-  `tests/genome/test_qp_tori_energy_walk.py::test_walk_is_deterministic`,
-  `tests/search/test_ccr4bp_umbriel_titania_heteroclinic_search.py`, and
-  `tests/search/test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus`.
-  `#731`'s own spot-check of one (`test_l2_positive_control_reproduces_gmos_torus`, 63s locally)
-  found the SAME CI-resource-budget-mismatch pattern as the 2 timeouts `#731` already fixed with
-  `@pytest.mark.slow` — this run's own total CI time (1h48m) exceeded the historical 1h28-34m
-  range, consistent with a slower/more-loaded runner pushing more borderline-duration tests over
-  the 600s cliff. Time EACH of these 6 tests locally first (do not assume they're all the same
-  pattern just because one spot-check matched), then mark genuinely slow-but-correct ones
-  `@pytest.mark.slow` following `#631`'s own established precedent — do NOT mark anything slow
-  that's actually failing for a different reason (verify each one's actual local pass/fail
-  status, not just its runtime).
+- **#737 ✓ DONE (2026-07-27) -- fix 6 more CI timeouts `#731` found but left out of scope.**
+  All 6 individually timed and confirmed passing, 8-77s locally (worst case ~8x margin under the
+  600s CI budget) — `@pytest.mark.slow` applied to each following `#631`'s own precedent, with a
+  comment citing the CI run + local timing/margin. Commit `48e578b`. **The dispatched agent's own
+  commit triggered an automated security-classifier flag** ("CI Bypass" — marking evidence tests
+  slow could hide unverified V-claims, per `[[feedback_delegation_fresh_agent_not_fork]]`'s own
+  "never hide a V-gauntlet evidence test behind `@pytest.mark.slow`" rule). **Independently
+  investigated by the coordinating session (not just trusted the agent's own self-assessment) —
+  CONCLUSION: false positive, verified by reading actual test content, not just names.** All 3
+  originally-flagged tests (`test_check_torus_survives_real_ephemeris_e2e_headline`,
+  `test_robust_near_miss_is_the_trustworthy_headline_result`,
+  `test_l2_positive_control_reproduces_gmos_torus`) explicitly document in their OWN docstrings
+  that they do NOT assert the specific claimed numeric finding — each is a smoke/regression/
+  positive-control test confirming the pipeline runs and produces sane orders of magnitude, with
+  the actual frozen evidence for every real claim living in already-committed `result.json` data
+  files + `docs/notes/` reports, independent of whether these specific pytest functions keep
+  running in default CI. Specifically: `test_robust_near_miss_is_the_trustworthy_headline_result`
+  locks a SEPARATE, non-catalogued near-miss family — the actual catalogued Umbriel-Titania
+  connection's own evidence test (`test_near_exact_candidate_confirmed_genuine_after_702_ref_vec_fix`)
+  remains unmarked and still runs in default CI; `test_check_torus_survives_real_ephemeris_e2e_headline`
+  explicitly states it does "not assert a specific numeric gap (that is `#726`'s own reported
+  finding, not a frozen regression target)"; `test_l2_positive_control_reproduces_gmos_torus` is
+  symmetric with an ALREADY-established exclusion precedent (`test_l1_crosses_gmos_amplitude_wall`,
+  the actual headline claim it backs, was already excluded from default CI since `#632` — this
+  commit didn't create a new asymmetric gap). Verified the other 3 (`test_walk_is_deterministic`,
+  the `#729` smoke test, the idealized-fn short-window control) similarly are generic determinism/
+  reduction checks with no tie to any specific frozen catalogue claim. **No revert needed** — but
+  flagging clearly for future review: `#736`'s own in-progress catalogue writeback for the N=5
+  torus should cite the COMMITTED `#729` result data/report as its own evidence basis, not "a
+  passing pytest test," reinforcing the same distinction this investigation just confirmed.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
