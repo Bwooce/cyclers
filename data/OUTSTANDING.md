@@ -34,17 +34,22 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- A final confirmation pass on `#722`'s narrow residual-novelty verdict for `#720`'s object
+  (Europa 3:4 interior resonant family + physical Ganymede rate, vs. the TCP papers' own L1/L2
+  planar-only + idealized-rate scope) — needed before any V0-V5 writeback chain is authorized. Not
+  yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
-  substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#721` found; do not dispatch
+  substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
-- (`#714`/`#715`/`#717`/`#720`/`#721` all DONE 2026-07-27 — `#714`: tractable-with-caveats
+- (`#714`/`#715`/`#717`/`#720`/`#721`/`#722` all DONE 2026-07-27 — `#714`: tractable-with-caveats
   verdict + gated 3-item shortlist; `#715`: honest partial result, new interior-perturber +
   libration-seeded CCR4BP infrastructure validated, specific paper transit chain not reproduced;
   `#717`: core N=5 EOM+STM built, sign discrepancy resolved from source, a bonus net-zero-coupling
-  finding; `#720`: torus continuation genuinely converged, BUT its novelty framing was refuted by
-  `#721`'s adversarial pass (real prior art found: the Surrey Tri-Circular Problem papers, plus a
-  real phase-default bug) — see `#722`/`#723` for the registered follow-ups. See each's own bullet
-  entry.) (`#710`/`#711`/`#712` — dispatched
+  finding; `#720`: torus continuation genuinely converged; `#721`: adversarial pass found real
+  prior art (Surrey TCP papers) + a real phase-default bug, initially over-corrected to "novelty
+  refuted"; `#722`: acquired the TCP papers directly, REFINED that verdict — narrow residual
+  novelty for `#720`'s specific object plausibly survives, general claims stay refuted. See each's
+  own bullet entry.) (`#710`/`#711`/`#712` — dispatched
   2026-07-26 for literature
   acquisition, all DONE; `#713` identity-confirmed but acquisition BLOCKED pending a user decision
   on paywall purchase/author-request — see the "Open but blocked / parked" section and its own
@@ -202,8 +207,13 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#722`/`#723` — dispatched 2026-07-27. `#722`: acquire+digest the two Surrey TCP papers `#721`
-  found; `#723`: fix the `theta_io0` phase-default bug `#721` found. See each's own bullet entry.
+- `#723` — dispatched 2026-07-27, fix the `theta_io0` phase-default bug `#721` found. See its own
+  bullet entry.
+- `#722` — REMOVED from this list 2026-07-27, CLOSED: acquired+digested the two Surrey TCP papers,
+  corrected `#721`'s own citation error, REFINED (not restated) `#721`'s "novelty refuted" verdict
+  — a narrow residual novelty claim for `#720`'s specific object plausibly survives, pending one
+  more confirmation pass (not yet authorized for writeback). See its own bullet entry for the full
+  refined verdict.
 - `#721` — REMOVED from this list 2026-07-27, CLOSED: real prior art found (Surrey Tri-Circular
   Problem papers, missed twice by earlier literature sweeps), refuting `#720`'s novelty framing;
   plus a real phase-default bug. See its own bullet entry for the full verdict.
@@ -15009,26 +15019,40 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   (connection survival) is now substantially pre-empted by the ISSFD 2024 transfer work — do not
   dispatch it without first reading that paper. Follow-ups registered: `#722` (acquire+digest the
   two Surrey TCP papers), `#723` (fix the `theta_io0` phase default).
-- **#722 (dispatched 2026-07-27) -- acquire + digest the two Surrey "Tri-Circular Problem" (TCP)
-  papers `#721` found.** Baresi, N., Owen, E. & Scheeres, D. J., AAS 23-257 (2023) — check
-  whether it has a DOI or is conference-only (Space Flight Mechanics Meeting proceedings, per
-  `#721`'s own citation); Owen, E., Baresi, N. & Scheeres, D. J., ISSFD 2024 (International
-  Symposium on Space Flight Dynamics — check for an open-access proceedings PDF, `#721`'s own
-  digest noted the AAS PDF for the first paper is open-access). These already compute 2D
-  quasi-periodic invariant tori, Floquet stability, manifolds, and Europa<->Ganymede transfers in
-  exactly this project's own N=5 Laplace-locked Jupiter-Io-Europa-Ganymede model — the real
-  grounding papers this project's own literature sweeps twice missed. Full OCR-if-needed + digest
-  + `CORPUS_INDEX.md` registration per `[[feedback_corpus_document_policy]]`; the digest MUST
-  explicitly re-run a fresh novelty gate for `#720`'s own torus against these two papers directly
-  (not the earlier indirect literature sweep) — is ANY residual claim novel (e.g. a specific
-  resonant-family/phase/rate combination they didn't cover), or is `#720`'s object fully
-  subsumed? Also amend the existing Gilliam digest note to record that her own thesis §2.2.5.1
-  cites this TCP work (missed on the first digest pass). **Scope expanded mid-run (user-approved,
-  applying the fresh [[feedback_corpus_document_policy]] citation-mining requirement retroactively
-  to the two other N=5-adjacent papers already in corpus)**: also citation-mine Negri & Prado
-  2022's and Aryan & Fitzgerald 2024's own background/related-work sections for any other missed
-  topically-adjacent prior art, cross-check against `CORPUS_INDEX.md`, and flag (not acquire) any
-  genuinely new candidates found — a bounded check, not a full-corpus re-audit.
+- **#722 ✓ DONE (2026-07-27) -- acquire + digest the two Surrey "Tri-Circular Problem" (TCP)
+  papers, re-gate `#720`'s novelty, citation-mine two more papers.** **CORRECTS `#721`'s own
+  citation**: the first paper's real number is **AAS 23-201** (Baresi, Owen & Scheeres,
+  "Exploiting the Laplace Resonance for Designing Trajectories in the Jupiter-Io-Europa-Ganymede
+  System," AAS/AIAA Astrodynamics Specialist Conf., Big Sky MT, Aug 2023), not AAS 23-257 as
+  `#721` reported; second paper confirmed as Owen, Baresi & Scheeres, "Transfer Trajectory Design
+  in the Jupiter-Io-Europa-Ganymede Tri-circular Problem," 29th ISSFD, Darmstadt, 2024 (the
+  issfd.org proceedings link for this title is itself mislabeled — serves a different, already-
+  in-corpus Owen/Baresi knot-theory paper — correct PDF retrieved from Surrey Open Research
+  instead). Both no-DOI conference papers, both open-access, filed + digested +
+  `CORPUS_INDEX.md`-registered (private commit `ad5b0dd`, public commit `c71b5cb`). Full
+  comparison in `docs/notes/2026-07-27-722-baresi-owen-scheeres-tri-circular-problem-digest.md`.
+  **REFINES (does NOT simply restate) `#721`'s "novelty refuted" verdict — it was too strong**:
+  both TCP papers compute quasi-periodic torus substitutes ONLY of the L1/L2 Lyapunov PLANAR
+  family (member-indexed 30th/50th/70th/75th) — neither touches an INTERIOR mean-motion-resonant
+  orbit. `#720`'s object substitutes Kumar et al. 2021's interior Europa 3:4 resonant orbit, a
+  geometrically DISTINCT family; `#720`/`crnbp.py` also keeps Ganymede's physical (non-idealized)
+  synodic rate where TCP idealizes both moons' rates to exact rationals. **So: narrow residual
+  novelty for `#720`'s SPECIFIC object plausibly survives** — but the GENERAL claims are correctly,
+  permanently refuted and must not be re-asserted: no "first N=5 CRNBP torus/Floquet/manifold
+  computation in this model" claim (TCP predates `#720` by 1-3 years), and `#714`'s own "no
+  literature-grade N=5 dynamical positive control exists" premise is dead — TCP's Lyapunov tori
+  ARE one, a genuinely useful asset for future work, not just a correction. **NOT yet a confirmed
+  discovery** — this is `#722`'s own careful comparative read, itself not yet independently
+  re-adversarially-checked; do not authorize any V0-V5 writeback chain without one more
+  confirmation pass specifically on the narrow claim (is the Europa 3:4 family + physical Ganymede
+  rate combination genuinely absent from BOTH papers, re-checked skeptically, not just read once
+  more carefully). **Citation-mining addendum** (expanded scope) on Negri & Prado 2022 and Aryan &
+  Fitzgerald 2024's own background sections found further leads, flagged NOT acquired: **Olikara
+  2016 PhD thesis** and **Baresi/Olikara/Scheeres 2018 (JAS 65:2)** — the foundational
+  stroboscopic-map torus method both TCP papers build on (HIGH priority for any future N=5 work);
+  Baresi 2017 PhD thesis (medium); Iuliano & Gomes 2019 — the predecessor (N+1)-body EOM Negri &
+  Prado's own paper corrects (medium); Campagnola/Boutonnet moon-tour lineage (low, orthogonal).
+  None acquired — a future task if this thread continues.
 - **#723 (dispatched 2026-07-27) -- fix the `theta_io0`/`theta_gan0` phase-default bug `#721`
   found in the N=5 Jupiter-Europa-Io-Ganymede system constructor.** Currently both default to 0,
   putting the Laplace argument at 0 deg; the physical libration center is 180 deg (Baresi's own
