@@ -205,11 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731`/`#734` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2,
-  epoch-robustness scan on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent);
-  `#731`: user-flagged CI failure investigation (stale catalogue ratchet already diagnosed, other
-  failures need proper root-causing); `#734`: fix `genome/qp_tori.py`'s docstring citation
-  imprecision found by `#733`. See each's own bullet entry.
+- `#729`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness scan
+  on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#731`: user-flagged CI
+  failure investigation (stale catalogue ratchet already diagnosed, other failures need proper
+  root-causing). See each's own bullet entry.
+- `#734` — REMOVED from this list 2026-07-27, CLOSED: docstring citation fixed + a bonus venue
+  error (Purdue -> Colorado Boulder) found and fixed across 5 files. See its own bullet entry.
 - `#733` — REMOVED from this list 2026-07-27, CLOSED: 2 more papers processed, found `qp_tori.py`'s
   own docstring cites the wrong Olikara method (real finding, doc-only fix registered as `#734`).
   See its own bullet entry.
@@ -15519,18 +15520,21 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   project's own torus-heteroclinic work), Canalias/Delshams/Masdemont/Roldán 2006 + its 2008
   spatial companion (medium, scattering-map technique), Jorba & Olmedo 2009 (medium, combined
   torus+stability method for non-autonomous systems).
-- **#734 (dispatched 2026-07-27) -- fix `genome/qp_tori.py`'s own docstring citation imprecision,
-  found by `#733`.** The module docstring cites "Olikara 2016" (the PhD thesis) as its method
-  source, but the actual implemented algorithm is the EARLIER Olikara & Scheeres 2010/2012 GMOS
-  shooting scheme — the thesis's own genuinely novel contribution (Gauss-Legendre collocation
-  instead of shooting, per `#733`'s own finding) has no counterpart in this code at all. This is a
-  documentation-only fix — the shooting method the code actually implements is real, validated,
-  and NOT being changed. Update the docstring/comments to cite the correct paper(s) (the Olikara &
-  Scheeres shooting-scheme paper(s) — check `docs/notes/CORPUS_INDEX.md`/`#733`'s own digest for
-  the exact already-in-corpus citation) and, if useful, add a brief note that the thesis's own
-  collocation method exists as a documented-but-unimplemented alternative (per `#733`'s digest,
-  `docs/notes/2026-07-27-733-olikara-thesis-haro-parameterization-book-digest.md`) — a real,
-  scoped future upgrade candidate, not something to build now. Do not touch the actual numerics.
+- **#734 ✓ DONE (2026-07-27) -- fix `genome/qp_tori.py`'s own docstring citation imprecision,
+  found by `#733`.** Fixed as scoped: the module docstring now correctly attributes the actually-
+  implemented algorithm to the Olikara & Scheeres 2010/2012 GMOS shooting scheme, with an explicit
+  note that the 2016 thesis describes a different, unimplemented collocation method. **Bonus
+  finding**: the thesis's own venue was ALSO mis-cited everywhere as "Purdue University" — it's
+  actually University of Colorado Boulder (advisor D.J. Scheeres). Fixed consistently across 5
+  files: `genome/qp_tori.py`, `qp_tori_arclength.py`, `qp_tori_energy_walk.py` (the citation
+  swapped to the correct shooting-scheme paper + venue fix), and `data/validation/v1_qp.py`/
+  `v2_qp.py` (venue-only fix — these legitimately cite the thesis for its truncation-error/
+  invariance-residual numeric content, left the citation itself intact, added a clarifying note on
+  which method is actually implemented). Historical dated planning docs under
+  `docs/superpowers/plans/`/`docs/superpowers/specs/` still carry the old phrasing — deliberately
+  left unedited per this project's frozen-snapshot convention, flagged for awareness only.
+  Verified: all 5 affected test files pass (4 pre-existing XPASS entries are documented `#731`
+  cross-platform BLAS-divergence markers, unrelated), ruff + full mypy clean. Commit `3aa4c61`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
