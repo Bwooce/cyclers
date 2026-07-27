@@ -34,6 +34,10 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- V0-V5 vetting chain steps 3+ (schema design, catalogue writeback) for `#724`'s N=5 torus, now
+  substantially strengthened by `#729`'s own recurring-window confirmation — a genuine user
+  decision point (mirrors `#701`->`#708`'s own "let's get validating" go-ahead), not an auto-fire.
+  Not yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
@@ -205,10 +209,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#729`/`#731` — dispatched 2026-07-27. `#729`: V0-V5 vetting chain step 2, epoch-robustness scan
-  on `#726`'s N=5 real-ephemeris consistency check (the `#705` precedent); `#731`: user-flagged CI
-  failure investigation (stale catalogue ratchet already diagnosed, other failures need proper
-  root-causing). See each's own bullet entry.
+- `#731` — dispatched 2026-07-27, user-flagged CI failure investigation (stale catalogue ratchet
+  already diagnosed, other failures need proper root-causing). See its own bullet entry.
+- `#729` — REMOVED from this list 2026-07-27, CLOSED: recurring narrow near-miss window CONFIRMED
+  across all 10 tested epochs at the headline torus point — substantially strengthens `#724`'s N=5
+  torus claim. See its own bullet entry.
 - `#734` — REMOVED from this list 2026-07-27, CLOSED: docstring citation fixed + a bonus venue
   error (Purdue -> Colorado Boulder) found and fixed across 5 files. See its own bullet entry.
 - `#733` — REMOVED from this list 2026-07-27, CLOSED: 2 more papers processed, found `qp_tori.py`'s
@@ -15391,23 +15396,31 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   diff inspection, proved to be a transient false positive -- both its commits contained exactly
   the authorized files, nothing else). Zero catalogue writes, zero code changes -- pure corpus
   acquisition/digest/registry task.
-- **#729 (dispatched 2026-07-27) -- V0-V5 vetting chain step 2: epoch-robustness scan on `#726`'s
-  N=5 real-ephemeris consistency check (the `#705` precedent).** `#726`'s single-epoch check found
-  a real, verified generic collapse (`pos_gap=3.68e5 km` at 2030-01-01, one Ganymede-synodic
-  period) — but this exactly mirrors the Umbriel-Titania case's own first-pass result, which
-  `#705` later showed was NOT representative once a dense multi-epoch scan ran (a comparably-tight
-  recurring window turned up at all 10 tested epochs across 2000-2083). Reuse `#726`'s own
-  `check_torus_survives_real_ephemeris` function (`src/cyclerfinder/search/
-  crnbp_real_ephemeris_consistency.py`), extend it into a dense scan across many well-separated
-  epochs (mirror `#705`'s own methodology exactly — same epoch spacing/count convention if it still
-  applies, check `scripts/run_705_epoch_robustness_scan.py` for the pattern) plus the several torus
-  points/window-length variants `#726` sampled non-systematically. Deliver a clear verdict: does a
-  narrow recurring near-miss window exist across epochs (strengthening the case, per `#705`'s own
-  precedent), or does the generic collapse hold consistently (a genuine negative for THIS specific
-  claim, though the `#714`->`#726` arc would still stand as a valuable capability build either
-  way). Remember: `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT` frozenset needs
-  this new script added, same as `#704`/`#705` themselves required (see
-  `[[feedback_verify_scope_must_include_tests_scripts]]`).
+- **#729 ✓ DONE (2026-07-27) -- V0-V5 vetting chain step 2: epoch-robustness scan on `#726`'s N=5
+  real-ephemeris consistency check.** **VERDICT: recurring narrow near-miss window CONFIRMED, NOT
+  a generic collapse — the same pattern that ultimately supported the Umbriel-Titania catalogue
+  writeback.** Real bug found and fixed FIRST: `#726`'s own `check_torus_survives_real_ephemeris`
+  called `spice.furnsh` on the LSK unconditionally every invocation — CSPICE_N0067 doesn't dedupe
+  repeated furnsh calls, so the kernel pool grows unboundedly and raises `SpiceNOMOREROOM` after
+  ~5300 calls (hit mid-scan); fixed with a module-level guard mirroring `core.ephemeris.Ephemeris`'s
+  own pattern, no physics changed (commit `3366bf1`). Scan mirrors `#705`'s own methodology exactly
+  on the epoch axis (10 epochs, 2000-2083, 300-point dense synodic-period scan + 28-iteration
+  bisection refine per epoch), PLUS a systematic 5-point torus-point axis (affordable at ~0.065s/
+  call). **Results**: at the headline torus point (theta1=theta2=0, `#726`'s own point) and at
+  (pi,pi): NARROW near-miss at ALL 10 epochs (503-1950 km and 790-1719 km respectively) — 200-2500x
+  tighter than `#726`'s own single-point headline collapse. At (pi/2,pi/2): also narrow, 10/10
+  (2410-4042 km). At (pi,0) and (0,pi): genuine generic collapse, 10/10 (tens of thousands to
+  ~1.3M km). **The narrow/collapse dichotomy is torus-point-dependent but PERFECTLY epoch-stable —
+  itself strong evidence this is real dynamical structure, not noise**, extending beyond `#705`'s
+  own single-axis scope as a bonus finding. 7 new tests in
+  `tests/scripts/test_729_epoch_torus_robustness_scan.py` (duty-cycle parity, threshold-sourcing
+  lock-in, torus-point-sample lock-in, LSK-furnish-guard regression, reduced-scale SPICE-gated
+  e2e smoke), added to `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT`. ruff +
+  full mypy-strict clean; ratchet clean apart from the same 2 confirmed pre-existing unrelated
+  failures (one transient CPU-contention flake in the new test file itself reproduced-green 3x
+  after, given the heavy concurrent activity on this shared repo today). Commits `3366bf1`/`ba2c3e2`.
+  **This substantially strengthens the case for `#724`'s N=5 torus object — the next V0-V5 steps
+  (schema design, catalogue writeback) are a genuine user decision point, not yet authorized.**
 - **#730 ✓ DONE (2026-07-27) -- consolidate the citation-mining acquisition backlog, user-requested.**
   Read all 23 relevant digest notes spanning 2026-06-11 through 2026-07-27 (the `#699`-`#728`
   CCR4BP/CRNBP arc, the Casoliva Earth-Moon digest, the Kumar-lineage `#728` site-mining wave, the
