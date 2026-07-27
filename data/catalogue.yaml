@@ -56146,3 +56146,496 @@
     "ccr4bp_provenance.connection.integrator_delta_km": "data/found/701_ccr4bp_umbriel_titania_search/result.json:best_robust_genuine_connection_corrected.corrected_integrator_delta_km = 1.0512238869207226e-07 -- the ghost-guard independent Radau-vs-DOP853 cross-check this row's V1 validation_level rests on."
     "ccr4bp_provenance.real_ephemeris_evidence.n_epochs_comparable": "data/found/705_ccr4bp_epoch_robustness_scan/result.json:summary.n_epochs_comparable_to_704 = 10 (of 10 tested)."
     "validity_window.synodic_period_days": "data/found/705_ccr4bp_epoch_robustness_scan/result.json:real_umbriel_titania_synodic_period_days = 7.908977583921671."
+
+# ---------------------------------------------------------------------------
+# N=5 CRNBP Jupiter-Europa 3:4 exterior resonant torus (Io+Ganymede forced)
+# ---------------------------------------------------------------------------
+- id: europa-3-4-crnbp-torus-jupiter-2026
+  name: "Jupiter-Europa 3:4 exterior resonant torus substitute, Laplace-locked N=5 CRNBP (Io+Ganymede forced)"
+  source: discovered
+  trajectory_regime: ballistic
+  model_assumption: crnbp   # schema v5.4 (task #735/#736): CRNBP -- Jupiter-Europa base restricted system forced by BOTH Io and Ganymede on their own circular orbits; ccr4bp would misstate the model (the whole point of the second novelty axis is the SECOND simultaneous perturber)
+  cycler_class: non-keplerian   # a bare 2-D quasi-periodic torus (Fourier coefficient array), not a chain of Kepler/Lambert arcs -- see #735 Sec 3
+  orbit_class: quasi_periodic_torus   # schema v5.4 (task #735/#736): new enum value -- see schema top-level description + #735 Secs 2-4 for why torus_homoclinic/resonant_po/quasi_cycler do not fit (NO connection has been computed for this object)
+  epoch_locked: true   # real-epoch-anchored (the #726/#729 model-shadowing check IS the row's evidence) -- the idealized torus GENERICALLY COLLAPSES off the recurring narrow window (#726), so epoch_locked=false would misstate the evidence (#735 Sec 5)
+  n_returns: 1   # ONE forcing period (one Ganymede-synodic cycle, ~7.05 days) of demonstrated real-ephemeris model-shadowing per recurring narrow window (#735 Sec 5 Option A) -- NOT a torus_homoclinic connection's departure-and-return opportunity (no connection exists); NOT #312's convention of counting consecutive repeat-flown cycles. #729's "10" is epoch-SAMPLING density, a different concept, carried in crnbp_provenance.real_ephemeris_evidence.torus_points[].n_epochs_tested instead
+  delta_v_kms:        # ballistic idealized torus; no maintenance-DV campaign run
+  v_infinity_leveraging_dv_kms:
+  fleet_size:
+  flyby_mechanics:        # no flyby of any moon -- see data_gaps below
+  primary: "Jupiter"
+  bodies: ["Jupiter", "Europa", "Io", "Ganymede"]   # Io and Ganymede are gravitational PERTURBERS, never closely encountered -- see crnbp_provenance.real_ephemeris_evidence.torus_points[].per_epoch[].closest_approach_km (closest approaches across the three NARROW model-shadowing torus points x all 10 epochs: Europa >=4.14e5 km, Io >=2.03e5 km, Ganymede >=2.16e5 km -- all far outside every SOI. The two GENUINELY-COLLAPSING points' divergent real-SPICE trajectories -- which are NOT the catalogued object, being exactly where the model fails to shadow -- come as close as 3.2e3 km to Ganymede and 8.8e4 km to Europa; see result.json secondary_scans)
+  sequence_canonical:   # not-applicable -- see data_gaps below
+  sense: "n/a"
+  period:
+    pair:
+    k:
+    years:
+    note: >
+      No beat-period/encounter-pair concept applies to a bare quasi-periodic torus (no
+      alternating named-body flyby cycle to state a pair/k/years for). The stroboscopic
+      forcing period (theta1 clock) is carried in crnbp_provenance.torus.period_tu; the
+      motion itself is quasi-periodic (irrational rotation number, crnbp_provenance.torus.
+      rotation_number), so no single orbital period exists to state here.
+  validity_window:
+    start: "2000-01-01T00:00:00Z"
+    end: "2083-01-01T00:00:00Z"
+    # synodic_duty_cycle_pct / synodic_boundary_period_days deliberately NOT populated --
+    # see data_gaps below (10 sparse anchors with per-anchor dense synodic scans, not a
+    # continuous multi-year daily scan, per #735 Sec 7 / #707 Q4's own precedent).
+    synodic_period_days: 7.053933330456041   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:real_ganymede_synodic_period_days (the real Ganymede-synodic forcing period)
+  validation_level: V0   # #735 Sec 8: no second-integrator (Radau) cross-check has been run for this torus in this session (out of scope for this writeback task, per #735's own explicit "V0 if not done" guidance) -- the independent nonlinear-flow closure check (crnbp_provenance.torus.closure_residual, methodologically independent of the algebraic solve) and #724's bit-for-bit foreground reproduction (independently re-run again this session, matching to 4e-11 relative) are the strongest evidence available, but neither is a literal second-integrator cross-check in the #701 V1-equivalent sense. A cheap Radau re-closure at a future writeback would support V1 (user decision, not claimed here).
+  source_ephemeris: "jup365.bsp (JPL/NAIF Galilean satellite SPK) via core.ephemeris; naif0012.tls"
+  orbit_source: derived
+  vinf_source: derived
+  orbit_fidelity: circular-coplanar   # the idealized-CRNBP torus numbers (crnbp_provenance.torus)
+  vinf_fidelity: real-de440   # the #726/#729 real-SPICE model-shadowing evidence is this row's headline real-world claim (no vinf_kms_at_encounters exists to pair it with -- see data_gaps; no body is encountered)
+  orbit_elements:
+    reference_frame: rotating-synodic
+    center: Jupiter
+    a_au:
+    e:
+    note: "Jupiter-Europa rotating-frame quasi-periodic torus; Keplerian elements inapplicable. The cr3bp tuple carries the BASE resonant orbit's identity; the torus's own identity (Fourier coefficients, rotation number, seed lineage) is in crnbp_provenance.torus."
+    cr3bp:
+      jacobi_constant:   # the CRNBP (two simultaneous time-periodic forcings, Io+Ganymede) has NO exact conserved quantity -- see data_gaps below
+      period_nd: 12.47771183806834   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_period_tu -- stroboscopic forcing period (one Ganymede-synodic cycle), nondim TU
+      stability_index:   # NOT computed -- no Floquet/stability work exists for this object (#724 mandatory qualifier) -- see data_gaps below
+      mass_ratio: 2.528017724591319e-05   # SOURCED: core.crnbp.jupiter_europa_io_ganymede_default().mu (Jupiter-Europa reduction; live-printed this session)
+      libration_point:
+      family: "europa-spacecraft-3:4-exterior-resonant-torus (Kumar et al. 2021 seed class; EXTERIOR, never 'interior' -- #724 correction)"
+      lunit_km: 671100.0   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:l_km_europa (Europa SMA)
+      tunit_s: 48843.87840180734   # DERIVED: l_km_europa / v_unit_europa_km_s = 671100.0 / 13.739695166696011 (result.json:v_unit_europa_km_s); one-line unit conversion, not a golden
+  crnbp_provenance:   # schema v5.4 (task #735/#736)
+    mu: 2.528017724591319e-05          # SOURCED: core.crnbp.jupiter_europa_io_ganymede_default().mu (live-printed this session, PYTHONPATH=src python3 -c "from cyclerfinder.core.crnbp import jupiter_europa_io_ganymede_default as f; print(f().mu)")
+    base_pair: "Jupiter-Europa"
+    perturbers:   # order matches core.crnbp.CRNBPSystem.perturbers in the producing run: (Io, Ganymede) -- live-printed this session
+      - body: "Io"
+        mu: 4.70434003054117e-05       # SOURCED: jupiter_europa_io_ganymede_default().perturbers[0].mu
+        a: 0.6285203397407242          # SOURCED: same, .a (Io SMA / Europa SMA)
+        omega: 1.0071053713566571      # SOURCED: same, .omega
+        theta0: 3.141592653589793      # SOURCED: same, .theta0 (pi -- physical Laplace libration center, #723)
+        rate_provenance: "laplace-projected: omega_io = -2*omega_gan EXACT (observed sidereal-period ratio -2.000000001, ~1.1e-9 relative residual, re-verified this session; registry-rate ratio -1.9996 attributed to SMA rounding -- core.crnbp module docstring)"
+      - body: "Ganymede"
+        mu: 7.804763238533231e-05      # SOURCED: same, .perturbers[1].mu
+        a: 1.59499329459097            # SOURCED: same, .a
+        omega: -0.5035526856783286     # SOURCED: same, .omega
+        theta0: 0.0
+        rate_provenance: "registry two_body_synodic_rate -- PHYSICAL, non-rate-idealized (ephemeris-period value -0.5036473892, 1.9e-4 relative, registry-SMA rounding, re-verified this session; both ~7.3e-3 from TCP's idealized -0.5) -- novelty axis 2 (#724)"
+    resonance_lock: "Galilean Laplace lock: omega_io = -2*omega_gan exact; phi_L = theta_io0 + 2*theta_gan0 = pi exactly (physical libration center, Sinclair 1975 / Murray & Dermott; TCP Table 1 uses the same phase -- phase is NOT a novelty axis, #724)"
+    torus:
+      base_resonance: "spacecraft:Europa=3:4-exterior (Kumar et al. 2021, arXiv:2109.14815; a ~= 1.2114 Europa SMA, BETWEEN the moons' orbits)"
+      period_tu: 12.47771183806834     # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_period_tu
+      rotation_number: 0.4964682691957192   # SOURCED: this session's fresh foreground reproduction of #724's own pipeline (scripts/verify_724_rerun_continuation.py, extended to print full precision) -- final continuation step's CRNBPTorusVariationalResult.rotation_number; matches #724's own quoted 0.496468269 to 10 significant figures
+      rho_strob: 3.119402134491422     # SOURCED: same fresh reproduction run, final step's CRNBPTorusVariationalResult.rho_strob (= omega2 * period)
+      n1: 2
+      n2: 20
+      residual_rms: 1.2343143649e-04   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_residual_rms (0.00012343143649488024); independently reproduced this session to 6e-13 relative (fresh run: 1.2343143649480972e-04), matching #723/#724's own quoted value to 4e-11 relative
+      closure_residual: 2.3212508597912776e-3   # SOURCED: this session's fresh foreground reproduction (scripts/verify_724_rerun_continuation.py final step) -- inside the 5e-3 gate; n2=20 TRUNCATION FLOOR, same as the #690 baseline. MANDATORY to quote alongside residual_rms (~2.1e-3 off-grid invariance vs 1.23e-4 on-grid, #721 SS2 / #724): matches #724's own quoted "2.321e-3" to displayed precision
+      seed_lineage: "Kumar-2021 JE 3:4 exterior resonant PO (CR3BP, perp residual 7.2e-13, re-verified this session) -> #690 CCR4BP torus n1=2/n2=20 (residual 1.2210263312e-04) -> mu_io=0 CRNBP seed at theta_io0=pi (1.2209943365e-04, byte-exact N=4 reduction gate) -> 8-step mu_Io continuation to physical 4.7043400305e-05 (self-generated positive control per #714: no literature-grade N=5 dynamical control exists)"
+      continuation:
+        parameter: "mu_io"
+        n_steps: 8
+        final_value: 4.7043400305e-05
+        monotonicity_note: "residual monotone across steps (one -9.5e-10 re-solve dip at step 1, #723); reproduced bit-for-bit in the foreground by #724 and independently re-reproduced again this session (scripts/verify_724_rerun_continuation.py), matching to 3.9e-11 relative"
+    real_ephemeris_evidence:
+      check_type: "model-shadowing over one Ganymede-synodic forcing period: idealized-CRNBP forward flow (propagate_crnbp) of a chosen torus point vs real-SPICE propagation of the same departure state (search.crnbp_real_ephemeris_consistency.check_torus_survives_real_ephemeris, #726; NOT a connection-quality metric -- no manifold pair exists for this object)"
+      force_model: "Jupiter point-mass (system-GM) central term + Europa + Io + Ganymede REAL SPICE (jup365.bsp) third-body perturbations, Jupiter-centred J2000 inertial frame -- verbatim per data/found/729_crnbp_epoch_torus_robustness_scan/result.json:force_model_notes (identical to #726's own force model)"
+      forcing_period_days: 7.053933330456041   # SOURCED: same, real_ganymede_synodic_period_days
+      narrow_near_miss_threshold_km: 5000.0   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:summary.narrow_near_miss_threshold_km -- pre-declared ABSOLUTE gate (no reference connection exists here for a relative gate, unlike ccr4bp_provenance's comparable_*_threshold)
+      positive_control:
+        pos_gap_km: 1.75e-2
+        vel_gap_km_s: 1.13e-7
+        note: "#726's mandatory positive control over an 8.06e5 km / 1.8e5 s arc (data/OUTSTANDING.md #726 entry) -- consistent with the accepted ~2.07e-4-relative system-GM-folding approximation used throughout this Jovian force-model chain"
+      generic_collapse_reference:
+        epoch_utc: "2030-01-01T00:00:00"
+        pos_gap_km: 3.68e5
+        vel_gap_km_s: 8.19
+        note: "#726 headline at torus point (0,0), naive 2030-01-01 epoch/phase (data/OUTSTANDING.md #726 entry) -- comparable to Ganymede's own orbital radius (1.07e6 km); verified GENUINE (not integrator/algebraic noise): an idealized-substitute-fed control at the same window gives only ~11% of the real gap, and at windows down to 0.02x the period the real gap (501 km) still exceeds the noise floor (50 km) by ~10x"
+      torus_points:   # SOURCED verbatim: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:primary_scans[] + secondary_scans[] -- ALL 5 tested torus points x ALL 10 epochs each, per #708's own no-compression precedent
+        - theta1_0: 0.0
+          theta2_0: 0.0
+          n_synodic_points_per_epoch: 300
+          n_epochs_narrow: 10
+          n_epochs_tested: 10
+          per_epoch:
+            - base_epoch_utc: "2000-01-01T00:00:00"
+              local_minimum_epoch_utc: "2000-01-07T20:16:37"
+              local_minimum_pos_gap_km: 1715.5883486989114
+              local_minimum_vel_gap_km_s: 0.03106051633661316
+              closest_approach_km: {Europa: 418849.08077241696, Io: 210372.12654338437, Ganymede: 515065.93786844524}
+              narrow_near_miss: true
+            - base_epoch_utc: "2009-03-23T03:59:59"
+              local_minimum_epoch_utc: "2009-03-29T09:33:53"
+              local_minimum_pos_gap_km: 655.3534456605724
+              local_minimum_vel_gap_km_s: 0.023423867614985116
+              closest_approach_km: {Europa: 418715.8483677048, Io: 409435.38980101293, Ganymede: 217352.30818197798}
+              narrow_near_miss: true
+            - base_epoch_utc: "2018-06-12T07:59:59"
+              local_minimum_epoch_utc: "2018-06-13T16:36:56"
+              local_minimum_pos_gap_km: 665.4394572214188
+              local_minimum_vel_gap_km_s: 0.023903571576745806
+              closest_approach_km: {Europa: 418713.4684145281, Io: 409866.2876785998, Ganymede: 216568.2508296495}
+              narrow_near_miss: true
+            - base_epoch_utc: "2027-09-01T12:00:00"
+              local_minimum_epoch_utc: "2027-09-03T06:55:34"
+              local_minimum_pos_gap_km: 1946.0383731755553
+              local_minimum_vel_gap_km_s: 0.0336976684794579
+              closest_approach_km: {Europa: 418851.5994807021, Io: 207317.59690355064, Ganymede: 815611.0095094396}
+              narrow_near_miss: true
+            - base_epoch_utc: "2036-11-20T16:00:00"
+              local_minimum_epoch_utc: "2036-11-22T19:20:49"
+              local_minimum_pos_gap_km: 1022.6254271500121
+              local_minimum_vel_gap_km_s: 0.0095242755103754
+              closest_approach_km: {Europa: 418939.07116678235, Io: 397271.88340778364, Ganymede: 577374.1094428077}
+              narrow_near_miss: true
+            - base_epoch_utc: "2046-02-10T13:59:59"
+              local_minimum_epoch_utc: "2046-02-14T03:50:31"
+              local_minimum_pos_gap_km: 1029.0178737046967
+              local_minimum_vel_gap_km_s: 0.009874919251216847
+              closest_approach_km: {Europa: 418938.0012909982, Io: 400076.9044893142, Ganymede: 587076.9148958889}
+              narrow_near_miss: true
+            - base_epoch_utc: "2055-05-02T18:00:00"
+              local_minimum_epoch_utc: "2055-05-03T06:21:55"
+              local_minimum_pos_gap_km: 1950.3817767019757
+              local_minimum_vel_gap_km_s: 0.03432938523181658
+              closest_approach_km: {Europa: 418850.26067912375, Io: 206493.12654804418, Ganymede: 816591.751055487}
+              narrow_near_miss: true
+            - base_epoch_utc: "2064-07-21T22:00:00"
+              local_minimum_epoch_utc: "2064-07-28T03:03:45"
+              local_minimum_pos_gap_km: 1765.7156301652483
+              local_minimum_vel_gap_km_s: 0.03284960015846224
+              closest_approach_km: {Europa: 418845.59312064986, Io: 203748.5069440767, Ganymede: 517587.5668154611}
+              narrow_near_miss: true
+            - base_epoch_utc: "2073-10-12T02:00:00"
+              local_minimum_epoch_utc: "2073-10-17T16:10:29"
+              local_minimum_pos_gap_km: 502.9368026989115
+              local_minimum_vel_gap_km_s: 0.019671505640978325
+              closest_approach_km: {Europa: 418749.96757576446, Io: 402566.5600497897, Ganymede: 241619.48409586583}
+              narrow_near_miss: true
+            - base_epoch_utc: "2083-01-01T00:00:00"
+              local_minimum_epoch_utc: "2083-01-05T11:15:23"
+              local_minimum_pos_gap_km: 1021.1334197943933
+              local_minimum_vel_gap_km_s: 0.010195939850161671
+              closest_approach_km: {Europa: 418938.3018959936, Io: 396745.4696755884, Ganymede: 578681.8309535478}
+              narrow_near_miss: true
+        - theta1_0: 3.141592653589793
+          theta2_0: 3.141592653589793
+          n_synodic_points_per_epoch: 60
+          n_epochs_narrow: 10
+          n_epochs_tested: 10
+          per_epoch:
+            - base_epoch_utc: "2000-01-01T00:00:00"
+              local_minimum_epoch_utc: "2000-01-02T12:38:13"
+              local_minimum_pos_gap_km: 1607.83318159131
+              local_minimum_vel_gap_km_s: 0.056892123835977186
+              closest_approach_km: {Europa: 414608.2439060642, Io: 235918.2391279681, Ganymede: 521345.0151408495}
+              narrow_near_miss: true
+            - base_epoch_utc: "2009-03-23T03:59:59"
+              local_minimum_epoch_utc: "2009-03-24T02:43:50"
+              local_minimum_pos_gap_km: 810.2711868921011
+              local_minimum_vel_gap_km_s: 0.05422156539237076
+              closest_approach_km: {Europa: 415418.7344893774, Io: 426158.60590110597, Ganymede: 609726.612146762}
+              narrow_near_miss: true
+            - base_epoch_utc: "2018-06-12T07:59:59"
+              local_minimum_epoch_utc: "2018-06-13T17:12:54"
+              local_minimum_pos_gap_km: 1719.2544692912043
+              local_minimum_vel_gap_km_s: 0.061010962330596386
+              closest_approach_km: {Europa: 414473.53082022385, Io: 224074.36404601356, Ganymede: 895178.0794774793}
+              narrow_near_miss: true
+            - base_epoch_utc: "2027-09-01T12:00:00"
+              local_minimum_epoch_utc: "2027-09-06T18:51:10"
+              local_minimum_pos_gap_km: 793.2071178384081
+              local_minimum_vel_gap_km_s: 0.054025047786403886
+              closest_approach_km: {Europa: 415438.38095745165, Io: 430014.3326346952, Ganymede: 620781.9741962941}
+              narrow_near_miss: true
+            - base_epoch_utc: "2036-11-20T16:00:00"
+              local_minimum_epoch_utc: "2036-11-26T09:14:57"
+              local_minimum_pos_gap_km: 1691.069479299732
+              local_minimum_vel_gap_km_s: 0.059938839271453895
+              closest_approach_km: {Europa: 414514.0523350411, Io: 231169.16874996468, Ganymede: 887242.7268612412}
+              narrow_near_miss: true
+            - base_epoch_utc: "2046-02-10T13:59:59"
+              local_minimum_epoch_utc: "2046-02-10T16:28:56"
+              local_minimum_pos_gap_km: 1694.3726176430705
+              local_minimum_vel_gap_km_s: 0.05937089730001851
+              closest_approach_km: {Europa: 414520.80702757253, Io: 227662.87323712587, Ganymede: 892949.571919769}
+              narrow_near_miss: true
+            - base_epoch_utc: "2055-05-02T18:00:00"
+              local_minimum_epoch_utc: "2055-05-06T18:18:38"
+              local_minimum_pos_gap_km: 790.2189007573971
+              local_minimum_vel_gap_km_s: 0.05355469292337875
+              closest_approach_km: {Europa: 415445.6187478657, Io: 430329.1119395944, Ganymede: 618709.5693948469}
+              narrow_near_miss: true
+            - base_epoch_utc: "2064-07-21T22:00:00"
+              local_minimum_epoch_utc: "2064-07-26T08:20:34"
+              local_minimum_pos_gap_km: 1658.189985037303
+              local_minimum_vel_gap_km_s: 0.05998704136350478
+              closest_approach_km: {Europa: 414541.98978182394, Io: 237586.01686064823, Ganymede: 879780.2748428064}
+              narrow_near_miss: true
+            - base_epoch_utc: "2073-10-12T02:00:00"
+              local_minimum_epoch_utc: "2073-10-17T16:50:09"
+              local_minimum_pos_gap_km: 1683.531661433407
+              local_minimum_vel_gap_km_s: 0.059796970563247856
+              closest_approach_km: {Europa: 414523.26247481396, Io: 233482.74697217866, Ganymede: 885494.2156439672}
+              narrow_near_miss: true
+            - base_epoch_utc: "2083-01-01T00:00:00"
+              local_minimum_epoch_utc: "2083-01-03T17:47:19"
+              local_minimum_pos_gap_km: 799.4865999855914
+              local_minimum_vel_gap_km_s: 0.05341864777130009
+              closest_approach_km: {Europa: 415441.40031948354, Io: 430409.0401232982, Ganymede: 618039.8928294361}
+              narrow_near_miss: true
+        - theta1_0: 1.5707963267948966
+          theta2_0: 1.5707963267948966
+          n_synodic_points_per_epoch: 60
+          n_epochs_narrow: 10
+          n_epochs_tested: 10
+          per_epoch:
+            - base_epoch_utc: "2000-01-01T00:00:00"
+              local_minimum_epoch_utc: "2000-01-06T01:32:37"
+              local_minimum_pos_gap_km: 2479.450100940925
+              local_minimum_vel_gap_km_s: 0.03473391460190738
+              closest_approach_km: {Europa: 710452.3756685327, Io: 373964.9670600393, Ganymede: 1021963.6844420509}
+              narrow_near_miss: true
+            - base_epoch_utc: "2009-03-23T03:59:59"
+              local_minimum_epoch_utc: "2009-03-24T02:40:35"
+              local_minimum_pos_gap_km: 4040.1557844736735
+              local_minimum_vel_gap_km_s: 0.04942161554312737
+              closest_approach_km: {Europa: 710455.9649002171, Io: 427783.57237338735, Ganymede: 277235.1354281896}
+              narrow_near_miss: true
+            - base_epoch_utc: "2018-06-12T07:59:59"
+              local_minimum_epoch_utc: "2018-06-13T17:12:19"
+              local_minimum_pos_gap_km: 2409.931168752753
+              local_minimum_vel_gap_km_s: 0.03367896508321661
+              closest_approach_km: {Europa: 710452.2361334867, Io: 379029.4045105154, Ganymede: 1009593.3324797846}
+              narrow_near_miss: true
+            - base_epoch_utc: "2027-09-01T12:00:00"
+              local_minimum_epoch_utc: "2027-09-06T18:47:54"
+              local_minimum_pos_gap_km: 4042.350717939889
+              local_minimum_vel_gap_km_s: 0.049218512241759625
+              closest_approach_km: {Europa: 710456.0943212161, Io: 431516.53929176833, Ganymede: 266004.4305110652}
+              narrow_near_miss: true
+            - base_epoch_utc: "2036-11-20T16:00:00"
+              local_minimum_epoch_utc: "2036-11-24T14:06:11"
+              local_minimum_pos_gap_km: 2675.4658244716197
+              local_minimum_vel_gap_km_s: 0.04271447075598132
+              closest_approach_km: {Europa: 710462.8885886354, Io: 435462.93883828435, Ganymede: 1165230.9438469184}
+              narrow_near_miss: true
+            - base_epoch_utc: "2046-02-10T13:59:59"
+              local_minimum_epoch_utc: "2046-02-10T16:28:21"
+              local_minimum_pos_gap_km: 2414.3902171692885
+              local_minimum_vel_gap_km_s: 0.03273690911884251
+              closest_approach_km: {Europa: 710452.1041703218, Io: 376248.28662724554, Ganymede: 1016880.5257605686}
+              narrow_near_miss: true
+            - base_epoch_utc: "2055-05-02T18:00:00"
+              local_minimum_epoch_utc: "2055-05-03T05:18:07"
+              local_minimum_pos_gap_km: 2637.3380848785123
+              local_minimum_vel_gap_km_s: 0.042226657617963057
+              closest_approach_km: {Europa: 710462.8894746323, Io: 436154.693426791, Ganymede: 1165265.6961243553}
+              narrow_near_miss: true
+            - base_epoch_utc: "2064-07-21T22:00:00"
+              local_minimum_epoch_utc: "2064-07-26T08:19:52"
+              local_minimum_pos_gap_km: 2489.4995674094694
+              local_minimum_vel_gap_km_s: 0.03434520316008679
+              closest_approach_km: {Europa: 710452.4351742029, Io: 368798.6797377643, Ganymede: 1035454.1590284837}
+              narrow_near_miss: true
+            - base_epoch_utc: "2073-10-12T02:00:00"
+              local_minimum_epoch_utc: "2073-10-17T16:49:27"
+              local_minimum_pos_gap_km: 2476.805081669176
+              local_minimum_vel_gap_km_s: 0.03387943777284061
+              closest_approach_km: {Europa: 710452.2004258026, Io: 371769.2781771428, Ganymede: 1026398.9472164884}
+              narrow_near_miss: true
+            - base_epoch_utc: "2083-01-01T00:00:00"
+              local_minimum_epoch_utc: "2083-01-07T05:59:55"
+              local_minimum_pos_gap_km: 2668.096737531689
+              local_minimum_vel_gap_km_s: 0.04199314183910508
+              closest_approach_km: {Europa: 710463.1636588083, Io: 436280.1306281568, Ganymede: 1164689.6962830585}
+              narrow_near_miss: true
+        - theta1_0: 3.141592653589793
+          theta2_0: 0.0
+          n_synodic_points_per_epoch: 60
+          n_epochs_narrow: 0
+          n_epochs_tested: 10
+          # GENUINE GENERIC COLLAPSE: per-epoch local minima 25531.6-1306778.1 km, 0/10 narrow
+          # (data/found/729_crnbp_epoch_torus_robustness_scan/result.json:secondary_scans[]
+          # entries with theta1_0=pi, theta2_0=0 -- full per-epoch data there, not repeated
+          # here per #729's own summary rollup, since none pass narrow_near_miss)
+        - theta1_0: 0.0
+          theta2_0: 3.141592653589793
+          n_synodic_points_per_epoch: 60
+          n_epochs_narrow: 0
+          n_epochs_tested: 10
+          # GENUINE GENERIC COLLAPSE: per-epoch local minima 33164.1-39984.2 km, 0/10 narrow
+          # (data/found/729_crnbp_epoch_torus_robustness_scan/result.json:secondary_scans[]
+          # entries with theta1_0=0, theta2_0=pi -- full per-epoch data there)
+      epoch_stability_note: >
+        The narrow/collapse dichotomy is torus-point-dependent but PERFECTLY epoch-stable
+        (every one of the 5 tested torus points is 10/10 narrow or 10/10 collapse across
+        2000-2083) -- itself strong evidence of real dynamical structure, not noise (#729's
+        key structural finding, extending beyond #705's single-axis scope). SOURCED:
+        data/found/729_crnbp_epoch_torus_robustness_scan/result.json:summary (fraction_
+        primary_epochs_narrow=1.0, fraction_secondary_combos_narrow=0.5 -- 2 of 4 secondary
+        points narrow, 2 collapse, each internally 10/10 consistent).
+      synodic_duty_cycle_bands_pct:   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:primary_scans[0].duty_cycle_dense_synodic_scan -- ONE representative (torus point (0,0), 2000-01-01 anchor), 300-pt dense scan (pre-bisection; the refined minimum at this anchor is 1715.6 km, below the dense-scan floor of 3793.4 km)
+        below_500km: {fraction_of_period: 0.0, n_distinct_windows: 0}
+        below_1000km: {fraction_of_period: 0.0, n_distinct_windows: 0}
+        below_2000km: {fraction_of_period: 0.0, n_distinct_windows: 0}
+        below_5000km: {fraction_of_period: 0.006666666666666667, n_distinct_windows: 2}
+        below_10000km: {fraction_of_period: 0.013333333333333334, n_distinct_windows: 4}
+        below_20000km: {fraction_of_period: 0.013333333333333334, n_distinct_windows: 4}
+        below_50000km: {fraction_of_period: 0.04666666666666667, n_distinct_windows: 5}
+      resolution_caveat: >
+        10 discrete anchor epochs (~9.2-year spacing, 2000-2083), 300 synodic-phase points
+        per primary anchor (60 per secondary combo) + bisection refine -- NOT a continuous
+        multi-year daily scan. The duty-cycle bands are from the pre-bisection dense scan at
+        ONE representative (torus-point, anchor) pair. Torus-point sampling is 5 points, not
+        a dense (theta1, theta2) map; the narrow/collapse basin boundary on the torus is
+        uncharacterized. A slow secular effect out of phase with all 10 anchors could in
+        principle exist undetected.
+    method: "variational-crnbp-torus(mu_io-continuation)+crnbp-real-ephemeris-consistency (src/cyclerfinder/search/{variational_crnbp_torus,crnbp_real_ephemeris_consistency}.py; scripts/{verify_724_rerun_continuation,run_729_epoch_torus_robustness_scan}.py)"
+  data_gaps:
+  - path: "sequence_canonical"
+    kind: "not-applicable"
+    note: >
+      Bare quasi-periodic torus -- no alternating named-body flyby sequence exists. No moon
+      is closely encountered (closest approaches across the three NARROW model-shadowing
+      torus points x all 10 epochs: Europa >=4.14e5 km, Io >=2.03e5 km, Ganymede >=2.16e5
+      km -- see crnbp_provenance.real_ephemeris_evidence.torus_points -- all far outside
+      every SOI; the two genuinely-collapsing points' divergent real-SPICE trajectories,
+      which are NOT the catalogued object, come as close as 3.2e3 km to Ganymede). Left
+      null rather than fabricated, per the #312/#708 rows' own precedent.
+    todo_ref: "#736"
+  - path: "orbit_elements.cr3bp.jacobi_constant"
+    kind: "not-applicable"
+    note: "The CRNBP (two simultaneous time-periodic forcings, Io+Ganymede) has NO exact conserved quantity; unlike the #708 row there is not even a quasi-Jacobi connection-endpoint gap to report (no connection exists for this object)."
+    todo_ref: "#736"
+  - path: "orbit_elements.cr3bp.stability_index"
+    kind: "unknown"
+    note: "No Floquet/stability, manifold, or transfer computation exists for this object (#724 mandatory qualifier; TCP has all three for THEIR Lyapunov-substitute tori -- this row must not imply parity). #714 shortlist item 3 (manifold/connection work) is gated and not dispatched."
+    todo_ref: "#736"
+  - path: "validity_window.synodic_duty_cycle_pct"
+    kind: "unknown"
+    note: >
+      10 sparse anchors with per-anchor dense synodic scans, not a continuous daily scan
+      (same evidence-shape mismatch as the #708 row, per #707 Q4 / #735 Sec 7). Within-cycle
+      structure is recorded as the threshold ladder in
+      crnbp_provenance.real_ephemeris_evidence.synodic_duty_cycle_bands_pct.
+    todo_ref: "#736"
+  - path: "vinf_kms_at_encounters"
+    kind: "not-applicable"
+    note: "No named-body encounter exists. vinf_fidelity (real-de440) records the fidelity tier of the row's headline real-SPICE model-shadowing evidence, per the #708 row's convention."
+    todo_ref: "#736"
+  - path: "validation_level"
+    kind: "unknown"
+    note: >
+      V0 (this writeback): no second-integrator (Radau) cross-check has been run for this
+      torus in this session. The independent nonlinear-flow closure check
+      (crnbp_provenance.torus.closure_residual) and #724's bit-for-bit foreground
+      reproduction (re-verified again this session) are the strongest available evidence,
+      but neither is a literal V1-equivalent same-class integrator cross-check per #735 Sec
+      8's honest calibration. A cheap Radau re-closure would support V1 -- not run here,
+      out of this task's scope.
+    todo_ref: "#736"
+  legs: []
+  corroborating_sources:
+  - authors: ["Baresi, N.", "Owen, D.", "Scheeres, D. J."]
+    year: 2023
+    title: "Exploiting the Laplace Resonance for Designing Trajectories in the Jupiter-Io-Europa-Ganymede System"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, Big Sky, MT, AAS 23-201"
+    note: "MODEL-CLASS source (mandatory citation, #724): the Tri-Circular/Laplace-locked N=5 idea is theirs; first N=5 tori (L1/L2 Lyapunov-family substitutes), Floquet stability, manifolds. Our object differs on exactly two axes: orbit family substituted (mean-motion-resonant vs Lyapunov) and rate model (physical Ganymede synodic rate vs both rates idealized to exact rationals -- their own 2*pi*k periodicity construction requires the idealization). No stability, manifold, or transfer computation exists for OUR object (they have all three for theirs)."
+  - authors: ["Owen, D.", "Baresi, N.", "Scheeres, D. J."]
+    year: 2024
+    title: "Transfer Trajectory Design in the Jupiter-Io-Europa-Ganymede Tri-circular Problem"
+    venue: "29th International Symposium on Space Flight Dynamics (ISSFD), Darmstadt, Germany"
+    note: "MODEL-CLASS source (mandatory citation, #724): planar TCP QPO continuation (70th/75th Lyapunov members) + Europa<->Ganymede transfers; its own SSVI future-work text confirms beyond-Lyapunov substitutes were NOT computed."
+  - authors: ["Kumar, B.", "Anderson, R. L.", "de la Llave, R.", "Gunter, B."]
+    year: 2021
+    title: "Computation and Analysis of Jupiter-Europa and Jupiter-Ganymede Resonant Orbits in the Planar Concentric Circular Restricted 4-Body Problem"
+    venue: "AAS/AIAA Astrodynamics Specialist Conference, AAS 21-651; arXiv:2109.14815"
+    note: "SEED source: the planar Jupiter-Europa 3:4 EXTERIOR resonant orbit/torus class this object substitutes (their own abstract's 'exterior Jupiter-Europa' terminology -- never 'interior', #724 correction). Their model is N=4 CCR4BP; no N=5/multi-perturber extension attempted (confirmed by #727's full-text read of their own 2023 Acta Astronautica follow-on paper, which is also entirely N=4)."
+  first_published:
+    authors: ["cyclerfinder discovery campaign"]
+    year: 2026
+    title: "Quasi-periodic invariant-torus substitute of the Jupiter-Europa 3:4 exterior resonant orbit in a Laplace-locked restricted five-body model"
+    venue: "cyclerfinder project; task chain #714 -> #717 -> #720 -> #721 -> #722 -> #723 -> #724 -> #726 -> #727 -> #729 -> #735 -> #736"
+    doi:
+  priority_date: "2026-07-27"
+  notes: |
+    First computed quasi-periodic invariant-torus substitute of a mean-motion-resonant
+    periodic orbit in a Laplace-locked Jupiter-Io-Europa-Ganymede restricted five-body
+    model: the planar Jupiter-Europa 3:4 resonant orbit of Kumar et al. 2021 (exterior to
+    Europa, a ~= 1.211 Europa SMA), continued to the physical Io mass with Ganymede at its
+    physical (non-rate-idealized) synodic rate and Io exactly Laplace-slaved (omega_Io =
+    -2*omega_Gan), at the physical libration-center phase (Phi_L = 180 deg), via 2D
+    pseudospectral Fourier collocation (n1=2, n2=20; on-grid residual RMS 1.23e-4, off-grid
+    invariance ~2.1e-3). [Verbatim #724 SS4 headline claim.]
+
+    Mandatory qualifiers (verbatim #724 SS4):
+    - The MODEL class is Baresi, Owen & Scheeres's (AAS 23-201, 2023; ISSFD 2024) -- cite
+      both; the Tri-Circular/Laplace-locked idea is theirs, and they computed the first N=5
+      tori (L1/L2 Lyapunov-family substitutes), Floquet stability, manifolds, and
+      Europa<->Ganymede transfers in it.
+    - Distinct from TCP on exactly TWO evidence-backed axes: (i) orbit family substituted
+      (mean-motion-resonant, Kumar-class, vs L1/L2 Lyapunov planar); (ii) rate model
+      (physical Ganymede synodic rate vs both rates idealized to exact rationals -- TCP's
+      own periodicity construction requires the idealization). Method (pseudospectral PDE
+      vs stroboscopic map+DFT) is a difference but NOT independently novelty-bearing. Phase
+      is NOT a differentiator (TCP already used 180 deg).
+    - Say "exterior Jupiter-Europa 3:4" or plain "Jupiter-Europa 3:4"; NEVER "interior" (the
+      orbit lies BETWEEN Europa and Ganymede, 1.2114 Europa units = 0.759 Ganymede units --
+      #722's/the #724 dispatch's own draft language used "interior" in error; corrected
+      here).
+    - No stability, manifold, or transfer computation exists for OUR object yet (TCP has
+      all three for theirs) -- do not imply otherwise. #714 shortlist item 3 (N=5
+      manifold/connection work) is gated and not dispatched.
+    - Never "first N=5 CRNBP torus" or "first torus in the Laplace-locked model".
+    - Novelty is conditional on the literature searched to date (#721's sweep + #722's full
+      read + #724's own follow-on search + #727's full-text read of Kumar/Anderson/de la
+      Llave 2023, confirmed entirely N=4). search/literature_check.py has NOT been run for
+      this object -- not by #724 (whose note explicitly deferred that gate to writeback
+      time) and not by this writeback task (#736); note the module's own #647 scoping
+      caveat flags its cycler-vocabulary matcher as unsuited to a raw non-cycler dynamical
+      object like a bare torus. The operative clearance is the manual #721/#722/#724/#727
+      literature sweeps above (the #706-style substance of the gate); a class-appropriate
+      scripted re-check at any future re-verification would be prudent.
+
+    Real-ephemeris standing (#726/#729): the idealized torus does NOT survive real SPICE
+    ephemeris generically (headline collapse at torus point (0,0), naive 2030-01-01 epoch:
+    3.68e5 km / 8.19 km/s over one Ganymede-synodic forcing period, comparable to
+    Ganymede's own orbital radius) -- but a narrow recurring near-miss window exists at 3 of
+    5 tested torus points: (0,0) and (pi,pi) both 10/10 narrow (refined per-epoch minima
+    502.9-1950.4 km and 790.2-1719.3 km respectively), (pi/2,pi/2) also 10/10 narrow
+    (2409.9-4042.4 km); (pi,0) and (0,pi) GENUINELY collapse 10/10 (2.55e4-1.31e6 km and
+    3.32e4-4.00e4 km respectively). The narrow/collapse dichotomy is torus-point-dependent
+    but PERFECTLY epoch-stable across all 10 tested anchors spanning 2000-2083 -- #729's own
+    strongest evidence that this is real dynamical structure, not noise. This differs in
+    KIND from the #708 Umbriel-Titania row's own evidence: there is no departure/target
+    manifold pair here, no connection has been computed or attempted, and the gap measured
+    is a model-shadowing mismatch (idealized CRNBP forward flow of a torus point vs
+    real-SPICE propagation of the same departure state), not a connection-quality metric.
+
+    validation_level=V0 (honest, per #735 Sec 8's strict reading -- no second-integrator
+    cross-check has been run for this torus; see data_gaps). our_status left absent,
+    matching the #312/#708 rows' own precedent, since no independent novelty-verification
+    gauntlet has been run for this object class.
+
+    Schema: admitted under schema v5.4 (task #735/#736), which added orbit_class=
+    quasi_periodic_torus, model_assumption=crnbp, and the additive crnbp_provenance block
+    (a NEW block, not an extension of ccr4bp_provenance, since it needs an N-body
+    perturbers[] LIST) -- see data/catalogue.schema.json's own v5.4 changelog entry and
+    docs/notes/2026-07-27-735-n5-crnbp-torus-catalogue-schema-design.md for the full design
+    reasoning (approved by the user as proposed).
+
+    Discovery + verification chain: #714 (shortlist/scoping) -> #717 (N=4 seed) -> #720
+    (mu_Io continuation to the physical torus) -> #721 (novelty sweep) -> #722 (refined
+    verdict, corrected a citation error) -> #723 (physical-phase correction) -> #724
+    (independent re-confirmation, corrected "interior"->"exterior", precise claim language)
+    -> #726 (real-ephemeris consistency check, first-pass generic collapse) -> #727
+    (Kumar/Anderson/de la Llave 2023 cross-check, novelty unaffected) -> #729 (epoch(+
+    torus-point) robustness scan, found the recurring narrow window) -> #735 (catalogue
+    schema design proposal, user-approved) -> #736 (this writeback: schema implementation +
+    row).
+  source_quotes:
+    "crnbp_provenance.torus.residual_rms": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_residual_rms = 0.00012343143649488024; independently re-reproduced this session (scripts/verify_724_rerun_continuation.py, extended) to 1.2343143649480972e-04, matching #723/#724's own quoted 1.2343143649e-04 to 4e-11 relative."
+    "crnbp_provenance.real_ephemeris_evidence.generic_collapse_reference.pos_gap_km": "data/OUTSTANDING.md #726 entry: 'Headline result: a real, GENERIC COLLAPSE (torus point theta1=theta2=0, epoch 2030-01-01, one Ganymede-synodic period = 12.478 TU/7.05 days): pos_gap=3.68e5 km, vel_gap=8.19 km/s -- comparable to Ganymede's own orbital radius (1.07e6 km).'"
+    "crnbp_provenance.real_ephemeris_evidence.torus_points[0].n_epochs_narrow": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:summary.n_primary_epochs_narrow = 10 (of 10 tested); fraction_primary_epochs_narrow = 1.0."
+    "orbit_elements.cr3bp.mass_ratio": "core.crnbp.jupiter_europa_io_ganymede_default().mu, live-printed this session (PYTHONPATH=src python3 -c \"from cyclerfinder.core.crnbp import jupiter_europa_io_ganymede_default as f; print(f().mu)\") = 2.528017724591319e-05."

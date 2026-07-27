@@ -537,10 +537,17 @@ NON_KEPLERIAN_IDS: frozenset[str] = frozenset(
         # homoclinic manifold connection (rotating-frame, base-CR3BP identity tuple),
         # not a chain of Kepler/Lambert arcs. non-keplerian 38->39.
         "umbriel-1-2-torus-homoclinic-uranus-2026",
+        # #736 (2026-07-27): europa-3-4-crnbp-torus-jupiter-2026 -- the #714-#729 N=5
+        # CRNBP Jupiter-Europa 3:4 exterior resonant torus, writing back #735's
+        # user-approved schema v5.4 design (orbit_class=quasi_periodic_torus,
+        # model_assumption=crnbp). cycler_class=non-keplerian: a bare 2-D
+        # quasi-periodic torus (Fourier coefficient array, rotating-frame, base-CR3BP
+        # identity tuple), not a chain of Kepler/Lambert arcs. non-keplerian 39->40.
+        "europa-3-4-crnbp-torus-jupiter-2026",
     ]
 )
 
-assert len(NON_KEPLERIAN_IDS) == 39
+assert len(NON_KEPLERIAN_IDS) == 40
 
 
 # ---------------------------------------------------------------------------
@@ -560,8 +567,8 @@ def test_all_rows_have_cycler_class() -> None:
 
 
 def test_census_distribution() -> None:
-    """Exact class distribution: single-ellipse=46, multi-arc=297, non-keplerian=39
-    (final, post-#708; see the incremental history below for how it got here).
+    """Exact class distribution: single-ellipse=46, multi-arc=297, non-keplerian=40
+    (final, post-#736; see the incremental history below for how it got here).
 
     #390 (2026-06-19) admitted the catalogue's first two SPK-derived mga_tour
     rows -- voyager-1-jupiter-saturn-grand-tour (E-J-S) and voyager-2-grand-tour
@@ -623,10 +630,20 @@ def test_census_distribution() -> None:
     model_assumption=ccr4bp). cycler_class=non-keplerian (one torus + its own
     homoclinic manifold connection, rotating-frame with a base-CR3BP identity
     tuple, not a chain of Kepler/Lambert arcs): non-keplerian 38->39.
+
+    #736 (2026-07-27) admitted europa-3-4-crnbp-torus-jupiter-2026 -- the #714-#729
+    N=5 CRNBP Jupiter-Europa 3:4 exterior resonant torus (Kumar et al. 2021 seed
+    class, continued to the physical Io mass with Ganymede at its physical synodic
+    rate, Laplace-locked), writing back #735's user-approved schema v5.4 design
+    (new orbit_class=quasi_periodic_torus, model_assumption=crnbp). cycler_class=
+    non-keplerian (a bare 2-D quasi-periodic torus, Fourier coefficient array,
+    rotating-frame with a base-CR3BP identity tuple, NOT a computed manifold
+    connection -- no connection has been attempted for this object): non-keplerian
+    39->40.
     """
     rows = _load_rows()
     counts = Counter(r.get("cycler_class", "single-ellipse") for r in rows)
-    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 39}
+    expected = {"single-ellipse": 46, "multi-arc": 297, "non-keplerian": 40}
     assert dict(counts) == expected, (
         f"Census mismatch.\n  Expected: {expected}\n  Got:      {dict(counts)}"
     )

@@ -25,7 +25,19 @@ def _load_schema() -> dict[str, Any]:
 
 
 def test_schema_version_is_current() -> None:
-    """The schema carries version == '5.3' (v5.3, task #707/#708: admits `#701`'s
+    """The schema carries version == '5.4' (v5.4, task #735/#736: admits the
+    Jupiter-Europa 3:4 exterior resonant N=5 CRNBP quasi-periodic invariant torus.
+    Three additive changes: a new model_assumption enum value crnbp; a new orbit_class
+    enum value quasi_periodic_torus (epoch_locked=true, n_returns=1 -- one forcing
+    period of demonstrated real-ephemeris model-shadowing per recurring narrow
+    window, distinct from torus_homoclinic's departure-and-return opportunity and
+    from the v5.2 epoch-free CR3BP KAM-corridor quasi_cycler carve-out); and one
+    additive, optional, nullable nested crnbp_provenance block (a NEW block, not an
+    extension of ccr4bp_provenance, since it needs an N-body perturbers[] LIST).
+    No existing row's validity or census count changes. See
+    docs/notes/2026-07-27-735-n5-crnbp-torus-catalogue-schema-design.md.
+
+    v5.3 (task #707/#708: admits `#701`'s
     Uranus Umbriel-Titania CCR4BP torus-homoclinic connection. Three additive changes:
     a new model_assumption enum value ccr4bp; a new orbit_class enum value
     torus_homoclinic (epoch_locked=true, n_returns=1 -- a real-epoch-anchored
@@ -66,7 +78,7 @@ def test_schema_version_is_current() -> None:
     v4.7 added the four-class orbit_class taxonomy for the catalogue-scope
     expansion, task #294)."""
     schema = _load_schema()
-    assert schema["version"] == "5.3"
+    assert schema["version"] == "5.4"
 
 
 def test_catalogue_matches_jsonschema() -> None:

@@ -201,7 +201,14 @@ EXPECTED_TIER_CENSUS: dict[str, int] = {
     # 'unvalidated' on the source-pair tier axis. Its V1-equivalent evidence (the #701
     # ghost-guard independent Radau-vs-DOP853 integrator cross-check) lives on the
     # orthogonal validation_level axis (src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE).
-    "unvalidated": 103,
+    # 103 -> 104 (2026-07-27, #736): europa-3-4-crnbp-torus-jupiter-2026 (the #714-#729
+    # N=5 CRNBP Jupiter-Europa 3:4 exterior resonant torus) admitted with
+    # orbit_source=derived / vinf_source=derived (a pseudo-source pair, per the same
+    # convention as every other computed CR3BP/CCR4BP/CRNBP row in this catalogue) ->
+    # 'unvalidated' on the source-pair tier axis. Its validation_level=V0 (honest -- no
+    # second-integrator cross-check has been run for this torus) lives on the
+    # orthogonal validation_level axis; see the row's own data_gaps entry.
+    "unvalidated": 104,
 }
 
 # The exact set of CROSS_VALIDATED rows: each pairs two DIFFERENT independent

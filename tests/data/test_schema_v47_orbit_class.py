@@ -83,6 +83,7 @@ def test_orbit_class_enum_present() -> None:
         "mga_tour",
         "resonant_po",
         "torus_homoclinic",
+        "quasi_periodic_torus",
     }
     assert props["orbit_class"]["default"] == "cycler"
 
@@ -152,8 +153,8 @@ def test_cycler_rows_are_not_epoch_locked() -> None:
 
 
 def test_non_cycler_rows_are_epoch_locked_with_finite_returns() -> None:
-    """quasi_cycler / precursor_mga / mga_tour / torus_homoclinic rows MUST be
-    epoch_locked with a finite n_returns.
+    """quasi_cycler / precursor_mga / mga_tour / torus_homoclinic / quasi_periodic_torus
+    rows MUST be epoch_locked with a finite n_returns.
 
     Exception (schema v5.2, task #684): a row matching
     :func:`_is_epoch_free_cr3bp_corridor_subclass` (the epoch-free CR3BP KAM-corridor
@@ -167,12 +168,25 @@ def test_non_cycler_rows_are_epoch_locked_with_finite_returns() -> None:
     ONE-SHOT departure-and-return opportunity per recurring synodic window
     (n_returns=1) -- it is NEVER eligible for the epoch-free CR3BP carve-out above
     (that carve-out is orbit_class='quasi_cycler'-scoped only).
+
+    ``quasi_periodic_torus`` (schema v5.4, task #735/#736) joins this group too: a bare
+    CRNBP quasi-periodic torus is also real-epoch-anchored (epoch_locked=true) with
+    n_returns=1 (one forcing period of demonstrated real-ephemeris model-shadowing per
+    recurring narrow window -- NOT a connection's departure-and-return opportunity, since
+    no connection exists for this object) -- also NEVER eligible for the epoch-free
+    CR3BP carve-out.
     """
     rows = _load_catalogue()
     bad = []
     for r in rows:
         cls = r.get("orbit_class")
-        if cls not in ("quasi_cycler", "precursor_mga", "mga_tour", "torus_homoclinic"):
+        if cls not in (
+            "quasi_cycler",
+            "precursor_mga",
+            "mga_tour",
+            "torus_homoclinic",
+            "quasi_periodic_torus",
+        ):
             continue
         if _is_epoch_free_cr3bp_corridor_subclass(r):
             if r.get("epoch_locked") is not False or r.get("n_returns") != "infinite":
