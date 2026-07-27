@@ -34,10 +34,6 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- V0-V5 vetting chain steps 3+ (schema design, catalogue writeback) for `#724`'s N=5 torus, now
-  substantially strengthened by `#729`'s own recurring-window confirmation — a genuine user
-  decision point (mirrors `#701`->`#708`'s own "let's get validating" go-ahead), not an auto-fire.
-  Not yet registered.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
@@ -209,8 +205,10 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#731` — dispatched 2026-07-27, user-flagged CI failure investigation (stale catalogue ratchet
-  already diagnosed, other failures need proper root-causing). See its own bullet entry.
+- `#731`/`#735` — dispatched 2026-07-27. `#731`: user-flagged CI failure investigation (stale
+  catalogue ratchet already diagnosed, other failures need proper root-causing); `#735`: V0-V5
+  vetting chain step 3, catalogue schema design for `#724`'s N=5 torus (design only, user-approval
+  required before implementation). See each's own bullet entry.
 - `#729` — REMOVED from this list 2026-07-27, CLOSED: recurring narrow near-miss window CONFIRMED
   across all 10 tested epochs at the headline torus point — substantially strengthens `#724`'s N=5
   torus claim. See its own bullet entry.
@@ -1529,7 +1527,11 @@ et al. 2016 (the standard parameterization-method textbook underlying the whole 
 #734 for fixing genome/qp_tori.py's own docstring citation imprecision found by #733 -- it cites
 "Olikara 2016" (the thesis) as if its collocation method were used, when the actual code
 implements the earlier Olikara & Scheeres shooting scheme; correct the citation, not the code.
-#735
+#735 for the V0-V5 vetting chain step 3: catalogue schema design pass for #724's confirmed-narrow,
+now #729-strengthened N=5 CRNBP torus -- user-authorized continuation 2026-07-27, mirroring #707's
+own precedent (present design options to user for approval before implementation); this object is
+a torus, NOT a homoclinic connection like the Umbriel-Titania #708 case, so may not fit the
+existing torus_homoclinic class as-is. #736
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15548,6 +15550,27 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   left unedited per this project's frozen-snapshot convention, flagged for awareness only.
   Verified: all 5 affected test files pass (4 pre-existing XPASS entries are documented `#731`
   cross-platform BLAS-divergence markers, unrelated), ruff + full mypy clean. Commit `3aa4c61`.
+- **#735 (dispatched 2026-07-27) -- V0-V5 vetting chain step 3: catalogue schema design for
+  `#724`'s (now `#729`-strengthened) N=5 CRNBP torus, user-authorized continuation 2026-07-27.**
+  Mirrors `#707`'s own precedent exactly: DESIGN ONLY, present options to the user for approval
+  BEFORE any implementation — do not write to the catalogue or schema in this task. Core question:
+  what `orbit_class` (or new class) correctly represents this object? It is fundamentally DIFFERENT
+  from `#708`'s own Umbriel-Titania object — that was a torus-HOMOCLINIC-CONNECTION (a manifold
+  intersection linking a torus's own stable/unstable manifolds), matching the existing
+  `torus_homoclinic` class exactly. `#724`'s N=5 object is just a TORUS that persists under real
+  ephemeris in a narrow recurring window (per `#729`) — no homoclinic connection, no manifold
+  intersection has been computed for it at all. Assess: does `torus_homoclinic` as currently
+  defined (schema v5.3, `n_returns=1` semantics) genuinely NOT fit this object (most likely), does
+  `resonant_po` (stable resonant/libration orbit, no demonstrated transport utility,
+  corroboration-only) fit better, or does this need a genuinely NEW `orbit_class` value (e.g. a
+  bare "quasi_periodic_torus" class, mirroring how `torus_homoclinic` itself was created new when
+  nothing else fit)? Also design the `ccr4bp_provenance`-equivalent block for N=5 (the existing
+  block's own `mu`/`mu_gan`/`a_gan`/`omega_gan` fields are N=4-shaped; this object needs a 3rd
+  perturber's parameters too — `mu_io`/`a_io`/`omega_io` or a more general N-body-list structure).
+  Read `docs/notes/2026-07-24-707-ccr4bp-catalogue-schema-design.md` (the `#707` precedent) for the
+  exact process/format to follow, and `#724`'s own report
+  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`) for the EXACT, mandatory
+  claim language this design must be able to represent without loosening it.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
