@@ -205,10 +205,12 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#726` — dispatched 2026-07-27, user-authorized start of the V0-V5 vetting chain on `#724`'s
-  CONFIRMED narrow N=5 CRNBP torus claim (real-ephemeris consistency check first, `#701`/`#704`
-  precedent); stalled on a backgrounded ratchet run, coordinating session polling directly. See its
-  own bullet entry.
+- `#729` — dispatched 2026-07-27, V0-V5 vetting chain step 2: epoch-robustness scan on `#726`'s
+  N=5 real-ephemeris consistency check (the `#705` precedent). See its own bullet entry.
+- `#726` — REMOVED from this list 2026-07-27, CLOSED: real-ephemeris consistency check found a
+  real, verified generic collapse in a single-epoch sample — mirrors the Umbriel-Titania case's
+  own first-pass result exactly; `#729` will settle whether a recurring window exists. See its own
+  bullet entry.
 - `#727` — REMOVED from this list 2026-07-27, CLOSED: processed the Kumar/Anderson/de la Llave
   2023 paper, confirmed `#724`'s N=5 novelty claim is unaffected (paper is entirely N=4). See its
   own bullet entry.
@@ -1487,7 +1489,11 @@ source), 1 code repo (`cz-index-matlab`) directly inspected and assessed (backgr
 one flagged future-work port candidate, nothing built), 3 concrete Earth-Moon/Uranian cross-checks
 against `#570`/`#312`/`#569`/`#701`-`#708` all came back clean (no overlap or contradiction), one
 paywalled gap (Blazevski & Ocampo 2012) confirmed genuinely inaccessible after a real search, zero
-catalogue/code changes. #729 next-unused):**
+catalogue/code changes. #729 for the V0-V5 vetting chain step 2 (the #705 analogue): a dense
+epoch-robustness scan on #726's N=5 real-ephemeris consistency check -- does a narrow recurring
+near-miss window exist across many epochs the way it did for the Umbriel-Titania case, or was
+#726's own single-epoch generic collapse actually representative. #730
+next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
 - **#514** — NAIF Kernel-Freshness Checker: Build monthly workflow and document NAIF kernel freshness. (Resolved)
@@ -15235,19 +15241,36 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   exact p-q resonant seed method Casoliva uses) and **Barrabés, Mondelo & Ollé 2009** (the exact
   homoclinic-continuation algorithm), plus Leiva & Briozzo, Broucke 1968, McGehee 1969,
   Llibre-Martínez-Simó 1985, Hénon 1997.
-- **#726 (dispatched 2026-07-27) -- start the V0-V5 vetting chain on `#724`'s CONFIRMED narrow N=5
-  CRNBP torus novelty claim, user-authorized 2026-07-27.** Mirrors the `#701`->`#708` Uranus
-  Umbriel-Titania precedent exactly. First step (the `#704` precedent): real-ephemeris consistency
-  check — does `#720`'s (phase-corrected per `#723`) idealized N=5 CRNBP torus survive real
-  Jupiter/Io/Europa/Ganymede SPICE ephemeris, or does it collapse like the Umbriel-Titania case did
-  generically (with a narrow recurring near-miss window)? Reuse this project's own established
-  SPICE-loading + real-N-body-propagation machinery from `#704`
-  (`src/cyclerfinder/search/ccr4bp_real_ephemeris_consistency.py`) — extend it to N=5 rather than
-  rebuilding. Use the EXACT proposed claim language from `#724`'s own report
-  (`docs/notes/2026-07-27-724-final-confirmation-n5-torus-novelty.md`) as the object under test —
-  do not loosen or reinterpret it. Subsequent V0-V5 steps (epoch-robustness scan, schema design,
-  catalogue writeback, independence adjudication against the other two novel-status rows) are
-  SEPARATE future tasks, gated on this one's own result, not auto-fired.
+- **#726 ✓ DONE (2026-07-27) -- V0-V5 vetting chain step 1: real-ephemeris consistency check on
+  `#724`'s CONFIRMED narrow N=5 CRNBP torus.** **Extended `#704`'s own module, did not rebuild
+  it** — `#704`'s fully generic math primitives (`osculating_frame`,
+  `nondim_state_to_inertial`/`inertial_state_to_nondim`, `real_nbody_rhs`, `propagate_real`,
+  `tu_to_seconds`, `ConsistencyCheckResult`) reused VERBATIM, unmodified; new thin driver
+  `check_torus_survives_real_ephemeris` in
+  `src/cyclerfinder/search/crnbp_real_ephemeris_consistency.py` composes them for
+  Jupiter/Europa/Io/Ganymede (three real SPICE perturbers vs. `#704`'s two), reusing the
+  already-validated persistent `core.ephemeris` Jupiter SPICE backend (`jup365.bsp`). Object-type
+  adaptation: a torus has no departure/target pair like `#704`'s connection, so "target" = the
+  idealized model's own forward flow (`propagate_crnbp`) of a chosen torus point over one
+  Ganymede-synodic forcing period, compared against real-SPICE propagation of the same departure
+  state. **Positive control**: `pos_gap=1.75e-2 km`, `vel_gap=1.13e-7 km/s` over an 8.06e5 km/
+  1.8e5 s arc — consistent with this whole Jovian arc's own accepted ~2.07e-4-relative
+  system-GM-folding approximation. **Headline result: a real, GENERIC COLLAPSE** (torus point
+  theta1=theta2=0, epoch 2030-01-01, one Ganymede-synodic period = 12.478 TU/7.05 days):
+  `pos_gap=3.68e5 km`, `vel_gap=8.19 km/s` — comparable to Ganymede's own orbital radius (1.07e6
+  km). Verified GENUINE (not integrator/algebraic noise): an idealized-substitute-fed control at
+  the same window gives only 4.18e4 km (~11% of the real gap); at windows down to 0.02x the period
+  the real gap (501 km) still exceeds the noise floor (50 km) by ~10x. Two other torus points and
+  2x/4x windows at the same epoch show similarly large, monotonically growing gaps (2.7e5-6.3e5
+  km) in this small, non-systematic sample — **no narrow near-miss window turned up yet, but a
+  proper epoch/window scan (the `#705` analogue) was explicitly out of scope for this task and
+  remains open. This exactly mirrors the Umbriel-Titania precedent's own first-pass result before
+  `#705` found its recurring window — do not treat this as a final negative yet.** 7 new tests in
+  `tests/search/test_crnbp_real_ephemeris_consistency.py` (pure-math sanity, the mandatory positive
+  control, an idealized-fed chaos-floor control, 2 SPICE-gated e2e tests reproducing the actual
+  `#724` torus), ruff+full-mypy-strict clean, ratchet clean apart from the same 2 pre-existing
+  unrelated failures. Commit `67d1f3f`. No catalogue writeback (matches `#704`'s own precedent).
+  **See `#729` for the epoch-robustness scan needed to settle whether a recurring window exists.**
 - **#727 ✓ DONE (2026-07-27) -- process Kumar/Anderson/de la Llave 2023, user-supplied PDF.**
   Filed (private `cyclers_pdf` commit `231a9d1`), digested + indexed (public commit `dceb9b7`).
   **Cross-check #1 (`#715`)**: their GPU method (spatially-partitioned mesh-intersection search
@@ -15336,6 +15359,23 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   diff inspection, proved to be a transient false positive -- both its commits contained exactly
   the authorized files, nothing else). Zero catalogue writes, zero code changes -- pure corpus
   acquisition/digest/registry task.
+- **#729 (dispatched 2026-07-27) -- V0-V5 vetting chain step 2: epoch-robustness scan on `#726`'s
+  N=5 real-ephemeris consistency check (the `#705` precedent).** `#726`'s single-epoch check found
+  a real, verified generic collapse (`pos_gap=3.68e5 km` at 2030-01-01, one Ganymede-synodic
+  period) — but this exactly mirrors the Umbriel-Titania case's own first-pass result, which
+  `#705` later showed was NOT representative once a dense multi-epoch scan ran (a comparably-tight
+  recurring window turned up at all 10 tested epochs across 2000-2083). Reuse `#726`'s own
+  `check_torus_survives_real_ephemeris` function (`src/cyclerfinder/search/
+  crnbp_real_ephemeris_consistency.py`), extend it into a dense scan across many well-separated
+  epochs (mirror `#705`'s own methodology exactly — same epoch spacing/count convention if it still
+  applies, check `scripts/run_705_epoch_robustness_scan.py` for the pattern) plus the several torus
+  points/window-length variants `#726` sampled non-systematically. Deliver a clear verdict: does a
+  narrow recurring near-miss window exist across epochs (strengthening the case, per `#705`'s own
+  precedent), or does the generic collapse hold consistently (a genuine negative for THIS specific
+  claim, though the `#714`->`#726` arc would still stand as a valuable capability build either
+  way). Remember: `tests/scripts/test_scripts_call_preflight.py`'s `_LEGACY_EXEMPT` frozenset needs
+  this new script added, same as `#704`/`#705` themselves required (see
+  `[[feedback_verify_scope_must_include_tests_scripts]]`).
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
