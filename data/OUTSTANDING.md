@@ -303,6 +303,18 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
+- `#757` — dispatched 2026-07-28, user-authorized ("continue with b" — re-scope Task B around the
+  2 confirmed families, 5:6-LI + 3:4-LO, since 5:6-LO is now a clean negative after 3 search
+  passes (`#753`/`#755`/`#756`)). Fable, research/scoping only, no code. `#745`'s own digest
+  (lines 89-102) already established the paper's Table 2 is a HOMOCLINIC self-connection of
+  3:4-LO ALONE (does not need any 5:6 family at all — already buildable with just the confirmed
+  3:4-LO!), while Table 3 is a HETEROCLINIC 3:4<->5:6 connection whose specific 5:6 flavor
+  (LI/LO/NO) was not pinned down by any digest so far. Determine: (a) confirm Table 2's homoclinic
+  gate is genuinely reachable now with only 3:4-LO in hand, and produce a concrete buildable task
+  spec for it; (b) read the paper directly to determine which 5:6 flavor Table 3's heteroclinic
+  connection actually uses — if 5:6-LI (the confirmed family), Task B may proceed on its ORIGINAL
+  full scope; if 5:6-LO/NO specifically, Table 3 is not reachable with confirmed families alone,
+  and should be reported as such (not force-fit onto 5:6-LI as a substitute without saying so).
 - `#756` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest CLEAN NEGATIVE, direct
   continuation of `#755`): redid the 5:6-LO search (target `|λ|=4445.387515`) with the
   period-proximity criterion relaxed during the search itself, not just at the final gate — per
