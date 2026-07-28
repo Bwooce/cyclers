@@ -53673,7 +53673,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.644916); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); continuation of the planar ross-rt-em-cycler-21-2025"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.146605137800207   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -53794,7 +53794,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.557059); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); continuation of the planar ross-rt-em-cycler-21-2025"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.4689950182924507   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -53915,7 +53915,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.438078); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); continuation of the planar ross-rt-em-cycler-21-2025"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.7419806649535277   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54036,7 +54036,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.314901); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); continuation of the planar ross-rt-em-cycler-21-2025"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.923022213334797   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54157,7 +54157,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=-0.236560); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); #438 continuation of the planar ross-rt-em-cycler-21-2025"
+      family: "Braik-Ross C21 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=2, k2=0, k_z=10); continuation of the planar ross-rt-em-cycler-21-2025"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 3.001381314571766   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54278,7 +54278,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.141999); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); continuation of the planar braik-ross-c32-cycler-2026"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.6804734895124325   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54399,7 +54399,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.162404); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); continuation of the planar braik-ross-c32-cycler-2026"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.7733507239075204   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54520,7 +54520,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.186161); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); continuation of the planar braik-ross-c32-cycler-2026"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 2.8693486749129837   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54641,7 +54641,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.253517); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); continuation of the planar braik-ross-c32-cycler-2026"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 3.0343588395943266   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.
@@ -54762,7 +54762,7 @@
     e:
     note: "3D CR3BP rotating-frame periodic orbit (genuinely out-of-plane, z0=0.302950); Keplerian elements inapplicable. CR3BP identity tuple below."
     cr3bp:
-      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); #438 continuation of the planar braik-ross-c32-cycler-2026"
+      family: "Braik-Ross C32 (2,1)-family, 3D out-of-plane broken-plane lift (winding k1=8, k2=0, k_z=26); continuation of the planar braik-ross-c32-cycler-2026"
       mass_ratio: 0.012150584270572   # SOURCED: Braik-Ross 2026 Table 1 / Ross-RT 2025 p. 3 (shared mu across the whole EM family lineage).
       libration_point:
       jacobi_constant: 3.0602516947803338   # Per #438 scan (data/scan_434_3d_broken_plane_em.jsonl), this specific 3D-lifted member.

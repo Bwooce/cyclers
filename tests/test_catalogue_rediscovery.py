@@ -306,7 +306,12 @@ EXPECTED_COVERAGE: dict[ExclusionReason, int] = {
     # shift -- none of the 21 new rows is v1-gauntlet-reachable (non-heliocentric
     # primary), confirmed by re-deriving the count directly from classify_row()
     # and spot-checking both commits' diffs.
-    ExclusionReason.NON_HELIOCENTRIC: 77,
+    # 77 -> 78 (2026-07-28, #736): +1 europa-3-4-crnbp-torus-jupiter-2026 row
+    # written back by #736 (primary="Jupiter", CRNBP model_assumption). Pure
+    # census shift -- not v1-gauntlet-reachable (non-heliocentric primary,
+    # and not a cycler in any case -- orbit_class=quasi_periodic_torus, no
+    # alternating named-body encounter sequence).
+    ExclusionReason.NON_HELIOCENTRIC: 78,
     # 5 -> 12 (2026-06-17, #367): +7 Rogers 2015 Table 4 precursor_mga rows
     # (VISIT-1/2, Case 1/2/3, S1L1, U0L1). Each carries a sourced V_inf at the
     # establishment Earth flyby but null V_inf at Mars (Rogers Table 4 publishes
