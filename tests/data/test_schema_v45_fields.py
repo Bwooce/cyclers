@@ -172,7 +172,18 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
     substitute is #701's own ghost guard (independent Radau-vs-DOP853 integrator
     cross-check of the idealized connection, integrator_delta_km~1.05e-7 km). NOT V2/V3
     (no multi-lap periodic structure and no budget-bounded correction burn exist for this
-    one-shot transfer). (V1=27, V2=8, V3=2, V4=6.)"""
+    one-shot transfer). (V1=27, V2=8, V3=2, V4=6.)
+
+    (#738 2026-07-28): europa-3-4-crnbp-torus-jupiter-2026 (#736's N=5 CRNBP torus,
+    written back V0) promoted V0 -> V1-EQUIVALENT -- the literal V1 gate has no analogue
+    for a bare torus (no connection at all, unlike the Umbriel-Titania row). The accepted
+    substitute, mirroring that row's own precedent: search.crnbp_torus_ghost_guard.
+    radau_ghost_guard, an independent Radau-vs-DOP853 cross-check of the torus's own
+    short-time flow-consistency claim at IDENTICAL sample anchors (the #702 anchoring
+    lesson adapted: no eigenvector here, so the guarded hazard is a mismatched sample
+    set, not a sign flip), agreeing to integrator_delta_max_km~7.11e-8 km. NOT V2/V3 (no
+    multi-lap periodic structure or connection to correct for a bare torus).
+    (V1=28, V2=8, V3=2, V4=6.)"""
     rows = _load_rows()
     byid = {r["id"]: r.get("validation_level") for r in rows}
     assert byid.get("aldrin-classic-em-k1-outbound") == "V2"
@@ -312,6 +323,14 @@ def test_live_v1_census_matches_recorded_evidence() -> None:
         # cross-check, the accepted substitute for the literal Lambert/Kepler V1 gate,
         # which has no analogue for a CCR4BP torus-homoclinic connection).
         "umbriel-1-2-torus-homoclinic-uranus-2026": "V1",
+        # #738 (2026-07-28): europa-3-4-crnbp-torus-jupiter-2026 promoted V0 -> V1
+        # -- see src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE for the full
+        # evidence citation (search.crnbp_torus_ghost_guard.radau_ghost_guard, an
+        # independent Radau-vs-DOP853 integrator cross-check of the torus's own
+        # short-time flow-consistency claim at identical sample anchors -- the
+        # same V1-EQUIVALENT class as the Umbriel-Titania row above, adapted for
+        # an object with no manifold connection to cross-check).
+        "europa-3-4-crnbp-torus-jupiter-2026": "V1",
     }, above_v0
     # Six rows carry V2 today: the powered Aldrin outbound (V2-powered) and the
     # five Ross EM cyclers (#229 V2-ballistic, 2026-06-13 USER-approved). Two rows

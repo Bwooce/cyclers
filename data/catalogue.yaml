@@ -56184,7 +56184,7 @@
     # see data_gaps below (10 sparse anchors with per-anchor dense synodic scans, not a
     # continuous multi-year daily scan, per #735 Sec 7 / #707 Q4's own precedent).
     synodic_period_days: 7.053933330456041   # SOURCED: data/found/729_crnbp_epoch_torus_robustness_scan/result.json:real_ganymede_synodic_period_days (the real Ganymede-synodic forcing period)
-  validation_level: V0   # #735 Sec 8: no second-integrator (Radau) cross-check has been run for this torus in this session (out of scope for this writeback task, per #735's own explicit "V0 if not done" guidance) -- the independent nonlinear-flow closure check (crnbp_provenance.torus.closure_residual, methodologically independent of the algebraic solve) and #724's bit-for-bit foreground reproduction (independently re-run again this session, matching to 4e-11 relative) are the strongest evidence available, but neither is a literal second-integrator cross-check in the #701 V1-equivalent sense. A cheap Radau re-closure at a future writeback would support V1 (user decision, not claimed here).
+  validation_level: V1   # #738 (2026-07-28): the #735 Sec 8 gap closed. search.crnbp_torus_ghost_guard.radau_ghost_guard cross-checks the torus's own short-time flow-consistency claim (variational_crnbp_torus._independent_closure) under an INDEPENDENT integrator (Radau vs the closure check's own DOP853), at the SAME (theta1, theta2) sample anchors (same RNG seed 0xC0FFEE, same dt_frac/n_samples -- the #702 anchoring lesson adapted to this object class, see the module docstring). Result: DOP853 and Radau agree to integrator_delta_max_km=7.112659620276295e-08 km (data/found/738_crnbp_torus_radau_ghost_guard/result.json:check.integrator_delta_max_km) -- seven orders of magnitude below the #701/#708 Umbriel-Titania row's own 1.0 km ghost_guard V1 gate, a comfortable margin, not razor-thin. Registered in src/cyclerfinder/data/validate.py::_LEVEL_EVIDENCE as the same V1-EQUIVALENT CONSISTENCY-gate class the Umbriel row's own entry uses (literal spec §14 V1 has no analogue for a bare torus; same-inputs-different-integrator, per validate.py's own #197 gate-classification convention). NOT V2 (no multi-lap periodic structure to test). NOT V3 (no budget-bounded correction burn at any #729 near-miss epoch).
   source_ephemeris: "jup365.bsp (JPL/NAIF Galilean satellite SPK) via core.ephemeris; naif0012.tls"
   orbit_source: derived
   vinf_source: derived
@@ -56237,6 +56237,21 @@
         n_steps: 8
         final_value: 4.7043400305e-05
         monotonicity_note: "residual monotone across steps (one -9.5e-10 re-solve dip at step 1, #723); reproduced bit-for-bit in the foreground by #724 and independently re-reproduced again this session (scripts/verify_724_rerun_continuation.py), matching to 3.9e-11 relative"
+      radau_cross_check:   # #738 (2026-07-28): the second-integrator evidence #735 Sec 8 flagged as missing -- this row's V1 basis
+        check_type: "search.crnbp_torus_ghost_guard.radau_ghost_guard -- Radau-vs-DOP853 independent-integrator cross-check of variational_crnbp_torus._independent_closure's own short-time flow-consistency claim, at the IDENTICAL (theta1, theta2) sample anchors (same RNG seed, dt_frac, n_samples -- the #702 anchoring lesson adapted to this object class: no eigenvector/manifold-lobe ambiguity exists for a deterministic Fourier-torus evaluation, so the analogous hazard guarded against is a MISMATCHED sample set, not a sign flip; see the module docstring)."
+        n_samples: 12   # SOURCED: data/found/738_crnbp_torus_radau_ghost_guard/result.json:check.n_samples (matches _independent_closure's own default)
+        dt_frac: 0.02   # SOURCED: same, .check.dt_frac
+        seed_hex: "0xc0ffee"   # SOURCED: same, .check.seed_hex -- MUST match variational_crnbp_torus._independent_closure's own hard-coded seed (the anchoring choice this evidence rests on)
+        integrator_rtol: 1.0e-12
+        integrator_atol: 1.0e-12
+        dop853_closure_residual: 2.3212508597912776e-3   # SOURCED: same, .check.dop853_closure_residual -- reproduces torus.closure_residual above to <1e-9 relative (same-anchor sanity gate; see radau_ghost_guard.reproduces_reported_closure)
+        radau_closure_residual: 2.3212508596430433e-3   # SOURCED: same, .check.radau_closure_residual
+        integrator_delta_max_km: 7.112659620276295e-08   # SOURCED: same, .check.integrator_delta_max_km -- position-only DOP853-vs-Radau gap, direct analogue of #701's ghost_guard.integrator_delta_km; seven orders of magnitude below that row's own 1.0 km V1 gate
+        integrator_delta_max_nondim: 2.5508013055640965e-13   # SOURCED: same, .check.integrator_delta_max_nondim -- full 4-state (x,y,vx,vy) norm, same units as closure_residual above
+        reproduces_reported_closure: true   # SOURCED: same, .check.reproduces_reported_closure
+        radau_consistent: true   # SOURCED: same, .check.radau_consistent
+        genuine: true   # SOURCED: same, .check.genuine
+        method: "search.crnbp_torus_ghost_guard.radau_ghost_guard (src/cyclerfinder/search/crnbp_torus_ghost_guard.py); tests/search/test_crnbp_torus_ghost_guard.py; data/found/738_crnbp_torus_radau_ghost_guard/result.json"
     real_ephemeris_evidence:
       check_type: "model-shadowing over one Ganymede-synodic forcing period: idealized-CRNBP forward flow (propagate_crnbp) of a chosen torus point vs real-SPICE propagation of the same departure state (search.crnbp_real_ephemeris_consistency.check_torus_survives_real_ephemeris, #726; NOT a connection-quality metric -- no manifold pair exists for this object)"
       force_model: "Jupiter point-mass (system-GM) central term + Europa + Io + Ganymede REAL SPICE (jup365.bsp) third-body perturbations, Jupiter-centred J2000 inertial frame -- verbatim per data/found/729_crnbp_epoch_torus_robustness_scan/result.json:force_model_notes (identical to #726's own force model)"
@@ -56491,7 +56506,7 @@
         a dense (theta1, theta2) map; the narrow/collapse basin boundary on the torus is
         uncharacterized. A slow secular effect out of phase with all 10 anchors could in
         principle exist undetected.
-    method: "variational-crnbp-torus(mu_io-continuation)+crnbp-real-ephemeris-consistency (src/cyclerfinder/search/{variational_crnbp_torus,crnbp_real_ephemeris_consistency}.py; scripts/{verify_724_rerun_continuation,run_729_epoch_torus_robustness_scan}.py)"
+    method: "variational-crnbp-torus(mu_io-continuation)+crnbp-real-ephemeris-consistency+crnbp-torus-ghost-guard (src/cyclerfinder/search/{variational_crnbp_torus,crnbp_real_ephemeris_consistency,crnbp_torus_ghost_guard}.py; scripts/{verify_724_rerun_continuation,run_729_epoch_torus_robustness_scan}.py)"
   data_gaps:
   - path: "sequence_canonical"
     kind: "not-applicable"
@@ -56523,17 +56538,6 @@
   - path: "vinf_kms_at_encounters"
     kind: "not-applicable"
     note: "No named-body encounter exists. vinf_fidelity (real-de440) records the fidelity tier of the row's headline real-SPICE model-shadowing evidence, per the #708 row's convention."
-    todo_ref: "#736"
-  - path: "validation_level"
-    kind: "unknown"
-    note: >
-      V0 (this writeback): no second-integrator (Radau) cross-check has been run for this
-      torus in this session. The independent nonlinear-flow closure check
-      (crnbp_provenance.torus.closure_residual) and #724's bit-for-bit foreground
-      reproduction (re-verified again this session) are the strongest available evidence,
-      but neither is a literal V1-equivalent same-class integrator cross-check per #735 Sec
-      8's honest calibration. A cheap Radau re-closure would support V1 -- not run here,
-      out of this task's scope.
     todo_ref: "#736"
   legs: []
   corroborating_sources:
@@ -56613,10 +56617,15 @@
     is a model-shadowing mismatch (idealized CRNBP forward flow of a torus point vs
     real-SPICE propagation of the same departure state), not a connection-quality metric.
 
-    validation_level=V0 (honest, per #735 Sec 8's strict reading -- no second-integrator
-    cross-check has been run for this torus; see data_gaps). our_status left absent,
-    matching the #312/#708 rows' own precedent, since no independent novelty-verification
-    gauntlet has been run for this object class.
+    validation_level=V1 (#738, 2026-07-28): the #735 Sec 8 gap closed -- an independent
+    Radau-vs-DOP853 integrator cross-check of the torus's own short-time flow-consistency
+    claim, at the identical sample anchors the corrector's own closure_residual was
+    computed from, agrees to integrator_delta_max_km=7.11e-8 km (crnbp_provenance.torus.
+    radau_cross_check; seven orders of magnitude below the #701/#708 Umbriel-Titania row's
+    own 1.0 km ghost_guard V1 gate). our_status left absent, matching the #312/#708 rows'
+    own precedent, since no independent novelty-verification gauntlet has been run for
+    this object class (orthogonal to validation_level, which gates mechanical correctness
+    not novelty).
 
     Schema: admitted under schema v5.4 (task #735/#736), which added orbit_class=
     quasi_periodic_torus, model_assumption=crnbp, and the additive crnbp_provenance block
@@ -56632,10 +56641,12 @@
     -> #726 (real-ephemeris consistency check, first-pass generic collapse) -> #727
     (Kumar/Anderson/de la Llave 2023 cross-check, novelty unaffected) -> #729 (epoch(+
     torus-point) robustness scan, found the recurring narrow window) -> #735 (catalogue
-    schema design proposal, user-approved) -> #736 (this writeback: schema implementation +
-    row).
+    schema design proposal, user-approved) -> #736 (writeback: schema implementation +
+    row, validation_level=V0) -> #738 (Radau independent-integrator cross-check,
+    validation_level V0 -> V1).
   source_quotes:
     "crnbp_provenance.torus.residual_rms": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:torus_residual_rms = 0.00012343143649488024; independently re-reproduced this session (scripts/verify_724_rerun_continuation.py, extended) to 1.2343143649480972e-04, matching #723/#724's own quoted 1.2343143649e-04 to 4e-11 relative."
     "crnbp_provenance.real_ephemeris_evidence.generic_collapse_reference.pos_gap_km": "data/OUTSTANDING.md #726 entry: 'Headline result: a real, GENERIC COLLAPSE (torus point theta1=theta2=0, epoch 2030-01-01, one Ganymede-synodic period = 12.478 TU/7.05 days): pos_gap=3.68e5 km, vel_gap=8.19 km/s -- comparable to Ganymede's own orbital radius (1.07e6 km).'"
     "crnbp_provenance.real_ephemeris_evidence.torus_points[0].n_epochs_narrow": "data/found/729_crnbp_epoch_torus_robustness_scan/result.json:summary.n_primary_epochs_narrow = 10 (of 10 tested); fraction_primary_epochs_narrow = 1.0."
     "orbit_elements.cr3bp.mass_ratio": "core.crnbp.jupiter_europa_io_ganymede_default().mu, live-printed this session (PYTHONPATH=src python3 -c \"from cyclerfinder.core.crnbp import jupiter_europa_io_ganymede_default as f; print(f().mu)\") = 2.528017724591319e-05."
+    "crnbp_provenance.torus.radau_cross_check.integrator_delta_max_km": "data/found/738_crnbp_torus_radau_ghost_guard/result.json:check.integrator_delta_max_km = 7.112659620276295e-08 -- the independent Radau-vs-DOP853 cross-check this row's V1 validation_level rests on (#738)."
