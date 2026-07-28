@@ -34,17 +34,35 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#751`/`#752` — dispatched 2026-07-28 (Fable, research/scoping only, no code): two new-capability
-  scoping passes, both flagged by user question following the `#749` digest. `#751`: does
+- `#751` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; dispatched same day with
+  `#752`, both flagged by user question following the `#749` digest). Question: does
   Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
   quasirandom Sun<->Jupiter L2-homoclinic shuttling orbits) represent a genuinely distinct
-  construction method from this project's existing "binary-cycler genome" tool, or is it the same
-  ground under different formalism? `#752`: how large a lift would classical CR3BP resonant-orbit-
-  manifold/homoclinic-continuation tour-design machinery (Anderson/Lo lineage, `#742`/`#745`/`#749`
-  all independently confirmed this project has none — `core/flyby.py`/`search/resonant_conic.py`/
+  construction method from this project's existing "binary-cycler genome" tool, or the same
+  ground under different formalism? **Answer (full reasoning in
+  `docs/notes/2026-07-28-751-llibre-symbolic-dynamics-scoping.md`, from a direct read of the
+  paper's full §6 proofs + Table I + the genome code): genuinely DIFFERENT ground — but NO-GO
+  on a standalone capability build.** Theorem C is a pure topological existence + local-uniqueness
+  proof (Moser nested strips), not a construction recipe; its bi-infinite alphabet indexes only
+  (side-switch sign, neck-revolution count) with the outer-region resonance FROZEN by the chosen
+  homoclinic pair — strictly less expressive for cycler design than the project's existing
+  resonance/encounter/winding encodings, whose `(k1,k2)` "genome" is an a-posteriori classifier
+  of stable cyclers in regular phase space, not an a-priori itinerary index near the homoclinic
+  tangle. The constructive version of the theorem's content is already published (KLMR 2000
+  itinerary transits; Casoliva 2008/2010 periodic homoclinic-shadowing Earth-Moon cyclers), so a
+  ~2-3-week build (MVS ~1 week) would yield reproduction-shaped, not discovery-shaped, output.
+  One narrow shared primitive (a Lyapunov-orbit homoclinic-connection finder, Casoliva Tables 4-6
+  as golden targets + Llibre Table I/II `mu_k` regime controls) is deferred to `#752`'s verdict —
+  fold it in if `#752` is GO, bank the paper as digested existence-guarantee/positive-control
+  material if not. No new task self-assigned.
+- `#752` — dispatched 2026-07-28 (Fable, research/scoping only, no code; the second of the two
+  `#749`-follow-up scoping passes, see `#751` above): how large a lift would classical CR3BP
+  resonant-orbit-manifold/homoclinic-continuation tour-design machinery (Anderson/Lo lineage,
+  `#742`/`#745`/`#749` all independently confirmed this project has none —
+  `core/flyby.py`/`search/resonant_conic.py`/
   `search/ieg_seed.py` remain patched-conic/Lambert) actually be, and is it worth reopening
   capability-building for (see `[[project_capability_frontier_complete]]` — the project explicitly
-  pivoted away from capability-building to running discovery; both tasks must report a real
+  pivoted away from capability-building to running discovery; the task must report a real
   go/no-go recommendation, not just describe the opportunity).
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
