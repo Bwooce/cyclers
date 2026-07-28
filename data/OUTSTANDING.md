@@ -87,6 +87,11 @@ unchanged. See `git log` around this date for the corrected commit.
   `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
   targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
   self-dispatched — awaiting user authorization since it reopens capability-building.
+- `#754` — registered 2026-07-28, HELD (not dispatched): `#752`'s own "Task B" — generalize
+  `heteroclinic_cycle.correct_connection` to a resonant-member node type + homoclinic A=B mode +
+  one-sided `{y=0}` section, gated on Anderson-Lo 2011 Tables 2/3 connection states; folds in
+  `#751`'s deferred Lyapunov homoclinic-connection-finder primitive. User explicitly chose
+  "Task A only for now" (2026-07-28) — dispatch only after `#753` reports and is reviewed.
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
@@ -266,6 +271,13 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
+- `#753` — dispatched 2026-07-28, user-authorized ("Task A only for now"): "Jupiter-Europa 3:4/5:6
+  unstable resonant families + Anderson-Lo Table-1 gate," per `#752`'s spec-complete Task A. Build
+  a resonant-orbit seed sweep for Jupiter-Europa planar CR3BP (µ=2.5266448850435e-5, p:q ∈
+  {3:4, 5:6}, both branch signs), converge via existing `correct_symmetric_fixed_jacobi`, continue
+  to C=2.99163956830415, classify via existing `_planar_floquet`/`barden_stability`. Gate: recover
+  ≥4 Table-1 families, match max monodromy eigenvalues (1036.116088 / 1.000008 / 4445.387515 /
+  28178.258323) to ~1e-3 relative. `#754` (Task B) HELD pending this task's result + review.
 - `#738` — REMOVED from this list 2026-07-28, ✓ DONE: N=5 CRNBP torus row
   (`europa-3-4-crnbp-torus-jupiter-2026`) promoted `validation_level: V0 -> V1`. Built
   `search.crnbp_torus_ghost_guard.radau_ghost_guard`, an independent Radau-vs-DOP853
