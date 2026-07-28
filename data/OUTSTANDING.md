@@ -205,9 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#743` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
-  V0->V1, user-requested; `#743`: Fable DOI-accuracy audit + free-acquisition sweep over the
-  remaining backlog, user-requested. See each's own bullet entry.
+- `#738`/`#744` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
+  V0->V1, user-requested; `#744`: process 14 PDFs `#743` already downloaded + apply all its DOI
+  findings to the master list. See each's own bullet entry.
+- `#743` — REMOVED from this list 2026-07-28, CLOSED: all 34 remaining §3-§7 items swept, 3 more
+  wrong DOIs corrected, 14 free PDFs downloaded. See its own bullet entry.
 - `#742` — REMOVED from this list 2026-07-28, CLOSED: 4 more papers processed, all cross-checks
   confirmed, one real omission flagged (BMO's own multiple-shooting extension, relevant to
   Casoliva's own long connection, never mentioned in our digest). See its own bullet entry.
@@ -1596,7 +1598,11 @@ re-verified" entry against real bibliographic sources (not pattern-guessing, per
 finding that 2 of the 5 guessed DOIs it inherited were flat wrong), and directly download any
 paper that turns out to be genuinely freely available (arXiv, NTRS, institutional repositories,
 Unpaywall-confirmed OA) -- reports back to the coordinating session for the standard
-file+digest+citation-mine+index pipeline, does not run that pipeline itself. #744
+file+digest+citation-mine+index pipeline, does not run that pipeline itself. #744 for processing
+the 14 PDFs #743 already downloaded to its own scratchpad location (items 21, 22, 26, 32, 33, 34,
+35, 37, 38, 39, 40, 41, 42, 48) + applying ALL of #743's DOI corrections/confirmations/no-DOI
+findings to the master list itself (3 more wrong pattern-guessed DOIs corrected, 3 status
+upgrades, ~20 more DOIs newly confirmed, 6 confirmed genuinely-no-DOI). #745
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15816,29 +15822,54 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   in the whole `#730` backlog. Citation-mining across all 4 surfaced ~35 new candidates (flagged,
   not acquired), with Lantoine/Russell/Campagnola 2011 independently cited by 2 of the 4 papers in
   this single pass.
-- **#743 (dispatched 2026-07-28, Fable) -- DOI-accuracy audit + free-acquisition sweep over the
-  remaining `#730` backlog, user-requested.** `#741` found a real, concrete reason to distrust
-  "standard-pattern" DOI guesses: 2 of 5 guessed DOIs it inherited from the master list turned out
-  to resolve to completely different, unrelated papers when actually downloaded. Scope: (1) read
-  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` in full, noting current
-  acquisition status (items 1-11, 24, 25, 44 now ACQUIRED per `#732`/`#733`/`#741`/`#742` — skip
-  those); (2) for every remaining NOT-acquired item, especially ones marked "no DOI found this
-  pass" or "standard-pattern, not independently re-verified" — independently re-verify against
-  REAL bibliographic sources (CrossRef, publisher pages, Semantic Scholar author profiles, Google
-  Scholar) rather than pattern-guessing a DOI from a journal's usual prefix; confirm author/title/
-  year match, not just DOI plausibility, before treating a DOI as confirmed; (3) for any paper
-  that turns out to be genuinely freely available (arXiv, NASA NTRS, an institutional repository,
-  Unpaywall-confirmed open access, an author's own personal/lab page hosting a PDF) — download it
-  directly; (4) do NOT attempt the full acquisition pipeline (filing to the private corpus,
-  digesting, citation-mining, `CORPUS_INDEX.md` registration) — that stays the coordinating
-  session's own job; this task's deliverable is a clear report (paper, corrected/confirmed DOI,
-  downloaded-or-not, file location if downloaded, genuinely-paywalled-with-no-OA-route if not) for
-  the coordinating session to process. Prioritize by the master list's own ranking (recurring-HIGH
-  first) — if the full remaining backlog (~50 items) can't reasonably be swept in one dispatch,
-  stop and report what's done rather than rushing the rest. Do NOT attempt to bypass a genuine
-  paywall (no scraping paywalled full-text, no using someone else's institutional credentials) —
-  a confirmed-paywalled-no-free-copy result is a legitimate, useful outcome, same as `#713`'s own
-  precedent.
+- **#743 ✓ DONE (2026-07-28, Fable) -- DOI-accuracy audit + free-acquisition sweep, all 34
+  remaining §3-§7 items swept, 14 PDFs downloaded.** Every DOI verified against real CrossRef
+  metadata (title+author+year match), not pattern inference; every free copy from arXiv/NTRS/
+  institutional repos/publisher OA only, no paywall bypass. **3 MORE wrong pattern-guessed DOIs
+  found and corrected** (same failure mode `#741` first caught): item 22 (Leiva & Briozzo 2006,
+  listed `...2005.12.017` resolved to an unrelated cerebral-blood-flow paper — corrected to
+  `10.1016/j.actaastro.2005.12.006`); item 40 (Frauenfelder/Koh/Moreno 2023, listed
+  `10.1137/22M1506743` didn't resolve — corrected to `10.1137/22M1500459`); item 42 (Aydin &
+  Batkhin 2025, listed `...10233-0` didn't resolve — corrected to `10.1007/s10569-025-10241-7`).
+  **3 status upgrades** (items previously marked "no DOI" that actually have one): item 30 (Lo &
+  Parker, DOI `10.2514/6.2004-5304`, still paywalled); item 39 (Fernández-Mora, Haro & Mondelo —
+  NOW PUBLISHED, *SIADS* 2024, DOI `10.1137/23M1561257`, author name corrected from "Fernández" to
+  "Fernández-Mora"); item 19 (JGCD DOI confirmed `10.2514/1.G002571`). **Many more DOIs newly
+  confirmed or re-confirmed** (items 12/13/15/16/17/18/20/23/26/29/31/32/33/34/35/36/38/41/43/48 —
+  full list in the agent's own report). **6 items confirmed genuinely no DOI** (14, 21, 27, 45, 46,
+  47 — including McGehee's 1969 thesis, ProQuest-only, no free e-copy anywhere). **14 free PDFs
+  DOWNLOADED** to
+  `/private/tmp/claude-501/-Users-bruce-dev-cyclers/e8a086b8-fae2-4e77-b340-1425b9d3c532/scratchpad/pdfs/`
+  (items 21, 22["Full Atlas" preprint — note: the PUBLISHED Acta Astro. article itself stays
+  paywalled], 26, 32, 33[short 8pp preprint only, the 41pp Nonlinearity paper stays paywalled], 34,
+  35, 37, 38, 39, 40, 41, 42, 48) — ready for `#744` to process. Several more items have a
+  known-but-not-yet-pulled manual route (ResearchGate public full-text pages for 23/47, a
+  Cloudflare-blocked direct PDF for 31, a JAXA repository record for 19 where browser permission
+  was denied mid-attempt). **Coverage**: all 34 remaining tabulated items (§3-§7) swept; §9's
+  20-item low-priority tail explicitly NOT swept (flagged as likely easy free gets for a future
+  pass — Purdue theses, NTRS conference papers, the GENESIS paper).
+- **#744 (dispatched 2026-07-28) -- process 14 PDFs `#743` already downloaded + apply all its DOI
+  findings to the master list.** All 14 PDFs sit at
+  `/private/tmp/claude-501/-Users-bruce-dev-cyclers/e8a086b8-fae2-4e77-b340-1425b9d3c532/scratchpad/pdfs/`
+  (filenames prefixed `itemNN-`), covering backlog items 21, 22, 26, 32, 33, 34, 35, 37, 38, 39,
+  40, 41, 42, 48 — full identities, corrected DOIs, and per-item caveats (item 22 is the "Full
+  Atlas" preprint, not the published Acta Astronautica article, which stays paywalled; item 33 is
+  an 8pp preprint, not the full 41pp Nonlinearity paper, which also stays paywalled) are in `#743`'s
+  own bullet entry above — read it in full before starting, plus the agent's own full report if
+  more per-item detail is needed. Scope: (1) VERIFY each PDF's own identity (page 1 or a quick
+  text-layer check) before trusting `#743`'s own labeling — a scratchpad location from a different
+  agent's own session should be spot-checked, not blindly trusted, matching this session's own
+  established discipline for every other batch this arc; (2) standard acquisition pipeline for all
+  14 that check out (file into the private `cyclers_pdf` corpus, OCR-if-needed, digest +
+  citation-mine per `[[feedback_corpus_document_policy]]`, `CORPUS_INDEX.md` registration,
+  honestly noting preprint-vs-published-version caveats where they apply); (3) apply ALL of
+  `#743`'s own DOI findings to `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`
+  itself, not just the 14 acquired items: correct the 3 wrong pattern-guessed DOIs (items 22, 40,
+  42), apply the 3 status upgrades (items 19, 30, 39 — note item 39's own author-name correction,
+  Fernández -> Fernández-Mora), update the ~20 newly-confirmed/re-confirmed DOIs, and mark the 6
+  confirmed-genuinely-no-DOI items (14, 21, 27, 45, 46, 47) as settled rather than still-uncertain.
+  This is a large, careful bookkeeping pass on the master list itself, not just marking items
+  acquired — take the time to get every field right.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
