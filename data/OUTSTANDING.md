@@ -205,9 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
-  V0->V1, user-requested; `#741`: process 5 user-supplied `#730` backlog papers + correct 2 real
-  DOI errors found in the master list. See each's own bullet entry.
+- `#738` — dispatched 2026-07-28, Radau re-closure to upgrade the N=5 torus row V0->V1,
+  user-requested. See its own bullet entry.
+- `#741` — REMOVED from this list 2026-07-28, CLOSED: all 5 papers processed, 2 DOIs corrected in
+  the master list, a real mischaracterization found and fixed in an already-acquired digest
+  (Kumar 2025's own description of Gonzalez & Mireles James 2017). See its own bullet entry.
 - `#740` — REMOVED from this list 2026-07-28, CLOSED: same documented BLAS-platform sensitivity
   class as `#584`/`#631`/`#632`, root cause located, documented with a lock-in test guard rather
   than fixed (nothing algorithmically wrong to fix). See its own bullet entry.
@@ -15755,34 +15757,29 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   fail loudly instead of silently overwriting the artifact. `data/floquet_phase1_reproduction.jsonl`
   left at its committed Linux/CI-produced value. Verified: ruff/mypy clean, all 12 relevant tests
   pass. Commit `7bc314e`.
-- **#741 (dispatched 2026-07-28) -- process ALL 5 top-10 `#730` backlog papers, user-supplied
-  (including 2 re-supplied after a DOI-correction round).** All 7 uploaded PDFs individually
-  verified by the coordinating session (page 1 each) — 2 of the first 5 were mismatches (see
-  below), user then supplied the 2 CORRECT-DOI replacements, now all 5 confirmed correct:
-  **Iuliano, J.R., "A Solution to the Circular Restricted N Body Problem in Planetary Systems,"**
-  MS thesis, Cal Poly San Luis Obispo (2016) — item 6, no DOI, free at
-  `digitalcommons.calpoly.edu/theses/1612`. **Gonzalez, J.L. & Mireles James, J.D., "High-Order
-  Parameterization of Stable/Unstable Manifolds for Long Periodic Orbits of Maps,"** *SIAM J.
-  Applied Dynamical Systems* 16(3):1748–1795 (2017) — item 10, DOI `10.1137/16M1090041`.
-  **Calleja, R., del-Castillo-Negrete, D., Martínez-del-Río, D. & Olvera, A., "A new method to
-  compute periodic orbits in general symplectic maps,"** *Commun. Nonlinear Sci. Numer. Simulat.*
-  99:105838 (2021) — item 7, DOI `10.1016/j.cnsns.2021.105838`. **Calleja, R. & de la Llave, R.,
-  "A numerically accessible criterion for the breakdown of quasi-periodic solutions and its
-  rigorous justification,"** *Nonlinearity* 23:2029–2058 (2010) — item 8, CORRECTED DOI
-  `10.1088/0951-7715/23/9/001` (the master list's own original guess, `...003`, was wrong — the
-  first uploaded file for this item resolved instead to an unrelated Matthes & Toscani kinetic-
-  theory paper). **Cabré, X., Fontich, E. & de la Llave, R., "The parameterization method for
-  invariant manifolds III: overview and applications,"** *J. Differential Equations* 218:444–515
-  (2005) — item 9, CORRECTED DOI `10.1016/j.jde.2004.12.003` (the master list's own original
-  guess, `...10.029`, was wrong — the first uploaded file for this item resolved instead to an
-  unrelated Azevêdo & Ontaneda paper). Both DOI errors originated from exactly the master list's
-  own explicitly-flagged "standard-pattern, not independently re-verified" category — a real,
-  useful confirmation that flag was doing its job. Scope: (1) file+digest+citation-mine+index all
-  5 confirmed-correct papers per `[[feedback_corpus_document_policy]]`; (2) correct the 2 wrong
-  DOIs in `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md` itself (items 8/9) to
-  the correct values above, with a note explaining the correction, AND mark all 5 items 6-10
-  ACQUIRED in the same document (matching `#732`/`#733`'s own precedent for updating this list
-  as items get acquired).
+- **#741 ✓ DONE (2026-07-28) -- all 5 top-10 `#730` backlog papers processed, 2 DOIs corrected in
+  the master list, one real mischaracterization in an existing digest found and fixed.** Filed
+  (private `cyclers_pdf` commit `7b421e7`), digested + indexed (public commit `10596d4`). Master
+  list corrected: items 8/9's DOIs fixed to `10.1088/0951-7715/23/9/001` /
+  `10.1016/j.jde.2004.12.003` with a note explaining the wrong-paper-at-guessed-DOI discovery, all
+  5 items 6-10 struck through as ACQUIRED. **Key findings**: Iuliano 2016 thesis's own Eq.
+  2.1/2.3-2.5 (a flat, uncoupled indirect summation) textually confirms the exact structural gap
+  `core/crnbp.py`'s own code comment already attributes to him relative to Negri & Prado's
+  corrected equation — `crnbp.py` had already independently proven this omission dynamically
+  inert, so this is confirmation only, no code change. Calleja et al. 2021 confirmed as fair-but-
+  incomplete prior art for the already-acquired Kumar 2026 paper (its own high-period robustness
+  comes from a Newton-Gauss stage credited to Haro et al., not original to it). Calleja & de la
+  Llave 2010's actual Sobolev-seminorm breakdown theorem chain (Meta-thm 2.2, Thm 5.3, Thm 5.8)
+  extracted — a genuine, reusable future diagnostic for this project's own continuation work.
+  Cabré/Fontich/de la Llave 2005 confirmed a direct sibling in the already-traced Haro/de la Llave
+  whiskered-tori lineage, no discrepancy. **Most notable**: the already-acquired Kumar 2025 digest
+  MISCHARACTERIZES Gonzalez & Mireles James 2017's own method as "direct Taylor-composition with
+  the Poincaré map" — that description actually matches this 2017 paper's own NAMED STRAWMAN
+  baseline, which its real composition-free multiple-shooting method beats by ~5-300x (its own
+  Fig. 7); corrected for the record in the new digest and `CORPUS_INDEX.md` entry (no code
+  implication — Kumar's own real, narrower gap still stands). Citation-mining flagged (not
+  acquired) a rigorous-numerics CR4BP pair (Burgos-García/Lessard/Mireles-James 2019, Castelli/
+  Lessard/Mireles-James 2017) and two Calleja/de la Llave 2009 numerical companion papers.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
