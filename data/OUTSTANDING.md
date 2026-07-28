@@ -55,15 +55,38 @@ unchanged. See `git log` around this date for the corrected commit.
   as golden targets + Llibre Table I/II `mu_k` regime controls) is deferred to `#752`'s verdict —
   fold it in if `#752` is GO, bank the paper as digested existence-guarantee/positive-control
   material if not. No new task self-assigned.
-- `#752` — dispatched 2026-07-28 (Fable, research/scoping only, no code; the second of the two
-  `#749`-follow-up scoping passes, see `#751` above): how large a lift would classical CR3BP
-  resonant-orbit-manifold/homoclinic-continuation tour-design machinery (Anderson/Lo lineage,
-  `#742`/`#745`/`#749` all independently confirmed this project has none —
-  `core/flyby.py`/`search/resonant_conic.py`/
-  `search/ieg_seed.py` remain patched-conic/Lambert) actually be, and is it worth reopening
-  capability-building for (see `[[project_capability_frontier_complete]]` — the project explicitly
-  pivoted away from capability-building to running discovery; the task must report a real
-  go/no-go recommendation, not just describe the opportunity).
+- `#752` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; the second of the two
+  `#749`-follow-up scoping passes, see `#751` above). Question: how large a lift would classical
+  CR3BP resonant-orbit-manifold/homoclinic tour-design machinery (Anderson/Lo lineage) actually
+  be, and is it worth reopening capability-building for
+  (`[[project_capability_frontier_complete]]`)? **Answer (full reasoning in
+  `docs/notes/2026-07-28-752-resonant-manifold-jovian-tour-scoping.md`, from direct reads of
+  Anderson-Lo 2010/2011 + BMO 2009 §2.2 and first-hand code verification): GO — but as a ~2-task
+  ASSEMBLY, not a capability-building program.** Key finding: the dispatch premise
+  ("`#742`/`#745`/`#749` all independently confirmed this project has none") is substantially
+  OVERSTATED — those passes grepped the Jovian-tour modules (`core/flyby.py`/
+  `search/resonant_conic.py`/`search/ieg_seed.py`, indeed patched-conic/Lambert, re-confirmed)
+  but missed that `search/resonance_network.py` (`#267`) already computes unstable RESONANT
+  planar-CR3BP periodic orbits + Floquet monodromy eigenpairs + eigenvector-offset manifold
+  globalization + a perigee-Poincaré overlap metric (Kumar 2025 cislunar reproduction, sourced
+  Table-6 seeds), and `genome/heteroclinic_cycle.py` (`#314`) has the genuine transversal 2×2
+  Newton manifold-to-manifold connection solver (Wilczak-Zgliczyński-validated). True remaining
+  gap is narrow: no planet-moon application, no Newton-corrected resonant-to-resonant connection
+  (only overlap scores), no homoclinic A=B mode, no BMO connection-family continuation (stays
+  out of MVP; `#746`'s nothing-to-port verdict confirmed — and `ccr4bp_heteroclinic_search.py`'s
+  4-unknown torus approach is the WRONG donor: `correct_connection` is the right one, port its
+  ghost-guard discipline only). Digit-grade sourced gates are in hand (Anderson-Lo 2011:
+  µ=2.5266448850435e-5, C=2.99163956830415, Table-1 max eigenvalues, Table-2/3 connection
+  states). Unlock: a new catalogue-eligible object class (ballistic resonance-transition
+  planet-moon cyclers — the 2011 paper's own constructed trajectory is periodic) + the standard
+  novel-discovery play on unstudied systems (Saturn-Titan/Enceladus, Uranus inner moons,
+  Neptune-Triton, Pluto-Charon; Uranus-Oberon connections are NOT novel, published AAS 24-288).
+  Effort clearly SMALLER than the `#714`→`#736` calibration arc (no new dynamics, no new object
+  machinery). Concrete Task A (spec-complete, dispatchable): Jupiter-Europa 3:4/5:6 family
+  recovery gated on Table-1 eigenvalues; Task B: connection-solver retarget gated on Tables 2/3;
+  `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
+  targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
+  self-dispatched — awaiting user authorization since it reopens capability-building.
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
