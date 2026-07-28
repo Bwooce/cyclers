@@ -196,13 +196,13 @@ unchanged. See `git log` around this date for the corrected commit.
   asymmetric pairs), `#622` (EM-L1/SE-L1, the last cell, closed 2026-07-17) — so a revival would
   only be "the same 4 pairs at a denser grid," the exact anti-pattern `#411`'s own entry warns
   against. See `#520`'s own bullet for the full reasoning. Do not revive.
-- `#713` — Casoliva/Mondelo/Villac/Mease/Barrabés/Ollé "Two Classes of Cycler Trajectories in the
-  Earth-Moon System" (JGCD 2010, DOI `10.2514/1.46856`). Identity fully confirmed (resolves a
-  hallucinated "Howell/Marchand" author mis-citation the user relayed from a second agent), but no
-  PDF exists via any free/legitimate channel checked (AIAA paywall, no green-OA deposit anywhere
-  — see the paper's own bullet entry for the full negative-acquisition trail). BLOCKED on a user
-  decision: pay for AIAA ARC single-article access, request the PDF from the authors via
-  ResearchGate, or check existing institutional access. Not auto-fired further.
+- `#713` — CORRECTED 2026-07-28 (stale entry, never updated after closure): this bullet said
+  "BLOCKED on a user decision" (AIAA paywall, no free channel found), but the user directly
+  supplied the PDF the same day and `#725` fully processed it 2026-07-27 (filed, digested,
+  citation-mined, indexed — see `docs/notes/2026-07-27-725-casoliva-earth-moon-cycler-families-digest.md`
+  and `CORPUS_INDEX.md`). Already CLOSED; removed from "blocked" status. Left here (not deleted)
+  as the record of the paywall trail + the resolved "Howell/Marchand" mis-citation, for reference
+  only.
 
 ### In progress
 - `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
