@@ -245,9 +245,14 @@ unchanged. See `git log` around this date for the corrected commit.
   (root of the whole lineage) and a 2nd/3rd independent recurrence of Howell-Marchand-Lo 2001 /
   Johannesen & D'Amario 1999. See `docs/notes/2026-07-28-745-anderson-lo-2010-2011-resonant-flyby-digest.md`.
   Commits: `cyclers_pdf` `bd6e4b9`, public repo `f89cf84`.
-- `#747` — registered 2026-07-28: cross-check Casoliva's 6 symmetric Class-1 p-q rows against
-  Franz & Russell 2022's public Zenodo periodic-orbit dataset (found by `#742`, item 44) — flagged
-  as a genuine, unexecuted cross-check candidate, not yet run.
+- `#747` — REMOVED from this list 2026-07-28, CLOSED: executed the cross-check (not just described
+  it). Verdict: structural domain mismatch, not a database lookup result — all 6 rows fall outside
+  Franz & Russell's search domain on three independent grounds (search-box `x0` bound, the explicit
+  350,000km/4-Hill-unit escape criterion vs. Casoliva's near-Keplerian wide-orbit construction, and
+  the Jacobi-constant/energy regime, visually confirmed against Fig. 3's own plotted `J`-range).
+  1-2c/1-2d excluded with certainty; the other four with high but not absolute confidence. Zenodo
+  dataset accessed and confirmed impractical to brute-force search (measured throughput: ~27 min for
+  the 1.3GB archive alone). See its own bullet entry.
 - `#748` — registered 2026-07-28: consolidate the ~60+ new citation-mining candidates flagged
   (but not acquired) across the three `#744` cluster digests plus `#742`'s own citation-mining pass
   into the `#730` master list, mirroring how `#730` itself was originally built — currently
@@ -15983,6 +15988,45 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   sourced numeric target" idea), port BMO's multiple-shooting augmentation alongside the
   single-shooting baseline as a documented option — not urgent, nothing found here shows current
   need. Finding note: `docs/notes/2026-07-28-746-bmo-multishooting-casoliva-he1-crosscheck.md`.
+- **#747 ✓ DONE (2026-07-28) -- cross-check Casoliva's 6 symmetric Class-1 p-q rows (1-2c, 1-2d,
+  2-1a, 2-1b, 3-2c, 7-3a) against Franz & Russell 2022's public Zenodo periodic-orbit database.
+  Executed for real, not just described: verdict is a structural domain mismatch, not a database
+  lookup result.** Reconstructed Casoliva's Table 3 (which `pdftotext -layout` badly scrambles) in
+  full precision via `pdftotext -raw` — clean row-per-orbit extraction, giving exact `C_J`, period
+  `T` (all exact integer multiples of `2π`, i.e. 1/2/3 sidereal months), IC `(x_i, u_i, v_i)`,
+  periselene `r_pM`, apogee `r_aE`, and stability index `k` for all 6 rows. Quantified the
+  `#742`-flagged mass-ratio gap to full precision: `µ_EM`(Casoliva 2010) = 0.0121529529 vs
+  `µ`(Franz-Russell) = 1.215058392535863e-2, relative difference **0.019497%** — real but 3-4 orders
+  of magnitude smaller than the actual exclusion driver. Read Franz & Russell's methodology in
+  full: their planar grid search is bounded to `x0 ∈ [-185,000 km, L2≈+64,500 km]` from the Moon
+  (Moon-centered frame) and explicitly discards any orbit that "escapes the vicinity of the Moon
+  (defined as ever being more than 4 Hill's units from the Moon, approximately 350,000 km)" at any
+  point during propagation — confirmed both from Table 2's stated bounds and by rendering/visually
+  inspecting Figs. 1 and 3 (PDF pages 15-16) directly. Converting Casoliva's 6 `C_J` values to
+  Franz-Russell's own dimensional `J` (km²/s²) units and comparing against Fig. 3's own plotted
+  axis range (`J≈2.8-4.2` retrograde, `2.8-4.0` prograde) shows **all 6 rows fall at or below their
+  plotted energy minimum** (0.51-2.71 km²/s² vs their ≈2.8 floor) — an independent third line of
+  evidence agreeing with the spatial-domain argument. **Per-row: 1-2c and 1-2d excluded with
+  certainty** (their own periselene radii, 339,553 km and 603,592 km, already meet/exceed the
+  350,000 km escape threshold — these orbits never enter Franz & Russell's search domain even at
+  closest approach). **2-1a/2-1b/3-2c/7-3a excluded with high but not absolute confidence**
+  (periselene sits inside the near-Moon zone, but Earth-relative apogee 409,000-598,000 km over
+  their 27-82 day periods, combined with the near-Keplerian Barrabés-Gómez matched-asymptotics
+  construction method, argues strongly against full-orbit containment; not independently verified
+  by propagation — building a propagator was out of scope for this research-only task). **Zenodo
+  access**: fetched `10.5281/zenodo.6411980` — a single 1.3GB zip (5.4GB uncompressed, 5 text files,
+  13M rows, no online query API, MATLAB-GUI-only interface). Measured actual download throughput
+  via a 20MB range request (808 KB/s) and extrapolated: **~27 minutes for the archive alone**,
+  before decompression/grep — confirmed impractical within this task's step-time budget, so the
+  brute-force search was correctly NOT attempted (honest "couldn't practically check," not a
+  hand-wave, per [[feedback_verify_gauntlet_with_positive_control]]). **Bottom line**: the two
+  datasets are dynamically adjacent but non-overlapping by construction — Casoliva's Class 1 has no
+  Franz-Russell counterpart for the same underlying reason it has no RRT counterpart (`#725`'s own
+  finding): its near-Keplerian wide orbits sit outside every near-Moon symmetric-family census this
+  project has cross-checked so far. No code written, no catalogue rows touched (research-only
+  scope). Finding note: `docs/notes/2026-07-28-747-franz-russell-casoliva-crosscheck.md`. Commits:
+  `cyclers_pdf` `2f78f3d` (missing `.txt` sidecar for the Franz-Russell PDF, generated this session),
+  public repo `0fc7d89`.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
