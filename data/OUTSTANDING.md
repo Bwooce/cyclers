@@ -208,6 +208,24 @@ unchanged. See `git log` around this date for the corrected commit.
 - `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
   V0->V1, user-requested. Background agent `a11d61508dddf2269` confirmed still running (tests/data
   ratchet suite) as of last check; do not duplicate-dispatch, poll/wait for its own report.
+- `#745` — dispatched 2026-07-28, user-supplied PDFs: process `#730` items 12 (Anderson & Lo,
+  "Dynamical Systems Analysis of Planetary Flybys and Approach: Planar Europa Orbiter," JGCD
+  33(6):1899-, DOI `10.2514/1.45060`, identity confirmed page-1-exact against the master list row)
+  and 13 (Anderson & Lo, "A Dynamical Systems Analysis of Resonant Flybys: Ballistic Case," JAS
+  58(2):167-194 (2011), identity confirmed page-1-exact) — full file+digest+citation-mine+index
+  pipeline, both freely user-supplied (not a paywall acquisition).
+- `#746` — registered 2026-07-28: investigate whether Barrabés/Mondelo/Ollé 2009's own
+  multiple-shooting extension (found by `#742`, item 24) applies to/would improve Casoliva's own
+  long-TOF He1 regime — flagged as a real omission (never mentioned by Casoliva's papers or the
+  `#725` digest), not yet investigated.
+- `#747` — registered 2026-07-28: cross-check Casoliva's 6 symmetric Class-1 p-q rows against
+  Franz & Russell 2022's public Zenodo periodic-orbit dataset (found by `#742`, item 44) — flagged
+  as a genuine, unexecuted cross-check candidate, not yet run.
+- `#748` — registered 2026-07-28: consolidate the ~60+ new citation-mining candidates flagged
+  (but not acquired) across the three `#744` cluster digests plus `#742`'s own citation-mining pass
+  into the `#730` master list, mirroring how `#730` itself was originally built — currently
+  scattered across individual digest notes, not yet deduplicated/priority-ranked/DOI-resolved as a
+  registry.
 - **TASK-NUMBER COLLISION NOTE RETRACTED 2026-07-28**: the note previously here, claiming a
   separate concurrent session ALSO used `#744`, was WRONG. Corrected after `#744`'s own agent
   investigated `git log`/reflog/stash/all worktree branches on request and found no evidence of any
