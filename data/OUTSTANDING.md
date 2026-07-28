@@ -34,7 +34,7 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
-- `#763` — registered 2026-07-29, ready to dispatch: fix 7 CI-only test timeouts (>600s,
+- `#763` — DISPATCHED 2026-07-29 (user: "sure"): fix 7 CI-only test timeouts (>600s,
   pytest-timeout) discovered on the `#736`/`#738` push to `origin/main` (CI run `30360261381`,
   triggered by `f5ba90b`) — `tests/search/test_crnbp_torus_ghost_guard.py::
   test_physical_torus_reproduces_the_catalogued_provenance_numbers`,
