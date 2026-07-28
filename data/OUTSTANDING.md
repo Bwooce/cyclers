@@ -292,6 +292,17 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
+- `#756` — dispatched 2026-07-28, user-authorized ("a" — one more targeted search): find 5:6-LO
+  (target `|λ|=4445.387515`) with the PERIOD-PROXIMITY search criterion relaxed, not just the
+  eigenvalue-magnitude one — per the coordinating session's own `#755` reviewer ruling (3:4-LO
+  confirmed despite a 2.1% period offset, on the grounds that Anderson-Lo 2011 p.171 Eq. 6
+  explicitly defines CR3BP resonance as approximate, `p*n_p ≈ q*n_q`, not exact, especially for
+  strongly unstable families far from the two-body limit). `#755`'s own 5:6-LO search implicitly
+  favored `period/2π` near an integer while scanning; this task should widen that net (e.g. accept
+  candidates with `period/2π` several percent off 6, the way 3:4-LO's confirmed candidate was
+  ~2.1% off 4) while still requiring the eigenvalue match and a plausible q=6-family lineage
+  (shape/close-approach corroboration, not period alone). Same honesty discipline: a continued
+  non-confirmation is acceptable and reportable, do not fudge either criterion to force a match.
 - `#755` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result, direct
   continuation of `#753`): targeted search for the 2 remaining unconfirmed Table-1 families,
   3:4-LO (target `|λ|=1036.116088`) and 5:6-LO (target `|λ|=4445.387515`). **3:4-LO**: a finer
