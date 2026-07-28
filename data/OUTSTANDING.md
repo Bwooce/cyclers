@@ -205,7 +205,11 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- None currently. `#736` — REMOVED from this list 2026-07-28, CLOSED: schema v5.4 + catalogue
+- `#738`/`#739`/`#740` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
+  row V0->V1, user-requested; `#739`: cheap GMOS-vs-PDE torus-corrector comparison on stable
+  parent orbits; `#740`: investigate the `#347`-lineage branch-selection nondeterminism `#736`'s
+  own review found. See each's own bullet entry.
+- `#736` — REMOVED from this list 2026-07-28, CLOSED: schema v5.4 + catalogue
   writeback landed — the catalogue's THIRD genuinely novel finding. Original implementing agent
   stalled silently; coordinating session independently verified and completed the commit itself
   after a mandatory Fable review caught and fixed 5 real defects. See its own bullet entry.
@@ -1552,7 +1556,17 @@ left out of scope -- tests/scripts/test_729_epoch_torus_robustness_scan.py (this
 test_walk_is_deterministic, test_ccr4bp_umbriel_titania_heteroclinic_search.py,
 test_variational_qp_torus.py::test_l2_positive_control_reproduces_gmos_torus -- all run
 comfortably within budget locally per #731's own spot-check, same CI-resource-budget mismatch
-pattern as the 2 timeouts #731 already fixed. #738
+pattern as the 2 timeouts #731 already fixed. #738 for a Radau re-closure independent
+second-integrator cross-check on europa-3-4-crnbp-torus-jupiter-2026 (#736), the specific,
+already-identified upgrade path from validation_level V0 to V1 (#735 Sec 8's own recommendation,
+mirroring #701/#702's own ghost-guard precedent) -- user-requested 2026-07-28. #739 for a cheap
+GMOS-vs-PDE torus-corrector comparison on stable parent orbits where GMOS already converges
+(#732's own found opportunity -- Baresi/Olikara/Scheeres 2018's comparison never tested unstable
+parent orbits, the regime this project's own PDE corrector was built to handle, but their finding
+may still argue for preferring GMOS on the stable cases this project also has). #740 for
+investigating the #347-lineage branch-selection nondeterminism found via #736's own review
+(data/floquet_phase1_reproduction.jsonl rewrites to a different bifurcation branch, k=(4,3) vs
+the committed k=(3,3), across repeated test runs of the same fixed seed/inputs). #741
 next-unused):**
 - **#512** — (n_em, n_se) Resonance Sweep: Run sweep driver and build analytic wrap table for #411 cross-system cycle. (Resolved)
 - **#513** — R52-U Recovery: Recover R52-U from sourced Braik-Ross initial conditions to partially flip the C32-dominance gate. (Resolved)
@@ -15668,6 +15682,45 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   flagging clearly for future review: `#736`'s own in-progress catalogue writeback for the N=5
   torus should cite the COMMITTED `#729` result data/report as its own evidence basis, not "a
   passing pytest test," reinforcing the same distinction this investigation just confirmed.
+- **#738 (dispatched 2026-07-28) -- Radau re-closure to upgrade `europa-3-4-crnbp-torus-jupiter-2026`
+  from V0 to V1, user-requested.** `#735`'s own schema design (Sec 8) and `#736`'s own writeback
+  both explicitly deferred this: `validation_level: V0` was chosen honestly because no independent
+  second-integrator cross-check has been run on the torus itself (unlike the Umbriel-Titania row's
+  own Radau ghost-guard V1). Mirrors the `#701`/`#702` ghost-guard precedent — build an
+  independent Radau (or other non-DOP853) propagation cross-check of the converged N=5 torus's own
+  closure/invariance, following the SAME seed-anchored-`ref_vec` discipline `#702` established
+  (never re-derive a reference vector at a different phase than the one actually used — that exact
+  bug produced a false ambiguous flag on `#701`'s own connection). If the cross-check passes
+  cleanly, update the catalogue row's `validation_level` to V1 and record the new evidence in
+  `crnbp_provenance.torus{}` per `#735`'s own documented upgrade path — do NOT claim V1 without
+  this actually running and passing. If it does NOT pass cleanly, do not force it — an honest
+  V0-stays-V0 outcome (or a properly diagnosed and fixed bug, `#702`-style) are both fully
+  legitimate results.
+- **#739 (dispatched 2026-07-28) -- cheap GMOS-vs-PDE torus-corrector comparison on stable parent
+  orbits.** Found by `#732`'s own cross-check 3: Baresi/Olikara/Scheeres 2018 found their preferred
+  GMOS (stroboscopic-map shooting) method faster + more accurate + gives free Floquet stability
+  compared to this project's own PDE(DFT) corrector (`variational_qp_torus.py`/
+  `variational_crnbp_torus.py`) — but their own comparison never tested UNSTABLE parent orbits, the
+  exact regime (the ~1540x monodromy-amplification wall, per `#612`'s own precedent) this
+  project's PDE corrector was specifically built to escape. On STABLE parent orbits (where GMOS
+  already converges cleanly, no wall to escape), their finding may still argue for preferring GMOS
+  — build a small, targeted comparison on a stable case both methods can already handle, and
+  report whether GMOS is genuinely faster/more accurate here too, as a real (not assumed) finding.
+  Low priority / low risk — a methodology-hygiene check, not blocking anything.
+- **#740 (dispatched 2026-07-28) -- investigate the `#347`-lineage branch-selection
+  nondeterminism found via `#736`'s own review.** `data/floquet_phase1_reproduction.jsonl`
+  (last legitimately updated by `#347` Phase 1.5) was found REWRITTEN to a DIFFERENT bifurcation
+  branch (`k=(4,3)`, Jacobi -0.75) by a routine test run of
+  `tests/genome/test_floquet_phase1_reproduction.py::test_phase1_end_to_end_reproduction`, when
+  the file's own committed content records `k=(3,3)`, Jacobi +3.80 — i.e. the SAME test, same
+  fixed inputs, produces a DIFFERENT converged branch across separate runs. This is a genuine
+  nondeterminism in the underlying `_select_saddle_center_eigenvector`/corrector machinery (not
+  merely a numeric-precision flip — a qualitatively different bifurcation family), already flagged
+  by `#736`'s own reviewer as "its own follow-up candidate," not investigated further at the time.
+  Determine root cause (a degenerate/near-degenerate eigenvalue selection point, a seed-dependent
+  basin split, or similar) and either fix the nondeterminism or document why it's expected/benign
+  with the same specific, evidence-cited discipline this project applies elsewhere (`#584`'s own
+  precedent) — do not just re-run and hope for the "right" branch.
 - **#686 ✓ DONE (2026-07-22, Fable) -- third fresh discovery-strategy pass, N>=4-body scope;
   honest tractability verdict delivered FIRST (general N>=4-body discovery remains intractable,
   with exactly ONE bounded tractable lane), 1-item shortlist produced; full report in
