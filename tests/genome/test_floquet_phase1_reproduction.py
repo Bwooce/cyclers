@@ -40,6 +40,25 @@ Discipline:
   * The test asserts INVARIANTS (topology distinct, residual < gate); the
     specific (k1', k2') of the branched orbit is read from the corrector's
     output, not from memory.
+
+Known BLAS-platform-dependent output (#740, 2026-07-28):
+  This test WRITES `data/floquet_phase1_reproduction.jsonl` on every run —
+  it is not a read-only assertion against a fixed golden file. The
+  bifurcation this pipeline branches at is genuinely near-degenerate (see
+  `cyclerfinder.genome.asymmetric_branch`'s module docstring for the full
+  writeup): an ~1e-8-relative BLAS-backend difference in the monodromy
+  eigen-decomposition is enough to tip `branch_at_saddle_center` into one
+  of (at least) two different, both fully valid, converged branches.
+  Linux/OpenBLAS CI (the historical committer of this artifact) reliably
+  produces topology (3, 3); Mac M-series/Accelerate BLAS reliably produces
+  topology (4, 3) instead — confirmed deterministic per-platform (5/5 runs,
+  thread-count-invariant), NOT a per-run race. Running this test locally on
+  a Mac WILL rewrite the committed artifact to the (4, 3) variant; do not
+  `git add` that diff without checking which BLAS backend is authoritative
+  (Linux CI, per the `#584`/`#631`/`#632` precedent). The
+  `_KNOWN_BRANCH_TOPOLOGIES` assertion below exists so a THIRD, unexplained
+  branch — which would be a real regression, not a known platform split —
+  fails loudly instead of silently overwriting the artifact.
 """
 
 from __future__ import annotations
@@ -64,6 +83,18 @@ from cyclerfinder.search.reachable_representatives import (
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 INPUT_ARTIFACT_PATH = _REPO_ROOT / "data" / "floquet_phase1_c32_family.jsonl"
 OUTPUT_ARTIFACT_PATH = _REPO_ROOT / "data" / "floquet_phase1_reproduction.jsonl"
+
+# Known BLAS-platform-dependent outcomes of branch_at_saddle_center at this
+# specific (3,2) C32 saddle-center (#740, 2026-07-28) — see this module's and
+# cyclerfinder.genome.asymmetric_branch's docstrings for the full writeup. Both
+# are corrector-converged (residual < 1e-10), topology-distinct-from-parent
+# branches; neither is "wrong". A branch topology NOT in this set is either a
+# genuine new platform variant (extend this set WITH evidence, per the same
+# investigation discipline used to populate it) or a real regression.
+_KNOWN_BRANCH_TOPOLOGIES = {
+    (3, 3): "Linux/OpenBLAS CI (historical committer of this artifact, ffd7991..9448b93)",
+    (4, 3): "Mac M-series/Accelerate BLAS (#740 investigation, confirmed 5/5 deterministic)",
+}
 
 
 def _load_walk_members() -> list[dict]:  # type: ignore[type-arg]
@@ -127,6 +158,20 @@ def test_phase1_end_to_end_reproduction() -> None:
     assert result.topology_changed, (
         f"branched topology ({result.branched_topology.k1}, {result.branched_topology.k2}) "
         f"identical to parent (3, 2); Phase 1 exit criterion not met"
+    )
+
+    # Lock in the discovered behavior (#740): the branch topology must be one
+    # of the known BLAS-platform-dependent outcomes. This is NOT a golden-value
+    # regression check on a single number — it's a guard against a THIRD,
+    # unexplained branch silently overwriting the committed reproduction
+    # artifact. See _KNOWN_BRANCH_TOPOLOGIES above and the module docstring.
+    found_topo = (result.branched_topology.k1, result.branched_topology.k2)
+    assert found_topo in _KNOWN_BRANCH_TOPOLOGIES, (
+        f"branched topology {found_topo} is NEITHER known BLAS-platform-dependent "
+        f"outcome {sorted(_KNOWN_BRANCH_TOPOLOGIES)} -- this is either a new platform "
+        f"variant (investigate + extend _KNOWN_BRANCH_TOPOLOGIES with evidence) or a "
+        f"real regression. Do NOT commit the resulting data/floquet_phase1_reproduction.jsonl "
+        f"diff without resolving which."
     )
 
     # Largest Floquet multiplier magnitude on the BRANCHED orbit (independent diagnostic).

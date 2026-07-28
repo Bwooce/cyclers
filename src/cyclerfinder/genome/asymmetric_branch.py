@@ -46,6 +46,42 @@ Discipline:
     signal. The corrector residual is necessary; the topology cross-check
     is the orthogonal gate that catches a residual-passing orbit on the
     wrong basin.
+
+Known BLAS-platform-dependent branch selection (#740, 2026-07-28):
+  At the (3,2) C32 saddle-center used by the Phase 1 reproduction test
+  (:mod:`tests.genome.test_floquet_phase1_reproduction`), the secondary
+  eigenvalue picked by :func:`_select_saddle_center_eigenvector` is
+  ``lambda ~= 0.9742447`` -- close enough to +1 that an ~1e-8-relative
+  difference in the monodromy eigen-decomposition (``np.linalg.eig``,
+  ultimately LAPACK) between BLAS backends is enough to perturb the seeded
+  IC (``parent_state0 + sign * epsilon * v``) across the boundary between
+  two DIFFERENT basins of the ``correct_general_periodic_3d`` Newton
+  corrector. Both basins converge cleanly (residual < 1e-10, independent
+  Radau closure < 1e-6) and both satisfy ``topology_changed`` -- there is
+  no algorithmic error, just a genuinely near-degenerate branch-selection
+  point whose outcome is BLAS-backend-dependent:
+
+    * Linux/OpenBLAS CI (the environment that produced every historical
+      commit of ``data/floquet_phase1_reproduction.jsonl`` from ``ffd7991``
+      through ``9448b93``): converges to topology ``(3, 3)``,
+      ``branch_jacobi ~= 3.797487``, ``eigenvalue_used_real ~=
+      0.97424465986531``.
+    * Mac M-series / Apple Accelerate BLAS (confirmed reproducible 5/5 runs,
+      thread-count-invariant -- NOT a per-run race, a genuine cross-platform
+      divergence): converges to topology ``(4, 3)``, ``branch_jacobi ~=
+      -0.753376``, ``eigenvalue_used_real ~= 0.97424467383240`` (differs
+      from the Linux value in the 8th significant digit).
+
+  This is the same documented class of issue as ``#584``/``#631``/``#632``
+  (Accelerate-vs-OpenBLAS rounding tipping a borderline/discretizing check);
+  see those entries in ``data/OUTSTANDING.md`` for the established pattern.
+  **Do not** treat a locally-Mac-produced diff of
+  ``data/floquet_phase1_reproduction.jsonl`` that flips ``(3,3)`` to
+  ``(4,3)`` (or vice versa) as a regression and commit over the other
+  platform's value without checking which BLAS backend actually produced
+  it. ``tests/genome/test_floquet_phase1_reproduction.py`` asserts the
+  branched topology is a member of this known set specifically so that a
+  genuinely NEW (unexplained) branch is not silently committed.
 """
 
 from __future__ import annotations
