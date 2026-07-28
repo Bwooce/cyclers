@@ -99,10 +99,20 @@ unchanged. See `git log` around this date for the corrected commit.
   mechanism) but its period misses the mandated clean-multiple check by ~2.1%, raising a genuine
   open question (not resolved by either task) about whether period-exactness is even the right
   test for a family this far from the two-body limit; 5:6-LO remains a clean, unchanged negative
-  despite substantial further targeted search. Task B is therefore STILL not well-founded without
-  either a decision on the 3:4-LO period-criterion question, further 5:6-LO search, or a re-scope;
-  see `#753`'s and `#755`'s own bullets + results notes for the full reasoning (opinion, not a
-  decision).
+  despite substantial further targeted search. **Reviewer verdict (coordinating session,
+  2026-07-28), independently re-read PDF p.171 in full context before ruling: 3:4-LO CONFIRMED**
+  on the weight of evidence (near-machine-precision eigenvalue + shape/close-approach
+  corroboration + a physically coherent, non-ad-hoc account grounded in the paper's own Eq. 6
+  "resonance is only approximate in the CR3BP" statement for why a strongly unstable family's
+  period would drift from the naive `2πq`, unlike `#753`'s original candidates which were wildly
+  off on BOTH eigenvalue and period simultaneously). The module's own strict quantitative gate is
+  NOT retroactively loosened to force this — it correctly still reports `FAIL`; this is a
+  qualitative reviewer judgment layered on top, documented in `#755`'s own results note under
+  "Reviewer verdict." `5:6-LO` remains genuinely unconfirmed; the ruling also implies its own
+  search should relax the period-proximity criterion, not just the eigenvalue-magnitude one (not
+  yet attempted). Task B (`#754`) now needs only `5:6-LO` (or a re-scope around
+  `3:4-LO`+`5:6-LI`) before its Table 2/3 gate is in reach; see `#753`'s and `#755`'s own bullets
+  + results notes for full reasoning.
 - `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —

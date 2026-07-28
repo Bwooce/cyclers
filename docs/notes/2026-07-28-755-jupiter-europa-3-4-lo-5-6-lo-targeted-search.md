@@ -188,6 +188,50 @@ strategy — a real second tool for a future task, not dead code.
 
 ---
 
+## Reviewer verdict (coordinating session, 2026-07-28)
+
+Independently re-read PDF p.171 directly (not just this task's quote) to check the Eq. 6
+citation in full context before ruling: confirmed accurate and unambiguous — *"In the
+two-body problem, resonances are precisely related by integers, but here \[i.e. the actual
+CRTBP\] ... a precise relationship does not exist, and islands in Poincaré sections
+representing quasi-periodic orbits are used to determine resonance."* The paper itself,
+not a hypothesis invented after the fact, defines CR3BP resonance as approximate
+(`p·n_p ≈ q·n_q`).
+
+**Ruling: 3:4-LO is CONFIRMED**, on the weight of evidence — not by loosening
+`TABLE1_PERIOD_REL_TOL` retroactively to force a pass (that would be exactly the kind of
+tolerance-fudging this task was explicitly told not to do; the module's own strict
+dual-criterion gate correctly and honestly still reports `FAIL`, and stays as-is). The
+basis for the ruling:
+1. Eigenvalue match to `2.8e-8` relative — tighter than the already-confirmed `5:6-LI`'s
+   own `9.6e-5` by four orders of magnitude, at the corrector's own convergence floor.
+2. Independent corroboration: trajectory shape matches the paper's own Fig. 16(a), and the
+   close-Europa-approach mechanism/altitude (~97 km) matches the paper's own qualitative
+   description of this family's instability source.
+3. The period offset (2.1%) is not an isolated excuse — it fits a coherent, physically
+   principled pattern rather than special-pleading for this one case: `5:6-LI` (weakly
+   unstable, `λ≈1.000008`, close to the two-body limit) tracks `2πq` almost exactly
+   (`2.5e-6` relative), while `3:4-LO` (extremely unstable, `λ≈1036`, three orders of
+   magnitude further from marginal stability) is exactly the regime the paper's own Eq. 6
+   says should NOT be expected to hold a precise integer period ratio. This is the opposite
+   quality of evidence from `#753`'s original rejected candidates, which were wildly off on
+   BOTH eigenvalue (2%-27%) AND period (`21.01`/`16.11`/`16.04` vs `4`/`6`/`6`) simultaneously
+   — those were correctly rejected as a different family entirely; this one is not that case.
+
+**Operational implication for future `5:6-LO` search**: if strongly unstable families
+genuinely drift from the naive `2πq` period (as this ruling concludes for `3:4-LO`), then
+`#755`'s own `5:6-LO` search — which explicitly favored candidates with `period/2π` near an
+integer — may have been filtering out the very candidate it was looking for. A follow-up
+`5:6-LO` search should relax the period-proximity search criterion (not just the final gate)
+alongside the eigenvalue-magnitude search, consistent with this ruling.
+
+**Net effect on `#754`**: 2 of the 2 families Task B needs are no longer both unconfirmed —
+`3:4-LO` now stands confirmed, `5:6-LO` remains a genuine, unchanged gap. `#754` still needs
+`5:6-LO` (or a re-scope around only `3:4-LO`+`5:6-LI`) before its own Table 2/3 gate is
+fully in reach.
+
+---
+
 ## Opinion on `#754` (Task B) — not a decision
 
 `#753`'s own recommendation was to hold Task B until 3:4-LO/5:6-LO confirm or
