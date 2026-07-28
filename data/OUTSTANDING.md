@@ -215,12 +215,28 @@ unchanged. See `git log` around this date for the corrected commit.
   Galán-Vioque & Vanderbauwhede, "Elemental Periodic Orbits Associated with the Libration Points
   in the CR3BP," IJBC 17(8):2625-2677 (2007), DOI `10.1142/S0218127407018671`, identity confirmed
   page-1-exact) — full file+digest+citation-mine+index pipeline, both freely user-supplied.
-- `#745` — dispatched 2026-07-28, user-supplied PDFs: process `#730` items 12 (Anderson & Lo,
-  "Dynamical Systems Analysis of Planetary Flybys and Approach: Planar Europa Orbiter," JGCD
-  33(6):1899-, DOI `10.2514/1.45060`, identity confirmed page-1-exact against the master list row)
-  and 13 (Anderson & Lo, "A Dynamical Systems Analysis of Resonant Flybys: Ballistic Case," JAS
-  58(2):167-194 (2011), identity confirmed page-1-exact) — full file+digest+citation-mine+index
-  pipeline, both freely user-supplied (not a paywall acquisition).
+- `#745` — REMOVED from this list 2026-07-28, CLOSED: both `#730` §3 items 12/13 (Anderson & Lo
+  2010 planar Europa orbiter, JGCD 33(6):1899-1912, DOI `10.2514/1.45060`; Anderson & Lo 2011
+  resonant flybys ballistic case, JAS 58(2):167-194, DOI `10.1007/BF03321164`) filed, digested,
+  citation-mined, indexed. Key finding: post-hoc CRTBP manifold analysis of the flown 1999 Europa
+  Orbiter (5:6 resonance dynamically required as last resonance, final approach follows an L2
+  Lyapunov orbit's stable manifold) plus a from-scratch ballistic 3:4<->5:6 resonance-cycling flyby
+  construction shadowing a homoclinic/heteroclinic connection (explicit Table 2/3 connection
+  states). **New lineage cross-check**: Kumar-Anderson-de la Llave-Gunter 2021 (the seed source of
+  this project's own catalogued N=5 CRNBP torus row, `#714`-`#736`) cites both papers as its own
+  tour-endgame ancestry refs [1]/[2] and uses the same m:n/"exterior" resonant-orbit naming
+  convention — a plausible but NOT digit-for-digit-verified 2-hop lineage link, flagged as a
+  concrete future cross-check task, not yet registered as its own `#`-numbered item. Confirmed: no
+  code in `cyclerfinder` implements the classical-CR3BP resonant-orbit-manifold/homoclinic
+  machinery these two papers use (this project's Jovian-tour modules — `core/flyby.py`,
+  `search/resonant_conic.py`, `search/ieg_seed.py` — remain patched-conic/Lambert throughout; the
+  CCR4BP/CRNBP torus-manifold code targets a structurally different object class). Mass-ratio
+  cross-check: this project's own DE440-derived Jupiter-Europa µ differs from the papers' stated
+  value by ~0.034% relative — negligible GM-vintage artifact, no correction needed. Citation-mining
+  surfaced ~13 new candidates (none acquired), strongest being Anderson's own 2005 PhD dissertation
+  (root of the whole lineage) and a 2nd/3rd independent recurrence of Howell-Marchand-Lo 2001 /
+  Johannesen & D'Amario 1999. See `docs/notes/2026-07-28-745-anderson-lo-2010-2011-resonant-flyby-digest.md`.
+  Commits: `cyclers_pdf` `bd6e4b9`, public repo `f89cf84`.
 - `#747` — registered 2026-07-28: cross-check Casoliva's 6 symmetric Class-1 p-q rows against
   Franz & Russell 2022's public Zenodo periodic-orbit dataset (found by `#742`, item 44) — flagged
   as a genuine, unexecuted cross-check candidate, not yet run.
