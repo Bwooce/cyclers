@@ -208,6 +208,17 @@ unchanged. See `git log` around this date for the corrected commit.
 - `#738`/`#744` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus row
   V0->V1, user-requested; `#744`: process 14 PDFs `#743` already downloaded + apply all its DOI
   findings to the master list. See each's own bullet entry.
+- **TASK-NUMBER COLLISION NOTED 2026-07-28**: a separate concurrent session ALSO used `#744` for
+  its own, differently-scoped task — a symplectic-invariant/periapse-map paper digest (Frauenfelder/
+  Koh/Moreno 2023, Frauenfelder & Moreno 2023, Aydin & Batkhin 2025 — items 40/41/42, directly
+  overlapping this session's own `#744` scope — plus Howell/Davis/Haapala 2012, not in this
+  session's own list). Their result:
+  `docs/notes/2026-07-28-744-symplectic-invariant-periapse-maps-digest.md` (uncommitted at time of
+  discovery). Spot-checked and looks like real, correct work. Messaged this session's own `#744`
+  agent to avoid duplicating items 40/41/42 and fold in the other session's findings instead of
+  re-digesting — resolution in progress, not yet confirmed complete. If you are that other
+  session: this repo's task numbers are sequential-next-unused with no shared registry (see
+  `[[project_task_numbering_convention]]`); the next-unused number as of this note is `#745`.
 - `#743` — REMOVED from this list 2026-07-28, CLOSED: all 34 remaining §3-§7 items swept, 3 more
   wrong DOIs corrected, 14 free PDFs downloaded. See its own bullet entry.
 - `#742` — REMOVED from this list 2026-07-28, CLOSED: 4 more papers processed, all cross-checks
