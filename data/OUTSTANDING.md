@@ -34,6 +34,24 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#763` — registered 2026-07-29, ready to dispatch: fix 7 CI-only test timeouts (>600s,
+  pytest-timeout) discovered on the `#736`/`#738` push to `origin/main` (CI run `30360261381`,
+  triggered by `f5ba90b`) — `tests/search/test_crnbp_torus_ghost_guard.py::
+  test_physical_torus_reproduces_the_catalogued_provenance_numbers`,
+  `::test_radau_ghost_guard_passes_the_physical_n5_torus_with_a_comfortable_margin`,
+  `tests/search/test_variational_crnbp_torus.py` (3 tests), `tests/search/
+  test_ccr4bp_torus_umbriel_titania.py::test_continue_ccr4bp_torus_mass_reaches_physical`,
+  `tests/search/test_variational_ccr4bp_torus.py::test_continue_ccr4bp_torus_mass_reaches_physical`.
+  **Critical constraint**: the two `test_crnbp_torus_ghost_guard.py` tests are literally today's
+  own `#738` V1-promotion evidence for `europa-3-4-crnbp-torus-jupiter-2026` — per
+  `[[feedback_delegation_fresh_agent_not_fork]]`'s own established rule, do NOT mark a V-gauntlet
+  evidence test `@pytest.mark.slow` (CI would silently skip it, leaving the V1 claim
+  unverified-in-CI even though it's honestly documented locally). Investigate whether these are
+  genuinely CI-runner-slower (raise the per-test `pytest.mark.timeout(N)` override instead of
+  skipping) or whether there's a real optimization opportunity in the underlying continuation/
+  ghost-guard computation. Passed locally on this Mac every time this session; CI (Linux/GHA
+  runner) is evidently much slower for this specific numerical workload. Fix per-test, don't
+  broaden a blanket timeout config change without checking each test's own evidence status first.
 - `#762` — ✓ DONE 2026-07-28 (cyclers.space repo, commit `a3295ee`). Added `torus_homoclinic` +
   `quasi_periodic_torus` to the site's `OrbitClass` type, `ORBIT_CLASS_LABEL`/
   `ORBIT_CLASS_LONG_LABEL` (`src/lib/catalogue.ts`), the class-filter dropdown, and badge CSS
@@ -76,6 +94,20 @@ unchanged. See `git log` around this date for the corrected commit.
   validated) and ideally `#750` (confirming whether this chain's own confirmed 3:4-LO orbit is
   digit-for-digit the same seed orbit underlying this torus — if so, `#759`'s own machinery
   applies directly rather than needing porting). Do not dispatch before both are resolved.
+  **Re-reviewed 2026-07-29 (coordinating session) against `#759`'s honest-FAIL (not clean-pass)
+  outcome, as `#759` itself flagged as needed**: still well-founded, with a recalibrated likely
+  path. `#759`'s own heteroclinic connection (3:4-LO -> 5:6-LO, Anderson-Lo's specific Table-3
+  route) failed to certify — but `#754`'s SEPARATE homoclinic self-connection of 3:4-LO alone
+  (Table 2, no 5:6-LO involvement at all) was a much closer, well-corroborated near-miss
+  (`1.13e-3`, ~2 orders of magnitude tighter than Table 3's `0.123`). This project's own numerics
+  demonstrably handle connections involving 3:4-LO's own manifold well; the specific blocker
+  found is 5:6-LO's own extreme manifold sensitivity (`λ≈4445`), not a general limitation. Since
+  `#761`'s actual goal is giving the TORUS (built around 3:4-LO's own lineage, pending `#750`'s
+  confirmation) a connection — not specifically reproducing Anderson-Lo's own Table 3 — a
+  homoclinic self-connection mirroring `#754`'s Table-2 approach (giving the torus a
+  departure/return path analogous to the sibling `torus_homoclinic` Umbriel-Titania row) is the
+  more directly relevant and more tractable path, not the heteroclinic 5:6-LO route. Still HELD
+  pending `#750`.
 - `#759` — ✓ DONE 2026-07-28 (user: "dispatch 759"): built the Table-3 heteroclinic connection
   `Wu(3:4-LO) ∩ Ws(5:6-LO)` machinery (`find_heteroclinic`/`Table3GateResult`/`gate_table3` in
   `src/cyclerfinder/search/jovian_resonant_connections.py`, extending `#754`'s module; 8 new
@@ -107,7 +139,20 @@ unchanged. See `git log` around this date for the corrected commit.
   gated by the same machinery + the mandatory `literature_check.py` novelty gate). Held pending
   `#759` (Table-3 build) landing and `#750` (unrun provenance check on whether this chain's own
   3:4-LO is digit-for-digit the same family that seeds the catalogued N=5 CRNBP torus) — dispatch
-  only once the machinery itself is fully validated, not before.
+  only once the machinery itself is fully validated, not before. **Re-reviewed 2026-07-29
+  (coordinating session) against `#759`'s honest-FAIL outcome, as `#759` itself flagged**: `#759`
+  landed (the `#759` dependency is satisfied), with a mixed but real validation result — Table 1:
+  3/4 rows in hand; Table 2: honest close FAIL; Table 3: honest FAIL with the chain's single
+  strongest quantitative reproduction (`4.5e-7`) as corroboration. The machinery is validated in
+  the sense that matters (correct on well-behaved cases, honestly non-fudged on hard ones, caught
+  a real latent bug along the way) — this is READY TO DISPATCH on that front. **One generalizable
+  finding to carry into scoping any per-system task**: Newton-shooting-based connection-finding
+  broke specifically on 5:6-LO's own extreme instability (`λ≈4445`, "fractally sensitive"
+  manifold curve); any newly-discovered resonant family in a new system with comparably extreme
+  eigenvalues should expect the same tractability wall, and may need the paper's own denser
+  manifold-interpolation method rather than pure Newton shooting. Still HELD pending `#750`, and
+  pending explicit user go-ahead given this reopens capability-building at genuine multi-task
+  scale (per-system).
 - `#751` — ✓ DONE 2026-07-28 (Fable, research/scoping only, no code; dispatched same day with
   `#752`, both flagged by user question following the `#749` digest). Question: does
   Llibre-Martínez-Simó 1985's Theorem C (Bernoulli-shift symbolic-dynamics existence proof of
