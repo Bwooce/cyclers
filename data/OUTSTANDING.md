@@ -87,17 +87,40 @@ unchanged. See `git log` around this date for the corrected commit.
   `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
   targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
   self-dispatched — awaiting user authorization since it reopens capability-building.
-- `#754` — DISPATCHED 2026-07-28 (user: "go"), Table-2 half only, RE-SCOPED by `#757` (see `#757`'s
-  own bullet + full spec in
+- `#754` — Table-2 half: ✓ DONE 2026-07-28 (direct continuation of `#757`'s re-scoping), RE-SCOPED
+  by `#757` (see `#757`'s own bullet + full spec in
   `docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md`): the original single "Task B"
-  (Tables 2 AND 3 gates) is now SPLIT on what the paper actually requires. **Table-2 half —
-  dispatchable NOW**: the paper's Table 2 is a homoclinic self-connection of 3:4-LO ALONE
-  (confirmed directly against PDF pp. 190-191, not just `#745`'s digest), so with 3:4-LO
-  reviewer-confirmed it is buildable with confirmed families only; spec-complete task in the
-  `#757` note §5 (ResonantNode adapter + `x_sign` section filter + homoclinic trivial-solution
-  ghost guard + Table-2 state gate (−1.28427733, 0.0, 0.00000009, 0.46372205) at 1e-4, tolerance
-  justified by the paper's own interpolation-not-Newton intersection method; bonus: the gate
-  independently stress-tests the `#755` reviewer ruling on a third, orthogonal axis). **Table-3
+  (Tables 2 AND 3 gates) is now SPLIT on what the paper actually requires. **Table-2 half — DONE,
+  honest FAIL (close, well-corroborated)**: the paper's Table 2 is a homoclinic self-connection of
+  3:4-LO ALONE (confirmed directly against PDF pp. 190-191, not just `#745`'s digest), buildable
+  with confirmed families only. Built per the `#757` note §5 spec: `ConnectionNode` Protocol +
+  `x_sign` section filter (both in `genome/heteroclinic_cycle.py`, no behavior change to existing
+  W-Z tests) + `ResonantNode` adapter (`search/jovian_resonant_connections.py`, recomputes the
+  saddle Floquet pair on the fly from the candidate's own stored IC/period, no schema change) +
+  homoclinic ghost guard (rejects any converged crossing within `1e-3` of the orbit's own section
+  point — the true margin found is `0.145`, 145x the guard radius). A coarse scan over
+  `branch_u, branch_s ∈ {±1}`, `k_u, k_s ∈ 1..6` found exactly ONE genuine converged homoclinic
+  self-intersection: `branch_u=+1, branch_s=-1, k_u=3, k_s=3`, Newton residual `2.6e-9`,
+  independently Radau-cross-checked to `6.8e-8` (this also found and fixed a real, previously-
+  latent bug: `crosscheck_cycle` hardcoded `epsilon=1e-6` regardless of the connection's own
+  epsilon, which silently broke the cross-check — reported `inf` — for Anderson & Lo's own
+  `0.5e-5` offset). **Gate result: FAILS on `x`** (recovered `-1.28540962` vs Table 2's
+  `-1.28427733`, abs err `1.13e-3`, gate tolerance `1e-4` — misses by ~11x) **but `xdot` passes**
+  (recovered `2.86e-9` vs `0.00000009`, err `8.7e-8`, well inside tolerance); forward/backward
+  propagation from the intersection re-approaches the 3:4-LO orbit to `<3e-5`/`<8e-6` nondim,
+  matching the paper's own Fig. 25 qualitative behavior. Reported honestly as a genuine, non-fudged
+  FAIL — not loosened — but a THIRD independent piece of corroborating evidence (orthogonal to
+  `#755`'s eigenvalue + shape/close-approach evidence) that our `3:4-LO` is the paper's own family;
+  the `x` gap is plausibly explained by the same unresolved ~2%-period-offset question `#755`'s
+  reviewer ruling already navigated (a `λ≈1036` family's manifold trajectories diverge exponentially
+  over the few-period integration horizon, so a small timing/phase difference is fully sufficient to
+  shift the self-intersection location this much without implying a different family). Code:
+  `src/cyclerfinder/genome/heteroclinic_cycle.py` (extended) +
+  `src/cyclerfinder/search/jovian_resonant_connections.py` (new) +
+  `tests/search/test_jovian_resonant_connections.py` (11 new tests, all passing, Table-2 gate
+  evidence test deliberately NOT `@pytest.mark.slow`); `ruff` clean, full-project `mypy src tests`
+  clean. Results note:
+  `docs/notes/2026-07-28-754-jupiter-europa-3-4-lo-homoclinic-table2-gate.md`. **Table-3
   half — status changed by `#758` (2026-07-28, DONE, see its own bullet below): NOT a clean
   negative anymore.** The paper's Table 3 heteroclinic is Wu(3:4-LO)∩Ws(**5:6-LO**) specifically
   (footnote 4 p. 184: "The 3:4-LO and 5:6-LO resonant orbits will be referred to as the 3:4 and
@@ -114,11 +137,12 @@ unchanged. See `git log` around this date for the corrected commit.
   (if anything more decisive than 3:4-LO's own case: an actual reproduced published number, not
   just shape/mechanism corroboration). **BOTH required families are now in hand — the Table-3
   half is buildable at its ORIGINAL scope**, seeded from `recover_758_table2_seeded_candidate()`,
-  using the same `ResonantNode`/section-crossing machinery the Table-2 half is building, gated on
-  Table 3's own reported state (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`).
-  `#751`'s deferred Lyapunov homoclinic-connection-finder
-  primitive still folds into the Table-2 half's homoclinic mode. Awaiting user authorization to
-  dispatch the re-scoped Table-2 build. Prior history: user chose "Task A only for now"
+  using the same `ResonantNode`/section-crossing machinery the Table-2 half already built (see
+  above), gated on Table 3's own reported state
+  (`x=-1.43029175, y=0.0, ẋ=0.00018678, ẏ=0.67262261`, per `#757`). Not yet dispatched as its own
+  task — awaiting user go-ahead. `#751`'s deferred Lyapunov homoclinic-connection-finder
+  primitive still folds into the Table-2 half's homoclinic mode (done, see above). Prior history:
+  user chose "Task A only for now"
   (2026-07-28) — `#753` reported (2026-07-28, DONE, PARTIAL: 1/4 Table-1
   families confirmed, 3/4 not), and `#755` (2026-07-28, DONE, direct continuation of `#753`)
   followed up with a targeted further search on the two families Task B's own gate needs (3:4-LO,
