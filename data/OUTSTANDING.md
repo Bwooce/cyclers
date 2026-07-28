@@ -386,14 +386,37 @@ unchanged. See `git log` around this date for the corrected commit.
   reports `passed=False`; this is a qualitative judgment layered on top, documented in this note's
   own "Reviewer verdict" section. **Net effect on `#754`: BOTH required families (3:4-LO, 5:6-LO)
   are now confirmed — the Table-3 heteroclinic gate is buildable at its ORIGINAL scope.**
-- `#750` — DISPATCHED 2026-07-29 (user: "fire"): verify digit-for-digit whether the
-  Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
-  catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
-  actually reuses any specific numeric result (not just cites as lineage) from Anderson & Lo 2010/
-  2011 (`#745`, `#730` items 12/13). `#745`'s own digest found both papers cited as refs [1]/[2]
-  with matching m:n/"exterior" resonant-orbit naming convention, but flagged this as a plausible,
-  not confirmed, two-hop link. Low urgency (provenance completeness, not blocking); dispatch when
-  convenient, not proactively fired given the current in-flight count.
+- `#750` ✓ DONE (2026-07-29) — verified digit-for-digit whether Kumar/Anderson/de la Llave/Gunter
+  2021 (AAS 21-651)'s own Jupiter-Europa 3:4 seed orbit is the SAME specific orbit as this
+  session's own `#753`→`#755`-confirmed 3:4-LO (reproducing Anderson & Lo 2011's Table 1
+  eigenvalue). Read Kumar 2021 directly (pdftotext + page-image check of Table 1): the paper's
+  ENTIRE numeric specification of its seed is "Jacobi constant value 3.0041 and ω = 3.097849
+  (arbitrarily chosen)" (p.8) plus a closest-Europa-approach of 22,052→18,721 km — no IC table
+  anywhere in the paper, confirming (independently, not just inheriting)
+  `variational_ccr4bp_torus.py`'s own prior "paper publishes no ICs" claim. **VERDICT: NOT the
+  same specific orbit** (Kumar's own C=3.0041 / ~19-22k km Europa approach vs. Anderson-Lo's
+  confirmed 3:4-LO C=2.99163956830415 / ~1,657 km approach — over an order of magnitude apart on
+  the approach distance, and Kumar's own text calls its choice "arbitrary," not a reproduction of
+  any prior orbit); **whether they are the same underlying CONTINUOUS family (same p:q=3:4
+  branch, different energy sample) is INDETERMINATE** — plausible (identical, bit-exact mass
+  ratio confirmed between the two papers; same "exterior"/Anderson-Lo's "Outer"-region branch;
+  the known fractal-sensitivity of this exact energy region could explain the gap) but not
+  demonstrated by any continuation run so far, including a brief attempt this task made that hit
+  the same branch-jump fragility `#753`'s own module docstring already documents. **Also found:
+  this project's own catalogued-torus seed (`#690`/`#724`) is a THIRD, still more distant point**
+  (closest Europa approach ~409,500 km, re-derived this task) — built as a theoretical
+  two-body-limit proxy for the object class, matching neither paper's specific orbit. **Bonus
+  finding:** Kumar 2021 uses the bit-identical Jupiter-Europa μ as Anderson & Lo 2011
+  (2.5266448850435e-5, confirmed via Kumar's own Table 1 arithmetic) — no mass-ratio-vintage gap
+  between the two PAPERS; the previously-documented ~0.02-0.05% gap is only between this
+  project's DE440 value and the papers' shared value. Also flagged (not load-bearing): Kumar
+  2021's Table 1 appears to have its Europa/Ganymede `Gm_i` row labels transposed relative to the
+  bodies' real masses. Full writeup:
+  `docs/notes/2026-07-29-750-kumar2021-anderson-lo-provenance-verification.md`. **Practical
+  consequence for `#761`** (not decided here): `#754`/`#759`'s 3:4-LO-specific connection
+  machinery targets an extreme close-flyby member of this resonance class that the catalogued
+  torus's own gentle, distant seed is not verified to share a branch with — porting it over would
+  need a dedicated continuation study, not just this provenance check.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
