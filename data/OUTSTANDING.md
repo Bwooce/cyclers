@@ -205,11 +205,14 @@ unchanged. See `git log` around this date for the corrected commit.
   ResearchGate, or check existing institutional access. Not auto-fired further.
 
 ### In progress
-- `#738`/`#739`/`#740`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the
-  N=5 torus row V0->V1, user-requested; `#739`: cheap GMOS-vs-PDE torus-corrector comparison on
-  stable parent orbits; `#740`: investigate the `#347`-lineage branch-selection nondeterminism
-  `#736`'s own review found; `#741`: process 3 user-supplied `#730` backlog papers + correct 2
-  real DOI errors found in the master list. See each's own bullet entry.
+- `#738`/`#740`/`#741` — dispatched 2026-07-28. `#738`: Radau re-closure to upgrade the N=5 torus
+  row V0->V1, user-requested; `#740`: investigate the `#347`-lineage branch-selection
+  nondeterminism `#736`'s own review found; `#741`: process 5 user-supplied `#730` backlog papers
+  + correct 2 real DOI errors found in the master list. See each's own bullet entry.
+- `#739` — REMOVED from this list 2026-07-28, CLOSED: found the "stable" test case wasn't
+  actually stable, and that GMOS isn't clearly faster/more accurate in this codebase (traced to a
+  real implementation-maturity gap, not necessarily an intrinsic per-method result). See its own
+  bullet entry.
 - `#736` — REMOVED from this list 2026-07-28, CLOSED: schema v5.4 + catalogue
   writeback landed — the catalogue's THIRD genuinely novel finding. Original implementing agent
   stalled silently; coordinating session independently verified and completed the commit itself
@@ -15704,17 +15707,30 @@ three have since closed (#315 via #494, #316 via #622 on 2026-07-17, #317 scoped
   this actually running and passing. If it does NOT pass cleanly, do not force it — an honest
   V0-stays-V0 outcome (or a properly diagnosed and fixed bug, `#702`-style) are both fully
   legitimate results.
-- **#739 (dispatched 2026-07-28) -- cheap GMOS-vs-PDE torus-corrector comparison on stable parent
-  orbits.** Found by `#732`'s own cross-check 3: Baresi/Olikara/Scheeres 2018 found their preferred
-  GMOS (stroboscopic-map shooting) method faster + more accurate + gives free Floquet stability
-  compared to this project's own PDE(DFT) corrector (`variational_qp_torus.py`/
-  `variational_crnbp_torus.py`) — but their own comparison never tested UNSTABLE parent orbits, the
-  exact regime (the ~1540x monodromy-amplification wall, per `#612`'s own precedent) this
-  project's PDE corrector was specifically built to escape. On STABLE parent orbits (where GMOS
-  already converges cleanly, no wall to escape), their finding may still argue for preferring GMOS
-  — build a small, targeted comparison on a stable case both methods can already handle, and
-  report whether GMOS is genuinely faster/more accurate here too, as a real (not assumed) finding.
-  Low priority / low risk — a methodology-hygiene check, not blocking anything.
+- **#739 ✓ DONE (2026-07-28) -- cheap GMOS-vs-PDE torus-corrector comparison, found the "stable"
+  case wasn't actually stable.** **Premise correction**: the test case reused (`test_l2_positive_
+  control_reproduces_gmos_torus`, EM L2 halo C=3.15) was assumed stable but its monodromy spectral
+  radius is actually **1161** (violently unstable, comparable to the L1 wall's own 1540) — this
+  project's test suite currently has NO genuinely Floquet-stable torus case at all, so the original
+  "stable-case" framing was imprecise. **Measured (8-core Mac)**: GMOS alone 95.17s
+  (converged=False, invariance residual 5.53e-5); PDE stage alone 121.11s (bootstrapped from the
+  GMOS result — PDE cannot run independently in this codebase; converged=False, residual_rms
+  3.59e-6, closure_residual 8.31e-7); full pipeline 216.28s; rotation number agreed exactly
+  (0.021400 both) confirming both methods reproduce the same torus. **Finding: Baresi/Olikara/
+  Scheeres's own "GMOS is faster and more accurate" does NOT clearly hold in this codebase** — PDE
+  was not slower and was 1-2 orders of magnitude more accurate on independent closure. Root cause
+  (checked in source, not speculated): this codebase's GMOS calls `scipy.optimize.least_squares`
+  WITHOUT an analytic Jacobian (defaults to finite differences), while the PDE corrector has a
+  hand-derived analytic Jacobian verified against finite differences in its own unit test — an
+  implementation-maturity asymmetry, not necessarily an intrinsic per-method result. Floquet
+  stability "for free" confirmed NOT available from this codebase's GMOS (it implements the
+  2010/2012 shooting scheme, not the 2016-thesis collocation variant that provides that byproduct
+  — matches `#734`'s own recent citation-accuracy fix). No catalogue or corrector-usage changes —
+  purely informational. No permanent regression test added (judgment call — timing assertions are
+  exactly what this file's own CI-flake history, `#631`/`#632`/`#737`, warns against; neither
+  corrector fully converged at these parameters so the residual numbers are platform/BLAS-
+  sensitive). Digest: `docs/notes/2026-07-28-739-gmos-vs-pde-torus-corrector-comparison.md`.
+  Commit `ff22557`.
 - **#740 (dispatched 2026-07-28) -- investigate the `#347`-lineage branch-selection
   nondeterminism found via `#736`'s own review.** `data/floquet_phase1_reproduction.jsonl`
   (last legitimately updated by `#347` Phase 1.5) was found REWRITTEN to a DIFFERENT bifurcation
