@@ -87,7 +87,8 @@ unchanged. See `git log` around this date for the corrected commit.
   `#751`'s deferred shared primitive (Lyapunov homoclinic-connection finder, Casoliva Tables 4-6
   targets) folds into Task B's homoclinic mode per `#751`'s own contingency. Neither task
   self-dispatched — awaiting user authorization since it reopens capability-building.
-- `#754` — RE-SCOPED by `#757` (2026-07-28, see `#757`'s own bullet + full spec in
+- `#754` — DISPATCHED 2026-07-28 (user: "go"), Table-2 half only, RE-SCOPED by `#757` (see `#757`'s
+  own bullet + full spec in
   `docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md`): the original single "Task B"
   (Tables 2 AND 3 gates) is now SPLIT on what the paper actually requires. **Table-2 half —
   dispatchable NOW**: the paper's Table 2 is a homoclinic self-connection of 3:4-LO ALONE
@@ -139,7 +140,7 @@ unchanged. See `git log` around this date for the corrected commit.
   completing the multi-patchpoint flyby-vector-rotation refinement `#755` started), not more
   grid+bisection at `C_flyby` directly, which three tasks have now applied at length. See
   `#753`'s, `#755`'s, and `#756`'s own bullets + results notes for full reasoning.
-- `#758` — registered 2026-07-28 by `#757` (not dispatched, awaiting user authorization): 5:6-LO
+- `#758` — DISPATCHED 2026-07-28 (user: "go"), registered by `#757`: 5:6-LO
   recovery from a NEW digit-grade sourced seed that `#757`'s direct paper read surfaced — Table 2's
   homoclinic intersection state (x=−1.28427733, ẋ=0.00000009, ẏ=+0.46372205) lies "almost exactly
   at the location of the 5:6 orbit" with Δx ≈ 8.0e-5 (p. 184 + p. 190), pinning the 5:6-LO orbit's
