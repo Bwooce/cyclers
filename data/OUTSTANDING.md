@@ -34,6 +34,14 @@ cited as evidence) was checked and found to be a real commit in a different repo
 unchanged. See `git log` around this date for the corrected commit.
 
 ### Ready to dispatch — no blocker
+- `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
+  Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
+  catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
+  actually reuses any specific numeric result (not just cites as lineage) from Anderson & Lo 2010/
+  2011 (`#745`, `#730` items 12/13). `#745`'s own digest found both papers cited as refs [1]/[2]
+  with matching m:n/"exterior" resonant-orbit naming convention, but flagged this as a plausible,
+  not confirmed, two-hop link. Low urgency (provenance completeness, not blocking); dispatch when
+  convenient, not proactively fired given the current in-flight count.
 - `#714`'s gated shortlist item 3 (does `#694`'s homoclinic connection survive Io's forcing) — now
   substantially PRE-EMPTED by the ISSFD 2024 TCP transfer work `#722` acquired; do not dispatch
   without first reading `#722`'s own digest of that paper. Not yet registered.
