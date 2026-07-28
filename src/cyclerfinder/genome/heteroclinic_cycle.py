@@ -290,6 +290,14 @@ class HeteroclinicConnection:
     ydot_sign_s: int | None = None
     x_sign_u: int | None = None
     x_sign_s: int | None = None
+    # Manifold offset magnitude used to find this connection (persisted for the same
+    # reason as the section filters above -- crosscheck_cycle previously hardcoded
+    # epsilon=1e-6 regardless of what the connection was actually found with, which is
+    # silently WRONG whenever a caller passes a different epsilon (e.g. Anderson & Lo
+    # 2011's own 0.5e-5): the re-seeded manifold can miss the k-th qualifying crossing
+    # entirely within the same max_time, reporting a spurious independent_residual=inf
+    # instead of the true cross-check agreement. Found and fixed via #754.
+    epsilon: float = 1e-6
 
 
 def _connection_residual(
@@ -504,6 +512,7 @@ def correct_connection(
                 ydot_sign_s=ydot_sign_s,
                 x_sign_u=x_sign_u,
                 x_sign_s=x_sign_s,
+                epsilon=epsilon,
             )
         rn = float(np.linalg.norm(res))
         if rn < tol:
@@ -536,6 +545,7 @@ def correct_connection(
                 ydot_sign_s=ydot_sign_s,
                 x_sign_u=x_sign_u,
                 x_sign_s=x_sign_s,
+                epsilon=epsilon,
             )
         try:
             step = np.linalg.solve(jac, -res)
@@ -575,6 +585,7 @@ def correct_connection(
         ydot_sign_s=ydot_sign_s,
         x_sign_u=x_sign_u,
         x_sign_s=x_sign_s,
+        epsilon=epsilon,
     )
 
 
@@ -667,9 +678,11 @@ def crosscheck_cycle(
     Returns a copy of ``cycle`` with ``independent_residual`` set to the maximum
     section-point disagreement between the corrector's stored crossing (DOP853) and
     a fresh ``method`` (default Radau) re-propagation at the SAME (tau_u, tau_s, k,
-    branch). A leg that fails to reproduce its crossing contributes ``inf`` (a real
-    failure, surfaced — never silently dropped). Mandatory before a "closed" claim
-    is trusted (orbit-closure-discipline: independent cross-check).
+    branch, epsilon, ydot_sign, x_sign -- all read back from the stored
+    ``HeteroclinicConnection``, not re-guessed). A leg that fails to reproduce its
+    crossing contributes ``inf`` (a real failure, surfaced — never silently
+    dropped). Mandatory before a "closed" claim is trusted (orbit-closure-
+    discipline: independent cross-check).
     """
     label_to_node = {nd.label: nd for nd in nodes}
     worst = 0.0
@@ -681,10 +694,20 @@ def crosscheck_cycle(
         b = label_to_node[conn.orbit_to]
         max_time = max_time_factor * max(a.period, b.period)
         seed_u = _seed_on_manifold(
-            system, a, tau=conn.tau_u, direction="unstable", branch=conn.branch_u, epsilon=1e-6
+            system,
+            a,
+            tau=conn.tau_u,
+            direction="unstable",
+            branch=conn.branch_u,
+            epsilon=conn.epsilon,
         )
         seed_s = _seed_on_manifold(
-            system, b, tau=conn.tau_s, direction="stable", branch=conn.branch_s, epsilon=1e-6
+            system,
+            b,
+            tau=conn.tau_s,
+            direction="stable",
+            branch=conn.branch_s,
+            epsilon=conn.epsilon,
         )
         p_u = _section_crossing(
             system,
