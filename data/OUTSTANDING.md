@@ -208,6 +208,13 @@ unchanged. See `git log` around this date for the corrected commit.
 - `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
   V0->V1, user-requested. Background agent `a11d61508dddf2269` confirmed still running (tests/data
   ratchet suite) as of last check; do not duplicate-dispatch, poll/wait for its own report.
+- `#749` — dispatched 2026-07-28, user-supplied PDFs: process `#730` items 28 (Llibre, Martínez &
+  Simó, "Transversality of the invariant manifolds associated to the Lyapunov family of periodic
+  orbits near L2 in the RTBP," J. Diff. Eq. 58:104-156 (1985), DOI `10.1016/0022-0396(85)90024-5`,
+  identity confirmed page-1-exact) and 43 (Doedel, Romanov, Paffenroth, Keller, Dichmann,
+  Galán-Vioque & Vanderbauwhede, "Elemental Periodic Orbits Associated with the Libration Points
+  in the CR3BP," IJBC 17(8):2625-2677 (2007), DOI `10.1142/S0218127407018671`, identity confirmed
+  page-1-exact) — full file+digest+citation-mine+index pipeline, both freely user-supplied.
 - `#745` — dispatched 2026-07-28, user-supplied PDFs: process `#730` items 12 (Anderson & Lo,
   "Dynamical Systems Analysis of Planetary Flybys and Approach: Planar Europa Orbiter," JGCD
   33(6):1899-, DOI `10.2514/1.45060`, identity confirmed page-1-exact against the master list row)
