@@ -145,6 +145,66 @@ than just the mandatory dual quantitative gate. See
 ``docs/notes/2026-07-28-756-jupiter-europa-5-6-lo-relaxed-period-search.md``
 for the full search log.
 
+#758 UPDATE (2026-07-28, direct continuation of #756/#757): #757's own
+re-scoping pass read the paper's Table 2 (p.190, "Homoclinic Trajectory
+State at Intersection" -- the Wu(3:4-LO) intersect Ws(3:4-LO) point at
+C_flyby) together with its own prose (pp.184/190: "the stable and unstable
+manifolds of the 3:4 orbit intersect almost exactly at the location of the
+5:6 orbit with a difference in x position from the 5:6 orbit of
+approximately 8.0 x 10^-5") and derived a genuinely NEW, sourced 5:6-LO
+seed window -- :data:`TABLE2_HOMOCLINIC_X` +- ~1e-4, NOT the x0~-1.42
+"fractal hotspot" three prior tasks (#753/#755/#756) had all worked. This
+task ran that seed directly (:func:`converge_candidate` at
+``x0=-1.28420033``, ``ydot0_sign=+1``, ``half_crossings=2``) and FOUND A
+STRONG CANDIDATE:
+
+* Eigenvalue: recovered 4445.389044 vs target 4445.387515 -- rel_err
+  3.4e-7, cross-checked between :func:`~cyclerfinder.search.cr3bp_periodic.barden_stability`
+  and :func:`~cyclerfinder.search.resonance_network._planar_floquet` to
+  3.0e-7 relative. Six orders of magnitude tighter than the PREVIOUS best
+  5:6-LO candidate (#753's original seed, 1.98% rel_err) -- see
+  :data:`_758_TABLE2_SEEDED_CANDIDATE_SEED`.
+* The recovered ``x0`` sits ``7.7e-5`` from :data:`TABLE2_HOMOCLINIC_X` --
+  matching the paper's OWN stated ``~8.0e-5`` offset to ~4% relative. This
+  is independent, paper-sourced numeric corroboration beyond the eigenvalue
+  match alone (not a shape/mechanism inference like 3:4-LO's Fig-16(a)
+  check -- an actual published number this task's finding reproduces).
+* Europa closest approach (:func:`europa_closest_approach`): 668 km --
+  CLOSER than the confirmed 3:4-LO orbit's own 1641 km, strongly matching
+  the paper's attributed close-flyby instability mechanism (p.177-178).
+* Basin robustness: 32 of 41 evenly-spaced seeds across the full
+  ``TABLE2_HOMOCLINIC_X +- 2e-4`` window converge Newton-directly to this
+  EXACT point (to >10 digits) -- not an isolated numerical fluke. (Also
+  reproduces #756's own documented tooling nuance: :func:`survey_candidates`'
+  own bracket/sign-flip scan does NOT detect this root at coarse grid
+  resolution here either -- direct Newton convergence from a nearby guess
+  is what finds it, exactly as #756 found for the pre-existing 5:6-LO seed.)
+* Independent Radau cross-check (:func:`~cyclerfinder.search.cr3bp_periodic.crosscheck_periodic`):
+  closure and Jacobi-conservation both pass at the 1e-13 level -- a
+  genuinely well-converged, independently-verified periodic orbit.
+* What does NOT confirm (same pattern as 3:4-LO, #755's own reviewer
+  precedent): ``period_over_2pi = 6.169686``, a real, tightly-converged
+  ~2.83% offset from the naive ``q=6`` value -- fails
+  :data:`TABLE1_PERIOD_REL_TOL`. Per the paper's own Eq. 6 text ("a precise
+  relationship does not exist" for strongly unstable CR3BP resonances), and
+  the #755 reviewer ruling's reasoning for 3:4-LO's own comparable period
+  offset, this is NOT treated as disqualifying, but this module does not
+  unilaterally flip the strict dual-criterion gate (:data:`GateRow.passed`
+  stays honestly ``False`` for this row, exactly mirroring how 3:4-LO is
+  reported) -- see the #758 results note for the full evidentiary writeup
+  and the explicit "candidate found, reviewer judgment invited" framing.
+:data:`_TABLE1_CANDIDATE_SEEDS["5:6-LO"]` is updated to this new seed (the
+strictly-superior candidate on every corroborating axis); the OLD #753
+seed (``x0=0.81360506``, rel_err=1.98%, no close Europa approach, no
+matching Table-2 offset) is superseded and its provenance is preserved only
+in this docstring and the #753/#755/#756 results notes, per this project's
+negative-results-registry discipline (the old value is no longer live code
+but its search history remains documented and reproducible from those
+notes). See
+``docs/notes/2026-07-28-758-jupiter-europa-5-6-lo-table2-seeded-search.md``
+for the full search log, basin-robustness data, and reviewer-facing
+evidence summary.
+
 Pure: math/numpy/scipy + :mod:`cyclerfinder.core.cr3bp`,
 :mod:`cyclerfinder.search.cr3bp_periodic`,
 :mod:`cyclerfinder.search.cr3bp_continuation`,
@@ -221,6 +281,25 @@ _LABEL_Q: dict[str, int] = {
 #: note for the full reasoning on whether 1e-2 is the RIGHT line to draw
 #: here (a real open question this module does not resolve unilaterally).
 TABLE1_PERIOD_REL_TOL = 1e-2
+
+#: Table 2 (p.190), "Homoclinic Trajectory State at Intersection" -- the
+#: Wu(3:4-LO) intersect Ws(3:4-LO) crossing point at C_flyby, verbatim
+#: (``y = 0`` by construction of the section). Verified directly against
+#: both the PDF text layer (line 1565 of the extracted text) and the
+#: rendered page image this task (#758) -- see
+#: ``docs/notes/2026-07-28-757-task-b-rescoping-confirmed-families.md`` and
+#: the #758 results note.
+TABLE2_HOMOCLINIC_X = -1.28427733
+TABLE2_HOMOCLINIC_XDOT = 0.00000009
+TABLE2_HOMOCLINIC_YDOT = 0.46372205
+
+#: The paper's own stated x-offset (pp.184/190, verbatim: "a difference in x
+#: position from the 5:6 orbit of approximately 8.0 x 10^-5") between Table
+#: 2's homoclinic intersection and the 5:6 (footnote 4: 5:6-LO) orbit's own
+#: section point. #758's recovered candidate reproduces this to ~4%
+#: relative (7.7e-5 found vs 8.0e-5 stated) -- independent, paper-sourced
+#: numeric corroboration of the family identification.
+TABLE2_5_6_LO_X_OFFSET_SOURCED = 8.0e-5
 
 #: Jupiter-Europa characteristic length (Europa's own SMA about Jupiter,
 #: ``core.satellites`` registry, JPL SSD) -- used ONLY for period-in-days
@@ -722,6 +801,54 @@ def survey_candidates(
     return out
 
 
+def basin_robustness_scan(
+    system: cr3bp.CR3BPSystem,
+    *,
+    x0_lo: float,
+    x0_hi: float,
+    n_seeds: int,
+    jacobi: float,
+    ydot0_sign: float,
+    half_crossings: int,
+    period_guess: float,
+    tol: float = 1e-11,
+) -> list[tuple[float, ResonantFamilyCandidate | None]]:
+    """Direct (non-bracket) Newton convergence from ``n_seeds`` evenly-spaced
+    ``x0`` guesses across ``[x0_lo, x0_hi]`` -- tests whether a candidate sits
+    in a robust, dominant basin rather than being an isolated numerical
+    fluke.
+
+    This is a DIFFERENT search strategy from :func:`survey_candidates`'s own
+    bracket/sign-flip scan of the crossing-miss function ``g(x0) = xdot``:
+    #756 already documented (candidates.jsonl search log) that the scan tool
+    can fail to detect a genuine root when ``g`` does not cleanly sign-flip
+    across it at the sampled grid resolution (a real tooling nuance, not a
+    data error -- direct Newton convergence from a nearby guess is the
+    ground truth). #758 hit the identical nuance for its own new candidate
+    (see the module docstring's #758 update) -- this function is the
+    general, reusable tool for the "does it converge from lots of nearby
+    guesses" robustness check, rather than one-off inline code.
+
+    Returns a list of ``(seed_x0, candidate_or_None)`` pairs, one per
+    sampled seed, in seed order.
+    """
+    xs = np.linspace(x0_lo, x0_hi, n_seeds)
+    out: list[tuple[float, ResonantFamilyCandidate | None]] = []
+    for x0 in xs:
+        cand = converge_candidate(
+            system,
+            "basin_scan",
+            float(x0),
+            jacobi,
+            period_guess,
+            ydot0_sign=ydot0_sign,
+            half_crossings=half_crossings,
+            tol=tol,
+        )
+        out.append((float(x0), cand))
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Empirically-located Table 1 candidate seeds (mirrors resonance_network.py's
 # _RESONANT_SEEDS pattern: found via survey_candidates() + natural-parameter
@@ -749,6 +876,40 @@ _TABLE1_CANDIDATE_SEEDS: dict[str, tuple[float, float, int | None, float]] = {
     # continuation callers get a stable, reproducible crossing index rather
     # than re-deriving it from a DIFFERENT period_guess at each C step.
     "5:6-LI": (-0.374722, 1.0, 52, 37.6990),
+    # #758: EIGENVALUE MATCH extremely tight (recovered 4445.389044 vs target
+    # 4445.387515, rel_err=3.4e-7 -- FAR inside the 1e-3 gate, cross-checked
+    # between barden_stability and _planar_floquet to 3.0e-7 relative) --
+    # SUPERSEDES the #753 original seed (x0=0.81360506, rel_err=1.98%, no
+    # close Europa approach, no Table-2 offset match; see the #753/#755/#756
+    # results notes for that seed's own history, preserved there since it is
+    # no longer live code). Located via a genuinely NEW, sourced strategy
+    # (#757/#758): Table 2's own homoclinic-intersection state (p.190,
+    # TABLE2_HOMOCLINIC_X=-1.28427733) plus the paper's own stated ~8.0e-5
+    # x-offset to the 5:6 orbit's own section point (p.184/190) pins a
+    # narrow, previously-unexplored seed window; direct Newton convergence
+    # at x0=-1.28420033 (NOT the x0~-1.42 "fractal hotspot" three prior
+    # tasks worked) finds this candidate immediately and robustly (32/41
+    # seeds across the full +-2e-4 window converge to this exact point --
+    # see basin_robustness_scan). Independently corroborated on THREE axes
+    # beyond the eigenvalue match: (1) recovered x0 sits 7.7e-5 from
+    # TABLE2_HOMOCLINIC_X, matching the paper's own stated ~8.0e-5 offset to
+    # ~4% relative -- an actual published NUMBER this candidate reproduces,
+    # not just a qualitative shape/mechanism inference; (2) Europa closest
+    # approach is 668 km, CLOSER than the confirmed 3:4-LO orbit's own 1641
+    # km (the paper's attributed close-flyby instability mechanism, p.
+    # 177-178); (3) independent Radau cross-check (crosscheck_periodic)
+    # passes closure and Jacobi-conservation at the 1e-13 level. What does
+    # NOT confirm: period_over_2pi=6.169686, a real ~2.83% offset from the
+    # clean q=6 multiple (fails TABLE1_PERIOD_REL_TOL) -- the SAME pattern
+    # the #755 reviewer ruling already accepted for 3:4-LO's comparable
+    # (2.1%) period offset, on the grounds that the paper's own Eq. 6 text
+    # says a precise 2*pi*q period is not expected for strongly unstable
+    # (far from the two-body integrable limit) families. This module keeps
+    # the strict dual-criterion gate as-is (does NOT report this row as
+    # "passed") pending a human reviewer's judgment call -- see the #758
+    # results note for the full evidentiary writeup and "candidate found,
+    # reviewer judgment invited" framing.
+    "5:6-LO": (-1.28420033, 1.0, 2, 40.0),
     # #755: EIGENVALUE MATCH essentially exact (recovered 1036.116117 vs
     # target 1036.116088, rel_err ~2.8e-8 -- FAR inside the 1e-3 gate, and
     # agreeing between barden_stability and _planar_floquet to <1e-7
@@ -776,25 +937,18 @@ _TABLE1_CANDIDATE_SEEDS: dict[str, tuple[float, float, int | None, float]] = {
     # criterion gate (does NOT report this row as "passed") pending that
     # question being resolved by a human reviewer.
     "3:4-LO": (-1.430408, 1.0, 6, 25.6725),
-    # NOT CONFIRMED (best candidates found; see results note). Both periods
-    # (period/2pi = 16.11 and 10.80) do NOT confirm 3:4 or 5:6 lineage (not
-    # a clean multiple of 2*pi*q for q in {4, 6}) -- these are honestly
-    # reported as unconfirmed near-misses in eigenvalue magnitude only, not
-    # verified family reproductions. Kept here (rather than discarded) so
-    # the gate report can show the closest approach found per row.
-    #
-    # #755 STILL NOT CONFIRMED despite extensive further targeted search
-    # (unlike 3:4-LO above): wide scans (x0 in [-1.6,-0.85], half_crossings
-    # 1-25, both signs) and repeated fine-grid refinements (n_grid up to
-    # 4000) around the same x0~-1.42 "fractal hotspot" that yielded 3:4-LO's
-    # match found many candidates with huge, wildly x0-sensitive
-    # eigenvalues (10^2 to 10^6) but NONE within an order of magnitude of
-    # the target 4445.387515 while ALSO having period/2pi anywhere near 6 --
-    # the closest simultaneous approach was x0=-1.4245, lam=982457 (223x too
-    # big) at period/2pi=6.25. Genuinely different outcome from 3:4-LO, not
-    # a symmetric near-miss -- see the #755 results note for the full search
-    # log. Kept as the best pre-#755 candidate (unchanged from #753).
-    "5:6-LO": (0.81360506, 1.0, 2, 101.2145),
+    # NOT CONFIRMED (best candidate found; see results notes). period/2pi =
+    # 10.80 does NOT confirm 3:4 or 5:6 lineage (not a clean multiple of
+    # 2*pi*q for any plausible q) -- honestly reported as an unconfirmed
+    # near-miss in eigenvalue magnitude only, not a verified family
+    # reproduction. #753's original wide search also found a 5:6-LO
+    # candidate this weak (x0=0.81360506, rel_err=1.98%, no close Europa
+    # approach) -- SUPERSEDED by the #758 candidate above once a genuinely
+    # better, independently-corroborated seed was found via the Table-2
+    # strategy; that old value is preserved only in the #753/#755/#756
+    # results notes, not in this table, per this project's
+    # negative-results-registry discipline (search history stays
+    # documented even after a table entry is superseded).
     "5:6-NO": (1.4975176, -1.0, 4, 100.7808),
 }
 
@@ -864,12 +1018,17 @@ def europa_closest_approach(
 # ANDERSON_LO_C_FLYBY, ranked PURELY by |lambda - 4445.387515| with NO
 # period-proximity filtering applied during the search itself (unlike
 # #755's own 5:6-LO search, which implicitly favored period_over_2pi near
-# 6 while scanning -- see the #755 reviewer verdict). None of these beats
-# the pre-existing #753 candidate (_TABLE1_CANDIDATE_SEEDS["5:6-LO"],
-# rel_err=1.98%) on eigenvalue, and none has a period anywhere near the
-# clean q=6 multiple OR a close Europa approach (see
+# 6 while scanning -- see the #755 reviewer verdict). At the time this
+# search ran, none of these beat #753's ORIGINAL 5:6-LO candidate
+# (x0=0.81360506, rel_err=1.98%, since SUPERSEDED in
+# _TABLE1_CANDIDATE_SEEDS by #758's dramatically better Table-2-seeded
+# find, rel_err=3.4e-7) on eigenvalue, and none has a period anywhere near
+# the clean q=6 multiple OR a close Europa approach (see
 # test_756_relaxed_search_near_misses_do_not_confirm) -- kept here as a
-# standing, honestly-negative regression, not a claimed improvement.
+# standing, honestly-negative regression, not a claimed improvement. The
+# comparison baseline (1.98%) is hardcoded in the test suite rather than
+# re-derived from ``recover_table1_candidate("5:6-LO")``, since that now
+# returns the #758 candidate, not the historical #753 one.
 #
 # Each tuple is (x0_guess, ydot0_sign, half_crossings, period_guess).
 # ---------------------------------------------------------------------------
@@ -921,6 +1080,54 @@ def recover_756_near_miss(
     )
     if cand is None:
         raise ValueError(f"hardcoded #756 near-miss seed for {label!r} failed to converge")
+    return cand
+
+
+# ---------------------------------------------------------------------------
+# #758: Table-2-seeded 5:6-LO candidate -- a genuinely new, sourced seed
+# strategy (see the module docstring's #758 update for the full evidence:
+# eigenvalue rel_err 3.4e-7, x0 offset from TABLE2_HOMOCLINIC_X matching the
+# paper's own stated ~8.0e-5 to ~4%, closer Europa approach than the
+# confirmed 3:4-LO orbit, basin-robust across 32/41 seeds, independent Radau
+# cross-check clean). This is now ALSO :data:`_TABLE1_CANDIDATE_SEEDS`'s
+# live "5:6-LO" entry -- this separate seed/recovery pair is kept for
+# provenance/direct-access convenience (mirrors the :func:`recover_756_near_miss`
+# pattern) and as a standing regression independent of any future change to
+# the shared table.
+# ---------------------------------------------------------------------------
+
+_758_TABLE2_SEEDED_CANDIDATE_SEED: tuple[float, float, int | None, float] = (
+    -1.28420033,
+    1.0,
+    2,
+    40.0,
+)
+
+
+def recover_758_table2_seeded_candidate(
+    system: cr3bp.CR3BPSystem | None = None,
+) -> ResonantFamilyCandidate:
+    """Converge+classify #758's Table-2-seeded 5:6-LO candidate.
+
+    Same pattern as :func:`recover_table1_candidate` / :func:`recover_756_near_miss`,
+    kept as its own named entry point (identical seed to
+    ``_TABLE1_CANDIDATE_SEEDS["5:6-LO"]``) so callers/tests do not depend on
+    that shared table's current contents to reach this specific, well-
+    evidenced candidate.
+    """
+    sys_ = system if system is not None else jupiter_europa_system()
+    x0_guess, ydot0_sign, half_crossings, period_guess = _758_TABLE2_SEEDED_CANDIDATE_SEED
+    cand = converge_candidate(
+        sys_,
+        "758-table2-seeded-5:6-LO",
+        x0_guess,
+        ANDERSON_LO_C_FLYBY,
+        period_guess,
+        ydot0_sign=ydot0_sign,
+        half_crossings=half_crossings,
+    )
+    if cand is None:
+        raise ValueError("hardcoded #758 seed failed to converge -- regression")
     return cand
 
 
@@ -1076,10 +1283,15 @@ __all__ = [
     "TABLE1_GATE_REL_TOL",
     "TABLE1_PERIOD_REL_TOL",
     "TABLE1_TARGETS",
+    "TABLE2_5_6_LO_X_OFFSET_SOURCED",
+    "TABLE2_HOMOCLINIC_X",
+    "TABLE2_HOMOCLINIC_XDOT",
+    "TABLE2_HOMOCLINIC_YDOT",
     "FlybyRotationSeed",
     "GateRow",
     "ResonantFamilyCandidate",
     "TwoBodySeed",
+    "basin_robustness_scan",
     "continue_candidate_toward_c_flyby",
     "converge_candidate",
     "europa_closest_approach",
@@ -1087,6 +1299,7 @@ __all__ = [
     "gate_report",
     "jupiter_europa_system",
     "recover_756_near_miss",
+    "recover_758_table2_seeded_candidate",
     "recover_table1_candidate",
     "survey_candidates",
     "two_body_flyby_rotation_seed",

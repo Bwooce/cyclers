@@ -239,10 +239,24 @@ def test_table1_gate_honest_report(system: object) -> None:
     assert row_34lo.period_rel_err > 1e-2, row_34lo
     assert not row_34lo.passed
 
-    # 5:6-LO and 5:6-NO fail on EIGENVALUE too (unlike 3:4-LO) -- #755 spent
-    # substantial additional targeted search on 5:6-LO specifically and
-    # found nothing closer than #753's original candidate.
-    assert not rows["5:6-LO"].eigenvalue_confirmed
+    # #758: 5:6-LO's eigenvalue is now ALSO confirmed to extreme precision
+    # (rel_err 3.4e-7, six orders of magnitude tighter than #753's original
+    # 1.98% seed) via a genuinely new, Table-2-derived seed strategy -- see
+    # the module docstring's #758 update. Same pattern as 3:4-LO: eigenvalue
+    # matches, period does not (real ~2.83% offset), so the strict
+    # dual-criterion gate still honestly reports FAIL pending reviewer
+    # judgment (see test_758_table2_seeded_candidate_* below for the full
+    # evidentiary regression).
+    row_56lo = rows["5:6-LO"]
+    assert row_56lo.eigenvalue_confirmed, row_56lo
+    assert row_56lo.rel_err < 1e-5, row_56lo
+    assert not row_56lo.period_confirmed, row_56lo
+    assert row_56lo.period_rel_err > 1e-2, row_56lo
+    assert not row_56lo.passed
+
+    # 5:6-NO still fails on EIGENVALUE (unlike 3:4-LO and 5:6-LO, both of
+    # which now match to extreme precision) -- no dedicated targeted search
+    # has been run for this row since #753's original wide sweep.
     assert not rows["5:6-NO"].eigenvalue_confirmed
 
 
@@ -367,44 +381,59 @@ def test_756_near_miss_converges_and_reproduces_recorded_eigenvalue(
     assert rel < 1e-4, f"{label}: barden={cand.max_eigenvalue} pf={cand.planar_floquet_eigenvalue}"
 
 
-def test_756_relaxed_search_near_misses_do_not_beat_pre_existing_candidate(
+def test_756_relaxed_search_near_misses_do_not_beat_753_original_candidate(
     system: object,
 ) -> None:
-    """The core #756 finding: relaxing the period-proximity search
-    criterion and ranking purely by eigenvalue closeness did NOT surface
-    anything better than #753's own pre-existing 5:6-LO candidate
-    (rel_err=1.98%). Asserted as a standing negative so a future
-    accidental improvement is caught (and celebrated), not silently
-    ignored."""
+    """The core #756 finding (at the time it ran): relaxing the
+    period-proximity search criterion and ranking purely by eigenvalue
+    closeness did NOT surface anything better than #753's own ORIGINAL
+    5:6-LO candidate (x0=0.81360506, rel_err=1.98%). That original
+    candidate has since been SUPERSEDED in ``_TABLE1_CANDIDATE_SEEDS`` by
+    #758's dramatically better Table-2-seeded find (rel_err=3.4e-7, see
+    the module docstring's #758 update) -- this test therefore compares
+    against the historical 1.98% baseline directly (not via
+    ``recover_table1_candidate("5:6-LO")``, which now returns the #758
+    candidate) so it keeps testing #756's own actual finding rather than
+    silently becoming vacuous."""
     target = jrf.TABLE1_TARGETS["5:6-LO"]
-    pre_existing = jrf.recover_table1_candidate("5:6-LO", system)  # type: ignore[arg-type]
-    pre_existing_rel_err = abs(pre_existing.max_eigenvalue - target) / target
-    assert pre_existing_rel_err == pytest.approx(0.0198, abs=1e-3)
-
+    historical_753_rel_err = 0.0198  # #753's original x0=0.81360506 seed
     for label in sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES):
         cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
         rel_err = abs(cand.max_eigenvalue - target) / target
-        assert rel_err > pre_existing_rel_err, (
-            f"{label} rel_err={rel_err} unexpectedly beat the pre-existing "
-            f"candidate's {pre_existing_rel_err} -- if a real improvement was "
-            "found, update this test and the #756 results note, don't just "
-            "loosen this assertion"
+        assert rel_err > historical_753_rel_err, (
+            f"{label} rel_err={rel_err} unexpectedly beat #753's original "
+            f"candidate's {historical_753_rel_err} -- if a real improvement "
+            "was found, update this test and the #756 results note, don't "
+            "just loosen this assertion"
         )
 
 
 def test_756_near_misses_lack_close_europa_approach_corroboration(system: object) -> None:
-    """Unlike 3:4-LO (0.00245 nondim, a genuine close flyby), NEITHER the
-    pre-existing 5:6-LO candidate NOR any #756 near-miss gets anywhere
-    close to Europa -- all stay an order of magnitude farther away, with
-    no qualitative close-flyby signature to corroborate family lineage."""
-    pre_existing = jrf.recover_table1_candidate("5:6-LO", system)  # type: ignore[arg-type]
-    pre_existing_dist = jrf.europa_closest_approach(
+    """Unlike 3:4-LO (0.00245 nondim, a genuine close flyby), NEITHER
+    #753's ORIGINAL 5:6-LO candidate (x0=0.81360506, since superseded in
+    ``_TABLE1_CANDIDATE_SEEDS`` by #758's find -- see the module
+    docstring's #758 update) NOR any #756 near-miss gets anywhere close to
+    Europa -- all stay an order of magnitude farther away, with no
+    qualitative close-flyby signature to corroborate family lineage
+    (contrast :func:`test_758_table2_seeded_candidate_makes_a_close_europa_approach`,
+    which shows the #758 candidate DOES)."""
+    historical_753_cand = jrf.converge_candidate(
         system,  # type: ignore[arg-type]
-        pre_existing.x0,
-        pre_existing.ydot0,
-        pre_existing.period,
+        "753-historical-5:6-LO",
+        0.81360506,
+        jrf.ANDERSON_LO_C_FLYBY,
+        101.2145,
+        ydot0_sign=1.0,
+        half_crossings=2,
     )
-    assert pre_existing_dist > 0.01
+    assert historical_753_cand is not None
+    historical_753_dist = jrf.europa_closest_approach(
+        system,  # type: ignore[arg-type]
+        historical_753_cand.x0,
+        historical_753_cand.ydot0,
+        historical_753_cand.period,
+    )
+    assert historical_753_dist > 0.01
 
     for label in sorted(jrf._756_RELAXED_SEARCH_NEAR_MISSES):
         cand = jrf.recover_756_near_miss(label, system)  # type: ignore[arg-type]
@@ -438,3 +467,209 @@ def test_flyby_rotation_symmetric_seed_runs_quickly(system: object) -> None:
     x0, jacobi = result
     assert -2.0 < x0 < 2.0
     assert math.isfinite(jacobi)
+
+
+# ---------------------------------------------------------------------------
+# (11) #758: Table-2-seeded 5:6-LO candidate. A genuinely new, sourced seed
+# strategy (Anderson & Lo's own Table 2 homoclinic-intersection state, p.190,
+# plus their own stated ~8.0e-5 x-offset to the 5:6 orbit, pp.184/190) found
+# a STRONG candidate -- eigenvalue rel_err 3.4e-7 (six orders of magnitude
+# tighter than #753's original 1.98% seed), an x0 offset from Table 2's own
+# point matching the paper's stated value to ~4%, a closer Europa flyby than
+# the CONFIRMED 3:4-LO orbit, basin robustness across the searched window,
+# and a clean independent Radau cross-check. The one thing that does NOT
+# confirm is the period (real ~2.83% offset from q=6, same qualitative
+# pattern the #755 reviewer ruling already accepted for 3:4-LO's own
+# comparable period offset). This module does NOT unilaterally flip the
+# strict dual-criterion gate -- see
+# ``docs/notes/2026-07-28-758-jupiter-europa-5-6-lo-table2-seeded-search.md``
+# for the full evidentiary writeup and "candidate found, reviewer judgment
+# invited" framing.
+# ---------------------------------------------------------------------------
+
+
+def test_table2_homoclinic_state_matches_paper_p190() -> None:
+    """Anderson & Lo 2011 Table 2, p.190, verbatim (x, xdot, ydot; y=0)."""
+    assert jrf.TABLE2_HOMOCLINIC_X == -1.28427733
+    assert jrf.TABLE2_HOMOCLINIC_XDOT == 0.00000009
+    assert jrf.TABLE2_HOMOCLINIC_YDOT == 0.46372205
+
+
+def test_table2_5_6_lo_x_offset_sourced_matches_paper_p184_p190() -> None:
+    """Anderson & Lo 2011 pp.184/190, verbatim: "a difference in x position
+    from the 5:6 orbit of approximately 8.0 x 10^-5"."""
+    assert jrf.TABLE2_5_6_LO_X_OFFSET_SOURCED == 8.0e-5
+
+
+def test_758_table2_seeded_candidate_converges_and_matches_recorded_values(
+    system: object,
+) -> None:
+    """Standing regression: the hardcoded #758 seed still converges to a
+    tightly-residual, real-unstable orbit at its recorded state."""
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    assert cand.crossing_residual < 1e-9
+    assert cand.jacobi == pytest.approx(jrf.ANDERSON_LO_C_FLYBY, abs=1e-8)
+    assert cand.is_real_unstable
+    assert cand.x0 == pytest.approx(-1.2842003, abs=1e-6)
+    assert cand.period_over_2pi == pytest.approx(6.169686, abs=1e-4)
+
+
+def test_758_table2_seeded_candidate_eigenvalue_confirms_under_table1_gate(
+    system: object,
+) -> None:
+    """The headline #758 finding: the recovered eigenvalue matches Table 1's
+    5:6-LO target FAR inside TABLE1_GATE_REL_TOL, cross-checked between
+    barden_stability and _planar_floquet (feedback_orbit_closure_discipline)
+    -- a much tighter match than #753's original 1.98% seed by six orders of
+    magnitude."""
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    target = jrf.TABLE1_TARGETS["5:6-LO"]
+    rel_err = abs(cand.max_eigenvalue - target) / target
+    assert rel_err < jrf.TABLE1_GATE_REL_TOL
+    assert rel_err == pytest.approx(3.4e-7, abs=2e-7)
+    cross_rel = abs(cand.max_eigenvalue - cand.planar_floquet_eigenvalue) / cand.max_eigenvalue
+    assert cross_rel < 1e-4, f"barden={cand.max_eigenvalue} pf={cand.planar_floquet_eigenvalue}"
+
+
+def test_758_table2_seeded_candidate_x0_offset_matches_paper_stated_value(
+    system: object,
+) -> None:
+    """The recovered candidate's x0 sits close to TABLE2_HOMOCLINIC_X, and
+    the offset itself matches the paper's OWN stated ~8.0e-5 value to ~4%
+    relative -- independent, paper-sourced numeric corroboration beyond the
+    eigenvalue match alone (not just a qualitative shape/mechanism
+    inference)."""
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    offset = cand.x0 - jrf.TABLE2_HOMOCLINIC_X
+    assert offset == pytest.approx(7.7e-5, abs=5e-6)
+    rel = abs(abs(offset) - jrf.TABLE2_5_6_LO_X_OFFSET_SOURCED) / jrf.TABLE2_5_6_LO_X_OFFSET_SOURCED
+    assert rel < 0.1, f"offset {offset} vs paper's stated {jrf.TABLE2_5_6_LO_X_OFFSET_SOURCED}"
+
+
+def test_758_table2_seeded_candidate_makes_a_closer_europa_approach_than_3_4_lo(
+    system: object,
+) -> None:
+    """Corroboration signal #2: the #758 candidate makes a genuine close
+    Europa flyby (~668 km) -- CLOSER than the CONFIRMED 3:4-LO orbit's own
+    1641 km approach, strongly matching the paper's attributed instability
+    mechanism (p.177-178). Contrast #753's original seed and every #756
+    near-miss, none of which get within an order of magnitude of Europa
+    (see test_756_near_misses_lack_close_europa_approach_corroboration)."""
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    dist = jrf.europa_closest_approach(system, cand.x0, cand.ydot0, cand.period)  # type: ignore[arg-type]
+    assert dist == pytest.approx(0.000996, abs=2e-5)
+
+    three_four_lo = jrf.recover_table1_candidate("3:4-LO", system)  # type: ignore[arg-type]
+    three_four_lo_dist = jrf.europa_closest_approach(
+        system,  # type: ignore[arg-type]
+        three_four_lo.x0,
+        three_four_lo.ydot0,
+        three_four_lo.period,
+    )
+    assert dist < three_four_lo_dist
+
+
+def test_758_table2_seeded_candidate_period_not_confirmed(system: object) -> None:
+    """Corroboration signal that does NOT confirm (honestly reported, same
+    pattern the #755 reviewer ruling already accepted for 3:4-LO's own
+    comparable period offset): period_over_2pi is a real, tightly-converged
+    ~2.83% offset from the clean q=6 multiple -- fails
+    TABLE1_PERIOD_REL_TOL. This is real signal, not tolerance noise (the
+    crossing_residual is ~1e-12, see
+    test_758_table2_seeded_candidate_converges_and_matches_recorded_values)."""
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    period_rel_err = abs(cand.period_over_2pi - 6.0) / 6.0
+    assert period_rel_err > jrf.TABLE1_PERIOD_REL_TOL
+    assert period_rel_err == pytest.approx(0.0283, abs=2e-3)
+
+
+def test_758_table2_seeded_candidate_independent_radau_crosscheck(system: object) -> None:
+    """Independent-integrator cross-check (feedback_orbit_closure_discipline):
+    re-propagating the #758 candidate's own state with Radau (a DIFFERENT
+    integrator from the DOP853 the corrector uses) must re-close and
+    conserve the Jacobi constant tightly."""
+    import numpy as np
+
+    cand = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    state0 = np.array([cand.x0, 0.0, 0.0, 0.0, cand.ydot0, 0.0])
+    orbit = cp.PeriodicOrbit(
+        state0=state0,
+        period=cand.period,
+        jacobi=cand.jacobi,
+        converged=True,
+        closure_residual=cand.crossing_residual,
+    )
+    ok, dj = cp.crosscheck_periodic(
+        system,  # type: ignore[arg-type]
+        orbit,
+        method="Radau",
+        rtol=1e-12,
+        atol=1e-12,
+        closure_tol=1e-6,
+        jacobi_tol=1e-6,
+    )
+    assert ok, f"Radau cross-check failed: jacobi drift={dj}"
+    assert dj < 1e-10
+
+
+def test_758_table2_seeded_candidate_supersedes_753_seed_in_shared_table(
+    system: object,
+) -> None:
+    """``_TABLE1_CANDIDATE_SEEDS["5:6-LO"]`` now points at the #758
+    candidate, not #753's original weaker seed -- ``recover_table1_candidate``
+    and ``recover_758_table2_seeded_candidate`` must agree."""
+    shared = jrf.recover_table1_candidate("5:6-LO", system)  # type: ignore[arg-type]
+    direct = jrf.recover_758_table2_seeded_candidate(system)  # type: ignore[arg-type]
+    assert shared.x0 == pytest.approx(direct.x0, abs=1e-9)
+    assert shared.max_eigenvalue == pytest.approx(direct.max_eigenvalue, rel=1e-9)
+
+
+def test_basin_robustness_scan_shows_dominant_basin(system: object) -> None:
+    """The #758 candidate is NOT an isolated numerical fluke: a majority of
+    evenly-spaced seeds across the sourced +-2e-4 window converge Newton-
+    directly to the exact same point (mirrors #756's own basin-robustness
+    check on the pre-existing 5:6-LO seed, and the same
+    survey_candidates-bracket-scan-misses-it tooling nuance #756
+    documented)."""
+    results = jrf.basin_robustness_scan(
+        system,  # type: ignore[arg-type]
+        x0_lo=jrf.TABLE2_HOMOCLINIC_X - 2e-4,
+        x0_hi=jrf.TABLE2_HOMOCLINIC_X + 2e-4,
+        n_seeds=11,
+        jacobi=jrf.ANDERSON_LO_C_FLYBY,
+        ydot0_sign=1.0,
+        half_crossings=2,
+        period_guess=40.0,
+    )
+    n_converged = sum(1 for _, c in results if c is not None)
+    assert n_converged >= 8, f"expected most seeds to converge, got {n_converged}/11"
+    target_x0 = jrf.recover_758_table2_seeded_candidate(system).x0  # type: ignore[arg-type]
+    n_at_target = sum(1 for _, c in results if c is not None and abs(c.x0 - target_x0) < 1e-6)
+    assert n_at_target >= 6, (
+        f"expected the #758 candidate's basin to dominate the window, got "
+        f"{n_at_target}/11 seeds landing there"
+    )
+
+
+def test_survey_candidates_bracket_scan_misses_758_root_at_coarse_resolution(
+    system: object,
+) -> None:
+    """Honest tooling-nuance regression (same one #756 documented for the
+    pre-existing 5:6-LO seed): survey_candidates' own bracket/sign-flip scan
+    does NOT detect the #758 root at a modest grid resolution in this
+    narrow window -- direct Newton convergence (basin_robustness_scan /
+    recover_758_table2_seeded_candidate) is the ground truth, not this
+    scan. Documented so a future reader does not conclude the region is
+    empty just because this particular tool found nothing here."""
+    found = jrf.survey_candidates(
+        system,  # type: ignore[arg-type]
+        jacobi=jrf.ANDERSON_LO_C_FLYBY,
+        ydot0_sign=1.0,
+        half_crossings=2,
+        t_hi=40.0,
+        x0_lo=jrf.TABLE2_HOMOCLINIC_X - 2e-4,
+        x0_hi=jrf.TABLE2_HOMOCLINIC_X + 2e-4,
+        n_grid=400,
+        label_prefix="758_scan_test_",
+    )
+    assert len(found) == 0
