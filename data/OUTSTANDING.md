@@ -386,7 +386,7 @@ unchanged. See `git log` around this date for the corrected commit.
   reports `passed=False`; this is a qualitative judgment layered on top, documented in this note's
   own "Reviewer verdict" section. **Net effect on `#754`: BOTH required families (3:4-LO, 5:6-LO)
   are now confirmed — the Table-3 heteroclinic gate is buildable at its ORIGINAL scope.**
-- `#750` — registered 2026-07-28, not yet dispatched: verify digit-for-digit whether the
+- `#750` — DISPATCHED 2026-07-29 (user: "fire"): verify digit-for-digit whether the
   Kumar/Anderson/de la Llave/Gunter 2021 (AAS 21-651) seed paper — the direct ancestor of the
   catalogued N=5 CRNBP torus discovery (`#714`→`#736`, `europa-3-4-crnbp-torus-jupiter-2026`) —
   actually reuses any specific numeric result (not just cites as lineage) from Anderson & Lo 2010/
