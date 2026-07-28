@@ -213,9 +213,26 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
-- `#738` — dispatched 2026-07-28, still running: Radau re-closure to upgrade the N=5 torus row
-  V0->V1, user-requested. Background agent `a11d61508dddf2269` confirmed still running (tests/data
-  ratchet suite) as of last check; do not duplicate-dispatch, poll/wait for its own report.
+- `#738` — REMOVED from this list 2026-07-28, ✓ DONE: N=5 CRNBP torus row
+  (`europa-3-4-crnbp-torus-jupiter-2026`) promoted `validation_level: V0 -> V1`. Built
+  `search.crnbp_torus_ghost_guard.radau_ghost_guard`, an independent Radau-vs-DOP853
+  cross-check of the torus's own short-time flow-consistency claim at IDENTICAL sample
+  anchors (the #702 anchoring lesson adapted for a deterministic single-valued torus with
+  no eigenvector sign ambiguity) — agree to `integrator_delta_max_km=7.11e-08`, seven
+  orders of magnitude below the Umbriel-Titania row's own 1.0 km V1 gate, closing the
+  `#735` Sec 8 gap `#736`'s writeback left open. Mandatory adversarial pre-execution
+  review (Fable, mirroring `#569`/`#708`/`#736`) verified every sourced number, confirmed
+  identical anchoring by reading both sampling loops side by side (empirically proven via
+  bit-identical DOP853 closure reproduction), confirmed the full N=5 coupling-term
+  equations are exercised, and exercised the ghost guard's failure path in tests. Verdict
+  PASS with 2 prose-only fixes (both applied): "six orders of magnitude" corrected to the
+  accurate "seven," and a sentence added crediting `#726`/`#729`'s real-SPICE
+  model-shadowing evidence as the genuinely independence-flavored companion evidence.
+  Commits: `76544f6`/`f02748e` (module+tests+evidence artifact, pre-review), `6a40beb`
+  (catalogue/validate.py/ratchet update, post-review — note this commit also
+  incidentally swept in two files from concurrently-running `#749`, a bare-`git-commit`
+  race; content unaffected, see `[[feedback_concurrent_agent_git_rules]]`'s new
+  refinement).
 - `#749` — REMOVED from this list 2026-07-28, ✓ DONE: both `#730` §4 item 28 (Llibre, Martínez &
   Simó 1985, "Transversality of the Invariant Manifolds Associated to the Lyapunov Family of
   Periodic Orbits near L2 in the RTBP," J. Diff. Eq. 58:104-156, DOI
@@ -274,11 +291,32 @@ unchanged. See `git log` around this date for the corrected commit.
   1-2c/1-2d excluded with certainty; the other four with high but not absolute confidence. Zenodo
   dataset accessed and confirmed impractical to brute-force search (measured throughput: ~27 min for
   the 1.3GB archive alone). See its own bullet entry.
-- `#748` — registered 2026-07-28: consolidate the ~60+ new citation-mining candidates flagged
-  (but not acquired) across the three `#744` cluster digests plus `#742`'s own citation-mining pass
-  into the `#730` master list, mirroring how `#730` itself was originally built — currently
-  scattered across individual digest notes, not yet deduplicated/priority-ranked/DOI-resolved as a
-  registry.
+- **#748 ✓ DONE (2026-07-28) -- consolidated 236 total unique candidates into the `#730` master
+  list (45 new tabulated, DOI-resolved; ~143 new grouped low-priority; 2 more false gaps found).**
+  Extracted every "genuinely new, flagged, not acquired" citation from the three `#744` cluster
+  digests plus `#742`'s own citation-mining pass (its acquisition summary was already folded into
+  `#730`, but its own citation-mining leads were not — verified, not assumed, per the task brief).
+  Sibling tasks `#745`/`#746`/`#747` landed concurrently partway through this pass; `#746`/`#747`
+  had no citation-mining section of their own (confirmed by direct read), but `#745`'s own pass
+  surfaced ~13 further candidates, folded into the same §9 tail (mostly recurrences of items this
+  pass already found, plus ~10 genuinely new). Cross-checked every candidate against
+  `CORPUS_INDEX.md` directly (not digest claims) and against `#730`'s existing 68 items, finding
+  real duplicates (e.g. Gómez/Marcote/Mondelo 2005 and Tsirogiannis/Perdios/Markellos 2008/2009
+  each independently surfaced from 2-3 separate sources, merged and priority-raised) and **2 more
+  false gaps** — Wilczak & Zgliczyński 2003 (*Comm. Math. Phys.* 234:37-75, already acquired, the
+  `#744` digest's own citation-mining pass missed it) and Koon/Lo/Marsden/Ross 2001 (*CMDA*
+  81:27-38, already acquired, `#742`'s own pass explicitly distinguished it from a different
+  in-corpus paper without checking it was itself already there) — now added to `#730` §1. 45
+  candidates individually tabulated with real DOI resolution (§8, items 49-93 — 4 parallel
+  WebSearch/CrossRef-verification subagents dispatched, no DOI pattern-guessed, one item honestly
+  reported "not independently verified" rather than fabricated); ~143 further low-priority items
+  grouped into an expanded §9 tail without individual DOI lookup, consistent with the master
+  list's own established effort/value tradeoff. `#749` (a separate, out-of-scope acquisition task)
+  also committed directly to the master list during this pass (§2 items 28/43) — left untouched,
+  not this task's responsibility. No acquisition, filing, or digesting performed — compilation
+  only, per task scope. See
+  `docs/notes/2026-07-27-730-acquisition-backlog-master-list.md`'s own "Update 2026-07-28 (`#748`)"
+  paragraph and new §8/§9 content for full detail.
 - **TASK-NUMBER COLLISION NOTE RETRACTED 2026-07-28**: the note previously here, claiming a
   separate concurrent session ALSO used `#744`, was WRONG. Corrected after `#744`'s own agent
   investigated `git log`/reflog/stash/all worktree branches on request and found no evidence of any
