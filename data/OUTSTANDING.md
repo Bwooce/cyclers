@@ -277,6 +277,18 @@ unchanged. See `git log` around this date for the corrected commit.
   only.
 
 ### In progress
+- `#755` — dispatched 2026-07-28, user-authorized ("continue with a" — targeted further search):
+  find and confirm `#753`'s 2 remaining unconfirmed Table-1 families, 3:4-LO
+  (target `|λ|=1036.116088`) and 5:6-LO (target `|λ|=4445.387515`), needed as `#754` (Task B)'s own
+  prerequisite manifolds. Per `#753`'s own results note recommendation: try (i) a finer C-grid
+  around the fold boundaries found in search-history step 4 (families hit a fold at
+  `C≈3.07`-`3.25`, short of `C_flyby=2.9916` — a denser C-step or a different simple-loop starting
+  family might extend further), and (ii) a seed derived from Anderson & Lo's own "Designing Flybys
+  Using Two-Body Approximations" section (two-body flyby-vector-rotation construction) rather than
+  the plain two-body resonant ellipse already tried and confirmed NOT to work directly. Same
+  honesty discipline as `#753`: a continued non-confirmation is an acceptable, reportable outcome,
+  not a task failure — do not fudge tolerances or accept a candidate lacking period confirmation
+  of correct `p:q` resonance lineage.
 - `#753` — REMOVED from "In progress" 2026-07-28, ✓ DONE (honest PARTIAL result — 1/4 Table-1
   families gate-passed, 3/4 not confirmed): built `search.jovian_resonant_families` retargeting
   the cislunar resonant-orbit pipeline (`resonance_network.py`, `#267`) to Jupiter-Europa at
